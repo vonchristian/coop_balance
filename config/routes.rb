@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: { sessions: 'users/sessions' , registrations: "bplo_section/settings/users"}
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  resources :home, only: [:index]
   namespace :admin do
     resources :settings, only: [:index]
     resources :departments, only: [:new, :create]
@@ -14,6 +15,7 @@ Rails.application.routes.draw do
   namespace :loans_department do
     resources :loan_products
   end
+  resources :member_registrations, only: [:new, :create]
   unauthenticated :user do
     root :to => 'home#index', :constraints => lambda { |request| request.env['warden'].user.nil? }, as: :unauthenticated_root
   end
