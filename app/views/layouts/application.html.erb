@@ -13,6 +13,9 @@
         <% if current_user.accounting_officer? %>
           <%=render "accounting_department/sidebar_for_accounting_department" %>
         <% end %>
+        <% if current_user.loan_officer? %>
+          <%=render "loans_department/sidebar_for_loans_department" %>
+        <% end %>
 
         <div class="content-wrapper">
           <section class="content">
