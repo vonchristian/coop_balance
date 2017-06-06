@@ -10,10 +10,17 @@ module AccountingDepartment
     has_many :debit_entries, :through => :debit_amounts, :source => :entry, :class_name => 'AccountingDepartment::Entry'
 
     validates :type, presence: true
-    validates :name, :account_code, presence: true, uniqueness: true
+    validates :name, :code, presence: true, uniqueness: true
 
     def self.active
     end
+    def self.types
+      ["AccountingDepartment::Asset",
+       "AccountingDepartment::Equity",
+       "AccountingDepartment::Liability",
+       "AccountingDepartment::Expense",
+       "AccountingDepartment::Revenue"]
+     end
     def self.balance(options={})
       if self.new.class == Accounting::Account
         raise(NoMethodError, "undefined method 'balance'")

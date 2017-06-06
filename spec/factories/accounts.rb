@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :account do
-    name "MyString"
-    code "MyString"
+    name   { Faker::Company.name }
+    code   { Faker::Bitcoin.address }
     contra false
     type ""
   end
