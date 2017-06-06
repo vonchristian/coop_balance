@@ -1,0 +1,10 @@
+<%= link_to 'New Account', new_accounting_department_account_path, class: "btn btn-primary btn-flat" %>
+
+
+<% @accounts.each do |account| %>
+  <%= account.name %>
+  <%= account.code %>
+  <%= account.type %>
+  <%= number_to_currency account.debits_balance %>
+  <%= number_to_currency account.credits_balance %>
+<% end %>

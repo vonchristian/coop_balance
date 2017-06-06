@@ -1,0 +1,7 @@
+<%= simple_form_for @account, url: :accounting_department_accounts do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :name %>
+  <%= f.input :code %>
+  <%= f.input :type, collection: AccountingDepartment::Account.types %>
+  <%= f.submit "Create Account", class: "btn btn-primary btn-flat", data: { disable_with: "Creating Account..." } %>
+<% end %>

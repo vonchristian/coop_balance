@@ -1,14 +1,30 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Coopcatalyst</title>
+    <title>Coop Catalyst</title>
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
+  <body class="hold-transition skin-black-light sidebar-mini">
+      <div class="wrapper">
+        <%=render "layouts/shared/header" %>
+        <% if current_user.accounting_officer? %>
+          <%=render "accounting_department/sidebar_for_accounting_department" %>
+        <% end %>
 
-  <body>
-    <%= yield %>
-  </body>
-</html>
+        <div class="content-wrapper">
+          <section class="content">
+            <ol class="breadcrumb">
+              <li><%#= breadcrumbs pretext: "You are here: ",
+                  separator: " &rsaquo; " %></li>
+            </ol>
+            <%=render "layouts/shared/flash_messages" %>
+            <%= yield %>
+          </section>
+        </div>
+          <%=render 'layouts/shared/footer' %>
+      </div>
+    </body>
+  </html>
