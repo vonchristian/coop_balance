@@ -19,12 +19,19 @@ Rails.application.routes.draw do
       resources :loan_applications, only: [:new, :create]
     end
   end
+  resources :savings do
+    resources :deposits, only: [:new, :create]
+    resources :withdrawals, only: [:new, :create]
+
+  end
   resources :share_capitals do
     resources :capital_build_ups, only: [:new, :create]
   end
   resources :members do
     resources :address_details
     resources :share_capitals, only: [:index, :new, :create]
+    resources :savings, only: [:index, :new, :create]
+
   end
   resources :member_registrations, only: [:new, :create]
   unauthenticated :user do
@@ -32,6 +39,10 @@ Rails.application.routes.draw do
   end
   namespace :management_department do
     resources :share_capital_products, only: [:new, :create], module: :settings
+    resources :saving_products, only: [:new, :create], module: :settings
+    resources :time_deposit_products, only: [:new, :create], module: :settings
+
+
     resources :settings, only: [:index]
     resources :members, only: [:index, :show]
 

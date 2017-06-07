@@ -1,0 +1,10 @@
+<%= simple_form_for [@member, @saving], url: :member_savings do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+  <%= f.input :saving_product_id, collection: SavingProduct.all.map{ |a| [ a.name.titleize, a.id] }, as: :radio_buttons %>
+  <%= f.input :account_number %>
+  <%= f.input :amount, label: "Initial Deposit" %>
+  <%= f.input :or_number %>
+  <%= f.input :member_id, input_html: { value: @member.id }, as: :hidden %>
+  <%= f.submit "Open Savings" %>
+<% end %>

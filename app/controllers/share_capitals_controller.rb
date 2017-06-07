@@ -1,5 +1,6 @@
 class ShareCapitalsController < ApplicationController
   def index
+    @member = Member.find(params[:member_id])
   end
   def new
     @member = Member.find(params[:member_id])

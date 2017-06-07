@@ -1,0 +1,8 @@
+<%= simple_form_for [@saving, @withdrawal], url: :saving_withdrawals do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :amount %>
+  <%= f.input :or_number %>
+  <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+  <%= f.input :saving_id, input_html: { value: @saving.id },as: :hidden %>
+  <%= f.submit "withdrawal" %>
+<% end %>

@@ -1,0 +1,33 @@
+  <div class="row">
+    <%= render 'members/partials/sidebar', member: @member %>
+    <div class="col-md-9">
+      <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+          <li><a href="#activity" data-toggle="tab">Activity</a></li>
+          <li><a href="#savings" data-toggle="tab">Savings</a></li>
+
+          <li class="<%='active' if current_page?(member_share_capitals_path(@member)) %>"> <%= link_to 'Share Capital', member_share_capitals_path(@member), id: 'share_capital' %></li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane" id="activity">
+            Activity
+          </div>
+          <div class="<%='active' if current_page?(member_share_capitals_path(@member)) %> tab-pane" id="share_capital">
+            Share Capital
+            <%= link_to "New Share Capital Subscription", new_member_share_capital_path(@member), class: "btn btn-primary btn-flat" %>
+          </div>
+          <div class="<%='active' if current_page?(member_savings_path(@member)) %> tab-pane" id="savings">
+            Savings Accounts
+            <%= link_to "New Savings Account", new_member_saving_path(@member), class: "btn btn-primary btn-flat" %>
+            <% @member.savings.each do |saving| %>
+              <%= saving.name %>
+              <%= saving.balance %>
+              <%= link_to 'Deposit', new_saving_deposit_path(saving) %>
+              <%= link_to 'Withdraw', new_saving_withdrawal_path(saving) %>
+
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

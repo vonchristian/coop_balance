@@ -2,6 +2,8 @@
   <% cache member do %>
     <div class="row">
       <div class="col-md-2">
+        <%=image_tag(member.avatar.url(:large), height: 120, width: 120, class: "img-responsive img-square") %>
+
       </div>
       <div class="col-md-6">
         <%= link_to member.full_name, management_department_member_path(member) %>
