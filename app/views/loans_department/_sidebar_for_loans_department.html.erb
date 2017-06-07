@@ -25,11 +25,13 @@
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
-          <li class="header"> ACCOUNTING </li>
+          <li class="header"> LOANS DEPARTMENT </li>
           <!-- <li><a href="/dashboard"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li> -->
 
-          <li class=<%#= 'active' if current_page?(accounting_department_loan_products_path) %> ><a href="/loans_department/loan_products"><i class="fa fa-pie-chart"></i> <span> &nbsp; Loan Products </span></a></li>
-          <li class=<%#= 'active' if current_page?(admin_settings_path) %> ><a href="/admin/settings"><i class="fa fa-cog"></i> <span> &nbsp; Settings</span></a></li>
+          <li class=<%#= 'active' if current_page?(loans_department_loan_products_path) %> ><a href="/loans_department/loan_products"><i class="fa fa-pie-chart"></i> <span>Loan Products </span></a></li>
+          <li class=<%#= 'active' if current_page?(loans_department_loans_path) %> ><a href="/loans_department/loans"><i class="fa fa-credit-card"></i> <span> Loans</span></a></li>
+
+          <li class=<%#= 'active' if current_page?(loans_department_members_path) %> ><a href="/loans_department/members"><i class="fa fa-users"></i> <span> Members</span></a></li>
           <li class=<%#= 'active' if current_page?(admin_settings_path) %> ><a href="/admin/settings"><i class="fa fa-cog"></i> <span> &nbsp; Settings</span></a></li>
 
     </section>

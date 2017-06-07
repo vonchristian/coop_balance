@@ -14,6 +14,13 @@ Rails.application.routes.draw do
   resources :loans_department, only: [:index]
   namespace :loans_department do
     resources :loan_products
+    resources :loans, except: [:destroy]
+    resources :members, only: [:index, :show] do
+      resources :loan_applications, only: [:new, :create]
+    end
+  end
+  resources :members do
+    resources :address_details
   end
   resources :member_registrations, only: [:new, :create]
   unauthenticated :user do
@@ -21,6 +28,6 @@ Rails.application.routes.draw do
   end
 
   root :to => 'accounting_department#index', :constraints => lambda { |request| request.env['warden'].user.role == 'accounting_officer' if request.env['warden'].user }, as: :accounting_department_root
-  root :to => 'loans_department#index', :constraints => lambda { |request| request.env['warden'].user.role == 'loans_officer' if request.env['warden'].user }, as: :loans_department_root
+  root :to => 'loans_department#index', :constraints => lambda { |request| request.env['warden'].user.role == 'loan_officer' if request.env['warden'].user }, as: :loans_department_root
 
 end

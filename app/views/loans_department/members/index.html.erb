@@ -1,0 +1,3 @@
+<% @members.each do |member| %>
+  <%=link_to member.first_name, loans_department_member_path(member) %>
+<% end %>

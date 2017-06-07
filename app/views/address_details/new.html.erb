@@ -1,0 +1,11 @@
+<%= simple_form_for(@address_details, url: { action: 'create' }) do |f| %>
+  <%= f.error_notification %>
+  <%= f.fields_for :addresses do |a| %>
+    <%= render 'shared/address_form', f: a %>
+  <% end %>
+  <div id='add-address'>
+    <%#= link_to_add_fields "Add Address", f, :addresses %>
+    <%= f.submit "Save Address" %>
+  </div>
+  <%= f.submit "Save and Continue" %>
+<% end %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170606075601) do
+ActiveRecord::Schema.define(version: 20170606091424) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,28 @@ ActiveRecord::Schema.define(version: 20170606075601) do
     t.index ["code"], name: "index_accounts_on_code", unique: true
     t.index ["name"], name: "index_accounts_on_name", unique: true
     t.index ["type"], name: "index_accounts_on_type"
+  end
+
+  create_table "addresses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "street"
+    t.string "barangay"
+    t.string "municipality"
+    t.string "province"
+    t.string "addressable_type"
+    t.uuid "addressable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id"
+  end
+
+  create_table "amortization_schedules", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "loan_id"
+    t.datetime "date"
+    t.decimal "principal"
+    t.decimal "interest"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["loan_id"], name: "index_amortization_schedules_on_loan_id"
   end
 
   create_table "amounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -61,6 +83,17 @@ ActiveRecord::Schema.define(version: 20170606075601) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["interest_recurrence"], name: "index_loan_products_on_interest_recurrence"
+  end
+
+  create_table "loans", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "member_id"
+    t.uuid "loan_product_id"
+    t.decimal "loan_amount", precision: 20, scale: 20
+    t.datetime "application_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["loan_product_id"], name: "index_loans_on_loan_product_id"
+    t.index ["member_id"], name: "index_loans_on_member_id"
   end
 
   create_table "members", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -100,6 +133,9 @@ ActiveRecord::Schema.define(version: 20170606075601) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  add_foreign_key "amortization_schedules", "loans"
   add_foreign_key "amounts", "accounts"
   add_foreign_key "amounts", "entries"
+  add_foreign_key "loans", "loan_products"
+  add_foreign_key "loans", "members"
 end

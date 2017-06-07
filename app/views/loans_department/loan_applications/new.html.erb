@@ -1,0 +1,7 @@
+<%= simple_form_for [@member, @loan], url: :loans_department_member_loan_applications do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :application_date %>
+  <%= f.input :loan_product_id, collection: LoansDepartment::LoanProduct.all.map{ |a| [a.name.titleize, a.id] } %>
+  <%= f.input :loan_amount %>
+  <%= f.submit "Save Loan Application", class: "btn btn-primary" %>
+<% end %>
