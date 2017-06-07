@@ -1,0 +1,22 @@
+class ShareCapitalsController < ApplicationController
+  def index
+  end 
+  def new
+    @member = Member.find(params[:member_id])
+    @share_capital = @member.share_capitals.build
+  end
+  def create
+    @member = Member.find(params[:member_id])
+    @share_capital = @member.share_capitals.create(share_capital_params)
+    if @share_capital.save
+      redirect_to management_department_member_url(@member), notice: "Success"
+    else
+      render :new
+    end
+  end
+
+  private
+  def share_capital_params
+    params.require(:share_capital).permit(:date_opened, :account_number, :share_capital_product_id)
+  end
+end

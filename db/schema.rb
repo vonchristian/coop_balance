@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170606091424) do
+ActiveRecord::Schema.define(version: 20170607082632) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,15 +53,24 @@ ActiveRecord::Schema.define(version: 20170606091424) do
   create_table "amounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "account_id"
     t.uuid "entry_id"
-    t.decimal "amount", precision: 20, scale: 20
     t.string "type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "amount"
     t.index ["account_id", "entry_id"], name: "index_amounts_on_account_id_and_entry_id"
     t.index ["account_id"], name: "index_amounts_on_account_id"
     t.index ["entry_id", "account_id"], name: "index_amounts_on_entry_id_and_account_id"
     t.index ["entry_id"], name: "index_amounts_on_entry_id"
     t.index ["type"], name: "index_amounts_on_type"
+  end
+
+  create_table "capital_build_ups", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "share_capital_id"
+    t.decimal "share_count"
+    t.datetime "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["share_capital_id"], name: "index_capital_build_ups_on_share_capital_id"
   end
 
   create_table "entries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -72,7 +81,9 @@ ActiveRecord::Schema.define(version: 20170606091424) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "entry_type"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_entry"
+    t.index ["entry_type"], name: "index_entries_on_entry_type"
   end
 
   create_table "loan_products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -107,6 +118,55 @@ ActiveRecord::Schema.define(version: 20170606091424) do
     t.index ["sex"], name: "index_members_on_sex"
   end
 
+  create_table "saving_products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.decimal "interest_rate"
+    t.integer "interest_recurrence"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_saving_products_on_name", unique: true
+  end
+
+  create_table "savings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "member_id"
+    t.string "account_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "saving_product_id"
+    t.index ["account_number"], name: "index_savings_on_account_number", unique: true
+    t.index ["member_id"], name: "index_savings_on_member_id"
+    t.index ["saving_product_id"], name: "index_savings_on_saving_product_id"
+  end
+
+  create_table "share_capital_product_shares", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "share_capital_product_id"
+    t.decimal "share_count"
+    t.decimal "cost_per_share"
+    t.datetime "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["share_capital_product_id"], name: "index_share_capital_product_shares_on_share_capital_product_id"
+  end
+
+  create_table "share_capital_products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_share_capital_products_on_name"
+  end
+
+  create_table "share_capitals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "member_id"
+    t.string "account_number"
+    t.datetime "date_opened"
+    t.string "type"
+    t.uuid "share_capital_product_id"
+    t.index ["account_number"], name: "index_share_capitals_on_account_number", unique: true
+    t.index ["member_id"], name: "index_share_capitals_on_member_id"
+    t.index ["share_capital_product_id"], name: "index_share_capitals_on_share_capital_product_id"
+    t.index ["type"], name: "index_share_capitals_on_type"
+  end
+
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -136,6 +196,12 @@ ActiveRecord::Schema.define(version: 20170606091424) do
   add_foreign_key "amortization_schedules", "loans"
   add_foreign_key "amounts", "accounts"
   add_foreign_key "amounts", "entries"
+  add_foreign_key "capital_build_ups", "share_capitals"
   add_foreign_key "loans", "loan_products"
   add_foreign_key "loans", "members"
+  add_foreign_key "savings", "members"
+  add_foreign_key "savings", "saving_products"
+  add_foreign_key "share_capital_product_shares", "share_capital_products"
+  add_foreign_key "share_capitals", "members"
+  add_foreign_key "share_capitals", "share_capital_products"
 end

@@ -1,0 +1,10 @@
+<%= link_to 'New Share Capital Product', new_management_department_share_capital_product_path, class: "btn btn-primary" %>
+
+
+<% @share_capital_products.each do |product| %>
+  <% cache product do %>
+    <%= product.name %>
+    <%= number_to_currency product.share_capital_product_shares.total_shares, unit: '' %>
+    <%= number_to_currency product.subscribed, unit: '' %>
+  <% end %>
+<% end %>

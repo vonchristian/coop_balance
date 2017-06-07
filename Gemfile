@@ -35,8 +35,6 @@ gem "gretel"
 gem 'public_activity'
 gem 'mina-puma', require: false
 gem 'barby'
-gem 'reform'
-gem 'reform-rails'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -60,6 +58,6 @@ group :test do
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-gem 'rack-mini-profiler', require: false
+gem 'rack-mini-profiler'
 gem 'memory_profiler'
 gem 'bullet'

@@ -16,6 +16,9 @@
         <% if current_user.loan_officer? %>
           <%=render "loans_department/sidebar_for_loans_department" %>
         <% end %>
+        <% if current_user.general_manager? %>
+          <%=render "management_department/sidebar_for_management_department", cached: true %>
+        <% end %>
 
         <div class="content-wrapper">
           <section class="content">

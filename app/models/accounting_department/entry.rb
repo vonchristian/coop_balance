@@ -32,7 +32,7 @@ module AccountingDepartment
     end
 
     private
-      def default_date
+      def set_default_date
         todays_date = ActiveRecord::Base.default_timezone == :utc ? Time.now.utc : Time.now
         self.entry_date ||= todays_date
       end

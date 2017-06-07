@@ -1,0 +1,2 @@
+class SavingProduct < ApplicationRecord
+end

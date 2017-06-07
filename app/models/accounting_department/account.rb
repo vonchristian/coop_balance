@@ -22,7 +22,7 @@ module AccountingDepartment
        "AccountingDepartment::Revenue"]
      end
     def self.balance(options={})
-      if self.new.class == Accounting::Account
+      if self.new.class == AccountingDepartment::Account
         raise(NoMethodError, "undefined method 'balance'")
       else
         accounts_balance = BigDecimal.new('0')
@@ -38,15 +38,15 @@ module AccountingDepartment
       end
     end
     def self.trial_balance
-      if self.new.class == Accounting::Account
-        Accounting::Asset.balance - (Accounting::Liability.balance + Accounting::Equity.balance + Accounting::Revenue.balance - Accounting::Expense.balance)
+      if self.new.class == AccountingDepartment::Account
+        AccountingDepartment::Asset.balance - (AccountingDepartment::Liability.balance + AccountingDepartment::Equity.balance + AccountingDepartment::Revenue.balance - AccountingDepartment::Expense.balance)
       else
         raise(NoMethodError, "undefined method 'trial_balance'")
       end
     end
 
     def balance(options={})
-      if self.class == Accounting::Account
+      if self.class == AccountingDepartment::Account
         raise(NoMethodError, "undefined method 'balance'")
       else
         if self.normal_credit_balance ^ contra
