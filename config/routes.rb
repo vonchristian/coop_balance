@@ -31,6 +31,8 @@ Rails.application.routes.draw do
     resources :address_details
     resources :share_capitals, only: [:index, :new, :create]
     resources :savings, only: [:index, :new, :create]
+    resources :time_deposits, only: [:index, :new, :create]
+
 
   end
   resources :member_registrations, only: [:new, :create]
@@ -50,5 +52,5 @@ Rails.application.routes.draw do
   root :to => 'accounting_department#index', :constraints => lambda { |request| request.env['warden'].user.role == 'accounting_officer' if request.env['warden'].user }, as: :accounting_department_root
   root :to => 'loans_department#index', :constraints => lambda { |request| request.env['warden'].user.role == 'loan_officer' if request.env['warden'].user }, as: :loans_department_root
   root :to => 'management_department#index', :constraints => lambda { |request| request.env['warden'].user.role == 'general_manager' if request.env['warden'].user }, as: :management_department_root
-
+  resources :users, only: [:show]
 end

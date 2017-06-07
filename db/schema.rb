@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170607084853) do
+ActiveRecord::Schema.define(version: 20170607102345) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -171,6 +171,28 @@ ActiveRecord::Schema.define(version: 20170607084853) do
     t.index ["type"], name: "index_share_capitals_on_type"
   end
 
+  create_table "time_deposit_products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.decimal "minimum_amount"
+    t.decimal "maximum_amount"
+    t.decimal "interest_rate"
+    t.string "name"
+    t.integer "interest_recurrence"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_time_deposit_products_on_name", unique: true
+  end
+
+  create_table "time_deposits", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "member_id"
+    t.uuid "time_deposit_product_id"
+    t.string "account_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_number"], name: "index_time_deposits_on_account_number", unique: true
+    t.index ["member_id"], name: "index_time_deposits_on_member_id"
+    t.index ["time_deposit_product_id"], name: "index_time_deposits_on_time_deposit_product_id"
+  end
+
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -191,6 +213,10 @@ ActiveRecord::Schema.define(version: 20170607084853) do
     t.integer "role"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "avatar_file_name"
+    t.string "avatar_content_type"
+    t.integer "avatar_file_size"
+    t.datetime "avatar_updated_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["role"], name: "index_users_on_role"
@@ -208,4 +234,6 @@ ActiveRecord::Schema.define(version: 20170607084853) do
   add_foreign_key "share_capital_product_shares", "share_capital_products"
   add_foreign_key "share_capitals", "members"
   add_foreign_key "share_capitals", "share_capital_products"
+  add_foreign_key "time_deposits", "members"
+  add_foreign_key "time_deposits", "time_deposit_products"
 end

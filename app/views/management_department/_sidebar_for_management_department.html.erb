@@ -5,27 +5,36 @@
         <!-- Sidebar user panel -->
         <div class="user-panel">
           <div class="pull-left image">
-            <%#=link_to(image_tag(current_user.avatar.url(:small), class: "img-circle", width: 40, height: 40), user_path(current_user)) %>
+            <%= image_tag(current_user.avatar.url(:small), class: "img-circle", width: 40, height: 40) %>
           </div>
           <div class="pull-left info">
-            <p><%#=link_to current_user.first_name, bplo_section_settings_user_path(current_user) %></p>
-            <a href="#"><i class="fa fa-circle text-success"></i> <small><%#=current_user.role %></small></a>
+            <p><%=link_to current_user.first_name, current_user %></p>
+            <a href="#"><i class="fa fa-circle text-success"></i> <small>Online</small></a>
           </div>
         </div>
         <!-- search form -->
-        <%#=form_tag accounting_accounts_path, method: :get, class: "sidebar-form" do %>
+        <%=form_tag members_path, method: :get, class: "sidebar-form" do %>
         <div class="input-group">
-          <%#= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search..." %>
+          <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search..." %>
           <span class="input-group-btn">
-            <%#= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+            <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
               <i class="fa fa-search"></i>
-            <%# end %>
+            <% end %>
           </span>
         </div>
-      <%# end %>
+      <% end %>
         <!-- /.search form -->
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
+          <li class="header"> SERVICES </li>
+          <li class=<%#= 'active' if current_page?(management_department_settings_path) %> ><a href="/management_department/settings"><i class="fa fa-pie-chart"></i> <span> Share Capitals</span></a></li>
+          <li class=<%#= 'active' if current_page?(management_department_settings_path) %> ><a href="/management_department/settings"><i class="fa fa-pie-chart"></i> <span> Savings </span></a></li>
+          <li class=<%#= 'active' if current_page?(management_department_settings_path) %> ><a href="/management_department/settings"><i class="fa fa-server"></i> <span> Time Deposits </span></a></li>
+          <li class="header"> LOANS </li>
+
+
+
+
             <li class="header"> MANAGEMENT DEPARTMENT </li>
             <!-- <li><a href="/dashboard"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li> -->
 

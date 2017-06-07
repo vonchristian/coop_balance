@@ -4,6 +4,7 @@ class Member < ApplicationRecord
   has_many :addresses, as: :addressable
   has_many :savings
   has_many :share_capitals
+  has_many :time_deposits
 
   has_attached_file :avatar,
   styles: { large: "120x120>",

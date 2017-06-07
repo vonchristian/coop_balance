@@ -5,6 +5,8 @@
         <ul class="nav nav-tabs">
           <li><a href="#activity" data-toggle="tab">Activity</a></li>
           <li><a href="#savings" data-toggle="tab">Savings</a></li>
+          <li><a href="#time-deposit" data-toggle="tab">Time Deposit</a></li>
+
 
           <li class="<%='active' if current_page?(member_share_capitals_path(@member)) %>"> <%= link_to 'Share Capital', member_share_capitals_path(@member), id: 'share_capital' %></li>
         </ul>
@@ -26,6 +28,13 @@
               <%= link_to 'Withdraw', new_saving_withdrawal_path(saving) %>
 
             <% end %>
+          </div>
+          <div class="<%='active' if current_page?(member_time_deposits_path(@member)) %> tab-pane" id="time-deposit">
+             <%= link_to 'New Time Deposit', new_member_time_deposit_path(@member) %>
+             <% @member.time_deposits.each do |time_deposit| %>
+               <%= time_deposit.balance %>
+               <%= time_deposit.time_deposit_product_name %>
+              <% end %>
           </div>
         </div>
       </div>
