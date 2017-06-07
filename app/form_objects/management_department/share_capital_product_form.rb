@@ -18,4 +18,4 @@ module ManagementDepartment
       find_share_capital_product.share_capital_product_shares.create(share_count: share_count, cost_per_share: cost_per_share)
     end
   end
-end 
+end

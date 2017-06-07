@@ -1,6 +1,6 @@
 class ShareCapitalsController < ApplicationController
   def index
-  end 
+  end
   def new
     @member = Member.find(params[:member_id])
     @share_capital = @member.share_capitals.build
