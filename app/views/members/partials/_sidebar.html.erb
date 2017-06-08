@@ -3,7 +3,7 @@
   <!-- Profile Image -->
   <div class="box box-solid">
     <div class="box-body box-profile">
-      <%=image_tag(@member.avatar.url(:medium), class: "profile-user-img img-responsive img-circle") %>
+      <%=image_tag(member.avatar.url(:medium), class: "profile-user-img img-responsive img-circle") %>
 
       <h3 class="profile-username text-center"><%= member.first_and_last_name %></h3>
 

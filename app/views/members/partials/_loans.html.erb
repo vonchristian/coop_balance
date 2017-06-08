@@ -11,9 +11,25 @@
         <small class="text-muted"> Term <%=loan.duration %> <%= loan.loan_term_duration.pluralize %></small><br>
         <small class="text-muted"> APR <%=loan.duration %> <%= loan.loan_term_duration.pluralize %></small><br>
         <small class="text-muted"> Monthly Payment <%=loan.duration %> <%= loan.loan_term_duration.pluralize %></small>
+        <br>
+
       </div>
       <div class="col-md-6 border-right">
         <span class="text-muted"><i class="fa fa-calendar"></i> NEXT PAYMENT DUE </span>
+        <h3> <%=Time.zone.now.strftime("%B %e, %Y") %></h3>
+        <br>
+        <small class="text-muted"><i class="fa fa-credit-card"> </i> PRINCIPAL PAID </small>
+
+        <h4 class="text-green"> P23213 </h4>
+
+
+           <span class="pull-right"> of <%= loan.loan_amount %></span>
+        <div class="progress xs">
+
+                        <div class="progress-bar progress-bar-success" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                          <span class="sr-only">20% Complete</span>
+                        </div>
+                      </div>
       </div>
       <div class="col-md-2">
         AMOUNT
