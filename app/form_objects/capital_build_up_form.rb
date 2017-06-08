@@ -1,6 +1,6 @@
 class CapitalBuildUpForm
   include ActiveModel::Model
-  attr_accessor :share_count, :or_number, :amount, :date, :share_capital_id
+  attr_accessor :share_count, :or_number, :amount, :date, :share_capital_id, :recorder_id
   validates :share_count, presence: true
 
   def save
@@ -16,7 +16,7 @@ class CapitalBuildUpForm
     find_share_capital.capital_build_ups.create(share_count: share_count)
   end
   def create_entry
-    AccountingDepartment::Entry.create!(commercial_document: find_share_capital, description: 'Payment of shares', reference_number: or_number, entry_date: date,
+    AccountingDepartment::Entry.create!(entry_type: 'capital_build_up', recorder_id: recorder_id, commercial_document: find_share_capital, description: 'Payment of capital build up', reference_number: or_number, entry_date: date,
     debit_amounts_attributes: [account: debit_account, amount: amount],
     credit_amounts_attributes: [account: credit_account, amount: amount])
   end

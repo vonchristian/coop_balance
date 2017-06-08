@@ -1,0 +1,29 @@
+share_capitals<small> TOTAL SAVINGS </small>
+<h3> <%=number_to_currency @share_capitals.sum(&:balance) %></h3>
+<div class="row">
+  <div class="col-md-5">
+    <div class="box box-solid">
+      <div class="box-header">
+        Savings Accounts
+      </div>
+      <div class="box-body">
+        <% @share_capitals.each do |share_capital| %>
+          <div class="row">
+            <div class="col-md-3">
+              <center><%=image_tag(share_capital.member.avatar.url(:medium), height: 60, width: 60, class: "img-circle") %></center>
+            </div>
+            <div class="col-md-9">
+              <%=number_to_currency share_capital.balance %><br>
+              <small class="text-muted"><%= share_capital.member.first_and_last_name.upcase %></small><br>
+              <small class="text-muted"> <%= share_capital.share_capital_product.try(:name) %></small><br>
+              <br>
+              <div class="row">
+                <div class="col-md-4">
+                  <%= link_to 'Capital Build Up', new_teller_department_share_capital_capital_build_up_path(share_capital), class: "btn btn-primary btn-sm" %>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <hr>
+        <% end %>

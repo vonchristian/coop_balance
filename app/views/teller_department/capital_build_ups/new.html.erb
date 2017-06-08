@@ -1,8 +1,9 @@
-<%= simple_form_for @capital_build_up, url: :share_capital_capital_build_ups do |f| %>
+<%= simple_form_for @capital_build_up, url: :teller_department_share_capital_capital_build_ups do |f| %>
   <p> <%= @share_capital.cost_per_share %></p>
   <%= f.input :share_capital_id, input_html: {value: @share_capital.id },as: :hidden %>
   <%= f.input :share_count %>
   <%= f.input :or_number %>
   <%= f.input :amount %>
+  <%= f.input :recorder_id, input_html: { value: current_user.id },as: :hidden %>
   <%= f.submit %>
 <% end %>

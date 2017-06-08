@@ -1,3 +1,5 @@
+<small> TOTAL SAVINGS </small>
+<h3> <%=number_to_currency @savings_accounts.sum(&:balance) %></h3>
 <div class="row">
   <div class="col-md-5">
     <div class="box box-solid">
@@ -11,8 +13,9 @@
               <center><%=image_tag(savings_account.member.avatar.url(:medium), height: 60, width: 60, class: "img-circle") %></center>
             </div>
             <div class="col-md-9">
-              <%=number_to_currency savings_account.balance %>
-              <p class="text-muted"><%= savings_account.member.first_and_last_name.upcase %></p>
+              <%=number_to_currency savings_account.balance %><br>
+              <small class="text-muted"><%= savings_account.member.first_and_last_name.upcase %></small><br>
+              <small class="text-muted"> <%= savings_account.saving_product.name %></small><br>
               <br>
               <div class="row">
                 <div class="col-md-4">
