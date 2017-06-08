@@ -17,7 +17,7 @@ module LoansDepartment
 
     private
     def loan_params
-      params.require(:loans_department_loan).permit(:loan_product_id, :loan_amount, :application_date)
+      params.require(:loans_department_loan).permit(:loan_product_id, :loan_amount, :application_date, :duration, :loan_term_duration)
     end
   end
 end

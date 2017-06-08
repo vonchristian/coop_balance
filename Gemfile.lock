@@ -103,6 +103,10 @@ GEM
     gretel (3.0.9)
       rails (>= 3.1.0)
     i18n (0.8.4)
+    icheck-rails (1.0.2.2)
+      jquery-rails
+      rails (>= 3.1.0)
+      sass-rails
     jbuilder (2.7.0)
       activesupport (>= 4.2.0)
       multi_json (>= 1.2)
@@ -304,6 +308,7 @@ DEPENDENCIES
   font-awesome-rails
   friendly_id
   gretel
+  icheck-rails
   jbuilder (~> 2.5)
   jquery-rails
   jquery-turbolinks

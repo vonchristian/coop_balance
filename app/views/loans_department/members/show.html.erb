@@ -1,1 +1,14 @@
-<%= link_to 'New Loan Application', new_loans_department_member_loan_application_path(member_id: @member.id) %>
+<div class="row">
+  <%= render 'members/partials/sidebar', member: @member %>
+  <div class="col-md-9">
+    <div class="nav-tabs-custom">
+      <ul class="nav nav-tabs">
+        <li><a href="#loans" data-toggle="tab">Loans</a></li>
+        <li><a href="#savings" data-toggle="tab">Savings</a></li>
+        <li><a href="#time-deposit" data-toggle="tab">Time Deposit</a></li>
+      </ul>
+      <div class="tab-content">
+        <%=render 'members/partials/loans', member: @member %>
+    </div>
+  </div>
+</div>

@@ -21,4 +21,7 @@ class Member < ApplicationRecord
   def full_name
     "#{last_name}, #{first_name} #{middle_name}."
   end
+  def first_and_last_name
+    "#{first_name} #{last_name}"
+  end
 end

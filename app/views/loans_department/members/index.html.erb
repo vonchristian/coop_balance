@@ -1,3 +1,5 @@
 <% @members.each do |member| %>
-  <%=link_to member.first_name, loans_department_member_path(member) %>
+  <% cache member do %>
+    <%=link_to member.full_name, loans_department_member_path(member) %>
+  <% end %>
 <% end %>

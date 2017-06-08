@@ -1,0 +1,26 @@
+<div class="tab-pane active" id="loans">
+  Loans
+  <%= link_to 'New Loan Application', new_loans_department_member_loan_application_path(member_id: @member.id) %>
+  <h4> Application </h4>
+  <% @member.loans.each do |loan| %>
+    <% cache loan do %>
+    <div class="row">
+      <div class="col-md-4 border-left">
+        <span class="text-muted"> <%=loan.loan_product_name.upcase %></span><br>
+        <h4><%=number_to_currency loan.loan_amount %></h4>
+        <small class="text-muted"> Term <%=loan.duration %> <%= loan.loan_term_duration.pluralize %></small><br>
+        <small class="text-muted"> APR <%=loan.duration %> <%= loan.loan_term_duration.pluralize %></small><br>
+        <small class="text-muted"> Monthly Payment <%=loan.duration %> <%= loan.loan_term_duration.pluralize %></small>
+      </div>
+      <div class="col-md-6 border-right">
+        <span class="text-muted"><i class="fa fa-calendar"></i> NEXT PAYMENT DUE </span>
+      </div>
+      <div class="col-md-2">
+        AMOUNT
+      </div>
+    </div>
+
+    <% end %>
+    <hr>
+  <% end %>
+</div>

@@ -1,5 +1,6 @@
 module LoansDepartment
   class Loan < ApplicationRecord
+    enum loan_term_duration: [:day, :week, :month, :year]
     belongs_to :member
     belongs_to :loan_product, class_name: "LoansDepartment::LoanProduct"
 
