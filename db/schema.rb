@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170608071903) do
+ActiveRecord::Schema.define(version: 20170608083509) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,8 +84,10 @@ ActiveRecord::Schema.define(version: 20170608071903) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "entry_type"
+    t.uuid "recorder_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_entry"
     t.index ["entry_type"], name: "index_entries_on_entry_type"
+    t.index ["recorder_id"], name: "index_entries_on_recorder_id"
   end
 
   create_table "loan_approvals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -244,6 +246,7 @@ ActiveRecord::Schema.define(version: 20170608071903) do
   add_foreign_key "amounts", "accounts"
   add_foreign_key "amounts", "entries"
   add_foreign_key "capital_build_ups", "share_capitals"
+  add_foreign_key "entries", "users", column: "recorder_id"
   add_foreign_key "loan_approvals", "loans"
   add_foreign_key "loan_approvals", "users", column: "approver_id"
   add_foreign_key "loans", "loan_products"

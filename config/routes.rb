@@ -54,14 +54,20 @@ Rails.application.routes.draw do
     resources :share_capital_products, only: [:new, :create], module: :settings
     resources :saving_products, only: [:new, :create], module: :settings
     resources :time_deposit_products, only: [:new, :create], module: :settings
-
-
     resources :settings, only: [:index]
     resources :members, only: [:index, :show]
-
+  end
+  namespace :teller_department do
+    resources :savings_accounts, only: [:index, :show] do
+      resources :deposits, only: [:new, :create]
+      resources :withdrawals, only: [:new, :create]
+    end
+    resources :entries, only: [:index, :show]
   end
   root :to => 'accounting_department#index', :constraints => lambda { |request| request.env['warden'].user.role == 'accounting_officer' if request.env['warden'].user }, as: :accounting_department_root
   root :to => 'loans_department#index', :constraints => lambda { |request| request.env['warden'].user.role == 'loan_officer' if request.env['warden'].user }, as: :loans_department_root
   root :to => 'management_department#index', :constraints => lambda { |request| request.env['warden'].user.role == 'general_manager' if request.env['warden'].user }, as: :management_department_root
+  root :to => 'teller_department#index', :constraints => lambda { |request| request.env['warden'].user.role == 'teller' if request.env['warden'].user }, as: :teller_department_root
+
   resources :users, only: [:show]
 end

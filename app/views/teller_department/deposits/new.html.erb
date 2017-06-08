@@ -1,8 +1,9 @@
-<%= simple_form_for [@saving, @deposit], url: :saving_deposits do |f| %>
+<%= simple_form_for [@saving, @deposit], url: :teller_department_savings_account_deposits do |f| %>
   <%= f.error_notification %>
   <%= f.input :amount %>
   <%= f.input :or_number %>
   <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
   <%= f.input :saving_id, input_html: { value: @saving.id },as: :hidden %>
+  <%= f.input :recorder_id, input_html: { value: current_user.id },as: :hidden %>
   <%= f.submit "Deposit" %>
 <% end %>

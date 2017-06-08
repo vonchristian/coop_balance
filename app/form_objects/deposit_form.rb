@@ -1,6 +1,6 @@
 class DepositForm
   include ActiveModel::Model
-  attr_accessor :saving_id, :amount, :or_number, :date
+  attr_accessor :saving_id, :recorder_id, :amount, :or_number, :date
   validates :amount, presence: true, numericality: true
   validates :or_number, presence: true
 
@@ -14,7 +14,7 @@ class DepositForm
   end
 
   def save_deposit
-    AccountingDepartment::Entry.create!(entry_type: 'deposit', commercial_document: find_saving, description: 'Savings deposit', reference_number: or_number, entry_date: date,
+    AccountingDepartment::Entry.create!(recorder_id: recorder_id, entry_type: 'deposit', commercial_document: find_saving, description: 'Savings deposit', reference_number: or_number, entry_date: date,
     debit_amounts_attributes: [account: debit_account, amount: amount],
     credit_amounts_attributes: [account: credit_account, amount: amount])
   end

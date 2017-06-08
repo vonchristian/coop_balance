@@ -19,10 +19,13 @@
         <% if current_user.general_manager? %>
           <%=render "management_department/sidebar_for_management_department", cached: true %>
         <% end %>
+        <% if current_user.teller? %>
+          <%=render "teller_department/sidebar_for_teller_department", cached: true %>
+        <% end %>
 
         <div class="content-wrapper">
           <section class="content">
-            
+
             <%=render "layouts/shared/flash_messages" %>
             <%= yield %>
           </section>

@@ -2,7 +2,7 @@
   <div class="col-md-12">
     <div class="box box-solid">
       <div class="box-body">
-        <%=form_tag accounting_department_entries_path, method: :get, class: "search-form" do %>
+        <%=form_tag teller_department_entries_path, method: :get, class: "search-form" do %>
           <div class="input-group">
             <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Entry...", id: 'taxpayer-search-form' %>
             <span class="input-group-btn">
@@ -108,7 +108,7 @@
                 </tr>
               </thead>
               <tbody>
-                <% @disbursements.each do |entry| %>
+                <% @entries.disbursement.each do |entry| %>
                   <% cache entry do %>
                     <%=render 'accounting_department/entries/entry', entry: entry %>
                   <% end %>
@@ -130,7 +130,7 @@
                 </tr>
               </thead>
               <tbody>
-                <% @withdrawals.each do |entry| %>
+                <% @entries.withdrawal.each do |entry| %>
                   <% cache entry do %>
                     <%=render 'accounting_department/entries/entry', entry: entry %>
                   <% end %>
@@ -152,7 +152,7 @@
                 </tr>
               </thead>
               <tbody>
-                <% @deposits.each do |entry| %>
+                <% @entries.deposit.each do |entry| %>
                   <% cache entry do %>
                     <%=render 'accounting_department/entries/entry', entry: entry %>
                   <% end %>

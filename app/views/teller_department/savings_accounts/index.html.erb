@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="col-md-5">
+    <div class="box box-solid">
+      <div class="box-header">
+        Savings Accounts
+      </div>
+      <div class="box-body">
+        <% @savings_accounts.each do |savings_account| %>
+          <div class="row">
+            <div class="col-md-3">
+              <center><%=image_tag(savings_account.member.avatar.url(:medium), height: 60, width: 60, class: "img-circle") %></center>
+            </div>
+            <div class="col-md-9">
+              <%=number_to_currency savings_account.balance %>
+              <p class="text-muted"><%= savings_account.member.first_and_last_name.upcase %></p>
+              <br>
+              <div class="row">
+                <div class="col-md-4">
+                  <%= link_to 'Deposit', new_teller_department_savings_account_deposit_path(savings_account), class: "btn btn-primary btn-sm" %>
+                </div>
+                <div class="col-md-4">
+                  <%= link_to 'Withdraw', new_teller_department_savings_account_deposit_path(savings_account), class: "btn btn-danger btn-sm" %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr>
+        <% end %>

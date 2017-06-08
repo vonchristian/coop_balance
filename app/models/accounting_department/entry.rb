@@ -5,6 +5,7 @@ module AccountingDepartment
     belongs_to :recorder, foreign_key: 'recorder_id', class_name: "User"
     belongs_to :department
     belongs_to :branch
+    belongs_to :recorder, class_name: "User", foreign_key: 'recorder_id'
 
     has_many :credit_amounts, :extend => AmountsExtension, :class_name => 'AccountingDepartment::CreditAmount', :inverse_of => :entry, dependent: :destroy
     has_many :debit_amounts, :extend => AmountsExtension, :class_name => 'AccountingDepartment::DebitAmount', :inverse_of => :entry, dependent: :destroy
