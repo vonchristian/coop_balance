@@ -16,4 +16,7 @@ class User < ApplicationRecord
   :url => "/system/:attachment/:id/:style/:filename"
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
 
+  def first_and_last_name
+    "#{first_name} #{last_name}"
+  end
 end

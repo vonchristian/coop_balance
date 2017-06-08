@@ -1,6 +1,6 @@
 module AccountingDepartment
   class Entry < ApplicationRecord
-    enum entry_type: [:capital_build_up, :deposit, :withdrawal]
+    enum entry_type: [:capital_build_up, :deposit, :withdrawal, :disbursement]
     belongs_to :commercial_document, :polymorphic => true
     belongs_to :recorder, foreign_key: 'recorder_id', class_name: "User"
     belongs_to :department

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170608031715) do
+ActiveRecord::Schema.define(version: 20170608071903) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,7 +23,9 @@ ActiveRecord::Schema.define(version: 20170608031715) do
     t.string "type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "main_account_id"
     t.index ["code"], name: "index_accounts_on_code", unique: true
+    t.index ["main_account_id"], name: "index_accounts_on_main_account_id"
     t.index ["name"], name: "index_accounts_on_name", unique: true
     t.index ["type"], name: "index_accounts_on_type"
   end
@@ -84,6 +86,18 @@ ActiveRecord::Schema.define(version: 20170608031715) do
     t.integer "entry_type"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_entry"
     t.index ["entry_type"], name: "index_entries_on_entry_type"
+  end
+
+  create_table "loan_approvals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "status"
+    t.datetime "date_approved"
+    t.uuid "approver_id"
+    t.uuid "loan_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["approver_id"], name: "index_loan_approvals_on_approver_id"
+    t.index ["loan_id"], name: "index_loan_approvals_on_loan_id"
+    t.index ["status"], name: "index_loan_approvals_on_status"
   end
 
   create_table "loan_products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -225,10 +239,13 @@ ActiveRecord::Schema.define(version: 20170608031715) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  add_foreign_key "accounts", "accounts", column: "main_account_id"
   add_foreign_key "amortization_schedules", "loans"
   add_foreign_key "amounts", "accounts"
   add_foreign_key "amounts", "entries"
   add_foreign_key "capital_build_ups", "share_capitals"
+  add_foreign_key "loan_approvals", "loans"
+  add_foreign_key "loan_approvals", "users", column: "approver_id"
   add_foreign_key "loans", "loan_products"
   add_foreign_key "loans", "members"
   add_foreign_key "savings", "members"

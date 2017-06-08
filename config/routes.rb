@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'reports/balance_sheet' => 'reports#balance_sheet'
+  get 'reports/income_statement' => 'reports#income_statement'
   devise_for :users, controllers: { sessions: 'users/sessions' , registrations: "bplo_section/settings/users"}
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   resources :home, only: [:index]
@@ -10,11 +12,20 @@ Rails.application.routes.draw do
   resources :accounting_department, only: [:index]
   namespace :accounting_department do
     resources :accounts
+    resources :entries
+    resources :balance_sheet
+    resources :income_statement
+
+
   end
   resources :loans_department, only: [:index]
   namespace :loans_department do
     resources :loan_products
-    resources :loans, except: [:destroy]
+    resources :loans, except: [:destroy] do
+      resources :approvals, only: [:new, :create]
+      resources :disbursements, only: [:new, :create]
+
+    end
     resources :members, only: [:index, :show] do
       resources :loan_applications, only: [:new, :create]
     end

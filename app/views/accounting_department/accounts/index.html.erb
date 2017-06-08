@@ -1,10 +1,35 @@
 <%= link_to 'New Account', new_accounting_department_account_path, class: "btn btn-primary btn-flat" %>
 
-
-<% @accounts.each do |account| %>
-  <%= account.name %>
-  <%= account.code %>
-  <%= account.type %>
-  <%= number_to_currency account.debits_balance %>
-  <%= number_to_currency account.credits_balance %>
-<% end %>
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-primary">
+      <div class="box-body">
+  <div class="table table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th> Account Code </th>
+          <th> Account </th>
+          <th> Type </th>
+          <th> Debits Balance </th>
+          <th> Credits Balance </th>
+          <th> Balance </th>
+        </tr>
+      </thead>ro
+      <tbody>
+        <% @accounts.each do |account| %>
+          <% cache account do %>
+            <tr>
+              <td> <%= account.code %></td>
+              <td> <%= account.name %></td>
+              <td> <%= account.type.gsub("AccountingDepartment::", "")%></td>
+              <td> <%= number_to_currency account.debits_balance %></td>
+              <td> <%= number_to_currency account.credits_balance %></td>
+              <td> <%= number_to_currency account.balance %></td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

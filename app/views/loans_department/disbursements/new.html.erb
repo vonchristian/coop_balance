@@ -1,0 +1,8 @@
+<%= simple_form_for [@loan, @disbursement], url: :loans_department_loan_disbursements do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :amount %>
+  <%= f.input :reference_number %>
+  <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+  <%= f.input :loan_id, input_html: { value: @loan.id },as: :hidden %>
+  <%= f.submit "Disburse Loan", class: "btn btn-primary" %>
+<% end %>
