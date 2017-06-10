@@ -1,0 +1,7 @@
+<%= simple_form_for [@raw_material, @finished_goods_material], url: :processing_department_raw_material_finished_goods_materials do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :date %>
+  <%= f.input :quantity %>
+  <%= f.input :raw_material_id, input_html: { value: @raw_material.id }, as: :hidden %>
+  <%= f.submit %>
+<% end %>

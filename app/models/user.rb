@@ -3,7 +3,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :lockable,
          :recoverable, :rememberable, :trackable, :validatable
-  enum role: [:system_administrator, :general_manager, :loan_officer, :accounting_officer, :teller]
+  enum role: [:system_administrator, :general_manager, :loan_officer, :accounting_officer, :teller, :stock_custodian]
   has_many :entries, class_name: "AccountingDepartment::Entry", foreign_key: 'recorder_id'
   has_attached_file :avatar,
   styles: { large: "120x120>",

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170608083509) do
+ActiveRecord::Schema.define(version: 20170610042224) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,6 +90,15 @@ ActiveRecord::Schema.define(version: 20170608083509) do
     t.index ["recorder_id"], name: "index_entries_on_recorder_id"
   end
 
+  create_table "finished_good_materials", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "raw_material_id"
+    t.decimal "quantity"
+    t.datetime "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["raw_material_id"], name: "index_finished_good_materials_on_raw_material_id"
+  end
+
   create_table "loan_approvals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer "status"
     t.datetime "date_approved"
@@ -140,6 +149,28 @@ ActiveRecord::Schema.define(version: 20170608083509) do
     t.index ["sex"], name: "index_members_on_sex"
   end
 
+  create_table "raw_material_stocks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "supplier_id"
+    t.uuid "raw_material_id"
+    t.decimal "quantity"
+    t.decimal "unit_cost"
+    t.decimal "total_cost"
+    t.datetime "delivery_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["raw_material_id"], name: "index_raw_material_stocks_on_raw_material_id"
+    t.index ["supplier_id"], name: "index_raw_material_stocks_on_supplier_id"
+  end
+
+  create_table "raw_materials", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "unit"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_raw_materials_on_name", unique: true
+  end
+
   create_table "saving_products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.decimal "interest_rate"
@@ -187,6 +218,14 @@ ActiveRecord::Schema.define(version: 20170608083509) do
     t.index ["member_id"], name: "index_share_capitals_on_member_id"
     t.index ["share_capital_product_id"], name: "index_share_capitals_on_share_capital_product_id"
     t.index ["type"], name: "index_share_capitals_on_type"
+  end
+
+  create_table "suppliers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "contact_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "time_deposit_products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -241,16 +280,28 @@ ActiveRecord::Schema.define(version: 20170608083509) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  create_table "work_in_progress_materials", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "raw_material_id"
+    t.decimal "quantity"
+    t.datetime "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["raw_material_id"], name: "index_work_in_progress_materials_on_raw_material_id"
+  end
+
   add_foreign_key "accounts", "accounts", column: "main_account_id"
   add_foreign_key "amortization_schedules", "loans"
   add_foreign_key "amounts", "accounts"
   add_foreign_key "amounts", "entries"
   add_foreign_key "capital_build_ups", "share_capitals"
   add_foreign_key "entries", "users", column: "recorder_id"
+  add_foreign_key "finished_good_materials", "raw_materials"
   add_foreign_key "loan_approvals", "loans"
   add_foreign_key "loan_approvals", "users", column: "approver_id"
   add_foreign_key "loans", "loan_products"
   add_foreign_key "loans", "members"
+  add_foreign_key "raw_material_stocks", "raw_materials"
+  add_foreign_key "raw_material_stocks", "suppliers"
   add_foreign_key "savings", "members"
   add_foreign_key "savings", "saving_products"
   add_foreign_key "share_capital_product_shares", "share_capital_products"
@@ -258,4 +309,5 @@ ActiveRecord::Schema.define(version: 20170608083509) do
   add_foreign_key "share_capitals", "share_capital_products"
   add_foreign_key "time_deposits", "members"
   add_foreign_key "time_deposits", "time_deposit_products"
+  add_foreign_key "work_in_progress_materials", "raw_materials"
 end
