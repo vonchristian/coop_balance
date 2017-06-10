@@ -4,4 +4,7 @@ class RawMaterialStock < ApplicationRecord
   def self.total
     sum(:quantity)
   end
+  def total_purchase_cost
+    [total_cost, freight_in, discount_amount].sum
+  end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170610042224) do
+ActiveRecord::Schema.define(version: 20170610070632) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -158,6 +158,10 @@ ActiveRecord::Schema.define(version: 20170610042224) do
     t.datetime "delivery_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "has_freight", default: false
+    t.boolean "discounted", default: false
+    t.decimal "freight_in", default: "0.0"
+    t.decimal "discount_amount", default: "0.0"
     t.index ["raw_material_id"], name: "index_raw_material_stocks_on_raw_material_id"
     t.index ["supplier_id"], name: "index_raw_material_stocks_on_supplier_id"
   end

@@ -1,0 +1,8 @@
+<%= simple_form_for [@supplier, @payment], url: :teller_department_supplier_payments do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :amount %>
+  <%= f.input :reference_number %>
+  <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+  <%= f.input :supplier_id, input_html: { value: @supplier.id },as: :hidden %>
+  <%= f.submit "withdrawal" %>
+<% end %>

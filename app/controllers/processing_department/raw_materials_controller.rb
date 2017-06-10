@@ -15,7 +15,7 @@ module ProcessingDepartment
 
     private
     def raw_material_params
-      params.require(:raw_material_form).permit(:name, :description, :unit, :unit_cost, :total_cost, :quantity, :delivery_date, :supplier_id)
+      params.require(:raw_material_form).permit(:name, :description, :unit, :unit_cost, :total_cost, :quantity, :delivery_date, :supplier_id, :recorder_id, :has_freight, :freight_in, :discounted, :discount_amount)
     end
   end
 end

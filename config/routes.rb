@@ -58,6 +58,9 @@ Rails.application.routes.draw do
     resources :members, only: [:index, :show]
   end
   namespace :teller_department do
+    resources :suppliers, only: [:index, :show] do
+      resources :payments, only: [:new, :create]
+    end
     resources :share_capitals, only: [:index, :show] do
       resources :capital_build_ups, only: [:new, :create]
     end
