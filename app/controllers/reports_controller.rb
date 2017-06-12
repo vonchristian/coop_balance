@@ -1,5 +1,5 @@
 
-class ReportsController <  AccountingDepartment::ApplicationController
+class ReportsController < ApplicationController
   def balance_sheet
     first_entry = AccountingDepartment::Entry.order('entry_date ASC').first
     @from_date = first_entry ? first_entry.entry_date: Date.today

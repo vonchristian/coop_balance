@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="col-md-4 col-md-offset-4">
+    <div class="box box-solid">
+      <div class="box-header">
+        <h3 class="box-title"> Material Details </h3>
+      </div>
+      <div class="box-body">
+        <%= simple_form_for [@raw_material, @work_in_progress_material], url: :warehouse_department_raw_material_work_in_process_materials do |f| %>
+          <%= f.error_notification %>
+          <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+          <%= f.input :quantity %>
+          <%= f.input :raw_material_id, input_html: { value: @raw_material.id }, as: :hidden %>
+          <%= f.submit %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

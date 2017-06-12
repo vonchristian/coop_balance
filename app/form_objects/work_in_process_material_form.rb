@@ -1,4 +1,4 @@
-class WorkInProgressMaterialForm
+class WorkInProcessMaterialForm
   include ActiveModel::Model
   attr_accessor :quantity, :date, :raw_material_id
   def save
@@ -10,6 +10,6 @@ class WorkInProgressMaterialForm
     RawMaterial.find_by(id: raw_material_id)
   end
   def create_work_in_progress_materials
-   find_raw_material.work_in_progress_materials.create(quantity: quantity, date: date)
+   find_raw_material.work_in_process_materials.create(quantity: quantity, date: date)
  end
 end

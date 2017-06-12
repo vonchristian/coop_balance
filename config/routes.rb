@@ -78,11 +78,18 @@ Rails.application.routes.draw do
 
   resources :users, only: [:show]
   resources :warehouse_department, only: [:index]
+
   namespace :warehouse_department do
+    resources :balance_sheet, only: [:index]
+    resources :income_statement, only: [:index]
+    resources :laborers, only: [:index, :show, :new, :create] do
+      resources :days_worked, only: [:new, :create]
+    end
     resources :purchases, only: [:index, :new, :create]
+    resources :finished_goods, only: [:index, :new, :create]
     resources :raw_materials, only: [:index, :show, :new, :create] do
       resources :purchases, only: [:new, :create]
-      resources :work_in_progress_materials, only: [:new, :create]
+      resources :work_in_process_materials, only: [:new, :create]
       resources :finished_goods_materials, only: [:new, :create]
     end
   end

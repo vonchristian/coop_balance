@@ -1,5 +1,20 @@
 module AccountingDepartment
   class Account < ApplicationRecord
+    WAREHOUSE_ACCOUNTS= ["Raw Materials Inventory",
+                          "Raw Materials Inventory",
+                          "Work in Process Inventory",
+                          "Finished Goods Inventory",
+                          "Cash on Hand",
+                          "Accounts Receivables Trade - Current",
+                          "Accounts Payable-Trade",
+                          "Raw Material Purchases",
+                          'Purchase Returns and Allowances',
+                          'Purchase Discounts',
+                          'Freight In',
+                          'Direct Labor',
+                          'Factory/Processing Overhead',
+                          'Sales']
+
     class_attribute :normal_credit_balance
 
     has_many :amounts, class_name: "AccountingDepartment::Amount"
@@ -11,6 +26,9 @@ module AccountingDepartment
 
     validates :type, presence: true
     validates :name, :code, presence: true, uniqueness: true
+    def self.warehouse_accounts
+      all.select{ |a| WAREHOUSE_ACCOUNTS.include?(a.name) }
+    end
 
     def self.active
     end
