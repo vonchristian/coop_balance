@@ -26,7 +26,7 @@
                 <td><%= purchase.quantity %> <%= purchase.raw_material_unit %></td>
                 <td><%= number_to_currency purchase.unit_cost %></td>
                 <td><%= number_to_currency purchase.total_cost %></td>
-                <td><%= purchase.supplier %></td>
+                <td><%= purchase.supplier.full_name %></td>
               </tr>
             <% end %>
           </tbody>
