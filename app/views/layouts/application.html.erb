@@ -25,6 +25,9 @@
       <% if current_user.stock_custodian? %>
         <%=render "warehouse_department/sidebar_for_warehouse_department", cached: true %>
       <% end %>
+      <% if current_user.store_cashier? %>
+        <%=render "store/sidebar_for_store", cached: true %>
+      <% end %>
       <div class="content-wrapper">
         <section class="content">
           <%=render "layouts/shared/flash_messages" %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170612022455) do
+ActiveRecord::Schema.define(version: 20170612071720) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,6 +75,11 @@ ActiveRecord::Schema.define(version: 20170612022455) do
     t.index ["share_capital_id"], name: "index_capital_build_ups_on_share_capital_id"
   end
 
+  create_table "carts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "days_workeds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.decimal "number_of_days"
     t.uuid "laborer_id"
@@ -128,6 +133,23 @@ ActiveRecord::Schema.define(version: 20170612022455) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "line_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "product_id"
+    t.uuid "product_stock_id"
+    t.uuid "order_id"
+    t.decimal "unit_cost"
+    t.decimal "total_cost"
+    t.datetime "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.decimal "quantity"
+    t.uuid "cart_id"
+    t.index ["cart_id"], name: "index_line_items_on_cart_id"
+    t.index ["order_id"], name: "index_line_items_on_order_id"
+    t.index ["product_id"], name: "index_line_items_on_product_id"
+    t.index ["product_stock_id"], name: "index_line_items_on_product_stock_id"
+  end
+
   create_table "loan_approvals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer "status"
     t.datetime "date_approved"
@@ -178,12 +200,39 @@ ActiveRecord::Schema.define(version: 20170612022455) do
     t.index ["sex"], name: "index_members_on_sex"
   end
 
+  create_table "orders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "member_id"
+    t.datetime "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "payment_type"
+    t.index ["member_id"], name: "index_orders_on_member_id"
+  end
+
+  create_table "product_stocks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.decimal "unit_cost"
+    t.decimal "total_cost"
+    t.uuid "product_id"
+    t.uuid "supplier_id"
+    t.datetime "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.decimal "quantity"
+    t.string "barcode"
+    t.index ["product_id"], name: "index_product_stocks_on_product_id"
+    t.index ["supplier_id"], name: "index_product_stocks_on_supplier_id"
+  end
+
   create_table "products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "description"
     t.string "unit"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "photo_file_name"
+    t.string "photo_content_type"
+    t.integer "photo_file_size"
+    t.datetime "photo_updated_at"
     t.index ["name"], name: "index_products_on_name", unique: true
   end
 
@@ -347,10 +396,17 @@ ActiveRecord::Schema.define(version: 20170612022455) do
   add_foreign_key "entries", "users", column: "recorder_id"
   add_foreign_key "finished_good_materials", "products"
   add_foreign_key "finished_good_materials", "raw_materials"
+  add_foreign_key "line_items", "carts"
+  add_foreign_key "line_items", "orders"
+  add_foreign_key "line_items", "product_stocks"
+  add_foreign_key "line_items", "products"
   add_foreign_key "loan_approvals", "loans"
   add_foreign_key "loan_approvals", "users", column: "approver_id"
   add_foreign_key "loans", "loan_products"
   add_foreign_key "loans", "members"
+  add_foreign_key "orders", "members"
+  add_foreign_key "product_stocks", "products"
+  add_foreign_key "product_stocks", "suppliers"
   add_foreign_key "raw_material_stocks", "raw_materials"
   add_foreign_key "raw_material_stocks", "suppliers"
   add_foreign_key "savings", "members"

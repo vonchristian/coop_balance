@@ -1,7 +1,7 @@
 <%= simple_form_for @purchase, url: :warehouse_department_purchases do |f| %>
   <%= f.error_notification %>
   <%= f.input :raw_material_id, collection: RawMaterial.all.map{|a| [a.name, a.id] }, as: :radio_buttons %>
-  
+
   <p> Stock Details </p>
   <%= f.input :supplier_id, collection: Supplier.all.map{|a| [a.full_name, a.id] } %>
   <%= f.input :recorder_id, input_html: { value: current_user.id }, as: :hidden %>

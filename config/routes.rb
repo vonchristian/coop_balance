@@ -75,6 +75,7 @@ Rails.application.routes.draw do
   root :to => 'management_department#index', :constraints => lambda { |request| request.env['warden'].user.role == 'general_manager' if request.env['warden'].user }, as: :management_department_root
   root :to => 'teller_department#index', :constraints => lambda { |request| request.env['warden'].user.role == 'teller' if request.env['warden'].user }, as: :teller_department_root
   root :to => 'warehouse_department#index', :constraints => lambda { |request| request.env['warden'].user.role == 'stock_custodian' if request.env['warden'].user }, as: :warehouse_department_root
+  root :to => 'store#index', :constraints => lambda { |request| request.env['warden'].user.role == 'store_cashier' if request.env['warden'].user }, as: :store_root
 
   resources :users, only: [:show]
   resources :warehouse_department, only: [:index]
@@ -94,4 +95,11 @@ Rails.application.routes.draw do
       resources :finished_goods_materials, only: [:new, :create]
     end
   end
+  resources :store, only: [:index]
+  resources :orders, only: [:index, :new, :create, :show]
+  resources :line_items, only: [:new, :create]
+  resources :products, only: [:index, :show, :new, :create] do
+    resources :stocks, only: [:new, :create]
+  end
+
 end

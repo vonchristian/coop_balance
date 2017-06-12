@@ -4,4 +4,4 @@ module TellerDepartment
       @share_capitals = ShareCapital.all
     end
   end
-end 
+end
