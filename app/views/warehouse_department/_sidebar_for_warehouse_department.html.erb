@@ -1,46 +1,44 @@
 <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
-    <section class="sidebar">
-      <!-- Sidebar user panel -->
-      <div class="user-panel">
-        <div class="pull-left image">
-          <%#=link_to(image_tag(current_user.avatar.url(:small), class: "img-circle", width: 40, height: 40), user_path(current_user)) %>
-        </div>
-        <div class="pull-left info">
-          <p><%#=link_to current_user.first_name, bplo_section_settings_user_path(current_user) %></p>
-          <a href="#"><i class="fa fa-circle text-success"></i> <small><%#=current_user.role %></small></a>
-        </div>
+  <section class="sidebar">
+    <!-- Sidebar user panel -->
+    <div class="user-panel">
+      <div class="pull-left image">
+        <%=link_to(image_tag(current_user.avatar.url(:small), class: "img-circle", width: 40, height: 40), user_path(current_user)) %>
       </div>
-      <!-- search form -->
-      <%#=form_tag accounting_accounts_path, method: :get, class: "sidebar-form" do %>
-      <div class="input-group">
-        <%#= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search..." %>
-        <span class="input-group-btn">
-          <%#= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
-            <i class="fa fa-search"></i>
-          <%# end %>
-        </span>
+      <div class="pull-left info">
+        <p><%= current_user.first_name %></p>
+        <a href="#"><i class="fa fa-circle text-success"></i> <small>Online</small></a>
       </div>
-    <%# end %>
-      <!-- /.search form -->
-      <!-- sidebar menu: : style can be found in sidebar.less -->
-      <ul class="sidebar-menu">
-          <li class="header"> WAREHOUSE DEPARTMENT </li>
-          <!-- <li><a href="/dashboard"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li> -->
+    </div>
+    <!-- search form -->
+    <%=form_tag warehouse_department_root_path, method: :get, class: "sidebar-form" do %>
+    <div class="input-group">
+      <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search..." %>
+      <span class="input-group-btn">
+        <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+          <i class="fa fa-search"></i>
+        <% end %>
+      </span>
+    </div>
+  <% end %>
+    <!-- /.search form -->
+    <!-- sidebar menu: : style can be found in sidebar.less -->
+    <ul class="sidebar-menu">
+        <li class="header"> WAREHOUSE DEPARTMENT </li>
+        <!-- <li><a href="/dashboard"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li> -->
 
-          <li class=<%#= 'active' if current_page?(warehouse_department_root_path) %> ><a href="/warehouse_department/"><i class="fa fa-dashboard"></i> <span>Dashboard </span></a></li>
-          <li class=<%#= 'active' if current_page?(warehouse_department_raw_materials_path) %> ><a href="/warehouse_department/raw_materials"><i class="fa fa-cubes"></i> <span>Raw Materials </span></a></li>
+        <li class=<%#= 'active' if current_page?(warehouse_department_root_path) %> ><a href="/warehouse_department/"><i class="fa fa-dashboard"></i> <span>Dashboard </span></a></li>
+        <li class=<%#= 'active' if current_page?(warehouse_department_raw_materials_path) %> ><a href="/warehouse_department/raw_materials"><i class="fa fa-cubes"></i> <span>Raw Materials </span></a></li>
 
-          <li class=<%#= 'active' if current_page?(warehouse_department_purchases_path) %> ><a href="/warehouse_department/purchases"><i class="fa fa-circle-o"></i> <span>Purchases </span></a></li>
-          <li class=<%#= 'active' if current_page?(warehouse_department_finished_goods_path) %> ><a href="/warehouse_department/finished_goods"><i class="fa fa-server"></i> <span>Finished Goods </span></a></li>
-          <li class=<%#= 'active' if current_page?(warehouse_department_laborers_path) %> ><a href="/warehouse_department/laborers"><i class="fa fa-circle-o"></i> <span>Laborers </span></a></li>
-          <li class=<%#= 'active' if current_page?(warehouse_department_suppliers_path) %> ><a href="/warehouse_department/suppliers"><i class="fa fa-circle-o"></i> <span>Suppliers</span></a></li>
-r
+        <li class=<%#= 'active' if current_page?(warehouse_department_purchases_path) %> ><a href="/warehouse_department/purchases"><i class="fa fa-truck"></i> <span>Deliveries </span></a></li>
+        <li class=<%#= 'active' if current_page?(warehouse_department_finished_goods_path) %> ><a href="/warehouse_department/finished_goods"><i class="fa fa-shopping-bag"></i> <span>Finished Goods </span></a></li>
+        <li class=<%#= 'active' if current_page?(warehouse_department_laborers_path) %> ><a href="/warehouse_department/laborers"><i class="fa fa-circle-o"></i> <span>Laborers </span></a></li>
+        <li class=<%#= 'active' if current_page?(warehouse_department_suppliers_path) %> ><a href="/warehouse_department/suppliers"><i class="fa fa-circle-o"></i> <span>Suppliers</span></a></li>
+        <li class="header"> REPORTS </li>
+        <li class=<%#= 'active' if current_page?(warehouse_department_balance_sheet_path) %> ><a href="/warehouse_department/balance_sheet"><i class="fa fa-circle-o"></i> <span>Balance Sheet </span></a></li>
+        <li class=<%#= 'active' if current_page?(warehouse_department_balance_sheet_path) %> ><a href="/warehouse_department/income_statement"><i class="fa fa-circle-o"></i> <span>Income Statement </span></a></li>
 
-          <li class="header"> REPORTS </li>
-          <li class=<%#= 'active' if current_page?(warehouse_department_balance_sheet_path) %> ><a href="/warehouse_department/balance_sheet"><i class="fa fa-circle-o"></i> <span>Balance Sheet </span></a></li>
-          <li class=<%#= 'active' if current_page?(warehouse_department_balance_sheet_path) %> ><a href="/warehouse_department/income_statement"><i class="fa fa-circle-o"></i> <span>Income Statement </span></a></li>
-
-    </section>
+  </section>
     <!-- /.sidebar -->
   </aside>
