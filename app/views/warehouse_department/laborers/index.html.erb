@@ -2,6 +2,13 @@
 
 <% @laborers.each do |laborer| %>
   <% cache laborer do %>
-    <%= link_to laborer.full_name, warehouse_department_laborer_path(laborer) %>
+    <div class="row">
+      <div class="col-md-2">
+      </div>
+      <div class="col-md-6">
+        <%= link_to laborer.full_name, warehouse_department_laborer_path(laborer) %>
+      </div>
+    </div>
+    <br>
   <%end %>
 <% end %>

@@ -82,6 +82,7 @@ Rails.application.routes.draw do
   namespace :warehouse_department do
     resources :balance_sheet, only: [:index]
     resources :income_statement, only: [:index]
+    resources :suppliers, only: [:index, :show, :new, :create]
     resources :laborers, only: [:index, :show, :new, :create] do
       resources :days_worked, only: [:new, :create]
     end
