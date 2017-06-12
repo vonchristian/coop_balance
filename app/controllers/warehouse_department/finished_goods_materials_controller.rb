@@ -1,4 +1,4 @@
-module ProcessingDepartment
+module WarehouseDepartment
   class FinishedGoodsMaterialsController < ApplicationController
     def new
       @raw_material = RawMaterial.find(params[:raw_material_id])
@@ -9,7 +9,7 @@ module ProcessingDepartment
       @finished_goods_material = FinishedGoodsMaterialForm.new(finished_goods_material_params)
       if @finished_goods_material.valid?
         @finished_goods_material.save
-        redirect_to processing_department_root_url, notice: "Success"
+        redirect_to warehouse_department_root_url, notice: "Success"
       else
         render :new
       end

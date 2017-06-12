@@ -1,5 +1,8 @@
-module ProcessingDepartment
+module WarehouseDepartment
   class RawMaterialsController < ApplicationController
+    def index
+      @raw_materials = RawMaterial.all
+    end
     def new
       @raw_material = RawMaterialForm.new
     end
@@ -7,7 +10,7 @@ module ProcessingDepartment
       @raw_material = RawMaterialForm.new(raw_material_params)
       if @raw_material.valid?
         @raw_material.save
-        redirect_to processing_department_root_url, notice: "Success"
+        redirect_to warehouse_department_root_url, notice: "Success"
       else
         render :new
       end

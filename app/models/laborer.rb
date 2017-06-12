@@ -1,0 +1,2 @@
+class Laborer < ApplicationRecord
+end
