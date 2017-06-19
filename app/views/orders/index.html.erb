@@ -1,4 +1,5 @@
 <% @orders.each do |order| %>
   <%=link_to order.member.try(:full_name), order %>
   <%=number_to_currency order.line_items.total_cost %>
+  <%= order.official_receipt_number %>
 <% end %>

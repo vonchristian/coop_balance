@@ -36,6 +36,7 @@ gem "gretel"
 gem 'public_activity'
 gem 'mina-puma', require: false
 gem 'barby'
+gem 'prawn-print'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

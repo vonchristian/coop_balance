@@ -9,6 +9,7 @@ class OrdersController < ApplicationController
     @order = Order.create(order_params)
     if @order.valid?
       @order.add_line_items_from_cart(current_cart)
+      OfficialReceipt.generate_number_for(@order)
       redirect_to store_index_url, notice: "Order saved successfully"
     else
       render @order
@@ -22,6 +23,7 @@ class OrdersController < ApplicationController
       format.pdf do
         pdf = OrderPdf.new(@order, @line_items, view_context)
           send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Invoice.pdf"
+        pdf.print
       end
     end
   end

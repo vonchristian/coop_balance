@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170612071720) do
+ActiveRecord::Schema.define(version: 20170612080626) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -198,6 +198,14 @@ ActiveRecord::Schema.define(version: 20170612071720) do
     t.integer "avatar_file_size"
     t.datetime "avatar_updated_at"
     t.index ["sex"], name: "index_members_on_sex"
+  end
+
+  create_table "official_receipts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "number", null: false
+    t.uuid "order_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_official_receipts_on_order_id"
   end
 
   create_table "orders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -404,6 +412,7 @@ ActiveRecord::Schema.define(version: 20170612071720) do
   add_foreign_key "loan_approvals", "users", column: "approver_id"
   add_foreign_key "loans", "loan_products"
   add_foreign_key "loans", "members"
+  add_foreign_key "official_receipts", "orders"
   add_foreign_key "orders", "members"
   add_foreign_key "product_stocks", "products"
   add_foreign_key "product_stocks", "suppliers"
