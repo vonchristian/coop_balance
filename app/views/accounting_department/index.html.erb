@@ -9,11 +9,11 @@
           </div>
           <div class="col-md-4 border-right">
             <small> CASH IN BANK </small>
-            <h2> <%= number_to_currency @cash_on_hand.balance %></h2>
+            <h2> <%= number_to_currency @cash_in_bank.balance %></h2>
           </div>
           <div class="col-md-4">
             <small> PETTY CASH FUND </small>
-            <h2> <%= number_to_currency @cash_on_hand.balance %></h2>
+            <h2> <%= number_to_currency @petty_cash.balance %></h2>
           </div>
         </div>
       </div>
@@ -27,6 +27,7 @@
         Revenues
       </div>
       <div class="box-body">
+        <h3><%=number_to_currency AccountingDepartment::Revenue.balance %></h3>
       </div>
     </div>
   </div>
@@ -36,6 +37,7 @@
         Expenses
       </div>
       <div class="box-body">
+        <h3><%=number_to_currency AccountingDepartment::Expense.balance %></h3>
       </div>
     </div>
   </div>

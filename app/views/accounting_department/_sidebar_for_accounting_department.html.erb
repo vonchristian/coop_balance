@@ -28,9 +28,13 @@
           <li class="header"> ACCOUNTING </li>
           <!-- <li><a href="/dashboard"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li> -->
 
-          <li class=<%#= 'active' if current_page?(accounting_department_accounts_path) %> ><a href="/accounting_department/accounts"><i class="fa fa-pie-chart"></i> <span>Chart of Accounts</span></a></li>
+          <li class=<%#= 'active' if current_page?(accounting_department_path) %> ><a href="/accounting_department"><i class="fa fa-home"></i> <span>Dashboard</span></a></li>
           <li class=<%#= 'active' if current_page?(accounting_department_entries_path) %> ><a href="/accounting_department/entries"><i class="fa fa-credit-card"></i> <span>Entries</span></a></li>
-          <li class=<%#= 'active' if current_page?(admin_settings_path) %> ><a href="/admin/settings"><i class="fa fa-cog"></i> <span> &nbsp; Settings</span></a></li>
+          <li class="header"> REPORTS </li>
+          <li class=<%#= 'active' if current_page?(accounting_department_accounts_path) %> ><a href="/accounting_department/accounts"><i class="fa fa-circle-o"></i> <span> General Ledger </span></a></li>
+
+          <li class=<%#= 'active' if current_page?(admin_settings_path) %> ><a href="/accounting_department/balance_sheet"><i class="fa fa-circle-o"></i> <span> Balance Sheet </span></a></li>
+          <li class=<%#= 'active' if current_page?(admin_settings_path) %> ><a href="/accounting_department/income_statement"><i class="fa fa-circle-o"></i> <span> Income Statement </span></a></li>
 
     </section>
     <!-- /.sidebar -->

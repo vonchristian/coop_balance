@@ -1,5 +1,22 @@
-<% @members.each do |member| %>
-  <% cache member do %>
-    <%=link_to member.full_name, loans_department_member_path(member) %>
-  <% end %>
-<% end %>
+<div class="row">
+  <div class="col-md-8">
+    <div class="box box-solid">
+      <div class="box-body">
+        <% @members.each do |member| %>
+          <% cache member do %>
+            <%= link_to loans_department_member_path(member) do %>
+              <div class="row">
+                <div class="col-md-2">
+                  <%= image_tag member.avatar_url, class: 'media-object img-circle', style: 'width:64px;height:64px;' %>
+                </div>
+                <div class="col-md-6">
+                  <b><%= member.full_name.upcase %></b><br><br>
+                  <span class="text-muted"> <i class="fa fa-phone"></i></span>
+                  <span class="text-muted"> <i class="fa fa-map-marker"></i><%=member.current_address %></span>
+
+                </div>
+              </div>
+              <hr>
+            <% end %>
+          <% end %>
+        <% end %>

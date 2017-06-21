@@ -1,7 +1,7 @@
 module AccountingDepartment
   class AccountsController < ApplicationController
     def index
-      @accounts = AccountingDepartment::Account.all 
+      @accounts = AccountingDepartment::Account.all.order(:code)
     end
     def new
       @account = AccountingDepartment::Account.new

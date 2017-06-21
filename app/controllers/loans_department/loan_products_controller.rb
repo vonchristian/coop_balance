@@ -1,6 +1,7 @@
 module LoansDepartment
   class LoanProductsController < ApplicationController
     def index
+      @loan_products = LoansDepartment::LoanProduct.all
     end
     def new
       @loan_product = LoansDepartment::LoanProductForm.new(LoansDepartment::LoanProduct.new)

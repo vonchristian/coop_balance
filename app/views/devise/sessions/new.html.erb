@@ -15,7 +15,7 @@
       <br>
       <%= simple_form_for(resource, as: resource_name, :url => session_path(resource_name),
         wrapper_mappings: {boolean: :vertical_boolean }) do |f| %>
-        <%=image_tag("logo.png", height: 140, width: 140, class: 'img-square img-responsive center-block') %>
+        <%=image_tag("logo.png", height: 140, width: 140, class: 'img-circle img-responsive center-block') %>
         <br>
         <br>
         <%= f.input :email, placeholder: "Email", input_html:{class: "form-control input-lg"}, label: false %>

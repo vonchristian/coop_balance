@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  get "avatar/:size/:background/:text" => Dragonfly.app.endpoint { |params, app|
+    app.generate(:initial_avatar, URI.unescape(params[:text]), { size: params[:size], background_color: params[:background] })
+}, as: :avatar
   get 'reports/balance_sheet' => 'reports#balance_sheet'
   get 'reports/income_statement' => 'reports#income_statement'
   devise_for :users, controllers: { sessions: 'users/sessions' , registrations: "bplo_section/settings/users"}
@@ -24,7 +27,7 @@ Rails.application.routes.draw do
     resources :loans, except: [:destroy] do
       resources :approvals, only: [:new, :create]
       resources :disbursements, only: [:new, :create]
-
+      resources :payments, only: [:new, :create]
     end
     resources :members, only: [:index, :show] do
       resources :loan_applications, only: [:new, :create]

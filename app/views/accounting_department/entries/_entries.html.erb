@@ -1,0 +1,20 @@
+<div class="table table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th> Date </th>
+        <th> Description </th>
+        <th> Reference Number </th>
+        <th> Amount </th>
+        <th> Member </th>
+      </tr>
+    </thead>
+    <tbody>
+      <% entries.each do |entry| %>
+        <% cache entry do %>
+          <%=render 'accounting_department/entries/entry', entry: entry %>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>

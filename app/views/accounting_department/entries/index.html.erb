@@ -68,98 +68,25 @@
         <li><a href="#deposits" data-toggle="tab">Deposits</a></li>
         <li><a href="#withdrawals" data-toggle="tab">Withdrawals</a></li>
         <li><a href="#disbursements" data-toggle="tab">Disbursements</a></li>
-
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="all-entries">
           All Entries
-          <div class="table table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th> Date </th>
-                  <th> Description </th>
-                  <th> Type </th>
-                  <th> # </th>
-                  <th> Amount </th>
-                  <th> Member </th>
-                </tr>
-              </thead>
-              <tbody>
-                <% @entries.each do |entry| %>
-                  <% cache entry do %>
-                    <%=render 'accounting_department/entries/all_entry', entry: entry %>
-                  <% end %>
-                <% end %>
-              </tbody>
-            </table>
-          </div>
+          <%=render 'accounting_department/entries/entries', entries: @entries %>
         </div>
+
         <div class="tab-pane" id="disbursements">
           Disbursements
-          <div class="table table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th> Date </th>
-                  <th> # </th>
-                  <th> Amount </th>
-                  <th> Member </th>
-                </tr>
-              </thead>
-              <tbody>
-                <% @disbursements.each do |entry| %>
-                  <% cache entry do %>
-                    <%=render 'accounting_department/entries/entry', entry: entry %>
-                  <% end %>
-                <% end %>
-              </tbody>
-            </table>
-          </div>
+          <%=render 'accounting_department/entries/entries', entries: @disbursements %>
         </div>
         <div class="tab-pane" id="withdrawals">
           Withdrawals
-          <div class="table table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th> Date </th>
-                  <th> # </th>
-                  <th> Amount </th>
-                  <th> Member </th>
-                </tr>
-              </thead>
-              <tbody>
-                <% @withdrawals.each do |entry| %>
-                  <% cache entry do %>
-                    <%=render 'accounting_department/entries/entry', entry: entry %>
-                  <% end %>
-                <% end %>
-              </tbody>
-            </table>
-          </div>
+          <%=render 'accounting_department/entries/entries', entries: @withdrawals %>
         </div>
+
         <div class="tab-pane" id="deposits">
-          Disbursements
-          <div class="table table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th> Date </th>
-                  <th> # </th>
-                  <th> Amount </th>
-                  <th> Member </th>
-                </tr>
-              </thead>
-              <tbody>
-                <% @deposits.each do |entry| %>
-                  <% cache entry do %>
-                    <%=render 'accounting_department/entries/entry', entry: entry %>
-                  <% end %>
-                <% end %>
-              </tbody>
-            </table>
-          </div>
+          Deposits
+          <%=render 'accounting_department/entries/entries', entries: @deposits %>
         </div>
     </div>
   </div>

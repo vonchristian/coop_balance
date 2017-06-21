@@ -1,0 +1,39 @@
+<div class="row">
+  <div class="col-md-4">
+    <div class="box box-solid">
+      <div class="box-header">
+        <h3 class="box-title"> Loan Products </h3>
+      </div>
+      <div class="box-body">
+        <% @loan_products.each do |loan_product| %>
+          <% cache loan_product do %>
+            <div class="row">
+              <div class="col-md-1">
+              </div>
+              <div class="col-md-8">
+                <b><%= loan_product.name %></b>
+              </div>
+              <div class="col-md-2">
+                <%= loan_product.loans.count %>
+              </div>
+            </div>
+            <br>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="box box-solid">
+      <div class="box-body">
+        RELEASED LOANS
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="box box-solid">
+      <div class="box-body">
+        LOANS RECEIVABLES
+      </div>
+    </div>
+  </div>

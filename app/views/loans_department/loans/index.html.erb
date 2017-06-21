@@ -1,20 +1,20 @@
 <div class="row">
-  <div class="col-md-4">
+  <div class="col-md-5">
     <div class="box box-solid">
       <div class="box-header">
         Loan Applications
       </div>
       <div class="box-body">
-        <% LoansDepartment::Loan.all.each do |loan| %>
+        <% LoansDepartment::Loan.application.limit(5).each do |loan| %>
           <%=link_to loans_department_loan_path(loan) do %>
             <div class="row">
               <div class="col-md-3">
-                <% if loan.member.present? %>
-                  <%=image_tag(loan.member.avatar.url(:small), class: "img-circle") %>
-                <% end %>
+                <h4><%= image_tag loan.member.avatar_url, class: 'media-object img-circle', style: 'width:50px;height:50px;' %></h4>
+
               </div>
-              <div class="col-md-8">
-                <h4><%=number_to_currency loan.loan_amount %></h4>
+              <div class="col-md-9">
+                <p><%=number_to_currency loan.loan_amount %></p>
+                <small class="text-muted"> <%=loan.member.full_name.upcase %></small><br>
                 <small class="text-muted"> <%=loan.loan_product_name.upcase %></small><br>
                 <small class="text-muted"> <i class="fa fa-calendar"></i> <%=loan.application_date.strftime("%B %e, %Y") %></small>
               </div>
@@ -22,6 +22,7 @@
             <hr>
           <% end %>
         <% end %>
+        <center><%= link_to 'View All', loans_department_loans_path %></center>
       </div>
     </div>
     <div class="box box-solid">
@@ -29,7 +30,7 @@
         Aging Loans
       </div>
       <div class="box-body">
-        <% LoansDepartment::Loan.all.each do |loan| %>
+        <% LoansDepartment::Loan.aging.all.each do |loan| %>
           <%=link_to loans_department_loan_path(loan) do %>
             <div class="row">
               <div class="col-md-3">
@@ -49,13 +50,13 @@
       </div>
     </div>
   </div>
-  <div class="col-md-8">
+  <div class="col-md-7">
     <div class="box box-solid">
       <div class="box-header">
         Current Loans
       </div>
       <div class="box-body">
-        <% LoansDepartment::Loan.all.each do |loan| %>
+        <% LoansDepartment::Loan.approved.each do |loan| %>
           <% cache loan do %>
           <div class="row">
             <div class="col-md-4 border-left">
