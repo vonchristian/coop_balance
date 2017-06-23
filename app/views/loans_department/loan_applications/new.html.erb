@@ -1,8 +1,8 @@
 <div class="row">
-  <div class="col-md-8 col-md-offset-2">
+  <div class="col-md-9 col-md-offset-1">
     <div class="box box-solid">
     <div class="box-body">
-      <center><%=image_tag(@member.avatar.url(:medium), class: "img-circle", height: 120, width: 120) %></center>
+      <h4><center><%= member_avatar(@member, style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center></h4>
       <h3 class="text-muted"><center><%= @member.first_and_last_name %></center></h3>
       <br>
       <p class="text-muted">Loan Application Details</p>

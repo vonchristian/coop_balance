@@ -29,6 +29,6 @@ class Member < ApplicationRecord
     addresses.order(created_at: :asc).last.try(:details)
   end
   def avatar_text
-    first_name.chr
+    "#{first_name.chr} #{last_name.chr.upcase}"
   end
 end
