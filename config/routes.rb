@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   get "avatar/:size/:background/:text" => Dragonfly.app.endpoint { |params, app|
     app.generate(:initial_avatar, URI.unescape(params[:text]), { size: params[:size], background_color: params[:background] })
-}, as: :avatar
+  }, as: :avatar
   get 'reports/balance_sheet' => 'reports#balance_sheet'
   get 'reports/income_statement' => 'reports#income_statement'
   devise_for :users, controllers: { sessions: 'users/sessions' , registrations: "bplo_section/settings/users"}
@@ -58,9 +58,12 @@ Rails.application.routes.draw do
     resources :saving_products, only: [:new, :create], module: :settings
     resources :time_deposit_products, only: [:new, :create], module: :settings
     resources :settings, only: [:index]
-    resources :members, only: [:index, :show]
+    resources :members, only: [:index, :show, :new, :create]
   end
   namespace :teller_department do
+    resources :members, only: [:index, :show, :new, :create] do 
+      resources :savings, only: [:new, :create]
+    end
     resources :suppliers, only: [:index, :show] do
       resources :payments, only: [:new, :create]
     end
@@ -70,6 +73,8 @@ Rails.application.routes.draw do
     resources :savings_accounts, only: [:index, :show] do
       resources :deposits, only: [:new, :create]
       resources :withdrawals, only: [:new, :create]
+    end
+    resources :time_deposits, only: [:index, :show] do
     end
     resources :entries, only: [:index, :show]
   end

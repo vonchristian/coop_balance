@@ -7,9 +7,21 @@
             Accounts
           </div>
           <div class="col-md-6">
+            <%=form_tag accounting_department_accounts_path, method: :get, class: "search-form" do %>
+            <div class="input-group">
+              <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Account..", id: 'account-search-form' %>
+              <span class="input-group-btn">
+                <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                  <i class="fa fa-search"></i>
+                <% end %>
+              </span>
+            </div>
+          <% end %>
           </div>
           <div class="col-md-4">
-            <%= link_to 'New Account', new_accounting_department_account_path, class: "btn btn-primary btn-flat pull-right" %>
+            <%= link_to new_accounting_department_account_path do %>
+              <span class="btn btn-primary btn-flat pull-right"><i class="fa fa-plus-circle"></i> New Account</span> 
+            <% end %>
           </div>
         </div>
       </div>
@@ -30,7 +42,7 @@
               <% @accounts.each do |account| %>
                 <% cache account do %>
                   <tr>
-                    <td> <%= account.code %></td>
+                    <td> <%= link_to account.code, accounting_department_account_path(account) %></td>
                     <td> <%= account.name %></td>
                     <td> <%= account.type.gsub("AccountingDepartment::", "")%></td>
                     <td> <%= number_to_currency account.debits_balance %></td>
@@ -41,6 +53,7 @@
               <% end %>
             </tbody>
           </table>
+          <center><%= paginate @accounts %></center>
         </div>
       </div>
     </div>

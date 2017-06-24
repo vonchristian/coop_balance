@@ -1,0 +1,31 @@
+<small> TOTAL SAVINGS </small>
+<h3> <%=number_to_currency @time_deposits.sum(&:balance) %></h3>
+<div class="row">
+  <div class="col-md-5">
+    <div class="box box-solid">
+      <div class="box-header">
+        Time Deposits
+      </div>
+      <div class="box-body">
+        <% @time_deposits.each do |time_deposit| %>
+          <div class="row">
+            <div class="col-md-3">
+              <center> <%= member_avatar(time_deposit.member, style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center>
+            </div>
+            <div class="col-md-9">
+              <%=number_to_currency time_deposit.balance %><br>
+              <small class="text-muted"><%= time_deposit.member.first_and_last_name.upcase %></small><br>
+              <small class="text-muted"> <%#= time_deposit.saving_product.name %></small><br>
+              <br>
+              <div class="row">
+                <div class="col-md-4">
+                  <%#= link_to 'Deposit', new_teller_department_time_deposit_deposit_path(time_deposit), class: "btn btn-primary btn-sm" %>
+                </div>
+                <div class="col-md-4">
+                  <%#= link_to 'Withdraw', new_teller_department_time_deposit_withdrawal_path(time_deposit), class: "btn btn-danger btn-sm" %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr>
+        <% end %>

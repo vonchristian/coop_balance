@@ -1,5 +1,7 @@
 class Member < ApplicationRecord
   include Avatarable
+  include PgSearch 
+  pg_search_scope :text_search, :against => [:first_name, :middle_name, :last_name]
   enum sex: [:male, :female, :other]
   has_many :loans, class_name: "LoansDepartment::Loan"
   has_many :addresses, as: :addressable
@@ -29,6 +31,6 @@ class Member < ApplicationRecord
     addresses.order(created_at: :asc).last.try(:details)
   end
   def avatar_text
-    "#{first_name.chr} #{last_name.chr.upcase}"
+    first_name.chr
   end
 end

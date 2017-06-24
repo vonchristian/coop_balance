@@ -14,7 +14,7 @@ class DepositForm
   end
 
   def save_deposit
-    AccountingDepartment::Entry.create!(recorder_id: recorder_id, entry_type: 'deposit', commercial_document: find_saving, description: 'Savings deposit', reference_number: or_number, entry_date: date,
+    find_saving.entries.create!(recorder_id: recorder_id, entry_type: 'deposit',  description: 'Savings deposit', reference_number: or_number, entry_date: date,
     debit_amounts_attributes: [account: debit_account, amount: amount],
     credit_amounts_attributes: [account: credit_account, amount: amount])
   end

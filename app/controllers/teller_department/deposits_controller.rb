@@ -9,7 +9,7 @@ module TellerDepartment
       @deposit = DepositForm.new(deposit_params)
       if @deposit.valid?
         @deposit.save
-        redirect_to "/", notice: "Success"
+        redirect_to teller_department_savings_account_path(@saving), notice: "Savings deposit saved successfully"
       else
         render :new
       end

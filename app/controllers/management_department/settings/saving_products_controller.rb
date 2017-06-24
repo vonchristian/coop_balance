@@ -16,7 +16,7 @@ module ManagementDepartment
 
       private
       def saving_product_params
-        params.require(:saving_product).permit(:name, :interest_rate)
+        params.require(:saving_product).permit(:name, :interest_rate, :interest_recurrence)
       end
     end
   end

@@ -1,5 +1,8 @@
 module AccountingDepartment
   class Account < ApplicationRecord
+    include PgSearch 
+    pg_search_scope :text_search, :against => [:name, :code]
+
     WAREHOUSE_ACCOUNTS= ["Raw Materials Inventory",
                           "Raw Materials Inventory",
                           "Work in Process Inventory",

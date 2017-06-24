@@ -3,7 +3,7 @@ class ShareCapital < ApplicationRecord
   belongs_to :share_capital_product
   has_many :capital_build_ups
   delegate :name, to: :share_capital_product, allow_nil: true
-  delegate :cost_per_share, to: :share_capital_product
+  delegate :cost_per_share, to: :share_capital_product, allow_nil: true
   def self.subscribed_shares
     all.sum(&:subscribed_shares)
   end

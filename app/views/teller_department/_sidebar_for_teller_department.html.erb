@@ -25,18 +25,17 @@
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
-          <li class="header"> LOANS DEPARTMENT </li>
+          <li class="header"> TELLER SECTION </li>
           <!-- <li><a href="/dashboard"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li> -->
-
+          <li class=<%= 'active' if current_page?(teller_department_members_path) %> ><a href="/teller_department/members"><i class="fa fa-users"></i> <span> Members</span></a></li>
           <li class=<%#= 'active' if current_page?(teller_department_savings_path) %> ><a href="/teller_department/savings_accounts"><i class="fa fa-database"></i> <span>Savings </span></a></li>
-          <li class=<%#= 'active' if current_page?(teller_department_savings_path) %> ><a href="/teller_department/share_capitals"><i class="fa fa-pie-chart"></i> <span>Share Capitals </span></a></li>
-          <li class=<%#= 'active' if current_page?(teller_department_savings_path) %> ><a href="/teller_department/savings_accounts"><i class="fa fa-database"></i> <span>Time Deposits </span></a></li>
-          <li class=<%#= 'active' if current_page?(teller_department_savings_path) %> ><a href="/teller_department/savings_accounts"><i class="fa fa-database"></i> <span>Loans </span></a></li>
-          <li class=<%#= 'active' if current_page?(teller_department_suppliers_path) %> ><a href="/teller_department/suppliers"><i class="fa fa-database"></i> <span>Suppliers </span></a></li>
-
+          <li class=<%#= 'active' if current_page?(teller_department_share_capitals_path) %> ><a href="/teller_department/share_capitals"><i class="fa fa-pie-chart"></i> <span>Share Capitals </span></a></li>
+          <li class=<%#= 'active' if current_page?(teller_department_time_deposits_path) %> ><a href="/teller_department/time_deposits"><i class="fa fa-database"></i> <span>Time Deposits </span></a></li>
+          
           <li class="header"> REPORTS </li>
           <li class=<%#= 'active' if current_page?(teller_department_savings_path) %> ><a href="/teller_department/entries"><i class="fa fa-database"></i> <span>Entries </span></a></li>
-
+          <li class="header"> SETTINGS </li>
+          <li class=<%#= 'active' if current_page?(teller_department_time_deposits_path) %> ><a href="/teller_department/saving_products"><i class="fa fa-database"></i> <span>Saving Products</span></a></li>
     </section>
     <!-- /.sidebar -->
   </aside>
