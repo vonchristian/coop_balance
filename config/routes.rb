@@ -56,11 +56,15 @@ Rails.application.routes.draw do
   namespace :management_department do
     resources :share_capital_products, only: [:new, :create], module: :settings
     resources :saving_products, only: [:new, :create], module: :settings
+    resources :programs, only: [:new, :create], module: :settings
     resources :time_deposit_products, only: [:new, :create], module: :settings
     resources :settings, only: [:index]
     resources :members, only: [:index, :show, :new, :create]
   end
   namespace :teller_department do
+    resources :program_subscriptions, shallow: true do 
+      resources :payments, only: [:new, :create], module: :program_subscriptions
+    end
     resources :members, only: [:index, :show, :new, :create] do 
       resources :savings, only: [:new, :create]
     end

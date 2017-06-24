@@ -8,6 +8,8 @@ class Member < ApplicationRecord
   has_many :savings
   has_many :share_capitals
   has_many :time_deposits
+  has_many :program_subscriptions
+  has_many :programs, through: :program_subscriptions
 
   has_attached_file :avatar,
   styles: { large: "120x120>",

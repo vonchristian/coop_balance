@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170623215813) do
+ActiveRecord::Schema.define(version: 20170624121609) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -246,6 +246,23 @@ ActiveRecord::Schema.define(version: 20170623215813) do
     t.index ["name"], name: "index_products_on_name", unique: true
   end
 
+  create_table "program_subscriptions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "program_id"
+    t.uuid "member_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["member_id"], name: "index_program_subscriptions_on_member_id"
+    t.index ["program_id"], name: "index_program_subscriptions_on_program_id"
+  end
+
+  create_table "programs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.decimal "contribution"
+    t.boolean "default_program", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "raw_material_stocks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "supplier_id"
     t.uuid "raw_material_id"
@@ -418,6 +435,8 @@ ActiveRecord::Schema.define(version: 20170623215813) do
   add_foreign_key "orders", "members"
   add_foreign_key "product_stocks", "products"
   add_foreign_key "product_stocks", "suppliers"
+  add_foreign_key "program_subscriptions", "members"
+  add_foreign_key "program_subscriptions", "programs"
   add_foreign_key "raw_material_stocks", "raw_materials"
   add_foreign_key "raw_material_stocks", "suppliers"
   add_foreign_key "savings", "members"
