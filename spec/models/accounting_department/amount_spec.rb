@@ -1,6 +1,7 @@
 require 'rails_helper'
 module AccountingDepartment
   RSpec.describe Amount, type: :model do
-    pending "add some examples to (or delete) #{__FILE__}"
+    subject { build(:amount) }
+    it { is_expected.to_not be_valid }
   end
 end

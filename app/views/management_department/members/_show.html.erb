@@ -27,7 +27,7 @@
             Savings Accounts
             <%= link_to "New Savings Account", new_member_saving_path(@member), class: "btn btn-primary btn-flat" %>
             <% @member.savings.each do |saving| %>
-              <%= saving.name %>
+              <%= saving.saving_product_name %>
               <%= saving.balance %>
               <%= link_to 'Deposit', new_saving_deposit_path(saving) %>
               <%= link_to 'Withdraw', new_saving_withdrawal_path(saving) %>

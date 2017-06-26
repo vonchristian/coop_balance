@@ -54,6 +54,13 @@ Rails.application.routes.draw do
     root :to => 'home#index', :constraints => lambda { |request| request.env['warden'].user.nil? }, as: :unauthenticated_root
   end
   namespace :management_department do
+    resources :accounting, only: [:index]
+    resources :share_capitals, only: [:index, :show]
+    resources :employees, only: [:index, :show]
+    resources :savings, only: [:index, :show]
+    resources :time_deposits, only: [:index, :show]
+    resources :entries, only: [:index, :show]
+    resources :accounts, only: [:index, :show]
     resources :share_capital_products, only: [:new, :create], module: :settings
     resources :saving_products, only: [:new, :create], module: :settings
     resources :programs, only: [:new, :create], module: :settings

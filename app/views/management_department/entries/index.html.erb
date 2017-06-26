@@ -1,0 +1,93 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-solid">
+      <div class="box-body">
+        <%=form_tag management_department_entries_path, method: :get, class: "search-form" do %>
+          <div class="input-group">
+            <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Entry...", id: 'taxpayer-search-form' %>
+            <span class="input-group-btn">
+              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                <i class="fa fa-search"></i>
+              <% end %>
+            </span>
+          </div>
+        <% end %>
+        <br>
+        <div class="row">
+          <div class="col-md-4">
+            <p class="text-muted"> Show Activity
+              <span class="btn btn-default"> This Day </span>
+              <span class="btn btn-default"> Last Week</span>
+              <span class="btn btn-default"> Last Month</span>
+
+          </div>
+          <div class="col-md-7">
+                          <%= form_tag({:action => "index", controller: "management_department/entries"}, {:method => :get})  do %>
+            <div class="row">
+              <div class="col-md-3">
+              <div class="form-group">
+                <%= text_field_tag :from_date, @from_date, :class => 'datepicker form-control border-input', :placeholder => "From " %>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <%= text_field_tag :to_date, @to_date, :class => 'form-control border-input datepicker', :placeholder => "To " %>
+
+              </div>
+            </div>
+            <div class="col-md-1">
+              <button type="submit" class="btn btn-default"> Go</button>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    Filters
+    <span class="btn btn-default btn-xs"> All Entries </span> &nbsp;
+    <span class="btn btn-default btn-xs"> Savings Deposits </span> &nbsp;
+    <span class="btn btn-default btn-xs"> Savings Withdrawals </span> &nbsp;
+    <span class="btn btn-default btn-xs"> Time Deposits </span> &nbsp;
+    <span class="btn btn-default btn-xs"> Capital Build Ups </span> &nbsp;
+    <span class="btn btn-default btn-xs"> Loan Disbursements </span> &nbsp;
+
+
+
+
+    <br>
+    <br>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="nav-tabs-custom">
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#all-entries" data-toggle="tab">All Entries</a></li>
+        <li><a href="#deposits" data-toggle="tab">Deposits</a></li>
+        <li><a href="#withdrawals" data-toggle="tab">Withdrawals</a></li>
+        <li><a href="#disbursements" data-toggle="tab">Disbursements</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="all-entries">
+          All Entries
+          <%=render 'management_department/entries/entries', entries: @entries %>
+        </div>
+
+        <div class="tab-pane" id="disbursements">
+          Disbursements
+          <%=render 'management_department/entries/entries', entries: @disbursements %>
+        </div>
+        <div class="tab-pane" id="withdrawals">
+          Withdrawals
+          <%=render 'management_department/entries/entries', entries: @withdrawals %>
+        </div>
+
+        <div class="tab-pane" id="deposits">
+          Deposits
+          <%=render 'management_department/entries/entries', entries: @deposits %>
+        </div>
+    </div>
+  </div>
+</div>

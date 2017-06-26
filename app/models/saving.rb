@@ -4,7 +4,7 @@ class Saving < ApplicationRecord
 
   belongs_to :member
   belongs_to :saving_product
-  delegate :name, to: :saving_product
+  delegate :name, to: :saving_product, prefix: true
   has_many :entries, class_name: "AccountingDepartment::Entry", as: :commercial_document
   
   def self.post_interests_earned

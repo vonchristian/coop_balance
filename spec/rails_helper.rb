@@ -8,7 +8,6 @@ require 'capybara/rails'
 require 'rspec/rails'
 require 'rspec/its'
 
-
 Dir[Rails.root.join("spec/models/shared_examples/**/*.rb")].each {|f| require f}
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 

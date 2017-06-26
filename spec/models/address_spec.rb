@@ -1,5 +1,13 @@
 require 'rails_helper'
 
-RSpec.describe Address, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+describe Address do
+  describe 'associations' do 
+  	it { is_expected.to belong_to :addressable }
+  end 
+
+  it "#details" do 
+  	address = build(:address, street: "Poblacion", barangay: "Poblacion West", municipality: "Lamut", province: "Ifugao")
+
+  	expect(address.details).to eql("Poblacion, Poblacion West, Lamut, Ifugao")
+  end
 end

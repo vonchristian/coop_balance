@@ -1,5 +1,33 @@
 require 'rails_helper'
 
-RSpec.describe Member, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+describe Member, type: :model do
+  describe "associations" do 
+  	it { is_expected.to have_many :loans }
+  	it { is_expected.to have_many :addresses }
+  	it { is_expected.to have_many :savings }
+  	it { is_expected.to have_many :share_capitals }
+  	it { is_expected.to have_many :time_deposits }
+  	it { is_expected.to have_many :program_subscriptions }
+  	it { is_expected.to have_many :programs }
+  end
+  describe 'validations' do 
+  end 
+  it "#full_name" do 
+  	member = create(:member, first_name: "Von", middle_name: "Pinosan", last_name: "Halip")
+
+  	expect(member.full_name).to eql("Halip, Von P.")
+  end
+  it "#first_and_name" do 
+  	member = create(:member, first_name: "Von", middle_name: "Pinosan", last_name: "Halip")
+
+  	expect(member.first_and_last_name).to eql("Von Halip")
+  end
+  it "#avatar_text" do 
+  	member = create(:member, first_name: "Von", middle_name: "Pinosan", last_name: "Halip")
+
+  	expect(member.avatar_text).to eql("V")
+  end
+  it "#current_address" do 
+    pending "add some examples to (or delete) #{__FILE__}"
+  end 
 end

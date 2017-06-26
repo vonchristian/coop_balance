@@ -1,0 +1,9 @@
+
+  <tr>
+  <td><%=entry.entry_date.strftime("%B %e, %Y") %></td>
+  <td><%= entry.recorder.try(:first_and_last_name) %></td>
+  <td><%= entry.description %></td>
+  <td><%= entry.reference_number %></td>
+  <td><%= number_to_currency entry.debit_amounts.sum(&:amount) %></td>
+  <td><%= entry.commercial_document.try(:member).try(:first_and_last_name) %></td>
+</tr>

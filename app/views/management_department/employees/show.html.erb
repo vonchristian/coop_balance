@@ -1,0 +1,29 @@
+<div class="row">
+  <div class="col-md-4">
+    <div class="nav-tabs-custom">
+      <div class="box-header">
+        
+           <h4><center><%=image_tag(@employee.avatar.url(:medium), class: "img-circle", width: 90, height: 90) %></center></h4>
+           
+            <h4><center><%= @employee.first_and_last_name %></center></h4>
+            <center><%= @employee.role.try(:titleize) %></center>
+      </div>
+     <div class="box-body">
+   
+        <div class="tabbable-line">
+          <ul class="nav nav-tabs">
+            <li class="active">
+              <a href="#tab_default_1" data-toggle="tab">
+              <i class="fa fa-user"></i> Info </a>
+            </li>
+            <li>
+              <a href="#tab_default_2" data-toggle="tab">
+              Entries </a>
+            </li>
+            <li>
+              <a href="#tab_default_3" data-toggle="tab">
+              Activities </a>
+            </li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab_default_1">
