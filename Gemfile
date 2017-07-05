@@ -5,7 +5,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '~> 5.1.2.rc1'
+gem 'rails', '~> 5.1.2'
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.7', group: [:development, :production]
 gem 'sass-rails', '>= 3.2'
@@ -38,6 +38,7 @@ gem 'public_activity'
 gem 'mina-puma', require: false
 gem 'barby'
 gem 'prawn-print'
+gem 'apartment'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
