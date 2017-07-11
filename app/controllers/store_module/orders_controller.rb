@@ -5,7 +5,7 @@ module StoreModule
       @order = StoreModule::Order.new
     end
     def index
-      @orders = StoreModule::Order.all
+      @orders = StoreModule::Order.all.includes(:member, :official_receipt)
     end
     def create
       @order = StoreModule::Order.create(order_params)
