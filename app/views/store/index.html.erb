@@ -25,9 +25,9 @@
                 <%=number_to_currency stock.unit_cost %>
               </span>
             </div>
-          <%= simple_form_for LineItem.new do |f| %>
+          <%= simple_form_for @line_item do |f| %>
           <div class="col-md-2">
-            <%= f.input :quantity, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity'}, label: false %>
+            <%= f.input :quantity, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, label: false %>
           <%= f.input :unit_cost, input_html: { value: stock.unit_cost, id: 'line_item_unit_cost' }, as: :hidden %>
         </div>
           <div class="col-md-2">
@@ -72,4 +72,4 @@
           </div>
         </div>
         <br>
-        <%= link_to "Checkout", new_order_path, class: "btn btn-primary btn-block" %>
+        <%= link_to "Checkout", new_store_module_order_path, class: "btn btn-primary btn-block" %>

@@ -1,0 +1,5 @@
+<tr>
+<td> <%= link_to order.created_at.strftime("%B %e, %Y"), store_module_order_path(order) %></td>
+<td> <%= order.line_items.count %></td>
+<td> <%= order.total_cost %> </td>
+</tr>

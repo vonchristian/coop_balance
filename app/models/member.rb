@@ -10,6 +10,7 @@ class Member < ApplicationRecord
   has_many :time_deposits
   has_many :program_subscriptions
   has_many :programs, through: :program_subscriptions
+  has_many :orders, class_name: "StoreModule::Order"
 
   has_attached_file :avatar,
   styles: { large: "120x120>",

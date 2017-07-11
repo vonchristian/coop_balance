@@ -6,7 +6,7 @@ class StoreController < ApplicationController
       @stocks = StoreModule::ProductStock.all
     end 
     @cart = current_cart
-    @line_item = StoreModle::LineItem.new
+    @line_item = StoreModule::LineItem.new
     @order = StoreModule::Order.new
   end
 end

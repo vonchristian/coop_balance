@@ -6,7 +6,7 @@ feature "Create product stock" do
     login_as(user, :scope => :user)
     supplier = create(:supplier, first_name: "Von Christian", last_name: "Halip")
     product = create(:product)
-    visit product_url(product)
+    visit store_module_product_url(product)
 
     click_link 'New Stock'
   end

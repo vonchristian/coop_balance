@@ -1,0 +1,7 @@
+<%=link_to 'New Product', new_store_module_product_path, class: "btn btn-primary" %>
+
+<% @products.each do |product| %>
+  <% cache product do %>
+    <%=link_to product.name, store_module_product_path(product) %>
+  <% end %>
+<% end %>

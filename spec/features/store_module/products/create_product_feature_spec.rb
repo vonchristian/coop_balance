@@ -4,7 +4,7 @@ feature "Create product" do
 	before(:each) do
     user = create(:user)
     login_as(user, :scope => :user)
-    visit products_url
+    visit store_module_products_url
     click_link 'New Product'
   end
 
