@@ -5,5 +5,14 @@ module StoreModule
 	  belongs_to :product, class_name: "StoreModule::Product"
 	  belongs_to :supplier
 	  delegate :name, to: :product
+
+	  validates :supplier_id, presence: true
+	  validates :unit_cost, :total_cost, numericality: { greater_than: 0.01 }
+	  before_save :set_default_date
+
+	  private 
+	  def set_default_date 
+	  	self.date ||= Time.zone.now
+	  end
 	end
 end

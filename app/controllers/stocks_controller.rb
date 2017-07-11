@@ -1,10 +1,10 @@
 class StocksController < ApplicationController
   def new
-    @product = Product.find(params[:product_id])
+    @product = StoreModule::Product.find(params[:product_id])
     @stock = @product.stocks.build
   end
   def create
-    @product = Product.find(params[:product_id])
+    @product = StoreModule::Product.find(params[:product_id])
     @stock = @product.stocks.build(stock_params)
     if @stock.valid?
       @stock.save
@@ -16,6 +16,6 @@ class StocksController < ApplicationController
 
   private
   def stock_params
-    params.require(:product_stock).permit(:supplier_id, :date, :quantity, :unit_cost, :total_cost, :barcode)
+    params.require(:store_module_product_stock).permit(:supplier_id, :date, :quantity, :unit_cost, :total_cost, :barcode)
   end
 end

@@ -3,7 +3,7 @@ FactoryGirl.define do
     unit_cost "9.99"
     total_cost "9.99"
     product nil
-    supplier nil
+    supplier
     date "2017-06-12 11:43:33"
   end
 end

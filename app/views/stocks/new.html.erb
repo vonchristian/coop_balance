@@ -1,6 +1,6 @@
 <%= simple_form_for [@product, @stock], url: :product_stocks do |f| %>
   <%= f.error_notification %>
-  <%= f.input :supplier_id, collection: Supplier.all.map{ |a| [a.full_name, a.id]} %>
+  <%= f.input :supplier_id, input_html: { id: "supplierSelect" }, collection: Supplier.all.map{ |a| [a.full_name, a.id]} %>
   <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
   <%= f.input :quantity %>
   <%= f.input :unit_cost %>
