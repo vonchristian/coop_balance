@@ -2,6 +2,6 @@
 
 <% @products.each do |product| %>
   <% cache product do %>
-    <%=link_to product.name, product %>
+    <%=link_to product.name, product_path(product) %>
   <% end %>
 <% end %>

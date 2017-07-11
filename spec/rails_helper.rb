@@ -7,6 +7,7 @@ require 'spec_helper'
 require 'capybara/rails'
 require 'rspec/rails'
 require 'rspec/its'
+require "paperclip/matchers"
 
 Dir[Rails.root.join("spec/models/shared_examples/**/*.rb")].each {|f| require f}
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
@@ -14,6 +15,7 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
+  config.include Paperclip::Shoulda::Matchers
   config.use_transactional_fixtures = true
   config.infer_spec_type_from_file_location!
   config.filter_rails_from_backtrace!

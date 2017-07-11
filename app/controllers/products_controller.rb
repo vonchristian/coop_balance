@@ -1,26 +1,26 @@
 class ProductsController < ApplicationController
   def index
-    @products = Product.all
+    @products = StoreModule::Product.all
   end
   def new
-    @product = Product.new
+    @product = StoreModule::Product.new
   end
   def create
-    @product = Product.create(product_params)
+    @product = StoreModule::Product.create(product_params)
     if @product.valid?
       @product.save
-      redirect_to products_url, notice: "Saved successfully"
+      redirect_to products_url, notice: "created successfully"
     else
       render :new
     end
   end
 
   def show
-    @product = Product.find(params[:id])
+    @product = StoreModule::Product.find(params[:id])
   end
 
   private
   def product_params
-    params.require(:product).permit(:name, :description, :unit)
+    params.require(:store_module_product).permit(:name, :description, :unit)
   end
 end

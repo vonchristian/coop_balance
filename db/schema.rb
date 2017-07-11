@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170624121609) do
+ActiveRecord::Schema.define(version: 20170711035131) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,6 +78,8 @@ ActiveRecord::Schema.define(version: 20170624121609) do
   create_table "carts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "user_id"
+    t.index ["user_id"], name: "index_carts_on_user_id"
   end
 
   create_table "days_workeds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -216,7 +218,9 @@ ActiveRecord::Schema.define(version: 20170624121609) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "payment_type"
+    t.uuid "user_id"
     t.index ["member_id"], name: "index_orders_on_member_id"
+    t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
   create_table "product_stocks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -418,6 +422,7 @@ ActiveRecord::Schema.define(version: 20170624121609) do
   add_foreign_key "amounts", "accounts"
   add_foreign_key "amounts", "entries"
   add_foreign_key "capital_build_ups", "share_capitals"
+  add_foreign_key "carts", "users"
   add_foreign_key "days_workeds", "laborers"
   add_foreign_key "entries", "departments"
   add_foreign_key "entries", "users", column: "recorder_id"
@@ -433,6 +438,7 @@ ActiveRecord::Schema.define(version: 20170624121609) do
   add_foreign_key "loans", "members"
   add_foreign_key "official_receipts", "orders"
   add_foreign_key "orders", "members"
+  add_foreign_key "orders", "users"
   add_foreign_key "product_stocks", "products"
   add_foreign_key "product_stocks", "suppliers"
   add_foreign_key "program_subscriptions", "members"
