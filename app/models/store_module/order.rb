@@ -2,7 +2,7 @@ module StoreModule
   class Order < ApplicationRecord
     enum payment_type: [:cash, :credit, :check]
     belongs_to :member
-    has_one :official_receipt
+    has_one :official_receipt, as: :receiptable
     delegate :number, to: :official_receipt, prefix: true
     has_many :line_items, class_name: "StoreModule::LineItem"
     def total_cost 

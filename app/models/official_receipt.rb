@@ -1,5 +1,5 @@
 class OfficialReceipt < ApplicationRecord
-  belongs_to :order
+  belongs_to :receiptable, polymorphic: true
   def self.generate_number_for(receiptable)
     return false if receiptable.official_receipt.present?
     if all.blank?
