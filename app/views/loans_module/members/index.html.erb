@@ -4,7 +4,7 @@
       <div class="box-body">
         <% @members.each do |member| %>
           <% cache member do %>
-            <%= link_to loans_department_member_path(member) do %>
+            <%= link_to loans_module_member_path(member) do %>
               <div class="row">
                 <div class="col-md-2">
                   <%= image_tag member.avatar_url, class: 'media-object img-circle', style: 'width:64px;height:64px;' %>

@@ -1,11 +1,11 @@
-module LoansDepartment
+module LoansModule
   class DisbursementsController < ApplicationController
     def new
-      @loan = LoansDepartment::Loan.find(params[:loan_id])
+      @loan = LoansModule::Loan.find(params[:loan_id])
       @disbursement = LoanDisbursementForm.new
     end
     def create
-      @loan = LoansDepartment::Loan.find(params[:loan_id])
+      @loan = LoansModule::Loan.find(params[:loan_id])
       @disbursement = LoanDisbursementForm.new(disbursement_params)
       if @disbursement.valid?
         @disbursement.save

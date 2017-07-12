@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :committee_members
   get "avatar/:size/:background/:text" => Dragonfly.app.endpoint { |params, app|
     app.generate(:initial_avatar, URI.unescape(params[:text]), { size: params[:size], background_color: params[:background] })
   }, as: :avatar
@@ -21,8 +22,9 @@ Rails.application.routes.draw do
 
 
   end
-  resources :loans_department, only: [:index]
-  namespace :loans_department do
+  resources :loans_module, only: [:index]
+  namespace :loans_module do
+    resources :dashboard, only: [:index]
     resources :loan_products
     resources :loans, except: [:destroy] do
       resources :approvals, only: [:new, :create]
@@ -90,7 +92,7 @@ Rails.application.routes.draw do
     resources :entries, only: [:index, :show]
   end
   root :to => 'accounting_department#index', :constraints => lambda { |request| request.env['warden'].user.role == 'accounting_officer' if request.env['warden'].user }, as: :accounting_department_root
-  root :to => 'loans_department#index', :constraints => lambda { |request| request.env['warden'].user.role == 'loan_officer' if request.env['warden'].user }, as: :loans_department_root
+  root :to => 'loans_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'loan_officer' if request.env['warden'].user }, as: :loans_module_root
   root :to => 'management_department#index', :constraints => lambda { |request| request.env['warden'].user.role == 'general_manager' if request.env['warden'].user }, as: :management_department_root
   root :to => 'teller_department#index', :constraints => lambda { |request| request.env['warden'].user.role == 'teller' if request.env['warden'].user }, as: :teller_department_root
   root :to => 'warehouse_department#index', :constraints => lambda { |request| request.env['warden'].user.role == 'stock_custodian' if request.env['warden'].user }, as: :warehouse_department_root

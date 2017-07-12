@@ -15,7 +15,7 @@
       </div>
     </div>
     <hr>
-<%= simple_form_for [@loan, @disbursement], url: :loans_department_loan_disbursements do |f| %>
+<%= simple_form_for [@loan, @disbursement], url: :loans_module_loan_disbursements do |f| %>
   <%= f.error_notification %>
   <%= f.input :amount, input_html: { value: @loan.loan_amount } %>
   <%= f.input :reference_number %>

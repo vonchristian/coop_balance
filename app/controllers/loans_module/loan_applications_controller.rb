@@ -1,4 +1,4 @@
-module LoansDepartment
+module LoansModule
   class LoanApplicationsController < ApplicationController
     def new
       @member = Member.find(params[:member_id])
@@ -9,7 +9,7 @@ module LoansDepartment
       @loan = @member.loans.create(loan_params)
       if @loan.valid?
         @loan.save
-        redirect_to loans_department_member_url(@member), notice: "Loan application saved successfully."
+        redirect_to loans_module_member_url(@member), notice: "Loan application saved successfully."
       else
         render :new
       end
@@ -17,7 +17,7 @@ module LoansDepartment
 
     private
     def loan_params
-      params.require(:loans_department_loan).permit(:loan_product_id, :loan_amount, :application_date, :duration, :loan_term_duration)
+      params.require(:loans_module_loan).permit(:loan_product_id, :loan_amount, :application_date, :duration, :loan_term_duration)
     end
   end
 end

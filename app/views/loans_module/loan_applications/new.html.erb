@@ -8,14 +8,14 @@
       <p class="text-muted">Loan Application Details</p>
       <div class="row">
         <div class="col-md-10 col-md-offset-1">
-          <%= simple_form_for [@member, @loan], url: :loans_department_member_loan_applications do |f| %>
+          <%= simple_form_for [@member, @loan], url: :loans_module_member_loan_applications do |f| %>
             <%= f.error_notification %>
             <div class="row">
               <div class="col-md-5">
                 <%= f.input :application_date, as: :string, input_html: { class: "datepicker" } %>
               </div>
             </div>
-              <%= f.input :loan_product_id, input_html: {class: 'icheck-me', "data-skin" => 'square', "data-color" => "blue"}, collection: LoansDepartment::LoanProduct.all.map{ |a| [a.name.titleize, a.id] }, as: :radio_buttons %>
+              <%= f.input :loan_product_id, input_html: {class: 'icheck-me', "data-skin" => 'square', "data-color" => "blue"}, collection: LoansModule::LoanProduct.all.map{ |a| [a.name.titleize, a.id] }, as: :radio_buttons %>
             <div class="row">
               <div class="col-md-5">
                 <%= f.input :loan_amount %>
@@ -26,7 +26,7 @@
                 <%= f.input :duration %>
               </div>
               <div class="col-md-2">
-                <%= f.input :loan_term_duration, collection: LoansDepartment::Loan.loan_term_durations.keys.to_a.map{ |a| [a.titleize.pluralize, a] } %>
+                <%= f.input :loan_term_duration, collection: LoansModule::Loan.loan_term_durations.keys.to_a.map{ |a| [a.titleize.pluralize, a] } %>
               </div>
             </div>
             <div class="box-footer">

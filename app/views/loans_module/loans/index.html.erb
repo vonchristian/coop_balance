@@ -5,11 +5,11 @@
         Loan Applications
       </div>
       <div class="box-body">
-        <% LoansDepartment::Loan.application.limit(5).each do |loan| %>
-          <%=link_to loans_department_loan_path(loan) do %>
+        <% LoansModule::Loan.application.limit(5).each do |loan| %>
+          <%=link_to loans_module_loan_path(loan) do %>
             <div class="row">
               <div class="col-md-3">
-                <h4><%= image_tag loan.member.avatar_url, class: 'media-object img-circle', style: 'width:50px;height:50px;' %></h4>
+                <h4><%= image_tag loan.member.avatar_url, class: 'media-object img-circle', style: 'width:60px;height:60px;' %></h4>
 
               </div>
               <div class="col-md-9">
@@ -22,7 +22,7 @@
             <hr>
           <% end %>
         <% end %>
-        <center><%= link_to 'View All', loans_department_loans_path %></center>
+        <center><%= link_to 'View All', loans_module_loans_path %></center>
       </div>
     </div>
     <div class="box box-solid">
@@ -30,8 +30,8 @@
         Aging Loans
       </div>
       <div class="box-body">
-        <% LoansDepartment::Loan.aging.all.each do |loan| %>
-          <%=link_to loans_department_loan_path(loan) do %>
+        <% LoansModule::Loan.aging.all.each do |loan| %>
+          <%=link_to loans_module_loan_path(loan) do %>
             <div class="row">
               <div class="col-md-3">
                 <% if loan.member.present? %>
@@ -56,7 +56,7 @@
         Current Loans
       </div>
       <div class="box-body">
-        <% LoansDepartment::Loan.approved.each do |loan| %>
+        <% LoansModule::Loan.approved.each do |loan| %>
           <% cache loan do %>
           <div class="row">
             <div class="col-md-4 border-left">

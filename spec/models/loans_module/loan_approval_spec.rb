@@ -1,5 +1,10 @@
 require 'rails_helper'
 
-RSpec.describe LoanApproval, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+module LoansModule
+  describe LoanApproval do
+    context 'associations' do 
+    	it { is_expected.to belong_to :approver }
+    	it { is_expected.to belong_to :loan }
+    end 
+  end 
 end

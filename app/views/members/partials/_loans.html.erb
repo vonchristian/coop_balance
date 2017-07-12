@@ -1,10 +1,10 @@
 <div class="tab-pane active" id="loans">
 
-  <%= link_to 'New Loan Application', new_loans_department_member_loan_application_path(member_id: @member.id), class: "btn btn-primary" %>
+  <%= link_to 'New Loan Application', new_loans_module_member_loan_application_path(member_id: @member.id), class: "btn btn-primary" %>
 <hr />
   <% @member.loans.each do |loan| %>
     <% cache loan do %>
-      <%=link_to loans_department_loan_path(loan) do %>
+      <%=link_to loans_module_loan_path(loan) do %>
         <div class="row">
           <div class="col-md-2 border-left">
             <span class="text-muted"> <%=loan.loan_product_name.upcase %></span><br>
