@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170711112212) do
+ActiveRecord::Schema.define(version: 20170712081529) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -317,7 +317,6 @@ ActiveRecord::Schema.define(version: 20170711112212) do
   create_table "share_capital_product_shares", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "share_capital_product_id"
     t.decimal "share_count"
-    t.decimal "cost_per_share"
     t.datetime "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -328,6 +327,7 @@ ActiveRecord::Schema.define(version: 20170711112212) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "cost_per_share"
     t.index ["name"], name: "index_share_capital_products_on_name"
   end
 

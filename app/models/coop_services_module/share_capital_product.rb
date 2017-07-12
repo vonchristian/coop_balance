@@ -1,14 +1,19 @@
-class ShareCapitalProduct < ApplicationRecord
-  has_many :share_capital_product_shares
-  has_many :subscribers, class_name: "ShareCapital"
+module CoopServicesModule  
+  class ShareCapitalProduct < ApplicationRecord
+    has_many :share_capital_product_shares
+    has_many :subscribers, class_name: "MembershipsModule::ShareCapital"
 
-  def cost_per_share
-    if share_capital_product_shares
-      share_capital_product_shares.last.cost_per_share
+
+    def total_subscribed
+      subscribers.subscribed_shares
     end
-  end
 
-  def subscribed
-    subscribers.subscribed_shares
+    def total_available_shares
+      total_shares - total_subscribed
+    end
+
+    def total_shares
+      share_capital_product_shares.total_shares
+    end
   end
 end

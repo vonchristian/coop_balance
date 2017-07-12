@@ -9,10 +9,10 @@ module AccountingModule
     belongs_to :branch
     belongs_to :recorder, class_name: "User", foreign_key: 'recorder_id'
 
-    has_many :credit_amounts, :extend => AmountsExtension, :class_name => 'AccountingDepartment::CreditAmount', :inverse_of => :entry, dependent: :destroy
-    has_many :debit_amounts, :extend => AmountsExtension, :class_name => 'AccountingDepartment::DebitAmount', :inverse_of => :entry, dependent: :destroy
-    has_many :credit_accounts, :through => :credit_amounts, :source => :account, :class_name => 'AccountingDepartment::Account'
-    has_many :debit_accounts, :through => :debit_amounts, :source => :account, :class_name => 'AccountingDepartment::Account'
+    has_many :credit_amounts, :extend => AmountsExtension, :class_name => 'AccountingModule::CreditAmount', :inverse_of => :entry, dependent: :destroy
+    has_many :debit_amounts, :extend => AmountsExtension, :class_name => 'AccountingModule::DebitAmount', :inverse_of => :entry, dependent: :destroy
+    has_many :credit_accounts, :through => :credit_amounts, :source => :account, :class_name => 'AccountingModule::Account'
+    has_many :debit_accounts, :through => :debit_amounts, :source => :account, :class_name => 'AccountingModule::Account'
 
     validates :description, presence: true
     validate :has_credit_amounts?

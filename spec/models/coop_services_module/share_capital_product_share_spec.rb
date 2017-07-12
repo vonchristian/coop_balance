@@ -1,5 +1,10 @@
 require 'rails_helper'
 
-RSpec.describe ShareCapitalProductShare, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+module CoopServicesModule
+	describe ShareCapitalProductShare do
+	  context 'associations' do 
+	  	it { is_expected.to have_many :share_capital_product_shares }
+	  	it { is_expected.to have_many :subscribers }
+	  end
+	end
 end
