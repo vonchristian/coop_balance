@@ -2,7 +2,7 @@ module AccountingModule
   class Entry < ApplicationRecord
     enum entry_type: [:capital_build_up, :deposit, :withdrawal, :disbursement,
          :supplier_payment, :supplier_delivery, :finished_good_entry,
-         :cash_sale, :credit_sale, :loan_payment, :savings_interest, :time_deposit]
+         :cash_sale, :credit_sale, :loan_payment, :savings_interest, :time_deposit, :program_subscription_payment]
     belongs_to :commercial_document, :polymorphic => true
     belongs_to :recorder, foreign_key: 'recorder_id', class_name: "User"
     belongs_to :department

@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :saving do
+  factory :saving, class: "MembershipsModule::Saving" do
     member nil
     account_number "MyString"
   end
