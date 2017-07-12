@@ -1,24 +1,11 @@
-# README
+# Cooperative Management Platform
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This project integrates the services of a cooperative in a single platform so that managing is easier and more transaparent.
 
-Things you may want to cover:
+These services are included:
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* Loans Module 
+* Accounting Module 
+* Cooperative Services Module 
+* Memberships and Program Subscriptions Module
+* Warehouse Module
