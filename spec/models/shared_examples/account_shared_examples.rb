@@ -1,4 +1,4 @@
-shared_examples_for 'a AccountingDepartment::Account subtype' do |elements|
+shared_examples_for 'a AccountingModule::Account subtype' do |elements|
   let(:contra) { false }
   let(:account) { FactoryGirl.create(elements[:kind], contra: contra)}
   subject { account }

@@ -1,4 +1,4 @@
-shared_examples_for 'a AccountingDepartment::Amount subtype' do |elements|
+shared_examples_for 'a AccountingModule::Amount subtype' do |elements|
   let(:amount) { FactoryGirl.build(elements[:kind]) }
   subject { amount }
 

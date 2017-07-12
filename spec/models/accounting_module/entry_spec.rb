@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-module AccountingDepartment
+module AccountingModule
   describe Entry do
   	describe 'associations' do 
   		it { is_expected.to belong_to :commercial_document }
@@ -123,7 +123,7 @@ module AccountingDepartment
                 ]
             }
           }
-          include_examples 'a built-from-hash AccountingDepartment::Entry'
+         
         end
 
         context "when given a credit/debits hash with :account_name => String" do
@@ -138,7 +138,7 @@ module AccountingDepartment
                 ]
             }
           }
-          include_examples 'a built-from-hash AccountingDepartment::Entry'
+          # include_examples 'a built-from-hash AccountingModule::Entry'
         end
 
         context "when given a credit/debits hash with :account => String" do
@@ -163,7 +163,7 @@ module AccountingDepartment
             entry
           }
 
-          include_examples 'a built-from-hash AccountingDepartment::Entry'
+          include_examples 'a built-from-hash AccountingModule::Entry'
         end
       end
 
@@ -203,7 +203,7 @@ module AccountingDepartment
             entry
           }
 
-          include_examples 'a built-from-hash AccountingDepartment::Entry'
+          include_examples 'a built-from-hash AccountingModule::Entry'
         end
       end
     end

@@ -1,5 +1,5 @@
 require 'rails_helper'
-module AccountingDepartment
+module AccountingModule
   describe Account, type: :model do
     let(:account) { build(:account) }
     subject { account }
