@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170712113907) do
+ActiveRecord::Schema.define(version: 20170713015303) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -185,7 +185,10 @@ ActiveRecord::Schema.define(version: 20170712113907) do
     t.datetime "updated_at", null: false
     t.decimal "quantity"
     t.uuid "cart_id"
+    t.string "line_itemable_type"
+    t.uuid "line_itemable_id"
     t.index ["cart_id"], name: "index_line_items_on_cart_id"
+    t.index ["line_itemable_type", "line_itemable_id"], name: "index_line_items_on_line_itemable_type_and_line_itemable_id"
     t.index ["order_id"], name: "index_line_items_on_order_id"
     t.index ["product_id"], name: "index_line_items_on_product_id"
     t.index ["product_stock_id"], name: "index_line_items_on_product_stock_id"
@@ -240,6 +243,15 @@ ActiveRecord::Schema.define(version: 20170712113907) do
     t.integer "avatar_file_size"
     t.datetime "avatar_updated_at"
     t.index ["sex"], name: "index_members_on_sex"
+  end
+
+  create_table "menus", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.string "unit"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_menus_on_name", unique: true
   end
 
   create_table "official_receipts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

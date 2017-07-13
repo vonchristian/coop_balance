@@ -4,6 +4,7 @@ module StoreModule
     belongs_to :member
     has_one :official_receipt, as: :receiptable
     delegate :number, to: :official_receipt, prefix: true, allow_nil: true
+    delegate :first_and_last_name, to: :member, prefix: true, allow_nil: true
     has_many :line_items, class_name: "StoreModule::LineItem", dependent: :destroy
 
     validates :member_id, presence: true

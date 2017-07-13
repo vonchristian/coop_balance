@@ -1,5 +1,12 @@
-<tr>
-<td> <%= link_to order.created_at.strftime("%B %e, %Y"), store_module_order_path(order) %></td>
+<tr data-link="<%=store_module_order_path(order)%>" class="myClass">
+<td> <%= order.date.strftime("%B %e, %Y") %></td>
 <td> <%= order.line_items.count %></td>
 <td> <%= order.total_cost %> </td>
 </tr>
+
+<script type="text/javascript">
+	$("tr").click(function() {
+  window.location = $(this).data("link")
+});
+	$('.myClass').css('cursor', 'pointer');
+</script>

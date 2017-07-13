@@ -10,9 +10,10 @@
 		        <thead>
 			        <tr>
 			        	<th>Date</th>
-			        	<th>#</th>
+			        	<th>OR / Invoice #</th>
+			        	<th></th>
 			        	<th>Member</th>
-			        	<th>Total Cost</th>
+			        	<th><span class="pull-right">Total Cost </span></th>
 			        </tr>
 			      </thead>
 			      <tbody>
@@ -20,8 +21,9 @@
 			          <tr data-link="<%=store_module_order_path(order)%>" class="myClass">
 			            <td><%= order.date.strftime("%B %e, %Y") %></td>
 			            <td><%= order.official_receipt_number %></td>
-			            <td><%= order.member.try(:full_name) %></td>
-				          <td><%=number_to_currency order.total_cost %></td>
+			            <td width="30px"><%= member_avatar(order.member, style: 'width:30px;height:30px;', class: 'media-object img-circle') %></td>
+			            <td><%= order.member_first_and_last_name %></td>
+				          <td><span class="pull-right"><%=number_to_currency order.total_cost %></span></td>
 				        </tr>
 				      <% end %>
 			      </tbody>
@@ -34,6 +36,6 @@
 <script type="text/javascript">
 	$("tr").click(function() {
   window.location = $(this).data("link")
-})
+});
 	$('.myClass').css('cursor', 'pointer');
 </script>

@@ -1,0 +1,17 @@
+<div class="row">
+  <div class="col-md-1">
+  </div>
+  <div class="col-md-1">
+    <%= line_item.quantity %>
+  </div>
+  <div class="col-md-5">
+    <%= line_item.product_stock_name %>
+  </div>
+  <div class="col-md-2">
+    <span class="pull-right"><%= number_to_currency line_item.unit_cost %></span>
+  </div>
+  <div class="col-md-2">
+    <span class="pull-right"><%= number_to_currency line_item.total_cost %></span>
+  </div>
+</div>
+<br>

@@ -8,6 +8,7 @@ module StoreModule
     	it { is_expected.to have_many :line_items }
     end 
     context 'delegations' do 
+      it { is_expected.to delegate_method(:first_and_last_name).to(:member).with_prefix }
     	it { is_expected.to delegate_method(:number).to(:official_receipt).with_prefix }
     end
 
