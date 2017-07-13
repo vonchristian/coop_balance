@@ -17,11 +17,11 @@
 			      </thead>
 			      <tbody>
 			        <% @orders.each do |order| %>
-			          <tr>
-			            <td><%= order.date %></td>
-			            <td><%=link_to order.member.try(:full_name), order %></td>
+			          <tr data-link="<%=store_module_order_path(order)%>" class="myClass">
+			            <td><%= order.date.strftime("%B %e, %Y") %></td>
+			            <td><%= order.official_receipt_number %></td>
+			            <td><%= order.member.try(:full_name) %></td>
 				          <td><%=number_to_currency order.total_cost %></td>
-				          <td><%= order.official_receipt_number %></td>
 				        </tr>
 				      <% end %>
 			      </tbody>
@@ -31,3 +31,9 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
+	$("tr").click(function() {
+  window.location = $(this).data("link")
+})
+	$('.myClass').css('cursor', 'pointer');
+</script>
