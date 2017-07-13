@@ -11,7 +11,9 @@ module StoreModule
       @order = StoreModule::Order.create(order_params)
       if @order.valid?
         @order.add_line_items_from_cart(current_cart)
-        OfficialReceipt.generate_number_for(@order)
+        if @order.cash?
+          OfficialReceipt.generate_number_for(@order)
+        end
         redirect_to store_index_url, notice: "Order saved successfully"
       else
         render @order

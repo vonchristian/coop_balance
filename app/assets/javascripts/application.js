@@ -17,6 +17,7 @@
 //= require bootstrap-sprockets
 //= require bootstrap-datepicker
 //= require icheck
+//= require select2-full
 //= require_tree .
 
 var ready = function () {

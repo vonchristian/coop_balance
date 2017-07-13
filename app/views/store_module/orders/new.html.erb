@@ -28,8 +28,8 @@
       
         <div class="col-md-4 col-md-offset-1">
           <%= simple_form_for @order do |f| %>
-            <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
-            <%= f.input :member_id, collection: Member.all.map{|a| [a.full_name, a.id] } %>
+            <%= f.input :date, as: :string, input_html: { class: "datepicker", value: Time.zone.now.strftime("%B %e, %Y") } %>
+            <%= f.input :member_id,  input_html: {id: 'member-select'}, collection: Member.all.map{|a| [a.full_name, a.id] } %>
             <%= f.input :payment_type, input_html: {class: 'icheck-me', "data-skin" => 'square', "data-color" => "blue"}, collection: StoreModule::Order.payment_types.keys.to_a.map {|a| [a.titleize, a]}, as: :radio_buttons %>
             <%= f.submit "Save Order", class: "btn btn-primary btn-block" %>
           <% end %>
@@ -38,3 +38,8 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
+  $( "#member-select" ).select2({
+      
+  });
+</script>

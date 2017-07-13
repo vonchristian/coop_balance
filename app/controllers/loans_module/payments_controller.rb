@@ -1,11 +1,11 @@
-module LoansDepartment
+module LoansModule
   class PaymentsController < ApplicationController
     def new
-      @loan = LoansDepartment::Loan.find(params[:loan_id])
+      @loan = LoansModule::Loan.find(params[:loan_id])
       @payment = LoanPaymentForm.new
     end
     def create
-      @loan = LoansDepartment::Loan.find(params[:loan_id])
+      @loan = LoansModule::Loan.find(params[:loan_id])
       @payment = LoanPaymentForm.new(payment_params)
       if @payment.valid?
         @payment.save

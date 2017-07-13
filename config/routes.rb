@@ -127,5 +127,5 @@ Rails.application.routes.draw do
       resources :stocks, only: [:new, :create]
     end
   end
-
+  mount ActionCable.server => '/cable'
 end
