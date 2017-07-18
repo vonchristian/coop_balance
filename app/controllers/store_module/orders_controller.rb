@@ -20,7 +20,7 @@ module StoreModule
       end
     end
     def show
-      @order = StoreModule::Order.find(params[:id])
+      @order = StoreModule::Order.includes(line_items: [:product_stock, :product]).find(params[:id])
       @line_items = @order.line_items
       respond_to do |format|
         format.html

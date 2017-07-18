@@ -1,7 +1,7 @@
 <tr data-link="<%=store_module_order_path(order)%>" class="myClass">
-<td> <%= order.date.strftime("%B %e, %Y") %></td>
-<td> <%= order.line_items.count %></td>
-<td> <%= order.total_cost %> </td>
+  <td> <%= order.date.strftime("%B %e, %Y") %></td>
+  <td> <%= order.line_items.count %></td>
+  <td> <span class="pull-right"><%= number_to_currency order.total_cost %></span> </td>
 </tr>
 
 <script type="text/javascript">
