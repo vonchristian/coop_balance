@@ -1,5 +1,5 @@
 module WarehouseModule
-	class FinishedGoodMaterial < ApplicationRecord
+	class WorkInProgressMaterial < ApplicationRecord
 	  def self.total
 	    sum(:quantity)
 	  end
