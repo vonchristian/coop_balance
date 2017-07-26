@@ -7,5 +7,6 @@ These services are included:
 * Loans Module 
 * Accounting Module 
 * Cooperative Services Module 
-* Memberships and Program Subscriptions Module
+* Members Registry Module 
+* Program Subscriptions Module
 * Warehouse Module
