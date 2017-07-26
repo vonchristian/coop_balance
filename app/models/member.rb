@@ -11,6 +11,7 @@ class Member < ApplicationRecord
   has_many :program_subscriptions
   has_many :programs, through: :program_subscriptions
   has_many :orders, class_name: "StoreModule::Order"
+  has_many :real_properties
 
   has_attached_file :avatar,
   styles: { large: "120x120>",

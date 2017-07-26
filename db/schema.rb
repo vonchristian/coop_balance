@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170713015303) do
+ActiveRecord::Schema.define(version: 20170718024324) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,6 +64,17 @@ ActiveRecord::Schema.define(version: 20170713015303) do
     t.index ["entry_id", "account_id"], name: "index_amounts_on_entry_id_and_account_id"
     t.index ["entry_id"], name: "index_amounts_on_entry_id"
     t.index ["type"], name: "index_amounts_on_type"
+  end
+
+  create_table "appraisals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "real_property_id"
+    t.decimal "market_value"
+    t.datetime "date_appraised"
+    t.uuid "appraiser_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["appraiser_id"], name: "index_appraisals_on_appraiser_id"
+    t.index ["real_property_id"], name: "index_appraisals_on_real_property_id"
   end
 
   create_table "capital_build_ups", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -344,6 +355,16 @@ ActiveRecord::Schema.define(version: 20170713015303) do
     t.index ["name"], name: "index_raw_materials_on_name", unique: true
   end
 
+  create_table "real_properties", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "member_id"
+    t.string "address"
+    t.string "type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["member_id"], name: "index_real_properties_on_member_id"
+    t.index ["type"], name: "index_real_properties_on_type"
+  end
+
   create_table "saving_products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.decimal "interest_rate"
@@ -472,6 +493,8 @@ ActiveRecord::Schema.define(version: 20170713015303) do
   add_foreign_key "amortization_schedules", "loans"
   add_foreign_key "amounts", "accounts"
   add_foreign_key "amounts", "entries"
+  add_foreign_key "appraisals", "real_properties"
+  add_foreign_key "appraisals", "users", column: "appraiser_id"
   add_foreign_key "capital_build_ups", "share_capitals"
   add_foreign_key "carts", "users"
   add_foreign_key "committee_members", "committees"
@@ -496,6 +519,7 @@ ActiveRecord::Schema.define(version: 20170713015303) do
   add_foreign_key "program_subscriptions", "programs"
   add_foreign_key "raw_material_stocks", "raw_materials"
   add_foreign_key "raw_material_stocks", "suppliers"
+  add_foreign_key "real_properties", "members"
   add_foreign_key "savings", "members"
   add_foreign_key "savings", "saving_products"
   add_foreign_key "share_capital_product_shares", "share_capital_products"

@@ -13,8 +13,8 @@ Rails.application.routes.draw do
     resources :departments, only: [:new, :create]
     resources :branches, only: [:new, :create]
   end
-  resources :accounting_department, only: [:index]
-  namespace :accounting_department do
+  resources :accounting_module, only: [:index]
+  namespace :accounting_module do
     resources :accounts
     resources :entries
     resources :balance_sheet
@@ -33,6 +33,7 @@ Rails.application.routes.draw do
     end
     resources :members, only: [:index, :show] do
       resources :loan_applications, only: [:new, :create]
+      resources :real_properties, only: [:new, :create]
     end
   end
   resources :savings do
@@ -55,7 +56,7 @@ Rails.application.routes.draw do
   unauthenticated :user do
     root :to => 'home#index', :constraints => lambda { |request| request.env['warden'].user.nil? }, as: :unauthenticated_root
   end
-  namespace :management_department do
+  namespace :management_module do
     resources :accounting, only: [:index]
     resources :share_capitals, only: [:index, :show]
     resources :employees, only: [:index, :show]
@@ -70,7 +71,7 @@ Rails.application.routes.draw do
     resources :settings, only: [:index]
     resources :members, only: [:index, :show, :new, :create]
   end
-  namespace :teller_department do
+  namespace :teller_module do
     resources :program_subscriptions, shallow: true do 
       resources :payments, only: [:new, :create], module: :program_subscriptions
     end
@@ -91,19 +92,19 @@ Rails.application.routes.draw do
     end
     resources :entries, only: [:index, :show]
   end
-  root :to => 'accounting_department#index', :constraints => lambda { |request| request.env['warden'].user.role == 'accounting_officer' if request.env['warden'].user }, as: :accounting_department_root
+  root :to => 'accounting_modulet#index', :constraints => lambda { |request| request.env['warden'].user.role == 'accounting_officer' if request.env['warden'].user }, as: :accounting_module_root
   root :to => 'loans_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'loan_officer' if request.env['warden'].user }, as: :loans_module_root
-  root :to => 'management_department#index', :constraints => lambda { |request| request.env['warden'].user.role == 'general_manager' if request.env['warden'].user }, as: :management_department_root
-  root :to => 'teller_department#index', :constraints => lambda { |request| request.env['warden'].user.role == 'teller' if request.env['warden'].user }, as: :teller_department_root
-  root :to => 'warehouse_department#index', :constraints => lambda { |request| request.env['warden'].user.role == 'stock_custodian' if request.env['warden'].user }, as: :warehouse_department_root
+  root :to => 'management_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'general_manager' if request.env['warden'].user }, as: :management_module_root
+  root :to => 'teller_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'teller' if request.env['warden'].user }, as: :teller_module_root
+  root :to => 'warehouse_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'stock_custodian' if request.env['warden'].user }, as: :warehouse_module_root
   root :to => 'store#index', :constraints => lambda { |request| request.env['warden'].user.role == 'store_cashier' if request.env['warden'].user }, as: :store_module_root
   root :to => 'store#index', :constraints => lambda { |request| request.env['warden'].user.role == 'stock_custodian' if request.env['warden'].user }, as: :store_stocks_module_root
 
 
   resources :users, only: [:show]
-  resources :warehouse_department, only: [:index]
+  resources :warehouse_module, only: [:index]
 
-  namespace :warehouse_department do
+  namespace :warehousemodule do
     resources :balance_sheet, only: [:index]
     resources :income_statement, only: [:index]
     resources :suppliers, only: [:index, :show, :new, :create]

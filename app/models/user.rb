@@ -6,6 +6,7 @@ class User < ApplicationRecord
   enum role: [:system_administrator, :general_manager, :loan_officer, :accounting_officer, :teller, :stock_custodian, :store_cashier]
   belongs_to :department
   has_many :entries, class_name: "AccountingDepartment::Entry", foreign_key: 'recorder_id'
+  has_many :appraised_properties, class_name: "Appraisal", foreign_key: 'appraiser_id'
   has_attached_file :avatar,
   styles: { large: "120x120>",
            medium: "70x70>",
