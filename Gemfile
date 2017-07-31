@@ -5,7 +5,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '~> 5.1.3.rc1'
+gem 'rails', '~> 5.1.3.rc2'
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.7', group: [:development, :production]
 gem 'sass-rails', '>= 3.2'
@@ -20,7 +20,7 @@ gem "select2-rails"
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'jquery-turbolinks'
-gem 'bootstrap-sass', '~> 3.3.6'
+gem 'bootstrap-sass'
 gem 'icheck-rails'
 gem 'friendly_id'
 gem 'font-awesome-rails'
@@ -48,12 +48,10 @@ group :development, :test do
 end
 
 group :development do
-
   gem 'spring'
   gem 'spring-watcher-listen'
   gem 'bullet'
 end
-
 group :test do
   gem 'shoulda-matchers'
   gem 'database_cleaner'
