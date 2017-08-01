@@ -11,7 +11,7 @@
     <div class="wrapper">
       <%=render "layouts/shared/header" %>
       <% if current_user.accounting_officer? %>
-        <%=render "accounting_department/sidebar_for_accounting_department" %>
+        <%=render "accounting_module/sidebar" %>
       <% end %>
       <% if current_user.loan_officer? %>
         <%=render "loans_module/sidebar_for_loans_department" %>

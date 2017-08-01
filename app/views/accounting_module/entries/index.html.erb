@@ -2,7 +2,7 @@
   <div class="col-md-12">
     <div class="box box-solid">
       <div class="box-body">
-        <%=form_tag accounting_department_entries_path, method: :get, class: "search-form" do %>
+        <%=form_tag accounting_module_entries_path, method: :get, class: "search-form" do %>
           <div class="input-group">
             <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Entry...", id: 'taxpayer-search-form' %>
             <span class="input-group-btn">
@@ -22,7 +22,7 @@
 
           </div>
           <div class="col-md-7">
-                          <%= form_tag({:action => "index", controller: "accounting_department/entries"}, {:method => :get})  do %>
+                          <%= form_tag({:action => "index", controller: "accounting_module/entries"}, {:method => :get})  do %>
             <div class="row">
               <div class="col-md-3">
               <div class="form-group">
@@ -72,21 +72,21 @@
       <div class="tab-content">
         <div class="tab-pane active" id="all-entries">
           All Entries
-          <%=render 'accounting_department/entries/entries', entries: @entries %>
+          <%=render 'accounting_module/entries/entries', entries: @entries %>
         </div>
 
         <div class="tab-pane" id="disbursements">
           Disbursements
-          <%=render 'accounting_department/entries/entries', entries: @disbursements %>
+          <%=render 'accounting_module/entries/entries', entries: @disbursements %>
         </div>
         <div class="tab-pane" id="withdrawals">
           Withdrawals
-          <%=render 'accounting_department/entries/entries', entries: @withdrawals %>
+          <%=render 'accounting_module/entries/entries', entries: @withdrawals %>
         </div>
 
         <div class="tab-pane" id="deposits">
           Deposits
-          <%=render 'accounting_department/entries/entries', entries: @deposits %>
+          <%=render 'accounting_module/entries/entries', entries: @deposits %>
         </div>
     </div>
   </div>

@@ -7,7 +7,7 @@
             Accounts
           </div>
           <div class="col-md-6">
-            <%=form_tag accounting_department_accounts_path, method: :get, class: "search-form" do %>
+            <%=form_tag accounting_module_accounts_path, method: :get, class: "search-form" do %>
             <div class="input-group">
               <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Account..", id: 'account-search-form' %>
               <span class="input-group-btn">
@@ -19,7 +19,7 @@
           <% end %>
           </div>
           <div class="col-md-4">
-            <%= link_to new_accounting_department_account_path do %>
+            <%= link_to new_accounting_module_account_path do %>
               <span class="btn btn-primary btn-flat pull-right"><i class="fa fa-plus-circle"></i> New Account</span> 
             <% end %>
           </div>
@@ -42,9 +42,9 @@
               <% @accounts.each do |account| %>
                 <% cache account do %>
                   <tr>
-                    <td> <%= link_to account.code, accounting_department_account_path(account) %></td>
+                    <td> <%= link_to account.code, accounting_module_account_path(account) %></td>
                     <td> <%= account.name %></td>
-                    <td> <%= account.type.gsub("AccountingDepartment::", "")%></td>
+                    <td> <%= account.type.gsub("AccountingModule::", "")%></td>
                     <td> <%= number_to_currency account.debits_balance %></td>
                     <td> <%= number_to_currency account.credits_balance %></td>
                     <td> <%= number_to_currency account.balance %></td>

@@ -1,10 +1,10 @@
-module AccountingDepartment
+module AccountingModule
   class EntriesController < ApplicationController
     def index
-      @entries = AccountingDepartment::Entry.all
-      @withdrawals =AccountingDepartment::Entry.withdrawal
-      @deposits =AccountingDepartment::Entry.deposit
-      @disbursements =AccountingDepartment::Entry.disbursement
+      @entries = AccountingModule::Entry.all
+      @withdrawals =AccountingModule::Entry.withdrawal
+      @deposits =AccountingModule::Entry.deposit
+      @disbursements =AccountingModule::Entry.loan_disbursement
     end
   end
 end

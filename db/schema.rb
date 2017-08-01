@@ -77,15 +77,6 @@ ActiveRecord::Schema.define(version: 20170726123609) do
     t.index ["real_property_id"], name: "index_appraisals_on_real_property_id"
   end
 
-  create_table "capital_build_ups", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "share_capital_id"
-    t.decimal "share_count"
-    t.datetime "date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["share_capital_id"], name: "index_capital_build_ups_on_share_capital_id"
-  end
-
   create_table "carts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -506,7 +497,6 @@ ActiveRecord::Schema.define(version: 20170726123609) do
   add_foreign_key "amounts", "entries"
   add_foreign_key "appraisals", "real_properties"
   add_foreign_key "appraisals", "users", column: "appraiser_id"
-  add_foreign_key "capital_build_ups", "share_capitals"
   add_foreign_key "carts", "users"
   add_foreign_key "committee_members", "committees"
   add_foreign_key "days_workeds", "laborers"
