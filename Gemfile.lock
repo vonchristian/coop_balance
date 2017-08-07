@@ -41,7 +41,7 @@ GEM
     addressable (2.5.1)
       public_suffix (~> 2.0, >= 2.0.2)
     arel (8.0.0)
-    autoprefixer-rails (7.1.2.3)
+    autoprefixer-rails (7.1.2.4)
       execjs
     avatar_magick (1.0.2)
       dragonfly (~> 1.0)
