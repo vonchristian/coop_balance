@@ -1,4 +1,4 @@
-module ManagementDepartment
+module ManagementModule
   module Settings
     class TimeDepositProductsController < ApplicationController
       def new

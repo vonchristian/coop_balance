@@ -1,17 +1,17 @@
-module ManagementDepartment
+module ManagementModule
   class AccountsController < ApplicationController
     def index
       if params[:search].present?
-        @accounts = AccountingDepartment::Account.text_search(params[:search]).page(params[:page]).per(50)
+        @accounts = AccountingModule::Account.text_search(params[:search]).page(params[:page]).per(50)
       else 
-        @accounts = AccountingDepartment::Account.all.order(:code).page(params[:page]).per(50)
+        @accounts = AccountingModule::Account.all.order(:code).page(params[:page]).per(50)
       end
     end
     def new
-      @account = AccountingDepartment::Account.new
+      @account = AccountingModule::Account.new
     end
     def create
-      @account = AccountingDepartment::Account.create(account_params)
+      @account = AccountingModule::Account.create(account_params)
       if @account.valid?
         @account.save
         redirect_to accounting_department_accounts_url, notice: "Account created successfully."
@@ -20,7 +20,7 @@ module ManagementDepartment
       end
     end
     def show 
-      @account = AccountingDepartment::Account.find(params[:id])
+      @account = AccountingModule::Account.find(params[:id])
     end
 
     private

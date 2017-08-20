@@ -1,15 +1,15 @@
-module TellerDepartment
+module TellerModule
   class DepositsController < ApplicationController
     def new
-      @saving = Saving.find(params[:savings_account_id])
+      @saving = MembershipsModule::Saving.find(params[:savings_account_id])
       @deposit = DepositForm.new
     end
     def create
-      @saving = Saving.find(params[:savings_account_id])
+      @saving = MembershipsModule::Saving.find(params[:savings_account_id])
       @deposit = DepositForm.new(deposit_params)
       if @deposit.valid?
         @deposit.save
-        redirect_to teller_department_savings_account_path(@saving), notice: "Savings deposit saved successfully"
+        redirect_to teller_module_savings_account_path(@saving), notice: "Savings deposit saved successfully"
       else
         render :new
       end

@@ -1,4 +1,4 @@
-module ManagementDepartment
+module ManagementModule
   class SavingsController < ApplicationController
     def index
     	if params[:search].present?

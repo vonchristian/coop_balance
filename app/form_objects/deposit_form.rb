@@ -10,7 +10,7 @@ class DepositForm
     end
   end
   def find_saving
-    Saving.find_by(id: saving_id)
+    MembershipsModule::Saving.find_by(id: saving_id)
   end
 
   def save_deposit
@@ -19,9 +19,9 @@ class DepositForm
     credit_amounts_attributes: [account: credit_account, amount: amount])
   end
   def debit_account
-    AccountingDepartment::Account.find_by(name: "Cash on Hand")
+    AccountingModule::Account.find_by(name: "Cash on Hand")
   end
   def credit_account
-    AccountingDepartment::Account.find_by(name: "Savings")
+    AccountingModule::Account.find_by(name: "Savings Deposits")
   end
 end

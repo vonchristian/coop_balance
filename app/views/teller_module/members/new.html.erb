@@ -1,0 +1,10 @@
+<%= simple_form_for @member, multipart: true, url: :teller_module_members do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :avatar, as: :file %>
+  <%= f.input :first_name %>
+  <%= f.input :middle_name %>
+  <%= f.input :last_name %>
+  <%= f.input :sex, collection: Member.sexes.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
+  <%= f.input :date_of_birth, as: :string, input_html: { class: "datepicker" } %>
+  <%= f.submit "Save Member", class: "btn btn-primary" %>
+ <% end %>

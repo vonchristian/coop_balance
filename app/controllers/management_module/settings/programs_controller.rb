@@ -1,4 +1,4 @@
-module ManagementDepartment
+module ManagementModule
 	module Settings 
 		class ProgramsController < ApplicationController
 			def new 

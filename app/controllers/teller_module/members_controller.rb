@@ -1,4 +1,4 @@
-module TellerDepartment 
+module TellerModule
 	class MembersController < ApplicationController 
 		def index 
 			if params[:search].present?
@@ -17,7 +17,7 @@ module TellerDepartment
 			@member = Member.new(member_registration_params)
 			if @member.valid?
 				@member.save 
-				redirect_to teller_department_member_url(@member), notice: "Member saved successfully"
+				redirect_to teller_module_member_url(@member), notice: "Member saved successfully"
 			else 
 				render @member 
 			end 

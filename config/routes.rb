@@ -76,6 +76,7 @@ Rails.application.routes.draw do
     resources :settings, only: [:index]
     resources :members, only: [:index, :show, :new, :create]
   end
+  resources :teller_module, only: [:index]
   namespace :teller_module do
     resources :program_subscriptions, shallow: true do 
       resources :payments, only: [:new, :create], module: :program_subscriptions

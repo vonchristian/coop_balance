@@ -1,4 +1,4 @@
-module ManagementDepartment 
+module ManagementModule 
 	class EmployeesController < ApplicationController
 		def index 
 			@employees = User.all 

@@ -1,15 +1,15 @@
-module TellerDepartment
+module TellerModule
   class WithdrawalsController < ApplicationController
     def new
-      @saving = Saving.find(params[:savings_account_id])
+      @saving = MembershipsModule::Saving.find(params[:savings_account_id])
       @withdrawal = WithdrawalForm.new
     end
     def create
-      @saving = Saving.find(params[:savings_account_id])
+      @saving = MembershipsModule::Saving.find(params[:savings_account_id])
       @withdrawal = WithdrawalForm.new(withdrawal_params)
       if @withdrawal.valid? && @withdrawal.amount_is_less_than_balance
         @withdrawal.save
-        redirect_to teller_department_savings_account_path(@saving), notice: "Withdraw transaction saved successfully"
+        redirect_to teller_module_savings_account_path(@saving), notice: "Withdraw transaction saved successfully"
       else 
         render :new, alert: "Amount exceeded balance"
       end

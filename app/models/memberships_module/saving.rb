@@ -3,7 +3,7 @@ module MembershipsModule
     include PgSearch
     pg_search_scope :text_search, :against => [:account_number]
 
-    belongs_to :account_owner, class_name: "Member", foreign_key: 'member_id'
+    belongs_to :member, class_name: "Member", foreign_key: 'member_id'
     belongs_to :saving_product, class_name: "CoopServicesModule::SavingProduct"
     delegate :name, to: :saving_product, prefix: true
     delegate :interest_rate, to: :saving_product, prefix: true

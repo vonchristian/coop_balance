@@ -1,4 +1,4 @@
-module TellerDepartment 
+module TellerModule
 	class SavingsController < ApplicationController
 		def new
       @member = Member.find(params[:member_id])

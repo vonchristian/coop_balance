@@ -1,7 +1,0 @@
-<%= simple_form_for @saving_product, url: :management_department_saving_products do |f| %>
-  <%= f.error_notification %>
-  <%= f.input :name %>
-  <%= f.input :interest_rate %>
-  <%= f.input :interest_recurrence, collection: SavingProduct.interest_recurrences.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
-  <%= f.submit "Create Saving Product" %>
-<% end %>

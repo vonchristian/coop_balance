@@ -9,7 +9,7 @@ module LoansModule
       @payment = LoanPaymentForm.new(payment_params)
       if @payment.valid?
         @payment.save
-        redirect_to loans_department_loan_path(@loan), notice: "Loan payment saved successfully."
+        redirect_to loans_module_loan_path(@loan), notice: "Loan payment saved successfully."
       else
         render :new
       end

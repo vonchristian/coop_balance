@@ -1,11 +1,11 @@
-module ManagementDepartment
+module ManagementModuule
   module Settings
     class ShareCapitalProductsController < ApplicationController
       def new
-        @share_capital_product = ManagementDepartment::ShareCapitalProductForm.new
+        @share_capital_product = ManagementModuule::ShareCapitalProductForm.new
       end
       def create
-        @share_capital_product = ManagementDepartment::ShareCapitalProductForm.new(share_capital_product_params)
+        @share_capital_product = ManagementModuule::ShareCapitalProductForm.new(share_capital_product_params)
         if @share_capital_product.valid?
           @share_capital_product.register
           redirect_to "/", notice: "Succeess"

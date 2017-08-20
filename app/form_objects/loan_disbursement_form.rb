@@ -14,7 +14,7 @@ class LoanDisbursementForm
   end
 
   def save_disbursement
-    AccountingModule::Entry.create!(entry_type: 'disbursement', commercial_document: find_loan, description: 'Loans disbursement', reference_number: reference_number, entry_date: date,
+    AccountingModule::Entry.create!(entry_type: 'loan_disbursement', commercial_document: find_loan, description: 'Loans disbursement', reference_number: reference_number, entry_date: date,
     debit_amounts_attributes: [account: debit_account, amount: amount],
     credit_amounts_attributes: [account: credit_account, amount: amount])
   end

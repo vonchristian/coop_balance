@@ -1,4 +1,4 @@
-module ManagementDepartment
+module ManagementModule
   class MembersController < ApplicationController
     def index
       @members = Member.all

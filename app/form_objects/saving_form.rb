@@ -16,17 +16,17 @@ class SavingForm
     find_member.savings.create(saving_product_id: saving_product_id, account_number: account_number)
   end
   def find_saving
-    Saving.find_by(account_number: account_number, saving_product_id: saving_product_id)
+    MembershipsModule::Saving.find_by(account_number: account_number, saving_product_id: saving_product_id)
   end
   def create_entry
-    AccountingDepartment::Entry.create!(entry_type: 'deposit', commercial_document: find_saving, description: 'Savings deposit', reference_number: or_number, entry_date: date,
+    AccountingModule::Entry.create!(entry_type: 'deposit', commercial_document: find_saving, description: 'Savings deposit', reference_number: or_number, entry_date: date,
     debit_amounts_attributes: [account: debit_account, amount: amount],
     credit_amounts_attributes: [account: credit_account, amount: amount])
   end
   def debit_account
-    AccountingDepartment::Account.find_by(name: "Cash on Hand")
+    AccountingModule::Account.find_by(name: "Cash on Hand")
   end
   def credit_account
-    AccountingDepartment::Account.find_by(name: "Savings")
+    AccountingModule::Account.find_by(name: "Savings Deposits")
   end
 end

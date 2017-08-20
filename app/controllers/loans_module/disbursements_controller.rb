@@ -9,7 +9,7 @@ module LoansModule
       @disbursement = LoanDisbursementForm.new(disbursement_params)
       if @disbursement.valid?
         @disbursement.save
-        redirect_to loans_department_loan_path(@loan), notice: "Disbursed successfully."
+        redirect_to loans_module_loan_path(@loan), notice: "Disbursed successfully."
       else
         render :new
       end

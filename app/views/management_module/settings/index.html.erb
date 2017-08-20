@@ -1,0 +1,13 @@
+<%= link_to 'New Share Capital Product', new_management_module_share_capital_product_path, class: "btn btn-primary" %>
+<%= link_to 'New Time Deposit Product', new_management_module_time_deposit_product_path, class: "btn btn-primary" %>
+<%= link_to 'New Program', new_management_module_program_path, class: "btn btn-primary" %>
+
+<% @share_capital_products.each do |product| %>
+  <% cache product do %>
+    <%= product.name %>
+    <%= number_to_currency product.share_capital_product_shares.total_shares, unit: '' %>
+    <%= number_to_currency product.subscribed, unit: '' %>
+  <% end %>
+<% end %>
+
+<%= link_to 'New Saving Product', new_management_module_saving_product_path %>

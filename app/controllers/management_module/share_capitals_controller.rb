@@ -1,4 +1,4 @@
-module ManagementDepartment 
+module ManagementModule 
 	class ShareCapitalsController < ApplicationController
 		def index 
 			if params[:search].present?
