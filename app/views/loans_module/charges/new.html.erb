@@ -1,0 +1,8 @@
+<%= simple_form_for @charge, url: :loans_module_charges do |f| %> 
+  <%= f.error_notification %>
+  <%= f.input :name %>
+  <%= f.input :charge_type, collection: Charge.charge_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
+  <%= f.input :percent %>
+  <%= f.input :amount %>
+  <%= f.submit "Create Charge", class: "btn btn-danger" %>
+<% end %>

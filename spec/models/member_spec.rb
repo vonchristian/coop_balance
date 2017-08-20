@@ -9,6 +9,7 @@ describe Member, type: :model do
   	it { is_expected.to have_many :time_deposits }
   	it { is_expected.to have_many :program_subscriptions }
   	it { is_expected.to have_many :programs }
+    it { is_expected.to have_many :orders }
     it { is_expected.to have_many :real_properties }
   end
   

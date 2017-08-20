@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170726123609) do
+ActiveRecord::Schema.define(version: 20170815082945) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,6 +82,20 @@ ActiveRecord::Schema.define(version: 20170726123609) do
     t.datetime "updated_at", null: false
     t.uuid "user_id"
     t.index ["user_id"], name: "index_carts_on_user_id"
+  end
+
+  create_table "charges", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.uuid "credit_account_id"
+    t.uuid "debit_account_id"
+    t.integer "charge_type"
+    t.decimal "amount"
+    t.decimal "percent"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["charge_type"], name: "index_charges_on_charge_type"
+    t.index ["credit_account_id"], name: "index_charges_on_credit_account_id"
+    t.index ["debit_account_id"], name: "index_charges_on_debit_account_id"
   end
 
   create_table "committee_members", force: :cascade do |t|
@@ -208,6 +222,32 @@ ActiveRecord::Schema.define(version: 20170726123609) do
     t.index ["status"], name: "index_loan_approvals_on_status"
   end
 
+  create_table "loan_product_charges", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "charge_id"
+    t.uuid "loan_product_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["charge_id"], name: "index_loan_product_charges_on_charge_id"
+    t.index ["loan_product_id"], name: "index_loan_product_charges_on_loan_product_id"
+  end
+
+  create_table "loan_product_mode_of_payments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "loan_product_id"
+    t.uuid "mode_of_payment_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["loan_product_id"], name: "index_loan_product_mode_of_payments_on_loan_product_id"
+    t.index ["mode_of_payment_id"], name: "index_loan_product_mode_of_payments_on_mode_of_payment_id"
+  end
+
+  create_table "loan_product_terms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.decimal "term"
+    t.uuid "loan_product_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["loan_product_id"], name: "index_loan_product_terms_on_loan_product_id"
+  end
+
   create_table "loan_products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "description"
@@ -215,6 +255,9 @@ ActiveRecord::Schema.define(version: 20170726123609) do
     t.integer "interest_recurrence"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "max_loanable_amount"
+    t.decimal "loan_product_term"
+    t.integer "mode_of_payment"
     t.index ["interest_recurrence"], name: "index_loan_products_on_interest_recurrence"
   end
 
@@ -254,6 +297,13 @@ ActiveRecord::Schema.define(version: 20170726123609) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_menus_on_name", unique: true
+  end
+
+  create_table "mode_of_payments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "mode"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["mode"], name: "index_mode_of_payments_on_mode"
   end
 
   create_table "official_receipts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -498,6 +548,8 @@ ActiveRecord::Schema.define(version: 20170726123609) do
   add_foreign_key "appraisals", "real_properties"
   add_foreign_key "appraisals", "users", column: "appraiser_id"
   add_foreign_key "carts", "users"
+  add_foreign_key "charges", "accounts", column: "credit_account_id"
+  add_foreign_key "charges", "accounts", column: "debit_account_id"
   add_foreign_key "committee_members", "committees"
   add_foreign_key "days_workeds", "laborers"
   add_foreign_key "entries", "departments"
@@ -510,6 +562,11 @@ ActiveRecord::Schema.define(version: 20170726123609) do
   add_foreign_key "line_items", "products"
   add_foreign_key "loan_approvals", "loans"
   add_foreign_key "loan_approvals", "users", column: "approver_id"
+  add_foreign_key "loan_product_charges", "charges"
+  add_foreign_key "loan_product_charges", "loan_products"
+  add_foreign_key "loan_product_mode_of_payments", "loan_products"
+  add_foreign_key "loan_product_mode_of_payments", "mode_of_payments"
+  add_foreign_key "loan_product_terms", "loan_products"
   add_foreign_key "loans", "loan_products"
   add_foreign_key "loans", "members"
   add_foreign_key "orders", "members"

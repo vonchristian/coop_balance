@@ -1,4 +1,4 @@
-<%= link_to 'New Loan Product', new_loans_department_loan_product_path, class: "btn btn-primary" %>
+<%= link_to 'New Loan Product', new_loans_module_loan_product_path, class: "btn btn-primary" %>
 <% @loan_products.each do |loan_product| %>
-  <%= loan_product.name %>
+  <%= link_to loan_product.name, loans_module_loan_product_path(loan_product) %>
 <% end %>

@@ -3,6 +3,7 @@ class Member < ApplicationRecord
   include PgSearch 
   pg_search_scope :text_search, :against => [:first_name, :middle_name, :last_name]
   enum sex: [:male, :female, :other]
+  
   has_many :loans, class_name: "LoansModule::Loan"
   has_many :addresses, as: :addressable
   has_many :savings

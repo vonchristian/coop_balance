@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   }, as: :avatar
   get 'reports/balance_sheet' => 'reports#balance_sheet'
   get 'reports/income_statement' => 'reports#income_statement'
-  devise_for :users, controllers: { sessions: 'users/sessions' , registrations: "bplo_section/settings/users"}
+  devise_for :users, controllers: { sessions: 'users/sessions', registrations: "bplo_section/settings/users"}
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   resources :home, only: [:index]
   namespace :admin do
@@ -25,7 +25,7 @@ Rails.application.routes.draw do
   resources :loans_module, only: [:index]
   namespace :loans_module do
     resources :dashboard, only: [:index]
-    resources :loan_products
+    resources :loan_products, except:[:destroy]
     resources :loans, except: [:destroy] do
       resources :approvals, only: [:new, :create]
       resources :disbursements, only: [:new, :create]
@@ -35,6 +35,11 @@ Rails.application.routes.draw do
       resources :loan_applications, only: [:new, :create]
       resources :real_properties, only: [:new, :create]
     end
+    resources :settings, only: [:index]
+    resources :charges, only: [:new, :create]
+    resources :loan_product_charges, only: [:new, :create]
+    resources :loan_calculator, only: [:index]
+
   end
   resources :savings do
     resources :deposits, only: [:new, :create]
@@ -104,7 +109,7 @@ Rails.application.routes.draw do
   resources :users, only: [:show]
   resources :warehouse_module, only: [:index]
 
-  namespace :warehousemodule do
+  namespace :warehouse_module do
     resources :balance_sheet, only: [:index]
     resources :income_statement, only: [:index]
     resources :suppliers, only: [:index, :show, :new, :create]

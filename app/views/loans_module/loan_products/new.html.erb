@@ -1,8 +1,9 @@
-<%= simple_form_for @loan_product, url: :loans_department_loan_products do |f| %>
+<%= simple_form_for @loan_product, url: :loans_module_loan_products do |f| %>
   <%= f.error_notification %>
   <%= f.input :name %>
   <%= f.input :description %>
+  <%= f.input :max_loanable_amount %>
   <%= f.input :interest_rate, label: "Interest Rate (in decimal)" %>
-  <%= f.input :interest_recurrence, collection: LoansDepartment::LoanProduct.interest_recurrences.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
+  
   <%= f.submit "Create Loan Product", class: "btn btn-primary btn-flat" %>
 <% end %>
