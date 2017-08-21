@@ -1,0 +1,12 @@
+
+  <% Member.all.except(@loan.member).each do |member| %>
+   <%= simple_form_for [@loan, @co_maker], url: :loans_module_loan_loan_co_makers do |f| %>
+    <%= member.full_name %>
+     <%= member_avatar(member, style: 'width:60px;height:60px;', class: 'media-object img-square') %>
+    <%= f.input :co_maker_id, input_html: { value: member.id } %>
+    <% if @loan.co_makers.exclude?(member) %>
+      <%= f.submit "Add" %>
+    <% end %>
+  <% end %>
+<% end %>
+<%=link_to 'Back to Loan', loans_module_loan_path(@loan), class: "btn btn-default" %>

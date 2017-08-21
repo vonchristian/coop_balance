@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170821104755) do
+ActiveRecord::Schema.define(version: 20170821110645) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -226,6 +226,15 @@ ActiveRecord::Schema.define(version: 20170821104755) do
     t.index ["approver_id"], name: "index_loan_approvals_on_approver_id"
     t.index ["loan_id"], name: "index_loan_approvals_on_loan_id"
     t.index ["status"], name: "index_loan_approvals_on_status"
+  end
+
+  create_table "loan_co_makers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "loan_id"
+    t.uuid "co_maker_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["co_maker_id"], name: "index_loan_co_makers_on_co_maker_id"
+    t.index ["loan_id"], name: "index_loan_co_makers_on_loan_id"
   end
 
   create_table "loan_product_charges", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -569,6 +578,8 @@ ActiveRecord::Schema.define(version: 20170821104755) do
   add_foreign_key "line_items", "products"
   add_foreign_key "loan_approvals", "loans"
   add_foreign_key "loan_approvals", "users", column: "approver_id"
+  add_foreign_key "loan_co_makers", "loans"
+  add_foreign_key "loan_co_makers", "members", column: "co_maker_id"
   add_foreign_key "loan_product_charges", "charges"
   add_foreign_key "loan_product_charges", "loan_products"
   add_foreign_key "loan_product_mode_of_payments", "loan_products"

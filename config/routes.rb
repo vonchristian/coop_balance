@@ -23,13 +23,15 @@ Rails.application.routes.draw do
 
   end
   resources :loans_module, only: [:index]
+  
   namespace :loans_module do
     resources :dashboard, only: [:index]
     resources :loan_products, except:[:destroy]
     resources :loans, except: [:destroy] do
-      resources :approvals, only: [:new, :create]
-      resources :disbursements, only: [:new, :create]
-      resources :payments, only: [:new, :create]
+    resources :approvals, only: [:new, :create]
+    resources :disbursements, only: [:new, :create]
+    resources :payments, only: [:new, :create]
+    resources :loan_co_makers, only: [:new, :create]
     end
     resources :members, only: [:index, :show] do
       resources :loan_applications, only: [:new, :create]
@@ -58,9 +60,7 @@ Rails.application.routes.draw do
 
   end
   resources :member_registrations, only: [:new, :create]
-  unauthenticated :user do
-    root :to => 'home#index', :constraints => lambda { |request| request.env['warden'].user.nil? }, as: :unauthenticated_root
-  end
+  
   namespace :management_module do
     resources :accounting, only: [:index]
     resources :share_capitals, only: [:index, :show]
@@ -135,6 +135,9 @@ Rails.application.routes.draw do
     resources :products, only: [:index, :show, :new, :create] do
       resources :stocks, only: [:new, :create]
     end
+  end
+  unauthenticated :user do
+    root :to => 'home#index', :constraints => lambda { |request| request.env['warden'].user.nil? }, as: :unauthenticated_root
   end
   mount ActionCable.server => '/cable'
 end
