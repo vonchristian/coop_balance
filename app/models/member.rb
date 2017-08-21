@@ -7,7 +7,7 @@ class Member < ApplicationRecord
   has_many :loans, class_name: "LoansModule::Loan"
   has_many :addresses, as: :addressable
   has_many :savings, class_name: "MembershipsModule::Saving"
-  has_many :share_capitals
+  has_many :share_capitals, class_name: "MembershipsModule::ShareCapital"
   has_many :time_deposits, class_name: "MembershipsModule::TimeDeposit"
   has_many :program_subscriptions, class_name: "MembershipsModule::ProgramSubscription"
   has_many :programs, through: :program_subscriptions

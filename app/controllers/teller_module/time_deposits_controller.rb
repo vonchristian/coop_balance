@@ -1,7 +1,7 @@
-module TellerDepartment
+module TellerModule
   class TimeDepositsController < ApplicationController
     def index
-      @time_deposits = TimeDeposit.all
+      @time_deposits = MembershipsModule::TimeDeposit.all
     end
   end
 end

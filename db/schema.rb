@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170815082945) do
+ActiveRecord::Schema.define(version: 20170821011252) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -432,6 +432,7 @@ ActiveRecord::Schema.define(version: 20170815082945) do
     t.datetime "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "cost_per_share"
     t.index ["share_capital_product_id"], name: "index_share_capital_product_shares_on_share_capital_product_id"
   end
 

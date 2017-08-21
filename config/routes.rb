@@ -83,6 +83,7 @@ Rails.application.routes.draw do
     end
     resources :members, only: [:index, :show, :new, :create] do 
       resources :savings, only: [:new, :create]
+      resources :time_deposits, only: [:new, :create]
     end
     resources :suppliers, only: [:index, :show] do
       resources :payments, only: [:new, :create]

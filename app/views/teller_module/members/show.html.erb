@@ -21,9 +21,10 @@
       </ul>
       <div class="tab-content">
         <%=render 'teller_module/members/partials/savings' %>
+        <%=render 'members/partials/loans', member: @member %>
         <%=render 'teller_module/members/partials/program_subscriptions' %>
-        <%#=render 'members/partials/savings', member: @member %>
-        <%#=render 'members/partials/share_capital', member: @member %>
+        <%=render 'members/partials/time_deposits', member: @member %>
+        <%=render 'members/partials/share_capital', member: @member %>
 
 
     </div>

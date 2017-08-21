@@ -17,7 +17,7 @@
         <hr>
         <div class="row">
           <div class="col-md-4 border-right">
-            <span class="text-muted"> <%=@loan.loan_product_name.upcase %></span><br>
+            <span class="text-muted"> <%=@loan.loan_product_name.try(:upcase) %></span><br>
             <h4><%=number_to_currency @loan.loan_amount %></h4>
             <small class="text-muted"> Term <%= @loan.duration %> <%= @loan.loan_term_duration %></small><br>
             <small class="text-muted"> APR <%= @loan.duration %> <%= @loan.loan_term_duration%></small><br>

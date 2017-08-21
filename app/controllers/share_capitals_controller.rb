@@ -10,7 +10,7 @@ class ShareCapitalsController < ApplicationController
     @member = Member.find(params[:member_id])
     @share_capital = @member.share_capitals.create(share_capital_params)
     if @share_capital.save
-      redirect_to management_department_member_url(@member), notice: "Success"
+      redirect_to teller_module_member_url(@member), notice: "Success"
     else
       render :new
     end
@@ -18,6 +18,6 @@ class ShareCapitalsController < ApplicationController
 
   private
   def share_capital_params
-    params.require(:share_capital).permit(:date_opened, :account_number, :share_capital_product_id)
+    params.require(:memberships_module_share_capital).permit(:date_opened, :account_number, :share_capital_product_id)
   end
 end

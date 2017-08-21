@@ -6,7 +6,7 @@
   <% cache product do %>
     <%= product.name %>
     <%= number_to_currency product.share_capital_product_shares.total_shares, unit: '' %>
-    <%= number_to_currency product.subscribed, unit: '' %>
+    <%#= number_to_currency product.subscribers, unit: '' %>
   <% end %>
 <% end %>
 
