@@ -1,0 +1,5 @@
+<%= simple_form_for @grace_period, url: :management_module_grace_periods do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :number_of_days %>
+  <%= f.submit "Save Grace Period", class: "btn btn-danger" %>
+<% end %>

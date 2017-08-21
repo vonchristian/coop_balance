@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170821011252) do
+ActiveRecord::Schema.define(version: 20170821104755) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -180,6 +180,12 @@ ActiveRecord::Schema.define(version: 20170821011252) do
     t.decimal "total_cost"
     t.index ["product_id"], name: "index_finished_good_materials_on_product_id"
     t.index ["raw_material_id"], name: "index_finished_good_materials_on_raw_material_id"
+  end
+
+  create_table "grace_periods", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.decimal "number_of_days"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "laborers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
