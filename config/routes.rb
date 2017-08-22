@@ -25,8 +25,11 @@ Rails.application.routes.draw do
   resources :loans_module, only: [:index]
   
   namespace :loans_module do
+    resources :loan_calculator, only: [:index]
     resources :dashboard, only: [:index]
-    resources :loan_products, except:[:destroy]
+    resources :loan_products, except:[:destroy] do 
+      resources :applications, only: [:new, :create]
+    end
     resources :loans, except: [:destroy] do
     resources :approvals, only: [:new, :create]
     resources :disbursements, only: [:new, :create]

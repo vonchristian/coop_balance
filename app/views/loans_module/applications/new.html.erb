@@ -1,0 +1,40 @@
+<% LoansModule::LoanProduct.all.each do |loan_product| %>
+  <%= link_to "#{loan_product.name}", new_loans_module_loan_product_application_path(loan_product) %>
+<% end %>
+<%= simple_form_for LoansModule::Loan.new do |f| %>
+  <%= f.input :loan_product_id, input_html: { value: @loan_product.name } %>
+  <%= @loan_product.interest_rate %>
+  <%= f.input :member_id, collection: Member.all.map{|a| [a.full_name, a.id] } %>
+  <%= f.input :loan_amount, input_html: { id: 'loan-amount', oninput: 'calculateLoan()' } %>
+  <%= f.input :term, label: "Loan Term (in months)" %>
+  <hr>
+   
+  <% @loan_product.charges.each do |charge| %>
+    <p><%= charge.name %>
+    <% if charge.amount_type? %>
+      <%= charge.amount %>
+    <% elsif charge.percent_type? %>
+      <div class="<%= charge.id.parameterize.underscore %>"><%= charge.percent %> %</div>
+      <div id='<%=charge.id %>'></div>
+</p>
+    <% end %>
+    	
+  <% end %>
+
+<% end %>
+
+		
+<script type="text/javascript">
+
+	function calculateLoan() {
+
+	  var loan_amount = document.getElementById('loan-amount').value;
+		<% @loan_product.charges.percent_type.each do |charge| %>
+	  var <%=charge.name.sub(" ", "_")%> = parseInt($('.<%=charge.id.parameterize.underscore%>').text());
+
+	  var <%=charge.name.downcase.parameterize.underscore%> = loan_amount * (<%=charge.name.sub(" ", "_")%>/100);
+	  document.getElementById('<%=charge.id%>').innerHTML = <%=charge.name.downcase.parameterize.underscore%>;
+	  	<% end %>
+	}
+</script>
+
