@@ -1,37 +1,9 @@
-<div class="row">
-  <div class="col-md-9 col-md-offset-1">
-    <div class="box box-solid">
-    <div class="box-body">
-      <h4><center><%= member_avatar(@member, style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center></h4>
-      <h3 class="text-muted"><center><%= @member.first_and_last_name %></center></h3>
-      <br>
-      <p class="text-muted">Loan Application Details</p>
-      <div class="row">
-        <div class="col-md-10 col-md-offset-1">
-          <%= simple_form_for [@member, @loan], url: :loans_module_member_loan_applications do |f| %>
-            <%= f.error_notification %>
-            <div class="row">
-              <div class="col-md-5">
-                <%= f.input :application_date, as: :string, input_html: { class: "datepicker" } %>
-              </div>
-            </div>
-              <%= f.input :loan_product_id, input_html: {class: 'icheck-me', "data-skin" => 'square', "data-color" => "blue"}, collection: LoansModule::LoanProduct.all.map{ |a| [a.name.titleize, a.id] }, as: :radio_buttons %>
-            <div class="row">
-              <div class="col-md-5">
-                <%= f.input :loan_amount %>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-3">
-                <%= f.input :duration %>
-              </div>
-              <div class="col-md-2">
-                <%= f.input :loan_term_duration, collection: LoansModule::Loan.loan_term_durations.keys.to_a.map{ |a| [a.titleize.pluralize, a] } %>
-              </div>
-            </div>
-            <div class="box-footer">
-              <%= f.submit "Save Loan Application", class: "btn btn-primary" %>
-            </div>
-          <% end %>
-        </div>
-      </div>
+<%= simple_form_for @loan, url: :loans_module_loan_applications do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :loan_product_id, collection: LoansModule::LoanProduct.all.map{|a| [a.name.titleize, a.id] }, as: :radio_buttons %>
+  <%= f.input :member_id, collection: Member.all.map {|a| [a.full_name, a.id] } %>
+  <%= f.input :loan_amount %>
+  <%= f.input :term, label: "Loan Term (in months)" %>
+  <%= f.submit "Calculate", class: "btn btn-primary" %>
+  <hr>
+<% end %>

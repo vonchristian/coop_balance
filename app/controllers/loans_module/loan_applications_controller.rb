@@ -1,23 +1,38 @@
 module LoansModule
   class LoanApplicationsController < ApplicationController
     def new
-      @member = Member.find(params[:member_id])
-      @loan = @member.loans.build
+      @loan = LoansModule::Loan.new
     end
     def create
-      @member = Member.find(params[:member_id])
-      @loan = @member.loans.create(loan_params)
+      @loan = LoansModule::Loan.create(loan_params)
       if @loan.valid?
         @loan.save
-        redirect_to loans_module_member_url(@member), notice: "Loan application saved successfully."
+        @loan.create_charges
+        redirect_to loans_module_loan_application_url(@loan), notice: "Loan application saved successfully."
       else
         render :new
       end
     end
+    def show 
+      @loan = LoansModule::Loan.find(params[:id])
+    end
+    def edit 
+      @loan = LoansModule::Loan.find(params[:id])
+    end
+    def update 
+      @loan = LoansModule::Loan.find(params[:id])
+      @loan.update(loan_params)
+      if @loan.save
+        @loan.create_charges 
+        redirect_to loans_module_loan_application_url(@loan), notice: "Loan updated successfully"
+      else 
+        render :edit 
+      end 
+    end 
 
     private
     def loan_params
-      params.require(:loans_module_loan).permit(:loan_product_id, :loan_amount, :application_date, :duration, :loan_term_duration)
+      params.require(:loans_module_loan).permit(:term, :loan_product_id, :loan_amount, :member_id, :application_date, :duration, :loan_term_duration)
     end
   end
 end

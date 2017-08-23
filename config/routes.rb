@@ -26,6 +26,7 @@ Rails.application.routes.draw do
   
   namespace :loans_module do
     resources :loan_calculator, only: [:index]
+    resources :loan_applications, only: [:new, :create, :show, :edit, :update]
     resources :dashboard, only: [:index]
     resources :loan_products, except:[:destroy] do 
       resources :applications, only: [:new, :create]
@@ -37,7 +38,7 @@ Rails.application.routes.draw do
     resources :loan_co_makers, only: [:new, :create]
     end
     resources :members, only: [:index, :show] do
-      resources :loan_applications, only: [:new, :create]
+      resources :loan_applications, only: [:new, :create], module: :member_loans
       resources :real_properties, only: [:new, :create]
     end
     resources :settings, only: [:index]
