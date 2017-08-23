@@ -4,6 +4,8 @@ class Member < ApplicationRecord
   pg_search_scope :text_search, :against => [:first_name, :middle_name, :last_name]
   enum sex: [:male, :female, :other]
   
+  has_one :tin, as: :tinable
+  has_one :membership, as: :memberable
   has_many :loans, class_name: "LoansModule::Loan"
   has_many :addresses, as: :addressable
   has_many :savings, class_name: "MembershipsModule::Saving"

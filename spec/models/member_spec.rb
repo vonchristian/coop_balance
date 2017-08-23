@@ -2,6 +2,8 @@ require 'rails_helper'
 
 describe Member, type: :model do
   describe "associations" do 
+    it { is_expected.to have_one :tin }
+    it { is_expected.to have_one :membership }
   	it { is_expected.to have_many :loans }
   	it { is_expected.to have_many :addresses }
   	it { is_expected.to have_many :savings }

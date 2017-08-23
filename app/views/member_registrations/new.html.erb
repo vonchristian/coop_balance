@@ -5,5 +5,6 @@
   <%= f.input :last_name %>
   <%= f.input :sex, collection: Member.sexes.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
   <%= f.input :date_of_birth %>
+  <%= f.input :tin_number %>
   <%= f.submit "Create Member" %>
 <% end %>

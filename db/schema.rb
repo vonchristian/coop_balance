@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170821122249) do
+ActiveRecord::Schema.define(version: 20170822130027) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -134,6 +134,13 @@ ActiveRecord::Schema.define(version: 20170821122249) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_committees_on_name", unique: true
+  end
+
+  create_table "cooperatives", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "registration_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "days_workeds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -291,6 +298,15 @@ ActiveRecord::Schema.define(version: 20170821122249) do
     t.index ["member_id"], name: "index_loans_on_member_id"
   end
 
+  create_table "member_occupations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "member_id"
+    t.uuid "occupation_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["member_id"], name: "index_member_occupations_on_member_id"
+    t.index ["occupation_id"], name: "index_member_occupations_on_occupation_id"
+  end
+
   create_table "members", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "first_name"
     t.string "middle_name"
@@ -303,7 +319,21 @@ ActiveRecord::Schema.define(version: 20170821122249) do
     t.string "avatar_content_type"
     t.integer "avatar_file_size"
     t.datetime "avatar_updated_at"
+    t.datetime "membership_date"
     t.index ["sex"], name: "index_members_on_sex"
+  end
+
+  create_table "memberships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "memberable_type"
+    t.uuid "memberable_id"
+    t.datetime "membership_date"
+    t.uuid "cooperative_id"
+    t.integer "membership_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cooperative_id"], name: "index_memberships_on_cooperative_id"
+    t.index ["memberable_type", "memberable_id"], name: "index_memberships_on_memberable_type_and_memberable_id"
+    t.index ["membership_type"], name: "index_memberships_on_membership_type"
   end
 
   create_table "menus", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -320,6 +350,12 @@ ActiveRecord::Schema.define(version: 20170821122249) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["mode"], name: "index_mode_of_payments_on_mode"
+  end
+
+  create_table "occupations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "official_receipts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -340,6 +376,12 @@ ActiveRecord::Schema.define(version: 20170821122249) do
     t.uuid "user_id"
     t.index ["member_id"], name: "index_orders_on_member_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
+  end
+
+  create_table "organizations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "product_stocks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -506,6 +548,15 @@ ActiveRecord::Schema.define(version: 20170821122249) do
     t.index ["time_deposit_product_id"], name: "index_time_deposits_on_time_deposit_product_id"
   end
 
+  create_table "tins", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "number"
+    t.string "tinable_type"
+    t.uuid "tinable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tinable_type", "tinable_id"], name: "index_tins_on_tinable_type_and_tinable_id"
+  end
+
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -588,6 +639,9 @@ ActiveRecord::Schema.define(version: 20170821122249) do
   add_foreign_key "loan_product_terms", "loan_products"
   add_foreign_key "loans", "loan_products"
   add_foreign_key "loans", "members"
+  add_foreign_key "member_occupations", "members"
+  add_foreign_key "member_occupations", "occupations"
+  add_foreign_key "memberships", "cooperatives"
   add_foreign_key "orders", "members"
   add_foreign_key "orders", "users"
   add_foreign_key "product_stocks", "products"

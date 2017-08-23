@@ -1,0 +1,2 @@
+class Cooperative < ApplicationRecord
+end

@@ -1,14 +1,25 @@
 class MemberRegistrationsController < ApplicationController
   def new
-    @member = MemberForm.new(Member.new)
+    @member = MemberRegistrationForm.new
   end
   def create
-    @member = MemberForm.new(Member.new)
-    if @member.validate(params[:member])
+    @member = MemberRegistrationForm.new(member_params)
+    if @member.valid?
       @member.save
-      redirect_to new_member_address_detail_path(@member), notice: "Loan Product created successfully."
+      redirect_to management_module_members_url, notice: 'Member registered successfully.'
     else
       render :new
     end
+  end
+
+  private
+   def member_params
+    params.require(:member_registration_form).permit(:first_name, 
+                :middle_name, 
+                :last_name, 
+                :sex, 
+                :avatar, 
+                :date_of_birth,
+                :tin_number)
   end
 end
