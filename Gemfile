@@ -50,7 +50,7 @@ end
 group :development do
   gem 'spring'
   gem 'spring-watcher-listen'
-  gem 'bullet'
+  # gem 'bullet'
 end
 group :test do
   gem 'shoulda-matchers'

@@ -10,3 +10,7 @@ These services are included:
 * Members Registry Module 
 * Program Subscriptions Module
 * Warehouse Module
+
+### Monthly Schedule amortization of loan to be collected
+- per barangay
+- per organization

@@ -4,6 +4,8 @@
   <%= f.input :member_id, collection: Member.all.map {|a| [a.full_name, a.id] } %>
   <%= f.input :loan_amount %>
   <%= f.input :term, label: "Loan Term (in months)" %>
+  <%= f.input :mode_of_payment, collection: LoansModule::Loan.mode_of_payments.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
+  
   <%= f.submit "Calculate", class: "btn btn-primary" %>
   <hr>
 <% end %>

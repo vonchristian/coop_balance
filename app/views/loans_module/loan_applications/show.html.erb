@@ -1,25 +1,67 @@
 <div class="row">
-  <div class="col-md-6">
-		<h4> <%= number_to_currency @loan.loan_amount %></h4>
-		<% @loan.charges.each do |charge| %>
-		  <div class="row">
-		    <div class="col-md-4">
-			    <%= charge.name %>
+  <div class="col-md-12">
+    <div class="box box-solid">
+      <div class="box-header">
+        <h3 class="title">Loan Application Details </h3>
+      </div>
+      <div class="box-body">
+		<div class="row">
+		  <div class="col-md-6">
+				<h4>Applied Amount <%= number_to_currency @loan.loan_amount %></h4>
+				<hr>
+				Less Charges
+				<% @loan.loan_charges.each do |loan_charge| %>
+				  <div class="row">
+				    <div class="col-md-4">
+					    <%= loan_charge.charge.name %>
+					  </div>
+					  <div class="col-md-4">
+					    <% if loan_charge.charge_adjustment %>
+					    <strike class="text-danger"><%= number_to_currency loan_charge.charge_amount %></strike><br>
+					    <%= number_to_currency loan_charge.charge_adjustment.charge_amount %>
+					    <span class="text-danger"><%= number_to_currency loan_charge.balance %></span>
+					    <% else %>
+					      <%= number_to_currency loan_charge.charge_amount %>
+
+					    <% end %>
+					  </div>
+					  <div class="col-md-4">
+					    <%= link_to 'Adjust', new_loans_module_loan_charge_adjustment_path(loan_charge), class: "btn btn-default btn-xs" %>
+					  </div>
+					 </div>
+					 <br>
+  
+				<% end %>
+				<%= link_to 'Add', new_loans_module_loan_additional_charge_path(@loan) %>
+				<% @loan.loan_additional_charges.all.each do |charge| %>
+				  <div class="row">
+				    <div class="col-md-6">
+				      <%= charge.name %>
+				    </div>
+				    <div class="col-md-6">
+				      <%= number_to_currency charge.amount %>
+				    </div>
+				  </div>
+				    <br>
+				  <% end %>
+				<div class="row">
+				  <div class="col-md-6">
+				    <h4> Total Charges </h4>
+				  </div>
+				  <div class="col-md-6">
+					  <%= number_to_currency @loan.total_loan_charges %>
+					</div>
 			  </div>
-			  <div class="col-md-4">
-			    <%= number_to_currency Charge.charge_amount(charge, @loan) %>
-			  </div>
-			 </div>
-			 <br>
+				 <h4>Net <%= number_to_currency @loan.net_proceed %></h4>
+				 <%= link_to 'Process Loan', loans_module_loan_processings_path(@loan), method: :create %>
+			</div>
+			<div class="col-md-6">
+			  <%= simple_form_for @loan, url: :loans_module_loan_application do |f| %>
+		  <%= f.error_notification %>
+		  <%= f.input :loan_product_id, collection: LoansModule::LoanProduct.all.map{|a| [a.name.titleize, a.id] }, as: :radio_buttons %>
+		  <%= f.input :member_id, collection: Member.all.map {|a| [a.full_name, a.id] } %>
+		  <%= f.input :loan_amount %>
+		  <%= f.input :term, label: "Loan Term (in months)" %>
+		  <%= f.submit "Calculate", class: "btn btn-primary" %>
+		  <hr>
 		<% end %>
-	</div>
-	<div class="col-md-6">
-	  <%= simple_form_for @loan, url: :loans_module_loan_application do |f| %>
-  <%= f.error_notification %>
-  <%= f.input :loan_product_id, collection: LoansModule::LoanProduct.all.map{|a| [a.name.titleize, a.id] }, as: :radio_buttons %>
-  <%= f.input :member_id, collection: Member.all.map {|a| [a.full_name, a.id] } %>
-  <%= f.input :loan_amount %>
-  <%= f.input :term, label: "Loan Term (in months)" %>
-  <%= f.submit "Calculate", class: "btn btn-primary" %>
-  <hr>
-<% end %>

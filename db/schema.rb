@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170823031447) do
+ActiveRecord::Schema.define(version: 20170823074006) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,6 +82,15 @@ ActiveRecord::Schema.define(version: 20170823031447) do
     t.datetime "updated_at", null: false
     t.uuid "user_id"
     t.index ["user_id"], name: "index_carts_on_user_id"
+  end
+
+  create_table "charge_adjustments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "loan_charge_id"
+    t.decimal "amount"
+    t.decimal "percent"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["loan_charge_id"], name: "index_charge_adjustments_on_loan_charge_id"
   end
 
   create_table "charges", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -157,6 +166,14 @@ ActiveRecord::Schema.define(version: 20170823031447) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "documentary_stamp_taxes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "taxable_type"
+    t.bigint "taxable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["taxable_type", "taxable_id"], name: "index_documentary_stamp_taxes_on_taxable_type_and_taxable_id"
+  end
+
   create_table "entries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "reference_number"
     t.datetime "entry_date"
@@ -223,6 +240,19 @@ ActiveRecord::Schema.define(version: 20170823031447) do
     t.index ["product_stock_id"], name: "index_line_items_on_product_stock_id"
   end
 
+  create_table "loan_additional_charges", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "loan_id"
+    t.string "name"
+    t.decimal "amount"
+    t.uuid "credit_account_id"
+    t.uuid "debit_account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["credit_account_id"], name: "index_loan_additional_charges_on_credit_account_id"
+    t.index ["debit_account_id"], name: "index_loan_additional_charges_on_debit_account_id"
+    t.index ["loan_id"], name: "index_loan_additional_charges_on_loan_id"
+  end
+
   create_table "loan_approvals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer "status"
     t.datetime "date_approved"
@@ -252,6 +282,14 @@ ActiveRecord::Schema.define(version: 20170823031447) do
     t.datetime "updated_at", null: false
     t.index ["co_maker_id"], name: "index_loan_co_makers_on_co_maker_id"
     t.index ["loan_id"], name: "index_loan_co_makers_on_loan_id"
+  end
+
+  create_table "loan_documentary_stamp_taxes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "loan_id"
+    t.decimal "amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["loan_id"], name: "index_loan_documentary_stamp_taxes_on_loan_id"
   end
 
   create_table "loan_product_charges", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -293,6 +331,24 @@ ActiveRecord::Schema.define(version: 20170823031447) do
     t.index ["interest_recurrence"], name: "index_loan_products_on_interest_recurrence"
   end
 
+  create_table "loan_protection_funds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "loan_id"
+    t.decimal "rate"
+    t.decimal "amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["loan_id"], name: "index_loan_protection_funds_on_loan_id"
+  end
+
+  create_table "loan_protection_rates", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.decimal "term"
+    t.decimal "min_age"
+    t.decimal "max_age"
+    t.decimal "rate"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "loans", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "member_id"
     t.uuid "loan_product_id"
@@ -304,8 +360,10 @@ ActiveRecord::Schema.define(version: 20170823031447) do
     t.integer "loan_term_duration"
     t.integer "loan_status", default: 0
     t.decimal "term"
+    t.integer "mode_of_payment"
     t.index ["loan_product_id"], name: "index_loans_on_loan_product_id"
     t.index ["member_id"], name: "index_loans_on_member_id"
+    t.index ["mode_of_payment"], name: "index_loans_on_mode_of_payment"
   end
 
   create_table "member_occupations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -599,6 +657,15 @@ ActiveRecord::Schema.define(version: 20170823031447) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  create_table "vouchers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "number"
+    t.string "voucherable_type"
+    t.bigint "voucherable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["voucherable_type", "voucherable_id"], name: "index_vouchers_on_voucherable_type_and_voucherable_id"
+  end
+
   create_table "work_in_process_materials", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "raw_material_id"
     t.decimal "quantity"
@@ -626,6 +693,7 @@ ActiveRecord::Schema.define(version: 20170823031447) do
   add_foreign_key "appraisals", "real_properties"
   add_foreign_key "appraisals", "users", column: "appraiser_id"
   add_foreign_key "carts", "users"
+  add_foreign_key "charge_adjustments", "loan_charges"
   add_foreign_key "charges", "accounts", column: "credit_account_id"
   add_foreign_key "charges", "accounts", column: "debit_account_id"
   add_foreign_key "committee_members", "committees"
@@ -638,17 +706,22 @@ ActiveRecord::Schema.define(version: 20170823031447) do
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items", "product_stocks"
   add_foreign_key "line_items", "products"
+  add_foreign_key "loan_additional_charges", "accounts", column: "credit_account_id"
+  add_foreign_key "loan_additional_charges", "accounts", column: "debit_account_id"
+  add_foreign_key "loan_additional_charges", "loans"
   add_foreign_key "loan_approvals", "loans"
   add_foreign_key "loan_approvals", "users", column: "approver_id"
   add_foreign_key "loan_charges", "charges"
   add_foreign_key "loan_charges", "loans"
   add_foreign_key "loan_co_makers", "loans"
   add_foreign_key "loan_co_makers", "members", column: "co_maker_id"
+  add_foreign_key "loan_documentary_stamp_taxes", "loans"
   add_foreign_key "loan_product_charges", "charges"
   add_foreign_key "loan_product_charges", "loan_products"
   add_foreign_key "loan_product_mode_of_payments", "loan_products"
   add_foreign_key "loan_product_mode_of_payments", "mode_of_payments"
   add_foreign_key "loan_product_terms", "loan_products"
+  add_foreign_key "loan_protection_funds", "loans"
   add_foreign_key "loans", "loan_products"
   add_foreign_key "loans", "members"
   add_foreign_key "member_occupations", "members"

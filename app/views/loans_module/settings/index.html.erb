@@ -1,1 +1,6 @@
 <%= link_to 'New Charge', new_loans_module_charge_path, class: "btn btn-danger" %>
+
+<% @charges.each do |charge| %>
+	 <%= charge.name %>
+	 <%= charge.charge_type %>
+<% end %>
