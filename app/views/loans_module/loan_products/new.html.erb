@@ -4,6 +4,7 @@
   <%= f.input :description %>
   <%= f.input :max_loanable_amount %>
   <%= f.input :interest_rate, label: "Interest Rate (in decimal)" %>
+  <%= f.input :account_id, collection: AccountingModule::Asset.all.map{|a| [a.name.titleize, a.id] } %>
   
   <%= f.submit "Create Loan Product", class: "btn btn-primary btn-flat" %>
 <% end %>

@@ -1,7 +1,9 @@
 class Charge < ApplicationRecord
 	enum charge_type: [:percent_type, :amount_type]
+  enum category: [:regular]
   belongs_to :credit_account, class_name: "AccountingModule::Account"
   belongs_to :debit_account, class_name: "AccountingModule::Account"
+  delegate :name, to: :credit_account, prefix: true, allow_nil: true
   def charge_amount(charge, loan)
   	if charge.amount_type?
   		charge.amount 

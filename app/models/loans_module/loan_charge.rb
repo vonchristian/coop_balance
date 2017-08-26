@@ -1,17 +1,19 @@
 module LoansModule	
 	class LoanCharge < ApplicationRecord
 	  belongs_to :loan, class_name: "LoansModule::Loan"
-	  belongs_to :charge
+	  belongs_to :chargeable, polymorphic: true
 	  has_one :charge_adjustment, dependent: :destroy
+	  delegate :credit_account_name, to: :chargeable, allow_nil: true
+	  delegate :name, :amount, :regular?, to: :chargeable, allow_nil: true
 	  def self.total 
 	  	all.sum(&:charge_amount_with_adjustment)
 	  end
 	  
 	  def charge_amount
-	  	if charge.amount_type?
-	  		charge.amount 
-	  	elsif charge.percent_type?
-	  		(charge.percent/100.0) * loan.loan_amount
+	  	if chargeable.percent_type?
+	  		(chargeable.percent/100.0) * loan.loan_amount
+	  	else 
+	  		chargeable.amount 
 	  	end 
 	  end 
 	  def balance 

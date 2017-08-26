@@ -1,5 +1,6 @@
 <%=simple_form_for [@loan_charge, @adjustment], url: :loans_module_loan_charge_adjustments do |f| %>
   <%= f.input :amount %>
   <%= f.input :percent, label: "Percent to be deducted" %>
+  <%= f.input :amortize_balance %>
   <%= f.submit %>
 <% end %>

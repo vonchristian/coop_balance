@@ -8,7 +8,13 @@ module LoansModule
       if @loan.valid?
         @loan.save
         @loan.create_charges
+       
+        @loan.set_capital_build_up
+        @loan.set_filing_fee
+        @loan.set_loan_protection_fee
+        @loan.create_amortization_schedule
         redirect_to loans_module_loan_application_url(@loan), notice: "Loan application saved successfully."
+        @loan.set_interest_on_loan_charge
       else
         render :new
       end
@@ -23,8 +29,14 @@ module LoansModule
       @loan = LoansModule::Loan.find(params[:id])
       @loan.update(loan_params)
       if @loan.save
-        @loan.create_charges 
+        @loan.create_charges
+        @loan.set_capital_build_up
+        @loan.set_filing_fee
+        @loan.set_loan_protection_fee
+        @loan.create_amortization_schedule
         redirect_to loans_module_loan_application_url(@loan), notice: "Loan updated successfully"
+        @loan.set_interest_on_loan_charge
+        
       else 
         render :edit 
       end 
@@ -32,7 +44,7 @@ module LoansModule
 
     private
     def loan_params
-      params.require(:loans_module_loan).permit(:term, :loan_product_id, :loan_amount, :member_id, :application_date, :duration, :loan_term_duration, :mode_of_payment)
+      params.require(:loans_module_loan).permit(:term, :loan_product_id, :loan_amount, :member_id, :application_date, :duration, :loan_term_duration, :mode_of_payment, :application_date)
     end
   end
 end

@@ -31,6 +31,7 @@ Rails.application.routes.draw do
     resources :loan_products, except:[:destroy] do 
       resources :applications, only: [:new, :create]
     end
+    resources :adjustments, only: [:destroy]
     resources :loan_charges, shallow: true do 
       resources :adjustments, only: [:new, :create], module: :loan_charges
     end
@@ -39,6 +40,7 @@ Rails.application.routes.draw do
     resources :additional_charges, only: [:new, :create]
     resources :approvals, only: [:new, :create]
     resources :disbursements, only: [:new, :create]
+    resources :disbursement_vouchers, only: [:new, :create, :show]
     resources :payments, only: [:new, :create]
     resources :loan_co_makers, only: [:new, :create]
     end

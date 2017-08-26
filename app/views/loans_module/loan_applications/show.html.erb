@@ -1,22 +1,22 @@
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-6">
     <div class="box box-solid">
-      <div class="box-header">
-        <h3 class="title">Loan Application Details </h3>
+      <div class="box-header with-border">
+        <h3 class="box-title">Loan Application Details </h3>
       </div>
       <div class="box-body">
 		<div class="row">
-		  <div class="col-md-6">
+		  <div class="col-md-12">
 				<h4>Applied Amount <%= number_to_currency @loan.loan_amount %></h4>
 				<hr>
 				Less Charges
 				<% @loan.loan_charges.each do |loan_charge| %>
 				  <div class="row">
 				    <div class="col-md-4">
-					    <%= loan_charge.charge.name %>
+					    <%= loan_charge.chargeable.try(:name) %>
 					  </div>
 					  <div class="col-md-4">
-					    <% if loan_charge.charge_adjustment %>
+					    <% if loan_charge.charge_adjustment.present? %>
 					    <strike class="text-danger"><%= number_to_currency loan_charge.charge_amount %></strike><br>
 					    <%= number_to_currency loan_charge.charge_adjustment.charge_amount %>
 					    <span class="text-danger"><%= number_to_currency loan_charge.balance %></span>
@@ -27,13 +27,16 @@
 					  </div>
 					  <div class="col-md-4">
 					    <%= link_to 'Adjust', new_loans_module_loan_charge_adjustment_path(loan_charge), class: "btn btn-default btn-xs" %>
+					    <% if !loan_charge.regular? %>
+					      <%= link_to 'Remove', loans_module_loan_charge_path(loan_charge), method: :delete, class: "btn btn-danger btn-xs" %>
+					    <% end %>
+
 					  </div>
 					 </div>
 					 <br>
   
 				<% end %>
-				<%= link_to 'Add', new_loans_module_loan_additional_charge_path(@loan) %>
-				<% @loan.loan_additional_charges.all.each do |charge| %>
+				<%= link_to 'Add', new_loans_module_loan_additional_charge_path(@loan) %>				<% @loan.loan_additional_charges.all.each do |charge| %>
 				  <div class="row">
 				    <div class="col-md-6">
 				      <%= charge.name %>
@@ -53,8 +56,25 @@
 					</div>
 			  </div>
 				 <h4>Net <%= number_to_currency @loan.net_proceed %></h4>
-				 <%= link_to 'Process Loan', loans_module_loan_processings_path(@loan), method: :create %>
+				 <hr>
+				 <div class="row">
+				  <div class="col-md-6">
+				    <%= number_to_currency @loan.monthly_payment %>
+				    <h4 class="title"> Monthly Payment </h4>
+				  </div>
+				  <div class="col-md-6 border-left">
+				    <h4><%= @loan.term %></h4>
+				    <h4 class="title"> Number of Payments </h4>
+				  </div>
+				 </div>
+				 <hr>
+				 <%= link_to 'Process Loan', loans_module_loan_processings_path(@loan), method: :create, class: "btn  btn-lg btn-success" %>
 			</div>
+		</div>
+	</div>
+	</div>
+	</div>
+
 			<div class="col-md-6">
 			  <%= simple_form_for @loan, url: :loans_module_loan_application do |f| %>
 		  <%= f.error_notification %>
@@ -62,6 +82,21 @@
 		  <%= f.input :member_id, collection: Member.all.map {|a| [a.full_name, a.id] } %>
 		  <%= f.input :loan_amount %>
 		  <%= f.input :term, label: "Loan Term (in months)" %>
+		  <%= f.input :application_date, as: :string, input_html: { class: "datepicker" } %>
 		  <%= f.submit "Calculate", class: "btn btn-primary" %>
 		  <hr>
 		<% end %>
+		</div>
+		<div class="table">
+		  <table class="table table-striped table-hover">
+		    <tbody>
+		<% @loan.amortization_schedules.order(created_at: :asc).each do |schedule| %>
+		  <tr>
+		  <td><%= schedule.date.strftime("%B %e, %Y") %></td>
+		  <td><%= number_to_currency schedule.principal %></td>
+		  <td><%= number_to_currency @loan.loan_amount - LoansModule::AmortizationSchedule.principal_for(schedule, @loan) %></td>
+		  </tr>
+		<% end %>
+		</tbody>
+		</table>
+		</div>

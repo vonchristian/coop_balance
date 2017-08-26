@@ -17,6 +17,9 @@ AccountingModule::Asset.create(code: 11600, name: "Investment in Non-Marketable 
 AccountingModule::Asset.create(code: 11610, name: "Allowance for Probable Losses -  INMES")
 AccountingModule::Asset.create(code: 11700, name: "Loans and Receivables")
 AccountingModule::Asset.create(code: 11711, name: "Loans Receivable - Current")
+AccountingModule::Asset.create(code: 117111, name: "Loans Receivable - Current (Regular Loan)")
+AccountingModule::Asset.create(code: 117112, name: "Loans Receivable - Current (Salary Loan)")
+
 AccountingModule::Asset.create(code: 11712, name: "Loans Receivable - Past Due")
 AccountingModule::Asset.create(code: 11713, name: "Loans Receivable - Restructured")
 AccountingModule::Asset.create(code: 11714, name: "Loans Receivable - Loans in Litigation")
@@ -194,6 +197,8 @@ AccountingModule::Revenue.create(code: 401101, name: 'Interest Income from Loans
 AccountingModule::Revenue.create(code: 401102, name: 'Interest Income from Loans - Regular Loan')
 AccountingModule::Revenue.create(code: 40120, name: 'Service Fees')
 AccountingModule::Revenue.create(code: 401201, name: 'Service Fees - Inspection Fees')
+AccountingModule::Revenue.create(code: 401202, name: 'Documentary Stamp Taxes')
+
 
 AccountingModule::Revenue.create(code: 40130, name: 'Filing Fees')
 AccountingModule::Revenue.create(code: 40140, name: 'Fines, Penalties, Surcharges')

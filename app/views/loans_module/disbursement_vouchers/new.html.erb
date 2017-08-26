@@ -1,0 +1,11 @@
+Payee <%= @loan.member.try(:full_name) %>
+<br>
+Payee Address <%= @loan.member.try(:current_address) %>
+
+<%= simple_form_for [@loan, @voucher], url: :loans_module_loan_disbursement_vouchers do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :number, input_html: { value: Voucher.generate_number } %>
+  <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+  <%= f.submit "Save Cash Disbursement Voucher" %>
+  
+<% end %>

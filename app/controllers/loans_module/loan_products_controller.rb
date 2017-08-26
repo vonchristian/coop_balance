@@ -21,7 +21,7 @@ module LoansModule
 
     private 
     def loan_product_params
-      params.require(:loans_module_loan_product).permit(:name, :description, :interest_rate, :interest_rate, :mode_of_payment, :max_loanable_amount)
+      params.require(:loans_module_loan_product).permit(:name, :description, :interest_rate, :interest_rate, :mode_of_payment, :max_loanable_amount, :account_id)
     end
   end
 end

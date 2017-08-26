@@ -6,6 +6,7 @@ module LoansModule
 		def create 
 			@charge = Charge.create(charge_params)
 			if @charge.save 
+				@charge.regular!
 				redirect_to loans_module_settings_url, notice: "Charge created successfully."
 			else 
 				render :new 

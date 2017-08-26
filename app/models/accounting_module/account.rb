@@ -29,6 +29,9 @@ module AccountingModule
 
     validates :type, presence: true
     validates :name, :code, presence: true, uniqueness: true
+    def account_name 
+      name 
+    end
     def self.warehouse_accounts
       all.select{ |a| WAREHOUSE_ACCOUNTS.include?(a.name) }
     end
