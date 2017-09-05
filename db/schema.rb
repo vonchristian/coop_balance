@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170826094700) do
+ActiveRecord::Schema.define(version: 20170905123957) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 20170826094700) do
     t.string "amortizeable_type"
     t.uuid "amortizeable_id"
     t.string "type"
+    t.decimal "loan_protection_fund"
     t.index ["amortizeable_type", "amortizeable_id"], name: "amortization_schedules_amortizeable_index"
     t.index ["loan_id"], name: "index_amortization_schedules_on_loan_id"
     t.index ["type"], name: "index_amortization_schedules_on_type"

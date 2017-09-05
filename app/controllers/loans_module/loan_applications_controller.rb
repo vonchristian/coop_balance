@@ -12,9 +12,9 @@ module LoansModule
         @loan.set_capital_build_up
         @loan.set_filing_fee
         @loan.set_loan_protection_fee
-        @loan.create_amortization_schedule
         redirect_to loans_module_loan_application_url(@loan), notice: "Loan application saved successfully."
         @loan.set_interest_on_loan_charge
+        @loan.create_amortization_schedule
       else
         render :new
       end
@@ -33,9 +33,9 @@ module LoansModule
         @loan.set_capital_build_up
         @loan.set_filing_fee
         @loan.set_loan_protection_fee
-        @loan.create_amortization_schedule
         redirect_to loans_module_loan_application_url(@loan), notice: "Loan updated successfully"
         @loan.set_interest_on_loan_charge
+        @loan.create_amortization_schedule
         
       else 
         render :edit 

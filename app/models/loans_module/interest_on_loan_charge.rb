@@ -1,5 +1,10 @@
 module LoansModule 
 	class InterestOnLoanCharge < Charge 
+  has_many :loan_charges, as: :chargeable, class_name: "LoansModule::LoanCharge"
+
+    def charge_for(loan)
+      loan_charges.where(loan: loan).last
+    end
 		def self.set_interest_on_loan_for(loan)
 			interest = self.amount_type.regular.create!(name: 'Interest on Loan', amount: self.interest_charge_for(loan), debit_account: AccountingModule::Account.find_by(name: "Cash on Hand"),
         credit_account: AccountingModule::Revenue.find_by(name: "Service Fees"))

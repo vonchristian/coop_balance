@@ -18,6 +18,7 @@ module LoansModule
     has_many :amortization_schedules, as: :amortizeable
     has_many :principal_amortization_schedules, as: :amortizeable, class_name: "LoansModule::PrincipalAmortizationSchedule"
     has_many :interest_on_loan_amortization_schedules, as: :amortizeable, class_name: "LoansModule::InterestOnLoanAmortizationSchedule"
+    has_many :interest_on_loan_charges, class_name: "LoansModule::InterestOnLoanCharge", as: :chargeable, through: :loan_charges, source: :chargeable, source_type: "LoansModule::InterestOnLoanCharge"
 
 
     delegate :full_name, to: :member, prefix: true, allow_nil: true
@@ -25,6 +26,17 @@ module LoansModule
     before_save :set_default_date
     after_commit :set_documentary_stamp_tax
     validate :less_than_max_amount?
+    def interest_on_loan_charge
+      charge = charges.where(type: "LoansModule::InterestOnLoanCharge").last
+      loan_charge = loan_charges.where(chargeable: charge).last
+      loan_charge.charge_amount_with_adjustment
+    end
+    def interest_on_loan_amount
+      interest_on_loan_charge
+    end
+    def monthly_interest_amortization 
+      interest_on_loan_charge
+    end
     def monthly_payment
       loan_amount / term 
     end
@@ -82,7 +94,8 @@ module LoansModule
       if amortization_schedules.present?
         amortization_schedules.destroy_all 
       end
-      LoansModule::AmortizationSchedule.create_schedule_for(self)
+      LoansModule::PrincipalAmortizationSchedule.create_schedule_for(self)
+      # LoansModule::InterestOnLoanAmortizationSchedule.create_schedule_for(self)
     end
     def disbursed?
       disbursement.present?
