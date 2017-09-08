@@ -98,3 +98,15 @@
     </div>
   </div>
 </div>
+<%= month_calendar do |date| %>
+<%=link_to date.strftime("%B %e, %Y"), calendar_path(date) %>
+<% LoansModule::AmortizationSchedule.for(date.beginning_of_day, date.end_of_day).each do |schedule| %>
+  <div class="row">
+    <div class="col-md-6">
+      Payment due for <%=schedule.amortizeable.try(:member_full_name) %>
+    </div>
+  </div>
+  <hr>
+<% end %>
+
+<% end %>

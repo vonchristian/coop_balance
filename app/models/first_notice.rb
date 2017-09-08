@@ -1,0 +1,2 @@
+class FirstNotice < Notice 
+end

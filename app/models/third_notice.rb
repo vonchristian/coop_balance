@@ -1,0 +1,2 @@
+class ThirdNotice < Notice 
+end

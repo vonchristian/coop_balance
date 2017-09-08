@@ -1,0 +1,17 @@
+<div class="tab-pane" id="notices">
+<h4> First Notice </h4>
+This notice will be served on <%= @loan.first_notice_date.strftime("%B %e, %Y") %>
+<%= link_to 'Print Notice', new_loans_module_loan_first_notice_path(@loan, format: 'pdf') %>
+<hr>
+<h4> Second Notice </h4>
+        <%=image_tag("letter_icon.png", height: 140, width: 140, class: 'img-square img-responsive') %>
+
+This notice will be served on <%= (@loan.first_notice_date + 15.days).strftime("%B %e, %Y") %>
+<%= link_to 'Print Notice', new_loans_module_loan_first_notice_path(@loan, format: 'pdf') %>
+<hr>
+<h4> Third Notice </h4>
+        <%=image_tag("letter_icon.png", height: 140, width: 140, class: 'img-square img-responsive') %>
+
+This notice will be served on <%= (@loan.first_notice_date + 15.days).strftime("%B %e, %Y") %>
+<%= link_to 'Print Notice', new_loans_module_loan_first_notice_path(@loan, format: 'pdf') %>
+</div>

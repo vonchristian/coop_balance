@@ -4,7 +4,7 @@ git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
   "https://github.com/#{repo_name}.git"
 end
-
+gem 'bootsnap', require: false
 gem 'rails', '~> 5.1.3'
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.7', group: [:development, :production]
@@ -64,3 +64,4 @@ gem 'rack-mini-profiler'
 gem 'memory_profiler'
 gem 'whenever', :require => false
 
+gem "simple_calendar", "~> 2.0"

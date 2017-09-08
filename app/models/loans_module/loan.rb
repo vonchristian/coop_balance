@@ -19,13 +19,25 @@ module LoansModule
     has_many :principal_amortization_schedules, as: :amortizeable, class_name: "LoansModule::PrincipalAmortizationSchedule"
     has_many :interest_on_loan_amortization_schedules, as: :amortizeable, class_name: "LoansModule::InterestOnLoanAmortizationSchedule"
     has_many :interest_on_loan_charges, class_name: "LoansModule::InterestOnLoanCharge", as: :chargeable, through: :loan_charges, source: :chargeable, source_type: "LoansModule::InterestOnLoanCharge"
-
+    
+    has_many :notices, as: :notified
+    has_one :first_notice, class_name: "FirstNotice", as: :notified
+    has_one :second_notice, class_name: "SecondNotice", as: :notified
+    has_one :third_notice, class_name: "ThirdNotice", as: :notified
 
     delegate :full_name, to: :member, prefix: true, allow_nil: true
     delegate :name, to: :loan_product, prefix: true, allow_nil: true
     before_save :set_default_date
     after_commit :set_documentary_stamp_tax
     validate :less_than_max_amount?
+    def first_notice_date
+    if amortization_schedules.present?
+      amortization_schedules.last.date + 5.days 
+    else 
+      Time.zone.now 
+    end
+    end
+
     def interest_on_loan_charge
       charge = charges.where(type: "LoansModule::InterestOnLoanCharge").last
       loan_charge = loan_charges.where(chargeable: charge).last
@@ -48,6 +60,9 @@ module LoansModule
     end
     def net_proceed
       loan_amount - total_loan_charges
+    end
+    def balance_for(schedule)
+      loan_amount - LoansModule::AmortizationSchedule.principal_for(schedule, self)
     end
     def total_loan_charges
       loan_charges.total + 

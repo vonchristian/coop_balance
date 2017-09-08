@@ -36,6 +36,7 @@ Rails.application.routes.draw do
       resources :adjustments, only: [:new, :create], module: :loan_charges
     end
     resources :loans, except: [:destroy] do
+    resources :first_notices, only: [:new, :create]
     resources :processings, only: [:create]
     resources :additional_charges, only: [:new, :create]
     resources :approvals, only: [:new, :create]
@@ -150,5 +151,7 @@ Rails.application.routes.draw do
   unauthenticated :user do
     root :to => 'home#index', :constraints => lambda { |request| request.env['warden'].user.nil? }, as: :unauthenticated_root
   end
+  resources :calendars, only: [:index, :show]
   mount ActionCable.server => '/cable'
+
 end

@@ -7,28 +7,32 @@
       <div class="box-body">
 		<div class="row">
 		  <div class="col-md-12">
-				<h4>Applied Amount <%= number_to_currency @loan.loan_amount %></h4>
+				<h4 class="loan-amount-applied">Applied Amount <%= number_to_currency @loan.loan_amount %></h4>
 				<hr>
-				Less Charges
+				<p class="text-danger">Less Charges</p>
 				<% @loan.loan_charges.each do |loan_charge| %>
 				  <div class="row">
-				    <div class="col-md-4">
+				    <div class="col-md-5 col-md-offset-1">
 					    <%= loan_charge.chargeable.try(:name) %>
 					  </div>
-					  <div class="col-md-4">
+					  <div class="col-md-3">
 					    <% if loan_charge.charge_adjustment.present? %>
-					    <strike class="text-danger"><%= number_to_currency loan_charge.charge_amount %></strike><br>
+					    <strike class="text-danger pull-right"><%= number_to_currency loan_charge.charge_amount, class: "pull-right" %></strike><br>
 					    <%= number_to_currency loan_charge.charge_adjustment.charge_amount %>
-					    <span class="text-danger"><%= number_to_currency loan_charge.balance %></span>
+					    <span class="text-danger"><%= number_to_currency loan_charge.balance%></span>
 					    <% else %>
-					      <%= number_to_currency loan_charge.charge_amount %>
+					      <span class="pull-right"><%= number_to_currency loan_charge.charge_amount %></span>
 
 					    <% end %>
 					  </div>
-					  <div class="col-md-4">
-					    <%= link_to 'Adjust', new_loans_module_loan_charge_adjustment_path(loan_charge), class: "btn btn-default btn-xs" %>
+					  <div class="col-md-2">
+					    <%= link_to new_loans_module_loan_charge_adjustment_path(loan_charge), class: "btn btn-default btn-xs" do %>
+                <span data-toggle="tooltip" title="Adjust Charge" class="text-warning"><i class="fa fa-pencil"></i> </span>
+              <% end %> &nbsp;
 					    <% if !loan_charge.regular? %>
-					      <%= link_to 'Remove', loans_module_loan_charge_path(loan_charge), method: :delete, class: "btn btn-danger btn-xs" %>
+					      <%= link_to loans_module_loan_charge_path(loan_charge), title: "Remove Charge", method: :delete do %>
+                <span data-toggle="tooltip" title="Remove Charge" class="text-danger"><i class="fa fa-trash"></i> </span>
+              <% end %>
 					    <% end %>
 
 					  </div>
@@ -36,7 +40,8 @@
 					 <br>
   
 				<% end %>
-				<%= link_to 'Add', new_loans_module_loan_additional_charge_path(@loan) %>				<% @loan.loan_additional_charges.all.each do |charge| %>
+				<%= link_to 'Add', new_loans_module_loan_additional_charge_path(@loan) %>				
+        <% @loan.loan_additional_charges.all.each do |charge| %>
 				  <div class="row">
 				    <div class="col-md-6">
 				      <%= charge.name %>
@@ -95,7 +100,7 @@
           <th>Date</th>
           <th>Principal</th>
           <th>Interest</th>
-          <th>Total </th>
+          <th>Total Amortization </th>
           <th>Balance</th>
         </tr>
       </thead>
@@ -106,7 +111,7 @@
 		  <td><%= number_to_currency schedule.principal %></td>
       <td><%= number_to_currency schedule.interest %> </td>
       <td><%= number_to_currency schedule.try(:total_amortization) %> </td>
-		  <td><%= number_to_currency @loan.loan_amount - LoansModule::AmortizationSchedule.principal_for(schedule, @loan) %></td>
+		  <td><%= number_to_currency @loan.balance_for(schedule) %></td>
 		  </tr>
 		<% end %>
 		</tbody>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170905123957) do
+ActiveRecord::Schema.define(version: 20170906094800) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -436,6 +436,19 @@ ActiveRecord::Schema.define(version: 20170905123957) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["mode"], name: "index_mode_of_payments_on_mode"
+  end
+
+  create_table "notices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "date"
+    t.string "type"
+    t.string "notified_type"
+    t.bigint "notified_id"
+    t.string "title"
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["notified_type", "notified_id"], name: "index_notices_on_notified_type_and_notified_id"
+    t.index ["type"], name: "index_notices_on_type"
   end
 
   create_table "occupations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

@@ -3,10 +3,12 @@ module LoansModule
 		class AdjustmentsController < ApplicationController
 			def new 
 				@loan_charge = LoansModule::LoanCharge.find(params[:loan_charge_id])
+        @loan = @loan_charge.loan
 				@adjustment = @loan_charge.build_charge_adjustment
 			end 
 			def create
 				@loan_charge = LoansModule::LoanCharge.find(params[:loan_charge_id])
+        @loan = @loan_charge.loan
 				@adjustment = @loan_charge.build_charge_adjustment(charge_adjustment_params)
 				if @adjustment.valid?
 					@adjustment.save 

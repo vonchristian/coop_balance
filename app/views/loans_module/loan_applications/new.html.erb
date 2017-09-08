@@ -1,12 +1,35 @@
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="box box-default">
+      <div class="box-header">
+        <h3 class="box-title"> New Loan Application </h3>
+      </div>
+      <div class="box-body">
 <%= simple_form_for @loan, url: :loans_module_loan_applications do |f| %>
   <%= f.error_notification %>
-  <%= f.input :loan_product_id, collection: LoansModule::LoanProduct.all.map{|a| [a.name.titleize, a.id] }, as: :radio_buttons %>
+    <%= f.input :loan_product_id, collection: LoansModule::LoanProduct.all.map{|a| [a.name.titleize, a.id] } %>
+
   <%= f.input :member_id, collection: Member.all.map {|a| [a.full_name, a.id] } %>
-  <%= f.input :loan_amount %>
+  <%= f.input :loan_amount, as: :string %>
   <%= f.input :term, label: "Loan Term (in months)" %>
   <%= f.input :mode_of_payment, collection: LoansModule::Loan.mode_of_payments.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
-  <%= f.input :application_date, as: :string, input_html: { class: "datepicker" } %>
-  
-  <%= f.submit "Calculate", class: "btn btn-primary" %>
-  <hr>
+  <%= f.input :application_date, as: :string, input_html: { class: "datepicker", value: Time.zone.now.strftime("%B %e, %Y") } %>
+  <div class="box-footer">
+    <%= button_tag( :class => "btn btn-primary btn-lg pull-right") do %>
+      Proceed <i class="fa fa-chevron-right"></i>
+    <% end %>
+  </div>
 <% end %>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#loans_module_loan_member_id").select2({
+      theme: "bootstrap"
+    });
+  });
+  $(document).ready(function() {
+    $("#loans_module_loan_loan_product_id").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>
