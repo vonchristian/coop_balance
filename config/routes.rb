@@ -151,7 +151,7 @@ Rails.application.routes.draw do
   unauthenticated :user do
     root :to => 'home#index', :constraints => lambda { |request| request.env['warden'].user.nil? }, as: :unauthenticated_root
   end
-  resources :calendars, only: [:index, :show]
+  resources :schedules, only: [:index, :show]
   mount ActionCable.server => '/cable'
 
 end

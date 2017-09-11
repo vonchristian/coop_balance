@@ -62,16 +62,7 @@
 			  </div>
 				 <h4>Net <%= number_to_currency @loan.net_proceed %></h4>
 				 <hr>
-				 <div class="row">
-				  <div class="col-md-6">
-				    <%= number_to_currency @loan.amortization_schedules.order(created_at: :asc).first.total_amortization %>
-				    <h4 class="title"> Monthly Payment </h4>
-				  </div>
-				  <div class="col-md-6 border-left">
-				    <h4><%= @loan.term %></h4>
-				    <h4 class="title"> Number of Payments </h4>
-				  </div>
-				 </div>
+				 
 				 <hr>
 				 <%= link_to 'Process Loan', loans_module_loan_processings_path(@loan), method: :create, class: "btn  btn-lg btn-success" %>
 			</div>
@@ -81,6 +72,20 @@
 	</div>
 
 			<div class="col-md-6">
+      <div class="row">
+          <div class="col-md-6 border-right">
+            <div class="box box-primary">
+            <%= number_to_currency @loan.amortization_schedules.order(created_at: :asc).first.total_amortization %>
+            <h4 class="title"> Monthly Payment </h4>
+          </div>
+          </div>
+          <div class="col-md-6 border-left">
+          <div class="box box-primary">
+            <h4><%= @loan.term %></h4>
+            <h4 class="title"> Number of Payments </h4>
+          </div>
+          </div>
+         </div>
 			  <%= simple_form_for @loan, url: :loans_module_loan_application do |f| %>
 		  <%= f.error_notification %>
 		  <%= f.input :loan_product_id, collection: LoansModule::LoanProduct.all.map{|a| [a.name.titleize, a.id] }, as: :radio_buttons %>
