@@ -1,0 +1,73 @@
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="box box-solid">
+        <div class="box-header">
+        </div>
+        <div class="box-body">
+          <%= month_calendar do |date| %>
+          <%=link_to loans_module_schedule_path(date)  do %>
+          <p><%=date.day %></p>
+            
+              <% LoansModule::AmortizationSchedule.for(date.beginning_of_day, date.end_of_day).count.times do %>
+                <span class="text-primary"><i class="fa fa-circle"></i></span>
+              <% end %>
+               <% Notice.for(date.beginning_of_day, date.end_of_day).count.times do %>
+                <span class="text-red"><i class="fa fa-circle"></i></span>
+              <% end %>
+          <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="row">
+  <div class="col-md-4">
+    <div class="box box-primary">
+      <div class="box-header">
+        <h3 class="box-title"> Payment Schedules for <%= Time.zone.now %></h3>
+      </div>
+      <div class="box-body">
+      <%= link_to 'Print', loans_module_schedule_path(Time.zone.now, format: 'pdf') %>
+      <% LoansModule::AmortizationSchedule.for(Time.zone.now.beginning_of_day, Time.zone.now.end_of_day).each do |schedule| %>
+        <div class="row">
+          <div class="col-md-4">
+            <%= schedule.amortizeable.try(:member_full_name) %>
+          </div>
+          <div class="col-md-6">
+            <%= number_to_currency schedule.try(:total_amortization) %>
+          </div>
+          <div class="col-md-2">
+            <%=link_to 'Print' %>
+          </div>
+        </div>
+        <br>
+      <% end %>
+      <center> <%= link_to 'View All' %></center>
+
+
+    </div>
+  </div>
+  </div>
+  <div class="col-md-4">
+    <div class="box box-danger">
+      <div class="box-header">
+        <h3 class="box-title"> Notices for <%= Time.zone.now %></h3>
+      </div>
+      <div class="box-body">
+      <% Notice.for(Time.zone.now.beginning_of_day, Time.zone.now.end_of_day).each do |notice| %>
+        <div class="row">
+          <div class="col-md-2">
+          </div>
+          <div class="col-md-8">
+            <%=notice.title %>
+          </div>
+          </div>
+          <br>
+      <% end %>
+      <center> <%= link_to 'View All', loans_module_notices_path %></center>
+
+    </div>
+  </div>
+</div>
+
