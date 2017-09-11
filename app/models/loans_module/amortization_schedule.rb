@@ -1,8 +1,11 @@
 module LoansModule
 	class AmortizationSchedule < ApplicationRecord
 	  belongs_to :amortizeable, polymorphic: true
+    has_one :payment_notice, as: :notified
+    after_commit :create_payment_notice
     def self.for(from_date, to_date)
       if from_date && to_date
+       
         where('date' => from_date..to_date)
       end
     end
@@ -13,6 +16,10 @@ module LoansModule
 	  end
     def total_amortization
       principal + interest
+    end
+    private
+    def create_payment_notice 
+      PaymentNotice.create(notified: self, date: (self.date - 3.days), title: 'Payment Notice', content: 'Payment Notice')
     end
 	end
 end

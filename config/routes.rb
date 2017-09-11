@@ -53,6 +53,8 @@ Rails.application.routes.draw do
     resources :charges, only: [:new, :create]
     resources :loan_product_charges, only: [:new, :create]
     resources :loan_calculator, only: [:index]
+    resources :schedules, only: [:index, :show]
+    resources :notices, only: [:index, :show]
 
   end
   resources :savings do
