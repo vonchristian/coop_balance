@@ -19,6 +19,10 @@ AccountingModule::Asset.create(code: 11700, name: "Loans and Receivables")
 AccountingModule::Asset.create(code: 11711, name: "Loans Receivable - Current")
 AccountingModule::Asset.create(code: 117111, name: "Loans Receivable - Current (Regular Loan)")
 AccountingModule::Asset.create(code: 117112, name: "Loans Receivable - Current (Salary Loan)")
+AccountingModule::Asset.create(code: 117113, name: "Loans Receivable - Current (Emergency Loan)")
+AccountingModule::Asset.create(code: 117113, name: "Loans Receivable - Current (OFW Loan)")
+
+
 
 AccountingModule::Asset.create(code: 11712, name: "Loans Receivable - Past Due")
 AccountingModule::Asset.create(code: 11713, name: "Loans Receivable - Restructured")
@@ -26,6 +30,8 @@ AccountingModule::Asset.create(code: 11714, name: "Loans Receivable - Loans in L
 AccountingModule::Asset.create(code: 11715, contra: true, name: "Unearned Interests and Discounts")
 AccountingModule::Asset.create(code: 11716, name: "Allowance for Probable Losses on Loans")
 AccountingModule::Asset.create(code: 11721, name: "Accounts Receivables Trade - Current")
+AccountingModule::Asset.create(code: 117211, name: "Accounts Receivables - Loan Penalties")
+
 AccountingModule::Asset.create(code: 11722, name: "Accounts Receivables Trade - Past Due")
 AccountingModule::Asset.create(code: 11723, name: "Accounts Receivables Trade - Restructured")
 AccountingModule::Asset.create(code: 11724, name: "Accounts Receivables Trade - in Litigation")
@@ -202,6 +208,8 @@ AccountingModule::Revenue.create(code: 401202, name: 'Documentary Stamp Taxes')
 
 AccountingModule::Revenue.create(code: 40130, name: 'Filing Fees')
 AccountingModule::Revenue.create(code: 40140, name: 'Fines, Penalties, Surcharges')
+AccountingModule::Revenue.create(code: 401401, name: 'Loan Penalties')
+
 AccountingModule::Revenue.create(code: 40200, name: 'Income from Service Operations')
 AccountingModule::Revenue.create(code: 40200, name: 'Service Income')
 

@@ -1,12 +1,62 @@
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="box box-solid">
+      <div class="box-header">
+        <div class="row">
+          <div class="col-md-2">
+            <%=link_to loans_module_loan_path(@loan) do  %>
+               <i class="icon-arrow-left fa-2x"></i>
+            <% end %>
+          </div>
+          <div class="col-md-7">
+            <%= @loan.member_full_name %>
+          </div>
+        </div>
+      </div>
 
-  <% Member.all.except(@loan.member).each do |member| %>
-   <%= simple_form_for [@loan, @co_maker], url: :loans_module_loan_loan_co_makers do |f| %>
-    <%= member.full_name %>
-     <%= member_avatar(member, style: 'width:60px;height:60px;', class: 'media-object img-square') %>
-    <%= f.input :co_maker_id, input_html: { value: member.id } %>
-    <% if @loan.co_makers.exclude?(member) %>
-      <%= f.submit "Add" %>
-    <% end %>
-  <% end %>
-<% end %>
-<%=link_to 'Back to Loan', loans_module_loan_path(@loan), class: "btn btn-default" %>
+      <div class="box-body">
+        <div class="row">
+          <div class="col-md-10 col-md-offset-1">
+            <%=form_tag new_loans_module_loan_loan_co_maker_path(@loan), method: :get, class: "search-form" do %>
+              <div class="input-group">
+                <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Member", id: 'account-search-form' %>
+                <span class="input-group-btn">
+                  <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                    <i class="fa fa-search"></i>
+                  <% end %>
+                </span>
+              </div>
+            <% end %>
+          </div>
+        </div>
+        <br>
+        <% @members.each do |member| %>
+         <%= simple_form_for [@loan, @co_maker], url: :loans_module_loan_loan_co_makers do |f| %>
+         <% if member != @loan.member %>
+         <div class="row">
+           <div class="col-md-2 col-md-offset-1 col-xs-2">
+             <%= member_avatar(member, style: 'width:40px;height:40px;', class: 'media-object img-circle') %>
+            </div>
+            <div class="col-md-5 col-xs-5">
+              <%= member.full_name %>
+              <%= f.input :co_maker_id, input_html: { value: member.id }, as: :hidden %>
+            </div>
+            <div class="col-md-4 col-xs-4">
+              <% if @loan.co_makers.exclude?(member) %>
+                <%= button_tag(class: "btn btn-default btn-sm") do %>
+                  <i class="icon-user-follow"></i> Select
+                <% end %>
+              <% else %>
+                <%= button_tag(class: "btn btn-success btn-sm disabled")do %>
+                  <i class="icon-user-following"></i> Selected
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+          <br>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

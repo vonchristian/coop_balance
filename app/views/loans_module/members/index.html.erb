@@ -2,6 +2,18 @@
   <div class="col-md-8">
     <div class="box box-solid">
       <div class="box-body">
+
+      <%=form_tag teller_module_members_path, method: :get, class: "search-form" do %>
+          <div class="input-group">
+            <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search First Name, Last Name ", id: 'account-search-form' %>
+            <span class="input-group-btn">
+              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                <i class="fa fa-search"></i>
+              <% end %>
+            </span>
+          </div>
+        <% end %>
+        <% end %>
         <% @members.each do |member| %>
           <% cache member do %>
             <%= link_to loans_module_member_path(member) do %>

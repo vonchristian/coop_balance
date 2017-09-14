@@ -18,6 +18,8 @@
 <%= simple_form_for [@loan, @payment], url: :loans_module_loan_payments do |f| %>
   <%= f.error_notification %>
   <%= f.input :amount %>
+  <%= f.input :interest %>
+  <%= f.input :penalty %>
   <%= f.input :reference_number %>
   <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
   <%= f.input :loan_id, input_html: { value: @loan.id },as: :hidden %>

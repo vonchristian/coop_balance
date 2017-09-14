@@ -30,12 +30,22 @@ module LoansModule
     before_save :set_default_date
     after_commit :set_documentary_stamp_tax
     validate :less_than_max_amount?
+    def total_unpaid_principal_for(date)
+      amortized_principal_for(date) - paid_principal_for(date)
+    end
+    def paid_principal_for(date)
+      AccountingModule::Account.find_by(name: "Loans Receivable - Current (#{self.loan_product_name.titleize})").credit_entries.where(commercial_document: self)
+    end
+
     def first_notice_date
     if amortization_schedules.present?
       amortization_schedules.last.date + 5.days 
     else 
       Time.zone.now 
     end
+    end
+    def penalties
+      entries.loan_penalty.total
     end
 
     def interest_on_loan_charge

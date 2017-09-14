@@ -3,6 +3,11 @@ module LoansModule
 		def new 
 			@loan = LoansModule::Loan.find(params[:loan_id])
 			@co_maker = @loan.loan_co_makers.build 
+      if params[:search].present?
+        @members = Member.text_search(params[:search])
+      else
+        @members = Member.all.except(@loan.member)
+      end
 		end 
 		def create
 			@loan = LoansModule::Loan.find(params[:loan_id])

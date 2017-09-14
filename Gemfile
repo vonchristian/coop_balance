@@ -38,7 +38,8 @@ gem 'public_activity'
 gem 'mina-puma', require: false
 gem 'barby'
 gem 'prawn-print'
-
+gem 'delayed_job_active_record'
+gem 'simple-line-icons-rails'
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails'

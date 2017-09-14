@@ -1,120 +1,26 @@
-<div class="col-md-12">
-          <div class="nav-tabs-custom">
-            <ul class="nav nav-tabs">
-              <li class="active"><a href="#activity" data-toggle="tab">Info</a></li>
-              <li ><a href="#payments" data-toggle="tab">Payments</a></li>
-              <li><a href="#loan-disbursement" data-toggle="tab">Disbursement</a></li>
-              <li><a href="#settings" data-toggle="tab">Settings</a></li>
-              <li><a href="#settings" data-toggle="tab">Reports</a></li>
-              <li><a href="#notices" data-toggle="tab">Notices</a></li>
-
-            </ul>
-            <div class="tab-content">
-              <div class="active tab-pane" id="activity">
 <div class="row">
   <div class="col-md-12">
-    <div class="box box-solid">
-      <div class="box-header">
-      </div>
-      <div class="box-body">
-        <div class="row">
-          <div class="col-md-2">
-            <% if @loan.member %>
-             <%= member_avatar(@loan.member, style: 'width:60px;height:60px;', class: 'media-object img-circle') %>
-            <% end %>
+    <div class="nav-tabs-custom">
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#loan-info" data-toggle="tab">Info</a></li>
+        <li ><a href="#loan-payments" data-toggle="tab">Payments</a></li>
+        <li ><a href="#loan-amortization-schedule" data-toggle="tab">Amortization Schedule</a></li>
+        <li><a href="#loan-disbursement" data-toggle="tab">Disbursement</a></li>
+        <li><a href="#settings" data-toggle="tab">Settings</a></li>
+        <li><a href="#settings" data-toggle="tab">Reports</a></li>
+        <li><a href="#notices" data-toggle="tab">Notices</a></li>
 
-          </div>
-          <div class="col-md-6">
-            <h3><%= @loan.member.try(:full_name).try(:upcase) %></h3>
-          </div>
-        </div>
-        <hr>
-        <div class="row">
-          <div class="col-md-4 border-right">
-            <span class="text-muted"> <%=@loan.loan_product_name.try(:upcase) %></span><br>
-            <h4><%=number_to_currency @loan.loan_amount %></h4>
-            <small class="text-muted"> Term <%= @loan.duration %> <%= @loan.loan_term_duration %></small><br>
-            <small class="text-muted"> APR <%= @loan.duration %> <%= @loan.loan_term_duration%></small><br>
-            <small class="text-muted"> Monthly Payment <%= @loan.duration %> <%= @loan.loan_term_duration %></small>
-            <br>
-            <%= link_to "Add Co Maker", new_loans_module_loan_loan_co_maker_path(@loan), class: "btn btn-primary" %>
-          </div>
-          <% if @loan.approved? %>
-            <div class="col-md-6 border-right">
-              <span class="text-muted"><i class="fa fa-calendar"></i> NEXT PAYMENT DUE </span>
-              <h4> <%=Time.zone.now.strftime("%B %e, %Y") %></h4>
-              <br>
-              <small class="text-muted"><i class="fa fa-credit-card"> </i> PRINCIPAL PAID </small>
-              <h4 class="text-green"> P 23213 </h4>
-              <span class="pull-right"> of <%= @loan.loan_amount %></span>
-              <div class="progress xs">
-                <div class="progress-bar progress-bar-success" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                  <span class="sr-only">20% Complete</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-2">
-              AMOUNT
-            </div>
-          <% end %>
-        </div>
-        <hr>
-          <div class="row">
-            <div class="col-md-6">
-               Loan Approval
-              <%= link_to "Approve", loans_module_loan_approvals_path(@loan),  method: :create, class: "btn btn-success btn-xs" %>
-              <hr>
-              <% @loan.loan_approvals.each do |approval| %>
-                <div class="row">
-                  <div  class="col-md-2">
-                    <%= image_tag(approval.approver.avatar.url(:small), class: "img-circle", height: 45, width: 45) %>
-                  </div>
-                  <div class="col-md-10">
-                    <%= approval.approver.first_and_last_name %><br>
-                    <small class="text-muted"> <%= approval.approver.role.titleize %></small><br>
-                    <i class="fa fa-calendar"></i> <small> <%= approval.date_approved.strftime("%B %e, %Y") %></small>
-                  </div>
-                </div>
-                <br>
-              <% end %>
-              
-            </div>
-            <div class="col-md-6">
-              <span class="text-muted"> BALANCE </span><br>
-              <h4> <%= number_to_currency @loan.balance %></h4>
-              <br>
-
-              Payments History
-              <%=link_to 'New Payment', new_loans_module_loan_payment_path(@loan), class: "btn btn-primary" %>
-              <hr>
-              <div class="table table-responsive">
-                <table class="table table-striped table-hover">
-                  <thead>
-                    <tr>
-                      <th> Date </th>
-                      <th> Amount </th>
-                      <th> Reference Number </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <% @loan.payments.each do |payment| %>
-                      <tr>
-                        <td><%= payment.entry_date.strftime("%B %e, %Y") %></td>
-                        <td><%= payment.credit_amounts.sum(:amount) %> </td>
-                        <td><%= payment.reference_number %></td>
-                      </tr>
-                    <% end %>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
+      </ul>
+      <div class="tab-content">
+        <%=render 'loans_module/loans/partials/loan_info' %>
+        <%=render 'loans_module/loans/partials/payments' %>
+        <%=render 'loans_module/loans/partials/amortization_schedule' %>
+        <%=render 'loans_module/loans/partials/loan_disbursement' %>
+        <%=render 'loans_module/loans/partials/notices' %>
       </div>
     </div>
   </div>
 </div>
-          <%=render 'loans_module/loans/partials/loan_disbursement' %>
-          <%=render 'loans_module/loans/partials/notices' %>
+
 
 
