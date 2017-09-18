@@ -1,0 +1,10 @@
+<%= simple_form_for [@member, @time_deposit], url: :teller_module_member_time_deposits do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :member_id, input_html: { value: @member.id }, as: :hidden %>
+  <%= f.input :recorder_id, input_html: { value: current_user.id }, as: :hidden %>
+  <%= f.input :account_number %>
+  <%= f.input :date %>
+  <%= f.input :or_number %>
+  <%= f.input :amount %>
+  <%= f.submit %>
+<% end %>
