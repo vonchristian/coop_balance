@@ -90,6 +90,7 @@ Rails.application.routes.draw do
     resources :settings, only: [:index]
     resources :members, only: [:index, :show, :new, :create]
     resources :grace_periods, only: [:new, :create], module: :settings
+    resources :loan_penalty_configs, only: [:new, :create], module: :settings
   end
   resources :teller_module, only: [:index]
   namespace :teller_module do
