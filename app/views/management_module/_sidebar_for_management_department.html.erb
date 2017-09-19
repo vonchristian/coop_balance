@@ -47,19 +47,13 @@
 
 
 
-
-
-
-
-
-
-
-
             <li class="header"> MANAGEMENT </li>
             <!-- <li><a href="/dashboard"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li> -->
 
             <li class=<%#= 'active' if current_page?(management_module_settings_path) %> ><a href="/management_module/settings"><i class="fa fa-cog"></i> <span> Settings</span></a></li>
             <li class=<%= 'active' if current_page?(management_module_employees_path) %> ><a href="/management_module/employees"><i class="fa fa-users"></i> <span> Employees</span></a></li>
+            <li class=<%= 'active' if current_page?(management_module_employees_path) %> ><a href="/management_module/employees"><i class="fa fa-bar-chart"></i> <span> Insights</span></a></li>
+
 
 
       </section>

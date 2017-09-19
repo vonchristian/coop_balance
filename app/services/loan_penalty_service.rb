@@ -14,6 +14,14 @@ class LoanPenaltyService
     AccountingModule::Account.find_by(name: 'Loan Penalties')
   end
   def self.penalty_for(loan, date)
-    loan.total_unpaid_principal_for(date) * 0.02
+    loan.total_unpaid_principal_for(date) * interest_rate
   end
+  def self.interest_rate
+    interest_rate = CoopConfigurationsModule::LoanPenaltyConfig.last.interest_rate
+    if interest_rate.present?
+      interest_rate
+    else 
+      0.01
+    end 
+  end 
 end
