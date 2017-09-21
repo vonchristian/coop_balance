@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   resources :loans_module, only: [:index]
   
   namespace :loans_module do
+    resources :aging_loans, only: [:index, :show]
     resources :loan_calculator, only: [:index]
     resources :loan_applications, only: [:new, :create, :show, :edit, :update]
     resources :dashboard, only: [:index]

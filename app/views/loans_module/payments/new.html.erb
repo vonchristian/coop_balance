@@ -1,9 +1,24 @@
 <div class="row">
-  <div class="col-md-4 col-md-offset-4">
-<div class="box box-solid">
+  <div class="col-md-12">
+    <div class="box box-default">
   <div class="box-header">
+    <h3 class="box-title">Loan Payment Details </h3>
   </div>
   <div class="box-body">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-1">
+        Loan Details
+        <%= number_to_currency @loan.loan_amount %>
+        <hr>
+        BALANCE
+        <hr>
+        INTEREST
+        <hr>
+        PENALTY
+        <hr>
+      </div>
+  <div class="col-md-4">
+
     <div class="row">
       <div class="col-md-3">
 
@@ -17,9 +32,9 @@
     <hr>
 <%= simple_form_for [@loan, @payment], url: :loans_module_loan_payments do |f| %>
   <%= f.error_notification %>
-  <%= f.input :amount %>
-  <%= f.input :interest %>
-  <%= f.input :penalty %>
+  <%= f.input :principal_amount %>
+  <%= f.input :interest_amount %>
+  <%= f.input :penalty_amount %>
   <%= f.input :reference_number %>
   <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
   <%= f.input :loan_id, input_html: { value: @loan.id },as: :hidden %>
@@ -27,4 +42,4 @@
     <%= f.submit "Save Payment", class: "btn btn-primary pull-right" %>
   </div>
 <% end %>
-l
+

@@ -20,7 +20,7 @@ class LoanPaymentForm
 
   def save_payment
     AccountingModule::Entry.loan_payment.create!(commercial_document: find_loan, description: 'Loans payment', reference_number: reference_number, entry_date: date,
-    debit_amounts_attributes: {[account: intrest_debit_account, amount: interest_amount], [account: debit_account, amount: principal_amount],
+    debit_amounts_attributes: [account: interest_debit_account, amount: interest_amount],
     credit_amounts_attributes: [account: credit_account, amount: amount])
   end
   def credit_account

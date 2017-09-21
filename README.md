@@ -14,3 +14,5 @@ These services are included:
 ### Monthly Schedule amortization of loan to be collected
 - per barangay
 - per organization
+
+Chart monthly revenue percentage

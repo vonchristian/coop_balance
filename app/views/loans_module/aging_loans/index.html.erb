@@ -1,0 +1,46 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box box-solid">
+        <ul class="nav nav-tabs">
+           <li class="<%='active' if current_page?(loans_module_aging_loans_path(start_num: nil, end_num: nil))%>"><%=link_to 'All Aging Loans', loans_module_aging_loans_path%></li>
+              <li class="<%='active' if current_page?(loans_module_aging_loans_path(start_num: 1, end_num: 30))%>"><%=link_to '1 - 30 Days', loans_module_aging_loans_path(start_num: 1, end_num: 30) %></li>
+              <li class="<%='active' if current_page?(loans_module_aging_loans_path(start_num: 31, end_num: 60))%>"><%=link_to '31 - 60 Days', loans_module_aging_loans_path(start_num: 31, end_num: 60) %></li>
+              <li class="<%='active' if current_page?(loans_module_aging_loans_path(start_num: 61, end_num: 90))%>"><%=link_to '61 - 90 Days', loans_module_aging_loans_path(start_num: 61, end_num: 90) %></li>
+              <li class="<%='active' if current_page?(loans_module_aging_loans_path(start_num: 91, end_num: 363))%>"><%=link_to '91 - 363 Days', loans_module_aging_loans_path(start_num: 91, end_num: 363) %></li>
+              <li class="<%='active' if current_page?(loans_module_aging_loans_path(start_num: 363, end_num: 99999))%>"><%=link_to 'Over 1 Year', loans_module_aging_loans_path(start_num: 364, end_num: 99999) %></li>
+            </ul>
+            <div class="tab-content">
+              <div class="active tab-pane" id="activity">
+        <div class="box-header">
+          <h3 class="box-title condensed-text"> <%=@start_num %> to <%= @end_num %> Days Past Due </h3>
+        </div>
+        <div class="box-body">
+          <div class="table table-responsive">
+            <table class="table table-hover table-striped">
+              <thead>
+                <th></th>
+                <th>Member</th>
+                <th>Past Due</th>
+                <th>Balance </th>
+              </thead>
+              <tbody>
+                <% @loans.each do |loan| %>
+                <%= link_to loans_module_loan_path(loan) do %>
+                  <tr>
+                    <td width="40px"> <%= member_avatar(loan.member, style: 'width:35px;height:35px;', class: 'media-object img-circle') %></td>
+                    <td> <%=link_to loan.member.full_name, loans_module_loan_path(loan) %></td>
+                    <td> <%= distance_of_time_in_words(loan.disbursement_date, Time.zone.now, true, except:[:minutes, :hours, :seconds]) %> </span></td>
+                    <td><%= number_to_currency loan.balance %> </td>
+                  </tr>
+                <% end %>
+                <% end %>
+              </tbody>
+            </table>
+            <center><%= paginate @loans %></center>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%=@start_num %>
+    <%=@end_num %>

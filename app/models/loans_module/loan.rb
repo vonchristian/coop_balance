@@ -29,6 +29,21 @@ module LoansModule
     delegate :name, to: :loan_product, prefix: true, allow_nil: true
     before_save :set_default_date
     after_commit :set_documentary_stamp_tax
+    def self.aging_for(start_num, end_num)
+        aging_loans = []
+        aging.each do |loan|
+          if (start_num..end_num).include?(loan.number_of_days_past_due)
+            aging_loans << loan
+          end
+        end
+        aging_loans
+    end
+    def self.aging 
+      all.select{|a| a.past_due? }
+    end
+    def past_due?
+      number_of_days_past_due >=1
+    end
     validate :less_than_max_amount?
     def total_unpaid_principal_for(date)
       amortized_principal_for(date) - paid_principal_for(date)
@@ -133,9 +148,24 @@ module LoansModule
     def disbursement
       entries.loan_disbursement
     end
+    def disbursement_date
+      if disbursement.present? 
+        disbursement.last.entry_date 
+      end
+    end
 
     def balance
       disbursement.total - payments.total
+    end
+    def number_of_days_past_due
+      if disbursement.present?
+        ((Time.zone.now - disbursement_date)/86400.0).to_i
+      else
+        0
+      end
+    end
+    def number_of_months_past_due
+      number_of_days_past_due / 30
     end
 
     private 

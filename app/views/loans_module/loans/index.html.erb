@@ -18,6 +18,10 @@
                 <small class="text-muted"> <%=loan.member.try(:full_name).try(:upcase) %></small><br>
                 <small class="text-muted"> <%=loan.loan_product_name.try(:upcase) %></small><br>
                 <small class="text-muted"> <i class="fa fa-calendar"></i> <%=loan.application_date.try(:strftime, ("%B %e, %Y")) %></small>
+                <br>
+                <% if loan.amortization_schedules.present? %>
+                <%= loan.number_of_days_past_due %>
+                <% end %>
               </div>
             </div>
             <hr>

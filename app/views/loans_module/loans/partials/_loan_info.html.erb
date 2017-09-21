@@ -69,8 +69,12 @@
           <span class="text-muted"> BALANCE </span><br>
           <h4> <%= number_to_currency @loan.balance %></h4>
           <br>
-
-          Payments History
+           
+          <%= @loan.number_of_days_past_due %> days before maturity date 
+          <hr>
+          or
+          <%= @loan.number_of_months_past_due %> months before maturity date 
+          
           
           </div>
         </div>

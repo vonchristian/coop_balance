@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-
+ruby '2.4.2'
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
   "https://github.com/#{repo_name}.git"
@@ -40,6 +40,7 @@ gem 'barby'
 gem 'prawn-print'
 gem 'delayed_job_active_record'
 gem 'simple-line-icons-rails'
+gem 'dotiw'
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails'
