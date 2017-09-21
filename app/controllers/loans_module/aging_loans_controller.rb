@@ -8,6 +8,13 @@ module LoansModule
       else
         @loans = Kaminari.paginate_array(LoansModule::Loan.aging).page(params[:page]).per(30)
       end
+      respond_to do |format|
+        format.html
+        format.pdf do 
+          pdf = LoansModule::AgingLoansPdf.new(@loans, @start_num, @end_num, view_context)
+          send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Aging Loans.pdf"
+        end
+      end
     end 
     def show
     end
