@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :member do
+  factory :member, aliases: [:borrower] do
     first_name "MyString"
     middle_name "MyString"
     last_name "MyString"

@@ -3,7 +3,7 @@ module LoansModule
     enum loan_term_duration: [:month]
     enum loan_status: [:application, :processing, :approved, :aging]
     enum mode_of_payment: [:monthly, :quarterly, :semi_annually, :lumpsum]
-    belongs_to :member
+    belongs_to :borrower, class_name: "Member", foreign_key: 'member_id'
     belongs_to :loan_product, class_name: "LoansModule::LoanProduct"
     has_one :cash_disbursement_voucher, class_name: "Voucher", as: :voucherable
    
@@ -25,18 +25,19 @@ module LoansModule
     has_one :second_notice, class_name: "SecondNotice", as: :notified
     has_one :third_notice, class_name: "ThirdNotice", as: :notified
 
-    delegate :full_name, to: :member, prefix: true, allow_nil: true
+    delegate :full_name, to: :borrower, prefix: true, allow_nil: true
     delegate :name, to: :loan_product, prefix: true, allow_nil: true
     before_save :set_default_date
     after_commit :set_documentary_stamp_tax
+    #find aging loans e.g. 1-30 days,
     def self.aging_for(start_num, end_num)
-        aging_loans = []
-        aging.each do |loan|
-          if (start_num..end_num).include?(loan.number_of_days_past_due)
-            aging_loans << loan
-          end
+      aging_loans = []
+      aging.each do |loan|
+        if (start_num..end_num).include?(loan.number_of_days_past_due)
+          aging_loans << loan
         end
-        aging_loans
+      end
+      aging_loans
     end
     def self.aging 
       all.select{|a| a.past_due? }
