@@ -18,6 +18,7 @@ module StoreModule
 
     def show
       @product = StoreModule::Product.find(params[:id])
+      @stocks = @product.stocks.paginate(:page => params[:page], :per_page => 35)
     end
 
     private

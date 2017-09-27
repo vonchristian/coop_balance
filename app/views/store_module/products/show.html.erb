@@ -1,2 +1,36 @@
-<%= link_to 'New Stock', new_store_module_product_stock_path(@product) %>
-<%= render @product.stocks %>
+<div class="content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title"><%= @product.name %></h3>
+        </div>
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-3 border-right">
+              <h3 class="no-padding"><%= @product.deliveries_count.to_i %></h3>
+              <small>DELIVERIES</small>
+            </div>
+            <div class="col-md-3 border-right">
+              <h3 class="no-padding"><%= @product.deliveries_count %></h3>
+              <small>SOLD</small>
+            </div>
+            <div class="col-md-3 border-right">
+              <center>
+              <h3 class="no-padding"><%= @product.deliveries_count %></h3>
+              <small>IN STOCK</small>
+              </center>
+            </div>
+          </div>
+          <hr>
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#product-stocks" data-toggle="tab">Stocks</a></li>
+              <li><a href="#product-sales" data-toggle="tab">Sales</a></li>
+              <li><a href="#product-settings" data-toggle="tab">Settings</a></li>
+            </ul>
+            <div class="tab-content">
+              <%= render 'store_module/products/partials/stocks' %>
+          </div>
+
+      </div>

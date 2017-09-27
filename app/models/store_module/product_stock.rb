@@ -9,6 +9,9 @@ module StoreModule
 	  validates :supplier_id, presence: true
 	  validates :unit_cost, :total_cost, numericality: { greater_than: 0.01 }
 	  before_save :set_default_date
+    def self.total 
+      sum(&:quantity)
+    end
 
 	  private 
 	  def set_default_date 

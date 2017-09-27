@@ -1,1 +1,9 @@
-<%= product_stock.quantity %>
+<tbody>
+<tr>
+  <td> <%= product_stock.date.strftime("%B %e, %Y") %></td>
+  <td> <%= product_stock.quantity %></td>
+  <td> <%= number_to_currency product_stock.unit_cost %></td>
+  <td> <%= number_to_currency product_stock.total_cost %></td>
+  <td> <%= product_stock.barcode %></td>
+</tr>
+</tbody>

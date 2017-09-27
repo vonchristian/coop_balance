@@ -17,5 +17,9 @@ module StoreModule
     validates_attachment_size :photo, :in => 0.megabytes..4.megabytes, :message => 'must be smaller than 4mb'
     
     validates :name, presence: true, uniqueness: true
+
+    def deliveries_count
+      stocks.total 
+    end
   end
 end

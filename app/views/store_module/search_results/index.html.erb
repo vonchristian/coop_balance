@@ -19,11 +19,11 @@
           <% if @search_results.empty? %>
             No result found for <b><%= params[:search] %></b>
             <% else %>
-            <%= @search_results.count %> found for <b><%=params[:search] %></b>
+            <p><%= @search_results.count %> found for <b><%=params[:search] %></b></p>
             <% @search_results.each do |search_result| %>
-
             <% if search_result.searchable_type == "StoreModule::Product" %>
-              <%= link_to search_result.searchable.try(:name), store_module_product_path(search_result.searchable) %>
+              <%= link_to search_result.searchable.try(:name), store_module_product_path(search_result.searchable) %><br>
+              <span class="text-muted"> <%= search_result.searchable.class.to_s.gsub("StoreModule::", "") %></span>
             <% end %>
             <% end %>
           <% end %>
