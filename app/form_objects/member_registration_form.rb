@@ -21,4 +21,5 @@ class MemberRegistrationForm
   end
   def save_tin
     find_member.create_tin(number: tin_number)
+  end
 end
