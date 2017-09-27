@@ -1,4 +1,5 @@
 Rails.application.configure do
+  Paperclip.options[:command_path] = "/usr/bin/"
 #   config.after_initialize do
 #   Bullet.enable = true
 #   Bullet.alert = true

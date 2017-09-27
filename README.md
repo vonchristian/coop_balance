@@ -16,3 +16,8 @@ These services are included:
 - per organization
 
 Chart monthly revenue percentage
+
+
+- Store update
+- suppliers index
+- Uploading of stocks
