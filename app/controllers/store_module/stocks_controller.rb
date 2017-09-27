@@ -1,5 +1,8 @@
 module StoreModule
   class StocksController < ApplicationController
+    def index 
+      @stock = StoreModule::ProductStock.all 
+    end
     def new
       @product = StoreModule::Product.find(params[:product_id])
       @stock = @product.stocks.build

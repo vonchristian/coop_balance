@@ -1,5 +1,7 @@
 module StoreModule
   class Product < ApplicationRecord
+    include PgSearch
+    multisearchable against: [:name]
     # has_many :finished_good_materials
     has_many :stocks, class_name: "StoreModule::ProductStock"
     has_attached_file :photo,

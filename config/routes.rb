@@ -145,9 +145,11 @@ Rails.application.routes.draw do
   end
   resources :store, only: [:index]
   namespace :store_module do 
+    resources :search_results, only: [:index]
     resources :members, only: [:index, :show, :new, :create]
     resources :orders, only: [:index, :new, :create, :show]
     resources :line_items, only: [:new, :create]
+    resources :stocks, only: [:index, :show]
     resources :products, only: [:index, :show, :new, :create] do
       resources :stocks, only: [:new, :create]
     end

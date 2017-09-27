@@ -1,0 +1,29 @@
+<div class="content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="box box-solid">
+        <div class="box-header">
+          <h3 class="box-title"> Search Results </h3>
+          <%=form_tag store_module_search_results_path, method: :get, class: "sidebar-form" do %>
+      <div class="input-group">
+        <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search..." %>
+        <span class="input-group-btn">
+          <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+            <i class="fa fa-search"></i>
+          <% end %>
+        </span>
+      </div>
+    <% end %>
+        </div>
+        <div class="box-body">
+          <% if @search_results.empty? %>
+            No result found for <b><%= params[:search] %></b>
+            <% else %>
+            <%= @search_results.count %> found for <b><%=params[:search] %></b>
+            <% @search_results.each do |search_result| %>
+
+            <% if search_result.searchable_type == "StoreModule::Product" %>
+              <%= link_to search_result.searchable.try(:name), store_module_product_path(search_result.searchable) %>
+            <% end %>
+            <% end %>
+          <% end %>
