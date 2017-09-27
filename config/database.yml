@@ -80,6 +80,6 @@ test:
 #
 production:
   <<: *default
-  database: coopcatalyst_final_production
+  database: coopcatalyst_production
   username: deploy
   password: deploy@itworx
