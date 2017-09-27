@@ -81,5 +81,5 @@ test:
 production:
   <<: *default
   database: coopcatalyst_final_production
-  username: coopcatalyst
-  password: <%= ENV['COOPCATALYST_DATABASE_PASSWORD'] %>
+  username: deploy
+  password: deploy@itworx
