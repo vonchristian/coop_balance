@@ -5,8 +5,8 @@
   <% @member.savings.each do |saving| %>
     <div class="row">
       <div class="col-md-3">
-		    <small> BALANCE </small>
-		    <h4><%= number_to_currency saving.balance %></h4>
+		    <p class="condensed-text"> BALANCE </p>
+		    <h2 class="text-muted"><%= number_to_currency saving.balance %></h2>
 		    <small class="text-muted"><%=saving.saving_product_name.try(:upcase) %></small>
 		  </div>
 		  <div class="col-md-2">

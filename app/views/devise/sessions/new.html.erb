@@ -2,7 +2,7 @@
   <br>
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
-        <%=image_tag("itworx.png", height: 140, width: 140, class: 'img-square img-responsive center-block') %>
+        <%=image_tag("itworx.png", height: 140, width: 140, class: 'img-circle img-responsive center-block') %>
     
       <h3 class="header-title"><center>COOP CATALYST</center></h3>
       <p class="category"><center> Cooperative Management Platform </center></p>
@@ -17,7 +17,7 @@
       <br>
       <%= simple_form_for(resource, as: resource_name, :url => session_path(resource_name),
         wrapper_mappings: {boolean: :vertical_boolean }) do |f| %>
-        <%=image_tag("itworx.png", height: 140, width: 140, class: 'img-square img-responsive center-block') %>
+        <%=image_tag("default.png", height: 140, width: 140, class: 'img-square img-responsive center-block') %>
         <br>
         <br>
         <%= f.input :email, placeholder: "Email", input_html:{class: "form-control input-lg"}, label: false %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170930033916) do
+ActiveRecord::Schema.define(version: 20170930050906) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,7 +24,6 @@ ActiveRecord::Schema.define(version: 20170930033916) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "main_account_id"
-    t.string "account_code"
     t.index ["code"], name: "index_accounts_on_code", unique: true
     t.index ["main_account_id"], name: "index_accounts_on_main_account_id"
     t.index ["name"], name: "index_accounts_on_name", unique: true
@@ -612,6 +611,7 @@ ActiveRecord::Schema.define(version: 20170930033916) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "saving_product_id"
+    t.string "account_owner_name"
     t.index ["account_number"], name: "index_savings_on_account_number", unique: true
     t.index ["member_id"], name: "index_savings_on_member_id"
     t.index ["saving_product_id"], name: "index_savings_on_saving_product_id"

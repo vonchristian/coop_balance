@@ -3,38 +3,21 @@
   <!-- Profile Image -->
   <div class="box box-solid">
     <div class="box-body box-profile">
-    <%= member_avatar(member, style: 'width:60px;height:60px;', class: "profile-user-img img-responsive img-circle") %>
+    <%= image_tag(member.avatar.url(:thumb), style: 'width:60px;height:60px;', class: "profile-user-img img-responsive img-circle") %>
       
       <h3 class="profile-username text-center"><%= member.first_and_last_name %></h3>
+      <% if @member.occupations.present? %>
+        <% @member.occupations.each do |occupation| %>
+          <center><span class="text-muted text-center"><%= occupation.title %> &nbsp; </span> </center>
+        <% end %>
+      <% end %>
+        <center><%= link_to 'Add Occupation', new_member_occupation_path(@member), class: 'text-muted text-center' %></center>
+        <hr>
 
-      <p class="text-muted text-center">Software Engineer</p>
+     
 
-      <ul class="list-group list-group-unbordered">
-        <li class="list-group-item">
-          <b>Followers</b> <a class="pull-right">1,322</a>
-        </li>
-        <li class="list-group-item">
-          <b>Following</b> <a class="pull-right">543</a>
-        </li>
-        <li class="list-group-item">
-          <b>Friends</b> <a class="pull-right">13,287</a>
-        </li>
-      </ul>
-
-      <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
-    </div>
-    <!-- /.box-body -->
-  </div>
-  <!-- /.box -->
-
-  <!-- About Me Box -->
-  <div class="box box-primary">
-    <div class="box-header with-border">
-      <h3 class="box-title">About Me</h3>
-    </div>
-    <!-- /.box-header -->
-    <div class="box-body">
-      <strong class="text-muted"><i class="fa fa-book margin-r-5"></i> Education</strong>
+     
+      <strong><i class="fa fa-book margin-r-5"></i> Education</strong>
 
       <p class="text-muted">
         B.S. in Computer Science from the University of Tennessee at Knoxville

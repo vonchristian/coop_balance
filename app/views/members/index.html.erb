@@ -5,7 +5,7 @@
       <div class="box-header">
         <div class="row">
           <div class="col-md-10 col-md-offset-1">
-            <%=form_tag management_module_members_path, method: :get, class: "sidebar-form" do %>
+            <%=form_tag members_path, method: :get, class: "sidebar-form" do %>
                 <div class="input-group">
                   <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search First Name, Last Name ", id: 'account-search-form' %>
                   <span class="input-group-btn">
@@ -23,7 +23,7 @@
         
         <% @members.each do |member| %>
           <% cache member do %>
-            <%= link_to management_module_member_path(member) do %>
+            <%= link_to member_path(member) do %>
               <div class="row">
                 <div class="col-md-3">
                   <center><%= image_tag(member.avatar.url(:thumb), class: "img-circle") %></center>

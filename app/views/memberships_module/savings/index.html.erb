@@ -1,0 +1,11 @@
+<% if @savings.present? %>
+  <% @savings.each do |saving| %>
+    <p class="condensed-text"> BALANCE </p>
+    <h3><%= number_to_currency saving.balance %></h3>
+  <% end %>
+<% else %>
+  <p class="alert alert-info">
+    No Savings Account found for <%= @member.full_name %>. &nbsp;
+    <%=link_to 'Open an Account', new_teller_module_member_saving_path(@member) %>
+  </p>
+<% end %>

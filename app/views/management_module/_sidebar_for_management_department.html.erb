@@ -27,7 +27,7 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
           <li class="header"> SERVICES </li>
-            <li class=<%= 'active' if current_page?(management_module_members_path) %> ><a href="/management_module/members"><i class="fa fa-users"></i> <span> Members</span></a></li>
+            <li class=<%= 'active' if current_page?(members_path) %> ><a href="/members"><i class="fa fa-users"></i> <span> Members</span></a></li>
 
           <li class=<%= 'active' if current_page?(management_module_share_capitals_path) %> ><a href="/management_module/share_capitals"><i class="fa fa-pie-chart"></i> <span> Share Capitals</span></a></li>
           <li class=<%= 'active' if current_page?(management_module_savings_path) %> ><a href="/management_module/savings"><i class="fa fa-money"></i> <span> Savings </span></a></li>

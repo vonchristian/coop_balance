@@ -10,13 +10,13 @@
   <body class="hold-transition skin-black-light sidebar-mini">
     <div class="wrapper">
       <%=render "layouts/shared/header" %>
-      <% if current_user.accounting_officer? %>
+      <% if current_user.bookkeeper? %>
         <%=render "accounting_module/sidebar" %>
       <% end %>
       <% if current_user.loan_officer? %>
         <%=render "loans_module/sidebar_for_loans_department" %>
       <% end %>
-      <% if current_user.general_manager? %>
+      <% if current_user.manager? %>
         <%=render "management_module/sidebar_for_management_department", cached: true %>
       <% end %>
       <% if current_user.teller? %>
@@ -25,8 +25,11 @@
       <% if current_user.stock_custodian? %>
         <%=render "warehouse_department/sidebar_for_warehouse_department", cached: true %>
       <% end %>
-      <% if current_user.store_cashier? %>
+      <% if current_user.sales_clerk? %>
         <%=render "store/sidebar_for_store", cached: true %>
+      <% end %>
+       <% if current_user.treasurer? %>
+        <%=render "treasury_module/sidebar", cached: true %>
       <% end %>
       <div class="content-wrapper">
         <section class="content">
