@@ -1,7 +1,8 @@
 class Member < ApplicationRecord
   include Avatarable
   include PgSearch 
-  pg_search_scope :text_search, :against => [:first_name, :middle_name, :last_name]
+  pg_search_scope :text_search, :against => [:passbook_number, :first_name, :middle_name, :last_name]
+  multisearchable agaisnt: [:passbook_number, :first_name]
   enum sex: [:male, :female, :other]
   
   has_one :tin, as: :tinable

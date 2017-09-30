@@ -3,7 +3,7 @@ class StoreController < ApplicationController
     if params[:name].present?
       @stocks = StoreModule::ProductStock.search_by_name(params[:name]).all.to_a.sort_by(&:date)
     else
-      @stocks = StoreModule::ProductStock.all.includes(:product)
+      @stocks = StoreModule::ProductStock.all.includes(:product).paginate(:page => params[:page], :per_page => 35)
     end 
     @cart = current_cart
     @line_item = StoreModule::LineItem.new

@@ -1,32 +1,72 @@
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-7">
     <div class="box box-solid">
       <div class="box-header">
         Order Details
       </div>
       <div class="box-body">
         <div class="row">
-          <div class="col-md-6 border-right">
-            <% @cart.line_items.each do |line_item| %>
-            <div class="row">
-              <div class="col-md-4">
-                <b><%= line_item.name %></b>
-              </div>
-              <div class="col-md-2">
-                <%= line_item.quantity %>
-              </div>
-              <div class="col-md-2">
-                <%= line_item.unit_cost %>
-              </div>
-              <div class="col-md-2">
-                <%= line_item.total_cost %>
-              </div>
-            </div>
-            <br>
-            <% end %>
+          <div class="col-md-1 col-sm-1 col-xs-1">
           </div>
+          <div class="col-md-1 col-sm-1 col-xs-1">
+            QTY
+          </div>
+          <div class="col-md-5 col-sm-5 col-xs-5">
+            Product
+          </div>
+          <div class="col-md-2 col-sm-2 col-xs-2">
+            <small>Unit Cost</small> 
+          </div>
+          <div class="col-md-3 col-sm-2 col-xs-2">
+            <small>Total Cost </small> 
+          </div>
+        </div>
+        <br>
+           <% @cart.line_items.each do |line_item| %>
+        <div class="row">
+          <div class="col-md-2">
+            <%= line_item.quantity.to_i %>
+          </div>
+          <div class="col-md-7">
+            <%= line_item.product_stock_name.try(:upcase) %><br>
+            <i><%= line_item.product_stock_barcode %></i><br>
+            <span class="label bg-gray">
+              <%= number_to_currency line_item.unit_cost %>
+            </span>
+          </div>
+          <div class="col-md-2">
+            <span class="pull-right"><%=number_to_currency line_item.total_cost %></span>
+          </div>
+        </div>
+        <br>
+        <% end %>
+        <hr>
+        <div class="row">
+          <div class="col-md-4 col-md-offset-2">
+            <b class="condensed-text"> TOTAL </b>
+          </div>
+          <div class="col-md-5">
+            <b><span class="pull-right"><%=number_to_currency @cart.line_items.total_cost %></span></b>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
       
-        <div class="col-md-4 col-md-offset-1">
+        <div class="col-md-5">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="condensed-text box-title"> PAYMENT DETAILS </h3>
+            <div class="box-body">
+               <div class="row">
+          <div class="col-md-4 col-md-offset-1">
+            <h3 class="condensed-text"> TOTAL </h3>
+          </div>
+          <div class="col-md-5">
+            <h3><span class="pull-right"><%=number_to_currency @cart.line_items.total_cost %></span></h3>
+          </div>
+        </div>
+        <hr>
           <%= simple_form_for @order do |f| %>
             <%= f.input :date, as: :string, input_html: { class: "datepicker", value: Time.zone.now.strftime("%B %e, %Y") } %>
             <%= f.input :member_id,  input_html: {id: 'member-select'}, collection: Member.all.map{|a| [a.full_name, a.id] } %>

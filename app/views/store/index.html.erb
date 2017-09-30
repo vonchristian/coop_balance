@@ -2,71 +2,100 @@
   <div class="col-md-7">
     <div class="box box-solid">
       <div class="box-body">
-        <%=form_tag store_index_path, method: :get, id: "search-form" do %>
-             <div class="input-group">
-               <%= text_field_tag :name, params[:name], class: "search-query form-control input-lg", placeholder: "Search...", type: "search" %>
-               <span class="input-group-btn">
-                 <%= button_tag(type: 'submit', class: "btn btn-flat btn-lg") do %>
-                   <i class="fa fa-search"></i>
-                 <% end %>
-               </span>
-             </div>
-           <% end %>
-           <br>
-        <% @stocks.each do |stock| %>
-          <div class="row">
-            <div class="col-md-2">
-              <%= image_tag(stock.product.photo.url(:medium), class: "img-square") %>
-            </div>
-            <div class="col-md-6">
-              <b><%= stock.name %></b><br>
-              <span class="label bg-gray">
-                <%=number_to_currency stock.unit_cost %>
-              </span>
-            </div>
-          <%= simple_form_for @line_item do |f| %>
-          <div class="col-md-2">
-            <%= f.input :quantity, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, label: false %>
-          <%= f.input :unit_cost, input_html: { value: stock.unit_cost, id: 'line_item_unit_cost' }, as: :hidden %>
-        </div>
-          <div class="col-md-2">
-          <%= f.input :product_stock_id, input_html: { value: stock.id }, as: :hidden %>
-          <%= f.submit "Add", class: "btn btn-primary btn-sm" %>
-        </div>
-        </div>
-        <br>
+         <%=form_tag store_index_path, method: :get, class: "sidebar-form" do %>
+      <div class="input-group">
+        <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search..." %>
+        <span class="input-group-btn">
+          <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+            <i class="fa fa-search"></i>
           <% end %>
-        <% end %>
+        </span>
+      </div>
+    <% end %>
+        <br>
+        
+          <% @stocks.each do |stock| %>
+            <div class="row">
+              <div class="col-md-5 col-md-offset-1">
+                <b><%= stock.name.try(:upcase) %></b><br>
+                <small class="text-muted"><%= stock.barcode %></small><br>
+                  <span class="label bg-green">
+                    <%= stock.in_stock.to_i %> left
+                  </span><br><br>
+               
+                <i class="fa fa-clock-o"></i> <%= stock.date.strftime("%b/%e/%y") %>
+              </div>
+              <div class="col-md-2">
+                <span class="pull-left"><%=number_to_currency stock.unit_cost %></span>
+              </div>
+              <%= simple_form_for @line_item do |f| %>
+                <div class="col-md-2">
+                  <% if !stock.out_of_stock? %>
+                    <%= f.input :quantity, as: :string, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, label: false %>
+                    <%= f.input :unit_cost, input_html: { value: stock.unit_cost, id: 'line_item_unit_cost' }, as: :hidden %>
+                  <% end %>
+                </div>
+                <div class="col-md-2">
+                  <%= f.input :product_stock_id, input_html: { value: stock.id }, as: :hidden %>
+                  <% if !stock.out_of_stock? %>
+                    <%= f.submit "Add", class: "btn btn-primary btn-sm" %>
+                  <% else %>
+                    <span class="badge bg-red pull-left"> <small>Out of Stock </small></span><br><br>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+            <hr>
+          <% end %>
+       
       </div>
     </div>
   </div>
 
   <div class="col-md-5">
     <div class="box box-solid">
+      <div class="box-header">
+        <h3 class="condensed-text box-title"> ORDER DETAILS </h3>
+      </div>
       <div class="box-body">
+        <div class="row">
+          
+          <div class="col-md-2 col-sm-1 col-xs-1">
+            QTY
+          </div>
+          <div class="col-md-7 col-sm-5 col-xs-5">
+            PRODUCT
+          </div>
+          
+          <div class="col-md-3 col-sm-2 col-xs-2">
+            <small>TOTAL COST</small> 
+          </div>
+        </div>
+        <br>
         <% @cart.line_items.each do |line_item| %>
         <div class="row">
-          <div class="col-md-4">
-            <b><%= line_item.name %></b>
+          <div class="col-md-2">
+            <%= line_item.quantity.to_i %>
+          </div>
+          <div class="col-md-7">
+            <%= line_item.product_stock_name.try(:upcase) %><br>
+            <small class="text-muted"><%= line_item.product_stock_barcode %></small><br>
+            <span class="label bg-gray">
+              <%= number_to_currency line_item.unit_cost %>
+            </span>
           </div>
           <div class="col-md-2">
-            <%= line_item.quantity %>
-          </div>
-          <div class="col-md-2">
-            <%= line_item.unit_cost %>
-          </div>
-          <div class="col-md-2">
-            <%= line_item.total_cost %>
+            <span class="pull-right"><%=number_to_currency line_item.total_cost %></span>
           </div>
         </div>
         <br>
         <% end %>
         <hr>
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-4 col-md-offset-2">
             <b> TOTAL </b>
           </div>
-          <div class="col-md-8">
+          <div class="col-md-5">
             <b><span class="pull-right"><%=number_to_currency @cart.line_items.total_cost %></span></b>
           </div>
         </div>

@@ -4,6 +4,7 @@ module StoreModule
 	  pg_search_scope :search_by_name, against: [:barcode]
 	  belongs_to :product, class_name: "StoreModule::Product"
 	  belongs_to :supplier
+    has_many :sold_items, class_name: "StoreModule::LineItem"
 	  delegate :name, to: :product
 
 	  validates :supplier_id, presence: true
@@ -12,6 +13,13 @@ module StoreModule
     def self.total 
       sum(&:quantity)
     end
+    def in_stock
+      quantity - sold_items.total
+    end
+    def out_of_stock?
+      in_stock.zero?
+    end
+
 
 	  private 
 	  def set_default_date 
