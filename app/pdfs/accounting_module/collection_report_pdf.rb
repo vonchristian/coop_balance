@@ -22,7 +22,7 @@ module AccountingModule
     end
 
     def heading 
-      image "#{Rails.root}/app/assets/images/logo_grayscale.jpg", width: 50, height: 50
+      image "#{Rails.root}/app/assets/images/logo.jpg", width: 50, height: 50, align: :center
       move_down 5
       text "COLLECTION REPORT"
       if @employee.present?

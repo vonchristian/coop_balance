@@ -9,6 +9,9 @@ module MembershipsModule
     delegate :interest_rate, to: :saving_product, prefix: true
     has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document
     before_save :set_account_owner_name
+    def self.top_savers 
+      all.to_a.sort_by(&:balance).first(10)
+    end
     def self.post_interests_earned
       all.each do |saving|
         post_interests_earned(saving)

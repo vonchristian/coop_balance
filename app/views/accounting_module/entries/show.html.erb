@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="box box-primary">
+      <div class="box-header">
+        <h3 class="box-title"> Entry Details </h3>
+      </div>
+      <div class="box-body">
+        <p>Date <%=@entry.entry_date.strftime("%B %e, %Y") %></p>
+        <p>Reference NUmber <%= @entry.reference_number %></p>
+        <p>Employee <%= @entry.recorder.try(:first_and_last_name) %></p>
+        <hr>
+        <p>Debits</p>
+        <% @entry.debit_amounts.each do |debit| %>
+          <div class="row">
+            <div class="col-md-6">
+              <%= debit.account.try(:name) %>
+            </div>
+            <div class="col-md-6">
+              <%= number_to_currency debit.amount %>
+            </div>
+          </div>
+          <br>
+        <% end %>
+        <hr>
+        <p>Credits</p>
+        <% @entry.credit_amounts.each do |credit| %>
+          <div class="row">
+            <div class="col-md-6">
+              <%= credit.account.try(:name) %>
+            </div>
+            <div class="col-md-6">
+              <%= number_to_currency credit.amount %>
+            </div>
+          </div>
+          <br>
+        <% end %>

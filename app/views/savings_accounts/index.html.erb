@@ -22,10 +22,10 @@
                   <center> <%= member_avatar(savings_account.member, style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center>
                 </div>
                 <div class="col-md-5">
-                  <%= savings_account.account_number %>
+                  #<%= savings_account.account_number %>
                   <br>
-                  <small class="text-muted"><%= savings_account.member.full_name.try(:upcase) %></small><br>
-                  <small class="text-muted"> <%= savings_account.saving_product_name %></small><br><br>
+                  <p class=""><%= savings_account.member.full_name.try(:upcase) %></p>
+                  <small class=""> <%= savings_account.saving_product_name %></small><br><br>
                   <%= link_to 'Deposit', new_savings_account_deposit_path(savings_account), class: "btn btn-xs btn-success" %> &nbsp; &nbsp;
                   <%= link_to 'Withdraw', new_savings_account_withdrawal_path(savings_account), class: "btn btn-xs btn-warning" %>
 
@@ -50,6 +50,7 @@
         <small class="text-muted"> TOTAL SAVINGS</small><br>
         <h3 class="box-title"> <%= number_to_currency AccountingModule::Account.find_by(name: "Savings Deposits").balance %></h3>
       </div>
+     
     </div>
   </div>
 </div>

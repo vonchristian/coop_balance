@@ -2,7 +2,7 @@ module AccountingModule
   class Entry < ApplicationRecord
     include PgSearch
     pg_search_scope :text_search, :against => [:reference_number, :description]
-
+    multisearchable against: [:reference_number, :description]
     enum entry_type: [:capital_build_up, 
                       :deposit, 
                       :withdrawal, 
