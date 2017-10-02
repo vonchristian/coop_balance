@@ -1,9 +1,9 @@
 class MembersController < ApplicationController
   def index
     if params[:search].present?
-      @members = Member.text_search(params[:search]).order(:last_name)
+      @members = Member.text_search(params[:search]).order(:last_name).paginate(page: params[:page], per_page: 35)
     else 
-      @members = Member.all.includes([:addresses]).order(:last_name)
+      @members = Member.all.includes([:addresses]).order(:last_name).paginate(page: params[:page], per_page: 35)
     end
   end
   def new 

@@ -1,7 +1,7 @@
 class CollectionsController < ApplicationController
   def index 
     @employees = User.all
-    @entries = AccountingModule::Account.find_by(name: "Cash on Hand (Treasury)").debit_entries
+    @entries = AccountingModule::Account.find_by(name: "Cash on Hand (Treasury)").debit_entries.paginate(page: params[:page], per_page: 30)
     @employee = User.find_by(id: params[:recorder_id])
     respond_to do |format| 
       format.html

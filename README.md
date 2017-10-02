@@ -30,3 +30,5 @@ add policies for pages
 
 cash disbursement per employee 
 cash receiveds per employee
+
+cash disbursement voucher printable pdf

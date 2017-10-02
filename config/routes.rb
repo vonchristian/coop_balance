@@ -185,6 +185,7 @@ Rails.application.routes.draw do
   resources :disbursements, only: [:index, :show, :new, :create]
   resources :collections, only: [:index, :show]
   resources :suppliers, only: [:index, :show, :new, :create]
+  resources :registries, only: [:create]
   mount ActionCable.server => '/cable'
 
 end

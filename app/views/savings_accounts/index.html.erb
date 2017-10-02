@@ -24,9 +24,9 @@
                 <div class="col-md-5">
                   <%= savings_account.account_number %>
                   <br>
-                  <small class="text-muted"><%= savings_account.member.first_and_last_name.upcase %></small><br>
+                  <small class="text-muted"><%= savings_account.member.full_name.try(:upcase) %></small><br>
                   <small class="text-muted"> <%= savings_account.saving_product_name %></small><br><br>
-                  <%= link_to 'Deposit', new_savings_account_deposit_path(savings_account), class: "btn btn-xs btn-success" %> &nbsp; | &nbsp;
+                  <%= link_to 'Deposit', new_savings_account_deposit_path(savings_account), class: "btn btn-xs btn-success" %> &nbsp; &nbsp;
                   <%= link_to 'Withdraw', new_savings_account_withdrawal_path(savings_account), class: "btn btn-xs btn-warning" %>
 
 
@@ -40,6 +40,15 @@
             <% end %>
           <% end %>
         <% end %>
+        <center><%= will_paginate @savings_accounts %> </center>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div  class="box box-default">
+      <div class="box-header">
+        <small class="text-muted"> TOTAL SAVINGS</small><br>
+        <h3 class="box-title"> <%= number_to_currency AccountingModule::Account.find_by(name: "Savings Deposits").balance %></h3>
       </div>
     </div>
   </div>

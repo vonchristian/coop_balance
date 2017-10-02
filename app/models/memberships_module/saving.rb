@@ -5,7 +5,7 @@ module MembershipsModule
 
     belongs_to :member, class_name: "Member", foreign_key: 'member_id'
     belongs_to :saving_product, class_name: "CoopServicesModule::SavingProduct"
-    delegate :name, to: :saving_product, prefix: true
+    delegate :name, to: :saving_product, prefix: true, allow_nil: true
     delegate :interest_rate, to: :saving_product, prefix: true
     has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document
     before_save :set_account_owner_name

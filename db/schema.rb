@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171002072932) do
+ActiveRecord::Schema.define(version: 20171002102414) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -604,6 +604,16 @@ ActiveRecord::Schema.define(version: 20171002072932) do
     t.datetime "updated_at", null: false
     t.index ["member_id"], name: "index_real_properties_on_member_id"
     t.index ["type"], name: "index_real_properties_on_type"
+  end
+
+  create_table "registries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "date"
+    t.string "spreadsheet_file_name"
+    t.string "spreadsheet_content_type"
+    t.integer "spreadsheet_file_size"
+    t.datetime "spreadsheet_updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "saving_products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
