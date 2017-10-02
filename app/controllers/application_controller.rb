@@ -5,6 +5,12 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :permission_denied
 
 
+ protected
+  def after_sign_in_path_for(current_user)
+    if current_user.treasurer?
+      treasury_module_root_url
+    end
+  end
 
   private
   def current_cart

@@ -21,3 +21,5 @@ Chart monthly revenue percentage
 - Store update
 - suppliers index
 - Uploading of stocks
+
+Check paginations on entries index page

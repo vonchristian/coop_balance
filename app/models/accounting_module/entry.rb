@@ -1,5 +1,8 @@
 module AccountingModule
   class Entry < ApplicationRecord
+    include PgSearch
+    pg_search_scope :text_search, :against => [:reference_number, :description]
+
     enum entry_type: [:capital_build_up, 
                       :deposit, 
                       :withdrawal, 
@@ -14,7 +17,8 @@ module AccountingModule
                       :time_deposit, 
                       :program_subscription_payment, 
                       :loan_penalty,
-                      :time_deposit_interest
+                      :time_deposit_interest, 
+                      :adjusting_entry
                     ]
     belongs_to :commercial_document, :polymorphic => true
     belongs_to :recorder, foreign_key: 'recorder_id', class_name: "User"
@@ -26,7 +30,7 @@ module AccountingModule
     has_many :debit_amounts, :extend => AmountsExtension, :class_name => 'AccountingModule::DebitAmount', :inverse_of => :entry, dependent: :destroy
     has_many :credit_accounts, :through => :credit_amounts, :source => :account, :class_name => 'AccountingModule::Account'
     has_many :debit_accounts, :through => :debit_amounts, :source => :account, :class_name => 'AccountingModule::Account'
-
+    has_many :amounts, class_name: "AccountingModule::Amount"
     validates :description, presence: true
     validate :has_credit_amounts?
     validate :has_debit_amounts?
@@ -39,7 +43,16 @@ module AccountingModule
     before_save :set_default_date
 
     delegate :first_and_last_name, to: :recorder, prefix: true, allow_nil: true
-
+    
+    def self.entered_on(hash={})
+      if hash[:from_date] && hash[:to_date]
+        from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : DateTime.parse(hash[:from_date])
+        to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : DateTime.parse(hash[:to_date])
+        includes([:amounts]).where('entries.entry_date' => from_date..to_date)
+      else
+        all
+      end
+    end
     def self.total(hash={})
       if hash[:from_date] && hash[:to_date]
         from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : DateTime.parse(hash[:from_date])

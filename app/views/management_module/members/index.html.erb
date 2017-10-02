@@ -1,4 +1,7 @@
-
+<%= form_tag import_management_module_members_path, multipart: true do %>
+  <%= file_field_tag :file %>
+  <%= submit_tag "Import Members" %>
+<% end %>
 <div class="row">
   <div class="col-md-8">
     <div class="box box-solid">

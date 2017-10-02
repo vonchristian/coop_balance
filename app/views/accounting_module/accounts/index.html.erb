@@ -1,13 +1,13 @@
 <div class="row">
   <div class="col-md-12">
-    <div class="box box-primary">
-      <div class="box-header">
+    <div class="box box-solid">
+      <div class="box-header with-border">
         <div class="row">
           <div class="col-md-2">
-            Accounts
+            <p class="condensed-text">ACCOUNTS </p>
           </div>
           <div class="col-md-6">
-            <%=form_tag accounting_module_accounts_path, method: :get, class: "search-form" do %>
+            <%=form_tag accounting_module_accounts_path, method: :get, class: "sidebar-form" do %>
             <div class="input-group">
               <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Account..", id: 'account-search-form' %>
               <span class="input-group-btn">
@@ -53,7 +53,7 @@
               <% end %>
             </tbody>
           </table>
-          <center><%= paginate @accounts %></center>
+          <center><%= will_paginate @accounts %></center>
         </div>
       </div>
     </div>

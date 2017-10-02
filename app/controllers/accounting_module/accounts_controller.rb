@@ -2,9 +2,9 @@ module AccountingModule
   class AccountsController < ApplicationController
     def index
       if params[:search].present?
-        @accounts = AccountingModule::Account.text_search(params[:search]).page(params[:page]).per(50)
+        @accounts = AccountingModule::Account.text_search(params[:search]).paginate(:page => params[:page], :per_page => 30)
       else 
-        @accounts = AccountingModule::Account.all.order(:code).page(params[:page]).per(50)
+        @accounts = AccountingModule::Account.all.order(:code).paginate(:page => params[:page], :per_page => 30)
       end
     end
     def new
