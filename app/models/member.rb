@@ -3,7 +3,7 @@ class Member < ApplicationRecord
   include Avatarable
   include PgSearch 
   pg_search_scope :text_search, :against => [:passbook_number, :first_name, :middle_name, :last_name]
-  multisearchable agaisnt: [:passbook_number, :first_name]
+  multisearchable against: [:passbook_number, :first_name, :last_name, :middle_name]
   enum sex: [:male, :female, :other]
   
   has_one :tin, as: :tinable
@@ -35,7 +35,9 @@ class Member < ApplicationRecord
       Member.create!(row.to_hash)
     end 
   end
-
+  def name #for search results
+    full_name
+  end
   def full_name
     "#{last_name}, #{first_name} #{middle_name}"
   end

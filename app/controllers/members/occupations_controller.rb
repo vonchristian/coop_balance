@@ -8,7 +8,7 @@ module Members
       @member = Member.find(params[:member_id])
       @occupation = @member.occupations.create(occupation_params)
       if @occupation.valid?
-        @occupation.save 
+        @occupation.save
         redirect_to member_url(@member), notice: "Occupation added successfully."
       else 
         render :new 

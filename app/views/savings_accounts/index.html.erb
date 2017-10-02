@@ -1,0 +1,67 @@
+<div class="row">
+  <div class="col-md-6">
+    <div class="box box-solid">
+      <div class="box-header">
+        <%=form_tag management_module_savings_path, method: :get, class: "search-form" do %>
+            <div class="input-group">
+              <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Account Number ", id: 'account-search-form' %>
+              <span class="input-group-btn">
+                <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                  <i class="fa fa-search"></i>
+                <% end %>
+              </span>
+            </div>
+          <% end %>
+      </div>
+      <div class="box-body">
+        <% @savings_accounts.each do |savings_account| %>
+          <%=link_to management_department_saving_path(savings_account) do %>
+            <% cache savings_account do %>
+              <div class="row">
+                <div class="col-md-2">
+                  <center> <%= member_avatar(savings_account.member, style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center>
+                </div>
+                <div class="col-md-5">
+                  <%= savings_account.account_number %>
+                  <br>
+                  <small class="text-muted"><%= savings_account.member.first_and_last_name.upcase %></small><br>
+                  <small class="text-muted"> <%= savings_account.saving_product_name %></small><br>
+                  <br>
+                </div>
+                <div class="col-md-3">
+                  <h4 class="text-muted"><center><%=number_to_currency savings_account.balance %></center></h4>
+                </div>
+              </div>
+              <hr>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="box box-primary">
+      <div class="box-header">
+        <h3 class="box-title"> Saving Products </h3>
+      </div>
+      <div class="box-body">
+        <% SavingProduct.includes(:subscribers).all.each do |saving_product| %>
+          <div class="row">
+            <div class="col-md-6">
+              <%=saving_product.name %><br>
+              <span class="badge bg-gray"><%=saving_product.subscribers.count %> Savers </span>
+            </div>
+            <div class="col-md-3">
+              <%=number_to_currency saving_product.subscribers.sum(&:balance) %>
+            </div>
+          </div>
+          <br>
+        <% end %>
+      </div>
+      <div class="box-footer">
+        <small> TOTAL SAVINGS </small>
+        <h3> <%=number_to_currency @savings_accounts.sum(&:balance) %></h3>
+      </div>
+    </div>
+  </div>
+</div>

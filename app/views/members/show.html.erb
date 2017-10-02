@@ -1,1 +1,25 @@
-<%= render 'members/partials/sidebar', member: @member %>
+
+  <div class="row">
+    <div class="col-md-3">
+      <%= render 'members/partials/sidebar', member: @member %>
+    </div>
+    <div class="col-md-9">
+      <div class="box box-solid">
+        <div class="box-header">
+        <ul class="nav nav-tabs">
+
+          <li class="active"><a href="#loans" data-toggle="tab">Loans</a></li>
+          <li><a href="#savings" data-toggle="tab">Savings</a></li>
+          <li><a href="#share_capital" data-toggle="tab">Share Capital</a></li>
+          <li><a href="#time-deposit" data-toggle="tab">Time Deposit</a></li>
+        </ul>
+      </div>
+        <div class="tab-content box-body">
+          <%=render 'members/partials/loans', member: @member %>
+          <%=render 'members/partials/savings', member: @member %>
+          <%=render 'members/partials/properties', member: @member %>
+      </div>
+    </div>
+      </div>
+</div>
+

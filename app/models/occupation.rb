@@ -1,3 +1,8 @@
 class Occupation < ApplicationRecord
-  validates :title, presence: true, uniqueness: true
+  include PgSearch
+  multisearchable against: [:title]
+  validates :title, presence: true
+  def name #for search results
+    title 
+  end
 end

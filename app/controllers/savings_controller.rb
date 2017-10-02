@@ -8,7 +8,7 @@ class SavingsController < ApplicationController
     @saving = SavingForm.new(saving_params)
     if @saving.valid?
       @saving.save
-      redirect_to management_module_member_url(@member), notice: "Success"
+      redirect_to member_url(@member), notice: "Savings Account opened successfully."
     else
       render :new
     end

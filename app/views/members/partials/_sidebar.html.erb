@@ -1,9 +1,9 @@
-<div class="col-md-3">
+
 
   <!-- Profile Image -->
   <div class="box box-solid">
     <div class="box-body box-profile">
-    <%= image_tag(member.avatar.url(:thumb), style: 'width:60px;height:60px;', class: "profile-user-img img-responsive img-circle") %>
+    <%= image_tag(member.avatar.url(:thumb), class: "profile-user-img img-responsive img-circle") %>
       
       <h3 class="profile-username text-center"><%= member.first_and_last_name %></h3>
       <% if @member.occupations.present? %>
@@ -17,38 +17,31 @@
      
 
      
-      <strong><i class="fa fa-book margin-r-5"></i> Education</strong>
+      <strong><i class="fa fa-phone margin-r-5"></i> Contact Number</strong>
 
       <p class="text-muted">
-        B.S. in Computer Science from the University of Tennessee at Knoxville
+        
       </p>
 
       <hr>
 
-      <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
+      <strong><i class="fa fa-map-marker margin-r-5"></i> Address</strong>
 
-      <p class="text-muted">Malibu, California</p>
+      <p class="text-muted"></p>
+      <hr>
+       <strong><i class="fa fa-book margin-r-5"></i> Education</strong>
+
+      <p class="text-muted"></p>
 
       <hr>
 
-      <strong><i class="fa fa-pencil margin-r-5"></i> Skills</strong>
 
-      <p>
-        <span class="label label-danger">UI Design</span>
-        <span class="label label-success">Coding</span>
-        <span class="label label-info">Javascript</span>
-        <span class="label label-warning">PHP</span>
-        <span class="label label-primary">Node.js</span>
-      </p>
 
-      <hr>
-
-      <strong><i class="fa fa-file-text-o margin-r-5"></i> Notes</strong>
+      <strong><i class="fa fa-file-text margin-r-5"></i> Notes</strong>
 
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
     </div>
     <!-- /.box-body -->
   </div>
   <!-- /.box -->
-</div>
-<!-- /.col -->
+

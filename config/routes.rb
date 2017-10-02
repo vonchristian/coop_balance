@@ -70,7 +70,7 @@ Rails.application.routes.draw do
     resources :address_details
     resources :occupations, only: [:new, :create], module: :members
     resources :share_capitals, only: [:index, :new, :create]
-    resources :savings, only: [:index, :new, :create], module: :memberships_module
+    resources :savings_accounts, only: [:index, :new, :create], module: :memberships_module
     resources :time_deposits, only: [:index, :new, :create]
 
 
@@ -166,6 +166,9 @@ Rails.application.routes.draw do
       resources :deposits, only: [:new, :create]
     end
   end
+  resources :savings_accounts, only: [:index, :show]
+  resources :search_results, only: [:index, :show]
+  resources :occupations, only: [:index, :show]
   mount ActionCable.server => '/cable'
 
 end
