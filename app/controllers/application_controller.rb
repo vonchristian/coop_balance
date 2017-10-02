@@ -4,14 +4,6 @@ class ApplicationController < ActionController::Base
   before_action :authenticate_user!
   rescue_from Pundit::NotAuthorizedError, with: :permission_denied
 
-
- protected
-  def after_sign_in_path_for(current_user)
-    if current_user.treasurer?
-      treasury_module_root_url
-    end
-  end
-
   private
   def current_cart
       StoreModule::Cart.find(session[:cart_id])

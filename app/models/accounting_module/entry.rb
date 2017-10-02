@@ -18,8 +18,10 @@ module AccountingModule
                       :program_subscription_payment, 
                       :loan_penalty,
                       :time_deposit_interest, 
-                      :adjusting_entry
+                      :adjusting_entry,
+                      :fund_transfer
                     ]
+    has_one :clearance, class_name: "EntryClearance"
     belongs_to :commercial_document, :polymorphic => true
     belongs_to :recorder, foreign_key: 'recorder_id', class_name: "User"
     belongs_to :department
@@ -64,6 +66,9 @@ module AccountingModule
     end
     def total
       debit_amounts.sum(:amount)
+    end
+    def cleared?
+      clearance.present?
     end
 
     private

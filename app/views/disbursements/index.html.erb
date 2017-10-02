@@ -1,0 +1,108 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-solid">
+      <div class="box-body">
+        <div class="row">
+          <div class="col-md-8">
+            <%=form_tag disbursements_path, method: :get, class: "sidebar-form" do %>
+              <div class="input-group">
+                <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Entry...", id: 'taxpayer-search-form' %>
+                <span class="input-group-btn">
+                  <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                    <i class="fa fa-search"></i>
+                  <% end %>
+                </span>
+              </div>
+            <% end %>
+          </div>
+          <div class="col-md-4">
+            <%= link_to "New Disbursement", new_disbursement_path, class: "btn btn-primary pull-right" %>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-5">
+            <span class="text-muted condensed-text"> SHOW ACTIVITY: </span> &nbsp; 
+            <%=link_to 'Yesterday', accounting_module_entries_path(from_date: Time.zone.now.yesterday.beginning_of_day, to_date: Time.zone.now.yesterday.end_of_day ), class: "btn btn-default"  %>
+
+            <%=link_to 'This Day', accounting_module_entries_path(from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day ), class: "btn btn-default"  %>
+            <%=link_to 'This Week', accounting_module_entries_path(from_date: Time.zone.now.beginning_of_week.beginning_of_day, to_date: Time.zone.now.end_of_week.end_of_day ), class: "btn btn-default"  %>
+            <%=link_to 'This Month', accounting_module_entries_path(from_date: Time.zone.now.beginning_of_week.beginning_of_day, to_date: Time.zone.now.end_of_week.end_of_day ), class: "btn btn-default"  %>
+          </div>
+          <div class="col-md-7">
+            <%= form_tag({:action => "index", controller: "accounting_module/entries"}, {:method => :get})  do %>
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <%= text_field_tag :from_date, @from_date, :class => 'datepicker form-control border-input', :placeholder => "From " %>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <%= text_field_tag :to_date, @to_date, :class => 'form-control border-input datepicker', :placeholder => "To " %>
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <button type="submit" class="btn btn-default"> Go</button>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+        <hr>
+        <span class="condensed-text">FILTERS: &nbsp; </span>
+        <% AccountingModule::Entry.entry_types.keys.to_a.each do |entry_type| %>
+          <span class="btn btn-default btn-sm"> <span class="text-muted"> <%=link_to entry_type.titleize, accounting_module_entries_path(entry_type: entry_type), class: "text-muted" %> </span> </span> &nbsp;
+        <% end %>
+        <hr />
+    
+      <p class="condensed-text"> PER EMPLOYEE </span></p>
+      <% @employees.each do |employee| %>
+        <%=link_to disbursements_path(recorder_id: employee.id) do %>
+          <span data-toggle="tooltip" title="<%=employee.first_name %>" data-placement="top">
+            &nbsp;<%= image_tag(employee.avatar.url(:medium), class: "img-circle", height: 45, width: 45) %> &nbsp;
+          </span>
+        <% end %>
+      <% end %>
+      <br>
+      <br>
+    </div>
+
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-default">
+      <div class="box-header">
+        <h3 class="box-title"> <%= params[:entry_type].try(:titleize) || "All" %> Entries </h3>
+        <%=link_to 'Print', disbursements_path(format: 'pdf'), class: "btn btn-default" %>
+      </div>
+      <div class="box-body">
+        <div class="table table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th> Date </th>
+                <th> Description </th>
+                <th> Reference Number </th>
+                <th> Amount </th>
+                <th> Member </th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @entries.each do |entry| %>
+                <% cache entry do %>
+                  <%= render 'accounting_module/entries/entry', entry: entry %>
+                <% end %>
+              <% end %>
+            </tbody>
+          </table>
+          <% if @entries.exists? %>
+            <center><%#= will_paginate @entries %></center>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

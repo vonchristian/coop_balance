@@ -1,0 +1,50 @@
+
+<div id="supplier-modal" class="modal fade"></div>
+<div class="row">
+                    <div class="col-md-12">
+                        <div class="box box-solid">
+                            <div class="box-header">
+                              <div class="row">
+                                <div class="col-md-3">
+                                  <h4 class="title">Suppliers</h4>
+                                  <p class="category">List of suppliers</p>
+                                </div>
+                                <div class="col-md-7">
+                                  <%=form_tag suppliers_path, method: :get, id: "sidebar-form" do %>
+                                    <div class="input-group">
+                                      <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search supplier...", type: "search" %>
+                                      <span class="input-group-btn">
+                                        <%= button_tag(type: 'submit', class: "btn") do %>
+                                          <i class="icon-magnifier"></i>
+                                        <% end %>
+                                      </span>
+                                    </div>
+                                  <% end %>
+                                </div>
+                                <div class="col-md-2">
+                                  <%=link_to 'New Supplier', new_supplier_path, class: "btn btn-primary pull-right", remote: true %>
+                                </div>
+                              </div>
+                            <div class="content table-responsive table-full-width">
+                                <table class="table table-striped">
+                                    <thead>
+                                      
+                                      <th>Business Name</th>
+                                      <th>Owner Name</th>
+                                      <th>Address</th>
+                                      <th>Contact</th>
+                                      <th>Purchases</th>
+                                    </thead>
+                                    <tbody>
+                                      <% @suppliers.each do |supplier| %>
+                                        <tr>
+                                          <td><%= link_to supplier.business_name, supplier %></td>
+                                          <td><%= supplier.owner_name %></td>
+                                          <td><%= supplier.address %></td>
+                                          <td><%= supplier.contact_number %></td>
+                                          <td><%#= customer.purchases_count %></td>
+                                        </tr>
+                                      <% end %>
+                                    </tbody>
+                                  </table>
+                                  <center> <%= will_paginate @suppliers %></center>

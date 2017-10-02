@@ -12,10 +12,12 @@
           <div class="col-md-3 border-right">
             <small class="text-muted">DEPOSITS </small>
             <h4><%= number_to_currency @savings_account.deposits %></h4>
+            <%= link_to 'New Deposit', new_savings_account_deposit_path(@savings_account), class: "btn btn-success" %>
           </div>
           <div class="col-md-3 border-right">
             <small class="text-muted">WITHDRAWALS </small>
             <h4><%= number_to_currency @savings_account.withdrawals %></h4>
+            <%= link_to 'New Withdrawal', new_savings_account_withdrawal_path(@savings_account), class: "btn btn-warning" %>
           </div>
           <div class="col-md-3 border-right">
             <small class="text-muted">EARNED INTERESTS</small>

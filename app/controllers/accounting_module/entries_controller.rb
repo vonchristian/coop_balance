@@ -15,6 +15,8 @@ module AccountingModule
         @entries = entries.paginate(:page => params[:page])
       elsif params[:search].present?
         @entries = AccountingModule::Entry.text_search(params[:search]).paginate(:page => params[:page], :per_page => 50)
+      elsif params[:recorder].present?
+        @entries = User.find(id: params[:recorder_id]).entries
       else
         @entries = AccountingModule::Entry.all.paginate(:page => params[:page], :per_page => 50)
       end
@@ -38,7 +40,7 @@ module AccountingModule
 
     private 
     def entry_params
-      params.require(:accounting_module_entry_form).permit(:user_id, :amount, :debit_account_id, :credit_account_id, :entry_date, :description, :reference_number, :entry_type)
+      params.require(:accounting_module_entry_form).permit(:recorder_id, :amount, :debit_account_id, :credit_account_id, :entry_date, :description, :reference_number, :entry_type)
     end
   end
 end

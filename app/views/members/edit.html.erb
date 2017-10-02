@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="box box-primary">
+      <div class="box-header">
+        <h3 class="box-title"> Edit Member Details </h3>
+      </div>
+      <div class="box-body">
+        <%= simple_form_for @member do |f| %>
+          <%if @member.avatar.blank? %>
+            <center><%=image_tag("default.png", height: 80, width: 80, :class=>"img-circle") %></center>
+          <% else %>
+            <center><%= image_tag @member.avatar.url(:large), class: 'center-block img-responsive img-circle'%></center>
+          <% end %>
+          <center><%= f.input :avatar, as: :file, label: "Upload photo" %></center>
+          <%= f.error_notification %>
+          <%= f.input :first_name %>
+          <%= f.input :middle_name %>
+          <%= f.input :last_name %>
+          <%= f.input :contact_number %>
+          <%= f.input :sex, collection: Member.sexes.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
+          <%= f.input :date_of_birth, as: :string, input_html: { class: "datepicker" } %>
+          <%= f.simple_fields_for :tin do |t| %>
+          <%= t.input :number, label: "TIN Number" %>
+          <% end %>
+          <div class="box-footer">
+            <%= f.submit "Save Member", class: "btn btn-primary pull-right" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

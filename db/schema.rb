@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170930050906) do
+ActiveRecord::Schema.define(version: 20171002072932) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -221,6 +221,16 @@ ActiveRecord::Schema.define(version: 20170930050906) do
     t.index ["entry_date"], name: "index_entries_on_entry_date"
     t.index ["entry_type"], name: "index_entries_on_entry_type"
     t.index ["recorder_id"], name: "index_entries_on_recorder_id"
+  end
+
+  create_table "entry_clearances", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "entry_id"
+    t.datetime "clearance_date"
+    t.uuid "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["entry_id"], name: "index_entry_clearances_on_entry_id"
+    t.index ["user_id"], name: "index_entry_clearances_on_user_id"
   end
 
   create_table "finished_good_materials", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -657,6 +667,8 @@ ActiveRecord::Schema.define(version: 20170930050906) do
     t.string "avatar_content_type"
     t.integer "avatar_file_size"
     t.datetime "avatar_updated_at"
+    t.string "business_name"
+    t.string "address"
   end
 
   create_table "time_deposit_products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -771,6 +783,8 @@ ActiveRecord::Schema.define(version: 20170930050906) do
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "debit_account_id"
   add_foreign_key "entries", "departments"
   add_foreign_key "entries", "users", column: "recorder_id"
+  add_foreign_key "entry_clearances", "entries"
+  add_foreign_key "entry_clearances", "users"
   add_foreign_key "finished_good_materials", "products"
   add_foreign_key "finished_good_materials", "raw_materials"
   add_foreign_key "line_items", "carts"

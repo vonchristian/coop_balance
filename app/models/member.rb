@@ -19,7 +19,8 @@ class Member < ApplicationRecord
   has_many :programs, through: :program_subscriptions
   has_many :orders, class_name: "StoreModule::Order"
   has_many :real_properties
-
+  accepts_nested_attributes_for :tin, :addresses
+  delegate :number, to: :tin, prefix: true, allow_nil: true
   has_attached_file :avatar,
   styles: { large: "120x120>",
            medium: "70x70>",

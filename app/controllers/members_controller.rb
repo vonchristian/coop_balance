@@ -9,6 +9,7 @@ class MembersController < ApplicationController
   def new 
     @member = Member.new 
     @member.build_tin
+    @member.addresses.build
   end
   def create 
     @member = Member.create(member_params)
@@ -23,9 +24,23 @@ class MembersController < ApplicationController
   def show
     @member = Member.find(params[:id])
   end
+  def edit 
+    @member = Member.find(params[:id])
+  end 
+  def update 
+    @member = Member.find(params[:id])
+    @member.update(member_params)
+    if @member.save 
+      redirect_to @member, notice: "Member updated successfully."
+    else 
+      render :edit 
+    end 
+  end 
+
 
   private 
   def member_params
-    params.require(:member).permit(:first_name, :middle_name, :last_name, :sex, :date_of_birth, :contact_number, :avatar)
+    params.require(:member).permit(:first_name, :middle_name, :last_name, :sex, :date_of_birth, :contact_number, :avatar, tin_attributes: [:number],
+      addresses_attributes: [:street, :barangay, :municipality, :province])
   end
 end 

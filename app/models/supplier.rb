@@ -11,7 +11,7 @@ class Supplier < ApplicationRecord
   :path => ":rails_root/public/system/:attachment/:id/:style/:filename",
   :url => "/system/:attachment/:id/:style/:filename"
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
-  def full_name
+  def owner_name
     [first_name, last_name].join(" ")
   end
   def balance

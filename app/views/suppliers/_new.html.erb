@@ -1,0 +1,39 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">New Supplier</h4>
+    </div>
+    <%=simple_form_for @supplier, url: :suppliers, remote: true do |f| %>
+    <%= f.error_notification %>
+      <div class="modal-body">
+        <ul class="errors text-danger">
+        </ul>
+        <div class="row">
+          <div class="col-md-12">
+            <%= f.input :business_name %>
+          </div>
+        </div>
+        <p class="text-muted"> Owner Details </p>
+        <div class="row">
+          <div class="col-md-6">
+            <%=f.input :first_name %>
+          </div>
+           <div class="col-md-6">
+            <%=f.input :last_name %>
+          </div>
+        </div>
+         <div class="row">
+          <div class="col-md-6">
+            <%=f.input :address %>
+          </div>
+           <div class="col-md-6">
+            <%=f.input :contact_number %>
+          </div>
+        </div>
+      <div class="modal-footer">
+        <%= link_to "Cancel", "#", class: "btn btn-default pull-left", data: {dismiss: "modal"} %>
+        <%=f.submit "Save Supplier", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+</div>

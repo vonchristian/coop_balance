@@ -1,12 +1,26 @@
 Rails.application.routes.draw do
   devise_for :committee_members
+  devise_for :users, controllers: { sessions: 'users/sessions', registrations: "bplo_section/settings/users"}
+  root :to => 'treasury_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'treasurer' if request.env['warden'].user }, as: :treasury_root
+  root :to => 'accounting_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'bookkeeper' if request.env['warden'].user }, as: :accounting_module_root
+  root :to => 'loans_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'loan_officer' if request.env['warden'].user }, as: :loans_module_root
+  root :to => 'management_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'manager' if request.env['warden'].user }, as: :management_module_root
+  root :to => 'teller_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'teller' if request.env['warden'].user }, as: :teller_module_root
+  root :to => 'warehouse_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'stock_custodian' if request.env['warden'].user }, as: :warehouse_module_root
+  root :to => 'store#index', :constraints => lambda { |request| request.env['warden'].user.role == 'sales_clerk' if request.env['warden'].user }, as: :store_module_root
+  root :to => 'store#index', :constraints => lambda { |request| request.env['warden'].user.role == 'stock_custodian' if request.env['warden'].user }, as: :store_stocks_module_root
+   
+  unauthenticated :user do
+    root :to => 'home#index', :constraints => lambda { |request| request.env['warden'].user.nil? }, as: :unauthenticated_root_dasd
+  end
+   
+  
   get "avatar/:size/:background/:text" => Dragonfly.app.endpoint { |params, app|
     app.generate(:initial_avatar, URI.unescape(params[:text]), { size: params[:size], background_color: params[:background] })
   }, as: :avatar
   get 'reports/balance_sheet' => 'reports#balance_sheet'
   get 'reports/income_statement' => 'reports#income_statement'
-  devise_for :users, controllers: { sessions: 'users/sessions', registrations: "bplo_section/settings/users"}
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+ 
   resources :home, only: [:index]
   namespace :admin do
     resources :settings, only: [:index]
@@ -119,22 +133,6 @@ Rails.application.routes.draw do
     end
     resources :entries, only: [:index, :show]
   end
-  devise_scope :user do
-    authenticated :user do
-      root :to => 'accounting_modulet#index', :constraints => lambda { |request| request.env['warden'].user.role == 'bookkeeper' if request.env['warden'].user }, as: :accounting_module_root
-      root :to => 'loans_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'loan_officer' if request.env['warden'].user }, as: :loans_module_root
-      root :to => 'management_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'manager' if request.env['warden'].user }, as: :management_module_root
-      root :to => 'teller_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'teller' if request.env['warden'].user }, as: :teller_module_root
-      root :to => 'warehouse_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'stock_custodian' if request.env['warden'].user }, as: :warehouse_module_root
-      root :to => 'store#index', :constraints => lambda { |request| request.env['warden'].user.role == 'sales_clerk' if request.env['warden'].user }, as: :store_module_root
-      root :to => 'store#index', :constraints => lambda { |request| request.env['warden'].user.role == 'stock_custodian' if request.env['warden'].user }, as: :store_stocks_module_root
-      root :to => 'treasury_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'treasurer' if request.env['warden'].user }, as: :treasury_module_root
-    
-    end
-    unauthenticated :user do
-      root :to => 'home#index', as: :unauthenticated_root
-    end
-  end
 
   resources :users, only: [:show]
   resources :warehouse_module, only: [:index]
@@ -169,14 +167,24 @@ Rails.application.routes.draw do
   resources :schedules, only: [:index, :show]
   resources :treasury_module, only: [:index]
   namespace :treasury_module do 
+    resources :employees, only: [:index, :show] do 
+      resources :remittances, only: [:new, :create]
+    end
     resources :search_results, only: [:index]
     resources :savings_accounts, only: [:index, :show] do 
       resources :deposits, only: [:new, :create]
     end
+    resources :entries, only: [:index, :show]
   end
-  resources :savings_accounts, only: [:index, :show]
+  resources :savings_accounts, only: [:index, :show] do 
+    resources :deposits, only: [:new, :create]
+    resources :withdrawals, only: [:new, :create]
+  end
   resources :search_results, only: [:index, :show]
   resources :occupations, only: [:index, :show]
+  resources :disbursements, only: [:index, :show, :new, :create]
+  resources :collections, only: [:index, :show]
+  resources :suppliers, only: [:index, :show, :new, :create]
   mount ActionCable.server => '/cable'
 
 end

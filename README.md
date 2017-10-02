@@ -23,3 +23,10 @@ Chart monthly revenue percentage
 - Uploading of stocks
 
 Check paginations on entries index page
+activate/ deactivate accounts
+edit tin number of member
+edit address of member
+add policies for pages
+
+cash disbursement per employee 
+cash receiveds per employee

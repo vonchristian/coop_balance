@@ -14,7 +14,7 @@
           <%= f.input :entry_type, collection: AccountingModule::Entry.entry_types.keys.to_a.map{ |a| [a.titleize, a] } %>
           <%= f.input :credit_account_id, label: "Credit Account:", collection: AccountingModule::Account.all.map{ |a| [a.name, a.id] } %>
           <%= f.input :debit_account_id, label: "Debit Account:", collection: AccountingModule::Account.all.map{ |a| [a.name, a.id] } %>
-          <%= f.input :user_id, input_html: { value: current_user.id }, as: :hidden %>
+          <%= f.input :recorder_id, input_html: { value: current_user.id }, as: :hidden %>
           <div class="box-footer">
             <%= f.submit "Save Entry", class: "btn btn-primary" %>
           </div>
