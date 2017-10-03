@@ -5,10 +5,11 @@ class Member < ApplicationRecord
   pg_search_scope :text_search, :against => [:passbook_number, :first_name, :middle_name, :last_name]
   multisearchable against: [:passbook_number, :first_name, :last_name, :middle_name]
   enum sex: [:male, :female, :other]
+  enum civil_status: [:single, :married, :widower, :divorced]
   
   has_one :tin, as: :tinable
   has_one :membership, as: :memberable
-  has_many :member_occupations
+  has_many :member_occupations, dependent: :destroy
   has_many :occupations, through: :member_occupations
   has_many :loans, class_name: "LoansModule::Loan"
   has_many :addresses, as: :addressable
