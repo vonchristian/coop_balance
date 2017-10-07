@@ -1,0 +1,2 @@
+CoopServicesModule::TimeDepositProduct.find_or_create_by(name: "Time Deposit (10-99,000) for Members for 90 Days", minimum_amount: 10.0, maximum_amount: 99_999.00, time_deposit_product_type: 'for_member', number_of_days: 90)
+CoopServicesModule::TimeDepositProduct.find_or_create_by(name: "Time Deposit (10-99,000) for Members for 90 Days", minimum_amount: 10.0, maximum_amount: 99_999.00, time_deposit_product_type: 'for_member', number_of_days: 90)

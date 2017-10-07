@@ -22,13 +22,13 @@ class MembersController < ApplicationController
   end 
 
   def show
-    @member = Member.find(params[:id])
+    @member = Member.friendly.find(params[:id])
   end
   def edit 
-    @member = Member.find(params[:id])
+    @member = Member.friendly.find(params[:id])
   end 
   def update 
-    @member = Member.find(params[:id])
+    @member = Member.friendly.find(params[:id])
     @member.update(member_params)
     if @member.save 
       redirect_to @member, notice: "Member updated successfully."

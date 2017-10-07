@@ -1,0 +1,10 @@
+
+<%= simple_form_for [@member, @time_deposit], url: :member_time_deposits do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :member_id, input_html: { value: @member.id }, as: :hidden %>
+  <%= f.input :date_deposited, as: :string, input_html: { class: "datepicker" } %>
+  <%= f.input :or_number %>
+  <%= f.input :amount %>
+<%= f.input :number_of_days %>
+  <%= f.submit %>
+<% end %>

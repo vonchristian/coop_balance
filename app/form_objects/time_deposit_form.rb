@@ -1,6 +1,6 @@
 class TimeDepositForm
   include ActiveModel::Model
-  attr_accessor :or_number, :date, :amount, :account_number, :member_id, :recorder_id
+  attr_accessor :or_number, :date_deposited, :amount,:member_id, :recorder_id, :number_of_days
 
   def save
     ActiveRecord::Base.transaction do
@@ -11,17 +11,18 @@ class TimeDepositForm
   end
 
   def create_time_deposit
-    time_deposit = find_member.time_deposits.create(account_number: account_number)
+    time_deposit = find_member.time_deposits.create(number_of_days: number_of_days, date_deposited: date_deposited)
   end
+
   def find_member
     Member.find_by(id: member_id)
   end
   def find_deposit
-    MembershipsModule::TimeDeposit.find_by(account_number: account_number)
+    find_member.time_deposits.find_by(number_of_days: number_of_days, date_deposited: date_deposited)
   end
 
   def create_entry
-    AccountingModule::Entry.time_deposit.create!(commercial_document: find_deposit, description: 'Time deposit', reference_number: or_number, entry_date: date,
+    find_deposit.deposits.time_deposit.create!(description: 'Time deposit', reference_number: or_number, entry_date: date_deposited,
     debit_amounts_attributes: [account: debit_account, amount: amount],
     credit_amounts_attributes: [account: credit_account, amount: amount])
   end

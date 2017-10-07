@@ -1,0 +1,24 @@
+<div class="row">
+  <div class="col-md-4 col-md-offset-4">
+    <div class="box box-primary">
+      <div class="box-header with-border">
+        <h3 class="box-title">Payment Details </h3>
+      </div>
+      <div class="box-body">
+        <% @member.program_subscriptions.unpaid.each do |program| %>
+          <%= simple_form_for [@member, @payment], url: :member_subscription_payments do |f| %>
+            <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+            <%= f.input :amount, as: :string, input_html: { value: program.contribution } %>
+            <%= f.input :or_number, label: "OR Number" %>
+            <%= f.input :recorder_id, input_html: { value: current_user.id }, as: :hidden %>
+            <%= f.input :program_id, input_html: { value: program.id } %>
+            <%= f.input :member_id, input_html: { value: @member.id } %>
+            <div class="box-footer">
+              <%= f.submit "Save Payment", class: "btn btn-primary btn-flat pull-right" %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

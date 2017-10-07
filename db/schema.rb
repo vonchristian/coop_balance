@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171003030506) do
+ActiveRecord::Schema.define(version: 20171007080338) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -247,6 +247,18 @@ ActiveRecord::Schema.define(version: 20171003030506) do
     t.index ["raw_material_id"], name: "index_finished_good_materials_on_raw_material_id"
   end
 
+  create_table "friendly_id_slugs", force: :cascade do |t|
+    t.string "slug", null: false
+    t.integer "sluggable_id", null: false
+    t.string "sluggable_type", limit: 50
+    t.string "scope"
+    t.datetime "created_at"
+    t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
+    t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
+    t.index ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
+    t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
+  end
+
   create_table "grace_periods", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.decimal "number_of_days"
     t.datetime "created_at", null: false
@@ -440,8 +452,12 @@ ActiveRecord::Schema.define(version: 20171003030506) do
     t.string "contact_number"
     t.string "passbook_number"
     t.integer "civil_status"
+    t.string "fullname"
+    t.string "slug"
+    t.index ["fullname"], name: "index_members_on_fullname", unique: true
     t.index ["passbook_number"], name: "index_members_on_passbook_number", unique: true
     t.index ["sex"], name: "index_members_on_sex"
+    t.index ["slug"], name: "index_members_on_slug", unique: true
   end
 
   create_table "memberships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -569,6 +585,7 @@ ActiveRecord::Schema.define(version: 20171003030506) do
     t.boolean "default_program", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "description"
   end
 
   create_table "raw_material_stocks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -687,9 +704,10 @@ ActiveRecord::Schema.define(version: 20171003030506) do
     t.decimal "maximum_amount"
     t.decimal "interest_rate"
     t.string "name"
-    t.integer "interest_recurrence"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "number_of_days"
+    t.integer "time_deposit_product_type"
     t.index ["name"], name: "index_time_deposit_products_on_name", unique: true
   end
 
@@ -699,6 +717,9 @@ ActiveRecord::Schema.define(version: 20171003030506) do
     t.string "account_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "number_of_days"
+    t.datetime "date_deposited"
+    t.string "depositor_name"
     t.index ["account_number"], name: "index_time_deposits_on_account_number", unique: true
     t.index ["member_id"], name: "index_time_deposits_on_member_id"
     t.index ["time_deposit_product_id"], name: "index_time_deposits_on_time_deposit_product_id"

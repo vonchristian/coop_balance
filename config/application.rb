@@ -8,6 +8,7 @@ Bundler.require(*Rails.groups)
 
 module Coopcatalyst
   class Application < Rails::Application
+    config.assets.precompile << 'delayed/web/application.css'
     # Initialize configuration defaults for originally generated Rails version.
     config.generators do |g|
       g.orm :active_record, primary_key_type: :uuid

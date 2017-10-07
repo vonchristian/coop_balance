@@ -1,4 +1,11 @@
 class TimeDepositsController < ApplicationController
+  def index
+    if params[:search].present?
+      @time_deposits = MembershipsModule::TimeDeposit.text_search(params[:search]).paginate(page: params[:page], per_page: 20)
+    else 
+      @time_deposits = MembershipsModule::TimeDeposit.all.paginate(page: params[:page], per_page: 20)
+    end
+  end
   def new
     @member = Member.find(params[:member_id])
     @time_deposit = TimeDepositForm.new
@@ -13,9 +20,13 @@ class TimeDepositsController < ApplicationController
       render :new
     end
   end
+  def show 
+    @time_deposit = MembershipsModule::TimeDeposit.find(params[:id])
+    @qr = RQRCode::QRCode.new( 'localhost:3000/members/')
+  end
 
   private
   def time_deposit_params
-    params.require(:time_deposit_form).permit(:account_number, :or_number, :amount, :date, :member_id)
+    params.require(:time_deposit_form).permit(:account_number, :or_number, :amount, :date, :member_id, :number_of_days)
   end
 end

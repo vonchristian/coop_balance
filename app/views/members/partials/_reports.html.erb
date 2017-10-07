@@ -1,0 +1,3 @@
+<div class="tab-pane <%='active' if current_page?(member_reports_path(@member)) %>" id="reports">
+<%= link_to 'Print Member Info', member_reports_path(@member, format: 'pdf') %>
+</div>

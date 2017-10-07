@@ -2,10 +2,13 @@ require 'csv'
 class Member < ApplicationRecord
   include Avatarable
   include PgSearch 
-  pg_search_scope :text_search, :against => [:passbook_number, :first_name, :middle_name, :last_name]
-  multisearchable against: [:passbook_number, :first_name, :last_name, :middle_name]
+  extend FriendlyId
+  friendly_id :fullname, use: :slugged
+  pg_search_scope :text_search, :against => [:passbook_number, :first_name, :middle_name, :last_name, :fullname]
+  multisearchable against: [:passbook_number, :first_name, :last_name, :middle_name, :fullname]
   enum sex: [:male, :female, :other]
   enum civil_status: [:single, :married, :widower, :divorced]
+  delegate :regular_member?, to: :membership, allow_nil: true
   
   has_one :tin, as: :tinable
   has_one :membership, as: :memberable
@@ -32,11 +35,15 @@ class Member < ApplicationRecord
   :path => ":rails_root/public/system/:attachment/:id/:style/:filename",
   :url => "/system/:attachment/:id/:style/:filename"
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
+
+  after_commit :set_fullname, on: [:create, :update]
+  after_commit :subscribe_to_programs
   def self.import(file)
     CSV.foreach(file.path, headers: true) do |row|
       Member.create!(row.to_hash)
     end 
   end
+   
   def name #for search results
     full_name
   end
@@ -51,5 +58,12 @@ class Member < ApplicationRecord
   end
   def avatar_text
     first_name.chr
+  end
+  private 
+  def set_fullname 
+    self.fullname = self.full_name #used for slugs
+  end
+  def subscribe_to_programs
+    CoopServicesModule::Program.subscribe(self)
   end
 end

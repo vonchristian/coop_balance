@@ -1,0 +1,33 @@
+
+  <div class="row">
+    <div class="col-md-3">
+      <%= render 'members/partials/sidebar', member: @member %>
+    </div>
+    <div class="col-md-9">
+      <div class="box box-solid">
+        <div class="box-header">
+        <ul class="nav nav-tabs">
+
+          <li><a href="#loans" data-toggle="tab">Loans</a></li>
+          <li><a href="#savings" data-toggle="tab">Savings</a></li>
+          <li><a href="#share_capital" data-toggle="tab">Share Capital</a></li>
+          <li class="<%= 'active' if current_page?(member_time_deposits_path(@member))%>"><%= link_to 'Time Deposits', member_time_deposits_path(@member) %></li>
+          <li class="<%= 'active' if current_page?(member_subscriptions_path(@member))%>"><%= link_to 'Program Subscriptions', member_subscriptions_path(@member) %></li>
+           <li class="<%= 'active' if current_page?(member_reports_path(@member))%>"><%= link_to 'Reports', member_reports_path(@member) %></li>
+
+        </ul>
+      </div>
+        <div class="tab-content box-body">
+          <%=render 'members/partials/loans', member: @member %>
+          <%=render 'members/partials/savings', member: @member %>
+          <%=render 'members/partials/time_deposits', member: @member %>
+          <%=render 'members/partials/properties', member: @member %>
+          <%=render 'members/partials/subscriptions', member: @member %>
+          <%=render 'members/partials/reports', member: @member %>
+
+
+      </div>
+    </div>
+      </div>
+</div>
+

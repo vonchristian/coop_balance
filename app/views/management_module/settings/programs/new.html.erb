@@ -1,7 +1,8 @@
-<%= simple_form_for @program, url: :management_department_programs do |f| %>
+<%= simple_form_for @program, url: :management_module_programs do |f| %>
   <%= f.error_notification %>
   <%= f.input :name %>
-  <%= f.input :contribution %>
+  <%= f.input :description %>
+  <%= f.input :contribution, label: "Amount" %>
   <%= f.input :default_program %>
   <%= f.submit "Create Program", class: "btn btn-primary" %>
 <% end %>

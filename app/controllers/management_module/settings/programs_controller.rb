@@ -2,12 +2,13 @@ module ManagementModule
 	module Settings 
 		class ProgramsController < ApplicationController
 			def new 
-				@program = Program.new 
+				@program = CoopServicesModule::Program.new 
 			end 
 			def create 
-				@program = Program.create(program_params)
-				if @program.save 
-					redirect_to management_department_settings_url, notice: "Program created successfully."
+				@program = CoopServicesModule::Program.create(program_params)
+				if @program.save
+           CoopServicesModule::Program.delay.subscribe_members(@program)
+					redirect_to management_module_settings_url, notice: "Program created successfully."
 				else
 				  render :new 
 				end 
@@ -16,7 +17,7 @@ module ManagementModule
 			private 
 
 			def program_params
-			  params.require(:program).permit(:name, :contribution, :default_program)
+			  params.require(:coop_services_module_program).permit(:name, :contribution, :default_program, :description)
 			end 
 		end
 	end 

@@ -1,0 +1,23 @@
+<div class="row">
+  <div class="col-md-5 col-md-offset-3">
+    <div class="nav-tabs-custom">
+      <div class="box-header">
+        <h4><center><%= member_avatar(@time_deposit.depositor, style: 'width:80px;height:80px;', class: 'media-object img-circle') %></center></h4>
+        <h3><center><%= @time_deposit.depositor.first_and_last_name %></center></h3>
+      </div>
+      <div class="box-body">
+        <%= simple_form_for [@time_deposit, @withdrawal], url: :time_deposit_withdrawals do |f| %>
+          <%= f.error_notification %>
+          <%= f.input :amount, input_html: { value: @time_deposit.balance } %>
+          <%= f.input :or_number %>
+          <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+          <%= f.input :time_deposit_id, input_html: { value: @time_deposit.id },as: :hidden %>
+          <%= f.input :recorder_id, input_html: { value: current_user.id },as: :hidden %>
+          <div class="footer">
+            <%= f.submit "Withdraw", class: "btn btn-primary pull-right", data: {disable_with: "Processing..." } %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

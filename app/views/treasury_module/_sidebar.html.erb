@@ -27,7 +27,9 @@
           <li class="header"> TREASURY SECTION </li>
           <li class=<%= 'active' if current_page?(treasury_module_index_path) %> ><a href="/treasury_module"><i class="fa fa-dashboard"></i> <span> Dashboard</span></a></li>
           <li class=<%= 'active' if current_page?(members_path) %> ><a href="/members"><i class="fa fa-users"></i> <span> Members</span></a></li>
-          <li class=<%= 'active' if current_page?(members_path) %> ><a href="/savings_accounts"><i class="fa fa-suitcase"></i> <span> Savings Accounts</span></a></li>
+          <li class=<%= 'active' if current_page?(savings_accounts_path) %> ><a href="/savings_accounts"><i class="fa fa-suitcase"></i> <span> Savings Accounts</span></a></li>
+          <li class=<%= 'active' if current_page?(time_deposits_path) %> ><a href="/time_deposits"><i class="fa fa-suitcase"></i> <span> Time Deposits</span></a></li>
+
 
           <li class=<%= 'active' if current_page?(treasury_module_entries_path) %> ><a href="/treasury_module/entries"><i class="fa fa-credit-card"></i> <span> Entries</span></a></li>
           <li class=<%= 'active' if current_page?(disbursements_path) %> ><a href="/disbursements"><i class="fa fa-mail-forward"></i> <span> Cash Disbursements</span></a></li>

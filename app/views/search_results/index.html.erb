@@ -27,7 +27,7 @@
                 <span class="text-muted"> <%= search_result.searchable.class.to_s %></span>
               <% end %>
               <% if search_result.searchable_type == "Member" %>
-              <%= link_to search_result.searchable.try(:name), members_path(search_result.searchable) %><br>
+              <%= link_to search_result.searchable.try(:name), member_path(search_result.searchable) %><br>
                 <span class="text-muted"> <%= search_result.searchable.class.to_s %></span>
               <% end %>
             <% if search_result.searchable_type == "StoreModule::Product" %>

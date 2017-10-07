@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  mount Delayed::Web::Engine, at: '/jobs'
   devise_for :committee_members
   devise_for :users, controllers: { sessions: 'users/sessions', registrations: "bplo_section/settings/users"}
   root :to => 'treasury_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'treasurer' if request.env['warden'].user }, as: :treasury_root
@@ -85,9 +86,10 @@ Rails.application.routes.draw do
     resources :occupations, only: [:new, :create], module: :members
     resources :share_capitals, only: [:index, :new, :create]
     resources :savings_accounts, only: [:index, :new, :create], module: :memberships_module
-    resources :time_deposits, only: [:index, :new, :create]
-
-
+    resources :time_deposits, only: [:index, :new, :create], module: :members
+    resources :subscriptions, only: [:index], module: :members
+    resources :subscription_payments, only: [:new, :create], module: :members #pay all subscriptions
+    resources :reports, only: [:index], module: :members
   end
   resources :member_registrations, only: [:new, :create]
   resources :management_module, only: [:index]
@@ -186,6 +188,14 @@ Rails.application.routes.draw do
   resources :collections, only: [:index, :show]
   resources :suppliers, only: [:index, :show, :new, :create]
   resources :registries, only: [:create]
+
+  resources :programs, only: [:index, :show] do 
+    resources :payments, only: [:new, :create], module: :programs
+  end
+  resources :time_deposits, only: [:index, :show] do 
+    resources :withdrawals, only: [:new, :create], module: :time_deposits
+    resources :renewals, only: [:new, :create], module: :time_deposits
+  end
   mount ActionCable.server => '/cable'
 
 end

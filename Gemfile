@@ -33,15 +33,19 @@ gem 'avatar_magick', '~> 1.0.1'
 gem 'pundit'
 gem 'prawn'
 gem 'prawn-table'
+gem 'prawn-qrcode'
 gem "gretel"
 gem 'public_activity'
 gem 'mina-puma', require: false
 gem 'barby'
+gem 'rqrcode'
 gem 'prawn-print'
 gem 'delayed_job_active_record'
 gem 'simple-line-icons-rails'
 gem 'dotiw'
 gem "spreadsheet"
+gem 'daemons'
+gem 'delayed-web'
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails'
