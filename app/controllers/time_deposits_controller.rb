@@ -22,7 +22,6 @@ class TimeDepositsController < ApplicationController
   end
   def show 
     @time_deposit = MembershipsModule::TimeDeposit.find(params[:id])
-    @qr = RQRCode::QRCode.new( 'localhost:3000/members/')
   end
 
   private

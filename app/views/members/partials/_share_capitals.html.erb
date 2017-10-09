@@ -1,0 +1,14 @@
+<div class="tab-pane <%='active' if current_page?(member_share_capitals_path(@member)) %>" id="share_capital">
+  <div class="row">
+    <div class="col-md-12">
+      <%= link_to 'New Share Capital', new_member_share_capital_path(@member), class: "btn btn-primary btn-flat pull-right" %>
+    </div>
+  </div>
+  <br>
+  <% @member.share_capitals.each do |share_capital| %>
+    <small><%= share_capital.name.try(:upcase) %></small>
+     <h4><%= number_to_currency share_capital.balance %></h4>
+    <%= link_to 'New Capital Build Up', new_share_capital_capital_build_up_path(share_capital), class: "btn btn-primary btn-flat" %>
+    <hr>
+  <% end %>
+</div>

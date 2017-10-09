@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   mount Delayed::Web::Engine, at: '/jobs'
-  devise_for :committee_members
+  # devise_for :committee_members
+  unauthenticated :user do
+    root :to => 'accounting_module#index', :constraints => lambda { |request| request.env['warden'].user.nil? }, as: :unauthenticated_root
+  end
   devise_for :users, controllers: { sessions: 'users/sessions', registrations: "bplo_section/settings/users"}
   root :to => 'treasury_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'treasurer' if request.env['warden'].user }, as: :treasury_root
   root :to => 'accounting_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'bookkeeper' if request.env['warden'].user }, as: :accounting_module_root
@@ -11,9 +14,7 @@ Rails.application.routes.draw do
   root :to => 'store#index', :constraints => lambda { |request| request.env['warden'].user.role == 'sales_clerk' if request.env['warden'].user }, as: :store_module_root
   root :to => 'store#index', :constraints => lambda { |request| request.env['warden'].user.role == 'stock_custodian' if request.env['warden'].user }, as: :store_stocks_module_root
    
-  unauthenticated :user do
-    root :to => 'home#index', :constraints => lambda { |request| request.env['warden'].user.nil? }, as: :unauthenticated_root_dasd
-  end
+  
    
   
   get "avatar/:size/:background/:text" => Dragonfly.app.endpoint { |params, app|
@@ -79,13 +80,16 @@ Rails.application.routes.draw do
 
   end
   resources :share_capitals do
-    resources :capital_build_ups, only: [:new, :create]
+    resources :capital_build_ups, only: [:new, :create], module: :share_capitals
   end
   resources :members do
     resources :address_details
+    resources :info, only: [:index], module: :members
+    resources :loans, only: [:index, :new, :create], module: :members
+    resources :share_capitals, only: [:index, :new, :create], module: :members
     resources :occupations, only: [:new, :create], module: :members
     resources :share_capitals, only: [:index, :new, :create]
-    resources :savings_accounts, only: [:index, :new, :create], module: :memberships_module
+    resources :savings_accounts, only: [:index, :new, :create], module: :members
     resources :time_deposits, only: [:index, :new, :create], module: :members
     resources :subscriptions, only: [:index], module: :members
     resources :subscription_payments, only: [:new, :create], module: :members #pay all subscriptions

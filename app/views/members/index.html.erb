@@ -29,7 +29,7 @@
         
         <% @members.each do |member| %>
           <% cache member do %>
-            <%= link_to member_path(member) do %>
+            <%= link_to member_info_index_path(member) do %>
               <div class="row">
                 <div class="col-md-3">
                   <center><%= image_tag(member.avatar.url(:medium), class: "img-circle", height: 50, width: 50) %></center>

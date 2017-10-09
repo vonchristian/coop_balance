@@ -1,9 +1,0 @@
-<div class="tab-pane" id="share_capital">
-  Share Capital
-  <%= link_to 'Open Share Capital', new_member_share_capital_path(@member) %>
-  <hr>
-  <% @member.share_capitals.each do |share_capital| %>
-    <h4><%= share_capital.name %> <%= number_to_currency share_capital.balance %></h4>
-    <%= link_to 'Capital Build Up', new_teller_module_share_capital_capital_build_up_path(share_capital) %>
-  <% end %>
-</div>

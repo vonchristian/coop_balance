@@ -1,6 +1,6 @@
-<div class="tab-pane" id="loans">
+<div class="tab-pane <%='active' if current_page?(member_loans_path(@member)) %>" id="loans">
 
-  <%= link_to 'New Loan Application', new_loans_module_member_loan_application_path(member_id: @member.id), class: "btn btn-primary" %>
+  <%= link_to 'New Loan Application', new_member_loan_path(@member), class: "btn btn-primary" %>
 <hr />
   <% @member.loans.each do |loan| %>
     <% cache loan do %>
