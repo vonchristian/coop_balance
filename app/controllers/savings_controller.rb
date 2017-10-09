@@ -16,6 +16,6 @@ class SavingsController < ApplicationController
 
   private
   def saving_params
-    params.require(:saving_form).permit(:account_number, :saving_product_id, :member_id, :or_number, :date, :amount)
+    params.require(:saving_form).permit(:recorder_id, :account_number, :saving_product_id, :member_id, :or_number, :date, :amount)
   end
 end

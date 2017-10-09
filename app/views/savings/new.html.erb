@@ -6,5 +6,6 @@
   <%= f.input :amount, label: "Initial Deposit" %>
   <%= f.input :or_number %>
   <%= f.input :member_id, input_html: { value: @member.id }, as: :hidden %>
+  <%= f.input :recorder_id, input_html: { value: current_user.id }, as: :hidden %>
   <%= f.submit "Open Savings" %>
 <% end %>

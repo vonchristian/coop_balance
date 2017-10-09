@@ -9,6 +9,8 @@ class Member < ApplicationRecord
   enum sex: [:male, :female, :other]
   enum civil_status: [:single, :married, :widower, :divorced]
   delegate :regular_member?, to: :membership, allow_nil: true
+  before_validation :set_fullname
+  validates :fullname, uniqueness: { message: 'is already registered'}
   
   has_one :tin, as: :tinable
   has_one :membership, as: :memberable

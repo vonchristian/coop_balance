@@ -10,10 +10,10 @@
   <%= f.error_notification %>
   <%= f.input :date, label: "Date Opened", as: :string, input_html: { class: "datepicker" } %>
   <%= f.input :saving_product_id, label: "Savings Account Type", collection: CoopServicesModule::SavingProduct.all.map{ |a| [ a.name.titleize, a.id] }, as: :radio_buttons %>
-  <%= f.input :account_number %>
   <%= f.input :amount, label: "Initial Deposit" %>
   <%= f.input :or_number %>
   <%= f.input :member_id, input_html: { value: @member.id }, as: :hidden %>
+  <%= f.input :recorder_id, input_html: { value: current_user.id }, as: :hidden %>
   <div class="box-footer">
     <%= f.submit "Open Savings Account", class: "btn btn-primary pull-right" %>
   </div>

@@ -11,21 +11,11 @@
 // about supported directives.
 //
 //= require jquery
-//= require jquery.turbolinks
 //= require jquery_ujs
-//= require turbolinks
 //= require bootstrap-sprockets
 //= require bootstrap-datepicker
+//= require moment
+//= require bootstrap-datetimepicker
 //= require icheck
 //= require select2
 //= require_tree .
-
-var ready = function () {
-  var o;
-  o = $.AdminLTE.options;
-  if (o.sidebarPushMenu) {
-    $.AdminLTE.pushMenu.activate(o.sidebarToggleSelector);
-  }
-  return $.AdminLTE.layout.activate();
-};
-document.addEventListener('turbolinks:load', ready);

@@ -10,7 +10,7 @@ class WithdrawalForm
       if amount_is_less_than_balance
         save_withdraw
       else 
-        false
+        errors[:base] << "Amount exceed balance" 
       end
     end
   end

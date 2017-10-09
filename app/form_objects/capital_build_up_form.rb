@@ -22,6 +22,6 @@ class CapitalBuildUpForm
     AccountingModule::Account.find_by(name: "Cash on Hand")
   end
   def credit_account
-    AccountingModule::Account.find_by(name: "Authorized Share Capital - Common")
+    AccountingModule::Account.find_by(name: "Paid-up Share Capital - Common")
   end
 end

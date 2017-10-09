@@ -1,5 +1,5 @@
 <small>CASH ON HAND (TREASURY)</small>>
-<%= AccountingModule::Account.find_by(name: "Cash on Hand (Treasury)").balance %>
+<%= AccountingModule::Account.find_by(name: "Cash on Hand").balance %>
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
     <div class="box box-solid">
@@ -14,7 +14,7 @@
           <%= f.input :description, as: :text %>
           <%= f.input :amount %>
           <%= f.input :entry_type, collection: AccountingModule::Entry.entry_types.keys.to_a.map{ |a| [a.titleize, a] } %>
-          <%= f.input :credit_account_id, input_html: { value: AccountingModule::Account.find_by(name: "Cash on Hand (Treasury)").id }, as: :hidden  %>
+          <%= f.input :credit_account_id, input_html: { value: AccountingModule::Account.find_by(name: "Cash on Hand").id }, as: :hidden  %>
           <%= f.input :debit_account_id, label: "Debit Account:", collection: AccountingModule::Account.all.map{ |a| [a.name, a.id] } %>
           <%= f.input :recorder_id, input_html: { value: current_user.id }, as: :hidden %>
           <div class="box-footer">

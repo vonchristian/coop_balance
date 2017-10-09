@@ -13,6 +13,7 @@
           <% end %>
           <center><%= f.input :avatar, as: :file, label: "Upload photo" %></center>
           <%= f.error_notification %>
+          <%= f.input :fullname, readonly: true %>
           <%= f.input :first_name %>
           <%= f.input :middle_name %>
           <%= f.input :last_name %>

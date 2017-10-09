@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171007080338) do
+ActiveRecord::Schema.define(version: 20171009035149) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -679,6 +679,7 @@ ActiveRecord::Schema.define(version: 20171007080338) do
     t.datetime "date_opened"
     t.string "type"
     t.uuid "share_capital_product_id"
+    t.string "account_owner_name"
     t.index ["account_number"], name: "index_share_capitals_on_account_number", unique: true
     t.index ["member_id"], name: "index_share_capitals_on_member_id"
     t.index ["share_capital_product_id"], name: "index_share_capitals_on_share_capital_product_id"

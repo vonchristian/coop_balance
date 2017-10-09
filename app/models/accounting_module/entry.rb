@@ -19,7 +19,8 @@ module AccountingModule
                       :loan_penalty,
                       :time_deposit_interest, 
                       :adjusting_entry,
-                      :fund_transfer
+                      :fund_transfer, 
+                      :share_capital_dividend
                     ]
     has_one :clearance, class_name: "EntryClearance"
     belongs_to :commercial_document, :polymorphic => true
@@ -28,8 +29,8 @@ module AccountingModule
     belongs_to :branch
     belongs_to :recorder, class_name: "User", foreign_key: 'recorder_id'
 
-    has_many :credit_amounts, :extend => AmountsExtension, :class_name => 'AccountingModule::CreditAmount', :inverse_of => :entry, dependent: :destroy
-    has_many :debit_amounts, :extend => AmountsExtension, :class_name => 'AccountingModule::DebitAmount', :inverse_of => :entry, dependent: :destroy
+    has_many :credit_amounts, :extend => AccountingModule::AmountsExtension, :class_name => 'AccountingModule::CreditAmount', :inverse_of => :entry, dependent: :destroy
+    has_many :debit_amounts, :extend => AccountingModule::AmountsExtension, :class_name => 'AccountingModule::DebitAmount', :inverse_of => :entry, dependent: :destroy
     has_many :credit_accounts, :through => :credit_amounts, :source => :account, :class_name => 'AccountingModule::Account'
     has_many :debit_accounts, :through => :debit_amounts, :source => :account, :class_name => 'AccountingModule::Account'
     has_many :amounts, class_name: "AccountingModule::Amount"
@@ -48,9 +49,9 @@ module AccountingModule
     
     def self.entered_on(hash={})
       if hash[:from_date] && hash[:to_date]
-        from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : DateTime.parse(hash[:from_date])
-        to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : DateTime.parse(hash[:to_date])
-        includes([:amounts]).where('entries.entry_date' => from_date..to_date)
+       from_date = hash[:from_date].kind_of?(Time) ? hash[:from_date] : Time.parse(hash[:from_date].strftime('%Y-%m-%d 12:00:00'))
+        to_date = hash[:to_date].kind_of?(Time) ? hash[:to_date] : Time.parse(hash[:to_date].strftime('%Y-%m-%d 12:59:59'))
+        includes([:amounts]).where('entries.entry_date' => (from_date.beginning_of_day)..(to_date.end_of_day))
       else
         all
       end

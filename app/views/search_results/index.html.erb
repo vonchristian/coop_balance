@@ -19,20 +19,30 @@
           <% if @search_results.empty? %>
             No result found for <b><%= params[:search] %></b>
             <% else %>
-            <p><%= @search_results.count %> found for <b><%=params[:search] %></b></p>
+            <p><%= @search_results.count %> results found for <b><%=params[:search] %></b></p>
             <% @search_results.each do |search_result| %>
-            
+              <%#=search_result.inspect %>
             <% if search_result.searchable_type == "Occupation" %>
               <%= link_to search_result.searchable.try(:name), occupations_path(search_result.searchable) %><br>
                 <span class="text-muted"> <%= search_result.searchable.class.to_s %></span>
               <% end %>
               <% if search_result.searchable_type == "Member" %>
-              <%= link_to search_result.searchable.try(:name), member_path(search_result.searchable) %><br>
+              <%= link_to search_result.searchable.try(:name), member_info_index_path(search_result.searchable) %><br>
                 <span class="text-muted"> <%= search_result.searchable.class.to_s %></span>
+                <hr>
               <% end %>
             <% if search_result.searchable_type == "StoreModule::Product" %>
               <%= link_to search_result.searchable.try(:name), store_module_product_path(search_result.searchable) %><br>
               <span class="text-muted"> <%= search_result.searchable.class.to_s.gsub("StoreModule::", "") %></span>
+            <% end %>
+             <% if search_result.searchable_type == "MembershipsModule::ShareCapital" %>
+              <%= link_to search_result.searchable.try(:name), share_capital_path(search_result.searchable) %><br>
+              <span class="text-muted"> <%= search_result.searchable.class.to_s.gsub("MembershipsModule::", "") %></span>
+              <hr>
+            <% end %>
+             <% if search_result.searchable_type == "MembershipsModule::Saving" %>
+              <%= link_to search_result.searchable.try(:name), savings_account_path(search_result.searchable) %><br>
+              <span class="text-muted"> <%= search_result.searchable.class.to_s.gsub("MembershipsModule::", "") %></span>
             <% end %>
             <% end %>
             <hr>

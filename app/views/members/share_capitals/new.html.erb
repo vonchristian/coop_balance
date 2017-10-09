@@ -2,6 +2,5 @@
   <%= f.error_notification %>
   <%= f.input :share_capital_product_id, collection: CoopServicesModule::ShareCapitalProduct.all.map{ |a| [a.name.titleize, a.id] }, as: :radio_buttons %>
   <%= f.input :date_opened, as: :string, input_html: { class: "datepicker" } %>
-  <%= f.input :account_number %>
   <%= f.submit %>
 <% end %>

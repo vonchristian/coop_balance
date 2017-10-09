@@ -1,1 +1,55 @@
-<%= render 'management_department/members/show', member: @member %>
+<div class="row">
+  <div class="col-md-6">
+    <div class="box box-solid">
+      <div class="box-header">
+        <%=form_tag share_capitals_path, method: :get, class: "search-form" do %>
+            <div class="input-group">
+              <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Account Number ", id: 'account-search-form' %>
+              <span class="input-group-btn">
+                <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                  <i class="fa fa-search"></i>
+                <% end %>
+              </span>
+            </div>
+          <% end %>
+      </div>
+      <div class="box-body">
+        <% @share_capitals.each do |share_capital| %>
+          <%=link_to share_capital_path(share_capital) do %>
+            <% cache share_capital do %>
+              <div class="row">
+                <div class="col-md-2">
+                  <center> <%= image_tag(share_capital.account_owner.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center>
+                </div>
+                <div class="col-md-5">
+                  <p class=""><%= share_capital.account_owner.full_name.try(:upcase) %></p>
+                  <small class=""> <%= share_capital.share_capital_product_name %></small><br><br>
+                  <%= link_to 'New Capital Build Up', new_share_capital_capital_build_up_path(share_capital), class: "btn btn-xs btn-success" %> &nbsp; &nbsp;
+
+                  <br>
+                </div>
+                <div class="col-md-3">
+                  <h4 class="text-muted"><center><%=number_to_currency share_capital.balance %></center></h4>
+                </div>
+              </div>
+              <hr>
+            <% end %>
+          <% end %>
+        <% end %>
+        <center><%= will_paginate @share_capitals %> </center>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div  class="box box-default">
+      <div class="box-header">
+        <small class="text-muted"> PAID UP SHARE CAPITALS - COMMON</small><br>
+        <h3 class="box-title"> <%= number_to_currency AccountingModule::Account.find_by(name: "Paid-up Share Capital - Common").balance %></h3>
+        <hr>
+        <small class="text-muted"> PAID UP SHARE CAPITALS - PREFFERED</small><br>
+        <h3 class="box-title"> <%= number_to_currency AccountingModule::Account.find_by(name: "Paid-up Share Capital - Preferred").balance %></h3>
+      </div>
+     
+    </div>
+  </div>
+</div>

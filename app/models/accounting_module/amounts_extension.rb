@@ -1,12 +1,20 @@
 module AccountingModule
   module AmountsExtension
     def balance(hash={})
-      if hash[:from_date] && hash[:to_date]
-        from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : DateTime.parse(hash[:from_date].to_date.strftime('%Y/%m/%d'))
-        to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : DateTime.parse(hash[:to_date].to_date.strftime('%Y/%m/%d'))
-        includes([:entry, :account]).where('entries.entry_date' => from_date..to_date).sum(:amount)
+      if hash[:from_date] && hash[:to_date] && hash[:recorder_id].nil?
+        from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : DateTime.parse(hash[:from_date].strftime('%Y-%m-%d 12:00:00'))
+        to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : DateTime.parse(hash[:to_date].strftime('%Y-%m-%d 12:59:59'))
+        joins(:entry, :account).where('entries.entry_date' => from_date..to_date).sum(:amount)
+      elsif hash[:from_date] && hash[:to_date] && hash[:recorder_id]
+        from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : DateTime.parse(hash[:from_date].strftime('%Y-%m-%d 12:00:00'))
+        to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : DateTime.parse(hash[:to_date].strftime('%Y-%m-%d 12:59:59'))
+        employee = User.find(hash[:recorder_id])
+        joins(:entry, :account).where('entries.recorder_id' => employee.id).where('entries.entry_date' => (from_date.beginning_of_day)..(to_date.end_of_day)).sum(:amount)
+      elsif hash[:recorder_id]
+        employee = User.find(hash[:recorder_id])
+        joins(:entry, :account).where('entries.recorder_id' => employee.id).sum(:amount)
       else
-        sum(:amount)
+        joins(:entry, :account).sum(:amount)
       end
     end
 

@@ -23,8 +23,7 @@
                 <div class="col-md-8">
                   <h4><%= number_to_currency time_deposit.amount_deposited %></h4>
                   <p><%= time_deposit.depositor_full_name.upcase %></p>
-                  <%= time_ago_in_words(time_deposit.maturity_date) %>
-                  <%= time_deposit.maturity_date.strftime("%B %e, %Y") %>
+                  <span class="text-danger"><i class="fa fa-calendar"> </i> Matures on: <%= time_deposit.maturity_date.strftime("%B %e, %Y") %></span>
                 </div>
               </div>
               <hr>

@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   unauthenticated :user do
     root :to => 'accounting_module#index', :constraints => lambda { |request| request.env['warden'].user.nil? }, as: :unauthenticated_root
   end
-  devise_for :users, controllers: { sessions: 'users/sessions', registrations: "bplo_section/settings/users"}
+  devise_for :users, controllers: { sessions: 'users/sessions', registrations: "management_module/settings/employees"}
   root :to => 'treasury_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'treasurer' if request.env['warden'].user }, as: :treasury_root
   root :to => 'accounting_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'bookkeeper' if request.env['warden'].user }, as: :accounting_module_root
   root :to => 'loans_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'loan_officer' if request.env['warden'].user }, as: :loans_module_root
@@ -74,11 +74,6 @@ Rails.application.routes.draw do
     resources :notices, only: [:index, :show]
 
   end
-  resources :savings do
-    resources :deposits, only: [:new, :create]
-    resources :withdrawals, only: [:new, :create]
-
-  end
   resources :share_capitals do
     resources :capital_build_ups, only: [:new, :create], module: :share_capitals
   end
@@ -86,6 +81,7 @@ Rails.application.routes.draw do
     resources :address_details
     resources :info, only: [:index], module: :members
     resources :loans, only: [:index, :new, :create], module: :members
+    resources :real_properties, only: [:index, :new, :create], module: :members
     resources :share_capitals, only: [:index, :new, :create], module: :members
     resources :occupations, only: [:new, :create], module: :members
     resources :share_capitals, only: [:index, :new, :create]
@@ -93,9 +89,9 @@ Rails.application.routes.draw do
     resources :time_deposits, only: [:index, :new, :create], module: :members
     resources :subscriptions, only: [:index], module: :members
     resources :subscription_payments, only: [:new, :create], module: :members #pay all subscriptions
-    resources :reports, only: [:index], module: :members
   end
   resources :member_registrations, only: [:new, :create]
+
   resources :management_module, only: [:index]
   namespace :management_module do
     resources :accounting, only: [:index]
@@ -105,6 +101,7 @@ Rails.application.routes.draw do
     resources :time_deposits, only: [:index, :show]
     resources :entries, only: [:index, :show]
     resources :accounts, only: [:index, :show]
+    resources :employees, only: [:new, :create], module: :settings
     resources :share_capital_products, only: [:new, :create], module: :settings
     resources :saving_products, only: [:new, :create], module: :settings
     resources :programs, only: [:new, :create], module: :settings
@@ -132,8 +129,8 @@ Rails.application.routes.draw do
       resources :capital_build_ups, only: [:new, :create]
     end
     resources :savings_accounts, only: [:index, :show] do
-      resources :deposits, only: [:new, :create]
-      resources :withdrawals, only: [:new, :create]
+      resources :deposits, only: [:new, :create], module: :savings_accounts
+      resources :withdrawals, only: [:new, :create], module: :savings_accounts
     end
     resources :time_deposits, only: [:index, :show] do
     end
@@ -183,8 +180,8 @@ Rails.application.routes.draw do
     resources :entries, only: [:index, :show]
   end
   resources :savings_accounts, only: [:index, :show] do 
-    resources :deposits, only: [:new, :create]
-    resources :withdrawals, only: [:new, :create]
+    resources :deposits, only: [:new, :create], module: :savings_accounts
+    resources :withdrawals, only: [:new, :create], module: :savings_accounts
   end
   resources :search_results, only: [:index, :show]
   resources :occupations, only: [:index, :show]
@@ -199,6 +196,9 @@ Rails.application.routes.draw do
   resources :time_deposits, only: [:index, :show] do 
     resources :withdrawals, only: [:new, :create], module: :time_deposits
     resources :renewals, only: [:new, :create], module: :time_deposits
+  end
+  resources :employees, only: [:index, :show] do 
+    resources :entries, only: [:index, :show], module: :employees
   end
   mount ActionCable.server => '/cable'
 

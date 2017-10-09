@@ -1,0 +1,11 @@
+<div class="row">
+  <div class="col-md-9 col-md-offset-2">
+    <div class="box box-solid">
+      <div class="box-header">
+  <%= simple_form_for [@member, @real_property], url: :member_real_properties do |f| %>
+    <%= f.error_notification %>
+    <%= f.input :address %>
+    <div class="box-footer">
+      <%= f.submit "Save Property", class: "btn btn-primary btn-flat pull-right" %>
+    </div>
+  <% end %>

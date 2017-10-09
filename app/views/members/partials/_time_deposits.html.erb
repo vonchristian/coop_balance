@@ -1,6 +1,9 @@
 <div class="tab-pane <%='active' if current_page?(member_time_deposits_path(@member)) %>" id='time-deposit'>
-  Time Deposit 
-  <%= link_to 'New Time Deposit', new_member_time_deposit_path(@member) %>
+  <div class="row">
+    <div class="col-md-12">
+      <%= link_to 'New Time Deposit', new_member_time_deposit_path(@member), class: "btn btn-primary btn-flat pull-right" %>
+    </div>
+  </div>
   <hr>
   <% @member.time_deposits.each do |time_deposit| %>
     <%=link_to time_deposit_path(time_deposit) do %>
