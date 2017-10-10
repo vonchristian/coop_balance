@@ -27,6 +27,7 @@ module AccountingModule
       bounding_box [0, 800], width: 100 do
         image "#{Rails.root}/app/assets/images/logo_kcmdc.jpg", width: 50, height: 50, align: :center
       end
+      
       bounding_box [0, 800], width: 600 do
         text "KIANGAN COMMUNITY MULTIPURPOSE DEVELOPMENT COOPERATIVE", align: :center
         text "Poblacion, Kiangan, Ifugao", size: 12, align: :center
