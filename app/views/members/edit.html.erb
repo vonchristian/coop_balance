@@ -5,7 +5,7 @@
         <h3 class="box-title"> Edit Member Details </h3>
       </div>
       <div class="box-body">
-        <%= simple_form_for @member do |f| %>
+        <%= simple_form_for @member multipart: true do |f| %>
           <%if @member.avatar.blank? %>
             <center><%=image_tag("default.png", height: 80, width: 80, :class=>"img-circle") %></center>
           <% else %>
