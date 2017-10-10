@@ -16,9 +16,9 @@ class User < ApplicationRecord
            small: "30x30>",
            x_small: "20x20>"},
   default_url: ":style/profile_default.jpg",
-  :path => ":rails_root/public/system/:attachment/:id/:style/:filename",
-  :url => "/system/:attachment/:id/:style/:filename"
-  validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
+  :path => ":rails_root/public/system/:attachment/:id/:basename_:style.:extension",
+  :url => "/system/:attachment/:id/:basename_:style.:extension"
+validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
 
   def first_and_last_name
     "#{first_name} #{last_name}"
