@@ -8,6 +8,9 @@ class SuppliersController < ApplicationController
   def create 
     @supplier = Supplier.create(supplier_params)
   end
+  def show 
+    @supplier = Supplier.find(params[:id])
+  end
 
   private 
   def supplier_params

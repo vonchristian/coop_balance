@@ -1,4 +1,4 @@
-module TellerDepartment
+module Suppliers
   class PaymentsController < ApplicationController
     def new
       @supplier = Supplier.find(params[:supplier_id])
@@ -9,7 +9,7 @@ module TellerDepartment
       @payment = SupplierPaymentForm.new(payment_params)
       if @payment.valid?
         @payment.save
-        redirect_to teller_department_supplier_url(@supplier), notice: "Success"
+        redirect_to supplier_url(@supplier), notice: "Success"
       else
         render :new
       end
@@ -17,7 +17,7 @@ module TellerDepartment
 
     private
     def payment_params
-      params.require(:supplier_payment_form).permit(:reference_number, :date, :amount, :supplier_id)
+      params.require(:supplier_payment_form).permit(:reference_number, :date, :amount, :supplier_id, :recorder_id, :description)
     end
   end
 end

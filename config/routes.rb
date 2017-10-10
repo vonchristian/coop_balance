@@ -122,9 +122,7 @@ Rails.application.routes.draw do
       resources :savings, only: [:new, :create]
       resources :time_deposits, only: [:new, :create]
     end
-    resources :suppliers, only: [:index, :show] do
-      resources :payments, only: [:new, :create]
-    end
+    
     resources :share_capitals, only: [:index, :show] do
       resources :capital_build_ups, only: [:new, :create]
     end
@@ -187,7 +185,9 @@ Rails.application.routes.draw do
   resources :occupations, only: [:index, :show]
   resources :disbursements, only: [:index, :show, :new, :create]
   resources :collections, only: [:index, :show]
-  resources :suppliers, only: [:index, :show, :new, :create]
+  resources :suppliers, only: [:index, :show, :new, :create] do 
+      resources :payments, only: [:new, :create], module: :suppliers
+    end
   resources :registries, only: [:create]
 
   resources :programs, only: [:index, :show] do 
