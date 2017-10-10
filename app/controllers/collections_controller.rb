@@ -7,7 +7,7 @@ class CollectionsController < ApplicationController
       format.html
       format.pdf do 
         pdf = AccountingModule::CollectionReportPdf.new(@entries, @employee, view_context)
-        send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Disbursement.pdf"
+        send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Collection Report.pdf"
       end
     end 
   end 

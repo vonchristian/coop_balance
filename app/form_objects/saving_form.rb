@@ -27,7 +27,7 @@ class SavingForm
     credit_amounts_attributes: [account: credit_account, amount: amount])
   end
   def debit_account
-    AccountingModule::Account.find_by(name: "Cash on Hand")
+    find_employee.cash_on_hand_account
   end
   def credit_account
     AccountingModule::Account.find_by(name: "Savings Deposits")

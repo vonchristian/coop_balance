@@ -28,11 +28,7 @@ module TimeDeposits
       credit_amounts_attributes: [account: credit_account, amount: amount])
     end
     def credit_account
-      if find_user.treasurer?
-        AccountingModule::Account.find_by(name: "Cash on Hand (Treasury)")
-      elsif find_user.teller?
-        AccountingModule::Account.find_by(name: "Cash on Hand (Cashier)")
-      end
+      find_user.cash_on_hand_account
     end
     def debit_account
       AccountingModule::Account.find_by(name: "Time Deposits")

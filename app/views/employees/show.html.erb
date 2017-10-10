@@ -1,2 +1,5 @@
 <ul class="nav nav-tabs">
           <li class="<%= 'active' if current_page?(employee_entries_path(@employee))%>"><%= link_to 'Entries', employee_entries_path(@employee) %></li>
+
+  <%= @employee.cash_on_hand_account.balance(recorder_id: @employee.id) + @employee.fund_transfer_total %>
+<%= link_to 'New Remittance', new_employee_remittance_path(@employee) %>

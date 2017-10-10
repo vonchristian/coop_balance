@@ -17,6 +17,9 @@ class WithdrawalForm
   def find_saving
     MembershipsModule::Saving.find_by(id: saving_id)
   end
+  def find_employee
+    User.find_by(id: recorder_id)
+  end
 
   def save_withdraw
     find_saving.entries.create!(recorder_id: recorder_id, entry_type: 'withdrawal', description: 'Withdraw', reference_number: or_number, entry_date: date,
@@ -24,7 +27,7 @@ class WithdrawalForm
     credit_amounts_attributes: [account: credit_account, amount: amount])
   end
   def credit_account
-    AccountingModule::Account.find_by(name: "Cash on Hand")
+    find_employee.cash_on_hand_account
   end
   def debit_account
     AccountingModule::Account.find_by(name: "Savings Deposits")

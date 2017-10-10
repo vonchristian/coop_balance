@@ -199,6 +199,7 @@ Rails.application.routes.draw do
   end
   resources :employees, only: [:index, :show] do 
     resources :entries, only: [:index, :show], module: :employees
+    resources :remittances, only: [:new, :create], module: :employees
   end
   mount ActionCable.server => '/cable'
 
