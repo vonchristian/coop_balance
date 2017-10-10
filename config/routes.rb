@@ -197,9 +197,10 @@ Rails.application.routes.draw do
     resources :withdrawals, only: [:new, :create], module: :time_deposits
     resources :renewals, only: [:new, :create], module: :time_deposits
   end
-  resources :employees, only: [:index, :show] do 
+  resources :employees, only: [:index, :show, :edit, :update] do 
     resources :entries, only: [:index, :show], module: :employees
     resources :remittances, only: [:new, :create], module: :employees
+    resources :vault_fund_transfers, only: [:new, :create], module: :employees
   end
   mount ActionCable.server => '/cable'
 

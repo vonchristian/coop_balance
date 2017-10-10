@@ -1,5 +1,5 @@
 module Employees
-  class RemittancesController < ApplicationController
+  class VaultFundTransfersController < ApplicationController
     def new 
       @employee = User.find(params[:employee_id])
       @entry = AccountingModule::RemittanceForm.new 
