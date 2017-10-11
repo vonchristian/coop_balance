@@ -82,17 +82,17 @@ module AccountingModule
         row(0).background_color = 'DDDDDD'
       end
       @entries.each do |entry|
-        table([["#{entry.entry_date.strftime("%B %e, %Y")}", "#{entry.description}", "#{entry.reference_number}",  "#{display_commercial_document_for(entry)}", "#{entry.recorder.try(:first_and_last_name)}"]], cell_style: { size: 9}, column_widths: [50, 130, 50,  100, 50, 100, 80]) do 
+        table([["#{entry.entry_date.strftime("%B %e, %Y")}", "#{entry.description}", "#{entry.reference_number}",  "#{display_commercial_document_for(entry).try(:upcase)}", "#{entry.recorder.try(:first_and_last_name).try(:upcase)}"]], cell_style: { size: 9, padding: [5,5,4,0]}, column_widths: [50, 130, 50,  100, 50, 100, 80]) do 
           cells.borders = []
         end
 
         table([["", "", "", "", "", "<b>DEBIT</b>"]]+  
-          entry.debit_amounts.map{|a| ["", "", "",  "", "", a.account.name,  price(a.amount)] }, column_widths: [50, 130, 50, 100, 50, 100, 80], cell_style: { inline_format: true, size: 8, padding: [0,0,4,0]}) do 
+          entry.debit_amounts.map{|a| ["", "", "",  "", "", a.account.name,  price(a.amount)] }, column_widths: [50, 130, 50, 100, 50, 100, 80], cell_style: { inline_format: true, size: 8, padding: [0,0,0,0]}) do 
           cells.borders = []
           column(-1).align = :right
         end
 
-        table([["",  "", "","", "", "<b>CREDIT</b>"]] + entry.credit_amounts.map{|a| ["", "", "",  "", "",  a.account.name, price(a.amount)] }, column_widths: [50, 130, 50, 100, 50, 100, 80], cell_style: {inline_format: true, padding: [0,0,4,0], size: 8} ) do 
+        table([["",  "", "","", "", "<b>CREDIT</b>"]] + entry.credit_amounts.map{|a| ["", "", "",  "", "",  a.account.name, price(a.amount)] }, column_widths: [50, 130, 50, 100, 50, 100, 80], cell_style: {inline_format: true, padding: [0,0,2,0], size: 8} ) do 
           cells.borders = []
           column(-1).align = :right
 
@@ -101,7 +101,6 @@ module AccountingModule
         stroke_color 'CCCCCC'
         line_width 0.2
         stroke_horizontal_rule
-        move_down 15
       end
       end
 
