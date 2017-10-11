@@ -15,7 +15,8 @@ module LoansModule
       @view_context.number_to_currency(number, :unit => "P ")
     end
     def heading 
-      image "#{Rails.root}/app/assets/images/logo_grayscale.jpg", width: 50, height: 50, position: :center
+      image "#{Rails.root}/app/assets/images/logo_kcmdc.jpg", width: 50, height: 50, position: :center
+       move_down 20
     	text "LOAN DISBURSEMENT VOUCHER", align: :center
        # barcode = Barby::Code39.new(@voucher.number)
       stroke_horizontal_rule
@@ -29,11 +30,14 @@ module LoansModule
 
     end
     def disbursement_table
-      table(table_data, header: true, cell_style: { size: 12, font: "Helvetica"}) do
+      table(table_data, header: true, cell_style: { size: 10, font: "Helvetica"}) do
         cells.borders = []
         row(-1).font_style = :bold
+        row(1).size = 8
         row(-1).background_color = 'DDDDDD'
         row(-3).background_color = 'D5456D'
+        row(1).background_color = 'DDDDDD'
+
 
         row(-1).size = 14
 
@@ -47,10 +51,10 @@ module LoansModule
 
     def table_data
       move_down 5
-      [["LOAN AMOUNT"]] + 
-      [["CHARGE", "DEBIT ACCOUNT", "CREDIT ACCOUNT", "AMOUNT"]] +
-      @table_data ||= @loan.loan_charges.map { |e| [e.name, price(e.charge_amount_with_adjustment), e.credit_account_name]} +
-      [["Total Charges", "#{price(@loan.total_loan_charges)}"]] +
+      [["LOAN AMOUNT", "", "", "#{price(@loan.loan_amount)}"]] + 
+      [["CHARGE NAME", "DEBIT ACCOUNT", "CREDIT ACCOUNT", "AMOUNT"]] +
+      @table_data ||= @loan.loan_charges.map { |e| [e.name,  e.debit_account_name,  e.credit_account_name, price(e.charge_amount_with_adjustment) ]} +
+      [["TOTAL CHARGES", "", "", "#{price(@loan.total_loan_charges)}"]] +
       [["", ""]] +
       [["Net Proceed", "", "", "#{price(@loan.net_proceed)}"]]
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171009035149) do
+ActiveRecord::Schema.define(version: 20171011104500) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -770,12 +770,12 @@ ActiveRecord::Schema.define(version: 20171009035149) do
   create_table "vouchers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "number"
     t.datetime "date"
-    t.string "voucherable_type"
-    t.bigint "voucherable_id"
-    t.string "payee_type"
-    t.bigint "payee_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "voucherable_type"
+    t.uuid "voucherable_id"
+    t.string "payee_type"
+    t.uuid "payee_id"
     t.index ["payee_type", "payee_id"], name: "index_vouchers_on_payee_type_and_payee_id"
     t.index ["voucherable_type", "voucherable_id"], name: "index_vouchers_on_voucherable_type_and_voucherable_id"
   end

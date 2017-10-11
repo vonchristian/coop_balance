@@ -9,5 +9,8 @@ module LoansModule
 
     validates :name, :interest_rate, presence: true 
     validates :interest_rate, numericality: true
+    def debit_account 
+      account 
+    end
   end
 end

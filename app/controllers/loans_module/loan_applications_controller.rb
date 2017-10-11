@@ -8,7 +8,6 @@ module LoansModule
       if @loan.valid?
         @loan.save
         @loan.create_charges
-       
         @loan.set_capital_build_up
         @loan.set_filing_fee
         @loan.set_loan_protection_fee

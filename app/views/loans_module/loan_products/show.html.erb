@@ -1,20 +1,37 @@
-<%= @loan_product.name %>
-<hr>
-Settings 
-
-Charges
-
-<% Charge.regular.all.each do |charge| %>
-
-  <%= charge.name %>
-  <%= charge.charge_type %>
-  <%= charge.percent %> %
-  <%= number_to_currency charge.amount %>
-<%=simple_form_for LoanProductCharge.new, url: :loans_module_loan_product_charges do |f| %>
-<%= f.input :loan_product_id, input_html: { value: @loan_product.id }, as: :hidden %>
-<%= f.input :charge_id, input_html: { value: charge.id }, as: :hidden %>
- <%= button_tag do %>
-    <i class="fa fa-toggle-off" aria-hidden="true"></i>
-  <% end %>
-<% end %>
-<% end %>
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-solid">
+    <div class="box box-header">
+      <h3 class="box-title"><%= @loan_product.name %></h3>
+    </div>
+    <div class="box-body">
+      <div class="row">
+        <div class="col-md-6">
+          <p class="text-muted">LOAN CHARGES </p>
+          <% Charge.regular.all.each do |charge| %>
+            <div class="row">
+              <div class="col-md-5 col-md-offset-1">
+                <%= charge.name %>
+              </div>
+              <div class="col-md-3">
+                <%= number_to_currency charge.amount %>
+              </div>
+              <div class="col-md-2">
+                <%=simple_form_for LoanProductCharge.new, url: :loans_module_loan_product_charges do |f| %>
+                  <%= f.input :loan_product_id, input_html: { value: @loan_product.id }, as: :hidden %>
+                  <%= f.input :charge_id, input_html: { value: charge.id }, as: :hidden %>
+                  <% if @loan_product.charges.exclude?(charge) %>
+                    <%= button_tag(class: "btn btn-default btn-sm") do %>
+                      <i class="icon-plus"></i> Add
+                    <% end %>
+                  <% else %>
+                    <%= button_tag(class: "btn btn-success btn-sm disabled")do %>
+                      <i class="icon-plus"></i> Added
+                    <% end %>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+            <br />
+          <% end %>
+        </div>

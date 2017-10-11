@@ -5,7 +5,7 @@ module LoansModule
     enum mode_of_payment: [:monthly, :quarterly, :semi_annually, :lumpsum]
     belongs_to :borrower, class_name: "Member", foreign_key: 'member_id'
     belongs_to :loan_product, class_name: "LoansModule::LoanProduct"
-    has_one :cash_disbursement_voucher, class_name: "Voucher", as: :voucherable
+    has_one :cash_disbursement_voucher, class_name: "Voucher", as: :voucherable, foreign_key: 'voucherable_id'
    
     has_many :loan_approvals, class_name: "LoansModule::LoanApproval"
     has_many :approvers, through: :loan_approvals
@@ -27,9 +27,13 @@ module LoansModule
 
     delegate :full_name, to: :borrower, prefix: true, allow_nil: true
     delegate :name, to: :loan_product, prefix: true, allow_nil: true
+    delegate :debit_account, :interest_rate, to: :loan_product, prefix: true
     before_save :set_default_date
     after_commit :set_documentary_stamp_tax
     #find aging loans e.g. 1-30 days,
+    def voucherable_amount
+      net_proceed
+    end
     def self.aging_for(start_num, end_num)
       aging_loans = []
       aging.each do |loan|
@@ -95,14 +99,14 @@ module LoansModule
       loan_additional_charges.total
     end
     def set_loan_protection_fee 
-      loan_protection_fund = Charge.amount_type.regular.create!(name: 'Loan Protection Fund', amount: LoanProtectionRate.set_amount_for(self), debit_account: AccountingModule::Account.find_by(name: "Cash on Hand"), credit_account: AccountingModule::Revenue.find_by(name: "Service Fees"))
+      loan_protection_fund = Charge.amount_type.create!(name: 'Loan Protection Fund', amount: LoanProtectionRate.set_amount_for(self), debit_account: AccountingModule::Account.find_by(name: "Cash on Hand"), credit_account: AccountingModule::Revenue.find_by(name: "Service Fees"))
       self.loan_charges.create(chargeable: loan_protection_fund)
     end
     def set_filing_fee
       if loan_amount < 5_000 
-        filing_fee = Charge.amount_type.regular.create!(name: 'Filing Fee', amount: 10, debit_account: AccountingModule::Account.find_by(name: "Cash on Hand"), credit_account: AccountingModule::Revenue.find_by(name: "Service Fees"))
+        filing_fee = Charge.amount_type.create!(name: 'Filing Fee', amount: 10, debit_account: AccountingModule::Account.find_by(name: "Cash on Hand"), credit_account: AccountingModule::Revenue.find_by(name: "Service Fees"))
       else 
-        filing_fee = Charge.amount_type.regular.create!(name: 'Filing Fee', amount: 100, debit_account: AccountingModule::Account.find_by(name: "Cash on Hand"), credit_account: AccountingModule::Revenue.find_by(name: "Service Fees"))
+        filing_fee = Charge.amount_type.create!(name: 'Filing Fee', amount: 100, debit_account: AccountingModule::Account.find_by(name: "Cash on Hand"), credit_account: AccountingModule::Revenue.find_by(name: "Service Fees"))
       end
       self.loan_charges.create(chargeable: filing_fee)
     end

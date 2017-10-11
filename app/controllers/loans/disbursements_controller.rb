@@ -1,5 +1,8 @@
-module LoansModule
+module Loans
   class DisbursementsController < ApplicationController
+    def index 
+      @loan = LoansModule::Loan.find(params[:loan_id])
+    end
     def new
       @loan = LoansModule::Loan.find(params[:loan_id])
       @disbursement = LoanDisbursementForm.new
@@ -9,7 +12,7 @@ module LoansModule
       @disbursement = LoanDisbursementForm.new(disbursement_params)
       if @disbursement.valid?
         @disbursement.save
-        redirect_to loans_module_loan_path(@loan), notice: "Disbursed successfully."
+        redirect_to loan_path(@loan), notice: "Disbursed successfully."
       else
         render :new
       end
@@ -17,7 +20,7 @@ module LoansModule
 
     private
     def disbursement_params
-      params.require(:loan_disbursement_form).permit(:amount, :loan_id, :reference_number, :date)
+      params.require(:loan_disbursement_form).permit(:recorder_id, :amount, :loan_id, :reference_number, :date, :payee_id)
     end
   end
 end

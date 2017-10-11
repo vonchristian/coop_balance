@@ -1,7 +1,7 @@
 module AccountingModule 
   class CollectionReportPdf < Prawn::Document 
     def initialize(entries, employee, from_date, to_date, view_context)
-       super(margin: 20, page_size: "A4", page_layout: :portrait)
+       super(margin: 10, page_size: "A4", page_layout: :portrait)
       @entries = entries 
       @employee = employee
       @from_date = from_date
@@ -18,6 +18,8 @@ module AccountingModule
     def display_commercial_document_for(entry)
       if entry.commercial_document.try(:member).present? 
         entry.commercial_document.try(:member).try(:full_name)
+      elsif entry.commercial_document.try(:borrower).present? 
+        entry.commercial_document.try(:borrower).try(:full_name)
       elsif entry.fund_transfer?
         entry.commercial_document.try(:first_and_last_name)
       end
@@ -73,25 +75,37 @@ module AccountingModule
         stroke_horizontal_rule
         move_down 15
       end
-      text "TRANSACTION DETAILS:", size: 9, style: :bold
-      table(table_data, header: true, cell_style: { inline_format: true, size: 9, font: "Helvetica"}, column_widths: [80]) do
-        cells.borders =[]
-        row(0).font_style = :bold
-        row(0).size = 8
-        row(0).background_color = 'DDDDDD'
-        column(0).align = :right
-        column(3).align = :right
-        # row(-1).background_color = "F8FE06"
-        # row(-1).size = 9
-      end
-    end
-  end
+      text "TRANSACTION DETAILS:", size: 8, style: :bold
+      table([["DATE", "DESCRIPTION", "REFERENCE NUMBER", "MEMBER", "EMPLOYEE", "ACCOUNT", "AMOUNT"]], cell_style: { inline_format: true, size: 6, font: "Helvetica"}, column_widths: [50, 130, 50, 100, 50, 100, 80]) do
 
-  def table_data
-    move_down 5
-    [["DATE", "DESCRIPTION", "REFERENCE NUMBER", "AMOUNT", "TYPE", "MEMBER", "EMPLOYEE"]] +
-    @table_data ||= @entries.entered_on(from_date: @from_date, to_date: @to_date, recorder_id: @employee.id).order(created_at: :asc).map { |e| [ e.entry_date.strftime("%b %e, %Y"), e.description, e.reference_number, price(e.debit_amounts.sum(&:amount)), e.entry_type, display_commercial_document_for(e), e.recorder.try(:first_and_last_name)]}
-    # [["TOTAL", "", "", "<b>#{price(@entries.total)}</b>", "", "", ""]]
+        row(0).font_style= :bold
+        row(0).background_color = 'DDDDDD'
+      end
+      @entries.each do |entry|
+        table([["#{entry.entry_date.strftime("%B %e, %Y")}", "#{entry.description}", "#{entry.reference_number}",  "#{display_commercial_document_for(entry)}", "#{entry.recorder.try(:first_and_last_name)}"]], cell_style: { size: 9}, column_widths: [50, 130, 50,  100, 50, 100, 80]) do 
+          cells.borders = []
+        end
+
+        table([["", "", "", "", "", "<b>DEBIT</b>"]]+  
+          entry.debit_amounts.map{|a| ["", "", "",  "", "", a.account.name,  price(a.amount)] }, column_widths: [50, 130, 50, 100, 50, 100, 80], cell_style: { inline_format: true, size: 8, padding: [0,0,4,0]}) do 
+          cells.borders = []
+          column(-1).align = :right
+        end
+
+        table([["",  "", "","", "", "<b>CREDIT</b>"]] + entry.credit_amounts.map{|a| ["", "", "",  "", "",  a.account.name, price(a.amount)] }, column_widths: [50, 130, 50, 100, 50, 100, 80], cell_style: {inline_format: true, padding: [0,0,4,0], size: 8} ) do 
+          cells.borders = []
+          column(-1).align = :right
+
+        end
+        stroke do
+        stroke_color 'CCCCCC'
+        line_width 0.2
+        stroke_horizontal_rule
+        move_down 15
+      end
+      end
+
+    end
   end
   end 
 end 

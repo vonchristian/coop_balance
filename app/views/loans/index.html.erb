@@ -5,17 +5,17 @@
         Loan Applications
       </div>
       <div class="box-body">
-        <% LoansModule::Loan.application.each do |loan| %>
-          <%=link_to loans_module_loan_path(loan) do %>
+        <% @loans.each do |loan| %>
+          <%=link_to loan_path(loan) do %>
             <div class="row">
               <div class="col-md-3">
-                 <% if loan.member %>
-                  <h4><%= image_tag loan.member.avatar_url, class: 'media-object img-circle', style: 'width:60px;height:60px;' %></h4>
+                 <% if loan.borrower %>
+                  <h4><%= image_tag loan.borrower.avatar_url, class: 'media-object img-circle', style: 'width:60px;height:60px;' %></h4>
                 <% end %>
               </div>
               <div class="col-md-9">
                 <p><%=number_to_currency loan.loan_amount %></p>
-                <small class="text-muted"> <%=loan.member.try(:full_name).try(:upcase) %></small><br>
+                <small class="text-muted"> <%=loan.borrower.try(:full_name).try(:upcase) %></small><br>
                 <small class="text-muted"> <%=loan.loan_product_name.try(:upcase) %></small><br>
                 <small class="text-muted"> <i class="fa fa-calendar"></i> <%=loan.application_date.try(:strftime, ("%B %e, %Y")) %></small>
                 <br>
@@ -35,12 +35,12 @@
         Aging Loans
       </div>
       <div class="box-body">
-        <% LoansModule::Loan.aging.all.each do |loan| %>
-          <%=link_to loans_module_loan_path(loan) do %>
+        <% LoansModule::Loan.aging.each do |loan| %>
+          <%=link_to loan_path(loan) do %>
             <div class="row">
               <div class="col-md-3">
-                <% if loan.member.present? %>
-                  <%=image_tag(loan.member.avatar.url(:small), class: "img-circle") %>
+                <% if loan.borrower.present? %>
+                  <%=image_tag(loan.borrower.avatar.url(:small), class: "img-circle") %>
                 <% end %>
               </div>
               <div class="col-md-8">

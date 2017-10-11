@@ -56,11 +56,8 @@ Rails.application.routes.draw do
     resources :first_notices, only: [:new, :create]
     resources :processings, only: [:create]
     resources :additional_charges, only: [:new, :create]
-    resources :approvals, only: [:new, :create]
-    resources :disbursements, only: [:new, :create]
-    resources :disbursement_vouchers, only: [:new, :create, :show]
     resources :payments, only: [:new, :create]
-    resources :loan_co_makers, only: [:new, :create]
+    
     end
     resources :members, only: [:index, :show] do
       resources :loan_applications, only: [:new, :create], module: :member_loans
@@ -201,6 +198,16 @@ Rails.application.routes.draw do
     resources :entries, only: [:index, :show], module: :employees
     resources :remittances, only: [:new, :create], module: :employees
     resources :vault_fund_transfers, only: [:new, :create], module: :employees
+  end
+  resources :loans, only: [:index, :show] do 
+    resources :loan_co_makers, only: [:new, :create], module: :loans
+    resources :approvals, only: [:new, :create], module: :loans
+    resources :disbursements, only: [:new, :create, :index], module: :loans
+    resources :disbursement_vouchers, only: [:new, :create, :show], module: :loans
+  end
+  resources :loan_co_makers, only: [:destroy]
+  resources :vouchers, only: [:index, :show] do 
+    resources :disbursements, only: [:new, :create], module: :vouchers
   end
   mount ActionCable.server => '/cable'
 

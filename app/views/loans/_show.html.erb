@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="nav-tabs-custom">
+      <ul class="nav nav-tabs">
+        <li class="<%= 'active' if current_page?(loan_path(@loan))%>"><%= link_to 'Info', loan_path(@loan) %></li>
+        <li class="<%= 'active' if current_page?(loan_disbursements_path(@loan))%>"><%= link_to 'Disbursement', loan_disbursements_path(@loan) %></li>
+
+        
+
+        <!-- <li class="active"><a href="#loan-info" data-toggle="tab">Info</a></li> -->
+       <li ><a href="#loan-payments" data-toggle="tab">Payments</a></li>
+        <li ><a href="#loan-amortization-schedule" data-toggle="tab">Amortization Schedule</a></li>
+        <li><a href="#settings" data-toggle="tab">Settings</a></li>
+        <li><a href="#settings" data-toggle="tab">Reports</a></li>
+        <li><a href="#notices" data-toggle="tab">Notices</a></li> -->
+
+      </ul>
+      <div class="tab-content">
+        <% if current_page?(loan_path(@loan)) %>
+          <%=render 'loans/partials/loan_info' %>
+        <% end %>
+        <% if current_page?(loan_disbursements_path(@loan)) %>
+          <%=render 'loans/partials/loan_disbursement' %>
+        <% end %>
+        <%#=render 'loans/partials/payments' %>
+        <%#=render 'loans/partials/amortization_schedule' %>
+        <%#=render 'loans/partials/loan_disbursement' %>
+        <%#=render 'loans/partials/notices' %>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

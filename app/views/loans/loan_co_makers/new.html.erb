@@ -2,14 +2,18 @@
   <div class="col-md-6 col-md-offset-3">
     <div class="box box-solid">
       <div class="box-header">
+        <br>
         <div class="row">
           <div class="col-md-2">
-            <%=link_to loans_module_loan_path(@loan) do  %>
+            <%=link_to loan_path(@loan) do  %>
                <i class="icon-arrow-left fa-2x"></i>
             <% end %>
           </div>
-          <div class="col-md-7">
-            <%= @loan.member_full_name %>
+          <div class="col-md-2">
+             <%= image_tag(@loan.borrower.avatar.url(:medium), class: "img-circle", height: 40, width: 40) %> 
+          </div>
+          <div class="col-md-8">
+           <h3 class="box-title"> <%= @loan.borrower_full_name %></h3>
           </div>
         </div>
       </div>
@@ -17,7 +21,7 @@
       <div class="box-body">
         <div class="row">
           <div class="col-md-10 col-md-offset-1">
-            <%=form_tag new_loans_module_loan_loan_co_maker_path(@loan), method: :get, class: "search-form" do %>
+            <%=form_tag new_loan_loan_co_maker_path(@loan), method: :get, class: "sidebar-form" do %>
               <div class="input-group">
                 <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Member", id: 'account-search-form' %>
                 <span class="input-group-btn">
@@ -31,8 +35,8 @@
         </div>
         <br>
         <% @members.each do |member| %>
-         <%= simple_form_for [@loan, @co_maker], url: :loans_module_loan_loan_co_makers do |f| %>
-         <% if member != @loan.member %>
+         <%= simple_form_for [@loan, @co_maker], url: :loan_loan_co_makers do |f| %>
+         <% if member != @loan.borrower %>
          <div class="row">
            <div class="col-md-2 col-md-offset-1 col-xs-2">
              <%= member_avatar(member, style: 'width:40px;height:40px;', class: 'media-object img-circle') %>
