@@ -38,7 +38,7 @@ familymenber
 belongs_to member
 relation [:mother, :father, :daughter, :son, :grandmother, :grandfather, :brother, :sister]
 
-Implement TImeDeposit
+Implement TimeDeposit done
 
 Entry of days worked of employee 
 Employee Contributions
@@ -48,14 +48,10 @@ Document Management
 Programs and program subscription of member
 
 
-This is the idea that Intercom was built on – that cooperatives should have easy, centralized access to information about their members and that it shouldn’t be so hard for them to use that information to improve the relationship and increase engagement.
-
-
+This is the idea that Coop Catalyst was built on – that cooperatives should have easy, centralized access to information about their members and that it shouldn’t be so hard for them to use that information to improve the relationship and increase engagement of members.
 
 background job kaltas payment of program from members who subscribed
 
 ##Accounting
   separate account for each programs
-
-
   print pdf of time deposit

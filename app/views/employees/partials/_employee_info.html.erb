@@ -1,8 +1,9 @@
 <div class="tab-pane <%= 'active' if current_page?(employee_path(@employee)) %>" id="employee-info">
-
+<% if current_user.treasurer? || current_user.teller? %>
   <h3><%= number_to_currency @employee.cash_on_hand_account.balance(recorder_id: @employee.id) + @employee.fund_transfer_total %></h3>
   <small class="text-muted"><%= @employee.cash_on_hand_account.try(:name).try(:upcase)%></small>
   <hr>
+<% end %>
   <% if current_user.treasurer? %>
     <div class="dropdown">
       <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">

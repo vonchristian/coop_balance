@@ -22,7 +22,7 @@ module Suppliers
 
     private 
     def voucher_params
-      params.require(:voucher).permit(:number, :date, :payee_id, :payee_type, :voucherable_id, :voucherable_type, :user_id)
+      params.require(:voucher).permit(:number, :date, :payee_id, :payee_type, :voucherable_id, :description, :voucherable_type, :user_id)
     end 
   end 
 end 

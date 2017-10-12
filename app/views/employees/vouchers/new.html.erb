@@ -50,7 +50,7 @@
               <%= f.input :account_id, label: false, prompt: "Select Account", collection: AccountingModule::Account.all.map{|a| [a.name, a.id] }  %>
             </div>
             <div class="col-md-2">
-              <%= f.submit "Add" %>
+              <%= f.submit "Add", class: "btn btn-primary btn-sm" %>
             </div>
           </div>
         <% end %>
@@ -78,3 +78,11 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#voucher_amount_account_id").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>

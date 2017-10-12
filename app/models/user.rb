@@ -4,7 +4,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :lockable,
          :recoverable, :rememberable, :trackable, :validatable
-  enum role: [:system_administrator, :manager, :loan_officer, :bookkeeper, :teller, :stock_custodian, :sales_clerk, :treasurer]
+  enum role: [:system_administrator, :manager, :loan_officer, :bookkeeper, :teller, :stock_custodian, :sales_clerk, :treasurer, :accountant]
   belongs_to :department
   has_many :entries, class_name: "AccountingModule::Entry", foreign_key: 'recorder_id'
   has_many :fund_transfers, class_name: "AccountingModule::Entry", as: :commercial_document

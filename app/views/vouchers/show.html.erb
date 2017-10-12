@@ -1,0 +1,144 @@
+<% if @voucher.for_loan? %>
+  <div class="row">
+  <div class="col-md-6 col-md-offset-3">
+<div class="box box-solid">
+  <div class="box-header">
+  </div>
+  <div class="box-body">
+    <div class="row">
+      <div class="col-md-3">
+
+         <%= member_avatar(@voucher.voucherable.borrower, style: 'width:60px;height:60px;', class: 'media-object img-circle') %>
+
+      </div>
+      <div class="col-md-9">
+        <p><%= @voucher.voucherable.borrower.full_name.upcase %></p>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+    <div class="col-md-6">
+      &nbsp; &nbsp; Loan Amount 
+    </div>
+    <div class="col-md-5">
+      <span class="pull-right"> <%= number_to_currency @voucher.voucherable.loan_amount %></span>
+    </div>
+  </div>
+  <br>
+  <p class="text-danger">LOAN CHARGES </p>
+  <% @voucher.voucherable.loan_charges.each do |loan_charge| %>
+    <div class="row">
+      <div class="col-md-6">
+        &nbsp; &nbsp; <%= loan_charge.chargeable.name %>
+      </div>
+      <div class="col-md-5">
+          <span class="pull-right"> <%= number_to_currency loan_charge.charge_amount_with_adjustment %></span>
+      </div>
+     
+     
+     </div>
+     <br>
+  <% end %>
+  <hr>
+  <div class="row">
+    <div class="col-md-6">
+      &nbsp; &nbsp; Net Proceed
+    </div>
+    <div class="col-md-5">
+      <span class='pull-right'> <%= number_to_currency @voucher.payable_amount %></span>
+    </div>
+  </div>
+  <br>
+<% elsif @voucher.for_purchases? %>
+  <div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="box box-solid">
+    <div class="box-header">
+    </div>
+    <div class="box-body">
+        <p class="text-muted">DELIVERED STOCKS </p>
+        <div class="row">
+          <div class="col-md-3">
+            <small><b>QTY</b></small>
+          </div>
+          <div class="col-md-5">
+            <small><b>PRODUCT</b></small>
+            
+          </div>
+          <div class="col-md-3">
+            <small><b>TOTAL COST</b></small>
+          </div>
+        </div>
+        <hr>
+        <% @voucher.voucherable.stocks.each do |stock| %>
+          <div class="row">
+            <div class="col-md-3">
+              <%= stock.quantity %>
+            </div>
+            <div class="col-md-5">
+              <%=stock.name %><br>
+              <span class="label bg-gray"><%=number_to_currency stock.unit_cost %></span>
+            </div>
+            <div class="col-md-3">
+              <%= stock.total_cost %>  
+            </div>
+          </div>
+          <br>
+        <% end %>
+        <div class="row">
+          <div class="col-md-6">
+            <b>TOTAL</b>
+          <div class="col-md-6">
+          <span class="pull-right">
+              <%=number_to_currency @voucher.voucherable.stocks.pluck(:total_cost).sum%>
+            </span>
+          </div>
+        </div>
+      </div>
+        <hr>
+<% elsif @voucher.for_employee? %>
+ <div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="box box-solid">
+      <div class="box-header">
+        <br>
+        <div class="row">
+          <div class="col-md-2 col-md-offset-1">
+            <%=image_tag(@voucher.payee.avatar.url(:medium), class: "img-circle", height: 50, width: 50) %>
+          </div>
+          <div class="col-md-8">
+            <h3 class="box-title"><%= @voucher.payee.first_and_last_name.try(:upcase) %></h3><br>
+            <small><%= @voucher.payee.role.titleize %></small><br>
+            <%=link_to 'Print(PDF)', voucher_path(@voucher, format: "pdf"), class: "btn btn-default btn-sm btn-flat" %>
+          </div>
+        </div>
+      </div>
+      <div class="box-body">
+        <% @voucher.voucher_amounts.each do |voucher_amount| %>
+          <div class="row">
+            <div class="col-md-6 col-md-offset-1">
+              <%= voucher_amount.account.try(:name) %>
+            </div>
+            <div class="col-md-3">
+              <span class="pull-right"> 
+                <%= number_to_currency voucher_amount.amount %>
+              </span>
+            </div>
+          </div>
+          <br />
+        <% end %>
+        <div class="row">
+          <div class="col-md-6 col-md-offset-1">
+            <b>TOTAL </b>
+          </div>
+          <div class="col-md-3">
+            <b class="pull-right"><%=number_to_currency @voucher.voucher_amounts.sum(&:amount) %></b>
+          </div>
+        </div>
+        <hr />
+         <% if !@voucher.disbursed? %>
+              <%= link_to 'Disburse', new_voucher_disbursement_path(@voucher), class: "btn btn-primary pull-right" %>
+            <% else %>
+                      <span class="label bg-green"> Disbursed </span>
+                    <% end %>
+<% end %>

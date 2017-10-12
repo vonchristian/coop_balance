@@ -36,10 +36,10 @@ class DisbursementForm
       debit_amount = AccountingModule::DebitAmount.new(account_id: amount.account_id, amount: amount.amount)
       entry.credit_amounts << credit_amount
       entry.debit_amounts << debit_amount
-
     end
-    entry.save 
+    entry.save!
   end
+
   def create_payment_for_purchase
     accounts_payable =  AccountingModule::Liability.find_by(name: 'Accounts Payable-Trade')
     entry = AccountingModule::Entry.supplier_payment.new(commercial_document: find_voucher,  :description => "Payment of delivered stocks", recorder_id: recorder_id, entry_date: date)
