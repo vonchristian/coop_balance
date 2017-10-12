@@ -1,18 +1,42 @@
 class Voucher < ApplicationRecord
+  has_one :entry, class_name: "AccountingModule::Entry", as: :commercial_document
   belongs_to :voucherable, polymorphic: true
   belongs_to :payee, polymorphic: true
+  delegate :payable_amount, to: :voucherable, allow_nil: true
+  has_many :voucher_amounts, dependent: :destroy
+  before_save :set_number, :set_date
+  def self.disbursed
+    all.select{|a| a.disbursed? }
+  end
+  def disbursed?
+    entry.present?
+  end
   def for_loan?
     voucherable_type == "LoansModule::Loan"
   end
-  def amount 
-    voucherable.voucherable_amount
+  def for_purchases?
+    voucherable_type == "StockRegistry"
   end
-  
-  def self.generate_number_for(voucher)
-  	if self.last.present?
-      voucher.number = "#{self.last.number.succ.rjust(12, '0')}"
-    else 
-     voucher.number =  "#{1.to_s.rjust(12, '0')}"
+  def for_employee?
+    payee_type == "User"
+  end
+
+  def add_amounts(employee)
+    self.voucher_amounts << employee.voucher_amounts
+    employee.voucher_amounts.each do |v|
+      v.commercial_document_id = nil 
+      v.commercial_document_type = nil 
+      v.save 
     end
+  end
+        
+
+
+  private
+  def set_number 
+    self.number = self.id 
+  end
+  def set_date
+    self.date ||= Time.zone.now
   end
 end

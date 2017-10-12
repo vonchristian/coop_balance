@@ -1,0 +1,83 @@
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="box box-solid">
+      <div class="box-body">
+        <%= simple_form_for @stock, url: :supplier_deliveries do |f| %>
+          <%= f.error_notification %>
+          <%= link_to 'New Product', new_product_path, remote: true %>
+          <%= f.input :product_id, collection: StoreModule::Product.all.map{|a| [a.name, a.id] } %>
+          <%= f.input :date, as: :string, input_html: { class: "datepicker", value: Time.zone.now.strftime("%B %e, %Y") } %>
+          <%= f.input :quantity %>
+          <%= f.input :unit_cost %>
+          <%= f.input :total_cost %>
+          <%= f.input :barcode %>
+          <%= f.input :supplier_id, input_html: { value: @supplier.id }, as: :hidden %>
+          <div class="box-footer">
+            <%= f.submit "Save Stock", class: "btn btn-primary btn-flat" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="box box-primary">
+      <div class="box-body">
+        <p class="text-muted">DELIVERED STOCKS </p>
+        <div class="row">
+          <div class="col-md-3">
+            <small><b>QTY</b></small>
+          </div>
+          <div class="col-md-5">
+            <small><b>PRODUCT</b></small>
+            
+          </div>
+          <div class="col-md-3">
+            <small><b>TOTAL COST</b></small>
+          </div>
+        </div>
+        <hr>
+        <% if @stock_registry.present? %>
+          <% @stock_registry.stocks.each do |stock| %>
+            <div class="row">
+              <div class="col-md-3">
+                <%= stock.quantity %>
+              </div>
+              <div class="col-md-5">
+                <%=stock.name %><br>
+                <span class="label bg-gray"><%=number_to_currency stock.unit_cost %></span>
+              </div>
+              <div class="col-md-3">
+                <span class="pull-right"><%= number_to_currency stock.total_cost %>  </span>
+              </div>
+            </div>
+            <br>
+          <% end %>
+          <hr>
+          <div class="row">
+            <div class="col-md-6">
+              <b>TOTAL</b>
+            </div>
+            <div class="col-md-5">
+              <span class="pull-right">
+                <%=number_to_currency @stock_registry.stocks.pluck(:total_cost).sum%>
+              </span>
+            </div>
+          </div>
+          <hr>
+        <p class="text-muted">VOUCHER DETAILS </p>
+        <%= simple_form_for [@supplier, @voucher], url: :supplier_vouchers do |f| %>
+          <%= f.input :date, as: :string, input_html: { class: "datepicker", value: Time.zone.now.strftime("%B %e, %Y") } %>
+          <%= f.input :voucherable_id, input_html: { value: @stock_registry.id }, as: :hidden %>
+          <%= f.input :voucherable_type, input_html: { value: "StockRegistry" }, as: :hidden %>
+          <%= f.input :payee_id, input_html: { value: @supplier.id }, as: :hidden %>
+          <%= f.input :payee_type, input_html: { value: @supplier.class }, as: :hidden %>
+          <%= f.input :user_id, input_html: { value: current_user.id }, as: :hidden %>
+
+          <%= f.submit "Create Voucher", class: "btn btn-primary" %>
+        <% end %>
+      <% end %>
+      </div>
+    </div>
+  </div>
+</div>

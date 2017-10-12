@@ -182,8 +182,9 @@ Rails.application.routes.draw do
   resources :occupations, only: [:index, :show]
   resources :disbursements, only: [:index, :show, :new, :create]
   resources :collections, only: [:index, :show]
-  resources :suppliers, only: [:index, :show, :new, :create] do 
-      resources :payments, only: [:new, :create], module: :suppliers
+  resources :suppliers, only: [:index, :show, :new, :create, :edit, :update] do 
+      resources :vouchers, only: [:create], module: :suppliers
+      resources :deliveries, only: [:index, :new, :create], module: :suppliers
     end
   resources :registries, only: [:create]
 
@@ -198,6 +199,9 @@ Rails.application.routes.draw do
     resources :entries, only: [:index, :show], module: :employees
     resources :remittances, only: [:new, :create], module: :employees
     resources :vault_fund_transfers, only: [:new, :create], module: :employees
+    resources :reports, only: [:index], module: :employees
+    resources :vouchers, only: [:index, :new, :create], module: :employees
+    resources :amounts, only: [:new, :create, :destroy], module: :employees
   end
   resources :loans, only: [:index, :show] do 
     resources :loan_co_makers, only: [:new, :create], module: :loans
@@ -209,6 +213,8 @@ Rails.application.routes.draw do
   resources :vouchers, only: [:index, :show] do 
     resources :disbursements, only: [:new, :create], module: :vouchers
   end
+  resources :products, only: [:new, :create]
+  resources :voucher_amounts, only: [:destroy]
   mount ActionCable.server => '/cable'
 
 end

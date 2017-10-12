@@ -1,0 +1,22 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">New Product</h4>
+    </div>
+    <%=simple_form_for @product, url: :products, remote: true do |f| %>
+    <%= f.error_notification %>
+      <div class="modal-body">
+        <ul class="errors text-danger">
+        </ul>
+        <div class="row">
+          <div class="col-md-12">
+            <%= f.input :name %>
+          </div>
+        </div>
+      <div class="modal-footer">
+        <%= link_to "Cancel", "#", class: "btn btn-default pull-left", data: {dismiss: "modal"} %>
+        <%=f.submit "Save Product", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+</div>

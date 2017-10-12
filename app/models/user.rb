@@ -10,6 +10,8 @@ class User < ApplicationRecord
   has_many :fund_transfers, class_name: "AccountingModule::Entry", as: :commercial_document
 
   has_many :appraised_properties, class_name: "Appraisal", foreign_key: 'appraiser_id'
+  has_many :voucher_amounts, as: :commercial_document # for adding cash advance on voucher
+  has_many :cash_disbursement_vouchers, as: :payee, class_name: "Voucher"
   has_attached_file :avatar,
   styles: { large: "120x120>",
            medium: "70x70>",
@@ -23,6 +25,9 @@ validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
   def self.loan_approvers 
     all.select{|a| User::LOAN_APPROVERS.include?(a.role.titleize)}
   end
+  def name  #for voucher index
+    first_and_last_name
+  end
   def first_and_last_name
     "#{first_name} #{last_name}"
   end
@@ -35,6 +40,9 @@ validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
   end 
   def fund_transfer_total
     fund_transfers.fund_transfer.map{ |a| a.debit_amounts.distinct.sum(:amount) }.sum
+  end
+  def payable_amount 
+    voucher_amounts.sum(:amount)
   end
         
 end

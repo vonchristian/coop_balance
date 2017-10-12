@@ -7,11 +7,19 @@ class ApplicationController < ActionController::Base
   private
   def current_cart
       StoreModule::Cart.find(session[:cart_id])
-    rescue ActiveRecord::RecordNotFound
+      rescue ActiveRecord::RecordNotFound
       cart = StoreModule::Cart.create(user_id: current_user.id)
       session[:cart_id] = cart.id
       cart
-    end
+  end
+
+  def current_stock_registry
+    StockRegistry.find(session[:stock_registry_id])
+    rescue ActiveRecord::RecordNotFound
+    registry = StockRegistry.create
+    session[:stock_registry_id] = registry.id
+    registry
+  end
   def permission_denied
     redirect_to root_path, alert: 'Sorry but you are not allowed to access this feature.'
   end

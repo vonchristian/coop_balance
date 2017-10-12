@@ -1,0 +1,50 @@
+
+
+  <!-- Profile Image -->
+  <div class="box box-solid">
+    <div class="box-body box-profile">
+    <%= image_tag(@supplier.avatar.url(:medium), class: "profile-user-img img-responsive img-circle") %>
+      
+      <h3 class="profile-username text-center"><%= @supplier.owner_name %></h3>
+        <hr>
+
+     
+
+     
+      <strong><i class="fa fa-phone margin-r-5"></i> Contact Number</strong>
+
+      <p class="text-muted"><%#= @supplier.contact_number %>
+        
+      </p>
+
+      <hr>
+
+      <strong><i class="fa fa-map-marker margin-r-5"></i> Address</strong>
+
+
+      <p class="text-muted"><%#= @supplier.addresses.current %></p>
+      <hr>
+       <strong><i class="fa fa-book margin-r-5"></i> TIN Number</strong>
+
+      <p class="text-muted"><%#= @supplier.tin_number %></p>
+
+      <hr>
+
+
+
+      <strong><i class="fa fa-file-text margin-r-5"></i> Notes</strong>
+
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
+       <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <%= link_to 'Update Info', edit_supplier_path(@supplier), class: "btn btn-primary btn-block" %>
+        <br>
+      </div>
+    </div>
+    </div>
+
+
+    <!-- /.box-body -->
+  </div>
+  <!-- /.box -->
+

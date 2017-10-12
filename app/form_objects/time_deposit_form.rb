@@ -20,14 +20,14 @@ class TimeDepositForm
   def find_deposit
     find_member.time_deposits.find_by(number_of_days: number_of_days, date_deposited: date_deposited)
   end
+  def find_employee 
+    User.find_by(id: recorder_id)
+  end
 
   def create_entry
-    find_deposit.deposits.time_deposit.create!(description: 'Time deposit', reference_number: or_number, entry_date: date_deposited,
-    debit_amounts_attributes: [account: debit_account, amount: amount],
+    find_deposit.deposits.time_deposit.create!(recorder_id: recorder_id, description: 'Time deposit', reference_number: or_number, entry_date: date_deposited,
+    debit_amounts_attributes: [account: find_employee.cash_on_hand_account, amount: amount],
     credit_amounts_attributes: [account: credit_account, amount: amount])
-  end
-  def debit_account
-    AccountingModule::Account.find_by(name: "Cash on Hand")
   end
   def credit_account
     AccountingModule::Account.find_by(name: "Time Deposits")

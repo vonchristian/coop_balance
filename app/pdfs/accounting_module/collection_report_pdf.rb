@@ -34,7 +34,7 @@ module AccountingModule
         text "KIANGAN COMMUNITY MULTIPURPOSE DEVELOPMENT COOPERATIVE", align: :center
         text "Poblacion, Kiangan, Ifugao", size: 12, align: :center
         move_down 10
-        text "COLLECTION REPORT", style: :bold, align: :center
+        text "TRANSACTIONS REPORT", style: :bold, align: :center
       end
       move_down 5
       stroke do

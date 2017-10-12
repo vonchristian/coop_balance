@@ -1,0 +1,24 @@
+<div class="tab-pane <%= 'active' if current_page?(supplier_deliveries_path(@supplier))%>">
+            <%= link_to 'New Delivery', new_supplier_delivery_path(@supplier), class: "btn btn-primary btn-flat pull-right" %>
+        <div class="table table-responsive">
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Voucher #</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @stock_registries.each do |registry| %>
+                  <tr>
+                    <td></td>
+                    <td><%= registry.date%></td>
+                    <td><%= registry.voucher_number %></td>
+                    <td><%= registry.payable_amount %></td>
+                  </tr>
+                <% end %>
+            </tbody>
+          </table>
+        </div>
+     

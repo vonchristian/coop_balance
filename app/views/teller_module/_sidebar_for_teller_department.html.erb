@@ -25,6 +25,7 @@
       <!-- /.search form -->
       <ul class="sidebar-menu">
           <li class="header"> TELLER SECTION </li>
+          <li class=<%= 'active' if current_page?(employee_path(current_user)) %> ><a href="/employees/<%=current_user.id %>"><i class="fa fa-cog"></i> <span> Account</span></a></li>
           <li class=<%= 'active' if current_page?(vouchers_path) %> ><a href="/vouchers"><i class="fa fa-folder"></i> <span> Vouchers</span></a></li>
           <li class=<%= 'active' if current_page?(treasury_module_index_path) %> ><a href="/treasury_module"><i class="fa fa-dashboard"></i> <span> Dashboard</span></a></li>
           <li class=<%= 'active' if current_page?(members_path) %> ><a href="/members"><i class="fa fa-users"></i> <span> Members</span></a></li>

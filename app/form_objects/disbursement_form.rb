@@ -8,11 +8,19 @@ class DisbursementForm
     ActiveRecord::Base.transaction do
       if find_voucher.for_loan?
         create_loan_disbursement
+      elsif find_voucher.for_purchases?
+        create_payment_for_purchase
+      elsif find_voucher.for_employee?
+        create_payment_for_employee
       end
     end
   end
   def find_voucher
     Voucher.find_by(id: voucher_id)
+  end
+
+  def find_supplier 
+    Supplier.find_by(id: voucherable_id)
   end
 
   def find_loan
@@ -21,9 +29,28 @@ class DisbursementForm
   def find_employee 
     User.find_by(id: recorder_id)
   end
+  def create_payment_for_employee 
+    entry = AccountingModule::Entry.new(commercial_document: find_voucher, :description => find_voucher.description, recorder_id: recorder_id, entry_date: date)
+    find_voucher.voucher_amounts.each do |amount|
+      credit_amount = AccountingModule::CreditAmount.new(account: find_employee.cash_on_hand_account , amount: amount.amount)
+      debit_amount = AccountingModule::DebitAmount.new(account_id: amount.account_id, amount: amount.amount)
+      entry.credit_amounts << credit_amount
+      entry.debit_amounts << debit_amount
 
+    end
+    entry.save 
+  end
+  def create_payment_for_purchase
+    accounts_payable =  AccountingModule::Liability.find_by(name: 'Accounts Payable-Trade')
+    entry = AccountingModule::Entry.supplier_payment.new(commercial_document: find_voucher,  :description => "Payment of delivered stocks", recorder_id: recorder_id, entry_date: date)
+    loan_debit_amount = AccountingModule::DebitAmount.new(amount: find_voucher.payable_amount, account: accounts_payable)
+    loan_credit_amount = AccountingModule::CreditAmount.new(amount: find_voucher.payable_amount, account: find_employee.cash_on_hand_account)
+    entry.debit_amounts << loan_debit_amount
+    entry.credit_amounts << loan_credit_amount
+    entry.save 
+  end
   def create_loan_disbursement
-    entry = AccountingModule::Entry.loan_disbursement.new(:description => "Loan disbursement", recorder_id: recorder_id, entry_date: date)
+    entry = AccountingModule::Entry.loan_disbursement.new(commercial_document: find_voucher, :description => "Loan disbursement", recorder_id: recorder_id, entry_date: date)
     loan_debit_amount = AccountingModule::DebitAmount.new(amount: find_loan.loan_amount, account: find_loan.loan_product_debit_account)
     loan_credit_amount = AccountingModule::CreditAmount.new(amount: find_loan.net_proceed, account:find_employee.cash_on_hand_account)
     entry.debit_amounts << loan_debit_amount

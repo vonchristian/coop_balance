@@ -10,7 +10,6 @@
             <thead>
               <tr>
                 <th>Date</th>
-                <th>#</th>
                 <th>Amount</th>
                 <th>Type</th>
                 <th> Payee</th>
@@ -19,12 +18,24 @@
             <tbody>
               <% @vouchers.each do |voucher| %>
                 <tr>
-                  <td></td>
-                  <td><%= voucher.number %></td>
-                  <td><%=number_to_currency voucher.amount %></td>
-                  <td><%= voucher.voucherable_type %></td>
+                  <td><%= voucher.date.strftime("%B %e, %Y") %></td>
+                  <td>
+                    <% if voucher.for_employee? %>
+                      <%= number_to_currency voucher.voucher_amounts.sum(&:amount) %>
+                    <% else %>
+                      <%= number_to_currency voucher.payable_amount %>
+                    <% end %>
+                  </td>
+                  <td><%= voucher.description %></td>
                   <td><%= voucher.payee.try(:name) %></td>
-                  <td><%= link_to 'Disburse', new_voucher_disbursement_path(voucher), class: "btn btn-primary btn-sm" %></td>
+                  <td>
+                    <% if !voucher.disbursed? %>
+                      <%= link_to 'Disburse', new_voucher_disbursement_path(voucher), class: "btn btn-primary btn-sm" %>
+                    <% else %>
+                      <span class="label bg-green"> Disbursed </span>
+                    <% end %>
+                    
+                      </td>
                 </tr>
               <% end %>
             </tbody>

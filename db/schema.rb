@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171011104500) do
+ActiveRecord::Schema.define(version: 20171011104507) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -553,7 +553,9 @@ ActiveRecord::Schema.define(version: 20171011104500) do
     t.datetime "updated_at", null: false
     t.decimal "quantity"
     t.string "barcode"
+    t.uuid "registry_id"
     t.index ["product_id"], name: "index_product_stocks_on_product_id"
+    t.index ["registry_id"], name: "index_product_stocks_on_registry_id"
     t.index ["supplier_id"], name: "index_product_stocks_on_supplier_id"
   end
 
@@ -632,6 +634,11 @@ ActiveRecord::Schema.define(version: 20171011104500) do
     t.datetime "spreadsheet_updated_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "type"
+    t.uuid "supplier_id"
+    t.string "number"
+    t.index ["supplier_id"], name: "index_registries_on_supplier_id"
+    t.index ["type"], name: "index_registries_on_type"
   end
 
   create_table "saving_products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -767,6 +774,19 @@ ActiveRecord::Schema.define(version: 20171011104500) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  create_table "voucher_amounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.decimal "amount"
+    t.uuid "account_id"
+    t.uuid "voucher_id"
+    t.string "commercial_document_type"
+    t.uuid "commercial_document_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_voucher_amounts_on_account_id"
+    t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_voucher_amount"
+    t.index ["voucher_id"], name: "index_voucher_amounts_on_voucher_id"
+  end
+
   create_table "vouchers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "number"
     t.datetime "date"
@@ -776,7 +796,10 @@ ActiveRecord::Schema.define(version: 20171011104500) do
     t.uuid "voucherable_id"
     t.string "payee_type"
     t.uuid "payee_id"
+    t.uuid "user_id"
+    t.string "description"
     t.index ["payee_type", "payee_id"], name: "index_vouchers_on_payee_type_and_payee_id"
+    t.index ["user_id"], name: "index_vouchers_on_user_id"
     t.index ["voucherable_type", "voucherable_id"], name: "index_vouchers_on_voucherable_type_and_voucherable_id"
   end
 
@@ -848,12 +871,14 @@ ActiveRecord::Schema.define(version: 20171011104500) do
   add_foreign_key "orders", "members"
   add_foreign_key "orders", "users"
   add_foreign_key "product_stocks", "products"
+  add_foreign_key "product_stocks", "registries"
   add_foreign_key "product_stocks", "suppliers"
   add_foreign_key "program_subscriptions", "members"
   add_foreign_key "program_subscriptions", "programs"
   add_foreign_key "raw_material_stocks", "raw_materials"
   add_foreign_key "raw_material_stocks", "suppliers"
   add_foreign_key "real_properties", "members"
+  add_foreign_key "registries", "suppliers"
   add_foreign_key "savings", "members"
   add_foreign_key "savings", "saving_products"
   add_foreign_key "share_capital_product_shares", "share_capital_products"
@@ -862,6 +887,9 @@ ActiveRecord::Schema.define(version: 20171011104500) do
   add_foreign_key "time_deposits", "members"
   add_foreign_key "time_deposits", "time_deposit_products"
   add_foreign_key "users", "departments"
+  add_foreign_key "voucher_amounts", "accounts"
+  add_foreign_key "voucher_amounts", "vouchers"
+  add_foreign_key "vouchers", "users"
   add_foreign_key "work_in_process_materials", "raw_materials"
   add_foreign_key "work_in_progress_materials", "raw_materials"
 end

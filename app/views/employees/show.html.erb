@@ -1,15 +1,1 @@
-<ul class="nav nav-tabs">
-          <li class="<%= 'active' if current_page?(employee_entries_path(@employee))%>"><%= link_to 'Entries', employee_entries_path(@employee) %></li>
-
-  <%= @employee.cash_on_hand_account.balance(recorder_id: @employee.id) + @employee.fund_transfer_total %>
-<div class="dropdown">
-  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-    Fund Transfer
-    <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-<li><%= link_to 'New Fund Transfer (To Teller)', new_employee_remittance_path(@employee)%></li>
- <li role="separator" class="divider"></li>
-<li><%= link_to 'New Fund Transfer (To Vault)', new_employee_vault_fund_transfer_path(@employee)%></li>
-  </ul>
-</div>
+<%= render 'show' %>

@@ -1,0 +1,21 @@
+<div class="tab-pane <%= 'active' if current_page?(employee_path(@employee)) %>" id="employee-info">
+
+  <h3><%= number_to_currency @employee.cash_on_hand_account.balance(recorder_id: @employee.id) + @employee.fund_transfer_total %></h3>
+  <small class="text-muted"><%= @employee.cash_on_hand_account.try(:name).try(:upcase)%></small>
+  <hr>
+  <% if current_user.treasurer? %>
+    <div class="dropdown">
+      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        Fund Transfer
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        <li><%= link_to 'New Fund Transfer (To Teller)', new_employee_remittance_path(@employee)%></li>
+        <li role="separator" class="divider"></li>
+        <li><%= link_to 'New Fund Transfer (To Vault)', new_employee_vault_fund_transfer_path(@employee)%></li>
+      </ul>
+    </div>
+  <%elsif current_user.teller? %>
+     <%= link_to 'New Remittance', new_employee_remittance_path(@employee), class: "btn btn-primary btn-flat" %> 
+  <% end %>
+</div>

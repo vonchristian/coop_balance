@@ -1,0 +1,24 @@
+
+<div class="content">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="box box-solid">
+        <div class="box-body">
+          <% @employees.each do |employee| %>
+            <% cache employee do %>
+              <%= link_to employee_path(employee) do %>
+                <div class="row">
+                  <div class="col-md-2">
+                    <%= image_tag(employee.avatar.url(:medium), class: "img-circle", height: 45, width: 45) %>
+                  </div>
+                  <div class="col-md-9">
+                    <h4 class="condensed-text"><%= employee.first_and_last_name %></h4>
+                    <%= employee.role %>
+                  </div>
+                </div>
+                <br>
+              <% end %>
+            <% end %>
+          <% end %>
+  </div>
+</div>

@@ -1,4 +1,5 @@
 class Registry < ApplicationRecord
+  
   has_attached_file :spreadsheet, :path => ":rails_root/public/system/:attachment/:id/:filename"
   do_not_validate_attachment_file_type :spreadsheet
   def parse_for_records
@@ -15,6 +16,7 @@ class Registry < ApplicationRecord
       end
     end
   end
+
   def create_or_find_member(row)
     Member.find_or_create_by(first_name: row[0], last_name: row[1])
   end

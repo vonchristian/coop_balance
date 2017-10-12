@@ -1,0 +1,19 @@
+<%= image_tag(@voucher.payee.avatar.url(:medium), class: "img-circle") %>
+  <% @voucher.voucher_amounts.each do |amount| %>
+    <%= amount.amount %>
+    <%= amount.account.try(:name) %>
+    <%= simple_form_for [@voucher, @disbursement], url: :voucher_disbursements do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :reference_number %>
+  <%= f.input :voucher_id, input_html: { value: @voucher.id }, as: :hidden %>
+  <%= f.input :voucherable_id, input_html: { value: @voucher.voucherable_id }, as: :hidden %>
+  <%= f.input :amount, input_html: { value: @voucher.voucher_amounts.sum(&:amount)} %>
+  <%= f.input :date, label: "Date Disbursed", as: :string, input_html: { class: "datepicker" } %>
+  <%= f.input :recorder_id, input_html: { value: current_user.id }, as: :hidden %>
+  <div class="box-footer">
+    <%= link_to 'Back', voucher_path(@voucher), class: "btn btn-default pull-left" %>
+    <%= f.submit "Disburse Loan", class: "btn btn-primary pull-right" %>
+  </div>
+<% end %>
+
+  <% end %>

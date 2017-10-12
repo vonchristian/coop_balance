@@ -10,7 +10,8 @@
   <%= f.input :date_deposited, as: :string, input_html: { class: "datepicker" } %>
   <%= f.input :or_number %>
   <%= f.input :amount %>
-<%= f.input :number_of_days, label: "No. of Days Deposited:" %>
+  <%= f.input :number_of_days, label: "No. of Days Deposited:" %>
+  <%= f.input :recorder_id, input_html: { value: current_user.id } %>
   <div class="box-footer">
     <%= f.submit "Save Time Deposit", class: "btn btn-primary btn-flat pull-right" %>
   </div>

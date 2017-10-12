@@ -31,7 +31,7 @@ module LoansModule
     before_save :set_default_date
     after_commit :set_documentary_stamp_tax
     #find aging loans e.g. 1-30 days,
-    def voucherable_amount
+    def payable_amount #for voucher
       net_proceed
     end
     def self.aging_for(start_num, end_num)

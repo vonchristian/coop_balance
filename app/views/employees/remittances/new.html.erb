@@ -2,7 +2,20 @@
   <div class="col-md-6 col-md-offset-3">
     <div class="box box-solid">
       <div class="box-header">
-        <h3 class="title condensed-text"> Entry Details </h3>
+        <br>
+        <div class="row">
+          <div class="col-md-2">
+            <h3 class="box-title"> <%= image_tag(current_user.avatar.url(:medium), class: "img-circle", height: 60, width: 60) %></h3>
+          </div>
+          <div class="col-md-9">
+            <h3 class="box-title"><%=current_user.first_and_last_name.try(:upcase) %> </h3><br>
+            <small><%= @employee.role.try(:titleize) %></small>
+          </div>
+        </div>
+        <hr>
+         <h3><%= number_to_currency @employee.cash_on_hand_account.balance(recorder_id: @employee.id) + @employee.fund_transfer_total %></h3>
+        <small class="text-muted"><%= @employee.cash_on_hand_account.try(:name).try(:upcase)%></small>
+        <hr>
       </div>
       <div class="box-body">
         <%=simple_form_for @entry, url: :employee_remittances do |f| %>
@@ -12,7 +25,7 @@
           <%= f.input :reference_number %>
           <%= f.input :description, as: :text %>
           <%= f.input :amount %>
-          <%= f.input :entry_type, input_html: {value: 'fund_transfer'} %>
+          <%= f.input :entry_type, input_html: {value: 'fund_transfer'}, as: :hidden %>
           <% if current_user.teller?  %>
             <%= f.input :credit_account_id, label: "Credit Account", input_html: { value: AccountingModule::Account.find_by(name: "Cash on Hand (Teller)").id }, as: :hidden %>
             <%= f.input :debit_account_id, label: "Debit Account:", input_html: { value: AccountingModule::Account.find_by(name: "Cash on Hand (Treasury)").id }, as: :hidden %>

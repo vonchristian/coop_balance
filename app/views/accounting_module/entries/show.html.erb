@@ -9,7 +9,7 @@
         <p>Reference NUmber <%= @entry.reference_number %></p>
         <p>Employee <%= @entry.recorder.try(:first_and_last_name) %></p>
         <hr>
-        <p>Debits</p>
+        <p><b>Debits</b></p>
         <% @entry.debit_amounts.each do |debit| %>
           <div class="row">
             <div class="col-md-6">

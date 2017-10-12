@@ -1,0 +1,33 @@
+<div class="row">
+    <div class="col-md-3">
+      <%= render 'employees/partials/sidebar', employee: @employee %>
+    </div>
+    <div class="col-md-9">
+      <div class="box box-solid">
+        <div class="box-header">
+        <ul class="nav nav-tabs">
+          <li class="<%= 'active' if current_page?(employee_path(@employee))%>"><%= link_to 'Info', employee_path(@employee) %></li>
+          <li class="<%= 'active' if current_page?(employee_entries_path(@employee))%>"><%= link_to 'Entries', employee_entries_path(@employee) %></li>
+          <li class="<%= 'active' if current_page?(employee_reports_path(@employee))%>"><%= link_to 'Reports', employee_reports_path(@employee) %></li>
+          <li class="<%= 'active' if current_page?(employee_vouchers_path(@employee))%>"><%= link_to 'Vouchers', employee_vouchers_path(@employee) %></li>
+
+
+        </ul>
+      </div>
+      <div class="tab-content box-body">
+        <% if current_page?(employee_path(@employee)) %>
+          <%=render 'employees/partials/employee_info' %>
+        <% end %>
+        <% if current_page?(employee_entries_path(@employee)) %>
+          <%= render 'employees/partials/entries'%>
+        <% end %>
+        <% if current_page?(employee_reports_path(@employee)) %>
+          <%= render 'employees/partials/reports'%>
+        <% end %>
+        <% if current_page?(employee_vouchers_path(@employee)) %>
+          <%= render 'employees/partials/vouchers'%>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

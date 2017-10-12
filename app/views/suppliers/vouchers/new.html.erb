@@ -1,0 +1,7 @@
+<%= simple_form_for @entry do |f| %>
+  <%=f.simple_fields_for :debit_amounts do |d| %>
+    <%= d.input :amount %>
+    <%= d.input :account, collection: AccountingModule::Expense.all.map{|a| [a.name.titleize, a.id] } %>
+  <% end %>
+  <%= f.submit "Add" %>
+<% end %>

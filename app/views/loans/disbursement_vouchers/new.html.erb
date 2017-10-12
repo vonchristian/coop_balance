@@ -50,7 +50,6 @@
 
 <%= simple_form_for [@loan, @voucher], url: :loan_disbursement_vouchers do |f| %>
   <%= f.error_notification %>
-  <%= f.input :number, input_html: { value: Voucher.generate_number_for(@voucher) } %>
   <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
   <%= f.submit "Save Cash Disbursement Voucher" %>
   
