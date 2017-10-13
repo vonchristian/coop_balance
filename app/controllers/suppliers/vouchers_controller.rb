@@ -1,18 +1,20 @@
 module Suppliers 
   class VouchersController < ApplicationController
+    def index 
+      @supplier = Supplier.find(params[:supplier_id])
+      @vouchers = @supplier.vouchers.order(date: :desc).paginate(page: params[:page], per_page: 35)
+    end
     def new 
       @supplier = Supplier.find(params[:supplier_id])
       @voucher = Voucher.new 
-      @entry = AccountingModule::Entry.new 
-      @entry.debit_amounts.build
+      @amount = VoucherAmount.new 
     end
     def create 
       @stock_registry = current_stock_registry
       @supplier = Supplier.find(params[:supplier_id])
       @voucher = Voucher.create(voucher_params)
       if @voucher.save 
-        @supplier.create_entry_for(@voucher)
-        StockRegistry.transfer_stocks_from(@stock_registry, @supplier)
+        @voucher.add_amounts(@supplier)
         redirect_to supplier_url(@supplier), notice: "Voucher created successfully."
 
       else 
@@ -22,7 +24,7 @@ module Suppliers
 
     private 
     def voucher_params
-      params.require(:voucher).permit(:number, :date, :payee_id, :payee_type, :voucherable_id, :description, :voucherable_type, :user_id)
+      params.require(:voucher).permit(:number, :date, :payee_id, :description, :payee_type, :voucherable_id, :description, :voucherable_type, :user_id)
     end 
   end 
 end 

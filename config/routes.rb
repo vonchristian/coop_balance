@@ -183,8 +183,9 @@ Rails.application.routes.draw do
   resources :disbursements, only: [:index, :show, :new, :create]
   resources :collections, only: [:index, :show]
   resources :suppliers, only: [:index, :show, :new, :create, :edit, :update] do 
-      resources :vouchers, only: [:create], module: :suppliers
+      resources :vouchers, only: [:index, :show, :new, :create], module: :suppliers
       resources :deliveries, only: [:index, :new, :create], module: :suppliers
+      resources :amounts, only: [:create, :destroy], module: :suppliers
     end
   resources :registries, only: [:create]
 
@@ -215,6 +216,12 @@ Rails.application.routes.draw do
   end
   resources :products, only: [:new, :create]
   resources :voucher_amounts, only: [:destroy]
+  resources :bank_accounts, only: [:index, :show, :new, :create, :edit, :update] do 
+    resources :deposits, only: [:new, :create], module: :bank_accounts
+    resources :withdrawals, only: [:new, :create], module: :bank_accounts
+    resources :bank_charges, only: [:new, :create], module: :bank_accounts
+    resources :bank_earned_interests, only: [:new, :create], module: :bank_accounts
+  end
   mount ActionCable.server => '/cable'
 
 end

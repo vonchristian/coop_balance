@@ -31,6 +31,7 @@
           <li class=<%= 'active' if current_page?(savings_accounts_path) %> ><a href="/savings_accounts"><i class="fa fa-suitcase"></i> <span> Savings Accounts</span></a></li>
           <li class=<%= 'active' if current_page?(share_capitals_path) %> ><a href="/share_capitals"><i class="fa fa-circle-o"></i> <span> Share Capitals </span></a></li>
           <li class=<%= 'active' if current_page?(time_deposits_path) %> ><a href="/time_deposits"><i class="fa fa-suitcase"></i> <span> Time Deposits</span></a></li>
+          <li class=<%= 'active' if current_page?(bank_accounts_path) %> ><a href="/bank_accounts"><i class="fa fa-bank"></i> <span> Bank Accounts</span></a></li>
 
 
           <li class=<%= 'active' if current_page?(employee_entries_path(current_user)) %> ><a href="/employees/<%="#{current_user.id}"%>/entries"><i class="fa fa-credit-card"></i> <span> Entries</span></a></li>

@@ -5,6 +5,9 @@ class Supplier < ApplicationRecord
   has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document
   has_many :stock_registries, class_name: "StockRegistry"
   has_many :vouchers, through: :stock_registries
+  has_many :voucher_amounts, as: :commercial_document # for adding cash advance on voucher
+  has_many :cash_disbursement_vouchers, as: :payee, class_name: "Voucher"
+  
   has_attached_file :avatar,
   styles: { large: "120x120>",
            medium: "70x70>",
@@ -15,6 +18,9 @@ class Supplier < ApplicationRecord
   :path => ":rails_root/public/system/:attachment/:id/:style/:filename",
   :url => "/system/:attachment/:id/:style/:filename"
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
+  def payable_amount 
+    voucher_amounts.sum(:amount)
+  end
   def name 
     business_name 
   end

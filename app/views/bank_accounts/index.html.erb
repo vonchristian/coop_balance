@@ -1,0 +1,33 @@
+<div class="row">
+  <div class="col-md-8">
+    <div class="box box-solid">
+      <div class="box-header">
+        <div class="row">
+          <div class="col-md-3">
+            <h3 class="box-title">Bank Accounts </h3>
+          </div>
+          <div class="col-md-6">
+          </div>
+          <div class="col-md-3">
+            <%= link_to 'New Bank Account', new_bank_account_path, class: "btn btn-primary btn-flat" %>
+          </div>
+        </div>
+      </div>
+      <div class="box-body">
+        <% @bank_accounts.each do |account| %>
+          <div class="row">
+            <div class="col-md-8">
+              <b><%= account.bank_name.try(:upcase) %></b><br>
+              <%=account.bank_address %><br>
+              <%= account.account_number %>
+            </div>
+            <div class="col-md-3">
+             <h3> <%= number_to_currency account.balance_total %></h3>
+            </div>
+          </div>
+          <hr>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

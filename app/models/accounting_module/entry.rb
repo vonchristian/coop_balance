@@ -20,7 +20,11 @@ module AccountingModule
                       :time_deposit_interest, 
                       :adjusting_entry,
                       :fund_transfer, 
-                      :share_capital_dividend
+                      :share_capital_dividend,
+                      :bank_deposit,
+                      :bank_withdrawal,
+                      :bank_earned_interest,
+                      :bank_charge
                     ]
     has_one :clearance, class_name: "EntryClearance"
     belongs_to :commercial_document, :polymorphic => true

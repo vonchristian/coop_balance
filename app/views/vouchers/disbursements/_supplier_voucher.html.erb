@@ -8,8 +8,9 @@
             <%=image_tag(@voucher.payee.avatar.url(:medium), class: "img-circle", height: 50, width: 50) %>
           </div>
           <div class="col-md-8">
-            <h3 class="box-title"><%= @voucher.payee.first_and_last_name.try(:upcase) %></h3><br>
-            <small><%= @voucher.payee.role.titleize %></small>
+            <h3 class="box-title"><%= @voucher.payee.business_name.try(:upcase) %></h3><br>
+            <small><%#= @voucher.payee.role.titleize %></small><br>
+            <%=link_to 'Print(PDF)', voucher_path(@voucher, format: "pdf"), class: "btn btn-default btn-sm btn-flat" %>
           </div>
         </div>
       </div>
@@ -36,7 +37,7 @@
           </div>
         </div>
         <hr />
-      <div class="row">
+         <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <%= simple_form_for [@voucher, @disbursement], url: :voucher_disbursements do |f| %>
           <%= f.error_notification %>

@@ -4,5 +4,7 @@
   <%= render 'purchase_details' %>
 <% elsif @voucher.for_employee? %>
   <%= render 'employee_voucher' %>
+<% elsif @voucher.for_supplier? %>
+  <%= render 'supplier_voucher' %>
   
 <% end %>

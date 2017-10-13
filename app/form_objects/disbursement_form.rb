@@ -12,6 +12,9 @@ class DisbursementForm
         create_payment_for_purchase
       elsif find_voucher.for_employee?
         create_payment_for_employee
+      elsif find_voucher.for_supplier?
+        create_payment_for_supplier
+          
       end
     end
   end
@@ -29,8 +32,18 @@ class DisbursementForm
   def find_employee 
     User.find_by(id: recorder_id)
   end
+  def create_payment_for_supplier
+    accounts_payable =  AccountingModule::Liability.find_by(name: 'Accounts Payable-Trade')
+    merchandise_inventory = AccountingModule::Account.find_by(name: "Merchandise Inventory")
+    entry = AccountingModule::Entry.supplier_delivery.new(commercial_document: find_voucher,  :description => "payment delivered stocks", recorder_id: recorder_id, entry_date: date)
+    debit_amount = AccountingModule::DebitAmount.new(amount: find_voucher.payable_amount, account: accounts_payable)
+    credit_amount = AccountingModule::CreditAmount.new(amount: find_voucher.payable_amount, account: find_employee.cash_on_hand_account)
+    entry.debit_amounts << debit_amount
+    entry.credit_amounts << credit_amount
+    entry.save 
+  end
   def create_payment_for_employee 
-    entry = AccountingModule::Entry.new(commercial_document: find_voucher, :description => find_voucher.description, recorder_id: recorder_id, entry_date: date)
+    entry = AccountingModule::Entry.supplier_payment.new(commercial_document: find_voucher, :description => find_voucher.description, recorder_id: recorder_id, entry_date: date)
     find_voucher.voucher_amounts.each do |amount|
       credit_amount = AccountingModule::CreditAmount.new(account: find_employee.cash_on_hand_account , amount: amount.amount)
       debit_amount = AccountingModule::DebitAmount.new(account_id: amount.account_id, amount: amount.amount)

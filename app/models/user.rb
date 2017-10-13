@@ -1,5 +1,6 @@
-class User < ApplicationRecord
+  class User < ApplicationRecord
   LOAN_APPROVERS = ["Manager", "Loan Officer"]
+  WITH_CASH_ON_HAND = ["Treasurer", "Teller", "Sales Clerk"]
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :lockable,
@@ -22,6 +23,9 @@ class User < ApplicationRecord
   :path => ":rails_root/public/system/:attachment/:id/:basename_:style.:extension",
   :url => "/system/:attachment/:id/:basename_:style.:extension"
 validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
+  def self.with_cash_on_hands
+    all.select{|a| WITH_CASH_ON_HAND.include?(a.role.titleize) }
+  end
   def self.loan_approvers 
     all.select{|a| User::LOAN_APPROVERS.include?(a.role.titleize)}
   end

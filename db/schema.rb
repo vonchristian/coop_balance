@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171011104507) do
+ActiveRecord::Schema.define(version: 20171013121700) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -81,6 +81,16 @@ ActiveRecord::Schema.define(version: 20171011104507) do
     t.datetime "updated_at", null: false
     t.index ["appraiser_id"], name: "index_appraisals_on_appraiser_id"
     t.index ["real_property_id"], name: "index_appraisals_on_real_property_id"
+  end
+
+  create_table "bank_accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "cooperative_id"
+    t.string "bank_name"
+    t.string "bank_address"
+    t.string "account_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cooperative_id"], name: "index_bank_accounts_on_cooperative_id"
   end
 
   create_table "carts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -829,6 +839,7 @@ ActiveRecord::Schema.define(version: 20171011104507) do
   add_foreign_key "amounts", "entries"
   add_foreign_key "appraisals", "real_properties"
   add_foreign_key "appraisals", "users", column: "appraiser_id"
+  add_foreign_key "bank_accounts", "cooperatives"
   add_foreign_key "carts", "users"
   add_foreign_key "charge_adjustments", "loan_charges"
   add_foreign_key "charges", "accounts", column: "credit_account_id"

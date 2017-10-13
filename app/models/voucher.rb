@@ -22,6 +22,9 @@ class Voucher < ApplicationRecord
   def for_purchases?
     voucherable_type == "StockRegistry"
   end
+  def for_supplier?
+    payee_type == "Supplier"
+  end
   def for_employee?
     payee_type == "User"
   end
