@@ -20,7 +20,7 @@ module StoreModule
 
     private
     def stock_params
-      params.require(:store_module_product_stock).permit(:supplier_id, :date, :quantity, :unit_cost, :total_cost, :barcode)
+      params.require(:store_module_product_stock).permit(:supplier_id, :date, :quantity, :unit_cost, :total_cost, :barcode, :retail_price, :wholesale_price)
     end
   end
 end

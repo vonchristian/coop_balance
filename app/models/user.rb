@@ -5,14 +5,29 @@
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :lockable,
          :recoverable, :rememberable, :trackable, :validatable
-  enum role: [:system_administrator, :manager, :loan_officer, :bookkeeper, :teller, :stock_custodian, :sales_clerk, :treasurer, :accountant]
+  enum sex: [:male, :female, :others]
+  enum role: [:system_administrator, 
+              :manager, 
+              :loan_officer, 
+              :bookkeeper, 
+              :teller, 
+              :stock_custodian, 
+              :sales_clerk, 
+              :treasurer, 
+              :accountant, 
+              :human_resource_officer]
   belongs_to :department
+  belongs_to :salary_grade
+  
   has_many :entries, class_name: "AccountingModule::Entry", foreign_key: 'recorder_id'
   has_many :fund_transfers, class_name: "AccountingModule::Entry", as: :commercial_document
-
   has_many :appraised_properties, class_name: "Appraisal", foreign_key: 'appraiser_id'
-  has_many :voucher_amounts, as: :commercial_document # for adding cash advance on voucher
+  has_many :voucher_amounts, as: :commercial_document # for adding amounts on voucher
   has_many :cash_disbursement_vouchers, as: :payee, class_name: "Voucher"
+  
+  delegate :name, :amount, to: :salary_grade, prefix: true, allow_nil: true
+  delegate :name, to: :department, prefix: true, allow_nil: true
+  
   has_attached_file :avatar,
   styles: { large: "120x120>",
            medium: "70x70>",
@@ -22,23 +37,31 @@
   default_url: ":style/profile_default.jpg",
   :path => ":rails_root/public/system/:attachment/:id/:basename_:style.:extension",
   :url => "/system/:attachment/:id/:basename_:style.:extension"
-validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
+  validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
+  def cash_advance_total
+    AccountingModule::Account.find_by(name: "Advances to Officers, Employees and Members").debit_entries.where(commercial_document: self)
+  end
   def self.with_cash_on_hands
     all.select{|a| WITH_CASH_ON_HAND.include?(a.role.titleize) }
   end
+
   def self.loan_approvers 
     all.select{|a| User::LOAN_APPROVERS.include?(a.role.titleize)}
   end
+
   def name  #for voucher index
     first_and_last_name
   end
   def first_and_last_name
     "#{first_name} #{last_name}"
   end
+
   def cash_on_hand_account
     if treasurer?
       AccountingModule::Asset.find_by(name: "Cash on Hand (Treasury)")
-    elsif teller?
+    elsif teller? 
+      AccountingModule::Asset.find_by(name: "Cash on Hand (Teller)")
+    elsif sales_clerk?
       AccountingModule::Asset.find_by(name: "Cash on Hand (Teller)")
     end 
   end 

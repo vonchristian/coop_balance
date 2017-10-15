@@ -21,17 +21,17 @@
 
          <li class="dropdown user user-menu">
            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-             <i class="icon-user"></i> <%#=image_tag(current_user.avatar.url(:small), width: 20, height: 20, class: "img-circle") %>
-             <span class="hidden-xs"> <%=current_user.first_name %></span>
+             <%=image_tag(current_user.avatar.url(:small), width: 20, height: 20, class: "img-circle") %>
+             <span class="hidden-xs"> <%=current_user.first_name %></span>&nbsp; <i class="fa fa-chevron-down"></i>
            </a>
            <ul class="dropdown-menu">
              <!-- User image -->
              <li class="user-header">
-                <%#=image_tag(current_user.avatar.url(:medium), class: "img-square")%>
+                <%=image_tag(current_user.avatar.url(:large), class: "img-square")%>
 
                <p>
-                   <%#=current_user.full_name %>
-                 <small><%#=current_user.role.try(:titleize).try(:upcase) %></small>
+                   <%=current_user.first_and_last_name %>
+                 <small><%=current_user.role.try(:titleize).try(:upcase) %></small>
                </p>
              </li>
              <!-- Menu Body -->

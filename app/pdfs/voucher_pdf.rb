@@ -61,14 +61,16 @@ class VoucherPdf < Prawn::Document
   end
   def voucher_details 
     text "ENTRY DETAILS", style: :bold
-    text "#{@voucher.entry.description}"
-    text "DEBIT"
-    @voucher.entry.debit_amounts.each do |amount|
-      table([["#{amount.amount}", "#{amount.account.try(:name)}"]])
-    end
-    text "CREDIT"
-    @voucher.entry.credit_amounts.each do |amount|
-      table([["#{amount.amount}", "#{amount.account.try(:name)}"]])
+    if @voucher.entry.present?
+      text "#{@voucher.entry.description}"
+      text "DEBIT"
+      @voucher.entry.debit_amounts.each do |amount|
+        table([["#{amount.amount}", "#{amount.account.try(:name)}"]])
+      end
+      text "CREDIT"
+      @voucher.entry.credit_amounts.each do |amount|
+        table([["#{amount.amount}", "#{amount.account.try(:name)}"]])
+      end
     end
 
     if @voucher.for_employee?

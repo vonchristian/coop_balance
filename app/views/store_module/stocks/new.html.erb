@@ -1,10 +1,12 @@
 <%= simple_form_for [@product, @stock], url: :store_module_product_stocks do |f| %>
   <%= f.error_notification %>
-  <%= f.input :supplier_id, input_html: { id: "supplierSelect" }, collection: Supplier.all.map{ |a| [a.full_name, a.id]} %>
+  <%= f.input :supplier_id, input_html: { id: "supplierSelect" }, collection: Supplier.all.map{ |a| [a.business_name, a.id]} %>
   <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
   <%= f.input :quantity %>
   <%= f.input :unit_cost %>
   <%= f.input :total_cost %>
+  <%= f.input :retail_price %>
+  <%= f.input :wholesale_price %>
   <%= f.input :barcode %>
   <%= f.submit "Save Stock" %>
 <% end %>

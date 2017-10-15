@@ -15,7 +15,7 @@ module Employees
   end 
     private 
     def amount_params
-      params.require(:voucher_amount).permit(:amount, :account_id)
+      params.require(:voucher_amount).permit(:amount, :account_id, :description)
     end
   end
 end 

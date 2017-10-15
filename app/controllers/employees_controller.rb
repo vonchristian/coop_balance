@@ -3,7 +3,7 @@ class EmployeesController < ApplicationController
     @employees = User.all
   end
   def show 
-    @employee = User.find(params[:id])
+    @employee = current_user
   end 
   def edit 
     @employee = User.find(params[:id])

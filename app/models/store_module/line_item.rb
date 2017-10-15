@@ -12,6 +12,9 @@ module StoreModule
     def self.total_cost
       all.sum(:total_cost)
     end
+    def unit_cost_and_quantity
+      product_stock.unit_cost * quantity
+    end
 
     private
     def set_total_cost

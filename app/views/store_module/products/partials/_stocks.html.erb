@@ -7,13 +7,18 @@
       <table class="table table-striped table-hover">
         <thead>
           <th>Date Delivered</th>
+          <th>Supplier</th>
           <th>Quantity</th>
           <th>Unit Cost</th>
           <th>Total Cost</th>
           <th>Barcode</th>
         </thead>
-    <%= render @stocks %>
-    <%= will_paginate @stocks %>
+        <tbody>
+          <%= render @stocks %>
+        </tbody>
+      </table>
+    </div>
+    <center> <%= will_paginate @stocks %></center>
   <% else %>
     <p class="alert alert-info">No stocks yet for this product <%= link_to 'Add Stock', new_store_module_product_stock_path(@product) %> </p>
   <% end %>

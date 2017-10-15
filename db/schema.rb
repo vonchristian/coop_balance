@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171013121700) do
+ActiveRecord::Schema.define(version: 20171015064306) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -165,6 +165,13 @@ ActiveRecord::Schema.define(version: 20171013121700) do
     t.index ["name"], name: "index_committees_on_name", unique: true
   end
 
+  create_table "contributions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.decimal "amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "cooperatives", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "registration_number"
@@ -213,6 +220,15 @@ ActiveRecord::Schema.define(version: 20171013121700) do
     t.index ["credit_account_id"], name: "index_documentary_stamp_taxes_on_credit_account_id"
     t.index ["debit_account_id"], name: "index_documentary_stamp_taxes_on_debit_account_id"
     t.index ["taxable_type", "taxable_id"], name: "index_documentary_stamp_taxes_on_taxable_type_and_taxable_id"
+  end
+
+  create_table "employee_contributions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "employee_id"
+    t.uuid "contribution_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["contribution_id"], name: "index_employee_contributions_on_contribution_id"
+    t.index ["employee_id"], name: "index_employee_contributions_on_employee_id"
   end
 
   create_table "entries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -319,6 +335,7 @@ ActiveRecord::Schema.define(version: 20171013121700) do
     t.uuid "loan_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "description"
     t.index ["approver_id"], name: "index_loan_approvals_on_approver_id"
     t.index ["loan_id"], name: "index_loan_approvals_on_loan_id"
     t.index ["status"], name: "index_loan_approvals_on_status"
@@ -534,6 +551,11 @@ ActiveRecord::Schema.define(version: 20171013121700) do
     t.datetime "updated_at", null: false
     t.integer "payment_type"
     t.uuid "user_id"
+    t.decimal "cash_tendered"
+    t.decimal "total_cost"
+    t.decimal "order_change"
+    t.uuid "employee_id"
+    t.index ["employee_id"], name: "index_orders_on_employee_id"
     t.index ["member_id"], name: "index_orders_on_member_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
@@ -564,6 +586,9 @@ ActiveRecord::Schema.define(version: 20171013121700) do
     t.decimal "quantity"
     t.string "barcode"
     t.uuid "registry_id"
+    t.string "name"
+    t.decimal "retail_price"
+    t.decimal "wholesale_price"
     t.index ["product_id"], name: "index_product_stocks_on_product_id"
     t.index ["registry_id"], name: "index_product_stocks_on_registry_id"
     t.index ["supplier_id"], name: "index_product_stocks_on_supplier_id"
@@ -649,6 +674,13 @@ ActiveRecord::Schema.define(version: 20171013121700) do
     t.string "number"
     t.index ["supplier_id"], name: "index_registries_on_supplier_id"
     t.index ["type"], name: "index_registries_on_type"
+  end
+
+  create_table "salary_grades", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.decimal "amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "saving_products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -777,10 +809,15 @@ ActiveRecord::Schema.define(version: 20171013121700) do
     t.integer "avatar_file_size"
     t.datetime "avatar_updated_at"
     t.uuid "department_id"
+    t.string "contact_number"
+    t.date "date_of_birth"
+    t.integer "sex"
+    t.uuid "salary_grade_id"
     t.index ["department_id"], name: "index_users_on_department_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["role"], name: "index_users_on_role"
+    t.index ["salary_grade_id"], name: "index_users_on_salary_grade_id"
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
@@ -792,6 +829,7 @@ ActiveRecord::Schema.define(version: 20171013121700) do
     t.uuid "commercial_document_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "description"
     t.index ["account_id"], name: "index_voucher_amounts_on_account_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_voucher_amount"
     t.index ["voucher_id"], name: "index_voucher_amounts_on_voucher_id"
@@ -848,6 +886,8 @@ ActiveRecord::Schema.define(version: 20171013121700) do
   add_foreign_key "days_workeds", "laborers"
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "credit_account_id"
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "debit_account_id"
+  add_foreign_key "employee_contributions", "contributions"
+  add_foreign_key "employee_contributions", "users", column: "employee_id"
   add_foreign_key "entries", "departments"
   add_foreign_key "entries", "users", column: "recorder_id"
   add_foreign_key "entry_clearances", "entries"
@@ -881,6 +921,7 @@ ActiveRecord::Schema.define(version: 20171013121700) do
   add_foreign_key "memberships", "cooperatives"
   add_foreign_key "orders", "members"
   add_foreign_key "orders", "users"
+  add_foreign_key "orders", "users", column: "employee_id"
   add_foreign_key "product_stocks", "products"
   add_foreign_key "product_stocks", "registries"
   add_foreign_key "product_stocks", "suppliers"
@@ -898,6 +939,7 @@ ActiveRecord::Schema.define(version: 20171013121700) do
   add_foreign_key "time_deposits", "members"
   add_foreign_key "time_deposits", "time_deposit_products"
   add_foreign_key "users", "departments"
+  add_foreign_key "users", "salary_grades"
   add_foreign_key "voucher_amounts", "accounts"
   add_foreign_key "voucher_amounts", "vouchers"
   add_foreign_key "vouchers", "users"

@@ -1,0 +1,4 @@
+<%= simple_form_for @employee, url: :hr_module_employee_employee_department do |f| %> 
+  <%= f.input :department_id, collection: Department.all.map{|a| [a.name.titleize, a.id] } %>
+  <%= f.submit %>
+<% end %>

@@ -6,3 +6,4 @@ function calculateLineItemTotalCost() {
   var result = quantity * unitCost;
   totalCost.value = result;
 }
+

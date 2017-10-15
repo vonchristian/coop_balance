@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   root :to => 'warehouse_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'stock_custodian' if request.env['warden'].user }, as: :warehouse_module_root
   root :to => 'store#index', :constraints => lambda { |request| request.env['warden'].user.role == 'sales_clerk' if request.env['warden'].user }, as: :store_module_root
   root :to => 'store#index', :constraints => lambda { |request| request.env['warden'].user.role == 'stock_custodian' if request.env['warden'].user }, as: :store_stocks_module_root
-   
+  root :to => 'hr_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'human_resource_officer' if request.env['warden'].user }, as: :hr_module_root 
   
    
   
@@ -86,6 +86,7 @@ Rails.application.routes.draw do
     resources :time_deposits, only: [:index, :new, :create], module: :members
     resources :subscriptions, only: [:index], module: :members
     resources :subscription_payments, only: [:new, :create], module: :members #pay all subscriptions
+    resources :purchases, only: [:index, :show], module: :members
   end
   resources :member_registrations, only: [:new, :create]
 
@@ -221,6 +222,21 @@ Rails.application.routes.draw do
     resources :withdrawals, only: [:new, :create], module: :bank_accounts
     resources :bank_charges, only: [:new, :create], module: :bank_accounts
     resources :bank_earned_interests, only: [:new, :create], module: :bank_accounts
+  end
+  resources :hr_module, only: [:index]
+  namespace :hr_module do 
+    resources :contributions, only: [:new, :create]
+    resources :amounts, only: [:new, :create]
+    resources :settings, only: [:index]
+    resources :departments, only: [:new, :create, :edit, :update]
+    resources :salary_grades, only: [:new, :create, :edit, :update]
+    resources :employees, except: [:destroy] do
+      resources :profile, only: [:index]
+      resources :employee_salary_grades, only: [:new, :create, :edit, :update]
+      resources :employee_departments, only: [:new, :create, :edit, :update]
+      resources :payrolls, only: [:index]
+
+    end
   end
   mount ActionCable.server => '/cable'
 

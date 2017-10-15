@@ -43,13 +43,16 @@
         <hr />
          <%= simple_form_for @amount, url: :employee_amounts do |f| %>
           <div class="row">
-            <div class="col-md-3 col-md-offset-1">
+            <div class="col-md-2">
               <%= f.input :amount, label: false, placeholder: "Amount", as: :string %>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
               <%= f.input :account_id, label: false, prompt: "Select Account", collection: AccountingModule::Account.all.map{|a| [a.name, a.id] }  %>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-4">
+              <%= f.input :description, label: false, placeholder: "Description" %>
+            </div>
+            <div class="col-md-1">
               <%= f.submit "Add", class: "btn btn-primary btn-sm" %>
             </div>
           </div>

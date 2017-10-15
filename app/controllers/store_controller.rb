@@ -1,7 +1,7 @@
 class StoreController < ApplicationController
   def index
-    if params[:name].present?
-      @stocks = StoreModule::ProductStock.search_by_name(params[:name]).all.to_a.sort_by(&:date)
+    if params[:search].present?
+      @stocks = StoreModule::ProductStock.text_search(params[:search]).all.to_a.sort_by(&:date)
     else
       @stocks = StoreModule::ProductStock.all.includes(:product).paginate(:page => params[:page], :per_page => 35)
     end 

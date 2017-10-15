@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-md-4 col-md-offset-4">
+    <div class="box box-default">
+      <div class="box-header">
+        <center>
+          <%= image_tag(@loan.borrower.avatar.url(:medium), class: "img-circle", height: 45, width: 45) %><br><br>
+          <h3 class="box-title"><%= @loan.borrower.first_and_last_name %></h3>
+        </center>
+      </div>
+      <div class="box-body">
+        <p class="text-muted">LOAN DETAILS </p>
+        <div class="row">
+          <div class="col-md-6">
+            &nbsp; &nbsp; Loan Amount 
+          </div>
+          <div class="col-md-5">
+            <%= @loan.loan_amount %>
+          </div>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col-md-6">
+              &nbsp; &nbsp; Date Applied
+            </div>
+            <div class="col-md-5">
+              <%= @loan.application_date.strftime("%B %e, %Y") %>
+            </div>
+          </div>
+        <hr>
+        <p class="text-muted">APPROVAL DETAILS </p>
+        <%= simple_form_for [@loan, @approval], url: :loan_approvals do |f| %>
+          <%= f.input :description %>
+          <%= f.input :date_approved, as: :string, input_html: { class: "datepicker" } %>
+          <%= f.input :approver_id, input_html: {value: current_user.id }, as: :hidden %>
+          <%= f.submit "Approve Loan", class: "btn btn-primary btn-block btn-flat" %>
+        <% end %>
+      </div>
+

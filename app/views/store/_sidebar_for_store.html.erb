@@ -4,11 +4,11 @@
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="pull-left image">
-          <%#=link_to(image_tag(current_user.avatar.url(:small), class: "img-circle", width: 40, height: 40), user_path(current_user)) %>
+          <%=link_to(image_tag(current_user.avatar.url(:medium), class: "img-circle", width: 40, height: 40), employee_path(current_user)) %>
         </div>
         <div class="pull-left info">
-          <p><%#=link_to current_user.first_name, bplo_section_settings_user_path(current_user) %></p>
-          <a href="#"><i class="fa fa-circle text-success"></i> <small><%#=current_user.role %></small></a>
+          <p><%=link_to current_user.first_name, employee_path(current_user) %></p>
+          <a href="#"><i class="fa fa-circle text-success"></i> <small><%=current_user.role.titleize %></small></a>
         </div>
       </div>
       <!-- search form -->
@@ -33,7 +33,7 @@
           <li class=<%= 'active' if current_page?(store_module_stocks_path) %> ><a href="/store_module/stocks"><i class="fa fa-cubes"></i> <span>Stocks</span></a></li>
           <li class=<%= 'active' if current_page?(store_module_orders_path) %> ><a href="/store_module/orders"><i class="fa fa-server"></i> <span> Orders</span></a></li>
 
-          <li class=<%= 'active' if current_page?(store_module_members_path) %> ><a href="/store_module/members"><i class="fa fa-users"></i> <span> Members</span></a></li>
+          <li class=<%= 'active' if current_page?(members_path) %> ><a href="/members"><i class="fa fa-users"></i> <span> Members</span></a></li>
           <li class=<%#= 'active' if current_page?(admin_settings_path) %> ><a href="/admin/settings"><i class="fa fa-cog"></i> <span> Settings</span></a></li>
 
     </section>

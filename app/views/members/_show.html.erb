@@ -13,6 +13,7 @@
           <li class="<%= 'active' if current_page?(member_share_capitals_path(@member))%>"><%= link_to 'Share Capitals', member_share_capitals_path(@member) %></li>
           <li class="<%= 'active' if current_page?(member_time_deposits_path(@member))%>"><%= link_to 'Time Deposits', member_time_deposits_path(@member) %></li>
           <li class="<%= 'active' if current_page?(member_subscriptions_path(@member))%>"><%= link_to 'Program Subscriptions', member_subscriptions_path(@member) %></li>
+          <li class="<%= 'active' if current_page?(member_purchases_path(@member))%>"><%= link_to 'Purchases', member_purchases_path(@member) %></li>
         </ul>
       </div>
         <div class="tab-content box-body">
@@ -32,8 +33,10 @@
             <%=render 'members/partials/time_deposits', member: @member %>
           <% end %>
           <% if current_page?(member_subscriptions_path(@member)) %>
-            <%=render 'members/partials/properties', member: @member %><!-- move this to info tab -->
             <%=render 'members/partials/subscriptions', member: @member %>
+          <% end %>
+          <% if current_page?(member_purchases_path(@member)) %>
+            <%= render 'members/partials/purchases', member: @member %>
           <% end %>
       </div>
     </div>

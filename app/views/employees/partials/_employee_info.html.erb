@@ -1,7 +1,7 @@
-<div class="tab-pane <%= 'active' if current_page?(employee_path(@employee)) %>" id="employee-info">
-<% if current_user.treasurer? || current_user.teller? %>
-  <h3><%= number_to_currency @employee.cash_on_hand_account.balance(recorder_id: @employee.id) + @employee.fund_transfer_total %></h3>
-  <small class="text-muted"><%= @employee.cash_on_hand_account.try(:name).try(:upcase)%></small>
+<div class="tab-pane <%= 'active' if current_page?(employee_path(current_user)) %>" id="employee-info">
+<% if current_user.treasurer? || current_user.teller? || current_user.sales_clerk? %>
+  <h3><%= number_to_currency current_user.cash_on_hand_account.balance(recorder_id: current_user.id) + current_user.fund_transfer_total %></h3>
+  <small class="text-muted"><%= current_user.cash_on_hand_account.try(:name).try(:upcase)%></small>
   <hr>
 <% end %>
   <% if current_user.treasurer? %>

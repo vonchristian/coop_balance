@@ -4,7 +4,7 @@ module StoreModule
       @members = Member.all
     end
     def show
-      @member = Member.find(params[:id])
+      @member = Member.friendly.find(params[:id])
     end
   end
 end

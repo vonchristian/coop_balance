@@ -1,0 +1,6 @@
+<%= simple_form_for @salary_grade, url: :hr_module_salary_grades do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :name %>
+  <%= f.input :amount %>
+  <%= f.submit "Create Salary Grade", class: "btn btn-primary" %>
+<% end %>
