@@ -24,7 +24,8 @@
   has_many :appraised_properties, class_name: "Appraisal", foreign_key: 'appraiser_id'
   has_many :voucher_amounts, as: :commercial_document # for adding amounts on voucher
   has_many :cash_disbursement_vouchers, as: :payee, class_name: "Voucher"
-  
+  has_many :employee_contributions, foreign_key: 'employee_id'
+  has_many :contributions, through: :employee_contributions
   delegate :name, :amount, to: :salary_grade, prefix: true, allow_nil: true
   delegate :name, to: :department, prefix: true, allow_nil: true
   

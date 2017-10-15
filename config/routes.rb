@@ -231,10 +231,12 @@ Rails.application.routes.draw do
     resources :departments, only: [:new, :create, :edit, :update]
     resources :salary_grades, only: [:new, :create, :edit, :update]
     resources :employees, except: [:destroy] do
+      resources :payroll_amounts, only: [:new, :create]
+      resources :contributions, only: [:new, :create], module: :employees
       resources :profile, only: [:index]
       resources :employee_salary_grades, only: [:new, :create, :edit, :update]
       resources :employee_departments, only: [:new, :create, :edit, :update]
-      resources :payrolls, only: [:index]
+      resources :payrolls, only: [:index, :new, :create]
 
     end
   end

@@ -1,10 +1,12 @@
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <div class="box box-primary">
-      <div class="box-header">
-        <h3 class="box-title"> Member Details </h3>
+    <div class="box box-solid">
+      <div class="box-header bg-gray">
+        <h3 class="box-title"> New Member Details </h3>
       </div>
       <div class="box-body">
+        <div class="row">
+          <div class="col-md-8 col-md-offset-2">
         <%= simple_form_for @member, multipart: true do |f| %>
           <%if @member.avatar.blank? %>
             <center><%=image_tag("default.png", height: 80, width: 80, :class=>"img-circle") %></center>
@@ -13,7 +15,7 @@
           <% end %>
           <center><%= f.input :avatar, as: :file, label: "Upload photo" %></center>
           <%= f.error_notification %>
-          <%= f.input :fullname, readonly: true %>
+          <%= f.input :fullname, readonly: true, as: :hidden %>
           <%= f.input :first_name %>
           <%= f.input :middle_name %>
           <%= f.input :last_name %>
@@ -28,7 +30,7 @@
           <%= f.simple_fields_for :addresses do |a| %>
             <%= a.input :street %>
             <%= a.input :barangay %>
-            <%= a.input :municipality, input_html: { value: "Tinoc" } %>
+            <%= a.input :municipality, input_html: { value: "Kiangan" } %>
             <%= a.input :province, input_html: { value: "Ifugao"} %>
           <% end %>
 

@@ -18,4 +18,5 @@
 //= require bootstrap-datetimepicker
 //= require icheck
 //= require select2
+//= require trix
 //= require_tree .

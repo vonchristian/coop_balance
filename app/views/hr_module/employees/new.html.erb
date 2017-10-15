@@ -1,11 +1,22 @@
 <div class="row">
-  <div class="col-md-4 col-md-offset-4">
+  <div class="col-md-6 col-md-offset-3">
     <div class="box box-solid">
-      <div class="box-header">
+      <div class="box-header bg-gray">
+        <h3 class="box-title">New Employee Registration </h3>
       </div>
       <div class="box-body">
-        <%= simple_form_for @employee, url: :hr_module_employees do |f| %>
+        <div class="row">
+          <div class="col-md-9 col-md-offset-2">
+        <%= simple_form_for @employee, url: :hr_module_employees, multipart: true do |f| %>
           <%= f.error_notification %>
+          <center>
+            <% if @employee.avatar.present? %>
+              <%= image_tag(@employee.avatar.url(:medium), class: "img-circle", height: 80, width: 80) %>
+            <% else %>
+              <%= image_tag('default.png', class: "img-circle", height: 80, width: 80) %>
+            <% end %>
+            <%= f.input :avatar, as: :file, label: "Upload Photo" %>
+          </center>
           <%= f.input :first_name %>
           <%= f.input :last_name %>
           <%= f.input :date_of_birth, as: :string, input_html: { class: "datepicker" } %>
@@ -15,5 +26,7 @@
           <%= f.input :password %>
           <%= f.input :password_confirmation %>
           <%= f.input :role, collection: User.roles.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %> 
-          <%= f.submit %>
+          <div class="box-footer">
+            <%= f.submit "Save Employee", class: "btn btn-primary pull-right" %>
+          </div>
         <% end %>

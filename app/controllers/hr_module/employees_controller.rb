@@ -32,7 +32,7 @@ module HrModule
 
     private 
     def employee_params
-      params.require(:user).permit(:first_name, :last_name, :contact_number, :email, :sex, :date_of_birth, :role, :password, :password_confirmation)
+      params.require(:user).permit(:first_name, :last_name, :contact_number, :email, :sex, :date_of_birth, :role, :password, :password_confirmation, :avatar)
     end
   end 
 end 
