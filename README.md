@@ -55,3 +55,11 @@ background job kaltas payment of program from members who subscribed
 ##Accounting
   separate account for each programs
   print pdf of time deposit
+
+
+  sales return 
+    sales return account 
+    merchandise inventory 
+
+    cost of goods sold 
+    cash on hand

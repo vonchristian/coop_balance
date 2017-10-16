@@ -26,6 +26,7 @@ module AccountingModule
                       :bank_earned_interest,
                       :bank_charge
                     ]
+                    
     has_one :clearance, class_name: "EntryClearance"
     belongs_to :commercial_document, :polymorphic => true
     belongs_to :recorder, foreign_key: 'recorder_id', class_name: "User"
