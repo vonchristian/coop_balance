@@ -9,7 +9,7 @@ module StoreModule
     end
     def create
       @order = StoreModule::Order.create(order_params)
-      if @order.valid?
+      if @order.save
         @order.add_line_items_from_cart(current_cart)
         if @order.cash?
           OfficialReceipt.generate_number_for(@order)

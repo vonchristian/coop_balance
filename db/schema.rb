@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171015064306) do
+ActiveRecord::Schema.define(version: 20171017023303) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -91,6 +91,15 @@ ActiveRecord::Schema.define(version: 20171015064306) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["cooperative_id"], name: "index_bank_accounts_on_cooperative_id"
+  end
+
+  create_table "barangays", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.uuid "municipality_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["municipality_id"], name: "index_barangays_on_municipality_id"
+    t.index ["name"], name: "index_barangays_on_name"
   end
 
   create_table "carts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -222,6 +231,17 @@ ActiveRecord::Schema.define(version: 20171015064306) do
     t.index ["taxable_type", "taxable_id"], name: "index_documentary_stamp_taxes_on_taxable_type_and_taxable_id"
   end
 
+  create_table "documents", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.text "title"
+    t.datetime "date"
+    t.string "uploader_type"
+    t.uuid "uploader_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["uploader_type", "uploader_id"], name: "index_documents_on_uploader_type_and_uploader_id"
+  end
+
   create_table "employee_contributions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "employee_id"
     t.uuid "contribution_id"
@@ -289,6 +309,18 @@ ActiveRecord::Schema.define(version: 20171015064306) do
     t.decimal "number_of_days"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "invoices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "type"
+    t.string "invoicable_type"
+    t.bigint "invoicable_id"
+    t.string "number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["invoicable_type", "invoicable_id"], name: "index_invoices_on_invoicable_type_and_invoicable_id"
+    t.index ["number"], name: "index_invoices_on_number", unique: true
+    t.index ["type"], name: "index_invoices_on_type"
   end
 
   create_table "laborers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -449,9 +481,17 @@ ActiveRecord::Schema.define(version: 20171015064306) do
     t.integer "loan_status", default: 0
     t.decimal "term"
     t.integer "mode_of_payment"
+    t.uuid "barangay_id"
+    t.uuid "street_id"
+    t.uuid "municipality_id"
+    t.uuid "organization_id"
+    t.index ["barangay_id"], name: "index_loans_on_barangay_id"
     t.index ["loan_product_id"], name: "index_loans_on_loan_product_id"
     t.index ["member_id"], name: "index_loans_on_member_id"
     t.index ["mode_of_payment"], name: "index_loans_on_mode_of_payment"
+    t.index ["municipality_id"], name: "index_loans_on_municipality_id"
+    t.index ["organization_id"], name: "index_loans_on_organization_id"
+    t.index ["street_id"], name: "index_loans_on_street_id"
   end
 
   create_table "member_occupations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -514,6 +554,13 @@ ActiveRecord::Schema.define(version: 20171015064306) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["mode"], name: "index_mode_of_payments_on_mode"
+  end
+
+  create_table "municipalities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_municipalities_on_name"
   end
 
   create_table "notices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -595,7 +642,6 @@ ActiveRecord::Schema.define(version: 20171015064306) do
   end
 
   create_table "products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
     t.string "description"
     t.string "unit"
     t.datetime "created_at", null: false
@@ -604,6 +650,7 @@ ActiveRecord::Schema.define(version: 20171015064306) do
     t.string "photo_content_type"
     t.integer "photo_file_size"
     t.datetime "photo_updated_at"
+    t.string "name"
     t.index ["name"], name: "index_products_on_name", unique: true
   end
 
@@ -733,6 +780,17 @@ ActiveRecord::Schema.define(version: 20171015064306) do
     t.index ["member_id"], name: "index_share_capitals_on_member_id"
     t.index ["share_capital_product_id"], name: "index_share_capitals_on_share_capital_product_id"
     t.index ["type"], name: "index_share_capitals_on_type"
+  end
+
+  create_table "streets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.uuid "barangay_id"
+    t.uuid "municipality_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["barangay_id"], name: "index_streets_on_barangay_id"
+    t.index ["municipality_id"], name: "index_streets_on_municipality_id"
+    t.index ["name"], name: "index_streets_on_name"
   end
 
   create_table "suppliers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -878,6 +936,7 @@ ActiveRecord::Schema.define(version: 20171015064306) do
   add_foreign_key "appraisals", "real_properties"
   add_foreign_key "appraisals", "users", column: "appraiser_id"
   add_foreign_key "bank_accounts", "cooperatives"
+  add_foreign_key "barangays", "municipalities"
   add_foreign_key "carts", "users"
   add_foreign_key "charge_adjustments", "loan_charges"
   add_foreign_key "charges", "accounts", column: "credit_account_id"
@@ -914,8 +973,12 @@ ActiveRecord::Schema.define(version: 20171015064306) do
   add_foreign_key "loan_product_terms", "loan_products"
   add_foreign_key "loan_products", "accounts"
   add_foreign_key "loan_protection_funds", "loans"
+  add_foreign_key "loans", "barangays"
   add_foreign_key "loans", "loan_products"
   add_foreign_key "loans", "members"
+  add_foreign_key "loans", "municipalities"
+  add_foreign_key "loans", "organizations"
+  add_foreign_key "loans", "streets"
   add_foreign_key "member_occupations", "members"
   add_foreign_key "member_occupations", "occupations"
   add_foreign_key "memberships", "cooperatives"
@@ -936,6 +999,8 @@ ActiveRecord::Schema.define(version: 20171015064306) do
   add_foreign_key "share_capital_product_shares", "share_capital_products"
   add_foreign_key "share_capitals", "members"
   add_foreign_key "share_capitals", "share_capital_products"
+  add_foreign_key "streets", "barangays"
+  add_foreign_key "streets", "municipalities"
   add_foreign_key "time_deposits", "members"
   add_foreign_key "time_deposits", "time_deposit_products"
   add_foreign_key "users", "departments"

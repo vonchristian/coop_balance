@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   }, as: :avatar
   get 'reports/balance_sheet' => 'reports#balance_sheet'
   get 'reports/income_statement' => 'reports#income_statement'
- 
+  resources :customer_registrations, only: [:new, :create]
   resources :home, only: [:index]
   namespace :admin do
     resources :settings, only: [:index]

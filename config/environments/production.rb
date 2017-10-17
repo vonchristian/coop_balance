@@ -1,7 +1,7 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
   Paperclip.options[:command_path] = "/usr/bin/convert"
-
+  config.action_cable.allowed_request_origins = ["http://localhost:3000"]
   # Code is not reloaded between requests.
   config.cache_classes = true
 

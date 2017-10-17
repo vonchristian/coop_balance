@@ -5,6 +5,10 @@ module LoansModule
     enum mode_of_payment: [:monthly, :quarterly, :semi_annually, :lumpsum]
     belongs_to :borrower, class_name: "Member", foreign_key: 'member_id'
     belongs_to :loan_product, class_name: "LoansModule::LoanProduct"
+    belongs_to :street, optional: true
+    belongs_to :barangay, optional: true
+    belongs_to :municipality, optional: true
+
     has_one :cash_disbursement_voucher, class_name: "Voucher", as: :voucherable, foreign_key: 'voucherable_id'
    
     has_many :loan_approvals, class_name: "LoansModule::LoanApproval"

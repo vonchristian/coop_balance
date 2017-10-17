@@ -13,7 +13,7 @@ gem 'sass-rails', '>= 3.2'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.2'
 gem 'jbuilder', '~> 2.5'
-gem 'redis', '~> 3.0'
+gem 'redis', '~> 3.2'
 gem 'devise'
 gem 'simple_form'
 gem "select2-rails"

@@ -1,3 +1,5 @@
+
+        <div id="customer-modal" class="modal fade"></div>
 <div class="row">
   <div class="col-md-7">
     <div class="box box-solid">
@@ -66,7 +68,8 @@
         <hr>
           <%= simple_form_for @order do |f| %>
             <%= f.input :date, as: :string, input_html: { class: "datepicker", value: Time.zone.now.strftime("%B %e, %Y") } %>
-            <%= f.input :member_id,  input_html: {id: 'member-select'}, collection: Member.all.map{|a| [a.full_name, a.id] } %>
+            <span><label>Customer</label><span class="pull-right"><%= link_to 'New Customer', new_customer_registration_path, remote: true %></span></span>
+            <%= f.input :member_id, default: Member.order(created_at: :asc).last.try(:full_name), input_html: {id: 'member-select'}, collection: Member.order(created_at: :desc).map{|a| [a.full_name, a.id] } %>
             <%= f.input :payment_type, input_html: {id: 'payment-type-select', class: 'icheck-me', "data-skin" => 'square', "data-color" => "blue"}, collection: StoreModule::Order.payment_types.keys.to_a.map {|a| [a.titleize, a]}, default: StoreModule::Order.payment_types.first %>
             <%= f.input :total_cost, input_html: { id: 'order-total-cost', value: @cart.line_items.total_cost }, as: :hidden %>
             <%= f.input :cash_tendered, as: :string, input_html: { id: 'order-cash-tendered', oninput: 'calculateChangeForOrder()', class: "input-lg"} %>
