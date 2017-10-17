@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171017023303) do
+ActiveRecord::Schema.define(version: 20171017123938) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -485,7 +485,9 @@ ActiveRecord::Schema.define(version: 20171017023303) do
     t.uuid "street_id"
     t.uuid "municipality_id"
     t.uuid "organization_id"
+    t.uuid "employee_id"
     t.index ["barangay_id"], name: "index_loans_on_barangay_id"
+    t.index ["employee_id"], name: "index_loans_on_employee_id"
     t.index ["loan_product_id"], name: "index_loans_on_loan_product_id"
     t.index ["member_id"], name: "index_loans_on_member_id"
     t.index ["mode_of_payment"], name: "index_loans_on_mode_of_payment"
@@ -979,6 +981,7 @@ ActiveRecord::Schema.define(version: 20171017023303) do
   add_foreign_key "loans", "municipalities"
   add_foreign_key "loans", "organizations"
   add_foreign_key "loans", "streets"
+  add_foreign_key "loans", "users", column: "employee_id"
   add_foreign_key "member_occupations", "members"
   add_foreign_key "member_occupations", "occupations"
   add_foreign_key "memberships", "cooperatives"

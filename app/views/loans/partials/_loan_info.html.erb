@@ -16,13 +16,13 @@
         <hr>
         <div class="row">
           <div class="col-md-5 border-right">
-             <p class="text-muted">LOAN DETAILS </p>
+             <p class="text-purple">LOAN DETAILS </p>
             <div class="row">
               <div class="col-md-6">
                 &nbsp; &nbsp;  Loan Product 
               </div>
               <div class="col-md-6">
-                <span class="text-muted"> <%=@loan.loan_product_name.try(:upcase) %></span>
+                <span class="text-purple"> <%=@loan.loan_product_name.try(:upcase) %></span>
               </div>
             </div>
             <br>
@@ -47,7 +47,7 @@
           <div class="col-md-5 col-md-offset-1">
             <div class="row">
               <div class="col-md-8">
-                <p class="text-muted">CO MAKERS</p>
+                <p class="text-purple">CO MAKERS</p>
               </div>
               <div class="col-md-4">
                 <%= link_to new_loan_loan_co_maker_path(@loan) do %>
@@ -73,10 +73,10 @@
           </div>
           <% if @loan.approved? %>
             <div class="col-md-6 border-right">
-              <span class="text-muted"><i class="fa fa-calendar"></i> NEXT PAYMENT DUE </span>
+              <span class="text-purple"><i class="fa fa-calendar"></i> NEXT PAYMENT DUE </span>
               <h4> <%=Time.zone.now.strftime("%B %e, %Y") %></h4>
               <br>
-              <small class="text-muted"><i class="fa fa-credit-card"> </i> PRINCIPAL PAID </small>
+              <small class="text-purple"><i class="fa fa-credit-card"> </i> PRINCIPAL PAID </small>
               <h4 class="text-green"> P 23213 </h4>
               <span class="pull-right"> of <%= @loan.loan_amount %></span>
               <div class="progress xs">
@@ -91,7 +91,7 @@
           <% end %>
         </div>
         <hr>
-        <p class="text-muted"> APPROVAL DETAILS </p>
+        <p class="text-purple"> APPROVAL DETAILS </p>
           <div class="row">
             <div class="col-md-5">
               <div class="row">
@@ -103,7 +103,7 @@
                       </div>
                       <div class="col-md-7">
                         <strong><%=employee.first_and_last_name %></strong><br>
-                        <small class="text-muted"><%= employee.role.titleize %></small><br>
+                        <small class="text-purple"><%= employee.role.titleize %></small><br>
                         <% if @loan.approvers.include?(employee) %>
                           Approved on
                           <%=@loan.loan_approvals.where(approver: employee).last.date_approved.strftime("%B %e, %Y") %>
@@ -125,7 +125,7 @@
         <hr>
         <div class="row">
           <div class="col-md-6">
-          <span class="text-muted"> MATURITY DETAILS </span><br>
+          <span class="text-purple"> MATURITY DETAILS </span><br>
           <span class="badge bg-red"><%= @loan.number_of_days_past_due %> days </span> before maturity date 
           <hr>
           or
