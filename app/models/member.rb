@@ -16,14 +16,14 @@ class Member < ApplicationRecord
   has_one :membership, as: :memberable
   has_many :member_occupations, dependent: :destroy
   has_many :occupations, through: :member_occupations
-  has_many :loans, class_name: "LoansModule::Loan"
+  has_many :loans, class_name: "LoansModule::Loan", as: :borrower
   has_many :addresses, as: :addressable
   has_many :savings, class_name: "MembershipsModule::Saving"
   has_many :share_capitals, class_name: "MembershipsModule::ShareCapital"
-  has_many :time_deposits, class_name: "MembershipsModule::TimeDeposit"
+  has_many :time_deposits, class_name: "MembershipsModule::TimeDeposit", as: :depositor
   has_many :program_subscriptions, class_name: "MembershipsModule::ProgramSubscription"
   has_many :programs, through: :program_subscriptions
-  has_many :orders, class_name: "StoreModule::Order"
+  has_many :orders, class_name: "StoreModule::Order", as: :customer
   has_many :real_properties
   accepts_nested_attributes_for :tin, :addresses
   delegate :number, to: :tin, prefix: true, allow_nil: true

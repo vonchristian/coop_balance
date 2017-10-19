@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   root :to => 'store#index', :constraints => lambda { |request| request.env['warden'].user.role == 'sales_clerk' if request.env['warden'].user }, as: :store_module_root
   root :to => 'store#index', :constraints => lambda { |request| request.env['warden'].user.role == 'stock_custodian' if request.env['warden'].user }, as: :store_stocks_module_root
   root :to => 'hr_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'human_resource_officer' if request.env['warden'].user }, as: :hr_module_root 
+  root :to => 'clerk_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'accounting_clerk' if request.env['warden'].user }, as: :clerk_module_root 
   
    
   
@@ -32,6 +33,7 @@ Rails.application.routes.draw do
   resources :accounting_module, only: [:index]
   namespace :accounting_module do
     resources :accounts
+    resources :assets, controller: 'accounts', type: 'AccountingModule::Asset' 
     resources :entries
     resources :balance_sheet
     resources :income_statement
@@ -102,7 +104,9 @@ Rails.application.routes.draw do
     resources :entries, only: [:index, :show]
     resources :accounts, only: [:index, :show]
     resources :employees, only: [:new, :create], module: :settings
-    resources :share_capital_products, only: [:new, :create], module: :settings
+    resources :share_capital_products, only: [:new, :create], module: :settings do 
+      resources :shares, only: [:new, :create]
+    end
     resources :saving_products, only: [:new, :create], module: :settings
     resources :programs, only: [:new, :create], module: :settings
     resources :time_deposit_products, only: [:new, :create], module: :settings
@@ -200,12 +204,15 @@ Rails.application.routes.draw do
     resources :renewals, only: [:new, :create], module: :time_deposits
   end
   resources :employees, only: [:index, :show, :edit, :update] do 
+    resources :savings_accounts, only: [:new, :create], module: :employees
     resources :entries, only: [:index, :show], module: :employees
     resources :remittances, only: [:new, :create], module: :employees
     resources :vault_fund_transfers, only: [:new, :create], module: :employees
     resources :reports, only: [:index], module: :employees
     resources :vouchers, only: [:index, :new, :create], module: :employees
     resources :amounts, only: [:new, :create, :destroy], module: :employees
+    resources :orders, only: [:index], module: :employees
+
   end
   resources :loans, only: [:index, :show] do 
     resources :loan_co_makers, only: [:new, :create], module: :loans

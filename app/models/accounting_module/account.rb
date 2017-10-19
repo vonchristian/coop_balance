@@ -26,9 +26,17 @@ module AccountingModule
     has_many :entries, through: :amounts, source: :entry
     has_many :credit_entries, :through => :credit_amounts, :source => :entry, :class_name => 'AccountingModule::Entry'
     has_many :debit_entries, :through => :debit_amounts, :source => :entry, :class_name => 'AccountingModule::Entry'
-
+    has_many :sub_accounts, class_name: "AccountingModule::Account", foreign_key: 'main_account_id'
+    belongs_to :main_account, class_name: "AccountingModule::Account"
     validates :type, presence: true
     validates :name, :code, presence: true, uniqueness: true
+    scope :assets, -> { where(type: 'AccountingModule::Asset') } 
+    scope :liabilities, -> { where(type: 'AccountingModule::Liability') } 
+    scope :equities, -> { where(type: 'AccountingModule::Equity') } 
+    scope :revenues, -> { where(type: 'AccountingModule::Revenue') } 
+    scope :expenses, -> { where(type: 'AccountingModule::Expense') } 
+
+
     def account_name 
       name 
     end
@@ -45,6 +53,7 @@ module AccountingModule
        "AccountingModule::Expense",
        "AccountingModule::Revenue"]
      end
+
     def self.balance(options={})
       if self.new.class == AccountingModule::Account
         raise(NoMethodError, "undefined method 'balance'")
@@ -61,6 +70,7 @@ module AccountingModule
         accounts_balance
       end
     end
+
     def self.trial_balance
       if self.new.class == AccountingModule::Account
         AccountingModule::Asset.balance - (AccountingModule::Liability.balance + AccountingModule::Equity.balance + AccountingModule::Revenue.balance - AccountingModule::Expense.balance)
@@ -81,10 +91,26 @@ module AccountingModule
       end
     end
     def credits_balance(options={})
-      credit_amounts.balance(options)
+      if sub_accounts.present?
+        balance = []
+        sub_accounts.each do |sub_account|
+          balance << sub_account.credit_amounts.balance({})
+        end
+        balance.sum
+      else
+        credit_amounts.balance(options)
+      end
     end
     def debits_balance(options={})
-      debit_amounts.balance(options)
+      if sub_accounts.present?
+        balance = []
+        sub_accounts.each do |sub_account|
+          balance << sub_account.debit_amounts.balance({})
+        end
+        balance.sum
+      else
+        debit_amounts.balance(options)
+      end
     end
   end
 end

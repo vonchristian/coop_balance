@@ -33,6 +33,7 @@ AccountingModule::Asset.create(code: 11714, name: "Loans Receivable - Loans in L
 AccountingModule::Asset.create(code: 11715, contra: true, name: "Unearned Interests and Discounts")
 AccountingModule::Asset.create(code: 11716, name: "Allowance for Probable Losses on Loans")
 AccountingModule::Asset.create(code: 11721, name: "Accounts Receivables Trade - Current")
+AccountingModule::Asset.create(code: 117212, name: "Accounts Receivables Trade - Current (General Merchandise)", main_account_id: AccountingModule::Asset.find_by(code: 11721, name: "Accounts Receivables Trade - Current").id )
 AccountingModule::Asset.create(code: 117211, name: "Accounts Receivables - Loan Penalties")
 
 AccountingModule::Asset.create(code: 11722, name: "Accounts Receivables Trade - Past Due")

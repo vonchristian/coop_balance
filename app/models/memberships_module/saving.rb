@@ -3,6 +3,7 @@ module MembershipsModule
     include PgSearch
     pg_search_scope :text_search, :against => [:account_number, :account_owner_name]
     multisearchable against: [:account_number, :account_owner_name]
+    belongs_to :depositor, polymorphic: true
     belongs_to :member, class_name: "Member", foreign_key: 'member_id'
     belongs_to :saving_product, class_name: "CoopServicesModule::SavingProduct"
     delegate :name, to: :saving_product, prefix: true, allow_nil: true
@@ -42,7 +43,7 @@ module MembershipsModule
     private 
     #used for pg search
     def set_account_owner_name
-      self.account_owner_name = self.member.full_name
+      self.account_owner_name = self.depositor.name
     end
     def set_account_number
       self.account_number = self.id

@@ -3,8 +3,8 @@
     <div class="box box-solid">
       <div class="box-header bg-gray">
         <div class="row">
-          <div class="col-md-2 col-md-offset-1">
-            <%=image_tag(@employee.avatar.url(:medium), class: "img-circle", height: 80, width: 80) %>
+          <div class="col-md-3">
+            <center><%=image_tag(@employee.avatar.url(:medium), class: "img-circle", height: 80, width: 80) %></center>
           </div>
           <div class="col-md-8">
             <br>
@@ -13,7 +13,27 @@
           </div>
         </div>
       </div>
+
       <div class="box-body">
+        <div class="row">
+          <div class="col-md-6 col-md-offset-1">
+            SALARY 
+          </div>
+          <div class="col-md-4">
+            <%=number_to_currency @employee.salary_grade_amount, class: "pull-right" %>
+          </div>
+        </div>
+        <br>
+        <p class="text-red">DEDUCTIONS </p>
+        <div class="row">
+          <div class="col-md-6 col-md-offset-1">
+            A/R General Merchandise
+          </div>
+          <div class="col-md-3">
+            <%=number_to_currency AccountingModule::Account.find_by(name: "Accounts Receivables Trade - Current (General Merchandise)").balance(commercial_document_id: @employee.id) %>
+          </div>
+        </div>
+        <hr>
         <p class="text-purple"> CONTRIBUTIONS </p>
         <% @employee.contributions.each do |contribution| %>
           <div class="row">

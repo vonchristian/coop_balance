@@ -1,8 +1,8 @@
   <div class="row">
     <div class="col-md-5">
       <div class="box box-solid">
-        <div class="box-header">
-          <h3 class="box-title">Cash on Hand </h3>
+        <div class="box-header bg-purple">
+          <h3 class="box-title condensed-text">Cash on Hand Details </h3>
         </div>
         <div class="box-body">
           <% User.with_cash_on_hands.each do |employee| %>
@@ -11,8 +11,8 @@
                 <%= image_tag(employee.avatar.url(:medium), class: "img-circle", height: 45, width: 45) %>
               </div>
               <div class="col-md-6">
-                <h4 class="condensed-text"><%= employee.first_and_last_name %></h4>
-                <%= employee.role %>
+                <b class="text-purple"><%= employee.first_and_last_name %></b><br>
+                <%= employee.role.try(:titleize) %>
               </div>
               <div class="col-md-3">
                 <%= number_to_currency employee.cash_on_hand_account.balance(recorder_id: employee.id) %>
@@ -42,13 +42,41 @@
             <%= number_to_currency AccountingModule::Account.find_by(name: "Cash in Bank").balance %>
           </div>
         </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-2">
+          </div>
+          <div class="col-md-6">
+            <%= AccountingModule::Account.find_by(name: "Cash and Cash Equivalents").name %>
+          </div>
+          <div class="col-md-3">
+            <%= number_to_currency AccountingModule::Account.find_by(name: "Cash and Cash Equivalents").balance %>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 <div class="col-md-4">
   <div class="box box-success">
     <div class="box-header">
-      <h3 class="box-title">Income </h3>
+      <div class="row">
+        <div class="col-md-3">
+          <h3 class="box-title">Revenue </h3>
+        </div>
+        <div class="col-md-9">
+          <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              This Day
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+              <li><%= link_to 'This Month'%></li>
+              <li role="separator" class="divider"></li>
+              <li><%= link_to 'This Quarter'%></li>
+            </ul>
+          </div>
+        </div>
+      </div>
       <h3><%= number_to_currency AccountingModule::Revenue.balance %></h3>
     </div>
     <div class="box-header">
@@ -56,3 +84,4 @@
       <h3><%= number_to_currency AccountingModule::Expense.balance %></h3>
     </div>
   </div>
+</div>

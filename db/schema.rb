@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171017123938) do
+ActiveRecord::Schema.define(version: 20171019113817) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -486,7 +486,10 @@ ActiveRecord::Schema.define(version: 20171017123938) do
     t.uuid "municipality_id"
     t.uuid "organization_id"
     t.uuid "employee_id"
+    t.string "borrower_type"
+    t.uuid "borrower_id"
     t.index ["barangay_id"], name: "index_loans_on_barangay_id"
+    t.index ["borrower_type", "borrower_id"], name: "index_loans_on_borrower_type_and_borrower_id"
     t.index ["employee_id"], name: "index_loans_on_employee_id"
     t.index ["loan_product_id"], name: "index_loans_on_loan_product_id"
     t.index ["member_id"], name: "index_loans_on_member_id"
@@ -594,7 +597,6 @@ ActiveRecord::Schema.define(version: 20171017123938) do
   end
 
   create_table "orders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "member_id"
     t.datetime "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -604,8 +606,10 @@ ActiveRecord::Schema.define(version: 20171017123938) do
     t.decimal "total_cost"
     t.decimal "order_change"
     t.uuid "employee_id"
+    t.string "customer_type"
+    t.uuid "customer_id"
+    t.index ["customer_type", "customer_id"], name: "index_orders_on_customer_type_and_customer_id"
     t.index ["employee_id"], name: "index_orders_on_employee_id"
-    t.index ["member_id"], name: "index_orders_on_member_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
@@ -748,7 +752,10 @@ ActiveRecord::Schema.define(version: 20171017123938) do
     t.datetime "updated_at", null: false
     t.uuid "saving_product_id"
     t.string "account_owner_name"
+    t.string "depositor_type"
+    t.uuid "depositor_id"
     t.index ["account_number"], name: "index_savings_on_account_number", unique: true
+    t.index ["depositor_type", "depositor_id"], name: "index_savings_on_depositor_type_and_depositor_id"
     t.index ["member_id"], name: "index_savings_on_member_id"
     t.index ["saving_product_id"], name: "index_savings_on_saving_product_id"
   end
@@ -778,9 +785,12 @@ ActiveRecord::Schema.define(version: 20171017123938) do
     t.string "type"
     t.uuid "share_capital_product_id"
     t.string "account_owner_name"
+    t.string "subscriber_type"
+    t.uuid "subscriber_id"
     t.index ["account_number"], name: "index_share_capitals_on_account_number", unique: true
     t.index ["member_id"], name: "index_share_capitals_on_member_id"
     t.index ["share_capital_product_id"], name: "index_share_capitals_on_share_capital_product_id"
+    t.index ["subscriber_type", "subscriber_id"], name: "index_share_capitals_on_subscriber_type_and_subscriber_id"
     t.index ["type"], name: "index_share_capitals_on_type"
   end
 
@@ -830,7 +840,10 @@ ActiveRecord::Schema.define(version: 20171017123938) do
     t.integer "number_of_days"
     t.datetime "date_deposited"
     t.string "depositor_name"
+    t.string "depositor_type"
+    t.uuid "depositor_id"
     t.index ["account_number"], name: "index_time_deposits_on_account_number", unique: true
+    t.index ["depositor_type", "depositor_id"], name: "index_time_deposits_on_depositor_type_and_depositor_id"
     t.index ["member_id"], name: "index_time_deposits_on_member_id"
     t.index ["time_deposit_product_id"], name: "index_time_deposits_on_time_deposit_product_id"
   end
@@ -985,7 +998,6 @@ ActiveRecord::Schema.define(version: 20171017123938) do
   add_foreign_key "member_occupations", "members"
   add_foreign_key "member_occupations", "occupations"
   add_foreign_key "memberships", "cooperatives"
-  add_foreign_key "orders", "members"
   add_foreign_key "orders", "users"
   add_foreign_key "orders", "users", column: "employee_id"
   add_foreign_key "product_stocks", "products"

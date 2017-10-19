@@ -14,8 +14,8 @@ module StoreModule
         if @order.cash?
           OfficialReceipt.generate_number_for(@order)
         end
-        @order.create_entry
         redirect_to store_index_url, notice: "Order saved successfully"
+        @order.create_entry
       else
         render @order
       end
@@ -35,7 +35,7 @@ module StoreModule
 
     private
     def order_params
-      params.require(:store_module_order).permit(:member_id, :date, :payment_type, :cash_tendered, :order_change, :total_cost, :employee_id)
+      params.require(:store_module_order).permit(:customer_id, :date, :payment_type, :cash_tendered, :order_change, :total_cost, :employee_id)
     end
   end
 end

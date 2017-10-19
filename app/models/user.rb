@@ -15,15 +15,20 @@
               :sales_clerk, 
               :treasurer, 
               :accountant, 
-              :human_resource_officer]
+              :human_resource_officer, 
+              :accounting_clerk]
+
   belongs_to :department
   belongs_to :salary_grade
-  
+  has_many :loans, class_name: "LoansModule::Loan", as: :borrower
+  has_many :savings, class_name: "MembershipsModule::Saving", as: :depositor
+  has_many :time_deposits, class_name: "MembershipsModule::TimeDeposit", as: :depositor
+  has_many :orders, class_name: "StoreModule::Order", as: :customer
   has_many :entries, class_name: "AccountingModule::Entry", foreign_key: 'recorder_id'
   has_many :fund_transfers, class_name: "AccountingModule::Entry", as: :commercial_document
   has_many :appraised_properties, class_name: "Appraisal", foreign_key: 'appraiser_id'
   has_many :voucher_amounts, as: :commercial_document # for adding amounts on voucher
-  has_many :cash_disbursement_vouchers, as: :payee, class_name: "Voucher"
+  has_many :vouchers, as: :payee, class_name: "Voucher"
   has_many :employee_contributions, foreign_key: 'employee_id'
   has_many :contributions, through: :employee_contributions
   delegate :name, :amount, to: :salary_grade, prefix: true, allow_nil: true
@@ -39,8 +44,12 @@
   :path => ":rails_root/public/system/:attachment/:id/:basename_:style.:extension",
   :url => "/system/:attachment/:id/:basename_:style.:extension"
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
+  def accounts_receivable_gen_merchandise_total
+    AccountingModule::Account.find_by(name: "Accounts Receivables Trade - Current (General Merchandise)").balance(commercial_document_id: self.id)
+  end
+
   def cash_advance_total
-    AccountingModule::Account.find_by(name: "Advances to Officers, Employees and Members").debit_entries.where(commercial_document: self)
+    AccountingModule::Account.find_by(name: "Advances to Officers, Employees and Members").debit_entries.where(commercial_document_id: self.id)
   end
   def self.with_cash_on_hands
     all.select{|a| WITH_CASH_ON_HAND.include?(a.role.titleize) }
@@ -69,6 +78,7 @@
   def fund_transfer_total
     fund_transfers.fund_transfer.map{ |a| a.debit_amounts.distinct.sum(:amount) }.sum
   end
+  
   def payable_amount 
     voucher_amounts.sum(:amount)
   end

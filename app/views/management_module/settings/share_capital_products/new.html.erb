@@ -1,7 +1,18 @@
-<%= simple_form_for @share_capital_product, url: :management_module_share_capital_products do |f| %>
-  <%= f.error_notification %>
-  <%= f.input :name %>
-  <%= f.input :share_count %>
-  <%= f.input :cost_per_share %>
-  <%= f.submit "Create Share Capital Product" %>
-<% end %>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="box box-purple">
+      <div class="box-header">
+        <h3 class="box-title">New Share Capital Product Details </h3>
+      </div>
+      <div class="box-body">
+        <div class="row">
+          <div class="col-md-10 col-md-offset-1">
+            <%= simple_form_for @share_capital_product, url: :management_module_share_capital_products do |f| %>
+              <%= f.error_notification %>
+              <%= f.input :name %>
+              <%= f.input :share_count %>
+              <%= f.input :cost_per_share %>
+              <div class="box-footer">
+                <%= f.submit "Create Share Capital Product", class: "btn btn-primary pull-right" %>
+              </div>
+            <% end %>

@@ -1,6 +1,6 @@
 class SavingForm
   include ActiveModel::Model
-  attr_accessor :member_id, :saving_product_id, :account_number, :amount, :or_number, :date, :recorder_id
+  attr_accessor :depositor_id, :depositor_type, :saving_product_id, :account_number, :amount, :or_number, :date, :recorder_id
   validates :saving_product_id, presence: true
 
   def save
@@ -9,14 +9,19 @@ class SavingForm
       create_entry
     end
   end
-  def find_member
-    Member.find_by(id: member_id)
+  def find_depositor
+    if Member.find_by(id: depositor_id).present?
+      depositor = Member.Member.find_by(id: depositor_id)
+    elsif User.find_by(id: depositor_id).present?
+      depositor = User.find_by(id: depositor_id)
+    end 
+    depositor
   end
   def find_employee 
     User.find_by(id: recorder_id)
   end
   def open_savings_account
-    find_member.savings.create(saving_product_id: saving_product_id, account_number: account_number)
+    find_depositor.savings.create(saving_product_id: saving_product_id, account_number: account_number)
   end
   def find_saving
     MembershipsModule::Saving.find_by(account_number: account_number, saving_product_id: saving_product_id)

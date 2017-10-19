@@ -3,7 +3,7 @@ module LoansModule
     enum loan_term_duration: [:month]
     enum loan_status: [:application, :processing, :approved, :aging]
     enum mode_of_payment: [:monthly, :quarterly, :semi_annually, :lumpsum]
-    belongs_to :borrower, class_name: "Member", foreign_key: 'member_id'
+    belongs_to :borrower, polymorphic: true
     belongs_to :employee, class_name: "User", foreign_key: 'employee_id' #prepared by signatory
     belongs_to :loan_product, class_name: "LoansModule::LoanProduct"
     belongs_to :street, optional: true

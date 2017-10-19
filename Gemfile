@@ -53,12 +53,16 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'rspec-its'
   gem 'faker'
+  gem 'guard-rspec', require: false
+  gem 'rb-fsevent'
+  gem 'growl'
 end
 
 group :development do
   gem 'spring'
   gem 'spring-watcher-listen'
   gem 'bullet'
+  gem 'pry-rails'
 end
 group :test do
   gem 'shoulda-matchers'

@@ -8,7 +8,7 @@ module ManagementModule
         @share_capital_product = ManagementModule::ShareCapitalProductForm.new(share_capital_product_params)
         if @share_capital_product.valid?
           @share_capital_product.register
-          redirect_to "/", notice: "Succeess"
+          redirect_to management_module_settings_url, notice: "Share Capital Product created succesfully."
         else
           render :new
         end

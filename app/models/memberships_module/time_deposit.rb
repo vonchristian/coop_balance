@@ -2,7 +2,7 @@ module MembershipsModule
   class TimeDeposit < ApplicationRecord
     include PgSearch
     pg_search_scope :text_search, against: [:depositor_name, :account_number]
-    belongs_to :depositor, class_name: "Member", foreign_key: 'member_id'
+    belongs_to :depositor, polymorphic: true
     belongs_to :time_deposit_product, class_name: "CoopServicesModule::TimeDepositProduct"
     has_many :deposits,  class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
 

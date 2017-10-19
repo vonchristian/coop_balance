@@ -19,10 +19,10 @@
             <% cache savings_account do %>
               <div class="row">
                 <div class="col-md-2">
-                  <center> <%=image_tag(savings_account.member.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center>
+                  <center> <%=image_tag(savings_account.depositor.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center>
                 </div>
                 <div class="col-md-5">
-                  <p class=""><%= savings_account.member.full_name.try(:upcase) %></p>
+                  <p class=""><%= savings_account.depositor.name.try(:upcase) %></p>
                   <small class=""> <%= savings_account.saving_product_name %></small><br><br>
                   <%= link_to 'Deposit', new_savings_account_deposit_path(savings_account), class: "btn btn-xs btn-success" %> &nbsp; &nbsp;
                   <%= link_to 'Withdraw', new_savings_account_withdrawal_path(savings_account), class: "btn btn-xs btn-warning" %>

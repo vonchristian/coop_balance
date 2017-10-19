@@ -3,7 +3,7 @@ require 'rails_helper'
 module MembershipsModule
   describe Saving do
     context "associations" do 
-    	it { is_expected.to belong_to :account_owner }
+    	it { is_expected.to belong_to :depositor }
     	it { is_expected.to belong_to :saving_product }
     	it { is_expected.to have_many :entries }
     end 

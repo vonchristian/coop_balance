@@ -3,19 +3,30 @@
     <div class="col-md-4">
       <div class="box box-solid">
         <div class="box-body">
+          <%=form_tag employees_path, method: :get, class: "sidebar-form" do %>
+              <div class="input-group">
+                <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Employee", id: 'taxpayer-search-form' %>
+                <span class="input-group-btn">
+                  <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                    <i class="fa fa-search"></i>
+                  <% end %>
+                </span>
+              </div>
+            <% end %>
+            <br>
           <% @employees.each do |employee| %>
             <% cache employee do %>
               <%= link_to employee_path(employee) do %>
                 <div class="row">
-                  <div class="col-md-2">
+                  <div class="col-md-2 col-md-offset-1">
                     <%= image_tag(employee.avatar.url(:medium), class: "img-circle", height: 45, width: 45) %>
                   </div>
                   <div class="col-md-9">
-                    <h4 class="condensed-text"><%= employee.first_and_last_name %></h4>
-                    <%= employee.role %>
+                    <p class="text-purple"><b><%= employee.first_and_last_name %></b></p>
+                    <small class="text-black"><%= employee.role.try(:titleize).try(:upcase) %></small>
                   </div>
                 </div>
-                <br>
+                <hr>
               <% end %>
             <% end %>
           <% end %>

@@ -19,4 +19,11 @@
   <%elsif current_user.teller? %>
      <%= link_to 'New Remittance', new_employee_remittance_path(@employee), class: "btn btn-primary btn-flat" %> 
   <% end %>
+  <% if @employee.savings.present? %>
+    <% @employee.savings.each do |saving| %>
+      <%= saving.balance %>
+    <% end %>
+  <% end %>
+    <%= link_to 'Open Savings Account', new_employee_savings_account_path(@employee) %>
+
 </div>
