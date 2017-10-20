@@ -7,6 +7,7 @@ module StoreModule
     has_one :charge_invoice, as: :invoicable
     delegate :number, to: :official_receipt, prefix: true, allow_nil: true
     delegate :first_and_last_name, to: :customer, prefix: true, allow_nil: true
+    delegate :name, to: :customer, prefix: true, allow_nil: true
     has_many :line_items, class_name: "StoreModule::LineItem", dependent: :destroy
 
     validates :customer_id, presence: true
@@ -54,9 +55,9 @@ module StoreModule
       self.date ||= Time.zone.now 
     end
     def set_customer_type
-      if User.find(self.customer_id).present?
+      if User.find_by(id: self.customer_id).present?
         self.customer_type = "User"
-      elsif Member.find(self.customer_id).present?
+      elsif Member.find_by(id: self.customer_id).present?
         self.customer_type = "Member"
       end 
     end 

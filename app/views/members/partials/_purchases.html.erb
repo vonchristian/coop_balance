@@ -16,8 +16,8 @@
             <tr data-link="<%=store_module_order_path(order)%>" class="myClass">
               <td><%= order.date.strftime("%B %e, %Y") %></td>
               <td><%= order.official_receipt_number %></td>
-              <td width="30px"><%= member_avatar(order.member, style: 'width:30px;height:30px;', class: 'media-object img-circle') %></td>
-              <td><%= order.member_first_and_last_name %></td>
+              <td width="30px"><%= image_tag(order.customer.avatar.url(:thumb), class: 'media-object img-circle') %></td>
+              <td><%= order.customer_name %></td>
               <td><span class="pull-right"><%=number_to_currency order.total_cost %></span></td>
             </tr>
           <% end %>

@@ -1,4 +1,12 @@
-<div class="tab-pane" id="notices">
+<div class="tab-pane <%='active' if current_page?(loan_notices_path(@loan))%>" id="notices">
+  <div class="row">
+    <div class="col-md-12">
+  <p class="text-purple"> PAYMENT SCHEDULES </p>
+    <% @loan.amortization_schedules.each do |schedule| %>
+      <%= schedule.date.strftime("%B %e, %Y") %>
+      <%= schedule.total_amortization %>
+      <%= link_to 'Print', schedule_path(schedule, format: 'pdf') %>
+    <% end %>
 <h4> First Notice </h4>
 This notice will be served on <%= @loan.first_notice_date.strftime("%B %e, %Y") %>
 <%= link_to 'Print Notice', new_loans_module_loan_first_notice_path(@loan, format: 'pdf') %>

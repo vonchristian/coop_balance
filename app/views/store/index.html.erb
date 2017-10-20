@@ -54,6 +54,7 @@
 
   <div class="col-md-5">
     <div class="box box-solid">
+      <% if @cart.line_items.present? %>
       <div class="box-header">
         <h3 class="condensed-text box-title"> ORDER DETAILS </h3>
       </div>
@@ -78,7 +79,7 @@
             <%= line_item.quantity.to_i %>
           </div>
           <div class="col-md-7">
-            <%= line_item.product_stock_name.try(:upcase) %><br>
+            <b><%= line_item.product_stock_name.try(:upcase) %></b><br>
             <small class="text-muted"><%= line_item.product_stock_barcode %></small><br>
             <span class="label bg-gray">
               <%= number_to_currency line_item.unit_cost %>
@@ -100,4 +101,8 @@
           </div>
         </div>
         <br>
-        <%= link_to "Checkout", new_store_module_order_path, class: "btn btn-primary btn-block" %>
+        <%= link_to "Checkout",  new_store_module_order_path, class: "btn btn-primary btn-block", :accesskey => "C" %>
+      </div>
+      <% else %>
+        <center><%=image_tag('empty_cart.png', height: 160, width: 160) %></center>
+      <% end %>

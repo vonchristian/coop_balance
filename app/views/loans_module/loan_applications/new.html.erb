@@ -9,7 +9,7 @@
   <%= f.error_notification %>
     <%= f.input :loan_product_id, collection: LoansModule::LoanProduct.all.map{|a| [a.name.titleize, a.id] } %>
 
-  <%= f.input :member_id, collection: Member.all.map {|a| [a.full_name, a.id] } %>
+  <%= f.input :borrower_id, collection: LoansModule::Loan.borrowers.map {|a| [a.name, a.id] } %>
   <%= f.input :loan_amount, as: :string %>
   <%= f.input :term, label: "Loan Term (in months)" %>
   <%= f.input :mode_of_payment, collection: LoansModule::Loan.mode_of_payments.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
@@ -23,7 +23,7 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
-    $("#loans_module_loan_member_id").select2({
+    $("#loans_module_loan_borrower_id").select2({
       theme: "bootstrap"
     });
   });

@@ -12,13 +12,13 @@ module LoansModule
 
     has_one :cash_disbursement_voucher, class_name: "Voucher", as: :voucherable, foreign_key: 'voucherable_id'
    
-    has_many :loan_approvals, class_name: "LoansModule::LoanApproval"
+    has_many :loan_approvals, class_name: "LoansModule::LoanApproval", dependent: :destroy
     has_many :approvers, through: :loan_approvals
     has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document
-    has_many :loan_charges, class_name: "LoansModule::LoanCharge"
-    has_many :loan_additional_charges
+    has_many :loan_charges, class_name: "LoansModule::LoanCharge", dependent: :destroy
+    has_many :loan_additional_charges, dependent: :destroy
     has_many :charges, through: :loan_charges, source: :chargeable, source_type: "Charge"
-    has_many :loan_co_makers, class_name: "LoansModule::LoanCoMaker"
+    has_many :loan_co_makers, class_name: "LoansModule::LoanCoMaker", dependent: :destroy
     has_many :co_makers, through: :loan_co_makers, class_name: "Member"
     has_many :amortization_schedules, as: :amortizeable
     has_many :principal_amortization_schedules, as: :amortizeable, class_name: "LoansModule::PrincipalAmortizationSchedule"
@@ -30,13 +30,16 @@ module LoansModule
     has_one :second_notice, class_name: "SecondNotice", as: :notified
     has_one :third_notice, class_name: "ThirdNotice", as: :notified
 
-    delegate :full_name, to: :borrower, prefix: true, allow_nil: true
+    delegate :name, to: :borrower, prefix: true, allow_nil: true
     delegate :name, to: :loan_product, prefix: true, allow_nil: true
     delegate :debit_account, :interest_rate, to: :loan_product, prefix: true
     before_save :set_default_date
-    after_commit :set_documentary_stamp_tax
+    after_commit :set_documentary_stamp_tax 
+    after_commit :set_borrower_type
     #find aging loans e.g. 1-30 days,
-    
+    def self.borrowers
+      User.all + Member.all 
+    end
     def name 
       loan_product_name 
     end
@@ -58,7 +61,6 @@ module LoansModule
     def past_due?
       number_of_days_past_due >=1
     end
-    validate :less_than_max_amount?
     def total_unpaid_principal_for(date)
       amortized_principal_for(date) - paid_principal_for(date)
     end
@@ -184,8 +186,15 @@ module LoansModule
 
     private 
     def set_documentary_stamp_tax
-     
     end
+
+    def set_borrower_type
+      if Member.find_by(id: self.borrower_id).present?
+        self.borrower_type = "Member"
+      elsif employee_borrower = User.find_by(id: self.borrower_id).present?
+       self.borrower_type = "User"
+      end 
+    end 
     def set_default_date 
       self.application_date ||= Time.zone.now
     end

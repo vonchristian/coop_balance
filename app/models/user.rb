@@ -17,9 +17,10 @@
               :accountant, 
               :human_resource_officer, 
               :accounting_clerk]
-
+  has_one :current_address, as: :addressable, class_name: "Address"
   belongs_to :department
   belongs_to :salary_grade
+
   has_many :loans, class_name: "LoansModule::Loan", as: :borrower
   has_many :savings, class_name: "MembershipsModule::Saving", as: :depositor
   has_many :time_deposits, class_name: "MembershipsModule::TimeDeposit", as: :depositor

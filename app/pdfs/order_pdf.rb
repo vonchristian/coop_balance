@@ -2,7 +2,7 @@ require 'barby'
 require 'barby/barcode/code_39'
 require 'barby/outputter/prawn_outputter'
 class OrderPdf < Prawn::Document
-  TABLE_WIDTHS = [30, 70,  40, 60]
+  TABLE_WIDTHS = [30, 70,  50, 50]
   ORDER_DETAILS_WIDTHS = [20, 20, 15]
   def initialize(order, line_items, view_context)
     super(margin: 2, page_size: [204, 792], page_layout: :portrait)
@@ -23,10 +23,10 @@ class OrderPdf < Prawn::Document
   end
   def logo
     move_down 10
-    image "#{Rails.root}/app/assets/images/logo_grayscale.jpg", width: 50, height: 50, position: :center
+    image "#{Rails.root}/app/assets/images/logo_kcmdc.jpg", width: 50, height: 50, position: :center
     move_down 5
-    text "HOJAP MULTIPURPOSE COOPERATIVE", align: :center, size: 8, style: :bold
-    text "Haliap, Asipulo, Ifugao", size: 7, align: :center
+    text "KIANGAN COMMUNITY MULTIPURPOSE COOPERATIVE", align: :center, size: 8, style: :bold
+    text "Poblacion, Kiangan, Ifugao", size: 7, align: :center
     text "Email: hmpc@gmail.com", size: 7, align: :center
     text "Contact No: 999-999-999", size: 7, align: :center
 
@@ -48,7 +48,7 @@ class OrderPdf < Prawn::Document
       move_down 15
       end
       table(table_data, header: true, cell_style: { size: 6, font: "Helvetica"}, column_widths: TABLE_WIDTHS) do
-        cells.borders = []
+        # cells.borders = []
         # row(0).font_style = :bold
         # row(0).background_color = 'DDDDDD'
         column(0).align = :right

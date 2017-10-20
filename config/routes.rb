@@ -55,13 +55,13 @@ Rails.application.routes.draw do
     resources :loan_charges, shallow: true do 
       resources :adjustments, only: [:new, :create], module: :loan_charges
     end
+
     resources :loans, except: [:destroy] do
       resources :amortization_schedules, only: [:index], module: :loans
-    resources :first_notices, only: [:new, :create]
-    resources :processings, only: [:create]
-    resources :additional_charges, only: [:new, :create]
-    resources :payments, only: [:new, :create]
-    
+      resources :first_notices, only: [:new, :create]
+      resources :processings, only: [:create]
+      resources :additional_charges, only: [:new, :create]
+      resources :payments, only: [:new, :create]
     end
     resources :members, only: [:index, :show] do
       resources :loan_applications, only: [:new, :create], module: :member_loans
@@ -216,6 +216,7 @@ Rails.application.routes.draw do
   end
   resources :loans, only: [:index, :show] do 
     resources :loan_co_makers, only: [:new, :create], module: :loans
+    resources :notices, only: [:index, :show, :new, :create], module: :loans
     resources :approvals, only: [:new, :create], module: :loans
     resources :disbursements, only: [:new, :create, :index], module: :loans
     resources :disbursement_vouchers, only: [:new, :create, :show], module: :loans
