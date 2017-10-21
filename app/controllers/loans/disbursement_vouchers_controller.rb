@@ -11,6 +11,7 @@ module Loans
       @voucher.payee = @loan.borrower
 			if @voucher.valid?
 				@voucher.save 
+        @voucher.add_amounts_from(@loan)
 				redirect_to loan_url(@loan), notice: "Cash disbursement voucher created successfully."
 			else 
 				render :new 
@@ -29,7 +30,7 @@ module Loans
 
 		private 
 		def voucher_params
-			params.require(:voucher).permit(:number, :date)
+			params.require(:voucher).permit(:number, :date, :description)
 		end 
 	end 
 end 

@@ -1,10 +1,17 @@
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
     <div class="box box-solid">
-      <div class="box-body">
-    <%= image_tag(@share_capital.account_owner.avatar.url(:thumb), class: "profile-user-img img-responsive img-circle") %>
-    <center><%= @share_capital.account_owner.full_name %></center>
-<hr>
+      <div class="box-header bg-gray">
+        <div class="row">
+          <div class="col-md-3">
+            <center> <%= image_tag(@share_capital.account_owner.avatar.url(:medium), class: "profile-user-img img-responsive img-circle") %></center>
+          </div>
+          <div class="col-md-8">
+            <h3 class="box-title"<%= @share_capital.account_owner.full_name %></h3><br>
+          
+          </div>
+        </div>
+
 <p class="text-muted">CAPITAL BUILD UP DETAILS </p>
 <%= simple_form_for @capital_build_up, url: :share_capital_capital_build_ups do |f| %>
   <p> <%= @share_capital.cost_per_share %></p>

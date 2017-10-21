@@ -1,8 +1,8 @@
   <div class="row">
     <div class="col-md-5">
       <div class="box box-solid">
-        <div class="box-header bg-purple">
-          <h3 class="box-title condensed-text">Cash on Hand Details </h3>
+        <div class="box-header">
+          <h3 class="box-title">Cash on Hand Details </h3>
         </div>
         <div class="box-body">
           <% User.with_cash_on_hands.each do |employee| %>
@@ -15,73 +15,74 @@
                 <%= employee.role.try(:titleize) %>
               </div>
               <div class="col-md-3">
-                <%= number_to_currency employee.cash_on_hand_account.balance(recorder_id: employee.id) %>
+                <span class="pull-right"><%= number_to_currency employee.cash_on_hand_account.balance(recorder_id: employee.id) %></span>
               </div>
             </div>
-            <br>
+            <hr>
         <% end %>
-        <hr />
         <div class="row">
           <div class="col-md-2">
+            <%=image_tag('vault.png', height: 45, width: 45) %>
           </div>
           <div class="col-md-6">
             <%= AccountingModule::Account.find_by(name: "Cash on Hand (Vault)").name %>
           </div>
           <div class="col-md-3">
-            <%= number_to_currency AccountingModule::Account.find_by(name: "Cash on Hand (Vault)").balance %>
+            <span class="pull-right"><%= number_to_currency AccountingModule::Account.find_by(name: "Cash on Hand (Vault)").balance %></span>
           </div>
         </div>
         <hr />
         <div class="row">
           <div class="col-md-2">
+             <%=image_tag('bank.png', height: 45, width: 45) %>
           </div>
           <div class="col-md-6">
             <%= AccountingModule::Account.find_by(name: "Cash in Bank").name %>
           </div>
           <div class="col-md-3">
-            <%= number_to_currency AccountingModule::Account.find_by(name: "Cash in Bank").balance %>
+            <span class="pull-right"><%= number_to_currency AccountingModule::Account.find_by(name: "Cash in Bank").balance %></span>
           </div>
         </div>
         <hr>
         <div class="row">
-          <div class="col-md-2">
-          </div>
           <div class="col-md-6">
-            <%= AccountingModule::Account.find_by(name: "Cash and Cash Equivalents").name %>
+            <b>TOTAL CASH</b>
           </div>
-          <div class="col-md-3">
-            <%= number_to_currency AccountingModule::Account.find_by(name: "Cash and Cash Equivalents").balance %>
+          <div class="col-md-5">
+            <p class="pull-right"><b><%= number_to_currency AccountingModule::Account.find_by(name: "Cash and Cash Equivalents").balance %></b></p>
           </div>
         </div>
       </div>
     </div>
   </div>
-<div class="col-md-4">
-  <div class="box box-success">
-    <div class="box-header">
-      <div class="row">
-        <div class="col-md-3">
-          <h3 class="box-title">Revenue </h3>
-        </div>
-        <div class="col-md-9">
-          <div class="dropdown">
-            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-              This Day
-              <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-              <li><%= link_to 'This Month'%></li>
-              <li role="separator" class="divider"></li>
-              <li><%= link_to 'This Quarter'%></li>
-            </ul>
+<div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-green"><i class="fa fa-server"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Revenue</span>
+              <span class="info-box-number">90<small>%</small></span>
+            </div>
+            <!-- /.info-box-content -->
           </div>
+          <!-- /.info-box -->
         </div>
-      </div>
-      <h3><%= number_to_currency AccountingModule::Revenue.balance %></h3>
-    </div>
-    <div class="box-header">
-      <h3 class="box-title">Expenses </h3>
-      <h3><%= number_to_currency AccountingModule::Expense.balance %></h3>
-    </div>
-  </div>
-</div>
+        <!-- /.col -->
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-red"><i class="fa fa-pie-chart"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Expenses</span>
+              <span class="info-box-number"><%=  AccountingModule::Expense.balance %></span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+      <div class="col-md-2">
+      <div class="box box-solid">
+        <div class="box-body">
+    <% User.all.each do |employee| %>
+    <%= image_tag(employee.avatar.url(:medium), height: 60, width: 60) %>
+    <% end %>

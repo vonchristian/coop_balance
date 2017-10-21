@@ -1,11 +1,10 @@
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
     <div class="box box-solid">
-      <div class="box-header">
-        <br>
+      <div class="box-header bg-gray">
         <div class="row">
-          <div class="col-md-2 col-md-offset-1">
-            <%=image_tag(@voucher.payee.avatar.url(:medium), class: "img-circle", height: 50, width: 50) %>
+          <div class="col-md-3">
+            <center><%=image_tag(@voucher.payee.avatar.url(:medium), class: "img-circle", height: 60, width: 60) %></center>
           </div>
           <div class="col-md-8">
             <h3 class="box-title"><%= @voucher.payee.first_and_last_name.try(:upcase) %></h3><br>

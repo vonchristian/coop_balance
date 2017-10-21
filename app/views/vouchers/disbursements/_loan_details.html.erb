@@ -9,7 +9,7 @@
             <%= member_avatar(@voucher.voucherable.borrower, style: 'width:60px;height:60px;', class: 'media-object img-circle') %>
           </div>
           <div class="col-md-9">
-            <p><%= @voucher.voucherable.borrower.full_name.upcase %></p>
+            <p><%= @voucher.voucherable.borrower.name.upcase %></p>
           </div>
         </div>
         <hr>

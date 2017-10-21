@@ -27,6 +27,7 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
           <li class="header"> MANAGEMENT </li>
+          <li class=<%= 'active' if current_page?(management_module_index_path) %> ><a href="/management_module"><i class="fa fa-dashboard"></i> <span> Dashboard</span></a></li>
             <li class=<%= 'active' if current_page?(members_path) %> ><a href="/members"><i class="fa fa-users"></i> <span> Members</span></a></li>
             <li class=<%= 'active' if current_page?(vouchers_path) %> ><a href="/vouchers"><i class="fa fa-folder"></i> <span> Vouchers</span></a></li>
 

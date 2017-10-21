@@ -4,11 +4,11 @@
   <div class="box-header bg-gray">
     <div class="row">
       <div class="col-md-3">
-        <center><%= member_avatar(@loan.borrower, style: 'width:80px;height:80px;', class: 'media-object img-circle') %></center>
+        <center><%= image_tag(@loan.borrower.avatar.url(:medium), style: 'width:80px;height:80px;', class: 'media-object img-circle') %></center>
       </div>
       <div class="col-md-9">
         <br>
-        <h3 class="box-title"><%= @loan.borrower.full_name.upcase %></h3><br>
+        <h3 class="box-title"><%= @loan.borrower_name.upcase %></h3><br>
          <i class="fa fa-map-marker"></i> Address: <%= @loan.borrower.try(:current_address) %>
       </div>
     </div>
@@ -50,6 +50,7 @@
 <%= simple_form_for [@loan, @voucher], url: :loan_disbursement_vouchers do |f| %>
   <%= f.error_notification %>
   <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+  <%= f.input :description, input_html: { value: "Loan disbursement voucher of #{@loan.borrower_name}" }, as: :text %>
   <div class="box-footer">
     <%= f.submit "Create Voucher", class: "btn btn-primary pull-right" %>
   </div>

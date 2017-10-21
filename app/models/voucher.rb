@@ -5,7 +5,7 @@ class Voucher < ApplicationRecord
   has_one :entry, class_name: "AccountingModule::Entry", as: :commercial_document
   belongs_to :voucherable, polymorphic: true
   belongs_to :payee, polymorphic: true
-  delegate :payable_amount, to: :voucherable, allow_nil: true
+  delegate :payable_amount, :name, to: :voucherable, allow_nil: true
   has_many :voucher_amounts, dependent: :destroy
   before_save :set_date
 
@@ -35,6 +35,11 @@ class Voucher < ApplicationRecord
       v.commercial_document_id = nil 
       v.commercial_document_type = nil 
       v.save 
+    end
+  end
+  def add_amounts_from(loan)
+    loan.charges.each do |charge|
+      self.voucher_amounts.create(amount: charge.amount, description: charge.name, account_id: charge.debit_account_id, commercial_document: charge)
     end
   end
         
