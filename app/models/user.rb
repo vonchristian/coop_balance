@@ -1,4 +1,4 @@
-  class User < ApplicationRecord
+class User < ApplicationRecord
   LOAN_APPROVERS = ["Manager", "Loan Officer"]
   WITH_CASH_ON_HAND = ["Treasurer", "Teller", "Sales Clerk"]
   # Include default devise modules. Others available are:

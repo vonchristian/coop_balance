@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171019113817) do
+ActiveRecord::Schema.define(version: 20171021044318) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -488,6 +488,7 @@ ActiveRecord::Schema.define(version: 20171019113817) do
     t.uuid "employee_id"
     t.string "borrower_type"
     t.uuid "borrower_id"
+    t.string "borrower_full_name"
     t.index ["barangay_id"], name: "index_loans_on_barangay_id"
     t.index ["borrower_type", "borrower_id"], name: "index_loans_on_borrower_type_and_borrower_id"
     t.index ["employee_id"], name: "index_loans_on_employee_id"

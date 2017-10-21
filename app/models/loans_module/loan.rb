@@ -1,5 +1,7 @@
 module LoansModule
   class Loan < ApplicationRecord
+    include PgSearch
+    pg_search_scope :text_search, :against => [:borrower_full_name]
     enum loan_term_duration: [:month]
     enum loan_status: [:application, :processing, :approved, :aging]
     enum mode_of_payment: [:monthly, :quarterly, :semi_annually, :lumpsum]
@@ -34,8 +36,6 @@ module LoansModule
     delegate :name, to: :loan_product, prefix: true, allow_nil: true
     delegate :debit_account, :interest_rate, to: :loan_product, prefix: true
     before_save :set_default_date
-    after_commit :set_documentary_stamp_tax 
-    after_commit :set_borrower_type
     #find aging loans e.g. 1-30 days,
     def self.borrowers
       User.all + Member.all 
@@ -83,6 +83,12 @@ module LoansModule
       charge = charges.where(type: "LoansModule::InterestOnLoanCharge").last
       loan_charge = loan_charges.where(chargeable: charge).last
       loan_charge.charge_amount_with_adjustment
+    end
+    def interest_debit_account
+      charge = charges.where(type: "LoansModule::InterestOnLoanCharge").last
+      if charge.present?
+        charge.credit_account
+      end
     end
     def interest_on_loan_amount
       interest_on_loan_charge
@@ -160,19 +166,25 @@ module LoansModule
     def payments
       entries.loan_payment
     end
+    def payments_total
+      loan_product_debit_account.credits_balance(commercial_document_id: self.id)
+    end
 
     def disbursement
-      entries.loan_disbursement
+      if cash_disbursement_voucher.present?
+       cash_disbursement_voucher.entry
+     end
     end
     def disbursement_date
       if disbursement.present? 
-        disbursement.last.entry_date 
+        disbursement.entry_date 
       end
     end
 
     def balance
-      disbursement.total - payments.total
+      loan_product_debit_account.balance(commercial_document_id: self.id)
     end
+
     def number_of_days_past_due
       if disbursement.present?
         ((Time.zone.now - disbursement_date)/86400.0).to_i
@@ -183,23 +195,28 @@ module LoansModule
     def number_of_months_past_due
       number_of_days_past_due / 30
     end
-
-    private 
-    def set_documentary_stamp_tax
-    end
-
     def set_borrower_type
       if Member.find_by(id: self.borrower_id).present?
         self.borrower_type = "Member"
       elsif employee_borrower = User.find_by(id: self.borrower_id).present?
        self.borrower_type = "User"
       end 
+      self.save 
     end 
-    def set_default_date 
-      self.application_date ||= Time.zone.now
+    def set_borrower_full_name 
+      self.borrower_full_name = self.borrower.name 
+      self.save
     end
-    def less_than_max_amount?
-      errors[:loan_amount] << "Amount exceeded maximum allowed amount which is #{self.loan_product.max_loanable_amount}" if self.loan_amount > self.loan_product.max_loanable_amount
-    end
+
+    private 
+      def set_documentary_stamp_tax
+      end
+
+      def set_default_date 
+        self.application_date ||= Time.zone.now
+      end
+      def less_than_max_amount?
+        errors[:loan_amount] << "Amount exceeded maximum allowed amount which is #{self.loan_product.max_loanable_amount}" if self.loan_amount > self.loan_product.max_loanable_amount
+      end
   end
 end

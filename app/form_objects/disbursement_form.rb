@@ -63,7 +63,7 @@ class DisbursementForm
     entry.save 
   end
   def create_loan_disbursement
-    entry = AccountingModule::Entry.loan_disbursement.new(commercial_document: find_voucher, :description => "Loan disbursement", recorder_id: recorder_id, entry_date: date)
+    entry = AccountingModule::Entry.loan_disbursement.new(commercial_document: find_loan, :description => "Loan disbursement", recorder_id: recorder_id, entry_date: date)
     loan_debit_amount = AccountingModule::DebitAmount.new(amount: find_loan.loan_amount, account: find_loan.loan_product_debit_account)
     loan_credit_amount = AccountingModule::CreditAmount.new(amount: find_loan.net_proceed, account:find_employee.cash_on_hand_account)
     entry.debit_amounts << loan_debit_amount

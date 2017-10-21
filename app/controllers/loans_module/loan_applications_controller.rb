@@ -15,6 +15,8 @@ module LoansModule
         redirect_to loans_module_loan_application_url(@loan), notice: "Loan application saved successfully."
         @loan.set_interest_on_loan_charge
         @loan.create_amortization_schedule
+        @loan.set_borrower_type
+        @loan.set_borrower_full_name
       else
         render :new
       end

@@ -6,7 +6,7 @@
       <div class="box-body">
         <div class="row">
           <div class="col-md-3">
-            <%= member_avatar(@voucher.voucherable.borrower, style: 'width:60px;height:60px;', class: 'media-object img-circle') %>
+            <%= image_tag(@voucher.voucherable.borrower.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %>
           </div>
           <div class="col-md-9">
             <p><%= @voucher.voucherable.borrower.name.upcase %></p>

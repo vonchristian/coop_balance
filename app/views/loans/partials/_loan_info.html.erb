@@ -14,6 +14,20 @@
           </div>
         </div>
         <hr>
+        <p class="text-purple">BALANCES </p>
+        <div class="row">
+          <div class="col-md-4">
+            <%= @loan.loan_amount %>
+          </div>
+
+          <div class="col-md-4">
+            <%= @loan.payments_total %>
+          </div>
+          <div class="col-md-4">
+            <%= @loan.balance %>
+          </div>
+        </div>
+        <hr />
         <div class="row">
           <div class="col-md-5 border-right">
              <p class="text-purple">LOAN DETAILS </p>

@@ -10,7 +10,9 @@
           <li class="<%= 'active' if current_page?(employee_entries_path(@employee))%>"><%= link_to 'Entries', employee_entries_path(@employee) %></li>
           <li class="<%= 'active' if current_page?(employee_reports_path(@employee))%>"><%= link_to 'Reports', employee_reports_path(@employee) %></li>
           <li class="<%= 'active' if current_page?(employee_vouchers_path(@employee))%>"><%= link_to 'Vouchers', employee_vouchers_path(@employee) %></li>
-          <li class="<%= 'active' if current_page?(employee_orders_path(@employee))%>"><%= link_to 'Orders', employee_orders_path(@employee) %></li>
+          <li class="<%= 'active' if current_page?(employee_orders_path(@employee))%>"><%= link_to 'Purchases', employee_orders_path(@employee) %></li>
+          <li class="<%= 'active' if current_page?(employee_loans_path(@employee))%>"><%= link_to 'Loans & Credit', employee_loans_path(@employee) %></li>
+
 
 
         </ul>
@@ -30,6 +32,9 @@
         <% end %>
         <% if current_page?(employee_orders_path(@employee)) %>
           <%=render 'employees/partials/orders' %>
+        <% end %>
+        <% if current_page?(employee_loans_path(@employee)) %>
+          <%= render 'employees/partials/loans' %>
         <% end %>
       </div>
     </div>

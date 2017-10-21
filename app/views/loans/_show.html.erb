@@ -5,6 +5,7 @@
         <li class="<%= 'active' if current_page?(loan_path(@loan))%>"><%= link_to 'Info', loan_path(@loan) %></li>
         <li class="<%= 'active' if current_page?(loan_disbursements_path(@loan))%>"><%= link_to 'Disbursement', loan_disbursements_path(@loan) %></li>
         <li class="<%= 'active' if current_page?(loans_module_loan_amortization_schedules_path(@loan))%>"><%= link_to 'Amortization', loans_module_loan_amortization_schedules_path(@loan) %></li>
+        <li class="<%= 'active' if current_page?(loan_payments_path(@loan))%>"><%= link_to 'Payments', loan_payments_path(@loan) %></li>
         <li class="<%= 'active' if current_page?(loan_notices_path(@loan))%>"><%= link_to 'Notices', loan_notices_path(@loan) %></li>
 
 
@@ -25,6 +26,9 @@
         <% end %>
         <% if current_page?(loan_notices_path(@loan)) %>
           <%=render 'loans/partials/notices' %>
+        <% end %>
+        <% if current_page?(loan_payments_path(@loan)) %>
+          <%= render 'loans/partials/payments' %>
         <% end %>
         <%#=render 'loans/partials/payments' %>
         <%#=render 'loans/partials/amortization_schedule' %>

@@ -73,7 +73,6 @@ Rails.application.routes.draw do
     resources :loan_calculator, only: [:index]
     resources :schedules, only: [:index, :show]
     resources :notices, only: [:index, :show]
-
   end
   resources :share_capitals do
     resources :capital_build_ups, only: [:new, :create], module: :share_capitals
@@ -212,14 +211,15 @@ Rails.application.routes.draw do
     resources :vouchers, only: [:index, :new, :create], module: :employees
     resources :amounts, only: [:new, :create, :destroy], module: :employees
     resources :orders, only: [:index], module: :employees
-
+    resources :loans, only: [:index], module: :employees
   end
   resources :loans, only: [:index, :show] do 
-    resources :loan_co_makers, only: [:new, :create], module: :loans
+    resources :loan_co_makers, only: [:index, :new, :create], module: :loans
     resources :notices, only: [:index, :show, :new, :create], module: :loans
     resources :approvals, only: [:new, :create], module: :loans
     resources :disbursements, only: [:new, :create, :index], module: :loans
     resources :disbursement_vouchers, only: [:new, :create, :show], module: :loans
+    resources :payments, only: [:index, :new, :create], module: :loans
   end
   resources :loan_co_makers, only: [:destroy]
   resources :vouchers, only: [:index, :show] do 
