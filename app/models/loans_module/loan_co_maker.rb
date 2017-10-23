@@ -1,8 +1,10 @@
 module LoansModule
 	class LoanCoMaker < ApplicationRecord
 	  belongs_to :loan, class_name: "LoansModule::Loan"
-	  belongs_to :co_maker, class_name: "Member", foreign_key: 'co_maker_id'
+	  belongs_to :co_maker, polymorphic: true
 
 	  validates :co_maker_id, presence: true
+
+    delegate :current_occupation, to: :co_maker, allow_nil: true
 	end
 end

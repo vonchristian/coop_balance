@@ -27,7 +27,7 @@ module LoansModule
     def table_data
       move_down 5
       [["Member", "Balance"]] + 
-      @table_data ||= @loans.map { |e| [e.member.try(:full_name), price(e.balance)]}
+      @table_data ||= @loans.map { |e| [e.borrower_name, price(e.balance)]}
     end
   end 
 end 

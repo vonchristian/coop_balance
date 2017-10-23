@@ -6,7 +6,7 @@ module Loans
       if params[:search].present?
         @members = Member.text_search(params[:search])
       else
-        @members = Member.all.except(@loan.borrower)
+        @members = LoansModule::Loan.borrowers
       end
 		end 
 		def create
@@ -23,7 +23,7 @@ module Loans
 
 		private 
 	  def co_maker_params
-	  	params.require(:loans_module_loan_co_maker).permit(:co_maker_id)
+	  	params.require(:loans_module_loan_co_maker).permit(:co_maker_id, :co_maker_type)
 		end 
 	end
 end

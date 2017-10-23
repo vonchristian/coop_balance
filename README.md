@@ -68,3 +68,9 @@ background job kaltas payment of program from members who subscribed
 what do you do if term exceeds 36 months
 rename factories to _factory.rb
 add faker to factories
+
+
+sales to ifedeco
+your own cic
+  know members credit data
+  know if a real property is collateralled already 

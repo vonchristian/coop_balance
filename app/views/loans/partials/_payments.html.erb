@@ -1,5 +1,7 @@
 <div class="tab-pane <%= 'active' if current_page?(loan_payments_path(@loan))%>" id='loan-payments'>
-  <%=link_to 'New Payment', new_loan_payment_path(@loan), class: "btn btn-primary" %>
+  <% if policy([:loans_module, :payment]).new? %>
+    <%=link_to 'New Payment', new_loan_payment_path(@loan), class: "btn btn-primary" %>
+  <% end %>
   <hr>
   <p class="condensed-text"> PAYMENTS HISTORY </p>
   

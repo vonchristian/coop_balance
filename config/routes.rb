@@ -43,10 +43,11 @@ Rails.application.routes.draw do
   resources :loans_module, only: [:index]
   
   namespace :loans_module do
+    resources :loan_registries, only: [:new, :create]
     resources :payment_schedules, only: [:index, :show]
     resources :aging_loans, only: [:index, :show]
     resources :loan_calculator, only: [:index]
-    resources :loan_applications, only: [:new, :create, :show, :edit, :update]
+    resources :loan_applications, only: [:new, :create, :show, :edit, :update, :destroy]
     resources :dashboard, only: [:index]
     resources :loan_products, except:[:destroy] do 
       resources :applications, only: [:new, :create]
@@ -217,12 +218,14 @@ Rails.application.routes.draw do
     resources :loans, only: [:index], module: :employees
   end
   resources :loans, only: [:index, :show] do 
+    resources :real_properties, only: [:new, :create, :show], module: :loans
     resources :loan_co_makers, only: [:index, :new, :create], module: :loans
     resources :notices, only: [:index, :show, :new, :create], module: :loans
     resources :approvals, only: [:new, :create], module: :loans
     resources :disbursements, only: [:new, :create, :index], module: :loans
     resources :disbursement_vouchers, only: [:new, :create, :show], module: :loans
     resources :payments, only: [:index, :new, :create], module: :loans
+    resources :collaterals, only: [:index, :new, :create], module: :loans
   end
   resources :loan_co_makers, only: [:destroy]
   resources :vouchers, only: [:index, :show] do 

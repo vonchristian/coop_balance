@@ -11,7 +11,11 @@ class Voucher < ApplicationRecord
 
   after_commit :set_number, on: [:create, :update]
   def payable_amount
-    voucher_amounts.sum(&:amount)
+    if for_loan?
+      voucherable.payable_amount
+    else
+      voucher_amounts.sum(&:amount)
+    end
   end
   def self.disbursed
     all.select{|a| a.disbursed? }

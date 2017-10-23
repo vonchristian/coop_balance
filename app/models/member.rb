@@ -17,6 +17,7 @@ class Member < ApplicationRecord
   has_many :member_occupations, dependent: :destroy
   has_many :occupations, through: :member_occupations
   has_many :loans, class_name: "LoansModule::Loan", as: :borrower
+  has_many :co_makered_loans, class_name: "LoansModule::LoanCoMaker", as: :co_maker
   has_many :addresses, as: :addressable
   has_many :savings, class_name: "MembershipsModule::Saving"
   has_many :share_capitals, class_name: "MembershipsModule::ShareCapital"
@@ -43,7 +44,10 @@ class Member < ApplicationRecord
   after_commit :subscribe_to_programs
   before_save :update_birth_date_fields
 
-
+  def current_occupation
+    return "No Occupation entered" if occupations.blank?
+    occupations.order(created_at: :asc).last
+  end
   def self.has_birthdays_on(month)
     where(birth_month: month).order(:birth_day)
   end

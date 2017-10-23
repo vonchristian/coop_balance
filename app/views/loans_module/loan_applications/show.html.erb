@@ -108,7 +108,14 @@
           </div>
         </div>
         <hr>
-				 <%= link_to 'Proceed', loan_path(@loan), class: "btn btn-success pull-right" %>
+        <div class="row">
+          <div class="col-md-6">
+            <%= link_to 'Cancel Application', loans_module_loan_application_path(@loan), method: :delete, class: "btn btn btn-danger" %>
+          </div>
+          <div class="col-md-6">
+				    <%= link_to 'Proceed', loan_path(@loan), class: "btn btn-success pull-right" %>
+          </div>
+        </div>
 			  </div>
       </div>
     </div>

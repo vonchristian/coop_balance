@@ -17,6 +17,7 @@ RSpec.describe User, type: :model do
     it { is_expected.to have_many :vouchers }
     it { is_expected.to have_many :employee_contributions }
     it { is_expected.to have_many :contributions }
+    it { is_expected.to have_many :real_properties }
     it { is_expected.to have_one :current_address }
   end
 

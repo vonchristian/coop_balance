@@ -4,7 +4,7 @@ module LoansModule
     pg_search_scope :text_search, :against => [:borrower_full_name]
     enum loan_term_duration: [:month]
     enum loan_status: [:application, :processing, :approved, :aging]
-    enum mode_of_payment: [:monthly, :quarterly, :semi_annually, :lumpsum]
+    enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
     belongs_to :borrower, polymorphic: true
     belongs_to :employee, class_name: "User", foreign_key: 'employee_id' #prepared by signatory
     belongs_to :loan_product, class_name: "LoansModule::LoanProduct"
@@ -21,12 +21,15 @@ module LoansModule
     has_many :loan_additional_charges, dependent: :destroy
     has_many :charges, through: :loan_charges, source: :chargeable, source_type: "Charge"
     has_many :loan_co_makers, class_name: "LoansModule::LoanCoMaker", dependent: :destroy
-    has_many :co_makers, through: :loan_co_makers, class_name: "Member"
+    has_many :member_co_makers, through: :loan_co_makers, source: :co_maker, source_type: 'Member'
+    has_many :employee_co_makers, through: :loan_co_makers, source: :co_maker, source_type: 'User'
+
     has_many :amortization_schedules, as: :amortizeable
     has_many :principal_amortization_schedules, as: :amortizeable, class_name: "LoansModule::PrincipalAmortizationSchedule"
     has_many :interest_on_loan_amortization_schedules, as: :amortizeable, class_name: "LoansModule::InterestOnLoanAmortizationSchedule"
     has_many :interest_on_loan_charges, class_name: "LoansModule::InterestOnLoanCharge", as: :chargeable, through: :loan_charges, source: :chargeable, source_type: "LoansModule::InterestOnLoanCharge"
-    
+    has_many :collaterals, class_name: "LoansModule::Collateral"
+    has_many :real_properties, through: :collaterals
     has_many :notices, as: :notified
     has_one :first_notice, class_name: "FirstNotice", as: :notified
     has_one :second_notice, class_name: "SecondNotice", as: :notified
@@ -37,6 +40,9 @@ module LoansModule
     delegate :debit_account, :interest_rate, to: :loan_product, prefix: true
     before_save :set_default_date
     #find aging loans e.g. 1-30 days,
+    def co_makers
+      employee_co_makers + member_co_makers
+    end
     def self.borrowers
       User.all + Member.all 
     end
@@ -106,7 +112,11 @@ module LoansModule
       18
     end
     def net_proceed
-      loan_amount - total_loan_charges
+      if total_loan_charges > 0
+        loan_amount - total_loan_charges
+      else
+        loan_amount
+      end
     end
     def balance_for(schedule)
       loan_amount - LoansModule::AmortizationSchedule.principal_for(schedule, self)
@@ -186,8 +196,8 @@ module LoansModule
     end
 
     def number_of_days_past_due
-      if disbursement.present?
-        ((Time.zone.now - disbursement_date)/86400.0).to_i
+      if maturity_date.present?
+        ((Time.zone.now - maturity_date)/86400.0).to_i
       else
         0
       end

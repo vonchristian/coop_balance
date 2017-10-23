@@ -23,6 +23,7 @@ class User < ApplicationRecord
   belongs_to :salary_grade
 
   has_many :loans, class_name: "LoansModule::Loan", as: :borrower
+  has_many :co_makered_loans, class_name: "LoansModule::LoanCoMaker", as: :co_maker
   has_many :savings, class_name: "MembershipsModule::Saving", as: :depositor
   has_many :time_deposits, class_name: "MembershipsModule::TimeDeposit", as: :depositor
   has_many :orders, class_name: "StoreModule::Order", as: :customer
@@ -32,6 +33,7 @@ class User < ApplicationRecord
   has_many :voucher_amounts, as: :commercial_document # for adding amounts on voucher
   has_many :vouchers, as: :payee, class_name: "Voucher"
   has_many :employee_contributions, foreign_key: 'employee_id'
+  has_many :real_properties, as: :owner
   has_many :contributions, through: :employee_contributions
   delegate :name, :amount, to: :salary_grade, prefix: true, allow_nil: true
   delegate :name, to: :department, prefix: true, allow_nil: true
@@ -47,6 +49,9 @@ class User < ApplicationRecord
   :path => ":rails_root/public/system/:attachment/:id/:basename_:style.:extension",
   :url => "/system/:attachment/:id/:basename_:style.:extension"
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
+  def current_occupation
+    role 
+  end
   def accounts_receivable_gen_merchandise_total
     AccountingModule::Account.find_by(name: "Accounts Receivables Trade - Current (General Merchandise)").balance(commercial_document_id: self.id)
   end

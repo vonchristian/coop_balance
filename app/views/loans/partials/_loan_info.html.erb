@@ -6,37 +6,45 @@
       </div>
       <div class="box-body">
         <div class="row">
-          <div class="col-md-2">
-            <%= image_tag(@loan.borrower.avatar.url(:medium), class: 'img-circle', height: 60, width: 60 ) %>    
-          </div>
-          <div class="col-md-6">
-            <h3><%= @loan.borrower_name.try(:upcase) %></h3>
-          </div>
-        </div>
-        <hr>
-        <p class="text-purple">BALANCES </p>
-        <div class="row">
           <div class="col-md-4">
-            <%= @loan.loan_amount %>
+            <small class="text-muted">LOAN AMOUNT</small>
+            <h3><%= number_to_currency @loan.loan_amount %></h3>
           </div>
 
           <div class="col-md-4">
-            <%= @loan.payments_total %>
+            <small class="text-muted">PAYMENT</small>
+            <h3><%= number_to_currency @loan.payments_total %></h3>
           </div>
           <div class="col-md-4">
-            <%= @loan.balance %>
+            <small class="text-red">BALANCE</small>
+            <h3 class="text-red"><%= number_to_currency @loan.balance %></h3>
           </div>
         </div>
         <hr />
         <div class="row">
-          <div class="col-md-5 border-right">
-             <p class="text-purple">LOAN DETAILS </p>
+          <div class="col-md-6 border-right">
+                <h4 class="condensed-text">LOAN DETAILS </h4>
             <div class="row">
               <div class="col-md-6">
-                &nbsp; &nbsp;  Loan Product 
+                &nbsp; &nbsp;  Borrower    
               </div>
               <div class="col-md-6">
-                <span class="text-purple"> <%=@loan.loan_product_name.try(:upcase) %></span>
+                <%= image_tag(@loan.borrower.avatar.url(:medium), class: 'img-circle', height: 40, width: 40 ) %> &nbsp;
+                <% if @loan.borrower.kind_of?(Member) %>
+                  <b> <%=link_to @loan.borrower_name, member_path(@loan.borrower)%></b>
+                <% elsif @loan.borrower.kind_of?(User) %>
+                  <b> <%=link_to @loan.borrower_name, employee_path(@loan.borrower)%></b>
+                <% end %>
+                  
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-6">
+                &nbsp; &nbsp;  Loan Type
+              </div>
+              <div class="col-md-6">
+                <span class="text-muted"> <%=@loan.loan_product_name.try(:upcase) %></span>
               </div>
             </div>
             <br>
@@ -57,15 +65,42 @@
                 <%=  @loan.loan_product_interest_rate %>
               </div>
             </div>
+            <br>
+            <div class="row">
+              <div class="col-md-6">
+                &nbsp; &nbsp; Mode of Payment
+              </div>
+              <div class="col-md-6">
+                <%=  @loan.mode_of_payment %>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-6">
+                &nbsp; &nbsp; Application Date
+              </div>
+              <div class="col-md-6">
+                <%=  @loan.application_date.strftime("%B %e, %Y") %>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-6">
+                &nbsp; &nbsp; Maturity Date
+              </div>
+              <div class="col-md-6">
+                <%=  @loan.maturity_date.strftime("%B %e, %Y") %>
+              </div>
+            </div>
           </div>
           <div class="col-md-5 col-md-offset-1">
             <div class="row">
               <div class="col-md-8">
-                <p class="text-purple">CO MAKERS</p>
+                <h4 class="condensed-text"><span class="badge bg-green"><%= @loan.co_makers.count %></span> &nbsp; LOAN CO MAKERS </h4>
               </div>
               <div class="col-md-4">
                 <%= link_to new_loan_loan_co_maker_path(@loan) do %>
-                  <span class="btn btn-default pull-right"><i class="fa fa-user-plus"></i> Add </span>
+                  <span class="btn btn-default pull-right"><i class="fa fa-user-plus"></i> Add / Remove</span>
                 <% end %>
               </div>
             </div>
@@ -76,21 +111,50 @@
                   <%= image_tag(loan_co_maker.co_maker.avatar.url(:thumb), class: "img-circle", height: 40, width: 40) %>
                 </div>
                 <div class="col-md-9">
-                  <%=link_to loan_co_maker_path(loan_co_maker), method: :delete, title: "Remove" do %>
-                    <span data-toggle="tooltip" data-placement="top" title="Remove"><i class="text-red fa fa-trash"></i>
-                  <% end %> <%= loan_co_maker.co_maker.full_name.try(:titleize) %>
+                  <% if loan_co_maker.co_maker.kind_of?(Member) %>
+                  <b><%=link_to loan_co_maker.co_maker.name.try(:titleize), member_path(loan_co_maker.co_maker) %></b>
+                  <% elsif loan_co_maker.co_maker.kind_of?(User) %>
+                    <b><%=link_to loan_co_maker.co_maker.name.try(:titleize), employee_path(loan_co_maker.co_maker) %></b>
+                  <% end %>
+                  <br>
+                  <small class="text-muted"> <%= loan_co_maker.current_occupation.try(:titleize).try(:upcase) %></small>
                   
                 </div>
               </div>
               <br>
             <% end %>
+            <hr>
+            <div class="row">
+              <div class="col-md-8">
+                 <h4 class="condensed-text">COLLATERAL DETAILS </h4>
+              </div>
+              <div class="col-md-4">
+                <%= link_to new_loan_collateral_path(@loan) do %>
+                  <span class="btn btn-default pull-right"><i class="fa fa-home"></i> Add / Remove </span>
+                <% end %>
+              </div>
+            </div>
+            <% @loan.real_properties.each do |real_property| %>
+               <%=link_to loan_real_property_path(loan_id: @loan.id, id: real_property.id) do %>
+                <div class="row">
+                  <div class="col-md-8">
+                    
+                    <b><%=real_property.description %> <%=number_to_currency real_property.appraised_value %></b><br>
+                    <% real_property.pictures.each do |image|%>
+                      <%=image_tag(image.image.url(:large), class: "img-square", height: 60, width: 60) %>
+                    <% end %>
+                  </div>
+                </div>
+              <br>
+              <% end %>
+            <% end %>
           </div>
           <% if @loan.approved? %>
             <div class="col-md-6 border-right">
-              <span class="text-purple"><i class="fa fa-calendar"></i> NEXT PAYMENT DUE </span>
+              <span class="text-muted"><i class="fa fa-calendar"></i> NEXT PAYMENT DUE </span>
               <h4> <%=Time.zone.now.strftime("%B %e, %Y") %></h4>
               <br>
-              <small class="text-purple"><i class="fa fa-credit-card"> </i> PRINCIPAL PAID </small>
+              <small class="text-muted"><i class="fa fa-credit-card"> </i> PRINCIPAL PAID </small>
               <h4 class="text-green"> P 23213 </h4>
               <span class="pull-right"> of <%= @loan.loan_amount %></span>
               <div class="progress xs">
@@ -105,7 +169,7 @@
           <% end %>
         </div>
         <hr>
-        <p class="text-purple"> APPROVAL DETAILS </p>
+        <p class="text-muted"> APPROVAL DETAILS </p>
           <div class="row">
             <div class="col-md-5">
               <div class="row">
@@ -117,7 +181,7 @@
                       </div>
                       <div class="col-md-7">
                         <strong><%=employee.first_and_last_name %></strong><br>
-                        <small class="text-purple"><%= employee.role.titleize %></small><br>
+                        <small class="text-muted"><%= employee.role.titleize %></small><br>
                         <% if @loan.approvers.include?(employee) %>
                           Approved on
                           <%=@loan.loan_approvals.where(approver: employee).last.date_approved.strftime("%B %e, %Y") %>
@@ -139,11 +203,11 @@
         <hr>
         <div class="row">
           <div class="col-md-6">
-          <span class="text-purple"> MATURITY DETAILS </span><br>
-          <span class="badge bg-red"><%= @loan.number_of_days_past_due %> days </span> before maturity date 
+          <span class="text-muted"> MATURITY DETAILS </span><br>
+          <span class="badge bg-red"><%= @loan.number_of_days_past_due %> days </span> past due
           <hr>
           or
-          <%= @loan.number_of_months_past_due %> months before maturity date 
+          <%= @loan.number_of_months_past_due %> months past due or <%= @loan.number_of_months_past_due / 12 %> years past due
           
           
           </div>

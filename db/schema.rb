@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171023031445) do
+ActiveRecord::Schema.define(version: 20171023125334) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -144,6 +144,15 @@ ActiveRecord::Schema.define(version: 20171023031445) do
     t.index ["charge_type"], name: "index_charges_on_charge_type"
     t.index ["credit_account_id"], name: "index_charges_on_credit_account_id"
     t.index ["debit_account_id"], name: "index_charges_on_debit_account_id"
+  end
+
+  create_table "collaterals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "loan_id"
+    t.uuid "real_property_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["loan_id"], name: "index_collaterals_on_loan_id"
+    t.index ["real_property_id"], name: "index_collaterals_on_real_property_id"
   end
 
   create_table "committee_members", force: :cascade do |t|
@@ -404,10 +413,11 @@ ActiveRecord::Schema.define(version: 20171023031445) do
 
   create_table "loan_co_makers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "loan_id"
-    t.uuid "co_maker_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["co_maker_id"], name: "index_loan_co_makers_on_co_maker_id"
+    t.string "co_maker_type"
+    t.uuid "co_maker_id"
+    t.index ["co_maker_type", "co_maker_id"], name: "index_loan_co_makers_on_co_maker_type_and_co_maker_id"
     t.index ["loan_id"], name: "index_loan_co_makers_on_loan_id"
   end
 
@@ -505,6 +515,7 @@ ActiveRecord::Schema.define(version: 20171023031445) do
     t.string "borrower_type"
     t.uuid "borrower_id"
     t.string "borrower_full_name"
+    t.datetime "maturity_date"
     t.index ["barangay_id"], name: "index_loans_on_barangay_id"
     t.index ["borrower_type", "borrower_id"], name: "index_loans_on_borrower_type_and_borrower_id"
     t.index ["employee_id"], name: "index_loans_on_employee_id"
@@ -647,6 +658,18 @@ ActiveRecord::Schema.define(version: 20171023031445) do
     t.index ["searchable_type", "searchable_id"], name: "index_pg_search_documents_on_searchable_type_and_searchable_id"
   end
 
+  create_table "pictures", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "pictureable_type"
+    t.uuid "pictureable_id"
+    t.string "image_file_name"
+    t.string "image_content_type"
+    t.integer "image_file_size"
+    t.datetime "image_updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pictureable_type", "pictureable_id"], name: "index_pictures_on_pictureable_type_and_pictureable_id"
+  end
+
   create_table "product_stocks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.decimal "unit_cost"
     t.decimal "total_cost"
@@ -729,7 +752,11 @@ ActiveRecord::Schema.define(version: 20171023031445) do
     t.string "type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "owner_type"
+    t.uuid "owner_id"
+    t.text "description"
     t.index ["member_id"], name: "index_real_properties_on_member_id"
+    t.index ["owner_type", "owner_id"], name: "index_real_properties_on_owner_type_and_owner_id"
     t.index ["type"], name: "index_real_properties_on_type"
   end
 
@@ -981,6 +1008,8 @@ ActiveRecord::Schema.define(version: 20171023031445) do
   add_foreign_key "charge_adjustments", "loan_charges"
   add_foreign_key "charges", "accounts", column: "credit_account_id"
   add_foreign_key "charges", "accounts", column: "debit_account_id"
+  add_foreign_key "collaterals", "loans"
+  add_foreign_key "collaterals", "real_properties"
   add_foreign_key "committee_members", "committees"
   add_foreign_key "days_workeds", "laborers"
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "credit_account_id"
@@ -1004,7 +1033,6 @@ ActiveRecord::Schema.define(version: 20171023031445) do
   add_foreign_key "loan_charges", "charges"
   add_foreign_key "loan_charges", "loans"
   add_foreign_key "loan_co_makers", "loans"
-  add_foreign_key "loan_co_makers", "members", column: "co_maker_id"
   add_foreign_key "loan_documentary_stamp_taxes", "loans"
   add_foreign_key "loan_product_charges", "charges"
   add_foreign_key "loan_product_charges", "loan_products"

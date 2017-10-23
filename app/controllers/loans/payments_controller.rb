@@ -6,6 +6,7 @@ module Loans
     def new
       @loan = LoansModule::Loan.find(params[:loan_id])
       @payment = LoanPaymentForm.new
+      authorize [:loans_module, :payment]
     end
     def create
       @loan = LoansModule::Loan.find(params[:loan_id])

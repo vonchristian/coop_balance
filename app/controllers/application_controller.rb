@@ -21,6 +21,6 @@ class ApplicationController < ActionController::Base
     registry
   end
   def permission_denied
-    redirect_to root_path, alert: 'Sorry but you are not allowed to access this feature.'
+    redirect_to "/", alert: 'Sorry but you are not allowed to access this feature.'
   end
 end

@@ -43,6 +43,11 @@ module LoansModule
         render :edit 
       end 
     end 
+    def destroy
+      @loan = LoansModule::Loan.find(params[:id])
+      @loan.destroy
+      redirect_to loans_url, notice: "Loan application cancelled successfully"
+    end
 
     private
     def loan_params

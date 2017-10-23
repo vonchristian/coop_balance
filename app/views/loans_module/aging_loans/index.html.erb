@@ -35,8 +35,8 @@
                 <% @loans.each do |loan| %>
                 <%= link_to loans_module_loan_path(loan) do %>
                   <tr>
-                    <td width="40px"> <%= member_avatar(loan.member, style: 'width:35px;height:35px;', class: 'media-object img-circle') %></td>
-                    <td> <%=link_to loan.member.full_name, loans_module_loan_path(loan) %></td>
+                    <td width="40px"> <%= image_tag(loan.borrower.avatar.url(:thumb), style: 'width:35px;height:35px;', class: 'media-object img-circle') %></td>
+                    <td> <%=link_to loan.borrower_name, loan_path(loan) %></td>
                     <td> <%= distance_of_time_in_words(loan.disbursement_date, Time.zone.now, true, except:[:minutes, :hours, :seconds]) %> </span></td>
                     <td><%= number_to_currency loan.balance %> </td>
                   </tr>

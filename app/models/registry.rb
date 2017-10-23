@@ -2,20 +2,20 @@ class Registry < ApplicationRecord
   
   has_attached_file :spreadsheet, :path => ":rails_root/public/system/:attachment/:id/:filename"
   do_not_validate_attachment_file_type :spreadsheet
-  def parse_for_records
-    book = Spreadsheet.open(spreadsheet.path)
-    sheet = book.worksheet(0)
-    transaction do
-      sheet.each 1 do |row|
-        if !row[0].nil? 
-          create_or_find_member(row)
-          create_saving_products(row)
-          create_savings(row)
-          create_entry(row)
-        end
-      end
-    end
-  end
+  # def parse_for_records
+  #   book = Spreadsheet.open(spreadsheet.path)
+  #   sheet = book.worksheet(0)
+  #   transaction do
+  #     sheet.each 1 do |row|
+  #       if !row[0].nil? 
+  #         create_or_find_member(row)
+  #         create_saving_products(row)
+  #         create_savings(row)
+  #         create_entry(row)
+  #       end
+  #     end
+  #   end
+  # end
 
   def create_or_find_member(row)
     Member.find_or_create_by(first_name: row[0], last_name: row[1])

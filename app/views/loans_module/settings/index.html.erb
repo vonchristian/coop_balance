@@ -6,3 +6,9 @@
 <% end %>
 
 <% @loan_protection_rates.each do |loan_protection_rate| %>
+<% end %>
+
+<%= simple_form_for LoansModule::LoanRegistry.new do |f| %>
+  <%= f.input :spreadsheet %>
+  <%= f.submit %>
+<% end %>
