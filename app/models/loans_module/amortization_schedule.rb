@@ -5,7 +5,6 @@ module LoansModule
     after_commit :create_payment_notice
     def self.for(from_date, to_date)
       if from_date && to_date
-       
         where('date' => from_date..to_date)
       end
     end

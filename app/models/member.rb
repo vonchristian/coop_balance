@@ -27,6 +27,7 @@ class Member < ApplicationRecord
   has_many :real_properties
   accepts_nested_attributes_for :tin, :addresses
   delegate :number, to: :tin, prefix: true, allow_nil: true
+
   has_attached_file :avatar,
   styles: { large: "120x120>",
            medium: "70x70>",
@@ -40,6 +41,13 @@ class Member < ApplicationRecord
 
   after_commit :set_fullname, on: [:create, :update]
   after_commit :subscribe_to_programs
+  before_save :update_birth_date_fields
+
+
+  def self.has_birthdays_on(month)
+    where(birth_month: month).order(:birth_day)
+  end
+
   def self.import(file)
     CSV.foreach(file.path, headers: true) do |row|
       Member.create!(row.to_hash)
@@ -75,5 +83,11 @@ class Member < ApplicationRecord
   end
   def subscribe_to_programs
     CoopServicesModule::Program.subscribe(self)
+  end
+  def update_birth_date_fields
+    if date_of_birth_changed?
+      self.birth_month = date_of_birth ? date_of_birth.month : nil
+      self.birth_day = date_of_birth ? date_of_birth.day : nil
+    end
   end
 end

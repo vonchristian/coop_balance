@@ -1,0 +1,20 @@
+ <div class="row">
+  <div class="col-md-12">
+    <div class="box box-solid">
+      <div class="box-header">
+        <h3 class="box-title"> Members Birthdays </h3>
+      </div>
+      <div class="box-body">
+      <%= month_calendar do |date| %> 
+        <%=link_to calendar_path(date) do %>
+        <p><%=date.day %></p>
+        <% @members.each do |member| %>
+          <% if member.birth_day == date.day %>
+            <%= image_tag(member.avatar.url(:thumb), class: "img-circle", height: 35, width: 35) %>  
+          <% end %>
+        <% end %>  
+        <% end %>  
+      <% end %>
+    </div>
+  </div>
+</div>

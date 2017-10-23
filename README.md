@@ -66,3 +66,5 @@ background job kaltas payment of program from members who subscribed
 
 
 what do you do if term exceeds 36 months
+rename factories to _factory.rb
+add faker to factories

@@ -253,6 +253,8 @@ Rails.application.routes.draw do
 
     end
   end
+  resources :calendars, only: [:index, :show]
+
   mount ActionCable.server => '/cable'
 
 end

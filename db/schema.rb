@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171023013555) do
+ActiveRecord::Schema.define(version: 20171023031445) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -543,6 +543,8 @@ ActiveRecord::Schema.define(version: 20171023013555) do
     t.integer "civil_status"
     t.string "fullname"
     t.string "slug"
+    t.integer "birth_month"
+    t.integer "birth_day"
     t.index ["fullname"], name: "index_members_on_fullname", unique: true
     t.index ["passbook_number"], name: "index_members_on_passbook_number", unique: true
     t.index ["sex"], name: "index_members_on_sex"
@@ -904,6 +906,9 @@ ActiveRecord::Schema.define(version: 20171023013555) do
     t.integer "sex"
     t.uuid "salary_grade_id"
     t.uuid "cooperative_id"
+    t.date "date_or_birth"
+    t.integer "birth_month"
+    t.integer "birth_day"
     t.index ["cooperative_id"], name: "index_users_on_cooperative_id"
     t.index ["department_id"], name: "index_users_on_department_id"
     t.index ["email"], name: "index_users_on_email", unique: true
