@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :account, :class => AccountingModule::Account do |account|
     account.name
     account.code

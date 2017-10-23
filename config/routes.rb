@@ -95,6 +95,9 @@ Rails.application.routes.draw do
 
   resources :management_module, only: [:index]
   namespace :management_module do
+    namespace :settings do 
+      resources :cooperatives, only: [:edit, :update]
+    end
     resources :accounting, only: [:index]
     resources :share_capitals, only: [:index, :show]
     resources :employees, only: [:index, :show]

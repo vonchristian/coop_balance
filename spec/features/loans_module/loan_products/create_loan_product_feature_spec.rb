@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature "Create Loan Product" do
   before(:each) do
-    user = FactoryGirl.create(:user)
+    user = FactoryBot.create(:user)
     login_as(user, :scope => :user)
     visit loans_department_loan_products_url
     click_link 'New Loan Product'

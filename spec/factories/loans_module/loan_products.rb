@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :loan_product, class: "LoansModule::LoanProduct" do
     name "MyString"
     description "MyString"

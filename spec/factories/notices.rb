@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :notice do
     date "2017-09-06 17:48:00"
     type ""

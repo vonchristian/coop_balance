@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature "Create Contribution" do
   before(:each) do
-    user = FactoryGirl.create(:user, role: 'human_resource_officer')
+    user = FactoryBot.create(:user, role: 'human_resource_officer')
     login_as(user, :scope => :user)
     visit hr_module_settings_url
     click_link 'New Contribution'

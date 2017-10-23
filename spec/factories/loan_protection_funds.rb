@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :loan_protection_fund do
     loan nil
     loan_protection_rate nil

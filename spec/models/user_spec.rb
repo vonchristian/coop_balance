@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
   describe 'associations' do 
     it { is_expected.to belong_to :department }
+    it { is_expected.to belong_to :cooperative }
     it { is_expected.to belong_to :salary_grade }
     it { is_expected.to have_many :entries }
     it { is_expected.to have_many :appraised_properties }

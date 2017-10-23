@@ -19,4 +19,5 @@
 //= require icheck
 //= require select2
 //= require trix
+//= require bootstrap-slider
 //= require_tree .

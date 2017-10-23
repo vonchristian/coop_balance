@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :amount, :class => AccountingModule::Amount do |amount|
     amount.amount BigDecimal.new('100')
     amount.association :entry, :factory => :entry_with_credit_and_debit

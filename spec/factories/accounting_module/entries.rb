@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :entry, :class => AccountingModule::Entry do |entry|
     entry.description 'factory description'
     factory :entry_with_credit_and_debit, :class => AccountingModule::Entry do |entry_cd|

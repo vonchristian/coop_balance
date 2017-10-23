@@ -7,6 +7,7 @@ end
 gem 'bootsnap', require: false
 gem 'trix'
 gem 'rails', '~> 5.1.4'
+gem 'bootstrap-slider-rails'
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.7', group: [:development, :production]
 gem 'sass-rails', '>= 3.2'
@@ -50,7 +51,7 @@ gem 'delayed-web'
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails'
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
   gem 'rspec-its'
   gem 'faker'
   gem 'guard-rspec', require: false

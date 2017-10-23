@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171021044318) do
+ActiveRecord::Schema.define(version: 20171023013555) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -102,6 +102,16 @@ ActiveRecord::Schema.define(version: 20171021044318) do
     t.index ["name"], name: "index_barangays_on_name"
   end
 
+  create_table "branch_offices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "cooperative_id"
+    t.string "address"
+    t.string "branch_name"
+    t.string "contact_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cooperative_id"], name: "index_branch_offices_on_cooperative_id"
+  end
+
   create_table "carts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -186,6 +196,12 @@ ActiveRecord::Schema.define(version: 20171021044318) do
     t.string "registration_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "contact_number"
+    t.string "address"
+    t.string "logo_file_name"
+    t.string "logo_content_type"
+    t.integer "logo_file_size"
+    t.datetime "logo_updated_at"
   end
 
   create_table "days_workeds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -887,6 +903,8 @@ ActiveRecord::Schema.define(version: 20171021044318) do
     t.date "date_of_birth"
     t.integer "sex"
     t.uuid "salary_grade_id"
+    t.uuid "cooperative_id"
+    t.index ["cooperative_id"], name: "index_users_on_cooperative_id"
     t.index ["department_id"], name: "index_users_on_department_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -953,6 +971,7 @@ ActiveRecord::Schema.define(version: 20171021044318) do
   add_foreign_key "appraisals", "users", column: "appraiser_id"
   add_foreign_key "bank_accounts", "cooperatives"
   add_foreign_key "barangays", "municipalities"
+  add_foreign_key "branch_offices", "cooperatives"
   add_foreign_key "carts", "users"
   add_foreign_key "charge_adjustments", "loan_charges"
   add_foreign_key "charges", "accounts", column: "credit_account_id"
@@ -1019,6 +1038,7 @@ ActiveRecord::Schema.define(version: 20171021044318) do
   add_foreign_key "streets", "municipalities"
   add_foreign_key "time_deposits", "members"
   add_foreign_key "time_deposits", "time_deposit_products"
+  add_foreign_key "users", "cooperatives"
   add_foreign_key "users", "departments"
   add_foreign_key "users", "salary_grades"
   add_foreign_key "voucher_amounts", "accounts"

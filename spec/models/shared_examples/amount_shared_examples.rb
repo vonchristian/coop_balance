@@ -1,5 +1,5 @@
 shared_examples_for 'a AccountingModule::Amount subtype' do |elements|
-  let(:amount) { FactoryGirl.build(elements[:kind]) }
+  let(:amount) { FactoryBot.build(elements[:kind]) }
   subject { amount }
 
   it { should be_valid }

@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :member, aliases: [:borrower] do
     first_name "MyString"
     middle_name "MyString"

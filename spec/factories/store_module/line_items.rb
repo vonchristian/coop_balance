@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :line_item, class: "StoreModule::LineItem" do
     product nil
     product_stock 

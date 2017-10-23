@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :bank_account do
     cooperative nil
     bank_name "MyString"

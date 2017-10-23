@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :real_property do
     member nil
     address "MyString"

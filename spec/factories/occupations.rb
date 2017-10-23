@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :occupation do
     title "MyString"
   end

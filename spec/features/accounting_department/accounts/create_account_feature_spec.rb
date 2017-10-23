@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature "Create Account" do
   before(:each) do
-    user = FactoryGirl.create(:user)
+    user = FactoryBot.create(:user)
     login_as(user, :scope => :user)
     visit accounting_department_accounts_url
     click_link 'New Account'

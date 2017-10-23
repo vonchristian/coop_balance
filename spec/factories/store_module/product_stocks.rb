@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :product_stock, class: "StoreModule::ProductStock" do
     unit_cost "9.99"
     total_cost "9.99"

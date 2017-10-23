@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :voucher do
     number "MyString"
     voucherable nil

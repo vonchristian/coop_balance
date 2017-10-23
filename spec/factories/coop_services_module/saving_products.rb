@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :saving_product do
     name "MyString"
     interest_rate "9.99"

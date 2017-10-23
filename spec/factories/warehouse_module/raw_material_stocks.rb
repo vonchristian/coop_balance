@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :raw_material_stock do
     supplier nil
     raw_material nil

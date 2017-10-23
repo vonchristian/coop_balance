@@ -32,7 +32,7 @@ module LoansModule
     has_one :second_notice, class_name: "SecondNotice", as: :notified
     has_one :third_notice, class_name: "ThirdNotice", as: :notified
 
-    delegate :name, to: :borrower, prefix: true, allow_nil: true
+    delegate :name, :age, to: :borrower, prefix: true, allow_nil: true
     delegate :name, to: :loan_product, prefix: true, allow_nil: true
     delegate :debit_account, :interest_rate, to: :loan_product, prefix: true
     before_save :set_default_date

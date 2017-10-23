@@ -7,10 +7,12 @@
             <center> <%= image_tag(@share_capital.account_owner.avatar.url(:medium), class: "profile-user-img img-responsive img-circle") %></center>
           </div>
           <div class="col-md-8">
-            <h3 class="box-title"<%= @share_capital.account_owner.full_name %></h3><br>
+            <h3 class="box-title"><%= @share_capital.account_owner.full_name %></h3><br>
           
           </div>
         </div>
+      </div>
+      <div class="box-body">
 
 <p class="text-muted">CAPITAL BUILD UP DETAILS </p>
 <%= simple_form_for @capital_build_up, url: :share_capital_capital_build_ups do |f| %>

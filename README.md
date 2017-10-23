@@ -63,3 +63,6 @@ background job kaltas payment of program from members who subscribed
 
     cost of goods sold 
     cash on hand
+
+
+what do you do if term exceeds 36 months

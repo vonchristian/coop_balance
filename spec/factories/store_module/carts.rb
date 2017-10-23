@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :cart, class: "StoreModule::Cart" do
     
   end

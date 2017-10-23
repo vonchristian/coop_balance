@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :loan_protection_rate do
     term "9.99"
     min_age "9.99"

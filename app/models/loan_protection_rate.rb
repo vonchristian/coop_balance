@@ -1,7 +1,7 @@
 class LoanProtectionRate < ApplicationRecord
 	DEFAULT_RATE = 1.35
 	def self.rate_for(loan)
-		rate = all.select{|a| a.age_range.include?(loan.member_age) && a.term == loan.term}.last
+		rate = all.select{|a| a.age_range.include?(loan.borrower_age) && a.term == loan.term}.last
 		if rate
 			rate.rate
 		else 

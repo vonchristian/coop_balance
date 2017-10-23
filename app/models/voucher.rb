@@ -5,11 +5,14 @@ class Voucher < ApplicationRecord
   has_one :entry, class_name: "AccountingModule::Entry", as: :commercial_document
   belongs_to :voucherable, polymorphic: true
   belongs_to :payee, polymorphic: true
-  delegate :payable_amount, :name, to: :voucherable, allow_nil: true
+  delegate :name, to: :voucherable, allow_nil: true
   has_many :voucher_amounts, dependent: :destroy
   before_save :set_date
 
   after_commit :set_number, on: [:create, :update]
+  def payable_amount
+    voucher_amounts.sum(&:amount)
+  end
   def self.disbursed
     all.select{|a| a.disbursed? }
   end

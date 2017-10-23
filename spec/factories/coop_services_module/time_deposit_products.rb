@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :time_deposit_product, class: "CoopServicesModule::TimeDepositProduct" do
     minimum_amount "9.99"
     maximum_amount "9.99"

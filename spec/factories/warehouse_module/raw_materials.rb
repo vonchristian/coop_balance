@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :raw_material do
     name "MyString"
     unit "MyString"

@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :share_capital, class: "MembershipsModule::ShareCapital" do
     association :account_owner, factory: :member
     account_number  { Faker::Number.number(11) }

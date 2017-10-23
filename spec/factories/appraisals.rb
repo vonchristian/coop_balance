@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :appraisal do
     property nil
     market_value "9.99"

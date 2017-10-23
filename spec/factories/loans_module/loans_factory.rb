@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :loan, class: "LoansModule::Loan" do
     borrower
     loan_product 

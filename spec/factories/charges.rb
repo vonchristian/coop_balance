@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :charge do
     name "MyString"
     credit_account nil

@@ -6,12 +6,37 @@
       </div>
       <div class="box-body">
         <small>LOAN TYPE:</small><br>
+        <%=form_tag loans_path, method: :get do %>
          <% LoansModule::LoanProduct.all.each do |loan_product| %>
           <span class="btn btn-default btn-sm"> <span class="text-muted"> <%=link_to loan_product.name, loans_path(loan_product_id: loan_product.id), class: "text-purple" %> </span> </span> &nbsp;
         <% end %>
         <hr />
+
+            Filter by price interval: <b>€ 10</b> <div class="slider slider-horizontal" style="width: 414px;"><div class="slider-track"><div class="slider-selection" style="left: 8.08081%; width: 91.9192%;"></div><div class="slider-handle round" style="left: 8.08081%;"></div><div class="slider-handle round" style="left: 100%;"></div></div><div class="tooltip top" style="top: -40px; left: 193.227px;"><div class="tooltip-arrow"></div><div class="tooltip-inner">10 : 1000</div></div><input class="span2" value="" data-slider-min="10" data-slider-max="1000" data-slider-step="5" data-slider-value="[250,450]" id="sl2" style="" type="text"></div> <b>€ 1000</b>
+          
+      
         <small> BARANGAY:</small><br>
+        <% Barangay.all.each do |barangay| %>
+         <%= barangay.name %>
+       <%= text_field_tag "Barangay", value: barangay.id %>
+        <% end %>
         <hr />
+        <span class="input-group-btn">
+                    <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                      <i class="fa fa-search"></i> Apply Filter
+                    <% end %>
+                  </span>
+      <% end %>
+       <%= form_tag loans_path, method: "get", id: "filter", class: "filter" do %>
+    <%= select_tag "loan_product", options_from_collection_for_select(LoansModule::LoanProduct.all, 'id', 'name')%>
+
+    <%= select_tag "barangay", options_from_collection_for_select(Barangay.all, 'id', 'name')%>
+     <span class="input-group-btn">
+                    <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                      <i class="fa fa-search"></i> Apply Filter
+                    <% end %>
+                  </span>
+  <% end %>
       </div>
     </div>
   </div>
@@ -78,4 +103,7 @@
   window.location = $(this).data("link")
 });
   $('.myClass').css('cursor', 'pointer');
+</script>
+<script type="text/javascript">
+  $('.slider').slider()
 </script>

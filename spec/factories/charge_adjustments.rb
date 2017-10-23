@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :charge_adjustment do
     loan_charge nil
     amount "9.99"

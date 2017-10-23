@@ -19,6 +19,7 @@ class User < ApplicationRecord
               :accounting_clerk]
   has_one :current_address, as: :addressable, class_name: "Address"
   belongs_to :department
+  belongs_to :cooperative
   belongs_to :salary_grade
 
   has_many :loans, class_name: "LoansModule::Loan", as: :borrower
@@ -34,6 +35,7 @@ class User < ApplicationRecord
   has_many :contributions, through: :employee_contributions
   delegate :name, :amount, to: :salary_grade, prefix: true, allow_nil: true
   delegate :name, to: :department, prefix: true, allow_nil: true
+  delegate :name, :address, :contact_number, :logo, to: :cooperative, prefix: true
   
   has_attached_file :avatar,
   styles: { large: "120x120>",
@@ -58,6 +60,14 @@ class User < ApplicationRecord
 
   def self.loan_approvers 
     all.select{|a| User::LOAN_APPROVERS.include?(a.role.titleize)}
+  end
+
+  def age
+    return 'No Date of Birth' unless date_of_birth.present?
+    days_alive = Date.today - date_of_birth
+    years = (days_alive / 365).to_i
+    months = ((days_alive % 365) / 30).to_i
+    "#{years}.#{months}".to_f
   end
 
   def name  #for voucher index

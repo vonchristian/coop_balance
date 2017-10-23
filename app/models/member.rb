@@ -45,7 +45,15 @@ class Member < ApplicationRecord
       Member.create!(row.to_hash)
     end 
   end
-   
+  
+  def age
+    return 'No Date of Birth' unless date_of_birth.present?
+    days_alive = Date.today - date_of_birth
+    years = (days_alive / 365).to_i
+    months = ((days_alive % 365) / 30).to_i
+    "#{years}.#{months}".to_f
+  end
+
   def name #for search results
     full_name
   end
