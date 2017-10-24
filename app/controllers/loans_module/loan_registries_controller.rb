@@ -10,7 +10,7 @@ module LoansModule
     end 
     private 
     def registry_params
-      params.require(:loans_module_loan_registry).permit(:spreadsheet)
+      params.require(:loans_module_loan_registry).permit(:spreadsheet, :employee_id)
     end 
   end 
 end 

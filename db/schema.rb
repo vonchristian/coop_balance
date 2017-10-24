@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171023125334) do
+ActiveRecord::Schema.define(version: 20171023132104) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -771,6 +771,8 @@ ActiveRecord::Schema.define(version: 20171023125334) do
     t.string "type"
     t.uuid "supplier_id"
     t.string "number"
+    t.uuid "employee_id"
+    t.index ["employee_id"], name: "index_registries_on_employee_id"
     t.index ["supplier_id"], name: "index_registries_on_supplier_id"
     t.index ["type"], name: "index_registries_on_type"
   end
@@ -1062,6 +1064,7 @@ ActiveRecord::Schema.define(version: 20171023125334) do
   add_foreign_key "raw_material_stocks", "suppliers"
   add_foreign_key "real_properties", "members"
   add_foreign_key "registries", "suppliers"
+  add_foreign_key "registries", "users", column: "employee_id"
   add_foreign_key "savings", "members"
   add_foreign_key "savings", "saving_products"
   add_foreign_key "share_capital_product_shares", "share_capital_products"

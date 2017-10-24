@@ -10,7 +10,7 @@ module LoansModule
     validates :name, :interest_rate, presence: true 
     validates :interest_rate, numericality: true
     def debit_account 
-      account || AccountingModule::Asset.find_by(name: "Loans Receivable - Current") 
+      account || AccountingModule::Asset.find_by(name: "Loans and Receivables") 
     end
   end
 end

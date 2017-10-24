@@ -9,6 +9,7 @@ module LoansModule
           if !row[0].nil? 
             create_or_find_member(row)
             create_or_find_loan(row)
+            create_loan_balance_entry(row)
           end
         end
       end
@@ -33,10 +34,26 @@ module LoansModule
 
                                )
     end
+    def find_loan(row)
+      find_member(row).loans.find_by(loan_product: find_loan_product(row), 
+                               application_date: DateTime.parse(row[3].to_s),
+                               loan_amount: row[5],
+                               term: row[9].to_i,
+                               mode_of_payment: normalize_mode_of_payment(row),
+                               maturity_date: DateTime.parse(row[11].to_s)
+
+                               )
+    end
     def normalize_mode_of_payment(row)
       if row[10].present?
         row[10].parameterize.gsub("-", "_")
       end
+    end
+    def create_loan_balance_entry(row)
+      AccountingModule::Entry.create!(recorder_id: self.employee_id, description: 'Old loans upload', entry_date: Time.zone.now, commercial_document: find_loan(row),
+        debit_amounts_attributes: [amount: row[6], account_id: AccountingModule::Account.find_by(name: 'Loans and Receivables').id],
+        credit_amounts_attributes: [amount: row[6], account_id: AccountingModule::Account.find_by(name: 'Cash on Hand').id]
+        )
     end
   end
 end
