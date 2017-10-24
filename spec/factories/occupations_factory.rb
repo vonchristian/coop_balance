@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :occupation do
-    title "MyString"
+    title { Faker::Company.profession }
   end
 end

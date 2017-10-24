@@ -39,7 +39,7 @@
              <!-- Menu Footer-->
              <li class="user-footer">
                <div class="pull-left">
-                 <%#=link_to 'Profile', bplo_section_settings_user_path(current_user),  class: "btn btn-default btn-flat" %>
+                 <%=link_to 'Profile', employee_path(current_user),  class: "btn btn-default btn-flat" %>
                </div>
                <div class="pull-right">
                 <%=link_to 'Sign out', destroy_user_session_path, method: :delete, class: "btn btn-danger" %>

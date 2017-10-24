@@ -2,4 +2,10 @@
   <% if policy([:employees, :savings_account]).new? %>
     <%= link_to 'Open Savings Account', new_employee_savings_account_path(@employee) %>
   <% end %>
+  <hr>
+  <% if @employee.savings.present? %>
+    <% @employee.savings.each do |saving| %>
+      <%= saving.balance %>
+    <% end %>
+  <% end %>
   </div>
