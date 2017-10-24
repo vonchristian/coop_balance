@@ -9,6 +9,8 @@ module MembershipsModule
     end 
     context 'delegations' do 
     	it { is_expected.to delegate_method(:name).to(:saving_product).with_prefix }
+      it { is_expected.to delegate_method(:name).to(:depositor).with_prefix }
+      it { is_expected.to delegate_method(:current_occupation).to(:depositor).with_prefix }
     	it { is_expected.to delegate_method(:interest_rate).to(:saving_product).with_prefix }
     end
 

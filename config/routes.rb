@@ -208,6 +208,7 @@ Rails.application.routes.draw do
   end
   resources :employees, only: [:index, :show, :edit, :update] do 
     resources :savings_accounts, only: [:index, :new, :create], module: :employees
+    resources :share_capitals, only: [:index, :new, :create], module: :employees
     resources :entries, only: [:index, :show], module: :employees
     resources :remittances, only: [:new, :create], module: :employees
     resources :vault_fund_transfers, only: [:new, :create], module: :employees

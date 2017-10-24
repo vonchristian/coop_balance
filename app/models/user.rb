@@ -25,6 +25,7 @@ class User < ApplicationRecord
   has_many :loans, class_name: "LoansModule::Loan", as: :borrower
   has_many :co_makered_loans, class_name: "LoansModule::LoanCoMaker", as: :co_maker
   has_many :savings, class_name: "MembershipsModule::Saving", as: :depositor
+  has_many :share_capitals, class_name: "MembershipsModule::ShareCapital", as: :subscriber
   has_many :time_deposits, class_name: "MembershipsModule::TimeDeposit", as: :depositor
   has_many :orders, class_name: "StoreModule::Order", as: :customer
   has_many :entries, class_name: "AccountingModule::Entry", foreign_key: 'recorder_id'

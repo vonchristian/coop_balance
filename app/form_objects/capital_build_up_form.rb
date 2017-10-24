@@ -17,7 +17,7 @@ class CapitalBuildUpForm
     AccountingModule::Entry.create!(entry_type: 'capital_build_up', recorder_id: recorder_id, commercial_document: find_share_capital, description: 'Payment of capital build up', reference_number: or_number, entry_date: date,
     debit_amounts_attributes: [account: debit_account, amount: amount],
     credit_amounts_attributes: [account: credit_account, amount: amount])
-  end
+end
   def debit_account
     AccountingModule::Account.find_by(name: "Cash on Hand")
   end

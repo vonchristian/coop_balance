@@ -9,6 +9,7 @@ module MembershipsModule
     end 
 
     context 'delegations' do 
+      it { is_expected.to delegate_method(:name).to(:subscriber).with_prefix }
     	it { is_expected.to delegate_method(:name).to(:share_capital_product).with_prefix }
     	it { is_expected.to delegate_method(:cost_per_share).to(:share_capital_product).with_prefix }
     end

@@ -7,6 +7,14 @@ class ShareCapitalsController < ApplicationController
     end
   end
   def show 
+    @employee = current_user
     @share_capital = MembershipsModule::ShareCapital.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.pdf do 
+        pdf = ShareCapitalPdf.new(@share_capital, @employee, view_context)
+        send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Share Capital PDF.pdf"
+      end
+    end
   end
 end

@@ -10,7 +10,7 @@ module ShareCapitals
       @capital_build_up = CapitalBuildUpForm.new(share_capital_params)
       if @capital_build_up.valid?
         @capital_build_up.save
-        redirect_to member_share_capitals_url(@share_capital.account_owner), notice: "Success"
+        redirect_to member_share_capitals_url(@share_capital.subscriber), notice: "Success"
       else
         render :new
       end

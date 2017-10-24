@@ -11,7 +11,7 @@ class Voucher < ApplicationRecord
 
   after_commit :set_number, on: [:create, :update]
   def payable_amount
-    if for_loan?
+    if for_loan? && voucherable.present?
       voucherable.payable_amount
     else
       voucher_amounts.sum(&:amount)

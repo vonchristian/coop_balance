@@ -16,8 +16,6 @@ These services are included:
 - per organization
 
 Chart monthly revenue percentage
-
-
 - Store update
 - suppliers index
 - Uploading of stocks
@@ -28,8 +26,8 @@ edit tin number of member
 edit address of member
 add policies for pages
 
-cash disbursement per employee 
-cash receiveds per employee
+cash disbursement per employee DONE
+cash receiveds per employee done
 
 cash disbursement voucher printable pdf
 

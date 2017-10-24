@@ -13,6 +13,8 @@
           <li class="<%= 'active' if current_page?(employee_orders_path(@employee))%>"><%= link_to 'Purchases', employee_orders_path(@employee) %></li>
           <li class="<%= 'active' if current_page?(employee_loans_path(@employee))%>"><%= link_to 'Loans & Credit', employee_loans_path(@employee) %></li>
           <li class="<%= 'active' if current_page?(employee_savings_accounts_path(@employee))%>"><%= link_to 'Savings', employee_savings_accounts_path(@employee) %></li>
+          <li class="<%= 'active' if current_page?(employee_savings_accounts_path(@employee))%>"><%= link_to 'Share Capitals', employee_share_capitals_path(@employee) %></li>
+
 
 
 
@@ -38,8 +40,11 @@
         <% if current_page?(employee_loans_path(@employee)) %>
           <%= render 'employees/partials/loans' %>
         <% end %>
-         <% if current_page?(employee_savings_accounts_path(@employee)) %>
+        <% if current_page?(employee_savings_accounts_path(@employee)) %>
           <%= render 'employees/partials/savings_accounts' %>
+        <% end %>
+        <% if current_page?(employee_share_capitals_path(@employee)) %>
+          <%= render 'employees/partials/share_capitals' %>
         <% end %>
       </div>
     </div>
