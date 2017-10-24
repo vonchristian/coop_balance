@@ -8,6 +8,7 @@ module Members
     def new
       @member = Member.friendly.find(params[:member_id])
       @saving = SavingForm.new
+      authorize [:members, :savings_account]
     end
 
     def create
@@ -23,7 +24,7 @@ module Members
 
     private
     def saving_params
-      params.require(:saving_form).permit(:recorder_id, :account_number, :saving_product_id, :member_id, :or_number, :date, :amount)
+      params.require(:saving_form).permit(:recorder_id, :account_number, :saving_product_id, :depositor_id, :depositor_type, :or_number, :date, :amount)
     end
   end 
 end

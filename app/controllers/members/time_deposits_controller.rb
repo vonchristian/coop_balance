@@ -6,6 +6,7 @@ module Members
     def new
       @member = Member.friendly.find(params[:member_id])
       @time_deposit = TimeDepositForm.new
+      authorize [:members, :time_deposit]
     end
     def create
       @member = Member.friendly.find(params[:member_id])

@@ -1,5 +1,7 @@
 <div class="tab-pane <%='active' if current_page?(member_savings_accounts_path(@member)) %>" id="savings-accounts">
+  <% if policy([:members, :savings_account]).new? %>
    <%=link_to 'New Savings Account', new_member_savings_account_path(@member), class: "btn btn-primary" %>
+  <% end %>
    <hr>
   <% if @member.savings.any? %>
     <% @member.savings.each do |savings_account| %>
@@ -13,7 +15,10 @@
     <% end %>
   <% else %>
     <br>
-    <span class="alert alert-info"> No Savings Account opened by <%= @member.first_and_last_name %> <%=link_to 'Open Savings Account', new_member_savings_account_path(@member) %></span>
+    <span class="alert alert-info"> No Savings Account opened by <%= @member.first_and_last_name %></span> 
+  <% if policy([:members, :savings_account]).new? %>
+      <%=link_to 'Open Savings Account', new_member_savings_account_path(@member) %>
+  <% end %>
     <br>
     <br>
     <br>

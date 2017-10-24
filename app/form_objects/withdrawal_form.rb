@@ -34,6 +34,6 @@ class WithdrawalForm
   end
 
   def amount_is_less_than_balance
-    amount.to_i < find_saving.balance
+    amount.to_i <= find_saving.balance
   end
 end

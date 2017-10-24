@@ -4,12 +4,14 @@ module MembershipsModule
     pg_search_scope :text_search, :against => [:account_number, :account_owner_name]
     multisearchable against: [:account_number, :account_owner_name]
     belongs_to :depositor, polymorphic: true
-    belongs_to :member, class_name: "Member", foreign_key: 'member_id'
     belongs_to :saving_product, class_name: "CoopServicesModule::SavingProduct"
+    delegate :name, to: :depositor, prefix: true
     delegate :name, to: :saving_product, prefix: true, allow_nil: true
     delegate :interest_rate, to: :saving_product, prefix: true
     has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
     before_save :set_account_owner_name, :set_account_number
+
+    
     def self.top_savers 
       all.to_a.sort_by(&:balance).first(10)
     end

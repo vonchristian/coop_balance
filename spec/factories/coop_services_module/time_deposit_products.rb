@@ -4,6 +4,5 @@ FactoryBot.define do
     maximum_amount "9.99"
     interest_rate "9.99"
     name "MyString"
-    interest_recurrence 1
   end
 end
