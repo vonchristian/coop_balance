@@ -4,7 +4,7 @@
 <hr />
   <% @member.loans.each do |loan| %>
     <% cache loan do %>
-      <%=link_to loans_module_loan_path(loan) do %>
+      <%=link_to loan_path(loan) do %>
         <div class="row">
           <div class="col-md-2 border-left">
             <span class="text-muted"> <%=loan.loan_product_name.try(:upcase) %></span><br>

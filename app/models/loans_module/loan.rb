@@ -16,7 +16,7 @@ module LoansModule
    
     has_many :loan_approvals, class_name: "LoansModule::LoanApproval", dependent: :destroy
     has_many :approvers, through: :loan_approvals
-    has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document
+    has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
     has_many :loan_charges, class_name: "LoansModule::LoanCharge", dependent: :destroy
     has_many :loan_additional_charges, dependent: :destroy
     has_many :charges, through: :loan_charges, source: :chargeable, source_type: "Charge"
@@ -24,18 +24,18 @@ module LoansModule
     has_many :member_co_makers, through: :loan_co_makers, source: :co_maker, source_type: 'Member'
     has_many :employee_co_makers, through: :loan_co_makers, source: :co_maker, source_type: 'User'
 
-    has_many :amortization_schedules, as: :amortizeable
-    has_many :principal_amortization_schedules, as: :amortizeable, class_name: "LoansModule::PrincipalAmortizationSchedule"
-    has_many :interest_on_loan_amortization_schedules, as: :amortizeable, class_name: "LoansModule::InterestOnLoanAmortizationSchedule"
+    has_many :amortization_schedules, as: :amortizeable, dependent: :destroy
+    has_many :principal_amortization_schedules, as: :amortizeable, class_name: "LoansModule::PrincipalAmortizationSchedule", dependent: :destroy
+    has_many :interest_on_loan_amortization_schedules, as: :amortizeable, class_name: "LoansModule::InterestOnLoanAmortizationSchedule", dependent: :destroy
     has_many :interest_on_loan_charges, class_name: "LoansModule::InterestOnLoanCharge", as: :chargeable, through: :loan_charges, source: :chargeable, source_type: "LoansModule::InterestOnLoanCharge"
-    has_many :collaterals, class_name: "LoansModule::Collateral"
+    has_many :collaterals, class_name: "LoansModule::Collateral", dependent: :destroy
     has_many :real_properties, through: :collaterals
-    has_many :notices, as: :notified
+    has_many :notices, as: :notified, dependent: :destroy
     has_one :first_notice, class_name: "FirstNotice", as: :notified
     has_one :second_notice, class_name: "SecondNotice", as: :notified
     has_one :third_notice, class_name: "ThirdNotice", as: :notified
 
-    delegate :name, :age, to: :borrower, prefix: true, allow_nil: true
+    delegate :name, :age, :contact_number, :current_address, to: :borrower,  prefix: true, allow_nil: true
     delegate :name, to: :loan_product, prefix: true, allow_nil: true
     delegate :debit_account, :interest_rate, to: :loan_product, prefix: true
     before_save :set_default_date

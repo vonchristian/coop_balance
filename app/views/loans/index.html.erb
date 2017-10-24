@@ -79,7 +79,7 @@
               <% @loans.each do |loan| %>
                 <tr data-link="<%=loan_path(loan)%>" class="myClass">
                   <td>
-                    <%= image_tag(loan.borrower.avatar.url(:thumb), class: "img-circle", height: 35, width: 35) %> &nbsp; <b><%=loan.borrower_full_name %></b>
+                    <%= image_tag(loan.borrower.avatar.url(:thumb), class: "img-circle", height: 35, width: 35) %> &nbsp; <b><%=loan.borrower_name %></b>
                       
                     </td>
                   <td><%= number_to_currency loan.loan_amount %></td>
@@ -93,6 +93,7 @@
               <% end %>
             </tbody>
           </table>
+          <center><%=will_paginate @loans %></center>
         </div>
       </div>
     </div>

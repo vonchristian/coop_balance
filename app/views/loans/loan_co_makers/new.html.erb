@@ -8,16 +8,16 @@
           </div>
           <div class="col-md-8">
             <br>
-           <h3 class="box-title"> <%= @loan.borrower_full_name.try(:upcase) %></h3>
+           <h3 class="box-title"> <%= @loan.borrower_name.try(:upcase) %></h3>
           </div>
         </div>
       </div>
 
       <div class="box-body">
-        <p class="text-purple">ADD CO MAKER </p>
+        <p class="text-purple">ADD CO MAKER</p>
         <div class="row">
           <div class="col-md-10 col-md-offset-1">
-            <%=form_tag new_loan_loan_co_maker_path(@loan), method: :get, class: "sidebar-form" do %>
+            <%=form_tag new_loan_loan_co_maker_path(@loan), method: :get, class: "" do %>
               <div class="input-group">
                 <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Member", id: 'account-search-form' %>
                 <span class="input-group-btn">
@@ -30,6 +30,39 @@
           </div>
         </div>
         <br>
+        <br>
+        <h4 class="condensed-text"> RECOMMENDED CO MAKERS </h4>
+        <% @loan.borrower.recommended_co_makers.each do |member| %>
+         <%= simple_form_for [@loan, @co_maker], url: :loan_loan_co_makers do |f| %>
+         <% if member != @loan.borrower %>
+         <div class="row">
+           <div class="col-md-2 col-md-offset-1 col-xs-2">
+             <%= image_tag(member.avatar.url(:medium), style: 'width:40px;height:40px;', class: 'media-object img-circle') %>
+            </div>
+            <div class="col-md-5 col-xs-5">
+              <%= member.name %>
+              <%= f.input :co_maker_id, input_html: { value: member.id }, as: :hidden %>
+              <%= f.input :co_maker_type, input_html: { value: member.class }, as: :hidden %>
+
+            </div>
+            <div class="col-md-4 col-xs-4">
+              <% if @loan.co_makers.pluck(:id).exclude?(member.id) %>
+                <%= button_tag(class: "btn btn-default btn-sm") do %>
+                  <i class="icon-user-follow"></i> Select
+                <% end %>
+              <% else %>
+                <%= button_tag(class: "btn btn-success btn-sm disabled")do %>
+                  <i class="icon-user-following"></i> Selected
+                <% end %>
+
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+          <br>
+        <% end %>
+      <% end %>
+      <hr>
         <% @members.each do |member| %>
          <%= simple_form_for [@loan, @co_maker], url: :loan_loan_co_makers do |f| %>
          <% if member != @loan.borrower %>
@@ -60,6 +93,8 @@
           <br>
         <% end %>
       <% end %>
+            <center><%=will_paginate @members %></center>
+
     </div>
   </div>
 </div>

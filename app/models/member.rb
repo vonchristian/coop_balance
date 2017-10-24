@@ -57,6 +57,9 @@ class Member < ApplicationRecord
       Member.create!(row.to_hash)
     end 
   end
+  def recommended_co_makers
+    Member.where(last_name: self.last_name)
+  end
   
   def age
     return 'No Date of Birth' unless date_of_birth.present?
@@ -70,7 +73,7 @@ class Member < ApplicationRecord
     full_name
   end
   def full_name
-    "#{last_name}, #{first_name} #{middle_name}"
+    "#{last_name} #{first_name} #{middle_name}"
   end
   def first_and_last_name
     "#{first_name} #{last_name}"

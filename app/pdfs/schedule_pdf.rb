@@ -1,7 +1,8 @@
 class SchedulePdf < Prawn::Document
-  def initialize(schedule, view_context)
+  def initialize(schedule, employee, view_context)
     super(margin: 30, page_size: "A4", page_layout: :portrait)
     @schedule = schedule
+    @employee = employee
     @view_context = view_context
     heading
   end

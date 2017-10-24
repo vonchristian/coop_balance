@@ -1,12 +1,13 @@
+require 'will_paginate/array'
 module Loans
 	class LoanCoMakersController < ApplicationController
 		def new 
 			@loan = LoansModule::Loan.find(params[:loan_id])
 			@co_maker = @loan.loan_co_makers.build 
       if params[:search].present?
-        @members = Member.text_search(params[:search])
+        @members = Member.text_search(params[:search]).paginate(page: params[:page], per_page: 50)
       else
-        @members = LoansModule::Loan.borrowers
+        @members = LoansModule::Loan.borrowers.paginate(page: params[:page], per_page: 50)
       end
 		end 
 		def create

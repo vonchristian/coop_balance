@@ -17,7 +17,7 @@ module LoansModule
       end
     end
     def create_or_find_member(row)
-      Member.find_or_create_by(first_name: row[0], last_name: row[1])
+      Member.find_or_create_by(first_name: row[1], last_name: row[0])
     end
 
     def find_member(row)
