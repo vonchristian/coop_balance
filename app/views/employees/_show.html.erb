@@ -12,6 +12,8 @@
           <li class="<%= 'active' if current_page?(employee_vouchers_path(@employee))%>"><%= link_to 'Vouchers', employee_vouchers_path(@employee) %></li>
           <li class="<%= 'active' if current_page?(employee_orders_path(@employee))%>"><%= link_to 'Purchases', employee_orders_path(@employee) %></li>
           <li class="<%= 'active' if current_page?(employee_loans_path(@employee))%>"><%= link_to 'Loans & Credit', employee_loans_path(@employee) %></li>
+          <li class="<%= 'active' if current_page?(employee_savings_accounts_path(@employee))%>"><%= link_to 'Savings', employee_savings_accounts_path(@employee) %></li>
+
 
 
 
@@ -35,6 +37,9 @@
         <% end %>
         <% if current_page?(employee_loans_path(@employee)) %>
           <%= render 'employees/partials/loans' %>
+        <% end %>
+         <% if current_page?(employee_savings_accounts_path(@employee)) %>
+          <%= render 'employees/partials/savings_accounts' %>
         <% end %>
       </div>
     </div>

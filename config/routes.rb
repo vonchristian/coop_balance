@@ -207,7 +207,7 @@ Rails.application.routes.draw do
     resources :renewals, only: [:new, :create], module: :time_deposits
   end
   resources :employees, only: [:index, :show, :edit, :update] do 
-    resources :savings_accounts, only: [:new, :create], module: :employees
+    resources :savings_accounts, only: [:index, :new, :create], module: :employees
     resources :entries, only: [:index, :show], module: :employees
     resources :remittances, only: [:new, :create], module: :employees
     resources :vault_fund_transfers, only: [:new, :create], module: :employees

@@ -25,6 +25,7 @@
   <%= f.input :depositor_id, input_html: { value: @employee.id }, as: :hidden %>
   <%= f.input :depositor_type, input_html: { value: @employee.class }, as: :hidden %>
   <%= f.input :recorder_id, input_html: { value: current_user.id }, as: :hidden %>
+  <%= f.input :account_number, input_html: { value: AccountNumberGenerator.generate_account_number(@saving) } %>
   <div class="box-footer">
     <%= f.submit "Open Savings Account", class: "btn btn-primary pull-right" %>
   </div>

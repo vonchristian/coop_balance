@@ -1,0 +1,5 @@
+<div class="tab-pane <%= 'active' if current_page?(employee_savings_accounts_path(@employee))%>">
+  <% if policy([:employees, :savings_account]).new? %>
+    <%= link_to 'Open Savings Account', new_employee_savings_account_path(@employee) %>
+  <% end %>
+  </div>

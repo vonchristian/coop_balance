@@ -3,14 +3,14 @@ require 'rails_helper'
 module MembershipsModule
   describe ShareCapital do
     context 'associations' do 
-    	it { is_expected.to belong_to :account_owner }
+    	it { is_expected.to belong_to :subscriber }
     	it { is_expected.to belong_to :share_capital_product }
-    	it { is_expected.to have_many :capital_build_ups }
+    	it { is_expected.to have_many :entries }
     end 
 
     context 'delegations' do 
-    	it { is_expected.to delegate_method(:name).to(:share_capital_product) }
-    	it { is_expected.to delegate_method(:cost_per_share).to(:share_capital_product) }
+    	it { is_expected.to delegate_method(:name).to(:share_capital_product).with_prefix }
+    	it { is_expected.to delegate_method(:cost_per_share).to(:share_capital_product).with_prefix }
     end
     it ".subscribed_shares" do
     	share_capital_product = create(:share_capital_product, cost_per_share: 10)

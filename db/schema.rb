@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171023132104) do
+ActiveRecord::Schema.define(version: 20171024100618) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -827,7 +827,6 @@ ActiveRecord::Schema.define(version: 20171023132104) do
   end
 
   create_table "share_capitals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "member_id"
     t.string "account_number"
     t.datetime "date_opened"
     t.string "type"
@@ -836,7 +835,6 @@ ActiveRecord::Schema.define(version: 20171023132104) do
     t.string "subscriber_type"
     t.uuid "subscriber_id"
     t.index ["account_number"], name: "index_share_capitals_on_account_number", unique: true
-    t.index ["member_id"], name: "index_share_capitals_on_member_id"
     t.index ["share_capital_product_id"], name: "index_share_capitals_on_share_capital_product_id"
     t.index ["subscriber_type", "subscriber_id"], name: "index_share_capitals_on_subscriber_type_and_subscriber_id"
     t.index ["type"], name: "index_share_capitals_on_type"
@@ -880,7 +878,6 @@ ActiveRecord::Schema.define(version: 20171023132104) do
   end
 
   create_table "time_deposits", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "member_id"
     t.uuid "time_deposit_product_id"
     t.string "account_number"
     t.datetime "created_at", null: false
@@ -892,7 +889,6 @@ ActiveRecord::Schema.define(version: 20171023132104) do
     t.uuid "depositor_id"
     t.index ["account_number"], name: "index_time_deposits_on_account_number", unique: true
     t.index ["depositor_type", "depositor_id"], name: "index_time_deposits_on_depositor_type_and_depositor_id"
-    t.index ["member_id"], name: "index_time_deposits_on_member_id"
     t.index ["time_deposit_product_id"], name: "index_time_deposits_on_time_deposit_product_id"
   end
 
@@ -1068,11 +1064,9 @@ ActiveRecord::Schema.define(version: 20171023132104) do
   add_foreign_key "savings", "members"
   add_foreign_key "savings", "saving_products"
   add_foreign_key "share_capital_product_shares", "share_capital_products"
-  add_foreign_key "share_capitals", "members"
   add_foreign_key "share_capitals", "share_capital_products"
   add_foreign_key "streets", "barangays"
   add_foreign_key "streets", "municipalities"
-  add_foreign_key "time_deposits", "members"
   add_foreign_key "time_deposits", "time_deposit_products"
   add_foreign_key "users", "cooperatives"
   add_foreign_key "users", "departments"
