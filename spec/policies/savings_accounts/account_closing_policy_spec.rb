@@ -17,6 +17,7 @@ module SavingsAccounts
       it { is_expected.to permit_action(:new)}
       it { is_expected.to permit_action(:create)}
     end
+
     context 'treasurer' do
       let(:user) { create(:user, role: 'treasurer') }
 

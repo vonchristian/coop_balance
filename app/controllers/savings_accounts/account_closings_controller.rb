@@ -9,7 +9,7 @@ module SavingsAccounts
       @savings_account = MembershipsModule::Saving.find(params[:savings_account_id])
       @account_closing = AccountClosingForm.new(account_closing_params)
       authorize [:savings_accounts, :account_closing]
-      
+
       if @account_closing.valid?
         @account_closing.save
         redirect_to savings_account_url(@savings_account), alert: "Savings Account closed successfully"
@@ -20,7 +20,7 @@ module SavingsAccounts
 
     private
     def account_closing_params
-      params.require(:account_closing_form).permit(:amount, :reference_number, :date, :recorder_id, :savings_account_id)
+      params.require(:account_closing_form).permit(:amount, :reference_number, :date, :recorder_id, :savings_account_id, :closing_account_fee)
     end
   end
 end
