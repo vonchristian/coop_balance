@@ -2,13 +2,17 @@
   <div class="col-md-12">
     <div class="nav-tabs-custom">
       <div class="box-header with-border">
-        
+
+
            <center><%= image_tag(@savings_account.depositor.avatar.url(:large), height: 90, width: 90, class: 'img-circle') %></center>
-           
+
             <h3><center><%= @savings_account.depositor_name %></center></h3>
             <center><small><%= @savings_account.depositor_current_occupation %></small></center>
       </div>
      <div class="box-body">
+      <% if @savings_account.closed? %>
+        <div class="corner-ribbon top-left red">Closed</div>
+      <% end %>
         <div class="row">
           <div class="col-md-3 col-md-offset-1 border-right">
             <small class="text-muted">DEPOSITS </small>
@@ -27,6 +31,7 @@
           <div class="col-md-3 border-right">
             <small class="condensed-text">BALANCE </small>
             <h3><i class="fa fa-circle text-green"></i> <%= number_to_currency @savings_account.balance %></h3>
+            <%= link_to 'Close Account', new_savings_account_account_closing_path(@savings_account), class: "btn btn-danger" %>
           </div>
         </div>
          <hr>

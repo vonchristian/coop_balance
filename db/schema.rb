@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171024122355) do
+ActiveRecord::Schema.define(version: 20171025014247) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -802,10 +802,17 @@ ActiveRecord::Schema.define(version: 20171024122355) do
     t.string "account_owner_name"
     t.string "depositor_type"
     t.uuid "depositor_id"
+    t.integer "status"
     t.index ["account_number"], name: "index_savings_on_account_number", unique: true
     t.index ["depositor_type", "depositor_id"], name: "index_savings_on_depositor_type_and_depositor_id"
     t.index ["member_id"], name: "index_savings_on_member_id"
     t.index ["saving_product_id"], name: "index_savings_on_saving_product_id"
+  end
+
+  create_table "savings_account_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.decimal "closing_account_fee"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "share_capital_product_shares", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -834,8 +841,8 @@ ActiveRecord::Schema.define(version: 20171024122355) do
     t.string "account_owner_name"
     t.string "subscriber_type"
     t.uuid "subscriber_id"
-    t.datetime "created_at", default: "2017-10-24 20:32:17", null: false
-    t.datetime "updated_at", default: "2017-10-24 20:32:17", null: false
+    t.datetime "created_at", default: "2017-10-25 08:45:18", null: false
+    t.datetime "updated_at", default: "2017-10-25 08:45:18", null: false
     t.index ["account_number"], name: "index_share_capitals_on_account_number", unique: true
     t.index ["share_capital_product_id"], name: "index_share_capitals_on_share_capital_product_id"
     t.index ["subscriber_type", "subscriber_id"], name: "index_share_capitals_on_subscriber_type_and_subscriber_id"

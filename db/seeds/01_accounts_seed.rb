@@ -206,10 +206,10 @@ AccountingModule::Revenue.create(code: 40110, name: 'Interest Income from Loans'
 AccountingModule::Revenue.create(code: 401101, name: 'Interest Income from Loans - Salary Loan')
 AccountingModule::Revenue.create(code: 401102, name: 'Interest Income from Loans - Regular Loan')
 AccountingModule::Revenue.create(code: 40120, name: 'Service Fees')
+
 AccountingModule::Revenue.create(code: 401201, name: 'Service Fees - Inspection Fees')
 AccountingModule::Revenue.create(code: 401202, name: 'Documentary Stamp Taxes')
-
-
+AccountingModule::Revenue.create(code: 401203, name: 'Closing Account Fees')
 AccountingModule::Revenue.create(code: 40130, name: 'Filing Fees')
 AccountingModule::Revenue.create(code: 40140, name: 'Fines, Penalties, Surcharges')
 AccountingModule::Revenue.create(code: 401401, name: 'Loan Penalties')

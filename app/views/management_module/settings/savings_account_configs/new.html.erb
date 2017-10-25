@@ -1,0 +1,4 @@
+<%=simple_form_for @savings_account_config, url: :management_module_settings_savings_account_configs do |f| %>
+  <%= f.input :closing_account_fee, as: :string %>
+  <%= f.submit "Save Fee" %>
+<% end %>

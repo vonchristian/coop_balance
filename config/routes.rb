@@ -13,11 +13,11 @@ Rails.application.routes.draw do
   root :to => 'warehouse_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'stock_custodian' if request.env['warden'].user }, as: :warehouse_module_root
   root :to => 'store#index', :constraints => lambda { |request| request.env['warden'].user.role == 'sales_clerk' if request.env['warden'].user }, as: :store_module_root
   root :to => 'store#index', :constraints => lambda { |request| request.env['warden'].user.role == 'stock_custodian' if request.env['warden'].user }, as: :store_stocks_module_root
-  root :to => 'hr_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'human_resource_officer' if request.env['warden'].user }, as: :hr_module_root 
-  root :to => 'clerk_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'accounting_clerk' if request.env['warden'].user }, as: :clerk_module_root 
-  
-   
-  
+  root :to => 'hr_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'human_resource_officer' if request.env['warden'].user }, as: :hr_module_root
+  root :to => 'clerk_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'accounting_clerk' if request.env['warden'].user }, as: :clerk_module_root
+
+
+
   get "avatar/:size/:background/:text" => Dragonfly.app.endpoint { |params, app|
     app.generate(:initial_avatar, URI.unescape(params[:text]), { size: params[:size], background_color: params[:background] })
   }, as: :avatar
@@ -33,7 +33,7 @@ Rails.application.routes.draw do
   resources :accounting_module, only: [:index]
   namespace :accounting_module do
     resources :accounts
-    resources :assets, controller: 'accounts', type: 'AccountingModule::Asset' 
+    resources :assets, controller: 'accounts', type: 'AccountingModule::Asset'
     resources :entries
     resources :balance_sheet
     resources :income_statement
@@ -41,7 +41,7 @@ Rails.application.routes.draw do
 
   end
   resources :loans_module, only: [:index]
-  
+
   namespace :loans_module do
     resources :loan_registries, only: [:new, :create]
     resources :payment_schedules, only: [:index, :show]
@@ -49,11 +49,11 @@ Rails.application.routes.draw do
     resources :loan_calculator, only: [:index]
     resources :loan_applications, only: [:new, :create, :show, :edit, :update, :destroy]
     resources :dashboard, only: [:index]
-    resources :loan_products, except:[:destroy] do 
+    resources :loan_products, except:[:destroy] do
       resources :applications, only: [:new, :create]
     end
     resources :adjustments, only: [:destroy]
-    resources :loan_charges, shallow: true do 
+    resources :loan_charges, shallow: true do
       resources :adjustments, only: [:new, :create], module: :loan_charges
     end
 
@@ -96,8 +96,9 @@ Rails.application.routes.draw do
 
   resources :management_module, only: [:index]
   namespace :management_module do
-    namespace :settings do 
+    namespace :settings do
       resources :cooperatives, only: [:edit, :update]
+      resources :savings_account_configs, only: [:new, :create]
     end
     resources :accounting, only: [:index]
     resources :share_capitals, only: [:index, :show]
@@ -107,7 +108,7 @@ Rails.application.routes.draw do
     resources :entries, only: [:index, :show]
     resources :accounts, only: [:index, :show]
     resources :employees, only: [:new, :create], module: :settings
-    resources :share_capital_products, only: [:new, :create], module: :settings do 
+    resources :share_capital_products, only: [:new, :create], module: :settings do
       resources :shares, only: [:new, :create]
     end
     resources :saving_products, only: [:new, :create], module: :settings
@@ -116,20 +117,20 @@ Rails.application.routes.draw do
     resources :settings, only: [:index]
     resources :members, only: [:index, :show, :new, :create] do
       collection { post :import }
-      end 
+      end
     resources :grace_periods, only: [:new, :create], module: :settings
     resources :loan_penalty_configs, only: [:new, :create], module: :settings
   end
   resources :teller_module, only: [:index]
   namespace :teller_module do
-    resources :program_subscriptions, shallow: true do 
+    resources :program_subscriptions, shallow: true do
       resources :payments, only: [:new, :create], module: :program_subscriptions
     end
-    resources :members, only: [:index, :show, :new, :create] do 
+    resources :members, only: [:index, :show, :new, :create] do
       resources :savings, only: [:new, :create]
       resources :time_deposits, only: [:new, :create]
     end
-    
+
     resources :share_capitals, only: [:index, :show] do
       resources :capital_build_ups, only: [:new, :create]
     end
@@ -161,7 +162,7 @@ Rails.application.routes.draw do
     end
   end
   resources :store, only: [:index]
-  namespace :store_module do 
+  namespace :store_module do
     resources :search_results, only: [:index]
     resources :members, only: [:index, :show, :new, :create]
     resources :orders, only: [:index, :new, :create, :show]
@@ -171,42 +172,43 @@ Rails.application.routes.draw do
       resources :stocks, only: [:new, :create]
     end
   end
- 
+
   resources :schedules, only: [:index, :show]
   resources :treasury_module, only: [:index]
-  namespace :treasury_module do 
-    resources :employees, only: [:index, :show] do 
+  namespace :treasury_module do
+    resources :employees, only: [:index, :show] do
       resources :remittances, only: [:new, :create]
     end
     resources :search_results, only: [:index]
-    resources :savings_accounts, only: [:index, :show] do 
+    resources :savings_accounts, only: [:index, :show] do
       resources :deposits, only: [:new, :create]
     end
     resources :entries, only: [:index, :show]
   end
-  resources :savings_accounts, only: [:index, :show] do 
+  resources :savings_accounts, only: [:index, :show] do
     resources :deposits, only: [:new, :create], module: :savings_accounts
     resources :withdrawals, only: [:new, :create], module: :savings_accounts
+    resources :account_closings, only: [:new, :create], module: :savings_accounts
   end
   resources :search_results, only: [:index, :show]
   resources :occupations, only: [:index, :show]
   resources :disbursements, only: [:index, :show, :new, :create]
   resources :collections, only: [:index, :show]
-  resources :suppliers, only: [:index, :show, :new, :create, :edit, :update] do 
+  resources :suppliers, only: [:index, :show, :new, :create, :edit, :update] do
       resources :vouchers, only: [:index, :show, :new, :create], module: :suppliers
       resources :deliveries, only: [:index, :new, :create], module: :suppliers
       resources :amounts, only: [:create, :destroy], module: :suppliers
     end
   resources :registries, only: [:create]
 
-  resources :programs, only: [:index, :show] do 
+  resources :programs, only: [:index, :show] do
     resources :payments, only: [:new, :create], module: :programs
   end
-  resources :time_deposits, only: [:index, :show] do 
+  resources :time_deposits, only: [:index, :show] do
     resources :withdrawals, only: [:new, :create], module: :time_deposits
     resources :renewals, only: [:new, :create], module: :time_deposits
   end
-  resources :employees, only: [:index, :show, :edit, :update] do 
+  resources :employees, only: [:index, :show, :edit, :update] do
     resources :savings_accounts, only: [:index, :new, :create], module: :employees
     resources :share_capitals, only: [:index, :new, :create], module: :employees
     resources :entries, only: [:index, :show], module: :employees
@@ -218,7 +220,7 @@ Rails.application.routes.draw do
     resources :orders, only: [:index], module: :employees
     resources :loans, only: [:index], module: :employees
   end
-  resources :loans, only: [:index, :show] do 
+  resources :loans, only: [:index, :show] do
     resources :real_properties, only: [:new, :create, :show], module: :loans
     resources :loan_co_makers, only: [:index, :new, :create], module: :loans
     resources :notices, only: [:index, :show, :new, :create], module: :loans
@@ -229,19 +231,19 @@ Rails.application.routes.draw do
     resources :collaterals, only: [:index, :new, :create], module: :loans
   end
   resources :loan_co_makers, only: [:destroy]
-  resources :vouchers, only: [:index, :show] do 
+  resources :vouchers, only: [:index, :show] do
     resources :disbursements, only: [:new, :create], module: :vouchers
   end
   resources :products, only: [:new, :create]
   resources :voucher_amounts, only: [:destroy]
-  resources :bank_accounts, only: [:index, :show, :new, :create, :edit, :update] do 
+  resources :bank_accounts, only: [:index, :show, :new, :create, :edit, :update] do
     resources :deposits, only: [:new, :create], module: :bank_accounts
     resources :withdrawals, only: [:new, :create], module: :bank_accounts
     resources :bank_charges, only: [:new, :create], module: :bank_accounts
     resources :bank_earned_interests, only: [:new, :create], module: :bank_accounts
   end
   resources :hr_module, only: [:index]
-  namespace :hr_module do 
+  namespace :hr_module do
     resources :contributions, only: [:new, :create]
     resources :amounts, only: [:new, :create]
     resources :settings, only: [:index]

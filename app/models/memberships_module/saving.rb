@@ -1,5 +1,6 @@
 module MembershipsModule
   class Saving < ApplicationRecord
+    enum status: [:active, :inactive, :closed]
     include PgSearch
     pg_search_scope :text_search, :against => [:account_number, :account_owner_name]
     multisearchable against: [:account_number, :account_owner_name]
@@ -11,16 +12,16 @@ module MembershipsModule
     has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
     before_save :set_account_owner_name, :set_account_number
 
-    
-    def self.top_savers 
+
+    def self.top_savers
       all.to_a.sort_by(&:balance).first(10)
     end
     def self.post_interests_earned
       all.each do |saving|
         post_interests_earned(saving)
-      end 
+      end
     end
-    def name 
+    def name
       account_owner_name || account_owner.full_name
     end
     def post_interests_earned
@@ -42,7 +43,7 @@ module MembershipsModule
     def can_withdraw?
       balance > 0.0
     end
-    private 
+    private
     #used for pg search
     def set_account_owner_name
       self.account_owner_name = self.depositor.name
