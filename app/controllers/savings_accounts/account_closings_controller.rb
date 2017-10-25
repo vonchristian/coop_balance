@@ -3,10 +3,13 @@ module SavingsAccounts
     def new
       @savings_account = MembershipsModule::Saving.find(params[:savings_account_id])
       @account_closing = AccountClosingForm.new
+      authorize [:savings_accounts, :account_closing]
     end
     def create
       @savings_account = MembershipsModule::Saving.find(params[:savings_account_id])
       @account_closing = AccountClosingForm.new(account_closing_params)
+      authorize [:savings_accounts, :account_closing]
+      
       if @account_closing.valid?
         @account_closing.save
         redirect_to savings_account_url(@savings_account), alert: "Savings Account closed successfully"

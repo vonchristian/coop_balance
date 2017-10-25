@@ -24,9 +24,13 @@
                 <div class="col-md-5">
                   <p class=""><%= savings_account.depositor.name.try(:upcase) %></p>
                   <small class=""> <%= savings_account.saving_product_name %></small><br><br>
-                  <%= link_to 'Deposit', new_savings_account_deposit_path(savings_account), class: "btn btn-xs btn-success" %> &nbsp; &nbsp;
-                  <%= link_to 'Withdraw', new_savings_account_withdrawal_path(savings_account), class: "btn btn-xs btn-warning" %>
-
+                  <% if policy([:savings_accounts, :deposit]).new? %>
+                    <%= link_to 'Deposit', new_savings_account_deposit_path(savings_account), class: "btn btn-xs btn-success" %>
+                  <% end %>
+                     &nbsp; &nbsp;
+                  <% if policy([:savings_accounts, :withdrawal]).new? %>
+                    <%= link_to 'Withdraw', new_savings_account_withdrawal_path(savings_account), class: "btn btn-xs btn-warning" %>
+                  <% end %>
 
                   <br>
                 </div>
@@ -48,7 +52,7 @@
         <small class="text-muted"> TOTAL SAVINGS</small><br>
         <h3 class="box-title"> <%= number_to_currency AccountingModule::Account.find_by(name: "Savings Deposits").balance %></h3>
       </div>
-     
+
     </div>
   </div>
 </div>

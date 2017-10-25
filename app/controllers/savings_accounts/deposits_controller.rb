@@ -1,12 +1,15 @@
-module SavingsAccounts 
+module SavingsAccounts
   class DepositsController < ApplicationController
     def new
       @savings_account = MembershipsModule::Saving.find(params[:savings_account_id])
       @deposit = DepositForm.new
+      authorize [:savings_accounts, :deposit]
     end
     def create
       @savings_account = MembershipsModule::Saving.find(params[:savings_account_id])
       @deposit = DepositForm.new(deposit_params)
+      authorize [:savings_accounts, :deposit]
+      
       if @deposit.valid?
         @deposit.save
         redirect_to savings_account_path(@savings_account), notice: "Savings deposit saved successfully"
