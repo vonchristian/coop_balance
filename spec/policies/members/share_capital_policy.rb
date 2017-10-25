@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 module Members
-  describe TimeDepositPolicy do
-    subject { Members::TimeDepositPolicy.new(user, record) }
+  describe ShareCapitalPolicy do
+    subject { Members::ShareCapitalPolicy.new(user, record) }
     let(:record) { create(:time_deposit) }
     context 'teller' do
       let(:user) { create(:user, role: 'teller') }

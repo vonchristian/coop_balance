@@ -841,8 +841,8 @@ ActiveRecord::Schema.define(version: 20171025014247) do
     t.string "account_owner_name"
     t.string "subscriber_type"
     t.uuid "subscriber_id"
-    t.datetime "created_at", default: "2017-10-25 08:45:18", null: false
-    t.datetime "updated_at", default: "2017-10-25 08:45:18", null: false
+    t.datetime "created_at", default: "2017-10-24 20:32:17", null: false
+    t.datetime "updated_at", default: "2017-10-24 20:32:17", null: false
     t.index ["account_number"], name: "index_share_capitals_on_account_number", unique: true
     t.index ["share_capital_product_id"], name: "index_share_capitals_on_share_capital_product_id"
     t.index ["subscriber_type", "subscriber_id"], name: "index_share_capitals_on_subscriber_type_and_subscriber_id"

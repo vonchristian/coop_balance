@@ -3,11 +3,13 @@ module ShareCapitals
     def new
       @share_capital = MembershipsModule::ShareCapital.find(params[:share_capital_id])
       @capital_build_up = CapitalBuildUpForm.new
+      authorize [:share_capitals, :capital_build_up]
     end
 
     def create
       @share_capital = MembershipsModule::ShareCapital.find(params[:share_capital_id])
       @capital_build_up = CapitalBuildUpForm.new(share_capital_params)
+      authorize [:share_capitals, :capital_build_up]
       if @capital_build_up.valid?
         @capital_build_up.save
         redirect_to member_share_capitals_url(@share_capital.subscriber), notice: "Success"

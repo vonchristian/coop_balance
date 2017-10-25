@@ -11,6 +11,8 @@ module Members
     def create
       @member = Member.friendly.find(params[:member_id])
       @time_deposit = TimeDepositForm.new(time_deposit_params)
+      authorize [:members, :time_deposit]
+      
       if @time_deposit.valid?
         @time_deposit.save
         redirect_to member_time_deposits_url(@member), notice: "Deposited successfully."

@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="box box-solid">
+      <div class="box-header bg-gray">
+        <h3 class="box-title"> New Loan Application </h3>
+      </div>
+      <div class="box-body">
+<%= simple_form_for @loan, url: :loans_module_loan_applications do |f| %>
+  <%= f.error_notification %>
+  <p class="text-muted"> Borrower: </p>
+    <%=image_tag(@member.avatar.url(:thumb), class: "img-circle", height: 45, width: 45) %> &nbsp; <%= @member.name %>
+    <hr>
+   <%= f.input :loan_product_id, collection: LoansModule::LoanProduct.all.map{|a| [a.name.titleize, a.id] } %>
+
+  <%= f.input :borrower_id, input_html: { value: @member.id }, as: :hidden %>
+  <%= f.input :loan_amount, as: :string %>
+  <%= f.input :term, label: "Loan Term (in months)" %>
+  <%= f.input :mode_of_payment, collection: LoansModule::Loan.mode_of_payments.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
+  <%= f.input :application_date, as: :string, input_html: { class: "datepicker", value: Time.zone.now.strftime("%B %e, %Y") } %>
+  <div class="box-footer">
+    <%= button_tag( :class => "btn btn-primary pull-right") do %>
+      Proceed  &nbsp;<i class="icon-arrow-right-circle"></i>
+    <% end %>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#loans_module_loan_borrower_id").select2({
+      theme: "bootstrap"
+    });
+  });
+  $(document).ready(function() {
+    $("#loans_module_loan_loan_product_id").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>
