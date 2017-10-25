@@ -24,7 +24,7 @@ class AccountClosingForm
 
   def save_withdraw
     find_savings_account.entries.withdrawal.create!(recorder_id: recorder_id, description: 'Closing of savings account', reference_number: reference_number, entry_date: date,
-    debit_amounts_attributes: [{ account: debit_account, amount: amount }, { account: credit_account, amount: closing_account_fee}],
+    debit_amounts_attributes: [{ account: debit_account, amount: find_savings_account.balance }],
     credit_amounts_attributes: [{account: credit_account, amount: amount}, { account: closing_fee_account, amount: closing_account_fee }])
   end
   def close_account

@@ -3,10 +3,12 @@ module TimeDeposits
     def new 
       @time_deposit = MembershipsModule::TimeDeposit.find(params[:time_deposit_id])
       @break_contract = TimeDeposits::BreakContractForm.new 
+      authorize [:time_deposits, :break_contract]
     end 
     def create
       @time_deposit = MembershipsModule::TimeDeposit.find(params[:time_deposit_id])
       @break_contract = TimeDeposits::BreakContractForm.new(break_contract_params)
+      authorize [:time_deposits, :break_contract]
       if @break_contract.valid?
         @break_contract.save 
         redirect_to time_deposit_url(@time_deposit), alert: "Break contract saved successfully."
