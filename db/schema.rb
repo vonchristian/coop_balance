@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171025014247) do
+ActiveRecord::Schema.define(version: 20171025064356) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -496,7 +496,6 @@ ActiveRecord::Schema.define(version: 20171025014247) do
   end
 
   create_table "loans", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "member_id"
     t.uuid "loan_product_id"
     t.datetime "application_date"
     t.datetime "created_at", null: false
@@ -520,7 +519,6 @@ ActiveRecord::Schema.define(version: 20171025014247) do
     t.index ["borrower_type", "borrower_id"], name: "index_loans_on_borrower_type_and_borrower_id"
     t.index ["employee_id"], name: "index_loans_on_employee_id"
     t.index ["loan_product_id"], name: "index_loans_on_loan_product_id"
-    t.index ["member_id"], name: "index_loans_on_member_id"
     t.index ["mode_of_payment"], name: "index_loans_on_mode_of_payment"
     t.index ["municipality_id"], name: "index_loans_on_municipality_id"
     t.index ["organization_id"], name: "index_loans_on_organization_id"
@@ -1050,7 +1048,6 @@ ActiveRecord::Schema.define(version: 20171025014247) do
   add_foreign_key "loan_protection_funds", "loans"
   add_foreign_key "loans", "barangays"
   add_foreign_key "loans", "loan_products"
-  add_foreign_key "loans", "members"
   add_foreign_key "loans", "municipalities"
   add_foreign_key "loans", "organizations"
   add_foreign_key "loans", "streets"
