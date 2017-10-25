@@ -1,6 +1,7 @@
 module CoopServicesModule
 	class TimeDepositProduct < ApplicationRecord
 	  enum time_deposit_product_type: [:for_member, :for_non_member]
+    has_one :break_contract_fee
 	  
     def self.set_product_for(time_deposit)
       if time_deposit.member?

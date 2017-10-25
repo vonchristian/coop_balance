@@ -3,6 +3,6 @@ FactoryBot.define do
     minimum_amount "9.99"
     maximum_amount "9.99"
     interest_rate "9.99"
-    name "MyString"
+    name  { Faker::Company.catch_phrase }
   end
 end

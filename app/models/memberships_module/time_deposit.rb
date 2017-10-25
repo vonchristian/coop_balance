@@ -1,5 +1,6 @@
 module MembershipsModule
   class TimeDeposit < ApplicationRecord
+    enum status: [:closed]
     include PgSearch
     pg_search_scope :text_search, against: [:depositor_name, :account_number]
     belongs_to :depositor, polymorphic: true
@@ -49,9 +50,11 @@ module MembershipsModule
       # add time dpeosit balance to saving account balance 
       #
     end
+
     def amount_deposited
       deposits.time_deposit.map{|a| a.debit_amounts.sum(:amount) }.sum
     end
+
     def balance
       amount_deposited + earned_interests
     end

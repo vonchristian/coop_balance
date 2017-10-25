@@ -72,3 +72,9 @@ sales to ifedeco
 your own cic
   know members credit data
   know if a real property is collateralled already 
+
+
+
+refactor break contract feature
+remove dragon fly gem
+remove member_avatar method

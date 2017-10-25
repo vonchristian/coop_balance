@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171025064356) do
+ActiveRecord::Schema.define(version: 20171025091911) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -110,6 +110,18 @@ ActiveRecord::Schema.define(version: 20171025064356) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["cooperative_id"], name: "index_branch_offices_on_cooperative_id"
+  end
+
+  create_table "break_contract_fees", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "time_deposit_product_id"
+    t.uuid "account_id"
+    t.decimal "amount"
+    t.decimal "rate"
+    t.integer "fee_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_break_contract_fees_on_account_id"
+    t.index ["time_deposit_product_id"], name: "index_break_contract_fees_on_time_deposit_product_id"
   end
 
   create_table "carts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -894,8 +906,10 @@ ActiveRecord::Schema.define(version: 20171025064356) do
     t.string "depositor_name"
     t.string "depositor_type"
     t.uuid "depositor_id"
+    t.integer "status"
     t.index ["account_number"], name: "index_time_deposits_on_account_number", unique: true
     t.index ["depositor_type", "depositor_id"], name: "index_time_deposits_on_depositor_type_and_depositor_id"
+    t.index ["status"], name: "index_time_deposits_on_status"
     t.index ["time_deposit_product_id"], name: "index_time_deposits_on_time_deposit_product_id"
   end
 
@@ -1009,6 +1023,8 @@ ActiveRecord::Schema.define(version: 20171025064356) do
   add_foreign_key "bank_accounts", "cooperatives"
   add_foreign_key "barangays", "municipalities"
   add_foreign_key "branch_offices", "cooperatives"
+  add_foreign_key "break_contract_fees", "accounts"
+  add_foreign_key "break_contract_fees", "time_deposit_products"
   add_foreign_key "carts", "users"
   add_foreign_key "charge_adjustments", "loan_charges"
   add_foreign_key "charges", "accounts", column: "credit_account_id"

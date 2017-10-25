@@ -32,16 +32,14 @@
   <br>
 <% end %>
 <hr>
+<% @time_deposit_products.each do |time_deposit_product| %>
+  <%= link_to time_deposit_product.name, management_module_time_deposit_product_path(time_deposit_product) %>
+<% end %>
+<hr>
 <%= link_to 'New Time Deposit Product', new_management_module_time_deposit_product_path, class: "btn btn-primary" %>
 <%= link_to 'New Program', new_management_module_program_path, class: "btn btn-primary" %>
 
-<% @share_capital_products.each do |product| %>
-  <% cache product do %>
-    <%= product.name %>
-    <%= number_to_currency product.share_capital_product_shares.total_shares, unit: '' %>
-    <%#= number_to_currency product.subscribers, unit: '' %>
-  <% end %>
-<% end %>
+
 
 <%= link_to 'New Saving Product', new_management_module_saving_product_path %>
 <%= link_to 'Set Grace Period', new_management_module_grace_period_path %>
@@ -50,5 +48,4 @@
 <%= link_to 'New Employee', new_user_registration_path %>
 <%#= link_to "New Committee", new_management_module_committee_path %>
 <%= link_to 'Cooperative Details', edit_management_module_settings_cooperative_path(@cooperative), class: "btn btn-warning" %>
-<%= link_to 'Add Closing Account Fee', new_management_module_settings_savings_account_config_path, class: "btn btn-
-" %>
+<%= link_to 'Add Closing Account Fee', new_management_module_settings_savings_account_config_path, class: "btn btn-danger" %>

@@ -14,6 +14,9 @@ module ManagementModule
           render :new
         end
       end
+      def show 
+        @time_deposit_product = CoopServicesModule::TimeDepositProduct.find(params[:id])
+      end
 
       private
       def time_deposit_product_params

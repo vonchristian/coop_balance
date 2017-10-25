@@ -99,6 +99,8 @@ Rails.application.routes.draw do
     namespace :settings do
       resources :cooperatives, only: [:edit, :update]
       resources :savings_account_configs, only: [:new, :create]
+      resources :break_contract_fees, only: [:new, :create]
+      resources :time_deposit_products, only: [:new, :create, :show]
     end
     resources :accounting, only: [:index]
     resources :share_capitals, only: [:index, :show]
@@ -113,7 +115,6 @@ Rails.application.routes.draw do
     end
     resources :saving_products, only: [:new, :create], module: :settings
     resources :programs, only: [:new, :create], module: :settings
-    resources :time_deposit_products, only: [:new, :create], module: :settings
     resources :settings, only: [:index]
     resources :members, only: [:index, :show, :new, :create] do
       collection { post :import }
@@ -207,6 +208,7 @@ Rails.application.routes.draw do
   resources :time_deposits, only: [:index, :show] do
     resources :withdrawals, only: [:new, :create], module: :time_deposits
     resources :renewals, only: [:new, :create], module: :time_deposits
+    resources :break_contracts, only: [:new, :create], module: :time_deposits
   end
   resources :employees, only: [:index, :show, :edit, :update] do
     resources :savings_accounts, only: [:index, :new, :create], module: :employees

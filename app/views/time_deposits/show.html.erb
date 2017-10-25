@@ -20,6 +20,7 @@
           </div>
           <div class="col-md-5">
             <%= number_to_currency @time_deposit.amount_deposited %>
+            <%=link_to 'Break Contract', new_time_deposit_break_contract_path(@time_deposit), class: "btn btn-danger" %>
           </div>
         </div>
         <hr>
