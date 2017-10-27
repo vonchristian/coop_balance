@@ -14,6 +14,9 @@ class OrganizationsController < ApplicationController
       render :new
     end
   end
+  def show
+    @organization = Organization.find(params[:id])
+  end
 
   private
   def organization_params

@@ -1,5 +1,5 @@
 require 'rails_helper'
-describe 'Organization index', type: :system do
+describe 'Create Organization', type: :system do
   before(:each) do
     user = create(:user)
     login_as(user, :scope => :user)

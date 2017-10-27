@@ -1,5 +1,16 @@
-<%= simple_form_for @organization do |f| %>
-  <%= f.error_notification %>
-  <%= f.input :name %>
-  <%= f.submit "Save Organization" %>
-<% end %>
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-solid">
+      <div class="box-header">
+        <h3 class="box-title">Organizations </h3>
+      </div>
+      <div class="box-body">
+        <%= simple_form_for @organization do |f| %>
+          <%= f.error_notification %>
+          <%= f.input :name %>
+          <%= f.submit "Save Organization" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
