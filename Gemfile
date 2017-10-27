@@ -57,17 +57,20 @@ group :development, :test do
   gem 'guard-rspec', require: false
   gem 'rb-fsevent'
   gem 'growl'
+  gem 'selenium-webdriver'
+  gem 'capybara', '~> 2.13'
 end
 
 group :development do
-  gem 'spring'
-  gem 'spring-watcher-listen'
   gem 'bullet'
   gem 'pry-rails'
+  gem 'web-console', '>= 3.3.0'
+  gem 'listen', '>= 3.0.5', '< 3.2'
+  gem 'spring'
+  gem 'spring-watcher-listen', '~> 2.0.0'
 end
 group :test do
   gem 'shoulda-matchers'
-  gem 'capybara'
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
