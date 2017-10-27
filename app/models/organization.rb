@@ -1,4 +1,4 @@
 class Organization < ApplicationRecord
-  has_one :membership, as: :memberable
-  has_many :members
+  has_many :organization_members
+  has_many :members, through: :organization_members
 end

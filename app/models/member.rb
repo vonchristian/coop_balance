@@ -1,7 +1,7 @@
 require 'csv'
 class Member < ApplicationRecord
   include Avatarable
-  include PgSearch 
+  include PgSearch
   extend FriendlyId
   friendly_id :fullname, use: :slugged
   pg_search_scope :text_search, :against => [:passbook_number, :first_name, :middle_name, :last_name, :fullname]
@@ -11,7 +11,7 @@ class Member < ApplicationRecord
   delegate :regular_member?, to: :membership, allow_nil: true
   before_validation :set_fullname
   validates :fullname, uniqueness: { message: 'is already registered'}
-  
+
   has_one :tin, as: :tinable
   has_one :membership, as: :memberable
   has_many :member_occupations, dependent: :destroy
@@ -26,6 +26,8 @@ class Member < ApplicationRecord
   has_many :programs, through: :program_subscriptions
   has_many :orders, class_name: "StoreModule::Order", as: :customer
   has_many :real_properties, as: :owner
+  has_many :organization_memberships, class_name: "OrganizationMember", foreign_key: 'member_id'
+  has_many :organizations, through: :organization_memberships
   accepts_nested_attributes_for :tin, :addresses
   delegate :number, to: :tin, prefix: true, allow_nil: true
 
@@ -55,12 +57,12 @@ class Member < ApplicationRecord
   def self.import(file)
     CSV.foreach(file.path, headers: true) do |row|
       Member.create!(row.to_hash)
-    end 
+    end
   end
   def recommended_co_makers
     Member.where(last_name: self.last_name)
   end
-  
+
   def age
     return 'No Date of Birth' unless date_of_birth.present?
     days_alive = Date.today - date_of_birth
@@ -84,8 +86,8 @@ class Member < ApplicationRecord
   def avatar_text
     first_name.chr
   end
-  private 
-  def set_fullname 
+  private
+  def set_fullname
     self.fullname = self.full_name #used for slugs
   end
   def subscribe_to_programs
