@@ -39,6 +39,8 @@ module LoansModule
     delegate :name, to: :loan_product, prefix: true, allow_nil: true
     delegate :debit_account, :interest_rate, to: :loan_product, prefix: true
     before_save :set_default_date
+    
+    validates :loan_product_id, presence: true
     #find aging loans e.g. 1-30 days,
     def co_makers
       employee_co_makers + member_co_makers

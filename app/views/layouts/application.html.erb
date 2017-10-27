@@ -38,6 +38,9 @@
       <% if current_user.accounting_clerk? %>
         <%=render "clerk_module/sidebar", cached: true %>
       <% end %>
+       <% if current_user.collector? %>
+        <%=render "collector_module/sidebar", cached: true %>
+      <% end %>
       <div class="content-wrapper">
         <section class="content">
           <%=render "layouts/shared/flash_messages" %>

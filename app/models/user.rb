@@ -16,7 +16,8 @@ class User < ApplicationRecord
               :treasurer, 
               :accountant, 
               :human_resource_officer, 
-              :accounting_clerk]
+              :accounting_clerk,
+              :collector]
   has_one :current_address, as: :addressable, class_name: "Address"
   belongs_to :department
   belongs_to :cooperative

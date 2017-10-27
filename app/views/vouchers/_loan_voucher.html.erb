@@ -4,12 +4,11 @@
   <div class="box-header bg-gray">
     <div class="row">
       <div class="col-md-3">
-        <%= @voucher.voucherable_id %>
-         <%#= member_avatar(@voucher.voucherable.borrower, style: 'width:60px;height:60px;', class: 'media-object img-circle') %>
+         <%= image_tag(@voucher.voucherable.borrower.avatar.url(:thumb), style: 'width:60px;height:60px;', class: 'media-object img-circle') %>
 
       </div>
       <div class="col-md-9">
-        <p><%#= @voucher.voucherable.borrower.full_name.upcase %></p>
+        <p><%= @voucher.voucherable.borrower_name.upcase %></p>
             <%=link_to 'Print(PDF)', voucher_path(@voucher, format: "pdf"), class: "btn btn-default btn-sm btn-flat active" %>
       </div>
     </div>

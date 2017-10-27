@@ -13,9 +13,9 @@ class DisbursementForm
       elsif find_voucher.for_employee?
         create_payment_for_employee
       elsif find_voucher.for_supplier?
-        create_payment_for_supplier
-          
+        create_payment_for_supplier    
       end
+      find_voucher.disbursed!
     end
   end
   def find_voucher

@@ -2,17 +2,17 @@ module Loans
 	class DisbursementVouchersController < ApplicationController
 		def new 
 			@loan = LoansModule::Loan.find(params[:loan_id])
-			@voucher = Voucher.new
+			@voucher = Vouchers::LoanVoucher.new
 		end 
 		def create
 			@loan = LoansModule::Loan.find(params[:loan_id])
-			@voucher = Voucher.create(voucher_params)
+			@voucher = Vouchers::LoanVoucher.create(voucher_params)
       @voucher.voucherable = @loan
       @voucher.payee = @loan.borrower
 			if @voucher.valid?
 				@voucher.save 
         @voucher.add_amounts_from(@loan)
-				redirect_to loan_url(@loan), notice: "Cash disbursement voucher created successfully."
+				redirect_to loan_url(@loan), notice: "Voucher created successfully."
 			else 
 				render :new 
 			end
@@ -22,7 +22,7 @@ module Loans
 			@voucher = @loan.cash_disbursement_voucher
 			respond_to do |format|
 				format.pdf do 
-					pdf = LoansModule::LoanDisbursementVoucherPdf.new(@loan, @voucher, view_context)
+					pdf = Vouchers::LoanVoucherPdf.new(@loan, @voucher, view_context)
           send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Loan Disbursement Voucher.pdf"
         end
       end

@@ -78,3 +78,18 @@ your own cic
 refactor break contract feature
 remove dragon fly gem
 remove member_avatar method
+
+
+
+
+
+
+
+add collector accounts
+
+add organization for filter of loans
+show charts on aging loans
+
+update loan schedule dates if disbursed
+
+update policies of every action/page

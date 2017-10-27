@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171025091911) do
+ActiveRecord::Schema.define(version: 20171026130725) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -989,7 +989,12 @@ ActiveRecord::Schema.define(version: 20171025091911) do
     t.uuid "payee_id"
     t.uuid "user_id"
     t.string "description"
+    t.integer "status"
+    t.decimal "payable_amount"
+    t.string "type"
     t.index ["payee_type", "payee_id"], name: "index_vouchers_on_payee_type_and_payee_id"
+    t.index ["status"], name: "index_vouchers_on_status"
+    t.index ["type"], name: "index_vouchers_on_type"
     t.index ["user_id"], name: "index_vouchers_on_user_id"
     t.index ["voucherable_type", "voucherable_id"], name: "index_vouchers_on_voucherable_type_and_voucherable_id"
   end

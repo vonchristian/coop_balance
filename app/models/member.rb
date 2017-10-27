@@ -25,7 +25,7 @@ class Member < ApplicationRecord
   has_many :program_subscriptions, class_name: "MembershipsModule::ProgramSubscription"
   has_many :programs, through: :program_subscriptions
   has_many :orders, class_name: "StoreModule::Order", as: :customer
-  has_many :real_properties
+  has_many :real_properties, as: :owner
   accepts_nested_attributes_for :tin, :addresses
   delegate :number, to: :tin, prefix: true, allow_nil: true
 

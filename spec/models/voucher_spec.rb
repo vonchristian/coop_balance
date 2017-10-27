@@ -3,8 +3,27 @@ require 'rails_helper'
 RSpec.describe Voucher, type: :model do
   describe 'associations' do 
     it { is_expected.to belong_to :voucherable }
+    it { is_expected.to have_one :entry }
     it { is_expected.to belong_to :payee }
+    it { is_expected.to have_many :voucher_amounts }
   end
+
+  describe 'enums' do 
+    it { is_expected.to define_enum_for(:status).with([:disbursed, :cancelled]) }
+  end
+
+  describe 'delegations' do 
+    it { is_expected.to delegate_method(:name).to(:voucherable)}
+  end
+  
+  describe 'callbacks' do 
+    it '.set_date' do 
+      voucher = Voucher.new 
+      voucher.save 
+      expect(voucher.date).to be_present
+    end
+  end
+
   describe ".generate_number" do 
     it 'for first voucher' do 
       Voucher.delete_all

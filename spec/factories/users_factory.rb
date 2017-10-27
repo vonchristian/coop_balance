@@ -7,5 +7,9 @@ FactoryBot.define do
     password    'secretpassword'
     password_confirmation 'secretpassword'
     role 0
+    cooperative
+    factory :loan_officer do 
+      role 'loan_officer'
+    end
   end
 end
