@@ -21,7 +21,9 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   config.include FactoryBot::Syntax::Methods
   config.include Warden::Test::Helpers
-  config.include Devise::TestHelpers, :type => :controller
+  config.include Devise::Test::IntegrationHelpers, :type => :system
+  config.include Devise::Test::ControllerHelpers, :type => :views
+  config.include Devise::Test::ControllerHelpers, :type => :controllers
 end
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
@@ -29,4 +31,3 @@ Shoulda::Matchers.configure do |config|
     with.library :rails
   end
 end
-Capybara.javascript_driver = :webkit

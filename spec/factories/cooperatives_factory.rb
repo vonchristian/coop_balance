@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :cooperative do
-    name                  { Faker::Bank.unique.name }
-    registration_number   { Faker::Business.unique.credit_card_number }
+    name                  { Faker::Bank.name }
+    registration_number   { Faker::Business.credit_card_number }
   end
 end

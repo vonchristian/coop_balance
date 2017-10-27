@@ -3,6 +3,7 @@ FactoryBot.define do
     account.name
     account.code
     account.contra false
+    type 'AccountingModule::Asset'
   end
 
   factory :asset, :class => AccountingModule::Asset do |account|

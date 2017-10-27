@@ -11,9 +11,11 @@ module AccountingModule
     end
     def new
       @account = AccountingModule::Account.new
+      authorize [:accounting_module, :account]
     end
     def create
       @account = AccountingModule::Account.create(account_params)
+      authorize [:accounting_module, :account]
       if @account.valid?
         @account.save
         redirect_to accounting_module_accounts_url, notice: "Account created successfully."

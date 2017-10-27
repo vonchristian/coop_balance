@@ -1,14 +1,14 @@
 require 'rails_helper'
 
-feature "Create product" do 
+describe "Create product", type: :system do 
 	before(:each) do
-    user = create(:user)
+    user = create(:user, role: 'sales_clerk')
     login_as(user, :scope => :user)
     visit store_module_products_url
     click_link 'New Product'
   end
 
-	scenario 'with valid attributes' do 
+	it 'with valid attributes' do 
 		fill_in "Name", with: "Test Product"
 		fill_in "Description", with: "Test Description"
 		fill_in "Unit", with: "Test Unit"
@@ -17,7 +17,7 @@ feature "Create product" do
 		expect(page).to have_content("created successfully")
 	end 
 
-	scenario 'with invalid attributes' do 
+	it 'with invalid attributes' do 
 		click_button 'Create Product'
 
 		expect(page).to have_content("can't be blank")

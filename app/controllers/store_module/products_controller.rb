@@ -5,6 +5,7 @@ module StoreModule
     end
     def new
       @product = StoreModule::Product.new
+      authorize [:store_module, :product]
     end
     def create
       @product = StoreModule::Product.create(product_params)
