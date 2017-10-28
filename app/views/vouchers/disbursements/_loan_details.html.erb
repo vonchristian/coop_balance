@@ -15,7 +15,7 @@
         <hr>
         <div class="row">
           <div class="col-md-6">
-            &nbsp; &nbsp; Loan Amount 
+            &nbsp; &nbsp; Loan Amount
           </div>
           <div class="col-md-5">
             <span class="pull-right"> <%= number_to_currency @voucher.voucherable.loan_amount %></span>
@@ -48,7 +48,7 @@
         <%= f.error_notification %>
         <%= f.input :voucher_id, input_html: { value: @voucher.id }, as: :hidden %>
         <%= f.input :voucherable_id, input_html: { value: @voucher.voucherable_id }, as: :hidden %>
-        <%= f.input :amount, input_html: { value: @voucher.payable_amount }, as: :hidden %>
+        <%= f.input :amount, input_html: { value: @voucher.voucher_amounts.sum(&:amount) } %>
         <%= f.input :reference_number %>
         <%= f.input :date, label: "Date Disbursed", as: :string, input_html: { class: "datepicker" } %>
         <%= f.input :recorder_id, input_html: { value: current_user.id }, as: :hidden %>

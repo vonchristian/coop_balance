@@ -38,19 +38,19 @@
                   <td><%=image_tag(voucher.payee.avatar.url(:thumb), class: "img-circle", height: 40, width: 40) %>&nbsp; <%= voucher.payee.try(:name) %></td>
                   <td><%= voucher.date.strftime("%B %e, %Y") %></td>
                   <td>
-                   
+
                       <%= number_to_currency voucher.payable_amount %>
-                  
+
                   </td>
-                  <td><%=link_to voucher.description, voucher %></td>
-                  
+                  <td><%=link_to voucher.description, voucher_path(voucher) %></td>
+
                   <td>
                     <% if !voucher.disbursed? %>
                       <%= link_to 'Disburse', new_voucher_disbursement_path(voucher), class: "btn btn-primary btn-sm" %>
                     <% else %>
                       <span class="label bg-green"> Disbursed </span>
                     <% end %>
-                    
+
                       </td>
                 </tr>
               <% end %>
