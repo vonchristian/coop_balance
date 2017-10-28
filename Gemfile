@@ -6,6 +6,7 @@ git_source(:github) do |repo_name|
 end
 gem 'bootsnap', require: false
 gem 'trix'
+gem 'autonumeric-rails'
 gem 'rails', '~> 5.1.4'
 gem 'bootstrap-slider-rails'
 gem 'pg', '~> 0.18'

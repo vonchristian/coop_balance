@@ -9,7 +9,7 @@
           <%= f.error_notification %>
           <%= f.input :name %>
           <%= f.input :description, as: :text %>
-          <%= f.input :max_loanable_amount, label: "Maximum Loanable Amount", as: :string %>
+          <%= f.input :max_loanable_amount, label: "Maximum Loanable Amount", as: :currency %>
           <%= f.input :interest_rate, label: "Interest Rate (Percent)" %>
           <%= f.input :account_id, collection: AccountingModule::Asset.all.map{|a| [a.name.titleize, a.id] } %>
           <div class="box-footer">

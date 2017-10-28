@@ -16,7 +16,7 @@
           <%= link_to loans_module_loan_product_path(loan_product) do %>
             <div class="row">
               <div class="col-md-6">
-                <%= loan_product.name.upcase %>
+                <%= loan_product.name.try(:upcase) %>
               </div>
             </div>
             <br>

@@ -13,7 +13,7 @@ class DisbursementForm
       elsif find_voucher.for_employee?
         create_payment_for_employee
       elsif find_voucher.for_supplier?
-        create_payment_for_supplier    
+        create_payment_for_supplier
       end
       find_voucher.disbursed!
     end
@@ -22,14 +22,14 @@ class DisbursementForm
     Voucher.find_by(id: voucher_id)
   end
 
-  def find_supplier 
+  def find_supplier
     Supplier.find_by(id: voucherable_id)
   end
 
   def find_loan
     LoansModule::Loan.find_by(id: voucherable_id)
   end
-  def find_employee 
+  def find_employee
     User.find_by(id: recorder_id)
   end
   def create_payment_for_supplier
@@ -42,9 +42,9 @@ class DisbursementForm
       entry.credit_amounts << credit_amount
       entry.debit_amounts << debit_amount
     end
-    entry.save 
+    entry.save
   end
-  def create_payment_for_employee 
+  def create_payment_for_employee
     entry = AccountingModule::Entry.supplier_payment.new(commercial_document: find_voucher, :description => find_voucher.description, recorder_id: recorder_id, entry_date: date)
     find_voucher.voucher_amounts.each do |amount|
       credit_amount = AccountingModule::CreditAmount.new(account: find_employee.cash_on_hand_account , amount: amount.amount)
@@ -62,11 +62,11 @@ class DisbursementForm
     loan_credit_amount = AccountingModule::CreditAmount.new(amount: find_voucher.payable_amount, account: find_employee.cash_on_hand_account)
     entry.debit_amounts << loan_debit_amount
     entry.credit_amounts << loan_credit_amount
-    entry.save 
+    entry.save
   end
   def create_loan_disbursement
     entry = AccountingModule::Entry.loan_disbursement.new(commercial_document: find_loan, :description => "Loan disbursement", recorder_id: recorder_id, entry_date: date)
-    loan_debit_amount = AccountingModule::DebitAmount.new(amount: find_loan.loan_amount, account: find_loan.loan_product_debit_account)
+    loan_debit_amount = AccountingModule::DebitAmount.new(amount: find_loan.loan_amount, account: find_loan.loan_product_account)
     loan_credit_amount = AccountingModule::CreditAmount.new(amount: find_loan.net_proceed, account:find_employee.cash_on_hand_account)
     entry.debit_amounts << loan_debit_amount
     entry.credit_amounts << loan_credit_amount
@@ -74,7 +74,7 @@ class DisbursementForm
       credit_amount = AccountingModule::CreditAmount.new(account: loan_charge.credit_account, amount: loan_charge.amount)
       entry.credit_amounts << credit_amount
     end
-    entry.save 
+    entry.save!
   end
 
 
@@ -87,7 +87,7 @@ class DisbursementForm
   #   entry.debit_amounts << debit_amount
   #   entry.credit_amounts << credit_amount
   #   entry.save
-  #   find_loan.loan_charges.each do |loan_charge| 
+  #   find_loan.loan_charges.each do |loan_charge|
   #   AccountingModule::Entry.loan_disbursement.create!(recorder_id: recorder_id, commercial_document: find_loan, description: 'Loans disbursement', reference_number: reference_number, entry_date: date,
   #   debit_amounts_attributes: [ { account: find_employee.cash_on_hand_account, amount: loan_charge.amount}, {account: debit_account, amount: amount} ],
   #   credit_amounts_attributes: [ { account: loan_charge.credit_account, amount: loan_charge.amount}, {account: credit_account, amount: amount} ])

@@ -20,4 +20,5 @@
 //= require select2
 //= require trix
 //= require bootstrap-slider
+//= require autonumeric
 //= require_tree .

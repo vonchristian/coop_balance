@@ -33,7 +33,7 @@
 <% end %>
 <hr>
 <% @time_deposit_products.each do |time_deposit_product| %>
-  <%= link_to time_deposit_product.name, management_module_time_deposit_product_path(time_deposit_product) %>
+  <%= link_to time_deposit_product.name, management_module_settings_time_deposit_product_path(time_deposit_product) %>
 <% end %>
 <hr>
 <%= link_to 'New Time Deposit Product', new_management_module_settings_time_deposit_product_path, class: "btn btn-primary" %>
