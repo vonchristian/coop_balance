@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171027121300) do
+ActiveRecord::Schema.define(version: 20171028102639) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -475,9 +475,7 @@ ActiveRecord::Schema.define(version: 20171027121300) do
   end
 
   create_table "loan_products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
     t.string "description"
-    t.integer "interest_recurrence"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.decimal "max_loanable_amount"
@@ -485,8 +483,9 @@ ActiveRecord::Schema.define(version: 20171027121300) do
     t.integer "mode_of_payment"
     t.uuid "account_id"
     t.decimal "interest_rate"
+    t.string "name"
     t.index ["account_id"], name: "index_loan_products_on_account_id"
-    t.index ["interest_recurrence"], name: "index_loan_products_on_interest_recurrence"
+    t.index ["name"], name: "index_loan_products_on_name", unique: true
   end
 
   create_table "loan_protection_funds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

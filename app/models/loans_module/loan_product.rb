@@ -4,13 +4,14 @@ module LoansModule
     has_many :loans
     has_many :loan_product_charges
     has_many :charges, through: :loan_product_charges
-    enum interest_recurrence: [:weekly, :monthly, :annually]
-    delegate :name, to: :account, prefix: true, allow_nil: true
 
-    validates :name, :interest_rate, presence: true 
+    delegate :name, to: :account, prefix: true
+
+    validates :name, :interest_rate, :account_id, presence: true
+    validates :name, uniqueness: true
     validates :interest_rate, numericality: true
-    def debit_account 
-      account || AccountingModule::Asset.find_by(name: "Loans and Receivables") 
+    def self.accounts
+      all.map{|a| a.account_name }
     end
   end
 end

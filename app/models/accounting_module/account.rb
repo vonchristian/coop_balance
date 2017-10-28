@@ -39,6 +39,11 @@ module AccountingModule
     def self.updated_at(from_date, to_date)
       where('accounts.updated_at' => (from_date.beginning_of_day)..(to_date.end_of_day))
     end
+    def self.loan_accounts
+      LoansModule::LoanProduct.accounts.uniq.map do |a|
+        self.find_by(name: a.to_s)
+      end
+    end
     def account_name
       name
     end
