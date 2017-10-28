@@ -13,7 +13,7 @@ module LoansModule
     belongs_to :municipality, optional: true
 
     has_one :cash_disbursement_voucher, class_name: "Voucher", as: :voucherable, foreign_key: 'voucherable_id'
-   
+
     has_many :loan_approvals, class_name: "LoansModule::LoanApproval", dependent: :destroy
     has_many :approvers, through: :loan_approvals
     has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
@@ -37,19 +37,19 @@ module LoansModule
 
     delegate :name, :age, :contact_number, :current_address, to: :borrower,  prefix: true, allow_nil: true
     delegate :name, to: :loan_product, prefix: true, allow_nil: true
-    delegate :debit_account, :interest_rate, to: :loan_product, prefix: true
+    delegate :account, :interest_rate, to: :loan_product, prefix: true
     before_save :set_default_date
-    
+
     validates :loan_product_id, presence: true
     #find aging loans e.g. 1-30 days,
     def co_makers
       employee_co_makers + member_co_makers
     end
     def self.borrowers
-      User.all + Member.all 
+      User.all + Member.all
     end
-    def name 
-      loan_product_name 
+    def name
+      loan_product_name
     end
     def payable_amount #for voucher
       net_proceed
@@ -63,7 +63,7 @@ module LoansModule
       end
       aging_loans
     end
-    def self.aging 
+    def self.aging
       all.select{|a| a.past_due? }
     end
     def past_due?
@@ -78,9 +78,9 @@ module LoansModule
 
     def first_notice_date
     if amortization_schedules.present?
-      amortization_schedules.last.date + 5.days 
-    else 
-      Time.zone.now 
+      amortization_schedules.last.date + 5.days
+    else
+      Time.zone.now
     end
     end
     def penalties
@@ -101,11 +101,11 @@ module LoansModule
     def interest_on_loan_amount
       interest_on_loan_charge
     end
-    def monthly_interest_amortization 
+    def monthly_interest_amortization
       interest_on_loan_charge
     end
     def monthly_payment
-      loan_amount / term 
+      loan_amount / term
     end
     def taxable_amount # for documentary_stamp_tax
       loan_amount
@@ -124,17 +124,17 @@ module LoansModule
       loan_amount - LoansModule::AmortizationSchedule.principal_for(schedule, self)
     end
     def total_loan_charges
-      loan_charges.total + 
+      loan_charges.total +
       loan_additional_charges.total
     end
-    def set_loan_protection_fee 
+    def set_loan_protection_fee
       loan_protection_fund = Charge.amount_type.create!(name: 'Loan Protection Fund', amount: LoanProtectionRate.set_amount_for(self), debit_account: AccountingModule::Account.find_by(name: "Cash on Hand"), credit_account: AccountingModule::Revenue.find_by(name: "Service Fees"))
       self.loan_charges.create(chargeable: loan_protection_fund)
     end
     def set_filing_fee
-      if loan_amount < 5_000 
+      if loan_amount < 5_000
         filing_fee = Charge.amount_type.create!(name: 'Filing Fee', amount: 10, debit_account: AccountingModule::Account.find_by(name: "Cash on Hand"), credit_account: AccountingModule::Revenue.find_by(name: "Service Fees"))
-      else 
+      else
         filing_fee = Charge.amount_type.create!(name: 'Filing Fee', amount: 100, debit_account: AccountingModule::Account.find_by(name: "Cash on Hand"), credit_account: AccountingModule::Revenue.find_by(name: "Service Fees"))
       end
       self.loan_charges.create(chargeable: filing_fee)
@@ -158,7 +158,7 @@ module LoansModule
         loan_charges.destroy_all
       end
       self.loan_product.charges.each do |charge|
-        loan_charges.find_or_create_by(chargeable: charge) 
+        loan_charges.find_or_create_by(chargeable: charge)
       end
        tax = Charge.amount_type.create!(name: 'Documentary Stamp Tax', amount: DocumentaryStampTax.set(self), debit_account: AccountingModule::Account.find_by(name: "Cash on Hand"),
         credit_account: AccountingModule::Revenue.find_by(name: "Service Fees"))
@@ -166,7 +166,7 @@ module LoansModule
     end
     def create_amortization_schedule
       if amortization_schedules.present?
-        amortization_schedules.destroy_all 
+        amortization_schedules.destroy_all
       end
       LoansModule::PrincipalAmortizationSchedule.create_schedule_for(self)
       # LoansModule::InterestOnLoanAmortizationSchedule.create_schedule_for(self)
@@ -174,12 +174,12 @@ module LoansModule
     def disbursed?
       disbursement.present?
     end
-    
+
     def payments
       entries.loan_payment
     end
     def payments_total
-      loan_product_debit_account.credits_balance(commercial_document_id: self.id)
+      loan_product_account.credits_balance(commercial_document_id: self.id)
     end
 
     def disbursement
@@ -188,13 +188,13 @@ module LoansModule
      end
     end
     def disbursement_date
-      if disbursement.present? 
-        disbursement.entry_date 
+      if disbursement.present?
+        disbursement.entry_date
       end
     end
 
     def balance
-      loan_product_debit_account.balance(commercial_document_id: self.id)
+      loan_product_account.balance(commercial_document_id: self.id)
     end
 
     def number_of_days_past_due
@@ -212,19 +212,19 @@ module LoansModule
         self.borrower_type = "Member"
       elsif employee_borrower = User.find_by(id: self.borrower_id).present?
        self.borrower_type = "User"
-      end 
-      self.save 
-    end 
-    def set_borrower_full_name 
-      self.borrower_full_name = self.borrower.name 
+      end
+      self.save
+    end
+    def set_borrower_full_name
+      self.borrower_full_name = self.borrower.name
       self.save
     end
 
-    private 
+    private
       def set_documentary_stamp_tax
       end
 
-      def set_default_date 
+      def set_default_date
         self.application_date ||= Time.zone.now
       end
       def less_than_max_amount?
