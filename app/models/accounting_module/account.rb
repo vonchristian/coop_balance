@@ -1,6 +1,6 @@
 module AccountingModule
   class Account < ApplicationRecord
-    include PgSearch 
+    include PgSearch
     pg_search_scope :text_search, :against => [:name, :code]
 
     WAREHOUSE_ACCOUNTS= ["Raw Materials Inventory",
@@ -30,15 +30,17 @@ module AccountingModule
     belongs_to :main_account, class_name: "AccountingModule::Account"
     validates :type, presence: true
     validates :name, :code, presence: true, uniqueness: true
-    scope :assets, -> { where(type: 'AccountingModule::Asset') } 
-    scope :liabilities, -> { where(type: 'AccountingModule::Liability') } 
-    scope :equities, -> { where(type: 'AccountingModule::Equity') } 
-    scope :revenues, -> { where(type: 'AccountingModule::Revenue') } 
-    scope :expenses, -> { where(type: 'AccountingModule::Expense') } 
+    scope :assets, -> { where(type: 'AccountingModule::Asset') }
+    scope :liabilities, -> { where(type: 'AccountingModule::Liability') }
+    scope :equities, -> { where(type: 'AccountingModule::Equity') }
+    scope :revenues, -> { where(type: 'AccountingModule::Revenue') }
+    scope :expenses, -> { where(type: 'AccountingModule::Expense') }
 
-
-    def account_name 
-      name 
+    def self.updated_at(from_date, to_date)
+      where('accounts.updated_at' => (from_date.beginning_of_day)..(to_date.end_of_day))
+    end
+    def account_name
+      name
     end
     def self.warehouse_accounts
       all.select{ |a| WAREHOUSE_ACCOUNTS.include?(a.name) }

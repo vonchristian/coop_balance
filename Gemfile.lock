@@ -379,6 +379,7 @@ DEPENDENCIES
   bullet
   byebug
   capybara (~> 2.13)
+  chronic
   coffee-rails (~> 4.2)
   daemons
   delayed-web

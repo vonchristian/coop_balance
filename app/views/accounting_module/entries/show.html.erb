@@ -1,21 +1,55 @@
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <div class="box box-primary">
-      <div class="box-header">
-        <h3 class="box-title"> Entry Details </h3>
-      </div>
+    <div class="box box-solid">
+
       <div class="box-body">
-        <p>Date <%=@entry.entry_date.strftime("%B %e, %Y") %></p>
-        <p>Reference NUmber <%= @entry.reference_number %></p>
-        <p>Employee <%= @entry.recorder.try(:first_and_last_name) %></p>
-        <hr>
-        <p><b>Debits</b></p>
+        <div class="row">
+          <div class="col-md-10 col-md-offset-1">
+            <div class="row">
+              <div class="col-md-5">
+                Member
+              </div>
+              <div class="col-md-5">
+                <%= image_tag(@entry.commercial_document.depositor.avatar.url(:thumb), class: "img-circle", height: 35, width: 35)%> &nbsp; <%= @entry.commercial_document.try(:name) %>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-5">
+                Date
+              </div>
+              <div class="col-md-5">
+                <%=@entry.entry_date.strftime("%B %e, %Y") %>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-5">
+                Reference Number
+              </div>
+              <div class="col-md-5">
+               #<%= @entry.reference_number %>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-5">
+                Employee
+              </div>
+              <div class="col-md-5">
+                <%= image_tag(@entry.recorder.avatar.url(:thumb), class: "img-circle", height: 35, width: 35)%> &nbsp; <%= @entry.recorder.try(:first_and_last_name) %>
+              </div>
+            </div>
+            <hr>
+          </div>
+        </div>
+        <p><b>&nbsp; &nbsp; Debits</b></p>
         <% @entry.debit_amounts.each do |debit| %>
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-5 col-md-offset-1">
               <%= debit.account.try(:name) %>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-5">
               <%= number_to_currency debit.amount %>
             </div>
           </div>

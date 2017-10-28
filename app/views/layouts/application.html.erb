@@ -11,7 +11,7 @@
   <body class="hold-transition skin-purple-light sidebar-mini">
     <div class="wrapper">
       <%=render "layouts/shared/header" %>
-      <% if current_user.bookkeeper? %>
+      <% if current_user.bookkeeper? || current_user.accountant? %>
         <%=render "accounting_module/sidebar" %>
       <% end %>
       <% if current_user.loan_officer? %>

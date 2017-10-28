@@ -20,6 +20,7 @@ gem 'simple_form'
 gem "select2-rails"
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
+gem 'chronic'
 gem 'bootstrap-sass'
 gem 'icheck-rails'
 gem 'friendly_id'

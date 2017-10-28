@@ -10,11 +10,15 @@ module AccountingModule
         to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : DateTime.parse(hash[:to_date].strftime('%Y-%m-%d 12:59:59'))
         employee = User.find(hash[:recorder_id])
         joins(:entry, :account).where('entries.recorder_id' => employee.id).where('entries.entry_date' => (from_date.beginning_of_day)..(to_date.end_of_day)).sum(:amount)
+      elsif hash[:from_date] && hash[:to_date]
+        from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : DateTime.parse(hash[:from_date].strftime('%Y-%m-%d 12:00:00'))
+        to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : DateTime.parse(hash[:to_date].strftime('%Y-%m-%d 12:59:59'))
+        joins(:entry, :account).where('entries.entry_date' => from_date..to_date).sum(:amount)
       elsif hash[:recorder_id]
         employee = User.find(hash[:recorder_id])
-        joins(:entry, :account).where('entries.recorder_id' => employee.id).sum(:amount) 
+        joins(:entry, :account).where('entries.recorder_id' => employee.id).sum(:amount)
        elsif hash[:commercial_document_id]
-        joins(:entry, :account).where('entries.commercial_document_id' => hash[:commercial_document_id]).sum(:amount) 
+        joins(:entry, :account).where('entries.commercial_document_id' => hash[:commercial_document_id]).sum(:amount)
       else
         joins(:entry, :account).sum(:amount)
       end
