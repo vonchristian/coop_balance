@@ -1,45 +1,23 @@
 FactoryBot.define do
   factory :account, :class => AccountingModule::Account do |account|
-    account.name
-    account.code
-    account.contra false
-    type 'AccountingModule::Asset'
-  end
+    name { Faker::Name.unique.first_name }
+    code  { Faker::Number.number(12) }
+    contra false
 
-  factory :asset, :class => AccountingModule::Asset do |account|
-    account.name
-    account.code
-    account.contra false
-  end
-
-  factory :equity, :class => AccountingModule::Equity do |account|
-    account.name
-    account.code
-    account.contra false
-  end
-
-  factory :expense, :class => AccountingModule::Expense do |account|
-    account.name
-    account.code
-    account.contra false
-  end
-
-  factory :liability, :class => AccountingModule::Liability do |account|
-    account.name
-    account.code
-    account.contra false
-  end
-
-  factory :revenue, :class => AccountingModule::Revenue do |account|
-    account.name
-    account.code
-    account.contra false
-  end
-
-  sequence :name do |n|
-    "Factory Name #{n}"
-  end
-  sequence :code do |n|
-    "#{n}000#{n}#{n}"
+    factory :asset do 
+      type 'AccountingModule::Asset'
+    end
+    factory :liability do 
+      type 'AccountingModule::Liability'
+    end
+    factory :equity do 
+      type 'AccountingModule::Equity'
+    end
+    factory :expense do 
+      type 'AccountingModule::Expense'
+    end
+    factory :revenue do 
+      type "AccountingModule::Revenue"
+    end
   end
 end

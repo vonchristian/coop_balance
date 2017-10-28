@@ -8,6 +8,7 @@ class Voucher < ApplicationRecord
   belongs_to :payee, polymorphic: true
   delegate :name, to: :voucherable, allow_nil: true
   has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", dependent: :destroy
+  
   before_save :set_date
   
   def for_loan?
