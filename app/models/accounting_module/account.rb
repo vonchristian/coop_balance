@@ -37,7 +37,7 @@ module AccountingModule
     scope :expenses, -> { where(type: 'AccountingModule::Expense') }
 
     def self.updated_at(from_date, to_date)
-      where('accounts.updated_at' => (from_date.beginning_of_day)..(to_date.end_of_day))
+      joins(:entries).where('entries.entry_date' => (from_date.beginning_of_day)..(to_date.end_of_day))
     end
     def self.loan_accounts
       LoansModule::LoanProduct.accounts.uniq.map do |a|

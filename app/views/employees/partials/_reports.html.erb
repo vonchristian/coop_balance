@@ -1,6 +1,6 @@
 <div class="tab-pane <%= 'active' if current_page?(employee_reports_path(@employee)) %>" id="employee-reports">
   <p class="text-muted">
-    TRANSACTION REPORT 
+    TRANSACTION REPORT
   </p>
   <%=link_to 'This Day', employee_entries_path(@employee, format: 'pdf', from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day), class: "btn btn-sm btn-default"  %> &nbsp;
 
@@ -27,4 +27,18 @@
               </div>
             <% end %>
 <hr>
+
+<%= form_tag({:action => "index", format: 'pdf', controller: "employees/reports", employee_id: @employee.id, date: params[:date]}, {:method => :get})  do %>
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <%= text_field_tag :date, @date, :class => 'datepicker form-control border-input', :placeholder => "Date" %>
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <button type="submit" class="btn btn-default"> Go</button>
+                </div>
+              </div>
+            <% end %>
+
 </div>

@@ -1,7 +1,8 @@
 class TellerReportPdf < Prawn::Document
-  def initialize(employee, view_context)
+  def initialize(employee, date, view_context)
     super(margin: 40, page_size: "A4", page_layout: :portrait)
     @employee = employee
+    @date = date
     @view_context = view_context
     heading
     fund_transfers
@@ -9,6 +10,9 @@ class TellerReportPdf < Prawn::Document
     time_deposits
     share_capitals
     loan_releases
+    loan_collections
+    expenses
+    summary_report
 
   end
   private
@@ -24,9 +28,12 @@ class TellerReportPdf < Prawn::Document
         text "Kiangan Community Multipurpose Cooperative", size: 10
     end
     bounding_box [0, 780], width: 400 do
-      text "Teller's Transaction", style: :bold, size: 10
-      move_down 5
-      text "#{Time.zone.now.strftime("%B %e, %Y")}", size: 10
+      text "Teller's Transaction", style: :bold, size: 14
+      move_down 3
+      text "#{@date.strftime("%B %e, %Y")}", size: 10
+      move_down 3
+
+      text "Employee: #{@employee.name}", size: 10
     end
     move_down 30
     stroke do
@@ -193,11 +200,108 @@ class TellerReportPdf < Prawn::Document
     [["", "Borrower", "Voucher #", "Loan Amount", "Net Proceed"]]
   end
   def loan_releases_data
-    @loan_releases_data ||= @employee.entries.loan_disbursement.map{|a| [ {image: a.commercial_document.borrower.avatar.path(:medium), image_height: 30, image_width: 30 }, a.commercial_document.try(:borrower_name), a.reference_number, price(a.commercial_document.loan_amount), price(a.commercial_document.net_proceed)]}
+    if @employee.entries.loan_disbursement.present?
+      @loan_releases_data ||= @employee.entries.loan_disbursement.map{|a| [ {image: a.commercial_document.borrower.avatar.path(:medium), image_height: 30, image_width: 30 }, a.commercial_document.try(:borrower_name), a.reference_number, price(a.commercial_document.loan_amount), price(a.commercial_document.net_proceed)]}
+    else
+      [["", "", "", "No Loan releases"]]
+    end
   end
 
   def loan_releases_total
-    [["", "Borrower", "Voucher #", "<b>#{price(@employee.entries.loan_disbursement.map{|a| a.debit_amounts.distinct.sum(:amount)}.sum)}</b>", "Net Proceed"]]
+
+      [["", "", "", "<b>#{price(@employee.entries.loan_disbursement.map{|a| a.debit_amounts.distinct.sum(:amount)}.sum)}</b>", "Net Proceed"]]
+
   end
+
+   def loan_collections
+    text "Loan Collections", style: :bold, size: 10, color: "DB4437"
+    table(loan_collections_header, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [40, 160, 100, 110, 100]) do
+      cells.borders = []
+    end
+    table(loan_collections_data, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [40, 160, 100, 110, 100]) do
+      cells.borders = []
+    end
+    stroke do
+      stroke_color 'CCCCCC'
+      line_width 0.2
+      stroke_horizontal_rule
+    end
+    table(loan_collections_total, header: true, cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [40, 160, 100, 110, 100]) do
+      cells.borders = []
+    end
+  end
+  def loan_collections_header
+    [["", "Borrower", "OR #", "Loan Amount", "Net Proceed"]]
+  end
+  def loan_collections_data
+    if @employee.entries.loan_disbursement.present?
+
+      @loan_collections_data ||= @employee.entries.loan_disbursement.map{|a| [ {image: a.commercial_document.borrower.avatar.path(:medium), image_height: 30, image_width: 30 }, a.commercial_document.try(:borrower_name), a.reference_number, price(a.commercial_document.loan_amount), price(a.commercial_document.net_proceed)]}
+    else
+      [[""]]
+    end
+  end
+
+  def loan_collections_total
+    [["", "", "", "<b>#{price(@employee.entries.loan_disbursement.map{|a| a.debit_amounts.distinct.sum(:amount)}.sum)}</b>", "Net Proceed"]]
+  end
+  def expenses
+    text "Expenses", style: :bold, size: 10, color: "DB4437"
+    table(expenses_data, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 10, 290, 90]) do
+        cells.borders = []
+        row(0).font_style = :bold
+    end
+    stroke do
+      stroke_color 'CCCCCC'
+      line_width 0.2
+      stroke_horizontal_rule
+      move_down 15
+    end
+
+     table(expenses_total_data, cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [10, 10, 290, 90]) do
+        cells.borders = []
+        row(0).font_style = :bold
+    end
+
+    stroke do
+      stroke_color 'CCCCCC'
+      line_width 0.2
+      stroke_horizontal_rule
+      move_down 15
+    end
+  end
+  def expenses_data
+    [["", "", "Account", "Amount"]] +
+    @expenses_data ||= AccountingModule::Expense.updated_at(@date.beginning_of_day, @date.end_of_day).map{|a| ["", "", a.name, a.entries.entered_on(from_date: @date, to_date: @date).map{|a| a.debit_amounts.distinct.sum(:amount)}.sum]}
+  end
+  def expenses_total_data
+    [["", "", "<b>TOTAL</b>", "#{AccountingModule::Expense.updated_at(@date.beginning_of_day, @date.end_of_day).map{|a| a.entries.entered_on(from_date: @date, to_date: @date).total}.sum}"]]
+  end
+
+  def summary_report
+    text "Summary Report", style: :bold, size: 10
+    table(summary_data, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 10, 290, 90]) do
+        cells.borders = []
+    end
+    stroke do
+      stroke_color 'CCCCCC'
+      line_width 0.2
+      stroke_horizontal_rule
+      move_down 15
+    end
+   table(total_summary_data, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 10, 290, 90]) do
+        cells.borders = []
+    end
+  end
+  def summary_data
+    [["", "", "Beginning Balance", "#{price(@employee.cash_on_hand_account.balance(from_date: @date.yesterday.end_of_day - 1.second, to_date: @date.yesterday.end_of_day, recorder_id: @employee.id))}"]] +
+    [["", "", "Cash Collections", "#{price(@employee.cash_on_hand_account.debits_balance(from_date: @date, to_date: @date, recorder_id: @employee.id))}"]] +
+    [["", "", "Cash Disbursed",  "#{price(@employee.cash_on_hand_account.credits_balance(from_date: @date, to_date: @date, recorder_id: @employee.id))}"]]
+  end
+  def total_summary_data
+    [["", "", "Ending Balance", "#{price(@employee.cash_on_hand_account.balance(from_date: @date.beginning_of_day - 1.second, to_date: @date.end_of_day, recorder_id: @employee.id) + @employee.fund_transfer_total)}"]]
+  end
+
+
 
 end
