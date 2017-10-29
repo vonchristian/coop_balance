@@ -1,18 +1,18 @@
 module MembershipsModule
   class ShareCapital < ApplicationRecord
-    include PgSearch 
+    include PgSearch
     pg_search_scope :text_search, :against => [:account_number, :account_owner_name]
     multisearchable against: [:account_number, :account_owner_name]
-    
+
     belongs_to :subscriber, polymorphic: true
     belongs_to :share_capital_product, class_name: "CoopServicesModule::ShareCapitalProduct"
     has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
-    
+
     delegate :name, to: :share_capital_product, prefix: true
     delegate :name, to: :subscriber, prefix: true
     delegate :cost_per_share, to: :share_capital_product, prefix: true
-
-    after_commit :set_account_owner_name    
+    validates :share_capital_product_id, presence: true
+    after_commit :set_account_owner_name
     def self.subscribed_shares
       all.sum(&:subscribed_shares)
     end
@@ -33,12 +33,12 @@ module MembershipsModule
     def dividends_total
       entries.share_capital_dividend.map{|a| a.debit_amounts.distinct.sum(:amount) }.sum
     end
-    private 
+    private
     def set_account_owner_name
       self.account_owner_name = self.subscriber_name
     end
-    
-    def name 
+
+    def name
       account_owner_name || subscriber_name
     end
   end

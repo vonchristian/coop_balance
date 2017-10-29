@@ -6,16 +6,16 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :lockable,
          :recoverable, :rememberable, :trackable, :validatable
   enum sex: [:male, :female, :others]
-  enum role: [:system_administrator, 
-              :manager, 
-              :loan_officer, 
-              :bookkeeper, 
-              :teller, 
-              :stock_custodian, 
-              :sales_clerk, 
-              :treasurer, 
-              :accountant, 
-              :human_resource_officer, 
+  enum role: [:system_administrator,
+              :manager,
+              :loan_officer,
+              :bookkeeper,
+              :teller,
+              :stock_custodian,
+              :sales_clerk,
+              :treasurer,
+              :accountant,
+              :human_resource_officer,
               :accounting_clerk,
               :collector]
   has_one :current_address, as: :addressable, class_name: "Address"
@@ -40,7 +40,7 @@ class User < ApplicationRecord
   delegate :name, :amount, to: :salary_grade, prefix: true, allow_nil: true
   delegate :name, to: :department, prefix: true, allow_nil: true
   delegate :name, :address, :contact_number, :logo, to: :cooperative, prefix: true
-  
+
   has_attached_file :avatar,
   styles: { large: "120x120>",
            medium: "70x70>",
@@ -52,7 +52,7 @@ class User < ApplicationRecord
   :url => "/system/:attachment/:id/:basename_:style.:extension"
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
   def current_occupation
-    role 
+    role
   end
   def accounts_receivable_gen_merchandise_total
     AccountingModule::Account.find_by(name: "Accounts Receivables Trade - Current (General Merchandise)").balance(commercial_document_id: self.id)
@@ -65,7 +65,7 @@ class User < ApplicationRecord
     all.select{|a| WITH_CASH_ON_HAND.include?(a.role.titleize) }
   end
 
-  def self.loan_approvers 
+  def self.loan_approvers
     all.select{|a| User::LOAN_APPROVERS.include?(a.role.titleize)}
   end
 
@@ -87,18 +87,18 @@ class User < ApplicationRecord
   def cash_on_hand_account
     if treasurer?
       AccountingModule::Asset.find_by(name: "Cash on Hand (Treasury)")
-    elsif teller? 
+    elsif teller?
       AccountingModule::Asset.find_by(name: "Cash on Hand (Teller)")
     elsif sales_clerk?
       AccountingModule::Asset.find_by(name: "Cash on Hand (Teller)")
-    end 
-  end 
+    end
+  end
   def fund_transfer_total
     fund_transfers.fund_transfer.map{ |a| a.debit_amounts.distinct.sum(:amount) }.sum
   end
-  
-  def payable_amount 
+
+  def payable_amount
     voucher_amounts.sum(:amount)
   end
-        
+
 end

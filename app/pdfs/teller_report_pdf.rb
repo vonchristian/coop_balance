@@ -36,18 +36,20 @@ class TellerReportPdf < Prawn::Document
 
       text "Employee: #{@employee.name}", size: 10
     end
-    move_down 10
+    move_down 15
     stroke do
-      stroke_color 'CCCCCC'
+      stroke_color '24292E'
       line_width 1
       stroke_horizontal_rule
-      move_down 15
+      move_down 20
     end
   end
   def fund_transfers
     text "Fund Transfers",  color: "4A86CF", style: :bold, size: 10
-    table([["", "Fund Transfer from Treasury", "#{price(100)}"]], header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 300, 100]) do
+    table([["", "Fund Transfer from Treasury", "#{price(100)}"]], header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 150, 100]) do
       cells.borders = []
+      column(2).align = :right
+
     end
     stroke do
       stroke_color 'CCCCCC'
@@ -58,25 +60,30 @@ class TellerReportPdf < Prawn::Document
   end
     def savings_deposits
      text "Savings Deposits", style: :bold, size: 10,  color: "4A86CF"
-      table(savings_deposits_balances, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 300, 100]) do
+      table(savings_deposits_balances, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 150, 100]) do
       cells.borders = []
+      column(2).align = :right
+
       end
-      table(savings_deposits_from_members, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 10, 290, 90]) do
+      table(savings_deposits_from_members, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 10, 150, 90]) do
       cells.borders = []
       row(0).text_color = "008751"
+      column(3).align = :right
       end
-      table(withdrawals_from_members, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 10, 290, 90]) do
+      table(withdrawals_from_members, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 10, 150, 90]) do
         cells.borders = []
         row(0).text_color = "DB4437"
+        column(3).align = :right
       end
       stroke do
         stroke_color 'CCCCCC'
         line_width 0.1
         stroke_horizontal_rule
     end
-      table(total_savings_deposits, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 10, 290, 90]) do
+      table(total_savings_deposits, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 10, 150, 90]) do
         cells.borders = []
         row(0).font_style = :bold
+        column(3).align = :right
       end
     stroke do
         stroke_color 'CCCCCC'
@@ -87,38 +94,42 @@ class TellerReportPdf < Prawn::Document
   end
   #Savings Deposits
   def savings_deposits_balances
-    [["", "Beginning Balance", "#{price(100)}"]]
+    [["", "Beginning Balance", "#{price(AccountingModule::Account.find_by(name: "Savings Deposits").balance(to_date: (@date.yesterday.end_of_day - 1.second), recorder_id: @employee.id))}"]]
   end
   def savings_deposits_from_members
-    [["", "", "Add Deposits", "+ #{AccountingModule::Account.find_by(name: "Savings Deposits").credit_entries.recorder_by(@employee.id).entered_on(from_date: @date, to_date: @date).total}"]]
+    [["", "", "Add Deposits", "#{price(AccountingModule::Account.find_by(name: "Savings Deposits").credit_entries.recorder_by(@employee.id).entered_on(from_date: @date, to_date: @date).total)}"]]
   end
   def total_savings_deposits
-    [["", "", "Total Savings Deposits", "#{AccountingModule::Account.find_by(name: "Savings Deposits").balance(:recorder_id => @employee.id)}"]]
+    [["", "", "Total Savings Deposits", "#{price(AccountingModule::Account.find_by(name: "Savings Deposits").balance(:recorder_id => @employee.id))}"]]
   end
   def withdrawals_from_members
-    [["", "", "Less Withdrawals", "- #{AccountingModule::Account.find_by(name: "Savings Deposits").debit_entries.recorder_by(@employee.id).entered_on(from_date: @date, to_date: @date).total}"]]
+    [["", "", "Less Withdrawals", "#{price(AccountingModule::Account.find_by(name: "Savings Deposits").debit_entries.recorder_by(@employee.id).entered_on(from_date: @date, to_date: @date).total)}"]]
   end
   def time_deposits
     text "Time Deposits", style: :bold, size: 10, color: "4A86CF"
-  table(time_deposits_balances, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 300, 100]) do
+  table(time_deposits_balances, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 150, 100]) do
       cells.borders = []
+      column(2).align = :right
       end
-      table(time_deposits_from_members, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 10, 290, 90]) do
-      cells.borders = []
-      row(0).text_color = "008751"
+      table(time_deposits_from_members, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 10, 150, 90]) do
+        cells.borders = []
+        row(0).text_color = "008751"
+        column(3).align = :right
       end
-      table(time_deposit_withdrawals_from_members, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 10, 290, 90]) do
+      table(time_deposit_withdrawals_from_members, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 10, 150, 90]) do
         cells.borders = []
         row(0).text_color = "DB4437"
+        column(3).align = :right
       end
       stroke do
         stroke_color 'CCCCCC'
         line_width 0.1
         stroke_horizontal_rule
     end
-      table(total_time_deposits, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 10, 290, 90]) do
+      table(total_time_deposits, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 10, 150, 90]) do
         cells.borders = []
         row(0).font_style = :bold
+        column(3).align = :right
       end
     stroke do
         stroke_color 'CCCCCC'
@@ -128,38 +139,42 @@ class TellerReportPdf < Prawn::Document
     end
   end
   def time_deposits_balances
-    [["", "Beginning Balance", "#{price(100)}"]]
+    [["", "Beginning Balance", "#{price(AccountingModule::Account.find_by(name: "Savings Deposits").balance(to_date: (@date.yesterday - 1.second), recorder_id: @employee.id))}"]]
   end
   def time_deposits_from_members
-    [["", "", "Add Time Deposits", "#{price(100)}"]]
+    [["", "", "Add Deposits", "#{price(AccountingModule::Account.find_by(name: "Time Deposits").credit_entries.recorder_by(@employee.id).entered_on(from_date: @date, to_date: @date).total)}"]]
   end
   def total_time_deposits
-    [["", "", "Total Time Deposits", "900"]]
+    [["", "", "Total Savings Deposits", "#{price(AccountingModule::Account.find_by(name: "Time Deposits").balance(:recorder_id => @employee.id))}"]]
   end
   def time_deposit_withdrawals_from_members
-    [["", "", "Less Deposit Withdrawals", "#{price(100)}"]]
+    [["", "", "Less Withdrawals", "#{price(AccountingModule::Account.find_by(name: "Time Deposits").debit_entries.recorder_by(@employee.id).entered_on(from_date: @date, to_date: @date).total)}"]]
   end
   def share_capitals
     text "Share Capitals", style: :bold, size: 10, color: "4A86CF"
-    table(share_capital_beginning_balance, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 300, 100]) do
+    table(share_capital_beginning_balance, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 150, 100]) do
       cells.borders = []
+      column(2).align = :right
     end
-      table(additional_share_capital, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 10, 290, 90]) do
+      table(additional_share_capital, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 10, 150, 90]) do
       cells.borders = []
       row(0).text_color = "008751"
+      column(3).align = :right
       end
-      table(share_capital_withdrawals, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 10, 290, 90]) do
+      table(share_capital_withdrawals, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 10, 150, 90]) do
         cells.borders = []
         row(0).text_color = "DB4437"
+        column(3).align = :right
       end
       stroke do
         stroke_color 'CCCCCC'
         line_width 0.1
         stroke_horizontal_rule
     end
-      table(total_share_capitals, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 10, 290, 90]) do
+      table(total_share_capitals, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 10, 150, 90]) do
         cells.borders = []
         row(0).font_style = :bold
+        column(3).align = :right
       end
     stroke do
         stroke_color 'CCCCCC'
@@ -169,16 +184,16 @@ class TellerReportPdf < Prawn::Document
     end
   end
   def share_capital_beginning_balance
-    [["", "Beginning Balance", "#{price(100)}"]]
+    [["", "Beginning Balance", "#{price(AccountingModule::Account.find_by(name: "Paid-up Share Capital - Common").balance(to_date: @date.yesterday, recorder_id: @employee.id))}"]]
   end
   def additional_share_capital
-    [["", "", "Add Share Capital", "#{price(100)}"]]
+   [["", "", "Additional Share Capital", "#{price(AccountingModule::Account.find_by(name: "Paid-up Share Capital - Common").balance(:recorder_id => @employee.id))}"]]
   end
   def total_share_capitals
-    [["", "", "Total Share Capitals", "900"]]
+    [["", "", "Total Share Capitals", "#{price(AccountingModule::Account.find_by(name: "Paid-up Share Capital - Common").balance(to_date: @date.end_of_day, :recorder_id => @employee.id))}"]]
   end
   def share_capital_withdrawals
-    [["", "", "Less Share Capital", "#{price(100)}"]]
+    [["", "", "Less Withdrawals", "#{price(AccountingModule::Account.find_by(name: 'Paid-up Share Capital - Common').debit_entries.recorder_by(@employee.id).entered_on(from_date: @date, to_date: @date).total)}"]]
   end
   def loan_releases
     text "Loan Releases", style: :bold, size: 10, color: "DB4437"

@@ -16,7 +16,7 @@ module Employees
     end
 
     def debit_account
-      AccountingModule::Account.find_by(name: "Cash on Hand")
+      User.find_by(id: recorder_id).cash_on_hand_account
     end
     def credit_account
       AccountingModule::Account.find_by(name: "Paid-up Share Capital - Common")

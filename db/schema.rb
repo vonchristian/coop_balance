@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171029080132) do
+ActiveRecord::Schema.define(version: 20171029111209) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -851,6 +851,8 @@ ActiveRecord::Schema.define(version: 20171029080132) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.decimal "cost_per_share"
+    t.uuid "account_id"
+    t.index ["account_id"], name: "index_share_capital_products_on_account_id"
     t.index ["name"], name: "index_share_capital_products_on_name"
   end
 
@@ -1105,6 +1107,7 @@ ActiveRecord::Schema.define(version: 20171029080132) do
   add_foreign_key "savings", "members"
   add_foreign_key "savings", "saving_products"
   add_foreign_key "share_capital_product_shares", "share_capital_products"
+  add_foreign_key "share_capital_products", "accounts"
   add_foreign_key "share_capitals", "share_capital_products"
   add_foreign_key "streets", "barangays"
   add_foreign_key "streets", "municipalities"

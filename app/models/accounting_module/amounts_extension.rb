@@ -16,6 +16,11 @@ module AccountingModule
         from_date = first_entry ? DateTime.parse(first_entry.entry_date.strftime('%Y-%m-%d 12:59:59')) : Time.zone.now
         to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : DateTime.parse(hash[:to_date].strftime('%Y-%m-%d 12:59:59'))
         joins(:entry, :account).where('entries.recorder_id' => hash[:recorder_id]).where('entries.entry_date' => (from_date.beginning_of_day - 1.second)..(to_date.end_of_day)).sum(:amount)
+      elsif hash[:to_date].present? && hash[:from_date].nil? && hash[:recorder_id].nil?
+        first_entry = AccountingModule::Entry.order('entry_date ASC').first
+        from_date = first_entry ? DateTime.parse(first_entry.entry_date.strftime('%Y-%m-%d 12:59:59')) : Time.zone.now
+        to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : DateTime.parse(hash[:to_date].strftime('%Y-%m-%d 12:59:59'))
+        joins(:entry, :account).where('entries.entry_date' => (from_date.beginning_of_day - 1.second)..(to_date.end_of_day)).sum(:amount)
       elsif hash[:recorder_id].present?
         joins(:entry, :account).where('entries.recorder_id' => hash[:recorder_id]).sum(:amount)
        elsif hash[:commercial_document_id]
