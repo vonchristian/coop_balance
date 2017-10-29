@@ -8,11 +8,12 @@ module MembershipsModule
     belongs_to :share_capital_product, class_name: "CoopServicesModule::ShareCapitalProduct"
     has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
 
-    delegate :name, to: :share_capital_product, prefix: true
+    delegate :name, :account, to: :share_capital_product, prefix: true
     delegate :name, to: :subscriber, prefix: true
     delegate :cost_per_share, to: :share_capital_product, prefix: true
     validates :share_capital_product_id, presence: true
     after_commit :set_account_owner_name
+
     def self.subscribed_shares
       all.sum(&:subscribed_shares)
     end
@@ -26,20 +27,20 @@ module MembershipsModule
     end
 
     def capital_build_ups_total
-      share_capital_product.credit_account.balance(commercial_document_id: self.id)
+      share_capital_product_account.balance(commercial_document_id: self.id)
     end
     def dividends
     end
     def dividends_total
       entries.share_capital_dividend.map{|a| a.debit_amounts.distinct.sum(:amount) }.sum
     end
+    def name
+      account_owner_name || subscriber_name
+    end
+
     private
     def set_account_owner_name
       self.account_owner_name = self.subscriber_name
-    end
-
-    def name
-      account_owner_name || subscriber_name
     end
   end
 end

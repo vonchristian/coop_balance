@@ -22,6 +22,6 @@ end
     User.find_by(id: recorder_id).cash_on_hand_account
   end
   def credit_account
-    AccountingModule::Account.find_by(name: "Paid-up Share Capital - Common")
+    find_share_capital.share_capital_product_account
   end
 end

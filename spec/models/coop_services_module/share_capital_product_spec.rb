@@ -20,6 +20,13 @@ module CoopServicesModule
       it { is_expected.to delegate_method(:name).to(:account).with_prefix }
     end
 
+    it ".accounts" do
+      share_capital_product = create(:share_capital_product)
+
+      expect(share_capital_product.account).to be_present
+      expect(CoopServicesModule::ShareCapitalProduct.accounts).to include(share_capital_product.account_name)
+    end
+
     it '#total_shares' do
     	share_capital_product = create(:share_capital_product, cost_per_share: 10)
 	  	share_capital_product_share = create(:share_capital_product_share, share_capital_product: share_capital_product, share_count: 1000)
