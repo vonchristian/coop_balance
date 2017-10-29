@@ -11,6 +11,11 @@ module MembershipsModule
     describe 'validations' do
       it { is_expected.to validate_presence_of :share_capital_product_id }
     end
+    describe 'enums' do
+      it do
+        is_expected.to define_enum_for(:status).with([:active, :inactive, :closed])
+      end
+    end
 
     context 'delegations' do
       it { is_expected.to delegate_method(:name).to(:subscriber).with_prefix }

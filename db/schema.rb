@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171029111209) do
+ActiveRecord::Schema.define(version: 20171029124432) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -866,8 +866,10 @@ ActiveRecord::Schema.define(version: 20171029111209) do
     t.uuid "subscriber_id"
     t.datetime "created_at", default: "2017-10-25 08:45:18", null: false
     t.datetime "updated_at", default: "2017-10-25 08:45:18", null: false
+    t.integer "status"
     t.index ["account_number"], name: "index_share_capitals_on_account_number", unique: true
     t.index ["share_capital_product_id"], name: "index_share_capitals_on_share_capital_product_id"
+    t.index ["status"], name: "index_share_capitals_on_status"
     t.index ["subscriber_type", "subscriber_id"], name: "index_share_capitals_on_subscriber_type_and_subscriber_id"
     t.index ["type"], name: "index_share_capitals_on_type"
   end

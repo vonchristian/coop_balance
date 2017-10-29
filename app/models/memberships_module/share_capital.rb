@@ -1,5 +1,6 @@
 module MembershipsModule
   class ShareCapital < ApplicationRecord
+    enum status: [:active, :inactive, :closed]
     include PgSearch
     pg_search_scope :text_search, :against => [:account_number, :account_owner_name]
     multisearchable against: [:account_number, :account_owner_name]
