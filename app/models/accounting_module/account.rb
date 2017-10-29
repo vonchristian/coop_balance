@@ -101,9 +101,9 @@ module AccountingModule
       if sub_accounts.present?
         balance = []
         sub_accounts.each do |sub_account|
-          balance << sub_account.credit_amounts.balance({})
+          balance << sub_account.credit_amounts.balance(options)
         end
-        balance.sum
+        balance.sum + credit_amounts.balance(options)
       else
         credit_amounts.balance(options)
       end
@@ -112,9 +112,9 @@ module AccountingModule
       if sub_accounts.present?
         balance = []
         sub_accounts.each do |sub_account|
-          balance << sub_account.debit_amounts.balance({})
+          balance << sub_account.debit_amounts.balance(options)
         end
-        balance.sum
+        balance.sum + debit_amounts.balance(options)
       else
         debit_amounts.balance(options)
       end

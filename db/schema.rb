@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171028102639) do
+ActiveRecord::Schema.define(version: 20171029080132) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,10 +65,12 @@ ActiveRecord::Schema.define(version: 20171028102639) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.decimal "amount"
+    t.uuid "recorder_id"
     t.index ["account_id", "entry_id"], name: "index_amounts_on_account_id_and_entry_id"
     t.index ["account_id"], name: "index_amounts_on_account_id"
     t.index ["entry_id", "account_id"], name: "index_amounts_on_entry_id_and_account_id"
     t.index ["entry_id"], name: "index_amounts_on_entry_id"
+    t.index ["recorder_id"], name: "index_amounts_on_recorder_id"
     t.index ["type"], name: "index_amounts_on_type"
   end
 
@@ -1032,6 +1034,7 @@ ActiveRecord::Schema.define(version: 20171028102639) do
   add_foreign_key "amortization_schedules", "loans"
   add_foreign_key "amounts", "accounts"
   add_foreign_key "amounts", "entries"
+  add_foreign_key "amounts", "users", column: "recorder_id"
   add_foreign_key "appraisals", "real_properties"
   add_foreign_key "appraisals", "users", column: "appraiser_id"
   add_foreign_key "bank_accounts", "cooperatives"

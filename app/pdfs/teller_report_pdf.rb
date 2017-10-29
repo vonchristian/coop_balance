@@ -13,6 +13,7 @@ class TellerReportPdf < Prawn::Document
     loan_collections
     expenses
     summary_report
+    summary_of_accounts
 
   end
   private
@@ -28,17 +29,17 @@ class TellerReportPdf < Prawn::Document
         text "Kiangan Community Multipurpose Cooperative", size: 10
     end
     bounding_box [0, 780], width: 400 do
-      text "Teller's Transaction", style: :bold, size: 14
+      text "Teller's Blotter", style: :bold, size: 14
       move_down 3
       text "#{@date.strftime("%B %e, %Y")}", size: 10
       move_down 3
 
       text "Employee: #{@employee.name}", size: 10
     end
-    move_down 30
+    move_down 10
     stroke do
       stroke_color 'CCCCCC'
-      line_width 0.2
+      line_width 1
       stroke_horizontal_rule
       move_down 15
     end
@@ -89,13 +90,13 @@ class TellerReportPdf < Prawn::Document
     [["", "Beginning Balance", "#{price(100)}"]]
   end
   def savings_deposits_from_members
-    [["", "", "Add Deposits", "#{price(100)}"]]
+    [["", "", "Add Deposits", "+ #{AccountingModule::Account.find_by(name: "Savings Deposits").credit_entries.recorder_by(@employee.id).entered_on(from_date: @date, to_date: @date).total}"]]
   end
   def total_savings_deposits
-    [["", "", "Total Savings Deposits", "900"]]
+    [["", "", "Total Savings Deposits", "#{AccountingModule::Account.find_by(name: "Savings Deposits").balance(:recorder_id => @employee.id)}"]]
   end
   def withdrawals_from_members
-    [["", "", "Less Withdrawals", "#{price(100)}"]]
+    [["", "", "Less Withdrawals", "- #{AccountingModule::Account.find_by(name: "Savings Deposits").debit_entries.recorder_by(@employee.id).entered_on(from_date: @date, to_date: @date).total}"]]
   end
   def time_deposits
     text "Time Deposits", style: :bold, size: 10, color: "4A86CF"
@@ -272,7 +273,7 @@ class TellerReportPdf < Prawn::Document
   end
   def expenses_data
     [["", "", "Account", "Amount"]] +
-    @expenses_data ||= AccountingModule::Expense.updated_at(@date.beginning_of_day, @date.end_of_day).map{|a| ["", "", a.name, a.entries.entered_on(from_date: @date, to_date: @date).map{|a| a.debit_amounts.distinct.sum(:amount)}.sum]}
+    @expenses_data ||= AccountingModule::Expense.updated_at(@date.beginning_of_day, @date.end_of_day).distinct.map{|a| ["", "", a.name, a.entries.entered_on(from_date: @date, to_date: @date).map{|a| a.debit_amounts.distinct.sum(:amount)}.sum]}
   end
   def expenses_total_data
     [["", "", "<b>TOTAL</b>", "#{AccountingModule::Expense.updated_at(@date.beginning_of_day, @date.end_of_day).map{|a| a.entries.entered_on(from_date: @date, to_date: @date).total}.sum}"]]
@@ -292,16 +293,39 @@ class TellerReportPdf < Prawn::Document
    table(total_summary_data, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 10, 290, 90]) do
         cells.borders = []
     end
+    stroke do
+      stroke_color 'CCCCCC'
+      line_width 0.2
+      stroke_horizontal_rule
+      move_down 15
+    end
   end
   def summary_data
-    [["", "", "Beginning Balance", "#{price(@employee.cash_on_hand_account.balance(from_date: @date.yesterday.end_of_day - 1.second, to_date: @date.yesterday.end_of_day, recorder_id: @employee.id))}"]] +
-    [["", "", "Cash Collections", "#{price(@employee.cash_on_hand_account.debits_balance(from_date: @date, to_date: @date, recorder_id: @employee.id))}"]] +
-    [["", "", "Cash Disbursed",  "#{price(@employee.cash_on_hand_account.credits_balance(from_date: @date, to_date: @date, recorder_id: @employee.id))}"]]
+    [["", "", "Cash Received", "#{price(@employee.cash_on_hand_account.debits_balance(from_date: @date.beginning_of_day - 1.second, to_date: @date.end_of_day, recorder_id: @employee.id))}"]] +
+    [["", "", "Cash Disbursed",  "#{price(@employee.cash_on_hand_account.credits_balance(from_date: @date.beginning_of_day - 1.second, to_date: @date.end_of_day, recorder_id: @employee.id))}"]]
   end
   def total_summary_data
     [["", "", "Ending Balance", "#{price(@employee.cash_on_hand_account.balance(from_date: @date.beginning_of_day - 1.second, to_date: @date.end_of_day, recorder_id: @employee.id) + @employee.fund_transfer_total)}"]]
   end
 
+  def summary_of_accounts
+    text "Summary of Accounts", style: :bold, size: 10
+
+    table(accounts_data, cell_style: { size: 10, font: "Helvetica"}, column_widths: [20, 80, 210, 90]) do
+        cells.borders = []
+        row(0).font_style = :bold
+    end
+    stroke do
+      stroke_color 'CCCCCC'
+      line_width 0.2
+      stroke_horizontal_rule
+      move_down 15
+    end
+  end
+  def accounts_data
+    [["", "Code", "Account", "Debits", "Credits"]] +
+    @accounts_data ||= AccountingModule::Account.updated_at(@date.beginning_of_day, @date.end_of_day).distinct.order(:code).map{|a| ["", a.code, a.name, a.debits_balance(recorder_id: @employee.id), a.credits_balance(recorder_id: @employee.id)]}
+  end
 
 
 end

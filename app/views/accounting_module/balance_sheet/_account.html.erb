@@ -13,7 +13,7 @@
       <% balance = account.balance(:from_date => @from_date, :to_date => @to_date) %>
       <tr>
         <td><%= account.name %></td>
-        <td><aspan class="pull-right"><%=number_to_currency balance.round(2) %></span></td>
+        <td><span class="pull-right"><%=number_to_currency balance.round(2) %></span></td>
         <% running_total += balance %>
       </tr>
     <% end %>
