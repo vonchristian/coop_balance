@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171029124432) do
+ActiveRecord::Schema.define(version: 20171030015759) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -811,6 +811,8 @@ ActiveRecord::Schema.define(version: 20171029124432) do
     t.integer "interest_recurrence"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "account_id"
+    t.index ["account_id"], name: "index_saving_products_on_account_id"
     t.index ["name"], name: "index_saving_products_on_name", unique: true
   end
 
@@ -1106,6 +1108,7 @@ ActiveRecord::Schema.define(version: 20171029124432) do
   add_foreign_key "real_properties", "members"
   add_foreign_key "registries", "suppliers"
   add_foreign_key "registries", "users", column: "employee_id"
+  add_foreign_key "saving_products", "accounts"
   add_foreign_key "savings", "members"
   add_foreign_key "savings", "saving_products"
   add_foreign_key "share_capital_product_shares", "share_capital_products"

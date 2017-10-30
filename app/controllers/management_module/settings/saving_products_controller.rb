@@ -16,7 +16,7 @@ module ManagementModule
 
       private
       def saving_product_params
-        params.require(:coop_services_module_saving_product).permit(:name, :interest_rate, :interest_recurrence)
+        params.require(:coop_services_module_saving_product).permit(:name, :interest_rate, :interest_recurrence, :account_id)
       end
     end
   end
