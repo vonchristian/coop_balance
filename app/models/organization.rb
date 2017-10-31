@@ -17,4 +17,7 @@ class Organization < ApplicationRecord
   def members
     member_members + employee_members
   end
+  def members_with_loans
+    member_members.with_loans
+  end
 end

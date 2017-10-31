@@ -46,7 +46,9 @@ class Member < ApplicationRecord
   after_commit :set_fullname, on: [:create, :update]
   after_commit :subscribe_to_programs
   before_save :update_birth_date_fields
-
+  def self.with_loans
+    all.select{|a| a.loans.present? }
+  end
   def current_occupation
     return "No Occupation entered" if occupations.blank?
     occupations.order(created_at: :asc).last
