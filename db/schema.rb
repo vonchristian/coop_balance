@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171030015759) do
+ActiveRecord::Schema.define(version: 20171031015231) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -910,6 +910,8 @@ ActiveRecord::Schema.define(version: 20171030015759) do
     t.datetime "updated_at", null: false
     t.integer "number_of_days"
     t.integer "time_deposit_product_type"
+    t.uuid "account_id"
+    t.index ["account_id"], name: "index_time_deposit_products_on_account_id"
     t.index ["name"], name: "index_time_deposit_products_on_name", unique: true
   end
 
@@ -1116,6 +1118,7 @@ ActiveRecord::Schema.define(version: 20171030015759) do
   add_foreign_key "share_capitals", "share_capital_products"
   add_foreign_key "streets", "barangays"
   add_foreign_key "streets", "municipalities"
+  add_foreign_key "time_deposit_products", "accounts"
   add_foreign_key "time_deposits", "time_deposit_products"
   add_foreign_key "users", "cooperatives"
   add_foreign_key "users", "departments"

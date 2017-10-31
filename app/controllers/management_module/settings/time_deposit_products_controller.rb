@@ -14,13 +14,13 @@ module ManagementModule
           render :new
         end
       end
-      def show 
+      def show
         @time_deposit_product = CoopServicesModule::TimeDepositProduct.find(params[:id])
       end
 
       private
       def time_deposit_product_params
-        params.require(:coop_services_module_time_deposit_product).permit(:name, :interest_rate, :minimum_amount, :maximum_amount, :time_deposit_product_type, :number_of_days)
+        params.require(:coop_services_module_time_deposit_product).permit(:name, :interest_rate, :minimum_amount, :maximum_amount, :time_deposit_product_type, :number_of_days, :account_id)
       end
     end
   end
