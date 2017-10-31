@@ -1,66 +1,37 @@
-
-
-  <!-- Profile Image -->
-  <div class="box box-solid">
-    <div class="box-body box-profile">
+<div class="box box-solid">
+  <div class="box-body box-profile">
     <%= image_tag(@employee.avatar.url(:medium), class: "profile-user-img img-responsive img-circle") %>
-
-      <h3 class="profile-username text-center"><%= @employee.first_and_last_name %></h3>
-        <hr>
-
-
-
-
-      <strong><i class="fa fa-phone margin-r-5"></i> Contact Number</strong>
-
-      <p class="text-muted"><%#= @employee.contact_number %>
-
-      </p>
-
-      <hr>
-
-      <strong><i class="fa fa-map-marker margin-r-5"></i> Address</strong>
-
-
-      <p class="text-muted"><%#= @employee.addresses.current %></p>
-      <hr>
-       <strong><i class="fa fa-book margin-r-5"></i> TIN Number</strong>
-
-      <p class="text-muted"><%#= @employee.tin_number %></p>
-
-      <hr>
-
-      <strong><i class="fa fa-book margin-r-5"></i> Membership</strong>
-
-      <p class="text-muted"><%= @employee.membership_type.try(:titleize) %></p>
-      <% if @employee.membership.present? %>
-        <%= link_to "Update Membership", edit_employee_membership_path(id: @employee.id) %>
-      <% else %>
-        <%= link_to "Update Membership", new_employee_membership_path(id: @employee.id) %>
-        <% end %>
-      <hr>
-
-      <strong><i class="fa fa-book margin-r-5"></i> Cash on Hand Account</strong>
-
-      <p class="text-muted"><%= @employee.cash_on_hand_account.try(:name) %></p>
-        <%= link_to "Update Cash on Hand Account", edit_employee_cash_on_hand_account_path(id: @employee.id) %>
-      <hr>
-
-
-
-      <strong><i class="fa fa-file-text margin-r-5"></i> Notes</strong>
-
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
-       <div class="row">
+    <h3 class="profile-username text-center"><%= @employee.first_and_last_name %></h3>
+    <hr>
+    <strong><i class="fa fa-phone margin-r-5"></i> Contact Number</strong>
+    <p class="text-muted"><%#= @employee.contact_number %></p>
+    <hr>
+    <strong><i class="fa fa-map-marker margin-r-5"></i> Address</strong>
+    <p class="text-muted"><%#= @employee.addresses.current %></p>
+    <hr>
+     <strong><i class="fa fa-book margin-r-5"></i> TIN Number</strong>
+    <p class="text-muted"><%#= @employee.tin_number %></p>
+    <hr>
+    <strong><i class="fa fa-book margin-r-5"></i> Membership</strong>
+    <p class="text-muted"><%= @employee.membership_type.try(:titleize) %></p>
+    <% if @employee.membership.present? %>
+      <%= link_to "Update Membership", edit_employee_membership_path(id: @employee.id, employee_id: @employee.id) %>
+    <% else %>
+      <%= link_to "Update Membership", new_employee_membership_path(id: @employee.id, employee_id: @employee.id) %>
+      <% end %>
+    <hr>
+    <strong><i class="fa fa-book margin-r-5"></i> Cash on Hand Account</strong>
+    <p class="text-muted"><%= @employee.cash_on_hand_account.try(:name) %></p>
+      <%= link_to "Update Cash on Hand Account", edit_employee_cash_on_hand_account_path(id: @employee.id, employee_id: @employee.id) %>
+    <hr>
+    <strong><i class="fa fa-file-text margin-r-5"></i> Notes</strong>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
+    <div class="row">
       <div class="col-md-8 col-md-offset-2">
         <%= link_to 'Update Info', edit_employee_path(@employee), class: "btn btn-primary btn-block" %>
         <br>
       </div>
     </div>
-    </div>
-
-
-    <!-- /.box-body -->
   </div>
-  <!-- /.box -->
+</div>
 
