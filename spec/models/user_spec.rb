@@ -27,7 +27,8 @@ RSpec.describe User, type: :model do
     it { is_expected.to delegate_method(:amount).to(:salary_grade).with_prefix }
     it { is_expected.to delegate_method(:name).to(:salary_grade).with_prefix }
     it { is_expected.to delegate_method(:name).to(:department).with_prefix }
-    it { is_expected.to delegate_method(:regular_member?).to(:membership).with_prefix }
+    it { is_expected.to delegate_method(:regular_member?).to(:membership) }
+    it { is_expected.to delegate_method(:membership_type).to(:membership) }
   end
   describe 'enums' do
     it do

@@ -212,6 +212,7 @@ Rails.application.routes.draw do
     resources :break_contracts, only: [:new, :create], module: :time_deposits
   end
   resources :employees, only: [:index, :show, :edit, :update] do
+    resources :memberships, only: [:new, :create, :edit, :update], module: :employees
     resources :time_deposits, only: [:index, :new, :create], module: :employees
     resources :savings_accounts, only: [:index, :new, :create], module: :employees
     resources :share_capitals, only: [:index, :new, :create], module: :employees
