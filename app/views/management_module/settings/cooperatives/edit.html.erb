@@ -8,11 +8,13 @@
         <%= simple_form_for @cooperative, url: :management_module_settings_cooperative do |f| %>
           <%= f.input :logo %>
           <%= f.input :name %>
+          <%= f.input :abbreviated_name %>
+
           <%= f.input :registration_number %>
           <%= f.input :address %>
           <%= f.input :contact_number %>
           <div class="box-footer">
-            <%= f.submit "Save", class: "btn btn-primary" %>
+            <%= f.submit "Save Cooperative Details", class: "btn btn-primary" %>
           </div>
         <% end %>
       </div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171031030459) do
+ActiveRecord::Schema.define(version: 20171031034452) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -225,6 +225,8 @@ ActiveRecord::Schema.define(version: 20171031030459) do
     t.string "logo_content_type"
     t.integer "logo_file_size"
     t.datetime "logo_updated_at"
+    t.string "abbreviated_name"
+    t.index ["abbreviated_name"], name: "index_cooperatives_on_abbreviated_name", unique: true
   end
 
   create_table "days_workeds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1122,10 +1124,10 @@ ActiveRecord::Schema.define(version: 20171031030459) do
   add_foreign_key "streets", "municipalities"
   add_foreign_key "time_deposit_products", "accounts"
   add_foreign_key "time_deposits", "time_deposit_products"
+  add_foreign_key "users", "accounts", column: "cash_on_hand_account_id"
   add_foreign_key "users", "cooperatives"
   add_foreign_key "users", "departments"
   add_foreign_key "users", "salary_grades"
-  add_foreign_key "users", "users", column: "cash_on_hand_account_id"
   add_foreign_key "voucher_amounts", "accounts"
   add_foreign_key "voucher_amounts", "vouchers"
   add_foreign_key "vouchers", "users"
