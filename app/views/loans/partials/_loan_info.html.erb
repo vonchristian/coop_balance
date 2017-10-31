@@ -22,11 +22,11 @@
         </div>
         <hr />
         <div class="row">
-          <div class="col-md-6 border-right">
+          <div class="col-md-6 col-md-offset-1">
                 <h4 class="condensed-text">LOAN DETAILS </h4>
             <div class="row">
               <div class="col-md-6">
-                &nbsp; &nbsp;  Borrower    
+                &nbsp; &nbsp;  Borrower
               </div>
               <div class="col-md-6">
                 <%= image_tag(@loan.borrower.avatar.url(:medium), class: 'img-circle', height: 40, width: 40 ) %> &nbsp;
@@ -35,7 +35,7 @@
                 <% elsif @loan.borrower.kind_of?(User) %>
                   <b> <%=link_to @loan.borrower_name, employee_path(@loan.borrower)%></b>
                 <% end %>
-                  
+
               </div>
             </div>
             <br>
@@ -50,7 +50,7 @@
             <br>
             <div class="row">
               <div class="col-md-6">
-                &nbsp; &nbsp; Loan Amount 
+                &nbsp; &nbsp; Loan Amount
               </div>
               <div class="col-md-6">
                 <%=number_to_currency @loan.loan_amount %>
@@ -92,11 +92,10 @@
                 <%=  @loan.maturity_date.try(:strftime, ("%B %e, %Y")) %>
               </div>
             </div>
-          </div>
-          <div class="col-md-5 col-md-offset-1">
+            <hr>
             <div class="row">
               <div class="col-md-8">
-                <h4 class="condensed-text"><span class="badge bg-green"><%= @loan.co_makers.count %></span> &nbsp; LOAN CO MAKERS </h4>
+                <h4 class="condensed-text"> LOAN CO MAKERS </h4>
               </div>
               <div class="col-md-4">
                 <%= link_to new_loan_loan_co_maker_path(@loan) do %>
@@ -118,7 +117,7 @@
                   <% end %>
                   <br>
                   <small class="text-muted"> <%= loan_co_maker.current_occupation.try(:titleize).try(:upcase) %></small>
-                  
+
                 </div>
               </div>
               <br>
@@ -138,7 +137,7 @@
                <%=link_to loan_real_property_path(loan_id: @loan.id, id: real_property.id) do %>
                 <div class="row">
                   <div class="col-md-8">
-                    
+
                     <b><%=real_property.description %> <%=number_to_currency real_property.appraised_value %></b><br>
                     <% real_property.pictures.each do |image|%>
                       <%=image_tag(image.image.url(:large), class: "img-square", height: 60, width: 60) %>
@@ -148,7 +147,6 @@
               <br>
               <% end %>
             <% end %>
-          </div>
           <% if @loan.approved? %>
             <div class="col-md-6 border-right">
               <span class="text-muted"><i class="fa fa-calendar"></i> NEXT PAYMENT DUE </span>
@@ -167,13 +165,13 @@
               AMOUNT
             </div>
           <% end %>
-        </div>
+
         <hr>
-        <p class="text-muted"> APPROVAL DETAILS </p>
           <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-8">
               <div class="row">
                 <div class="col-md-12">
+                   <p class="text-muted"> APPROVAL DETAILS </p>
                   <% User.loan_approvers.each do |employee| %>
                     <div class="row">
                       <div class="col-md-3">
@@ -191,7 +189,7 @@
                         <% if !@loan.approvers.include?(employee) && current_user == employee %>
                           <%= link_to "Approve", new_loan_approval_path(@loan), class: "btn btn-success btn-xs" %>
                         <% end %>
-                        
+
                       </div>
                     </div>
                     <br>
@@ -208,8 +206,8 @@
           <hr>
           or
           <%= @loan.number_of_months_past_due %> months past due or <%= @loan.number_of_months_past_due / 12 %> years past due
-          
-          
+
+
           </div>
         </div>
       </div>
@@ -217,4 +215,4 @@
   </div>
 </div>
 
-   
+

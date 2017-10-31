@@ -268,6 +268,7 @@ Rails.application.routes.draw do
   resources :calendars, only: [:index, :show]
   resources :organizations, only: [:index, :show, :new, :create] do
     resources :members, only: [:new, :create], module: :organizations
+    resources :loans, only: [:index], module: :organizations
   end
 
   mount ActionCable.server => '/cable'

@@ -11,7 +11,9 @@
           <%= f.input :description, as: :text %>
           <%= f.input :max_loanable_amount, label: "Maximum Loanable Amount", as: :currency %>
           <%= f.input :interest_rate, label: "Interest Rate (Percent)" %>
-          <%= f.input :account_id, collection: AccountingModule::Asset.all.map{|a| [a.name.titleize, a.id] } %>
+          <div class="loan-accounts">
+          <%= f.input :account_id, label: "Select Account", collection: AccountingModule::Asset.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanAccountSelect'} %>
+          </div>
           <div class="box-footer">
             <%= f.submit "Create Loan Product", class: "btn btn-primary btn-flat" %>
           </div>
