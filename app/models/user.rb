@@ -22,7 +22,7 @@ class User < ApplicationRecord
   belongs_to :department
   belongs_to :cooperative
   belongs_to :salary_grade
-
+  has_one :membership, as: :memberable
   has_many :loans, class_name: "LoansModule::Loan", as: :borrower
   has_many :co_makered_loans, class_name: "LoansModule::LoanCoMaker", as: :co_maker
   has_many :savings, class_name: "MembershipsModule::Saving", as: :depositor
@@ -40,6 +40,7 @@ class User < ApplicationRecord
   delegate :name, :amount, to: :salary_grade, prefix: true, allow_nil: true
   delegate :name, to: :department, prefix: true, allow_nil: true
   delegate :name, :address, :contact_number, :logo, to: :cooperative, prefix: true
+  delegate :regular_member?, to: :membership
 
   has_attached_file :avatar,
   styles: { large: "120x120>",
@@ -53,6 +54,9 @@ class User < ApplicationRecord
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
   def current_occupation
     role
+  end
+  def full_name
+    name
   end
   def accounts_receivable_gen_merchandise_total
     AccountingModule::Account.find_by(name: "Accounts Receivables Trade - Current (General Merchandise)").balance(commercial_document_id: self.id)

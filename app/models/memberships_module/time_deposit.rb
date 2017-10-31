@@ -10,44 +10,47 @@ module MembershipsModule
     delegate :name, :interest_rate, to: :time_deposit_product, allow_nil: true, prefix: true
     delegate :full_name, :first_and_last_name, to: :depositor, prefix: true
     before_save :set_account_number, :set_date_deposited, :set_depositor_name, on: [:create]
+
+    validates :depositor_id, :depositor_type, presence: true
+    validates :number_of_days, presence: true, numericality: true
     def member?
       depositor.regular_member?
     end
     def non_member?
       !depositor.regular_member?
     end
-    def self.matured 
+    def self.matured
       all.select{|a| a.matured? }
     end
     def self.post_interests_earned
       !matured.each do |time_deposit|
         post_interests_earned
-      end 
+      end
     end
     def post_interests_earned
       if !matured?
-        AccountingModule::Entry.time_deposit_interest.create!(commercial_document: self, description: 'Time deposit earned interest', entry_date: Time.zone.now, 
-          debit_amounts_attributes: [account_id: AccountingModule::Account.find_by(name: "Interest Expense on Deposits").id, amount: self.balance * (self.time_deposit_product_interest_rate / 100.0) ], 
+        AccountingModule::Entry.time_deposit_interest.create!(commercial_document: self, description: 'Time deposit earned interest', entry_date: Time.zone.now,
+          debit_amounts_attributes: [account_id: AccountingModule::Account.find_by(name: "Interest Expense on Deposits").id, amount: self.balance * (self.time_deposit_product_interest_rate / 100.0) ],
           credit_amounts_attributes: [account_id: AccountingModule::Account.find_by(name: "Time Deposits").id, amount: self.balance * (self.time_deposit_product_interest_rate / 100.0) ])
       end
     end
-    def maturity_date 
+    def maturity_date
       if date_deposited.present?
-        date_deposited + number_of_days.days 
+        date_deposited + number_of_days.days
       end
     end
     def matured?
-      maturity_date < Time.zone.now 
+      maturity_date < Time.zone.now
     end
-    def transfer_to_savings 
+    def transfer_to_savings
       #if matured?
-      #find_member_savings_accounts 
+      #find_member_savings_accounts
       #if savings_accounts.present?
-        #select last saving account 
-        #add time deposit balance to saving account balance 
-      #elsif no account found 
-      #create savings account 
-      # add time dpeosit balance to saving account balance 
+        #select last saving account
+        #add time deposit balance to saving account balance
+      #elsif no account found
+      #create savings account
+      # add time dpeosit balance to saving account balance
       #
     end
 
@@ -64,14 +67,14 @@ module MembershipsModule
     def withdrawn?
       deposits.withdrawal.present?
     end
-    private 
-    def set_account_number 
+    private
+    def set_account_number
       self.account_number ||= self.id
     end
     def set_date_deposited
-      self.date_deposited ||= Time.zone.now 
+      self.date_deposited ||= Time.zone.now
     end
-    def set_depositor_name 
+    def set_depositor_name
       self.depositor_name ||= self.depositor_full_name
     end
   end

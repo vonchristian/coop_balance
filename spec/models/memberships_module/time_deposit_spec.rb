@@ -2,17 +2,23 @@ require 'rails_helper'
 
 module MembershipsModule
   describe TimeDeposit do
-    context 'associations' do 
+    context 'associations' do
     	it { is_expected.to belong_to :depositor }
     	it { is_expected.to belong_to :time_deposit_product }
     	it { is_expected.to have_many :deposits }
-    end 
+    end
+    describe 'validations' do
+      it { is_expected.to validate_presence_of :depositor_id }
+      it { is_expected.to validate_presence_of :depositor_type }
+      it { is_expected.to validate_presence_of :number_of_days }
+      it { is_expected.to validate_numericality_of :number_of_days }
+    end
 
     it '#balance' do
       time_deposit = create(:time_deposit)
       deposit = create(:entry_with_credit_and_debit, commercial_document: time_deposit)
 
-      puts time_deposit.balance 
+      puts time_deposit.balance
     end
-  end 
+  end
 end

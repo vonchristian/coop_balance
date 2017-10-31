@@ -1,4 +1,8 @@
 <div class="tab-pane <%= 'active' if current_page?(employee_time_deposits_path(@employee)) %>" id="employee-time-deposits">
   Time Deposits
   <%= link_to 'New Time Deposit', new_employee_time_deposit_path(@employee), class: "btn btn-primary" %>
+  <hr>
+  <% @time_deposits.each do |time_deposit| %>
+    <%= time_deposit.amount_deposited %>
+  <% end %>
 </div>
