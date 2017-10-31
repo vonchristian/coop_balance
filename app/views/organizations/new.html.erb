@@ -5,8 +5,14 @@
         <h3 class="box-title">Organizations </h3>
       </div>
       <div class="box-body">
-        <%= simple_form_for @organization do |f| %>
+        <%= simple_form_for @organization, multipart: true do |f| %>
           <%= f.error_notification %>
+         <%if @organization.avatar.blank? %>
+            <center><%=image_tag("default_organization_avatar.jpg", height: 80, width: 80, :class=>"img-circle") %></center>
+          <% else %>
+            <center><%= image_tag @organization.avatar.url(:large), class: 'center-block img-responsive img-circle'%></center>
+          <% end %>
+          <center><%= f.input :avatar, as: :file, label: "Upload Logo" %></center>
           <%= f.input :name %>
           <%= f.submit "Save Organization" %>
         <% end %>

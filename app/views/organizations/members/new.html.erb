@@ -2,6 +2,9 @@
   <div class="col-md-6 col-md-offset-3">
     <div class="box box-solid">
       <div class="box-header with-border">
+        <%=link_to organization_path(@organization), title: "Back" do %>
+          <span class="btn btn-default pull-left"><i class="fa fa-chevron-left"></i> Back </span>
+        <% end %> &nbsp; &nbsp;
         <h3 class="box-title"><%= @organization.name %></h3>
       </div>
       <div class="box-body">
