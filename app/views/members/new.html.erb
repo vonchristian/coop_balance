@@ -26,6 +26,9 @@
           <%= f.simple_fields_for :tin do |t| %>
           <%= t.input :number, label: "TIN Number" %>
           <% end %>
+          <%= f.simple_fields_for :membership do |m| %>
+            <%= m.input :membership_type, collection: Membership.membership_types.keys.to_a.map{|a| [a.titleize, a ] }, as: :radio_buttons %>
+          <% end %>
           <p class="text-muted"> Address Details </p>
           <%= f.simple_fields_for :addresses do |a| %>
             <%= a.input :street %>

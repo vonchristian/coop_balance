@@ -80,6 +80,7 @@ Rails.application.routes.draw do
   end
   resources :members do
     resources :address_details
+    resources :memberships, only: [:new, :create, :edit, :update], module: :members
     resources :info, only: [:index], module: :members
     resources :loans, only: [:index, :new, :create], module: :members
     resources :real_properties, only: [:index, :new, :create], module: :members

@@ -18,6 +18,9 @@ describe Member, type: :model do
 
 
   end
+  describe 'delegations' do
+    it { is_expected.to delegate_method(:membership_type).to(:membership) }
+  end
 
   describe 'validations' do
   end

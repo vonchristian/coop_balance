@@ -4,7 +4,7 @@
   <div class="box box-solid">
     <div class="box-body box-profile">
     <%= image_tag(member.avatar.url(:medium), class: "profile-user-img img-responsive img-circle") %>
-      
+
       <h3 class="profile-username text-center"><%= member.first_and_last_name %></h3>
       <% if @member.occupations.present? %>
         <% @member.occupations.each do |occupation| %>
@@ -14,13 +14,13 @@
         <center><%= link_to 'Add Occupation', new_member_occupation_path(@member), class: 'text-muted text-center' %></center>
         <hr>
 
-     
 
-     
+
+
       <strong><i class="fa fa-phone margin-r-5"></i> Contact Number</strong>
 
       <p class="text-muted"><%= @member.contact_number %>
-        
+
       </p>
 
       <hr>
@@ -33,6 +33,14 @@
        <strong><i class="fa fa-book margin-r-5"></i> TIN Number</strong>
 
       <p class="text-muted"><%= @member.tin_number %></p>
+
+      <hr>
+      <strong><i class="fa fa-book margin-r-5"></i> Membership Type</strong>
+
+      <p class="text-muted"><%= @member.membership_type.try(:titleize) %></p>
+      <% if @member.membership.present? %>
+        <%= link_to 'Update Membership', edit_member_membership_path(@member) %>
+      <% end %>
 
       <hr>
 
