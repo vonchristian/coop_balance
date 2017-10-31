@@ -15,7 +15,9 @@
                 <%= employee.role.try(:titleize) %>
               </div>
               <div class="col-md-3">
-                <span class="pull-right"><%= number_to_currency employee.cash_on_hand_account.balance(recorder_id: employee.id) %></span>
+                <% if employee.cash_on_hand_account.present? %>
+                  <span class="pull-right"><%= number_to_currency employee.cash_on_hand_account.balance(recorder_id: employee.id) %></span>
+                <% end %>
               </div>
             </div>
             <hr>
