@@ -13,12 +13,8 @@
           <li class="<%= 'active' if current_page?(employee_orders_path(@employee))%>"><%= link_to 'Purchases', employee_orders_path(@employee) %></li>
           <li class="<%= 'active' if current_page?(employee_loans_path(@employee))%>"><%= link_to 'Loans & Credit', employee_loans_path(@employee) %></li>
           <li class="<%= 'active' if current_page?(employee_savings_accounts_path(@employee))%>"><%= link_to 'Savings', employee_savings_accounts_path(@employee) %></li>
-          <li class="<%= 'active' if current_page?(employee_savings_accounts_path(@employee))%>"><%= link_to 'Share Capitals', employee_share_capitals_path(@employee) %></li>
-
-
-
-
-
+          <li class="<%= 'active' if current_page?(employee_share_capitals_path(@employee))%>"><%= link_to 'Share Capitals', employee_share_capitals_path(@employee) %></li>
+          <li class="<%= 'active' if current_page?(employee_time_deposits_path(@employee))%>"><%= link_to 'Time Deposits', employee_time_deposits_path(@employee) %></li>
         </ul>
       </div>
       <div class="tab-content box-body">
@@ -45,6 +41,9 @@
         <% end %>
         <% if current_page?(employee_share_capitals_path(@employee)) %>
           <%= render 'employees/partials/share_capitals' %>
+        <% end %>
+         <% if current_page?(employee_time_deposits_path(@employee)) %>
+          <%= render 'employees/partials/time_deposits' %>
         <% end %>
       </div>
     </div>

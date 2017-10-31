@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :user do
+  factory :user, aliases: [:employee] do
     first_name  { Faker::Name.first_name }
     middle_name { Faker::Name.last_name }
     last_name   { Faker::Name.last_name }
@@ -8,7 +8,7 @@ FactoryBot.define do
     password_confirmation 'secretpassword'
     role 0
     cooperative
-    factory :loan_officer do 
+    factory :loan_officer do
       role 'loan_officer'
     end
   end
