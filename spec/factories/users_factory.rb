@@ -14,5 +14,8 @@ FactoryBot.define do
     factory :manager do
       role 'manager'
     end
+    factory :sales_clerk do
+      role 'sales_clerk'
+    end
   end
 end

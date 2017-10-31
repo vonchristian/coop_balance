@@ -1,4 +1,5 @@
-<div class="tab-pane active" id="purchases">
+<div class="tab-pane <%= 'active' if current_page?(member_purchases_path(@member)) %>" id="purchases">
+  <%= link_to 'Print (PDF)', member_purchases_path(@member, format: 'pdf') %>
   <div class="box-body">
     <div class="table table-responsive">
       <table class="table table-striped table-hover">

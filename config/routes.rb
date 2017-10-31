@@ -271,6 +271,7 @@ Rails.application.routes.draw do
     resources :members, only: [:new, :create], module: :organizations
     resources :loans, only: [:index], module: :organizations
   end
+  resources :customers, only: [:index]
 
   mount ActionCable.server => '/cable'
 

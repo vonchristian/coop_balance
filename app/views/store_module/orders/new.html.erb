@@ -17,7 +17,7 @@
             Product
           </div>
           <div class="col-md-3 col-sm-2 col-xs-2">
-            <small><b>Total Cost</b> </small> 
+            <small><b>Total Cost</b> </small>
           </div>
         </div>
         <br>
@@ -51,10 +51,10 @@
       </div>
     </div>
   </div>
-      
+
         <div class="col-md-5">
           <div class="box box-solid">
-            <div class="box-header bg-green">
+            <div class="box-header bg-blue">
               <h3 class="condensed-text box-title"> PAYMENT DETAILS </h3>
             </div>
             <div class="box-body">
@@ -70,14 +70,14 @@
           <%= simple_form_for @order do |f| %>
             <%= f.input :date, as: :string, input_html: { class: "datepicker", value: Time.zone.now.strftime("%B %e, %Y") } %>
             <span><label>Customer</label><span class="pull-right"><%= link_to 'New Customer', new_customer_registration_path, remote: true %></span></span>
-            <%= f.input :customer_id, default: Member.order(created_at: :asc).last.try(:full_name), input_html: {id: 'member-select'}, collection: StoreModule::Order.customers.map{|a| [a.name, a.id] } %>
+            <%= f.input :customer_id, label: false, default: Member.order(created_at: :asc).last.try(:full_name), input_html: {id: 'member-select'}, collection: StoreModule::Order.customers.map{|a| [a.name, a.id] } %>
             <%= f.input :payment_type, input_html: {id: 'payment-type-select', class: 'icheck-me', "data-skin" => 'square', "data-color" => "blue"}, collection: StoreModule::Order.payment_types.keys.to_a.map {|a| [a.titleize, a]}, default: StoreModule::Order.payment_types.first %>
             <%= f.input :total_cost, input_html: { id: 'order-total-cost', value: @cart.line_items.total_cost }, as: :hidden %>
             <%= f.input :cash_tendered, as: :string, input_html: { id: 'order-cash-tendered', oninput: 'calculateChangeForOrder()', class: "input-lg"} %>
             <%= f.input :order_change, label: "Change", readonly: true, input_html: { id: 'order-change', value: 0, class: 'bg-gray input-lg'}, as: :string %>
             <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
             <div class="box-footer">
-              <center><%= f.submit "Save Order", class: "btn btn-success btn-block btn-flat btn-lg" %></center>
+              <center><%= f.submit "Save Order", class: "btn btn-primary btn-block btn-flat btn-lg" %></center>
             </div>
           <% end %>
         </div>
@@ -86,9 +86,9 @@
   </div>
 </div>
 <script type="text/javascript">
-  $( "#member-select" ).select2({    
+  $( "#member-select" ).select2({
   });
-  $( "#payment-type-select" ).select2({    
+  $( "#payment-type-select" ).select2({
   });
   function calculateChangeForOrder() {
     var orderCashTendered = document.getElementById('order-cash-tendered').value;

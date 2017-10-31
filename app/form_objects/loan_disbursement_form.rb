@@ -7,7 +7,7 @@ class LoanDisbursementForm
   def save
     ActiveRecord::Base.transaction do
       save_disbursement
-      update_amortization_schedules
+      # update_amortization_schedules
     end
   end
   def find_loan
