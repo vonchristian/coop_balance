@@ -139,13 +139,13 @@ class TellerReportPdf < Prawn::Document
     end
   end
   def time_deposits_balances
-    [["", "Beginning Balance", "#{price(AccountingModule::Account.find_by(name: "Savings Deposits").balance(to_date: (@date.yesterday.end_of_day - 1.second), recorder_id: @employee.id))}"]]
+    [["", "Beginning Balance", "#{price(AccountingModule::Account.find_by(name: "Time Deposits").balance(to_date: @date.yesterday.end_of_day))}"]]
   end
   def time_deposits_from_members
     [["", "", "Add Deposits", "#{price(AccountingModule::Account.find_by(name: "Time Deposits").credit_entries.recorder_by(@employee.id).entered_on(from_date: @date, to_date: @date).total)}"]]
   end
   def total_time_deposits
-    [["", "", "Total Savings Deposits", "#{price(AccountingModule::Account.find_by(name: "Time Deposits").balance(:recorder_id => @employee.id))}"]]
+    [["", "", "Total Time Deposits", "#{price(AccountingModule::Account.find_by(name: "Time Deposits").balance(to_date: @date.end_of_day))}"]]
   end
   def time_deposit_withdrawals_from_members
     [["", "", "Less Withdrawals", "#{price(AccountingModule::Account.find_by(name: "Time Deposits").debit_entries.recorder_by(@employee.id).entered_on(from_date: @date, to_date: @date).total)}"]]

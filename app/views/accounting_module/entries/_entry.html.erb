@@ -1,12 +1,12 @@
 
   <tr>
-    <td><%=entry.entry_date.strftime("%B %e, %Y") %><br>
+    <td>
       <% if entry.recorder.present? %>
         <%=image_tag(entry.recorder.avatar.url(:thumb), class: "img-circle", height: 30, width: 30)%>
         <b><%= entry.recorder_first_and_last_name %></b>
       <% end %>
-      
     </td>
+    <td><%=entry.entry_date.strftime("%B %e, %Y") %></td>
     <td><%=link_to entry.description, accounting_module_entry_path(entry) %><br>
       <span class="badge"><%= entry.entry_type %></span>
     </td>

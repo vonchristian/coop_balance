@@ -23,7 +23,7 @@
           <hr>
           <div class="row">
             <div class="col-md-5">
-              <span class="text-muted condensed-text"> SHOW ACTIVITY: </span> &nbsp; 
+              <span class="text-muted condensed-text"> SHOW ACTIVITY: </span> &nbsp;
               <%=link_to 'Yesterday', employee_entries_path(@employee, from_date: Time.zone.now.yesterday.beginning_of_day, to_date: Time.zone.now.yesterday.end_of_day ), class: "btn btn-default"  %>
                <%=link_to 'This Day', employee_entries_path(@employee, from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day ), class: "btn btn-default"  %>
               <%=link_to 'This Week', employee_entries_path(@employee,from_date: Time.zone.now.beginning_of_week.beginning_of_day, to_date: Time.zone.now.end_of_week.end_of_day ), class: "btn btn-default"  %>
@@ -61,6 +61,7 @@
             <table class="table table-striped">
               <thead>
                 <tr>
+                  <th> Employee </th>
                   <th> Date </th>
                   <th> Description </th>
                   <th> Reference Number </th>
