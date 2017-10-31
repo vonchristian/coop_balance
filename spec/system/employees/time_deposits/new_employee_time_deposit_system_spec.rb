@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Index of employee time deposits' do
+describe 'New employee time deposit' do
   before(:each) do
     user = create(:user, role: 'teller')
     login_as(user, scope: :user )
@@ -9,7 +9,8 @@ describe 'Index of employee time deposits' do
     visit employee_time_deposits_url(employee)
     expect(page).to have_content("Time Deposits")
     click_link "New Time Deposit"
-    Rails.application.load_seed
+    debit_account = create(:asset, name: "Cash on Hand (Teller)")
+    credit_account = create(:liability, name: "Time Deposits" )
   end
   it 'with valid attributes' do
     fill_in "Amount", with: 100_000
