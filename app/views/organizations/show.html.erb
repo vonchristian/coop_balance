@@ -1,3 +1,7 @@
 <%= @organization.name %>
 
 <%= link_to "Add Members", new_organization_member_path(@organization) %>
+
+<% @organization.members.each do |member| %>
+  <%= member.name %>
+<% end %>

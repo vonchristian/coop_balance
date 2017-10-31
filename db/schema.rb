@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171031034452) do
+ActiveRecord::Schema.define(version: 20171031044314) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -657,13 +657,14 @@ ActiveRecord::Schema.define(version: 20171031034452) do
   end
 
   create_table "organization_members", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "member_id"
     t.uuid "organization_id"
     t.datetime "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["member_id"], name: "index_organization_members_on_member_id"
+    t.string "organization_membership_type"
+    t.uuid "organization_membership_id"
     t.index ["organization_id"], name: "index_organization_members_on_organization_id"
+    t.index ["organization_membership_type", "organization_membership_id"], name: "index_on_organization_members_membership"
   end
 
   create_table "organizations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1102,7 +1103,6 @@ ActiveRecord::Schema.define(version: 20171031034452) do
   add_foreign_key "memberships", "cooperatives"
   add_foreign_key "orders", "users"
   add_foreign_key "orders", "users", column: "employee_id"
-  add_foreign_key "organization_members", "members"
   add_foreign_key "organization_members", "organizations"
   add_foreign_key "product_stocks", "products"
   add_foreign_key "product_stocks", "registries"

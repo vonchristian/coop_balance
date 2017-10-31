@@ -15,7 +15,7 @@ module Organizations
 
     private
     def member_params
-      params.require(:organization_member).permit(:member_id)
+      params.require(:organization_member).permit(:organization_membership_id, :organization_membership_type)
     end
   end
 end

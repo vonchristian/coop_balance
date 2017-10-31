@@ -19,6 +19,10 @@ RSpec.describe User, type: :model do
     it { is_expected.to have_many :employee_contributions }
     it { is_expected.to have_many :contributions }
     it { is_expected.to have_many :real_properties }
+    it { is_expected.to have_many :organization_memberships }
+    it { is_expected.to have_many :organizations }
+
+
     it { is_expected.to have_one :current_address }
     it { is_expected.to have_one :membership }
   end
@@ -47,7 +51,8 @@ RSpec.describe User, type: :model do
               :treasurer,
               :accountant,
               :human_resource_officer,
-              :accounting_clerk])
+              :accounting_clerk,
+              :collector])
     end
   end
 end

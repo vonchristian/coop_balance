@@ -2,8 +2,8 @@
   <%= member.name %>
 
   <%= simple_form_for [@organization, @member], url: :organization_members do |f| %>
-    <%= f.input :member_id, input_html: { value: member.id } %>
-    <%= f.input :member_type, input_html: { value: member.class } %>
+    <%= f.input :organization_membership_id, input_html: { value: member.id } %>
+    <%= f.input :organization_membership_type, input_html: { value: member.class } %>
     <%= f.submit "Add Member" %>
   <% end %>
 <% end %>
