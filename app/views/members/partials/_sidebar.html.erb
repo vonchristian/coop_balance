@@ -40,6 +40,8 @@
       <p class="text-muted"><%= @member.membership_type.try(:titleize) %></p>
       <% if @member.membership.present? %>
         <%= link_to 'Update Membership', edit_member_membership_path(@member) %>
+      <% else %>
+        <%= link_to 'Update Membership', new_member_membership_path(@member) %>
       <% end %>
 
       <hr>

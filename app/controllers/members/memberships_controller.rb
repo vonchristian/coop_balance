@@ -1,5 +1,21 @@
 module Members
   class MembershipsController < ApplicationController
+    def new
+      @member = Member.friendly.find(params[:member_id])
+      @membership = @member.build_membership
+    end
+
+    def create
+       @member = Member.friendly.find(params[:member_id])
+      @membership = @member.create_membership(membership_params)
+      if @membership.valid?
+        @membership.save
+        redirect_to member_url(@member), notice: "Membership saved successfully."
+      else
+        render :new
+      end
+    end
+
     def edit
       @member = Member.friendly.find(params[:member_id])
       @membership = @member.membership
