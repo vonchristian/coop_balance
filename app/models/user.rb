@@ -18,6 +18,7 @@ class User < ApplicationRecord
               :human_resource_officer,
               :accounting_clerk,
               :collector]
+  belongs_to :cash_on_hand_account, class_name: "AccountingModule::Account", foreign_key: 'cash_on_hand_account_id'
   has_one :current_address, as: :addressable, class_name: "Address"
   belongs_to :department
   belongs_to :cooperative
@@ -90,15 +91,15 @@ class User < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
-  def cash_on_hand_account
-    if treasurer?
-      AccountingModule::Asset.find_by(name: "Cash on Hand (Treasury)")
-    elsif teller?
-      AccountingModule::Asset.find_by(name: "Cash on Hand (Teller)")
-    elsif sales_clerk?
-      AccountingModule::Asset.find_by(name: "Cash on Hand (Teller)")
-    end
-  end
+  # def cash_on_hand_account
+  #   if treasurer?
+  #     AccountingModule::Asset.find_by(name: "Cash on Hand (Treasury)")
+  #   elsif teller?
+  #     AccountingModule::Asset.find_by(name: "Cash on Hand (Teller)")
+  #   elsif sales_clerk?
+  #     AccountingModule::Asset.find_by(name: "Cash on Hand (Teller)")
+  #   end
+  # end
   def fund_transfer_total
     fund_transfers.fund_transfer.map{ |a| a.debit_amounts.distinct.sum(:amount) }.sum
   end

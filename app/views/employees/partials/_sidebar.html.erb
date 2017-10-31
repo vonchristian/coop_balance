@@ -34,10 +34,16 @@
 
       <p class="text-muted"><%= @employee.membership_type.try(:titleize) %></p>
       <% if @employee.membership.present? %>
-        <%= link_to "Update Membership", edit_employee_membership_path(@employee) %>
+        <%= link_to "Update Membership", edit_employee_membership_path(id: @employee.id) %>
       <% else %>
-        <%= link_to "Update Membership", new_employee_membership_path(@employee) %>
+        <%= link_to "Update Membership", new_employee_membership_path(id: @employee.id) %>
         <% end %>
+      <hr>
+
+      <strong><i class="fa fa-book margin-r-5"></i> Cash on Hand Account</strong>
+
+      <p class="text-muted"><%= @employee.cash_on_hand_account.try(:name) %></p>
+        <%= link_to "Update Cash on Hand Account", edit_employee_cash_on_hand_account_path(id: @employee.id) %>
       <hr>
 
 

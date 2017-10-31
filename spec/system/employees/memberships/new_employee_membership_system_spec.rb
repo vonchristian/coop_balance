@@ -7,6 +7,7 @@ describe 'New employee membership' do
     @employee = create(:user)
     visit employee_url(@employee)
     cash_on_hand = create(:asset, name: "Cash on Hand (Teller)")
+    @employee.cash_on_hand_account = cash_on_hand
   end
 
   it 'with valid attributes' do

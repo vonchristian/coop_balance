@@ -1,0 +1,5 @@
+<%= simple_form_for @employee, url: :employee_cash_on_hand_account do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :cash_on_hand_account_id, collection: AccountingModule::Account.all.map{|a| [a.name.titleize, a.id] } %>
+  <%= f.submit "Save Cash on Hand Account" %>
+<% end %>

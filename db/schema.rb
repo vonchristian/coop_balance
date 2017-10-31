@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171031015231) do
+ActiveRecord::Schema.define(version: 20171031030459) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -974,6 +974,8 @@ ActiveRecord::Schema.define(version: 20171031015231) do
     t.date "date_or_birth"
     t.integer "birth_month"
     t.integer "birth_day"
+    t.uuid "cash_on_hand_account_id"
+    t.index ["cash_on_hand_account_id"], name: "index_users_on_cash_on_hand_account_id"
     t.index ["cooperative_id"], name: "index_users_on_cooperative_id"
     t.index ["department_id"], name: "index_users_on_department_id"
     t.index ["email"], name: "index_users_on_email", unique: true
@@ -1123,6 +1125,7 @@ ActiveRecord::Schema.define(version: 20171031015231) do
   add_foreign_key "users", "cooperatives"
   add_foreign_key "users", "departments"
   add_foreign_key "users", "salary_grades"
+  add_foreign_key "users", "users", column: "cash_on_hand_account_id"
   add_foreign_key "voucher_amounts", "accounts"
   add_foreign_key "voucher_amounts", "vouchers"
   add_foreign_key "vouchers", "users"

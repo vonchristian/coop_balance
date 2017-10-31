@@ -1,9 +1,11 @@
 <div class="tab-pane <%= 'active' if current_page?(employee_path(current_user)) %>" id="employee-info">
-<% if current_user.treasurer? || current_user.teller? || current_user.sales_clerk? %>
-  <h3><%= number_to_currency current_user.cash_on_hand_account.balance(recorder_id: current_user.id) + current_user.fund_transfer_total %></h3>
-  <small class="text-muted"><%= current_user.cash_on_hand_account.try(:name).try(:upcase)%></small>
-  <hr>
-<% end %>
+  <% if @employee.cash_on_hand_account.present? %>
+    <% if current_user.treasurer? || current_user.teller? || current_user.sales_clerk? %>
+      <h3><%= number_to_currency current_user.cash_on_hand_account.balance(recorder_id: current_user.id) + current_user.fund_transfer_total %></h3>
+      <small class="text-muted"><%= current_user.cash_on_hand_account.try(:name).try(:upcase)%></small>
+      <hr>
+    <% end %>
+  <% end %>
   <% if current_user.treasurer? %>
     <div class="dropdown">
       <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -17,6 +19,6 @@
       </ul>
     </div>
   <%elsif current_user.teller? %>
-     <%= link_to 'New Remittance', new_employee_remittance_path(@employee), class: "btn btn-primary btn-flat" %> 
+     <%= link_to 'New Remittance', new_employee_remittance_path(@employee), class: "btn btn-primary btn-flat" %>
   <% end %>
 </div>
