@@ -4,10 +4,10 @@ This project integrates the services of a cooperative in a single platform so th
 
 These services are included:
 
-* Loans Module 
-* Accounting Module 
-* Cooperative Services Module 
-* Members Registry Module 
+* Loans Module
+* Accounting Module
+* Cooperative Services Module
+* Members Registry Module
 * Program Subscriptions Module
 * Warehouse Module
 
@@ -38,7 +38,7 @@ relation [:mother, :father, :daughter, :son, :grandmother, :grandfather, :brothe
 
 Implement TimeDeposit done
 
-Entry of days worked of employee 
+Entry of days worked of employee
 Employee Contributions
 
 Document Management
@@ -55,11 +55,11 @@ background job kaltas payment of program from members who subscribed
   print pdf of time deposit
 
 
-  sales return 
-    sales return account 
-    merchandise inventory 
+  sales return
+    sales return account
+    merchandise inventory
 
-    cost of goods sold 
+    cost of goods sold
     cash on hand
 
 
@@ -71,7 +71,7 @@ add faker to factories
 sales to ifedeco
 your own cic
   know members credit data
-  know if a real property is collateralled already 
+  know if a real property is collateralled already
 
 
 
@@ -93,3 +93,6 @@ show charts on aging loans
 update loan schedule dates if disbursed
 
 update policies of every action/page
+
+
+WIP: Select dropdown for capybara

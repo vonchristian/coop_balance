@@ -1,0 +1,5 @@
+<div class="tab-pane <%= 'active' if current_page?(organization_loans_path(@organization)) %>">
+  Loans of Members
+  <hr>
+  <%=link_to 'Billing Statement', organization_loans_path(@organization, format: 'pdf') %>
+</div>

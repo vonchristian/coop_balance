@@ -1,11 +1,10 @@
 FactoryBot.define do
   factory :loan_product, class: "LoansModule::LoanProduct" do
-    name "MyString"
+    sequence(:name){|n| "Loan #{n} - #{n} Loan" }
     description "MyString"
-    interest_recurrence 1
     max_loanable_amount 1000
     interest_rate 1
-    account
+    association :account, factory: :asset
 
   end
 end

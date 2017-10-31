@@ -1,6 +1,6 @@
 <%= simple_form_for @loan, url: :loans_module_loan_applications do |f| %>
 <%= f.error_notification %>
-  <%= f.input :loan_product_id, collection: LoansModule::LoanProduct.all.map{|a| [a.name.titleize, a.id] }, prompt: "Select Type of Loan" %>
+  <%= f.input :loan_product_id, label: "Select Loan Product", collection: LoansModule::LoanProduct.all.map{|a| [a.name.titleize, a.id] }, prompt: "Select Type of Loan" %>
   <%= f.input :member_id, collection: Member.all.map {|a| [a.full_name, a.id] } %>
   <%= f.input :loan_amount %>
   <%= f.input :mode_of_payment, collection: LoansModule::Loan.mode_of_payments.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
@@ -19,12 +19,12 @@
       <div id='<%=charge.id %>'></div>
 </p>
     <% end %>
-    	
+
   <% end %>
 
 <% end %>
 
-		
+
 <script type="text/javascript">
 
 	function calculateLoanCharges() {
