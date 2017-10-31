@@ -12,7 +12,7 @@
           <% else %>
             <center><%= image_tag @organization.avatar.url(:large), class: 'center-block img-responsive img-circle'%></center>
           <% end %>
-          <center><%= f.input :avatar, as: :file, label: "Upload Logo" %></center>
+          <center><%= f.input :avatar, as: :file, label: "Upload Logo", input_html: { id: 'uploadOrganizationAvatar' } %></center>
           <%= f.input :name %>
           <%= f.submit "Save Organization" %>
         <% end %>
