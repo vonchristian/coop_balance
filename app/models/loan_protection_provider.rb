@@ -1,0 +1,2 @@
+class LoanProtectionProvider < ApplicationRecord
+end
