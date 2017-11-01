@@ -1,0 +1,14 @@
+<%= simple_form_for [@loan_product, @loan_product_charge], url: :loans_module_loan_product_loan_product_charges do |f| %>
+  <%= f.simple_fields_for :charge do |ff| %>
+   <%= ff.input :name %>
+  <%= ff.input :charge_type, collection: Charge.charge_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
+  <%= ff.input :percent %>
+  <%= ff.input :amount %>
+  <%= ff.input :account_id, collection: AccountingModule::Revenue.all.map{ |a| [a.name.titleize, a.id] } %>
+  <p> Loan Amount Range </p>
+  <%= ff.input :minimum_loan_amount %>
+  <%= ff.input :maximum_loan_amount %>
+  <%= ff.input :depends_on_loan_amount %>
+<% end %>
+  <%= f.submit "Create Charge", class: "btn btn-danger" %>
+<% end %>

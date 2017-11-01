@@ -8,41 +8,39 @@ module LoansModule
       @loan.employee = current_user
       if @loan.valid?
         @loan.save
-        @loan.create_charges
-        @loan.set_capital_build_up
-        @loan.set_filing_fee
-        @loan.set_loan_protection_fee
+        @loan.create_loan_product_charges
+        @loan.create_documentary_stamp_tax
+        @loan.set_loan_protection_fund
         redirect_to loans_module_loan_application_url(@loan), notice: "Loan application saved successfully."
-        @loan.set_interest_on_loan_charge
-        @loan.create_amortization_schedule
+        # @loan.create_amortization_schedule
         @loan.set_borrower_type
         @loan.set_borrower_full_name
       else
         render :new
       end
     end
-    def show 
+    def show
       @loan = LoansModule::Loan.find(params[:id])
     end
-    def edit 
+    def edit
       @loan = LoansModule::Loan.find(params[:id])
     end
-    def update 
+    def update
       @loan = LoansModule::Loan.find(params[:id])
       @loan.update(loan_params)
       if @loan.save
         @loan.create_charges
-        @loan.set_capital_build_up
         @loan.set_filing_fee
         @loan.set_loan_protection_fee
         redirect_to loans_module_loan_application_url(@loan), notice: "Loan updated successfully"
         @loan.set_interest_on_loan_charge
         @loan.create_amortization_schedule
-        
-      else 
-        render :edit 
-      end 
-    end 
+        @loan.set_borrower_type
+        @loan.set_borrower_full_name
+      else
+        render :edit
+      end
+    end
     def destroy
       @loan = LoansModule::Loan.find(params[:id])
       @loan.destroy

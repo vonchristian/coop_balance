@@ -1,7 +1,7 @@
 require 'rails_helper'
 module LoansModule
   describe Loan do
-    context 'associations' do 
+    context 'associations' do
     	it { is_expected.to belong_to :borrower }
       it { is_expected.to belong_to :employee }
     	it { is_expected.to belong_to :loan_product }
@@ -17,7 +17,9 @@ module LoansModule
       it { is_expected.to have_many :charges }
       it { is_expected.to have_many :loan_additional_charges }
       it { is_expected.to have_many :loan_co_makers }
-      it { is_expected.to have_many :co_makers }
+      it { is_expected.to have_many :member_co_makers }
+      it { is_expected.to have_many :employee_co_makers }
+
       it { is_expected.to have_many :principal_amortization_schedules }
       it { is_expected.to have_many :interest_on_loan_amortization_schedules }
       it { is_expected.to have_many :notices }
@@ -26,16 +28,18 @@ module LoansModule
       it { is_expected.to have_one :first_notice }
       it { is_expected.to have_one :second_notice }
       it { is_expected.to have_one :third_notice }
-    end 
+      it { is_expected.to have_one :loan_protection_fund }
 
-    context 'delegations' do 
+    end
+
+    context 'delegations' do
     	it { is_expected.to delegate_method(:name).to(:borrower).with_prefix }
     	it { is_expected.to delegate_method(:name).to(:loan_product).with_prefix }
-      it { is_expected.to delegate_method(:debit_account).to(:loan_product).with_prefix }
+      it { is_expected.to delegate_method(:account).to(:loan_product).with_prefix }
       it { is_expected.to delegate_method(:interest_rate).to(:loan_product).with_prefix }
     end
 
-    it "#taxable_amount" do 
+    it "#taxable_amount" do
       loan = create(:loan, loan_amount: 100)
 
       expect(loan.taxable_amount).to eql(100)

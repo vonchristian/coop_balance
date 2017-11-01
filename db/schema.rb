@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171101011049) do
+ActiveRecord::Schema.define(version: 20171101030907) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -145,8 +145,6 @@ ActiveRecord::Schema.define(version: 20171101011049) do
 
   create_table "charges", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
-    t.uuid "credit_account_id"
-    t.uuid "debit_account_id"
     t.integer "charge_type"
     t.decimal "amount"
     t.decimal "percent"
@@ -154,10 +152,13 @@ ActiveRecord::Schema.define(version: 20171101011049) do
     t.datetime "updated_at", null: false
     t.string "type"
     t.integer "category"
+    t.uuid "account_id"
+    t.decimal "minimum_loan_amount"
+    t.decimal "maximum_loan_amount"
+    t.boolean "depends_on_loan_amount", default: false
+    t.index ["account_id"], name: "index_charges_on_account_id"
     t.index ["category"], name: "index_charges_on_category"
     t.index ["charge_type"], name: "index_charges_on_charge_type"
-    t.index ["credit_account_id"], name: "index_charges_on_credit_account_id"
-    t.index ["debit_account_id"], name: "index_charges_on_debit_account_id"
   end
 
   create_table "collaterals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -416,13 +417,11 @@ ActiveRecord::Schema.define(version: 20171101011049) do
 
   create_table "loan_charges", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "loan_id"
-    t.uuid "charge_id"
     t.boolean "optional"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "chargeable_type"
     t.uuid "chargeable_id"
-    t.index ["charge_id"], name: "index_loan_charges_on_charge_id"
     t.index ["chargeable_type", "chargeable_id"], name: "index_loan_charges_on_chargeable_type_and_chargeable_id"
     t.index ["loan_id"], name: "index_loan_charges_on_loan_id"
   end
@@ -1073,8 +1072,7 @@ ActiveRecord::Schema.define(version: 20171101011049) do
   add_foreign_key "break_contract_fees", "time_deposit_products"
   add_foreign_key "carts", "users"
   add_foreign_key "charge_adjustments", "loan_charges"
-  add_foreign_key "charges", "accounts", column: "credit_account_id"
-  add_foreign_key "charges", "accounts", column: "debit_account_id"
+  add_foreign_key "charges", "accounts"
   add_foreign_key "collaterals", "loans"
   add_foreign_key "collaterals", "real_properties"
   add_foreign_key "committee_members", "committees"
@@ -1097,7 +1095,6 @@ ActiveRecord::Schema.define(version: 20171101011049) do
   add_foreign_key "loan_additional_charges", "loans"
   add_foreign_key "loan_approvals", "loans"
   add_foreign_key "loan_approvals", "users", column: "approver_id"
-  add_foreign_key "loan_charges", "charges"
   add_foreign_key "loan_charges", "loans"
   add_foreign_key "loan_co_makers", "loans"
   add_foreign_key "loan_documentary_stamp_taxes", "loans"

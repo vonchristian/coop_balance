@@ -50,7 +50,7 @@ Rails.application.routes.draw do
     resources :loan_applications, only: [:new, :create, :show, :edit, :update, :destroy]
     resources :dashboard, only: [:index]
     resources :loan_products, except:[:destroy] do
-      resources :applications, only: [:new, :create]
+      resources :loan_product_charges, only: [:new, :create]
     end
     resources :adjustments, only: [:destroy]
     resources :loan_charges, shallow: true do

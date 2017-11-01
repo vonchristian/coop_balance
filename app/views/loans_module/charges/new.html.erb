@@ -1,10 +1,9 @@
-<%= simple_form_for @charge, url: :loans_module_charges do |f| %> 
+<%= simple_form_for @charge, url: :loans_module_charges do |f| %>
   <%= f.error_notification %>
   <%= f.input :name %>
   <%= f.input :charge_type, collection: Charge.charge_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
   <%= f.input :percent %>
   <%= f.input :amount %>
-  <%= f.input :debit_account_id, input_html: { value: AccountingModule::Asset.find_by(name: "Cash on Hand") }, as: :hidden %>
-  <%= f.input :credit_account_id, collection: AccountingModule::Revenue.all.map{ |a| [a.name.titleize, a.id] } %>
+  <%= f.input :account_id, collection: AccountingModule::Revenue.all.map{ |a| [a.name.titleize, a.id] } %>
   <%= f.submit "Create Charge", class: "btn btn-danger" %>
 <% end %>

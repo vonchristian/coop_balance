@@ -8,12 +8,12 @@ module LoansModule
     belongs_to :borrower, polymorphic: true
     belongs_to :employee, class_name: "User", foreign_key: 'employee_id' #prepared by signatory
     belongs_to :loan_product, class_name: "LoansModule::LoanProduct"
-    belongs_to :street, optional: true
-    belongs_to :barangay, optional: true
-    belongs_to :municipality, optional: true
+    belongs_to :street, optional: true, class_name: "Addresses::Street"
+    belongs_to :barangay, optional: true, class_name: "Addresses::Barangay"
+    belongs_to :municipality, optional: true, class_name: "Addresses::Municipality"
 
     has_one :cash_disbursement_voucher, class_name: "Voucher", as: :voucherable, foreign_key: 'voucherable_id'
-
+    has_one :loan_protection_fund, class_name: "LoansModule::LoanProtectionFund", dependent: :destroy
     has_many :loan_approvals, class_name: "LoansModule::LoanApproval", dependent: :destroy
     has_many :approvers, through: :loan_approvals
     has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
@@ -90,7 +90,9 @@ module LoansModule
     def interest_on_loan_charge
       charge = charges.where(type: "LoansModule::InterestOnLoanCharge").last
       loan_charge = loan_charges.where(chargeable: charge).last
-      loan_charge.charge_amount_with_adjustment
+      if loan_charge.present?
+        loan_charge.charge_amount_with_adjustment
+      end
     end
     def interest_debit_account
       charge = charges.where(type: "LoansModule::InterestOnLoanCharge").last
@@ -127,41 +129,15 @@ module LoansModule
       loan_charges.total +
       loan_additional_charges.total
     end
-    def set_loan_protection_fee
-      loan_protection_fund = Charge.amount_type.create!(name: 'Loan Protection Fund', amount: LoanProtectionRate.set_amount_for(self), debit_account: AccountingModule::Account.find_by(name: "Cash on Hand"), credit_account: AccountingModule::Revenue.find_by(name: "Service Fees"))
-      self.loan_charges.create(chargeable: loan_protection_fund)
+    def create_loan_product_charges
+      self.loan_product.create_charges_for(self)
     end
-    def set_filing_fee
-      if loan_amount < 5_000
-        filing_fee = Charge.amount_type.create!(name: 'Filing Fee', amount: 10, debit_account: AccountingModule::Account.find_by(name: "Cash on Hand"), credit_account: AccountingModule::Revenue.find_by(name: "Service Fees"))
-      else
-        filing_fee = Charge.amount_type.create!(name: 'Filing Fee', amount: 100, debit_account: AccountingModule::Account.find_by(name: "Cash on Hand"), credit_account: AccountingModule::Revenue.find_by(name: "Service Fees"))
-      end
-      self.loan_charges.create(chargeable: filing_fee)
+    def set_loan_protection_fund
+      LoansModule::LoanProtectionFund.set_loan_protection_fund_for(self)
     end
 
-    def set_capital_build_up
-      if loan_amount < 50_000
-        capital_build_up = Charge.amount_type.create!(name: 'Capital Build Up', amount: (0.02 * loan_amount), debit_account: AccountingModule::Account.find_by(name: "Cash on Hand"), credit_account: AccountingModule::Revenue.find_by(name: "Service Fees"))
-      elsif (50_001..100_000.00).include?(loan_amount)
-        capital_build_up = Charge.amount_type.create!(name: 'Capital Build Up', amount: (0.15 * loan_amount), debit_account: AccountingModule::Account.find_by(name: "Cash on Hand"), credit_account: AccountingModule::Revenue.find_by(name: "Service Fees"))
-      else
-        capital_build_up = Charge.amount_type.create!(name: 'Capital Build Up', amount: (0.1 * loan_amount), debit_account: AccountingModule::Account.find_by(name: "Cash on Hand"), credit_account: AccountingModule::Revenue.find_by(name: "Service Fees"))
-      end
-      self.loan_charges.create(chargeable: capital_build_up)
-    end
-    def set_interest_on_loan_charge
-      LoansModule::InterestOnLoanCharge.set_interest_on_loan_for(self)
-    end
-    def create_charges
-      if self.loan_charges.present?
-        loan_charges.destroy_all
-      end
-      self.loan_product.charges.each do |charge|
-        loan_charges.find_or_create_by(chargeable: charge)
-      end
-       tax = Charge.amount_type.create!(name: 'Documentary Stamp Tax', amount: DocumentaryStampTax.set(self), debit_account: AccountingModule::Account.find_by(name: "Cash on Hand"),
-        credit_account: AccountingModule::Revenue.find_by(name: "Service Fees"))
+    def create_documentary_stamp_tax
+       tax = Charge.amount_type.create!(name: 'Documentary Stamp Tax', amount: DocumentaryStampTax.set(self), account: AccountingModule::Revenue.find_by(name: "Service Fees"))
       self.loan_charges.create!(chargeable: tax)
     end
     def create_amortization_schedule

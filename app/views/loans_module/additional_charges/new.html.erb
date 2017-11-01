@@ -2,5 +2,6 @@
   <%= f.error_notification %>
   <%= f.input :name %>
   <%= f.input :amount %>
+  <%= f.input :account_id, collection: AccountingModule::Account.all.map{|a| [a.name.titleize, a.id] } %>
   <%= f.submit %>
 <% end %>

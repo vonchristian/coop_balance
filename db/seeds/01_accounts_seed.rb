@@ -144,6 +144,8 @@ AccountingModule::Liability.create(code: 21400, name: 'Accounts Payable-Non Trad
 AccountingModule::Liability.create(code: 21500, name: 'Loans Payable - Current')
 AccountingModule::Liability.create(code: 21600, name: 'Finance Lease Payable - Current')
 AccountingModule::Liability.create(code: 21700, name: 'Due to Regulatory Agencies')
+AccountingModule::Liability.create(code: 217001, name: 'Loan Protection Fund Payable')
+
 AccountingModule::Liability.create(code: 21800, name: 'Cash Bond Payable')
 AccountingModule::Liability.create(code: 21900, name: 'SSS/ECC/Philhealth/Pag-ibig Premium Contributions Payable')
 AccountingModule::Liability.create(code: 22000, name: 'SSS/Pag-ibig Loans Payable')
