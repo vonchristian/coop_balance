@@ -14,10 +14,8 @@ feature "Create Loan Product" do
     fill_in "Name", with: "Salary Loan"
     fill_in "Description", with: "description for loan"
     fill_in 'Interest Rate', with: 0.1
-
-within '.loan-accounts' do
   find("option[value='Loans Receivable']").click
-end
+
     click_button "Create Loan Product"
 
     expect(page).to have_content("created successfully")
