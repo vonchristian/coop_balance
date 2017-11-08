@@ -165,6 +165,8 @@ Rails.application.routes.draw do
   end
   resources :store, only: [:index]
   namespace :store_module do
+    resources :settings, only: [:index]
+    resources :accounts_receivable_store_config, only: [:new, :create]
     resources :search_results, only: [:index]
     resources :members, only: [:index, :show, :new, :create]
     resources :orders, only: [:index, :new, :create, :show]

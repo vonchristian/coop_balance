@@ -26,10 +26,10 @@
         <br>
         <div class="row">
           <div class="col-md-5 col-md-offset-1">
-            <p class="condensed-text">Loan Protection Fund </p>
+            <p class="condensed-text">Utang Store </p>
           </div>
           <div class="col-md-3">
-            <span class="pull-right"> <%= number_to_currency @loan.loan_protection_fund.try(:amount) %></span>
+            <span class="pull-right"> <%= number_to_currency @loan.borrower.account_receivable_store %></span>
           </div>
         </div>
         <br>

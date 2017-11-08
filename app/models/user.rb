@@ -19,6 +19,7 @@ class User < ApplicationRecord
               :accounting_clerk,
               :collector]
   belongs_to :cash_on_hand_account, class_name: "AccountingModule::Account", foreign_key: 'cash_on_hand_account_id'
+  has_one :account_receivable_store, as: :debtor
   has_one :current_address, as: :addressable, class_name: "Address"
   belongs_to :department
   belongs_to :cooperative
@@ -68,9 +69,10 @@ class User < ApplicationRecord
   def full_name
     name
   end
-  def accounts_receivable_gen_merchandise_total
+  def account_receivable_store_balance
     AccountingModule::Account.find_by(name: "Accounts Receivables Trade - Current (General Merchandise)").balance(commercial_document_id: self.id)
   end
+
 
   def cash_advance_total
     AccountingModule::Account.find_by(name: "Advances to Officers, Employees and Members").debit_entries.where(commercial_document_id: self.id)

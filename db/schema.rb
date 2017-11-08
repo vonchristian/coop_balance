@@ -10,11 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171101030907) do
+ActiveRecord::Schema.define(version: 20171107231709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pgcrypto"
+
+  create_table "account_receivable_store_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_account_receivable_store_configs_on_account_id"
+  end
+
+  create_table "account_receivable_stores", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "debtor_type"
+    t.uuid "debtor_id"
+    t.uuid "account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_account_receivable_stores_on_account_id"
+    t.index ["debtor_type", "debtor_id"], name: "index_borrower_account_receivable_store"
+  end
 
   create_table "accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
@@ -1058,6 +1075,8 @@ ActiveRecord::Schema.define(version: 20171101030907) do
     t.index ["raw_material_id"], name: "index_work_in_progress_materials_on_raw_material_id"
   end
 
+  add_foreign_key "account_receivable_store_configs", "accounts"
+  add_foreign_key "account_receivable_stores", "accounts"
   add_foreign_key "accounts", "accounts", column: "main_account_id"
   add_foreign_key "amortization_schedules", "loans"
   add_foreign_key "amounts", "accounts"
