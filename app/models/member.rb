@@ -77,6 +77,11 @@ class Member < ApplicationRecord
   def name #for search results
     full_name
   end
+
+  def account_receivable_store_balance
+    StoreCredit.new.balance(self)
+  end
+
   def full_name
     "#{last_name} #{first_name} #{middle_name}"
   end

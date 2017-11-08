@@ -1,6 +1,6 @@
 <div class="tab-pane <%= 'active' if current_page?(employee_loans_path(@employee))%>">
    <small>ACCOUNTS RECEIVABLE (STORE)</small>
-  <h3 class="box-title"><%=number_to_currency @employee.accounts_receivable_gen_merchandise_total %></h3>
+  <h3 class="box-title"><%=number_to_currency @employee.account_receivable_store_balance %></h3>
   <hr>
   <h4 class="condensed-text">LOANS </h4>
   <% if policy([:members, :loan]).new? %>

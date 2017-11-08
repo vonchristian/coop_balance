@@ -42,6 +42,12 @@ module LoansModule
 
     validates :loan_product_id, presence: true
     #find aging loans e.g. 1-30 days,
+    def self.disbursed
+      all.select{|a| a.disbursed? }
+    end
+    def store_payment_total
+      entries.map{|a| a.credit_amounts.distinct.where(account: CoopConfigurationsModule::AccountReceivableStoreConfig.account_to_debit).sum(&:amount)}.sum
+    end
     def co_makers
       employee_co_makers + member_co_makers
     end
@@ -148,7 +154,7 @@ module LoansModule
       # LoansModule::InterestOnLoanAmortizationSchedule.create_schedule_for(self)
     end
     def disbursed?
-      disbursement.present?
+      entries.loan_disbursement.present?
     end
 
     def payments
@@ -160,7 +166,7 @@ module LoansModule
 
     def disbursement
       if cash_disbursement_voucher.present?
-       cash_disbursement_voucher.entry
+       cash_disbursement_voucher.entry.loan_disbursement
      end
     end
     def disbursement_date

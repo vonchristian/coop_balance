@@ -3,6 +3,9 @@
     <%= link_to 'New Loan Application', new_member_loan_path(@member), class: "btn btn-primary" %>
   <% end %>
 <hr />
+<small>ACCOUNTS RECEIVABLE (STORE)</small>
+  <h3 class="box-title"><%=number_to_currency @member.account_receivable_store_balance %></h3>
+  <hr>
   <% @member.loans.each do |loan| %>
     <% cache loan do %>
       <%=link_to loan_path(loan) do %>

@@ -71,7 +71,7 @@ class DisbursementForm
     entry.debit_amounts << loan_debit_amount
     entry.credit_amounts << loan_credit_amount
     find_loan.loan_charges.each do |loan_charge|
-      credit_amount = AccountingModule::CreditAmount.new(account: loan_charge.credit_account, amount: loan_charge.amount)
+      credit_amount = AccountingModule::CreditAmount.new(account: loan_charge.account, amount: loan_charge.amount)
       entry.credit_amounts << credit_amount
     end
     entry.save!

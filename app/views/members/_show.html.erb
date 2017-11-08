@@ -8,7 +8,7 @@
         <div class="box-header">
         <ul class="nav nav-tabs">
           <li class="<%= 'active' if current_page?(member_info_index_path(@member))%>"><%= link_to 'Info', member_info_index_path(@member) %></li>
-          <li class="<%= 'active' if current_page?(member_loans_path(@member))%>"><%= link_to 'Loans', member_loans_path(@member) %></li>
+          <li class="<%= 'active' if current_page?(member_loans_path(@member))%>"><%= link_to 'Loans & Credit', member_loans_path(@member) %></li>
           <li class="<%= 'active' if current_page?(member_savings_accounts_path(@member))%>"><%= link_to 'Savings', member_savings_accounts_path(@member) %></li>
           <li class="<%= 'active' if current_page?(member_share_capitals_path(@member))%>"><%= link_to 'Share Capitals', member_share_capitals_path(@member) %></li>
           <li class="<%= 'active' if current_page?(member_time_deposits_path(@member))%>"><%= link_to 'Time Deposits', member_time_deposits_path(@member) %></li>

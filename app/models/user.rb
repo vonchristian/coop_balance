@@ -70,7 +70,7 @@ class User < ApplicationRecord
     name
   end
   def account_receivable_store_balance
-    AccountingModule::Account.find_by(name: "Accounts Receivables Trade - Current (General Merchandise)").balance(commercial_document_id: self.id)
+    StoreCredit.new.balance(self)
   end
 
 

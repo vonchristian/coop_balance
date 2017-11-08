@@ -1,0 +1,8 @@
+<%= simple_form_for [@loan, @additional_charge], url: :loans_module_loan_store_credit_payments do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :name %>
+  <%= f.input :amount %>
+  <%= f.input :account_id, input_html: { value: CoopConfigurationsModule::AccountReceivableStoreConfig.account_to_debit.id } %>
+  <%= CoopConfigurationsModule::AccountReceivableStoreConfig.account_to_debit.name %>
+  <%= f.submit %>
+<% end %>

@@ -1,4 +1,4 @@
-module StoreModule  
+module StoreModule
   class Order < ApplicationRecord
     enum payment_type: [:cash, :credit, :check]
     belongs_to :customer, polymorphic: true
@@ -12,8 +12,8 @@ module StoreModule
 
     validates :customer_id, presence: true
     after_commit :set_default_date, :set_customer_type, on: :create
-    def self.customers 
-      Member.all + User.all 
+    def self.customers
+      Member.all + User.all
     end
 
     def add_line_items_from_cart(cart)
@@ -28,17 +28,17 @@ module StoreModule
 
     def create_entry
       cash_on_hand = User.find_by(id: employee_id).cash_on_hand_account
-      accounts_receivable = AccountingModule::Account.find_by(name: "Accounts Receivables Trade - Current (General Merchandise)")
+      accounts_receivable = CoopConfigurationsModule::AccountReceivableStoreConfig.account_to_debit
       cost_of_goods_sold = AccountingModule::Account.find_by(name: "Cost of Goods Sold")
       sales = AccountingModule::Account.find_by(name: "Sales")
       merchandise_inventory = AccountingModule::Account.find_by(name: "Merchandise Inventory")
       if cash? || check?
-        AccountingModule::Entry.cash_sale.create!( recorder_id: self.employee_id, commercial_document: self.customer, entry_date: self.date, description: "Payment for order", 
-          debit_amounts_attributes: [{amount: self.total_cost, account: cash_on_hand}, {amount: self.stock_cost, account: cost_of_goods_sold}], 
+        AccountingModule::Entry.cash_sale.create!( recorder_id: self.employee_id, commercial_document: self.customer, entry_date: self.date, description: "Payment for order",
+          debit_amounts_attributes: [{amount: self.total_cost, account: cash_on_hand}, {amount: self.stock_cost, account: cost_of_goods_sold}],
           credit_amounts_attributes:[{amount: self.total_cost, account: sales}, {amount: self.stock_cost, account: merchandise_inventory}])
       elsif credit?
-        AccountingModule::Entry.credit_sale.create!(commercial_document: self.customer, entry_date: self.date, description: "Credit order", 
-          debit_amounts_attributes: [{amount: self.total_cost, account: accounts_receivable}, {amount: self.stock_cost, account: cost_of_goods_sold}], 
+        AccountingModule::Entry.credit_sale.create!(commercial_document: self.customer, entry_date: self.date, description: "Credit order",
+          debit_amounts_attributes: [{amount: self.total_cost, account: accounts_receivable}, {amount: self.stock_cost, account: cost_of_goods_sold}],
           credit_amounts_attributes:[{amount: self.total_cost, account: sales}, {amount: self.stock_cost, account: merchandise_inventory}])
       end
     end
@@ -47,19 +47,19 @@ module StoreModule
         'green'
       elsif credit?
         'red'
-      end 
-    end 
-          
-    private 
-    def set_default_date 
-      self.date ||= Time.zone.now 
+      end
+    end
+
+    private
+    def set_default_date
+      self.date ||= Time.zone.now
     end
     def set_customer_type
       if User.find_by(id: self.customer_id).present?
         self.customer_type = "User"
       elsif Member.find_by(id: self.customer_id).present?
         self.customer_type = "Member"
-      end 
-    end 
+      end
+    end
   end
 end

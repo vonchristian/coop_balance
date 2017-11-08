@@ -26,10 +26,11 @@
         <br>
         <div class="row">
           <div class="col-md-5 col-md-offset-1">
-            <p class="condensed-text">Utang Store </p>
+            <p class="condensed-text">Accounts Receivable Store</p>
           </div>
           <div class="col-md-3">
-            <span class="pull-right"> <%= number_to_currency @loan.borrower.account_receivable_store %></span>
+            <span class="pull-right"> <%= number_to_currency @loan.borrower.account_receivable_store_balance %></span>
+            <%= link_to 'New Payment', new_loans_module_loan_store_credit_payment_path(@loan) %>
           </div>
         </div>
         <br>
@@ -52,7 +53,6 @@
 					    <span class="pull-right"><%= number_to_currency loan_charge.charge_adjustment.charge_amount %></span>
 					    <% else %>
 					      <span class="pull-right"><%= number_to_currency loan_charge.charge_amount %></span>
-
 					    <% end %>
 					  </div>
 					  <div class="col-md-2">

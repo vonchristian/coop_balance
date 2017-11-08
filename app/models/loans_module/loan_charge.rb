@@ -4,7 +4,7 @@ module LoansModule
 	  belongs_to :chargeable, polymorphic: true
     has_many :amortization_schedules, as: :amortizeable
 	  has_one :charge_adjustment, dependent: :destroy
-	  delegate :debit_account, :credit_account, :credit_account_name, :debit_account_name,  to: :chargeable, allow_nil: true
+	  delegate :account, :account_name,  to: :chargeable, allow_nil: true
 	  delegate :name, :amount, :regular?, to: :chargeable, allow_nil: true
 	  def self.total
 	  	all.sum(&:charge_amount_with_adjustment)
