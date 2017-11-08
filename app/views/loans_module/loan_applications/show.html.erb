@@ -63,6 +63,11 @@
 					      <%= link_to loans_module_loan_charge_path(loan_charge), title: "Remove Charge", method: :delete do %>
                 <span data-toggle="tooltip" title="Remove Charge" class="text-danger"><i class="fa fa-trash"></i> </span>
               <% end %>
+              <% if loan_charge.amortize_balance %>
+                <%= link_to new_loans_module_loan_charge_payment_schedule_path(loan_charge), title: "Set Payment Schedule" do %>
+                <span data-toggle="tooltip" title="Set Payment Schedule" class="text-primary"><i class="fa fa-calendar"></i> </span>
+              <% end %>
+              <% end %>
 					    <% end %>
 
 					  </div>

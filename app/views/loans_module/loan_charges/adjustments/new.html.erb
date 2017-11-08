@@ -1,6 +1,26 @@
-<%=simple_form_for [@loan_charge, @adjustment], url: :loans_module_loan_charge_adjustments do |f| %>
-  <%= f.input :amount %>
-  <%= f.input :percent, label: "Percent to be deducted" %>
-  <%= f.input :amortize_balance %>
-  <%= f.submit %>
-<% end %>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="box box-default">
+      <div class="box-header">
+        <h3 class="box-title">Adjustment Details </h3>
+      </div>
+      <div class="box-body">
+        <div class="row">
+          <div class="col-md-6">
+            <%= @loan_charge.name %>
+          </div>
+          <div class="col-md-6">
+            <%= @loan_charge.amount %>
+          </div>
+        </div>
+        <br />
+        <%=simple_form_for [@loan_charge, @adjustment], url: :loans_module_loan_charge_adjustments do |f| %>
+          <%= f.input :amount, as: :currency %>
+          <%= f.input :percent, label: "Percent to be deducted" %>
+          <%= f.input :amortize_balance, as: :boolean %>
+           <%= f.submit %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

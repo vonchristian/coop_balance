@@ -42,6 +42,7 @@ module LoansModule
     before_save :set_default_date
 
     validates :loan_product_id, presence: true
+    validates :term, presence: true, numericality: { greater_than: 0.1 }
     #find aging loans e.g. 1-30 days,
 
     def store_payment_total

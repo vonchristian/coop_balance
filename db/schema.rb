@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171108063414) do
+ActiveRecord::Schema.define(version: 20171108115406) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -70,8 +70,10 @@ ActiveRecord::Schema.define(version: 20171108063414) do
     t.uuid "amortizeable_id"
     t.string "type"
     t.decimal "loan_protection_fund"
+    t.integer "schedule_type"
     t.index ["amortizeable_type", "amortizeable_id"], name: "amortization_schedules_amortizeable_index"
     t.index ["loan_id"], name: "index_amortization_schedules_on_loan_id"
+    t.index ["schedule_type"], name: "index_amortization_schedules_on_schedule_type"
     t.index ["type"], name: "index_amortization_schedules_on_type"
   end
 
@@ -430,6 +432,17 @@ ActiveRecord::Schema.define(version: 20171108063414) do
     t.index ["approver_id"], name: "index_loan_approvals_on_approver_id"
     t.index ["loan_id"], name: "index_loan_approvals_on_loan_id"
     t.index ["status"], name: "index_loan_approvals_on_status"
+  end
+
+  create_table "loan_charge_payment_schedules", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "loan_charge_id"
+    t.integer "schedule_type"
+    t.datetime "date"
+    t.decimal "amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["loan_charge_id"], name: "index_loan_charge_payment_schedules_on_loan_charge_id"
+    t.index ["schedule_type"], name: "index_loan_charge_payment_schedules_on_schedule_type"
   end
 
   create_table "loan_charges", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1140,6 +1153,7 @@ ActiveRecord::Schema.define(version: 20171108063414) do
   add_foreign_key "loan_additional_charges", "loans"
   add_foreign_key "loan_approvals", "loans"
   add_foreign_key "loan_approvals", "users", column: "approver_id"
+  add_foreign_key "loan_charge_payment_schedules", "loan_charges"
   add_foreign_key "loan_charges", "loans"
   add_foreign_key "loan_co_makers", "loans"
   add_foreign_key "loan_documentary_stamp_taxes", "loans"

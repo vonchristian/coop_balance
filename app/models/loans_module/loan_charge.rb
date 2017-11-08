@@ -3,10 +3,13 @@ module LoansModule
 	  belongs_to :loan, class_name: "LoansModule::Loan", foreign_key: 'loan_id'
 	  belongs_to :chargeable, polymorphic: true
     has_many :amortization_schedules, as: :amortizeable
+    has_many :loan_charge_payment_schedules
 	  has_one :charge_adjustment, dependent: :destroy
 	  delegate :account, :account_name,  to: :chargeable, allow_nil: true
 	  delegate :name, :amount, :regular?, to: :chargeable, allow_nil: true
+	  delegate :amortize_balance, to: :charge_adjustment, allow_nil: true
 	  validates :loan_id, :chargeable_id, :chargeable_type, presence: true
+
 	  def self.total
 	  	all.sum(&:charge_amount_with_adjustment)
 	  end

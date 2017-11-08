@@ -31,6 +31,11 @@ module LoansModule
       it { is_expected.to have_one :loan_protection_fund }
 
     end
+    describe 'validations' do
+      it { is_expected.to validate_presence_of :term }
+      it { is_expected.to validate_presence_of :loan_product_id }
+      it { is_expected.to validate_numericality_of :term }
+    end
 
     context 'delegations' do
     	it { is_expected.to delegate_method(:name).to(:borrower).with_prefix }
