@@ -35,6 +35,7 @@ Rails.application.routes.draw do
   resources :accounting_module, only: [:index]
   namespace :accounting_module do
     resources :settings, only: [:index]
+    resources :loan_protection_fund_configs, only: [:new, :create]
     resources :accounts
     resources :assets, controller: 'accounts', type: 'AccountingModule::Asset'
     resources :entries

@@ -1,0 +1,4 @@
+<%= simple_form_for @loan_protection_fund_config, url: :accounting_module_loan_protection_fund_configs do |f| %>
+  <%= f.input :account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
+  <%= f.submit "Save" %>
+<% end %>

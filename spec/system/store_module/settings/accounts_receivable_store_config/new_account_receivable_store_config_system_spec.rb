@@ -21,7 +21,7 @@ describe 'new accounts receivable store config' do
     visit store_module_settings_url
     click_link 'Set Account for Accounts Receivable'
 
-    # select 'Accounts Receivable - General Merchandise'
+    select 'Accounts Receivable - General Merchandise'
     click_button 'Save'
 
     expect(page).to have_content("can't be blank")
