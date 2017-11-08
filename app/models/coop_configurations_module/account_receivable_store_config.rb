@@ -5,21 +5,21 @@ module CoopConfigurationsModule
 
     def self.balance_for(customer)
       if self.last.present?
-        self.order(created_at: :asc).last.account.balance(commercial_document: customer.id)
+        self.order(created_at: :asc).last.account.balance(commercial_document_id: customer.id)
       else
         AccountingModule::Account.find_by(name: "Accounts Receivables Trade - Current (General Merchandise)").balance(commercial_document_id: customer.id)
       end
     end
     def self.debit_balance_for(customer)
       if self.last.present?
-        self.order(created_at: :asc).last.account.debits_balance(commercial_document: customer.id)
+        self.order(created_at: :asc).last.account.debits_balance(commercial_document_id: customer.id)
       else
         AccountingModule::Account.find_by(name: "Accounts Receivables Trade - Current (General Merchandise)").debits_balance(commercial_document: customer.id)
       end
     end
     def self.credit_balance_for(customer)
       if self.last.present?
-        self.order(created_at: :asc).last.account.credits_balance(commercial_document: customer.id)
+        self.order(created_at: :asc).last.account.credits_balance(commercial_document_id: customer.id)
       else
         AccountingModule::Account.find_by(name: "Accounts Receivables Trade - Current (General Merchandise)").credits_balance(commercial_document: customer.id)
       end
