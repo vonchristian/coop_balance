@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171107231709) do
+ActiveRecord::Schema.define(version: 20171108021045) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -506,6 +506,13 @@ ActiveRecord::Schema.define(version: 20171107231709) do
     t.string "name"
     t.index ["account_id"], name: "index_loan_products_on_account_id"
     t.index ["name"], name: "index_loan_products_on_name", unique: true
+  end
+
+  create_table "loan_protection_fund_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_loan_protection_fund_configs_on_account_id"
   end
 
   create_table "loan_protection_funds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1123,6 +1130,7 @@ ActiveRecord::Schema.define(version: 20171107231709) do
   add_foreign_key "loan_product_mode_of_payments", "mode_of_payments"
   add_foreign_key "loan_product_terms", "loan_products"
   add_foreign_key "loan_products", "accounts"
+  add_foreign_key "loan_protection_fund_configs", "accounts"
   add_foreign_key "loan_protection_funds", "accounts"
   add_foreign_key "loan_protection_funds", "loan_protection_rates"
   add_foreign_key "loan_protection_funds", "loans"

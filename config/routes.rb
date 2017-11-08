@@ -6,7 +6,9 @@ Rails.application.routes.draw do
   end
   devise_for :users, controllers: { sessions: 'users/sessions', registrations: "management_module/settings/employees"}
   root :to => 'treasury_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'treasurer' if request.env['warden'].user }, as: :treasury_root
-  root :to => 'accounting_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'bookkeeper' if request.env['warden'].user }, as: :accounting_module_root
+  root :to => 'accounting_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'bookkeeper' if request.env['warden'].user }, as: :bookkeeper_module_root
+  root :to => 'accounting_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'accountant' if request.env['warden'].user }, as: :accountant_module_root
+
   root :to => 'loans_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'loan_officer' if request.env['warden'].user }, as: :loans_module_root
   root :to => 'management_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'manager' if request.env['warden'].user }, as: :management_module_root
   root :to => 'teller_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'teller' if request.env['warden'].user }, as: :teller_module_root
@@ -32,6 +34,7 @@ Rails.application.routes.draw do
   end
   resources :accounting_module, only: [:index]
   namespace :accounting_module do
+    resources :settings, only: [:index]
     resources :accounts
     resources :assets, controller: 'accounts', type: 'AccountingModule::Asset'
     resources :entries
