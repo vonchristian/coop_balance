@@ -5,6 +5,7 @@ module LoansModule
     end
     def new
       @loan_product = LoansModule::LoanProduct.new
+      @loan_product.build_loan_product_interest
     end
     def create
       @loan_product = LoansModule::LoanProduct.create(loan_product_params)
@@ -15,13 +16,13 @@ module LoansModule
         render :new
       end
     end
-    def show 
+    def show
       @loan_product = LoansModule::LoanProduct.find(params[:id])
     end
 
-    private 
+    private
     def loan_product_params
-      params.require(:loans_module_loan_product).permit(:name, :description, :interest_rate, :interest_rate, :mode_of_payment, :max_loanable_amount, :account_id)
+      params.require(:loans_module_loan_product).permit(:name, :description, :interest_rate, :interest_rate, :mode_of_payment, :max_loanable_amount, :account_id, loan_product_interest_attributes: [:rate, :account_id])
     end
   end
 end

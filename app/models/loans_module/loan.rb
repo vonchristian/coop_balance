@@ -3,7 +3,7 @@ module LoansModule
     include PgSearch
     pg_search_scope :text_search, :against => [:borrower_full_name]
     enum loan_term_duration: [:month]
-    enum loan_status: [:application, :processing, :approved, :aging]
+    enum loan_status: [:application, :processing, :approved, :disbursed, :past_due, :aging]
     enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
     belongs_to :borrower, polymorphic: true
     belongs_to :employee, class_name: "User", foreign_key: 'employee_id' #prepared by signatory
@@ -12,8 +12,9 @@ module LoansModule
     belongs_to :barangay, optional: true, class_name: "Addresses::Barangay"
     belongs_to :municipality, optional: true, class_name: "Addresses::Municipality"
 
+    has_many :loan_protection_funds, class_name: "LoansModule::LoanProtectionFund", dependent: :destroy
     has_one :cash_disbursement_voucher, class_name: "Voucher", as: :voucherable, foreign_key: 'voucherable_id'
-    has_one :loan_protection_fund, class_name: "LoansModule::LoanProtectionFund", dependent: :destroy
+    has_many :loan_protection_funds, class_name: "LoansModule::LoanProtectionFund", dependent: :destroy
     has_many :loan_approvals, class_name: "LoansModule::LoanApproval", dependent: :destroy
     has_many :approvers, through: :loan_approvals
     has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
@@ -42,11 +43,15 @@ module LoansModule
 
     validates :loan_product_id, presence: true
     #find aging loans e.g. 1-30 days,
-    def self.disbursed
-      all.select{|a| a.disbursed? }
-    end
+
     def store_payment_total
       entries.map{|a| a.credit_amounts.distinct.where(account: CoopConfigurationsModule::AccountReceivableStoreConfig.account_to_debit).sum(&:amount)}.sum
+    end
+    def penalty_payment_total
+      entries.map{|a| a.credit_amounts.distinct.where(account: CoopConfigurationsModule::LoanPenaltyConfig.account_to_debit).sum(&:amount)}.sum
+    end
+    def penalties_total
+      LoanPenalty.new.balance(self.borrower)
     end
     def co_makers
       employee_co_makers + member_co_makers
@@ -93,19 +98,13 @@ module LoansModule
       entries.loan_penalty.total
     end
 
-    def interest_on_loan_charge
-      charge = charges.where(type: "LoansModule::InterestOnLoanCharge").last
-      loan_charge = loan_charges.where(chargeable: charge).last
-      if loan_charge.present?
-        loan_charge.charge_amount_with_adjustment
-      end
+    def remaining_term
+      term - terms_elapsed
     end
-    def interest_debit_account
-      charge = charges.where(type: "LoansModule::InterestOnLoanCharge").last
-      if charge.present?
-        charge.credit_account
-      end
+    def terms_elapsed
+      (Time.zone.now.year * 12 + Time.zone.now.month) - (disbursement_date.year * 12 + disbursement_date.month)
     end
+
     def interest_on_loan_amount
       interest_on_loan_charge
     end
@@ -131,14 +130,26 @@ module LoansModule
     def balance_for(schedule)
       loan_amount - LoansModule::AmortizationSchedule.principal_for(schedule, self)
     end
+    def unpaid_principal
+      loan_amount - paid_principal
+    end
+    def paid_principal
+      loan_product_account.balance(commercial_document_id: self.id)
+    end
     def total_loan_charges
       loan_charges.total +
       loan_additional_charges.total
     end
     def create_loan_product_charges
+      if loan_charges.present?
+        loan_charges.destroy_all
+      end
       self.loan_product.create_charges_for(self)
     end
     def set_loan_protection_fund
+      if loan_protection_funds.present?
+        loan_protection_funds.destroy_all
+      end
       LoansModule::LoanProtectionFund.set_loan_protection_fund_for(self)
     end
 
@@ -153,6 +164,8 @@ module LoansModule
       LoansModule::PrincipalAmortizationSchedule.create_schedule_for(self)
       # LoansModule::InterestOnLoanAmortizationSchedule.create_schedule_for(self)
     end
+    def interest_on_loan_amount
+    end
     def disbursed?
       entries.loan_disbursement.present?
     end
@@ -165,8 +178,8 @@ module LoansModule
     end
 
     def disbursement
-      if cash_disbursement_voucher.present?
-       cash_disbursement_voucher.entry.loan_disbursement
+      if entries.present?
+       entries.loan_disbursement.last
      end
     end
     def disbursement_date

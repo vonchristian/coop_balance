@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171108021045) do
+ActiveRecord::Schema.define(version: 20171108063414) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -461,11 +461,20 @@ ActiveRecord::Schema.define(version: 20171108021045) do
     t.index ["loan_id"], name: "index_loan_documentary_stamp_taxes_on_loan_id"
   end
 
+  create_table "loan_interest_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_loan_interest_configs_on_account_id"
+  end
+
   create_table "loan_penalty_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.decimal "number_of_days"
     t.decimal "interest_rate"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "account_id"
+    t.index ["account_id"], name: "index_loan_penalty_configs_on_account_id"
   end
 
   create_table "loan_product_charges", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -475,6 +484,16 @@ ActiveRecord::Schema.define(version: 20171108021045) do
     t.datetime "updated_at", null: false
     t.index ["charge_id"], name: "index_loan_product_charges_on_charge_id"
     t.index ["loan_product_id"], name: "index_loan_product_charges_on_loan_product_id"
+  end
+
+  create_table "loan_product_interests", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.decimal "rate"
+    t.uuid "loan_product_id"
+    t.uuid "account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_loan_product_interests_on_account_id"
+    t.index ["loan_product_id"], name: "index_loan_product_interests_on_loan_product_id"
   end
 
   create_table "loan_product_mode_of_payments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1124,8 +1143,12 @@ ActiveRecord::Schema.define(version: 20171108021045) do
   add_foreign_key "loan_charges", "loans"
   add_foreign_key "loan_co_makers", "loans"
   add_foreign_key "loan_documentary_stamp_taxes", "loans"
+  add_foreign_key "loan_interest_configs", "accounts"
+  add_foreign_key "loan_penalty_configs", "accounts"
   add_foreign_key "loan_product_charges", "charges"
   add_foreign_key "loan_product_charges", "loan_products"
+  add_foreign_key "loan_product_interests", "accounts"
+  add_foreign_key "loan_product_interests", "loan_products"
   add_foreign_key "loan_product_mode_of_payments", "loan_products"
   add_foreign_key "loan_product_mode_of_payments", "mode_of_payments"
   add_foreign_key "loan_product_terms", "loan_products"

@@ -47,6 +47,7 @@ Rails.application.routes.draw do
   resources :loans_module, only: [:index]
 
   namespace :loans_module do
+    resources :reports, only: [:index]
     resources :loan_registries, only: [:new, :create]
     resources :payment_schedules, only: [:index, :show]
     resources :aging_loans, only: [:index, :show]
@@ -63,6 +64,7 @@ Rails.application.routes.draw do
 
     resources :loans, except: [:destroy] do
       resources :store_credit_payments, only: [:new, :create]
+      resources :loan_protection_funds, only: [:new, :create]
       resources :amortization_schedules, only: [:index], module: :loans
       resources :first_notices, only: [:new, :create]
       resources :processings, only: [:create]

@@ -14,6 +14,10 @@
           <div class="loan-accounts">
           <%= f.input :account_id, label: "Select Account", collection: AccountingModule::Asset.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanAccountSelect'} %>
           </div>
+          <%= f.simple_fields_for :loan_product_interest do |ff| %>
+            <%= ff.input :rate %>
+            <%= ff.input :account_id, label: "Select Account", collection: AccountingModule::Revenue.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanProductInterestAccountSelect'} %>
+          <% end %>
           <div class="box-footer">
             <%= f.submit "Create Loan Product", class: "btn btn-primary btn-flat" %>
           </div>

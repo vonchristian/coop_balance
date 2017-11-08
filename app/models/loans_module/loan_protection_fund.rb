@@ -25,11 +25,17 @@ module LoansModule
       LoanProtectionRate.rate_for(loan)
     end
     def self.set_amount_for(loan)
-      number_of_thousands = loan.loan_amount / 1_000
-      number_of_thousands * self.rate_for(loan) * loan.term
+      if !loan.disbursed?
+        number_of_thousands = loan.loan_amount / 1_000
+        number_of_thousands * self.rate_for(loan) * loan.term
+      elsif loan.disbursed?
+        number_of_thousands = loan.balance / 1_000
+        number_of_thousands * self.rate_for(loan) * loan.remaining_term
+      end
     end
     def self.set_loan_protection_fund_for(loan)
-      loan.create_loan_protection_fund(amount: set_amount_for(loan), account: account_to_debit)
+      loan_protection = loan.loan_protection_funds.create(amount: set_amount_for(loan), account: account_to_debit)
+      loan.loan_charges.find_or_create_by(chargeable: loan_protection)
     end
 
     private

@@ -75,6 +75,7 @@ class DisbursementForm
       entry.credit_amounts << credit_amount
     end
     entry.save!
+    find_loan.disbursed!
   end
 
 

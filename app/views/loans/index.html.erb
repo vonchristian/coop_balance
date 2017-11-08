@@ -79,7 +79,9 @@
               <% @loans.each do |loan| %>
                 <tr data-link="<%=loan_path(loan)%>" class="myClass">
                   <td>
+                    <% if loan.borrower.present? %>
                     <%= image_tag(loan.borrower.avatar.url(:thumb), class: "img-circle", height: 35, width: 35) %> &nbsp; <b><%=loan.borrower_name %></b>
+                    <% end %>
 
                     </td>
                   <td><%= number_to_currency loan.loan_amount %></td>
