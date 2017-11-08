@@ -15,7 +15,11 @@ module LoansModule
       false
     end
     def self.account_to_debit
-      AccountingModule::Liability.find_by(name: 'Loan Protection Fund Payable')
+      if CoopConfigurationsModule::LoanProtectionFundConfig.last.present?
+        CoopConfigurationsModule::LoanProtectionFundConfig.order(created_at: :asc).last.account
+      else
+        AccountingModule::Liability.find_by(name: 'Loan Protection Fund Payable')
+      end
     end
     def self.rate_for(loan)
       LoanProtectionRate.rate_for(loan)
