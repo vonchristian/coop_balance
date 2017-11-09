@@ -8,7 +8,13 @@ module CoopServicesModule
     validates :name, uniqueness: true
     validates :cost_per_share, numericality: true
     delegate :name, to: :account, prefix: true
-
+    def default_account
+      if account.present?
+        account
+      else
+        AccountingModule::Account.find_by(name: "Paid-up Share Capital - Common")
+      end
+    end
     def self.accounts
       all.map{|a| a.account_name }
     end

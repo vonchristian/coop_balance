@@ -9,7 +9,7 @@ module TreasuryModule
       @entry = TreasuryModule::FundTransferForm.new(remittance_params)
       if @entry.valid?
         @entry.save
-        redirect_to treasury_module_employee_url(@employee), notice: "Remittance saved successfully."
+        redirect_to employee_url(@employee), notice: "Remittance saved successfully."
       else
         render :new
       end

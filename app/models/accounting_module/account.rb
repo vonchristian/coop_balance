@@ -25,7 +25,9 @@ module AccountingModule
     has_many :debit_amounts, :extend => AmountsExtension, :class_name => 'AccountingModule::DebitAmount'
     has_many :entries, through: :amounts, source: :entry
     has_many :credit_entries, :through => :credit_amounts, :source => :entry, :class_name => 'AccountingModule::Entry'
+
     has_many :debit_entries, :through => :debit_amounts, :source => :entry, :class_name => 'AccountingModule::Entry'
+
     has_many :sub_accounts, class_name: "AccountingModule::Account", foreign_key: 'main_account_id'
     belongs_to :main_account, class_name: "AccountingModule::Account"
     validates :type, presence: true
@@ -39,6 +41,13 @@ module AccountingModule
     def self.updated_at(from_date, to_date)
       joins(:entries).where('entries.entry_date' => (from_date.beginning_of_day)..(to_date.end_of_day))
     end
+    def self.updated_by(employee)
+      all.select{|a| a.updated_by(employee) }
+    end
+    def updated_by(employee)
+      entries.recorded_by(employee)
+    end
+
     def self.loan_accounts
       LoansModule::LoanProduct.accounts.uniq.map do |a|
         self.find_by(name: a.to_s)

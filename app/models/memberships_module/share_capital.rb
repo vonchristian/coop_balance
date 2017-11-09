@@ -9,7 +9,7 @@ module MembershipsModule
     belongs_to :share_capital_product, class_name: "CoopServicesModule::ShareCapitalProduct"
     has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
 
-    delegate :name, :account, to: :share_capital_product, prefix: true
+    delegate :name, :account, :default_account, to: :share_capital_product, prefix: true
     delegate :name, to: :subscriber, prefix: true
     delegate :cost_per_share, to: :share_capital_product, prefix: true
     validates :share_capital_product_id, presence: true
@@ -24,7 +24,7 @@ module MembershipsModule
     end
 
     def balance
-      capital_build_ups_total
+      share_capital_product_default_account.balance(commercial_document_id: self.id)
     end
 
     def capital_build_ups_total

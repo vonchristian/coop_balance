@@ -11,7 +11,7 @@ class TellerReportPdf < Prawn::Document
     time_deposits
     share_capitals
     loan_releases
-    # loan_collections
+    loan_collections
     expenses
     summary_report
     summary_of_accounts
@@ -188,13 +188,13 @@ class TellerReportPdf < Prawn::Document
     end
   end
   def share_capital_beginning_balance
-    [["", "Beginning Balance", "#{price(AccountingModule::Account.find_by(name: "Paid-up Share Capital - Common").balance(to_date: @date.yesterday, recorder_id: @employee.id))}"]]
+    [["", "Beginning Balance", "#{price(AccountingModule::Account.find_by(name: "Paid-up Share Capital - Common").balance(to_date: @date.yesterday))}"]]
   end
   def additional_share_capital
    [["", "", "Additional Share Capital", "#{price(AccountingModule::Account.find_by(name: "Paid-up Share Capital - Common").balance(:recorder_id => @employee.id))}"]]
   end
   def total_share_capitals
-    [["", "", "Total Share Capitals", "#{price(AccountingModule::Account.find_by(name: "Paid-up Share Capital - Common").balance(to_date: @date.end_of_day, :recorder_id => @employee.id))}"]]
+    [["", "", "Total Share Capitals", "#{price(AccountingModule::Account.find_by(name: "Paid-up Share Capital - Common").balance(to_date: @date.end_of_day))}"]]
   end
   def share_capital_withdrawals
     [["", "", "Less Withdrawals", "#{price(AccountingModule::Account.find_by(name: 'Paid-up Share Capital - Common').debit_entries.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total)}"]]
@@ -316,11 +316,11 @@ class TellerReportPdf < Prawn::Document
     end
   end
   def summary_data
-    [["", "", "Cash Received",  "#{price(@employee.cash_on_hand_account.debits_balance(recorder_id:@employee.id))}"]] +
+    [["", "", "Cash Received",  "#{price(@employee.cash_on_hand_account.debits_balance(recorder_id:@employee.id) + @employee.fund_transfers.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).total) }"]] +
     [["", "", "Cash Disbursed",  "#{price(@employee.cash_on_hand_account.credits_balance(recorder_id:@employee.id))}"]]
   end
   def total_summary_data
-    [["", "", "Ending Balance", "#{price(@employee.cash_on_hand_account.balance(recorder_id: @employee.id, from_date: @date.beginning_of_day, to_date: @date.end_of_day))  }"]]
+    [["", "", "Ending Balance", "#{price(@employee.cash_on_hand_account.balance(recorder_id: @employee.id, from_date: @date.beginning_of_day, to_date: @date.end_of_day)+ @employee.fund_transfers.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).total)  }"]]
   end
 
   def summary_of_accounts
@@ -329,6 +329,8 @@ class TellerReportPdf < Prawn::Document
     table(accounts_data, cell_style: { size: 10, font: "Helvetica"}, column_widths: [20, 80, 210, 90]) do
         cells.borders = []
         row(0).font_style = :bold
+        column(3).align = :right
+        column(4).align = :right
     end
     stroke do
       stroke_color 'CCCCCC'
@@ -339,7 +341,7 @@ class TellerReportPdf < Prawn::Document
   end
   def accounts_data
     [["", "Code", "Account", "Debits", "Credits"]] +
-    @accounts_data ||= AccountingModule::Account.updated_at(@date.beginning_of_day, @date.end_of_day).distinct.order(:code).map{|a| ["", a.code, a.name, a.debits_balance(recorder_id: @employee.id), a.credits_balance(recorder_id: @employee.id)]}
+    @accounts_data ||= AccountingModule::Account.updated_at(@date.beginning_of_day, @date.end_of_day).updated_by(@employee).uniq.map{ |a| ["", a.code, a.name, price(a.debits_balance(recorder_id: @employee.id)), price(a.credits_balance(recorder_id: @employee.id))]}
   end
 
 

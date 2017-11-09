@@ -2,7 +2,7 @@ module Employees
   class ReportsController < ApplicationController
     def index
       @employee = User.find(params[:employee_id])
-      @date = Chronic.parse(params[:date])
+      @date = params[:date] ? Chronic.parse(params[:date]) : Date.today
       respond_to do |format|
         format.html
         format.pdf do
