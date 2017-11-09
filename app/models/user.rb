@@ -112,21 +112,20 @@ class User < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
-  # def cash_on_hand_account
-  #   if treasurer?
-  #     AccountingModule::Asset.find_by(name: "Cash on Hand (Treasury)")
-  #   elsif teller?
-  #     AccountingModule::Asset.find_by(name: "Cash on Hand (Teller)")
-  #   elsif sales_clerk?
-  #     AccountingModule::Asset.find_by(name: "Cash on Hand (Teller)")
-  #   end
-  # end
+  def default_cash_on_hand_account
+    return cash_on_hand_account if cash_on_hand_account.present?
+    if treasurer?
+      AccountingModule::Asset.find_by(name: "Cash on Hand (Treasury)")
+    elsif teller? || sales_clerk?
+      AccountingModule::Asset.find_by(name: "Cash on Hand (Teller)")
+    end
+  end
+
   def fund_transfer_total
-    fund_transfers.fund_transfer.map{ |a| a.debit_amounts.distinct.sum(:amount) }.sum
+    fund_transfers.fund_transfer.total
   end
 
   def payable_amount
     voucher_amounts.sum(:amount)
   end
-
 end

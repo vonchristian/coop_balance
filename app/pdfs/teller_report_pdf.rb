@@ -191,7 +191,7 @@ class TellerReportPdf < Prawn::Document
     [["", "Beginning Balance", "#{price(AccountingModule::Account.find_by(name: "Paid-up Share Capital - Common").balance(to_date: @date.yesterday))}"]]
   end
   def additional_share_capital
-   [["", "", "Additional Share Capital", "#{price(AccountingModule::Account.find_by(name: "Paid-up Share Capital - Common").balance(:recorder_id => @employee.id))}"]]
+   [["", "", "Additional Share Capital", "#{price(AccountingModule::Account.find_by(name: "Paid-up Share Capital - Common").credit_entries.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total)}"]]
   end
   def total_share_capitals
     [["", "", "Total Share Capitals", "#{price(AccountingModule::Account.find_by(name: "Paid-up Share Capital - Common").balance(to_date: @date.end_of_day))}"]]
@@ -288,14 +288,14 @@ class TellerReportPdf < Prawn::Document
   end
   def expenses_data
     [["", "", "Account", "Amount"]] +
-    @expenses_data ||= AccountingModule::Expense.updated_at(@date.beginning_of_day, @date.end_of_day).distinct.map{|a| ["", "", a.name, a.entries.entered_on(from_date: @date, to_date: @date).map{|a| a.debit_amounts.distinct.sum(:amount)}.sum]}
+    @expenses_data ||= AccountingModule::Expense.updated_at(@date.beginning_of_day, @date.end_of_day).distinct.map{|a| ["", "", a.name, price(a.entries.entered_on(from_date: @date, to_date: @date).map{|a| a.debit_amounts.distinct.sum(:amount)}.sum)]}
   end
   def expenses_total_data
     [["", "", "<b>TOTAL</b>", "#{AccountingModule::Expense.updated_at(@date.beginning_of_day, @date.end_of_day).map{|a| a.entries.entered_on(from_date: @date, to_date: @date).total}.sum}"]]
   end
 
   def summary_report
-    text "Summary Report", style: :bold, size: 10
+    text "SUMMARY REPORT", style: :bold, size: 10
     table(summary_data, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 10, 290, 90]) do
         cells.borders = []
     end
@@ -316,8 +316,8 @@ class TellerReportPdf < Prawn::Document
     end
   end
   def summary_data
-    [["", "", "Cash Received",  "#{price(@employee.cash_on_hand_account.debits_balance(recorder_id:@employee.id) + @employee.fund_transfers.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).total) }"]] +
-    [["", "", "Cash Disbursed",  "#{price(@employee.cash_on_hand_account.credits_balance(recorder_id:@employee.id))}"]]
+    [["", "", "Cash Received",  "#{price(@employee.cash_on_hand_account.debit_entries.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).recorded_by(@employee.id).total + @employee.fund_transfers.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).total) }"]] +
+    [["", "", "Cash Disbursed",  "#{price(@employee.cash_on_hand_account.credit_entries.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).recorded_by(@employee.id).total)}"]]
   end
   def total_summary_data
     [["", "", "Ending Balance", "#{price(@employee.cash_on_hand_account.balance(recorder_id: @employee.id, from_date: @date.beginning_of_day, to_date: @date.end_of_day)+ @employee.fund_transfers.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).total)  }"]]

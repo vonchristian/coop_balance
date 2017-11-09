@@ -30,6 +30,7 @@ module MembershipsModule
 
     def balance
       deposits + interests_earned - withdrawals
+      #saving_product_account.balance(commercial_document: self)
     end
     def deposits
       entries.deposit.map{|a| a.debit_amounts.sum(:amount)}.sum
