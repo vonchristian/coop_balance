@@ -401,7 +401,6 @@ DEPENDENCIES
   delayed_job_active_record
   devise
   dotiw
-  dragonfly
   factory_bot_rails
   faker
   font-awesome-rails
