@@ -44,6 +44,7 @@ module LoansModule
     validates :loan_amount, numericality: { less_than: :loan_product_max_loanable_amount}
 
     #find aging loans e.g. 1-30 days,
+
     def self.disbursed_on(date)
       disbursed.includes([:entries]).where('entries.entry_date' => (date.beginning_of_day)..(date.end_of_day))
     end

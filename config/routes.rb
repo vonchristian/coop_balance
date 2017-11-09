@@ -47,6 +47,9 @@ Rails.application.routes.draw do
   resources :loans_module, only: [:index]
 
   namespace :loans_module do
+    namespace :reports do
+      resources :loan_releases, only: [:index]
+    end
     resources :reports, only: [:index]
     resources :loan_protection_funds, module: :reports, only: [:index]
     resources :loan_registries, only: [:new, :create]
