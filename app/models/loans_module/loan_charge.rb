@@ -24,6 +24,7 @@ module LoansModule
 	  		chargeable.amount
 		  end
 	  end
+
 	  def balance
 	  	if charge_adjustment.present?
 	  	  charge_amount - charge_adjustment.charge_amount

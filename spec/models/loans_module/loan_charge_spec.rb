@@ -33,11 +33,28 @@ module LoansModule
         expect(loan_charge.charge_amount).to eql(100)
       end
       it 'as an amount type' do
-         loan = create(:loan, loan_amount: 1000)
+        loan = create(:loan, loan_amount: 1000)
         charge = create(:charge, charge_type: 'amount_type', amount: 10)
         loan_charge = create(:loan_charge, loan: loan, chargeable: charge)
 
         expect(loan_charge.charge_amount).to eql(10)
+      end
+    end
+    describe '#charge_amount_with_adjustment' do
+      it 'with charge_adjustment' do
+        loan = create(:loan, loan_amount: 1000)
+        charge = create(:charge, charge_type: 'amount_type', amount: 100)
+        loan_charge = create(:loan_charge, loan: loan, chargeable: charge)
+        charge_adjustment = create(:charge_adjustment, loan_charge: loan_charge, amount: 55)
+
+        expect(loan_charge.charge_amount_with_adjustment).to eql(55)
+      end
+      it 'without charge_adjustment' do
+        loan = create(:loan, loan_amount: 1000)
+        charge = create(:charge, charge_type: 'amount_type', amount: 10)
+        loan_charge = create(:loan_charge, loan: loan, chargeable: charge)
+
+        expect(loan_charge.charge_amount_with_adjustment).to eql(10)
       end
     end
   end
