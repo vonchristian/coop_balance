@@ -19,16 +19,14 @@ module LoansModule
     has_many :approvers, through: :loan_approvals
     has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
     has_many :loan_charges, class_name: "LoansModule::LoanCharge", dependent: :destroy
+    has_many :loan_charge_payment_schedules, through: :loan_charges
     has_many :loan_additional_charges, dependent: :destroy
     has_many :charges, through: :loan_charges, source: :chargeable, source_type: "Charge"
     has_many :loan_co_makers, class_name: "LoansModule::LoanCoMaker", dependent: :destroy
     has_many :member_co_makers, through: :loan_co_makers, source: :co_maker, source_type: 'Member'
     has_many :employee_co_makers, through: :loan_co_makers, source: :co_maker, source_type: 'User'
 
-    has_many :amortization_schedules, as: :amortizeable, dependent: :destroy
-    has_many :principal_amortization_schedules, as: :amortizeable, class_name: "LoansModule::PrincipalAmortizationSchedule", dependent: :destroy
-    has_many :interest_on_loan_amortization_schedules, as: :amortizeable, class_name: "LoansModule::InterestOnLoanAmortizationSchedule", dependent: :destroy
-    has_many :interest_on_loan_charges, class_name: "LoansModule::InterestOnLoanCharge", as: :chargeable, through: :loan_charges, source: :chargeable, source_type: "LoansModule::InterestOnLoanCharge"
+    has_many :amortization_schedules, dependent: :destroy
     has_many :collaterals, class_name: "LoansModule::Collateral", dependent: :destroy
     has_many :real_properties, through: :collaterals
     has_many :notices, as: :notified, dependent: :destroy
@@ -37,14 +35,16 @@ module LoansModule
     has_one :third_notice, class_name: "ThirdNotice", as: :notified
 
     delegate :name, :age, :contact_number, :current_address, to: :borrower,  prefix: true, allow_nil: true
-    delegate :name, to: :loan_product, prefix: true, allow_nil: true
+    delegate :name, :loan_product_interest_account, to: :loan_product, prefix: true, allow_nil: true
     delegate :account, :interest_rate, to: :loan_product, prefix: true
     before_save :set_default_date
 
     validates :loan_product_id, presence: true
     validates :term, presence: true, numericality: { greater_than: 0.1 }
     #find aging loans e.g. 1-30 days,
-
+    def payment_schedules
+      amortization_schedules + loan_charge_payment_schedules
+    end
     def store_payment_total
       entries.map{|a| a.credit_amounts.distinct.where(account: CoopConfigurationsModule::AccountReceivableStoreConfig.account_to_debit).sum(&:amount)}.sum
     end
@@ -53,6 +53,10 @@ module LoansModule
     end
     def penalties_total
       LoanPenalty.new.balance(self.borrower)
+    end
+    def interest_on_loan
+      interest = loan_charges.select{|a| a.chargeable.account == a.loan.loan_product_loan_product_interest_account}.last
+      interest.charge_amount_with_adjustment
     end
     def co_makers
       employee_co_makers + member_co_makers

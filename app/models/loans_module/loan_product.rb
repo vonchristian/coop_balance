@@ -21,8 +21,8 @@ module LoansModule
       self.charges.not_depends_on_loan_amount.each do |charge|
         loan.loan_charges.find_or_create_by(chargeable: charge)
       end
-      # interest_on_loan_charge = Charge.create(name: "Interest on Loan", amount: self.loan_product_interest_rate * loan.loan_amount, account_id: self.loan_product_interest_account.id)
-      # loan.loan_charges.find_or_create_by(chargeable: interest_on_loan_charge )
+      interest_on_loan_charge = Charge.create(name: "Interest on Loan", amount: self.loan_product_interest_rate * loan.loan_amount, account_id: self.loan_product_interest_account.id)
+      loan.loan_charges.find_or_create_by(chargeable: interest_on_loan_charge )
     end
     def self.accounts
       all.map{|a| a.account_name }

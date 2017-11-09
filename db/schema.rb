@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171108115406) do
+ActiveRecord::Schema.define(version: 20171109024003) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(version: 20171108115406) do
     t.string "type"
     t.decimal "loan_protection_fund"
     t.integer "schedule_type"
+    t.decimal "amount"
     t.index ["amortizeable_type", "amortizeable_id"], name: "amortization_schedules_amortizeable_index"
     t.index ["loan_id"], name: "index_amortization_schedules_on_loan_id"
     t.index ["schedule_type"], name: "index_amortization_schedules_on_schedule_type"
@@ -441,7 +442,11 @@ ActiveRecord::Schema.define(version: 20171108115406) do
     t.decimal "amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "amortization_schedule_id"
+    t.uuid "loan_id"
+    t.index ["amortization_schedule_id"], name: "index_loan_charge_payment_schedules_on_amortization_schedule_id"
     t.index ["loan_charge_id"], name: "index_loan_charge_payment_schedules_on_loan_charge_id"
+    t.index ["loan_id"], name: "index_loan_charge_payment_schedules_on_loan_id"
     t.index ["schedule_type"], name: "index_loan_charge_payment_schedules_on_schedule_type"
   end
 
@@ -1153,7 +1158,9 @@ ActiveRecord::Schema.define(version: 20171108115406) do
   add_foreign_key "loan_additional_charges", "loans"
   add_foreign_key "loan_approvals", "loans"
   add_foreign_key "loan_approvals", "users", column: "approver_id"
+  add_foreign_key "loan_charge_payment_schedules", "amortization_schedules"
   add_foreign_key "loan_charge_payment_schedules", "loan_charges"
+  add_foreign_key "loan_charge_payment_schedules", "loans"
   add_foreign_key "loan_charges", "loans"
   add_foreign_key "loan_co_makers", "loans"
   add_foreign_key "loan_documentary_stamp_taxes", "loans"

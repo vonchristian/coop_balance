@@ -12,7 +12,7 @@ module LoansModule
         @loan.create_documentary_stamp_tax
         @loan.set_loan_protection_fund
         redirect_to loans_module_loan_application_url(@loan), notice: "Loan application saved successfully."
-        # @loan.create_amortization_schedule
+        @loan.create_amortization_schedule
         @loan.set_borrower_type
         @loan.set_borrower_full_name
       else
@@ -34,7 +34,7 @@ module LoansModule
         @loan.create_documentary_stamp_tax
         @loan.set_loan_protection_fund
         redirect_to loans_module_loan_application_url(@loan), notice: "Loan application saved successfully."
-        # @loan.create_amortization_schedule
+        @loan.create_amortization_schedule
         @loan.set_borrower_type
         @loan.set_borrower_full_name
       else

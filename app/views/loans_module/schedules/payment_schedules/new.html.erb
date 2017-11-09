@@ -5,6 +5,10 @@
         <%=link_to 'Back to Loan', loans_module_loan_application_path(@loan_charge.loan) %>
       </div>
       <div class="box-body">
+        <%= @loan_charge.name %>
+        <%= number_to_currency @loan_charge.amount %>
+        <%= number_to_currency @loan_charge.charge_amount_with_adjustment %>
+        <%#= link_to 'Equal Amortization', equal_amortization_loans_module_loan_charge_path(@loan_charge) %>
         <div class="row">
           <div class="col-md-6 col-md-offset-1">
             <div class="table table-responsive">
@@ -33,6 +37,7 @@
               <%= f.input :date, as: :string, input_html: { class: 'datepicker' } %>
               <%= f.input :amount %>
               <%= f.input :loan_charge_id, input_html: { value: @loan_charge.id }, as: :hidden %>
+              <%= f.input :loan_id, input_html: { value: @loan_charge.loan.id } %>
               <%= f.submit "Create" %>
             <% end %>
           </div>

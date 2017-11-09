@@ -17,7 +17,7 @@ module LoansModule
 
       private
       def payment_schedule_params
-        params.require(:loan_charge_payment_schedule).permit(:date, :amount, :loan_charge_id)
+        params.require(:loan_charge_payment_schedule).permit(:date, :amount, :loan_id)
       end
     end
   end
