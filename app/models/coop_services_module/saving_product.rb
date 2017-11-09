@@ -13,8 +13,19 @@ module CoopServicesModule
     delegate :name, to: :account, prefix: true
 
     def self.accounts
-    	all.map{|a| a.account_name }
+    	all.map{|a| a.account }
     end
+
+    def self.accounts_balance(options={})
+      accounts.uniq.map{|a| a.balance(options)}.sum
+    end
+    def self.accounts_credits_balance(options={})
+      accounts.uniq.map{|a| a.credits_balance(options)}.sum
+    end
+    def self.accounts_debits_balance(options={})
+      accounts.uniq.map{|a| a.debits_balance(options)}.sum
+    end
+
 	  def post_interests_earned
 	  	subscribers.each do |saving|
 	  		InterestPosting.new.post_interests_earned(saving)

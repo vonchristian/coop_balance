@@ -69,12 +69,12 @@ class TellerReportPdf < Prawn::Document
       column(2).align = :right
 
       end
-      table(savings_deposits_from_members, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 10, 150, 90]) do
+      table(add_savings_deposits, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 10, 150, 90]) do
       cells.borders = []
       row(0).text_color = "008751"
       column(3).align = :right
       end
-      table(withdrawals_from_members, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 10, 150, 90]) do
+      table(less_savings_deposits, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 10, 150, 90]) do
         cells.borders = []
         row(0).text_color = "DB4437"
         column(3).align = :right
@@ -98,16 +98,18 @@ class TellerReportPdf < Prawn::Document
   end
   #Savings Deposits
   def savings_deposits_balances
-    [["", "Beginning Balance", "#{price(AccountingModule::Account.find_by(name: "Savings Deposits").balance(to_date: @date.yesterday.end_of_day))}"]]
+    [["", "Beginning Balance", "#{price(CoopServicesModule::SavingProduct.accounts_balance(to_date: @date.yesterday.end_of_day))}"]]
   end
-  def savings_deposits_from_members
-    [["", "", "Add Deposits", "#{price(AccountingModule::Account.find_by(name: "Savings Deposits").credit_entries.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total)}"]]
+  def add_savings_deposits
+    [["", "", "Add Deposits", "#{price(CoopServicesModule::SavingProduct.accounts.map{|a| a.credit_entries.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total}.sum) }"]]
   end
+
+  def less_savings_deposits
+    [["", "", "Less Withdrawals", "#{price(CoopServicesModule::SavingProduct.accounts.map{|a| a.debit_entries.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total}.sum )}"]]
+  end
+
   def total_savings_deposits
-    [["", "", "Total Savings Deposits", "#{price(AccountingModule::Account.find_by(name: "Savings Deposits").balance)}"]]
-  end
-  def withdrawals_from_members
-    [["", "", "Less Withdrawals", "#{price(AccountingModule::Account.find_by(name: "Savings Deposits").debit_entries.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total)}"]]
+    [["", "", "Total Savings Deposits", "#{price(CoopServicesModule::SavingProduct.accounts_balance)}"]]
   end
   def time_deposits
     text "Time Deposits", style: :bold, size: 10, color: "4A86CF"
@@ -188,7 +190,7 @@ class TellerReportPdf < Prawn::Document
     end
   end
   def share_capital_beginning_balance
-    [["", "Beginning Balance", "#{price(AccountingModule::Account.find_by(name: "Paid-up Share Capital - Common").balance(to_date: @date.yesterday))}"]]
+    [["", "Beginning Balance", "#{price(CoopServicesModule::ShareCapitalProduct.accounts_balance(to_date: @date.yesterday))}"]]
   end
   def additional_share_capital
    [["", "", "Additional Share Capital", "#{price(AccountingModule::Account.find_by(name: "Paid-up Share Capital - Common").credit_entries.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total)}"]]

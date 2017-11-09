@@ -19,7 +19,11 @@ module CoopServicesModule
     end
 
     def self.accounts
+      all.map{|a| a.account }
+    end
 
+    def self.accounts_balance(options={})
+      accounts.uniq.map{|a| a.balance(options)}.sum
     end
 
     def total_subscribed

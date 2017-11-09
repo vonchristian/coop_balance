@@ -4,6 +4,24 @@ module CoopServicesModule
     has_one :break_contract_fee
     belongs_to :account, class_name: "AccountingModule::Account"
     delegate :name, to: :account, prefix: true
+    validates :account_id, presence: true
+
+    def self.accounts
+      all.map{|a| a.account }
+    end
+
+    def self.accounts_balance(options={})
+      accounts.uniq.map{|a| a.balance(options)}.sum
+    end
+
+    def self.accounts_credits_balance(options={})
+      accounts.uniq.map{|a| a.credits_balance(options)}.sum
+    end
+
+    def self.accounts_debits_balance(options={})
+      accounts.uniq.map{|a| a.debits_balance(options)}.sum
+    end
+
     def self.set_product_for(time_deposit)
       if time_deposit.member?
        set_time_deposit_product_for_member(time_deposit)
