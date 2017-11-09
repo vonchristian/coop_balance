@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171109024003) do
+ActiveRecord::Schema.define(version: 20171109113444) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -324,11 +324,13 @@ ActiveRecord::Schema.define(version: 20171109024003) do
     t.integer "entry_type"
     t.uuid "recorder_id"
     t.uuid "department_id"
+    t.uuid "voucher_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_entry"
     t.index ["department_id"], name: "index_entries_on_department_id"
     t.index ["entry_date"], name: "index_entries_on_entry_date"
     t.index ["entry_type"], name: "index_entries_on_entry_type"
     t.index ["recorder_id"], name: "index_entries_on_recorder_id"
+    t.index ["voucher_id"], name: "index_entries_on_voucher_id"
   end
 
   create_table "entry_clearances", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1146,6 +1148,7 @@ ActiveRecord::Schema.define(version: 20171109024003) do
   add_foreign_key "employee_contributions", "users", column: "employee_id"
   add_foreign_key "entries", "departments"
   add_foreign_key "entries", "users", column: "recorder_id"
+  add_foreign_key "entries", "vouchers"
   add_foreign_key "entry_clearances", "entries"
   add_foreign_key "entry_clearances", "users"
   add_foreign_key "finished_good_materials", "products"

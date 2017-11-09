@@ -2,8 +2,9 @@ require 'rails_helper'
 
 module AccountingModule
   describe Entry do
-  	describe 'associations' do 
+  	describe 'associations' do
   		it { is_expected.to belong_to :commercial_document }
+      it { is_expected.to belong_to :voucher }
   	end
     let(:entry) { build(:entry) }
     subject { entry }
@@ -123,7 +124,7 @@ module AccountingModule
                 ]
             }
           }
-         
+
         end
 
         context "when given a credit/debits hash with :account_name => String" do

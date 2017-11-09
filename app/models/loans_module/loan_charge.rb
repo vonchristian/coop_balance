@@ -12,6 +12,7 @@ module LoansModule
     def interest_on_loan
     	where(chargeable.account == self.loan.interest_on_loan)
     end
+
 	  def self.total
 	  	all.sum(&:charge_amount_with_adjustment)
 	  end
@@ -34,11 +35,15 @@ module LoansModule
 	  end
 
 	  def charge_amount_with_adjustment
-	  	if charge_adjustment.present?
-	  	  charge_adjustment.charge_amount
-	    else
-	    	charge_amount
-	    end
+	  	if chargeable.present?
+		  	if charge_adjustment.present?
+		  	  charge_adjustment.charge_amount
+		    else
+		    	charge_amount
+		    end
+		  else
+		  	0
+		  end
 	  end
 
 	end

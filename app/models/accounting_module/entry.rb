@@ -16,7 +16,7 @@ module AccountingModule
                       :savings_interest,
                       :time_deposit,
                       :program_subscription_payment,
-                      :loan_penalty,
+                      # :loan_penalty,
                       :time_deposit_interest,
                       :adjusting_entry,
                       :fund_transfer,
@@ -32,6 +32,7 @@ module AccountingModule
     belongs_to :recorder, foreign_key: 'recorder_id', class_name: "User"
     belongs_to :department
     belongs_to :branch
+    belongs_to :voucher
     belongs_to :recorder, class_name: "User", foreign_key: 'recorder_id'
 
     has_many :credit_amounts, :extend => AccountingModule::AmountsExtension, :class_name => 'AccountingModule::CreditAmount', :inverse_of => :entry, dependent: :destroy
@@ -53,6 +54,7 @@ module AccountingModule
     after_commit :update_accounts, :update_amounts
 
     delegate :first_and_last_name, to: :recorder, prefix: true, allow_nil: true
+    delegate :number, to: :voucher, prefix: true, allow_nil: true
 
     def self.entered_on(hash={})
       if hash[:from_date] && hash[:to_date]

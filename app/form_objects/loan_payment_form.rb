@@ -8,7 +8,8 @@ class LoanPaymentForm
                 :date,
                 :recorder_id
   validates :principal_amount, :interest_amount, :penalty_amount, presence: true, numericality: true
-  validates :reference_number, presence: true
+  validates :reference_number, :principal_amount, presence: true
+  validates :principal_amount, numericality: { greater_than: 0 }
 
   def save
     ActiveRecord::Base.transaction do

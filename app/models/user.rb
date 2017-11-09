@@ -60,6 +60,14 @@ class User < ApplicationRecord
   :path => ":rails_root/public/system/:attachment/:id/:basename_:style.:extension",
   :url => "/system/:attachment/:id/:basename_:style.:extension"
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
+  def self.cash_on_hand_accounts
+    user_accounts = all.collect{|a| a.cash_on_hand_account_id }.compact
+    accounts = []
+    user_accounts.each do |account|
+      accounts << AccountingModule::Account.find(account)
+    end
+    accounts
+  end
   def recommended_co_makers
     User.where(last_name: self.last_name)
   end

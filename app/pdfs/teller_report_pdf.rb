@@ -1,3 +1,4 @@
+
 class TellerReportPdf < Prawn::Document
   def initialize(employee, date, view_context)
     super(margin: 40, page_size: "A4", page_layout: :portrait)
@@ -197,70 +198,67 @@ class TellerReportPdf < Prawn::Document
   end
   def loan_releases
     text "Loan Releases", style: :bold, size: 10, color: "DB4437"
-    table(loan_releases_header, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [40, 160, 100, 110, 100]) do
-      cells.borders = []
-    end
-    table(loan_releases_data, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [40, 160, 100, 110, 100]) do
-      cells.borders = []
+    if @employee.entries.loan_disbursement.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).present?
+
+      table(loan_releases_data, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [40, 160, 100, 110, 100]) do
+        cells.borders = []
+      end
+    else
+      text "No Loan released for #{@date.strftime("%B %e, %Y")}", size: 10
+      move_down 10
     end
     stroke do
       stroke_color 'CCCCCC'
       line_width 0.2
       stroke_horizontal_rule
-    end
-    table(loan_releases_total, header: true, cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [40, 160, 100, 110, 100]) do
-      cells.borders = []
     end
   end
   def loan_releases_header
-    [["", "Borrower", "Voucher #", "Loan Amount", "Net Proceed"]]
+
   end
   def loan_releases_data
-    if @employee.entries.loan_disbursement.present?
-      @loan_releases_data ||= @employee.entries.loan_disbursement.map{|a| [ {image: a.commercial_document.borrower.avatar.path(:medium), image_height: 30, image_width: 30 }, a.commercial_document.try(:borrower_name), a.reference_number, price(a.commercial_document.loan_amount), price(a.commercial_document.net_proceed)]}
-    else
-      [["", "", "", "No Loan releases"]]
-    end
-  end
-
-  def loan_releases_total
-
+    if @employee.entries.loan_disbursement.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).present?
+       [["", "Borrower", "Voucher #", "Loan Amount", "Net Proceed"]] +
+      @loan_collections_data ||= @employee.entries.loan_disbursement.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{|a| ["", a.commercial_document.try(:borrower_name), a.voucher_number, price(a.commercial_document.loan_amount), price(a.commercial_document.net_proceed)]} +
       [["", "", "", "<b>#{price(@employee.entries.loan_disbursement.map{|a| a.debit_amounts.distinct.sum(:amount)}.sum)}</b>", "Net Proceed"]]
 
-  end
-
-   def loan_collections
-    text "Loan Collections", style: :bold, size: 10, color: "DB4437"
-    table(loan_collections_header, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [40, 160, 100, 110, 100]) do
-      cells.borders = []
-    end
-    table(loan_collections_data, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [40, 160, 100, 110, 100]) do
-      cells.borders = []
-    end
-    stroke do
-      stroke_color 'CCCCCC'
-      line_width 0.2
-      stroke_horizontal_rule
-    end
-    table(loan_collections_total, header: true, cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [40, 160, 100, 110, 100]) do
-      cells.borders = []
-    end
-  end
-  def loan_collections_header
-    [["", "Borrower", "OR #", "Loan Amount", "Net Proceed"]]
-  end
-  def loan_collections_data
-    if @employee.entries.loan_disbursement.present?
-
-      @loan_collections_data ||= @employee.entries.loan_disbursement.map{|a| [ {image: a.commercial_document.borrower.avatar.path(:medium), image_height: 30, image_width: 30 }, a.commercial_document.try(:borrower_name), a.reference_number, price(a.commercial_document.loan_amount), price(a.commercial_document.net_proceed)]}
     else
       [[""]]
     end
   end
 
-  def loan_collections_total
-    [["", "", "", "<b>#{price(@employee.entries.loan_disbursement.map{|a| a.debit_amounts.distinct.sum(:amount)}.sum)}</b>", "Net Proceed"]]
+   def loan_collections
+    text "Loan Collections", style: :bold, size: 10, color: "DB4437"
+
+    if @employee.entries.loan_payment.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).present?
+
+      table(loan_collections_data, header: true, cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [40, 160, 100, 110, 100]) do
+        cells.borders = []
+      end
+    else
+      move_down 5
+      text "    No Loan Collections for #{@date.strftime("%B %e, %Y")}", size: 10
+    end
+    stroke do
+      stroke_color 'CCCCCC'
+      line_width 0.2
+      stroke_horizontal_rule
+      move_down 5
+    end
   end
+
+  def loan_collections_data
+    if @employee.entries.loan_payment.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).present?
+       [["", "Borrower", "OR #", "Amount", ""]] +
+      @loan_collections_data ||= @employee.entries.loan_payment.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{|a| ["", a.commercial_document.try(:borrower_name), a.reference_number, price(a.debit_amounts.sum(&:amount))]} +
+    [["", "", "<b>TOTAL</b>", "<b>#{price(@employee.entries.loan_payment.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{|a| a.debit_amounts.distinct.sum(:amount)}.sum)}</b>", ""]]
+
+    else
+      [[""]]
+    end
+  end
+
+
   def expenses
     text "Expenses", style: :bold, size: 10, color: "DB4437"
     table(expenses_data, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 10, 290, 90]) do

@@ -44,6 +44,9 @@ module LoansModule
     validates :loan_amount, numericality: { less_than: :loan_product_max_loanable_amount}
 
     #find aging loans e.g. 1-30 days,
+    def self.disbursed_on(date)
+      disbursed.includes([:entries]).where('entries.entry_date' => (date.beginning_of_day)..(date.end_of_day))
+    end
     def payment_schedules
       amortization_schedules + loan_charge_payment_schedules
     end
@@ -66,6 +69,7 @@ module LoansModule
     def self.borrowers
       User.all + Member.all
     end
+
     def name
       loan_product_name
     end
@@ -128,10 +132,14 @@ module LoansModule
       18
     end
     def net_proceed
-      if total_loan_charges > 0
-        loan_amount - total_loan_charges
+      if !disbursed?
+        if total_loan_charges > 0
+          loan_amount - total_loan_charges
+        else
+          loan_amount
+        end
       else
-        loan_amount
+        entries.loan_disbursement.last.credit_amounts.distinct.select{|a| User.cash_on_hand_accounts.include?(a.account)}.sum(&:amount)
       end
     end
     def balance_for(schedule)
