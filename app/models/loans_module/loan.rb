@@ -35,12 +35,14 @@ module LoansModule
     has_one :third_notice, class_name: "ThirdNotice", as: :notified
 
     delegate :name, :age, :contact_number, :current_address, to: :borrower,  prefix: true, allow_nil: true
-    delegate :name, :loan_product_interest_account, to: :loan_product, prefix: true, allow_nil: true
+    delegate :name, :max_loanable_amount, :loan_product_interest_account, to: :loan_product, prefix: true, allow_nil: true
     delegate :account, :interest_rate, to: :loan_product, prefix: true
     before_save :set_default_date
 
     validates :loan_product_id, presence: true
     validates :term, presence: true, numericality: { greater_than: 0.1 }
+    validates :loan_amount, numericality: { less_than: :loan_product_max_loanable_amount}
+
     #find aging loans e.g. 1-30 days,
     def payment_schedules
       amortization_schedules + loan_charge_payment_schedules

@@ -5,6 +5,8 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 gem 'bootsnap', require: false
+gem 'client_side_validations'
+gem 'client_side_validations-simple_form'
 gem 'trix'
 gem 'autonumeric-rails'
 gem 'rails', '~> 5.1.4'

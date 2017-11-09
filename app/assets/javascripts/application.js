@@ -21,4 +21,6 @@
 //= require trix
 //= require bootstrap-slider
 //= require autonumeric
+//= require rails.validations
+//= require rails.validations.simple_form
 //= require_tree .
