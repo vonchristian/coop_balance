@@ -5,7 +5,6 @@ module LoansModule
     has_one :payment_notice, as: :notified
     enum schedule_type: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
     # after_commit :create_payment_notice
-    has_many :loan_charge_payment_schedules
     def self.scheduled_for(from_date, to_date)
       if from_date && to_date
         where('date' => from_date..to_date)
