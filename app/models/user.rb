@@ -19,7 +19,6 @@ class User < ApplicationRecord
               :accounting_clerk,
               :collector]
   belongs_to :cash_on_hand_account, class_name: "AccountingModule::Account", foreign_key: 'cash_on_hand_account_id'
-  has_one :account_receivable_store, as: :debtor
   has_one :current_address, as: :addressable, class_name: "Address"
   belongs_to :department
   belongs_to :cooperative
@@ -60,6 +59,7 @@ class User < ApplicationRecord
   :path => ":rails_root/public/system/:attachment/:id/:basename_:style.:extension",
   :url => "/system/:attachment/:id/:basename_:style.:extension"
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
+
   def self.cash_on_hand_accounts
     user_accounts = all.collect{|a| a.cash_on_hand_account_id }.compact
     accounts = []
@@ -68,23 +68,27 @@ class User < ApplicationRecord
     end
     accounts
   end
+
   def recommended_co_makers
     User.where(last_name: self.last_name)
   end
+
   def current_occupation
     role
   end
+
   def full_name
     name
   end
+
   def account_receivable_store_balance
     StoreCredit.new.balance(self)
   end
 
-
   def cash_advance_total
     AccountingModule::Account.find_by(name: "Advances to Officers, Employees and Members").debit_entries.where(commercial_document_id: self.id)
   end
+
   def self.with_cash_on_hands
     all.select{|a| WITH_CASH_ON_HAND.include?(a.role.titleize) }
   end
