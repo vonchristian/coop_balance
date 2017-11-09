@@ -20,15 +20,13 @@ module LoansModule
       it { is_expected.to have_many :member_co_makers }
       it { is_expected.to have_many :employee_co_makers }
 
-      it { is_expected.to have_many :principal_amortization_schedules }
-      it { is_expected.to have_many :interest_on_loan_amortization_schedules }
       it { is_expected.to have_many :notices }
       it { is_expected.to have_many :collaterals }
       it { is_expected.to have_many :real_properties }
       it { is_expected.to have_one :first_notice }
       it { is_expected.to have_one :second_notice }
       it { is_expected.to have_one :third_notice }
-      it { is_expected.to have_one :loan_protection_fund }
+      it { is_expected.to have_many :loan_protection_funds }
 
     end
     describe 'validations' do

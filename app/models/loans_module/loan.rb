@@ -30,9 +30,9 @@ module LoansModule
     has_many :collaterals, class_name: "LoansModule::Collateral", dependent: :destroy
     has_many :real_properties, through: :collaterals
     has_many :notices, as: :notified, dependent: :destroy
-    has_one :first_notice, class_name: "FirstNotice", as: :notified
-    has_one :second_notice, class_name: "SecondNotice", as: :notified
-    has_one :third_notice, class_name: "ThirdNotice", as: :notified
+    has_one :first_notice, class_name: "LoansModule::Notices::FirstNotice", as: :notified
+    has_one :second_notice, class_name: "LoansModule::Notices::SecondNotice", as: :notified
+    has_one :third_notice, class_name: "LoansModule::Notices::ThirdNotice", as: :notified
 
     delegate :name, :age, :contact_number, :current_address, to: :borrower,  prefix: true, allow_nil: true
     delegate :name, :max_loanable_amount, :loan_product_interest_account, to: :loan_product, prefix: true, allow_nil: true
