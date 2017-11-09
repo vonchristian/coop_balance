@@ -6,7 +6,7 @@ module LoansModule
     enum schedule_type: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
     # after_commit :create_payment_notice
     has_many :loan_charge_payment_schedules
-    def self.for(from_date, to_date)
+    def self.scheduled_for(from_date, to_date)
       if from_date && to_date
         where('date' => from_date..to_date)
       end
@@ -18,7 +18,7 @@ module LoansModule
 	  end
 
     def total_amortization
-      # principal + interest
+       principal + interest
     end
 
     private

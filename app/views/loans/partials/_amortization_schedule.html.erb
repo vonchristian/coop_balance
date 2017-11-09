@@ -16,31 +16,31 @@
           </tr>
         </thead>
         <tbody>
-          <% @loan.payment_schedules.each do |schedule| %>
+          <% @loan.amortization_schedules.order(created_at: :asc).each do |schedule| %>
             <tr>
               <td></td>
               <td><%= schedule.date.strftime("%B %e, %Y") %><br>
                 <%= schedule.try(:name) %>
                 <%= schedule.amount %>
               </td>
-              <td><%= number_to_currency schedule.try(:principal) %></td>
-              <td><%= number_to_currency schedule.try(:interest) %> </td>
+              <td><%= number_to_currency schedule.principal %></td>
+              <td><%= number_to_currency schedule.interest %> </td>
               <td>
-                <% @loan.loan_charge_payment_schedules.scheduled_for(schedule.date).each do |loan_charge_payment_schedule| %>
+                <% @loan.loan_charge_payment_schedules.each do |loan_charge_payment_schedule| %>
                   <div class="row">
                     <div class="col-md-6">
                       <%= loan_charge_payment_schedule.date.strftime("%B %e, %Y") %>
                       <%= loan_charge_payment_schedule.name %>
                     </div>
                     <div class="col-md-6">
-                      <span class="pull-right"><%= loan_charge_payment_schedule.amount %></span>
+                      <span class="pull-right"><%= number_to_currency loan_charge_payment_schedule.amount %></span>
                     </div>
                   </div>
                   <br>
                 <% end %>
               </td>
-              <td><%= number_to_currency schedule.try(:total_amortization) %> </td>
-              <td><%#= number_to_currency @loan.balance_for(schedule) %></td>
+              <td><%= number_to_currency schedule.total_amortization %> </td>
+              <td><%= number_to_currency @loan.balance_for(schedule) %></td>
             </tr>
           <% end %>
         </tbody>
