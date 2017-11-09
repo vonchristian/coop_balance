@@ -194,6 +194,8 @@ Rails.application.routes.draw do
   namespace :treasury_module do
     resources :employees, only: [:index, :show] do
       resources :remittances, only: [:new, :create]
+      resources :fund_transfers, only: [:new, :create]
+
     end
     resources :search_results, only: [:index]
     resources :savings_accounts, only: [:index, :show] do

@@ -47,6 +47,12 @@ module LoansModule
     def self.disbursed_on(date)
       disbursed.includes([:entries]).where('entries.entry_date' => (date.beginning_of_day)..(date.end_of_day))
     end
+    def self.disbursed_by(employee)
+      all.select{|a| a.disbursed_by(employee) }
+    end
+    def disbursed_by(employee)
+      entries.loan_disbursement.where(recorder_id: employee.id)
+    end
 
     def payment_schedules
       amortization_schedules + loan_charge_payment_schedules

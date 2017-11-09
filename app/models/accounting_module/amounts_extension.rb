@@ -4,8 +4,7 @@ module AccountingModule
       if hash[:from_date].present? && hash[:to_date].present? && hash[:recorder_id].present?
         from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : Time.parse(hash[:from_date].strftime('%Y-%m-%d 12:00:00'))
         to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : Time.parse(hash[:to_date].strftime('%Y-%m-%d 12:59:59'))
-        joins(:entry, :account).where('entries.recorder_id' => hash[:recorder_id]).where('entries.entry_date' => (from_date.beginning_of_day - 1.second)..(to_date.end_of_day)).sum(:amount)
-
+        joins(:entry, :account).where('entries.recorder_id' => hash[:recorder_id]).where('entries.entry_date' => (from_date.beginning_of_day)..(to_date.end_of_day)).sum(:amount)
       elsif hash[:from_date].present? && hash[:to_date].present? && hash[:recorder_id].nil?
         from_date = hash[:from_date] ? hash[:from_date] : Chronic.parse(hash[:from_date])
         to_date = hash[:to_date] ? hash[:to_date] : Chronic.parse(hash[:to_date])

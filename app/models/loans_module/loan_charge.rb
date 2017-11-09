@@ -18,11 +18,13 @@ module LoansModule
 	  end
 
 	  def charge_amount
-	  	if chargeable.percent_type?
-	  		(chargeable.percent / 100.0) * loan.loan_amount
-	  	else
-	  		chargeable.amount
-		  end
+	  	if chargeable
+		  	if chargeable.percent_type?
+		  		(chargeable.percent / 100.0) * loan.loan_amount
+		  	else
+		  		chargeable.amount
+			  end
+			end
 	  end
 
 	  def balance
@@ -34,11 +36,15 @@ module LoansModule
 	  end
 
 	  def charge_amount_with_adjustment
-	  	if charge_adjustment.present?
-	  	  charge_adjustment.charge_amount
-	    else
-	    	charge_amount
-	    end
+	  	if chargeable
+		  	if charge_adjustment.present?
+		  	  charge_adjustment.charge_amount
+		    else
+		    	charge_amount
+		    end
+		  else
+		  	0
+		  end
 	  end
 	end
 end

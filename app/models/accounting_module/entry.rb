@@ -49,7 +49,7 @@ module AccountingModule
     accepts_nested_attributes_for :credit_amounts, :debit_amounts, allow_destroy: true
 
 
-    # Support the deprecated .build method
+
     before_save :set_default_date
     after_commit :update_accounts, :update_amounts
 
@@ -58,14 +58,14 @@ module AccountingModule
 
     def self.entered_on(hash={})
       if hash[:from_date] && hash[:to_date]
-       from_date = hash[:from_date].kind_of?(Time) ? hash[:from_date] : Time.parse(hash[:from_date].strftime('%Y-%m-%d 12:00:00'))
-        to_date = hash[:to_date].kind_of?(Time) ? hash[:to_date] : Time.parse(hash[:to_date].strftime('%Y-%m-%d 12:59:59'))
+       from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : Chronic.parse(hash[:from_date].strftime('%Y-%m-%d 12:00:00'))
+        to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : Chronic.parse(hash[:to_date].strftime('%Y-%m-%d 12:59:59'))
         includes([:amounts]).where('entries.entry_date' => (from_date.beginning_of_day)..(to_date.end_of_day))
       else
         all
       end
     end
-    def self.recorder_by(recorder_id)
+    def self.recorded_by(recorder_id)
       where('recorder_id' => recorder_id )
     end
     def self.total(hash={})

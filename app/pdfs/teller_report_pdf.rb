@@ -11,7 +11,7 @@ class TellerReportPdf < Prawn::Document
     time_deposits
     share_capitals
     loan_releases
-    loan_collections
+    # loan_collections
     expenses
     summary_report
     summary_of_accounts
@@ -47,7 +47,7 @@ class TellerReportPdf < Prawn::Document
   end
   def fund_transfers
     text "Fund Transfers",  color: "4A86CF", style: :bold, size: 10
-    table([["", "Fund Transfer from Treasury", "#{price(100)}"]], header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 150, 100]) do
+    table(fund_transfers_data, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 150, 100]) do
       cells.borders = []
       column(2).align = :right
 
@@ -58,6 +58,9 @@ class TellerReportPdf < Prawn::Document
       stroke_horizontal_rule
       move_down 15
     end
+  end
+  def fund_transfers_data
+    [["", "Fund Transfer from Treasury", "#{price(@employee.fund_transfers.entered_on(from_date: @date, to_date: @date).total)}"]]
   end
     def savings_deposits
      text "Savings Deposits", style: :bold, size: 10,  color: "4A86CF"
@@ -98,13 +101,13 @@ class TellerReportPdf < Prawn::Document
     [["", "Beginning Balance", "#{price(AccountingModule::Account.find_by(name: "Savings Deposits").balance(to_date: @date.yesterday.end_of_day))}"]]
   end
   def savings_deposits_from_members
-    [["", "", "Add Deposits", "#{price(AccountingModule::Account.find_by(name: "Savings Deposits").credit_entries.recorder_by(@employee.id).entered_on(from_date: @date, to_date: @date).total)}"]]
+    [["", "", "Add Deposits", "#{price(AccountingModule::Account.find_by(name: "Savings Deposits").credit_entries.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total)}"]]
   end
   def total_savings_deposits
     [["", "", "Total Savings Deposits", "#{price(AccountingModule::Account.find_by(name: "Savings Deposits").balance)}"]]
   end
   def withdrawals_from_members
-    [["", "", "Less Withdrawals", "#{price(AccountingModule::Account.find_by(name: "Savings Deposits").debit_entries.recorder_by(@employee.id).entered_on(from_date: @date, to_date: @date).total)}"]]
+    [["", "", "Less Withdrawals", "#{price(AccountingModule::Account.find_by(name: "Savings Deposits").debit_entries.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total)}"]]
   end
   def time_deposits
     text "Time Deposits", style: :bold, size: 10, color: "4A86CF"
@@ -143,13 +146,13 @@ class TellerReportPdf < Prawn::Document
     [["", "Beginning Balance", "#{price(AccountingModule::Account.find_by(name: "Time Deposits").balance(to_date: @date.yesterday.end_of_day))}"]]
   end
   def time_deposits_from_members
-    [["", "", "Add Deposits", "#{price(AccountingModule::Account.find_by(name: "Time Deposits").credit_entries.recorder_by(@employee.id).entered_on(from_date: @date, to_date: @date).total)}"]]
+    [["", "", "Add Deposits", "#{price(AccountingModule::Account.find_by(name: "Time Deposits").credit_entries.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total)}"]]
   end
   def total_time_deposits
     [["", "", "Total Time Deposits", "#{price(AccountingModule::Account.find_by(name: "Time Deposits").balance(to_date: @date.end_of_day))}"]]
   end
   def time_deposit_withdrawals_from_members
-    [["", "", "Less Withdrawals", "#{price(AccountingModule::Account.find_by(name: "Time Deposits").debit_entries.recorder_by(@employee.id).entered_on(from_date: @date, to_date: @date).total)}"]]
+    [["", "", "Less Withdrawals", "#{price(AccountingModule::Account.find_by(name: "Time Deposits").debit_entries.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total)}"]]
   end
   def share_capitals
     text "Share Capitals", style: :bold, size: 10, color: "4A86CF"
@@ -194,13 +197,13 @@ class TellerReportPdf < Prawn::Document
     [["", "", "Total Share Capitals", "#{price(AccountingModule::Account.find_by(name: "Paid-up Share Capital - Common").balance(to_date: @date.end_of_day, :recorder_id => @employee.id))}"]]
   end
   def share_capital_withdrawals
-    [["", "", "Less Withdrawals", "#{price(AccountingModule::Account.find_by(name: 'Paid-up Share Capital - Common').debit_entries.recorder_by(@employee.id).entered_on(from_date: @date, to_date: @date).total)}"]]
+    [["", "", "Less Withdrawals", "#{price(AccountingModule::Account.find_by(name: 'Paid-up Share Capital - Common').debit_entries.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total)}"]]
   end
   def loan_releases
     text "Loan Releases", style: :bold, size: 10, color: "DB4437"
     if @employee.entries.loan_disbursement.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).present?
 
-      table(loan_releases_data, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [40, 160, 100, 110, 100]) do
+      table(loan_releases_data, header: true, cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [40, 160, 100, 110, 100]) do
         cells.borders = []
       end
     else
@@ -211,16 +214,15 @@ class TellerReportPdf < Prawn::Document
       stroke_color 'CCCCCC'
       line_width 0.2
       stroke_horizontal_rule
+      move_down 10
     end
   end
-  def loan_releases_header
 
-  end
   def loan_releases_data
     if @employee.entries.loan_disbursement.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).present?
        [["", "Borrower", "Voucher #", "Loan Amount", "Net Proceed"]] +
-      @loan_collections_data ||= @employee.entries.loan_disbursement.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{|a| ["", a.commercial_document.try(:borrower_name), a.voucher_number, price(a.commercial_document.loan_amount), price(a.commercial_document.net_proceed)]} +
-      [["", "", "", "<b>#{price(@employee.entries.loan_disbursement.map{|a| a.debit_amounts.distinct.sum(:amount)}.sum)}</b>", "Net Proceed"]]
+      @loan_collections_data ||= @employee.entries.loan_disbursement.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{|a| ["", a.commercial_document.try(:borrower_name), a.voucher_number, price(a.commercial_document.loan_amount), price(a.commercial_document.try(:net_proceed))]} +
+      [["", "", "<b>TOTAL</b>", "<b>#{price(LoansModule::Loan.disbursed_on(@date).disbursed_by(@employee).sum(&:loan_amount))}</b>", "<b>#{price(LoansModule::Loan.disbursed_on(@date).disbursed_by(@employee).sum(&:net_proceed))}</b>"]]
 
     else
       [[""]]
@@ -314,11 +316,11 @@ class TellerReportPdf < Prawn::Document
     end
   end
   def summary_data
-    [["", "", "Cash Received", "#{price(@employee.cash_on_hand_account.debits_balance(from_date: @date.beginning_of_day - 1.second, to_date: @date.end_of_day, recorder_id: @employee.id))}"]] +
-    [["", "", "Cash Disbursed",  "#{price(@employee.cash_on_hand_account.credits_balance(from_date: @date.beginning_of_day - 1.second, to_date: @date.end_of_day, recorder_id: @employee.id))}"]]
+    [["", "", "Cash Received",  "#{price(@employee.cash_on_hand_account.debits_balance(recorder_id:@employee.id))}"]] +
+    [["", "", "Cash Disbursed",  "#{price(@employee.cash_on_hand_account.credits_balance(recorder_id:@employee.id))}"]]
   end
   def total_summary_data
-    [["", "", "Ending Balance", "#{price(@employee.cash_on_hand_account.balance(from_date: @date.beginning_of_day - 1.second, to_date: @date.end_of_day, recorder_id: @employee.id) + @employee.fund_transfer_total)}"]]
+    [["", "", "Ending Balance", "#{price(@employee.cash_on_hand_account.balance(recorder_id: @employee.id, from_date: @date.beginning_of_day, to_date: @date.end_of_day))  }"]]
   end
 
   def summary_of_accounts
