@@ -8,7 +8,6 @@ module LoansModule
       it { is_expected.to belong_to :street }
       it { is_expected.to belong_to :barangay }
       it { is_expected.to belong_to :municipality }
-
       it { is_expected.to have_one :cash_disbursement_voucher }
     	it { is_expected.to have_many :loan_approvals }
     	it { is_expected.to have_many :approvers }
@@ -45,6 +44,19 @@ module LoansModule
       loan = create(:loan, loan_amount: 100)
 
       expect(loan.taxable_amount).to eql(100)
+    end
+
+    it '.disbursed_on(date)' do
+      disbursed_loan = create(:loan, loan_status: 'disbursed')
+      undisbursed_loan = create(:loan)
+      date = Date.today
+      entry = create(:entry_with_credit_and_debit, commercial_document: disbursed_loan, entry_date: date)
+
+      expect(LoansModule::Loan.disbursed_on(date)).to include(disbursed_loan)
+      expect(LoansModule::Loan.disbursed_on(date)).to_not include(undisbursed_loan)
+    end
+
+    it '#terms_elapsed' do
     end
   end
 end

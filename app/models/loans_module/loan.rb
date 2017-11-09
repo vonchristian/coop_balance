@@ -40,13 +40,14 @@ module LoansModule
 
     validates :loan_product_id, presence: true
     validates :term, presence: true, numericality: { greater_than: 0.1 }
-    validates :loan_amount, numericality: { less_than: :loan_product_max_loanable_amount}
+    validates :loan_amount, numericality: { less_than_or_equal_to: :loan_product_max_loanable_amount}
 
     #find aging loans e.g. 1-30 days,
 
     def self.disbursed_on(date)
       disbursed.includes([:entries]).where('entries.entry_date' => (date.beginning_of_day)..(date.end_of_day))
     end
+
     def payment_schedules
       amortization_schedules + loan_charge_payment_schedules
     end
@@ -85,9 +86,7 @@ module LoansModule
       end
       aging_loans
     end
-    def self.aging
-      all.select{|a| a.past_due? }
-    end
+
     def past_due?
       number_of_days_past_due >=1
     end
@@ -95,7 +94,7 @@ module LoansModule
       amortized_principal_for(date) - paid_principal_for(date)
     end
     def paid_principal_for(date)
-      AccountingModule::Account.find_by(name: "Loans Receivable - Current (#{self.loan_product_name.titleize})").credit_entries.where(commercial_document: self)
+      loan_product_account.credit_entries.where(commercial_document: self)
     end
 
     def first_notice_date
@@ -105,15 +104,15 @@ module LoansModule
       Time.zone.now
     end
     end
-    def penalties
-      entries.loan_penalty.total
-    end
 
     def remaining_term
       term - terms_elapsed
     end
+
     def terms_elapsed
-      (Time.zone.now.year * 12 + Time.zone.now.month) - (disbursement_date.year * 12 + disbursement_date.month)
+      if disbursed?
+        (Time.zone.now.year * 12 + Time.zone.now.month) - (disbursement_date.year * 12 + disbursement_date.month)
+      end
     end
 
     def interest_on_loan_amount
@@ -128,12 +127,10 @@ module LoansModule
     def taxable_amount # for documentary_stamp_tax
       loan_amount
     end
-    def member_age #testing for LPF
-      18
-    end
+
     def net_proceed
       if !disbursed?
-        if total_loan_charges > 0
+        if loan_charges.total > 0
           loan_amount - total_loan_charges
         else
           loan_amount
@@ -152,8 +149,7 @@ module LoansModule
       loan_product_account.balance(commercial_document_id: self.id)
     end
     def total_loan_charges
-      loan_charges.total +
-      loan_additional_charges.total
+      loan_charges.total
     end
     def create_loan_product_charges
       if loan_charges.present?
@@ -238,7 +234,7 @@ module LoansModule
         self.application_date ||= Time.zone.now
       end
       def less_than_max_amount?
-        errors[:loan_amount] << "Amount exceeded maximum allowed amount which is #{self.loan_product.max_loanable_amount}" if self.loan_amount > self.loan_product.max_loanable_amount
+        errors[:loan_amount] << "Amount exceeded maximum allowed amount which is #{self.loan_product.max_loanable_amount}" if self.loan_amount >= self.loan_product.max_loanable_amount
       end
   end
 end

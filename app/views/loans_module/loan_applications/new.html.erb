@@ -5,12 +5,12 @@
         <h3 class="box-title"> New Loan Application </h3>
       </div>
       <div class="box-body">
-<%= simple_form_for @loan, validate: true, url: :loans_module_loan_applications do |f| %>
+<%= simple_form_for @loan, url: :loans_module_loan_applications do |f| %>
   <%= f.error_notification %>
     <%= f.input :loan_product_id, validate: { presence: true }, label: 'Select Type of Loan', collection: LoansModule::LoanProduct.all.map{|a| [a.name.titleize, a.id] } %>
 
   <%= f.input :borrower_id, collection: LoansModule::Loan.borrowers.map {|a| [a.name, a.id] } %>
-  <%= f.input :loan_amount, as: :currency, validate: { presence: true }  %>
+  <%= f.input :loan_amount, as: :currency %>
   <%= f.input :term, label: "Loan Term (in months)" %>
   <%= f.input :mode_of_payment, collection: LoansModule::Loan.mode_of_payments.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
   <%= f.input :application_date, as: :string, input_html: { class: "datepicker", value: Time.zone.now.strftime("%B %e, %Y") } %>

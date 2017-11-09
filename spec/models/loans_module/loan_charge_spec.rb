@@ -23,6 +23,13 @@ module LoansModule
       it { is_expected.to delegate_method(:regular?).to(:chargeable) }
       it { is_expected.to delegate_method(:amortize_balance).to(:charge_adjustment) }
     end
+    it '.total' do
+      loan = create(:loan, loan_amount: 1000)
+      charge = create(:charge, charge_type: 'percent_type', percent: 10)
+      loan_charge = create(:loan_charge, loan: loan, chargeable: charge)
+
+      expect(LoansModule::LoanCharge.total).to eql(100)
+    end
     describe '#charge_amount' do
       it 'as a percent type' do
         #returns 10% of loan amount

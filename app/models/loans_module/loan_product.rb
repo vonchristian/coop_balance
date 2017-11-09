@@ -7,7 +7,7 @@ module LoansModule
     has_many :charges, through: :loan_product_charges
 
     delegate :name, to: :account, prefix: true
-    delegate :rate, :account, to: :loan_product_interest, prefix: true
+    delegate :rate, :account, to: :loan_product_interest, prefix: true, allow_nil: true
 
     validates :name, :interest_rate, :account_id, presence: true
     validates :name, uniqueness: true
