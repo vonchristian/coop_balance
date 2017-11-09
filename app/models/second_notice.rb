@@ -1,2 +1,0 @@
-class SecondNotice < Notice 
-end

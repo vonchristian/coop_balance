@@ -1,2 +1,0 @@
-class FirstNotice < Notice 
-end
