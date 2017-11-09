@@ -15,7 +15,6 @@ module LoansModule
     	it { is_expected.to have_many :entries }
       it { is_expected.to have_many :loan_charges }
       it { is_expected.to have_many :charges }
-      it { is_expected.to have_many :loan_additional_charges }
       it { is_expected.to have_many :loan_co_makers }
       it { is_expected.to have_many :member_co_makers }
       it { is_expected.to have_many :employee_co_makers }

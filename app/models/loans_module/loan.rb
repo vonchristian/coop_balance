@@ -20,7 +20,6 @@ module LoansModule
     has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
     has_many :loan_charges, class_name: "LoansModule::LoanCharge", dependent: :destroy
     has_many :loan_charge_payment_schedules, through: :loan_charges
-    has_many :loan_additional_charges, dependent: :destroy
     has_many :charges, through: :loan_charges, source: :chargeable, source_type: "Charge"
     has_many :loan_co_makers, class_name: "LoansModule::LoanCoMaker", dependent: :destroy
     has_many :member_co_makers, through: :loan_co_makers, source: :co_maker, source_type: 'Member'
