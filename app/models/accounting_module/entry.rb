@@ -33,7 +33,6 @@ module AccountingModule
     belongs_to :department
     belongs_to :branch
     belongs_to :voucher
-    belongs_to :recorder, class_name: "User", foreign_key: 'recorder_id'
 
     has_many :credit_amounts, :extend => AccountingModule::AmountsExtension, :class_name => 'AccountingModule::CreditAmount', :inverse_of => :entry, dependent: :destroy
     has_many :debit_amounts, :extend => AccountingModule::AmountsExtension, :class_name => 'AccountingModule::DebitAmount', :inverse_of => :entry, dependent: :destroy
@@ -78,7 +77,7 @@ module AccountingModule
       end
     end
     def total
-      debit_amounts.sum(:amount)
+      debit_amounts.distinct.sum(:amount)
     end
     def cleared?
       clearance.present?

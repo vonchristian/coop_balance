@@ -1,6 +1,5 @@
 require 'csv'
 class Member < ApplicationRecord
-  include Avatarable
   include PgSearch
   extend FriendlyId
   friendly_id :fullname, use: :slugged

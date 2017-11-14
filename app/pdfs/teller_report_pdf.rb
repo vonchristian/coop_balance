@@ -101,11 +101,11 @@ class TellerReportPdf < Prawn::Document
     [["", "Beginning Balance", "#{price(CoopServicesModule::SavingProduct.accounts_balance(to_date: @date.yesterday.end_of_day))}"]]
   end
   def add_savings_deposits
-    [["", "", "Add Deposits", "#{price(CoopServicesModule::SavingProduct.accounts.map{|a| a.credit_entries.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total}.sum) }"]]
+    [["", "", "Add Deposits", "#{price(CoopServicesModule::SavingProduct.accounts.uniq.map{|a| a.credit_entries.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total}.sum) }"]]
   end
 
   def less_savings_deposits
-    [["", "", "Less Withdrawals", "#{price(CoopServicesModule::SavingProduct.accounts.map{|a| a.debit_entries.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total}.sum )}"]]
+    [["", "", "Less Withdrawals", "#{price(CoopServicesModule::SavingProduct.accounts.uniq.map{|a| a.debit_entries.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total}.sum )}"]]
   end
 
   def total_savings_deposits
@@ -322,7 +322,7 @@ class TellerReportPdf < Prawn::Document
     [["", "", "Cash Disbursed",  "#{price(@employee.cash_on_hand_account.credit_entries.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).recorded_by(@employee.id).total)}"]]
   end
   def total_summary_data
-    [["", "", "Ending Balance", "#{price(@employee.cash_on_hand_account.balance(recorder_id: @employee.id, from_date: @date.beginning_of_day, to_date: @date.end_of_day)+ @employee.fund_transfers.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).total)  }"]]
+    [["", "", "Ending Balance", "#{price(@employee.cash_on_hand_account_balance)}"]]
   end
 
   def summary_of_accounts
@@ -343,7 +343,7 @@ class TellerReportPdf < Prawn::Document
   end
   def accounts_data
     [["", "Code", "Account", "Debits", "Credits"]] +
-    @accounts_data ||= AccountingModule::Account.updated_at(@date.beginning_of_day, @date.end_of_day).updated_by(@employee).uniq.map{ |a| ["", a.code, a.name, price(a.debits_balance(recorder_id: @employee.id)), price(a.credits_balance(recorder_id: @employee.id))]}
+    @accounts_data ||= AccountingModule::Account.updated_at(@date.beginning_of_day, @date.end_of_day).updated_by(@employee).uniq.map{ |a| ["", a.code, a.name, price(a.debits_balance(from_date: @date.beginning_of_day, to_date: @date.end_of_day, recorder_id: @employee.id)), price(a.credits_balance(from_date: @date.beginning_of_day, to_date: @date.end_of_day, recorder_id: @employee.id))]}
   end
 
 

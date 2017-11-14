@@ -84,6 +84,10 @@ class User < ApplicationRecord
   def account_receivable_store_balance
     StoreCredit.new.balance(self)
   end
+  def cash_on_hand_account_balance
+    cash_on_hand_account.balance(recorder_id: self) +
+    fund_transfer_total
+  end
 
   def cash_advance_total
     AccountingModule::Account.find_by(name: "Advances to Officers, Employees and Members").debit_entries.where(commercial_document_id: self.id)

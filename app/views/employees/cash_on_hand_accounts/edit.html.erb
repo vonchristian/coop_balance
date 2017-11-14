@@ -3,3 +3,11 @@
   <%= f.input :cash_on_hand_account_id, collection: AccountingModule::Account.all.map{|a| [a.name.titleize, a.id] } %>
   <%= f.submit "Save Cash on Hand Account" %>
 <% end %>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#user_cash_on_hand_account_id").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>

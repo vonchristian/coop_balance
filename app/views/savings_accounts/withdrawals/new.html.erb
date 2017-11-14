@@ -9,7 +9,7 @@
         <small>BALANCE</small>
         <h3 class="condensed-text"><%= number_to_currency @savings_account.balance %></h3>
         <hr>
-        <%= simple_form_for [@savings_account, @withdrawal], validate: true, url: :savings_account_withdrawals do |f| %>
+        <%= simple_form_for [@savings_account, @withdrawal], url: :savings_account_withdrawals do |f| %>
           <%= f.error_notification %>
           <%= f.input :amount, as: :currency %>
           <%= f.input :or_number %>
