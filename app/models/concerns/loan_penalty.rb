@@ -7,7 +7,7 @@ class LoanPenalty
     loan.unpaid_balance_for(schedule) * rate
   end
   def rate
-    0.02
+    CoopConfigurationsModule::LoanPenaltyConfig.default_rate
   end
 end
 
