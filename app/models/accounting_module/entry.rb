@@ -71,7 +71,7 @@ module AccountingModule
       if hash[:from_date].present? && hash[:to_date].present?
         from_date = Chronic.parse(hash[:from_date].to_date)
         to_date = Chronic.parse(hash[:to_date].to_date)
-        includes([:amounts]).where('entry_date' => from_date..to_date).distinct.map{|a| a.amounts.distinct.sum(:amount)}.sum
+        includes([:amounts]).where('entry_date' => (from_date.beginning_of_day)..(to_date.end_of_day)).distinct.map{|a| a.amounts.distinct.sum(:amount)}.sum
       else
         all.distinct.map{|a| a.credit_amounts.sum(:amount)}.sum
       end

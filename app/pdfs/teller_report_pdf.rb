@@ -322,7 +322,7 @@ class TellerReportPdf < Prawn::Document
     [["", "", "Cash Disbursed",  "#{price(@employee.cash_on_hand_account.credit_entries.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).recorded_by(@employee.id).total)}"]]
   end
   def total_summary_data
-    [["", "", "Ending Balance", "#{price(@employee.cash_on_hand_account_balance)}"]]
+    [["", "", "Ending Balance", "#{price(@employee.cash_on_hand_account.balance(recorder_id: @employee.id, from_date: @date.beginning_of_day, to_date: @date.end_of_day) + @employee.fund_transfers.total(from_date: @date.beginning_of_day, to_date: @date.end_of_day))}"]]
   end
 
   def summary_of_accounts

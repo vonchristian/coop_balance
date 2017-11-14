@@ -84,9 +84,9 @@ class User < ApplicationRecord
   def account_receivable_store_balance
     StoreCredit.new.balance(self)
   end
-  def cash_on_hand_account_balance
-    cash_on_hand_account.balance(recorder_id: self) +
-    fund_transfer_total
+  def cash_on_hand_account_balance(options = {})
+    cash_on_hand_account.balance(recorder_id: self.id) +
+    fund_transfers.total(options)
   end
 
   def cash_advance_total
