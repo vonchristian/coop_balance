@@ -22,7 +22,7 @@ module AccountingModule
         joins(:entry, :account).where('entries.entry_date' => (from_date.beginning_of_day - 1.second)..(to_date.end_of_day)).sum(:amount)
       elsif hash[:recorder_id].present?
         joins(:entry, :account).where('entries.recorder_id' => hash[:recorder_id]).sum(:amount)
-       elsif hash[:commercial_document_id]
+       elsif hash[:commercial_document_id].present?
         joins(:entry, :account).where('entries.commercial_document_id' => hash[:commercial_document_id]).sum(:amount)
       else
         joins(:entry, :account).sum(:amount)

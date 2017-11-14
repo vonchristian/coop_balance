@@ -7,7 +7,7 @@ module MembershipsModule
     belongs_to :depositor, polymorphic: true
     belongs_to :saving_product, class_name: "CoopServicesModule::SavingProduct"
     delegate :name, :current_occupation, to: :depositor, prefix: true
-    delegate :name, to: :saving_product, prefix: true, allow_nil: true
+    delegate :name, :account, to: :saving_product, prefix: true
     delegate :interest_rate, to: :saving_product, prefix: true
     has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
     before_save :set_account_owner_name, :set_account_number

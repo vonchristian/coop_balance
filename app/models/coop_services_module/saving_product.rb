@@ -1,6 +1,6 @@
 module CoopServicesModule
 	class SavingProduct < ApplicationRecord
-	  enum interest_recurrence:[:daily, :weekly, :monthly, :quarterly, :annually]
+	  enum interest_recurrence: [:daily, :weekly, :monthly, :quarterly, :semi_annually, :annually]
 
 	  has_many :subscribers, class_name: "MembershipsModule::Saving"
 	  belongs_to :account, class_name: "AccountingModule::Account"

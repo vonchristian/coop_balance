@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171109162426) do
+ActiveRecord::Schema.define(version: 20171114125507) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -916,6 +916,8 @@ ActiveRecord::Schema.define(version: 20171109162426) do
     t.decimal "closing_account_fee"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "interest_account_id"
+    t.index ["interest_account_id"], name: "index_savings_account_configs_on_interest_account_id"
   end
 
   create_table "share_capital_product_shares", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1205,6 +1207,7 @@ ActiveRecord::Schema.define(version: 20171109162426) do
   add_foreign_key "saving_products", "accounts"
   add_foreign_key "savings", "members"
   add_foreign_key "savings", "saving_products"
+  add_foreign_key "savings_account_configs", "accounts", column: "interest_account_id"
   add_foreign_key "share_capital_product_shares", "share_capital_products"
   add_foreign_key "share_capital_products", "accounts"
   add_foreign_key "share_capitals", "share_capital_products"
