@@ -4,5 +4,6 @@ FactoryBot.define do
     maximum_amount "9.99"
     interest_rate "9.99"
     name  { Faker::Company.catch_phrase }
+    association :account, factory: :liability
   end
 end
