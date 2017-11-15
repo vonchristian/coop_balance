@@ -14,6 +14,26 @@
         </div>
       </div>
       <div class="box-body">
+        <p class="text-muted"> Borrower's Profile </p>
+        Share Capital
+        <%= @loan.borrower.share_capitals.balance %>
+        <hr />
+
+          Unpaid Contributions
+          <% @loan.borrower.program_subscriptions.unpaid.each do |subscription| %>
+          <div class="row">
+            <div class="col-md-6">
+              <%= subscription.name %>
+            </div>
+            <div class="col-md-3">
+              <%= subscription.contribution %>
+            </div>
+            <div class="col-md-3">
+              <%= link_to 'Add to Charges', loans_module_loan_borrower_subscription_charges_path(@loan, program_subscription_id: subscription.id), method: :create, class: "btn btn-default btn-sm" %>
+          </div>
+        </div>
+          <% end %>
+        <hr />
         <p class="text-purple">LOAN APPLICATION DETAILS </p>
     		<div class="row">
     		  <div class="col-md-5 col-md-offset-1">

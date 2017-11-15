@@ -100,3 +100,5 @@ WIP: Select dropdown for capybara
 
 
 Review Fund Transfer transactions
+
+revire Loan Charges / subscription charges

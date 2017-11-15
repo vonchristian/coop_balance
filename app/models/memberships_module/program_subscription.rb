@@ -1,9 +1,19 @@
  module MembershipsModule
 	class ProgramSubscription < ApplicationRecord
 	  belongs_to :program, class_name: "CoopServicesModule::Program"
-	  belongs_to :subscriber, class_name: "Member", foreign_key: 'member_id'
+	  belongs_to :subscriber, polymorphic: true
 	  has_many :subscription_payments, class_name: "AccountingModule::Entry", as: :commercial_document
 	  delegate :name, :contribution, :description, to: :program
+    def percent_type?
+      false
+    end
+    def regular?
+      false
+    end
+    def amount
+      contribution
+    end
+
 	  def self.unpaid
       all.select{|a| a.unpaid? }
     end

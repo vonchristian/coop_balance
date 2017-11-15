@@ -2,15 +2,18 @@ require 'rails_helper'
 
 module CoopServicesModule
   describe Program do
-  	context 'associations' do 
-  		it { is_expected.to have_many :subscribers }
+  	context 'associations' do
+  		it { is_expected.to have_many :member_subscribers }
+      it { is_expected.to have_many :program_subscriptions }
   	end
-  	context 'validations' do 
+  	context 'validations' do
   		it { is_expected.to validate_presence_of :name }
+      it { is_expected.to validate_presence_of :contribution }
+      it { is_expected.to validate_numericality_of :contribution }
   		it { is_expected.to validate_uniqueness_of :name }
   	end
 
-  	it ".default_programs" do 
+  	it ".default_programs" do
   		default_program = create(:program, default_program: true)
   		not_default_program = create(:program, default_program: false)
 

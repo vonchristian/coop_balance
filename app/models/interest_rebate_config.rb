@@ -1,0 +1,2 @@
+class InterestRebateConfig < ApplicationRecord
+end

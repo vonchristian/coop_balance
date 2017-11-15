@@ -1,4 +1,7 @@
 <div class="tab-pane" id="program-subscriptions">
+  <% @programs.each do |program| %>
+    <%= program.name %>
+  <% end %>
   <% @member.program_subscriptions.each do |program_subscription| %>
  	  <%= program_subscription.name %><br>
  	  <%= number_to_currency program_subscription.contribution %>

@@ -44,6 +44,9 @@ class User < ApplicationRecord
   has_many :organization_memberships, class_name: "OrganizationMember", as: :organization_membership
   has_many :organizations, through: :organization_memberships
 
+  has_many :program_subscriptions, class_name: "MembershipsModule::ProgramSubscription", as: :subscriber
+  has_many :subscribed_programs, through: :program_subscriptions, class_name: "CoopServicesModule::Program"
+
   delegate :name, :amount, to: :salary_grade, prefix: true, allow_nil: true
   delegate :name, to: :department, prefix: true, allow_nil: true
   delegate :name, :address, :contact_number, :logo, to: :cooperative, prefix: true
@@ -87,7 +90,7 @@ class User < ApplicationRecord
     StoreCredit.new.balance(self)
   end
   def cash_on_hand_account_balance(options = {})
-    cash_on_hand_account.balance(recorder_id: self.id) +
+    default_cash_on_hand_account.balance(recorder_id: self.id) +
     fund_transfers.total(options)
   end
 

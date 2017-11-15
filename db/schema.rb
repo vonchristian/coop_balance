@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171114125507) do
+ActiveRecord::Schema.define(version: 20171115070021) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -324,8 +324,10 @@ ActiveRecord::Schema.define(version: 20171114125507) do
     t.uuid "recorder_id"
     t.uuid "department_id"
     t.uuid "voucher_id"
+    t.uuid "employee_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_entry"
     t.index ["department_id"], name: "index_entries_on_department_id"
+    t.index ["employee_id"], name: "index_entries_on_employee_id"
     t.index ["entry_date"], name: "index_entries_on_entry_date"
     t.index ["entry_type"], name: "index_entries_on_entry_type"
     t.index ["recorder_id"], name: "index_entries_on_recorder_id"
@@ -370,6 +372,12 @@ ActiveRecord::Schema.define(version: 20171114125507) do
 
   create_table "grace_periods", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.decimal "number_of_days"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "interest_rebate_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.decimal "percent"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -634,16 +642,15 @@ ActiveRecord::Schema.define(version: 20171114125507) do
     t.string "avatar_content_type"
     t.integer "avatar_file_size"
     t.datetime "avatar_updated_at"
-    t.datetime "membership_date"
     t.string "contact_number"
-    t.string "passbook_number"
     t.integer "civil_status"
     t.string "fullname"
     t.string "slug"
     t.integer "birth_month"
     t.integer "birth_day"
+    t.string "email"
+    t.index ["email"], name: "index_members_on_email", unique: true
     t.index ["fullname"], name: "index_members_on_fullname", unique: true
-    t.index ["passbook_number"], name: "index_members_on_passbook_number", unique: true
     t.index ["sex"], name: "index_members_on_sex"
     t.index ["slug"], name: "index_members_on_slug", unique: true
   end
@@ -656,6 +663,10 @@ ActiveRecord::Schema.define(version: 20171114125507) do
     t.integer "membership_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "account_number"
+    t.datetime "application_date"
+    t.datetime "approval_date"
+    t.index ["account_number"], name: "index_memberships_on_account_number", unique: true
     t.index ["cooperative_id"], name: "index_memberships_on_cooperative_id"
     t.index ["memberable_type", "memberable_id"], name: "index_memberships_on_memberable_type_and_memberable_id"
     t.index ["membership_type"], name: "index_memberships_on_membership_type"
@@ -805,11 +816,12 @@ ActiveRecord::Schema.define(version: 20171114125507) do
 
   create_table "program_subscriptions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "program_id"
-    t.uuid "member_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["member_id"], name: "index_program_subscriptions_on_member_id"
+    t.string "subscriber_type"
+    t.uuid "subscriber_id"
     t.index ["program_id"], name: "index_program_subscriptions_on_program_id"
+    t.index ["subscriber_type", "subscriber_id"], name: "index_subscriber_in_program_subscriptions"
   end
 
   create_table "programs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -936,6 +948,9 @@ ActiveRecord::Schema.define(version: 20171114125507) do
     t.datetime "updated_at", null: false
     t.decimal "cost_per_share"
     t.uuid "account_id"
+    t.decimal "minimum_number_of_subscribed_share"
+    t.decimal "minimum_number_of_paid_share"
+    t.boolean "default_product", default: false
     t.index ["account_id"], name: "index_share_capital_products_on_account_id"
     t.index ["name"], name: "index_share_capital_products_on_name"
   end
@@ -1148,6 +1163,7 @@ ActiveRecord::Schema.define(version: 20171114125507) do
   add_foreign_key "employee_contributions", "contributions"
   add_foreign_key "employee_contributions", "users", column: "employee_id"
   add_foreign_key "entries", "departments"
+  add_foreign_key "entries", "users", column: "employee_id"
   add_foreign_key "entries", "users", column: "recorder_id"
   add_foreign_key "entries", "vouchers"
   add_foreign_key "entry_clearances", "entries"
@@ -1197,7 +1213,6 @@ ActiveRecord::Schema.define(version: 20171114125507) do
   add_foreign_key "product_stocks", "products"
   add_foreign_key "product_stocks", "registries"
   add_foreign_key "product_stocks", "suppliers"
-  add_foreign_key "program_subscriptions", "members"
   add_foreign_key "program_subscriptions", "programs"
   add_foreign_key "raw_material_stocks", "raw_materials"
   add_foreign_key "raw_material_stocks", "suppliers"

@@ -3,8 +3,8 @@ class Member < ApplicationRecord
   include PgSearch
   extend FriendlyId
   friendly_id :fullname, use: :slugged
-  pg_search_scope :text_search, :against => [:passbook_number, :first_name, :middle_name, :last_name, :fullname]
-  multisearchable against: [:passbook_number, :first_name, :last_name, :middle_name, :fullname]
+  pg_search_scope :text_search, :against => [ :first_name, :middle_name, :last_name, :fullname]
+  multisearchable against: [:first_name, :last_name, :middle_name, :fullname]
   enum sex: [:male, :female, :other]
   enum civil_status: [:single, :married, :widower, :divorced]
   delegate :regular_member?, to: :membership
@@ -21,7 +21,7 @@ class Member < ApplicationRecord
   has_many :savings, class_name: "MembershipsModule::Saving", as: :depositor
   has_many :share_capitals, class_name: "MembershipsModule::ShareCapital", as: :subscriber
   has_many :time_deposits, class_name: "MembershipsModule::TimeDeposit", as: :depositor
-  has_many :program_subscriptions, class_name: "MembershipsModule::ProgramSubscription"
+  has_many :program_subscriptions, class_name: "MembershipsModule::ProgramSubscription", as: :subscriber
   has_many :programs, through: :program_subscriptions
   has_many :orders, class_name: "StoreModule::Order", as: :customer
   has_many :real_properties, as: :owner
@@ -47,6 +47,9 @@ class Member < ApplicationRecord
   before_save :update_birth_date_fields
   def self.with_loans
     all.select{|a| a.loans.present? }
+  end
+  def subscribed?(program)
+    programs.include?(program)
   end
 
   def current_occupation

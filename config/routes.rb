@@ -74,6 +74,7 @@ Rails.application.routes.draw do
       resources :first_notices, only: [:new, :create]
       resources :processings, only: [:create]
       resources :additional_charges, only: [:new, :create]
+      resources :borrower_subscription_charges, only: [:new, :create]
       resources :payments, only: [:new, :create]
     end
     resources :members, only: [:index, :show] do
@@ -101,7 +102,7 @@ Rails.application.routes.draw do
     resources :share_capitals, only: [:index, :new, :create]
     resources :savings_accounts, only: [:index, :new, :create], module: :members
     resources :time_deposits, only: [:index, :new, :create], module: :members
-    resources :subscriptions, only: [:index], module: :members
+    resources :subscriptions, only: [:index, :create], module: :members
     resources :subscription_payments, only: [:new, :create], module: :members #pay all subscriptions
     resources :purchases, only: [:index, :show], module: :members
   end
@@ -288,6 +289,9 @@ Rails.application.routes.draw do
     resources :loans, only: [:index], module: :organizations
   end
   resources :customers, only: [:index]
+  resources :membership_applications, only: [:new, :create, :show] do
+    resources :contributions, only: [:new], module: :membership_applications
+  end
 
   mount ActionCable.server => '/cable'
 

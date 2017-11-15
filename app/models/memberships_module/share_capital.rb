@@ -22,6 +22,9 @@ module MembershipsModule
     def subscribed_shares
       (capital_build_ups_total / share_capital_product_cost_per_share.to_i)
     end
+    def self.balance
+      all.sum(&:balance)
+    end
 
     def balance
       share_capital_product_default_account.balance(commercial_document_id: self.id)

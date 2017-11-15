@@ -8,7 +8,12 @@ module CoopServicesModule
     validates :name, uniqueness: true
     validates :cost_per_share, numericality: true
     delegate :name, to: :account, prefix: true
-    def self.set_product_for(share_capital)
+
+    def self.subscribe(subscriber)
+      subscriber.share_capitals.create(share_capital_product: self.default_product)
+    end
+    def self.default_product
+      all.where(default_product: true).order(created_at: :asc).first
     end
     def default_account
       if account.present?

@@ -20,13 +20,16 @@
               <%= link_to new_member_path do %>
                 <span class="btn btn-primary pull-right"><i class="fa fa-user-plus"></i> New Member </span>
               <% end %>
+              <%= link_to new_membership_application_path do %>
+                <span class="btn btn-primary pull-right"><i class="fa fa-user-plus"></i> New Membership Application </span>
+              <% end %>
             </div>
           </div>
 
         <br>
       </div>
       <div class="box-body">
-        
+
         <% @members.each do |member| %>
           <% cache member do %>
             <%= link_to member_info_index_path(member) do %>
