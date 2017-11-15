@@ -182,7 +182,7 @@ AccountingModule::Equity.create(code: 30120, name: 'Unissued Share Capital - Com
 AccountingModule::Equity.create(code: 30130, name: 'Subscribed Share Capital - Common')
 AccountingModule::Equity.create(code: 30140, name: 'Subscription Receivable - Common')
 AccountingModule::Equity.create(code: 30150, name: 'Paid-up Share Capital - Common')
-AccountingModule::Equity.create(code: 30160, name: 'Treasury Shares Capital - Common')
+AccountingModule::Equity.create(code: 30160, name: 'Treasury Share Capital - Common')
 AccountingModule::Equity.create(code: 30170, name: 'Authorized Share Capital - Preferred')
 AccountingModule::Equity.create(code: 30180, name: 'Unissued Share Capital - Preferred')
 AccountingModule::Equity.create(code: 30190, name: 'Subscribed Share Capital - Preferred')

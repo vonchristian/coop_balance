@@ -19,7 +19,7 @@ module Employees
       User.find_by(id: recorder_id).cash_on_hand_account
     end
     def credit_account
-      AccountingModule::Account.find_by(name: "Paid-up Share Capital - Common")
+      CoopServicesModule::ShareCapitalProduct.find_by(id: share_capital_product_id).default_account
     end
   end
 end

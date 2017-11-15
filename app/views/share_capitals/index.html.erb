@@ -41,16 +41,4 @@
       </div>
     </div>
   </div>
-  <div class="col-md-6">
-    <div  class="box box-default">
-      <div class="box-header">
-        <small class="text-muted"> PAID UP SHARE CAPITALS - COMMON</small><br>
-        <h3 class="box-title"> <%= number_to_currency AccountingModule::Account.find_by(name: "Paid-up Share Capital - Common").balance %></h3>
-        <hr>
-        <small class="text-muted"> PAID UP SHARE CAPITALS - PREFFERED</small><br>
-        <h3 class="box-title"> <%= number_to_currency AccountingModule::Account.find_by(name: "Paid-up Share Capital - Preferred").balance %></h3>
-      </div>
-     
-    </div>
-  </div>
 </div>

@@ -1,0 +1,9 @@
+<%= simple_form_for @entry, url: :membership_application_payments do |f| %>
+  <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+  <%= f.input :description, input_html: { value: "Payment of membership fee, share capital and MAS Contribution"} %>
+  <%= f.input :reference_number %>
+  <%= f.input :member_id, input_html: { value: @member.id } %>
+  <%= f.input :recorder_id, input_html: { value: current_user.id } %>
+
+  <%= f.submit "Save Payment" %>
+<% end %>

@@ -10,10 +10,13 @@ module CoopServicesModule
     delegate :name, to: :account, prefix: true
 
     def self.subscribe(subscriber)
-      subscriber.share_capitals.create(share_capital_product: self.default_product)
+      subscriber.share_capitals.find_or_create_by(share_capital_product: self.default_product)
+    end
+    def minimum_payment
+      cost_per_share * minimum_number_of_paid_share
     end
     def self.default_product
-      all.where(default_product: true).order(created_at: :asc).first
+      where(default_product: true).last
     end
     def default_account
       if account.present?
@@ -29,6 +32,12 @@ module CoopServicesModule
 
     def self.accounts_balance(options={})
       accounts.uniq.map{|a| a.balance(options)}.sum
+    end
+    def self.accounts_credits_balance(options={})
+      accounts.uniq.map{|a| a.credits_balance(options)}.sum
+    end
+    def self.accounts_debits_balance(options={})
+      accounts.uniq.map{|a| a.debits_balance(options)}.sum
     end
 
     def total_subscribed

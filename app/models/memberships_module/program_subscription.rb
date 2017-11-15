@@ -21,8 +21,9 @@
       !paid?(from_date=Time.zone.now.beginning_of_year.beginning_of_day, to_date= Time.zone.now.end_of_year.end_of_day)
     end
 	  def paid?(from_date, to_date)
-      entry = subscription_payments.program_subscription_payment.order(created_at: :asc).last
-      entry.present? && entry.entry_date.between?(from_date, to_date)
+      # entry = subscription_payments.program_subscription_payment.order(created_at: :asc).last
+      # entry.present? && entry.entry_date.between?(from_date, to_date)
+      program.account.entries.where(commercial_document_id: self.subscriber.id).present?
 	  end
 	end
 end

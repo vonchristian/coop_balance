@@ -290,7 +290,9 @@ Rails.application.routes.draw do
   end
   resources :customers, only: [:index]
   resources :membership_applications, only: [:new, :create, :show] do
-    resources :contributions, only: [:new], module: :membership_applications
+    resources :contributions, only: [:new, :create], module: :membership_applications
+    resources :payments, only: [:new, :create], module: :membership_applications
+
   end
 
   mount ActionCable.server => '/cable'

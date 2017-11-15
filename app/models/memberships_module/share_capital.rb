@@ -27,7 +27,8 @@ module MembershipsModule
     end
 
     def balance
-      share_capital_product_default_account.balance(commercial_document_id: self.id)
+      share_capital_product_default_account.balance(commercial_document_id: self.id)+
+      share_capital_product_account.balance(commercial_document_id: self.subscriber_id)
     end
 
     def capital_build_ups_total

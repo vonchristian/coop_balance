@@ -13,6 +13,7 @@ class TellerReportPdf < Prawn::Document
     loan_releases
     loan_collections
     expenses
+    revenues
     summary_report
     summary_of_accounts
 
@@ -193,13 +194,13 @@ class TellerReportPdf < Prawn::Document
     [["", "Beginning Balance", "#{price(CoopServicesModule::ShareCapitalProduct.accounts_balance(to_date: @date.yesterday))}"]]
   end
   def additional_share_capital
-   [["", "", "Additional Share Capital", "#{price(AccountingModule::Account.find_by(name: "Paid-up Share Capital - Common").credit_entries.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total)}"]]
+   [["", "", "Additional Share Capital", "#{price(CoopServicesModule::ShareCapitalProduct.accounts_credits_balance(recorder_id: @employee.id))}"]]
   end
   def total_share_capitals
-    [["", "", "Total Share Capitals", "#{price(AccountingModule::Account.find_by(name: "Paid-up Share Capital - Common").balance(to_date: @date.end_of_day))}"]]
+    [["", "", "Total Share Capitals", "#{price(CoopServicesModule::ShareCapitalProduct.accounts_balance(recorder_id: @employee.id))}"]]
   end
   def share_capital_withdrawals
-    [["", "", "Less Withdrawals", "#{price(AccountingModule::Account.find_by(name: 'Paid-up Share Capital - Common').debit_entries.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total)}"]]
+    [["", "", "Less Withdrawals", "#{price(CoopServicesModule::ShareCapitalProduct.accounts_debits_balance(recorder_id: @employee.id))}"]]
   end
   def loan_releases
     text "Loan Releases", style: :bold, size: 10, color: "DB4437"
@@ -265,7 +266,7 @@ class TellerReportPdf < Prawn::Document
 
   def expenses
     text "Expenses", style: :bold, size: 10, color: "DB4437"
-    table(expenses_data, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 10, 290, 90]) do
+    table(expenses_data, cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [10, 10, 290, 90]) do
         cells.borders = []
         row(0).font_style = :bold
     end
@@ -274,11 +275,6 @@ class TellerReportPdf < Prawn::Document
       line_width 0.2
       stroke_horizontal_rule
       move_down 15
-    end
-
-     table(expenses_total_data, cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [10, 10, 290, 90]) do
-        cells.borders = []
-        row(0).font_style = :bold
     end
 
     stroke do
@@ -290,10 +286,33 @@ class TellerReportPdf < Prawn::Document
   end
   def expenses_data
     [["", "", "Account", "Amount"]] +
-    @expenses_data ||= AccountingModule::Expense.updated_at(@date.beginning_of_day, @date.end_of_day).distinct.map{|a| ["", "", a.name, price(a.entries.entered_on(from_date: @date, to_date: @date).map{|a| a.debit_amounts.distinct.sum(:amount)}.sum)]}
-  end
-  def expenses_total_data
+    @expenses_data ||= AccountingModule::Expense.updated_at(@date.beginning_of_day, @date.end_of_day).distinct.map{|a| ["", "", a.name, price(a.entries.entered_on(from_date: @date, to_date: @date).map{|a| a.debit_amounts.distinct.sum(:amount)}.sum)]} +
     [["", "", "<b>TOTAL</b>", "#{AccountingModule::Expense.updated_at(@date.beginning_of_day, @date.end_of_day).map{|a| a.entries.entered_on(from_date: @date, to_date: @date).total}.sum}"]]
+  end
+  def revenues
+    text "Other Income", style: :bold, size: 10, color: "DB4437"
+    table(revenues_data, cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [10, 10, 290, 90]) do
+        cells.borders = []
+        row(0).font_style = :bold
+    end
+    stroke do
+      stroke_color 'CCCCCC'
+      line_width 0.2
+      stroke_horizontal_rule
+      move_down 15
+    end
+
+    stroke do
+      stroke_color 'CCCCCC'
+      line_width 0.2
+      stroke_horizontal_rule
+      move_down 15
+    end
+  end
+  def revenues_data
+    [["", "", "Account", "Amount"]] +
+    @revenues_data ||= AccountingModule::Revenue.updated_at(@date.beginning_of_day, @date.end_of_day).distinct.map{|a| ["", "", a.name, price(a.entries.entered_on(from_date: @date, to_date: @date).map{|a| a.debit_amounts.distinct.sum(:amount)}.sum)]} +
+    [["", "", "<b>TOTAL</b>", "#{AccountingModule::Revenue.updated_at(@date.beginning_of_day, @date.end_of_day).map{|a| a.entries.entered_on(from_date: @date, to_date: @date).total}.sum}"]]
   end
 
   def summary_report

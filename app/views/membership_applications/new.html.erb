@@ -37,6 +37,8 @@
             <%= program.contribution %>
           <% end %>
           <hr>
+          <p>Share Capital</p>
+          <%= f.input :share_capital_product_id, input_html: { value: CoopServicesModule::ShareCapitalProduct.default_product.id } %>
 
           <%= f.submit "Save Membership Application" %>
         <% end %>

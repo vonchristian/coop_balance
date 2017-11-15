@@ -1,8 +1,42 @@
-
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <div class="box box-solid">
+      <div class="box-body">
+<%= simple_form_for @amount, url: :membership_application_contributions do |f| %>
 <% CoopServicesModule::Program.default_programs.all.each do |program| %>
   <%= program.name %>
   <%= program.contribution %>
   Share Capital Products
 
+ <%= f.input :description, input_html: { value: program.name }, as: :hidden %>
+ <%= f.input :amount, input_html: { value: program.contribution }, as: :hidden  %>
+ <%= f.input :account_id, input_html: { value: program.account.id }, as: :hidden  %>
+ <%= f.input :commercial_document_id, input_html: { value: @member.id }, as: :hidden  %>
+  <%= f.input :commercial_document_type, input_html: { value: @member.class }, as: :hidden  %>
+  <% unless @member.voucher_amounts.pluck(:description).include?(program.name) %>
+  <%= f.submit 'Add to Voucher' %>
+  <% end %>
 
 <% end %>
+<% end %>
+<%= simple_form_for @amount, url: :membership_application_contributions do |f| %>
+<%= @member.full_name %>
+<% @member.share_capitals.each do |share_capital| %>
+  <%= share_capital.share_capital_product.name %>
+  <%= number_to_currency share_capital.share_capital_product.minimum_payment %>
+  <%= f.input :amount, input_html: { value: share_capital.share_capital_product.minimum_payment }, as: :hidden %>
+  <%= f.input :description, input_html: { value: share_capital.share_capital_product_name }, as: :hidden  %>
+  <%= f.input :account_id, input_html: { value: share_capital.share_capital_product.account.id }, as: :hidden  %>
+  <%= f.input :commercial_document_id, input_html: { value: @member.id }, as: :hidden  %>
+  <%= f.input :commercial_document_type, input_html: { value: @member.class }, as: :hidden  %>
+<% unless @member.voucher_amounts.pluck(:description).include?(share_capital.share_capital_product_name) %>
+  <%= f.submit 'Add to Voucher' %>
+  <% end %>
+<% end %>
+<% end %>
+
+<% @member.voucher_amounts.each do |voucher_amount| %>
+  <%= voucher_amount.description %>
+  <%= number_to_currency voucher_amount.amount %>
+<% end %>
+<%= link_to 'Accept Payment', new_membership_application_payment_path(@member) %>

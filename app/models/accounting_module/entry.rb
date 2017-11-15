@@ -16,7 +16,7 @@ module AccountingModule
                       :savings_interest,
                       :time_deposit,
                       :program_subscription_payment,
-                      # :loan_penalty,
+                      :loan_penalty,
                       :time_deposit_interest,
                       :adjusting_entry,
                       :fund_transfer,

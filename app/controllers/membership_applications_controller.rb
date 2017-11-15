@@ -47,6 +47,7 @@ class MembershipApplicationsController < ApplicationController
       :spouses_date_of_birth,
       :spouse_educational_attainment,
       :spouses_occupation,
-       :application_date)
+       :application_date,
+       :share_capital_product_id)
       end
 end
