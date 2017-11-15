@@ -2,9 +2,9 @@
   <div class="col-md-12">
     <div class="nav-tabs-custom">
       <div class="box-header">
-        
+
            <h4><center><%= image_tag(@share_capital.subscriber.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center></h4>
-           
+
             <h3><center><%= @share_capital.subscriber_name %></center></h3>
       </div>
      <div class="box-body">
@@ -32,7 +32,7 @@
                   <th> Date </th>
                   <th>Reference Number</th>
                   <th> Amount </th>
-                  <th> Type </th>
+
                   <th> Employee </th>
                 </tr>
               </thead>
@@ -41,9 +41,9 @@
                   <tr>
                     <td><%= entry.entry_date.strftime("%B %e, %Y") %></td>
                     <td><%= entry.reference_number %></td>
-                    <td><%= number_to_currency entry.credit_amounts.sum(:amount) %></td>
+                    <td><%= number_to_currency entry.amounts.where(account: @share_capital.share_capital_product_account).sum(:amount) %></td>
 
-                    <td><%= entry.entry_type %></td>
+
                     <td><% if entry.recorder %>
                       <%=image_tag(entry.recorder.avatar.url(:thumb), class: "img-circle", height: 35, width: 35) %> &nbsp;
                       <%= entry.recorder_first_and_last_name %>
