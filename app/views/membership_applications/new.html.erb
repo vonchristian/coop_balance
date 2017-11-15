@@ -9,6 +9,7 @@
           <div class="row">
             <div class="col-md-10 col-md-offset-1">
           <%= f.input :account_number, input_html: { value: Membership.generate_account_number } %>
+          <%= f.input :membership_type, collection: Membership.membership_types.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
           <%= f.input :first_name %>
           <%= f.input :middle_name %>
           <%= f.input :last_name %>

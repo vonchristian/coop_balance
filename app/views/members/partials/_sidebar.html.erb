@@ -45,6 +45,13 @@
       <% end %>
 
       <hr>
+      <strong><i class="fa fa-map-marker margin-r-5"></i> Date of Birth</strong>
+
+
+      <p class="text-muted"><%= @member.date_of_birth.try(:strftime, "%B %e, %Y") %></p>
+      <p class="text-muted"> Age <%= @member.age %> Years</p>
+
+      <hr>
 
 
 

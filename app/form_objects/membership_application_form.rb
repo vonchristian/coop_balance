@@ -30,22 +30,23 @@ class MembershipApplicationForm
   :spouses_date_of_birth,
   :spouse_educational_attainment,
   :spouses_occupation,
-   :application_date,
-   :share_capital_product_id
+  :application_date,
+  :share_capital_product_id,
+  :membership_type
 
   def save
     ActiveRecord::Base.transaction do
       create_member
-
     end
   end
+
   def find_member
     Membership.find_by(account_number: account_number).memberable
   end
   private
   def create_member
     member = Member.create(first_name: first_name, middle_name: middle_name, last_name: last_name, civil_status: civil_status, sex: sex, date_of_birth: date_of_birth, contact_number: contact_number, email: email)
-   Membership.create!(memberable: member, account_number: account_number)
-   member.share_capitals.create(share_capital_product_id: share_capital_product_id)
+   Membership.create!(memberable: member, account_number: account_number, membership_type: membership_type)
+   MembershipsModule::ShareCapital.create(subscriber: member, share_capital_product_id: share_capital_product_id)
   end
 end

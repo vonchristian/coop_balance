@@ -27,7 +27,7 @@
           <li class="header"> TELLER SECTION </li>
           <li class=<%= 'active' if current_page?(employee_path(current_user)) %> ><a href="/employees/<%=current_user.id %>"><i class="fa fa-cog"></i> <span> Account</span></a></li>
           <li class=<%= 'active' if current_page?(vouchers_path) %> ><a href="/vouchers"><i class="fa fa-folder"></i> <span> Vouchers</span></a></li>
-          <li class=<%= 'active' if current_page?(treasury_module_index_path) %> ><a href="/treasury_module"><i class="fa fa-dashboard"></i> <span> Dashboard</span></a></li>
+
           <li class=<%= 'active' if current_page?(members_path) %> ><a href="/members"><i class="fa fa-users"></i> <span> Members</span></a></li>
           <li class=<%= 'active' if current_page?(savings_accounts_path) %> ><a href="/savings_accounts"><i class="fa fa-suitcase"></i> <span> Savings Accounts</span></a></li>
           <li class=<%= 'active' if current_page?(share_capitals_path) %> ><a href="/share_capitals"><i class="fa fa-pie-chart"></i> <span> Share Capitals </span></a></li>
@@ -35,9 +35,7 @@
           <li class=<%= 'active' if current_page?(loans_path) %> ><a href="/loans"><i class="fa fa-suitcase"></i> <span> Loans</span></a></li>
 
 
-          <li class=<%= 'active' if current_page?(treasury_module_entries_path) %> ><a href="/treasury_module/entries"><i class="fa fa-credit-card"></i> <span> Entries</span></a></li>
-          <li class=<%= 'active' if current_page?(disbursements_path) %> ><a href="/disbursements"><i class="fa fa-mail-forward"></i> <span> Cash Disbursements</span></a></li>
-          <li class=<%= 'active' if current_page?(collections_path) %> ><a href="/collections"><i class="fa fa-reply"></i> <span> Cash Receipts</span></a></li>
+
           <li class=<%= 'active' if current_page?(employees_path) %> ><a href="/employees"><i class="fa fa-users"></i> <span> Employees</span></a></li>
           <li class=<%= 'active' if current_page?(suppliers_path) %> ><a href="/suppliers"><i class="fa fa-truck"></i> <span> Suppliers</span></a></li>
 
