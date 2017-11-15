@@ -6,6 +6,7 @@ module CoopServicesModule
     has_many :employee_subscribers, through: :program_subscriptions, class_name: "User"
     validates :name, presence: true, uniqueness: true
     validates :contribution, presence: true, numericality: true
+    validates :account_id, presence: true
     def self.subscribers
       member_subscribers + employee_subscribers
     end
