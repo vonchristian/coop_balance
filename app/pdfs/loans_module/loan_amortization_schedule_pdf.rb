@@ -13,6 +13,13 @@ module LoansModule
       approved_by_signature
     end
     private
+    def other_charges_for(date)
+      charges = []
+      @loan.loan_charge_payment_schedules.scheduled_for(date).each do |a|
+        charges << a.name_and_amount
+      end
+      charges.join("")
+    end
     def price(number)
       @view_context.number_to_currency(number, :unit => "P ")
     end
@@ -25,7 +32,7 @@ module LoansModule
         text "Kiangan Community Multipurpose Cooperative", size: 10
     end
     bounding_box [0, 780], width: 400 do
-      text "Amortization Schedule", style: :bold, size: 14
+      text "AMORTIZATION SCHEDULE", style: :bold, size: 14
       move_down 3
 
       move_down 3
@@ -41,7 +48,7 @@ module LoansModule
     end
   end
     def amortization_schedule
-      table(amortization_schedule_data, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [100, 100, 100, 100, 120]) do
+      table(amortization_schedule_data, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [100, 90, 90, 90, 70, 90]) do
 
         row(0).font_style = :bold
         row(0).background_color = 'DDDDDD'
@@ -51,11 +58,15 @@ module LoansModule
 
         column(3).align = :right
         column(4).align = :right
+        column(3).size = 8
+
+        column(5).align = :right
+
       end
     end
     def amortization_schedule_data
-      [["DATE", "PRINCIPAL", "INTEREST", "TOTAL", "BALANCE"]] +
-      @table_date ||= @amortization_schedules.map{|a| [a.date.strftime("%B %e, %Y"), price(a.principal), price(a.interest), price(a.total_amortization), price(@loan.balance_for(a))] }
+      [["DATE", "PRINCIPAL", "INTEREST", "OTHER CHARGES", "TOTAL", "BALANCE"]] +
+      @table_date ||= @amortization_schedules.order(date: :asc).map{|a| [a.date.strftime("%B %e, %Y"), price(a.principal), price(a.interest), other_charges_for(a.date), price(a.total_amortization), price(@loan.balance_for(a))] }
     end
     def borrower_signature
       text "#{@loan.borrower.try(:first_and_last_name).try(:upcase)}"

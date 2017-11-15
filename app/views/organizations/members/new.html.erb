@@ -8,6 +8,17 @@
         <h3 class="box-title"><%= @organization.name %></h3>
       </div>
       <div class="box-body">
+       <%=form_tag new_organization_member_path, method: :get, class: "sidebar-form" do %>
+              <div class="input-group">
+                <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search for First name, Last name", id: 'taxpayer-search-form' %>
+                <span class="input-group-btn">
+                  <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                    <i class="fa fa-search"></i>
+                  <% end %>
+                </span>
+              </div>
+            <% end %>
+            <br>
 <% @members.each do |member| %>
   <div class="row">
     <div class="col-md-2 col-md-offset-1">

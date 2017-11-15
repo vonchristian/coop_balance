@@ -73,7 +73,7 @@ module AccountingModule
         to_date = Chronic.parse(hash[:to_date].to_date)
         includes([:amounts]).where('entry_date' => (from_date.beginning_of_day)..(to_date.end_of_day)).distinct.map{|a| a.amounts.distinct.sum(:amount)}.sum
       else
-        all.distinct.map{|a| a.credit_amounts.sum(:amount)}.sum
+        all.distinct.map{|a| a.credit_amounts.distinct.sum(:amount)}.sum
       end
     end
     def total

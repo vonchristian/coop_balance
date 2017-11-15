@@ -16,8 +16,12 @@ module LoansModule
       loan.amortization_schedules.select { |a| (from_date.beginning_of_day..to_date.end_of_day).cover?(a.date)}.sum(&:principal)
 	  end
 
-    def total_amortization
-       principal + interest
+    def total_amortization(options = {})
+       principal + interest +
+       total_other_charges_for(self.date)
+    end
+    def total_other_charges_for(date)
+      loan.loan_charge_payment_schedules.scheduled_for(date).sum(:amount)
     end
 
     private

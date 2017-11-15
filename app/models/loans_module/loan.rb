@@ -11,7 +11,7 @@ module LoansModule
     belongs_to :street, optional: true, class_name: "Addresses::Street"
     belongs_to :barangay, optional: true, class_name: "Addresses::Barangay"
     belongs_to :municipality, optional: true, class_name: "Addresses::Municipality"
-
+    belongs_to :organization
     has_many :loan_protection_funds, class_name: "LoansModule::LoanProtectionFund", dependent: :destroy
     has_one :cash_disbursement_voucher, class_name: "Voucher", as: :voucherable, foreign_key: 'voucherable_id'
     has_many :loan_protection_funds, class_name: "LoansModule::LoanProtectionFund", dependent: :destroy
@@ -36,6 +36,7 @@ module LoansModule
     delegate :name, :age, :contact_number, :current_address, to: :borrower,  prefix: true, allow_nil: true
     delegate :name, :max_loanable_amount, :loan_product_interest_account, to: :loan_product, prefix: true, allow_nil: true
     delegate :account, :interest_rate, to: :loan_product, prefix: true
+    delegate :name, to: :organization, prefix: true, allow_nil: true
     before_save :set_default_date
 
     validates :loan_product_id, presence: true
@@ -70,6 +71,11 @@ module LoansModule
       interest = loan_charges.select{|a| a.chargeable.account == a.loan.loan_product_loan_product_interest_account}.last
       interest.charge_amount_with_adjustment
     end
+    def interest_on_loan_balance
+      interest = loan_charges.select{|a| a.chargeable.account == a.loan.loan_product_loan_product_interest_account}.last
+      interest.balance
+    end
+
     def co_makers
       employee_co_makers + member_co_makers
     end
@@ -202,6 +208,8 @@ module LoansModule
     def disbursement_date
       if disbursement.present?
         disbursement.entry_date
+      else
+        "Not Yet Disbursed"
       end
     end
 

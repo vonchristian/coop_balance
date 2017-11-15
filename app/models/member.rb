@@ -48,6 +48,7 @@ class Member < ApplicationRecord
   def self.with_loans
     all.select{|a| a.loans.present? }
   end
+
   def current_occupation
     return "No Occupation entered" if occupations.blank?
     occupations.order(created_at: :asc).last

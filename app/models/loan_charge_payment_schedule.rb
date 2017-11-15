@@ -7,4 +7,7 @@ class LoanChargePaymentSchedule < ApplicationRecord
   def self.scheduled_for(month)
     where('loan_charge_payment_schedules.date' => (month.beginning_of_month)..(month.end_of_month))
   end
+  def name_and_amount
+    "#{name}  #{amount}"
+  end
 end

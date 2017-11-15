@@ -2,7 +2,7 @@ class Organization < ApplicationRecord
   has_many :organization_members
   has_many :member_members, through: :organization_members, source: :organization_membership, source_type: "Member"
   has_many :employee_members, through: :organization_members, source: :organization_membership, source_type: "User"
-
+  has_many :loans, class_name: "LoansModule::Loan"
   has_attached_file :avatar,
   styles: { large: "120x120>",
            medium: "70x70>",
@@ -19,5 +19,8 @@ class Organization < ApplicationRecord
   end
   def members_with_loans
     member_members.with_loans
+  end
+  def add_loans_of(borrower)
+    borrower.loans.update_all(organization_id: self.id)
   end
 end

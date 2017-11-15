@@ -235,6 +235,7 @@ AccountingModule::Revenue.create(code: 40430, name: 'Commission Income')
 AccountingModule::Revenue.create(code: 40440, name: 'Realized Gross Margin')
 AccountingModule::Revenue.create(code: 40450, name: 'Miscellaneous Income')
 
+#Expense Accounts
 AccountingModule::Expense.create(code: 50000, name: 'Cost of Goods Sold')
 AccountingModule::Expense.create(code: 51110, name: 'Purchases')
 AccountingModule::Expense.create(code: 51120, name: 'Raw Material Purchases')

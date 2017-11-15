@@ -2,19 +2,7 @@
   Loans of Members
   <hr>
   <%=link_to 'Billing Statement', organization_loans_path(@organization, format: 'pdf') %>
-  <% @members.each do |member| %>
-  <div class="row">
-    <div class="col-md-2 col-md-offset-1">
-      <%= image_tag(member.avatar.url(:medium), class: "img-circle", height: 50, width: 50) %>
-    </div>
-    <div class="col-md-5">
-      <b><%= member.name %></b><br>
-      <small class="text-muted"><%= member.current_occupation.try(:upcase) %></small>
-    </div>
-    <div class="col-md-2">
-    </div>
-  </div>
-  <br>
+  <% @loans.each do |loan| %>
+  <%= loan.borrower_name %>
 <% end %>
-<%=will_paginate @members %>
 </div>

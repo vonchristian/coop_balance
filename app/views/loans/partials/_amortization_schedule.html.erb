@@ -26,7 +26,7 @@
               <td><%= number_to_currency schedule.principal %></td>
               <td><%= number_to_currency schedule.interest %> </td>
               <td>
-                <% @loan.loan_charge_payment_schedules.each do |loan_charge_payment_schedule| %>
+                <% @loan.loan_charge_payment_schedules.scheduled_for(schedule.date).each do |loan_charge_payment_schedule| %>
                   <div class="row">
                     <div class="col-md-6">
                       <%= loan_charge_payment_schedule.date.strftime("%B %e, %Y") %>

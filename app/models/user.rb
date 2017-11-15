@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  include PgSearch
+  pg_search_scope :text_search, :against => [:first_name, :last_name]
   LOAN_APPROVERS = ["Manager", "Loan Officer"]
   WITH_CASH_ON_HAND = ["Treasurer", "Teller", "Sales Clerk"]
   # Include default devise modules. Others available are:

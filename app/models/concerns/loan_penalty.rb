@@ -4,7 +4,8 @@ class LoanPenalty
     borrower.loans.disbursed.map{|a| a.penalty_payment_total }.sum
   end
   def compute(loan, schedule)
-    loan.unpaid_balance_for(schedule) * rate
+    #compute daily loan penalty
+    loan.unpaid_balance_for(schedule) * (rate / 30)
   end
   def rate
     CoopConfigurationsModule::LoanPenaltyConfig.default_rate
