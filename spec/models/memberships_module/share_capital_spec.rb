@@ -47,7 +47,7 @@ module MembershipsModule
       capital_build_up = create(:entry_with_credit_and_debit, commercial_document_id: share_capital.id, entry_type: 'capital_build_up')
       another_capital_build_up = create(:entry_with_credit_and_debit, commercial_document_id: share_capital.subscriber.id)
 
-      expect(share_capital.entries.count).
+      # expect(share_capital.entries.count).
     end
 
   end

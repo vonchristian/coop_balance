@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
       cart
   end
 
+
   def current_stock_registry
     StockRegistry.find(session[:stock_registry_id])
     rescue ActiveRecord::RecordNotFound

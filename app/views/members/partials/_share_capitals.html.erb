@@ -8,11 +8,13 @@
   </div>
   <br>
   <% @member.share_capitals.each do |share_capital| %>
-    <small><%= share_capital.share_capital_product_name.try(:upcase) %></small>
-     <h4><%= number_to_currency share_capital.balance %></h4>
-    <% if policy([:share_capitals, :capital_build_up]).new? %>
-      <%= link_to 'New Capital Build Up', new_share_capital_capital_build_up_path(share_capital), class: "btn btn-primary btn-flat" %>
+    <%= link_to share_capital_path(share_capital) do %>
+      <small><%= share_capital.share_capital_product_name.try(:upcase) %></small>
+       <h4><%= number_to_currency share_capital.balance %></h4>
+      <% if policy([:share_capitals, :capital_build_up]).new? %>
+        <%= link_to 'New Capital Build Up', new_share_capital_capital_build_up_path(share_capital), class: "btn btn-primary btn-flat" %>
+      <% end %>
+      <hr>
     <% end %>
-    <hr>
   <% end %>
 </div>
