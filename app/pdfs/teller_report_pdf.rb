@@ -194,13 +194,13 @@ class TellerReportPdf < Prawn::Document
     [["", "Beginning Balance", "#{price(CoopServicesModule::ShareCapitalProduct.accounts_balance(to_date: @date.yesterday))}"]]
   end
   def additional_share_capital
-   [["", "", "Additional Share Capital", "#{price(CoopServicesModule::ShareCapitalProduct.accounts_credits_balance(recorder_id: @employee.id))}"]]
+   [["", "", "Additional Share Capital", "#{price(CoopServicesModule::ShareCapitalProduct.accounts_credits_balance(recorder_id: @employee.id, from_date: @date.beginning_of_day, to_date: @date.end_of_day))}"]]
   end
   def total_share_capitals
     [["", "", "Total Share Capitals", "#{price(CoopServicesModule::ShareCapitalProduct.accounts_balance(recorder_id: @employee.id))}"]]
   end
   def share_capital_withdrawals
-    [["", "", "Less Withdrawals", "#{price(CoopServicesModule::ShareCapitalProduct.accounts_debits_balance(recorder_id: @employee.id))}"]]
+    [["", "", "Less Withdrawals", "#{price(CoopServicesModule::ShareCapitalProduct.accounts_debits_balance(recorder_id: @employee.id, from_date: @date.beginning_of_day, to_date: @date.end_of_day))}"]]
   end
   def loan_releases
     text "Loan Releases", style: :bold, size: 10, color: "DB4437"
