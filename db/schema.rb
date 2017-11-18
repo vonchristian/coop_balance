@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171118074938) do
+ActiveRecord::Schema.define(version: 20171118082623) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -315,12 +315,14 @@ ActiveRecord::Schema.define(version: 20171118074938) do
     t.uuid "department_id"
     t.uuid "voucher_id"
     t.uuid "branch_office_id"
+    t.uuid "section_id"
     t.index ["branch_office_id"], name: "index_entries_on_branch_office_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_entry"
     t.index ["department_id"], name: "index_entries_on_department_id"
     t.index ["entry_date"], name: "index_entries_on_entry_date"
     t.index ["entry_type"], name: "index_entries_on_entry_type"
     t.index ["recorder_id"], name: "index_entries_on_recorder_id"
+    t.index ["section_id"], name: "index_entries_on_section_id"
     t.index ["voucher_id"], name: "index_entries_on_voucher_id"
   end
 
@@ -872,10 +874,12 @@ ActiveRecord::Schema.define(version: 20171118074938) do
     t.uuid "depositor_id"
     t.integer "status"
     t.uuid "branch_office_id"
+    t.uuid "section_id"
     t.index ["account_number"], name: "index_savings_on_account_number", unique: true
     t.index ["branch_office_id"], name: "index_savings_on_branch_office_id"
     t.index ["depositor_type", "depositor_id"], name: "index_savings_on_depositor_type_and_depositor_id"
     t.index ["saving_product_id"], name: "index_savings_on_saving_product_id"
+    t.index ["section_id"], name: "index_savings_on_section_id"
   end
 
   create_table "savings_account_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1131,6 +1135,7 @@ ActiveRecord::Schema.define(version: 20171118074938) do
   add_foreign_key "employee_contributions", "users", column: "employee_id"
   add_foreign_key "entries", "branch_offices"
   add_foreign_key "entries", "departments"
+  add_foreign_key "entries", "sections"
   add_foreign_key "entries", "users", column: "recorder_id"
   add_foreign_key "entries", "vouchers"
   add_foreign_key "finished_good_materials", "products"
@@ -1183,6 +1188,7 @@ ActiveRecord::Schema.define(version: 20171118074938) do
   add_foreign_key "saving_products", "accounts"
   add_foreign_key "savings", "branch_offices"
   add_foreign_key "savings", "saving_products"
+  add_foreign_key "savings", "sections"
   add_foreign_key "savings_account_configs", "accounts", column: "interest_account_id"
   add_foreign_key "sections", "branch_offices"
   add_foreign_key "share_capital_product_shares", "share_capital_products"

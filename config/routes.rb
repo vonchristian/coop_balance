@@ -116,6 +116,9 @@ Rails.application.routes.draw do
       resources :cooperatives, only: [:edit, :update, :show] do
         resources :branches, only: [:new, :create]
       end
+      resources :branch_offices, shallow: true do
+        resources :sections, only: [:new, :create]
+      end
       resources :savings_account_configs, only: [:new, :create]
       resources :break_contract_fees, only: [:new, :create]
       resources :time_deposit_products, only: [:new, :create, :show]
@@ -153,10 +156,10 @@ Rails.application.routes.draw do
     resources :share_capitals, only: [:index, :show] do
       resources :capital_build_ups, only: [:new, :create]
     end
-    resources :savings_accounts, only: [:index, :show] do
-      resources :deposits, only: [:new, :create], module: :savings_accounts
-      resources :withdrawals, only: [:new, :create], module: :savings_accounts
-    end
+    # resources :savings_accounts, only: [:index, :show] do
+    #   resources :withdrawals, only: [:new, :create], module: :savings_accounts
+    #   resources :sections, only: [:edit, :update], module: :savings_accounts
+    # end
     resources :time_deposits, only: [:index, :show] do
     end
     resources :entries, only: [:index, :show]
@@ -203,12 +206,13 @@ Rails.application.routes.draw do
 
     end
     resources :search_results, only: [:index]
-    resources :savings_accounts, only: [:index, :show] do
-      resources :deposits, only: [:new, :create]
-    end
+    # resources :savings_accounts, only: [:index, :show] do
+    #   resources :deposits, only: [:new, :create]
+    # end
     resources :entries, only: [:index, :show]
   end
   resources :savings_accounts, only: [:index, :show] do
+    resources :sections, only: [:edit, :update], module: :savings_accounts
     resources :deposits, only: [:new, :create], module: :savings_accounts
     resources :withdrawals, only: [:new, :create], module: :savings_accounts
     resources :account_closings, only: [:new, :create], module: :savings_accounts

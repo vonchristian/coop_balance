@@ -1,0 +1,4 @@
+<%= simple_form_for @savings_account, url: :savings_account_section do |f| %>
+  <%= f.input :section_id, collection: CoopConfigurationsModule::Section.all.map{|a| [a.name, a.id] }, as: :radio_buttons %>
+  <%= f.submit "Update" %>
+<% end %>

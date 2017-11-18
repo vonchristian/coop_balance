@@ -1,7 +1,7 @@
 FactoryBot.define do
-  factory :section do
-    branch_office nil
+  factory :section, class: "CoopConfigurationsModule::Section" do
     name "MyString"
     description "MyString"
+    association :branch_office
   end
 end

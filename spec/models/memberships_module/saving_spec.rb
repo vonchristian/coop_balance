@@ -5,11 +5,13 @@ module MembershipsModule
     context "associations" do
     	it { is_expected.to belong_to :depositor }
       it { is_expected.to belong_to :branch_office }
+      it { is_expected.to belong_to :section }
     	it { is_expected.to belong_to :saving_product }
     	it { is_expected.to have_many :entries }
     end
     context 'delegations' do
     	it { is_expected.to delegate_method(:name).to(:saving_product).with_prefix }
+      it { is_expected.to delegate_method(:name).to(:section).with_prefix }
       it { is_expected.to delegate_method(:name).to(:branch_office).with_prefix }
       it { is_expected.to delegate_method(:account).to(:saving_product).with_prefix }
       it { is_expected.to delegate_method(:name).to(:depositor).with_prefix }

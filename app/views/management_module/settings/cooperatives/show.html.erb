@@ -1,1 +1,5 @@
 <%= link_to 'Add Branch', new_management_module_settings_cooperative_branch_path(@cooperative) %>
+
+<% @cooperative.branch_offices.each do |branch_office| %>
+  <%= link_to branch_office.branch_name, accounting_module_branch_office_path(branch_office) %>
+<% end %>
