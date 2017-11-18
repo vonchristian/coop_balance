@@ -5,7 +5,7 @@
         <h3 class="box-title">New Loan Product Details </h3>
       </div>
       <div class="box-body">
-        <%= simple_form_for @loan_product, url: :loans_module_loan_products do |f| %>
+        <%= simple_form_for @loan_product, url: :loans_module_loan_product do |f| %>
           <%= f.error_notification %>
           <%= f.input :name %>
           <%= f.input :description, as: :text %>

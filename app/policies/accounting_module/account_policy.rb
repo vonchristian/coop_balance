@@ -1,10 +1,10 @@
-module AccountingModule 
+module AccountingModule
   class AccountPolicy < ApplicationPolicy
     def new?
-      user.accountant?
-    end 
+      user.accountant? || user.bookkeeper?
+    end
     def create?
       new?
-    end 
-  end 
-end 
+    end
+  end
+end

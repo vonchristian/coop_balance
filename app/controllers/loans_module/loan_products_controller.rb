@@ -20,9 +20,22 @@ module LoansModule
       @loan_product = LoansModule::LoanProduct.find(params[:id])
     end
 
+    def edit
+      @loan_product = LoansModule::LoanProduct.find(params[:id])
+    end
+    def update
+      @loan_product = LoansModule::LoanProduct.find(params[:id])
+      @loan_product.update(loan_product_params)
+      if @loan_product.save
+        redirect_to loans_module_loan_product_url(@loan_product), notice: "updated successfully"
+      else
+        render :edit
+      end
+    end
+
     private
     def loan_product_params
-      params.require(:loans_module_loan_product).permit(:name, :description, :interest_rate, :interest_rate, :mode_of_payment, :max_loanable_amount, :account_id, loan_product_interest_attributes: [:rate, :account_id])
+      params.require(:loans_module_loan_product).permit(:name, :description, :mode_of_payment, :max_loanable_amount, :account_id, loan_product_interest_attributes: [:rate, :account_id])
     end
   end
 end

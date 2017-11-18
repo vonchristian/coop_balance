@@ -257,6 +257,8 @@ Rails.application.routes.draw do
   resources :loan_co_makers, only: [:destroy]
   resources :vouchers, only: [:index, :show] do
     resources :disbursements, only: [:new, :create], module: :vouchers
+    resources :loan_disbursements, only: [:new, :create], module: :vouchers
+
   end
   resources :products, only: [:new, :create]
   resources :voucher_amounts, only: [:destroy]

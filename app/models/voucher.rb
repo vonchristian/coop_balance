@@ -9,7 +9,7 @@ class Voucher < ApplicationRecord
   delegate :name, :payable_amount, to: :voucherable, allow_nil: true
   has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", dependent: :destroy
 
-  before_save :set_datep
+  before_save :set_date
 
   def for_loan?
     voucherable_type == "LoansModule::Loan"

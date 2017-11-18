@@ -10,6 +10,7 @@
         <div class="col-md-6">
           <p class="text-muted"> INTEREST </p>
           <%= @loan_product.loan_product_interest.try(:rate) %>
+          <%=link_to 'Edit', edit_loans_module_loan_product_path(@loan_product) %>
           <hr />
           <p class="text-muted">LOAN CHARGES </p>
           <% @loan_product.charges.each do |charge| %>

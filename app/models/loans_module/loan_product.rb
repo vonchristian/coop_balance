@@ -9,11 +9,13 @@ module LoansModule
     delegate :name, to: :account, prefix: true
     delegate :rate, :account, to: :loan_product_interest, prefix: true, allow_nil: true
 
-    validates :name, :interest_rate, :account_id, presence: true
+    validates :name,:account_id, presence: true
     validates :name, uniqueness: true
-    validates :interest_rate, numericality: true
 
     accepts_nested_attributes_for :loan_product_interest
+    def interest_rate
+      loan_product_interest_rate
+    end
     def create_charges_for(loan)
       self.charges.depends_on_loan_amount.includes_loan_amount(loan).each do |charge|
           loan.loan_charges.create(chargeable: charge)
@@ -21,7 +23,7 @@ module LoansModule
       self.charges.not_depends_on_loan_amount.each do |charge|
         loan.loan_charges.find_or_create_by(chargeable: charge)
       end
-      interest_on_loan_charge = Charge.create(name: "Interest on Loan", amount: self.loan_product_interest_rate * loan.loan_amount, account_id: self.loan_product_interest_account.id)
+      interest_on_loan_charge = Charge.create(name: "Interest on Loan", amount: (self.loan_product_interest_rate / 100) * loan.loan_amount, account_id: self.loan_product_interest_account.id)
       loan.loan_charges.find_or_create_by(chargeable: interest_on_loan_charge )
     end
     def self.accounts

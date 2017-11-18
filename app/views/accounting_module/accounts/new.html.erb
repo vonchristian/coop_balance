@@ -1,7 +1,15 @@
 <%= simple_form_for @account, url: :accounting_module_accounts do |f| %>
   <%= f.error_notification %>
+  <%= f.input :main_account_id, collection: AccountingModule::Account.all.map{|a| [a.name.titleize, a.id] } %>
   <%= f.input :name %>
   <%= f.input :code %>
   <%= f.input :type, collection: AccountingModule::Account.types %>
   <%= f.submit "Create Account", class: "btn btn-primary btn-flat", data: { disable_with: "Creating Account..." } %>
 <% end %>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#accounting_module_account_main_account_id").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>

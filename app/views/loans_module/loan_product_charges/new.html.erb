@@ -11,7 +11,7 @@
           <%= ff.input :charge_type, collection: Charge.charge_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
           <%= ff.input :percent %>
           <%= ff.input :amount %>
-          <%= ff.input :account_id, collection: AccountingModule::Revenue.all.map{ |a| [a.name.titleize, a.id] } %>
+          <%= ff.input :account_id, collection: AccountingModule::Account.all.map{ |a| [a.name.titleize, a.id] }, input_html: { id: 'loan_product_charge_account_id' } %>
           <p> Loan Amount Range </p>
           <%= ff.input :minimum_loan_amount %>
           <%= ff.input :maximum_loan_amount %>
@@ -23,3 +23,11 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#loan_product_charge_account_id").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>
+

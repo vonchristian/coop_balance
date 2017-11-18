@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171115094545) do
+ActiveRecord::Schema.define(version: 20171118010703) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -492,8 +492,11 @@ ActiveRecord::Schema.define(version: 20171115094545) do
     t.decimal "loan_product_term"
     t.integer "mode_of_payment"
     t.uuid "account_id"
-    t.decimal "interest_rate"
     t.string "name"
+    t.decimal "minimum_loanable_amount"
+    t.string "depends_on_share_capital_balance"
+    t.decimal "minimum_share_capital_balance"
+    t.decimal "maximum_share_capital_balance"
     t.index ["account_id"], name: "index_loan_products_on_account_id"
     t.index ["name"], name: "index_loan_products_on_name", unique: true
   end

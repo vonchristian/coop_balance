@@ -6,8 +6,16 @@
   <%= f.input :charge_type, collection: Charge.charge_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
   <%= f.input :percent %>
   <%= f.input :amount %>
-  <%= f.input :account_id, collection: AccountingModule::Revenue.all.map{ |a| [a.name.titleize, a.id] } %>
+  <%= f.input :account_id, collection: AccountingModule::All.all.map{ |a| [a.name.titleize, a.id] }, input_html: { id: 'loan_product_charge_account_id'} %>
   <%= f.submit "Create Charge", class: "btn btn-danger" %>
 <% end %>
 </div>
 </div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#loan_product_charge_account_id").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>

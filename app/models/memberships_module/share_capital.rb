@@ -14,6 +14,7 @@ module MembershipsModule
     delegate :cost_per_share, to: :share_capital_product, prefix: true
     validates :share_capital_product_id, presence: true
     after_commit :set_account_owner_name
+    has_many :capital_build_ups, class_name: "AccountingModule::Entry", as: :commercial_document
     def entries
       share_capital_product_account.entries.where(commercial_document_id: self) +
       share_capital_product_account.entries.where(commercial_document_id: self.subscriber_id)
