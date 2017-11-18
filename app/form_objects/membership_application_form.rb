@@ -1,5 +1,6 @@
 class MembershipApplicationForm
   include ActiveModel::Model
+  include ActiveModel::Validations::Callbacks
   attr_accessor :first_name, :middle_name, :last_name,
   :date_of_birth,
   :account_number,
@@ -34,6 +35,8 @@ class MembershipApplicationForm
   :share_capital_product_id,
   :membership_type,
   :branch_office_id
+
+  validates :branch_office_id, presence: true
 
   def save
     ActiveRecord::Base.transaction do

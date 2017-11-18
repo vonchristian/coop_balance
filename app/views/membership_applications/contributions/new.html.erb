@@ -45,7 +45,7 @@
     <div class="col-md-2">
       <%= f.input :amount, input_html: { value: share_capital.share_capital_product.minimum_payment }, as: :hidden %>
       <%= f.input :description, input_html: { value: share_capital.share_capital_product_name }, as: :hidden  %>
-      <%= f.input :account_id, input_html: { value: share_capital.share_capital_product.account.id }, as: :hidden  %>
+      <%= f.input :account_id, input_html: { value: share_capital.share_capital_product_account.id }, as: :hidden  %>
       <%= f.input :commercial_document_id, input_html: { value: @member.id }, as: :hidden  %>
       <%= f.input :commercial_document_type, input_html: { value: @member.class }, as: :hidden  %>
     <% unless @member.voucher_amounts.pluck(:description).include?(share_capital.share_capital_product_name) %>

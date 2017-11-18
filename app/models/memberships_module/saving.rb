@@ -14,7 +14,10 @@ module MembershipsModule
     has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
     before_save :set_account_owner_name, :set_account_number, :set_branch_office
 
-
+    def self.set_inactive_accounts
+      #to do find accounts not within saving product interest posting
+      # did not save for a set time
+    end
     def self.top_savers
       all.to_a.sort_by(&:balance).first(10)
     end
@@ -40,7 +43,7 @@ module MembershipsModule
       entries.savings_interest.map{|a| a.debit_amounts.sum(:amount)}.sum
     end
     def can_withdraw?
-      balance > 0.0
+      !closed? && balance > 0.0
     end
     private
     #used for pg search

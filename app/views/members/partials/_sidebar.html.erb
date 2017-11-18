@@ -56,6 +56,7 @@
       <strong><i class="fa fa-book margin-r-5"></i> Branch Office</strong>
 
       <p class="text-muted"><%= @member.branch_office_name %></p>
+      <%= link_to 'Update Branch Office', edit_member_branch_office_path(id: @member.id, member_id: @member.id) %>
       <hr />
 
 

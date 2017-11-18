@@ -5,6 +5,7 @@ module MembershipsModule
     context 'associations' do
     	it { is_expected.to belong_to :subscriber }
     	it { is_expected.to belong_to :share_capital_product }
+      it { is_expected.to belong_to :branch_office }
     	# it { is_expected.to have_many :entries }
     end
 
