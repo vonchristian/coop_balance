@@ -35,6 +35,7 @@
       <p class="text-muted"><%= @member.tin_number %></p>
 
       <hr>
+
       <strong><i class="fa fa-book margin-r-5"></i> Membership Type</strong>
 
       <p class="text-muted"><%= @member.membership_type.try(:titleize) %></p>
@@ -52,7 +53,10 @@
       <p class="text-muted"> Age <%= @member.age %> Years</p>
 
       <hr>
+      <strong><i class="fa fa-book margin-r-5"></i> Branch Office</strong>
 
+      <p class="text-muted"><%= @member.branch_office_name %></p>
+      <hr />
 
 
       <strong><i class="fa fa-file-text margin-r-5"></i> Notes</strong>

@@ -10,8 +10,9 @@ module MembershipsModule
     delegate :name, :current_occupation, to: :depositor, prefix: true
     delegate :name, :account, to: :saving_product, prefix: true
     delegate :interest_rate, to: :saving_product, prefix: true
+    delegate :name, to: :branch_office, prefix: true, allow_nil: true
     has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
-    before_save :set_account_owner_name, :set_account_number
+    before_save :set_account_owner_name, :set_account_number, :set_branch_office
 
 
     def self.top_savers
@@ -48,6 +49,9 @@ module MembershipsModule
     end
     def set_account_number
       self.account_number = self.id
+    end
+    def set_branch_office
+      self.branch_office_id = self.depositor.branch_office.id
     end
   end
 end

@@ -22,7 +22,7 @@
         <hr>
         <div class="row">
           <div class="col-md-5">
-            <span class="text-muted condensed-text"> SHOW ACTIVITY: </span> &nbsp; 
+            <span class="text-muted condensed-text"> SHOW ACTIVITY: </span> &nbsp;
             <%=link_to 'Yesterday', accounting_module_entries_path(from_date: Time.zone.now.yesterday.beginning_of_day, to_date: Time.zone.now.yesterday.end_of_day ), class: "btn btn-default"  %>
 
             <%=link_to 'This Day', accounting_module_entries_path(from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day ), class: "btn btn-default"  %>
@@ -55,6 +55,10 @@
           <span class="btn btn-default btn-sm"> <span class="text-muted"> <%=link_to entry_type.titleize, accounting_module_entries_path(entry_type: entry_type), class: "text-muted" %> </span> </span> &nbsp;
         <% end %>
         <hr />
+        Per Branch
+        <% CoopConfigurationsModule::BranchOffice.all.each do |branch_office| %>
+          <%= link_to branch_office.branch_name, accounting_module_entries_path(branch_office_id: branch_office.id) %>
+        <% end %>
       </div>
     </div>
   </div>

@@ -5,6 +5,7 @@ module AccountingModule
   	describe 'associations' do
   		it { is_expected.to belong_to :commercial_document }
       it { is_expected.to belong_to :voucher }
+      it { is_expected.to belong_to :branch_office }
   	end
     let(:entry) { build(:entry) }
     subject { entry }

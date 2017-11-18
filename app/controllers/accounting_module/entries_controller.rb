@@ -17,28 +17,30 @@ module AccountingModule
         @entries = AccountingModule::Entry.text_search(params[:search]).paginate(:page => params[:page], :per_page => 50)
       elsif params[:recorder].present?
         @entries = User.find(id: params[:recorder_id]).entries
+      elsif params[:branch_office_id].present?
+        @entries = CoopConfigurationsModule::BranchOffice.find(params[:branch_office_id]).entries
       else
         @entries = AccountingModule::Entry.all.paginate(:page => params[:page], :per_page => 50)
       end
     end
-    def new 
+    def new
       @entry = AccountingModule::EntryForm.new
-    end 
-    def create 
+    end
+    def create
       @entry = AccountingModule::EntryForm.new(entry_params)
       if @entry.valid?
-        @entry.save 
+        @entry.save
         redirect_to accounting_module_entries_url, notice: "Entry saved successfully"
-      else 
-        render :new 
-      end 
-    end 
+      else
+        render :new
+      end
+    end
 
-    def show 
+    def show
       @entry = AccountingModule::Entry.find(params[:id])
     end
 
-    private 
+    private
     def entry_params
       params.require(:accounting_module_entry_form).permit(:recorder_id, :amount, :debit_account_id, :credit_account_id, :entry_date, :description, :reference_number, :entry_type)
     end

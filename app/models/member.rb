@@ -8,9 +8,10 @@ class Member < ApplicationRecord
   enum sex: [:male, :female, :other]
   enum civil_status: [:single, :married, :widower, :divorced]
   delegate :regular_member?, to: :membership
+  delegate :name, to: :branch_office, prefix: true, allow_nil: true
   before_validation :set_fullname
   validates :fullname, uniqueness: { message: 'is already registered'}
-
+  belongs_to :branch_office, class_name: "CoopConfigurationsModule::BranchOffice"
   has_one :tin, as: :tinable
   has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", as: :commercial_document #for temporary cration of debit adn creditrs
   has_one :membership, as: :memberable
@@ -88,7 +89,7 @@ has_many :program_subscriptions, class_name: "MembershipsModule::ProgramSubscrip
   end
 
   def full_name
-    "#{last_name} #{first_name} #{middle_name}"
+    "#{last_name}, #{first_name} #{middle_name}"
   end
   def first_and_last_name
     "#{first_name} #{last_name}"

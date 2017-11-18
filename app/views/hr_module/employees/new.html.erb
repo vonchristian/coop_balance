@@ -25,7 +25,8 @@
           <%= f.input :contact_number %>
           <%= f.input :password %>
           <%= f.input :password_confirmation %>
-          <%= f.input :role, collection: User.roles.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %> 
+          <%= f.input :role, collection: User.roles.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
+          <%= f.input :branch_office_id, collection: CoopConfigurationsModule::BranchOffice.all.map{ |a| [a.branch_name.titleize, a.id] }, as: :radio_buttons %>
           <div class="box-footer">
             <%= f.submit "Save Employee", class: "btn btn-primary pull-right" %>
           </div>

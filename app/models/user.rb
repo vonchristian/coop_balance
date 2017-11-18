@@ -24,6 +24,7 @@ class User < ApplicationRecord
   has_one :current_address, as: :addressable, class_name: "Address"
   belongs_to :department
   belongs_to :cooperative
+  belongs_to :branch_office, class_name: "CoopConfigurationsModule::BranchOffice"
   belongs_to :salary_grade
   has_one :membership, as: :memberable
   has_many :loans, class_name: "LoansModule::Loan", as: :borrower

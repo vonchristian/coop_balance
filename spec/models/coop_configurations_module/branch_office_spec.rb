@@ -5,6 +5,7 @@ module CoopConfigurationsModule
     describe 'associations' do
       it { is_expected.to belong_to :cooperative }
       it { is_expected.to have_many :sections }
+      it { is_expected.to have_many :accounts }
     end
 
     describe 'validations' do

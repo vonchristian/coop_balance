@@ -8,6 +8,8 @@
 
             <h3><center><%= @savings_account.depositor_name %></center></h3>
             <center><small><%= @savings_account.depositor_current_occupation %></small></center>
+            <center><small><%= @savings_account.branch_office_name %></small></center>
+
       </div>
      <div class="box-body">
       <% if @savings_account.closed? %>

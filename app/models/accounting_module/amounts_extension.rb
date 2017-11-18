@@ -24,6 +24,8 @@ module AccountingModule
         joins(:entry, :account).where('entries.recorder_id' => hash[:recorder_id]).sum(:amount)
        elsif hash[:commercial_document_id].present?
         joins(:entry, :account).where('entries.commercial_document_id' => hash[:commercial_document_id]).sum(:amount)
+      elsif hash[:branch_office_id].present?
+        joins(:entry, :account).where('entries.branch_office_id' => hash[:branch_office_id]).sum(:amount)
       else
         joins(:entry, :account).sum(:amount)
       end

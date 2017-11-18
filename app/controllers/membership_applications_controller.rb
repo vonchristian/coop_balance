@@ -49,6 +49,7 @@ class MembershipApplicationsController < ApplicationController
       :spouses_occupation,
       :application_date,
       :share_capital_product_id,
-      :membership_type )
+      :membership_type,
+      :branch_office_id )
       end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171118053826) do
+ActiveRecord::Schema.define(version: 20171118072441) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -314,6 +314,8 @@ ActiveRecord::Schema.define(version: 20171118053826) do
     t.uuid "recorder_id"
     t.uuid "department_id"
     t.uuid "voucher_id"
+    t.uuid "branch_office_id"
+    t.index ["branch_office_id"], name: "index_entries_on_branch_office_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_entry"
     t.index ["department_id"], name: "index_entries_on_department_id"
     t.index ["entry_date"], name: "index_entries_on_entry_date"
@@ -596,6 +598,8 @@ ActiveRecord::Schema.define(version: 20171118053826) do
     t.integer "birth_month"
     t.integer "birth_day"
     t.string "email", default: "", null: false
+    t.uuid "branch_office_id"
+    t.index ["branch_office_id"], name: "index_members_on_branch_office_id"
     t.index ["fullname"], name: "index_members_on_fullname", unique: true
     t.index ["sex"], name: "index_members_on_sex"
     t.index ["slug"], name: "index_members_on_slug", unique: true
@@ -1032,6 +1036,8 @@ ActiveRecord::Schema.define(version: 20171118053826) do
     t.integer "birth_month"
     t.integer "birth_day"
     t.uuid "cash_on_hand_account_id"
+    t.uuid "branch_office_id"
+    t.index ["branch_office_id"], name: "index_users_on_branch_office_id"
     t.index ["cash_on_hand_account_id"], name: "index_users_on_cash_on_hand_account_id"
     t.index ["cooperative_id"], name: "index_users_on_cooperative_id"
     t.index ["department_id"], name: "index_users_on_department_id"
@@ -1121,6 +1127,7 @@ ActiveRecord::Schema.define(version: 20171118053826) do
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "debit_account_id"
   add_foreign_key "employee_contributions", "contributions"
   add_foreign_key "employee_contributions", "users", column: "employee_id"
+  add_foreign_key "entries", "branch_offices"
   add_foreign_key "entries", "departments"
   add_foreign_key "entries", "users", column: "recorder_id"
   add_foreign_key "entries", "vouchers"
@@ -1156,6 +1163,7 @@ ActiveRecord::Schema.define(version: 20171118053826) do
   add_foreign_key "loans", "users", column: "employee_id"
   add_foreign_key "member_occupations", "members"
   add_foreign_key "member_occupations", "occupations"
+  add_foreign_key "members", "branch_offices"
   add_foreign_key "memberships", "cooperatives"
   add_foreign_key "orders", "users"
   add_foreign_key "orders", "users", column: "employee_id"
@@ -1183,6 +1191,7 @@ ActiveRecord::Schema.define(version: 20171118053826) do
   add_foreign_key "time_deposit_products", "accounts"
   add_foreign_key "time_deposits", "time_deposit_products"
   add_foreign_key "users", "accounts", column: "cash_on_hand_account_id"
+  add_foreign_key "users", "branch_offices"
   add_foreign_key "users", "cooperatives"
   add_foreign_key "users", "departments"
   add_foreign_key "users", "salary_grades"

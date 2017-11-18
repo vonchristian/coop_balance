@@ -28,6 +28,7 @@ module AccountingModule
                     ]
 
     has_one :clearance, class_name: "EntryClearance"
+    belongs_to :branch_office, class_name: "CoopConfigurationsModule::BranchOffice"
     belongs_to :commercial_document, :polymorphic => true
     belongs_to :recorder, foreign_key: 'recorder_id', class_name: "User"
     belongs_to :department

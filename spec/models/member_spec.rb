@@ -3,6 +3,7 @@ require 'rails_helper'
 describe Member, type: :model do
   describe "associations" do
     it { is_expected.to have_one :tin }
+    it { is_expected.to belong_to :branch_office }
     it { is_expected.to have_one :membership }
   	it { is_expected.to have_many :loans }
   	it { is_expected.to have_many :addresses }
@@ -20,6 +21,7 @@ describe Member, type: :model do
   end
   describe 'delegations' do
     it { is_expected.to delegate_method(:membership_type).to(:membership) }
+    it { is_expected.to delegate_method(:name).to(:branch_office).with_prefix }
   end
 
   describe 'validations' do
@@ -27,7 +29,7 @@ describe Member, type: :model do
   it "#full_name" do
   	member = create(:member, first_name: "Von", middle_name: "Pinosan", last_name: "Halip")
 
-  	expect(member.full_name).to eql("Halip, Von P.")
+  	expect(member.full_name).to eql("Halip, Von Pinosan")
   end
   it "#first_and_name" do
   	member = create(:member, first_name: "Von", middle_name: "Pinosan", last_name: "Halip")
