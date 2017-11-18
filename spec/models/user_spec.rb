@@ -30,6 +30,7 @@ RSpec.describe User, type: :model do
 
   describe 'delegations' do
     it { is_expected.to delegate_method(:amount).to(:salary_grade).with_prefix }
+    it { is_expected.to delegate_method(:amount).to(:branch_office).with_prefix }
     it { is_expected.to delegate_method(:name).to(:salary_grade).with_prefix }
     it { is_expected.to delegate_method(:name).to(:department).with_prefix }
     it { is_expected.to delegate_method(:regular_member?).to(:membership) }

@@ -22,7 +22,9 @@
     <hr>
     <strong><i class="fa fa-book margin-r-5"></i> Cash on Hand Account</strong>
     <p class="text-muted"><%= @employee.cash_on_hand_account.try(:name) %></p>
-      <%= link_to "Update Cash on Hand Account", edit_employee_cash_on_hand_account_path(id: @employee.id, employee_id: @employee.id) %>
+      <% if policy([:employees, :cash_on_hand_account]).edit? %>
+        <%= link_to "Update Cash on Hand Account", edit_employee_cash_on_hand_account_path(id: @employee.id, employee_id: @employee.id) %>
+      <% end %>
     <hr>
     <strong><i class="fa fa-file-text margin-r-5"></i> Notes</strong>
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>

@@ -6,7 +6,7 @@
         <div class="col-md-1">
         </div>
         <div class="col-md-5">
-          Full Name 
+          Full Name
         </div>
         <div class="col-md-5">
           <%= @employee.first_and_last_name %>
@@ -17,7 +17,7 @@
         <div class="col-md-1">
         </div>
         <div class="col-md-5">
-          Position 
+          Position
         </div>
         <div class="col-md-5">
           <%= @employee.role.titleize %>
@@ -28,7 +28,7 @@
         <div class="col-md-1">
         </div>
         <div class="col-md-5">
-          Salary Grade 
+          Salary Grade
         </div>
         <div class="col-md-5">
           <% if @employee.salary_grade %>
@@ -40,7 +40,7 @@
         </div>
       </div>
       <br>
-       <div class="row">
+      <div class="row">
         <div class="col-md-1">
         </div>
         <div class="col-md-5">
@@ -51,6 +51,21 @@
             <%= @employee.department_name %>
           <% else %>
             <%= link_to 'Add Department', edit_hr_module_employee_employee_department_path(@employee) %>
+          <% end %>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-5">
+          Branch Office
+        </div>
+        <div class="col-md-5">
+          <% if @employee.branch_office %>
+            <%= @employee.branch_office_name %>
+          <% else %>
+            <%= link_to 'Set Branch Office', edit_hr_module_employee_branch_office_path(@employee) %>
           <% end %>
         </div>
       </div>

@@ -8,9 +8,9 @@ module MembershipsModule
     belongs_to :subscriber, polymorphic: true
     belongs_to :share_capital_product, class_name: "CoopServicesModule::ShareCapitalProduct"
     belongs_to :branch_office, class_name: "CoopConfigurationsModule::BranchOffice"
-    # has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
 
     delegate :name, :account, :default_account, to: :share_capital_product, prefix: true
+    delegate :name, to: :branch_office, prefix: true, allow_nil: true
     delegate :name, to: :subscriber, prefix: true
     delegate :cost_per_share, to: :share_capital_product, prefix: true
     validates :share_capital_product_id, presence: true
@@ -56,7 +56,9 @@ module MembershipsModule
     end
 
     def set_branch_office
-      self.branch_office_id = self.subscriber.branch_office.id
+      if subscriber.branch_office.present?
+        self.branch_office_id = self.subscriber.branch_office.id
+      end
     end
 
   end

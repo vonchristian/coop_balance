@@ -91,10 +91,11 @@ Rails.application.routes.draw do
   end
   resources :share_capitals do
     resources :capital_build_ups, only: [:new, :create], module: :share_capitals
+    resources :branch_offices, only: [:edit, :update], module: :share_capitals
   end
   resources :members do
-      resources :branch_offices, only: [:new, :create, :edit, :update], module: :members
-    resources :address_details
+    resources :branch_offices, only: [:new, :create, :edit, :update], module: :members
+    resources :addresses, only: [:edit, :update], module: :members
     resources :memberships, only: [:edit, :update], module: :members
     resources :info, only: [:index], module: :members
     resources :loans, only: [:index, :new, :create], module: :members
@@ -115,9 +116,6 @@ Rails.application.routes.draw do
     namespace :settings do
       resources :cooperatives, only: [:edit, :update, :show] do
         resources :branches, only: [:new, :create]
-      end
-      resources :branch_offices, shallow: true do
-        resources :sections, only: [:new, :create]
       end
       resources :savings_account_configs, only: [:new, :create]
       resources :break_contract_fees, only: [:new, :create]
@@ -285,12 +283,12 @@ Rails.application.routes.draw do
     resources :salary_grades, only: [:new, :create, :edit, :update]
     resources :employees, except: [:destroy] do
       resources :payroll_amounts, only: [:new, :create]
+      resources :branch_offices, only: [:edit, :update], module: :employees
       resources :contributions, only: [:new, :create], module: :employees
       resources :profile, only: [:index]
       resources :employee_salary_grades, only: [:new, :create, :edit, :update]
       resources :employee_departments, only: [:new, :create, :edit, :update]
       resources :payrolls, only: [:index, :new, :create]
-
     end
   end
   resources :calendars, only: [:index, :show]
@@ -304,6 +302,9 @@ Rails.application.routes.draw do
     resources :payments, only: [:new, :create], module: :membership_applications
   end
   resources :cooperatives, only: [:show]
+  resources :branch_offices, only: [:index, :show] do
+      resources :sections, only: [:new, :create], module: :branch_offices
+    end
 
   mount ActionCable.server => '/cable'
 

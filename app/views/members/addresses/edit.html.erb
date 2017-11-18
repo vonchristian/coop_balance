@@ -1,0 +1,8 @@
+<%= simple_form_for [@member, @address], url: :member_address do |f| %>
+  <%= f.input :street %>
+  <%= f.input :barangay %>
+  <%= f.input :municipality %>
+  <%= f.input :province %>
+  <%= f.submit "Save Address" %>
+<% end %>
+

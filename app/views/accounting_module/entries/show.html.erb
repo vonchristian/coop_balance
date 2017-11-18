@@ -40,6 +40,15 @@
                 <%= image_tag(@entry.recorder.avatar.url(:thumb), class: "img-circle", height: 35, width: 35)%> &nbsp; <%= @entry.recorder.try(:first_and_last_name) %>
               </div>
             </div>
+            <br />
+            <div class="row">
+              <div class="col-md-5">
+                Branch Office
+              </div>
+              <div class="col-md-5">
+                <%= @entry.branch_office_name %>
+              </div>
+            </div>
             <hr>
           </div>
         </div>
@@ -56,10 +65,10 @@
           <br>
         <% end %>
         <hr>
-        <p>Credits</p>
+        <p><b>&nbsp; &nbsp; Credits</b></p>
         <% @entry.credit_amounts.each do |credit| %>
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-5 col-md-offset-1">
               <%= credit.account.try(:name) %>
             </div>
             <div class="col-md-6">

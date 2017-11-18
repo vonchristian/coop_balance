@@ -20,6 +20,7 @@ module MembershipsModule
 
     context 'delegations' do
       it { is_expected.to delegate_method(:name).to(:subscriber).with_prefix }
+      it { is_expected.to delegate_method(:name).to(:branch_office).with_prefix }
     	it { is_expected.to delegate_method(:name).to(:share_capital_product).with_prefix }
       it { is_expected.to delegate_method(:account).to(:share_capital_product).with_prefix }
 

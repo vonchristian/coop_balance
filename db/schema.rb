@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171118082623) do
+ActiveRecord::Schema.define(version: 20171118114917) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -935,8 +935,10 @@ ActiveRecord::Schema.define(version: 20171118082623) do
     t.datetime "updated_at", default: "2017-11-15 16:47:09", null: false
     t.integer "status"
     t.uuid "branch_office_id"
+    t.uuid "section_id"
     t.index ["account_number"], name: "index_share_capitals_on_account_number", unique: true
     t.index ["branch_office_id"], name: "index_share_capitals_on_branch_office_id"
+    t.index ["section_id"], name: "index_share_capitals_on_section_id"
     t.index ["share_capital_product_id"], name: "index_share_capitals_on_share_capital_product_id"
     t.index ["status"], name: "index_share_capitals_on_status"
     t.index ["subscriber_type", "subscriber_id"], name: "index_share_capitals_on_subscriber_type_and_subscriber_id"
@@ -1194,6 +1196,7 @@ ActiveRecord::Schema.define(version: 20171118082623) do
   add_foreign_key "share_capital_product_shares", "share_capital_products"
   add_foreign_key "share_capital_products", "accounts"
   add_foreign_key "share_capitals", "branch_offices"
+  add_foreign_key "share_capitals", "sections"
   add_foreign_key "share_capitals", "share_capital_products"
   add_foreign_key "streets", "barangays"
   add_foreign_key "streets", "municipalities"

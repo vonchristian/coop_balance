@@ -44,7 +44,7 @@
             <small class="condensed-text">BALANCE </small>
             <h3><i class="fa fa-circle text-green"></i> <%= number_to_currency @savings_account.balance %></h3>
             <% if policy([:savings_accounts, :account_closing]).new? %>
-              <%= link_to 'Close Account', new_savings_account_account_closing_path(@savings_account), class: "btn btn-danger" %>
+              <%= link_to 'Close Account', new_savings_account_account_closing_path(@savings_account), class: "btn btn-danger btn-xs" %>
             <% end %>
           </div>
         </div>

@@ -1,0 +1,5 @@
+<%= simple_form_for [@branch, @section], url: :branch_office_sections do |f| %>
+  <%= f.input :name %>
+  <%= f.input :description %>
+  <%= f.submit "Create Section" %>
+<% end %>

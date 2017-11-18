@@ -8,6 +8,9 @@ module AccountingModule
       it { is_expected.to belong_to :branch_office }
       it { is_expected.to belong_to :section }
   	end
+    describe 'delegations' do
+      it { is_expected.to delegate_method(:name).to(:branch_office).with_prefix }
+    end
     let(:entry) { build(:entry) }
     subject { entry }
 

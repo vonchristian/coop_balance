@@ -29,6 +29,7 @@
 
 
       <p class="text-muted"><%= @member.addresses.current %></p>
+      <%= link_to 'Update Address', edit_member_address_path(id: @member.id) %>
       <hr>
        <strong><i class="fa fa-book margin-r-5"></i> TIN Number</strong>
 

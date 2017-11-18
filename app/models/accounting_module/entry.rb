@@ -58,7 +58,7 @@ module AccountingModule
 
     delegate :first_and_last_name, to: :recorder, prefix: true, allow_nil: true
     delegate :number, to: :voucher, prefix: true, allow_nil: true
-
+    delegate :name, to: :branch_office, prefix: true, allow_nil: true
     def self.entered_on(hash={})
       if hash[:from_date] && hash[:to_date]
        from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : Chronic.parse(hash[:from_date].strftime('%Y-%m-%d 12:00:00'))

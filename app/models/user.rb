@@ -53,6 +53,7 @@ class User < ApplicationRecord
   delegate :name, :address, :contact_number, :logo, to: :cooperative, prefix: true
   delegate :regular_member?, to: :membership
   delegate :membership_type, to: :membership, allow_nil: true
+  delegate :name, to: :branch_office, prefix: true, allow_nil: true
 
 
   has_attached_file :avatar,
