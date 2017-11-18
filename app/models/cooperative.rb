@@ -1,5 +1,5 @@
 class Cooperative < ApplicationRecord
-  has_many :branch_offices
+  has_many :branch_offices, class_name: "CoopConfigurationsModule::BranchOffice"
   validates :name, presence: true
   validates :name, uniqueness: true
   validates :registration_number, presence: true

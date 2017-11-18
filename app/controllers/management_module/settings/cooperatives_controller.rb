@@ -15,6 +15,9 @@ module ManagementModule
           render :edit
         end
       end
+      def show
+        @cooperative = Cooperative.find(params[:id])
+      end
 
       private
       def cooperative_params

@@ -1,0 +1,6 @@
+<%= simple_form_for [@cooperative, @branch], url: :management_module_settings_cooperative_branches do |f| %>
+  <%= f.input :branch_name %>
+  <%= f.input :address %>
+  <%= f.input :contact_number %>
+  <%= f.submit "Create Branch" %>
+<% end %>

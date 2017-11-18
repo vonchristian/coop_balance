@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171118010703) do
+ActiveRecord::Schema.define(version: 20171118043207) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -778,7 +778,9 @@ ActiveRecord::Schema.define(version: 20171118010703) do
     t.datetime "updated_at", null: false
     t.text "description"
     t.uuid "account_id"
+    t.integer "payment_schedule_type"
     t.index ["account_id"], name: "index_programs_on_account_id"
+    t.index ["payment_schedule_type"], name: "index_programs_on_payment_schedule_type"
   end
 
   create_table "raw_material_stocks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -878,6 +880,16 @@ ActiveRecord::Schema.define(version: 20171118010703) do
     t.datetime "updated_at", null: false
     t.uuid "interest_account_id"
     t.index ["interest_account_id"], name: "index_savings_account_configs_on_interest_account_id"
+  end
+
+  create_table "sections", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "branch_office_id"
+    t.string "name"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["branch_office_id"], name: "index_sections_on_branch_office_id"
+    t.index ["name"], name: "index_sections_on_name", unique: true
   end
 
   create_table "share_capital_product_shares", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1162,6 +1174,7 @@ ActiveRecord::Schema.define(version: 20171118010703) do
   add_foreign_key "savings", "members"
   add_foreign_key "savings", "saving_products"
   add_foreign_key "savings_account_configs", "accounts", column: "interest_account_id"
+  add_foreign_key "sections", "branch_offices"
   add_foreign_key "share_capital_product_shares", "share_capital_products"
   add_foreign_key "share_capital_products", "accounts"
   add_foreign_key "share_capitals", "share_capital_products"

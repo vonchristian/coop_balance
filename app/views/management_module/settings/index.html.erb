@@ -37,7 +37,7 @@
 <% end %>
 <hr>
 <%= link_to 'New Time Deposit Product', new_management_module_settings_time_deposit_product_path, class: "btn btn-primary" %>
-<%= link_to 'New Program', new_management_module_program_path, class: "btn btn-primary" %>
+<%= link_to 'New Program / Fees', new_management_module_program_path, class: "btn btn-primary" %>
 
 
 
@@ -49,3 +49,4 @@
 <%#= link_to "New Committee", new_management_module_committee_path %>
 <%= link_to 'Update Cooperative Details', edit_management_module_settings_cooperative_path(@cooperative), class: "btn btn-warning" %>
 <%= link_to 'Add Closing Account Fee', new_management_module_settings_savings_account_config_path, class: "btn btn-danger" %>
+<%= link_to current_user.cooperative_name, management_module_settings_cooperative_path(current_user.cooperative) %>

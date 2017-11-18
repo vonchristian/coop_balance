@@ -16,11 +16,7 @@ module MembershipsModule
     def self.top_savers
       all.to_a.sort_by(&:balance).first(10)
     end
-    def self.post_interests_earned
-      all.each do |saving|
-        post_interests_earned(saving)
-      end
-    end
+
     def name
       account_owner_name || account_owner.full_name
     end
@@ -29,8 +25,8 @@ module MembershipsModule
     end
 
     def balance
-      deposits + interests_earned - withdrawals
-      #saving_product_account.balance(commercial_document: self)
+      # deposits + interests_earned - withdrawals
+      saving_product_account.balance(commercial_document_id: self.id)
     end
     def deposits
       entries.deposit.map{|a| a.debit_amounts.sum(:amount)}.sum

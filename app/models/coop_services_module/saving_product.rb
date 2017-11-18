@@ -27,9 +27,14 @@ module CoopServicesModule
     end
 
 	  def post_interests_earned
-	  	subscribers.each do |saving|
-	  		InterestPosting.new.post_interests_earned(saving)
-	  	end
+      if quarterly?
+  	  	post_quarterly_interests
+      end
 	  end
+    def post_quarterly_interests
+      subscribers.each do |saving|
+        InterestPosting.new.post_interests_earned(saving, Time.zone.now.end_of_quarter)
+      end
+    end
 	end
 end
