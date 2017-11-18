@@ -31,7 +31,9 @@ module AccountingModule
     belongs_to :commercial_document, :polymorphic => true
     belongs_to :recorder, foreign_key: 'recorder_id', class_name: "User"
     belongs_to :department
-    belongs_to :branch
+    belongs_to :branch_office, class_name: "CoopConfigurationsModule::BranchOffice"
+    belongs_to :section, class_name: "CoopConfigurationsModule::Section"
+
     belongs_to :voucher
 
     has_many :credit_amounts, :extend => AccountingModule::AmountsExtension, :class_name => 'AccountingModule::CreditAmount', :inverse_of => :entry, dependent: :destroy

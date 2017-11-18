@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171118043207) do
+ActiveRecord::Schema.define(version: 20171118053826) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -859,7 +859,6 @@ ActiveRecord::Schema.define(version: 20171118043207) do
   end
 
   create_table "savings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "member_id"
     t.string "account_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -868,9 +867,10 @@ ActiveRecord::Schema.define(version: 20171118043207) do
     t.string "depositor_type"
     t.uuid "depositor_id"
     t.integer "status"
+    t.uuid "branch_office_id"
     t.index ["account_number"], name: "index_savings_on_account_number", unique: true
+    t.index ["branch_office_id"], name: "index_savings_on_branch_office_id"
     t.index ["depositor_type", "depositor_id"], name: "index_savings_on_depositor_type_and_depositor_id"
-    t.index ["member_id"], name: "index_savings_on_member_id"
     t.index ["saving_product_id"], name: "index_savings_on_saving_product_id"
   end
 
@@ -1171,7 +1171,7 @@ ActiveRecord::Schema.define(version: 20171118043207) do
   add_foreign_key "registries", "suppliers"
   add_foreign_key "registries", "users", column: "employee_id"
   add_foreign_key "saving_products", "accounts"
-  add_foreign_key "savings", "members"
+  add_foreign_key "savings", "branch_offices"
   add_foreign_key "savings", "saving_products"
   add_foreign_key "savings_account_configs", "accounts", column: "interest_account_id"
   add_foreign_key "sections", "branch_offices"

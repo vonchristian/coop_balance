@@ -3,7 +3,6 @@ FactoryBot.define do
     sequence(:name){|n| "Loan #{n} - #{n} Loan" }
     description "MyString"
     max_loanable_amount 1_000_000
-    interest_rate 1
     association :account, factory: :asset
 
   end

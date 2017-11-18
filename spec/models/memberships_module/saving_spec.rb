@@ -4,6 +4,7 @@ module MembershipsModule
   describe Saving do
     context "associations" do
     	it { is_expected.to belong_to :depositor }
+      it { is_expected.to belong_to :branch_office }
     	it { is_expected.to belong_to :saving_product }
     	it { is_expected.to have_many :entries }
     end
@@ -47,7 +48,8 @@ module MembershipsModule
 
     context '#can_withdraw?' do
     	it 'TRUE if balance is greater than 0' do
-    		saving = create(:saving)
+        saving_product = create(:saving_product)
+    		saving = create(:saving, saving_product: saving_product)
         deposit = create(:entry_with_credit_and_debit, commercial_document: saving, entry_type: 'deposit')
         withdrawal = create(:entry_with_credit_and_debit, commercial_document: saving, entry_type: 'withdrawal')
         savings_interest = create(:entry_with_credit_and_debit, commercial_document: saving, entry_type: 'savings_interest')
@@ -57,7 +59,8 @@ module MembershipsModule
     	end
 
     	it 'FALSE if balance is less than 0' do
-    		saving = create(:saving)
+    		saving_product = create(:saving_product)
+        saving = create(:saving, saving_product: saving_product)
         deposit = create(:entry_with_credit_and_debit, commercial_document: saving, entry_type: 'deposit')
         withdrawal = create(:entry_with_credit_and_debit, commercial_document: saving, entry_type: 'withdrawal')
 

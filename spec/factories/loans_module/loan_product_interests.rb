@@ -1,6 +1,7 @@
 FactoryBot.define do
-  factory :loan_product_interest do
-    rate "9.99"
-    loan_product nil
+  factory :loan_product_interest, class: "LoansModule::LoanProductInterest" do
+    rate 12
+    loan_product
+    association :account, factory: :revenue
   end
 end

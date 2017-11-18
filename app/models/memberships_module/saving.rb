@@ -6,6 +6,7 @@ module MembershipsModule
     multisearchable against: [:account_number, :account_owner_name]
     belongs_to :depositor, polymorphic: true
     belongs_to :saving_product, class_name: "CoopServicesModule::SavingProduct"
+    belongs_to :branch_office, class_name: "CoopConfigurationsModule::BranchOffice"
     delegate :name, :current_occupation, to: :depositor, prefix: true
     delegate :name, :account, to: :saving_product, prefix: true
     delegate :interest_rate, to: :saving_product, prefix: true
