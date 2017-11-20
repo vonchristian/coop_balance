@@ -19,7 +19,7 @@ module Registries
     end
 
     def find_saving_product(row)
-      CoopServicesModule::SavingProduct.find_by(name: row[4])
+      CoopServicesModule::SavingProduct.find_by(name: row[3])
     end
 
     def find_member(row)
@@ -28,7 +28,7 @@ module Registries
 
 
     def create_entry(row)
-      savings = find_member(row).savings.create(saving_product: find_saving_product(row))
+      savings = find_member(row).savings.create!(saving_product: find_saving_product(row))
 
       savings.entries.create!(recorder_id: self.employee_id, entry_type: 'deposit',  description: 'Forwarded balance Savings deposit',  entry_date: Time.zone.now,
       debit_amounts_attributes: [account: debit_account, amount: row[2]],

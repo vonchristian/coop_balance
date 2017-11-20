@@ -15,6 +15,7 @@ module MembershipsModule
     delegate :name, to: :section, prefix: true, allow_nil: true
     has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
     before_save :set_account_owner_name, :set_account_number
+    validates :saving_product_id, presence: true
     def self.generate_account_number
       if self.exists? && order(created_at: :asc).last.account_number.present?
         order(created_at: :asc).last.account_number.succ
