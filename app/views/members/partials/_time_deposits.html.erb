@@ -9,22 +9,8 @@
   <hr>
   <% @member.time_deposits.each do |time_deposit| %>
     <%=link_to time_deposit_path(time_deposit) do %>
-    <% if time_deposit.withdrawn? %>
-      Withdrawn 
+      <h3><%=  number_to_currency time_deposit.balance %></h3>
+      <%= time_deposit.current_term.number_of_days %>Days Deposited
     <% end %>
-    <%= time_deposit.account_number %>
-    <h4>Amount Deposited:<%= number_to_currency time_deposit.amount_deposited %></h4>
-    <p class="text-muted">Interest Earned: <%= number_to_currency time_deposit.earned_interests %></p>
-    <span class="text-muted">Date Deposited: <%= time_deposit.date_deposited.strftime("%B %e, %Y") %></span><br>
-    <span class="text-muted">Maturity Date: <%= time_deposit.maturity_date.strftime("%B %e, %Y") %></span><br>
-    <span class="">Time Deposit Product: <%= time_deposit.time_deposit_product_interest_rate %>
-    <% if !time_deposit.withdrawn? %>
-      <%= link_to 'Withdraw', new_time_deposit_withdrawal_path(time_deposit), class: "btn btn-warning" %>
-    <% else %>
-       <span class="label bg-red"> Withdrawn  </span>
-    <% end %>
-    <%= link_to 'Renew', new_time_deposit_renewal_path(time_deposit) %>
-    <hr>
-  <% end %>
   <% end %>
 </div>

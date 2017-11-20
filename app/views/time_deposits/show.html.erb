@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-md-6 col-md-offset-3">
+  <div class="col-md-12">
     <div class="box box-success">
     <div class="box-header">
       <div class="row">
@@ -21,11 +21,20 @@
           <div class="col-md-5">
             <%= number_to_currency @time_deposit.amount_deposited %>
             <% if policy([:time_deposits, :break_contract]).new? %>
+
               <%=link_to 'Break Contract', new_time_deposit_break_contract_path(@time_deposit), class: "btn btn-danger" %>
             <% end %>
           </div>
         </div>
         <hr>
+  <p class="text-muted">TERM DETAILS </p>
+  <%= @time_deposit.current_term_deposit_date %>
+  <%= @time_deposit.current_term_maturity_date %>
+  <%= @time_deposit.current_term_matured? %>
+   <% if policy([:time_deposits, :fixed_term]).new?  && @time_deposit.matured? %>
+    <%= link_to 'Renew/Extend', new_time_deposit_fixed_term_path(@time_deposit) %>
+  <% end %>
+
 <p>TRANSACTIONS HISTORY</p>
 <% @time_deposit.deposits.each do |entry| %>
    <div class="row">

@@ -6,15 +6,20 @@ module MembershipsModule
     belongs_to :depositor, polymorphic: true
     belongs_to :time_deposit_product, class_name: "CoopServicesModule::TimeDepositProduct"
     has_many :deposits,  class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
-
+    has_many :fixed_terms, class_name: "TimeDepositsModule::FixedTerm", dependent: :destroy
     delegate :name, :interest_rate, :account, to: :time_deposit_product, prefix: true
     delegate :full_name, :first_and_last_name, to: :depositor, prefix: true
-
-    before_save :set_date_deposited, :set_depositor_name, on: [:create]
+    delegate :maturity_date, :deposit_date, :matured?, to: :current_term, prefix: true
+    before_save :set_depositor_name, on: [:create]
 
     validates :depositor_id, :depositor_type,  presence: true
-    validates :number_of_days, presence: true, numericality: true
-    after_commit :set_maturity_date, :set_account_number
+
+    after_commit :set_account_number
+
+    def current_term
+      fixed_terms.order(created_at: :asc).last
+    end
+
     def member?
       depositor.regular_member?
     end
@@ -40,7 +45,7 @@ module MembershipsModule
     end
 
     def matured?
-      maturity_date < Time.zone.now
+      current_term.matured?
     end
     def transfer_to_savings
       #if matured?
@@ -73,14 +78,10 @@ module MembershipsModule
     def set_account_number
       self.account_number = self.id
     end
-    def set_date_deposited
-      self.date_deposited ||= Time.zone.now
-    end
+
     def set_depositor_name
       self.depositor_name ||= self.depositor_full_name
     end
-    def set_maturity_date
-      self.maturity_date = date_deposited + number_of_days.days
-    end
+
   end
 end

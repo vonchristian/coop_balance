@@ -1,0 +1,6 @@
+<%= simple_form_for [ @time_deposit, @fixed_term], url: :time_deposit_fixed_terms do |f| %>
+  <%= f.input :number_of_days %>
+  <%= f.input :deposit_date, as: :string, input_html: { class: "datepicker" } %>
+  <%= f.input :maturity_date, as: :string, input_html: { class: "datepicker" } %>
+  <%= f.submit "Save" %>
+<% end %>

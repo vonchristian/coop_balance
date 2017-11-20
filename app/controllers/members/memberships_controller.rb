@@ -33,7 +33,7 @@ module Members
 
     private
     def membership_params
-      params.require(:membership).permit(:membership_type)
+      params.require(:membership).permit(:membership_type, :account_number)
     end
   end
 end

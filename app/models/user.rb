@@ -124,10 +124,16 @@ class User < ApplicationRecord
   end
 
   def default_cash_on_hand_account
-    return cash_on_hand_account if cash_on_hand_account.present?
-    if treasurer?
+    if self.cash_on_hand_account.present?
+      cash_on_hand_account
+    else
+      User.default_account_for(self)
+    end
+  end
+  def self.default_account_for(employee)
+    if employee.treasurer?
       AccountingModule::Asset.find_by(name: "Cash on Hand (Treasury)")
-    elsif teller? || sales_clerk?
+    elsif employee.teller? || employee.sales_clerk?
       AccountingModule::Asset.find_by(name: "Cash on Hand (Teller)")
     end
   end

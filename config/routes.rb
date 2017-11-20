@@ -160,8 +160,9 @@ Rails.application.routes.draw do
     #   resources :withdrawals, only: [:new, :create], module: :savings_accounts
     #   resources :sections, only: [:edit, :update], module: :savings_accounts
     # end
-    resources :time_deposits, only: [:index, :show] do
-    end
+    # resources :time_deposits, only: [:index, :show] do
+
+    # end
     resources :entries, only: [:index, :show]
   end
 
@@ -232,6 +233,7 @@ Rails.application.routes.draw do
     resources :payments, only: [:new, :create], module: :programs
   end
   resources :time_deposits, only: [:index, :show] do
+    resources :fixed_terms, only: [:new, :create], module: :time_deposits
     resources :withdrawals, only: [:new, :create], module: :time_deposits
     resources :renewals, only: [:new, :create], module: :time_deposits
     resources :break_contracts, only: [:new, :create], module: :time_deposits

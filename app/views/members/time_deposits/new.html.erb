@@ -12,7 +12,6 @@
   <%= f.input :amount %>
   <%= f.input :number_of_days, label: "No. of Days Deposited:" %>
   <%= f.input :recorder_id, input_html: { value: current_user.id } %>
-  <%= f.input :account_number, input_html: { value: AccountNumberGenerator.generate_account_number(@time_deposit) } %>
   <div class="box-footer">
     <%= f.submit "Save Time Deposit", class: "btn btn-primary btn-flat pull-right" %>
   </div>

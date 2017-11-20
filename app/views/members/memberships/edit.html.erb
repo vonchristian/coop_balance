@@ -1,5 +1,6 @@
 <%= simple_form_for [@member, @membership], url: :member_membership do |f| %>
   <%= f.error_notification %>
   <%= f.input :membership_type, collection: Membership.membership_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
-  <%= f.submit "Save Membership" %>
+  <%= f.input :account_number, input_html: { value: AccountNumberGenerator.generate_account_for(@member) } %>
+  <%= f.submit "Save Membershicp" %>
 <% end %>

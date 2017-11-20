@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171120075948) do
+ActiveRecord::Schema.define(version: 20171120110312) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -338,6 +338,16 @@ ActiveRecord::Schema.define(version: 20171120075948) do
     t.decimal "total_cost"
     t.index ["product_id"], name: "index_finished_good_materials_on_product_id"
     t.index ["raw_material_id"], name: "index_finished_good_materials_on_raw_material_id"
+  end
+
+  create_table "fixed_terms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "time_deposit_id"
+    t.datetime "deposit_date"
+    t.datetime "maturity_date"
+    t.integer "number_of_days"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["time_deposit_id"], name: "index_fixed_terms_on_time_deposit_id"
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
@@ -989,13 +999,10 @@ ActiveRecord::Schema.define(version: 20171120075948) do
     t.string "account_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "number_of_days"
-    t.datetime "date_deposited"
     t.string "depositor_name"
     t.string "depositor_type"
     t.uuid "depositor_id"
     t.integer "status"
-    t.datetime "maturity_date"
     t.index ["account_number"], name: "index_time_deposits_on_account_number", unique: true
     t.index ["depositor_type", "depositor_id"], name: "index_time_deposits_on_depositor_type_and_depositor_id"
     t.index ["status"], name: "index_time_deposits_on_status"
@@ -1143,6 +1150,7 @@ ActiveRecord::Schema.define(version: 20171120075948) do
   add_foreign_key "entries", "vouchers"
   add_foreign_key "finished_good_materials", "products"
   add_foreign_key "finished_good_materials", "raw_materials"
+  add_foreign_key "fixed_terms", "time_deposits"
   add_foreign_key "line_items", "carts"
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items", "product_stocks"

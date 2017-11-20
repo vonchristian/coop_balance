@@ -3,6 +3,5 @@ FactoryBot.define do
     association :depositor, factory: :member
     association :time_deposit_product
     account_number nil
-    number_of_days 90
   end
 end
