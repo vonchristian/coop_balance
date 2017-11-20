@@ -14,7 +14,7 @@ module Registries
     end
     private
     def account_number
-      Membership.generate_account_number
+      MembershipsModule::Saving.generate_account_number
     end
 
     def create_or_find_member(row)
@@ -29,7 +29,7 @@ module Registries
       Member.find_by(last_name: row[0], first_name: row[1])
     end
     def find_savings(row)
-      savings = find_member(row).savings.find_or_create_by(account_number: account_number,  saving_product: find_saving_product(row))
+      find_member(row).savings.create(account_number: account_number,  saving_product: find_saving_product(row))
     end
 
     def create_entry(row)

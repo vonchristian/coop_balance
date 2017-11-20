@@ -15,6 +15,13 @@ module MembershipsModule
     delegate :name, to: :section, prefix: true, allow_nil: true
     has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
     before_save :set_account_owner_name
+    def self.generate_account_number
+      if self.exists? && order(created_at: :asc).last.account_number.present?
+        order(created_at: :asc).last.account_number.succ
+      else
+        "#{Time.zone.now.year.to_s.last(2)}000001"
+      end
+    end
 
     def self.set_inactive_accounts
       #to do find accounts not within saving product interest posting date range
