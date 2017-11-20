@@ -14,7 +14,7 @@ module MembershipsModule
     delegate :name, to: :branch_office, prefix: true, allow_nil: true
     delegate :name, to: :section, prefix: true, allow_nil: true
     has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
-    before_save :set_account_owner_name
+    before_save :set_account_owner_name, :set_account_number
     def self.generate_account_number
       if self.exists? && order(created_at: :asc).last.account_number.present?
         order(created_at: :asc).last.account_number.succ
@@ -58,6 +58,9 @@ module MembershipsModule
     #used for pg search
     def set_account_owner_name
       self.account_owner_name = self.depositor.name
+    end
+    def set_account_number
+      self.account_number = self.id
     end
 
     def set_branch_office

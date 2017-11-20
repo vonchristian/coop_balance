@@ -13,9 +13,6 @@ module Registries
       end
     end
     private
-    def account_number
-      MembershipsModule::Saving.generate_account_number
-    end
 
     def create_or_find_member(row)
       Member.find_or_create_by(last_name: row[0], first_name: row[1])
@@ -28,12 +25,12 @@ module Registries
     def find_member(row)
       Member.find_by(last_name: row[0], first_name: row[1])
     end
-    def find_savings(row)
-      find_member(row).savings.create(account_number: account_number,  saving_product: find_saving_product(row))
-    end
+
 
     def create_entry(row)
-      find_savings(row).entries.create!(recorder_id: self.employee_id, entry_type: 'deposit',  description: 'Forwarded balance Savings deposit',  entry_date: Time.zone.now,
+      savings = find_member(row).savings.create(saving_product: find_saving_product(row))
+
+      savings.entries.create!(recorder_id: self.employee_id, entry_type: 'deposit',  description: 'Forwarded balance Savings deposit',  entry_date: Time.zone.now,
       debit_amounts_attributes: [account: debit_account, amount: row[2]],
       credit_amounts_attributes: [account: credit_account, amount: row[2]])
     end
