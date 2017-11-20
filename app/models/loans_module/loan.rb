@@ -106,11 +106,26 @@ module LoansModule
     def past_due?
       number_of_days_past_due >=1
     end
+    def amortized_principal_for(options={})
+      amortization_schedules.scheduled_for(options).sum(&:principal)
+    end
+    def amortized_interest_for(options={})
+      amortization_schedules.scheduled_for(options).sum(&:interest)
+    end
+    def arrears(options={})
+      payments_total(options) -
+      amortization_schedules.scheduled_for(options).sum(&:total_amortization)
+    end
+
     def total_unpaid_principal_for(date)
       amortized_principal_for(date) - paid_principal_for(date)
     end
+
     def paid_principal_for(date)
       loan_product_account.credit_entries.where(commercial_document: self)
+    end
+    def total_deductions(options={})
+      amortized_principal_for(options) + amortized_interest_for(options) + arrears(options)
     end
 
     def first_notice_date
@@ -167,6 +182,7 @@ module LoansModule
     def total_loan_charges
       loan_charges.total
     end
+
     def create_loan_product_charges
       if loan_charges.present?
         loan_charges.destroy_all
@@ -200,8 +216,16 @@ module LoansModule
     def payments
       entries.loan_payment
     end
-    def payments_total
-      loan_product_account.credits_balance(commercial_document_id: self.id)
+    def principal_payments_total(options={})
+      loan_product_account.credits_balance(commercial_document_id: self.id, from_date: options[:from_date], to_date: options[:to_date])
+    end
+
+    def interest_payments_total(options={})
+      CoopConfigurationsModule::LoanInterestConfig.account_to_debit.credits_balance(from_date: options[:from_date], to_date: options[:to_date], commercial_document_id: self.id)
+    end
+
+    def payments_total(options={})
+      principal_payments_total(options) + interest_payments_total(options)
     end
 
     def disbursement
@@ -225,7 +249,7 @@ module LoansModule
     end
 
     def balance
-      loan_product_account.balance(commercial_document_id: self.id)
+      loan_amount - payments_total
     end
 
     def number_of_days_past_due

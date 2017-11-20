@@ -1,7 +1,7 @@
 module Organizations
   class LoansController < ApplicationController
     def index
-      @date = params[:from_date] ? Chronic.parse(params[:date]) : Date.today
+      @date = params[:date] ? Chronic.parse(params[:date]) : Date.today.strftime("%B %e, %Y")
       @organization = Organization.find(params[:organization_id])
       @loans = @organization.loans.disbursed.paginate(page: params[:page], per_page: 50)
       @cooperative = current_user.cooperative
