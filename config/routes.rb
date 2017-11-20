@@ -112,6 +112,7 @@ Rails.application.routes.draw do
 
   resources :management_module, only: [:index]
   namespace :management_module do
+    resources :savings_account_registries, only: [:new, :create]
     namespace :settings do
       resources :cooperatives, only: [:edit, :update, :show] do
         resources :branches, only: [:new, :create]

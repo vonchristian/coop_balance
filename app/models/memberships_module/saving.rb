@@ -14,10 +14,10 @@ module MembershipsModule
     delegate :name, to: :branch_office, prefix: true, allow_nil: true
     delegate :name, to: :section, prefix: true, allow_nil: true
     has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
-    before_save :set_account_owner_name, :set_account_number, :set_branch_office
+    before_save :set_account_owner_name, :set_account_number
 
     def self.set_inactive_accounts
-      #to do find accounts not within saving product interest posting
+      #to do find accounts not within saving product interest posting date range
       # did not save for a set time
     end
     def self.top_savers
