@@ -96,7 +96,7 @@ Rails.application.routes.draw do
   resources :members do
     resources :branch_offices, only: [:new, :create, :edit, :update], module: :members
     resources :addresses, only: [:edit, :update], module: :members
-    resources :memberships, only: [:edit, :update], module: :members
+    resources :memberships, only: [:edit, :update, :new, :create], module: :members
     resources :info, only: [:index], module: :members
     resources :loans, only: [:index, :new, :create], module: :members
     resources :real_properties, only: [:index, :new, :create], module: :members
