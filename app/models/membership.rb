@@ -7,7 +7,7 @@ class Membership < ApplicationRecord
     if self.exists? && order(created_at: :asc).last.account_number.present?
       order(created_at: :asc).last.account_number.succ
     else
-      "#{Time.zone.now.year.to_s.last(2)} - 000001"
+      "#{Time.zone.now.year.to_s.last(2)}000001"
     end
   end
 end
