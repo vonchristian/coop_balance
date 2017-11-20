@@ -47,6 +47,7 @@ class MembershipApplicationForm
   def find_member
     Membership.find_by(account_number: account_number).memberable
   end
+
   private
   def create_member
     member = Member.create(first_name: first_name, middle_name: middle_name, last_name: last_name, civil_status: civil_status, sex: sex, date_of_birth: date_of_birth, contact_number: contact_number, email: email, branch_office_id: branch_office_id)

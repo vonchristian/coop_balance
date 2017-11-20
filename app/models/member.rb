@@ -45,7 +45,7 @@ has_many :program_subscriptions, class_name: "MembershipsModule::ProgramSubscrip
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
 
   after_commit :set_fullname, on: [:create, :update]
-  after_commit :subscribe_to_programs
+  # after_commit :subscribe_to_programs
   before_save :update_birth_date_fields
   def self.with_loans
     all.select{|a| a.loans.present? }

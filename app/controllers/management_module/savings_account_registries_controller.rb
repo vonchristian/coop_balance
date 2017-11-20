@@ -4,6 +4,7 @@ module ManagementModule
       @registry = Registries::SavingsAccountRegistry.create(registry_params)
       if @registry.save
         redirect_to management_module_settings_url, notice: "Savings Account registry saved successfully"
+        @registry.parse_for_records
       else
         render :new
       end

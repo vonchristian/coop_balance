@@ -7,6 +7,7 @@ class MembershipApplicationsController < ApplicationController
     if @membership.valid?
       @membership.save
       redirect_to new_membership_application_contribution_url(@membership.find_member), notice: "Membership application saved successfully"
+       CoopServicesModule::Program.subscribe(@membership.find_member)
     else
       render :new
     end
