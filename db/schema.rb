@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171122023805) do
+ActiveRecord::Schema.define(version: 20171122023808) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -940,8 +940,8 @@ ActiveRecord::Schema.define(version: 20171122023805) do
     t.string "account_owner_name"
     t.string "subscriber_type"
     t.uuid "subscriber_id"
-    t.datetime "created_at", default: "2017-11-20 13:10:46", null: false
-    t.datetime "updated_at", default: "2017-11-20 13:10:46", null: false
+    t.datetime "created_at", default: "2017-11-20 20:28:11", null: false
+    t.datetime "updated_at", default: "2017-11-20 20:28:11", null: false
     t.integer "status"
     t.uuid "branch_office_id"
     t.uuid "section_id"
@@ -1072,7 +1072,9 @@ ActiveRecord::Schema.define(version: 20171122023805) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "description"
+    t.integer "amount_type"
     t.index ["account_id"], name: "index_voucher_amounts_on_account_id"
+    t.index ["amount_type"], name: "index_voucher_amounts_on_amount_type"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_voucher_amount"
     t.index ["voucher_id"], name: "index_voucher_amounts_on_voucher_id"
   end
@@ -1091,7 +1093,11 @@ ActiveRecord::Schema.define(version: 20171122023805) do
     t.integer "status"
     t.decimal "payable_amount"
     t.string "type"
+    t.uuid "preparer_id"
+    t.uuid "disburser_id"
+    t.index ["disburser_id"], name: "index_vouchers_on_disburser_id"
     t.index ["payee_type", "payee_id"], name: "index_vouchers_on_payee_type_and_payee_id"
+    t.index ["preparer_id"], name: "index_vouchers_on_preparer_id"
     t.index ["status"], name: "index_vouchers_on_status"
     t.index ["type"], name: "index_vouchers_on_type"
     t.index ["user_id"], name: "index_vouchers_on_user_id"
@@ -1217,6 +1223,8 @@ ActiveRecord::Schema.define(version: 20171122023805) do
   add_foreign_key "voucher_amounts", "accounts"
   add_foreign_key "voucher_amounts", "vouchers"
   add_foreign_key "vouchers", "users"
+  add_foreign_key "vouchers", "users", column: "disburser_id"
+  add_foreign_key "vouchers", "users", column: "preparer_id"
   add_foreign_key "work_in_process_materials", "raw_materials"
   add_foreign_key "work_in_progress_materials", "raw_materials"
 end

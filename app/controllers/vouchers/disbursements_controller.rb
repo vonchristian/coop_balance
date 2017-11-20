@@ -1,23 +1,23 @@
-module Vouchers 
+module Vouchers
   class DisbursementsController < ApplicationController
-    def new 
+    def new
       @voucher = Voucher.find(params[:voucher_id])
-      @disbursement = DisbursementForm.new 
-    end 
-    def create 
+      @disbursement = DisbursementForm.new
+    end
+    def create
       @voucher = Voucher.find(params[:voucher_id])
       @disbursement = DisbursementForm.new(disbursement_params)
       if @disbursement.valid?
-        @disbursement.save 
+        @disbursement.save
         redirect_to voucher_url(@voucher), notice: "Voucher disbursed successfully"
-      else 
-        render :new 
-      end 
-    end 
-
-    private 
-    def disbursement_params
-      params.require(:disbursement_form).permit(:voucher_id, :voucherable_id, :recorder_id, :amount, :reference_number, :date)
+      else
+        render :new
+      end
     end
-  end 
-end 
+
+    private
+    def disbursement_params
+      params.require(:disbursement_form).permit(:voucher_id, :voucherable_id, :recorder_id, :amount, :reference_number, :date, :description)
+    end
+  end
+end

@@ -2,17 +2,17 @@ module Loans
 	class DisbursementVouchersController < ApplicationController
 		def new
 			@loan = LoansModule::Loan.find(params[:loan_id])
-			@voucher = Vouchers::LoanVoucher.new
+			@voucher = Vouchers::LoanDisbursementVoucher.new
 		end
 		def create
 			@loan = LoansModule::Loan.find(params[:loan_id])
-			@voucher = Vouchers::LoanVoucher.create(voucher_params)
+			@voucher = Vouchers::LoanDisbursementVoucher.create(voucher_params)
       @voucher.voucherable = @loan
       @voucher.payee = @loan.borrower
 			if @voucher.valid?
 				@voucher.save
         @voucher.add_amounts_from(@loan)
-				redirect_to loan_url(@loan), notice: "Voucher created successfully."
+				redirect_to loan_disbursements_url(@loan), notice: "Voucher created successfully."
 			else
 				render :new
 			end
@@ -30,7 +30,7 @@ module Loans
 
 		private
 		def voucher_params
-			params.require(:vouchers_loan_voucher).permit(:number, :date, :description)
+			params.require(:vouchers_loan_disbursement_voucher).permit(:number, :date, :description, :number, :preparer_id)
 		end
 	end
 end

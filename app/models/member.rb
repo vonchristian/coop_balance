@@ -81,7 +81,7 @@ has_many :program_subscriptions, class_name: "MembershipsModule::ProgramSubscrip
   end
 
   def name #for search results
-    full_name
+    first_and_last_name
   end
 
   def account_receivable_store_balance

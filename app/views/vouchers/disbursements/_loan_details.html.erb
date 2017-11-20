@@ -48,7 +48,7 @@
         <%= f.error_notification %>
         <%= f.input :voucher_id, input_html: { value: @voucher.id }, as: :hidden %>
         <%= f.input :voucherable_id, input_html: { value: @voucher.voucherable_id }, as: :hidden %>
-        <%= f.input :amount, input_html: { value: @voucher.voucher_amounts.sum(&:amount) }%>
+        <%= f.input :amount, input_html: { value: @voucher.voucher_amounts.sum(&:amount) }, as: :hidden %>
         <%= f.input :reference_number %>
         <%= f.input :description, input_html: { value: "Loan disbursement of #{@voucher.voucherable.try(:borrower_name)}" } %>
         <%= f.input :date, label: "Date Disbursed", as: :string, input_html: { class: "datepicker" } %>

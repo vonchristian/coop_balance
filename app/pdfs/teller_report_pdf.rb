@@ -22,7 +22,7 @@ class TellerReportPdf < Prawn::Document
   def price(number)
     @view_context.number_to_currency(number, :unit => "P ")
   end
-   def heading
+  def heading
     bounding_box [300, 780], width: 50 do
       image "#{Rails.root}/app/assets/images/logo_kcmdc.jpg", width: 50, height: 50
     end
@@ -222,10 +222,10 @@ class TellerReportPdf < Prawn::Document
   end
 
   def loan_releases_data
-    if @employee.entries.loan_disbursement.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).present?
+    if @employee.disbursed_loan_vouchers.disbursed_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).present?
        [["", "Borrower", "Voucher #", "Loan Amount", "Net Proceed"]] +
-      @loan_collections_data ||= @employee.entries.loan_disbursement.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{|a| ["", a.commercial_document.try(:borrower_name), a.voucher_number, price(a.commercial_document.loan_amount), price(a.commercial_document.try(:net_proceed))]} +
-      [["", "", "<b>TOTAL</b>", "<b>#{price(LoansModule::Loan.disbursed_on(@date).disbursed_by(@employee).sum(&:loan_amount))}</b>", "<b>#{price(LoansModule::Loan.disbursed_on(@date).disbursed_by(@employee).sum(&:net_proceed))}</b>"]]
+      @loan_releases_data ||= @employee.disbursed_loan_vouchers.disbursed_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{|a| ["", a.payee_name, a.number, price(a.voucherable.loan_amount), price(a.voucherable.net_proceed)]} +
+      [["", "", "<b>TOTAL</b>", "<b>#{price(@employee.disbursed_loan_vouchers.disbursed_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{|a| a.voucherable.loan_amount}.sum) }</b>",  "<b>#{price(@employee.disbursed_loan_vouchers.disbursed_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{|a| a.voucherable.net_proceed}.sum) }</b>"]]
 
     else
       [[""]]

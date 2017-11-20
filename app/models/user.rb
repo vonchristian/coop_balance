@@ -38,6 +38,11 @@ class User < ApplicationRecord
   has_many :appraised_properties, class_name: "Appraisal", foreign_key: 'appraiser_id'
   has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", as: :commercial_document # for adding amounts on voucher
   has_many :vouchers, as: :payee, class_name: "Voucher"
+  has_many :prepared_vouchers, class_name: "Voucher", foreign_key: 'preparer_id'
+  has_many :disbursed_vouchers, class_name: "Voucher", foreign_key: 'disburser_id'
+  has_many :disbursed_loan_vouchers, class_name: "Vouchers::LoanDisbursementVoucher", foreign_key: 'disburser_id'
+
+
   has_many :employee_contributions, foreign_key: 'employee_id'
   has_many :real_properties, as: :owner
   has_many :contributions, through: :employee_contributions

@@ -6,7 +6,13 @@ class Voucher < ApplicationRecord
   has_one :entry, class_name: "AccountingModule::Entry", as: :commercial_document
   belongs_to :voucherable, polymorphic: true
   belongs_to :payee, polymorphic: true
+  belongs_to :preparer, class_name: "User", foreign_key: 'preparer_id'
+  belongs_to :disburser, class_name: "User", foreign_key: 'disburser_id'
+
   delegate :name, :payable_amount, to: :voucherable, allow_nil: true
+  delegate :full_name, :current_occupation, to: :preparer, prefix: true
+  delegate :full_name, :current_occupation, to: :disburser, prefix: true, allow_nil: true
+  delegate :name, to: :payee, prefix: true
   has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", dependent: :destroy
 
   before_save :set_date
@@ -34,14 +40,11 @@ class Voucher < ApplicationRecord
   end
 
   def self.generate_number_for(voucher)
-    return  voucher.number = Voucher.last.number.succ if Voucher.exists?
+    return  voucher.number = Voucher.order(created_at: :asc).last.number.succ if Voucher.exists? && Voucher.order(created_at: :asc).last.number.present?
     voucher.number = "000000000001"
   end
 
-
-
   private
-
   def set_date
     self.date ||= Time.zone.now
   end

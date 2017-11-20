@@ -15,6 +15,7 @@ module LoansModule
         @loan.create_amortization_schedule
         @loan.set_borrower_type
         @loan.set_borrower_full_name
+        @loan.set_organization
       else
         render :new
       end
@@ -37,6 +38,7 @@ module LoansModule
         @loan.create_amortization_schedule
         @loan.set_borrower_type
         @loan.set_borrower_full_name
+        @loan.set_organization
       else
         render :new
       end

@@ -21,7 +21,8 @@ module Employees
 
     private
     def voucher_params
-      params.require(:voucher).permit(:date, :description, :payee_id, :payee_type, :voucherable_id, :voucherable_type)
+      params.require(:voucher).permit(:date, :payee_id, :description, :payee_type, :voucherable_id, :description, :voucherable_type, :user_id, :number, :preparer_id)
+
     end
   end
 end

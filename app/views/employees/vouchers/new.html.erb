@@ -1,90 +1,104 @@
 <div class="row">
-  <div class="col-md-8 col-md-offset-2">
+  <div class="col-md-12">
     <div class="box box-solid">
       <div class="box-header">
-        <br>
-        <div class="row">
-          <div class="col-md-2 col-md-offset-1">
-            <%=image_tag(@employee.avatar.url(:medium), class: "img-circle", height: 50, width: 50) %>
-          </div>
-          <div class="col-md-8">
-            <h3 class="box-title"><%= @employee.first_and_last_name.try(:upcase) %></h3><br>
-            <small><%= @employee.role.titleize %></small>
-          </div>
-        </div>
+        <h3 class="box-title"> New Voucher Details </h3>
       </div>
       <div class="box-body">
-        <% @employee.voucher_amounts.each do |voucher_amount| %>
-          <div class="row">
-            <div class="col-md-6 col-md-offset-1">
-              <%= voucher_amount.account.try(:name) %>
-            </div>
-            <div class="col-md-3">
-              <span class="pull-right"> 
-                <%= number_to_currency voucher_amount.amount %>
-              </span>
-            </div>
-            <div class="col-md-1">
-              <%=link_to employee_amount_path(id: voucher_amount.id), method: :delete do %>
-                <span class="text-danger"><i class="fa fa-trash"></i> </span>
-              <% end %>
-            </div>
-          </div>
-          <br />
-        <% end %>
         <div class="row">
-          <div class="col-md-6 col-md-offset-1">
-            <b>TOTAL </b>
-          </div>
-          <div class="col-md-3">
-            <b class="pull-right"><%=number_to_currency @employee.voucher_amounts.sum(&:amount) %></b>
-          </div>
-        </div>
-        <hr />
-         <%= simple_form_for @amount, url: :employee_amounts do |f| %>
-          <div class="row">
-            <div class="col-md-2">
-              <%= f.input :amount, label: false, placeholder: "Amount", as: :string %>
-            </div>
-            <div class="col-md-4">
-              <%= f.input :account_id, label: false, prompt: "Select Account", collection: AccountingModule::Account.all.map{|a| [a.name, a.id] }  %>
-            </div>
-            <div class="col-md-4">
-              <%= f.input :description, label: false, placeholder: "Description" %>
-            </div>
-            <div class="col-md-1">
-              <%= f.submit "Add", class: "btn btn-primary btn-sm" %>
-            </div>
-          </div>
-        <% end %>
-        <% if @employee.voucher_amounts.present? %>
-          <div class="row">
-            <div class="col-md-10 col-md-offset-1">
-              <p class="text-muted">
-                VOUCHER DETAILS
-              </p>
-              <%= simple_form_for @voucher, url: :employee_vouchers do |f| %>
-                <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
-                <%= f.input :description, as: :text %>
-                <%= f.input :payee_id, input_html: { value: @employee.id }, as: :hidden %>
-                <%= f.input :payee_type, input_html: { value: @employee.class }, as: :hidden %>
-                  <%= f.input :voucherable_id, input_html: { value: @employee.id }, as: :hidden %>
-                <%= f.input :voucherable_type, input_html: { value: @employee.class }, as: :hidden %>
-                <div class="box-footer">
-                  <%= f.submit "Create Voucher", class: "btn btn-primary btn-flat pull-right" %>
-                </div>
-              <% end %>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    </div>
-  </div>
-</div>
+          <div class="col-md-10 col-md-offset-1">
+        <p>Payee</p>
 
+
+            <%=image_tag(@employee.avatar.url(:medium), class: "img-circle", height: 50, width: 50) %>
+
+            <p><%= @employee.name.try(:upcase) %></p>
+
+        <div class="table table-responsive">
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>Account</th>
+                <th>Debit</th>
+                <th>Credit</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @employee.voucher_amounts.each do |voucher_amount| %>
+                <tr>
+                  <td><%= voucher_amount.description %></td>
+                  <td><%= voucher_amount.account_name %></td>
+                  <td>
+                    <% if voucher_amount.debit? %>
+                      <%= number_to_currency voucher_amount.amount %>
+                    <% end %>
+                  </td>
+                   <td>
+                    <% if voucher_amount.credit? %>
+                      <%= number_to_currency voucher_amount.amount %>
+                    <% end %>
+                  </td>
+                  <td>
+                    <%=link_to employee_amount_path(id: voucher_amount.id), method: :delete do %>
+                      <span class="text-danger"><i class="fa fa-trash"></i> </span>
+                    <% end %>
+                  </td>
+
+                </tr>
+              <% end %>
+              <% if @employee.voucher_amounts.present? %>
+                 <tr>
+                  <td></td>
+                  <td>TOTAL</td>
+                  <td><b><%= number_to_currency @employee.voucher_amounts.debit.sum(:amount) %></b></td>
+                  <td><b><%= number_to_currency @employee.voucher_amounts.credit.sum(:amount) %></b></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              <% end %>
+
+              <%= simple_form_for @amount, url: :employee_amounts do |f| %>
+                <tr>
+                    <td width="300px"><%= f.input :description, label: false, placeholder: "Description" %></td>
+                    <td width="200px"><%= f.input :account_id, label: false, prompt: "Select Account", collection: AccountingModule::Account.all.map{|a| [a.name, a.id] }  %></td>
+                    <td><%= f.input :amount, label: false, placeholder: "Amount", as: :string %></td>
+                    <td><%= f.input :amount_type, label: false, placeholder: "Amount Type", collection: Vouchers::VoucherAmount.amount_types.keys.to_a.map{|a| [a.titleize, a] } %></td>
+                    <td><%= f.submit "Add", class: "btn btn-primary btn-sm" %></td>
+                  </tr>
+              <% end %>
+
+            </tbody>
+          </table>
+        </div>
+        <% if @employee.voucher_amounts.present? %>
+          <p class="text-muted"> VOUCHER DETAILS </p>
+          <%= simple_form_for @voucher, url: :employee_vouchers do |f| %>
+          <tr>
+          <td><%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+          <%= f.input :description, as: :text %>
+          <%= f.input :payee_id, input_html: { value: @employee.id }, as: :hidden %>
+          <%= f.input :payee_type, input_html: { value: @employee.class }, as: :hidden %>
+            <%= f.input :voucherable_id, input_html: { value: @employee.id }, as: :hidden %>
+          <%= f.input :voucherable_type, input_html: { value: @employee.class }, as: :hidden %>
+          <%= f.input :number, input_html: { value: Voucher.generate_number_for(@voucher) } %>
+          <%= f.input :preparer_id, input_html: { value: current_user.id }, as: :hidden %>
+          <div class="box-footer">
+            <%= f.submit "Create Voucher", class: "btn btn-primary pull-right" %>
+          </div>
+          <% end %>
+        <% end %>
 <script type="text/javascript">
   $(document).ready(function() {
-    $("#voucher_amount_account_id").select2({
+    $("#vouchers_voucher_amount_account_id").select2({
+      theme: "bootstrap"
+    });
+    $("#vouchers_voucher_amount_amount_type").select2({
       theme: "bootstrap"
     });
   });

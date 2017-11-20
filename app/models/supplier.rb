@@ -4,7 +4,7 @@ class Supplier < ApplicationRecord
   has_many :delivered_stocks, class_name: "StoreModule::ProductStock"
   has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document
   has_many :stock_registries, class_name: "StockRegistry"
-  has_many :vouchers, through: :stock_registries
+  has_many :vouchers, as: :payee
   has_many :voucher_amounts, as: :commercial_document, class_name: "Vouchers::VoucherAmount" # for adding cash advance on voucher
   has_many :cash_disbursement_vouchers, as: :payee, class_name: "Voucher"
 

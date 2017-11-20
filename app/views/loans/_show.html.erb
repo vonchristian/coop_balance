@@ -3,13 +3,13 @@
     <div class="nav-tabs-custom">
       <ul class="nav nav-tabs">
         <li class="<%= 'active' if current_page?(loan_path(@loan))%>"><%= link_to 'Info', loan_path(@loan) %></li>
-        <li class="<%= 'active' if current_page?(loan_disbursements_path(@loan))%>"><%= link_to 'Disbursement', loan_disbursements_path(@loan) %></li>
+        <li class="<%= 'active' if current_page?(loan_disbursements_path(@loan))%>"><%= link_to 'Disbursement / Charges', loan_disbursements_path(@loan) %></li>
         <li class="<%= 'active' if current_page?(loans_module_loan_amortization_schedules_path(@loan))%>"><%= link_to 'Amortization', loans_module_loan_amortization_schedules_path(@loan) %></li>
         <li class="<%= 'active' if current_page?(loan_payments_path(@loan))%>"><%= link_to 'Payments', loan_payments_path(@loan) %></li>
         <li class="<%= 'active' if current_page?(loan_notices_path(@loan))%>"><%= link_to 'Notices', loan_notices_path(@loan) %></li>
 
 
-        
+
 
        <li ><a href="#loan-payments" data-toggle="tab">Payments</a></li>
         <li ><a href="#loan-amortization-schedule" data-toggle="tab">Amortization Schedule</a></li>

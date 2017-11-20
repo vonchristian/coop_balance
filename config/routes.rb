@@ -300,6 +300,7 @@ Rails.application.routes.draw do
   resources :organizations, only: [:index, :show, :new, :create] do
     resources :members, only: [:new, :create], module: :organizations
     resources :loans, only: [:index], module: :organizations
+    resources :reports, only: [:index], module: :organizations
   end
   resources :customers, only: [:index]
   resources :membership_applications, only: [:new, :create, :show] do

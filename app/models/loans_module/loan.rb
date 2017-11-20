@@ -65,7 +65,7 @@ module LoansModule
       entries.map{|a| a.credit_amounts.distinct.where(account: CoopConfigurationsModule::LoanPenaltyConfig.account_to_debit).sum(&:amount)}.sum
     end
     def penalties_total
-      LoanPenalty.new.balance(self.borrower)
+      LoanPenalty.new.balance(self)
     end
     def interest_on_loan
       interest = loan_charges.select{|a| a.chargeable.account == a.loan.loan_product_loan_product_interest_account}.last
@@ -103,7 +103,7 @@ module LoansModule
       aging_loans
     end
 
-    def past_due?
+    def is_past_due?
       number_of_days_past_due >=1
     end
     def amortized_principal_for(options={})
@@ -113,7 +113,6 @@ module LoansModule
       amortization_schedules.scheduled_for(options).sum(&:interest)
     end
     def arrears(options={})
-      payments_total(options) -
       amortization_schedules.scheduled_for(options).sum(&:total_amortization)
     end
 
@@ -221,7 +220,7 @@ module LoansModule
     end
 
     def interest_payments_total(options={})
-      CoopConfigurationsModule::LoanInterestConfig.account_to_debit.credits_balance(from_date: options[:from_date], to_date: options[:to_date], commercial_document_id: self.id)
+      CoopConfigurationsModule::LoanInterestConfig.account_to_debit.debits_balance(from_date: options[:from_date], to_date: options[:to_date], commercial_document_id: self.id)
     end
 
     def payments_total(options={})
@@ -272,6 +271,11 @@ module LoansModule
     end
     def set_borrower_full_name
       self.borrower_full_name = self.borrower.name
+      self.save
+    end
+
+    def set_organization
+      self.organization_id = self.borrower.organization_memberships.current.try(:organization_id)
       self.save
     end
 

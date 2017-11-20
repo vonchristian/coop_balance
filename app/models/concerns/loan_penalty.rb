@@ -1,7 +1,6 @@
 class LoanPenalty
-   def balance(borrower)
-    CoopConfigurationsModule::LoanPenaltyConfig.balance_for(borrower) +
-    borrower.loans.disbursed.map{|a| a.penalty_payment_total }.sum
+   def balance(loan)
+    CoopConfigurationsModule::LoanPenaltyConfig.balance_for(loan)
   end
   def compute(loan, schedule)
     #compute daily loan penalty

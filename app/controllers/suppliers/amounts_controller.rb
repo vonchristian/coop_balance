@@ -15,7 +15,7 @@ module Suppliers
   end
     private
     def amount_params
-      params.require(:vouchers_voucher_amount).permit(:amount, :account_id)
+      params.require(:vouchers_voucher_amount).permit(:amount, :account_id, :description, :amount_type)
     end
   end
 end

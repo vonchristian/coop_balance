@@ -1,13 +1,10 @@
 <div class="<%='active' if current_page?(loan_disbursements_path(@loan)) %> tab-pane" id="loan-disbursement">
-
-                <%= link_to 'Print CDV', loan_disbursement_voucher_path(id: @loan.id, format: 'pdf') %>
-                <%= link_to "Create Disbursement Voucher", new_loan_disbursement_voucher_path(@loan), class: "btn btn-primary btn-xs" %>
-              <%if !@loan.disbursed? %>
-                <%= link_to "Disburse", new_loan_disbursement_path(@loan), class: "btn btn-primary btn-xs" %>
-              <%  end %>
+  <% if @loan.cash_disbursement_voucher.present? %>
+    <%= link_to 'Print CDV', voucher_path(@loan.cash_disbursement_voucher, format: "pdf") %>
+  <% end %>
   <div class="row">
     <div class="col-md-3">
-      &nbsp; &nbsp; Loan Amount 
+      &nbsp; &nbsp; Loan Amount
     </div>
     <div class="col-md-3">
       <%= number_to_currency @loan.loan_amount %>
@@ -23,8 +20,8 @@
 		  <div class="col-md-3">
 		      <%= number_to_currency loan_charge.charge_amount_with_adjustment %>
 		  </div>
-		 
-		 
+
+
 		 </div>
 		 <br>
 	<% end %>
@@ -38,5 +35,10 @@
       <%= number_to_currency @loan.net_proceed %>
     </div>
   </div>
+  <br>
+  <br>
+  <% if !@loan.cash_disbursement_voucher.present? %>
+    <%= link_to "Create Voucher", new_loan_disbursement_voucher_path(@loan), class: "btn btn-primary" %>
+  <% end %>
 
 </div>
