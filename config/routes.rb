@@ -94,8 +94,9 @@ Rails.application.routes.draw do
     resources :branch_offices, only: [:edit, :update], module: :share_capitals
   end
   resources :members do
+    resources :tins, only: [:new, :create], module: :members
     resources :branch_offices, only: [:new, :create, :edit, :update], module: :members
-    resources :addresses, only: [:edit, :update], module: :members
+    resources :addresses, only: [:new, :create, :edit, :update], module: :members
     resources :memberships, only: [:edit, :update, :new, :create], module: :members
     resources :info, only: [:index], module: :members
     resources :loans, only: [:index, :new, :create], module: :members

@@ -26,6 +26,7 @@
   <%= f.input :depositor_type, input_html: { value: @employee.class }, as: :hidden %>
   <%= f.input :recorder_id, input_html: { value: current_user.id }, as: :hidden %>
   <%= f.input :account_number, input_html: { value: AccountNumberGenerator.generate_account_number(@saving) } %>
+  <%= f.input :section_id, label: 'Monitoring Section', collection: current_user.branch_office.sections.all.map{ |a| [a.name, a.id] }, as: :radio_buttons %>
   <div class="box-footer">
     <%= f.submit "Open Savings Account", class: "btn btn-primary pull-right" %>
   </div>

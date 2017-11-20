@@ -278,6 +278,8 @@ AccountingModule::Expense.create(code: 62590, name: "Impairment Loss (Marketing 
 AccountingModule::Expense.create(code: 70000, name: "Financing Cost")
 AccountingModule::Expense.create(code: 71100, name: "Interest Expense on Borrowings", main_account_id: AccountingModule::Expense.find_by_name('Financing Cost') )
 AccountingModule::Expense.create(code: 71200, name: "Interest Expense on Deposits", main_account_id: AccountingModule::Expense.find_by_name('Financing Cost'))
+AccountingModule::Expense.create(code: 712001, name: "Interest Expense on Time Deposits", main_account_id: AccountingModule::Expense.find_by_name('Financing Cost'))
+
 AccountingModule::Expense.create(code: 71300, name: "Other Financing Charges", main_account_id: AccountingModule::Expense.find_by_name('Financing Cost'))
 
 # #Selling/Marketing Cost Costs

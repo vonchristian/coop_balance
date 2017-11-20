@@ -1,0 +1,5 @@
+<%= simple_form_for [@member, @tin], url: :member_tins do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :number %>
+  <%= f.submit "Update TIN" %>
+<% end %>

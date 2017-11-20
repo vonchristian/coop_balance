@@ -1,11 +1,11 @@
 module Members
   class AddressesController < ApplicationController
-    def edit
+    def new
       @member = Member.friendly.find(params[:member_id])
       @address = @member.addresses.build
     end
-    def update
-      @member = Member.frienly.find(params[:member_id])
+    def create
+      @member = Member.friendly.find(params[:member_id])
       @address = @member.addresses.create(address_params)
       if @member.save
         redirect_to member_url(@member), notice: "Address updated successfully"
@@ -16,7 +16,7 @@ module Members
 
     private
     def address_params
-      params.require(:address).permit(:barangay_id, :municipality_id, :street)
+      params.require(:address).permit(:street, :barangay, :municipality, :province)
     end
   end
 end
