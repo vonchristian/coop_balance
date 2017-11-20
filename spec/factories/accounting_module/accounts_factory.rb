@@ -1,23 +1,23 @@
 FactoryBot.define do
   factory :account, :class => AccountingModule::Account do |account|
-    sequence(:name){|n| "account#{n} #{n} account" }
+    name { Faker::Company.name }
     code  { Faker::Number.number(12) }
     contra false
 
-    factory :asset do
-      type 'AccountingModule::Asset'
+    factory :asset, class: "AccountingModule::Asset" do
+
     end
-    factory :liability do
-      type 'AccountingModule::Liability'
+    factory :liability, class: "AccountingModule::Liability" do
+
     end
-    factory :equity do
-      type 'AccountingModule::Equity'
+    factory :equity, class: "AccountingModule::Equity" do
+
     end
-    factory :expense do
-      type 'AccountingModule::Expense'
+    factory :expense, class: "AccountingModule::Expense" do
+
     end
-    factory :revenue do
-      type "AccountingModule::Revenue"
+    factory :revenue, class: "AccountingModule::Revenue" do
+
     end
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171118114917) do
+ActiveRecord::Schema.define(version: 20171120075948) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -995,6 +995,7 @@ ActiveRecord::Schema.define(version: 20171118114917) do
     t.string "depositor_type"
     t.uuid "depositor_id"
     t.integer "status"
+    t.datetime "maturity_date"
     t.index ["account_number"], name: "index_time_deposits_on_account_number", unique: true
     t.index ["depositor_type", "depositor_id"], name: "index_time_deposits_on_depositor_type_and_depositor_id"
     t.index ["status"], name: "index_time_deposits_on_status"
