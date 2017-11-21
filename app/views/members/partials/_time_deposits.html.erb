@@ -9,8 +9,11 @@
   <hr>
   <% @member.time_deposits.each do |time_deposit| %>
     <%=link_to time_deposit_path(time_deposit) do %>
-      <h3><%=  number_to_currency time_deposit.balance %></h3>
+      <h3><%=  number_to_currency time_deposit.amount_deposited %></h3>
       <%= time_deposit.current_term.number_of_days %>Days Deposited
+      <% if time_deposit.withdrawn? %>
+                <span class="text-danger"> Withdrawn last <%= time_deposit.withdrawal_date.strftime("%B %e, %Y") %></span>
+              <% end %>
     <% end %>
   <% end %>
 </div>
