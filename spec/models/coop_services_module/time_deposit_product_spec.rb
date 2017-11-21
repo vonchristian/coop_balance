@@ -12,7 +12,11 @@ module CoopServicesModule
 
     describe 'validations' do
       it { is_expected.to validate_presence_of :account_id }
+      it { is_expected.to validate_presence_of :time_deposit_product_type }
+      it { is_expected.to validate_presence_of :name }
+      it { is_expected.to validate_uniqueness_of :name }
     end
+
     describe ".set_product_for(time_deposit)" do
       it ".set_time_deposit_product_for_member" do
        	time_deposit_product = create(:time_deposit_product, time_deposit_product_type: 'for_member', minimum_amount: 1, maximum_amount: 1000)

@@ -48,14 +48,18 @@
                 </div>
               </div>
               <hr />
+              <% if @time_deposit.withdrawn? %>
+                <span class="text-danger"> Withdrawn last <%= @time_deposit.withdrawal_date.strftime("%B %e, %Y") %></span>
+              <% end %>
+              <br>
               <div class="row">
                 <div class="col-md-6">
-                  <% if policy([:time_deposits, :break_contract]).new? && !@time_deposit.matured? %>
+                  <% if policy([:time_deposits, :break_contract]).new? && !@time_deposit.matured? && !@time_deposit.withdrawn? %>
                     <%=link_to 'Break Contract', new_time_deposit_break_contract_path(@time_deposit), class: "btn btn-danger" %>
                   <% end %>
                 </div>
                 <div class="col-md-6">
-                  <% if policy([:time_deposits, :fixed_term]).new?  && @time_deposit.matured? %>
+                  <% if policy([:time_deposits, :fixed_term]).new?  && @time_deposit.can_be_extended? %>
                     <%= link_to 'Renew/Extend', new_time_deposit_fixed_term_path(@time_deposit) %>
                   <% end %>
                 </div>

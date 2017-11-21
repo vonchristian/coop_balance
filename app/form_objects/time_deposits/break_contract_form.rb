@@ -2,8 +2,8 @@ module TimeDeposits
   class BreakContractForm
     include ActiveModel::Model
     include ActiveModel::Validations::Callbacks
-    attr_accessor :time_deposit_id, :amount, :break_contract_amount, :reference_number, :date, :recorder_id
-    validates :amount, presence: true, numericality: true
+    attr_accessor :amount, :break_contract_amount, :reference_number, :date, :recorder_id, :time_deposit_id
+    validates :amount, :break_contract_amount, presence: true, numericality: true
     validates :reference_number, presence: true
 
     def save
@@ -24,16 +24,16 @@ module TimeDeposits
     end
 
     def save_withdraw
-       find_time_deposit.deposits.withdrawal.create!(recorder_id: recorder_id, description: 'Withdraw time deposit', reference_number: reference_number, entry_date: date,
-      debit_amounts_attributes: [{account: debit_account, amount: find_time_deposit.balance } ],
+       find_time_deposit.entries.withdrawal.create!(recorder_id: recorder_id, description: 'Withdraw time deposit with break contract fee', reference_number: reference_number, entry_date: date,
+      debit_amounts_attributes: [{account: debit_account, amount: find_time_deposit.amount_deposited } ],
       credit_amounts_attributes: [{account: credit_account, amount: amount}, {account: break_contract_account, amount: break_contract_amount}])
     end
     def close_account
-      find_time_deposit.closed!
+      find_time_deposit.withdrawn!
     end
 
     def break_contract_account
-      AccountingModule::Account.find_by(name: "Break Contract Fees")
+      CoopConfigurationsModule::BreakContractFee.default_account
     end
 
     def credit_account
@@ -41,7 +41,7 @@ module TimeDeposits
     end
 
     def debit_account
-      AccountingModule::Account.find_by(name: "Time Deposits")
+      find_time_deposit.time_deposit_product_account
     end
 
     def amount_is_less_than_balance

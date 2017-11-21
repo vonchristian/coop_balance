@@ -4,7 +4,8 @@ module CoopServicesModule
     has_one :break_contract_fee
     belongs_to :account, class_name: "AccountingModule::Account"
     delegate :name, to: :account, prefix: true
-    validates :account_id, presence: true
+    validates :account_id, :name, :time_deposit_product_type, presence: true
+    validates :name, uniqueness: true
 
     def self.accounts
       all.map{|a| a.account }
@@ -32,6 +33,9 @@ module CoopServicesModule
 
     def amount_range
       minimum_amount..maximum_amount
+    end
+    def amount_range_and_days
+      "#{amount_range} #{number_of_days}"
     end
 
     private

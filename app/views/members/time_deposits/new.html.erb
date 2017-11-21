@@ -7,11 +7,12 @@
 <%= simple_form_for [@member, @time_deposit], url: :member_time_deposits do |f| %>
   <%= f.error_notification %>
   <%= f.input :member_id, input_html: { value: @member.id }, as: :hidden %>
-  <%= f.input :date_deposited, as: :string, input_html: { class: "datepicker" } %>
+  <%= f.input :date_deposited, as: :string, input_html: { value: Time.zone.now.strftime("%B %e, %Y"), class: "datepicker" } %>
   <%= f.input :or_number %>
   <%= f.input :amount %>
   <%= f.input :number_of_days, label: "No. of Days Deposited:" %>
-  <%= f.input :recorder_id, input_html: { value: current_user.id } %>
+  <%= f.input :recorder_id, input_html: { value: current_user.id }, as: :hidden %>
+  <%= f.input :time_deposit_product_id, collection: CoopServicesModule::TimeDepositProduct.all.map{|a| [a.amount_range_and_days, a.id] } %>
   <div class="box-footer">
     <%= f.submit "Save Time Deposit", class: "btn btn-primary btn-flat pull-right" %>
   </div>

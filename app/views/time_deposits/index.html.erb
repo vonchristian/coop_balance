@@ -21,9 +21,12 @@
                   <%= image_tag(time_deposit.depositor.avatar.url(:thumb), class: "img-circle", height: 50, width: 50) %>
                 </div>
                 <div class="col-md-8">
-                  <h4><%= number_to_currency time_deposit.balance %></h4>
+                  <h4><%= number_to_currency time_deposit.amount_deposited %></h4>
                   <p><%= time_deposit.depositor_name.upcase %></p>
-                  <span class="text-danger"><i class="fa fa-calendar"> </i> Matures on: <%= time_deposit.current_term_maturity_date.strftime("%B %e, %Y") %></span>
+                  <span><i class="fa fa-calendar"> </i> Matures on: <%= time_deposit.current_term_maturity_date.strftime("%B %e, %Y") %></span>
+                  <% if time_deposit.withdrawn? %>
+                   <span class="text-danger"> Withdrawn last <%= time_deposit.withdrawal_date.strftime("%B %e, %Y") %></span>
+                  <% end %>
                 </div>
               </div>
               <hr>

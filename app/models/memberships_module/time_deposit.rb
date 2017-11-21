@@ -15,7 +15,14 @@ module MembershipsModule
     validates :depositor_id, :depositor_type,  presence: true
 
     after_commit :set_account_number
-
+    def can_be_extended?
+      !withdrawn? && matured?
+    end
+    def withdrawal_date
+      if withdrawn?
+        entries.order(created_at: :asc).last.entry_date
+      end
+    end
     def current_term
       fixed_terms.order(created_at: :asc).last
     end
