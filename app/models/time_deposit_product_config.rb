@@ -1,0 +1,2 @@
+class TimeDepositProductConfig < ApplicationRecord
+end

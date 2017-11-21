@@ -1,14 +1,14 @@
 module MembershipsModule
   class TimeDeposit < ApplicationRecord
-    enum status: [:closed]
+    enum status: [:withdrawn]
     include PgSearch
     pg_search_scope :text_search, against: [:depositor_name, :account_number]
     belongs_to :depositor, polymorphic: true
     belongs_to :time_deposit_product, class_name: "CoopServicesModule::TimeDepositProduct"
-    has_many :deposits,  class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
+    has_many :entries,  class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
     has_many :fixed_terms, class_name: "TimeDepositsModule::FixedTerm", dependent: :destroy
     delegate :name, :interest_rate, :account, to: :time_deposit_product, prefix: true
-    delegate :full_name, :first_and_last_name, to: :depositor, prefix: true
+    delegate :name, :full_name, :first_and_last_name, to: :depositor, prefix: true
     delegate :maturity_date, :deposit_date, :matured?, to: :current_term, prefix: true
     before_save :set_depositor_name, on: [:create]
 
@@ -31,17 +31,15 @@ module MembershipsModule
     def self.matured
       all.select{|a| a.matured? }
     end
+
     def self.post_interests_earned
       !matured.each do |time_deposit|
         post_interests_earned
       end
     end
+
     def post_interests_earned
-      if !matured?
-        AccountingModule::Entry.time_deposit_interest.create!(commercial_document: self, description: 'Time deposit earned interest', entry_date: Time.zone.now,
-          debit_amounts_attributes: [account_id: AccountingModule::Account.find_by(name: "Interest Expense on Deposits").id, amount: self.balance * (self.time_deposit_product_interest_rate / 100.0) ],
-          credit_amounts_attributes: [account_id: AccountingModule::Account.find_by(name: "Time Deposits").id, amount: self.balance * (self.time_deposit_product_interest_rate / 100.0) ])
-      end
+      TimeDepositsModule::InterestEarnedPosting.post_for(self)
     end
 
     def matured?
@@ -60,7 +58,7 @@ module MembershipsModule
     end
 
     def amount_deposited
-      deposits.time_deposit.map{|a| a.debit_amounts.sum(:amount) }.sum
+      entries.time_deposit.map{|a| a.debit_amounts.sum(:amount) }.sum
     end
 
     def balance
@@ -68,12 +66,10 @@ module MembershipsModule
     end
 
     def earned_interests
-      deposits.time_deposit_interest.map{|a| a.debit_amounts.sum(:amount) }.sum
+      entries.time_deposit_interest.map{|a| a.debit_amounts.sum(:amount) }.sum
     end
 
-    def withdrawn?
-      deposits.withdrawal.present?
-    end
+
     private
     def set_account_number
       self.account_number = self.id
@@ -82,6 +78,5 @@ module MembershipsModule
     def set_depositor_name
       self.depositor_name ||= self.depositor_full_name
     end
-
   end
 end

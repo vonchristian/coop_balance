@@ -1,23 +1,22 @@
-module ManagementModule 
-  module Settings 
-    class BreakContractFeesController < ApplicationController 
+module ManagementModule
+  module Settings
+    class BreakContractFeesController < ApplicationController
       def new
-        @time_deposit_product = CoopServicesModule::TimeDepositProduct.find(params[:time_deposit_product_id])
-        @break_contract_fee = BreakContractFee.new 
-      end 
+        @break_contract_fee = CoopConfigurationsModule::BreakContractFee.new
+      end
       def create
-        @break_contract_fee = BreakContractFee.create(break_contract_fee_params)
-        if @break_contract_fee.save 
-          redirect_to management_module_settings_time_deposit_product_url(@break_contract_fee.time_deposit_product), notice: "Break Contract Fee set successfully"
-        else 
-          render :new 
-        end 
-      end 
+        @break_contract_fee = CoopConfigurationsModule::BreakContractFee.create(break_contract_fee_params)
+        if @break_contract_fee.save
+          redirect_to management_module_settings_url, notice: "Break Contract Fee saved successfully"
+        else
+          render :new
+        end
+      end
 
-      private 
+      private
       def break_contract_fee_params
-        params.require(:break_contract_fee).permit(:amount, :rate, :fee_type, :time_deposit_product_id)
-      end 
-    end 
-  end 
+        params.require(:coop_configurations_module_break_contract_fee).permit(:amount, :rate)
+      end
+    end
+  end
 end

@@ -116,6 +116,7 @@ Rails.application.routes.draw do
   namespace :management_module do
     resources :savings_account_registries, only: [:new, :create]
     namespace :settings do
+      resources :break_contract_fees, only: [:new, :create]
       resources :cooperatives, only: [:edit, :update, :show] do
         resources :branches, only: [:new, :create]
       end

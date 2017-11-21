@@ -56,3 +56,5 @@
   <%= f.input :employee_id, input_html: { value: current_user.id } %>
   <%= f.submit %>
 <% end %>
+
+<%= link_to "Set Break Contract Fee", new_management_module_settings_break_contract_fee_path, class: "btn btn-danger" %>

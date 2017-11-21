@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171120110312) do
+ActiveRecord::Schema.define(version: 20171121101353) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -124,7 +124,6 @@ ActiveRecord::Schema.define(version: 20171120110312) do
   end
 
   create_table "break_contract_fees", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "time_deposit_product_id"
     t.uuid "account_id"
     t.decimal "amount"
     t.decimal "rate"
@@ -132,7 +131,6 @@ ActiveRecord::Schema.define(version: 20171120110312) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_break_contract_fees_on_account_id"
-    t.index ["time_deposit_product_id"], name: "index_break_contract_fees_on_time_deposit_product_id"
   end
 
   create_table "carts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1131,7 +1129,6 @@ ActiveRecord::Schema.define(version: 20171120110312) do
   add_foreign_key "barangays", "municipalities"
   add_foreign_key "branch_offices", "cooperatives"
   add_foreign_key "break_contract_fees", "accounts"
-  add_foreign_key "break_contract_fees", "time_deposit_products"
   add_foreign_key "carts", "users"
   add_foreign_key "charge_adjustments", "loan_charges"
   add_foreign_key "charges", "accounts"
