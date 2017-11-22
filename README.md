@@ -90,7 +90,7 @@ add collector accounts
 add organization for filter of loans
 show charts on aging loans
 
-update loan schedule dates if disbursed
+update loan schedule dates if disbursed DONE
 
 update policies of every action/page
 
