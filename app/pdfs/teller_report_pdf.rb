@@ -99,7 +99,7 @@ class TellerReportPdf < Prawn::Document
   end
   #Savings Deposits
   def savings_deposits_balances
-    [["", "Beginning Balance", "#{price(CoopServicesModule::SavingProduct.accounts_balance(to_date: @date.yesterday.end_of_day))}"]]
+    [["", "Beginning Balance", "#{price(CoopServicesModule::SavingProduct.accounts_balance(to_date: @date.beginning_of_day))}"]]
   end
   def add_savings_deposits
     [["", "", "Add Deposits", "#{price(CoopServicesModule::SavingProduct.accounts.uniq.map{|a| a.credit_entries.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total}.sum) }"]]
@@ -146,7 +146,7 @@ class TellerReportPdf < Prawn::Document
     end
   end
   def time_deposits_balances
-    [["", "Beginning Balance", "#{price(AccountingModule::Account.find_by(name: "Time Deposits").balance(to_date: @date.yesterday.end_of_day))}"]]
+    [["", "Beginning Balance", "#{price(AccountingModule::Account.find_by(name: "Time Deposits").balance(to_date: @date.beginning_of_day))}"]]
   end
   def time_deposits_from_members
     [["", "", "Add Deposits", "#{price(AccountingModule::Account.find_by(name: "Time Deposits").credit_entries.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total)}"]]
@@ -191,7 +191,7 @@ class TellerReportPdf < Prawn::Document
     end
   end
   def share_capital_beginning_balance
-    [["", "Beginning Balance", "#{price(CoopServicesModule::ShareCapitalProduct.accounts_balance(to_date: @date.yesterday))}"]]
+    [["", "Beginning Balance", "#{price(CoopServicesModule::ShareCapitalProduct.accounts_balance(to_date: @date.beginning_of_day))}"]]
   end
   def additional_share_capital
    [["", "", "Additional Share Capital", "#{price(CoopServicesModule::ShareCapitalProduct.accounts_credits_balance(recorder_id: @employee.id, from_date: @date.beginning_of_day, to_date: @date.end_of_day))}"]]

@@ -18,7 +18,7 @@ module ManagementModule
 
       private
       def branch_params
-        params.require(:coop_configurations_module_branch_office).permit(:contact_number, :address, :branch_name)
+        params.require(:coop_configurations_module_branch_office).permit(:contact_number, :address, :branch_name, :branch_type)
       end
     end
   end

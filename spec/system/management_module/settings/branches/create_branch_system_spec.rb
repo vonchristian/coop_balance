@@ -15,6 +15,7 @@ describe "Create branch" do
     fill_in "Branch name", with: "Mansoyosoy"
     fill_in 'Address', with: 'Mansoyosoy, Ifugao'
     fill_in 'Contact number', with: '09347823742'
+    choose 'Main Office'
     click_button "Create Branch"
 
     expect(page).to have_content('created successfully')

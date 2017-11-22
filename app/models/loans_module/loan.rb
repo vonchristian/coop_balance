@@ -72,8 +72,12 @@ module LoansModule
       interest.charge_amount_with_adjustment
     end
     def interest_on_loan_balance
-      interest = loan_charges.select{|a| a.chargeable.account == a.loan.loan_product_loan_product_interest_account}.last
-      interest.balance
+      interest = loan_charges.select{|a| a.chargeable.account == self.loan_product_loan_product_interest_account}.last
+      if interest.present?
+        interest.balance
+      else
+        0
+      end
     end
 
     def co_makers
@@ -205,6 +209,13 @@ module LoansModule
        entries.loan_disbursement.last
      end
     end
+
+    def maturity_date
+      if amortization_schedules.present?
+        amortization_schedules.order(created_at: :asc).last.date
+      end
+    end
+
     def disbursement_date
       if disbursement.present?
         disbursement.entry_date

@@ -11,6 +11,7 @@ module CoopConfigurationsModule
       it { is_expected.to validate_presence_of :branch_name }
       it { is_expected.to validate_presence_of :address }
       it { is_expected.to validate_presence_of :contact_number }
+      it { is_expected.to validate_presence_of :branch_type }
       it { is_expected.to validate_uniqueness_of :branch_name }
     end
     describe 'enums' do

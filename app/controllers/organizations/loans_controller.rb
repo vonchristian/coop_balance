@@ -1,12 +1,14 @@
 module Organizations
   class LoansController < ApplicationController
     def index
+      @date = params[:from_date] ? Chronic.parse(params[:date]) : Date.today
       @organization = Organization.find(params[:organization_id])
       @loans = @organization.loans.disbursed.paginate(page: params[:page], per_page: 50)
+      @cooperative = current_user.cooperative
       respond_to do |format|
         format.html
         format.pdf do
-          pdf = Organizations::BillingStatementPdf.new(@organization, @loans, view_context)
+          pdf = Organizations::BillingStatementPdf.new(@organization, @loans, @cooperative, @date, view_context)
           send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Billing Statement.pdf"
         end
       end

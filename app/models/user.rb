@@ -54,8 +54,7 @@ class User < ApplicationRecord
   delegate :regular_member?, to: :membership
   delegate :membership_type, to: :membership, allow_nil: true
   delegate :name, to: :branch_office, prefix: true, allow_nil: true
-
-
+  delegate :abbreviated_name, :name, to: :cooperative, prefix: true
   has_attached_file :avatar,
   styles: { large: "120x120>",
            medium: "70x70>",

@@ -58,5 +58,16 @@ module LoansModule
 
     it '#terms_elapsed' do
     end
+
+    it "#maturity_date" do
+      loan_product = create(:loan_product)
+      loan_product_interest = create(:loan_product_interest, loan_product: loan_product)
+      loan = create(:loan, term: 1, mode_of_payment: 'monthly',  loan_product: loan_product)
+      loan.disbursed!
+      entry = create(:entry_with_credit_and_debit, commercial_document: loan, entry_date: Date.today)
+      LoansModule::PrincipalAmortizationSchedule.create_schedule_for(loan)
+      expect(loan.amortization_schedules).to be_present
+      expect(loan.maturity_date.to_date).to eql(Date.today.next_month.to_date)
+    end
   end
 end
