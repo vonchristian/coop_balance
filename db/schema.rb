@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171121101353) do
+ActiveRecord::Schema.define(version: 20171122011358) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -120,6 +120,8 @@ ActiveRecord::Schema.define(version: 20171121101353) do
     t.string "contact_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "branch_type"
+    t.index ["branch_type"], name: "index_branch_offices_on_branch_type"
     t.index ["cooperative_id"], name: "index_branch_offices_on_cooperative_id"
   end
 

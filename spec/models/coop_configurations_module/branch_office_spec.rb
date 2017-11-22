@@ -5,7 +5,6 @@ module CoopConfigurationsModule
     describe 'associations' do
       it { is_expected.to belong_to :cooperative }
       it { is_expected.to have_many :sections }
-      it { is_expected.to have_many :accounts }
     end
 
     describe 'validations' do
@@ -13,6 +12,9 @@ module CoopConfigurationsModule
       it { is_expected.to validate_presence_of :address }
       it { is_expected.to validate_presence_of :contact_number }
       it { is_expected.to validate_uniqueness_of :branch_name }
+    end
+    describe 'enums' do
+      it { is_expected.to define_enum_for(:branch_type).with([:main_office, :satellite_office]) }
     end
   end
 end
