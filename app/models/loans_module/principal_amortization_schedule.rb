@@ -17,7 +17,7 @@ module LoansModule
       if loan.disbursed?
         loan.disbursement_date
       else
-        loan.starting_date(loan)
+        loan.application_date
       end
     end
 
