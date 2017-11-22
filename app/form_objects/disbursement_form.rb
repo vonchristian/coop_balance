@@ -76,6 +76,7 @@ class DisbursementForm
     end
     entry.save!
     find_loan.disbursed!
+    LoansModule::PrincipalAmortizationSchedule.create_schedule_for(find_loan)
   end
 
 
