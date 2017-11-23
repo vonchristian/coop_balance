@@ -5,7 +5,8 @@ class Charge < ApplicationRecord
   has_many :loan_charges, as: :chargeable, class_name: "LoansModule::LoanCharge"
   delegate :name, to: :account, prefix: true, allow_nil: true
 
-  validates :amount, numericality: true
+  validates :amount, numericality: true, presence: true
+  validates :name, presence: true
 
   validates :account_id, presence: true
   def self.total

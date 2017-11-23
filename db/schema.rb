@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171123080536) do
+ActiveRecord::Schema.define(version: 20171123090447) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -658,6 +658,18 @@ ActiveRecord::Schema.define(version: 20171123080536) do
     t.index ["name"], name: "index_municipalities_on_name"
   end
 
+  create_table "notes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "noteable_type"
+    t.uuid "noteable_id"
+    t.uuid "noter_id"
+    t.string "title"
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["noteable_type", "noteable_id"], name: "index_notes_on_noteable_type_and_noteable_id"
+    t.index ["noter_id"], name: "index_notes_on_noter_id"
+  end
+
   create_table "notices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "date"
     t.string "type"
@@ -1190,6 +1202,7 @@ ActiveRecord::Schema.define(version: 20171123080536) do
   add_foreign_key "member_occupations", "occupations"
   add_foreign_key "members", "branch_offices"
   add_foreign_key "memberships", "cooperatives"
+  add_foreign_key "notes", "users", column: "noter_id"
   add_foreign_key "orders", "users"
   add_foreign_key "orders", "users", column: "employee_id"
   add_foreign_key "organization_members", "organizations"
