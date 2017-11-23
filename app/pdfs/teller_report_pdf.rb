@@ -226,9 +226,6 @@ class TellerReportPdf < Prawn::Document
        [["", "Borrower", "Voucher #", "Loan Amount", "Net Proceed"]] +
       @loan_releases_data ||= @employee.disbursed_loan_vouchers.disbursed_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{|a| ["", a.payee_name, a.number, price(a.voucherable.loan_amount), price(a.voucherable.net_proceed)]} +
       [["", "", "<b>TOTAL</b>", "<b>#{price(@employee.disbursed_loan_vouchers.disbursed_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{|a| a.voucherable.loan_amount}.sum) }</b>",  "<b>#{price(@employee.disbursed_loan_vouchers.disbursed_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{|a| a.voucherable.net_proceed}.sum) }</b>"]]
-
-    else
-      [[""]]
     end
   end
 
