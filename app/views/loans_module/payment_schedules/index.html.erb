@@ -5,6 +5,23 @@
         <h3 class="box-title"> Payment Schedules </h3>
       </div>
       <div class="box-body">
+        <%= form_tag({:action => "index", controller: "loans_module/payment_schedules"}, {:method => :get})  do %>
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <%= text_field_tag :from_date, @from_date, :class => 'datepicker form-control border-input', :placeholder => "From " %>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <%= text_field_tag :to_date, @to_date, :class => 'form-control border-input datepicker', :placeholder => "To " %>
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <button type="submit" class="btn btn-default"> Go</button>
+                </div>
+              </div>
+            <% end %>
         <div class="table table-responsive">
           <table class="table table-striped table-hover">
             <thead>
@@ -19,8 +36,8 @@
               <% @payment_schedules.each do |schedule| %>
                 <tr>
                   <td><%= schedule.date.strftime("%B %e, %Y") %></td>
-                  <td><%= schedule.amortizeable.try(:name) %></td>
-                  <td><%= schedule.amortizeable.try(:borrower_full_name) %></td>
+                  <td><%= link_to schedule.loan.loan_product_name, loans_module_payment_schedule_path(schedule) %></td>
+                  <td><%= schedule.loan.borrower_name %></td>
                   <td><%= link_to "View (PDF)", loans_module_payment_schedule_path(schedule, format: 'pdf'), class: "btn btn-default" %></td>
                 </tr>
               <% end %>

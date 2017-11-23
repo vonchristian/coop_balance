@@ -17,4 +17,7 @@ class Organization < ApplicationRecord
   def members
     member_members + employee_members
   end
+  def add_loans_of(member)
+    member.loans.update_attributes(organization_id: self.id)
+  end
 end

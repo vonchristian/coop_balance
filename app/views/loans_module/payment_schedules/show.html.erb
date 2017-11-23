@@ -1,0 +1,6 @@
+<%= link_to 'Update', edit_loans_module_payment_schedule_path(@payment_schedule) %>
+
+
+<% @payment_schedule.notes.each do |note| %>
+  <%= note.content %>
+<% end %>

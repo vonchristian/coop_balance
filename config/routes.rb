@@ -54,7 +54,7 @@ Rails.application.routes.draw do
     end
     resources :reports, only: [:index]
     resources :loan_registries, only: [:new, :create]
-    resources :payment_schedules, only: [:index, :show]
+    resources :payment_schedules, only: [:index, :show, :edit, :update]
     resources :aging_loans, only: [:index, :show]
     resources :loan_calculator, only: [:index]
     resources :loan_applications, only: [:new, :create, :show, :edit, :update, :destroy]
