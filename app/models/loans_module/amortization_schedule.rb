@@ -5,6 +5,12 @@ module LoansModule
     has_one :payment_notice, as: :notified
     enum schedule_type: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
     # after_commit :create_payment_notice
+    def self.principal_for(schedule, loan)
+      from_date = loan.amortization_schedules.order(created_at: :asc).first.date
+      to_date = schedule.date
+      loan.amortization_schedules.select { |a| (from_date.beginning_of_day..to_date.end_of_day).cover?(a.date)}.sum(&:principal)
+    end
+
     def self.scheduled_for(options={})
       if options[:from_date] && options[:to_date]
         where('date' => options[:from_date]..options[:to_date])

@@ -9,6 +9,7 @@ module LoansModule
       it { is_expected.to belong_to :barangay }
       it { is_expected.to belong_to :municipality }
       it { is_expected.to have_one :cash_disbursement_voucher }
+      it { is_expected.to belong_to :preparer }
     	it { is_expected.to have_many :loan_approvals }
     	it { is_expected.to have_many :approvers }
     	it { is_expected.to have_many :entries }
@@ -35,6 +36,7 @@ module LoansModule
 
     context 'delegations' do
     	it { is_expected.to delegate_method(:name).to(:borrower).with_prefix }
+      it { is_expected.to delegate_method(:full_name).to(:preparer).with_prefix }
     	it { is_expected.to delegate_method(:name).to(:loan_product).with_prefix }
       it { is_expected.to delegate_method(:account).to(:loan_product).with_prefix }
       it { is_expected.to delegate_method(:interest_rate).to(:loan_product).with_prefix }

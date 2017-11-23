@@ -29,6 +29,7 @@ module LoansModule
     has_many :collaterals, class_name: "LoansModule::Collateral", dependent: :destroy
     has_many :real_properties, through: :collaterals
     has_many :notices, as: :notified, dependent: :destroy
+    belongs_to :preparer, class_name: "User", foreign_key: 'preparer_id'
     has_one :first_notice, class_name: "LoansModule::Notices::FirstNotice", as: :notified
     has_one :second_notice, class_name: "LoansModule::Notices::SecondNotice", as: :notified
     has_one :third_notice, class_name: "LoansModule::Notices::ThirdNotice", as: :notified
@@ -37,6 +38,7 @@ module LoansModule
     delegate :name, :max_loanable_amount, :loan_product_interest_account, to: :loan_product, prefix: true, allow_nil: true
     delegate :account, :interest_rate, to: :loan_product, prefix: true
     delegate :name, to: :organization, prefix: true, allow_nil: true
+    delegate :full_name, :current_occupation, to: :preparer, prefix: true
     before_save :set_default_date
 
     validates :loan_product_id, presence: true

@@ -147,6 +147,7 @@
 		  <%= f.input :term, label: "Loan Term (in months)" %>
       <%= f.input :mode_of_payment, collection: LoansModule::Loan.mode_of_payments.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
 		  <%= f.input :application_date, as: :string, input_html: { class: "datepicker" } %>
+      <%= f.input :preparer_id, input_html: { value: current_user.id }, as: :hidden %>
 		  <%= f.submit "Calculate", class: "btn btn-primary" %>
 		  <hr>
 		<% end %>

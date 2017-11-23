@@ -8,9 +8,7 @@ module LoansModule
       @view_context = view_context
       heading
       amortization_schedule
-      borrower_signature
-      prepared_by_signature
-      approved_by_signature
+      signatory_details
     end
     private
     def other_charges_for(date)
@@ -59,31 +57,33 @@ module LoansModule
         column(3).align = :right
         column(4).align = :right
         column(3).size = 8
+        column(4).size = 8
+
 
         column(5).align = :right
 
       end
     end
     def amortization_schedule_data
-      [["DATE", "PRINCIPAL", "INTEREST", "OTHER CHARGES", "TOTAL", "BALANCE"]] +
+      [["DATE", "PRINCIPAL", "INTEREST", "OTHER CHARGES", "TOTAL AMORTIZATION", "BALANCE"]] +
       @table_date ||= @amortization_schedules.order(date: :asc).map{|a| [a.date.strftime("%B %e, %Y"), price(a.principal), price(a.interest), other_charges_for(a.date), price(a.total_amortization), price(@loan.balance_for(a))] }
     end
-    def borrower_signature
-      text "#{@loan.borrower.try(:first_and_last_name).try(:upcase)}"
-      text "BORROWER"
-      move_down 15
-      text "#{@loan.borrower_name.upcase}", style: :bold
-    end
-    def prepared_by_signature
-      text "PREPARED BY:"
-      move_down 15
-      text "#{@employee.first_and_last_name.upcase}", style: :bold
-    end
-    def approved_by_signature
-      text "APPROVED BY"
-      move_down 15
-
-      text "#{@employee.first_and_last_name.upcase}", style: :bold
-    end
+    def signatory_details
+    move_down 50
+      table(signatory, cell_style: { inline_format: true, size: 9, font: "Helvetica"}, column_widths: [130, 130, 130, 130]) do
+        cells.borders = []
+        row(3).font_style = :bold
+     end
+   end
+   def approver
+     User.manager.last
+   end
+   def signatory
+    [["PREPARED BY", "", "APPROVED BY", "RECEIVED BY"]] +
+    [["", ""]] +
+    [["", ""]] +
+    [["#{@loan.preparer_full_name.to_s.try(:upcase)}", "", "#{approver.name.to_s.upcase}", "#{@loan.borrower_name.try(:upcase)}"]] +
+    [["#{@loan.preparer_current_occupation.try(:titleize)}", "", "#{approver.current_occupation.to_s.titleize}", "Borrower"]]
+  end
   end
 end
