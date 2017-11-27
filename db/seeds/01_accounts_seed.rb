@@ -210,6 +210,7 @@ AccountingModule::Revenue.create(code: 401102, name: 'Interest Income from Loans
 AccountingModule::Revenue.create(code: 40120, name: 'Service Fees')
 
 AccountingModule::Revenue.create(code: 401201, name: 'Service Fees - Inspection Fees')
+AccountingModule::Revenue.create(code: 401202, name: 'Service Fees - Check Fees')
 AccountingModule::Revenue.create(code: 401202, name: 'Documentary Stamp Taxes')
 AccountingModule::Revenue.create(code: 401203, name: 'Closing Account Fees')
 AccountingModule::Revenue.create(code: 4012031, name: 'Time Deposit Break Contract Fees')

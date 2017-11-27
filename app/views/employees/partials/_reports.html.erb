@@ -27,8 +27,35 @@
               </div>
             <% end %>
 <hr>
-
+<p>Teller Report</p>
 <%= form_tag({:action => "index", format: 'pdf', controller: "employees/reports", employee_id: @employee.id, date: params[:date]}, {:method => :get})  do %>
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <%= text_field_tag :date, @date, :class => 'datepicker form-control border-input', :placeholder => "Date" %>
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <button type="submit" class="btn btn-default"> Go</button>
+                </div>
+              </div>
+            <% end %>
+<p>Cash Disbursements</p>
+<%= form_tag({:action => "index", format: 'pdf', controller: "employees/cash_disbursements", employee_id: @employee.id, date: params[:date]}, {:method => :get})  do %>
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <%= text_field_tag :date, @date, :class => 'datepicker form-control border-input', :placeholder => "Date" %>
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <button type="submit" class="btn btn-default"> Go</button>
+                </div>
+              </div>
+            <% end %>
+          <hr>
+          <p>Cash Receipts</p>
+<%= form_tag({:action => "index", format: 'pdf', controller: "employees/cash_receipts", employee_id: @employee.id, date: params[:date]}, {:method => :get})  do %>
               <div class="row">
                 <div class="col-md-3">
                   <div class="form-group">

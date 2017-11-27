@@ -23,7 +23,7 @@ class Member < ApplicationRecord
   has_many :savings, class_name: "MembershipsModule::Saving", as: :depositor
   has_many :share_capitals, class_name: "MembershipsModule::ShareCapital", as: :subscriber
   has_many :time_deposits, class_name: "MembershipsModule::TimeDeposit", as: :depositor
-has_many :program_subscriptions, class_name: "MembershipsModule::ProgramSubscription", as: :subscriber
+  has_many :program_subscriptions, class_name: "MembershipsModule::ProgramSubscription", as: :subscriber
   has_many :programs, through: :program_subscriptions
   has_many :orders, class_name: "StoreModule::Order", as: :customer
   has_many :real_properties, as: :owner
@@ -47,6 +47,7 @@ has_many :program_subscriptions, class_name: "MembershipsModule::ProgramSubscrip
   after_commit :set_fullname, on: [:create, :update]
   # after_commit :subscribe_to_programs
   before_save :update_birth_date_fields
+
   def self.with_loans
     all.select{|a| a.loans.present? }
   end
@@ -59,6 +60,7 @@ has_many :program_subscriptions, class_name: "MembershipsModule::ProgramSubscrip
     return "No Occupation entered" if occupations.blank?
     occupations.order(created_at: :asc).last
   end
+
   def self.has_birthdays_on(month)
     where(birth_month: month).order(:birth_day)
   end
