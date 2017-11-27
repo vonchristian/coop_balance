@@ -284,7 +284,7 @@ class TellerReportPdf < Prawn::Document
   def expenses_data
     [["", "", "Account", "Amount"]] +
     @expenses_data ||= AccountingModule::Expense.updated_at(@date.beginning_of_day, @date.end_of_day).distinct.map{|a| ["", "", a.name, price(a.entries.entered_on(from_date: @date, to_date: @date).map{|a| a.debit_amounts.distinct.sum(:amount)}.sum)]} +
-    [["", "", "<b>TOTAL</b>", "#{AccountingModule::Expense.updated_at(@date.beginning_of_day, @date.end_of_day).map{|a| a.amounts.entered_on(from_date: @date, to_date: @date).total}.sum}"]]
+    [["", "", "<b>TOTAL</b>", "<b>#{price(AccountingModule::Expense.updated_at(@date.beginning_of_day, @date.end_of_day).map{|a| a.amounts.entered_on(from_date: @date, to_date: @date).total}.sum)}</b>"]]
   end
   def revenues
     text "Other Income", style: :bold, size: 10, color: "DB4437"

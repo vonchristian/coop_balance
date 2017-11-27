@@ -109,24 +109,24 @@ module Reports
       end
       text "TRANSACTION DETAILS:", size: 10, style: :bold
       move_down 5
-      table([["DATE", "DESCRIPTION", "REFERENCE NUMBER", "PARTICULAR/PAYEE", "EMPLOYEE", "ACCOUNT", "AMOUNT"]], cell_style: { inline_format: true, size: 6, font: "Helvetica"}, column_widths: [50, 100, 50, 100, 50, 100, 100]) do
+      table([["DATE", "DESCRIPTION", "REFERENCE NUMBER", "PARTICULAR/PAYEE", "EMPLOYEE", "ACCOUNT", "AMOUNT"]], cell_style: { inline_format: true, size: 6, font: "Helvetica"}, column_widths: [50, 100, 50, 100, 50, 120, 80]) do
         cells.borders = []
         row(0).font_style= :bold
         row(0).background_color = 'DDDDDD'
         column(-1).align = :right
       end
       @entries.each do |entry|
-        table([["#{entry.entry_date.strftime("%b %e, %Y")}", "#{entry.description}", "#{entry.reference_number}",  "#{display_commercial_document_for(entry).try(:upcase)}", "#{entry.recorder.try(:first_and_last_name).try(:upcase)}"]], cell_style: { size: 8, padding: [5,5,4,0]}, column_widths: [50, 100, 50,  100, 50, 100, 100]) do
+        table([["#{entry.entry_date.strftime("%b %e, %Y")}", "#{entry.description}", "#{entry.reference_number}",  "#{display_commercial_document_for(entry).try(:upcase)}", "#{entry.recorder.try(:first_and_last_name).try(:upcase)}"]], cell_style: { size: 8, padding: [5,5,4,0]}, column_widths: [50, 100, 50,  100, 50, 120, 80]) do
           cells.borders = []
         end
 
         table([["", "", "", "", "", "<b>DEBIT</b>"]]+
-          entry.debit_amounts.map{|a| ["", "", "",  "", "", a.account.name,  price(a.amount)] }, column_widths: [50, 100, 50, 100, 50, 100, 100], cell_style: { inline_format: true, size: 8, padding: [0,0,0,0]}) do
+          entry.debit_amounts.map{|a| ["", "", "",  "", "", a.account.name,  price(a.amount)] }, column_widths: [50, 100, 50, 100, 50, 120, 80], cell_style: { inline_format: true, size: 8, padding: [0,0,0,0]}) do
           cells.borders = []
           column(-1).align = :right
         end
 
-        table([["",  "", "","", "", "<b>CREDIT</b>"]] + entry.credit_amounts.map{|a| ["", "", "",  "", "",  a.account.name, price(a.amount)] }, column_widths: [50, 100, 50, 100, 50, 100, 100], cell_style: {inline_format: true, padding: [0,0,2,0], size: 8} ) do
+        table([["",  "", "","", "", "<b>CREDIT</b>"]] + entry.credit_amounts.map{|a| ["", "", "",  "", "",  a.account.name, price(a.amount)] }, column_widths: [50, 100, 50, 100, 50, 120, 80], cell_style: {inline_format: true, padding: [0,0,2,0], size: 8} ) do
           cells.borders = []
           column(-1).align = :right
 

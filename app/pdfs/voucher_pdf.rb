@@ -63,7 +63,7 @@ def heading
         end
   end
   def approver
-    User.manager.last
+    User.general_manager.last
   end
   def debit_amount_for(amount)
     if amount.debit?

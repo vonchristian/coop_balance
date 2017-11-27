@@ -1,7 +1,7 @@
 module LoansModule
   class PaymentPolicy < ApplicationPolicy
     def new?
-      user.cash_on_hand_account.present? && record.disbursed?
+      user.cash_on_hand_account.present?
     end
     def create?
       new?

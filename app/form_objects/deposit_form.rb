@@ -17,7 +17,7 @@ class DepositForm
   end
 
   def save_deposit
-    find_saving.entries.create!(recorder_id: recorder_id, entry_type: 'deposit',  description: 'Savings deposit', reference_number: or_number, entry_date: date, section_id: find_saving.section.id, branch_office_id: find_employee.branch_office_id,
+    find_saving.entries.create!(recorder_id: recorder_id, entry_type: 'deposit',  description: 'Savings deposit', reference_number: or_number, entry_date: date, branch_office_id: find_employee.branch_office_id,
     debit_amounts_attributes: [account: debit_account, amount: amount],
     credit_amounts_attributes: [account: credit_account, amount: amount])
   end
