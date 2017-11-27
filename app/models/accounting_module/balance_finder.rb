@@ -1,5 +1,5 @@
 module AccountingModule
-  module AmountsExtension
+  module BalanceFinder
     def balance(hash={})
       if hash[:from_date].present? && hash[:to_date].present? && hash[:recorder_id].present?
         from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : Time.parse(hash[:from_date].strftime('%Y-%m-%d 12:00:00'))
