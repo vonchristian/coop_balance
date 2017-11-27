@@ -19,8 +19,8 @@ module Registries
       Member.find_or_create_by(last_name: row[0], first_name: row[1])
     end
 
-    def find_share_capital_product(row)
-      CoopServicesModule::ShareCapitalProduct.find_by(name: row[3])
+    def share_capital_product
+      CoopServicesModule::ShareCapitalProduct.default_product
     end
 
     def find_member(row)
@@ -28,7 +28,7 @@ module Registries
     end
 
     def create_entry(row)
-      share_capital = find_member(row).share_capitals.create!(share_capital_product: find_share_capital_product(row))
+      share_capital = find_member(row).share_capitals.create!(share_capital_product: share_capital_product)
 
       share_capital.capital_build_ups.capital_build_up.create!(recorder_id: self.employee_id, description: 'Forwarded balance Share capital',  entry_date: Time.zone.now,
       debit_amounts_attributes: [account: debit_account, amount: row[2]],
@@ -40,7 +40,7 @@ module Registries
     end
 
     def credit_account
-      find_share_capital_product.account
+      share_capital_product.paid_up_account
     end
   end
 end

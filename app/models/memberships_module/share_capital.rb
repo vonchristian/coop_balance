@@ -9,37 +9,38 @@ module MembershipsModule
     belongs_to :share_capital_product, class_name: "CoopServicesModule::ShareCapitalProduct"
     belongs_to :branch_office, class_name: "CoopConfigurationsModule::BranchOffice"
 
-    delegate :name, :account, :default_account, to: :share_capital_product, prefix: true
+    delegate :name, :paid_up_account, :subscription_account, :default_paid_up_account, :default_subscription_account, to: :share_capital_product, prefix: true
     delegate :name, to: :branch_office, prefix: true, allow_nil: true
     delegate :name, to: :subscriber, prefix: true
     delegate :cost_per_share, to: :share_capital_product, prefix: true
     validates :share_capital_product_id, presence: true
     after_commit :set_account_owner_name, :set_branch_office
+
     has_many :capital_build_ups, class_name: "AccountingModule::Entry", as: :commercial_document
     def entries
-      share_capital_product_account.entries.where(commercial_document_id: self) +
-      share_capital_product_account.entries.where(commercial_document_id: self.subscriber_id)
+      share_capital_product_paid_up_account.entries.where(commercial_document_id: self) +
+      share_capital_product_paid_up_account.entries.where(commercial_document_id: self.subscriber_id)
     end
     def self.subscribed_shares
       all.sum(&:subscribed_shares)
     end
 
     def subscribed_shares
-      (capital_build_ups_total / share_capital_product_cost_per_share.to_i)
+      share_capital_product_default_subscription_account.balance(commercial_document_d: self.id)
     end
     def self.balance
       all.sum(&:balance)
     end
 
     def balance
-      share_capital_product_default_account.balance(commercial_document_id: self.id) +
-      share_capital_product_default_account.balance(commercial_document_id: self.subscriber_id)
+      share_capital_product_default_paid_up_account.balance(commercial_document_id: self.id) +
+      share_capital_product_default_paid_up_account.balance(commercial_document_id: self.subscriber_id)
     end
 
 
     def capital_build_ups_total
-      share_capital_product_account.balance(commercial_document_id: self.id) +
-      share_capital_product_account.balance(commercial_document_id: self.subscriber_id)
+      share_capital_product_default_paid_up_account.balance(commercial_document_id: self.id) +
+      share_capital_product_default_paid_up_account.balance(commercial_document_id: self.subscriber_id)
     end
     def dividends
     end
@@ -60,6 +61,5 @@ module MembershipsModule
         self.branch_office_id = self.subscriber.branch_office.id
       end
     end
-
   end
 end

@@ -1,5 +1,5 @@
-class ManagementModulePolicy < ApplicationPolicy 
+class ManagementModulePolicy < ApplicationPolicy
   def index?
-    user.manager?
-  end 
-end 
+    user.general_manager?
+  end
+end

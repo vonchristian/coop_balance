@@ -12,7 +12,7 @@ module ManagementModule
 
     private
     def registry_params
-      params.require(:registry).permit(:spreadsheet, :employee_id)
+      params.require(:registries_savings_account_registry).permit(:spreadsheet, :employee_id)
     end
   end
 end

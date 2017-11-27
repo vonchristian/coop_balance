@@ -103,7 +103,7 @@
                   <tr>
                     <td><%= entry.entry_date.strftime("%B %e, %Y") %></td>
                     <td><%= entry.reference_number %></td>
-                    <td><%= number_to_currency entry.amounts.where(account: @share_capital.share_capital_product_account).sum(:amount) %></td>
+                    <td><%= number_to_currency entry.amounts.where(account: @share_capital.share_capital_product_paid_up_account).sum(:amount) %></td>
 
 
                     <td><% if entry.recorder %>

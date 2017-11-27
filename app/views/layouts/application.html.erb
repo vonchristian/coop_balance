@@ -17,7 +17,7 @@
       <% if current_user.loan_officer? %>
         <%=render "loans_module/sidebar_for_loans_department" %>
       <% end %>
-      <% if current_user.manager? %>
+      <% if current_user.general_manager? %>
         <%=render "management_module/sidebar_for_management_department", cached: true %>
       <% end %>
       <% if current_user.teller? %>
