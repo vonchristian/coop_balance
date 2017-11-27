@@ -2,8 +2,8 @@ module AccountingModule
   module BalanceFinder
     def balance(hash={})
       if hash[:from_date].present? && hash[:to_date].present? && hash[:recorder_id].present?
-        from_date = Chronic.parse(hash[:from_date].strftime('%Y-%m-%d 12:00:00'))
-        to_date = Chronic.parse(hash[:to_date].strftime('%Y-%m-%d 12:59:59'))
+        from_date = Chronic.parse(hash[:from_date].to_date)
+        to_date = Chronic.parse(hash[:to_date].to_date)
         joins(:entry, :account).where('entries.recorder_id' => hash[:recorder_id]).where('entries.entry_date' => (from_date.beginning_of_day)..(to_date.end_of_day)).sum(:amount)
       elsif hash[:from_date].present? && hash[:to_date].present? && hash[:recorder_id].nil?
         from_date = Chronic.parse(hash[:from_date].strftime('%Y-%m-%d 12:00:00'))
@@ -17,9 +17,9 @@ module AccountingModule
         joins(:entry, :account).where('entries.recorder_id' => hash[:recorder_id]).where('entries.entry_date' => (from_date.beginning_of_day)..(to_date.end_of_day)).sum(:amount)
       elsif hash[:to_date].present? && hash[:from_date].nil? && hash[:recorder_id].nil?
         first_entry = AccountingModule::Entry.order(entry_date: :asc).first
-        from_date = first_entry ? Time.parse(first_entry.entry_date.strftime('%Y-%m-%d 12:59:59')) : Time.zone.now
-        to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : Time.parse(hash[:to_date].strftime('%Y-%m-%d 12:59:59'))
-        joins(:entry, :account).where('entries.entry_date' => (from_date.beginning_of_day - 1.second)..(to_date.end_of_day)).sum(:amount)
+        from_date = first_entry ? Chronic.parse(first_entry.entry_date.strftime('%Y-%m-%d 12:59:59')) : Time.zone.now.beginning_of_day
+        to_date = Chronic.parse(hash[:to_date].to_date)
+        joins(:entry, :account).where('entries.entry_date' => (from_date.beginning_of_day)..(to_date.end_of_day)).sum(:amount)
       elsif hash[:recorder_id].present?
         joins(:entry, :account).where('entries.recorder_id' => hash[:recorder_id]).sum(:amount)
        elsif hash[:commercial_document_id].present?

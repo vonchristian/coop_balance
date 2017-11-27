@@ -99,7 +99,7 @@ class TellerReportPdf < Prawn::Document
   end
   #Savings Deposits
   def savings_deposits_balances
-    [["", "Beginning Balance", "#{price(CoopServicesModule::SavingProduct.accounts_balance(to_date: @date.beginning_of_day))}"]]
+    [["", "Beginning Balance", "#{price(CoopServicesModule::SavingProduct.accounts_balance(to_date: @date.yesterday.end_of_day))}"]]
   end
   def add_savings_deposits
     [["", "", "Add Deposits", "#{price(CoopServicesModule::SavingProduct.accounts.uniq.map{|a| a.credit_entries.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total}.sum) }"]]
@@ -191,16 +191,16 @@ class TellerReportPdf < Prawn::Document
     end
   end
   def share_capital_beginning_balance
-    [["", "Beginning Balance", "#{price(CoopServicesModule::ShareCapitalProduct.accounts_balance(to_date: @date.beginning_of_day))}"]]
+    [["", "Beginning Balance", "#{price(CoopServicesModule::ShareCapitalProduct.paid_up_accounts_balance(to_date: @date.yesterday.end_of_day))}"]]
   end
   def additional_share_capital
-   [["", "", "Additional Share Capital", "#{price(CoopServicesModule::ShareCapitalProduct.accounts_credits_balance(recorder_id: @employee.id, from_date: @date.beginning_of_day, to_date: @date.end_of_day))}"]]
+   [["", "", "Additional Share Capital", "#{price(CoopServicesModule::ShareCapitalProduct.paid_up_accounts.uniq.map{|a| a.credit_entries.recorded_by(@employee.id).entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).total}.sum) }"]]
   end
   def total_share_capitals
-    [["", "", "Total Share Capitals", "#{price(CoopServicesModule::ShareCapitalProduct.accounts_balance(recorder_id: @employee.id))}"]]
+    [["", "", "Total Share Capitals", "#{price(CoopServicesModule::ShareCapitalProduct.paid_up_accounts_balance(to_date: @date.end_of_day))}"]]
   end
   def share_capital_withdrawals
-    [["", "", "Less Withdrawals", "#{price(CoopServicesModule::ShareCapitalProduct.accounts_debits_balance(recorder_id: @employee.id, from_date: @date.beginning_of_day, to_date: @date.end_of_day))}"]]
+    [["", "", "Less Withdrawals", "#{price(CoopServicesModule::ShareCapitalProduct.paid_up_accounts_debits_balance(recorder_id: @employee.id, from_date: @date.beginning_of_day, to_date: @date.end_of_day))}"]]
   end
   def loan_releases
     text "Loan Releases", style: :bold, size: 10, color: "DB4437"
