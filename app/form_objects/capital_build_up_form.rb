@@ -24,6 +24,6 @@ class CapitalBuildUpForm
     User.find_by(id: recorder_id).cash_on_hand_account
   end
   def credit_account
-    find_share_capital.share_capital_product_default_account
+    find_share_capital.share_capital_product_default_paid_up_account
   end
 end

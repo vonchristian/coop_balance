@@ -21,8 +21,8 @@ module AccountingModule
     class_attribute :normal_credit_balance
 
     has_many :amounts, class_name: "AccountingModule::Amount"
-    has_many :credit_amounts, :extend => AmountsExtension, :class_name => 'AccountingModule::CreditAmount'
-    has_many :debit_amounts, :extend => AmountsExtension, :class_name => 'AccountingModule::DebitAmount'
+    has_many :credit_amounts, :extend => AccountingModule::BalanceFinder, :class_name => 'AccountingModule::CreditAmount'
+    has_many :debit_amounts, :extend => AccountingModule::BalanceFinder, :class_name => 'AccountingModule::DebitAmount'
     has_many :entries, through: :amounts, source: :entry
     has_many :credit_entries, :through => :credit_amounts, :source => :entry, :class_name => 'AccountingModule::Entry'
 

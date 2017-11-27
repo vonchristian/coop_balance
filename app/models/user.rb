@@ -9,7 +9,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
   enum sex: [:male, :female, :others]
   enum role: [:system_administrator,
-              :manager,
+              :general_manager,
+              :branch_manager,
               :loan_officer,
               :bookkeeper,
               :teller,

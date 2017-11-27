@@ -14,7 +14,8 @@
               <%= f.input :minimum_number_of_paid_share %>
               <%= f.input :cost_per_share %>
               <%= f.input :default_product %>
-              <%= f.input :account_id, collection: AccountingModule::Account.all.map{|a| [a.name.titleize, a.id] } %>
+              <%= f.input :paid_up_account_id, collection: AccountingModule::Account.all.map{|a| [a.name.titleize, a.id] } %>
+               <%= f.input :subscription_account_id, collection: AccountingModule::Account.all.map{|a| [a.name.titleize, a.id] } %>
               <div class="box-footer">
                 <%= f.submit "Create Share Capital Product", class: "btn btn-primary pull-right" %>
               </div>
@@ -27,7 +28,10 @@
 </div>
 <script type="text/javascript">
   $(document).ready(function() {
-    $("#coop_services_module_share_capital_product_account_id").select2({
+    $("#coop_services_module_share_capital_product_paid_up_account_id").select2({
+      theme: "bootstrap"
+    });
+     $("#coop_services_module_share_capital_product_subscription_account_id").select2({
       theme: "bootstrap"
     });
   });

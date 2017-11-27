@@ -27,7 +27,6 @@ module AccountingModule
                       :bank_charge
                     ]
 
-    has_one :clearance, class_name: "EntryClearance"
     belongs_to :branch_office, class_name: "CoopConfigurationsModule::BranchOffice"
     belongs_to :section, class_name: "CoopConfigurationsModule::Section"
     belongs_to :commercial_document, :polymorphic => true
@@ -38,8 +37,8 @@ module AccountingModule
 
     belongs_to :voucher
 
-    has_many :credit_amounts, :extend => AccountingModule::AmountsExtension, :class_name => 'AccountingModule::CreditAmount', :inverse_of => :entry, dependent: :destroy
-    has_many :debit_amounts, :extend => AccountingModule::AmountsExtension, :class_name => 'AccountingModule::DebitAmount', :inverse_of => :entry, dependent: :destroy
+    has_many :credit_amounts, :extend => AccountingModule::BalanceFinder, :class_name => 'AccountingModule::CreditAmount', :inverse_of => :entry, dependent: :destroy
+    has_many :debit_amounts, :extend => AccountingModule::BalanceFinder, :class_name => 'AccountingModule::DebitAmount', :inverse_of => :entry, dependent: :destroy
     has_many :credit_accounts, :through => :credit_amounts, :source => :account, :class_name => 'AccountingModule::Account'
     has_many :debit_accounts, :through => :debit_amounts, :source => :account, :class_name => 'AccountingModule::Account'
     has_many :amounts, class_name: "AccountingModule::Amount"

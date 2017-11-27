@@ -95,6 +95,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
+    colorize (0.8.1)
     concurrent-ruby (1.0.5)
     crass (1.0.3)
     daemons (1.2.5)
@@ -245,7 +246,7 @@ GEM
     pundit (1.1.0)
       activesupport (>= 3.0.0)
     rack (2.0.3)
-    rack-mini-profiler (0.10.6)
+    rack-mini-profiler (0.10.7)
       rack (>= 1.2.0)
     rack-test (0.8.2)
       rack (>= 1.0, < 3)
@@ -396,6 +397,7 @@ DEPENDENCIES
   client_side_validations
   client_side_validations-simple_form
   coffee-rails (~> 4.2)
+  colorize
   daemons
   delayed-web
   delayed_job_active_record
@@ -455,4 +457,4 @@ RUBY VERSION
    ruby 2.4.2p198
 
 BUNDLED WITH
-   1.16.0.pre.3
+   1.16.0

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171123090447) do
+ActiveRecord::Schema.define(version: 20171127031642) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -938,12 +938,14 @@ ActiveRecord::Schema.define(version: 20171123090447) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.decimal "cost_per_share"
-    t.uuid "account_id"
     t.decimal "minimum_number_of_subscribed_share"
     t.decimal "minimum_number_of_paid_share"
     t.boolean "default_product", default: false
-    t.index ["account_id"], name: "index_share_capital_products_on_account_id"
+    t.uuid "paid_up_account_id"
+    t.uuid "subscription_account_id"
     t.index ["name"], name: "index_share_capital_products_on_name"
+    t.index ["paid_up_account_id"], name: "index_share_capital_products_on_paid_up_account_id"
+    t.index ["subscription_account_id"], name: "index_share_capital_products_on_subscription_account_id"
   end
 
   create_table "share_capitals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -954,8 +956,8 @@ ActiveRecord::Schema.define(version: 20171123090447) do
     t.string "account_owner_name"
     t.string "subscriber_type"
     t.uuid "subscriber_id"
-    t.datetime "created_at", default: "2017-11-20 20:28:11", null: false
-    t.datetime "updated_at", default: "2017-11-20 20:28:11", null: false
+    t.datetime "created_at", default: "2017-11-27 11:44:53", null: false
+    t.datetime "updated_at", default: "2017-11-27 11:44:53", null: false
     t.integer "status"
     t.uuid "branch_office_id"
     t.uuid "section_id"
@@ -1223,7 +1225,8 @@ ActiveRecord::Schema.define(version: 20171123090447) do
   add_foreign_key "savings_account_configs", "accounts", column: "interest_account_id"
   add_foreign_key "sections", "branch_offices"
   add_foreign_key "share_capital_product_shares", "share_capital_products"
-  add_foreign_key "share_capital_products", "accounts"
+  add_foreign_key "share_capital_products", "accounts", column: "paid_up_account_id"
+  add_foreign_key "share_capital_products", "accounts", column: "subscription_account_id"
   add_foreign_key "share_capitals", "branch_offices"
   add_foreign_key "share_capitals", "sections"
   add_foreign_key "share_capitals", "share_capital_products"
