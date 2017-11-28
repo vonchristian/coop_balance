@@ -16,6 +16,7 @@ module MembershipsModule
     has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
     before_save :set_account_owner_name, :set_account_number
     validates :saving_product_id, presence: true
+
     def self.generate_account_number
       if self.exists? && order(created_at: :asc).last.account_number.present?
         order(created_at: :asc).last.account_number.succ
@@ -24,10 +25,25 @@ module MembershipsModule
       end
     end
 
+    def self.with_minimum_balances
+      all.select{|a| a.balance >= saving_product.minimum_balance }
+    end
+
     def self.set_inactive_accounts
       #to do find accounts not within saving product interest posting date range
       # did not save for a set time
     end
+
+    def self.updated_at(options={})
+      if options[:from_date] && options[:to_date]
+        from_date = Chronic.parse(options[:from_date].to_date)
+        to_date = Chronic.parse(options[:to_date].to_date)
+        where('updated_at' => (from_date.beginning_of_day)..(to_date.end_of_day))
+      else
+        all
+      end
+    end
+
     def self.top_savers
       all.to_a.sort_by(&:balance).first(10)
     end

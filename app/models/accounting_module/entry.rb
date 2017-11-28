@@ -29,7 +29,7 @@ module AccountingModule
 
     belongs_to :branch_office, class_name: "CoopConfigurationsModule::BranchOffice"
     belongs_to :section, class_name: "CoopConfigurationsModule::Section"
-    belongs_to :commercial_document, :polymorphic => true
+    belongs_to :commercial_document, :polymorphic => true, touch: true
     belongs_to :recorder, foreign_key: 'recorder_id', class_name: "User"
     belongs_to :department
     belongs_to :branch_office, class_name: "CoopConfigurationsModule::BranchOffice"

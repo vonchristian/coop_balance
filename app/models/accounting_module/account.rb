@@ -41,6 +41,7 @@ module AccountingModule
     def self.updated_at(from_date, to_date)
       joins(:entries).where('entries.entry_date' => (from_date.beginning_of_day)..(to_date.end_of_day))
     end
+
     def self.updated_by(employee)
       all.select{|a| a.updated_by(employee) }
     end

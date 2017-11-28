@@ -23,7 +23,7 @@ class LoanApplicationForm
 
   private
   def create_loan
-  	LoansModule::Loan.create!(loan_product_id: loan_product_id, member_id: member_id, loan_amount: loan_amount, application_date: application_date, term: term, organization_id: organization_id))
+  	LoansModule::Loan.create!(loan_product_id: loan_product_id, member_id: member_id, loan_amount: loan_amount, application_date: application_date, term: term, organization_id: organization_id)
   end
 end
 

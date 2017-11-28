@@ -114,6 +114,7 @@ Rails.application.routes.draw do
 
   resources :management_module, only: [:index]
   namespace :management_module do
+    resources :reports, only: [:index]
     resources :savings_account_registries, only: [:new, :create]
     resources :share_capital_registries, only: [:new, :create]
     namespace :settings do
@@ -316,5 +317,5 @@ Rails.application.routes.draw do
     end
 
   mount ActionCable.server => '/cable'
-
+  resources :cooperative_products, only: [:index]
 end

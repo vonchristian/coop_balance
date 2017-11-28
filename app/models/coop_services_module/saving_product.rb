@@ -11,7 +11,9 @@ module CoopServicesModule
 	  validates :account_id, presence: true
 
     delegate :name, to: :account, prefix: true
-
+    def self.total_subscribers
+      all.map{|a| a.subscribers.count }.sum
+    end
     def self.accounts
     	all.map{|a| a.account }
     end
@@ -25,6 +27,9 @@ module CoopServicesModule
     def self.accounts_debits_balance(options={})
       accounts.uniq.map{|a| a.debits_balance(options)}.sum
     end
+    def balance(options={})
+      account.balance(options)
+    end
 
 	  def post_interests_earned
       if quarterly?
@@ -32,7 +37,7 @@ module CoopServicesModule
       end
 	  end
     def post_quarterly_interests
-      subscribers.each do |saving|
+      subscribers.with_minimum_balances.each do |saving|
         InterestPosting.new.post_interests_earned(saving, Time.zone.now.end_of_quarter)
       end
     end
