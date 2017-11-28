@@ -41,6 +41,7 @@ module CooperativeReports
         move_down 10
         text "No saving_products data.", align: :center
       else
+        text "SAVINGS PRODUCTS", size: 10, style: :bold
         move_down 10
         stroke do
         stroke_color 'CCCCCC'
