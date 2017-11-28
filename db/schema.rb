@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171127031642) do
+ActiveRecord::Schema.define(version: 20171128051650) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -883,6 +883,7 @@ ActiveRecord::Schema.define(version: 20171127031642) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "account_id"
+    t.decimal "minimum_balance"
     t.index ["account_id"], name: "index_saving_products_on_account_id"
     t.index ["name"], name: "index_saving_products_on_name", unique: true
   end

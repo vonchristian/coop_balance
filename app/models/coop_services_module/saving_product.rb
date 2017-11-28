@@ -5,7 +5,7 @@ module CoopServicesModule
 	  has_many :subscribers, class_name: "MembershipsModule::Saving"
 	  belongs_to :account, class_name: "AccountingModule::Account"
 
-	  validates :interest_rate, numericality: { greater_than_or_equal_to: 0.01 }, presence: true
+	  validates :interest_rate, :minimum_balance, numericality: { greater_than_or_equal_to: 0.01 }, presence: true
 	  validates :interest_recurrence, presence: true
 	  validates :name, presence: true, uniqueness: true
 	  validates :account_id, presence: true
