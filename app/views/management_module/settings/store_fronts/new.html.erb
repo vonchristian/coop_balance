@@ -1,0 +1,6 @@
+<%= simple_form_for @store_front, url: :management_module_settings_store_fronts do |f| %>
+  <%= f.input :name %>
+  <%= f.input :address %>
+  <%= f.input :contact_number %>
+  <%= f.submit "Create Store Front" %>
+<% end %>

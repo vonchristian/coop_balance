@@ -4,7 +4,10 @@
       <div class="box-header">
       </div>
       <div class="box-body">
-        <%=link_to 'PDF', cooperative_products_path(format: 'pdf') %>
+        <%=link_to 'PDF',monitoring_savings_products_path(format: 'pdf') %>
+         <%=link_to 'This Day',monitoring_savings_products_path(from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day ), class: "btn btn-default"  %>
+            <%=link_to 'This Week',monitoring_savings_products_path(from_date: Time.zone.now.beginning_of_week.beginning_of_day, to_date: Time.zone.now.end_of_week.end_of_day ), class: "btn btn-default"  %>
+            <%=link_to 'This Month',monitoring_savings_products_path(from_date: Time.zone.now.beginning_of_week.beginning_of_day, to_date: Time.zone.now.end_of_week.end_of_day ), class: "btn btn-default"  %>
         <div class="table table-responsive">
           <table class="table table-striped table-hover">
             <thead>

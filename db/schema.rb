@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171128051650) do
+ActiveRecord::Schema.define(version: 20171128130847) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -316,6 +316,7 @@ ActiveRecord::Schema.define(version: 20171128051650) do
     t.uuid "voucher_id"
     t.uuid "branch_office_id"
     t.uuid "section_id"
+    t.uuid "store_front_id"
     t.index ["branch_office_id"], name: "index_entries_on_branch_office_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_entry"
     t.index ["department_id"], name: "index_entries_on_department_id"
@@ -323,6 +324,7 @@ ActiveRecord::Schema.define(version: 20171128051650) do
     t.index ["entry_type"], name: "index_entries_on_entry_type"
     t.index ["recorder_id"], name: "index_entries_on_recorder_id"
     t.index ["section_id"], name: "index_entries_on_section_id"
+    t.index ["store_front_id"], name: "index_entries_on_store_front_id"
     t.index ["voucher_id"], name: "index_entries_on_voucher_id"
   end
 
@@ -971,6 +973,16 @@ ActiveRecord::Schema.define(version: 20171128051650) do
     t.index ["type"], name: "index_share_capitals_on_type"
   end
 
+  create_table "store_fronts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "cooperative_id"
+    t.string "name"
+    t.string "address"
+    t.string "contact_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cooperative_id"], name: "index_store_fronts_on_cooperative_id"
+  end
+
   create_table "streets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.uuid "barangay_id"
@@ -1167,6 +1179,7 @@ ActiveRecord::Schema.define(version: 20171128051650) do
   add_foreign_key "entries", "branch_offices"
   add_foreign_key "entries", "departments"
   add_foreign_key "entries", "sections"
+  add_foreign_key "entries", "store_fronts"
   add_foreign_key "entries", "users", column: "recorder_id"
   add_foreign_key "entries", "vouchers"
   add_foreign_key "finished_good_materials", "products"
@@ -1231,6 +1244,7 @@ ActiveRecord::Schema.define(version: 20171128051650) do
   add_foreign_key "share_capitals", "branch_offices"
   add_foreign_key "share_capitals", "sections"
   add_foreign_key "share_capitals", "share_capital_products"
+  add_foreign_key "store_fronts", "cooperatives"
   add_foreign_key "streets", "barangays"
   add_foreign_key "streets", "municipalities"
   add_foreign_key "time_deposit_products", "accounts"

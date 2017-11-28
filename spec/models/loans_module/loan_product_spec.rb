@@ -4,6 +4,11 @@ module LoansModule
   describe LoanProduct do
     describe 'associations' do
     	it { is_expected.to have_many :loans }
+      it { is_expected.to have_many :member_borrowers }
+      it { is_expected.to have_many :employee_borrowers }
+      it { is_expected.to have_many :organization_borrowers }
+
+
     	it { is_expected.to have_many :loan_product_charges }
     	it { is_expected.to have_many :charges }
       it { is_expected.to have_one :loan_product_interest }

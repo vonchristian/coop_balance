@@ -1,5 +1,5 @@
-module CooperativeReports
-  class ProductsReportPdf < Prawn::Document
+module CooperativeProducts
+  class SavingsProductsPdf < Prawn::Document
     def initialize(saving_products, view_context)
       super(margin: 40, page_size: "A4", page_layout: :portrait)
       @saving_products = saving_products
@@ -20,7 +20,7 @@ module CooperativeReports
           text "Kiangan Community Multipurpose Cooperative", size: 10
       end
       bounding_box [0, 780], width: 400 do
-        text "Cooperative Products Analysis", style: :bold, size: 14
+        text "SAVINGS PRODUCTS", style: :bold, size: 14
         move_down 3
          text "", size: 10
         move_down 3
