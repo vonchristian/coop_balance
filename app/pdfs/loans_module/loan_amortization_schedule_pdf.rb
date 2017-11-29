@@ -76,7 +76,7 @@ module LoansModule
      end
    end
    def approver
-     User.manager.last
+     User.general_manager.last
    end
    def signatory
     [["PREPARED BY", "", "APPROVED BY", "RECEIVED BY"]] +

@@ -109,9 +109,11 @@
         <div class="row">
           <div class="col-md-5 col-md-offset-1">
             <span class="condensed-text"> MONTHLY PAYMENT (AVERAGE) </span>
+            <%=link_to 'View Schedule', loans_module_loan_amortization_schedules_path(@loan, format: 'pdf') %>
+
           </div>
           <div class="col-md-3">
-            <span class="pull-right"><%#= number_to_currency @loan.amortization_schedules.order(created_at: :asc).first.total_amortization %></span>
+            <span class="pull-right"><%= number_to_currency @loan.amortization_schedules.order(created_at: :asc).first.total_amortization %></span>
           </div>
         </div>
         <br>
@@ -120,7 +122,7 @@
             <span class="condensed-text"> NUMBER OF PAYMENTS </span>
           </div>
           <div class="col-md-3">
-            <span class="pull-right"><%= @loan.term.to_i %></span>
+            <span class="pull-right"><%= @loan.amortization_schedules.count %></span>
           </div>
         </div>
         <hr>
