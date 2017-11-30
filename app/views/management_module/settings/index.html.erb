@@ -65,4 +65,10 @@
   <%= f.submit %>
 <% end %>
 
+<%= simple_form_for Registries::CapitalBuildUpRegistry.new, url: :management_module_capital_build_up_registries do |f| %>
+  <%= f.input :spreadsheet, label: 'Capital Build Up Registry' %>
+  <%= f.input :employee_id, input_html: { value: current_user.id } %>
+  <%= f.submit %>
+<% end %>
+
 <%= link_to 'New Store Front', new_management_module_settings_store_front_path %>

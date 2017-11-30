@@ -97,6 +97,14 @@ update policies of every action/page
 
 WIP: Select dropdown for capybara
 
+
 Review Fund Transfer transactions
 
 revire Loan Charges / subscription charges
+
+
+layout receipt
+user pos printer
+
+
+validates fullname of member
