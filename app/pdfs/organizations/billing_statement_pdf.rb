@@ -46,7 +46,7 @@ module Organizations
     def loans_table
       [["BORROWER", "RELEASE DATE", "MATURITY", "LOAN AMOUNT", "LOAN BALANCE", "PRINCIPAL", "INTEREST", "ARREARS", "TOTAL DEDUCTION"]] +
 
-      @loans_table ||= @loans.disbursed.map{ |a| [a.borrower_name, a.disbursement_date.strftime("%B %e, %Y"), a.maturity_date.strftime("%B %e, %Y"), price(a.loan_amount), price(a.balance), price(a.amortized_principal_for(from_date: @date.to_date.beginning_of_month, to_date: @date.to_date.end_of_month)), price(a.amortized_interest_for(from_date: @date.to_date.beginning_of_month, to_date: @date.to_date.end_of_month)), price(a.arrears(from_date: @date.to_date.beginning_of_month, to_date: @date.to_date.end_of_month)), price(a.total_deductions(from_date: @date.to_date.beginning_of_month, to_date: @date.to_date.end_of_month))] }
+      @loans_table ||= @loans.disbursed.map{ |a| [a.borrower_name, a.maturity_date.strftime("%B %e, %Y"), a.maturity_date.strftime("%B %e, %Y"), price(a.loan_amount), price(a.balance), price(a.amortized_principal_for(from_date: @date.to_date.beginning_of_month, to_date: @date.to_date.end_of_month)), price(a.amortized_interest_for(from_date: @date.to_date.beginning_of_month, to_date: @date.to_date.end_of_month)), price(a.arrears(from_date: @date.to_date.beginning_of_month, to_date: @date.to_date.end_of_month)), price(a.total_deductions(from_date: @date.to_date.beginning_of_month, to_date: @date.to_date.end_of_month))] }
     end
   end
 end

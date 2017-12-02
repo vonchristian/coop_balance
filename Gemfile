@@ -5,11 +5,14 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 gem 'bootsnap', require: false
+gem 'rubyzip', '~> 1.1.0'
+gem 'axlsx', '2.1.0.pre'
+gem 'axlsx_rails'
 gem 'client_side_validations'
 gem 'client_side_validations-simple_form'
 gem 'trix'
 gem 'autonumeric-rails'
-gem 'rails', '~> 5.1.4'
+gem 'rails', '5.2.0.beta2'
 gem 'bootstrap-slider-rails'
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.7', group: [:development, :production]
@@ -66,7 +69,7 @@ group :development, :test do
 end
 
 group :development do
-  gem 'bullet'
+  # gem 'bullet'
   gem 'pry-rails'
   gem 'web-console', '>= 3.3.0'
   gem 'listen', '>= 3.0.5', '< 3.2'

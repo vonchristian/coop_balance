@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171128130847) do
+ActiveRecord::Schema.define(version: 20171130080641) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,15 +56,8 @@ ActiveRecord::Schema.define(version: 20171128130847) do
     t.decimal "interest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "amortizeable_type"
-    t.uuid "amortizeable_id"
-    t.string "type"
-    t.integer "schedule_type"
     t.decimal "amount"
-    t.index ["amortizeable_type", "amortizeable_id"], name: "amortization_schedules_amortizeable_index"
     t.index ["loan_id"], name: "index_amortization_schedules_on_loan_id"
-    t.index ["schedule_type"], name: "index_amortization_schedules_on_schedule_type"
-    t.index ["type"], name: "index_amortization_schedules_on_type"
   end
 
   create_table "amounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

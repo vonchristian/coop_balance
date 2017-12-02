@@ -205,7 +205,7 @@ module LoansModule
       if amortization_schedules.present?
         amortization_schedules.destroy_all
       end
-      LoansModule::PrincipalAmortizationSchedule.create_schedule_for(self)
+      LoansModule::AmortizationSchedule.create_schedule_for(self)
       # LoansModule::InterestOnLoanAmortizationSchedule.create_schedule_for(self)
     end
     def interest_on_loan_amount

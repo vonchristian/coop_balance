@@ -1,0 +1,7 @@
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "Buttons") do |sheet|
+  @loans.each do |loan|
+    sheet.add_row ["First Column", "Second", "Third"]
+    sheet.add_row [loan.borrower_name]
+  end
+end

@@ -7,6 +7,7 @@ module Organizations
       @cooperative = current_user.cooperative
       respond_to do |format|
         format.html
+        format.xlsx
         format.pdf do
           pdf = Organizations::BillingStatementPdf.new(@organization, @loans, @cooperative, @date, view_context)
           send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Billing Statement.pdf"

@@ -1,6 +1,7 @@
 <div class="tab-pane <%= 'active' if current_page?(organization_loans_path(@organization)) %>">
   Loans of Members
   <hr>
+  <%= link_to 'Excel', organization_loans_path(@organization, format: 'xlsx') %>
 <%= form_tag({:action => "index", format: 'pdf', controller: "organizations/loans", organization_id: @organization.id, date: params[:date]}, {:method => :get})  do %>
               <div class="row">
                 <div class="col-md-3">
