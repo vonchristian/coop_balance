@@ -35,5 +35,25 @@ require 'rails_helper'
 
       expect(product_stock.in_stock).to eql(10)
     end
+
+    it '#out_of_stock?' do
+      product_stock = create(:product_stock, quantity: 20)
+      sold_item = create(:line_item, quantity: 20, line_itemable: product_stock)
+
+      expect(product_stock.out_of_stock?).to be true
+    end
+
+    it '#set_default_date' do
+      product_stock = create(:product_stock)
+
+      expect(product_stock.date.to_date).to eql(Time.zone.now.to_date)
+    end
+
+    it '#set_name' do
+      product = create(:product, name: "Soy Sauce 250ml")
+      product_stock = create(:product_stock, product: product)
+
+      expect(product_stock.name).to eql("Soy Sauce 250ml")
+    end
   end
 end

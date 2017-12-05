@@ -1,18 +1,15 @@
 module StoreModule
   class LineItem < ApplicationRecord
     belongs_to :line_itemable, polymorphic: true
-    belongs_to :product, class_name: "StoreModule::Product"
     belongs_to :cart, class_name: "StoreModule::Cart"
     delegate :name, :barcode, to: :line_itemable, prefix: true
     after_commit :set_total_cost
-    def self.total
+    def self.total_quantity
       all.sum(&:quantity)
     end
+
     def self.total_cost
       all.sum(:total_cost)
-    end
-    def unit_cost_and_quantity
-      product_stock.unit_cost * quantity
     end
 
     private

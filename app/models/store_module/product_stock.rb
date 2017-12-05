@@ -17,11 +17,11 @@ module StoreModule
     end
 
     def in_stock
-      quantity - sold_items.total
+      quantity - sold_items.total_quantity
     end
 
     def out_of_stock?
-      in_stock.zero?
+      in_stock.zero? || in_stock < 0
     end
 
 	  private

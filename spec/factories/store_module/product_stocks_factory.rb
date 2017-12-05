@@ -4,7 +4,6 @@ FactoryBot.define do
     total_cost "9.99"
     product
     supplier
-    date "2017-06-12 11:43:33"
     quantity 1
     barcode '11111111'
     sequence(:name) { |n| "ProductStock " +  ('a'..'z').to_a.shuffle.join }
