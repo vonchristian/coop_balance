@@ -13,6 +13,7 @@ class Member < ApplicationRecord
   validates :fullname, uniqueness: { message: 'is already registered'}
   belongs_to :branch_office, class_name: "CoopConfigurationsModule::BranchOffice"
   has_one :tin, as: :tinable
+  has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document
   has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", as: :commercial_document #for temporary cration of debit adn creditrs
   has_one :membership, as: :memberable
   has_many :member_occupations, dependent: :destroy

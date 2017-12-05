@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2017_12_05_115548) do
+ActiveRecord::Schema.define(version: 2017_12_05_230130) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -133,6 +133,13 @@ ActiveRecord::Schema.define(version: 2017_12_05_115548) do
     t.datetime "updated_at", null: false
     t.uuid "user_id"
     t.index ["user_id"], name: "index_carts_on_user_id"
+  end
+
+  create_table "categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_categories_on_name", unique: true
   end
 
   create_table "charge_adjustments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -777,6 +784,8 @@ ActiveRecord::Schema.define(version: 2017_12_05_115548) do
     t.integer "photo_file_size"
     t.datetime "photo_updated_at"
     t.string "name"
+    t.uuid "category_id"
+    t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["name"], name: "index_products_on_name", unique: true
   end
 
@@ -1212,6 +1221,7 @@ ActiveRecord::Schema.define(version: 2017_12_05_115548) do
   add_foreign_key "product_stocks", "products"
   add_foreign_key "product_stocks", "registries"
   add_foreign_key "product_stocks", "suppliers"
+  add_foreign_key "products", "categories"
   add_foreign_key "program_subscriptions", "programs"
   add_foreign_key "programs", "accounts"
   add_foreign_key "raw_material_stocks", "raw_materials"

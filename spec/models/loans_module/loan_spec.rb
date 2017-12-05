@@ -8,17 +8,18 @@ module LoansModule
       it { is_expected.to belong_to :street }
       it { is_expected.to belong_to :barangay }
       it { is_expected.to belong_to :municipality }
+      it { is_expected.to belong_to :organization }
       it { is_expected.to have_one :cash_disbursement_voucher }
       it { is_expected.to belong_to :preparer }
     	it { is_expected.to have_many :loan_approvals }
     	it { is_expected.to have_many :approvers }
     	it { is_expected.to have_many :entries }
       it { is_expected.to have_many :loan_charges }
+      it { is_expected.to have_many :loan_charge_payment_schedules }
       it { is_expected.to have_many :charges }
       it { is_expected.to have_many :loan_co_makers }
       it { is_expected.to have_many :member_co_makers }
       it { is_expected.to have_many :employee_co_makers }
-
       it { is_expected.to have_many :notices }
       it { is_expected.to have_many :collaterals }
       it { is_expected.to have_many :real_properties }
@@ -31,15 +32,24 @@ module LoansModule
     describe 'validations' do
       it { is_expected.to validate_presence_of :term }
       it { is_expected.to validate_presence_of :loan_product_id }
-      it { is_expected.to validate_numericality_of :term }
+      it { is_expected.to validate_numericality_of(:term).is_greater_than(0.1) }
+      it { is_expected.to validate_numericality_of(:loan_amount).is_less_than_or_equal_to(:loan_product_max_loanable_amount) }
     end
 
     context 'delegations' do
     	it { is_expected.to delegate_method(:name).to(:borrower).with_prefix }
+      it { is_expected.to delegate_method(:age).to(:borrower).with_prefix }
+      it { is_expected.to delegate_method(:contact_number).to(:borrower).with_prefix }
+      it { is_expected.to delegate_method(:current_address).to(:borrower).with_prefix }
       it { is_expected.to delegate_method(:full_name).to(:preparer).with_prefix }
+      it { is_expected.to delegate_method(:current_occupation).to(:preparer).with_prefix }
     	it { is_expected.to delegate_method(:name).to(:loan_product).with_prefix }
+      it { is_expected.to delegate_method(:max_loanable_amount).to(:loan_product).with_prefix }
+      it { is_expected.to delegate_method(:loan_product_interest_account).to(:loan_product).with_prefix }
       it { is_expected.to delegate_method(:account).to(:loan_product).with_prefix }
       it { is_expected.to delegate_method(:interest_rate).to(:loan_product).with_prefix }
+      it { is_expected.to delegate_method(:name).to(:organization).with_prefix }
+
     end
 
     it "#taxable_amount" do
@@ -67,7 +77,7 @@ module LoansModule
       loan = create(:loan, term: 2, mode_of_payment: 'monthly',  loan_product: loan_product)
       loan.disbursed!
       entry = create(:entry_with_credit_and_debit, commercial_document: loan, entry_date: Date.today)
-      LoansModule::PrincipalAmortizationSchedule.create_schedule_for(loan)
+      LoansModule::AmortizationSchedule.create_schedule_for(loan)
       expect(loan.amortization_schedules).to be_present
       expect(loan.maturity_date.to_date).to eql(Date.today.next_month.next_month.to_date)
     end

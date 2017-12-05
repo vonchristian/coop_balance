@@ -5,16 +5,17 @@ module LoansModule
     enum loan_term_duration: [:month]
     enum loan_status: [:application, :processing, :approved, :disbursed, :past_due, :aging]
     enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
+
     belongs_to :borrower, polymorphic: true
-    belongs_to :employee, class_name: "User", foreign_key: 'employee_id' #prepared by signatory
+    belongs_to :employee, class_name: "User", foreign_key: 'employee_id'
     belongs_to :loan_product, class_name: "LoansModule::LoanProduct"
     belongs_to :street, optional: true, class_name: "Addresses::Street"
     belongs_to :barangay, optional: true, class_name: "Addresses::Barangay"
     belongs_to :municipality, optional: true, class_name: "Addresses::Municipality"
-    belongs_to :organization
+    belongs_to :organization, optional: true
+    belongs_to :preparer, class_name: "User", foreign_key: 'preparer_id'
     has_many :loan_protection_funds, class_name: "LoansModule::LoanProtectionFund", dependent: :destroy
     has_one :cash_disbursement_voucher, class_name: "Voucher", as: :voucherable, foreign_key: 'voucherable_id'
-    has_many :loan_protection_funds, class_name: "LoansModule::LoanProtectionFund", dependent: :destroy
     has_many :loan_approvals, class_name: "LoansModule::LoanApproval", dependent: :destroy
     has_many :approvers, through: :loan_approvals
     has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
@@ -29,7 +30,6 @@ module LoansModule
     has_many :collaterals, class_name: "LoansModule::Collateral", dependent: :destroy
     has_many :real_properties, through: :collaterals
     has_many :notices, as: :notified, dependent: :destroy
-    belongs_to :preparer, class_name: "User", foreign_key: 'preparer_id'
     has_one :first_notice, class_name: "LoansModule::Notices::FirstNotice", as: :notified
     has_one :second_notice, class_name: "LoansModule::Notices::SecondNotice", as: :notified
     has_one :third_notice, class_name: "LoansModule::Notices::ThirdNotice", as: :notified
@@ -61,10 +61,10 @@ module LoansModule
       amortization_schedules + loan_charge_payment_schedules
     end
     def store_payment_total
-      entries.map{|a| a.credit_amounts.distinct.where(account: CoopConfigurationsModule::AccountReceivableStoreConfig.account_to_debit).sum(&:amount)}.sum
+      AccountsReceivableStore.new.total_payments(self)
     end
     def penalty_payment_total
-      entries.map{|a| a.credit_amounts.distinct.where(account: CoopConfigurationsModule::LoanPenaltyConfig.account_to_debit).sum(&:amount)}.sum
+      LoanPenalty.new.payments_total(self)
     end
     def penalties_total
       LoanPenalty.new.balance(self)
