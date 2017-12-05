@@ -16,6 +16,7 @@ RSpec.describe Voucher, type: :model do
 
   describe 'delegations' do
     it { is_expected.to delegate_method(:name).to(:voucherable) }
+    it { is_expected.to delegate_method(:payable_amount).to(:voucherable) }
     it { is_expected.to delegate_method(:full_name).to(:preparer).with_prefix }
     it { is_expected.to delegate_method(:full_name).to(:disburser).with_prefix }
     it { is_expected.to delegate_method(:current_occupation).to(:preparer).with_prefix }

@@ -8,14 +8,23 @@ class Voucher < ApplicationRecord
   belongs_to :payee, polymorphic: true
   belongs_to :preparer, class_name: "User", foreign_key: 'preparer_id'
   belongs_to :disburser, class_name: "User", foreign_key: 'disburser_id'
+  has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", dependent: :destroy
 
   delegate :name, :payable_amount, to: :voucherable, allow_nil: true
   delegate :full_name, :current_occupation, to: :preparer, prefix: true
   delegate :full_name, :current_occupation, to: :disburser, prefix: true, allow_nil: true
   delegate :name, to: :payee, prefix: true
-  has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", dependent: :destroy
 
   before_save :set_date
+
+  def add_amounts(payee)
+    self.voucher_amounts << payee.voucher_amounts
+    payee.voucher_amounts.each do |v|
+      v.commercial_document_id = nil
+      v.commercial_document_type = nil
+      v.save
+    end
+  end
 
   def for_loan?
     voucherable_type == "LoansModule::Loan"
@@ -30,14 +39,6 @@ class Voucher < ApplicationRecord
     payee_type == "User"
   end
 
-  def add_amounts(employee)
-    self.voucher_amounts << employee.voucher_amounts
-    employee.voucher_amounts.each do |v|
-      v.commercial_document_id = nil
-      v.commercial_document_type = nil
-      v.save
-    end
-  end
 
   def self.generate_number_for(voucher)
     return  voucher.number = Voucher.order(created_at: :asc).last.number.succ if Voucher.exists? && Voucher.order(created_at: :asc).last.number.present?

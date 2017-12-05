@@ -1,4 +1,4 @@
 module Vouchers
-  class EmployeeVoucher < Voucher 
+  class EmployeeVoucher < Voucher
   end
 end

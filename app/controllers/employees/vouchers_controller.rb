@@ -6,11 +6,11 @@ module Employees
     def new
       @employee = User.find(params[:employee_id])
       @amount = Vouchers::VoucherAmount.new
-      @voucher = Voucher.new
+      @voucher = Vouchers::EmployeeVoucher.new
     end
     def create
        @employee = User.find(params[:employee_id])
-      @voucher = Voucher.create(voucher_params)
+      @voucher = Vouchers::EmployeeVoucher.create(voucher_params)
       if @voucher.save
         @voucher.add_amounts(@employee)
         redirect_to employee_vouchers_url(@employee), notice: "Voucher created successfully."
@@ -21,7 +21,7 @@ module Employees
 
     private
     def voucher_params
-      params.require(:voucher).permit(:date, :payee_id, :description, :payee_type, :voucherable_id, :description, :voucherable_type, :user_id, :number, :preparer_id)
+      params.require(:vouchers_employee_voucher).permit(:date, :payee_id, :description, :payee_type, :voucherable_id, :description, :voucherable_type, :user_id, :number, :preparer_id)
 
     end
   end
