@@ -10,11 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171130080641) do
+ActiveRecord::Schema.define(version: 2017_12_05_115548) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
   enable_extension "pgcrypto"
+  enable_extension "plpgsql"
 
   create_table "account_receivable_store_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "account_id"
@@ -390,8 +390,6 @@ ActiveRecord::Schema.define(version: 20171130080641) do
   end
 
   create_table "line_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "product_id"
-    t.uuid "product_stock_id"
     t.uuid "order_id"
     t.decimal "unit_cost"
     t.decimal "total_cost"
@@ -405,8 +403,6 @@ ActiveRecord::Schema.define(version: 20171130080641) do
     t.index ["cart_id"], name: "index_line_items_on_cart_id"
     t.index ["line_itemable_type", "line_itemable_id"], name: "index_line_items_on_line_itemable_type_and_line_itemable_id"
     t.index ["order_id"], name: "index_line_items_on_order_id"
-    t.index ["product_id"], name: "index_line_items_on_product_id"
-    t.index ["product_stock_id"], name: "index_line_items_on_product_stock_id"
   end
 
   create_table "loan_approvals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1180,8 +1176,6 @@ ActiveRecord::Schema.define(version: 20171130080641) do
   add_foreign_key "fixed_terms", "time_deposits"
   add_foreign_key "line_items", "carts"
   add_foreign_key "line_items", "orders"
-  add_foreign_key "line_items", "product_stocks"
-  add_foreign_key "line_items", "products"
   add_foreign_key "loan_approvals", "loans"
   add_foreign_key "loan_approvals", "users", column: "approver_id"
   add_foreign_key "loan_charge_payment_schedules", "amortization_schedules"

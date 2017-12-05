@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :product, class: "StoreModule::Product" do
-    name { Faker::Ecommerce.name }
+    sequence(:name) { |n| "Product " +  ('a'..'z').to_a.shuffle.join }
     description "MyString"
     unit "MyString"
   end

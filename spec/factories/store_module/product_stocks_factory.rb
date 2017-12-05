@@ -7,7 +7,7 @@ FactoryBot.define do
     date "2017-06-12 11:43:33"
     quantity 1
     barcode '11111111'
-    name ''
+    sequence(:name) { |n| "ProductStock " +  ('a'..'z').to_a.shuffle.join }
     retail_price 100
     wholesale_price 100
   end

@@ -23,7 +23,7 @@ module StoreModule
 
     private
     def line_item_params
-      params.require(:store_module_line_item).permit(:pricing_type, :user_id, :product_stock_id, :quantity, :unit_cost, :total_cost)
+      params.require(:store_module_line_item).permit(:pricing_type, :user_id, :line_itemable_id, :line_itemable_type, :quantity, :unit_cost, :total_cost)
     end
   end
 end

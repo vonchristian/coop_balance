@@ -13,7 +13,7 @@
       </div>
     <% end %>
         <br>
-        
+
           <% @stocks.each do |stock| %>
             <div class="row">
               <div class="col-md-5 col-md-offset-1">
@@ -22,7 +22,7 @@
                   <span class="label bg-green">
                     <%= stock.in_stock.to_i %> left
                   </span><br><br>
-               
+
                 <i class="fa fa-clock-o"></i> <%= stock.date.strftime("%b/%e/%y") %>
               </div>
               <div class="col-md-2">
@@ -36,7 +36,8 @@
                   <% end %>
                 </div>
                 <div class="col-md-2">
-                  <%= f.input :product_stock_id, input_html: { value: stock.id }, as: :hidden %>
+                  <%= f.input :line_itemable_id, input_html: { value: stock.id }, as: :hidden %>
+                  <%= f.input :line_itemable_type, input_html: { value: stock.class }, as: :hidden %>
                   <% if !stock.out_of_stock? %>
                     <%= f.submit "Add", class: "btn btn-primary btn-sm" %>
                   <% else %>
@@ -47,7 +48,7 @@
             </div>
             <hr>
           <% end %>
-       
+
       </div>
     </div>
   </div>
@@ -60,16 +61,16 @@
       </div>
       <div class="box-body">
         <div class="row">
-          
+
           <div class="col-md-2 col-sm-1 col-xs-1">
             QTY
           </div>
           <div class="col-md-7 col-sm-5 col-xs-5">
             PRODUCT
           </div>
-          
+
           <div class="col-md-3 col-sm-2 col-xs-2">
-            <small>TOTAL COST</small> 
+            <small>TOTAL COST</small>
           </div>
         </div>
         <br>
