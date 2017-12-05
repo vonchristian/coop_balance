@@ -2,11 +2,12 @@ require 'rails_helper'
 
 module StoreModule
   describe Product do
-    context "associations" do 
+    context "associations" do
     	it { is_expected.to have_many :stocks }
+        it { is_expected.to have_many :sold_items }
     end
-    context 'validations' do 
-    	it { is_expected.to validate_presence_of :name } 
+    context 'validations' do
+    	it { is_expected.to validate_presence_of :name }
     	it { is_expected.to validate_uniqueness_of :name }
     end
 

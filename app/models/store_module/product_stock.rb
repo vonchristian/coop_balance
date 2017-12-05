@@ -11,6 +11,9 @@ module StoreModule
 	  validates :supplier_id, presence: true
 	  validates :unit_cost, :total_cost, :quantity, :retail_price, :wholesale_price, numericality: { greater_than: 0.01 }
 	  before_save :set_default_date, :set_name
+    def self.in_stock
+      sum(&:in_stock)
+    end
 
     def self.total_quantity
       sum(&:quantity)

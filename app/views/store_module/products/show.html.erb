@@ -8,16 +8,16 @@
         <div class="box-body">
           <div class="row">
             <div class="col-md-3 border-right">
-              <h3 class="no-padding"><%= @product.deliveries_count.to_i %></h3>
+              <h3 class="no-padding"><%= @product.stocks.total_quantity %></h3>
               <small>DELIVERIES</small>
             </div>
             <div class="col-md-3 border-right">
-              <h3 class="no-padding"><%= @product.sold_count %></h3>
+              <h3 class="no-padding"><%= @product.sold_items.total_quantity %></h3>
               <small>SOLD</small>
             </div>
             <div class="col-md-3 border-right">
               <center>
-              <h3 class="no-padding"><%= @product.in_stock_count %></h3>
+              <h3 class="no-padding"><%= @product.stocks.in_stock %></h3>
               <small>IN STOCK</small>
               </center>
             </div>

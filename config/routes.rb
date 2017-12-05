@@ -188,6 +188,7 @@ Rails.application.routes.draw do
   resources :store, only: [:index]
   namespace :store_module do
     resources :settings, only: [:index]
+    resources :reports, only: [:index]
     resources :accounts_receivable_store_config, only: [:new, :create]
     resources :search_results, only: [:index]
     resources :members, only: [:index, :show, :new, :create]

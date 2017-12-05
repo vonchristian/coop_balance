@@ -2,6 +2,10 @@ module StoreModule
   class ProductsController < ApplicationController
     def index
       @products = StoreModule::Product.all
+      respond_to do |format|
+        format.html
+        format.xlsx
+      end
     end
     def new
       @product = StoreModule::Product.new
