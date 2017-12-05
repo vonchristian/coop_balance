@@ -8,7 +8,7 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
 
   </head>
-  <body class="hold-transition skin-purple-light sidebar-mini">
+  <body class="hold-transition skin-black-light sidebar-mini">
     <div class="wrapper">
       <%=render "layouts/shared/header" %>
       <% if current_user.bookkeeper? || current_user.accountant? %>
@@ -47,7 +47,7 @@
           <%= yield %>
         </section>
       </div>
-        <%=render 'layouts/shared/footer' %>
+        <%=render 'layouts/shared/footer', cached: true %>
     </div>
 
   </body>

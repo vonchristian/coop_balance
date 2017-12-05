@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :product, class: "StoreModule::Product" do
-    name "MyString"
+    name { Faker::Ecommerce.name }
     description "MyString"
     unit "MyString"
   end

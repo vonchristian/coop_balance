@@ -1,5 +1,0 @@
-<%= simple_form_for Registry.new do |f| %>
-  <%= f.input :spreadsheet %>
-  <%= f.input :employee_id, input_html: { current_user.id }, as: :hidden %>
-  <%= f.submit %>
-<% end %>

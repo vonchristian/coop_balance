@@ -9,9 +9,9 @@ module StoreModule
 	  delegate :name, to: :product, allow_nil: true
 
 	  validates :supplier_id, presence: true
-	  validates :unit_cost, :total_cost, numericality: { greater_than: 0.01 }
+	  validates :unit_cost, :total_cost, :quantity, :retail_price, :wholesale_price, numericality: { greater_than: 0.01 }
 	  before_save :set_default_date, :set_name
-    def self.total 
+    def self.total
       sum(&:quantity)
     end
     def in_stock
@@ -22,12 +22,12 @@ module StoreModule
     end
 
 
-	  private 
-	  def set_default_date 
+	  private
+	  def set_default_date
 	  	self.date ||= Time.zone.now
 	  end
-    def set_name 
-      self.name = self.product.name 
+    def set_name
+      self.name = self.product.name
     end
 	end
 end
