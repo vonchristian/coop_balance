@@ -242,6 +242,7 @@ Rails.application.routes.draw do
     resources :break_contracts, only: [:new, :create], module: :time_deposits
   end
   resources :employees, only: [:index, :show, :edit, :update] do
+    resources :blotters, only: [:index], module: :employees
     resources :cash_disbursements, only: [:index], module: :employees
     resources :cash_receipts, only: [:index], module: :employees
     resources :loans, only: [:new, :create], module: :employees

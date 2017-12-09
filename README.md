@@ -122,3 +122,6 @@ Fix time deposits on transactio nsummary
 Statement of accounts per member
 
 refactor transactions summary pdf
+
+
+The man doesnt know how to give up
