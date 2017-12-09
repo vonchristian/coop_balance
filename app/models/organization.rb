@@ -1,5 +1,5 @@
 class Organization < ApplicationRecord
-  has_many :organization_members
+  has_many :organization_members, class_name: "Organizations::OrganizationMember"
   has_many :member_members, through: :organization_members, source: :organization_membership, source_type: "Member"
   has_many :employee_members, through: :organization_members, source: :organization_membership, source_type: "User"
   has_many :loans, class_name: "LoansModule::Loan"

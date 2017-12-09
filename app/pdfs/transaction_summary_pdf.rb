@@ -1,5 +1,4 @@
-
-class TellerReportPdf < Prawn::Document
+class TransactionSummaryPdf < Prawn::Document
   def initialize(employee, date, view_context)
     super(margin: 40, page_size: "A4", page_layout: :portrait)
     @employee = employee

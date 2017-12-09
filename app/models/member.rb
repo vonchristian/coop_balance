@@ -28,7 +28,7 @@ class Member < ApplicationRecord
   has_many :programs, through: :program_subscriptions
   has_many :orders, class_name: "StoreModule::Order", as: :customer
   has_many :real_properties, as: :owner
-  has_many :organization_memberships, class_name: "OrganizationMember", as: :organization_membership
+  has_many :organization_memberships, class_name: "Organizations::OrganizationMember", as: :organization_membership
   has_many :organizations, through: :organization_memberships
   accepts_nested_attributes_for :tin, :addresses, :membership
   delegate :number, to: :tin, prefix: true, allow_nil: true

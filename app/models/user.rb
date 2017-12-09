@@ -48,7 +48,7 @@ class User < ApplicationRecord
   has_many :real_properties, as: :owner
   has_many :contributions, through: :employee_contributions
 
-  has_many :organization_memberships, class_name: "OrganizationMember", as: :organization_membership
+  has_many :organization_memberships, class_name: "Organizations::OrganizationMember", as: :organization_membership
   has_many :organizations, through: :organization_memberships
 
   has_many :program_subscriptions, class_name: "MembershipsModule::ProgramSubscription", as: :subscriber
