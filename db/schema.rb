@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2017_12_05_230130) do
+ActiveRecord::Schema.define(version: 2017_12_09_072645) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -317,11 +317,13 @@ ActiveRecord::Schema.define(version: 2017_12_05_230130) do
     t.uuid "branch_office_id"
     t.uuid "section_id"
     t.uuid "store_front_id"
+    t.integer "payment_type", default: 0
     t.index ["branch_office_id"], name: "index_entries_on_branch_office_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_entry"
     t.index ["department_id"], name: "index_entries_on_department_id"
     t.index ["entry_date"], name: "index_entries_on_entry_date"
     t.index ["entry_type"], name: "index_entries_on_entry_type"
+    t.index ["payment_type"], name: "index_entries_on_payment_type"
     t.index ["recorder_id"], name: "index_entries_on_recorder_id"
     t.index ["section_id"], name: "index_entries_on_section_id"
     t.index ["store_front_id"], name: "index_entries_on_store_front_id"
@@ -509,8 +511,10 @@ ActiveRecord::Schema.define(version: 2017_12_05_230130) do
     t.string "depends_on_share_capital_balance"
     t.decimal "minimum_share_capital_balance"
     t.decimal "maximum_share_capital_balance"
+    t.string "slug"
     t.index ["account_id"], name: "index_loan_products_on_account_id"
     t.index ["name"], name: "index_loan_products_on_name", unique: true
+    t.index ["slug"], name: "index_loan_products_on_slug", unique: true
   end
 
   create_table "loan_protection_fund_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

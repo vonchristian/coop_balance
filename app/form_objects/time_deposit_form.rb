@@ -1,7 +1,7 @@
 class TimeDepositForm
   include ActiveModel::Model
   include ActiveModel::Callbacks
-  attr_accessor :or_number, :account_number, :date_deposited, :amount,:member_id, :recorder_id, :number_of_days, :time_deposit_product_id
+  attr_accessor :or_number, :account_number, :date_deposited, :amount,:member_id, :recorder_id, :number_of_days, :time_deposit_product_id, :payment_type
   validates :time_deposit_product_id, presence: true
   validates :amount, presence: true, numericality: true
   validates :number_of_days, presence: true, numericality: true
@@ -29,7 +29,7 @@ class TimeDepositForm
   end
 
   def create_entry
-    find_deposit.entries.time_deposit.create!(recorder_id: recorder_id, description: 'Time deposit', reference_number: or_number, entry_date: date_deposited,
+    find_deposit.entries.time_deposit.create!(payment_type: payment_type, recorder_id: recorder_id, description: 'Time deposit', reference_number: or_number, entry_date: date_deposited,
     debit_amounts_attributes: [account: find_employee.cash_on_hand_account, amount: amount],
     credit_amounts_attributes: [account: credit_account, amount: amount])
   end

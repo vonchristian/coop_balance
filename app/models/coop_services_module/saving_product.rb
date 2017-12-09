@@ -20,6 +20,7 @@ module CoopServicesModule
         subscribers
       end
     end
+
     def self.total_subscribers
       all.map{|a| a.subscribers.count }.sum
     end

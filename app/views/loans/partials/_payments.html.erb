@@ -1,7 +1,7 @@
 <div class="tab-pane <%= 'active' if current_page?(loan_payments_path(@loan))%>" id='loan-payments'>
-  <% if policy([:loans_module, :payment]).new? %>
+    <% if @loan.disbursed? %>
     <%=link_to 'New Payment', new_loan_payment_path(@loan), class: "btn btn-primary" %>
-  <% end %>
+    <% end %>
   <hr>
   <p class="condensed-text"> PAYMENTS HISTORY </p>
 
@@ -9,7 +9,7 @@
     <table class="table table-striped table-hover">
       <thead>
         <tr>
-          <th> DATE </th>
+        <th> DATE </th>
           <th> AMOUNT </th>
           <th> REFERENCE NUMBER </th>
           <th> EMPLOYEE</th>

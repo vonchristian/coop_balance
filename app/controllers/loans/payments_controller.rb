@@ -1,12 +1,14 @@
 module Loans
   class PaymentsController < ApplicationController
-    def index 
+    def index
       @loan = LoansModule::Loan.find(params[:loan_id])
-    end 
+    end
     def new
       @loan = LoansModule::Loan.find(params[:loan_id])
       @payment = LoanPaymentForm.new
-      authorize [:loans_module, :payment]
+      unless @loan.disbursement.present? && current_user.cash_on_hand_account.present?
+        redirect_to loans_url, alert: "Loan is not yet disbursed"
+      end
     end
     def create
       @loan = LoansModule::Loan.find(params[:loan_id])

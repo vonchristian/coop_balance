@@ -108,3 +108,17 @@ user pos printer
 
 
 validates fullname of member
+
+
+Settigns page for savings accounts for transferring deposit, closing account
+, adjustments
+
+FIX management settings page
+
+filter members per barangay, per municipality export to excel
+
+
+Fix time deposits on transactio nsummary
+Statement of accounts per member
+
+refactor transactions summary pdf

@@ -32,7 +32,7 @@
       <% LoansModule::AmortizationSchedule.for((Date.parse(@date).beginning_of_day), (Date.parse(@date).end_of_day)).each do |schedule| %>
         <div class="row">
           <div class="col-md-4">
-            <%= schedule.amortizeable.try(:borrower_name) %>
+            <%= schedule.loan.try(:borrower_name) %>
           </div>
           <div class="col-md-8">
             <%= number_to_currency schedule.try(:total_amortization) %>

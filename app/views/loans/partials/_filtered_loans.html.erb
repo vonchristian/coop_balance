@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col-md-3">
+    <div class="box box-solid">
+      <div class="box-header bg-gray">
+        <h3 class="box-title"> Filters </h3>
+      </div>
+      <div class="box-body">
+        <small>LOAN TYPE:</small><br>
+         <% LoansModule::LoanProduct.all.each do |loan_product| %>
+          <%=link_to loan_product.name, loans_module_loan_product_loans_path(loan_product), class: "badge bg-gray" %>
+        <% end %>
+        <hr />
+
+
+        <small> BARANGAY:</small><br>
+        <% @barangays.all.each do |barangay| %>
+          <%= barangay.name %>
+        <% end %>
+        <hr>
+        <small> MUNICIPALITY</small><br>
+        <% @municipalities.all.each do |municipality| %>
+          <%= link_to municipality.name, municipality_loans_path(municipality) %>
+        <% end %>
+        <hr>
+        <small>ORGANIZATION</small><br>
+        <% @organizations.each do |organization| %>
+          <%= link_to organization.name, organization_loans_path(organization) %>
+        <% end %>
+
+      </div>
+    </div>
+  </div>

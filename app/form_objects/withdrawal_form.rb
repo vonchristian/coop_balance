@@ -1,7 +1,7 @@
 class WithdrawalForm
   include ActiveModel::Model
   include ActiveModel::Validations::Callbacks
-  attr_accessor :saving_id, :amount, :or_number, :date, :recorder_id
+  attr_accessor :saving_id, :amount, :or_number, :date, :recorder_id, :payment_type
   validates :amount, presence: true, numericality: true
   validates :or_number, presence: true
 
@@ -9,8 +9,8 @@ class WithdrawalForm
     ActiveRecord::Base.transaction do
       if amount_is_less_than_balance
         save_withdraw
-      else 
-        errors[:base] << "Amount exceed balance" 
+      else
+        errors[:base] << "Amount exceed balance"
       end
     end
   end
@@ -22,7 +22,7 @@ class WithdrawalForm
   end
 
   def save_withdraw
-    find_saving.entries.create!(recorder_id: recorder_id, entry_type: 'withdrawal', description: 'Withdraw', reference_number: or_number, entry_date: date,
+    find_saving.entries.create!(payment_type: payment_type, recorder_id: recorder_id, entry_type: 'withdrawal', description: 'Withdraw', reference_number: or_number, entry_date: date,
     debit_amounts_attributes: [account: debit_account, amount: amount],
     credit_amounts_attributes: [account: credit_account, amount: amount])
   end

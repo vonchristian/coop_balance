@@ -41,7 +41,7 @@ module LoansModule
     delegate :full_name, :current_occupation, to: :preparer, prefix: true
     before_save :set_default_date
 
-    validates :loan_product_id, presence: true
+    validates :loan_product_id, :borrower_id, :borrower_type, presence: true
     validates :term, presence: true, numericality: { greater_than: 0.1 }
     validates :loan_amount, numericality: { less_than_or_equal_to: :loan_product_max_loanable_amount}
 
@@ -168,7 +168,7 @@ module LoansModule
           loan_amount
         end
       else
-        entries.loan_disbursement.last.credit_amounts.distinct.select{|a| User.cash_on_hand_accounts.include?(a.account)}.sum(&:amount)
+        disbursement.credit_amounts.distinct.select{|a| User.cash_on_hand_accounts.include?(a.account)}.sum(&:amount)
       end
     end
     def balance_for(schedule)
@@ -211,7 +211,7 @@ module LoansModule
     def interest_on_loan_amount
     end
     def disbursed?
-      entries.loan_disbursement.present?
+      disbursement.present?
     end
 
     def payments
@@ -230,9 +230,9 @@ module LoansModule
     end
 
     def disbursement
-      if entries.present?
-       entries.loan_disbursement.last
-     end
+      if cash_disbursement_voucher.present?
+         cash_disbursement_voucher.entry
+      end
     end
 
     def maturity_date
@@ -244,13 +244,14 @@ module LoansModule
     def disbursement_date
       if disbursement.present?
         disbursement.entry_date
-      else
-        "Not Yet Disbursed"
       end
     end
 
     def balance
       loan_amount - payments_total
+    end
+    def status_color
+      'yellow'
     end
 
     def number_of_days_past_due

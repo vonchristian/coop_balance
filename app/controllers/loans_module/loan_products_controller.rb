@@ -17,14 +17,14 @@ module LoansModule
       end
     end
     def show
-      @loan_product = LoansModule::LoanProduct.find(params[:id])
+      @loan_product = LoansModule::LoanProduct.friendly.find(params[:id])
     end
 
     def edit
-      @loan_product = LoansModule::LoanProduct.find(params[:id])
+      @loan_product = LoansModule::LoanProduct.friendly.find(params[:id])
     end
     def update
-      @loan_product = LoansModule::LoanProduct.find(params[:id])
+      @loan_product = LoansModule::LoanProduct.friendly.find(params[:id])
       @loan_product.update(loan_product_params)
       if @loan_product.save
         redirect_to loans_module_loan_product_url(@loan_product), notice: "updated successfully"

@@ -15,7 +15,7 @@ module ManagementModule
 
       private
       def break_contract_fee_params
-        params.require(:coop_configurations_module_break_contract_fee).permit(:amount, :rate)
+        params.require(:coop_configurations_module_break_contract_fee).permit(:amount, :rate, :account_id)
       end
     end
   end

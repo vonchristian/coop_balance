@@ -30,7 +30,7 @@ class TransactionSummaryPdf < Prawn::Document
         text "Kiangan Community Multipurpose Cooperative", size: 10
     end
     bounding_box [0, 780], width: 400 do
-      text "Teller's Blotter", style: :bold, size: 14
+      text "Transactions Summary", style: :bold, size: 14
       move_down 3
       text "#{@date.strftime("%B %e, %Y")}", size: 10
       move_down 3
@@ -101,11 +101,15 @@ class TransactionSummaryPdf < Prawn::Document
     [["", "Beginning Balance", "#{price(CoopServicesModule::SavingProduct.accounts_balance(to_date: @date.yesterday.end_of_day))}"]]
   end
   def add_savings_deposits
-    [["", "", "Add Deposits", "#{price(CoopServicesModule::SavingProduct.accounts.uniq.map{|a| a.credit_entries.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total}.sum) }"]]
+    [["", "", "Add Deposits (Cash)", "#{price(CoopServicesModule::SavingProduct.accounts.uniq.map{|a| a.credit_entries.cash.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total}.sum) }"]] +
+    [["", "", "Add Deposits (Check)", "#{price(CoopServicesModule::SavingProduct.accounts.uniq.map{|a| a.credit_entries.check.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total}.sum) }"]]
+
   end
 
   def less_savings_deposits
-    [["", "", "Less Withdrawals", "#{price(CoopServicesModule::SavingProduct.accounts.uniq.map{|a| a.debit_entries.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total}.sum )}"]]
+    [["", "", "Less Withdrawals (Cash)", "#{price(CoopServicesModule::SavingProduct.accounts.uniq.map{|a| a.debit_entries.cash.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total}.sum )}"]] +
+    [["", "", "Less Withdrawals (Check)", "#{price(CoopServicesModule::SavingProduct.accounts.uniq.map{|a| a.debit_entries.check.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total}.sum )}"]]
+
   end
 
   def total_savings_deposits
@@ -145,17 +149,21 @@ class TransactionSummaryPdf < Prawn::Document
     end
   end
   def time_deposits_balances
-    [["", "Beginning Balance", "#{price(AccountingModule::Account.find_by(name: "Time Deposits").balance(to_date: @date.beginning_of_day))}"]]
+    [["", "Beginning Balance", "#{price(CoopServicesModule::TimeDepositProduct.accounts_balance(to_date: @date.yesterday.end_of_day))}"]]
   end
   def time_deposits_from_members
-    [["", "", "Add Deposits", "#{price(AccountingModule::Account.find_by(name: "Time Deposits").credit_entries.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total)}"]]
-  end
-  def total_time_deposits
-    [["", "", "Total Time Deposits", "#{price(AccountingModule::Account.find_by(name: "Time Deposits").balance(to_date: @date.end_of_day))}"]]
+    [["", "", "Add Deposits (Cash)", "#{price(CoopServicesModule::TimeDepositProduct.accounts.uniq.map{|a| a.credit_entries.cash.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total}.sum) }"]] +
+    [["", "", "Add Deposits (Check)", "#{price(CoopServicesModule::TimeDepositProduct.accounts.uniq.map{|a| a.credit_entries.check.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total}.sum) }"]]
   end
   def time_deposit_withdrawals_from_members
-    [["", "", "Less Withdrawals", "#{price(AccountingModule::Account.find_by(name: "Time Deposits").debit_entries.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total)}"]]
+    [["", "", "Less Withdrawals (Cash)", "#{price(CoopServicesModule::TimeDepositProduct.accounts.uniq.map{|a| a.debit_entries.cash.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total}.sum) }"]] +
+    [["", "", "Less Withdrawals (Check)", "#{price(CoopServicesModule::TimeDepositProduct.accounts.uniq.map{|a| a.debit_entries.check.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total}.sum) }"]]
+
   end
+  def total_time_deposits
+    [["", "", "Total Time Deposits", "#{price(CoopServicesModule::TimeDepositProduct.accounts_balance)}"]]
+  end
+
   def share_capitals
     text "Share Capitals", style: :bold, size: 10, color: "4A86CF"
     table(share_capital_beginning_balance, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 150, 100]) do

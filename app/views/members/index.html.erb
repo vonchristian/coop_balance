@@ -27,7 +27,6 @@
         <br>
       </div>
       <div class="box-body">
-
         <% @members.each do |member| %>
           <% cache member do %>
             <%= link_to member_info_index_path(member) do %>
@@ -46,5 +45,16 @@
           <% end %>
         <% end %>
         <center><%= will_paginate @members %> </center>
+      </div>
+    </div>
+  </div>
+    <div class="col-md-4">
+      <div class="box box-solid">
+        <div class="box-header">
+          Monitoring
+        </div>
+        <div class="box-body">
+          <% Addresses::Municipali
+    </div>
 
 

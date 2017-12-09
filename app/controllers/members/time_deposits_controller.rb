@@ -23,7 +23,7 @@ module Members
 
     private
     def time_deposit_params
-      params.require(:time_deposit_form).permit(:or_number, :amount, :date, :member_id, :recorder_id, :number_of_days, :date_deposited, :time_deposit_product_id)
+      params.require(:time_deposit_form).permit(:or_number, :amount, :date, :member_id, :recorder_id, :number_of_days, :date_deposited, :time_deposit_product_id, :payment_type)
     end
   end
 end

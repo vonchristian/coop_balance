@@ -32,6 +32,8 @@ module LoansModule
     describe 'validations' do
       it { is_expected.to validate_presence_of :term }
       it { is_expected.to validate_presence_of :loan_product_id }
+      it { is_expected.to validate_presence_of :borrower_id }
+      it { is_expected.to validate_presence_of :borrower_type_id }
       it { is_expected.to validate_numericality_of(:term).is_greater_than(0.1) }
       it { is_expected.to validate_numericality_of(:loan_amount).is_less_than_or_equal_to(:loan_product_max_loanable_amount) }
     end

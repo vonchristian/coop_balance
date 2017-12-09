@@ -1,112 +1,20 @@
 <div class="row">
-  <div class="col-md-3">
-    <div class="box box-solid">
-      <div class="box-header bg-gray">
-        <h3 class="box-title"> Filters </h3>
-      </div>
-      <div class="box-body">
-        <small>LOAN TYPE:</small><br>
-        <%=form_tag loans_path, method: :get do %>
-         <% LoansModule::LoanProduct.all.each do |loan_product| %>
-          <span class="btn btn-default btn-sm"> <span class="text-muted"> <%=link_to loan_product.name, loans_path(loan_product_id: loan_product.id), class: "text-purple" %> </span> </span> &nbsp;
-        <% end %>
-        <hr />
-
-            Filter by price interval: <b>€ 10</b> <div class="slider slider-horizontal" style="width: 414px;"><div class="slider-track"><div class="slider-selection" style="left: 8.08081%; width: 91.9192%;"></div><div class="slider-handle round" style="left: 8.08081%;"></div><div class="slider-handle round" style="left: 100%;"></div></div><div class="tooltip top" style="top: -40px; left: 193.227px;"><div class="tooltip-arrow"></div><div class="tooltip-inner">10 : 1000</div></div><input class="span2" value="" data-slider-min="10" data-slider-max="1000" data-slider-step="5" data-slider-value="[250,450]" id="sl2" style="" type="text"></div> <b>€ 1000</b>
-
-
-        <small> BARANGAY:</small><br>
-        <% @barangays.all.each do |barangay| %>
-         <%= barangay.name %>
-       <%= text_field_tag "Barangay", value: barangay.id %>
-        <% end %>
-        <hr />
-        <span class="input-group-btn">
-                    <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
-                      <i class="fa fa-search"></i> Apply Filter
-                    <% end %>
-                  </span>
-      <% end %>
-       <%= form_tag loans_path, method: "get", id: "filter", class: "filter" do %>
-    <%= select_tag "loan_product", options_from_collection_for_select(LoansModule::LoanProduct.all, 'id', 'name')%>
-
-    <%= select_tag "barangay", options_from_collection_for_select(Addresses::Barangay.all, 'id', 'name')%>
-     <span class="input-group-btn">
-                    <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
-                      <i class="fa fa-search"></i> Apply Filter
-                    <% end %>
-                  </span>
-  <% end %>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-9">
+  <div class="col-md-12">
     <div class="box box-solid">
       <div class="box-header">
-        <div class="row">
-          <div class="col-md-2">
-            <h3 class="box-title">All Loans</h3>
-          </div>
-          <div class="col-md-6">
-            <%=form_tag loans_path, method: :get do %>
-                <div class="input-group">
-                  <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Borrower name", id: 'account-search-form' %>
-                  <span class="input-group-btn">
-                    <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
-                      <i class="fa fa-search"></i>
-                    <% end %>
-                  </span>
-                </div>
-              <% end %>
-          </div>
-        </div>
       </div>
       <div class="box-body">
+    <div class="nav-tabs-custom">
+      <ul class="nav nav-tabs">
+        <li class="<%= 'active' if current_page?(loans_path)%>"><%= link_to 'Info', loans_path %></li>
+        <li class="<%= 'active' if current_page?(filtered_loans_path)%>"><%= link_to 'Filters', filtered_loans_path %></li>
+        <li class="<%= 'active' if current_page?(loans_path)%>"><%= link_to 'Settings', loans_path %></li>
+    </ul>
+    <div class="tab-content">
+      <% if current_page? filtered_loans_path %>
+        <%= render 'loans/partials/filtered_loans' %>
+      <% end %>
+      <% if current_page? loans_path %>
+        <%= render 'loans/partials/all_loans' %>
+      <% end %>
 
-        <div class="table table-responsive">
-          <table class="table table-striped table-hover">
-            <thead>
-              <tr>
-                <th>Borrower</th>
-                <th>Loan Amount</th>
-                <th>Net Proceed</th>
-                <th>Type</th>
-                <th>Application Date</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @loans.each do |loan| %>
-                <tr data-link="<%=loan_path(loan)%>" class="myClass">
-                  <td>
-                    <% if loan.borrower.present? %>
-                    <%= image_tag(loan.borrower.avatar.url(:thumb), class: "img-circle", height: 35, width: 35) %> &nbsp; <b><%=loan.borrower_name %></b>
-                    <% end %>
-
-                    </td>
-                  <td><%= number_to_currency loan.loan_amount %></td>
-                  <td><%= number_to_currency loan.net_proceed %></td>
-                  <td><%= loan.loan_product_name %></td>
-                  <td>
-                    <%= loan.application_date.strftime("%B %e, %Y") %>
-
-                    </td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-          <center><%=will_paginate @loans %></center>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<script type="text/javascript">
-  $("tr").click(function() {
-  window.location = $(this).data("link")
-});
-  $('.myClass').css('cursor', 'pointer');
-</script>
-<script type="text/javascript">
-  $('.slider').slider()
-</script>

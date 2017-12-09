@@ -11,6 +11,7 @@
     <%= simple_form_for [@saving, @deposit], url: :savings_account_deposits do |f| %>
       <%= f.error_notification %>
       <%= f.input :amount, as: :currency %>
+      <%= f.input :payment_type, label: 'Type', collection: AccountingModule::Entry.payment_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
       <%= f.input :or_number %>
       <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
       <%= f.input :saving_id, input_html: { value: @savings_account.id },as: :hidden %>

@@ -1,10 +1,10 @@
 <%= simple_form_for [@member, @time_deposit], url: :member_time_deposits do |f| %>
   <%= f.error_notification %>
+  <%= f.input :amount %>
   <%= f.input :member_id, input_html: { value: @member.id }, as: :hidden %>
   <%= f.input :account_number %>
   <%= f.input :date %>
   <%= f.input :or_number %>
-  <%= f.input :amount %>
-  
+
   <%= f.submit %>
 <% end %>

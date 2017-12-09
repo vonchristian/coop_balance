@@ -1,15 +1,22 @@
 <div class="row">
-  <div class="col-md-4 col-md-offset-4">
-    <div class="box box-solid">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="nav-tabs-custom">
       <div class="box-header">
+          <h3 class="box-title"> New Time Deposit Details </h3>
+           <h4><center><%= image_tag(@member.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center></h4>
+
+            <h3><center><%= @member.name %></center></h3>
       </div>
-      <div class="box-body">
+     <div class="box-body">
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1">
 <%= simple_form_for [@member, @time_deposit], url: :member_time_deposits do |f| %>
   <%= f.error_notification %>
   <%= f.input :member_id, input_html: { value: @member.id }, as: :hidden %>
   <%= f.input :date_deposited, as: :string, input_html: { value: Time.zone.now.strftime("%B %e, %Y"), class: "datepicker" } %>
   <%= f.input :or_number %>
   <%= f.input :amount %>
+  <%= f.input :payment_type, label: 'Type', collection: AccountingModule::Entry.payment_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
   <%= f.input :number_of_days, label: "No. of Days Deposited:" %>
   <%= f.input :recorder_id, input_html: { value: current_user.id }, as: :hidden %>
   <%= f.input :time_deposit_product_id, collection: CoopServicesModule::TimeDepositProduct.all.map{|a| [a.amount_range_and_days, a.id] } %>

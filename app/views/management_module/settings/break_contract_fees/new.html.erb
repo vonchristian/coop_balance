@@ -1,4 +1,5 @@
 <%= simple_form_for @break_contract_fee, url: :management_module_settings_break_contract_fees do |f| %>
   <%= f.input :amount %>
+  <%= f.input :account_id, collection: AccountingModule::Revenue.all.map{|a| [a.name, a.id] } %>
   <%= f.submit "Save" %>
 <% end %>

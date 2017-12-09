@@ -1,5 +1,7 @@
 module LoansModule
   class LoanProduct < ApplicationRecord
+    extend FriendlyId
+    friendly_id :name, use: :slugged
   	belongs_to :account, class_name: "AccountingModule::Account"
     has_one :loan_product_interest
     has_many :loans

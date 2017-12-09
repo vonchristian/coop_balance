@@ -57,6 +57,7 @@ Rails.application.routes.draw do
     resources :dashboard, only: [:index]
     resources :loan_products, except:[:destroy] do
       resources :loan_product_charges, only: [:new, :create]
+      resources :loans, only: [:index], module: :loan_products
     end
     resources :adjustments, only: [:destroy]
     resources :loan_charges do
@@ -322,4 +323,5 @@ Rails.application.routes.draw do
     resources :loan_products, only: [:index]
     resources :store_fronts, only: [:index]
   end
+  resources :filtered_loans, only: [:index], module: :loans_module
 end

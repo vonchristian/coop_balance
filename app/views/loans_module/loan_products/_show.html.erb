@@ -1,0 +1,27 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-solid">
+    <div class="box box-header">
+      <h3 class="box-title"><%= @loan_product.name %></h3>
+      <p class="text-muted"><%= @loan_product.description %></p>
+      <%= link_to "Add Charges", new_loans_module_loan_product_loan_product_charge_path(@loan_product) %>
+    </div>
+    <div class="box-body">
+       <div class="nav-tabs-custom">
+         <ul class="nav nav-tabs">
+            <li class="<%= 'active' if current_page?(loans_module_loan_product_path(@loan_product))%>"><%= link_to 'Info', loans_module_loan_product_path(@loan_product) %></li>
+             <li class="<%= 'active' if current_page?(loans_module_loan_product_loans_path(@loan_product))%>"><%= link_to 'Loans', loans_module_loan_product_loans_path(@loan_product) %></li>
+          </ul>
+          <div class="tab-content box-body">
+            <% if current_page? loans_module_loan_product_loans_path(@loan_product) %>
+              <%= render 'loans_module/loan_products/partials/loans' %>
+            <% end %>
+            <% if current_page? loans_module_loan_product_path(@loan_product) %>
+              <%= render 'loans_module/loan_products/partials/info' %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

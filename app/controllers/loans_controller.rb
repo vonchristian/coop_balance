@@ -13,7 +13,15 @@ class LoansController < ApplicationController
     else
       @loans = LoansModule::Loan.all.paginate(page: params[:page], per_page: 30)
     end
-    @barangays = Addresses::Barangay.all
+
+    respond_to do |format|
+      format.xlsx
+      format.html
+      format.pdf do
+        pdf = LoansModule::Reports::FilteredLoansPdf.new(@loans,view_context)
+        send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Loans Report.pdf"
+      end
+    end
   end
   def show
     @loan = LoansModule::Loan.find(params[:id])
