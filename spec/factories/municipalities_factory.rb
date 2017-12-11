@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :municipality, class: "Addresses::Municipality" do
-    name "MyString"
+    sequence(:name) { |n| "Street Name" +  ('a'..'z').to_a.shuffle.join }
   end
 end

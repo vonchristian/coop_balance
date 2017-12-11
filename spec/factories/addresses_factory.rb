@@ -1,9 +1,10 @@
 FactoryBot.define do
   factory :address do
-    street "MyString"
-    barangay "MyString"
-    municipality "MyString"
-    province "MyString"
+    street
+    barangay
+    municipality
+    province
     addressable nil
+    current false
   end
 end

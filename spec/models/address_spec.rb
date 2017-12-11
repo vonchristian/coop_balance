@@ -9,6 +9,17 @@ describe Address do
     it { is_expected.to belong_to :province }
   end
 
+  describe 'validations' do
+    it { is_expected.to validate_presence_of :street_id }
+    it { is_expected.to validate_presence_of :barangay_id }
+    it { is_expected.to validate_presence_of :municipality_id }
+    it { is_expected.to validate_presence_of :province_id }
+  end
+  it '.current_address' do
+    address = create(:address, current: false)
+    current_address = create(:address, current: true)
+    expect(Address.current_address).to eql(current_address)
+  end
   it "#details" do
     province = create(:province, name: "Ifugao")
     municipality = create(:municipality, name: "Lamut")
