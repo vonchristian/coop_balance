@@ -38,8 +38,12 @@ module AccountingModule
     scope :revenues, -> { where(type: 'AccountingModule::Revenue') }
     scope :expenses, -> { where(type: 'AccountingModule::Expense') }
 
-    def self.updated_at(from_date, to_date)
-      joins(:entries).where('entries.entry_date' => (from_date.beginning_of_day)..(to_date.end_of_day))
+    def self.updated_at(options={})
+      if options[:from_date] && options[:to_date]
+        from_date = options[:from_date].kind_of?(DateTime) ? options[:from_date] : Chronic.parse(options[:from_date].strftime('%Y-%m-%d 12:00:00'))
+        to_date = options[:to_date].kind_of?(DateTime) ? options[:to_date] : Chronic.parse(options[:to_date].strftime('%Y-%m-%d 12:59:59'))
+        joins(:entries).where('entries.entry_date' => (from_date.beginning_of_day)..(to_date.end_of_day))
+      end
     end
 
     def self.updated_by(employee)

@@ -30,6 +30,10 @@ Rails.application.routes.draw do
 
   resources :accounting_module, only: [:index]
   namespace :accounting_module do
+    namespace :reports do
+      resources :trial_balances, only: [:index]
+    end
+    resources :reports, only: [:index]
     resources :branch_offices, only: [:index, :show]
     resources :settings, only: [:index]
     resources :loan_protection_fund_configs, only: [:new, :create]

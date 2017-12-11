@@ -10,6 +10,10 @@ module AccountingModule
 
       respond_to do |format|
         format.html # index.html.erb
+        format.pdf do
+          pdf = AccountingModule::Reports::BalanceSheetPdf.new(@from_date, @to_date, @assets, @liabilities, @equity, view_context)
+          send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Disbursement.pdf"
+        end
       end
     end
   end

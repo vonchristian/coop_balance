@@ -1,0 +1,7 @@
+<%= link_to 'Trial Balance', accounting_module_reports_trial_balances_path %>
+<h3 class="box-title"><b>Income Statement</b> </h3><br><br>
+      <%= @from_date.strftime("%B %e, %Y") %> -
+      <%= @to_date.strftime("%B %e, %Y") %>
+      <%=link_to accounting_module_income_statement_index_path(format: 'pdf', from_date: @from_date, to_date: @to_date) do  %>
+        <span class="btn btn-default btn-sm"><i class="fa fa-print"></i> Print (PDF) </span>
+      <% end %>

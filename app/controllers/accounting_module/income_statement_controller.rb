@@ -4,8 +4,8 @@ module AccountingModule
     def index
       @from_date = params[:from_date] ? Chronic.parse(params[:from_date]) : Date.today.at_beginning_of_month
       @to_date = params[:to_date] ? Chronic.parse(params[:to_date]) : Date.today
-      @revenues = AccountingModule::Revenue.updated_at(@from_date, @to_date)
-      @expenses = AccountingModule::Expense.updated_at(@from_date, @to_date)
+      @revenues = AccountingModule::Revenue.updated_at(from_date: @from_date, to_date: @to_date)
+      @expenses = AccountingModule::Expense.updated_at(from_date: @from_date, to_date: @to_date)
       @employee = current_user
 
       respond_to do |format|
