@@ -14,7 +14,7 @@
 
         <small> BARANGAY:</small><br>
         <% @barangays.all.each do |barangay| %>
-          <%= barangay.name %>
+          <%= link_to barangay.name, barangay_loans_path(barangay) %>
         <% end %>
         <hr>
         <small> MUNICIPALITY</small><br>

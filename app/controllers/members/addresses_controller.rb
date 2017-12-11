@@ -16,7 +16,7 @@ module Members
 
     private
     def address_params
-      params.require(:address).permit(:street, :barangay, :municipality, :province)
+      params.require(:address).permit(:street_id, :barangay_id, :municipality_id, :province_id, :current)
     end
   end
 end

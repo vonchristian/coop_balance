@@ -9,7 +9,6 @@ gem 'rubyzip', '~> 1.1.0'
 gem 'axlsx', '2.1.0.pre'
 gem 'axlsx_rails'
 gem 'client_side_validations'
-gem "simple-line-icons-rails"
 gem 'client_side_validations-simple_form'
 gem 'trix'
 gem 'autonumeric-rails'

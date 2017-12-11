@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2017_12_09_072645) do
+ActiveRecord::Schema.define(version: 2017_12_11_062532) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -46,7 +46,16 @@ ActiveRecord::Schema.define(version: 2017_12_09_072645) do
     t.uuid "addressable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "current", default: false
+    t.uuid "street_id"
+    t.uuid "barangay_id"
+    t.uuid "municipality_id"
+    t.uuid "province_id"
     t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id"
+    t.index ["barangay_id"], name: "index_addresses_on_barangay_id"
+    t.index ["municipality_id"], name: "index_addresses_on_municipality_id"
+    t.index ["province_id"], name: "index_addresses_on_province_id"
+    t.index ["street_id"], name: "index_addresses_on_street_id"
   end
 
   create_table "amortization_schedules", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -657,7 +666,9 @@ ActiveRecord::Schema.define(version: 2017_12_09_072645) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "province_id"
     t.index ["name"], name: "index_municipalities_on_name"
+    t.index ["province_id"], name: "index_municipalities_on_province_id"
   end
 
   create_table "notes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -814,6 +825,13 @@ ActiveRecord::Schema.define(version: 2017_12_09_072645) do
     t.integer "payment_schedule_type"
     t.index ["account_id"], name: "index_programs_on_account_id"
     t.index ["payment_schedule_type"], name: "index_programs_on_payment_schedule_type"
+  end
+
+  create_table "provinces", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_provinces_on_name", unique: true
   end
 
   create_table "raw_material_stocks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1157,6 +1175,10 @@ ActiveRecord::Schema.define(version: 2017_12_09_072645) do
 
   add_foreign_key "account_receivable_store_configs", "accounts"
   add_foreign_key "accounts", "accounts", column: "main_account_id"
+  add_foreign_key "addresses", "barangays"
+  add_foreign_key "addresses", "municipalities"
+  add_foreign_key "addresses", "provinces"
+  add_foreign_key "addresses", "streets"
   add_foreign_key "amortization_schedules", "loans"
   add_foreign_key "amounts", "accounts"
   add_foreign_key "amounts", "entries"
@@ -1218,6 +1240,7 @@ ActiveRecord::Schema.define(version: 2017_12_09_072645) do
   add_foreign_key "member_occupations", "occupations"
   add_foreign_key "members", "branch_offices"
   add_foreign_key "memberships", "cooperatives"
+  add_foreign_key "municipalities", "provinces"
   add_foreign_key "notes", "users", column: "noter_id"
   add_foreign_key "orders", "users"
   add_foreign_key "orders", "users", column: "employee_id"

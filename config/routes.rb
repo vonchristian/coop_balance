@@ -325,4 +325,7 @@ Rails.application.routes.draw do
     resources :store_fronts, only: [:index]
   end
   resources :filtered_loans, only: [:index], module: :loans_module
+  resources :barangays, only: [:show] do
+    resources :loans, only: [:index], module: :barangays
+  end
 end

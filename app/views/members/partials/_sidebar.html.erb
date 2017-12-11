@@ -28,7 +28,7 @@
       <strong><i class="fa fa-map-marker margin-r-5"></i> Address</strong>
 
 
-      <p class="text-muted"><%= @member.addresses.current %></p>
+      <p class="text-muted"><%= @member.addresses.current_address.try(:details) %></p>
       <%= link_to 'Update Address', new_member_address_path(id: @member.id, member_id: @member.id) %>
       <hr>
        <strong><i class="fa fa-book margin-r-5"></i> TIN Number</strong>

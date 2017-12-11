@@ -1,8 +1,9 @@
 <%= simple_form_for [@member, @address], url: :member_addresses do |f| %>
-  <%= f.input :street %>
-  <%= f.input :barangay %>
-  <%= f.input :municipality %>
-  <%= f.input :province %>
+  <%= f.input :street_id, collection: Addresses::Street.all.map{ |a| [a.name, a.id] } %>
+  <%= f.input :barangay_id, collection: Addresses::Barangay.all.map{ |a| [a.name, a.id] }  %>
+  <%= f.input :municipality_id, collection: Addresses::Municipality.all.map{ |a| [a.name, a.id] }  %>
+  <%= f.input :province_id, collection: Addresses::Province.all.map{ |a| [a.name, a.id] }  %>
+  <%= f.input :current %>
   <%= f.submit "Save Address" %>
 <% end %>
 

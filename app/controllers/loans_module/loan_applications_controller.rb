@@ -16,6 +16,7 @@ module LoansModule
         @loan.set_borrower_type
         @loan.set_borrower_full_name
         @loan.set_organization
+        @loan.set_barangay
       else
         render :new
       end

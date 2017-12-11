@@ -281,6 +281,10 @@ module LoansModule
       self.organization_id = self.borrower.organization_memberships.current.try(:organization_id)
       self.save
     end
+    def set_barangay
+      self.barangay_id = self.borrower.addresses.current.try(:barangay_id)
+      self.save
+    end
 
     private
       def set_documentary_stamp_tax
