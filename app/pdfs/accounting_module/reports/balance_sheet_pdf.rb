@@ -18,29 +18,25 @@ module AccountingModule
       end
 
       def heading
-        bounding_box [300, 780], width: 50 do
-          image "#{Rails.root}/app/assets/images/logo_kcmdc.jpg", width: 50, height: 50
+        bounding_box [300, 760], width: 50 do
+          image "#{Rails.root}/app/assets/images/logo_kcmdc.jpg", width: 40, height: 40
         end
-        bounding_box [370, 780], width: 200 do
-            text "KCMDC", style: :bold, size: 24
-            text "Kiangan Community Multipurpose Cooperative", size: 10
+        bounding_box [350, 760], width: 150 do
+            text "KCMDC", style: :bold, size: 22
+            text "Poblacion, Kiangan, Ifugao", size: 10
         end
-        bounding_box [0, 780], width: 400 do
-          text "Balance Sheet Report", style: :bold, size: 14
-          move_down 3
-          text "#{@to_date.strftime("%B %e, %Y")}", size: 10
-          move_down 3
-          text "Date Generated: #{Time.zone.now.strftime("%B %e, %Y %H:%M %p")}", size: 8
-          move_down 3
-
-          # text "Employee: #{@employee.name}", size: 10
+        bounding_box [0, 760], width: 400 do
+          text "Balance Sheet", style: :bold, size: 14
+          move_down 5
+          text "#{@from_date.strftime("%B %e, %Y")} - #{@to_date.strftime("%B %e, %Y")} ", size: 10
+          move_down 5
         end
-        move_down 15
+        move_down 10
         stroke do
-          stroke_color '24292E'
-          line_width 1
+          stroke_color 'CCCCCC'
+          line_width 0.2
           stroke_horizontal_rule
-          move_down 20
+          move_down 15
         end
       end
     end

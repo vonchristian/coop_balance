@@ -2,8 +2,8 @@ module AccountingModule
   module Reports
     class TrialBalancesController < ApplicationController
       def index
-        @from_date = params[:from_date] ? Chronic.parse(params[:from_date]) : Date.today.at_beginning_of_month
-        @to_date = params[:to_date] ? Chronic.parse(params[:to_date]) : Date.today
+        @from_date = params[:from_date] ? Chronic.parse(params[:from_date]) : Date.today.at_beginning_of_month.strftime("%B %e, %Y")
+        @to_date = params[:to_date] ? Chronic.parse(params[:to_date]) : Date.today.strftime("%B %e, %Y")
         @accounts = AccountingModule::Account.all.paginate(page: params[:page], per_page: 50)
         respond_to do |format|
           format.html
