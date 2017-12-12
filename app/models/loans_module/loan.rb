@@ -41,15 +41,22 @@ module LoansModule
     delegate :full_name, :current_occupation, to: :preparer, prefix: true
     before_save :set_default_date
 
-    validates :loan_product_id, :borrower_id, :borrower_type, presence: true
+    validates :loan_product_id, :borrower_id, presence: true
     validates :term, presence: true, numericality: { greater_than: 0.1 }
     validates :loan_amount, numericality: { less_than_or_equal_to: :loan_product_max_loanable_amount}
 
     #find aging loans e.g. 1-30 days,
 
-    def self.disbursed_on(date)
-      disbursed.includes([:entries]).where('entries.entry_date' => (date.beginning_of_day)..(date.end_of_day))
+    def self.borrowers
+      User.all + Member.all
     end
+
+    def self.disbursed_on(options={})
+      if options[:date].present?
+        disbursed.includes([:entries]).where('entries.entry_date' => (options[:date].beginning_of_day)..(options[:date].end_of_day))
+      end
+    end
+
     def self.disbursed_by(employee)
       all.select{|a| a.disbursed_by(employee) }
     end
@@ -282,7 +289,7 @@ module LoansModule
       self.save
     end
     def set_barangay
-      self.barangay_id = self.borrower.addresses.current.try(:barangay_id)
+      self.barangay_id = self.borrower.current_address.try(:barangay_id)
       self.save
     end
 

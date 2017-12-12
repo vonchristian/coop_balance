@@ -7,7 +7,7 @@
             <h3 class="box-title">Income Statement</h3>
           </div>
           <div class="col-md-9">
-            <%= form_tag({:action => 'index'}, {:method => :get, :class => 'form-inline'}) do%>
+            <%= form_tag({controller: 'accounting_module/reports/income_statements',:action => 'index'}, {:method => :get, :class => 'form-inline'}) do%>
               <div class="form-group">
               <%= label_tag :from_date, nil, class: 'sr-only'%>
               <%= text_field_tag :from_date, @from_date, :class => 'datepicker form-control', :placeholder => "Date" %>

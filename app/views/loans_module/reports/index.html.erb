@@ -1,3 +1,15 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-solid">
+      <div class="box-header">
+        <h4 class="box-title"> Loans Section Reports</h4>
+      </div>
+      <div class="box-body">
+        <h4><b>Loan Releases</b></h4>
+        <p class="text-muted"> Generate report of loan releases. </p>
+        <%= link_to 'Loan Releases', loans_module_reports_loan_releases_path(format: 'pdf') %>
+        <hr>
+      </div>
+    </div>
 <h3>Reports</h3>
 <%= link_to 'Loan Protection Funds', loans_module_reports_loan_protection_funds_path %>
-<%= link_to 'Loan Releases', loans_module_reports_loan_releases_path %>

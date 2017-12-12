@@ -61,6 +61,9 @@ class Member < ApplicationRecord
     return "No Occupation entered" if occupations.blank?
     occupations.order(created_at: :asc).last
   end
+  def current_address
+    addresses.current_address
+  end
 
   def self.has_birthdays_on(month)
     where(birth_month: month).order(:birth_day)

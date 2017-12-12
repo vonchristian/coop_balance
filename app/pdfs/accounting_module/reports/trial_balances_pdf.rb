@@ -26,9 +26,9 @@ module AccountingModule
         bounding_box [0, 760], width: 400 do
           text "Trial Balance", style: :bold, size: 14
           move_down 5
-          text "#{@to_date.strftime("%B %e, %Y")}", size: 10
+          text "#{@to_date.to_date.strftime("%B %e, %Y")}", size: 10
           move_down 5
-          text "Date Generated: #{Time.zone.now.strftime("%B %e, %Y %H:%M %p")}"
+          text "Date Generated: #{Time.zone.now.strftime("%B %e, %Y %H:%M %p")}", size: 9
           move_down 5
         end
         move_down 10

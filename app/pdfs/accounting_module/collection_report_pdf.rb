@@ -1,35 +1,35 @@
-module AccountingModule 
-  class CollectionReportPdf < Prawn::Document 
+module AccountingModule
+  class CollectionReportPdf < Prawn::Document
     def initialize(entries, employee, from_date, to_date, view_context)
        super(margin: 10, page_size: "A4", page_layout: :portrait)
-      @entries = entries 
+      @entries = entries
       @employee = employee
       @from_date = from_date
       @to_date = to_date
       @view_context = view_context
-      heading 
+      heading
       account_details
       entries_table
-    end 
-    private 
+    end
+    private
     def price(number)
       @view_context.number_to_currency(number, :unit => "P ")
     end
     def display_commercial_document_for(entry)
-      if entry.commercial_document.try(:member).present? 
+      if entry.commercial_document.try(:member).present?
         entry.commercial_document.try(:member).try(:full_name)
-      elsif entry.commercial_document.try(:borrower).present? 
+      elsif entry.commercial_document.try(:borrower).present?
         entry.commercial_document.try(:borrower).try(:full_name)
       elsif entry.fund_transfer?
         entry.commercial_document.try(:first_and_last_name)
       end
     end
 
-    def heading 
+    def heading
       bounding_box [0, 800], width: 100 do
         image "#{Rails.root}/app/assets/images/logo_kcmdc.jpg", width: 50, height: 50, align: :center
       end
-      
+
       bounding_box [0, 800], width: 600 do
         text "KIANGAN COMMUNITY MULTIPURPOSE DEVELOPMENT COOPERATIVE", align: :center
         text "Poblacion, Kiangan, Ifugao", size: 12, align: :center
@@ -44,17 +44,17 @@ module AccountingModule
       move_down 15
       end
       if @employee.present?
-        image "#{@employee.avatar.path(:large)}", width: 50, height: 50
+        # image "#{@employee.avatar.path(:large)}", width: 50, height: 50
         move_down 5
         text "#{@employee.first_and_last_name.try(:upcase)}", size: 10, style: :bold
       end
-    end 
-    def account_details 
+    end
+    def account_details
       table(accounts_data, cell_style: { inline_format: true, size: 10, font: "Helvetica", :padding => [2,0,0,0]}, column_widths: [180]) do
         cells.borders =[]
         column(1).align = :right
-      end 
-    end 
+      end
+    end
     def accounts_data
       [["Start Date", "#{@from_date.strftime("%B %e, %Y")}"]] +
       [["End Date", "#{@to_date.strftime("%B %e, %Y")}"]] +
@@ -82,17 +82,17 @@ module AccountingModule
         row(0).background_color = 'DDDDDD'
       end
       @entries.each do |entry|
-        table([["#{entry.entry_date.strftime("%B %e, %Y")}", "#{entry.description}", "#{entry.reference_number}",  "#{display_commercial_document_for(entry).try(:upcase)}", "#{entry.recorder.try(:first_and_last_name).try(:upcase)}"]], cell_style: { size: 9, padding: [5,5,4,0]}, column_widths: [50, 130, 50,  100, 50, 100, 80]) do 
+        table([["#{entry.entry_date.strftime("%B %e, %Y")}", "#{entry.description}", "#{entry.reference_number}",  "#{display_commercial_document_for(entry).try(:upcase)}", "#{entry.recorder.try(:first_and_last_name).try(:upcase)}"]], cell_style: { size: 9, padding: [5,5,4,0]}, column_widths: [50, 130, 50,  100, 50, 100, 80]) do
           cells.borders = []
         end
 
-        table([["", "", "", "", "", "<b>DEBIT</b>"]]+  
-          entry.debit_amounts.map{|a| ["", "", "",  "", "", a.account.name,  price(a.amount)] }, column_widths: [50, 130, 50, 100, 50, 100, 80], cell_style: { inline_format: true, size: 8, padding: [0,0,0,0]}) do 
+        table([["", "", "", "", "", "<b>DEBIT</b>"]]+
+          entry.debit_amounts.map{|a| ["", "", "",  "", "", a.account.name,  price(a.amount)] }, column_widths: [50, 130, 50, 100, 50, 100, 80], cell_style: { inline_format: true, size: 8, padding: [0,0,0,0]}) do
           cells.borders = []
           column(-1).align = :right
         end
 
-        table([["",  "", "","", "", "<b>CREDIT</b>"]] + entry.credit_amounts.map{|a| ["", "", "",  "", "",  a.account.name, price(a.amount)] }, column_widths: [50, 130, 50, 100, 50, 100, 80], cell_style: {inline_format: true, padding: [0,0,2,0], size: 8} ) do 
+        table([["",  "", "","", "", "<b>CREDIT</b>"]] + entry.credit_amounts.map{|a| ["", "", "",  "", "",  a.account.name, price(a.amount)] }, column_widths: [50, 130, 50, 100, 50, 100, 80], cell_style: {inline_format: true, padding: [0,0,2,0], size: 8} ) do
           cells.borders = []
           column(-1).align = :right
 
@@ -106,5 +106,5 @@ module AccountingModule
 
     end
   end
-  end 
-end 
+  end
+end

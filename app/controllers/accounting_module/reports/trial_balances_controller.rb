@@ -2,9 +2,10 @@ module AccountingModule
   module Reports
     class TrialBalancesController < ApplicationController
       def index
-        @from_date = params[:from_date] ? Chronic.parse(params[:from_date]) : Date.today.at_beginning_of_month.strftime("%B %e, %Y")
-        @to_date = params[:to_date] ? Chronic.parse(params[:to_date]) : Date.today.strftime("%B %e, %Y")
-        @accounts = AccountingModule::Account.all.paginate(page: params[:page], per_page: 50)
+        first_entry = AccountingModule::Entry.order('entry_date DESC').first
+        @from_date = first_entry ? DateTime.parse(first_entry.entry_date.strftime("%B %e, %Y")) : Time.zone.now
+        @to_date = params[:to_date] ? Chronic.parse(params[:to_date]) : Time.zone.now
+        @accounts = AccountingModule::Account.updated_at(from_date: @from_date, to_date: @to_date)
         respond_to do |format|
           format.html
           format.xlsx

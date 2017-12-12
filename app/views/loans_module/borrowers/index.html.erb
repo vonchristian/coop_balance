@@ -1,0 +1,3 @@
+<% @borrowers.each do |borrower| %>
+  <%= link_to borrower.name, loans_module_borrower_path(borrower) %>
+<% end %>

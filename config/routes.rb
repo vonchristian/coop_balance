@@ -18,40 +18,33 @@ Rails.application.routes.draw do
   root :to => 'hr_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'human_resource_officer' if request.env['warden'].user }, as: :hr_module_root
   root :to => 'clerk_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'accounting_clerk' if request.env['warden'].user }, as: :clerk_module_root
 
-
-
-  get "avatar/:size/:background/:text" => Dragonfly.app.endpoint { |params, app|
-    app.generate(:initial_avatar, URI.unescape(params[:text]), { size: params[:size], background_color: params[:background] })
-  }, as: :avatar
-  get 'reports/balance_sheet' => 'reports#balance_sheet'
-  get 'reports/income_statement' => 'reports#income_statement'
   resources :customer_registrations, only: [:new, :create]
   resources :home, only: [:index]
 
   resources :accounting_module, only: [:index]
   namespace :accounting_module do
+    resources :reports, only: [:index]
     namespace :reports do
       resources :trial_balances, only: [:index]
+      resources :proofsheets, only: [:index]
+      resources :income_statements, only: [:index]
+      resources :balance_sheets, only: [:index]
     end
-    resources :reports, only: [:index]
     resources :branch_offices, only: [:index, :show]
     resources :settings, only: [:index]
     resources :loan_protection_fund_configs, only: [:new, :create]
     resources :accounts
     resources :assets, controller: 'accounts', type: 'AccountingModule::Asset'
     resources :entries
-    resources :balance_sheet
-    resources :income_statement
-
-
   end
-  resources :loans_module, only: [:index]
 
+  resources :loans_module, only: [:index]
   namespace :loans_module do
     namespace :reports do
       resources :loan_releases, only: [:index]
       resources :loan_protection_funds, only: [:index]
     end
+    resources :borrowers, only: [:index, :show]
     resources :reports, only: [:index]
     resources :loan_registries, only: [:new, :create]
     resources :payment_schedules, only: [:index, :show, :edit, :update]

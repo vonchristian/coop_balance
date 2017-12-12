@@ -13,7 +13,7 @@
       </div>
       <button type="submit" class="btn btn-default">Get Report</button>
     <% end %>
-    <%= link_to "Print(PDF)", accounting_module_balance_sheet_index_path(format: 'pdf', to_date: @to_date), class: "btn btn-default" %>
+    <%= link_to "Print(PDF)", accounting_module_reports_balance_sheets_path(format: 'pdf', to_date: @to_date), class: "btn btn-default" %>
   <br>
 
   <%= render 'account', :name => "Assets", :accounts => @assets %>

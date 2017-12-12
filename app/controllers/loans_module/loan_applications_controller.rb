@@ -4,10 +4,10 @@ module LoansModule
       @loan = LoansModule::Loan.new
     end
     def create
-      @loan = LoansModule::Loan.create(loan_params)
+      @loan = LoansModule::Loan.create!(loan_params)
       @loan.employee = current_user
       if @loan.valid?
-        @loan.save
+        @loan.save!
         @loan.create_loan_product_charges
         @loan.create_documentary_stamp_tax
         @loan.set_loan_protection_fund
