@@ -4,7 +4,6 @@ module LoansModule
     has_many :payment_notices, as: :notified
     has_many :notes, as: :noteable
     accepts_nested_attributes_for :notes
-    # after_commit :create_payment_notice
     def self.create_schedule_for(loan)
       loan.amortization_schedules.destroy_all
       if loan.monthly?
@@ -53,9 +52,9 @@ module LoansModule
         end
       end
     end
-    def self.for(from_date, to_date)
-      if from_date && to_date
-        where('date' => from_date..to_date)
+    def self.for(options={})
+      if options[:from_date].present? && options[:to_date].present?
+        where('date' => (options[:from_date].beginning_of_day)..options[:to_date].end_of_day))
       end
     end
     def self.principal_for(schedule, loan)
@@ -75,11 +74,6 @@ module LoansModule
     end
     def total_other_charges_for(date)
       loan.loan_charge_payment_schedules.scheduled_for(date).sum(:amount)
-    end
-
-    private
-    def create_payment_notice
-      PaymentNotice.create(notified: self, date: (self.date - 3.days), title: 'Payment Notice', content: 'Payment Notice')
     end
 	end
 end
