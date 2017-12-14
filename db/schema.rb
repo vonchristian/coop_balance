@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2017_12_11_062532) do
+ActiveRecord::Schema.define(version: 2017_12_14_024646) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -321,22 +321,15 @@ ActiveRecord::Schema.define(version: 2017_12_11_062532) do
     t.datetime "updated_at", null: false
     t.integer "entry_type"
     t.uuid "recorder_id"
-    t.uuid "department_id"
-    t.uuid "voucher_id"
-    t.uuid "branch_office_id"
-    t.uuid "section_id"
-    t.uuid "store_front_id"
     t.integer "payment_type", default: 0
-    t.index ["branch_office_id"], name: "index_entries_on_branch_office_id"
+    t.string "origin_type"
+    t.uuid "origin_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_entry"
-    t.index ["department_id"], name: "index_entries_on_department_id"
     t.index ["entry_date"], name: "index_entries_on_entry_date"
     t.index ["entry_type"], name: "index_entries_on_entry_type"
+    t.index ["origin_type", "origin_id"], name: "index_entries_on_origin_type_and_origin_id"
     t.index ["payment_type"], name: "index_entries_on_payment_type"
     t.index ["recorder_id"], name: "index_entries_on_recorder_id"
-    t.index ["section_id"], name: "index_entries_on_section_id"
-    t.index ["store_front_id"], name: "index_entries_on_store_front_id"
-    t.index ["voucher_id"], name: "index_entries_on_voucher_id"
   end
 
   create_table "finished_good_materials", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1200,12 +1193,7 @@ ActiveRecord::Schema.define(version: 2017_12_11_062532) do
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "debit_account_id"
   add_foreign_key "employee_contributions", "contributions"
   add_foreign_key "employee_contributions", "users", column: "employee_id"
-  add_foreign_key "entries", "branch_offices"
-  add_foreign_key "entries", "departments"
-  add_foreign_key "entries", "sections"
-  add_foreign_key "entries", "store_fronts"
   add_foreign_key "entries", "users", column: "recorder_id"
-  add_foreign_key "entries", "vouchers"
   add_foreign_key "finished_good_materials", "products"
   add_foreign_key "finished_good_materials", "raw_materials"
   add_foreign_key "fixed_terms", "time_deposits"
