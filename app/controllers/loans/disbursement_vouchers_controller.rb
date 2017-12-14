@@ -7,7 +7,6 @@ module Loans
 		def create
 			@loan = LoansModule::Loan.find(params[:loan_id])
 			@voucher = Vouchers::LoanDisbursementVoucher.create(voucher_params)
-      @voucher.voucherable = @loan
       @voucher.payee = @loan.borrower
 			if @voucher.valid?
 				@voucher.save

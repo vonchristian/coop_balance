@@ -2,12 +2,10 @@ module LoansModule
   class Loan < ApplicationRecord
     include PgSearch
     pg_search_scope :text_search, :against => [:borrower_full_name]
-    enum loan_term_duration: [:month]
     enum loan_status: [:application, :processing, :approved, :disbursed, :past_due, :aging]
     enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
 
     belongs_to :borrower, polymorphic: true
-    belongs_to :employee, class_name: "User", foreign_key: 'employee_id'
     belongs_to :loan_product, class_name: "LoansModule::LoanProduct"
     belongs_to :street, optional: true, class_name: "Addresses::Street"
     belongs_to :barangay, optional: true, class_name: "Addresses::Barangay"
@@ -15,7 +13,7 @@ module LoansModule
     belongs_to :organization, optional: true
     belongs_to :preparer, class_name: "User", foreign_key: 'preparer_id'
     has_many :loan_protection_funds, class_name: "LoansModule::LoanProtectionFund", dependent: :destroy
-    has_one :cash_disbursement_voucher, class_name: "Voucher", as: :voucherable, foreign_key: 'voucherable_id'
+    has_one :disbursement_voucher, class_name: "Voucher", as: :payee
     has_many :loan_approvals, class_name: "LoansModule::LoanApproval", dependent: :destroy
     has_many :approvers, through: :loan_approvals
     has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
@@ -41,28 +39,25 @@ module LoansModule
     delegate :full_name, :current_occupation, to: :preparer, prefix: true
     before_save :set_default_date
 
-    validates :loan_product_id, :borrower_id, presence: true
+    validates :loan_product_id, :term, :loan_amount, :borrower_id, presence: true
     validates :term, presence: true, numericality: { greater_than: 0.1 }
     validates :loan_amount, numericality: { less_than_or_equal_to: :loan_product_max_loanable_amount}
-
-    #find aging loans e.g. 1-30 days,
 
     def self.borrowers
       User.all + Member.all
     end
 
-    def self.disbursed_on(options={})
+    def self.disbursed(options={})
       if options[:date].present?
         disbursed.includes([:entries]).where('entries.entry_date' => (options[:date].beginning_of_day)..(options[:date].end_of_day))
+      elsif options[:preparer_id].present?
+        User.find_by(id: options[:preparer_id]).disbursed_loans
       end
     end
 
-    def self.disbursed_by(employee)
-      all.select{|a| a.disbursed_by(employee) }
-    end
-    def disbursed_by(employee)
-      entries.loan_disbursement.where(recorder_id: employee.id)
-    end
+    # def disbursed_by(employee)
+    #   entries.loan_disbursement.where(recorder_id: employee.id)
+    # end
 
     def payment_schedules
       amortization_schedules + loan_charge_payment_schedules
@@ -92,16 +87,11 @@ module LoansModule
     def co_makers
       employee_co_makers + member_co_makers
     end
-    def self.borrowers
-      User.all + Member.all
-    end
 
     def name
       loan_product_name
     end
-    def payable_amount #for voucher
-      net_proceed
-    end
+
     def self.aging_for(start_num, end_num)
       aging_loans = []
       aging.each do |loan|
@@ -157,12 +147,7 @@ module LoansModule
     def interest_on_loan_amount
       interest_on_loan_charge
     end
-    def monthly_interest_amortization
-      interest_on_loan_charge
-    end
-    def monthly_payment
-      loan_amount / term
-    end
+
     def taxable_amount # for documentary_stamp_tax
       loan_amount
     end
@@ -205,7 +190,7 @@ module LoansModule
     end
 
     def create_documentary_stamp_tax
-       tax = Charge.amount_type.create!(name: 'Documentary Stamp Tax', amount: DocumentaryStampTax.set(self), account: AccountingModule::Revenue.find_by(name: "Service Fees"))
+       tax = Charge.amount_type.create!(name: 'Documentary Stamp Tax', amount: DocumentaryStampTax.set(self), account: AccountingModule::Liability.find_by(name: "Documentary Stamp Taxes"))
       self.loan_charges.create!(chargeable: tax)
     end
     def create_amortization_schedule
@@ -213,17 +198,14 @@ module LoansModule
         amortization_schedules.destroy_all
       end
       LoansModule::AmortizationSchedule.create_schedule_for(self)
-      # LoansModule::InterestOnLoanAmortizationSchedule.create_schedule_for(self)
-    end
-    def interest_on_loan_amount
     end
     def disbursed?
       disbursement.present?
     end
-
     def payments
       entries.loan_payment
     end
+
     def principal_payments_total(options={})
       loan_product_account.credits_balance(commercial_document_id: self.id, from_date: options[:from_date], to_date: options[:to_date])
     end
@@ -294,9 +276,6 @@ module LoansModule
     end
 
     private
-      def set_documentary_stamp_tax
-      end
-
       def set_default_date
         self.application_date ||= Time.zone.now
       end

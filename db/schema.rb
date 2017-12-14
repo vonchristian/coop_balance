@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2017_12_14_024646) do
+ActiveRecord::Schema.define(version: 2017_12_14_081805) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -562,8 +562,6 @@ ActiveRecord::Schema.define(version: 2017_12_14_024646) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.decimal "loan_amount"
-    t.decimal "duration"
-    t.integer "loan_term_duration"
     t.integer "loan_status", default: 0
     t.decimal "term"
     t.integer "mode_of_payment"
@@ -571,14 +569,12 @@ ActiveRecord::Schema.define(version: 2017_12_14_024646) do
     t.uuid "street_id"
     t.uuid "municipality_id"
     t.uuid "organization_id"
-    t.uuid "employee_id"
     t.string "borrower_type"
     t.uuid "borrower_id"
     t.string "borrower_full_name"
     t.uuid "preparer_id"
     t.index ["barangay_id"], name: "index_loans_on_barangay_id"
     t.index ["borrower_type", "borrower_id"], name: "index_loans_on_borrower_type_and_borrower_id"
-    t.index ["employee_id"], name: "index_loans_on_employee_id"
     t.index ["loan_product_id"], name: "index_loans_on_loan_product_id"
     t.index ["mode_of_payment"], name: "index_loans_on_mode_of_payment"
     t.index ["municipality_id"], name: "index_loans_on_municipality_id"
@@ -1222,7 +1218,6 @@ ActiveRecord::Schema.define(version: 2017_12_14_024646) do
   add_foreign_key "loans", "municipalities"
   add_foreign_key "loans", "organizations"
   add_foreign_key "loans", "streets"
-  add_foreign_key "loans", "users", column: "employee_id"
   add_foreign_key "loans", "users", column: "preparer_id"
   add_foreign_key "member_occupations", "members"
   add_foreign_key "member_occupations", "occupations"
