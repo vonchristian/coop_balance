@@ -10,6 +10,7 @@ module AccountingModule
     def self.recorded_by(recorder_id)
       where('recorder_id' => recorder_id)
     end
+
     def self.total
       sum(:amount)
     end

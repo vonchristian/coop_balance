@@ -28,15 +28,9 @@ module AccountingModule
                       :bank_charge
                     ]
 
-    belongs_to :branch_office, class_name: "CoopConfigurationsModule::BranchOffice"
-    belongs_to :section, class_name: "CoopConfigurationsModule::Section"
+
     belongs_to :commercial_document, :polymorphic => true, touch: true
     belongs_to :recorder, foreign_key: 'recorder_id', class_name: "User"
-    belongs_to :department
-    belongs_to :branch_office, class_name: "CoopConfigurationsModule::BranchOffice"
-    belongs_to :section, class_name: "CoopConfigurationsModule::Section"
-
-    belongs_to :voucher
 
     has_many :credit_amounts, :extend => AccountingModule::BalanceFinder, :class_name => 'AccountingModule::CreditAmount', :inverse_of => :entry, dependent: :destroy
     has_many :debit_amounts, :extend => AccountingModule::BalanceFinder, :class_name => 'AccountingModule::DebitAmount', :inverse_of => :entry, dependent: :destroy
@@ -68,8 +62,8 @@ module AccountingModule
         all
       end
     end
-    def self.recorded_by(recorder_id)
-      where('recorder_id' => recorder_id )
+    def self.recorded_by(employee)
+      where('recorder_id' => employee.id )
     end
     def self.total(hash={})
       if hash[:from_date].present? && hash[:to_date].present?
@@ -79,12 +73,6 @@ module AccountingModule
       else
         all.distinct.map{|a| a.credit_amounts.distinct.sum(:amount)}.sum
       end
-    end
-    def total
-      debit_amounts.distinct.sum(:amount)
-    end
-    def cleared?
-      clearance.present?
     end
 
     private

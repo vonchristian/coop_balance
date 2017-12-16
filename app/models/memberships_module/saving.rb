@@ -10,7 +10,7 @@ module MembershipsModule
     belongs_to :section, class_name: "CoopConfigurationsModule::Section"
     delegate :name, :current_occupation, to: :depositor, prefix: true
     delegate :name, :account, to: :saving_product, prefix: true
-    delegate :interest_rate, to: :saving_product, prefix: true
+    delegate :interest_rate, :interest_account, to: :saving_product, prefix: true
     delegate :name, to: :branch_office, prefix: true, allow_nil: true
     delegate :name, to: :section, prefix: true, allow_nil: true
     has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
@@ -56,17 +56,19 @@ module MembershipsModule
     end
 
     def balance
-      # deposits + interests_earned - withdrawals
+      include(:saving_product)
       saving_product_account.balance(commercial_document_id: self.id)
     end
     def deposits
-      entries.deposit.map{|a| a.debit_amounts.sum(:amount)}.sum
+      saving_product_account.debits_balance(commercial_document_id: self.id)
+
     end
     def withdrawals
-      entries.withdrawal.map{|a| a.debit_amounts.sum(:amount)}.sum
+      saving_product_account.credits_balance(commercial_document_id: self.id)
     end
     def interests_earned
-      entries.savings_interest.map{|a| a.debit_amounts.sum(:amount)}.sum
+      saving_product_interest_account.credits_balance(commercial_document_id: self.id)
+
     end
     def can_withdraw?
       !closed? && balance > 0.0

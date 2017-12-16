@@ -4,6 +4,8 @@ module CoopServicesModule
 
 	  has_many :subscribers, class_name: "MembershipsModule::Saving"
 	  belongs_to :account, class_name: "AccountingModule::Account"
+    belongs_to :interest_account, class_name: "AccountingModule::Account"
+
 
 	  validates :interest_rate, :minimum_balance, numericality: { greater_than_or_equal_to: 0.01 }, presence: true
 	  validates :interest_recurrence, presence: true
@@ -34,9 +36,11 @@ module CoopServicesModule
     def self.accounts_credits_balance(options={})
       accounts.uniq.map{|a| a.credits_balance(options)}.sum
     end
+
     def self.accounts_debits_balance(options={})
       accounts.uniq.map{|a| a.debits_balance(options)}.sum
     end
+
     def balance(options={})
       account.balance(options)
     end

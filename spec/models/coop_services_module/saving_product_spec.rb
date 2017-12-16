@@ -5,7 +5,9 @@ module CoopServicesModule
     describe "associations" do
     	it { is_expected.to have_many :subscribers }
       it { is_expected.to belong_to :account }
+      it { is_expected.to belong_to :interest_account }
     end
+
     describe "validations" do
     	it { is_expected.to validate_presence_of :interest_recurrence }
     	it { is_expected.to validate_presence_of :interest_rate }
