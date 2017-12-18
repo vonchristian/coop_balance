@@ -16,7 +16,7 @@ module TreasuryModule
     end
 
     def save_fund_transfer
-      AccountingModule::Entry.fund_transfer.create!(recorder_id: recorder_id, commercial_document_id: commercial_document_id, commercial_document_type: "User", description: description, reference_number: reference_number, entry_date: entry_date,
+      AccountingModule::Entry.create!(recorder_id: recorder_id, commercial_document_id: commercial_document_id, commercial_document_type: "User", description: description, reference_number: reference_number, entry_date: entry_date,
       debit_amounts_attributes: [account_id: debit_account.id, amount: amount],
       credit_amounts_attributes: [account_id: credit_account_id, amount: amount])
     end

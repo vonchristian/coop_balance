@@ -13,7 +13,6 @@
           <%= f.input :reference_number %>
           <%= f.input :description, as: :text %>
           <%= f.input :amount %>
-          <%= f.input :entry_type, input_html: {value: 'fund_transfer'} %>
           <%= f.input :credit_account_id, label: "Credit Account", input_html: { value: @employee.cash_on_hand_account.id } %>
           <%= f.input :recorder_id, input_html: { value: current_user.id }, as: :hidden %>
           <%= f.input :commercial_document_id, label: "Transfer To: ", collection: User.teller.all.map{|a| [a.full_name, a.id] } %>

@@ -1,33 +1,17 @@
 class DisbursementForm
   include ActiveModel::Model
-  attr_accessor  :voucher_id, :voucherable_id, :amount, :reference_number, :date, :recorder_id, :description
-  validates :amount, presence: true, numericality: true
+  attr_accessor  :voucher_id, :voucherable_id, :amount, :reference_number, :date, :recorder_id, :description, :total_amount
   validates :reference_number, presence: true
+  validate :amount_less_than_current_cash_on_hand?
 
   def save
     ActiveRecord::Base.transaction do
       save_cash_disbursement
       disburse_voucher
-    #   if find_voucher.for_loan?
-    #     create_loan_disbursement
-    #   elsif find_voucher.for_purchases?
-    #     create_payment_for_purchase
-    #   elsif find_voucher.for_employee?
-    #     create_payment_for_employee
-    #   elsif find_voucher.for_supplier?
-    #     create_payment_for_supplier
-    #   end
-    #   find_voucher.disbursed!
-    # end
-    end
-  end
-  def entry_type_for(voucher)
-    if voucher.for_loan?
-      'loan_disbursement'
     end
   end
   def save_cash_disbursement
-    entry = AccountingModule::Entry.new(commercial_document: find_voucher, entry_type: entry_type_for(find_voucher), :description => description, recorder_id: recorder_id, entry_date: date)
+    entry = AccountingModule::Entry.new(commercial_document: find_voucher, :description => description, recorder_id: recorder_id, entry_date: date)
     find_voucher.voucher_amounts.debit.each do |amount|
       debit_amount = AccountingModule::DebitAmount.new(account_id: amount.account_id, amount: amount.amount)
       entry.debit_amounts << debit_amount
@@ -47,67 +31,11 @@ class DisbursementForm
     Voucher.find_by(id: voucher_id)
   end
 
-  # def find_supplier
-  #   Supplier.find_by(id: voucherable_id)
-  # end
-
-  # def find_loan
-  #   LoansModule::Loan.find_by(id: voucherable_id)
-  # end
   def find_employee
     User.find_by(id: recorder_id)
   end
-  # def create_payment_for_supplier
-  #   accounts_payable =  AccountingModule::Liability.find_by(name: 'Accounts Payable-Trade')
-  #   merchandise_inventory = AccountingModule::Account.find_by(name: "Merchandise Inventory")
-  #   entry = AccountingModule::Entry.supplier_payment.new(commercial_document: find_voucher,  :description => "payment delivered stocks", recorder_id: recorder_id, entry_date: date)
-  #   find_voucher.voucher_amounts.each do |amount|
-  #     credit_amount = AccountingModule::CreditAmount.new(account: find_employee.cash_on_hand_account , amount: amount.amount)
-  #     debit_amount = AccountingModule::DebitAmount.new(account_id: amount.account_id, amount: amount.amount)
-  #     entry.credit_amounts << credit_amount
-  #     entry.debit_amounts << debit_amount
-  #   end
-  #   entry.save
-  # end
-  # def create_payment_for_employee
-  #   entry = AccountingModule::Entry.supplier_payment.new(commercial_document: find_voucher, :description => find_voucher.description, recorder_id: recorder_id, entry_date: date)
-  #   find_voucher.voucher_amounts.each do |amount|
-  #     credit_amount = AccountingModule::CreditAmount.new(account: find_employee.cash_on_hand_account , amount: amount.amount)
-  #     debit_amount = AccountingModule::DebitAmount.new(account_id: amount.account_id, amount: amount.amount)
-  #     entry.credit_amounts << credit_amount
-  #     entry.debit_amounts << debit_amount
-  #   end
-  #   entry.save!
-  # end
-
-  # def create_payment_for_purchase
-  #   accounts_payable =  AccountingModule::Liability.find_by(name: 'Accounts Payable-Trade')
-  #   entry = AccountingModule::Entry.supplier_payment.new(commercial_document: find_voucher,  :description => "Payment of delivered stocks", recorder_id: recorder_id, entry_date: date)
-  #   loan_debit_amount = AccountingModule::DebitAmount.new(amount: find_voucher.payable_amount, account: accounts_payable)
-  #   loan_credit_amount = AccountingModule::CreditAmount.new(amount: find_voucher.payable_amount, account: find_employee.cash_on_hand_account)
-  #   entry.debit_amounts << loan_debit_amount
-  #   entry.credit_amounts << loan_credit_amount
-  #   entry.save
-  # end
-  # def create_loan_disbursement
-  #   entry = AccountingModule::Entry.loan_disbursement.new(voucher: find_voucher, commercial_document: find_loan, :description => "Loan disbursement", recorder_id: recorder_id, entry_date: date)
-  #   loan_debit_amount = AccountingModule::DebitAmount.new(amount: find_loan.loan_amount, account: find_loan.loan_product_account)
-  #   loan_credit_amount = AccountingModule::CreditAmount.new(amount: find_loan.net_proceed, account:find_employee.cash_on_hand_account)
-  #   entry.debit_amounts << loan_debit_amount
-  #   entry.credit_amounts << loan_credit_amount
-  #   find_loan.loan_charges.each do |loan_charge|
-  #     credit_amount = AccountingModule::CreditAmount.new(account: loan_charge.account, amount: loan_charge.amount)
-  #     entry.credit_amounts << credit_amount
-  #   end
-  #   entry.save!
-  #   find_loan.disbursed!
-  #   LoansModule::PrincipalAmortizationSchedule.create_schedule_for(find_loan)
-  # end
-
-  # def credit_account
-  #   find_employee.cash_on_hand_account
-  # end
-  # def debit_account
-  #   find_loan.loan_product_debit_account
-  # end
+  private
+  def amount_less_than_current_cash_on_hand?
+    errors[:total_amount] << "Amount exceeded current cash on hand" if BigDecimal.new(total_amount) > find_employee.cash_on_hand_account_balance
+  end
 end

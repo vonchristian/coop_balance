@@ -7,7 +7,7 @@ module Loans
 		def create
 			@loan = LoansModule::Loan.find(params[:loan_id])
 			@voucher = Vouchers::LoanDisbursementVoucher.create(voucher_params)
-      @voucher.payee = @loan.borrower
+      @voucher.payee = @loan
 			if @voucher.valid?
 				@voucher.save
         @voucher.add_amounts_from(@loan)
@@ -18,7 +18,7 @@ module Loans
 		end
 		def show
 			@loan = LoansModule::Loan.find(params[:loan_id])
-			@voucher = @loan.cash_disbursement_voucher
+			@voucher = @loan.disbursement_voucher
 			respond_to do |format|
 				format.pdf do
 					pdf = Vouchers::LoanVoucherPdf.new(@loan, @voucher, view_context)

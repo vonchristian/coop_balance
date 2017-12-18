@@ -54,7 +54,7 @@ module LoansModule
     end
     def self.for(options={})
       if options[:from_date].present? && options[:to_date].present?
-        where('date' => (options[:from_date].beginning_of_day)..options[:to_date].end_of_day))
+        where('date' => (options[:from_date].beginning_of_day)..(options[:to_date].end_of_day))
       end
     end
     def self.principal_for(schedule, loan)

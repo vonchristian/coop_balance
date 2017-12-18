@@ -17,7 +17,7 @@ module Vouchers
 
     private
     def disbursement_params
-      params.require(:disbursement_form).permit(:voucher_id, :description, :voucherable_id, :recorder_id, :amount, :reference_number, :date)
+      params.require(:disbursement_form).permit(:voucher_id, :description, :payee_id, :payee_type, :recorder_id, :amount, :reference_number, :date)
     end
   end
 end

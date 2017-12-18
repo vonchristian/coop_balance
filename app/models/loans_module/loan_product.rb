@@ -19,6 +19,9 @@ module LoansModule
     validates :name, uniqueness: true
 
     accepts_nested_attributes_for :loan_product_interest
+    def self.accounts
+      all.map{|a| a.account }
+    end
     def borrowers
       member_borrowers + employee_borrowers + organization_borrowers
     end
@@ -26,17 +29,26 @@ module LoansModule
       loan_product_interest_rate
     end
     def create_charges_for(loan)
-      self.charges.depends_on_loan_amount.includes_loan_amount(loan).each do |charge|
-          loan.loan_charges.create(chargeable: charge)
-      end
-      self.charges.not_depends_on_loan_amount.each do |charge|
-        loan.loan_charges.find_or_create_by(chargeable: charge)
-      end
-      interest_on_loan_charge = Charge.create(name: "Interest on Loan", amount: (self.loan_product_interest_rate / 100) * loan.loan_amount, account_id: self.loan_product_interest_account.id)
+      create_charges_that_depends_on_loan_amount(loan)
+      create_charges_that_does_not_depends_on_loan_amount(loan)
+      create_interest_on_loan_charge_for(loan)
+    end
+
+    def create_interest_on_loan_charge_for(loan)
+      interest_on_loan_charge = Charge.create(name: "Interest on Loan", amount: (loan_product_interest_rate / 100) * loan.loan_amount, account_id: loan_product_interest_account.id)
       loan.loan_charges.find_or_create_by(chargeable: interest_on_loan_charge )
     end
-    def self.accounts
-      all.map{|a| a.account_name }
+
+    def create_charges_that_depends_on_loan_amount(loan)
+      charges.depends_on_loan_amount.includes_loan_amount(loan).each do |charge|
+          loan.loan_charges.create(chargeable: charge)
+      end
+    end
+
+    def create_charges_that_does_not_depends_on_loan_amount(loan)
+     charges.not_depends_on_loan_amount.each do |charge|
+        loan.loan_charges.find_or_create_by(chargeable: charge)
+      end
     end
   end
 end

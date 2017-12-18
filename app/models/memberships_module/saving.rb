@@ -56,15 +56,14 @@ module MembershipsModule
     end
 
     def balance
-      include(:saving_product)
       saving_product_account.balance(commercial_document_id: self.id)
     end
-    def deposits
-      saving_product_account.debits_balance(commercial_document_id: self.id)
 
+    def deposits
+      saving_product_account.credits_balance(commercial_document_id: self.id)
     end
     def withdrawals
-      saving_product_account.credits_balance(commercial_document_id: self.id)
+      saving_product_account.debits_balance(commercial_document_id: self.id)
     end
     def interests_earned
       saving_product_interest_account.credits_balance(commercial_document_id: self.id)

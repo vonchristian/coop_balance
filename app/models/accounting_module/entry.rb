@@ -4,32 +4,34 @@ module AccountingModule
     pg_search_scope :text_search, :against => [:reference_number, :description]
     multisearchable against: [:reference_number, :description]
     enum payment_type: [:cash, :check]
-    enum entry_type: [:capital_build_up,
-                      :deposit,
-                      :withdrawal,
-                      :loan_disbursement,
-                      :supplier_payment,
-                      :supplier_delivery,
-                      :finished_good_entry,
-                      :cash_sale,
-                      :credit_sale,
-                      :loan_payment,
-                      :savings_interest,
-                      :time_deposit,
-                      :program_subscription_payment,
-                      :loan_penalty,
-                      :time_deposit_interest,
-                      :adjusting_entry,
-                      :fund_transfer,
-                      :share_capital_dividend,
-                      :bank_deposit,
-                      :bank_withdrawal,
-                      :bank_earned_interest,
-                      :bank_charge
-                    ]
+    # enum entry_type: [:capital_build_up,
+    #                   :deposit,
+    #                   :withdrawal,
+    #                   :loan_disbursement,
+    #                   :supplier_payment,
+    #                   :supplier_delivery,
+    #                   :finished_good_entry,
+    #                   :cash_sale,
+    #                   :credit_sale,
+    #                   :loan_payment,
+    #                   :savings_interest,
+    #                   :time_deposit,
+    #                   :program_subscription_payment,
+    #                   :loan_penalty,
+    #                   :time_deposit_interest,
+    #                   :adjusting_entry,
+    #                   :fund_transfer,
+    #                   :share_capital_dividend,
+    #                   :bank_deposit,
+    #                   :bank_withdrawal,
+    #                   :bank_earned_interest,
+    #                   :bank_charge
+    #                 ]
 
 
     belongs_to :commercial_document, :polymorphic => true, touch: true
+    belongs_to :origin, :polymorphic => true, touch: true
+
     belongs_to :recorder, foreign_key: 'recorder_id', class_name: "User"
 
     has_many :credit_amounts, :extend => AccountingModule::BalanceFinder, :class_name => 'AccountingModule::CreditAmount', :inverse_of => :entry, dependent: :destroy
@@ -52,7 +54,7 @@ module AccountingModule
 
     delegate :first_and_last_name, to: :recorder, prefix: true, allow_nil: true
     delegate :number, to: :voucher, prefix: true, allow_nil: true
-    delegate :name, to: :branch_office, prefix: true, allow_nil: true
+    delegate :name, to: :origin, prefix: true, allow_nil: true
     def self.entered_on(hash={})
       if hash[:from_date] && hash[:to_date]
        from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : Chronic.parse(hash[:from_date].strftime('%Y-%m-%d 12:00:00'))

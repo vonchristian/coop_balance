@@ -9,7 +9,7 @@ module SavingsAccounts
       @savings_account = MembershipsModule::Saving.find(params[:savings_account_id])
       @withdrawal = WithdrawalForm.new(withdrawal_params)
       authorize [:savings_accounts, :withdrawal]
-      if @withdrawal.valid? && @withdrawal.amount_is_less_than_balance
+      if @withdrawal.valid?
         @withdrawal.save
         redirect_to savings_account_path(@savings_account), notice: "Withdraw transaction saved successfully."
       else

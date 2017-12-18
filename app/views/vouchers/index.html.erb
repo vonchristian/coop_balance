@@ -34,7 +34,7 @@
             <tbody>
               <% @vouchers.each do |voucher| %>
                  <tr data-link="<%=voucher_path(voucher)%>" class="myClass">
-                  <td><%=image_tag(voucher.payee.avatar.url(:thumb), class: "img-circle", height: 40, width: 40) %>&nbsp; <%= voucher.payee.try(:name) %></td>
+                  <td><%#=image_tag(voucher.payee.avatar.url(:thumb), class: "img-circle", height: 40, width: 40) %>&nbsp; <%= voucher.payee.try(:name) %></td>
                   <td><%= voucher.date.strftime("%B %e, %Y") %></td>
 
                   <td><%=link_to voucher.description, voucher_path(voucher) %></td>

@@ -4,7 +4,7 @@ module LoansModule
     pg_search_scope :text_search, :against => [:borrower_full_name]
     enum loan_status: [:application, :processing, :approved, :disbursed, :past_due, :aging]
     enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
-
+    has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", as: :commercial_document # for adding amounts on voucher
     belongs_to :borrower, polymorphic: true
     belongs_to :loan_product, class_name: "LoansModule::LoanProduct"
     belongs_to :street, optional: true, class_name: "Addresses::Street"
@@ -89,7 +89,7 @@ module LoansModule
     end
 
     def name
-      loan_product_name
+      borrower_name
     end
 
     def self.aging_for(start_num, end_num)
@@ -219,8 +219,8 @@ module LoansModule
     end
 
     def disbursement
-      if cash_disbursement_voucher.present?
-         cash_disbursement_voucher.entry
+      if disbursement_voucher.present?
+         disbursement_voucher.entry
       end
     end
 

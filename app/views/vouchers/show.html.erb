@@ -9,7 +9,7 @@
           <div class="col-md-10 col-md-offset-1">
             <p>Payee</p>
             <%=image_tag(@voucher.payee.avatar.url(:medium), class: "img-circle", height: 50, width: 50) %>
-            <p><%= @voucher.name.try(:upcase) %></p>
+            <p><%#= @voucher.name.try(:upcase) %></p>
             <div class="table table-responsive">
               <table class="table table-hover table-striped">
                 <thead>

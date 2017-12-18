@@ -21,7 +21,6 @@
               <td></td>
               <td><%= schedule.date.strftime("%B %e, %Y") %><br>
                 <%= schedule.try(:name) %>
-                <%= schedule.amount %>
               </td>
               <td><%= number_to_currency schedule.principal %></td>
               <td><%= number_to_currency schedule.interest %> </td>

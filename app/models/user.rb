@@ -144,10 +144,14 @@ class User < ApplicationRecord
   end
 
   def fund_transfer_total
-    fund_transfers.fund_transfer.total
+    fund_transfers.total
   end
-
-  def payable_amount
-    voucher_amounts.sum(:amount)
+  def set_cash_on_hand_account
+    if treasurer?
+      self.cash_on_hand_account = AccountingModule::Asset.find_by(name: "Cash on Hand (Treasury)")
+    elsif teller? || sales_clerk?
+      self.cash_on_hand_account = AccountingModule::Asset.find_by(name: "Cash on Hand (Teller)")
+    end
+    self.save
   end
 end

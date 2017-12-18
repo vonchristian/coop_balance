@@ -37,7 +37,6 @@ module MembershipsModule
       share_capital_product_default_paid_up_account.balance(commercial_document_id: self.subscriber_id)
     end
 
-
     def capital_build_ups_total
       share_capital_product_default_paid_up_account.balance(commercial_document_id: self.id) +
       share_capital_product_default_paid_up_account.balance(commercial_document_id: self.subscriber_id)

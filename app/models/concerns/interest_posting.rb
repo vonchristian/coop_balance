@@ -1,6 +1,6 @@
 class InterestPosting
   def post_interests_earned(savings_account, posting_date)
-    savings_account.entries.create!(entry_type: 'savings_interest',  description: 'Savings interest', entry_date: posting_date,
+    savings_account.entries.create!(description: 'Savings interest', entry_date: posting_date,
     debit_amounts_attributes: [account: debit_account, amount: amount_for(savings_account)],
     credit_amounts_attributes: [account: credit_account, amount: amount_for(savings_account)])
   end

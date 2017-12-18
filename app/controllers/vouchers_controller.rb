@@ -8,7 +8,6 @@ class VouchersController < ApplicationController
   end
   def show
     @voucher = Voucher.find(params[:id])
-    @loan = @voucher.voucherable
     respond_to do |format|
       format.html
       format.pdf do

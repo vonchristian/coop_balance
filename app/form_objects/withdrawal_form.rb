@@ -4,14 +4,13 @@ class WithdrawalForm
   attr_accessor :saving_id, :amount, :or_number, :date, :recorder_id, :payment_type
   validates :amount, presence: true, numericality: true
   validates :or_number, presence: true
+  validate :amount_less_than_current_cash_on_hand?
+  validate :amount_is_less_than_balance?
+
 
   def save
     ActiveRecord::Base.transaction do
-      if amount_is_less_than_balance
-        save_withdraw
-      else
-        errors[:base] << "Amount exceed balance"
-      end
+      save_withdraw
     end
   end
   def find_saving
@@ -22,18 +21,25 @@ class WithdrawalForm
   end
 
   def save_withdraw
-    find_saving.entries.create!(payment_type: payment_type, recorder_id: recorder_id, entry_type: 'withdrawal', description: 'Withdraw', reference_number: or_number, entry_date: date,
+    find_saving.entries.create!(payment_type: payment_type, recorder_id: recorder_id, description: 'Withdraw', reference_number: or_number, entry_date: date,
     debit_amounts_attributes: [account: debit_account, amount: amount],
     credit_amounts_attributes: [account: credit_account, amount: amount])
   end
   def credit_account
     find_employee.cash_on_hand_account
   end
+
   def debit_account
-    AccountingModule::Account.find_by(name: "Savings Deposits")
+    find_saving.saving_product_account
+    # AccountingModule::Account.find_by(name: "Savings Deposits")
   end
 
-  def amount_is_less_than_balance
-    amount.to_i <= find_saving.balance
+  private
+  def amount_is_less_than_balance?
+    errors[:amount] << "Amount exceeded balance"  if BigDecimal.new(amount) > find_saving.balance
+  end
+
+  def amount_less_than_current_cash_on_hand?
+    errors[:amount] << "Amount exceeded current cash on hand" if BigDecimal.new(amount) > find_employee.cash_on_hand_account_balance
   end
 end

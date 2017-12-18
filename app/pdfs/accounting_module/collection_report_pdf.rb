@@ -20,8 +20,8 @@ module AccountingModule
         entry.commercial_document.try(:member).try(:full_name)
       elsif entry.commercial_document.try(:borrower).present?
         entry.commercial_document.try(:borrower).try(:full_name)
-      elsif entry.fund_transfer?
-        entry.commercial_document.try(:first_and_last_name)
+      else
+        entry.commercial_document.try(:name)
       end
     end
 

@@ -50,10 +50,6 @@
             </div>
           </div>
           <hr>
-          <span class="condensed-text">FILTERS: &nbsp; </span>
-          <% AccountingModule::Entry.entry_types.keys.to_a.each do |entry_type| %>
-            <span class="btn btn-default btn-sm"> <span class="text-muted"> <%=link_to entry_type.titleize, employee_entries_path(@employee, entry_type: entry_type), class: "text-muted" %> </span> </span> &nbsp;
-          <% end %>
         </div>
         </div>
         <div class="box-body">

@@ -1,4 +1,4 @@
-module Reports
+module Employees
   class CashOnHandPdf < Prawn::Document
     def initialize(entries, employee, from_date, to_date, title, view_context)
        super(margin: 20, page_size: "A4", page_layout: :portrait)
@@ -25,8 +25,6 @@ module Reports
         entry.commercial_document.try(:depositor).try(:full_name)
       elsif entry.commercial_document.try(:borrower).present?
         entry.commercial_document.try(:borrower).try(:full_name)
-      elsif entry.fund_transfer?
-        entry.commercial_document.try(:first_and_last_name)
       else
         entry.description
       end
@@ -93,7 +91,7 @@ module Reports
   end
   def sundries_summary_data
     [["", "Code", "Account Title ", "Debits", "Credits"]] +
-    @sundries_summary ||= AccountingModule::Account.updated_at(@to_date.beginning_of_day, @to_date.end_of_day).updated_by(@employee).uniq.map{ |a| ["", a.code, a.name, price(a.debits_balance(from_date: @to_date.beginning_of_day, to_date: @to_date.end_of_day, recorder_id: @employee.id)), price(a.credits_balance(from_date: @to_date.beginning_of_day, to_date: @to_date.end_of_day, recorder_id: @employee.id))]}
+    @sundries_summary ||= AccountingModule::Account.updated_at(from_date: @to_date.beginning_of_day, to_date: @to_date.end_of_day).updated_by(@employee).uniq.map{ |a| ["", a.code, a.name, price(a.debits_balance(from_date: @to_date.beginning_of_day, to_date: @to_date.end_of_day, recorder_id: @employee.id)), price(a.credits_balance(from_date: @to_date.beginning_of_day, to_date: @to_date.end_of_day, recorder_id: @employee.id))]}
   end
     def entries_table
     if !@entries.any?
