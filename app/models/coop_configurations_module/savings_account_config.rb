@@ -1,6 +1,10 @@
 module CoopConfigurationsModule
   class SavingsAccountConfig < ApplicationRecord
+    belongs_to :closing_account, class_name: "AccountingModule::Account"
+    belongs_to :interest_account, class_name: "AccountingModule::Account"
+
     validates :closing_account_fee, numericality: true, presence: true
+    validates :closing_account_id, :interest_account_id, presence: true
     def self.default_closing_account_fee
       if self.exists?
         order(created_at: :asc).last.closing_account_fee

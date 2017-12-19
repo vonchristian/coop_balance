@@ -9,11 +9,7 @@
             <h3><center><%= @savings_account.depositor_name %></center></h3>
             <center><small><%= @savings_account.depositor_current_occupation %></small></center>
             <center><small><%= @savings_account.branch_office_name %></small></center>
-            <% if @savings_account.section.blank? %>
-              <%= link_to 'Set Section', edit_savings_account_section_path(@savings_account) %>
-            <% else %>
-              <center><small><%= @savings_account.section_name %></small></center>
-            <% end %>
+
 
 
       </div>

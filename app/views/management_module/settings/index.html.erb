@@ -48,7 +48,7 @@
 <%= link_to 'New Employee', new_user_registration_path %>
 <%#= link_to "New Committee", new_management_module_committee_path %>
 <%= link_to 'Update Cooperative Details', edit_management_module_settings_cooperative_path(@cooperative), class: "btn btn-warning" %>
-<%= link_to 'Add Closing Account Fee', new_management_module_settings_savings_account_config_path, class: "btn btn-danger" %>
+<%= link_to 'Set Savings Accounts Configuration', new_management_module_settings_savings_account_config_path, class: "btn btn-danger" %>
 <%= link_to current_user.cooperative_name, management_module_settings_cooperative_path(current_user.cooperative) %>
 
 <%= simple_form_for Registry.new, url: :management_module_savings_account_registries do |f| %>

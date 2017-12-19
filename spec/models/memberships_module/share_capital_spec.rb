@@ -5,7 +5,7 @@ module MembershipsModule
     context 'associations' do
     	it { is_expected.to belong_to :subscriber }
     	it { is_expected.to belong_to :share_capital_product }
-      it { is_expected.to belong_to :branch_office }
+      it { is_expected.to belong_to :office }
     	# it { is_expected.to have_many :entries }
     end
 
@@ -20,7 +20,7 @@ module MembershipsModule
 
     context 'delegations' do
       it { is_expected.to delegate_method(:name).to(:subscriber).with_prefix }
-      it { is_expected.to delegate_method(:name).to(:branch_office).with_prefix }
+      it { is_expected.to delegate_method(:name).to(:office).with_prefix }
     	it { is_expected.to delegate_method(:name).to(:share_capital_product).with_prefix }
       it { is_expected.to delegate_method(:paid_up_account).to(:share_capital_product).with_prefix }
       it { is_expected.to delegate_method(:subscription_account).to(:share_capital_product).with_prefix }

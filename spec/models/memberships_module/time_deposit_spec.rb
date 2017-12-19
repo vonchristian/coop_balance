@@ -7,6 +7,7 @@ module MembershipsModule
     	it { is_expected.to belong_to :time_deposit_product }
     	it { is_expected.to have_many :entries }
       it { is_expected.to have_many :fixed_terms }
+      it { is_expected.to belong_to :office }
     end
 
     describe 'validations' do
@@ -23,6 +24,8 @@ module MembershipsModule
       it { is_expected.to delegate_method(:maturity_date).to(:current_term).with_prefix }
       it { is_expected.to delegate_method(:deposit_date).to(:current_term).with_prefix }
       it { is_expected.to delegate_method(:matured?).to(:current_term).with_prefix }
+      it { is_expected.to delegate_method(:name).to(:office).with_prefix }
+
     end
 
     describe 'enums' do

@@ -25,7 +25,7 @@ class User < ApplicationRecord
   has_one :current_address, as: :addressable, class_name: "Address"
   belongs_to :department
   belongs_to :cooperative
-  belongs_to :branch_office, class_name: "CoopConfigurationsModule::BranchOffice"
+  belongs_to :office, class_name: "CoopConfigurationsModule::Office"
   belongs_to :salary_grade
   has_one :membership, as: :memberable
   has_many :loans, class_name: "LoansModule::Loan", as: :borrower
@@ -59,7 +59,7 @@ class User < ApplicationRecord
   delegate :name, :address, :contact_number, :logo, to: :cooperative, prefix: true
   delegate :regular_member?, to: :membership
   delegate :membership_type, to: :membership, allow_nil: true
-  delegate :name, to: :branch_office, prefix: true, allow_nil: true
+  delegate :name, to: :office, prefix: true, allow_nil: true
   delegate :abbreviated_name, :name, to: :cooperative, prefix: true
   has_attached_file :avatar,
   styles: { large: "120x120>",

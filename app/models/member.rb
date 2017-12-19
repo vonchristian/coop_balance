@@ -7,11 +7,10 @@ class Member < ApplicationRecord
   multisearchable against: [:first_name, :last_name, :middle_name, :fullname]
   enum sex: [:male, :female, :other]
   enum civil_status: [:single, :married, :widower, :divorced]
-  delegate :regular_member?, to: :membership
-  delegate :name, to: :branch_office, prefix: true, allow_nil: true
+
   before_validation :set_fullname
   validates :fullname, uniqueness: { message: 'is already registered'}
-  belongs_to :branch_office, class_name: "CoopConfigurationsModule::BranchOffice"
+  belongs_to :office, class_name: "CoopConfigurationsModule::Office"
   has_one :tin, as: :tinable
   has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document
   has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", as: :commercial_document #for temporary cration of debit adn creditrs
@@ -33,6 +32,8 @@ class Member < ApplicationRecord
   accepts_nested_attributes_for :tin, :addresses, :membership
   delegate :number, to: :tin, prefix: true, allow_nil: true
   delegate :membership_type, to: :membership, allow_nil: true
+  delegate :regular_member?, to: :membership
+  delegate :name, to: :office, prefix: true, allow_nil: true
 
   has_attached_file :avatar,
   styles: { large: "120x120>",

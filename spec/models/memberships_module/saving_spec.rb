@@ -4,17 +4,14 @@ module MembershipsModule
   describe Saving do
     context "associations" do
     	it { is_expected.to belong_to :depositor }
-      it { is_expected.to belong_to :branch_office }
-      it { is_expected.to belong_to :section }
+      it { is_expected.to belong_to :office }
     	it { is_expected.to belong_to :saving_product }
     	it { is_expected.to have_many :entries }
     end
     context 'delegations' do
     	it { is_expected.to delegate_method(:name).to(:saving_product).with_prefix }
       it { is_expected.to delegate_method(:interest_account).to(:saving_product).with_prefix }
-
-      it { is_expected.to delegate_method(:name).to(:section).with_prefix }
-      it { is_expected.to delegate_method(:name).to(:branch_office).with_prefix }
+      it { is_expected.to delegate_method(:name).to(:office).with_prefix }
       it { is_expected.to delegate_method(:account).to(:saving_product).with_prefix }
       it { is_expected.to delegate_method(:name).to(:depositor).with_prefix }
       it { is_expected.to delegate_method(:current_occupation).to(:depositor).with_prefix }
@@ -23,11 +20,11 @@ module MembershipsModule
 
     it '.updated_at' do
       updated_saving = create(:saving)
-      not_updated_saving = create(:saving)
+      not_updated_saving = create(:saving, updated_at: Date.yesterday)
       deposit = create(:entry_with_credit_and_debit, entry_date: Date.today, commercial_document: updated_saving, entry_type: 'deposit')
 
-      expect(MembershipsModule::Saving.updated_at(from_date: Date.today, to_date: Date.today)).to include(updated_saving)
-      expect(MembershipsModule::Saving.updated_at(from_date: Date.today, to_date: Date.today)).to include(not_updated_saving)
+      expect(MembershipsModule::Saving.updated_at(from_date: Date.today, to_date: Date.today).pluck(:id)).to include(updated_saving.id)
+      expect(MembershipsModule::Saving.updated_at(from_date: Date.today, to_date: Date.today).pluck(:id)).to_not include(not_updated_saving.id)
     end
 
     it '#balance' do

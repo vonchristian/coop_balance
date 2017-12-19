@@ -39,7 +39,7 @@ class AccountClosingForm
   end
 
   def debit_account
-    AccountingModule::Account.find_by(name: "Savings Deposits")
+    find_savings.saving_product_account
   end
 
   def amount_is_less_than_balance?

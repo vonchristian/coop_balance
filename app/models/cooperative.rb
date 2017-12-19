@@ -1,9 +1,9 @@
 class Cooperative < ApplicationRecord
-  has_many :branch_offices, class_name: "CoopConfigurationsModule::BranchOffice"
+  has_many :offices, class_name: "CoopConfigurationsModule::Office"
   has_many :store_fronts
   validates :name, presence: true
   validates :name, uniqueness: true
-  validates :registration_number, presence: true
+  validates :registration_number, presence: true, uniqueness: true
    has_attached_file :logo,
   styles: { large: "120x120>",
            medium: "70x70>",

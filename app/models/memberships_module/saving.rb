@@ -6,13 +6,11 @@ module MembershipsModule
     multisearchable against: [:account_number, :account_owner_name]
     belongs_to :depositor, polymorphic: true
     belongs_to :saving_product, class_name: "CoopServicesModule::SavingProduct"
-    belongs_to :branch_office, class_name: "CoopConfigurationsModule::BranchOffice"
-    belongs_to :section, class_name: "CoopConfigurationsModule::Section"
+    belongs_to :office, class_name: "CoopConfigurationsModule::Office"
     delegate :name, :current_occupation, to: :depositor, prefix: true
     delegate :name, :account, to: :saving_product, prefix: true
     delegate :interest_rate, :interest_account, to: :saving_product, prefix: true
-    delegate :name, to: :branch_office, prefix: true, allow_nil: true
-    delegate :name, to: :section, prefix: true, allow_nil: true
+    delegate :name, to: :office, prefix: true, allow_nil: true
     has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
     before_save :set_account_owner_name, :set_account_number
     validates :saving_product_id, presence: true
@@ -79,10 +77,6 @@ module MembershipsModule
     end
     def set_account_number
       self.account_number = self.id
-    end
-
-    def set_branch_office
-      self.branch_office_id = self.depositor.branch_office.id
     end
   end
 end

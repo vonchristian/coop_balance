@@ -4,12 +4,14 @@ module MembershipsModule
     include PgSearch
     pg_search_scope :text_search, against: [:depositor_name, :account_number]
     belongs_to :depositor, polymorphic: true
+    belongs_to :office, class_name: "CoopConfigurationsModule::Office"
     belongs_to :time_deposit_product, class_name: "CoopServicesModule::TimeDepositProduct"
     has_many :entries,  class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
     has_many :fixed_terms, class_name: "TimeDepositsModule::FixedTerm", dependent: :destroy
     delegate :name, :interest_rate, :account, to: :time_deposit_product, prefix: true
     delegate :name, :full_name, :first_and_last_name, to: :depositor, prefix: true
     delegate :maturity_date, :deposit_date, :matured?, to: :current_term, prefix: true
+    delegate :name, to: :office, prefix: true
     before_save :set_depositor_name, on: [:create]
 
     validates :depositor_id, :depositor_type,  presence: true
@@ -51,17 +53,6 @@ module MembershipsModule
 
     def matured?
       current_term.matured?
-    end
-    def transfer_to_savings
-      #if matured?
-      #find_member_savings_accounts
-      #if savings_accounts.present?
-        #select last saving account
-        #add time deposit balance to saving account balance
-      #elsif no account found
-      #create savings account
-      # add time dpeosit balance to saving account balance
-      #
     end
 
     def amount_deposited

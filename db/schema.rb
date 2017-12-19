@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2017_12_14_101605) do
+ActiveRecord::Schema.define(version: 2017_12_19_022407) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -610,9 +610,9 @@ ActiveRecord::Schema.define(version: 2017_12_14_101605) do
     t.integer "birth_month"
     t.integer "birth_day"
     t.string "email", default: "", null: false
-    t.uuid "branch_office_id"
-    t.index ["branch_office_id"], name: "index_members_on_branch_office_id"
+    t.uuid "office_id"
     t.index ["fullname"], name: "index_members_on_fullname", unique: true
+    t.index ["office_id"], name: "index_members_on_office_id"
     t.index ["sex"], name: "index_members_on_sex"
     t.index ["slug"], name: "index_members_on_slug", unique: true
   end
@@ -688,6 +688,18 @@ ActiveRecord::Schema.define(version: 2017_12_14_101605) do
     t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "offices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "type"
+    t.string "name"
+    t.uuid "cooperative_id"
+    t.string "address"
+    t.string "contact_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cooperative_id"], name: "index_offices_on_cooperative_id"
+    t.index ["type"], name: "index_offices_on_type"
   end
 
   create_table "official_receipts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -909,13 +921,11 @@ ActiveRecord::Schema.define(version: 2017_12_14_101605) do
     t.string "depositor_type"
     t.uuid "depositor_id"
     t.integer "status"
-    t.uuid "branch_office_id"
-    t.uuid "section_id"
+    t.uuid "office_id"
     t.index ["account_number"], name: "index_savings_on_account_number", unique: true
-    t.index ["branch_office_id"], name: "index_savings_on_branch_office_id"
     t.index ["depositor_type", "depositor_id"], name: "index_savings_on_depositor_type_and_depositor_id"
+    t.index ["office_id"], name: "index_savings_on_office_id"
     t.index ["saving_product_id"], name: "index_savings_on_saving_product_id"
-    t.index ["section_id"], name: "index_savings_on_section_id"
   end
 
   create_table "savings_account_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -923,6 +933,8 @@ ActiveRecord::Schema.define(version: 2017_12_14_101605) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "interest_account_id"
+    t.uuid "closing_account_id"
+    t.index ["closing_account_id"], name: "index_savings_account_configs_on_closing_account_id"
     t.index ["interest_account_id"], name: "index_savings_account_configs_on_interest_account_id"
   end
 
@@ -972,10 +984,10 @@ ActiveRecord::Schema.define(version: 2017_12_14_101605) do
     t.datetime "created_at", default: "2017-11-27 11:44:53", null: false
     t.datetime "updated_at", default: "2017-11-27 11:44:53", null: false
     t.integer "status"
-    t.uuid "branch_office_id"
     t.uuid "section_id"
+    t.uuid "office_id"
     t.index ["account_number"], name: "index_share_capitals_on_account_number", unique: true
-    t.index ["branch_office_id"], name: "index_share_capitals_on_branch_office_id"
+    t.index ["office_id"], name: "index_share_capitals_on_office_id"
     t.index ["section_id"], name: "index_share_capitals_on_section_id"
     t.index ["share_capital_product_id"], name: "index_share_capitals_on_share_capital_product_id"
     t.index ["status"], name: "index_share_capitals_on_status"
@@ -1018,6 +1030,18 @@ ActiveRecord::Schema.define(version: 2017_12_14_101605) do
     t.string "address"
   end
 
+  create_table "time_deposit_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "break_contract_account_id"
+    t.uuid "interest_account_id"
+    t.uuid "account_id"
+    t.decimal "break_contract_fee"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_time_deposit_configs_on_account_id"
+    t.index ["break_contract_account_id"], name: "index_time_deposit_configs_on_break_contract_account_id"
+    t.index ["interest_account_id"], name: "index_time_deposit_configs_on_interest_account_id"
+  end
+
   create_table "time_deposit_products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.decimal "minimum_amount"
     t.decimal "maximum_amount"
@@ -1041,8 +1065,10 @@ ActiveRecord::Schema.define(version: 2017_12_14_101605) do
     t.string "depositor_type"
     t.uuid "depositor_id"
     t.integer "status"
+    t.uuid "office_id"
     t.index ["account_number"], name: "index_time_deposits_on_account_number", unique: true
     t.index ["depositor_type", "depositor_id"], name: "index_time_deposits_on_depositor_type_and_depositor_id"
+    t.index ["office_id"], name: "index_time_deposits_on_office_id"
     t.index ["status"], name: "index_time_deposits_on_status"
     t.index ["time_deposit_product_id"], name: "index_time_deposits_on_time_deposit_product_id"
   end
@@ -1090,12 +1116,12 @@ ActiveRecord::Schema.define(version: 2017_12_14_101605) do
     t.integer "birth_month"
     t.integer "birth_day"
     t.uuid "cash_on_hand_account_id"
-    t.uuid "branch_office_id"
-    t.index ["branch_office_id"], name: "index_users_on_branch_office_id"
+    t.uuid "office_id"
     t.index ["cash_on_hand_account_id"], name: "index_users_on_cash_on_hand_account_id"
     t.index ["cooperative_id"], name: "index_users_on_cooperative_id"
     t.index ["department_id"], name: "index_users_on_department_id"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["office_id"], name: "index_users_on_office_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["role"], name: "index_users_on_role"
     t.index ["salary_grade_id"], name: "index_users_on_salary_grade_id"
@@ -1222,10 +1248,11 @@ ActiveRecord::Schema.define(version: 2017_12_14_101605) do
   add_foreign_key "loans", "users", column: "preparer_id"
   add_foreign_key "member_occupations", "members"
   add_foreign_key "member_occupations", "occupations"
-  add_foreign_key "members", "branch_offices"
+  add_foreign_key "members", "offices"
   add_foreign_key "memberships", "cooperatives"
   add_foreign_key "municipalities", "provinces"
   add_foreign_key "notes", "users", column: "noter_id"
+  add_foreign_key "offices", "cooperatives"
   add_foreign_key "orders", "users"
   add_foreign_key "orders", "users", column: "employee_id"
   add_foreign_key "organization_members", "organizations"
@@ -1242,26 +1269,30 @@ ActiveRecord::Schema.define(version: 2017_12_14_101605) do
   add_foreign_key "registries", "users", column: "employee_id"
   add_foreign_key "saving_products", "accounts"
   add_foreign_key "saving_products", "accounts", column: "interest_account_id"
-  add_foreign_key "savings", "branch_offices"
+  add_foreign_key "savings", "offices"
   add_foreign_key "savings", "saving_products"
-  add_foreign_key "savings", "sections"
+  add_foreign_key "savings_account_configs", "accounts", column: "closing_account_id"
   add_foreign_key "savings_account_configs", "accounts", column: "interest_account_id"
   add_foreign_key "sections", "branch_offices"
   add_foreign_key "share_capital_product_shares", "share_capital_products"
   add_foreign_key "share_capital_products", "accounts", column: "paid_up_account_id"
   add_foreign_key "share_capital_products", "accounts", column: "subscription_account_id"
-  add_foreign_key "share_capitals", "branch_offices"
+  add_foreign_key "share_capitals", "offices"
   add_foreign_key "share_capitals", "sections"
   add_foreign_key "share_capitals", "share_capital_products"
   add_foreign_key "store_fronts", "cooperatives"
   add_foreign_key "streets", "barangays"
   add_foreign_key "streets", "municipalities"
+  add_foreign_key "time_deposit_configs", "accounts"
+  add_foreign_key "time_deposit_configs", "accounts", column: "break_contract_account_id"
+  add_foreign_key "time_deposit_configs", "accounts", column: "interest_account_id"
   add_foreign_key "time_deposit_products", "accounts"
+  add_foreign_key "time_deposits", "offices"
   add_foreign_key "time_deposits", "time_deposit_products"
   add_foreign_key "users", "accounts", column: "cash_on_hand_account_id"
-  add_foreign_key "users", "branch_offices"
   add_foreign_key "users", "cooperatives"
   add_foreign_key "users", "departments"
+  add_foreign_key "users", "offices"
   add_foreign_key "users", "salary_grades"
   add_foreign_key "voucher_amounts", "accounts"
   add_foreign_key "voucher_amounts", "vouchers"

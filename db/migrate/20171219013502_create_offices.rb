@@ -1,12 +1,14 @@
-class CreateBranchOffices < ActiveRecord::Migration[5.1]
+class CreateOffices < ActiveRecord::Migration[5.2]
   def change
-    create_table :branch_offices, id: :uuid do |t|
+    create_table :offices, id: :uuid do |t|
+      t.string :type
+      t.string :name
       t.belongs_to :cooperative, foreign_key: true, type: :uuid
       t.string :address
-      t.string :branch_name, :unique => true
       t.string :contact_number
 
       t.timestamps
     end
+    add_index :offices, :type
   end
 end
