@@ -42,7 +42,17 @@ module LoansModule
     validates :loan_product_id, :term, :loan_amount, :borrower_id, presence: true
     validates :term, presence: true, numericality: { greater_than: 0.1 }
     validates :loan_amount, numericality: { less_than_or_equal_to: :loan_product_max_loanable_amount}
-
+    def self.loan_payments(options={})
+      entries = []
+      if options[:from_date] && options[:to_date] && options[:employee_id].present?
+        LoansModule::LoanProduct.accounts.each do |account|
+          account.credit_entries.entered_on(from_date: options[:from_date], to_date: options[:to_date]).recorded_by(options[:employee_id]).each do |entry|
+            entries << entry
+          end
+        end
+      end
+      entries
+    end
     def self.borrowers
       User.all + Member.all
     end

@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
     <div class="box box-solid">
-      <div class="box-header">
+      <div class="box-header bg-gray">
 
            <h4><center><%= image_tag(@member.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center></h4>
 
@@ -9,8 +9,9 @@
       </div>
       <div class="box-body">
         <p class="text-muted">Member Contributions </p>
+        <% CoopServicesModule::Program.default_programs.all.each do |program| %>
 <%= simple_form_for @amount, url: :membership_application_contributions do |f| %>
-<% CoopServicesModule::Program.default_programs.all.each do |program| %>
+
   <div class="row">
     <div class="col-md-5 col-md-offset-1">
       <%= program.name %>
@@ -21,11 +22,16 @@
     <div class="col-md-2">
      <%= f.input :description, input_html: { value: program.name }, as: :hidden %>
      <%= f.input :amount, input_html: { value: program.contribution }, as: :hidden  %>
-     <%= f.input :account_id, input_html: { value: program.account.id }, as: :hidden  %>
+     <%= f.input :amount_type, input_html: { value: 'debit' }, as: :hidden  %>
+
+     <%= f.input :account_id, input_html: { value: program.account_id }, as: :hidden  %>
      <%= f.input :commercial_document_id, input_html: { value: @member.id }, as: :hidden  %>
       <%= f.input :commercial_document_type, input_html: { value: @member.class }, as: :hidden  %>
       <% unless @member.voucher_amounts.pluck(:description).include?(program.name) %>
+
       <%= f.submit 'Add', class: "btn btn-primary btn-sm" %>
+       <% else %>
+      <span class="label bg-green"> Added </span>
       <% end %>
     </div>
   </div>
@@ -44,12 +50,16 @@
     </div>
     <div class="col-md-2">
       <%= f.input :amount, input_html: { value: share_capital.share_capital_product.minimum_payment }, as: :hidden %>
+     <%= f.input :amount_type, input_html: { value: 'debit' }, as: :hidden  %>
+
       <%= f.input :description, input_html: { value: share_capital.share_capital_product_name }, as: :hidden  %>
-      <%= f.input :account_id, input_html: { value: share_capital.share_capital_product_account.id }, as: :hidden  %>
+      <%= f.input :account_id, input_html: { value: share_capital.share_capital_product_paid_up_account.id }, as: :hidden  %>
       <%= f.input :commercial_document_id, input_html: { value: @member.id }, as: :hidden  %>
       <%= f.input :commercial_document_type, input_html: { value: @member.class }, as: :hidden  %>
     <% unless @member.voucher_amounts.pluck(:description).include?(share_capital.share_capital_product_name) %>
       <%= f.submit 'Add', class: "btn btn-primary btn-sm" %>
+    <% else %>
+      <span class="label bg-green"> Added </span>
       <% end %>
     </div>
   </div>

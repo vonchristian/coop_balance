@@ -54,7 +54,21 @@
           Monitoring
         </div>
         <div class="box-body">
-          <% Addresses::Municipali
+          <p class="text-muted">Membership Applications </p>
+
+          <% @membership_applications.each do |membership| %>
+            <%= link_to membership_application_path(membership.memberable) do %>
+              <div class="row">
+                <div class="col-md-3">
+                  <%= image_tag(membership.memberable.avatar.url(:medium), class: "img-circle", height: 40, width: 40) %>
+                </div>
+                <div class="col-md-8">
+                  <%= membership.memberable_name %>
+                </div>
+              </div>
+              <br>
+            <% end %>
+          <% end %>
     </div>
 
 

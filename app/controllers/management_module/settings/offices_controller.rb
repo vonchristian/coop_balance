@@ -1,13 +1,13 @@
 module ManagementModule
   module Settings
-    class BranchesController < ApplicationController
+    class OfficesController < ApplicationController
       def new
         @cooperative = Cooperative.find(params[:cooperative_id])
-        @branch = @cooperative.branch_offices.build
+        @branch = @cooperative.offices.build
       end
       def create
         @cooperative = Cooperative.find(params[:cooperative_id])
-        @branch = @cooperative.branch_offices.create(branch_params)
+        @branch = @cooperative.offices.create(office_params)
         if @branch.valid?
           @branch.save
           redirect_to management_module_settings_cooperative_url(@cooperative), notice: "Branch created successfully"
@@ -17,8 +17,8 @@ module ManagementModule
       end
 
       private
-      def branch_params
-        params.require(:coop_configurations_module_branch_office).permit(:contact_number, :address, :branch_name, :branch_type)
+      def office_params
+        params.require(:coop_configurations_module_office).permit(:contact_number, :address, :name)
       end
     end
   end

@@ -211,7 +211,7 @@ class TransactionSummaryPdf < Prawn::Document
   end
   def loan_releases
     text "Loan Releases", style: :bold, size: 10, color: "DB4437"
-    if @employee.entries.loan_disbursement.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).present?
+    if @employee.disbursed_loan_vouchers.disbursed_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).present?
 
       table(loan_releases_data, header: true, cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [40, 160, 100, 110, 100]) do
         cells.borders = []
@@ -238,8 +238,8 @@ class TransactionSummaryPdf < Prawn::Document
 
    def loan_collections
     text "Loan Collections", style: :bold, size: 10, color: "DB4437"
+    if LoansModule::Loan.loan_payments(employee_id: @employee.id, from_date: @date.beginning_of_day, to_date: @date.end_of_day).present?
 
-    if @employee.entries.loan_payment.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).present?
 
       table(loan_collections_data, header: true, cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [40, 160, 100, 110, 100]) do
         cells.borders = []
@@ -257,9 +257,9 @@ class TransactionSummaryPdf < Prawn::Document
   end
 
   def loan_collections_data
-    if @employee.entries.loan_payment.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).present?
+    if LoansModule::Loan.loan_payments(employee_id: @employee.id, from_date: @date.beginning_of_day, to_date: @date.end_of_day).present?
        [["", "Borrower", "OR #", "Amount", ""]] +
-      @loan_collections_data ||= @employee.entries.loan_payment.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{|a| ["", a.commercial_document.try(:borrower_name), a.reference_number, price(a.debit_amounts.sum(&:amount))]} +
+      @loan_collections_data ||= LoansModule::Loan.loan_payments(employee_id: @employee.id, from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{|a| ["", a.commercial_document.try(:borrower_name), a.reference_number, price(a.debit_amounts.sum(&:amount))]} +
     [["", "", "<b>TOTAL</b>", "<b>#{price(@employee.entries.loan_payment.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{|a| a.debit_amounts.distinct.sum(:amount)}.sum)}</b>", ""]]
 
     else

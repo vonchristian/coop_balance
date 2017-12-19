@@ -41,6 +41,6 @@
           <p>Share Capital</p>
           <%= f.input :share_capital_product_id, input_html: { value: CoopServicesModule::ShareCapitalProduct.default_product.id } %>
           <hr>
-          <%= f.input :branch_office_id, collection: CoopConfigurationsModule::BranchOffice.all.map{|a| [a.branch_name, a.id] }, as: :radio_buttons %>
+          <%= f.input :office_id, collection: CoopConfigurationsModule::Office.all.map{|a| [a.branch_name, a.id] }, as: :radio_buttons %>
           <%= f.submit "Save Membership Application" %>
         <% end %>

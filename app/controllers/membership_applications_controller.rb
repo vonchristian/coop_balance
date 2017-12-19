@@ -13,7 +13,7 @@ class MembershipApplicationsController < ApplicationController
     end
   end
   def show
-
+    @membership = Member.find(params[:id])
   end
 
   private
@@ -51,6 +51,6 @@ class MembershipApplicationsController < ApplicationController
       :application_date,
       :share_capital_product_id,
       :membership_type,
-      :branch_office_id )
+      :office_id )
       end
 end

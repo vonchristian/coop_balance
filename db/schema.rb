@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2017_12_19_022407) do
+ActiveRecord::Schema.define(version: 2017_12_19_052748) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -628,10 +628,12 @@ ActiveRecord::Schema.define(version: 2017_12_19_022407) do
     t.string "account_number"
     t.datetime "application_date"
     t.datetime "approval_date"
+    t.integer "status"
     t.index ["account_number"], name: "index_memberships_on_account_number", unique: true
     t.index ["cooperative_id"], name: "index_memberships_on_cooperative_id"
     t.index ["memberable_type", "memberable_id"], name: "index_memberships_on_memberable_type_and_memberable_id"
     t.index ["membership_type"], name: "index_memberships_on_membership_type"
+    t.index ["status"], name: "index_memberships_on_status"
   end
 
   create_table "menus", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

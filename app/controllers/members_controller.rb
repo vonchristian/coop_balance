@@ -5,6 +5,7 @@ class MembersController < ApplicationController
     else
       @members = Member.all.includes([:addresses]).order(:last_name).paginate(page: params[:page], per_page: 35)
     end
+    @membership_applications = Membership.pending
   end
   def new
     @member = Member.new

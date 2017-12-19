@@ -30,7 +30,7 @@ Rails.application.routes.draw do
       resources :income_statements, only: [:index]
       resources :balance_sheets, only: [:index]
     end
-    resources :branch_offices, only: [:index, :show]
+    resources :offices, only: [:index, :show]
     resources :settings, only: [:index]
     resources :loan_protection_fund_configs, only: [:new, :create]
     resources :accounts
@@ -85,11 +85,11 @@ Rails.application.routes.draw do
   end
   resources :share_capitals do
     resources :capital_build_ups, only: [:new, :create], module: :share_capitals
-    resources :branch_offices, only: [:edit, :update], module: :share_capitals
+    resources :offices, only: [:edit, :update], module: :share_capitals
   end
   resources :members do
     resources :tins, only: [:new, :create], module: :members
-    resources :branch_offices, only: [:new, :create, :edit, :update], module: :members
+    resources :offices, only: [:new, :create, :edit, :update], module: :members
     resources :addresses, only: [:new, :create, :edit, :update], module: :members
     resources :memberships, only: [:edit, :update, :new, :create], module: :members
     resources :info, only: [:index], module: :members
@@ -116,7 +116,7 @@ Rails.application.routes.draw do
       resources :store_fronts, only: [:new, :create]
       resources :break_contract_fees, only: [:new, :create]
       resources :cooperatives, only: [:edit, :update, :show] do
-        resources :branches, only: [:new, :create]
+        resources :offices, only: [:new, :create]
       end
       resources :savings_account_configs, only: [:new, :create]
       resources :break_contract_fees, only: [:new, :create]
@@ -290,7 +290,7 @@ Rails.application.routes.draw do
     resources :salary_grades, only: [:new, :create, :edit, :update]
     resources :employees, except: [:destroy] do
       resources :payroll_amounts, only: [:new, :create]
-      resources :branch_offices, only: [:edit, :update], module: :employees
+      resources :offices, only: [:edit, :update], module: :employees
       resources :contributions, only: [:new, :create], module: :employees
       resources :profile, only: [:index]
       resources :employee_salary_grades, only: [:new, :create, :edit, :update]
@@ -310,8 +310,8 @@ Rails.application.routes.draw do
     resources :payments, only: [:new, :create], module: :membership_applications
   end
   resources :cooperatives, only: [:show]
-  resources :branch_offices, only: [:index, :show] do
-      resources :sections, only: [:new, :create], module: :branch_offices
+  resources :offices, only: [:index, :show] do
+      resources :sections, only: [:new, :create], module: :offices
     end
 
   mount ActionCable.server => '/cable'

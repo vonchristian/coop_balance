@@ -1,0 +1,6 @@
+<%= simple_form_for [@cooperative, @branch], url: :management_module_settings_cooperative_offices do |f| %>
+  <%= f.input :name %>
+  <%= f.input :address %>
+  <%= f.input :contact_number %>
+  <%= f.submit "Create Office" %>
+<% end %>

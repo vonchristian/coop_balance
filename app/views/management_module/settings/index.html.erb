@@ -72,3 +72,9 @@
 <% end %>
 
 <%= link_to 'New Store Front', new_management_module_settings_store_front_path %>
+<hr>
+<% @programs.each do |program| %>
+  <%= program.description %>
+  <%= program.contribution %>
+  <%= program.account.name %>
+<% end %>

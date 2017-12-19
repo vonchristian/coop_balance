@@ -1,5 +1,5 @@
 module ShareCapitals
-  class BranchOfficesController < ApplicationController
+  class OfficesController < ApplicationController
     def edit
       @share_capital = MembershipsModule::ShareCapital.find(params[:share_capital_id])
     end
@@ -15,7 +15,7 @@ module ShareCapitals
 
     private
     def share_capital_params
-      params.require(:memberships_module_share_capital).permit(:branch_office_id)
+      params.require(:memberships_module_share_capital).permit(:office_id)
     end
   end
 end

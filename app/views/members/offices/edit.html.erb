@@ -1,0 +1,4 @@
+<%= simple_form_for @member, url: :member_office do |f| %>
+  <%= f.input :office_id, collection: CoopConfigurationsModule::Office.all.map{|a| [a.branch_name, a.id] }, as: :radio_buttons %>
+  <%= f.submit "Update Branch Office" %>
+<% end %>

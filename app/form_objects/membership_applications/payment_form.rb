@@ -8,6 +8,7 @@ module MembershipApplications
     def save
       ActiveRecord::Base.transaction do
         save_entry
+        approve_membership
       end
     end
     def find_member
@@ -30,6 +31,9 @@ module MembershipApplications
         v.commercial_document_type = nil
         v.save
       end
+    end
+    def approve_membership
+      find_member.membership.approved!
     end
   end
 end

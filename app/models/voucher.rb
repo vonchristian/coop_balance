@@ -18,6 +18,15 @@ class Voucher < ApplicationRecord
   delegate :name, to: :payee, prefix: true
 
   before_save :set_date
+  def self.disbursed_on(options={})
+    if hash[:from_date] && hash[:to_date]
+     from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : Chronic.parse(hash[:from_date].strftime('%Y-%m-%d 12:00:00'))
+      to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : Chronic.parse(hash[:to_date].strftime('%Y-%m-%d 12:59:59'))
+      includes([:entry]).where('entries.entry_date' => (from_date.beginning_of_day)..(to_date.end_of_day))
+    else
+      all
+    end
+  end
 
   def add_amounts(payee)
     self.voucher_amounts << payee.voucher_amounts
@@ -27,20 +36,6 @@ class Voucher < ApplicationRecord
       v.save
     end
   end
-
-  # def for_loan?
-  #   voucherable_type == "LoansModule::Loan"
-  # end
-  # def for_purchases?
-  #   voucherable_type == "StockRegistry"
-  # end
-  # def for_supplier?
-  #   payee_type == "Supplier"
-  # end
-  # def for_employee?
-  #   payee_type == "User"
-  # end
-
 
   def self.generate_number_for(voucher)
     return  voucher.number = Voucher.order(created_at: :asc).last.number.succ if Voucher.exists? && Voucher.order(created_at: :asc).last.number.present?

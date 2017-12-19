@@ -22,6 +22,7 @@ module LoansModule
     def self.accounts
       all.map{|a| a.account }
     end
+
     def borrowers
       member_borrowers + employee_borrowers + organization_borrowers
     end

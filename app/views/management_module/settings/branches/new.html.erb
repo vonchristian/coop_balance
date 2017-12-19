@@ -1,7 +1,0 @@
-<%= simple_form_for [@cooperative, @branch], url: :management_module_settings_cooperative_branches do |f| %>
-  <%= f.input :branch_name %>
-  <%= f.input :address %>
-  <%= f.input :contact_number %>
-  <%= f.input :branch_type, collection: CoopConfigurationsModule::BranchOffice.branch_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
-  <%= f.submit "Create Branch" %>
-<% end %>

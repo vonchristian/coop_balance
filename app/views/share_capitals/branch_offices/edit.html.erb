@@ -1,4 +1,0 @@
-<%= simple_form_for @share_capital, url: :share_capital_branch_office do |f| %>
-  <%= f.input :branch_office_id, collection: current_user.cooperative.branch_offices.map{|a| [ a.name.titleize, a.id] }, as: :radio_buttons %>
-  <%= f.submit "Update Branch Office" %>
-<% end %>

@@ -8,11 +8,8 @@
     <%= image_tag(@share_capital.subscriber.avatar.url(:medium), class: "profile-user-img img-responsive img-circle") %>
 
       <h3 class="profile-username text-center"><%= @share_capital.subscriber_name %></h3>
-      <% if @share_capital.subscriber.occupations.present? %>
-        <% @share_capital.subscriber.occupations.each do |occupation| %>
-          <center><span class="text-muted text-center"><%= occupation.title %> &nbsp; </span> </center>
-        <% end %>
-      <% end %>
+
+          <center><span class="text-muted text-center"><%= @share_capital.subscriber.try(:current_occupation) %> &nbsp; </span> </center>
         <hr>
 
 
@@ -29,7 +26,7 @@
       <strong><i class="fa fa-map-marker margin-r-5"></i> Address</strong>
 
 
-      <p class="text-muted"><%= @share_capital.subscriber.addresses.current %></p>
+      <p class="text-muted"><%= @share_capital.subscriber.try(:current_address) %></p>
       <hr>
        <strong><i class="fa fa-book margin-r-5"></i> TIN Number</strong>
 
@@ -41,10 +38,9 @@
 
       <p class="text-muted"><%= @share_capital.subscriber.membership_type.try(:titleize) %></p>
       <hr>
-       <strong><i class="fa fa-book margin-r-5"></i> Branch Office</strong>
-      <p class="text-muted"><%= @share_capital.branch_office_name %></p>
-       <%= link_to "Update Branch Office", edit_share_capital_branch_office_path(@share_capital) %>
-
+       <strong><i class="fa fa-book margin-r-5"></i> Office</strong>
+      <p class="text-muted"><%= @share_capital.office_name %></p>
+       <%= link_to "Update Branch Office", edit_share_capital_office_path(@share_capital) %>
       <hr>
 
       <strong><i class="fa fa-file-text margin-r-5"></i> Notes</strong>
