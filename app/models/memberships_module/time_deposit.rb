@@ -56,7 +56,8 @@ module MembershipsModule
     end
 
     def amount_deposited
-      entries.time_deposit.map{|a| a.debit_amounts.sum(:amount) }.sum
+      time_deposit_product_account.balance(commercial_document_id: self.id)
+      # entries.map{|a| a.debit_amounts.sum(:amount) }.sum
     end
 
     def balance
@@ -64,7 +65,7 @@ module MembershipsModule
     end
 
     def earned_interests
-      entries.time_deposit_interest.map{|a| a.debit_amounts.sum(:amount) }.sum
+      CoopConfigurationsModule::TimeDepositConfig.earned_interests_for(self)
     end
 
 

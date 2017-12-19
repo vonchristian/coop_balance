@@ -24,7 +24,7 @@ module TimeDeposits
     end
 
     def save_withdraw
-       find_time_deposit.entries.withdrawal.create!(recorder_id: recorder_id, description: 'Withdraw time deposit with break contract fee', reference_number: reference_number, entry_date: date,
+       find_time_deposit.entries.create!(recorder_id: recorder_id, description: 'Withdraw time deposit with break contract fee', reference_number: reference_number, entry_date: date,
       debit_amounts_attributes: [{account: debit_account, amount: find_time_deposit.amount_deposited } ],
       credit_amounts_attributes: [{account: credit_account, amount: amount}, {account: break_contract_account, amount: break_contract_amount}])
     end
@@ -33,7 +33,7 @@ module TimeDeposits
     end
 
     def break_contract_account
-      CoopConfigurationsModule::BreakContractFee.default_account
+      CoopConfigurationsModule::TimeDepositConfig.default_break_contract_account
     end
 
     def credit_account

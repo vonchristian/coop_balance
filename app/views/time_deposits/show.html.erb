@@ -86,7 +86,7 @@
                         <td><%= entry.reference_number %></td>
                         <td><%= number_to_currency entry.credit_amounts.sum(:amount) %></td>
 
-                        <td><%= entry.entry_type %> / <%= entry.payment_type %></td>
+                        <td><%= entry.description %> / <%= entry.payment_type %></td>
                         <td><% if entry.recorder %>
                           <%=image_tag(entry.recorder.avatar.url(:thumb), class: "img-circle", height: 35, width: 35) %> &nbsp;
                           <%= entry.recorder_first_and_last_name %>
