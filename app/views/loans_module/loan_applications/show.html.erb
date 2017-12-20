@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-8 col-md-offset-2">
     <div class="box box-solid">
       <div class="box-header bg-gray">
         <div class="row">
@@ -18,6 +18,12 @@
         Share Capital
         <%= @loan.borrower.share_capitals.balance %>
         <hr />
+        <p class="text-muted">PREVIOUS LOANS </p>
+        <% @loan.borrower.loans.disbursed.each do |loan| %>
+          <%= number_to_currency loan.balance %>
+          <%=link_to 'New Payment', new_loans_module_loan_previous_loan_payment_path(loan) %>
+        <% end %>
+        <hr>
 
           Unpaid Contributions
           <% @loan.borrower.program_subscriptions.unpaid.each do |subscription| %>
@@ -33,6 +39,16 @@
           </div>
         </div>
           <% end %>
+          <div class="row">
+          <div class="col-md-5 col-md-offset-1">
+            <p class="condensed-text">Accounts Receivable Store</p>
+          </div>
+          <div class="col-md-3">
+            <span class="pull-right"> <%= number_to_currency @loan.borrower.account_receivable_store_balance %></span>
+            <%= link_to 'New Payment', new_loans_module_loan_store_credit_payment_path(@loan) %>
+          </div>
+        </div>
+        <br>
         <hr />
         <p class="text-purple">LOAN APPLICATION DETAILS </p>
     		<div class="row">
@@ -41,16 +57,6 @@
           </div>
           <div class="col-md-3">
             <span class="pull-right"> <%= number_to_currency @loan.loan_amount %></span>
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="col-md-5 col-md-offset-1">
-            <p class="condensed-text">Accounts Receivable Store</p>
-          </div>
-          <div class="col-md-3">
-            <span class="pull-right"> <%= number_to_currency @loan.borrower.account_receivable_store_balance %></span>
-            <%= link_to 'New Payment', new_loans_module_loan_store_credit_payment_path(@loan) %>
           </div>
         </div>
         <br>
@@ -137,21 +143,4 @@
 			  </div>
       </div>
     </div>
-			<div class="col-md-4">
-        <div class="well">
-
-			  <%= simple_form_for @loan, url: :loans_module_loan_application do |f| %>
-		  <%= f.error_notification %>
-		  <%= f.input :loan_product_id, collection: LoansModule::LoanProduct.all.map{|a| [a.name.titleize, a.id] } %>
-  <%= f.input :borrower_id, collection: LoansModule::Loan.borrowers.map {|a| [a.name, a.id] } %>
-
-		  <%= f.input :loan_amount %>
-		  <%= f.input :term, label: "Loan Term (in months)" %>
-      <%= f.input :mode_of_payment, collection: LoansModule::Loan.mode_of_payments.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
-		  <%= f.input :application_date, as: :string, input_html: { class: "datepicker" } %>
-      <%= f.input :preparer_id, input_html: { value: current_user.id }, as: :hidden %>
-		  <%= f.submit "Calculate", class: "btn btn-primary" %>
-		  <hr>
-		<% end %>
-		</div>
 

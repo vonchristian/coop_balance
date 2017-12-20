@@ -15,7 +15,7 @@ class Member < ApplicationRecord
   has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document
   has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", as: :commercial_document #for temporary cration of debit adn creditrs
   has_one :membership, as: :memberable
-  has_many :member_occupations, dependent: :destroy
+  has_many :member_occupations, class_name: "MembershipsModule::MemberOccupation", dependent: :destroy
   has_many :occupations, through: :member_occupations
   has_many :loans, class_name: "LoansModule::Loan", as: :borrower
   has_many :co_makered_loans, class_name: "LoansModule::LoanCoMaker", as: :co_maker

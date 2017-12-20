@@ -26,7 +26,7 @@ class User < ApplicationRecord
   belongs_to :department
   belongs_to :cooperative
   belongs_to :office, class_name: "CoopConfigurationsModule::Office"
-  belongs_to :salary_grade
+  belongs_to :salary_grade, class_name: "HrModule::SalaryGrade"
   has_one :membership, as: :memberable
   has_many :loans, class_name: "LoansModule::Loan", as: :borrower
   has_many :co_makered_loans, class_name: "LoansModule::LoanCoMaker", as: :co_maker
@@ -129,13 +129,13 @@ class User < ApplicationRecord
   end
 
   def default_cash_on_hand_account
-    if self.cash_on_hand_account.present?
+    if cash_on_hand_account.present?
       cash_on_hand_account
     else
-      User.default_account_for(self)
+      User.default_cash_on_hand_account_for(self)
     end
   end
-  def self.default_account_for(employee)
+  def self.default_cash_on_hand_account_for(employee)
     if employee.treasurer?
       AccountingModule::Asset.find_by(name: "Cash on Hand (Treasury)")
     elsif employee.teller? || employee.sales_clerk?

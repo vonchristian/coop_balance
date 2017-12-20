@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2017_12_19_052748) do
+ActiveRecord::Schema.define(version: 2017_12_20_014427) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -513,8 +513,13 @@ ActiveRecord::Schema.define(version: 2017_12_19_052748) do
     t.decimal "minimum_share_capital_balance"
     t.decimal "maximum_share_capital_balance"
     t.string "slug"
+    t.uuid "interest_account_id"
+    t.uuid "penalty_account_id"
+    t.decimal "interest_rate"
     t.index ["account_id"], name: "index_loan_products_on_account_id"
+    t.index ["interest_account_id"], name: "index_loan_products_on_interest_account_id"
     t.index ["name"], name: "index_loan_products_on_name", unique: true
+    t.index ["penalty_account_id"], name: "index_loan_products_on_penalty_account_id"
     t.index ["slug"], name: "index_loan_products_on_slug", unique: true
   end
 
@@ -1238,6 +1243,8 @@ ActiveRecord::Schema.define(version: 2017_12_19_052748) do
   add_foreign_key "loan_product_interests", "accounts"
   add_foreign_key "loan_product_interests", "loan_products"
   add_foreign_key "loan_products", "accounts"
+  add_foreign_key "loan_products", "accounts", column: "interest_account_id"
+  add_foreign_key "loan_products", "accounts", column: "penalty_account_id"
   add_foreign_key "loan_protection_fund_configs", "accounts"
   add_foreign_key "loan_protection_funds", "accounts"
   add_foreign_key "loan_protection_funds", "loan_protection_rates"

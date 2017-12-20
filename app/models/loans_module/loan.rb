@@ -2,7 +2,6 @@ module LoansModule
   class Loan < ApplicationRecord
     include PgSearch
     pg_search_scope :text_search, :against => [:borrower_full_name]
-    enum loan_status: [:application, :processing, :approved, :disbursed, :past_due, :aging]
     enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
     has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", as: :commercial_document # for adding amounts on voucher
     belongs_to :borrower, polymorphic: true
@@ -33,8 +32,8 @@ module LoansModule
     has_one :third_notice, class_name: "LoansModule::Notices::ThirdNotice", as: :notified
 
     delegate :name, :age, :contact_number, :current_address, to: :borrower,  prefix: true, allow_nil: true
-    delegate :name, :max_loanable_amount, :loan_product_interest_account, to: :loan_product, prefix: true, allow_nil: true
-    delegate :account, :interest_rate, to: :loan_product, prefix: true
+    delegate :name, :max_loanable_amount, to: :loan_product, prefix: true, allow_nil: true
+    delegate :account, :interest_account, :penalty_account, to: :loan_product, prefix: true
     delegate :name, to: :organization, prefix: true, allow_nil: true
     delegate :full_name, :current_occupation, to: :preparer, prefix: true
     before_save :set_default_date
@@ -42,6 +41,7 @@ module LoansModule
     validates :loan_product_id, :term, :loan_amount, :borrower_id, presence: true
     validates :term, presence: true, numericality: { greater_than: 0.1 }
     validates :loan_amount, numericality: { less_than_or_equal_to: :loan_product_max_loanable_amount}
+    delegate :avatar, to: :borrower
     def self.loan_payments(options={})
       entries = []
       if options[:from_date] && options[:to_date] && options[:employee_id].present?
@@ -62,6 +62,8 @@ module LoansModule
         disbursed.includes([:entries]).where('entries.entry_date' => (options[:date].beginning_of_day)..(options[:date].end_of_day))
       elsif options[:preparer_id].present?
         User.find_by(id: options[:preparer_id]).disbursed_loans
+      else
+        all
       end
     end
 
@@ -86,7 +88,7 @@ module LoansModule
       interest.charge_amount_with_adjustment
     end
     def interest_on_loan_balance
-      interest = loan_charges.select{|a| a.chargeable.account == self.loan_product_loan_product_interest_account}.last
+      interest = loan_charges.select{|a| a.chargeable.account == self.loan_product_interest_account}.last
       if interest.present?
         interest.balance
       else
@@ -190,7 +192,7 @@ module LoansModule
       if loan_charges.present?
         loan_charges.destroy_all
       end
-      self.loan_product.create_charges_for(self)
+      loan_product.create_charges_for(self)
     end
     def set_loan_protection_fund
       if loan_protection_funds.present?
@@ -200,7 +202,7 @@ module LoansModule
     end
 
     def create_documentary_stamp_tax
-       tax = Charge.amount_type.create!(name: 'Documentary Stamp Tax', amount: DocumentaryStampTax.set(self), account: AccountingModule::Liability.find_by(name: "Documentary Stamp Taxes"))
+       tax = Charge.amount_type.create!(name: 'Documentary Stamp Tax', amount: DocumentaryStampTax.set(self), account: AccountingModule::Account.find_by(name: "Documentary Stamp Taxes"))
       self.loan_charges.create!(chargeable: tax)
     end
     def create_amortization_schedule

@@ -63,6 +63,7 @@ Rails.application.routes.draw do
     end
 
     resources :loans, except: [:destroy] do
+      resources :previous_loan_payments, only: [:new, :create]
       resources :store_credit_payments, only: [:new, :create]
       resources :loan_protection_funds, only: [:new, :create]
       resources :amortization_schedules, only: [:index], module: :loans

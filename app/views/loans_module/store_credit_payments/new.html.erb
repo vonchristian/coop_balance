@@ -1,8 +1,31 @@
-<%= simple_form_for [@loan, @additional_charge], url: :loans_module_loan_store_credit_payments do |f| %>
-  <%= f.error_notification %>
-  <%= f.input :name %>
-  <%= f.input :amount %>
-  <%= f.input :account_id, input_html: { value: CoopConfigurationsModule::AccountReceivableStoreConfig.account_to_debit.id } %>
-  <%= CoopConfigurationsModule::AccountReceivableStoreConfig.account_to_debit.name %>
-  <%= f.submit %>
-<% end %>
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <div class="box box-solid">
+      <div class="box-header bg-gray">
+        <div class="row">
+          <div class="col-md-2 col-md-offset-1">
+            <%=image_tag(@loan.borrower.avatar.url(:medium), class: "img-circle", height: 80, width: 80) %>
+          </div>
+          <div class="col-md-8">
+            <br>
+            <h3 class="box-title"><%= @loan.borrower.first_and_last_name.try(:upcase) %></h3><br>
+            <small><i class="fa fa-map-marker"></i> <%= @loan.borrower.current_address %></small>
+          </div>
+        </div>
+      </div>
+      <div class="box-body">
+        <div class="row">
+          <div class="col-md-10 col-md-offset-1">
+        <%= simple_form_for [@loan, @additional_charge], url: :loans_module_loan_store_credit_payments do |f| %>
+          <%= f.error_notification %>
+          <%= f.input :name, input_html: { value: "Store credit payment" }, as: :hidden %>
+          <%= f.input :amount %>
+          <%= f.input :account_id, input_html: { value: CoopConfigurationsModule::AccountReceivableStoreConfig.account_to_debit.id }, as: :hidden %>
+          <div class="box-footer">
+            <%= f.submit "Save", class: "btn btn-primary pull-right" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

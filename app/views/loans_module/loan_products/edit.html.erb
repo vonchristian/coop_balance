@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-md-4 col-md-offset-4">
+  <div class="col-md-6 col-md-offset-3">
     <div class="box box-default">
       <div class="box-header">
         <h3 class="box-title">New Loan Product Details </h3>
@@ -12,10 +12,12 @@
           <%= f.input :max_loanable_amount, label: "Maximum Loanable Amount", as: :currency %>
 
           <%= f.input :account_id, label: "Select Loan Account", collection: AccountingModule::Asset.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanAccountSelect'} %>
-          <%= f.simple_fields_for :loan_product_interest do |ff| %>
-            <%= ff.input :rate %>
-            <%= ff.input :account_id, label: "Select Interest Account", collection: AccountingModule::Revenue.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanProductInterestAccountSelect'} %>
-          <% end %>
+          <%= f.input :interest_account_id, label: "Select Loan Interest Account", collection: AccountingModule::Asset.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanInterestAccountSelect'} %>
+
+           <%= f.input :penalty_account_id, label: "Select Loan Penalty Account", collection: AccountingModule::Asset.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanPenaltyAccountSelect'} %>
+
+            <%= f.input :interest_rate, label: "Interest Rate (Annual):", placeholder: 'e.g. 12' %>
+
           <div class="box-footer">
             <%= f.submit "Create Loan Product", class: "btn btn-primary btn-flat" %>
           </div>
@@ -31,7 +33,12 @@
     });
   });
   $(document).ready(function() {
-    $("#loanProductInterestAccountSelect").select2({
+    $("#loanInterestAccountSelect").select2({
+      theme: "bootstrap"
+    });
+  });
+  $(document).ready(function() {
+    $("#loanPenaltyAccountSelect").select2({
       theme: "bootstrap"
     });
   });

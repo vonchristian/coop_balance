@@ -49,6 +49,10 @@ module LoansModule
       it { is_expected.to delegate_method(:max_loanable_amount).to(:loan_product).with_prefix }
       it { is_expected.to delegate_method(:loan_product_interest_account).to(:loan_product).with_prefix }
       it { is_expected.to delegate_method(:account).to(:loan_product).with_prefix }
+      it { is_expected.to delegate_method(:penalty_account).to(:loan_product).with_prefix }
+      it { is_expected.to delegate_method(:interest_account).to(:loan_product).with_prefix }
+
+
       it { is_expected.to delegate_method(:interest_rate).to(:loan_product).with_prefix }
       it { is_expected.to delegate_method(:name).to(:organization).with_prefix }
 
