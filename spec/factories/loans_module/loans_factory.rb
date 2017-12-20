@@ -5,6 +5,5 @@ FactoryBot.define do
     loan_amount 100_000
     application_date nil
     term 12
-    loan_status nil
   end
 end

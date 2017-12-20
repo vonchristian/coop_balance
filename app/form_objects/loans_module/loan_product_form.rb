@@ -1,7 +1,7 @@
 module LoansModule
   class LoanProductForm
-    include ActiveModel::Model 
-    attr_accessor :name, :description, :max_loanable_amount,  :interest_rate
+    include ActiveModel::Model
+    attr_accessor :name, :description, :maximum_loanable_amount,  :interest_rate
 
     def save
     ActiveRecord::Base.transaction do

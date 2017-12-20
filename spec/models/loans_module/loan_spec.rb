@@ -3,13 +3,12 @@ module LoansModule
   describe Loan do
     context 'associations' do
     	it { is_expected.to belong_to :borrower }
-      it { is_expected.to belong_to :employee }
     	it { is_expected.to belong_to :loan_product }
       it { is_expected.to belong_to :street }
       it { is_expected.to belong_to :barangay }
       it { is_expected.to belong_to :municipality }
       it { is_expected.to belong_to :organization }
-      it { is_expected.to have_one :cash_disbursement_voucher }
+      it { is_expected.to have_one :disbursement_voucher }
       it { is_expected.to belong_to :preparer }
     	it { is_expected.to have_many :loan_approvals }
     	it { is_expected.to have_many :approvers }
@@ -33,9 +32,8 @@ module LoansModule
       it { is_expected.to validate_presence_of :term }
       it { is_expected.to validate_presence_of :loan_product_id }
       it { is_expected.to validate_presence_of :borrower_id }
-      it { is_expected.to validate_presence_of :borrower_type_id }
       it { is_expected.to validate_numericality_of(:term).is_greater_than(0.1) }
-      it { is_expected.to validate_numericality_of(:loan_amount).is_less_than_or_equal_to(:loan_product_max_loanable_amount) }
+      it { is_expected.to validate_numericality_of(:loan_amount) }
     end
 
     context 'delegations' do
@@ -46,8 +44,7 @@ module LoansModule
       it { is_expected.to delegate_method(:full_name).to(:preparer).with_prefix }
       it { is_expected.to delegate_method(:current_occupation).to(:preparer).with_prefix }
     	it { is_expected.to delegate_method(:name).to(:loan_product).with_prefix }
-      it { is_expected.to delegate_method(:max_loanable_amount).to(:loan_product).with_prefix }
-      it { is_expected.to delegate_method(:loan_product_interest_account).to(:loan_product).with_prefix }
+      it { is_expected.to delegate_method(:maximum_loanable_amount).to(:loan_product) }
       it { is_expected.to delegate_method(:account).to(:loan_product).with_prefix }
       it { is_expected.to delegate_method(:penalty_account).to(:loan_product).with_prefix }
       it { is_expected.to delegate_method(:interest_account).to(:loan_product).with_prefix }
@@ -55,6 +52,8 @@ module LoansModule
 
       it { is_expected.to delegate_method(:interest_rate).to(:loan_product).with_prefix }
       it { is_expected.to delegate_method(:name).to(:organization).with_prefix }
+      it { is_expected.to delegate_method(:avatar).to(:borrower) }
+
 
     end
 
@@ -65,7 +64,7 @@ module LoansModule
     end
 
     it '.disbursed_on(date)' do
-      disbursed_loan = create(:loan, loan_status: 'disbursed')
+      disbursed_loan = create(:loan)
       undisbursed_loan = create(:loan)
       date = Date.today
       entry = create(:entry_with_credit_and_debit, commercial_document: disbursed_loan, entry_date: date)
@@ -79,9 +78,7 @@ module LoansModule
 
     it "#maturity_date" do
       loan_product = create(:loan_product)
-      loan_product_interest = create(:loan_product_interest, loan_product: loan_product)
       loan = create(:loan, term: 2, mode_of_payment: 'monthly',  loan_product: loan_product)
-      loan.disbursed!
       entry = create(:entry_with_credit_and_debit, commercial_document: loan, entry_date: Date.today)
       LoansModule::AmortizationSchedule.create_schedule_for(loan)
       expect(loan.amortization_schedules).to be_present

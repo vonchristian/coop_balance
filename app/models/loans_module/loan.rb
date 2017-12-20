@@ -32,15 +32,16 @@ module LoansModule
     has_one :third_notice, class_name: "LoansModule::Notices::ThirdNotice", as: :notified
 
     delegate :name, :age, :contact_number, :current_address, to: :borrower,  prefix: true, allow_nil: true
-    delegate :name, :maximum_loanable_amount, to: :loan_product, prefix: true, allow_nil: true
+    delegate :name,  to: :loan_product, prefix: true, allow_nil: true
     delegate :account, :interest_account, :interest_rate, :penalty_account, to: :loan_product, prefix: true
     delegate :name, to: :organization, prefix: true, allow_nil: true
     delegate :full_name, :current_occupation, to: :preparer, prefix: true
+    delegate :maximum_loanable_amount, to: :loan_product
     before_save :set_default_date
 
     validates :loan_product_id, :term, :loan_amount, :borrower_id, presence: true
     validates :term, presence: true, numericality: { greater_than: 0.1 }
-    validates :loan_amount, numericality: { less_than_or_equal_to: :loan_product_maximum_loanable_amount}
+    validates :loan_amount, numericality: { less_than_or_equal_to: :maximum_loanable_amount }
     delegate :avatar, to: :borrower
     def self.loan_payments(options={})
       entries = []
@@ -56,27 +57,26 @@ module LoansModule
     def self.borrowers
       User.all + Member.all
     end
-
-    def self.disbursed(options={})
-      if options[:date].present?
-        disbursed.includes([:entries]).where('entries.entry_date' => (options[:date].beginning_of_day)..(options[:date].end_of_day))
-      elsif options[:preparer_id].present?
-        User.find_by(id: options[:preparer_id]).disbursed_loans
-      else
-        all
-      end
+    def self.disbursed_loans
+      all.select{ |a| a.disbursement.present? }
     end
+
+    def self.disbursed_on(date)
+        includes([:entries]).where('entries.entry_date' => (date.beginning_of_day)..(date.end_of_day))
+    end
+
+    def self.disbursed_by(employee)
+      User.find_by(id: employee.id).disbursed_loans
+    end
+
     def approved?
-      false
+      approvers.pluck(:id) == User.loan_approvers.pluck(:id)
     end
-
-    # def disbursed_by(employee)
-    #   entries.loan_disbursement.where(recorder_id: employee.id)
-    # end
 
     def payment_schedules
       amortization_schedules + loan_charge_payment_schedules
     end
+
     def store_payment_total
       AccountsReceivableStore.new.total_payments(self)
     end
@@ -86,10 +86,10 @@ module LoansModule
     def penalties_total
       LoanPenalty.new.balance(self)
     end
-    def interest_on_loan
-      interest = loan_charges.select{|a| a.chargeable.account == a.loan.loan_product_interest_account}.last
-      interest.charge_amount_with_adjustment
-    end
+    # def interest_on_loan
+    #   interest = loan_charges.select{|a| a.chargeable.account == a.loan.loan_product_interest_account}.last
+    #   interest.charge_amount_with_adjustment
+    # end
     def interest_on_loan_balance
       interest = loan_charges.select{|a| a.chargeable.account == self.loan_product_interest_account}.last
       if interest.present?
@@ -298,7 +298,7 @@ module LoansModule
         self.application_date ||= Time.zone.now
       end
       def less_than_max_amount?
-        errors[:loan_amount] << "Amount exceeded maximum allowed amount which is #{self.loan_product.max_loanable_amount}" if self.loan_amount >= self.loan_product.max_loanable_amount
+        errors[:loan_amount] << "Amount exceeded maximum allowed amount which is #{maximun_loanable_amount}" if self.loan_amount >= self.maximum_loanable_amount
       end
   end
 end

@@ -9,7 +9,7 @@
           <%= f.error_notification %>
           <%= f.input :name %>
           <%= f.input :description, as: :text %>
-          <%= f.input :max_loanable_amount, label: "Maximum Loanable Amount", as: :currency %>
+          <%= f.input :maximum_loanable_amount, label: "Maximum Loanable Amount", as: :currency %>
 
           <%= f.input :account_id, label: "Select Loan Account", collection: AccountingModule::Asset.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanAccountSelect'} %>
           <%= f.input :interest_account_id, label: "Select Loan Interest Account", collection: AccountingModule::Asset.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanInterestAccountSelect'} %>
