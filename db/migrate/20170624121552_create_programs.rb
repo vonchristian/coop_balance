@@ -4,6 +4,7 @@ class CreatePrograms < ActiveRecord::Migration[5.1]
       t.string :name
       t.decimal :contribution
       t.boolean :default_program, default: false
+      t.text :description
 
       t.timestamps
     end

@@ -5,6 +5,11 @@ class CreateLoanProducts < ActiveRecord::Migration[5.1]
       t.string :description
       t.string :interest_rate
       t.integer :interest_recurrence
+      t.decimal :maximum_loanable_amount
+      t.belongs_to :account, foreign_key: { to_table: :accounts }, type: :uuid
+      t.belongs_to :interest_account, foreign_key: { to_table: :accounts }, type: :uuid
+      t.belongs_to :penalty_account, foreign_key: { to_table: :accounts }, type: :uuid
+
 
       t.timestamps
     end

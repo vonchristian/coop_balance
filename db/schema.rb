@@ -65,16 +65,18 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
     t.decimal "interest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "schedule_type"
     t.index ["loan_id"], name: "index_amortization_schedules_on_loan_id"
+    t.index ["schedule_type"], name: "index_amortization_schedules_on_schedule_type"
   end
 
   create_table "amounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "account_id"
     t.uuid "entry_id"
+    t.decimal "amount"
     t.string "type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.decimal "amount"
     t.uuid "recorder_id"
     t.index ["account_id", "entry_id"], name: "index_amounts_on_account_id_and_entry_id"
     t.index ["account_id"], name: "index_amounts_on_account_id"
@@ -114,32 +116,10 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
     t.index ["name"], name: "index_barangays_on_name"
   end
 
-  create_table "branch_offices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "cooperative_id"
-    t.string "address"
-    t.string "branch_name"
-    t.string "contact_number"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "branch_type"
-    t.index ["branch_type"], name: "index_branch_offices_on_branch_type"
-    t.index ["cooperative_id"], name: "index_branch_offices_on_cooperative_id"
-  end
-
-  create_table "break_contract_fees", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "account_id"
-    t.decimal "amount"
-    t.decimal "rate"
-    t.integer "fee_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["account_id"], name: "index_break_contract_fees_on_account_id"
-  end
-
   create_table "carts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "user_id"
     t.index ["user_id"], name: "index_carts_on_user_id"
   end
 
@@ -154,9 +134,9 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
     t.uuid "loan_charge_id"
     t.decimal "amount"
     t.decimal "percent"
+    t.boolean "amortize_balance", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "amortize_balance", default: false
     t.index ["loan_charge_id"], name: "index_charge_adjustments_on_loan_charge_id"
   end
 
@@ -167,14 +147,11 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
     t.decimal "percent"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "type"
-    t.integer "category"
     t.uuid "account_id"
     t.decimal "minimum_loan_amount"
     t.decimal "maximum_loan_amount"
     t.boolean "depends_on_loan_amount", default: false
     t.index ["account_id"], name: "index_charges_on_account_id"
-    t.index ["category"], name: "index_charges_on_category"
     t.index ["charge_type"], name: "index_charges_on_charge_type"
   end
 
@@ -315,20 +292,22 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
     t.datetime "entry_date"
     t.string "commercial_document_type"
     t.uuid "commercial_document_id"
+    t.uuid "recorder_id"
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "entry_type"
-    t.uuid "recorder_id"
+    t.uuid "voucher_id"
+    t.uuid "store_front_id"
     t.integer "payment_type", default: 0
     t.string "origin_type"
     t.uuid "origin_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_entry"
     t.index ["entry_date"], name: "index_entries_on_entry_date"
-    t.index ["entry_type"], name: "index_entries_on_entry_type"
     t.index ["origin_type", "origin_id"], name: "index_entries_on_origin_type_and_origin_id"
     t.index ["payment_type"], name: "index_entries_on_payment_type"
     t.index ["recorder_id"], name: "index_entries_on_recorder_id"
+    t.index ["store_front_id"], name: "index_entries_on_store_front_id"
+    t.index ["voucher_id"], name: "index_entries_on_voucher_id"
   end
 
   create_table "finished_good_materials", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -401,15 +380,15 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
 
   create_table "line_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "order_id"
-    t.decimal "unit_cost"
-    t.decimal "total_cost"
-    t.datetime "date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.decimal "quantity"
     t.uuid "cart_id"
     t.string "line_itemable_type"
     t.uuid "line_itemable_id"
+    t.decimal "unit_cost"
+    t.decimal "total_cost"
+    t.decimal "quantity"
+    t.datetime "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["cart_id"], name: "index_line_items_on_cart_id"
     t.index ["line_itemable_type", "line_itemable_id"], name: "index_line_items_on_line_itemable_type_and_line_itemable_id"
     t.index ["order_id"], name: "index_line_items_on_order_id"
@@ -445,11 +424,11 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
 
   create_table "loan_charges", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "loan_id"
+    t.string "chargeable_type"
+    t.uuid "chargeable_id"
     t.boolean "optional"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "chargeable_type"
-    t.uuid "chargeable_id"
     t.index ["chargeable_type", "chargeable_id"], name: "index_loan_charges_on_chargeable_type_and_chargeable_id"
     t.index ["loan_id"], name: "index_loan_charges_on_loan_id"
   end
@@ -489,32 +468,20 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
     t.index ["loan_product_id"], name: "index_loan_product_charges_on_loan_product_id"
   end
 
-  create_table "loan_product_interests", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.decimal "rate"
-    t.uuid "loan_product_id"
-    t.uuid "account_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["account_id"], name: "index_loan_product_interests_on_account_id"
-    t.index ["loan_product_id"], name: "index_loan_product_interests_on_loan_product_id"
-  end
-
   create_table "loan_products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "description"
+    t.decimal "maximum_loanable_amount"
+    t.uuid "account_id"
+    t.uuid "interest_account_id"
+    t.uuid "penalty_account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.decimal "max_loanable_amount"
-    t.decimal "loan_product_term"
-    t.integer "mode_of_payment"
-    t.uuid "account_id"
     t.string "name"
     t.decimal "minimum_loanable_amount"
     t.string "depends_on_share_capital_balance"
     t.decimal "minimum_share_capital_balance"
     t.decimal "maximum_share_capital_balance"
     t.string "slug"
-    t.uuid "interest_account_id"
-    t.uuid "penalty_account_id"
     t.decimal "interest_rate"
     t.index ["account_id"], name: "index_loan_products_on_account_id"
     t.index ["interest_account_id"], name: "index_loan_products_on_interest_account_id"
@@ -562,13 +529,13 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
 
   create_table "loans", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "loan_product_id"
+    t.decimal "loan_amount"
+    t.decimal "loan_term"
+    t.integer "mode_of_payment"
     t.datetime "application_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.decimal "loan_amount"
-    t.integer "loan_status", default: 0
     t.decimal "term"
-    t.integer "mode_of_payment"
     t.uuid "barangay_id"
     t.uuid "street_id"
     t.uuid "municipality_id"
@@ -580,7 +547,6 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
     t.index ["barangay_id"], name: "index_loans_on_barangay_id"
     t.index ["borrower_type", "borrower_id"], name: "index_loans_on_borrower_type_and_borrower_id"
     t.index ["loan_product_id"], name: "index_loans_on_loan_product_id"
-    t.index ["mode_of_payment"], name: "index_loans_on_mode_of_payment"
     t.index ["municipality_id"], name: "index_loans_on_municipality_id"
     t.index ["organization_id"], name: "index_loans_on_organization_id"
     t.index ["preparer_id"], name: "index_loans_on_preparer_id"
@@ -601,15 +567,15 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
     t.string "middle_name"
     t.string "last_name"
     t.integer "sex"
+    t.integer "civil_status"
     t.date "date_of_birth"
+    t.string "contact_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "avatar_file_name"
     t.string "avatar_content_type"
     t.integer "avatar_file_size"
     t.datetime "avatar_updated_at"
-    t.string "contact_number"
-    t.integer "civil_status"
     t.string "fullname"
     t.string "slug"
     t.integer "birth_month"
@@ -648,13 +614,6 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_menus_on_name", unique: true
-  end
-
-  create_table "mode_of_payments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.integer "mode"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["mode"], name: "index_mode_of_payments_on_mode"
   end
 
   create_table "municipalities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -711,19 +670,19 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
 
   create_table "official_receipts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "number", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.string "receiptable_type"
     t.uuid "receiptable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["receiptable_type", "receiptable_id"], name: "index_official_receipts_on_receiptable_type_and_receiptable_id"
   end
 
   create_table "orders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id"
     t.datetime "date"
+    t.integer "pay_type", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "payment_type"
-    t.uuid "user_id"
     t.decimal "cash_tendered"
     t.decimal "total_cost"
     t.decimal "order_change"
@@ -732,6 +691,7 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
     t.uuid "customer_id"
     t.index ["customer_type", "customer_id"], name: "index_orders_on_customer_type_and_customer_id"
     t.index ["employee_id"], name: "index_orders_on_employee_id"
+    t.index ["pay_type"], name: "index_orders_on_pay_type"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
@@ -780,13 +740,13 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
   create_table "product_stocks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.decimal "unit_cost"
     t.decimal "total_cost"
+    t.decimal "quantity"
+    t.string "barcode"
     t.uuid "product_id"
     t.uuid "supplier_id"
     t.datetime "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.decimal "quantity"
-    t.string "barcode"
     t.uuid "registry_id"
     t.string "name"
     t.decimal "retail_price"
@@ -825,9 +785,9 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
     t.string "name"
     t.decimal "contribution"
     t.boolean "default_program", default: false
+    t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "description"
     t.uuid "account_id"
     t.integer "payment_schedule_type"
     t.index ["account_id"], name: "index_programs_on_account_id"
@@ -887,9 +847,9 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
     t.string "spreadsheet_content_type"
     t.integer "spreadsheet_file_size"
     t.datetime "spreadsheet_updated_at"
+    t.string "type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "type"
     t.uuid "supplier_id"
     t.string "number"
     t.uuid "employee_id"
@@ -921,10 +881,10 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
 
   create_table "savings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "account_number"
+    t.string "account_owner_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "saving_product_id"
-    t.string "account_owner_name"
     t.string "depositor_type"
     t.uuid "depositor_id"
     t.integer "status"
@@ -945,23 +905,13 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
     t.index ["interest_account_id"], name: "index_savings_account_configs_on_interest_account_id"
   end
 
-  create_table "sections", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "branch_office_id"
-    t.string "name"
-    t.string "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["branch_office_id"], name: "index_sections_on_branch_office_id"
-    t.index ["name"], name: "index_sections_on_name", unique: true
-  end
-
   create_table "share_capital_product_shares", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "share_capital_product_id"
     t.decimal "share_count"
+    t.decimal "cost_per_share"
     t.datetime "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.decimal "cost_per_share"
     t.index ["share_capital_product_id"], name: "index_share_capital_product_shares_on_share_capital_product_id"
   end
 
@@ -969,7 +919,6 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.decimal "cost_per_share"
     t.decimal "minimum_number_of_subscribed_share"
     t.decimal "minimum_number_of_paid_share"
     t.boolean "default_product", default: false
@@ -981,21 +930,19 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
   end
 
   create_table "share_capitals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "share_capital_product_id"
     t.string "account_number"
     t.datetime "date_opened"
     t.string "type"
-    t.uuid "share_capital_product_id"
     t.string "account_owner_name"
     t.string "subscriber_type"
     t.uuid "subscriber_id"
-    t.datetime "created_at", default: "2017-11-27 11:44:53", null: false
-    t.datetime "updated_at", default: "2017-11-27 11:44:53", null: false
+    t.datetime "created_at", default: "2017-12-20 12:19:46", null: false
+    t.datetime "updated_at", default: "2017-12-20 12:19:46", null: false
     t.integer "status"
-    t.uuid "section_id"
     t.uuid "office_id"
     t.index ["account_number"], name: "index_share_capitals_on_account_number", unique: true
     t.index ["office_id"], name: "index_share_capitals_on_office_id"
-    t.index ["section_id"], name: "index_share_capitals_on_section_id"
     t.index ["share_capital_product_id"], name: "index_share_capitals_on_share_capital_product_id"
     t.index ["status"], name: "index_share_capitals_on_status"
     t.index ["subscriber_type", "subscriber_id"], name: "index_share_capitals_on_subscriber_type_and_subscriber_id"
@@ -1027,14 +974,14 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
     t.string "first_name"
     t.string "last_name"
     t.string "contact_number"
+    t.string "address"
+    t.string "business_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "avatar_file_name"
     t.string "avatar_content_type"
     t.integer "avatar_file_size"
     t.datetime "avatar_updated_at"
-    t.string "business_name"
-    t.string "address"
   end
 
   create_table "time_deposit_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1113,7 +1060,6 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
     t.string "avatar_content_type"
     t.integer "avatar_file_size"
     t.datetime "avatar_updated_at"
-    t.uuid "department_id"
     t.string "contact_number"
     t.date "date_of_birth"
     t.integer "sex"
@@ -1126,7 +1072,6 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
     t.uuid "office_id"
     t.index ["cash_on_hand_account_id"], name: "index_users_on_cash_on_hand_account_id"
     t.index ["cooperative_id"], name: "index_users_on_cooperative_id"
-    t.index ["department_id"], name: "index_users_on_department_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["office_id"], name: "index_users_on_office_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -1210,8 +1155,6 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
   add_foreign_key "appraisals", "users", column: "appraiser_id"
   add_foreign_key "bank_accounts", "cooperatives"
   add_foreign_key "barangays", "municipalities"
-  add_foreign_key "branch_offices", "cooperatives"
-  add_foreign_key "break_contract_fees", "accounts"
   add_foreign_key "carts", "users"
   add_foreign_key "charge_adjustments", "loan_charges"
   add_foreign_key "charges", "accounts"
@@ -1223,7 +1166,9 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "debit_account_id"
   add_foreign_key "employee_contributions", "contributions"
   add_foreign_key "employee_contributions", "users", column: "employee_id"
+  add_foreign_key "entries", "store_fronts"
   add_foreign_key "entries", "users", column: "recorder_id"
+  add_foreign_key "entries", "vouchers"
   add_foreign_key "finished_good_materials", "products"
   add_foreign_key "finished_good_materials", "raw_materials"
   add_foreign_key "fixed_terms", "time_deposits"
@@ -1240,8 +1185,6 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
   add_foreign_key "loan_penalty_configs", "accounts"
   add_foreign_key "loan_product_charges", "charges"
   add_foreign_key "loan_product_charges", "loan_products"
-  add_foreign_key "loan_product_interests", "accounts"
-  add_foreign_key "loan_product_interests", "loan_products"
   add_foreign_key "loan_products", "accounts"
   add_foreign_key "loan_products", "accounts", column: "interest_account_id"
   add_foreign_key "loan_products", "accounts", column: "penalty_account_id"
@@ -1282,12 +1225,10 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
   add_foreign_key "savings", "saving_products"
   add_foreign_key "savings_account_configs", "accounts", column: "closing_account_id"
   add_foreign_key "savings_account_configs", "accounts", column: "interest_account_id"
-  add_foreign_key "sections", "branch_offices"
   add_foreign_key "share_capital_product_shares", "share_capital_products"
   add_foreign_key "share_capital_products", "accounts", column: "paid_up_account_id"
   add_foreign_key "share_capital_products", "accounts", column: "subscription_account_id"
   add_foreign_key "share_capitals", "offices"
-  add_foreign_key "share_capitals", "sections"
   add_foreign_key "share_capitals", "share_capital_products"
   add_foreign_key "store_fronts", "cooperatives"
   add_foreign_key "streets", "barangays"
@@ -1300,7 +1241,6 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
   add_foreign_key "time_deposits", "time_deposit_products"
   add_foreign_key "users", "accounts", column: "cash_on_hand_account_id"
   add_foreign_key "users", "cooperatives"
-  add_foreign_key "users", "departments"
   add_foreign_key "users", "offices"
   add_foreign_key "users", "salary_grades"
   add_foreign_key "voucher_amounts", "accounts"

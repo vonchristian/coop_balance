@@ -17,11 +17,17 @@ module LoansModule
 
     describe 'delegations' do
       it { is_expected.to delegate_method(:name).to(:account).with_prefix }
+      it { is_expected.to delegate_method(:name).to(:interest_account).with_prefix }
+      it { is_expected.to delegate_method(:name).to(:penalty_account).with_prefix }
+
+
     end
     describe 'validations' do
       it { is_expected.to validate_presence_of :name }
       it { is_expected.to validate_uniqueness_of :name }
       it { is_expected.to validate_presence_of :account_id }
+      it { is_expected.to validate_presence_of :interest_account_id }
+      it { is_expected.to validate_presence_of :penalty_account_id }
     end
     describe 'nested attributes' do
       it do

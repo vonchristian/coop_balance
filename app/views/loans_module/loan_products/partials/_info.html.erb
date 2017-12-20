@@ -4,7 +4,7 @@
           <%= @loan_product.interest_rate %>
           <%=link_to 'Edit', edit_loans_module_loan_product_path(@loan_product) %>
           <hr />
-          <%= @loan_product.max_loanable_amount %>
+          <%= @loan_product.maximum_loanable_amount %>
           <p class="text-muted">LOAN CHARGES </p>
           <% @loan_product.charges.each do |charge| %>
             <div class="row">

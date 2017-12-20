@@ -32,15 +32,15 @@ module LoansModule
     has_one :third_notice, class_name: "LoansModule::Notices::ThirdNotice", as: :notified
 
     delegate :name, :age, :contact_number, :current_address, to: :borrower,  prefix: true, allow_nil: true
-    delegate :name, :max_loanable_amount, to: :loan_product, prefix: true, allow_nil: true
-    delegate :account, :interest_account, :penalty_account, to: :loan_product, prefix: true
+    delegate :name, :maximum_loanable_amount, to: :loan_product, prefix: true, allow_nil: true
+    delegate :account, :interest_account, :interest_rate, :penalty_account, to: :loan_product, prefix: true
     delegate :name, to: :organization, prefix: true, allow_nil: true
     delegate :full_name, :current_occupation, to: :preparer, prefix: true
     before_save :set_default_date
 
     validates :loan_product_id, :term, :loan_amount, :borrower_id, presence: true
     validates :term, presence: true, numericality: { greater_than: 0.1 }
-    validates :loan_amount, numericality: { less_than_or_equal_to: :loan_product_max_loanable_amount}
+    validates :loan_amount, numericality: { less_than_or_equal_to: :loan_product_maximum_loanable_amount}
     delegate :avatar, to: :borrower
     def self.loan_payments(options={})
       entries = []
@@ -66,6 +66,9 @@ module LoansModule
         all
       end
     end
+    def approved?
+      false
+    end
 
     # def disbursed_by(employee)
     #   entries.loan_disbursement.where(recorder_id: employee.id)
@@ -84,7 +87,7 @@ module LoansModule
       LoanPenalty.new.balance(self)
     end
     def interest_on_loan
-      interest = loan_charges.select{|a| a.chargeable.account == a.loan.loan_product_loan_product_interest_account}.last
+      interest = loan_charges.select{|a| a.chargeable.account == a.loan.loan_product_interest_account}.last
       interest.charge_amount_with_adjustment
     end
     def interest_on_loan_balance
@@ -156,9 +159,9 @@ module LoansModule
       end
     end
 
-    def interest_on_loan_amount
-      interest_on_loan_charge
-    end
+    # def interest_on_loan_amount
+    #   interest_on_loan_charge
+    # end
 
     def taxable_amount # for documentary_stamp_tax
       loan_amount
@@ -215,7 +218,7 @@ module LoansModule
       disbursement.present?
     end
     def payments
-      entries.loan_payment
+      entries
     end
 
     def principal_payments_total(options={})
@@ -223,11 +226,14 @@ module LoansModule
     end
 
     def interest_payments_total(options={})
-      CoopConfigurationsModule::LoanInterestConfig.account_to_debit.debits_balance(from_date: options[:from_date], to_date: options[:to_date], commercial_document_id: self.id)
+      loan_product_interest_account.debits_balance(from_date: options[:from_date], to_date: options[:to_date], commercial_document_id: self.id)
+    end
+     def penalty_payments_total(options={})
+      loan_product_penalty_account.debits_balance(from_date: options[:from_date], to_date: options[:to_date], commercial_document_id: self.id)
     end
 
     def payments_total(options={})
-      principal_payments_total(options) + interest_payments_total(options)
+      principal_payments_total(options) + interest_payments_total(options) + penalty_payments_total
     end
 
     def disbursement

@@ -4,6 +4,7 @@ class CreateTimeDeposits < ActiveRecord::Migration[5.1]
       t.belongs_to :member, foreign_key: true, type: :uuid
       t.belongs_to :time_deposit_product, foreign_key: true, type: :uuid
       t.string :account_number
+      t.decimal :number_of_days
 
       t.timestamps
     end

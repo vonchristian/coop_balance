@@ -15,11 +15,11 @@ module LoansModule
     has_many :charges, through: :loan_product_charges
 
     delegate :name, to: :account, prefix: true
-
-
+    delegate :name, to: :interest_account, prefix: true
+    delegate :name, to: :penalty_account, prefix: true
     validates :name,:account_id, :interest_rate, :interest_account_id, :penalty_account_id, presence: true
     validates :name, uniqueness: true
-    validates :interest_rate, numericality: true
+    validates :interest_rate, :maximum_loanable_amount, numericality: true
 
     def self.accounts
       all.map{|a| a.account }
