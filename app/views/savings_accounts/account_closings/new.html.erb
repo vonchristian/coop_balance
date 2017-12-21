@@ -6,14 +6,45 @@
         <center><h3 class="box-title"><%= @savings_account.depositor_name %></h3></center>
       </div>
       <div class="box-body">
-        <small>BALANCE</small>
-        <h3 class="condensed-text"><%= number_to_currency @savings_account.balance %></h3>
-        <hr>
-        <p> Closing Account Fee <%=number_to_currency CoopConfigurationsModule::SavingsAccountConfig.default_closing_account_fee %>
+        <div class="row">
+          <div class="col-md-9 col-md-offset-2">
+            <div class="row">
+              <div class="col-md-5">
+                Balance
+              </div>
+              <div class="col-md-5">
+                <span class="pull-right">
+                  <%= number_to_currency @savings_account.balance %>
+                </span>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-5">
+                Closing Account Fee
+              </div>
+              <div class="col-md-5">
+                <span class="pull-right">
+                  <%=number_to_currency CoopConfigurationsModule::SavingsAccountConfig.default_closing_account_fee %>
+                </span>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-md-5">
+                <b>Amount to Disburse</b>
+              </div>
+              <div class="col-md-5">
+                <span class="pull-right">
+                  <b><%= number_to_currency @savings_account.balance -  CoopConfigurationsModule::SavingsAccountConfig.default_closing_account_fee %></b>
+                </span>
+              </div>
+            </div>
+            <br>
         <%= simple_form_for [@savings_account, @account_closing], url: :savings_account_account_closings do |f| %>
           <%= f.error_notification %>
-          <%= f.input :amount, input_html: { value: @savings_account.balance -  CoopConfigurationsModule::SavingsAccountConfig.default_closing_account_fee }, readonly: true %>
-          <%= f.input :closing_account_fee, input_html: { value: CoopConfigurationsModule::SavingsAccountConfig.default_closing_account_fee } %>
+          <%= f.input :amount, input_html: { value: @savings_account.balance -  CoopConfigurationsModule::SavingsAccountConfig.default_closing_account_fee }, as: :hidden %>
+          <%= f.input :closing_account_fee, input_html: { value: CoopConfigurationsModule::SavingsAccountConfig.default_closing_account_fee }, as: :hidden %>
           <%= f.input :reference_number %>
           <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
           <%= f.input :savings_account_id, input_html: { value: @savings_account.id },as: :hidden %>
@@ -21,6 +52,7 @@
           <div class="footer">
             <%= f.submit "Close Account", class: "btn btn-danger btn-block btn-lg", data: {disable_with: "Processing..." } %>
           </div>
+          <br>
         <% end %>
       </div>
     </div>

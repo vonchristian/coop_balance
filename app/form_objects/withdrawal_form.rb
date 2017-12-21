@@ -22,8 +22,8 @@ class WithdrawalForm
 
   def save_withdraw
     find_saving.entries.create!(payment_type: payment_type, recorder_id: recorder_id, description: 'Withdraw', reference_number: or_number, entry_date: date,
-    debit_amounts_attributes: [account: debit_account, amount: amount],
-    credit_amounts_attributes: [account: credit_account, amount: amount])
+    debit_amounts_attributes: [account: debit_account, amount: amount, commercial_document: find_saving],
+    credit_amounts_attributes: [account: credit_account, amount: amount, commercial_document: find_saving])
   end
   def credit_account
     find_employee.cash_on_hand_account
@@ -36,10 +36,10 @@ class WithdrawalForm
 
   private
   def amount_is_less_than_balance?
-    errors[:amount] << "Amount exceeded balance"  if BigDecimal.new(amount) > find_saving.balance
+    errors[:amount] << "Amount exceeded balance"  if (amount.to_i) > find_saving.balance
   end
 
   def amount_less_than_current_cash_on_hand?
-    errors[:amount] << "Amount exceeded current cash on hand" if BigDecimal.new(amount) > find_employee.cash_on_hand_account_balance
+    errors[:amount] << "Amount exceeded current cash on hand" if (amount.to_i) > find_employee.cash_on_hand_account_balance
   end
 end

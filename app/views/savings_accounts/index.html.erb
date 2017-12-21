@@ -24,18 +24,25 @@
                 <div class="col-md-5">
                   <p class=""><%= savings_account.depositor.name.try(:upcase) %></p>
                   <small class=""> <%= savings_account.saving_product_name %></small><br><br>
-                  <% if policy([:savings_accounts, :deposit]).new? %>
-                    <%= link_to 'Deposit', new_savings_account_deposit_path(savings_account), class: "btn btn-xs btn-success" %>
-                  <% end %>
-                     &nbsp; &nbsp;
-                  <% if policy([:savings_accounts, :withdrawal]).new? %>
-                    <%= link_to 'Withdraw', new_savings_account_withdrawal_path(savings_account), class: "btn btn-xs btn-warning" %>
+                  <% if !savings_account.closed? %>
+                    <% if policy([:savings_accounts, :deposit]).new? %>
+                      <%= link_to 'Deposit', new_savings_account_deposit_path(savings_account), class: "btn btn-xs btn-success" %>
+                    <% end %>
+                       &nbsp; &nbsp;
+                    <% if policy([:savings_accounts, :withdrawal]).new? %>
+                      <%= link_to 'Withdraw', new_savings_account_withdrawal_path(savings_account), class: "btn btn-xs btn-warning" %>
+                    <% end %>
                   <% end %>
 
                   <br>
                 </div>
                 <div class="col-md-3">
                   <h4 class="text-muted"><center><%=number_to_currency savings_account.balance %></center></h4>
+                </div>
+                <div class="col-md-2">
+                  <% if savings_account.closed? %>
+                    <span class="badge bg-red"> Closed </span>
+                  <% end %>
                 </div>
               </div>
               <hr>

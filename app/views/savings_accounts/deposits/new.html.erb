@@ -12,7 +12,7 @@
       <%= f.error_notification %>
       <%= f.input :amount, as: :currency %>
       <%= f.input :payment_type, label: 'Type', collection: AccountingModule::Entry.payment_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
-      <%= f.input :or_number %>
+      <%= f.input :or_number, label: 'Reference number' %>
       <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
       <%= f.input :saving_id, input_html: { value: @savings_account.id },as: :hidden %>
       <%= f.input :recorder_id, input_html: { value: current_user.id },as: :hidden %>

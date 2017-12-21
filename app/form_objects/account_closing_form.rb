@@ -13,9 +13,10 @@ class AccountClosingForm
       close_account
     end
   end
+  private
 
   def find_savings_account
-    MembershipsModule::Saving.find_by(id: savings_account_id)
+    MembershipsModule::Saving.find_by_id(savings_account_id)
   end
   def find_employee
     User.find_by(id: recorder_id)
@@ -23,8 +24,8 @@ class AccountClosingForm
 
   def save_withdraw
     find_savings_account.entries.create!(recorder_id: recorder_id, description: 'Closing of savings account', reference_number: reference_number, entry_date: date,
-    debit_amounts_attributes: [{ account: debit_account, amount: find_savings_account.balance }],
-    credit_amounts_attributes: [{account: credit_account, amount: amount}, { account: closing_fee_account, amount: closing_account_fee }])
+    debit_amounts_attributes: [{ account: debit_account, amount: find_savings_account.balance, commercial_document: find_savings_account }],
+    credit_amounts_attributes: [{account: credit_account, amount: amount, commercial_document: find_savings_account}, { account: closing_fee_account, amount: closing_account_fee, commercial_document: find_savings_account }])
   end
   def close_account
     find_savings_account.closed!
@@ -39,7 +40,7 @@ class AccountClosingForm
   end
 
   def debit_account
-    find_savings.saving_product_account
+    find_savings_account.saving_product_account
   end
 
   def amount_is_less_than_balance?
