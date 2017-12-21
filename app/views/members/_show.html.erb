@@ -14,6 +14,7 @@
           <li class="<%= 'active' if current_page?(member_time_deposits_path(@member))%>"><%= link_to 'Time Deposits', member_time_deposits_path(@member) %></li>
           <li class="<%= 'active' if current_page?(member_subscriptions_path(@member))%>"><%= link_to 'Program Subscriptions', member_subscriptions_path(@member) %></li>
           <li class="<%= 'active' if current_page?(member_purchases_path(@member))%>"><%= link_to 'Purchases', member_purchases_path(@member) %></li>
+           <li class="<%= 'active' if current_page?(member_settings_path(@member))%>"><%= link_to 'Settings', member_settings_path(@member) %></li>
         </ul>
       </div>
         <div class="tab-content box-body">

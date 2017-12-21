@@ -125,3 +125,6 @@ refactor transactions summary pdf
 
 
 The man doesnt know how to give up
+
+cancel membership
+withdraw share_capital

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2017_12_21_111046) do
+ActiveRecord::Schema.define(version: 2017_12_21_110904) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -907,9 +907,7 @@ ActiveRecord::Schema.define(version: 2017_12_21_111046) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "closing_account_id"
-    t.uuid "interest_expense_account_id"
     t.index ["closing_account_id"], name: "index_savings_account_configs_on_closing_account_id"
-    t.index ["interest_expense_account_id"], name: "index_savings_account_configs_on_interest_expense_account_id"
   end
 
   create_table "share_capital_product_shares", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1232,7 +1230,6 @@ ActiveRecord::Schema.define(version: 2017_12_21_111046) do
   add_foreign_key "savings", "offices"
   add_foreign_key "savings", "saving_products"
   add_foreign_key "savings_account_configs", "accounts", column: "closing_account_id"
-  add_foreign_key "savings_account_configs", "accounts", column: "interest_expense_account_id"
   add_foreign_key "share_capital_product_shares", "share_capital_products"
   add_foreign_key "share_capital_products", "accounts", column: "paid_up_account_id"
   add_foreign_key "share_capital_products", "accounts", column: "subscription_account_id"

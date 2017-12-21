@@ -94,6 +94,7 @@ Rails.application.routes.draw do
     resources :addresses, only: [:new, :create, :edit, :update], module: :members
     resources :memberships, only: [:edit, :update, :new, :create], module: :members
     resources :info, only: [:index], module: :members
+    resources :settings, only: [:index], module: :members
     resources :loans, only: [:index, :new, :create], module: :members
     resources :real_properties, only: [:index, :new, :create], module: :members
     resources :share_capitals, only: [:index, :new, :create], module: :members
