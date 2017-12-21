@@ -12,6 +12,7 @@ module CoopConfigurationsModule
         DEFAULT_RATE
       end
     end
+
     #account to debit on payment of loan penalty
     def self.account_to_debit
       if self.exists?

@@ -7,7 +7,6 @@ FactoryBot.define do
     association :interest_account, factory: :asset
     association :penalty_account, factory: :asset
     interest_rate 12
-
-
+    penalty_rate 2
   end
 end

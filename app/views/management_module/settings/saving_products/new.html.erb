@@ -4,6 +4,8 @@
 
   <%= f.input :interest_rate %>
   <%= f.input :interest_recurrence, collection:  CoopServicesModule::SavingProduct.interest_recurrences.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
+  <%= f.input :interest_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] }%>
+  <%= f.input :minimum_balance, label: "Minimum Balance to earn interest:" %>
   <%= f.input :account_id, input_html: { id: "savingProductAccountSelect" }, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
   <%= f.submit "Create Saving Product" %>
 <% end %>

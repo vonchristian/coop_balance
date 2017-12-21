@@ -3,7 +3,7 @@ module AccountingModule
     belongs_to :entry, :class_name => 'AccountingModule::Entry'
     belongs_to :account, :class_name => 'AccountingModule::Account', touch: true
     belongs_to :recorder, class_name: "User", foreign_key: 'recorder_id'
-
+    belongs_to :commercial_document, polymorphic: true
     validates :type, :amount, :entry, :account, presence: true
     validates :amount, numericality: true
 

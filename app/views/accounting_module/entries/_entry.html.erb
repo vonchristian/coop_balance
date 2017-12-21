@@ -7,8 +7,7 @@
       <% end %>
     </td>
     <td><%=entry.entry_date.strftime("%B %e, %Y") %></td>
-    <td><%=link_to entry.description, accounting_module_entry_path(entry) %><br>
-      <span class="badge"><%= entry.entry_type %></span>
+    <td><%=link_to entry.description, accounting_module_entry_path(entry) %>
     </td>
     <td><%= entry.reference_number %></td>
     <td><%= number_to_currency entry.debit_amounts.sum(&:amount) %></td>

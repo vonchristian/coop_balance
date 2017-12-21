@@ -13,11 +13,11 @@ class DisbursementForm
   def save_cash_disbursement
     entry = AccountingModule::Entry.new(commercial_document: find_voucher, :description => description, recorder_id: recorder_id, entry_date: date)
     find_voucher.voucher_amounts.debit.each do |amount|
-      debit_amount = AccountingModule::DebitAmount.new(account_id: amount.account_id, amount: amount.amount)
+      debit_amount = AccountingModule::DebitAmount.new(account_id: amount.account_id, amount: amount.amount, commercial_document: amount.commercial_document)
       entry.debit_amounts << debit_amount
     end
     find_voucher.voucher_amounts.credit.each do |amount|
-      credit_amount = AccountingModule::CreditAmount.new(account_id: amount.account_id , amount: amount.amount)
+      credit_amount = AccountingModule::CreditAmount.new(account_id: amount.account_id , amount: amount.amount, commercial_document: amount.commercial_document)
       entry.credit_amounts << credit_amount
     end
     entry.save!
@@ -25,7 +25,6 @@ class DisbursementForm
   def disburse_voucher
     find_voucher.disbursed!
     find_voucher.update_attributes(disburser_id: recorder_id)
-    find_voucher.disburse_loan
   end
 
   def find_voucher

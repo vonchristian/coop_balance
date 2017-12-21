@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2017_12_20_014427) do
+ActiveRecord::Schema.define(version: 2017_12_21_042914) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -78,8 +78,11 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "recorder_id"
+    t.string "commercial_document_type"
+    t.uuid "commercial_document_id"
     t.index ["account_id", "entry_id"], name: "index_amounts_on_account_id_and_entry_id"
     t.index ["account_id"], name: "index_amounts_on_account_id"
+    t.index ["commercial_document_type", "commercial_document_id"], name: "index_amounts_on_commercial_document"
     t.index ["entry_id", "account_id"], name: "index_amounts_on_entry_id_and_account_id"
     t.index ["entry_id"], name: "index_amounts_on_entry_id"
     t.index ["recorder_id"], name: "index_amounts_on_recorder_id"
@@ -429,7 +432,10 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
     t.boolean "optional"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "commercial_document_type"
+    t.uuid "commercial_document_id"
     t.index ["chargeable_type", "chargeable_id"], name: "index_loan_charges_on_chargeable_type_and_chargeable_id"
+    t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_loan_charges"
     t.index ["loan_id"], name: "index_loan_charges_on_loan_id"
   end
 
@@ -483,6 +489,7 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
     t.decimal "maximum_share_capital_balance"
     t.string "slug"
     t.decimal "interest_rate"
+    t.decimal "penalty_rate"
     t.index ["account_id"], name: "index_loan_products_on_account_id"
     t.index ["interest_account_id"], name: "index_loan_products_on_interest_account_id"
     t.index ["name"], name: "index_loan_products_on_name", unique: true
@@ -924,6 +931,7 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
     t.boolean "default_product", default: false
     t.uuid "paid_up_account_id"
     t.uuid "subscription_account_id"
+    t.decimal "cost_per_share"
     t.index ["name"], name: "index_share_capital_products_on_name"
     t.index ["paid_up_account_id"], name: "index_share_capital_products_on_paid_up_account_id"
     t.index ["subscription_account_id"], name: "index_share_capital_products_on_subscription_account_id"
@@ -937,8 +945,8 @@ ActiveRecord::Schema.define(version: 2017_12_20_014427) do
     t.string "account_owner_name"
     t.string "subscriber_type"
     t.uuid "subscriber_id"
-    t.datetime "created_at", default: "2017-12-20 16:07:58", null: false
-    t.datetime "updated_at", default: "2017-12-20 16:07:58", null: false
+    t.datetime "created_at", default: "2017-12-20 12:19:46", null: false
+    t.datetime "updated_at", default: "2017-12-20 12:19:46", null: false
     t.integer "status"
     t.uuid "office_id"
     t.index ["account_number"], name: "index_share_capitals_on_account_number", unique: true

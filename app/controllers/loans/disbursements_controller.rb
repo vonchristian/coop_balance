@@ -1,8 +1,9 @@
 module Loans
   class DisbursementsController < ApplicationController
-    def index 
+    def index
       @loan = LoansModule::Loan.find(params[:loan_id])
     end
+
     def new
       @loan = LoansModule::Loan.find(params[:loan_id])
       @disbursement = LoanDisbursementForm.new

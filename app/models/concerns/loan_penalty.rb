@@ -1,10 +1,10 @@
 class LoanPenalty
   def payments_total(loan)
-    loan.entries.map{|a| a.credit_amounts.distinct.where(account: CoopConfigurationsModule::LoanPenaltyConfig.account_to_debit).sum(&:amount)}.sum
+    loan.entries.map{|a| a.credit_amounts.distinct.where(account: loan.loan_product.penalty_account_id).sum(&:amount)}.sum
   end
 
   def balance(loan)
-    CoopConfigurationsModule::LoanPenaltyConfig.balance_for(loan)
+    loan.loan_product.penalty_account.balance(commercial_document_id: loan.id)
   end
 
   def compute(loan, schedule)
@@ -13,7 +13,7 @@ class LoanPenalty
   end
 
   def rate
-    CoopConfigurationsModule::LoanPenaltyConfig.default_rate
+   loan.loan_product.penalty_rate
   end
 end
 

@@ -2,6 +2,8 @@ module LoansModule
 	class LoanCharge < ApplicationRecord
 	  belongs_to :loan, class_name: "LoansModule::Loan"
 	  belongs_to :chargeable, polymorphic: true
+	  belongs_to :commercial_document, polymorphic: true
+
     has_many :loan_charge_payment_schedules, dependent: :destroy
 	  has_one :charge_adjustment, dependent: :destroy
 	  delegate :account, :account_name,  to: :chargeable, allow_nil: true

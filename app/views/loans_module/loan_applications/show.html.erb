@@ -19,9 +19,9 @@
         <%= @loan.borrower.share_capitals.balance %>
         <hr />
         <p class="text-muted">PREVIOUS LOANS </p>
-        <% @loan.borrower.loans.disbursed.each do |loan| %>
+        <% @loan.borrower.loans.disbursed_loans.each do |loan| %>
           <%= number_to_currency loan.balance %>
-          <%=link_to 'New Payment', new_loans_module_loan_previous_loan_payment_path(loan) %>
+          <%=link_to 'New Payment', new_loans_module_loan_previous_loan_payment_path(previous_loan_id: loan.id, loan_id: @loan.id) %>
         <% end %>
         <hr>
 
@@ -101,6 +101,7 @@
 					 </div>
 					 <br>
 				<% end %>
+
         <hr />
         <div class="row">
           <div class="col-md-5 col-md-offset-1">
