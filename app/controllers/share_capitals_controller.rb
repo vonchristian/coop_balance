@@ -6,12 +6,13 @@ class ShareCapitalsController < ApplicationController
       @share_capitals = MembershipsModule::ShareCapital.all.paginate(page: params[:page], per_page: 30)
     end
   end
-  def show 
+  def show
     @employee = current_user
     @share_capital = MembershipsModule::ShareCapital.find(params[:id])
+    @entries = @share_capital.capital_build_ups.paginate(page: params[:page], per_page: 50)
     respond_to do |format|
       format.html
-      format.pdf do 
+      format.pdf do
         pdf = ShareCapitalPdf.new(@share_capital, @employee, view_context)
         send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Share Capital PDF.pdf"
       end

@@ -17,10 +17,11 @@ module MembershipsModule
     after_commit :set_account_owner_name
 
     has_many :capital_build_ups, class_name: "AccountingModule::Entry", as: :commercial_document
+
     def entries
-      share_capital_product_paid_up_account.entries.where(commercial_document_id: self) +
-      share_capital_product_paid_up_account.entries.where(commercial_document_id: self.subscriber_id)
+      share_capital_product_paid_up_account.entries.where(commercial_document_id: self)
     end
+
     def self.subscribed_shares
       all.sum(&:subscribed_shares)
     end

@@ -12,7 +12,7 @@ module ShareCapitals
       authorize [:share_capitals, :capital_build_up]
       if @capital_build_up.valid?
         @capital_build_up.save
-        redirect_to share_capital_url(@share_capital), notice: "Capital build up successfully."
+        redirect_to share_capital_url(@share_capital), notice: "Capital build up saved successfully."
       else
         render :new
       end
