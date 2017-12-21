@@ -57,6 +57,16 @@ module LoansModule
       end
       entries
     end
+    def loan_payments
+      entries = []
+        LoansModule::LoanProduct.accounts.each do |account|
+          account.amounts.where(commercial_document: self).each do |amount|
+            entries << amount.entry
+          end
+        end
+      entries
+    end
+
     def self.borrowers
       User.all + Member.all
     end

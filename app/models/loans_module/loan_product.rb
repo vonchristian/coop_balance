@@ -23,7 +23,9 @@ module LoansModule
     validates :interest_rate, :penalty_rate, :maximum_loanable_amount, numericality: true
 
     def self.accounts
-      all.map{|a| a.account }
+      all.map{|a| a.account } +
+      all.map{|a| a.interest_account } +
+      all.map{ |a| a.penalty_account }
     end
 
     def borrowers

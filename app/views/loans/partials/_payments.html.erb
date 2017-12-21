@@ -16,10 +16,10 @@
         </tr>
       </thead>
       <tbody>
-        <% @loan.entries.order(created_at: :desc).each do |payment| %>
+        <% @loan.loan_paytments.each do |payment| %>
           <tr>
             <td><%= payment.entry_date.strftime("%B %e, %Y") %></td>
-            <td><%= number_to_currency payment.credit_amounts.sum(:amount) %> </td>
+            <td><%= number_to_currency payment.credit_amounts.where(commercial_document: @loan).sum(:amount) %> </td>
             <td><%= payment.reference_number %></td>
             <td>
               <%= image_tag(payment.recorder.avatar.url(:thumb), class: "img-circle", height: 40, width: 40) %> &nbsp; <%= payment.recorder.try(:name) %>
