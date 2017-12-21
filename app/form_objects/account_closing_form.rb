@@ -32,7 +32,7 @@ class AccountClosingForm
   end
 
   def closing_fee_account
-    AccountingModule::Account.find_by(name: "Closing Account Fees")
+    CoopConfigurationsModule::SavingsAccountConfig.default_closing_account
   end
 
   def credit_account
