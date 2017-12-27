@@ -132,7 +132,7 @@ Statement of accounts per member
 refactor transactions summary pdf
 
 
-The man doesnt know how to give up
+The man doesnt know how to give upkms316
 
-cancel membership
-withdraw share_capital
+10 coops sign up
+kms316
