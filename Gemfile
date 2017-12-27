@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.4.2'
+ruby '2.5.0'
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
   "https://github.com/#{repo_name}.git"
@@ -48,6 +48,7 @@ gem 'mina-puma', require: false
 gem 'barby'
 gem 'rqrcode'
 gem 'prawn-print'
+gem 'delayed_job', github: 'collectiveidea/delayed_job', branch: 'master'
 gem 'delayed_job_active_record'
 gem 'simple-line-icons-rails'
 gem 'dotiw'
