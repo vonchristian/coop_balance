@@ -9,7 +9,7 @@ module MembershipsModule
     belongs_to :share_capital_product, class_name: "CoopServicesModule::ShareCapitalProduct"
     belongs_to :office, class_name: "CoopConfigurationsModule::Office"
 
-    delegate :name, :paid_up_account, :subscription_account, :default_paid_up_account, :default_subscription_account, to: :share_capital_product, prefix: true
+    delegate :name, :paid_up_account, :subscription_account, :closing_account, :closing_account_fee, :default_paid_up_account, :default_subscription_account, to: :share_capital_product, prefix: true
     delegate :name, to: :office, prefix: true, allow_nil: true
     delegate :name, to: :subscriber, prefix: true
     delegate :cost_per_share, to: :share_capital_product, prefix: true
@@ -17,6 +17,9 @@ module MembershipsModule
     after_commit :set_account_owner_name
 
     has_many :capital_build_ups, class_name: "AccountingModule::Entry", as: :commercial_document
+    def closed?
+      share_capital_product_closing_account.entries.where(commercial_document: self).present?
+    end
 
     def entries
       share_capital_product_paid_up_account.entries.where(commercial_document_id: self)
@@ -28,9 +31,6 @@ module MembershipsModule
 
     def subscribed_shares
       share_capital_product_default_subscription_account.balance(commercial_document_d: self.id)
-    end
-    def self.balance
-      all.sum(&:balance)
     end
 
     def balance

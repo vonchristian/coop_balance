@@ -4,6 +4,7 @@ module CoopServicesModule
 	describe ShareCapitalProduct do
 	  context 'associations' do
       it { is_expected.to belong_to :paid_up_account }
+      it { is_expected.to belong_to :closing_account }
       it { is_expected.to belong_to :subscription_account }
 	  	it { is_expected.to have_many :share_capital_product_shares }
 	  	it { is_expected.to have_many :subscribers }

@@ -19,9 +19,9 @@ class Voucher < ApplicationRecord
 
   before_save :set_date
   def self.disbursed_on(options={})
-    if hash[:from_date] && hash[:to_date]
-     from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : Chronic.parse(hash[:from_date].strftime('%Y-%m-%d 12:00:00'))
-      to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : Chronic.parse(hash[:to_date].strftime('%Y-%m-%d 12:59:59'))
+    if options[:from_date] && options[:to_date]
+     from_date = options[:from_date].kind_of?(DateTime) ? options[:from_date] : Chronic.parse(options[:from_date].strftime('%Y-%m-%d 12:00:00'))
+      to_date = options[:to_date].kind_of?(DateTime) ? options[:to_date] : Chronic.parse(options[:to_date].strftime('%Y-%m-%d 12:59:59'))
       includes([:entry]).where('entries.entry_date' => (from_date.beginning_of_day)..(to_date.end_of_day))
     else
       all

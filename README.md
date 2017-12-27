@@ -1,3 +1,11 @@
+transform the cooperative industry
+eliminate much of the manual, time consuming effort currently required to keep disparate ledgers.
+Financial agreements are recorded and automatically managed without error, where anybody can transact seamlessly for any contractual purpose without friction.
+
+We believe markets will move towards models where parties collaborate to maintain accurate, shared records of these agreements. Duplications, reconcilations will be thigs of the past.
+We aspire to define a shared ledger fabric for cooperatives that relies on proven technologies.
+
+
 # Cooperative Management Platform
 
 This project integrates the services of a cooperative in a single platform so that managing is easier and more transaparent.

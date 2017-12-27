@@ -341,11 +341,12 @@ class TransactionSummaryPdf < Prawn::Document
     end
   end
   def summary_data
+    [["", "", "Beginning Balance", "#{price(@employee.cash_on_hand_account.balance(recorder_id: @employee.id, to_date: @date.yesterday.end_of_day))}"]] +
     [["", "", "Cash Received",  "#{price(@employee.cash_on_hand_account.debit_entries.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).recorded_by(@employee.id).total + @employee.fund_transfers.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).total) }"]] +
     [["", "", "Cash Disbursed",  "#{price(@employee.cash_on_hand_account.credit_entries.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).recorded_by(@employee.id).total)}"]]
   end
   def total_summary_data
-    [["", "", "Ending Balance", "#{price(@employee.cash_on_hand_account.balance(recorder_id: @employee.id, from_date: @date.beginning_of_day, to_date: @date.end_of_day) + @employee.fund_transfers.total(from_date: @date.beginning_of_day, to_date: @date.end_of_day))}"]]
+    [["", "", "Ending Balance", "#{price(@employee.cash_on_hand_account_balance)}"]]
   end
 
   def summary_of_accounts

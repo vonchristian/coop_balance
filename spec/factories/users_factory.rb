@@ -8,6 +8,7 @@ FactoryBot.define do
     password_confirmation 'secretpassword'
     role 0
     cooperative
+    association :cash_on_hand_account, factory: :asset
     factory :loan_officer do
       role 'loan_officer'
     end

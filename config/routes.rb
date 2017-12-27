@@ -86,6 +86,7 @@ Rails.application.routes.draw do
   end
   resources :share_capitals do
     resources :capital_build_ups, only: [:new, :create], module: :share_capitals
+    resources :account_closings, only: [:new, :create], module: :share_capitals
     resources :offices, only: [:edit, :update], module: :share_capitals
   end
   resources :members do

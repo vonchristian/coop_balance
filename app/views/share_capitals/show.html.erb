@@ -64,13 +64,18 @@
            <h4><center><%= image_tag(@share_capital.subscriber.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center></h4>
 
             <h3><center><%= @share_capital.subscriber_name %></center></h3>
+            <% if !@share_capital.closed? %>
+              <%= link_to 'Close Account', new_share_capital_account_closing_path(@share_capital) %>
+            <% end %>
       </div>
      <div class="box-body">
         <div class="row">
           <div class="col-md-3 border-right">
             <small class="text-muted">CAPITAL BUILD UPS </small>
             <h4><%= number_to_currency @share_capital.capital_build_ups_total %></h4>
-            <%= link_to 'New Capital Build Up', new_share_capital_capital_build_up_path(@share_capital), class: "btn btn-success" %>
+            <% if !@share_capital.closed? %>
+              <%= link_to 'New Capital Build Up', new_share_capital_capital_build_up_path(@share_capital), class: "btn btn-success" %>
+            <% end %>
           </div>
           <div class="col-md-3 border-right">
             <small class="text-muted">EARNED DIVIDENDS</small>
@@ -90,7 +95,7 @@
                   <th> Date </th>
                   <th>Reference Number</th>
                   <th> Amount </th>
-
+                  <th> Description</th>
                   <th> Employee </th>
                 </tr>
               </thead>
@@ -100,6 +105,7 @@
                     <td><%= entry.entry_date.strftime("%B %e, %Y") %></td>
                     <td><%= entry.reference_number %></td>
                     <td><%= number_to_currency entry.amounts.where(account: @share_capital.share_capital_product_paid_up_account).sum(:amount) %></td>
+                    <td><%= entry.description %></td>
 
 
                     <td><% if entry.recorder %>

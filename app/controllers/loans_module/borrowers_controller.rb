@@ -4,7 +4,11 @@ module LoansModule
       @borrowers = Loan.borrowers
     end
     def show
-      @borrower = Member.find(params[:id])
+      if @borrower.class == "Member"
+        @borrower = Member.find(params[:id])
+      elsif @borrower.class == "User"
+        @borrower = User.find(params[:id])
+      end
     end
   end
 end

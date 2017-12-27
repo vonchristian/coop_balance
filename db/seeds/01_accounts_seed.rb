@@ -215,6 +215,8 @@ AccountingModule::Revenue.create(code: 401202, name: 'Service Fees - Check Fees'
 AccountingModule::Revenue.create(code: 401203, name: 'Closing Account Fees')
 AccountingModule::Revenue.create(code: 4012031, name: 'Time Deposit Break Contract Fees')
 AccountingModule::Revenue.create(code: 4012032, name: 'Savings Account Closing Fees')
+AccountingModule::Revenue.create(code: 4012033, name: 'Share Capital Closing Fees')
+
 AccountingModule::Revenue.create(code: 40130, name: 'Filing Fees')
 AccountingModule::Revenue.create(code: 40140, name: 'Fines, Penalties, Surcharges')
 AccountingModule::Revenue.create(code: 401401, name: 'Loan Penalties')

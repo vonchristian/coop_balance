@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2017_12_21_110904) do
+ActiveRecord::Schema.define(version: 2017_12_27_015717) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -930,6 +930,10 @@ ActiveRecord::Schema.define(version: 2017_12_21_110904) do
     t.uuid "paid_up_account_id"
     t.uuid "subscription_account_id"
     t.decimal "cost_per_share"
+    t.boolean "has_closing_account_fee", default: false
+    t.decimal "closing_account_fee", default: "0.0"
+    t.uuid "closing_account_id"
+    t.index ["closing_account_id"], name: "index_share_capital_products_on_closing_account_id"
     t.index ["name"], name: "index_share_capital_products_on_name"
     t.index ["paid_up_account_id"], name: "index_share_capital_products_on_paid_up_account_id"
     t.index ["subscription_account_id"], name: "index_share_capital_products_on_subscription_account_id"
@@ -1231,6 +1235,7 @@ ActiveRecord::Schema.define(version: 2017_12_21_110904) do
   add_foreign_key "savings", "saving_products"
   add_foreign_key "savings_account_configs", "accounts", column: "closing_account_id"
   add_foreign_key "share_capital_product_shares", "share_capital_products"
+  add_foreign_key "share_capital_products", "accounts", column: "closing_account_id"
   add_foreign_key "share_capital_products", "accounts", column: "paid_up_account_id"
   add_foreign_key "share_capital_products", "accounts", column: "subscription_account_id"
   add_foreign_key "share_capitals", "offices"
