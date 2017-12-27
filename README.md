@@ -133,6 +133,5 @@ refactor transactions summary pdf
 
 
 The man doesnt know how to give upkms316
-
+in 6 months (july 2018)
 10 coops sign up
-kms316
