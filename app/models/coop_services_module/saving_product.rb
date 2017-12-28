@@ -5,13 +5,13 @@ module CoopServicesModule
 	  has_many :subscribers, class_name: "MembershipsModule::Saving"
 	  belongs_to :account, class_name: "AccountingModule::Account"
     belongs_to :closing_account, class_name: "AccountingModule::Account"
-    belongs_to :interest_account, class_name: "AccountingModule::Account"
+    belongs_to :interest_expense_account, class_name: "AccountingModule::Account"
 
 
 	  validates :interest_rate, :minimum_balance, numericality: { greater_than_or_equal_to: 0.01 }, presence: true
 	  validates :interest_recurrence, presence: true
 	  validates :name, presence: true, uniqueness: true
-	  validates :account_id, :interest_account_id, presence: true
+	  validates :account_id, :interest_expense_account_id, presence: true
 
     delegate :name, to: :account, prefix: true
     def accounts_opened(options={})

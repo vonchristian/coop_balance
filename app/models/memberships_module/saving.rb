@@ -11,7 +11,7 @@ module MembershipsModule
              :account,
              :closing_account,
              :interest_rate,
-             :interest_account, to: :saving_product, prefix: true
+             :interest_expense_account, to: :saving_product, prefix: true
     delegate :name, to: :office, prefix: true, allow_nil: true
     has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
     before_save :set_account_owner_name, :set_account_number

@@ -4,7 +4,7 @@ FactoryBot.define do
     interest_rate "9.99"
     interest_recurrence 1
     association :account, factory: :liability
-    association :interest_account, factory: :expense
+    association :interest_expense_account, factory: :expense
 
     minimum_balance 100
   end

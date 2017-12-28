@@ -9,7 +9,7 @@ class InterestPosting
     savings_account.balance * savings_account.saving_product_interest_rate * (number_of_days_in_quarter(posting_date) / 365)
   end
   def debit_account
-    CoopConfigurationsModule::SavingsAccountConfig.new.default_interest_account
+   savings_account.saving_product_interest_expense_account
   end
   def credit_account
     savings_account.saving_product_account
