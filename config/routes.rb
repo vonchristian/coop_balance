@@ -187,10 +187,6 @@ Rails.application.routes.draw do
   end
   resources :store, only: [:index]
   namespace :store_module do
-    resources :checkouts, only: [:new, :create]
-    resources :memberships, shallow: true do
-      resources :orders, only: [:new, :create], module: :memberships
-    end
     resources :settings, only: [:index]
     resources :reports, only: [:index]
     resources :accounts_receivable_store_config, only: [:new, :create]
@@ -334,6 +330,7 @@ Rails.application.routes.draw do
   end
 
   namespace :store_front_module do
+    resources :checkouts, only: [:create]
     resources :order_processings, only: [:new, :create]
   end
 end

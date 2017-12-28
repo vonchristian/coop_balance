@@ -92,7 +92,7 @@ class Member < ApplicationRecord
   end
 
   def account_receivable_store_balance
-    StoreCredit.new.balance(self)
+   AccountsReceivableStore.new.balance(self)
   end
 
   def full_name

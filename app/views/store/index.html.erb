@@ -103,7 +103,7 @@
         </div>
         <br>
         <div class="box-footer">
-          <%= simple_form_for @checkout, url: :store_module_checkouts do |f| %>
+          <%= simple_form_for @checkout, url: :store_front_module_checkouts do |f| %>
             <%= f.input :customer_id, collection: StoreModule::Order.customers.map{|a| [ a.name, a.id] } %>
         <%=f.submit "Checkout", class: "btn btn-primary btn-block btn-lg", :accesskey => "C" %>
         <% end %>

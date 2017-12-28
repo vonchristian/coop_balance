@@ -1,4 +1,4 @@
-module StoreModule
+module StoreFrontModule
   class CheckoutsController < ApplicationController
     def create
       @checkout = StoreFrontModule::CheckoutForm.new(checkout_params)
