@@ -148,3 +148,7 @@ At CoopCatalyst, we're all about automation. We're on a mission to make cooperat
 
 BIG REDESIGN
 Rename store_module to store_front_module
+
+
+Research
+include modules rails

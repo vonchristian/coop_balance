@@ -93,8 +93,8 @@ class User < ApplicationRecord
     name
   end
 
-  def account_receivable_store_balance
-    StoreCredit.new.balance(self)
+ def account_receivable_store_balance
+   AccountsReceivableStore.new.balance(self)
   end
   def cash_on_hand_account_balance(options = {})
     default_cash_on_hand_account.balance(recorder_id: self.id) +
