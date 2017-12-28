@@ -55,26 +55,24 @@
         <div class="col-md-5">
           <div class="box box-solid">
             <div class="box-header">
-              <h3 class="condensed-text box-title"> PAYMENT DETAILS </h3>
+              <h3 class="condensed-text box-title"> CUSTOMER DETAILS </h3>
             </div>
             <div class="box-body">
-               <div class="row">
-          <div class="col-md-4 col-md-offset-1">
-            <h3 class="condensed-text"> TOTAL </h3>
-          </div>
-          <div class="col-md-5">
-            <h3><span class="pull-right"><%=number_to_currency @cart.line_items.total_cost %></span></h3>
-          </div>
-        </div>
-        <hr>
         <div class="row">
-          <div class="col-md-2">
-            <%= image_tag(@customer.avatar.url(:medium), class: "img-circle", height: 45, width: 45) %>
+          <div class="col-md-3">
+            <%= image_tag(@customer.avatar.url(:medium), class: "img-circle", height: 80, width: 80) %>
           </div>
-          <div class="col-md-8">
+          <div class="col-md-7">
             <b><%= @customer.name.try(:upcase) %></b><br>
-            <i class="fa fa-mobile"></i><br>
-            <i class="fa fa-map-marker"></i> <%= @customer.current_address %>
+            <% if @customer.orders.present? %>
+              <i class="fa fa-clock-o"></i> <%= @customer.latest_purchase_date.try(:strftime, ("%B %e, %Y")) %><br>
+              <span class="text-muted">Last Purchase </span><br>
+            <% end %>
+
+            <%= link_to 'Change Customer', store_index_url %>
+
+          </div>
+          <div class="col-md-2">
           </div>
         </div>
         <hr>
@@ -87,6 +85,14 @@
         <small class="text-muted"> ACCOUNTS RECEIVABLE (STORE) </small>
         <h4><%= number_to_currency @customer.account_receivable_store_balance %></h4>
         <hr />
+         <div class="row">
+                <div class="col-md-4 col-md-offset-1">
+                  <h3 class="condensed-text"> TOTAL </h3>
+                </div>
+                <div class="col-md-5">
+                  <h3><span class="pull-right"><%=number_to_currency @cart.line_items.total_cost %></span></h3>
+                </div>
+              </div>
           <%= simple_form_for @order, url: :store_front_module_order_processings do |f| %>
             <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
             <%= f.input :date, as: :string, input_html: { class: "datepicker", value: Time.zone.now.strftime("%B %e, %Y") } %>
@@ -96,7 +102,7 @@
 
             <%= f.input :pay_type, input_html: {id: 'payment-type-select', class: 'icheck-me', "data-skin" => 'square', "data-color" => "blue"}, collection: StoreModule::Order.pay_types.keys.to_a.map {|a| [a.titleize, a]}, default: StoreModule::Order.pay_types.first %>
             <%= f.input :total_cost, input_html: { id: 'order-total-cost', value: @cart.line_items.total_cost }, as: :hidden %>
-            <%= f.input :cash_tendered, as: :string, input_html: { id: 'order-cash-tendered', oninput: 'calculateChangeForOrder()', class: "input-lg"} %>
+            <%= f.input :cash_tendered, autofocus: true, as: :string, input_html: { id: 'order-cash-tendered', oninput: 'calculateChangeForOrder()', class: "input-lg"} %>
             <%= f.input :order_change, label: "Change", readonly: true, input_html: { id: 'order-change', value: 0, class: 'bg-gray input-lg'}, as: :string %>
             <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
             <div class="box-footer">

@@ -8,7 +8,7 @@
               <h3 class="box-title"> Customers </h3>
             </div>
             <div class="col-md-6">
-              <%=form_tag members_path, method: :get, class: "sidebar-form" do %>
+              <%=form_tag customers_path, method: :get, class: "sidebar-form" do %>
                 <div class="input-group">
                   <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search First Name, Last Name ", id: 'account-search-form' %>
                   <span class="input-group-btn">
@@ -19,34 +19,29 @@
                 </div>
               <% end %>
             </div>
-            <div class="col-md-3">
-              <%= link_to new_member_path do %>
-                <span class="btn btn-primary pull-right"><i class="fa fa-user-plus"></i> New Member </span>
-              <% end %>
-            </div>
           </div>
 
         <br>
       </div>
       <div class="box-body">
 
-        <% @customers.each do |member| %>
-          <% cache member do %>
-            <%= link_to member_info_index_path(member) do %>
+        <% @customers.each do |customer| %>
+          <% cache customer do %>
+            <%= link_to customer_path(customer) do %>
               <div class="row">
                 <div class="col-md-3">
-                  <center><%= image_tag(member.avatar.url(:medium), class: "img-circle", height: 80, width: 80) %></center>
+                  <center><%= image_tag(customer.avatar.url(:medium), class: "img-circle", height: 80, width: 80) %></center>
                 </div>
                 <div class="col-md-6">
-                  <b><%= member.full_name.upcase %></b><br><br>
-                  <span class="text-muted"> <i class="fa fa-phone"></i> <%= member.contact_number || 'Not Set' %> &nbsp;</span>
-                  <span class="text-muted"> <i class="fa fa-map-marker"></i> <%=member.current_address || 'Not Set' %></span>
+                  <b><%= customer.full_name.upcase %></b><br><br>
+                  <span class="text-muted"> <i class="fa fa-phone"></i> <%= customer.contact_number || 'Not Set' %> &nbsp;</span>
+                  <span class="text-muted"> <i class="fa fa-map-marker"></i> <%=customer.current_address || 'Not Set' %></span>
               </div>
               </div>
               <hr>
             <% end %>
           <% end %>
         <% end %>
-        <center><%= will_paginate @members %> </center>
+        <center><%= will_paginate @customers %> </center>
 
 

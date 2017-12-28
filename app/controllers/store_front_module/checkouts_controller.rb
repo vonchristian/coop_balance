@@ -3,7 +3,7 @@ module StoreFrontModule
     def create
       @checkout = StoreFrontModule::CheckoutForm.new(checkout_params)
       if @checkout.valid?
-        redirect_to new_store_front_module_order_processing_path(customer_id: @checkout.customer_id), notice: "Processing order..."
+        redirect_to new_store_front_module_order_processing_path(customer_id: @checkout.customer_id)
       else
         redirect_to store_index_url, alert: "Customer not found!"
       end

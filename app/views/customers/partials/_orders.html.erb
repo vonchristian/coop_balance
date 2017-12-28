@@ -1,0 +1,31 @@
+<div class="tab-pane <%= 'active' if current_page?(customer_orders_path(@customer)) %>">
+  <div class="table table-responsive">
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>OR / Invoice #</th>
+          <th>Employee</th>
+          <th><span class="pull-right">Total Cost </span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @orders.each do |order| %>
+          <tr data-link="<%=store_module_order_path(order)%>" class="myClass">
+            <td> <%= order.date.try(:strftime, ("%B %e, %Y")) %></td>
+            <td> <%= order.reference_number %></td>
+            <td> <%= image_tag(order.customer.avatar.url(:medium), class: "img-circle", height: 35, width: 35) %> <%= order.employee.try(:name) %></td>
+            <td> <span class="pull-right"> <%= number_to_currency order.total_cost %></span> </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <center><%= will_paginate @orders %></center>
+  </div>
+</div>
+<script type="text/javascript">
+  $("tr").click(function() {
+  window.location = $(this).data("link")
+});
+  $('.myClass').css('cursor', 'pointer');
+</script>

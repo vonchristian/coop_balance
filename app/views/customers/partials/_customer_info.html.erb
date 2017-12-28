@@ -1,0 +1,14 @@
+<div class="tab-pane <%= 'active' if current_page?(customer_path(@customer)) %>">
+  <small class="text-muted"> TOTAL PURCHASES (<%= Time.zone.now.year %>) </small>
+        <h4><%= number_to_currency @customer.total_purchases(from_date: Time.zone.now.beginning_of_year, to_date: Time.zone.now.end_of_year) %></h4>
+        <hr />
+  <small class="text-muted"> SAVINGS </small>
+        <h4><%= number_to_currency @customer.total_savings %></h4>
+        <hr />
+        <small class="text-muted"> SHARE CAPITAL </small>
+        <h4><%= number_to_currency @customer.total_share_capitals %></h4>
+        <hr />
+        <small class="text-muted"> ACCOUNTS RECEIVABLE (STORE) </small>
+        <h4><%= number_to_currency @customer.account_receivable_store_balance %></h4>
+        <hr />
+</div>

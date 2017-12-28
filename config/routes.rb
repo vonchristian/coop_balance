@@ -307,7 +307,9 @@ Rails.application.routes.draw do
     resources :loans, only: [:index], module: :organizations
     resources :reports, only: [:index], module: :organizations
   end
-  resources :customers, only: [:index]
+  resources :customers, only: [:index, :show] do
+    resources :orders, only: [:index], module: :customers
+  end
   resources :membership_applications, only: [:new, :create, :show] do
     resources :contributions, only: [:new, :create], module: :membership_applications
     resources :payments, only: [:new, :create], module: :membership_applications

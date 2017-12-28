@@ -1,0 +1,49 @@
+<div class="row">
+  <div class="col-md-3">
+    <div class="box box-solid">
+      <div class="box-body box-profile">
+        <%= image_tag(@customer.avatar.url(:medium), class: "profile-user-img img-responsive img-circle") %>
+        <h3 class="profile-username text-center"><%= @customer.first_and_last_name %></h3>
+        <center><span class="text-muted text-center"><%= @customer.current_occupation %> &nbsp; </span> </center>
+        <hr>
+        <strong><i class="fa fa-phone margin-r-5"></i> Contact Number</strong>
+        <p class="text-muted"><%= @customer.contact_number %></p>
+        <hr>
+        <strong><i class="fa fa-map-marker margin-r-5"></i> Address</strong>
+        <p class="text-muted"><%= @customer.current_address %></p>
+        <hr>
+        <strong><i class="fa fa-book margin-r-5"></i> TIN Number</strong>
+        <p class="text-muted"><%= @customer.tin_number %></p>
+        <hr>
+        <strong><i class="fa fa-book margin-r-5"></i> customership Type</strong>
+        <p class="text-muted"><%= @customer.membership_type.try(:titleize) %></p>
+        <hr>
+        <strong><i class="fa fa-map-marker margin-r-5"></i> Date of Birth</strong>
+        <p class="text-muted"><%= @customer.date_of_birth.try(:strftime, "%B %e, %Y") %></p>
+        <p class="text-muted"> Age <%= @customer.age %> Years</p>
+        <hr>
+        <strong><i class="fa fa-book margin-r-5"></i> Office</strong>
+        <p class="text-muted"><%= @customer.office_name %></p>
+        <hr />
+      </div>
+    </div>
+  </div>
+  <div class="col-md-9">
+    <div class="box box-solid">
+      <div class="box-header">
+        <ul class="nav nav-tabs">
+          <li class="<%= 'active' if current_page?(customer_path(@customer))%>"><%= link_to 'Info', customer_path(@customer) %></li>
+          <li class="<%= 'active' if current_page?(customer_orders_path(@customer))%>"><%= link_to 'Purchases', customer_orders_path(@customer) %></li>
+
+        </ul>
+      <div class="tab-content box-body">
+        <% if current_page? customer_path(@customer) %>
+          <%= render 'customers/partials/customer_info' %>
+        <% end %>
+        <% if current_page? customer_orders_path(@customer) %>
+          <%= render 'customers/partials/orders' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

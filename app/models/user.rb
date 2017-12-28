@@ -23,6 +23,7 @@ class User < ApplicationRecord
               :collector]
   belongs_to :cash_on_hand_account, class_name: "AccountingModule::Account", foreign_key: 'cash_on_hand_account_id'
   has_one :current_address, as: :addressable, class_name: "Address"
+  has_one :tin, as: :tinable
   belongs_to :department
   belongs_to :cooperative
   belongs_to :office, class_name: "CoopConfigurationsModule::Office"
@@ -61,6 +62,7 @@ class User < ApplicationRecord
   delegate :membership_type, to: :membership, allow_nil: true
   delegate :name, to: :office, prefix: true, allow_nil: true
   delegate :abbreviated_name, :name, to: :cooperative, prefix: true
+  delegate :number, to: :tin, prefix: true, allow_nil: true
   has_attached_file :avatar,
   styles: { large: "120x120>",
            medium: "70x70>",
@@ -91,6 +93,15 @@ class User < ApplicationRecord
 
   def full_name
     name
+  end
+  def total_savings
+    savings.sum(&:balance)
+  end
+  def total_share_capitals
+    share_capitals.sum(&:balance)
+  end
+  def total_purchases
+    orders.sum(:total_cost)
   end
 
  def account_receivable_store_balance
