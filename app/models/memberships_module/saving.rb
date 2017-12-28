@@ -70,7 +70,7 @@ module MembershipsModule
       saving_product_account.debits_balance(commercial_document_id: self.id)
     end
     def interests_earned
-      saving_product_interest_account.credits_balance(commercial_document_id: self.id)
+      saving_product_interest_expense_account.credits_balance(commercial_document_id: self.id)
 
     end
     def can_withdraw?
