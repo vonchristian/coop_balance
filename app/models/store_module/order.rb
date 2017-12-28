@@ -5,7 +5,7 @@ module StoreModule
     belongs_to :employee, class_name: "User", foreign_key: 'employee_id'
     has_one :official_receipt, as: :receiptable
     has_one :entry, as: :commercial_document, class_name: "AccountingModule::Entry"
-    has_one :invoice, as: :invoicable
+    has_one :invoice, as: :invoiceable
     delegate :number, to: :official_receipt, prefix: true, allow_nil: true
     delegate :first_and_last_name, to: :customer, prefix: true, allow_nil: true
     delegate :name, to: :customer, prefix: true, allow_nil: true
@@ -22,7 +22,7 @@ module StoreModule
       else
         sum(:total_cost)
       end
-   end
+    end
     def reference_number
       official_receipt_number || invoice_number
     end

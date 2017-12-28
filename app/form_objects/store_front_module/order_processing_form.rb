@@ -21,10 +21,11 @@ module StoreFrontModule
     end
 
 
-    def add_line_items_from_cart(order)
-      StoreModule::Cart.find_by(id: cart_id).line_items.each do |item|
-        item.cart_id = nil
-        order.line_items << item
+    def create_reference_number(order)
+      if order.cash? || order.check?
+        OfficialReceipt.create_receipt(order)
+      elsif order.credit?
+        Invoices::SalesInvoice.create_invoice(order)
       end
     end
     def create_entry(order)
@@ -67,6 +68,7 @@ module StoreFrontModule
         item.cart_id = nil
         order.line_items << item
       end
+      StoreFrontModule::OrderProcessingForm.new.create_reference_number(order)
       StoreFrontModule::OrderProcessingForm.new.create_entry(order)
     end
 
