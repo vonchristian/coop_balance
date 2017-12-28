@@ -187,6 +187,7 @@ Rails.application.routes.draw do
   end
   resources :store, only: [:index]
   namespace :store_module do
+    resources :checkouts, only: [:new, :create]
     resources :memberships, shallow: true do
       resources :orders, only: [:new, :create], module: :memberships
     end
@@ -330,5 +331,9 @@ Rails.application.routes.draw do
   resources :filtered_loans, only: [:index], module: :loans_module
   resources :barangays, only: [:show] do
     resources :loans, only: [:index], module: :barangays
+  end
+
+  namespace :store_front_module do
+    resources :order_processings, only: [:new, :create]
   end
 end

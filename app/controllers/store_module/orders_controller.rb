@@ -1,15 +1,18 @@
 module StoreModule
   class OrdersController < ApplicationController
-    def new
-      @cart = current_cart
-      @order = StoreModule::Order.new
-    end
     def index
       @orders = StoreModule::Order.all.includes(:customer, :official_receipt).order(date: :desc)
     end
+
+    def new
+      @cart = current_cart
+      @order = StoreFrontModule::OrderProcessing.new
+      @customer = StoreFrontModule::CheckoutForm.new.find_customer(params[:customer_id])
+    end
+
     def create
-      @order = StoreModule::Order.create(order_params)
-      if @order.save
+      @order = StoreFrontModule::OrderProcessing.new(order_params)
+      if @order.valid?
         @order.add_line_items_from_cart(current_cart)
         if @order.cash?
           OfficialReceipt.generate_number_for(@order)
@@ -35,7 +38,7 @@ module StoreModule
 
     private
     def order_params
-      params.require(:store_module_order).permit(:customer_id, :date, :pay_type, :cash_tendered, :order_change, :total_cost, :employee_id)
+      params.require(:store_module_order).permit(:customer_id, :date, :pay_type, :cash_tendered, :order_change, :total_cost, :employee_id, :cart_id)
     end
   end
 end

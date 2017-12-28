@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2017_12_30_104955) do
+ActiveRecord::Schema.define(version: 2017_12_30_104957) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -685,7 +685,6 @@ ActiveRecord::Schema.define(version: 2017_12_30_104955) do
   end
 
   create_table "orders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "user_id"
     t.datetime "date"
     t.integer "pay_type", default: 0
     t.datetime "created_at", null: false
@@ -699,7 +698,6 @@ ActiveRecord::Schema.define(version: 2017_12_30_104955) do
     t.index ["customer_type", "customer_id"], name: "index_orders_on_customer_type_and_customer_id"
     t.index ["employee_id"], name: "index_orders_on_employee_id"
     t.index ["pay_type"], name: "index_orders_on_pay_type"
-    t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
   create_table "organization_members", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -960,6 +958,19 @@ ActiveRecord::Schema.define(version: 2017_12_30_104955) do
     t.index ["type"], name: "index_share_capitals_on_type"
   end
 
+  create_table "store_front_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "cost_of_goods_sold_account_id"
+    t.uuid "accounts_receivable_account_id"
+    t.uuid "merchandise_inventory_account_id"
+    t.uuid "sales_account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["accounts_receivable_account_id"], name: "index_store_front_configs_on_accounts_receivable_account_id"
+    t.index ["cost_of_goods_sold_account_id"], name: "index_store_front_configs_on_cost_of_goods_sold_account_id"
+    t.index ["merchandise_inventory_account_id"], name: "index_store_front_configs_on_merchandise_inventory_account_id"
+    t.index ["sales_account_id"], name: "index_store_front_configs_on_sales_account_id"
+  end
+
   create_table "store_fronts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "cooperative_id"
     t.string "name"
@@ -1216,7 +1227,6 @@ ActiveRecord::Schema.define(version: 2017_12_30_104955) do
   add_foreign_key "municipalities", "provinces"
   add_foreign_key "notes", "users", column: "noter_id"
   add_foreign_key "offices", "cooperatives"
-  add_foreign_key "orders", "users"
   add_foreign_key "orders", "users", column: "employee_id"
   add_foreign_key "organization_members", "organizations"
   add_foreign_key "product_stocks", "products"
@@ -1242,6 +1252,10 @@ ActiveRecord::Schema.define(version: 2017_12_30_104955) do
   add_foreign_key "share_capital_products", "accounts", column: "subscription_account_id"
   add_foreign_key "share_capitals", "offices"
   add_foreign_key "share_capitals", "share_capital_products"
+  add_foreign_key "store_front_configs", "accounts", column: "accounts_receivable_account_id"
+  add_foreign_key "store_front_configs", "accounts", column: "cost_of_goods_sold_account_id"
+  add_foreign_key "store_front_configs", "accounts", column: "merchandise_inventory_account_id"
+  add_foreign_key "store_front_configs", "accounts", column: "sales_account_id"
   add_foreign_key "store_fronts", "cooperatives"
   add_foreign_key "streets", "barangays"
   add_foreign_key "streets", "municipalities"

@@ -69,16 +69,18 @@
         <hr>
         <%= image_tag(@customer.avatar.url(:medium), class: "img-circle") %>
         <hr>
-          <%= simple_form_for @order, url: :store_module_orders do |f| %>
+          <%= simple_form_for @order, url: :store_front_module_order_processings do |f| %>
             <%= f.input :cart_id, input_html: { value: @cart.id } %>
             <%= f.input :date, as: :string, input_html: { class: "datepicker", value: Time.zone.now.strftime("%B %e, %Y") } %>
             <span><label>Customer</label><span class="pull-right"><%= link_to 'New Customer', new_customer_registration_path, remote: true %></span></span>
-            <%= f.input :customer_id, label: false, default: Member.order(created_at: :asc).last.try(:full_name), input_html: {id: 'member-select'}, collection: StoreModule::Order.customers.map{|a| [a.name, a.id] } %>
+            <%= f.input :customer_id, input_html: { value: @customer.id } %>
+            <%= f.input :customer_type, input_html: { value: @customer.class } %>
+
             <%= f.input :pay_type, input_html: {id: 'payment-type-select', class: 'icheck-me', "data-skin" => 'square', "data-color" => "blue"}, collection: StoreModule::Order.pay_types.keys.to_a.map {|a| [a.titleize, a]}, default: StoreModule::Order.pay_types.first %>
             <%= f.input :total_cost, input_html: { id: 'order-total-cost', value: @cart.line_items.total_cost }, as: :hidden %>
             <%= f.input :cash_tendered, as: :string, input_html: { id: 'order-cash-tendered', oninput: 'calculateChangeForOrder()', class: "input-lg"} %>
             <%= f.input :order_change, label: "Change", readonly: true, input_html: { id: 'order-change', value: 0, class: 'bg-gray input-lg'}, as: :string %>
-            <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+            <%= f.input :employee_id, input_html: { value: current_user.id } %>
             <div class="box-footer">
               <center><%= f.submit "Save Order", class: "btn btn-primary btn-block btn-flat btn-lg" %></center>
             </div>

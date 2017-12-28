@@ -8,6 +8,9 @@ module StoreModule
     def self.total_quantity
       all.sum(&:quantity)
     end
+    def unit_cost_and_quantity
+      unit_cost * quantity
+    end
 
     def self.total_cost
       all.sum(:total_cost)
