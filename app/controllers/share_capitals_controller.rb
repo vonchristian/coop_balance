@@ -9,7 +9,7 @@ class ShareCapitalsController < ApplicationController
   def show
     @employee = current_user
     @share_capital = MembershipsModule::ShareCapital.find(params[:id])
-    @entries = @share_capital.capital_build_ups.paginate(page: params[:page], per_page: 50)
+    @entries = @share_capital.capital_build_ups.includes(:recorder).paginate(page: params[:page], per_page: 50)
     respond_to do |format|
       format.html
       format.pdf do

@@ -53,6 +53,12 @@ class Member < ApplicationRecord
   def self.with_loans
     all.select{|a| a.loans.present? }
   end
+  def total_savings
+    savings.sum(&:balance)
+  end
+  def total_share_capitals
+    share_capitals.sum(&:balance)
+  end
 
   def subscribed?(program)
     programs.include?(program)
@@ -102,7 +108,7 @@ class Member < ApplicationRecord
     "#{first_name} #{last_name}"
   end
   def current_address
-    addresses.order(created_at: :asc).last.try(:details)
+    addresses.order(created_at: :asc).last.try(:details) || "Not Yet Entered"
   end
   def avatar_text
     first_name.chr
