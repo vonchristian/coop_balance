@@ -27,8 +27,6 @@ module MembershipsModule
       it { is_expected.to delegate_method(:paid_up_account).to(:share_capital_product).with_prefix }
       it { is_expected.to delegate_method(:closing_account).to(:share_capital_product).with_prefix }
       it { is_expected.to delegate_method(:subscription_account).to(:share_capital_product).with_prefix }
-
-
     	it { is_expected.to delegate_method(:cost_per_share).to(:share_capital_product).with_prefix }
     end
     it ".subscribed_shares" do

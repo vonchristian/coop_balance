@@ -135,3 +135,11 @@ refactor transactions summary pdf
 The man doesnt know how to give upkms316
 in 6 months (july 2018)
 10 coops sign up
+
+
+rename store_module to store_front_module
+remove status of savings
+if savings closed? the same with share capitals closed
+
+
+At CoopCatalyst, we're all about automation. We're on a mission to make cooperative management fast and easy. Driven by numerous conversations with our customers and our own experiences, we've built a new CI feature that can automatically parallelize any test suite and cut its runtime to just a few minutes - Semaphore Boosters. Learn more and try it out.

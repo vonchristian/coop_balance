@@ -19,7 +19,7 @@
               <div class="col-md-5 col-md-offset-1">
                 <b><%= stock.name.try(:upcase) %></b><br>
                 <small class="text-muted"><%= stock.barcode %></small><br>
-                  <span class="label bg-green">
+                  <span class="label bg-yellow">
                     <%= stock.in_stock.to_i %> left
                   </span><br><br>
 
@@ -80,8 +80,8 @@
             <%= line_item.quantity.to_i %>
           </div>
           <div class="col-md-7">
-            <b><%= line_item.product_stock_name.try(:upcase) %></b><br>
-            <small class="text-muted"><%= line_item.product_stock_barcode %></small><br>
+            <b><%= line_item.name.try(:upcase) %></b><br>
+            <small class="text-muted"><%= line_item.barcode %></small><br>
             <span class="label bg-gray">
               <%= number_to_currency line_item.unit_cost %>
             </span>
@@ -102,7 +102,9 @@
           </div>
         </div>
         <br>
-        <%= link_to "Checkout",  new_store_module_order_path, class: "btn btn-primary btn-block", :accesskey => "C" %>
+        <div class="box-footer">
+        <%= link_to "Checkout",  new_store_module_order_path, class: "btn btn-primary btn-block btn-lg", :accesskey => "C" %>
+      </div>
       </div>
       <% else %>
         <center><%=image_tag('empty_cart.png', height: 160, width: 160) %></center>

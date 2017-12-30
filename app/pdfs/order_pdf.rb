@@ -48,9 +48,9 @@ class OrderPdf < Prawn::Document
       move_down 15
       end
       table(table_data, header: true, cell_style: { size: 6, font: "Helvetica"}, column_widths: TABLE_WIDTHS) do
-        # cells.borders = []
-        # row(0).font_style = :bold
-        # row(0).background_color = 'DDDDDD'
+        cells.borders = []
+        row(0).font_style = :bold
+        row(0).background_color = 'DDDDDD'
         column(0).align = :right
         column(3).align = :right
         column(4).align = :right
@@ -61,18 +61,19 @@ class OrderPdf < Prawn::Document
   def table_data
     move_down 5
     [["QTY", "PRODUCT", "COST", "TOTAL"]] +
-    @table_data ||= @line_items.map { |e| [e.quantity, e.product_stock.try(:name), price(e.unit_cost), price(e.total_cost)]}
+    @table_data ||= @line_items.map { |e| [e.quantity, e.name, price(e.unit_cost), price(e.total_cost)]}
   end
   def asterisks
     move_down 10
     stroke_horizontal_rule
     move_down 10
-    text "THIS SERVES AS YOUR OFFICIAL RECEIPT", size: 7, align: :center, style: :bold
-    barcode = Barby::Code39.new(@order.official_receipt.number)
-    barcode.annotate_pdf(self, height: 25, x: 5, y: cursor - 30)
-    move_down 32
-    text "OFFICIAL RECEIPT #: #{@order.official_receipt.number}", size: 7, align: :center
-
+    if @order.official_receipt.present?
+      text "THIS SERVES AS YOUR OFFICIAL RECEIPT", size: 7, align: :center, style: :bold
+      barcode = Barby::Code39.new(@order.official_receipt.try(:number))
+      barcode.annotate_pdf(self, height: 25, x: 5, y: cursor - 30)
+      move_down 32
+      text "OFFICIAL RECEIPT #: #{@order.official_receipt.number}", size: 7, align: :center
+    end
 
   end
   def barcode

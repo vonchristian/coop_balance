@@ -1,7 +1,12 @@
 module StoreModule
   class ProductsController < ApplicationController
     def index
-      @products = StoreModule::Product.all
+      if params[:category_id].present?
+        @products = StoreModule::Category.find(params[:category_id]).products
+      else
+        @products = StoreModule::Product.all
+      end
+      @categories = StoreModule::Category.all
       respond_to do |format|
         format.html
         format.xlsx

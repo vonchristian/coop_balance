@@ -14,6 +14,9 @@ module MembershipsModule
     has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
     before_save :set_account_owner_name, :set_account_number
     validates :saving_product_id, presence: true
+    def closed?
+      saving_product_closing_account.entries.where(commercial_document: self).present?
+    end
 
     def self.generate_account_number
       if self.exists? && order(created_at: :asc).last.account_number.present?

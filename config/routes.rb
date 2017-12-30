@@ -187,6 +187,9 @@ Rails.application.routes.draw do
   end
   resources :store, only: [:index]
   namespace :store_module do
+    resources :memberships, shallow: true do
+      resources :orders, only: [:new, :create], module: :memberships
+    end
     resources :settings, only: [:index]
     resources :reports, only: [:index]
     resources :accounts_receivable_store_config, only: [:new, :create]
@@ -196,7 +199,9 @@ Rails.application.routes.draw do
     resources :line_items, only: [:new, :create]
     resources :stocks, only: [:index, :show]
     resources :products, only: [:index, :show, :new, :create] do
-      resources :stocks, only: [:new, :create]
+      resources :stocks, only: [:index, :new, :create], module: :products
+      resources :sales, only: [:index], module: :products
+
     end
   end
 
@@ -275,7 +280,6 @@ Rails.application.routes.draw do
     resources :loan_disbursements, only: [:new, :create], module: :vouchers
 
   end
-  resources :products, only: [:new, :create]
   resources :voucher_amounts, only: [:destroy]
   resources :bank_accounts, only: [:index, :show, :new, :create, :edit, :update] do
     resources :deposits, only: [:new, :create], module: :bank_accounts

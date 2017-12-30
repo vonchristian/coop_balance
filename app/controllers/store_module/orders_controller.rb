@@ -21,7 +21,7 @@ module StoreModule
       end
     end
     def show
-      @order = StoreModule::Order.includes(line_items: [:product_stock, :product]).find(params[:id])
+      @order = StoreModule::Order.includes(line_items: [:line_itemable]).find(params[:id])
       @line_items = @order.line_items
       respond_to do |format|
         format.html
@@ -35,7 +35,7 @@ module StoreModule
 
     private
     def order_params
-      params.require(:store_module_order).permit(:customer_id, :date, :payment_type, :cash_tendered, :order_change, :total_cost, :employee_id)
+      params.require(:store_module_order).permit(:customer_id, :date, :pay_type, :cash_tendered, :order_change, :total_cost, :employee_id)
     end
   end
 end

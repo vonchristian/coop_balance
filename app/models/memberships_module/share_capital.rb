@@ -17,12 +17,22 @@ module MembershipsModule
     after_commit :set_account_owner_name
 
     has_many :capital_build_ups, class_name: "AccountingModule::Entry", as: :commercial_document
+    def average_balance
+      balances = []
+      balance_for(from_date: (Time.zone.now.last_year.end_of_year - 15.days), to_date: Time.zone.now.last_year.end_of_year)
+      balance_for(from_date: Time.zone.now.beginning_of_year, to_date: (Time.zone.now.beginning_of_year + 14.days))
+      balance_for(from_date: Time.zone.now.beginning_of_year.next_month, to_date: (Time.zone.now.beginning_of_year.next_month + 14.days))
+      balance_for(from_date: Time.zone.now.beginning_of_year.next_month, to_date: (Time.zone.now.beginning_of_year.next_month + 14.days))
+      balances.sum / balances.length
+    end
     def closed?
       share_capital_product_closing_account.entries.where(commercial_document: self).present?
     end
 
     def entries
-      share_capital_product_paid_up_account.entries.where(commercial_document_id: self)
+      share_capital_product_paid_up_account.entries.where(commercial_document_id: self) +
+       share_capital_product_closing_account.entries.where(commercial_document: self) +
+        share_capital_product_subscription_account.entries.where(commercial_document: self)
     end
 
     def self.subscribed_shares

@@ -1,13 +1,13 @@
 class Supplier < ApplicationRecord
   has_many :raw_material_stocks
   has_many :addresses, as: :addressable
-  has_many :delivered_stocks, class_name: "StoreModule::ProductStock"
+  has_many :supplied_stocks, class_name: "StoreModule::ProductStock"
   has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document
   has_many :stock_registries, class_name: "StockRegistry"
   has_many :vouchers, as: :payee
   has_many :voucher_amounts, as: :commercial_document, class_name: "Vouchers::VoucherAmount" # for adding cash advance on voucher
-  has_many :cash_disbursement_vouchers, as: :payee, class_name: "Voucher"
 
+  validates :business_name, presence: true, uniqueness: true
   has_attached_file :avatar,
   styles: { large: "120x120>",
            medium: "70x70>",
@@ -21,6 +21,7 @@ class Supplier < ApplicationRecord
   def payable_amount
     voucher_amounts.sum(:amount)
   end
+
   def name
     business_name
   end

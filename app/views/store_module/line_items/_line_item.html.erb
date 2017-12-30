@@ -5,7 +5,8 @@
     <%= line_item.quantity %>
   </div>
   <div class="col-md-5">
-    <%= line_item.product_stock_name %>
+    <%= line_item.name %><br>
+    <small class="text-muted"><%= line_item.barcode %></small>
   </div>
   <div class="col-md-2">
     <span class="pull-right"><%= number_to_currency line_item.unit_cost %></span>

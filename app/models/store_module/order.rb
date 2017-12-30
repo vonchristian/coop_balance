@@ -1,6 +1,6 @@
 module StoreModule
   class Order < ApplicationRecord
-    enum payment_type: [:cash, :credit, :check]
+    enum pay_type: [:cash, :credit, :check]
     belongs_to :customer, polymorphic: true
     belongs_to :employee, class_name: "User", foreign_key: 'employee_id'
     has_one :official_receipt, as: :receiptable
@@ -33,13 +33,13 @@ module StoreModule
       sales = AccountingModule::Account.find_by(name: "Sales")
       merchandise_inventory = AccountingModule::Account.find_by(name: "Merchandise Inventory")
       if cash? || check?
-        AccountingModule::Entry.cash_sale.create!( recorder_id: self.employee_id, commercial_document: self.customer, entry_date: self.date, description: "Payment for order",
-          debit_amounts_attributes: [{amount: self.total_cost, account: cash_on_hand}, {amount: self.stock_cost, account: cost_of_goods_sold}],
-          credit_amounts_attributes:[{amount: self.total_cost, account: sales}, {amount: self.stock_cost, account: merchandise_inventory}])
+        AccountingModule::Entry.create!( recorder_id: self.employee_id, commercial_document: self.customer, entry_date: self.date, description: "Payment for order",
+          debit_amounts_attributes: [{amount: self.total_cost, account: cash_on_hand, commercial_document: self}, {amount: self.stock_cost, account: cost_of_goods_sold, commercial_document: self}],
+          credit_amounts_attributes:[{amount: self.total_cost, account: sales, commercial_document: self}, {amount: self.stock_cost, account: merchandise_inventory, commercial_document: self}])
       elsif credit?
-        AccountingModule::Entry.credit_sale.create!(commercial_document: self.customer, entry_date: self.date, description: "Credit order",
-          debit_amounts_attributes: [{amount: self.total_cost, account: accounts_receivable}, {amount: self.stock_cost, account: cost_of_goods_sold}],
-          credit_amounts_attributes:[{amount: self.total_cost, account: sales}, {amount: self.stock_cost, account: merchandise_inventory}])
+        AccountingModule::Entry.create!(commercial_document: self.customer, entry_date: self.date, description: "Credit order",
+          debit_amounts_attributes: [{amount: self.total_cost, account: accounts_receivable, commercial_document: self}, {amount: self.stock_cost, account: cost_of_goods_sold, commercial_document: self}],
+          credit_amounts_attributes:[{amount: self.total_cost, account: sales, commercial_document: self}, {amount: self.stock_cost, account: merchandise_inventory, commercial_document: self}])
       end
     end
     def badge_color

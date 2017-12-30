@@ -3,6 +3,7 @@ require 'rails_helper'
 module StoreModule
   describe Product do
     context "associations" do
+        it { is_expected.to belong_to :category }
     	it { is_expected.to have_many :stocks }
         it { is_expected.to have_many :sold_items }
     end

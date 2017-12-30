@@ -6,7 +6,9 @@ class Membership < ApplicationRecord
   validates :memberable_id, :memberable_type, presence: true
   validates :account_number, presence: true, uniqueness: true
   before_validation :set_account_number
-  delegate :name, to: :memberable, prefix: true
+  delegate :name, to: :memberable
+  delegate :savings, :share_capitals, :account_receivable_store_balance, to: :memberable
+
   def self.generate_account_number
     if self.last.present?
       order(created_at: :asc).last.account_number.succ

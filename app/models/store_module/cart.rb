@@ -12,9 +12,9 @@ module StoreModule
       if self.line_items.pluck(:line_itemable_id).include?(line_item.line_itemable_id)
         self.line_items.where(line_itemable_id: line_item.line_itemable_id).delete_all
         # replace with a single item
-        self.line_items.create!(line_itemable_id: line_item.line_itemable_id, quantity: line_item.quantity,  unit_cost: line_item.unit_cost, total_cost: line_item.total_cost)
+        self.line_items.create!(line_itemable_id: line_item.line_itemable_id, line_itemable_type: line_item.line_itemable_type, quantity: line_item.quantity,  unit_cost: line_item.unit_cost, total_cost: line_item.total_cost)
       else
-        self.line_items.create!(line_itemable_id: line_item.line_itemable_id, quantity: line_item.quantity,  unit_cost: line_item.unit_cost, total_cost: line_item.total_cost)
+        self.line_items.create!(line_itemable_id: line_item.line_itemable_id, line_itemable_type: line_item.line_itemable_type, quantity: line_item.quantity,  unit_cost: line_item.unit_cost, total_cost: line_item.total_cost)
       end
     end
   end

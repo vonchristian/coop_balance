@@ -1,5 +1,5 @@
 <div class="tab-pane active" id="product-stocks">
-  <% if @product.stocks.any? %>
+  <% if @stocks.any? %>
     <%= link_to new_store_module_product_stock_path(@product) do %>
       <span class="btn btn-primary"><i class="fa fa-plus-circle"></i> New Stock </span>
     <% end %>
@@ -22,5 +22,5 @@
   <% else %>
     <p class="alert alert-info">No stocks yet for this product <%= link_to 'Add Stock', new_store_module_product_stock_path(@product) %> </p>
   <% end %>
-  
+
 </div>

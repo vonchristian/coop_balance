@@ -2,8 +2,10 @@ module StoreModule
   class Product < ApplicationRecord
     include PgSearch
     multisearchable against: [:name]
+    belongs_to :category, class_name: "StoreModule::Category"
     has_many :stocks, class_name: "StoreModule::ProductStock"
     has_many :sold_items, through: :stocks, source: :sold_items
+    has_many :orders, through: :sold_items
     has_attached_file :photo,
     styles: { large: "120x120>",
              medium: "70x70>",
