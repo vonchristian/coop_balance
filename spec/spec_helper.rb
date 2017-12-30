@@ -14,8 +14,8 @@ RSpec.configure do |config|
   config.before(:each, type: :system, js: true) do
     driven_by :selenium_chrome_headless
   end
-  if Bullet.enable?
-    config.before(:each) { Bullet.start_request }
-    config.after(:each)  { Bullet.end_request }
-  end
+  # if Bullet.enable?
+  #   config.before(:each) { Bullet.start_request }
+  #   config.after(:each)  { Bullet.end_request }
+  # end
 end

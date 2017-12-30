@@ -4,6 +4,7 @@ module CoopServicesModule
 
 	  has_many :subscribers, class_name: "MembershipsModule::Saving"
 	  belongs_to :account, class_name: "AccountingModule::Account"
+    belongs_to :closing_account, class_name: "AccountingModule::Account"
     belongs_to :interest_account, class_name: "AccountingModule::Account"
 
 

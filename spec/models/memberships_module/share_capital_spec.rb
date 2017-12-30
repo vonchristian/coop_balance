@@ -74,8 +74,7 @@ module MembershipsModule
       expect(share_capital.balance).to eq 5_000
 
       closing_account_entry = build(:entry, commercial_document: share_capital)
-      credit_amount = create(:credit_amount, amount: (share_capital.balance - share_capital.share_capital_product_closing_account_fee) , entry: closing_account_entry, commercial_document: share_capital, account: employee.cash_on_hand_account)
-      debit_amount = create(:debit_amount, amount: share_capital.balance, entry: closing_account_entry, commercial_document: share_capital, account: share_capital.share_capital_product_paid_up_account)
+saving      debit_amount = create(:debit_amount, amount: share_capital.balance, entry: closing_account_entry, commercial_document: share_capital, account: share_capital.share_capital_product_paid_up_account)
       credit_amount = create(:credit_amount, amount: share_capital.share_capital_product_closing_account_fee, entry: closing_account_entry, commercial_document: share_capital, account: share_capital.share_capital_product_closing_account)
       closing_account_entry.save
 

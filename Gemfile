@@ -68,10 +68,10 @@ group :development, :test do
   gem 'growl'
   gem 'selenium-webdriver'
   gem 'capybara', '~> 2.13'
+  gem 'bullet'
 end
 
 group :development do
-  gem 'bullet'
   gem 'pry-rails'
   gem 'web-console', '>= 3.3.0'
   gem 'listen', '>= 3.0.5', '< 3.2'

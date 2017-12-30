@@ -1,6 +1,5 @@
 module MembershipsModule
   class Saving < ApplicationRecord
-    enum status: [:active, :inactive, :closed]
     include PgSearch
     pg_search_scope :text_search, :against => [:account_number, :account_owner_name]
     multisearchable against: [:account_number, :account_owner_name]
@@ -8,12 +7,16 @@ module MembershipsModule
     belongs_to :saving_product, class_name: "CoopServicesModule::SavingProduct"
     belongs_to :office, class_name: "CoopConfigurationsModule::Office"
     delegate :name, :current_occupation, to: :depositor, prefix: true
-    delegate :name, :account, to: :saving_product, prefix: true
-    delegate :interest_rate, :interest_account, to: :saving_product, prefix: true
+    delegate :name,
+             :account,
+             :closing_account,
+             :interest_rate,
+             :interest_account, to: :saving_product, prefix: true
     delegate :name, to: :office, prefix: true, allow_nil: true
     has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
     before_save :set_account_owner_name, :set_account_number
     validates :saving_product_id, presence: true
+
     def closed?
       saving_product_closing_account.entries.where(commercial_document: self).present?
     end
