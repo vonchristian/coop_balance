@@ -48,7 +48,7 @@ gem 'mina-puma', require: false
 gem 'barby'
 gem 'rqrcode'
 gem 'prawn-print'
-gem 'delayed_job', github: 'collectiveidea/delayed_job', branch: 'master'
+gem 'delayed_job'
 gem 'delayed_job_active_record'
 gem 'simple-line-icons-rails'
 gem 'dotiw'
