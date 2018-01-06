@@ -5,6 +5,7 @@
         <h3 class="box-title">Edit Cooperative Details </h3>
       </div>
       <div class="box-body">
+        <%= image_tag(@cooperative.logo.url(:medium)) %>
         <%= simple_form_for @cooperative, url: :management_module_settings_cooperative do |f| %>
           <%= f.input :logo %>
           <%= f.input :name %>

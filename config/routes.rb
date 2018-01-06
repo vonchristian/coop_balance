@@ -33,7 +33,10 @@ Rails.application.routes.draw do
     resources :offices, only: [:index, :show]
     resources :settings, only: [:index]
     resources :loan_protection_fund_configs, only: [:new, :create]
-    resources :accounts
+    resources :accounts do
+      resources :reports, only: [:index], module: :accounts
+      resources :entries, only: [:index], module: :accounts
+    end
     resources :assets, controller: 'accounts', type: 'AccountingModule::Asset'
     resources :entries
   end

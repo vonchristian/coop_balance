@@ -1,12 +1,12 @@
-module ManagementModule 
-  module Settings 
+module ManagementModule
+  module Settings
     class CooperativePolicy < ApplicationPolicy
       def edit?
-        user.manager?
-      end 
+        user.general_manager?
+      end
       def update?
         edit?
-      end 
-    end 
-  end 
-end 
+      end
+    end
+  end
+end

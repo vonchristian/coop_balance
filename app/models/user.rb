@@ -21,6 +21,7 @@ class User < ApplicationRecord
               :human_resource_officer,
               :accounting_clerk,
               :collector]
+
   belongs_to :cash_on_hand_account, class_name: "AccountingModule::Account", foreign_key: 'cash_on_hand_account_id'
   has_one :current_address, as: :addressable, class_name: "Address"
   has_one :tin, as: :tinable
@@ -63,6 +64,7 @@ class User < ApplicationRecord
   delegate :name, to: :office, prefix: true, allow_nil: true
   delegate :abbreviated_name, :name, to: :cooperative, prefix: true
   delegate :number, to: :tin, prefix: true, allow_nil: true
+  delegate :name, :abbreviated_name, to: :cooperative, prefix: true
   has_attached_file :avatar,
   styles: { large: "120x120>",
            medium: "70x70>",
