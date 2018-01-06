@@ -31,6 +31,7 @@ module AccountingModule
     delegate :first_and_last_name, to: :recorder, prefix: true, allow_nil: true
     delegate :number, to: :voucher, prefix: true, allow_nil: true
     delegate :name, to: :origin, prefix: true, allow_nil: true
+
     def self.loan_payments(options={})
       entries = []
       LoansModule::LoanProduct.accounts.each do |account|

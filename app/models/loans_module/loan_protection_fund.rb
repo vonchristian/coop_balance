@@ -30,6 +30,9 @@ module LoansModule
       end
     end
     def self.set_loan_protection_fund_for(loan)
+      if loan.loan_protection_funds.present?
+        loan.loan_protection_funds.destroy_all
+      end
       loan_protection = Charge.create(name: "Loan Protection Fund", amount: set_amount_for(loan), account: CoopConfigurationsModule::LoanProtectionFundConfig.account_to_debit)
       loan.loan_charges.find_or_create_by(chargeable: loan_protection)
     end

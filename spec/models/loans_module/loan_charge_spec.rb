@@ -6,6 +6,7 @@ module LoansModule
       it { is_expected.to have_one :charge_adjustment }
     	it { is_expected.to belong_to :loan }
     	it { is_expected.to belong_to :chargeable }
+      it { is_expected.to belong_to :commercial_document }
       it { is_expected.to have_many :loan_charge_payment_schedules }
     end
 
@@ -13,6 +14,8 @@ module LoansModule
       it { is_expected.to validate_presence_of :loan_id }
       it { is_expected.to validate_presence_of :chargeable_id }
       it { is_expected.to validate_presence_of :chargeable_type }
+      it { is_expected.to validate_presence_of :commercial_document_id }
+      it { is_expected.to validate_presence_of :commercial_document_type }
     end
 
     describe 'delegations' do

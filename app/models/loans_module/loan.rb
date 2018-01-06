@@ -207,9 +207,6 @@ module LoansModule
       loan_product.create_charges_for(self)
     end
     def set_loan_protection_fund
-      if loan_protection_funds.present?
-        loan_protection_funds.destroy_all
-      end
       LoansModule::LoanProtectionFund.set_loan_protection_fund_for(self)
     end
 
@@ -226,9 +223,7 @@ module LoansModule
     def disbursed?
       disbursement.present?
     end
-    # def payments
-    #   entries
-    # end
+
     def principal_balance(options={})
       loan_product_account.balance(commercial_document_id: self.id, from_date: options[:from_date], to_date: options[:to_date])
     end
