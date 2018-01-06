@@ -215,7 +215,7 @@ module LoansModule
 
     def create_documentary_stamp_tax
        tax = Charge.amount_type.create!(name: 'Documentary Stamp Tax', amount: DocumentaryStampTax.set(self), account: AccountingModule::Account.find_by(name: "Documentary Stamp Taxes"))
-      self.loan_charges.create!(chargeable: tax)
+      self.loan_charges.create!(chargeable: tax, commercial_document: self)
     end
     def create_amortization_schedule
       if amortization_schedules.present?
@@ -229,6 +229,13 @@ module LoansModule
     # def payments
     #   entries
     # end
+    def principal_balance(options={})
+      loan_product_account.balance(commercial_document_id: self.id, from_date: options[:from_date], to_date: options[:to_date])
+    end
+
+    def interest_balance(options={})
+      loan_product_interest_account.balance(from_date: options[:from_date], to_date: options[:to_date], commercial_document_id: self.id)
+    end
 
     def principal_payments_total(options={})
       loan_product_account.credits_balance(commercial_document_id: self.id, from_date: options[:from_date], to_date: options[:to_date])
@@ -281,9 +288,9 @@ module LoansModule
       number_of_days_past_due / 30
     end
     def set_borrower_type
-      if Member.find_by(id: self.borrower_id).present?
+      if Member.find_by_id(borrower_id).present?
         self.borrower_type = "Member"
-      elsif employee_borrower = User.find_by(id: self.borrower_id).present?
+      elsif User.find_by_id(borrower_id).present?
        self.borrower_type = "User"
       end
       self.save

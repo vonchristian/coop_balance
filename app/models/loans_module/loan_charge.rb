@@ -9,7 +9,7 @@ module LoansModule
 	  delegate :account, :account_name,  to: :chargeable, allow_nil: true
 	  delegate :name, :amount, :regular?, to: :chargeable, allow_nil: true
 	  delegate :amortize_balance, to: :charge_adjustment, allow_nil: true
-	  validates :loan_id, :chargeable_id, :chargeable_type, presence: true
+	  validates :loan_id, :chargeable_id, :commercial_document_id, :chargeable_type, presence: true
 
     def interest_on_loan
     	where(chargeable.account == self.loan.interest_on_loan)

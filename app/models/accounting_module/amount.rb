@@ -7,6 +7,8 @@ module AccountingModule
     validates :type, :amount, :entry, :account, :commercial_document, presence: true
     validates :amount, numericality: true
 
+    delegate :name, to: :account, prefix: true
+
     def self.recorded_by(recorder_id)
       where('recorder_id' => recorder_id)
     end

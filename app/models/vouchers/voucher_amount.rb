@@ -6,7 +6,7 @@ module Vouchers
     belongs_to :commercial_document, polymorphic: true
     delegate :name, to: :account, prefix: true
 
-    validates :description, :amount, :account_id, :amount_type, presence: true
+    validates :description, :amount, :account_id, :commercial_document_id, :amount_type, presence: true
     validates :amount, numericality: true
     def self.total
       sum(:amount)

@@ -28,7 +28,7 @@ class DisbursementForm
   end
 
   def find_voucher
-    Voucher.find_by(id: voucher_id)
+    Voucher.find_by_id(voucher_id)
   end
 
   def find_employee

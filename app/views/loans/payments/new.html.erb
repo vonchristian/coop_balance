@@ -7,13 +7,16 @@
   <div class="box-body">
     <div class="row">
       <div class="col-md-6 col-md-offset-1">
+        <%= image_tag(@loan.borrower.avatar.url(:medium), height: 60, width: 60) %>
+        <h4><%= @loan.borrower_full_name %></h4>
         Loan Details
         <%= number_to_currency @loan.loan_amount %>
-        <%= @loan.loan_product_account %>
         <hr>
-        BALANCE
+        PRINCIPAL BALANCE
+        <%= @loan.principal_balance %>
         <hr>
         INTEREST
+        <%= @loan.interest_balance %>
         <hr>
         PENALTY
         <hr>

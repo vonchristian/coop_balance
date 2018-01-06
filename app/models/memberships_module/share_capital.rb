@@ -17,6 +17,9 @@ module MembershipsModule
     after_commit :set_account_owner_name
 
     has_many :capital_build_ups, class_name: "AccountingModule::Entry", as: :commercial_document
+    def self.balance
+      sum(&:balance)
+    end
     def average_balance
       balances = []
       balance_for(from_date: (Time.zone.now.last_year.end_of_year - 15.days), to_date: Time.zone.now.last_year.end_of_year)

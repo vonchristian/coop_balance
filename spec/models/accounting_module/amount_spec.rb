@@ -18,5 +18,8 @@ module AccountingModule
       it { is_expected.to validate_presence_of :commercial_document }
       it { is_expected.to validate_numericality_of :amount }
     end
+    describe 'delegations' do
+      it { is_expected.to delegate_method(:name).to(:account).with_prefix }
+    end
   end
 end
