@@ -228,6 +228,10 @@ module LoansModule
       loan_product_account.balance(commercial_document_id: self.id, from_date: options[:from_date], to_date: options[:to_date])
     end
 
+    def penalty_balance(options={})
+      loan_product_penalty_account.balance(from_date: options[:from_date], to_date: options[:to_date], commercial_document_id: self.id)
+    end
+
     def interest_balance(options={})
       loan_product_interest_account.balance(from_date: options[:from_date], to_date: options[:to_date], commercial_document_id: self.id)
     end
