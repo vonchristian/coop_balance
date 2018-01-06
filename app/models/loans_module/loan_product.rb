@@ -21,6 +21,9 @@ module LoansModule
 
     validates :name, uniqueness: true
     validates :interest_rate, :penalty_rate, :maximum_loanable_amount, numericality: true
+    def self.principal_payments
+
+    end
 
     def self.accounts
       all.map{|a| a.account } +

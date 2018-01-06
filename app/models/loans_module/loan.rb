@@ -60,7 +60,7 @@ module LoansModule
     def loan_payments
       entries = []
         LoansModule::LoanProduct.accounts.each do |account|
-          account.amounts.where(commercial_document: self).each do |amount|
+          account.credit_amounts.where(commercial_document: self).each do |amount|
             entries << amount.entry
           end
         end
