@@ -16,7 +16,7 @@
         </tr>
       </thead>
       <tbody>
-        <% @loan.loan_paytments.each do |payment| %>
+        <% @loan.loan_payments.each do |payment| %>
           <tr>
             <td><%= payment.entry_date.strftime("%B %e, %Y") %></td>
             <td><%= number_to_currency payment.credit_amounts.where(commercial_document: @loan).sum(:amount) %> </td>

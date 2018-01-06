@@ -36,7 +36,10 @@ RSpec.describe User, type: :model do
     it { is_expected.to delegate_method(:name).to(:department).with_prefix }
     it { is_expected.to delegate_method(:regular_member?).to(:membership) }
     it { is_expected.to delegate_method(:membership_type).to(:membership) }
+    it { is_expected.to delegate_method(:name).to(:cooperative).with_prefix }
+    it { is_expected.to delegate_method(:abbreviated_name).to(:cooperative).with_prefix }
   end
+
   describe 'enums' do
     it do
       should define_enum_for(:sex).

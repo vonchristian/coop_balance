@@ -3,11 +3,11 @@ module AccountingModule
     class EntriesReportPdf < Prawn::Document
       def initialize(entries, account, employee, from_date, to_date, view_context)
         super(margin: 40, page_size: "A4", page_layout: :portrait)
-        @entries = entries
-        @account = account
-        @employee = employee
-        @from_date = from_date
-        @to_date = to_date
+        @entries      = entries
+        @account      = account
+        @employee     = employee
+        @from_date    = from_date
+        @to_date      = to_date
         @view_context = view_context
         heading
         entries_table
@@ -32,7 +32,7 @@ module AccountingModule
       text "#{Time.zone.now.strftime("%B %e, %Y")}", size: 10
       move_down 3
 
-      text "Account: #{@ccount}", size: 10
+      text "Account: #{@account.name}", size: 10
     end
     move_down 15
     stroke do
@@ -54,10 +54,9 @@ module AccountingModule
         stroke_horizontal_rule
         move_down 15
         end
-        table(table_data, header: true, cell_style: { size: 8, font: "Helvetica"}, column_widths: [80, 100]) do
-
-          # row(0).font_style = :bold
-          # row(0).background_color = 'DDDDDD'
+        table(table_data, header: true, cell_style: { size: 8, font: "Helvetica"}, column_widths: [80, 100, 80]) do
+          row(0).font_style = :bold
+          row(0).background_color = 'DDDDDD'
           column(0).align = :right
           column(3).align = :right
           column(4).align = :right

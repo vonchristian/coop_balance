@@ -1,0 +1,6 @@
+<% @accounts.each do |account| %>
+  <p><%= account.name %></p>
+  <% account.debit_entries.each do |entry| %>
+  <%= entry.description %>
+  <% end %>
+<% end %>
