@@ -1,22 +1,19 @@
 class BankAccount < ApplicationRecord
-  enum entry_type: [:bank_deposit, :bank_withdrawal, :bank_earned_interest, :bank_charge]
+
   belongs_to :cooperative
+  belongs_to :account, class_name: "AccountingModule::Account"
   validates :bank_name, :bank_address, :account_number, presence: true
+  validates :account_id, presence: true
   has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
-  def balance_total 
-    deposits_total + earned_interests_total - withdrawals_total - bank_expenses_total
-  end
-  def deposits_total
-    entries.bank_deposit.map{|a| a.debit_amounts.distinct.sum(:amount) }.sum
-  end
-  def withdrawals_total
-    entries.bank_withdrawal.map{|a| a.debit_amounts.distinct.sum(:amount) }.sum 
+  def balance
+   account.balance(commercial_document_id: self.id)
   end
 
-  def earned_interests_total
-    entries.bank_earned_interest.map{|a| a.debit_amounts.distinct.sum(:amount) }.sum 
+  def deposits
+   account.debits_balance(commercial_document_id: self.id)
+
   end
-  def bank_expenses_total
-    entries.bank_charge.map{|a| a.debit_amounts.distinct.sum(:amount) }.sum 
+  def withdrawals
+    account.credits_balance(commercial_document_id: self.id)
   end
 end

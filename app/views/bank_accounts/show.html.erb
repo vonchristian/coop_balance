@@ -42,7 +42,7 @@
         </div>
         <div class="col-md-6">
           <small>BALANCE</small>
-          <h3><%= number_to_currency @bank_account.balance_total %></h3>
+          <h3><%= number_to_currency @bank_account.balance %></h3>
         </div>
       </div>
     <hr />
@@ -75,12 +75,11 @@
           </thead>
           <tbody>
             <% @entries.each do |entry| %>
-              <% cache entry do %>            
+              <% cache entry do %>
                 <tr>
                   <td><%=entry.entry_date.strftime("%B %e, %Y") %></td>
                   <td><%= entry.description %></td>
                   <td><%= entry.reference_number %></td>
-                  <td><%= entry.entry_type.try(:titleize) %></td>
                   <td><%= number_to_currency entry.debit_amounts.sum(&:amount) %></td>
                   <td><%= entry.recorder.try(:first_and_last_name) %></td>
                 </tr>

@@ -3,7 +3,7 @@
     <div class="box box-solid">
       <div class="box-header">
         <h3 class="box-title">
-          Bank Account Details 
+          Bank Account Details
         </h3>
       </div>
       <div class="box-body">
@@ -12,8 +12,9 @@
           <%= f.input :bank_name %>
           <%= f.input :bank_address %>
           <%= f.input :account_number %>
+          <%= f.input :account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
           <div class="box-footer">
-            <%= f.submit "Save Account", class: "btn btn-flat btn-primary" %>
+            <%= f.submit "Save Bank Account", class: "btn btn-flat btn-primary" %>
           </div>
         <% end %>
       </div>
