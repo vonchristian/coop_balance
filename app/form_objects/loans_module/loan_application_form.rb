@@ -22,7 +22,13 @@ module LoansModule
 
     private
     def find_borrower
-      User.find_by_id(borrower_id)
+      employee_borrower = User.find_by_id(borrower_id)
+      member_borrower = Member.find_by_id(borrower_id)
+      if member_borrower.present?
+        member_borrower
+      elsif employee_borrower.present?
+        employee_borrower
+      end
     end
 
     def save_loan

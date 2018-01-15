@@ -198,10 +198,6 @@ module LoansModule
       loan_charges.total
     end
 
-
-
-
-
     def disbursed?
       disbursement.present?
     end
@@ -268,17 +264,6 @@ module LoansModule
     def number_of_months_past_due
       number_of_days_past_due / 30
     end
-    # def set_borrower_type
-    #   if Member.find_by_id(borrower_id).present?
-    #     self.borrower_type = "Member"
-    #   elsif User.find_by_id(borrower_id).present?
-    #    self.borrower_type = "User"
-    #   end
-    #   self.save
-    # end
-
-
-
 
     private
       def set_default_date

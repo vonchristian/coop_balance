@@ -1,14 +1,54 @@
-<%= @loan.inspect %>
-<%= @loan.loan_product_account %>
-<%= @loan.loan_product_interest_account %>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="box box-solid">
+      <div class="box-header">
+        <h3 class="box-title"> Previous Loan Details </h3>
+      </div>
+      <div class="box-body">
+        <div class="row">
+          <div class="col-md-10 col-md-offset-1">
+            <div class="row">
+              <div class="col-md-5">
+                Principal
+              </div>
+              <div class="col-md-5">
+                <span class="pull-right"><%= number_to_currency @previous_loan.principal_balance %></span>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-5">
+                Interest
+              </div>
+              <div class="col-md-5">
+                <span class="pull-right">
+                  <%= number_to_currency @previous_loan.interest_balance %>
+                </span>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-5">
+                 Penalties
+              </div>
+              <div class="col-md-5">
+                <span class="pull-right">
+                  <%= number_to_currency @previous_loan.penalty_balance %>
+                </span>
+              </div>
+            </div>
+            <br>
 
-<%= simple_form_for [@loan, @payment], url: :loans_module_loan_previous_loan_payments do |f| %>
-<%= f.input :principal_amount %>
-<%= f.input :interest_amount %>
-<%= f.input :penalty_amount %>
-<p class="text-danger"> DISCOUNT </p>
-<%= f.input :discount_amount %>
-<%= f.input :loan_id, input_html: { value: @loan.id } %>
-<%= f.input :previous_loan_id, input_html: { value: @previous_loan.id } %>
-<%= f.submit "Save Payment" %>
-<% end %>
+        <%= simple_form_for [@loan, @payment], url: :loans_module_loan_previous_loan_payments do |f| %>
+        <%= f.input :principal_amount %>
+        <%= f.input :interest_amount %>
+        <%= f.input :penalty_amount %>
+        <p class="text-danger"> DISCOUNT </p>
+        <%= f.input :discount_amount %>
+        <%= f.input :loan_id, input_html: { value: @loan.id }, as: :hidden %>
+        <%= f.input :previous_loan_id, input_html: { value: @previous_loan.id }, as: :hidden %>
+          <div class="box-footer">
+            <%= f.submit "Save", class: "btn btn-primary pull-right" %>
+            <%= link_to 'Back', loans_module_loan_application_path(@loan), class: "btn btn-default pull-left" %>
+          </div>
+        <% end %>
