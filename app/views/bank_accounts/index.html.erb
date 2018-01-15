@@ -15,16 +15,18 @@
       </div>
       <div class="box-body">
         <% @bank_accounts.each do |account| %>
-          <div class="row">
-            <div class="col-md-8">
-              <b><%= account.bank_name.try(:upcase) %></b><br>
-              <%=account.bank_address %><br>
-              <%= account.account_number %>
+          <%= link_to bank_account_url(account) do %>
+            <div class="row">
+              <div class="col-md-8">
+                <b><%= account.bank_name.try(:upcase) %></b><br>
+                <%=account.bank_address %><br>
+                <%= account.account_number %>
+              </div>
+              <div class="col-md-3">
+               <h3> <%= number_to_currency account.balance %></h3>
+              </div>
             </div>
-            <div class="col-md-3">
-             <h3> <%= number_to_currency account.balance %></h3>
-            </div>
-          </div>
+          <% end %>
           <hr>
         <% end %>
       </div>
