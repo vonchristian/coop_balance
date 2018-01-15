@@ -12,14 +12,14 @@
     <%= simple_form_for [@bank_account, @entry], url: :bank_account_deposits do |f| %>
       <%= f.error_notification %>
       <%= f.input :amount %>
-      <%= f.input :or_number %>
+      <%= f.input :reference_number %>
       <%= f.input :description %>
       <%= f.input :entry_type, input_html: { value: 'bank_charge' } %>
       <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
       <%= f.input :bank_account_id, input_html: { value: @bank_account.id },as: :hidden %>
       <%= f.input :recorder_id, input_html: { value: current_user.id },as: :hidden %>
-      <%= f.input :credit_account_id, input_html: { value: AccountingModule::Account.find_by(name: "Cash in Bank").id } %>
-      <%= f.input :debit_account_id, input_html: { value: AccountingModule::Account.find_by(name: "Bank Charges").id } %>
+      <%= f.input :credit_account_id, input_html: { value: @bank_account.account_id } %>
+      <%= f.input :debit_account_id, collection: AccountingModule::Expense.all.map{|a| [a.name, a.id] } %>
 
       <div class="box-footer">
         <%= f.submit "Save Deposit", class: "btn btn-primary pull-right" %>

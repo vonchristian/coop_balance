@@ -1,8 +1,10 @@
 class BankAccount < ApplicationRecord
   belongs_to :cooperative
   belongs_to :account, class_name: "AccountingModule::Account"
+  belongs_to :earned_interest_account, class_name: "AccountingModule::Account"
+
   validates :bank_name, :bank_address, :account_number, presence: true
-  validates :account_id, presence: true
+  validates :account_id, :earned_interest_account_id, presence: true
   has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
 
   def balance

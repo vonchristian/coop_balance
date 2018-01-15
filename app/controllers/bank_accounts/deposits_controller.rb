@@ -17,7 +17,7 @@ module BankAccounts
 
     private
     def entry_params
-      params.require(:bank_accounts_entry_form).permit(:amount, :or_number, :date, :bank_account_id, :description, :recorder_id)
+      params.require(:bank_accounts_entry_form).permit(:amount, :date, :bank_account_id, :description, :recorder_id, :reference_number, :credit_account_id, :debit_account_id)
     end
   end
 end

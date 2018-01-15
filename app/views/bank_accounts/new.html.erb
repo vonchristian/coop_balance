@@ -13,11 +13,13 @@
           <%= f.input :bank_address %>
           <%= f.input :account_number %>
           <%= f.input :account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
+          <%= f.input :earned_interest_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
+
           <p>Deposit Details</p>
           <%= f.input :date, input_html: { class: "datepicker" } %>
           <%= f.input :amount %>
           <%= f.input :reference_number %>
-          <%= f.input :recorder_id, input_html: { value: current_user.id } %>
+          <%= f.input :recorder_id, input_html: { value: current_user.id }, as: :hidden %>
           <%= f.input :description %>
           <div class="box-footer">
             <%= f.submit "Save Bank Account", class: "btn btn-flat btn-primary" %>

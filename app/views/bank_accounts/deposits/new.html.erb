@@ -2,7 +2,7 @@
   <div class="col-md-4 col-md-offset-4">
     <div class="nav-tabs-custom">
       <div class="box-header">
-          <h3 class="box-title"> New Entry Details </h3> <br><br>
+          <h3 class="box-title"> Deposit Details </h3> <br><br>
             <b> <%= @bank_account.bank_name %></b><br>
             <small><%= @bank_account.account_number %></small><br>
             <small><%= @bank_account.bank_address %></small>
@@ -12,12 +12,14 @@
     <%= simple_form_for [@bank_account, @entry], url: :bank_account_deposits do |f| %>
       <%= f.error_notification %>
       <%= f.input :amount %>
-      <%= f.input :or_number %>
+      <%= f.input :reference_number %>
       <%= f.input :description %>
       <%= f.input :entry_type, input_html: { value: 'bank_deposit' }, as: :hidden %>
       <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
       <%= f.input :bank_account_id, input_html: { value: @bank_account.id },as: :hidden %>
       <%= f.input :recorder_id, input_html: { value: current_user.id },as: :hidden %>
+      <%= f.input :debit_account_id, input_html: { value: @bank_account.account_id } %>
+      <%= f.input :credit_account_id, input_html: { value: current_user.cash_on_hand_account_id } %>
 
       <div class="box-footer">
         <%= f.submit "Save Deposit", class: "btn btn-primary pull-right" %>

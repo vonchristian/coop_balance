@@ -9,7 +9,7 @@ class BankAccountsController < ApplicationController
     @bank_account = BankAccountForm.new(bank_account_params)
     if @bank_account.valid?
       @bank_account.save
-      redirect_to bank_accounts_url, notice: "Bank account details saved successfully"
+      redirect_to bank_accounts_url, notice: "Bank account details saved successfully."
     else
       render :new
     end
@@ -21,6 +21,6 @@ class BankAccountsController < ApplicationController
 
   private
   def bank_account_params
-    params.require(:bank_account_form).permit(:bank_name, :bank_address, :account_number,  :amount, :recorder_id, :account_id, :date, :reference_number, :description)
+    params.require(:bank_account_form).permit(:bank_name, :bank_address, :account_number,  :amount, :recorder_id, :account_id, :earned_interest_account_id, :date, :reference_number, :description)
   end
 end

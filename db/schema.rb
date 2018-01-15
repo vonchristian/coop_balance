@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_01_06_080834) do
+ActiveRecord::Schema.define(version: 2018_01_15_015504) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -108,8 +108,10 @@ ActiveRecord::Schema.define(version: 2018_01_06_080834) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "account_id"
+    t.uuid "earned_interest_account_id"
     t.index ["account_id"], name: "index_bank_accounts_on_account_id"
     t.index ["cooperative_id"], name: "index_bank_accounts_on_cooperative_id"
+    t.index ["earned_interest_account_id"], name: "index_bank_accounts_on_earned_interest_account_id"
   end
 
   create_table "barangays", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1178,6 +1180,7 @@ ActiveRecord::Schema.define(version: 2018_01_06_080834) do
   add_foreign_key "appraisals", "real_properties"
   add_foreign_key "appraisals", "users", column: "appraiser_id"
   add_foreign_key "bank_accounts", "accounts"
+  add_foreign_key "bank_accounts", "accounts", column: "earned_interest_account_id"
   add_foreign_key "bank_accounts", "cooperatives"
   add_foreign_key "barangays", "municipalities"
   add_foreign_key "carts", "users"

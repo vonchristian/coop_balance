@@ -9,7 +9,9 @@
           <div class="col-md-6">
           </div>
           <div class="col-md-3">
-            <%= link_to 'New Bank Account', new_bank_account_path, class: "btn btn-primary btn-flat" %>
+            <% if policy(:bank_account).new? %>
+              <%= link_to 'New Bank Account', new_bank_account_path, class: "btn btn-primary btn-flat" %>
+            <% end %>
           </div>
         </div>
       </div>

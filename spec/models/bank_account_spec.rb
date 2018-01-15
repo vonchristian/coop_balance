@@ -9,5 +9,6 @@ RSpec.describe BankAccount, type: :model do
   describe 'associations' do
     it { is_expected.to belong_to :cooperative }
     it { is_expected.to belong_to :account }
+    it { is_expected.to belong_to :earned_interest_account }
   end
 end
