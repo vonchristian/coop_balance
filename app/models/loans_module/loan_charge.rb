@@ -28,14 +28,15 @@ module LoansModule
 	  	else
 	  		chargeable.amount
 		end
+	end
 
-	  # def balance
-	  # 	if charge_adjustment.present?
-	  # 	  charge_amount - charge_adjustment.charge_amount
-	  # 	else
-	  # 		0
-	  # 	end
-	  # end
+	  def amortized_balance
+	  	if charge_adjustment.present?
+	  	  charge_amount - charge_adjustment.charge_amount
+	  	else
+	  		0
+	  	end
+	  end
 
 	  def charge_amount_with_adjustment
 	  	if charge_adjustment.present?

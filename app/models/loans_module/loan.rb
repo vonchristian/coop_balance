@@ -40,8 +40,6 @@ module LoansModule
     delegate :maximum_loanable_amount, to: :loan_product
     delegate :avatar, to: :borrower
 
-    before_save :set_default_date
-
     validates :loan_product_id, :term, :loan_amount, :borrower_id, presence: true
     validates :term, presence: true, numericality: { greater_than: 0.1 }
     validates :loan_amount, numericality: { less_than_or_equal_to: :maximum_loanable_amount }
@@ -106,7 +104,7 @@ module LoansModule
     def interest_on_loan_balance
       interest = loan_charges.select{|a| a.chargeable.account == self.loan_product_interest_account}.last
       if interest.present?
-        interest.balance
+        interest.amortized_balance
       else
         0
       end
@@ -200,26 +198,10 @@ module LoansModule
       loan_charges.total
     end
 
-    def create_loan_product_charges
-      if loan_charges.present?
-        loan_charges.destroy_all
-      end
-      loan_product.create_charges_for(self)
-    end
-    def set_loan_protection_fund
-      LoansModule::LoanProtectionFund.set_loan_protection_fund_for(self)
-    end
 
-    def create_documentary_stamp_tax
-       tax = Charge.amount_type.create!(name: 'Documentary Stamp Tax', amount: DocumentaryStampTax.set(self), account: AccountingModule::Account.find_by(name: "Documentary Stamp Taxes"))
-      self.loan_charges.create!(chargeable: tax, commercial_document: self)
-    end
-    def create_amortization_schedule
-      if amortization_schedules.present?
-        amortization_schedules.destroy_all
-      end
-      LoansModule::AmortizationSchedule.create_schedule_for(self)
-    end
+
+
+
     def disbursed?
       disbursement.present?
     end
@@ -286,34 +268,23 @@ module LoansModule
     def number_of_months_past_due
       number_of_days_past_due / 30
     end
-    def set_borrower_type
-      if Member.find_by_id(borrower_id).present?
-        self.borrower_type = "Member"
-      elsif User.find_by_id(borrower_id).present?
-       self.borrower_type = "User"
-      end
-      self.save
-    end
-    def set_borrower_full_name
-      self.borrower_full_name = self.borrower.name
-      self.save
-    end
+    # def set_borrower_type
+    #   if Member.find_by_id(borrower_id).present?
+    #     self.borrower_type = "Member"
+    #   elsif User.find_by_id(borrower_id).present?
+    #    self.borrower_type = "User"
+    #   end
+    #   self.save
+    # end
 
-    def set_organization
-      self.organization_id = self.borrower.organization_memberships.current.try(:organization_id)
-      self.save
-    end
-    def set_barangay
-      self.barangay_id = self.borrower.current_address.try(:barangay_id)
-      self.save
-    end
+
+
 
     private
       def set_default_date
         self.application_date ||= Time.zone.now
       end
-      def less_than_max_amount?
-        errors[:loan_amount] << "Amount exceeded maximum allowed amount which is #{maximun_loanable_amount}" if self.loan_amount >= self.maximum_loanable_amount
-      end
+
+
   end
 end

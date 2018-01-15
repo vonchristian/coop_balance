@@ -20,7 +20,7 @@
           <%= f.error_notification %>
           <%= f.input :name, input_html: { value: "Store credit payment" }, as: :hidden %>
           <%= f.input :amount %>
-          <%= f.input :account_id, input_html: { value: CoopConfigurationsModule::AccountReceivableStoreConfig.account_to_debit.id }, as: :hidden %>
+          <%= f.input :account_id, input_html: { value: CoopConfigurationsModule::StoreFrontConfig.default_accounts_receivable_account.id }, as: :hidden %>
           <div class="box-footer">
             <%= f.submit "Save", class: "btn btn-primary pull-right" %>
           </div>

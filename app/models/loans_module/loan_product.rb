@@ -43,7 +43,7 @@ module LoansModule
 
     def create_interest_on_loan_charge_for(loan)
       interest_on_loan_charge = Charge.create(name: "Interest on Loan", amount: (self.interest_rate / 100) * loan.loan_amount, account_id: self.interest_account_id)
-      loan.loan_charges.find_or_create_by(chargeable: interest_on_loan_charge )
+      loan.loan_charges.find_or_create_by(chargeable: interest_on_loan_charge, commercial_document: loan )
     end
 
     def create_charges_that_depends_on_loan_amount(loan)
