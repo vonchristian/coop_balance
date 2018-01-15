@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_01_15_015504) do
+ActiveRecord::Schema.define(version: 2018_01_15_075315) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -359,6 +359,21 @@ ActiveRecord::Schema.define(version: 2018_01_15_015504) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "interest_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "loan_product_id"
+    t.uuid "earned_interest_income_account_id"
+    t.uuid "interest_receivable_account_id"
+    t.uuid "unearned_interest_income_account_id"
+    t.decimal "rate"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "add_on_interest"
+    t.index ["earned_interest_income_account_id"], name: "index_interest_configs_on_earned_interest_income_account_id"
+    t.index ["interest_receivable_account_id"], name: "index_interest_configs_on_interest_receivable_account_id"
+    t.index ["loan_product_id"], name: "index_interest_configs_on_loan_product_id"
+    t.index ["unearned_interest_income_account_id"], name: "index_interest_configs_on_unearned_interest_income_account_id"
+  end
+
   create_table "interest_rebate_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.decimal "percent"
     t.datetime "created_at", null: false
@@ -494,8 +509,10 @@ ActiveRecord::Schema.define(version: 2018_01_15_015504) do
     t.string "slug"
     t.decimal "interest_rate"
     t.decimal "penalty_rate"
+    t.uuid "interest_receivable_account_id"
     t.index ["account_id"], name: "index_loan_products_on_account_id"
     t.index ["interest_account_id"], name: "index_loan_products_on_interest_account_id"
+    t.index ["interest_receivable_account_id"], name: "index_loan_products_on_interest_receivable_account_id"
     t.index ["name"], name: "index_loan_products_on_name", unique: true
     t.index ["penalty_account_id"], name: "index_loan_products_on_penalty_account_id"
     t.index ["slug"], name: "index_loan_products_on_slug", unique: true
@@ -1200,6 +1217,10 @@ ActiveRecord::Schema.define(version: 2018_01_15_015504) do
   add_foreign_key "finished_good_materials", "products"
   add_foreign_key "finished_good_materials", "raw_materials"
   add_foreign_key "fixed_terms", "time_deposits"
+  add_foreign_key "interest_configs", "accounts", column: "earned_interest_income_account_id"
+  add_foreign_key "interest_configs", "accounts", column: "interest_receivable_account_id"
+  add_foreign_key "interest_configs", "accounts", column: "unearned_interest_income_account_id"
+  add_foreign_key "interest_configs", "loan_products"
   add_foreign_key "line_items", "carts"
   add_foreign_key "line_items", "orders"
   add_foreign_key "loan_approvals", "loans"
@@ -1215,6 +1236,7 @@ ActiveRecord::Schema.define(version: 2018_01_15_015504) do
   add_foreign_key "loan_product_charges", "loan_products"
   add_foreign_key "loan_products", "accounts"
   add_foreign_key "loan_products", "accounts", column: "interest_account_id"
+  add_foreign_key "loan_products", "accounts", column: "interest_receivable_account_id"
   add_foreign_key "loan_products", "accounts", column: "penalty_account_id"
   add_foreign_key "loan_protection_fund_configs", "accounts"
   add_foreign_key "loan_protection_funds", "accounts"

@@ -4,8 +4,10 @@ module LoansModule
     friendly_id :name, use: :slugged
   	belongs_to :account, class_name: "AccountingModule::Account"
     belongs_to :interest_account, class_name: "AccountingModule::Account"
+    belongs_to :interest_receivable_account, class_name: "AccountingModule::Account"
     belongs_to :penalty_account, class_name: "AccountingModule::Account"
-
+    has_one :interest_configuration
+    has_one :penalty_configuration
     has_many :loans
     has_many :member_borrowers, through: :loans, source: :borrower, source_type: 'Member'
     has_many :employee_borrowers, through: :loans, source: :borrower, source_type: 'User'
@@ -17,7 +19,7 @@ module LoansModule
     delegate :name, to: :account, prefix: true
     delegate :name, to: :interest_account, prefix: true
     delegate :name, to: :penalty_account, prefix: true
-    validates :name,:account_id, :interest_rate, :interest_account_id, :penalty_account_id, :penalty_rate, presence: true
+    validates :name,:account_id, :interest_rate, :interest_account_id, :interest_receivable_account_id, presence: true
 
     validates :name, uniqueness: true
     validates :interest_rate, :penalty_rate, :maximum_loanable_amount, numericality: true
@@ -42,7 +44,7 @@ module LoansModule
     end
 
     def create_interest_on_loan_charge_for(loan)
-      interest_on_loan_charge = Charge.create(name: "Interest on Loan", amount: (self.interest_rate / 100) * loan.loan_amount, account_id: self.interest_account_id)
+      interest_on_loan_charge = Charge.create(name: "Interest on Loan", amount: (self.interest_rate / 100) * loan.loan_amount, account_id: self.interest_receivable_account_id)
       loan.loan_charges.find_or_create_by(chargeable: interest_on_loan_charge, commercial_document: loan )
     end
 

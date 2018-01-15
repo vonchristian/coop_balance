@@ -1,12 +1,12 @@
 module LoansModule
   class BorrowersController < ApplicationController
     def index
-      @borrowers = Loan.borrowers
+      @borrowers = Loan.borrowers.paginate(page: params[:page], per_page: 35)
     end
     def show
-      if @borrower.class == "Member"
+      if Member.find_by_id(params[:id]).present?
         @borrower = Member.find(params[:id])
-      elsif @borrower.class == "User"
+      elsif User.find_by_id(params[:id]).present?
         @borrower = User.find(params[:id])
       end
     end

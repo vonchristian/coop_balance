@@ -1,1 +1,46 @@
-<%= @borrower.inspect %>
+
+  <div class="row">
+    <div class="col-md-3">
+      <%= render 'members/partials/sidebar', member: @borrower %>
+    </div>
+    <div class="col-md-9">
+      <div class="box box-solid">
+        <div class="box-header">
+        <ul class="nav nav-tabs">
+          <li class="<%= 'active' if current_page?(member_info_index_path(@borrower))%>"><%= link_to 'Info', member_info_index_path(@borrower) %></li>
+          <li class="<%= 'active' if current_page?(member_loans_path(@borrower))%>"><%= link_to 'Loans & Credit', member_loans_path(@borrower) %></li>
+          <li class="<%= 'active' if current_page?(member_savings_accounts_path(@borrower))%>"><%= link_to 'Savings', member_savings_accounts_path(@borrower) %></li>
+          <li class="<%= 'active' if current_page?(member_share_capitals_path(@borrower))%>"><%= link_to 'Share Capitals', member_share_capitals_path(@borrower) %></li>
+          <li class="<%= 'active' if current_page?(member_time_deposits_path(@borrower))%>"><%= link_to 'Time Deposits', member_time_deposits_path(@borrower) %></li>
+          <li class="<%= 'active' if current_page?(member_subscriptions_path(@borrower))%>"><%= link_to 'Program Subscriptions', member_subscriptions_path(@borrower) %></li>
+          <li class="<%= 'active' if current_page?(member_purchases_path(@borrower))%>"><%= link_to 'Purchases', member_purchases_path(@borrower) %></li>
+           <li class="<%= 'active' if current_page?(member_settings_path(@borrower))%>"><%= link_to 'Settings', member_settings_path(@borrower) %></li>
+        </ul>
+      </div>
+        <div class="tab-content box-body">
+          <% if current_page?(member_info_index_path(@borrower)) %>
+            <%= render 'members/partials/info', member: @borrower %>
+          <% end %>
+          <% if current_page?(member_loans_path(@borrower)) %>
+            <%=render 'members/partials/loans', member: @borrower %>
+          <% end %>
+          <% if current_page?(member_savings_accounts_path(@borrower)) %>
+            <%=render 'members/partials/savings_accounts', member: @borrower %>
+          <% end %>
+          <% if current_page?(member_share_capitals_path(@borrower)) %>
+            <%=render 'members/partials/share_capitals', member: @borrower %>
+          <% end %>
+          <% if current_page?(member_time_deposits_path(@borrower)) %>
+            <%=render 'members/partials/time_deposits', member: @borrower %>
+          <% end %>
+          <% if current_page?(member_subscriptions_path(@borrower)) %>
+            <%=render 'members/partials/subscriptions', member: @borrower %>
+          <% end %>
+          <% if current_page?(member_purchases_path(@borrower)) %>
+            <%= render 'members/partials/purchases', member: @borrower %>
+          <% end %>
+      </div>
+    </div>
+      </div>
+</div>
+

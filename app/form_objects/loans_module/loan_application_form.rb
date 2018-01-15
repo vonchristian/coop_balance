@@ -32,11 +32,10 @@ module LoansModule
     end
 
     def save_loan
-      loan = find_borrower.loans.create(loan_product_id: loan_product_id, loan_amount: loan_amount, term: term, application_date: application_date, mode_of_payment: mode_of_payment, preparer_id: preparer_id)
+      loan = find_borrower.loans.create!(loan_product_id: loan_product_id, loan_amount: loan_amount, term: term, application_date: application_date, mode_of_payment: mode_of_payment, preparer_id: preparer_id)
       create_loan_product_charges(loan)
       create_amortization_schedule(loan)
       create_documentary_stamp_tax(loan)
-
     end
 
     def create_loan_product_charges(loan)

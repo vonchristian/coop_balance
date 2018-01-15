@@ -13,6 +13,8 @@
 
           <%= f.input :account_id, label: "Select Loan Account", collection: AccountingModule::Asset.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanAccountSelect'} %>
           <%= f.input :interest_account_id, label: "Select Loan Interest Account", collection: AccountingModule::Asset.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanInterestAccountSelect'} %>
+          <%= f.input :interest_receivable_account_id, label: "Select Loan Interest Account", collection: AccountingModule::Asset.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanInterestAccountSelect'} %>
+
 
 
             <%= f.input :interest_rate, label: "Interest Rate (Annual):", placeholder: 'e.g. 12' %>
