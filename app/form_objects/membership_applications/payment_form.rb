@@ -20,8 +20,8 @@ module MembershipApplications
     def save_entry
       entry = AccountingModule::Entry.new(commercial_document: find_member, :description => description, recorder_id: recorder_id, entry_date: date)
       find_member.voucher_amounts.each do |amount|
-       debit_amount = AccountingModule::DebitAmount.new(account: find_employee.cash_on_hand_account , amount: amount.amount)
-        credit_amount = AccountingModule::CreditAmount.new(account_id: amount.account_id, amount: amount.amount)
+       debit_amount = AccountingModule::DebitAmount.new(account: find_employee.cash_on_hand_account , amount: amount.amount, commercial_document: find_member)
+        credit_amount = AccountingModule::CreditAmount.new(account_id: amount.account_id, amount: amount.amount, commercial_document: find_member)
         entry.credit_amounts << credit_amount
         entry.debit_amounts << debit_amount
       end

@@ -11,7 +11,7 @@
           <%= f.input :or_number, label: "OR Number" %>
           <%= f.input :recorder_id, input_html: { value: current_user.id }, as: :hidden %>
           <%= f.input :program_id, input_html: { value: @program.id } %>
-          <%= f.input :member_id, input_html: { value: @member.id } %>
+          <%= f.input :subscriber_id, input_html: { value: @member.id } %>
           <div class="box-footer">
             <%= f.submit "Save Payment", class: "btn btn-primary btn-flat pull-right" %>
           </div>

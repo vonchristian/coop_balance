@@ -16,10 +16,10 @@
         <span class="text-muted"><%= program.description %></span>
       </div>
       <div class="col-md-6">
-        <% if program.paid?(Time.zone.now.beginning_of_year.beginning_of_day, Time.zone.now.end_of_year.end_of_day) %>
+        <% if program.paid?(from_date: Time.zone.now.beginning_of_year.beginning_of_day, to_date: Time.zone.now.end_of_year.end_of_day) %>
           <span class="label label-success"> Paid </span>
         <% else %>
-          <%= link_to 'Pay Contribution', new_program_payment_path(program, member_id: @member.id), class: "btn btn-sm btn-flat btn-primary" %>
+          <%= link_to 'Pay Contribution', new_program_payment_path(program, subscriber_id: @member.id), class: "btn btn-sm btn-flat btn-primary" %>
         <% end %>
       </div>
     </div>
