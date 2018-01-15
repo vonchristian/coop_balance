@@ -16,4 +16,7 @@ class BankAccount < ApplicationRecord
   def withdrawals
     account.credits_balance(commercial_document_id: self.id)
   end
+  def earned_interests
+    earned_interest_account.balance(commercial_document_id: self.id)
+  end
 end
