@@ -17,7 +17,7 @@ module TreasuryModule
 
     private
     def remittance_params
-      params.require(:treasury_module_fund_transfer_form).permit(:recorder_id, :commercial_document_id, :amount, :debit_account_id, :credit_account_id, :entry_date, :description, :reference_number, :entry_type)
+      params.require(:treasury_module_fund_transfer_form).permit(:recorder_id, :commercial_document_id, :amount, :debit_account_id, :credit_account_id, :entry_date, :description, :reference_number)
     end
   end
 end

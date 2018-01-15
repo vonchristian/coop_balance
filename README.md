@@ -153,3 +153,8 @@ remove entry_type
 
 Research
 include modules rails
+
+entry for loan disbursement
+if earned interest income
+unearned interest income
+amortized interest
