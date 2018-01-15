@@ -7,7 +7,7 @@ class Address < ApplicationRecord
   validates :street_id, :barangay_id, :municipality_id, :province_id, presence: true
 
   def self.current_address
-    order(created_at: :asc).where(current: true).last
+    order(created_at: :asc).where(current: true).last || NullAddress.new
   end
   def details
     "#{street.name}, #{barangay.name}, #{municipality.name}, #{province.name}"

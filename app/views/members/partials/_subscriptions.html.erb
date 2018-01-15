@@ -1,14 +1,22 @@
 <div class="tab-pane <%='active' if current_page?(member_subscriptions_path(@member)) %>" id='subscriptions'>
-  <p class="text-muted"> PROGRAM SUBSCRIPTIONS </p>
+  <p class="text-muted"> PROGRAMS </p>
 <%=link_to "Pay All", new_member_subscription_payment_path(@member), class: "btn btn-primary" %>
   <% @programs.each do |program| %>
-    <%= program.name %>
-    <% if member.subscribed?(program) %>
-      Subscribed
-    <% else %>
-      <%= link_to 'Subscribe', member_subscriptions_path(@member, program_id: program.id), method: :create %>
-    <% end %>
+    <div class="row">
+      <div class="col-md-5">
+        <%= program.name %>
+      </div>
+      <div class="col-md-5">
+        <% if member.subscribed?(program) %>
+          Subscribed
+        <% else %>
+          <%= link_to 'Subscribe', member_subscriptions_path(@member, program_id: program.id), method: :create %>
+        <% end %>
+      </div>
+    </div>
+    <br>
   <% end %>
+  <p class="text-muted"> SUBSCRIBED PROGRAMS </p>
   <% @member.program_subscriptions.each do |program| %>
     <div class="row">
       <div class="col-md-6">
@@ -16,6 +24,7 @@
         <span class="text-muted"><%= program.description %></span>
       </div>
       <div class="col-md-6">
+        <%= number_to_currency program.contribution %>
         <% if program.paid?(from_date: Time.zone.now.beginning_of_year.beginning_of_day, to_date: Time.zone.now.end_of_year.end_of_day) %>
           <span class="label label-success"> Paid </span>
         <% else %>

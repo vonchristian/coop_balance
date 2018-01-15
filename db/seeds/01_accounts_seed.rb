@@ -25,12 +25,9 @@ AccountingModule::Asset.create(code: 117112, name: "Loans Receivable - Current (
 AccountingModule::Asset.create(code: 117113, name: "Loans Receivable - Current (Emergency Loan)")
 AccountingModule::Asset.create(code: 117113, name: "Loans Receivable - Current (OFW Loan)")
 
-
-
 AccountingModule::Asset.create(code: 11712, name: "Loans Receivable - Past Due")
 AccountingModule::Asset.create(code: 11713, name: "Loans Receivable - Restructured")
 AccountingModule::Asset.create(code: 11714, name: "Loans Receivable - Loans in Litigation")
-AccountingModule::Asset.create(code: 11715, contra: true, name: "Unearned Interests and Discounts")
 AccountingModule::Asset.create(code: 11715, contra: true, name: "Unearned Interests and Discounts")
 
 AccountingModule::Asset.create(code: 11716, name: "Allowance for Probable Losses on Loans")

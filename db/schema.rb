@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_01_15_075315) do
+ActiveRecord::Schema.define(version: 2018_01_15_101755) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -901,6 +901,7 @@ ActiveRecord::Schema.define(version: 2018_01_15_075315) do
     t.decimal "minimum_balance"
     t.uuid "closing_account_id"
     t.uuid "interest_expense_account_id"
+    t.boolean "has_closing_account_fee", default: false
     t.index ["account_id"], name: "index_saving_products_on_account_id"
     t.index ["closing_account_id"], name: "index_saving_products_on_closing_account_id"
     t.index ["interest_expense_account_id"], name: "index_saving_products_on_interest_expense_account_id"

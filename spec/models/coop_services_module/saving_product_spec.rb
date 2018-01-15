@@ -37,5 +37,12 @@ module CoopServicesModule
       expect(saving_product.account).to be_present
       expect(CoopServicesModule::SavingProduct.accounts.pluck(:id)).to include(saving_product.account.id)
     end
+
+    it ".total_subscribers" do
+      saving_product = create(:saving_product)
+      subscriber = create(:saving, saving_product: saving_product)
+      another_subscriber = create(:saving, saving_product: saving_product)
+      expect(CoopServicesModule::SavingProduct.total_subscribers).to eq 2
+    end
   end
 end

@@ -20,6 +20,9 @@ module MembershipsModule
     def closed?
       saving_product_closing_account.entries.where(commercial_document: self).present?
     end
+    def interest_posted?(date)
+     saving_product_interest_expense_account.credit_entries.entered_on(from_date: saving_product.beginning_date_for(date), to_date: saving_product.ending_date_for(date)).present?
+    end
 
     def self.generate_account_number
       if self.exists? && order(created_at: :asc).last.account_number.present?
@@ -55,15 +58,16 @@ module MembershipsModule
     def name
       account_owner_name || account_owner.full_name
     end
-    def post_interests_earned
-      InterestPosting.new.post_interests_earned(self)
+    def post_interests_earned(date)
+      InterestPosting.new.post_interests_earned(self, date)
     end
 
     def balance
       saving_product_account.balance(commercial_document_id: self.id)
     end
 
-    def deposits
+    def de
+      posits
       saving_product_account.credits_balance(commercial_document_id: self.id)
     end
     def withdrawals

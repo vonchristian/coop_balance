@@ -7,7 +7,6 @@ module CoopServicesModule
     belongs_to :closing_account, class_name: "AccountingModule::Account"
     belongs_to :interest_expense_account, class_name: "AccountingModule::Account"
 
-
 	  validates :interest_rate, :minimum_balance, numericality: { greater_than_or_equal_to: 0.01 }, presence: true
 	  validates :interest_recurrence, presence: true
 	  validates :name, presence: true, uniqueness: true
@@ -18,7 +17,7 @@ module CoopServicesModule
       if options[:from_date] && options[:to_date]
         from_date = Chronic.parse(options[:from_date].to_date)
         to_date = Chronic.parse(options[:to_date].to_date)
-        subscribers.where('created_at' => (from_date.beginning_of_day)..(to_date.end_of_day))
+        includes(:subscribers).where('subscribers.created_at' => (from_date.beginning_of_day)..(to_date.end_of_day))
       else
         subscribers
       end
@@ -27,6 +26,7 @@ module CoopServicesModule
     def self.total_subscribers
       all.map{|a| a.subscribers.count }.sum
     end
+
     def self.accounts
     	all.map{|a| a.account }
     end
@@ -44,6 +44,16 @@ module CoopServicesModule
 
     def balance(options={})
       account.balance(options)
+    end
+    def beginning_date_for(date)
+      if quarterly?
+        date.beginning_of_quarter
+      end
+    end
+    def ending_date_for(date)
+      if quarterly?
+        date.end_of_quarter
+      end
     end
 
 	  def post_interests_earned
