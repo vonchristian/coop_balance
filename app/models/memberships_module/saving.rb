@@ -3,9 +3,12 @@ module MembershipsModule
     include PgSearch
     pg_search_scope :text_search, :against => [:account_number, :account_owner_name]
     multisearchable against: [:account_number, :account_owner_name]
+
     belongs_to :depositor, polymorphic: true
     belongs_to :saving_product, class_name: "CoopServicesModule::SavingProduct"
     belongs_to :office, class_name: "CoopConfigurationsModule::Office"
+    has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
+
     delegate :name, :current_occupation, to: :depositor, prefix: true
     delegate :name,
              :account,
@@ -13,29 +16,25 @@ module MembershipsModule
              :interest_rate,
              :interest_expense_account, to: :saving_product, prefix: true
     delegate :name, to: :office, prefix: true, allow_nil: true
-    has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
+
     before_save :set_account_owner_name, :set_account_number
+
     validates :saving_product_id, presence: true
+  scope :has_minimum_balance, -> { SavingsQuery.new.has_minimum_balance  }
 
     def closed?
-      saving_product_closing_account.entries.where(commercial_document: self).present?
+      saving_product_closing_account.amounts.where(commercial_document: self).present?
+    end
+
+    def number_of_days_inactive
+      (Time.zone.now - updated_at)/86_400.0
     end
 
     def interest_posted?(date)
-     saving_product_interest_expense_account.credit_entries.entered_on(from_date: saving_product.beginning_date_for(date), to_date: saving_product.ending_date_for(date)).present?
+      saving_product.interest_posted?(date)
     end
 
-    def self.generate_account_number
-      if self.exists? && order(created_at: :asc).last.account_number.present?
-        order(created_at: :asc).last.account_number.succ
-      else
-        "#{Time.zone.now.year.to_s.last(2)}000001"
-      end
-    end
 
-    def self.with_minimum_balances
-      all.select{|a| a.balance >= saving_product.minimum_balance }
-    end
 
     def self.set_inactive_accounts
       #to do find accounts not within saving product interest posting date range

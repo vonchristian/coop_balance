@@ -18,7 +18,7 @@ module CoopConfigurationsModule
       AccountingModule::Revenue.find_by_name("Closing Account Fees")
     end
 
-    def default_number_of_days_to_be_dormant
+    def self.default_number_of_days_to_be_dormant
       order(created_at: :asc).last.try(:number_of_days_to_be_dormant) || NullDormantCount.new.number_of_days_to_be_dormant
     end
 

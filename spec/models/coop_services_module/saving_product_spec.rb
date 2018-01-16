@@ -17,10 +17,9 @@ module CoopServicesModule
         is_expected.to validate_numericality_of(:minimum_balance).is_greater_than_or_equal_to(0.01)
     	end
     	it { is_expected.to validate_presence_of :name }
+      it { is_expected.to validate_uniqueness_of :name }
       it { is_expected.to validate_presence_of :account_id }
       it { is_expected.to validate_presence_of :interest_expense_account_id }
-
-    	it { is_expected.to validate_uniqueness_of :name }
     end
 
     describe 'enums' do
@@ -29,13 +28,16 @@ module CoopServicesModule
 
     describe 'delegations' do
       it { is_expected.to delegate_method(:name).to(:account).with_prefix }
+      it { is_expected.to delegate_method(:balance).to(:account) }
+      it { is_expected.to delegate_method(:debits_balance).to(:account) }
+      it { is_expected.to delegate_method(:credits_balance).to(:account) }
     end
 
     it ".accounts" do
       saving_product = create(:saving_product)
 
       expect(saving_product.account).to be_present
-      expect(CoopServicesModule::SavingProduct.accounts.pluck(:id)).to include(saving_product.account.id)
+      expect(CoopServicesModule::SavingProduct.accounts.pluck(:id)).to include(saving_product.account_id)
     end
 
     it ".total_subscribers" do

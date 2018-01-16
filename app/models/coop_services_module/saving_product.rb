@@ -13,18 +13,17 @@ module CoopServicesModule
 	  validates :account_id, :interest_expense_account_id, presence: true
 
     delegate :name, to: :account, prefix: true
-    def accounts_opened(options={})
-      if options[:from_date] && options[:to_date]
-        from_date = Chronic.parse(options[:from_date].to_date)
-        to_date = Chronic.parse(options[:to_date].to_date)
-        includes(:subscribers).where('subscribers.created_at' => (from_date.beginning_of_day)..(to_date.end_of_day))
-      else
-        subscribers
-      end
+    delegate :balance, :debits_balance, :credits_balance, to: :account
+    def self.accounts_opened(options={})
+      SavingProductQuery.new.accounts_opened(options)
     end
 
     def self.total_subscribers
-      all.map{|a| a.subscribers.count }.sum
+      sum(&:total_subscribers)
+    end
+
+    def total_subscribers
+      subscribers.count
     end
 
     def self.accounts
@@ -42,18 +41,8 @@ module CoopServicesModule
       accounts.uniq.map{|a| a.debits_balance(options)}.sum
     end
 
-    def balance(options={})
-      account.balance(options)
-    end
-    def beginning_date_for(date)
-      if quarterly?
-        date.beginning_of_quarter
-      end
-    end
-    def ending_date_for(date)
-      if quarterly?
-        date.end_of_quarter
-      end
+    def interest_posted?(date)
+      interest_expense_account.credit_amounts.entered_on(from_date: beginning_date_for(date), to_date: ending_date_for(date)).present?
     end
 
 	  def post_interests_earned
@@ -61,9 +50,26 @@ module CoopServicesModule
   	  	post_quarterly_interests
       end
 	  end
+
+    private
+
     def post_quarterly_interests
       subscribers.with_minimum_balances.each do |saving|
-        InterestPosting.new.post_interests_earned(saving, Time.zone.now.end_of_quarter)
+        if !saving.interest_posted?(Time.zone.now.end_of_quarter)
+          InterestPosting.new.post_interests_earned(saving, Time.zone.now.end_of_quarter)
+        end
+      end
+    end
+
+    def beginning_date_for(date)
+      if quarterly?
+        date.beginning_of_quarter
+      end
+    end
+
+    def ending_date_for(date)
+      if quarterly?
+        date.end_of_quarter
       end
     end
 	end
