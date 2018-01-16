@@ -12,7 +12,6 @@ class AccountClosingForm
     if valid?
       ActiveRecord::Base.transaction do
         save_withdraw
-        close_account
       end
     end
   end
@@ -27,13 +26,29 @@ class AccountClosingForm
   end
 
   def save_withdraw
-    find_savings_account.entries.create!(recorder_id: recorder_id, description: 'Closing of savings account', reference_number: reference_number, entry_date: date,
-    debit_amounts_attributes: [{ account: debit_account, amount: find_savings_account.balance, commercial_document: find_savings_account }],
-    credit_amounts_attributes: [{account: credit_account, amount: amount, commercial_document: find_savings_account}, { account: closing_fee_account, amount: closing_account_fee, commercial_document: find_savings_account }])
+    find_savings_account.entries.create!(
+      recorder_id: recorder_id,
+      description: 'Closing of savings account',
+      reference_number: reference_number,
+      entry_date: date,
+      debit_amounts_attributes: [{
+        account: debit_account,
+        amount: find_savings_account.balance,
+        commercial_document: find_savings_account
+      }],
+      credit_amounts_attributes: [
+        {
+        account: credit_account,
+        amount: amount,
+        commercial_document: find_savings_account
+        },
+        { account: closing_fee_account,
+          amount: closing_account_fee,
+          commercial_document: find_savings_account
+        }
+      ])
   end
-  def close_account
-    find_savings_account.closed!
-  end
+
 
   def closing_fee_account
     CoopConfigurationsModule::SavingsAccountConfig.default_closing_account

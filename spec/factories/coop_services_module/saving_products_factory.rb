@@ -5,6 +5,7 @@ FactoryBot.define do
     interest_recurrence 1
     association :account, factory: :liability
     association :interest_expense_account, factory: :expense
+    association :closing_account, factory: :revenue
 
     minimum_balance 100
   end

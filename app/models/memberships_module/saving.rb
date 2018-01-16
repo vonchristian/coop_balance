@@ -20,6 +20,7 @@ module MembershipsModule
     def closed?
       saving_product_closing_account.entries.where(commercial_document: self).present?
     end
+
     def interest_posted?(date)
      saving_product_interest_expense_account.credit_entries.entered_on(from_date: saving_product.beginning_date_for(date), to_date: saving_product.ending_date_for(date)).present?
     end
@@ -66,8 +67,7 @@ module MembershipsModule
       saving_product_account.balance(commercial_document_id: self.id)
     end
 
-    def de
-      posits
+    def deposits
       saving_product_account.credits_balance(commercial_document_id: self.id)
     end
     def withdrawals
