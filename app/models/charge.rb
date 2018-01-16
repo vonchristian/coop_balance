@@ -10,14 +10,6 @@ class Charge < ApplicationRecord
 
   validates :account_id, presence: true
 
-  def self.depends_on_loan_amount
-    all.where(depends_on_loan_amount: true)
-  end
-
-	def self.not_depends_on_loan_amount
-    all.where(depends_on_loan_amount: false)
-  end
-
   def self.includes_loan_amount(loan)
     all.select{|a| a.loan_amount_range.include?(loan.loan_amount) }
   end
