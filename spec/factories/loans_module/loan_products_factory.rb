@@ -5,6 +5,7 @@ FactoryBot.define do
     maximum_loanable_amount 1_000_000
     association :account, factory: :asset
     association :interest_account, factory: :asset
+    association :interest_receivable_account, factory: :asset
     association :penalty_account, factory: :asset
     interest_rate 12
     penalty_rate 2

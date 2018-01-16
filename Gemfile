@@ -80,9 +80,10 @@ group :development do
 end
 group :test do
   gem 'shoulda-matchers'
+  gem 'database_cleaner'
+  gem 'launchy'
 end
 
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'rack-mini-profiler'
 gem 'memory_profiler'
 gem 'whenever', :require => false
