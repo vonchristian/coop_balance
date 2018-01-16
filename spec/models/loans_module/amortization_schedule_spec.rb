@@ -7,6 +7,7 @@ module LoansModule
     	it { is_expected.to belong_to :loan }
       it { is_expected.to have_many :notes }
     end
+    
 
     describe '.create_schedule_for(loan)' do
       it 'monthly' do
@@ -15,7 +16,7 @@ module LoansModule
 
         expect(monthly_loan.amortization_schedules.count).to eql 36
       end
-      
+
       it 'quarterly' do
         quarterly_loan = create(:loan, mode_of_payment: 'quarterly', term: 36, application_date: Date.today)
         LoansModule::AmortizationSchedule.create_schedule_for(quarterly_loan)

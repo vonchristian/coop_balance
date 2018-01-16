@@ -17,6 +17,7 @@ FactoryBot.define do
     end
 
     factory :revenue, class: "AccountingModule::Revenue" do
+      sequence(:name) { |n| "Revenue Account " +  ('a'..'z').to_a.shuffle.join }
     end
   end
 end

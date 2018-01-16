@@ -22,20 +22,22 @@ class Charge < ApplicationRecord
     all.select{|a| a.loan_amount_range.include?(loan.loan_amount) }
   end
 
-  def charge_amount(charge, loan)
-    if !charge.depends_on_loan_amount?
-    	if charge.amount_type?
-    		charge.amount
-    	elsif charge.percent_type?
-    		(charge.percent/100.0) * loan.loan_amount
+  def amount_for(loan)
+    if !depends_on_loan_amount?
+    	if amount_type?
+    		amount
+    	elsif percent_type?
+    		(percent/100.0) * loan.loan_amount
     	end
-    elsif charge.depends_on_loan_amount?
+    elsif depends_on_loan_amount?
       find_approriate_charge_for(charge, loan)
     end
   end
+
   def loan_amount_range
     minimum_loan_amount..maximum_loan_amount
   end
+
   def find_appropriate_charge_for(charge, loan)
     if charge.loan_amount_range.include?(loan.loan_amount) && charge.percent_type?
       (charge.percent/100.0) * loan.loan_amount

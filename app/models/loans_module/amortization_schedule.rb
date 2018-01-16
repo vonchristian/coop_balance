@@ -11,12 +11,6 @@ module LoansModule
       create_succeeding_schedule(loan)
     end
 
-    def self.for(options={})
-      if options[:from_date].present? && options[:to_date].present?
-        where('date' => (options[:from_date].beginning_of_day)..(options[:to_date].end_of_day))
-      end
-    end
-
     def self.principal_for(schedule, loan)
       from_date = loan.amortization_schedules.order(created_at: :asc).first.date
       to_date = schedule.date
@@ -24,8 +18,10 @@ module LoansModule
     end
 
     def self.scheduled_for(options={})
-      if options[:from_date] && options[:to_date]
-        where('date' => (options[:from_date].beginning_of_day)..(options[:to_date]).end_of_day)
+			if options[:from_date].present? && options[:to_date].present?
+				from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : Chronic.parse(hash[:from_date].strftime('%Y-%m-%d 12:00:00'))
+         to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : Chronic.parse(hash[:to_date].strftime('%Y-%m-%d 12:59:59'))
+        where('date' => (from_date.beginning_of_day)..(to_date.end_of_day))
       end
     end
 
@@ -37,8 +33,6 @@ module LoansModule
     def total_other_charges_for(date)
       loan.loan_charge_payment_schedules.scheduled_for(date).sum(:amount)
     end
-
-
 
 		private
 		def self.starting_date(loan)
