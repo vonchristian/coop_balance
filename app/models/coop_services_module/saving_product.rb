@@ -14,6 +14,7 @@ module CoopServicesModule
 
     delegate :name, to: :account, prefix: true
     delegate :balance, :debits_balance, :credits_balance, to: :account
+
     def self.accounts_opened(options={})
       SavingProductQuery.new.accounts_opened(options)
     end

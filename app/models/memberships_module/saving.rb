@@ -20,7 +20,7 @@ module MembershipsModule
     before_save :set_account_owner_name, :set_account_number
 
     validates :saving_product_id, presence: true
-  scope :has_minimum_balance, -> { SavingsQuery.new.has_minimum_balance  }
+    scope :has_minimum_balance, -> { SavingsQuery.new.has_minimum_balance  }
 
     def closed?
       saving_product_closing_account.amounts.where(commercial_document: self).present?

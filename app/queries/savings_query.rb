@@ -12,7 +12,7 @@ class SavingsQuery
     relation.select{|a| a.balance < a.saving_product.minimum_balance }
   end
 
-  def dormant_accounts(days_count)
+  def dormant_accounts(days_count = CoopConfigurationsModule::SavingsAccountConfig.default_number_of_days_to_be_dormant)
     relation.select { |a| a.number_of_days_inactive >= days_count }
   end
 end

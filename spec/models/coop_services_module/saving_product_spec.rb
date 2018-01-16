@@ -46,5 +46,12 @@ module CoopServicesModule
       another_subscriber = create(:saving, saving_product: saving_product)
       expect(CoopServicesModule::SavingProduct.total_subscribers).to eq 2
     end
+
+    it "#total_subscribers" do
+      saving_product = create(:saving_product)
+      subscriber = create(:saving, saving_product: saving_product)
+
+      expect(saving_product.total_subscribers).to eql 1
+    end
   end
 end
