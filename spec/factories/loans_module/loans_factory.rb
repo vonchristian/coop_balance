@@ -3,7 +3,7 @@ FactoryBot.define do
     association :borrower, factory: :member
     loan_product
     loan_amount 100_000
-    application_date nil
+    application_date Date.today
     term 12
   end
 end

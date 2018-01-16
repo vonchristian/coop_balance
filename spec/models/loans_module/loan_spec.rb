@@ -78,7 +78,7 @@ module LoansModule
 
     it "#maturity_date" do
       loan_product = create(:loan_product)
-      loan = create(:loan, term: 2, mode_of_payment: 'monthly',  loan_product: loan_product)
+      loan = create(:loan, term: 2, mode_of_payment: 'monthly',  loan_product: loan_product, application_date: Date.today)
       entry = create(:entry_with_credit_and_debit, commercial_document: loan, entry_date: Date.today)
       LoansModule::AmortizationSchedule.create_schedule_for(loan)
       expect(loan.amortization_schedules).to be_present
