@@ -3,6 +3,7 @@ module LoansModule
     belongs_to :loan
     has_many :payment_notices, as: :notified
     has_many :notes, as: :noteable
+
     accepts_nested_attributes_for :notes
     def self.create_schedule_for(loan)
       loan.amortization_schedules.destroy_all

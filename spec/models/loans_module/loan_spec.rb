@@ -82,7 +82,7 @@ module LoansModule
       entry = create(:entry_with_credit_and_debit, commercial_document: loan, entry_date: Date.today)
       LoansModule::AmortizationSchedule.create_schedule_for(loan)
       expect(loan.amortization_schedules).to be_present
-      expect(loan.maturity_date.to_date).to eql(Date.today.next_month.next_month.to_date)
+      expect(loan.maturity_date.to_date).to eql(Date.today + 2.months)
     end
   end
 end

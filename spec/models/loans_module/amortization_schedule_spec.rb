@@ -7,5 +7,6 @@ module LoansModule
     	it { is_expected.to belong_to :loan }
       it { is_expected.to have_many :notes }
     end
+    it
   end
 end
