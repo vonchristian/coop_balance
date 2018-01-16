@@ -12,13 +12,11 @@ module LoansModule
 
 	  delegate :account, :account_name, :name, :amount, :regular?, to: :chargeable
 
-		delegate :amortize_balance, to: :charge_adjustment, allow_nil: true
-    def interest_on_loan
-    	where(chargeable.account == self.loan.interest_on_loan)
-    end
+		delegate :amortize_balance?, :amortizeable_amount, to: :charge_adjustment, allow_nil: true
+
 
 	  def self.total
-	  	all.map{|a| a.charge_amount_with_adjustment }.sum
+	  	sum(&:charge_amount_with_adjustment)
 	  end
 
 	  def charge_amount_with_adjustment
@@ -28,6 +26,7 @@ module LoansModule
 				regular_charge_amount
 	    end
 	  end
+
 
 		def regular_charge_amount
 			chargeable.amount_for(self.loan)

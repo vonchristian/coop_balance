@@ -2,17 +2,19 @@ module LoansModule
   class LoanProduct < ApplicationRecord
     extend FriendlyId
     friendly_id :name, use: :slugged
+
   	belongs_to :account, class_name: "AccountingModule::Account"
     belongs_to :interest_account, class_name: "AccountingModule::Account"
     belongs_to :interest_receivable_account, class_name: "AccountingModule::Account"
     belongs_to :penalty_account, class_name: "AccountingModule::Account"
+
     has_one :interest_configuration
     has_one :penalty_configuration
+
     has_many :loans
     has_many :member_borrowers, through: :loans, source: :borrower, source_type: 'Member'
     has_many :employee_borrowers, through: :loans, source: :borrower, source_type: 'User'
     has_many :organization_borrowers, through: :loans, source: :borrower, source_type: 'Organization'
-
     has_many :loan_product_charges
     has_many :charges, through: :loan_product_charges
 
@@ -23,9 +25,6 @@ module LoansModule
 
     validates :name, uniqueness: true
     validates :interest_rate, :penalty_rate, :maximum_loanable_amount, numericality: true
-    def self.principal_payments
-
-    end
 
     def self.accounts
       all.map{|a| a.account } +

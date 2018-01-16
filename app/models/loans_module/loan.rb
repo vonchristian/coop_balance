@@ -104,7 +104,7 @@ module LoansModule
     def interest_on_loan_balance
       interest = loan_charges.select{|a| a.chargeable.account == self.loan_product_interest_account}.last
       if interest.present?
-        interest.amortized_balance
+        interest.amortizeable_amount.to_f
       else
         0
       end

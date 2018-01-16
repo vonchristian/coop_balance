@@ -24,9 +24,11 @@ module LoansModule
       it { is_expected.to delegate_method(:name).to(:chargeable) }
       it { is_expected.to delegate_method(:amount).to(:chargeable) }
       it { is_expected.to delegate_method(:regular?).to(:chargeable) }
-      it { is_expected.to delegate_method(:amortize_balance).to(:charge_adjustment) }
+      it { is_expected.to delegate_method(:amortize_balance?).to(:charge_adjustment) }
+      it { is_expected.to delegate_method(:amortizeable_amount).to(:charge_adjustment) }
+
     end
-    
+
     it '.total' do
       loan = create(:loan, loan_amount: 1000)
       charge = create(:charge, charge_type: 'percent_type', percent: 10)
@@ -42,7 +44,7 @@ module LoansModule
         loan_charge = create(:loan_charge, loan: loan, chargeable: charge)
         charge_adjustment = create(:charge_adjustment, loan_charge: loan_charge, amount: 55)
 
-        expect(loan_charge.charge_amount_with_adjustment).to eql(55)
+        expect(loan_charge.charge_amount_with_adjustment).to eql(45)
       end
       it 'without charge_adjustment' do
         loan = create(:loan, loan_amount: 1000)
