@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_01_15_101755) do
+ActiveRecord::Schema.define(version: 2018_01_16_071555) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -928,6 +928,7 @@ ActiveRecord::Schema.define(version: 2018_01_15_101755) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "closing_account_id"
+    t.decimal "number_of_days_to_be_dormant"
     t.index ["closing_account_id"], name: "index_savings_account_configs_on_closing_account_id"
   end
 
