@@ -7,23 +7,20 @@ module AccountingModule
 
     belongs_to :commercial_document, :polymorphic => true, touch: true
     belongs_to :origin, :polymorphic => true, touch: true
-
     belongs_to :recorder, foreign_key: 'recorder_id', class_name: "User"
-
-    has_many :credit_amounts, :extend => AccountingModule::BalanceFinder, :class_name => 'AccountingModule::CreditAmount', :inverse_of => :entry, dependent: :destroy
-    has_many :debit_amounts, :extend => AccountingModule::BalanceFinder, :class_name => 'AccountingModule::DebitAmount', :inverse_of => :entry, dependent: :destroy
+    has_many :credit_amounts, :class_name => 'AccountingModule::CreditAmount', :inverse_of => :entry, dependent: :destroy
+    has_many :debit_amounts, :class_name => 'AccountingModule::DebitAmount', :inverse_of => :entry, dependent: :destroy
     has_many :credit_accounts, :through => :credit_amounts, :source => :account, :class_name => 'AccountingModule::Account'
     has_many :debit_accounts, :through => :debit_amounts, :source => :account, :class_name => 'AccountingModule::Account'
     has_many :amounts, class_name: "AccountingModule::Amount"
     has_many :accounts, class_name: "AccountingModule::Account", through: :amounts
+
     validates :description, presence: true
     validate :has_credit_amounts?
     validate :has_debit_amounts?
     validate :amounts_cancel?
 
     accepts_nested_attributes_for :credit_amounts, :debit_amounts, allow_destroy: true
-
-
 
     before_save :set_default_date
     after_commit :update_accounts, :update_amounts

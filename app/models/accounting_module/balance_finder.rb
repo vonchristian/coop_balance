@@ -9,7 +9,6 @@ module AccountingModule
         from_date = Chronic.parse(hash[:from_date].strftime('%Y-%m-%d 12:00:00'))
         to_date = Chronic.parse(hash[:to_date].strftime('%Y-%m-%d 12:59:59'))
         joins(:entry, :account).where('entries.entry_date' =>  (from_date.beginning_of_day)..(to_date.end_of_day)).sum(:amount)
-
       elsif hash[:to_date].present? && hash[:from_date].nil? && hash[:recorder_id].present?
         first_entry = AccountingModule::Entry.order(entry_date: :asc).first
         from_date = first_entry ? Chronic.parse(first_entry.entry_date.strftime('%Y-%m-%d 12:59:59')) : Time.zone.now
@@ -25,7 +24,7 @@ module AccountingModule
        elsif hash[:commercial_document_id].present?
         where('commercial_document_id' => hash[:commercial_document_id]).sum(:amount)
       elsif hash[:office_id].present?
-        joins(:entry, :account).where('entries.branch_office_id' => hash[:branch_office_id]).sum(:amount)
+        joins(:entry, :account).where('entries.office_id' => hash[:office_id]).sum(:amount)
       else
         joins(:entry, :account).sum(:amount)
       end

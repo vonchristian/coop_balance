@@ -1,8 +1,9 @@
 module AccountingModule
   class Amount < ApplicationRecord
-    belongs_to :entry, :class_name => 'AccountingModule::Entry'
+    extend AccountingModule::BalanceFinder
+    belongs_to :entry, :class_name => 'AccountingModule::Entry', touch: true
     belongs_to :account, :class_name => 'AccountingModule::Account', touch: true
-    belongs_to :recorder, class_name: "User", foreign_key: 'recorder_id'
+    belongs_to :recorder, class_name: "User", foreign_key: 'recorder_id', touch: true
     belongs_to :commercial_document, polymorphic: true, touch: true
     validates :type, :amount, :entry, :account, :commercial_document, presence: true
     validates :amount, numericality: true
