@@ -1,33 +1,25 @@
 module AccountingModule
   module BalanceFinder
     def balance(hash={})
+      first_entry = AccountingModule::Entry.order(entry_date: :asc).first
       if hash[:from_date].present? && hash[:to_date].present? && hash[:recorder_id].present?
-        range = DateRange.new(from_date: hash[:from_date], to_date: hash[:to_date])
-        from_date = Chronic.parse(hash[:from_date].to_date)
-        to_date = Chronic.parse(hash[:to_date].to_date)
-        joins(:entry, :account).where('entries.recorder_id' => hash[:recorder_id]).where('entries.entry_date' => (from_date.beginning_of_day)..(to_date.end_of_day)).sum(:amount)
+        balance_for_recorder(hash[:recorder_id]) + balance_for_date_range(hash[:from_date], hash[:to_date])
       elsif hash[:from_date].present? && hash[:to_date].present? && hash[:recorder_id].nil?
-        from_date = Chronic.parse(hash[:from_date].strftime('%Y-%m-%d 12:00:00'))
-        to_date = Chronic.parse(hash[:to_date].strftime('%Y-%m-%d 12:59:59'))
-        joins(:entry, :account).where('entries.entry_date' =>  (from_date.beginning_of_day)..(to_date.end_of_day)).sum(:amount)
+        balance_for_date_range(hash[:from_date], hash[:to_date])
       elsif hash[:to_date].present? && hash[:from_date].nil? && hash[:recorder_id].present?
-        first_entry = AccountingModule::Entry.order(entry_date: :asc).first
-        from_date = first_entry ? Chronic.parse(first_entry.entry_date.strftime('%Y-%m-%d 12:59:59')) : Time.zone.now
-        to_date = Chronic.parse(hash[:to_date].strftime('%Y-%m-%d 12:59:59'))
-        joins(:entry, :account).where('entries.recorder_id' => hash[:recorder_id]).where('entries.entry_date' => (from_date.beginning_of_day)..(to_date.end_of_day)).sum(:amount)
-      elsif hash[:to_date].present? && hash[:from_date].nil? && hash[:recorder_id].nil?
-        first_entry = AccountingModule::Entry.order(entry_date: :asc).first
         from_date = first_entry ? Chronic.parse(first_entry.entry_date.strftime('%Y-%m-%d 12:59:59')) : Time.zone.now.beginning_of_day
-        to_date = Chronic.parse(hash[:to_date].to_date)
-        joins(:entry, :account).where('entries.entry_date' => (from_date.beginning_of_day)..(to_date.end_of_day)).sum(:amount)
-      elsif hash[:recorder_id].present?
-        joins(:entry, :account).where('entries.recorder_id' => hash[:recorder_id]).sum(:amount)
-       elsif hash[:commercial_document_id].present?
-        where('commercial_document_id' => hash[:commercial_document_id]).sum(:amount)
+        balance_for_recorder(hash[:recorder_id]) + balance_for_date_range(from_date, hash[:to_date])
+      elsif hash[:to_date].present? && hash[:from_date].nil? && hash[:recorder_id].nil?
+        from_date = first_entry ? Chronic.parse(first_entry.entry_date.strftime('%Y-%m-%d 12:59:59')) : Time.zone.now.beginning_of_day
+        balance_for_date_range(from_date, hash[:to_date])
+      elsif hash[:recorder_id].present? && hash[:from_date].nil? && hash[:to_date].nil?
+        balance_for_recorder(hash[:recorder_id])
+      elsif hash[:commercial_document_id].present?
+        balance_for_commercial_document(hash[:commercial_document_id])
       elsif hash[:office_id].present?
-        joins(:entry, :account).where('entries.office_id' => hash[:office_id]).sum(:amount)
+        joins(:entry, :account).where('entries.office_id' => hash[:office_id]).total
       else
-        joins(:entry, :account).sum(:amount)
+        joins(:entry, :account).total
       end
     end
 
@@ -39,6 +31,17 @@ module AccountingModule
         end
       end
       return balance
+    end
+    private
+    def balance_for_recorder(recorder)
+      joins(:entry, :account).where('recorder_id' => recorder).total
+    end
+    def balance_for_date_range(from_date, to_date)
+      date_range = DateRange.new(from_date: from_date, to_date: to_date)
+      joins(:entry, :account).where('entries.entry_date' => (date_range.start_date)..(date_range.end_date)).total
+    end
+    def balance_for_commercial_document(commercial_document)
+      where('commercial_document_id' => commercial_document).total
     end
   end
 end
