@@ -39,25 +39,19 @@ module AccountingModule
       entries
     end
 
-    def self.entered_on(hash={})
-      if hash[:from_date] && hash[:to_date]
-       from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : Chronic.parse(hash[:from_date].strftime('%Y-%m-%d 12:00:00'))
-        to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : Chronic.parse(hash[:to_date].strftime('%Y-%m-%d 12:59:59'))
-        includes([:amounts]).where('entries.entry_date' => (from_date.beginning_of_day)..(to_date.end_of_day))
-      else
-        all
-      end
+    def self.entered_on(options={})
+      EntriesQuery.new.entered_on(options)
     end
+
     def self.recorded_by(employee_id)
-      where('recorder_id' => employee_id )
+      where(recorder_id: employee_id )
     end
-    def self.total(hash={})
-      if hash[:from_date].present? && hash[:to_date].present?
-        from_date = Chronic.parse(hash[:from_date].to_date)
-        to_date = Chronic.parse(hash[:to_date].to_date)
-        includes([:amounts]).where('entry_date' => (from_date.beginning_of_day)..(to_date.end_of_day)).distinct.map{|a| a.amounts.distinct.sum(:amount)}.sum
+
+    def self.total(options={})
+      if options[:from_date].present? && options[:to_date].present?
+         entered_on(options).distinct.map{|a| a.amounts.total }.sum
       else
-        all.distinct.map{|a| a.credit_amounts.distinct.sum(:amount)}.sum
+        all.distinct.map{|a| a.credit_amounts.total}.sum
       end
     end
 

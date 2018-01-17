@@ -2,6 +2,7 @@ module AccountingModule
   module BalanceFinder
     def balance(hash={})
       if hash[:from_date].present? && hash[:to_date].present? && hash[:recorder_id].present?
+        range = DateRange.new(from_date: hash[:from_date], to_date: hash[:to_date])
         from_date = Chronic.parse(hash[:from_date].to_date)
         to_date = Chronic.parse(hash[:to_date].to_date)
         joins(:entry, :account).where('entries.recorder_id' => hash[:recorder_id]).where('entries.entry_date' => (from_date.beginning_of_day)..(to_date.end_of_day)).sum(:amount)

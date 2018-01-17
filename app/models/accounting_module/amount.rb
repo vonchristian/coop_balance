@@ -15,7 +15,7 @@ module AccountingModule
     end
 
     def self.total
-      sum(:amount)
+      distinct.sum(:amount)
     end
 
     def self.entered_on(hash={})
