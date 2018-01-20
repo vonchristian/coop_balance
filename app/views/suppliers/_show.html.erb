@@ -4,14 +4,15 @@
     </div>
     <div class="col-md-9">
       <div class="box box-solid">
-        <div class="box-header">
-        <ul class="nav nav-tabs">
+
+      <div class="tab-content box-body">
+        <div class="nav-tabs-navigation">
+        <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
           <li class="<%= 'active' if current_page?(supplier_path(@supplier))%>"><%= link_to 'Info', supplier_path(@supplier) %></li>
           <li class="<%= 'active' if current_page?(supplier_deliveries_path(@supplier))%>"><%= link_to 'Deliveries', supplier_deliveries_path(@supplier) %></li>
           <li class="<%= 'active' if current_page?(supplier_vouchers_path(@supplier))%>"><%= link_to 'Vouchers', supplier_vouchers_path(@supplier) %></li>
         </ul>
       </div>
-      <div class="tab-content box-body">
         <% if current_page?(supplier_path(@supplier)) %>
           <%=render 'suppliers/partials/supplier_info' %>
         <% end %>

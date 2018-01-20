@@ -5,7 +5,7 @@
       <div class="box-body">
         <%= simple_form_for @stock, url: :supplier_deliveries do |f| %>
           <%= f.error_notification %>
-          <%= link_to 'New Product', new_product_path, remote: true %>
+
           <%= f.input :product_id, collection: StoreModule::Product.all.map{|a| [a.name, a.id] } %>
           <%= f.input :date, as: :string, input_html: { class: "datepicker", value: Time.zone.now.strftime("%B %e, %Y") } %>
           <%= f.input :quantity %>
@@ -30,7 +30,7 @@
           </div>
           <div class="col-md-5">
             <small><b>PRODUCT</b></small>
-            
+
           </div>
           <div class="col-md-3">
             <small><b>TOTAL COST</b></small>

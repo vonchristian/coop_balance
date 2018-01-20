@@ -36,7 +36,7 @@ class Supplier < ApplicationRecord
     vouchers.disbursed.sum(&:payable_amount)
   end
   def deliveries_total
-    entries.supplier_delivery.map{|a| a.debit_amounts.distinct.sum(:amount) }.sum
+    entries.map{|a| a.debit_amounts.distinct.sum(:amount) }.sum
   end
   def create_entry_for(voucher)
     accounts_payable =  AccountingModule::Liability.find_by(name: 'Accounts Payable-Trade')
