@@ -8,10 +8,25 @@ RSpec.describe Supplier, type: :model do
     it { is_expected.to have_many :addresses }
     it { is_expected.to have_many :supplied_stocks }
     it { is_expected.to have_many :entries }
+    it { is_expected.to have_many :addresses }
+    it { is_expected.to have_many :stock_registries }
+
   end
 
   describe 'validations' do
     it { is_expected.to validate_presence_of :business_name }
     it { is_expected.to validate_uniqueness_of :business_name }
+  end
+  describe 'avatar attachment' do
+    it { is_expected.to have_attached_file(:avatar) }
+    it { is_expected.to validate_attachment_content_type(:avatar).
+                allowing('image/png', 'image/gif').
+                rejecting('text/plain', 'text/xml') }
+  end
+
+  it '#owner_name' do
+    supplier = build(:supplier, first_name: 'Von', last_name: 'Halip')
+
+    expect(supplier.owner_name).to eql('Von Halip')
   end
 end

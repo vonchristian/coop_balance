@@ -1,6 +1,6 @@
 class OfficialReceipt < ApplicationRecord
   belongs_to :receiptable, polymorphic: true
-  def self.generate_number_for(receiptable)
+  def self.create_receipt(receiptable)
     return false if receiptable.official_receipt.present?
     if all.blank?
       receiptable.create_official_receipt(number: 1.to_s.rjust(12, "0"))

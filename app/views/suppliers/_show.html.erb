@@ -9,7 +9,7 @@
         <div class="nav-tabs-navigation">
         <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
           <li class="<%= 'active' if current_page?(supplier_path(@supplier))%>"><%= link_to 'Info', supplier_path(@supplier) %></li>
-          <li class="<%= 'active' if current_page?(supplier_deliveries_path(@supplier))%>"><%= link_to 'Deliveries', supplier_deliveries_path(@supplier) %></li>
+          <li class="<%= 'active' if current_page?(supplier_deliveries_path(@supplier))%>"><%= link_to 'Stocks Deliveries', supplier_deliveries_path(@supplier) %></li>
           <li class="<%= 'active' if current_page?(supplier_vouchers_path(@supplier))%>"><%= link_to 'Vouchers', supplier_vouchers_path(@supplier) %></li>
         </ul>
       </div>

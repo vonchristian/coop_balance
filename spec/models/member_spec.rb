@@ -36,12 +36,9 @@ describe Member, type: :model do
 
   	expect(member.first_and_last_name).to eql("Von Halip")
   end
-  it "#avatar_text" do
-  	member = create(:member, first_name: "Von", middle_name: "Pinosan", last_name: "Halip")
 
-  	expect(member.avatar_text).to eql("V")
-  end
   it "#current_address" do
     pending "add some examples to (or delete) #{__FILE__}"
   end
+
 end

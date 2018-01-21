@@ -16,4 +16,9 @@ class VouchersController < ApplicationController
       end
     end
   end
+  def destroy
+    @voucher = Voucher.find(params[:id])
+    @voucher.destroy
+    redirect_to "/", notice: "Voucher cancelled successfully."
+  end
 end

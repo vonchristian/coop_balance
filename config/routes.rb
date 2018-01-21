@@ -276,7 +276,7 @@ Rails.application.routes.draw do
     resources :collaterals, only: [:index, :new, :create], module: :loans
   end
   resources :loan_co_makers, only: [:destroy]
-  resources :vouchers, only: [:index, :show] do
+  resources :vouchers, only: [:index, :show, :destroy] do
     resources :disbursements, only: [:new, :create], module: :vouchers
     resources :loan_disbursements, only: [:new, :create], module: :vouchers
 

@@ -1,31 +1,27 @@
-module Suppliers 
+module Suppliers
   class DeliveriesController < ApplicationController
-    def index 
+    def index
       @supplier = Supplier.find(params[:supplier_id])
-      @stock_registries = @supplier.stock_registries
-
-    end 
-    def new 
-      @stock_registry = current_stock_registry
-      @supplier = Supplier.find(params[:supplier_id])
-      @stock = StoreModule::ProductStock.new
-      @product = StoreModule::Product.new
-      @voucher = Voucher.new
-    end 
-    def create
-      @stock_registry = current_stock_registry
-      @supplier = Supplier.find(params[:supplier_id])
-      @stock = @stock_registry.stocks.create(stock_params)
-      if @stock.save 
-        redirect_to new_supplier_delivery_url(@supplier), notice: "Stock added successfully"
-      else 
-        redirect_to new_supplier_delivery_url(@supplier), alert: "Error"
-      end 
-    end 
-
-    private 
-    def stock_params
-      params.require(:store_module_product_stock).permit(:product_id, :date, :quantity, :unit_cost, :total_cost, :barcode, :supplier_id)
     end
-  end 
-end 
+    def new
+      @supplier = Supplier.find(params[:supplier_id])
+      @stock = @supplier.supplied_stocks.build
+      @stock_registry = current_stock_registry
+    end
+    def create
+      @supplier = Supplier.find(params[:supplier_id])
+      @stock = @supplier.supplied_stocks.build(stock_params)
+      @stock.registry = current_stock_registry
+      if   @stock.save!
+        redirect_to new_supplier_delivery_url(@supplier), notice: "Stock added successfully"
+      else
+        render :new
+      end
+    end
+
+    private
+    def stock_params
+      params.require(:store_module_product_stock).permit(:product_id, :date, :quantity, :unit_cost, :total_cost, :barcode, :supplier_id, :retail_price, :wholesale_price)
+    end
+  end
+end

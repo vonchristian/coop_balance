@@ -32,6 +32,7 @@ module AccountingModule
       end
       return balance
     end
+    
     private
     def balance_for_recorder(recorder)
       joins(:entry, :account).where('recorder_id' => recorder).total

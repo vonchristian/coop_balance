@@ -167,4 +167,7 @@ class User < ApplicationRecord
     end
     self.save
   end
+  def latest_purchase_date
+    orders.last.date || Time.zone.now
+  end
 end

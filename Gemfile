@@ -82,6 +82,7 @@ group :test do
   gem 'shoulda-matchers'
   gem 'database_cleaner'
   gem 'launchy'
+  gem 'capybara-webkit'
 end
 
 gem 'rack-mini-profiler'

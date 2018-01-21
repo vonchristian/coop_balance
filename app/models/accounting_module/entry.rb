@@ -8,8 +8,8 @@ module AccountingModule
     belongs_to :commercial_document, :polymorphic => true, touch: true
     belongs_to :origin, :polymorphic => true, touch: true
     belongs_to :recorder, foreign_key: 'recorder_id', class_name: "User"
-    has_many :credit_amounts, :class_name => 'AccountingModule::CreditAmount', :inverse_of => :entry, dependent: :destroy
-    has_many :debit_amounts, :class_name => 'AccountingModule::DebitAmount', :inverse_of => :entry, dependent: :destroy
+    has_many :credit_amounts, extend: AccountingModule::BalanceFinder, :class_name => 'AccountingModule::CreditAmount', :inverse_of => :entry, dependent: :destroy
+    has_many :debit_amounts, extend: AccountingModule::BalanceFinder, :class_name => 'AccountingModule::DebitAmount', :inverse_of => :entry, dependent: :destroy
     has_many :credit_accounts, :through => :credit_amounts, :source => :account, :class_name => 'AccountingModule::Account'
     has_many :debit_accounts, :through => :debit_amounts, :source => :account, :class_name => 'AccountingModule::Account'
     has_many :amounts, class_name: "AccountingModule::Amount"
