@@ -57,18 +57,12 @@ gem 'daemons'
 gem 'delayed-web'
 gem 'colorize'
 group :development, :test do
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  gem 'spring-commands-rspec'
+  gem 'guard'
+  gem 'guard-livereload'
+  gem 'guard-rspec'
   gem 'rspec-rails'
+  gem 'capybara'
   gem 'factory_bot_rails'
-  gem 'rspec-its'
-  gem 'faker'
-  gem 'guard-rspec', require: false
-  gem 'rb-fsevent'
-  gem 'growl'
-  gem 'selenium-webdriver'
-  gem 'capybara', '~> 2.13'
-  gem 'bullet'
 end
 
 group :development do

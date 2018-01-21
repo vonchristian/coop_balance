@@ -3,9 +3,8 @@ ENV['RAILS_ENV'] = 'test'
 require File.expand_path('../../config/environment', __FILE__)
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
-require 'spec_helper'
-require 'capybara/rspec'
 require 'rspec/rails'
+require 'capybara/rspec'
 require "paperclip/matchers"
 require 'database_cleaner'
 
@@ -17,27 +16,15 @@ ActiveRecord::Migration.maintain_test_schema!
 RSpec.configure do |config|
   config.include ActiveSupport::Testing::TimeHelpers
   config.include Paperclip::Shoulda::Matchers
-  config.use_transactional_fixtures = false
-  config.infer_spec_type_from_file_location!
-  config.filter_rails_from_backtrace!
   config.include FactoryBot::Syntax::Methods
   config.include Warden::Test::Helpers
   config.include Devise::Test::IntegrationHelpers, :type => :system
   config.include Devise::Test::ControllerHelpers, :type => :views
   config.include Devise::Test::ControllerHelpers, :type => :controllers
-end
-Shoulda::Matchers.configure do |config|
-  config.integrate do |with|
-    with.test_framework :rspec
-    with.library :rails
-  end
-end
-RSpec.configure do |config|
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation)
-  end
-  config.before(:each) do
     DatabaseCleaner.strategy = :transaction
+
   end
   config.before(:each, :js => true) do
     DatabaseCleaner.strategy = :truncation
@@ -48,6 +35,12 @@ RSpec.configure do |config|
   config.after(:each) do
     DatabaseCleaner.clean
   end
-
 end
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
+end
+
 Capybara.javascript_driver = :webkit
