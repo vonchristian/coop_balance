@@ -67,21 +67,21 @@ end
 
 group :development do
   gem 'pry-rails'
-  gem 'web-console', '>= 3.3.0'
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'spring-commands-rspec'
 end
 group :test do
   gem 'shoulda-matchers'
-  gem 'database_cleaner'
+  gem 'database_rewinder'
   gem 'launchy'
   gem 'capybara-webkit'
 end
 
-gem 'rack-mini-profiler'
-gem 'memory_profiler'
+# gem 'rack-mini-profiler'
+# gem 'memory_profiler'
 gem 'whenever', :require => false
 
 gem "simple_calendar", "~> 2.0"
-gem 'traceroute'
+# gem 'traceroute'

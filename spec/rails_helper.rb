@@ -6,7 +6,6 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 require 'rspec/rails'
 require 'capybara/rspec'
 require "paperclip/matchers"
-require 'database_cleaner'
 
 Dir[Rails.root.join("spec/models/shared_examples/**/*.rb")].each {|f| require f}
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
@@ -22,18 +21,11 @@ RSpec.configure do |config|
   config.include Devise::Test::ControllerHelpers, :type => :views
   config.include Devise::Test::ControllerHelpers, :type => :controllers
   config.before(:suite) do
-    DatabaseCleaner.clean_with(:truncation)
-    DatabaseCleaner.strategy = :transaction
+    DatabaseRewinder.clean_all
+  end
 
-  end
-  config.before(:each, :js => true) do
-    DatabaseCleaner.strategy = :truncation
-  end
-  config.before(:each) do
-    DatabaseCleaner.start
-  end
   config.after(:each) do
-    DatabaseCleaner.clean
+    DatabaseRewinder.clean
   end
 end
 Shoulda::Matchers.configure do |config|
