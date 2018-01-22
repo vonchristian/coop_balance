@@ -62,6 +62,7 @@ module MembershipsModule
     end
 
     it '#interests_earned' do
+      employee = create(:user, role: 'teller')
     	saving = create(:saving)
       withdrawal = build(:entry, commercial_document: saving)
       credit_amount = create(:credit_amount, amount: 500, entry: withdrawal, commercial_document: saving, account: employee.cash_on_hand_account)
@@ -73,13 +74,15 @@ module MembershipsModule
 
     context '#can_withdraw?' do
     	it 'TRUE if balance is greater than 0' do
+        employee = create(:user, role: 'teller')
         saving_product = create(:saving_product)
     		saving = create(:saving, saving_product: saving_product)
-        deposit = create(:entry_with_credit_and_debit, commercial_document: saving)
-        withdrawal = create(:entry_with_credit_and_debit, commercial_document: saving)
-        savings_interest = create(:entry_with_credit_and_debit, commercial_document: saving)
+        deposit = build(:entry, commercial_document: saving)
+        credit_amount = create(:credit_amount, amount: 5000, entry: deposit, commercial_document: saving, account: saving.saving_product_account)
+        debit_amount = create(:debit_amount, amount: 5_000, entry: deposit, commercial_document: saving, account: employee.cash_on_hand_account)
+        deposit.save
 
-        expect(saving.balance).to eql(100)
+        expect(saving.balance).to eql(5_000)
         expect(saving.can_withdraw?).to be true
     	end
 

@@ -43,9 +43,8 @@ module MembershipsModule
 
     def self.updated_at(options={})
       if options[:from_date] && options[:to_date]
-        from_date = Chronic.parse(options[:from_date].to_date)
-        to_date = Chronic.parse(options[:to_date].to_date)
-        where('updated_at' => (from_date.beginning_of_day)..(to_date.end_of_day))
+        date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
+        where('updated_at' => (date_range.start_date..date_range.end_date))
       else
         all
       end
