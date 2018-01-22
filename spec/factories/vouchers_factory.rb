@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :voucher do
     number "MyString"
-    voucherable nil
+    association :preparer, factory: :user
+    association :disburser, factory: :user
   end
 end
