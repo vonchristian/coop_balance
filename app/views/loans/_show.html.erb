@@ -33,7 +33,9 @@
 
   </div>
   <div class="col-md-9">
-    <div class="nav-tabs-custom">
+    <div class="box box-solid">
+      <div class="box-body">
+    <div class="nav-tabs-navigation">
       <ul class="nav nav-tabs">
         <li class="<%= 'active' if current_page?(loan_path(@loan))%>"><%= link_to 'Info', loan_path(@loan) %></li>
         <li class="<%= 'active' if current_page?(loan_disbursements_path(@loan))%>"><%= link_to 'Disbursement / Charges', loan_disbursements_path(@loan) %></li>

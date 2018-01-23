@@ -1,3 +1,4 @@
+require 'will_paginate/array'
 module LoansModule
   class BorrowersController < ApplicationController
     def index

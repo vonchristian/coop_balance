@@ -78,6 +78,13 @@ module MembershipsModule
     def can_withdraw?
       !closed? && balance > 0.0
     end
+    def last_transaction_date
+      if entries.any?
+        entries.order(entry_date: :asc).last.entry_date.strftime("%B %e, %Y")
+      else
+        "No Transactions"
+      end
+    end
     private
     #used for pg search
     def set_account_owner_name

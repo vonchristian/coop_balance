@@ -16,7 +16,7 @@ module LoansModule
 
 
 	  def self.total
-	  	sum(&:charge_amount_with_adjustment)
+	  	all.map{|a| a.charge_amount_with_adjustment }.compact.sum
 	  end
 
 	  def charge_amount_with_adjustment
