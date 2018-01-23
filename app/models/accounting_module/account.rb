@@ -13,7 +13,7 @@ module AccountingModule
 
     has_many :debit_entries, :through => :debit_amounts, :source => :entry, :class_name => 'AccountingModule::Entry'
 
-    has_many :sub_accounts, class_name: "AccountingModule::Account", foreign_key: 'main_account_id'
+    has_many :subsidiary_accounts, class_name: "AccountingModule::Account", foreign_key: 'main_account_id'
     belongs_to :main_account, class_name: "AccountingModule::Account"
     validates :type, presence: true
     validates :name, :code, presence: true, uniqueness: true
@@ -93,15 +93,15 @@ module AccountingModule
       end
     end
     def credits_balance(options={})
-      if sub_accounts.present?
-        sub_accounts.map{ |a| a.debit_amounts.balance(options) }.sum + debit_amounts.balance(options)
+      if subsidiary_accounts.present?
+        subsidiary_accounts.map{ |a| a.debit_amounts.balance(options) }.sum + debit_amounts.balance(options)
       else
         credit_amounts.balance(options)
       end
     end
     def debits_balance(options={})
-      if sub_accounts.present?
-        sub_accounts.map{ |a| a.debit_amounts.balance(options) }.sum + debit_amounts.balance(options)
+      if subsidiary_accounts.present?
+        subsidiary_accounts.map{ |a| a.debit_amounts.balance(options) }.sum + debit_amounts.balance(options)
       else
         debit_amounts.balance(options)
       end
