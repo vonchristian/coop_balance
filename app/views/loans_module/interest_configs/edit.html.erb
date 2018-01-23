@@ -1,0 +1,6 @@
+<%= simple_form_for @interest_config, url: :loans_module_interest_config do |f| %>
+  <%= f.input :rate %>
+  <%= f.input :interest_revenue_account_id, collection: AccountingModule::Revenue.all.map{|a| [a.name, a.id] } %>
+  <%= f.input :unearned_interest_income_account_id, collection: AccountingModule::Asset.all.map{|a| [a.name, a.id] } %>
+  <%= f.submit %>
+<% end %>

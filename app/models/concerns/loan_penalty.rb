@@ -4,7 +4,7 @@ class LoanPenalty
   end
 
   def balance(loan)
-    loan.loan_product.penalty_account.balance(commercial_document_id: loan.id)
+    # loan.loan_product.penalty_account.balance(commercial_document_id: loan.id)
   end
 
   def compute(loan, schedule)

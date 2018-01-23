@@ -21,15 +21,17 @@ module LoansModule
 
 	  def charge_amount_with_adjustment
 	  	if charge_adjustment.present?
-	  	  charge_adjustment.adjusted_charge_amount
+	  	  adjusted_amount
 	    else
 				regular_charge_amount
 	    end
 	  end
-
+	  def adjusted_amount
+	  	charge_adjustment.adjusted_charge_amount
+	  end
 
 		def regular_charge_amount
-			chargeable.amount_for(self.loan)
+			chargeable.amount
 		end
 	end
 end

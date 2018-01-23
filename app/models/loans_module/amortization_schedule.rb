@@ -7,6 +7,9 @@ module LoansModule
     accepts_nested_attributes_for :notes
 
 		def self.create_schedule_for(loan)
+      if loan.amortization_schedules.present?
+        loan.amortization_schedules.destroy_all
+      end
 			create_first_schedule(loan)
       create_succeeding_schedule(loan)
     end
@@ -54,7 +57,7 @@ module LoansModule
 		def self.create_succeeding_schedule(loan)
 			if !loan.lumpsum?
 				ActiveRecord::Base.transaction do
-					number_of_schedules_for(loan).times do
+					number_of_remaining_schedules_for(loan).times do
 						loan.amortization_schedules.create(
 							date: schedule_date_for(loan),
 							principal: principal_amount_for(loan),
@@ -65,39 +68,29 @@ module LoansModule
 			end
 		end
 		def self.principal_amount_for(loan)
-			if loan.quarterly?
-			  (loan.loan_amount / (loan.term / 4))
-			elsif loan.monthly?
-				(loan.loan_amount / loan.term.to_i)
-			elsif loan.semi_annually?
-				(loan.loan_amount / (loan.term.to_i/6))
-			elsif loan.lumpsum?
-				(loan.loan_amount)
-			end
+			(loan.loan_amount / number_of_payments(loan))
 		end
 
 		def self.interest_amount_for(loan)
-			if loan.monthly?
-				(loan.interest_on_loan_balance / (loan.term))
-		  elsif loan.quarterly?
-			  (loan.interest_on_loan_balance / (loan.term/4))
-			elsif loan.semi_annually?
-				(loan.interest_on_loan_balance/(loan.term.to_i/6))
-			elsif loan.lumpsum?
-				loan.interest_on_loan_balance
-			end
+			(loan.interest_on_loan_balance / number_of_payments(loan))
 		end
 
-		def self.number_of_schedules_for(loan)
-			if loan.quarterly?
-			  ((loan.term.to_i / 4) -1)
-		  elsif loan.monthly?
-			  (loan.term.to_i - 1)
-			elsif loan.semi_annually?
-				((loan.term.to_i / 6) -1)
+    def self.number_of_payments(loan)
+      if loan.monthly?
+        loan.term.to_i
+      elsif loan.quarterly?
+        loan.term.to_i / 4
+      elsif loan.semi_annually?
+        loan.term.to_i / 6
+      elsif loan.lumpsum?
+        1
       end
-		end
+    end
 
+
+		def self.number_of_remaining_schedules_for(loan)
+			number_of_payments(loan) - 1
+		end
 		def self.schedule_date_for(loan)
 			if loan.monthly?
 			  loan.amortization_schedules.order(created_at: :asc).last.date.next_month

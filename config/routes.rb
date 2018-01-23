@@ -43,6 +43,7 @@ Rails.application.routes.draw do
 
   resources :loans_module, only: [:index]
   namespace :loans_module do
+    resources :interest_configs, only: [:edit, :update]
     namespace :reports do
       resources :loan_releases, only: [:index]
       resources :loan_protection_funds, only: [:index]
@@ -57,6 +58,7 @@ Rails.application.routes.draw do
     resources :loan_applications, only: [:new, :create, :show, :edit, :update, :destroy]
     resources :dashboard, only: [:index]
     resources :loan_products, except:[:destroy] do
+      resources :interest_configurations, only: [:new, :create]
       resources :loan_product_charges, only: [:new, :create]
       resources :loans, only: [:index], module: :loan_products
     end

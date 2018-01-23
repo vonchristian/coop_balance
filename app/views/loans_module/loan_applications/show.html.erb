@@ -76,8 +76,8 @@
 					  </div>
 					  <div class="col-md-3">
 					    <% if loan_charge.charge_adjustment.present? %>
-					    <strike class="text-danger pull-right"><%= number_to_currency loan_charge.charge_amount_with_adjustment, class: "pull-right" %></strike><br>
-					    <span class="pull-right"><%= number_to_currency loan_charge.charge_adjustment.charge_amount %></span>
+					    <strike class="text-danger pull-right"><%= number_to_currency loan_charge.regular_charge_amount, class: "pull-right" %></strike><br>
+					    <span class="pull-right"><%= number_to_currency loan_charge.charge_amount_with_adjustment %></span>
 					    <% else %>
 					      <span class="pull-right"><%= number_to_currency loan_charge.regular_charge_amount %></span>
 					    <% end %>

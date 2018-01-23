@@ -3,8 +3,7 @@ require 'rails_helper'
 module LoansModule
   describe LoanProduct do
     describe 'associations' do
-      it { is_expected.to belong_to :account }
-      it { is_expected.to belong_to :interest_account }
+      it { is_expected.to belong_to :loans_receivable_current_account }
       it { is_expected.to belong_to :penalty_account }
     	it { is_expected.to have_many :loans }
       it { is_expected.to have_many :member_borrowers }

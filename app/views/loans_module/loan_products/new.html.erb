@@ -11,17 +11,9 @@
           <%= f.input :description, as: :text %>
           <%= f.input :maximum_loanable_amount,  as: :currency %>
 
-          <%= f.input :account_id, label: "Select Loan Account", collection: AccountingModule::Asset.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanAccountSelect'} %>
-          <%= f.input :interest_account_id, label: "Select Loan Interest Account", collection: AccountingModule::Asset.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanInterestAccountSelect'} %>
-          <%= f.input :interest_receivable_account_id, label: "Select Loan Interest Account", collection: AccountingModule::Asset.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanInterestAccountSelect'} %>
+          <%= f.input :loans_receivable_current_account_id, label: "Select Loans Receivable (Current) Account", collection: AccountingModule::Asset.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanAccountSelect'} %>
+          <%= f.input :loans_receivable_past_due_account_id, label: "Select Loans Receivable (Past Due) Account", collection: AccountingModule::Asset.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanAccountSelect'} %>
 
-
-
-            <%= f.input :interest_rate, label: "Interest Rate (Annual):", placeholder: 'e.g. 12' %>
-            <p>LOAN PENALTY</p>
-
-           <%= f.input :penalty_account_id, label: "Select Loan Penalty Account", collection: AccountingModule::Asset.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanPenaltyAccountSelect'} %>
-            <%= f.input :penalty_rate, label: "Penalty Rate (Monthly):", placeholder: 'e.g. 2' %>
 
           <div class="box-footer">
             <%= f.submit "Create Loan Product", class: "btn btn-primary btn-flat" %>

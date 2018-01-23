@@ -3,12 +3,12 @@ module LoansModule
     extend FriendlyId
     friendly_id :name, use: :slugged
 
-  	belongs_to :account, class_name: "AccountingModule::Account"
-    belongs_to :interest_account, class_name: "AccountingModule::Account"
-    belongs_to :interest_receivable_account, class_name: "AccountingModule::Account"
+    belongs_to :loans_receivable_current_account, class_name: "AccountingModule::Account"
+    belongs_to :loans_receivable_past_due_account, class_name: "AccountingModule::Account"
+
     belongs_to :penalty_account, class_name: "AccountingModule::Account"
 
-    has_one :interest_configuration
+    has_one :interest_config, class_name: "LoansModule::InterestConfig"
     has_one :penalty_configuration
 
     has_many :loans
@@ -17,15 +17,16 @@ module LoansModule
     has_many :organization_borrowers, through: :loans, source: :borrower, source_type: 'Organization'
     has_many :loan_product_charges
     has_many :charges, through: :loan_product_charges
-
-    delegate :name, to: :account, prefix: true
-    delegate :name, to: :interest_account, prefix: true
-    delegate :name, to: :penalty_account, prefix: true
-    validates :name,:account_id, :interest_rate, :interest_account_id, :interest_receivable_account_id, presence: true
+#DO NOT ALLOW NIL RATE AND ACCOUNTS
+    delegate :rate, to: :interest_config, prefix: true, allow_nil: true
+    delegate :interest_revenue_account_id, to: :interest_config, allow_nil: true
+    validates :name,:loans_receivable_current_account_id, :loans_receivable_past_due_account_id, presence: true
 
     validates :name, uniqueness: true
-    validates :interest_rate, :penalty_rate, :maximum_loanable_amount, numericality: true
-
+    validates :maximum_loanable_amount, numericality: true
+    def interest_rate
+      interest_config.rate
+    end
     def self.accounts
       all.map{|a| a.account } +
       all.map{|a| a.interest_account } +
@@ -43,8 +44,7 @@ module LoansModule
     end
 
     def create_interest_on_loan_charge_for(loan)
-      interest_on_loan_charge = Charge.create(name: "Interest on Loan", amount: (self.interest_rate / 100) * loan.loan_amount, account_id: self.interest_receivable_account_id)
-      loan.loan_charges.find_or_create_by(chargeable: interest_on_loan_charge, commercial_document: loan )
+      interest_config.create_charges_for(loan)
     end
 
     def create_charges_that_depends_on_loan_amount(loan)
@@ -60,3 +60,6 @@ module LoansModule
     end
   end
 end
+
+
+#if interest is prededucted

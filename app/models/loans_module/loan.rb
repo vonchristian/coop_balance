@@ -34,7 +34,7 @@ module LoansModule
 
     delegate :name, :age, :contact_number, :current_address, to: :borrower,  prefix: true, allow_nil: true
     delegate :name,  to: :loan_product, prefix: true
-    delegate :account, :interest_account, :interest_receivable_account, :interest_rate, :penalty_account, to: :loan_product, prefix: true
+    delegate :interest_rate, to: :loan_product, prefix: true
     delegate :name, to: :organization, prefix: true, allow_nil: true
     delegate :full_name, :current_occupation, to: :preparer, prefix: true
     delegate :maximum_loanable_amount, to: :loan_product
@@ -102,7 +102,7 @@ module LoansModule
     #   interest.charge_amount_with_adjustment
     # end
     def interest_on_loan_balance
-      interest = loan_charges.select{|a| a.chargeable.account == self.loan_product_interest_account}.last
+      interest = loan_charges.select{|a| a.chargeable.account_id == self.loan_product.interest_revenue_account_id}.last
       if interest.present?
         interest.amortizeable_amount.to_f
       else
@@ -203,7 +203,7 @@ module LoansModule
     end
 
     def principal_balance(options={})
-      loan_product_account.balance(commercial_document_id: self.id, from_date: options[:from_date], to_date: options[:to_date])
+      loan_product.loans_receivable_current_account.balance(commercial_document_id: self.id, from_date: options[:from_date], to_date: options[:to_date])
     end
 
     def penalty_balance(options={})
@@ -215,18 +215,18 @@ module LoansModule
     end
 
     def principal_payments_total(options={})
-      loan_product_account.credits_balance(commercial_document_id: self.id, from_date: options[:from_date], to_date: options[:to_date])
+      # loan_product.loans_receivable_current_account.credits_balance(commercial_document_id: self.id, from_date: options[:from_date], to_date: options[:to_date])
     end
 
     def interest_payments_total(options={})
-      loan_product_interest_receivable_account.debits_balance(from_date: options[:from_date], to_date: options[:to_date], commercial_document_id: self.id)
+      # loan_product_interest_receivable_account.debits_balance(from_date: options[:from_date], to_date: options[:to_date], commercial_document_id: self.id)
     end
     def penalty_payments_total(options={})
-      loan_product_penalty_account.debits_balance(from_date: options[:from_date], to_date: options[:to_date], commercial_document_id: self.id)
+      # loan_product_penalty_account.debits_balance(from_date: options[:from_date], to_date: options[:to_date], commercial_document_id: self.id)
     end
 
     def payments_total(options={})
-      principal_payments_total(options) + interest_payments_total(options) + penalty_payments_total(options)
+      # principal_payments_total(options) + interest_payments_total(options) + penalty_payments_total(options)
     end
 
     def disbursement
@@ -248,7 +248,7 @@ module LoansModule
     end
 
     def balance
-      loan_amount - payments_total
+      # loan_amount - payments_total
     end
     def status_color
       'yellow'

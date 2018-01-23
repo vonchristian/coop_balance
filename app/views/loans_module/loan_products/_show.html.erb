@@ -5,6 +5,7 @@
       <h3 class="box-title"><%= @loan_product.name %></h3>
       <p class="text-muted"><%= @loan_product.description %></p>
       <%= link_to "Add Charges", new_loans_module_loan_product_loan_product_charge_path(@loan_product) %>
+      <%= link_to "Interest Configuration", new_loans_module_loan_product_interest_configuration_path(@loan_product) %>
     </div>
     <div class="box-body">
        <div class="nav-tabs-custom">
