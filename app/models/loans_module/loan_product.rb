@@ -24,6 +24,11 @@ module LoansModule
 
     validates :name, uniqueness: true
     validates :maximum_loanable_amount, numericality: true
+
+    def monthly_interest_rate
+      0.01
+    end
+
     def interest_rate
       interest_config.rate
     end

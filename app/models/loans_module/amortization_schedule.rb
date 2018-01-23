@@ -12,6 +12,7 @@ module LoansModule
       end
 			create_first_schedule(loan)
       create_succeeding_schedule(loan)
+      update_amortization_schedule(loan)
     end
 
     def self.principal_for(schedule, loan)
@@ -35,6 +36,12 @@ module LoansModule
 
     def total_other_charges_for(date)
       loan.loan_charge_payment_schedules.scheduled_for(date).sum(:amount)
+    end
+    def self.update_amortization_schedule(loan)
+      loan.amortization_schedules.order(date: :asc).each do |amortization_schedule|
+        amortization_schedule.interest = (loan.balance_for(amortization_schedule) * loan.loan_product_monthly_interest_rate)
+        amortization_schedule.save
+      end
     end
 
 		private
@@ -72,7 +79,8 @@ module LoansModule
 		end
 
 		def self.interest_amount_for(loan)
-			(loan.interest_on_loan_balance / number_of_payments(loan))
+      loan.amortization_schedules.order(date: :asc).map{}
+			# (loan.interest_on_loan_balance / number_of_payments(loan))
 		end
 
     def self.number_of_payments(loan)
