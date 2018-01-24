@@ -19,8 +19,8 @@ module LoansModule
     has_many :charges, through: :loan_product_charges
 #DO NOT ALLOW NIL RATE AND ACCOUNTS
     delegate :rate, to: :interest_config, prefix: true, allow_nil: true
-    delegate :interest_revenue_account_id, to: :interest_config
-    delegate :interest_revenue_account_id, to: :interest_config, allow_nil: true
+    delegate :interest_revenue_account, :interest_revenue_account_id, to: :interest_config
+    delegate :unearned_interest_income_account, :unearned_interest_income_account_id, to: :interest_config, allow_nil: true
     validates :name,:loans_receivable_current_account_id, :loans_receivable_past_due_account_id, presence: true
 
     validates :name, uniqueness: true

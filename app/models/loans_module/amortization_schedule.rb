@@ -6,7 +6,12 @@ module LoansModule
 
     accepts_nested_attributes_for :notes
 
-
+    def debit_account
+      loan.loan_product.interest_revenue_account
+    end
+    def credit_account
+      loan.loan_product.unearned_interest_income_account
+    end
     def self.with_prededucted_interests
       select{|a| a.has_prededucted_interest? }
     end
@@ -18,7 +23,8 @@ module LoansModule
 			create_first_schedule(loan)
       create_succeeding_schedule(loan)
       update_amortization_schedule(loan)
-      update_with_preducted_interest_payments(loan)
+      update_with_prededucted_interest_payments(loan)
+      LoansModule::PredeductedInterest.create_schedules_for(loan)
     end
     def self.average_monthly_payment(loan)
       all.collect{ |a| a.total_amortization }.sum / loan.term
@@ -119,7 +125,8 @@ module LoansModule
 		end
 		def self.schedule_date_for(loan)
 			if loan.monthly?
-			  loan.amortization_schedules.order(created_at: :asc).last.date.next_month
+			  month_date = loan.amortization_schedules.order(created_at: :asc).last.date.next_month
+        proper_date_for(month_date)
 			elsif loan.quarterly?
 				loan.amortization_schedules.order(created_at: :asc).last.date.next_quarter
 			elsif loan.semi_annually?
@@ -137,12 +144,19 @@ module LoansModule
 				starting_date(loan) + loan.term.to_i.months
 			end
 		end
-    def self.update_with_preducted_interest_payments(loan)
+    def self.update_with_prededucted_interest_payments(loan)
       if loan.number_of_interest_payments_prededucted > 0
-        loan.amortization_schedules.order(date: :desc).first(loan.number_of_interest_payments_prededucted).each do |schedule|
+        loan.amortization_schedules.order(date: :asc).first(loan.number_of_interest_payments_prededucted).each do |schedule|
           schedule.has_prededucted_interest = true
           schedule.save
         end
+      end
+    end
+    def self.proper_date_for(date)
+      if date.sunday?
+        date.next
+      else
+        date
       end
     end
 	end

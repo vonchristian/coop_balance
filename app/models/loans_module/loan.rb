@@ -16,6 +16,7 @@ module LoansModule
     belongs_to :organization, optional: true
     belongs_to :preparer, class_name: "User", foreign_key: 'preparer_id'
 
+    has_many :prededucted_interests, class_name: "LoansModule::PredeductedInterest", dependent: :destroy
     has_many :loan_protection_funds, class_name: "LoansModule::LoanProtectionFund", dependent: :destroy
     has_many :loan_approvals, class_name: "LoansModule::LoanApproval", dependent: :destroy
     has_many :approvers, through: :loan_approvals
