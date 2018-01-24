@@ -37,7 +37,7 @@ class User < ApplicationRecord
   has_many :time_deposits, class_name: "MembershipsModule::TimeDeposit", as: :depositor
   has_many :orders, class_name: "StoreModule::Order", as: :customer
   has_many :entries, class_name: "AccountingModule::Entry", foreign_key: 'recorder_id'
-  has_many :fund_transfers, class_name: "AccountingModule::Entry", as: :commercial_document
+
   has_many :appraised_properties, class_name: "Appraisal", foreign_key: 'appraiser_id'
   has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", as: :commercial_document # for adding amounts on voucher
   has_many :vouchers, as: :payee, class_name: "Vouchers::EmployeeVoucher"
@@ -110,8 +110,7 @@ class User < ApplicationRecord
    AccountsReceivableStore.new.balance(self)
   end
   def cash_on_hand_account_balance(options = {})
-    default_cash_on_hand_account.balance(recorder_id: self.id) +
-    fund_transfers.total(options)
+    default_cash_on_hand_account.balance(recorder_id: self.id)
   end
 
   def cash_advance_total
@@ -156,9 +155,6 @@ class User < ApplicationRecord
     end
   end
 
-  def fund_transfer_total
-    fund_transfers.total
-  end
   def set_cash_on_hand_account
     if treasurer?
       self.cash_on_hand_account = AccountingModule::Asset.find_by(name: "Cash on Hand (Treasury)")

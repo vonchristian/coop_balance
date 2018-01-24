@@ -7,6 +7,8 @@ module LoansModule
 		def adjusted_charge_amount
 	  	if amount.present?
 	  		regular_charge_amount - amount
+	  	elsif number_of_payments.present?
+        loan_charge.loan.amortization_schedules.order(date: :asc).first(number_of_payments).sum(&:interest)
 	  	else
 	  	  regular_charge_amount * (percent / 100.0)
 	  	end

@@ -31,7 +31,7 @@ module LoansModule
 	  end
 
 		def regular_charge_amount
-			chargeable.amount
+			chargeable.amount_for(self.loan)
 		end
 	end
 end

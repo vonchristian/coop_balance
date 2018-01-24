@@ -29,6 +29,7 @@
             <div class="col-md-10 col-md-offset-1">
               <%= f.input :amount, as: :currency %>
               <%= f.input :percent, label: "Percent to be deducted" %>
+              <%= f.input :number_of_payments %>
               <span class="help-block"> If you want to amortize the balance left for this loan charge, check this box. </span>
               <%= f.input :amortize_balance, as: :boolean %>
               <div class='box-footer'>

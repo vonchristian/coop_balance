@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_01_23_031320) do
+ActiveRecord::Schema.define(version: 2018_01_24_105409) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -144,6 +144,7 @@ ActiveRecord::Schema.define(version: 2018_01_23_031320) do
     t.boolean "amortize_balance", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "number_of_payments"
     t.index ["loan_charge_id"], name: "index_charge_adjustments_on_loan_charge_id"
   end
 

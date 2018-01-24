@@ -18,6 +18,16 @@ module LoansModule
       end
       charges.join("")
     end
+    def interest_amount_for(a)
+      if @loan.interest_on_loan_charge.charge_adjustment.present? && @loan.interest_on_loan_charge.charge_adjustment.number_of_payments.present?
+        number_of_payments = @loan.interest_on_loan_charge.charge_adjustment.number_of_payments
+        if @loan.amortization_schedules.order(date: :asc).first(number_of_payments).include?(a)
+          "#{price(a.interest)} - PREDEDUCTED"
+        else
+          price(a.interest)
+        end
+      end
+    end
     def price(number)
       @view_context.number_to_currency(number, :unit => "P ")
     end
@@ -66,7 +76,8 @@ module LoansModule
     end
     def amortization_schedule_data
       [["DATE", "PRINCIPAL", "INTEREST", "OTHER CHARGES", "TOTAL AMORTIZATION", "BALANCE"]] +
-      @table_date ||= @amortization_schedules.order(date: :asc).map{|a| [a.date.strftime("%B %e, %Y"), price(a.principal), price(a.interest), other_charges_for(a.date), price(a.total_amortization), price(@loan.balance_for(a))] }
+      [["", "","", "", "", "#{price(@loan.loan_amount)}"]] +
+      @table_date ||= @amortization_schedules.order(date: :asc).map{|a| [a.date.strftime("%B %e, %Y"), price(a.principal), (interest_amount_for(a)), other_charges_for(a.date), price(a.total_amortization), price(@loan.balance_for(a))] }
     end
     def signatory_details
     move_down 50

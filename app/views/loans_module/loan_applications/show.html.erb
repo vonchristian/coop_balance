@@ -120,7 +120,7 @@
 
           </div>
           <div class="col-md-3">
-            <span class="pull-right"><%= number_to_currency @loan.amortization_schedules.order(created_at: :asc).first.try(:total_amortization) %></span>
+            <span class="pull-right"><%= number_to_currency @loan.amortization_schedules.average_monthly_payment(@loan) %></span>
           </div>
         </div>
         <br>

@@ -14,6 +14,9 @@ module LoansModule
       create_succeeding_schedule(loan)
       update_amortization_schedule(loan)
     end
+    def self.average_monthly_payment(loan)
+      all.collect{ |a| a.total_amortization }.sum / loan.term
+    end
 
     def self.principal_for(schedule, loan)
       from_date = loan.amortization_schedules.order(created_at: :asc).first.date
@@ -30,9 +33,22 @@ module LoansModule
     end
 
     def total_amortization(options = {})
-       principal + interest +
+       principal + interest_computation +
        total_other_charges_for(self.date)
     end
+    def interest_computation
+      if loan.interest_on_loan_charge.charge_adjustment.present? && loan.interest_on_loan_charge.charge_adjustment.number_of_payments.present?
+        number_of_payments = loan.interest_on_loan_charge.charge_adjustment.number_of_payments
+        if loan.amortization_schedules.order(date: :desc).first(number_of_payments).include?(self)
+          0
+        else
+          interest
+        end
+      else
+        0
+      end
+    end
+
 
     def total_other_charges_for(date)
       loan.loan_charge_payment_schedules.scheduled_for(date).sum(:amount)

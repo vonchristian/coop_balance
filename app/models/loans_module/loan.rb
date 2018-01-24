@@ -34,7 +34,7 @@ module LoansModule
 
     delegate :name, :age, :contact_number, :current_address, to: :borrower,  prefix: true, allow_nil: true
     delegate :name,  to: :loan_product, prefix: true
-    delegate :interest_rate, :monthly_interest_rate, to: :loan_product, prefix: true
+    delegate :interest_revenue_account_id, :interest_rate, :monthly_interest_rate, to: :loan_product, prefix: true
     delegate :name, to: :organization, prefix: true, allow_nil: true
     delegate :full_name, :current_occupation, to: :preparer, prefix: true
     delegate :maximum_loanable_amount, to: :loan_product
@@ -96,6 +96,10 @@ module LoansModule
     end
     def penalties_total
       LoanPenalty.new.balance(self)
+    end
+    def interest_on_loan_charge
+      interest = charges.where(account_id: loan_product_interest_revenue_account_id)
+      loan_charges.find_by(chargeable: interest)
     end
 
     def interest_on_loan_balance

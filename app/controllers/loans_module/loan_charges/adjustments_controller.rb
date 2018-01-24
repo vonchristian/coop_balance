@@ -20,7 +20,7 @@ module LoansModule
 			end
 			private
 			def charge_adjustment_params
-				params.require(:loans_module_charge_adjustment).permit(:percent, :amount, :amortize_balance)
+				params.require(:loans_module_charge_adjustment).permit(:percent, :amount, :amortize_balance, :number_of_payments)
 			end
 		end
 	end

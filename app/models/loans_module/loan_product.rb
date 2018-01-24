@@ -19,6 +19,7 @@ module LoansModule
     has_many :charges, through: :loan_product_charges
 #DO NOT ALLOW NIL RATE AND ACCOUNTS
     delegate :rate, to: :interest_config, prefix: true, allow_nil: true
+    delegate :interest_revenue_account_id, to: :interest_config
     delegate :interest_revenue_account_id, to: :interest_config, allow_nil: true
     validates :name,:loans_receivable_current_account_id, :loans_receivable_past_due_account_id, presence: true
 
@@ -26,12 +27,13 @@ module LoansModule
     validates :maximum_loanable_amount, numericality: true
 
     def monthly_interest_rate
-      0.01
+      interest_rate / 12.0
     end
 
     def interest_rate
       interest_config.rate
     end
+
     def self.accounts
       all.map{|a| a.account } +
       all.map{|a| a.interest_account } +
@@ -54,13 +56,13 @@ module LoansModule
 
     def create_charges_that_depends_on_loan_amount(loan)
       charges.depends_on_loan_amount.includes_loan_amount(loan).each do |charge|
-          loan.loan_charges.create(chargeable: charge)
+          loan.loan_charges.create!(chargeable: charge, commercial_document: loan)
       end
     end
 
     def create_charges_that_does_not_depends_on_loan_amount(loan)
      charges.not_depends_on_loan_amount.each do |charge|
-        loan.loan_charges.find_or_create_by(chargeable: charge)
+        loan.loan_charges.find_or_create_by!(chargeable: charge, commercial_document: loan)
       end
     end
   end
