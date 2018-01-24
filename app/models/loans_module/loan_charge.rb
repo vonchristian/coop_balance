@@ -14,7 +14,6 @@ module LoansModule
 
 		delegate :amortize_balance?, :amortizeable_amount, to: :charge_adjustment, allow_nil: true
 
-
 	  def self.total
 	  	all.map{|a| a.charge_amount_with_adjustment }.compact.sum
 	  end
@@ -33,5 +32,12 @@ module LoansModule
 		def regular_charge_amount
 			chargeable.amount_for(self.loan)
 		end
+		def number_of_interest_payments_prededucted
+      if charge_adjustment.present? && charge_adjustment.number_of_payments.present?
+        charge_adjustment.number_of_payments
+      else
+        0
+      end
+    end
 	end
 end

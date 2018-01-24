@@ -5,9 +5,12 @@ module LoansModule
     has_many :notes, as: :noteable
 
     accepts_nested_attributes_for :notes
+
+
     def self.with_prededucted_interests
       select{|a| a.has_prededucted_interest? }
     end
+
 		def self.create_schedule_for(loan)
       if loan.amortization_schedules.present?
         loan.amortization_schedules.destroy_all
@@ -15,6 +18,7 @@ module LoansModule
 			create_first_schedule(loan)
       create_succeeding_schedule(loan)
       update_amortization_schedule(loan)
+      update_with_preducted_interest_payments(loan)
     end
     def self.average_monthly_payment(loan)
       all.collect{ |a| a.total_amortization }.sum / loan.term
@@ -28,9 +32,8 @@ module LoansModule
 
     def self.scheduled_for(options={})
 			if options[:from_date].present? && options[:to_date].present?
-				from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : Chronic.parse(hash[:from_date].strftime('%Y-%m-%d 12:00:00'))
-         to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : Chronic.parse(hash[:to_date].strftime('%Y-%m-%d 12:59:59'))
-        where('date' => (from_date.beginning_of_day)..(to_date.end_of_day))
+				date_range = DateRange.new(from_date options[:from_date], to_date: options[:to_date])
+        where('date' => (date_range.start_date..date_range.end_date))
       end
     end
 
@@ -38,7 +41,8 @@ module LoansModule
        principal + interest_computation +
        total_other_charges_for(self.date)
     end
-    def interest_computation
+
+    def interest_computation #show on pdf amortization schedule
       if has_prededucted_interest?
         0
       else
@@ -46,9 +50,11 @@ module LoansModule
       end
     end
 
+
     def total_other_charges_for(date)
       loan.loan_charge_payment_schedules.scheduled_for(date).sum(:amount)
     end
+
     def self.update_amortization_schedule(loan)
       loan.amortization_schedules.order(date: :asc).each do |amortization_schedule|
         amortization_schedule.interest = (loan.balance_for(amortization_schedule) * loan.loan_product_monthly_interest_rate)
@@ -131,5 +137,13 @@ module LoansModule
 				starting_date(loan) + loan.term.to_i.months
 			end
 		end
+    def self.update_with_preducted_interest_payments(loan)
+      if loan.number_of_interest_payments_prededucted > 0
+        loan.amortization_schedules.order(date: :desc).first(loan.number_of_interest_payments_prededucted).each do |schedule|
+          schedule.has_prededucted_interest = true
+          schedule.save
+        end
+      end
+    end
 	end
 end

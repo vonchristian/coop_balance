@@ -39,6 +39,7 @@ module LoansModule
     delegate :full_name, :current_occupation, to: :preparer, prefix: true
     delegate :maximum_loanable_amount, to: :loan_product
     delegate :avatar, to: :borrower
+    delegate :number_of_interest_payments_prededucted, to: :interest_on_loan_charge, allow_nil: true
 
     validates :loan_product_id, :term, :loan_amount, :borrower_id, presence: true
     validates :term, presence: true, numericality: { greater_than: 0.1 }
@@ -64,6 +65,7 @@ module LoansModule
         end
       entries
     end
+
 
     def self.borrowers
       User.all + Member.all

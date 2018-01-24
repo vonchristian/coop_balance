@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :amortization_schedule do
+  factory :amortization_schedule, class: "LoansModule::AmortizationSchedule" do
     loan nil
     date nil
     principal "9.99"
