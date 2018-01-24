@@ -13,8 +13,11 @@
 #   rake "some:great:rake:task"
 # end
 #
-every 1.days do
+every 1.day do
   runner "SavingProduct.post_interests_earned"
 end
 
+every 1.day do
+  runner "UnearnedInterestIncome.post_entry"
+end
 # Learn more: http://github.com/javan/whenever
