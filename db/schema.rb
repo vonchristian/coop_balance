@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_01_24_105409) do
+ActiveRecord::Schema.define(version: 2018_01_24_134347) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 2018_01_24_105409) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "schedule_type"
+    t.boolean "has_prededucted_interest"
     t.index ["loan_id"], name: "index_amortization_schedules_on_loan_id"
     t.index ["schedule_type"], name: "index_amortization_schedules_on_schedule_type"
   end
@@ -760,6 +761,22 @@ ActiveRecord::Schema.define(version: 2018_01_24_105409) do
     t.index ["pictureable_type", "pictureable_id"], name: "index_pictures_on_pictureable_type_and_pictureable_id"
   end
 
+  create_table "prededucted_interests", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "loan_id"
+    t.datetime "posting_date"
+    t.decimal "amount"
+    t.uuid "debit_account_id"
+    t.uuid "credit_account_id"
+    t.string "commercial_document_type"
+    t.uuid "commercial_document_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_prededucted_interests"
+    t.index ["credit_account_id"], name: "index_prededucted_interests_on_credit_account_id"
+    t.index ["debit_account_id"], name: "index_prededucted_interests_on_debit_account_id"
+    t.index ["loan_id"], name: "index_prededucted_interests_on_loan_id"
+  end
+
   create_table "product_stocks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.decimal "unit_cost"
     t.decimal "total_cost"
@@ -1254,6 +1271,9 @@ ActiveRecord::Schema.define(version: 2018_01_24_105409) do
   add_foreign_key "offices", "cooperatives"
   add_foreign_key "orders", "users", column: "employee_id"
   add_foreign_key "organization_members", "organizations"
+  add_foreign_key "prededucted_interests", "accounts", column: "credit_account_id"
+  add_foreign_key "prededucted_interests", "accounts", column: "debit_account_id"
+  add_foreign_key "prededucted_interests", "loans"
   add_foreign_key "product_stocks", "products"
   add_foreign_key "product_stocks", "registries"
   add_foreign_key "product_stocks", "suppliers"

@@ -5,7 +5,9 @@ module LoansModule
     has_many :notes, as: :noteable
 
     accepts_nested_attributes_for :notes
-
+    def self.with_prededucted_interests
+      select{|a| a.has_prededucted_interest? }
+    end
 		def self.create_schedule_for(loan)
       if loan.amortization_schedules.present?
         loan.amortization_schedules.destroy_all
@@ -37,18 +39,12 @@ module LoansModule
        total_other_charges_for(self.date)
     end
     def interest_computation
-      if loan.interest_on_loan_charge.charge_adjustment.present? && loan.interest_on_loan_charge.charge_adjustment.number_of_payments.present?
-        number_of_payments = loan.interest_on_loan_charge.charge_adjustment.number_of_payments
-        if loan.amortization_schedules.order(date: :desc).first(number_of_payments).include?(self)
-          0
-        else
-          interest
-        end
-      else
+      if has_prededucted_interest?
         0
+      else
+        interest
       end
     end
-
 
     def total_other_charges_for(date)
       loan.loan_charge_payment_schedules.scheduled_for(date).sum(:amount)
