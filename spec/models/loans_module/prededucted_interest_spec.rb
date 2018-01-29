@@ -3,6 +3,7 @@ require 'rails_helper'
 module LoansModule
   describe PredeductedInterest do
     describe 'associations' do
+      it { is_expected.to have_one :entry }
       it { is_expected.to belong_to :loan }
       it { is_expected.to belong_to :credit_account }
       it { is_expected.to belong_to :debit_account }

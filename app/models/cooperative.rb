@@ -14,4 +14,7 @@ class Cooperative < ApplicationRecord
   :path => ":rails_root/public/system/:attachment/:id/:basename_:style.:extension",
   :url => "/system/:attachment/:id/:basename_:style.:extension"
   validates_attachment_content_type :logo, content_type: /\Aimage\/.*\Z/
+  def tinoc?
+    name== "Kalanguya Cultural Community Multipurpose Cooperative"
+  end
 end

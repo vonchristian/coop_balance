@@ -1,5 +1,5 @@
 # workers 3
-# threads 2,8
+# threads 5,5
 
 # environment 'production'
 # directory '/var/www/rbg_pos/current'
@@ -12,3 +12,9 @@
 # pidfile "#{shared_dir}/tmp/pids/puma.pid"
 
 # prune_bundler
+# preload_app!
+# on_worker_boot do
+#   ActiveRecord::Base.establish_connection
+# end
+
+# #

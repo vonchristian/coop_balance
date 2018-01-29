@@ -49,7 +49,10 @@ Rails.application.routes.draw do
       resources :loan_protection_funds, only: [:index]
       resources :loan_collections, only: [:index]
     end
-    resources :borrowers, only: [:index, :show]
+    resources :member_borrowers, only: [:index, :show]
+    resources :employee_borrowers, only: [:index, :show]
+    resources :organization_borrowers, only: [:index, :show]
+
     resources :reports, only: [:index]
     resources :loan_registries, only: [:new, :create]
     resources :payment_schedules, only: [:index, :show, :edit, :update]

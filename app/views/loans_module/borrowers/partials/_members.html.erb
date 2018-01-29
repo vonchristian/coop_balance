@@ -1,13 +1,8 @@
-
-<div class="row">
-  <div class="col-md-8">
-    <div class="box box-default">
-      <div class="box-header">
-          <div class="row">
+ <div class="row">
             <div class="col-md-12">
-              <%=form_tag loans_module_borrowers_path, method: :get do %>
+              <%=form_tag loans_module_member_borrowers_path, method: :get do %>
                 <div class="input-group">
-                  <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search First Name, Last Name ", id: 'account-search-form' %>
+                  <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Member", id: 'account-search-form' %>
                   <span class="input-group-btn">
                     <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
                       <i class="fa fa-search"></i>
@@ -20,9 +15,13 @@
         <br>
       </div>
       <div class="box-body">
+        <ul class="nav nav-tabs">
+          <li class="<%= 'active' if current_page? loans_module_member_borrowers_path%>"><%= link_to 'Members', loans_module_member_borrowers_path %></li>
+
+        </ul>
         <% @borrowers.each do |borrower| %>
           <% cache borrower do %>
-            <%= link_to loans_module_borrower_path(borrower) do %>
+            <%= link_to loans_module_member_borrower_path(borrower) do %>
               <div class="row">
                 <div class="col-md-3">
                   <center><%= image_tag(borrower.avatar.url(:medium), class: "img-circle", height: 80, width: 80) %></center>

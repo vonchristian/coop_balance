@@ -1,8 +1,8 @@
 require 'will_paginate/array'
 module LoansModule
-  class BorrowersController < ApplicationController
+  class MemberBorrowersController < ApplicationController
     def index
-      @borrowers = Loan.borrowers.paginate(page: params[:page], per_page: 35)
+      @borrowers = Member.with_loans.paginate(page: params[:page], per_page: 35)
     end
     def show
       if Member.find_by_id(params[:id]).present?

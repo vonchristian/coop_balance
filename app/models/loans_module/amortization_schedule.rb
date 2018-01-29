@@ -22,9 +22,11 @@ module LoansModule
       end
 			create_first_schedule(loan)
       create_succeeding_schedule(loan)
-      update_amortization_schedule(loan)
-      update_with_prededucted_interest_payments(loan)
-      LoansModule::PredeductedInterest.create_schedules_for(loan)
+      if loan.preparer_cooperative.tinoc?
+        update_amortization_schedule(loan)
+        update_with_prededucted_interest_payments(loan)
+        LoansModule::PredeductedInterest.create_schedules_for(loan)
+      end
     end
     def self.average_monthly_payment(loan)
       all.collect{ |a| a.total_amortization }.sum / loan.term
@@ -154,7 +156,7 @@ module LoansModule
     end
     def self.proper_date_for(date)
       if date.sunday?
-        date.next
+        date.to_date.next
       else
         date
       end

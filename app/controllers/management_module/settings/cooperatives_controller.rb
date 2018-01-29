@@ -23,6 +23,11 @@ module ManagementModule
       def cooperative_params
         params.require(:cooperative).permit(:name, :registration_number, :address, :contact_number, :logo)
       end
+      def current_cooperative
+    cooperative = current_user.cooperative
+    session[:cooperative_id] = cooperative.id
+    cooperative
+  end
     end
   end
 end

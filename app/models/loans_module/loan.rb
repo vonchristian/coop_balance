@@ -37,7 +37,7 @@ module LoansModule
     delegate :name,  to: :loan_product, prefix: true
     delegate :interest_revenue_account_id, :interest_rate, :monthly_interest_rate, to: :loan_product, prefix: true
     delegate :name, to: :organization, prefix: true, allow_nil: true
-    delegate :full_name, :current_occupation, to: :preparer, prefix: true
+    delegate :full_name, :cooperative, :current_occupation, to: :preparer, prefix: true
     delegate :maximum_loanable_amount, to: :loan_product
     delegate :avatar, to: :borrower
     delegate :number_of_interest_payments_prededucted, to: :interest_on_loan_charge, allow_nil: true
@@ -108,7 +108,7 @@ module LoansModule
     def interest_on_loan_balance
       interest = loan_charges.select{|a| a.chargeable.account_id == self.loan_product.interest_revenue_account_id}.last
       if interest.present?
-        interest.amortizeable_amount.to_f
+        interest.amount
       else
         0
       end
