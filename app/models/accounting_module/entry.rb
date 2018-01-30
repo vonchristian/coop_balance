@@ -54,6 +54,9 @@ module AccountingModule
         all.distinct.map{|a| a.credit_amounts.total}.sum
       end
     end
+    def total
+      amounts.sum(:amount)
+    end
 
     private
       def set_default_date

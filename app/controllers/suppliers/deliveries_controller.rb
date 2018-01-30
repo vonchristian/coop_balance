@@ -7,12 +7,16 @@ module Suppliers
       @supplier = Supplier.find(params[:supplier_id])
       @stock = @supplier.supplied_stocks.build
       @stock_registry = current_stock_registry
+      @product = StoreFrontModule::Product.text_search(params[:search]).last
+      @voucher = @supplier.vouchers.text_search(params[:voucher_search]).last
+      @delivery_processing = Suppliers::DeliveryProcessing.new
     end
     def create
       @supplier = Supplier.find(params[:supplier_id])
       @stock = @supplier.supplied_stocks.build(stock_params)
       @stock.registry = current_stock_registry
-      if   @stock.save!
+      if   @stock.valid?
+        @stock.save
         redirect_to new_supplier_delivery_url(@supplier), notice: "Stock added successfully"
       else
         render :new
@@ -21,7 +25,7 @@ module Suppliers
 
     private
     def stock_params
-      params.require(:store_front_module_product_stock).permit(:product_id, :date, :quantity, :unit_cost, :total_cost, :barcode, :supplier_id, :retail_price, :wholesale_price)
+      params.require(:store_front_module_product_stock).permit(:product_id, :date, :quantity, :purchase_cost, :total_purchase_cost, :barcode, :supplier_id, :selling_price)
     end
   end
 end

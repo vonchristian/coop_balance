@@ -1,0 +1,19 @@
+<%=form_tag store_index_path, method: :get, class: "sidebar-form" do %>
+          <div class="input-group">
+            <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search..." %>
+            <span class="input-group-btn">
+              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                <i class="fa fa-search"></i>
+              <% end %>
+            </span>
+          </div>
+        <% end %>
+<% @registry.stocks.each do |stock| %>
+  <%= stock.inspect %>
+<% end %>
+
+<%= simple_form_for @stock, url: :store_front_module_stock_deliveries do |f| %>
+  <%= f.input :purchase_cost %>
+  <%= f.input :product_id, collection: StoreFrontModule::Product.all.map{|a| [a.name, a.id] } %>
+  <%= f.submit %>
+<% end %>

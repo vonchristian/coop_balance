@@ -14,7 +14,7 @@
       <!-- search form -->
       <%=form_tag store_front_module_search_results_path, method: :get, class: "sidebar-form" do %>
       <div class="input-group">
-        <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search..." %>
+        <%= text_field_tag :search, params[:sidebar_search], class: "form-control", placeholder: "Search..." %>
         <span class="input-group-btn">
           <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
             <i class="fa fa-search"></i>

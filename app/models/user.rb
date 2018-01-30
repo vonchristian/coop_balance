@@ -20,7 +20,8 @@ class User < ApplicationRecord
               :accountant,
               :human_resource_officer,
               :accounting_clerk,
-              :collector]
+              :collector,
+              :sales_manager]
 
   belongs_to :cash_on_hand_account, class_name: "AccountingModule::Account", foreign_key: 'cash_on_hand_account_id'
   has_one :current_address, as: :addressable, class_name: "Address"

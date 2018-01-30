@@ -1,4 +1,6 @@
 class Supplier < ApplicationRecord
+  include PgSearch
+  pg_search_scope :text_search, against: [:business_name]
   has_many :raw_material_stocks, class_name: "WarehouseModule::RawMaterialStock"
   has_many :addresses, as: :addressable
   has_many :supplied_stocks, class_name: "StoreFrontModule::ProductStock"
@@ -36,7 +38,7 @@ class Supplier < ApplicationRecord
   end
   #
   def payments_total
-    vouchers.disbursed.sum(&:payable_amount)
+    vouchers.disbursed.map{|a| a.payable_amount }.compact.sum
   end
   #
   def deliveries_total

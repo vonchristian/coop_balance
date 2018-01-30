@@ -7,9 +7,9 @@ module StoreFrontModule
     belongs_to :registry, class_name: "StockRegistry", foreign_key: 'registry_id'
     has_many :sold_items, class_name: "StoreFrontModule::LineItem", as: :line_itemable
     has_many :returned_items, class_name: ""
-	  delegate :name, to: :product, allow_nil: true
+	  delegate :name, :unit_of_measurement, to: :product, allow_nil: true
 
-	  validates :supplier_id, presence: true
+	  validates :supplier_id, :product_id, presence: true
 	  validates :purchase_cost, :total_purchase_cost, :quantity, :selling_price, numericality: { greater_than: 0.01 }
 	  before_save :set_default_date, :set_name
     def self.in_stock

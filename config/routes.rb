@@ -204,6 +204,7 @@ Rails.application.routes.draw do
     resources :orders, only: [:index, :new, :create, :show]
     resources :line_items, only: [:new, :create]
     resources :stocks, only: [:index, :show]
+    resources :stock_deliveries, only: [:new, :create]
     resources :products, only: [:index, :show, :new, :create] do
       resources :stocks, only: [:index, :new, :create], module: :products
       resources :sales, only: [:index], module: :products
@@ -238,6 +239,8 @@ Rails.application.routes.draw do
   resources :suppliers, only: [:index, :show, :new, :create, :edit, :update] do
       resources :vouchers, only: [:index, :show, :new, :create], module: :suppliers
       resources :deliveries, only: [:index, :new, :create], module: :suppliers
+      resources :delivery_processings, only: [:create], module: :suppliers
+      resources :delivery_vouchers, only: [:create], module: :suppliers
       resources :purchase_returns, only: [:index, :new, :create], module: :suppliers
       resources :amounts, only: [:create, :destroy], module: :suppliers
     end

@@ -2,6 +2,8 @@ module StoreFrontModule
   class Product < ApplicationRecord
     include PgSearch
     multisearchable against: [:name]
+    pg_search_scope :text_search, against: [:name], :associated_against => {
+    :stocks => [:barcode] }
     belongs_to :category, class_name: "StoreFrontModule::Category"
     has_many :stocks, class_name: "StoreFrontModule::ProductStock"
     has_many :sold_items, through: :stocks, source: :sold_items

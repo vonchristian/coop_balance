@@ -1,13 +1,12 @@
 class Voucher < ApplicationRecord
   include PgSearch
-  enum status: [:disbursed, :cancelled]
-
   pg_search_scope :text_search, :against => [:number, :description]
   multisearchable against: [:number, :description]
 
   has_one :entry, class_name: "AccountingModule::Entry", as: :commercial_document
 
   belongs_to :payee, polymorphic: true
+  belongs_to :commercial_document, polymorphic: true
   belongs_to :preparer, class_name: "User", foreign_key: 'preparer_id'
   belongs_to :disburser, class_name: "User", foreign_key: 'disburser_id'
 
@@ -18,6 +17,14 @@ class Voucher < ApplicationRecord
   delegate :name, to: :payee, prefix: true
 
   before_save :set_date
+
+  def self.disbursed
+    select{|a| a.disbursed? }
+  end
+
+  def disbursed?
+    entry.present?
+  end
   def self.disbursed_on(options={})
     if options[:from_date] && options[:to_date]
       date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_01_30_075324) do
+ActiveRecord::Schema.define(version: 2018_01_30_120346) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -797,7 +797,6 @@ ActiveRecord::Schema.define(version: 2018_01_30_075324) do
 
   create_table "products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "description"
-    t.string "unit"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "photo_file_name"
@@ -806,6 +805,7 @@ ActiveRecord::Schema.define(version: 2018_01_30_075324) do
     t.datetime "photo_updated_at"
     t.string "name"
     t.uuid "category_id"
+    t.string "unit_of_measurement"
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["name"], name: "index_products_on_name", unique: true
   end
@@ -1171,24 +1171,22 @@ ActiveRecord::Schema.define(version: 2018_01_30_075324) do
     t.datetime "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "voucherable_type"
-    t.uuid "voucherable_id"
     t.string "payee_type"
     t.uuid "payee_id"
     t.uuid "user_id"
     t.string "description"
-    t.integer "status"
     t.decimal "payable_amount"
     t.string "type"
     t.uuid "preparer_id"
     t.uuid "disburser_id"
+    t.string "commercial_document_type"
+    t.uuid "commercial_document_id"
+    t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_vouchers"
     t.index ["disburser_id"], name: "index_vouchers_on_disburser_id"
     t.index ["payee_type", "payee_id"], name: "index_vouchers_on_payee_type_and_payee_id"
     t.index ["preparer_id"], name: "index_vouchers_on_preparer_id"
-    t.index ["status"], name: "index_vouchers_on_status"
     t.index ["type"], name: "index_vouchers_on_type"
     t.index ["user_id"], name: "index_vouchers_on_user_id"
-    t.index ["voucherable_type", "voucherable_id"], name: "index_vouchers_on_voucherable_type_and_voucherable_id"
   end
 
   create_table "work_in_process_materials", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

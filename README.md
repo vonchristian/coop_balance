@@ -158,3 +158,5 @@ entry for loan disbursement
 if earned interest income
 unearned interest income
 amortized interest
+
+render :back
