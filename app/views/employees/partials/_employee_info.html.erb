@@ -17,7 +17,7 @@
         <li><%= link_to 'New Fund Transfer (To Vault)', new_employee_vault_fund_transfer_path(@employee)%></li>
       </ul>
     </div>
-  <% elsif current_user.teller? %>
+  <% elsif current_user.teller? || current_user.sales_clerk? %>
      <%= link_to 'New Remittance', new_employee_remittance_path(@employee), class: "btn btn-primary btn-flat" %>
   <% end %>
 </div>

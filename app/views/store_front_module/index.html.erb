@@ -2,7 +2,7 @@
   <div class="col-md-7">
     <div class="box box-solid">
       <div class="box-body">
-        <%=form_tag store_index_path, method: :get, class: "sidebar-form" do %>
+        <%=form_tag store_front_module_index_path, method: :get, class: "sidebar-form" do %>
           <div class="input-group">
             <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search..." %>
             <span class="input-group-btn">
@@ -20,36 +20,38 @@
             </tr>
           </thead>
           <tbody>
-            <% @stocks.each do |stock| %>
-              <tr>
-                <td>
-                  <b><%= stock.name.try(:upcase) %></b><br>
-                  <small class="text-muted"><%= stock.barcode %></small><br>
-                  <span class="label bg-yellow">
-                    <%= stock.in_stock.to_i %> left
-                  </span>
-                  <i class="fa fa-clock-o"></i> <%= stock.date.strftime("%b/%e/%y") %>
-                </td>
-                <td><span class="pull-left"><%=number_to_currency stock.selling_price %></span></td>
-                  <%= simple_form_for @line_item do |f| %>
-                  <td width="100px">
-                    <% if !stock.out_of_stock? %>
-                      <%= f.input :quantity, as: :string, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, label: false %>
-                      <%= f.input :unit_cost, input_html: { value: stock.selling_price, id: 'line_item_unit_cost' }, as: :hidden %>
-                    <% end %>
-                  </td>
-                    <%= f.input :line_itemable_id, input_html: { value: stock.id }, as: :hidden %>
-                    <%= f.input :line_itemable_type, input_html: { value: stock.class }, as: :hidden %>
+            <% if params[:search].present? %>
+              <% @stocks.each do |stock| %>
+                <tr>
                   <td>
-                    <% if !stock.out_of_stock? %>
-                      <%= f.submit "Add", class: "btn btn-primary btn-sm" %>
-                    <% else %>
-                      <span class="badge bg-red pull-left"> <small>Out of Stock </small></span><br><br>
-                    <% end %>
+                    <b><%= stock.name.try(:upcase) %></b><br>
+                    <small class="text-muted"><%= stock.barcode %></small><br>
+                    <span class="label bg-yellow">
+                      <%= stock.in_stock.to_i %> left
+                    </span>
+                    <i class="fa fa-clock-o"></i> <%= stock.date.strftime("%b/%e/%y") %>
                   </td>
-                  <% end %>
+                  <td><span class="pull-left"><%=number_to_currency stock.selling_price %></span></td>
+                    <%= simple_form_for @line_item do |f| %>
+                    <td width="100px">
+                      <% if !stock.out_of_stock? %>
+                        <%= f.input :quantity, as: :string, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, label: false %>
+                        <%= f.input :unit_cost, input_html: { value: stock.selling_price, id: 'line_item_unit_cost' }, as: :hidden %>
+                      <% end %>
+                    </td>
+                      <%= f.input :line_itemable_id, input_html: { value: stock.id }, as: :hidden %>
+                      <%= f.input :line_itemable_type, input_html: { value: stock.class }, as: :hidden %>
+                    <td>
+                      <% if !stock.out_of_stock? %>
+                        <%= f.submit "Add", class: "btn btn-primary btn-sm" %>
+                      <% else %>
+                        <span class="badge bg-red pull-left"> <small>Out of Stock </small></span><br><br>
+                      <% end %>
+                    </td>
+                    <% end %>
 
-              </tr>
+                </tr>
+              <% end %>
             <% end %>
           </tbody>
         </table>

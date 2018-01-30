@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_01_30_120346) do
+ActiveRecord::Schema.define(version: 2018_01_30_123024) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -786,7 +786,6 @@ ActiveRecord::Schema.define(version: 2018_01_30_120346) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "registry_id"
-    t.string "name"
     t.decimal "selling_price"
     t.decimal "purchase_cost"
     t.decimal "total_purchase_cost"
@@ -1085,7 +1084,6 @@ ActiveRecord::Schema.define(version: 2018_01_30_120346) do
     t.string "account_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "depositor_name"
     t.string "depositor_type"
     t.uuid "depositor_id"
     t.integer "status"

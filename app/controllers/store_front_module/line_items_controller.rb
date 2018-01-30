@@ -5,12 +5,11 @@ module StoreFrontModule
       @line_item = @cart.line_items.create(line_item_params)
       respond_to do |format|
         if @line_item.save
-          # @line_item.retail!
           @cart.add_line_item(@line_item)
-            format.html { redirect_to store_index_url, notice: "Added to cart." }
+            format.html { redirect_to store_front_module_index_url, notice: "Added to cart." }
             format.js   { @current_item = @line_item }
         else
-          format.html { redirect_to store_index_url }
+          format.html { redirect_to store_front_module_index_url }
         end
       end
     end

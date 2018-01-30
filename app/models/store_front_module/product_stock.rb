@@ -1,7 +1,8 @@
 module StoreFrontModule
 	class ProductStock < ApplicationRecord
 	  include PgSearch
-	  pg_search_scope :text_search, against: [:barcode, :name]
+	  pg_search_scope :text_search, against: [:barcode,], :associated_against => {
+    :product => [:name] }
 	  belongs_to :product, class_name: "StoreFrontModule::Product"
 	  belongs_to :supplier
     belongs_to :registry, class_name: "StockRegistry", foreign_key: 'registry_id'
@@ -11,7 +12,7 @@ module StoreFrontModule
 
 	  validates :supplier_id, :product_id, presence: true
 	  validates :purchase_cost, :total_purchase_cost, :quantity, :selling_price, numericality: { greater_than: 0.01 }
-	  before_save :set_default_date, :set_name
+	  before_save :set_default_date
     def self.in_stock
       sum(&:in_stock)
     end
@@ -32,8 +33,5 @@ module StoreFrontModule
 	  def set_default_date
 	  	self.date ||= Time.zone.now
 	  end
-    def set_name
-      self.name = self.product.name
-    end
 	end
 end

@@ -194,8 +194,9 @@ Rails.application.routes.draw do
       resources :finished_goods_materials, only: [:new, :create]
     end
   end
-  resources :store, only: [:index]
+  resources :store_front_module, only: [:index]
   namespace :store_front_module do
+    resources :employees, only: [:show]
     resources :settings, only: [:index]
     resources :reports, only: [:index]
     resources :accounts_receivable_store_config, only: [:new, :create]

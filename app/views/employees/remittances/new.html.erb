@@ -13,33 +13,20 @@
           </div>
         </div>
         <hr>
-         <h3><%= number_to_currency @employee.cash_on_hand_account.balance(recorder_id: @employee.id) + @employee.fund_transfer_total %></h3>
+         <h3><%= number_to_currency @employee.cash_on_hand_account.balance(recorder_id: @employee.id) %></h3>
         <small class="text-muted"><%= @employee.cash_on_hand_account.try(:name).try(:upcase)%></small>
         <hr>
       </div>
       <div class="box-body">
         <%=simple_form_for @entry, url: :employee_remittances do |f| %>
           <%= f.error_notification %>
-          <%= f.input :user_id, input_html: { value: @employee.id }, as: :hidden %>
           <%= f.input :entry_date, as: :string, input_html: { class: "datepicker" } %>
           <%= f.input :reference_number %>
           <%= f.input :description, as: :text %>
           <%= f.input :amount %>
           <%= f.input :entry_type, input_html: {value: 'fund_transfer'}, as: :hidden %>
-          <% if current_user.teller?  %>
-            <%= f.input :credit_account_id, label: "Credit Account", input_html: { value: AccountingModule::Account.find_by(name: "Cash on Hand (Teller)").id }, as: :hidden %>
-            <%= f.input :debit_account_id, label: "Debit Account:", input_html: { value: AccountingModule::Account.find_by(name: "Cash on Hand (Treasury)").id }, as: :hidden %>
-          <% elsif current_user.treasurer? %>
-             <%= f.input :credit_account_id, label: "Credit Account", input_html: { value: AccountingModule::Account.find_by(name: "Cash on Hand (Treasury)").id }, as: :hidden %>
-            <%= f.input :debit_account_id, label: "Debit Account:", input_html: { value: AccountingModule::Account.find_by(name: "Cash on Hand (Teller)").id }, as: :hidden %>
-          <% end %>
-            
           <%= f.input :recorder_id, input_html: { value: current_user.id }, as: :hidden %>
-          <% if current_user.treasurer? %>
-            <%= f.input :commercial_document_id, label: "Transfer To:", collection: User.teller.all.map{|a| [a.first_and_last_name, a.id] } %>
-          <% else %>
-            <%= f.input :commercial_document_id, label: "Transfer To:", collection: User.treasurer.all.map{|a| [a.first_and_last_name, a.id] } %>
-          <% end %>
+            <%= f.input :remitted_to_id, label: "Transfer To:", collection: User.all.map{|a| [a.role, a.id] } %>
           <div class="box-footer">
             <%= f.submit "Save Remittance", class: "btn btn-primary" %>
           </div>
@@ -47,7 +34,7 @@
       </div>
     </div>
   </div>
-</div>        
+</div>
 
 <script type="text/javascript">
   $(document).ready(function() {

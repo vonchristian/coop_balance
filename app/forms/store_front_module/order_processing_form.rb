@@ -35,14 +35,27 @@ module StoreFrontModule
       sales = CoopConfigurationsModule::StoreFrontConfig.default_sales_account
       merchandise_inventory = CoopConfigurationsModule::StoreFrontConfig.default_merchandise_inventory_account
       if order.cash? || order.check?
-        AccountingModule::Entry.create!( recorder_id: order.employee_id, commercial_document: order.customer, entry_date: order.date, description: "Payment for order",
-          debit_amounts_attributes: [{amount: order.total_cost, account: cash_on_hand, commercial_document: order}, {amount: order.stock_cost, account: cost_of_goods_sold, commercial_document: order}],
-          credit_amounts_attributes:[{amount: order.total_cost, account: sales, commercial_document: order}, {amount: order.stock_cost, account: merchandise_inventory, commercial_document: order}])
+        AccountingModule::Entry.create!( recorder_id: order.employee_id,
+                                         commercial_document: order.customer,
+                                         entry_date: order.date,
+                                         description: "Payment for order",
+                                         debit_amounts_attributes: [{ amount: order.total_cost,
+                                                                      account: cash_on_hand,
+                                                                      commercial_document: order},
+                                                                    { amount: order.stock_cost,
+                                                                      account: cost_of_goods_sold,
+                                                                      commercial_document: order } ],
+                                          credit_amounts_attributes:[{amount: order.total_cost,
+                                                                      account: sales,
+                                                                      commercial_document: order},
+                                                                     {amount: order.stock_cost,
+                                                                      account: merchandise_inventory,
+                                                                      commercial_document: order}])
       elsif order.credit?
         AccountingModule::Entry.create!(
           commercial_document: order.customer,
           entry_date: order.date,
-          description: "Credit order",
+          description: "Credit purchase of #{order.customer_name}",
           debit_amounts_attributes:
           [{amount: order.total_cost,
             account: accounts_receivable,
@@ -64,12 +77,15 @@ module StoreFrontModule
                    order_change: order_change,
                    total_cost: total_cost
                    )
+      remove_cart_reference(order)
+      create_reference_number(order)
+      create_entry(order)
+    end
+    def remove_cart_reference(order)
       StoreFrontModule::Cart.find_by(id: cart_id).line_items.each do |item|
         item.cart_id = nil
         order.line_items << item
       end
-      StoreFrontModule::OrderProcessingForm.new.create_reference_number(order)
-      StoreFrontModule::OrderProcessingForm.new.create_entry(order)
     end
 
 

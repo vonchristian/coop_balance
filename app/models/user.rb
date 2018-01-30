@@ -38,7 +38,7 @@ class User < ApplicationRecord
   has_many :time_deposits, class_name: "MembershipsModule::TimeDeposit", as: :depositor
   has_many :orders, class_name: "StoreFrontModule::Order", as: :customer
   has_many :entries, class_name: "AccountingModule::Entry", foreign_key: 'recorder_id'
-
+  has_many :accepted_fund_transfers, class_name: "AccountingModule::Entry", as: :commercial_document
   has_many :appraised_properties, class_name: "Appraisal", foreign_key: 'appraiser_id'
   has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", as: :commercial_document # for adding amounts on voucher
   has_many :vouchers, as: :payee, class_name: "Vouchers::EmployeeVoucher"

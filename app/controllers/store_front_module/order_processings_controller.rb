@@ -10,7 +10,7 @@ module StoreFrontModule
       @order = StoreFrontModule::OrderProcessingForm.new(order_processing_params)
       if @order.valid?
         @order.save
-        redirect_to store_index_url, notice: "Order processed successfully."
+        redirect_to store_front_module_index_url, notice: "Order processed successfully."
       else
         render :new
       end
