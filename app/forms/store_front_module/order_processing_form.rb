@@ -55,7 +55,7 @@ module StoreFrontModule
     end
 
     def create_order
-      order = StoreModule::Order.create!(customer_id: customer_id,
+      order = StoreFrontModule::Order.create!(customer_id: customer_id,
                    date: date,
                    customer_type: customer_type,
                    pay_type: pay_type,
@@ -64,7 +64,7 @@ module StoreFrontModule
                    order_change: order_change,
                    total_cost: total_cost
                    )
-      StoreModule::Cart.find_by(id: cart_id).line_items.each do |item|
+      StoreFrontModule::Cart.find_by(id: cart_id).line_items.each do |item|
         item.cart_id = nil
         order.line_items << item
       end

@@ -1,10 +1,10 @@
-module StoreModule 
+module StoreFrontModule
   class ProductPolicy < ApplicationPolicy
     def new?
       user.stock_custodian? || user.sales_clerk?
-    end 
+    end
     def create?
       new?
-    end 
-  end 
-end 
+    end
+  end
+end

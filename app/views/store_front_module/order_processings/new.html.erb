@@ -100,7 +100,7 @@
             <%= f.input :customer_id, input_html: { value: @customer.id }, as: :hidden %>
             <%= f.input :customer_type, input_html: { value: @customer.class }, as: :hidden %>
 
-            <%= f.input :pay_type, input_html: {id: 'payment-type-select', class: 'icheck-me', "data-skin" => 'square', "data-color" => "blue"}, collection: StoreModule::Order.pay_types.keys.to_a.map {|a| [a.titleize, a]}, default: StoreModule::Order.pay_types.first %>
+            <%= f.input :pay_type, input_html: {id: 'payment-type-select', class: 'icheck-me', "data-skin" => 'square', "data-color" => "blue"}, collection: StoreFrontModule::Order.pay_types.keys.to_a.map {|a| [a.titleize, a]}, default: StoreFrontModule::Order.pay_types.first %>
             <%= f.input :total_cost, input_html: { id: 'order-total-cost', value: @cart.line_items.total_cost }, as: :hidden %>
             <%= f.input :cash_tendered, autofocus: true, as: :string, input_html: { id: 'order-cash-tendered', oninput: 'calculateChangeForOrder()', class: "input-lg"} %>
             <%= f.input :order_change, label: "Change", readonly: true, input_html: { id: 'order-change', value: 0, class: 'bg-gray input-lg'}, as: :string %>

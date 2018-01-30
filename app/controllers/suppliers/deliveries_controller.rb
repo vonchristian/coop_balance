@@ -21,7 +21,7 @@ module Suppliers
 
     private
     def stock_params
-      params.require(:store_module_product_stock).permit(:product_id, :date, :quantity, :unit_cost, :total_cost, :barcode, :supplier_id, :retail_price, :wholesale_price)
+      params.require(:store_front_module_product_stock).permit(:product_id, :date, :quantity, :unit_cost, :total_cost, :barcode, :supplier_id, :retail_price, :wholesale_price)
     end
   end
 end

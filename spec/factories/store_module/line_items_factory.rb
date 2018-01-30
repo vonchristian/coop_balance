@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :line_item, class: "StoreModule::LineItem" do
+  factory :line_item, class: "StoreFrontModule::LineItem" do
     association :line_itemable, factory: :product_stock
     unit_cost "9.99"
     total_cost "9.99"

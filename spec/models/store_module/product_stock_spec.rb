@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-  module StoreModule
+  module StoreFrontModule
   describe ProductStock do
     context "associations" do
     	it { is_expected.to belong_to :product }
@@ -26,7 +26,7 @@ require 'rails_helper'
       product_stock = create(:product_stock, quantity: 10)
       product_stock_2 = create(:product_stock, quantity: 10)
 
-      expect(StoreModule::ProductStock.total_quantity).to eql(20)
+      expect(StoreFrontModule::ProductStock.total_quantity).to eql(20)
     end
 
     it '#in_stock' do

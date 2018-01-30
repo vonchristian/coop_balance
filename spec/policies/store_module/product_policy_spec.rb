@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-module StoreModule
+module StoreFrontModule
   describe ProductPolicy do
-    subject { StoreModule::ProductPolicy.new(user, record) }
+    subject { StoreFrontModule::ProductPolicy.new(user, record) }
     let(:record) { create(:product) }
     context 'sales clerk' do
       let(:user) { create(:user, role: 'sales_clerk') }

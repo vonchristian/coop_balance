@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_01_24_134347) do
+ActiveRecord::Schema.define(version: 2018_01_30_075324) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -778,8 +778,6 @@ ActiveRecord::Schema.define(version: 2018_01_24_134347) do
   end
 
   create_table "product_stocks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.decimal "unit_cost"
-    t.decimal "total_cost"
     t.decimal "quantity"
     t.string "barcode"
     t.uuid "product_id"
@@ -789,8 +787,9 @@ ActiveRecord::Schema.define(version: 2018_01_24_134347) do
     t.datetime "updated_at", null: false
     t.uuid "registry_id"
     t.string "name"
-    t.decimal "retail_price"
-    t.decimal "wholesale_price"
+    t.decimal "selling_price"
+    t.decimal "purchase_cost"
+    t.decimal "total_purchase_cost"
     t.index ["product_id"], name: "index_product_stocks_on_product_id"
     t.index ["registry_id"], name: "index_product_stocks_on_registry_id"
     t.index ["supplier_id"], name: "index_product_stocks_on_supplier_id"
@@ -839,6 +838,18 @@ ActiveRecord::Schema.define(version: 2018_01_24_134347) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_provinces_on_name", unique: true
+  end
+
+  create_table "purchase_returns", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "supplier_id"
+    t.uuid "product_stock_id"
+    t.decimal "quantity"
+    t.decimal "total_cost"
+    t.datetime "return_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_stock_id"], name: "index_purchase_returns_on_product_stock_id"
+    t.index ["supplier_id"], name: "index_purchase_returns_on_supplier_id"
   end
 
   create_table "raw_material_stocks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1280,6 +1291,8 @@ ActiveRecord::Schema.define(version: 2018_01_24_134347) do
   add_foreign_key "products", "categories"
   add_foreign_key "program_subscriptions", "programs"
   add_foreign_key "programs", "accounts"
+  add_foreign_key "purchase_returns", "product_stocks"
+  add_foreign_key "purchase_returns", "suppliers"
   add_foreign_key "raw_material_stocks", "raw_materials"
   add_foreign_key "raw_material_stocks", "suppliers"
   add_foreign_key "real_properties", "members"

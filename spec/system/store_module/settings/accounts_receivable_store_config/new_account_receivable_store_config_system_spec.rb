@@ -6,7 +6,7 @@ describe 'new accounts receivable store config' do
     user = create(:user, role: 'sales_clerk')
     login_as(user, :scope => :user)
     account = create(:asset, name: "Accounts Receivable - General Merchandise")
-    visit store_module_settings_url
+    visit store_front_module_settings_url
     click_link 'Set Account for Accounts Receivable'
 
     select 'Accounts Receivable - General Merchandise'
@@ -18,7 +18,7 @@ describe 'new accounts receivable store config' do
     user = create(:user, role: 'sales_clerk')
     login_as(user, :scope => :user)
     account = create(:asset, name: "Accounts Receivable - General Merchandise")
-    visit store_module_settings_url
+    visit store_front_module_settings_url
     click_link 'Set Account for Accounts Receivable'
 
     select 'Accounts Receivable - General Merchandise'

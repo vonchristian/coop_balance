@@ -16,8 +16,6 @@ describe Member, type: :model do
     it { is_expected.to have_many :real_properties }
     it { is_expected.to have_many :organization_memberships }
     it { is_expected.to have_many :organizations }
-
-
   end
   describe 'delegations' do
     it { is_expected.to delegate_method(:membership_type).to(:membership) }

@@ -11,7 +11,7 @@
       </thead>
       <tbody>
         <% @orders.each do |order| %>
-          <tr data-link="<%=store_module_order_path(order)%>" class="myClass">
+          <tr data-link="<%=store_front_module_order_path(order)%>" class="myClass">
             <td> <%= order.date.try(:strftime, ("%B %e, %Y")) %></td>
             <td> <%= order.reference_number %></td>
             <td> <%= image_tag(order.customer.avatar.url(:medium), class: "img-circle", height: 35, width: 35) %> <%= order.employee.try(:name) %></td>

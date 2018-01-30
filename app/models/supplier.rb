@@ -1,12 +1,12 @@
 class Supplier < ApplicationRecord
   has_many :raw_material_stocks, class_name: "WarehouseModule::RawMaterialStock"
   has_many :addresses, as: :addressable
-  has_many :supplied_stocks, class_name: "StoreModule::ProductStock"
+  has_many :supplied_stocks, class_name: "StoreFrontModule::ProductStock"
   has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document
   has_many :stock_registries, class_name: "StockRegistry"
   has_many :vouchers, as: :payee
   has_many :voucher_amounts, as: :commercial_document, class_name: "Vouchers::VoucherAmount"
-
+  has_many :purchase_returns, class_name: "StoreFrontModule::PurchaseReturn"
   validates :business_name, presence: true, uniqueness: true
   has_attached_file :avatar,
   styles: { large: "120x120>",

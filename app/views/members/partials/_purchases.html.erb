@@ -14,7 +14,7 @@
         </thead>
         <tbody>
           <% @member.orders.each do |order| %>
-            <tr data-link="<%=store_module_order_path(order)%>" class="myClass">
+            <tr data-link="<%=store_front_module_order_path(order)%>" class="myClass">
               <td><%= order.date.strftime("%B %e, %Y") %></td>
               <td><%= order.official_receipt_number %></td>
               <td width="30px"><%= image_tag(order.customer.avatar.url(:thumb), class: 'media-object img-circle') %></td>

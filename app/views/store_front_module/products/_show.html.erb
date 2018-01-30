@@ -1,0 +1,44 @@
+<div class="content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title"><%= @product.name %></h3>
+        </div>
+        <div class="box-body">
+          <div class="row">
+            <div class="col-md-3 border-right">
+              <h3 class="no-padding"><%= @product.stocks.total_quantity %></h3>
+              <small>DELIVERIES</small>
+            </div>
+            <div class="col-md-3 border-right">
+              <h3 class="no-padding"><%= @product.sold_items.total_quantity %></h3>
+              <small>SOLD</small>
+            </div>
+            <div class="col-md-3 border-right">
+              <center>
+              <h3 class="no-padding"><%= @product.stocks.in_stock %></h3>
+              <small>IN STOCK</small>
+              </center>
+            </div>
+          </div>
+          <hr>
+          <div class="nav-tabs-custom">
+             <ul class="nav nav-tabs">
+          <li class="<%= 'active' if current_page?(store_front_module_product_path(@product))%>"><%= link_to 'Info', store_front_module_product_path(@product) %></li>
+          <li class="<%= 'active' if current_page?(store_front_module_product_stocks_path(@product))%>"><%= link_to 'Stocks', store_front_module_product_stocks_path(@product) %></li>
+           <li class="<%= 'active' if current_page?(store_front_module_product_sales_path(@product))%>"><%= link_to 'Sales', store_front_module_product_sales_path(@product) %></li>
+
+
+
+        </ul>
+            <div class="tab-content">
+              <% if current_page? store_front_module_product_stocks_path(@product) %>
+                <%= render 'store_front_module/products/partials/stocks' %>
+              <% end %>
+              <% if current_page? store_front_module_product_sales_path(@product) %>
+                <%= render 'store_front_module/products/partials/sales' %>
+              <% end %>
+          </div>
+
+      </div>

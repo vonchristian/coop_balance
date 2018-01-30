@@ -25,7 +25,7 @@ class Member < ApplicationRecord
   has_many :time_deposits, class_name: "MembershipsModule::TimeDeposit", as: :depositor
   has_many :program_subscriptions, class_name: "MembershipsModule::ProgramSubscription", as: :subscriber
   has_many :programs, through: :program_subscriptions
-  has_many :orders, class_name: "StoreModule::Order", as: :customer
+  has_many :orders, class_name: "StoreFrontModule::Order", as: :customer
   has_many :real_properties, as: :owner
   has_many :organization_memberships, class_name: "Organizations::OrganizationMember", as: :organization_membership
   has_many :organizations, through: :organization_memberships

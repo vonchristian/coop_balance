@@ -137,7 +137,7 @@ in 6 months (july 2018)
 10 coops sign up
 
 
-rename store_module to store_front_module
+rename store_front_module to store_front_module
 remove status of savings
 if savings closed? the same with share capitals closed
 
@@ -147,7 +147,7 @@ At CoopCatalyst, we're all about automation. We're on a mission to make cooperat
 
 
 BIG REDESIGN
-Rename store_module to store_front_module
+Rename store_front_module to store_front_module
 remove entry_type
 
 

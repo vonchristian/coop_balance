@@ -1,4 +1,4 @@
-module StoreModule
+module StoreFrontModule
   class SettingsPolicy < ApplicationPolicy
     def index?
       user.sales_clerk?

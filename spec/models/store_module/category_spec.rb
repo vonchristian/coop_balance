@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-module StoreModule
+module StoreFrontModule
   RSpec.describe Category, type: :model do
     describe 'associations' do
       it { is_expected.to have_many :products }

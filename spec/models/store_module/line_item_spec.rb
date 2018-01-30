@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-module StoreModule
+module StoreFrontModule
   describe LineItem do
     context 'associations' do
     	it { is_expected.to belong_to :line_itemable }
@@ -16,14 +16,14 @@ module StoreModule
       line_item = create(:line_item, quantity: 10)
       another_line_item = create(:line_item, quantity: 10)
 
-      expect(StoreModule::LineItem.total_quantity).to eql(20)
+      expect(StoreFrontModule::LineItem.total_quantity).to eql(20)
     end
 
     it ".total_cost" do
     	line_item = create(:line_item, total_cost: 10)
     	another_line_item = create(:line_item, total_cost: 10)
 
-    	expect(StoreModule::LineItem.total_cost).to eql(20)
+    	expect(StoreFrontModule::LineItem.total_cost).to eql(20)
     end
 
     it '.set_total_cost' do

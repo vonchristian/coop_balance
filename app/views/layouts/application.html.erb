@@ -27,7 +27,7 @@
         <%=render "warehouse_department/sidebar_for_warehouse_department", cached: true %>
       <% end %>
       <% if current_user.sales_clerk? %>
-        <%=render "store/sidebar_for_store", cached: true %>
+        <%=render "store_front_module/sidebar_for_store", cached: true %>
       <% end %>
        <% if current_user.treasurer? %>
         <%=render "treasury_module/sidebar", cached: true %>

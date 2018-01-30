@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :cart, class: "StoreModule::Cart" do
-    
+  factory :cart, class: "StoreFrontModule::Cart" do
+
   end
 end

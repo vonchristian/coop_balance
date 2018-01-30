@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :product_stock, class: "StoreModule::ProductStock" do
+  factory :product_stock, class: "StoreFrontModule::ProductStock" do
     unit_cost "9.99"
     total_cost "9.99"
     product

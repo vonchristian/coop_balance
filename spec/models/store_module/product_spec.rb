@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-module StoreModule
+module StoreFrontModule
   describe Product do
     context "associations" do
         it { is_expected.to belong_to :category }

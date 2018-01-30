@@ -6,7 +6,7 @@
         <%= simple_form_for @stock, url: :supplier_deliveries do |f| %>
           <%= f.error_notification %>
 
-          <%= f.input :product_id, collection: StoreModule::Product.all.map{|a| [a.name, a.id] } %>
+          <%= f.input :product_id, collection: StoreFrontModule::Product.all.map{|a| [a.name, a.id] } %>
           <%= f.input :date, as: :string, input_html: { class: "datepicker", value: Time.zone.now.strftime("%B %e, %Y") } %>
           <%= f.input :quantity %>
           <%= f.input :unit_cost %>

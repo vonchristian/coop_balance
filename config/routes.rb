@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   root :to => 'management_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'general_manager' if request.env['warden'].user }, as: :management_module_root
   root :to => 'teller_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'teller' if request.env['warden'].user }, as: :teller_module_root
   root :to => 'warehouse_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'stock_custodian' if request.env['warden'].user }, as: :warehouse_module_root
-  root :to => 'store#index', :constraints => lambda { |request| request.env['warden'].user.role == 'sales_clerk' if request.env['warden'].user }, as: :store_module_root
+  root :to => 'store#index', :constraints => lambda { |request| request.env['warden'].user.role == 'sales_clerk' if request.env['warden'].user }, as: :store_front_module_root
   root :to => 'store#index', :constraints => lambda { |request| request.env['warden'].user.role == 'stock_custodian' if request.env['warden'].user }, as: :store_stocks_module_root
   root :to => 'hr_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'human_resource_officer' if request.env['warden'].user }, as: :hr_module_root
   root :to => 'clerk_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'accounting_clerk' if request.env['warden'].user }, as: :clerk_module_root
@@ -195,7 +195,7 @@ Rails.application.routes.draw do
     end
   end
   resources :store, only: [:index]
-  namespace :store_module do
+  namespace :store_front_module do
     resources :settings, only: [:index]
     resources :reports, only: [:index]
     resources :accounts_receivable_store_config, only: [:new, :create]
@@ -238,6 +238,7 @@ Rails.application.routes.draw do
   resources :suppliers, only: [:index, :show, :new, :create, :edit, :update] do
       resources :vouchers, only: [:index, :show, :new, :create], module: :suppliers
       resources :deliveries, only: [:index, :new, :create], module: :suppliers
+      resources :purchase_returns, only: [:index, :new, :create], module: :suppliers
       resources :amounts, only: [:create, :destroy], module: :suppliers
     end
   resources :registries, only: [:create]

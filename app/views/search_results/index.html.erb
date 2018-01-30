@@ -31,9 +31,9 @@
                 <span class="text-muted"> <%= search_result.searchable.class.to_s %></span>
                 <hr>
               <% end %>
-            <% if search_result.searchable_type == "StoreModule::Product" %>
-              <%= link_to search_result.searchable.try(:name), store_module_product_path(search_result.searchable) %><br>
-              <span class="text-muted"> <%= search_result.searchable.class.to_s.gsub("StoreModule::", "") %></span>
+            <% if search_result.searchable_type == "StoreFrontModule::Product" %>
+              <%= link_to search_result.searchable.try(:name), store_front_module_product_path(search_result.searchable) %><br>
+              <span class="text-muted"> <%= search_result.searchable.class.to_s.gsub("StoreFrontModule::", "") %></span>
             <% end %>
              <% if search_result.searchable_type == "MembershipsModule::ShareCapital" %>
               <%= link_to search_result.searchable.try(:name), share_capital_path(search_result.searchable) %><br>

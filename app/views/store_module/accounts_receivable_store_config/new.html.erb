@@ -1,4 +1,0 @@
-<%= simple_form_for @accounts_receivable_store_config, url: :store_module_accounts_receivable_store_config_index do |f| %>
-  <%= f.input :account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
-  <%= f.submit "Save" %>
-<% end %>
