@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_01_31_120326) do
+ActiveRecord::Schema.define(version: 2018_01_31_122628) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -413,9 +413,15 @@ ActiveRecord::Schema.define(version: 2018_01_31_120326) do
     t.datetime "updated_at", null: false
     t.uuid "unit_of_measurement_id"
     t.string "type"
+    t.string "commercial_document_type"
+    t.uuid "commercial_document_id"
+    t.string "barcode"
+    t.uuid "product_id"
     t.index ["cart_id"], name: "index_line_items_on_cart_id"
+    t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_line_items"
     t.index ["line_itemable_type", "line_itemable_id"], name: "index_line_items_on_line_itemable_type_and_line_itemable_id"
     t.index ["order_id"], name: "index_line_items_on_order_id"
+    t.index ["product_id"], name: "index_line_items_on_product_id"
     t.index ["type"], name: "index_line_items_on_type"
     t.index ["unit_of_measurement_id"], name: "index_line_items_on_unit_of_measurement_id"
   end
@@ -1261,6 +1267,7 @@ ActiveRecord::Schema.define(version: 2018_01_31_120326) do
   add_foreign_key "interest_configs", "loan_products"
   add_foreign_key "line_items", "carts"
   add_foreign_key "line_items", "orders"
+  add_foreign_key "line_items", "products"
   add_foreign_key "line_items", "unit_of_measurements"
   add_foreign_key "loan_approvals", "loans"
   add_foreign_key "loan_approvals", "users", column: "approver_id"

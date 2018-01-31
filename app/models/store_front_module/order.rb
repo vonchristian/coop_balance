@@ -3,13 +3,16 @@ module StoreFrontModule
     enum pay_type: [:cash, :credit, :check]
     belongs_to :commercial_document, polymorphic: true
     belongs_to :employee, class_name: "User", foreign_key: 'employee_id'
+    belongs_to :store_front
     has_one :official_receipt, as: :receiptable
     has_one :entry, as: :commercial_document, class_name: "AccountingModule::Entry"
     has_one :invoice, as: :invoiceable
-    delegate :number, to: :official_receipt, prefix: true, allow_nil: true
-    delegate :first_and_last_name, to: :customer, prefix: true, allow_nil: true
-    delegate :name, to: :customer, prefix: true, allow_nil: true
-    has_many :line_items, class_name: "StoreFrontModule::LineItem", as: :line_itemable
+
+    has_many :sale_line_items, extend: StoreFrontModule::QuantityBalanceFinder, class_name: "StoreFrontModule::SaleLineItem", inverse_of: :order
+    has_many :purchase_line_items, extend: StoreFrontModule::QuantityBalanceFinder, class_name: "StoreFrontModule::PurchaseLineItem", inverse_of: :order
+    has_many :line_items, class_name: "StoreFrontModule::LineItem"
+    has_many :products, class_name: "StoreFrontModule::Product", through: :line_items
+
     delegate :number, to: :official_receipt, prefix: true, allow_nil: true
     delegate :number, to: :invoice, prefix: true, allow_nil: true
 

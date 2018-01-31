@@ -3,7 +3,7 @@ class Supplier < ApplicationRecord
   pg_search_scope :text_search, against: [:business_name]
   has_many :raw_material_stocks, class_name: "WarehouseModule::RawMaterialStock"
   has_many :addresses, as: :addressable
-  has_many :supplied_stocks, class_name: "StoreFrontModule::ProductStock"
+  has_many :purchase_line_items, class_name: "StoreFrontModule::PurchaseLineItem"
   has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document
   has_many :stock_registries, class_name: "StockRegistry"
   has_many :vouchers, as: :payee
