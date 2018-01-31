@@ -2,9 +2,9 @@ module StoreFrontModule
   class LineItemProcessing
     include ActiveModel::Model
     include ActiveModel::Validations
-    attr_accessor :unit_of_measurement_id, :quantity, :cart_id, :line_itemable_id, :line_itemable_type, :search
-    validates :quantity, numericality: { less_than_or_equal_to: :stock_quantity }, on: :create
-    validate :quantity_is_less_than_or_equal_to_available_stock_quantity?
+    attr_accessor :unit_of_measurement_id, :quantity, :cart_id, :line_itemable_id, :line_itemable_type, :product_id
+    validates :quantity, numericality: { less_than_or_equal_to: :available_stock }, on: :create
+    validate :quantity_is_less_than_or_equal_to_available_stock?
     def process!
       ActiveRecord::Base.transaction do
           create_line_item
@@ -29,20 +29,49 @@ module StoreFrontModule
     def find_stock
       StoreFrontModule::ProductStock.find_by_id(line_itemable_id)
     end
-    def stock_quantity
-      find_stock.in_stock
+
+    def available_quantity
+      find_product.in_stock
     end
 
     def converted_quantity
-      if find_unit_of_measurement.base_measurement?
-        quantity.to_f
+      find_unit_of_measurement.conversion_multiplier * quantity.to_f
+    end
+
+    def quantity_is_less_than_or_equal_to_available_stock?
+      errors[:quantity] << "exceeded" if converted_quantity.to_f > available_quantity
+    end
+
+    def find_product
+      StoreFrontModule::Product.find_by_id(product_id)
+    end
+
+    def applicable_num(quantity)
+      1.upto(find_product.stocks.count).each do |num|
+      stocks.last(num).sum(:quantity) >= quantity
+        num
+      end
+    end
+    def decrease_stocks
+      if !remaining_quantity.zero?
+        find_product.stocks.order(date: :asc).last(applicable_num(quantity) -1).each do |stock|
+          stock.line_items.create(quantity: stock.in_stock)
+        end
+         find_product.stocks.order(date: :asc).last(applicable_num(quantity)).last.sold_items.create(quantity: remaining_quantity(quantity))
       else
-        quantity.to_f * find_unit_of_measurement.conversion_quantity.to_f
+        find_product.stocks.order(date: :asc).last(applicable_num(quantity)).each do |stock|
+          stock.line_items.create(quantity: stock.in_stock)
+        end
       end
     end
 
-    def quantity_is_less_than_or_equal_to_available_stock_quantity?
-      errors[:quantity] << "exceeded" if converted_quantity.to_f > stock_quantity
+    def remaining_quantity(quantity)
+      num = find_product.stocks.order(date: :asc).last(applicable_num(quantity)-1).sum(&:quantity) - quantity
+      if num.zero?
+        0
+      else
+        num
+      end
     end
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_01_31_080131) do
+ActiveRecord::Schema.define(version: 2018_01_31_120326) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -412,9 +412,11 @@ ActiveRecord::Schema.define(version: 2018_01_31_080131) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "unit_of_measurement_id"
+    t.string "type"
     t.index ["cart_id"], name: "index_line_items_on_cart_id"
     t.index ["line_itemable_type", "line_itemable_id"], name: "index_line_items_on_line_itemable_type_and_line_itemable_id"
     t.index ["order_id"], name: "index_line_items_on_order_id"
+    t.index ["type"], name: "index_line_items_on_type"
     t.index ["unit_of_measurement_id"], name: "index_line_items_on_unit_of_measurement_id"
   end
 
@@ -714,9 +716,6 @@ ActiveRecord::Schema.define(version: 2018_01_31_080131) do
     t.decimal "total_cost"
     t.decimal "order_change"
     t.uuid "employee_id"
-    t.string "customer_type"
-    t.uuid "customer_id"
-    t.index ["customer_type", "customer_id"], name: "index_orders_on_customer_type_and_customer_id"
     t.index ["employee_id"], name: "index_orders_on_employee_id"
     t.index ["pay_type"], name: "index_orders_on_pay_type"
   end

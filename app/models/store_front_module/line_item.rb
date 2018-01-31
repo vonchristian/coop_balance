@@ -1,5 +1,6 @@
 module StoreFrontModule
   class LineItem < ApplicationRecord
+    extend StoreFrontModule::BalanceFinder
     belongs_to :line_itemable, polymorphic: true
     belongs_to :order
     belongs_to :purchase_return
@@ -7,7 +8,8 @@ module StoreFrontModule
     belongs_to :cart, class_name: "StoreFrontModule::Cart"
     delegate :name, :barcode, to: :line_itemable, allow_nil: true
     delegate :code, to: :unit_of_measurement, prefix: true
-    def self.total_quantity
+
+    def self.total
       all.sum(&:converted_quantity)
     end
 
@@ -20,11 +22,7 @@ module StoreFrontModule
     end
 
     def converted_quantity
-      if unit_of_measurement.base_measurement?
-        quantity
-      else
-        quantity * unit_of_measurement.conversion_quantity
-      end
+      quantity * unit_of_measurement.conversion_multiplier
     end
   end
 end

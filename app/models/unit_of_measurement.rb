@@ -1,5 +1,6 @@
 class UnitOfMeasurement < ApplicationRecord
   belongs_to :product
+
   def self.base_measurement
     where(base_measurement: true).order(created_at: :asc).last
   end
@@ -12,6 +13,14 @@ class UnitOfMeasurement < ApplicationRecord
       quantity.to_f
     else
       quantity.to_f * conversion_quantity
+    end
+  end
+
+  def conversion_multiplier
+    if base_measurement?
+      quantity
+    else
+      conversion_quantity
     end
   end
 end

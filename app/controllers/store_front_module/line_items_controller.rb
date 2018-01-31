@@ -24,7 +24,7 @@ module StoreFrontModule
 
     private
     def line_item_params
-      params.require(:store_front_module_line_item).permit(:line_itemable_id, :line_itemable_type, :quantity,  :unit_of_measurement_id, :cart_id, :search)
+      params.require(:store_front_module_line_item).permit(:line_itemable_id, :line_itemable_type, :quantity,  :unit_of_measurement_id, :cart_id, :product_id)
     end
   end
 end

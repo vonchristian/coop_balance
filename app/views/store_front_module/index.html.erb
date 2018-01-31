@@ -20,34 +20,32 @@
             </tr>
           </thead>
           <tbody>
-            <% if @stocks.any? %>
-              <% @stocks.each do |stock| %>
+            <% if @products.any? %>
+              <% @products.each do |product| %>
                 <tr>
                   <td>
-                    <b><%= stock.name.try(:upcase) %></b><br>
-                    <small class="text-muted"><%= stock.barcode %></small><br>
+                    <b><%= product.name.try(:upcase) %></b><br>
+
                     <span class="label bg-yellow">
-                      <%= stock.in_stock.to_i %> left
+                      <%= product.in_stock.to_i %> left
                     </span>
-                    <i class="fa fa-clock-o"></i> <%= stock.date.strftime("%b/%e/%y") %>
                   </td>
                   <td>
-                    <% stock.unit_of_measurements.each do |unit_of_measurement| %>
+                    <% product.unit_of_measurements.each do |unit_of_measurement| %>
                       <%= number_to_currency unit_of_measurement.price %> <%= unit_of_measurement.code %>
                     <% end %>
                   </td>
                     <%= simple_form_for @line_item, url: :store_front_module_line_items do |f| %>
                     <td width="100px">
-                      <% if !stock.out_of_stock? %>
+                      <% if !product.out_of_stock? %>
                         <%= f.input :quantity, as: :string, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, label: false %>
-                        <%= f.input :unit_of_measurement_id, collection: stock.unit_of_measurements.all.map{|a| [a.code, a.id] } %>
+                        <%= f.input :unit_of_measurement_id, collection: product.unit_of_measurements.all.map{|a| [a.code, a.id] } %>
                       <% end %>
                     </td>
-                      <%= f.input :line_itemable_id, input_html: { value: stock.id }, as: :hidden %>
-                      <%= f.input :line_itemable_type, input_html: { value: stock.class }, as: :hidden %>
                       <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
+                      <%= f.input :product_id, input_html: { value: @cart.id }, as: :hidden %>
                     <td>
-                      <% if !stock.out_of_stock? %>
+                      <% if !product.out_of_stock? %>
                         <%= f.submit "Add", class: "btn btn-primary btn-sm" %>
                       <% else %>
                         <span class="badge bg-red pull-left"> <small>Out of Stock </small></span><br><br>

@@ -1,9 +1,9 @@
 class StoreFrontModuleController < ApplicationController
   def index
     if params[:search].present?
-      @stocks = StoreFrontModule::ProductStock.text_search(params[:search]).all.to_a.sort_by(&:date).reverse
+      @products = StoreFrontModule::Product.text_search(params[:search]).all
     else
-      @stocks = StoreFrontModule::ProductStock.all
+      @products = StoreFrontModule::Product.all
     end
     @cart = current_cart
     @line_item = StoreFrontModule::LineItem.new

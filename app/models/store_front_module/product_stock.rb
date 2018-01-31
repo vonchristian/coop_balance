@@ -25,7 +25,10 @@ module StoreFrontModule
     end
 
     def converted_quantity
-      unit_of_measurement.convert_quantity(quantity)
+      conversion_multiplier * quantity
+    end
+    def conversion_multiplier
+      unit_of_measurement.try(:conversion_multiplier) || 1
     end
 
     def sold_items_quantity

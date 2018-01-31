@@ -1,7 +1,7 @@
 module StoreFrontModule
   class Order < ApplicationRecord
     enum pay_type: [:cash, :credit, :check]
-    belongs_to :customer, polymorphic: true
+    belongs_to :commercial_document, polymorphic: true
     belongs_to :employee, class_name: "User", foreign_key: 'employee_id'
     has_one :official_receipt, as: :receiptable
     has_one :entry, as: :commercial_document, class_name: "AccountingModule::Entry"
