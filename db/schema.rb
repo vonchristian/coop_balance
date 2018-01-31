@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_01_30_123024) do
+ActiveRecord::Schema.define(version: 2018_01_31_080131) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -411,9 +411,11 @@ ActiveRecord::Schema.define(version: 2018_01_30_123024) do
     t.datetime "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "unit_of_measurement_id"
     t.index ["cart_id"], name: "index_line_items_on_cart_id"
     t.index ["line_itemable_type", "line_itemable_id"], name: "index_line_items_on_line_itemable_type_and_line_itemable_id"
     t.index ["order_id"], name: "index_line_items_on_order_id"
+    t.index ["unit_of_measurement_id"], name: "index_line_items_on_unit_of_measurement_id"
   end
 
   create_table "loan_approvals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -789,9 +791,11 @@ ActiveRecord::Schema.define(version: 2018_01_30_123024) do
     t.decimal "selling_price"
     t.decimal "purchase_cost"
     t.decimal "total_purchase_cost"
+    t.uuid "unit_of_measurement_id"
     t.index ["product_id"], name: "index_product_stocks_on_product_id"
     t.index ["registry_id"], name: "index_product_stocks_on_registry_id"
     t.index ["supplier_id"], name: "index_product_stocks_on_supplier_id"
+    t.index ["unit_of_measurement_id"], name: "index_product_stocks_on_unit_of_measurement_id"
   end
 
   create_table "products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1104,6 +1108,19 @@ ActiveRecord::Schema.define(version: 2018_01_30_123024) do
     t.index ["tinable_type", "tinable_id"], name: "index_tins_on_tinable_type_and_tinable_id"
   end
 
+  create_table "unit_of_measurements", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "product_id"
+    t.string "code"
+    t.string "description"
+    t.decimal "price"
+    t.decimal "quantity"
+    t.decimal "conversion_quantity"
+    t.boolean "base_measurement", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_unit_of_measurements_on_product_id"
+  end
+
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -1245,6 +1262,7 @@ ActiveRecord::Schema.define(version: 2018_01_30_123024) do
   add_foreign_key "interest_configs", "loan_products"
   add_foreign_key "line_items", "carts"
   add_foreign_key "line_items", "orders"
+  add_foreign_key "line_items", "unit_of_measurements"
   add_foreign_key "loan_approvals", "loans"
   add_foreign_key "loan_approvals", "users", column: "approver_id"
   add_foreign_key "loan_charge_payment_schedules", "amortization_schedules"
@@ -1284,6 +1302,7 @@ ActiveRecord::Schema.define(version: 2018_01_30_123024) do
   add_foreign_key "product_stocks", "products"
   add_foreign_key "product_stocks", "registries"
   add_foreign_key "product_stocks", "suppliers"
+  add_foreign_key "product_stocks", "unit_of_measurements"
   add_foreign_key "products", "categories"
   add_foreign_key "program_subscriptions", "programs"
   add_foreign_key "programs", "accounts"
@@ -1319,6 +1338,7 @@ ActiveRecord::Schema.define(version: 2018_01_30_123024) do
   add_foreign_key "time_deposit_products", "accounts"
   add_foreign_key "time_deposits", "offices"
   add_foreign_key "time_deposits", "time_deposit_products"
+  add_foreign_key "unit_of_measurements", "products"
   add_foreign_key "users", "accounts", column: "cash_on_hand_account_id"
   add_foreign_key "users", "cooperatives"
   add_foreign_key "users", "offices"

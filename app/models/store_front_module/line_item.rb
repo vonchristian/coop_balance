@@ -3,13 +3,14 @@ module StoreFrontModule
     belongs_to :line_itemable, polymorphic: true
     belongs_to :order
     belongs_to :purchase_return
+    belongs_to :unit_of_measurement
     belongs_to :cart, class_name: "StoreFrontModule::Cart"
     delegate :name, :barcode, to: :line_itemable, allow_nil: true
-    validates :unit_cost, presence: true, numericality: true
-    after_commit :set_total_cost
+    delegate :code, to: :unit_of_measurement, prefix: true
     def self.total_quantity
-      all.sum(&:quantity)
+      all.sum(&:converted_quantity)
     end
+
     def unit_cost_and_quantity
       unit_cost * quantity
     end
@@ -18,9 +19,12 @@ module StoreFrontModule
       all.sum(:total_cost)
     end
 
-    private
-    def set_total_cost
-      self.total_cost ||= quantity * unit_cost
+    def converted_quantity
+      if unit_of_measurement.base_measurement?
+        quantity
+      else
+        quantity * unit_of_measurement.conversion_quantity
+      end
     end
   end
 end

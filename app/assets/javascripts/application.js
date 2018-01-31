@@ -12,6 +12,8 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery-ui/widgets/autocomplete
+//= require autocomplete-rails
 //= require bootstrap-sprockets
 //= require bootstrap-datepicker
 //= require moment
@@ -24,3 +26,4 @@
 //= require rails.validations
 //= require rails.validations.simple_form
 //= require_tree .
+

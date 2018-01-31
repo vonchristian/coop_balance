@@ -8,6 +8,7 @@ module StoreFrontModule
     has_many :stocks, class_name: "StoreFrontModule::ProductStock"
     has_many :sold_items, through: :stocks, source: :sold_items
     has_many :orders, through: :sold_items
+    has_many :unit_of_measurements
     has_attached_file :photo,
     styles: { large: "120x120>",
              medium: "70x70>",
@@ -21,5 +22,8 @@ module StoreFrontModule
     validates_attachment_size :photo, :in => 0.megabytes..4.megabytes, :message => 'must be smaller than 4mb'
 
     validates :name, presence: true, uniqueness: true
+    def base_measurement
+      unit_of_measurements.base_measurement
+    end
   end
 end

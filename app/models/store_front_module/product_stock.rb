@@ -6,13 +6,12 @@ module StoreFrontModule
 	  belongs_to :product, class_name: "StoreFrontModule::Product"
 	  belongs_to :supplier
     belongs_to :registry, class_name: "StockRegistry", foreign_key: 'registry_id'
+    belongs_to :unit_of_measurement
     has_many :sold_items, class_name: "StoreFrontModule::LineItem", as: :line_itemable
-    has_many :returned_items, class_name: ""
-	  delegate :name, :unit_of_measurement, to: :product, allow_nil: true
+    has_many :returned_items
+    delegate :code, to: :unit_of_measurement, prefix: true, allow_nil: true
+	  delegate :name, :unit_of_measurements, to: :product, allow_nil: true
 
-	  validates :supplier_id, :product_id, presence: true
-	  validates :purchase_cost, :total_purchase_cost, :quantity, :selling_price, numericality: { greater_than: 0.01 }
-	  before_save :set_default_date
     def self.in_stock
       sum(&:in_stock)
     end
@@ -22,8 +21,17 @@ module StoreFrontModule
     end
 
     def in_stock
-      quantity - sold_items.total_quantity
+      converted_quantity - sold_items_quantity
     end
+
+    def converted_quantity
+      unit_of_measurement.convert_quantity(quantity)
+    end
+
+    def sold_items_quantity
+      sold_items.total_quantity
+    end
+
 
     def out_of_stock?
       in_stock.zero? || in_stock < 0

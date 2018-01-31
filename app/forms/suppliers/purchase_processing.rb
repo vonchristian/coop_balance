@@ -1,5 +1,5 @@
 module Suppliers
-  class DeliveryProcessing
+  class PurchaseProcessing
     include ActiveModel::Model
     attr_accessor :supplier_id, :voucher_id, :registry_id, :payable_amount
     validates :registry_id, :voucher_id, presence: true

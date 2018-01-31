@@ -1,0 +1,9 @@
+<%= simple_form_for [@product, @unit_of_measurement], url: :store_front_module_product_unit_of_measurements do |f| %>
+  <%= f.input :code %>
+  <%= f.input :description %>
+  <%= f.input :quantity %>
+  <%= f.input :price %>
+  <%= f.input :conversion_quantity %>
+  <%= f.input :base_measurement %>
+  <%= f.submit %>
+<% end %>

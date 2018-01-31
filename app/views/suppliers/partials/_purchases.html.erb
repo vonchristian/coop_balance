@@ -1,5 +1,5 @@
-<div class="tab-pane <%= 'active' if current_page?(supplier_deliveries_path(@supplier))%>">
-            <%= link_to 'New Delivery', new_supplier_delivery_path(@supplier), class: "btn btn-primary btn-flat pull-right" %>
+<div class="tab-pane <%= 'active' if current_page?(supplier_purchases_path(@supplier))%>">
+            <%= link_to 'New Purchase', new_supplier_purchase_path(@supplier), class: "btn btn-primary btn-flat pull-right" %>
             <%= link_to 'New Purchase Return', new_supplier_purchase_return_path(@supplier), class: "btn btn-primary btn-flat pull-right" %>
 
         <div class="table table-responsive">

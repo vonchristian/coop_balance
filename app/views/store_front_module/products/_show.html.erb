@@ -33,6 +33,9 @@
 
         </ul>
             <div class="tab-content">
+              <% if current_page? store_front_module_product_path(@product) %>
+                <%= render 'store_front_module/products/partials/info' %>
+              <% end %>
               <% if current_page? store_front_module_product_stocks_path(@product) %>
                 <%= render 'store_front_module/products/partials/stocks' %>
               <% end %>
