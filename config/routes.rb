@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   root :to => 'loans_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'loan_officer' if request.env['warden'].user }, as: :loans_module_root
   root :to => 'management_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'general_manager' if request.env['warden'].user }, as: :management_module_root
   root :to => 'teller_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'teller' if request.env['warden'].user }, as: :teller_module_root
-  root :to => 'warehouse_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'stock_custodian' if request.env['warden'].user }, as: :warehouse_module_root
+  root :to => 'store_front_module/products#index', :constraints => lambda { |request| request.env['warden'].user.role == 'stock_custodian' if request.env['warden'].user }, as: :warehouse_module_root
   root :to => 'store_front_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'sales_clerk' if request.env['warden'].user }, as: :store_front_module_root
   root :to => 'store_front_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'stock_custodian' if request.env['warden'].user }, as: :store_stocks_module_root
   root :to => 'hr_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'human_resource_officer' if request.env['warden'].user }, as: :hr_module_root
@@ -203,11 +203,11 @@ Rails.application.routes.draw do
     resources :search_results, only: [:index]
     resources :members, only: [:index, :show, :new, :create]
     resources :orders, only: [:index, :new, :create, :show]
-    resources :line_items, only: [:new, :create]
-    resources :stocks, only: [:index, :show, :destroy]
+    resources :line_items, only: [:new, :create, :destroy]
+    resources :purchases, only: [:index, :show, :destroy]
     resources :stock_deliveries, only: [:new, :create]
     resources :products, only: [:index, :show, :new, :create] do
-      resources :stocks, only: [:index, :new, :create], module: :products
+      resources :purchases, only: [:index, :new, :create], module: :products
       resources :sales, only: [:index], module: :products
       resources :unit_of_measurements, only: [:new, :create]
     end
@@ -349,4 +349,5 @@ Rails.application.routes.draw do
     resources :checkouts, only: [:create]
     resources :order_processings, only: [:new, :create]
   end
+
 end

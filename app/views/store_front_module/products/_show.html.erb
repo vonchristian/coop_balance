@@ -8,17 +8,17 @@
         <div class="box-body">
           <div class="row">
             <div class="col-md-3 border-right">
-              <h3 class="no-padding"><%= @product.stocks.total_quantity %></h3>
-              <small>DELIVERIES</small>
+              <h3 class="no-padding"><%= @product.purchases_balance %></h3>
+              <small>PURCHASES</small>
             </div>
             <div class="col-md-3 border-right">
-              <h3 class="no-padding"><%= @product.sold_items.total_quantity %></h3>
-              <small>SOLD</small>
+              <h3 class="no-padding"><%= @product.sales_balance %></h3>
+              <small>SALES</small>
             </div>
             <div class="col-md-3 border-right">
               <center>
-              <h3 class="no-padding"><%= @product.stocks.in_stock %></h3>
-              <small>IN STOCK</small>
+              <h3 class="no-padding"><%= @product.balance %></h3>
+              <small>AVAILABLE QTY</small>
               </center>
             </div>
           </div>
@@ -26,7 +26,7 @@
           <div class="nav-tabs">
              <ul class="nav nav-tabs">
           <li class="<%= 'active' if current_page?(store_front_module_product_path(@product))%>"><%= link_to 'Info', store_front_module_product_path(@product) %></li>
-          <li class="<%= 'active' if current_page?(store_front_module_product_stocks_path(@product))%>"><%= link_to 'Stocks', store_front_module_product_stocks_path(@product) %></li>
+          <li class="<%= 'active' if current_page?(store_front_module_product_purchases_path(@product))%>"><%= link_to 'Purchases', store_front_module_product_purchases_path(@product) %></li>
            <li class="<%= 'active' if current_page?(store_front_module_product_sales_path(@product))%>"><%= link_to 'Sales', store_front_module_product_sales_path(@product) %></li>
 
 
@@ -36,8 +36,8 @@
               <% if current_page? store_front_module_product_path(@product) %>
                 <%= render 'store_front_module/products/partials/info' %>
               <% end %>
-              <% if current_page? store_front_module_product_stocks_path(@product) %>
-                <%= render 'store_front_module/products/partials/stocks' %>
+              <% if current_page? store_front_module_product_purchases_path(@product) %>
+                <%= render 'store_front_module/products/partials/purchases' %>
               <% end %>
               <% if current_page? store_front_module_product_sales_path(@product) %>
                 <%= render 'store_front_module/products/partials/sales' %>

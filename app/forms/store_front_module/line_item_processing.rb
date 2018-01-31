@@ -2,7 +2,7 @@ module StoreFrontModule
   class LineItemProcessing
     include ActiveModel::Model
     include ActiveModel::Validations
-    attr_accessor :unit_of_measurement_id, :quantity, :cart_id, :line_itemable_id, :line_itemable_type, :product_id
+    attr_accessor :unit_of_measurement_id, :quantity, :cart_id, :product_id
     validates :quantity, numericality: { less_than_or_equal_to: :available_stock }, on: :create
     validate :quantity_is_less_than_or_equal_to_available_stock?
     def process!

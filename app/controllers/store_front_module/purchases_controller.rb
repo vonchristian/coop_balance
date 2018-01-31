@@ -1,5 +1,5 @@
 module StoreFrontModule
-  class StocksController < ApplicationController
+  class PurchasesController < ApplicationController
     def new
       @stock = StockDelivery.new
       @registry = StockRegistry.new

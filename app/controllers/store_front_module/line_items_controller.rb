@@ -19,7 +19,7 @@ module StoreFrontModule
     def destroy
       @line_item = StoreFrontModule::LineItem.find(params[:id])
       @line_item.destroy
-      redirect_to store_index_url
+      redirect_to new_supplier_purchase_url(@line_item.commercial_document)
     end
 
     private

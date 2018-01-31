@@ -24,7 +24,7 @@
         <%=render "teller_module/sidebar_for_teller_department", cached: true %>
       <% end %>
       <% if current_user.stock_custodian? %>
-        <%=render "warehouse_department/sidebar_for_warehouse_department", cached: true %>
+        <%=render "store_front_module/sidebar_for_stock_custodian", cached: true %>
       <% end %>
       <% if current_user.sales_clerk? %>
         <%=render "store_front_module/sidebar_for_store", cached: true %>

@@ -5,17 +5,17 @@ module Suppliers
     end
     def new
       @supplier = Supplier.find(params[:supplier_id])
-      @stock = Suppliers::StockPurchaseProcessing.new
-      @stock_registry = current_stock_registry
+      @line_item = StoreFrontModule::PurchaseLineItemProcessing.new
+      @cart = current_cart
       @product = StoreFrontModule::Product.text_search(params[:search]).last
       @voucher = @supplier.vouchers.text_search(params[:voucher_search]).last
-      @delivery_processing = Suppliers::PurchaseProcessing.new
+      @order_processing = StoreFrontModule::PurchaseOrderProcessing.new
     end
     def create
       @supplier = Supplier.find(params[:supplier_id])
-      @stock = Suppliers::StockPurchaseProcessing.new(stock_params)
-      if @stock.valid?
-        @stock.process!
+      @line_item = StoreFrontModule::PurchaseLineItemProcessing.new(purchase_params)
+      if @line_item.valid?
+        @line_item.process!
         redirect_to new_supplier_purchase_url(@supplier), notice: "Stock added successfully"
       else
         render :new
@@ -23,8 +23,8 @@ module Suppliers
     end
 
     private
-    def stock_params
-      params.require(:suppliers_stock_purchase_processing).permit(:product_id, :date, :quantity, :purchase_cost, :total_purchase_cost, :barcode, :supplier_id, :selling_price, :unit_of_measurement_id, :registry_id)
+    def purchase_params
+      params.require(:store_front_module_purchase_line_item_processing).permit(:commercial_document_id, :commercial_document_type, :unit_of_measurement_id, :quantity, :cart_id, :product_id, :unit_cost, :total_cost, :cart_id, :barcode)
     end
   end
 end

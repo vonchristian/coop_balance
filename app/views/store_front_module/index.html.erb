@@ -20,7 +20,7 @@
             </tr>
           </thead>
           <tbody>
-            <% if @products.any? %>
+            <% if params[:search].present? %>
               <% @products.each do |product| %>
                 <tr>
                   <td>

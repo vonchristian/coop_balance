@@ -8,6 +8,7 @@ module StoreFrontModule
     belongs_to :product
 
     validates :unit_of_measurement_id, presence: true
+    delegate :name, to: :product, allow_nil: true
     delegate :code, to: :unit_of_measurement, prefix: true
     delegate :conversion_multiplier, to: :unit_of_measurement
 

@@ -7,8 +7,8 @@ module StoreFrontModule
     belongs_to :category, class_name: "StoreFrontModule::Category"
     has_many :unit_of_measurements
     has_many :line_items, class_name: "StoreFrontModule::LineItem"
-    has_many :sale_line_items, :class_name => 'StoreFrontModule::SaleLineItem'
-    has_many :purchase_line_items, :class_name => 'StoreFrontModule::PurchaseLineItem'
+    has_many :purchases, :class_name => 'StoreFrontModule::SaleLineItem'
+    has_many :sales, :class_name => 'StoreFrontModule::PurchaseLineItem'
     has_many :orders, through: :line_items, source: :order
     has_many :sales_orders, :through => :sale_line_items, :source => :order, :class_name => 'StoreFrontModule::Order'
     has_many :purchase_orders, :through => :purchase_line_items, :source => :order, :class_name => 'StoreFrontModule::Order'
@@ -40,11 +40,11 @@ module StoreFrontModule
     end
 
     def sales_balance(options={})
-      sale_line_items.balance(options)
+      sales.balance(options)
     end
 
     def purchases_balance(options={})
-      purchase_line_items.balance(options)
+      purchases.balance(options)
     end
   end
 end

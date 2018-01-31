@@ -1,8 +1,5 @@
 <div class="tab-pane active" id="product-stocks">
-  <% if @stocks.any? %>
-    <%= link_to new_store_front_module_product_stock_path(@product) do %>
-      <span class="btn btn-primary"><i class="fa fa-plus-circle"></i> New Stock </span>
-    <% end %>
+  <% if @purchases.any? %>
     <div class="table table-responsive">
       <table class="table table-striped table-hover">
         <thead>
@@ -14,13 +11,13 @@
           <th>Barcode</th>
         </thead>
         <tbody>
-          <%= render @stocks %>
+          <%= render @purchases %>
         </tbody>
       </table>
     </div>
-    <center> <%= will_paginate @stocks %></center>
+    <center> <%= will_paginate @purchases %></center>
   <% else %>
-    <p class="alert alert-info">No stocks yet for this product <%= link_to 'Add Stock', new_store_front_module_product_stock_path(@product) %> </p>
+    <p class="alert alert-info">No purchases yet for this product </p>
   <% end %>
 
 </div>

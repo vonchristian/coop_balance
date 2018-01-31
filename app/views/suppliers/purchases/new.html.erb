@@ -19,7 +19,7 @@
             </span>
           </div>
         <% end %>
-        <%= simple_form_for @stock, url: :supplier_purchases do |f| %>
+        <%= simple_form_for @line_item, url: :supplier_purchases do |f| %>
           <%= f.error_notification %>
 
           <% if @product.present? %>
@@ -31,20 +31,21 @@
           <%= f.input :date, as: :string, input_html: { class: "datepicker", value: Time.zone.now.strftime("%B %e, %Y") } %>
           <%= f.input :quantity, input_html: { autofocus: true, id: 'stock_quantity', oninput: 'calculateTotalPurchaseCost()'} %>
             <% if @product.present?%>
-          <%= f.input :unit_of_measurement_id, collection: @product.unit_of_measurements.map{|a| [a.code, a.id] } %>
+          <%= f.input :unit_of_measurement_id, collection: @product.unit_of_measurements.map{|a| [a.quantity_and_code, a.id] } %>
 
-              <%= f.input :purchase_cost, input_html: {id: 'stock_purchase_cost', oninput: 'calculateTotalPurchaseCost()', value: @product.stocks.order(date: :desc).first.try(:purchase_cost) } %>
-            <% else %>
-              <%= f.input :purchase_cost, input_html: { id: 'stock_purchase_cost', oninput: 'calculateTotalPurchaseCost()' } %>
+              <%= f.input :unit_cost, label: "Purchase Cost", input_html: {id: 'stock_purchase_cost', oninput: 'calculateTotalPurchaseCost()', value: @product.purchases.order(date: :desc).first.try(:unit_cost) } %>
+
             <% end %>
-          <%= f.input :total_purchase_cost, input_html: { id: 'stock_total_purchase_cost' }, readonly: true %>
+          <%= f.input :total_cost, input_html: { id: 'stock_total_purchase_cost' }, readonly: true %>
           <% if params[:search].present? %>
             <%= f.input :barcode, input_html: { value: params[:search] } %>
           <% else %>
             <%= f.input :barcode %>
           <% end %>
-          <%= f.input :supplier_id, input_html: { value: @supplier.id }, as: :hidden %>
-          <%= f.input :registry_id, input_html: { value: @stock_registry.id }, as: :hidden %>
+          <%= f.input :commercial_document_id, input_html: { value: @supplier.id }, as: :hidden %>
+          <%= f.input :commercial_document_type, input_html: { value: @supplier.class }, as: :hidden %>
+
+ <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
 
           <div class="box-footer">
             <%= f.submit "Save Stock", class: "btn btn-default btn-flat" %>
@@ -67,25 +68,25 @@
             <thead>
               <tr>
                 <th>QTY</th>
-                <th>UNIT</th>
+
                 <th>DESCRIPTION</th>
                 <th><span class="pull-right">PURCHASE COST</span></th>
                 <th><span class="pull-right">TOTAL COST</span></th>
               </tr>
             </thead>
             <tbody>
-              <% @stock_registry.stocks.each do |stock| %>
+              <% @cart.line_items.each do |line_item| %>
                 <tr>
                   <td>
-                    <%= stock.quantity %> <%= stock.unit_of_measurement_code %>
+                    <%= line_item.quantity %> <%= line_item.unit_of_measurement_code %>
                   </td>
                   <td>
-                    <%= stock.name %><br>
-                    <small class="text-muted"><%= stock.barcode %></small>
+                    <%= line_item.name %><br>
+                    <small class="text-muted"><%= line_item.barcode %></small>
                   </td>
-                  <td><span class="pull-right"> <%= number_to_currency stock.purchase_cost %></span></td>
-                  <td><span class="pull-right"><%= number_to_currency stock.total_purchase_cost %></span></td>
-                  <td><%= link_to store_front_module_stock_path(stock), method: :delete do %>
+                  <td><span class="pull-right"> <%= number_to_currency line_item.unit_cost %></span></td>
+                  <td><span class="pull-right"><%= number_to_currency line_item.total_cost %></span></td>
+                  <td><%= link_to store_front_module_line_item_path(line_item), method: :delete do %>
                       <span class="fa fa-trash"></span>
                       <% end %>
                   </td>
@@ -100,7 +101,7 @@
             </div>
             <div class="col-md-5">
               <span class="pull-right">
-                <%=number_to_currency @stock_registry.stocks.pluck(:total_purchase_cost).sum%>
+                <%=number_to_currency @cart.line_items.pluck(:total_cost).sum%>
               </span>
             </div>
           </div>
