@@ -2,11 +2,11 @@ module StoreFrontModule
   class ProductsController < ApplicationController
     def index
       if params[:category_id].present?
-        @products = StoreFrontModule::Category.find(params[:category_id]).products
+        @products = StoreFrontModule::Category.find(params[:category_id]).products.paginate(page: params[:page], per_page: 50)
       elsif params[:search].present?
-        @products = StoreFrontModule::Product.text_search(params[:search])
+        @products = StoreFrontModule::Product.text_search(params[:search]).paginate(page: params[:page], per_page: 50)
       else
-        @products = StoreFrontModule::Product.all
+        @products = StoreFrontModule::Product.all.paginate(page: params[:page], per_page: 50)
       end
       @categories = StoreFrontModule::Category.all
       respond_to do |format|

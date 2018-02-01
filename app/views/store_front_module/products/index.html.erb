@@ -56,9 +56,11 @@
 							  <tr>
 								  <% cache product do %>
 								    <td><%=link_to product.name, store_front_module_product_path(product) %></td>
+                    <td><%= product.balance %></td>
 								  <% end %>
 								</tr>
 							<% end %>
 						</tbody>
 					</table>
+          <center><%= will_paginate @products %></center>
 				</div>

@@ -1,22 +1,30 @@
 module StoreFrontModule
   class PurchasesController < ApplicationController
+    autocomplete :supplier, :business_name, full: true, limit: 50
     def new
-      @stock = StockDelivery.new
-      @registry = StockRegistry.new
+      @line_item = StoreFrontModule::PurchaseLineItemProcessing.new
+      @cart = current_cart
+      if params[:product_search].present?
+        @product = StoreFrontModule::Product.find(params[:product_search][:product_id])
+      end
+      @supplier = Supplier.text_search(params[:supplier_search]).last
+
     end
     def create
-      @stock = StockDelivery.new(stock_params)
-      if @stock.valid?
-        @stock.save
-        redirect_to new_store_module_stock_path, notice: 'added successfully'
+      @line_item = StoreFrontModule::PurchaseLineItemProcessing.new(purchase_params)
+      if @line_item.valid?
+        @line_item.process!
+        redirect_to new_store_front_module_purchase_url(@supplier), notice: "Stock added successfully"
       else
         render :new
       end
     end
-    def destroy
-      @stock = StoreFrontModule::ProductStock.find(params[:id])
-      @stock.destroy
-      redirect_to new_supplier_purchase_url(@stock.supplier), notice: "Removed successfully."
+    def autocomplete_product_name
+    end
+
+    private
+    def purchase_params
+      params.require(:store_front_module_purchase_line_item_processing).permit(:commercial_document_id, :commercial_document_type, :unit_of_measurement_id, :quantity, :cart_id, :product_id, :unit_cost, :total_cost, :cart_id, :barcode)
     end
   end
 end

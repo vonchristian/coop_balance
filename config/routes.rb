@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   mount Delayed::Web::Engine, at: '/jobs'
-  # devise_for :committee_members
   unauthenticated :user do
     root :to => 'accounting_module#index', :constraints => lambda { |request| request.env['warden'].user.nil? }, as: :unauthenticated_root
   end
@@ -204,7 +203,12 @@ Rails.application.routes.draw do
     resources :members, only: [:index, :show, :new, :create]
     resources :orders, only: [:index, :new, :create, :show]
     resources :line_items, only: [:new, :create, :destroy]
-    resources :purchases, only: [:index, :show, :destroy]
+    resources :purchases, only: [:index, :new, :create, :show, :destroy]  do
+      get :autocomplete_supplier_business_name, :on => :collection
+      get :autocomplete_product_name, :on => :collection
+
+    end
+    resources :purchase_order_processings, only: [:new, :create]
     resources :stock_deliveries, only: [:new, :create]
     resources :products, only: [:index, :show, :new, :create] do
       resources :purchases, only: [:index, :new, :create], module: :products
@@ -349,5 +353,4 @@ Rails.application.routes.draw do
     resources :checkouts, only: [:create]
     resources :order_processings, only: [:new, :create]
   end
-
 end

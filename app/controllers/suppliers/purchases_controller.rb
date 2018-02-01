@@ -9,7 +9,7 @@ module Suppliers
       @cart = current_cart
       @product = StoreFrontModule::Product.text_search(params[:search]).last
       @voucher = @supplier.vouchers.text_search(params[:voucher_search]).last
-      @order_processing = StoreFrontModule::PurchaseOrderProcessing.new
+      @purchase_order_processing = StoreFrontModule::PurchaseOrderProcessing.new
     end
     def create
       @supplier = Supplier.find(params[:supplier_id])

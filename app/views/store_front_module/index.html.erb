@@ -1,3 +1,5 @@
+<%= @cart.id %>
+
 <div class="row">
   <div class="col-md-7">
     <div class="box box-solid">
@@ -29,6 +31,8 @@
                     <span class="label bg-yellow">
                       <%= product.balance %> left
                     </span>
+                    <%= product.sales_balance %>
+                    <%= product.purchases_balance %>
                   </td>
                   <td>
                     <% product.unit_of_measurements.each do |unit_of_measurement| %>
@@ -43,7 +47,7 @@
                       <% end %>
                     </td>
                       <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
-                      <%= f.input :product_id, input_html: { value: @cart.id }, as: :hidden %>
+                      <%= f.input :product_id, input_html: { value: product.id }, as: :hidden %>
                     <td>
                       <% if !product.out_of_stock? %>
                         <%= f.submit "Add", class: "btn btn-primary btn-sm" %>

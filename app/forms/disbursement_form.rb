@@ -23,7 +23,6 @@ class DisbursementForm
     entry.save!
   end
   def disburse_voucher
-    find_voucher.disbursed!
     find_voucher.update_attributes(disburser_id: recorder_id)
   end
 

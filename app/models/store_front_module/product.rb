@@ -5,14 +5,16 @@ module StoreFrontModule
     pg_search_scope :text_search, against: [:name], :associated_against => {
     :line_items => [:barcode] }
     belongs_to :category, class_name: "StoreFrontModule::Category"
-    has_many :unit_of_measurements
+    has_many :unit_of_measurements, class_name: "StoreFrontModule::UnitOfMeasurement"
     has_many :line_items, class_name: "StoreFrontModule::LineItem"
-    has_many :purchases, :class_name => 'StoreFrontModule::SaleLineItem'
-    has_many :sales, :class_name => 'StoreFrontModule::PurchaseLineItem'
+    has_many :purchases, :class_name => 'StoreFrontModule::PurchaseLineItem'
+    has_many :sales, :class_name => 'StoreFrontModule::SalesLineItem'
     has_many :orders, through: :line_items, source: :order
-    has_many :sales_orders, :through => :sale_line_items, :source => :order, :class_name => 'StoreFrontModule::Order'
-    has_many :purchase_orders, :through => :purchase_line_items, :source => :order, :class_name => 'StoreFrontModule::Order'
-
+    has_many :sales_orders, :through => :sales, :source => :order, :class_name => 'StoreFrontModule::Order'
+    has_many :purchase_orders, :through => :purchases, :source => :order, :class_name => 'StoreFrontModule::Order'
+    has_many :sales_returns, class_name: "StoreFrontModule::SalesReturnLineItem"
+    has_many :purchase_returns, class_name: "StoreFrontModule::PurchaseReturnLineItem"
+    has_many :spoilages, class_name: "StoreFrontModule::SpoilageLineItem"
     has_attached_file :photo,
     styles: { large: "120x120>",
              medium: "70x70>",
@@ -36,15 +38,17 @@ module StoreFrontModule
     end
 
     def balance(options={})
-      sales_balance(options) - purchases_balance(options)
+      purchases_balance(options) - sales_balance(options)
     end
 
     def sales_balance(options={})
-      sales.balance(options)
+      sales.balance(product_id: self.id) -
+      sales_returns.balance(product_id: self.id)
     end
 
     def purchases_balance(options={})
-      purchases.balance(options)
+      purchases.balance(product_id: self.id) -
+      purchase_returns.balance(product_id: self.id)
     end
   end
 end

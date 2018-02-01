@@ -6,18 +6,27 @@ module StoreFrontModule
     belongs_to :unit_of_measurement
     belongs_to :cart, class_name: "StoreFrontModule::Cart"
     belongs_to :product
+    belongs_to :referenced_line_item, class_name: "StoreFrontModule::LineItem"
 
-    validates :unit_of_measurement_id, presence: true
-    delegate :name, to: :product, allow_nil: true
+    validates :unit_of_measurement_id, :product_id, presence: true
+    delegate :name, to: :commercial_document, prefix: true
+    delegate :name, to: :product
     delegate :code, to: :unit_of_measurement, prefix: true
     delegate :conversion_multiplier, to: :unit_of_measurement
+    delegate :balance, to: :product, prefix: true
+
+    validates :quantity, numericality: { less_than_or_equal_to: :product_balance }, if: :sales_line_item?
 
     def self.total
       all.sum(&:converted_quantity)
     end
 
-    def unit_cost_and_quantity
-      unit_cost * quantity
+    def cost_of_goods_sold
+      if referenced_line_item.present?
+        referenced_line_item.unit_cost * quantity
+      else
+        0
+      end
     end
 
     def self.total_cost
@@ -26,6 +35,10 @@ module StoreFrontModule
 
     def converted_quantity
       quantity * conversion_multiplier
+    end
+
+    def sales_line_item?
+      type == "StoreFrontModule::SalesLineItem"
     end
   end
 end

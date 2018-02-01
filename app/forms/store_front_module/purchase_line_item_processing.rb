@@ -11,7 +11,7 @@ module StoreFrontModule
 
     private
     def process_purchase
-      find_cart.line_items.create(commercial_document_id: commercial_document_id,
+      find_cart.purchase_line_items.create(commercial_document_id: commercial_document_id,
                                   commercial_document_type: commercial_document_type,
                                   quantity: quantity,
                                   unit_cost: unit_cost,

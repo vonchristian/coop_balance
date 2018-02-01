@@ -1,4 +1,4 @@
 module StoreFrontModule
-  class SaleLineItem < LineItem
+  class SalesLineItem < LineItem
   end
 end

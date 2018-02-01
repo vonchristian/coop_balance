@@ -5,21 +5,17 @@
       <div class="box-body">
         <p><b>Search for Product</b></p>
 
-        <%=form_tag new_supplier_purchase_path(@supplier), method: :get, class: "sidebar-form" do %>
+        <%= simple_form_for :product_search, url: :new_store_front_module_purchase, method: :get, class: "sidebar-form" do |f| %>
           <div class="input-group">
-            <% if @product.present? %>
-              <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search..." %>
-            <% else %>
-              <%= text_field_tag :search, params[:search], autofocus: true, class: "form-control", placeholder: "Search..." %>
-            <% end %>
+            <%= f.input :product_id, input_html: {class: "form-control" }, placeholder: "Search...", collection: StoreFrontModule::Product.all.map{|a| [a.name, a.id]}, label: false %>
             <span class="input-group-btn">
-              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+              <%= button_tag(type: 'submit', class: "btn btn-flat") do %>
                 <i class="fa fa-search"></i>
               <% end %>
             </span>
           </div>
         <% end %>
-        <%= simple_form_for @line_item, url: :supplier_purchases do |f| %>
+        <%= simple_form_for @line_item, url: :store_front_module_purchases do |f| %>
           <%= f.error_notification %>
 
           <% if @product.present? %>
@@ -42,8 +38,6 @@
           <% else %>
             <%= f.input :barcode %>
           <% end %>
-          <%= f.input :commercial_document_id, input_html: { value: @supplier.id }, as: :hidden %>
-          <%= f.input :commercial_document_type, input_html: { value: @supplier.class }, as: :hidden %>
 
  <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
 
@@ -56,11 +50,34 @@
   </div>
   <div class="col-md-8">
     <div class="box box-solid">
-      <div class="box-header bg-olive">
+      <div class="box-header with-border">
+        <%=form_tag new_store_front_module_purchase_path, method: :get, class: "sidebar-form" do %>
+          <div class="input-group">
 
-           <h4><center><%= image_tag(@supplier.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center></h4>
+             <%= text_field_tag :supplier_search, params[:supplier_search], class: "form-control", placeholder: "Search...", type: "search", data: {autocomplete: autocomplete_supplier_business_name_store_front_module_purchases_path} %>
 
-            <h3><center><%= @supplier.business_name %></center></h3>
+            <span class="input-group-btn">
+              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                <i class="fa fa-search"></i>
+              <% end %>
+            </span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="box box-solid">
+        <div class="box-header bg-gray">
+        <% if @supplier.present? %>
+          <div class="row">
+            <div class="col-md-2">
+              <center><%= image_tag(@supplier.avatar.url(:medium), class: "img-circle", hegiht: 45, width: 45) %></center>
+            </div>
+            <div class="col-md-5">
+              <b> <%= @supplier.business_name.try(:upcase) %></b><br>
+              <i class="fa fa-map-marker"></i> Address: <%= @supplier.address %>
+            </div>
+          </div>
+        <% end %>
       </div>
       <div class="box-body">
         <div class="table table-responsive">
@@ -106,47 +123,18 @@
             </div>
           </div>
           <hr>
-          <%=form_tag new_supplier_purchase_path(@supplier), method: :get, class: "sidebar-form" do %>
-            <div class="input-group">
-                <%= text_field_tag :voucher_search, params[:voucher_number], autofocus: true, class: "form-control", placeholder: "Search Voucher Number..." %>
-              <span class="input-group-btn">
-                <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
-                  <i class="fa fa-search"></i>
-                <% end %>
-              </span>
-            </div>
-          <% end %>
-          <% if @voucher.present? && @voucher.disbursed? %>
-      <div class="row">
-        <div class="col-md-5">
-          &nbsp; &nbsp; Description
-        </div>
-        <div class="col-md-5">
-          <%= @voucher.description %>
-        </div>
-      </div>
-      <br>
-      <div class="row">
-        <div class="col-md-5">
-          &nbsp; &nbsp; Amount
-        </div>
-        <div class="col-md-5">
-          <%= @voucher.entry.debit_amounts.sum(&:amount) %>
-        </div>
-      </div>
-  <%= simple_form_for [@supplier, @purchase_order_processing], url: :store_front_module_purchase_order_processings do |f| %>
-    <%= f.input :voucher_id, input_html: { value: @voucher.id }, as: :hidden %>
-    <%= f.input :supplier_id, input_html: { value: @supplier.id }, as: :hidden %>
-    <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
-    <div class="box-footer">
-        <%= f.submit "Process", class: "btn btn-disabled pull-right" %>
-    </div>
-  <% end %>
-<% else %>
-  No Voucher found.
-<% end %>
+          <%= link_to "Process",new_store_front_module_purchase_order_processing_path %>
+
+
 
       </div>
     </div>
   </div>
 </div>
+<script>
+  $(document).ready(function() {
+    $("#product_search_product_id").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>

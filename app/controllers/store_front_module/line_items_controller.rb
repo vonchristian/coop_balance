@@ -1,11 +1,6 @@
 module StoreFrontModule
   class LineItemsController < ApplicationController
     def create
-      if params[:search].present?
-        @stocks = StoreFrontModule::ProductStock.text_search(params[:search]).all.to_a.sort_by(&:date).reverse
-      else
-        @stocks = StoreFrontModule::ProductStock.all
-      end
       @cart = current_cart
       @checkout = StoreFrontModule::CheckoutForm.new
       @line_item = StoreFrontModule::LineItemProcessing.new(line_item_params)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_01_31_122628) do
+ActiveRecord::Schema.define(version: 2018_02_01_122428) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -403,8 +403,6 @@ ActiveRecord::Schema.define(version: 2018_01_31_122628) do
   create_table "line_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "order_id"
     t.uuid "cart_id"
-    t.string "line_itemable_type"
-    t.uuid "line_itemable_id"
     t.decimal "unit_cost"
     t.decimal "total_cost"
     t.decimal "quantity"
@@ -417,11 +415,12 @@ ActiveRecord::Schema.define(version: 2018_01_31_122628) do
     t.uuid "commercial_document_id"
     t.string "barcode"
     t.uuid "product_id"
+    t.uuid "referenced_line_item_id"
     t.index ["cart_id"], name: "index_line_items_on_cart_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_line_items"
-    t.index ["line_itemable_type", "line_itemable_id"], name: "index_line_items_on_line_itemable_type_and_line_itemable_id"
     t.index ["order_id"], name: "index_line_items_on_order_id"
     t.index ["product_id"], name: "index_line_items_on_product_id"
+    t.index ["referenced_line_item_id"], name: "index_line_items_on_referenced_line_item_id"
     t.index ["type"], name: "index_line_items_on_type"
     t.index ["unit_of_measurement_id"], name: "index_line_items_on_unit_of_measurement_id"
   end
@@ -722,6 +721,9 @@ ActiveRecord::Schema.define(version: 2018_01_31_122628) do
     t.decimal "total_cost"
     t.decimal "order_change"
     t.uuid "employee_id"
+    t.string "commercial_document_type"
+    t.uuid "commercial_document_id"
+    t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_orders"
     t.index ["employee_id"], name: "index_orders_on_employee_id"
     t.index ["pay_type"], name: "index_orders_on_pay_type"
   end
@@ -1266,6 +1268,7 @@ ActiveRecord::Schema.define(version: 2018_01_31_122628) do
   add_foreign_key "interest_configs", "accounts", column: "unearned_interest_income_account_id"
   add_foreign_key "interest_configs", "loan_products"
   add_foreign_key "line_items", "carts"
+  add_foreign_key "line_items", "line_items", column: "referenced_line_item_id"
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items", "products"
   add_foreign_key "line_items", "unit_of_measurements"
