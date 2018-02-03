@@ -2,11 +2,11 @@ module StoreFrontModule
   class Product < ApplicationRecord
     include PgSearch
     multisearchable against: [:name]
-    pg_search_scope :text_search, against: [:name], :associated_against => {
-    :line_items => [:barcode] }
+    pg_search_scope :text_search, against: [:name]
     belongs_to :category, class_name: "StoreFrontModule::Category"
     has_many :unit_of_measurements, class_name: "StoreFrontModule::UnitOfMeasurement"
     has_many :line_items, class_name: "StoreFrontModule::LineItem"
+
     has_many :purchases, :class_name => 'StoreFrontModule::LineItems::PurchaseOrderLineItem'
     has_many :sales, :class_name => 'StoreFrontModule::LineItems::SalesOrderLineItem'
     has_many :orders, through: :line_items, source: :order

@@ -5,8 +5,6 @@ module StoreFrontModule
     has_many :purchase_order_line_items, dependent: :destroy, class_name: "StoreFrontModule::LineItems::PurchaseOrderLineItem"
     has_many :sales_order_line_items, dependent: :destroy, class_name: "StoreFrontModule::LineItems::SalesOrderLineItem"
 
-
-
     def total_cost
       line_items.sum(&:total_cost)
     end

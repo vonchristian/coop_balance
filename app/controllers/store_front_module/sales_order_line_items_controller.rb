@@ -1,5 +1,5 @@
 module StoreFrontModule
-  class LineItemsSalesOrderLineItemProcessingsController < ApplicationController
+  class SalesOrderLineItemsController < ApplicationController
     def create
       @cart = current_cart
       @checkout = StoreFrontModule::CheckoutForm.new
@@ -14,12 +14,12 @@ module StoreFrontModule
     def destroy
       @line_item = StoreFrontModule::LineItem.find(params[:id])
       @line_item.destroy
-      redirect_to new_supplier_purchase_url(@line_item.commercial_document)
+      redirect_to store_front_module_index_url
     end
 
     private
     def line_item_params
-      params.require(:store_front_module_line_items_sales_order_line_item_processing).permit(:commercial_document_id, :commercial_document_type, :unit_of_measurement_id, :quantity, :cart_id, :product_id, :unit_cost, :total_cost, :cart_id, :barcode)
+      params.require(:store_front_module_line_items_sales_order_line_item_processing).permit(:commercial_document_id, :commercial_document_type, :unit_of_measurement_id, :quantity, :cart_id, :product_id, :unit_cost, :total_cost, :cart_id, :barcode, :referenced_line_item_id)
     end
   end
 end
