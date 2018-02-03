@@ -9,6 +9,7 @@ class Supplier < ApplicationRecord
   has_many :vouchers, as: :payee
   has_many :voucher_amounts, as: :commercial_document, class_name: "Vouchers::VoucherAmount"
   has_many :purchase_returns, class_name: "StoreFrontModule::PurchaseReturn"
+  has_many :purchase_orders, class_name: "StoreFrontModule::Orders::PurchaseOrder", as: :commercial_document
   validates :business_name, presence: true, uniqueness: true
   has_attached_file :avatar,
   styles: { large: "120x120>",

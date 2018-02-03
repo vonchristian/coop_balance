@@ -12,7 +12,13 @@
               </tr>
             </thead>
             <tbody>
-
+              <% @purchase_orders.each do|order| %>
+                <tr>
+                  <td><%= order.created_at %></td>
+                  <td><%= order.voucher_number %> </td>
+                  <td><%= order.purchase_order_line_items.count %></td>
+                </tr>
+              <% end %>
             </tbody>
           </table>
         </div>

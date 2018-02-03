@@ -5,7 +5,7 @@ module StoreFrontModule
        @cart = current_cart
     end
     def create
-      @purchase_order = StoreFrontModule::PurchaseOrderProcessing.new(purchase_order_params)
+      @purchase_order = StoreFrontModule::Orders::PurchaseOrderProcessing.new(purchase_order_params)
       if @purchase_order.valid?
         @purchase_order.process!
         redirect_to store_front_module_purchases_url, notice: "successfully"
@@ -16,7 +16,7 @@ module StoreFrontModule
 
     private
     def purchase_order_params
-      params.require(:store_front_module_purchase_order_processing).permit(:supplier_id, :voucher_id, :cart_id)
+      params.require(:store_front_module_orders_purchase_order_processing).permit(:commercial_document_id, :commercial_document_type, :voucher_id, :cart_id)
     end
   end
 end

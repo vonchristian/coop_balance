@@ -2,7 +2,6 @@ module StoreFrontModule
   class LineItem < ApplicationRecord
     extend StoreFrontModule::QuantityBalanceFinder
     belongs_to :commercial_document, polymorphic: true
-    belongs_to :order
     belongs_to :unit_of_measurement
     belongs_to :cart, class_name: "StoreFrontModule::Cart"
     belongs_to :product

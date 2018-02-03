@@ -202,7 +202,7 @@ Rails.application.routes.draw do
     resources :search_results, only: [:index]
     resources :members, only: [:index, :show, :new, :create]
     resources :orders, only: [:index, :new, :create, :show]
-    resources :line_items, only: [:new, :create, :destroy]
+    resources :line_items_sales_order_line_item_processings, only: [:new, :create, :destroy]
     resources :purchases, only: [:index, :new, :create, :show, :destroy]  do
       get :autocomplete_supplier_business_name, :on => :collection
       get :autocomplete_product_name, :on => :collection

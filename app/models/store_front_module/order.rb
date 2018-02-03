@@ -1,21 +1,15 @@
 module StoreFrontModule
   class Order < ApplicationRecord
     enum pay_type: [:cash, :credit, :check]
-
-    belongs_to :commercial_document, polymorphic: true
     belongs_to :employee, class_name: "User", foreign_key: 'employee_id'
     belongs_to :store_front
     has_one :official_receipt, as: :receiptable
     has_one :invoice, as: :invoiceable
-    has_one :voucher, as: :commercial_document
     has_one :entry,                       class_name: "AccountingModule::Entry", as: :commercial_document
     has_many :sale_line_items,            class_name: "StoreFrontModule::SaleLineItem", inverse_of: :order,
                                           extend: StoreFrontModule::QuantityBalanceFinder
     has_many :purchase_line_items,        class_name: "StoreFrontModule::PurchaseLineItem", inverse_of: :order,
                                           extend: StoreFrontModule::QuantityBalanceFinder
-    has_many :line_items,                 class_name: "StoreFrontModule::LineItem"
-    has_many :sales_line_items,           class_name: "StoreFrontModule::SalesLineItem"
-    has_many :purchase_line_items,        class_name: "StoreFrontModule::PurchaseLineItem"
     has_many :sales_return_line_items,    class_name: "StoreFrontModule::SalesReturnLineItem"
     has_many :purchase_return_line_items, class_name: "PurchaseReturnLineItem"
     has_many :products,                   class_name: "StoreFrontModule::Product", through: :line_items

@@ -39,7 +39,7 @@
                       <%= number_to_currency unit_of_measurement.price %> <%= unit_of_measurement.code %>
                     <% end %>
                   </td>
-                    <%= simple_form_for @line_item, url: :store_front_module_line_items do |f| %>
+                    <%= simple_form_for @line_item, url: :store_front_module_line_items_sales_order_line_item_processings do |f| %>
                     <td width="100px">
                       <% if !product.out_of_stock? %>
                         <%= f.input :quantity, as: :string, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, label: false %>
