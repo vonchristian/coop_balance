@@ -20,4 +20,7 @@ end
 every 1.day do
   runner "UnearnedInterestIncome.post_entry"
 end
+every 1.hour do
+  command "backup perform -t coopcatalyst_backup"
+end
 # Learn more: http://github.com/javan/whenever
