@@ -5,6 +5,7 @@ module StoreFrontModule
     belongs_to :store_front
     has_one :official_receipt, as: :receiptable
     has_one :invoice, as: :invoiceable
+    has_many :line_items, class_name: "StoreFrontModule::LineItem"
     has_one :entry,                       class_name: "AccountingModule::Entry", as: :commercial_document
     has_many :sale_line_items,            class_name: "StoreFrontModule::SaleLineItem", inverse_of: :order,
                                           extend: StoreFrontModule::QuantityBalanceFinder
@@ -47,8 +48,6 @@ module StoreFrontModule
     def total_cost
       line_items.sum(&:total_cost)
     end
-
-
     def badge_color
       if cash? || check?
         'green'

@@ -7,6 +7,6 @@ class StoreFrontModuleController < ApplicationController
 
     @cart = current_cart
     @line_item = StoreFrontModule::LineItems::SalesOrderLineItemProcessing.new
-    @checkout = StoreFrontModule::CheckoutForm.new
+    @sales_order = StoreFrontModule::Orders::SalesOrderProcessing.new
   end
 end

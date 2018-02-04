@@ -137,8 +137,12 @@
         </div>
         <br>
         <div class="box-footer">
-          <%= simple_form_for @checkout, url: :store_front_module_checkouts do |f| %>
+          <%= simple_form_for @sales_order, url: :store_front_module_sales_order_processings do |f| %>
             <%= f.input :customer_id, collection: StoreFrontModule::Order.customers.map{|a| [ a.name, a.id] } %>
+            <%= f.input :cash_tendered %>
+            <%= f.input :order_change %>
+            <%= f.input :cart_id, input_html: { value: @cart.id } %>
+            <%= f.input :employee_id, input_html: { value: current_user.id } %>
         <%=f.submit "Checkout", class: "btn btn-primary btn-block btn-lg", :accesskey => "C" %>
         <% end %>
       </div>

@@ -1,2 +1,0 @@
-module StoreFrontModule
-  module Purchase

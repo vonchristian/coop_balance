@@ -2,7 +2,6 @@ module StoreFrontModule
   class SalesOrderLineItemsController < ApplicationController
     def create
       @cart = current_cart
-      @checkout = StoreFrontModule::CheckoutForm.new
       @line_item = StoreFrontModule::LineItems::SalesOrderLineItemProcessing.new(line_item_params)
       if @line_item.valid?
         @line_item.process!

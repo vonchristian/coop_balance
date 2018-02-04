@@ -147,7 +147,7 @@ At CoopCatalyst, we're all about automation. We're on a mission to make cooperat
 
 
 BIG REDESIGN
-Rename store_front_module to store_front_module
+Rename store_front_module to store_front_module DONE
 remove entry_type
 
 

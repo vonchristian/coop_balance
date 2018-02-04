@@ -352,7 +352,7 @@ Rails.application.routes.draw do
   end
 
   namespace :store_front_module do
-    resources :checkouts, only: [:create]
+    resources :sales_order_processings, only: [:create], module: :orders
     resources :order_processings, only: [:new, :create]
   end
 end
