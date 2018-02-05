@@ -13,9 +13,9 @@ module StoreFrontModule
       private
       def create_sales_order
         order = find_customer.sales_orders.create(cash_tendered: cash_tendered,order_change: order_change, date: date)
-        find_cart.sales_order_line_items.each do |line_item|
-          line_item.cart_id = nil
-          order.sales_order_line_items << line_item
+        find_cart.sales_order_line_items.each do |sales_order_line_item|
+          sales_order_line_item.cart_id = nil
+          order.sales_order_line_items << sales_order_line_item
         end
         create_entry(order)
       end

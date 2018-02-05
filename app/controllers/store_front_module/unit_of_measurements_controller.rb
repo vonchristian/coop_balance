@@ -18,7 +18,7 @@ module StoreFrontModule
 
     private
     def unit_of_measurement_params
-      params.require(:unit_of_measurement).permit(:code, :description, :quantity, :price, :base_measurement, :conversion_quantity)
+      params.require(:store_front_module_unit_of_measurement).permit(:code, :description, :quantity, :price, :base_measurement, :conversion_quantity)
     end
   end
 end

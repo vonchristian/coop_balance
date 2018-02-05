@@ -47,8 +47,8 @@ class Voucher < ApplicationRecord
     return  voucher.number = Voucher.order(created_at: :asc).last.number.succ if Voucher.exists? && Voucher.order(created_at: :asc).last.number.present?
     voucher.number = "000000000001"
   end
-  def valid_for?(order)
-    order.total == voucher.debit_amounts.total && voucher.commercial_document.nil?
+  def valid_for?(cart)
+    cart.total_cost == self.entry.debit_amounts.total && self.commercial_document.nil?
   end
   private
   def set_date

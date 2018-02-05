@@ -54,8 +54,7 @@
                     <span class="label bg-yellow">
                       <%= product.balance %> left
                     </span>
-                    <%= product.sales_balance %>
-                    <%= product.purchases_balance %>
+
                   </td>
                   <td>
                     <% product.unit_of_measurements.each do |unit_of_measurement| %>
@@ -107,7 +106,11 @@
           <tbody>
             <% @cart.line_items.each do |line_item| %>
               <tr>
-                <td><%= line_item.quantity.to_i %> <%= line_item.unit_of_measurement_code %></td>
+                <td><%= line_item.quantity %> <%= line_item.unit_of_measurement_code %>
+                  <%= line_item.referenced_line_item.unit_cost %>
+                  purchase_cost <%= line_item.referenced_line_item.purchase_cost %>
+
+                </td>
                 <td><b><%= line_item.name.try(:upcase) %></b><br>
                   <small class="text-muted"><%= line_item.barcode %></small><br>
                   <span class="label bg-gray">

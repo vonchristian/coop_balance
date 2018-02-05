@@ -141,7 +141,7 @@
     <%= f.input :commercial_document_type, input_html: { value: "Supplier" } %>
     <%= f.input :commercial_document_id, input_html: { value: @supplier.id } %>
     <div class="box-footer">
-      <% if @voucher.valid_for?(@purchase_order_processing) %>
+      <% if @voucher.valid_for?(@cart) %>
         <%= f.submit "Process", class: "btn btn-disabled pull-right" %>
       <% else %>
         <span class="alert alert-warning"> This VOucher is alread used. </span>

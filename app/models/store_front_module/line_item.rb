@@ -22,12 +22,9 @@ module StoreFrontModule
     end
 
     def cost_of_goods_sold
-      if referenced_line_item.present?
-        referenced_line_item.unit_cost * quantity
-      else
-        product.line_items.available.order(created_at: :asc).last.unit_cost * quantity
-      end
+      referenced_line_item.purchase_cost * quantity
     end
+
 
     def self.total_cost
       all.sum(:total_cost)

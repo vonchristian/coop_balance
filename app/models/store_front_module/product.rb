@@ -50,5 +50,8 @@ module StoreFrontModule
       purchases.balance(product_id: self.id) -
       purchase_returns.balance(product_id: self.id)
     end
+    def available_quantity
+      balance
+    end
   end
 end
