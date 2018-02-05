@@ -13,7 +13,7 @@
             </thead>
             <tbody>
               <% @purchase_orders.each do|order| %>
-                <tr>
+                 <tr data-link="<%=store_front_module_purchase_order_path(order)%>" class="purchaseOrderIndex">
                   <td><%= order.created_at %></td>
                   <td><%= order.voucher_number %> </td>
                   <td><%= order.purchase_order_line_items.count %></td>
@@ -22,4 +22,12 @@
             </tbody>
           </table>
         </div>
+      </div>
+    <script type="text/javascript">
+  $("tr").click(function() {
+  window.location = $(this).data("link")
+});
+  $('.purchaseOrderIndex').css('cursor', 'pointer');
+</script>
+
 

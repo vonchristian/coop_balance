@@ -68,7 +68,7 @@ class Member < ApplicationRecord
   end
 
   def total_purchases(options={})
-    orders.total(options)
+    sales_orders.total(options)
   end
 
   def subscribed?(program)

@@ -83,19 +83,38 @@ def heading
       row(0).background_color = "DDDDDD"
       row(0).font_style = :bold
     end
-    @voucher.voucher_amounts.each do |amount|
-      table([[amount.description, "#{amount.account.try(:name)}", "#{price(debit_amount_for(amount))}",  "#{price(credit_amount_for(amount))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [200, 130, 100, 100]) do
+    if @voucher.disbursed?
+      @voucher.entry.amounts.each do |amount|
+      table([[@voucher.description, "#{amount.account.try(:name)}", "#{price(debit_amount_for(amount))}",  "#{price(credit_amount_for(amount))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [200, 130, 100, 100]) do
         # cells.borders = []
         column(2).align = :right
         column(3).align = :right
       end
     end
+    else
+      @voucher.voucher_amounts.each do |amount|
+        table([[amount.description, "#{amount.account.try(:name)}", "#{price(debit_amount_for(amount))}",  "#{price(credit_amount_for(amount))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [200, 130, 100, 100]) do
+          # cells.borders = []
+          column(2).align = :right
+          column(3).align = :right
+        end
+      end
+    end
+    if @voucher.disbursed?
+      table([["","TOTAL", "#{price(@voucher.entry.debit_amounts.sum(:amount))}", "#{price(@voucher.entry.credit_amounts.sum(:amount))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"},  column_widths: [200, 130, 100, 100]) do
+      # cells.borders = []
+      row(0).font_style = :bold
+      column(2).align = :right
+      column(3).align = :right
+     end
+    else
     table([["","TOTAL", "#{price(@voucher.voucher_amounts.debit.sum(:amount))}", "#{price(@voucher.voucher_amounts.debit.sum(:amount))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"},  column_widths: [200, 130, 100, 100]) do
       # cells.borders = []
       row(0).font_style = :bold
       column(2).align = :right
       column(3).align = :right
     end
+  end
   end
   def signatory_details
     move_down 50

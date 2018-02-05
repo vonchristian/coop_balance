@@ -25,19 +25,17 @@ module StoreFrontModule
           purchase.available_quantity.to_f
         end
       end
-      def remaining_quantity(purchase)
-        quantity.to_f - find_cart.sales_order_line_items.upto(purchase).sum(&:quantity)
-      end
+
       def decrease_product_available_quantity
         remaining_quantity = converted_quantity
         find_product.purchases.order(date: :asc).available.each do |purchase|
             sales = find_cart.sales_order_line_items.create!(quantity: quantity_for(purchase, remaining_quantity),
                                                    unit_cost: selling_cost,
                                                    total_cost: set_total_cost(purchase, remaining_quantity),
-                                                   unit_of_measurement: find_unit_of_measurement,
+                                                   unit_of_measurement: find_product.base_measurement,
                                                    product_id: product_id,
                                                    referenced_line_item: purchase)
-            remaining_quantity -= sales.quantity
+            remaining_quantity -= sales.converted_quantity
             break if remaining_quantity.zero?
         end
       end
@@ -49,7 +47,7 @@ module StoreFrontModule
       end
 
       def selling_cost
-        find_unit_of_measurement.price
+        find_unit_of_measurement.base_selling_price
       end
 
       def set_total_cost(purchase, remaining_quantity)

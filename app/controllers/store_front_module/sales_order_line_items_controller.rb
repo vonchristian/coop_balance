@@ -7,12 +7,13 @@ module StoreFrontModule
         @line_item.process!
         redirect_to store_front_module_index_url, notice: "Added to cart."
       else
-        redirect_to store_front_module_index_url
+        redirect_to store_front_module_index_url, alert: "Exceeded available quantity"
       end
     end
     def destroy
-      @line_item = StoreFrontModule::LineItem.find(params[:id])
-      @line_item.destroy
+      @cart = current_cart
+      @product = StoreFrontModule::Product.find(params[:id])
+      @cart.line_items.where(product: @product).destroy_all
       redirect_to store_front_module_index_url
     end
 

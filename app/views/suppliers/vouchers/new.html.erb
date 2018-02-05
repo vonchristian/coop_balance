@@ -26,7 +26,7 @@
               </tr>
             </thead>
             <tbody>
-              <% @supplier.voucher_amounts.each do |voucher_amount| %>
+              <% @supplier.voucher_amounts.with_no_vouchers.each do |voucher_amount| %>
                 <tr>
                   <td><%= voucher_amount.description %></td>
                   <td><%= voucher_amount.account_name %></td>
@@ -48,12 +48,12 @@
 
                 </tr>
               <% end %>
-              <% if @supplier.voucher_amounts.present? %>
+              <% if @supplier.voucher_amounts.with_no_vouchers.present? %>
                  <tr>
                   <td></td>
                   <td>TOTAL</td>
-                  <td><b><%= number_to_currency @supplier.voucher_amounts.debit.sum(:amount) %></b></td>
-                  <td><b><%= number_to_currency @supplier.voucher_amounts.credit.sum(:amount) %></b></td>
+                  <td><b><%= number_to_currency @supplier.voucher_amounts.debit.with_no_vouchers.sum(&:amount) %></b></td>
+                  <td><b><%= number_to_currency @supplier.voucher_amounts.credit.with_no_vouchers.sum(&:amount) %></b></td>
                 </tr>
                 <tr>
                   <td></td>
@@ -65,7 +65,11 @@
 
               <%= simple_form_for @amount, url: :supplier_amounts do |f| %>
                 <tr>
-                    <td width="300px"><%= f.input :description, label: false, placeholder: "Description" %></td>
+                    <td width="300px"><%= f.input :description, label: false, placeholder: "Description" %>
+                      <%= f.input :commercial_document_id, input_html: { value: @supplier.id }, as: :hidden %>
+                      <%= f.input :commercial_document_type, input_html: { value: @supplier.class }, as: :hidden %>
+                    </td>
+
                     <td width="200px"><%= f.input :account_id, label: false, prompt: "Select Account", collection: AccountingModule::Account.all.map{|a| [a.name, a.id] }  %></td>
                     <td><%= f.input :amount, label: false, placeholder: "Amount", as: :string %></td>
                     <td><%= f.input :amount_type, label: false, placeholder: "Amount Type", collection: Vouchers::VoucherAmount.amount_types.keys.to_a.map{|a| [a.titleize, a] } %></td>
@@ -76,7 +80,7 @@
             </tbody>
           </table>
         </div>
-        <% if @supplier.voucher_amounts.present? %>
+        <% if @supplier.voucher_amounts.with_no_vouchers.present? %>
           <p class="text-muted"> VOUCHER DETAILS </p>
           <%= simple_form_for @voucher, url: :supplier_vouchers do |f| %>
           <tr>
@@ -94,10 +98,10 @@
         <% end %>
 <script type="text/javascript">
   $(document).ready(function() {
-    $("#vouchers_voucher_amount_account_id").select2({
+    $("#suppliers_voucher_amount_processing_account_id").select2({
       theme: "bootstrap"
     });
-    $("#vouchers_voucher_amount_amount_type").select2({
+    $("#suppliers_voucher_amount_processing_amount_type").select2({
       theme: "bootstrap"
     });
   });

@@ -1,5 +1,5 @@
 <div class="tab-pane <%= 'active' if current_page?(supplier_vouchers_path(@supplier))%>" id="supplier-vouchers">
-  <%= link_to "New Voucher", new_supplier_voucher_path(@supplier), class: "btn btn-primary" %>
+  <%= link_to "New Voucher", new_supplier_voucher_path(@supplier), class: "btn btn-primary pull-right" %>
   <div class="table table-responsive">
     <table class="table table-hover table-striped">
       <thead>
@@ -13,9 +13,19 @@
       <tbody>
         <% @supplier.vouchers.each do |voucher| %>
           <tr>
-            <td><%= voucher.date.strftime("%B %e, %Y") %></td>
+            <td><%= voucher.date.strftime("%B %e, %Y") %>
+
+            </td>
             <td><%=link_to voucher.description, voucher_path(voucher) %></td>
-            <td><span class="pull-right"><%= number_to_currency voucher.voucher_amounts.sum(:amount) %></span></td>
+            <td>
+              <span class="pull-right">
+                <% if voucher.disbursed? %>
+                  <%= number_to_currency voucher.entry.total %>
+                <% else %>
+                  <%= number_to_currency voucher.voucher_amounts.sum(:amount) %>
+                <% end %>
+              </span>
+            </td>
             <td>
               <% if voucher.disbursed? %>
                 <span class="label bg-green"> Disbursed </span>

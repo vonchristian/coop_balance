@@ -37,7 +37,7 @@
 
             <% end %>
           <%= f.input :total_cost, input_html: { id: 'stock_total_purchase_cost' }, readonly: true %>
-          <% if params[:search].present? %>
+          <% if params[:search].present? && !params[:search] == @product.name %>
             <%= f.input :barcode, input_html: { value: params[:search] } %>
           <% else %>
             <%= f.input :barcode %>
@@ -138,8 +138,9 @@
     <%= f.input :voucher_id, input_html: { value: @voucher.id }, as: :hidden %>
     <%= f.input :supplier_id, input_html: { value: @supplier.id }, as: :hidden %>
     <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
-    <%= f.input :commercial_document_type, input_html: { value: "Supplier" } %>
-    <%= f.input :commercial_document_id, input_html: { value: @supplier.id } %>
+    <%= f.input :commercial_document_type, input_html: { value: "Supplier" }, as: :hidden %>
+    <%= f.input :commercial_document_id, input_html: { value: @supplier.id }, as: :hidden %>
+    <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
     <div class="box-footer">
       <% if @voucher.valid_for?(@cart) %>
         <%= f.submit "Process", class: "btn btn-disabled pull-right" %>

@@ -10,8 +10,8 @@ module StoreFrontModule
     has_many :purchases, :class_name => 'StoreFrontModule::LineItems::PurchaseOrderLineItem'
     has_many :sales, :class_name => 'StoreFrontModule::LineItems::SalesOrderLineItem'
     has_many :orders, through: :line_items, source: :order
-    has_many :sales_orders, :through => :sales, :source => :order, :class_name => 'StoreFrontModule::Order'
-    has_many :purchase_orders, :through => :purchases, :source => :order, :class_name => 'StoreFrontModule::Order'
+    has_many :sales_orders, :through => :sales, :source => :order, :class_name => 'StoreFrontModule::Orders::SalesOrder'
+    has_many :purchase_orders, :through => :purchases, :source => :order, :class_name => 'StoreFrontModule::Orders::PurchaseOrder'
     has_many :sales_returns, class_name: "StoreFrontModule::LineItems::SalesReturnLineItem"
     has_many :purchase_returns, class_name: "StoreFrontModule::LineItems::PurchaseReturnLineItem"
     has_many :spoilages, class_name: "StoreFrontModule::SpoilageLineItem"
@@ -28,7 +28,7 @@ module StoreFrontModule
     validates_attachment_size :photo, :in => 0.megabytes..4.megabytes, :message => 'must be smaller than 4mb'
 
     validates :name, presence: true, uniqueness: true
-
+    delegate :code, to: :base_measurement, prefix: true
     def base_measurement
       unit_of_measurements.base_measurement
     end

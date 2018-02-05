@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-solid">
+      <div class="box-header">
+        <h3 class="box-title">saless</h3>
+      </div>
+      <div class="box-body">
+        <div class="table table-responsive">
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Supplier</th>
+                <th>Items Count</th>
+                <th>Total Cost</th>
+                <th>Employee</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @sales_orders.each do |sales_order| %>
+                 <tr data-link="<%=store_front_module_sales_order_path(sales_order)%>" class="salesOrderIndex">
+                  <td><%= sales_order.date %></td>
+                  <td><%= sales_order.commercial_document_name %></td>
+                  <td><%= sales_order.sales_order_line_items.count %></td>
+                  <td><%= number_to_currency sales_order.total_cost %></td>
+                  <td><%= sales_order.employee_name %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+          <center><%= will_paginate @sales_orders %></center>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $("tr").click(function() {
+  window.location = $(this).data("link")
+});
+  $('.salesOrderIndex').css('cursor', 'pointer');
+</script>

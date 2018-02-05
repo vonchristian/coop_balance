@@ -160,3 +160,27 @@ unearned interest income
 amortized interest
 
 render :back
+
+
+STORE CART
+<% @sales_order_line_items.each do |line_item| %>
+                  <tr>
+                    <td>
+                      <%= line_item.quantity %> <%= line_item.unit_of_measurement_code %>
+                    </td>
+                    <td width="300px"><%= line_item.name.try(:titleize) %> <span class="text-muted"><%= line_item.barcode %></span>
+                    </td>
+                    <td>
+                      <span class="pull-right">
+                        <%= number_to_currency line_item.unit_cost %></td>
+                      </span>
+                    <td>
+                      <span class="pull-right"><%=number_to_currency line_item.total_cost %></span>
+                    </td>
+                    <td>
+                    <%= link_to store_front_module_sales_order_line_item_path(line_item), method: :delete do %>
+                      <span class="fa fa-trash"></span>
+                    <% end %>
+                    </td>
+                  </tr>
+                <% end %>

@@ -1,151 +1,106 @@
-<% if @line_items.present? %>
-  <% @line_items.each do |line_item| %>
-    <%= line_item.name %>
-    <%= line_item.available_quantity %>
-    <%= simple_form_for @line_item, url: :store_front_module_sales_order_line_items do |f| %>
-                    <td width="100px">
-                      <% if !line_item.out_of_stock? %>
-                        <%= f.input :quantity, as: :string, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, label: false %>
-                        <%= f.input :unit_of_measurement_id, input_html: { value: line_item.unit_of_measurement_id } %>
-                      <% end %>
-                    </td>
-                      <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
-                      <%= f.input :product_id, input_html: { value: line_item.product_id }, as: :hidden %>
-                      <%= f.input :barcode, input_html: { value: line_item.barcode } %>
-                      <%= f.input :referenced_line_item_id, input_html: { value: line_item.id } %>
-                    <td>
-                      <% if !line_item.out_of_stock? %>
-                        <%= f.submit "Add", class: "btn btn-primary btn-sm" %>
-                      <% else %>
-                        <span class="badge bg-red pull-left"> <small>Out of Stock </small></span><br><br>
-                      <% end %>
-                    </td>
-                    <% end %>
-  <% end %>
-<% end %>
 <div class="row">
   <div class="col-md-7">
     <div class="box box-solid">
       <div class="box-body">
-        <%=form_tag store_front_module_index_path, method: :get, class: "sidebar-form" do %>
+       <% if params[:search].present? %>
+        <%=form_tag store_front_module_index_path, method: :get do %>
           <div class="input-group">
-            <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search..." %>
+            <%= text_field_tag :search, params[:search], class: "form-control input-lg", placeholder: "Search Products..." %>
             <span class="input-group-btn">
-              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
-                <i class="fa fa-search"></i>
+              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat btn-lg") do %>
+                <i class="fa fa-search"></i> Search
               <% end %>
             </span>
           </div>
         <% end %>
+        <% else %>
+         <%=form_tag store_front_module_index_path, method: :get do %>
+          <div class="input-group">
+            <%= text_field_tag :search, params[:search], autofocus: true,  class: "form-control input-lg", placeholder: "Search Products..."  %>
+            <span class="input-group-btn">
+              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat btn-lg") do %>
+                <i class="fa fa-search"></i> Search
+              <% end %>
+            </span>
+          </div>
+        <% end %>
+      <% end %>
         <br>
         <table class="table table-responsive">
-          <thead>
-            <tr>
-              <th>Product</th>
-            </tr>
-          </thead>
           <tbody>
             <% if @products.present? %>
-              <% @products.each do |product| %>
-                <tr>
-                  <td>
-                    <b><%= product.name.try(:upcase) %></b><br>
-
-                    <span class="label bg-yellow">
-                      <%= product.balance %> left
-                    </span>
-
-                  </td>
-                  <td>
-                    <% product.unit_of_measurements.each do |unit_of_measurement| %>
-                      <%= number_to_currency unit_of_measurement.price %> <%= unit_of_measurement.code %>
-                    <% end %>
-                  </td>
-                    <%= simple_form_for @line_item, url: :store_front_module_sales_order_line_items do |f| %>
-                    <td width="100px">
-                      <% if !product.out_of_stock? %>
-                        <%= f.input :quantity, as: :string, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, label: false %>
-                        <%= f.input :unit_of_measurement_id, collection: product.unit_of_measurements.all.map{|a| [a.code, a.id] } %>
-                      <% end %>
-                    </td>
-                      <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
-                      <%= f.input :product_id, input_html: { value: product.id }, as: :hidden %>
-                      <%= f.input :barcode %>
-                    <td>
-                      <% if !product.out_of_stock? %>
-                        <%= f.submit "Add", class: "btn btn-primary btn-sm" %>
-                      <% else %>
-                        <span class="badge bg-red pull-left"> <small>Out of Stock </small></span><br><br>
-                      <% end %>
-                    </td>
-                    <% end %>
-
-                </tr>
-              <% end %>
+              <%= render 'store_front_module/searched_products' %>
+            <% elsif @line_items.present? %>
+              <%= render 'store_front_module/searched_line_items' %>
             <% end %>
           </tbody>
         </table>
+        <hr>
+        <% if @sales_order_line_items.present? %>
+          <p class="text-muted"> ORDER DETAILS </p>
+          <div class="table table-responsive">
+            <table class="table table-hover table-striped">
+              <thead>
+                <tr>
+                  <th><b>QTY</b></th>
+                  <th><b>DESCRIPTION</b></th>
+                  <th><span class="pull-right"><b>UNIT COST</b></span></th>
+                  <th><span class="pull-right"><b>TOTAL COST</b></span></th>
+                </tr>
+              </thead>
+              <tbody>
+
+                <% @cart.products.order(updated_at: :desc).uniq.each do |product| %>
+                  <tr>
+                    <td>
+                      <%= @cart.line_items_quantity(product) %> <%= product.base_measurement_code %>
+                    </td>
+                    <td width="300px"><%= product.name.try(:titleize) %> <span class="text-muted"><%#= line_item.barcode %></span>
+                    </td>
+                    <td>
+                      <span class="pull-right">
+                        <%= number_to_currency product.base_measurement.price %></td>
+                      </span>
+                    <td>
+                      <span class="pull-right"><%=number_to_currency @cart.line_items_total_cost(product) %></span>
+                    </td>
+                    <td>
+                    <%= link_to store_front_module_sales_order_line_item_path(product), method: :delete do %>
+                      <span class="fa fa-trash"></span>
+                    <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+                <hr>
+              </tbody>
+            </table>
+          </div>
+        <% end %>
       </div>
+
     </div>
   </div>
   <div class="col-md-5">
     <div class="box box-solid">
       <% if @cart.line_items.present? %>
       <div class="box-header">
-        <h3 class="condensed-text box-title"> ORDER DETAILS </h3>
-      </div>
-      <div class="box-body">
-        <table class="table table-hover table-striped">
-          <thead>
-            <tr>
-              <th>QTY</th>
-              <th>DESCRIPTION</th>
-              <th>TOTAL COST</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @cart.line_items.each do |line_item| %>
-              <tr>
-                <td><%= line_item.quantity %> <%= line_item.unit_of_measurement_code %>
-                  <%= line_item.referenced_line_item.unit_cost %>
-                  purchase_cost <%= line_item.referenced_line_item.purchase_cost %>
-
-                </td>
-                <td><b><%= line_item.name.try(:upcase) %></b><br>
-                  <small class="text-muted"><%= line_item.barcode %></small><br>
-                  <span class="label bg-gray">
-                    <%= number_to_currency line_item.unit_cost %>
-                  </span>
-                </td>
-                <td>
-                  <span class="pull-right"><%=number_to_currency line_item.total_cost %></span>
-                </td>
-                <td>
-                <%= link_to store_front_module_sales_order_line_item_path(line_item), method: :delete do %>
-                  <span class="fa fa-trash"></span>
-                <% end %>
-                </td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-        <hr>
         <div class="row">
           <div class="col-md-4 col-md-offset-2">
-            <b> TOTAL </b>
+            <h3><b> TOTAL </b></h3>
           </div>
           <div class="col-md-5">
-            <b><span class="pull-right"><%=number_to_currency @cart.line_items.total_cost %></span></b>
+            <h3><b><span class="pull-right"><%=number_to_currency @cart.line_items.total_cost %></span></b></h3>
           </div>
         </div>
-        <br>
+      </div>
+      <div class="box-body">
         <div class="box-footer">
           <%= simple_form_for @sales_order, url: :store_front_module_sales_order_processings do |f| %>
             <%= f.input :customer_id, collection: StoreFrontModule::Order.customers.map{|a| [ a.name, a.id] } %>
             <%= f.input :cash_tendered %>
             <%= f.input :order_change %>
-            <%= f.input :cart_id, input_html: { value: @cart.id } %>
-            <%= f.input :employee_id, input_html: { value: current_user.id } %>
+            <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
+            <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
         <%=f.submit "Checkout", class: "btn btn-primary btn-block btn-lg", :accesskey => "C" %>
         <% end %>
       </div>
@@ -153,3 +108,15 @@
       <% else %>
         <center><%=image_tag('empty_cart.png', height: 160, width: 160) %></center>
       <% end %>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#store_front_module_orders_sales_order_processing_customer_id").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>
+<script type="text/javascript">
+  JQuery ->
+  $(#search).autocomplete;
+
+</script>

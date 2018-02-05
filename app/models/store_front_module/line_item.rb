@@ -6,7 +6,7 @@ module StoreFrontModule
     belongs_to :commercial_document, polymorphic: true
     belongs_to :unit_of_measurement
     belongs_to :cart, class_name: "StoreFrontModule::Cart"
-    belongs_to :product
+    belongs_to :product, touch: true
     belongs_to :referenced_line_item, class_name: "StoreFrontModule::LineItem"
     validates :unit_of_measurement_id, :product_id, presence: true
     delegate :name, to: :commercial_document, prefix: true
@@ -14,7 +14,6 @@ module StoreFrontModule
     delegate :code, to: :unit_of_measurement, prefix: true
     delegate :conversion_multiplier, to: :unit_of_measurement
     delegate :balance, to: :product, prefix: true
-
     validates :quantity, numericality: { less_than_or_equal_to: :product_balance }, if: :sales_line_item?
 
     def self.total

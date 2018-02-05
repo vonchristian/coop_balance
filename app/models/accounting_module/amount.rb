@@ -9,7 +9,12 @@ module AccountingModule
     validates :amount, numericality: true
 
     delegate :name, to: :account, prefix: true
-
+    def debit?
+      type == "AccountingModule::DebitAmount"
+    end
+    def credit?
+      type == "AccountingModule::CreditAmount"
+    end
     def self.recorded_by(recorder_id)
       where('recorder_id' => recorder_id)
     end

@@ -6,17 +6,15 @@ module Suppliers
     end
     def new
       @supplier = Supplier.find(params[:supplier_id])
-      @voucher = Voucher.new
-      @amount = Vouchers::VoucherAmount.new
+      @voucher = Suppliers::VoucherProcessing.new
+      @amount = Suppliers::VoucherAmountProcessing.new
     end
     def create
-      @stock_registry = current_stock_registry
       @supplier = Supplier.find(params[:supplier_id])
-      @voucher = Voucher.create(voucher_params)
-      @voucher.payee = @supplier
+      @amount = Suppliers::VoucherAmountProcessing.new
+      @voucher = Suppliers::VoucherProcessing.new(voucher_params)
       if @voucher.valid?
-        @voucher.save
-        @voucher.add_amounts(@supplier)
+        @voucher.process!
         redirect_to supplier_vouchers_url(@supplier), notice: "Voucher created successfully."
 
       else
@@ -26,7 +24,7 @@ module Suppliers
 
     private
     def voucher_params
-      params.require(:voucher).permit(:number, :date, :payee_id, :description, :payee_type, :description, :user_id, :number, :preparer_id)
+      params.require(:suppliers_voucher_processing).permit(:number, :date, :payee_id, :description, :user_id, :number, :preparer_id)
     end
   end
 end

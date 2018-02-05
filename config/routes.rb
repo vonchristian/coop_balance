@@ -193,7 +193,10 @@ Rails.application.routes.draw do
       resources :finished_goods_materials, only: [:new, :create]
     end
   end
-  resources :store_front_module, only: [:index]
+  resources :store_front_module, only: [:index] do
+    get :autocomplete_product_name, :on => :collection
+  end
+
   namespace :store_front_module do
     resources :employees, only: [:show]
     resources :settings, only: [:index]
@@ -201,21 +204,19 @@ Rails.application.routes.draw do
     resources :accounts_receivable_store_config, only: [:new, :create]
     resources :search_results, only: [:index]
     resources :members, only: [:index, :show, :new, :create]
-    resources :orders, only: [:index, :new, :create, :show]
+    resources :sales_orders, only: [:index, :new, :create, :show], module: :orders
     resources :line_items, only: [:new, :create, :destroy]
     resources :sales_order_line_items, only: [:new, :create, :destroy]
-
-    resources :purchases, only: [:index, :new, :create, :show, :destroy]  do
-      get :autocomplete_supplier_business_name, :on => :collection
-      get :autocomplete_product_name, :on => :collection
-
-    end
+    resources :purchase_orders, only: [:index, :new, :create, :show, :destroy], module: :orders
     resources :purchase_order_processings, only: [:new, :create]
     resources :stock_deliveries, only: [:new, :create]
     resources :products, only: [:index, :show, :new, :create] do
       resources :purchases, only: [:index, :new, :create], module: :products
       resources :sales, only: [:index], module: :products
       resources :unit_of_measurements, only: [:new, :create]
+    end
+    resources :customers, only: [:index, :show] do
+      resources :sales_orders, only: [:index], module: :customers
     end
   end
 
@@ -327,9 +328,7 @@ Rails.application.routes.draw do
     resources :loans, only: [:index], module: :organizations
     resources :reports, only: [:index], module: :organizations
   end
-  resources :customers, only: [:index, :show] do
-    resources :orders, only: [:index], module: :customers
-  end
+
   resources :membership_applications, only: [:new, :create, :show] do
     resources :contributions, only: [:new, :create], module: :membership_applications
     resources :payments, only: [:new, :create], module: :membership_applications

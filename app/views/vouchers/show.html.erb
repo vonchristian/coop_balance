@@ -1,15 +1,15 @@
-<div class="row">
-  <div class="col-md-12">
+ <div class="col-md-8 col-md-offset-2">
     <div class="box box-solid">
-      <div class="box-header">
-        <h3 class="box-title">Voucher Details </h3>
+      <div class="box-header bg-gray">
+
+           <h4><center><%= image_tag(@voucher.payee.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center></h4>
+
+            <h3><center><%= @voucher.payee.try(:name) %></center></h3>
       </div>
       <div class="box-body">
         <div class="row">
           <div class="col-md-10 col-md-offset-1">
-            <p>Payee</p>
-            <%=image_tag(@voucher.payee.avatar.url(:medium), class: "img-circle", height: 50, width: 50) %>
-            <p><%#= @voucher.name.try(:upcase) %></p>
+
             <div class="table table-responsive">
               <table class="table table-hover table-striped">
                 <thead>
@@ -22,21 +22,40 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <% @voucher.voucher_amounts.each do |voucher_amount| %>
-                    <tr>
-                      <td><%= voucher_amount.description %></td>
-                      <td><%= voucher_amount.account_name %></td>
-                      <td>
-                        <% if voucher_amount.debit? %>
-                          <%= number_to_currency voucher_amount.amount %>
-                        <% end %>
-                      </td>
-                       <td>
-                        <% if voucher_amount.credit? %>
-                          <%= number_to_currency voucher_amount.amount %>
-                        <% end %>
-                      </td>
-                    </tr>
+                  <% if @voucher.disbursed? %>
+                    <% @voucher.entry.amounts.each do |voucher_amount| %>
+                      <tr>
+                        <td><%= @voucher.description %></td>
+                        <td><%= voucher_amount.account_name %></td>
+                        <td>
+                          <% if voucher_amount.debit? %>
+                            <%= number_to_currency voucher_amount.amount %>
+                          <% end %>
+                        </td>
+                         <td>
+                          <% if voucher_amount.credit? %>
+                            <%= number_to_currency voucher_amount.amount %>
+                          <% end %>
+                        </td>
+                      </tr>
+                    <% end %>
+                  <% else %>
+                    <% @voucher.voucher_amounts.each do |voucher_amount| %>
+                      <tr>
+                        <td><%= voucher_amount.description %></td>
+                        <td><%= voucher_amount.account_name %></td>
+                        <td>
+                          <% if voucher_amount.debit? %>
+                            <%= number_to_currency voucher_amount.amount %>
+                          <% end %>
+                        </td>
+                         <td>
+                          <% if voucher_amount.credit? %>
+                            <%= number_to_currency voucher_amount.amount %>
+                          <% end %>
+                        </td>
+                      </tr>
+                    <% end %>
                   <% end %>
                   <% if @voucher.voucher_amounts.present? %>
                      <tr>

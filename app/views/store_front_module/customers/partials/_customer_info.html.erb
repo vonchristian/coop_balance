@@ -1,4 +1,4 @@
-<div class="tab-pane <%= 'active' if current_page?(customer_path(@customer)) %>">
+<div class="tab-pane <%= 'active' if current_page?(store_front_module_customer_path(@customer)) %>">
   <small class="text-muted"> TOTAL PURCHASES (<%= Time.zone.now.year %>) </small>
         <h4><%= number_to_currency @customer.total_purchases(from_date: Time.zone.now.beginning_of_year, to_date: Time.zone.now.end_of_year) %></h4>
         <hr />
