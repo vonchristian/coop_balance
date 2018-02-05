@@ -17,7 +17,7 @@
               </tr>
             </thead>
             <tbody>
-              <% @purchase_orders.processed.each do |purchase_order| %>
+              <% @purchase_orders.each do |purchase_order| %>
                  <tr data-link="<%=store_front_module_purchase_order_path(purchase_order)%>" class="purchaseOrderIndex">
                   <td><%= purchase_order.date %></td>
                   <td><%= purchase_order.commercial_document_name %></td>

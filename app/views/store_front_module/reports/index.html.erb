@@ -1,1 +1,36 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-solid">
+      <div class="box-header">
+        <h3 class="box-title"> Reports Section </h3>
+      </div>
+      <div class="box-body">
+  <h4>Invetory Status Report</h4>
  <%= link_to 'Excel', store_front_module_products_path(@products, format: 'xlsx') %>
+ <hr>
+<h4>Sales Report</h4>
+<span class="text-block"> Generate sales report.</span>
+<br>
+<%= link_to 'This Day', store_front_module_sales_reports_path(format: 'pdf', from_date: Date.today, to_date: Date.today), class: "btn btn-default btn-sm bg-gray" %>
+<%= link_to 'This Week', store_front_module_sales_reports_path(format: 'pdf', from_date: Date.today.beginning_of_week, to_date: Date.today.end_of_week),  class: "btn btn-default btn-sm "  %>
+<%= link_to 'This Month', store_front_module_sales_reports_path(format: 'pdf', from_date: Date.today.beginning_of_month, to_date: Date.today.end_of_month) %>
+<%= link_to 'This Quarter', store_front_module_sales_reports_path(format: 'pdf', from_date: Date.today.beginning_of_quarter, to_date: Date.today.end_of_quarter) %>
+<%= link_to 'This Year', store_front_module_sales_reports_path(format: 'pdf', from_date: Date.today.beginning_of_year, to_date: Date.today.end_of_year) %>
+
+<span class="help-block"> Generate sales for this day <%= Date.today.strftime("%B %e, %Y") %></span>
+<hr>
+<h4>Purchases Report</h4>
+<span class="help-block"> Generate purchases report. </span>
+<%= link_to 'This Day', store_front_module_purchases_reports_path(format: 'pdf', from_date: Date.today, to_date: Date.today) %>
+<%= link_to 'This Week', store_front_module_purchases_reports_path(format: 'pdf', from_date: Date.today.beginning_of_week, to_date: Date.today.end_of_week) %>
+<%= link_to 'This Month', store_front_module_purchases_reports_path(format: 'pdf', from_date: Date.today.beginning_of_month, to_date: Date.today.end_of_month) %>
+<%= link_to 'This Quarter', store_front_module_purchases_reports_path(format: 'pdf', from_date: Date.today, to_date: Date.today) %>
+<%= link_to 'This Year', store_front_module_purchases_reports_path(format: 'pdf', from_date: Date.today, to_date: Date.today) %>
+<hr>
+<h4>Spilages Report</h4>
+<hr>
+<h4>Sales Returns Report</h4>
+<hr />
+<h4>Accounts Receivables Report</h4>
+<hr>
+<h4>Accounts Payables Reports</h4>

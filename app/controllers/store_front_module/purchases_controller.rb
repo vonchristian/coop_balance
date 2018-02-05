@@ -1,6 +1,5 @@
 module StoreFrontModule
   class PurchasesController < ApplicationController
-    autocomplete :supplier, :business_name, full: true, limit: 50
     def new
       @line_item = StoreFrontModule::PurchaseLineItemProcessing.new
       @cart = current_cart

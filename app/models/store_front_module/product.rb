@@ -28,7 +28,7 @@ module StoreFrontModule
     validates_attachment_size :photo, :in => 0.megabytes..4.megabytes, :message => 'must be smaller than 4mb'
 
     validates :name, presence: true, uniqueness: true
-    delegate :code, to: :base_measurement, prefix: true
+    delegate :code, :price, to: :base_measurement, prefix: true
     def base_measurement
       unit_of_measurements.base_measurement
     end

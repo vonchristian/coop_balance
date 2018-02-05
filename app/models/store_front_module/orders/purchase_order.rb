@@ -1,16 +1,30 @@
 module StoreFrontModule
   module Orders
     class PurchaseOrder < Order
-      belongs_to :supplier, foreign_key: 'commercial_document_id'
       has_one :voucher, as: :commercial_document
       has_many :purchase_order_line_items, class_name: "StoreFrontModule::LineItems::PurchaseOrderLineItem", foreign_key: 'order_id'
+      has_many :products, class_name: "StoreFrontModule::Product", through: :purchase_order_line_items
 
       delegate :number, :date, :disburser_full_name,  to: :voucher, prefix: true, allow_nil: true
+      delegate :name, to: :supplier, prefix: true
+
       def self.processed
         select{ |a| a.processed? }
       end
+
       def processed?
         voucher.present?
+      end
+
+      def supplier
+        commercial_document
+      end
+      def line_items_quantity(product)
+        purchase_order_line_items.where(product: product).sum(&:quantity)
+      end
+
+      def line_items_total_cost(product)
+        purchase_order_line_items.where(product: product).sum(&:total_cost)
       end
     end
   end

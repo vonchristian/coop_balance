@@ -21,14 +21,17 @@ module StoreFrontModule
     delegate :number,                     to: :invoice, prefix: true, allow_nil: true
     delegate :first_and_last_name,        to: :commercial_document, prefix: true
     before_save :set_default_date
-
-    def self.total(options={})
+    def self.ordered_on(options={})
       if options[:from_date] && options[:to_date]
         date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
-        where('date' => (date_range.start_date..date_range.end_date)).sum(:total_cost)
+        where('date' => (date_range.start_date..date_range.end_date))
       else
-        sum(:total_cost)
+        all
       end
+    end
+
+    def self.total(options={})
+      ordered_on(options).sum(&:total_cost)
     end
 
     def reference_number

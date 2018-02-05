@@ -4,6 +4,7 @@ module StoreFrontModule
       include ActiveModel::Model
       attr_accessor  :customer_id, :date, :cash_tendered, :order_change, :employee_id, :cart_id
 
+      validates :employee_id, :customer_id, :cash_tendered, :order_change, presence: true
       def process!
         ActiveRecord::Base.transaction do
           create_sales_order
@@ -12,7 +13,12 @@ module StoreFrontModule
 
       private
       def create_sales_order
-        order = find_customer.sales_orders.create(cash_tendered: cash_tendered,order_change: order_change, date: date)
+        order = find_customer.sales_orders.create(
+        cash_tendered: cash_tendered,
+        order_change: order_change,
+        date: date,
+        employee: find_employee)
+
         find_cart.sales_order_line_items.each do |sales_order_line_item|
           sales_order_line_item.cart_id = nil
           order.sales_order_line_items << sales_order_line_item
@@ -24,21 +30,24 @@ module StoreFrontModule
         return User.find_by_id(customer_id) if User.find_by_id(customer_id).present?
         return Member.find_by_id(customer_id)
       end
+
       def find_cart
         Cart.find_by_id(cart_id)
       end
+
       def find_employee
         User.find_by_id(employee_id)
       end
+
       def create_entry(order)
         cash_on_hand = find_employee.cash_on_hand_account
         cost_of_goods_sold = CoopConfigurationsModule::StoreFrontConfig.default_cost_of_goods_sold_account
         sales = CoopConfigurationsModule::StoreFrontConfig.default_sales_account
         merchandise_inventory = CoopConfigurationsModule::StoreFrontConfig.default_merchandise_inventory_account
-        find_employee.entries.create!(
+        find_employee.entries.create(
           commercial_document: find_customer,
           entry_date: order.date,
-          description: "Payment for sales order",
+          description: "Payment for sales",
           debit_amounts_attributes: [{ amount: order.total_cost,
                                         account: cash_on_hand,
                                         commercial_document: order},
