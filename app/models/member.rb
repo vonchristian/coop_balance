@@ -26,6 +26,8 @@ class Member < ApplicationRecord
   has_many :program_subscriptions, class_name: "MembershipsModule::ProgramSubscription", as: :subscriber
   has_many :programs, through: :program_subscriptions
   has_many :sales_orders, class_name: "StoreFrontModule::Orders::SalesOrder", as: :commercial_document
+  has_many :sales_return_orders, class_name: "StoreFrontModule::Orders::SalesReturnOrder", as: :commercial_document
+
   has_many :real_properties, as: :owner
   has_many :organization_memberships, class_name: "Organizations::OrganizationMember", as: :organization_membership
   has_many :organizations, through: :organization_memberships

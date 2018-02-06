@@ -184,3 +184,6 @@ STORE CART
                     </td>
                   </tr>
                 <% end %>
+
+
+add stats on product show page

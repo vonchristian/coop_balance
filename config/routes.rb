@@ -202,6 +202,7 @@ Rails.application.routes.draw do
     resources :purchases_reports, only: [:index], module: :reports
     resources :spoilages_reports, only: [:index], module: :reports
     resources :spoilages, only: [:index, :new, :create, :destroy]
+    resources :sales_return_line_items, only: [:index, :new, :create, :destroy], module: :line_items
     resources :employees, only: [:show]
     resources :settings, only: [:index]
     resources :reports, only: [:index]
@@ -209,6 +210,7 @@ Rails.application.routes.draw do
     resources :search_results, only: [:index]
     resources :members, only: [:index, :show, :new, :create]
     resources :sales_orders, only: [:index, :new, :create, :show], module: :orders
+    resources :sales_return_order_processings, only: [:index, :new, :create, :show], module: :orders
     resources :line_items, only: [:new, :create, :destroy]
     resources :sales_order_line_items, only: [:new, :create, :destroy]
     resources :purchase_orders, only: [:index, :new, :create, :show, :destroy], module: :orders

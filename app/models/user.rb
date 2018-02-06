@@ -37,6 +37,7 @@ class User < ApplicationRecord
   has_many :share_capitals, class_name: "MembershipsModule::ShareCapital", as: :subscriber
   has_many :time_deposits, class_name: "MembershipsModule::TimeDeposit", as: :depositor
   has_many :sales_orders, class_name: "StoreFrontModule::Orders::SalesOrder", as: :commercial_document
+  has_many :sales_return_orders, class_name: "StoreFrontModule::Orders::SalesReturnOrder", as: :commercial_document
   has_many :entries, class_name: "AccountingModule::Entry", foreign_key: 'recorder_id'
   has_many :accepted_fund_transfers, class_name: "AccountingModule::Entry", as: :commercial_document
   has_many :appraised_properties, class_name: "Appraisal", foreign_key: 'appraiser_id'
