@@ -10,7 +10,6 @@ class StoreFrontModuleController < ApplicationController
       @sales_order = StoreFrontModule::Orders::SalesOrderProcessing.new
       @sales_order_line_items = @cart.sales_order_line_items.order(created_at: :desc)
       format.html
-      format.json
     end
   end
 end

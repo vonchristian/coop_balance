@@ -1,6 +1,6 @@
 module StoreFrontModule
   module LineItems
-    class PurchaseReturnLineItem < LineItem
+    class SalesReturnOrderLineItem < LineItem
     end
   end
 end

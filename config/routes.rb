@@ -200,6 +200,7 @@ Rails.application.routes.draw do
   namespace :store_front_module do
     resources :sales_reports, only: [:index], module: :reports
     resources :purchases_reports, only: [:index], module: :reports
+    resources :spoilages, only: [:index, :new, :create]
     resources :employees, only: [:show]
     resources :settings, only: [:index]
     resources :reports, only: [:index]

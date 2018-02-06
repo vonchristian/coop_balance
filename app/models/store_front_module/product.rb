@@ -12,9 +12,9 @@ module StoreFrontModule
     has_many :orders, through: :line_items, source: :order
     has_many :sales_orders, :through => :sales, :source => :order, :class_name => 'StoreFrontModule::Orders::SalesOrder'
     has_many :purchase_orders, :through => :purchases, :source => :order, :class_name => 'StoreFrontModule::Orders::PurchaseOrder'
-    has_many :sales_returns, class_name: "StoreFrontModule::LineItems::SalesReturnLineItem"
-    has_many :purchase_returns, class_name: "StoreFrontModule::LineItems::PurchaseReturnLineItem"
-    has_many :spoilages, class_name: "StoreFrontModule::SpoilageLineItem"
+    has_many :sales_returns, class_name: "StoreFrontModule::LineItems::SalesReturnOrderLineItem"
+    has_many :purchase_returns, class_name: "StoreFrontModule::LineItems::PurchaseReturnOrderLineItem"
+    has_many :spoilages, class_name: "StoreFrontModule::LineItems::SpoilageOrderLineItem"
     has_attached_file :photo,
     styles: { large: "120x120>",
              medium: "70x70>",
@@ -48,7 +48,8 @@ module StoreFrontModule
 
     def purchases_balance(options={})
       purchases.balance(product_id: self.id) -
-      purchase_returns.balance(product_id: self.id)
+      purchase_returns.balance(product_id: self.id) -
+      spoilages.balance(product_id: self.id)
     end
     def available_quantity
       balance

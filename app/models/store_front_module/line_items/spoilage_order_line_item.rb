@@ -1,6 +1,6 @@
 module StoreFrontModule
   module LineItems
-    class SalesReturnLineItem < LineItem
+    class SpoilageOrderLineItem < LineItem
     end
   end
 end
