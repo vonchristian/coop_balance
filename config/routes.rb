@@ -200,7 +200,8 @@ Rails.application.routes.draw do
   namespace :store_front_module do
     resources :sales_reports, only: [:index], module: :reports
     resources :purchases_reports, only: [:index], module: :reports
-    resources :spoilages, only: [:index, :new, :create]
+    resources :spoilages_reports, only: [:index], module: :reports
+    resources :spoilages, only: [:index, :new, :create, :destroy]
     resources :employees, only: [:show]
     resources :settings, only: [:index]
     resources :reports, only: [:index]
@@ -212,6 +213,7 @@ Rails.application.routes.draw do
     resources :sales_order_line_items, only: [:new, :create, :destroy]
     resources :purchase_orders, only: [:index, :new, :create, :show, :destroy], module: :orders
     resources :purchase_order_processings, only: [:new, :create]
+    resources :spoilage_order_processings, only: [:new, :create], module: :orders
     resources :stock_deliveries, only: [:new, :create]
     resources :products, only: [:index, :show, :new, :create] do
       resources :purchases, only: [:index, :new, :create], module: :products

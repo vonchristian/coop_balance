@@ -27,7 +27,10 @@
 <%= link_to 'This Quarter', store_front_module_purchases_reports_path(format: 'pdf', from_date: Date.today, to_date: Date.today) %>
 <%= link_to 'This Year', store_front_module_purchases_reports_path(format: 'pdf', from_date: Date.today, to_date: Date.today) %>
 <hr>
-<h4>Spilages Report</h4>
+<h4>Spoilages Report</h4>
+<span class="help-block"> Generate report for spoilages.</span>
+<%= link_to 'This Day', store_front_module_spoilages_reports_path(format: 'pdf', from_date: Date.today, to_date: Date.today) %>
+
 <hr>
 <h4>Sales Returns Report</h4>
 <hr />

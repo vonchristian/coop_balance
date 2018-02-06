@@ -1,13 +1,16 @@
 <div class="row">
   <div class="col-md-7">
-    <div class="box box-solid">
+    <div class="box box-primary">
+      <div class="box-header">
+        <h3 class="box-title"> Store Section </h3>
+      </div>
       <div class="box-body">
        <% if params[:search].present? %>
         <%=form_tag store_front_module_index_path, method: :get do %>
           <div class="input-group">
             <%= text_field_tag :search, params[:search], class: "form-control input-lg", placeholder: "Search Products..." %>
             <span class="input-group-btn">
-              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat btn-lg") do %>
+              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-primary btn-lg") do %>
                 <i class="fa fa-search"></i> Search
               <% end %>
             </span>
@@ -18,7 +21,7 @@
           <div class="input-group">
             <%= text_field_tag :search, params[:search], autofocus: true,  class: "form-control input-lg", placeholder: "Search Products..."  %>
             <span class="input-group-btn">
-              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat btn-lg") do %>
+              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-primary btn-lg") do %>
                 <i class="fa fa-search"></i> Search
               <% end %>
             </span>

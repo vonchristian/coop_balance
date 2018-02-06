@@ -30,6 +30,7 @@ module StoreFrontModule
             break if remaining_quantity.zero?
         end
       end
+
       def quantity_for(purchase, remaining_quantity)
         if purchase.available_quantity >= BigDecimal.new(remaining_quantity)
           BigDecimal.new(remaining_quantity)

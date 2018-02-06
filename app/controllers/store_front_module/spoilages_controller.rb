@@ -14,7 +14,7 @@ module StoreFrontModule
     end
     def create
       @cart = current_cart
-      @line_item = StoreFrontModule::LineItems::SpoilageOrderLineItemProcessing.new(line_item_params)
+      @line_item = StoreFrontModule::LineItems::SpoilageOrderLineItemProcessing.new(spoilage_params)
       if @line_item.valid?
         @line_item.process!
         redirect_to new_store_front_module_spoilage_url, notice: "Added to cart."
@@ -22,8 +22,15 @@ module StoreFrontModule
         redirect_to new_store_front_module_spoilage_url, alert: "Exceeded available quantity"
       end
     end
+    def destroy
+      @cart = current_cart
+      @spoilage_line_item = StoreFrontModule::LineItems::SpoilageOrderLineItem.find(params[:id])
+      @spoilage.destroy
+      redirect_to new_store_front_module_spoilage_url, notice: "Removed successfully"
+    end
+
     private
-    def line_item_params
+    def spoilage_params
       params.require(:store_front_module_line_items_spoilage_order_line_item_processing).permit(:unit_of_measurement_id, :quantity, :cart_id, :product_id, :unit_cost, :total_cost, :cart_id, :barcode, :referenced_line_item_id)
     end
   end

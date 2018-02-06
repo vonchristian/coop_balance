@@ -1,13 +1,17 @@
 <div class="row">
   <div class="col-md-7">
-    <div class="box box-solid">
+    <div class="box box-danger">
+      <div class="box-header">
+        <h3 class="box-title text-danger"> Spoilage Section </h3>
+        <span class="help-block"> Generate spoilages on this section </span>
+      </div>
       <div class="box-body">
        <% if params[:search].present? %>
         <%=form_tag new_store_front_module_spoilage_path, method: :get do %>
           <div class="input-group">
             <%= text_field_tag :search, params[:search], class: "form-control input-lg", placeholder: "Search Products..." %>
             <span class="input-group-btn">
-              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat btn-lg") do %>
+              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-danger btn-lg") do %>
                 <i class="fa fa-search"></i> Search
               <% end %>
             </span>
@@ -18,7 +22,7 @@
           <div class="input-group">
             <%= text_field_tag :search, params[:search], autofocus: true,  class: "form-control input-lg", placeholder: "Search Products..."  %>
             <span class="input-group-btn">
-              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat btn-lg") do %>
+              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-danger btn-lg") do %>
                 <i class="fa fa-search"></i> Search
               <% end %>
             </span>
@@ -37,7 +41,7 @@
         </table>
         <hr>
         <% if @spoilage_order_line_items.present? %>
-          <p class="text-muted"> ORDER DETAILS </p>
+          <p class="text-danger"> SPOILAGE DETAILS </p>
           <div class="table table-responsive">
             <table class="table table-hover table-striped">
               <thead>
@@ -49,23 +53,23 @@
                 </tr>
               </thead>
               <tbody>
-
-                <% @cart.products.order(updated_at: :desc).uniq.each do |product| %>
+                <% @cart.spoilage_order_line_items.each do |line_item| %>
                   <tr>
                     <td>
-                      <%= @cart.line_items_quantity(product) %> <%= product.base_measurement_code %>
+                      <%= line_item.quantity %> <%= line_item.unit_of_measurement_code %>
+
                     </td>
-                    <td width="300px"><%= product.name.try(:titleize) %> <span class="text-muted"><%#= line_item.barcode %></span>
+                    <td width="300px"><%= line_item.name.try(:titleize) %> <span class="text-muted"><%#= line_item.barcode %></span>
                     </td>
                     <td>
                       <span class="pull-right">
-                        <%= number_to_currency product.base_measurement.price %></td>
+                        <%= number_to_currency line_item.unit_cost %></td>
                       </span>
                     <td>
-                      <span class="pull-right"><%=number_to_currency @cart.line_items_total_cost(product) %></span>
+                      <span class="pull-right"><%=number_to_currency line_item.total_cost %></span>
                     </td>
                     <td>
-                    <%= link_to store_front_module_spoilage_order_line_item_path(product), method: :delete do %>
+                    <%= link_to store_front_module_spoilage_path(line_item), method: :delete, class: "text-danger" do %>
                       <span class="fa fa-trash"></span>
                     <% end %>
                     </td>
@@ -77,23 +81,32 @@
           </div>
         <% end %>
       </div>
-
     </div>
   </div>
   <div class="col-md-5">
     <div class="box box-solid">
       <% if @cart.line_items.present? %>
-      <div class="box-header">
-        <div class="row">
-          <div class="col-md-4 col-md-offset-2">
-            <h3><b> TOTAL </b></h3>
-          </div>
-          <div class="col-md-5">
-            <h3><b><span class="pull-right"><%=number_to_currency @cart.line_items.total_cost %></span></b></h3>
+        <div class="box-header">
+          <div class="row">
+            <div class="col-md-4 col-md-offset-2">
+              <h3><b> TOTAL </b></h3>
+            </div>
+            <div class="col-md-5">
+              <h3><b><span class="pull-right"><%=number_to_currency @cart.line_items.total_cost %></span></b></h3>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="box-body">
+        <div class="box-body">
+          <%= simple_form_for @spoilage_order, url: :store_front_module_spoilage_order_processings do |f| %>
+            <%= f.input :title %>
+            <%= f.input :content, as: :text %>
+            <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+            <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
+            <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
 
+            <%= f.submit "Save Spoilages", class: "btn btn-danger btn-block" %>
+          <% end %>
+          <br />
+        </div>
       <% end %>
 
