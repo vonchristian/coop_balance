@@ -211,10 +211,11 @@ Rails.application.routes.draw do
     resources :members, only: [:index, :show, :new, :create]
     resources :sales_orders, only: [:index, :new, :create, :show], module: :orders
     resources :sales_return_order_processings, only: [:index, :new, :create, :show], module: :orders
+    resources :purchase_return_order_processings, only: [:index, :new, :create, :show], module: :orders
     resources :line_items, only: [:new, :create, :destroy]
     resources :sales_order_line_items, only: [:new, :create, :destroy]
     resources :purchase_orders, only: [:index, :new, :create, :show, :destroy], module: :orders
-    resources :purchase_order_processings, only: [:new, :create]
+    resources :purchase_order_processings, only: [:new, :create], module: :orders
     resources :spoilage_order_processings, only: [:new, :create], module: :orders
     resources :stock_deliveries, only: [:new, :create]
     resources :products, only: [:index, :show, :new, :create] do

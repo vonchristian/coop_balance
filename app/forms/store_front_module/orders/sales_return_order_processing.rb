@@ -30,7 +30,6 @@ module StoreFrontModule
         Cart.find_by_id(cart_id)
       end
       def create_entry(order)
-        def create_entry(order)
         cash_on_hand = find_employee.cash_on_hand_account
         sales_return = CoopConfigurationsModule::StoreFrontConfig.default_sales_return_account
         merchandise_inventory = CoopConfigurationsModule::StoreFrontConfig.default_merchandise_inventory_account
@@ -39,18 +38,17 @@ module StoreFrontModule
           entry_date: order.date,
           description: "Payment for sales",
           debit_amounts_attributes: [{ amount: order.total_cost,
-                                        account: cash_on_hand,
+                                        account: sales_return,
                                         commercial_document: order},
-                                      { amount: order.cost_of_goods_sold,
-                                        account: cost_of_goods_sold,
+                                      { amount: order.total_cost,
+                                        account: merchandise_inventory,
                                         commercial_document: order } ],
             credit_amounts_attributes:[{amount: order.total_cost,
-                                        account: sales,
+                                        account: cash_on_hand,
                                         commercial_document: order},
-                                       {amount: order.cost_of_goods_sold,
-                                        account: merchandise_inventory,
+                                       {amount: order.total_cost,
+                                        account: purchases,
                                         commercial_document: order}])
-      end
       end
     end
   end

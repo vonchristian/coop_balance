@@ -1,21 +1,21 @@
 module StoreFrontModule
   module Orders
-    class PurchaseOrderProcessing
+    class PurchaseReturnOrderProcessing
       include ActiveModel::Model
       attr_accessor  :cart_id, :commercial_document_id, :commercial_document_type, :voucher_id, :employee_id
-      validates :voucher_id, presence: true
+        validates :voucher_id, presence: true
       def process!
         ActiveRecord::Base.transaction do
-          create_purchase_order
+          create_purchase_return_order
         end
       end
 
       private
-      def create_purchase_order
-        order = find_supplier.purchase_orders.create(voucher: find_voucher, employee_id: employee_id)
-        find_cart.purchase_order_line_items.each do |line_item|
+      def create_purchase_return_order
+        order = find_supplier.purchase_return_orders.create(date: date, employee_id: employee_id)
+        find_cart.purchase_return_order_line_items.each do |line_item|
           line_item.cart_id = nil
-          order.purchase_order_line_items << line_item
+          order.purchase_return_order_line_items << line_item
         end
         create_entry(order)
       end
@@ -27,19 +27,17 @@ module StoreFrontModule
           entry_date: order.date,
           description: "Purchase of stocks from #{find_supplier.business_name}",
           debit_amounts_attributes: [ amount: order.total_cost,
-                                      account: merchandise_inventory,
+                                      account: accounts_payable,
                                       commercial_document: find_supplier],
             credit_amounts_attributes:[amount: order.total_cost,
-                                       account:accounts_payable,
+                                       account: merchandise_inventory,
                                        commercial_document: find_supplier])
       end
 
       def find_supplier
         Supplier.find_by_id(commercial_document_id)
       end
-      def find_voucher
-        Voucher.find_by_id(voucher_id)
-      end
+
       def find_cart
         Cart.find_by_id(cart_id)
       end

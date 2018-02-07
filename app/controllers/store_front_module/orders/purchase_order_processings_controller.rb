@@ -1,7 +1,7 @@
 module StoreFrontModule
   class PurchaseOrderProcessingsController < ApplicationController
     def new
-      @order = StoreFrontModule::PurchaseOrderProcessingForm.new
+      @purchase_order = StoreFrontModule::Orders::PurchaseOrderProcessing.new
        @cart = current_cart
     end
     def create

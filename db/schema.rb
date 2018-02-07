@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_02_07_063251) do
+ActiveRecord::Schema.define(version: 2018_02_07_111918) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1034,6 +1034,8 @@ ActiveRecord::Schema.define(version: 2018_02_07_063251) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "sales_return_account_id"
+    t.uuid "accounts_payable_account_id"
+    t.index ["accounts_payable_account_id"], name: "index_store_front_configs_on_accounts_payable_account_id"
     t.index ["accounts_receivable_account_id"], name: "index_store_front_configs_on_accounts_receivable_account_id"
     t.index ["cost_of_goods_sold_account_id"], name: "index_store_front_configs_on_cost_of_goods_sold_account_id"
     t.index ["merchandise_inventory_account_id"], name: "index_store_front_configs_on_merchandise_inventory_account_id"
@@ -1347,6 +1349,7 @@ ActiveRecord::Schema.define(version: 2018_02_07_063251) do
   add_foreign_key "share_capital_products", "accounts", column: "subscription_account_id"
   add_foreign_key "share_capitals", "offices"
   add_foreign_key "share_capitals", "share_capital_products"
+  add_foreign_key "store_front_configs", "accounts", column: "accounts_payable_account_id"
   add_foreign_key "store_front_configs", "accounts", column: "accounts_receivable_account_id"
   add_foreign_key "store_front_configs", "accounts", column: "cost_of_goods_sold_account_id"
   add_foreign_key "store_front_configs", "accounts", column: "merchandise_inventory_account_id"

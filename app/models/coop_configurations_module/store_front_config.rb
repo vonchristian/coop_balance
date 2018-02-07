@@ -14,6 +14,10 @@ module CoopConfigurationsModule
       return self.order(created_at: :asc).last.accounts_receivable_account if self.any?
       AccountingModule::Account.find_by(name: "Accounts Receivables Trade - Current (General Merchandise)")
     end
+    def self.default_accounts_payable_account
+      return self.order(created_at: :asc).last.accounts_payable_account if self.any?
+      AccountingModule::Account.find_by(name: "Accounts Payable-Trade")
+    end
     def self.default_cost_of_goods_sold_account
       return self.order(created_at: :asc).last.cost_of_goods_sold_account if self.any?
       AccountingModule::Account.find_by(name: "Cost of Goods Sold")
