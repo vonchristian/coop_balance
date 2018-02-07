@@ -2,6 +2,7 @@ module CoopConfigurationsModule
   class StoreFrontConfig < ApplicationRecord
     belongs_to :cost_of_goods_sold_account, class_name: "AccountingModule::Account"
     belongs_to :accounts_receivable_account,  class_name: "AccountingModule::Account"
+    belongs_to :accounts_payable_account,  class_name: "AccountingModule::Account"
     belongs_to :merchandise_inventory_account, class_name: "AccountingModule::Account"
     belongs_to :sales_account, class_name: "AccountingModule::Account"
 
@@ -15,9 +16,10 @@ module CoopConfigurationsModule
       AccountingModule::Account.find_by(name: "Accounts Receivables Trade - Current (General Merchandise)")
     end
     def self.default_accounts_payable_account
-      return self.order(created_at: :asc).last.accounts_payable_account if self.any?
+      return self.order(created_at: :asc).last.accounts_payable_account if self.order(created_at: :asc).last.accounts_payable_account.present?
       AccountingModule::Account.find_by(name: "Accounts Payable-Trade")
     end
+
     def self.default_cost_of_goods_sold_account
       return self.order(created_at: :asc).last.cost_of_goods_sold_account if self.any?
       AccountingModule::Account.find_by(name: "Cost of Goods Sold")

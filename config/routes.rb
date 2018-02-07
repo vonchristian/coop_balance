@@ -203,10 +203,11 @@ Rails.application.routes.draw do
     resources :spoilages_reports, only: [:index], module: :reports
     resources :spoilages, only: [:index, :new, :create, :destroy]
     resources :sales_return_line_items, only: [:index, :new, :create, :destroy], module: :line_items
+    resources :purchase_order_line_item_processings, only: [:index, :new, :create, :destroy], module: :line_items
+
     resources :employees, only: [:show]
     resources :settings, only: [:index]
     resources :reports, only: [:index]
-    resources :accounts_receivable_store_config, only: [:new, :create]
     resources :search_results, only: [:index]
     resources :members, only: [:index, :show, :new, :create]
     resources :sales_orders, only: [:index, :new, :create, :show], module: :orders
@@ -217,7 +218,7 @@ Rails.application.routes.draw do
     resources :purchase_orders, only: [:index, :new, :create, :show, :destroy], module: :orders
     resources :purchase_order_processings, only: [:new, :create], module: :orders
     resources :spoilage_order_processings, only: [:new, :create], module: :orders
-    resources :stock_deliveries, only: [:new, :create]
+
     resources :products, only: [:index, :show, :new, :create] do
       resources :purchases, only: [:index, :new, :create], module: :products
       resources :sales, only: [:index], module: :products

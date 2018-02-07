@@ -3,6 +3,13 @@ module StoreFrontModule
     class PurchaseOrderLineItem < LineItem
       belongs_to :purchase_order, class_name: "StoreFrontModule::Orders::PurchaseOrder", foreign_key: 'order_id'
       has_many :sales_order_line_items, class_name: "StoreFrontModule::LineItems::SalesOrderLineItem", foreign_key: 'referenced_line_item_id'
+      def self.processed
+        select{|a| a.processed? }
+      end
+      def processed?
+        purchase_order && purchase_order.processed?
+      end
+
       def self.available
         select { |a| !a.out_of_stock? }
       end

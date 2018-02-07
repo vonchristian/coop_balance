@@ -43,7 +43,7 @@ class Supplier < ApplicationRecord
   end
   #
   def deliveries_total
-    entries.map{|a| a.debit_amounts.distinct.sum(:amount) }.sum
+    CoopConfigurationsModule::StoreFrontConfig.default_accounts_payable_account.balance(commercial_document_id: self.id)
   end
 
   # def create_entry_for(voucher)
