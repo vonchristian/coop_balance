@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_02_03_114701) do
+ActiveRecord::Schema.define(version: 2018_02_07_063251) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1033,10 +1033,12 @@ ActiveRecord::Schema.define(version: 2018_02_03_114701) do
     t.uuid "sales_account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "sales_return_account_id"
     t.index ["accounts_receivable_account_id"], name: "index_store_front_configs_on_accounts_receivable_account_id"
     t.index ["cost_of_goods_sold_account_id"], name: "index_store_front_configs_on_cost_of_goods_sold_account_id"
     t.index ["merchandise_inventory_account_id"], name: "index_store_front_configs_on_merchandise_inventory_account_id"
     t.index ["sales_account_id"], name: "index_store_front_configs_on_sales_account_id"
+    t.index ["sales_return_account_id"], name: "index_store_front_configs_on_sales_return_account_id"
   end
 
   create_table "store_fronts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1349,6 +1351,7 @@ ActiveRecord::Schema.define(version: 2018_02_03_114701) do
   add_foreign_key "store_front_configs", "accounts", column: "cost_of_goods_sold_account_id"
   add_foreign_key "store_front_configs", "accounts", column: "merchandise_inventory_account_id"
   add_foreign_key "store_front_configs", "accounts", column: "sales_account_id"
+  add_foreign_key "store_front_configs", "accounts", column: "sales_return_account_id"
   add_foreign_key "store_fronts", "cooperatives"
   add_foreign_key "streets", "barangays"
   add_foreign_key "streets", "municipalities"

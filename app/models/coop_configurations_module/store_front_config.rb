@@ -22,6 +22,12 @@ module CoopConfigurationsModule
       return self.order(created_at: :asc).last.sales_account if self.any?
       AccountingModule::Account.find_by(name: "Sales")
     end
+
+    def self.default_sales_return_account
+      return self.order(created_at: :asc).last.sales_return_account if self.any?
+      AccountingModule::Account.find_by(name: "Sales Returns and Allowances")
+    end
+
     def self.default_merchandise_inventory_account
       return self.order(created_at: :asc).last.merchandise_inventory_account if self.any?
       AccountingModule::Account.find_by(name: "Merchandise Inventory")

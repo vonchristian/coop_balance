@@ -18,6 +18,7 @@ module StoreFrontModule
           line_item.cart_id = nil
           order.purchase_order_line_items << line_item
         end
+        create_entry(order)
       end
 
       def find_customer
@@ -27,6 +28,29 @@ module StoreFrontModule
 
       def find_cart
         Cart.find_by_id(cart_id)
+      end
+      def create_entry(order)
+        def create_entry(order)
+        cash_on_hand = find_employee.cash_on_hand_account
+        sales_return = CoopConfigurationsModule::StoreFrontConfig.default_sales_return_account
+        merchandise_inventory = CoopConfigurationsModule::StoreFrontConfig.default_merchandise_inventory_account
+        find_employee.entries.create(
+          commercial_document: find_customer,
+          entry_date: order.date,
+          description: "Payment for sales",
+          debit_amounts_attributes: [{ amount: order.total_cost,
+                                        account: cash_on_hand,
+                                        commercial_document: order},
+                                      { amount: order.cost_of_goods_sold,
+                                        account: cost_of_goods_sold,
+                                        commercial_document: order } ],
+            credit_amounts_attributes:[{amount: order.total_cost,
+                                        account: sales,
+                                        commercial_document: order},
+                                       {amount: order.cost_of_goods_sold,
+                                        account: merchandise_inventory,
+                                        commercial_document: order}])
+      end
       end
     end
   end
