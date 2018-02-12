@@ -7,6 +7,7 @@ module CoopConfigurationsModule
       it { is_expected.to belong_to :accounts_receivable_account }
       it { is_expected.to belong_to :cost_of_goods_sold_account }
       it { is_expected.to belong_to :sales_account }
+      it { is_expected.to belong_to :accounts_payable_account }
     end
 
     describe 'validations' do

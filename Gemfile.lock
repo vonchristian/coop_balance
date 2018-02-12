@@ -275,7 +275,7 @@ GEM
       activerecord (>= 3.0)
       i18n (>= 0.5.0)
       railties (>= 3.0.0)
-    public_suffix (3.0.1)
+    public_suffix (3.0.2)
     puma (3.11.2)
     pundit (1.1.0)
       activesupport (>= 3.0.0)
