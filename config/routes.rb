@@ -222,6 +222,7 @@ Rails.application.routes.draw do
     resources :products, only: [:index, :show, :new, :create] do
       resources :purchases, only: [:index, :new, :create], module: :products
       resources :sales, only: [:index], module: :products
+      resources :settings, only: [:index], module: :products
       resources :unit_of_measurements, only: [:new, :create]
     end
     resources :customers, only: [:index, :show] do

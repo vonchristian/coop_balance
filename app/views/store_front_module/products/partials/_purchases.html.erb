@@ -11,7 +11,16 @@
           <th>Barcode</th>
         </thead>
         <tbody>
-          <%= render @purchases %>
+          <% @purchases.each do |line_item| %>
+            <tr>
+              <td> <%= line_item.date %></td>
+              <td> <%= line_item.supplier_name %></td>
+              <td> <%= line_item.quantity %></td>
+              <td> <%= number_to_currency line_item.unit_cost %></td>
+              <td> <%= number_to_currency line_item.total_cost %></td>
+              <td> <%= line_item.barcode %></td>
+            </tr>
+          <% end %>
         </tbody>
       </table>
     </div>

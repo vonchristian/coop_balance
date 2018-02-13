@@ -29,6 +29,9 @@ module StoreFrontModule
 
     validates :name, presence: true, uniqueness: true
     delegate :code, :price, to: :base_measurement, prefix: true
+    def base_selling_price
+      base_measurement.price
+    end
     def base_measurement
       unit_of_measurements.base_measurement
     end

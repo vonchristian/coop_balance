@@ -1,3 +1,9 @@
+Bacnong
+Boton
+Daw-es
+Salupey
+
+
 transform the cooperative industry
 eliminate much of the manual, time consuming effort currently required to keep disparate ledgers.
 Financial agreements are recorded and automatically managed without error, where anybody can transact seamlessly for any contractual purpose without friction.

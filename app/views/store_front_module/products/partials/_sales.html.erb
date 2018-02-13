@@ -14,10 +14,15 @@
             <tbody>
               <% @orders.each do |order| %>
 
-                <tr data-link="<%=store_front_module_order_path(order)%>" class="myClass">
-                  <td width="30px"><%= image_tag(order.customer.avatar.url(:thumb), style: 'width:30px;height:30px;', class: 'media-object img-circle') %></td>
+                <tr data-link="<%=store_front_module_sales_order_path(order)%>" class="myClass">
+                  <td width="30px">
+                    <% if order.customer.present? %>
+                    <%= image_tag(order.customer.avatar.url(:thumb), style: 'width:30px;height:30px;', class: 'media-object img-circle') %>
+                    <% end %>
+
+                    </td>
                   <td><%= order.customer_name %></td>
-                  <td><%= order.date.strftime("%B %e, %Y") %></td>
+                  <td><%= order.date.try(:strftime, ("%B %e, %Y")) %></td>
                   <td><%= order.official_receipt_number %></td>
 
                   <td><span class="pull-right"><%=number_to_currency order.total_cost %></span></td>

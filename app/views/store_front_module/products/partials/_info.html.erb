@@ -1,6 +1,37 @@
-<%= link_to "Add Unit of Measurement", new_store_front_module_product_unit_of_measurement_path(@product) %>
-Base Measurement
-<%= @product.base_measurement.try(:price) %> / <%= @product.base_measurement.try(:quantity_and_code) %>
+<h4>Quantities</h4>
+<div class="row">
+            <div class="col-md-3 border-right">
+              <h3 class="no-padding"><%= @product.purchases_balance %></h3>
+              <small>PURCHASES</small>
+            </div>
+            <div class="col-md-3 border-right">
+              <h3 class="no-padding"><%= @product.sales_balance %></h3>
+              <small>SALES</small>
+            </div>
+            <div class="col-md-3 border-right">
+              <center>
+              <h3 class="no-padding text-sucs316
+              cess"><%= @product.balance %></h3>
+              <small class="text-success">AVAILABLE QTY</small>
+              </center>
+            </div>
+          </div>
+          <hr>
+<h4>Unit of Measurements</h4>
+<span class="help-block"> Unit of measurements are used for price mark ups and converting quantities to base measurements (e.g. 1 sack to 50 kgs)</span>
+<%= link_to "Add Unit of Measurement", new_store_front_module_product_unit_of_measurement_path(@product), class: "btn btn-primary" %>
+<hr>
 <% @product.unit_of_measurements.each do |unit_of_measurement| %>
-  <%= number_to_currency unit_of_measurement.price %> <%= unit_of_measurement.quantity_and_code %>
+  <div class="row">
+    <div class="col-md-4">
+      <%= unit_of_measurement.quantity_and_code %>
+      <% if unit_of_measurement.base_measurement %>
+        <span class="badge bg-green"> Base Measurement </span>
+      <% end %>
+    </div>
+    <div class="col-md-3">
+      <%= number_to_currency unit_of_measurement.price %>
+    </div>
+  </div>
+  <br>
 <% end %>
