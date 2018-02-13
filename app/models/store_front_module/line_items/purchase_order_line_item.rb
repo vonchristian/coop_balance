@@ -16,12 +16,15 @@ module StoreFrontModule
       def self.available
         select { |a| !a.out_of_stock? }
       end
+
       def out_of_stock?
         available_quantity.zero?
       end
+
       def sold_quantity
         sales_order_line_items.total
       end
+
       def available_quantity
         converted_quantity -
         sold_quantity
