@@ -7,6 +7,10 @@ module StoreFrontModule
       where(base_measurement: true).order(created_at: :asc).last
     end
 
+    def price
+      mark_up_prices.current.price
+    end
+
     def quantity_and_code
       "#{quantity} / #{code}"
     end

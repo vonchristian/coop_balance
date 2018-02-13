@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_02_13_102549) do
+ActiveRecord::Schema.define(version: 2018_02_13_124223) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1142,7 +1142,6 @@ ActiveRecord::Schema.define(version: 2018_02_13_102549) do
     t.uuid "product_id"
     t.string "code"
     t.string "description"
-    t.decimal "price"
     t.decimal "quantity"
     t.decimal "conversion_quantity"
     t.boolean "base_measurement", default: false

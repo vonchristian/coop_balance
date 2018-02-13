@@ -22,7 +22,7 @@ module StoreFrontModule
         name: name,
         description: description
          )
-      StoreFrontModule::UnitOfMeasurement.create(
+      unit_of_measurement = StoreFrontModule::UnitOfMeasurement.create(
         product: product,
         code: unit_of_measurement_code,
         description: unit_of_measurement_description,
@@ -30,6 +30,7 @@ module StoreFrontModule
         price: price,
         base_measurement: true
         )
+      unit_of_measurement.mark_up_prices.create(price: price)
     end
   end
 end
