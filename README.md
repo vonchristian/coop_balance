@@ -1,3 +1,5 @@
+segregate store_front_module_to rails_engine
+
 Bacnong
 Boton
 Daw-es

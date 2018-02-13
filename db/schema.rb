@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_02_07_111918) do
+ActiveRecord::Schema.define(version: 2018_02_13_102549) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -594,6 +594,15 @@ ActiveRecord::Schema.define(version: 2018_02_07_111918) do
     t.index ["organization_id"], name: "index_loans_on_organization_id"
     t.index ["preparer_id"], name: "index_loans_on_preparer_id"
     t.index ["street_id"], name: "index_loans_on_street_id"
+  end
+
+  create_table "mark_up_prices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.decimal "price"
+    t.datetime "date"
+    t.uuid "unit_of_measurement_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["unit_of_measurement_id"], name: "index_mark_up_prices_on_unit_of_measurement_id"
   end
 
   create_table "member_occupations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1311,6 +1320,7 @@ ActiveRecord::Schema.define(version: 2018_02_07_111918) do
   add_foreign_key "loans", "organizations"
   add_foreign_key "loans", "streets"
   add_foreign_key "loans", "users", column: "preparer_id"
+  add_foreign_key "mark_up_prices", "unit_of_measurements"
   add_foreign_key "member_occupations", "members"
   add_foreign_key "member_occupations", "occupations"
   add_foreign_key "members", "offices"

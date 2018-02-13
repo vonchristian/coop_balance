@@ -1,6 +1,7 @@
 module StoreFrontModule
   class UnitOfMeasurement < ApplicationRecord
     belongs_to :product
+    has_many :mark_up_prices, class_name: "StoreFrontModule::MarkUpPrice"
 
     def self.base_measurement
       where(base_measurement: true).order(created_at: :asc).last
