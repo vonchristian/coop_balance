@@ -183,7 +183,7 @@ GEM
     hashie (3.5.7)
     htmlentities (4.3.4)
     http_parser.rb (0.6.0)
-    i18n (0.9.4)
+    i18n (0.9.5)
       concurrent-ruby (~> 1.0)
     icheck-rails (1.0.2.2)
       jquery-rails

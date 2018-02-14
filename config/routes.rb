@@ -225,6 +225,9 @@ Rails.application.routes.draw do
       resources :settings, only: [:index], module: :products
       resources :unit_of_measurements, only: [:new, :create]
     end
+    resources :unit_of_measurements, shallow: true do
+      resources :mark_up_prices, only: [:new, :create]
+    end
     resources :customers, only: [:index, :show] do
       resources :sales_orders, only: [:index], module: :customers
     end
