@@ -1,14 +1,14 @@
 module StoreFrontModule
   class UnitOfMeasurement < ApplicationRecord
     belongs_to :product
-    has_many :mark_up_prices, class_name: "StoreFrontModule::MarkUpPrice"
+    has_many :mark_up_prices, class_name: "StoreFrontModule::MarkUpPrice", dependent: :destroy
 
     def self.base_measurement
       where(base_measurement: true).order(created_at: :asc).last
     end
 
     def price
-      mark_up_prices.current.price
+      mark_up_prices.current.try(:price)
     end
 
     def quantity_and_code

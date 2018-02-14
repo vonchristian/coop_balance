@@ -1,9 +1,10 @@
-<%= simple_form_for [@product, @unit_of_measurement], url: :store_front_module_product_unit_of_measurements do |f| %>
+<%= simple_form_for @unit_of_measurement, url: :store_front_module_product_unit_of_measurements do |f| %>
   <%= f.input :code %>
   <%= f.input :description %>
   <%= f.input :quantity %>
   <%= f.input :price %>
   <%= f.input :conversion_quantity %>
-  <%= f.input :base_measurement %>
+  <%= f.input :base_measurement, as: :boolean %>
+  <%= f.input :product_id, input_html: { value: @product.id }, as: :hidden %>
   <%= f.submit %>
 <% end %>

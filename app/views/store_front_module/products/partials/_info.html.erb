@@ -30,8 +30,9 @@
       <% end %>
     </div>
     <div class="col-md-3">
-      <%= number_to_currency unit_of_measurement.price %>
-      <%= link_to 'Update Price', new_store_front_module_unit_of_measurement_mark_up_price_path(unit_of_measurement) %>
+      <%= number_to_currency unit_of_measurement.price %> as of <%= unit_of_measurement.mark_up_prices.current.date.strftime("%B %e, %Y") %><br>
+
+      <%= link_to 'Update Price', new_store_front_module_unit_of_measurement_mark_up_price_path(unit_of_measurement), class: "btn btn-sm btn-default" %>
     </div>
   </div>
   <br>

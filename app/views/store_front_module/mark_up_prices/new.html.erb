@@ -1,0 +1,6 @@
+<%= simple_form_for [@unit_of_measurement, @mark_up_price], url: :store_front_module_unit_of_measurement_mark_up_prices do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :price %>
+  <%#= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+  <%= f.submit "Save Price" %>
+<% end %>

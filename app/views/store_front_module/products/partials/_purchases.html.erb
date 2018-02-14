@@ -13,9 +13,9 @@
         <tbody>
           <% @purchases.each do |line_item| %>
             <tr>
-              <td> <%= line_item.date %></td>
+              <td> <%= line_item.date.strftime("%B %e, %Y") %></td>
               <td> <%= line_item.supplier_name %></td>
-              <td> <%= line_item.quantity %></td>
+              <td> <%= line_item.quantity %> <%= line_item.unit_of_measurement_code %></td>
               <td> <%= number_to_currency line_item.unit_cost %></td>
               <td> <%= number_to_currency line_item.total_cost %></td>
               <td> <%= line_item.barcode %></td>
