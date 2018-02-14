@@ -1,3 +1,9 @@
+REFACTOR
+try facade pattern for line item transactions
+
+payment of store credits
+
+
 segregate store_front_module_to rails_engine
 
 Bacnong

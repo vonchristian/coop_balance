@@ -27,6 +27,9 @@ module StoreFrontModule
     def converted_quantity
       reverted_quantity * conversion_multiplier
     end
+    def reverted_quantity
+      quantity
+    end
 
   end
 end

@@ -61,6 +61,7 @@ module StoreFrontModule
         'red'
       end
     end
+
     private
     def set_default_date
         todays_date = ActiveRecord::Base.default_timezone == :utc ? Time.now.utc : Time.now

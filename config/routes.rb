@@ -209,7 +209,6 @@ Rails.application.routes.draw do
     resources :sales_return_line_items, only: [:index, :new, :create, :destroy], module: :line_items
     resources :purchase_order_line_item_processings, only: [:index, :new, :create, :destroy], module: :line_items
     resources :purchase_return_order_line_item_processings, only: [:new, :create, :destroy], module: :line_items
-
     resources :employees, only: [:show]
     resources :settings, only: [:index]
     resources :reports, only: [:index]
@@ -224,6 +223,7 @@ Rails.application.routes.draw do
     resources :purchase_return_orders, only: [:index], module: :orders
     resources :purchase_order_processings, only: [:new, :create], module: :orders
     resources :spoilage_order_processings, only: [:new, :create], module: :orders
+    resources :credit_sales_order_processings, only: [:create], module: :orders
 
     resources :products, only: [:index, :show, :new, :create] do
       resources :purchases, only: [:index, :new, :create], module: :products
@@ -233,13 +233,12 @@ Rails.application.routes.draw do
       resources :settings, only: [:index], module: :products
       resources :unit_of_measurements, only: [:new, :create]
     end
-
     resources :unit_of_measurements, shallow: true do
       resources :mark_up_prices, only: [:new, :create]
     end
     resources :customers, only: [:index, :show] do
       resources :sales_orders, only: [:index], module: :customers
-      resources :credit_sales_orders, only: [:new, :create], module: :customers
+      resources :credit_sales_order_line_items, only: [:new, :create, :destroy], module: :line_items
     end
   end
 

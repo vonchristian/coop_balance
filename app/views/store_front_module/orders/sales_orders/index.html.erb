@@ -9,9 +9,8 @@
           <table class="table table-hover table-striped">
             <thead>
               <tr>
+                <th>Customer</th>
                 <th>Date</th>
-                <th>Supplier</th>
-                <th>Items Count</th>
                 <th>Total Cost</th>
                 <th>Employee</th>
               </tr>
@@ -19,11 +18,16 @@
             <tbody>
               <% @sales_orders.each do |sales_order| %>
                  <tr data-link="<%=store_front_module_sales_order_path(sales_order)%>" class="salesOrderIndex">
-                  <td><%= sales_order.date %></td>
-                  <td><%= sales_order.commercial_document_name %></td>
-                  <td><%= sales_order.sales_order_line_items.count %></td>
+                  <td><b class="text-primary"><%= image_tag(sales_order.customer.avatar.url(:small), class: "img-circle", height: 45, width: 45) %> &nbsp;<%= sales_order.commercial_document_name %></b></td>
+                  <td>
+                    <%= sales_order.date.try(:strftime, ("%B %e, %Y")) %><br>
+                    <% if sales_order.credit_sales? %>
+                      <span class="badge bg-red"> Credit </span>
+                    <% end %>
+                  </td>
                   <td><%= number_to_currency sales_order.total_cost %></td>
                   <td><%= sales_order.employee_name %></td>
+                  <td><%#= number_to_currency sales_order.income %></td>
                 </tr>
               <% end %>
             </tbody>

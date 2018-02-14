@@ -2,7 +2,7 @@ module StoreFrontModule
   module Orders
     class SalesOrdersController < ApplicationController
       def index
-        @sales_orders = StoreFrontModule::Orders::SalesOrder.all.paginate(page: params[:page], per_page: 30)
+        @sales_orders = StoreFrontModule::Orders::SalesOrder.order(date: :desc).paginate(page: params[:page], per_page: 30)
         @from_date = Chronic.parse(params[:from_date])
         @to_date = Chronic.parse(params[:to_date])
         respond_to do |format|

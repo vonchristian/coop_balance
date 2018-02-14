@@ -12,7 +12,11 @@
       <tbody>
         <% @sales_orders.each do |order| %>
           <tr data-link="<%=store_front_module_sales_order_path(order)%>" class="myClass">
-            <td> <%= order.date.try(:strftime, ("%B %e, %Y")) %></td>
+            <td> <%= order.date.try(:strftime, ("%B %e, %Y")) %><br>
+              <% if order.credit_sales? %>
+                      <span class="badge bg-red"> Credit </span>
+                    <% end %>
+            </td>
             <td> <%= order.reference_number %></td>
             <td> <%= image_tag(order.commercial_document.avatar.url(:medium), class: "img-circle", height: 35, width: 35) %> <%= order.employee.try(:name) %></td>
             <td> <span class="pull-right"> <%= number_to_currency order.total_cost %></span> </td>

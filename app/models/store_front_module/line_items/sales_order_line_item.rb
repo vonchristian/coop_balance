@@ -16,7 +16,6 @@ module StoreFrontModule
           quantity / conversion_multiplier.to_f
         end
       end
-
     end
   end
 end
