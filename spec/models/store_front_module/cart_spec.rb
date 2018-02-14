@@ -5,6 +5,7 @@ module StoreFrontModule
 	  context "associations" do
 	  	it { is_expected.to belong_to :employee }
 	  	it { is_expected.to have_many :line_items }
+	  	it { is_expected.to have_many :purchase_return_order_line_items }
 	  end
 
 	  it "#total_cost" do

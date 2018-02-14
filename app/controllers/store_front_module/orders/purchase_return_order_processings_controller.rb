@@ -1,8 +1,11 @@
 module StoreFrontModule
   module Orders
     class PurchaseReturnOrderProcessingsController < ApplicationController
+      def index
+        @purchase_return_orders = StoreFrontModule::Orders::PurchaseReturnOrder.all
+      end
       def new
-        @order = StoreFrontModule::Orders::PurchaseReturnOrderProcessingForm.new
+        @order = StoreFrontModule::Orders::PurchaseReturnOrderProcessing.new
          @cart = current_cart
       end
       def create
@@ -11,7 +14,7 @@ module StoreFrontModule
           @purchase_return_order.process!
           redirect_to store_front_module_purchase_return_orders_url, notice: "Purchase Return processed successfully."
         else
-          render :new
+          redirect_to new_store_front_module_purchase_return_order_line_item_processing_url, alert: "Error"
         end
       end
 

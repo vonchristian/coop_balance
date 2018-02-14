@@ -204,6 +204,7 @@ Rails.application.routes.draw do
     resources :spoilages, only: [:index, :new, :create, :destroy]
     resources :sales_return_line_items, only: [:index, :new, :create, :destroy], module: :line_items
     resources :purchase_order_line_item_processings, only: [:index, :new, :create, :destroy], module: :line_items
+    resources :purchase_return_order_line_item_processings, only: [:new, :create, :destroy], module: :line_items
 
     resources :employees, only: [:show]
     resources :settings, only: [:index]
@@ -216,6 +217,7 @@ Rails.application.routes.draw do
     resources :line_items, only: [:new, :create, :destroy]
     resources :sales_order_line_items, only: [:new, :create, :destroy]
     resources :purchase_orders, only: [:index, :new, :create, :show, :destroy], module: :orders
+    resources :purchase_return_orders, only: [:index], module: :orders
     resources :purchase_order_processings, only: [:new, :create], module: :orders
     resources :spoilage_order_processings, only: [:new, :create], module: :orders
 

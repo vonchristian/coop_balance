@@ -18,7 +18,7 @@ module StoreFrontModule
 
           expect(purchase_order_line_item.available_quantity).to eql(100)
 
-          sales_order_line_item = create(:sales_order_line_item, referenced_line_item: purchase_order_line_item, unit_of_measurement: unit_of_measurement, quantity: 10)
+          sales_order_line_item = create(:sales_order_line_item, purchase_order_line_item: purchase_order_line_item, unit_of_measurement: unit_of_measurement, quantity: 10)
 
           expect(purchase_order_line_item.sold_quantity).to eql(10)
         end
@@ -28,7 +28,7 @@ module StoreFrontModule
           purchase_order_line_item = create(:purchase_order_line_item, quantity: 500, unit_of_measurement: unit_of_measurement)
           expect(purchase_order_line_item.available_quantity).to eql(5000)
 
-          sales_order_line_item = create(:sales_order_line_item, referenced_line_item: purchase_order_line_item, unit_of_measurement: unit_of_measurement, quantity: 10)
+          sales_order_line_item = create(:sales_order_line_item, purchase_order_line_item: purchase_order_line_item, unit_of_measurement: unit_of_measurement, quantity: 10)
 
           expect(purchase_order_line_item.sold_quantity).to eql(100)
           expect(purchase_order_line_item.available_quantity).to eql(4_900)
@@ -41,7 +41,7 @@ module StoreFrontModule
 
           expect(purchase_order_line_item.available_quantity).to eql(100)
 
-          sales_order_line_item = create(:sales_order_line_item, referenced_line_item: purchase_order_line_item, unit_of_measurement: unit_of_measurement, quantity: 10)
+          sales_order_line_item = create(:sales_order_line_item, purchase_order_line_item: purchase_order_line_item, unit_of_measurement: unit_of_measurement, quantity: 10)
 
           expect(purchase_order_line_item.out_of_stock?).to be false
         end
@@ -51,7 +51,7 @@ module StoreFrontModule
 
           expect(purchase_order_line_item.available_quantity).to eql(100)
 
-          sales_order_line_item = create(:sales_order_line_item, referenced_line_item: purchase_order_line_item, unit_of_measurement: unit_of_measurement, quantity: 100)
+          sales_order_line_item = create(:sales_order_line_item, purchase_order_line_item: purchase_order_line_item, unit_of_measurement: unit_of_measurement, quantity: 100)
 
           expect(purchase_order_line_item.out_of_stock?).to be true
         end
@@ -64,7 +64,7 @@ module StoreFrontModule
 
           expect(purchase_order_line_item.available_quantity).to eql(100)
 
-          sales_order_line_item = create(:sales_order_line_item, referenced_line_item: purchase_order_line_item, unit_of_measurement: unit_of_measurement, quantity: 10)
+          sales_order_line_item = create(:sales_order_line_item, purchase_order_line_item: purchase_order_line_item, unit_of_measurement: unit_of_measurement, quantity: 10)
 
           expect(purchase_order_line_item.available_quantity).to eql(90)
         end
@@ -74,7 +74,7 @@ module StoreFrontModule
 
           expect(purchase_order_line_item.available_quantity).to eql(1000)
 
-          sales_order_line_item = create(:sales_order_line_item, referenced_line_item: purchase_order_line_item, unit_of_measurement: unit_of_measurement, quantity: 10)
+          sales_order_line_item = create(:sales_order_line_item, purchase_order_line_item: purchase_order_line_item, unit_of_measurement: unit_of_measurement, quantity: 10)
 
           expect(purchase_order_line_item.sold_quantity).to eql(100)
           expect(purchase_order_line_item.available_quantity).to eql(900)

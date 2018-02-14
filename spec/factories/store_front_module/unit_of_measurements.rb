@@ -3,7 +3,6 @@ FactoryBot.define do
     product nil
     code "kg"
     description "MyString"
-    price "9.99"
     quantity 1
     conversion_quantity 50
     base_measurement false

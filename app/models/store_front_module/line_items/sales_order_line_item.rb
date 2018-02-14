@@ -5,8 +5,6 @@ module StoreFrontModule
       belongs_to :sales_order, class_name: "StoreFrontModule::Orders::SalesOrder", foreign_key: 'order_id'
       delegate :customer, :official_receipt_number, :date, :customer_name, to: :sales_order, allow_nil: true
 
-      validates :quantity, numericality: { less_than_or_equal_to: :product_balance }
-
       def cost_of_goods_sold
         referenced_line_item.purchase_cost * quantity
       end
