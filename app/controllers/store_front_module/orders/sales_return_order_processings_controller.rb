@@ -14,7 +14,7 @@ module StoreFrontModule
 
       private
       def order_processing_params
-        params.require(:store_front_module_orders_sales_return_order_processing).permit(:customer_id, :date, :employee_id, :cart_id)
+        params.require(:store_front_module_orders_sales_return_order_processing).permit(:customer_id, :date, :employee_id, :cart_id, :note)
       end
     end
   end

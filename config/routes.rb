@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   root :to => 'teller_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'teller' if request.env['warden'].user }, as: :teller_module_root
   root :to => 'store_front_module/products#index', :constraints => lambda { |request| request.env['warden'].user.role == 'stock_custodian' if request.env['warden'].user }, as: :warehouse_module_root
   root :to => 'store_front_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'sales_clerk' if request.env['warden'].user }, as: :store_front_module_root
+  root :to => 'store_front_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'sales_manager' if request.env['warden'].user }, as: :store_front_module_sales_manager_root
+
   root :to => 'store_front_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'stock_custodian' if request.env['warden'].user }, as: :store_stocks_module_root
   root :to => 'hr_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'human_resource_officer' if request.env['warden'].user }, as: :hr_module_root
   root :to => 'clerk_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'accounting_clerk' if request.env['warden'].user }, as: :clerk_module_root
@@ -198,7 +200,9 @@ Rails.application.routes.draw do
   end
 
   namespace :store_front_module do
+    resources :sales_return_orders, only: [:index, :show], module: :orders
     resources :sales_reports, only: [:index], module: :reports
+    resources :sales_clerk_reports, only: [:index], module: :reports
     resources :purchases_reports, only: [:index], module: :reports
     resources :spoilages_reports, only: [:index], module: :reports
     resources :spoilages, only: [:index, :new, :create, :destroy]
@@ -224,9 +228,12 @@ Rails.application.routes.draw do
     resources :products, only: [:index, :show, :new, :create] do
       resources :purchases, only: [:index, :new, :create], module: :products
       resources :sales, only: [:index], module: :products
+      resources :purchase_returns, only: [:index], module: :products
+      resources :sales_returns, only: [:index], module: :products
       resources :settings, only: [:index], module: :products
       resources :unit_of_measurements, only: [:new, :create]
     end
+
     resources :unit_of_measurements, shallow: true do
       resources :mark_up_prices, only: [:new, :create]
     end

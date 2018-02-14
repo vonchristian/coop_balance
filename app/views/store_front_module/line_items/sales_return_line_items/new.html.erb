@@ -12,7 +12,7 @@
             <%= text_field_tag :search, params[:search], class: "form-control input-lg", placeholder: "Search Products..." %>
             <span class="input-group-btn">
               <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-danger btn-lg") do %>
-                <i class="fa fa-search"></i> Search
+                <i class="fa fa-search"></i>
               <% end %>
             </span>
           </div>
@@ -23,7 +23,7 @@
             <%= text_field_tag :search, params[:search], autofocus: true,  class: "form-control input-lg", placeholder: "Search Products..."  %>
             <span class="input-group-btn">
               <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-danger btn-lg") do %>
-                <i class="fa fa-search"></i> Search
+                <i class="fa fa-search"></i>
               <% end %>
             </span>
           </div>
@@ -39,9 +39,9 @@
             <% end %>
           </tbody>
         </table>
-        <hr>
+        <br>
         <% if @sales_return_order_line_items.present? %>
-          <p class="text-danger"> sales_return DETAILS </p>
+          <p class="text-danger"><b> SALES RETURN DETAILS</b> </p>
           <div class="table table-responsive">
             <table class="table table-hover table-striped">
               <thead>
@@ -75,7 +75,6 @@
                     </td>
                   </tr>
                 <% end %>
-                <hr>
               </tbody>
             </table>
           </div>
@@ -102,8 +101,9 @@
             <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
             <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
             <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+            <%= f.input :note, as: :text %>
 
-            <%= f.submit "Save sales_returns", class: "btn btn-danger btn-block" %>
+            <%= f.submit "Save Sales Return", class: "btn btn-danger btn-block" %>
           <% end %>
           <br />
         </div>

@@ -5,6 +5,8 @@ module CoopConfigurationsModule
     belongs_to :accounts_payable_account,  class_name: "AccountingModule::Account"
     belongs_to :merchandise_inventory_account, class_name: "AccountingModule::Account"
     belongs_to :sales_account, class_name: "AccountingModule::Account"
+    belongs_to :sales_return_account, class_name: "AccountingModule::Account"
+
 
     validates :cost_of_goods_sold_account_id,
               :accounts_receivable_account_id,

@@ -27,6 +27,9 @@
         <%=render "store_front_module/sidebar_for_stock_custodian", cached: true %>
       <% end %>
       <% if current_user.sales_clerk? %>
+        <%=render "store_front_module/sidebar_for_sales_clerk", cached: true %>
+      <% end %>
+      <% if current_user.sales_manager? %>
         <%=render "store_front_module/sidebar_for_store", cached: true %>
       <% end %>
        <% if current_user.treasurer? %>

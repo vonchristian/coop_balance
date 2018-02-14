@@ -10,8 +10,8 @@
                   </td>
                   <td>
 
-                      <b class="text-danger"><%= product.balance %> <%= product.base_measurement_code.try(:upcase) %></b><br>
-                      <small>AVAILABLE</small>
+                      <b class="text-danger"><%= product.sales_balance %> <%= product.base_measurement_code.try(:upcase) %></b><br>
+                      <small>SOLD</small>
 
                   </td>
                     <%= simple_form_for @sales_return_line_item, url: :store_front_module_sales_return_line_items do |f| %>
@@ -28,7 +28,7 @@
                       <%= f.input :product_id, input_html: { value: product.id }, as: :hidden %>
                     <td>
                       <% if !product.out_of_stock? %>
-                        <%= f.submit "Add", class: "btn btn-danger btn-sm" %>
+                        <%= f.submit "Add", class: "btn btn-danger btn-sm pull-right" %>
                       <% else %>
                         <span class="text-danger"><b>OUT OF STOCK</b></span>
                       <% end %>
