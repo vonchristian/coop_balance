@@ -12,8 +12,14 @@ module StoreFrontModule
     end
     def destroy
       @cart = current_cart
-      @product = StoreFrontModule::Product.find(params[:id])
-      @cart.line_items.where(product: @product).destroy_all
+      @product = StoreFrontModule::Product.find_by(id: params[:id])
+      if @product.present?
+        @cart.line_items.where(product: @product).destroy_all
+      end
+      @line_item = StoreFrontModule::LineItems::SalesOrderLineItem.find_by(id: params[:id])
+      if @line_item.present?
+        @line_item.destroy
+      end
       redirect_to store_front_module_index_url
     end
 

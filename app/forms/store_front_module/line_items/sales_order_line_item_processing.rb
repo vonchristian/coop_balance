@@ -21,18 +21,20 @@ module StoreFrontModule
       end
 
       def decrease_product_available_quantity
-        remaining_quantity = converted_quantity
+        requested_quantity = converted_quantity
         find_product.purchases.order(date: :asc).available.each do |purchase|
-            sales = find_cart.sales_order_line_items.create!(quantity: quantity_for(purchase, remaining_quantity),
-                                                   unit_cost: selling_cost,
-                                                   total_cost: set_total_cost(purchase, remaining_quantity),
-                                                   unit_of_measurement: find_product.base_measurement,
-                                                   product_id: product_id,
-                                                   referenced_line_item: purchase)
-            remaining_quantity -= sales.converted_quantity
-            break if remaining_quantity.zero?
+          sales = find_cart.sales_order_line_items.create!(
+          quantity:                 quantity_for(purchase, requested_quantity),
+          unit_cost:                selling_cost,
+          total_cost:               set_total_cost,
+          unit_of_measurement:      find_unit_of_measurement,
+          product_id:               product_id,
+          purchase_order_line_item: purchase)
+          requested_quantity -= sales.converted_quantity
+          break if requested_quantity.zero?
         end
       end
+
       def decrease_purchase_line_item_quantity
         find_cart.sales_order_line_items.create!(
           quantity: converted_quantity,
@@ -40,13 +42,13 @@ module StoreFrontModule
           total_cost: converted_quantity.to_f * selling_cost,
           product_id: find_purchase_order_line_item.product_id,
           unit_of_measurement: find_unit_of_measurement,
-          referenced_line_item: find_purchase_order_line_item
+          purchase_order_line_item: find_purchase_order_line_item
           )
       end
 
-      def quantity_for(purchase, remaining_quantity)
-        if purchase.available_quantity >= BigDecimal.new(remaining_quantity)
-          BigDecimal.new(remaining_quantity)
+      def quantity_for(purchase, requested_quantity)
+        if purchase.available_quantity >= BigDecimal.new(requested_quantity)
+          BigDecimal.new(requested_quantity)
         else
           purchase.available_quantity.to_f
         end
@@ -60,15 +62,15 @@ module StoreFrontModule
       end
 
       def selling_cost
-        find_product.base_selling_price
+        find_unit_of_measurement.price.to_f
       end
 
-      def set_total_cost(purchase, remaining_quantity)
-        selling_cost * quantity_for(purchase, remaining_quantity)
+      def set_total_cost
+        selling_cost * quantity.to_f
       end
 
       def find_unit_of_measurement
-        StoreFrontModule::UnitOfMeasurement.find_by_id(unit_of_measurement_id)
+        find_product.unit_of_measurements.find_by_id(unit_of_measurement_id)
       end
 
       def find_product

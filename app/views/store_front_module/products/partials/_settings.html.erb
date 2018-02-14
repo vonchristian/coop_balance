@@ -1,0 +1,21 @@
+
+<h4>Unit of Measurements</h4>
+<span class="help-block"> Unit of measurements are used for price mark ups and converting quantities to base measurements (e.g. 1 sack to 50 kgs)</span>
+<%= link_to "Add Unit of Measurement", new_store_front_module_product_unit_of_measurement_path(@product), class: "btn btn-primary" %>
+<hr>
+<% @product.unit_of_measurements.each do |unit_of_measurement| %>
+  <div class="row">
+    <div class="col-md-4">
+      <%= unit_of_measurement.quantity_and_code %>
+      <% if unit_of_measurement.base_measurement %>
+        <span class="badge bg-green"> Base Measurement </span>
+      <% end %>
+    </div>
+    <div class="col-md-3">
+      <%= number_to_currency unit_of_measurement.price %> <br>
+
+      <%= link_to 'Update Price', new_store_front_module_unit_of_measurement_mark_up_price_path(unit_of_measurement), class: "btn btn-sm btn-default" %>
+    </div>
+  </div>
+  <br>
+<% end %>

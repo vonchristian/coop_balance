@@ -1,12 +1,18 @@
 <h4>Quantities</h4>
 <div class="row">
             <div class="col-md-3 border-right">
-              <h3 class="no-padding"><%= @product.purchases_balance %></h3>
-              <small>PURCHASES</small>
+              <h3 class="no-padding"><center><%= @product.purchases_balance %></center></h3>
+              <small><center>PURCHASES</center></small>
+              <br>
+              <p class="text-danger"><center><%= @product.purchase_returns_balance %></center></p>
+              <small class="text-danger"> <center>PURCHASE RETURNS</center></small>
             </div>
             <div class="col-md-3 border-right">
-              <h3 class="no-padding"><%= @product.sales_balance %></h3>
-              <small>SALES</small>
+              <h3 class="no-padding"><center><%= @product.sales_balance %></center></h3>
+              <small><center>SALES</center></small>
+               <br>
+              <p class="text-danger"><center><%= @product.sales_returns_balance %></center></p>
+              <small class="text-danger"> <center>SALES RETURNS</center></small>
             </div>
             <div class="col-md-3 border-right">
               <center>
@@ -17,10 +23,7 @@
             </div>
           </div>
           <hr>
-<h4>Unit of Measurements</h4>
-<span class="help-block"> Unit of measurements are used for price mark ups and converting quantities to base measurements (e.g. 1 sack to 50 kgs)</span>
-<%= link_to "Add Unit of Measurement", new_store_front_module_product_unit_of_measurement_path(@product), class: "btn btn-primary" %>
-<hr>
+<h4>Mark Up Prices</h4>
 <% @product.unit_of_measurements.each do |unit_of_measurement| %>
   <div class="row">
     <div class="col-md-4">
@@ -32,7 +35,6 @@
     <div class="col-md-3">
       <%= number_to_currency unit_of_measurement.price %> <br>
 
-      <%= link_to 'Update Price', new_store_front_module_unit_of_measurement_mark_up_price_path(unit_of_measurement), class: "btn btn-sm btn-default" %>
     </div>
   </div>
   <br>

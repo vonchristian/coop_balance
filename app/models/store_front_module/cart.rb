@@ -26,6 +26,9 @@ module StoreFrontModule
     def line_items_quantity(product)
       line_items.where(product: product).sum(&:quantity)
     end
+    def line_items_unit_cost(product)
+      line_items.where(product: product).last.unit_cost
+    end
     def line_items_total_cost(product)
       line_items.where(product: product).sum(&:total_cost)
     end

@@ -19,6 +19,7 @@ module StoreFrontModule
           barcode: barcode,
           product: find_product)
       end
+
       def find_cart
         StoreFrontModule::Cart.find_by_id(cart_id)
       end

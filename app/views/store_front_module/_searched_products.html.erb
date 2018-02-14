@@ -22,7 +22,7 @@
                       <% end %>
                     </td>
                     <td><% if !product.out_of_stock? %>
-                        <%= f.input :unit_of_measurement_id, input_html: { value: product.base_measurement }, label: false, collection: product.unit_of_measurements.all.map{|a| [a.code, a.id] } %>
+                        <%= f.input :unit_of_measurement_id, input_html: { value: product.base_measurement }, label: false, collection: product.unit_of_measurements.all.map{|a| [a.code, a.id] }, selected: product.unit_of_measurements.base_measurement %>
                       <% end %></td>
                       <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
                       <%= f.input :product_id, input_html: { value: product.id }, as: :hidden %>

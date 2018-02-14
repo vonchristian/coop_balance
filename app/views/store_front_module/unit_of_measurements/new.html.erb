@@ -1,10 +1,27 @@
-<%= simple_form_for @unit_of_measurement, url: :store_front_module_product_unit_of_measurements do |f| %>
-  <%= f.input :code %>
-  <%= f.input :description %>
-  <%= f.input :quantity %>
-  <%= f.input :price %>
-  <%= f.input :conversion_quantity %>
-  <%= f.input :base_measurement, as: :boolean %>
-  <%= f.input :product_id, input_html: { value: @product.id }, as: :hidden %>
-  <%= f.submit %>
-<% end %>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="box box-solid">
+      <div class="box-header">
+        <h3 class="box-title"> Unit of Measurement Details </h3>
+      </div>
+      <div class="box-body">
+        <div class="row">
+          <div class="col-md-10 col-md-offset-1">
+            <%= simple_form_for @unit_of_measurement, url: :store_front_module_product_unit_of_measurements do |f| %>
+              <%= f.input :code %>
+              <%= f.input :description %>
+              <%= f.input :quantity %>
+              <%= f.input :price %>
+              <%= f.input :conversion_quantity %>
+              <%= f.input :base_measurement, as: :boolean %>
+              <%= f.input :product_id, input_html: { value: @product.id }, as: :hidden %>
+              <div class="box-footer">
+                <%= f.submit "Save", class: "btn btn-primary pull-right" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

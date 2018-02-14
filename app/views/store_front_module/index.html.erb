@@ -53,22 +53,24 @@
               </thead>
               <tbody>
 
-                <% @cart.products.order(updated_at: :desc).uniq.each do |product| %>
+
+                <% @cart.sales_order_line_items.each do |line_item| %>
                   <tr>
                     <td>
-                      <%= @cart.line_items_quantity(product) %> <%= product.base_measurement_code %>
+                      <%= line_item.reverted_quantity %> <%= line_item.unit_of_measurement_code %>
                     </td>
-                    <td width="300px"><%= product.name.try(:titleize) %> <span class="text-muted"><%#= line_item.barcode %></span>
+                    <td width="300px"><%= line_item.name.try(:titleize) %> <span class="text-muted"><%= line_item.barcode %></span>
                     </td>
                     <td>
                       <span class="pull-right">
-                        <%= number_to_currency product.base_measurement.price %></td>
+
+                        <%= number_to_currency line_item.unit_cost %></td>
                       </span>
                     <td>
-                      <span class="pull-right"><%=number_to_currency @cart.line_items_total_cost(product) %></span>
+                      <span class="pull-right"><%=number_to_currency line_item.total_cost %></span>
                     </td>
                     <td>
-                    <%= link_to store_front_module_sales_order_line_item_path(product), method: :delete do %>
+                    <%= link_to store_front_module_sales_order_line_item_path(line_item), method: :delete do %>
                       <span class="fa fa-trash"></span>
                     <% end %>
                     </td>

@@ -29,6 +29,9 @@ module StoreFrontModule
         converted_quantity -
         sold_quantity
       end
+      def reverted_quantity
+        quantity
+      end
 
       def purchase_cost
         if unit_of_measurement.base_measurement?

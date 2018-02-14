@@ -31,6 +31,9 @@
               <% if current_page? store_front_module_product_sales_returns_path(@product) %>
                 <%= render 'store_front_module/products/partials/sales_returns' %>
               <% end %>
+              <% if current_page? store_front_module_product_settings_path(@product) %>
+                <%= render 'store_front_module/products/partials/settings' %>
+              <% end %>
           </div>
         </div>
       </div>

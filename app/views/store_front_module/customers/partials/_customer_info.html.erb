@@ -10,5 +10,6 @@
         <hr />
         <small class="text-muted"> ACCOUNTS RECEIVABLE (STORE) </small>
         <h4><%= number_to_currency @customer.account_receivable_store_balance %></h4>
+        <%= link_to "New Credit", new_customer_credit_sales_order_path(@customer), class: "btn btn-warning" %>
         <hr />
 </div>

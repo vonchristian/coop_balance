@@ -6,8 +6,17 @@ module StoreFrontModule
       delegate :customer, :official_receipt_number, :date, :customer_name, to: :sales_order, allow_nil: true
 
       def cost_of_goods_sold
-        referenced_line_item.purchase_cost * quantity
+        purchase_order_line_item.purchase_cost * quantity
       end
+
+      def reverted_quantity
+        if unit_of_measurement.base_measurement?
+          quantity
+        else
+          quantity / conversion_multiplier.to_f
+        end
+      end
+
     end
   end
 end

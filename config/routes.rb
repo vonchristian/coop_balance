@@ -239,6 +239,7 @@ Rails.application.routes.draw do
     end
     resources :customers, only: [:index, :show] do
       resources :sales_orders, only: [:index], module: :customers
+      resources :credit_sales_orders, only: [:new, :create], module: :customers
     end
   end
 

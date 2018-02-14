@@ -20,7 +20,7 @@
             </td>
             <td><%= line_item.customer_name %></td>
             <td><%= line_item.date.try(:strftime, ("%B %e, %Y")) %></td>
-            <td><%= line_item.unit_cost %> <%= line_item.unit_of_measurement_code %></td>
+            <td><%= line_item.quantity %> <%= line_item.unit_of_measurement_code %></td>
 
             <td><span class="pull-right"><%=number_to_currency line_item.total_cost %></span></td>
           </tr>

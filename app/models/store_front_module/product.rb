@@ -54,6 +54,13 @@ module StoreFrontModule
       purchase_returns.balance(product_id: self.id) -
       spoilages.balance(product_id: self.id)
     end
+    def purchase_returns_balance(options={})
+      purchase_returns.balance(product_id: self.id)
+    end
+
+    def sales_returns_balance(options={})
+      sales_returns.balance(product_id: self.id)
+    end
 
     def available_quantity
       balance
