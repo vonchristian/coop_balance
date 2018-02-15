@@ -1,8 +1,9 @@
 module StoreFrontModule
   module Reports
     class SalesReportPdf < Prawn::Document
-      def initialize(sales_orders, from_date, to_date, view_context)
+      def initialize(employee,sales_orders, from_date, to_date, view_context)
         super(margin: 30, page_size: "A4", page_layout: :portrait)
+        @employee     = employee
         @sales_orders = sales_orders
         @from_date    = from_date
         @to_date      = to_date
@@ -31,6 +32,9 @@ module StoreFrontModule
             text "FROM: #{@from_date.strftime("%B %e, %Y")}", size: 10
             text "TO: #{@to_date.strftime("%B %e, %Y")}", size: 10
           end
+          if @employee.present?
+              text "EMPLOYEE: #{@employee.first_and_last_name.try(:upcase)}", size: 10, style: :bold
+            end
         end
         stroke do
           move_down 30

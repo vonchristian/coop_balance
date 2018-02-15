@@ -6,24 +6,25 @@ module StoreFrontModule
 
       validates :employee_id, :customer_id, :cash_tendered, :order_change, presence: true
       def process!
-        ActiveRecord::Base.transaction do
+
           create_sales_order
-        end
       end
 
       private
       def create_sales_order
-        order = find_customer.sales_orders.create(
-        cash_tendered: cash_tendered,
-        order_change: order_change,
-        date: date,
-        employee: find_employee)
+        ActiveRecord::Base.transaction do
+          order = find_customer.sales_orders.create(
+          cash_tendered: cash_tendered,
+          order_change: order_change,
+          date: date,
+          employee: find_employee)
 
-        find_cart.sales_order_line_items.each do |sales_order_line_item|
-          sales_order_line_item.cart_id = nil
-          order.sales_order_line_items << sales_order_line_item
+          find_cart.sales_order_line_items.each do |sales_order_line_item|
+            sales_order_line_item.cart_id = nil
+            order.sales_order_line_items << sales_order_line_item
+          end
+          create_entry(order)
         end
-        create_entry(order)
       end
 
       def find_customer
@@ -44,7 +45,8 @@ module StoreFrontModule
         cost_of_goods_sold = CoopConfigurationsModule::StoreFrontConfig.default_cost_of_goods_sold_account
         sales = CoopConfigurationsModule::StoreFrontConfig.default_sales_account
         merchandise_inventory = CoopConfigurationsModule::StoreFrontConfig.default_merchandise_inventory_account
-        find_employee.entries.create(
+        find_employee.entries.create!(
+          recorder: find_employee,
           commercial_document: find_customer,
           entry_date: order.date,
           description: "Payment for sales",

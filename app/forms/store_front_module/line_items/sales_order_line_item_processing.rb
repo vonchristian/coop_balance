@@ -20,24 +20,32 @@ module StoreFrontModule
         end
       end
 
-      def decrease_product_available_quantity
+       def decrease_product_available_quantity
+        sales = find_cart.sales_order_line_items.create!(
+            quantity: quantity,
+            unit_cost:                selling_cost,
+            total_cost:               set_total_cost,
+            unit_of_measurement:      find_unit_of_measurement,
+            product_id:               product_id)
+
         requested_quantity = converted_quantity
+
         find_product.purchases.order(date: :asc).available.each do |purchase|
-          sales = find_cart.sales_order_line_items.create!(
-          quantity:                 quantity_for(purchase, requested_quantity),
-          unit_cost:                selling_cost,
-          total_cost:               set_total_cost,
-          unit_of_measurement:      find_unit_of_measurement,
-          product_id:               product_id,
-          purchase_order_line_item: purchase)
-          requested_quantity -= sales.converted_quantity
+          temp_sales = sales.referenced_purchase_order_line_items.create!(
+            quantity:                 quantity_for(purchase, requested_quantity),
+            unit_cost:                find_unit_of_measurement.base_selling_price,
+            total_cost:               total_cost_for(purchase, quantity),
+            unit_of_measurement:      find_product.base_measurement,
+            product_id:               product_id,
+            purchase_order_line_item: purchase)
+          requested_quantity -= temp_sales.quantity
           break if requested_quantity.zero?
         end
       end
 
       def decrease_purchase_line_item_quantity
         find_cart.sales_order_line_items.create!(
-          quantity: converted_quantity,
+          quantity: quantity,
           unit_cost: selling_cost,
           total_cost: converted_quantity.to_f * selling_cost,
           product_id: find_purchase_order_line_item.product_id,
@@ -62,11 +70,15 @@ module StoreFrontModule
       end
 
       def selling_cost
-        find_unit_of_measurement.price.to_f
+        find_unit_of_measurement.price
       end
 
       def set_total_cost
         selling_cost * quantity.to_f
+      end
+
+      def total_cost_for(purchase, requested_quantity)
+        find_unit_of_measurement.base_selling_price * quantity_for(purchase, requested_quantity)
       end
 
       def find_unit_of_measurement

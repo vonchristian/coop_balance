@@ -1,0 +1,15 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-solid">
+      <div class="box-header with-border">
+        <h3 class="box-title"> Sales Clerk Reports </h3>
+      </div>
+      <div class="box-body">
+        <h4>Sales</h4>
+        <span class="help-block"> Generate Sales Report. </span><br>
+        <%= link_to 'This Day', store_front_module_sales_clerk_sales_reports_path(format: 'pdf', from_date: Date.today, to_date: Date.today, employee_id: @employee.id), class: "btn btn-default btn-sm bg-gray" %>
+        <hr>
+      </div>
+    </div>
+  </div>
+</div>

@@ -6,8 +6,7 @@ module StoreFrontModule
     belongs_to :store_front
     has_one :official_receipt, as: :receiptable
     has_one :invoice, as: :invoiceable
-    has_many :line_items, class_name: "StoreFrontModule::LineItem"
-    has_one :entry,                       class_name: "AccountingModule::Entry", as: :commercial_document
+    has_many :line_items, class_name: "StoreFrontModule::LineItem", dependent: :destroy
     has_many :sale_line_items,            class_name: "StoreFrontModule::SaleLineItem", inverse_of: :order,
                                           extend: StoreFrontModule::QuantityBalanceFinder
     has_many :purchase_line_items,        class_name: "StoreFrontModule::PurchaseLineItem", inverse_of: :order,

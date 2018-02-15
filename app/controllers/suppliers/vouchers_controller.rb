@@ -24,7 +24,7 @@ module Suppliers
 
     private
     def voucher_params
-      params.require(:suppliers_voucher_processing).permit(:number, :date, :payee_id, :description, :user_id, :number, :preparer_id)
+      params.require(:suppliers_voucher_processing).permit(:number, :date, :supplier_id, :description, :user_id, :number, :preparer_id)
     end
   end
 end

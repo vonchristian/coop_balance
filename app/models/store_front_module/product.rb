@@ -3,7 +3,7 @@ module StoreFrontModule
     include PgSearch
     multisearchable against: [:name]
     pg_search_scope :text_search, against: [:name]
-    belongs_to :category, class_name: "StoreFrontModule::Category"
+    belongs_to :category, class_name: "StoreFrontModule::Category", optional: true
     has_many :unit_of_measurements, class_name: "StoreFrontModule::UnitOfMeasurement"
     has_many :line_items, class_name: "StoreFrontModule::LineItem"
 

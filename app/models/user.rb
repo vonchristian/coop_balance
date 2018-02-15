@@ -31,6 +31,7 @@ class User < ApplicationRecord
   belongs_to :office, class_name: "CoopConfigurationsModule::Office"
   belongs_to :salary_grade, class_name: "HrModule::SalaryGrade"
   has_one :membership, as: :memberable
+  has_many :sold_orders, class_name: "StoreFrontModule::Orders::SalesOrder", foreign_key: 'employee_id'
   has_many :loans, class_name: "LoansModule::Loan", as: :borrower
   has_many :co_makered_loans, class_name: "LoansModule::LoanCoMaker", as: :co_maker
   has_many :savings, class_name: "MembershipsModule::Saving", as: :depositor
@@ -75,7 +76,7 @@ class User < ApplicationRecord
   :path => ":rails_root/public/system/:attachment/:id/:basename_:style.:extension",
   :url => "/system/:attachment/:id/:basename_:style.:extension"
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
-  validates :cash_on_hand_account_id, uniqueness: true
+  # validates :cash_on_hand_account_id, uniqueness: true
   def self.cash_on_hand_accounts
     user_accounts = all.collect{|a| a.cash_on_hand_account_id }.compact
     accounts = []

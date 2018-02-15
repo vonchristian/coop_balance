@@ -1,7 +1,7 @@
 module Suppliers
   class VoucherProcessing
     include ActiveModel::Model
-    attr_accessor :number, :date, :payee_id,  :description, :user_id, :number, :preparer_id
+    attr_accessor :number, :date, :supplier_id,  :description, :user_id, :number, :preparer_id
     validates :date, :description, presence: true
     def process!
       ActiveRecord::Base.transaction do
@@ -19,7 +19,7 @@ module Suppliers
       voucher.voucher_amounts << find_supplier.voucher_amounts
     end
     def find_supplier
-      Supplier.find_by_id(payee_id)
+      Supplier.find_by_id(supplier_id)
     end
   end
 end

@@ -203,6 +203,7 @@ Rails.application.routes.draw do
     resources :sales_return_orders, only: [:index, :show], module: :orders
     resources :sales_reports, only: [:index], module: :reports
     resources :sales_clerk_reports, only: [:index], module: :reports
+    resources :sales_clerk_sales_reports, only: [:index], module: :reports
     resources :purchases_reports, only: [:index], module: :reports
     resources :spoilages_reports, only: [:index], module: :reports
     resources :spoilages, only: [:index, :new, :create, :destroy]

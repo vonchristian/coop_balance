@@ -55,9 +55,13 @@
 
 
                 <% @cart.sales_order_line_items.each do |line_item| %>
+                  <%line_item.referenced_purchase_order_line_items.each do |jjj| %>
+                  <%= jjj.quantity %>
+                  <% end %>
                   <tr>
                     <td>
-                      <%= line_item.reverted_quantity %> <%= line_item.unit_of_measurement_code %>
+
+                      <%= line_item.quantity %> <%= line_item.unit_of_measurement_code %>
                     </td>
                     <td width="300px"><%= line_item.name.try(:titleize) %> <span class="text-muted"><%= line_item.barcode %></span>
                     </td>

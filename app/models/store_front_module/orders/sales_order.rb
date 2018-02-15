@@ -4,6 +4,14 @@ module StoreFrontModule
       has_many :sales_order_line_items, class_name: "StoreFrontModule::LineItems::SalesOrderLineItem",
                                  extend: StoreFrontModule::QuantityBalanceFinder, foreign_key: 'order_id'
       has_many :products, through: :sales_order_line_items, class_name: "StoreFrontModule::Product"
+
+      def self.total_income
+        sum(&:income)
+      end
+      def self.cash_sales
+        select{ |order| !order.credit_sales? }
+      end
+
       def self.credit_sales
         select{ |order| order.credit_sales? }
       end
@@ -15,6 +23,9 @@ module StoreFrontModule
         commercial_document
       end
       def income
+        total_cost - cost_of_goods_sold
+      end
+      def cost_of_goods_sold
         sales_order_line_items.map{|a| a.cost_of_goods_sold }.compact.sum
       end
 

@@ -201,3 +201,14 @@ STORE CART
 
 
 add stats on product show page
+
+
+sales order line item
+1 dozen
+
+purchase order line item
+3 5
+9 5.50
+cost of goods sold
+3 * 5= 15
+9 * 5.50 49.50
