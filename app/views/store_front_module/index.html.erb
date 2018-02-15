@@ -55,9 +55,6 @@
 
 
                 <% @cart.sales_order_line_items.each do |line_item| %>
-                  <%line_item.referenced_purchase_order_line_items.each do |jjj| %>
-                  <%= jjj.quantity %>
-                  <% end %>
                   <tr>
                     <td>
 
