@@ -7,7 +7,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :lockable,
          :recoverable, :rememberable, :trackable, :validatable
-  enum sex: [:male, :female, :others]
+  enum sex: [:male, :female]
   enum role: [:system_administrator,
               :general_manager,
               :branch_manager,
@@ -39,7 +39,7 @@ class User < ApplicationRecord
   has_many :sales_orders, class_name: "StoreFrontModule::Orders::SalesOrder", as: :commercial_document
   has_many :sales_return_orders, class_name: "StoreFrontModule::Orders::SalesReturnOrder", as: :commercial_document
   has_many :entries, class_name: "AccountingModule::Entry", foreign_key: 'recorder_id'
-  has_many :accepted_fund_transfers, class_name: "AccountingModule::Entry", as: :commercial_document
+
   has_many :appraised_properties, class_name: "Appraisal", foreign_key: 'appraiser_id'
   has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", as: :commercial_document # for adding amounts on voucher
   has_many :vouchers, as: :payee, class_name: "Vouchers::EmployeeVoucher"
@@ -48,9 +48,7 @@ class User < ApplicationRecord
   has_many :disbursed_loan_vouchers, class_name: "Vouchers::LoanDisbursementVoucher", foreign_key: 'disburser_id'
 
 
-  has_many :employee_contributions, foreign_key: 'employee_id'
   has_many :real_properties, as: :owner
-  has_many :contributions, through: :employee_contributions
 
   has_many :organization_memberships, class_name: "Organizations::OrganizationMember", as: :organization_membership
   has_many :organizations, through: :organization_memberships
@@ -77,7 +75,7 @@ class User < ApplicationRecord
   :path => ":rails_root/public/system/:attachment/:id/:basename_:style.:extension",
   :url => "/system/:attachment/:id/:basename_:style.:extension"
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
-
+  validates :cash_on_hand_account_id, uniqueness: true
   def self.cash_on_hand_accounts
     user_accounts = all.collect{|a| a.cash_on_hand_account_id }.compact
     accounts = []
@@ -104,8 +102,8 @@ class User < ApplicationRecord
   def total_share_capitals
     share_capitals.sum(&:balance)
   end
-  def total_purchases
-    orders.sum(:total_cost)
+  def total_purchases(options={})
+    sales_orders.total(options)
   end
 
  def account_receivable_store_balance

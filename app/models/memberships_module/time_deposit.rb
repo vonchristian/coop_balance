@@ -2,7 +2,8 @@ module MembershipsModule
   class TimeDeposit < ApplicationRecord
     enum status: [:withdrawn]
     include PgSearch
-    pg_search_scope :text_search, against: [:account_number], associated_against: depositor: [:first_name, :last_name]
+    pg_search_scope :text_search, against: [:account_number], :associated_against => { :depositor => [:first_name, :last_name ] }
+
     belongs_to :depositor, polymorphic: true
     belongs_to :office, class_name: "CoopConfigurationsModule::Office"
     belongs_to :time_deposit_product, class_name: "CoopServicesModule::TimeDepositProduct"
