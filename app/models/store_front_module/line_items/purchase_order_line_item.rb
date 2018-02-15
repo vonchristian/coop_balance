@@ -22,11 +22,12 @@ module StoreFrontModule
       end
 
       def out_of_stock?
+        referenced_purchase_order_line_items.any? &&
         available_quantity.zero?
       end
 
       def sold_quantity
-        referenced_purchase_order_line_items.sum(&:converted_quantity)
+        referenced_purchase_order_line_items.sum(:quantity)
       end
 
       def available_quantity
@@ -38,7 +39,7 @@ module StoreFrontModule
         if unit_of_measurement.base_measurement?
           unit_cost
         else
-          unit_cost / unit_of_measurement.conversion_multiplier
+          unit_cost / conversion_multiplier
         end
       end
     end

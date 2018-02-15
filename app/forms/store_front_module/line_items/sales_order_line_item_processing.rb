@@ -33,7 +33,7 @@ module StoreFrontModule
         find_product.purchases.order(date: :asc).available.each do |purchase|
           temp_sales = sales.referenced_purchase_order_line_items.create!(
             quantity:                 quantity_for(purchase, requested_quantity),
-            unit_cost:                find_unit_of_measurement.base_selling_price,
+            unit_cost:                purchase.purchase_cost,
             total_cost:               total_cost_for(purchase, quantity),
             unit_of_measurement:      find_product.base_measurement,
             product_id:               product_id,
@@ -78,7 +78,7 @@ module StoreFrontModule
       end
 
       def total_cost_for(purchase, requested_quantity)
-        find_unit_of_measurement.base_selling_price * quantity_for(purchase, requested_quantity)
+        purchase.purchase_cost * quantity_for(purchase, requested_quantity)
       end
 
       def find_unit_of_measurement

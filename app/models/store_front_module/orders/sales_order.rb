@@ -3,11 +3,10 @@ module StoreFrontModule
     class SalesOrder < Order
       has_many :sales_order_line_items, class_name: "StoreFrontModule::LineItems::SalesOrderLineItem",
                                  extend: StoreFrontModule::QuantityBalanceFinder, foreign_key: 'order_id'
-      has_many :products, through: :sales_order_line_items, class_name: "StoreFrontModule::Product"
-
       def self.total_income
         sum(&:income)
       end
+
       def self.cash_sales
         select{ |order| !order.credit_sales? }
       end
@@ -19,23 +18,19 @@ module StoreFrontModule
       def customer_name
         commercial_document_name
       end
+
       def customer
         commercial_document
       end
+
       def income
         total_cost - cost_of_goods_sold
       end
+
       def cost_of_goods_sold
-        sales_order_line_items.map{|a| a.cost_of_goods_sold }.compact.sum
+        sales_order_line_items.cost_of_goods_sold
       end
 
-      def line_items_quantity(product)
-        sales_order_line_items.where(product: product).sum(&:quantity)
-      end
-
-      def line_items_total_cost(product)
-        sales_order_line_items.where(product: product).sum(&:total_cost)
-      end
       def credit_sales?
         CoopConfigurationsModule::StoreFrontConfig.default_accounts_receivable_account.debit_amounts.where(commercial_document: self).present?
       end
