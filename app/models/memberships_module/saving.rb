@@ -4,10 +4,12 @@ module MembershipsModule
     pg_search_scope :text_search, :against => [:account_number, :account_owner_name]
     multisearchable against: [:account_number, :account_owner_name]
 
-    belongs_to :depositor, polymorphic: true
-    belongs_to :saving_product, class_name: "CoopServicesModule::SavingProduct"
-    belongs_to :office, class_name: "CoopConfigurationsModule::Office"
-    has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
+    belongs_to :depositor,        class_name: "Membership",
+                                  foreign_key: 'membership_id'
+    belongs_to :saving_product,   class_name: "CoopServicesModule::SavingProduct"
+    belongs_to :office,           class_name: "CoopConfigurationsModule::Office"
+    has_many :entries,            class_name: "AccountingModule::Entry",
+                                  as: :commercial_document
 
     delegate :name, :current_occupation, to: :depositor, prefix: true
     delegate :name,
@@ -50,8 +52,8 @@ module MembershipsModule
       end
     end
 
-    def self.top_savers
-      all.to_a.sort_by(&:balance).first(10)
+    def self.top_savers(limiting_num=10)
+      all.to_a.sort_by(&:balance).first(limiting_num)
     end
 
     def name
@@ -73,7 +75,6 @@ module MembershipsModule
     end
     def interests_earned
       saving_product_interest_expense_account.credits_balance(commercial_document_id: self.id)
-
     end
     def can_withdraw?
       !closed? && balance > 0.0

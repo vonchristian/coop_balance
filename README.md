@@ -1,3 +1,6 @@
+Decrement sales return if barcode is present?
+
+
 REFACTOR
 try facade pattern for line item transactions
 

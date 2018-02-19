@@ -14,13 +14,15 @@ class Member < ApplicationRecord
   has_one :tin, as: :tinable
   has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document
   has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", as: :commercial_document #for temporary cration of debit adn creditrs
-  has_one :membership, as: :memberable
+  has_many :memberships, as: :memberable
+  has_many :savings, through: :memberships
+  has_many :
   has_many :member_occupations, class_name: "MembershipsModule::MemberOccupation", dependent: :destroy
   has_many :occupations, through: :member_occupations
   has_many :loans, class_name: "LoansModule::Loan", as: :borrower
   has_many :co_makered_loans, class_name: "LoansModule::LoanCoMaker", as: :co_maker
   has_many :addresses, as: :addressable
-  has_many :savings, class_name: "MembershipsModule::Saving", as: :depositor
+  # has_many :savings, class_name: "MembershipsModule::Saving", as: :depositor
   has_many :share_capitals, class_name: "MembershipsModule::ShareCapital", as: :subscriber
   has_many :time_deposits, class_name: "MembershipsModule::TimeDeposit", as: :depositor
   has_many :program_subscriptions, class_name: "MembershipsModule::ProgramSubscription", as: :subscriber
@@ -53,8 +55,8 @@ class Member < ApplicationRecord
   before_save :update_birth_date_fields
   #move to a module to be included to users
   def latest_purchase_date
-      if orders.present?
-        orders.order(created_at: :asc).last.date
+      if sales_orders.present?
+        sales_orders.order(created_at: :asc).last.date
       else
         "No Purchases yet"
       end

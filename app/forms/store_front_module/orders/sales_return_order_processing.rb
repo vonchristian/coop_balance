@@ -12,6 +12,7 @@ module StoreFrontModule
       end
 
       private
+
       def create_sales_return_order
         order = find_customer.sales_return_orders.create(date: date, employee_id: employee_id)
         find_cart.sales_return_order_line_items.each do |line_item|
