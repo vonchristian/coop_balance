@@ -19,7 +19,7 @@ module StoreFrontModule
       def update_product_available_quantity
         sales_return = find_cart.sales_return_order_line_items.create!(quantity: quantity,
                                                    unit_cost: selling_cost,
-                                                   total_cost: selling_cost * quantity.to_f,
+                                                   total_cost: set_total_cost,
                                                    unit_of_measurement: find_unit_of_measurement,
                                                    product_id: product_id
                                                   )
@@ -38,6 +38,9 @@ module StoreFrontModule
 
       def selling_cost
         find_unit_of_measurement.price
+      end
+      def set_total_cost
+        selling_cost * quantity.to_f
       end
 
       def find_customer

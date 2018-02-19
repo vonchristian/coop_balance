@@ -3,7 +3,7 @@ module StoreFrontModule
     class SalesReturnLineItemsController < ApplicationController
       def new
         if params[:search].present?
-          @products = StoreFrontModule::Product.text_search(params[:search]).all
+          @products = StoreFrontModule::Product.text_search_with_barcode(params[:search]).all
           @line_items = StoreFrontModule::LineItems::SalesOrderLineItem.text_search(params[:search])
         end
         @cart = current_cart

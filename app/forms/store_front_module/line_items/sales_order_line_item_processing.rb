@@ -2,7 +2,7 @@ module StoreFrontModule
   module LineItems
     class SalesOrderLineItemProcessing
      include ActiveModel::Model
-      attr_accessor :unit_of_measurement_id, :quantity, :cart_id, :product_id, :unit_cost, :total_cost, :cart_id, :barcode, :referenced_line_item_id, :barcode
+      attr_accessor :unit_of_measurement_id, :quantity, :cart_id, :product_id, :unit_cost, :total_cost, :cart_id, :barcode, :purchase_order_line_item_id, :barcode
       validates :quantity, numericality: { greater_than: 0.1 }
       validate :quantity_is_less_than_or_equal_to_available_quantity?
       def process!
@@ -15,7 +15,7 @@ module StoreFrontModule
       def process_sales_order_line_item
         if product_id.present? && barcode.blank?
           decrease_product_available_quantity
-        elsif referenced_line_item_id.present? && barcode.present?
+        elsif purchase_order_line_item_id.present? && barcode.present?
             decrease_purchase_line_item_quantity
         end
       end
@@ -44,14 +44,21 @@ module StoreFrontModule
       end
 
       def decrease_purchase_line_item_quantity
-        find_cart.sales_order_line_items.create!(
+        sales = find_cart.sales_order_line_items.create!(
           quantity: quantity,
           unit_cost: selling_cost,
-          total_cost: converted_quantity.to_f * selling_cost,
-          product_id: find_purchase_order_line_item.product_id,
-          unit_of_measurement: find_unit_of_measurement,
-          purchase_order_line_item: find_purchase_order_line_item
+          total_cost: set_total_cost,
+          product_id: product_id,
+          unit_of_measurement: find_unit_of_measurement
           )
+        purchase = find_purchase_order_line_item
+        sales = sales.referenced_purchase_order_line_items.create!(
+            quantity:                 converted_quantity,
+            unit_cost:                purchase.purchase_cost,
+            total_cost:               total_cost_for(purchase, quantity),
+            unit_of_measurement:      find_product.base_measurement,
+            product_id:               product_id,
+            purchase_order_line_item: purchase)
       end
 
       def quantity_for(purchase, requested_quantity)
@@ -90,13 +97,13 @@ module StoreFrontModule
       end
 
       def find_purchase_order_line_item
-        StoreFrontModule::LineItems::PurchaseOrderLineItem.find_by_id(referenced_line_item_id)
+        StoreFrontModule::LineItems::PurchaseOrderLineItem.find_by_id(purchase_order_line_item_id)
       end
 
       def available_quantity
         if product_id.present? && barcode.blank?
           find_product.available_quantity
-        elsif referenced_line_item_id.present? && barcode.present?
+        elsif purchase_order_line_item_id.present? && barcode.present?
           find_purchase_order_line_item.available_quantity
         end
       end

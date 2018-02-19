@@ -16,7 +16,6 @@ class Member < ApplicationRecord
   has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", as: :commercial_document #for temporary cration of debit adn creditrs
   has_many :memberships, as: :memberable
   has_many :savings, through: :memberships
-  has_many :
   has_many :member_occupations, class_name: "MembershipsModule::MemberOccupation", dependent: :destroy
   has_many :occupations, through: :member_occupations
   has_many :loans, class_name: "LoansModule::Loan", as: :borrower
@@ -33,7 +32,7 @@ class Member < ApplicationRecord
   has_many :real_properties, as: :owner
   has_many :organization_memberships, class_name: "Organizations::OrganizationMember", as: :organization_membership
   has_many :organizations, through: :organization_memberships
-  accepts_nested_attributes_for :tin, :addresses, :membership
+  accepts_nested_attributes_for :tin, :addresses
   delegate :number, to: :tin, prefix: true, allow_nil: true
   delegate :membership_type, to: :membership, allow_nil: true
   delegate :regular_member?, to: :membership

@@ -35,7 +35,7 @@
             <% if @products.present? %>
               <%= render 'store_front_module/line_items/sales_return_line_items/searched_products' %>
             <% elsif @line_items.present? %>
-              <%= render 'store_front_module/sales_returns/searched_line_items' %>
+              <%= render 'store_front_module/line_items/sales_return_line_items/searched_line_items' %>
             <% end %>
           </tbody>
         </table>

@@ -3,7 +3,7 @@ module StoreFrontModule
     class PurchaseReturnOrderLineItemProcessingsController < ApplicationController
       def new
         if params[:search].present?
-          @products = StoreFrontModule::Product.text_search(params[:search]).all
+          @products = StoreFrontModule::Product.text_search_with_barcode(params[:search]).all
         end
         @cart = current_cart
         @purchase_return_order_line_item = StoreFrontModule::LineItems::PurchaseReturnOrderLineItemProcessing.new
@@ -25,7 +25,7 @@ module StoreFrontModule
         @cart = current_cart
         @line_item = StoreFrontModule::LineItems::PurchaseReturnOrderLineItem.find(params[:id])
         @line_item.destroy
-        redirect_to new_store_front_module_purchase_return_order_line_item_processings_url
+        redirect_to new_store_front_module_purchase_return_order_line_item_processing_url, alert: "Removed successfully"
       end
 
       private

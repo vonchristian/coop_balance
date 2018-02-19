@@ -2,16 +2,18 @@ module StoreFrontModule
   module Reports
     module SalesClerk
       class SalesReportPdf < Prawn::Document
-        def initialize(employee,sales_orders, from_date, to_date, view_context)
+        def initialize(employee,sales_orders, sales_return_orders, from_date, to_date, view_context)
           super(margin: 30, page_size: "A4", page_layout: :portrait)
           @employee     = employee
           @sales_orders = sales_orders
+          @sales_return_orders = sales_return_orders
           @from_date    = from_date
           @to_date      = to_date
           @view_context = view_context
           heading
           summary
           order_details
+          sales_return_order_details
         end
 
         private
@@ -60,7 +62,7 @@ module StoreFrontModule
               cells.borders = []
               column(1).font_style = :bold
             end
-            table([["INCOME", "#{@sales_orders.total_income}"]], header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [100, 100]) do
+            table([["INCOME", "#{price(@sales_orders.total_income)}"]], header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [100, 100]) do
               cells.borders = []
               column(1).font_style = :bold
             end
@@ -100,12 +102,32 @@ module StoreFrontModule
           end
         end
         def order_details
+          text "SALES", style: :bold, size: 12
           table(orders_data, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [130, 200, 105, 100]) do
+            row(0).font_style = :bold
+            column(2).align = :right
+            column(3).align = :right
+
           end
         end
         def orders_data
           [["DATE", "CUSTOMER", "TOTAL COST", "INCOME"]] +
-          @orders_data ||= @sales_orders.map{|order| [order.date.strftime("%B %e, %Y"), order.customer_name, order.total_cost, order.income]}
+          @orders_data ||= @sales_orders.map{|order| [order.date.strftime("%B %e, %Y"), order.customer_name, price(order.total_cost), price(order.income)]}
+        end
+
+        def sales_return_order_details
+          move_down 10
+          text "SALES RETURNS", style: :bold, size: 12
+          table(sales_return_orders_data, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [130, 200, 105, 100]) do
+            row(0).font_style = :bold
+            column(2).align = :right
+            column(3).align = :right
+
+          end
+        end
+        def sales_return_orders_data
+          [["DATE", "CUSTOMER", "TOTAL COST", "REMARKS"]] +
+          @sales_return_orders_data ||= @sales_return_orders.map{|order| [order.date.strftime("%B %e, %Y"), order.customer_name, price(order.total_cost), order.note_content]}
         end
       end
     end

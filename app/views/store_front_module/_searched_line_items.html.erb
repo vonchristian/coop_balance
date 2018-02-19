@@ -26,7 +26,7 @@
                       <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
                       <%= f.input :product_id, input_html: { value: line_item.product_id }, as: :hidden %>
                       <%= f.input :barcode, input_html: { value: params[:search] }, as: :hidden %>
-                      <%= f.input :referenced_line_item_id, input_html: { value: line_item.id }, as: :hidden %>
+                      <%= f.input :purchase_order_line_item_id, input_html: { value: line_item.id }, as: :hidden %>
                     <td>
                       <% if !line_item.out_of_stock? %>
                         <%= f.submit "Add", class: "btn btn-primary btn-sm" %>
@@ -35,6 +35,5 @@
                       <% end %>
                     </td>
                     <% end %>
-
                 </tr>
               <% end %>

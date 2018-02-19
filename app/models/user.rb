@@ -31,7 +31,11 @@ class User < ApplicationRecord
   belongs_to :office, class_name: "CoopConfigurationsModule::Office"
   belongs_to :salary_grade, class_name: "HrModule::SalaryGrade"
   has_one :membership, as: :memberable
-  has_many :sold_orders, class_name: "StoreFrontModule::Orders::SalesOrder", foreign_key: 'employee_id'
+  has_many :sold_orders,            class_name: "StoreFrontModule::Orders::SalesOrder",
+                                    foreign_key: 'employee_id'
+  has_many :returned_sales_orders,    class_name: "StoreFrontModule::Orders::SalesReturnOrder",
+                                    foreign_key: 'employee_id'
+
   has_many :loans, class_name: "LoansModule::Loan", as: :borrower
   has_many :co_makered_loans, class_name: "LoansModule::LoanCoMaker", as: :co_maker
   has_many :savings, class_name: "MembershipsModule::Saving", as: :depositor
