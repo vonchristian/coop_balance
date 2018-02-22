@@ -961,8 +961,8 @@ ActiveRecord::Schema.define(version: 2018_02_17_013806) do
     t.string "account_owner_name"
     t.string "subscriber_type"
     t.uuid "subscriber_id"
-    t.datetime "created_at", default: "2018-02-15 13:35:41", null: false
-    t.datetime "updated_at", default: "2018-02-15 13:35:41", null: false
+    t.datetime "created_at", default: "2018-02-22 21:11:17", null: false
+    t.datetime "updated_at", default: "2018-02-22 21:11:17", null: false
     t.integer "status"
     t.uuid "office_id"
     t.index ["account_number"], name: "index_share_capitals_on_account_number", unique: true
