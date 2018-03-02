@@ -79,12 +79,11 @@ group :test do
   gem 'shoulda-matchers'
   gem 'database_rewinder'
   gem 'launchy'
-  # gem 'capybara-webkit'pp
 end
 
-# gem 'rack-mini-profiler'
-# gem 'memory_profiler'
+gem 'rack-mini-profiler'
+gem 'memory_profiler'
 gem 'whenever', :require => false
 
 gem "simple_calendar"
-# gem 'traceroute'
+gem 'traceroute'
