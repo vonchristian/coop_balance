@@ -50,14 +50,10 @@
           </div>
         </div>
         <hr>
-        <span class="condensed-text">FILTERS: &nbsp; </span>
-        <% AccountingModule::Entry.entry_types.keys.to_a.each do |entry_type| %>
-          <span class="btn btn-default btn-sm"> <span class="text-muted"> <%=link_to entry_type.titleize, accounting_module_entries_path(entry_type: entry_type), class: "text-muted" %> </span> </span> &nbsp;
-        <% end %>
-        <hr />
+
         Per Branch
-        <% CoopConfigurationsModule::BranchOffice.all.each do |branch_office| %>
-          <%= link_to branch_office.branch_name, accounting_module_entries_path(branch_office_id: branch_office.id) %>
+        <% CoopConfigurationsModule::Office.all.each do |office| %>
+          <%= link_to office.name, accounting_module_entries_path(branch_office_id: office.id) %>
         <% end %>
       </div>
     </div>

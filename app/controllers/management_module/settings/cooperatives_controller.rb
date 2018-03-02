@@ -17,6 +17,7 @@ module ManagementModule
       end
       def show
         @cooperative = Cooperative.find(params[:id])
+        @offices = @cooperative.offices.all.paginate(page: params[:page], per_page: 15)
       end
 
       private

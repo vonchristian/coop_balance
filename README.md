@@ -1,3 +1,6 @@
+filter to current office
+
+
 Decrement sales return if barcode is present?
 
 

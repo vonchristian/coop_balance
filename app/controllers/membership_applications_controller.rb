@@ -1,13 +1,12 @@
 class MembershipApplicationsController < ApplicationController
   def new
-    @membership = MembershipApplicationForm.new
+    @membership = MembershipApplication.new
   end
   def create
-    @membership = MembershipApplicationForm.new(membership_params)
+    @membership = MembershipApplication.new(membership_params)
     if @membership.valid?
       @membership.save
       redirect_to new_membership_application_contribution_url(@membership.find_member), notice: "Membership application saved successfully"
-       CoopServicesModule::Program.subscribe(@membership.find_member)
     else
       render :new
     end
@@ -18,7 +17,7 @@ class MembershipApplicationsController < ApplicationController
 
   private
   def membership_params
-    params.require(:membership_application_form).permit(:first_name, :middle_name, :last_name,
+    params.require(:membership_application).permit(:first_name, :middle_name, :last_name,
       :date_of_birth,
       :account_number,
       :pmes_date,

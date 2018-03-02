@@ -20,7 +20,7 @@
           </div>
           <div class="col-md-4">
             <%= link_to new_accounting_module_account_path do %>
-              <span class="btn btn-primary btn-flat pull-right"><i class="fa fa-plus-circle"></i> New Account</span> 
+              <span class="btn btn-primary btn-flat pull-right"><i class="fa fa-plus-circle"></i> New Account</span>
             <% end %>
           </div>
         </div>
@@ -42,15 +42,15 @@
             <tbody>
               <% @accounts.each do |account| %>
                 <% cache account do %>
-                  <% if account.sub_accounts.present? %>
+                  <% if account.subsidiary_accounts.present? %>
                      <tr data-link="<%=accounting_module_account_path(account)%>" class="myClass">
                       <td> <%= account.code %><br>
-                        <% account.sub_accounts.each do |sub_account| %>
+                        <% account.subsidiary_accounts.each do |sub_account| %>
                         &nbsp; &nbsp;  <%= sub_account.code %><br>
                         <% end %>
                       </td>
                       <td> <%= account.name %><br>
-                        <% account.sub_accounts.each do |sub_account| %>
+                        <% account.subsidiary_accounts.each do |sub_account| %>
                         &nbsp; &nbsp;  <%= sub_account.name %><br>
                         <% end %>
                       </td>
@@ -59,19 +59,19 @@
                       </td>
                       <td> <%= account.type.gsub("AccountingModule::", "")%></td>
                       <td> <%= number_to_currency account.debits_balance %><br>
-                        <% account.sub_accounts.each do |sub_account| %>
+                        <% account.subsidiary_accounts.each do |sub_account| %>
                         &nbsp; &nbsp;  <%= number_to_currency sub_account.debits_balance %><br>
                         <% end %>
                       </td>
                       <td> <%= number_to_currency account.credits_balance %><br>
-                        <% account.sub_accounts.each do |sub_account| %>
+                        <% account.subsidiary_accounts.each do |sub_account| %>
                         &nbsp; &nbsp;  <%= number_to_currency sub_account.credits_balance %><br>
-                        <% end %>            
+                        <% end %>
                       </td>
                       <td> <%= number_to_currency account.balance %><br>
-                        <% account.sub_accounts.each do |sub_account| %>
+                        <% account.subsidiary_accounts.each do |sub_account| %>
                         &nbsp; &nbsp;  <%= number_to_currency sub_account.credits_balance %><br>
-                        <% end %>                  
+                        <% end %>
                       </td>
                     </tr>
                   <% elsif account.main_account.blank? %>
