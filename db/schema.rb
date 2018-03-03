@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_02_17_013806) do
+ActiveRecord::Schema.define(version: 2018_03_03_055952) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -618,6 +618,7 @@ ActiveRecord::Schema.define(version: 2018_02_17_013806) do
     t.integer "status"
     t.string "beneficiary_type"
     t.uuid "beneficiary_id"
+    t.string "search_term"
     t.index ["account_number"], name: "index_memberships_on_account_number", unique: true
     t.index ["beneficiary_type", "beneficiary_id"], name: "index_memberships_on_beneficiary_type_and_beneficiary_id"
     t.index ["cooperative_id"], name: "index_memberships_on_cooperative_id"
@@ -904,12 +905,9 @@ ActiveRecord::Schema.define(version: 2018_02_17_013806) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "saving_product_id"
-    t.string "depositor_type"
-    t.uuid "depositor_id"
     t.uuid "office_id"
     t.uuid "membership_id"
     t.index ["account_number"], name: "index_savings_on_account_number", unique: true
-    t.index ["depositor_type", "depositor_id"], name: "index_savings_on_depositor_type_and_depositor_id"
     t.index ["membership_id"], name: "index_savings_on_membership_id"
     t.index ["office_id"], name: "index_savings_on_office_id"
     t.index ["saving_product_id"], name: "index_savings_on_saving_product_id"

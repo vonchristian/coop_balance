@@ -9,7 +9,7 @@ module MembershipApplications
       @entry = MembershipApplications::PaymentForm.new(payment_params)
       if @entry.valid?
         @entry.save
-        redirect_to member_url(@member), notice: "Payment saved successfully"
+        redirect_to membership_url(@member), notice: "Payment saved successfully"
       else
         render :new
       end

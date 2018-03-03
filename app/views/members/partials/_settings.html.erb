@@ -1,0 +1,7 @@
+<div class="tab-pane <%= 'active' if current_page? member_settings_path(@member) %>">
+  <h4>Settings</h4>
+  <p class="text-muted"><b>Profile</b></p>
+  <span class="text-muted">Update profile details of this member. </span><br>
+  <%= link_to "Update Profile", edit_member_path(@member), class: "btn btn-default btn-sm" %>
+  <hr>
+</div>

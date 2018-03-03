@@ -1,11 +1,15 @@
 
   <div class="row">
     <div class="col-md-3">
-      <%= render 'members/partials/sidebar', member: @member %>
+      <%#= render 'members/partials/sidebar', member: @member %>
     </div>
-    <div class="col-md-9">
-      <div class="box box-solid">
+    <div class="col-md-12">
+      <div class="box box-default">
         <div class="box-header">
+          <center>
+            <%=image_tag(@member.avatar.url(:medium), class: "img-circle", height: 60, width: 60) %>
+            <h4><%= @member.name %></h4>
+          </center>
         <ul class="nav nav-tabs">
           <li class="<%= 'active' if current_page?(member_info_index_path(@member))%>"><%= link_to 'Info', member_info_index_path(@member) %></li>
           <li class="<%= 'active' if current_page?(member_loans_path(@member))%>"><%= link_to 'Loans & Credit', member_loans_path(@member) %></li>
@@ -38,6 +42,9 @@
           <% end %>
           <% if current_page?(member_purchases_path(@member)) %>
             <%= render 'members/partials/purchases', member: @member %>
+          <% end %>
+          <% if current_page? member_settings_path(@member) %>
+            <%= render 'members/partials/settings' %>
           <% end %>
       </div>
     </div>

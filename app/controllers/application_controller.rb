@@ -5,14 +5,16 @@ class ApplicationController < ActionController::Base
   rescue_from Pundit::NotAuthorizedError, with: :permission_denied
 
   private
-
-
   def current_cart
       StoreFrontModule::Cart.find(session[:cart_id])
       rescue ActiveRecord::RecordNotFound
       cart = StoreFrontModule::Cart.create(user_id: current_user.id)
       session[:cart_id] = cart.id
       cart
+  end
+
+  def current_cooperative
+    current_user.cooperative
   end
 
 

@@ -34,7 +34,6 @@ class Member < ApplicationRecord
   has_many :organizations, through: :organization_memberships
   accepts_nested_attributes_for :tin, :addresses
   delegate :number, to: :tin, prefix: true, allow_nil: true
-  delegate :membership_type, to: :membership, allow_nil: true
   delegate :regular_member?, to: :membership
   delegate :name, to: :office, prefix: true, allow_nil: true
 
@@ -53,6 +52,13 @@ class Member < ApplicationRecord
   # after_commit :subscribe_to_programs
   before_save :update_birth_date_fields
   #move to a module to be included to users
+  def name
+    full_name
+  end
+  def membership_type_for(cooperative)
+    memberships.where(cooperative: cooperative).membership_type
+  end
+
   def latest_purchase_date
       if sales_orders.present?
         sales_orders.order(created_at: :asc).last.date

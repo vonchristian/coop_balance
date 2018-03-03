@@ -41,7 +41,6 @@ class MembershipApplication
   :sex,
   :date_of_birth,
   :contact_number,
-  :address,
   :civil_status, presence: true
   def save
     ActiveRecord::Base.transaction do

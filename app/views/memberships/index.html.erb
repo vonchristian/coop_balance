@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-md-6">
+    <div class="box box-default">
+      <div class="box-header">
+        <%=form_tag memberships_path, method: :get do %>
+                <div class="input-group">
+                  <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search First Name, Last Name ", id: 'account-search-form' %>
+                  <span class="input-group-btn">
+                    <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                      <i class="fa fa-search"></i>
+                    <% end %>
+                  </span>
+                </div>
+              <% end %>
+        <%= link_to new_membership_application_path do %>
+                <span class="btn btn-primary pull-right"><i class="fa fa-user-plus"></i> New Membership Application </span>
+              <% end %>
+      </div>
+      <div class="box-body">
+        <% @memberships.each do |membership| %>
+        <% cache do %>
+          <%=link_to membership_path(membership) do %>
+            <div class="row">
+              <div class="col-md-2">
+                <%= image_tag(membership.avatar.url(:medium), class: "img-circle", height: 60, width: 60) %>
+              </div>
+              <div class="col-md-9">
+                <h4><%=membership.name %></h4>
+              </div>
+            </div>
+            <hr>
+          <% end %>
+        <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -41,7 +41,6 @@
 
 
 
-<%= link_to 'New Saving Product', new_management_module_saving_product_path %>
 <%= link_to 'Set Grace Period', new_management_module_grace_period_path %>
 <%= link_to 'New Employee', new_user_registration_path %>
 <%#= link_to "New Committee", new_management_module_committee_path %>
@@ -77,4 +76,29 @@
   <%= program.account.name %>
 <% end %>
 <hr>
+</div>
+</div>
+</div>
 
+
+<div class="col-md-4">
+  <div class="box box-danger">
+    <div class="box-header">
+      <div class="row">
+        <div class="col-md-6">
+          <h3 class="box-title"> Savings Products</h3>
+        </div>
+        <div class="col-md-6">
+          <%= link_to new_management_module_saving_product_path do  %>
+          <span class="btn btn-danger btn-xs pull-right" data-toggle="tooltip" title="New Savings Product"><i class="fa fa-plus"></i> New
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="box-body">
+    <% CoopServicesModule::SavingProduct.all.each do |saving_product| %>
+      <%= saving_product.name %>
+    </div>
+    <% end %>
+  </div>
+</div>

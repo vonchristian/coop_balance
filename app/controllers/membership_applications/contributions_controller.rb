@@ -15,4 +15,5 @@ module MembershipApplications
       params.require(:vouchers_voucher_amount).permit(:amount, :amount_type, :description, :account_id, :commercial_document_id, :commercial_document_type)
     end
   end
+
 end

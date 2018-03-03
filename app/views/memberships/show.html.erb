@@ -1,0 +1,21 @@
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="box box-default">
+      <div class="box-header">
+        <center>
+          <%= image_tag(@membership.avatar.url(:medium), height: 60, width: 60, class: "img-circle") %>
+          <h4><%= @membership.memberable.full_name %></h4>
+        </center>
+      </div>
+    <div class="box-body">
+      <h4>Share Capitals</h4>
+      <hr>
+      <h4>Savings</h4>
+      <hr>
+      <h4>Loans</h4>
+      <hr>
+
+      <% if @membership.memberable.is_a?(Member) %>
+      <%= link_to "View Profile", member_path(@membership.memberable), class: "btn btn-primary" %>
+      <% end %>

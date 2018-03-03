@@ -1,4 +1,6 @@
 class Membership < ApplicationRecord
+  include PgSearch
+  pg_search_scope :text_search, against: [:search_term]
   belongs_to :memberable, polymorphic: true
   belongs_to :cooperative
   enum membership_type: [:regular_member, :associate_member, :organization, :special_depositor]
@@ -6,6 +8,7 @@ class Membership < ApplicationRecord
   validates :memberable_id, :memberable_type, presence: true
   validates :account_number, presence: true, uniqueness: true
   before_validation :set_account_number
+  delegate :avatar, to: :memberable
   delegate :name, to: :memberable
   delegate :savings, :share_capitals, :account_receivable_store_balance, to: :memberable
   belongs_to :beneficiary, polymorphic: true
@@ -13,18 +16,13 @@ class Membership < ApplicationRecord
   validate :beneficiary_is_not_the_same_member?
   validates :cooperative_id, uniqueness: { scope: :memberable_id }
 
-  has_many :savings,                class_name: "MembershipsModule::Saving",
-                                    as: :depositor
-  has_many :loans,                  class_name: "LoansModule::Loan",
-                                    as: :borrower
-  has_many :share_capitals,         class_name: "MembershipsModule::ShareCapital",
-                                    as: :subscriber
-  has_many :time_deposits,          class_name: "MembershipsModule::TimeDeposit",
-                                    as: :depositor
-  has_many :program_subscriptions,  class_name: "MembershipsModule::ProgramSubscription",
-                                    as: :subscriber
+  has_many :savings,                class_name: "MembershipsModule::Saving"
+  has_many :loans,                  class_name: "LoansModule::Loan"
+  has_many :share_capitals,         class_name: "MembershipsModule::ShareCapital"
+  has_many :time_deposits,          class_name: "MembershipsModule::TimeDeposit"
+  has_many :program_subscriptions,  class_name: "MembershipsModule::ProgramSubscription"
   has_many :programs,               through: :program_subscriptions
-
+  before_save :set_search_term
   def self.generate_account_number
     if self.last.present?
       order(created_at: :asc).last.account_number.succ
@@ -38,5 +36,8 @@ class Membership < ApplicationRecord
   end
   def beneficiary_is_not_the_same_member?
     errors[:base] << "The beneficiary is the same member" if beneficiary == memberable
+  end
+  def set_search_term
+    self.search_term = self.name
   end
 end

@@ -7,21 +7,6 @@ class MembersController < ApplicationController
     end
     @membership_applications = Membership.pending
   end
-  def new
-    @member = Member.new
-    @member.build_tin
-    @member.build_membership
-    @member.addresses.build
-  end
-  def create
-    @member = Member.create(member_params)
-    if @member.valid?
-      @member.save
-      redirect_to @member, notice: "Member saved successfully."
-    else
-      render :new
-    end
-  end
 
   def show
     @member = Member.friendly.find(params[:id])
@@ -34,6 +19,7 @@ class MembersController < ApplicationController
     @member.update(member_params)
     if @member.save
       redirect_to @member, notice: "Member updated successfully."
+      @member.memberships.each(&:save) #update search terms on memberships table
     else
       render :edit
     end

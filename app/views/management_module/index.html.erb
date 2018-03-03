@@ -16,7 +16,7 @@
               </div>
               <div class="col-md-3">
                 <% if employee.cash_on_hand_account.present? %>
-                  <span class="pull-right"><%= number_to_currency employee.cash_on_hand_account.balance(recorder_id: employee.id) + employee.fund_transfer_total %></span>
+                  <span class="pull-right"><%= number_to_currency employee.cash_on_hand_account_balance %></span>
                 <% end %>
               </div>
             </div>

@@ -377,4 +377,5 @@ Rails.application.routes.draw do
     resources :sales_order_processings, only: [:create], module: :orders
     resources :order_processings, only: [:new, :create]
   end
+  resources :memberships, only: [:index, :show]
 end

@@ -36,14 +36,7 @@
 
       <hr>
 
-      <strong><i class="fa fa-book margin-r-5"></i> Membership Type</strong>
 
-      <p class="text-muted"><%= member.membership_type.try(:titleize) %></p>
-      <% if member.membership.present? %>
-        <%= link_to 'Update Membership', edit_member_membership_path(id: member.id, member_id: member.id) %>
-      <% else %>
-        <%= link_to 'Update Membership', new_member_membership_path(id: member.id, member_id: member.id) %>
-      <% end %>
 
       <hr>
       <strong><i class="fa fa-map-marker margin-r-5"></i> Date of Birth</strong>
