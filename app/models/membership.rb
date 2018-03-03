@@ -14,15 +14,20 @@ class Membership < ApplicationRecord
   belongs_to :beneficiary, polymorphic: true
 
   validate :beneficiary_is_not_the_same_member?
-  validates :cooperative_id, uniqueness: { scope: :memberable_id }
+  validates :cooperative_id, presence: true, uniqueness: { scope: :memberable_id }
 
-  has_many :savings,                class_name: "MembershipsModule::Saving"
+  has_many :savings,                class_name: "MembershipsModule::Saving", foreign_key: 'membership_id'
   has_many :loans,                  class_name: "LoansModule::Loan"
   has_many :share_capitals,         class_name: "MembershipsModule::ShareCapital"
   has_many :time_deposits,          class_name: "MembershipsModule::TimeDeposit"
   has_many :program_subscriptions,  class_name: "MembershipsModule::ProgramSubscription"
   has_many :programs,               through: :program_subscriptions
   before_save :set_search_term
+  def self.membership_for(options={})
+    if options[:cooperative] && options[:memberable]
+      membership = where(cooperative: options[:cooperative]).where(memberable: options[:memberable]).last
+    end
+  end
   def self.generate_account_number
     if self.last.present?
       order(created_at: :asc).last.account_number.succ

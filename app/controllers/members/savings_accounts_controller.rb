@@ -1,13 +1,14 @@
 module Members
   class SavingsAccountsController < ApplicationController
-    def index 
+    def index
       @member = Member.friendly.find(params[:member_id])
       @savings = @member.savings
-    end 
+    end
 
     def new
       @member = Member.friendly.find(params[:member_id])
       @saving = SavingForm.new
+      @cooperative = current_user.cooperative
       authorize [:members, :savings_account]
     end
 
@@ -26,5 +27,5 @@ module Members
     def saving_params
       params.require(:saving_form).permit(:recorder_id, :account_number, :saving_product_id, :depositor_id, :depositor_type, :or_number, :date, :amount)
     end
-  end 
+  end
 end

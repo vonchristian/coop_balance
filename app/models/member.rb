@@ -52,6 +52,9 @@ class Member < ApplicationRecord
   # after_commit :subscribe_to_programs
   before_save :update_birth_date_fields
   #move to a module to be included to users
+  def membership_for(cooperative)
+    memberships.where(cooperative: cooperative).first
+  end
   def name
     full_name
   end

@@ -1,18 +1,18 @@
-module Employees 
+module Employees
   class SavingsAccountsController < ApplicationController
-    def index 
+    def index
       @employee = User.find(params[:employee_id])
     end
-    def new 
+    def new
       @employee = User.find(params[:employee_id])
-      @savings_account = Employees::SavingsAccountForm.new
+      @savings_account = SavingForm.new
       authorize [:employees, :savings_account]
-    end 
+    end
     def create
-      @employee = User.find(params[:employee_id])      
-      @saving = Employees::SavingsAccountForm.new(saving_params)
-      if @saving.valid?
-        @saving.save
+      @employee = User.find(params[:employee_id])
+      @savings_account = SavingForm.new(saving_params)
+      if @savings_account.valid?
+        @savings_account.save
         redirect_to employee_url(@employee), notice: "Savings Account opened successfully."
       else
         render :new
@@ -21,7 +21,7 @@ module Employees
 
     private
     def saving_params
-      params.require(:employees_savings_account_form).permit(:recorder_id, :account_number, :saving_product_id, :depositor_id, :depositor_type, :or_number, :date, :amount)
+      params.require(:saving_form).permit(:recorder_id, :account_number, :saving_product_id, :depositor_id, :or_number, :date, :amount)
     end
-  end 
-end 
+  end
+end

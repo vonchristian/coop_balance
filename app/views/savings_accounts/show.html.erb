@@ -1,4 +1,4 @@
-<%= @savings_account.last_transaction_date %>
+
 <div class="row">
   <div class="col-md-12">
     <div class="nav-tabs-custom">
@@ -8,7 +8,7 @@
            <center><%= image_tag(@savings_account.depositor.avatar.url(:large), height: 90, width: 90, class: 'img-circle') %></center>
 
             <h3><center><%= @savings_account.depositor_name %></center></h3>
-            <center><small><%= @savings_account.depositor_current_occupation %></small></center>
+            <center><small><%#= @savings_account.depositor_current_occupation %></small></center>
             <center><small><%= @savings_account.office_name %></small></center>
 
 

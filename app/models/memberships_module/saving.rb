@@ -5,7 +5,7 @@ module MembershipsModule
     multisearchable against: [:account_number, :account_owner_name]
 
     belongs_to :depositor,        class_name: "Membership",
-                                  foreign_key: 'membership_id'
+                                  foreign_key: 'membership_id', touch: true
 
     belongs_to :saving_product,   class_name: "CoopServicesModule::SavingProduct"
     belongs_to :office,           class_name: "CoopConfigurationsModule::Office"
@@ -19,12 +19,11 @@ module MembershipsModule
              :interest_rate,
              :interest_expense_account, to: :saving_product, prefix: true
     delegate :name, to: :office, prefix: true, allow_nil: true
+    delegate :name, to: :depositor, prefix: true
 
-    before_save :set_account_owner_name, :set_account_number
-
-    validates :saving_product_id, presence: true
+    validates :saving_product_id, presence: true, uniqueness: { scope: :membership_id }
     scope :has_minimum_balance, -> { SavingsQuery.new.has_minimum_balance  }
-
+    before_save :set_account_owner_name
     def closed?
       saving_product_closing_account.amounts.where(commercial_document: self).present?
     end
@@ -58,7 +57,7 @@ module MembershipsModule
     end
 
     def name
-      account_owner_name || account_owner.full_name
+      depositor_name
     end
     def post_interests_earned(date)
       InterestPosting.new.post_interests_earned(self, date)
@@ -88,12 +87,8 @@ module MembershipsModule
       end
     end
     private
-    #used for pg search
     def set_account_owner_name
-      self.account_owner_name = self.depositor.name
-    end
-    def set_account_number
-      self.account_number = self.id
+      self.account_owner_name = self.depositor_name
     end
   end
 end

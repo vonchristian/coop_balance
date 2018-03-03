@@ -2,19 +2,25 @@
   <div class="col-md-6">
     <div class="box box-default">
       <div class="box-header">
-        <%=form_tag memberships_path, method: :get do %>
-                <div class="input-group">
-                  <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search First Name, Last Name ", id: 'account-search-form' %>
-                  <span class="input-group-btn">
-                    <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
-                      <i class="fa fa-search"></i>
-                    <% end %>
-                  </span>
-                </div>
-              <% end %>
-        <%= link_to new_membership_application_path do %>
-                <span class="btn btn-primary pull-right"><i class="fa fa-user-plus"></i> New Membership Application </span>
-              <% end %>
+        <div class="row">
+          <div class="col-md-9">
+            <%=form_tag memberships_path, method: :get do %>
+              <div class="input-group">
+                <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search First Name, Last Name ", id: 'account-search-form' %>
+                <span class="input-group-btn">
+                  <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                    <i class="fa fa-search"></i>
+                  <% end %>
+                </span>
+              </div>
+            <% end %>
+          </div>
+          <div class="col-md-3">
+            <%= link_to new_membership_application_path do %>
+              <span class="btn btn-primary pull-right"><i class="fa fa-user-plus"></i> New</span>
+            <% end %>
+          </div>
+        </div>
       </div>
       <div class="box-body">
         <% @memberships.each do |membership| %>

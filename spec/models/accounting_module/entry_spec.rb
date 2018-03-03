@@ -5,7 +5,7 @@ module AccountingModule
   	describe 'associations' do
   		it { is_expected.to belong_to :commercial_document }
       it { is_expected.to belong_to :voucher }
-      it { is_expected.to belong_to :branch_office }
+      it { is_expected.to belong_to :origin }
       it { is_expected.to belong_to :section }
   	end
     describe 'delegations' do
@@ -55,11 +55,10 @@ module AccountingModule
     end
 
     context "without an entry date" do
-      let(:entry) { build(:entry_with_credit_and_debit, entry_date: nil) }
-
-      context "should assign a default date before being saved" do
-        before { entry.save! }
-        its(:entry_date) { is_expected.to == Time.zone.now }
+      it "should assign a default date before being saved" do
+        entry = create(:entry_with_credit_and_debit, entry_date: nil)
+        entry.save
+        expect(entry.entry_date).to eql == Time.zone.now
       end
     end
 

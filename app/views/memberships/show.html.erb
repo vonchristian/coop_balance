@@ -18,4 +18,7 @@
 
       <% if @membership.memberable.is_a?(Member) %>
       <%= link_to "View Profile", member_path(@membership.memberable), class: "btn btn-primary" %>
+      <% elsif @membership.memberable.is_a?(User) %>
+      <%= link_to "View Profile", employee_path(@membership.memberable), class: "btn btn-primary" %>
+
       <% end %>
