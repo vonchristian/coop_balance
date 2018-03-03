@@ -2,29 +2,29 @@ require 'csv'
 class Member < ApplicationRecord
   include PgSearch
   extend FriendlyId
-  friendly_id :fullname, use: :slugged
-  pg_search_scope :text_search, :against => [ :first_name, :middle_name, :last_name, :fullname]
-  multisearchable against: [:first_name, :last_name, :middle_name, :fullname]
+  friendly_id :full_name, use: :slugged
+  pg_search_scope :text_search, :against => [ :first_name, :middle_name, :last_name]
+  multisearchable against: [:first_name, :last_name, :middle_name]
   enum sex: [:male, :female, :other]
   enum civil_status: [:single, :married, :widower, :divorced]
 
-  before_validation :set_fullname
-  validates :fullname, uniqueness: { message: 'is already registered'}
   belongs_to :office, class_name: "CoopConfigurationsModule::Office"
   has_one :tin, as: :tinable
   has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document
   has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", as: :commercial_document #for temporary cration of debit adn creditrs
-  has_many :memberships, as: :memberable
-  has_many :savings, through: :memberships
+  has_many :memberships, as: :cooperator
+
+  has_many :share_capitals, class_name: "MembershipsModule::ShareCapital",
+                             through: :memberships
+
   has_many :member_occupations, class_name: "MembershipsModule::MemberOccupation", dependent: :destroy
   has_many :occupations, through: :member_occupations
   has_many :loans, class_name: "LoansModule::Loan", as: :borrower
   has_many :co_makered_loans, class_name: "LoansModule::LoanCoMaker", as: :co_maker
   has_many :addresses, as: :addressable
-  # has_many :savings, class_name: "MembershipsModule::Saving", as: :depositor
-  has_many :share_capitals, class_name: "MembershipsModule::ShareCapital", as: :subscriber
+
   has_many :time_deposits, class_name: "MembershipsModule::TimeDeposit", as: :depositor
-  has_many :program_subscriptions, class_name: "MembershipsModule::ProgramSubscription", as: :subscriber
+  has_many :program_subscriptions, class_name: "MembershipsModule::ProgramSubscription", through: :memberships
   has_many :programs, through: :program_subscriptions
   has_many :sales_orders, class_name: "StoreFrontModule::Orders::SalesOrder", as: :commercial_document
   has_many :sales_return_orders, class_name: "StoreFrontModule::Orders::SalesReturnOrder", as: :commercial_document
@@ -48,13 +48,12 @@ class Member < ApplicationRecord
   :url => "/system/:attachment/:id/:style/:filename"
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
 
-  after_commit :set_fullname, on: [:create, :update]
-  # after_commit :subscribe_to_programs
   before_save :update_birth_date_fields
   #move to a module to be included to users
   def membership_for(cooperative)
     memberships.where(cooperative: cooperative).first
   end
+
   def name
     full_name
   end

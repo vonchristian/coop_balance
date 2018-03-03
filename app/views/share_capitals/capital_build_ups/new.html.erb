@@ -8,7 +8,7 @@
           </div>
           <div class="col-md-8">
             <h3 class="box-title"><%= @share_capital.subscriber_name %></h3><br>
-          
+
           </div>
         </div>
       </div>
@@ -18,6 +18,8 @@
 <%= simple_form_for @capital_build_up, url: :share_capital_capital_build_ups do |f| %>
   <p> <%= @share_capital.share_capital_product_cost_per_share %></p>
   <%= f.input :share_capital_id, input_html: {value: @share_capital.id },as: :hidden %>
+  <%= f.input :membership_id, input_html: {value: @share_capital.membership_id },as: :hidden %>
+
   <%= f.input :share_count, label: "Number of Shares" %>
   <%= f.input :or_number %>
   <%= f.input :amount %>

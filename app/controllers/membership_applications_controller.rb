@@ -6,7 +6,7 @@ class MembershipApplicationsController < ApplicationController
     @membership = MembershipApplication.new(membership_params)
     if @membership.valid?
       @membership.save
-      redirect_to new_membership_application_contribution_url(@membership.find_member), notice: "Membership application saved successfully"
+      redirect_to new_membership_application_contribution_url(@membership.find_membership), notice: "Membership application saved successfully"
     else
       render :new
     end
@@ -50,6 +50,7 @@ class MembershipApplicationsController < ApplicationController
       :application_date,
       :share_capital_product_id,
       :membership_type,
-      :office_id )
+      :office_id,
+      :cooperative_id )
       end
 end

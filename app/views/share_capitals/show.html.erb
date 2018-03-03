@@ -1,63 +1,5 @@
 <div class="row">
-  <div class="col-md-3">
-
-
-  <!-- Profile Image -->
-  <div class="box box-solid">
-    <div class="box-body box-profile">
-    <%= image_tag(@share_capital.subscriber.avatar.url(:medium), class: "profile-user-img img-responsive img-circle") %>
-
-      <h3 class="profile-username text-center"><%= @share_capital.subscriber_name %></h3>
-
-          <center><span class="text-muted text-center"><%= @share_capital.subscriber.try(:current_occupation) %> &nbsp; </span> </center>
-        <hr>
-
-
-
-
-      <strong><i class="fa fa-phone margin-r-5"></i> Contact Number</strong>
-
-      <p class="text-muted"><%= @share_capital.subscriber.contact_number %>
-
-      </p>
-
-      <hr>
-
-      <strong><i class="fa fa-map-marker margin-r-5"></i> Address</strong>
-
-
-      <p class="text-muted"><%= @share_capital.subscriber.try(:current_address) %></p>
-      <hr>
-       <strong><i class="fa fa-book margin-r-5"></i> TIN Number</strong>
-
-      <p class="text-muted"><%= @share_capital.subscriber.tin_number %></p>
-
-      <hr>
-
-      <strong><i class="fa fa-book margin-r-5"></i> Membership Type</strong>
-
-      <p class="text-muted"><%= @share_capital.subscriber.membership_type.try(:titleize) %></p>
-      <hr>
-       <strong><i class="fa fa-book margin-r-5"></i> Office</strong>
-      <p class="text-muted"><%= @share_capital.office_name %></p>
-       <%= link_to "Update Branch Office", edit_share_capital_office_path(@share_capital) %>
-      <hr>
-
-      <strong><i class="fa fa-file-text margin-r-5"></i> Notes</strong>
-
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
-       <div class="row">
-
-    </div>
-    </div>
-
-    <!-- /.box-body -->
-  </div>
-  <!-- /.box -->
-
-
-  </div>
-  <div class="col-md-9">
+  <div class="col-md-12">
     <div class="nav-tabs-custom">
       <div class="box-header">
 
@@ -104,13 +46,13 @@
                   <tr>
                     <td><%= entry.entry_date.strftime("%B %e, %Y") %></td>
                     <td><%= entry.reference_number %></td>
-                    <td><%= number_to_currency entry.amounts.where(account: @share_capital.share_capital_product_paid_up_account).sum(:amount) %></td>
+                    <td><%= number_to_currency entry.amount %></td>
                     <td><%= entry.description %></td>
 
 
                     <td><% if entry.recorder %>
                       <%=image_tag(entry.recorder.avatar.url(:thumb), class: "img-circle", height: 35, width: 35) %> &nbsp;
-                      <%= entry.recorder_first_and_last_name %>
+                      <%= entry.recorder.try(:name) %>
                       <% end %>
                      </td>
                   </tr>

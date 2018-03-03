@@ -3,10 +3,12 @@ module Programs
     def new
       @member = Member.find(params[:subscriber_id])
       @program = MembershipsModule::ProgramSubscription.find(params[:program_id])
-      @payment = Programs::PaymentForm.new
+      @payment = ProgramSubscriptions::PaymentProcessing.new
     end
     def create
-      @payment = Programs::PaymentForm.new(payment_params)
+      @member = Member.find(params[:subscriber_id])
+      @program = MembershipsModule::ProgramSubscription.find(params[:program_id])
+      @payment = ProgramSubscriptions::PaymentProcessing.new(payment_params)
       if @payment.valid?
         @payment.save
         @member = Member.find_by(id: params[:subscriber_id])
@@ -18,7 +20,7 @@ module Programs
 
     private
     def payment_params
-      params.require(:programs_payment_form).permit(:amount, :date, :recorder_id, :or_number, :program_id, :subscriber_id)
+      params.require(:programs_payment_processing).permit(:amount, :date, :recorder_id, :or_number, :program_id, :subscriber_id)
     end
   end
 end

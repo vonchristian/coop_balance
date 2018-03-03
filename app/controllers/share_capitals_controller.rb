@@ -1,15 +1,16 @@
+require 'will_paginate/array'
 class ShareCapitalsController < ApplicationController
   def index
     if params[:search].present?
-      @share_capitals = MembershipsModule::ShareCapital.text_search(params[:search]).paginate(page: params[:page], per_page: 30)
+      @share_capitals = MembershipsModule::ShareCapital.text_search(params[:search]).paginate(page: params[:page], per_page: 25)
     else
-      @share_capitals = MembershipsModule::ShareCapital.all.paginate(page: params[:page], per_page: 30)
+      @share_capitals = MembershipsModule::ShareCapital.all.paginate(page: params[:page], per_page: 25)
     end
   end
   def show
     @employee = current_user
     @share_capital = MembershipsModule::ShareCapital.find(params[:id])
-    @entries = @share_capital.capital_build_ups.includes(:recorder).paginate(page: params[:page], per_page: 50)
+    @entries = @share_capital.capital_build_ups.paginate(page: params[:page], per_page: 25)
     respond_to do |format|
       format.html
       format.pdf do

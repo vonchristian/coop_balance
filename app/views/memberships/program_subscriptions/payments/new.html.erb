@@ -1,0 +1,10 @@
+<%= @program_subscription.program.contribution %>
+<%= simple_form_for @payment, url: :membership_program_subscription_payments do |f| %>
+  <%= f.input :program_subscription_id, input_html: { value: @program_subscription.id } %>
+  <%= f.input :recorder_id, input_html: { value: current_user.id } %>
+  <%= f.input :amount%>
+  <%= f.input :or_number %>
+  <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+  <%= f.input :membership_id, input_html: { value: @membership.id } %>
+  <%= f.submit "Save Payment" %>
+<% end %>

@@ -9,6 +9,7 @@ module AccountingModule
     validates :amount, numericality: true
 
     delegate :name, to: :account, prefix: true
+    delegate :entry_date, :recorder, :reference_number, :description,  to: :entry
     def debit?
       type == "AccountingModule::DebitAmount"
     end

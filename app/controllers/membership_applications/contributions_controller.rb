@@ -1,14 +1,14 @@
 module MembershipApplications
   class ContributionsController < ApplicationController
     def new
-      @member = Member.find(params[:membership_application_id])
+      @membership = Membership.find(params[:membership_application_id])
       @amount = Vouchers::VoucherAmount.new
     end
     def create
-      @member = Member.find(params[:membership_application_id])
+      @membership = Membership.find(params[:membership_application_id])
       @amount = Vouchers::VoucherAmount.create!(amount_params)
       @amount.save
-      redirect_to new_membership_application_contribution_url(@member), notice: "added successfully"
+      redirect_to new_membership_application_contribution_url(@membership), notice: "added successfully"
     end
     private
     def amount_params

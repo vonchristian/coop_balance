@@ -113,8 +113,7 @@ Rails.application.routes.draw do
     resources :share_capitals, only: [:index, :new, :create]
     resources :savings_accounts, only: [:index, :new, :create], module: :members
     resources :time_deposits, only: [:index, :new, :create], module: :members
-    resources :subscriptions, only: [:index, :create], module: :members
-    resources :subscription_payments, only: [:new, :create], module: :members #pay all subscriptions
+    resources :subscriptions, only: [:index], module: :members
     resources :purchases, only: [:index, :show], module: :members
   end
   resources :member_registrations, only: [:new, :create]
@@ -377,5 +376,10 @@ Rails.application.routes.draw do
     resources :sales_order_processings, only: [:create], module: :orders
     resources :order_processings, only: [:new, :create]
   end
-  resources :memberships, only: [:index, :show]
+  resources :memberships, only: [:index, :show] do
+    resources :share_capital_subscriptions, only: [:new, :create], module: :memberships
+    resources :program_subscriptions, only: [:create], module: :memberships do
+      resources :payments, only: [:new, :create], module: :program_subscriptions
+    end
+  end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_03_03_055952) do
+ActiveRecord::Schema.define(version: 2018_03_03_125125) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -592,21 +592,17 @@ ActiveRecord::Schema.define(version: 2018_03_03_055952) do
     t.string "avatar_content_type"
     t.integer "avatar_file_size"
     t.datetime "avatar_updated_at"
-    t.string "fullname"
     t.string "slug"
     t.integer "birth_month"
     t.integer "birth_day"
     t.string "email", default: "", null: false
     t.uuid "office_id"
-    t.index ["fullname"], name: "index_members_on_fullname", unique: true
     t.index ["office_id"], name: "index_members_on_office_id"
     t.index ["sex"], name: "index_members_on_sex"
     t.index ["slug"], name: "index_members_on_slug", unique: true
   end
 
   create_table "memberships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "memberable_type"
-    t.uuid "memberable_id"
     t.datetime "membership_date"
     t.uuid "cooperative_id"
     t.integer "membership_type"
@@ -619,10 +615,12 @@ ActiveRecord::Schema.define(version: 2018_03_03_055952) do
     t.string "beneficiary_type"
     t.uuid "beneficiary_id"
     t.string "search_term"
+    t.string "cooperator_type"
+    t.uuid "cooperator_id"
     t.index ["account_number"], name: "index_memberships_on_account_number", unique: true
     t.index ["beneficiary_type", "beneficiary_id"], name: "index_memberships_on_beneficiary_type_and_beneficiary_id"
     t.index ["cooperative_id"], name: "index_memberships_on_cooperative_id"
-    t.index ["memberable_type", "memberable_id"], name: "index_memberships_on_memberable_type_and_memberable_id"
+    t.index ["cooperator_type", "cooperator_id"], name: "index_memberships_on_cooperator_type_and_cooperator_id"
     t.index ["membership_type"], name: "index_memberships_on_membership_type"
     t.index ["status"], name: "index_memberships_on_status"
   end
@@ -794,6 +792,8 @@ ActiveRecord::Schema.define(version: 2018_03_03_055952) do
     t.datetime "updated_at", null: false
     t.string "subscriber_type"
     t.uuid "subscriber_id"
+    t.uuid "membership_id"
+    t.index ["membership_id"], name: "index_program_subscriptions_on_membership_id"
     t.index ["program_id"], name: "index_program_subscriptions_on_program_id"
     t.index ["subscriber_type", "subscriber_id"], name: "index_subscriber_in_program_subscriptions"
   end
@@ -957,17 +957,16 @@ ActiveRecord::Schema.define(version: 2018_03_03_055952) do
     t.datetime "date_opened"
     t.string "type"
     t.string "account_owner_name"
-    t.string "subscriber_type"
-    t.uuid "subscriber_id"
     t.datetime "created_at", default: "2018-02-22 21:11:17", null: false
     t.datetime "updated_at", default: "2018-02-22 21:11:17", null: false
     t.integer "status"
     t.uuid "office_id"
+    t.uuid "membership_id"
     t.index ["account_number"], name: "index_share_capitals_on_account_number", unique: true
+    t.index ["membership_id"], name: "index_share_capitals_on_membership_id"
     t.index ["office_id"], name: "index_share_capitals_on_office_id"
     t.index ["share_capital_product_id"], name: "index_share_capitals_on_share_capital_product_id"
     t.index ["status"], name: "index_share_capitals_on_status"
-    t.index ["subscriber_type", "subscriber_id"], name: "index_share_capitals_on_subscriber_type_and_subscriber_id"
     t.index ["type"], name: "index_share_capitals_on_type"
   end
 
@@ -1266,6 +1265,7 @@ ActiveRecord::Schema.define(version: 2018_03_03_055952) do
   add_foreign_key "prededucted_interests", "accounts", column: "debit_account_id"
   add_foreign_key "prededucted_interests", "loans"
   add_foreign_key "products", "categories"
+  add_foreign_key "program_subscriptions", "memberships"
   add_foreign_key "program_subscriptions", "programs"
   add_foreign_key "programs", "accounts"
   add_foreign_key "raw_material_stocks", "raw_materials"
@@ -1284,6 +1284,7 @@ ActiveRecord::Schema.define(version: 2018_03_03_055952) do
   add_foreign_key "share_capital_products", "accounts", column: "closing_account_id"
   add_foreign_key "share_capital_products", "accounts", column: "paid_up_account_id"
   add_foreign_key "share_capital_products", "accounts", column: "subscription_account_id"
+  add_foreign_key "share_capitals", "memberships"
   add_foreign_key "share_capitals", "offices"
   add_foreign_key "share_capitals", "share_capital_products"
   add_foreign_key "store_front_configs", "accounts", column: "accounts_payable_account_id"

@@ -6,7 +6,6 @@ module MembershipsModule
 
     belongs_to :depositor,        class_name: "Membership",
                                   foreign_key: 'membership_id', touch: true
-
     belongs_to :saving_product,   class_name: "CoopServicesModule::SavingProduct"
     belongs_to :office,           class_name: "CoopConfigurationsModule::Office"
     has_many :entries,            class_name: "AccountingModule::Entry",

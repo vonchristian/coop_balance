@@ -30,7 +30,7 @@ class User < ApplicationRecord
   belongs_to :cooperative
   belongs_to :office, class_name: "CoopConfigurationsModule::Office"
   belongs_to :salary_grade, class_name: "HrModule::SalaryGrade"
-  has_one :membership, as: :memberable
+  has_many :memberships, as: :cooperative
   has_many :sold_orders,            class_name: "StoreFrontModule::Orders::SalesOrder",
                                     foreign_key: 'employee_id'
   has_many :returned_sales_orders,    class_name: "StoreFrontModule::Orders::SalesReturnOrder",
@@ -38,7 +38,7 @@ class User < ApplicationRecord
 
   has_many :loans, class_name: "LoansModule::Loan", as: :borrower
   has_many :co_makered_loans, class_name: "LoansModule::LoanCoMaker", as: :co_maker
-  has_many :memberships, as: :memberable
+  has_many :memberships, as: :cooperator
   has_many :savings, class_name: "MembershipsModule::Saving", through: :memberships
   has_many :share_capitals, class_name: "MembershipsModule::ShareCapital", as: :subscriber
   has_many :time_deposits, class_name: "MembershipsModule::TimeDeposit", as: :depositor
@@ -65,8 +65,6 @@ class User < ApplicationRecord
   delegate :name, :amount, to: :salary_grade, prefix: true, allow_nil: true
   delegate :name, to: :department, prefix: true, allow_nil: true
   delegate :name, :address, :contact_number, :logo, to: :cooperative, prefix: true
-  delegate :regular_member?, to: :membership
-  delegate :membership_type, to: :membership, allow_nil: true
   delegate :name, to: :office, prefix: true, allow_nil: true
   delegate :abbreviated_name, :name, to: :cooperative, prefix: true
   delegate :number, to: :tin, prefix: true, allow_nil: true

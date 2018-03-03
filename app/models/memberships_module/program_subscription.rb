@@ -1,7 +1,7 @@
  module MembershipsModule
 	class ProgramSubscription < ApplicationRecord
 	  belongs_to :program, class_name: "CoopServicesModule::Program"
-	  belongs_to :subscriber, polymorphic: true
+	  belongs_to :subscriber, class_name: "Membership", foreign_key: 'membership_id'
 	  has_many :subscription_payments, class_name: "AccountingModule::Entry", as: :commercial_document
 	  delegate :name, :contribution, :account, :description, to: :program
     def percent_type?
@@ -21,7 +21,8 @@
       !paid?(from_date: Time.zone.now.beginning_of_year.beginning_of_day, to_date: Time.zone.now.end_of_year.end_of_day)
     end
 	  def paid?(options={})
-      account.amounts.where(commercial_document_id: self.subscriber_id).entered_on(options).present?
+      account.amounts.where(commercial_document: self.subscriber).entered_on(options).present? ||
+      account.amounts.where(commercial_document: self).present?
 	  end
 	end
 end

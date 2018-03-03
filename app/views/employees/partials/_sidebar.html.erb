@@ -13,12 +13,7 @@
     <p class="text-muted"><%#= @employee.tin_number %></p>
     <hr>
     <strong><i class="fa fa-book margin-r-5"></i> Membership</strong>
-    <p class="text-muted"><%= @employee.membership_type.try(:titleize) %></p>
-    <% if @employee.membership.present? %>
-      <%= link_to "Update Membership", edit_employee_membership_path(id: @employee.id, employee_id: @employee.id) %>
-    <% else %>
-      <%= link_to "Update Membership", new_employee_membership_path(id: @employee.id, employee_id: @employee.id) %>
-      <% end %>
+    <p class="text-muted"><%#= @employee.membership_type.try(:titleize) %></p>
     <hr>
     <strong><i class="fa fa-book margin-r-5"></i> Cash on Hand Account</strong>
     <p class="text-muted"><%= @employee.cash_on_hand_account.try(:name) %></p>

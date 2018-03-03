@@ -22,7 +22,7 @@
                   <center> <%= image_tag(share_capital.subscriber.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center>
                 </div>
                 <div class="col-md-5">
-                  <p class="text-purple"><b><%= share_capital.subscriber_name.try(:upcase) %></b></p>
+                  <p><b><%= share_capital.subscriber_name%></b></p>
                   <small class="text-muted"> <%= share_capital.share_capital_product_name.try(:upcase) %></small><br><br>
                   <% if policy([:share_capitals, :capital_build_up]).new? %>
                     <%= link_to 'New Capital Build Up', new_share_capital_capital_build_up_path(share_capital), class: "btn btn-xs btn-default" %> &nbsp; &nbsp;
@@ -30,7 +30,7 @@
                   <br>
                 </div>
                 <div class="col-md-3">
-                  <h4 class="text-purple"><center><%=number_to_currency share_capital.balance %></center></h4>
+                  <h4><center><%=number_to_currency share_capital.balance %></center></h4>
                 </div>
               </div>
               <hr>

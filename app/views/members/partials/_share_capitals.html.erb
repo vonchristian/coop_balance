@@ -1,20 +1,20 @@
-<div class="tab-pane <%='active' if current_page?(member_share_capitals_path(@member)) %>" id="share_capital">
+<div class="tab-pane <%='active' if current_page?(member_share_capitals_path(@member)) %>">
   <div class="row">
     <div class="col-md-12">
       <% if policy([:members, :share_capital]).new? %>
-        <%= link_to 'New Share Capital', new_member_share_capital_path(@member), class: "btn btn-primary btn-flat pull-right" %>
+        <% @member.memberships.each do |membership| %>
+          <% if membership.cooperative == current_user.cooperative %>
+            <%= link_to 'New Share Capital', new_membership_share_capital_subscription_path(membership), class: "btn btn-primary btn-flat pull-right" %>
+          <% end %>
+        <% end %>
       <% end %>
     </div>
   </div>
-  <br>
   <% @member.share_capitals.each do |share_capital| %>
-    <%= link_to share_capital_path(share_capital) do %>
-      <small><%= share_capital.share_capital_product_name.try(:upcase) %></small>
-       <h4><%= number_to_currency share_capital.balance %></h4>
-      <% if policy([:share_capitals, :capital_build_up]).new? %>
-        <%= link_to 'New Capital Build Up', new_share_capital_capital_build_up_path(share_capital), class: "btn btn-primary btn-flat" %>
-      <% end %>
-      <hr>
+    <%=link_to share_capital_url(share_capital) do %>
+      <%= share_capital.balance %>
+      <small><%=share_capital.share_capital_product_name %></small>
     <% end %>
   <% end %>
-</div>
+  <hr />
+

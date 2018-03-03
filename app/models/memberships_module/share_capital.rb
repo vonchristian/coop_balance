@@ -1,11 +1,11 @@
 module MembershipsModule
   class ShareCapital < ApplicationRecord
-    enum status: [:active, :inactive, :closed]
     include PgSearch
     pg_search_scope :text_search, :against => [:account_number, :account_owner_name]
     multisearchable against: [:account_number, :account_owner_name]
 
-    belongs_to :subscriber, polymorphic: true
+    belongs_to :subscriber, class_name: "Membership", foreign_key: 'membership_id'
+
     belongs_to :share_capital_product, class_name: "CoopServicesModule::ShareCapitalProduct"
     belongs_to :office, class_name: "CoopConfigurationsModule::Office"
 
@@ -13,10 +13,12 @@ module MembershipsModule
     delegate :name, to: :office, prefix: true, allow_nil: true
     delegate :name, to: :subscriber, prefix: true
     delegate :cost_per_share, to: :share_capital_product, prefix: true
-    validates :share_capital_product_id, presence: true
-    after_commit :set_account_owner_name
+    before_save :set_account_owner_name
 
-    has_many :capital_build_ups, class_name: "AccountingModule::Entry", as: :commercial_document
+    def capital_build_ups
+      share_capital_product_paid_up_account.credit_amounts.where(commercial_document: self) +
+      share_capital_product_paid_up_account.credit_amounts.where(commercial_document: self.subscriber)
+    end
     def self.balance
       sum(&:balance)
     end
@@ -48,12 +50,12 @@ module MembershipsModule
 
     def balance
       share_capital_product_default_paid_up_account.balance(commercial_document_id: self.id) +
-      share_capital_product_default_paid_up_account.balance(commercial_document_id: self.subscriber_id)
+      share_capital_product_default_paid_up_account.balance(commercial_document_id: self.membership_id)
     end
 
     def capital_build_ups_total
       share_capital_product_default_paid_up_account.balance(commercial_document_id: self.id) +
-      share_capital_product_default_paid_up_account.balance(commercial_document_id: self.subscriber_id)
+      share_capital_product_default_paid_up_account.balance(commercial_document_id: self.membership_id)
     end
     def dividends
     end

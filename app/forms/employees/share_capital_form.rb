@@ -31,11 +31,14 @@ module Employees
       find_employee.cash_on_hand_account
     end
     def find_subscriber
-      User.find_by(id: subscriber_id)
+      Membership.find_by_id(subscriber_id)
     end
 
     def credit_account
-      CoopServicesModule::ShareCapitalProduct.find_by(id: share_capital_product_id).default_paid_up_account
+      find_share_capital_product.paid_up_account
+    end
+    def find_share_capital_product
+      CoopServicesModule::ShareCapitalProduct.find_by_id(share_capital_product_id)
     end
   end
 end

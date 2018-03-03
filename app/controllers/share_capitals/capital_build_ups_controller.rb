@@ -20,7 +20,7 @@ module ShareCapitals
 
     private
     def share_capital_params
-      params.require(:capital_build_up_form).permit(:share_capital_id, :share_count, :or_number, :amount, :recorder_id)
+      params.require(:capital_build_up_form).permit(:share_capital_id, :share_count, :or_number, :amount, :recorder_id, :membership_id)
     end
   end
 end

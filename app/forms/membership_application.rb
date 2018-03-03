@@ -34,32 +34,59 @@ class MembershipApplication
   :application_date,
   :share_capital_product_id,
   :membership_type,
-  :office_id
+  :office_id,
+  :cooperative_id
   validates :first_name,
   :middle_name,
   :last_name,
   :sex,
   :date_of_birth,
   :contact_number,
-  :civil_status, presence: true
+  :civil_status,
+  :cooperative_id,
+   presence: true
+  validate :unique_full_name
   def save
     ActiveRecord::Base.transaction do
       create_member
-      subscribe_member_to_programs
     end
   end
 
-  def find_member
-    Membership.find_by(account_number: account_number).memberable
+  def find_membership
+    Membership.find_by(account_number: account_number)
   end
 
   private
   def create_member
-    member = Member.create!(first_name: first_name, middle_name: middle_name, last_name: last_name, civil_status: civil_status, sex: sex, date_of_birth: date_of_birth, contact_number: contact_number, email: email, office_id: office_id)
-   Membership.pending.create!(memberable: member, account_number: account_number, membership_type: membership_type)
-   MembershipsModule::ShareCapital.create(subscriber: member, share_capital_product_id: share_capital_product_id)
+    member = Member.create(
+    first_name: first_name,
+    middle_name: middle_name,
+    last_name: last_name,
+    civil_status: civil_status,
+    sex: sex,
+    date_of_birth: date_of_birth,
+    contact_number: contact_number,
+    email: email,
+    office_id: office_id,
+    avatar: avatar)
+    create_membership(member)
   end
-  def subscribe_member_to_programs
-    CoopServicesModule::Program.subscribe(find_member)
+  def create_membership(member)
+    membership = Membership.pending.create!(cooperator: member, account_number: account_number, membership_type: membership_type, cooperative_id: cooperative_id)
+    subscribe_to_share_capital(membership)
+    subscribe_to_default_programs(membership)
+  end
+  def subscribe_to_share_capital(subscriber)
+    MembershipsModule::ShareCapital.create(subscriber: subscriber, share_capital_product_id: share_capital_product_id)
+  end
+
+  def subscribe_to_default_programs
+    CoopServicesModule::Program.subscribe(subscriber)
+  end
+
+  def unique_full_name
+    errors[:last_name] << "already registered" if Member.find_by(first_name: first_name, middle_name: middle_name, last_name: last_name).present?
+    errors[:first_name] << "already registered" if Member.find_by(first_name: first_name, middle_name: middle_name, last_name: last_name).present?
+    errors[:middle_name] << "already registered" if Member.find_by(first_name: first_name, middle_name: middle_name, last_name: last_name).present?
   end
 end

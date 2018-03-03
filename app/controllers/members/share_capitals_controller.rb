@@ -1,16 +1,16 @@
-module Members 
+module Members
   class ShareCapitalsController < ApplicationController
-    def index 
+    def index
       @member = Member.friendly.find(params[:member_id])
       @share_capitals = @member.share_capitals
-    end 
+    end
     def new
       @member = Member.friendly.find(params[:member_id])
-      @share_capital = Members::ShareCapitalForm.new
+      @share_capital = ShareCapitalForm.new
     end
     def create
       @member = Member.friendly.find(params[:member_id])
-      @share_capital = Members::ShareCapitalForm.new(share_capital_params)
+      @share_capital = ShareCapitalForm.new(share_capital_params)
       if @share_capital.save
         redirect_to member_share_capitals_url(@member), notice: "Success"
       else
@@ -20,7 +20,8 @@ module Members
 
     private
     def share_capital_params
-      params.require(:members_share_capital_form).permit(:account_number, :subscriber_id, :subscriber_type, :amount, :date, :reference_number, :recorder_id, :share_capital_product_id)
-    end 
+      params.require(:members_share_capital_form).
+      permit(:account_number, :subscriber_id, :subscriber_type, :amount, :date, :reference_number, :recorder_id, :share_capital_product_id)
+    end
   end
-end 
+end
