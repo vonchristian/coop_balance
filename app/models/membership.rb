@@ -11,14 +11,16 @@ class Membership < ApplicationRecord
   delegate :avatar, to: :cooperator
   delegate :name, to: :cooperator, prefix: true
   delegate :savings, :share_capitals, :account_receivable_store_balance, to: :cooperator
-  belongs_to :beneficiary, polymorphic: true
 
-  validate :beneficiary_is_not_the_same_member?
+
   validates :cooperative_id, presence: true, uniqueness: { scope: :cooperator_id }
-
+  validates :account_number, presence: true, uniqueness: true
+  has_many :membership_beneficiaries
+  has_many :beneficiaries, through: :membership_beneficiaries
   has_many :savings,                class_name: "MembershipsModule::Saving",
                                     foreign_key: 'membership_id'
-  has_many :loans,                  class_name: "LoansModule::Loan"
+  has_many :loans,                  class_name: "LoansModule::Loan",
+                                    foreign_key: 'membership_id'
   has_many :share_capitals,         class_name: "MembershipsModule::ShareCapital",
                                     foreign_key: 'membership_id'
   has_many :time_deposits,          class_name: "MembershipsModule::TimeDeposit",
@@ -49,9 +51,7 @@ class Membership < ApplicationRecord
   def set_account_number
     self.account_number ||= Membership.generate_account_number
   end
-  def beneficiary_is_not_the_same_member?
-    errors[:base] << "The beneficiary is the same member" if beneficiary == cooperator
-  end
+
   def set_search_term
     self.search_term = self.cooperator_name
   end

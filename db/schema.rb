@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_03_04_214747) do
+ActiveRecord::Schema.define(version: 2018_03_04_220912) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -551,9 +551,11 @@ ActiveRecord::Schema.define(version: 2018_03_04_214747) do
     t.uuid "borrower_id"
     t.string "borrower_full_name"
     t.uuid "preparer_id"
+    t.uuid "membership_id"
     t.index ["barangay_id"], name: "index_loans_on_barangay_id"
     t.index ["borrower_type", "borrower_id"], name: "index_loans_on_borrower_type_and_borrower_id"
     t.index ["loan_product_id"], name: "index_loans_on_loan_product_id"
+    t.index ["membership_id"], name: "index_loans_on_membership_id"
     t.index ["municipality_id"], name: "index_loans_on_municipality_id"
     t.index ["organization_id"], name: "index_loans_on_organization_id"
     t.index ["preparer_id"], name: "index_loans_on_preparer_id"
@@ -600,6 +602,16 @@ ActiveRecord::Schema.define(version: 2018_03_04_214747) do
     t.index ["office_id"], name: "index_members_on_office_id"
     t.index ["sex"], name: "index_members_on_sex"
     t.index ["slug"], name: "index_members_on_slug", unique: true
+  end
+
+  create_table "membership_beneficiaries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "membership_id"
+    t.string "beneficiary_type"
+    t.uuid "beneficiary_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["beneficiary_type", "beneficiary_id"], name: "inde_beneficiary_on_membership_beneficiaries"
+    t.index ["membership_id"], name: "index_membership_beneficiaries_on_membership_id"
   end
 
   create_table "memberships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1053,13 +1065,10 @@ ActiveRecord::Schema.define(version: 2018_03_04_214747) do
     t.string "account_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "depositor_type"
-    t.uuid "depositor_id"
     t.integer "status"
     t.uuid "office_id"
     t.uuid "membership_id"
     t.index ["account_number"], name: "index_time_deposits_on_account_number", unique: true
-    t.index ["depositor_type", "depositor_id"], name: "index_time_deposits_on_depositor_type_and_depositor_id"
     t.index ["membership_id"], name: "index_time_deposits_on_membership_id"
     t.index ["office_id"], name: "index_time_deposits_on_office_id"
     t.index ["status"], name: "index_time_deposits_on_status"
@@ -1249,6 +1258,7 @@ ActiveRecord::Schema.define(version: 2018_03_04_214747) do
   add_foreign_key "loan_protection_funds", "loans"
   add_foreign_key "loans", "barangays"
   add_foreign_key "loans", "loan_products"
+  add_foreign_key "loans", "memberships"
   add_foreign_key "loans", "municipalities"
   add_foreign_key "loans", "organizations"
   add_foreign_key "loans", "streets"
@@ -1257,6 +1267,7 @@ ActiveRecord::Schema.define(version: 2018_03_04_214747) do
   add_foreign_key "member_occupations", "members"
   add_foreign_key "member_occupations", "occupations"
   add_foreign_key "members", "offices"
+  add_foreign_key "membership_beneficiaries", "memberships"
   add_foreign_key "memberships", "cooperatives"
   add_foreign_key "municipalities", "provinces"
   add_foreign_key "notes", "users", column: "noter_id"
