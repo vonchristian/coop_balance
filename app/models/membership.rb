@@ -21,7 +21,8 @@ class Membership < ApplicationRecord
   has_many :loans,                  class_name: "LoansModule::Loan"
   has_many :share_capitals,         class_name: "MembershipsModule::ShareCapital",
                                     foreign_key: 'membership_id'
-  has_many :time_deposits,          class_name: "MembershipsModule::TimeDeposit"
+  has_many :time_deposits,          class_name: "MembershipsModule::TimeDeposit",
+                                    foreign_key: 'membership_id'
   has_many :program_subscriptions,  class_name: "MembershipsModule::ProgramSubscription", foreign_key: 'membership_id'
   has_many :programs,               through: :program_subscriptions
   has_many :voucher_amounts, as: :commercial_document, class_name: "Vouchers::VoucherAmount"

@@ -4,7 +4,7 @@ module MembershipsModule
     include PgSearch
     pg_search_scope :text_search, against: [:account_number], :associated_against => { :depositor => [:first_name, :last_name ] }
 
-    belongs_to :depositor, polymorphic: true
+    belongs_to :depositor, class_name: "Membership", foreign_key: 'membership_id'
     belongs_to :office, class_name: "CoopConfigurationsModule::Office"
     belongs_to :time_deposit_product, class_name: "CoopServicesModule::TimeDepositProduct"
     has_many :entries,  class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
@@ -15,7 +15,6 @@ module MembershipsModule
     delegate :name, to: :office, prefix: true
     before_save :set_depositor_name, on: [:create]
 
-    validates :depositor_id, :depositor_type,  presence: true
 
     after_commit :set_account_number
     def can_be_extended?
@@ -58,7 +57,6 @@ module MembershipsModule
 
     def amount_deposited
       time_deposit_product_account.balance(commercial_document_id: self.id)
-      # entries.map{|a| a.debit_amounts.sum(:amount) }.sum
     end
 
     def balance

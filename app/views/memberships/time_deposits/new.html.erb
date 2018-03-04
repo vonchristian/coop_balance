@@ -3,16 +3,16 @@
     <div class="nav-tabs-custom">
       <div class="box-header">
           <h3 class="box-title"> New Time Deposit Details </h3>
-           <h4><center><%= image_tag(@member.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center></h4>
+           <h4><center><%= image_tag(@membership.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center></h4>
 
-            <h3><center><%= @member.name %></center></h3>
+            <h3><center><%= @membership.name %></center></h3>
       </div>
      <div class="box-body">
       <div class="row">
         <div class="col-md-10 col-md-offset-1">
-<%= simple_form_for [@member, @time_deposit], url: :member_time_deposits do |f| %>
+<%= simple_form_for [@membership, @time_deposit], url: :membership_time_deposits do |f| %>
   <%= f.error_notification %>
-  <%= f.input :member_id, input_html: { value: @member.id }, as: :hidden %>
+  <%= f.input :membership_id, input_html: { value: @membership.id }, as: :hidden %>
   <%= f.input :date_deposited, as: :string, input_html: { value: Time.zone.now.strftime("%B %e, %Y"), class: "datepicker" } %>
   <%= f.input :or_number %>
   <%= f.input :amount %>
@@ -20,6 +20,7 @@
   <%= f.input :number_of_days, label: "No. of Days Deposited:" %>
   <%= f.input :recorder_id, input_html: { value: current_user.id }, as: :hidden %>
   <%= f.input :time_deposit_product_id, collection: CoopServicesModule::TimeDepositProduct.all.map{|a| [a.amount_range_and_days, a.id] } %>
+  <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
   <div class="box-footer">
     <%= f.submit "Save Time Deposit", class: "btn btn-primary btn-flat pull-right" %>
   </div>
