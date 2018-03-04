@@ -17,8 +17,8 @@
 	  def self.unpaid
       all.select{|a| a.unpaid? }
     end
-    def unpaid?
-      !paid?(from_date: Time.zone.now.beginning_of_year.beginning_of_day, to_date: Time.zone.now.end_of_year.end_of_day)
+    def unpaid?(options={})
+      !paid?(options)
     end
 	  def paid?(options={})
       account.amounts.where(commercial_document: self.subscriber).entered_on(options).present? ||
