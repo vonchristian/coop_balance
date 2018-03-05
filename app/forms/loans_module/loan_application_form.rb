@@ -17,7 +17,13 @@ module LoansModule
       end
     end
     def find_loan
-      LoansModule::Loan.find_by(loan_product_id: loan_product_id, loan_amount: loan_amount, term: term, application_date: application_date, mode_of_payment: mode_of_payment, preparer_id: preparer_id)
+      LoansModule::Loan.find_by(
+        loan_product_id: loan_product_id,
+        loan_amount: loan_amount,
+        term: term,
+        application_date: application_date,
+        mode_of_payment: mode_of_payment,
+        preparer_id: preparer_id)
     end
 
     private

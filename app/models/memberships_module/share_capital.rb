@@ -4,14 +4,14 @@ module MembershipsModule
     pg_search_scope :text_search, :against => [:account_number, :account_owner_name]
     multisearchable against: [:account_number, :account_owner_name]
 
-    belongs_to :subscriber, class_name: "Membership", foreign_key: 'membership_id'
+    belongs_to :subscriber, polymorphic: true
 
     belongs_to :share_capital_product, class_name: "CoopServicesModule::ShareCapitalProduct"
     belongs_to :office, class_name: "CoopConfigurationsModule::Office"
 
     delegate :name, :paid_up_account, :subscription_account, :closing_account, :closing_account_fee, :default_paid_up_account, :default_subscription_account, to: :share_capital_product, prefix: true
     delegate :name, to: :office, prefix: true, allow_nil: true
-    delegate :name, to: :subscriber, prefix: true
+    delegate :name, to: :subscriber, prefix: true, allow_nil: true
     delegate :cost_per_share, to: :share_capital_product, prefix: true
     before_save :set_account_owner_name
 
@@ -36,8 +36,8 @@ module MembershipsModule
 
     def entries
       share_capital_product_paid_up_account.entries.where(commercial_document_id: self) +
-       share_capital_product_closing_account.entries.where(commercial_document: self) +
-        share_capital_product_subscription_account.entries.where(commercial_document: self)
+      share_capital_product_closing_account.entries.where(commercial_document: self) +
+      share_capital_product_subscription_account.entries.where(commercial_document: self)
     end
 
     def self.subscribed_shares
@@ -50,12 +50,12 @@ module MembershipsModule
 
     def balance
       share_capital_product_default_paid_up_account.balance(commercial_document_id: self.id) +
-      share_capital_product_default_paid_up_account.balance(commercial_document_id: self.membership_id)
+      share_capital_product_default_paid_up_account.balance(commercial_document_id: self.subscriber_id)
     end
 
     def capital_build_ups_total
       share_capital_product_default_paid_up_account.balance(commercial_document_id: self.id) +
-      share_capital_product_default_paid_up_account.balance(commercial_document_id: self.membership_id)
+      share_capital_product_default_paid_up_account.balance(commercial_document_id: self.subscriber_id)
     end
     def dividends
     end

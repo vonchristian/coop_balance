@@ -14,6 +14,7 @@ class Member < ApplicationRecord
   has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", as: :commercial_document #for temporary cration of debit adn creditrs
   has_many :memberships, as: :cooperator
   has_many :savings, class_name: "MembershipsModule::Saving", as: :depositor
+  has_many :share_capitals, class_name: "MembershipsModule::ShareCapital", as: :subscriber
 
   has_many :share_capitals, class_name: "MembershipsModule::ShareCapital",
                              through: :memberships

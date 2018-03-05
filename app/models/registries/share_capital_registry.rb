@@ -7,40 +7,40 @@ module Registries
       transaction do
         sheet.each 1 do |row|
           if !row[0].nil?
-            create_or_find_member(row)
             create_entry(row)
           end
         end
       end
     end
     private
+    def find_share_capital_product(row)
+      CoopServicesModule::ShareCapitalProduct.find_by(name: row[3])
+    end
 
-    def create_or_find_member(row)
+    def find_subscriber(row)
       Member.find_or_create_by(last_name: row[0], first_name: row[1])
     end
 
-    def share_capital_product
-      CoopServicesModule::ShareCapitalProduct.default_product
-    end
-
-    def find_member(row)
-      Member.find_by(last_name: row[0], first_name: row[1])
-    end
-
     def create_entry(row)
-      share_capital = find_member(row).share_capitals.create!(share_capital_product: share_capital_product)
-
-      share_capital.capital_build_ups.capital_build_up.create!(recorder_id: self.employee_id, description: 'Forwarded balance Share capital',  entry_date: Time.zone.now,
-      debit_amounts_attributes: [account: debit_account, amount: row[2].to_f],
-      credit_amounts_attributes: [account: credit_account, amount: row[2].to_f])
+      share_capital = MembershipsModule::ShareCapital.create(
+        subscriber: find_subscriber(row),
+        account_number: SecureRandom.uuid,
+        share_capital_product: find_share_capital_product(row))
+      AccountingModule::Entry.create!(
+        recorder_id: self.employee_id,
+        commercial_document: find_subscriber(row),
+        description: 'Forwarded balance of share capital as of December 31, 2017',
+        entry_date: Date.today.last_year.end_of_year,
+        debit_amounts_attributes: [account: debit_account, amount: row[2].to_f, commercial_document: share_capital],
+        credit_amounts_attributes: [account: credit_account(row), amount: row[2].to_f, commercial_document: share_capital])
     end
 
     def debit_account
-      AccountingModule::Account.find_by(name: "Cash on Hand (Treasury)")
+      AccountingModule::Account.find_by(name: "Cash on Hand - Main Office (Treasury)")
     end
 
-    def credit_account
-      share_capital_product.paid_up_account
+    def credit_account(row)
+      find_share_capital_product(row).paid_up_account
     end
   end
 end

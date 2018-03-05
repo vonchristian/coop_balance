@@ -122,7 +122,7 @@ Rails.application.routes.draw do
   namespace :management_module do
     resources :savings_account_registries, only: [:new, :create]
     resources :share_capital_registries, only: [:new, :create]
-    resources :capital_build_up_registries, only: [:new, :create]
+    resources :loan_registries, only: [:new, :create]
 
     namespace :settings do
       resources :store_fronts, only: [:new, :create]

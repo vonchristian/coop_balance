@@ -19,7 +19,7 @@ module Registries
       savings.entries.create!(
       recorder_id: self.employee_id,
       description: 'Forwarded balance of savings deposit as of December 31, 2017',
-      entry_date: Time.zone.now,
+      entry_date: Date.today.last_year.end_of_year,
       debit_amounts_attributes: [account: debit_account, amount: row[2], commercial_document: savings],
       credit_amounts_attributes: [account: credit_account(row), amount: row[2], commercial_document: savings])
     end
