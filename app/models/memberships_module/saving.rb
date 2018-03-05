@@ -4,8 +4,7 @@ module MembershipsModule
     pg_search_scope :text_search, :against => [:account_number, :account_owner_name]
     multisearchable against: [:account_number, :account_owner_name]
 
-    belongs_to :depositor,        class_name: "Membership",
-                                  foreign_key: 'membership_id', touch: true
+    belongs_to :depositor,        polymorphic: true,  touch: true
     belongs_to :saving_product,   class_name: "CoopServicesModule::SavingProduct"
     belongs_to :office,           class_name: "CoopConfigurationsModule::Office"
     has_many :entries,            class_name: "AccountingModule::Entry",
@@ -20,7 +19,7 @@ module MembershipsModule
     delegate :name, to: :office, prefix: true, allow_nil: true
     delegate :name, to: :depositor, prefix: true
 
-    validates :saving_product_id, presence: true, uniqueness: { scope: :membership_id }
+    validates :saving_product_id, presence: true, uniqueness: { scope: :depositor_id }
     scope :has_minimum_balance, -> { SavingsQuery.new.has_minimum_balance  }
     before_save :set_account_owner_name
     def closed?

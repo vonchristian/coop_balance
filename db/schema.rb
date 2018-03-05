@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_03_04_220912) do
+ActiveRecord::Schema.define(version: 2018_03_05_044059) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -918,9 +918,10 @@ ActiveRecord::Schema.define(version: 2018_03_04_220912) do
     t.datetime "updated_at", null: false
     t.uuid "saving_product_id"
     t.uuid "office_id"
-    t.uuid "membership_id"
+    t.string "depositor_type"
+    t.uuid "depositor_id"
     t.index ["account_number"], name: "index_savings_on_account_number", unique: true
-    t.index ["membership_id"], name: "index_savings_on_membership_id"
+    t.index ["depositor_type", "depositor_id"], name: "index_savings_on_depositor_type_and_depositor_id"
     t.index ["office_id"], name: "index_savings_on_office_id"
     t.index ["saving_product_id"], name: "index_savings_on_saving_product_id"
   end
@@ -1289,7 +1290,6 @@ ActiveRecord::Schema.define(version: 2018_03_04_220912) do
   add_foreign_key "saving_products", "accounts"
   add_foreign_key "saving_products", "accounts", column: "closing_account_id"
   add_foreign_key "saving_products", "accounts", column: "interest_expense_account_id"
-  add_foreign_key "savings", "memberships"
   add_foreign_key "savings", "offices"
   add_foreign_key "savings", "saving_products"
   add_foreign_key "savings_account_configs", "accounts", column: "closing_account_id"
