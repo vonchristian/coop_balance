@@ -15,14 +15,15 @@ module LoansModule
 #DO NOT ALLOW NIL RATE AND ACCOUNTS
     delegate :rate, to: :current_interest_config, prefix: true, allow_nil: true
     delegate :interest_revenue_account, :interest_revenue_account_id, to: :current_interest_config
-    delegate :unearned_interest_income_account, :unearned_interest_income_account_id, to: :interest_config, allow_nil: true
     validates :name,:loans_receivable_current_account_id, :loans_receivable_past_due_account_id, presence: true
 
     validates :name, uniqueness: true
     validates :maximum_loanable_amount, numericality: true
+
     def current_interest_config
       interest_configs.current
     end
+
     def monthly_interest_rate
       interest_rate / 12.0
     end

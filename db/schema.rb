@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180305213201) do
+ActiveRecord::Schema.define(version: 20180305231257) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -479,7 +479,6 @@ ActiveRecord::Schema.define(version: 20180305213201) do
   create_table "loan_products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "description"
     t.decimal "maximum_loanable_amount"
-    t.uuid "penalty_account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
@@ -488,14 +487,11 @@ ActiveRecord::Schema.define(version: 20180305213201) do
     t.decimal "minimum_share_capital_balance"
     t.decimal "maximum_share_capital_balance"
     t.string "slug"
-    t.decimal "interest_rate"
-    t.decimal "penalty_rate"
     t.uuid "loans_receivable_current_account_id"
     t.uuid "loans_receivable_past_due_account_id"
     t.index ["loans_receivable_current_account_id"], name: "index_loan_products_on_loans_receivable_current_account_id"
     t.index ["loans_receivable_past_due_account_id"], name: "index_loan_products_on_loans_receivable_past_due_account_id"
     t.index ["name"], name: "index_loan_products_on_name", unique: true
-    t.index ["penalty_account_id"], name: "index_loan_products_on_penalty_account_id"
     t.index ["slug"], name: "index_loan_products_on_slug", unique: true
   end
 
@@ -1264,7 +1260,6 @@ ActiveRecord::Schema.define(version: 20180305213201) do
   add_foreign_key "loan_product_charges", "loan_products"
   add_foreign_key "loan_products", "accounts", column: "loans_receivable_current_account_id"
   add_foreign_key "loan_products", "accounts", column: "loans_receivable_past_due_account_id"
-  add_foreign_key "loan_products", "accounts", column: "penalty_account_id"
   add_foreign_key "loan_protection_fund_configs", "accounts"
   add_foreign_key "loan_protection_funds", "accounts"
   add_foreign_key "loan_protection_funds", "loan_protection_rates"
