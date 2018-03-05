@@ -3,6 +3,7 @@ class Organization < ApplicationRecord
   has_many :member_members, through: :organization_members, source: :organization_membership, source_type: "Member"
   has_many :employee_members, through: :organization_members, source: :organization_membership, source_type: "User"
   has_many :loans, class_name: "LoansModule::Loan"
+  has_many :savings, class_name: "MembershipsModule::Saving", as: :depositor
   has_attached_file :avatar,
   styles: { large: "120x120>",
            medium: "70x70>",

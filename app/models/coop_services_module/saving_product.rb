@@ -1,4 +1,4 @@
-module CoopServicesModule
+ module CoopServicesModule
 	class SavingProduct < ApplicationRecord
 	  enum interest_recurrence: [:daily, :weekly, :monthly, :quarterly, :semi_annually, :annually]
 
