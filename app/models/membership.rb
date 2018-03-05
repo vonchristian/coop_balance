@@ -15,8 +15,9 @@ class Membership < ApplicationRecord
 
   validates :cooperative_id, presence: true, uniqueness: { scope: :cooperator_id }
   validates :account_number, presence: true, uniqueness: true
-  has_many :membership_beneficiaries
+  has_many :membership_beneficiaries, class_name: "MembershipsModule::MembershipBeneficiary"
   has_many :beneficiaries, through: :membership_beneficiaries
+
   has_many :savings,                class_name: "MembershipsModule::Saving",
                                     foreign_key: 'membership_id'
   has_many :loans,                  class_name: "LoansModule::Loan",

@@ -2,7 +2,7 @@ workers 3
 threads 5,5
 
 environment 'production'
-directory '/var/www/rbg_pos/current'
+directory '/var/www/coopcatalyst/current'
 shared_dir = File.expand_path("../..", __FILE__)
 
 stdout_redirect "#{shared_dir}/log/puma.stdout.log", "#{shared_dir}/log/puma.stderr.log", true
