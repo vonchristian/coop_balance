@@ -31,7 +31,7 @@ module LoansModule
     end
     def post!
       if can_be_posted?
-        create_entry(payment_type: payment_type, description: 'Earned interest income', reference_number: "systems generated", entry_date: posting_date,
+        create_entry(description: 'Earned interest income', reference_number: "system generated", entry_date: posting_date,
       debit_amounts_attributes: [account: debit_account, amount: amount, commercial_document: self],
       credit_amounts_attributes: [account: credit_account, amount: amount, commercial_document: self])
       end

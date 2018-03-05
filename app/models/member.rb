@@ -16,17 +16,16 @@ class Member < ApplicationRecord
   has_many :savings, class_name: "MembershipsModule::Saving", as: :depositor
   has_many :share_capitals, class_name: "MembershipsModule::ShareCapital", as: :subscriber
 
-  has_many :share_capitals, class_name: "MembershipsModule::ShareCapital",
-                             through: :memberships
   has_many :time_deposits,  class_name: "MembershipsModule::TimeDeposit",
-                            through: :memberships
+                            as: :depositor
+  has_many :program_subscriptions, class_name: "MembershipsModule::ProgramSubscription", as: :subscriber
   has_many :member_occupations, class_name: "MembershipsModule::MemberOccupation", dependent: :destroy
   has_many :occupations, through: :member_occupations
   has_many :loans, class_name: "LoansModule::Loan", as: :borrower
   has_many :co_makered_loans, class_name: "LoansModule::LoanCoMaker", as: :co_maker
   has_many :addresses, as: :addressable
 
-  has_many :program_subscriptions, class_name: "MembershipsModule::ProgramSubscription", through: :memberships
+
   has_many :programs, through: :program_subscriptions
   has_many :sales_orders, class_name: "StoreFrontModule::Orders::SalesOrder", as: :commercial_document
   has_many :sales_return_orders, class_name: "StoreFrontModule::Orders::SalesReturnOrder", as: :commercial_document

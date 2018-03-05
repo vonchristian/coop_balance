@@ -25,6 +25,9 @@ AccountingModule::Asset.create(code: 117112, name: "Loans Receivable - Current (
 AccountingModule::Asset.create(code: 117113, name: "Loans Receivable - Current (Emergency Loan)")
 AccountingModule::Asset.create(code: 117113, name: "Loans Receivable - Current (OFW Loan)")
 
+AccountingModule::Asset.create(code: 117114, name: "Loans Receivable - Current (Regular Loan Penalties)")
+
+
 AccountingModule::Asset.create(code: 11712, name: "Loans Receivable - Past Due")
 AccountingModule::Asset.create(code: 1171211, name: "Loans Receivable - Past Due (Regular Loan)")
 

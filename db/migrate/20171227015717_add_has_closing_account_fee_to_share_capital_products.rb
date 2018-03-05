@@ -1,4 +1,4 @@
-class AddHasClosingAccountFeeToShareCapitalProducts < ActiveRecord::Migration[5.2]
+class AddHasClosingAccountFeeToShareCapitalProducts < ActiveRecord::Migration[5.1]
   def change
     add_column :share_capital_products, :has_closing_account_fee, :boolean, default: false
     add_column :share_capital_products, :closing_account_fee, :decimal, default: 0

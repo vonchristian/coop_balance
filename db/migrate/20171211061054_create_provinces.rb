@@ -1,4 +1,4 @@
-class CreateProvinces < ActiveRecord::Migration[5.2]
+class CreateProvinces < ActiveRecord::Migration[5.1]
   def change
     create_table :provinces, id: :uuid do |t|
       t.string :name

@@ -1,4 +1,4 @@
-class CreateOffices < ActiveRecord::Migration[5.2]
+class CreateOffices < ActiveRecord::Migration[5.1]
   def change
     create_table :offices, id: :uuid do |t|
       t.string :type

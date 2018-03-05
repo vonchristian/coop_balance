@@ -1,42 +1,39 @@
 module LoansModule
   class LoanProduct < ApplicationRecord
-    extend FriendlyId
-    friendly_id :name, use: :slugged
-
     belongs_to :loans_receivable_current_account, class_name: "AccountingModule::Account"
     belongs_to :loans_receivable_past_due_account, class_name: "AccountingModule::Account"
 
-    belongs_to :penalty_account, class_name: "AccountingModule::Account"
-
-    has_one :interest_config, class_name: "LoansModule::InterestConfig"
-    has_one :penalty_configuration
+    has_many :interest_configs,      class_name: "LoansModule::LoanProducts::InterestConfig"
+    has_many :penalty_configs,       class_name: "LoansModule::LoanProducts::PenaltyConfig"
+    has_many :loan_product_charges,  class_name: "LoansModule::LoanProducts::LoanProductCharge"
 
     has_many :loans
     has_many :member_borrowers, through: :loans, source: :borrower, source_type: 'Member'
     has_many :employee_borrowers, through: :loans, source: :borrower, source_type: 'User'
     has_many :organization_borrowers, through: :loans, source: :borrower, source_type: 'Organization'
-    has_many :loan_product_charges
     has_many :charges, through: :loan_product_charges
 #DO NOT ALLOW NIL RATE AND ACCOUNTS
-    delegate :rate, to: :interest_config, prefix: true, allow_nil: true
-    delegate :interest_revenue_account, :interest_revenue_account_id, to: :interest_config
+    delegate :rate, to: :current_interest_config, prefix: true, allow_nil: true
+    delegate :interest_revenue_account, :interest_revenue_account_id, to: :current_interest_config
     delegate :unearned_interest_income_account, :unearned_interest_income_account_id, to: :interest_config, allow_nil: true
     validates :name,:loans_receivable_current_account_id, :loans_receivable_past_due_account_id, presence: true
 
     validates :name, uniqueness: true
     validates :maximum_loanable_amount, numericality: true
-
+    def current_interest_config
+      interest_configs.current
+    end
     def monthly_interest_rate
       interest_rate / 12.0
     end
 
     def interest_rate
-      interest_config.rate
+      current_interest_config.rate
     end
 
     def self.accounts
-      all.map{|a| a.account } +
-      all.map{|a| a.interest_account } +
+      all.map{|a| a.loans_receivable_current_account } +
+      all.map{|a| a.interest_revenue_account } +
       all.map{ |a| a.penalty_account }
     end
 

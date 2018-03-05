@@ -39,5 +39,8 @@ module LoansModule
         0
       end
     end
+    def balance
+      regular_charge_amount - adjusted_amount
+    end
 	end
 end

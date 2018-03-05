@@ -105,8 +105,8 @@ module LoansModule
 		end
 
 		def self.interest_amount_for(loan)
-      loan.amortization_schedules.order(date: :asc).map{}
-			# (loan.interest_on_loan_balance / number_of_payments(loan))
+      # loan.amortization_schedules.order(date: :asc).map{}
+			(loan.interest_on_loan_balance / number_of_payments(loan))
 		end
 
     def self.number_of_payments(loan)
@@ -147,7 +147,7 @@ module LoansModule
 			end
 		end
     def self.update_with_prededucted_interest_payments(loan)
-      if loan.number_of_interest_payments_prededucted > 0
+      if  loan.number_of_interest_payments_prededucted > 0
         loan.amortization_schedules.order(date: :asc).first(loan.number_of_interest_payments_prededucted).each do |schedule|
           schedule.has_prededucted_interest = true
           schedule.save

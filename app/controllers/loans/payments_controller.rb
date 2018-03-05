@@ -6,9 +6,6 @@ module Loans
     def new
       @loan = LoansModule::Loan.find(params[:loan_id])
       @payment = LoanPaymentForm.new
-      unless @loan.disbursement.present? && current_user.cash_on_hand_account.present?
-        redirect_to loans_url, alert: "Loan is not yet disbursed"
-      end
     end
     def create
       @loan = LoansModule::Loan.find(params[:loan_id])

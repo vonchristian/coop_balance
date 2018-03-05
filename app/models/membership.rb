@@ -18,17 +18,6 @@ class Membership < ApplicationRecord
   has_many :membership_beneficiaries, class_name: "MembershipsModule::MembershipBeneficiary"
   has_many :beneficiaries, through: :membership_beneficiaries
 
-  has_many :savings,                class_name: "MembershipsModule::Saving",
-                                    foreign_key: 'membership_id'
-  has_many :loans,                  class_name: "LoansModule::Loan",
-                                    foreign_key: 'membership_id'
-  has_many :share_capitals,         class_name: "MembershipsModule::ShareCapital",
-                                    foreign_key: 'membership_id'
-  has_many :time_deposits,          class_name: "MembershipsModule::TimeDeposit",
-                                    foreign_key: 'membership_id'
-  has_many :program_subscriptions,  class_name: "MembershipsModule::ProgramSubscription", foreign_key: 'membership_id'
-  has_many :programs,               through: :program_subscriptions
-  has_many :voucher_amounts, as: :commercial_document, class_name: "Vouchers::VoucherAmount"
   before_save :set_search_term
   def name
     cooperator_name

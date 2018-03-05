@@ -1,4 +1,4 @@
-class CreateMarkUpPrices < ActiveRecord::Migration[5.2]
+class CreateMarkUpPrices < ActiveRecord::Migration[5.1]
   def change
     create_table :mark_up_prices, id: :uuid do |t|
       t.decimal :price

@@ -1,4 +1,4 @@
-class CreateInterestConfigs < ActiveRecord::Migration[5.2]
+class CreateInterestConfigs < ActiveRecord::Migration[5.1]
   def change
     create_table :interest_configs, id: :uuid do |t|
       t.belongs_to :loan_product, foreign_key: true, type: :uuid

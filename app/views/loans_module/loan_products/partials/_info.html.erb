@@ -2,9 +2,8 @@
         <div class="col-md-6">
           <p class="text-muted"> INTEREST </p>
 
-          Rate <%= @loan_product.interest_config_rate %>
+          Rate <%= @loan_product.current_interest_config_rate %>
 
-          <%=link_to 'Edit', edit_loans_module_interest_config_path(@loan_product.interest_config) %>
           <hr />
           <%= @loan_product.maximum_loanable_amount %>
           <p class="text-muted">LOAN CHARGES </p>

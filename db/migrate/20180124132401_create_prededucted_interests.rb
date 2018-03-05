@@ -1,4 +1,4 @@
-class CreatePredeductedInterests < ActiveRecord::Migration[5.2]
+class CreatePredeductedInterests < ActiveRecord::Migration[5.1]
   def change
     create_table :prededucted_interests, id: :uuid do |t|
       t.belongs_to :loan, foreign_key: true, type: :uuid

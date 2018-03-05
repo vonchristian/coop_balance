@@ -1,4 +1,4 @@
-class CreateStoreFrontConfigs < ActiveRecord::Migration[5.2]
+class CreateStoreFrontConfigs < ActiveRecord::Migration[5.1]
   def change
     create_table :store_front_configs, id: :uuid do |t|
       t.belongs_to :cost_of_goods_sold_account, foreign_key: { to_table: :accounts }, type: :uuid

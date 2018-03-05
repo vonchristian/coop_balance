@@ -1,4 +1,4 @@
-class CreateUnitOfMeasurements < ActiveRecord::Migration[5.2]
+class CreateUnitOfMeasurements < ActiveRecord::Migration[5.1]
   def change
     create_table :unit_of_measurements, id: :uuid do |t|
       t.belongs_to :product, foreign_key: true, type: :uuid

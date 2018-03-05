@@ -1,4 +1,4 @@
-class AddStreetIdToAddresses < ActiveRecord::Migration[5.2]
+class AddStreetIdToAddresses < ActiveRecord::Migration[5.1]
   def change
     add_reference :addresses, :street, foreign_key: true, type: :uuid
     add_reference :addresses, :barangay, foreign_key: true, type: :uuid

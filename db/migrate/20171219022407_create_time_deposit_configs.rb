@@ -1,4 +1,4 @@
-class CreateTimeDepositConfigs < ActiveRecord::Migration[5.2]
+class CreateTimeDepositConfigs < ActiveRecord::Migration[5.1]
   def change
     create_table :time_deposit_configs, id: :uuid do |t|
       t.belongs_to :break_contract_account, foreign_key: { to_table: :accounts }, type: :uuid

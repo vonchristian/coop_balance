@@ -10,11 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_03_05_063044) do
+ActiveRecord::Schema.define(version: 20180305213201) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "pgcrypto"
   enable_extension "plpgsql"
+  enable_extension "pgcrypto"
 
   create_table "accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
@@ -346,6 +346,8 @@ ActiveRecord::Schema.define(version: 2018_03_05_063044) do
     t.boolean "add_on_interest"
     t.uuid "interest_revenue_account_id"
     t.uuid "unearned_interest_income_account_id"
+    t.uuid "interest_receivable_account_id"
+    t.index ["interest_receivable_account_id"], name: "index_interest_configs_on_interest_receivable_account_id"
     t.index ["interest_revenue_account_id"], name: "index_interest_configs_on_interest_revenue_account_id"
     t.index ["loan_product_id"], name: "index_interest_configs_on_loan_product_id"
     t.index ["unearned_interest_income_account_id"], name: "index_interest_configs_on_unearned_interest_income_account_id"
@@ -744,6 +746,18 @@ ActiveRecord::Schema.define(version: 2018_03_05_063044) do
     t.datetime "avatar_updated_at"
   end
 
+  create_table "penalty_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "loan_product_id"
+    t.decimal "rate"
+    t.uuid "penalty_receivable_account_id"
+    t.uuid "penalty_revenue_account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["loan_product_id"], name: "index_penalty_configs_on_loan_product_id"
+    t.index ["penalty_receivable_account_id"], name: "index_penalty_configs_on_penalty_receivable_account_id"
+    t.index ["penalty_revenue_account_id"], name: "index_penalty_configs_on_penalty_revenue_account_id"
+  end
+
   create_table "pg_search_documents", force: :cascade do |t|
     t.text "content"
     t.string "searchable_type"
@@ -802,8 +816,6 @@ ActiveRecord::Schema.define(version: 2018_03_05_063044) do
     t.datetime "updated_at", null: false
     t.string "subscriber_type"
     t.uuid "subscriber_id"
-    t.uuid "membership_id"
-    t.index ["membership_id"], name: "index_program_subscriptions_on_membership_id"
     t.index ["program_id"], name: "index_program_subscriptions_on_program_id"
     t.index ["subscriber_type", "subscriber_id"], name: "index_subscriber_in_program_subscriptions"
   end
@@ -968,8 +980,8 @@ ActiveRecord::Schema.define(version: 2018_03_05_063044) do
     t.datetime "date_opened"
     t.string "type"
     t.string "account_owner_name"
-    t.datetime "created_at", default: "2018-02-22 21:11:17", null: false
-    t.datetime "updated_at", default: "2018-02-22 21:11:17", null: false
+    t.datetime "created_at", default: "2018-03-06 06:11:22", null: false
+    t.datetime "updated_at", default: "2018-03-06 06:11:22", null: false
     t.integer "status"
     t.uuid "office_id"
     t.string "subscriber_type"
@@ -1231,6 +1243,7 @@ ActiveRecord::Schema.define(version: 2018_03_05_063044) do
   add_foreign_key "finished_good_materials", "products"
   add_foreign_key "finished_good_materials", "raw_materials"
   add_foreign_key "fixed_terms", "time_deposits"
+  add_foreign_key "interest_configs", "accounts", column: "interest_receivable_account_id"
   add_foreign_key "interest_configs", "accounts", column: "interest_revenue_account_id"
   add_foreign_key "interest_configs", "accounts", column: "unearned_interest_income_account_id"
   add_foreign_key "interest_configs", "loan_products"
@@ -1273,11 +1286,13 @@ ActiveRecord::Schema.define(version: 2018_03_05_063044) do
   add_foreign_key "offices", "cooperatives"
   add_foreign_key "orders", "users", column: "employee_id"
   add_foreign_key "organization_members", "organizations"
+  add_foreign_key "penalty_configs", "accounts", column: "penalty_receivable_account_id"
+  add_foreign_key "penalty_configs", "accounts", column: "penalty_revenue_account_id"
+  add_foreign_key "penalty_configs", "loan_products"
   add_foreign_key "prededucted_interests", "accounts", column: "credit_account_id"
   add_foreign_key "prededucted_interests", "accounts", column: "debit_account_id"
   add_foreign_key "prededucted_interests", "loans"
   add_foreign_key "products", "categories"
-  add_foreign_key "program_subscriptions", "memberships"
   add_foreign_key "program_subscriptions", "programs"
   add_foreign_key "programs", "accounts"
   add_foreign_key "raw_material_stocks", "raw_materials"

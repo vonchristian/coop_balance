@@ -35,7 +35,7 @@ module MembershipsModule
     end
 
     def entries
-      share_capital_product_paid_up_account.entries.where(commercial_document_id: self) +
+      share_capital_product_paid_up_account.entries.where(commercial_document: self) +
       share_capital_product_closing_account.entries.where(commercial_document: self) +
       share_capital_product_subscription_account.entries.where(commercial_document: self)
     end

@@ -18,6 +18,7 @@
            <div class="col-md-3">
             <small class="text-muted">FINES/PENALTIES</small>
             <h3><%= number_to_currency @loan.penalties_total %></h3>
+            <%=link_to 'New Interest', new_loans_module_loan_interest_posting_path(@loan) %>
           </div>
           <div class="col-md-3">
             <small class="text-red">BALANCE</small>
