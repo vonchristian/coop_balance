@@ -12,7 +12,7 @@ class MembershipApplicationsController < ApplicationController
     end
   end
   def show
-    @membership = Member.find(params[:id])
+    @membership = Membership.find(params[:membership_application_id])
   end
 
   private

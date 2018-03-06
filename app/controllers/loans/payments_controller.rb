@@ -20,7 +20,8 @@ module Loans
 
     private
     def payment_params
-      params.require(:loan_payment_form).permit(:principal_amount, :interest_amount, :penalty_amount, :recorder_id, :loan_id, :reference_number, :date)
+      params.require(:loan_payment_form).
+      permit(:principal_amount, :interest_amount, :penalty_amount, :recorder_id, :loan_id, :reference_number, :date)
     end
   end
 end

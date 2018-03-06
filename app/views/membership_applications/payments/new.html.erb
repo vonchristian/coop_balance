@@ -3,12 +3,12 @@
     <div class="box box-solid">
       <div class="box-header">
         <center>
-          <%= image_tag(@membership.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %>
-          <h4><%= @membership.name %></h4>
+          <%= image_tag(@cooperator.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %>
+          <h4><%= @cooperator.name %></h4>
         </center>
       </div>
       <div class="box-body">
-        <% @membership.voucher_amounts.each do |amount| %>
+        <% @cooperator.voucher_amounts.each do |amount| %>
           <div class="row">
             <div class="col-md-5 col-md-offset-1">
               <%= amount.description %>
@@ -27,7 +27,7 @@
             <h4><b>TOTAL</b></h4>
           </div>
           <div class="col-md-5">
-            <h4><span class="pull-right"><b><%= number_to_currency @membership.voucher_amounts.total %></b></span></h4>
+            <h4><span class="pull-right"><b><%= number_to_currency @cooperator.voucher_amounts.total %></b></span></h4>
           </div>
         </div>
         <hr>

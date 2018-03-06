@@ -23,7 +23,7 @@
             <td><%= number_to_currency payment.debit_amounts.sum(&:amount) %> </td>
             <td><%= payment.reference_number %></td>
             <td>
-              <%= payment.recorder.try(:name) %>
+              <%= payment.recorder_name %>
             </td>
           </tr>
         <% end %>

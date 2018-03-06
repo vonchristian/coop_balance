@@ -76,6 +76,7 @@ Rails.application.routes.draw do
     resources :loans, except: [:destroy] do
       resources :interest_postings, only: [:new, :create], module: :loans
       resources :penalty_postings, only: [:new, :create], module: :loans
+      resources :interest_rebate_postings, only: [:new, :create], module: :loans
       resources :previous_loan_payments, only: [:new, :create]
       resources :store_credit_payments, only: [:new, :create]
       resources :loan_protection_funds, only: [:new, :create]

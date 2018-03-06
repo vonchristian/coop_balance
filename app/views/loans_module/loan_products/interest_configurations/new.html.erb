@@ -3,5 +3,7 @@
   <%= f.input :interest_revenue_account_id, collection: AccountingModule::Revenue.all.map{|a| [a.name, a.id] } %>
   <%= f.input :unearned_interest_income_account_id, collection: AccountingModule::Asset.all.map{|a| [a.name, a.id] } %>
   <%= f.input :interest_receivable_account_id, collection: AccountingModule::Asset.all.map{|a| [a.name, a.id] } %>
+  <%= f.input :interest_rebate_account_id, collection: AccountingModule::Asset.all.map{|a| [a.name, a.id] } %>
+
   <%= f.submit "Save Interest Configuration" %>
 <% end %>

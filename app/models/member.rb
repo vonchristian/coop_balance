@@ -1,8 +1,6 @@
 require 'csv'
 class Member < ApplicationRecord
   include PgSearch
-  extend FriendlyId
-  friendly_id :full_name, use: :slugged
   pg_search_scope :text_search, :against => [ :first_name, :middle_name, :last_name]
   multisearchable against: [:first_name, :last_name, :middle_name]
   enum sex: [:male, :female, :other]

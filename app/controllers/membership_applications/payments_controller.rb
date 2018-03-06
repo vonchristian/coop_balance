@@ -2,10 +2,12 @@ module MembershipApplications
   class PaymentsController < ApplicationController
     def new
       @membership = Membership.find(params[:membership_application_id])
+      @cooperator = @membership.cooperator
       @entry = MembershipApplications::PaymentProcessing.new
     end
     def create
       @membership = Membership.find(params[:membership_application_id])
+      @cooperator = @membership.cooperator
       @entry = MembershipApplications::PaymentProcessing.new(payment_params)
       if @entry.valid?
         @entry.save

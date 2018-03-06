@@ -17,6 +17,7 @@ module LoansModule
     delegate :interest_revenue_account,
              :interest_receivable_account,
              :unearned_interest_income_account,
+             :interest_rebate_account,
              to: :current_interest_config
     delegate :penalty_receivable_account,
              :penalty_revenue_account,

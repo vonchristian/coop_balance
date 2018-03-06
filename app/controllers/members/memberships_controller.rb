@@ -1,12 +1,12 @@
 module Members
   class MembershipsController < ApplicationController
     def new
-      @member = Member.friendly.find(params[:member_id])
+      @member = Member.find(params[:member_id])
       @membership = @member.build_membership
     end
 
     def create
-       @member = Member.friendly.find(params[:member_id])
+       @member = Member.find(params[:member_id])
       @membership = @member.create_membership(membership_params)
       if @membership.valid?
         @membership.save
@@ -17,11 +17,11 @@ module Members
     end
 
     def edit
-      @member = Member.friendly.find(params[:member_id])
+      @member = Member.find(params[:member_id])
       @membership = @member.membership
     end
     def update
-       @member = Member.friendly.find(params[:member_id])
+       @member = Member.find(params[:member_id])
       @membership = @member.create_membership(membership_params)
       if @membership.valid?
         @membership.save

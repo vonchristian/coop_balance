@@ -1,7 +1,7 @@
 module Members
   class AddressesController < ApplicationController
     def new
-      @member = Member.friendly.find(params[:member_id])
+      @member = Member.find(params[:member_id])
       @address = @member.addresses.build
     end
     def create

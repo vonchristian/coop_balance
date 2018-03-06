@@ -71,16 +71,22 @@ class MembershipApplication
     avatar: avatar)
     create_membership(member)
   end
-  def create_membership(member)
-    membership = Membership.pending.create!(cooperator: member, account_number: account_number, membership_type: membership_type, cooperative_id: cooperative_id)
-    subscribe_to_share_capital(membership)
-    subscribe_to_default_programs(membership)
+  def create_membership(cooperator)
+    Membership.pending.create!(
+      cooperator: cooperator,
+      account_number: account_number,
+      membership_type: membership_type,
+      cooperative_id: cooperative_id)
+    subscribe_to_share_capital(cooperator)
+    subscribe_to_default_programs(cooperator)
   end
   def subscribe_to_share_capital(subscriber)
-    MembershipsModule::ShareCapital.create(subscriber: subscriber, share_capital_product_id: share_capital_product_id)
+    MembershipsModule::ShareCapital.create(
+      subscriber: subscriber,
+      share_capital_product_id: share_capital_product_id)
   end
 
-  def subscribe_to_default_programs
+  def subscribe_to_default_programs(subscriber)
     CoopServicesModule::Program.subscribe(subscriber)
   end
 

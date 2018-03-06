@@ -19,7 +19,12 @@ module LoansModule
       private
       def interest_configuration_params
         params.require(:loans_module_loan_products_interest_config).
-        permit(:rate, :interest_revenue_account_id, :unearned_interest_income_account_id, :interest_receivable_account_id)
+        permit(:rate,
+               :interest_revenue_account_id,
+               :unearned_interest_income_account_id,
+               :interest_receivable_account_id,
+               :interest_rebate_account_id)
+               )
       end
     end
   end

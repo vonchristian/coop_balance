@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180306084105) do
+ActiveRecord::Schema.define(version: 20180306214921) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -355,6 +355,8 @@ ActiveRecord::Schema.define(version: 20180306084105) do
     t.uuid "interest_revenue_account_id"
     t.uuid "unearned_interest_income_account_id"
     t.uuid "interest_receivable_account_id"
+    t.uuid "interest_rebate_account_id"
+    t.index ["interest_rebate_account_id"], name: "index_interest_configs_on_interest_rebate_account_id"
     t.index ["interest_receivable_account_id"], name: "index_interest_configs_on_interest_receivable_account_id"
     t.index ["interest_revenue_account_id"], name: "index_interest_configs_on_interest_revenue_account_id"
     t.index ["loan_product_id"], name: "index_interest_configs_on_loan_product_id"
@@ -1250,6 +1252,7 @@ ActiveRecord::Schema.define(version: 20180306084105) do
   add_foreign_key "finished_good_materials", "products"
   add_foreign_key "finished_good_materials", "raw_materials"
   add_foreign_key "fixed_terms", "time_deposits"
+  add_foreign_key "interest_configs", "accounts", column: "interest_rebate_account_id"
   add_foreign_key "interest_configs", "accounts", column: "interest_receivable_account_id"
   add_foreign_key "interest_configs", "accounts", column: "interest_revenue_account_id"
   add_foreign_key "interest_configs", "accounts", column: "unearned_interest_income_account_id"

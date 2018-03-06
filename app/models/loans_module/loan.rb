@@ -34,7 +34,16 @@ module LoansModule
 
     delegate :name, :age, :contact_number, :current_address, to: :borrower,  prefix: true, allow_nil: true
     delegate :name,  to: :loan_product, prefix: true
-    delegate :unearned_interest_income_account, :loans_receivable_current_account, :penalty_revenue_account, :penalty_receivable_account, :interest_revenue_account, :interest_receivable_account, :interest_rate, :monthly_interest_rate, to: :loan_product, prefix: true
+    delegate :unearned_interest_income_account,
+             :loans_receivable_current_account,
+             :penalty_revenue_account,
+             :penalty_receivable_account,
+             :interest_revenue_account,
+             :interest_receivable_account,
+             :interest_rebate_account,
+             :interest_rate,
+             :monthly_interest_rate,
+             to: :loan_product, prefix: true
     delegate :name, to: :organization, prefix: true, allow_nil: true
     delegate :full_name, :cooperative, :current_occupation, to: :preparer, prefix: true
     delegate :maximum_loanable_amount, to: :loan_product

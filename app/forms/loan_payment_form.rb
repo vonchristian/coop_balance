@@ -31,7 +31,7 @@ class LoanPaymentForm
       commercial_document: find_loan,
       reference_number: reference_number,
       :description => "Payment of loan on #{Time.zone.now.strftime("%B %e, %Y")}",
-      recorder_id: find_employee,
+      recorder: find_employee,
       entry_date: date)
     interest_credit_amount = AccountingModule::CreditAmount.new(
       amount: interest_amount,

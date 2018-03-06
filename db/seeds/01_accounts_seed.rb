@@ -212,6 +212,8 @@ AccountingModule::Revenue.create(code: 40100, name: 'Income from Operations')
 AccountingModule::Revenue.create(code: 40110, name: 'Interest Income from Loans')
 AccountingModule::Revenue.create(code: 401101, name: 'Interest Income from Loans - Salary Loan')
 AccountingModule::Revenue.create(code: 401102, name: 'Interest Income from Loans - Regular Loan')
+AccountingModule::Revenue.create(code: 401100, name: 'Interest Income from Loans Rebates', contra: true)
+
 AccountingModule::Revenue.create(code: 40120, name: 'Service Fees')
 
 AccountingModule::Revenue.create(code: 401201, name: 'Service Fees - Inspection Fees')
