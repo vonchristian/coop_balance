@@ -14,14 +14,18 @@ module LoansModule
     has_many :charges, through: :loan_product_charges
 #DO NOT ALLOW NIL RATE AND ACCOUNTS
     delegate :rate, to: :current_interest_config, prefix: true, allow_nil: true
-    delegate :interest_revenue_account, :interest_revenue_account_id, to: :current_interest_config
+    delegate :interest_revenue_account, :unearned_interest_income_account, :interest_revenue_account_id, to: :current_interest_config
     validates :name,:loans_receivable_current_account_id, :loans_receivable_past_due_account_id, presence: true
+    delegate :penalty_receivable_account, to: :current_penalty_config
 
     validates :name, uniqueness: true
     validates :maximum_loanable_amount, numericality: true
 
     def current_interest_config
       interest_configs.current
+    end
+    def current_penalty_config
+      penalty_configs.current
     end
 
     def monthly_interest_rate
@@ -49,7 +53,7 @@ module LoansModule
     end
 
     def create_interest_on_loan_charge_for(loan)
-      interest_config.create_charges_for(loan)
+      current_interest_config.create_charges_for(loan)
     end
 
     def create_charges_that_depends_on_loan_amount(loan)

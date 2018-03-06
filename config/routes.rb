@@ -62,6 +62,7 @@ Rails.application.routes.draw do
     resources :dashboard, only: [:index]
     resources :loan_products, except:[:destroy] do
       resources :interest_configurations, only: [:new, :create], module: :loan_products
+      resources :penalty_configurations, only: [:new, :create], module: :loan_products
       resources :loan_product_charges, only: [:new, :create], module: :loan_products
       resources :loans, only: [:index], module: :loan_products
     end

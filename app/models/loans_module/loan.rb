@@ -16,7 +16,6 @@ module LoansModule
     belongs_to :organization, optional: true
     belongs_to :preparer, class_name: "User", foreign_key: 'preparer_id'
 
-    has_many :prededucted_interests, class_name: "LoansModule::PredeductedInterest", dependent: :destroy
     has_many :loan_protection_funds, class_name: "LoansModule::LoanProtectionFund", dependent: :destroy
     has_many :loan_approvals, class_name: "LoansModule::LoanApproval", dependent: :destroy
     has_many :approvers, through: :loan_approvals
@@ -35,12 +34,12 @@ module LoansModule
 
     delegate :name, :age, :contact_number, :current_address, to: :borrower,  prefix: true, allow_nil: true
     delegate :name,  to: :loan_product, prefix: true
-    delegate :unearned_interest_income_account, :interest_rate, :monthly_interest_rate, to: :loan_product, prefix: true
+    delegate :unearned_interest_income_account, :interest_revenue_account, :interest_rate, :monthly_interest_rate, to: :loan_product, prefix: true
     delegate :name, to: :organization, prefix: true, allow_nil: true
     delegate :full_name, :cooperative, :current_occupation, to: :preparer, prefix: true
     delegate :maximum_loanable_amount, to: :loan_product
     delegate :avatar, to: :borrower
-    delegate :number_of_interest_payments_prededucted, to: :interest_on_loan_charge, allow_nil: true
+    delegate :number_of_interest_payments_prededucted, to: :interest_on_loan_charge
 
     validates :loan_product_id, :term, :loan_amount, :borrower_id, presence: true
     validates :term, presence: true, numericality: { greater_than: 0.1 }
@@ -184,6 +183,13 @@ module LoansModule
     def balance_for(schedule)
       loan_amount - LoansModule::AmortizationSchedule.principal_for(schedule, self)
     end
+    def principal_balance_for(schedule) #used to compute interest
+      if schedule == self.amortization_schedules.order(date: :asc).first
+        loan_amount
+      else
+        loan_amount - amortization_schedules.principal_for(schedule.previous_schedule, self)
+      end
+    end
     def unpaid_principal
       loan_amount - paid_principal
     end
@@ -218,7 +224,7 @@ module LoansModule
       loan_product.interest_revenue_account.debits_balance(from_date: options[:from_date], to_date: options[:to_date], commercial_document_id: self.id)
     end
     def penalty_payments_total(options={})
-      loan_product.penalty_account.debits_balance(from_date: options[:from_date], to_date: options[:to_date], commercial_document_id: self.id)
+      loan_product.penalty_receivable_account.debits_balance(from_date: options[:from_date], to_date: options[:to_date], commercial_document_id: self.id)
     end
 
     def payments_total(options={})

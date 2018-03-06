@@ -18,6 +18,13 @@ module LoansModule
       end
       charges.join("")
     end
+    def formatted_interest(schedule)
+      if schedule.prededucted_interest?
+        "#{price(schedule.interest)} - PREDEDUCTED"
+      else
+        price(schedule.interest)
+      end
+    end
     def interest_amount_for(a)
       if @loan.interest_on_loan_charge.charge_adjustment.present? && @loan.interest_on_loan_charge.charge_adjustment.number_of_payments.present?
         number_of_payments = @loan.interest_on_loan_charge.charge_adjustment.number_of_payments
@@ -77,7 +84,7 @@ module LoansModule
     def amortization_schedule_data
       [["DATE", "PRINCIPAL", "INTEREST", "OTHER CHARGES", "TOTAL AMORTIZATION", "BALANCE"]] +
       [["", "","", "", "", "#{price(@loan.loan_amount)}"]] +
-      @table_date ||= @amortization_schedules.order(date: :asc).map{|a| [a.date.strftime("%B %e, %Y"), price(a.principal), price(a.interest_computation), other_charges_for(a.date), price(a.total_amortization), price(@loan.balance_for(a))] }
+      @table_date ||= @amortization_schedules.order(date: :asc).map{|a| [a.date.strftime("%B %e, %Y"), price(a.principal), (formatted_interest(a)), other_charges_for(a.date), price(a.total_amortization), price(@loan.balance_for(a))] }
     end
     def signatory_details
     move_down 50

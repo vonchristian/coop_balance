@@ -13,8 +13,8 @@ module LoansModule
       def create_charges_for(loan)
        interest_on_loan_charge = Charge.amount_type.create!(
         name: "Interest on Loan",
-        amount: (self.rate) * loan.loan_amount,
-        account: self.unearned_interest_income_account)
+        amount: rate * loan.loan_amount,
+        account: unearned_interest_income_account)
         loan.loan_charges.find_or_create_by(chargeable: interest_on_loan_charge, commercial_document: loan )
       end
     end

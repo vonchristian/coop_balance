@@ -24,6 +24,9 @@ class DisbursementForm
   end
   def disburse_voucher
     find_voucher.update_attributes(disburser_id: recorder_id)
+    if find_voucher.payee.kind_of?(LoansModule::Loan)
+      find_voucher.payee.amortization_schedules.update_amortization_schedule_dates(find_voucher.payee)
+    end
   end
 
   def find_voucher

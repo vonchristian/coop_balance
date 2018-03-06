@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180305231257) do
+ActiveRecord::Schema.define(version: 20180306033014) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,6 +60,14 @@ ActiveRecord::Schema.define(version: 20180305231257) do
     t.datetime "updated_at", null: false
     t.integer "schedule_type"
     t.boolean "has_prededucted_interest"
+    t.boolean "prededucted_interest", default: false
+    t.uuid "debit_account_id"
+    t.uuid "credit_account_id"
+    t.string "commercial_document_type"
+    t.uuid "commercial_document_id"
+    t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_amortization_schedules"
+    t.index ["credit_account_id"], name: "index_amortization_schedules_on_credit_account_id"
+    t.index ["debit_account_id"], name: "index_amortization_schedules_on_debit_account_id"
     t.index ["loan_id"], name: "index_amortization_schedules_on_loan_id"
     t.index ["schedule_type"], name: "index_amortization_schedules_on_schedule_type"
   end
@@ -1214,6 +1222,8 @@ ActiveRecord::Schema.define(version: 20180305231257) do
   add_foreign_key "addresses", "municipalities"
   add_foreign_key "addresses", "provinces"
   add_foreign_key "addresses", "streets"
+  add_foreign_key "amortization_schedules", "accounts", column: "credit_account_id"
+  add_foreign_key "amortization_schedules", "accounts", column: "debit_account_id"
   add_foreign_key "amortization_schedules", "loans"
   add_foreign_key "amounts", "accounts"
   add_foreign_key "amounts", "entries"
