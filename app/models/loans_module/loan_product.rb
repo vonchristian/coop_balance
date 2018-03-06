@@ -13,10 +13,16 @@ module LoansModule
     has_many :organization_borrowers, through: :loans, source: :borrower, source_type: 'Organization'
     has_many :charges, through: :loan_product_charges
 #DO NOT ALLOW NIL RATE AND ACCOUNTS
-    delegate :rate, to: :current_interest_config, prefix: true, allow_nil: true
-    delegate :interest_revenue_account, :unearned_interest_income_account, :interest_revenue_account_id, to: :current_interest_config
+    delegate :rate, to: :current_interest_config, prefix: true
+    delegate :interest_revenue_account,
+             :interest_receivable_account,
+             :unearned_interest_income_account,
+             to: :current_interest_config
+    delegate :penalty_receivable_account,
+             :penalty_revenue_account,
+             to: :current_penalty_config
+
     validates :name,:loans_receivable_current_account_id, :loans_receivable_past_due_account_id, presence: true
-    delegate :penalty_receivable_account, to: :current_penalty_config
 
     validates :name, uniqueness: true
     validates :maximum_loanable_amount, numericality: true
@@ -33,13 +39,13 @@ module LoansModule
     end
 
     def interest_rate
-      current_interest_config.rate
+      current_interest_config_rate
     end
 
     def self.accounts
       all.map{|a| a.loans_receivable_current_account } +
       all.map{|a| a.interest_revenue_account } +
-      all.map{ |a| a.penalty_account }
+      all.map{ |a| a.penalty_receivable_account }
     end
 
     def borrowers

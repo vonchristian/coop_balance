@@ -1,0 +1,9 @@
+<%= simple_form_for [@loan, @interest_posting], url: :loans_module_loan_penalty_postings do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :amount %>
+  <%= f.input :reference_number %>
+  <%= f.input :description %>
+  <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+  <%= f.input :loan_id, input_html: { value: @loan.id }, as: :hidden %>
+  <%= f.submit "Post Interest" %>
+<% end %>

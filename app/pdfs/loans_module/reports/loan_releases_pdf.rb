@@ -1,10 +1,10 @@
 module LoansModule
   module Reports
     class LoanReleasesPdf < Prawn::Document
-      def initialize(loans, date, view_context)
+      def initialize(loans, from_date, to_date, view_context)
         super(margin: 40, page_size: "A4", page_layout: :portrait)
         @loans = loans
-        @date = date
+        @from_date = to_date
         @view_context = view_context
         heading
         loans_table
@@ -24,7 +24,7 @@ module LoansModule
         bounding_box [0, 760], width: 400 do
           text "Loan Releases Report", style: :bold, size: 14
           move_down 5
-          text "#{@date.strftime("%B %e, %Y")} ", size: 10
+          text "#{@from_date.strftime("%B %e, %Y")} ", size: 10
           move_down 5
         end
         move_down 10
@@ -38,7 +38,7 @@ module LoansModule
 
       def loans_table
         if @loans.any?
-          table(table_data, header: true, cell_style: { size: 12, font: "Helvetica"}) do
+          table(table_data, header: true, cell_style: { size: 9, font: "Helvetica"}) do
             column(1).align = :right
             row(0).font_style = :bold
             row(0).background_color = 'DDDDDD'
@@ -50,9 +50,9 @@ module LoansModule
 
     def table_data
       move_down 5
-      [["Borrower", "Date Disbursed", "Net Proceed", "Balance"]] +
-      @table_data ||= @loans.map { |e| [e.borrower_name, e.disbursement_date.try(:strftime, ("%B %e, %Y")), price(e.net_proceed), price(e.balance)]} +
-      [["#{@loans.count}", "#{price(@loans.sum(&:balance))}"]]
+      [["Borrower", "Type of Loan", "Address", "Contact Number", "Date Disbursed", "Net Proceed"]] +
+      @table_data ||= @loans.map { |e| [e.borrower_name, e.loan_product_name, e.disbursement_date.try(:strftime, ("%B %e, %Y")), price(e.net_proceed)]} +
+      [["#{@loans.count}", "", "#{price(@loans.sum(&:balance))}"]]
     end
     end
   end

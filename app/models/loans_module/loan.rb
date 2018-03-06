@@ -34,7 +34,7 @@ module LoansModule
 
     delegate :name, :age, :contact_number, :current_address, to: :borrower,  prefix: true, allow_nil: true
     delegate :name,  to: :loan_product, prefix: true
-    delegate :unearned_interest_income_account, :interest_revenue_account, :interest_rate, :monthly_interest_rate, to: :loan_product, prefix: true
+    delegate :unearned_interest_income_account, :loans_receivable_current_account, :penalty_revenue_account, :penalty_receivable_account, :interest_revenue_account, :interest_receivable_account, :interest_rate, :monthly_interest_rate, to: :loan_product, prefix: true
     delegate :name, to: :organization, prefix: true, allow_nil: true
     delegate :full_name, :cooperative, :current_occupation, to: :preparer, prefix: true
     delegate :maximum_loanable_amount, to: :loan_product
@@ -56,14 +56,18 @@ module LoansModule
       end
       entries
     end
-    def loan_payments
+    def loan_payments(options={})
       entries = []
-        LoansModule::LoanProduct.accounts.each do |account|
-          account.credit_amounts.where(commercial_document: self).each do |amount|
-            entries << amount
-          end
-        end
-      entries
+      loan_product_loans_receivable_current_account.credit_amounts.where(commercial_document: self).each do |amount|
+        entries << amount.entry
+      end
+      loan_product_interest_receivable_account.credit_amounts.where(commercial_document: self).each do |amount|
+        entries << amount.entry
+      end
+      loan_product_penalty_receivable_account.credit_amounts.where(commercial_document: self).each do |amount|
+        entries << amount.entry
+      end
+      entries.uniq
     end
 
 
@@ -74,8 +78,16 @@ module LoansModule
       all.select{ |a| a.disbursement.present? }
     end
 
-    def self.disbursed_on(date)
-        includes([:entries]).where('entries.entry_date' => (date.beginning_of_day)..(date.end_of_day))
+    def self.disbursed_on(options={})
+      if options[:from_date] && options[:to_date]
+        date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
+        disbursed.where('disbursement_date' => (date_range.start_date..date_range.end_date))
+      else
+        all
+      end
+    end
+    def self.disbursed
+      where.not(disbursement_date: nil)
     end
 
     def self.disbursed_by(employee)
@@ -177,7 +189,11 @@ module LoansModule
       if !disbursed?
         loan_amount - loan_charges.total
       else
-        loan_product.loans_receivable_current_account.debits_balance(commercial_document_id: self.id)
+        amounts = []
+        User.cash_on_hand_accounts.each do |account|
+          amounts << disbursement_entry.credit_amounts.where(account: account).pluck(:amount).sum
+        end
+        amounts.sum
       end
     end
     def balance_for(schedule)
@@ -203,32 +219,30 @@ module LoansModule
     def disbursed?
       loan_product.loans_receivable_current_account.debit_amounts.where(commercial_document: self).present?
     end
-
-    def principal_balance(options={})
-      loan_product.loans_receivable_current_account.balance(commercial_document_id: self.id, from_date: options[:from_date], to_date: options[:to_date])
+    def disbursement_entry
+      loan_product.loans_receivable_current_account.debit_amounts.where(commercial_document: self).first.entry
     end
 
-    def penalty_balance(options={})
-      loan_product_penalty_account.balance(from_date: options[:from_date], to_date: options[:to_date], commercial_document_id: self.id)
+    def principal_balance
+      loan_product.loans_receivable_current_account.balance(commercial_document_id: self.id)
     end
 
-    def interest_balance(options={})
-      loan_product_interest_receivable_account.balance(from_date: options[:from_date], to_date: options[:to_date], commercial_document_id: self.id)
+
+    def principal_payments
+      loan_product.loans_receivable_current_account.credits_balance(commercial_document_id: self.id)
     end
 
-    def principal_payments_total(options={})
-      loan_product.loans_receivable_current_account.credits_balance(commercial_document_id: self.id, from_date: options[:from_date], to_date: options[:to_date])
+    def interest_payments
+      loan_product_interest_receivable_account.credits_balance(commercial_document_id: self.id)
+    end
+    def penalty_payments
+      loan_product_penalty_receivable_account.credits_balance(commercial_document_id: self.id)
     end
 
-    def interest_payments_total(options={})
-      loan_product.interest_revenue_account.debits_balance(from_date: options[:from_date], to_date: options[:to_date], commercial_document_id: self.id)
-    end
-    def penalty_payments_total(options={})
-      loan_product.penalty_receivable_account.debits_balance(from_date: options[:from_date], to_date: options[:to_date], commercial_document_id: self.id)
-    end
-
-    def payments_total(options={})
-      principal_payments_total(options) + interest_payments_total(options) + penalty_payments_total(options)
+    def payments_total
+      principal_payments +
+      interest_payments +
+      penalty_payments
     end
 
     def disbursement
@@ -243,15 +257,24 @@ module LoansModule
       end
     end
 
-    def disbursement_date
-      if disbursement.present?
-        disbursement.entry_date
-      end
+    def balance
+      principal_balance +
+      interest_receivable_balance +
+      penalties_balance
+    end
+    def interest_receivable_balance
+      loan_product_interest_receivable_account.balance(commercial_document_id: self.id)
+    end
+    def penalties_balance
+      loan_product_penalty_receivable_account.balance(commercial_document_id: self.id)
+    end
+    def interest_receivable_debits_balance
+      loan_product_interest_receivable_account.debits_balance(commercial_document_id: self.id)
+    end
+     def penalties_debits_balance
+      loan_product_penalty_receivable_account.debits_balance(commercial_document_id: self.id)
     end
 
-    def balance
-      principal_balance
-    end
 
     def status_color
       'yellow'
@@ -266,6 +289,10 @@ module LoansModule
     end
     def number_of_months_past_due
       number_of_days_past_due / 30
+    end
+
+    def paid?
+      disbursed? && principal_balance.zero?
     end
 
     private

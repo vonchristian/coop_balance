@@ -28,17 +28,16 @@
           <li class="header"> LOANS DEPARTMENT </li>
           <li><a href="/loans_module/dashboard"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
 
-          <li class=<%#= 'active' if current_page?(loans_module_loan_products_path) %> ><a href="/loans_module/loan_products"><i class="fa fa-pie-chart"></i> <span>Loan Products </span></a></li>
-          <li class=<%#= 'active' if current_page?(loans_module_loan_products_path) %> ><a href="/loans_module/loan_applications/new"><i class="fa fa-calculator"></i> <span>New Loan</span></a></li>
-          <li class=<%#= 'active' if current_page?(loans_module_loans_path) %> ><a href="/loans"><i class="fa fa-credit-card"></i> <span> Loans</span></a></li>
+          <li class=<%= 'active' if current_page?(loans_module_loan_products_path) %> ><a href="/loans_module/loan_products"><i class="fa fa-pie-chart"></i> <span>Loan Products </span></a></li>
+          <li class=<%= 'active' if current_page?(loans_module_loan_products_path) %> ><a href="/loans_module/loan_applications/new"><i class="fa fa-calculator"></i> <span>New Loan</span></a></li>
+          <li class=<%= 'active' if current_page?(loans_module_loans_path) %> ><a href="/loans"><i class="fa fa-credit-card"></i> <span> Loans</span></a></li>
 
-          <li class=<%= 'active' if current_page?(members_path) %> ><a href="/loans_module/borrowers"><i class="icon-people"></i> <span> &nbsp; Borrowers</span></a></li>
-          <li class=<%= 'active' if current_page?(employees_path) %> ><a href="/employees"><i class="fa fa-grid"></i> <span> Employees</span></a></li>
+
              <li class=<%= 'active' if current_page?(organizations_path) %> ><a href="/organizations"><i class="fa fa-sitemap"></i> <span> Organizations</span></a></li>
 
 
-          <li class=<%#= 'active' if current_page?(loans_module_members_path) %> ><a href="/loans_module/schedules"><i class="fa fa-calendar"></i> <span> Calendar</span></a></li>
-          <li class=<%#= 'active' if current_page?(loans_module_members_path) %> ><a href="/loans_module/payment_schedules"><i class="fa fa-calendar"></i> <span> Amortization Schedules</span></a></li>
+          <li class=<%= 'active' if current_page?(loans_module_schedules_path) %> ><a href="/loans_module/schedules"><i class="fa fa-calendar"></i> <span> Schedules</span></a></li>
+
           <li class=<%= 'active' if current_page?(loans_module_settings_path) %> ><a href="/loans_module/settings"><i class="icon-sliders"></i> <span> &nbsp; Settings</span></a></li>
           <li class=<%#= 'active' if current_page?(admin_settings_path) %> ><a href="/loans_module/aging_loans"><i class="fa fa-hourglass-end"></i> <span> Aging Loans</span></a></li>
           <li class=<%= 'active' if current_page?(loans_module_reports_path) %> ><a href="/loans_module/reports"><i class="icon-folder"></i> <span>  &nbsp;Reports</span></a></li>

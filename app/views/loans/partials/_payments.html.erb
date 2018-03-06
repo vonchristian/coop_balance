@@ -20,10 +20,10 @@
         <% @loan.loan_payments.each do |payment| %>
           <tr>
             <td><%= payment.entry_date.strftime("%B %e, %Y") %></td>
-            <td><%= number_to_currency payment.amount %> </td>
+            <td><%= number_to_currency payment.debit_amounts.sum(&:amount) %> </td>
             <td><%= payment.reference_number %></td>
             <td>
-              <%= image_tag(payment.recorder.avatar.url(:thumb), class: "img-circle", height: 40, width: 40) %> &nbsp; <%= payment.recorder.try(:name) %>
+              <%= payment.recorder.try(:name) %>
             </td>
           </tr>
         <% end %>

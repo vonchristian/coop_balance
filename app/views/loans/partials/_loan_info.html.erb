@@ -7,18 +7,22 @@
       <div class="box-body">
         <div class="row">
           <div class="col-md-3">
-            <small class="text-muted">LOAN AMOUNT</small>
+            <small class="text-muted">PRINCIPAL</small>
             <h3><%= number_to_currency @loan.loan_amount %></h3>
           </div>
-
-          <div class="col-md-3">
-            <small class="text-muted">PAYMENT</small>
-            <h3><%= number_to_currency @loan.payments_total %></h3>
+           <div class="col-md-2">
+            <small class="text-muted">INTERESTS</small>
+            <h5><%= number_to_currency @loan.interest_receivable_debits_balance %></h5>
+            <%=link_to 'New Interest', new_loans_module_loan_interest_posting_path(@loan), class: "btn btn-xs btn-danger" %><br>
           </div>
-           <div class="col-md-3">
-            <small class="text-muted">FINES/PENALTIES</small>
-            <h3><%= number_to_currency @loan.penalties_total %></h3>
-            <%=link_to 'New Interest', new_loans_module_loan_interest_posting_path(@loan) %>
+          <div class="col-md-2">
+            <small class="text-muted">PENALTIES</small>
+            <h5><%= number_to_currency @loan.penalties_debits_balance %></h5>
+            <%=link_to 'New Penalty', new_loans_module_loan_penalty_posting_path(@loan), class: "btn btn-xs btn-danger" %><br>
+          </div>
+          <div class="col-md-2">
+            <small class="text-muted">PAYMENTS</small>
+            <h3><%= number_to_currency @loan.payments_total %></h3>
           </div>
           <div class="col-md-3">
             <small class="text-red">BALANCE</small>
@@ -211,22 +215,10 @@
           </div>
         </div>
         <hr>
-        <div class="row">
-          <div class="col-md-6">
-            <span class="text-muted"> MATURITY DETAILS </span><br>
-            <span class="badge bg-red"><%= @loan.number_of_days_past_due %> days </span> past due
-            <hr>
-            or
-            <%= @loan.number_of_months_past_due %> months past due or <%= @loan.number_of_months_past_due / 12 %> years past due
-            <hr />
-            <p class="text-muted">LOAN PROTECTION FUND </p>
-            <%= link_to 'Compute LPF', new_loans_module_loan_loan_protection_fund_path(@loan) %>
-          </div>
-
-        </div>
       </div>
     </div>
   </div>
 </div>
 
 
+<%=@loan.paid? %>

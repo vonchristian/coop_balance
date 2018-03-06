@@ -24,26 +24,48 @@ class LoanPaymentForm
   end
 
   def save_payment
-    interest_revenue_account = CoopConfigurationsModule::LoanInterestConfig.account_to_debit
-    penalty_account = CoopConfigurationsModule::LoanPenaltyConfig.account_to_debit
+    interest_revenue_account = find_loan.loan_product_interest_receivable_account
+    penalty_account = find_loan.loan_product_penalty_receivable_account
 
-    entry = AccountingModule::Entry.new(commercial_document: find_loan,  reference_number: reference_number, :description => "Payment of loan on #{Time.zone.now.strftime("%B %e, %Y")}", recorder_id: recorder_id, entry_date: date)
-    interest_credit_amount = AccountingModule::CreditAmount.new(amount: interest_amount, account: interest_revenue_account, commercial_document: find_loan)
-    penalty_credit_amount = AccountingModule::CreditAmount.new(amount: penalty_amount, account: penalty_account, commercial_document: find_loan)
-    principal_credit_amount = AccountingModule::CreditAmount.new(amount: principal_amount, account: find_loan.loan_product_account, commercial_document: find_loan)
-    principal_debit_amount = AccountingModule::DebitAmount.new(amount: principal_amount, account: find_employee.cash_on_hand_account, commercial_document: find_loan)
-    interest_debit_amount = AccountingModule::DebitAmount.new(amount: interest_amount, account: find_employee.cash_on_hand_account, commercial_document: find_loan)
-    penalty_debit_amount = AccountingModule::DebitAmount.new(amount: penalty_amount, account: find_employee.cash_on_hand_account, commercial_document: find_loan)
+    entry = AccountingModule::Entry.new(
+      commercial_document: find_loan,
+      reference_number: reference_number,
+      :description => "Payment of loan on #{Time.zone.now.strftime("%B %e, %Y")}",
+      recorder_id: find_employee,
+      entry_date: date)
+    interest_credit_amount = AccountingModule::CreditAmount.new(
+      amount: interest_amount,
+      account: interest_revenue_account,
+      commercial_document: find_loan)
+    penalty_credit_amount = AccountingModule::CreditAmount.new(
+      amount: penalty_amount,
+      account: penalty_account,
+      commercial_document: find_loan)
+    principal_credit_amount = AccountingModule::CreditAmount.new(
+      amount: principal_amount,
+      account: find_loan.loan_product_loans_receivable_current_account,
+      commercial_document: find_loan)
+    principal_debit_amount = AccountingModule::DebitAmount.new(
+      amount: principal_amount,
+      account: find_employee.cash_on_hand_account,
+      commercial_document: find_loan)
+    interest_debit_amount = AccountingModule::DebitAmount.new(
+      amount: interest_amount,
+      account: find_employee.cash_on_hand_account,
+      commercial_document: find_loan)
+    penalty_debit_amount = AccountingModule::DebitAmount.new(
+      amount: penalty_amount,
+      account: find_employee.cash_on_hand_account,
+      commercial_document: find_loan)
     entry.debit_amounts << principal_debit_amount
     if interest_amount.to_f > 0
       entry.debit_amounts << interest_debit_amount
+      entry.credit_amounts << interest_credit_amount
     end
     if penalty_amount.to_f > 0
       entry.debit_amounts << penalty_debit_amount
+      entry.credit_amounts << penalty_credit_amount
     end
-
-    entry.credit_amounts << interest_credit_amount
-    entry.credit_amounts << penalty_credit_amount
     entry.credit_amounts << principal_credit_amount
     entry.save!
   end

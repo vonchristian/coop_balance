@@ -44,6 +44,8 @@ Rails.application.routes.draw do
 
   resources :loans_module, only: [:index]
   namespace :loans_module do
+    resources :schedules, only: [:index, :show]
+    resources :amortization_schedules, only: [:show], module: :schedules
     namespace :reports do
       resources :loan_releases, only: [:index]
       resources :loan_protection_funds, only: [:index]
@@ -55,7 +57,6 @@ Rails.application.routes.draw do
 
     resources :reports, only: [:index]
     resources :loan_registries, only: [:new, :create]
-    resources :payment_schedules, only: [:index, :show, :edit, :update]
     resources :aging_loans, only: [:index, :show]
     resources :loan_calculator, only: [:index]
     resources :loan_applications, only: [:new, :create, :show, :edit, :update, :destroy]
@@ -74,6 +75,7 @@ Rails.application.routes.draw do
 
     resources :loans, except: [:destroy] do
       resources :interest_postings, only: [:new, :create], module: :loans
+      resources :penalty_postings, only: [:new, :create], module: :loans
       resources :previous_loan_payments, only: [:new, :create]
       resources :store_credit_payments, only: [:new, :create]
       resources :loan_protection_funds, only: [:new, :create]
@@ -92,7 +94,6 @@ Rails.application.routes.draw do
     resources :charges, only: [:new, :create]
     resources :loan_product_charges, only: [:new, :create]
     resources :loan_calculator, only: [:index]
-    resources :schedules, only: [:index, :show]
     resources :notices, only: [:index, :show]
   end
   resources :share_capitals do

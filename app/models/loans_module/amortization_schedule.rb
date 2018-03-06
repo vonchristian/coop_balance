@@ -8,29 +8,28 @@ module LoansModule
     has_many :notes, as: :noteable
 
     accepts_nested_attributes_for :notes
+    def color
+      if missed_payment?
+        "red"
+      elsif payment_made?
+        "green"
+      else
+        "yellow"
+      end
+    end
+    def missed_payment?
+      !payment_made?
+    end
+    def payment_made?
+      loan.loan_payments(from_date: self.date.beginning_of_week, to_date: self.date.end_of_week).present?
+    end
+
     def previous_schedule
       from_date = loan.amortization_schedules.order(date: :asc).first.date
       to_date = self.date
       count = loan.amortization_schedules.select { |a| (from_date.beginning_of_day..to_date.end_of_day).cover?(a.date) }.count
       loan.amortization_schedules.order(date: :asc).take(count-1).last
     end
-
-    def self.update_amortization_schedule_dates(loan)
-      update_first(loan)
-    end
-
-    def self.update_first(loan)
-      first = loan.amortization_schedules.order(date: :asc).first.update_attributes(
-        date: loan.disbursement_date)
-      loan.amortization_schedules.order(date: :asc).each do |amortization_schedule|
-        if !amortization_schedule == first
-          amortization_schedule.date = schedule_date_for(loan)
-          amortization_schedule.save
-        end
-      end
-    end
-
-
 
 
 
@@ -66,7 +65,7 @@ module LoansModule
 
     def self.scheduled_for(options={})
 			if options[:from_date].present? && options[:to_date].present?
-				date_range = DateRange.new(from_date options[:from_date], to_date: options[:to_date])
+				date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
         where('date' => (date_range.start_date..date_range.end_date))
       end
     end

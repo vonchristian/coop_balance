@@ -1,17 +1,17 @@
 module LoansModule
   module Loans
-    class InterestPosting
+    class PenaltyPosting
       include ActiveModel::Model
       attr_accessor :date, :reference_number, :description, :amount, :employee_id, :loan_id
 
       def post!
         ActiveRecord::Base.transaction do
-          post_interest
+          post_penalty
         end
       end
 
       private
-      def post_interest
+      def post_penalty
         AccountingModule::Entry.create(
           entry_date: date,
           reference_number: reference_number,
@@ -19,12 +19,12 @@ module LoansModule
           commercial_document: find_borrower,
           credit_amounts_attributes: [
             amount: amount,
-            account: interest_income_account,
+            account: penalty_income_account,
             commercial_document: find_loan
           ],
           debit_amounts_attributes: [
             amount: amount,
-            account: interest_receivable_account,
+            account: penalty_receivable_account,
             commercial_document: find_loan
           ]
         )
@@ -36,11 +36,11 @@ module LoansModule
       def find_loan
         LoansModule::Loan.find_by_id(loan_id)
       end
-      def interest_income_account
-        find_loan.loan_product.interest_revenue_account
+      def penalty_income_account
+        find_loan.loan_product_penalty_revenue_account
       end
-      def interest_receivable_account
-        find_loan.loan_product.interest_receivable_account
+      def penalty_receivable_account
+        find_loan.loan_product_penalty_receivable_account
       end
     end
   end

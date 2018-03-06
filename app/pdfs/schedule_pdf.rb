@@ -7,10 +7,10 @@ class SchedulePdf < Prawn::Document
     heading
   end
   private
-  def heading 
+  def heading
     bounding_box [0, 780], width: 100 do
       image "#{Rails.root}/app/assets/images/logo_kcmdc.jpg", width: 50, height: 50, align: :center
-    end 
+    end
     bounding_box [0, 780], width: 530 do
       text "KIANGAN COMMUNITY MULTIPURPOSE DEVELOPMENT COOPERATIVE", align: :center
       text "Poblacion, Kiangan, Ifugao", size: 12, align: :center
@@ -24,5 +24,5 @@ class SchedulePdf < Prawn::Document
         move_down 15
       end
     end
-  end 
+  end
 end
