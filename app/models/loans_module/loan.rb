@@ -44,7 +44,7 @@ module LoansModule
     validates :loan_product_id, :term, :loan_amount, :borrower_id, presence: true
     validates :term, presence: true, numericality: { greater_than: 0.1 }
     validates :loan_amount, numericality: { less_than_or_equal_to: :maximum_loanable_amount }
-
+    before_save :set_borrower_full_name
     def self.loan_payments(options={})
       entries = []
       if options[:from_date] && options[:to_date] && options[:employee_id].present?
@@ -298,6 +298,9 @@ module LoansModule
     private
       def set_default_date
         self.application_date ||= Time.zone.now
+      end
+      def set_borrower_full_name
+        self.borrower_full_name = self.borrower_name
       end
 
 

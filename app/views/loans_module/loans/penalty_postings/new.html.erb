@@ -1,9 +1,25 @@
-<%= simple_form_for [@loan, @interest_posting], url: :loans_module_loan_penalty_postings do |f| %>
-  <%= f.error_notification %>
-  <%= f.input :amount %>
-  <%= f.input :reference_number %>
-  <%= f.input :description %>
-  <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
-  <%= f.input :loan_id, input_html: { value: @loan.id }, as: :hidden %>
-  <%= f.submit "Post Interest" %>
-<% end %>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="box box-danger">
+      <div class="box-header bg-red">
+        <center>
+          <%=image_tag(@loan.borrower.avatar.url(:medium), height: 60, width: 60, class: "img-circle") %>
+          <h4><%= @loan.borrower_name %></h4>
+        </center>
+      </div>
+      <div class="box-body">
+        <%= simple_form_for [@loan, @penalty_posting], url: :loans_module_loan_penalty_postings do |f| %>
+          <%= f.error_notification %>
+          <%= f.input :amount %>
+          <%= f.input :reference_number %>
+          <%= f.input :description %>
+          <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+          <%= f.input :loan_id, input_html: { value: @loan.id }, as: :hidden %>
+          <div class="box-footer">
+            <%= f.submit "Post Penalty", class: "btn btn-danger pull-right" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
