@@ -3,6 +3,7 @@ module CoopServicesModule
     belongs_to :paid_up_account, class_name: "AccountingModule::Account"
     belongs_to :closing_account, class_name: "AccountingModule::Account"
     belongs_to :subscription_account, class_name: "AccountingModule::Account"
+    belongs_to :interest_payable_account, class_name: "AccountingModule::Account"
 
     has_many :share_capital_product_shares
     has_many :subscribers, class_name: "MembershipsModule::ShareCapital"

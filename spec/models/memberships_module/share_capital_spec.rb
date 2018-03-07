@@ -27,7 +27,6 @@ module MembershipsModule
       it { is_expected.to delegate_method(:paid_up_account).to(:share_capital_product).with_prefix }
       it { is_expected.to delegate_method(:closing_account).to(:share_capital_product).with_prefix }
       it { is_expected.to delegate_method(:subscription_account).to(:share_capital_product).with_prefix }
-    	it { is_expected.to delegate_method(:cost_per_share).to(:share_capital_product).with_prefix }
     end
     it ".subscribed_shares" do
     	share_capital_product = create(:share_capital_product, cost_per_share: 10)
@@ -40,13 +39,6 @@ module MembershipsModule
       expect(MembershipsModule::ShareCapital.subscribed_shares).to eql(20)
     end
 
-    it '#subscribed_shares' do
-    	share_capital_product = create(:share_capital_product, cost_per_share: 10)
-    	share_capital = create(:share_capital, share_capital_product: share_capital_product)
-      capital_build_up = create(:entry_with_credit_and_debit, commercial_document: share_capital)
-
-      expect(share_capital.subscribed_shares).to eql(10)
-    end
     it ".entries" do
       share_capital = create(:share_capital)
       capital_build_up = create(:entry_with_credit_and_debit, commercial_document: share_capital)
@@ -74,7 +66,7 @@ module MembershipsModule
       expect(share_capital.balance).to eq 5_000
 
       closing_account_entry = build(:entry, commercial_document: share_capital)
-saving      debit_amount = create(:debit_amount, amount: share_capital.balance, entry: closing_account_entry, commercial_document: share_capital, account: share_capital.share_capital_product_paid_up_account)
+      debit_amount = create(:debit_amount, amount: share_capital.balance, entry: closing_account_entry, commercial_document: share_capital, account: share_capital.share_capital_product_paid_up_account)
       credit_amount = create(:credit_amount, amount: share_capital.share_capital_product_closing_account_fee, entry: closing_account_entry, commercial_document: share_capital, account: share_capital.share_capital_product_closing_account)
       closing_account_entry.save
 

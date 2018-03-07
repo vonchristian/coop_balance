@@ -62,6 +62,8 @@ module MembershipsModule
     def balance
       time_deposit_product_account.balance(commercial_document_id: self.id)
     end
+    def interests_earned
+    end
 
     def earned_interests
       CoopConfigurationsModule::TimeDepositConfig.earned_interests_for(self)

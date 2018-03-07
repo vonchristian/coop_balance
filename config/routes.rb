@@ -104,6 +104,7 @@ Rails.application.routes.draw do
     resources :offices, only: [:edit, :update], module: :share_capitals
   end
   resources :members do
+    resources :time_deposits, only: [:new, :create], module: :members
     resources :tins, only: [:new, :create], module: :members
     resources :offices, only: [:new, :create, :edit, :update], module: :members
     resources :addresses, only: [:new, :create, :edit, :update], module: :members
@@ -293,6 +294,7 @@ Rails.application.routes.draw do
     resources :break_contracts, only: [:new, :create], module: :time_deposits
   end
   resources :employees, only: [:index, :show, :edit, :update] do
+    resources :info, only: [:index], module: :employees
     resources :blotters, only: [:index], module: :employees
     resources :cash_disbursements, only: [:index], module: :employees
     resources :cash_receipts, only: [:index], module: :employees

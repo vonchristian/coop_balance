@@ -18,7 +18,7 @@
   <%= f.input :amount %>
   <%= f.input :payment_type, label: 'Type', collection: AccountingModule::Entry.payment_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
   <%= f.input :number_of_days, label: "No. of Days Deposited:" %>
-  <%= f.input :recorder_id, input_html: { value: current_user.id }, as: :hidden %>
+  <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
   <%= f.input :time_deposit_product_id, collection: CoopServicesModule::TimeDepositProduct.all.map{|a| [a.amount_range_and_days, a.id] } %>
   <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
   <div class="box-footer">

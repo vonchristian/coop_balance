@@ -1,11 +1,11 @@
 module Memberships
   class ShareCapitalSubscriptionsController < ApplicationController
     def new
-      @membership = Membership.find(params[:membership_id])
+      @member = Member.find(params[:member_id])
       @share_capital = Memberships::ShareCapitalSubscription.new
     end
     def create
-      @membership = Membership.find(params[:membership_id])
+      @member = Member.find(params[:member_id])
       @share_capital = Memberships::ShareCapitalSubscription.new(share_capital_params)
       if @share_capital.valid?
         @share_capital.subscribe!

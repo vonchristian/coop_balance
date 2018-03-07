@@ -14,7 +14,6 @@ class TimeDepositForm
   end
   def create_time_deposit
     time_deposit = find_depositor.time_deposits.create!(account_number: account_number, time_deposit_product_id: time_deposit_product_id)
-    TimeDepositsModule::FixedTerm.create!(time_deposit: time_deposit, number_of_days: number_of_days, deposit_date: date_deposited, maturity_date: (date_deposited.to_date + (number_of_days.to_i.days)))
   end
 
   def find_depositor

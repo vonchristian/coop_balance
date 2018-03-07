@@ -35,7 +35,7 @@ module CoopServicesModule
       minimum_amount..maximum_amount
     end
     def amount_range_and_days
-      "#{amount_range} #{number_of_days}"
+      "#{name} - #{amount_range} #{number_of_days} days"
     end
 
     private

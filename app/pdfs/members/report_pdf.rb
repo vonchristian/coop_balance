@@ -5,39 +5,91 @@ module Members
       super(margin: 30, page_size: 'A4', page_layout: :portrait)
       @member = member
       @view_context = view_context
-      member_details
-      subscription_details
-      savings_account_details
+      heading
+      investment_details
+      loans
     end
 
     private
-    def member_details
-      qrcode = RQRCode::QRCode.new("http://github.com/whomwah/rqrcode", :level=>:h, :size => 12, :dot => 2.8)
-      render_qr_code(qrcode)
+    def price(number)
+      @view_context.number_to_currency(number, :unit => "P ")
+    end
+    def heading
+      bounding_box [300, 780], width: 60 do
+       #image "#{Rails.root}/app/assets/images/kccmc_logo.jpg", width: 50, height: 50
+      end
+      bounding_box [350, 760], width: 150 do
+          text "KCCMC", style: :bold, size: 22
+          text "Poblacion, Tinoc, Ifugao", size: 10
+      end
+      bounding_box [0, 760], width: 400 do
+        text "Member's Data Sheet", style: :bold, size: 14
+        move_down 5
+        text "#{@member.name.try(:upcase)}"
+      end
       move_down 10
-      text "MEMBER DETAILS"
+      stroke do
+        stroke_color 'CCCCCC'
+        line_width 0.2
+        stroke_horizontal_rule
+        move_down 15
+      end
     end
-    def subscription_details
+    def investment_details
+      text "SHARE CAPITAL", style: :bold
       move_down 5
-      stroke do
-      stroke_color 'CCCCCC'
-      line_width 0.2
-      stroke_horizontal_rule
-      move_down 15
+      @member.share_capitals.each do |share_capital|
+        table([["", share_capital.share_capital_product_name.try(:upcase), price(share_capital.balance)]], cell_style: { inline_format: true, size: 10, font: "Helvetica" }, column_widths: [20, 150, 100]) do
+          cells.borders = []
+        end
       end
-      text "PROGRAM SUBSCRIPTION DETAILS"
-    end
-    def savings_account_details
       stroke do
-      stroke_color 'CCCCCC'
-      line_width 0.2
-      stroke_horizontal_rule
-      move_down 15
+        stroke_color 'CCCCCC'
+        line_width 0.2
+        stroke_horizontal_rule
+        move_down 15
       end
-      text "SAVINGS"
+      text "SAVINGS", style: :bold
+      move_down 5
       @member.savings.each do |savings_account|
-        text "#{savings_account.saving_product_name}"
+        table([["", savings_account.saving_product_name.try(:upcase), price(savings_account.balance)]], cell_style: { inline_format: true, size: 10, font: "Helvetica" }, column_widths: [20, 150, 100]) do
+          cells.borders = []
+        end
+      end
+      stroke do
+        stroke_color 'CCCCCC'
+        line_width 0.2
+        stroke_horizontal_rule
+        move_down 15
+      end
+      text "TIME DEPOSITS", style: :bold
+      move_down 5
+      @member.time_deposits.each do |time_deposit|
+        table([["", time_deposit.time_deposit_product_name.try(:upcase), price(time_deposit.balance)]], cell_style: { inline_format: true, size: 10, font: "Helvetica" }, column_widths: [20, 150, 100]) do
+          cells.borders = []
+        end
+      end
+      stroke do
+        stroke_color 'CCCCCC'
+        line_width 0.2
+        stroke_horizontal_rule
+        move_down 15
       end
     end
+    def loans
+      text "LOANS", style: :bold
+      @member.loans.each do |loan|
+        table([["", loan.loan_product_name.try(:upcase), price(loan.balance)]], cell_style: { inline_format: true, size: 10, font: "Helvetica" }, column_widths: [20, 150, 100]) do
+          cells.borders = []
+        end
+      end
+      stroke do
+        stroke_color 'CCCCCC'
+        line_width 0.2
+        stroke_horizontal_rule
+        move_down 15
+      end
+    end
+
   end
 end

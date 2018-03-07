@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180307054319) do
+ActiveRecord::Schema.define(version: 20180307080326) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -983,7 +983,9 @@ ActiveRecord::Schema.define(version: 20180307054319) do
     t.boolean "has_closing_account_fee", default: false
     t.decimal "closing_account_fee", default: "0.0"
     t.uuid "closing_account_id"
+    t.uuid "interest_payable_account_id"
     t.index ["closing_account_id"], name: "index_share_capital_products_on_closing_account_id"
+    t.index ["interest_payable_account_id"], name: "index_share_capital_products_on_interest_payable_account_id"
     t.index ["name"], name: "index_share_capital_products_on_name"
     t.index ["paid_up_account_id"], name: "index_share_capital_products_on_paid_up_account_id"
     t.index ["subscription_account_id"], name: "index_share_capital_products_on_subscription_account_id"
@@ -1097,6 +1099,7 @@ ActiveRecord::Schema.define(version: 20180307054319) do
     t.uuid "membership_id"
     t.string "depositor_type"
     t.uuid "depositor_id"
+    t.datetime "date_deposited"
     t.index ["account_number"], name: "index_time_deposits_on_account_number", unique: true
     t.index ["depositor_type", "depositor_id"], name: "index_time_deposits_on_depositor_type_and_depositor_id"
     t.index ["membership_id"], name: "index_time_deposits_on_membership_id"
@@ -1328,6 +1331,7 @@ ActiveRecord::Schema.define(version: 20180307054319) do
   add_foreign_key "savings_account_configs", "accounts", column: "closing_account_id"
   add_foreign_key "share_capital_product_shares", "share_capital_products"
   add_foreign_key "share_capital_products", "accounts", column: "closing_account_id"
+  add_foreign_key "share_capital_products", "accounts", column: "interest_payable_account_id"
   add_foreign_key "share_capital_products", "accounts", column: "paid_up_account_id"
   add_foreign_key "share_capital_products", "accounts", column: "subscription_account_id"
   add_foreign_key "share_capitals", "offices"

@@ -5,68 +5,94 @@
         <h3 class="box-title"> Time Deposit Details </h3>
       </div>
       <div class="box-body">
+        <div class="row">
+          <div class="col-md-6">
           <div class="row">
-            <div class="col-md-8">
-              <div class="row">
-                <div class="col-md-4">
-                   &nbsp; &nbsp; Amount Deposited
-                </div>
-                <div class="col-md-6">
-                  <%= number_to_currency @time_deposit.amount_deposited %>
-                </div>
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-4">
+              Time Deposit Product
+            </div>
+            <div class="col-md-6">
+              <b><%= @time_deposit.time_deposit_product_name.try(:upcase) %></b>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-4">
+              Depositor
+            </div>
+            <div class="col-md-6">
+              <%= @time_deposit.depositor_name %>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-md-1">
+            </div>
+              <div class="col-md-4">
+                Date Deposited
               </div>
-              <br>
-              <div class="row">
-                <div class="col-md-4">
-                  &nbsp; &nbsp; Depositor
-                </div>
-                <div class="col-md-6">
-                   <%= image_tag(@time_deposit.depositor.avatar.url(:thumb), class: "img-circle", height: 35, width: 35) %>&nbsp; &nbsp;
-                    <%= @time_deposit.depositor_name %>
-                </div>
+              <div class="col-md-6">
+                <span class="pull-left">
+                  <%= @time_deposit.current_term_deposit_date.strftime("%B %e, %Y") %>
+                </span>
               </div>
-              <br />
-              <div class="row">
-                <div class="col-md-4">
-                  &nbsp; &nbsp; Date Deposited
-                </div>
-                <div class="col-md-6">
-                  <span class="pull-left">
-                    <%= @time_deposit.current_term_deposit_date.strftime("%B %e, %Y") %>
-                  </span>
-                </div>
+            </div>
+            <br />
+            <div class="row">
+              <div class="col-md-1">
               </div>
-              <br />
-              <div class="row">
-                <div class="col-md-4">
-                  &nbsp; &nbsp; Maturity Date
-                </div>
-                <div class="col-md-6">
-                  <span class="pull-left">
-                    <%= @time_deposit.current_term_maturity_date.strftime("%B %e, %Y")  %>
-                  </span>
-                </div>
+              <div class="col-md-4">
+                Maturity Date
               </div>
-              <hr />
-              <% if @time_deposit.withdrawn? %>
-                <span class="text-danger"> Withdrawn last <%= @time_deposit.withdrawal_date.strftime("%B %e, %Y") %></span>
-              <% end %>
-              <br>
-              <div class="row">
-                <div class="col-md-6">
-                  <% if policy([:time_deposits, :break_contract]).new? && !@time_deposit.matured? && !@time_deposit.withdrawn? %>
-                    <%=link_to 'Break Contract', new_time_deposit_break_contract_path(@time_deposit), class: "btn btn-danger" %>
-                  <% end %>
-                </div>
-                <div class="col-md-6">
-                  <% if policy([:time_deposits, :fixed_term]).new?  && @time_deposit.can_be_extended? %>
-                    <%= link_to 'Renew/Extend', new_time_deposit_fixed_term_path(@time_deposit) %>
-                  <% end %>
-                </div>
+              <div class="col-md-6">
+                <span class="pull-left">
+                  <%= @time_deposit.current_term_maturity_date.strftime("%B %e, %Y")  %>
+                </span>
               </div>
+            </div>
+            <br>
+           <div class="row">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-4">
+              Account Number
+            </div>
+            <div class="col-md-6">
+              <%= @time_deposit.account_number %>
             </div>
           </div>
         </div>
+        <div class="col-md-4">
+          <small>BALANCE</small>
+          <h3><%= number_to_currency @time_deposit.balance %></h3>
+        </div>
+        <div class="col-md-2">
+           <small class="text-muted">EARNED INTEREST</small><br>
+          <small><%= number_to_currency @time_deposit.interests_earned %></small>
+        </div>
+      </div>
+    <hr />
+    <% if @time_deposit.withdrawn? %>
+      <span class="text-danger"> Withdrawn last <%= @time_deposit.withdrawal_date.strftime("%B %e, %Y") %></span>
+    <% end %>
+    <br>
+    <div class="row">
+      <div class="col-md-6">
+        <% if policy([:time_deposits, :break_contract]).new? && !@time_deposit.matured? && !@time_deposit.withdrawn? %>
+          <%=link_to 'Break Contract', new_time_deposit_break_contract_path(@time_deposit), class: "btn btn-danger" %>
+        <% end %>
+      </div>
+      <div class="col-md-6">
+        <% if policy([:time_deposits, :fixed_term]).new?  && @time_deposit.can_be_extended? %>
+          <%= link_to 'Renew/Extend', new_time_deposit_fixed_term_path(@time_deposit) %>
+        <% end %>
+
+    </div>
+  </div>
     <p class="text-muted">TRANSACTIONS HISTORY </p>
     <div class="table table-responsive">
                 <table class="table table-hover table-striped">

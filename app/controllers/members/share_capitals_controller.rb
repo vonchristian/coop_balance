@@ -6,13 +6,13 @@ module Members
     end
     def new
       @member = Member.find(params[:member_id])
-      @share_capital = ShareCapitalForm.new
+      @share_capital = Memberships::ShareCapitalSubscription.new
     end
     def create
       @member = Member.find(params[:member_id])
-      @share_capital = ShareCapitalForm.new(share_capital_params)
-      if @share_capital.save
-        redirect_to member_share_capitals_url(@member), notice: "Success"
+      @share_capital = Memberships::ShareCapitalSubscription.new(share_capital_params)
+      if @share_capital.subscribe!
+        redirect_to share_capital_url(@share_capital.find_share_capital), notice: "Success"
       else
         render :new
       end
@@ -20,8 +20,8 @@ module Members
 
     private
     def share_capital_params
-      params.require(:members_share_capital_form).
-      permit(:account_number, :subscriber_id, :subscriber_type, :amount, :date, :reference_number, :recorder_id, :share_capital_product_id)
+      params.require(:memberships_share_capital_subscription).
+      permit(:account_number, :subscriber_id, :subscriber_type, :amount, :date, :reference_number, :employee_id, :share_capital_product_id)
     end
   end
 end

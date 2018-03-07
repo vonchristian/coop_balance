@@ -3,7 +3,7 @@ module Memberships
     include ActiveModel::Model
     attr_accessor :share_capital_product_id,
                   :employee_id,
-                  :membership_id,
+                  :subscriber_id,
                   :amount,
                   :reference_number,
                   :date,
@@ -14,7 +14,7 @@ module Memberships
               :reference_number,
               :date,
               :account_number,
-              :membership_id,
+              :subscriber_id,
               presence: true
     validates :amount, numericality: true
     validate :ensure_unique_share_capital_product
@@ -24,11 +24,7 @@ module Memberships
       end
     end
     def find_share_capital
-      MembershipsModule::ShareCapital.find_by(
-        subscriber: find_subscriber,
-        account_number: account_number,
-        share_capital_product: find_share_capital_product,
-        date_opened: date)
+      MembershipsModule::ShareCapital.find_by(account_number: account_number)
     end
 
     private
@@ -60,7 +56,13 @@ module Memberships
     end
 
     def find_subscriber
-      Membership.find_by_id(membership_id)
+      employee_subscriber = User.find_by_id(subscriber_id)
+      member_subscriber = Member.find_by_id(subscriber_id)
+      if employee_subscriber.present?
+        employee_subscriber
+      elsif member_subscriber.present?
+        member_subscriber
+      end
     end
 
     def credit_account

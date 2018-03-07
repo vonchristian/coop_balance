@@ -23,11 +23,13 @@ class TransactionSummaryPdf < Prawn::Document
   end
   def heading
     bounding_box [300, 780], width: 50 do
-      image "#{Rails.root}/app/assets/images/logo_kcmdc.jpg", width: 50, height: 50
+      # image "#{Rails.root}/app/assets/images/logo_kcmdc.jpg", width: 50, height: 50
     end
     bounding_box [370, 780], width: 200 do
-        text "KCMDC", style: :bold, size: 24
-        text "Kiangan Community Multipurpose Cooperative", size: 10
+        text "KCCMC", style: :bold, size: 24
+        text "Kalanguya Cultural Community", size: 10
+        text "Multipurpose Cooperative", size: 10
+
     end
     bounding_box [0, 780], width: 400 do
       text "Transactions Summary", style: :bold, size: 14
@@ -60,7 +62,7 @@ class TransactionSummaryPdf < Prawn::Document
     end
   end
   def fund_transfers_data
-    [["", "Fund Transfer from Treasury", "#{price(@employee.fund_transfers.entered_on(from_date: @date, to_date: @date).total)}"]]
+    [["", "Fund Transfer from Treasury"]]
   end
     def savings_deposits
      text "Savings Deposits", style: :bold, size: 10,  color: "4A86CF"
@@ -342,7 +344,7 @@ class TransactionSummaryPdf < Prawn::Document
   end
   def summary_data
     [["", "", "Beginning Balance", "#{price(@employee.cash_on_hand_account.balance(recorder_id: @employee.id, to_date: @date.yesterday.end_of_day))}"]] +
-    [["", "", "Cash Received",  "#{price(@employee.cash_on_hand_account.debit_entries.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).recorded_by(@employee.id).total + @employee.fund_transfers.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).total) }"]] +
+    [["", "", "Cash Received",  "#{price(@employee.cash_on_hand_account.debit_entries.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).recorded_by(@employee.id).total)}"]] +
     [["", "", "Cash Disbursed",  "#{price(@employee.cash_on_hand_account.credit_entries.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).recorded_by(@employee.id).total)}"]]
   end
   def total_summary_data

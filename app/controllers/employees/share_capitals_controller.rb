@@ -5,13 +5,13 @@ module Employees
     end
     def new
       @employee = User.find(params[:employee_id])
-      @share_capital = Employees::ShareCapitalForm.new
+      @share_capital = Memberships::ShareCapitalSubscription.new
     end
     def create
       @employee = User.find(params[:employee_id])
-      @share_capital = Employees::ShareCapitalForm.new(share_capital_params)
-      if @share_capital.save
-        redirect_to employee_share_capitals_url(@employee), notice: "Share capital subscribed successfully."
+      @share_capital = Memberships::ShareCapitalSubscription.new(share_capital_params)
+      if @share_capital.subscribe!
+        redirect_to share_capital_url(@share_capital.find_share_capital), notice: "Share capital subscribed successfully."
       else
         render :new
       end
@@ -19,7 +19,15 @@ module Employees
 
     private
     def share_capital_params
-      params.require(:employees_share_capital_form).permit(:account_number, :subscriber_id, :amount, :date, :reference_number, :recorder_id, :share_capital_product_id)
+      params.require(:memberships_share_capital_subscription).
+      permit(
+        :account_number,
+        :subscriber_id,
+        :amount,
+        :date,
+        :reference_number,
+        :employee_id,
+        :share_capital_product_id)
     end
   end
 end
