@@ -14,13 +14,32 @@ class SavingForm
     User.find_by(id: recorder_id)
   end
   def find_depositor
-    Membership.find_by(id: depositor_id)
+    member_depositor = Member.find_by(id: depositor_id)
+    employee_depositor = User.find_by_id(depositor_id)
+    if member_depositor.present?
+      member_depositor
+    elsif employee_depositor.present?
+      employee_depositor
+    end
   end
   def open_savings_account
-    savings_account = MembershipsModule::Saving.create(membership_id: depositor_id, saving_product_id: saving_product_id, account_number: account_number)
-    savings_account.entries.create!(recorder_id: recorder_id, description: 'Savings deposit', reference_number: or_number, entry_date: date,
-    debit_amounts_attributes: [account: debit_account, amount: amount, commercial_document: savings_account],
-    credit_amounts_attributes: [account: credit_account, amount: amount, commercial_document: savings_account])
+    savings_account = find_depositor.savings.create(
+      saving_product_id: saving_product_id,
+      account_number: account_number)
+    AccountingModule::Entry.create!(
+      commercial_document: find_depositor,
+      recorder: find_employee,
+      description: "Savings deposit  of #{find_depositor.name}",
+      reference_number: or_number,
+      entry_date: date,
+    debit_amounts_attributes: [
+      account: debit_account,
+      amount: amount,
+      commercial_document: savings_account],
+    credit_amounts_attributes: [
+      account: credit_account,
+      amount: amount,
+      commercial_document: savings_account])
   end
 
   def debit_account

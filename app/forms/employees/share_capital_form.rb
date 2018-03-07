@@ -1,13 +1,17 @@
 module Employees
   class ShareCapitalForm
     include ActiveModel::Model
-    attr_accessor :share_capital_product_id, :subscriber_id, :account_number, :share_count, :reference_number, :amount, :date, :share_capital_id, :recorder_id
+    attr_accessor :share_capital_product_id, :subscriber_id, :account_number, :reference_number, :amount, :date, :share_capital_id, :recorder_id
+
+    validates :reference_number, :date, :amount, presence: true
+    validates :amount, numericality: true
 
     def save
       ActiveRecord::Base.transaction do
         subscribe_to_share_capital
       end
     end
+
     private
     def find_employee
       User.find_by(id: recorder_id)
@@ -33,8 +37,11 @@ module Employees
     end
     def find_subscriber
       employee_subscriber = User.find_by_id(subscriber_id)
+      member_subscriber = Member.find_by_id(subscriber_id)
       if employee_subscriber.present?
         employee_subscriber
+      elsif member_subscriber.present?
+        member_subscriber
       end
     end
 

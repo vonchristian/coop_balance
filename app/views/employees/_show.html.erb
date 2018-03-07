@@ -1,10 +1,13 @@
 <div class="row">
-    <div class="col-md-3">
-      <%= render 'employees/partials/sidebar', employee: @employee %>
-    </div>
-    <div class="col-md-9">
+    <div class="col-md-12">
       <div class="box box-solid">
         <div class="box-header">
+          <center>
+            <%= image_tag(@employee.avatar.url(:medium), height: 60, width: 60, class: "img-circle") %>
+            <h4><%= @employee.name %></h4>
+          </center>
+        </div>
+      <div class="box-body">
         <ul class="nav nav-tabs">
           <li class="<%= 'active' if current_page?(employee_path(@employee))%>"><%= link_to 'Info', employee_path(@employee) %></li>
           <li class="<%= 'active' if current_page?(employee_entries_path(@employee))%>"><%= link_to 'Entries', employee_entries_path(@employee) %></li>
@@ -16,8 +19,6 @@
           <li class="<%= 'active' if current_page?(employee_share_capitals_path(@employee))%>"><%= link_to 'Share Capitals', employee_share_capitals_path(@employee) %></li>
           <li class="<%= 'active' if current_page?(employee_time_deposits_path(@employee))%>"><%= link_to 'Time Deposits', employee_time_deposits_path(@employee) %></li>
         </ul>
-      </div>
-      <div class="tab-content box-body">
         <% if current_page?(employee_path(@employee)) %>
           <%=render 'employees/partials/employee_info' %>
         <% end %>

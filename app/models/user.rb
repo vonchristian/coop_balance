@@ -32,6 +32,7 @@ class User < ApplicationRecord
   belongs_to :office, class_name: "CoopConfigurationsModule::Office"
   belongs_to :salary_grade, class_name: "HrModule::SalaryGrade"
   has_many :memberships, as: :cooperative
+  has_many :purchases, class_name: "StoreFrontModule::Orders::SalesOrder", as: :commercial_document
   has_many :sold_orders,            class_name: "StoreFrontModule::Orders::SalesOrder",
                                     foreign_key: 'employee_id'
   has_many :returned_sales_orders,    class_name: "StoreFrontModule::Orders::SalesReturnOrder",
@@ -40,7 +41,7 @@ class User < ApplicationRecord
   has_many :loans, class_name: "LoansModule::Loan", as: :borrower
   has_many :co_makered_loans, class_name: "LoansModule::LoanCoMaker", as: :co_maker
   has_many :memberships, as: :cooperator
-  has_many :savings, class_name: "MembershipsModule::Saving", through: :memberships
+  has_many :savings, class_name: "MembershipsModule::Saving", as: :depositor
   has_many :share_capitals, class_name: "MembershipsModule::ShareCapital", as: :subscriber
   has_many :time_deposits, class_name: "MembershipsModule::TimeDeposit", as: :depositor
   has_many :sales_orders, class_name: "StoreFrontModule::Orders::SalesOrder", as: :commercial_document
@@ -81,6 +82,9 @@ class User < ApplicationRecord
   :url => "/system/:attachment/:id/:basename_:style.:extension"
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
   # validates :cash_on_hand_account_id, uniqueness: true
+  def self.with_cash_on_hand_accounts
+    where.not(cash_on_hand_account_id: nil)
+  end
   def self.cash_on_hand_accounts
     user_accounts = all.collect{|a| a.cash_on_hand_account_id }.compact
     accounts = []

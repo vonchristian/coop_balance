@@ -7,8 +7,6 @@ module MembershipsModule
     belongs_to :depositor,        polymorphic: true,  touch: true
     belongs_to :saving_product,   class_name: "CoopServicesModule::SavingProduct"
     belongs_to :office,           class_name: "CoopConfigurationsModule::Office"
-    has_many :entries,            class_name: "AccountingModule::Entry",
-                                  as: :commercial_document
 
     delegate :name, :current_occupation, to: :depositor, prefix: true
     delegate :name,
@@ -22,6 +20,13 @@ module MembershipsModule
     validates :saving_product_id, presence: true, uniqueness: { scope: :depositor_id }
     scope :has_minimum_balance, -> { SavingsQuery.new.has_minimum_balance  }
     before_save :set_account_owner_name
+    def entries
+      accounting_entries = []
+      saving_product.account.amounts.where(commercial_document: self).each do |amount|
+        accounting_entries << amount.entry
+      end
+      accounting_entries
+    end
     def closed?
       saving_product_closing_account.amounts.where(commercial_document: self).present?
     end

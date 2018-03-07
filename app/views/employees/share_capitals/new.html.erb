@@ -2,26 +2,24 @@
   <div class="col-md-6 col-md-offset-3">
     <div class="box box-solid">
       <div class="box-header bg-gray">
-        <div class="row">
-          <div class="col-md-3">
-            <center> <%= image_tag(@employee.avatar.url(:medium), class: "profile-user-img img-responsive img-circle") %></center>
-          </div>
-          <div class="col-md-8">
-            <h3 class="box-title"><%= @employee.name %></h3><br>
-          
-          </div>
-        </div>
+        <center>
+          <%= image_tag(@employee.avatar.url(:medium), class: "profile-user-img img-responsive img-circle") %>
+          <h3 class="box-title"><%= @employee.name %></h3>
+        </center>
       </div>
       <div class="box-body">
-<%= simple_form_for @share_capital, url: :employee_share_capitals do |f| %>
-  <%= f.input :subscriber_id, input_html: { value: @employee.id } %>
-  <%= f.input :subscriber_type, input_html: { value: @employee.class } %>
-  <%= f.input :share_capital_product_id, collection: CoopServicesModule::ShareCapitalProduct.all.map{|a| [a.name, a.id] }, as: :radio_buttons %>
-  <%= f.input :share_count, label: "Number of Shares" %>
-  <%= f.input :reference_number %>
-  <%= f.input :amount %>
-  <%= f.input :recorder_id, input_html: { value: current_user.id },as: :hidden %>
-  <div class="box-footer">
-    <%= f.submit "Save Share Capital", class: "btn btn-primary pull-right" %>
+        <%= simple_form_for @share_capital, url: :employee_share_capitals do |f| %>
+          <%= f.input :subscriber_id, input_html: { value: @employee.id }, as: :hidden %>
+          <%= f.input :share_capital_product_id, collection: CoopServicesModule::ShareCapitalProduct.all.map{|a| [a.name, a.id] }, as: :radio_buttons %>
+          <%= f.input :reference_number %>
+          <%= f.input :amount %>
+          <%= f.input :recorder_id, input_html: { value: current_user.id },as: :hidden %>
+          <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
+          <div class="box-footer">
+            <%= f.submit "Save Share Capital", class: "btn btn-primary pull-right" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
   </div>
-<% end %>
+</div>

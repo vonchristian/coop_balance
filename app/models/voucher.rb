@@ -15,8 +15,13 @@ class Voucher < ApplicationRecord
   delegate :full_name, :current_occupation, to: :preparer, prefix: true
   delegate :full_name, :current_occupation, to: :disburser, prefix: true, allow_nil: true
   delegate :name, to: :payee, prefix: true
+  delegate :avatar, to: :payee, allow_nil: true
 
   before_save :set_date
+  def self.payees
+    User.all + Supplier.all
+  end
+
   def self.unused
     disbursed.select{|a| a.commercial_document_id.nil? }
   end

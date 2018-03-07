@@ -1,19 +1,55 @@
-
 <div class="row">
   <div class="col-md-12">
-    <div class="nav-tabs-custom">
-      <div class="box-header with-border">
-
-
-           <center><%= image_tag(@savings_account.depositor.avatar.url(:large), height: 90, width: 90, class: 'img-circle') %></center>
-
-            <h3><center><%= @savings_account.depositor_name %></center></h3>
-            <center><small><%#= @savings_account.depositor_current_occupation %></small></center>
-            <center><small><%= @savings_account.office_name %></small></center>
-
-
-
+    <div class="box box-solid">
+      <div class="box-header">
+        <h3 class="box-title"> Savings Account Details </h3>
       </div>
+      <div class="box-body">
+        <div class="row">
+          <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-4">
+              Saving Product
+            </div>
+            <div class="col-md-6">
+              <b><%= @savings_account.saving_product_name.try(:upcase) %></b>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-4">
+              Depositor
+            </div>
+            <div class="col-md-6">
+              <%= @savings_account.depositor_name %>
+            </div>
+          </div>
+          <br>
+           <div class="row">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-4">
+              Account Number
+            </div>
+            <div class="col-md-6">
+              <%= @savings_account.account_number %>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <small>BALANCE</small>
+          <h3><%= number_to_currency @savings_account.balance %></h3>
+        </div>
+        <div class="col-md-2">
+           <small class="text-muted">EARNED INTEREST</small><br>
+          <small><%= number_to_currency @savings_account.interests_earned %></small>
+        </div>
+      </div>
+    <hr />
      <div class="box-body">
       <% if @savings_account.closed? %>
         <div class="corner-ribbon top-left red">Closed</div>

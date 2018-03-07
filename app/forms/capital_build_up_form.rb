@@ -1,8 +1,8 @@
 class CapitalBuildUpForm
   include ActiveModel::Model
   include ActiveModel::Validations::Callbacks
-  attr_accessor :share_count, :or_number, :amount, :date, :share_capital_id, :recorder_id, :membership_id
-  validates :amount, :share_count, presence: true, numericality: true
+  attr_accessor :or_number, :amount, :date, :share_capital_id, :recorder_id
+  validates :amount, presence: true, numericality: true
   validates :or_number, presence: true
   def save
     ActiveRecord::Base.transaction do
@@ -15,7 +15,12 @@ class CapitalBuildUpForm
   end
 
   def create_entry
-  AccountingModule::Entry.create!(commercial_document: find_subscriber, recorder_id: recorder_id, description: 'Payment of capital build up', reference_number: or_number, entry_date: date,
+  AccountingModule::Entry.create!(
+    commercial_document: find_subscriber,
+    recorder_id: recorder_id,
+    description: 'Payment of capital build up',
+    reference_number: or_number,
+    entry_date: date,
     debit_amounts_attributes: [account: debit_account, amount: amount, commercial_document: find_share_capital],
     credit_amounts_attributes: [account: credit_account, amount: amount, commercial_document: find_share_capital])
   end
@@ -26,7 +31,7 @@ class CapitalBuildUpForm
     find_share_capital.share_capital_product_paid_up_account
   end
   def find_subscriber
-    Membership.find_by_id(membership_id)
+    find_share_capital.subscriber
   end
   def find_employee
     User.find_by_id(recorder_id)

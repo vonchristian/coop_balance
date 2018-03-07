@@ -249,10 +249,13 @@ Rails.application.routes.draw do
   resources :schedules, only: [:index, :show]
   resources :treasury_module, only: [:index]
   namespace :treasury_module do
+    resources :disbursements, only: [:index]
+    resources :cash_receipts, only: [:index]
+    resources :disbursement_line_items, only: [:new, :create, :destroy]
+    resources :disbursement_processings, only: [:create]
     resources :employees, only: [:index, :show] do
       resources :remittances, only: [:new, :create]
       resources :fund_transfers, only: [:new, :create]
-
     end
     resources :search_results, only: [:index]
     # resources :savings_accounts, only: [:index, :show] do
@@ -301,6 +304,7 @@ Rails.application.routes.draw do
     resources :share_capitals, only: [:index, :new, :create], module: :employees
     resources :entries, only: [:index, :show], module: :employees
     resources :remittances, only: [:new, :create], module: :employees
+    resources :cash_transfers, only: [:new, :create], module: :employees
     resources :vault_fund_transfers, only: [:new, :create], module: :employees
     resources :reports, only: [:index], module: :employees
     resources :vouchers, only: [:index, :new, :create], module: :employees

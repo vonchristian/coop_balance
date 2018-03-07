@@ -1,0 +1,56 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-default">
+      <div class="box-header with-border">
+        <div class="row">
+          <div class="col-md-2">
+            <h3 class="box-title"> Cash Receipts </h3>
+          </div>
+          <div class="col-md-6">
+            <%=form_tag treasury_module_cash_receipts_path, method: :get do %>
+              <div class="input-group">
+                <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search cash_receipts ", id: 'account-search-form' %>
+                <span class="input-group-btn">
+                  <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                    <i class="fa fa-search"></i>
+                  <% end %>
+                </span>
+              </div>
+            <% end %>
+          </div>
+          <div class="col-md-3">
+
+          </div>
+        </div>
+      </div>
+      <div class="box-body">
+        <% @cash_receipts.each do |cash_receipt| %>
+          <% cache do %>
+            <%= link_to accounting_module_entry_path(cash_receipt) do %>
+              <div class="row">
+                <div class="col-md-1">
+                  <% if cash_receipt.commercial_document.present? && cash_receipt.commercial_document.avatar.present? %>
+                    <%= image_tag(cash_receipt.commercial_document.avatar.url(:medium), class: "img-circle", height: 45, width: 45) %>
+                  <% end %>
+                </div>
+                <div class="col-md-5">
+                    <b><%= cash_receipt.description %></b><br>
+                    <span class="text-muted">
+                      <i class="fa fa-clock-o"></i> <%= cash_receipt.entry_date.strftime("%B %e, %Y") %> &nbsp;
+                      <i class="fa fa-note"></i> <%= cash_receipt.reference_number %>
+                    </span>
+                    <br>
+                    <b class="text-muted"><i class="fa fa-user"></i> &nbsp;<%= cash_receipt.commercial_document.try(:name) %></b>
+                </div>
+                <div class="col-md-3">
+                  <h4><%= number_to_currency cash_receipt.amounts.where(account: current_user.cash_on_hand_account).sum(&:amount) %></h4>
+                </div>
+              </div>
+              <br>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

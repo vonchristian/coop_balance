@@ -1,0 +1,25 @@
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="box box-primary">
+      <div class="box-header bg-blue">
+        <center>
+          <%=image_tag(@employee.avatar.url(:medium), height: 60, width: 60, class: "img-circle") %>
+          <h4><%= @employee.name %></h4>
+        </center>
+      </div>
+      <div class="box-body">
+        <%= simple_form_for [@employee, @cash_transfer], url: :employee_cash_transfers do |f| %>
+          <%= f.error_notification %>
+          <%= f.input :amount %>
+          <%= f.input :reference_number %>
+          <%= f.input :description %>
+          <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+          <%= f.input :transferred_to_id, collection: User.with_cash_on_hand_accounts.map{|a| [a.name, a.id] } %>
+          <div class="box-footer">
+            <%= f.submit "Save Transfer", class: "btn btn-primary pull-right" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

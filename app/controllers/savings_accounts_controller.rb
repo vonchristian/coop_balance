@@ -8,6 +8,6 @@ class SavingsAccountsController < ApplicationController
   end
 
   def show
-    @savings_account = MembershipsModule::Saving.includes(entries: :recorder).find(params[:id])
+    @savings_account = MembershipsModule::Saving.find(params[:id])
   end
 end

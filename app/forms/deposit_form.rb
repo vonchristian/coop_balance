@@ -17,7 +17,13 @@ class DepositForm
   end
 
   def save_deposit
-    find_saving.entries.create!(payment_type: payment_type, recorder_id: recorder_id, description: 'Savings deposit', reference_number: or_number, entry_date: date,
+    AccountingModule::Entry.create!(
+      commercial_document: find_saving.depositor,
+      payment_type: payment_type,
+      recorder_id: recorder_id,
+      description: 'Savings deposit',
+      reference_number: or_number,
+      entry_date: date,
     debit_amounts_attributes: [account: debit_account, amount: amount, commercial_document: find_saving],
     credit_amounts_attributes: [account: credit_account, amount: amount, commercial_document: find_saving])
   end

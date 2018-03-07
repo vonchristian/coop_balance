@@ -22,7 +22,7 @@
   <%= f.input :saving_product_id, label: "Savings Account Type", collection: CoopServicesModule::SavingProduct.all.map{ |a| [ a.name.titleize, a.id] }, as: :radio_buttons %>
   <%= f.input :amount, label: "Initial Deposit" %>
   <%= f.input :or_number %>
-  <%= f.input :depositor_id, input_html: { value: Membership.membership_for(cooperative: current_user.cooperative, memberable: @employee).id }, as: :hidden %>
+  <%= f.input :depositor_id, input_html: { value: @employee.id }, as: :hidden %>
   <%= f.input :depositor_type, input_html: { value: @employee.class }, as: :hidden %>
   <%= f.input :recorder_id, input_html: { value: current_user.id }, as: :hidden %>
   <%= f.input :account_number, input_html: { value: AccountNumberGenerator.generate_account_number(@saving) }, as: :hidden %>

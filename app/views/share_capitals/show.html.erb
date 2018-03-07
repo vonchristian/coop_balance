@@ -1,34 +1,59 @@
 <div class="row">
   <div class="col-md-12">
-    <div class="nav-tabs-custom">
+    <div class="box box-solid">
       <div class="box-header">
-
-           <h4><center><%= image_tag(@share_capital.subscriber.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center></h4>
-
-            <h3><center><%= @share_capital.subscriber_name %></center></h3>
-            <% if !@share_capital.closed? %>
-              <%= link_to 'Close Account', new_share_capital_account_closing_path(@share_capital) %>
-            <% end %>
+        <h3 class="box-title"> Share Capital Details </h3>
       </div>
-     <div class="box-body">
+      <div class="box-body">
         <div class="row">
-          <div class="col-md-3 border-right">
-            <small class="text-muted">CAPITAL BUILD UPS </small>
-            <h4><%= number_to_currency @share_capital.capital_build_ups_total %></h4>
-            <% if !@share_capital.closed? %>
-              <%= link_to 'New Capital Build Up', new_share_capital_capital_build_up_path(@share_capital), class: "btn btn-success" %>
-            <% end %>
+          <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-4">
+              Share Capital
+            </div>
+            <div class="col-md-6">
+              <b><%= @share_capital.share_capital_product_name.try(:upcase) %></b>
+            </div>
           </div>
-          <div class="col-md-3 border-right">
-            <small class="text-muted">EARNED DIVIDENDS</small>
-            <h4><%= number_to_currency @share_capital.dividends_total %></h4>
+          <br>
+          <div class="row">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-4">
+              Subscriber
+            </div>
+            <div class="col-md-6">
+              <%= @share_capital.subscriber_name %>
+            </div>
           </div>
-          <div class="col-md-3 border-right">
-            <small class="text-muted">BALANCE </small>
-            <h4><%= number_to_currency @share_capital.balance %></h4>
+          <br>
+           <div class="row">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-4">
+              Account Number
+            </div>
+            <div class="col-md-6">
+              <%= @share_capital.account_number %>
+            </div>
           </div>
         </div>
-         <hr>
+        <div class="col-md-4">
+          <small>BALANCE</small>
+          <h3><%= number_to_currency @share_capital.balance %></h3>
+          <% if !@share_capital.closed? %>
+              <%= link_to 'New Capital Build Up', new_share_capital_capital_build_up_path(@share_capital), class: "btn btn-success" %>
+            <% end %>
+        </div>
+        <div class="col-md-2">
+           <small class="text-muted">DIVIDENDS</small><br>
+          <small><%#= number_to_currency @share_capital.interests_earned %></small>
+        </div>
+      </div>
+    <hr />
+     <div class="box-body">
          <p class="text-muted">TRANSACTIONS HISTORY</p>
          <div class="table table-responsive">
             <table class="table table-hover table-striped">

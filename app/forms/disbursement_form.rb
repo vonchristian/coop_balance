@@ -11,7 +11,11 @@ class DisbursementForm
     end
   end
   def save_cash_disbursement
-    entry = AccountingModule::Entry.new(commercial_document: find_voucher, :description => description, recorder_id: recorder_id, entry_date: date)
+    entry = AccountingModule::Entry.new(
+      commercial_document: find_voucher,
+      :description => description,
+      recorder_id: recorder_id,
+      entry_date: date)
     find_voucher.voucher_amounts.debit.each do |amount|
       debit_amount = AccountingModule::DebitAmount.new(
         account_id: amount.account_id,

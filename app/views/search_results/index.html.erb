@@ -21,6 +21,7 @@
             <% else %>
             <p><%= @search_results.count %> results found for <b><%=params[:search] %></b></p>
             <% @search_results.each do |search_result| %>
+
               <% if search_result.searchable.is_a?(AccountingModule::Entry) %>
               <b><%= link_to search_result.searchable.try(:description), accounting_module_entry_path(search_result.searchable) %></b><br>
                 <span class="text-muted"> Entry </span>
@@ -39,14 +40,21 @@
               <%= link_to search_result.searchable.try(:name), store_front_module_product_path(search_result.searchable) %><br>
               <span class="text-muted"> <%= search_result.searchable.class.to_s.gsub("StoreFrontModule::", "") %></span>
             <% end %>
-             <% if search_result.searchable_type == "MembershipsModule::ShareCapital" %>
+             <% if search_result.searchable.is_a?(MembershipsModule::ShareCapital) %>
               <%= link_to search_result.searchable.try(:name), share_capital_path(search_result.searchable) %><br>
-              <span class="text-muted"> <%= search_result.searchable.class.to_s.gsub("MembershipsModule::", "") %></span>
+              <span class="text-muted"> Share Capital Account</span><br>
+              <span class="text-muted"> Updated last <%= search_result.searchable.updated_at.strftime("%B %e, %Y") %></span>
               <hr>
             <% end %>
-             <% if search_result.searchable_type == "MembershipsModule::Saving" %>
-              <%= link_to search_result.searchable.try(:name), savings_account_path(search_result.searchable) %><br>
-              <span class="text-muted"> <%= search_result.searchable.class.to_s.gsub("MembershipsModule::", "") %></span>
+            <% if search_result.searchable.is_a?(MembershipsModule::Saving) %>
+              <b><%= link_to search_result.searchable.try(:name), savings_account_path(search_result.searchable) %></b><br>
+              <span class="text-muted"> Savings Account</span>
+              <hr>
+            <% end %>
+            <% if search_result.searchable.is_a?(User) %>
+              <b><%= link_to search_result.searchable.try(:name), employee_path(search_result.searchable) %></b><br>
+              <span class="text-muted"> Employee</span>
+              <hr>
             <% end %>
             <% end %>
             <hr>

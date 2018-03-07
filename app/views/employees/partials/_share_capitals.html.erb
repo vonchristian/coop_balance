@@ -4,8 +4,10 @@
   <% end %>
   <hr>
   <% if @employee.share_capitals.present? %>
-    <% @employee.share_capitals.each do |saving| %>
-      <%= saving.balance %>
+    <% @employee.share_capitals.each do |share_capital| %>
+    <%= link_to share_capital_path(share_capital) do %>
+        <%= share_capital.balance %>
+    <% end %>
     <% end %>
   <% end %>
   </div>

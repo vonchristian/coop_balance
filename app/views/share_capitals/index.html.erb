@@ -25,7 +25,7 @@
                   <p><b><%= share_capital.subscriber_name%></b></p>
                   <small class="text-muted"> <%= share_capital.share_capital_product_name.try(:upcase) %></small><br><br>
                   <% if policy([:share_capitals, :capital_build_up]).new? %>
-                    <%= link_to 'New Capital Build Up', new_share_capital_capital_build_up_path(share_capital), class: "btn btn-xs btn-default" %> &nbsp; &nbsp;
+                    <%= link_to 'New Capital Build Up', new_share_capital_capital_build_up_path(share_capital), class: "btn btn-xs btn-primary" %> &nbsp; &nbsp;
                   <% end %>
                   <br>
                 </div>

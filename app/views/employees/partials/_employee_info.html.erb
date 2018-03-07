@@ -1,7 +1,8 @@
 <div class="tab-pane <%= 'active' if current_page?(employee_path(@employee)) %>" id="employee-info">
   <% if current_user.cash_on_hand_account.present? %>
       <h3><%= number_to_currency current_user.cash_on_hand_account_balance %></h3>
-      <small class="text-muted"><%= current_user.cash_on_hand_account.try(:name).try(:upcase)%></small>
+      <small class="text-muted"><%= current_user.cash_on_hand_account.try(:name).try(:upcase)%></small><br>
+      <%=link_to 'View Transactions', accounting_module_account_path(current_user.cash_on_hand_account), class: "btn btn-default btn-xs" %>
       <hr>
   <% end %>
   <% if current_user.treasurer? %>
@@ -17,6 +18,7 @@
       </ul>
     </div>
   <% elsif current_user.teller? || current_user.sales_clerk? %>
-     <%= link_to 'New Remittance', new_employee_remittance_path(@employee), class: "btn btn-primary btn-flat" %>
+     <%= link_to 'New Cash Transfer', new_employee_cash_transfer_path(@employee), class: "btn btn-primary btn-flat" %>
+
   <% end %>
 </div>
