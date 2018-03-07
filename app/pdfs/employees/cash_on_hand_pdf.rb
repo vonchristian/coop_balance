@@ -72,10 +72,10 @@ module Employees
       [["", "Account", "#{@employee.cash_on_hand_account.try(:name)}"]] +
       [["", "Start Date", "#{@from_date.strftime("%B %e, %Y")}"]] +
       [["", "End Date", "#{@to_date.strftime("%B %e, %Y")}"]] +
-      [["", "Beginning Balance",  "#{price(@employee.cash_on_hand_account.balance(from_date: (@from_date.beginning_of_day), to_date: (@from_date.beginning_of_day), recorder_id: @employee.id))}"]] +
-      [["", "Cash Disbursements", "#{price(@employee.cash_on_hand_account.credits_balance(from_date: (@from_date.beginning_of_day - 1.second), to_date: @to_date.end_of_day, recorder_id: @employee.id))}"]] +
-      [["", "Cash Receipts", "#{price(@employee.cash_on_hand_account.debits_balance(from_date: (@from_date.beginning_of_day - 1.second), to_date: @to_date.end_of_day, recorder_id: @employee.id) + @employee.fund_transfer_total)}"]] +
-      [["", "Ending Balance", "#{price(@employee.cash_on_hand_account.balance(recorder_id: @employee.id) + @employee.fund_transfer_total)}" ]]
+      [["", "Beginning Balance",  "#{price(@employee.cash_on_hand_account_balance(from_date: (@from_date.yesterday.end_of_day), to_date: (@from_date.beginning_of_day)))}"]] +
+      [["", "Cash Disbursements", "#{price(@employee.cash_on_hand_account.credits_balance(from_date: (@from_date.beginning_of_day - 1.second), to_date: @to_date.end_of_day))}"]] +
+      [["", "Cash Receipts", "#{price(@employee.cash_on_hand_account.debits_balance(from_date: (@from_date.beginning_of_day - 1.second), to_date: @to_date.end_of_day))}"]] +
+      [["", "Ending Balance", "#{price(@employee.cash_on_hand_account_balance)}" ]]
     end
 
     def sundries_summary
@@ -91,7 +91,7 @@ module Employees
   end
   def sundries_summary_data
     [["", "Code", "Account Title ", "Debits", "Credits"]] +
-    @sundries_summary ||= AccountingModule::Account.updated_at(from_date: @to_date.beginning_of_day, to_date: @to_date.end_of_day).updated_by(@employee).uniq.map{ |a| ["", a.code, a.name, price(a.debits_balance(from_date: @to_date.beginning_of_day, to_date: @to_date.end_of_day, recorder_id: @employee.id)), price(a.credits_balance(from_date: @to_date.beginning_of_day, to_date: @to_date.end_of_day, recorder_id: @employee.id))]}
+    @sundries_summary ||= AccountingModule::Account.updated_at(from_date: @from_date.beginning_of_day, to_date: @to_date.end_of_day).updated_by(@employee).uniq.map{ |a| ["", a.code, a.name, price(a.debits_balance(from_date: @to_date.beginning_of_day, to_date: @to_date.end_of_day)), price(a.credits_balance(from_date: @to_date.beginning_of_day, to_date: @to_date.end_of_day))]}
   end
     def entries_table
     if !@entries.any?

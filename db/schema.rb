@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180307080326) do
+ActiveRecord::Schema.define(version: 20180307122628) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -707,6 +707,8 @@ ActiveRecord::Schema.define(version: 20180307080326) do
     t.string "contact_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "cash_in_vault_account_id"
+    t.index ["cash_in_vault_account_id"], name: "index_offices_on_cash_in_vault_account_id"
     t.index ["cooperative_id"], name: "index_offices_on_cooperative_id"
     t.index ["type"], name: "index_offices_on_type"
   end
@@ -1305,6 +1307,7 @@ ActiveRecord::Schema.define(version: 20180307080326) do
   add_foreign_key "memberships", "cooperatives"
   add_foreign_key "municipalities", "provinces"
   add_foreign_key "notes", "users", column: "noter_id"
+  add_foreign_key "offices", "accounts", column: "cash_in_vault_account_id"
   add_foreign_key "offices", "cooperatives"
   add_foreign_key "orders", "users", column: "employee_id"
   add_foreign_key "organization_members", "organizations"

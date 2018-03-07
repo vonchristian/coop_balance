@@ -2,11 +2,11 @@ module TreasuryModule
   class FundTransfersController < ApplicationController
     def new
        @employee = current_user
-      @entry = TreasuryModule::FundTransferForm.new
+      @entry = TreasuryModule::FundTransferProcessing.new
     end
     def create
       @employee = current_user
-      @entry = TreasuryModule::FundTransferForm.new(remittance_params)
+      @entry = TreasuryModule::FundTransferProcessing.new(remittance_params)
       if @entry.valid?
         @entry.save
         redirect_to employee_url(@employee), notice: "Remittance saved successfully."
@@ -17,7 +17,13 @@ module TreasuryModule
 
     private
     def remittance_params
-      params.require(:treasury_module_fund_transfer_form).permit(:recorder_id, :commercial_document_id, :amount, :debit_account_id, :credit_account_id, :entry_date, :description, :reference_number)
+      params.require(:treasury_module_fund_transfer_processing).
+      permit(:employee_id,
+        :receiver_id,
+        :amount,
+        :entry_date,
+        :description,
+        :reference_number)
     end
   end
 end

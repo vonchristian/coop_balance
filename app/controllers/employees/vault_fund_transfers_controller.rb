@@ -2,14 +2,14 @@ module Employees
   class VaultFundTransfersController < ApplicationController
     def new
       @employee = User.find(params[:employee_id])
-      @entry = AccountingModule::RemittanceForm.new
+      @entry = TreasuryModule::VaultFundTransferProcessing.new
     end
     def create
       @employee = User.find(params[:employee_id])
-      @entry = AccountingModule::RemittanceForm.new(remittance_params)
+      @entry = TreasuryModule::VaultFundTransferProcessing.new(remittance_params)
       if @entry.valid?
         @entry.save
-        redirect_to employee_url(@employee), notice: "Remittance saved successfully."
+        redirect_to employee_url(@employee), notice: "Fund transfer saved successfully."
       else
         render :new
       end
@@ -17,7 +17,14 @@ module Employees
 
     private
     def remittance_params
-      params.require(:accounting_module_remittance_form).permit(:commercial_document_id, :recorder_id, :user_id, :amount, :debit_account_id, :credit_account_id, :entry_date, :description, :reference_number)
+      params.require(:treasury_module_vault_fund_transfer_processing).
+      permit(
+        :employee_id,
+        :amount,
+        :credit_account_id,
+        :entry_date,
+        :description,
+        :reference_number)
     end
   end
 end

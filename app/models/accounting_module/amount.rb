@@ -5,17 +5,21 @@ module AccountingModule
     belongs_to :account, :class_name => 'AccountingModule::Account', touch: true
     belongs_to :recorder, class_name: "User", foreign_key: 'recorder_id', touch: true
     belongs_to :commercial_document, polymorphic: true, touch: true
+
     validates :type, :amount, :entry, :account, :commercial_document_id,  presence: true
     validates :amount, numericality: true
 
     delegate :name, to: :account, prefix: true
     delegate :entry_date, :recorder, :reference_number, :description,  to: :entry
+
     def debit?
       type == "AccountingModule::DebitAmount"
     end
+
     def credit?
       type == "AccountingModule::CreditAmount"
     end
+
     def self.recorded_by(recorder_id)
       where('recorder_id' => recorder_id)
     end
@@ -26,9 +30,8 @@ module AccountingModule
 
     def self.entered_on(hash={})
       if hash[:from_date] && hash[:to_date]
-       from_date = hash[:from_date].kind_of?(DateTime) ? hash[:from_date] : Chronic.parse(hash[:from_date].strftime('%Y-%m-%d 12:00:00'))
-        to_date = hash[:to_date].kind_of?(DateTime) ? hash[:to_date] : Chronic.parse(hash[:to_date].strftime('%Y-%m-%d 12:59:59'))
-        where('created_at' => (from_date.beginning_of_day)..(to_date.end_of_day))
+        date_range = DateRange.new(from_date: hash[:from_date], to_date: hash[:to_date])
+        where('created_at' => (date_range.start_date)..(date_range.end_date))
       else
         all
       end

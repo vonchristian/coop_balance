@@ -1,23 +1,24 @@
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <div class="box box-solid">
-      <div class="box-header">
-        <h3 class="title condensed-text"> Entry Details </h3>
-        <%= @employee.name %>
+    <div class="box box-default">
+      <div class="box-header bg-gray">
+        <center>
+          <%= image_tag(@employee.avatar.url(:medium), class: "img-circle", height: 60, width: 60) %><br>
+          <h3 class="box-title"><%= @employee.name %></h3>
+        </center>
       </div>
       <div class="box-body">
         <%=simple_form_for @entry, url: :treasury_module_employee_fund_transfers do |f| %>
           <%= f.error_notification %>
-          <%= f.input :recorder_id, input_html: { value: @employee.id }, as: :hidden %>
+          <%= f.input :employee_id, input_html: { value: @employee.id }, as: :hidden %>
           <%= f.input :entry_date, as: :string, input_html: { value: Time.zone.now.strftime("%B %e, %Y"), class: "datepicker" } %>
           <%= f.input :reference_number %>
           <%= f.input :description, as: :text %>
           <%= f.input :amount %>
-          <%= f.input :credit_account_id, label: "Credit Account", input_html: { value: @employee.cash_on_hand_account.id } %>
           <%= f.input :recorder_id, input_html: { value: current_user.id }, as: :hidden %>
-          <%= f.input :commercial_document_id, label: "Transfer To: ", collection: User.teller.all.map{|a| [a.full_name, a.id] } %>
+          <%= f.input :receiver_id, label: "Transfer To: ", collection: User.teller.all.map{|a| [a.full_name, a.id] } %>
           <div class="box-footer">
-            <%= f.submit "Save Fund Transfer", class: "btn btn-primary" %>
+            <%= f.submit "Save Fund Transfer", class: "btn btn-primary pull-right" %>
           </div>
         <% end %>
       </div>
@@ -27,13 +28,7 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
-    $("#accounting_module_entry_form_credit_account_id").select2({
-      theme: "bootstrap"
-    });
-     $("#accounting_module_entry_form_debit_account_id").select2({
-      theme: "bootstrap"
-    });
-      $("#accounting_module_entry_form_entry_type").select2({
+    $("#treasury_module_fund_transfer_processing_receiver_id").select2({
       theme: "bootstrap"
     });
   });

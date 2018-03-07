@@ -24,8 +24,6 @@ module Employees
         entry.commercial_document.try(:depositor).try(:full_name)
       elsif entry.commercial_document.try(:borrower).present?
         entry.commercial_document.try(:borrower).try(:name)
-      elsif entry.fund_transfer?
-        entry.commercial_document.try(:first_and_last_name)
       elsif entry.commercial_document.try(:supplier).present?
         entry.commercial_document.try(:name)
       else
@@ -35,11 +33,11 @@ module Employees
 
     def heading
       bounding_box [300, 780], width: 50 do
-        image "#{Rails.root}/app/assets/images/logo_kcmdc.jpg", width: 50, height: 50
+        image "#{Rails.root}/app/assets/images/kccmc.jpg", width: 50, height: 50
       end
-      bounding_box [370, 780], width: 200 do
-          text "KCMDC", style: :bold, size: 24
-          text "Kiangan Community Multipurpose Cooperative", size: 10
+      bounding_box [370, 780], width: 150 do
+          text "KCCMC", style: :bold, size: 24
+          text "Kalanguya Cultural Community Multipurpose Cooperative", size: 10
       end
       bounding_box [0, 780], width: 400 do
         text "#{@employee.role.titleize}'s Blotter Report", style: :bold, size: 14
@@ -63,7 +61,7 @@ module Employees
         cells.borders = []
         column(2).align = :right
       end
-      table([["", "TOTAL AMOUNTSd RECEIVED", "#{price(@employee.cash_on_hand_account.debit_entries.recorded_by(@employee).map{|a| a.amounts.where(account: @employee.cash_on_hand_account).sum(&:amount) }.sum)}"]], cell_style: {size: 9, column_widths: [20, 150, 100]}) do
+      table([["", "TOTAL AMOUNTS RECEIVED", "#{price(@employee.cash_on_hand_account.debit_entries.recorded_by(@employee).map{|a| a.amounts.where(account: @employee.cash_on_hand_account).sum(&:amount) }.sum)}"]], cell_style: {size: 9, column_widths: [20, 150, 100]}) do
         cells.borders = []
         column(2).align = :right
 
@@ -89,7 +87,7 @@ module Employees
     end
     def amounts_received_data
       [["Date", "Payee", "Description", "Type", "Amount"]] +
-      @amounts_received_data ||= @employee.cash_on_hand_account.credit_entries.recorded_by(@employee).map{|a| [a.entry_date.strftime("%B %e, %Y"), display_commercial_document_for(a), a.description, a.payment_type, price(a.amounts.where(account: @employee.cash_on_hand_account).sum(&:amount)) ] } +
+      @amounts_received_data ||= @employee.cash_on_hand_account.debit_entries.recorded_by(@employee).map{|a| [a.entry_date.strftime("%B %e, %Y"), display_commercial_document_for(a), a.description, a.payment_type, price(a.amounts.where(account: @employee.cash_on_hand_account).sum(&:amount)) ] } +
       [["", "", "", "TOTAL", "#{price(@employee.cash_on_hand_account.debit_entries.recorded_by(@employee).map{|a| a.amounts.where(account: @employee.cash_on_hand_account).sum(&:amount) }.sum)}"]]
     end
 

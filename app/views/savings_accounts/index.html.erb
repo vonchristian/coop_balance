@@ -57,8 +57,10 @@
   <div class="col-md-6">
     <div  class="box box-default">
       <div class="box-header">
-        <small class="text-muted"> TOTAL SAVINGS</small><br>
-        <h3 class="box-title"> <%= number_to_currency CoopServicesModule::SavingProduct.accounts_balance %></h3>
+        <% CoopServicesModule::SavingProduct.all.each do |saving_product| %>
+          <%= saving_product.name %>
+          <%= number_to_currency saving_product.balance %>
+        <% end %>
       </div>
 
     </div>

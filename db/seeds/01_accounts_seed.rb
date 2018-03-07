@@ -3,6 +3,8 @@ AccountingModule::Asset.create(code: 11110, name: "Cash on Hand")
 AccountingModule::Asset.create(code: 111101, name: "Cash on Hand - Main (Treasury)")
 AccountingModule::Asset.create(code: 111102, name: "Cash on Hand (Teller)")
 AccountingModule::Asset.create(code: 111103, name: "Cash on Hand (Vault)")
+AccountingModule::Asset.create(code: 1111031, name: "Cash on Hand (Vault) - Poblacion")
+
 AccountingModule::Asset.create(code: 11120, name: "Checks and Other Cash Items (COCI)")
 AccountingModule::Asset.create(code: 11130, name: "Cash in Bank")
 AccountingModule::Asset.create(code: 11140, name: "Cash in Cooperative Federation")

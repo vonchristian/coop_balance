@@ -16,7 +16,7 @@
           <%= f.input :or_number, label: "Reference number" %>
           <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
           <%= f.input :saving_id, input_html: { value: @savings_account.id },as: :hidden %>
-          <%= f.input :recorder_id, input_html: { value: current_user.id },as: :hidden %>
+          <%= f.input :employee_id, input_html: { value: current_user.id },as: :hidden %>
           <div class="footer">
             <%= f.submit "Save Withdraw", class: "btn btn-primary pull-right", data: {disable_with: "Processing..." } %>
           </div>

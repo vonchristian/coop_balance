@@ -6,6 +6,7 @@ module Members
       @member = member
       @view_context = view_context
       heading
+      profile
       investment_details
       loans
     end
@@ -15,19 +16,41 @@ module Members
       @view_context.number_to_currency(number, :unit => "P ")
     end
     def heading
-      bounding_box [300, 780], width: 60 do
-       #image "#{Rails.root}/app/assets/images/kccmc_logo.jpg", width: 50, height: 50
+      bounding_box [310, 780], width: 60 do
+       image "#{Rails.root}/app/assets/images/kccmc_logo.jpg", width: 70, height: 70
       end
-      bounding_box [350, 760], width: 150 do
+      bounding_box [390, 770], width: 150 do
           text "KCCMC", style: :bold, size: 22
-          text "Poblacion, Tinoc, Ifugao", size: 10
+          text "Kalanguya Cultural Community", size: 10
+          text "Multipurpose Cooperative", size: 10
       end
       bounding_box [0, 760], width: 400 do
-        text "Member's Data Sheet", style: :bold, size: 14
+        text "MEMBER'S DATA SHEET", style: :bold, size: 14
         move_down 5
-        text "#{@member.name.try(:upcase)}"
+        text "As of #{Date.today.strftime("%B %e, %Y")}", size: 10
       end
-      move_down 10
+      move_down 20
+      stroke do
+      stroke_color '24292E'
+      line_width 1
+      stroke_horizontal_rule
+      move_down 20
+    end
+    end
+    def profile
+      text "MEMBER'S PROFILE", style: :bold
+      table([["", "Member", "<b>#{@member.name.try(:upcase)}</b>"]], cell_style: { inline_format: true, size: 10, font: "Helvetica" }, column_widths: [20, 150, 200]) do
+          cells.borders = []
+      end
+      table([["", "Contact Number", @member.contact_number]], cell_style: { inline_format: true, size: 10, font: "Helvetica" }, column_widths: [20, 150, 100]) do
+          cells.borders = []
+      end
+      table([["", "Address", @member.current_address]], cell_style: { inline_format: true, size: 10, font: "Helvetica" }, column_widths: [20, 150, 100]) do
+          cells.borders = []
+      end
+      table([["", "Date of Birth", @member.date_of_birth.try(:strftime, ("%B %e, %Y"))]], cell_style: { inline_format: true, size: 10, font: "Helvetica" }, column_widths: [20, 150, 100]) do
+          cells.borders = []
+      end
       stroke do
         stroke_color 'CCCCCC'
         line_width 0.2
