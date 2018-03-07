@@ -13,6 +13,8 @@
            <div class="col-md-2">
             <small class="text-muted">INTERESTS</small>
             <h5><%= number_to_currency @loan.interest_receivable_debits_balance %></h5>
+            <h5><%= number_to_currency @loan.unearned_interests %></h5>
+
             <%=link_to 'New Interest', new_loans_module_loan_interest_posting_path(@loan), class: "btn btn-xs btn-danger" %><br>
             <%=link_to 'New Rebate', new_loans_module_loan_interest_rebate_posting_path(@loan), class: "btn btn-xs btn-default" %><br>
 

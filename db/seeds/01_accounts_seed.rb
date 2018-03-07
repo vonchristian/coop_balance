@@ -25,15 +25,23 @@ AccountingModule::Asset.create(code: 117112, name: "Loans Receivable - Current (
 AccountingModule::Asset.create(code: 117113, name: "Loans Receivable - Current (Emergency Loan)")
 AccountingModule::Asset.create(code: 117113, name: "Loans Receivable - Current (OFW Loan)")
 
-AccountingModule::Asset.create(code: 117114, name: "Loans Receivable - Current (Regular Loan Penalties)")
+AccountingModule::Asset.create(code: 117114, name: "Loan Penalties Receivable - (Regular Loan)")
+AccountingModule::Asset.create(code: 117115, name: "Loan Penalties Receivable - (Emergency Loan)")
+
 
 
 AccountingModule::Asset.create(code: 11712, name: "Loans Receivable - Past Due")
 AccountingModule::Asset.create(code: 1171211, name: "Loans Receivable - Past Due (Regular Loan)")
+AccountingModule::Asset.create(code: 1171212, name: "Loans Receivable - Past Due (Emergency Loan)")
+
 
 AccountingModule::Asset.create(code: 11713, name: "Loans Receivable - Restructured")
 AccountingModule::Asset.create(code: 11714, name: "Loans Receivable - Loans in Litigation")
 AccountingModule::Asset.create(code: 11715, contra: true, name: "Unearned Interests and Discounts")
+AccountingModule::Asset.create(code: 117151, contra: true, name: "Unearned Interests and Discounts - Regular Loan")
+AccountingModule::Asset.create(code: 117152, contra: true, name: "Unearned Interests and Discounts - Emergency Loan")
+
+
 
 AccountingModule::Asset.create(code: 11716, name: "Allowance for Probable Losses on Loans")
 AccountingModule::Asset.create(code: 11721, name: "Accounts Receivables Trade - Current")
@@ -44,7 +52,15 @@ AccountingModule::Asset.create(code: 11722, name: "Accounts Receivables Trade - 
 AccountingModule::Asset.create(code: 11723, name: "Accounts Receivables Trade - Restructured")
 AccountingModule::Asset.create(code: 11724, name: "Accounts Receivables Trade - in Litigation")
 AccountingModule::Asset.create(code: 11725, name: "Allowance for Probable Losses on Accounts Receivable Trade")
-AccountingModule::Asset.create(code: 11726, name: "Interests on Credit Receivables")
+AccountingModule::Asset.create(code: 11726, name: "Interests on Loan Receivables")
+AccountingModule::Asset.create(code: 117261, name: "Interests on Loan Receivables - Emergency Loan")
+AccountingModule::Asset.create(code: 11727, name: "Penalties on Loan Receivables")
+AccountingModule::Asset.create(code: 117271, name: "Penalties on Loan Receivables - Regular Loan")
+AccountingModule::Asset.create(code: 117272, name: "Penalties on Loan Receivables - Emergency Loan")
+
+
+
+
 AccountingModule::Asset.create(code: 11730, name: "Installment Receivables - Current")
 AccountingModule::Asset.create(code: 11731, name: "Installment Receivables - Past Due")
 AccountingModule::Asset.create(code: 11733, name: "Installment Receivables - Restructured")
@@ -59,6 +75,10 @@ AccountingModule::Asset.create(code: 11770,  name: "Finance Lease Receivable")
 AccountingModule::Asset.create(code: 11780,  name: "Other Current Receivables")
 AccountingModule::Asset.create(code: 11800,  name: "Inventories")
 AccountingModule::Asset.create(code: 11810,  name: "Merchandise Inventory")
+AccountingModule::Asset.create(code: 118101,  name: "Merchandise Inventory (Poblacion)")
+AccountingModule::Asset.create(code: 118102,  name: "Merchandise Inventory (Mansoyosoy)")
+AccountingModule::Asset.create(code: 118103,  name: "Merchandise Inventory (Tukucan)")
+
 AccountingModule::Asset.create(code: 11820,  name: "Reposessed Inventories")
 AccountingModule::Asset.create(code: 11830,  name: "Spare Parts/Materials and Other Goods Inventory")
 AccountingModule::Asset.create(code: 11840,  name: "Raw Materials Inventory")
@@ -212,7 +232,11 @@ AccountingModule::Revenue.create(code: 40100, name: 'Income from Operations')
 AccountingModule::Revenue.create(code: 40110, name: 'Interest Income from Loans')
 AccountingModule::Revenue.create(code: 401101, name: 'Interest Income from Loans - Salary Loan')
 AccountingModule::Revenue.create(code: 401102, name: 'Interest Income from Loans - Regular Loan')
-AccountingModule::Revenue.create(code: 401100, name: 'Interest Income from Loans Rebates', contra: true)
+AccountingModule::Revenue.create(code: 401103, name: 'Interest Income from Loans - Emergency Loan')
+
+AccountingModule::Revenue.create(code: 401100, name: 'Interest Rebates', contra: true)
+AccountingModule::Revenue.create(code: 4011001, name: 'Interest Rebates - Emergency Loan', contra: true)
+
 
 AccountingModule::Revenue.create(code: 40120, name: 'Service Fees')
 
@@ -225,7 +249,9 @@ AccountingModule::Revenue.create(code: 4012033, name: 'Share Capital Closing Fee
 
 AccountingModule::Revenue.create(code: 40130, name: 'Filing Fees')
 AccountingModule::Revenue.create(code: 40140, name: 'Fines, Penalties, Surcharges')
-AccountingModule::Revenue.create(code: 401401, name: 'Loan Penalties')
+AccountingModule::Revenue.create(code: 401401, name: 'Loan Penalties Income')
+AccountingModule::Revenue.create(code: 4014011, name: 'Loan Penalties Income - Regular Loan')
+AccountingModule::Revenue.create(code: 4014012, name: 'Loan Penalties Income - Emergency Loan')
 
 AccountingModule::Revenue.create(code: 40200, name: 'Income from Service Operations')
 AccountingModule::Revenue.create(code: 40200, name: 'Service Income')
@@ -237,6 +263,10 @@ AccountingModule::Revenue.create(code: 40310, name: 'Sales')
 AccountingModule::Revenue.create(code: 40320, name: 'Installment Sales')
 AccountingModule::Revenue.create(code: 40330, name: 'Sales Returns and Allowances', contra: true)
 AccountingModule::Revenue.create(code: 40340, name: 'Sales Discounts', contra: true)
+AccountingModule::Revenue.create(code: 40350, name: 'Penalties Discounts', contra: true)
+AccountingModule::Revenue.create(code: 403501, name: 'Penalties Discounts - Regular Loan', contra: true)
+AccountingModule::Revenue.create(code: 403502, name: 'Penalties Discounts - Emergency Loan', contra: true)
+
 AccountingModule::Revenue.create(code: 40400, name: 'Other Income')
 AccountingModule::Revenue.create(code: 40410, name: 'Income/Interest from Investment/Deposits')
 AccountingModule::Revenue.create(code: 40420, name: 'Membership Fee')

@@ -13,6 +13,22 @@
 
           <%= f.input :loans_receivable_current_account_id, label: "Select Loans Receivable (Current) Account", collection: AccountingModule::Asset.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanAccountSelect'} %>
           <%= f.input :loans_receivable_past_due_account_id, label: "Select Loans Receivable (Past Due) Account", collection: AccountingModule::Asset.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanAccountSelect'} %>
+          <h4>Interest Configuration</h4>
+          <%= f.input :interest_rate %>
+          <%= f.input :unearned_interest_income_account_id,  collection: AccountingModule::Asset.all.map{|a| [a.name, a.id] } %>
+          <%= f.input :interest_revenue_account_id,  collection: AccountingModule::Revenue.all.map{|a| [a.name, a.id] } %>
+          <%= f.input :interest_receivable_account_id,  collection: AccountingModule::Asset.all.map{|a| [a.name, a.id] } %>
+
+          <h4>Penalty Configuration</h4>
+          <%= f.input :penalty_rate %>
+          <%= f.input :penalty_revenue_account_id,  collection: AccountingModule::Revenue.all.map{|a| [a.name, a.id] } %>
+          <%= f.input :penalty_receivable_account_id,  collection: AccountingModule::Asset.all.map{|a| [a.name, a.id] } %>
+          <%= f.input :penalty_discount_account_id,  collection: AccountingModule::Revenue.all.map{|a| [a.name, a.id] } %>
+
+
+
+
+
 
 
           <div class="box-footer">

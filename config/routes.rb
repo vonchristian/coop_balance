@@ -44,6 +44,7 @@ Rails.application.routes.draw do
 
   resources :loans_module, only: [:index]
   namespace :loans_module do
+    resources :search_results, only: [:index]
     resources :schedules, only: [:index, :show]
     resources :amortization_schedules, only: [:show], module: :schedules
     namespace :reports do

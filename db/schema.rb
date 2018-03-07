@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180306214921) do
+ActiveRecord::Schema.define(version: 20180307024104) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -355,8 +355,6 @@ ActiveRecord::Schema.define(version: 20180306214921) do
     t.uuid "interest_revenue_account_id"
     t.uuid "unearned_interest_income_account_id"
     t.uuid "interest_receivable_account_id"
-    t.uuid "interest_rebate_account_id"
-    t.index ["interest_rebate_account_id"], name: "index_interest_configs_on_interest_rebate_account_id"
     t.index ["interest_receivable_account_id"], name: "index_interest_configs_on_interest_receivable_account_id"
     t.index ["interest_revenue_account_id"], name: "index_interest_configs_on_interest_revenue_account_id"
     t.index ["loan_product_id"], name: "index_interest_configs_on_loan_product_id"
@@ -455,6 +453,8 @@ ActiveRecord::Schema.define(version: 20180306214921) do
     t.datetime "updated_at", null: false
     t.string "commercial_document_type"
     t.uuid "commercial_document_id"
+    t.integer "amount_type"
+    t.index ["amount_type"], name: "index_loan_charges_on_amount_type"
     t.index ["chargeable_type", "chargeable_id"], name: "index_loan_charges_on_chargeable_type_and_chargeable_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_loan_charges"
     t.index ["loan_id"], name: "index_loan_charges_on_loan_id"
@@ -560,6 +560,8 @@ ActiveRecord::Schema.define(version: 20180306214921) do
     t.string "borrower_full_name"
     t.uuid "preparer_id"
     t.datetime "disbursement_date"
+    t.string "account_number"
+    t.index ["account_number"], name: "index_loans_on_account_number", unique: true
     t.index ["barangay_id"], name: "index_loans_on_barangay_id"
     t.index ["borrower_type", "borrower_id"], name: "index_loans_on_borrower_type_and_borrower_id"
     t.index ["loan_product_id"], name: "index_loans_on_loan_product_id"
@@ -760,7 +762,9 @@ ActiveRecord::Schema.define(version: 20180306214921) do
     t.uuid "penalty_revenue_account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "penalty_discount_account_id"
     t.index ["loan_product_id"], name: "index_penalty_configs_on_loan_product_id"
+    t.index ["penalty_discount_account_id"], name: "index_penalty_configs_on_penalty_discount_account_id"
     t.index ["penalty_receivable_account_id"], name: "index_penalty_configs_on_penalty_receivable_account_id"
     t.index ["penalty_revenue_account_id"], name: "index_penalty_configs_on_penalty_revenue_account_id"
   end
@@ -1087,7 +1091,10 @@ ActiveRecord::Schema.define(version: 20180306214921) do
     t.integer "status"
     t.uuid "office_id"
     t.uuid "membership_id"
+    t.string "depositor_type"
+    t.uuid "depositor_id"
     t.index ["account_number"], name: "index_time_deposits_on_account_number", unique: true
+    t.index ["depositor_type", "depositor_id"], name: "index_time_deposits_on_depositor_type_and_depositor_id"
     t.index ["membership_id"], name: "index_time_deposits_on_membership_id"
     t.index ["office_id"], name: "index_time_deposits_on_office_id"
     t.index ["status"], name: "index_time_deposits_on_status"
@@ -1252,7 +1259,6 @@ ActiveRecord::Schema.define(version: 20180306214921) do
   add_foreign_key "finished_good_materials", "products"
   add_foreign_key "finished_good_materials", "raw_materials"
   add_foreign_key "fixed_terms", "time_deposits"
-  add_foreign_key "interest_configs", "accounts", column: "interest_rebate_account_id"
   add_foreign_key "interest_configs", "accounts", column: "interest_receivable_account_id"
   add_foreign_key "interest_configs", "accounts", column: "interest_revenue_account_id"
   add_foreign_key "interest_configs", "accounts", column: "unearned_interest_income_account_id"
@@ -1295,6 +1301,7 @@ ActiveRecord::Schema.define(version: 20180306214921) do
   add_foreign_key "offices", "cooperatives"
   add_foreign_key "orders", "users", column: "employee_id"
   add_foreign_key "organization_members", "organizations"
+  add_foreign_key "penalty_configs", "accounts", column: "penalty_discount_account_id"
   add_foreign_key "penalty_configs", "accounts", column: "penalty_receivable_account_id"
   add_foreign_key "penalty_configs", "accounts", column: "penalty_revenue_account_id"
   add_foreign_key "penalty_configs", "loan_products"

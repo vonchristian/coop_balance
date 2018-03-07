@@ -4,7 +4,7 @@
       <div class="box box-solid">
         <div class="box-header">
           <h3 class="box-title"> Search Results </h3>
-          <%=form_tag search_results_path, method: :get, class: "sidebar-form" do %>
+          <%=form_tag loans_module_search_results_path, method: :get, class: "sidebar-form" do %>
       <div class="input-group">
         <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search..." %>
         <span class="input-group-btn">
@@ -21,15 +21,27 @@
             <% else %>
             <p><%= @search_results.count %> results found for <b><%=params[:search] %></b></p>
             <% @search_results.each do |search_result| %>
-              <% if search_result.searchable.is_a?(AccountingModule::Entry) %>
-              <b><%= link_to search_result.searchable.try(:description), accounting_module_entry_path(search_result.searchable) %></b><br>
-                <span class="text-muted"> Entry </span>
-                <hr>
+              <% if search_result.searchable.is_a?(LoansModule::Loan) %>
+                <b><%= link_to search_result.searchable.try(:borrower_name), loan_path(search_result.searchable) %></b><br>
+                <span class="text-muted"> Loan</span>
               <% end %>
-              <% if search_result.searchable_type == "Occupation" %>
-              <%= link_to search_result.searchable.try(:name), occupations_path(search_result.searchable) %><br>
+              <% if search_result.searchable.is_a?(User) %>
+                <b><%= link_to search_result.searchable.try(:name), employee_path(search_result.searchable) %></b><br>
                 <span class="text-muted"> <%= search_result.searchable.class.to_s %></span>
               <% end %>
+              <% if search_result.searchable.is_a?(Voucher) %>
+                <b><%= link_to search_result.searchable.try(:description), voucher_path(search_result.searchable) %></b><br>
+                <span class="text-muted"> Voucher</span>
+                <hr>
+              <% end %>
+              <% if search_result.searchable.is_a?(MembershipsModule::Saving) %>
+                <%= link_to search_result.searchable.try(:name), savings_account_path(search_result.searchable) %><br>
+                <span class="text-muted"> <%= search_result.searchable.class.to_s %></span>
+              <% end %>
+            <% if search_result.searchable_type == "Occupation" %>
+              <%= link_to search_result.searchable.try(:name), occupations_path(search_result.searchable) %><br>
+                <span class="text-muted"> <%= search_result.searchable.class.to_s %></span>
+            <% end %>
               <% if search_result.searchable_type == "Member" %>
               <%= link_to search_result.searchable.try(:name), member_info_index_path(search_result.searchable) %><br>
                 <span class="text-muted"> <%= search_result.searchable.class.to_s %></span>

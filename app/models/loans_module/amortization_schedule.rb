@@ -53,7 +53,11 @@ module LoansModule
       update_amortization_schedule(loan)
     end
     def self.average_monthly_payment(loan)
-      all.collect{ |a| a.total_amortization }.sum / loan.term
+      if loan.lumpsum?
+        loan.loan_amount
+      else
+        all.collect{ |a| a.total_amortization }.sum / loan.term
+      end
     end
 
     def self.principal_for(schedule, loan)
@@ -94,14 +98,21 @@ module LoansModule
     def self.update_amortization_schedule(loan)
       loan.amortization_schedules.order(date: :asc).first(loan.number_of_interest_payments_prededucted).each do |schedule|
         schedule.prededucted_interest = true
-        schedule.interest = (loan.principal_balance_for(schedule) * loan.loan_product_monthly_interest_rate)
+        schedule.interest = interest_computation(schedule, loan)
         schedule.debit_account_id = schedule.default_debit_account
         schedule.debit_account_id = schedule.default_credit_account
         schedule.save
       end
       loan.amortization_schedules.where(prededucted_interest: false).order(date: :asc).each do |schedule|
-        schedule.interest = (loan.principal_balance_for(schedule) * loan.loan_product_monthly_interest_rate)
+        schedule.interest = interest_computation(schedule, loan)
         schedule.save
+      end
+    end
+    def self.interest_computation(schedule, loan)
+      if !loan.lumpsum?
+        (loan.principal_balance_for(schedule) * loan.loan_product_monthly_interest_rate)
+      else
+        loan.loan_amount * loan.loan_product_interest_rate
       end
     end
 

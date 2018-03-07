@@ -4,7 +4,7 @@ module MembershipsModule
     include PgSearch
     pg_search_scope :text_search, against: [:account_number], :associated_against => { :depositor => [:first_name, :last_name ] }
 
-    belongs_to :depositor, class_name: "Membership", foreign_key: 'membership_id'
+    belongs_to :depositor, polymorphic: true
     belongs_to :office, class_name: "CoopConfigurationsModule::Office"
     belongs_to :time_deposit_product, class_name: "CoopServicesModule::TimeDepositProduct"
     has_many :entries,  class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy

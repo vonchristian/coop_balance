@@ -19,12 +19,12 @@ module LoansModule
           commercial_document: find_borrower,
           credit_amounts_attributes: [
             amount: amount,
-            account: interest_rebate_account,
-            commercial_document: find_loan
+            account: share_capital_account,
+            commercial_document: find_share_capital
           ],
           debit_amounts_attributes: [
             amount: amount,
-            account: interest_receivable_account,
+            account: unearned_interest_income_account,
             commercial_document: find_loan
           ]
         )
@@ -33,14 +33,18 @@ module LoansModule
       def find_borrower
         find_loan.borrower
       end
+      def find_share_capital
+        find_borrower.share_capitals.default.first
+      end
+
       def find_loan
         LoansModule::Loan.find_by_id(loan_id)
       end
-      def interest_rebate_account
-        find_loan.loan_product_interest_rebate_account
+      def unearned_interest_income_account
+        find_loan.loan_product_unearned_interest_income_account
       end
-      def interest_receivable_account
-        find_loan.loan_product_interest_receivable_account
+      def share_capital_account
+        find_share_capital.share_capital_product_paid_up_account
       end
     end
   end

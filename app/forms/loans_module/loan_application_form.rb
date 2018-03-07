@@ -10,6 +10,7 @@ module LoansModule
                   :application_date,
                   :mode_of_payment,
                   :application_date,
+                  :account_number,
                   :preparer_id
     def save
       ActiveRecord::Base.transaction do
@@ -17,13 +18,7 @@ module LoansModule
       end
     end
     def find_loan
-      LoansModule::Loan.find_by(
-        loan_product_id: loan_product_id,
-        loan_amount: loan_amount,
-        term: term,
-        application_date: application_date,
-        mode_of_payment: mode_of_payment,
-        preparer_id: preparer_id)
+      LoansModule::Loan.find_by(account_number: account_number)
     end
 
     private
@@ -38,15 +33,23 @@ module LoansModule
     end
 
     def save_loan
-      loan = find_borrower.loans.create!(loan_product_id: loan_product_id, loan_amount: loan_amount, term: term, application_date: application_date, mode_of_payment: mode_of_payment, preparer_id: preparer_id)
+      loan = find_borrower.loans.create!(
+        loan_product_id: loan_product_id,
+        loan_amount: loan_amount,
+        term: term,
+        application_date: application_date,
+        mode_of_payment: mode_of_payment,
+        preparer_id: preparer_id,
+        account_number: account_number)
       create_loan_product_charges(loan)
       create_amortization_schedule(loan)
       create_documentary_stamp_tax(loan)
     end
 
     def create_loan_product_charges(loan)
-      if loan.loan_charges.present?
-        loan.loan_charges.destroy_all
+      loan_charges = LoansModule::LoanCharge.where(loan: loan)
+      if loan_charges.present?
+        loan_charges.destroy_all
       end
       loan.loan_product.create_charges_for(loan)
     end

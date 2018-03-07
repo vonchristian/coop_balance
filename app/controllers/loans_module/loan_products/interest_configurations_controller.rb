@@ -24,7 +24,7 @@ module LoansModule
                :unearned_interest_income_account_id,
                :interest_receivable_account_id,
                :interest_rebate_account_id)
-               )
+
       end
     end
   end

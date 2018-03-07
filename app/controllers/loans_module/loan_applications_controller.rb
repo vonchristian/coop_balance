@@ -61,6 +61,7 @@ module LoansModule
                   :application_date,
                   :mode_of_payment,
                   :application_date,
+                  :account_number,
                   :preparer_id)
     end
   end

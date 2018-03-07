@@ -18,10 +18,11 @@ module Employees
         share_capital_product_id: share_capital_product_id,
         account_number: account_number,
         date_opened: date)
-      share_capital.capital_build_ups.create!(
+      AccountingModule::Entry.create!(
         recorder_id: recorder_id,
         description: 'Payment of capital build up',
         reference_number: reference_number,
+        commercial_document: share_capital,
         entry_date: date,
         debit_amounts_attributes: [account: debit_account, amount: amount, commercial_document: share_capital],
         credit_amounts_attributes: [account: credit_account, amount: amount, commercial_document: share_capital])
@@ -31,7 +32,10 @@ module Employees
       find_employee.cash_on_hand_account
     end
     def find_subscriber
-      Membership.find_by_id(subscriber_id)
+      employee_subscriber = User.find_by_id(subscriber_id)
+      if employee_subscriber.present?
+        employee_subscriber
+      end
     end
 
     def credit_account

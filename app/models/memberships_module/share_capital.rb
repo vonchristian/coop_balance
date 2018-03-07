@@ -14,6 +14,9 @@ module MembershipsModule
     delegate :name, to: :subscriber, prefix: true, allow_nil: true
     delegate :cost_per_share, to: :share_capital_product, prefix: true
     before_save :set_account_owner_name
+    def self.default
+      select{|a| a.share_capital_product.default_product? }
+    end
 
     def capital_build_ups
       share_capital_product_paid_up_account.credit_amounts.where(commercial_document: self) +

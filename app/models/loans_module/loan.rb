@@ -2,6 +2,7 @@ module LoansModule
   class Loan < ApplicationRecord
     include PgSearch
     pg_search_scope :text_search, :against => [:borrower_full_name]
+    multisearchable against: [:borrower_full_name]
     enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
     has_one :disbursement_voucher, class_name: "Voucher", as: :payee
     has_one :first_notice, class_name: "LoansModule::Notices::FirstNotice", as: :notified
@@ -244,8 +245,13 @@ module LoansModule
     def interest_payments
       loan_product_interest_receivable_account.credits_balance(commercial_document_id: self.id)
     end
+
     def penalty_payments
       loan_product_penalty_receivable_account.credits_balance(commercial_document_id: self.id)
+    end
+
+    def unearned_interests
+      loan_product_unearned_interest_income_account.balance(commercial_document_id: self.id)
     end
 
     def payments_total
@@ -272,7 +278,7 @@ module LoansModule
       penalties_balance
     end
     def interest_receivable_balance
-      loan_product_interest_receivable_account.balance(commercial_document_id: self.id)
+      loan_product_interest_receivable_account.debits_balance(commercial_document_id: self.id)
     end
     def penalties_balance
       loan_product_penalty_receivable_account.balance(commercial_document_id: self.id)
@@ -309,7 +315,7 @@ module LoansModule
         self.application_date ||= Time.zone.now
       end
       def set_borrower_full_name
-        self.borrower_full_name = self.borrower_name
+        self.borrower_full_name = self.borrower.full_name
       end
 
 

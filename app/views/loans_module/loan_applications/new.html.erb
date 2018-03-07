@@ -15,7 +15,7 @@
   <%= f.input :mode_of_payment, collection: LoansModule::Loan.mode_of_payments.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
   <%= f.input :application_date, as: :string, input_html: { class: "datepicker", value: Time.zone.now.strftime("%B %e, %Y") } %>
   <%= f.input :preparer_id, input_html: { value: current_user.id }, as: :hidden %>
-
+  <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
   <div class="box-footer">
     <%= button_tag( :class => "btn btn-primary pull-right") do %>
       Proceed  &nbsp;<i class="icon-arrow-right-circle"></i>

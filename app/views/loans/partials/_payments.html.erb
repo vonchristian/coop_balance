@@ -4,13 +4,14 @@
     <%=link_to 'New Payment', new_loan_payment_path(@loan), class: "btn btn-primary" %>
     <% end %>
   <hr>
-  <p class="condensed-text"> PAYMENTS HISTORY </p>
+  <p class="condensed-text"> TRANSACTIONS HISTORY </p>
 
   <div class="table table-responsive">
     <table class="table table-striped table-hover">
       <thead>
         <tr>
         <th> DATE </th>
+          <th>DESCRIPTION</th>
           <th> AMOUNT </th>
           <th> REFERENCE NUMBER </th>
           <th> EMPLOYEE</th>
@@ -20,6 +21,7 @@
         <% @loan.loan_payments.each do |payment| %>
           <tr>
             <td><%= payment.entry_date.strftime("%B %e, %Y") %></td>
+            <td><%= payment.description %></td>
             <td><%= number_to_currency payment.debit_amounts.sum(&:amount) %> </td>
             <td><%= payment.reference_number %></td>
             <td>

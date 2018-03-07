@@ -9,7 +9,7 @@
       </div>
       <div class="box-body">
         <center>
-          <h4><%= @loan.interest_receivable_debits_balance %></h4>
+          <h4><%= @loan.unearned_interests %></h4>
         </center>
         <h4>Rebate Details</h4>
         <%= simple_form_for [@loan, @rebate], url: :loans_module_loan_interest_rebate_postings do |f| %>
