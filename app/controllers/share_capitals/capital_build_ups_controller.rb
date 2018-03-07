@@ -2,13 +2,13 @@ module ShareCapitals
   class CapitalBuildUpsController < ApplicationController
     def new
       @share_capital = MembershipsModule::ShareCapital.find(params[:share_capital_id])
-      @capital_build_up = CapitalBuildUpForm.new
+      @capital_build_up = Memberships::ShareCapitals::CapitalBuildUpProcessing.new
       authorize [:share_capitals, :capital_build_up]
     end
 
     def create
       @share_capital = MembershipsModule::ShareCapital.find(params[:share_capital_id])
-      @capital_build_up = CapitalBuildUpForm.new(share_capital_params)
+      @capital_build_up = Memberships::ShareCapitals::CapitalBuildUpProcessing.new(share_capital_params)
       authorize [:share_capitals, :capital_build_up]
       if @capital_build_up.valid?
         @capital_build_up.save
@@ -20,7 +20,7 @@ module ShareCapitals
 
     private
     def share_capital_params
-      params.require(:capital_build_up_form).permit(:share_capital_id, :share_count, :or_number, :amount, :recorder_id, :membership_id)
+      params.require(:memberships_share_capitals_capital_build_up_processing).permit(:share_capital_id, :or_number, :amount, :employee_id, :depositor_id)
     end
   end
 end

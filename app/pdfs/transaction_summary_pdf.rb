@@ -100,22 +100,19 @@ class TransactionSummaryPdf < Prawn::Document
   end
   #Savings Deposits
   def savings_deposits_balances
-    [["", "Beginning Balance", "#{price(CoopServicesModule::SavingProduct.accounts_balance(to_date: @date.yesterday.end_of_day))}"]]
+    [["", "Beginning Balance", "#{price(CoopServicesModule::SavingProduct.all.map{|a| a.account.balance(from_date: @date.yesterday, to_date: @date.yesterday.end_of_day)}.sum)}"]]
   end
   def add_savings_deposits
-    [["", "", "Add Deposits (Cash)", "#{price(CoopServicesModule::SavingProduct.accounts.uniq.map{|a| a.credit_entries.cash.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total}.sum) }"]] +
-    [["", "", "Add Deposits (Check)", "#{price(CoopServicesModule::SavingProduct.accounts.uniq.map{|a| a.credit_entries.check.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total}.sum) }"]]
-
+    [["", "", "Add Deposits", "#{price(CoopServicesModule::SavingProduct.all.map{ |a| a.account.debits_balance(from_date: @date.beginning_of_day, to_date: @date.end_of_day)}.sum) }"]]
   end
 
   def less_savings_deposits
-    [["", "", "Less Withdrawals (Cash)", "#{price(CoopServicesModule::SavingProduct.accounts.uniq.map{|a| a.debit_entries.cash.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total}.sum )}"]] +
-    [["", "", "Less Withdrawals (Check)", "#{price(CoopServicesModule::SavingProduct.accounts.uniq.map{|a| a.debit_entries.check.recorded_by(@employee.id).entered_on(from_date: @date, to_date: @date).total}.sum )}"]]
-
+    [["", "", "Less Withdrawals", "#{price(CoopServicesModule::SavingProduct.all.map{ |a| a.account.credits_balance(from_date: @date.beginning_of_day, to_date: @date.end_of_day)}.sum) }"]]
   end
 
   def total_savings_deposits
-    [["", "", "Total Savings Deposits", "#{price(CoopServicesModule::SavingProduct.accounts_balance)}"]]
+    [["", "", "Total Savings", "#{price(CoopServicesModule::SavingProduct.all.map{ |a| a.account.balance(from_date: @date.beginning_of_day, to_date: @date.end_of_day)}.sum) }"]]
+
   end
   def time_deposits
     text "Time Deposits", style: :bold, size: 10, color: "4A86CF"
@@ -209,7 +206,7 @@ class TransactionSummaryPdf < Prawn::Document
     [["", "", "Total Share Capitals", "#{price(CoopServicesModule::ShareCapitalProduct.paid_up_accounts_balance(to_date: @date.end_of_day))}"]]
   end
   def share_capital_withdrawals
-    [["", "", "Less Withdrawals", "#{price(CoopServicesModule::ShareCapitalProduct.paid_up_accounts_debits_balance(recorder_id: @employee.id, from_date: @date.beginning_of_day, to_date: @date.end_of_day))}"]]
+    [["", "", "Less Withdrawals", "#{price(CoopServicesModule::ShareCapitalProduct.paid_up_accounts_debits_balance(from_date: @date.beginning_of_day, to_date: @date.end_of_day))}"]]
   end
   def loan_releases
     text "Loan Releases", style: :bold, size: 10, color: "DB4437"
@@ -317,8 +314,8 @@ class TransactionSummaryPdf < Prawn::Document
   end
   def revenues_data
     [["", "", "Account", "Amount"]] +
-    @revenues_data ||= AccountingModule::Revenue.updated_at(from_date: @date.beginning_of_day, to_date: @date.end_of_day).distinct.map{|a| ["", "", a.name, price(a.amounts.entered_on(from_date: @date, to_date: @date).sum(:amount))]} +
-    [["", "", "<b>TOTAL</b>", "#{AccountingModule::Revenue.updated_at(from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{|a| a.amounts.entered_on(from_date: @date, to_date: @date).total}.sum}"]]
+    @revenues_data ||= AccountingModule::Revenue.updated_at(from_date: @date.beginning_of_day, to_date: @date.end_of_day).distinct.to_a.sort_by(&:balance).reverse.map{|a| ["", "", a.name, price(a.balance(from_date: @date, to_date: @date))]} +
+    [["", "", "<b>TOTAL</b>", "#{AccountingModule::Revenue.updated_at(from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{|a| a.balance(from_date: @date, to_date: @date) }.sum}"]]
   end
 
   def summary_report
@@ -343,7 +340,7 @@ class TransactionSummaryPdf < Prawn::Document
     end
   end
   def summary_data
-    [["", "", "Beginning Balance", "#{price(@employee.cash_on_hand_account.balance(recorder_id: @employee.id, to_date: @date.yesterday.end_of_day))}"]] +
+    [["", "", "Beginning Balance", "#{price(@employee.cash_on_hand_account.balance(from_date: @date.beginning_of_day-1.second, to_date: @date.end_of_day))}"]] +
     [["", "", "Cash Received",  "#{price(@employee.cash_on_hand_account.debit_entries.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).recorded_by(@employee.id).total)}"]] +
     [["", "", "Cash Disbursed",  "#{price(@employee.cash_on_hand_account.credit_entries.entered_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).recorded_by(@employee.id).total)}"]]
   end
@@ -369,7 +366,7 @@ class TransactionSummaryPdf < Prawn::Document
   end
   def accounts_data
     [["", "Code", "Account", "Debits", "Credits"]] +
-    @accounts_data ||= AccountingModule::Account.updated_at(from_date: @date.beginning_of_day, to_date: @date.end_of_day).updated_by(@employee).uniq.map{ |a| ["", a.code, a.name, price(a.debits_balance(from_date: @date.beginning_of_day, to_date: @date.end_of_day, recorder_id: @employee.id)), price(a.credits_balance(from_date: @date.beginning_of_day, to_date: @date.end_of_day, recorder_id: @employee.id))]}
+    @accounts_data ||= AccountingModule::Account.updated_at(from_date: @date.beginning_of_day, to_date: @date.end_of_day).updated_by(@employee).uniq.map{ |a| ["", a.code, a.name, price(a.debits_balance(from_date: @date.beginning_of_day, to_date: @date.end_of_day)), price(a.credits_balance(from_date: @date.beginning_of_day, to_date: @date.end_of_day))]}
   end
 
 

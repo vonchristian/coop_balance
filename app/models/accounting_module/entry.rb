@@ -16,13 +16,14 @@ module AccountingModule
     has_many :accounts, class_name: "AccountingModule::Account", through: :amounts
 
     validates :description, presence: true
+    validates :origin_id, :recorder_id, presence: true
     validate :has_credit_amounts?
     validate :has_debit_amounts?
     validate :amounts_cancel?
 
     accepts_nested_attributes_for :credit_amounts, :debit_amounts, allow_destroy: true
 
-    before_save :set_default_date
+    before_save :set_default_date, :set_office
     after_commit :update_accounts, :update_amounts
 
     delegate :first_and_last_name, to: :recorder, prefix: true, allow_nil: true
@@ -47,19 +48,16 @@ module AccountingModule
       where(recorder_id: employee_id )
     end
 
-    def self.total(options={})
-      if options[:from_date].present? && options[:to_date].present?
-         entered_on(options).distinct.map{|a| a.amounts.total }.sum
-      else
-        all.distinct.map{|a| a.credit_amounts.total}.sum
-      end
-    end
 
-    def total
-      amounts.sum(:amount)
+
+    def self.total
+      all.map{|a| a.credit_amounts.sum(:amount)}.sum
     end
 
     private
+      def set_office
+        self.origin = self.recorder.office
+      end
       def set_default_date
         todays_date = ActiveRecord::Base.default_timezone == :utc ? Time.now.utc : Time.now
         self.entry_date ||= todays_date

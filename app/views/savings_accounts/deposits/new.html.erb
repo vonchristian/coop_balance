@@ -9,14 +9,14 @@
         </center>
       </div>
       <div class="box-body">
-        <%= simple_form_for [@saving, @deposit], url: :savings_account_deposits do |f| %>
+        <%= simple_form_for [@savings_account, @deposit], url: :savings_account_deposits do |f| %>
           <%= f.error_notification %>
           <%= f.input :amount, as: :currency %>
           <%= f.input :payment_type, label: 'Type', collection: AccountingModule::Entry.payment_types.keys.to_a.map{|a| [a.titleize, a] }, selected: AccountingModule::Entry.payment_types.keys.first %>
           <%= f.input :or_number, label: 'Reference number' %>
           <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
           <%= f.input :saving_id, input_html: { value: @savings_account.id },as: :hidden %>
-          <%= f.input :recorder_id, input_html: { value: current_user.id },as: :hidden %>
+          <%= f.input :employee_id, input_html: { value: current_user.id },as: :hidden %>
           <div class="box-footer">
             <%= f.submit "Save Deposit", class: "btn btn-primary pull-right" %>
           </div>
@@ -28,7 +28,7 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
-    $("#deposit_form_payment_type").select2({
+    $("#memberships_savings_accounts_deposit_processing_payment_type").select2({
       theme: "bootstrap"
     });
   });

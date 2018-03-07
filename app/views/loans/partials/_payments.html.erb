@@ -18,7 +18,7 @@
         </tr>
       </thead>
       <tbody>
-        <% @loan.loan_payments.each do |payment| %>
+        <% @payments.each do |payment| %>
           <tr>
             <td><%= payment.entry_date.strftime("%B %e, %Y") %></td>
             <td><%= payment.description %></td>
@@ -31,5 +31,6 @@
         <% end %>
       </tbody>
     </table>
+    <center><%= will_paginate @payments %></center>
   </div>
 </div>

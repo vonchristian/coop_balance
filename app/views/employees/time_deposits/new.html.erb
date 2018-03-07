@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <div class="box box-purple">
+    <div class="box box-default">
       <div class="box-header">
         <center>
           <%= image_tag(@employee.avatar.url(:medium), height: 60, width: 60, class: "img-circle") %>
@@ -19,7 +19,7 @@
           <%= f.input :time_deposit_product_id, collection: CoopServicesModule::TimeDepositProduct.all.map{|a| [a.amount_range_and_days, a.id] } %>
           <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
           <div class="box-footer">
-            <%= f.submit "Save Time Deposit", class: "btn btn-default bg-purple pull-right" %>
+            <%= f.submit "Save Time Deposit", class: "btn btn-primary pull-right" %>
           </div>
         <% end %>
       </div>

@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-md-5 col-md-offset-3">
-    <div class="nav-tabs-custom">
+    <div class="box box-default">
       <div class="box-header">
         <h4><center><%= image_tag(@savings_account.depositor.avatar.url(:medium), style: 'width:80px;height:80px;', class: 'media-object img-circle') %></center></h4>
         <center><h3 class="box-title"><%= @savings_account.depositor_name %></h3></center>
@@ -10,18 +10,26 @@
         <h3 class="condensed-text"><%= number_to_currency @savings_account.balance %></h3>
         <hr>
         <%= simple_form_for [@savings_account, @withdrawal], url: :savings_account_withdrawals do |f| %>
-          <%= f.error_notification %>
+         <%= f.error_notification %>
           <%= f.input :amount, as: :currency %>
-          <%= f.input :payment_type, label: 'Type', collection: AccountingModule::Entry.payment_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
-          <%= f.input :or_number, label: "Reference number" %>
+          <%= f.input :payment_type, label: 'Type', collection: AccountingModule::Entry.payment_types.keys.to_a.map{|a| [a.titleize, a] }, selected: AccountingModule::Entry.payment_types.keys.first %>
+          <%= f.input :or_number, label: 'Reference number' %>
           <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
           <%= f.input :saving_id, input_html: { value: @savings_account.id },as: :hidden %>
           <%= f.input :employee_id, input_html: { value: current_user.id },as: :hidden %>
-          <div class="footer">
-            <%= f.submit "Save Withdraw", class: "btn btn-primary pull-right", data: {disable_with: "Processing..." } %>
+          <div class="box-footer">
+            <%= f.submit "Save Withdrawal", class: "btn btn-primary pull-right", data: { disable_with: 'Processing...' } %>
           </div>
         <% end %>
       </div>
     </div>
   </div>
 </div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#memberships_savings_accounts_withdrawal_processing_payment_type").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>
+

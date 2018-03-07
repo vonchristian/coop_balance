@@ -54,7 +54,7 @@
           <%= f.input :reference_number %>
           <%= f.input :date, as: :string, input_html: { value: Time.zone.now.strftime("%B %e, %Y"), class: "datepicker" } %>
           <%= f.input :loan_id, input_html: { value: @loan.id },as: :hidden %>
-          <%= f.input :recorder_id, input_html: { value: current_user.id }, as: :hidden %>
+          <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
           <div class="box-footer">
             <%= f.submit "Save Payment", class: "btn btn-primary pull-right" %>
           </div>

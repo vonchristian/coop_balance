@@ -9,9 +9,6 @@ RSpec.describe Voucher, type: :model do
     it { is_expected.to have_many :voucher_amounts }
   end
 
-  describe 'enums' do
-    it { is_expected.to define_enum_for(:status).with([:disbursed, :cancelled]) }
-  end
 
   describe 'delegations' do
     it { is_expected.to delegate_method(:full_name).to(:preparer).with_prefix }
@@ -19,6 +16,7 @@ RSpec.describe Voucher, type: :model do
     it { is_expected.to delegate_method(:current_occupation).to(:preparer).with_prefix }
     it { is_expected.to delegate_method(:current_occupation).to(:disburser).with_prefix }
     it { is_expected.to delegate_method(:name).to(:payee).with_prefix }
+    it { is_expected.to delegate_method(:avatar).to(:payee).with_prefix }
   end
 
   it '.disbursed_on(from_date, to_date)' do

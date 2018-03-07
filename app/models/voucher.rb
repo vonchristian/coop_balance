@@ -4,12 +4,9 @@ class Voucher < ApplicationRecord
   multisearchable against: [:number, :description]
 
   has_one :entry, class_name: "AccountingModule::Entry", as: :commercial_document
-
   belongs_to :payee, polymorphic: true
-  belongs_to :commercial_document, polymorphic: true
   belongs_to :preparer, class_name: "User", foreign_key: 'preparer_id'
   belongs_to :disburser, class_name: "User", foreign_key: 'disburser_id'
-
   has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", dependent: :destroy
 
   delegate :full_name, :current_occupation, to: :preparer, prefix: true
@@ -26,12 +23,13 @@ class Voucher < ApplicationRecord
     disbursed.select{|a| a.commercial_document_id.nil? }
   end
   def self.disbursed
-    select{|a| a.disbursed? }
+    select{ |a| a.disbursed? }
   end
 
   def disbursed?
     entry.present?
   end
+
   def self.disbursed_on(options={})
     if options[:from_date] && options[:to_date]
       date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
@@ -54,9 +52,11 @@ class Voucher < ApplicationRecord
     return  voucher.number = Voucher.order(created_at: :asc).last.number.succ if Voucher.exists? && Voucher.order(created_at: :asc).last.number.present?
     voucher.number = "000000000001"
   end
+
   def valid_for?(cart)
     cart.total_cost == self.entry.debit_amounts.total && self.commercial_document.nil?
   end
+
   private
   def set_date
     self.date ||= Time.zone.now

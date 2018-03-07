@@ -97,7 +97,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <% @savings_account.entries.each do |entry| %>
+                    <% @entries.each do |entry| %>
                       <tr>
                         <td><%= entry.entry_date.strftime("%B %e, %Y") %></td>
                         <td><%= entry.reference_number %></td>
@@ -115,6 +115,7 @@
                     <% end %>
                   </tbody>
                 </table>
+                <center><%= will_paginate @entries %></center>
               </div>
             </div>
           </div>

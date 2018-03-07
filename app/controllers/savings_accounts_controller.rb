@@ -1,3 +1,4 @@
+require 'will_paginate/array'
 class SavingsAccountsController < ApplicationController
   def index
     if params[:search].present?
@@ -9,5 +10,6 @@ class SavingsAccountsController < ApplicationController
 
   def show
     @savings_account = MembershipsModule::Saving.find(params[:id])
+    @entries = @savings_account.entries.sort_by(&:entry_date).reverse.paginate(page: params[:page], per_page: 25)
   end
 end

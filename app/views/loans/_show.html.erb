@@ -1,6 +1,12 @@
 <div class="row">
   <div class="col-md-12">
     <div class="box box-solid">
+      <div class="box-header">
+        <center>
+          <%= image_tag(@loan.borrower.avatar.url(:medium), height: 60, width: 60, class: 'profile-img img-circle') %><br>
+          <h4 class="box-title"><%= @loan.borrower_name %></h4>
+        </center>
+      </div>
       <div class="box-body">
     <div class="nav-tabs-navigation">
       <ul class="nav nav-tabs">
