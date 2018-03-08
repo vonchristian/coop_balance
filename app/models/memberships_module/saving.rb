@@ -17,7 +17,6 @@ module MembershipsModule
     delegate :name, to: :office, prefix: true, allow_nil: true
     delegate :name, to: :depositor, prefix: true
 
-    validates :saving_product_id, presence: true, uniqueness: { scope: :depositor_id }
     scope :has_minimum_balance, -> { SavingsQuery.new.has_minimum_balance  }
     before_save :set_account_owner_name
     def entries

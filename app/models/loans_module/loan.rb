@@ -52,7 +52,7 @@ module LoansModule
     delegate :number_of_interest_payments_prededucted, to: :interest_on_loan_charge
 
     validates :loan_product_id, :term, :loan_amount, :borrower_id, presence: true
-    validates :term, presence: true, numericality: { greater_than: 0.1 }
+    validates :term, presence: true, numericality: true
     validates :loan_amount, numericality: { less_than_or_equal_to: :maximum_loanable_amount }
     before_save :set_borrower_full_name
     def self.loan_payments(options={})

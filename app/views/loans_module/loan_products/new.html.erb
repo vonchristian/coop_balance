@@ -12,7 +12,7 @@
           <%= f.input :maximum_loanable_amount,  as: :currency %>
 
           <%= f.input :loans_receivable_current_account_id, label: "Select Loans Receivable (Current) Account", collection: AccountingModule::Asset.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanAccountSelect'} %>
-          <%= f.input :loans_receivable_past_due_account_id, label: "Select Loans Receivable (Past Due) Account", collection: AccountingModule::Asset.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanAccountSelect'} %>
+          <%= f.input :loans_receivable_past_due_account_id, label: "Select Loans Receivable (Past Due) Account", collection: AccountingModule::Asset.all.map{|a| [a.name.titleize, a.id] } %>
           <h4>Interest Configuration</h4>
           <%= f.input :interest_rate %>
           <%= f.input :unearned_interest_income_account_id,  collection: AccountingModule::Asset.all.map{|a| [a.name, a.id] } %>
@@ -42,6 +42,27 @@
 <script type="text/javascript">
   $(document).ready(function() {
     $("#loanAccountSelect").select2({
+      theme: "bootstrap"
+    });
+    $("#loans_module_loan_product_registration_loans_receivable_past_due_account_id").select2({
+      theme: "bootstrap"
+    });
+    $("#loans_module_loan_product_registration_unearned_interest_income_account_id").select2({
+      theme: "bootstrap"
+    });
+    $("#loans_module_loan_product_registration_interest_revenue_account_id").select2({
+      theme: "bootstrap"
+    });
+    $("#loans_module_loan_product_registration_interest_receivable_account_id").select2({
+      theme: "bootstrap"
+    });
+    $("#loans_module_loan_product_registration_penalty_receivable_account_id").select2({
+      theme: "bootstrap"
+    });
+    $("#loans_module_loan_product_registration_penalty_revenue_account_id").select2({
+      theme: "bootstrap"
+    });
+    $("#loans_module_loan_product_registration_penalty_discount_account_id").select2({
       theme: "bootstrap"
     });
   });

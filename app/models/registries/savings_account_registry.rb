@@ -6,22 +6,34 @@ module Registries
       transaction do
         sheet.each 1 do |row|
           if !row[0].nil?
-            create_entry(row)
+            create_savings_account(row)
           end
         end
       end
     end
     private
-    def create_entry(row)
-      savings = find_depositor(row).savings.create!(
+    def create_savings_account(row)
+       savings = MembershipsModule::Saving.create!(
+        depositor: find_depositor(row),
         saving_product: find_saving_product(row),
         account_number: SecureRandom.uuid)
-      savings.entries.create!(
-      recorder_id: self.employee_id,
+       create_entry(savings, row)
+     end
+    def create_entry(savings, row)
+      AccountingModule::Entry.create!(
+      commercial_document: find_depositor(row),
+      origin: self.employee.office,
+      recorder: self.employee,
       description: 'Forwarded balance of savings deposit as of December 31, 2017',
       entry_date: Date.today.last_year.end_of_year,
-      debit_amounts_attributes: [account: debit_account, amount: row[2], commercial_document: savings],
-      credit_amounts_attributes: [account: credit_account(row), amount: row[2], commercial_document: savings])
+      debit_amounts_attributes: [
+        account: debit_account,
+        amount: row[2].to_f,
+        commercial_document: savings],
+      credit_amounts_attributes: [
+        account: credit_account(row),
+        amount: row[2].to_f,
+        commercial_document: savings])
     end
     def find_saving_product(row)
       CoopServicesModule::SavingProduct.find_by(name: row[3])
@@ -37,7 +49,7 @@ module Registries
 
 
     def debit_account
-      AccountingModule::Account.find_by(name: "Cash on Hand - Main Office (Treasury)")
+      AccountingModule::Account.find_by(name: "Cash on Hand")
     end
 
     def credit_account(row)

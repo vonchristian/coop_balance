@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180307214017) do
+ActiveRecord::Schema.define(version: 20180308123445) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -365,12 +365,6 @@ ActiveRecord::Schema.define(version: 20180307214017) do
     t.index ["unearned_interest_income_account_id"], name: "index_interest_configs_on_unearned_interest_income_account_id"
   end
 
-  create_table "interest_rebate_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.decimal "percent"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "invoices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "type"
     t.string "number"
@@ -403,14 +397,11 @@ ActiveRecord::Schema.define(version: 20180307214017) do
     t.datetime "updated_at", null: false
     t.uuid "unit_of_measurement_id"
     t.string "type"
-    t.string "commercial_document_type"
-    t.uuid "commercial_document_id"
     t.string "barcode"
     t.uuid "referenced_line_item_id"
     t.uuid "sales_order_line_item_id"
     t.uuid "purchase_order_line_item_id"
     t.index ["cart_id"], name: "index_line_items_on_cart_id"
-    t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_line_items"
     t.index ["order_id"], name: "index_line_items_on_order_id"
     t.index ["product_id"], name: "index_line_items_on_product_id"
     t.index ["purchase_order_line_item_id"], name: "index_line_items_on_purchase_order_line_item_id"
@@ -472,13 +463,6 @@ ActiveRecord::Schema.define(version: 20180307214017) do
     t.uuid "co_maker_id"
     t.index ["co_maker_type", "co_maker_id"], name: "index_loan_co_makers_on_co_maker_type_and_co_maker_id"
     t.index ["loan_id"], name: "index_loan_co_makers_on_loan_id"
-  end
-
-  create_table "loan_interest_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "account_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["account_id"], name: "index_loan_interest_configs_on_account_id"
   end
 
   create_table "loan_product_charges", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -796,22 +780,6 @@ ActiveRecord::Schema.define(version: 20180307214017) do
     t.index ["pictureable_type", "pictureable_id"], name: "index_pictures_on_pictureable_type_and_pictureable_id"
   end
 
-  create_table "prededucted_interests", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "loan_id"
-    t.datetime "posting_date"
-    t.decimal "amount"
-    t.uuid "debit_account_id"
-    t.uuid "credit_account_id"
-    t.string "commercial_document_type"
-    t.uuid "commercial_document_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_prededucted_interests"
-    t.index ["credit_account_id"], name: "index_prededucted_interests_on_credit_account_id"
-    t.index ["debit_account_id"], name: "index_prededucted_interests_on_debit_account_id"
-    t.index ["loan_id"], name: "index_prededucted_interests_on_loan_id"
-  end
-
   create_table "products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "description"
     t.datetime "created_at", null: false
@@ -999,8 +967,8 @@ ActiveRecord::Schema.define(version: 20180307214017) do
     t.datetime "date_opened"
     t.string "type"
     t.string "account_owner_name"
-    t.datetime "created_at", default: "2018-03-06 06:11:22", null: false
-    t.datetime "updated_at", default: "2018-03-06 06:11:22", null: false
+    t.datetime "created_at", default: "2018-03-08 11:21:37", null: false
+    t.datetime "updated_at", default: "2018-03-08 11:21:37", null: false
     t.integer "status"
     t.uuid "office_id"
     t.string "subscriber_type"
@@ -1186,7 +1154,7 @@ ActiveRecord::Schema.define(version: 20180307214017) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "description"
-    t.integer "amount_type"
+    t.integer "amount_type", default: 0
     t.index ["account_id"], name: "index_voucher_amounts_on_account_id"
     t.index ["amount_type"], name: "index_voucher_amounts_on_amount_type"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_voucher_amount"
@@ -1281,7 +1249,6 @@ ActiveRecord::Schema.define(version: 20180307214017) do
   add_foreign_key "loan_charge_payment_schedules", "loans"
   add_foreign_key "loan_charges", "loans"
   add_foreign_key "loan_co_makers", "loans"
-  add_foreign_key "loan_interest_configs", "accounts"
   add_foreign_key "loan_product_charges", "charges"
   add_foreign_key "loan_product_charges", "loan_products"
   add_foreign_key "loan_products", "accounts", column: "loans_receivable_current_account_id"
@@ -1312,9 +1279,6 @@ ActiveRecord::Schema.define(version: 20180307214017) do
   add_foreign_key "penalty_configs", "accounts", column: "penalty_receivable_account_id"
   add_foreign_key "penalty_configs", "accounts", column: "penalty_revenue_account_id"
   add_foreign_key "penalty_configs", "loan_products"
-  add_foreign_key "prededucted_interests", "accounts", column: "credit_account_id"
-  add_foreign_key "prededucted_interests", "accounts", column: "debit_account_id"
-  add_foreign_key "prededucted_interests", "loans"
   add_foreign_key "products", "categories"
   add_foreign_key "program_subscriptions", "programs"
   add_foreign_key "programs", "accounts"

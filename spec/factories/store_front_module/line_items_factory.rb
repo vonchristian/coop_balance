@@ -1,6 +1,5 @@
 FactoryBot.define do
   factory :line_item, class: "StoreFrontModule::LineItem" do
-    association :commercial_document, factory: :supplier
     association :product
     association :unit_of_measurement
     unit_cost "9.99"

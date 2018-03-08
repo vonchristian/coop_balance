@@ -25,23 +25,44 @@ AccountingModule::Asset.create(code: 11711, name: "Loans Receivable - Current")
 AccountingModule::Asset.create(code: 117111, name: "Loans Receivable - Current (Regular Loan)")
 AccountingModule::Asset.create(code: 117112, name: "Loans Receivable - Current (Salary Loan)")
 AccountingModule::Asset.create(code: 117113, name: "Loans Receivable - Current (Emergency Loan)")
+AccountingModule::Asset.create(code: 117114, name: "Loans Receivable - Current (Contractors Loan)")
+AccountingModule::Asset.create(code: 117115, name: "Loans Receivable - Current (Special Loan)")
+AccountingModule::Asset.create(code: 117116, name: "Loans Receivable - Current (Agri Input Loan)")
+
+
+
 AccountingModule::Asset.create(code: 117113, name: "Loans Receivable - Current (OFW Loan)")
 
 AccountingModule::Asset.create(code: 117114, name: "Loan Penalties Receivable - (Regular Loan)")
 AccountingModule::Asset.create(code: 117115, name: "Loan Penalties Receivable - (Emergency Loan)")
+AccountingModule::Asset.create(code: 117116, name: "Loan Penalties Receivable - (Salary Loan)")
+AccountingModule::Asset.create(code: 117117, name: "Loan Penalties Receivable - (Contractors Loan)")
+AccountingModule::Asset.create(code: 117118, name: "Loan Penalties Receivable - (Agri Input Loan)")
+AccountingModule::Asset.create(code: 117118, name: "Loan Penalties Receivable - (Special Loan)")
 
 
 
 AccountingModule::Asset.create(code: 11712, name: "Loans Receivable - Past Due")
 AccountingModule::Asset.create(code: 1171211, name: "Loans Receivable - Past Due (Regular Loan)")
 AccountingModule::Asset.create(code: 1171212, name: "Loans Receivable - Past Due (Emergency Loan)")
+AccountingModule::Asset.create(code: 1171213, name: "Loans Receivable - Past Due (Salary Loan)")
+AccountingModule::Asset.create(code: 1171214, name: "Loans Receivable - Past Due (Special Loan)")
+AccountingModule::Asset.create(code: 1171215, name: "Loans Receivable - Past Due (Contractors Loan)")
+AccountingModule::Asset.create(code: 1171216, name: "Loans Receivable - Past Due (Agri Input Loan)")
+
+
 
 
 AccountingModule::Asset.create(code: 11713, name: "Loans Receivable - Restructured")
 AccountingModule::Asset.create(code: 11714, name: "Loans Receivable - Loans in Litigation")
 AccountingModule::Asset.create(code: 11715, contra: true, name: "Unearned Interests and Discounts")
-AccountingModule::Asset.create(code: 117151, contra: true, name: "Unearned Interests and Discounts - Regular Loan")
-AccountingModule::Asset.create(code: 117152, contra: true, name: "Unearned Interests and Discounts - Emergency Loan")
+AccountingModule::Asset.create(code: 117151, contra: true, name: "Unearned Interests - Regular Loan")
+AccountingModule::Asset.create(code: 117152, contra: true, name: "Unearned Interests - Emergency Loan")
+AccountingModule::Asset.create(code: 117153, contra: true, name: "Unearned Interests - Salary Loan")
+AccountingModule::Asset.create(code: 117154, contra: true, name: "Unearned Interests - Special Loan")
+AccountingModule::Asset.create(code: 117155, contra: true, name: "Unearned Interests - Contractors Loan")
+AccountingModule::Asset.create(code: 117156, contra: true, name: "Unearned Interests - Agri Input Loan")
+
 
 
 
@@ -55,10 +76,14 @@ AccountingModule::Asset.create(code: 11723, name: "Accounts Receivables Trade - 
 AccountingModule::Asset.create(code: 11724, name: "Accounts Receivables Trade - in Litigation")
 AccountingModule::Asset.create(code: 11725, name: "Allowance for Probable Losses on Accounts Receivable Trade")
 AccountingModule::Asset.create(code: 11726, name: "Interests on Loan Receivables")
-AccountingModule::Asset.create(code: 117261, name: "Interests on Loan Receivables - Emergency Loan")
 AccountingModule::Asset.create(code: 11727, name: "Penalties on Loan Receivables")
 AccountingModule::Asset.create(code: 117271, name: "Penalties on Loan Receivables - Regular Loan")
+AccountingModule::Asset.create(code: 117272, name: "Penalties on Loan Receivables - Salary Loan")
+AccountingModule::Asset.create(code: 117272, name: "Penalties on Loan Receivables - Contractors Loan")
 AccountingModule::Asset.create(code: 117272, name: "Penalties on Loan Receivables - Emergency Loan")
+AccountingModule::Asset.create(code: 117272, name: "Penalties on Loan Receivables - Agri Input Loan")
+AccountingModule::Asset.create(code: 117272, name: "Penalties on Loan Receivables - Special Loan")
+
 
 
 
@@ -164,6 +189,8 @@ AccountingModule::Asset.create(code: 14141,  name: "Accumulated
 #Liability
 AccountingModule::Liability.create(code: 21000, name: 'Current Liabilities')
 AccountingModule::Liability.create(code: 21100, name: 'Savings Deposits')
+AccountingModule::Liability.create(code: 211001, name: 'Savings Deposits - Regular Savings')
+
 AccountingModule::Liability.create(code: 21200, name: 'Time Deposits')
 AccountingModule::Liability.create(code: 21300, name: 'Accounts Payable-Trade')
 AccountingModule::Liability.create(code: 21400, name: 'Accounts Payable-Non Trade')
@@ -235,9 +262,9 @@ AccountingModule::Revenue.create(code: 40110, name: 'Interest Income from Loans'
 AccountingModule::Revenue.create(code: 401101, name: 'Interest Income from Loans - Salary Loan')
 AccountingModule::Revenue.create(code: 401102, name: 'Interest Income from Loans - Regular Loan')
 AccountingModule::Revenue.create(code: 401103, name: 'Interest Income from Loans - Emergency Loan')
-
-AccountingModule::Revenue.create(code: 401100, name: 'Interest Rebates', contra: true)
-AccountingModule::Revenue.create(code: 4011001, name: 'Interest Rebates - Emergency Loan', contra: true)
+AccountingModule::Revenue.create(code: 401104, name: 'Interest Income from Loans - Contractors Loan')
+AccountingModule::Revenue.create(code: 401105, name: 'Interest Income from Loans - Agri Input Loan')
+AccountingModule::Revenue.create(code: 401106, name: 'Interest Income from Loans - Special Loan')
 
 
 AccountingModule::Revenue.create(code: 40120, name: 'Service Fees')
@@ -254,6 +281,10 @@ AccountingModule::Revenue.create(code: 40140, name: 'Fines, Penalties, Surcharge
 AccountingModule::Revenue.create(code: 401401, name: 'Loan Penalties Income')
 AccountingModule::Revenue.create(code: 4014011, name: 'Loan Penalties Income - Regular Loan')
 AccountingModule::Revenue.create(code: 4014012, name: 'Loan Penalties Income - Emergency Loan')
+AccountingModule::Revenue.create(code: 4014013, name: 'Loan Penalties Income - Special Loan')
+AccountingModule::Revenue.create(code: 4014014, name: 'Loan Penalties Income - Contractors Loan')
+AccountingModule::Revenue.create(code: 4014015, name: 'Loan Penalties Income - Agri Input Loan')
+AccountingModule::Revenue.create(code: 4014016, name: 'Loan Penalties Income - Salary Loan')
 
 AccountingModule::Revenue.create(code: 40200, name: 'Income from Service Operations')
 AccountingModule::Revenue.create(code: 40200, name: 'Service Income')
@@ -268,6 +299,11 @@ AccountingModule::Revenue.create(code: 40340, name: 'Sales Discounts', contra: t
 AccountingModule::Revenue.create(code: 40350, name: 'Penalties Discounts', contra: true)
 AccountingModule::Revenue.create(code: 403501, name: 'Penalties Discounts - Regular Loan', contra: true)
 AccountingModule::Revenue.create(code: 403502, name: 'Penalties Discounts - Emergency Loan', contra: true)
+AccountingModule::Revenue.create(code: 403503, name: 'Penalties Discounts - Salary Loan', contra: true)
+AccountingModule::Revenue.create(code: 403504, name: 'Penalties Discounts - Contractors Loan', contra: true)
+AccountingModule::Revenue.create(code: 403505, name: 'Penalties Discounts - Agri Input Loan', contra: true)
+AccountingModule::Revenue.create(code: 403506, name: 'Penalties Discounts - Special Loan', contra: true)
+
 
 AccountingModule::Revenue.create(code: 40400, name: 'Other Income')
 AccountingModule::Revenue.create(code: 40410, name: 'Income/Interest from Investment/Deposits')

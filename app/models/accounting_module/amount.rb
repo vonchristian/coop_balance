@@ -23,11 +23,6 @@ module AccountingModule
     def self.recorded_by(recorder_id)
       where('recorder_id' => recorder_id)
     end
-
-    def self.total
-      distinct.sum(:amount)
-    end
-
     def self.entered_on(hash={})
       if hash[:from_date] && hash[:to_date]
         date_range = DateRange.new(from_date: hash[:from_date], to_date: hash[:to_date])

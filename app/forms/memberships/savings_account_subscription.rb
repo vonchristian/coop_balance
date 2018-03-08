@@ -5,7 +5,6 @@ module Memberships
 
     validates :saving_product_id, presence: true
     validates :amount, presence: true, numericality: true
-    validate :unique_saving_product_per_depositor
 
     def save
       ActiveRecord::Base.transaction do
@@ -60,11 +59,6 @@ module Memberships
 
     def find_savings_product
       CoopServicesModule::SavingProduct.find_by_id(saving_product_id)
-    end
-
-    private
-    def unique_saving_product_per_depositor
-      errors[:saving_product_id] << "Account already opened for this Saving Product" if find_depositor.savings.pluck(:saving_product_id).include?(saving_product_id)
     end
   end
 end
