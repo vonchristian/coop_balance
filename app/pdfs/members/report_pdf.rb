@@ -61,10 +61,10 @@ module Members
     def investment_details
       text "SHARE CAPITAL", style: :bold
       move_down 5
-      @member.share_capitals.each do |share_capital|
-        table([["", share_capital.share_capital_product_name.try(:upcase), price(share_capital.balance)]], cell_style: { inline_format: true, size: 10, font: "Helvetica" }, column_widths: [20, 150, 100]) do
-          cells.borders = []
-        end
+      table(share_capitals_data, cell_style: { inline_format: true, size: 10, font: "Helvetica" }, column_widths: [20, 150, 100]) do
+        cells.borders = []
+        row(0).size = 8
+        row(0).font_style = :bold
       end
       stroke do
         stroke_color 'CCCCCC'
@@ -113,6 +113,9 @@ module Members
         move_down 15
       end
     end
-
+    def share_capitals_data
+      [["", "TYPE", "BALANCE", "NO. OF SHARES"]] +
+      @share_capitals_data ||= @member.share_capitals.map{|share_capital| ["", share_capital.share_capital_product_name.try(:upcase), price(share_capital.balance), share_capital.number_of_shares]}
+    end
   end
 end
