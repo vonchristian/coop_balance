@@ -8,9 +8,14 @@
   </div>
   <% @member.share_capitals.each do |share_capital| %>
     <%=link_to share_capital_url(share_capital) do %>
-      <%= share_capital.balance %>
-      <small><%=share_capital.share_capital_product_name %></small>
+      <div class="row">
+        <div class="col-md-5">
+          <h4><%= number_to_currency share_capital.balance %></h4>
+          <small><%=share_capital.share_capital_product_name.try(:upcase) %></small>
+        </div>
+      </div>
+      <br>
     <% end %>
   <% end %>
-  <hr />
+</div>
 

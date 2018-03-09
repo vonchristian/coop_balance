@@ -7,22 +7,26 @@ module Memberships
                   :amount,
                   :reference_number,
                   :date,
+                  :description,
                   :account_number
     validates :share_capital_product_id,
               :employee_id,
               :amount,
               :reference_number,
+              :description,
+              :account_number,
               :date,
               :account_number,
               :subscriber_id,
               presence: true
     validates :amount, numericality: true
-    validate :ensure_unique_share_capital_product
+
     def subscribe!
       ActiveRecord::Base.transaction do
         save_subscription
       end
     end
+
     def find_share_capital
       MembershipsModule::ShareCapital.find_by(account_number: account_number)
     end
@@ -39,12 +43,19 @@ module Memberships
     end
     def create_entry(share_capital)
       AccountingModule::Entry.create(
+        origin: find_employee.office,
         recorder: find_employee,
-        description: "Share capital subscription",
+        description: description,
         entry_date: date,
         commercial_document: find_subscriber,
-        debit_amounts_attributes: [account: debit_account, amount: amount, commercial_document: share_capital],
-        credit_amounts_attributes: [account: credit_account, amount: amount, commercial_document: share_capital]
+        debit_amounts_attributes: [
+          account: debit_account,
+          amount: amount,
+          commercial_document: share_capital],
+        credit_amounts_attributes: [
+          account: credit_account,
+          amount: amount,
+          commercial_document: share_capital]
         )
     end
     def find_employee
@@ -71,10 +82,6 @@ module Memberships
 
     def find_share_capital_product
       CoopServicesModule::ShareCapitalProduct.find_by_id(share_capital_product_id)
-    end
-    private
-    def ensure_unique_share_capital_product
-      errors[:share_capital_product_id] << "Already subscribed" if find_subscriber.share_capitals.pluck(:share_capital_product_id).include?(share_capital_product_id)
     end
   end
 end

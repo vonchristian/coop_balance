@@ -38,12 +38,8 @@
           <%= f.input :mother_middle_name, label: "Middle Name" %>
           <%= f.input :mother_maiden_name, label: "Mother's Maiden Name" %>
           <%= f.input :mother_occupation, label: "Occupation" %>
-          <% CoopServicesModule::Program.all.each do |program| %>
-            <%= program.name %>
-            <%= program.contribution %>
-          <% end %>
-          <hr>
           <%= f.input :share_capital_product_id, input_html: { value: CoopServicesModule::ShareCapitalProduct.default_product.id }, as: :hidden %>
+
           <%= f.input :office_id, collection: CoopConfigurationsModule::Office.all.map{|a| [a.name, a.id] }, as: :radio_buttons %>
           <%= f.input :cooperative_id, input_html: { value: current_user.cooperative_id }, as: :hidden %>
           <div class="box-footer">

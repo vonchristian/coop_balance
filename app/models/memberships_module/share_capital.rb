@@ -14,6 +14,7 @@ module MembershipsModule
             :closing_account_fee,
             :default_paid_up_account,
             :default_product?,
+            :cost_per_share,
             :default_subscription_account, to: :share_capital_product, prefix: true
     delegate :name, to: :office, prefix: true
     delegate :name, to: :subscriber, prefix: true
@@ -53,8 +54,8 @@ module MembershipsModule
       all.sum(&:subscribed_shares)
     end
 
-    def subscribed_shares
-      share_capital_product_default_subscription_account.balance(commercial_document_d: self.id)
+    def number_of_shares
+      balance / share_capital_product_cost_per_share
     end
 
     def balance

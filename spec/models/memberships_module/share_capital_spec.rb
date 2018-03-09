@@ -19,7 +19,7 @@ module MembershipsModule
       it { is_expected.to delegate_method(:closing_account).to(:share_capital_product).with_prefix }
       it { is_expected.to delegate_method(:subscription_account).to(:share_capital_product).with_prefix }
       it { is_expected.to delegate_method(:default_product?).to(:share_capital_product).with_prefix }
-
+      it { is_expected.to delegate_method(:cost_per_share).to(:share_capital_product).with_prefix }
     end
 
     it '#balance' do
@@ -49,6 +49,19 @@ module MembershipsModule
 
       expect(share_capital.balance).to eq 0
       # expect(share_capital.closed?).to be true
+    end
+
+    it "#subscribed_shares" do
+      employee = create(:user, role: 'teller')
+      share_capital_product = create(:share_capital_product, cost_per_share: 100)
+      share_capital = create(:share_capital, share_capital_product: share_capital_product)
+      capital_build_up = build(:entry, commercial_document: share_capital.subscriber)
+      credit_amount = create(:credit_amount, amount: 5000, entry: capital_build_up, commercial_document: share_capital, account: share_capital.share_capital_product_paid_up_account)
+      debit_amount = create(:debit_amount, amount: 5_000, entry: capital_build_up, commercial_document: share_capital, account: employee.cash_on_hand_account)
+      capital_build_up.save
+
+      expect(share_capital.balance).to eq 5_000
+      expect(share_capital.number_of_shares).to eql(50)
     end
   end
 end

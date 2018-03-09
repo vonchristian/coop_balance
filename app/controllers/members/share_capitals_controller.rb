@@ -21,7 +21,7 @@ module Members
     private
     def share_capital_params
       params.require(:memberships_share_capital_subscription).
-      permit(:account_number, :subscriber_id, :subscriber_type, :amount, :date, :reference_number, :employee_id, :share_capital_product_id)
+      permit(:description, :account_number, :subscriber_id, :amount, :date, :reference_number, :employee_id, :share_capital_product_id)
     end
   end
 end

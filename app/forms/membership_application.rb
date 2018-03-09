@@ -83,6 +83,7 @@ class MembershipApplication
   def subscribe_to_share_capital(subscriber)
     MembershipsModule::ShareCapital.create(
       subscriber: subscriber,
+      account_number: SecureRandom.uuid,
       share_capital_product_id: share_capital_product_id)
   end
 

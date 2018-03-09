@@ -27,7 +27,7 @@ module Members
       bounding_box [0, 760], width: 400 do
         text "MEMBER'S DATA SHEET", style: :bold, size: 14
         move_down 5
-        text "As of #{Date.today.strftime("%B %e, %Y")}", size: 10
+        text "As of #{Date.today.last_year.end_of_year.strftime("%B %e, %Y")}", size: 10
       end
       move_down 20
       stroke do
