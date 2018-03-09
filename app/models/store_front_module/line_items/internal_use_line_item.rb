@@ -1,6 +1,6 @@
 module StoreFrontModule
   module LineItems
-    class SpoilageOrderLineItem < LineItem
+    class InternalUseLineItem < LineItem
     end
   end
 end

@@ -4,5 +4,6 @@ FactoryBot.define do
     address "Poblacion"
     contact_number "112312"
     association :cooperative
+    association :cash_in_vault_account, factory: :asset
   end
 end

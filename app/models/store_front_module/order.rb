@@ -1,18 +1,12 @@
 module StoreFrontModule
   class Order < ApplicationRecord
     enum pay_type: [:cash, :credit, :check]
-    belongs_to :employee, class_name: "User", foreign_key: 'employee_id'
-    belongs_to :commercial_document, polymorphic: true
+    belongs_to :employee,                 class_name: "User", foreign_key: 'employee_id'
+    belongs_to :commercial_document,      polymorphic: true
     belongs_to :store_front
-    has_one :official_receipt, as: :receiptable
-    has_one :invoice, as: :invoiceable
-    has_many :line_items, class_name: "StoreFrontModule::LineItem", dependent: :destroy
-    has_many :sale_line_items,            class_name: "StoreFrontModule::SaleLineItem", inverse_of: :order,
-                                          extend: StoreFrontModule::QuantityBalanceFinder
-    has_many :purchase_line_items,        class_name: "StoreFrontModule::PurchaseLineItem", inverse_of: :order,
-                                          extend: StoreFrontModule::QuantityBalanceFinder
-    has_many :sales_return_line_items,    class_name: "StoreFrontModule::SalesReturnLineItem"
-    has_many :purchase_return_line_items, class_name: "PurchaseReturnLineItem"
+    has_one :official_receipt,            as: :receiptable
+    has_one :invoice,                     as: :invoiceable
+    has_many :line_items,                 class_name: "StoreFrontModule::LineItem", dependent: :destroy
     has_many :products,                   class_name: "StoreFrontModule::Product", through: :line_items
     delegate :name,                       to: :commercial_document, prefix: true
     delegate :name,                       to: :employee, prefix: true, allow_nil: true
@@ -20,6 +14,7 @@ module StoreFrontModule
     delegate :number,                     to: :invoice, prefix: true, allow_nil: true
     delegate :first_and_last_name,        to: :commercial_document, prefix: true
     before_save :set_default_date
+
     def self.ordered_on(options={})
       if options[:from_date] && options[:to_date]
         date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])

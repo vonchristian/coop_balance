@@ -8,10 +8,6 @@ module StoreFrontModule
     	it { is_expected.to have_one :official_receipt }
       it { is_expected.to have_one :invoice }
     	it { is_expected.to have_many :line_items }
-      it { is_expected.to have_many :sales_line_items }
-      it { is_expected.to have_many :purchase_line_items }
-      it { is_expected.to have_many :sales_return_line_items }
-      it { is_expected.to have_many :purchase_return_line_items }
       it { is_expected.to have_many :products }
     end
     describe 'delegations' do

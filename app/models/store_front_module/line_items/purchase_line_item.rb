@@ -1,14 +1,14 @@
 module StoreFrontModule
   module LineItems
-    class PurchaseOrderLineItem < LineItem
-      belongs_to :purchase_order, class_name: "StoreFrontModule::Orders::PurchaseOrder", foreign_key: 'order_id'
-      has_many :referenced_purchase_order_line_items, class_name: "StoreFrontModule::LineItems::ReferencedPurchaseOrderLineItem", foreign_key: 'purchase_order_line_item_id'
-
+    class PurchaseLineItem < LineItem
+      belongs_to :purchase_order,               class_name: "StoreFrontModule::Orders::PurchaseOrder", foreign_key: 'order_id'
+      has_many :referenced_purchase_line_items, class_name: "StoreFrontModule::LineItems::ReferencedPurchaseLineItem", foreign_key: 'purchase_order_line_item_id'
       delegate :supplier_name, :date, to: :purchase_order
 
       def self.processed
         select{|a| a.processed? }
       end
+
       def sold?
         referenced_purchase_order_line_items.present? && out_of_stock?
       end
@@ -22,12 +22,12 @@ module StoreFrontModule
       end
 
       def out_of_stock?
-        referenced_purchase_order_line_items.any? &&
+        referenced_purchase_line_items.any? &&
         available_quantity.zero?
       end
 
       def sold_quantity
-        referenced_purchase_order_line_items.sum(:quantity)
+        referenced_purchase_line_items.sum(:quantity)
       end
 
       def available_quantity

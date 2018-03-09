@@ -9,6 +9,11 @@ module LoansModule
       def self.current
         order(created_at: :desc).first
       end
+
+
+      def daily_rate
+        rate / 30
+      end
     end
   end
 end

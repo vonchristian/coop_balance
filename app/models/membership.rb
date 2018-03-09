@@ -3,6 +3,7 @@ class Membership < ApplicationRecord
   pg_search_scope :text_search, against: [:search_term]
   belongs_to :cooperator, polymorphic: true
   belongs_to :cooperative
+
   enum membership_type: [:regular_member, :associate_member, :organization, :special_depositor]
   enum status: [:pending, :approved, :cancelled]
   validates :cooperator_id, :cooperator_type, presence: true

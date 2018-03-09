@@ -13,13 +13,14 @@ module MembershipsModule
             :interest_payable_account,
             :closing_account_fee,
             :default_paid_up_account,
+            :default_product?,
             :default_subscription_account, to: :share_capital_product, prefix: true
-    delegate :name, to: :office, prefix: true, allow_nil: true
-    delegate :name, to: :subscriber, prefix: true, allow_nil: true
-    delegate :avatar, to: :subscriber, allow_nil: true
+    delegate :name, to: :office, prefix: true
+    delegate :name, to: :subscriber, prefix: true
+    delegate :avatar, to: :subscriber
     before_save :set_account_owner_name
     def self.default
-      select{|a| a.share_capital_product.default_product? }
+      select{|a| a.share_capital_product_default_product? }
     end
 
     def capital_build_ups
@@ -29,6 +30,7 @@ module MembershipsModule
     def self.balance
       sum(&:balance)
     end
+
     def average_balance
       balances = []
       balance(from_date: (Time.zone.now.last_year.end_of_year - 15.days), to_date: Time.zone.now.last_year.end_of_year + 15.days) #january
@@ -38,13 +40,13 @@ module MembershipsModule
       balances.sum / balances.length
     end
     def closed?
-      share_capital_product_closing_account.entries.where(commercial_document: self).present?
+      share_capital_product_closing_account.entries.where(commercial_document: self).present? ||
+      share_capital_product_closing_account.entries.where(commercial_document: self.subscriber).present?
     end
 
     def entries
       share_capital_product_paid_up_account.entries.where(commercial_document: self) +
-      share_capital_product_closing_account.entries.where(commercial_document: self) +
-      share_capital_product_subscription_account.entries.where(commercial_document: self)
+      share_capital_product_closing_account.entries.where(commercial_document: self)
     end
 
     def self.subscribed_shares
@@ -60,10 +62,6 @@ module MembershipsModule
       share_capital_product_default_paid_up_account.balance(commercial_document_id: self.subscriber_id)
     end
 
-    def capital_build_ups_total
-      share_capital_product_default_paid_up_account.balance(commercial_document_id: self.id) +
-      share_capital_product_default_paid_up_account.balance(commercial_document_id: self.subscriber_id)
-    end
     def dividends_earned
       share_capital_product_interest_payable_account.balance(commercial_document_id: self.id)
     end

@@ -18,19 +18,21 @@ module MembershipApplications
     end
     def save_entry
       entry = AccountingModule::Entry.new(
+        origin:              find_employee.office,
         commercial_document: find_membership.cooperator,
-        :description => description,
-        recorder: find_employee,
-        entry_date: date)
+        description:         description,
+        recorder:            find_employee,
+        reference_number:    reference_number,
+        entry_date:          date)
       find_membership.cooperator.voucher_amounts.each do |amount|
-       debit_amount = AccountingModule::DebitAmount.new(
-        account: find_employee.cash_on_hand_account ,
-        amount: amount.amount,
-        commercial_document: find_membership.cooperator)
+        debit_amount = AccountingModule::DebitAmount.new(
+        account:             find_employee.cash_on_hand_account ,
+        amount:              amount.amount,
+        commercial_document: amount.commercial_document)
         credit_amount = AccountingModule::CreditAmount.new(
-          account: amount.account,
-          amount: amount.amount,
-          commercial_document: find_membership.cooperator)
+        account:             amount.account,
+        amount:              amount.amount,
+        commercial_document: amount.commercial_document)
         entry.credit_amounts << credit_amount
         entry.debit_amounts << debit_amount
       end
@@ -41,6 +43,5 @@ module MembershipApplications
         v.save
       end
     end
-
   end
 end

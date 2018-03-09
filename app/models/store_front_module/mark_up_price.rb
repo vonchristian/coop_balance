@@ -2,6 +2,7 @@ module StoreFrontModule
   class MarkUpPrice < ApplicationRecord
     belongs_to :unit_of_measurement
     before_save :set_default_date
+    validates :price, presence: true, numericality: true
     def self.current
       order(date: :desc).first
     end

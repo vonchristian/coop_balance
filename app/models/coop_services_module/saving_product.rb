@@ -31,17 +31,6 @@
     	all.map{|a| a.account }
     end
 
-    def self.accounts_balance(options={})
-      accounts.uniq.map{|a| a.balance(options)}.sum
-    end
-    def self.accounts_credits_balance(options={})
-      accounts.uniq.map{|a| a.credits_balance(options)}.sum
-    end
-
-    def self.accounts_debits_balance(options={})
-      accounts.uniq.map{|a| a.debits_balance(options)}.sum
-    end
-
     def interest_posted?(date)
       interest_expense_account.credit_amounts.entered_on(from_date: beginning_date_for(date), to_date: ending_date_for(date)).present?
     end

@@ -14,6 +14,7 @@ module Memberships
       def find_share_capital
         MembershipsModule::ShareCapital.find_by_id(share_capital_id)
       end
+
       private
       def save_capital_build_up
       AccountingModule::Entry.create!(
@@ -32,6 +33,7 @@ module Memberships
           amount: amount,
           commercial_document: find_share_capital])
       end
+
       def debit_account
         find_employee.cash_on_hand_account
       end

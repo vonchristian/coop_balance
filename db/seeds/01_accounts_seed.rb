@@ -68,8 +68,9 @@ AccountingModule::Asset.create(code: 117156, contra: true, name: "Unearned Inter
 
 AccountingModule::Asset.create(code: 11716, name: "Allowance for Probable Losses on Loans")
 AccountingModule::Asset.create(code: 11721, name: "Accounts Receivables Trade - Current")
-AccountingModule::Asset.create(code: 117212, name: "Accounts Receivables Trade - Current (General Merchandise)", main_account_id: AccountingModule::Asset.find_by(code: 11721, name: "Accounts Receivables Trade - Current").id )
-AccountingModule::Asset.create(code: 117211, name: "Accounts Receivables - Loan Penalties")
+AccountingModule::Asset.create(code: 117212, name: "Accounts Receivables Trade - Current (Poblacion Storefront)", main_account_id: AccountingModule::Asset.find_by(code: 11721, name: "Accounts Receivables Trade - Current").id )
+AccountingModule::Asset.create(code: 117213, name: "Accounts Receivables Trade - Current (Tukucan Storefront)", main_account_id: AccountingModule::Asset.find_by(code: 11721, name: "Accounts Receivables Trade - Current").id )
+AccountingModule::Asset.create(code: 117214, name: "Accounts Receivables Trade - Current (Mansoyosoy Storefront)", main_account_id: AccountingModule::Asset.find_by(code: 11721, name: "Accounts Receivables Trade - Current").id )
 
 AccountingModule::Asset.create(code: 11722, name: "Accounts Receivables Trade - Past Due")
 AccountingModule::Asset.create(code: 11723, name: "Accounts Receivables Trade - Restructured")

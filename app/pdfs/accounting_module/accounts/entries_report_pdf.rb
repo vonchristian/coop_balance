@@ -20,7 +20,7 @@ module AccountingModule
 
       def heading
     bounding_box [300, 780], width: 50 do
-      image "#{@employee.cooperative.logo.path(:medium)}", width: 50, height: 50
+      # image "#{@employee.cooperative.logo.path(:medium)}", width: 50, height: 50
     end
     bounding_box [370, 780], width: 150 do
         text "#{@employee.cooperative_abbreviated_name}", style: :bold, size: 24
@@ -54,7 +54,7 @@ module AccountingModule
         stroke_horizontal_rule
         move_down 15
         end
-        table(table_data, header: true, cell_style: { size: 8, font: "Helvetica"}, column_widths: [80, 100, 80]) do
+        table(table_data, header: true, cell_style: { size: 8, font: "Helvetica"}, column_widths: [80, 150, 80]) do
           row(0).font_style = :bold
           row(0).background_color = 'DDDDDD'
           column(0).align = :right

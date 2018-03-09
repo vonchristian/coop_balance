@@ -1,80 +1,79 @@
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
     <div class="box box-solid">
-      <div class="box-header bg-gray">
-
-           <h4><center><%= image_tag(@cooperator.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center></h4>
-
+      <div class="box-header">
+          <center>
+            <%= image_tag(@cooperator.avatar.url(:medium), height: 60, width: 60, class: 'profile-img img-circle') %><br>
             <h3><center><%= @cooperator.name %></center></h3>
+          </center>
       </div>
       <div class="box-body">
         <p class="text-muted">Membership Contributions </p>
-        <% CoopServicesModule::Program.default_programs.all.each do |program| %>
-<%= simple_form_for @amount, url: :membership_application_contributions do |f| %>
-
-  <div class="row">
-    <div class="col-md-5 col-md-offset-1">
-      <%= program.name %>
-    </div>
-    <div class="col-md-3">
-      <span class="pull-right"><%= number_to_currency program.contribution %></span>
-    </div>
-    <div class="col-md-2">
-     <%= f.input :description, input_html: { value: program.name }, as: :hidden %>
-     <%= f.input :amount, input_html: { value: program.contribution }, as: :hidden  %>
-     <%= f.input :amount_type, input_html: { value: 'debit' }, as: :hidden  %>
-
-     <%= f.input :account_id, input_html: { value: program.account_id }, as: :hidden  %>
-     <%= f.input :commercial_document_id, input_html: { value: @cooperator.id }, as: :hidden  %>
-      <%= f.input :commercial_document_type, input_html: { value: @cooperator.class }, as: :hidden  %>
-      <% unless @cooperator.voucher_amounts.pluck(:description).include?(program.name) %>
-
-      <%= f.submit 'Add', class: "btn btn-primary btn-sm" %>
-       <% else %>
-      <span class="label bg-green"> Added </span>
-      <% end %>
+        <% CoopServicesModule::Program.all.each do |program| %>
+          <%= simple_form_for @amount, url: :membership_application_contributions do |f| %>
+            <div class="row">
+              <div class="col-md-5 col-md-offset-1">
+                <%= program.name %>
+              </div>
+              <div class="col-md-3">
+                <span class="pull-right"><%= number_to_currency program.contribution %></span>
+              </div>
+              <div class="col-md-2">
+                <%= f.input :description, input_html: { value: program.name }, as: :hidden %>
+                <%= f.input :amount, input_html: { value: program.contribution }, as: :hidden  %>
+                <%= f.input :amount_type, input_html: { value: 'debit' }, as: :hidden  %>
+                <%= f.input :account_id, input_html: { value: program.account_id }, as: :hidden  %>
+                <%= f.input :commercial_document_id, input_html: { value: @cooperator.id }, as: :hidden  %>
+                <%= f.input :commercial_document_type, input_html: { value: @cooperator.class }, as: :hidden  %>
+                <% unless @cooperator.voucher_amounts.pluck(:description).include?(program.name) %>
+                  <%= f.submit 'Add', class: "btn btn-primary btn-sm" %>
+                <% else %>
+                  <span class="label bg-green"> Added </span>
+                <% end %>
+              </div>
+            </div>
+            <br>
+          <% end %>
+        <% end %>
+        <%= simple_form_for @amount, url: :membership_application_contributions do |f| %>
+          <% @cooperator.share_capitals.each do |share_capital| %>
+            <div class="row">
+              <div class="col-md-5 col-md-offset-1">
+                <%= share_capital.share_capital_product.name %>
+              </div>
+              <div class="col-md-3">
+                <span class="pull-right"><%= number_to_currency share_capital.share_capital_product.minimum_payment %></span>
+              </div>
+              <div class="col-md-2">
+                <%= f.input :amount, input_html: { value: share_capital.share_capital_product.minimum_payment }, as: :hidden %>
+                <%= f.input :amount_type, input_html: { value: 'debit' }, as: :hidden  %>
+                <%= f.input :description, input_html: { value: share_capital.share_capital_product_name }, as: :hidden  %>
+                <%= f.input :account_id, input_html: { value: share_capital.share_capital_product_paid_up_account.id }, as: :hidden  %>
+                <%= f.input :commercial_document_id, input_html: { value: @cooperator.id }, as: :hidden  %>
+                <%= f.input :commercial_document_type, input_html: { value: @cooperator.class.to_s }, as: :hidden  %>
+                <% unless @cooperator.voucher_amounts.pluck(:description).include?(share_capital.share_capital_product_name) %>
+                  <%= f.submit 'Add', class: "btn btn-primary btn-sm" %>
+                <% else %>
+                  <span class="label bg-green"> Added </span>
+                <% end %>
+              </div>
+            </div>
+            <br />
+          <% end %>
+        <% end %>
+        <hr>
+        <div class="row">
+          <div class="col-md-5 col-md-offset-1">
+            <h4>TOTAL</h4>
+          </div>
+          <div class="col-md-3">
+            <h4><span class="pull-right"><%= number_to_currency @cooperator.voucher_amounts.total %></span></h4>
+          </div>
+        </div>
+        <div class="box-footer">
+          <%= link_to 'Accept Payment', new_membership_application_payment_path(@membership), class: "btn btn-primary pull-right" %>
+        </div>
+      </div>
     </div>
   </div>
-  <br>
-
-<% end %>
-<% end %>
-<%= simple_form_for @amount, url: :membership_application_contributions do |f| %>
-<% @cooperator.share_capitals.each do |share_capital| %>
-  <div class="row">
-    <div class="col-md-5 col-md-offset-1">
-      <%= share_capital.share_capital_product.name %>
-    </div>
-    <div class="col-md-3">
-      <span class="pull-right"><%= number_to_currency share_capital.share_capital_product.minimum_payment %></span>
-    </div>
-    <div class="col-md-2">
-      <%= f.input :amount, input_html: { value: share_capital.share_capital_product.minimum_payment }, as: :hidden %>
-     <%= f.input :amount_type, input_html: { value: 'debit' }, as: :hidden  %>
-
-      <%= f.input :description, input_html: { value: share_capital.share_capital_product_name }, as: :hidden  %>
-      <%= f.input :account_id, input_html: { value: share_capital.share_capital_product_paid_up_account.id }, as: :hidden  %>
-      <%= f.input :commercial_document_id, input_html: { value: @cooperator.id }, as: :hidden  %>
-      <%= f.input :commercial_document_type, input_html: { value: @cooperator.class }, as: :hidden  %>
-    <% unless @cooperator.voucher_amounts.pluck(:description).include?(share_capital.share_capital_product_name) %>
-      <%= f.submit 'Add', class: "btn btn-primary btn-sm" %>
-    <% else %>
-      <span class="label bg-green"> Added </span>
-      <% end %>
-    </div>
-  </div>
-  <br />
-<% end %>
-<% end %>
-<hr>
-<div class="row">
-  <div class="col-md-5 col-md-offset-1">
-    <h4>TOTAL</h4>
-  </div>
-  <div class="col-md-3">
-    <h4><span class="pull-right"><%= number_to_currency @cooperator.voucher_amounts.total %></span></h4>
-  </div>
-</div>
-<div class="box-footer">
-  <%= link_to 'Accept Payment', new_membership_application_payment_path(@membership), class: "btn btn-primary pull-right" %>
 </div>

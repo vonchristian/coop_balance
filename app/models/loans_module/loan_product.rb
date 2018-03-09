@@ -26,6 +26,11 @@ module LoansModule
 
     validates :name, uniqueness: true
     validates :maximum_loanable_amount, numericality: true
+    def post_penalties #daily
+      if !penalty_posted?
+        PenaltyPosting
+      end
+    end
 
     def current_interest_config
       interest_configs.current

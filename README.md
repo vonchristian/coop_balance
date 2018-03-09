@@ -1,3 +1,5 @@
+setup guard rspec
+
 filter to current office
 
 
