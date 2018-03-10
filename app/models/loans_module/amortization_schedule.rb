@@ -109,10 +109,10 @@ module LoansModule
       end
     end
     def self.interest_computation(schedule, loan)
-      if !loan.lumpsum?
-        (loan.principal_balance_for(schedule) * loan.loan_product_monthly_interest_rate)
+      if loan.lumpsum?
+        loan.loan_amount * loan.loan_product_monthly_interest_rate * loan.term
       else
-        loan.loan_amount * loan.loan_product_interest_rate
+        (loan.principal_balance_for(schedule) * loan.loan_product_monthly_interest_rate)
       end
     end
 
