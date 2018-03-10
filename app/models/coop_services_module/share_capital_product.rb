@@ -1,28 +1,22 @@
 module CoopServicesModule
   class ShareCapitalProduct < ApplicationRecord
-    belongs_to :paid_up_account,          class_name: "AccountingModule::Account"
-    belongs_to :closing_account,          class_name: "AccountingModule::Account"
-    belongs_to :subscription_account,     class_name: "AccountingModule::Account"
+    belongs_to :paid_up_account, class_name: "AccountingModule::Account"
+    belongs_to :closing_account, class_name: "AccountingModule::Account"
+    belongs_to :subscription_account, class_name: "AccountingModule::Account"
     belongs_to :interest_payable_account, class_name: "AccountingModule::Account"
-    has_many :subscribers,                class_name: "MembershipsModule::ShareCapital"
 
-    validates :name,
-              :paid_up_account_id,
-              :closing_account_id,
-              :subscription_account_id,
-              :cost_per_share,
-              :minimum_number_of_paid_share,
-              :minimum_number_of_subscribed_share,
-              presence: true
-    validates :name,
-              uniqueness: true
-    validates :cost_per_share,
-              :minimum_number_of_paid_share,
-              :minimum_number_of_subscribed_share,
-              numericality: true
+    has_many :subscribers, class_name: "MembershipsModule::ShareCapital"
+
+    validates :name, :paid_up_account_id, :closing_account_id, :subscription_account_id, :cost_per_share, presence: true
+    validates :name, uniqueness: true
+    validates :cost_per_share, numericality: true
     delegate :name, to: :paid_up_account, prefix: true
     delegate :name, to: :subscription_account, prefix: true
 
+
+    def self.subscribe(subscriber)
+      subscriber.share_capitals.find_or_create_by(share_capital_product: self.default_product)
+    end
     def minimum_payment
       cost_per_share * minimum_number_of_paid_share
     end

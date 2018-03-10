@@ -28,22 +28,6 @@ module CoopServicesModule
               uniqueness: true
 
 
-    def self.accounts
-      all.map{|a| a.account }
-    end
-
-    def self.accounts_balance(options={})
-      accounts.uniq.map{|a| a.balance(options)}.sum
-    end
-
-    def self.accounts_credits_balance(options={})
-      accounts.uniq.map{|a| a.credits_balance(options)}.sum
-    end
-
-    def self.accounts_debits_balance(options={})
-      accounts.uniq.map{|a| a.debits_balance(options)}.sum
-    end
-
     def amount_range
       minimum_deposit..maximum_deposit
     end

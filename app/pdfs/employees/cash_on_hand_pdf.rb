@@ -35,8 +35,8 @@ module Employees
       image "#{Rails.root}/app/assets/images/logo_kcmdc.jpg", width: 50, height: 50
     end
     bounding_box [370, 800], width: 200 do
-        text "KCMDC", style: :bold, size: 24
-        text "Kiangan Community Multipurpose Cooperative", size: 10
+        text "#{@employee.cooperative_abbreviated_name}", style: :bold, size: 24
+        text "#{@employee.cooperative_name}", size: 10
     end
     bounding_box [0, 800], width: 400 do
       text "#{@title}", style: :bold, size: 12
@@ -56,7 +56,7 @@ module Employees
   end
     def account_details
       text "CASH ON HAND DETAILS", size: 10, style: :bold
-      table(accounts_data, cell_style: { inline_format: true, size: 10, font: "Helvetica", :padding => [2,0,0,0]}, column_widths: [20, 150, 150]) do
+      table(accounts_data, cell_style: { inline_format: true, size: 10, font: "Helvetica", :padding => [2,0,5,0]}, column_widths: [20, 150, 150]) do
         cells.borders =[]
         column(2).align = :right
       end
@@ -81,7 +81,7 @@ module Employees
     def sundries_summary
     text "SUMMARY OF ACCOUNTS", style: :bold, size: 10
 
-    table(sundries_summary_data, cell_style: { size: 10, font: "Helvetica"}, column_widths: [20, 80, 200, 150, 100]) do
+    table(sundries_summary_data, cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [20, 80, 200, 150, 100]) do
         cells.borders = []
         row(0).font_style = :bold
         column(3).align = :right
@@ -91,7 +91,11 @@ module Employees
   end
   def sundries_summary_data
     [["", "Code", "Account Title ", "Debits", "Credits"]] +
-    @sundries_summary ||= AccountingModule::Account.updated_at(from_date: @from_date.beginning_of_day, to_date: @to_date.end_of_day).updated_by(@employee).uniq.map{ |a| ["", a.code, a.name, price(a.debits_balance(from_date: @to_date.beginning_of_day, to_date: @to_date.end_of_day)), price(a.credits_balance(from_date: @to_date.beginning_of_day, to_date: @to_date.end_of_day))]}
+    @sundries_summary ||= AccountingModule::Account.updated_at(from_date: @from_date.beginning_of_day, to_date: @to_date.end_of_day).updated_by(@employee).uniq.map{ |a| ["", a.code, a.name, price(a.debits_balance(from_date: @to_date.beginning_of_day, to_date: @to_date.end_of_day)), price(a.credits_balance(from_date: @to_date.beginning_of_day, to_date: @to_date.end_of_day))]} +
+    [["", "", "<b>TOTAL</b>",
+      "<b>#{price(AccountingModule::Account.updated_at(from_date: @from_date.beginning_of_day, to_date: @to_date.end_of_day).updated_by(@employee).uniq.map{|a| a.debits_balance(from_date: @to_date.beginning_of_day, to_date: @to_date.end_of_day)}.sum )}</b>",
+      "<b>#{price(AccountingModule::Account.updated_at(from_date: @from_date.beginning_of_day, to_date: @to_date.end_of_day).updated_by(@employee).uniq.map{|a| a.credits_balance(from_date: @to_date.beginning_of_day, to_date: @to_date.end_of_day)}.sum )}</b>"]]
+
   end
     def entries_table
     if !@entries.any?

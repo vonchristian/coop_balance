@@ -1,7 +1,7 @@
 
 <div class="row">
   <div class="col-md-12">
-    <div class="box box-solid">
+    <div class="box box-default">
     <div class="box-header">
       <h3 class="box-title"> Balance Sheet </h3>
     </div>
@@ -15,10 +15,10 @@
     <% end %>
     <%= link_to "Print(PDF)", accounting_module_reports_balance_sheets_path(format: 'pdf', to_date: @to_date), class: "btn btn-default" %>
   <br>
-
-  <%= render 'account', :name => "Assets", :accounts => @assets %>
-  <%= render 'account', :name => "Liabilities", :accounts => @liabilities %>
-  <%= render 'account', :name => "Equity", :accounts => @equity %>
-
+  <div class="table table-responsive">
+    <%= render 'account', :name => "Assets", :accounts => @assets %>
+    <%= render 'account', :name => "Liabilities", :accounts => @liabilities %>
+    <%= render 'account', :name => "Equity", :accounts => @equity %>
+  </div>
 
 </div>

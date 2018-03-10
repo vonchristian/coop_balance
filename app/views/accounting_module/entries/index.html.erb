@@ -50,11 +50,6 @@
           </div>
         </div>
         <hr>
-
-        Per Branch
-        <% CoopConfigurationsModule::Office.all.each do |office| %>
-          <%= link_to office.name, accounting_module_entries_path(branch_office_id: office.id) %>
-        <% end %>
       </div>
     </div>
   </div>
@@ -63,7 +58,7 @@
   <div class="col-md-12">
     <div class="box box-default">
       <div class="box-header">
-        <h3 class="box-title"> <%= params[:entry_type].try(:titleize) || "All" %> Entries </h3>
+        <h3 class="box-title"> Journal Entries </h3>
       </div>
       <div class="box-body">
         <div class="table table-responsive">

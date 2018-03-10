@@ -23,12 +23,13 @@ module AccountingModule
     scope :equities, -> { where(type: 'AccountingModule::Equity') }
     scope :revenues, -> { where(type: 'AccountingModule::Revenue') }
     scope :expenses, -> { where(type: 'AccountingModule::Expense') }
-
+    def self.active
+      where(active: true)
+    end
     def self.updated_at(options={})
       if options[:from_date] && options[:to_date]
-        from_date = options[:from_date].kind_of?(DateTime) ? options[:from_date] : Chronic.parse(options[:from_date].strftime('%Y-%m-%d 12:00:00'))
-        to_date = options[:to_date].kind_of?(DateTime) ? options[:to_date] : Chronic.parse(options[:to_date].strftime('%Y-%m-%d 12:59:59'))
-        where('updated_at' => (from_date.beginning_of_day)..(to_date.end_of_day))
+        date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
+        where('updated_at' => (date_range.start_date)..(date_range.end_date))
       end
     end
 
@@ -39,11 +40,7 @@ module AccountingModule
       entries.recorded_by(employee)
     end
 
-    def self.loan_accounts
-      LoansModule::LoanProduct.accounts.uniq.map do |a|
-        self.find_by(name: a.to_s)
-      end
-    end
+
     def account_name
       name
     end
@@ -57,20 +54,17 @@ module AccountingModule
      end
 
     def self.balance(options={})
-      if self.new.class == AccountingModule::Account
-        raise(NoMethodError, "undefined method 'balance'")
-      else
-        accounts_balance = BigDecimal.new('0')
-        accounts = self.all
-        accounts.each do |account|
-          if account.contra?
-            accounts_balance -= account.balance(options)
-          else
-            accounts_balance += account.balance(options)
-          end
+      return raise(NoMethodError, "undefined method 'balance'") if self.new.class == AccountingModule::Account
+      accounts_balance = BigDecimal.new('0')
+      accounts = self.all
+      accounts.each do |account|
+        if account.contra?
+          accounts_balance -= account.balance(options)
+        else
+          accounts_balance += account.balance(options)
         end
-        accounts_balance
       end
+      accounts_balance
     end
 
     def self.trial_balance

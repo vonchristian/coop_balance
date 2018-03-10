@@ -41,7 +41,6 @@
             </thead>
             <tbody>
               <% @accounts.each do |account| %>
-                <% cache account do %>
                   <% if account.subsidiary_accounts.present? %>
                      <tr data-link="<%=accounting_module_account_path(account)%>" class="myClass">
                       <td> <%= account.code %><br>
@@ -84,7 +83,6 @@
                       <td> <%= number_to_currency account.balance %></td>
                     </tr>
                   <% end %>
-                <% end %>
               <% end %>
             </tbody>
           </table>

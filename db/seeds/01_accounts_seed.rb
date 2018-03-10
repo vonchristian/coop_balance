@@ -93,10 +93,6 @@ AccountingModule::Asset.create(code: 117274, name: "Penalties on Loan Receivable
 AccountingModule::Asset.create(code: 117275, name: "Penalties on Loan Receivables - Agri Input Loan")
 AccountingModule::Asset.create(code: 117276, name: "Penalties on Loan Receivables - Special Loan")
 
-
-
-
-
 AccountingModule::Asset.create(code: 11730, name: "Installment Receivables - Current")
 AccountingModule::Asset.create(code: 11731, name: "Installment Receivables - Past Due")
 AccountingModule::Asset.create(code: 11733, name: "Installment Receivables - Restructured")

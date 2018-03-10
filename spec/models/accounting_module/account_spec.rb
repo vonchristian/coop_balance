@@ -4,6 +4,15 @@ module AccountingModule
     describe 'associations' do
       it { is_expected.to have_many :subsidiary_accounts }
     end
+
+    it ".active" do
+      active_account = create(:asset, active: true)
+      inactive_account = create(:expense, active: false)
+
+      expect(AccountingModule::Account.active).to include(active_account)
+      expect(AccountingModule::Account.active).to_not include(inactive_account)
+    end
+
     let(:account) { build(:account) }
     subject { account }
 
