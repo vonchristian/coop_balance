@@ -65,7 +65,7 @@ module MembershipsModule
       InterestPosting.new.post_interests_earned(self, date)
     end
 
-    def balance
+    def balance(options={})
       saving_product_account.balance(commercial_document_id: self.id)
     end
 
@@ -81,12 +81,25 @@ module MembershipsModule
     def can_withdraw?
       !closed? && balance > 0.0
     end
+    def first_transaction_date
+      if entries.any?
+        entries.sort_by(&:entry_date).first.entry_date
+      end
+    end
     def last_transaction_date
       if entries.any?
-        entries.order(entry_date: :asc).last.entry_date.strftime("%B %e, %Y")
+        entries.sort_by(&:entry_date).reverse.first.entry_date.strftime("%B %e, %Y")
       else
         "No Transactions"
       end
+    end
+    def average_daily_balance
+      balances = []
+      (Date.today.beginning_of_quarter..Date.today.end_of_quarter).each do |date|
+        daily_balance = saving_product.balance(commercial_document_id: self.id, from_date: self.first_transaction_date, to_date: date.end_of_day)
+        balances << daily_balance
+      end
+      balances.sum / balances.size
     end
     private
     def set_account_owner_name

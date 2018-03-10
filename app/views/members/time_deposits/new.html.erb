@@ -16,7 +16,7 @@
           <%= f.input :number_of_days %>
           <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
           <%= f.input :depositor_id, input_html: { value: @member.id }, as: :hidden %>
-          <%= f.input :time_deposit_product_id, collection: CoopServicesModule::TimeDepositProduct.all.map{|a| [a.amount_range_and_days, a.id] } %>
+          <%= f.input :time_deposit_product_id, collection: CoopServicesModule::TimeDepositProduct.all.map{|a| [a.amount_range_and_days, a.id] }, as: :radio_buttons %>
           <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
           <div class="box-footer">
             <%= f.submit "Save Time Deposit", class: "btn btn-primary pull-right" %>

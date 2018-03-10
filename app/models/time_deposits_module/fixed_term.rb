@@ -6,6 +6,9 @@ module TimeDepositsModule
     def matured?
       maturity_date < Time.zone.now
     end
+    def number_of_months
+      number_of_days / 30
+    end
     private
     def set_default_date
       self.deposit_date ||= Time.zone.now

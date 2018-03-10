@@ -10,13 +10,14 @@
           <%= f.input :name %>
           <%= f.input :minimum_deposit %>
           <%= f.input :maximum_deposit %>
-          <%= f.input :interest_rate %>
+          <%= f.input :annual_interest_rate %>
           <%= f.input :number_of_days %>
           <%= f.input :time_deposit_product_type, collection: CoopServicesModule::TimeDepositProduct.time_deposit_product_types.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
           <%= f.input :account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
           <%= f.input :interest_expense_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
           <%= f.input :break_contract_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
           <%= f.input :break_contract_fee %>
+          <%= f.input :break_contract_rate %>
           <div class="box-footer">
             <%= f.submit "Create Time Deposit Product", class: "btn btn-danger pull-right" %>
           </div>

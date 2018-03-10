@@ -193,6 +193,8 @@ AccountingModule::Liability.create(code: 21100, name: 'Savings Deposits')
 AccountingModule::Liability.create(code: 211001, name: 'Savings Deposits - Regular Savings')
 
 AccountingModule::Liability.create(code: 21200, name: 'Time Deposits')
+AccountingModule::Liability.create(code: 21201, name: 'Time Deposits - Members ( 10,000 upto 200,000 for 90Days)')
+
 AccountingModule::Liability.create(code: 21300, name: 'Accounts Payable-Trade')
 AccountingModule::Liability.create(code: 21400, name: 'Accounts Payable-Non Trade')
 AccountingModule::Liability.create(code: 21500, name: 'Loans Payable - Current')

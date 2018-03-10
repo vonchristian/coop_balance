@@ -45,6 +45,9 @@
     def interest_posted?(date)
       interest_expense_account.credit_amounts.entered_on(from_date: beginning_date_for(date), to_date: ending_date_for(date)).present?
     end
+    def quarterly_interest_rate
+      interest_rate / 4.0
+    end
 
     private
     def beginning_date_for(date)

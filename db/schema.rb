@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180309233327) do
+ActiveRecord::Schema.define(version: 20180310035505) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1046,7 +1046,6 @@ ActiveRecord::Schema.define(version: 20180309233327) do
   end
 
   create_table "time_deposit_products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.decimal "interest_rate"
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -1058,6 +1057,8 @@ ActiveRecord::Schema.define(version: 20180309233327) do
     t.decimal "break_contract_fee"
     t.decimal "minimum_deposit"
     t.decimal "maximum_deposit"
+    t.decimal "break_contract_rate"
+    t.decimal "annual_interest_rate"
     t.index ["account_id"], name: "index_time_deposit_products_on_account_id"
     t.index ["break_contract_account_id"], name: "index_time_deposit_products_on_break_contract_account_id"
     t.index ["interest_expense_account_id"], name: "index_time_deposit_products_on_interest_expense_account_id"
