@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180308123445) do
+ActiveRecord::Schema.define(version: 20180309233327) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1046,8 +1046,6 @@ ActiveRecord::Schema.define(version: 20180308123445) do
   end
 
   create_table "time_deposit_products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.decimal "minimum_amount"
-    t.decimal "maximum_amount"
     t.decimal "interest_rate"
     t.string "name"
     t.datetime "created_at", null: false
@@ -1055,7 +1053,14 @@ ActiveRecord::Schema.define(version: 20180308123445) do
     t.integer "number_of_days"
     t.integer "time_deposit_product_type"
     t.uuid "account_id"
+    t.uuid "break_contract_account_id"
+    t.uuid "interest_expense_account_id"
+    t.decimal "break_contract_fee"
+    t.decimal "minimum_deposit"
+    t.decimal "maximum_deposit"
     t.index ["account_id"], name: "index_time_deposit_products_on_account_id"
+    t.index ["break_contract_account_id"], name: "index_time_deposit_products_on_break_contract_account_id"
+    t.index ["interest_expense_account_id"], name: "index_time_deposit_products_on_interest_expense_account_id"
     t.index ["name"], name: "index_time_deposit_products_on_name", unique: true
   end
 
@@ -1313,6 +1318,8 @@ ActiveRecord::Schema.define(version: 20180308123445) do
   add_foreign_key "time_deposit_configs", "accounts", column: "break_contract_account_id"
   add_foreign_key "time_deposit_configs", "accounts", column: "interest_account_id"
   add_foreign_key "time_deposit_products", "accounts"
+  add_foreign_key "time_deposit_products", "accounts", column: "break_contract_account_id"
+  add_foreign_key "time_deposit_products", "accounts", column: "interest_expense_account_id"
   add_foreign_key "time_deposits", "memberships"
   add_foreign_key "time_deposits", "offices"
   add_foreign_key "time_deposits", "time_deposit_products"

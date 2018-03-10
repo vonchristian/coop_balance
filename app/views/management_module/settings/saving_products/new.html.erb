@@ -10,12 +10,12 @@
           <div class="row">
             <div class="col-md-10 col-md-offset-1">
               <%= f.input :name %>
-              <%= f.input :interest_rate %>
+              <%= f.input :interest_rate, label: "Interest Rate (Annual)" %>
               <%= f.input :interest_recurrence, collection:  CoopServicesModule::SavingProduct.interest_recurrences.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
               <%= f.input :interest_expense_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] }%>
               <%= f.input :minimum_balance, label: "Minimum Balance to earn interest:" %>
-              <%= f.input :account_id, input_html: { id: "savingProductAccountSelect" }, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
-              <%= f.input :closing_account_id, input_html: { id: "savingProductAccountSelect" }, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
+              <%= f.input :account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
+              <%= f.input :closing_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
 
               <div class="box-footer">
                 <%= f.submit "Create Saving Product", class: "btn btn-danger pull-right" %>
@@ -27,3 +27,17 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#coop_services_module_saving_product_interest_expense_account_id").select2({
+      theme: "bootstrap"
+    });
+    $("#coop_services_module_saving_product_account_id").select2({
+      theme: "bootstrap"
+    });
+    $("#coop_services_module_saving_product_closing_account_id").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>
+

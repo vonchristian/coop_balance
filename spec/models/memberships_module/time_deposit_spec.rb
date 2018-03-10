@@ -10,12 +10,9 @@ module MembershipsModule
       it { is_expected.to belong_to :office }
     end
 
-    describe 'validations' do
-      it { is_expected.to validate_presence_of :depositor_id }
-      it { is_expected.to validate_presence_of :depositor_type }
-    end
     describe 'delegations' do
       it { is_expected.to delegate_method(:account).to(:time_deposit_product).with_prefix }
+      it { is_expected.to delegate_method(:break_contract_fee).to(:time_deposit_product).with_prefix }
       it { is_expected.to delegate_method(:name).to(:time_deposit_product).with_prefix }
       it { is_expected.to delegate_method(:interest_rate).to(:time_deposit_product).with_prefix }
       it { is_expected.to delegate_method(:full_name).to(:depositor).with_prefix }

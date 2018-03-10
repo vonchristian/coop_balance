@@ -54,7 +54,7 @@
   <%= f.submit "Upload Savings" %>
 <% end %>
 
-<%= link_to "Set Break Contract Fee", new_management_module_settings_break_contract_fee_path, class: "btn btn-danger" %>
+
 
 <%= simple_form_for Registries::ShareCapitalRegistry.new, url: :management_module_share_capital_registries do |f| %>
   <%= f.input :spreadsheet, label: 'Share Capital Registry' %>

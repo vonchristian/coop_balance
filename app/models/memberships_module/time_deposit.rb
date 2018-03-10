@@ -9,10 +9,16 @@ module MembershipsModule
     belongs_to :time_deposit_product, class_name: "CoopServicesModule::TimeDepositProduct"
     has_many :entries,  class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
     has_many :fixed_terms, class_name: "TimeDepositsModule::FixedTerm", dependent: :destroy
-    delegate :name, :interest_rate, :account, to: :time_deposit_product, prefix: true
+    delegate :name,
+             :interest_rate,
+             :account,
+             :break_contract_fee,
+             to: :time_deposit_product,
+             prefix: true
     delegate :name, :full_name, :first_and_last_name, to: :depositor, prefix: true
     delegate :maturity_date, :deposit_date, :matured?, to: :current_term, prefix: true
     delegate :name, to: :office, prefix: true
+
     before_save :set_depositor_name, on: [:create]
 
 

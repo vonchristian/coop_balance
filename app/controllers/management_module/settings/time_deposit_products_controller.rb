@@ -20,7 +20,18 @@ module ManagementModule
 
       private
       def time_deposit_product_params
-        params.require(:coop_services_module_time_deposit_product).permit(:name, :interest_rate, :minimum_amount, :maximum_amount, :time_deposit_product_type, :number_of_days, :account_id)
+        params.require(:coop_services_module_time_deposit_product).
+        permit(:name,
+               :interest_rate,
+               :minimum_deposit,
+               :maximum_deposit,
+               :time_deposit_product_type,
+               :number_of_days,
+               :break_contract_fee,
+               :account_id,
+               :interest_expense_account_id,
+               :break_contract_account_id
+               )
       end
     end
   end

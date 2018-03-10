@@ -131,12 +131,10 @@ Rails.application.routes.draw do
 
     namespace :settings do
       resources :store_fronts, only: [:new, :create]
-      resources :break_contract_fees, only: [:new, :create]
       resources :cooperatives, only: [:edit, :update, :show] do
         resources :offices, only: [:new, :create]
       end
       resources :savings_account_configs, only: [:new, :create]
-      resources :break_contract_fees, only: [:new, :create]
       resources :time_deposit_products, only: [:new, :create, :show]
     end
     resources :accounting, only: [:index]

@@ -1,11 +1,40 @@
-<%= simple_form_for @time_deposit_product, url: :management_module_settings_time_deposit_products do |f| %>
-  <%= f.error_notification %>
-  <%= f.input :name %>
-  <%= f.input :minimum_amount %>
-  <%= f.input :maximum_amount %>
-  <%= f.input :interest_rate %>
-  <%= f.input :number_of_days %>
-  <%= f.input :time_deposit_product_type, collection: CoopServicesModule::TimeDepositProduct.time_deposit_product_types.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
-  <%= f.input :account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
-  <%= f.submit "Create Saving Product" %>
-<% end %>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="box box-danger">
+      <div class="box-header">
+        <h3 class="box-title"> Time Deposit Product Details </h3>
+      </div>
+      <div class="box-body">
+        <%= simple_form_for @time_deposit_product, url: :management_module_settings_time_deposit_products do |f| %>
+          <%= f.error_notification %>
+          <%= f.input :name %>
+          <%= f.input :minimum_deposit %>
+          <%= f.input :maximum_deposit %>
+          <%= f.input :interest_rate %>
+          <%= f.input :number_of_days %>
+          <%= f.input :time_deposit_product_type, collection: CoopServicesModule::TimeDepositProduct.time_deposit_product_types.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
+          <%= f.input :account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
+          <%= f.input :interest_expense_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
+          <%= f.input :break_contract_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
+          <%= f.input :break_contract_fee %>
+          <div class="box-footer">
+            <%= f.submit "Create Time Deposit Product", class: "btn btn-danger pull-right" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#coop_services_module_time_deposit_product_account_id").select2({
+      theme: "bootstrap"
+    });
+    $("#coop_services_module_time_deposit_product_interest_expense_account_id").select2({
+      theme: "bootstrap"
+    });
+    $("#coop_services_module_time_deposit_product_break_contract_account_id").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>

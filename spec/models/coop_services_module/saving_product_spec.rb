@@ -20,6 +20,8 @@ module CoopServicesModule
       it { is_expected.to validate_uniqueness_of :name }
       it { is_expected.to validate_presence_of :account_id }
       it { is_expected.to validate_presence_of :interest_expense_account_id }
+      it { is_expected.to validate_presence_of :closing_account_id }
+
     end
 
     describe 'enums' do

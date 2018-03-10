@@ -48,10 +48,12 @@ module AccountingModule
       where(recorder_id: employee_id )
     end
 
-
-
     def self.total
-      all.map{|a| a.credit_amounts.sum(:amount)}.sum
+      all.map{|a| a.total }.sum
+    end
+
+    def total
+      credit_amounts.sum(:amount)
     end
 
     private
