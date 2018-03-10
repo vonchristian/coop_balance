@@ -11,7 +11,7 @@ REFACTOR
 try facade pattern for line item transactions
 
 payment of store credits
-
+<a href="#" class="text-muted"><i class="fa fa-gear"></i></a>
 
 segregate store_front_module_to rails_engine
 

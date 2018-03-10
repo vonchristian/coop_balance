@@ -21,7 +21,7 @@ module MembershipsModule
     before_save :set_account_owner_name
     def entries
       accounting_entries = []
-      saving_product.account.amounts.where(commercial_document: self).each do |amount|
+      saving_product_account.amounts.where(commercial_document: self).each do |amount|
         accounting_entries << amount.entry
       end
       accounting_entries

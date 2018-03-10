@@ -3,6 +3,16 @@
     <div class="box box-solid">
       <div class="box-header">
         <h3 class="box-title"> Time Deposit Details </h3>
+       <div class="dropdown pull-right">
+        <button class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+          <span class="fa fa-cog"></span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+          <li><%=link_to "New Adjusting Entry", new_time_deposit_adjusting_entry_path(@time_deposit) %></li>
+          <li><a href="#">Transfer to Savings</a></li>
+
+        </ul>
+      </div>
       </div>
       <div class="box-body">
         <div class="row">
