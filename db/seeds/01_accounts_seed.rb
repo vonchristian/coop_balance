@@ -88,10 +88,10 @@ AccountingModule::Asset.create(code: 117266, name: "Interests on Loan Receivable
 AccountingModule::Asset.create(code: 11727, name: "Penalties on Loan Receivables")
 AccountingModule::Asset.create(code: 117271, name: "Penalties on Loan Receivables - Regular Loan")
 AccountingModule::Asset.create(code: 117272, name: "Penalties on Loan Receivables - Salary Loan")
-AccountingModule::Asset.create(code: 117272, name: "Penalties on Loan Receivables - Contractors Loan")
-AccountingModule::Asset.create(code: 117272, name: "Penalties on Loan Receivables - Emergency Loan")
-AccountingModule::Asset.create(code: 117272, name: "Penalties on Loan Receivables - Agri Input Loan")
-AccountingModule::Asset.create(code: 117272, name: "Penalties on Loan Receivables - Special Loan")
+AccountingModule::Asset.create(code: 117273, name: "Penalties on Loan Receivables - Contractors Loan")
+AccountingModule::Asset.create(code: 117274, name: "Penalties on Loan Receivables - Emergency Loan")
+AccountingModule::Asset.create(code: 117275, name: "Penalties on Loan Receivables - Agri Input Loan")
+AccountingModule::Asset.create(code: 117276, name: "Penalties on Loan Receivables - Special Loan")
 
 
 
