@@ -7,20 +7,18 @@ module AccountingModule
       commercial_document = hash[:commercial_document_id]
       if commercial_document.present? && from_date.present? && to_date.present?
         date_range = DateRange.new(from_date: from_date, to_date: to_date)
-        joins(:entry, :account).where('entries.entry_date' => (date_range.start_date)..(date_range.end_date)).
-        where(commercial_document_id: commercial_document).
-        sum(:amount)
+        joins(:entry, :account).where('entries.entry_date' => date_range.range).
+        where(commercial_document_id: commercial_document).total
       elsif commercial_document.blank? && from_date.present? && to_date.present?
         date_range = DateRange.new(from_date: from_date, to_date: to_date)
-        joins(:entry, :account).where('entries.entry_date' => (date_range.start_date)..(date_range.end_date)).sum(:amount)
+        joins(:entry, :account).where('entries.entry_date' => date_range.range).total
       elsif commercial_document.present? && from_date.blank? && to_date.blank?
-        where('commercial_document_id' => commercial_document).sum(:amount)
+        where('commercial_document_id' => commercial_document).total
       elsif commercial_document.blank? && from_date.blank? && to_date.present?
         date_range = DateRange.new(from_date: first_entry_date, to_date: to_date)
-        joins(:entry, :account).where('entries.entry_date' => (date_range.start_date)..(date_range.end_date)).
-        sum(:amount)
+        joins(:entry, :account).where('entries.entry_date' => date_range.range).total
       else
-        joins(:entry, :account).sum(:amount)
+        joins(:entry, :account).total
       end
     end
 

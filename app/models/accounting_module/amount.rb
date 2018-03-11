@@ -19,6 +19,9 @@ module AccountingModule
     def credit?
       type == "AccountingModule::CreditAmount"
     end
+    def self.total(options={})
+      where(options).sum(:amount)
+    end
 
     def self.recorded_by(recorder_id)
       where('recorder_id' => recorder_id)
