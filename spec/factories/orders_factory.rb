@@ -7,7 +7,7 @@ FactoryBot.define do
       association :commercial_document, factory: :supplier
     end
 
-    factory :sales_order do
+    factory :sales_order, class: "StoreFrontModule::Orders::SalesOrder" do
       association :commercial_document, factory: :member
     end
   end

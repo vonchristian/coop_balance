@@ -1,8 +1,11 @@
 module StoreFrontModule
   module LineItems
     class PurchaseLineItem < LineItem
-      belongs_to :purchase_order,               class_name: "StoreFrontModule::Orders::PurchaseOrder", foreign_key: 'order_id'
-      has_many :referenced_purchase_line_items, class_name: "StoreFrontModule::LineItems::ReferencedPurchaseLineItem", foreign_key: 'purchase_order_line_item_id'
+      belongs_to :purchase_order,               class_name: "StoreFrontModule::Orders::PurchaseOrder",
+                                                foreign_key: 'order_id'
+      has_many :referenced_purchase_line_items, class_name: "StoreFrontModule::LineItems::ReferencedPurchaseLineItem",
+                                                foreign_key: 'purchase_line_item_id'
+
       delegate :supplier_name, :date, to: :purchase_order
 
       def self.processed
@@ -27,7 +30,7 @@ module StoreFrontModule
       end
 
       def sold_quantity
-        referenced_purchase_line_items.sum(:quantity)
+        referenced_purchase_line_items.sum(&:converted_quantity)
       end
 
       def available_quantity

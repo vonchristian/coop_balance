@@ -2,7 +2,7 @@ require 'rails_helper'
 
 module StoreFrontModule
   module LineItems
-    describe SalesOrderLineItem, type: :model do
+    describe SalesLineItem, type: :model do
       describe 'associations' do
         it { is_expected.to belong_to :sales_order }
         it { is_expected.to belong_to :purchase_order_line_item }

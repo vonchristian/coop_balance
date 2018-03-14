@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180310110705) do
+ActiveRecord::Schema.define(version: 20180314121634) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -400,14 +400,14 @@ ActiveRecord::Schema.define(version: 20180310110705) do
     t.string "type"
     t.string "barcode"
     t.uuid "referenced_line_item_id"
-    t.uuid "sales_order_line_item_id"
-    t.uuid "purchase_order_line_item_id"
+    t.uuid "purchase_line_item_id"
+    t.uuid "sales_line_item_id"
     t.index ["cart_id"], name: "index_line_items_on_cart_id"
     t.index ["order_id"], name: "index_line_items_on_order_id"
     t.index ["product_id"], name: "index_line_items_on_product_id"
-    t.index ["purchase_order_line_item_id"], name: "index_line_items_on_purchase_order_line_item_id"
+    t.index ["purchase_line_item_id"], name: "index_line_items_on_purchase_line_item_id"
     t.index ["referenced_line_item_id"], name: "index_line_items_on_referenced_line_item_id"
-    t.index ["sales_order_line_item_id"], name: "index_line_items_on_sales_order_line_item_id"
+    t.index ["sales_line_item_id"], name: "index_line_items_on_sales_line_item_id"
     t.index ["type"], name: "index_line_items_on_type"
     t.index ["unit_of_measurement_id"], name: "index_line_items_on_unit_of_measurement_id"
   end

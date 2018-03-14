@@ -28,7 +28,7 @@ module StoreFrontModule
       if base_measurement?
         quantity
       else
-        conversion_quantity
+        conversion_quantity || 1
       end
     end
   end
