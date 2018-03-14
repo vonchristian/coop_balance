@@ -9,7 +9,7 @@ module StoreFrontModule
       delegate :supplier_name, :date, to: :purchase_order
 
       def self.processed
-        select{|a| a.processed? }
+        select{ |a| a.processed? }
       end
 
       def sold?
