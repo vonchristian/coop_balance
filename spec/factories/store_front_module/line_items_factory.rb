@@ -6,14 +6,14 @@ FactoryBot.define do
     total_cost "9.99"
     date "2017-06-12 13:15:14"
 
-    factory :purchase_line_item_with_base_measurement do
-      type "StoreFrontModule::PurchaseLineItem"
+    factory :purchase_line_item_with_base_measurement, class: "StoreFrontModule::LineItems::PurchaseLineItem" do
       association :unit_of_measurement, factory: :base_measurement
+      association :purchase_order
     end
 
-    factory :purchase_line_item_with_conversion_multiplier do
-      type "StoreFrontModule::PurchaseLineItem"
+    factory :purchase_line_item_with_conversion_multiplier, class: "StoreFrontModule::LineItems::PurchaseLineItem" do
       association :unit_of_measurement, factory: :measurement_with_conversion_multiplier
+      association :purchase_order
     end
 
     factory :purchase_return_line_item_with_base_measurement do

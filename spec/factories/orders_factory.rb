@@ -3,7 +3,7 @@ FactoryBot.define do
     association :commercial_document, factory: :member
     date "2017-06-12 13:20:12"
 
-    factory :purchase_order do
+    factory :purchase_order, class: "StoreFrontModule::Orders::PurchaseOrder" do
       association :commercial_document, factory: :supplier
     end
 

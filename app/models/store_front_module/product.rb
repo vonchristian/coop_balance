@@ -39,7 +39,7 @@ module StoreFrontModule
     has_many :stock_transfer_orders,            class_name: "StoreFrontModule::Orders::StockTransferOrder",
                                                 through: :stock_transfers,
                                                 source: :stock_transfer_order
-    has_many :receivedstock_transfer_orders,    class_name: "StoreFrontModule::Orders::ReceivedStockTransferOrder",
+    has_many :received_stock_transfer_orders,    class_name: "StoreFrontModule::Orders::ReceivedStockTransferOrder",
                                                 through: :received_stock_transfers,
                                                 source: :received_stock_transfer_order
 
@@ -84,7 +84,7 @@ module StoreFrontModule
     end
 
     def purchases_balance(options={})
-      purchases.processed.balance(product_id: self.id) -
+      purchases.balance(product_id: self.id) -
       purchase_returns.balance(product_id: self.id) -
       spoilages.balance(product_id: self.id)
     end

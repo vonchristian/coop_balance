@@ -9,6 +9,7 @@ FactoryBot.define do
 
     factory :base_measurement do
       base_measurement true
+      quantity 1
     end
     factory :measurement_with_conversion_multiplier do
       base_measurement false

@@ -1,6 +1,6 @@
 module StoreFrontModule
   module Orders
-    class StockTransferOrder < Order
+    class ReceivedStockTransferOrder < Order
     end
   end
 end

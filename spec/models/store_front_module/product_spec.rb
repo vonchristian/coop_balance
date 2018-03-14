@@ -12,10 +12,17 @@ module StoreFrontModule
       it { is_expected.to have_many :purchase_returns }
       it { is_expected.to have_many :internal_uses }
       it { is_expected.to have_many :spoilages }
+      it { is_expected.to have_many :stock_transfers }
+      it { is_expected.to have_many :received_stock_transfers }
       it { is_expected.to have_many :orders }
       it { is_expected.to have_many :sales_orders }
       it { is_expected.to have_many :purchase_orders }
-
+      it { is_expected.to have_many :purchase_return_orders }
+      it { is_expected.to have_many :sales_return_orders }
+      it { is_expected.to have_many :internal_use_orders }
+      it { is_expected.to have_many :spoilage_orders }
+      it { is_expected.to have_many :stock_transfer_orders }
+      it { is_expected.to have_many :received_stock_transfer_orders }
     end
     context 'validations' do
     	it { is_expected.to validate_presence_of :name }
@@ -40,15 +47,19 @@ module StoreFrontModule
       context 'no purchase returns' do
         it 'unit of measurement is base measurement' do
           product = create(:product)
-          order = create(:purchase_order)
-          purchase = create(:purchase_line_item_with_base_measurement,  quantity: 100, product: product, order: order)
+          purchase = create(:purchase_line_item_with_base_measurement,
+            quantity: 100,
+            product: product)
+          another_purchase = create(:purchase_line_item_with_base_measurement,
+            quantity: 10,
+            product: product)
 
-          expect(product.purchases_balance).to eql(100)
+          expect(product.purchases_balance).to eql(110)
         end
+
         it 'unit of measurement has conversion multiplier' do
           product = create(:product)
-          order = create(:purchase_order)
-          purchase = create(:purchase_line_item_with_conversion_multiplier,  quantity: 100, product: product, order: order)
+          purchase = create(:purchase_line_item_with_conversion_multiplier,  quantity: 100, product: product)
 
           expect(product.purchases_balance).to eql(5000)
         end
