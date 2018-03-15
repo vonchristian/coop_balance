@@ -6,6 +6,9 @@ FactoryBot.define do
     factory :purchase_order, class: "StoreFrontModule::Orders::PurchaseOrder" do
       association :commercial_document, factory: :supplier
     end
+    factory :purchase_return_order, class: "StoreFrontModule::Orders::PurchaseReturnOrder" do
+      association :commercial_document, factory: :supplier
+    end
 
     factory :sales_order, class: "StoreFrontModule::Orders::SalesOrder" do
       association :commercial_document, factory: :member

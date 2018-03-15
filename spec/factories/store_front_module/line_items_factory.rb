@@ -16,18 +16,18 @@ FactoryBot.define do
       association :purchase_order
     end
 
-    factory :purchase_return_line_item_with_base_measurement do
-      type "StoreFrontModule::PurchaseReturnLineItem"
+    factory :purchase_return_line_item_with_base_measurement, class: "StoreFrontModule::LineItems::PurchaseReturnLineItem" do
       association :unit_of_measurement, factory: :base_measurement
+      association :purchase_return_order
+
     end
 
-    factory :purchase_return_line_item_with_conversion_multiplier do
-      type "StoreFrontModule::PurchaseReturnLineItem"
+    factory :purchase_return_line_item_with_conversion_multiplier, class: "StoreFrontModule::LineItems::PurchaseReturnLineItem" do
       association :unit_of_measurement, factory: :measurement_with_conversion_multiplier
+      association :purchase_return_order
     end
 
-    factory :sales_line_item_with_base_measurement do
-      type "StoreFrontModule::SalesLineItem"
+    factory :sales_line_item_with_base_measurement, class: "StoreFrontModule::LineItems::SalesLineItem" do
       association :unit_of_measurement, factory: :base_measurement
     end
   end

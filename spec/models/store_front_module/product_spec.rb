@@ -24,9 +24,12 @@ module StoreFrontModule
       it { is_expected.to have_many :stock_transfer_orders }
       it { is_expected.to have_many :received_stock_transfer_orders }
     end
-    context 'validations' do
+    describe 'validations' do
     	it { is_expected.to validate_presence_of :name }
     	it { is_expected.to validate_uniqueness_of :name }
+    end
+    describe 'delegations' do
+      it { is_expected.to delegate_method(:code).to(:base_measurement).with_prefix }
     end
 
     it { is_expected.to have_attached_file(:photo) }

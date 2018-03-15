@@ -101,11 +101,11 @@ module StoreFrontModule
       internal_uses.balance(product_id: self.id)
     end
 
-    def stock_tranfer_balance(options={})
+    def stock_transfer_balance(options={})
       stock_transfers.balance(product_id: self.id)
     end
 
-    def received_stock_tranfer_balance(options={})
+    def received_stock_transfer_balance(options={})
       received_stock_transfers.balance(product_id: self.id)
     end
 
