@@ -1,6 +1,8 @@
 module StoreFrontModule
   module Orders
     class StockTransferOrder < Order
+      has_many :stock_transfer_line_items, class_name: "StoreFrontModule::LineItems::StockTransferLineItem",
+               foreign_key: 'order_id'
     end
   end
 end

@@ -126,6 +126,27 @@ module StoreFrontModule
         expect(purchase_line_item.purchase_cost).to eql(100)
         expect(another_purchase_line_item.purchase_cost).to eql(10)
       end
+      it "#purchase_returns_quantity" do
+        purchase_line_item = create(:purchase_line_item_with_base_measurement, quantity: 100)
+        purchase_return_line_item = create(:purchase_return_line_item_with_base_measurement,
+                                    quantity: 20,
+                                    purchase_line_item: purchase_line_item)
+        expect(purchase_line_item.purchase_returns_quantity).to eql(20)
+      end
+      it "#internal_uses_quantity" do
+        purchase_line_item = create(:purchase_line_item_with_base_measurement, quantity: 100)
+        internal_use_line_item = create(:internal_use_line_item_with_base_measurement,
+                                    quantity: 20,
+                                    purchase_line_item: purchase_line_item)
+        expect(purchase_line_item.internal_uses_quantity).to eql(20)
+      end
+      it "#stock_transfers_quantity" do
+        purchase_line_item = create(:purchase_line_item_with_base_measurement, quantity: 100)
+        stock_transfer_line_item = create(:stock_transfer_line_item_with_base_measurement,
+                                    quantity: 20,
+                                    purchase_line_item: purchase_line_item)
+        expect(purchase_line_item.stock_transfers_quantity).to eql(20)
+      end
     end
   end
 end

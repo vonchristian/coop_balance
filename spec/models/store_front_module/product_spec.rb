@@ -47,7 +47,7 @@ module StoreFrontModule
     end
 
     describe "#purchases_balance(options)" do
-      context 'no purchase returns' do
+      describe 'no purchase returns' do
         it 'unit of measurement is base measurement' do
           product = create(:product)
           purchase = create(:purchase_line_item_with_base_measurement,
@@ -67,39 +67,122 @@ module StoreFrontModule
           expect(product.purchases_balance).to eql(5000)
         end
       end
+    end
 
-      context 'with purchase returns' do
-        it 'unit of measurement is base measurement' do
-          product = create(:product)
-          order = create(:purchase_order)
-          purchase = create(:purchase_line_item_with_base_measurement,  quantity: 100, product: product, order: order)
-          purchase_return = create(:purchase_return_line_item_with_base_measurement, quantity: 5, product: product, order: order)
+    describe 'with purchase returns' do
+      it 'unit of measurement is base measurement' do
+        product = create(:product)
+        order = create(:purchase_order)
+        purchase = create(:purchase_line_item_with_base_measurement,  quantity: 100, product: product, order: order)
+        purchase_return = create(:purchase_return_line_item_with_base_measurement, quantity: 5, product: product, order: order)
 
-          expect(product.purchases_balance).to eql(95)
-        end
-
-        it 'unit of measurement has conversion multiplier' do
-          product = create(:product)
-          order = create(:purchase_order)
-          purchase = create(:purchase_line_item_with_conversion_multiplier,  quantity: 100, product: product, order: order)
-          purchase_return = create(:purchase_return_line_item_with_conversion_multiplier, quantity: 10, product: product, order: order)
-
-          expect(product.purchases_balance).to eql(4500)
-        end
+        expect(product.purchases_balance).to eql(95)
       end
 
-      describe "#sales_balance(options)" do
-        context 'with no sales return' do
-          it 'unit of measurement is base measurement' do
-            product = create(:product)
-            purchase_order = create(:purchase_order)
-            sales_order = create(:sales_order)
-            purchase = create(:purchase_line_item_with_base_measurement,  quantity: 100, product: product, order: purchase_order)
-            sale = create(:sales_line_item_with_base_measurement,  quantity: 100.0, product: product, order: sales_order)
+      it 'unit of measurement has conversion multiplier' do
+        product = create(:product)
+        order = create(:purchase_order)
+        purchase = create(:purchase_line_item_with_conversion_multiplier,  quantity: 100, product: product, order: order)
+        purchase_return = create(:purchase_return_line_item_with_conversion_multiplier, quantity: 10, product: product, order: order)
 
-            expect(product.sales_balance).to eql(100)
-            expect(product.balance).to eql(0)
-          end
+        expect(product.purchases_balance).to eql(4500)
+      end
+    end
+
+    describe "#sales_balance(options)" do
+      context 'with no sales return' do
+        it 'unit of measurement is base measurement' do
+          product = create(:product)
+          purchase_order = create(:purchase_order)
+          sales_order = create(:sales_order)
+          purchase = create(:purchase_line_item_with_base_measurement,  quantity: 100, product: product, order: purchase_order)
+          sale = create(:sales_line_item_with_base_measurement,  quantity: 100.0, product: product, order: sales_order)
+
+          expect(product.sales_balance).to eql(100)
+          expect(product.balance).to eql(0)
+        end
+      end
+    end
+
+    describe "#sales_returns_balance(options)" do
+      it 'returns sales returns quantity' do
+        product = create(:product)
+        purchase_order = create(:purchase_order)
+        sales_order = create(:sales_order)
+        purchase = create(:purchase_line_item_with_base_measurement,  quantity: 100, product: product, order: purchase_order)
+        sale = create(:sales_line_item_with_base_measurement,  quantity: 100.0, product: product, order: sales_order)
+
+        expect(product.sales_balance).to eql(100)
+        expect(product.balance).to eql(0)
+
+        sales_return = create(:sales_return_line_item_with_base_measurement,  quantity: 10.0, product: product, order: sales_order)
+
+        expect(product.sales_returns_balance).to eql(10)
+        expect(product.balance).to eql(10)
+      end
+    end
+
+    describe "#internal_use_balance(options)" do
+      it 'returns internal_use quantity' do
+        product = create(:product)
+        purchase_order = create(:purchase_order)
+        internal_use_order = create(:internal_use_order)
+        purchase = create(:purchase_line_item_with_base_measurement,  quantity: 100, product: product, order: purchase_order)
+        internal_use = create(:internal_use_line_item_with_base_measurement,
+          quantity: 10.0,
+          product: product, order: internal_use_order)
+
+        expect(product.internal_use_balance).to eql(10)
+        expect(product.balance).to eql(90)
+      end
+    end
+
+    describe "#stock_transfer_balance(options)" do
+      it 'returns stock_transfer quantity' do
+        product = create(:product)
+        purchase_order = create(:purchase_order)
+        stock_transfer_order = create(:stock_transfer_order)
+        purchase = create(:purchase_line_item_with_base_measurement,  quantity: 100, product: product, order: purchase_order)
+        stock_transfer = create(:stock_transfer_line_item_with_base_measurement,
+          quantity: 10.0,
+          product: product,
+          order: stock_transfer_order)
+
+        expect(product.stock_transfer_balance).to eql(10)
+        expect(product.balance).to eql(90)
+      end
+    end
+    describe "#received_stock_transfer_balance(options)" do
+      it 'returns received_stock_transfer quantity' do
+        product = create(:product)
+        purchase_order = create(:purchase_order)
+        received_stock_transfer_order = create(:received_stock_transfer_order)
+        purchase = create(:purchase_line_item_with_base_measurement,  quantity: 100, product: product, order: purchase_order)
+        received_stock_transfer = create(:received_stock_transfer_line_item_with_base_measurement,
+          quantity: 10.0,
+          product: product,
+          order: received_stock_transfer_order)
+
+        expect(product.received_stock_transfer_balance).to eql(10)
+        expect(product.balance).to eql(110)
+      end
+      describe "#out_of_stock?" do
+        it "returns TRUE if available_quantity == 0" do
+          product = create(:product)
+          purchase_order = create(:purchase_order)
+          sales_order = create(:sales_order)
+          purchase = create(:purchase_line_item_with_base_measurement,  quantity: 100, product: product, order: purchase_order)
+          sale = create(:sales_line_item_with_base_measurement,  quantity: 100.0, product: product, order: sales_order)
+
+          expect(product.sales_balance).to eql(100)
+          expect(product.balance).to eql(0)
+          expect(product.out_of_stock?).to be true
+
+          sales_return = create(:sales_return_line_item_with_base_measurement,  quantity: 10.0, product: product, order: sales_order)
+
+          expect(product.sales_returns_balance).to eql(10)
+          expect(product.balance).to eql(10)
+          expect(product.out_of_stock?).to be false
         end
       end
     end

@@ -13,5 +13,18 @@ FactoryBot.define do
     factory :sales_order, class: "StoreFrontModule::Orders::SalesOrder" do
       association :commercial_document, factory: :member
     end
+    factory :sales_return_order, class: "StoreFrontModule::Orders::SalesReturnOrder" do
+      association :commercial_document, factory: :member
+    end
+    factory :internal_use_order, class: "StoreFrontModule::Orders::InternalUseOrder" do
+      association :commercial_document, factory: :user
+    end
+    factory :stock_transfer_order, class: "StoreFrontModule::Orders::StockTransferOrder" do
+      association :commercial_document, factory: :store_front
+    end
+
+    factory :received_stock_transfer_order, class: "StoreFrontModule::Orders::ReceivedStockTransferOrder" do
+      association :commercial_document, factory: :store_front
+    end
   end
 end
