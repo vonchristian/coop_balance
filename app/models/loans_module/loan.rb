@@ -309,14 +309,14 @@ module LoansModule
     def status_color
       if is_past_due?
         'red'
-      elsif paid?(options)
+      elsif paid?
         'green'
       end
     end
     def status_text
       if is_past_due?
         'Past Due'
-      elsif paid?(options)
+      elsif paid?
         'Paid'
       else
         'Current'

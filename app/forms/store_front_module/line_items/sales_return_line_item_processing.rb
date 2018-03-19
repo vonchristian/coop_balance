@@ -1,6 +1,6 @@
 module StoreFrontModule
   module LineItems
-    class SalesReturnOrderLineItemProcessing
+    class SalesReturnLineItemProcessing
      include ActiveModel::Model
       attr_accessor :unit_of_measurement_id, :quantity, :cart_id, :product_id, :unit_cost, :total_cost, :cart_id, :barcode, :referenced_line_item_id
       validate :quantity_is_less_than_or_equal_to_sold_quantity?

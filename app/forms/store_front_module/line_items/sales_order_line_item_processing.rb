@@ -1,6 +1,6 @@
 module StoreFrontModule
   module LineItems
-    class SalesOrderLineItemProcessing
+    class SalesLineItemProcessing
      include ActiveModel::Model
       attr_accessor :unit_of_measurement_id, :quantity, :cart_id, :product_id, :unit_cost, :total_cost, :cart_id, :barcode, :purchase_order_line_item_id, :barcode
       validates :quantity, numericality: { greater_than: 0.1 }

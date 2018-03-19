@@ -1,6 +1,6 @@
 module StoreFrontModule
   module LineItems
-    class SpoilageOrderLineItemProcessing
+    class SpoilageLineItemProcessing
       include ActiveModel::Model
       attr_accessor :unit_of_measurement_id, :quantity, :cart_id, :product_id, :unit_cost, :total_cost, :cart_id, :barcode, :referenced_line_item_id
       validates :quantity, numericality: { greater_than: 0.1 }

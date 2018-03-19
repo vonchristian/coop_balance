@@ -1,6 +1,6 @@
 module StoreFrontModule
   module LineItems
-    class PurchaseOrderLineItemProcessing
+    class PurchaseLineItemProcessing
      include ActiveModel::Model
       attr_accessor :unit_of_measurement_id, :quantity, :cart_id, :product_id, :unit_cost, :total_cost, :cart_id, :barcode
 

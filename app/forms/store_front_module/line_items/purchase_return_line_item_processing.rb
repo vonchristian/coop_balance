@@ -1,6 +1,6 @@
 module StoreFrontModule
   module LineItems
-    class PurchaseReturnOrderLineItemProcessing
+    class PurchaseReturnLineItemProcessing
       include ActiveModel::Model
       attr_accessor :product_id, :cart_id, :unit_cost, :total_cost,  :unit_of_measurement_id, :employee_id, :supplier_id, :barcode, :quantity
       def process!
