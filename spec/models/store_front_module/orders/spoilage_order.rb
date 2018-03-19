@@ -5,7 +5,7 @@ module StoreFrontModule
     describe SpoilageOrder do
       describe 'associations' do
         it { is_expected.to have_one :note }
-        it { is_expected.to have_many :spoilage_order_line_items }
+        it { is_expected.to have_many :spoilage_line_items }
       end
     end
   end

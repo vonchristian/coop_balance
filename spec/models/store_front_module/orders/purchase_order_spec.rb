@@ -5,7 +5,7 @@ module StoreFrontModule
     describe PurchaseOrder do
       describe 'associations' do
         it { is_expected.to have_one :voucher }
-        it { is_expected.to have_many :purchase_order_line_items }
+        it { is_expected.to have_many :purchase_line_items }
         it { is_expected.to have_many :products }
       end
       describe 'delegations' do

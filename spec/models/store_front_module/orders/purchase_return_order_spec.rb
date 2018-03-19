@@ -5,7 +5,7 @@ module StoreFrontModule
     describe PurchaseReturnOrder do
       describe 'associations' do
         it { is_expected.to have_one :note }
-        it { is_expected.to have_many :purchase_return_order_line_items }
+        it { is_expected.to have_many :purchase_return_line_items }
       end
       describe 'delegations' do
         it { is_expected.to delegate_method(:content).to(:note).with_prefix }

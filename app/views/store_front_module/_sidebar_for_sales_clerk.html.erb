@@ -1,3 +1,4 @@
+
 <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
@@ -26,12 +27,28 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
           <li class="header"> STORE FRONT </li>
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-server"></i> <span>Orders</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+              <li><a href="/store_front_module/sales"><i class="fa fa-circle-o"></i> Sales</a></li>
+              <li><a href="/store_front_module/purchases"><i class="fa fa-circle-o"></i> Purchases</a></li>
+              <li><a href="/store_front_module/stock_transfers"><i class="fa fa-circle-o"></i> Stock Transfers</a></li>
+              <li><a href="/store_front_module/sales_returns"><i class="fa fa-circle-o"></i> Sales Returns</a></li>
+              <li><a href="/store_front_module/purchase_returns"><i class="fa fa-circle-o"></i> Purchase Returns</a></li>
+              <li><a href="/store_front_module/internal_uses"><i class="fa fa-circle-o"></i> Internal Use</a></li>
+              <li><a href="/store_front_module/spoilages"><i class="fa fa-circle-o"></i> Spoilages</a></li>
+            </ul>
+          </li>
           <!-- <li><a href="/dashboard"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li> -->
           <li class=<%= 'active' if current_page?(store_front_module_index_path) %> ><a href="/store_front_module"><i class="fa fa-home"></i> <span>Store</span></a></li>
 
           <li class=<%= 'active' if current_page?(store_front_module_products_path) %> ><a href="/store_front_module/products"><i class="fa fa-tag"></i> <span>Products</span></a></li>
 
-          <li class=<%= 'active' if current_page?(store_front_module_sales_orders_path) %> ><a href="/store_front_module/sales_orders"><i class="fa fa-bar-chart"></i> <span> Sales Monitoring</span></a></li>
           <li class=<%= 'active' if current_page?(store_front_module_sales_return_orders_path) %> ><a href="/store_front_module/sales_return_orders"><i class="fa fa-circle-o"></i> <span> Sales Returns</span></a></li>
 
 

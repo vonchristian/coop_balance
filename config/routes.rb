@@ -202,13 +202,19 @@ Rails.application.routes.draw do
   end
 
   namespace :store_front_module do
-    resources :sales_return_orders, only: [:index, :show], module: :orders
+    resources :sales_returns,   only: [:index, :show],   module: :orders
+    resources :spoilages,       only: [:index, :show],   module: :orders
+    resources :purchases,       only: [:index, :show],   module: :orders
+    resources :internal_uses,   only: [:index, :show],   module: :orders
+    resources :sales,           only: [:index, :show],   module: :orders
+    resources :stock_transfers, only: [:index, :show],   module: :orders
+
     resources :sales_reports, only: [:index], module: :reports
     resources :sales_clerk_reports, only: [:index], module: :reports
     resources :sales_clerk_sales_reports, only: [:index], module: :reports
     resources :purchases_reports, only: [:index], module: :reports
     resources :spoilages_reports, only: [:index], module: :reports
-    resources :spoilages, only: [:index, :new, :create, :destroy]
+    resources :spoilages, only: [:new, :create, :destroy]
     resources :sales_return_line_items, only: [:index, :new, :create, :destroy], module: :line_items
     resources :purchase_order_line_item_processings, only: [:index, :new, :create, :destroy], module: :line_items
     resources :purchase_return_order_line_item_processings, only: [:new, :create, :destroy], module: :line_items

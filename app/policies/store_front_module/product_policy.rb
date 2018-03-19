@@ -1,7 +1,7 @@
 module StoreFrontModule
   class ProductPolicy < ApplicationPolicy
     def new?
-      user.stock_custodian?
+      user.stock_custodian? || user.sales_clerk?
     end
     def create?
       new?
