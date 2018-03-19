@@ -8,8 +8,11 @@ module LoansModule
       it { is_expected.to belong_to :barangay }
       it { is_expected.to belong_to :municipality }
       it { is_expected.to belong_to :organization }
-      it { is_expected.to have_one :disbursement_voucher }
       it { is_expected.to belong_to :preparer }
+      it { is_expected.to have_one :disbursement_voucher }
+      it { is_expected.to have_one :first_notice }
+      it { is_expected.to have_one :second_notice }
+      it { is_expected.to have_one :third_notice }
     	it { is_expected.to have_many :loan_approvals }
     	it { is_expected.to have_many :approvers }
     	it { is_expected.to have_many :entries }
@@ -22,11 +25,7 @@ module LoansModule
       it { is_expected.to have_many :notices }
       it { is_expected.to have_many :collaterals }
       it { is_expected.to have_many :real_properties }
-      it { is_expected.to have_one :first_notice }
-      it { is_expected.to have_one :second_notice }
-      it { is_expected.to have_one :third_notice }
       it { is_expected.to have_many :loan_protection_funds }
-
     end
     describe 'validations' do
       it { is_expected.to validate_presence_of :term }

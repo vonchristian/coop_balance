@@ -19,6 +19,38 @@
         </div>
       </div>
       <div class="box-body">
+        <% @loans.each do |loan| %>
+          <% cache do %>
+            <%= link_to loan_path(loan) do %>
+              <div class="row">
+                <div class="col-md-1">
+                  <%= image_tag(loan.borrower.avatar.url(:medium), height: 60, width: 60, class: "img-circle") %>
+                </div>
+                <div class="col-md-4">
+                  <b><%= loan.borrower_name.try(:upcase) %></b><br>
+                  <small class="text-muted"><%= loan.loan_product_name %></small><br>
+                  <%= loan.updated_at.strftime("%b %e, %Y") %>
+                  <small>Last updated</small>
+                </div>
+                <div class="col-md-2">
+                  <b><%= number_to_currency loan.loan_amount %></b><br>
+                  <small>Loan Amount</small>
+                </div>
+                <div class="col-md-2">
+                  <span class="text-red"><%= number_to_currency loan.balance %></span><br>
+                  <small class="text-muted">Loan Balance</small><br>
+                  <small class="label bg-<%=loan.status_color %>"> <%= loan.status_text.try(:upcase) %> </small>
+
+                </div>
+                <div class="col-md-2">
+
+                </div>
+              </div>
+              <br>
+            <% end %>
+          <% end %>
+        <% end %>
+        <center><%= will_paginate @loans %></center>
         <div class="table table-responsive">
           <table class="table table-striped table-hover">
             <thead>
@@ -41,7 +73,7 @@
 
                     </td>
                   <td><%= number_to_currency loan.loan_amount %></td>
-                  <td><%= number_to_currency loan.net_proceed %></td>
+
                   <td><%= loan.loan_product_name %></td>
                   <td>
                     <%= loan.application_date.strftime("%B %e, %Y") %>

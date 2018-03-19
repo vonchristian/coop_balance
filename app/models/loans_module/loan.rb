@@ -9,28 +9,35 @@ module LoansModule
     has_one :second_notice, class_name: "LoansModule::Notices::SecondNotice", as: :notified
     has_one :third_notice, class_name: "LoansModule::Notices::ThirdNotice", as: :notified
 
-    belongs_to :borrower, polymorphic: true
-    belongs_to :loan_product, class_name: "LoansModule::LoanProduct"
-    belongs_to :street, optional: true, class_name: "Addresses::Street"
-    belongs_to :barangay, optional: true, class_name: "Addresses::Barangay"
-    belongs_to :municipality, optional: true, class_name: "Addresses::Municipality"
-    belongs_to :organization, optional: true
-    belongs_to :preparer, class_name: "User", foreign_key: 'preparer_id'
-
-    has_many :loan_protection_funds, class_name: "LoansModule::LoanProtectionFund", dependent: :destroy
-    has_many :loan_approvals, class_name: "LoansModule::LoanApproval", dependent: :destroy
-    has_many :approvers, through: :loan_approvals
-    has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
-    has_many :loan_charges, class_name: "LoansModule::LoanCharge", dependent: :destroy
+    belongs_to :borrower,               polymorphic: true
+    belongs_to :loan_product,           class_name: "LoansModule::LoanProduct"
+    belongs_to :street,                 class_name: "Addresses::Street",
+                                        optional: true
+    belongs_to :barangay,               class_name: "Addresses::Barangay",
+                                        optional: true
+    belongs_to :municipality,           class_name: "Addresses::Municipality",
+                                        optional: true
+    belongs_to :organization,           optional: true
+    belongs_to :preparer,               class_name: "User",
+                                        foreign_key: 'preparer_id'
+    has_many :loan_protection_funds,    class_name: "LoansModule::LoanProtectionFund",
+                                        dependent: :destroy
+    has_many :loan_approvals,           class_name: "LoansModule::LoanApproval",
+                                        dependent: :destroy
+    has_many :approvers,                through: :loan_approvals
+    has_many :entries,                  class_name: "AccountingModule::Entry",
+                                        as: :commercial_document,
+                                        dependent: :destroy
+    has_many :loan_charges,             class_name: "LoansModule::LoanCharge",
+                                        dependent: :destroy
     has_many :loan_charge_payment_schedules, through: :loan_charges
     has_many :charges, through: :loan_charges, source: :chargeable, source_type: "Charge"
-    has_many :loan_co_makers, class_name: "LoansModule::LoanCoMaker", dependent: :destroy
-    has_many :member_co_makers, through: :loan_co_makers, source: :co_maker, source_type: 'Member'
-    has_many :employee_co_makers, through: :loan_co_makers, source: :co_maker, source_type: 'User'
-    has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", as: :commercial_document # for adding amounts on voucher
-    has_many :amortization_schedules, dependent: :destroy
-    has_many :collaterals, class_name: "LoansModule::Collateral", dependent: :destroy
-    has_many :real_properties, through: :collaterals
+    has_many :loan_co_makers,           class_name: "LoansModule::LoanCoMaker",
+                                        dependent: :destroy
+    has_many :voucher_amounts,          class_name: "Vouchers::VoucherAmount", as: :commercial_document # for adding amounts on voucher
+    has_many :amortization_schedules,   dependent: :destroy
+    has_many :collaterals,              class_name: "LoansModule::Collateral", dependent: :destroy
+    has_many :real_properties,          through: :collaterals
     has_many :notices, as: :notified, dependent: :destroy
 
     delegate :name, :age, :contact_number, :current_address, to: :borrower,  prefix: true, allow_nil: true
@@ -55,6 +62,15 @@ module LoansModule
     validates :term, presence: true, numericality: true
     validates :loan_amount, numericality: { less_than_or_equal_to: :maximum_loanable_amount }
     before_save :set_borrower_full_name
+    def self.paid(options={})
+      all.map{|a| a.paid?(options) }
+    end
+    def self.payments_total
+      all.map{|loan| loan.payments_total }.sum
+    end
+     def self.balance
+      all.sum(&:balance)
+    end
     def self.loan_payments(options={})
       entries = []
       if options[:from_date] && options[:to_date] && options[:employee_id].present?
@@ -267,8 +283,8 @@ module LoansModule
     end
 
     def maturity_date
-      if amortization_schedules.present?
-        amortization_schedules.order(created_at: :asc).last.date
+      if disbursed?
+        disbursement_date + term.to_i.months
       end
     end
 
@@ -290,9 +306,21 @@ module LoansModule
       loan_product_penalty_receivable_account.debits_balance(commercial_document_id: self.id)
     end
 
-
     def status_color
-      'yellow'
+      if is_past_due?
+        'red'
+      elsif paid?(options)
+        'green'
+      end
+    end
+    def status_text
+      if is_past_due?
+        'Past Due'
+      elsif paid?(options)
+        'Paid'
+      else
+        'Current'
+      end
     end
 
     def number_of_days_past_due
@@ -306,18 +334,16 @@ module LoansModule
       number_of_days_past_due / 30
     end
 
-    def paid?
-      disbursed? && principal_balance.zero?
+    def paid?(options={})
+      disbursed? && balance.zero?
     end
 
     private
-      def set_default_date
-        self.application_date ||= Time.zone.now
-      end
-      def set_borrower_full_name
-        self.borrower_full_name = self.borrower.full_name
-      end
-
-
+    def set_default_date
+      self.application_date ||= Time.zone.now
+    end
+    def set_borrower_full_name
+      self.borrower_full_name = self.borrower.full_name
+    end
   end
 end

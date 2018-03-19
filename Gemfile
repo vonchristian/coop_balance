@@ -74,8 +74,10 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen'
   gem 'spring-commands-rspec'
+  gem 'bullet'
 end
 group :test do
+  gem 'simplecov', require: false
   gem 'shoulda-matchers'
   gem 'database_rewinder'
   gem 'launchy'

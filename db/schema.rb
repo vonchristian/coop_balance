@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180314121634) do
+ActiveRecord::Schema.define(version: 20180317005621) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1006,6 +1006,8 @@ ActiveRecord::Schema.define(version: 20180314121634) do
     t.string "contact_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "accounts_receivable_account_id"
+    t.index ["accounts_receivable_account_id"], name: "index_store_fronts_on_accounts_receivable_account_id"
     t.index ["cooperative_id"], name: "index_store_fronts_on_cooperative_id"
   end
 
@@ -1313,6 +1315,7 @@ ActiveRecord::Schema.define(version: 20180314121634) do
   add_foreign_key "store_front_configs", "accounts", column: "merchandise_inventory_account_id"
   add_foreign_key "store_front_configs", "accounts", column: "sales_account_id"
   add_foreign_key "store_front_configs", "accounts", column: "sales_return_account_id"
+  add_foreign_key "store_fronts", "accounts", column: "accounts_receivable_account_id"
   add_foreign_key "store_fronts", "cooperatives"
   add_foreign_key "streets", "barangays"
   add_foreign_key "streets", "municipalities"

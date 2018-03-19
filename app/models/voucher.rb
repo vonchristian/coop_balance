@@ -3,10 +3,10 @@ class Voucher < ApplicationRecord
   pg_search_scope :text_search, :against => [:number, :description]
   multisearchable against: [:number, :description]
 
-  has_one :entry, class_name: "AccountingModule::Entry", as: :commercial_document
-  belongs_to :payee, polymorphic: true
-  belongs_to :preparer, class_name: "User", foreign_key: 'preparer_id'
-  belongs_to :disburser, class_name: "User", foreign_key: 'disburser_id'
+  has_one :entry,            class_name: "AccountingModule::Entry", as: :commercial_document
+  belongs_to :payee,         polymorphic: true
+  belongs_to :preparer,      class_name: "User", foreign_key: 'preparer_id'
+  belongs_to :disburser,     class_name: "User", foreign_key: 'disburser_id'
   has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", dependent: :destroy
 
   delegate :full_name, :current_occupation, to: :preparer, prefix: true
@@ -14,29 +14,27 @@ class Voucher < ApplicationRecord
   delegate :name, to: :payee, prefix: true
   delegate :avatar, to: :payee, allow_nil: true
 
-  before_save :set_date
+  before_save :set_default_date
+
   def self.payees
-    User.all + Supplier.all
+    User.all + Supplier.all + Member.all
   end
 
   def self.unused
-    disbursed.select{|a| a.commercial_document_id.nil? }
-  end
-  def self.disbursed
-    select{ |a| a.disbursed? }
+    disbursed.select { |a| a.payee_id.nil? }
   end
 
-  def disbursed?
-    entry.present?
-  end
-
-  def self.disbursed_on(options={})
+  def self.disbursed(options={})
     if options[:from_date] && options[:to_date]
       date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
       includes([:entry]).where('entries.entry_date' => (date_range.start_date..date_range.end_date))
     else
       all
     end
+  end
+
+  def disbursed?
+    entry.present?
   end
 
   def add_amounts(payee)
@@ -58,7 +56,7 @@ class Voucher < ApplicationRecord
   end
 
   private
-  def set_date
+  def set_default_date
     self.date ||= Time.zone.now
   end
 end

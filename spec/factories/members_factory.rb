@@ -6,11 +6,6 @@ FactoryBot.define do
     association :office
     sex 'male'
     date_of_birth { Faker::Date.birthday(18, 65) }
-    factory :regular_member do
-      association :membership, factory: :regular_membership
-    end
-    factory :associate_member do
-      association :membership, factory: :associate_membership
-    end
+
   end
 end
