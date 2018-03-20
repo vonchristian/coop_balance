@@ -251,24 +251,24 @@ module LoansModule
     end
 
     def principal_balance
-      loan_product.loans_receivable_current_account.balance(commercial_document_id: self.id)
+      loan_product.loans_receivable_current_account.balance(commercial_document_id: self.id, commercial_document_type: self.class.to_s)
     end
 
 
     def principal_payments
-      loan_product.loans_receivable_current_account.credits_balance(commercial_document_id: self.id)
+      loan_product.loans_receivable_current_account.credits_balance(commercial_document_id: self.id, commercial_document_type: self.class.to_s)
     end
 
     def interest_payments
-      loan_product_interest_receivable_account.credits_balance(commercial_document_id: self.id)
+      loan_product_interest_receivable_account.credits_balance(commercial_document_id: self.id, commercial_document_type: self.class.to_s)
     end
 
     def penalty_payments
-      loan_product_penalty_receivable_account.credits_balance(commercial_document_id: self.id)
+      loan_product_penalty_receivable_account.credits_balance(commercial_document_id: self.id, commercial_document_type: self.class.to_s)
     end
 
     def unearned_interests
-      loan_product_unearned_interest_income_account.balance(commercial_document_id: self.id)
+      loan_product_unearned_interest_income_account.balance(commercial_document_id: self.id, commercial_document_type: self.class.to_s)
     end
 
     def payments_total
@@ -295,16 +295,16 @@ module LoansModule
       penalties_balance
     end
     def interest_receivable_balance
-      loan_product_interest_receivable_account.debits_balance(commercial_document_id: self.id)
+      loan_product_interest_receivable_account.debits_balance(commercial_document_id: self.id, commercial_document_type: self.class.to_s)
     end
     def penalties_balance
-      loan_product_penalty_receivable_account.balance(commercial_document_id: self.id)
+      loan_product_penalty_receivable_account.balance(commercial_document_id: self.id, commercial_document_type: self.class.to_s)
     end
     def interest_receivable_debits_balance
-      loan_product_interest_receivable_account.debits_balance(commercial_document_id: self.id)
+      loan_product_interest_receivable_account.debits_balance(commercial_document_id: self.id, commercial_document_type: self.class.to_s)
     end
      def penalties_debits_balance
-      loan_product_penalty_receivable_account.debits_balance(commercial_document_id: self.id)
+      loan_product_penalty_receivable_account.debits_balance(commercial_document_id: self.id, commercial_document_type: self.class.to_s)
     end
 
     def status_color

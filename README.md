@@ -77,7 +77,7 @@ Document Management
 Programs and program subscription of member
 
 
-This is the idea that Coop Catalyst was built on – that cooperatives should have easy, centralized access to information about their members and that it shouldn’t be so hard for them to use that information to improve the relationship and increase engagement of members.
+This is the idea that Coop Catalyst was built on – that cooperatives should have easy, centralized access to information about their members and that it shouldn’t be so hard for them to use that information to improve the relationship and improve the services for their members.
 
 background job kaltas payment of program from members who subscribed
 
@@ -97,7 +97,6 @@ background job kaltas payment of program from members who subscribed
 what do you do if term exceeds 36 months
 rename factories to _factory.rb
 add faker to factories
-
 
 sales to ifedeco
 your own cic
@@ -211,13 +210,3 @@ STORE CART
 
 add stats on product show page
 
-
-sales order line item
-1 dozen
-
-purchase order line item
-3 5
-9 5.50
-cost of goods sold
-3 * 5= 15
-9 * 5.50 49.50

@@ -1,6 +1,6 @@
 module CoopServicesModule
 	class Program < ApplicationRecord
-    enum payment_schedule_type: [:one_time_payment, :annually]
+    enum payment_schedule_type: [:one_time_payment, :annually, :monthly, :quarterly]
 
     belongs_to :account,             class_name: "AccountingModule::Account"
 	  has_many :program_subscriptions, class_name: "MembershipsModule::ProgramSubscription"
