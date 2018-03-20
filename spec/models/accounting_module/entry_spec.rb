@@ -4,53 +4,55 @@ module AccountingModule
   describe Entry do
   	describe 'associations' do
   		it { is_expected.to belong_to :commercial_document }
-      it { is_expected.to belong_to :voucher }
       it { is_expected.to belong_to :origin }
-      it { is_expected.to belong_to :section }
   	end
-    describe 'delegations' do
-      it { is_expected.to delegate_method(:name).to(:branch_office).with_prefix }
+
+    describe 'validations' do
+      it { is_expected.to validate_presence_of :description }
     end
-    let(:entry) { build(:entry) }
-    subject { entry }
 
-    it { is_expected.to be_valid }
+    describe 'delegations' do
+      it { is_expected.to delegate_method(:name).to(:origin).with_prefix }
+    end
 
-    context "with credit and debit" do
-      let(:entry) { build(:entry_with_credit_and_debit) }
-      it { is_expected.to be_valid }
-
-      it "should require a description" do
-        entry.description = nil
+    context 'without credit and debit' do
+      it 'is not valid' do
+        entry = build(:entry)
         expect(entry).to_not be_valid
       end
     end
 
-    context "with a debit" do
-      before {
-        entry.debit_amounts << build(:debit_amount, entry: entry)
-      }
-      it { is_expected.to be_valid }
+    context "with credit and debit" do
+      it 'is valid' do
+        entry = build(:entry_with_credit_and_debit)
+        expect(entry).to be_valid
+      end
+    end
 
-      context "with an invalid credit" do
-        before {
-          entry.credit_amounts << build(:credit_amount, entry: entry, amount: nil)
-        }
-        it { is_expected.to be_valid }
+
+    context "with a debit" do
+      let(:entry) { build(:entry)}
+
+      it 'is not valid' do
+        debit_amounts = build(:debit_amount, entry: entry)
+        expect(entry).to_not be_valid
+      end
+      it 'is not valid with invalid debit amount' do
+        debit_amounts = build(:debit_amount, entry: entry, amount: nil)
+        expect(entry).to_not be_valid
       end
     end
 
     context "with a credit" do
-      before {
-        entry.credit_amounts << build(:credit_amount, entry: entry)
-      }
-      it { is_expected.to be_valid }
+      let(:entry) { build(:entry)}
+      it 'is not valid' do
+        credit_amounts = build(:credit_amount, entry: entry)
+        expect(entry).to_not be_valid
+      end
 
-      context "with an invalid debit" do
-        before {
-          entry.debit_amounts << build(:debit_amount, entry: entry, amount: nil)
-        }
-        it { is_expected.to be_valid }
+      it 'is not valid with invalid credits amount' do
+        credit_amounts = build(:credit_amount, entry: entry, amount: nil)
+        expect(entry).to_not be_valid
       end
     end
 
@@ -58,32 +60,34 @@ module AccountingModule
       it "should assign a default date before being saved" do
         entry = create(:entry_with_credit_and_debit, entry_date: nil)
         entry.save
-        expect(entry.entry_date).to eql == Time.zone.now
+        expect(entry.entry_date.to_date).to eql Time.zone.now.to_date
       end
     end
+    context 'debits and credits should cancel' do
+      let(:entry) { build(:entry)}
+      it "should require the debit and credit amounts to cancel" do
+        entry.credit_amounts << build(:credit_amount, :amount => 100, :entry => entry)
+        entry.debit_amounts << build(:debit_amount, :amount => 200, :entry => entry)
+        expect(entry).to_not be_valid
+        expect(entry.errors['base']).to eq(["The credit and debit amounts are not equal"])
+      end
 
-    it "should require the debit and credit amounts to cancel" do
-      entry.credit_amounts << build(:credit_amount, :amount => 100, :entry => entry)
-      entry.debit_amounts << build(:debit_amount, :amount => 200, :entry => entry)
-      expect(entry).to_not be_valid
-      expect(entry.errors['base']).to eq(["The credit and debit amounts are not equal"])
-    end
+      it "should require the debit and credit amounts to cancel even with fractions" do
+        entry = build(:entry)
+        entry.credit_amounts << build(:credit_amount, :amount => 100.1, :entry => entry)
+        entry.debit_amounts << build(:debit_amount, :amount => 100.2, :entry => entry)
+        expect(entry).to_not be_valid
+        expect(entry.errors['base']).to eq(["The credit and debit amounts are not equal"])
+      end
 
-    it "should require the debit and credit amounts to cancel even with fractions" do
-      entry = build(:entry)
-      entry.credit_amounts << build(:credit_amount, :amount => 100.1, :entry => entry)
-      entry.debit_amounts << build(:debit_amount, :amount => 100.2, :entry => entry)
-      expect(entry).to_not be_valid
-      expect(entry.errors['base']).to eq(["The credit and debit amounts are not equal"])
-    end
-
-    it "should ignore debit and credit amounts marked for destruction to cancel" do
-      entry.credit_amounts << build(:credit_amount, :amount => 100, :entry => entry)
-      debit_amount = build(:debit_amount, :amount => 100, :entry => entry)
-      debit_amount.mark_for_destruction
-      entry.debit_amounts << debit_amount
-      expect(entry).to_not be_valid
-      expect(entry.errors['base']).to eq(["The credit and debit amounts are not equal"])
+      it "should ignore debit and credit amounts marked for destruction to cancel" do
+        entry.credit_amounts << build(:credit_amount, :amount => 100, :entry => entry)
+        debit_amount = build(:debit_amount, :amount => 100, :entry => entry)
+        debit_amount.mark_for_destruction
+        entry.debit_amounts << debit_amount
+        expect(entry).to_not be_valid
+        expect(entry.errors['base']).to eq(["The credit and debit amounts are not equal"])
+      end
     end
 
 
@@ -111,107 +115,6 @@ module AccountingModule
           end
         end
       end
-
-      describe ".new" do
-        let(:entry) { Entry.new(hash) }
-        subject { entry }
-
-        context "when given a credit/debits hash with :account => Account" do
-          let(:hash) {
-            {
-                description: "Sold some widgets",
-                commercial_document: mock_document,
-                debits: [{account: accounts_receivable, amount: 50}],
-                credits: [
-                    {account: sales_revenue, amount: 45},
-                    {account: sales_tax_payable, amount: 5}
-                ]
-            }
-          }
-
-        end
-
-        context "when given a credit/debits hash with :account_name => String" do
-          let(:hash) {
-            {
-                description: "Sold some widgets",
-                commercial_document: mock_document,
-                debits: [{account_name: accounts_receivable.name, amount: 50}],
-                credits: [
-                    {account_name: sales_revenue.name, amount: 45},
-                    {account_name: sales_tax_payable.name, amount: 5}
-                ]
-            }
-          }
-          # include_examples 'a built-from-hash AccountingModule::Entry'
-        end
-
-        context "when given a credit/debits hash with :account => String" do
-          let(:hash) {
-            {
-                description: "Sold some widgets",
-                commercial_document: mock_document,
-                debits: [{account: accounts_receivable.name, amount: 50}],
-                credits: [
-                    {account: sales_revenue.name, amount: 45},
-                    {account: sales_tax_payable.name, amount: 5}
-                ]
-            }
-          }
-
-          before { ::ActiveSupport::Deprecation.silenced = true }
-          after { ::ActiveSupport::Deprecation.silenced = false }
-
-          it("should be deprecated") {
-            # one deprecation per account looked up
-            ::ActiveSupport::Deprecation.should_receive(:warn).exactly(3).times
-            entry
-          }
-
-          # include_examples 'a built-from-hash AccountingModule::Entry'
-        end
-      end
-
-      describe ".build" do
-        let(:entry) { Entry.build(hash) }
-        subject { entry }
-
-        before { ::ActiveSupport::Deprecation.silenced = true }
-        after { ::ActiveSupport::Deprecation.silenced = false }
-
-        context "when used at all" do
-          let(:hash) { Hash.new }
-
-          it("should be deprecated") {
-            # .build is the only thing deprecated
-            ::ActiveSupport::Deprecation.should_receive(:warn).once
-            entry
-          }
-        end
-
-        context "when given a credit/debits hash with :account => String" do
-          let(:hash) {
-            {
-                description: "Sold some widgets",
-                commercial_document: mock_document,
-                debits: [{account: accounts_receivable.name, amount: 50}],
-                credits: [
-                    {account: sales_revenue.name, amount: 45},
-                    {account: sales_tax_payable.name, amount: 5}
-                ]
-            }
-          }
-
-          it("should be deprecated") {
-            # one deprecation for build, plus three for accounts as strings
-            ::ActiveSupport::Deprecation.should_receive(:warn).exactly(4).times
-            entry
-          }
-
-          # include_examples 'a built-from-hash AccountingModule::Entry'
-        end
-      end
     end
-
   end
 end

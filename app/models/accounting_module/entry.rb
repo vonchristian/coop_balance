@@ -24,7 +24,6 @@ module AccountingModule
     accepts_nested_attributes_for :credit_amounts, :debit_amounts, allow_destroy: true
 
     before_save :set_default_date, :set_office
-    after_commit :update_accounts, :update_amounts
 
     delegate :first_and_last_name, to: :recorder, prefix: true, allow_nil: true
     delegate :number, to: :voucher, prefix: true, allow_nil: true
@@ -57,19 +56,16 @@ module AccountingModule
     end
 
     private
+
       def set_office
         self.origin = self.recorder.office
       end
+
       def set_default_date
         todays_date = ActiveRecord::Base.default_timezone == :utc ? Time.now.utc : Time.now
         self.entry_date ||= todays_date
       end
-      def update_accounts
-        self.accounts.update_all(updated_at: self.entry_date)
-      end
-      def update_amounts
-        self.amounts.update_all(recorder_id: self.recorder_id)
-      end
+
       def has_credit_amounts?
         errors[:base] << "Entry must have at least one credit amount" if self.credit_amounts.blank?
       end

@@ -4,7 +4,7 @@ module CoopServicesModule
 
     belongs_to :account,             class_name: "AccountingModule::Account"
 	  has_many :program_subscriptions, class_name: "MembershipsModule::ProgramSubscription"
-    has_many :subscribers,           through: :program_subscriptions
+    has_many :subscribers,           through: :program_subscriptions, source: :subscriber
 
     validates :name, presence: true, uniqueness: true
     validates :contribution, presence: true, numericality: true

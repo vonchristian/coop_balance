@@ -5,27 +5,25 @@ module AccountingModule
 
     class_attribute :normal_credit_balance
 
-    has_many :amounts, class_name: "AccountingModule::Amount"
-    has_many :credit_amounts, :class_name => 'AccountingModule::CreditAmount'
-    has_many :debit_amounts,  :class_name => 'AccountingModule::DebitAmount'
-    has_many :entries, through: :amounts, source: :entry
-    has_many :credit_entries, :through => :credit_amounts, :source => :entry, :class_name => 'AccountingModule::Entry'
+    belongs_to :main_account,       class_name: "AccountingModule::Account", foreign_key: 'main_account_id'
+    has_many :amounts,              class_name: "AccountingModule::Amount"
+    has_many :credit_amounts,       :class_name => 'AccountingModule::CreditAmount'
+    has_many :debit_amounts,        :class_name => 'AccountingModule::DebitAmount'
+    has_many :entries,              through: :amounts, source: :entry
+    has_many :credit_entries,       :through => :credit_amounts, :source => :entry, :class_name => 'AccountingModule::Entry'
+    has_many :debit_entries,        :through => :debit_amounts, :source => :entry, :class_name => 'AccountingModule::Entry'
+    has_many :subsidiary_accounts,  class_name: "AccountingModule::Account", foreign_key: 'main_account_id'
 
-    has_many :debit_entries, :through => :debit_amounts, :source => :entry, :class_name => 'AccountingModule::Entry'
-
-    has_many :subsidiary_accounts, class_name: "AccountingModule::Account", foreign_key: 'main_account_id'
-    belongs_to :main_account, class_name: "AccountingModule::Account"
     validates :type, presence: true
     validates :name, :code, presence: true, uniqueness: true
 
-    scope :assets, -> { where(type: 'AccountingModule::Asset') }
+    scope :assets,      -> { where(type: 'AccountingModule::Asset') }
     scope :liabilities, -> { where(type: 'AccountingModule::Liability') }
-    scope :equities, -> { where(type: 'AccountingModule::Equity') }
-    scope :revenues, -> { where(type: 'AccountingModule::Revenue') }
-    scope :expenses, -> { where(type: 'AccountingModule::Expense') }
-    def self.active
-      where(active: true)
-    end
+    scope :equities,    -> { where(type: 'AccountingModule::Equity') }
+    scope :revenues,    -> { where(type: 'AccountingModule::Revenue') }
+    scope :expenses,    -> { where(type: 'AccountingModule::Expense') }
+    scope :active,      -> { where(active: true) }
+
     def self.updated_at(options={})
       if options[:from_date] && options[:to_date]
         date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
@@ -56,8 +54,7 @@ module AccountingModule
     def self.balance(options={})
       return raise(NoMethodError, "undefined method 'balance'") if self.new.class == AccountingModule::Account
       accounts_balance = BigDecimal.new('0')
-      accounts = self.all
-      accounts.each do |account|
+      self.all.each do |account|
         if account.contra?
           accounts_balance -= account.balance(options)
         else
@@ -68,25 +65,26 @@ module AccountingModule
     end
 
     def self.trial_balance
-      if self.new.class == AccountingModule::Account
-        AccountingModule::Asset.balance - (AccountingModule::Liability.balance + AccountingModule::Equity.balance + AccountingModule::Revenue.balance - AccountingModule::Expense.balance)
-      else
-        raise(NoMethodError, "undefined method 'trial_balance'")
-      end
+      return raise(NoMethodError, "undefined method 'trial_balance'") if self.new.class != AccountingModule::Account
+      AccountingModule::Asset.balance -
+      ( AccountingModule::Liability.balance +
+        AccountingModule::Equity.balance +
+        AccountingModule::Revenue.balance -
+        AccountingModule::Expense.balance
+      )
     end
 
     def balance(options={})
-      if self.class == AccountingModule::Account
-        raise(NoMethodError, "undefined method 'balance'")
+      return raise(NoMethodError, "undefined method 'balance'") if self.class == AccountingModule::Account
+      if self.normal_credit_balance ^ contra
+        credits_balance(options) - debits_balance(options)
       else
-        if self.normal_credit_balance ^ contra
-          credits_balance(options) - debits_balance(options)
-        else
-          debits_balance(options) - credits_balance(options)
-        end
+        debits_balance(options) - credits_balance(options)
       end
     end
+
     def credits_balance(options={})
+      return raise(NoMethodError, "undefined method 'balance'") if self.class == AccountingModule::Account
       if subsidiary_accounts.present?
         subsidiary_accounts.map{ |a| a.debit_amounts.balance(options) }.sum + debit_amounts.balance(options)
       else
@@ -94,6 +92,7 @@ module AccountingModule
       end
     end
     def debits_balance(options={})
+      return raise(NoMethodError, "undefined method 'balance'") if self.class == AccountingModule::Account
       if subsidiary_accounts.present?
         subsidiary_accounts.map{ |a| a.debit_amounts.balance(options) }.sum + debit_amounts.balance(options)
       else

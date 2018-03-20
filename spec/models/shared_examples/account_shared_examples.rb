@@ -5,28 +5,32 @@ shared_examples_for 'a AccountingModule::Account subtype' do |elements|
 
   describe "class methods" do
     subject { account.class }
-    its(:balance) { should be_kind_of(BigDecimal) }
+    it 'balance' do
+      expect(account.balance).to be_kind_of(BigDecimal)
+    end
     describe "trial_balance" do
       it "should raise NoMethodError" do
-        lambda { subject.trial_balance }.should raise_error NoMethodError
+        expect( lambda { subject.trial_balance } ).to raise_error NoMethodError
       end
     end
   end
 
   describe "instance methods" do
-    its(:balance) { should be_kind_of(BigDecimal) }
+    it '#balance' do
+      expect(account.balance).to be_kind_of(BigDecimal)
+    end
 
     it "reports a balance with date range" do
-      account.balance(:from_date => "2014-01-01", :to_date => Date.today).should be_kind_of(BigDecimal)
+      expect(account.balance(:from_date => "2014-01-01", :to_date => Date.today)).to be_kind_of(BigDecimal)
     end
 
     it { is_expected.to respond_to(:credit_entries) }
-    it { should respond_to(:debit_entries) }
+    it { is_expected.to respond_to(:debit_entries) }
   end
 
   it "requires a name" do
     account.name = nil
-    account.should_not be_valid
+    expect(account).to_not be_valid
   end
 
   # Figure out which way credits and debits should apply
@@ -40,21 +44,21 @@ shared_examples_for 'a AccountingModule::Account subtype' do |elements|
 
   describe "when given a debit" do
     before { FactoryBot.create(:debit_amount, account: account) }
-    its(:balance) { should be.send(debit_condition, 0) }
+    it { expect(account.balance).to be.send(debit_condition, 0) }
 
     describe "on a contra account" do
       let(:contra) { true }
-      its(:balance) { should be.send(credit_condition, 0) }
+      it { expect(account.balance).to be.send(credit_condition, 0) }
     end
   end
 
   describe "when given a credit" do
     before { FactoryBot.create(:credit_amount, account: account) }
-    its(:balance) { should be.send(credit_condition, 0) }
+    it { expect(account.balance).to be.send(credit_condition, 0) }
 
     describe "on a contra account" do
       let(:contra) { true }
-      its(:balance) { should be.send(debit_condition, 0) }
+      it { expect(account.balance).to be.send(debit_condition, 0) }
     end
   end
 end

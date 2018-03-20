@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 module CoopConfigurationsModule
-  describe BranchOffice do
+  describe Office do
     describe 'associations' do
       it { is_expected.to belong_to :cooperative }
     end
