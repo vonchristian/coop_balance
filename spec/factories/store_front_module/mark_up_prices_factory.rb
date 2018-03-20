@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :mark_up_price, class: "StoreFrontModule::MarkUpPrice" do
     price "9.99"
-    date "2018-02-13 18:25:49"
+    date Time.zone.now
     unit_of_measurement nil
   end
 end

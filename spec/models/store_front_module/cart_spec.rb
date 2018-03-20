@@ -5,7 +5,16 @@ module StoreFrontModule
 	  context "associations" do
 	  	it { is_expected.to belong_to :employee }
 	  	it { is_expected.to have_many :line_items }
-	  	it { is_expected.to have_many :purchase_return_order_line_items }
+	  	it { is_expected.to have_many :sales_line_items }
+	  	it { is_expected.to have_many :purchase_line_items }
+	  	it { is_expected.to have_many :stock_transfer_line_items }
+	  	it { is_expected.to have_many :sales_return_line_items }
+	  	it { is_expected.to have_many :purchase_return_line_items }
+	  	it { is_expected.to have_many :spoilage_line_items }
+	  	it { is_expected.to have_many :internal_use_line_items }
+	  	it { is_expected.to have_many :received_stock_transfer_line_items }
+
+
 	  end
 
 	  it "#total_cost" do

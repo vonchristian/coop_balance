@@ -19,8 +19,6 @@ module StoreFrontModule
       it { is_expected.to delegate_method(:name).to(:product) }
       it { is_expected.to delegate_method(:employee).to(:order) }
       it { is_expected.to delegate_method(:name).to(:employee).with_prefix }
-
-
     end
 
     it ".total" do

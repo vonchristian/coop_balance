@@ -5,7 +5,7 @@ module StoreFrontModule
     describe SalesLineItem, type: :model do
       describe 'associations' do
         it { is_expected.to belong_to :sales_order }
-        it { is_expected.to belong_to :purchase_order_line_item }
+        it { is_expected.to have_many :referenced_purchase_line_items }
       end
       describe 'delegations' do
         it { is_expected.to delegate_method(:customer).to(:sales_order) }
