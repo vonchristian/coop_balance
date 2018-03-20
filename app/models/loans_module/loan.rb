@@ -1,3 +1,4 @@
+#ensure disbursement date is set if disbursed
 module LoansModule
   class Loan < ApplicationRecord
     include PgSearch

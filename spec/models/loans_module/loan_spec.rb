@@ -20,8 +20,6 @@ module LoansModule
       it { is_expected.to have_many :loan_charge_payment_schedules }
       it { is_expected.to have_many :charges }
       it { is_expected.to have_many :loan_co_makers }
-      it { is_expected.to have_many :member_co_makers }
-      it { is_expected.to have_many :employee_co_makers }
       it { is_expected.to have_many :notices }
       it { is_expected.to have_many :collaterals }
       it { is_expected.to have_many :real_properties }
@@ -31,7 +29,7 @@ module LoansModule
       it { is_expected.to validate_presence_of :term }
       it { is_expected.to validate_presence_of :loan_product_id }
       it { is_expected.to validate_presence_of :borrower_id }
-      it { is_expected.to validate_numericality_of(:term).is_greater_than(0.1) }
+      it { is_expected.to validate_numericality_of(:term) }
       it { is_expected.to validate_numericality_of(:loan_amount) }
     end
 
@@ -44,9 +42,8 @@ module LoansModule
       it { is_expected.to delegate_method(:current_occupation).to(:preparer).with_prefix }
     	it { is_expected.to delegate_method(:name).to(:loan_product).with_prefix }
       it { is_expected.to delegate_method(:maximum_loanable_amount).to(:loan_product) }
-      it { is_expected.to delegate_method(:account).to(:loan_product).with_prefix }
-      it { is_expected.to delegate_method(:penalty_account).to(:loan_product).with_prefix }
-      it { is_expected.to delegate_method(:interest_account).to(:loan_product).with_prefix }
+      it { is_expected.to delegate_method(:loans_receivable_current_account).to(:loan_product).with_prefix }
+      it { is_expected.to delegate_method(:unearned_interest_income_account).to(:loan_product).with_prefix }
 
 
       it { is_expected.to delegate_method(:interest_rate).to(:loan_product).with_prefix }
@@ -63,25 +60,32 @@ module LoansModule
     end
 
     it '.disbursed_on(date)' do
-      disbursed_loan = create(:loan)
-      undisbursed_loan = create(:loan)
       date = Date.today
+      disbursed_loan = create(:loan, disbursement_date: date)
+      undisbursed_loan = create(:loan)
       entry = create(:entry_with_credit_and_debit, commercial_document: disbursed_loan, entry_date: date)
 
-      expect(LoansModule::Loan.disbursed_on(date)).to include(disbursed_loan)
-      expect(LoansModule::Loan.disbursed_on(date)).to_not include(undisbursed_loan)
+      expect(LoansModule::Loan.disbursed_on(from_date: date, to_date: date)).to include(disbursed_loan)
+      expect(LoansModule::Loan.disbursed_on(from_date: date, to_date: date)).to_not include(undisbursed_loan)
     end
 
     it '#terms_elapsed' do
     end
 
     it "#maturity_date" do
-      loan_product = create(:loan_product)
-      loan = create(:loan, term: 2, mode_of_payment: 'monthly',  loan_product: loan_product, application_date: Date.today)
-      entry = create(:entry_with_credit_and_debit, commercial_document: loan, entry_date: Date.today)
+      loan_product = create(:loan_product_with_interest_config)
+      loan = create(:loan_with_interest_on_loan_charge, term: 12, mode_of_payment: 'monthly', loan_product: loan_product, loan_amount: 100_000)
+      date = Date.today
+      cash_on_hand_account = create(:asset)
+      entry = build(:entry, commercial_document: loan, entry_date: date)
+      create(:debit_amount, entry: entry, commercial_document: loan,  account: loan_product.loans_receivable_current_account)
+      create(:credit_amount, entry: entry, commercial_document: loan, account: cash_on_hand_account )
+      entry.save
+      loan.update_attributes(disbursement_date: date)
       LoansModule::AmortizationSchedule.create_schedule_for(loan)
       expect(loan.amortization_schedules).to be_present
-      expect(loan.maturity_date.to_date).to eql(Date.today + 2.months)
+      expect(loan.maturity_date.to_date).to eql((date + loan.term.to_i.months).to_date)
+      expect(loan.disbursed?).to be true
     end
   end
 end

@@ -75,7 +75,7 @@ module LoansModule
     end
 
     def interest_computation
-      if prededucted_interest?
+      if has_prededucted_interest?
         0
       else
         interest

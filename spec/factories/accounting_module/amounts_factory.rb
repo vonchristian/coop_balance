@@ -19,6 +19,6 @@ FactoryBot.define do
     association :entry, :factory => :entry_with_credit_and_debit
     association :account, :factory => :asset
     association :commercial_document, factory: :saving
-
   end
+
 end

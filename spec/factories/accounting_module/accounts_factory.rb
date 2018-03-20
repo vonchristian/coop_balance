@@ -4,19 +4,20 @@ FactoryBot.define do
     code  { Faker::Number.number(12) }
     contra false
 
-    factory :asset, class: "AccountingModule::Asset" do
+    factory :asset, class: AccountingModule::Asset do
+        type "AccountingModule::Asset"
     end
 
-    factory :liability, class: "AccountingModule::Liability" do
+    factory :liability, class: AccountingModule::Liability do
     end
 
-    factory :equity, class: "AccountingModule::Equity" do
+    factory :equity, class: AccountingModule::Equity do
     end
 
-    factory :expense, class: "AccountingModule::Expense" do
+    factory :expense, class: AccountingModule::Expense do
     end
 
-    factory :revenue, class: "AccountingModule::Revenue" do
+    factory :revenue, class: AccountingModule::Revenue do
       sequence(:name) { |n| "Revenue Account " +  ('a'..'z').to_a.shuffle.join }
     end
   end

@@ -16,13 +16,13 @@ module LoansModule
     end
 
     describe 'delegations' do
-      it { is_expected.to delegate_method(:rate).to(:current_interest_config).with_prefix }
-      it { is_expected.to delegate_method(:interest_revenue_account).to(:current_interest_config) }
-      it { is_expected.to delegate_method(:interest_receivable_account).to(:current_interest_config) }
-      it { is_expected.to delegate_method(:unearned_interest_income_account).to(:current_interest_config) }
-      it { is_expected.to delegate_method(:penalty_receivable_account).to(:current_penalty_config) }
-      it { is_expected.to delegate_method(:penalty_revenue_account).to(:current_penalty_config) }
-
+      let(:loan_product) { create(:loan_product_with_interest_config)}
+        it { is_expected.to delegate_method(:rate).to(:current_interest_config).with_prefix }
+        it { is_expected.to delegate_method(:interest_revenue_account).to(:current_interest_config) }
+        it { is_expected.to delegate_method(:interest_receivable_account).to(:current_interest_config) }
+        it { is_expected.to delegate_method(:unearned_interest_income_account).to(:current_interest_config) }
+        it { is_expected.to delegate_method(:penalty_receivable_account).to(:current_penalty_config) }
+        it { is_expected.to delegate_method(:penalty_revenue_account).to(:current_penalty_config) }
     end
     describe 'validations' do
       it { is_expected.to validate_presence_of :name }
