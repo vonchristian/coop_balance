@@ -7,7 +7,8 @@ module MembershipsModule
     belongs_to :depositor,        polymorphic: true,  touch: true
     belongs_to :saving_product,   class_name: "CoopServicesModule::SavingProduct"
     belongs_to :office,           class_name: "CoopConfigurationsModule::Office"
-
+    has_many   :entries,         class_name: "AccountingModule::Entry",
+                                  as: :commercial_document
     delegate :name, :current_occupation, to: :depositor, prefix: true
     delegate :name,
              :account,
@@ -66,17 +67,17 @@ module MembershipsModule
     end
 
     def balance(options={})
-      saving_product_account.balance(commercial_document_id: self.id)
+      saving_product_account.balance(commercial_document_id: self.id, commercial_document_type: self.class.to_s)
     end
 
     def deposits
-      saving_product_account.credits_balance(commercial_document_id: self.id)
+      saving_product_account.credits_balance(commercial_document_id: self.id, commercial_document_type: self.class.to_s)
     end
     def withdrawals
-      saving_product_account.debits_balance(commercial_document_id: self.id)
+      saving_product_account.debits_balance(commercial_document_id: self.id, commercial_document_type: self.class.to_s)
     end
     def interests_earned
-      saving_product_interest_expense_account.credits_balance(commercial_document_id: self.id)
+      saving_product_interest_expense_account.credits_balance(commercial_document_id: self.id, commercial_document_type: self.class.to_s)
     end
     def can_withdraw?
       !closed? && balance > 0.0
@@ -96,7 +97,7 @@ module MembershipsModule
     def average_daily_balance
       balances = []
       (Date.today.beginning_of_quarter..Date.today.end_of_quarter).each do |date|
-        daily_balance = saving_product.balance(commercial_document_id: self.id, from_date: self.first_transaction_date, to_date: date.end_of_day)
+        daily_balance = saving_product.balance(commercial_document_id: self.id, commercial_document_type: self.class.to_s, from_date: self.first_transaction_date, to_date: date.end_of_day)
         balances << daily_balance
       end
       balances.sum / balances.size
