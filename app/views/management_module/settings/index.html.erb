@@ -74,27 +74,49 @@
 </div>
 </div>
 
-
+<div class="row">
+  <div class="col-md-4">
+    <div class="box box-danger">
+      <div class="box-header">
+        <div class="row">
+          <div class="col-md-6">
+            <h3 class="box-title"> Savings Products</h3>
+          </div>
+          <div class="col-md-6">
+            <%= link_to new_management_module_saving_product_path do  %>
+            <span class="btn btn-danger btn-xs pull-right" data-toggle="tooltip" title="New Savings Product"><i class="fa fa-plus"></i> New </span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="box-body">
+      <% CoopServicesModule::SavingProduct.all.each do |saving_product| %>
+        <%= saving_product.name %>
+      </div>
+      <% end %>
+    </div>
+  </div>
 <div class="col-md-4">
   <div class="box box-danger">
     <div class="box-header">
       <div class="row">
         <div class="col-md-6">
-          <h3 class="box-title"> Savings Products</h3>
+          <h3 class="box-title"> Store Fronts</h3>
         </div>
         <div class="col-md-6">
-          <%= link_to new_management_module_saving_product_path do  %>
-          <span class="btn btn-danger btn-xs pull-right" data-toggle="tooltip" title="New Savings Product"><i class="fa fa-plus"></i> New
+          <%= link_to new_management_module_settings_store_front_path do  %>
+          <span class="btn btn-danger btn-xs pull-right" data-toggle="tooltip" title="New Savings Product"><i class="fa fa-plus"></i> New </span>
           <% end %>
         </div>
       </div>
     </div>
     <div class="box-body">
-    <% CoopServicesModule::SavingProduct.all.each do |saving_product| %>
-      <%= saving_product.name %>
+    <% StoreFront.all.each do |store_front| %>
+      <%= store_front.name %>
     </div>
     <% end %>
   </div>
+</div>
 </div>
 <hr>
 <%= simple_form_for Registries::LoanRegistry.new, url: :management_module_loan_registries do |f| %>

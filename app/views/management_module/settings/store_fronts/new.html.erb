@@ -2,5 +2,48 @@
   <%= f.input :name %>
   <%= f.input :address %>
   <%= f.input :contact_number %>
+  <%= f.input :accounts_receivable_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
+  <%= f.input :merchandise_inventory_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
+  <%= f.input :cost_of_goods_sold_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
+  <%= f.input :sales_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
+  <%= f.input :sales_return_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
+  <%= f.input :accounts_payable_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
+  <%= f.input :spoilage_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
+<%= f.input :sales_discount_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
+
+
+
   <%= f.submit "Create Store Front" %>
 <% end %>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#store_front_accounts_receivable_account_id").select2({
+      theme: "bootstrap"
+    });
+    $("#store_front_accounts_payable_account_id").select2({
+      theme: "bootstrap"
+    });
+    $("#store_front_cost_of_goods_account_id").select2({
+      theme: "bootstrap"
+    });
+    $("#store_front_merchandise_inventory_account_id").select2({
+      theme: "bootstrap"
+    });
+    $("#store_front_sales_account_id").select2({
+      theme: "bootstrap"
+    });
+    $("#store_front_sales_return_account_id").select2({
+      theme: "bootstrap"
+    });
+    $("#store_front_cost_of_goods_sold_account_id").select2({
+      theme: "bootstrap"
+    });
+    $("#store_front_spoilage_account_id").select2({
+      theme: "bootstrap"
+    });
+    $("#store_front_sales_discount_account_id").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>

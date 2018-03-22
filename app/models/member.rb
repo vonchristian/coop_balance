@@ -111,7 +111,7 @@ class Member < ApplicationRecord
 
 
   def account_receivable_store_balance
-    StoreFront.balance(self)
+    StoreFront.accounts_receivable_balance(self)
   end
 
   def full_name

@@ -83,7 +83,7 @@ module AccountingModule
     def credits_balance(options={})
       return raise(NoMethodError, "undefined method 'balance'") if self.class == AccountingModule::Account
       if subsidiary_accounts.present?
-        balance  = BigDecimal.new('0')
+        balance  = []
         subsidiary_accounts.each do |sub_account|
           balance << sub_account.credit_amounts.balance(options)
         end

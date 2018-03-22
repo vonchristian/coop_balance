@@ -35,10 +35,11 @@ module StoreFrontModule
         User.find_by_id(employee_id)
       end
       def create_entry(order)
+        store_front = find_employee.store_front
         cash_on_hand = find_employee.cash_on_hand_account
-        sales_return = CoopConfigurationsModule::StoreFrontConfig.default_sales_return_account
-        merchandise_inventory = CoopConfigurationsModule::StoreFrontConfig.default_merchandise_inventory_account
-        cost_of_goods_sold = CoopConfigurationsModule::StoreFrontConfig.default_cost_of_goods_sold_account
+        sales_return = store_front.sales_return_account
+        merchandise_inventory = store_front.merchandise_inventory_account
+        cost_of_goods_sold = store_front.cost_of_goods_sold_account
         find_employee.entries.create(
           commercial_document: find_customer,
           entry_date: order.date,

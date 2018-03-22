@@ -32,6 +32,7 @@ module StoreFrontModule
       end
 
       def create_entry(spoilage_order)
+        store_front = find_employee.store_front
         spoilage_account = AccountingModule::Account.find_by(name: "Spoilage, Breakage and Losses (Selling/Marketing Cost)")
         merchandise_inventory = CoopConfigurationsModule::StoreFrontConfig.default_merchandise_inventory_account
         find_employee.entries.create!(

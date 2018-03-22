@@ -1,5 +1,9 @@
 class AccountsReceivableStore
   def balance(customer)
-    CoopConfigurationsModule::StoreFrontConfig.default_accounts_receivable_account.balance(commercial_document_id: customer.id)
+    balance = []
+    StoreFront.all.each do |store_front|
+      balance << store_front.caccounts_receivable_account.balance(commercial_document: customer)
+    end
+    balance.sum
   end
 end

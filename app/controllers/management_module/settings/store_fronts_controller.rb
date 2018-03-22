@@ -17,7 +17,18 @@ module ManagementModule
 
       private
       def store_front_params
-        params.require(:store_front).permit(:name, :address, :contact_number)
+        params.require(:store_front).
+        permit(:name,
+               :address,
+               :contact_number,
+               :accounts_receivable_account_id,
+               :accounts_payable_account_id,
+               :merchandise_inventory_account_id,
+               :cost_of_goods_sold_account_id,
+               :sales_account_id,
+               :sales_return_account_id,
+               :spoilage_account_id
+               )
       end
     end
   end

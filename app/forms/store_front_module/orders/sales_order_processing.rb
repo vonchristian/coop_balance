@@ -41,10 +41,11 @@ module StoreFrontModule
       end
 
       def create_entry(order)
+        store_front = find_employee.store_front
         cash_on_hand = find_employee.cash_on_hand_account
-        cost_of_goods_sold = CoopConfigurationsModule::StoreFrontConfig.default_cost_of_goods_sold_account
-        sales = CoopConfigurationsModule::StoreFrontConfig.default_sales_account
-        merchandise_inventory = CoopConfigurationsModule::StoreFrontConfig.default_merchandise_inventory_account
+        cost_of_goods_sold = store_front.cost_of_goods_sold_account
+        sales = store_front.sales_account
+        merchandise_inventory = store_front.merchandise_inventory_account
         find_employee.entries.create!(
           recorder: find_employee,
           commercial_document: find_customer,

@@ -20,8 +20,9 @@ module StoreFrontModule
         create_entry(order)
       end
       def create_entry(order)
-        accounts_payable = CoopConfigurationsModule::StoreFrontConfig.default_accounts_payable_account
-        merchandise_inventory = CoopConfigurationsModule::StoreFrontConfig.default_merchandise_inventory_account
+        store_front = find_employee.store_front
+        accounts_payable = store_front.accounts_payable_account
+        merchandise_inventory = store_front.merchandise_inventory_account
         find_employee.entries.create(
           commercial_document: find_supplier,
           entry_date: order.date,

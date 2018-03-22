@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180317005621) do
+ActiveRecord::Schema.define(version: 20180322015944) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1007,8 +1007,22 @@ ActiveRecord::Schema.define(version: 20180317005621) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "accounts_receivable_account_id"
+    t.uuid "cost_of_goods_sold_account_id"
+    t.uuid "accounts_payable_account_id"
+    t.uuid "merchandise_inventory_account_id"
+    t.uuid "sales_account_id"
+    t.uuid "sales_return_account_id"
+    t.uuid "spoilage_account_id"
+    t.uuid "sales_discount_account_id"
+    t.index ["accounts_payable_account_id"], name: "index_store_fronts_on_accounts_payable_account_id"
     t.index ["accounts_receivable_account_id"], name: "index_store_fronts_on_accounts_receivable_account_id"
     t.index ["cooperative_id"], name: "index_store_fronts_on_cooperative_id"
+    t.index ["cost_of_goods_sold_account_id"], name: "index_store_fronts_on_cost_of_goods_sold_account_id"
+    t.index ["merchandise_inventory_account_id"], name: "index_store_fronts_on_merchandise_inventory_account_id"
+    t.index ["sales_account_id"], name: "index_store_fronts_on_sales_account_id"
+    t.index ["sales_discount_account_id"], name: "index_store_fronts_on_sales_discount_account_id"
+    t.index ["sales_return_account_id"], name: "index_store_fronts_on_sales_return_account_id"
+    t.index ["spoilage_account_id"], name: "index_store_fronts_on_spoilage_account_id"
   end
 
   create_table "streets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1143,6 +1157,7 @@ ActiveRecord::Schema.define(version: 20180317005621) do
     t.uuid "cash_on_hand_account_id"
     t.uuid "office_id"
     t.uuid "department_id"
+    t.uuid "store_front_id"
     t.index ["cash_on_hand_account_id"], name: "index_users_on_cash_on_hand_account_id"
     t.index ["cooperative_id"], name: "index_users_on_cooperative_id"
     t.index ["department_id"], name: "index_users_on_department_id"
@@ -1151,6 +1166,7 @@ ActiveRecord::Schema.define(version: 20180317005621) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["role"], name: "index_users_on_role"
     t.index ["salary_grade_id"], name: "index_users_on_salary_grade_id"
+    t.index ["store_front_id"], name: "index_users_on_store_front_id"
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
@@ -1315,7 +1331,14 @@ ActiveRecord::Schema.define(version: 20180317005621) do
   add_foreign_key "store_front_configs", "accounts", column: "merchandise_inventory_account_id"
   add_foreign_key "store_front_configs", "accounts", column: "sales_account_id"
   add_foreign_key "store_front_configs", "accounts", column: "sales_return_account_id"
+  add_foreign_key "store_fronts", "accounts", column: "accounts_payable_account_id"
   add_foreign_key "store_fronts", "accounts", column: "accounts_receivable_account_id"
+  add_foreign_key "store_fronts", "accounts", column: "cost_of_goods_sold_account_id"
+  add_foreign_key "store_fronts", "accounts", column: "merchandise_inventory_account_id"
+  add_foreign_key "store_fronts", "accounts", column: "sales_account_id"
+  add_foreign_key "store_fronts", "accounts", column: "sales_discount_account_id"
+  add_foreign_key "store_fronts", "accounts", column: "sales_return_account_id"
+  add_foreign_key "store_fronts", "accounts", column: "spoilage_account_id"
   add_foreign_key "store_fronts", "cooperatives"
   add_foreign_key "streets", "barangays"
   add_foreign_key "streets", "municipalities"
@@ -1334,6 +1357,7 @@ ActiveRecord::Schema.define(version: 20180317005621) do
   add_foreign_key "users", "departments"
   add_foreign_key "users", "offices"
   add_foreign_key "users", "salary_grades"
+  add_foreign_key "users", "store_fronts"
   add_foreign_key "voucher_amounts", "accounts"
   add_foreign_key "voucher_amounts", "vouchers"
   add_foreign_key "vouchers", "users"
