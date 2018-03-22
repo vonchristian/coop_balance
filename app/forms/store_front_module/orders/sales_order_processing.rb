@@ -45,6 +45,7 @@ module StoreFrontModule
         cash_on_hand = find_employee.cash_on_hand_account
         cost_of_goods_sold = store_front.cost_of_goods_sold_account
         sales = store_front.sales_account
+        sales_discount = store_front.sales_discount_account
         merchandise_inventory = store_front.merchandise_inventory_account
         find_employee.entries.create!(
           recorder: find_employee,
@@ -57,9 +58,9 @@ module StoreFrontModule
                                       { amount: order.cost_of_goods_sold,
                                         account: cost_of_goods_sold,
                                         commercial_document: order } ],
-            credit_amounts_attributes:[{amount: order.total_cost,
-                                        account: sales,
-                                        commercial_document: order},
+            credit_amounts_attributes:[{ amount: order.total_cost,
+                                         account: sales,
+                                         commercial_document: order},
                                        {amount: order.cost_of_goods_sold,
                                         account: merchandise_inventory,
                                         commercial_document: order}])

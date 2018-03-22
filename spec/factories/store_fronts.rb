@@ -9,8 +9,12 @@ FactoryBot.define do
     association :cost_of_goods_sold_account,    factory: :expense
     association :sales_account,                 factory: :revenue
     association :sales_return_account,          factory: :revenue
+    association :sales_discount_account,        factory: :revenue
     association :merchandise_inventory_account, factory: :asset
     association :spoilage_account,              factory: :expense
+    association :internal_use_account,          factory: :expense
+    association :purchase_return_account,       factory: :expense
+
 
   end
 end

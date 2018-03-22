@@ -1,6 +1,6 @@
 module StoreFrontModule
   module Orders
-    class SalesOrdersController < ApplicationController
+    class SalesController < ApplicationController
       def index
         @sales_orders = StoreFrontModule::Orders::SalesOrder.order(date: :desc).paginate(page: params[:page], per_page: 30)
         @from_date = Chronic.parse(params[:from_date])

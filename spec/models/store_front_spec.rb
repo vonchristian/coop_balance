@@ -11,6 +11,10 @@ RSpec.describe StoreFront, type: :model do
     it { is_expected.to belong_to :sales_return_account }
     it { is_expected.to belong_to :spoilage_account }
     it { is_expected.to belong_to :sales_discount_account }
+    it { is_expected.to belong_to :purchase_return_account }
+    it { is_expected.to belong_to :internal_use_account }
+    it { is_expected.to belong_to :sales_discount_account }
+
 
 
     it { is_expected.to have_many :entries }
@@ -36,6 +40,8 @@ RSpec.describe StoreFront, type: :model do
     it { is_expected.to validate_uniqueness_of :accounts_payable_account_id }
     it { is_expected.to validate_uniqueness_of :spoilage_account_id }
     it { is_expected.to validate_uniqueness_of :sales_discount_account_id }
+    it { is_expected.to validate_uniqueness_of :purchase_return_account_id }
+    it { is_expected.to validate_uniqueness_of :internal_use_account_id }
   end
 
   it "#accounts_receivable_balance(customer)" do

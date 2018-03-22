@@ -8,7 +8,11 @@ class StoreFront < ApplicationRecord
   belongs_to :sales_return_account,          class_name: "AccountingModule::Account"
   belongs_to :accounts_payable_account,      class_name: "AccountingModule::Account"
   belongs_to :spoilage_account,              class_name: "AccountingModule::Account"
-  belongs_to :sales_discount_account,              class_name: "AccountingModule::Account"
+  belongs_to :sales_discount_account,        class_name: "AccountingModule::Account"
+  belongs_to :purchase_return_account,       class_name: "AccountingModule::Account"
+  belongs_to :internal_use_account,          class_name: "AccountingModule::Account"
+
+
 
   has_many :entries,                         class_name: "AccountingModule::Entry",
                                              as: :origin
@@ -22,6 +26,8 @@ class StoreFront < ApplicationRecord
             :accounts_payable_account_id,
             :spoilage_account_id,
             :sales_discount_account_id,
+            :internal_use_account_id,
+            :purchase_return_account_id,
             presence: true,
             uniqueness: true
 

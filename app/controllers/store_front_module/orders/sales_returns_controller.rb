@@ -1,6 +1,6 @@
 module StoreFrontModule
   module Orders
-    class SalesReturnOrdersController < ApplicationController
+    class SalesReturnsController < ApplicationController
       def index
         @sales_return_orders = StoreFrontModule::Orders::SalesReturnOrder.order(date: :desc).all.paginate(page: params[:page], per_page: 35)
       end

@@ -1,6 +1,6 @@
 module StoreFrontModule
   module Orders
-    class PurchaseOrdersController < ApplicationController
+    class PurchasesController < ApplicationController
       def new
         if params[:search].present?
           @products = StoreFrontModule::Product.text_search(params[:search]).all

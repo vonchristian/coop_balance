@@ -1,6 +1,6 @@
-poblacion = StoreFront.build(name: "KCCMC Poblacion Storefront", address: "Poblacion, Tinoc, Ifugao", contact_number: "")
-tukucan = StoreFront.build(name: "KCCMC Tukucan Storefront", address: "Tukucan, Tinoc, Ifugao", contact_number: "")
-mansoyosoy = StoreFront.build(name: "KCCMC Mansoyosoy Storefront", address: "Mansoyosoy, Tinoc, Ifugao", contact_number: "")
+poblacion = StoreFront.new(name: "KCCMC Poblacion Storefront", address: "Poblacion, Tinoc, Ifugao", contact_number: "")
+tukucan = StoreFront.new(name: "KCCMC Tukucan Storefront", address: "Tukucan, Tinoc, Ifugao", contact_number: "")
+mansoyosoy = StoreFront.new(name: "KCCMC Mansoyosoy Storefront", address: "Mansoyosoy, Tinoc, Ifugao", contact_number: "")
 
 poblacion.merchandise_inventory_account = AccountingModule::Asset.create(code: 118101,  name: "Merchandise Inventory (Poblacion Storefront)")
 tukucan.merchandise_inventory_account = AccountingModule::Asset.create(code: 118102,  name: "Merchandise Inventory (Tukucan Storefront)")
@@ -34,6 +34,15 @@ mansoyosoy.spoilage_account = AccountingModule::Expense.create(code: 723403, nam
 poblacion.sales_discount_account = AccountingModule::Revenue.create(code: 403401, name: 'Sales Discounts (Poblacion Storefront)', contra: true)
 tukucan.sales_discount_account = AccountingModule::Revenue.create(code: 403402, name: 'Sales Discounts (Tukucan Storefront)', contra: true)
 mansoyosoy.sales_discount_account = AccountingModule::Revenue.create(code: 403403, name: 'Sales Discounts (Mansoyosoy Storefront)', contra: true)
+
+poblacion.purchase_return_account = AccountingModule::Expense.create(code: 511301, name: 'Purchase Returns and Allowances (Poblacion Storefront)', contra: true)
+tukucan.purchase_return_account = AccountingModule::Expense.create(code: 511302, name: 'Purchase Returns and Allowances (Tukucan Storefront)', contra: true)
+mansoyosoy.purchase_return_account = AccountingModule::Expense.create(code: 511303, name: 'Purchase Returns and Allowances (Mansoyosoy Storefront)', contra: true)
+
+poblacion.internal_use_account = AccountingModule::Expense.create(code: 723404, name: "Internal Use (Poblacion Storefront)")
+tukucan.internal_use_account = AccountingModule::Expense.create(code: 723405, name: "Internal Use (Tukucan Storefront)")
+mansoyosoy.internal_use_account = AccountingModule::Expense.create(code: 723406, name: "Internal Use (Mansoyosoy Storefront)")
+
 
 poblacion.save!
 tukucan.save!

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180322015944) do
+ActiveRecord::Schema.define(version: 20180322021750) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1014,11 +1014,15 @@ ActiveRecord::Schema.define(version: 20180322015944) do
     t.uuid "sales_return_account_id"
     t.uuid "spoilage_account_id"
     t.uuid "sales_discount_account_id"
+    t.uuid "purchase_return_account_id"
+    t.uuid "internal_use_account_id"
     t.index ["accounts_payable_account_id"], name: "index_store_fronts_on_accounts_payable_account_id"
     t.index ["accounts_receivable_account_id"], name: "index_store_fronts_on_accounts_receivable_account_id"
     t.index ["cooperative_id"], name: "index_store_fronts_on_cooperative_id"
     t.index ["cost_of_goods_sold_account_id"], name: "index_store_fronts_on_cost_of_goods_sold_account_id"
+    t.index ["internal_use_account_id"], name: "index_store_fronts_on_internal_use_account_id"
     t.index ["merchandise_inventory_account_id"], name: "index_store_fronts_on_merchandise_inventory_account_id"
+    t.index ["purchase_return_account_id"], name: "index_store_fronts_on_purchase_return_account_id"
     t.index ["sales_account_id"], name: "index_store_fronts_on_sales_account_id"
     t.index ["sales_discount_account_id"], name: "index_store_fronts_on_sales_discount_account_id"
     t.index ["sales_return_account_id"], name: "index_store_fronts_on_sales_return_account_id"
@@ -1334,7 +1338,9 @@ ActiveRecord::Schema.define(version: 20180322015944) do
   add_foreign_key "store_fronts", "accounts", column: "accounts_payable_account_id"
   add_foreign_key "store_fronts", "accounts", column: "accounts_receivable_account_id"
   add_foreign_key "store_fronts", "accounts", column: "cost_of_goods_sold_account_id"
+  add_foreign_key "store_fronts", "accounts", column: "internal_use_account_id"
   add_foreign_key "store_fronts", "accounts", column: "merchandise_inventory_account_id"
+  add_foreign_key "store_fronts", "accounts", column: "purchase_return_account_id"
   add_foreign_key "store_fronts", "accounts", column: "sales_account_id"
   add_foreign_key "store_fronts", "accounts", column: "sales_discount_account_id"
   add_foreign_key "store_fronts", "accounts", column: "sales_return_account_id"
