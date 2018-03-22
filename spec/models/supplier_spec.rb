@@ -4,13 +4,12 @@ RSpec.describe Supplier, type: :model do
   describe 'associations' do
     it { is_expected.to have_many :vouchers }
     it { is_expected.to have_many :voucher_amounts }
-    it { is_expected.to have_many :raw_material_stocks }
     it { is_expected.to have_many :addresses }
-    it { is_expected.to have_many :supplied_stocks }
     it { is_expected.to have_many :entries }
     it { is_expected.to have_many :addresses }
     it { is_expected.to have_many :stock_registries }
-
+    it { is_expected.to have_many :purchase_orders }
+    it { is_expected.to have_many :purchase_return_orders }
   end
 
   describe 'validations' do

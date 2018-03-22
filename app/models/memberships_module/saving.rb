@@ -1,7 +1,7 @@
 module MembershipsModule
   class Saving < ApplicationRecord
     include PgSearch
-    pg_search_scope :text_search, :against => [:account_number, :account_owner_name]
+    pg_search_scope :text_search, against: [:account_number, :account_owner_name]
     multisearchable against: [:account_number, :account_owner_name]
 
     belongs_to :depositor,        polymorphic: true,  touch: true
@@ -67,17 +67,17 @@ module MembershipsModule
     end
 
     def balance(options={})
-      saving_product_account.balance(commercial_document_id: self.id, commercial_document_type: self.class.to_s)
+      saving_product_account.balance(commercial_document: self)
     end
 
     def deposits
-      saving_product_account.credits_balance(commercial_document_id: self.id, commercial_document_type: self.class.to_s)
+      saving_product_account.credits_balance(commercial_document: self)
     end
     def withdrawals
-      saving_product_account.debits_balance(commercial_document_id: self.id, commercial_document_type: self.class.to_s)
+      saving_product_account.debits_balance(commercial_document: self)
     end
     def interests_earned
-      saving_product_interest_expense_account.credits_balance(commercial_document_id: self.id, commercial_document_type: self.class.to_s)
+      saving_product_interest_expense_account.credits_balance(commercial_document: self)
     end
     def can_withdraw?
       !closed? && balance > 0.0
@@ -97,14 +97,15 @@ module MembershipsModule
     def average_daily_balance
       balances = []
       (Date.today.beginning_of_quarter..Date.today.end_of_quarter).each do |date|
-        daily_balance = saving_product.balance(commercial_document_id: self.id, commercial_document_type: self.class.to_s, from_date: self.first_transaction_date, to_date: date.end_of_day)
+        daily_balance = saving_product.balance(commercial_document: self, from_date: self.first_transaction_date, to_date: date.end_of_day)
         balances << daily_balance
       end
       balances.sum / balances.size
     end
+
     private
     def set_account_owner_name
-      self.account_owner_name = self.depositor_name
+      self.account_owner_name = self.depositor_name # depositor is polymorphic
     end
   end
 end

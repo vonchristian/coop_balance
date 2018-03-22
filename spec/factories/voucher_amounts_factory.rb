@@ -1,7 +1,7 @@
 FactoryBot.define do
-  factory :voucher_amount do
+  factory :voucher_amount, class: Vouchers::VoucherAmount do
     amount "9.99"
-    account nil
+    association :account, factory: :asset
     voucher nil
   end
 end

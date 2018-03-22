@@ -16,11 +16,7 @@ module CoopServicesModule
       it { is_expected.to validate_presence_of :subscription_account_id }
       it { is_expected.to validate_presence_of :name }
       it { is_expected.to validate_presence_of :cost_per_share }
-      it { is_expected.to validate_presence_of :minimum_number_of_paid_share }
-      it { is_expected.to validate_presence_of :minimum_number_of_subscribed_share }
       it { is_expected.to validate_numericality_of :cost_per_share }
-      it { is_expected.to validate_numericality_of :minimum_number_of_paid_share }
-      it { is_expected.to validate_numericality_of :minimum_number_of_subscribed_share }
     end
 
     describe 'delegations' do

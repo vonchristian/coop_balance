@@ -21,8 +21,8 @@ module StoreFrontModule
       purchase_order = create(:order)
       sales_order = create(:order)
       purchase_line_item = create(:purchase_line_item_with_base_measurement, quantity: 100, unit_cost: 8, total_cost: 800, order: purchase_order, product: product)
-      sales_line_item =  create(:sales_line_item_with_base_measurement, unit_cost: 10, total_cost: 1000,  quantity: 100,  order: sales_order, product: product, referenced_line_item: purchase_line_item)
-
+      sales_line_item =  create(:sales_line_item_with_base_measurement, unit_cost: 10, total_cost: 1000,  quantity: 100,  order: sales_order, product: product)
+      sales_line_item.referenced_purchase_line_items << create(:referenced_purchase_line_item, purchase_line_item: purchase_line_item, unit_cost: 8, quantity: 100 )
       expect(sales_order.cost_of_goods_sold).to eql(800)
       expect(sales_order.total_cost).to eql(1000)
     end

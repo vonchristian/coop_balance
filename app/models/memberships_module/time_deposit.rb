@@ -11,6 +11,7 @@ module MembershipsModule
     belongs_to :time_deposit_product, class_name: "CoopServicesModule::TimeDepositProduct"
     has_many :entries,                class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
     has_many :fixed_terms,            class_name: "TimeDepositsModule::FixedTerm", dependent: :destroy
+
     delegate :name,
              :interest_rate,
              :account,
@@ -34,7 +35,7 @@ module MembershipsModule
     before_save :set_depositor_name, on: [:create]
 
     def can_be_extended?
-      !withdrawn? && matured?
+      !withdrawn? && current_term_matured?
     end
     def withdrawal_date
       if withdrawn?
@@ -42,7 +43,7 @@ module MembershipsModule
       end
     end
     def current_term
-      fixed_terms.order(created_at: :asc).last
+      fixed_terms.current
     end
 
     def member?
@@ -54,11 +55,11 @@ module MembershipsModule
     end
 
     def self.matured
-      all.select{|a| a.matured? }
+      all.select{|a| a.current_term_matured? }
     end
 
     def self.post_interests_earned
-      !matured.each do |time_deposit|
+      !current_term_matured.each do |time_deposit|
         post_interests_earned
       end
     end
@@ -67,18 +68,13 @@ module MembershipsModule
       TimeDepositsModule::InterestEarnedPosting.post_for(self)
     end
 
-    def matured?
-      current_term.matured?
-    end
 
     def amount_deposited
-      time_deposit_product_account.balance(commercial_document_id: self.id)
+      balance
     end
 
     def balance
-      time_deposit_product_account.balance(commercial_document_id: self.id)
-    end
-    def interests_earned
+      time_deposit_product_account.balance(commercial_document: self)
     end
 
     def earned_interests
@@ -88,7 +84,7 @@ module MembershipsModule
       time_deposit_product.break_contract_rate * amount_deposited
     end
     def computed_earned_interests
-      if matured?
+      if current_term_matured?
         amount_deposited * rate
       else
         amount_deposited *
@@ -96,11 +92,9 @@ module MembershipsModule
         days_elapsed
       end
     end
+
     def days_elapsed
        (Time.zone.now - date_deposited) /86400
-    end
-    def matured?
-      days_elapsed >= current_term.number_of_days
     end
 
     def rate

@@ -25,26 +25,26 @@ module MembershipsModule
     it '#balance' do
       employee = create(:user, role: 'teller')
       share_capital = create(:share_capital)
-      capital_build_up = build(:entry, commercial_document: share_capital)
-      credit_amount = create(:credit_amount, amount: 5000, entry: capital_build_up, commercial_document: share_capital, account: share_capital.share_capital_product_paid_up_account)
-      debit_amount = create(:debit_amount, amount: 5_000, entry: capital_build_up, commercial_document: share_capital, account: employee.cash_on_hand_account)
-      capital_build_up.save
+      deposit = build(:entry, commercial_document: share_capital)
+      deposit.credit_amounts << create(:credit_amount, amount: 5_000, commercial_document: share_capital, account: share_capital.share_capital_product_default_paid_up_account)
+      deposit.debit_amounts << create(:debit_amount, amount: 5_000, commercial_document: share_capital, account: employee.cash_on_hand_account)
+      deposit.save
 
-      expect(share_capital.balance).to eq(5_000)
+      expect(share_capital.balance).to eq(5000)
     end
     it '#closed?' do
       employee = create(:user, role: 'teller')
       share_capital = create(:share_capital)
       capital_build_up = build(:entry, commercial_document: share_capital)
-      credit_amount = create(:credit_amount, amount: 5000, entry: capital_build_up, commercial_document: share_capital, account: share_capital.share_capital_product_paid_up_account)
-      debit_amount = create(:debit_amount, amount: 5_000, entry: capital_build_up, commercial_document: share_capital, account: employee.cash_on_hand_account)
+      capital_build_up.credit_amounts << create(:credit_amount, amount: 5000, commercial_document: share_capital, account: share_capital.share_capital_product_paid_up_account)
+      capital_build_up.debit_amounts << create(:debit_amount, amount: 5_000,  commercial_document: share_capital, account: employee.cash_on_hand_account)
       capital_build_up.save
 
       expect(share_capital.balance).to eq 5_000
 
       closing_account_entry = build(:entry, commercial_document: share_capital)
-      debit_amount = create(:debit_amount, amount: share_capital.balance, entry: closing_account_entry, commercial_document: share_capital, account: share_capital.share_capital_product_paid_up_account)
-      credit_amount = create(:credit_amount, amount: share_capital.share_capital_product_closing_account_fee, entry: closing_account_entry, commercial_document: share_capital, account: share_capital.share_capital_product_closing_account)
+      closing_account_entry.debit_amounts << create(:debit_amount, amount: share_capital.balance,  commercial_document: share_capital, account: share_capital.share_capital_product_paid_up_account)
+      closing_account_entry.credit_amounts << create(:credit_amount, amount: share_capital.share_capital_product_closing_account_fee, commercial_document: share_capital, account: share_capital.share_capital_product_closing_account)
       closing_account_entry.save
 
       expect(share_capital.balance).to eq 0
@@ -56,8 +56,8 @@ module MembershipsModule
       share_capital_product = create(:share_capital_product, cost_per_share: 100)
       share_capital = create(:share_capital, share_capital_product: share_capital_product)
       capital_build_up = build(:entry, commercial_document: share_capital.subscriber)
-      credit_amount = create(:credit_amount, amount: 5000, entry: capital_build_up, commercial_document: share_capital, account: share_capital.share_capital_product_paid_up_account)
-      debit_amount = create(:debit_amount, amount: 5_000, entry: capital_build_up, commercial_document: share_capital, account: employee.cash_on_hand_account)
+      capital_build_up.credit_amounts << create(:credit_amount, amount: 5000, commercial_document: share_capital, account: share_capital.share_capital_product_paid_up_account)
+      capital_build_up.debit_amounts << create(:debit_amount, amount: 5_000, commercial_document: share_capital, account: employee.cash_on_hand_account)
       capital_build_up.save
 
       expect(share_capital.balance).to eq 5_000

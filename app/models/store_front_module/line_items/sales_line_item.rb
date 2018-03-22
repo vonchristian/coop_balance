@@ -13,7 +13,7 @@ module StoreFrontModule
       end
 
       def cost_of_goods_sold
-        referenced_purchase_order_line_items.cost_of_goods_sold
+        referenced_purchase_line_items.cost_of_goods_sold
       end
     end
   end

@@ -3,7 +3,8 @@ require 'rails_helper'
 module CoopServicesModule
   describe Program do
   	context 'associations' do
-  		it { is_expected.to have_many :subscribers }
+  		it { is_expected.to have_many :member_subscribers }
+      it { is_expected.to have_many :employee_subscribers }
       it { is_expected.to have_many :program_subscriptions }
   	end
   	context 'validations' do

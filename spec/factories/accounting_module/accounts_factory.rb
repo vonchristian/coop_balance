@@ -5,7 +5,6 @@ FactoryBot.define do
     contra false
 
     factory :asset, class: AccountingModule::Asset do
-        type "AccountingModule::Asset"
     end
 
     factory :liability, class: AccountingModule::Liability do

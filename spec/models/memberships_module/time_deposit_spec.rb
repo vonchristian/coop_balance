@@ -32,53 +32,23 @@ module MembershipsModule
     it "#current_term" do
       time_deposit = create(:time_deposit)
       fixed_term = create(:fixed_term, time_deposit: time_deposit)
-      last_fixed_term = create(:fixed_term, time_deposit: time_deposit)
+      latest_fixed_term = create(:fixed_term, time_deposit: time_deposit)
 
-      expect(time_deposit.current_term).to eql(last_fixed_term)
+      expect(time_deposit.current_term).to eql(latest_fixed_term)
       expect(time_deposit.current_term).to_not eql(fixed_term)
 
     end
 
-    it "#matured?" do
-      time_deposit = create(:time_deposit)
-      fixed_term = create(:fixed_term, deposit_date: Date.today.last_year, number_of_days: 90, time_deposit: time_deposit)
-      expect(fixed_term.matured?).to be true
-      expect(time_deposit.matured?).to be true
-    end
-
     it '#balance' do
-      account = create(:liability, name: "Time Deposits")
-      time_deposit_product = create(:time_deposit_product, account: account)
-      time_deposit = create(:time_deposit)
-
+      employee = create(:user, role: 'teller')
+      time_deposit_product = create(:time_deposit_product)
+      time_deposit = create(:time_deposit, time_deposit_product: time_deposit_product)
       entry = build(:entry, commercial_document: time_deposit)
-      credit_amount = create(:credit_amount, account: account, amount: 100_000)
-      debit_amount = create(:debit_amount, account: account, amount: 100_000)
+      entry.credit_amounts << create(:credit_amount, account: time_deposit_product.account, amount: 100_000, commercial_document: time_deposit)
+      entry.debit_amounts << create(:debit_amount, account: employee.cash_on_hand_account, amount: 100_000, commercial_document: time_deposit)
+      entry.save
 
-      entry.credit_amounts << credit_amount
-      entry.debit_amounts << debit_amount
-      expect(time_deposit.balance).to eql(entry.total)
-    end
-
-    it "#amount_deposited" do
-      account = create(:liability, name: "Time Deposits")
-      time_deposit_product = create(:time_deposit_product, account: account)
-      time_deposit = create(:time_deposit)
-
-      entry = build(:entry, commercial_document: time_deposit)
-      credit_amount = create(:credit_amount, account: account, amount: 100_000)
-      debit_amount = create(:debit_amount, account: account, amount: 100_000)
-
-      entry.credit_amounts << credit_amount
-      entry.debit_amounts << debit_amount
-      expect(time_deposit.amount_deposited).to eql(entry.total)
-    end
-
-
-    it '#set_account_number' do
-      time_deposit = create(:time_deposit)
-
-      expect(time_deposit.account_number).to eql(time_deposit.id)
+      expect(time_deposit.balance).to eql(100_000)
     end
   end
 end

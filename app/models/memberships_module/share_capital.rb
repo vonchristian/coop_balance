@@ -59,12 +59,12 @@ module MembershipsModule
     end
 
     def balance
-      share_capital_product_default_paid_up_account.balance(commercial_document_id: self.id) +
-      share_capital_product_default_paid_up_account.balance(commercial_document_id: self.subscriber_id)
+      share_capital_product_default_paid_up_account.balance(commercial_document: self) +
+      share_capital_product_default_paid_up_account.balance(commercial_document: self.subscriber)
     end
 
     def dividends_earned
-      share_capital_product_interest_payable_account.balance(commercial_document_id: self.id)
+      share_capital_product_interest_payable_account.balance(commercial_document: self)
     end
     def dividends_total
       # entries.share_capital_dividend.map{|a| a.debit_amounts.distinct.sum(:amount) }.sum

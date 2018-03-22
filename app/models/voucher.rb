@@ -16,10 +16,6 @@ class Voucher < ApplicationRecord
 
   before_save :set_default_date
 
-  def self.payees
-    User.all + Supplier.all + Member.all
-  end
-
   def self.unused
     disbursed.select { |a| a.payee_id.nil? }
   end

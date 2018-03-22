@@ -11,16 +11,90 @@ module AccountingModule
       it { is_expected.to have_many :entries }
       it { is_expected.to have_many :debit_entries }
       it { is_expected.to have_many :credit_entries }
+    end
+    describe 'validations' do
+      it { is_expected.to validate_presence_of :type }
+      it { is_expected.to validate_presence_of :name }
+      it { is_expected.to validate_presence_of :code }
+      it { is_expected.to validate_uniqueness_of :name }
+      it { is_expected.to validate_uniqueness_of(:code).case_insensitive }
+    end
+    describe 'scopes' do
+      it ".assets" do
+        asset     = create(:asset)
+        liability = create(:liability)
+        expect(described_class.assets.pluck(:id)).to include(asset.id)
+        expect(described_class.assets.pluck(:id)).to_not include(liability.id)
+      end
+      it ".liabilities" do
+        asset     = create(:asset)
+        liability = create(:liability)
+        expect(described_class.liabilities.pluck(:id)).to_not include(asset.id)
+        expect(described_class.liabilities.pluck(:id)).to include(liability.id)
+      end
+      it ".equities" do
+        asset     = create(:asset)
+        equity    = create(:equity)
+        expect(described_class.equities.pluck(:id)).to_not include(asset.id)
+        expect(described_class.equities.pluck(:id)).to include(equity.id)
+      end
+      it ".expenses" do
+        asset     = create(:asset)
+        expense    = create(:expense)
+        expect(described_class.expenses.pluck(:id)).to_not include(asset.id)
+        expect(described_class.expenses.pluck(:id)).to include(expense.id)
+      end
+      it ".revenues" do
+        asset     = create(:asset)
+        revenue    = create(:revenue)
+        expect(described_class.revenues.pluck(:id)).to_not include(asset.id)
+        expect(described_class.revenues.pluck(:id)).to include(revenue.id)
+      end
 
+      it ".active" do
+        active_account = create(:asset, active: true)
+        inactive_account = create(:expense, active: false)
+
+        expect(described_class.active).to include(active_account)
+        expect(described_class.active).to_not include(inactive_account)
+      end
     end
 
-    it ".active" do
-      active_account = create(:asset, active: true)
-      inactive_account = create(:expense, active: false)
+    it ".updated_at(options)" do
+      account = create(:asset, updated_at: Date.today)
+      updated_account = create(:asset, updated_at: Date.today + 1.days)
 
-      expect(described_class.active).to include(active_account)
-      expect(described_class.active).to_not include(inactive_account)
+      expect(described_class.updated_at(from_date: Date.tomorrow, to_date: Date.tomorrow)).to include(updated_account)
+      expect(described_class.updated_at(from_date: Date.tomorrow, to_date: Date.tomorrow)).to_not include(account)
     end
+
+    it ".updated_by(employee)" do
+      employee  = create(:employee)
+      liability = create(:liability)
+      asset     = create(:asset)
+      revenue   = create(:revenue)
+      entry     = build(:entry, recorder: employee)
+      entry.credit_amounts << create(:credit_amount, account: asset)
+      entry.debit_amounts  << create(:debit_amount, account: revenue)
+      entry.save
+
+      expect(described_class.updated_by(employee)).to include(asset)
+      expect(described_class.updated_by(employee)).to include(revenue)
+      expect(described_class.updated_by(employee)).to_not include(liability)
+    end
+    it ".types" do
+      expect(described_class.types).to eql  ["AccountingModule::Asset",
+       "AccountingModule::Equity",
+       "AccountingModule::Liability",
+       "AccountingModule::Expense",
+       "AccountingModule::Revenue"]
+     end
+
+    it "#account_name" do
+      asset = build(:asset, name: "Cash on Hand")
+      expect(asset.account_name).to eql "Cash on Hand"
+    end
+
 
     let(:account) { build(:account) }
     subject { account }
@@ -28,15 +102,8 @@ module AccountingModule
     it { is_expected.to_not be_valid }  # must construct a child type instead
 
     describe "when using a child type" do
-      let(:account) { create(:account, type: "Finance::Asset") }
+      let(:account) { create(:account, type: "AccountingModule::Asset") }
       it { is_expected.to be_valid }
-
-      it "should be unique per name" do
-        not_conflict = create(:asset, name: "Cash on Hand")
-        conflict = build(:asset, name: "Cash on Hand")
-        expect(conflict).to_not be_valid
-        expect(conflict.errors[:name]).to eql ["has already been taken"]
-      end
     end
 
     it "calling the instance method #balance should raise a NoMethodError" do

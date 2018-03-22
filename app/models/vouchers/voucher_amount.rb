@@ -11,8 +11,9 @@ module Vouchers
     def self.total
       sum(:amount)
     end
-    def self.with_no_vouchers
-      select{ |a| a.voucher.nil? }
-    end
+
+    # def self.with_no_vouchers
+    #   select{ |a| a.voucher.nil? }
+    # end
   end
 end

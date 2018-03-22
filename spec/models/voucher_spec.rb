@@ -20,6 +20,7 @@ RSpec.describe Voucher, type: :model do
   end
 
   it ".payees" do
+  end
 
 
   it "#disbursed?" do

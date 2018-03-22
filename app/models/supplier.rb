@@ -1,17 +1,22 @@
 class Supplier < ApplicationRecord
   include PgSearch
   pg_search_scope :text_search, against: [:business_name]
-  has_many :raw_material_stocks, class_name: "WarehouseModule::RawMaterialStock"
   has_many :addresses, as: :addressable
-  has_many :purchase_line_items, class_name: "StoreFrontModule::PurchaseLineItem"
-  has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document
-  has_many :stock_registries, class_name: "StockRegistry"
-  has_many :vouchers, as: :payee
-  has_many :voucher_amounts, as: :commercial_document, class_name: "Vouchers::VoucherAmount"
-  has_many :purchase_orders, class_name: "StoreFrontModule::Orders::PurchaseOrder", as: :commercial_document
-  has_many :purchase_return_orders, class_name: "StoreFrontModule::Orders::PurchaseReturnOrder", as: :commercial_document
+  has_many :entries,                class_name: "AccountingModule::Entry",
+                                    as: :commercial_document
+  has_many :stock_registries,       class_name: "StockRegistry"
+  has_many :vouchers,               as: :payee
+  has_many :voucher_amounts,        class_name: "Vouchers::VoucherAmount",
+                                    as: :commercial_document
+  has_many :purchase_orders,        class_name: "StoreFrontModule::Orders::PurchaseOrder",
+                                    as: :commercial_document
+  has_many :purchase_line_items,    class_name: "StoreFrontModule::PurchaseLineItem",
+                                    through: :purchase_orders
+  has_many :purchase_return_orders, class_name: "StoreFrontModule::Orders::PurchaseReturnOrder",
+                                    as: :commercial_document
 
   validates :business_name, presence: true, uniqueness: true
+
   has_attached_file :avatar,
   styles: { large: "120x120>",
            medium: "70x70>",
@@ -31,30 +36,15 @@ class Supplier < ApplicationRecord
     [first_name, last_name].join(" ")
   end
 
-  # def accounts_payable
-  #   accounts_payable.balance(commercial_document_id: self.id)
-  # end
-  #
   def balance
     deliveries_total - payments_total
   end
-  #
+
   def payments_total
     vouchers.disbursed.map{|a| a.payable_amount }.compact.sum
   end
-  #
+
   def deliveries_total
     CoopConfigurationsModule::StoreFrontConfig.default_accounts_payable_account.balance(commercial_document_id: self.id)
   end
-
-  # def create_entry_for(voucher)
-  #   accounts_payable =  AccountingModule::Liability.find_by(name: 'Accounts Payable-Trade')
-  #   merchandise_inventory = AccountingModule::Account.find_by(name: "Merchandise Inventory")
-  #   entry = AccountingModule::Entry.supplier_delivery.new(commercial_document: self,  :description => "delivered stocks", recorder_id: voucher.user_id, entry_date: voucher.date)
-  #   debit_amount = AccountingModule::DebitAmount.new(amount: voucher.payable_amount, account: merchandise_inventory)
-  #   credit_amount = AccountingModule::CreditAmount.new(amount: voucher.payable_amount, account: accounts_payable)
-  #   entry.debit_amounts << debit_amount
-  #   entry.credit_amounts << credit_amount
-  #   entry.save
-  # end
 end

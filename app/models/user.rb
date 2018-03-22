@@ -24,45 +24,37 @@ class User < ApplicationRecord
               :collector,
               :sales_manager]
 
-  belongs_to :cash_on_hand_account, class_name: "AccountingModule::Account", foreign_key: 'cash_on_hand_account_id'
-  has_one :current_address, as: :addressable, class_name: "Address"
-  has_one :tin, as: :tinable
-  belongs_to :department
+  belongs_to :cash_on_hand_account,   class_name: "AccountingModule::Account", foreign_key: 'cash_on_hand_account_id'
+  has_one :current_address,           as: :addressable, class_name: "Address"
+  has_one :tin,                       as: :tinable
   belongs_to :cooperative
-  belongs_to :office, class_name: "CoopConfigurationsModule::Office"
-  belongs_to :salary_grade, class_name: "HrModule::SalaryGrade"
-  has_many :memberships, as: :cooperative
-  has_many :purchases, class_name: "StoreFrontModule::Orders::SalesOrder", as: :commercial_document
-  has_many :sold_orders,            class_name: "StoreFrontModule::Orders::SalesOrder",
-                                    foreign_key: 'employee_id'
+  belongs_to :office,                 class_name: "CoopConfigurationsModule::Office"
+  belongs_to :salary_grade,           class_name: "HrModule::SalaryGrade"
+  has_many :purchases,                class_name: "StoreFrontModule::Orders::SalesOrder", as: :commercial_document
+  has_many :sold_orders,              class_name: "StoreFrontModule::Orders::SalesOrder",
+                                      foreign_key: 'employee_id'
   has_many :returned_sales_orders,    class_name: "StoreFrontModule::Orders::SalesReturnOrder",
-                                    foreign_key: 'employee_id'
-
-  has_many :loans, class_name: "LoansModule::Loan", as: :borrower
-  has_many :co_makered_loans, class_name: "LoansModule::LoanCoMaker", as: :co_maker
-  has_many :memberships, as: :cooperator
-  has_many :savings, class_name: "MembershipsModule::Saving", as: :depositor
-  has_many :share_capitals, class_name: "MembershipsModule::ShareCapital", as: :subscriber
-  has_many :time_deposits, class_name: "MembershipsModule::TimeDeposit", as: :depositor
-  has_many :sales_orders, class_name: "StoreFrontModule::Orders::SalesOrder", as: :commercial_document
-  has_many :sales_return_orders, class_name: "StoreFrontModule::Orders::SalesReturnOrder", as: :commercial_document
-  has_many :entries, class_name: "AccountingModule::Entry", foreign_key: 'recorder_id'
-
-  has_many :appraised_properties, class_name: "Appraisal", foreign_key: 'appraiser_id'
-  has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", as: :commercial_document # for adding amounts on voucher
-  has_many :vouchers, as: :payee, class_name: "Vouchers::EmployeeVoucher"
-  has_many :prepared_vouchers, class_name: "Voucher", foreign_key: 'preparer_id'
-  has_many :disbursed_vouchers, class_name: "Voucher", foreign_key: 'disburser_id'
-  has_many :disbursed_loan_vouchers, class_name: "Vouchers::LoanDisbursementVoucher", foreign_key: 'disburser_id'
-
-
-  has_many :real_properties, as: :owner
-
+                                      foreign_key: 'employee_id'
+  has_many :loans,                    class_name: "LoansModule::Loan", as: :borrower
+  has_many :co_makered_loans,         class_name: "LoansModule::LoanCoMaker", as: :co_maker
+  has_many :memberships,              as: :cooperator
+  has_many :savings,                  class_name: "MembershipsModule::Saving", as: :depositor
+  has_many :share_capitals,           class_name: "MembershipsModule::ShareCapital", as: :subscriber
+  has_many :time_deposits,            class_name: "MembershipsModule::TimeDeposit", as: :depositor
+  has_many :sales_orders,             class_name: "StoreFrontModule::Orders::SalesOrder", as: :commercial_document
+  has_many :sales_return_orders,      class_name: "StoreFrontModule::Orders::SalesReturnOrder", as: :commercial_document
+  has_many :entries,                  class_name: "AccountingModule::Entry", foreign_key: 'recorder_id'
+  has_many :appraised_properties,     class_name: "Appraisal", foreign_key: 'appraiser_id'
+  has_many :voucher_amounts,          class_name: "Vouchers::VoucherAmount", as: :commercial_document # for adding amounts on voucher
+  has_many :vouchers,                 as: :payee, class_name: "Vouchers::EmployeeVoucher"
+  has_many :prepared_vouchers,        class_name: "Voucher", foreign_key: 'preparer_id'
+  has_many :disbursed_vouchers,       class_name: "Voucher", foreign_key: 'disburser_id'
+  has_many :disbursed_loan_vouchers,  class_name: "Vouchers::LoanDisbursementVoucher", foreign_key: 'disburser_id'
+  has_many :real_properties,          as: :owner
   has_many :organization_memberships, class_name: "Organizations::OrganizationMember", as: :organization_membership
-  has_many :organizations, through: :organization_memberships
-
-  has_many :program_subscriptions, class_name: "MembershipsModule::ProgramSubscription", as: :subscriber
-  has_many :subscribed_programs, through: :program_subscriptions, class_name: "CoopServicesModule::Program"
+  has_many :organizations,            through: :organization_memberships
+  has_many :program_subscriptions,    class_name: "MembershipsModule::ProgramSubscription", as: :subscriber
+  has_many :subscribed_programs,      through: :program_subscriptions, class_name: "CoopServicesModule::Program"
 
   delegate :name, :amount, to: :salary_grade, prefix: true, allow_nil: true
   delegate :name, to: :department, prefix: true, allow_nil: true
@@ -98,10 +90,6 @@ class User < ApplicationRecord
     accounts
   end
 
-  def recommended_co_makers
-    User.where(last_name: self.last_name)
-  end
-
   def current_occupation
     role
   end
@@ -123,7 +111,7 @@ class User < ApplicationRecord
    AccountsReceivableStore.new.balance(self)
   end
   def cash_on_hand_account_balance(options = {})
-    default_cash_on_hand_account.balance(recorder_id: self.id)
+    default_cash_on_hand_account.balance
   end
 
   def cash_advance_total

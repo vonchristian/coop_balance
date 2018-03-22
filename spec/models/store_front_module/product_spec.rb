@@ -130,7 +130,7 @@ module StoreFrontModule
         purchase = create(:purchase_line_item_with_base_measurement,  quantity: 100, product: product, order: purchase_order)
         internal_use = create(:internal_use_line_item_with_base_measurement,
           quantity: 10.0,
-          product: product, order: internal_use_order)
+          product: product, order: internal_use_order, purchase_line_item: purchase)
 
         expect(product.internal_use_balance).to eql(10)
         expect(product.balance).to eql(90)

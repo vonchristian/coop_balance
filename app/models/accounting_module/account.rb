@@ -2,6 +2,7 @@ module AccountingModule
   class Account < ApplicationRecord
     include PgSearch
     pg_search_scope :text_search, :against => [:name, :code]
+    multisearchable against: [:name, :code]
 
     class_attribute :normal_credit_balance
 
@@ -14,8 +15,9 @@ module AccountingModule
     has_many :debit_entries,        :through => :debit_amounts, :source => :entry, :class_name => 'AccountingModule::Entry'
     has_many :subsidiary_accounts,  class_name: "AccountingModule::Account", foreign_key: 'main_account_id'
 
-    validates :type, presence: true
-    validates :name, :code, presence: true, uniqueness: true
+    validates :type, :name, :code, presence: true
+    validates :name, uniqueness: true
+    validates :code, uniqueness: { case_sensitive: false }
 
     scope :assets,      -> { where(type: 'AccountingModule::Asset') }
     scope :liabilities, -> { where(type: 'AccountingModule::Liability') }
@@ -30,14 +32,9 @@ module AccountingModule
         where('updated_at' => (date_range.start_date)..(date_range.end_date))
       end
     end
-
     def self.updated_by(employee)
-      all.select{|a| a.updated_by(employee) }
+      includes(:entries).where('entries.recorder_id' => employee.id)
     end
-    def updated_by(employee)
-      entries.recorded_by(employee)
-    end
-
 
     def account_name
       name
@@ -86,7 +83,11 @@ module AccountingModule
     def credits_balance(options={})
       return raise(NoMethodError, "undefined method 'balance'") if self.class == AccountingModule::Account
       if subsidiary_accounts.present?
-        subsidiary_accounts.map{ |a| a.debit_amounts.balance(options) }.sum + debit_amounts.balance(options)
+        balance  = BigDecimal.new('0')
+        subsidiary_accounts.each do |sub_account|
+          balance << sub_account.credit_amounts.balance(options)
+        end
+        balance.sum
       else
         credit_amounts.balance(options)
       end
