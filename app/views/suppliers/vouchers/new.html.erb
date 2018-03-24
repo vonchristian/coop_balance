@@ -1,24 +1,14 @@
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-8">
     <div class="box box-solid">
       <div class="box-header">
         <h3 class="box-title"> New Voucher Details </h3>
       </div>
       <div class="box-body">
-        <div class="row">
-          <div class="col-md-10 col-md-offset-1">
-        <p>Payee</p>
-
-
-            <%=image_tag(@supplier.avatar.url(:medium), class: "img-circle", height: 50, width: 50) %>
-
-            <p><%= @supplier.business_name.try(:upcase) %></p>
-
         <div class="table table-responsive">
           <table class="table table-hover table-striped">
             <thead>
               <tr>
-                <th>Description</th>
                 <th>Account</th>
                 <th>Debit</th>
                 <th>Credit</th>
@@ -28,7 +18,6 @@
             <tbody>
               <% @supplier.voucher_amounts.with_no_vouchers.each do |voucher_amount| %>
                 <tr>
-                  <td><%= voucher_amount.description %></td>
                   <td><%= voucher_amount.account_name %></td>
                   <td>
                     <% if voucher_amount.debit? %>
@@ -45,13 +34,11 @@
                       <span class="text-danger"><i class="fa fa-trash"></i> </span>
                     <% end %>
                   </td>
-
                 </tr>
               <% end %>
               <% if @supplier.voucher_amounts.with_no_vouchers.present? %>
-                 <tr>
-                  <td></td>
-                  <td>TOTAL</td>
+                <tr>
+                  <td><b>TOTAL</b></td>
                   <td><b><%= number_to_currency @supplier.voucher_amounts.debit.with_no_vouchers.sum(&:amount) %></b></td>
                   <td><b><%= number_to_currency @supplier.voucher_amounts.credit.with_no_vouchers.sum(&:amount) %></b></td>
                 </tr>
@@ -59,13 +46,10 @@
                   <td></td>
                   <td></td>
                   <td></td>
-                  <td></td>
                 </tr>
               <% end %>
-
               <%= simple_form_for @amount, url: :supplier_amounts do |f| %>
                 <tr>
-                    <td width="300px"><%= f.input :description, label: false, placeholder: "Description" %>
                       <%= f.input :commercial_document_id, input_html: { value: @supplier.id }, as: :hidden %>
                       <%= f.input :commercial_document_type, input_html: { value: @supplier.class }, as: :hidden %>
                     </td>
@@ -76,18 +60,31 @@
                     <td><%= f.submit "Add", class: "btn btn-primary btn-sm" %></td>
                   </tr>
               <% end %>
-
             </tbody>
           </table>
         </div>
+      </div>
+    </div>
+  </div>
+    <div class="col-md-4">
+      <div class="box box-default">
+        <div class="box-header">
+          <center>
+            <%=image_tag(@supplier.avatar.url(:medium), class: "img-circle", height: 50, width: 50) %>
+            <p><%= @supplier.business_name.try(:upcase) %></p>
+          </center>
+        </div>
+        <div class="box-body">
+
+
+
         <% if @supplier.voucher_amounts.with_no_vouchers.present? %>
-          <p class="text-muted"> VOUCHER DETAILS </p>
           <%= simple_form_for @voucher, url: :supplier_vouchers do |f| %>
           <tr>
           <td><%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
           <%= f.input :description, as: :text %>
           <%= f.input :supplier_id, input_html: { value: @supplier.id }, as: :hidden %>
-          <%= f.input :number, input_html: { value: Voucher.generate_number_for(@voucher) } %>
+          <%= f.input :number, input_html: { value: Voucher.generate_number_for(@voucher) }, readonly: true %>
           <%= f.input :preparer_id, input_html: { value: current_user.id }, as: :hidden %>
           <div class="box-footer">
             <%= f.submit "Create Voucher", class: "btn btn-primary pull-right" %>

@@ -1,0 +1,39 @@
+<% @line_items.each do |line_item| %>
+                <tr>
+                  <td>
+                    <b><%= line_item.name.try(:upcase) %></b><br>
+
+
+                      <small class="text-success"><%= number_to_currency line_item.unit_of_measurement.product.base_measurement.price %> / <%= line_item.product.base_measurement_code %></small>
+
+                  </td>
+                  <td>
+
+                      <b class="text-danger"><%= line_item.available_quantity %> <%= line_item.product.base_measurement_code.try(:upcase) %></b><br>
+                      <small>AVAILABLE</small>
+
+                  </td>
+                    <%= simple_form_for @purchase_return_line_item, url: :store_front_module_purchase_return_line_items do |f| %>
+                    <td width="100px">
+                      <% if !line_item.out_of_stock? %>
+                        <%= f.input :quantity, as: :string, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, label: false, autofocus: true %>
+
+                      <% end %>
+                    </td>
+                    <td><% if !line_item.out_of_stock? %>
+                        <%= f.input :unit_of_measurement_id, collection: line_item.product.unit_of_measurements.map{|a| [a.code, a.id] },  label: false, selected: line_item.product.base_measurement %>
+                      <% end %></td>
+                      <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
+                      <%= f.input :product_id, input_html: { value: line_item.product_id }, as: :hidden %>
+                      <%= f.input :barcode, input_html: { value: params[:search] }%>
+                      <%= f.input :purchase_line_item_id, input_html: { value: line_item.id }, as: :hidden %>
+                    <td>
+                      <% if !line_item.out_of_stock? %>
+                        <%= f.submit "Add", class: "btn btn-primary btn-sm" %>
+                      <% else %>
+                        <span class="text-danger"><b>OUT OF STOCK</b></span>
+                      <% end %>
+                    </td>
+                    <% end %>
+                </tr>
+              <% end %>

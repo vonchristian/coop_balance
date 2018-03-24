@@ -20,12 +20,12 @@ module StoreFrontModule
       def decrease_product_available_quantity
         remaining_quantity = converted_quantity
         find_product.purchases.order(date: :asc).available.each do |purchase|
-            spoilages = find_cart.spoilage_order_line_items.create!(quantity: quantity_for(purchase, remaining_quantity),
+            spoilages = find_cart.spoilage_line_items.create!(quantity: quantity_for(purchase, remaining_quantity),
                                                    unit_cost: purchase.unit_cost,
                                                    total_cost: set_total_cost(purchase, remaining_quantity),
                                                    unit_of_measurement_id: unit_of_measurement_id,
                                                    product_id: product_id,
-                                                   referenced_line_item: purchase)
+                                                   purchase_line_item: purchase)
             remaining_quantity -= spoilages.converted_quantity
             break if remaining_quantity.zero?
         end

@@ -4,6 +4,7 @@ RSpec.describe Voucher, type: :model do
   describe 'associations' do
     it { is_expected.to have_one :entry }
     it { is_expected.to belong_to :payee }
+    it { is_expected.to belong_to :commercial_document }
     it { is_expected.to belong_to :preparer }
     it { is_expected.to belong_to :disburser }
     it { is_expected.to have_many :voucher_amounts }

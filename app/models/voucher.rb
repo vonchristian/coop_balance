@@ -5,6 +5,8 @@ class Voucher < ApplicationRecord
 
   has_one :entry,            class_name: "AccountingModule::Entry", as: :commercial_document
   belongs_to :payee,         polymorphic: true
+  belongs_to :commercial_document,         polymorphic: true #orders
+
   belongs_to :preparer,      class_name: "User", foreign_key: 'preparer_id'
   belongs_to :disburser,     class_name: "User", foreign_key: 'disburser_id'
   has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", dependent: :destroy
@@ -17,7 +19,17 @@ class Voucher < ApplicationRecord
   before_save :set_default_date
 
   def self.unused
-    disbursed.select { |a| a.payee_id.nil? }
+    disbursed.select { |a| a.commercial_document_id.nil? }
+  end
+  def total
+    if disbursed?
+      entry.debit_amounts.sum(&:amount)
+    else
+      voucher_amounts.sum
+    end
+  end
+  def number_and_total
+    "#{number} - #{total}"
   end
 
   def self.disbursed(options={})

@@ -7,7 +7,9 @@ module StoreFrontModule
                                     foreign_key: 'sales_line_item_id'
 
       delegate :purchase_cost, to: :purchase_line_item
-
+      delegate :sales_order, to: :sales_line_item
+      delegate :customer, to: :sales_order
+      delegate :name, to: :customer, prefix: true
       def self.cost_of_goods_sold
         sum(&:cost_of_goods_sold)
       end

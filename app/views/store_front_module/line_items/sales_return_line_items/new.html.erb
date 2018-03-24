@@ -40,7 +40,7 @@
           </tbody>
         </table>
         <br>
-        <% if @sales_return_order_line_items.present? %>
+        <% if @sales_return_line_items.present? %>
           <p class="text-danger"><b> SALES RETURN DETAILS</b> </p>
           <div class="table table-responsive">
             <table class="table table-hover table-striped">
@@ -53,7 +53,7 @@
                 </tr>
               </thead>
               <tbody>
-                <% @cart.sales_return_order_line_items.each do |line_item| %>
+                <% @cart.sales_return_line_items.each do |line_item| %>
                   <tr>
                     <td>
                       <%= line_item.quantity %> <%= line_item.unit_of_measurement_code %>
@@ -63,8 +63,9 @@
                     </td>
                     <td>
                       <span class="pull-right">
-                        <%= number_to_currency line_item.unit_cost %></td>
+                        <%= number_to_currency line_item.unit_cost %>
                       </span>
+                    </td>
                     <td>
                       <span class="pull-right"><%=number_to_currency line_item.total_cost %></span>
                     </td>
@@ -84,19 +85,19 @@
   </div>
   <div class="col-md-5">
     <div class="box box-solid">
-      <% if @cart.line_items.present? %>
+      <% if @cart.sales_return_line_items.present? %>
         <div class="box-header">
           <div class="row">
             <div class="col-md-4 col-md-offset-2">
               <h3><b> TOTAL </b></h3>
             </div>
             <div class="col-md-5">
-              <h3><b><span class="pull-right"><%=number_to_currency @cart.line_items.total_cost %></span></b></h3>
+              <h3><b><span class="pull-right"><%=number_to_currency @cart.sales_return_line_items.total_cost %></span></b></h3>
             </div>
           </div>
         </div>
         <div class="box-body">
-          <%= simple_form_for @sales_return_order, url: :store_front_module_sales_return_order_processings do |f| %>
+          <%= simple_form_for @sales_return_order, url: :store_front_module_sales_returns do |f| %>
             <%= f.input :customer_id, collection: StoreFrontModule::Order.customers.map{|a| [a.name, a.id] } %>
             <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
             <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
@@ -108,4 +109,14 @@
           <br />
         </div>
       <% end %>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#store_front_module_orders_sales_return_order_processing_customer_id").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>
 

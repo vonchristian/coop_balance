@@ -1,0 +1,60 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-danger with-border">
+      <div class="box-header">
+        <div class="row">
+          <div class="col-md-4">
+            <h3 class="box-title"> Spoilages </h3>
+          </div>
+          <div class="col-md-5">
+          </div>
+          <div class="col-md-3">
+            <span class="pull-right">
+              <%= link_to "New Spoilage", new_store_front_module_spoilage_line_item_path, class: "btn btn-danger" %>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="box-body">
+        <div class="table table-responsive">
+          <table class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th> Date </th>
+                <th> Supplier </th>
+                <th> Items </th>
+                <th> Employee </th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @spoilages.each do |spoilage| %>
+                <tr>
+                  <td><%= spoilage.date.strftime("%B %e, %Y") %></td>
+                  <td><%= spoilage.supplier_name %></td>
+                  <td>
+                    <% spoilage.spoilage_line_items.each do |line_item| %>
+                      <div class="row">
+                        <div class="col-md-3">
+                          <%= line_item.quantity %> <%= line_item.unit_of_measurement_code %>
+                        </div>
+                        <div class="col-md-6">
+                          <%= line_item.name %>
+                        </div>
+                        <div class="col-md-3">
+                          <%= number_to_currency line_item.total_cost %>
+                        </div>
+                      </div>
+                      <br>
+                    <% end %>
+                  </td>
+                  <td><%= spoilage.employee_name %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

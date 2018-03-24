@@ -3,11 +3,20 @@
     <div class="box box-danger">
       <div class="box-header">
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-3">
             <h3 class="box-title">Sales Returns Section</h3>
-            <span class="help-block"> List of sales returns </span>
           </div>
-          <div class="col-md-5">
+          <div class="col-md-6">
+             <%=form_tag store_front_module_sales_returns_path, method: :get, id: "sidebar-form" do %>
+                <div class="input-group">
+                  <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search...", type: "search" %>
+                  <span class="input-group-btn">
+                    <%= button_tag(type: 'submit', class: "btn") do %>
+                      <i class="icon-magnifier"></i>
+                    <% end %>
+                  </span>
+                </div>
+              <% end %>
           </div>
           <div class="col-md-3">
             <span class="pull-right">
@@ -31,19 +40,19 @@
             </thead>
             <tbody>
               <% @sales_return_orders.each do |sales_return_order| %>
-                 <tr data-link="<%=store_front_module_sales_return_order_path(sales_return_order)%>" class="salesReturnOrderIndex">
+                 <tr data-link="<%=store_front_module_sales_return_path(sales_return_order)%>" class="salesReturnOrderIndex">
                   <td><%= sales_return_order.date.strftime("%B %e, %Y") %></td>
                   <td><%= sales_return_order.commercial_document_name %></td>
                   <td>
-                    <% sales_return_order.sales_return_order_line_items.each do |line_item|%>
+                    <% sales_return_order.sales_return_line_items.each do |line_item|%>
                       <div class="row">
                         <div class="col-md-3">
-                          <%= line_item.quantity %> <%= line_item.unit_of_measurement_code %>
+                          <%= line_item.quantity %>
                         </div>
                         <div class="col-md-6">
                           <%= line_item.name %>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                           <%= number_to_currency line_item.unit_cost %>
                         </div>
                       </div>

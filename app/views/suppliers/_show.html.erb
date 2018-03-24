@@ -1,9 +1,12 @@
 <div class="row">
-    <div class="col-md-3">
-      <%= render 'suppliers/partials/sidebar' %>
-    </div>
-    <div class="col-md-9">
-      <div class="box box-solid">
+    <div class="col-md-12">
+      <div class="box box-default">
+      <div class="box-header">
+        <center>
+          <%= image_tag(@supplier.avatar.url(:medium), class: "img-responsive img-circle", height: 60, width: 60) %>
+          <h3 class="box-title"><%= @supplier.owner_name %></h3>
+        </center>
+      </div>
 
       <div class="tab-content box-body">
         <div class="nav-tabs-navigation">

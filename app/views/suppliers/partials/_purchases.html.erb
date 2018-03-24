@@ -13,10 +13,10 @@
             </thead>
             <tbody>
               <% @purchase_orders.each do|order| %>
-                 <tr data-link="<%=store_front_module_purchase_order_path(order)%>" class="purchaseOrderIndex">
+                 <tr data-link="<%=store_front_module_purchase_path(order)%>" class="purchaseOrderIndex">
                   <td><%= order.created_at %></td>
                   <td><%= order.voucher_number %> </td>
-                  <td><%= order.purchase_order_line_items.count %></td>
+                  <td><%= order.purchase_line_items.count %></td>
                 </tr>
               <% end %>
             </tbody>

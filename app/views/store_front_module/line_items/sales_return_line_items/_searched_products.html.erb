@@ -22,7 +22,7 @@
                       <% end %>
                     </td>
                     <td><% if product.sales_balance > 0 %>
-                        <%= f.input :unit_of_measurement_id, input_html: { value: product.base_measurement }, label: false, collection: product.unit_of_measurements.all.map{|a| [a.code, a.id] } %>
+                        <%= f.input :unit_of_measurement_id, selected: product.base_measurement, label: false, collection: product.unit_of_measurements.all.map{|a| [a.code, a.id] } %>
                       <% end %></td>
                       <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
                       <%= f.input :product_id, input_html: { value: product.id }, as: :hidden %>

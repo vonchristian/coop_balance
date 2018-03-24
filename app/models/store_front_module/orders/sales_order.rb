@@ -28,11 +28,7 @@ module StoreFrontModule
       end
 
       def cost_of_goods_sold
-        sales_order_line_items.cost_of_goods_sold
-      end
-
-      def credit_sales?
-        CoopConfigurationsModule::StoreFrontConfig.default_accounts_receivable_account.debit_amounts.where(commercial_document: self).present?
+        sales_line_items.cost_of_goods_sold
       end
     end
   end

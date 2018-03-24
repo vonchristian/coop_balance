@@ -10,7 +10,7 @@
           </div>
           <div class="col-md-3">
             <span class="pull-right">
-              <%= link_to "New Purchase Return", new_store_front_module_purchase_return_order_line_item_processing_path, class: "btn btn-danger" %>
+              <%= link_to "New Purchase Return", new_store_front_module_purchase_return_line_item_path, class: "btn btn-danger" %>
             </span>
           </div>
         </div>
@@ -32,7 +32,7 @@
                   <td><%= purchase_return_order.date.strftime("%B %e, %Y") %></td>
                   <td><%= purchase_return_order.supplier_name %></td>
                   <td>
-                    <% purchase_return_order.purchase_return_order_line_items.each do |line_item| %>
+                    <% purchase_return_order.purchase_return_line_items.each do |line_item| %>
                       <div class="row">
                         <div class="col-md-3">
                           <%= line_item.quantity %> <%= line_item.unit_of_measurement_code %>

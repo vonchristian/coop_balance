@@ -1,6 +1,8 @@
 module StoreFrontModule
   class Order < ApplicationRecord
-    enum pay_type: [:cash, :credit, :check]
+    include PgSearch
+    pg_search_scope :text_search, against: [:commercial_document_name]
+    enum pay_type: [:cash, :check]
     belongs_to :employee,                 class_name: "User", foreign_key: 'employee_id'
     belongs_to :commercial_document,      polymorphic: true
     belongs_to :store_front
@@ -13,7 +15,7 @@ module StoreFrontModule
     delegate :number,                     to: :official_receipt, prefix: true, allow_nil: true
     delegate :number,                     to: :invoice, prefix: true, allow_nil: true
     delegate :first_and_last_name,        to: :commercial_document, prefix: true
-    before_save :set_default_date
+    before_save :set_default_date, :set_commercial_document_name
 
     def self.ordered_on(options={})
       if options[:from_date] && options[:to_date]
@@ -58,8 +60,11 @@ module StoreFrontModule
 
     private
     def set_default_date
-        todays_date = ActiveRecord::Base.default_timezone == :utc ? Time.now.utc : Time.now
-        self.date ||= todays_date
-      end
+      todays_date = ActiveRecord::Base.default_timezone == :utc ? Time.now.utc : Time.now
+      self.date ||= todays_date
+    end
+    def set_commercial_document_name #pg_search cannot traverse polymorphic association
+      self.commercial_document_name = self.commercial_document.name
+    end
   end
 end

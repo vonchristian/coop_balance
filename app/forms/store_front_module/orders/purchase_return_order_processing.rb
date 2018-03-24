@@ -13,9 +13,9 @@ module StoreFrontModule
       private
       def create_purchase_return_order
         order = find_supplier.purchase_return_orders.create!(date: date, employee_id: employee_id)
-        find_cart.purchase_return_order_line_items.each do |line_item|
+        find_cart.purchase_return_line_items.each do |line_item|
           line_item.cart_id = nil
-          order.purchase_return_order_line_items << line_item
+          order.purchase_return_line_items << line_item
         end
         create_entry(order)
       end
@@ -24,6 +24,7 @@ module StoreFrontModule
         accounts_payable = store_front.accounts_payable_account
         merchandise_inventory = store_front.merchandise_inventory_account
         find_employee.entries.create!(
+          origin: find_employee.office,
           commercial_document: find_supplier,
           entry_date: order.date,
           description: "Purchase return of stocks to #{find_supplier.business_name}",

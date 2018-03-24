@@ -1,0 +1,61 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-default">
+      <div class="box-header">
+        <div class="row">
+          <div class="col-md-3">
+            <h3 class="box-title">Inventories Section</h3>
+          </div>
+          <div class="col-md-6">
+             <%=form_tag store_front_module_inventories_path, method: :get, id: "sidebar-form" do %>
+                <div class="input-group">
+                  <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search...", type: "search" %>
+                  <span class="input-group-btn">
+                    <%= button_tag(type: 'submit', class: "btn") do %>
+                      <i class="icon-magnifier"></i>
+                    <% end %>
+                  </span>
+                </div>
+              <% end %>
+          </div>
+          <div class="col-md-3">
+            <span class="pull-right">
+              <%= link_to "New Inventory", new_store_front_module_purchase_line_item_path, class: "btn btn-primary" %>
+            </span>
+          </div>
+        </div>
+      </div>
+    <div class="box-body">
+      <div class="table table-responsive">
+        <table class="table table-striped table-hover">
+          <thead>
+            <th>Date</th>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Barcode</th>
+            <th>Supplier</th>
+            <th>In Stock</th>
+          </thead>
+          <tbody>
+            <% @inventories.each do |line_item| %>
+              <tr data-link="<%=store_front_module_inventory_path(line_item)%>" class="inventoryIndex">
+                <td><%= line_item.order.try(:date).try(:strftime, "%B %e, %Y") %></td>
+                <td><%= line_item.name %></td>
+                <td><%= line_item.quantity %></td>
+                <td><%= line_item.barcode %></td>
+                <td><%= line_item.supplier_name %></td>
+                <td><%= line_item.available_quantity %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $("tr").click(function() {
+  window.location = $(this).data("link")
+});
+  $('.inventoryIndex').css('cursor', 'pointer');
+</script>

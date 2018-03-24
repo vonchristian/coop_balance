@@ -2,9 +2,9 @@ module StoreFrontModule
   module Orders
     class CreditSalesOrderProcessing
       include ActiveModel::Model
-      attr_accessor  :customer_id,  :employee_id, :cart_id, :date
+      attr_accessor  :customer_id,  :employee_id, :cart_id, :date, :description, :reference_number
 
-      validates :employee_id, :customer_id, presence: true
+      validates :employee_id, :customer_id, :description, :reference_number, presence: true
       def process!
         ActiveRecord::Base.transaction do
           create_sales_order
@@ -14,12 +14,13 @@ module StoreFrontModule
       private
       def create_sales_order
         order = find_customer.sales_orders.create(
+        credit: true,
         date: date,
         employee: find_employee)
 
-        find_cart.sales_order_line_items.each do |sales_order_line_item|
-          sales_order_line_item.cart_id = nil
-          order.sales_order_line_items << sales_order_line_item
+        find_cart.sales_line_items.each do |sales_line_item|
+          sales_line_item.cart_id = nil
+          order.sales_line_items << sales_line_item
         end
         create_entry(order)
       end
@@ -47,7 +48,7 @@ module StoreFrontModule
         find_employee.entries.create(
           commercial_document: find_customer,
           entry_date: order.date,
-          description: "Payment for sales",
+          description: description,
           debit_amounts_attributes: [{ amount: order.total_cost,
                                         account: accounts_receivable,
                                         commercial_document: order},

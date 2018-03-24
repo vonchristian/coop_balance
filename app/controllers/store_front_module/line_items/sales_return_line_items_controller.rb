@@ -9,12 +9,12 @@ module StoreFrontModule
         @cart = current_cart
         @sales_return_line_item = StoreFrontModule::LineItems::SalesReturnLineItemProcessing.new
         @sales_return_order = StoreFrontModule::Orders::SalesReturnOrderProcessing.new
-        @sales_return_order_line_items = @cart.sales_return_order_line_items.order(created_at: :desc)
+        @sales_return_line_items = @cart.sales_return_line_items.order(created_at: :desc)
       end
 
       def create
         @cart = current_cart
-        @sales_return_line_item = StoreFrontModule::LineItems::SalesReturLineItemProcessing.new(line_item_params)
+        @sales_return_line_item = StoreFrontModule::LineItems::SalesReturnLineItemProcessing.new(line_item_params)
         if @sales_return_line_item.valid?
           @sales_return_line_item.process!
           redirect_to new_store_front_module_sales_return_line_item_url, notice: "Added to cart."

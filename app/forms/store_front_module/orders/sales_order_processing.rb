@@ -2,11 +2,19 @@ module StoreFrontModule
   module Orders
     class SalesOrderProcessing
       include ActiveModel::Model
-      attr_accessor  :customer_id, :date, :cash_tendered, :order_change, :employee_id, :cart_id
+      attr_accessor  :customer_id,
+                     :date,
+                     :cash_tendered,
+                     :order_change,
+                     :employee_id,
+                     :cart_id,
+                     :discount_amount,
+                     :total_cost,
+                     :reference_number
 
       validates :employee_id, :customer_id, :cash_tendered, :order_change, presence: true
-      def process!
 
+      def process!
           create_sales_order
       end
 
@@ -19,9 +27,9 @@ module StoreFrontModule
           date: date,
           employee: find_employee)
 
-          find_cart.sales_order_line_items.each do |sales_order_line_item|
+          find_cart.sales_line_items.each do |sales_order_line_item|
             sales_order_line_item.cart_id = nil
-            order.sales_order_line_items << sales_order_line_item
+            order.sales_line_items << sales_order_line_item
           end
           create_entry(order)
         end
@@ -48,22 +56,29 @@ module StoreFrontModule
         sales_discount = store_front.sales_discount_account
         merchandise_inventory = store_front.merchandise_inventory_account
         find_employee.entries.create!(
+          origin: find_employee.office,
           recorder: find_employee,
           commercial_document: find_customer,
           entry_date: order.date,
           description: "Payment for sales",
-          debit_amounts_attributes: [{ amount: order.total_cost,
+          debit_amounts_attributes: [ { amount: total_cost_less_discount(order),
                                         account: cash_on_hand,
+                                        commercial_document: order},
+                                      { amount: discount_amount,
+                                        account: sales_discount,
                                         commercial_document: order},
                                       { amount: order.cost_of_goods_sold,
                                         account: cost_of_goods_sold,
                                         commercial_document: order } ],
-            credit_amounts_attributes:[{ amount: order.total_cost,
-                                         account: sales,
-                                         commercial_document: order},
-                                       {amount: order.cost_of_goods_sold,
+          credit_amounts_attributes:[ { amount: order.total_cost,
+                                        account: sales,
+                                        commercial_document: order},
+                                      { amount: order.cost_of_goods_sold,
                                         account: merchandise_inventory,
                                         commercial_document: order}])
+      end
+      def total_cost_less_discount(order)
+        order.total_cost - discount_amount.to_f
       end
     end
   end

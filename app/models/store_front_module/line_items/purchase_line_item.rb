@@ -13,6 +13,8 @@ module StoreFrontModule
                                                   foreign_key: 'purchase_line_item_id'
       has_many :returned_sales_line_items,        class_name: "StoreFrontModule::LineItems::ReferencedSalesLineItem",
                                                   foreign_key: 'purchase_line_item_id'
+      has_many :spoilage_line_items,              class_name: "StoreFrontModule::LineItems::SpoilageLineItem",
+                                                  foreign_key: 'purchase_line_item_id'
 
       delegate :supplier_name, :date, to: :purchase_order
 
@@ -43,7 +45,8 @@ module StoreFrontModule
         sold_quantity -
         purchase_returns_quantity -
         internal_uses_quantity -
-        stock_transfers_quantity
+        stock_transfers_quantity -
+        spoilage_quantity
       end
       def sold_quantity
         referenced_purchase_line_items.sum(&:converted_quantity)
@@ -57,6 +60,9 @@ module StoreFrontModule
       end
       def stock_transfers_quantity
         stock_transfer_line_items.sum(&:converted_quantity)
+      end
+      def spoilage_quantity
+        spoilage_line_items.sum(&:converted_quantity)
       end
 
       def purchase_cost

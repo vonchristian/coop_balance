@@ -1,0 +1,42 @@
+<% @products.each do |product| %>
+  <div class="row">
+    <div class="col-md-4">
+      <b><%= product.name.try(:upcase) %></b>
+    </div>
+    <div class="col-md-3">
+      <% product.unit_of_measurements.each do |unit_of_measurement| %>
+        <small class="text-success"><%= number_to_currency unit_of_measurement.price %> / <%= unit_of_measurement.code %></small>
+      <% end %>
+    </div>
+    <div class="col-md-3">
+      <b class="text-danger"><%= product.balance %> <%= product.base_measurement_code.try(:upcase) %></b><br>
+      <small>AVAILABLE</small>
+    </div>
+  </div>
+  <hr>
+  <%= simple_form_for @purchase_line_item, url: :store_front_module_purchase_line_items do |f| %>
+    <div class="row">
+      <div class="col-md-2">
+        <%= f.input :quantity, as: :string, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, autofocus: true %>
+      </div>
+      <div class="col-md-2">
+        <%= f.input :unit_of_measurement_id, label: 'Unit', selected: product.base_measurement, collection: product.unit_of_measurements.all.map{|a| [a.code, a.id] } %>
+      </div>
+      <div class="col-md-2">
+        <%= f.input :unit_cost, input_html: { value: product.last_purchase_cost}  %>
+      </div>
+      <div class="col-md-2">
+        <%= f.input :total_cost %>
+      </div>
+      <div class="col-md-2">
+        <%= f.input :barcode %>
+        <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
+        <%= f.input :product_id, input_html: { value: product.id }, as: :hidden %>
+      </div>
+      <div class="col-md-2">
+        <br>
+        <%= f.submit "Add", class: "btn btn-success" %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

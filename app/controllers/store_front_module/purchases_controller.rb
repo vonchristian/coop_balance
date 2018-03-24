@@ -18,8 +18,7 @@ module StoreFrontModule
         render :new
       end
     end
-    def autocomplete_product_name
-    end
+
 
     private
     def purchase_params

@@ -1,0 +1,47 @@
+<% @line_items.each do |line_item| %>
+                <tr>
+                  <td>
+                    <b><%= line_item.name.try(:upcase) %></b><br>
+
+                    <% line_item.product.unit_of_measurements.each do |unit_of_measurement| %>
+                      <small class="text-success"><%= number_to_currency unit_of_measurement.price %> / <%= unit_of_measurement.code %></small>
+                    <% end %>
+
+                  </td>
+                  <td>
+
+                      <b class="text-danger"><%= line_item.available_quantity %> <%= line_item.product.base_measurement_code.try(:upcase) %></b><br>
+                      <small>AVAILABLE</small>
+
+                  </td>
+                </tr>
+                    <%= simple_form_for @purchase_line_item, url: :store_front_module_purchase_line_items do |f| %>
+                      <div class="row">
+                        <div class="col-md-1">
+                        <%= f.input :quantity, as: :string, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, autofocus: true %>
+                      </div>
+                      <div class="col-md-2">
+                        <%= f.input :unit_of_measurement_id, label: 'Unit', input_html: { value: line_item.product.base_measurement }, collection: line_item.product.unit_of_measurements.all.map{|a| [a.code, a.id] } %>
+                      </div>
+                      <div class="col-md-2">
+                        <%= f.input :unit_cost, input_html: { value: line_item.product.last_purchase_cost} %>
+                      </div>
+                      <div class="col-md-2">
+                        <%= f.input :total_cost %>
+                      </div>
+                      <div class="col-md-3">
+                        <%= f.input :barcode %>
+                        <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
+                        <%= f.input :product_id, input_html: { value: line_item.product.id }, as: :hidden %>
+                        <%= f.input :purchase_line_item_id, input_html: { value: line_item.id }, as: :hidden %>
+                      </div>
+                      <div class="col-md-2">
+                        <br>
+                        <%= f.submit "Add", class: "btn btn-success" %>
+                      </div>
+                    </div>
+
+
+
+              <% end %>
+<% end %>

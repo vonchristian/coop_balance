@@ -2,26 +2,35 @@ module StoreFrontModule
   module LineItems
     class SalesLineItemProcessing
      include ActiveModel::Model
-      attr_accessor :unit_of_measurement_id, :quantity, :cart_id, :product_id, :unit_cost, :total_cost, :cart_id, :barcode, :purchase_order_line_item_id, :barcode
+      attr_accessor :unit_of_measurement_id,
+                    :quantity,
+                    :cart_id,
+                    :product_id,
+                    :unit_cost,
+                    :total_cost,
+                    :cart_id,
+                    :barcode,
+                    :purchase_line_item_id
+
       validates :quantity, numericality: { greater_than: 0.1 }
       validate :quantity_is_less_than_or_equal_to_available_quantity?
       def process!
         ActiveRecord::Base.transaction do
-          process_sales_order_line_item
+          process_sales_line_item
         end
       end
 
       private
-      def process_sales_order_line_item
+      def process_sales_line_item
         if product_id.present? && barcode.blank?
           decrease_product_available_quantity
-        elsif purchase_order_line_item_id.present? && barcode.present?
+        elsif purchase_line_item_id.present? && barcode.present?
             decrease_purchase_line_item_quantity
         end
       end
 
        def decrease_product_available_quantity
-        sales = find_cart.sales_order_line_items.create!(
+        sales = find_cart.sales_line_items.create!(
             quantity: quantity,
             unit_cost:                selling_cost,
             total_cost:               set_total_cost,
@@ -31,34 +40,36 @@ module StoreFrontModule
         requested_quantity = converted_quantity
 
         find_product.purchases.order(date: :asc).available.each do |purchase|
-          temp_sales = sales.referenced_purchase_order_line_items.create!(
+          temp_sales = sales.referenced_purchase_line_items.create!(
             quantity:                 quantity_for(purchase, requested_quantity),
             unit_cost:                purchase.purchase_cost,
             total_cost:               total_cost_for(purchase, quantity),
             unit_of_measurement:      find_product.base_measurement,
             product_id:               product_id,
-            purchase_order_line_item: purchase)
+            purchase_line_item: purchase)
           requested_quantity -= temp_sales.quantity
           break if requested_quantity.zero?
         end
       end
 
       def decrease_purchase_line_item_quantity
-        sales = find_cart.sales_order_line_items.create!(
+        sales = find_cart.sales_line_items.create!(
           quantity: quantity,
           unit_cost: selling_cost,
           total_cost: set_total_cost,
           product_id: product_id,
+          barcode: barcode,
           unit_of_measurement: find_unit_of_measurement
           )
-        purchase = find_purchase_order_line_item
-        sales = sales.referenced_purchase_order_line_items.create!(
+        purchase = find_purchase_line_item
+        sales = sales.referenced_purchase_line_items.create!(
             quantity:                 converted_quantity,
             unit_cost:                purchase.purchase_cost,
             total_cost:               total_cost_for(purchase, quantity),
             unit_of_measurement:      find_product.base_measurement,
             product_id:               product_id,
-            purchase_order_line_item: purchase)
+            barcode: barcode,
+            purchase_line_item: purchase)
       end
 
       def quantity_for(purchase, requested_quantity)
@@ -96,15 +107,15 @@ module StoreFrontModule
         Product.find_by_id(product_id)
       end
 
-      def find_purchase_order_line_item
-        StoreFrontModule::LineItems::PurchaseOrderLineItem.find_by_id(purchase_order_line_item_id)
+      def find_purchase_line_item
+        StoreFrontModule::LineItems::PurchaseLineItem.find_by_id(purchase_line_item_id)
       end
 
       def available_quantity
         if product_id.present? && barcode.blank?
           find_product.available_quantity
-        elsif purchase_order_line_item_id.present? && barcode.present?
-          find_purchase_order_line_item.available_quantity
+        elsif purchase_line_item_id.present? && barcode.present?
+          find_purchase_line_item.available_quantity
         end
       end
 

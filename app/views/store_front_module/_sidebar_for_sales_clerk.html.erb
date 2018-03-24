@@ -27,6 +27,9 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
           <li class="header"> STORE FRONT </li>
+
+          <!-- <li><a href="/dashboard"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li> -->
+          <li class=<%= 'active' if current_page?(new_store_front_module_sales_line_item_path) %> ><a href="/"><i class="fa fa-home"></i> <span>Store</span></a></li>
           <li class="treeview">
             <a href="#">
               <i class="fa fa-server"></i> <span>Orders</span>
@@ -44,15 +47,13 @@
               <li><a href="/store_front_module/spoilages"><i class="fa fa-circle-o"></i> Spoilages</a></li>
             </ul>
           </li>
-          <!-- <li><a href="/dashboard"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li> -->
-          <li class=<%= 'active' if current_page?(store_front_module_index_path) %> ><a href="/store_front_module"><i class="fa fa-home"></i> <span>Store</span></a></li>
 
           <li class=<%= 'active' if current_page?(store_front_module_products_path) %> ><a href="/store_front_module/products"><i class="fa fa-tag"></i> <span>Products</span></a></li>
-
-          <li class=<%= 'active' if current_page?(store_front_module_sales_returns_path) %> ><a href="/store_front_module/sales_returns"><i class="fa fa-circle-o"></i> <span> Sales Returns</span></a></li>
+           <li class=<%= 'active' if current_page?(store_front_module_inventories_path) %> ><a href="/store_front_module/inventories"><i class="fa fa-cube"></i> <span>Inventory</span></a></li>
 
 
          <li class=<%= 'active' if current_page?(store_front_module_customers_path) %> ><a href="/store_front_module/customers"><i class="fa fa-users"></i> <span> Customers</span></a></li>
+         <li class=<%= 'active' if current_page?(suppliers_path) %> ><a href="/suppliers"><i class="fa fa-users"></i> <span> Suppliers</span></a></li>
 
 
             <li class=<%= 'active' if current_page?(store_front_module_sales_clerk_reports_path) %> ><a href="/store_front_module/sales_clerk_reports"><i class="fa fa-folder"></i> <span> Reports</span></a></li>

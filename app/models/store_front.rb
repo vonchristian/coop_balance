@@ -11,9 +11,6 @@ class StoreFront < ApplicationRecord
   belongs_to :sales_discount_account,        class_name: "AccountingModule::Account"
   belongs_to :purchase_return_account,       class_name: "AccountingModule::Account"
   belongs_to :internal_use_account,          class_name: "AccountingModule::Account"
-
-
-
   has_many :entries,                         class_name: "AccountingModule::Entry",
                                              as: :origin
   validates :name, :address, :contact_number, presence: true
@@ -34,6 +31,7 @@ class StoreFront < ApplicationRecord
   def self.accounts_receivable_balance(customer)
     all.map{|a| a.accounts_receivable_balance(customer) }.sum
   end
+
 
   def accounts_receivable_balance(customer)
     accounts_receivable_account.balance(commercial_document: customer)

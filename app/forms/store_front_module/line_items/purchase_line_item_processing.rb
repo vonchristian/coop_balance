@@ -9,10 +9,9 @@ module StoreFrontModule
           process_line_item
         end
       end
-
       private
       def process_line_item
-        line_item = find_cart.purchase_order_line_items.create(
+        line_item = find_cart.purchase_line_items.create(
                                     quantity: quantity,
                                     unit_cost: unit_cost,
                                     total_cost: total_cost,

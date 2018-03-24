@@ -17,7 +17,7 @@ module StoreFrontModule
         end
       end
       def update_product_available_quantity
-        sales_return = find_cart.sales_return_order_line_items.create!(quantity: quantity,
+        sales_return = find_cart.sales_return_line_items.create!(quantity: quantity,
                                                    unit_cost: selling_cost,
                                                    total_cost: set_total_cost,
                                                    unit_of_measurement: find_unit_of_measurement,

@@ -54,14 +54,13 @@
                       <tr>
                         <td><%= voucher_amount.account_name %></td>
                         <td>
-                          <% if voucher_amount.debit? %>
                             <%= number_to_currency voucher_amount.amount %>
-                          <% end %>
+
                         </td>
                          <td>
-                          <% if voucher_amount.credit? %>
+
                             <%= number_to_currency voucher_amount.amount %>
-                          <% end %>
+
                         </td>
                       </tr>
                     <% end %>

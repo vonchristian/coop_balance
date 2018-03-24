@@ -14,7 +14,8 @@ class DisbursementForm
     entry = AccountingModule::Entry.new(
       commercial_document: find_voucher,
       :description => description,
-      recorder_id: recorder_id,
+      recorder: find_employee,
+      origin: find_employee.office,
       entry_date: date)
     find_voucher.voucher_amounts.debit.each do |amount|
       debit_amount = AccountingModule::DebitAmount.new(

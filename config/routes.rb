@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   root :to => 'management_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'general_manager' if request.env['warden'].user }, as: :management_module_root
   root :to => 'teller_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'teller' if request.env['warden'].user }, as: :teller_module_root
   root :to => 'store_front_module/products#index', :constraints => lambda { |request| request.env['warden'].user.role == 'stock_custodian' if request.env['warden'].user }, as: :warehouse_module_root
-  root :to => 'store_front_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'sales_clerk' if request.env['warden'].user }, as: :store_front_module_root
+  root :to => 'store_front_module/line_items/sales_line_items#new', :constraints => lambda { |request| request.env['warden'].user.role == 'sales_clerk' if request.env['warden'].user }, as: :store_front_module_root
   root :to => 'store_front_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'sales_manager' if request.env['warden'].user }, as: :store_front_module_sales_manager_root
 
   root :to => 'store_front_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'stock_custodian' if request.env['warden'].user }, as: :store_stocks_module_root
@@ -202,44 +202,52 @@ Rails.application.routes.draw do
   end
 
   namespace :store_front_module do
-    resources :sales_returns,   only: [:index, :show],   module: :orders
-    resources :spoilages,       only: [:index, :show],   module: :orders
-    resources :purchases,       only: [:index, :show],   module: :orders
-    resources :internal_uses,   only: [:index, :show],   module: :orders
-    resources :sales,           only: [:index, :show],   module: :orders
-    resources :stock_transfers, only: [:index, :show],   module: :orders
+    resources :inventories, only: [:index, :show] do
+      resources :sales,            only: [:index], module: :inventories
+      resources :sales_returns,    only: [:index], module: :inventories
+      resources :purchase_returns, only: [:index], module: :inventories
+      resources :spoilages,        only: [:index], module: :inventories
+    end
 
-    resources :sales_reports, only: [:index], module: :reports
-    resources :sales_clerk_reports, only: [:index], module: :reports
+    resources :purchases,                only: [:index, :show, :create],   module: :orders
+    resources :sales,                    only: [:index, :show, :create],   module: :orders
+    resources :credit_sales,             only: [:index, :show, :create],   module: :orders
+    resources :sales_returns,            only: [:index, :show, :create],   module: :orders
+    resources :purchase_returns,         only: [:index, :show, :create],   module: :orders
+    resources :spoilages,                only: [:index, :show, :create],   module: :orders
+    resources :internal_uses,            only: [:index, :show, :create],   module: :orders
+    resources :stock_transfers,          only: [:index, :show, :create],   module: :orders
+    resources :received_stock_transfers, only: [:index, :show, :create],   module: :orders
+
+    resources :purchase_line_items,                only: [:new, :create, :destroy], module: :line_items
+    resources :sales_line_items,                   only: [:new, :create, :destroy], module: :line_items
+    resources :sales_return_line_items,            only: [:new, :create, :destroy], module: :line_items
+    resources :purchase_return_line_items,         only: [:new, :create, :destroy], module: :line_items
+    resources :credit_sales_line_items,            only: [:new, :create, :destroy], module: :line_items
+    resources :spoilage_line_items,                only: [:new, :create, :destroy], module: :line_items
+    resources :stock_transfer_line_items,          only: [:new, :create, :destroy], module: :line_items
+    resources :internal_use_line_items,            only: [:new, :create, :destroy], module: :line_items
+    resources :received_stock_transfer_line_items, only: [:new, :create, :destroy], module: :line_items
+
+    resources :sales_reports,             only: [:index], module: :reports
+    resources :sales_clerk_reports,       only: [:index], module: :reports
     resources :sales_clerk_sales_reports, only: [:index], module: :reports
-    resources :purchases_reports, only: [:index], module: :reports
-    resources :spoilages_reports, only: [:index], module: :reports
-    resources :spoilages, only: [:new, :create, :destroy]
-    resources :sales_return_line_items, only: [:index, :new, :create, :destroy], module: :line_items
-    resources :purchase_order_line_item_processings, only: [:index, :new, :create, :destroy], module: :line_items
-    resources :purchase_return_order_line_item_processings, only: [:new, :create, :destroy], module: :line_items
-    resources :employees, only: [:show]
-    resources :settings, only: [:index]
-    resources :reports, only: [:index]
+    resources :purchases_reports,         only: [:index], module: :reports
+    resources :spoilages_reports,         only: [:index], module: :reports
+
+    resources :suppliers,      only: [:index, :new, :create]
+    resources :employees,      only: [:show]
+    resources :settings,       only: [:index]
+    resources :reports,        only: [:index]
     resources :search_results, only: [:index]
-    resources :members, only: [:index, :show, :new, :create]
-    resources :sales_orders, only: [:index, :new, :create, :show], module: :orders
-    resources :sales_return_order_processings, only: [:index, :new, :create, :show], module: :orders
-    resources :purchase_return_order_processings, only: [:index, :new, :create, :show], module: :orders
-    resources :line_items, only: [:new, :create, :destroy]
-    resources :sales_order_line_items, only: [:new, :create, :destroy]
-    resources :purchase_orders, only: [:index, :new, :create, :show, :destroy], module: :orders
-    resources :purchase_return_orders, only: [:index], module: :orders
-    resources :purchase_order_processings, only: [:new, :create], module: :orders
-    resources :spoilage_order_processings, only: [:new, :create], module: :orders
-    resources :credit_sales_order_processings, only: [:create], module: :orders
+    resources :members,        only: [:index, :show, :new, :create]
 
     resources :products, only: [:index, :show, :new, :create] do
-      resources :purchases, only: [:index, :new, :create], module: :products
-      resources :sales, only: [:index], module: :products
-      resources :purchase_returns, only: [:index], module: :products
-      resources :sales_returns, only: [:index], module: :products
-      resources :settings, only: [:index], module: :products
+      resources :purchases,            only: [:index, :new, :create], module: :products
+      resources :sales,                only: [:index],                module: :products
+      resources :purchase_returns,     only: [:index],                module: :products
+      resources :sales_returns,        only: [:index],                module: :products
+      resources :settings,             only: [:index],                module: :products
       resources :unit_of_measurements, only: [:new, :create]
     end
     resources :unit_of_measurements, shallow: true do
@@ -247,7 +255,6 @@ Rails.application.routes.draw do
     end
     resources :customers, only: [:index, :show] do
       resources :sales_orders, only: [:index], module: :customers
-      resources :credit_sales_order_line_items, only: [:new, :create, :destroy], module: :line_items
     end
   end
 
@@ -385,11 +392,6 @@ Rails.application.routes.draw do
   resources :filtered_loans, only: [:index], module: :loans_module
   resources :barangays, only: [:show] do
     resources :loans, only: [:index], module: :barangays
-  end
-
-  namespace :store_front_module do
-    resources :sales_order_processings, only: [:create], module: :orders
-    resources :order_processings, only: [:new, :create]
   end
   resources :memberships, only: [:index, :show] do
     resources :time_deposits, only: [:new, :create], module: :memberships

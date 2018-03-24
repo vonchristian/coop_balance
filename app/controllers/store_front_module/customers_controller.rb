@@ -3,13 +3,9 @@ module StoreFrontModule
   class CustomersController < ApplicationController
     def index
       if params[:search].present?
-        member_customers = Member.text_search(params[:search])
-        employee_customers = User.text_search(params[:search])
-        customers = member_customers + employee_customers
-        @customers =customers.paginate(page: params[:page], per_page: 50)
+        @customers = Customer.text_search(params[:search]).paginate(page: params[:page], per_page: 25)
       else
-        customers = Member.all + User.all
-        @customers = customers.paginate(page: params[:page], per_page: 50)
+        @customers = Customer.all.paginate(page: params[:page], per_page: 25)
       end
     end
     def show

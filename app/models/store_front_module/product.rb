@@ -69,6 +69,9 @@ module StoreFrontModule
     def out_of_stock?
       balance.zero?
     end
+    def last_purchase_cost
+      purchases.order(created_at: :asc).last.try(:unit_cost)
+    end
 
     def balance(options={})
       received_stock_transfer_balance(options) +

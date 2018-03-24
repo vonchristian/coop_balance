@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-default">
+      <div class="box-header">
+        <h3 class="box-title"> <%= @line_item.name %></h3><br><br>
+        <i class="fa fa-cube"></i> QTY <%= @line_item.quantity %>&nbsp; &nbsp;
+        <i class="fa fa-shopping-cart"></i> SOLD <%= @line_item.sold_quantity %>&nbsp; &nbsp;
+        <i class="fa fa-arrow-left"></i> PURCHASE RETURN <%= @line_item.purchase_returns_quantity %>&nbsp; &nbsp;
+
+        <i class="fa fa-server"></i> IN STOCK <%= @line_item.available_quantity %>
+      </div>
+      <div class="box-body">
+        <div class="nav-tabs">
+          <ul class="nav nav-tabs">
+            <li class="<%= 'active' if current_page?(store_front_module_inventory_path(@line_item))%>"><%= link_to 'Info', store_front_module_inventory_path(@line_item) %></li>
+            <li class="<%= 'active' if current_page?(store_front_module_inventory_sales_path(@line_item))%>"><%= link_to 'Sales', store_front_module_inventory_sales_path(@line_item) %></li>
+            <li class="<%= 'active' if current_page?(store_front_module_inventory_sales_returns_path(@line_item))%>"><%= link_to 'Sales Returns', store_front_module_inventory_sales_returns_path(@line_item) %></li>
+            <li class="<%= 'active' if current_page?(store_front_module_inventory_spoilages_path(@line_item))%>"><%= link_to 'Spoilages', store_front_module_inventory_spoilages_path(@line_item) %></li>
+          </ul>
+        </div>
+        <div class="tab-content">
+          <% if current_page? store_front_module_inventory_path(@line_item) %>
+            <%= render 'store_front_module/inventories/partials/info' %>
+          <% end %>
+          <% if current_page? store_front_module_inventory_sales_path(@line_item) %>
+            <%= render 'store_front_module/inventories/partials/sales' %>
+          <% end %>
+          <% if current_page? store_front_module_inventory_sales_returns_path(@line_item) %>
+            <%= render 'store_front_module/inventories/partials/sales_returns' %>
+          <% end %>
+          <% if current_page? store_front_module_inventory_spoilages_path(@line_item) %>
+            <%= render 'store_front_module/inventories/partials/spoilages' %>
+          <% end %>
+
+        </div>
+      </div>

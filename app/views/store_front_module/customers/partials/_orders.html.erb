@@ -13,7 +13,7 @@
         <% @sales_orders.each do |order| %>
           <tr data-link="<%=store_front_module_sales_order_path(order)%>" class="myClass">
             <td> <%= order.date.try(:strftime, ("%B %e, %Y")) %><br>
-              <% if order.credit_sales? %>
+              <% if order.credit? %>
                       <span class="badge bg-red"> Credit </span>
                     <% end %>
             </td>
