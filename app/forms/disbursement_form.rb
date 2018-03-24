@@ -45,6 +45,7 @@ class DisbursementForm
     find_voucher.update_attributes(disburser_id: recorder_id)
     if find_voucher.payee.kind_of?(LoansModule::Loan)
       find_voucher.payee.update_attributes(disbursement_date: date)
+      find_voucher.payee.update_attributes(maturity_date: date + payee.term.to_i.momths)
       LoansModule::AmortizationSchedule.create_schedule_for(find_voucher.payee)
     end
   end

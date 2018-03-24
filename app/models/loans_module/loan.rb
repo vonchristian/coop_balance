@@ -3,6 +3,10 @@ module LoansModule
   class Loan < ApplicationRecord
     include PgSearch
     include PastDueMonitoring
+    include LoansModule::Loans::Interest
+    include LoansModule::Loans::Penalty
+    include LoansModule::Loans::Amortization
+
     pg_search_scope :text_search, :against => [:borrower_full_name]
     multisearchable against: [:borrower_full_name]
     enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
@@ -65,13 +69,21 @@ module LoansModule
     validates :loan_amount, numericality: { less_than_or_equal_to: :maximum_loanable_amount }
     before_save :set_borrower_full_name
 
-    def self.past_due
-      select{ |a| a.is_past_due? }
+    def self.past_due(options={})
+      LoansModule::LoansQuery.new.past_due(options)
+    end
+     def self.matured(options={})
+      LoansModule::LoansQuery.new.matured(options)
+    end
+
+    def self.aging_for(options={})
+      LoansModule::LoansQuery.new.aging(options)
     end
 
     def self.paid(options={})
-      all.map{|a| a.paid?(options) }
+      all.map{ |a| a.paid?(options) }
     end
+
     def self.payments_total
       all.map{|loan| loan.payments_total }.sum
     end
@@ -87,6 +99,7 @@ module LoansModule
       end
       entries
     end
+
     def loan_payments(options={})
       entries = []
       loan_product_loans_receivable_current_account.credit_amounts.where(commercial_document: self).each do |amount|
@@ -101,18 +114,10 @@ module LoansModule
       entries.uniq
     end
 
-    def self.disbursed
-      where.not(disbursement_date: nil)
+    def self.disbursed(options={})
+      LoansQuery.new.disbursed(options)
     end
 
-    def self.disbursed_on(options={})
-      if options[:from_date] && options[:to_date]
-        date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
-        disbursed.where('disbursement_date' => (date_range.start_date..date_range.end_date))
-      else
-        all
-      end
-    end
 
     def self.disbursed_by(employee)
       User.find_by(id: employee.id).disbursed_loans
@@ -131,13 +136,6 @@ module LoansModule
       AccountsReceivableStore.new.total_payments(self)
     end
 
-    def penalty_payment_total
-      LoanPenalty.new.payments_total(self)
-    end
-
-    def penalties_total
-      LoanPenalty.new.balance(self)
-    end
 
     def interest_on_loan_charge
       interest = charges.where(account: loan_product_unearned_interest_income_account)
@@ -156,35 +154,12 @@ module LoansModule
       borrower_name
     end
 
-    def self.aging_for(start_num, end_num)
-      aging_loans = []
-      aging.each do |loan|
-        if (start_num..end_num).include?(loan.number_of_days_past_due)
-          aging_loans << loan
-        end
-      end
-      aging_loans
-    end
 
-    def amortized_principal_for(options={})
-      amortization_schedules.scheduled_for(options).sum(&:principal)
-    end
-
-    def amortized_interest_for(options={})
-      amortization_schedules.scheduled_for(options).sum(&:interest)
-    end
 
     def arrears(options={})
       amortization_schedules.scheduled_for(options).sum(&:total_amortization)
     end
 
-    def total_unpaid_principal_for(date)
-      amortized_principal_for(date) - paid_principal_for(date)
-    end
-
-    def paid_principal_for(date)
-      loan_product_account.credit_entries.where(commercial_document: self)
-    end
     def total_deductions(options={})
       amortized_principal_for(options) +
       amortized_interest_for(options) +
@@ -192,11 +167,11 @@ module LoansModule
     end
 
     def first_notice_date
-    if amortization_schedules.present?
-      amortization_schedules.last.date + 5.days
-    else
-      Time.zone.now
-    end
+      if amortization_schedules.present?
+        amortization_schedules.last.date + 5.days
+      else
+        Time.zone.now
+      end
     end
 
     def remaining_term
@@ -228,6 +203,7 @@ module LoansModule
     def balance_for(schedule)
       loan_amount - LoansModule::AmortizationSchedule.principal_for(schedule, self)
     end
+
     def principal_balance_for(schedule) #used to compute interest
       if schedule == self.amortization_schedules.order(date: :asc).first
         loan_amount
@@ -235,12 +211,8 @@ module LoansModule
         loan_amount - amortization_schedules.principal_for(schedule.previous_schedule, self)
       end
     end
-    def unpaid_principal
-      loan_amount - paid_principal
-    end
-    def paid_principal
-      LoanPrincipal.new.payments_total(self)
-    end
+
+
     def total_loan_charges
       loan_charges.total
     end
@@ -252,26 +224,7 @@ module LoansModule
       loan_product.loans_receivable_current_account.debit_amounts.where(commercial_document: self).first.entry
     end
 
-    def principal_balance
-      loan_product.loans_receivable_current_account.balance(commercial_document: self)
-    end
 
-
-    def principal_payments
-      loan_product.loans_receivable_current_account.credits_balance(commercial_document: self)
-    end
-
-    def interest_payments
-      loan_product_interest_receivable_account.credits_balance(commercial_document: self)
-    end
-
-    def penalty_payments
-      loan_product_penalty_receivable_account.credits_balance(commercial_document: self)
-    end
-
-    def unearned_interests
-      loan_product_unearned_interest_income_account.balance(commercial_document: self)
-    end
 
     def payments_total
       principal_payments +
@@ -285,30 +238,10 @@ module LoansModule
       end
     end
 
-    def maturity_date
-      if disbursed?
-        disbursement_date + term.to_i.months
-      else
-        application_date + term.to_i.months
-      end
-    end
-
     def balance
       principal_balance +
       interest_receivable_balance +
       penalties_balance
-    end
-    def interest_receivable_balance
-      loan_product_interest_receivable_account.debits_balance(commercial_document: self)
-    end
-    def penalties_balance
-      loan_product_penalty_receivable_account.balance(commercial_document: self)
-    end
-    def interest_receivable_debits_balance
-      loan_product_interest_receivable_account.debits_balance(commercial_document: self)
-    end
-     def penalties_debits_balance
-      loan_product_penalty_receivable_account.debits_balance(commercial_document: self)
     end
 
     def status_color
@@ -327,10 +260,6 @@ module LoansModule
       else
         'Current'
       end
-    end
-
-    def number_of_months_past_due
-      number_of_days_past_due / 30
     end
 
     def paid?(options={})
