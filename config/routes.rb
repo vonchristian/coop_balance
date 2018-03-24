@@ -104,22 +104,23 @@ Rails.application.routes.draw do
     resources :offices, only: [:edit, :update], module: :share_capitals
   end
   resources :members do
-    resources :time_deposits, only: [:new, :create], module: :members
-    resources :tins, only: [:new, :create], module: :members
-    resources :offices, only: [:new, :create, :edit, :update], module: :members
-    resources :addresses, only: [:new, :create, :edit, :update], module: :members
-    resources :memberships, only: [:edit, :update, :new, :create], module: :members
-    resources :info, only: [:index], module: :members
-    resources :settings, only: [:index], module: :members
-    resources :loans, only: [:index, :new, :create], module: :members
-    resources :real_properties, only: [:index, :new, :create], module: :members
-    resources :share_capitals, only: [:index, :new, :create], module: :members
-    resources :occupations, only: [:new, :create], module: :members
-    resources :share_capitals, only: [:index, :new, :create]
-    resources :savings_accounts, only: [:index, :new, :create], module: :members
-    resources :time_deposits, only: [:index], module: :members
-    resources :subscriptions, only: [:index], module: :members
-    resources :purchases, only: [:index, :show], module: :members
+    resources :relationships,    only: [:new, :create],                 module: :members
+    resources :time_deposits,    only: [:new, :create],                 module: :members
+    resources :tins,             only: [:new, :create],                 module: :members
+    resources :offices,          only: [:new, :create, :edit, :update], module: :members
+    resources :addresses,        only: [:new, :create, :edit, :update], module: :members
+    resources :memberships,      only: [:edit, :update, :new, :create], module: :members
+    resources :info,             only: [:index],                        module: :members
+    resources :settings,         only: [:index],                        module: :members
+    resources :loans,            only: [:index, :new, :create],         module: :members
+    resources :real_properties,  only: [:index, :new, :create],         module: :members
+    resources :share_capitals,   only: [:index, :new, :create],         module: :members
+    resources :occupations,      only: [:new, :create],                 module: :members
+    resources :share_capitals,   only: [:index, :new, :create]
+    resources :savings_accounts, only: [:index, :new, :create],         module: :members
+    resources :time_deposits,    only: [:index],                        module: :members
+    resources :subscriptions,    only: [:index],                        module: :members
+    resources :purchases,        only: [:index, :show],                 module: :members
   end
   resources :member_registrations, only: [:new, :create]
 

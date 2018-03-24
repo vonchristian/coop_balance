@@ -1,0 +1,49 @@
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="box box-default">
+      <div class="box-header">
+        <center>
+          <%= image_tag(@member.avatar.url(:medium), class: "img-circle", height: 60, width: 60) %>
+          <h3 class="box-title"> <%= @member.full_name %></h3>
+        </center>
+      </div>
+      <div class="box-body">
+        <%=form_tag new_member_relationship_path(@member), method: :get do %>
+          <div class="input-group">
+            <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search First Name, Last Name ", id: 'account-search-form' %>
+            <span class="input-group-btn">
+              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                <i class="fa fa-search"></i>
+              <% end %>
+            </span>
+          </div>
+        <% end %>
+        <br>
+        <% @members.each do |member| %>
+          <%= simple_form_for [@member, @relationship], url: :member_relationships do |f| %>
+            <div class="row">
+              <div class="col-md-2">
+                <%= image_tag(member.avatar.url(:medium), class: "img-circle", height: 45, width: 45) %>
+              </div>
+              <div class="col-md-5">
+                <%= member.name %>
+              </div>
+              <div class="col-md-3">
+                <% if @member.relationships.pluck(:relationer_id).include?(member.id) %>
+                  <%= @member.relationships.for(member) %>
+               <% else %>
+                <%= f.input :relationship_type, collection: Relationship.relationship_types.keys.to_a.map{|a| [a.titleize, a] }, label: false %>
+                 <% end %>
+              </div>
+              <div class="col-md-2">
+                <%= f.input :relationer_id, input_html: { value: member.id }, as: :hidden %>
+                <%= f.input :relationer_type, input_html: { value: member.class.to_s }, as: :hidden %>
+                <% if !@member.relationships.pluck(:relationer_id).include?(member.id) %>
+                  <%= f.submit "Add", class: "btn btn-primary" %>
+                <% end %>
+              </div>
+            </div>
+            <br>
+          <% end %>
+        <% end %>
+

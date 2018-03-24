@@ -11,13 +11,17 @@ module Members
     private
     def purchases_details
       text "PURCHASES DETAILS"
-      table(purchases_data) do
-        cells.borders = []
+      if @member.sales_orders.present?
+        table(purchases_data) do
+          cells.borders = []
+        end
+      else
+        "NO DATA AVAILABLE"
       end
     end
     def purchases_data
       [["Date", "Total Cost"]]
-      @purchases_data = @member.orders.map{|a| [a.date.strftime("%B %e, %Y"), a.total_cost]}
+      @purchases_data = @member.sales_orders.map{|a| [a.date.strftime("%B %e, %Y"), a.total_cost]}
     end
   end
 end

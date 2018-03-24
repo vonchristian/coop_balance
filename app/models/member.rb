@@ -27,14 +27,17 @@ class Member < ApplicationRecord
   has_many :co_makered_loans,      class_name: "LoansModule::LoanCoMaker",
                                    as: :co_maker
   has_many :addresses,             as: :addressable
-  has_many :subscribed_programs,   class_name: "CoopServicesModule::Program", through: :program_subscriptions, source: :program
-  has_many :sales_orders,          class_name: "StoreFrontModule::Orders::SalesOrder",
-                                   as: :commercial_document
-  has_many :sales_return_orders,   class_name: "StoreFrontModule::Orders::SalesReturnOrder",
-                                   as: :commercial_document
-  has_many :real_properties,       as: :owner
+  has_many :subscribed_programs,      class_name: "CoopServicesModule::Program", through: :program_subscriptions, source: :program
+  has_many :sales_orders,             class_name: "StoreFrontModule::Orders::SalesOrder",
+                                      as: :commercial_document
+  has_many :sales_return_orders,      class_name: "StoreFrontModule::Orders::SalesReturnOrder",
+                                      as: :commercial_document
+  has_many :real_properties,          as: :owner
   has_many :organization_memberships, class_name: "Organizations::OrganizationMember", as: :organization_membership
   has_many :organizations,            through: :organization_memberships
+  has_many :relationships,            as: :relationee
+  has_many :relations, as: :relationer
+
 
   delegate :number, to: :tin, prefix: true, allow_nil: true
   delegate :name, to: :office, prefix: true, allow_nil: true
@@ -100,6 +103,10 @@ class Member < ApplicationRecord
   def recommended_co_makers
     Member.where(last_name: self.last_name)
   end
+  def recommended_relationships
+    Member.where(last_name: self.last_name)
+  end
+
 
   def age
     return 'No Date of Birth' unless date_of_birth.present?

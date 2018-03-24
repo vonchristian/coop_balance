@@ -9,4 +9,17 @@
 <hr>
 <%= link_to 'Print Member Info', member_info_index_path(@member, format: 'pdf') %>
 <hr>
+<%= link_to 'New Relationship', new_member_relationship_path(@member), class: "btn btn-primary" %>
+  <% @member.relationships.each do |relationship| %>
+    <div class="row">
+      <div class="col-md-1">
+        <%= image_tag(relationship.relationer.avatar.url(:medium), class: "img-circle", height: 45, width: 45) %>
+      </div>
+      <div class="col-md-4">
+        <b><%= relationship.relationee_name %></b><br>
+        <span class="text-muted"><%= relationship.relationship_type.titleize %></span>
+      </div>
+    </div>
+    <br>
+  <% end %>
 </div>

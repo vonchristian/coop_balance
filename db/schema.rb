@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180322090448) do
+ActiveRecord::Schema.define(version: 20180324015415) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -883,6 +883,19 @@ ActiveRecord::Schema.define(version: 20180322090448) do
     t.index ["employee_id"], name: "index_registries_on_employee_id"
     t.index ["supplier_id"], name: "index_registries_on_supplier_id"
     t.index ["type"], name: "index_registries_on_type"
+  end
+
+  create_table "relationships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "relationship_type"
+    t.string "relationee_type"
+    t.uuid "relationee_id"
+    t.string "relationer_type"
+    t.uuid "relationer_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["relationee_type", "relationee_id"], name: "index_relationships_on_relationee_type_and_relationee_id"
+    t.index ["relationer_type", "relationer_id"], name: "index_relationships_on_relationer_type_and_relationer_id"
+    t.index ["relationship_type"], name: "index_relationships_on_relationship_type"
   end
 
   create_table "salary_grades", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
