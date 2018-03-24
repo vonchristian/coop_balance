@@ -101,8 +101,8 @@ module LoansModule
       entries.uniq
     end
 
-    def self.disbursed_loans
-      all.select{ |a| a.disbursement.present? }
+    def self.disbursed
+      where.not(disbursement_date: nil)
     end
 
     def self.disbursed_on(options={})
@@ -112,9 +112,6 @@ module LoansModule
       else
         all
       end
-    end
-    def self.disbursed
-      where.not(disbursement_date: nil)
     end
 
     def self.disbursed_by(employee)
@@ -126,18 +123,22 @@ module LoansModule
     end
 
     def payment_schedules
-      amortization_schedules + loan_charge_payment_schedules
+      amortization_schedules +
+      loan_charge_payment_schedules
     end
 
     def store_payment_total
       AccountsReceivableStore.new.total_payments(self)
     end
+
     def penalty_payment_total
       LoanPenalty.new.payments_total(self)
     end
+
     def penalties_total
       LoanPenalty.new.balance(self)
     end
+
     def interest_on_loan_charge
       interest = charges.where(account: loan_product_unearned_interest_income_account)
       loan_charges.find_by(chargeable: interest)
@@ -148,7 +149,7 @@ module LoansModule
     end
 
     def co_makers
-      employee_co_makers + member_co_makers
+      LoansModule::CoMaker.all
     end
 
     def name
@@ -164,12 +165,15 @@ module LoansModule
       end
       aging_loans
     end
+
     def amortized_principal_for(options={})
       amortization_schedules.scheduled_for(options).sum(&:principal)
     end
+
     def amortized_interest_for(options={})
       amortization_schedules.scheduled_for(options).sum(&:interest)
     end
+
     def arrears(options={})
       amortization_schedules.scheduled_for(options).sum(&:total_amortization)
     end
@@ -182,7 +186,9 @@ module LoansModule
       loan_product_account.credit_entries.where(commercial_document: self)
     end
     def total_deductions(options={})
-      amortized_principal_for(options) + amortized_interest_for(options) + arrears(options)
+      amortized_principal_for(options) +
+      amortized_interest_for(options) +
+      arrears(options)
     end
 
     def first_notice_date
