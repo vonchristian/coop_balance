@@ -9,7 +9,7 @@
   <%= f.error_notification %>
     <%= f.input :loan_product_id, validate: { presence: true }, label: 'Select Type of Loan', collection: LoansModule::LoanProduct.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanProductSelect' } %>
 
-  <%= f.input :borrower_id, collection: LoansModule::Loan.borrowers.map {|a| [a.name, a.id] }, input_html: { id: "borrowerSelect" } %>
+  <%= f.input :borrower_id, collection: Borrower.all.map {|a| [a.name, a.id] }, input_html: { id: "borrowerSelect" } %>
   <%= f.input :loan_amount, as: :currency %>
   <%= f.input :term, label: "Loan Term (in months)" %>
   <%= f.input :mode_of_payment, collection: LoansModule::Loan.mode_of_payments.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>

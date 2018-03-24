@@ -5,14 +5,15 @@ feature 'Create Loan application' do
     Rails.application.load_seed
     user = create(:loan_officer)
     login_as(user, :scope => :user)
-    borrower = create(:member, first_name: "Juan", last_name: "Cruz")
+    borrower = create(:member, first_name: "Juan", last_name: "Cruz", middle_name: "Dela")
 
     loan_product = create(:loan_product_with_interest_config, name: "Salary Loan")
     visit new_loans_module_loan_application_url
   end
 
   scenario 'with valid attributes' do
-    select "Juan Cruz", :from => "borrowerSelect"
+    save_and_open_page
+    select "Cruz, Juan Dela", :from => "borrowerSelect"
     select "Salary Loan", :from => "loanProductSelect"
     fill_in "Loan amount", with: 100_000
     fill_in "Term", with: 12

@@ -2,6 +2,7 @@
 module LoansModule
   class Loan < ApplicationRecord
     include PgSearch
+    include PastDueMonitoring
     pg_search_scope :text_search, :against => [:borrower_full_name]
     multisearchable against: [:borrower_full_name]
     enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
@@ -63,6 +64,7 @@ module LoansModule
     validates :term, presence: true, numericality: true
     validates :loan_amount, numericality: { less_than_or_equal_to: :maximum_loanable_amount }
     before_save :set_borrower_full_name
+
     def self.past_due
       select{ |a| a.is_past_due? }
     end
@@ -73,9 +75,7 @@ module LoansModule
     def self.payments_total
       all.map{|loan| loan.payments_total }.sum
     end
-     def self.balance
-      all.sum(&:balance)
-    end
+
     def self.loan_payments(options={})
       entries = []
       if options[:from_date] && options[:to_date] && options[:employee_id].present?
@@ -101,10 +101,6 @@ module LoansModule
       entries.uniq
     end
 
-
-    def self.borrowers
-      User.all + Member.all
-    end
     def self.disbursed_loans
       all.select{ |a| a.disbursement.present? }
     end
@@ -168,10 +164,6 @@ module LoansModule
       end
       aging_loans
     end
-
-    def is_past_due?
-      number_of_days_past_due >=1
-    end
     def amortized_principal_for(options={})
       amortization_schedules.scheduled_for(options).sum(&:principal)
     end
@@ -211,7 +203,6 @@ module LoansModule
       end
     end
 
-
     def taxable_amount # for documentary_stamp_tax
       loan_amount
     end
@@ -227,6 +218,7 @@ module LoansModule
         amounts.sum
       end
     end
+
     def balance_for(schedule)
       loan_amount - LoansModule::AmortizationSchedule.principal_for(schedule, self)
     end
@@ -290,6 +282,8 @@ module LoansModule
     def maturity_date
       if disbursed?
         disbursement_date + term.to_i.months
+      else
+        application_date + term.to_i.months
       end
     end
 
@@ -318,6 +312,7 @@ module LoansModule
         'green'
       end
     end
+
     def status_text
       if is_past_due?
         'Past Due'
@@ -328,9 +323,6 @@ module LoansModule
       end
     end
 
-    def number_of_days_past_due
-      ((Time.zone.now - maturity_date)/86400.0).to_i
-    end
     def number_of_months_past_due
       number_of_days_past_due / 30
     end

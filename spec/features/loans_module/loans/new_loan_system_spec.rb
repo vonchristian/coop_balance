@@ -9,7 +9,6 @@ describe 'New Loan' do
   end
 
   it 'with valid attributes' do
-    save_and_open_page
     select @loan_product.name.titleize, from: "Select Type of Loan"
   end
 end

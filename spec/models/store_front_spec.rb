@@ -23,7 +23,6 @@ RSpec.describe StoreFront, type: :model do
   describe 'validations' do
     it { is_expected.to validate_presence_of :name }
     it { is_expected.to validate_presence_of :address }
-    it { is_expected.to validate_presence_of :contact_number }
     it { is_expected.to validate_uniqueness_of :name }
     it { is_expected.to validate_presence_of :accounts_receivable_account_id }
     it { is_expected.to validate_presence_of :cost_of_goods_sold_account_id }

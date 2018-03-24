@@ -13,7 +13,7 @@ class StoreFront < ApplicationRecord
   belongs_to :internal_use_account,          class_name: "AccountingModule::Account"
   has_many :entries,                         class_name: "AccountingModule::Entry",
                                              as: :origin
-  validates :name, :address, :contact_number, presence: true
+  validates :name, :address,  presence: true
   validates :name, uniqueness: true
   validates :accounts_receivable_account_id,
             :cost_of_goods_sold_account_id,
