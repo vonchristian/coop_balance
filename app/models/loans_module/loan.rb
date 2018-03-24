@@ -63,6 +63,10 @@ module LoansModule
     validates :term, presence: true, numericality: true
     validates :loan_amount, numericality: { less_than_or_equal_to: :maximum_loanable_amount }
     before_save :set_borrower_full_name
+    def self.past_due
+      select{ |a| a.is_past_due? }
+    end
+
     def self.paid(options={})
       all.map{|a| a.paid?(options) }
     end
@@ -325,11 +329,7 @@ module LoansModule
     end
 
     def number_of_days_past_due
-      if maturity_date.present?
-        ((Time.zone.now - maturity_date)/86400.0).to_i
-      else
-        0
-      end
+      ((Time.zone.now - maturity_date)/86400.0).to_i
     end
     def number_of_months_past_due
       number_of_days_past_due / 30
