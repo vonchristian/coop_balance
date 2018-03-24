@@ -3,7 +3,7 @@ class Relationship < ApplicationRecord
   belongs_to :relationee, polymorphic: true
   belongs_to :relationer, polymorphic: true
 
-  validates :relationee_id, :relationer_id, :relationship_type, presence: true
+  validates :relationee_id, :relationer_id, :relationer_type, :relationship_type, presence: true
 
   delegate :name, to: :relationer, prefix: true, allow_nil: true
   delegate :name, to: :relationee, prefix: true, allow_nil: true

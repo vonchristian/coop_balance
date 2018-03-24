@@ -18,6 +18,7 @@ describe Member, type: :model do
     it { is_expected.to have_many :organization_memberships }
     it { is_expected.to have_many :organizations }
     it { is_expected.to have_many :relationships }
+    it { is_expected.to have_many :relations }
   end
   describe 'delegations' do
     it { is_expected.to delegate_method(:name).to(:office).with_prefix }

@@ -14,7 +14,7 @@ describe Relationship, type: :model do
 
   describe 'enums' do
     it { is_expected.to define_enum_for(:relationship_type).with(
-      [:father,
+      [ :father,
         :mother,
         :son,
         :daughter
