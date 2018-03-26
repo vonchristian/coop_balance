@@ -2,8 +2,9 @@
 module LoansModule
   class Loan < ApplicationRecord
     include PgSearch
-    include PastDueMonitoring
+    include LoansModule::Loans::PastDue
     include LoansModule::Loans::Interest
+    include LoansModule::Loans::Principal
     include LoansModule::Loans::Penalty
     include LoansModule::Loans::Amortization
 
@@ -11,9 +12,6 @@ module LoansModule
     multisearchable against: [:borrower_full_name]
     enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
     has_one :disbursement_voucher, class_name: "Voucher", as: :payee
-    has_one :first_notice, class_name: "LoansModule::Notices::FirstNotice", as: :notified
-    has_one :second_notice, class_name: "LoansModule::Notices::SecondNotice", as: :notified
-    has_one :third_notice, class_name: "LoansModule::Notices::ThirdNotice", as: :notified
 
     belongs_to :borrower,               polymorphic: true
     belongs_to :loan_product,           class_name: "LoansModule::LoanProduct"
@@ -37,14 +35,15 @@ module LoansModule
     has_many :loan_charges,             class_name: "LoansModule::LoanCharge",
                                         dependent: :destroy
     has_many :loan_charge_payment_schedules, through: :loan_charges
-    has_many :charges, through: :loan_charges, source: :chargeable, source_type: "Charge"
+    has_many :charges,                  through: :loan_charges,
+                                        source: :chargeable,
+                                        source_type: "Charge"
     has_many :loan_co_makers,           class_name: "LoansModule::LoanCoMaker",
                                         dependent: :destroy
     has_many :voucher_amounts,          class_name: "Vouchers::VoucherAmount", as: :commercial_document # for adding amounts on voucher
     has_many :amortization_schedules,   dependent: :destroy
     has_many :collaterals,              class_name: "LoansModule::Collateral", dependent: :destroy
     has_many :real_properties,          through: :collaterals
-    has_many :notices, as: :notified, dependent: :destroy
 
     delegate :name, :age, :contact_number, :current_address, to: :borrower,  prefix: true, allow_nil: true
     delegate :name,  to: :loan_product, prefix: true
@@ -63,41 +62,45 @@ module LoansModule
     delegate :maximum_loanable_amount, to: :loan_product
     delegate :avatar, to: :borrower
     delegate :number_of_interest_payments_prededucted, to: :interest_on_loan_charge
-
+    delegate :name, to: :barangay, prefix: true, allow_nil: true
     validates :loan_product_id, :term, :loan_amount, :borrower_id, presence: true
     validates :term, presence: true, numericality: true
     validates :loan_amount, numericality: { less_than_or_equal_to: :maximum_loanable_amount }
     before_save :set_borrower_full_name
 
+    def self.for(options={})
+      where(street:       options[:street]).
+      where(barangay:     options[:barangay]).
+      where(organization: options[:organization]).
+      where(municipality: options[:municipality])
+    end
+
+    def self.disbursed(options={})
+      LoansQuery.new.disbursed(options)
+    end
+
+    def self.disbursed_by(employee)
+      User.find_by(id: employee.id).disbursed_loans
+    end
+
     def self.past_due(options={})
       LoansModule::LoansQuery.new.past_due(options)
     end
+
      def self.matured(options={})
       LoansModule::LoansQuery.new.matured(options)
     end
 
-    def self.aging_for(options={})
+    def self.aging(options={})
       LoansModule::LoansQuery.new.aging(options)
     end
 
-    def self.paid(options={})
-      all.map{ |a| a.paid?(options) }
+    def self.paid
+      all.map{ |a| a.paid? }
     end
 
     def self.payments_total
       all.map{|loan| loan.payments_total }.sum
-    end
-
-    def self.loan_payments(options={})
-      entries = []
-      if options[:from_date] && options[:to_date] && options[:employee_id].present?
-        LoansModule::LoanProduct.accounts.each do |account|
-          account.credit_entries.entered_on(from_date: options[:from_date], to_date: options[:to_date]).recorded_by(options[:employee_id]).each do |entry|
-            entries << entry
-          end
-        end
-      end
-      entries
     end
 
     def loan_payments(options={})
@@ -114,15 +117,6 @@ module LoansModule
       entries.uniq
     end
 
-    def self.disbursed(options={})
-      LoansQuery.new.disbursed(options)
-    end
-
-
-    def self.disbursed_by(employee)
-      User.find_by(id: employee.id).disbursed_loans
-    end
-
     def approved?
       approvers.pluck(:id) == User.loan_approvers.pluck(:id)
     end
@@ -130,10 +124,6 @@ module LoansModule
     def payment_schedules
       amortization_schedules +
       loan_charge_payment_schedules
-    end
-
-    def store_payment_total
-      AccountsReceivableStore.new.total_payments(self)
     end
 
 
@@ -164,14 +154,6 @@ module LoansModule
       amortized_principal_for(options) +
       amortized_interest_for(options) +
       arrears(options)
-    end
-
-    def first_notice_date
-      if amortization_schedules.present?
-        amortization_schedules.last.date + 5.days
-      else
-        Time.zone.now
-      end
     end
 
     def remaining_term
@@ -212,7 +194,6 @@ module LoansModule
       end
     end
 
-
     def total_loan_charges
       loan_charges.total
     end
@@ -223,8 +204,6 @@ module LoansModule
     def disbursement_entry
       loan_product.loans_receivable_current_account.debit_amounts.where(commercial_document: self).first.entry
     end
-
-
 
     def payments_total
       principal_payments +
@@ -262,7 +241,7 @@ module LoansModule
       end
     end
 
-    def paid?(options={})
+    def paid?
       disbursed? && balance.zero?
     end
 

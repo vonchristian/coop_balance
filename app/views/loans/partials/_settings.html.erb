@@ -1,0 +1,5 @@
+<div class="tab-pane <%= 'active' if current_page? loan_settings_path(@loan) %>">
+  Settings
+  <%= @loan.barangay_name %>
+  <%= link_to 'Set Barangay', edit_loan_barangay_path(id: @loan.id), class: "btn btn-danger" %>
+</div>

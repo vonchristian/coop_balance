@@ -3,11 +3,11 @@ module LoansModule
     belongs_to :loans_receivable_current_account, class_name: "AccountingModule::Account"
     belongs_to :loans_receivable_past_due_account, class_name: "AccountingModule::Account"
 
-    has_many :interest_configs,      class_name: "LoansModule::LoanProducts::InterestConfig"
-    has_many :penalty_configs,       class_name: "LoansModule::LoanProducts::PenaltyConfig"
-    has_many :loan_product_charges,  class_name: "LoansModule::LoanProducts::LoanProductCharge"
+    has_many :interest_configs,      class_name: "LoansModule::LoanProducts::InterestConfig", dependent: :destroy
+    has_many :penalty_configs,       class_name: "LoansModule::LoanProducts::PenaltyConfig",dependent: :destroy
+    has_many :loan_product_charges,  class_name: "LoansModule::LoanProducts::LoanProductCharge",dependent: :destroy
 
-    has_many :loans
+    has_many :loans, dependent: :destroy
     has_many :member_borrowers, through: :loans, source: :borrower, source_type: 'Member'
     has_many :employee_borrowers, through: :loans, source: :borrower, source_type: 'User'
     has_many :organization_borrowers, through: :loans, source: :borrower, source_type: 'Organization'
@@ -26,6 +26,22 @@ module LoansModule
 
     validates :name, uniqueness: true
     validates :maximum_loanable_amount, numericality: true
+    def self.loan_payments(options={})
+      entries = []
+      self.all.each do |loan_product|
+        loan_product.loans_receivable_current_account.credit_amounts.entered_on(options).recorded_by(options).each do |entry|
+          entries << entry
+        end
+        loan_product.interest_receivable_account.credit_amounts.entered_on(options).recorded_by(options).each do |entry|
+          entries << entry
+        end
+        loan_product.penalty_receivable_account.credit_amounts.entered_on(options).recorded_by(options).each do |entry|
+          entries << entry
+        end
+      end
+      entries
+    end
+
     def post_penalties #daily
       if !penalty_posted?
         PenaltyPosting

@@ -9,6 +9,7 @@ FactoryBot.define do
     role 0
     cooperative
     association :cash_on_hand_account, factory: :asset
+    office
     factory :loan_officer do
       role 'loan_officer'
     end

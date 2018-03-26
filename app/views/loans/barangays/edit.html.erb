@@ -1,0 +1,4 @@
+<%= simple_form_for @loan, url: :loan_barangay do |f| %>
+  <%= f.input :barangay_id, collection: Addresses::Barangay.all.map{|a| [a.name, a.id] } %>
+  <%= f.submit %>
+<% end %>

@@ -328,14 +328,15 @@ Rails.application.routes.draw do
     resources :loans, only: [:index], module: :employees
   end
   resources :loans, only: [:index, :show] do
-    resources :real_properties, only: [:new, :create, :show], module: :loans
-    resources :loan_co_makers, only: [:index, :new, :create], module: :loans
-    resources :notices, only: [:index, :show, :new, :create], module: :loans
-    resources :approvals, only: [:new, :create], module: :loans
-    resources :disbursements, only: [:new, :create, :index], module: :loans
-    resources :disbursement_vouchers, only: [:new, :create, :show], module: :loans
-    resources :payments, only: [:index, :new, :create], module: :loans
-    resources :collaterals, only: [:index, :new, :create], module: :loans
+    resources :barangays,             only: [:edit, :update],        module: :loans
+    resources :settings,              only: [:index],                module: :loans
+    resources :real_properties,       only: [:new, :create, :show],  module: :loans
+    resources :loan_co_makers,        only: [:index, :new, :create], module: :loans
+    resources :approvals,             only: [:new, :create],         module: :loans
+    resources :disbursements,         only: [:new, :create, :index], module: :loans
+    resources :disbursement_vouchers, only: [:new, :create, :show],  module: :loans
+    resources :payments,              only: [:index, :new, :create], module: :loans
+    resources :collaterals,           only: [:index, :new, :create], module: :loans
   end
   resources :loan_co_makers, only: [:destroy]
   resources :vouchers, only: [:index, :show, :destroy] do
