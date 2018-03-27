@@ -12,7 +12,7 @@
       </thead>
       <tbody>
         <% @purchase_returns.each do |line_item| %>
-          <tr data-link="<%=store_front_module_sales_order_path(line_item)%>" class="myClass">
+          <tr data-link="<%=store_front_module_sale_path(line_item)%>" class="myClass">
             <td width="30px">
               <% if line_item.supplier.present? %>
               <%= image_tag(line_item.supplier.avatar.url(:thumb), style: 'width:30px;height:30px;', class: 'media-object img-circle') %>

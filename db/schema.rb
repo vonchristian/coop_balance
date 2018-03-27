@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180324075106) do
+ActiveRecord::Schema.define(version: 20180326123244) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -402,6 +402,7 @@ ActiveRecord::Schema.define(version: 20180324075106) do
     t.uuid "referenced_line_item_id"
     t.uuid "purchase_line_item_id"
     t.uuid "sales_line_item_id"
+    t.datetime "expiry_date"
     t.index ["cart_id"], name: "index_line_items_on_cart_id"
     t.index ["order_id"], name: "index_line_items_on_order_id"
     t.index ["product_id"], name: "index_line_items_on_product_id"

@@ -7,6 +7,9 @@ module StoreFrontModule
         it { is_expected.to belong_to :purchase_order }
         it { is_expected.to have_many :referenced_purchase_line_items }
       end
+      describe 'validations' do
+        it { is_expected.to validate_presence_of :expiry_date }
+      end
       describe 'delegations' do
         it { is_expected.to delegate_method(:supplier_name).to(:purchase_order) }
         it { is_expected.to delegate_method(:date).to(:purchase_order) }

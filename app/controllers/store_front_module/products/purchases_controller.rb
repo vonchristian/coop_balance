@@ -3,7 +3,10 @@ module StoreFrontModule
     class PurchasesController < ApplicationController
       def index
         @product = StoreFrontModule::Product.find(params[:product_id])
-        @purchases = @product.purchases.all.paginate(page: params[:page], per_page: 50)
+        @purchases = @product.
+        purchases.
+        processed.
+        paginate(page: params[:page], per_page: 50)
       end
       def new
         @product = StoreFrontModule::Product.find(params[:product_id])

@@ -24,7 +24,7 @@ module StoreFrontModule
       end
       def destroy
         @cart = current_cart
-        @line_item = StoreFrontModule::LineItems::SalesReturLineItem.find(params[:id])
+        @line_item = StoreFrontModule::LineItems::SalesReturnLineItem.find(params[:id])
         @line_item.destroy
         redirect_to new_store_front_module_sales_return_line_item_url
       end

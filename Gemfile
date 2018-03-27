@@ -12,7 +12,7 @@ gem 'client_side_validations'
 gem 'client_side_validations-simple_form'
 gem 'trix'
 gem 'autonumeric-rails'
-gem 'rails', '5.1.4'
+gem 'rails', '5.2.rc2'
 gem 'bootstrap-slider-rails'
 gem 'pg', '0.21'
 gem 'puma', '~> 3.7', group: [:development, :production]
@@ -58,6 +58,7 @@ gem "spreadsheet"
 gem 'daemons'
 gem 'delayed-web'
 gem 'colorize'
+gem 'mini_magick'
 group :development, :test do
   gem 'guard'
   gem 'guard-livereload'
@@ -66,6 +67,7 @@ group :development, :test do
   gem 'capybara'
   gem 'factory_bot_rails'
   gem 'faker'
+
 end
 
 group :development do

@@ -208,6 +208,12 @@ Rails.application.routes.draw do
       resources :sales_returns,    only: [:index], module: :inventories
       resources :purchase_returns, only: [:index], module: :inventories
       resources :spoilages,        only: [:index], module: :inventories
+      resources :settings,         only: [:index], module: :inventories
+      resources :internal_uses,    only: [:index], module: :inventories
+      resources :stock_transfers,  only: [:index], module: :inventories
+
+
+
     end
 
     resources :purchases,                only: [:index, :show, :create],   module: :orders

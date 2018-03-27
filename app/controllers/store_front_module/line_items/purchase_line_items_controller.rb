@@ -38,7 +38,8 @@ module StoreFrontModule
                :product_id,
                :referenced_line_item_id,
                :barcode,
-               :cart_id)
+               :cart_id,
+               :expiry_date)
       end
     end
   end

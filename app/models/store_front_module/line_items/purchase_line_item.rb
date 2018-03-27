@@ -15,20 +15,14 @@ module StoreFrontModule
                                                   foreign_key: 'purchase_line_item_id'
       has_many :spoilage_line_items,              class_name: "StoreFrontModule::LineItems::SpoilageLineItem",
                                                   foreign_key: 'purchase_line_item_id'
+      validates :expiry_date, presence: true
+      delegate :supplier_name, :date, to: :purchase_order, allow_nil: true
 
-      delegate :supplier_name, :date, to: :purchase_order
 
-      def self.processed
-        select{ |a| a.processed? }
-      end
 
       def sold?
         referenced_purchase_order_line_items.present? &&
         out_of_stock?
-      end
-
-      def processed?
-        purchase_order && purchase_order.processed?
       end
 
       def self.available
@@ -49,20 +43,20 @@ module StoreFrontModule
         spoilage_quantity
       end
       def sold_quantity
-        referenced_purchase_line_items.sum(&:converted_quantity)
+        referenced_purchase_line_items.processed.sum(&:converted_quantity)
       end
 
       def purchase_returns_quantity
-        purchase_return_line_items.sum(&:converted_quantity)
+        purchase_return_line_items.processed.sum(&:converted_quantity)
       end
       def internal_uses_quantity
-        internal_use_line_items.sum(&:converted_quantity)
+        internal_use_line_items.processed.sum(&:converted_quantity)
       end
       def stock_transfers_quantity
-        stock_transfer_line_items.sum(&:converted_quantity)
+        stock_transfer_line_items.processed.sum(&:converted_quantity)
       end
       def spoilage_quantity
-        spoilage_line_items.sum(&:converted_quantity)
+        spoilage_line_items.processed.sum(&:converted_quantity)
       end
 
       def purchase_cost

@@ -21,6 +21,14 @@ module StoreFrontModule
     delegate :employee,               to: :order
     delegate :name,                   to: :employee, prefix: true
 
+    def self.processed
+      joins(:order).where.not('orders.id' => nil)
+    end
+
+    def processed
+      where.not(order_id: nil)
+    end
+
     def self.total
       all.sum(&:converted_quantity)
     end

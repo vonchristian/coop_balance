@@ -14,7 +14,7 @@
             <tbody>
               <% @orders.each do |order| %>
 
-                <tr data-link="<%=store_front_module_sales_order_path(order)%>" class="myClass">
+                <tr data-link="<%=store_front_module_sale_path(order)%>" class="myClass">
                   <td width="30px">
                     <% if order.customer.present? %>
                     <%= image_tag(order.customer.avatar.url(:thumb), style: 'width:30px;height:30px;', class: 'media-object img-circle') %>
