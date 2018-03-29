@@ -1,3 +1,5 @@
+rename memberships module to cooperators module
+
 move time deposit to savings accounts
 setup guard rspec
 

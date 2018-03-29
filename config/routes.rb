@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  # devise_for :cooperators
   mount Delayed::Web::Engine, at: '/jobs'
   unauthenticated :user do
     root :to => 'accounting_module#index', :constraints => lambda { |request| request.env['warden'].user.nil? }, as: :unauthenticated_root
@@ -407,5 +408,10 @@ Rails.application.routes.draw do
     resources :program_subscriptions, only: [:create], module: :memberships do
       resources :payments, only: [:new, :create], module: :program_subscriptions
     end
+  end
+  resources :cooperators, only: [:show]
+  namespace :cooperators do
+    resources :accounts, only: [:show]
+    resources :sign_ups, only: [:new, :create]
   end
 end

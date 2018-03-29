@@ -6,6 +6,8 @@ module StoreFrontModule
         joins(:order).where('orders.date' => (date_range.start_date)..(date_range.end_date)).total
       elsif options[:product].present?
         joins(:product, :order).where(product: options[:product]).total
+      elsif options[:purchase_line_item].present?
+        where(purchase_line_item: options[:purchase_line_item]).total
       else
         joins(:order).total
       end

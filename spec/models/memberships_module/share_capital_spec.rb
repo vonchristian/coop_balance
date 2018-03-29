@@ -30,7 +30,7 @@ module MembershipsModule
       deposit.debit_amounts << create(:debit_amount, amount: 5_000, commercial_document: share_capital, account: employee.cash_on_hand_account)
       deposit.save
 
-      expect(share_capital.balance).to eq(5000)
+      expect(share_capital.paid_up_balance).to eq(5000)
     end
     it '#closed?' do
       employee = create(:user, role: 'teller')
@@ -40,14 +40,14 @@ module MembershipsModule
       capital_build_up.debit_amounts << create(:debit_amount, amount: 5_000,  commercial_document: share_capital, account: employee.cash_on_hand_account)
       capital_build_up.save
 
-      expect(share_capital.balance).to eq 5_000
+      expect(share_capital.paid_up_balance).to eq 5_000
 
       closing_account_entry = build(:entry, commercial_document: share_capital)
-      closing_account_entry.debit_amounts << create(:debit_amount, amount: share_capital.balance,  commercial_document: share_capital, account: share_capital.share_capital_product_paid_up_account)
+      closing_account_entry.debit_amounts << create(:debit_amount, amount: share_capital.paid_up_balance,  commercial_document: share_capital, account: share_capital.share_capital_product_paid_up_account)
       closing_account_entry.credit_amounts << create(:credit_amount, amount: share_capital.share_capital_product_closing_account_fee, commercial_document: share_capital, account: share_capital.share_capital_product_closing_account)
       closing_account_entry.save
 
-      expect(share_capital.balance).to eq 0
+      expect(share_capital.paid_up_balance).to eq 0
       # expect(share_capital.closed?).to be true
     end
 
@@ -60,8 +60,9 @@ module MembershipsModule
       capital_build_up.debit_amounts << create(:debit_amount, amount: 5_000, commercial_document: share_capital, account: employee.cash_on_hand_account)
       capital_build_up.save
 
-      expect(share_capital.balance).to eq 5_000
-      expect(share_capital.number_of_shares).to eql(50)
+      expect(share_capital.paid_up_balance).to eq 5_000
+      expect(share_capital.paid_up_shares).to eql(50)
     end
+
   end
 end

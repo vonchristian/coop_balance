@@ -54,13 +54,17 @@ module MembershipsModule
       all.sum(&:subscribed_shares)
     end
 
-    def number_of_shares
-      balance / share_capital_product_cost_per_share
+    def paid_up_shares
+      paid_up_balance / share_capital_product_cost_per_share
     end
 
-    def balance
+    def paid_up_balance
       share_capital_product_default_paid_up_account.balance(commercial_document: self) +
       share_capital_product_default_paid_up_account.balance(commercial_document: self.subscriber)
+    end
+
+    def subscription_balance
+      share_capital_product_subscription_account.balance(commercial_document: self)
     end
 
     def dividends_earned

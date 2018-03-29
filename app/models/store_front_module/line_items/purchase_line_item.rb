@@ -39,7 +39,7 @@ module StoreFrontModule
 
       def available_quantity
         returned_sales_quantity +
-        received_stock_transfers_quantity +
+        received_stock_transfer_quantity +
         converted_quantity -
         sold_quantity -
         purchase_returns_quantity -
@@ -65,6 +65,12 @@ module StoreFrontModule
         spoilage_line_items.processed.sum(&:converted_quantity)
       end
 
+      def returned_sales_quantity
+        purchase_return_line_items.sum(&:converted_quantity)
+      end
+      def received_stock_transfer_quantity
+        received_stock_transfer_line_items.sum(&:converted_quantity)
+      end
       def purchase_cost
         if unit_of_measurement.base_measurement?
           unit_cost

@@ -18,8 +18,6 @@
                <%= f.input :subscription_account_id, collection: AccountingModule::Account.all.map{|a| [a.name.titleize, a.id] } %>
                <%= f.input :closing_account_id, collection: AccountingModule::Account.all.map{|a| [a.name.titleize, a.id] } %>
                <%= f.input :interest_payable_account_id, collection: AccountingModule::Account.all.map{|a| [a.name.titleize, a.id] } %>
-
-
               <div class="box-footer">
                 <%= f.submit "Create Share Capital Product", class: "btn btn-primary pull-right" %>
               </div>
