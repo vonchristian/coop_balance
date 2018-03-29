@@ -5,7 +5,7 @@ module StoreFrontModule
         date_range = DateRange.new(from_date: from_date, to_date: to_date)
         joins(:order).where('orders.date' => (date_range.start_date)..(date_range.end_date)).total
       elsif options[:product].present?
-        joins(:product).where(product: options[:product]).total
+        joins(:product, :order).where(product: options[:product]).total
       else
         joins(:order).total
       end

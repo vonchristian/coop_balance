@@ -15,6 +15,9 @@ module StoreFrontModule
                                                   foreign_key: 'purchase_line_item_id'
       has_many :spoilage_line_items,              class_name: "StoreFrontModule::LineItems::SpoilageLineItem",
                                                   foreign_key: 'purchase_line_item_id'
+      has_many :received_stock_transfer_line_items, class_name: "StoreFrontModule::LineItems::ReceivedStockTransferLineItem",
+                                                  foreign_key: 'purchase_line_item_id'
+
       validates :expiry_date, presence: true
       delegate :supplier_name, :date, to: :purchase_order, allow_nil: true
 
@@ -35,6 +38,8 @@ module StoreFrontModule
       end
 
       def available_quantity
+        returned_sales_quantity +
+        received_stock_transfers_quantity +
         converted_quantity -
         sold_quantity -
         purchase_returns_quantity -
@@ -42,6 +47,7 @@ module StoreFrontModule
         stock_transfers_quantity -
         spoilage_quantity
       end
+
       def sold_quantity
         referenced_purchase_line_items.processed.sum(&:converted_quantity)
       end

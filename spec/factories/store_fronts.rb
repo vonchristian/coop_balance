@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :store_front do
-    cooperative
+    association :business, factory: :cooperative
     name "MyString"
     address "MyString"
     contact_number "MyString"

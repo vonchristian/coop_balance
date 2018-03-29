@@ -1,6 +1,6 @@
 class Cooperative < ApplicationRecord
   has_many :offices, class_name: "CoopConfigurationsModule::Office"
-  has_many :store_fronts
+  has_many :store_fronts, as: :business
   validates :name, presence: true
   validates :name, uniqueness: true
   validates :registration_number, presence: true, uniqueness: true

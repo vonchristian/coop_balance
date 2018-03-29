@@ -1,5 +1,5 @@
 class StoreFront < ApplicationRecord
-  belongs_to :cooperative
+  belongs_to :business, polymorphic: true
 
   belongs_to :accounts_receivable_account,   class_name: "AccountingModule::Account"
   belongs_to :cost_of_goods_sold_account,    class_name: "AccountingModule::Account"

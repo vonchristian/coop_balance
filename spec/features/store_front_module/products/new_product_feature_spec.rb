@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe "Create product", type: :system do
+describe "Create product" do
 	before(:each) do
     user = create(:user, role: 'sales_clerk')
     login_as(user, :scope => :user)
@@ -11,7 +11,10 @@ describe "Create product", type: :system do
 	it 'with valid attributes' do
 		fill_in "Name", with: "Test Product"
 		fill_in "Description", with: "Test Description"
-		fill_in "Unit", with: "Test Unit"
+		fill_in "Unit of measurement code", with: "Test Unit"
+    fill_in "Unit of measurement description", with: "Test Unit"
+    fill_in 'Quantity', with: 1
+    fill_in 'Price', with: 500
 		click_button "Create Product"
 
 		expect(page).to have_content("created successfully")

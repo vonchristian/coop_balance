@@ -10,11 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180326123244) do
+ActiveRecord::Schema.define(version: 2018_03_29_055027) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
   enable_extension "pgcrypto"
+  enable_extension "plpgsql"
 
   create_table "accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
@@ -1017,7 +1017,6 @@ ActiveRecord::Schema.define(version: 20180326123244) do
   end
 
   create_table "store_fronts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "cooperative_id"
     t.string "name"
     t.string "address"
     t.string "contact_number"
@@ -1033,9 +1032,11 @@ ActiveRecord::Schema.define(version: 20180326123244) do
     t.uuid "sales_discount_account_id"
     t.uuid "purchase_return_account_id"
     t.uuid "internal_use_account_id"
+    t.string "business_type"
+    t.uuid "business_id"
     t.index ["accounts_payable_account_id"], name: "index_store_fronts_on_accounts_payable_account_id"
     t.index ["accounts_receivable_account_id"], name: "index_store_fronts_on_accounts_receivable_account_id"
-    t.index ["cooperative_id"], name: "index_store_fronts_on_cooperative_id"
+    t.index ["business_type", "business_id"], name: "index_store_fronts_on_business_type_and_business_id"
     t.index ["cost_of_goods_sold_account_id"], name: "index_store_fronts_on_cost_of_goods_sold_account_id"
     t.index ["internal_use_account_id"], name: "index_store_fronts_on_internal_use_account_id"
     t.index ["merchandise_inventory_account_id"], name: "index_store_fronts_on_merchandise_inventory_account_id"
@@ -1365,7 +1366,6 @@ ActiveRecord::Schema.define(version: 20180326123244) do
   add_foreign_key "store_fronts", "accounts", column: "sales_discount_account_id"
   add_foreign_key "store_fronts", "accounts", column: "sales_return_account_id"
   add_foreign_key "store_fronts", "accounts", column: "spoilage_account_id"
-  add_foreign_key "store_fronts", "cooperatives"
   add_foreign_key "streets", "barangays"
   add_foreign_key "streets", "municipalities"
   add_foreign_key "time_deposit_configs", "accounts"
