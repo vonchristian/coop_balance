@@ -1,0 +1,20 @@
+<div class="tab-pane <%= 'active' if current_page? store_front_module_inventory_stock_transfers_path(@line_item) %>">
+  <div class="table table-responsive">
+    <table class="table table-hover table-striped">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Store Front</th>
+          <th>Qty</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @stock_transfers.each do |line_item| %>
+          <tr>
+            <td><%= line_item.purchase_return_order.try(:date).try(:strftime, "%B %e, %Y") %></td>
+            <td><%= line_item.store_front_name %></td>
+            <td><%= line_item.quantity %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>

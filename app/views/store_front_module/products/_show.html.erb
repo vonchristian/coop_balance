@@ -13,6 +13,9 @@
                <li class="<%= 'active' if current_page?(store_front_module_product_sales_path(@product))%>"><%= link_to 'Sales', store_front_module_product_sales_path(@product) %></li>
                <li class="<%= 'active' if current_page?(store_front_module_product_purchase_returns_path(@product))%>"><%= link_to 'Purchase Returns', store_front_module_product_purchase_returns_path(@product) %></li>
                <li class="<%= 'active' if current_page?(store_front_module_product_sales_returns_path(@product))%>"><%= link_to 'Sales Returns', store_front_module_product_sales_returns_path(@product) %></li>
+               <li class="<%= 'active' if current_page?(store_front_module_product_stock_transfers_path(@product))%>"><%= link_to 'Stock Transfers', store_front_module_product_stock_transfers_path(@product) %></li>
+               <li class="<%= 'active' if current_page?(store_front_module_product_internal_uses_path(@product))%>"><%= link_to 'Internal Uses', store_front_module_product_internal_uses_path(@product) %></li>
+               <li class="<%= 'active' if current_page?(store_front_module_product_spoilages_path(@product))%>"><%= link_to 'Spoilages', store_front_module_product_spoilages_path(@product) %></li>
                <li class="<%= 'active' if current_page?(store_front_module_product_settings_path(@product))%>"><%= link_to 'Settings', store_front_module_product_settings_path(@product) %></li>
             </ul>
             <div class="tab-content">
@@ -33,6 +36,15 @@
               <% end %>
               <% if current_page? store_front_module_product_settings_path(@product) %>
                 <%= render 'store_front_module/products/partials/settings' %>
+              <% end %>
+              <% if current_page? store_front_module_product_stock_transfers_path(@product) %>
+                <%= render 'store_front_module/products/partials/stock_transfers' %>
+              <% end %>
+              <% if current_page? store_front_module_product_internal_uses_path(@product) %>
+                <%= render 'store_front_module/products/partials/internal_uses' %>
+              <% end %>
+              <% if current_page? store_front_module_product_spoilages_path(@product) %>
+                <%= render 'store_front_module/products/partials/spoilages' %>
               <% end %>
           </div>
         </div>

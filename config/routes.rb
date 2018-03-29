@@ -211,11 +211,7 @@ Rails.application.routes.draw do
       resources :settings,         only: [:index], module: :inventories
       resources :internal_uses,    only: [:index], module: :inventories
       resources :stock_transfers,  only: [:index], module: :inventories
-
-
-
     end
-
     resources :purchases,                only: [:index, :show, :create],   module: :orders
     resources :sales,                    only: [:index, :show, :create],   module: :orders
     resources :credit_sales,             only: [:index, :show, :create],   module: :orders
@@ -250,11 +246,15 @@ Rails.application.routes.draw do
     resources :members,        only: [:index, :show, :new, :create]
 
     resources :products, only: [:index, :show, :new, :create] do
-      resources :purchases,            only: [:index, :new, :create], module: :products
-      resources :sales,                only: [:index],                module: :products
-      resources :purchase_returns,     only: [:index],                module: :products
-      resources :sales_returns,        only: [:index],                module: :products
-      resources :settings,             only: [:index],                module: :products
+      resources :purchases,                only: [:index, :new, :create], module: :products
+      resources :sales,                    only: [:index],                module: :products
+      resources :purchase_returns,         only: [:index],                module: :products
+      resources :sales_returns,            only: [:index],                module: :products
+      resources :settings,                 only: [:index],                module: :products
+      resources :spoilages,                only: [:index],                module: :products
+      resources :internal_uses,            only: [:index],                module: :products
+      resources :stock_transfers,          only: [:index],                module: :products
+      resources :received_stock_transfers, only: [:index],                module: :products
       resources :unit_of_measurements, only: [:new, :create]
     end
     resources :unit_of_measurements, shallow: true do

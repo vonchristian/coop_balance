@@ -18,10 +18,10 @@
             <li class="<%= 'active' if current_page?(store_front_module_inventory_purchase_returns_path(@line_item))%>"><%= link_to 'Purchase Returns', store_front_module_inventory_purchase_returns_path(@line_item) %></li>
 
             <li class="<%= 'active' if current_page?(store_front_module_inventory_spoilages_path(@line_item))%>"><%= link_to 'Spoilages', store_front_module_inventory_spoilages_path(@line_item) %></li>
-            <li class="<%= 'active' if current_page?(store_front_module_inventory_spoilages_path(@line_item))%>"><%= link_to 'Internal Use', store_front_module_inventory_internal_uses_path(@line_item) %></li>
-            <li class="<%= 'active' if current_page?(store_front_module_inventory_spoilages_path(@line_item))%>"><%= link_to 'Stock Transfers', store_front_module_inventory_stock_transfers_path(@line_item) %></li>
+            <li class="<%= 'active' if current_page?(store_front_module_inventory_internal_uses_path(@line_item))%>"><%= link_to 'Internal Use', store_front_module_inventory_internal_uses_path(@line_item) %></li>
+            <li class="<%= 'active' if current_page?(store_front_module_inventory_stock_transfers_path(@line_item))%>"><%= link_to 'Stock Transfers', store_front_module_inventory_stock_transfers_path(@line_item) %></li>
 
-            <li class="<%= 'active' if current_page?(store_front_module_inventory_spoilages_path(@line_item))%>"><%= link_to 'Settings', store_front_module_inventory_settings_path(@line_item) %></li>
+            <li class="<%= 'active' if current_page?(store_front_module_inventory_settings_path(@line_item))%>"><%= link_to 'Settings', store_front_module_inventory_settings_path(@line_item) %></li>
 
 
           </ul>
@@ -41,6 +41,15 @@
           <% end %>
           <% if current_page? store_front_module_inventory_purchase_returns_path(@line_item) %>
             <%= render 'store_front_module/inventories/partials/purchase_returns' %>
+          <% end %>
+          <% if current_page? store_front_module_inventory_stock_transfers_path(@line_item) %>
+            <%= render 'store_front_module/inventories/partials/stock_transfers' %>
+          <% end %>
+          <% if current_page? store_front_module_inventory_internal_uses_path(@line_item) %>
+            <%= render 'store_front_module/inventories/partials/internal_uses' %>
+          <% end %>
+          <% if current_page? store_front_module_inventory_settings_path(@line_item) %>
+            <%= render 'store_front_module/inventories/partials/settings' %>
           <% end %>
 
         </div>
