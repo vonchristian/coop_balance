@@ -19,7 +19,6 @@ module StoreFrontModule
                                                   dependent: :destroy
     has_many :received_stock_transfer_line_items, class_name: "StoreFrontModule::LineItems::PurchaseReturnLineItem",
                                                   dependent: :destroy
-
     def total_cost
       line_items.sum(&:total_cost)
     end

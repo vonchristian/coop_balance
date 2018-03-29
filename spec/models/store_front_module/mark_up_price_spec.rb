@@ -8,14 +8,14 @@ module StoreFrontModule
 
     describe 'validations' do
       it { is_expected.to validate_presence_of :price }
-      it { is_expected.to validate_numericality_of :price }
+      it { is_expected.to validate_numericality_of(:price).is_greater_than(0.01) }
     end
 
     it ".current" do
       old_price  = create(:mark_up_price, date: Date.yesterday)
       new_price = create(:mark_up_price, date: Date.today)
 
-      expect(StoreFrontModule::MarkUpPrice.current).to eql(new_price)
+      expect(described_class.current).to eql(new_price)
     end
     it ".set_default_date" do
       price = create(:mark_up_price)

@@ -13,8 +13,6 @@ module StoreFrontModule
 	  	it { is_expected.to have_many :spoilage_line_items }
 	  	it { is_expected.to have_many :internal_use_line_items }
 	  	it { is_expected.to have_many :received_stock_transfer_line_items }
-
-
 	  end
 
 	  it "#total_cost" do

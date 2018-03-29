@@ -2,7 +2,9 @@ module StoreFrontModule
   class Order < ApplicationRecord
     include PgSearch
     pg_search_scope :text_search, against: [:commercial_document_name]
+
     enum pay_type: [:cash, :check]
+
     belongs_to :employee,                 class_name: "User", foreign_key: 'employee_id'
     belongs_to :commercial_document,      polymorphic: true
     belongs_to :store_front
@@ -10,6 +12,7 @@ module StoreFrontModule
     has_one :invoice,                     as: :invoiceable
     has_many :line_items,                 class_name: "StoreFrontModule::LineItem", dependent: :destroy
     has_many :products,                   class_name: "StoreFrontModule::Product", through: :line_items
+
     delegate :name,                       to: :commercial_document, prefix: true
     delegate :name,                       to: :employee, prefix: true, allow_nil: true
     delegate :number,                     to: :official_receipt, prefix: true, allow_nil: true
@@ -26,6 +29,7 @@ module StoreFrontModule
       end
     end
 
+
     def self.total(options={})
       ordered_on(options).sum(&:total_cost)
     end
@@ -36,10 +40,6 @@ module StoreFrontModule
       else
         invoice_number
       end
-    end
-
-    def self.customers
-      Member.all + User.all
     end
 
 

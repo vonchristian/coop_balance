@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_03_29_055840) do
+ActiveRecord::Schema.define(version: 2018_03_29_120341) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -752,9 +752,11 @@ ActiveRecord::Schema.define(version: 2018_03_29_055840) do
     t.string "type"
     t.boolean "credit", default: false
     t.string "commercial_document_name"
+    t.uuid "store_front_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_orders"
     t.index ["employee_id"], name: "index_orders_on_employee_id"
     t.index ["pay_type"], name: "index_orders_on_pay_type"
+    t.index ["store_front_id"], name: "index_orders_on_store_front_id"
     t.index ["type"], name: "index_orders_on_type"
   end
 
@@ -1352,6 +1354,7 @@ ActiveRecord::Schema.define(version: 2018_03_29_055840) do
   add_foreign_key "notes", "users", column: "noter_id"
   add_foreign_key "offices", "accounts", column: "cash_in_vault_account_id"
   add_foreign_key "offices", "cooperatives"
+  add_foreign_key "orders", "store_fronts"
   add_foreign_key "orders", "users", column: "employee_id"
   add_foreign_key "organization_members", "organizations"
   add_foreign_key "penalty_configs", "accounts", column: "penalty_discount_account_id"
