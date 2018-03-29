@@ -21,15 +21,13 @@ module StoreFrontModule
       validates :expiry_date, presence: true
       delegate :supplier_name, :date, to: :purchase_order, allow_nil: true
 
-
-
       def sold?
         sales.present? &&
         out_of_stock?
       end
 
       def self.available
-        select { |a| !a.out_of_stock? }
+        select { |a| a.balance > 0 }
       end
 
       def out_of_stock?
@@ -47,30 +45,31 @@ module StoreFrontModule
         stock_transfers_quantity -
         spoilages_quantity
       end
-
       def sold_quantity
-        sales.processed.sum(&:converted_quantity)
+        sales.total
       end
 
       def purchase_returns_quantity
-        purchase_returns.processed.sum(&:converted_quantity)
+        purchase_returns.total
       end
       def internal_uses_quantity
-        internal_uses.processed.sum(&:converted_quantity)
+        internal_uses.total
       end
       def stock_transfers_quantity
-        stock_transfers.processed.sum(&:converted_quantity)
+        stock_transfers.total
       end
       def spoilages_quantity
-        spoilages.processed.sum(&:converted_quantity)
+        spoilages.total
       end
 
       def sales_returns_quantity
-        sales_returns.sum(&:converted_quantity)
+        sales_returns.total
       end
+
       def received_stock_transfers_quantity
-        received_stock_transfers.sum(&:converted_quantity)
+        received_stock_transfers.total
       end
+
       def purchase_cost
         if unit_of_measurement.base_measurement?
           unit_cost

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 module StoreFrontModule
   module LineItems
-    describe PurchaseLineItem, type: :model do
+    describe PurchaseLineItem do
       describe 'associations' do
         it { is_expected.to belong_to :purchase_order }
         it { is_expected.to have_many :sales }
@@ -40,16 +40,16 @@ module StoreFrontModule
           expect(purchase_line_item.sold_quantity). to eql 10
         end
         it 'is_converted' do
-          not_base_unit_of_measurement =  create(:unit_of_measurement,
+          not_base_unit_of_measurement = create(:unit_of_measurement,
                                                 base_measurement: false,
                                                 conversion_quantity: 10)
-          purchase_line_item_2 =          create(:purchase_line_item,
+          purchase_line_item_2         = create(:purchase_line_item,
                                                 quantity: 500,
                                                 unit_of_measurement: not_base_unit_of_measurement)
-          sales_line_item_2 =             create(:sales_line_item,
+          sales_line_item_2            = create(:sales_line_item,
                                                 unit_of_measurement: not_base_unit_of_measurement,
                                                 quantity: 10)
-          referenced_2 =                  create(:referenced_purchase_line_item,
+          referenced_2                 = create(:referenced_purchase_line_item,
                                                 purchase_line_item: purchase_line_item_2,
                                                 quantity: 10,
                                                 sales_line_item: sales_line_item_2,
@@ -136,27 +136,7 @@ module StoreFrontModule
         expect(purchase_line_item.purchase_cost).to eql(100)
         expect(another_purchase_line_item.purchase_cost).to eql(10)
       end
-      it "#purchase_returns_quantity" do
-        purchase_line_item = create(:purchase_line_item_with_base_measurement, quantity: 100)
-        purchase_return_line_item = create(:purchase_return_line_item_with_base_measurement,
-                                    quantity: 20,
-                                    purchase_line_item: purchase_line_item)
-        expect(purchase_line_item.purchase_returns_quantity).to eql(20)
-      end
-      it "#internal_uses_quantity" do
-        purchase_line_item = create(:purchase_line_item_with_base_measurement, quantity: 100)
-        internal_use_line_item = create(:internal_use_line_item_with_base_measurement,
-                                    quantity: 20,
-                                    purchase_line_item: purchase_line_item)
-        expect(purchase_line_item.internal_uses_quantity).to eql(20)
-      end
-      it "#stock_transfers_quantity" do
-        purchase_line_item = create(:purchase_line_item_with_base_measurement, quantity: 100)
-        stock_transfer_line_item = create(:stock_transfer_line_item_with_base_measurement,
-                                    quantity: 20,
-                                    purchase_line_item: purchase_line_item)
-        expect(purchase_line_item.stock_transfers_quantity).to eql(20)
-      end
+
       it 'available_quantity' do
           purchase_line_item = create(:purchase_line_item_with_base_measurement, quantity: 1000)
           sales  = create(:sales_line_item_with_base_measurement,
