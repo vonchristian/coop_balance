@@ -108,6 +108,7 @@
 
                   <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
                   <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
+                  <%= f.input :description, as: :text %>
                   <%= f.submit "Save Order", class: "btn btn-lg btn-success btn-block" %>
         <% end %>
       </div>

@@ -15,29 +15,29 @@ module StoreFrontModule
       validates :employee_id, :customer_id, :cash_tendered, :order_change, presence: true
 
       def process!
+        ActiveRecord::Base.transaction do
           create_sales_order
+        end
       end
 
       private
       def create_sales_order
-        ActiveRecord::Base.transaction do
-          order = find_customer.sales_orders.create(
-          cash_tendered: cash_tendered,
-          order_change: order_change,
-          date: date,
-          employee: find_employee)
+        order = StoreFrontModule::Orders::SalesOrder.create(
+        commercial_document: find_customer,
+        cash_tendered: cash_tendered,
+        order_change: order_change,
+        date: date,
+        employee: find_employee)
 
-          find_cart.sales_line_items.each do |sales_order_line_item|
-            sales_order_line_item.cart_id = nil
-            order.sales_line_items << sales_order_line_item
-          end
-          create_entry(order)
+        find_cart.sales_line_items.each do |sales_line_item|
+          sales_line_item.cart_id = nil
+          order.sales_line_items << sales_line_item
         end
+        create_entry(order)
       end
 
       def find_customer
-        return User.find_by_id(customer_id) if User.find_by_id(customer_id).present?
-        return Member.find_by_id(customer_id)
+        Customer.find_by_id(customer_id)
       end
 
       def find_cart

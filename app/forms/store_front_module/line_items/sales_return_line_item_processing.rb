@@ -2,7 +2,17 @@ module StoreFrontModule
   module LineItems
     class SalesReturnLineItemProcessing
      include ActiveModel::Model
-      attr_accessor :unit_of_measurement_id, :quantity, :cart_id, :product_id, :unit_cost, :total_cost, :cart_id, :barcode, :referenced_line_item_id
+      attr_accessor :unit_of_measurement_id,
+      :quantity,
+      :cart_id,
+      :product_id,
+      :unit_cost,
+      :total_cost,
+      :barcode,
+      :purchase_line_item_id
+      validates :product_id,
+                :unit_of_measurement_id,
+                presence: true
       validate :quantity_is_less_than_or_equal_to_sold_quantity?
       def process!
         ActiveRecord::Base.transaction do
@@ -12,17 +22,17 @@ module StoreFrontModule
 
       private
       def process_sales_return
-        if product_id.present?
-          update_product_available_quantity
-        end
+        create_sales_return
       end
-      def update_product_available_quantity
-        sales_return = find_cart.sales_return_line_items.create!(quantity: quantity,
-                                                   unit_cost: selling_cost,
-                                                   total_cost: set_total_cost,
-                                                   unit_of_measurement: find_unit_of_measurement,
-                                                   product_id: product_id
-                                                  )
+      def create_sales_return
+        find_cart.sales_return_line_items.create!(
+          quantity: quantity,
+          unit_cost: selling_cost,
+          total_cost: set_total_cost,
+          unit_of_measurement: find_unit_of_measurement,
+          product_id: product_id,
+          purchase_line_item_id: purchase_line_item_id
+        )
       end
       def find_product
         StoreFrontModule::Product.find_by_id(product_id)
@@ -44,8 +54,7 @@ module StoreFrontModule
       end
 
       def find_customer
-        return User.find_by_id(customer_id) if User.find_by_id(customer_id).present?
-        return Member.find_by_id(customer_id)
+        Customer.find_by_id(customer_id)
       end
 
       def find_employee
@@ -54,13 +63,17 @@ module StoreFrontModule
      def sold_quantity
         if product_id.present? && barcode.blank?
           find_product.sales_balance
-        elsif referenced_line_item_id.present? && barcode.present?
-          find_purchase_order_line_item.sold_quantity
+        elsif purchase_line_item_id.present? && barcode.present?
+          find_purchase_line_item.sold_quantity
         end
       end
 
       def find_product
         StoreFrontModule::Product.find_by_id(product_id)
+      end
+
+      def find_purchase_line_item
+        StoreFrontModule::LineItems::PurchaseLineItem.find_by_id(purchase_line_item_id)
       end
 
 

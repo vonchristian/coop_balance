@@ -3,8 +3,8 @@ module StoreFrontModule
     class SalesReturnLineItemsController < ApplicationController
       def new
         if params[:search].present?
-          @products = StoreFrontModule::Product.text_search_with_barcode(params[:search]).all
-          @line_items = StoreFrontModule::LineItems::SalesLineItem.text_search(params[:search])
+          @products = StoreFrontModule::Product.text_search(params[:search]).all
+          @line_items = StoreFrontModule::LineItems::PurchaseLineItem.includes(:unit_of_measurement).text_search(params[:search])
         end
         @cart = current_cart
         @sales_return_line_item = StoreFrontModule::LineItems::SalesReturnLineItemProcessing.new
@@ -31,7 +31,8 @@ module StoreFrontModule
 
       private
       def line_item_params
-        params.require(:store_front_module_line_items_sales_return_line_item_processing).permit(:customer_id, :unit_of_measurement_id, :quantity, :cart_id, :product_id, :referenced_line_item_id)
+        params.require(:store_front_module_line_items_sales_return_line_item_processing).
+        permit(:customer_id, :unit_of_measurement_id, :quantity, :cart_id, :product_id, :purchase_line_item_id)
       end
     end
   end

@@ -5,7 +5,7 @@ module StoreFrontModule
                                       foreign_key: 'order_id'
       belongs_to :purchase_line_item, class_name: "StoreFrontModule::LineItems::PurchaseLineItem",
                                       foreign_key: 'purchase_line_item_id'
-      delegate :supplier, :supplier_name, :date, to: :purchase_return_order
+      delegate :commercial_document, :commercial_document_name, :date, to: :spoilage_order
     end
   end
 end

@@ -22,11 +22,11 @@ module StoreFrontModule
     delegate :name,                   to: :employee, prefix: true
 
     def self.processed
-      joins(:order).where.not('orders.id' => nil)
+      where.not(order_id: nil)
     end
 
-    def processed
-      where.not(order_id: nil)
+    def processed?
+      order_id.present?
     end
 
     def self.total

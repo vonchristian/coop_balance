@@ -30,7 +30,7 @@
               <% @spoilages.each do |spoilage| %>
                 <tr>
                   <td><%= spoilage.date.strftime("%B %e, %Y") %></td>
-                  <td><%= spoilage.supplier_name %></td>
+                  <td><%= spoilage.commercial_document_name %></td>
                   <td>
                     <% spoilage.spoilage_line_items.each do |line_item| %>
                       <div class="row">

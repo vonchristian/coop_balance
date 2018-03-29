@@ -39,6 +39,7 @@ FactoryBot.define do
     factory :internal_use_line_item_with_base_measurement, class: "StoreFrontModule::LineItems::InternalUseLineItem" do
       association :unit_of_measurement, factory: :base_measurement
       association :internal_use_order
+      association :purchase_line_item
     end
     factory :stock_transfer_line_item_with_base_measurement, class: "StoreFrontModule::LineItems::StockTransferLineItem" do
       association :unit_of_measurement, factory: :base_measurement
@@ -47,6 +48,13 @@ FactoryBot.define do
     factory :received_stock_transfer_line_item_with_base_measurement, class: "StoreFrontModule::LineItems::ReceivedStockTransferLineItem" do
       association :unit_of_measurement, factory: :base_measurement
       association :received_stock_transfer_order
+    end
+    factory :spoilage_line_item_with_base_measurement, class: "StoreFrontModule::LineItems::SpoilageLineItem" do
+      association :unit_of_measurement, factory: :base_measurement
+      association :spoilage_order
+    end
+    factory :referenced_purchase_line_item_with_base_measurement, class: "StoreFrontModule::LineItems::ReferencedPurchaseLineItem" do
+      association :unit_of_measurement, factory: :base_measurement
     end
   end
 end

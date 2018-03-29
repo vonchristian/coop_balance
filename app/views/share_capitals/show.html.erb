@@ -48,16 +48,16 @@
             <div class="col-md-1">
             </div>
             <div class="col-md-4">
-              Number of Shares
+              Paid Up Shares
             </div>
             <div class="col-md-6">
-              <%= @share_capital.number_of_shares %>
+              <%= @share_capital.paid_up_shares %>
             </div>
           </div>
         </div>
         <div class="col-md-4">
-          <small>BALANCE</small>
-          <h3><%= number_to_currency @share_capital.balance %></h3>
+          <small>PAID UP BALANCE</small>
+          <h3><%= number_to_currency @share_capital.paid_up_balance %></h3>
           <% if !@share_capital.closed? %>
               <%= link_to 'New Capital Build Up', new_share_capital_capital_build_up_path(@share_capital), class: "btn btn-success" %>
             <% end %>

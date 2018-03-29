@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :store_front do
     association :business, factory: :cooperative
-    name "MyString"
+    sequence(:name) { |n| "Store front " +  ('a'..'z').to_a.shuffle.join }
     address "MyString"
     contact_number "MyString"
     association :accounts_receivable_account,   factory: :asset

@@ -2,7 +2,7 @@ module StoreFrontModule
   module Orders
     class SpoilageOrderProcessing
       include ActiveModel::Model
-      attr_accessor  :title, :content, :employee_id, :cart_id, :date
+      attr_accessor  :description, :employee_id, :cart_id, :date
 
       validates :employee_id, :title, :content, :date, presence: true
 
@@ -14,11 +14,13 @@ module StoreFrontModule
 
       private
       def create_spoilage_order
-        spoilage_order = StoreFrontModule::Orders::SpoilageOrder.create!(date: date, employee: find_employee)
-        spoilage_order.create_note!(title: title, content: content)
-        find_cart.spoilage_order_line_items.each do |spoilage_order_line_item|
-          spoilage_order_line_item.cart_id = nil
-          spoilage_order.spoilage_order_line_items << spoilage_order_line_item
+        spoilage_order = StoreFrontModule::Orders::SpoilageOrder.create!(
+          date: date,
+          commercial_document: find_employee,
+          employee: find_employee)
+        find_cart.spoilage_line_items.each do |spoilage_line_item|
+          spoilage_line_item.cart_id = nil
+          spoilage_order.spoilage_line_items << spoilage_line_item
         end
         create_entry(spoilage_order)
       end
@@ -33,15 +35,16 @@ module StoreFrontModule
 
       def create_entry(spoilage_order)
         store_front = find_employee.store_front
-        spoilage_account = AccountingModule::Account.find_by(name: "Spoilage, Breakage and Losses (Selling/Marketing Cost)")
-        merchandise_inventory = CoopConfigurationsModule::StoreFrontConfig.default_merchandise_inventory_account
+        spoilage_account = store_front.spoilage_account
+        merchandise_inventory = store_front.merchandise_inventory_account
         find_employee.entries.create!(
+          origin: find_employee.store_front,
           commercial_document: spoilage_order,
-          entry_date: spoilage_order.date,
-          description: "Spoilage of merchandise inventories",
+          entry_date: date,
+          description: description,
           debit_amounts_attributes: [amount: spoilage_order.total_cost,
                                     account: spoilage_account,
-                                    commercial_document: spoilage_order ],
+                                    commercial_document: spoilage_order],
           credit_amounts_attributes:[account: merchandise_inventory,
                                      amount: spoilage_order.total_cost,
                                      commercial_document: spoilage_order])

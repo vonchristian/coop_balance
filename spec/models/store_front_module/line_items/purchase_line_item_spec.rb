@@ -5,8 +5,15 @@ module StoreFrontModule
     describe PurchaseLineItem, type: :model do
       describe 'associations' do
         it { is_expected.to belong_to :purchase_order }
-        it { is_expected.to have_many :referenced_purchase_line_items }
+        it { is_expected.to have_many :sales }
+        it { is_expected.to have_many :purchase_returns }
+        it { is_expected.to have_many :internal_uses }
+        it { is_expected.to have_many :stock_transfers }
+        it { is_expected.to have_many :sales_returns }
+        it { is_expected.to have_many :spoilages }
+        it { is_expected.to have_many :received_stock_transfers }
       end
+
       describe 'validations' do
         it { is_expected.to validate_presence_of :expiry_date }
       end
@@ -149,6 +156,43 @@ module StoreFrontModule
                                     quantity: 20,
                                     purchase_line_item: purchase_line_item)
         expect(purchase_line_item.stock_transfers_quantity).to eql(20)
+      end
+      it 'available_quantity' do
+          purchase_line_item = create(:purchase_line_item_with_base_measurement, quantity: 1000)
+          sales  = create(:sales_line_item_with_base_measurement,
+                        quantity: 100)
+          reference  = create(:referenced_purchase_line_item_with_base_measurement,
+                        purchase_line_item: purchase_line_item,
+                        sales_line_item: sales,
+                        quantity: 100)
+          sales_return = create(:sales_return_line_item_with_base_measurement,
+                        purchase_line_item: purchase_line_item,
+                        quantity: 50)
+          spoilage = create(:spoilage_line_item_with_base_measurement,
+                        purchase_line_item: purchase_line_item,
+                        quantity: 50)
+          received_stock_transfers = create(:received_stock_transfer_line_item_with_base_measurement,
+                        purchase_line_item: purchase_line_item,
+                        quantity: 50)
+          internal_uses = create(:internal_use_line_item_with_base_measurement,
+                        purchase_line_item: purchase_line_item,
+                        quantity: 50)
+          stock_transfers = create(:stock_transfer_line_item_with_base_measurement,
+                        purchase_line_item: purchase_line_item,
+                        quantity: 50)
+           purchase_return = create(:purchase_return_line_item_with_base_measurement,
+                        purchase_line_item: purchase_line_item,
+                        quantity: 200)
+
+          expect(purchase_line_item.converted_quantity).to eql 1_000
+          expect(purchase_line_item.sold_quantity).to eql 100
+          expect(purchase_line_item.sales_returns_quantity).to eql 50
+          expect(purchase_line_item.spoilages_quantity).to eql 50
+          expect(purchase_line_item.received_stock_transfers_quantity).to eql 50
+          expect(purchase_line_item.internal_uses_quantity).to eql 50
+          expect(purchase_line_item.stock_transfers_quantity).to eql 50
+          expect(purchase_line_item.purchase_returns_quantity).to eql 200
+          expect(purchase_line_item.available_quantity).to eql 650
       end
     end
   end

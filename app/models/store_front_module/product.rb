@@ -83,24 +83,22 @@ module StoreFrontModule
     end
 
     def balance(options={})
-      received_stock_transfer_balance(options) +
+      received_stock_transfers_balance(options) +
       sales_returns_balance(options) +
       purchases_balance(options) -
       sales_balance(options) -
-      internal_use_balance(options) -
-      spoilages_balance -
-      stock_transfer_balance(options)
+      internal_uses_balance(options) -
+      spoilages_balance(options) -
+      stock_transfers_balance(options) -
+      purchase_returns_balance(options)
     end
 
     def sales_balance(options={})
-      sales.processed.balance(self) -
-      sales_returns.processed.balance(self)
+      sales.processed.balance(self)
     end
 
     def purchases_balance(options={})
-      purchases.processed.balance(self) -
-      purchase_returns.processed.balance(self) -
-      spoilages.processed.balance(self)
+      purchases.processed.balance(self)
     end
 
     def purchase_returns_balance(options={})
@@ -111,15 +109,15 @@ module StoreFrontModule
       sales_returns.processed.balance(self)
     end
 
-    def internal_use_balance(options={})
+    def internal_uses_balance(options={})
       internal_uses.processed.balance(self)
     end
 
-    def stock_transfer_balance(options={})
+    def stock_transfers_balance(options={})
       stock_transfers.processed.balance(self)
     end
 
-    def received_stock_transfer_balance(options={})
+    def received_stock_transfers_balance(options={})
       received_stock_transfers.processed.balance(self)
     end
 

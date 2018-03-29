@@ -11,10 +11,12 @@
       <tbody>
         <% @sales_returns.each do |line_item| %>
           <tr>
-            <td><%= line_item.purchase_return_order.try(:date).try(:strftime, "%B %e, %Y") %></td>
-            <td><%= line_item.supplier_name %></td>
+            <td><%= line_item.sales_return_order.try(:date).try(:strftime, "%B %e, %Y") %></td>
+            <td><%= line_item.customer_name %></td>
             <td><%= line_item.quantity %></td>
           </tr>
         <% end %>
       </tbody>
     </table>
+  </div>
+</div>

@@ -13,7 +13,7 @@ module StoreFrontModule
                     :purchase_line_item_id
 
       validates :quantity, numericality: { greater_than: 0.1 }
-      validate :quantity_is_less_than_or_equal_to_available_quantity?
+      validate :ensure_quantity_is_less_than_or_equal_to_available_quantity?
       def process!
         ActiveRecord::Base.transaction do
           process_sales_line_item
@@ -23,19 +23,19 @@ module StoreFrontModule
       private
       def process_sales_line_item
         if product_id.present? && barcode.blank?
-          decrease_product_available_quantity
+          create_product_sales
         elsif purchase_line_item_id.present? && barcode.present?
             decrease_purchase_line_item_quantity
         end
       end
 
-       def decrease_product_available_quantity
+       def create_product_sales
         sales = find_cart.sales_line_items.create!(
-            quantity: quantity,
-            unit_cost:                selling_cost,
-            total_cost:               set_total_cost,
-            unit_of_measurement:      find_unit_of_measurement,
-            product_id:               product_id)
+            quantity:            quantity,
+            unit_cost:           selling_cost,
+            total_cost:          set_total_cost,
+            unit_of_measurement: find_unit_of_measurement,
+            product:             find_product)
 
         requested_quantity = converted_quantity
 
@@ -54,22 +54,22 @@ module StoreFrontModule
 
       def decrease_purchase_line_item_quantity
         sales = find_cart.sales_line_items.create!(
-          quantity: quantity,
-          unit_cost: selling_cost,
-          total_cost: set_total_cost,
-          product_id: product_id,
-          barcode: barcode,
+          quantity:            quantity,
+          unit_cost:           selling_cost,
+          total_cost:          set_total_cost,
+          product_id:          product_id,
+          barcode:             barcode,
           unit_of_measurement: find_unit_of_measurement
           )
         purchase = find_purchase_line_item
-        sales = sales.referenced_purchase_line_items.create!(
-            quantity:                 converted_quantity,
-            unit_cost:                purchase.purchase_cost,
-            total_cost:               total_cost_for(purchase, quantity),
-            unit_of_measurement:      find_product.base_measurement,
-            product_id:               product_id,
-            barcode: barcode,
-            purchase_line_item: purchase)
+        sales.referenced_purchase_line_items.create!(
+            quantity:            converted_quantity,
+            unit_cost:           purchase.purchase_cost,
+            total_cost:          total_cost_for(purchase, quantity),
+            unit_of_measurement: find_product.base_measurement,
+            product_id:          product_id,
+            barcode:             barcode,
+            purchase_line_item:  purchase)
       end
 
       def quantity_for(purchase, requested_quantity)
@@ -119,7 +119,7 @@ module StoreFrontModule
         end
       end
 
-      def quantity_is_less_than_or_equal_to_available_quantity?
+      def ensure_quantity_is_less_than_or_equal_to_available_quantity?
         errors[:quantity] << "exceeded available quantity" if converted_quantity.to_f > available_quantity
       end
     end

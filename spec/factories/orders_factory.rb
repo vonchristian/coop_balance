@@ -26,5 +26,8 @@ FactoryBot.define do
     factory :received_stock_transfer_order, class: "StoreFrontModule::Orders::ReceivedStockTransferOrder" do
       association :commercial_document, factory: :store_front
     end
+    factory :spoilage_order, class: "StoreFrontModule::Orders::SpoilageOrder" do
+      association :commercial_document, factory: :user
+    end
   end
 end
