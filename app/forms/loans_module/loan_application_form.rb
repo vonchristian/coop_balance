@@ -56,7 +56,7 @@ module LoansModule
 
     def create_documentary_stamp_tax(loan)
        tax = Charge.amount_type.create!(name: 'Documentary Stamp Tax', amount: DocumentaryStampTax.set(loan), account: AccountingModule::Account.find_by(name: "Documentary Stamp Taxes"))
-      loan.loan_charges.create!(chargeable: tax, commercial_document: loan)
+      loan.loan_charges.create!(charge: tax, commercial_document: loan)
     end
 
     # def set_loan_protection_fund

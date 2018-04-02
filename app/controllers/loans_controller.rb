@@ -3,7 +3,11 @@ class LoansController < ApplicationController
     if params[:search].present?
       @loans = LoansModule::Loan.text_search(params[:search]).paginate(page: params[:page], per_page: 30)
     else
-      @loans = LoansModule::Loan.all.includes(:borrower, :loan_product => [:loans_receivable_current_account => [:subsidiary_accounts]]).paginate(page: params[:page], per_page: 30)
+      @loans = LoansModule::Loan.
+      all.
+      order(updated_at: :desc).
+      includes(:borrower, :loan_product => [:loans_receivable_current_account => [:subsidiary_accounts]]).
+      paginate(page: params[:page], per_page: 30)
     end
 
     respond_to do |format|

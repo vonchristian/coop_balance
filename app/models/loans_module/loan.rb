@@ -1,4 +1,3 @@
-#ensure disbursement date is set if disbursed
 module LoansModule
   class Loan < ApplicationRecord
     include PgSearch
@@ -35,9 +34,7 @@ module LoansModule
     has_many :loan_charges,             class_name: "LoansModule::LoanCharge",
                                         dependent: :destroy
     has_many :loan_charge_payment_schedules, through: :loan_charges
-    has_many :charges,                  through: :loan_charges,
-                                        source: :chargeable,
-                                        source_type: "Charge"
+    has_many :charges,                  through: :loan_charges
     has_many :loan_co_makers,           class_name: "LoansModule::LoanCoMaker",
                                         dependent: :destroy
     has_many :voucher_amounts,          class_name: "Vouchers::VoucherAmount", as: :commercial_document # for adding amounts on voucher
@@ -67,7 +64,9 @@ module LoansModule
     validates :term, presence: true, numericality: true
     validates :loan_amount, numericality: { less_than_or_equal_to: :maximum_loanable_amount }
     before_save :set_borrower_full_name
-
+    def self.balance(options={})
+      self.for(options).sum(&:balance)
+    end
     def self.for(options={})
       where(street:       options[:street]).
       where(barangay:     options[:barangay]).
@@ -129,7 +128,7 @@ module LoansModule
 
     def interest_on_loan_charge
       interest = charges.where(account: loan_product_unearned_interest_income_account)
-      loan_charges.find_by(chargeable: interest)
+      loan_charges.find_by(charge: interest)
     end
 
     def interest_on_loan_balance

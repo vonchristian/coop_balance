@@ -23,6 +23,7 @@ module LoansModule
     end
     def show
       @loan = LoansModule::Loan.find(params[:id])
+      @borrower = @loan.borrower
     end
     def edit
       @loan = LoansModule::Loan.find(params[:id])

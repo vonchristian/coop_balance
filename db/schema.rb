@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_03_29_120341) do
+ActiveRecord::Schema.define(version: 2018_04_01_215501) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -472,16 +472,15 @@ ActiveRecord::Schema.define(version: 2018_03_29_120341) do
 
   create_table "loan_charges", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "loan_id"
-    t.string "chargeable_type"
-    t.uuid "chargeable_id"
     t.boolean "optional"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "amount_type"
+    t.uuid "charge_id"
     t.string "commercial_document_type"
     t.uuid "commercial_document_id"
-    t.integer "amount_type"
     t.index ["amount_type"], name: "index_loan_charges_on_amount_type"
-    t.index ["chargeable_type", "chargeable_id"], name: "index_loan_charges_on_chargeable_type_and_chargeable_id"
+    t.index ["charge_id"], name: "index_loan_charges_on_charge_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_loan_charges"
     t.index ["loan_id"], name: "index_loan_charges_on_loan_id"
   end
@@ -1328,6 +1327,7 @@ ActiveRecord::Schema.define(version: 2018_03_29_120341) do
   add_foreign_key "loan_charge_payment_schedules", "amortization_schedules"
   add_foreign_key "loan_charge_payment_schedules", "loan_charges"
   add_foreign_key "loan_charge_payment_schedules", "loans"
+  add_foreign_key "loan_charges", "charges"
   add_foreign_key "loan_charges", "loans"
   add_foreign_key "loan_co_makers", "loans"
   add_foreign_key "loan_product_charges", "charges"

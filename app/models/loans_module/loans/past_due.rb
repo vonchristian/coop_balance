@@ -2,7 +2,9 @@ module LoansModule
   module Loans
     module PastDue
       def is_past_due?
-        maturity_date < Time.zone.now
+        if maturity_date.present?
+          maturity_date < Time.zone.now
+        end
       end
 
       def number_of_days_past_due

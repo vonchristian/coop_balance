@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-md-8 col-md-offset-2">
+  <div class="col-md-7">
     <div class="box box-solid">
       <div class="box-header bg-gray">
         <div class="row">
@@ -14,42 +14,7 @@
         </div>
       </div>
       <div class="box-body">
-        <p class="text-muted"> Borrower's Profile </p>
-        Share Capital
-        <%#= @loan.borrower.share_capitals.balance %>
-        <hr />
-        <p class="text-muted">PREVIOUS LOANS </p>
-        <% @loan.borrower.loans.disbursed_loans.each do |loan| %>
-          <%= number_to_currency loan.balance %>
-          <%=link_to 'New Payment', new_loans_module_loan_previous_loan_payment_path(previous_loan_id: loan.id, loan_id: @loan.id) %>
-        <% end %>
-        <hr>
 
-          Unpaid Contributions
-          <% @loan.borrower.program_subscriptions.unpaid.each do |subscription| %>
-          <div class="row">
-            <div class="col-md-6">
-              <%= subscription.name %>
-            </div>
-            <div class="col-md-3">
-              <%= subscription.contribution %>
-            </div>
-            <div class="col-md-3">
-              <%= link_to 'Add to Charges', loans_module_loan_borrower_subscription_charges_path(@loan, program_subscription_id: subscription.id), method: :create, class: "btn btn-default btn-sm" %>
-          </div>
-        </div>
-          <% end %>
-          <div class="row">
-          <div class="col-md-5 col-md-offset-1">
-            <p class="condensed-text">Accounts Receivable Store</p>
-          </div>
-          <div class="col-md-3">
-            <span class="pull-right"> <%= number_to_currency @loan.borrower.account_receivable_store_balance %></span>
-            <%= link_to 'New Payment', new_loans_module_loan_store_credit_payment_path(@loan) %>
-          </div>
-        </div>
-        <br>
-        <hr />
         <p class="text-purple">LOAN APPLICATION DETAILS </p>
     		<div class="row">
     		  <div class="col-md-5 col-md-offset-1">
@@ -72,7 +37,7 @@
 				<% @loan.loan_charges.each do |loan_charge| %>
 				  <div class="row">
 				    <div class="col-md-5 col-md-offset-1">
-					    <span class=""><%= loan_charge.chargeable.try(:name) %></span>
+					    <span class=""><%= loan_charge.charge.try(:name) %></span>
 					  </div>
 					  <div class="col-md-3">
 					    <% if loan_charge.charge_adjustment.present? %>
@@ -144,3 +109,63 @@
 			  </div>
       </div>
     </div>
+  <div class="col-md-5">
+    <div class="box box-solid">
+      <div class="box-header with-border">
+        <h3 class="box-title"> Share Capital </h3>
+      </div>
+      <div class="box-body">
+        <% @borrower.share_capitals.each do |share_capital| %>
+          <h4><%= number_to_currency share_capital.balance %></h4>
+        <% end %>
+      </div>
+    </div>
+    <div class="box box-solid">
+      <div class="box-header">
+        <h3 class="box-title"> Previous Loans </h3>
+      </div>
+      <div class="box-body">
+         <p class="text-muted">PREVIOUS LOANS </p>
+        <% @borrower.loans.disbursed(from_date: Date.today, to_date: Date.today).each do |loan| %>
+          <%= number_to_currency loan.balance %>
+          <%=link_to 'New Payment', new_loans_module_loan_previous_loan_payment_path(previous_loan_id: loan.id, loan_id: @loan.id) %>
+        <%end %>
+      </div>
+    </div>
+    <div class="box box-solid">
+      <div class="box-header">
+        <h3 class="box-title"> Program Subscriptions </h3>
+      </div>
+      <div class="box-body">
+        <% @loan.borrower.program_subscriptions.unpaid.each do |subscription| %>
+          <div class="row">
+            <div class="col-md-6">
+              <%= subscription.name %>
+            </div>
+            <div class="col-md-3">
+              <%= subscription.contribution %>
+            </div>
+            <div class="col-md-3">
+              <%= link_to 'Add to Charges', loans_module_loan_borrower_subscription_charges_path(@loan, program_subscription_id: subscription.id), method: :create, class: "btn btn-default btn-sm" %>
+            </div>
+          </div>
+          <br />
+        <% end %>
+      </div>
+    </div>
+    <div class="box box-solid">
+      <div class="box-header">
+        <h3 class="box-title"> Savings </h3>
+      </div>
+    </div>
+    <div class="box box-solid">
+      <div class="box-header">
+        <h3 class="box-title"> Accounts Receivable Store </h3>
+      </div>
+      <div class="box-body">
+        <% current_user.cooperative.store_fronts.each do |store_front| %>
+        <%= store_front.name %>
+        <% end %>
+      </div>
+    </div>
+  </div>

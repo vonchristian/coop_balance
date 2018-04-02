@@ -11,15 +11,18 @@ class LoansQuery
   end
 
   def disbursed(options={})
-    relation.where.not(disbursement_date: nil).disbursed_on(options)
+    relation.where.not(disbursement_date: nil)
   end
+
   def matured(options={})
     range = DateRange.new(start_date: options[:from_date], to_date: options[:to_date])
     where('maturity_date' => range)
   end
 
   def disbursed_on(options={})
-    range = DateRange.new(start_date: options[:from_date], to_date: options[:to_date])
+    from_date = Date.today
+    to_date   = Date.today
+    range     = DateRange.new(start_date: from_date, to_date: to_date)
     where('disbursement_date' => range)
   end
 

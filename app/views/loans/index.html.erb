@@ -1,20 +1,57 @@
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-7">
     <div class="box box-solid">
       <div class="box-header">
+        <div class="row">
+          <div class="col-md-2">
+            <h3 class="box-title">All Loans</h3>
+          </div>
+          <div class="col-md-6">
+            <%=form_tag loans_path, method: :get do %>
+                <div class="input-group">
+                  <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Borrower name", id: 'account-search-form' %>
+                  <span class="input-group-btn">
+                    <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                      <i class="fa fa-search"></i>
+                    <% end %>
+                  </span>
+                </div>
+              <% end %>
+          </div>
+        </div>
       </div>
-      <div class="box-body">
-    <div class="nav-tabs-navigation">
-      <ul class="nav nav-tabs">
-        <li class="<%= 'active' if current_page?(loans_path)%>"><%= link_to 'Info', loans_path %></li>
-        <li class="<%= 'active' if current_page?(filtered_loans_path)%>"><%= link_to 'Filters', filtered_loans_path %></li>
-        <li class="<%= 'active' if current_page?(loans_path)%>"><%= link_to 'Settings', loans_path %></li>
-    </ul>
-    <div class="tab-content">
-      <% if current_page? filtered_loans_path %>
-        <%= render 'loans/partials/filtered_loans' %>
-      <% end %>
-      <% if current_page? loans_path %>
-        <%= render 'loans/partials/all_loans' %>
-      <% end %>
+        <div class="box-body">
+          <% @loans.each do |loan| %>
+            <% cache do %>
+              <%= link_to loan_path(loan) do %>
+                <div class="row">
+                  <div class="col-md-2">
+                    <%= image_tag(loan.borrower.avatar.url(:medium), height: 60, width: 60, class: "img-circle") %>
+                  </div>
+                  <div class="col-md-4">
+                    <b><%= loan.borrower_name.try(:upcase) %></b><br>
+                    <small class="text-muted"><%= loan.loan_product_name %></small><br>
+                    <%= loan.updated_at.strftime("%b %e, %Y") %>
+                    <small>Last updated</small>
+                  </div>
+                  <div class="col-md-2">
+                    <b><%= number_to_currency loan.loan_amount %></b><br>
+                    <small>Loan Amount</small>
+                  </div>
+                  <div class="col-md-2">
+                    <span class="text-red"><%= number_to_currency loan.balance %></span><br>
+                    <small class="text-muted">Loan Balance</small><br>
+                    <small class="label bg-<%=loan.status_color %>"> <%= loan.status_text.try(:upcase) %> </small>
 
+                  </div>
+                  <div class="col-md-2">
+
+                  </div>
+                </div>
+                <br>
+              <% end %>
+            <% end %>
+          <% end %>
+          <center><%= will_paginate @loans %></center>
+        </div>
+      </div>

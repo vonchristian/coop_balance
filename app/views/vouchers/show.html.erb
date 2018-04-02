@@ -45,22 +45,22 @@
                     <th>Account</th>
                     <th>Debit</th>
                     <th>Credit</th>
-                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
                   <% if @voucher.disbursed? %>
-                    <% @voucher.entry.amounts.each do |voucher_amount| %>
+                    <% @voucher.entry.amounts.each do |amount| %>
                       <tr>
-                        <td><%= voucher_amount.account_name %></td>
+                        <td><%= amount.account_name %></td>
                         <td>
-                            <%= number_to_currency voucher_amount.amount %>
-
-                        </td>
-                         <td>
-
-                            <%= number_to_currency voucher_amount.amount %>
-
+                          <% if amount.kind_of?(AccountingModule::DebitAmount) %>
+                          <%= number_to_currency amount.amount %>
+                          <% end %>
+                          </td>
+                        <td>
+                          <% if amount.kind_of?(AccountingModule::CreditAmount) %>
+                          <%= number_to_currency amount.amount %>
+                          <% end %>
                         </td>
                       </tr>
                     <% end %>

@@ -8,7 +8,7 @@ module LoansModule
 
     it '#charge_amount' do
       charge = create(:charge, amount: 100, charge_type: 'amount_type')
-      loan_charge = create(:loan_charge, chargeable: charge)
+      loan_charge = create(:loan_charge, charge: charge)
       amount_charge_adjustment = create(:charge_adjustment, loan_charge: loan_charge, amount: 50)
 
       percent_charge_adjustment = create(:charge_adjustment, percent: 15, loan_charge: loan_charge, amount: nil)
@@ -18,7 +18,7 @@ module LoansModule
     end
     it '#amortizeable_amount' do
       charge = create(:charge, amount: 100, charge_type: 'amount_type')
-      loan_charge = create(:loan_charge, chargeable: charge)
+      loan_charge = create(:loan_charge, charge: charge)
       adjustment_with_amortization = create(:charge_adjustment, loan_charge: loan_charge, amount: 50, amortize_balance: true)
       adjustment_without_amortization = create(:charge_adjustment, loan_charge: loan_charge, amount: 50, amortize_balance: false)
 

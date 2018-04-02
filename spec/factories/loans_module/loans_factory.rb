@@ -13,7 +13,7 @@ FactoryBot.define do
       association :loan_product, factory: :loan_product_with_interest_config
       loan.after(:build) do |t|
         charge = create(:interest_on_loan_charge, account: t.loan_product_unearned_interest_income_account)
-        t.loan_charges << create(:loan_charge, chargeable: charge)
+        t.loan_charges << create(:loan_charge, charge: charge)
       end
     end
   end

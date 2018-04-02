@@ -20,6 +20,7 @@
             <%= f.error_notification %>
             <%= f.input :name, placeholder: 'e.g. Notarial Fee' %>
             <%= f.input :amount %>
+            <%= f.input :charge_type, input_html: { value: Charge.charge_types.first } %>
             <%= f.input :account_id, collection: AccountingModule::Account.all.map{|a| [a.name.titleize, a.id] } %>
             <div class="box-footer">
               <%= f.submit "Save Charge", class: "btn btn-primary pull-right" %>

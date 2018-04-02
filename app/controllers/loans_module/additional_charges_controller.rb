@@ -6,10 +6,10 @@ module LoansModule
 		end
 		def create
 			@loan = LoansModule::Loan.find(params[:loan_id])
-			@additional_charge = Charge.new(additional_charge_params)
+			@additional_charge = Charge.amount_type.new(additional_charge_params)
 			if @additional_charge.valid?
 				@additional_charge.save
-        @loan.loan_charges.create(chargeable: @additional_charge, commercial_document: @loan)
+        @loan.loan_charges.credit.create(charge: @additional_charge, commercial_document: @loan)
 				redirect_to loans_module_loan_application_url(@loan), notice: "Additional Charge created successfully"
 			else
 				render :new

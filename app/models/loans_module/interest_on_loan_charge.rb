@@ -5,11 +5,6 @@ module LoansModule
     def charge_for(loan)
       loan_charges.where(loan: loan).last
     end
-		def self.set_interest_on_loan_for(loan)
-			interest = self.amount_type.regular.create!(name: 'Interest on Loan', amount: self.interest_charge_for(loan),
-        account: AccountingModule::Revenue.find_by(name: "Service Fees"))
-      loan.loan_charges.create!(chargeable: interest)
-    end
     def self.interest_charge_for(loan)
     	first_year(loan)
     	# if (0..12).include?(loan.term)
