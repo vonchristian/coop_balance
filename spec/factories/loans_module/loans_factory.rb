@@ -11,9 +11,9 @@ FactoryBot.define do
       application_date Date.today
       term 12
       association :loan_product, factory: :loan_product_with_interest_config
-      loan.after(:build) do |t|
-        charge = create(:interest_on_loan_charge, account: t.loan_product_unearned_interest_income_account)
-        t.loan_charges << create(:loan_charge, charge: charge)
+      after(:build) do |loan|
+        charge = create(:interest_on_loan_charge, account: loan.loan_product_unearned_interest_income_account)
+        create(:loan_charge, charge: charge, loan: loan)
       end
     end
   end
