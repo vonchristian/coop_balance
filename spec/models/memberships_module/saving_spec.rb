@@ -21,11 +21,15 @@ module MembershipsModule
 
     it '.updated_at' do
       updated_saving = create(:saving)
-      not_updated_saving = create(:saving, updated_at: Date.yesterday)
-      deposit = create(:entry_with_credit_and_debit, entry_date: Date.today, commercial_document: updated_saving)
+      not_updated_saving = create(:saving)
+      employee = create(:user, role: 'teller')
+      deposit = build(:entry, commercial_document: updated_saving, entry_date: Date.today)
+      deposit.credit_amounts << create(:credit_amount, amount: 5_000, commercial_document: updated_saving, account: updated_saving.saving_product_account)
+      deposit.debit_amounts << create(:debit_amount, amount: 5_000, commercial_document: updated_saving, account: employee.cash_on_hand_account)
+      deposit.save
 
-      expect(MembershipsModule::Saving.updated_at(from_date: Date.today, to_date: Date.today).pluck(:id)).to include(updated_saving.id)
-      expect(MembershipsModule::Saving.updated_at(from_date: Date.today, to_date: Date.today).pluck(:id)).to_not include(not_updated_saving.id)
+      expect(described_class.updated_at(from_date: Date.today, to_date: Date.today)).to include(updated_saving)
+      expect(described_class.updated_at(from_date: Date.today, to_date: Date.today)).to_not include(not_updated_saving)
     end
 
     it '#balance' do

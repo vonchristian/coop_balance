@@ -16,11 +16,11 @@ module MembershipsModule
       subscriber = create(:member)
       program = create(:program, payment_schedule_type: "annually")
       program_subscription = create(:program_subscription, program: program, subscriber: subscriber)
-      date = Date.today
-      entry = build(:entry, commercial_document: program_subscription, entry_date: date)
+      entry = build(:entry, commercial_document: program_subscription, entry_date: Date.today)
       create(:debit_amount, entry: entry, commercial_document: program_subscription, account: program.account)
-      create(:credit_amount, entry: entry, commercial_document: subscriber, account: program.account)
+      create(:credit_amount, entry: entry, commercial_document: program_subscription, account: program.account)
       entry.save
+
       expect(program_subscription.paid?(from_date: Date.today.beginning_of_year, to_date: Date.today.end_of_year)).to be true
     end
   end

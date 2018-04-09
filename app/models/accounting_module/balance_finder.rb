@@ -6,13 +6,13 @@ module AccountingModule
       to_date = options[:to_date]
       commercial_document = options[:commercial_document]
       if commercial_document.present? && from_date.present? && to_date.present?
-        balance_for(options).balance_at(options).sum(:amount)
+        balance_for(options).entered_on(options).sum(:amount)
       elsif commercial_document.blank? && from_date.present? && to_date.present?
-        balance_at(options).sum(:amount)
+        entered_on(options).sum(:amount)
       elsif commercial_document.present? && from_date.blank? && to_date.blank?
         balance_for(options).sum(:amount)
       elsif commercial_document.blank? && from_date.blank? && to_date.present?
-        balance_for(options).sum(:amount)
+        entered_on(options).sum(:amount)
       else
         joins(:entry, :account).
         sum(:amount)
@@ -24,14 +24,6 @@ module AccountingModule
       where(commercial_document: options[:commercial_document])
     end
 
-    def balance_at(options={})
-      first_entry_date = AccountingModule::Entry.order(entry_date: :desc).last.try(:entry_date) || Date.today
-      from_date = options[:from_date] || first_entry_date
-      to_date = options[:to_date]
-      date_range = DateRange.new(from_date: from_date, to_date: to_date)
-      joins(:entry, :account).
-      where('entries.entry_date' => date_range.range)
-    end
 
     def balance_for_new_record
       balance = BigDecimal.new('0')

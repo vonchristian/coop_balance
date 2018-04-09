@@ -12,24 +12,17 @@ module AccountingModule
     delegate :name, to: :account, prefix: true
     delegate :entry_date, :recorder, :reference_number, :description,  to: :entry
 
-    def self.total(options={})
-      where(options).sum(:amount)
-    end
-
     def self.recorded_by(recorder_id)
       where(recorder_id: recorder_id)
     end
 
-    def self.entered_on(hash={})
-      if hash[:from_date] && hash[:to_date]
-        date_range = DateRange.new(from_date: hash[:from_date], to_date: hash[:to_date])
-        includes(:entry).where('entries.entry_date' => (date_range.start_date)..(date_range.end_date))
-      elsif hash[:commercial_document]
-        where(commercial_document: hash[:commercial_document])
-      else
-        all
-      end
+    def self.entered_on(options={})
+      first_entry_date = AccountingModule::Entry.order(entry_date: :desc).last.try(:entry_date) || Date.today
+      from_date = options[:from_date] || first_entry_date
+      to_date = options[:to_date]
+      date_range = DateRange.new(from_date: from_date, to_date: to_date)
+      joins(:entry, :account).
+      where('entries.entry_date' => date_range.range)
     end
-
   end
 end

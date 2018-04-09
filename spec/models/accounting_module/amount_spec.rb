@@ -27,5 +27,16 @@ module AccountingModule
       it { is_expected.to delegate_method(:reference_number).to(:entry) }
       it { is_expected.to delegate_method(:description).to(:entry) }
     end
+
+    it ".entered_on(options={})" do
+      employee = create(:user, role: 'teller')
+      updated_saving = create(:saving)
+      deposit = build(:entry, commercial_document: updated_saving, entry_date: Date.today)
+      debit = deposit.credit_amounts << create(:credit_amount, amount: 5_000, commercial_document: updated_saving, account: updated_saving.saving_product_account)
+      deposit.debit_amounts << create(:debit_amount, amount: 5_000, commercial_document: updated_saving, account: employee.cash_on_hand_account)
+      deposit.save
+
+      expect(described_class.entered_on(from_date: Date.today, to_date: Date.today))
+    end
   end
 end
