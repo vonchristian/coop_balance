@@ -13,7 +13,7 @@ module LoansModule
 				if @adjustment.valid?
 					@adjustment.save
 					redirect_to loans_module_loan_application_url(@loan_charge.loan), notice: "Adjustment saved successfully."
-      LoansModule::AmortizationSchedule.create_schedule_for(@loan)
+        LoansModule::AmortizationSchedule.create_schedule_for(@loan)
 				else
 					render :new
 				end

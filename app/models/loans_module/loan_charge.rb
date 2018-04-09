@@ -1,4 +1,4 @@
-module LoansModule
+  module LoansModule
 	class LoanCharge < ApplicationRecord
     enum amount_type: [:credit, :debit]
 	  has_one :charge_adjustment, dependent: :destroy

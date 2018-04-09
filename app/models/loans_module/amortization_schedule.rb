@@ -97,7 +97,7 @@ module LoansModule
 
     def self.update_amortization_schedule(loan)
       loan.amortization_schedules.order(date: :asc).first(loan.number_of_interest_payments_prededucted).each do |schedule|
-        schedule.prededucted_interest = true
+        schedule.has_prededucted_interest = true
         schedule.interest = interest_computation(schedule, loan)
         schedule.debit_account_id = schedule.default_debit_account
         schedule.debit_account_id = schedule.default_credit_account
