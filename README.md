@@ -1,3 +1,6 @@
+process unearned interest income that is prededucted
+
+
 rename memberships module to cooperators module
 
 move time deposit to savings accounts
