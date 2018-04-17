@@ -6,13 +6,18 @@ module AccountingModule
       to_date = options[:to_date]
       commercial_document = options[:commercial_document]
       if commercial_document.present? && from_date.present? && to_date.present?
-        balance_for(options).entered_on(options).sum(:amount)
+        balance_for(options).
+        entered_on(options).
+        sum(:amount)
       elsif commercial_document.blank? && from_date.present? && to_date.present?
-        entered_on(options).sum(:amount)
+        entered_on(options).
+        sum(:amount)
       elsif commercial_document.present? && from_date.blank? && to_date.blank?
-        balance_for(options).sum(:amount)
+        balance_for(options).
+        sum(:amount)
       elsif commercial_document.blank? && from_date.blank? && to_date.present?
-        entered_on(options).sum(:amount)
+        entered_on(options).
+        sum(:amount)
       else
         joins(:entry, :account).
         sum(:amount)

@@ -25,7 +25,7 @@ class Voucher < ApplicationRecord
     if disbursed?
       entry.debit_amounts.sum(&:amount)
     else
-      voucher_amounts.sum
+      voucher_amounts.sum(&:amount)
     end
   end
   def number_and_total

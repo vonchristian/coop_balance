@@ -27,7 +27,7 @@ module StoreFrontModule
       end
 
       def self.available
-        select { |a| a.balance > 0 }
+        select { |a| a.available_quantity > 0 }
       end
 
       def out_of_stock?

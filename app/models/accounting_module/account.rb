@@ -32,6 +32,7 @@ module AccountingModule
         where('updated_at' => (date_range.start_date)..(date_range.end_date))
       end
     end
+
     def self.updated_by(employee)
       includes(:entries).where('entries.recorder_id' => employee.id)
     end
