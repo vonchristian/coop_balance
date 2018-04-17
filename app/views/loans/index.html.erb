@@ -22,7 +22,6 @@
       </div>
         <div class="box-body">
           <% @loans.each do |loan| %>
-            <% cache do %>
               <%= link_to loan_path(loan) do %>
                 <div class="row">
                   <div class="col-md-2">
@@ -49,7 +48,6 @@
                   </div>
                 </div>
                 <br>
-              <% end %>
             <% end %>
           <% end %>
           <center><%= will_paginate @loans %></center>
