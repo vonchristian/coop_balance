@@ -31,7 +31,7 @@ gem 'chronic'
 gem 'bootstrap-sass'
 gem 'icheck-rails'
 gem 'friendly_id'
-gem 'font-awesome-rails'
+gem "font-awesome-rails", github: "bokmann/font-awesome-rails", branch: "master"
 gem 'bootstrap-datepicker-rails'
 gem 'momentjs-rails'
 gem 'bootstrap3-datetimepicker-rails'

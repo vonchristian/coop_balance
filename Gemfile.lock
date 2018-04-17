@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/bokmann/font-awesome-rails.git
+  revision: 0e5c694d5485983772f47ef1c8051af9fbb3938d
+  branch: master
+  specs:
+    font-awesome-rails (4.7.0.4)
+      railties (>= 3.2, < 6.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -151,8 +159,6 @@ GEM
     faraday (0.14.0)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.23)
-    font-awesome-rails (4.7.0.4)
-      railties (>= 3.2, < 6.0)
     formatador (0.2.5)
     friendly_id (5.2.3)
       activerecord (>= 4.0.0)
@@ -448,7 +454,7 @@ DEPENDENCIES
   dotiw
   factory_bot_rails
   faker
-  font-awesome-rails
+  font-awesome-rails!
   friendly_id
   gretel
   guard
