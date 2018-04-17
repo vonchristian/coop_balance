@@ -17,10 +17,15 @@ module BankAccounts
     end
 
     def save_entry
-      find_bank_account.entries.create!(recorder_id: recorder_id,
+      find_bank_account.entries.create!(
+      origin: find_employee.office,
+      recorder: find_employee,
       description: description, reference_number: reference_number, entry_date: date,
       debit_amounts_attributes: [account_id: debit_account_id, amount: amount, commercial_document: find_bank_account],
       credit_amounts_attributes: [account_id: credit_account_id, amount: amount, commercial_document: find_bank_account])
+    end
+    def find_employee
+      User.find_by_id(recorder_id)
     end
   end
 end

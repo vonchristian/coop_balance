@@ -14,7 +14,10 @@ class BankAccountForm
   private
   def create_bank_account
     bank_account = BankAccount.find_or_create_by(bank_name: bank_name, bank_address: bank_address, account_number: account_number, account_id: account_id, earned_interest_account_id: earned_interest_account_id)
-    bank_account.entries.create!(recorder_id: recorder_id, entry_date: date, reference_number: reference_number, description: description,
+    bank_account.entries.create!(
+      origin: find_employee.office,
+      recorder: find_employee,
+      entry_date: date, reference_number: reference_number, description: description,
       credit_amounts_attributes: [account: credit_account, amount: amount, commercial_document: bank_account],
       debit_amounts_attributes: [account_id: account_id, amount: amount, commercial_document: bank_account])
   end

@@ -1,3 +1,4 @@
+single entry for interest on deposits
 process unearned interest income that is prededucted
 
 
