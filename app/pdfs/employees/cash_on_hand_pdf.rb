@@ -32,7 +32,7 @@ module Employees
 
    def heading
     bounding_box [300, 800], width: 50 do
-      image "#{Rails.root}/app/assets/images/logo_kcmdc.jpg", width: 50, height: 50
+      image "#{Rails.root}/app/assets/images/kccmc_logo.jpg", width: 50, height: 50
     end
     bounding_box [370, 800], width: 200 do
         text "#{@employee.cooperative_abbreviated_name}", style: :bold, size: 24

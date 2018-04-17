@@ -23,10 +23,10 @@ class OrderPdf < Prawn::Document
   end
   def logo
     move_down 10
-    image "#{Rails.root}/app/assets/images/logo_kcmdc.jpg", width: 50, height: 50, position: :center
+    image "#{Rails.root}/app/assets/images/kccmc_logo.jpg", width: 50, height: 50, position: :center
     move_down 5
-    text "KIANGAN COMMUNITY MULTIPURPOSE COOPERATIVE", align: :center, size: 8, style: :bold
-    text "Poblacion, Kiangan, Ifugao", size: 7, align: :center
+    text "Tinoc COMMUNITY MULTIPURPOSE COOPERATIVE", align: :center, size: 8, style: :bold
+    text "Poblacion, Tinoc, Ifugao", size: 7, align: :center
     text "Email: hmpc@gmail.com", size: 7, align: :center
     text "Contact No: 999-999-999", size: 7, align: :center
 

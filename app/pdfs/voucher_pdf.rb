@@ -18,11 +18,11 @@ class VoucherPdf < Prawn::Document
   end
 def heading
     bounding_box [300, 780], width: 50 do
-      image "#{Rails.root}/app/assets/images/logo_kcmdc.jpg", width: 50, height: 50
+      image "#{Rails.root}/app/assets/images/kccmc_logo.jpg", width: 50, height: 50
     end
     bounding_box [370, 780], width: 200 do
-        text "KCMDC", style: :bold, size: 24
-        text "Kiangan Community Multipurpose Cooperative", size: 10
+        text "KCCMC", style: :bold, size: 24
+        text "Tinoc Community Multipurpose Cooperative", size: 10
     end
     bounding_box [0, 780], width: 400 do
       text "CASH DISBURSEMENT VOUCHER", style: :bold, size: 12

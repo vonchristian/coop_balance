@@ -15,11 +15,11 @@ module LoansModule
       end
       def heading
         bounding_box [300, 760], width: 50 do
-          image "#{Rails.root}/app/assets/images/logo_kcmdc.jpg", width: 40, height: 40
+          image "#{Rails.root}/app/assets/images/kccmc_logo.jpg", width: 40, height: 40
         end
         bounding_box [350, 760], width: 150 do
-            text "KCMDC", style: :bold, size: 22
-            text "Poblacion, Kiangan, Ifugao", size: 10
+            text "KCCMC", style: :bold, size: 22
+            text "Poblacion, Tinoc, Ifugao", size: 10
         end
         bounding_box [0, 760], width: 400 do
           text "Loan Releases Report", style: :bold, size: 14

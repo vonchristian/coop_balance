@@ -1,28 +1,28 @@
-module LoansModule 
-	class LoanDisbursementVoucherPdf < Prawn::Document 
+module LoansModule
+	class LoanDisbursementVoucherPdf < Prawn::Document
 		def initialize(loan, voucher, view_context)
       super(margin: 40, page_layout: :portrait)
-      @loan = loan 
-      @voucher = voucher 
+      @loan = loan
+      @voucher = voucher
       @view_context = view_context
       heading
       loan_details
       disbursement_table
     end
 
-    private 
+    private
     def price(number)
       @view_context.number_to_currency(number, :unit => "P ")
     end
-    def heading 
-      image "#{Rails.root}/app/assets/images/logo_kcmdc.jpg", width: 50, height: 50, position: :center
+    def heading
+      image "#{Rails.root}/app/assets/images/kccmc_logo.jpg", width: 50, height: 50, position: :center
        move_down 20
     	text "LOAN DISBURSEMENT VOUCHER", align: :center
        # barcode = Barby::Code39.new(@voucher.number)
       stroke_horizontal_rule
       move_down 10
-    end 
-    def loan_details 
+    end
+    def loan_details
       text "#{@loan.loan_product_name}"
       text "#{@loan.loan_product.account_name}"
 
@@ -51,7 +51,7 @@ module LoansModule
 
     def table_data
       move_down 5
-      [["LOAN AMOUNT", "", "", "#{price(@loan.loan_amount)}"]] + 
+      [["LOAN AMOUNT", "", "", "#{price(@loan.loan_amount)}"]] +
       [["CHARGE NAME", "DEBIT ACCOUNT", "CREDIT ACCOUNT", "AMOUNT"]] +
       @table_data ||= @loan.loan_charges.map { |e| [e.name,  e.debit_account_name,  e.credit_account_name, price(e.charge_amount_with_adjustment) ]} +
       [["TOTAL CHARGES", "", "", "#{price(@loan.total_loan_charges)}"]] +
@@ -59,5 +59,5 @@ module LoansModule
       [["Net Proceed", "", "", "#{price(@loan.net_proceed)}"]]
 
     end
-  end 
-end 
+  end
+end

@@ -1,4 +1,4 @@
-module LoansModule 
+module LoansModule
   class AmortizationSchedulePdf < Prawn::Document
     def initialize(schedule, view_context)
       super(margin: 30, page_size: "A4", page_layout: :portrait)
@@ -6,17 +6,17 @@ module LoansModule
       @view_context = view_context
       heading
     end
-    private 
+    private
     def price(number)
       @view_context.number_to_currency(number, :unit => "P ")
     end
-   def heading 
+   def heading
     bounding_box [0, 770], width: 100 do
-        image "#{Rails.root}/app/assets/images/logo_kcmdc.jpg", width: 50, height: 50, align: :center
-      end 
+        image "#{Rails.root}/app/assets/images/kccmc_logo.jpg", width: 50, height: 50, align: :center
+      end
       bounding_box [0, 770], width: 530 do
-        text "KIANGAN COMMUNITY MULTIPURPOSE DEVELOPMENT COOPERATIVE", align: :center
-        text "Poblacion, Kiangan, Ifugao", size: 12, align: :center
+        text "Tinoc COMMUNITY MULTIPURPOSE DEVELOPMENT COOPERATIVE", align: :center
+        text "Poblacion, Tinoc, Ifugao", size: 12, align: :center
         move_down 10
         text "PAYMENT SCHEDULE", style: :bold, align: :center
         move_down 5
@@ -29,5 +29,5 @@ module LoansModule
       end
   end
 
-  end 
-end 
+  end
+end

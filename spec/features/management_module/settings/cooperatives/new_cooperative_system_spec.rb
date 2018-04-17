@@ -9,8 +9,8 @@ describe 'New cooperative' do
   end
 
   it 'with valid attributes' do
-    fill_in "Name", with: "Kiangan Community Multipurpose Cooperative"
-    fill_in "Abbreviated name", with: "KCMDC"
+    fill_in "Name", with: "Tinoc Community Multipurpose Cooperative"
+    fill_in "Abbreviated name", with: "KCCMC"
     fill_in "Registration number", with: '009-9900990'
     click_button "Save Cooperative Details"
 

@@ -23,7 +23,7 @@ class TransactionSummaryPdf < Prawn::Document
   end
   def heading
     bounding_box [300, 780], width: 50 do
-      # image "#{Rails.root}/app/assets/images/logo_kcmdc.jpg", width: 50, height: 50
+      # image "#{Rails.root}/app/assets/images/kccmc_logo.jpg", width: 50, height: 50
     end
     bounding_box [370, 780], width: 200 do
         text "KCCMC", style: :bold, size: 24
@@ -208,7 +208,7 @@ class TransactionSummaryPdf < Prawn::Document
   end
   def loan_releases
     text "Loan Releases", style: :bold, size: 10, color: "DB4437"
-    if @employee.disbursed_loan_vouchers.disbursed_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).present?
+    if @employee.disbursed_loan_vouchers.disbursed(from_date: @date.beginning_of_day, to_date: @date.end_of_day).present?
 
       table(loan_releases_data, header: true, cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [40, 160, 100, 110, 100]) do
         cells.borders = []

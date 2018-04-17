@@ -101,6 +101,9 @@ module LoansModule
     def self.payments_total
       all.map{|loan| loan.payments_total }.sum
     end
+    def self.loan_payments(options={})
+      all.map{|a| a.loan_payments(options)}
+    end
 
     def loan_payments(options={})
       entries = []

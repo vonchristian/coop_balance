@@ -9,11 +9,11 @@ class SchedulePdf < Prawn::Document
   private
   def heading
     bounding_box [0, 780], width: 100 do
-      image "#{Rails.root}/app/assets/images/logo_kcmdc.jpg", width: 50, height: 50, align: :center
+      image "#{Rails.root}/app/assets/images/kccmc_logo.jpg", width: 50, height: 50, align: :center
     end
     bounding_box [0, 780], width: 530 do
-      text "KIANGAN COMMUNITY MULTIPURPOSE DEVELOPMENT COOPERATIVE", align: :center
-      text "Poblacion, Kiangan, Ifugao", size: 12, align: :center
+      text "Tinoc COMMUNITY MULTIPURPOSE DEVELOPMENT COOPERATIVE", align: :center
+      text "Poblacion, Tinoc, Ifugao", size: 12, align: :center
       move_down 10
       text "PAYMENT SCHEDULE", style: :bold, align: :center
       move_down 5
