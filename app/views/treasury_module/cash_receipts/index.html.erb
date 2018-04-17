@@ -19,37 +19,38 @@
             <% end %>
           </div>
           <div class="col-md-3">
-
+            <span class="pull-right">
+              <%=link_to 'New Cash Receipt', new_treasury_module_cash_receipt_line_item_path, class: "btn btn-primary" %>
+            </span>
           </div>
         </div>
       </div>
       <div class="box-body">
         <% @cash_receipts.each do |cash_receipt| %>
-          <% cache do %>
-            <%= link_to accounting_module_entry_path(cash_receipt) do %>
-              <div class="row">
-                <div class="col-md-1">
-                  <% if cash_receipt.commercial_document.present? && cash_receipt.commercial_document.avatar.present? %>
-                    <%= image_tag(cash_receipt.commercial_document.avatar.url(:medium), class: "img-circle", height: 45, width: 45) %>
-                  <% end %>
-                </div>
-                <div class="col-md-5">
-                    <b><%= cash_receipt.description %></b><br>
-                    <span class="text-muted">
-                      <i class="fa fa-clock-o"></i> <%= cash_receipt.entry_date.strftime("%B %e, %Y") %> &nbsp;
-                      <i class="fa fa-note"></i> <%= cash_receipt.reference_number %>
-                    </span>
-                    <br>
-                    <b class="text-muted"><i class="fa fa-user"></i> &nbsp;<%= cash_receipt.commercial_document.try(:name) %></b>
-                </div>
-                <div class="col-md-3">
-                  <h4><%= number_to_currency cash_receipt.amounts.where(account: current_user.cash_on_hand_account).sum(&:amount) %></h4>
-                </div>
+          <%= link_to accounting_module_entry_path(cash_receipt) do %>
+            <div class="row">
+              <div class="col-md-1">
+                <% if cash_receipt.commercial_document.present? && cash_receipt.commercial_document.avatar.present? %>
+                  <%= image_tag(cash_receipt.commercial_document.avatar.url(:medium), class: "img-circle", height: 45, width: 45) %>
+                <% end %>
               </div>
-              <br>
-            <% end %>
-          <% end %>
+              <div class="col-md-5">
+                  <b><%= cash_receipt.description %></b><br>
+                  <span class="text-muted">
+                    <i class="fa fa-clock-o"></i> <%= cash_receipt.entry_date.strftime("%B %e, %Y") %> &nbsp;
+                    <i class="fa fa-note"></i> <%= cash_receipt.reference_number %>
+                  </span>
+                  <br>
+                  <b class="text-muted"><i class="fa fa-user"></i> &nbsp;<%= cash_receipt.commercial_document.try(:name) %></b>
+              </div>
+              <div class="col-md-3">
+                <h4><%= number_to_currency cash_receipt.amounts.where(account: current_user.cash_on_hand_account).sum(&:amount) %></h4>
+              </div>
+            </div>
+            <br>
         <% end %>
+        <% end %>
+        <center><%= will_paginate @cash_receipts %></center>
       </div>
     </div>
   </div>

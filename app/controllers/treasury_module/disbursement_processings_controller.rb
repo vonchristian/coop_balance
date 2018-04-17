@@ -1,7 +1,7 @@
 module TreasuryModule
   class DisbursementProcessingsController < ApplicationController
     def create
-      @disbursement = DisbursementProcessing.new(disbursement_params)
+      @disbursement = Vouchers::DisbursementProcessing.new(disbursement_params)
       if @disbursement.valid?
         @disbursement.disburse!
         redirect_to treasury_module_disbursements_url, notice: "Disbursement saved successfully."
@@ -11,7 +11,7 @@ module TreasuryModule
     end
     private
     def disbursement_params
-      params.require(:disbursement_processing).permit(:reference_number, :date, :description, :employee_id, :payee_id)
+      params.require(:vouchers_disbursement_processing).permit(:reference_number, :date, :description, :employee_id, :payee_id)
     end
   end
 end

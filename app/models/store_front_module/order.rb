@@ -18,6 +18,7 @@ module StoreFrontModule
     delegate :number,                     to: :official_receipt, prefix: true, allow_nil: true
     delegate :number,                     to: :invoice, prefix: true, allow_nil: true
     delegate :first_and_last_name,        to: :commercial_document, prefix: true
+    delegate :avatar,                     to: :commercial_document
     before_save :set_default_date, :set_commercial_document_name
 
     def self.ordered_on(options={})

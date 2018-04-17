@@ -273,7 +273,10 @@ Rails.application.routes.draw do
     resources :disbursements, only: [:index]
     resources :cash_receipts, only: [:index]
     resources :disbursement_line_items, only: [:new, :create, :destroy]
+    resources :cash_receipt_line_items, only: [:new, :create, :destroy]
     resources :disbursement_processings, only: [:create]
+    resources :cash_receipt_processings, only: [:create]
+
     resources :employees, only: [:index, :show] do
       resources :remittances, only: [:new, :create]
       resources :fund_transfers, only: [:new, :create]
