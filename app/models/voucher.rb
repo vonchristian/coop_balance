@@ -17,7 +17,11 @@ class Voucher < ApplicationRecord
   delegate :avatar, to: :payee, allow_nil: true
 
   before_save :set_default_date
-
+  def self.payees
+    User.all +
+    Member.all +
+    Organization.all
+  end
   def self.unused
     disbursed.select { |a| a.commercial_document_id.nil? }
   end
