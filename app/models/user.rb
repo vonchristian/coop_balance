@@ -46,7 +46,7 @@ class User < ApplicationRecord
   has_many :entries,                  class_name: "AccountingModule::Entry", foreign_key: 'recorder_id'
   has_many :appraised_properties,     class_name: "Appraisal", foreign_key: 'appraiser_id'
   has_many :voucher_amounts,          class_name: "Vouchers::VoucherAmount", as: :commercial_document # for adding amounts on voucher
-  has_many :vouchers,                 as: :payee, class_name: "Vouchers::EmployeeVoucher"
+  has_many :vouchers,                 as: :payee
   has_many :prepared_vouchers,        class_name: "Voucher", foreign_key: 'preparer_id'
   has_many :disbursed_vouchers,       class_name: "Voucher", foreign_key: 'disburser_id'
   has_many :disbursed_loan_vouchers,  class_name: "Vouchers::LoanDisbursementVoucher", foreign_key: 'disburser_id'
