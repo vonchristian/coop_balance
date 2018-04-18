@@ -1,2 +1,0 @@
-class CashReceiptProcessingsController < ApplicationController
-  d
