@@ -90,13 +90,20 @@ module LoansModule
 
     def create_charges_that_depends_on_loan_amount(loan)
       charges.depends_on_loan_amount.includes_loan_amount(loan).each do |charge|
-          loan.loan_charges.create!(charge: charge, commercial_document: loan)
+          loan.loan_charges.create!(
+          charge: charge,
+          commercial_document: loan,
+          amount_type: 'credit'
+          )
       end
     end
 
     def create_charges_that_does_not_depends_on_loan_amount(loan)
      charges.not_depends_on_loan_amount.each do |charge|
-        loan.loan_charges.find_or_create_by!(charge: charge, commercial_document: loan)
+        loan.loan_charges.find_or_create_by!(
+          charge: charge,
+          commercial_document: loan,
+          amount_type: 'credit')
       end
     end
   end

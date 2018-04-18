@@ -116,7 +116,7 @@
       </div>
       <div class="box-body">
         <% @borrower.share_capitals.each do |share_capital| %>
-          <h4><%= number_to_currency share_capital.balance %></h4>
+          <h4><%= number_to_currency share_capital.paid_up_balance %></h4>
         <% end %>
       </div>
     </div>

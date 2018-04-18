@@ -1,5 +1,5 @@
 <div class="<%='active' if current_page?(loan_disbursements_path(@loan)) %> tab-pane" id="loan-disbursement">
-  <% if @loan.disbursement_voucher.present? && @loan.disbursed? %>
+  <% if @loan.disbursement_voucher.present? %>
     <%= link_to 'Print CDV', voucher_path(@loan.disbursement_voucher, format: "pdf") %>
   <% end %>
   <div class="row">
