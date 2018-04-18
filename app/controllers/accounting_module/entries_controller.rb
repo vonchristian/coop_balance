@@ -20,7 +20,7 @@ module AccountingModule
       elsif params[:branch_office_id].present?
         @entries = CoopConfigurationsModule::BranchOffice.find(params[:branch_office_id]).entries
       else
-        @entries = AccountingModule::Entry.all.paginate(:page => params[:page], :per_page => 50)
+        @entries = AccountingModule::Entry.all.order(entry_date: :desc).paginate(:page => params[:page], :per_page => 50)
       end
     end
     def new
