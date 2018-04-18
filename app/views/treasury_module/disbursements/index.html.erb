@@ -27,7 +27,6 @@
       </div>
       <div class="box-body">
         <% @disbursements.each do |disbursement| %>
-          <% cache do %>
             <%= link_to accounting_module_entry_path(disbursement) do %>
               <div class="row">
                 <div class="col-md-1">
@@ -49,7 +48,6 @@
                 </div>
               </div>
               <br>
-            <% end %>
           <% end %>
         <% end %>
       </div>

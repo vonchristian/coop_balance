@@ -100,7 +100,7 @@ class TransactionSummaryPdf < Prawn::Document
   end
   #Savings Deposits
   def savings_deposits_balances
-    [["", "Beginning Balance", "#{price(CoopServicesModule::SavingProduct.all.map{|a| a.account.balance(to_date: @date.yesterday.end_of_day) }.sum) }"]]
+    [["", "Beginning Balance", "#{price(CoopServicesModule::SavingProduct.all.map{ |a| a.account.balance(to_date: @date.yesterday.end_of_day) }.sum) }"]]
   end
   def add_savings_deposits
     [["", "", "Add Deposits", "#{price(CoopServicesModule::SavingProduct.all.map{|a| a.account.credits_balance(from_date: @date.beginning_of_day, to_date: @date.end_of_day)}.sum) }"]]
@@ -113,6 +113,7 @@ class TransactionSummaryPdf < Prawn::Document
   def total_savings_deposits
     [["", "", "Total Savings", "#{price(CoopServicesModule::SavingProduct.all.map{|a| a.account.balance(to_date: @date.end_of_day) }.sum) }"]]
   end
+
   def time_deposits
     text "Time Deposits", style: :bold, size: 10, color: "4A86CF"
   table(time_deposits_balances, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 150, 100]) do
@@ -226,18 +227,16 @@ class TransactionSummaryPdf < Prawn::Document
   end
 
   def loan_releases_data
-    if @employee.disbursed_loan_vouchers.disbursed_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).present?
+    if @employee.disbursed_loan_vouchers.disbursed(from_date: @date.beginning_of_day, to_date: @date.end_of_day).present?
        [["", "Borrower", "Voucher #", "Loan Amount", "Net Proceed"]] +
-      @loan_releases_data ||= @employee.disbursed_loan_vouchers.disbursed_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{|a| ["", a.payee_name, a.number, price(a.payee.loan_amount), price(a.payee.net_proceed)]} +
-      [["", "", "<b>TOTAL</b>", "<b>#{price(@employee.disbursed_loan_vouchers.disbursed_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{|a| a.payee.loan_amount}.sum) }</b>",  "<b>#{price(@employee.disbursed_loan_vouchers.disbursed_on(from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{|a| a.payee.net_proceed}.sum) }</b>"]]
+      @loan_releases_data ||= @employee.disbursed_loan_vouchers.disbursed(from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{|a| ["", a.payee_name, a.number, price(a.payee.loan_amount), price(a.payee.net_proceed)]} +
+      [["", "", "<b>TOTAL</b>", "<b>#{price(@employee.disbursed_loan_vouchers.disbursed(from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{|a| a.payee.loan_amount}.sum) }</b>",  "<b>#{price(@employee.disbursed_loan_vouchers.disbursed(from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{|a| a.payee.net_proceed}.sum) }</b>"]]
     end
   end
 
    def loan_collections
     text "Loan Collections", style: :bold, size: 10, color: "DB4437"
-    if LoansModule::Loan.loan_payments(employee_id: @employee.id, from_date: @date.beginning_of_day, to_date: @date.end_of_day).present?
-
-
+    if AccountingModule::Entry.loan_payments(employee_id: @employee.id, from_date: @date.beginning_of_day, to_date: @date.end_of_day).present?
       table(loan_collections_data, header: true, cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [40, 160, 100, 110, 100]) do
         cells.borders = []
       end
@@ -254,11 +253,10 @@ class TransactionSummaryPdf < Prawn::Document
   end
 
   def loan_collections_data
-    if LoansModule::Loan.loan_payments(employee_id: @employee.id, from_date: @date.beginning_of_day, to_date: @date.end_of_day).present?
+    if AccountingModule::Entry.loan_payments(employee_id: @employee.id, from_date: @date.beginning_of_day, to_date: @date.end_of_day).present?
        [["", "Borrower", "OR #", "Amount", ""]] +
-      @loan_collections_data ||= LoansModule::Loan.loan_payments(employee_id: @employee.id, from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{|a| ["", a.commercial_document.try(:borrower_name), a.reference_number, price(a.debit_amounts.sum(&:amount))]} +
-    [["", "", "<b>TOTAL</b>", "<b>#{price(@employee.entries.loan_payments(from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{|a| a.debit_amounts.distinct.sum(:amount)}.sum)}</b>", ""]]
-
+      @loan_collections_data ||= AccountingModule::Entry.loan_payments(employee_id: @employee.id, from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{|a| ["", a.commercial_document.try(:name), a.reference_number, price(a.debit_amounts.sum(&:amount))]} +
+    [["", "", "<b>TOTAL</b>", "<b>#{price(AccountingModule::Entry.loan_payments(employee_id: @employee.id, from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{|a| a.debit_amounts.sum(:amount)}.sum)}</b>", ""]]
     else
       [[""]]
     end
