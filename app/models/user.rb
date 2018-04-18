@@ -49,6 +49,7 @@ class User < ApplicationRecord
   has_many :vouchers,                 as: :payee
   has_many :prepared_vouchers,        class_name: "Voucher", foreign_key: 'preparer_id'
   has_many :disbursed_vouchers,       class_name: "Voucher", foreign_key: 'disburser_id'
+  has_many :disbursed_loan_vouchers,       class_name: "Vouchers::LoanDisbursementVoucher", foreign_key: 'disburser_id'
   has_many :real_properties,          as: :owner
   has_many :organization_memberships, class_name: "Organizations::OrganizationMember", as: :organization_membership
   has_many :organizations,            through: :organization_memberships

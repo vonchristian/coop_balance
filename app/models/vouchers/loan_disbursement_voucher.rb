@@ -12,7 +12,7 @@ module Vouchers
       amount_type: 'credit',
       amount: loan.net_proceed,
       description: 'Net Proceed',
-      account: AccountingModule::Account.find_by(name: "Cash on Hand"),
+      account: AccountingModule::Account.find_by(name: "Cash on Hand - Main (Treasury)"),
       commercial_document: loan)
 
       loan.loan_charges.credit.each do |charge|

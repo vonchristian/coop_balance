@@ -31,9 +31,13 @@ module AccountingModule
     delegate :name, to: :recorder, prefix: true, allow_nil: true
     def self.loan_payments(options={})
       entries = []
-      LoansModule::LoanProduct.accounts.each do |account|
-        account.credit_entries.entered_on(options).each do |entry|
-          entries << entry
+      User.cash_on_hand_accounts.each do |account|
+        account.
+        debit_amounts.
+        entered_on(options).
+        where(commercial_document_type: "LoansModule::Loan").
+        each do |amount|
+          entries << amount.entry
         end
       end
       entries

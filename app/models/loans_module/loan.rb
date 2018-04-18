@@ -179,9 +179,11 @@ module LoansModule
       else
         amounts = []
         User.cash_on_hand_accounts.each do |account|
-          amounts << disbursement_entry.credit_amounts.where(account: account).pluck(:amount).sum
+          disbursement_entry.credit_amounts.where(account: account).each do |amount|
+            amounts << amount
+          end
         end
-        amounts.sum
+        amounts.uniq.sum(&:amount)
       end
     end
 

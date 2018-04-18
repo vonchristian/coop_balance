@@ -31,17 +31,17 @@ module LoansModule
     def self.loan_payments(options={})
       entries = []
       self.all.each do |loan_product|
-        loan_product.loans_receivable_current_account.credit_amounts.entered_on(options).recorded_by(options).each do |entry|
-          entries << entry
+        loan_product.loans_receivable_current_account.credit_amounts.entered_on(options).recorded_by(options).each do |amount|
+          entries << amount.entry
         end
-        loan_product.interest_receivable_account.credit_amounts.entered_on(options).recorded_by(options).each do |entry|
-          entries << entry
+        loan_product.interest_receivable_account.credit_amounts.entered_on(options).recorded_by(options).each do |amount|
+          entries << amount.entry
         end
-        loan_product.penalty_receivable_account.credit_amounts.entered_on(options).recorded_by(options).each do |entry|
-          entries << entry
+        loan_product.penalty_receivable_account.credit_amounts.entered_on(options).recorded_by(options).each do |amount|
+          entries << amount.entry
         end
       end
-      entries
+      entries.uniq
     end
 
     def post_penalties #daily
