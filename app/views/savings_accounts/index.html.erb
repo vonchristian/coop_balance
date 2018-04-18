@@ -2,16 +2,23 @@
   <div class="col-md-6">
     <div class="box box-solid">
       <div class="box-header">
-        <%=form_tag savings_accounts_path, method: :get, class: "search-form" do %>
-            <div class="input-group">
-              <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Account Number ", id: 'account-search-form' %>
-              <span class="input-group-btn">
-                <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
-                  <i class="fa fa-search"></i>
-                <% end %>
-              </span>
+        <div class="row">
+          <div class="col-md-8">
+            <%=form_tag savings_accounts_path, method: :get, class: "search-form" do %>
+                <div class="input-group">
+                  <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Account Number ", id: 'account-search-form' %>
+                  <span class="input-group-btn">
+                    <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                      <i class="fa fa-search"></i>
+                    <% end %>
+                  </span>
+                </div>
+              <% end %>
             </div>
-          <% end %>
+            <div class="col-md-4">
+              <%= link_to 'New Account', new_treasury_module_savings_account_path, class: "btn btn-primary" %>
+            </div>
+          </div>
       </div>
 
       <div class="box-body">

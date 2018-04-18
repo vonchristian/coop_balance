@@ -5,6 +5,7 @@ module LoansModule
         @loan = LoansModule::Loan.find(params[:loan_id])
         @penalty_posting = LoansModule::Loans::PenaltyPosting.new
       end
+
       def create
         @loan = LoansModule::Loan.find(params[:loan_id])
         @penalty_posting = LoansModule::Loans::PenaltyPosting.new(penalty_params)

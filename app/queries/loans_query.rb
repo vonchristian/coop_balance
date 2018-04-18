@@ -5,6 +5,7 @@ class LoansQuery
     @relation = relation
   end
 
+
   def matured(options={})
     range = DateRange.new(start_date: options[:from_date], to_date: options[:to_date])
     relation.where('maturity_date' => range)

@@ -18,7 +18,11 @@ module Registries
     end
 
     def find_subscriber(row)
-      Member.find_or_create_by(last_name: row[0], first_name: row[1])
+      if row[4] == "Member"
+        Member.find_or_create_by(last_name: row[0], first_name: row[1])
+      elsif row[4] == "Organization"
+        Organization.find_or_create_by(name: row[0])
+      end
     end
 
     def create_entry(row)
@@ -27,20 +31,24 @@ module Registries
         account_number: SecureRandom.uuid,
         share_capital_product: find_share_capital_product(row))
       AccountingModule::Entry.create!(
-        recorder_id: self.employee_id,
+        origin: find_employee.office,
+        recorder: find_employee,
         commercial_document: find_subscriber(row),
-        description: 'Forwarded balance of share capital as of December 31, 2017',
-        entry_date: Date.today.last_year.end_of_year,
+        description: 'Forwarded balance of share capital as of December 15, 2017',
+        entry_date: Date.today.last_year.end_of_year - 16.days,
         debit_amounts_attributes: [account: debit_account, amount: row[2].to_f, commercial_document: share_capital],
         credit_amounts_attributes: [account: credit_account(row), amount: row[2].to_f, commercial_document: share_capital])
     end
 
     def debit_account
-      AccountingModule::Account.find_by(name: "Cash on Hand - Main Office (Treasury)")
+      AccountingModule::Account.find_by(name: "Cash on Hand")
     end
 
     def credit_account(row)
       find_share_capital_product(row).paid_up_account
+    end
+    def find_employee
+      User.find_by_id(employee_id)
     end
   end
 end

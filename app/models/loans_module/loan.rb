@@ -52,6 +52,7 @@ module LoansModule
              :interest_receivable_account,
              :interest_rebate_account,
              :interest_rate,
+             :penalty_rate,
              :monthly_interest_rate,
              to: :loan_product, prefix: true
     delegate :name, to: :organization, prefix: true, allow_nil: true
@@ -74,16 +75,16 @@ module LoansModule
       where(municipality: options[:municipality])
     end
 
+    def self.past_due
+      select{ |loan| loan.is_past_due? }
+    end
+
     def self.disbursed(options={})
       LoansQuery.new.disbursed(options)
     end
 
     def self.disbursed_by(employee)
       User.find_by(id: employee.id).disbursed_loans
-    end
-
-    def self.past_due(options={})
-      LoansModule::LoansQuery.new.past_due(options)
     end
 
      def self.matured(options={})
@@ -245,6 +246,10 @@ module LoansModule
 
     def paid?
       disbursed? && balance.zero?
+    end
+    def loan_penalty_computation
+      daily_rate = (loan_product_penalty_rate / 100.0) / 30.0
+      (principal_balance * daily_rate) * number_of_days_past_due
     end
 
     private

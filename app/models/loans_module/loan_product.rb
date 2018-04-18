@@ -14,6 +14,8 @@ module LoansModule
     has_many :charges, through: :loan_product_charges
 #DO NOT ALLOW NIL RATE AND ACCOUNTS
     delegate :rate, to: :current_interest_config, prefix: true
+    delegate :rate, to: :current_penalty_config, prefix: true
+
     delegate :interest_revenue_account,
              :interest_receivable_account,
              :unearned_interest_income_account,
@@ -61,6 +63,9 @@ module LoansModule
 
     def interest_rate
       current_interest_config_rate
+    end
+    def penalty_rate
+      current_penalty_config_rate
     end
 
     def self.accounts

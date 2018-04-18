@@ -32,7 +32,7 @@ module LoansModule
         origin: find_employee.office,
         commercial_document: find_loan.borrower,
         reference_number: reference_number,
-        :description => "Payment of loan on #{Time.zone.now.strftime("%B %e, %Y")}",
+        :description => "Payment of loan on #{date.to_date.strftime("%B %e, %Y")}",
         recorder: find_employee,
         entry_date: date)
       interest_credit_amount = AccountingModule::CreditAmount.new(

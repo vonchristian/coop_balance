@@ -29,6 +29,8 @@
                 <%=link_to @share_capital.subscriber_name, member_info_index_path(@share_capital.subscriber) %>
               <% elsif @share_capital.subscriber.is_a?(User) %>
                 <%=link_to @share_capital.subscriber_name, employee_path(@share_capital.subscriber) %>
+              <% elsif @share_capital.subscriber.is_a?(Organization) %>
+                <%=link_to @share_capital.subscriber_name, organization_path(@share_capital.subscriber) %>
               <% end %>
             </div>
           </div>
