@@ -1,73 +1,37 @@
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-6 col-md-offset-3">
     <div class="box box-solid">
-      <div class="box-header">
-        <h3 class="title">Loan Application Details </h3>
+      <div class="box-header bg-gray">
+        <h3 class="box-title"> New Loan Application </h3>
       </div>
       <div class="box-body">
-		<div class="row">
-		  <div class="col-md-6">
-				<h4>Applied Amount <%= number_to_currency @loan.loan_amount %></h4>
-				<hr>
-				Less Charges
-				<% @loan.loan_charges.each do |loan_charge| %>
-				  <div class="row">
-				    <div class="col-md-4">
-					    <%= loan_charge.chargeable.try(:name) %>
-					  </div>
-					  <div class="col-md-4">
-					    <% if loan_charge.charge_adjustment.present? %>
-					    <strike class="text-danger"><%= number_to_currency loan_charge.charge_amount %></strike><br>
-					    <%= number_to_currency loan_charge.charge_adjustment.charge_amount %>
-					    <span class="text-danger"><%= number_to_currency loan_charge.balance %></span>
-					    <% else %>
-					      <%= number_to_currency loan_charge.charge_amount %>
+<%= simple_form_for @loan, url: :loans_module_loan_application do |f| %>
+  <%= f.error_notification %>
+    <%= f.input :loan_product_id, validate: { presence: true }, label: 'Select Type of Loan', collection: LoansModule::LoanProduct.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanProductSelect' } %>
 
-					    <% end %>
-					  </div>
-					  <div class="col-md-4">
-					    <%= link_to 'Adjust', new_loans_module_loan_charge_adjustment_path(loan_charge), class: "btn btn-default btn-xs" %>
-					    <%= link_to loans_module_loan_charge_path(loan_charge), method: :delete do %>
-                <span class="text-danger"><i class="fa fa-trash"></i> </span>
-              <% end %>
+  <%= f.input :borrower_id, collection: Borrower.all.map {|a| [a.name, a.id] }, input_html: { id: "borrowerSelect" } %>
+  <%= f.input :loan_amount, as: :currency %>
+  <%= f.input :term, label: "Loan Term (in months)" %>
+  <%= f.input :mode_of_payment, collection: LoansModule::Loan.mode_of_payments.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
+  <%= f.input :application_date, as: :string, input_html: { class: "datepicker", value: Time.zone.now.strftime("%B %e, %Y") } %>
+  <%= f.input :preparer_id, input_html: { value: current_user.id }, as: :hidden %>
+  <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
+  <div class="box-footer">
+    <%= button_tag( :class => "btn btn-primary pull-right") do %>
+      Proceed  &nbsp;<i class="icon-arrow-right-circle"></i>
+    <% end %>
+  </div>
+<% end %>
 
-					  </div>
-					 </div>
-					 <br>
-  
-				<% end %>
-				<%= link_to 'Add', new_loans_module_loan_additional_charge_path(@loan) %>				<% @loan.loan_additional_charges.all.each do |charge| %>
-				  <div class="row">
-				    <div class="col-md-6">
-				      <%= charge.name %>
-				    </div>
-				    <div class="col-md-6">
-				      <%= number_to_currency charge.amount %>
-				    </div>
-				  </div>
-				    <br>
-				  <% end %>
-				<div class="row">
-				  <div class="col-md-6">
-				    <h4> Total Charges </h4>
-				  </div>
-				  <div class="col-md-6">
-					  <%= number_to_currency @loan.total_loan_charges %>
-					</div>
-			  </div>
-				 <h4>Net <%= number_to_currency @loan.net_proceed %></h4>
-				 <%= link_to 'Process Loan', loans_module_loan_processings_path(@loan), method: :create %>
-			</div>
-			<div class="col-md-6">
-			  <%= simple_form_for @loan, url: :loans_module_loan_application do |f| %>
-		  <%= f.error_notification %>
-		  <%= f.input :loan_product_id, collection: LoansModule::LoanProduct.all.map{|a| [a.name.titleize, a.id] }, as: :radio_buttons %>
-		  <%= f.input :member_id, collection: Member.all.map {|a| [a.full_name, a.id] } %>
-		  <%= f.input :loan_amount %>
-		  <%= f.input :term, label: "Loan Term (in months)" %>
-      <%= f.input :mode_of_payment, collection: LoansModule::Loan.mode_of_payments.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
-
-		  <%= f.input :application_date, as: :string, input_html: { class: "datepicker" } %>
-		  <%= f.submit "Calculate", class: "btn btn-primary" %>
-		  <hr>
-		<% end %>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#loanProductSelect").select2({
+      theme: "bootstrap"
+    });
+  });
+  $(document).ready(function() {
+    $("#borrowerSelect").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>

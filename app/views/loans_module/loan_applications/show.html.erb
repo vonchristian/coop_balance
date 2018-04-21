@@ -48,8 +48,8 @@
 					    <% end %>
 					  </div>
 					  <div class="col-md-2">
-					    <%= link_to new_loans_module_loan_charge_adjustment_path(loan_charge), class: "btn btn-default btn-xs" do %>
-                <span data-toggle="tooltip" title="Adjust Charge" class="text-warning"><i class="fa fa-pencil"></i> </span>
+					    <%= link_to new_loans_module_loan_charge_adjustment_path(loan_charge), title: "Adjust Charge" do %>
+                <span data-toggle="tooltip" title="Adjust Charge" class="text-warning"><i class="fa fa-calculator"></i> </span>
               <% end %> &nbsp;
 					    <% if !loan_charge.regular? %>
 					      <%= link_to loans_module_loan_charge_path(loan_charge), title: "Remove Charge", method: :delete do %>
@@ -117,6 +117,9 @@
       <div class="box-body">
         <% @borrower.share_capitals.each do |share_capital| %>
           <h4><%= number_to_currency share_capital.paid_up_balance %></h4>
+          <div class="box-footer">
+            <%=link_to 'Add Capital Build Up', new_loans_module_loan_share_capital_build_up_path(share_capital_id: share_capital.id, loan_id: @loan.id), class: "btn btn-warning btn-sm" %>
+          </div>
         <% end %>
       </div>
     </div>
@@ -154,8 +157,14 @@
       </div>
     </div>
     <div class="box box-solid">
-      <div class="box-header">
+      <div class="box-header with-border">
         <h3 class="box-title"> Savings </h3>
+      </div>
+      <div class="box-body">
+        <% @borrower.savings.each do |savings_account| %>
+        <h4><%= number_to_currency savings_account.balance %></h4>
+        <%= link_to "Add Deposit", new_loans_module_loan_savings_account_deposit_path(savings_account_id: savings_account.id, loan_id: @loan.id), class: "btn btn-warning btn-sm" %>
+        <% end %>
       </div>
     </div>
     <div class="box box-solid">

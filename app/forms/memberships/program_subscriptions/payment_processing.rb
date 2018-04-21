@@ -2,9 +2,9 @@ module Memberships
   module ProgramSubscriptions
     class PaymentProcessing
       include ActiveModel::Model
-      attr_accessor :program_subscription_id, :recorder_id, :amount, :or_number, :date, :membership_id
+      attr_accessor :program_subscription_id, :employee_id, :amount, :reference_number, :date, :member_id
       validates :amount, presence: true, numericality: true
-      validates :or_number, presence: true
+      validates :reference_number, :date, presence: true
 
       def save
         ActiveRecord::Base.transaction do
@@ -13,14 +13,21 @@ module Memberships
       end
       private
       def save_payment
-        AccountingModule::Entry.create(
+        AccountingModule::Entry.create!(
+          origin: find_employee.office,
           recorder: find_employee,
-          description: 'Payment of program subscription',
-          reference_number: or_number,
-          commercial_document: find_membership,
+          description: "Payment of #{find_program_subscription.name}",
+          reference_number: reference_number,
+          commercial_document: find_member,
           entry_date: date,
-          debit_amounts_attributes: [account: debit_account, amount: amount, commercial_document: find_program_subscription],
-          credit_amounts_attributes: [account: credit_account, amount: amount, commercial_document: find_program_subscription]
+          debit_amounts_attributes: [
+          account: debit_account,
+          amount: amount,
+          commercial_document: find_program_subscription],
+          credit_amounts_attributes: [
+          account: credit_account,
+          amount: amount,
+          commercial_document: find_program_subscription]
         )
       end
       def debit_account
@@ -30,14 +37,14 @@ module Memberships
         find_program_subscription.account
       end
       def find_program_subscription
-        MembershipsModule::ProgramSubscription.find_by(id: program_subscription_id)
+        MembershipsModule::ProgramSubscription.find_by_id(program_subscription_id)
       end
-      def find_membership
-        Membership.find_by_id(membership_id)
+      def find_member
+        Member.find_by_id(member_id)
       end
 
       def find_employee
-        User.find_by_id(recorder_id)
+        User.find_by_id(employee_id)
       end
     end
   end

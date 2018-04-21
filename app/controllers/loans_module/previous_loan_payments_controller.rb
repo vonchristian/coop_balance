@@ -3,11 +3,12 @@ module LoansModule
     def new
       @previous_loan = LoansModule::Loan.find(params[:previous_loan_id])
       @loan = LoansModule::Loan.find(params[:loan_id])
-      @payment = LoansModule::PreviousLoanPaymentForm.new
+      @payment = LoansModule::Loans::PreviousLoanPayment.new
     end
     def create
       @loan = LoansModule::Loan.find(params[:loan_id])
-      @payment = LoansModule::PreviousLoanPaymentForm.new(previous_loan_payment_params)
+      @previous_loan = LoansModule::Loan.find(params[:loans_module_loans_previous_loan_payment][:previous_loan_id])
+      @payment = LoansModule::Loans::PreviousLoanPayment.new(previous_loan_payment_params)
       if @payment.valid?
         @payment.save
         redirect_to loans_module_loan_application_url(@loan), notice: "Previous loan payment saved successfully"
@@ -18,7 +19,7 @@ module LoansModule
 
     private
     def previous_loan_payment_params
-      params.require(:loans_module_previous_loan_payment_form).permit(:principal_amount,
+      params.require(:loans_module_loans_previous_loan_payment).permit(:principal_amount,
                   :interest_amount,
                   :penalty_amount,
                   :discount_amount,

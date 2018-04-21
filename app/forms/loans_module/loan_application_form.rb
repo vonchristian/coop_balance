@@ -43,7 +43,7 @@ module LoansModule
         account_number: account_number)
       create_loan_product_charges(loan)
       create_amortization_schedule(loan)
-      create_documentary_stamp_tax(loan)
+      # create_documentary_stamp_tax(loan)
     end
 
     def create_loan_product_charges(loan)

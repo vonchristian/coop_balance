@@ -20,11 +20,7 @@ module LoansModule
       end
       private
       def interest_amount_for(loan)
-        if loan.lumpsum?
-          loan.loan_product_monthly_interest_rate * loan.loan_amount * loan.term
-        else
-          loan.loan_product_monthly_interest_rate * loan.loan_amount
-        end
+        loan.loan_product_monthly_interest_rate * loan.loan_amount * loan.term
       end
     end
   end

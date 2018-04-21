@@ -1,0 +1,10 @@
+<%= simple_form_for [@program_subscription, @payment], url: :program_subscription_payments do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :amount %>
+  <%= f.input :reference_number %>
+  <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+  <%= f.input :program_subscription_id, input_html: { value: @program_subscription.id } %>
+  <%= f.input :member_id, input_html: { value: @member.id } %>
+  <%= f.input :employee_id, input_html: { value: current_user.id } %>
+  <%= f.submit %>
+<% end %>

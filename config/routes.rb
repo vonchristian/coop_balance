@@ -61,7 +61,7 @@ Rails.application.routes.draw do
     resources :loan_registries, only: [:new, :create]
     resources :aging_loans, only: [:index, :show]
     resources :loan_calculator, only: [:index]
-    resources :loan_applications, only: [:new, :create, :show, :edit, :update, :destroy]
+    resources :loan_applications, only: [:new, :create, :show, :destroy]
     resources :dashboard, only: [:index]
     resources :loan_products, except:[:destroy] do
       resources :interest_configurations, only: [:new, :create], module: :loan_products
@@ -76,19 +76,22 @@ Rails.application.routes.draw do
     end
 
     resources :loans, except: [:destroy] do
-      resources :interest_postings, only: [:new, :create], module: :loans
-      resources :penalty_postings, only: [:new, :create], module: :loans
-      resources :interest_rebate_postings, only: [:new, :create], module: :loans
-      resources :previous_loan_payments, only: [:new, :create]
-      resources :store_credit_payments, only: [:new, :create]
-      resources :loan_protection_funds, only: [:new, :create]
-      resources :amortization_schedules, only: [:index], module: :loans
-      resources :first_notices, only: [:new, :create]
-      resources :processings, only: [:create]
-      resources :additional_charges, only: [:new, :create]
+      resources :share_capital_build_ups,       only: [:new, :create], module: :loans
+      resources :savings_account_deposits,       only: [:new, :create], module: :loans
+      resources :term_extensions,               only: [:new, :create], module: :loans
+      resources :interest_postings,             only: [:new, :create], module: :loans
+      resources :penalty_postings,              only: [:new, :create], module: :loans
+      resources :interest_rebate_postings,      only: [:new, :create], module: :loans
+      resources :previous_loan_payments,        only: [:new, :create]
+      resources :store_credit_payments,         only: [:new, :create]
+      resources :loan_protection_funds,         only: [:new, :create]
+      resources :amortization_schedules,        only: [:index],        module: :loans
+      resources :first_notices,                 only: [:new, :create]
+      resources :processings,                   only: [:create]
+      resources :additional_charges,            only: [:new, :create]
       resources :borrower_subscription_charges, only: [:new, :create]
-      resources :payments, only: [:new, :create]
-      resources :losses, only: [:new, :create], module: :loans
+      resources :payments,                      only: [:new, :create]
+      resources :losses,                        only: [:new, :create], module: :loans
     end
     resources :members, only: [:index, :show] do
       resources :loan_applications, only: [:new, :create], module: :member_loans
@@ -122,6 +125,8 @@ Rails.application.routes.draw do
     resources :savings_accounts, only: [:index, :new, :create],         module: :members
     resources :time_deposits,    only: [:index],                        module: :members
     resources :subscriptions,    only: [:index],                        module: :members
+    resources :program_subscriptions,    only: [:create],                       module: :members
+
     resources :purchases,        only: [:index, :show],                 module: :members
   end
   resources :member_registrations, only: [:new, :create]
@@ -161,9 +166,7 @@ Rails.application.routes.draw do
   end
   resources :teller_module, only: [:index]
   namespace :teller_module do
-    resources :program_subscriptions, shallow: true do
-      resources :payments, only: [:new, :create], module: :program_subscriptions
-    end
+
     resources :members, only: [:index, :show, :new, :create] do
       resources :savings, only: [:new, :create]
       resources :time_deposits, only: [:new, :create]
@@ -419,4 +422,7 @@ Rails.application.routes.draw do
     resources :accounts, only: [:show]
     resources :sign_ups, only: [:new, :create]
   end
+  resources :program_subscriptions, shallow: true do
+      resources :payments, only: [:new, :create], module: :program_subscriptions
+    end
 end

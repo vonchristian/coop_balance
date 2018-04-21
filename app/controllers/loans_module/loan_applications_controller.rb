@@ -8,15 +8,7 @@ module LoansModule
       @loan = LoansModule::LoanApplicationForm.new(loan_params)
       if @loan.valid?
         @loan.save
-        # @loan.create_loan_product_charges
-        # @loan.create_documentary_stamp_tax
-        # @loan.set_loan_protection_fund
         redirect_to loans_module_loan_application_url(@loan.find_loan), notice: "Loan application saved successfully."
-        # @loan.create_amortization_schedule
-        # @loan.set_borrower_type
-        # @loan.set_borrower_full_name
-        # @loan.set_organization
-        # @loan.set_barangay
       else
         render :new
       end
@@ -24,26 +16,6 @@ module LoansModule
     def show
       @loan = LoansModule::Loan.find(params[:id])
       @borrower = @loan.borrower
-    end
-    def edit
-      @loan = LoansModule::Loan.find(params[:id])
-    end
-    def update
-       @loan = LoansModule::Loan.create(loan_params)
-      @loan.employee = current_user
-      if @loan.valid?
-        @loan.save
-        @loan.create_loan_product_charges
-        @loan.create_documentary_stamp_tax
-        @loan.set_loan_protection_fund
-        redirect_to loans_module_loan_application_url(@loan), notice: "Loan application saved successfully."
-        @loan.create_amortization_schedule
-        @loan.set_borrower_type
-        @loan.set_borrower_full_name
-        @loan.set_organization
-      else
-        render :new
-      end
     end
     def destroy
       @loan = LoansModule::Loan.find(params[:id])

@@ -110,7 +110,7 @@
                       <tr>
                         <td><%= entry.entry_date.strftime("%B %e, %Y") %></td>
                         <td><%= entry.reference_number %></td>
-                        <td><%= number_to_currency entry.credit_amounts.sum(:amount) %></td>
+                        <td><%= number_to_currency entry.credit_amounts.where(account: @savings_account.saving_product_account).sum(&:amount) %></td>
 
                         <td><%= entry.description %> /
                             <%= entry.payment_type.to_s.titleize %>
