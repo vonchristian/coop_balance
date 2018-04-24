@@ -35,6 +35,20 @@ module AccountingModule
         render :new
       end
     end
+    def edit
+      @entry = AccountingModule::Entry.find(params[:id])
+    end
+    def create
+      @entry = AccountingModule::Entry.find(params[:id])
+      @entry.update(edit_entry_params)
+      if @entry.valid?
+        @entry.save
+        redirect_to accounting_module_entry_url(@entry), notice: "Entry updated successfully"
+      else
+        render :edit
+      end
+    end
+
 
     def show
       @entry = AccountingModule::Entry.find(params[:id])
@@ -43,6 +57,10 @@ module AccountingModule
     private
     def entry_params
       params.require(:accounting_module_entry_form).permit(:recorder_id, :amount, :debit_account_id, :credit_account_id, :entry_date, :description, :reference_number, :entry_type)
+    end
+    def edit_entry_params
+      params.require(:accounting_module_entry).
+      permit(:recorder_id, :reference_number, :description)
     end
   end
 end

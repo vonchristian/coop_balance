@@ -41,6 +41,7 @@ module LoansModule
     has_many :amortization_schedules,   dependent: :destroy
     has_many :collaterals,              class_name: "LoansModule::Collateral", dependent: :destroy
     has_many :real_properties,          through: :collaterals
+    has_many :terms,                    as: :termable
 
     delegate :name, :age, :contact_number, :current_address, to: :borrower,  prefix: true, allow_nil: true
     delegate :name,  to: :loan_product, prefix: true
@@ -65,6 +66,9 @@ module LoansModule
     validates :term, presence: true, numericality: true
     validates :loan_amount, numericality: { less_than_or_equal_to: :maximum_loanable_amount }
     before_save :set_borrower_full_name
+
+    accepts_nested_attributes_for :terms, allow_destroy: true
+
     def self.balance(options={})
       self.for(options).sum(&:balance)
     end

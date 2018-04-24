@@ -1,3 +1,6 @@
+make loan term and time deposit term to be polymorphic
+
+
 single entry for interest on deposits
 process unearned interest income that is prededucted
 

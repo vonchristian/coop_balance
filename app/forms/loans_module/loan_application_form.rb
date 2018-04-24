@@ -17,6 +17,7 @@ module LoansModule
         save_loan
       end
     end
+
     def find_loan
       LoansModule::Loan.find_by(account_number: account_number)
     end
@@ -36,11 +37,12 @@ module LoansModule
       loan = find_borrower.loans.create!(
         loan_product_id: loan_product_id,
         loan_amount: loan_amount,
-        term: term,
         application_date: application_date,
         mode_of_payment: mode_of_payment,
         preparer_id: preparer_id,
-        account_number: account_number)
+        account_number: account_number,
+        loan_terms_attributes: [
+          term: term])
       create_loan_product_charges(loan)
       create_amortization_schedule(loan)
       # create_documentary_stamp_tax(loan)

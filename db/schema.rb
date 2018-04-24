@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_04_01_215501) do
+ActiveRecord::Schema.define(version: 2018_04_24_122151) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -560,6 +560,16 @@ ActiveRecord::Schema.define(version: 2018_04_01_215501) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "loan_terms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "term"
+    t.uuid "loan_id"
+    t.datetime "effectivity_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "maturity_date"
+    t.index ["loan_id"], name: "index_loan_terms_on_loan_id"
+  end
+
   create_table "loans", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "loan_product_id"
     t.decimal "loan_amount"
@@ -568,7 +578,6 @@ ActiveRecord::Schema.define(version: 2018_04_01_215501) do
     t.datetime "application_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.decimal "term"
     t.uuid "barangay_id"
     t.uuid "street_id"
     t.uuid "municipality_id"
@@ -579,7 +588,6 @@ ActiveRecord::Schema.define(version: 2018_04_01_215501) do
     t.uuid "preparer_id"
     t.datetime "disbursement_date"
     t.string "account_number"
-    t.datetime "maturity_date"
     t.index ["account_number"], name: "index_loans_on_account_number", unique: true
     t.index ["barangay_id"], name: "index_loans_on_barangay_id"
     t.index ["borrower_type", "borrower_id"], name: "index_loans_on_borrower_type_and_borrower_id"
@@ -1102,6 +1110,17 @@ ActiveRecord::Schema.define(version: 2018_04_01_215501) do
     t.datetime "avatar_updated_at"
   end
 
+  create_table "terms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "termable_type"
+    t.bigint "termable_id"
+    t.datetime "effectivity_date"
+    t.datetime "maturity_date"
+    t.integer "term"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["termable_type", "termable_id"], name: "index_terms_on_termable_type_and_termable_id"
+  end
+
   create_table "time_deposit_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "break_contract_account_id"
     t.uuid "interest_account_id"
@@ -1338,6 +1357,7 @@ ActiveRecord::Schema.define(version: 2018_04_01_215501) do
   add_foreign_key "loan_protection_funds", "accounts"
   add_foreign_key "loan_protection_funds", "loan_protection_rates"
   add_foreign_key "loan_protection_funds", "loans"
+  add_foreign_key "loan_terms", "loans"
   add_foreign_key "loans", "barangays"
   add_foreign_key "loans", "loan_products"
   add_foreign_key "loans", "municipalities"

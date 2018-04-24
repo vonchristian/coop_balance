@@ -20,6 +20,7 @@ module LoansModule
       it { is_expected.to have_many :collaterals }
       it { is_expected.to have_many :real_properties }
       it { is_expected.to have_many :loan_protection_funds }
+      it { is_expected.to have_many :terms }
     end
     describe 'validations' do
       it { is_expected.to validate_presence_of :term }

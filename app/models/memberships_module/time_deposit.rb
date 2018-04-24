@@ -10,7 +10,7 @@ module MembershipsModule
     belongs_to :office,               class_name: "CoopConfigurationsModule::Office"
     belongs_to :time_deposit_product, class_name: "CoopServicesModule::TimeDepositProduct"
     has_many :entries,                class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
-    has_many :fixed_terms,            class_name: "TimeDepositsModule::FixedTerm", dependent: :destroy
+    has_many :terms,                  as: :termable, dependent: :destroy
 
     delegate :name,
              :interest_rate,
@@ -43,7 +43,7 @@ module MembershipsModule
       end
     end
     def current_term
-      fixed_terms.current
+      terms.current
     end
 
     def member?
