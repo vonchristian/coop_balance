@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_04_24_122151) do
+ActiveRecord::Schema.define(version: 2018_04_24_125921) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -573,7 +573,6 @@ ActiveRecord::Schema.define(version: 2018_04_24_122151) do
   create_table "loans", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "loan_product_id"
     t.decimal "loan_amount"
-    t.decimal "loan_term"
     t.integer "mode_of_payment"
     t.datetime "application_date"
     t.datetime "created_at", null: false
@@ -1112,7 +1111,7 @@ ActiveRecord::Schema.define(version: 2018_04_24_122151) do
 
   create_table "terms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "termable_type"
-    t.bigint "termable_id"
+    t.uuid "termable_id"
     t.datetime "effectivity_date"
     t.datetime "maturity_date"
     t.integer "term"

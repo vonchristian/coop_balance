@@ -23,10 +23,8 @@ module LoansModule
       it { is_expected.to have_many :terms }
     end
     describe 'validations' do
-      it { is_expected.to validate_presence_of :term }
       it { is_expected.to validate_presence_of :loan_product_id }
       it { is_expected.to validate_presence_of :borrower_id }
-      it { is_expected.to validate_numericality_of(:term) }
       it { is_expected.to validate_numericality_of(:loan_amount) }
     end
 
@@ -46,6 +44,14 @@ module LoansModule
       it { is_expected.to delegate_method(:avatar).to(:borrower) }
       it { is_expected.to delegate_method(:name).to(:barangay).with_prefix }
 
+    end
+
+    it "#current_term" do
+      loan = create(:loan)
+      old_term = create(:term, termable: loan, effectivity_date: Date.today.last_month)
+      current_term = create(:term, termable: loan, effectivity_date: Date.today)
+
+      expect(loan.current_term).to eql(current_term)
     end
 
     describe 'scopes' do

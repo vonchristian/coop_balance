@@ -10,14 +10,14 @@ module LoansModule
       from_date = options[:from_date] || relation.order(application_date: :desc).first.disbursement_date
       to_date  = options[:to_date] || Date.today
       range    = DateRange.new(from_date: from_date, to_date: to_date)
-      relation.where('maturity_date' => range.start_date..range.end_date )
+      relation.joins(:terms).where('terms.maturity_date' => range.start_date..range.end_date )
     end
 
     def past_due(options={})
       from_date = options[:from_date] || relation.order(application_date: :desc).first.disbursement_date
       to_date   = options[:to_date] || Date.today
       range     = DateRange.new(from_date: from_date, to_date: to_date)
-      relation.where('maturity_date' => range.start_date..range.end_date )
+      relation.joins(:terms).where('terms.maturity_date' => range.start_date..range.end_date )
     end
 
     def disbursed(options={})

@@ -1,7 +1,6 @@
 module LoansModule
   class Loan < ApplicationRecord
     include PgSearch
-    include LoansModule::Loans::PastDue
     include LoansModule::Loans::Interest
     include LoansModule::Loans::Principal
     include LoansModule::Loans::Penalty
@@ -62,12 +61,16 @@ module LoansModule
     delegate :avatar, to: :borrower
     delegate :number_of_interest_payments_prededucted, to: :interest_on_loan_charge
     delegate :name, to: :barangay, prefix: true, allow_nil: true
-    validates :loan_product_id, :term, :loan_amount, :borrower_id, presence: true
-    validates :term, presence: true, numericality: true
+    validates :loan_product_id,  :loan_amount, :borrower_id, presence: true
     validates :loan_amount, numericality: { less_than_or_equal_to: :maximum_loanable_amount }
     before_save :set_borrower_full_name
 
     accepts_nested_attributes_for :terms, allow_destroy: true
+
+    delegate :is_past_due?, :number_of_days_past_due, :remaining_term, :terms_elapsed, to: :current_term
+    def current_term
+      terms.current
+    end
 
     def self.balance(options={})
       self.for(options).sum(&:balance)
@@ -79,8 +82,8 @@ module LoansModule
       where(municipality: options[:municipality])
     end
 
-    def self.past_due
-      select{ |loan| loan.is_past_due? }
+    def self.past_due(options={})
+      LoansModule::LoansQuery.new.past_due(options)
     end
 
     def self.disbursed(options={})
@@ -161,16 +164,6 @@ module LoansModule
       amortized_principal_for(options) +
       amortized_interest_for(options) +
       arrears(options)
-    end
-
-    def remaining_term
-      term - terms_elapsed
-    end
-
-    def terms_elapsed
-      if disbursed?
-        (Time.zone.now.year * 12 + Time.zone.now.month) - (disbursement_date.year * 12 + disbursement_date.month)
-      end
     end
 
     def taxable_amount # for documentary_stamp_tax

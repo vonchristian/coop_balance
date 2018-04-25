@@ -8,17 +8,13 @@ class LoansQuery
 
   def matured(options={})
     range = DateRange.new(start_date: options[:from_date], to_date: options[:to_date])
-    relation.where('maturity_date' => range)
+    relation.joins(:terms).where('terms.maturity_date' => range)
   end
 
   def disbursed(options={})
     relation.where.not(disbursement_date: nil)
   end
 
-  def matured(options={})
-    range = DateRange.new(start_date: options[:from_date], to_date: options[:to_date])
-    where('maturity_date' => range)
-  end
 
   def disbursed_on(options={})
     from_date = Date.today
@@ -27,7 +23,7 @@ class LoansQuery
     where('disbursement_date' => range)
   end
 
-  def aging(options)
+  def aging(options={})
     aging_loans = []
     range = options[:min]..options[:max]
     relation.past_due.each do |loan|
