@@ -39,7 +39,7 @@ module Vouchers
       end
     end
     def credit_account_for(amount)
-      if amount.account.name.downcase.include?("cash")
+      if amount.account.name.downcase.include?("cash") || amount.account.name.downcase.include?("Cash")
         find_employee.cash_on_hand_account
       else
         amount.account

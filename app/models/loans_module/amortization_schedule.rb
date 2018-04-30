@@ -56,7 +56,7 @@ module LoansModule
       if loan.lumpsum?
         loan.loan_amount
       else
-        all.collect{ |a| a.total_amortization }.sum / loan.term
+        all.collect{ |a| a.total_amortization }.sum / loan.current_term_number_of_months
       end
     end
 
@@ -110,7 +110,7 @@ module LoansModule
     end
     def self.interest_computation(schedule, loan)
       if loan.lumpsum?
-        loan.loan_amount * loan.loan_product_monthly_interest_rate * loan.term
+        loan.loan_amount * loan.loan_product_monthly_interest_rate * loan.current_term_number_of_months
       else
         (loan.principal_balance_for(schedule) * loan.loan_product_monthly_interest_rate)
       end
@@ -151,11 +151,11 @@ module LoansModule
 
     def self.number_of_payments(loan)
       if loan.monthly?
-        loan.term.to_i
+        loan.current_term_number_of_months.to_i
       elsif loan.quarterly?
-        loan.term.to_i / 4
+        loan.current_term_number_of_months.to_i / 4
       elsif loan.semi_annually?
-        loan.term.to_i / 6
+        loan.current_term_number_of_months.to_i / 6
       elsif loan.lumpsum?
         1
       end
@@ -182,7 +182,7 @@ module LoansModule
 			elsif loan.semi_annually?
 				starting_date(loan).next_quarter.next_quarter
 			elsif loan.lumpsum?
-				starting_date(loan) + loan.term.to_i.months
+				starting_date(loan) + loan.current_term_number_of_months.to_i.months
 			end
 		end
 

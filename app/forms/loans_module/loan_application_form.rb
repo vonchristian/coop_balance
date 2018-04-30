@@ -41,7 +41,7 @@ module LoansModule
         mode_of_payment: mode_of_payment,
         preparer_id: preparer_id,
         account_number: account_number,
-        loan_terms_attributes: [
+        terms_attributes: [
           term: term])
       create_loan_product_charges(loan)
       create_amortization_schedule(loan)

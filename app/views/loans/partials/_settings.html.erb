@@ -7,5 +7,8 @@
   <%= link_to 'Set as Loss', new_loans_module_loan_loss_path(@loan), class: "btn btn-danger" %>
 </div>
 <p>Extend Loan Term</p>
-Maturity Date <%= @loan.maturity_date.strftime("%B %e, %Y") %>
-  <%= link_to 'New Extension', new_loans_module_loan_term_extension_path(@loan), class: "btn btn-danger" %>
+<% @loan.terms.each do |term| %>
+  <%= term.effectivity_date.strftime("%B %e %Y") %>
+  <%= term.maturity_date.strftime("%B %e, %Y") %>
+<% end %>
+  <%= link_to 'New Extension', new_loans_module_loan_term_path(@loan), class: "btn btn-danger" %>

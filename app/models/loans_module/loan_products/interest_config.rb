@@ -20,7 +20,7 @@ module LoansModule
       end
       private
       def interest_amount_for(loan)
-        loan.loan_product_monthly_interest_rate * loan.loan_amount * loan.term
+        loan.loan_product_monthly_interest_rate * loan.loan_amount * loan.current_term_number_of_months
       end
     end
   end

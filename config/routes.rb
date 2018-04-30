@@ -77,8 +77,8 @@ Rails.application.routes.draw do
 
     resources :loans, except: [:destroy] do
       resources :share_capital_build_ups,       only: [:new, :create], module: :loans
-      resources :savings_account_deposits,       only: [:new, :create], module: :loans
-      resources :term_extensions,               only: [:new, :create], module: :loans
+      resources :savings_account_deposits,      only: [:new, :create], module: :loans
+      resources :terms,                         only: [:new, :create], module: :loans
       resources :interest_postings,             only: [:new, :create], module: :loans
       resources :penalty_postings,              only: [:new, :create], module: :loans
       resources :interest_rebate_postings,      only: [:new, :create], module: :loans

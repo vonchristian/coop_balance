@@ -2,6 +2,10 @@ class Term < ApplicationRecord
   belongs_to :termable, polymorphic: true
   validates :term, presence: true, numericality: true
   delegate :disbursed?, to: :termable, allow_nil: true
+
+  def number_of_months
+    term
+  end
   def self.current
     order(effectivity_date: :asc).last
   end

@@ -102,7 +102,9 @@
                 Maturity Date
               </div>
               <div class="col-md-6">
-                <%=  @loan.maturity_date.try(:strftime, ("%B %e, %Y")) %>
+                <% if @loan.disbursed? %>
+                  <%=  @loan.maturity_date.try(:strftime, ("%B %e, %Y")) %>
+                <% end %>
               </div>
             </div>
             <hr>

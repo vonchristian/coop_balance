@@ -1,13 +1,13 @@
 module LoansModule
   module Loans
-    class TermExtensionsController < ApplicationController
+    class TermsController < ApplicationController
       def new
         @loan = LoansModule::Loan.find(params[:loan_id])
-        @term_extension = LoansModule::Loans::TermExtension.new
+        @term_extension = LoansModule::Loans::Term.new
       end
       def create
         @loan = LoansModule::Loan.find(params[:loan_id])
-        @term_extension = LoansModule::Loans::TermExtension.new(term_extension_params)
+        @term_extension = LoansModule::Loans::Term.new(term_params)
         if @term_extension.valid?
           @term_extension.extend!
           redirect_to loan_url(@loan), notice: "Loan term extension saved successfully."
@@ -17,9 +17,9 @@ module LoansModule
       end
 
       private
-      def term_extension_params
-        params.require(:loans_module_loans_term_extension).
-        permit(:number_of_months, :loan_id, :employee_id, :date)
+      def term_params
+        params.require(:loans_module_loans_term).
+        permit(:term, :loan_id, :employee_id, :effectivity_date)
       end
     end
   end

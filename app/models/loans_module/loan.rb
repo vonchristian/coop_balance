@@ -67,7 +67,8 @@ module LoansModule
 
     accepts_nested_attributes_for :terms, allow_destroy: true
 
-    delegate :is_past_due?, :number_of_days_past_due, :remaining_term, :terms_elapsed, to: :current_term
+    delegate :is_past_due?, :number_of_days_past_due, :remaining_term, :terms_elapsed, :maturity_date, to: :current_term
+    delegate :number_of_months, to: :current_term, prefix: true
     def current_term
       terms.current
     end

@@ -1,8 +1,8 @@
 module LoansModule
   module Loans
-    class TermExtension
+    class Term
       include ActiveModel::Model
-      attr_accessor :date, :number_of_months, :loan_id, :employee_id
+      attr_accessor :effectivity_date, :term, :loan_id, :employee_id
       def extend!
         ActiveRecord::Base.transaction do
           save_term_extension
@@ -12,17 +12,21 @@ module LoansModule
 
       private
       def save_term_extension
-        find_loan.update(
-          term: number_of_months,
-          maturity_date: find_loan.maturity_date + number_of_months.to_i.months)
-        find_loan.save
+        find_loan.terms.create(
+          effectivity_date: effectivity_date,
+          maturity_date: maturity_date,
+          term: term)
       end
+      def maturity_date
+        effectivity_date.to_date + term.to_i.months
+      end
+
       def compute_interest
         AccountingModule::Entry.create(
           origin: find_employee.office,
           recorder: find_employee,
-          entry_date: date,
-          description: "Interest on loan for term extension of #{number_of_months} months of #{find_loan.borrower_name}",
+          entry_date: effectivity_date,
+          description: "Interest on loan for term extension of #{term} months of #{find_loan.borrower_name}",
           commercial_document: find_borrower,
           credit_amounts_attributes: [
             amount: computed_amount,

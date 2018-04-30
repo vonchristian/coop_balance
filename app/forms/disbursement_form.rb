@@ -35,19 +35,25 @@ class DisbursementForm
   end
 
   def credit_account_for(amount)
-    if amount.account.name.downcase.include?("cash")
+    if amount.account.name.downcase.include?("cash") || amount.account.name.downcase.include?("Cash")
       find_employee.cash_on_hand_account
     else
       amount.account
     end
   end
   def disburse_voucher
-    find_voucher.update_attributes(disburser_id: recorder_id)
+    find_voucher.update_attributes(disburser: find_employee)
     if find_voucher.payee.kind_of?(LoansModule::Loan)
-      find_voucher.payee.update_attributes(disbursement_date: date)
-      find_voucher.payee.update_attributes(maturity_date: (date.to_date + payee.term.to_i.months))
-      LoansModule::AmortizationSchedule.create_schedule_for(payee)
+      update_loan
     end
+  end
+  def update_loan
+    payee.update_attributes(disbursement_date: date)
+    LoansModule::AmortizationSchedule.create_schedule_for(payee)
+    payee.current_term.update_attributes(effectivity_date: date, maturity_date: maturity_date)
+  end
+  def maturity_date
+    date.to_date + payee.current_term_number_of_months.to_i.months
   end
 
   def find_voucher

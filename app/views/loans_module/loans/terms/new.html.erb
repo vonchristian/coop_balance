@@ -1,0 +1,7 @@
+<%= simple_form_for [@loan, @term_extension], url: :loans_module_loan_terms do |f| %>
+  <%= f.input :term %>
+  <%= f.input :loan_id, input_html: { value: @loan.id } %>
+  <%= f.input :employee_id, input_html: { value: current_user.id } %>
+  <%= f.input :effectivity_date, as: :string, input_html: { class: "datepicker" } %>
+  <%= f.submit "Save Term Extension" %>
+<% end %>

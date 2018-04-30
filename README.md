@@ -1,3 +1,5 @@
+check loan payment interest and penalty
+
 make loan term and time deposit term to be polymorphic
 
 
