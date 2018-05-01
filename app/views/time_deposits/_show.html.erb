@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-solid">
+      <div class="box-header">
+        <h3 class="box-title"> Time Deposit Details </h3>
+       <div class="dropdown pull-right">
+        <button class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+          <span class="fa fa-cog"></span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+          <li><%=link_to "New Adjusting Entry", new_time_deposit_adjusting_entry_path(@time_deposit) %></li>
+          <li><a href="#">Transfer to Savings</a></li>
+
+        </ul>
+      </div>
+      </div>
+      <div class="box-body">
+        <ul class="nav nav-tabs">
+          <li class="<%= 'active' if current_page?(time_deposit_path(@time_deposit))%>"><%= link_to 'Info',time_deposit_path(@time_deposit) %></li>
+           <li class="<%= 'active' if current_page?(time_deposit_settings_path(@time_deposit))%>"><%= link_to 'Settings',time_deposit_settings_path(@time_deposit) %></li>
+        </ul>
+        <div class="tab-content">
+          <% if current_page? time_deposit_path(@time_deposit) %>
+            <%= render 'time_deposits/partials/info' %>
+          <% end %>
+          <% if current_page? time_deposit_settings_path(@time_deposit) %>
+            <%= render 'time_deposits/partials/settings' %>
+          <% end %>
+      </div>
+  </div>
+</div>

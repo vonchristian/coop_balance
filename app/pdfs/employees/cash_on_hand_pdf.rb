@@ -117,7 +117,7 @@ module Employees
         row(0).background_color = 'DDDDDD'
         column(-1).align = :right
       end
-      @entries.each do |entry|
+      @entries.uniq.each do |entry|
         table([["#{entry.entry_date.strftime("%b %e, %Y")}", "#{entry.description}", "#{entry.reference_number}",  "#{display_commercial_document_for(entry).try(:upcase)}", "#{entry.recorder.try(:first_and_last_name).try(:upcase)}"]], cell_style: { size: 8, padding: [5,5,4,0]}, column_widths: [50, 100, 50,  100, 50, 120, 80]) do
           cells.borders = []
         end

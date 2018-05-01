@@ -38,10 +38,10 @@ module Memberships
           account_number: account_number,
           date_deposited: date,
           time_deposit_product_id: time_deposit_product_id)
-        TimeDepositsModule::FixedTerm.create!(
-          time_deposit: time_deposit,
-          number_of_days: number_of_days,
-          deposit_date: date,
+          Term.create!(
+          termable: time_deposit,
+          term: number_of_days,
+          effectivity_date: date,
           maturity_date: (date.to_date + (number_of_days.to_i.days)))
         create_entry(time_deposit)
       end

@@ -110,7 +110,7 @@ Rails.application.routes.draw do
   end
   resources :members do
     resources :relationships,    only: [:new, :create],                 module: :members
-    resources :time_deposits,    only: [:new, :create],                 module: :members
+    resources :time_deposits,    only: [:index, :new, :create],                 module: :members
     resources :tins,             only: [:new, :create],                 module: :members
     resources :offices,          only: [:new, :create, :edit, :update], module: :members
     resources :addresses,        only: [:new, :create, :edit, :update], module: :members
@@ -123,7 +123,6 @@ Rails.application.routes.draw do
     resources :occupations,      only: [:new, :create],                 module: :members
     resources :share_capitals,   only: [:index, :new, :create]
     resources :savings_accounts, only: [:index, :new, :create],         module: :members
-    resources :time_deposits,    only: [:index],                        module: :members
     resources :subscriptions,    only: [:index],                        module: :members
     resources :program_subscriptions,    only: [:create],                       module: :members
 
@@ -316,10 +315,12 @@ Rails.application.routes.draw do
   end
   resources :time_deposits, only: [:index, :show] do
     resources :adjusting_entries, only: [:new, :create], module: :time_deposits
-    resources :fixed_terms, only: [:new, :create], module: :time_deposits
     resources :withdrawals, only: [:new, :create], module: :time_deposits
-    resources :renewals, only: [:new, :create], module: :time_deposits
+    resources :term_extensions, only: [:new, :create], module: :time_deposits
     resources :break_contracts, only: [:new, :create], module: :time_deposits
+    resources :settings, only: [:index], module: :time_deposits
+    resources :earned_interests, only: [:new, :create], module: :time_deposits
+
   end
   resources :employees, only: [:index, :show, :edit, :update] do
     resources :info, only: [:index], module: :employees

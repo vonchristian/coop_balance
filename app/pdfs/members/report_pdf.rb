@@ -17,17 +17,19 @@ module Members
     end
     def heading
       bounding_box [310, 780], width: 60 do
-       image "#{Rails.root}/app/assets/images/kccmc_logo.jpg", width: 70, height: 70
+       image "#{Rails.root}/app/assets/images/kccmc_logo.jpg", width: 60, height: 60
       end
       bounding_box [390, 770], width: 150 do
           text "KCCMC", style: :bold, size: 22
           text "Kalanguya Cultural Community", size: 10
           text "Multipurpose Cooperative", size: 10
+          move_down 2
+          text "Poblacion, Tinoc, Ifugao", size: 9, style: :italic
       end
       bounding_box [0, 760], width: 400 do
         text "MEMBER'S DATA SHEET", style: :bold, size: 14
         move_down 5
-        text "As of #{Date.today.last_year.end_of_year.strftime("%B %e, %Y")}", size: 10
+        text "As of #{@member.updated_at.strftime("%B %e, %Y")}", size: 10
       end
       move_down 20
       stroke do
@@ -115,7 +117,7 @@ module Members
     end
     def share_capitals_data
       [["", "TYPE", "BALANCE", "NO. OF SHARES"]] +
-      @share_capitals_data ||= @member.share_capitals.map{|share_capital| ["", share_capital.share_capital_product_name.try(:upcase), price(share_capital.balance), share_capital.number_of_shares]}
+      @share_capitals_data ||= @member.share_capitals.map{|share_capital| ["", share_capital.share_capital_product_name.try(:upcase), price(share_capital.paid_up_balance), share_capital.paid_up_shares]}
     end
   end
 end

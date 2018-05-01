@@ -37,7 +37,8 @@ module CoopServicesModule
     end
 
     def monthly_interest_rate
-      annual_interest_rate / 12.0
+      rate = annual_interest_rate || 0.02
+      rate / 12.0
     end
 
     private

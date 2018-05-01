@@ -9,12 +9,12 @@ module MembershipsModule
     belongs_to :depositor,            polymorphic: true
     belongs_to :office,               class_name: "CoopConfigurationsModule::Office"
     belongs_to :time_deposit_product, class_name: "CoopServicesModule::TimeDepositProduct"
-    has_many :entries,                class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
     has_many :terms,                  as: :termable, dependent: :destroy
 
     delegate :name,
              :interest_rate,
              :account,
+             :interest_expense_account,
              :break_contract_fee,
              to: :time_deposit_product,
              prefix: true
@@ -24,7 +24,7 @@ module MembershipsModule
              to: :depositor,
              prefix: true
     delegate :maturity_date,
-             :deposit_date,
+             :effectivity_date,
              :matured?,
              to: :current_term,
              prefix: true
@@ -33,7 +33,13 @@ module MembershipsModule
              prefix: true
 
     before_save :set_depositor_name, on: [:create]
-
+    def entries
+      accounting_entries = []
+      time_deposit_product_account.amounts.where(commercial_document: self).each do |amount|
+        accounting_entries << amount.entry
+      end
+      accounting_entries
+    end
     def can_be_extended?
       !withdrawn? && current_term_matured?
     end
@@ -88,7 +94,7 @@ module MembershipsModule
         amount_deposited * rate
       else
         amount_deposited *
-        interest_rate *
+        rate *
         days_elapsed
       end
     end

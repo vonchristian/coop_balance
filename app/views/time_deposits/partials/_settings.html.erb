@@ -1,0 +1,24 @@
+<div class="tab-pane <%= 'active' if current_page?(time_deposit_settings_path(@time_deposit)) %>">
+  <div class="row">
+    <div class="col-md-6">
+      <% if policy([:time_deposits, :break_contract]).new? && !@time_deposit.current_term_matured? && !@time_deposit.withdrawn? %>
+        <%=link_to 'Break Contract', new_time_deposit_break_contract_path(@time_deposit), class: "btn btn-danger" %>
+      <% end %>
+    </div>
+  </div>
+  <hr>
+  <h4>Terms</h4>
+  <% @time_deposit.terms.each do |term| %>
+   <%= term.effectivity_date.strftime("%B %e, %Y") %>
+   <%= term.maturity_date.strftime("%B %e, %Y") %>
+   <%= term.number_of_months %>
+   <% if @time_deposit.terms.current == term %>
+     <span class="label bg-green"> Current </span>
+    <% end %>
+  <% end %>
+
+  <%= link_to 'New Term Extension', new_time_deposit_term_extension_path(@time_deposit), class: "btn btn-danger" %>
+  <hr />
+  <h4>Earned Interests</h4>
+    <%= link_to 'New Earned Interest', new_time_deposit_earned_interest_path(@time_deposit), class: "btn btn-danger" %>
+</div>

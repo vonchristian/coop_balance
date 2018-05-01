@@ -1,5 +1,5 @@
 
-<%= simple_form_for [@time_deposit, @renewal], url: :time_deposit_renewals do |f| %>
+<%= simple_form_for [@time_deposit, @renewal], url: :time_deposit_term_extensions do |f| %>
   <%= f.error_notification %>
   <%= f.input :time_deposit_id, input_html: { value: @time_deposit.id } %>
   <%= f.input :member_id, input_html: { value: @time_deposit.depositor.id } %>
