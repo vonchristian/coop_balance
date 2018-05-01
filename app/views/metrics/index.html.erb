@@ -1,0 +1,52 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-solid">
+      <div class="box-header">
+      </div>
+      <div class="box-body">
+        <h4>Served Members</h4>
+        <h2><%=number_to_currency @served_members.count, unit: "", precision: 0 %></h2>
+        FROM <%= @from_date.strftime("%B %e, %Y") %>
+        TO <%= @to_date.strftime("%B %e, %Y") %>
+        <hr>
+        <%= link_to "This Year", metrics_path(from_date: Date.today.beginning_of_year, to_date: Date.today.end_of_year), class: "label bg-gray" %>
+         <%= link_to "This Quarter", metrics_path(from_date: Date.today.beginning_of_quarter, to_date: Date.today.end_of_quarter), class: "label bg-gray" %>
+         <%= link_to "This Month", metrics_path(from_date: Date.today.beginning_of_month, to_date: Date.today.end_of_month), class: "label bg-gray" %>
+         <%= link_to "This Week", metrics_path(from_date: Date.today.beginning_of_week, to_date: Date.today.end_of_week), class: "label bg-gray" %>
+         <%= link_to "This Day", metrics_path(from_date: Date.today.beginning_of_day, to_date: Date.today.end_of_day), class: "label bg-gray" %>
+         <hr>
+         <small>TOTAL EXPENSES</small>
+         <h1><%= number_to_currency AccountingModule::Expense.debits_balance(from_date: @from_date, to_date: @to_date) %></h1>
+         <% AccountingModule::Expense.updated_at(from_date: @from_date, to_date: @to_date).uniq.sort_by(&:balance).reverse.each do |account| %>
+          <div class="row">
+            <div class="col-md-7">
+              <%= account.name %>
+            </div>
+            <div class="col-md-4">
+              <%= number_to_currency account.debits_balance(from_date: @from_date, to_date: @to_date) %>
+            </div>
+          </div>
+          <br>
+        <% end %>
+        <hr>
+        <small>TOTAL REVENUES</small>
+         <h1><%= number_to_currency AccountingModule::Revenue.credits_balance(from_date: @from_date, to_date: @to_date) %></h1>
+         <% AccountingModule::Revenue.updated_at(from_date: @from_date, to_date: @to_date).uniq.sort_by(&:balance).reverse.each do |account| %>
+          <div class="row">
+            <div class="col-md-7">
+              <%= account.name %>
+            </div>
+            <div class="col-md-4">
+              <%= number_to_currency account.credits_balance(from_date: @from_date, to_date: @to_date) %>
+            </div>
+          </div>
+          <br>
+        <% end %>
+        <hr>
+        <small>PROFIT</small>
+         <h1><%= number_to_currency(AccountingModule::Revenue.credits_balance(from_date: @from_date, to_date: @to_date) - AccountingModule::Expense.debits_balance(from_date: @from_date, to_date: @to_date)) %></h1>
+
+      </div>
+    </div>
+  </div>
+</div>

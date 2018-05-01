@@ -426,4 +426,5 @@ Rails.application.routes.draw do
   resources :program_subscriptions, shallow: true do
       resources :payments, only: [:new, :create], module: :program_subscriptions
     end
+  resources :metrics, only: [:index]
 end

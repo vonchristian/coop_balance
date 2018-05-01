@@ -6,7 +6,7 @@ module MembershipsModule
                     against: [:account_number],
                     :associated_against => { :depositor => [:first_name, :last_name ] }
 
-    belongs_to :depositor,            polymorphic: true
+    belongs_to :depositor,            polymorphic: true, touch: true
     belongs_to :office,               class_name: "CoopConfigurationsModule::Office"
     belongs_to :time_deposit_product, class_name: "CoopServicesModule::TimeDepositProduct"
     has_many :terms,                  as: :termable, dependent: :destroy

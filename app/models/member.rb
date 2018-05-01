@@ -54,6 +54,12 @@ class Member < ApplicationRecord
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
 
   before_save :update_birth_date_fields
+  def self.updated_at(options={})
+      if options[:from_date] && options[:to_date]
+        date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
+        where('updated_at' => (date_range.start_date)..(date_range.end_date))
+      end
+    end
 
   def self.has_birthdays_on(month)
     BirthdayQuery.new(self).has_birthdays_on(month)

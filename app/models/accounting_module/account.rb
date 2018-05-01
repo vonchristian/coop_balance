@@ -61,6 +61,30 @@ module AccountingModule
       end
       accounts_balance
     end
+    def self.credits_balance(options={})
+      return raise(NoMethodError, "undefined method 'credits balance'") if self.new.class == AccountingModule::Account
+      accounts_balance = BigDecimal.new('0')
+      self.all.each do |account|
+        if account.contra?
+          accounts_balance -= account.credits_balance(options)
+        else
+          accounts_balance += account.credits_balance(options)
+        end
+      end
+      accounts_balance
+    end
+    def self.debits_balance(options={})
+      return raise(NoMethodError, "undefined method 'credits balance'") if self.new.class == AccountingModule::Account
+      accounts_balance = BigDecimal.new('0')
+      self.all.each do |account|
+        if account.contra?
+          accounts_balance -= account.debits_balance(options)
+        else
+          accounts_balance += account.debits_balance(options)
+        end
+      end
+      accounts_balance
+    end
 
     def self.trial_balance
       return raise(NoMethodError, "undefined method 'trial_balance'") if self.new.class != AccountingModule::Account

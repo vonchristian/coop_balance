@@ -3,7 +3,7 @@ module MembershipsModule
     include PgSearch
     pg_search_scope :text_search, :against => [:account_number, :account_owner_name]
     multisearchable against: [:account_number, :account_owner_name]
-    belongs_to :subscriber, polymorphic: true
+    belongs_to :subscriber, polymorphic: true, touch: true
     belongs_to :share_capital_product, class_name: "CoopServicesModule::ShareCapitalProduct"
     belongs_to :office, class_name: "CoopConfigurationsModule::Office"
     delegate :name,
