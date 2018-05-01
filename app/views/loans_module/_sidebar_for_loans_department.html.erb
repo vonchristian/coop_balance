@@ -26,9 +26,8 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
           <li class="header"> LOANS DEPARTMENT </li>
-          <li><a href="/loans_module/dashboard"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
 
-          <li class=<%= 'active' if current_page?(loans_module_loan_products_path) %> ><a href="/loans_module/loan_products"><i class="fa fa-pie-chart"></i> <span>Loan Products </span></a></li>
+          <li class=<%= 'active' if current_page?(loans_module_loan_products_path) %> ><a href="/loans_module/loan_products"><i class="fa fa-tag"></i> <span>Loan Products </span></a></li>
           <li class=<%= 'active' if current_page?(loans_module_loan_products_path) %> ><a href="/loans_module/loan_applications/new"><i class="fa fa-calculator"></i> <span>New Loan</span></a></li>
           <li class=<%= 'active' if current_page?(loans_module_loans_path) %> ><a href="/loans"><i class="fa fa-credit-card"></i> <span> Loans</span></a></li>
 
@@ -38,9 +37,9 @@
 
           <li class=<%= 'active' if current_page?(loans_module_schedules_path) %> ><a href="/loans_module/schedules"><i class="fa fa-calendar"></i> <span> Schedules</span></a></li>
 
-          <li class=<%= 'active' if current_page?(loans_module_settings_path) %> ><a href="/loans_module/settings"><i class="icon-sliders"></i> <span> &nbsp; Settings</span></a></li>
+
           <li class=<%#= 'active' if current_page?(admin_settings_path) %> ><a href="/loans_module/aging_loans"><i class="fa fa-hourglass-end"></i> <span> Aging Loans</span></a></li>
-          <li class=<%= 'active' if current_page?(loans_module_reports_path) %> ><a href="/loans_module/reports"><i class="icon-folder"></i> <span>  &nbsp;Reports</span></a></li>
+          <li class=<%= 'active' if current_page?(loans_module_reports_path) %> ><a href="/loans_module/reports"><i class="fa fa-folder"></i> <span>  &nbsp;Reports</span></a></li>
 
 
 

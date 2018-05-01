@@ -6,11 +6,44 @@
       </div>
       <div class="box-body">
         <h4><b>Loan Releases</b></h4>
-        <p class="text-muted"> Generate report of loan releases. </p>
-        <%= link_to 'Loan Releases', loans_module_reports_loan_releases_path(format: 'pdf') %>
-        <hr>
+        <%= form_tag({:action => "index", controller: "loans_module/reports/loan_releases", format: 'pdf'}, {:method => :get})  do %>
+        <div class="row">
+          <div class="col-md-3">
+          <div class="form-group">
+            <%= text_field_tag :from_date, @from_date, :class => 'datepicker form-control border-input', :placeholder => "From " %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <%= text_field_tag :to_date, @to_date, :class => 'form-control border-input datepicker', :placeholder => "To " %>
+
+          </div>
+        </div>
+        <div class="col-md-2">
+          <button type="submit" class="btn btn-warning btn-sm"> Generate Report</button>
+        </div>
       </div>
+    <% end %>
+    <hr>
+    <h4><b>Loan Payments</b></h4>
+        <%= form_tag({:action => "index", controller: "loans_module/reports/loan_collections", format: 'pdf'}, {:method => :get})  do %>
+        <div class="row">
+          <div class="col-md-3">
+          <div class="form-group">
+            <%= text_field_tag :from_date, @from_date, :class => 'datepicker form-control border-input', :placeholder => "From " %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <%= text_field_tag :to_date, @to_date, :class => 'form-control border-input datepicker', :placeholder => "To " %>
+
+          </div>
+        </div>
+        <div class="col-md-2">
+          <button type="submit" class="btn btn-warning btn-sm"> Generate Report</button>
+        </div>
+      </div>
+    <% end %>
     </div>
-<h3>Reports</h3>
-<%= link_to 'Loan Protection Funds', loans_module_reports_loan_protection_funds_path %>
-<%= link_to 'Loan Collections', loans_module_reports_loan_collections_path %>
+  </div>
+</div>

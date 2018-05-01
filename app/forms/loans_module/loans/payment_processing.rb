@@ -30,7 +30,7 @@ module LoansModule
 
       entry = AccountingModule::Entry.new(
         origin: find_employee.office,
-        commercial_document: find_loan.borrower,
+        commercial_document: find_loan,
         reference_number: reference_number,
         :description => "Payment of loan on #{date.to_date.strftime("%B %e, %Y")}",
         recorder: find_employee,

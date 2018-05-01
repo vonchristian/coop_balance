@@ -1,14 +1,14 @@
 module LoansModule
   module Reports
-    class LoanReleasesPdf < Prawn::Document
-      def initialize(loans, from_date, to_date, view_context)
+    class LoanCollectionsPdf < Prawn::Document
+      def initialize(collections, from_date, to_date, view_context)
         super(margin: 40, page_size: "A4", page_layout: :portrait)
-        @loans = loans
+        @collections = collections
         @from_date = from_date
         @to_date = to_date
         @view_context = view_context
         heading
-        loans_table
+        collections_table
       end
       private
       def price(number)
@@ -23,7 +23,7 @@ module LoansModule
             text "Poblacion, Tinoc, Ifugao", size: 10
         end
         bounding_box [0, 760], width: 400 do
-          text "Loan Releases Report", style: :bold, size: 14
+          text "Loan Collections Report", style: :bold, size: 14
           move_down 5
           text "FROM: #{@from_date.strftime("%B %e, %Y")} To: #{@to_date.strftime("%B %e, %Y")}", size: 10
           move_down 5
@@ -37,23 +37,23 @@ module LoansModule
         end
       end
 
-      def loans_table
-        if @loans.any?
+      def collections_table
+        if @collections.any?
           table(table_data, header: true, cell_style: { size: 9, font: "Helvetica"}) do
             column(1).align = :right
             row(0).font_style = :bold
             row(0).background_color = 'DDDDDD'
           end
         else
-          "NO Loan Releases"
+          "NO Loan Collections"
         end
       end
 
     def table_data
       move_down 5
-      [["Borrower", "Type of Loan", "Address", "Contact Number", "Date Disbursed", "Loan Amount", "Net Proceed"]] +
-      @table_data ||= @loans.map { |e| [e.borrower_name, e.loan_product_name, e.borrower_current_address, e.borrower_contact_number, e.disbursement_date.try(:strftime, ("%B %e, %Y")), price(e.loan_amount), price(e.net_proceed)]} +
-      [["", "","", "", "", "#{price(@loans.sum(&:loan_amount))}", "#{price(@loans.sum(&:net_proceed))}"]]
+      [["Borrower", "Type of Loan",  "Date", "OR Number", "Employee", "Amount"]] +
+      @table_data ||= @collections.uniq.map { |e| [e.commercial_document.try(:name), e.commercial_document.try(:loan_product_name), e.entry_date.strftime("%B %e, %Y"), e.reference_number, e.recorder_name, price(e.debit_amounts.sum(&:amount))] } +
+      [["", "", "", "", "", "#{price(@collections.uniq.map{|a| a.debit_amounts.sum(&:amount)}.sum) }"]]
     end
     end
   end
