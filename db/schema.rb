@@ -566,7 +566,6 @@ ActiveRecord::Schema.define(version: 2018_04_24_122151) do
     t.datetime "effectivity_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "maturity_date"
     t.index ["loan_id"], name: "index_loan_terms_on_loan_id"
   end
 
@@ -589,6 +588,7 @@ ActiveRecord::Schema.define(version: 2018_04_24_122151) do
     t.string "account_number"
     t.integer "loan_term"
     t.integer "term"
+    t.datetime "maturity_date"
     t.index ["account_number"], name: "index_loans_on_account_number", unique: true
     t.index ["barangay_id"], name: "index_loans_on_barangay_id"
     t.index ["borrower_type", "borrower_id"], name: "index_loans_on_borrower_type_and_borrower_id"
