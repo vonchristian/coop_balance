@@ -1,3 +1,12 @@
+
+Per barangay of loan
+add maturity date
+per loan product per barangay
+per organization
+
+loan unearned interest posting
+
+
 check loan payment interest and penalty
 
 make loan term and time deposit term to be polymorphic

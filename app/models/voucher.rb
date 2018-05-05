@@ -17,6 +17,9 @@ class Voucher < ApplicationRecord
   delegate :avatar, to: :payee, allow_nil: true
 
   before_save :set_default_date
+  def self.unearned
+    where(unearned: true)
+  end
   def self.payees
     User.all +
     Member.all +

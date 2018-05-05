@@ -70,12 +70,13 @@ module Employees
     end
     def accounts_data
       [["", "Account", "#{@employee.cash_on_hand_account.try(:name)}"]] +
+      [["","Transactions Count ", "#{@entries.count}"]] +
       [["", "Start Date", "#{@from_date.strftime("%B %e, %Y")}"]] +
       [["", "End Date", "#{@to_date.strftime("%B %e, %Y")}"]] +
-      [["", "Beginning Balance",  "#{price(@employee.cash_on_hand_account_balance(from_date: (@from_date.yesterday.end_of_day), to_date: (@from_date.beginning_of_day)))}"]] +
-      [["", "Cash Disbursements", "#{price(@employee.cash_on_hand_account.credits_balance(from_date: (@from_date.beginning_of_day - 1.second), to_date: @to_date.end_of_day))}"]] +
-      [["", "Cash Receipts", "#{price(@employee.cash_on_hand_account.debits_balance(from_date: (@from_date.beginning_of_day - 1.second), to_date: @to_date.end_of_day))}"]] +
-      [["", "Ending Balance", "#{price(@employee.cash_on_hand_account_balance)}" ]]
+      [["", "Beginning Balance",  "#{price(@employee.cash_on_hand_account.balance(to_date: @from_date.yesterday))}"]] +
+      [["", "Cash Disbursements", "#{price(@employee.cash_on_hand_account.credits_balance(from_date: @from_date.beginning_of_day, to_date: @to_date.end_of_day))}"]] +
+      [["", "Cash Receipts", "#{price(@employee.cash_on_hand_account.debits_balance(from_date: @from_date.beginning_of_day, to_date: @to_date.end_of_day))}"]] +
+      [["", "Ending Balance", "#{price(@employee.cash_on_hand_account.balance(to_date: @to_date.end_of_day))}" ]]
     end
 
     def sundries_summary

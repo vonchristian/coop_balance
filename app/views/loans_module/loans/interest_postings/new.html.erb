@@ -10,6 +10,7 @@
       <div class="box-body">
         <%= simple_form_for [@loan, @interest_posting], url: :loans_module_loan_interest_postings do |f| %>
           <%= f.error_notification %>
+          <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
           <%= f.input :amount %>
           <%= f.input :reference_number %>
           <%= f.input :description %>

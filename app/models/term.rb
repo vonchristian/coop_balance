@@ -4,7 +4,11 @@ class Term < ApplicationRecord
   delegate :disbursed?, to: :termable, allow_nil: true
 
   def number_of_months
-    term
+    if termable.is_a?(MembershipsModule::TimeDeposit)
+      term
+    elsif termable.is_a?(LoansModule::Loan)
+      term
+    end
   end
   def self.current
     order(effectivity_date: :asc).last

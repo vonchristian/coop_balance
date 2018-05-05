@@ -86,6 +86,7 @@ class User < ApplicationRecord
     accounts = []
     user_accounts.each do |account|
       accounts << AccountingModule::Account.find(account)
+      accounts << AccountingModule::Account.find_by(name: "Cash on Hand")
     end
     accounts
   end

@@ -47,6 +47,7 @@ module Memberships
         recorder: find_employee,
         description: description,
         entry_date: date,
+        reference_number: reference_number,
         commercial_document: find_subscriber,
         debit_amounts_attributes: [
           account: debit_account,

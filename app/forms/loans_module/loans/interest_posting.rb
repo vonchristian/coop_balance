@@ -7,12 +7,15 @@ module LoansModule
       def post!
         ActiveRecord::Base.transaction do
           post_interest
+          create_schedule_fo_posting
         end
       end
 
       private
       def post_interest
         AccountingModule::Entry.create(
+          origin: find_employee.office,
+          recorder: find_employee,
           entry_date: date,
           reference_number: reference_number,
           description: description,
@@ -33,6 +36,10 @@ module LoansModule
       def find_borrower
         find_loan.borrower
       end
+      def find_employee
+        User.find_by_id(employee_id)
+      end
+
       def find_loan
         LoansModule::Loan.find_by_id(loan_id)
       end

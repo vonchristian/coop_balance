@@ -20,7 +20,7 @@
       <tbody>
         <% @payments.each do |payment| %>
           <tr>
-            <td><%= payment.entry_date.strftime("%B %e, %Y") %></td>
+            <td><%= link_to payment.entry_date.strftime("%B %e, %Y"), accounting_module_entry_path(payment) %></td>
             <td><%= payment.description %></td>
             <td><%= number_to_currency payment.debit_amounts.sum(&:amount) %> </td>
             <td><%= payment.reference_number %></td>

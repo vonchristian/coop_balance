@@ -10,6 +10,7 @@
              :one_time_payment?,
              :annually?,
              to: :program
+    delegate :name, to: :subscriber, prefix: true
 
     def percent_type?
       false

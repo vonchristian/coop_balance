@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_04_24_122151) do
+ActiveRecord::Schema.define(version: 2018_05_02_030543) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1273,6 +1273,7 @@ ActiveRecord::Schema.define(version: 2018_04_24_122151) do
     t.uuid "disburser_id"
     t.string "commercial_document_type"
     t.uuid "commercial_document_id"
+    t.boolean "unearned", default: false
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_vouchers"
     t.index ["disburser_id"], name: "index_vouchers_on_disburser_id"
     t.index ["payee_type", "payee_id"], name: "index_vouchers_on_payee_type_and_payee_id"

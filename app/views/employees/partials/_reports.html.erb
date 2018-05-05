@@ -27,7 +27,7 @@
               </div>
             <% end %>
 <hr>
-<p>Teller Report</p>
+<h4>Transaction Summary Report</h4>
 <%= form_tag({:action => "index", format: 'pdf', controller: "employees/reports", employee_id: @employee.id, date: params[:date]}, {:method => :get})  do %>
               <div class="row">
                 <div class="col-md-3">
@@ -36,16 +36,22 @@
                   </div>
                 </div>
                 <div class="col-md-1">
-                  <button type="submit" class="btn btn-default"> Go</button>
+                  <button type="submit" class="btn btn-default"> Generate</button>
                 </div>
               </div>
             <% end %>
+<hr>
 <p>Cash Disbursements</p>
-<%= form_tag({:action => "index", format: 'pdf', controller: "employees/cash_disbursements", employee_id: @employee.id, date: params[:date]}, {:method => :get})  do %>
+<%= form_tag({:action => "index", format: 'pdf', controller: "employees/cash_disbursements", employee_id: @employee.id, to_date: params[:to_date]}, {:method => :get})  do %>
               <div class="row">
                 <div class="col-md-3">
                   <div class="form-group">
-                    <%= text_field_tag :date, @date, :class => 'datepicker form-control border-input', :placeholder => "Date" %>
+                    <%= text_field_tag :from_date, @date, :class => 'datepicker form-control border-input', :placeholder => "Date" %>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <%= text_field_tag :to_date, @date, :class => 'datepicker form-control border-input', :placeholder => "Date" %>
                   </div>
                 </div>
                 <div class="col-md-1">

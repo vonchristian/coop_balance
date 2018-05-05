@@ -8,13 +8,36 @@
   </div>
   <hr>
   <h4>Terms</h4>
+  <div class="row">
+    <div class="col-md-4">
+      <b>Date Deposited</b>
+    </div>
+    <div class="col-md-4">
+      <b>Maturity Date</b>
+    </div>
+    <div class="col-md-2">
+      <b>Term</b>
+    </div>
+  </div>
+  <br>
   <% @time_deposit.terms.each do |term| %>
-   <%= term.effectivity_date.strftime("%B %e, %Y") %>
-   <%= term.maturity_date.strftime("%B %e, %Y") %>
-   <%= term.number_of_months %>
-   <% if @time_deposit.terms.current == term %>
-     <span class="label bg-green"> Current </span>
-    <% end %>
+  <div class="row">
+    <div class="col-md-4">
+      <%= term.effectivity_date.strftime("%B %e, %Y") %>
+    </div>
+    <div class="col-md-4">
+      <%= term.maturity_date.strftime("%B %e, %Y") %>
+    </div>
+    <div class="col-md-2">
+      <%= term.number_of_months %> Days
+    </div>
+    <div class="col-md-2">
+     <% if @time_deposit.terms.current == term %>
+       <span class="label bg-green"> Current </span>
+      <% end %>
+    </div>
+  </div>
+  <br>
   <% end %>
 
   <%= link_to 'New Term Extension', new_time_deposit_term_extension_path(@time_deposit), class: "btn btn-danger" %>

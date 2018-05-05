@@ -11,10 +11,10 @@
         <hr>
         <%= simple_form_for [@savings_account, @withdrawal], url: :savings_account_withdrawals do |f| %>
          <%= f.error_notification %>
+          <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
           <%= f.input :amount, as: :currency %>
           <%= f.input :payment_type, label: 'Type', collection: AccountingModule::Entry.payment_types.keys.to_a.map{|a| [a.titleize, a] }, selected: AccountingModule::Entry.payment_types.keys.first %>
           <%= f.input :or_number, label: 'Reference number' %>
-          <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
           <%= f.input :saving_id, input_html: { value: @savings_account.id },as: :hidden %>
           <%= f.input :employee_id, input_html: { value: current_user.id },as: :hidden %>
           <div class="box-footer">

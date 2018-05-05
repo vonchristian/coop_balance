@@ -52,6 +52,7 @@ class DisbursementForm
     LoansModule::AmortizationSchedule.create_schedule_for(payee)
     payee.current_term.update_attributes(effectivity_date: date, maturity_date: maturity_date)
   end
+
   def maturity_date
     date.to_date + payee.current_term_number_of_months.to_i.months
   end

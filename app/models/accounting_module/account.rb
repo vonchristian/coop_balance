@@ -107,23 +107,11 @@ module AccountingModule
 
     def credits_balance(options={})
       return raise(NoMethodError, "undefined method 'balance'") if self.class == AccountingModule::Account
-      if subsidiary_accounts.present?
-        balance  = []
-        subsidiary_accounts.each do |sub_account|
-          balance << sub_account.credit_amounts.balance(options)
-        end
-        balance.sum
-      else
-        credit_amounts.balance(options)
-      end
+      credit_amounts.balance(options)
     end
     def debits_balance(options={})
       return raise(NoMethodError, "undefined method 'balance'") if self.class == AccountingModule::Account
-      if subsidiary_accounts.present?
-        subsidiary_accounts.map{ |a| a.debit_amounts.balance(options) }.sum + debit_amounts.balance(options)
-      else
-        debit_amounts.balance(options)
-      end
+      debit_amounts.balance(options)
     end
   end
 end

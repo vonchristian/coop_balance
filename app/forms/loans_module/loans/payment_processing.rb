@@ -25,8 +25,8 @@ module LoansModule
     end
     private
     def save_payment
-      interest_revenue_account = find_loan.loan_product_interest_receivable_account
-      penalty_account = find_loan.loan_product_penalty_receivable_account
+      interest_revenue_account = find_loan.loan_product_interest_revenue_account
+      penalty_account = find_loan.loan_product_penalty_revenue_account
 
       entry = AccountingModule::Entry.new(
         origin: find_employee.office,
