@@ -1,0 +1,5 @@
+<% @programs.each do |program| %>
+  <%= link_to program.name, program_path(program) %>
+  <%= program.program_subscriptions.count %>
+  <%= number_to_currency program.account.balance%>
+<% end %>

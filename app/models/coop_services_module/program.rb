@@ -3,7 +3,7 @@ module CoopServicesModule
     enum payment_schedule_type: [:one_time_payment, :annually, :monthly, :quarterly]
 
     belongs_to :account,             class_name: "AccountingModule::Account"
-	  has_many :program_subscriptions, class_name: "MembershipsModule::ProgramSubscription"
+	  has_many :program_subscriptions, class_name: "MembershipsModule::ProgramSubscription", inverse_of: :program
     has_many :member_subscribers,    through: :program_subscriptions, source: :subscriber, source_type: "Member"
     has_many :employee_subscribers,  through: :program_subscriptions, source: :subscriber, source_type: "User"
 
@@ -11,6 +11,7 @@ module CoopServicesModule
     validates :name, presence: true, uniqueness: true
     validates :contribution, presence: true, numericality: true
     validates :account_id, presence: true
+
     def subscribers
       employee_subscribers +
       member_subscribers

@@ -11,7 +11,9 @@
              :annually?,
              to: :program
     delegate :name, to: :subscriber, prefix: true
-
+    def self.for(options={})
+      where(program: options[:program])
+    end
     def percent_type?
       false
     end
@@ -23,8 +25,11 @@
       contribution
     end
 
-	  def self.unpaid
-      all.select{|a| a.unpaid? }
+	  def self.unpaid(options={})
+      all.select{|a| a.unpaid?(options) }
+    end
+    def self.paid(options={})
+      all.select{|a| a.paid?(options) }
     end
 
     def unpaid?(options={})
