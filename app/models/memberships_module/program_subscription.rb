@@ -39,10 +39,14 @@
 	  def paid?(options={})
       if one_time_payment?
         account.amounts.where(commercial_document: self.subscriber).present? ||
-        account.amounts.where(commercial_document: self).present?
+        account.amounts.where(commercial_document: self).present? ||
+        account.entries.where(commercial_document: self).present? ||
+        account.entries.where(commercial_document: self.subscriber).present?
       else
-        account.amounts.where(commercial_document: self.subscriber).present? ||
-        account.amounts.where(commercial_document: self).present?
+        account.amounts.entered_on(options).where(commercial_document: self.subscriber).present? ||
+        account.amounts.entered_on(options).where(commercial_document: self).present? ||
+        account.entries.entered_on(options).where(commercial_document: self).present? ||
+        account.entries.entered_on(options).where(commercial_document: self.subscriber).present?
       end
 	  end
 	end
