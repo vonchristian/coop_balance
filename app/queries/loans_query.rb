@@ -5,7 +5,9 @@ class LoansQuery
     @relation = relation
   end
 
-
+  def past_due(options={})
+    relation.joins(:terms).where('terms.maturity_date' > Time.zone.now)
+  end
   def matured(options={})
     range = DateRange.new(start_date: options[:from_date], to_date: options[:to_date])
     relation.joins(:terms).where('terms.maturity_date' => range)

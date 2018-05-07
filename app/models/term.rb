@@ -3,6 +3,10 @@ class Term < ApplicationRecord
   validates :term, presence: true, numericality: true
   delegate :disbursed?, to: :termable, allow_nil: true
 
+  def self.past_due
+    all.select{ |a| a.is_past_due? }
+  end
+
   def number_of_months
     if termable.is_a?(MembershipsModule::TimeDeposit)
       term
