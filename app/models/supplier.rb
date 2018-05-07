@@ -43,8 +43,4 @@ class Supplier < ApplicationRecord
   def payments_total
     vouchers.disbursed.map{|a| a.payable_amount }.compact.sum
   end
-
-  def deliveries_total
-    CoopConfigurationsModule::StoreFrontConfig.default_accounts_payable_account.balance(commercial_document_id: self.id)
-  end
 end

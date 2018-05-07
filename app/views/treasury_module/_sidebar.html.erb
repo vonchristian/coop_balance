@@ -35,12 +35,14 @@
 
           <li class=<%= 'active' if current_page?(savings_accounts_path) %> ><a href="/savings_accounts"><i class="fa fa-suitcase"></i> <span> Savings Accounts</span></a></li>
 
-          <li class=<%= 'active' if current_page?(share_capitals_path) %> ><a href="/share_capitals"><i class="fa fa-circle-o"></i> <span> Share Capitals </span></a></li>
+          <li class=<%= 'active' if current_page?(share_capitals_path) %> ><a href="/share_capitals"><i class="fa fa-suitcase"></i> <span> Share Capitals </span></a></li>
           <li class=<%= 'active' if current_page?(time_deposits_path) %> ><a href="/time_deposits"><i class="fa fa-suitcase"></i> <span> Time Deposits</span></a></li>
-          <li class=<%= 'active' if current_page?(bank_accounts_path) %> ><a href="/bank_accounts"><i class="fa fa-bank"></i> <span> Bank Accounts</span></a></li>
+          <li class=<%= 'active' if current_page?(bank_accounts_path) %> ><a href="/bank_accounts"><i class="fa fa-building"></i> <span> Bank Accounts</span></a></li>
 
 
           <li class=<%= 'active' if current_page?(employee_entries_path(current_user)) %> ><a href="/employees/<%="#{current_user.id}"%>/entries"><i class="fa fa-credit-card"></i> <span> Entries</span></a></li>
+          <li class=<%= 'active' if current_page?(employee_reports_path(current_user)) %> ><a href="/employees/<%="#{current_user.id}"%>/reports"><i class="fa fa-folder"></i> <span> Reports</span></a></li>
+
 
           <li class=<%= 'active' if current_page?(employees_path) %> ><a href="/employees"><i class="fa fa-users"></i> <span> Employees</span></a></li>
           <li class=<%= 'active' if current_page?(suppliers_path) %> ><a href="/suppliers"><i class="fa fa-truck"></i> <span> Suppliers</span></a></li>

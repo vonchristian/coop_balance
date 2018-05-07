@@ -155,7 +155,7 @@ class TransactionSummaryPdf < Prawn::Document
   end
 
   def time_deposit_withdrawals_from_members
-    [["", "", "Less Deposits", "#{price(CoopServicesModule::TimeDepositProduct.all.map{|a| a.account.debits_balance(from_date: @date.beginning_of_day, to_date: @date.end_of_day) }.sum) }"]]
+    [["", "", "Less Withdrawals", "#{price(CoopServicesModule::TimeDepositProduct.all.map{|a| a.account.debits_balance(from_date: @date.beginning_of_day, to_date: @date.end_of_day) }.sum) }"]]
   end
   def total_time_deposits
     [["", "", "Total Time Deposits", "#{price(CoopServicesModule::TimeDepositProduct.all.map{|a| a.account.balance(to_date: @date.end_of_day) }.sum) }"]]

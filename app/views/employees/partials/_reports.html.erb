@@ -1,13 +1,13 @@
 <div class="tab-pane <%= 'active' if current_page?(employee_reports_path(@employee)) %>" id="employee-reports">
-  <p class="text-muted">
-    TRANSACTION REPORT
-  </p>
+  <h4>
+    Transactions Report
+  </h4>
   <%=link_to 'This Day', employee_entries_path(@employee, format: 'pdf', from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day), class: "btn btn-sm btn-default"  %> &nbsp;
 
   <%=link_to 'This Week', employee_entries_path(@employee, format: 'pdf', from_date: Time.zone.now.beginning_of_week.beginning_of_day, to_date: Time.zone.now.end_of_week.end_of_day), class: "btn btn-sm btn-default"  %> &nbsp;
    <%=link_to 'This Month', employee_entries_path(@employee, format: 'pdf', from_date: Time.zone.now.beginning_of_month.beginning_of_day, to_date: Time.zone.now.end_of_month.end_of_day), class: "btn btn-sm btn-default"  %> &nbsp;
-  <br>
-  <br>
+<br>
+<br>
   <small class="text-muted">OR select date </small>
 <%= form_tag({:action => "index", format: 'pdf', controller: "employees/entries", employee_id: @employee.id, from_date: params[:from_date], to_date: params[:to_date]}, {:method => :get})  do %>
               <div class="row">
@@ -41,7 +41,7 @@
               </div>
             <% end %>
 <hr>
-<p>Cash Disbursements</p>
+<h4>Cash Disbursements</h4>
 <%= form_tag({:action => "index", format: 'pdf', controller: "employees/cash_disbursements", employee_id: @employee.id, to_date: params[:to_date]}, {:method => :get})  do %>
               <div class="row">
                 <div class="col-md-3">
@@ -60,12 +60,17 @@
               </div>
             <% end %>
           <hr>
-          <p>Cash Receipts</p>
-<%= form_tag({:action => "index", format: 'pdf', controller: "employees/cash_receipts", employee_id: @employee.id, date: params[:date]}, {:method => :get})  do %>
+          <h4>Cash Receipts</h4>
+<%= form_tag({:action => "index", format: 'pdf', controller: "employees/cash_receipts", employee_id: @employee.id, to_date: params[:to_date]}, {:method => :get})  do %>
               <div class="row">
                 <div class="col-md-3">
                   <div class="form-group">
-                    <%= text_field_tag :date, @date, :class => 'datepicker form-control border-input', :placeholder => "Date" %>
+                    <%= text_field_tag :from_date, @date, :class => 'datepicker form-control border-input', :placeholder => "From Date" %>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <%= text_field_tag :to_date, @date, :class => 'datepicker form-control border-input', :placeholder => "To Date" %>
                   </div>
                 </div>
                 <div class="col-md-1">

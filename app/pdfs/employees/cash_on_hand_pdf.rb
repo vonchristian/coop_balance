@@ -41,7 +41,7 @@ module Employees
     bounding_box [0, 800], width: 400 do
       text "#{@title}", style: :bold, size: 12
       move_down 3
-      text "Date: #{@to_date.strftime("%B %e, %Y")}", size: 10
+      text "#{@from_date.strftime("%B %e, %Y")} TO #{@to_date.strftime("%B %e, %Y")} ", size: 10
       move_down 3
 
       text "Employee: #{@employee.name}", size: 10
@@ -73,7 +73,7 @@ module Employees
       [["","Transactions Count ", "#{@entries.count}"]] +
       [["", "Start Date", "#{@from_date.strftime("%B %e, %Y")}"]] +
       [["", "End Date", "#{@to_date.strftime("%B %e, %Y")}"]] +
-      [["", "Beginning Balance",  "#{price(@employee.cash_on_hand_account.balance(to_date: @from_date.yesterday))}"]] +
+      [["", "Beginning Balance",  "#{price(@employee.cash_on_hand_account.balance(to_date: @from_date.yesterday.end_of_day))}"]] +
       [["", "Cash Disbursements", "#{price(@employee.cash_on_hand_account.credits_balance(from_date: @from_date.beginning_of_day, to_date: @to_date.end_of_day))}"]] +
       [["", "Cash Receipts", "#{price(@employee.cash_on_hand_account.debits_balance(from_date: @from_date.beginning_of_day, to_date: @to_date.end_of_day))}"]] +
       [["", "Ending Balance", "#{price(@employee.cash_on_hand_account.balance(to_date: @to_date.end_of_day))}" ]]
@@ -92,10 +92,10 @@ module Employees
   end
   def sundries_summary_data
     [["", "Code", "Account Title ", "Debits", "Credits"]] +
-    @sundries_summary ||= AccountingModule::Account.updated_at(from_date: @from_date.beginning_of_day, to_date: @to_date.end_of_day).updated_by(@employee).uniq.map{ |a| ["", a.code, a.name, price(a.debits_balance(from_date: @to_date.beginning_of_day, to_date: @to_date.end_of_day)), price(a.credits_balance(from_date: @to_date.beginning_of_day, to_date: @to_date.end_of_day))]} +
+    @sundries_summary ||= AccountingModule::Account.updated_at(from_date: @from_date.beginning_of_day, to_date: @to_date.end_of_day).updated_by(@employee).uniq.map{ |a| ["", a.code, a.name, price(a.debits_balance(from_date: @from_date.beginning_of_day, to_date: @to_date.end_of_day)), price(a.credits_balance(from_date: @from_date.beginning_of_day, to_date: @to_date.end_of_day))]} +
     [["", "", "<b>TOTAL</b>",
-      "<b>#{price(AccountingModule::Account.updated_at(from_date: @from_date.beginning_of_day, to_date: @to_date.end_of_day).updated_by(@employee).uniq.map{|a| a.debits_balance(from_date: @to_date.beginning_of_day, to_date: @to_date.end_of_day)}.sum )}</b>",
-      "<b>#{price(AccountingModule::Account.updated_at(from_date: @from_date.beginning_of_day, to_date: @to_date.end_of_day).updated_by(@employee).uniq.map{|a| a.credits_balance(from_date: @to_date.beginning_of_day, to_date: @to_date.end_of_day)}.sum )}</b>"]]
+      "<b>#{price(AccountingModule::Account.updated_at(from_date: @from_date.beginning_of_day, to_date: @to_date.end_of_day).updated_by(@employee).uniq.map{|a| a.debits_balance(from_date: @from_date.beginning_of_day, to_date: @to_date.end_of_day)}.sum )}</b>",
+      "<b>#{price(AccountingModule::Account.updated_at(from_date: @from_date.beginning_of_day, to_date: @to_date.end_of_day).updated_by(@employee).uniq.map{|a| a.credits_balance(from_date: @from_date.beginning_of_day, to_date: @to_date.end_of_day)}.sum )}</b>"]]
 
   end
     def entries_table

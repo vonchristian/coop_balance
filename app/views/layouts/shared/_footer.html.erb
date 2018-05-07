@@ -1,7 +1,7 @@
 <footer class="main-footer">
   <div class="pull-right hidden-xs">
     <%=image_tag("itworx.png", class: "img-circle", height: 30, width: 30) %>&nbsp;
-    <b><small>Cooperative Management Platform </small></b>
+    <b><small><%=current_user.cooperative_abbreviated_name %> </small></b>
   </div>
   <strong>Copyright &copy; <%=Time.zone.now.year%> <a href="http://facebook.com/itworx">ITWORX Technology Services</a></strong> Enjoy the rest of your <%= Time.zone.now.strftime("%A") %>, <b><%= current_user.first_name %></b>.
 </footer>

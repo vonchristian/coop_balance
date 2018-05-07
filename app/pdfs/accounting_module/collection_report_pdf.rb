@@ -69,13 +69,13 @@ module AccountingModule
       text "No entries data.", align: :center
     else
 
-      table([["DATE", "DESCRIPTION", "REFERENCE NUMBER", "MEMBER", "EMPLOYEE", "ACCOUNT", "AMOUNT"]], cell_style: { inline_format: true, size: 6, font: "Helvetica"}, column_widths: [50, 100, 50, 100, 50, 100, 80]) do
+      table([["DATE", "DESCRIPTION", "REFERENCE NUMBER", "MEMBER",  "ACCOUNT", "AMOUNT"]], cell_style: { inline_format: true, size: 6, font: "Helvetica"}, column_widths: [50, 150, 50, 100,  100, 80]) do
 
         row(0).font_style= :bold
         row(0).background_color = 'DDDDDD'
       end
       @entries.each do |entry|
-        table([["#{entry.entry_date.strftime("%B %e, %Y")}", "#{entry.description}", "#{entry.reference_number}",  "#{display_commercial_document_for(entry).try(:upcase)}", "#{entry.recorder.try(:first_and_last_name).try(:upcase)}"]], cell_style: { size: 9, padding: [5,5,4,0]}, column_widths: [50, 100, 50,  100, 50, 100, 80]) do
+        table([["#{entry.entry_date.strftime("%B %e, %Y")}", "#{entry.description}", "#{entry.reference_number}",  "#{display_commercial_document_for(entry).try(:upcase)}",]], cell_style: { size: 9, padding: [5,5,4,0]}, column_widths: [50, 150, 50,  100,  100, 80]) do
           cells.borders = []
         end
 
