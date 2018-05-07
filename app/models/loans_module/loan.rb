@@ -110,23 +110,23 @@ module LoansModule
     def self.payments_total
       all.map{|loan| loan.payments_total }.sum
     end
-    # def self.loan_payments(options={})
-    #   all.map{|a| a.loan_payments(options)}
-    # end
+    def self.loan_payments(options={})
+      all.map{|a| a.loan_payments(options)}
+    end
 
-    # def loan_payments(options={})
-    #   entries = []
-    #   loan_product_loans_receivable_current_account.credit_amounts.where(commercial_document: self).each do |amount|
-    #     entries << amount.entry
-    #   end
-    #   loan_product_interest_receivable_account.credit_amounts.where(commercial_document: self).each do |amount|
-    #     entries << amount.entry
-    #   end
-    #   loan_product_penalty_receivable_account.credit_amounts.where(commercial_document: self).each do |amount|
-    #     entries << amount.entry
-    #   end
-    #   entries.uniq
-    # end
+    def loan_payments(options={})
+      entries = []
+      loan_product_loans_receivable_current_account.credit_amounts.where(commercial_document: self).each do |amount|
+        entries << amount.entry
+      end
+      loan_product_interest_receivable_account.credit_amounts.where(commercial_document: self).each do |amount|
+        entries << amount.entry
+      end
+      loan_product_penalty_receivable_account.credit_amounts.where(commercial_document: self).each do |amount|
+        entries << amount.entry
+      end
+      entries.uniq
+    end
 
     def approved?
       approvers.pluck(:id) == User.loan_approvers.pluck(:id)

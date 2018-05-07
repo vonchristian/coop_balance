@@ -30,11 +30,13 @@ module LoansModule
 
     def aging(options={})
       aging_loans = []
-      range = options[:min]..options[:max]
+      min_num = options[:start_num] || 1
+      max_num = options[:end_num] || 999_999
+      range = min_num..max_num
       relation.past_due.each do |loan|
         if range.include?(loan.number_of_days_past_due)
           aging_loans << loan
-        end
+      end
       end
       aging_loans
     end

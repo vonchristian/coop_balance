@@ -12,10 +12,12 @@ class IncomeStatementPdf < Prawn::Document
     show_expenses
     net_surplus
   end
+
   private
   def price(number)
     @view_context.number_to_currency(number, :unit => "P ")
   end
+
   def heading
     bounding_box [300, 760], width: 50 do
       image "#{Rails.root}/app/assets/images/kccmc_logo.jpg", width: 40, height: 40
@@ -45,18 +47,20 @@ class IncomeStatementPdf < Prawn::Document
       column(1).align = :right
       row(-1).font_style = :bold
     end
-     stroke do
-          stroke_color 'CCCCCC'
-          line_width 0.2
-          stroke_horizontal_rule
-          move_down 15
-        end
+    stroke do
+      stroke_color 'CCCCCC'
+      line_width 0.2
+      stroke_horizontal_rule
+      move_down 15
+    end
   end
+
   def revenues_data
     [["", ""]] +
     @revenues_data ||= @revenues.map{|a| [a.name, price(a.balance(to_date: @to_date))] } +
     [["TOTAL REVENUES", "#{price(AccountingModule::Revenue.balance(to_date: @to_date))}"]]
   end
+
   def show_expenses
     text "Expenses", style: :bold
     table(expenses_data, cell_style: { inline_format: true, size: 11, font: "Helvetica", :padding => [2,5,2,5]}, column_widths: [300, 100]) do
@@ -65,25 +69,26 @@ class IncomeStatementPdf < Prawn::Document
       row(-1).font_style = :bold
     end
   end
+
   def expenses_data
     [["", ""]] +
     @expenses_data ||= @expenses.map{|a| [a.name, price(a.balance(to_date: @to_date))] } +
-    [["TOTAL EXPENSES", "#{price(AccountingModule::Expense.balance)}"]]
+    [["TOTAL EXPENSES", "#{price(AccountingModule::Expense.balance(to_date: @to_date)}"]]
 
   end
-  def net_surplus
-     stroke do
-          stroke_color 'CCCCCC'
-          line_width 0.2
-          stroke_horizontal_rule
-          move_down 15
-        end
-        table([["NET SURPLUS", "#{price(AccountingModule::Revenue.balance(to_date: @to_date) - AccountingModule::Expense.balance(to_date: @to_date))}"]], cell_style: { inline_format: true, size: 11, font: "Helvetica", :padding => [2,5,2,5]}, column_widths: [300, 100]) do
-          row(0).font_style = :bold
-          cells.borders = []
-          column(1).align =:right
-        end
-      end
 
+  def net_surplus
+   stroke do
+      stroke_color 'CCCCCC'
+      line_width 0.2
+      stroke_horizontal_rule
+      move_down 15
+    end
+    table([["NET SURPLUS", "#{price(AccountingModule::Revenue.balance(to_date: @to_date) - AccountingModule::Expense.balance(to_date: @to_date))}"]], cell_style: { inline_format: true, size: 11, font: "Helvetica", :padding => [2,5,2,5]}, column_widths: [300, 100]) do
+      row(0).font_style = :bold
+      cells.borders = []
+      column(1).align =:right
+    end
+  end
 end
 

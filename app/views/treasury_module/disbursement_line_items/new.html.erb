@@ -11,7 +11,7 @@
               <%= f.input :account_id, label: false, placeholder: "Account", collection: AccountingModule::Account.all.map{|a| [a.name, a.id] }, prompt: "Select Account" %>
             </div>
             <div class="col-md-3">
-              <%= f.input :amount, label: false, placeholder: 'Amount'  %>
+              <%= f.input :amount, label: false, placeholder: 'Amount', as: :currency  %>
             </div>
             <div class="col-md-2">
               <%= f.input :amount_type, label: false, collection: Vouchers::VoucherAmount.amount_types.keys.to_a.map{|a| [a.titleize, a] } %>

@@ -1,7 +1,25 @@
-<%= simple_form_for [@loan, @term_extension], url: :loans_module_loan_terms do |f| %>
-  <%= f.input :term %>
-  <%= f.input :loan_id, input_html: { value: @loan.id } %>
-  <%= f.input :employee_id, input_html: { value: current_user.id } %>
-  <%= f.input :effectivity_date, as: :string, input_html: { class: "datepicker" } %>
-  <%= f.submit "Save Term Extension" %>
-<% end %>
+<% content_for(:html_title) { "#{@loan.borrower_name} | New Term Extension" } %>
+<div class="row">
+  <div class="col-md-4 col-md-offset-4">
+    <div class="box box-default">
+      <div class="box-header">
+        <h3 class="box-title"> New Term Extension Details </h3>
+        <center>
+          <%= image_tag(@loan.borrower.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %>
+          <h3><%= @loan.borrower_name %></h3>
+        </center>
+      </div>
+      <div class="box-body">
+        <%= simple_form_for [@loan, @term_extension], url: :loans_module_loan_terms do |f| %>
+          <%= f.input :term, label: "Number of Months:" %>
+          <%= f.input :loan_id, input_html: { value: @loan.id }, as: :hidden %>
+          <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+          <%= f.input :effectivity_date, as: :string, input_html: { class: "datepicker" } %>
+          <div class="box-footer">
+            <%= f.submit "Save Term Extension", class: "btn btn-danger pull-right" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
