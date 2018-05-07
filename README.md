@@ -1,3 +1,13 @@
+Merging of members
+merging of share capitals
+
+
+
+You must have something that drives you
+You must operate with a “deathbed mentality” and not undervalue your time
+You must be willing to experiment and fail continually
+You can’t be a coward, which means you go against your intuition because you fear what others think (the scientific definition of courage means you deliberately confront risks to achieve a “noble goal”)
+You need to be an intense and wise learner, which means you get the best information from the best resources and apply immediately what you learn
 
 Per barangay of loan
 add maturity date

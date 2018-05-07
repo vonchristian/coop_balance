@@ -17,6 +17,7 @@ module MembershipsModule
              :interest_expense_account, to: :saving_product, prefix: true
     delegate :name, to: :office, prefix: true, allow_nil: true
     delegate :name, to: :depositor, prefix: true
+    delegate :avatar, to: :depositor, allow_nil: true
 
     scope :has_minimum_balance, -> { SavingsQuery.new.has_minimum_balance  }
     before_save :set_account_owner_name

@@ -6,20 +6,5 @@
       <%=link_to 'View Transactions', accounting_module_account_path(current_user.cash_on_hand_account), class: "btn btn-default btn-xs" %>
       <hr>
   <% end %>
-  <% if current_user.treasurer? %>
-    <div class="dropdown">
-      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-        Fund Transfer
-        <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-        <li><%= link_to 'New Fund Transfer (To Teller)', new_treasury_module_employee_fund_transfer_path(@employee)%></li>
-        <li role="separator" class="divider"></li>
-        <li><%= link_to 'New Fund Transfer (To Vault)', new_employee_vault_fund_transfer_path(@employee)%></li>
-      </ul>
-    </div>
-  <% elsif current_user.teller? || current_user.sales_clerk? %>
-     <%= link_to 'New Cash Transfer', new_employee_cash_transfer_path(@employee), class: "btn btn-primary btn-flat" %>
 
-  <% end %>
 </div>

@@ -14,6 +14,7 @@ class DisbursementForm
     entry = AccountingModule::Entry.new(
       commercial_document: find_voucher,
       :description => description,
+      reference_number: reference_number,
       recorder: find_employee,
       origin: find_employee.office,
       entry_date: date)
