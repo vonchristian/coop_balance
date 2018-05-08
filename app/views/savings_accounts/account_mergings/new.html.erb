@@ -1,0 +1,5 @@
+<%=simple_form_for @merging, url: :savings_account_account_mergings do |f| %>
+  <%= f.input :mergee_id, collection: MembershipsModule::Saving.all.map{ |a| [a.depositor_name, a.id] } %>
+  <%= f.input :merger_id, input_html: { value: @savings_account.id} %>
+  <%= f.submit "Merge Account", class: "btn btn-danger" %>
+<% end %>

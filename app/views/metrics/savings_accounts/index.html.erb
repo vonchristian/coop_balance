@@ -1,0 +1,12 @@
+<%= simple_form_for @query, url: :metrics_savings_accounts do |f| %>
+<%= f.input :limiting_num %>
+<%= f.input :saving_product_id, collection: CoopServicesModule::SavingProduct.all.map{|a| [a.name, a.id] } %>
+<%= f.input :balance %>
+<%=f.submit %>
+<% end %>
+
+<%= @limiting_num %>
+<% @top_savings.each do |saving| %>
+ <%= saving.depositor_name %>
+ <%= saving.balance %>
+<% end %>

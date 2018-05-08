@@ -6,7 +6,9 @@
   <p>Loss</p>
   <%= link_to 'Set as Loss', new_loans_module_loan_loss_path(@loan), class: "btn btn-danger" %>
 </div>
-<p>Extend Loan Term</p>
+<h4>Loan Term</h4>
+<span class="text-muted"> Extend loan terms </span>
+<br>
 <% @loan.terms.each do |term| %>
   <%= term.effectivity_date.strftime("%B %e %Y") %>
   <%= term.maturity_date.strftime("%B %e, %Y") %>
@@ -14,5 +16,7 @@
   <%= link_to 'New Extension', new_loans_module_loan_term_path(@loan), class: "btn btn-danger" %>
 <hr>
 <h4>Archive</h4>
-
-<%= link_to "Archive Loan", loans_module_loan_archivings_path(@loan), method: :post, class: "btn btn-danger" %>
+<span class="text-muted"> Archive paid loans </span>
+<% if policy([:loans_module, :loans, :archiving]).new? && !@loan.archived? && @loan.paid? %>
+  <%= link_to "Archive Loan", loans_module_loan_archivings_path(@loan), method: :post, class: "btn btn-danger" %>
+<% end %>

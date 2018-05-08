@@ -6,37 +6,42 @@ class Member < ApplicationRecord
   enum sex: [:male, :female, :other]
   enum civil_status: [:single, :married, :widower, :divorced]
 
-  belongs_to :office,              class_name: "CoopConfigurationsModule::Office"
-  has_one :tin,                    as: :tinable
-  has_many :entries,               class_name: "AccountingModule::Entry", as: :commercial_document
-  has_many :voucher_amounts,       class_name: "Vouchers::VoucherAmount", as: :commercial_document #for temporary cration of debit adn creditrs
-  has_many :memberships,           as: :cooperator
-  has_many :savings,               class_name: "MembershipsModule::Saving",
-                                   as: :depositor
-  has_many :share_capitals,        class_name: "MembershipsModule::ShareCapital",
-                                   as: :subscriber
-  has_many :time_deposits,         class_name: "MembershipsModule::TimeDeposit",
-                                   as: :depositor
-  has_many :program_subscriptions, class_name: "MembershipsModule::ProgramSubscription",
-                                   as: :subscriber
-  has_many :member_occupations,    class_name: "MembershipsModule::MemberOccupation",
-                                   dependent: :destroy
-  has_many :occupations,           through: :member_occupations
-  has_many :loans,                 class_name: "LoansModule::Loan",
-                                   as: :borrower
-  has_many :co_makered_loans,      class_name: "LoansModule::LoanCoMaker",
-                                   as: :co_maker
-  has_many :addresses,             as: :addressable
-  has_many :subscribed_programs,      class_name: "CoopServicesModule::Program", through: :program_subscriptions, source: :program
+  belongs_to :office,                 class_name: "CoopConfigurationsModule::Office"
+  has_one :tin,                       as: :tinable
+  has_many :entries,                  class_name: "AccountingModule::Entry",
+                                      as: :commercial_document
+  has_many :voucher_amounts,          class_name: "Vouchers::VoucherAmount",
+                                      as: :commercial_document
+  has_many :memberships,              as: :cooperator
+  has_many :savings,                  class_name: "MembershipsModule::Saving",
+                                      as: :depositor
+  has_many :share_capitals,           class_name: "MembershipsModule::ShareCapital",
+                                      as: :subscriber
+  has_many :time_deposits,            class_name: "MembershipsModule::TimeDeposit",
+                                      as: :depositor
+  has_many :program_subscriptions,    class_name: "MembershipsModule::ProgramSubscription",
+                                      as: :subscriber
+  has_many :member_occupations,       class_name: "MembershipsModule::MemberOccupation",
+                                      dependent: :destroy
+  has_many :occupations,              through: :member_occupations
+  has_many :loans,                    class_name: "LoansModule::Loan",
+                                      as: :borrower
+  has_many :co_makered_loans,         class_name: "LoansModule::LoanCoMaker",
+                                      as: :co_maker
+  has_many :addresses,                as: :addressable
+  has_many :subscribed_programs,      class_name: "CoopServicesModule::Program",
+                                      through: :program_subscriptions,
+                                      source: :program
   has_many :sales_orders,             class_name: "StoreFrontModule::Orders::SalesOrder",
                                       as: :commercial_document
   has_many :sales_return_orders,      class_name: "StoreFrontModule::Orders::SalesReturnOrder",
                                       as: :commercial_document
   has_many :real_properties,          as: :owner
-  has_many :organization_memberships, class_name: "Organizations::OrganizationMember", as: :organization_membership
+  has_many :organization_memberships, class_name: "Organizations::OrganizationMember",
+                                      as: :organization_membership
   has_many :organizations,            through: :organization_memberships
   has_many :relationships,            as: :relationee
-  has_many :relations, as: :relationer
+  has_many :relations,                as: :relationer
 
 
   delegate :number, to: :tin, prefix: true, allow_nil: true

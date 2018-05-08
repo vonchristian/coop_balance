@@ -128,6 +128,7 @@ Rails.application.routes.draw do
     resources :program_subscriptions,    only: [:create],                       module: :members
 
     resources :purchases,        only: [:index, :show],                 module: :members
+    resources :account_mergings, only: [:new, :create],                 module: :members
   end
   resources :member_registrations, only: [:new, :create]
 
@@ -292,11 +293,14 @@ Rails.application.routes.draw do
     resources :entries, only: [:index, :show]
   end
   resources :savings_accounts, only: [:index, :show] do
+    resources :settings,          only: [:index],        module: :savings_accounts
+    resources :account_mergings,  only: [:new, :create], module: :savings_accounts
     resources :adjusting_entries, only: [:new, :create], module: :savings_accounts
-    resources :deposits, only: [:new, :create], module: :savings_accounts
-    resources :withdrawals, only: [:new, :create], module: :savings_accounts
-    resources :account_closings, only: [:new, :create], module: :savings_accounts
+    resources :deposits,          only: [:new, :create], module: :savings_accounts
+    resources :withdrawals,       only: [:new, :create], module: :savings_accounts
+    resources :account_closings,  only: [:new, :create], module: :savings_accounts
   end
+
   resources :search_results, only: [:index, :show]
   resources :occupations, only: [:index, :show]
   resources :disbursements, only: [:index, :show, :new, :create]
@@ -428,4 +432,7 @@ Rails.application.routes.draw do
       resources :payments, only: [:new, :create], module: :program_subscriptions
     end
   resources :metrics, only: [:index]
+  namespace :metrics do
+    resources :savings_accounts, only: [:index, :create]
+  end
 end

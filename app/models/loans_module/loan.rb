@@ -72,6 +72,7 @@ module LoansModule
     def current_term
       terms.current
     end
+
     def self.not_archived
       where(archived: false)
     end
@@ -146,7 +147,7 @@ module LoansModule
 
 
     def interest_on_loan_charge
-      interest = charges.where(account: loan_product_unearned_interest_income_account)
+      interest = charges.where(account: loan_product_interest_revenue_account)
       loan_charges.find_by(charge: interest)
     end
 

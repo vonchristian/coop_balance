@@ -7,8 +7,8 @@ module MembershipsModule
     belongs_to :depositor,        polymorphic: true,  touch: true
     belongs_to :saving_product,   class_name: "CoopServicesModule::SavingProduct"
     belongs_to :office,           class_name: "CoopConfigurationsModule::Office"
-    has_many   :entries,         class_name: "AccountingModule::Entry",
-                                  as: :commercial_document
+    # has_many   :entries,         class_name: "AccountingModule::Entry",
+    #                               as: :commercial_document
     delegate :name, :current_occupation, to: :depositor, prefix: true
     delegate :name,
              :account,
@@ -56,8 +56,9 @@ module MembershipsModule
       end
     end
 
-    def self.top_savers(limiting_num=10)
-      all.to_a.sort_by(&:balance).first(limiting_num)
+    def self.top_savers(options={})
+      limiting_num = options[:limiting_num] || 10
+      all.to_a.sort_by(&:balance).reverse.first(limiting_num)
     end
 
     def name

@@ -1,0 +1,5 @@
+<%= simple_form_for @merging, url: :member_account_mergings do |f| %>
+<%= f.input :mergee_id, collection: Member.all.map{|a| [a.name, a.id] } %>
+<%= f.input :merger_id, input_html: { value: @merger.id } %>
+<%= f.submit "Merge Account", class: "btn btn-primary" %>
+<% end %>
