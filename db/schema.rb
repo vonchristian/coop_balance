@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_02_030543) do
+ActiveRecord::Schema.define(version: 2018_05_08_084558) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -329,6 +329,7 @@ ActiveRecord::Schema.define(version: 2018_05_02_030543) do
     t.integer "payment_type", default: 0
     t.string "origin_type"
     t.uuid "origin_id"
+    t.boolean "offline_receipt", default: false
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_entry"
     t.index ["entry_date"], name: "index_entries_on_entry_date"
     t.index ["origin_type", "origin_id"], name: "index_entries_on_origin_type_and_origin_id"
@@ -589,6 +590,7 @@ ActiveRecord::Schema.define(version: 2018_05_02_030543) do
     t.integer "loan_term"
     t.integer "term"
     t.datetime "maturity_date"
+    t.boolean "archived", default: false
     t.index ["account_number"], name: "index_loans_on_account_number", unique: true
     t.index ["barangay_id"], name: "index_loans_on_barangay_id"
     t.index ["borrower_type", "borrower_id"], name: "index_loans_on_borrower_type_and_borrower_id"

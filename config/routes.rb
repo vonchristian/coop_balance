@@ -76,6 +76,7 @@ Rails.application.routes.draw do
     end
 
     resources :loans, except: [:destroy] do
+      resources :archivings, only: [:create], module: :loans
       resources :share_capital_build_ups,       only: [:new, :create], module: :loans
       resources :savings_account_deposits,      only: [:new, :create], module: :loans
       resources :terms,                         only: [:new, :create], module: :loans

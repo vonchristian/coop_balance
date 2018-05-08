@@ -12,3 +12,7 @@
   <%= term.maturity_date.strftime("%B %e, %Y") %>
 <% end %>
   <%= link_to 'New Extension', new_loans_module_loan_term_path(@loan), class: "btn btn-danger" %>
+<hr>
+<h4>Archive</h4>
+
+<%= link_to "Archive Loan", loans_module_loan_archivings_path(@loan), method: :post, class: "btn btn-danger" %>

@@ -8,8 +8,8 @@
         <%= simple_form_for @time_deposit_product, url: :management_module_settings_time_deposit_products do |f| %>
           <%= f.error_notification %>
           <%= f.input :name %>
-          <%= f.input :minimum_deposit %>
-          <%= f.input :maximum_deposit %>
+          <%= f.input :minimum_deposit, as: :currency %>
+          <%= f.input :maximum_deposit, as: :currency %>
           <%= f.input :annual_interest_rate %>
           <%= f.input :number_of_days %>
           <%= f.input :time_deposit_product_type, collection: CoopServicesModule::TimeDepositProduct.time_deposit_product_types.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>

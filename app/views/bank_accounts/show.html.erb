@@ -43,6 +43,10 @@
         <div class="col-md-4">
           <small>BALANCE</small>
           <h3><%= number_to_currency @bank_account.balance %></h3>
+          <br>
+          <%= link_to 'New Deposit', new_bank_account_deposit_path(@bank_account), class: "btn btn-success"%> &nbsp; &nbsp;
+          <%= link_to 'New Withdraw', new_bank_account_withdrawal_path(@bank_account), class: "btn btn-danger" %>
+
         </div>
         <div class="col-md-2">
            <small class="text-muted">EARNED INTEREST</small><br>
@@ -62,9 +66,6 @@
             <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-            <li><%= link_to 'New Deposit', new_bank_account_deposit_path(@bank_account)%></li>
-            <li><%= link_to 'New Withdraw', new_bank_account_withdrawal_path(@bank_account)%></li>
-              <li role="separator" class="divider"></li>
             <li><%= link_to 'New Bank Charge', new_bank_account_bank_charge_path(@bank_account)%></li>
             <li><%= link_to 'New Earned Interest', new_bank_account_bank_earned_interest_path(@bank_account)%></li>
 

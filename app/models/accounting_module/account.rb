@@ -50,67 +50,44 @@ module AccountingModule
      end
 
     def self.balance(options={})
-      return raise(NoMethodError, "undefined method 'balance'") if self.new.class == AccountingModule::Account
-      accounts_balance = BigDecimal.new('0')
-      self.all.each do |account|
-        if account.contra?
-          accounts_balance -= account.balance(options)
-        else
-          accounts_balance += account.balance(options)
+      if self.new.class == AccountingModule::Account
+        raise(NoMethodError, "undefined method 'balance'")
+      else
+        accounts_balance = BigDecimal.new('0')
+        accounts = self.all
+        accounts.each do |account|
+          if account.contra
+            accounts_balance -= account.balance(options)
+          else
+            accounts_balance += account.balance(options)
+          end
         end
+        accounts_balance
       end
-      accounts_balance
     end
-    def self.credits_balance(options={})
-      return raise(NoMethodError, "undefined method 'credits balance'") if self.new.class == AccountingModule::Account
-      accounts_balance = BigDecimal.new('0')
-      self.all.each do |account|
-        if account.contra?
-          accounts_balance -= account.credits_balance(options)
-        else
-          accounts_balance += account.credits_balance(options)
-        end
-      end
-      accounts_balance
-    end
-    def self.debits_balance(options={})
-      return raise(NoMethodError, "undefined method 'credits balance'") if self.new.class == AccountingModule::Account
-      accounts_balance = BigDecimal.new('0')
-      self.all.each do |account|
-        if account.contra?
-          accounts_balance -= account.debits_balance(options)
-        else
-          accounts_balance += account.debits_balance(options)
-        end
-      end
-      accounts_balance
-    end
-
     def self.trial_balance
-      return raise(NoMethodError, "undefined method 'trial_balance'") if self.new.class != AccountingModule::Account
-      AccountingModule::Asset.balance -
-      ( AccountingModule::Liability.balance +
-        AccountingModule::Equity.balance +
-        AccountingModule::Revenue.balance -
-        AccountingModule::Expense.balance
-      )
+      if self.new.class == AccountingModule::Account
+        AccountingModule::Asset.balance - (AccountingModule::Liability.balance + AccountingModule::Equity.balance + AccountingModule::Revenue.balance - AccountingModule::Expense.balance)
+      else
+        raise(NoMethodError, "undefined method 'trial_balance'")
+      end
     end
 
     def balance(options={})
-      return raise(NoMethodError, "undefined method 'balance'") if self.class == AccountingModule::Account
-      if self.normal_credit_balance ^ contra
-        credits_balance(options) - debits_balance(options)
+      if self.class == AccountingModule::Account
+        raise(NoMethodError, "undefined method 'balance'")
       else
-        debits_balance(options) - credits_balance(options)
+        if self.normal_credit_balance ^ contra
+          credits_balance(options) - debits_balance(options)
+        else
+          debits_balance(options) - credits_balance(options)
+        end
       end
     end
-
     def credits_balance(options={})
-      return raise(NoMethodError, "undefined method 'balance'") if self.class == AccountingModule::Account
       credit_amounts.balance(options)
     end
     def debits_balance(options={})
-      return raise(NoMethodError, "undefined method 'balance'") if self.class == AccountingModule::Account
       debit_amounts.balance(options)
     end
   end

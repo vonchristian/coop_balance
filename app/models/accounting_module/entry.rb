@@ -4,7 +4,7 @@ module AccountingModule
     pg_search_scope :text_search, :against => [:reference_number, :description]
     multisearchable against: [:reference_number, :description]
     enum payment_type: [:cash, :check]
-
+    has_one :official_receipt, as: :receiptable
     belongs_to :commercial_document, :polymorphic => true, touch: true
     belongs_to :origin, :polymorphic => true, touch: true
     belongs_to :recorder, foreign_key: 'recorder_id', class_name: "User"
@@ -57,6 +57,9 @@ module AccountingModule
 
     def total
       credit_amounts.sum(:amount)
+    end
+    def unbalanced?
+      credit_amounts.sum(:amount) != debit_amounts.sum(:amount)
     end
 
     private

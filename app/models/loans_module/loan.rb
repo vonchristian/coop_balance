@@ -72,6 +72,13 @@ module LoansModule
     def current_term
       terms.current
     end
+    def self.not_archived
+      where(archived: false)
+    end
+
+    def self.archived
+      where(archived: true)
+    end
 
     def self.balance(options={})
       self.for(options).sum(&:balance)

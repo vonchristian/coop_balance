@@ -55,6 +55,22 @@ module LoansModule
     end
 
     describe 'scopes' do
+      it ".not_archived" do
+        loan = create(:loan, archived: false)
+        archived_loan = create(:loan, archived: true)
+
+        expect(described_class.not_archived).to include(loan)
+        expect(described_class.not_archived).to_not include(archived_loan)
+      end
+
+      it ".archived" do
+        loan = create(:loan, archived: false)
+        archived_loan = create(:loan, archived: true)
+
+        expect(described_class.archived).to_not include(loan)
+        expect(described_class.archived).to include(archived_loan)
+      end
+
       it ".disbursed(options)" do
         date = Date.today
         disbursed_loan = create(:loan, disbursement_date: date)

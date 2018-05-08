@@ -14,6 +14,13 @@ module LoansModule
         it { is_expected.to validate_presence_of :interest_revenue_account_id }
         it { is_expected.to validate_numericality_of :rate }
       end
+      it ".current" do
+        interest_config = create(:interest_config, created_at: Date.today.yesterday)
+        current_interest_config = create(:interest_config, created_at: Date.today)
+
+        expect(described_class.current).to eql current_interest_config
+        expect(described_class.current).to_not eql interest_config
+      end
     end
   end
 end
