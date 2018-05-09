@@ -73,7 +73,7 @@ class IncomeStatementPdf < Prawn::Document
   def expenses_data
     [["", ""]] +
     @expenses_data ||= @expenses.map{|a| [a.name, price(a.balance(to_date: @to_date))] } +
-    [["TOTAL EXPENSES", "#{price(AccountingModule::Expense.balance(to_date: @to_date)}"]]
+    [["TOTAL EXPENSES", "#{price(AccountingModule::Expense.balance(to_date: @to_date))}"]]
 
   end
 
