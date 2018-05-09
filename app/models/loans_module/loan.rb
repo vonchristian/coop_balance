@@ -59,6 +59,7 @@ module LoansModule
     delegate :full_name, :cooperative, :current_occupation, to: :preparer, prefix: true
     delegate :maximum_loanable_amount, to: :loan_product
     delegate :avatar, to: :borrower
+
     delegate :number_of_interest_payments_prededucted, to: :interest_on_loan_charge
     delegate :name, to: :barangay, prefix: true, allow_nil: true
     validates :loan_product_id,  :loan_amount, :borrower_id, presence: true

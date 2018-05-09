@@ -44,6 +44,7 @@ module LoansModule
       entries.uniq
     end
 
+
     def post_penalties #daily
       if !penalty_posted?
         PenaltyPosting
