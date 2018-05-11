@@ -1,15 +1,12 @@
 <div class="row">
-  <div class="col-md-7">
+  <div class="col-md-8">
     <div class="box box-solid">
       <div class="box-header">
         <div class="row">
-          <div class="col-md-3">
-            <h3 class="box-title">All Loans</h3>
-          </div>
-          <div class="col-md-8">
+          <div class="col-md-12">
             <%=form_tag loans_path, method: :get do %>
                 <div class="input-group">
-                  <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Borrower name", id: 'account-search-form' %>
+                  <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Borrower name", id: 'sidebar-form' %>
                   <span class="input-group-btn">
                     <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
                       <i class="fa fa-search"></i>
@@ -30,8 +27,7 @@
                   <div class="col-md-4">
                     <b><%= loan.borrower_name.try(:upcase) %></b><br>
                     <small class="text-muted"><%= loan.loan_product_name %></small><br>
-                    <%= loan.updated_at.strftime("%b %e, %Y") %>
-                    <small>Last updated</small>
+
                   </div>
                   <div class="col-md-2">
                     <b><%= number_to_currency loan.loan_amount %></b><br>
@@ -40,7 +36,6 @@
                   <div class="col-md-2">
                     <span class="text-red"><%= number_to_currency loan.balance %></span><br>
                     <small class="text-muted">Loan Balance</small><br>
-
                   </div>
                   <div class="col-md-2">
 
@@ -51,4 +46,25 @@
           <% end %>
           <center><%= will_paginate @loans %></center>
         </div>
+      </div>
+    </div>
+        <div class="col-md-4">
+          <div class="box box-default">
+            <div class="box-header">
+              <h3 class="title">Barangays</h3>
+            </div>
+            <div class="box-body">
+              <% Addresses::Barangay.all.each do |barangay| %>
+                <div class="row">
+                  <div class="col-md-8">
+                    <%= link_to barangay.name, barangay_loans_path(barangay) %>
+                  </div>
+                  <div class="col-md-3">
+                    <%= barangay.loans.count %>
+                  </div>
+                </div>
+                <br>
+              <% end %>
+
+            </div>
       </div>

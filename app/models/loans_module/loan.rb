@@ -73,6 +73,9 @@ module LoansModule
     def current_term
       terms.current
     end
+    def disburser
+      disbursement_voucher.entry.recorder
+    end
 
     def self.not_archived
       where(archived: false)
@@ -91,13 +94,20 @@ module LoansModule
       where(organization: options[:organization]).
       where(municipality: options[:municipality])
     end
+    def self.current_loans{options={}}
+      disbursed(options).
+      not_matured(options)
+    end
+
+    def self.not_matured(options={})
+    end
 
     def self.past_due(options={})
       all.select { |a| a.is_past_due? }
     end
 
     def self.disbursed(options={})
-      LoansQuery.new.disbursed(options)
+      LoansModule::LoansQuery.new.disbursed(options)
     end
 
     def self.disbursed_by(employee)

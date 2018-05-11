@@ -1,0 +1,21 @@
+<%= form_tag({:action => "index",  controller: "reports/audit_reports", to_date: params[:to_date]}, {:method => :get})  do %>
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <%= text_field_tag :from_date, @date, :class => 'datepicker form-control border-input', :placeholder => "From Date" %>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <%= text_field_tag :to_date, @date, :class => 'datepicker form-control border-input', :placeholder => "To Date" %>
+                  </div>
+                </div>
+                <div class="col-md-1">
+                  <button type="submit" class="btn btn-default"> Go</button>
+                </div>
+              </div>
+            <% end %>
+<%= link_to 'View (PDF)', reports_audit_reports_path(from_date: @from_date, to_date: @to_date, format: "pdf") %>
+<% @entries.each do |entry| %>
+  <%= entry.entry_date %>
+<% end %>

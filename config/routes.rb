@@ -435,4 +435,7 @@ Rails.application.routes.draw do
   namespace :metrics do
     resources :savings_accounts, only: [:index, :create]
   end
+  namespace :reports do
+    resources :audit_reports, only: [:index]
+  end
 end

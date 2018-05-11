@@ -5,6 +5,5 @@ module CoopConfigurationsModule
     validates :name, presence: true, uniqueness: true
     validates :contact_number, presence: true
     validates :address, presence: true
-    validates :cash_in_vault_account_id, uniqueness: true
   end
 end

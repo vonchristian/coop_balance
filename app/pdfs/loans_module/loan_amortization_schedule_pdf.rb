@@ -1,12 +1,13 @@
 module LoansModule
   class LoanAmortizationSchedulePdf < Prawn::Document
     def initialize(loan, amortization_schedules, employee, view_context)
-      super(margin: 30, page_size: "A4", page_layout: :portrait)
+      super(margin: 50, page_size: "LEGAL", page_layout: :portrait)
       @loan = loan
       @amortization_schedules = amortization_schedules
       @employee = employee
       @view_context = view_context
       heading
+      loan_charges_details
       amortization_schedule
       signatory_details
     end
@@ -39,15 +40,15 @@ module LoansModule
     def price(number)
       @view_context.number_to_currency(number, :unit => "P ")
     end
-     def heading
-    bounding_box [300, 780], width: 50 do
+    def heading
+    bounding_box [300, 930], width: 50 do
       image "#{Rails.root}/app/assets/images/kccmc_logo.jpg", width: 50, height: 50
     end
-    bounding_box [370, 780], width: 200 do
+    bounding_box [370, 930], width: 200 do
         text "KCCMC", style: :bold, size: 24
-        text "Tinoc Community Multipurpose Cooperative", size: 10
+        text "Poblacion, Tinoc, Ifugao", size: 10
     end
-    bounding_box [0, 780], width: 400 do
+    bounding_box [0, 930], width: 400 do
       text "AMORTIZATION SCHEDULE", style: :bold, size: 14
       move_down 3
 
@@ -60,24 +61,62 @@ module LoansModule
       stroke_color '24292E'
       line_width 1
       stroke_horizontal_rule
-      move_down 20
+      move_down 10
     end
   end
+  def loan_charges_details
+    table([["Application Date", "#{@loan.application_date.strftime("%B %e, %Y")}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 100]) do
+      cells.borders = []
+      column(1).align = :right
+    end
+
+    table([["Maturity Date", "#{@loan.maturity_date.strftime("%B %e, %Y")}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 100]) do
+      cells.borders = []
+      column(1).align = :right
+    end
+    table([["LOAN AMOUNT", "#{price(@loan.loan_amount)}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 100]) do
+      cells.borders = []
+      column(1).align = :right
+
+    end
+    table([["<b>Less Charges</b>"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 100]) do
+      cells.borders = []
+      column(1).align = :right
+    end
+
+    table(loan_charges_data, cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 100]) do
+      cells.borders = []
+      column(1).align = :right
+
+
+    end
+    move_down 5
+    stroke do
+      stroke_color '24292E'
+      line_width 1
+      stroke_horizontal_rule
+      move_down 5
+    end
+    table([["<b>NET PROCEED</b>", "<b>#{price @loan.net_proceed}</b>"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 100]) do
+      cells.borders = []
+      column(1).align = :right
+
+    end
+    move_down 30
+
+  end
+  def loan_charges_data
+    @loan_charges_data ||= @loan.loan_charges.map{|a| [a.name, price(a.charge_amount_with_adjustment)]}
+  end
     def amortization_schedule
-      table(amortization_schedule_data, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [100, 90, 90, 90, 70, 90]) do
+      table(amortization_schedule_data, header: true, cell_style: { size: 9, font: "Helvetica"}, column_widths: [90, 100, 100, 60, 70, 90]) do
 
         row(0).font_style = :bold
-        row(0).background_color = 'DDDDDD'
         column(0).align = :right
         column(1).align = :right
         column(2).align = :right
-
         column(3).align = :right
         column(4).align = :right
-        column(3).size = 8
-        column(4).size = 8
-
-
         column(5).align = :right
 
       end
@@ -96,7 +135,7 @@ module LoansModule
     end
     def signatory_details
     move_down 50
-      table(signatory, cell_style: { inline_format: true, size: 9, font: "Helvetica"}, column_widths: [130, 130, 130, 130]) do
+      table(signatory, cell_style: { inline_format: true, size: 9, font: "Helvetica"}, column_widths: [100, 20, 100, 20, 100, 20, 100]) do
         cells.borders = []
         row(3).font_style = :bold
      end
@@ -105,11 +144,11 @@ module LoansModule
      User.general_manager.last
    end
    def signatory
-    [["PREPARED BY", "", "APPROVED BY", "RECEIVED BY"]] +
+    [["PREPARED BY", "", "APPROVED BY", "", "DISBURSED BY", "", "RECEIVED BY"]] +
     [["", ""]] +
     [["", ""]] +
-    [["#{@loan.preparer_full_name.to_s.try(:upcase)}", "", "#{approver.name.to_s.upcase}", "#{@loan.borrower_name.try(:upcase)}"]] +
-    [["#{@loan.preparer_current_occupation.try(:titleize)}", "", "#{approver.current_occupation.to_s.titleize}", "Borrower"]]
+    [["#{@loan.preparer_full_name.to_s.try(:upcase)}", "", "#{@loan.disbursement_voucher.try(:disburser).try(:name).try(:upcase)}", "", "#{approver.name.to_s.upcase}", "", "#{@loan.borrower_name.try(:upcase)}"]] +
+    [["#{@loan.preparer_current_occupation.try(:titleize)}", "", "#{approver.current_occupation.to_s.titleize}", "", "#{@loan.disburser.try(:current_occupation).try(:titleize) }", "", "Borrower"]]
   end
   end
 end

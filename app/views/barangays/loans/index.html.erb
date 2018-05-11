@@ -1,14 +1,13 @@
-<%= @barangay.name %>
-show total loans
-loans disbursed
-loans collected
-loans receivable
-
-<%= @loans.count %>
-
-
-
 <div class="row">
+  <div class="col-md-8">
+    <div class="box box-default">
+      <div class="box-header with-border">
+        <h3 class="box-title"><%= @barangay.name %></h3>
+      </div>
+      <div class="box-body">
+      </div>
+    </div>
+  </div>
   <div class="col-md-4">
     <div class="box box-solid">
     <div class="box-header">
@@ -20,7 +19,7 @@ loans receivable
           Loans
         </div>
         <div class="col-md-5">
-          <%#= @loans.count %>
+          <%= @loans.count %>
         </div>
       </div>
       <hr>
@@ -32,6 +31,7 @@ loans receivable
           <%= number_to_currency @loans.disbursed.sum(&:loan_amount) %>
         </div>
       </div>
+      <hr>
       <div class="row">
         <div class="col-md-7">
           Loans Paid
@@ -40,6 +40,7 @@ loans receivable
           <%= number_to_currency @loans.payments_total %>
         </div>
       </div>
+      <hr>
       <div class="row">
         <div class="col-md-7">
           Loans Receivable
@@ -48,5 +49,8 @@ loans receivable
           <%= number_to_currency @loans.balance %>
         </div>
       </div>
+    </div>
+  </div>
+</div>
 
 
