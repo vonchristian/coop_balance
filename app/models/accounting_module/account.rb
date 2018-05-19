@@ -24,8 +24,13 @@ module AccountingModule
     scope :equities,    -> { where(type: 'AccountingModule::Equity') }
     scope :revenues,    -> { where(type: 'AccountingModule::Revenue') }
     scope :expenses,    -> { where(type: 'AccountingModule::Expense') }
-    scope :active,      -> { where(active: true) }
 
+    def self.active
+      where(active: true)
+    end
+    def self.inactive
+      where.not(active: true)
+    end
     def self.updated_at(options={})
       if options[:from_date] && options[:to_date]
         date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])

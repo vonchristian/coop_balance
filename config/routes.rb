@@ -27,10 +27,13 @@ Rails.application.routes.draw do
   namespace :accounting_module do
     resources :reports, only: [:index]
     namespace :reports do
-      resources :trial_balances, only: [:index]
-      resources :proofsheets, only: [:index]
-      resources :income_statements, only: [:index]
-      resources :balance_sheets, only: [:index]
+      resources :trial_balances,       only: [:index]
+      resources :proofsheets,          only: [:index]
+      resources :income_statements,    only: [:index]
+      resources :balance_sheets,       only: [:index]
+      resources :financial_conditions, only: [:index]
+      resources :comparative_financial_conditions, only: [:index]
+
     end
     resources :offices, only: [:index, :show]
     resources :settings, only: [:index]

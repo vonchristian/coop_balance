@@ -1,0 +1,24 @@
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-default">
+    <div class="box-header">
+      <h3 class="box-title"> Financial Condition </h3>
+    </div>
+    <div class="box-body">
+    <%= form_tag({:action => 'index'}, {:method => :get, :class => 'form-inline'}) do%>
+      <div class="form-group">
+      <%= label_tag :date, nil, class: 'sr-only'%>
+      <%= text_field_tag :date, @to_date, :class => 'datepicker form-control' %>
+      </div>
+      <button type="submit" class="btn btn-default">Get Report</button>
+    <% end %>
+    <%= link_to "View (PDF)", accounting_module_reports_financial_conditions_path(format: 'pdf', to_date: @to_date), class: "btn btn-default" %>
+  <br>
+  <div class="table table-responsive">
+    <%= render 'account', :name => "Assets", :accounts => @assets %>
+    <%= render 'account', :name => "Liabilities", :accounts => @liabilities %>
+    <%= render 'account', :name => "Equity", :accounts => @equity %>
+  </div>
+
+</div>
