@@ -15,7 +15,7 @@ module LoansModule
         image "#{Rails.root}/app/assets/images/kccmc_logo.jpg", width: 50, height: 50, align: :center
       end
       bounding_box [0, 770], width: 530 do
-        text "Tinoc COMMUNITY MULTIPURPOSE DEVELOPMENT COOPERATIVE", align: :center
+        text "KALANGUYA COMMUNITY MULTIPURPOSE DEVELOPMENT COOPERATIVE", align: :center
         text "Poblacion, Tinoc, Ifugao", size: 12, align: :center
         move_down 10
         text "PAYMENT SCHEDULE", style: :bold, align: :center

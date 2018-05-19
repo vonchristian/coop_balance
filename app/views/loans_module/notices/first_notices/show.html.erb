@@ -1,0 +1,3 @@
+<%= @notice.date_for(@loan).strftime("%B %e, %Y") %>
+<%= @loan.maturity_date.strftime("%B %e, %Y") %>
+<%= link_to 'View PDF', loans_module_loan_first_notice_path(@loan, format: 'pdf') %>

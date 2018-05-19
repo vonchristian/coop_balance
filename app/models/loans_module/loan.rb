@@ -41,8 +41,10 @@ module LoansModule
     has_many :collaterals,              class_name: "LoansModule::Collateral", dependent: :destroy
     has_many :real_properties,          through: :collaterals
     has_many :terms,                    as: :termable
+    has_many :notices,                  class_name: "LoansModule::Notice",
+                                        as: :notified
 
-    delegate :name, :age, :contact_number, :current_address, to: :borrower,  prefix: true, allow_nil: true
+    delegate :name, :age, :contact_number, :current_address,  :first_name, to: :borrower,  prefix: true, allow_nil: true
     delegate :name,  to: :loan_product, prefix: true
     delegate :unearned_interest_income_account,
              :loans_receivable_current_account,
@@ -73,6 +75,7 @@ module LoansModule
     def current_term
       terms.current
     end
+
     def disburser
       disbursement_voucher.entry.recorder
     end
@@ -88,13 +91,15 @@ module LoansModule
     def self.balance(options={})
       self.for(options).sum(&:balance)
     end
+
     def self.for(options={})
       where(street:       options[:street]).
       where(barangay:     options[:barangay]).
       where(organization: options[:organization]).
       where(municipality: options[:municipality])
     end
-    def self.current_loans{options={}}
+
+    def self.current_loans(options={})
       disbursed(options).
       not_matured(options)
     end
@@ -269,6 +274,13 @@ module LoansModule
     def loan_penalty_computation
       daily_rate = (loan_product_penalty_rate / 100.0) / 30.0
       (principal_balance * daily_rate) * number_of_days_past_due
+    end
+
+    def first_notice_date
+      maturity_date + 10.days
+    end
+    def second_notice_date
+      first_notice_date + 10.days
     end
 
     private

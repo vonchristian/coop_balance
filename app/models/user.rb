@@ -74,6 +74,7 @@ class User < ApplicationRecord
   :url => "/system/:attachment/:id/:basename_:style.:extension"
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
   # validates :cash_on_hand_account_id, uniqueness: true
+
   def self.has_birthdays_on(month)
     where(birth_month: month).order(:birth_day)
   end

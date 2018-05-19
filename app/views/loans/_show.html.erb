@@ -23,6 +23,7 @@
         <% if current_page?(loan_disbursements_path(@loan)) %>
           <%=render 'loans/partials/loan_disbursement' %>
         <% end %>
+
         <% if current_page?(loans_module_loan_amortization_schedules_path(@loan)) %>
           <%=render 'loans/partials/amortization_schedule' %>
         <% end %>
@@ -30,6 +31,7 @@
         <% if current_page?(loan_payments_path(@loan)) %>
           <%= render 'loans/partials/payments' %>
         <% end %>
+
         <% if current_page? loan_settings_path(@loan) %>
           <%= render 'loans/partials/settings' %>
         <% end %>
