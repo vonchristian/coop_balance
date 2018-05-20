@@ -2,6 +2,7 @@ module AccountingModule
   module Reports
     class FinancialConditionsController < ApplicationController
       def index
+        @comparison = AccountingModule::FinancialConditionComparison.new
         first_entry = AccountingModule::Entry.order('entry_date ASC').first
         @from_date = first_entry ? DateTime.parse(first_entry.entry_date.strftime("%B %e, %Y")) : Time.zone.now
         @to_date = params[:entry_date] ? DateTime.parse(params[:entry_date]) : Time.zone.now

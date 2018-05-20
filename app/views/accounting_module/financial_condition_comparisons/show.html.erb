@@ -1,3 +1,12 @@
+<%= @comparison.comparison_type %>
+<%= @comparison.first_date %>
+<%= @comparison.second_date %>
+<%= @comparison.first_date_display_title %>
+<%= @comparison.second_date_display_title %>
+
+<%= number_to_currency AccountingModule::Asset.balance(to_date: @comparison.first_comparison_date) %>
+<%= number_to_currency AccountingModule::Asset.balance(to_date: @comparison.second_comparison_date) %>
+
 
 <div class="row">
   <div class="col-md-12">
@@ -6,15 +15,7 @@
       <h3 class="box-title"> Financial Condition </h3>
     </div>
     <div class="box-body">
-    <%= form_tag({:action => 'index'}, {:method => :get, :class => 'form-inline'}) do%>
-      <div class="form-group">
-      <%= label_tag :to_date, nil, class: 'sr-only'%>
-      <%= text_field_tag :to_date, @to_date, :class => 'datepicker form-control' %>
-      </div>
-      <button type="submit" class="btn btn-default">Get Report</button>
-    <% end %>
-    <%= link_to "View (PDF)", accounting_module_reports_financial_conditions_path(format: 'pdf', to_date: @to_date), class: "btn btn-default" %>
-  <br>
+
   <%= simple_form_for @comparison, url: :accounting_module_financial_condition_comparisons do |f| %>
     <%= f.input :first_date, as: :string, input_html: { class: "datepicker" } %>
     <%= f.input :second_date, as: :string, input_html: { class: "datepicker" } %>

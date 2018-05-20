@@ -1,0 +1,38 @@
+<table class="table table-striped table-hover">
+  <caption class="text-left"><b><%=name%></b></caption>
+  <thead>
+  <tr>
+    <th></th>
+    <th><%= @comparison.first_date_display_title %> </th>
+    <th><%= @comparison.second_date_display_title %></th>
+  </tr>
+  </thead>
+<% if accounts.count > 0 %>
+  <tbody>
+    <% first_running_total = 0 %>
+    <% second_running_total = 0 %>
+    <% accounts.each do |account| %>
+      <% first_date_balance = account.balance(:to_date => @comparison.first_comparison_date) %>
+      <% second_date_balance = account.balance(:to_date => @comparison.second_comparison_date) %>
+
+      <tr>
+        <td><%= account.name %></td>
+        <td><span class="pull-right"><%=number_to_currency first_date_balance.round(2) %></span></td>
+        <td><span class="pull-right"><%=number_to_currency second_date_balance.round(2) %></span></td>
+
+        <% first_running_total += first_date_balance %>
+        <% second_running_total += second_date_balance %>
+
+      </tr>
+    <% end %>
+    <tr>
+      <strong>
+        <td><b>TOTAL <%= name.upcase %></b></td>
+        <td><span class="pull-right"> <b><%=number_to_currency first_running_total.round(2) %></b></span></td>
+        <td><span class="pull-right"> <b><%=number_to_currency second_running_total.round(2) %></b></span></td>
+
+      </strong>
+    </tr>
+  </tbody>
+<% end %>
+</table>

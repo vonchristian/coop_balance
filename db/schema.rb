@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_08_115722) do
+ActiveRecord::Schema.define(version: 2018_05_20_224745) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -337,6 +337,15 @@ ActiveRecord::Schema.define(version: 2018_05_08_115722) do
     t.index ["recorder_id"], name: "index_entries_on_recorder_id"
     t.index ["store_front_id"], name: "index_entries_on_store_front_id"
     t.index ["voucher_id"], name: "index_entries_on_voucher_id"
+  end
+
+  create_table "financial_condition_comparisons", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "first_date"
+    t.datetime "second_date"
+    t.integer "comparison_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["comparison_type"], name: "index_financial_condition_comparisons_on_comparison_type"
   end
 
   create_table "finished_good_materials", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

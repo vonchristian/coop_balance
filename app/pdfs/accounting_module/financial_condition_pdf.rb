@@ -12,7 +12,7 @@ module AccountingModule
       heading
       asset_accounts
       liabilities_accounts
-      equities_data
+      equities_accounts
       total_liabilities_and_equities
     end
 
@@ -80,7 +80,7 @@ module AccountingModule
     end
 
     def total_assets_data
-      [["<b>TOTAL ASSETS</b>", "", "<b>#{price(@assets.balance)}</b>"]]
+      [["<b>TOTAL ASSETS</b>", "", "<b>#{price(AccountingModule::Asset.balance)}</b>"]]
     end
 
     def liabilities_accounts
@@ -113,10 +113,10 @@ module AccountingModule
     end
 
     def total_liabilities_data
-      [["<b>TOTAL LIABILITIES</b>", "", "<b>#{price(@liabilities.balance)}</b>"]]
+      [["<b>TOTAL LIABILITIES</b>", "", "<b>#{price(AccountingModule::Liability.balance)}</b>"]]
     end
 
-    def equities_data
+    def equities_accounts
       move_down 10
       text "MEMBERS' EQUITY", size: 12, style: :bold
 
@@ -141,7 +141,7 @@ module AccountingModule
       @equities_data ||= @equities.map{ |a| ["", a.name, price(a.balance(to_date: @to_date))] }
     end
     def total_equities_data
-      [["<b>TOTAL MEMBERS' EQUITY</b>", "", "<b>#{price(@equities.balance)}</b>"]]
+      [["<b>TOTAL EQUITY</b>", "", "<b>#{price(AccountingModule::Equity.balance)}</b>"]]
     end
 
     def total_liabilities_and_equities(options={})
@@ -152,12 +152,12 @@ module AccountingModule
       end
     end
     def liabilities_and_equities_data(options={})
-      [["<b>TOTAL LIABILITIES AND MEMBERS' EQUITY</b>", "", "<b>#{price(liabilities_and_equities_total(options))}</b>"]]
+      [["<b>TOTAL LIABILITIES AND EQUITY</b>", "", "<b>#{price(liabilities_and_equities_total(options))}</b>"]]
     end
 
     def liabilities_and_equities_total(options={})
-      @liabilities.balance +
-      @equities.balance
+      AccountingModule::Liability.balance +
+      AccountingModule::Equity.balance
     end
   end
 end

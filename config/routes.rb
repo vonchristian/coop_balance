@@ -25,6 +25,7 @@ Rails.application.routes.draw do
 
   resources :accounting_module, only: [:index]
   namespace :accounting_module do
+    resources :financial_condition_comparisons, only: [:new, :create, :show]
     resources :reports, only: [:index]
     namespace :reports do
       resources :trial_balances,       only: [:index]
@@ -32,8 +33,6 @@ Rails.application.routes.draw do
       resources :income_statements,    only: [:index]
       resources :balance_sheets,       only: [:index]
       resources :financial_conditions, only: [:index]
-      resources :comparative_financial_conditions, only: [:index]
-
     end
     resources :offices, only: [:index, :show]
     resources :settings, only: [:index]
