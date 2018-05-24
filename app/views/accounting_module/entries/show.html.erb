@@ -67,10 +67,15 @@
         <% @entry.debit_amounts.each do |debit| %>
           <div class="row">
             <div class="col-md-5 col-md-offset-1">
-              <%= debit.account.try(:name) %>
+              <%= debit.account.try(:name) %><br>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-4">
               <%= number_to_currency debit.amount %>
+            </div>
+            <div class="col-md-2">
+               <% if current_user.bookkeeper? || current_user.accountant? %>
+                  <%=link_to "Edit", edit_accounting_module_amount_path(debit), class: "btn btn-warning btn-xs" %>
+                <% end %>
             </div>
           </div>
           <br>
