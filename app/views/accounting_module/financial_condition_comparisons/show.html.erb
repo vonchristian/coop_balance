@@ -13,10 +13,11 @@
     <div class="box box-default">
     <div class="box-header">
       <h3 class="box-title"> Financial Condition </h3>
+      <span class="text-block">As of <%= Date.today.strftime("%B %e, %Y") %></span>
     </div>
     <div class="box-body">
 
-  <%= simple_form_for @comparison, url: :accounting_module_financial_condition_comparisons do |f| %>
+  <%= simple_form_for @comparison, url: :accounting_module_financial_condition_comparisons, html: { class: "form-inline" } do |f| %>
     <%= f.input :first_date, as: :string, input_html: { class: "datepicker" } %>
     <%= f.input :second_date, as: :string, input_html: { class: "datepicker" } %>
     <%= f.input :comparison_type, collection: AccountingModule::FinancialConditionComparison.comparison_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>

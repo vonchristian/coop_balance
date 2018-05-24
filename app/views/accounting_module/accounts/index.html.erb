@@ -37,6 +37,7 @@
                 <th> Debits Balance </th>
                 <th> Credits Balance </th>
                 <th> Balance </th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -81,6 +82,18 @@
                       <td> <%= number_to_currency account.debits_balance %></td>
                       <td> <%= number_to_currency account.credits_balance %></td>
                       <td> <%= number_to_currency account.balance %></td>
+
+                        <td>
+                          <% if account.active? %>
+                          <%= link_to accounting_module_account_deactivations_path(account), method: :post do %>
+                            <i class="fa fa-toggle-on fa-2x"></i>
+                          <% end %>
+                          <% else %>
+                          <%= link_to accounting_module_account_activations_path(account), method: :post do %>
+                          <i class="fa fa-toggle-off fa-2x "></i>
+                          <% end %>
+                          </td>
+                      <% end %>
                     </tr>
                   <% end %>
               <% end %>

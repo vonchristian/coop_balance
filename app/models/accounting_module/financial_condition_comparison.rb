@@ -9,6 +9,7 @@ module AccountingModule
         first_date.strftime("%Y")
       end
     end
+
     def second_date_display_title
       if monthly?
         second_date.strftime("%B %Y")
@@ -16,6 +17,7 @@ module AccountingModule
         second_date.strftime("%Y")
       end
     end
+
     def first_comparison_date
       if monthly?
         first_date.end_of_month

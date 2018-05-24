@@ -38,6 +38,8 @@ Rails.application.routes.draw do
     resources :settings, only: [:index]
     resources :loan_protection_fund_configs, only: [:new, :create]
     resources :accounts do
+      resources :activations, only: [:create], module: :accounts
+      resources :deactivations, only: [:create], module: :accounts
       resources :reports, only: [:index], module: :accounts
       resources :entries, only: [:index], module: :accounts
     end
