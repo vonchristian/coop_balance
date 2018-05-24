@@ -124,3 +124,9 @@
   <%= f.input :employee_id, input_html: { value: current_user.id } %>
   <%= f.submit %>
 <% end %>
+<h4>Time Deposit Registry</h4>
+<%= simple_form_for Registries::TimeDepositRegistry.new, url: :management_module_time_deposit_registries do |f| %>
+  <%= f.input :spreadsheet %>
+  <%= f.input :employee_id, input_html: { value: current_user.id } %>
+  <%= f.submit %>
+<% end %>

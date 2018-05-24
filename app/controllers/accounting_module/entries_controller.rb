@@ -65,7 +65,7 @@ module AccountingModule
     end
     def edit_entry_params
       params.require(:accounting_module_entry).
-      permit(:recorder_id, :reference_number, :description)
+      permit(:recorder_id, :reference_number, :description, :entry_date)
     end
   end
 end

@@ -145,6 +145,8 @@ Rails.application.routes.draw do
     resources :savings_account_registries, only: [:new, :create]
     resources :share_capital_registries, only: [:new, :create]
     resources :loan_registries, only: [:new, :create]
+    resources :time_deposit_registries, only: [:new, :create]
+
 
     namespace :settings do
       resources :store_fronts, only: [:new, :create]

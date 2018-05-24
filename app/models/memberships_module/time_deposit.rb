@@ -27,7 +27,7 @@ module MembershipsModule
              :effectivity_date,
              :matured?,
              to: :current_term,
-             prefix: true
+             prefix: true, allow_nil: true
     delegate :name,
              to: :office,
              prefix: true
