@@ -13,7 +13,7 @@ module AccountingModule
       private
       def create_financial_condition_comparison
         AccountingModule::FinancialConditionComparison.create(
-          comparison_type: comparison_type
+          comparison_type: comparison_type,
           first_date: first_date,
           second_date: second_date)
       end

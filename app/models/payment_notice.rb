@@ -1,2 +1,2 @@
-class PaymentNotice < Notice 
+class PaymentNotice < LoansModule::Notice
 end
