@@ -45,6 +45,9 @@ Rails.application.routes.draw do
     end
     resources :assets, controller: 'accounts', type: 'AccountingModule::Asset'
     resources :entries
+    resources :debit_amounts, only: [:edit, :update]
+    resources :credit_amounts, only: [:edit, :update]
+
   end
 
   resources :loans_module, only: [:index]

@@ -27,7 +27,7 @@
               <div class="col-md-5">
                 Description
               </div>
-              <div class="col-md-6">
+              <div class="col-md-7">
                 <%=@entry.description %>
               </div>
             </div>
@@ -63,48 +63,22 @@
           </div>
         </div>
         <hr />
-        <p><b>&nbsp; &nbsp; Debits</b></p>
-        <% @entry.debit_amounts.each do |debit| %>
-          <div class="row">
-            <div class="col-md-5 col-md-offset-1">
-              <%= debit.account.try(:name) %><br>
-            </div>
-            <div class="col-md-4">
-              <%= number_to_currency debit.amount %>
-            </div>
-            <div class="col-md-2">
-              <% if current_user.bookkeeper? || current_user.accountant? %>
-                <%=link_to "Edit", edit_accounting_module_debit_amount_path(debit), class: "btn btn-warning btn-xs" %>
-              <% end %>
-            </div>
+        <%= simple_form_for [@amount], url: :accounting_module_debit_amount do |f| %>
+          <%= f.input :amount %>
+          <%= f.input :account_id, collection: AccountingModule::Account.all.map{ |a| [a.name, a.id] } %>
+          <div class="box-footer">
+            <%= f.submit "Update Amount", class: "btn btn-warning pull-right" %>
           </div>
-          <br>
         <% end %>
-        <hr>
-        <p><b>&nbsp; &nbsp; Credits</b></p>
-        <% @entry.credit_amounts.each do |credit| %>
-          <div class="row">
-            <div class="col-md-5 col-md-offset-1">
-              <%= credit.account.try(:name) %>
-            </div>
-            <div class="col-md-4">
-              <%= number_to_currency credit.amount %>
-            </div>
-            <div class="col-md-2">
-              <% if current_user.bookkeeper? || current_user.accountant? %>
-                <%=link_to "Edit", edit_accounting_module_credit_amount_path(credit), class: "btn btn-warning btn-xs" %>
-              <% end %>
-            </div>
-          </div>
-          <br>
-        <% end %>
-        <div class="box-footer">
-          <% if current_user.bookkeeper? || current_user.accountant? || @entry.recorder==current_user %>
-            <%= link_to "Edit", edit_accounting_module_entry_path(@entry), class: "btn btn-warning pull-right" %>
-          <% end %>
-          <% if current_user.bookkeeper? || current_user.accountant? %>
-            <%= link_to "Delete", accounting_module_entry_path(@entry), method: :delete, data: { confirm: "Are you sure you want to delete this entry?"}, class: "btn btn-danger" %>
-          <% end %>
-
-        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function() {
+     $("#accounting_module_debit_amount_account_id").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>
 
