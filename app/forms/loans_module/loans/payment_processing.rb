@@ -8,9 +8,10 @@ module LoansModule
                 :penalty_amount,
                 :reference_number,
                 :date,
+                :description,
                 :employee_id
     validates :principal_amount, :interest_amount, :penalty_amount, presence: true, numericality: true
-    validates :reference_number, presence: true
+    validates :reference_number, :description, presence: true
 
     def save
       ActiveRecord::Base.transaction do
@@ -32,7 +33,7 @@ module LoansModule
         origin: find_employee.office,
         commercial_document: find_loan,
         reference_number: reference_number,
-        :description => "Payment of loan on #{date.to_date.strftime("%B %e, %Y")}",
+        :description => description,
         recorder: find_employee,
         entry_date: date)
       interest_credit_amount = AccountingModule::CreditAmount.new(

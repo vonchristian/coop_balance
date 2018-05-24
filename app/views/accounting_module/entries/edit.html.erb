@@ -10,12 +10,6 @@
           <%= f.input :entry_date, as: :string, input_html: { class: "datepicker" } %>
           <%= f.input :reference_number %>
           <%= f.input :description %>
-          <%= simple_fields_for :debit_amounts do |ff| %>
-          <%= ff.input :amount %>
-          <%= ff.input :debit_account_id, label: "Debit Account:", collection: AccountingModule::Account.all.map{ |a| [a.name, a.id] } %>
-          <% end %>
-
-          <%= f.input :recorder_id, input_html: { value: current_user.id }, as: :hidden %>
           <div class="box-footer">
             <%= f.submit "Update Entry", class: "btn btn-danger" %>
           </div>
