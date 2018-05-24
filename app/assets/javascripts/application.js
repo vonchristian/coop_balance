@@ -16,8 +16,6 @@
 //= require bootstrap-datepicker
 //= require moment
 //= require bootstrap-datetimepicker
-//= require icheck
-//= require underscore
 //= require select2
 //= require trix
 //= require bootstrap-slider
