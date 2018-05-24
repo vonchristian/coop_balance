@@ -5,17 +5,17 @@ require 'mina/rbenv'
 require 'mina/puma'
 
 set :whenever_name, 'production'
-set :domain, '192.168.8.101'
-set :deploy_to, '/var/www/coopcatalyst'
-set :repository, 'https://github.com/vonchristian/coopcatalyst2.git'
-set :branch, 'master'
-set :user, 'deploy'
-set :term_mode, nil
+set :domain,        '192.168.8.102'
+set :deploy_to,     '/var/www/coopcatalyst'
+set :repository,    'https://github.com/vonchristian/coopcatalyst2.git'
+set :branch,        'master'
+set :user,          'deploy'
+set :term_mode,     nil
 set :forward_agent, true
-set :app_path, lambda { "#{fetch(:deploy_to)}/#{fetch(:current_path)}" }
-set :stage, 'production'
-set :shared_paths, ['config/database.yml', 'config/secrets.yml', 'log', 'tmp/log', 'public/system', 'tmp/pids', 'tmp/sockets']
-set :shared_dirs, fetch(:shared_dirs, []).push('public/system')
+set :app_path,      lambda { "#{fetch(:deploy_to)}/#{fetch(:current_path)}" }
+set :stage,         'production'
+set :shared_paths,  ['config/database.yml', 'config/secrets.yml', 'log', 'tmp/log', 'public/system', 'tmp/pids', 'tmp/sockets']
+set :shared_dirs,   fetch(:shared_dirs, []).push('public/system')
 # Optional settings:
 #   set :user, 'foobar'    # Username in the server to SSH to.
 #   set :port, '30000'     # SSH port number.
