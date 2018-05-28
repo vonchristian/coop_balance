@@ -9,7 +9,6 @@ module TimeDeposits
       @withdrawal = TimeDeposits::WithdrawalForm.new(withdrawal_params)
       if @withdrawal.valid?
         @withdrawal.save
-        @time_deposit.withdrawn!
         redirect_to time_deposit_url(@time_deposit), notice: "Time Deposit withdrawn successfully"
       else
         render :new

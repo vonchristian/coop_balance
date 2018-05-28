@@ -76,11 +76,10 @@ module MembershipsModule
     end
 
     def balance(options={})
-      saving_product_account.balance(
-        from_date: options[:from_date],
+      saving_product_account.balance(from_date: options[:from_date],
         to_date: options[:to_date],
         commercial_document: self) +
-      saving_product_interest_expense_account.credits_balance(from_date: options[:from_date], to_date: options[:to_date], commercial_document: self)
+      saving_product_interest_expense_account.debits_balance(from_date: options[:from_date], to_date: options[:to_date], commercial_document: self)
     end
 
     def deposits
