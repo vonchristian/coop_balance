@@ -16,7 +16,7 @@ module AccountingModule
         balance_for(options).
         sum(:amount)
       elsif commercial_document.blank? && from_date.blank? && to_date.present?
-        entered_on(from_date: first_entry_date, to_date: to_date).
+        entered_on(from_date: first_entry_date, to_date: options[:to_date]).
         sum(:amount)
       else
         joins(:entry, :account).

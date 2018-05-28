@@ -1,3 +1,36 @@
+class InterestPosting
+  def post_interests_earned(options={})
+    if !options[:savings_account].interest_posted?(date: options[:date])
+      AccountingModule::Entry.create!(
+        origin: options[:employee].office,
+        recorder: options[:employee],
+        description: 'Interest expense on savings deposits',
+        entry_date: options[:date],
+        debit_amounts_attributes: [
+          account: options[:savings_account].saving_product_interest_expense_account,
+          amount: amount_for(savings_account: options[:savings_account], date: options[:date]),
+          commercial_document: options[:savings_account] ],
+      credit_amounts_attributes: [
+        account: options[:savings_account].saving_product_account,
+        amount: amount_for(savings_account: options[:savings_account], date: options[:date]),
+        commercial_document: options[:savings_account]]
+      )
+    end
+  end
+
+  def amount_for(options={})
+    options[:savings_account].balance *
+    options[:savings_account].saving_product_quarterly_interest_rate *
+    number_of_days(date: options[:date])
+  end
+
+  def number_of_days(options={})
+    (((options[:date].end_of_quarter - options[:date].beginning_of_quarter)/86400.0).to_i) / 365
+  end
+end
+
+
+
 Merging of members
 merging of share capitals
 

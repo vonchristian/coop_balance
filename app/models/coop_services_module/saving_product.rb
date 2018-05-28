@@ -42,9 +42,15 @@
     	all.map{ |a| a.account }
     end
 
-    def interest_posted?(date)
-      interest_expense_account.credit_amounts.entered_on(from_date: beginning_date_for(date), to_date: ending_date_for(date)).present?
+    def interest_posted?(options={})
+      interest_expense_account.
+      credit_amounts.
+      entries_for(commercial_document: self).
+      entered_on(
+        from_date: beginning_date_for(options[:date]),
+        to_date: ending_date_for(options[:date])).present?
     end
+
     def quarterly_interest_rate
       interest_rate / 4.0
     end

@@ -17,6 +17,9 @@ module AccountingModule
     def self.recorded_by(recorder_id)
       where(recorder_id: recorder_id)
     end
+    def self.entries_for(options={})
+      where(commercial_document: options[:commercial_document])
+    end
 
     def self.entered_on(options={})
       first_entry_date = AccountingModule::Entry.order(entry_date: :desc).last.try(:entry_date) || Date.today

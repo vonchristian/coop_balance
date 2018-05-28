@@ -41,6 +41,7 @@ Rails.application.routes.draw do
       resources :activations, only: [:create], module: :accounts
       resources :deactivations, only: [:create], module: :accounts
       resources :reports, only: [:index], module: :accounts
+      resources :settings, only: [:index], module: :accounts
       resources :entries, only: [:index], module: :accounts
     end
     resources :assets, controller: 'accounts', type: 'AccountingModule::Asset'

@@ -7,13 +7,13 @@ module MembershipsModule
     belongs_to :depositor,        polymorphic: true,  touch: true
     belongs_to :saving_product,   class_name: "CoopServicesModule::SavingProduct"
     belongs_to :office,           class_name: "CoopConfigurationsModule::Office"
-    # has_many   :entries,         class_name: "AccountingModule::Entry",
-    #                               as: :commercial_document
+
     delegate :name, :current_occupation, to: :depositor, prefix: true
     delegate :name,
              :account,
              :closing_account,
              :interest_rate,
+             :quarterly_interest_rate,
              :interest_expense_account, to: :saving_product, prefix: true
     delegate :name, to: :office, prefix: true, allow_nil: true
     delegate :name, to: :depositor, prefix: true
@@ -26,7 +26,10 @@ module MembershipsModule
       saving_product_account.amounts.where(commercial_document: self).each do |amount|
         accounting_entries << amount.entry
       end
-      accounting_entries
+      saving_product_interest_expense_account.amounts.where(commercial_document: self).each do |amount|
+        accounting_entries << amount.entry
+      end
+      accounting_entries.uniq
     end
     def closed?
       saving_product_closing_account.amounts.where(commercial_document: self).present?
@@ -37,7 +40,11 @@ module MembershipsModule
     end
 
     def interest_posted?(date)
-      saving_product.interest_posted?(date)
+      saving_product.
+      interest_expense_account.
+      credit_amounts.
+      entries_for(commercial_document: self).
+      entered_on(from_date: date.beginning_of_quarter, to_date: date.end_of_quarter).present?
     end
 
 
@@ -69,7 +76,11 @@ module MembershipsModule
     end
 
     def balance(options={})
-      saving_product_account.balance(commercial_document: self)
+      saving_product_account.balance(
+        from_date: options[:from_date],
+        to_date: options[:to_date],
+        commercial_document: self) +
+      saving_product_interest_expense_account.credits_balance(from_date: options[:from_date], to_date: options[:to_date], commercial_document: self)
     end
 
     def deposits
@@ -79,16 +90,19 @@ module MembershipsModule
       saving_product_account.debits_balance(commercial_document: self)
     end
     def interests_earned
-      saving_product_interest_expense_account.credits_balance(commercial_document: self)
+      saving_product_interest_expense_account.debits_balance(commercial_document: self)
     end
+
     def can_withdraw?
       !closed? && balance > 0.0
     end
+
     def first_transaction_date
       if entries.any?
         entries.sort_by(&:entry_date).first.entry_date
       end
     end
+
     def last_transaction_date
       if entries.any?
         entries.sort_by(&:entry_date).reverse.first.entry_date.strftime("%B %e, %Y")
@@ -96,13 +110,15 @@ module MembershipsModule
         "No Transactions"
       end
     end
-    def average_daily_balance
+    def average_daily_balance(options={})
       balances = []
-      (Date.today.beginning_of_quarter..Date.today.end_of_quarter).each do |date|
+      date_range = options[:date].beginning_of_quarter..options[:date].end_of_quarter
+      (date_range).each do |date|
         daily_balance = saving_product.balance(commercial_document: self, from_date: self.first_transaction_date, to_date: date.end_of_day)
         balances << daily_balance
       end
-      balances.sum / balances.size
+
+      balances.sum / 365
     end
 
     private

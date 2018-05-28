@@ -286,7 +286,7 @@ class TransactionSummaryPdf < Prawn::Document
   def expenses_data
     [["", "", "Account", "Amount"]] +
     @expenses_data ||= AccountingModule::Expense.updated_at(from_date: @date.beginning_of_day, to_date: @date.end_of_day).distinct.map{|a| ["", "", a.name, price(a.debits_balance(to_date: @date.end_of_day))]} +
-    [["", "", "<b>TOTAL</b>", "<b>#{price(AccountingModule::Expense.updated_at(from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{ |a| a.balance(to_date: @date.end_of_day)}.sum )}</b>"]]
+    [["", "", "<b>TOTAL</b>", "<b>#{price(AccountingModule::Expense.updated_at(from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{ |a| a.debits_balance(to_date: @date.end_of_day)}.sum )}</b>"]]
   end
   def revenues
     text "Other Income", style: :bold, size: 10, color: "DB4437"
@@ -310,8 +310,8 @@ class TransactionSummaryPdf < Prawn::Document
   end
   def revenues_data
     [["", "", "Account", "Amount"]] +
-    @revenues_data ||= AccountingModule::Revenue.updated_at(from_date: @date.beginning_of_day, to_date: @date.end_of_day).distinct.to_a.sort_by(&:balance).reverse.map{|a| ["", "", a.name, price(a.balance(from_date: @date, to_date: @date))]} +
-    [["", "", "<b>TOTAL</b>", "#{AccountingModule::Revenue.updated_at(from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{|a| a.balance(from_date: @date, to_date: @date) }.sum}"]]
+    @revenues_data ||= AccountingModule::Revenue.updated_at(from_date: @date.beginning_of_day, to_date: @date.end_of_day).distinct.to_a.sort_by(&:balance).reverse.map{|a| ["", "", a.name, price(a.credits_balance(from_date: @date, to_date: @date))]} +
+    [["", "", "<b>TOTAL</b>", "#{AccountingModule::Revenue.updated_at(from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{|a| a.credits_balance(from_date: @date, to_date: @date) }.sum}"]]
   end
 
   def summary_report
