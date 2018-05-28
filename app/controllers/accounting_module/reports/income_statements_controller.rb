@@ -3,7 +3,7 @@ module AccountingModule
   module Reports
     class IncomeStatementsController < ApplicationController
       def index
-        @from_date = params[:from_date] ? Chronic.parse(params[:from_date]) : Date.today.at_beginning_of_month
+        @from_date = AccountingModule::Entry.order(entry_date: :desc).last.try(:entry_date) || Date.today
         @to_date = params[:to_date] ? Chronic.parse(params[:to_date]) : Date.today
         @revenues = AccountingModule::Revenue.updated_at(from_date: @from_date, to_date: @to_date)
         @expenses = AccountingModule::Expense.updated_at(from_date: @from_date, to_date: @to_date)

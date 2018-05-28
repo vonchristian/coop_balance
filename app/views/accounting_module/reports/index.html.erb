@@ -21,8 +21,7 @@
             <p class="text-muted"> Generate report for income statement. </p>
             <%= form_tag({:controller => 'accounting_module/reports/income_statements', action: 'index', format: 'pdf'}, {:method => :get, :class => 'form-inline'}) do %>
               <div class="form-group">
-                <%= label_tag :from_date, nil, class: 'sr-only'%>
-                <%= text_field_tag :from_date, Time.zone.now.beginning_of_month.strftime("%B %e, %Y"), :class => 'datepicker form-control' %>
+
                 <%= label_tag :to_date, nil, class: 'sr-only'%>
                 <%= text_field_tag :to_date, Time.zone.now.strftime("%B %e, %Y"), :class => 'datepicker form-control' %>
 

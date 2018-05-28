@@ -29,7 +29,7 @@ class IncomeStatementPdf < Prawn::Document
     bounding_box [0, 760], width: 400 do
       text "Income Statement", style: :bold, size: 14
       move_down 5
-      text "#{@from_date.strftime("%B %e, %Y")} - #{@to_date.strftime("%B %e, %Y")} ", size: 10
+      text "As of #{@to_date.strftime("%B %e, %Y")} ", size: 10
       move_down 5
     end
     move_down 10
