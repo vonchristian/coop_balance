@@ -65,8 +65,21 @@
     <div  class="box box-default">
       <div class="box-header">
         <% CoopServicesModule::SavingProduct.all.each do |saving_product| %>
-          <%= saving_product.name %>
-          <%= number_to_currency saving_product.balance %>
+          <h4><%= saving_product.name %></h4>
+          <h4><%= number_to_currency saving_product.balance %></h4>
+          <small> BALANCE</small>
+          <hr>
+          <h4><%= number_to_currency saving_product.balance(to_date: Date.today.beginning_of_year.end_of_quarter) %></h4>
+          <small>FIRST QUARTER BALANCE (<%= Date.today.beginning_of_year.end_of_quarter.strftime("%B %e, %Y") %>)</small>
+          <hr>
+          <h4><%= number_to_currency saving_product.balance(to_date: Date.today.beginning_of_year.next_quarter.end_of_quarter) %></h4>
+          <small>SECOND QUARTER BALANCE (<%= Date.today.beginning_of_year.next_quarter.end_of_quarter.strftime("%B %e, %Y") %>)</small>
+          <hr>
+           <h4><%= number_to_currency saving_product.balance(to_date: Date.today.beginning_of_year.next_quarter.next_quarter.end_of_quarter) %></h4>
+          <small>THIRD QUARTER BALANCE (<%= Date.today.beginning_of_year.next_quarter.next_quarter.end_of_quarter.strftime("%B %e, %Y") %>)</small>
+          <hr>
+          <h4><%= number_to_currency saving_product.balance(to_date: Date.today.end_of_year.end_of_quarter) %></h4>
+          <small>LAST QUARTER BALANCE (<%= Date.today.end_of_year.end_of_quarter.strftime("%B %e, %Y") %>)</small>
         <% end %>
       </div>
 
