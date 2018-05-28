@@ -1,0 +1,24 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-default">
+      <div class="box-header">
+        <h3 class="box-title"> Scheduled Postings </h3>
+      </div>
+      <div class="box-body">
+        <h4>Savings</h4>
+        <% if !MembershipsModule::Saving.has_minimum_balance.first.interest_posted?(Date.today.beginning_of_year.end_of_quarter) %>
+          <%= link_to "Post Interests (1st Qtr 2018)", accounting_module_interests_earned_postings_path(date: Date.today.beginning_of_year.end_of_quarter), data: { confirm: "Are you sure you want to post earned interests"}, class: "btn btn-danger btn-sm", method: :post %>
+          <% else %>
+           <span class="label bg-gray"> 1st Quarter Posted </span>
+        <% end %>
+        <br>
+        <br>
+        <% if !MembershipsModule::Saving.has_minimum_balance.first.interest_posted?(Date.today.beginning_of_year.next_quarter.end_of_quarter) %>
+          <%= link_to "Post Interests (2st Qtr 2018)", accounting_module_interests_earned_postings_path(date: Date.today.beginning_of_year.next_quarter.end_of_quarter), data: { confirm: "Are you sure you want to post earned interests"}, class: "btn btn-danger btn-sm", method: :post %>
+          <% else %>
+           <span class="label bg-gray"> 2st Quarter Posted </span>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
