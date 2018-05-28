@@ -25,6 +25,8 @@ Rails.application.routes.draw do
 
   resources :accounting_module, only: [:index]
   namespace :accounting_module do
+    resources :entry_line_items, only: [:new, :create, :destroy]
+    resources :entry_processings, only: [:create]
     resources :financial_condition_comparisons, only: [:new, :create, :show]
     resources :reports, only: [:index]
     namespace :reports do

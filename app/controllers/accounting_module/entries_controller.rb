@@ -24,13 +24,13 @@ module AccountingModule
       end
     end
     def new
-      @entry = AccountingModule::EntryForm.new
+      @line_item = Vouchers::VoucherAmountProcessing.new
     end
     def create
-      @entry = AccountingModule::EntryForm.new(entry_params)
-      if @entry.valid?
-        @entry.save
-        redirect_to accounting_module_entries_url, notice: "Entry saved successfully"
+      @line_item = Vouchers::VoucherAmountProcessing.new(entry_params)
+      if @line_item.valid?
+        @line_item.save
+        redirect_to new_accounting_module_entry_line_item_url, notice: "Entry saved successfully"
       else
         render :new
       end
