@@ -23,7 +23,9 @@
                 <div class="col-md-8">
                   <h4><%= number_to_currency time_deposit.amount_deposited %></h4>
                   <p><%= time_deposit.depositor_name.upcase %></p>
-                  <span><i class="fa fa-calendar"> </i> Matures on: <%#= time_deposit.current_term_maturity_date.strftime("%B %e, %Y") %></span>
+                  <% if time_deposit.current_term.present? %>
+                  <span><i class="fa fa-calendar"> </i> Matures on: <%= time_deposit.current_term_maturity_date.strftime("%B %e, %Y") %></span>
+                  <% end %><br>
                   <% if time_deposit.withdrawn? %>
                    <span class="text-danger"> Withdrawn last <%= time_deposit.withdrawal_date.strftime("%B %e, %Y") %></span>
                   <% end %>
@@ -34,7 +36,7 @@
           <% end %>
         </div>
         <div class="col-md-6">
-          <small>TOTAL TIME DEPOSITS</small>
+
         </div>
       </div>
     </div>

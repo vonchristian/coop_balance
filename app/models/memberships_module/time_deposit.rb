@@ -45,7 +45,7 @@ module MembershipsModule
     end
     def withdrawal_date
       if withdrawn?
-        entries.order(created_at: :asc).last.entry_date
+        entries.sort_by(&:entry_date).reverse.first.entry_date
       end
     end
     def current_term
