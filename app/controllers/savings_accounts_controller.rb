@@ -1,10 +1,11 @@
 require 'will_paginate/array'
 class SavingsAccountsController < ApplicationController
   def index
+    @metric = CoopServicesModule::SavingProduct.metric
     if params[:search].present?
       @savings_accounts = MembershipsModule::Saving.text_search(params[:search]).paginate(:page => params[:page], :per_page => 20)
     else
-      @savings_accounts = MembershipsModule::Saving.includes([:depositor, :saving_product =>[:account, :interest_expense_account]]).order(:account_owner_name).all.paginate(:page => params[:page], :per_page => 20)
+      @savings_accounts = MembershipsModule::Saving.includes([:depositor, :saving_product =>[:account, :interest_expense_account]]).order(:account_owner_name).all.paginate(:page => params[:page], :per_page => 25)
     end
   end
 

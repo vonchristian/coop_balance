@@ -17,9 +17,11 @@ module LoansModule
         "yellow"
       end
     end
+
     def missed_payment?
       !payment_made?
     end
+
     def payment_made?
       loan.loan_payments(from_date: self.date.beginning_of_week, to_date: self.date.end_of_week).present?
     end
@@ -31,13 +33,12 @@ module LoansModule
       loan.amortization_schedules.order(date: :asc).take(count-1).last
     end
 
-
-
     def default_debit_account
       if prededucted_interest?
         loan.loan_product_unearned_interest_income_account
       end
     end
+
     def default_credit_account
       if prededucted_interest?
         loan.loan_product_interest_revenue_account
@@ -52,6 +53,7 @@ module LoansModule
       create_succeeding_schedule(loan)
       update_amortization_schedule(loan)
     end
+
     def self.average_monthly_payment(loan)
       if loan.lumpsum?
         loan.loan_amount
@@ -65,7 +67,6 @@ module LoansModule
       to_date = schedule.date
       loan.amortization_schedules.select { |a| (from_date.beginning_of_day..to_date.end_of_day).cover?(a.date) }.sum(&:principal)
     end
-
 
     def self.scheduled_for(options={})
 			if options[:from_date].present? && options[:to_date].present?
@@ -88,12 +89,9 @@ module LoansModule
        total_other_charges_for(self.date)
     end
 
-
-
     def total_other_charges_for(date)
       loan.loan_charge_payment_schedules.scheduled_for(date).sum(:amount)
     end
-
 
     def self.update_amortization_schedule(loan)
       loan.amortization_schedules.order(date: :asc).first(loan.number_of_interest_payments_prededucted).each do |schedule|
@@ -108,6 +106,7 @@ module LoansModule
         schedule.save
       end
     end
+
     def self.interest_computation(schedule, loan)
       if loan.lumpsum?
         loan.loan_amount * loan.loan_product_monthly_interest_rate * loan.current_term_number_of_months
@@ -161,10 +160,10 @@ module LoansModule
       end
     end
 
-
 		def self.number_of_remaining_schedules_for(loan)
 			number_of_payments(loan) - 1
 		end
+
 		def self.schedule_date_for(loan)
 			if loan.monthly?
 			  month_date = loan.amortization_schedules.order(date: :asc).last.date.next_month
@@ -174,6 +173,7 @@ module LoansModule
 				loan.amortization_schedules.order(date: :asc).last.date + 6.months
 			end
 		end
+
 		def self.first_amortization_date_for(loan)
 			if loan.monthly?
 			  starting_date(loan).next_month

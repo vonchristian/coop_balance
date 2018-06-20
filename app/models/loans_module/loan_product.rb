@@ -74,6 +74,9 @@ module LoansModule
       all.map{|a| a.interest_revenue_account } +
       all.map{ |a| a.penalty_receivable_account }
     end
+    def self.loans_receivable_current_accounts
+      all.map{|a| a.loans_receivable_current_account }
+    end
 
     def borrowers
       member_borrowers + employee_borrowers + organization_borrowers

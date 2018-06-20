@@ -1,34 +1,117 @@
-class InterestPosting
-  def post_interests_earned(options={})
-    if !options[:savings_account].interest_posted?(date: options[:date])
-      AccountingModule::Entry.create!(
-        origin: options[:employee].office,
-        recorder: options[:employee],
-        description: 'Interest expense on savings deposits',
-        entry_date: options[:date],
-        debit_amounts_attributes: [
-          account: options[:savings_account].saving_product_interest_expense_account,
-          amount: amount_for(savings_account: options[:savings_account], date: options[:date]),
-          commercial_document: options[:savings_account] ],
-      credit_amounts_attributes: [
-        account: options[:savings_account].saving_product_account,
-        amount: amount_for(savings_account: options[:savings_account], date: options[:date]),
-        commercial_document: options[:savings_account]]
-      )
-    end
-  end
 
-  def amount_for(options={})
-    options[:savings_account].balance *
-    options[:savings_account].saving_product_quarterly_interest_rate *
-    number_of_days(date: options[:date])
-  end
+upstream tebtebba {
+        server unix:///var/www/tebtebba/shared/tmp/socke$
+}
+server {
+        listen 80;
+        server_name 68.233.45.219; # change to match you$
+        root /var/www/tebtebba/current/public; # I assum$
+        location / {
+                proxy_pass http://tebtebba; # match the $
+                proxy_set_header Host $host;
+                proxy_set_header X-Forwarded-For $proxy_$
+        }
 
-  def number_of_days(options={})
-    (((options[:date].end_of_quarter - options[:date].beginning_of_quarter)/86400.0).to_i) / 365
+        location ~* ^/assets/ {
+                # Per RFC2616 - 1 year maximum expiry
+                expires 1y;
+                add_header Cache-Control public;
+
+                # Some browsers still send conditional-G$
+                # Last-Modified header or an ETag header$
+                # reached the expiry date sent in the Ex$
+                add_header Last-Modified "";
+                add_header ETag "";
+                break;
+        }
+}
+
+
+METRICS
+
+1% SHARE CAPITAL INCREASE PER MONTH
+1% SAVINGS INCREASE PER MONTH
+
+
+
+STATUS OF PER BARANGAY
+SAVINGS
+SHARE CAPITALS
+
+
+CROPITAL
+
+
+ef balance(options={})
+  first_entry_date = AccountingModule::Entry.order(entry_date: :desc).last.try(:entry_date) || Date.today
+  from_date = options[:from_date]
+  to_date = options[:to_date]
+  commercial_document = options[:commercial_document]
+  if commercial_document.present? && from_date.present? && to_date.present?
+    balance_for(options).
+    entered_on(options).
+    sum(:amount)
+  elsif commercial_document.blank? && from_date.present? && to_date.present?
+    entered_on(options).
+    sum(:amount)
+  elsif commercial_document.present? && from_date.blank? && to_date.blank?
+    balance_for(options).
+    sum(:amount)
+  elsif commercial_document.blank? && from_date.blank? && to_date.present?
+    entered_on(from_date: first_entry_date, to_date: options[:to_date]).
+    sum(:amount)
+  else
+    joins(:entry, :account).
+    sum(:amount)
   end
 end
 
+
+<h4>BALANCES / YEAR </h4>
+<% year_dates = [] %>
+<% start_date = MembershipsModule::Saving.order(date_opened: :desc).last.date_opened %>
+<% (start_date.to_date..Date.today).each do |date| %>
+
+  <% year_dates << date.end_of_year%>
+<% end %>
+<% savings_balances_data = [] %>
+<% year_dates.uniq.each do |year| %>
+<% savings_balances_data << { year.end_of_year.strftime("%B %Y") => CoopServicesModule::SavingProduct.total_balances(to_date: year.end_of_year) } %>
+<% end %>
+<%= line_chart (Hash[*savings_balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"} %>
+
+
+
+
+Keep expenses down
+
+<h4>Loans Receivables </h4>
+<div class="row">
+  <div class="col-md-4">
+    <% loan_product_balances_data = [] %>
+    <% LoansModule::LoanProduct.loans_receivable_current_accounts.each do |account| %>
+    <% loan_product_balances_data << { account.name => account.balance } %>
+    <% end %>
+    <% LoansModule::LoanProduct.loans_receivable_current_accounts.each do |account| %>
+      <div class="row">
+        <div class="col-md-6">
+          <%= account.name %>
+        </div>
+        <div class="col-md-6">
+          <span class="pull-right"><%= number_to_currency account.balance %></span>
+        </div>
+      </div>
+      <br />
+    <% end %>
+  </div>
+  <div class="col-md-8">
+    <%= bar_chart (Hash[*loan_product_balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"}, prefix: "P ", width: "800px", height: "500px", legend: false, label: "Value" %>
+  </div>
+</div>
+
+
+
+old loans
 
 
 Merging of members
@@ -272,4 +355,3 @@ STORE CART
 
 
 add stats on product show page
-

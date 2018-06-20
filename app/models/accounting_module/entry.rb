@@ -29,18 +29,25 @@ module AccountingModule
     delegate :number, to: :voucher, prefix: true, allow_nil: true
     delegate :name, to: :origin, prefix: true, allow_nil: true
     delegate :name, to: :recorder, prefix: true, allow_nil: true
+
     def self.loan_payments(options={})
-      entries = []
+      amounts = []
       User.cash_on_hand_accounts.each do |account|
-        account.
-        debit_amounts.
-        entered_on(options).
-        where(commercial_document_type: "LoansModule::Loan").
-        each do |amount|
-          entries << amount.entry
+        AccountingModule::DebitAmount.where(commercial_document_type: "LoansModule::Loan").where(account: account).entered_on(options).each do |amount|
+          amounts << amount
         end
       end
-      entries
+      amounts
+    end
+    
+    def self.loan_disbursements(options={})
+      amounts = []
+      User.cash_on_hand_accounts.each do |account|
+        AccountingModule::CreditAmount.where(commercial_document_type: "LoansModule::Loan").where(account: account).entered_on(options).each do |amount|
+          amounts << amount
+        end
+      end
+      amounts
     end
 
     def self.entered_on(options={})

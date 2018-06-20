@@ -57,6 +57,10 @@ gem 'daemons'
 gem 'delayed-web'
 gem 'colorize'
 gem 'mini_magick'
+gem 'chartkick'
+gem 'groupdate'
+gem "highcharts-rails"
+
 group :development, :test do
   gem 'guard'
   gem 'guard-livereload'
@@ -82,7 +86,7 @@ group :test do
   gem 'launchy'
 end
 
-gem 'rack-mini-profiler'
+gem 'rack-mini-profiler', require: false
 gem 'memory_profiler'
 gem 'whenever', :require => false
 

@@ -1,0 +1,2 @@
+<h4>Served Members</h4>
+<%= line_chart Member.group_by_day(:updated_at).count %>

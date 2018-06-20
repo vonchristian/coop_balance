@@ -89,7 +89,7 @@ class User < ApplicationRecord
       accounts << AccountingModule::Account.find(account)
       accounts << AccountingModule::Account.find_by(name: "Cash on Hand")
     end
-    accounts
+    accounts.uniq
   end
 
   def current_occupation

@@ -11,7 +11,7 @@
               <% LoansModule::AmortizationSchedule.scheduled_for(from_date: date.beginning_of_day, to_date: date.end_of_day).each do |schedule| %>
                 <span class="text-<%= schedule.color%>" data-toggle="tooltip" title="<%= schedule.loan.borrower_name%>"><i class="fa fa-circle"></i></span>
               <% end %>
-               <% Notice.for(date.beginning_of_day, date.end_of_day).count.times do %>
+               <% LoansModule::Notice.for(date.beginning_of_day, date.end_of_day).count.times do %>
                 <span class="text-red"><i class="fa fa-circle"></i></span>
               <% end %>
           <% end %>

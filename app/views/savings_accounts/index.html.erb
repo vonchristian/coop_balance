@@ -64,23 +64,28 @@
   <div class="col-md-6">
     <div  class="box box-default">
       <div class="box-header">
-        <% CoopServicesModule::SavingProduct.all.each do |saving_product| %>
-          <h4><%= saving_product.name %></h4>
-          <h4><%= number_to_currency saving_product.balance %></h4>
-          <small> BALANCE</small>
-          <hr>
-          <h4><%= number_to_currency saving_product.balance(to_date: Date.today.beginning_of_year.end_of_quarter) %></h4>
-          <small>FIRST QUARTER BALANCE (<%= Date.today.beginning_of_year.end_of_quarter.strftime("%B %e, %Y") %>)</small>
-          <hr>
-          <h4><%= number_to_currency saving_product.balance(to_date: Date.today.beginning_of_year.next_quarter.end_of_quarter) %></h4>
-          <small>SECOND QUARTER BALANCE (<%= Date.today.beginning_of_year.next_quarter.end_of_quarter.strftime("%B %e, %Y") %>)</small>
-          <hr>
-           <h4><%= number_to_currency saving_product.balance(to_date: Date.today.beginning_of_year.next_quarter.next_quarter.end_of_quarter) %></h4>
-          <small>THIRD QUARTER BALANCE (<%= Date.today.beginning_of_year.next_quarter.next_quarter.end_of_quarter.strftime("%B %e, %Y") %>)</small>
-          <hr>
-          <h4><%= number_to_currency saving_product.balance(to_date: Date.today.end_of_year.end_of_quarter) %></h4>
-          <small>LAST QUARTER BALANCE (<%= Date.today.end_of_year.end_of_quarter.strftime("%B %e, %Y") %>)</small>
+        <small>METRICS</small>
+        <% if  @metric.negative? %>
+        <h1 class="text-danger"><%= number_to_currency @metric %> % <span class="fa fa-arrow-down"></span></h1>
+        <% elsif @metric.positive? %>
+        <h1 class="text-success"><%= number_to_currency @metric %> % <span class="fa fa-arrow-up"></span></h1>
+
         <% end %>
+        <small>SINCE <%= Date.today.last_month.end_of_month.strftime("%B %e, %Y") %></small>
+        <hr />
+        <h4>BALANCES / YEAR </h4>
+        <% year_dates = [] %>
+        <% start_date = MembershipsModule::Saving.order(date_opened: :desc).last.date_opened %>
+        <% (start_date.to_date..Date.today).each do |date| %>
+
+          <% year_dates << date.end_of_year%>
+        <% end %>
+        <% savings_balances_data = [] %>
+        <% year_dates.uniq.each do |year| %>
+        <% savings_balances_data << { year.end_of_year.strftime("%B %Y") => CoopServicesModule::SavingProduct.total_balances(to_date: year.end_of_year) } %>
+        <% end %>
+        <%= line_chart (Hash[*savings_balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"} %>
+
       </div>
 
     </div>

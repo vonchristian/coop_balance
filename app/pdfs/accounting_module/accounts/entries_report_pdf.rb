@@ -67,7 +67,7 @@ module AccountingModule
     def table_data
       move_down 5
       [["DATE", "DESCRIPTION", "REFERENCE NUMBER", "AMOUNT", "CUSTOMER", "EMPLOYEE"]] +
-      @table_data ||= @entries.map { |e| [ e.entry_date.strftime("%B %e, %Y"), e.description, e.reference_number, price(e.debit_amounts.where(account: @account).sum(&:amount)), e.commercial_document.try(:name), e.recorder.try(:first_and_last_name)]}
+      @table_data ||= @entries.map { |e| [ e.entry_date.strftime("%B %e, %Y"), e.description, e.reference_number, price(e.amounts.where(account: @account).distinct.sum(&:amount)), e.commercial_document.try(:name), e.recorder.try(:first_and_last_name)]}
     end
     end
   end

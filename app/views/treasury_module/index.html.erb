@@ -1,1 +1,1 @@
-<%=render 'employees/show' %>
+<%= line_chart Member.group_by_day(:created_at).count %>

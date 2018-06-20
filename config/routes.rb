@@ -314,6 +314,8 @@ Rails.application.routes.draw do
     resources :deposits,          only: [:new, :create], module: :savings_accounts
     resources :withdrawals,       only: [:new, :create], module: :savings_accounts
     resources :account_closings,  only: [:new, :create], module: :savings_accounts
+    resources :barangay_settings,  only: [:edit, :update], module: :savings_accounts
+
   end
 
   resources :search_results, only: [:index, :show]

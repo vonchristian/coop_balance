@@ -12,7 +12,7 @@ module Coopcatalyst
       g.orm :active_record, primary_key_type: :uuid
     end
     config.time_zone = 'Asia/Manila'
-    config.active_record.default_timezone = :local
+    config.active_record.default_timezone = :utc
     config.active_job.queue_adapter = :delayed_job
 
     # Settings in config/environments/* take precedence over those specified here.

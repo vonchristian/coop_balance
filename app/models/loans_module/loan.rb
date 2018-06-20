@@ -99,9 +99,9 @@ module LoansModule
       where(municipality: options[:municipality])
     end
 
-    def self.current_loans(options={})
-      disbursed(options).
-      not_matured(options)
+    def self.current_loans
+      self.where.not(disbursement_date: nil).
+      joins(:terms).where.not('terms.maturity_date < ?', Date.today)
     end
 
     def self.not_matured(options={})
@@ -119,8 +119,13 @@ module LoansModule
       User.find_by(id: employee.id).disbursed_loans
     end
 
-     def self.matured(options={})
-      LoansModule::LoansQuery.new.matured(options)
+    def self.matured(options={})
+      if options[:from_date] && options[:to_date]
+        range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
+        self.joins(:terms).where('terms.maturity_date' => range.start_date..range.end_date )
+      else
+        self.joins(:terms).where('terms.maturity_date < ?', Date.today)
+      end
     end
 
     def self.aging(options={})

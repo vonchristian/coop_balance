@@ -1,0 +1,51 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-solid">
+      <div class="box-body">
+
+  <div class="row">
+    <div class="col-md-6">
+      <h4>Top 10 Expenses</h4>
+      <% expenses_data = [] %>
+      <% @expenses.to_a.sort_by(&:balance).reverse.first(10).each do |account| %>
+        <% expenses_data << { account.name => account.balance } %>
+      <% end %>
+      <%= pie_chart (Hash[*expenses_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"} %>
+    </div>
+
+    <div class="col-md-6">
+      <h4>Top 10 Revenues</h4>
+      <% revenues_data = [] %>
+        <% @revenues.to_a.sort_by(&:balance).reverse.first(10).each do |account| %>
+
+          <% revenues_data << { account.name => account.balance } %>
+        <% end %>
+        <%= pie_chart (Hash[*revenues_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"} %>
+
+    </div>
+  </div>
+  <hr />
+
+
+
+   <h4>Expenses vs. Revenue</h4>
+    <% month_dates = [] %>
+    <% start_date = Date.today.beginning_of_year %>
+    <% (start_date.to_date..Date.today.end_of_month).each do |date| %>
+
+      <% month_dates << date.end_of_month %>
+    <% end %>
+    <%=  revenues_accounts_data = [] %>
+    <% month_dates.uniq.each do |month| %>
+      <%= month.strftime("%B") %>
+      <% revenues_accounts_data << { month.strftime("%B") => AccountingModule::Revenue.balance(to_date: month.end_of_month) } %>
+    <% end %>
+    <%=  expenses_accounts_data = [] %>
+    <% month_dates.uniq.each do |month| %>
+      <% expenses_accounts_data << { month.strftime("%B") => AccountingModule::Expense.balance(to_date: month.end_of_month) } %>
+    <% end %>
+
+    <%= line_chart [
+      {name: "Revenues", data: (Hash[*revenues_accounts_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}) },
+      {name: "Expenses", data: (Hash[*expenses_accounts_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}) }
+    ], width: "1000px", height: "400px", curve: false %>

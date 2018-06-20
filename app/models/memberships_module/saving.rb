@@ -4,9 +4,11 @@ module MembershipsModule
     pg_search_scope :text_search, against: [:account_number, :account_owner_name]
     multisearchable against: [:account_number, :account_owner_name]
 
+    belongs_to :barangay, optional: true, class_name: "Addresses::Barangay"
     belongs_to :depositor,        polymorphic: true,  touch: true
     belongs_to :saving_product,   class_name: "CoopServicesModule::SavingProduct"
     belongs_to :office,           class_name: "CoopConfigurationsModule::Office"
+    has_many :amounts,            class_name: "AccountingModule::Amount", as: :commercial_document
 
     delegate :name, :current_occupation, to: :depositor, prefix: true
     delegate :name,
@@ -17,10 +19,12 @@ module MembershipsModule
              :interest_expense_account, to: :saving_product, prefix: true
     delegate :name, to: :office, prefix: true, allow_nil: true
     delegate :name, to: :depositor, prefix: true
+    delegate :name, to: :barangay, prefix: true, allow_nil: true
+
     delegate :avatar, to: :depositor, allow_nil: true
 
     scope :has_minimum_balance, -> { SavingsQuery.new.has_minimum_balance  }
-    before_save :set_account_owner_name
+    before_save :set_account_owner_name, :set_date_opened
     def entries
       accounting_entries = []
       saving_product_account.amounts.where(commercial_document: self).each do |amount|
@@ -123,6 +127,10 @@ module MembershipsModule
     private
     def set_account_owner_name
       self.account_owner_name = self.depositor_name # depositor is polymorphic
+    end
+    def set_date_opened
+      todays_date = ActiveRecord::Base.default_timezone == :utc ? Time.now.utc : Time.now
+      self.date_opened ||= todays_date
     end
   end
 end

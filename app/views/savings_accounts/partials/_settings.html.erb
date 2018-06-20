@@ -3,4 +3,7 @@
    <hr>
    <h4>Merge Account</h4>
    <%= link_to 'Merge Account', new_savings_account_account_merging_path(@savings_account), class: "btn btn-danger" %>
+  <h4>Set Barangay</h4>
+  <%= @savings_account.barangay_name %>
+    <%= link_to 'Set Barangay', edit_savings_account_barangay_setting_path(id: @savings_account), class: "btn btn-danger" %>
 </div>
