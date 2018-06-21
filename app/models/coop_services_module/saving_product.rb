@@ -21,6 +21,8 @@
               :closing_account_id,
               presence: true
 
+    validates :minimum_balance, presence: true, numericality: true
+
     delegate :name, to: :account, prefix: true
     delegate :balance,
              :debits_balance,

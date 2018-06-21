@@ -1,10 +1,11 @@
 require 'will_paginate/array'
 class ShareCapitalsController < ApplicationController
   def index
+    @metric = CoopServicesModule::ShareCapitalProduct.metric
     if params[:search].present?
       @share_capitals = MembershipsModule::ShareCapital.text_search(params[:search]).paginate(page: params[:page], per_page: 25)
     else
-      @share_capitals = MembershipsModule::ShareCapital.all.paginate(page: params[:page], per_page: 25)
+      @share_capitals = MembershipsModule::ShareCapital.includes(:subscriber, :share_capital_product).all.paginate(page: params[:page], per_page: 25)
     end
   end
   def show

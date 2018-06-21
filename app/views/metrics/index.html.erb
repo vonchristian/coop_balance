@@ -1,3 +1,59 @@
+<div class="col-md-6">
+  <div  class="box box-default">
+    <div class="box-header">
+      <small>SAVINGS ACCOUNTS METRICS</small>
+      <% if  @saving_metric.negative? %>
+      <h1 class="text-danger"><%= number_to_currency @saving_metric %> % <span class="fa fa-arrow-down"></span></h1>
+      <% elsif @saving_metric.positive? %>
+      <h1 class="text-success"><%= number_to_currency @saving_metric %> % <span class="fa fa-arrow-up"></span></h1>
+      <% end %>
+      <small>SINCE <%= Date.today.last_month.end_of_month.strftime("%B %e, %Y") %></small>
+      <hr />
+      <h4>BALANCES / YEAR </h4>
+      <% year_dates = [] %>
+      <% start_date = MembershipsModule::Saving.order(date_opened: :desc).last.date_opened %>
+      <% (start_date.to_date..Date.today).each do |date| %>
+
+        <% year_dates << date.end_of_year%>
+      <% end %>
+      <% savings_balances_data = [] %>
+      <% year_dates.uniq.each do |year| %>
+      <% savings_balances_data << { year.end_of_year.strftime("%B %Y") => CoopServicesModule::SavingProduct.total_balances(to_date: year.end_of_year) } %>
+      <% end %>
+      <%= line_chart (Hash[*savings_balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"} %>
+
+    </div>
+
+  </div>
+</div>
+<div class="col-md-6">
+  <div  class="box box-default">
+    <div class="box-header">
+      <small>SHARE CAPITAL METRICS</small>
+      <% if  @share_capital_metric.negative? %>
+      <h1 class="text-danger"><%= number_to_currency @share_capital_metric %> % <span class="fa fa-arrow-down"></span></h1>
+      <% elsif @share_capital_metric.positive? %>
+      <h1 class="text-success"><%= number_to_currency @share_capital_metric %> % <span class="fa fa-arrow-up"></span></h1>
+      <% end %>
+      <small>SINCE <%= Date.today.last_month.end_of_month.strftime("%B %e, %Y") %></small>
+      <hr />
+      <h4>BALANCES / YEAR </h4>
+      <% year_dates = [] %>
+      <% start_date = MembershipsModule::ShareCapital.order(date_opened: :desc).last.date_opened %>
+      <% (start_date.to_date..Date.today).each do |date| %>
+
+        <% year_dates << date.end_of_year%>
+      <% end %>
+      <% share_capital_balances_data = [] %>
+      <% year_dates.uniq.each do |year| %>
+      <% share_capital_balances_data << { year.end_of_year.strftime("%B %Y") => CoopServicesModule::ShareCapitalProduct.total_balances(to_date: year.end_of_year) } %>
+      <% end %>
+      <%= line_chart (Hash[*share_capital_balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"} %>
+
+    </div>
+
+  </div>
+</div>
  <ul class="nav nav-tabs">
           <li class="<%= 'active' if current_page?(metrics_savings_accounts_path)%>"><%= link_to 'Savings Accounts', metrics_savings_accounts_path %></li>
 

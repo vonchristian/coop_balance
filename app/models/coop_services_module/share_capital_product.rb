@@ -18,6 +18,26 @@ module CoopServicesModule
     delegate :name, to: :paid_up_account, prefix: true
     delegate :name, to: :subscription_account, prefix: true
 
+    def self.total_balances(options={})
+      balances = BigDecimal.new("0")
+      accounts.each do |account|
+        balances += account.balance(options)
+      end
+      balances
+    end
+
+    def self.metric
+      total_balance = total_balances(to_date: Date.today.end_of_month)
+      ((total_balance -
+      total_balances(to_date: Date.today.last_month.end_of_month)) / total_balance) * 100.0
+    end
+
+
+
+    def self.accounts
+      accounts = self.pluck(:paid_up_account_id)
+      AccountingModule::Account.where('accounts.id' => accounts)
+    end
 
     def self.subscribe(subscriber)
       subscriber.share_capitals.find_or_create_by(share_capital_product: self.default_product)

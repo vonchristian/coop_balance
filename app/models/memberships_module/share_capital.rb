@@ -6,6 +6,7 @@ module MembershipsModule
     belongs_to :subscriber, polymorphic: true, touch: true
     belongs_to :share_capital_product, class_name: "CoopServicesModule::ShareCapitalProduct"
     belongs_to :office, class_name: "CoopConfigurationsModule::Office"
+    has_many :amounts, as: :commercial_document, class_name: "AccountingModule::Amount"
     delegate :name,
             :paid_up_account,
             :subscription_account,
@@ -19,27 +20,48 @@ module MembershipsModule
     delegate :name, to: :office, prefix: true
     delegate :name, to: :subscriber, prefix: true
     delegate :avatar, to: :subscriber
-    before_save :set_account_owner_name
+    before_save :set_account_owner_name, on: [:create, :update]
+    after_commit :set_has_minimum_balance_status
+
+    def self.has_minimum_balance
+      self.where(has_minimum_balance: true)
+    end
+
+    def self.below_minimum_balance
+      self.where(has_minimum_balance: false)
+    end
+
     def self.default
       select{|a| a.share_capital_product_default_product? }
     end
 
-    def capital_build_ups
-      share_capital_product_paid_up_account.credit_amounts.where(commercial_document: self) +
-      share_capital_product_paid_up_account.credit_amounts.where(commercial_document: self.subscriber)
+    def capital_build_ups(args={})
+      share_capital_product_paid_up_account.credit_amounts.where(commercial_document: self).entered_on(args) +
+      share_capital_product_paid_up_account.credit_amounts.where(commercial_document: self.subscriber).entered_on(args)
     end
     def self.balance
       sum(&:balance)
     end
 
-    def average_balance
-      balances = []
-      balance(from_date: (Time.zone.now.last_year.end_of_year - 15.days), to_date: Time.zone.now.last_year.end_of_year + 15.days) #january
-      balance(from_date: Time.zone.now.beginning_of_year, to_date: (Time.zone.now.beginning_of_year + 14.days)) #february
-      balance(from_date: Time.zone.now.beginning_of_year.next_month, to_date: (Time.zone.now.beginning_of_year.next_month + 14.days))
-      balance(from_date: Time.zone.now.beginning_of_year.next_month, to_date: (Time.zone.now.beginning_of_year.next_month + 14.days))
-      balances.sum / balances.length
+    def average_monthly_balance(args = {})
+      first_entry_date = AccountingModule::Entry.order(entry_date: :desc).last.try(:entry_date) || Date.today
+      date = args[:date]
+      paid_up_balance(from_date: first_entry_date, to_date: date.beginning_of_month.last_month.end_of_month, commercial_document: self) +
+      capital_build_ups(commercial_document: self, from_date: date.beginning_of_month, to_date: (date.beginning_of_month + 14.days)).sum(&:amount)
     end
+
+    def averaged_monthly_balances
+      months = []
+      (DateTime.now.beginning_of_year..DateTime.now.end_of_year).each do |month|
+        months << month.beginning_of_month
+      end
+      balances = []
+      months.uniq.each do |month|
+        balances << average_monthly_balance(date: month.beginning_of_month)
+      end
+      balances.sum / balances.size
+    end
+
     def closed?
       share_capital_product_closing_account.entries.where(commercial_document: self).present? ||
       share_capital_product_closing_account.entries.where(commercial_document: self.subscriber).present?
@@ -58,9 +80,9 @@ module MembershipsModule
       paid_up_balance / share_capital_product_cost_per_share
     end
 
-    def paid_up_balance
-      share_capital_product_default_paid_up_account.balance(commercial_document: self) +
-      share_capital_product_default_paid_up_account.balance(commercial_document: self.subscriber)
+    def paid_up_balance(args={})
+      share_capital_product_default_paid_up_account.balance(from_date: args[:from_date], to_date: args[:to_date], commercial_document: self) +
+      share_capital_product_default_paid_up_account.balance(from_date: args[:from_date], to_date: args[:to_date], commercial_document: self.subscriber)
     end
 
     def subscription_balance
@@ -78,8 +100,17 @@ module MembershipsModule
     end
 
     private
+
     def set_account_owner_name
       self.account_owner_name = self.subscriber_name
+    end
+
+    def set_has_minimum_balance_status
+      if paid_up_balance >= share_capital_product.minimum_balance
+        self.has_minimum_balance = true
+      elsif paid_up_balance < share_capital_product.minimum_balance
+        self.has_minimum_balance = false
+      end
     end
   end
 end

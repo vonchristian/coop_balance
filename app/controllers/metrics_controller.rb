@@ -1,5 +1,7 @@
 class MetricsController < ApplicationController
   def index
+    @saving_metric = CoopServicesModule::SavingProduct.metric
+    @share_capital_metric = CoopServicesModule::ShareCapitalProduct.metric
     @from_date = params[:from_date] ? DateTime.parse(params[:from_date]) : DateTime.now.at_beginning_of_month
     @to_date = params[:to_date] ? DateTime.parse(params[:to_date]) : DateTime.now
     @members = Member.updated_at(from_date: @from_date, to_date: @to_date)

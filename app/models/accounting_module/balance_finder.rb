@@ -19,13 +19,13 @@ module AccountingModule
         entered_on(from_date: first_entry_date, to_date: options[:to_date]).
         sum(:amount)
       else
-        joins(:entry, :account).
+        includes(:entry).
         sum(:amount)
       end
     end
 
     def balance_for(options={})
-      joins(:entry, :account).
+      includes(:entry).
       where(commercial_document: options[:commercial_document])
     end
 

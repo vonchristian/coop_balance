@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   # devise_for :cooperators
   mount Delayed::Web::Engine, at: '/jobs'
+  mount PgHero::Engine, at: "pghero"
   unauthenticated :user do
     root :to => 'accounting_module#index', :constraints => lambda { |request| request.env['warden'].user.nil? }, as: :unauthenticated_root
   end
@@ -307,6 +308,9 @@ Rails.application.routes.draw do
     # end
     resources :entries, only: [:index, :show]
   end
+  resources :savings_accounts_dashboards, only: [:index]
+  resources :savings_accounts_below_minimum_balances, only: [:index]
+
   resources :savings_accounts, only: [:index, :show] do
     resources :settings,          only: [:index],        module: :savings_accounts
     resources :account_mergings,  only: [:new, :create], module: :savings_accounts

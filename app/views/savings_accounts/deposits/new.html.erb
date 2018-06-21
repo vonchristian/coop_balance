@@ -12,11 +12,11 @@
       <div class="box-body">
         <%= simple_form_for [@savings_account, @deposit], url: :savings_account_deposits do |f| %>
           <%= f.error_notification %>
-          <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
-          <%= f.input :amount, as: :currency %>
+          <%= f.input :date, as: :string, input_html: { class: "datepicker", autocomplete: "off" } %>
+          <%= f.input :amount, as: :currency, input_html: { autocomplete: "off" } %>
           <%= f.input :payment_type, label: 'Type', collection: AccountingModule::Entry.payment_types.keys.to_a.map{|a| [a.titleize, a] }, selected: AccountingModule::Entry.payment_types.keys.first %>
           <%= f.input :offline_receipt, as: :boolean, input_html: { checked: true }, as: :hidden %>
-          <%= f.input :or_number, label: 'Reference number' %>
+          <%= f.input :or_number, label: 'OR number', input_html: { autocomplete: "off" } %>
           <%= f.input :saving_id, input_html: { value: @savings_account.id },as: :hidden %>
           <%= f.input :employee_id, input_html: { value: current_user.id },as: :hidden %>
           <div class="box-footer">
@@ -35,4 +35,3 @@
     });
   });
 </script>
-

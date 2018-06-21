@@ -1,0 +1,76 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box box-solid">
+          <div class="box-body">
+
+            <ul class="nav nav-tabs">
+              <li class="<%='active' if current_page?(savings_accounts_path(from_date: nil, to_date: nil)) %>"><%=link_to 'All Savings', savings_accounts_path %></li>
+              <li class="<%='active' if current_page?(savings_accounts_path(from_date: Date.today - 30.days, to_date: Date.today))%>"><%=link_to '1 - 30 Days Inactive', savings_accounts_path(from_date: Date.today - 30.days, to_date: Date.today) %></li>
+              <li class="<%='active' if current_page?(savings_accounts_path(from_date: Date.today - 60.days, to_date: Date.today - 31.days))%>"><%=link_to '31 - 60 Days Inactive', savings_accounts_path(from_date: Date.today - 60.days, to_date: Date.today - 31.days) %></li>
+              <li class="<%='active' if current_page?(savings_accounts_path(from_date: Date.today - 90.days, to_date: Date.today - 61.days))%>"><%=link_to '61 - 90 Days Inactive', savings_accounts_path(from_date: Date.today - 90.days, to_date: Date.today - 61.days) %></li>
+              <li class="<%='active' if current_page?(savings_accounts_path(from_date: Date.today - 363.days, to_date: Date.today - 91.days))%>"><%=link_to 'Over 1 Year', savings_accounts_path(from_date: Date.today - 999.years, to_date: Date.today - 363.days) %></li>
+              <li class="<%='active' if current_page?(savings_accounts_below_minimum_balances_path)%>"><%=link_to 'Below Min. Balance', savings_accounts_below_minimum_balances_path %></li>
+              <li class="<%='active' if current_page?(savings_accounts_dashboards_path)%>"><%=link_to 'Dashboard', savings_accounts_dashboards_path %></li>
+
+            </ul>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-solid">
+      <div class="box-header">
+        <div class="row">
+          <div class="col-md-8">
+            <%=form_tag savings_accounts_path, method: :get, class: "search-form" do %>
+                <div class="input-group">
+                  <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Account Number ", id: 'account-search-form' %>
+                  <span class="input-group-btn">
+                    <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                      <i class="fa fa-search"></i>
+                    <% end %>
+                  </span>
+                </div>
+              <% end %>
+            </div>
+            <div class="col-md-4">
+              <%= link_to 'New Account', new_treasury_module_savings_account_path, class: "btn btn-primary" %>
+            </div>
+          </div>
+      </div>
+
+      <div class="box-body">
+        <% @savings_accounts.each do |savings_account| %>
+          <%=link_to savings_account_path(savings_account) do %>
+
+              <div class="row">
+                <div class="col-md-2">
+                  <center> <%=image_tag(savings_account.depositor.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center>
+                </div>
+                <div class="col-md-5">
+                  <p class=""><%= savings_account.depositor.name.try(:upcase) %></p>
+                  <small class=""> <%= savings_account.saving_product_name %></small><br><br>
+                    <% if policy([:savings_accounts, :deposit]).new? %>
+                      <%= link_to 'Deposit', new_savings_account_deposit_path(savings_account), class: "btn btn-success" %>
+                    <% end %>
+                       &nbsp; &nbsp;
+                    <% if policy([:savings_accounts, :withdrawal]).new? %>
+                      <%= link_to 'Withdraw', new_savings_account_withdrawal_path(savings_account), class: "btn btn btn-warning" %>
+                    <% end %>
+
+                  <br>
+                </div>
+                <div class="col-md-3">
+                  <h4 class="text-muted"><center><%=number_to_currency savings_account.balance %></center></h4>
+                  <br />
+                  <span class="label bg-red"><%= savings_account.number_of_days_inactive %> Days inactive </span>
+                </div>
+              </div>
+              <hr>
+            <% end %>
+          <% end %>
+
+        <center><%= will_paginate @savings_accounts %> </center>
+      </div>
+    </div>
+  </div>
+</div>

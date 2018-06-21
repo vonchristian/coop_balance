@@ -1,4 +1,4 @@
-<div class="tab-pane <%= 'active' if current_page? savings_account_path(@savings_account) %>">
+ <div class="tab-pane <%= 'active' if current_page? savings_account_path(@savings_account) %>">
   <div class="row">
           <div class="col-md-6">
           <div class="row">
@@ -33,10 +33,15 @@
               <%= @savings_account.account_number %>
             </div>
           </div>
+          <br />
         </div>
         <div class="col-md-4">
           <small>BALANCE</small>
-          <h3><%= number_to_currency @savings_account.balance %></h3>
+          <h2><%= number_to_currency @savings_account.balance %></h2>
+        </div>
+        <div class="col-md-2">
+          <small>INACTIVITY</small>
+          <h4 class="text-danger"><%= @savings_account.number_of_days_inactive %> Days</h4>
         </div>
 
       </div>
@@ -46,7 +51,8 @@
         <div class="corner-ribbon top-left red">Closed</div>
       <% end %>
         <div class="row">
-          <div class="col-md-3 col-md-offset-1 border-right">
+
+          <div class="col-md-3 border-right">
             <small class="text-muted">DEPOSITS </small>
             <h4><%= number_to_currency @savings_account.deposits %></h4>
             <% if policy([:savings_accounts, :deposit]).new? && !@savings_account.closed? %>
@@ -64,14 +70,15 @@
           <div class="col-md-3 border-right">
             <small class="condensed-text">BALANCE </small>
             <h3><i class="fa fa-circle text-green"></i> <%= number_to_currency @savings_account.balance %></h3>
-            <% if policy([:savings_accounts, :account_closing]).new? && !@savings_account.closed? %>
-              <%= link_to 'Close Account', new_savings_account_account_closing_path(@savings_account), class: "btn btn-danger btn-xs" %>
+            <% if !@savings_account.has_minimum_balance? %>
+              <span class="label bg-red">BELOW MINIMUM BALANCE </span>
             <% end %>
+
           </div>
         </div>
          <hr>
          <div class="row">
-            <div class="col-md-10 col-md-offset-1">
+            <div class="col-md-12">
               <p class="text-muted">TRANSACTIONS HISTORY </p>
               <div class="table table-responsive">
                 <table class="table table-hover table-striped">
@@ -86,21 +93,23 @@
                   </thead>
                   <tbody>
                     <% @entries.each do |entry| %>
-                      <tr>
-                        <td><%= link_to entry.entry_date.strftime("%B %e, %Y"), accounting_module_entry_path(entry) %></td>
-                        <td><%= entry.reference_number %></td>
-                        <td>
-                          <%= number_to_currency entry.credit_amounts.sum(&:amount) %></td>
+                      <% cache(entry) do %>
+                        <tr>
+                          <td><%= link_to entry.entry_date.strftime("%B %e, %Y"), accounting_module_entry_path(entry) %></td>
+                          <td><%= entry.reference_number %></td>
+                          <td>
+                            <%= number_to_currency entry.credit_amounts.sum(&:amount) %></td>
 
-                        <td><%= entry.description %> /
-                            <%= entry.payment_type.to_s.titleize %>
-                        </td>
-                        <td><% if entry.recorder %>
-                          <%=image_tag(entry.recorder.avatar.url(:thumb), class: "img-circle", height: 35, width: 35) %> &nbsp;
-                          <%= entry.recorder_first_and_last_name %>
-                          <% end %>
-                         </td>
-                      </tr>
+                          <td><%= entry.description %> /
+                              <%= entry.payment_type.to_s.titleize %>
+                          </td>
+                          <td><% if entry.recorder %>
+                            <%=image_tag(entry.recorder.avatar.url(:thumb), class: "img-circle", height: 35, width: 35) %> &nbsp;
+                            <%= entry.recorder_first_and_last_name %>
+                            <% end %>
+                           </td>
+                        </tr>
+                      <% end %>
                     <% end %>
                   </tbody>
                 </table>

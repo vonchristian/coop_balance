@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_19_133731) do
+ActiveRecord::Schema.define(version: 2018_06_21_104008) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
@@ -29,6 +30,7 @@ ActiveRecord::Schema.define(version: 2018_06_19_133731) do
     t.index ["main_account_id"], name: "index_accounts_on_main_account_id"
     t.index ["name"], name: "index_accounts_on_name", unique: true
     t.index ["type"], name: "index_accounts_on_type"
+    t.index ["updated_at"], name: "index_accounts_on_updated_at"
   end
 
   create_table "addresses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -85,6 +87,7 @@ ActiveRecord::Schema.define(version: 2018_06_19_133731) do
     t.uuid "commercial_document_id"
     t.index ["account_id", "entry_id"], name: "index_amounts_on_account_id_and_entry_id"
     t.index ["account_id"], name: "index_amounts_on_account_id"
+    t.index ["commercial_document_id", "commercial_document_type"], name: "index_commercial_documents_on_accounting_amounts"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_amounts_on_commercial_document"
     t.index ["entry_id", "account_id"], name: "index_amounts_on_entry_id_and_account_id"
     t.index ["entry_id"], name: "index_amounts_on_entry_id"
@@ -261,6 +264,25 @@ ActiveRecord::Schema.define(version: 2018_06_19_133731) do
     t.index ["unlock_token"], name: "index_cooperators_on_unlock_token", unique: true
   end
 
+  create_table "croppings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "crop_id"
+    t.datetime "date_started"
+    t.datetime "date_harvested"
+    t.decimal "harvest"
+    t.decimal "selling_price"
+    t.uuid "farm_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["crop_id"], name: "index_croppings_on_crop_id"
+    t.index ["farm_id"], name: "index_croppings_on_farm_id"
+  end
+
+  create_table "crops", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "days_workeds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.decimal "number_of_days"
     t.uuid "laborer_id"
@@ -337,6 +359,25 @@ ActiveRecord::Schema.define(version: 2018_06_19_133731) do
     t.index ["recorder_id"], name: "index_entries_on_recorder_id"
     t.index ["store_front_id"], name: "index_entries_on_store_front_id"
     t.index ["voucher_id"], name: "index_entries_on_voucher_id"
+  end
+
+  create_table "farm_owners", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "farm_id"
+    t.string "owner_type"
+    t.uuid "owner_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["farm_id"], name: "index_farm_owners_on_farm_id"
+    t.index ["owner_type", "owner_id"], name: "index_farm_owners_on_owner_type_and_owner_id"
+  end
+
+  create_table "farms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "description"
+    t.uuid "barangay_id"
+    t.decimal "area"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["barangay_id"], name: "index_farms_on_barangay_id"
   end
 
   create_table "financial_condition_comparisons", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -824,6 +865,17 @@ ActiveRecord::Schema.define(version: 2018_06_19_133731) do
     t.index ["searchable_type", "searchable_id"], name: "index_pg_search_documents_on_searchable_type_and_searchable_id"
   end
 
+  create_table "pghero_query_stats", force: :cascade do |t|
+    t.text "database"
+    t.text "user"
+    t.text "query"
+    t.bigint "query_hash"
+    t.float "total_time"
+    t.bigint "calls"
+    t.datetime "captured_at"
+    t.index ["database", "captured_at"], name: "index_pghero_query_stats_on_database_and_captured_at"
+  end
+
   create_table "pictures", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "pictureable_type"
     t.uuid "pictureable_id"
@@ -986,7 +1038,9 @@ ActiveRecord::Schema.define(version: 2018_06_19_133731) do
     t.uuid "depositor_id"
     t.datetime "date_opened"
     t.uuid "barangay_id"
+    t.boolean "has_minimum_balance", default: false
     t.index ["account_number"], name: "index_savings_on_account_number", unique: true
+    t.index ["account_owner_name"], name: "index_savings_on_account_owner_name"
     t.index ["barangay_id"], name: "index_savings_on_barangay_id"
     t.index ["depositor_type", "depositor_id"], name: "index_savings_on_depositor_type_and_depositor_id"
     t.index ["office_id"], name: "index_savings_on_office_id"
@@ -1026,6 +1080,7 @@ ActiveRecord::Schema.define(version: 2018_06_19_133731) do
     t.decimal "closing_account_fee", default: "0.0"
     t.uuid "closing_account_id"
     t.uuid "interest_payable_account_id"
+    t.decimal "minimum_balance", default: "0.0"
     t.index ["closing_account_id"], name: "index_share_capital_products_on_closing_account_id"
     t.index ["interest_payable_account_id"], name: "index_share_capital_products_on_interest_payable_account_id"
     t.index ["name"], name: "index_share_capital_products_on_name"
@@ -1045,6 +1100,7 @@ ActiveRecord::Schema.define(version: 2018_06_19_133731) do
     t.uuid "office_id"
     t.string "subscriber_type"
     t.uuid "subscriber_id"
+    t.boolean "has_minimum_balance", default: false
     t.index ["account_number"], name: "index_share_capitals_on_account_number", unique: true
     t.index ["office_id"], name: "index_share_capitals_on_office_id"
     t.index ["share_capital_product_id"], name: "index_share_capitals_on_share_capital_product_id"
@@ -1340,12 +1396,16 @@ ActiveRecord::Schema.define(version: 2018_06_19_133731) do
   add_foreign_key "collaterals", "loans"
   add_foreign_key "collaterals", "real_properties"
   add_foreign_key "committee_members", "committees"
+  add_foreign_key "croppings", "crops"
+  add_foreign_key "croppings", "farms"
   add_foreign_key "days_workeds", "laborers"
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "credit_account_id"
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "debit_account_id"
   add_foreign_key "entries", "store_fronts"
   add_foreign_key "entries", "users", column: "recorder_id"
   add_foreign_key "entries", "vouchers"
+  add_foreign_key "farm_owners", "farms"
+  add_foreign_key "farms", "barangays"
   add_foreign_key "finished_good_materials", "products"
   add_foreign_key "finished_good_materials", "raw_materials"
   add_foreign_key "fixed_terms", "time_deposits"

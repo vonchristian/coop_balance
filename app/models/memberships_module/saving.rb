@@ -8,7 +8,8 @@ module MembershipsModule
     belongs_to :depositor,        polymorphic: true,  touch: true
     belongs_to :saving_product,   class_name: "CoopServicesModule::SavingProduct"
     belongs_to :office,           class_name: "CoopConfigurationsModule::Office"
-    has_many :amounts,            class_name: "AccountingModule::Amount", as: :commercial_document
+    has_many :debit_amounts,      class_name: "AccountingModule::DebitAmount", as: :commercial_document
+    has_many :credit_amounts,      class_name: "AccountingModule::CreditAmount", as: :commercial_document
 
     delegate :name, :current_occupation, to: :depositor, prefix: true
     delegate :name,
@@ -24,13 +25,24 @@ module MembershipsModule
     delegate :avatar, to: :depositor, allow_nil: true
 
     scope :has_minimum_balance, -> { SavingsQuery.new.has_minimum_balance  }
+
     before_save :set_account_owner_name, :set_date_opened
+    after_commit :check_balance
+
+    def self.below_minimum_balance
+      where(has_minimum_balance: false)
+    end
+
+    def self.inactive(options={})
+      updated_at(options)
+    end
+
     def entries
       accounting_entries = []
-      saving_product_account.amounts.where(commercial_document: self).each do |amount|
+      saving_product_account.amounts.includes(:entry => [:credit_amounts]).where(commercial_document: self).each do |amount|
         accounting_entries << amount.entry
       end
-      saving_product_interest_expense_account.amounts.where(commercial_document: self).each do |amount|
+      saving_product_interest_expense_account.amounts.includes(:entry =>[:credit_amounts]).where(commercial_document: self).each do |amount|
         accounting_entries << amount.entry
       end
       accounting_entries.uniq
@@ -40,7 +52,7 @@ module MembershipsModule
     end
 
     def number_of_days_inactive
-      (Time.zone.now - updated_at)/86_400.0
+      ((Time.zone.now - updated_at)/86_400.0).round
     end
 
     def interest_posted?(date)
@@ -80,10 +92,8 @@ module MembershipsModule
     end
 
     def balance(options={})
-      saving_product_account.balance(from_date: options[:from_date],
-        to_date: options[:to_date],
-        commercial_document: self) +
-      saving_product_interest_expense_account.debits_balance(from_date: options[:from_date], to_date: options[:to_date], commercial_document: self)
+      saving_product_account.balance(commercial_document: self, from_date: nil, to_date: nil) +
+      saving_product_interest_expense_account.debits_balance(commercial_document: self, from_date: nil, to_date: nil)
     end
 
     def deposits
@@ -125,6 +135,14 @@ module MembershipsModule
     end
 
     private
+    def check_balance
+      if balance >= saving_product.minimum_balance
+        self.has_minimum_balance = true
+      elsif balance < saving_product.minimum_balance
+        self.has_minimum_balance = false
+      end
+    end
+
     def set_account_owner_name
       self.account_owner_name = self.depositor_name # depositor is polymorphic
     end

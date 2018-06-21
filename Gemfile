@@ -60,6 +60,8 @@ gem 'mini_magick'
 gem 'chartkick'
 gem 'groupdate'
 gem "highcharts-rails"
+gem 'pghero'
+gem 'pg_query', '>= 0.9.0'
 
 group :development, :test do
   gem 'guard'

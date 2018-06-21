@@ -26,7 +26,7 @@ module AccountingModule
       from_date = options[:from_date] || first_entry_date
       to_date = options[:to_date] || Date.today
       date_range = DateRange.new(from_date: from_date, to_date: to_date)
-      joins(:entry, :account).
+      includes(:entry).
       where('entries.entry_date' => date_range.start_date..date_range.end_date)
     end
   end

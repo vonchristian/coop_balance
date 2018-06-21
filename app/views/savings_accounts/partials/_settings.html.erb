@@ -7,3 +7,6 @@
   <%= @savings_account.barangay_name %>
     <%= link_to 'Set Barangay', edit_savings_account_barangay_setting_path(id: @savings_account), class: "btn btn-danger" %>
 </div>
+<% if policy([:savings_accounts, :account_closing]).new? && !@savings_account.closed? %>
+  <%= link_to 'Close Account', new_savings_account_account_closing_path(@savings_account), class: "btn btn-danger btn-xs" %>
+<% end %>

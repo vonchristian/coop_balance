@@ -8,8 +8,8 @@ module AccountingModule
 
     belongs_to :main_account,       class_name: "AccountingModule::Account", foreign_key: 'main_account_id'
     has_many :amounts,              class_name: "AccountingModule::Amount"
-    has_many :credit_amounts,       :class_name => 'AccountingModule::CreditAmount'
-    has_many :debit_amounts,        :class_name => 'AccountingModule::DebitAmount'
+    has_many :credit_amounts,       :extend => AccountingModule::BalanceFinder, :class_name => 'AccountingModule::CreditAmount'
+    has_many :debit_amounts,        :extend => AccountingModule::BalanceFinder, :class_name => 'AccountingModule::DebitAmount'
     has_many :entries,              through: :amounts, source: :entry
     has_many :credit_entries,       :through => :credit_amounts, :source => :entry, :class_name => 'AccountingModule::Entry'
     has_many :debit_entries,        :through => :debit_amounts, :source => :entry, :class_name => 'AccountingModule::Entry'
@@ -89,6 +89,7 @@ module AccountingModule
         end
       end
     end
+    
     def credits_balance(options={})
       credit_amounts.balance(options)
     end

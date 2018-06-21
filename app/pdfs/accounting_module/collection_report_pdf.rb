@@ -1,5 +1,6 @@
 module AccountingModule
   class CollectionReportPdf < Prawn::Document
+    attr_reader :view_context
     def initialize(entries, employee, from_date, to_date, view_context)
        super(margin: 30, page_size: "A4", page_layout: :portrait)
       @entries = entries
@@ -13,7 +14,7 @@ module AccountingModule
     end
     private
     def price(number)
-      @view_context.number_to_currency(number, :unit => "P ")
+      view_context.number_to_currency(number, :unit => "P ")
     end
     def display_commercial_document_for(entry)
       if entry.commercial_document.try(:member).present?

@@ -4,11 +4,11 @@ module AccountingModule
     self.normal_credit_balance = false
 
     def balance(options={})
-      super
+      super(options)
     end
 
     def self.balance(options={})
-      super
+      super(options)
     end
   end
 end
