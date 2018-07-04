@@ -1,6 +1,7 @@
 module LoansModule
   class LoanApplicationsController < ApplicationController
     def new
+      @borrower = Borrower.find(params[:borrower_id])
       @loan = LoansModule::LoanApplicationForm.new
     end
 

@@ -1,6 +1,6 @@
 <div class="tab-pane <%='active' if current_page?(member_loans_path(@member)) %>" id="loans">
   <% if policy([:members, :loan]).new? %>
-    <%= link_to 'New Loan Application', new_member_loan_path(@member), class: "btn btn-primary" %>
+    <%= link_to 'New Loan Application', new_loans_module_loan_application_path(borrower_id: @member.id, borrower_type: @member.class.to_s), class: "btn btn-primary" %>
   <% end %>
 <hr />
 <small>ACCOUNTS RECEIVABLE (STORE)</small>
