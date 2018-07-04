@@ -62,6 +62,7 @@ gem 'groupdate'
 gem "highcharts-rails"
 gem 'pghero'
 gem 'pg_query', '>= 0.9.0'
+gem 'image_processing', '~> 1.2'
 
 group :development, :test do
   gem 'guard'
