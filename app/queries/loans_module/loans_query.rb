@@ -21,7 +21,7 @@ module LoansModule
     end
 
     def disbursed(options={})
-      from_date = options[:from_date] || LoansModule::Loan.order(disbursement_date: :desc).first.disbursement_date || Date.today.beginning_of_year
+      from_date = options[:from_date] || LoansModule::Loan.order(disbursement_date: :desc).first.try(:disbursement_date) || Date.today.beginning_of_year
       to_date   = options[:to_date] || Date.today.end_of_year
       range     = DateRange.new(from_date: from_date, to_date: to_date)
       relation.where.not(disbursement_date: nil).

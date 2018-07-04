@@ -34,7 +34,9 @@ module LoansModule
     end
 
     def save_loan
-      loan = find_borrower.loans.create!(
+      loan = LoansModule::Loan.create!(
+        borrower_id: borrower_id,
+        borrower_type: borrower_type,
         loan_product_id: loan_product_id,
         loan_amount: loan_amount,
         application_date: application_date,
@@ -54,7 +56,6 @@ module LoansModule
         loan_charges.destroy_all
       end
       loan.loan_product.create_charges_for(loan)
-    end
 
     def create_documentary_stamp_tax(loan)
        tax = Charge.amount_type.create!(name: 'Documentary Stamp Tax', amount: DocumentaryStampTax.set(loan), account: AccountingModule::Account.find_by(name: "Documentary Stamp Taxes"))

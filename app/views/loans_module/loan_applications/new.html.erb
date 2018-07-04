@@ -12,7 +12,8 @@
   <%= f.error_notification %>
     <%= f.input :loan_product_id, validate: { presence: true }, label: 'Select Type of Loan', collection: LoansModule::LoanProduct.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanProductSelect' } %>
 
-  <%= f.input :borrower_id, input_html: { value: @borrower.id } %>
+  <%= f.input :borrower_id, input_html: { value: @borrower.id }, as: :hidden %>
+  <%= f.input :borrower_type, input_html: { value: @borrower.class.to_s }, as: :hidden %>
   <%= f.input :loan_amount, as: :currency %>
   <%= f.input :term, label: "Loan Term (in months)" %>
   <%= f.input :mode_of_payment, collection: LoansModule::Loan.mode_of_payments.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
