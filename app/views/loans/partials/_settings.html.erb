@@ -17,6 +17,6 @@
 <hr>
 <h4>Archive</h4>
 <span class="text-muted"> Archive paid loans </span>
-<% if policy([:loans_module, :loans, :archiving]).new? && !@loan.archived? && @loan.paid? %>
-  <%= link_to "Archive Loan", loans_module_loan_archivings_path(@loan), method: :post, class: "btn btn-danger" %>
+<% if policy([:loans_module, :loans, :archiving]).new? && !@loan.archived? %>
+  <%= link_to "Archive Loan", loans_module_loan_archivings_path(@loan), method: :post, data: { confirm_with: "Are you sure you want to archive this loan?" }, class: "btn btn-danger" %>
 <% end %>
