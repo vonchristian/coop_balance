@@ -21,7 +21,19 @@ module MembershipsModule
     delegate :name, to: :subscriber, prefix: true
     delegate :avatar, to: :subscriber
     before_save :set_account_owner_name, on: [:create, :update]
-    after_commit :set_has_minimum_balance_status
+    after_save :set_has_minimum_balance_status
+    def self.inactive(options={})
+      updated_at(options)
+    end
+
+    def self.updated_at(options={})
+      if options[:from_date] && options[:to_date]
+        date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
+        where('updated_at' => (date_range.start_date..date_range.end_date))
+      else
+        all
+      end
+    end
 
     def self.has_minimum_balance
       self.where(has_minimum_balance: true)
@@ -32,13 +44,19 @@ module MembershipsModule
     end
 
     def self.default
-      select{|a| a.share_capital_product_default_product? }
+      select {|a| a.share_capital_product_default_product? }
     end
 
     def capital_build_ups(args={})
-      share_capital_product_paid_up_account.credit_amounts.where(commercial_document: self).entered_on(args) +
-      share_capital_product_paid_up_account.credit_amounts.where(commercial_document: self.subscriber).entered_on(args)
+      share_capital_product_paid_up_account.
+      credit_amounts.where(commercial_document: self).
+      entered_on(args) +
+      share_capital_product_paid_up_account.
+      credit_amounts.
+      where(commercial_document: self.subscriber).
+      entered_on(args)
     end
+
     def self.balance
       sum(&:balance)
     end

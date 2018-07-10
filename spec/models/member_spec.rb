@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Member, type: :model do
   describe "associations" do
-    it { is_expected.to have_one :tin }
+    it { is_expected.to have_many :tins }
     it { is_expected.to belong_to :office }
     it { is_expected.to have_many :memberships }
   	it { is_expected.to have_many :loans }
@@ -19,6 +19,7 @@ describe Member, type: :model do
     it { is_expected.to have_many :organizations }
     it { is_expected.to have_many :relationships }
     it { is_expected.to have_many :relations }
+    it { is_expected.to have_many :contacts }
   end
   describe 'delegations' do
     it { is_expected.to delegate_method(:name).to(:office).with_prefix }

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_10_013458) do
+ActiveRecord::Schema.define(version: 2018_07_10_082220) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -239,6 +239,15 @@ ActiveRecord::Schema.define(version: 2018_07_10_013458) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_committees_on_name", unique: true
+  end
+
+  create_table "contacts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "contactable_type"
+    t.uuid "contactable_id"
+    t.string "number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["contactable_type", "contactable_id"], name: "index_contacts_on_contactable_type_and_contactable_id"
   end
 
   create_table "cooperatives", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -711,6 +720,7 @@ ActiveRecord::Schema.define(version: 2018_07_10_013458) do
     t.integer "birth_day"
     t.string "email", default: "", null: false
     t.uuid "office_id"
+    t.integer "birth_year"
     t.index ["office_id"], name: "index_members_on_office_id"
     t.index ["sex"], name: "index_members_on_sex"
     t.index ["slug"], name: "index_members_on_slug", unique: true

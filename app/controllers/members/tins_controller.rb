@@ -2,13 +2,13 @@ module Members
   class TinsController < ApplicationController
     def new
       @member = Member.find(params[:member_id])
-      @tin = @member.build_tin
+      @tin = @member.tins.build
     end
     def create
       @member = Member.find(params[:member_id])
-      @tin = @member.create_tin(tin_params)
+      @tin = @member.tins.create(tin_params)
       if @tin.save
-        redirect_to @member, notice: "TIN number updated successfully"
+        redirect_to member_info_index_url(@member), notice: "TIN number updated successfully"
       else
         render :new
       end

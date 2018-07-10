@@ -1,0 +1,78 @@
+<h4> Total Savings  <%= number_to_currency @savings.sum(&:balance) %></h4>
+<hr>
+<h4>Savings Inactivity Statistics </h4>
+<%= line_chart @savings.group_by_month(:updated_at).count, download: true, curve: false %>
+<hr>
+ <% savings_inactivity_data = [] %>
+              <% savings_inactivity_data << { "1-30 Days Inactive" => @savings.updated_at(from_date: Date.today - 30.days, to_date: Date.today).count } %>
+              <% savings_inactivity_data << { "31-60 Days Inactive" => @savings.updated_at(from_date: Date.today - 60.days, to_date: Date.today - 31.days).count } %>
+              <% savings_inactivity_data << { "31-60 Days Inactive" => @savings.updated_at(from_date: Date.today - 60.days, to_date: Date.today - 31.days).count } %>
+              <% savings_inactivity_data << { "91-363 Days Inactive" => @savings.updated_at(from_date: Date.today - 90.days, to_date: Date.today - 61.days).count } %>
+              <% savings_inactivity_data << { "91-363 Days Inactive" => @savings.updated_at(from_date: Date.today - 363.days, to_date: Date.today - 91.days).count } %>
+
+
+              <% savings_inactivity_data << { "Over 1 Year Inactive" => @savings.updated_at(from_date: Date.today - 999.years, to_date: Date.today - 364.days).count } %>
+
+
+
+
+
+              <%= pie_chart (Hash[*savings_inactivity_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"}, download: true %>
+<div class="col-md-4">
+              <h5><i class="fa fa-chart-pie"></i> INACTIVITY STATISTICS</h5>
+              <div class="row">
+                <div class="col-md-8">
+                  1-30 Days Inactive
+                </div>
+                <div class="col-md-3">
+                  <%= @savings.updated_at(from_date: Date.today - 30.days, to_date: Date.today).size %>
+
+                </div>
+              </div>
+              <br />
+              <hr />
+              <div class="row">
+                <div class="col-md-8">
+                  31-60 Days Inactive
+                </div>
+                <div class="col-md-3">
+                  <%= @savings.updated_at(from_date: Date.today - 60.days, to_date: Date.today - 31.days).count %>
+                </div>
+              </div>
+              <br />
+              <div class="row">
+                <div class="col-md-8">
+                  61-90 Days Inactive
+                </div>
+                <div class="col-md-3">
+                  <%= @savings.updated_at(from_date: Date.today - 90.days, to_date: Date.today - 61.days).size %>
+                </div>
+              </div>
+              <br />
+              <div class="row">
+                <div class="col-md-8">
+                  91-363 Days Inactive
+                </div>
+                <div class="col-md-3">
+                  <%= @savings.updated_at(from_date: Date.today - 363.days, to_date: Date.today - 91.days).size %>
+                </div>
+              </div>
+              <br />
+              <div class="row">
+                <div class="col-md-8">
+                  Over 1 Year Inactive
+                </div>
+                <div class="col-md-3">
+                  <%= @savings.updated_at(from_date: Date.today - 999.years, to_date: Date.today - 364.days).size %>
+                </div>
+              </div>
+              <hr />
+              <div class="row">
+                <div class="col-md-8">
+                  Total Savings Accounts
+                </div>
+                <div class="col-md-3">
+                  <%= @savings.size %>
+                </div>
+              </div>
+            </div>

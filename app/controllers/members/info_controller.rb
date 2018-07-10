@@ -1,7 +1,7 @@
 module Members
   class InfoController < ApplicationController
     def index
-      @member = Member.includes(:relationships =>[:relationer,:relationee]).find(params[:member_id])
+      @member = Member.find(params[:member_id])
       respond_to do |format|
         format.html
         format.pdf do

@@ -1,11 +1,49 @@
 <div class="tab-pane <%='active' if current_page?(member_info_index_path(@member)) %>">
-<%= member.full_name %>
-<hr>
-<p class="text-muted">REAL PROPERTIES </p>
-  <%= link_to 'New Property', new_member_real_property_path(@member) %>
-<% @member.real_properties.each do |real_property| %>
-  <%= real_property.address %>
-<% end %>
-<hr>
+<div class="row">
+  <div class="col-md-6">
+    <div class="row">
+      <div class="col-md-6">
+        <strong>
+          <i class="fa fa-map-marker"></i> Current Address
+        </strong>
+      </div>
+      <div class="col-md-6">
+        <%= @member.current_address %><br>
+          <%= link_to 'Update', new_member_address_path(@member), class: "btn btn-default btn-xs" %>
+
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-6">
+        <strong><i class="fa fa-phone"></i> Contact Info </strong>
+      </div>
+      <div class="col-md-6">
+        <%= @member.current_contact_number %><br>
+        <%= link_to 'Update', new_member_contact_path(@member), class: "btn btn-default btn-xs" %>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-6">
+        <strong><i class="fa fa-calendar"></i> Date of Birth </strong>
+      </div>
+      <div class="col-md-6">
+        <%= @member.date_of_birth.try(:strftime, "%B %e, %Y") %><br>
+        <%= link_to 'Update', edit_member_path(@member), class: "btn btn-default btn-xs" %>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-6">
+        <strong><i class="fa fa-info"></i> TIN Number </strong>
+      </div>
+      <div class="col-md-6">
+        <%= @member.current_tin_number %><br>
+        <%= link_to 'Update', new_member_tin_path(@member), class: "btn btn-default btn-xs" %>
+      </div>
+    </div>
+  </div>
+</div>
 <%= link_to 'Print Member Info', member_info_index_path(@member, format: 'pdf') %>
 <hr>

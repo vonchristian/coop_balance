@@ -7,7 +7,7 @@ class Member < ApplicationRecord
   enum civil_status: [:single, :married, :widower, :divorced]
 
   belongs_to :office,                 class_name: "CoopConfigurationsModule::Office"
-  has_one :tin,                       as: :tinable
+  has_many :tins,                       as: :tinable
   has_many :entries,                  class_name: "AccountingModule::Entry",
                                       as: :commercial_document
   has_many :voucher_amounts,          class_name: "Vouchers::VoucherAmount",
@@ -42,11 +42,13 @@ class Member < ApplicationRecord
   has_many :organizations,            through: :organization_memberships
   has_many :relationships,            as: :relationee
   has_many :relations,                as: :relationer
+  has_many :contacts, as: :contactable
 
 
   delegate :number, to: :tin, prefix: true, allow_nil: true
   delegate :name, to: :office, prefix: true, allow_nil: true
-
+  delegate :number, to: :current_contact, prefix: true, allow_nil: true
+  delegate :number, to: :current_tin, prefix: true, allow_nil: true
   has_attached_file :avatar,
   styles: { large: "120x120>",
            medium: "70x70>",
@@ -60,14 +62,25 @@ class Member < ApplicationRecord
 
   before_save :update_birth_date_fields
   def self.updated_at(options={})
-      if options[:from_date] && options[:to_date]
-        date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
-        where('updated_at' => (date_range.start_date)..(date_range.end_date))
-      end
+    if options[:from_date] && options[:to_date]
+      date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
+      where('updated_at' => (date_range.start_date)..(date_range.end_date))
     end
+  end
 
-  def self.has_birthdays_on(month)
-    BirthdayQuery.new(self).has_birthdays_on(month)
+  def self.has_birth_month_on(options= {})
+    BirthdayQuery.new(self).has_birth_month_on(options)
+  end
+
+  def self.has_birth_day_on(options= {})
+    BirthdayQuery.new(self).has_birth_day_on(options)
+  end
+
+  def current_contact
+    contacts.current
+  end
+  def current_tin
+    tins.current
   end
 
   def name
@@ -151,6 +164,7 @@ class Member < ApplicationRecord
     if date_of_birth_changed?
       self.birth_month = date_of_birth ? date_of_birth.month : nil
       self.birth_day = date_of_birth ? date_of_birth.day : nil
+      self.birth_year = date_of_birth ? date_of_birth.year : nil
     end
   end
 end

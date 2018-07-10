@@ -131,8 +131,10 @@ Rails.application.routes.draw do
     resources :offices, only: [:edit, :update], module: :share_capitals
   end
   resources :members do
+    resources :contacts,         only: [:new, :create],                 module: :members
+    resources :tins,             only: [:new, :create],                 module: :members
     resources :relationships,    only: [:new, :create],                 module: :members
-    resources :time_deposits,    only: [:index, :new, :create],                 module: :members
+    resources :time_deposits,    only: [:index, :new, :create],         module: :members
     resources :tins,             only: [:new, :create],                 module: :members
     resources :offices,          only: [:new, :create, :edit, :update], module: :members
     resources :addresses,        only: [:new, :create, :edit, :update], module: :members
@@ -317,6 +319,10 @@ Rails.application.routes.draw do
   end
   resources :savings_accounts_dashboards, only: [:index]
   resources :savings_accounts_below_minimum_balances, only: [:index]
+  resources :share_capitals_below_minimum_balances, only: [:index]
+  resources :share_capitals_dashboards, only: [:index]
+
+
 
   resources :savings_accounts, only: [:index, :show] do
     resources :settings,          only: [:index],        module: :savings_accounts
@@ -441,8 +447,10 @@ Rails.application.routes.draw do
     resources :store_fronts, only: [:index]
   end
   resources :filtered_loans, only: [:index], module: :loans_module
-  resources :barangays, only: [:show] do
+  resources :barangays, only: [:index, :show] do
     resources :loans, only: [:index], module: :barangays
+    resources :savings, only: [:index], module: :barangays
+    resources :members, only: [:index], module: :barangays
   end
   resources :memberships, only: [:index, :show] do
     resources :time_deposits, only: [:new, :create], module: :memberships

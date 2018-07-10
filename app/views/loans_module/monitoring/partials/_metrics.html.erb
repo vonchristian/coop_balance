@@ -2,3 +2,4 @@
 <small>PAST DUE</small>
 <h1><%=number_to_currency((LoansModule::Loan.not_archived.current_loans.count.to_f / LoansModule::Loan.count.to_f) * 100, unit: "") %> % </h1>
 <small>CURRENT</small>
+

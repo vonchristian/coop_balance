@@ -1,18 +1,30 @@
-<div class="row">
-  <div class="col-md-6">
-    <div class="box box-solid">
-      <div class="box-header">
-        <%=form_tag share_capitals_path, method: :get, class: "search-form" do %>
-            <div class="input-group">
-              <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Account Number ", id: 'account-search-form' %>
-              <span class="input-group-btn">
-                <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
-                  <i class="fa fa-search"></i>
-                <% end %>
-              </span>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box box-solid">
+        <div class="box-body">
+          <ul class="nav nav-tabs">
+            <ul class="nav nav-tabs">
+              <li class="<%='active' if current_page?(share_capitals_path(from_date: nil, to_date: nil)) %>"><%=link_to 'All Share Capitals', share_capitals_path %></li>
+              <li class="<%='active' if current_page?(share_capitals_path(from_date: Date.today - 30.days, to_date: Date.today))%>"><%=link_to '1 - 30 Days Inactive', share_capitals_path(from_date: Date.today - 30.days, to_date: Date.today) %></li>
+            <li class="<%='active' if current_page?(share_capitals_path(from_date: Date.today - 60.days, to_date: Date.today - 31.days))%>"><%=link_to '31 - 60 Days Inactive', share_capitals_path(from_date: Date.today - 60.days, to_date: Date.today - 31.days) %></li>
+            <li class="<%='active' if current_page?(share_capitals_path(from_date: Date.today - 90.days, to_date: Date.today - 61.days))%>"><%=link_to '61 - 90 Days Inactive', share_capitals_path(from_date: Date.today - 90.days, to_date: Date.today - 61.days) %></li>
+            <li class="<%='active' if current_page?(share_capitals_path(from_date: Date.today - 363.days, to_date: Date.today - 91.days))%>"><%=link_to 'Over 1 Year', share_capitals_path(from_date: Date.today - 999.years, to_date: Date.today - 363.days) %></li>
+            <li class="<%='active' if current_page?(share_capitals_below_minimum_balances_path)%>"><%=link_to 'Below Min. Balance', share_capitals_below_minimum_balances_path %></li>
+            <li class="<%='active' if current_page?(share_capitals_dashboards_path)%>"><%=link_to 'Dashboard', share_capitals_dashboards_path %></li>
+          </ul>
+          <div class="tab-content">
+            <%=form_tag share_capitals_path, method: :get, class: "search-form" do %>
+                <div class="input-group">
+                  <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Account Number ", id: 'account-search-form' %>
+                  <span class="input-group-btn">
+                    <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                      <i class="fa fa-search"></i>
+                    <% end %>
+                  </span>
+                </div>
+              <% end %>
             </div>
-          <% end %>
-      </div>
       <div class="box-body">
         <% @share_capitals.each do |share_capital| %>
           <%=link_to share_capital_path(share_capital) do %>

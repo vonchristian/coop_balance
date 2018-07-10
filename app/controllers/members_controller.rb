@@ -18,7 +18,7 @@ class MembersController < ApplicationController
     @member = Member.find(params[:id])
     @member.update(member_params)
     if @member.save
-      redirect_to @member, notice: "Member updated successfully."
+      redirect_to member_info_index_url(@member), notice: "Member updated successfully."
       @member.memberships.each(&:save) #update search terms on memberships table
     else
       render :edit

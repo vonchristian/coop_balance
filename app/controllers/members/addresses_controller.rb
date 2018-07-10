@@ -5,10 +5,10 @@ module Members
       @address = @member.addresses.build
     end
     def create
-      @member = Member.friendly.find(params[:member_id])
+      @member = Member.find(params[:member_id])
       @address = @member.addresses.create(address_params)
       if @member.save
-        redirect_to member_url(@member), notice: "Address updated successfully"
+        redirect_to member_info_index_url(@member), notice: "Address updated successfully"
       else
         render :edit
       end
