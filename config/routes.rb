@@ -320,7 +320,9 @@ Rails.application.routes.draw do
   resources :savings_accounts_dashboards, only: [:index]
   resources :savings_accounts_below_minimum_balances, only: [:index]
   resources :share_capitals_below_minimum_balances, only: [:index]
-  resources :share_capitals_dashboards, only: [:index]
+namespace :share_capitals_section do
+    resources :dashboards, only: [:index]
+  end
 
 
 

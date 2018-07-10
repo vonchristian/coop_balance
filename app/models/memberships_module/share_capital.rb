@@ -21,7 +21,6 @@ module MembershipsModule
     delegate :name, to: :subscriber, prefix: true
     delegate :avatar, to: :subscriber
     before_save :set_account_owner_name, on: [:create, :update]
-    after_save :set_has_minimum_balance_status
     def self.inactive(options={})
       updated_at(options)
     end
@@ -48,13 +47,8 @@ module MembershipsModule
     end
 
     def capital_build_ups(args={})
-      share_capital_product_paid_up_account.
-      credit_amounts.where(commercial_document: self).
-      entered_on(args) +
-      share_capital_product_paid_up_account.
-      credit_amounts.
-      where(commercial_document: self.subscriber).
-      entered_on(args)
+      share_capital_product_paid_up_account.credit_amounts.where(commercial_document: self).entered_on(args) +
+      share_capital_product_paid_up_account.credit_amounts.where(commercial_document: self.subscriber).entered_on(args)
     end
 
     def self.balance
@@ -117,18 +111,23 @@ module MembershipsModule
       account_owner_name || subscriber_name
     end
 
+    def set_balance_status
+      if paid_up_balance >= share_capital_product.minimum_balance
+        self.has_minimum_balance = true
+      else
+        self.has_minimum_balance = false
+      end
+      self.save
+    end
+
+    def number_of_days_inactive
+      ((Time.zone.now - updated_at)/86_400.0).round
+    end
+
     private
 
     def set_account_owner_name
       self.account_owner_name = self.subscriber_name
-    end
-
-    def set_has_minimum_balance_status
-      if paid_up_balance >= share_capital_product.minimum_balance
-        self.has_minimum_balance = true
-      elsif paid_up_balance < share_capital_product.minimum_balance
-        self.has_minimum_balance = false
-      end
     end
   end
 end

@@ -30,6 +30,7 @@
       </div>
       <div class="col-md-6">
         <%= @member.date_of_birth.try(:strftime, "%B %e, %Y") %><br>
+        <%= @member.age %> Years Old  <br>
         <%= link_to 'Update', edit_member_path(@member), class: "btn btn-default btn-xs" %>
       </div>
     </div>

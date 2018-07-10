@@ -8,6 +8,7 @@ module Memberships
       def save
         ActiveRecord::Base.transaction do
           save_capital_build_up
+          update_share_capital_status
         end
       end
 
@@ -48,6 +49,9 @@ module Memberships
 
       def find_employee
         User.find_by_id(employee_id)
+      end
+      def update_share_capital_status
+        find_share_capital.set_balance_status
       end
     end
   end

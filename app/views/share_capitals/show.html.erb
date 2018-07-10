@@ -64,6 +64,12 @@
               <%= link_to 'New Capital Build Up', new_share_capital_capital_build_up_path(@share_capital), class: "btn btn-success" %>
             <% end %>
         </div>
+        <div class="col-md-2">
+          <small>INACTIVITY</small>
+          <h4 class="text-danger"><%= @share_capital.number_of_days_inactive %> Days</h4>
+          <small>Last Active Date</small><br>
+          <i class="fa fa-calendar"></i> &nbsp; <%= @share_capital.updated_at.strftime("%B %e, %Y") %>
+        </div>
 
       </div>
     <hr />

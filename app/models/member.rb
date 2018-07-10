@@ -87,6 +87,8 @@ class Member < ApplicationRecord
     full_name
   end
 
+
+
   def latest_purchase_date
     if sales_orders.present?
       sales_orders.order(created_at: :asc).last.date
@@ -133,11 +135,8 @@ class Member < ApplicationRecord
 
 
   def age
-    return 'No Date of Birth' unless date_of_birth.present?
-    days_alive = Date.today - date_of_birth
-    years = (days_alive / 365).to_i
-    months = ((days_alive % 365) / 30).to_i
-    "#{years}.#{months}".to_f
+    return "No Date of Birth" if date_of_birth.nil?
+    ((Time.zone.now - date_of_birth.to_time) / 1.year.seconds).floor
   end
 
 

@@ -31,7 +31,7 @@
               <% savings_inactivity_data << { "1-30 Days Inactive" => @savings_accounts.updated_at(from_date: Date.today - 30.days, to_date: Date.today).count } %>
               <% savings_inactivity_data << { "31-60 Days Inactive" => @savings_accounts.updated_at(from_date: Date.today - 60.days, to_date: Date.today - 31.days).count } %>
               <% savings_inactivity_data << { "31-60 Days Inactive" => @savings_accounts.updated_at(from_date: Date.today - 60.days, to_date: Date.today - 31.days).count } %>
-              <% savings_inactivity_data << { "91-363 Days Inactive" => @savings_accounts.updated_at(from_date: Date.today - 90.days, to_date: Date.today - 61.days).count } %>
+              <% savings_inactivity_data << { "61-90 Days Inactive" => @savings_accounts.updated_at(from_date: Date.today - 90.days, to_date: Date.today - 61.days).count } %>
               <% savings_inactivity_data << { "91-363 Days Inactive" => @savings_accounts.updated_at(from_date: Date.today - 363.days, to_date: Date.today - 91.days).count } %>
 
 
@@ -106,3 +106,16 @@
           <div class="box-body">
             <h4>Savings Accounts Transactions / Month</h4>
             <%= line_chart @savings_accounts.group_by_quarter(:updated_at).count, download: true, curve: false %>
+            <hr>
+            <h4>Balances vs Month </h4>
+<% months = [] %>
+      <% (DateTime.now.beginning_of_year..DateTime.now).each do |month| %>
+       <% months << month.beginning_of_month %>
+      <% end %>
+      <% balances_data = [] %>
+      <% months.uniq.each do |month| %>
+
+        <% balances_data << { month.strftime("%B %Y") => CoopServicesModule::SavingProduct.total_balances(to_date: month.end_of_month) } %>
+      <% end %>
+
+<%= line_chart (Hash[*balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"}, download: true, curve: false, thousands: "," %>
