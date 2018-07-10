@@ -19,7 +19,6 @@ class User < ApplicationRecord
               :sales_clerk,
               :treasurer,
               :accountant,
-              :human_resource_officer,
               :accounting_clerk,
               :collector,
               :sales_manager]

@@ -17,7 +17,6 @@ Rails.application.routes.draw do
   root :to => 'store_front_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'sales_manager' if request.env['warden'].user }, as: :store_front_module_sales_manager_root
 
   root :to => 'store_front_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'stock_custodian' if request.env['warden'].user }, as: :store_stocks_module_root
-  root :to => 'hr_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'human_resource_officer' if request.env['warden'].user }, as: :hr_module_root
   root :to => 'clerk_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'accounting_clerk' if request.env['warden'].user }, as: :clerk_module_root
 
   resources :customer_registrations, only: [:new, :create]
@@ -387,23 +386,7 @@ namespace :share_capitals_section do
     resources :bank_charges, only: [:new, :create], module: :bank_accounts
     resources :bank_earned_interests, only: [:new, :create], module: :bank_accounts
   end
-  resources :hr_module, only: [:index]
-  namespace :hr_module do
-    resources :contributions, only: [:new, :create]
-    resources :amounts, only: [:new, :create]
-    resources :settings, only: [:index]
-    resources :departments, only: [:new, :create, :edit, :update]
-    resources :salary_grades, only: [:new, :create, :edit, :update]
-    resources :employees, except: [:destroy] do
-      resources :payroll_amounts, only: [:new, :create]
-      resources :offices, only: [:edit, :update], module: :employees
-      resources :contributions, only: [:new, :create], module: :employees
-      resources :profile, only: [:index]
-      resources :employee_salary_grades, only: [:new, :create, :edit, :update]
-      resources :employee_departments, only: [:new, :create, :edit, :update]
-      resources :payrolls, only: [:index, :new, :create]
-    end
-  end
+
   resources :calendars, only: [:index, :show]
   resources :organizations, only: [:index, :show, :new, :create] do
     resources :members, only: [:new, :create], module: :organizations
