@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   root :to => 'accounting_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'bookkeeper' if request.env['warden'].user }, as: :bookkeeper_module_root
   root :to => 'accounting_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'accountant' if request.env['warden'].user }, as: :accountant_module_root
 
-  root :to => 'loans_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'loan_officer' if request.env['warden'].user }, as: :loans_module_root
+  root :to => 'loans#index', :constraints => lambda { |request| request.env['warden'].user.role == 'loan_officer' if request.env['warden'].user }, as: :loans_module_root
   root :to => 'management_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'general_manager' if request.env['warden'].user }, as: :management_module_root
   root :to => 'teller_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'teller' if request.env['warden'].user }, as: :teller_module_root
   root :to => 'store_front_module/products#index', :constraints => lambda { |request| request.env['warden'].user.role == 'stock_custodian' if request.env['warden'].user }, as: :warehouse_module_root
@@ -58,6 +58,13 @@ Rails.application.routes.draw do
 
   resources :loans_module, only: [:index]
   namespace :loans_module do
+    namespace :monitoring do
+      resources :disbursements, only: [:index]
+      resources :loan_product_portfolios, only: [:index]
+      resources :loans_per_barangays, only: [:index]
+      resources :loan_payments, only: [:index]
+      resources :metrics, only: [:index]
+    end
     resources :search_results, only: [:index]
     resources :schedules, only: [:index, :show]
     resources :amortization_schedules, only: [:show], module: :schedules

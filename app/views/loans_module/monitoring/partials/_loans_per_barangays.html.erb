@@ -1,0 +1,14 @@
+<h4>Loans per Barangay</h4>
+
+<% barangay_current_loans_data = [] %>
+<% Addresses::Barangay.all.each do |barangay| %>
+  <% barangay_current_loans_data << { barangay.name => barangay.loans.current_loans.count } %>
+<% end %>
+<% barangay_past_loans_data = [] %>
+<% Addresses::Barangay.all.each do |barangay| %>
+  <% barangay_past_loans_data << { barangay.name => barangay.loans.past_due.count } %>
+<% end %>
+<%= bar_chart [
+  {name: "Current Loans", data: (Hash[*barangay_current_loans_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}) },
+  {name: "Past Due", data: (Hash[*barangay_past_loans_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}) }
+], width: "900px", height: "1000px" %>

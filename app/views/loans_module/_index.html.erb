@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="box box-solid">
+      <div class="box-header">
+
+      </div>
+      <div class="box-body">
+        <ul class="nav nav-tabs">
+           <li class="<%= 'active' if current_page?(loans_module_monitoring_metrics_path)%>"><%= link_to 'Metrics', loans_module_monitoring_metrics_path %></li>
+          <li class="<%= 'active' if current_page?(loans_module_monitoring_disbursements_path)%>"><%= link_to 'Disbursements', loans_module_monitoring_disbursements_path %></li>
+          <li class="<%= 'active' if current_page?(loans_module_monitoring_loan_product_portfolios_path)%>"><%= link_to 'Loan Products', loans_module_monitoring_loan_product_portfolios_path %></li>
+          <li class="<%= 'active' if current_page?(loans_module_monitoring_loans_per_barangays_path)%>"><%= link_to 'Per Barangay', loans_module_monitoring_loans_per_barangays_path %></li>
+          <li class="<%= 'active' if current_page?(loans_module_monitoring_loan_payments_path)%>"><%= link_to 'Loan Payments', loans_module_monitoring_loan_payments_path %></li>
+        </ul>
+        <div class="tab-content">
+           <% if current_page? loans_module_monitoring_metrics_path %>
+            <%= render 'loans_module/monitoring/partials/metrics' %>
+          <% end %>
+          <% if current_page? loans_module_monitoring_disbursements_path %>
+            <%= render 'loans_module/monitoring/partials/disbursements' %>
+          <% end %>
+          <% if current_page? loans_module_monitoring_loan_product_portfolios_path %>
+            <%= render 'loans_module/monitoring/partials/loan_product_portfolios' %>
+          <% end %>
+          <% if current_page? loans_module_monitoring_loans_per_barangays_path %>
+            <%= render 'loans_module/monitoring/partials/loans_per_barangays' %>
+          <% end %>
+          <% if current_page? loans_module_monitoring_loan_payments_path %>
+            <%= render 'loans_module/monitoring/partials/loan_payments' %>
+          <% end %>
+      </div>

@@ -27,7 +27,11 @@ class Term < ApplicationRecord
   end
 
   def number_of_days_past_due
-    ((Time.zone.now - maturity_date)/86400.0).to_i
+    if maturity_date.present?
+      ((Time.zone.now - maturity_date)/86400.0).to_i
+    else
+      0
+    end
   end
 
   def remaining_term

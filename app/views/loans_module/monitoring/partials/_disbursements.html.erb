@@ -1,0 +1,19 @@
+
+        <h4> Disbursements Per Year </h4>
+      </div>
+      <div class="box-body">
+        <%= line_chart LoansModule::Loan.group_by_year(:disbursement_date).count, curve: false, download: true %>
+      </div>
+<% year_dates = [] %>
+<% start_date = LoansModule::Loan.order(disbursement_date: :desc).last.disbursement_date %>
+<% (start_date.to_date..Date.today).each do |date| %>
+
+  <% year_dates << date.end_of_year%>
+<% end %>
+<h4>Loans Maturity per year</h4>
+<% loans_maturity_data = [] %>
+<% year_dates.uniq.each do |year| %>
+
+  <% loans_maturity_data << { year.strftime("%Y") => LoansModule::Loan.matured(from_date: year.beginning_of_year, to_date: year.end_of_year).count } %>
+<% end %>
+<%= line_chart (Hash[*loans_maturity_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"}, legend: true, curve: false, download: true %>

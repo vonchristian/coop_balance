@@ -7,7 +7,7 @@
             <ul class="nav nav-tabs">
               <li class="<%='active' if current_page?(savings_accounts_path(from_date: nil, to_date: nil)) %>"><%=link_to 'All Savings', savings_accounts_path %></li>
               <li class="<%='active' if current_page?(savings_accounts_path(from_date: Date.today - 30.days, to_date: Date.today))%>"><%=link_to '1 - 30 Days Inactive', savings_accounts_path(from_date: Date.today - 30.days, to_date: Date.today) %></li>
-              <li class="<%='active' if current_page?(savings_accounts_path(from_date: Date.today - 60.days, to_date: Date.today - 31.days))%>"><%=link_to '31 - 60 Days Inactive', savings_accounts_path(from_date: Date.today - 60.days, to_date: Date.today - 31.days) %></li>
+            <li class="<%='active' if current_page?(savings_accounts_path(from_date: Date.today - 60.days, to_date: Date.today - 31.days))%>"><%=link_to '31 - 60 Days Inactive', savings_accounts_path(from_date: Date.today - 60.days, to_date: Date.today - 31.days) %></li>
               <li class="<%='active' if current_page?(savings_accounts_path(from_date: Date.today - 90.days, to_date: Date.today - 61.days))%>"><%=link_to '61 - 90 Days Inactive', savings_accounts_path(from_date: Date.today - 90.days, to_date: Date.today - 61.days) %></li>
               <li class="<%='active' if current_page?(savings_accounts_path(from_date: Date.today - 363.days, to_date: Date.today - 91.days))%>"><%=link_to 'Over 1 Year', savings_accounts_path(from_date: Date.today - 999.years, to_date: Date.today - 363.days) %></li>
               <li class="<%='active' if current_page?(savings_accounts_below_minimum_balances_path)%>"><%=link_to 'Below Min. Balance', savings_accounts_dashboards_path %></li>

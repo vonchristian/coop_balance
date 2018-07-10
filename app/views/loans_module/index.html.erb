@@ -5,17 +5,13 @@
 
       </div>
       <div class="box-body">
+        <ul class="nav nav-tabs">
+          <li class="<%= 'active' if current_page?(loans_module_monitoring_disbursements_path)%>"><%= link_to 'Disbursements', loans_module_monitoring_disbursements_path %></li>
+        </ul>
 
-<h4>Disbursed Loans</h4>
-<%= line_chart LoansModule::Loan.group_by_year(:disbursement_date).count, curve: false %>
 
-<h4>Loan Products</h4>
-<% sample_data = [] %>
-  <% LoansModule::LoanProduct.all.each do |loan_product| %>
 
-    <% sample_data << { loan_product.name => loan_product.loans.count } %>
-  <% end %>
-  <%= pie_chart (Hash[*sample_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"}, legend: true, label: "Value" %>
+
 <h4>Loans Status</h4>
 
 <% loans_status_data = [] %>
@@ -26,81 +22,30 @@
 
 
   <%= pie_chart (Hash[*loans_status_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"}, legend: true, label: "Value" %>
-<h1><%=number_to_currency((LoansModule::Loan.matured.count.to_f / LoansModule::Loan.count.to_f) * 100, unit: "") %> % </h1>
-<small>PAST DUE</small>
-<h1><%=number_to_currency((LoansModule::Loan.current_loans.count.to_f / LoansModule::Loan.count.to_f) * 100, unit: "") %> % </h1>
-<small>CURRENT</small>
+
 
 <h4></h4>
 <h4>LOANS</h4>
 <%= LoansModule::Loan.count%>
 
-<h4>Loans per Barangay</h4>
-
-<% barangay_current_loans_data = [] %>
-<% Addresses::Barangay.all.each do |barangay| %>
-  <% barangay_current_loans_data << { barangay.name => barangay.loans.current_loans.count } %>
-<% end %>
-<% barangay_past_loans_data = [] %>
-<% Addresses::Barangay.all.each do |barangay| %>
-  <% barangay_past_loans_data << { barangay.name => barangay.loans.past_due.count } %>
-<% end %>
-
-<%= bar_chart [
-  {name: "Current Loans", data: (Hash[*barangay_current_loans_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}) },
-  {name: "Past Due", data: (Hash[*barangay_past_loans_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}) }
-], width: "900px", height: "1000px" %>
 
 
-<% loan_product_current_loans_data = [] %>
-<% LoansModule::LoanProduct.all.each do |loan_product| %>
-  <% loan_product_current_loans_data << { loan_product.name => loan_product.loans.current_loans.count } %>
-<% end %>
+
+
 <h4>Loan Product </h4>
-<% loan_product_past_loans_data = [] %>
-<% LoansModule::LoanProduct.all.each do |loan_product| %>
-  <% loan_product_past_loans_data << { loan_product.name => loan_product.loans.past_due.count } %>
-<% end %>
-
-<%= column_chart [
-  {name: "Current Loans", data: (Hash[*loan_product_current_loans_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}) },
-  {name: "Past Due", data: (Hash[*loan_product_past_loans_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}) }
-], width: "1000px", height: "800px" %>
 
 
-<%= year_dates = [] %>
-<% start_date = LoansModule::Loan.order(disbursement_date: :desc).last.disbursement_date %>
-<% (start_date.to_date..Date.today).each do |date| %>
-
-  <% year_dates << date.end_of_year%>
-<% end %>
-<h4>Loans Maturity per year</h4>
-<% loans_maturity_data = [] %>
-<% year_dates.uniq.each do |year| %>
-
-  <% loans_maturity_data << { year.strftime("%Y") => LoansModule::Loan.matured(from_date: year.beginning_of_year, to_date: year.end_of_year).count } %>
-<% end %>
 
 
-<%= line_chart (Hash[*loans_maturity_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"}, legend: true, label: "Value" %>
+
+
 
 <% loans_maturity_balance_data = [] %>
 <% year_dates.uniq.each do |year| %>
-  <%= LoansModule::Loan.matured(from_date: year.beginning_of_year, to_date: year.end_of_year).map{|loan| loan.balance }.sum %>
+  <% LoansModule::Loan.matured(from_date: year.beginning_of_year, to_date: year.end_of_year).map{|loan| loan.balance }.sum %>
   <% loans_maturity_balance_data << { year.strftime("%Y") => LoansModule::Loan.matured(from_date: year.beginning_of_year, to_date: year.end_of_year).balance } %>
 <% end %>
 <%= bar_chart (Hash[*loans_maturity_balance_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"}, legend: true, label: "Value" %>
-<h4>Loan Payments</h4>
-<% loan_payments_data = [] %>
-<% year_dates.uniq.each do |year| %>
-
-  <% loan_payments_data << { year.strftime("%Y") => AccountingModule::Entry.loan_payments(from_date: year.beginning_of_year, to_date: year.end_of_year).sum(&:amount) } %>
-<% end %>
-<% loan_disbursements_data = [] %>
-<% year_dates.uniq.each do |year| %>
-
-  <% loan_disbursements_data << { year.strftime("%Y") => AccountingModule::Entry.loan_disbursements(from_date: year.beginning_of_year, to_date: year.end_of_year).sum(&:amount) } %>
-<% end %>
 
 
 <%= line_chart [

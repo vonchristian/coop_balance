@@ -1,0 +1,22 @@
+
+<h4>Loan Payments</h4>
+<% year_dates = [] %>
+<% start_date = LoansModule::Loan.order(disbursement_date: :desc).last.disbursement_date %>
+<% (start_date.to_date..Date.today).each do |date| %>
+
+  <% year_dates << date.end_of_year%>
+<% end %>
+<% loan_payments_data = [] %>
+<% year_dates.uniq.each do |year| %>
+
+  <% loan_payments_data << { year.strftime("%Y") => AccountingModule::Entry.loan_payments(from_date: year.beginning_of_year, to_date: year.end_of_year).sum(&:amount) } %>
+<% end %>
+<% loan_disbursements_data = [] %>
+<% year_dates.uniq.each do |year| %>
+
+  <% loan_disbursements_data << { year.strftime("%Y") => AccountingModule::Entry.loan_disbursements(from_date: year.beginning_of_year, to_date: year.end_of_year).sum(&:amount) } %>
+<% end %>
+<%= line_chart [
+  {name: "Loan Payments", data: (Hash[*loan_payments_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}) },
+  {name: "Loan Disbursements", data: (Hash[*loan_disbursements_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}) }
+], width: "1000px", height: "400px", curve: false %>
