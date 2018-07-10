@@ -1,2 +1,0 @@
-class LoanProtectionProvider < ApplicationRecord
-end

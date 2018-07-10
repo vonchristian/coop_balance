@@ -13,7 +13,6 @@ Rails.application.routes.draw do
   root :to => 'loans#index', :constraints => lambda { |request| request.env['warden'].user.role == 'loan_officer' if request.env['warden'].user }, as: :loans_module_root
   root :to => 'management_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'general_manager' if request.env['warden'].user }, as: :management_module_root
   root :to => 'teller_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'teller' if request.env['warden'].user }, as: :teller_module_root
-  root :to => 'store_front_module/products#index', :constraints => lambda { |request| request.env['warden'].user.role == 'stock_custodian' if request.env['warden'].user }, as: :warehouse_module_root
   root :to => 'store_front_module/line_items/sales_line_items#new', :constraints => lambda { |request| request.env['warden'].user.role == 'sales_clerk' if request.env['warden'].user }, as: :store_front_module_root
   root :to => 'store_front_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'sales_manager' if request.env['warden'].user }, as: :store_front_module_sales_manager_root
 
@@ -212,26 +211,6 @@ Rails.application.routes.draw do
   end
 
   resources :users, only: [:show]
-  resources :warehouse_module, only: [:index]
-
-  namespace :warehouse_module do
-    resources :balance_sheet, only: [:index]
-    resources :income_statement, only: [:index]
-    resources :suppliers, only: [:index, :show, :new, :create]
-    resources :laborers, only: [:index, :show, :new, :create] do
-      resources :days_worked, only: [:new, :create]
-    end
-    resources :purchases, only: [:index, :new, :create]
-    resources :finished_goods, only: [:index, :new, :create]
-    resources :raw_materials, only: [:index, :show, :new, :create] do
-      resources :purchases, only: [:new, :create]
-      resources :work_in_process_materials, only: [:new, :create]
-      resources :finished_goods_materials, only: [:new, :create]
-    end
-  end
-  resources :store_front_module, only: [:index] do
-    get :autocomplete_product_name, :on => :collection
-  end
 
   namespace :store_front_module do
     resources :inventories, only: [:index, :show] do

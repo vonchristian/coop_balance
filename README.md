@@ -1,3 +1,5 @@
+move loan product to coop_services_module
+
 TODO
 update savings (has_minimum_balance)
 

@@ -7,7 +7,7 @@ class Member < ApplicationRecord
   enum civil_status: [:single, :married, :widower, :divorced]
 
   belongs_to :office,                 class_name: "CoopConfigurationsModule::Office"
-  has_many :tins,                       as: :tinable
+  has_many :tins,                     as: :tinable
   has_many :entries,                  class_name: "AccountingModule::Entry",
                                       as: :commercial_document
   has_many :voucher_amounts,          class_name: "Vouchers::VoucherAmount",
@@ -36,7 +36,7 @@ class Member < ApplicationRecord
                                       as: :commercial_document
   has_many :sales_return_orders,      class_name: "StoreFrontModule::Orders::SalesReturnOrder",
                                       as: :commercial_document
-  has_many :real_properties,          as: :owner
+
   has_many :organization_memberships, class_name: "Organizations::OrganizationMember",
                                       as: :organization_membership
   has_many :organizations,            through: :organization_memberships
@@ -68,17 +68,18 @@ class Member < ApplicationRecord
     end
   end
 
-  def self.has_birth_month_on(options= {})
-    BirthdayQuery.new(self).has_birth_month_on(options)
+  def self.has_birth_month_on(args= {})
+    BirthdayQuery.new(self).has_birth_month_on(args)
   end
 
-  def self.has_birth_day_on(options= {})
-    BirthdayQuery.new(self).has_birth_day_on(options)
+  def self.has_birth_day_on(args= {})
+    BirthdayQuery.new(self).has_birth_day_on(args)
   end
 
   def current_contact
     contacts.current
   end
+
   def current_tin
     tins.current
   end
@@ -87,8 +88,6 @@ class Member < ApplicationRecord
     full_name
   end
 
-
-
   def latest_purchase_date
     if sales_orders.present?
       sales_orders.order(created_at: :asc).last.date
@@ -96,6 +95,7 @@ class Member < ApplicationRecord
       "No Purchases yet"
     end
   end
+
   def self.with_loans
     all.select{|a| a.loans.present? }
   end
@@ -125,7 +125,6 @@ class Member < ApplicationRecord
     addresses.current_address
   end
 
-
   def recommended_co_makers
     Member.where(last_name: self.last_name)
   end
@@ -147,9 +146,11 @@ class Member < ApplicationRecord
   def full_name
     "#{last_name}, #{first_name} #{middle_name}"
   end
+
   def first_and_last_name
     "#{first_name} #{last_name}"
   end
+
   def current_address
     addresses.order(created_at: :asc).last.try(:details) || "Not Yet Entered"
   end

@@ -114,7 +114,7 @@
                 <% end %>
               </div>
             </div>
-            <hr>
+            <br>
              <div class="row">
               <div class="col-md-6">
                 Organization
@@ -123,6 +123,7 @@
                 <%=  @loan.organization_name %>
               </div>
             </div>
+            <hr>
             <div class="row">
               <div class="col-md-8">
                 <h4 class="condensed-text"> LOAN CO MAKERS </h4>
@@ -153,88 +154,4 @@
               <br>
             <% end %>
             <hr>
-            <div class="row">
-              <div class="col-md-8">
-                 <h4 class="condensed-text">COLLATERAL DETAILS </h4>
-              </div>
-              <div class="col-md-4">
-                <%= link_to new_loan_collateral_path(@loan) do %>
-                  <span class="btn btn-default pull-right"><i class="fa fa-home"></i> Add / Remove </span>
-                <% end %>
-              </div>
-            </div>
-            <% @loan.real_properties.each do |real_property| %>
-               <%=link_to loan_real_property_path(loan_id: @loan.id, id: real_property.id) do %>
-                <div class="row">
-                  <div class="col-md-8">
-
-                    <b><%=real_property.description %> <%=number_to_currency real_property.appraised_value %></b><br>
-                    <% real_property.pictures.each do |image|%>
-                      <%=image_tag(image.image.url(:large), class: "img-square", height: 60, width: 60) %>
-                    <% end %>
-                  </div>
-                </div>
-              <br>
-              <% end %>
-            <% end %>
-          <% if @loan.approved? %>
-            <div class="col-md-6 border-right">
-              <span class="text-muted"><i class="fa fa-calendar"></i> NEXT PAYMENT DUE </span>
-              <h4> <%=Time.zone.now.strftime("%B %e, %Y") %></h4>
-              <br>
-              <small class="text-muted"><i class="fa fa-credit-card"> </i> PRINCIPAL PAID </small>
-              <h4 class="text-green"> P 23213 </h4>
-              <span class="pull-right"> of <%= @loan.loan_amount %></span>
-              <div class="progress xs">
-                <div class="progress-bar progress-bar-success" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                  <span class="sr-only">20% Complete</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-2">
-              AMOUNT
-            </div>
-          <% end %>
-
-        <hr>
-          <div class="row">
-            <div class="col-md-8">
-              <div class="row">
-                <div class="col-md-12">
-                   <p class="text-muted"> APPROVAL DETAILS </p>
-                  <% User.loan_approvers.each do |employee| %>
-                    <div class="row">
-                      <div class="col-md-3">
-                        <%=image_tag(employee.avatar.url(:medium), height: 40, width: 40, class: "img-circle") %>
-                      </div>
-                      <div class="col-md-7">
-                        <strong><%=employee.first_and_last_name %></strong><br>
-                        <small class="text-muted"><%= employee.role.titleize %></small><br>
-                        <% if @loan.approvers.include?(employee) %>
-                          Approved on
-                          <%=@loan.loan_approvals.where(approver: employee).last.date_approved.strftime("%B %e, %Y") %>
-                        <% end %>
-                      </div>
-                      <div class="col-md-2">
-                        <% if !@loan.approvers.include?(employee) && current_user == employee %>
-                          <%= link_to "Approve", new_loan_approval_path(@loan), class: "btn btn-success btn-xs" %>
-                        <% end %>
-
-                      </div>
-                    </div>
-                    <br>
-                <% end %>
-              </div>
-            </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <h4>Notices</h4>
-  <%= link_to 'First Notice', loans_module_loan_first_notice_path(@loan), class: "btn btn-default" %>
-
-</div>
-
-
-<%=@loan.paid? %>

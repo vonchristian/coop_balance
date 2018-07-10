@@ -22,11 +22,7 @@ module LoansModule
     belongs_to :organization,           optional: true
     belongs_to :preparer,               class_name: "User",
                                         foreign_key: 'preparer_id'
-    has_many :loan_protection_funds,    class_name: "LoansModule::LoanProtectionFund",
-                                        dependent: :destroy
-    has_many :loan_approvals,           class_name: "LoansModule::LoanApproval",
-                                        dependent: :destroy
-    has_many :approvers,                through: :loan_approvals
+
     has_many :entries,                  class_name: "AccountingModule::Entry",
                                         as: :commercial_document,
                                         dependent: :destroy
@@ -38,8 +34,7 @@ module LoansModule
                                         dependent: :destroy
     has_many :voucher_amounts,          class_name: "Vouchers::VoucherAmount", as: :commercial_document # for adding amounts on voucher
     has_many :amortization_schedules,   dependent: :destroy
-    has_many :collaterals,              class_name: "LoansModule::Collateral", dependent: :destroy
-    has_many :real_properties,          through: :collaterals
+
     has_many :terms,                    as: :termable
     has_many :notices,                  class_name: "LoansModule::Notice",
                                         as: :notified
@@ -72,6 +67,7 @@ module LoansModule
 
     delegate :is_past_due?, :number_of_days_past_due, :remaining_term, :terms_elapsed, :maturity_date, to: :current_term, allow_nil: true
     delegate :number_of_months, to: :current_term, prefix: true
+
     def current_term
       terms.current
     end

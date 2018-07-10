@@ -19,12 +19,15 @@ class BankAccount < ApplicationRecord
   def balance
    account.balance(commercial_document_id: self.id)
   end
+
   def deposits
    account.debits_balance(commercial_document_id: self.id)
   end
+
   def withdrawals
     account.credits_balance(commercial_document_id: self.id)
   end
+
   def earned_interests
     earned_interest_account.balance(commercial_document_id: self.id)
   end
