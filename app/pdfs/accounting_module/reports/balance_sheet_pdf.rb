@@ -1,6 +1,7 @@
 module AccountingModule
   module Reports
     class BalanceSheetPdf < Prawn::Document
+      attr_reader :assets, :liabilities, :equity
       def initialize(from_date, to_date, assets, liabilities, equity, view_context)
         super(margin: 40, page_size: "A4", page_layout: :portrait)
         @from_date = from_date
@@ -21,9 +22,6 @@ module AccountingModule
       end
 
       def heading
-        bounding_box [300, 760], width: 50 do
-          image "#{Rails.root}/app/assets/images/kccmc_logo.jpg", width: 40, height: 40
-        end
         bounding_box [350, 760], width: 150 do
             text "KCCMC", style: :bold, size: 22
             text "Poblacion, Tinoc, Ifugao", size: 10
@@ -31,7 +29,7 @@ module AccountingModule
         bounding_box [0, 760], width: 400 do
           text "Balance Sheet", style: :bold, size: 14
           move_down 5
-          text "#{@from_date.strftime("%B %e, %Y")} - #{@to_date.strftime("%B %e, %Y")} ", size: 10
+          text "As of #{@to_date.strftime("%B %e, %Y")} ", size: 10
           move_down 5
         end
         move_down 10
@@ -44,7 +42,7 @@ module AccountingModule
       end
       def assets_table
         text "Assets", style: :bold
-        table(assets_data, cell_style: { inline_format: true, size: 11, font: "Helvetica", :padding => [2,5,2,5]}, column_widths: [300, 100]) do
+        table(assets_data, cell_style: { inline_format: true, size: 8, font: "Helvetica", :padding => [2,5,2,5]}, column_widths: [300, 100]) do
           cells.borders =[]
           column(1).align = :right
           row(-1).font_style = :bold
@@ -58,8 +56,8 @@ module AccountingModule
         end
       end
       def assets_data
-        @assets_data ||= @assets.map{|a| [a.name, price(a.balance(to_date: @to_date))] } +
-        [["TOTAL ASSETS", "#{price(AccountingModule::Asset.balance)}"]]
+        @assets_data ||= assets.map{|a| [a.name, price(a.balance(to_date: @to_date))] } +
+        [["TOTAL ASSETS", "#{price(assets.balance(to_date: @to_date))}"]]
       end
        def liabilities_table
         text "Liabilities", style: :bold
@@ -77,8 +75,8 @@ module AccountingModule
         end
       end
       def liabilities_data
-        @liabilities_data ||= @liabilities.map{|a| [a.name, price(a.balance(to_date: @to_date))] } +
-        [["TOTAL LIABILITIES", "#{price(AccountingModule::Liability.balance)}"]]
+        @liabilities_data ||= liabilities.map{|a| [a.name, price(a.balance(to_date: @to_date))] } +
+        [["TOTAL LIABILITIES", "#{price(liabilities.balance(to_date: @to_date))}"]]
 
       end
      def equities_table
@@ -98,7 +96,7 @@ module AccountingModule
       end
       def equities_data
         @equities_data ||= @equity.map{|a| [a.name, price(a.balance(to_date: @to_date))] } +
-        [["TOTAL EQUITY", "#{price(AccountingModule::Equity.balance)}"]]
+        [["TOTAL EQUITY", "#{price(equity.balance(to_date: @to_date))}"]]
 
       end
     end

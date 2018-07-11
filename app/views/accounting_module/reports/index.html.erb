@@ -30,7 +30,7 @@
             <% end %>
             <hr>
             <h4><b>Balance Sheet</b></h4>
-            <p class="text-muted">Generate reports for balance sheet statement. </p>
+            <p class="text-muted">Generate report for balance sheet statement. </p>
             <%= form_tag({ controller: 'accounting_module/reports/balance_sheets', action: 'index', format: 'pdf'}, {:method => :get, :class => 'form-inline'}) do%>
               <div class="form-group">
                 <%= label_tag :to_date, nil, class: 'sr-only'%>
@@ -40,7 +40,7 @@
             <% end %>
             <hr>
             <h4><b>Proofsheet Report</b></h4>
-            <p class="text-muted">Generate reports for consolidated proofsheet report. </p>
+            <p class="text-muted">Generate report for consolidated proofsheet report. </p>
              <%= form_tag({ controller: 'accounting_module/reports/proofsheets', action: 'index', format: 'pdf'}, {:method => :get, :class => 'form-inline'}) do%>
               <div class="form-group">
                 <%= label_tag :to_date, nil, class: 'sr-only'%>

@@ -22,11 +22,8 @@
         </span>
       </div>
     <% end %>
-      <!-- /.search form -->
-      <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
           <li class="header"> ACCOUNTING </li>
-          <!-- <li><a href="/dashboard"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li> -->
 
           <li class=<%= 'active' if current_page?(accounting_module_index_path) %> ><a href="/accounting_module"><i class="fa fa-home"></i> <span>Dashboard</span></a></li>
           <li class=<%= 'active' if current_page?(accounting_module_entries_path) %> ><a href="/accounting_module/entries"><i class="fa fa-credit-card"></i> <span>Entries</span></a></li>
@@ -39,20 +36,10 @@
           <li class=<%= 'active' if current_page?(loans_path) %> ><a href="/loans"><i class="fa fa-briefcase"></i> <span>Loans</span></a></li>
 
 
-
-
           <li class="header"> REPORTS </li>
-          <li class=<%= 'active' if current_page?(accounting_module_accounts_path) %> ><a href="/accounting_module/accounts"><i class="fa fa-circle-o"></i> <span> General Ledger </span></a></li>
-          <li class=<%= 'active' if current_page?(accounting_module_reports_financial_conditions_path) %> ><a href="/accounting_module/reports/financial_conditions"><i class="fa fa-circle-o"></i> <span> Financial Condition </span></a></li>
-
-
-
-          <li class=<%= 'active' if current_page?(accounting_module_settings_path) %> ><a href="/accounting_module/branch_offices"><i class="fa fa-usb"></i> <span> Branch Offices</span></a></li>
-
+          <li class=<%= 'active' if current_page?(accounting_module_accounts_path) %> ><a href="/accounting_module/accounts"><i class="fa fa-circle"></i> <span> General Ledger </span></a></li>
+          <li class=<%= 'active' if current_page?(accounting_module_reports_financial_conditions_path) %> ><a href="/accounting_module/reports/financial_conditions"><i class="fa fa-circle"></i> <span> Financial Statement </span></a></li>
           <li class=<%= 'active' if current_page?(accounting_module_reports_path) %> ><a href="/accounting_module/reports"><i class="fa fa-folder"></i> <span> Reports</span></a></li>
-
-          <li class=<%= 'active' if current_page?(accounting_module_schedules_path) %> ><a href="/accounting_module/schedules"><i class="fa fa-folder"></i> <span> Schedules</span></a></li>
-
 
     </section>
     <!-- /.sidebar -->

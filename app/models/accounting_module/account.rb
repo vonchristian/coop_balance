@@ -89,12 +89,12 @@ module AccountingModule
         end
       end
     end
-    
-    def credits_balance(options={})
-      credit_amounts.balance(options)
+
+    def credits_balance(args={})
+      credit_amounts.balance(args)
     end
-    def debits_balance(options={})
-      debit_amounts.balance(options)
+    def debits_balance(args={})
+      debit_amounts.balance(args)
     end
   end
 end

@@ -7,12 +7,12 @@ module AccountingModule
       elsif params[:from_date].present? && params[:to_date].present?
         @from_date = DateTime.parse(params[:from_date])
         @to_date = DateTime.parse(params[:to_date])
-        @entries = AccountingModule::Entry.entered_on(from_date: @from_date, to_date: @to_date)
+        @entries = AccountingModule::Entry.entered_on(from_date: @from_date, to_date: @to_date).paginate(:page => params[:page], :per_page => 50)
       elsif params[:from_date].present? && params[:to_date].present?
         @from_date = DateTime.parse(params[:from_date])
         @to_date = DateTime.parse(params[:to_date])
         entries = AccountingModule::Entry.entered_on(from_date: @from_date, to_date: @to_date)
-        @entries = entries.paginate(:page => params[:page])
+        @entries = entries.paginate(:page => params[:page], per_page: 50)
       elsif params[:search].present?
         @entries = AccountingModule::Entry.text_search(params[:search]).paginate(:page => params[:page], :per_page => 50)
       elsif params[:recorder].present?

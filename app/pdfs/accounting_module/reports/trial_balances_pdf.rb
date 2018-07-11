@@ -41,7 +41,7 @@ module AccountingModule
       end
 
       def accounts_table
-      table(accounts_data, cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [2,5,2,5]}, column_widths: [45, 150, 80, 80, 80, 80]) do
+      table(accounts_data, cell_style: { inline_format: true, size: 8, font: "Helvetica", :padding => [2,5,2,5]}, column_widths: [45, 150, 80, 80, 80, 80]) do
         cells.borders = []
         row(0).font_style= :bold
         # row(0).background_color = 'DDDDDD'
@@ -57,7 +57,7 @@ module AccountingModule
         stroke_horizontal_rule
         move_down 4
       end
-      table([["TOTAL", "", "#{price(AccountingModule::Account.updated_at(from_date: @to_date, to_date: @to_date).distinct.map{|a| a.balance(to_date: @to_date.yesterday.end_of_day)}.sum) }", "#{price(AccountingModule::Account.updated_at(from_date: @to_date, to_date: @to_date).distinct.map{|a| a.debits_balance(to_date: @to_date)}.sum) }", "#{price(AccountingModule::Account.updated_at(from_date: @to_date, to_date: @to_date).distinct.map{|a| a.credits_balance(to_date: @to_date)}.sum) }", "#{price(AccountingModule::Account.updated_at(from_date: @to_date, to_date: @to_date).distinct.map{|a| a.balance(to_date: @to_date)}.sum) }"]], cell_style: { inline_format: true, size: 10, font: "Helvetica", :padding => [2,5,2,5]}, column_widths: [45, 150, 80, 80, 80, 80]) do
+      table([["TOTAL", "", "#{price(AccountingModule::Account.updated_at(from_date: @to_date, to_date: @to_date).distinct.map{|a| a.balance(to_date: @to_date.yesterday.end_of_day)}.sum) }", "#{price(AccountingModule::Account.updated_at(from_date: @to_date, to_date: @to_date).distinct.map{|a| a.debits_balance(to_date: @to_date)}.sum) }", "#{price(AccountingModule::Account.updated_at(from_date: @to_date, to_date: @to_date).distinct.map{|a| a.credits_balance(to_date: @to_date)}.sum) }", "#{price(AccountingModule::Account.updated_at(from_date: @to_date, to_date: @to_date).distinct.map{|a| a.balance(to_date: @to_date)}.sum) }"]], cell_style: { inline_format: true, size: 8, font: "Helvetica", :padding => [2,5,2,5]}, column_widths: [45, 150, 80, 80, 80, 80]) do
         cells.borders = []
         column(2).align = :right
         column(3).align = :right
@@ -68,7 +68,7 @@ module AccountingModule
     end
     def accounts_data
       [["CODE", "ACCOUNT TITLE", "BEGINNING BALANCE", "DEBITS", "CREDITS", "ENDING BALANCE"]] +
-      @accounts_data ||= AccountingModule::Account.updated_at(from_date: @to_date, to_date: @to_date).uniq.map{|a| [a.code, a.name, price(a.balance(to_date: @to_date.yesterday.end_of_day)), price(a.debits_balance(to_date: @to_date)), price(a.credits_balance(to_date: @to_date)), price(a.balance(to_date: @to_date))] }
+      @accounts_data ||= AccountingModule::Account.updated_at(from_date: @to_date, to_date: @to_date).uniq.map{|a| [a.code, a.name, price(a.balance(to_date: @to_date)), price(a.debits_balance(to_date: @to_date)), price(a.credits_balance(to_date: @to_date)), price(a.balance(to_date: @to_date))] }
     end
     end
   end

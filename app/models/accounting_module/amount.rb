@@ -14,9 +14,11 @@ module AccountingModule
     def self.for(account)
       where(account: account)
     end
+
     def self.recorded_by(recorder_id)
       where(recorder_id: recorder_id)
     end
+
     def self.entries_for(options={})
       where(commercial_document: options[:commercial_document])
     end

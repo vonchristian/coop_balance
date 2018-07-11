@@ -1,32 +1,40 @@
-
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-md-12">
     <div class="box box-default">
       <div class="box-header">
-          <div class="row">
-            <div class="col-md-8">
-              <%=form_tag members_path, method: :get do %>
-                <div class="input-group">
-                  <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search First Name, Last Name ", id: 'account-search-form' %>
-                  <span class="input-group-btn">
-                    <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
-                      <i class="fa fa-search"></i>
-                    <% end %>
-                  </span>
-                </div>
-              <% end %>
-            </div>
-            <div class="col-md-4">
-
-              <%= link_to new_membership_application_path do %>
-                <span class="btn btn-primary pull-right"><i class="fa fa-user-plus"></i> New Membership Application </span>
-              <% end %>
-            </div>
-          </div>
-
-        <br>
+        <h4>Active Members </h4>
+        <% months = [] %>
+        <% (DateTime.now.beginning_of_year..DateTime.now).each do |month| %>
+          <% months << month.beginning_of_month %>
+        <% end %>
+        <% active_members_data = [] %>
+        <% months.uniq.each do |month| %>
+          <% active_members_data << { month.strftime("%B %Y") => Member.updated_at(from_date: DateTime.now.beginning_of_year, to_date: month.end_of_month).count } %>
+        <% end %>
+        <%= line_chart (Hash[*active_members_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"}, download: true, curve: false, thousands: "," %>
       </div>
+      <hr>
       <div class="box-body">
+        <div class="row">
+          <div class="col-md-8">
+            <%=form_tag members_path, method: :get do %>
+              <div class="input-group">
+                <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search First Name, Last Name ", id: 'account-search-form' %>
+                <span class="input-group-btn">
+                  <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                    <i class="fa fa-search"></i>
+                  <% end %>
+                </span>
+              </div>
+            <% end %>
+          </div>
+          <div class="col-md-4">
+            <%= link_to new_membership_application_path do %>
+              <span class="btn btn-primary pull-right"><i class="fa fa-user-plus"></i> New Membership Application </span>
+            <% end %>
+          </div>
+        </div>
+        <br>
         <% @members.each do |member| %>
           <% cache member do %>
             <%= link_to member_info_index_path(member) do %>
