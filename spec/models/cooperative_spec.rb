@@ -4,6 +4,9 @@ RSpec.describe Cooperative, type: :model do
   describe 'associations' do
     it { is_expected.to have_many :offices }
     it { is_expected.to have_many :store_fronts }
+    it { is_expected.to have_many :cooperative_services }
+    it { is_expected.to have_many :accountable_accounts }
+    it { is_expected.to have_many :accounts }
   end
   describe 'validations' do
     it { is_expected.to validate_presence_of :name }

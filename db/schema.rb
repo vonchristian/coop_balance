@@ -10,12 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_11_014717) do
+ActiveRecord::Schema.define(version: 2018_07_11_115505) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "accountable_accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "accountable_type"
+    t.uuid "accountable_id"
+    t.uuid "account_id"
+    t.index ["account_id"], name: "index_accountable_accounts_on_account_id"
+    t.index ["accountable_type", "accountable_id"], name: "index_accountable_on_accountable_accounts"
+  end
 
   create_table "accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
@@ -107,10 +115,12 @@ ActiveRecord::Schema.define(version: 2018_07_11_014717) do
     t.string "commercial_document_type"
     t.uuid "commercial_document_id"
     t.datetime "entry_date"
+    t.uuid "cooperative_service_id"
     t.index ["account_id", "entry_id"], name: "index_amounts_on_account_id_and_entry_id"
     t.index ["account_id"], name: "index_amounts_on_account_id"
     t.index ["commercial_document_id", "commercial_document_type"], name: "index_commercial_documents_on_accounting_amounts"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_amounts_on_commercial_document"
+    t.index ["cooperative_service_id"], name: "index_amounts_on_cooperative_service_id"
     t.index ["entry_id", "account_id"], name: "index_amounts_on_entry_id_and_account_id"
     t.index ["entry_id"], name: "index_amounts_on_entry_id"
     t.index ["recorder_id"], name: "index_amounts_on_recorder_id"
@@ -249,6 +259,14 @@ ActiveRecord::Schema.define(version: 2018_07_11_014717) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["contactable_type", "contactable_id"], name: "index_contacts_on_contactable_type_and_contactable_id"
+  end
+
+  create_table "cooperative_services", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "cooperative_id"
+    t.string "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cooperative_id"], name: "index_cooperative_services_on_cooperative_id"
   end
 
   create_table "cooperatives", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1406,6 +1424,7 @@ ActiveRecord::Schema.define(version: 2018_07_11_014717) do
     t.index ["raw_material_id"], name: "index_work_in_progress_materials_on_raw_material_id"
   end
 
+  add_foreign_key "accountable_accounts", "accounts"
   add_foreign_key "accounts", "accounts", column: "main_account_id"
   add_foreign_key "addresses", "barangays"
   add_foreign_key "addresses", "municipalities"
@@ -1415,6 +1434,7 @@ ActiveRecord::Schema.define(version: 2018_07_11_014717) do
   add_foreign_key "amortization_schedules", "accounts", column: "debit_account_id"
   add_foreign_key "amortization_schedules", "loans"
   add_foreign_key "amounts", "accounts"
+  add_foreign_key "amounts", "cooperative_services"
   add_foreign_key "amounts", "entries"
   add_foreign_key "amounts", "users", column: "recorder_id"
   add_foreign_key "appraisals", "real_properties"
@@ -1429,6 +1449,7 @@ ActiveRecord::Schema.define(version: 2018_07_11_014717) do
   add_foreign_key "collaterals", "loans"
   add_foreign_key "collaterals", "real_properties"
   add_foreign_key "committee_members", "committees"
+  add_foreign_key "cooperative_services", "cooperatives"
   add_foreign_key "croppings", "crops"
   add_foreign_key "croppings", "farms"
   add_foreign_key "days_workeds", "laborers"

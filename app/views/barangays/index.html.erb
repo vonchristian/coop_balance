@@ -10,6 +10,7 @@
             <thead>
               <tr>
                 <th> Barangay </th>
+                <th> Members </th>
                 <th> Loans </th>
                 <th> Savings </th>
               </tr>
@@ -18,6 +19,9 @@
               <% @barangays.each do |barangay| %>
                 <tr>
                   <td> <%= link_to barangay.name, barangay_path(barangay) %></td>
+                  <td><%= barangay.members.uniq.count %></td>
+                  <td><%= barangay.loans.uniq.count %></td>
+                  <td><%= barangay.savings.uniq.count %></td>
                 </tr>
               <% end %>
             </tbody>

@@ -15,7 +15,10 @@ module AccountingModule
         balance_for(options).
         sum(:amount)
       elsif commercial_document.blank? && from_date.blank? && to_date.present?
-        entered_on(from_date: AccountingModule::Entry.order(entry_date: :asc).first.try(:entry_date) || Date.today, to_date: options[:to_date]).
+        entered_on(from_date: Date.today - 999.years, to_date: options[:to_date]).
+        sum(:amount)
+      elsif options[:cooperative_service].present?
+        includes(:cooperative_service).where(cooperative_service: options[:cooperative_service]).
         sum(:amount)
       else
         sum(:amount)

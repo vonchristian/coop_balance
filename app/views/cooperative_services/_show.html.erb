@@ -1,0 +1,25 @@
+ <div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box box-solid">
+        <section class="box box-header">
+          <h3 class="box-title"> <%= @cooperative_service.title %></h3>
+        </section>
+
+        <div class="box-body">
+          <ul class="nav nav-tabs">
+            <li class="<%='active' if current_page?(cooperative_service_balance_sheets_path(@cooperative_service))%>"><%=link_to 'Balance Sheet', cooperative_service_balance_sheets_path(@cooperative_service) %></li>
+            <li class="<%='active' if current_page?(cooperative_service_settings_path(@cooperative_service))%>"><%=link_to 'Settings', cooperative_service_settings_path(@cooperative_service) %></li>
+          </ul>
+          <div class="tab-content">
+            <% if current_page? cooperative_service_balance_sheets_path(@cooperative_service) %>
+              <%= render 'cooperative_services/partials/balance_sheets' %>
+            <% end %>
+            <% if current_page? cooperative_service_settings_path(@cooperative_service) %>
+              <%= render 'cooperative_services/partials/settings' %>
+            <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

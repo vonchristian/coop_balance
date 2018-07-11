@@ -26,38 +26,34 @@
         <!-- /.search form -->
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
-          <li class="header"> MANAGEMENT </li>
-          <li class=<%= 'active' if current_page?(management_module_index_path) %> ><a href="/management_module"><i class="fa fa-dashboard"></i> <span> Dashboard</span></a></li>
+
             <li class=<%= 'active' if current_page?(members_path) %> ><a href="/members"><i class="fa fa-users"></i> <span> Members</span></a></li>
-            <li class=<%= 'active' if current_page?(vouchers_path) %> ><a href="/vouchers"><i class="fa fa-folder"></i> <span> Vouchers</span></a></li>
 
-          <li class=<%= 'active' if current_page?(share_capitals_path) %> ><a href="/share_capitals"><i class="fa fa-pie-chart"></i> <span> Share Capitals</span></a></li>
-          <li class=<%= 'active' if current_page?(savings_accounts_path) %> ><a href="/savings_accounts"><i class="fa fa-money"></i> <span> Savings </span></a></li>
-          <li class=<%= 'active' if current_page?(time_deposits_path) %> ><a href="/time_deposits"><i class="fa fa-server"></i> <span> Time Deposits </span></a></li>
-          <li class="header"> LOANS </li>
-          <li class=<%#= 'active' if current_page?(loans_module_loans_path) %> ><a href="/loans"><i class="fa fa-credit-card"></i> <span> Loans </span></a></li>
-          <li class="header"> ACCOUNTING </li>
-          <li class=<%= 'active' if current_page?(accounting_module_entries_path) %> ><a href="/accounting_module/entries"><i class="fa fa-circle-o"></i> <span> General Ledger</span></a></li>
-          <li class=<%= 'active' if current_page?(accounting_module_accounts_path) %> ><a href="/accounting_module/accounts"><i class="fa fa-circle-o"></i> <span> Chart of Accounts</span></a></li>
+          <li class=<%= 'active' if current_page?(share_capitals_path) %> ><a href="/share_capitals"><i class="fa fa-briefcase"></i> <span> Share Capitals</span></a></li>
+          <li class=<%= 'active' if current_page?(savings_accounts_path) %> ><a href="/savings_accounts"><i class="fa fa-briefcase"></i> <span> Savings </span></a></li>
+          <li class=<%= 'active' if current_page?(time_deposits_path) %> ><a href="/time_deposits"><i class="fa fa-hourglass"></i> <span> Time Deposits </span></a></li>
+          <li class=<%= 'active' if current_page?(loans_path) %> ><a href="/loans"><i class="fa fa-credit-card"></i> <span> Loans </span></a></li>
+          <li class=<%= 'active' if current_page?(barangays_path) %> ><a href="/barangays"><i class="fa fa-map-marker"></i> <span> Barangays </span></a></li>
+
+          <li class=<%= 'active' if current_page?(calendars_path) %> ><a href="/calendars"><i class="fa fa-calendar"></i> <span> Birthday Calendar</span></a></li>
 
 
-            <li class=<%#= 'active' if current_page?(management_module_settings_path) %> ><a href="/management_module/settings"><i class="fa fa-cog"></i> <span> Settings</span></a></li>
-            <li class=<%= 'active' if current_page?(employees_path) %> ><a href="/hr_module/employees"><i class="fa fa-users"></i> <span> Employees</span></a></li>
-            <li class=<%= 'active' if current_page?(calendars_path) %> ><a href="/calendars"><i class="fa fa-calendar-o"></i> <span> Calendar</span></a></li>
+
+
+
 
              <li class=<%= 'active' if current_page?(organizations_path) %> ><a href="/organizations"><i class="fa fa-sitemap"></i> <span> Organizations</span></a></li>
-             <li class=<%= 'active' if current_page?(offices_path) %> ><a href="/branch_offices"><i class="fa fa-sitemap"></i> <span> Offices</span></a></li>
+
               <li class="header"> MONITORING </li>
              <li class=<%= 'active' if current_page?(loans_module_monitoring_metrics_path) %> ><a href="/loans_module/monitoring/metrics"><i class="fa fa-circle"></i> <span> Loans Portfolio</span></a></li>
              <li class=<%= 'active' if current_page?(savings_accounts_dashboards_path) %> ><a href="/savings_accounts_dashboards"><i class="fa fa-circle"></i> <span> Savings Portfolio</span></a></li>
+             <li class=<%= 'active' if current_page?(share_capitals_section_dashboards_path) %> ><a href="/share_capitals_section/dashboards"><i class="fa fa-circle"></i> <span> Share Capitals Portfolio</span></a></li>
+             <li class=<%= 'active' if current_page?(cooperative_services_path) %> ><a href="/cooperative_services"><i class="fa fa-circle"></i> <span> Services Portfolio</span></a></li>
 
+              <li class="header"> SETTINGS </li>
 
-
-
-
-
-
-
-      </section>
+              <li class=<%= 'active' if current_page?(management_module_settings_path) %> ><a href="/management_module/settings"><i class="fa fa-cog"></i> <span> Settings</span></a></li>
+           </ul>
+          </section>
       <!-- /.sidebar -->
     </aside>

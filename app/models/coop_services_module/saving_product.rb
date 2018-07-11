@@ -1,5 +1,7 @@
  module CoopServicesModule
 	class SavingProduct < ApplicationRecord
+    extend Totalable
+    extend Metricable
 	  enum interest_recurrence: [:daily, :weekly, :monthly, :quarterly, :semi_annually, :annually]
 
 	  has_many :subscribers,                class_name: "MembershipsModule::Saving"
@@ -35,36 +37,6 @@
     def self.total_subscribers
       sum(&:total_subscribers)
     end
-
-    def self.total_balances(options={})
-      balances = BigDecimal.new("0")
-      accounts.each do |account|
-        balances += account.balance(options)
-      end
-      balances
-    end
-
-    def self.metric
-      total_balance = total_balances(to_date: Date.today.end_of_month)
-      ((total_balance -
-      total_balances(to_date: Date.today.last_month.end_of_month)) / total_balance) * 100.0
-    end
-    def self.metric_color
-      if metric.negative?
-        "danger"
-      elsif metric.positive?
-        "success"
-      end
-    end
-    def self.metric_chevron
-      if metric.negative?
-        "down"
-      elsif metric.positive?
-        "up"
-      end
-    end
-
-
 
     def total_subscribers
       subscribers.count

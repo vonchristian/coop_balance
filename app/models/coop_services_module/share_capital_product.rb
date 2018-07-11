@@ -1,10 +1,11 @@
 module CoopServicesModule
   class ShareCapitalProduct < ApplicationRecord
+    extend Metricable
+    extend Totalable
     belongs_to :paid_up_account, class_name: "AccountingModule::Account"
     belongs_to :closing_account, class_name: "AccountingModule::Account"
     belongs_to :subscription_account, class_name: "AccountingModule::Account"
     belongs_to :interest_payable_account, class_name: "AccountingModule::Account"
-
     has_many :subscribers, class_name: "MembershipsModule::ShareCapital"
 
     validates :name,
@@ -18,22 +19,6 @@ module CoopServicesModule
     delegate :name, to: :paid_up_account, prefix: true
     delegate :name, to: :subscription_account, prefix: true
     # after_commit :update_share_capitals
-
-    def self.total_balances(options={})
-      balances = BigDecimal.new("0")
-      accounts.each do |account|
-        balances += account.balance(options)
-      end
-      balances
-    end
-
-    def self.metric
-      total_balance = total_balances(to_date: Date.today.end_of_month)
-      ((total_balance -
-      total_balances(to_date: Date.today.last_month.end_of_month)) / total_balance) * 100.0
-    end
-
-
 
     def self.accounts
       accounts = self.pluck(:paid_up_account_id)

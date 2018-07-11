@@ -4,6 +4,6 @@ class BarangaysController < ApplicationController
   end
   def show
     @barangay = Addresses::Barangay.find(params[:id])
-    @members = @barangay.members.uniq
+    @members = @barangay.members
   end
 end

@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   root :to => 'accounting_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'accountant' if request.env['warden'].user }, as: :accountant_module_root
 
   root :to => 'loans#index', :constraints => lambda { |request| request.env['warden'].user.role == 'loan_officer' if request.env['warden'].user }, as: :loans_module_root
-  root :to => 'management_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'general_manager' if request.env['warden'].user }, as: :management_module_root
+  root :to => 'members#index', :constraints => lambda { |request| request.env['warden'].user.role == 'general_manager' if request.env['warden'].user }, as: :management_module_root
   root :to => 'members#index', :constraints => lambda { |request| request.env['warden'].user.role == 'teller' if request.env['warden'].user }, as: :teller_module_root
   root :to => 'store_front_module/line_items/sales_line_items#new', :constraints => lambda { |request| request.env['warden'].user.role == 'sales_clerk' if request.env['warden'].user }, as: :store_front_module_root
   root :to => 'store_front_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'sales_manager' if request.env['warden'].user }, as: :store_front_module_sales_manager_root
@@ -154,7 +154,6 @@ Rails.application.routes.draw do
   end
   resources :member_registrations, only: [:new, :create]
 
-  resources :management_module, only: [:index]
   namespace :management_module do
     resources :savings_account_registries, only: [:new, :create]
     resources :share_capital_registries, only: [:new, :create]
@@ -437,5 +436,13 @@ namespace :share_capitals_section do
   end
   namespace :reports do
     resources :audit_reports, only: [:index]
+  end
+  resources :cooperative_services, only: [:index, :new, :create, :show] do
+    resources :balance_sheets,  only: [:index],         module: :cooperative_services
+    resources :settings,        only: [:index],         module: :cooperative_services
+    resources :accounts,        only: [:new, :create], module: :cooperative_services do
+      resources :activations,   only: [:create],       module: :accounts
+      resources :deactivations, only: [:create],       module: :accounts
+    end
   end
 end

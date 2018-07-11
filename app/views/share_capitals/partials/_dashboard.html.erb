@@ -1,3 +1,16 @@
+<div class="row">
+                  <div class="col-md-6">
+                    <h3><%= number_to_currency CoopServicesModule::ShareCapitalProduct.total_balances %></h3>
+                    <small>TOTAL PAID UP SHARE CAPITALS</small>
+
+                  </div>
+                  <div class="col-md-3">
+                    <small>METRICS</small>
+                    <h3 class="text-<%= CoopServicesModule::ShareCapitalProduct.metric_color%>"><i class="fa fa-arrow-<%=CoopServicesModule::ShareCapitalProduct.metric_chevron%>"></i> <%= number_to_currency CoopServicesModule::ShareCapitalProduct.metric(first_date: Date.today, second_date: Date.today.last_month), unit: "" %> % </h3>
+                    <small>SINCE LAST MONTH (<%= Date.today.last_month.strftime("%B %e, %Y") %>)</small>
+                  </div>
+                </div>
+                <hr>
 <h4>Share Capitals Inactivity</h4>
 <% share_capitals_inactivity_data = [] %>
 <% share_capitals_inactivity_data << { "1-30 Days Inactive" => @share_capitals.updated_at(from_date: Date.today - 30.days, to_date: Date.today).count } %>

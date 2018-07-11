@@ -5,6 +5,7 @@ module AccountingModule
     belongs_to :account, :class_name => 'AccountingModule::Account', touch: true
     belongs_to :recorder, class_name: "User", foreign_key: 'recorder_id', touch: true
     belongs_to :commercial_document, polymorphic: true, touch: true
+    belongs_to :cooperative_service, class_name: "CoopServicesModule::CooperativeService"
 
     validates :type, :amount, :entry, :account, :commercial_document_id,  presence: true
     validates :amount, numericality: true

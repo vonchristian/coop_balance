@@ -9,6 +9,7 @@ module AccountingModule
       it { is_expected.to belong_to :account }
       it { is_expected.to belong_to :commercial_document }
       it { is_expected.to belong_to :recorder }
+      it { is_expected.to belong_to :cooperative_service }
     end
 
     describe 'validations' do
@@ -22,7 +23,6 @@ module AccountingModule
 
     describe 'delegations' do
       it { is_expected.to delegate_method(:name).to(:account).with_prefix }
-      it { is_expected.to delegate_method(:entry_date).to(:entry) }
       it { is_expected.to delegate_method(:recorder).to(:entry) }
       it { is_expected.to delegate_method(:reference_number).to(:entry) }
       it { is_expected.to delegate_method(:description).to(:entry) }

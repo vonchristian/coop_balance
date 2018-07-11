@@ -19,11 +19,15 @@ module AccountingModule
     validates :name, uniqueness: true
     validates :code, uniqueness: { case_sensitive: false }
 
-    scope :assets,      -> { where(type: 'AccountingModule::Asset') }
+
     scope :liabilities, -> { where(type: 'AccountingModule::Liability') }
     scope :equities,    -> { where(type: 'AccountingModule::Equity') }
     scope :revenues,    -> { where(type: 'AccountingModule::Revenue') }
     scope :expenses,    -> { where(type: 'AccountingModule::Expense') }
+
+    def self.assets
+      where(type: 'AccountingModule::Asset')
+    end
 
     def self.active
       where(active: true)
@@ -45,6 +49,9 @@ module AccountingModule
     def account_name
       name
     end
+    def normalized_type
+      type.gsub("AccountingModule::", "")
+    end
 
     def self.types
       ["AccountingModule::Asset",
@@ -55,20 +62,16 @@ module AccountingModule
      end
 
     def self.balance(options={})
-      if self.new.class == AccountingModule::Account
-        raise(NoMethodError, "undefined method 'balance'")
-      else
-        accounts_balance = BigDecimal.new('0')
-        accounts = self.all
-        accounts.each do |account|
-          if account.contra
-            accounts_balance -= account.balance(options)
-          else
-            accounts_balance += account.balance(options)
-          end
+      accounts_balance = BigDecimal.new('0')
+      accounts = self.all
+      accounts.each do |account|
+        if account.contra
+          accounts_balance -= account.balance(options)
+        else
+          accounts_balance += account.balance(options)
         end
-        accounts_balance
       end
+      accounts_balance
     end
     def self.trial_balance
       if self.new.class == AccountingModule::Account

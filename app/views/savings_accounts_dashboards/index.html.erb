@@ -24,6 +24,19 @@
 
             </div>
           </div>
+          <div class="row">
+                  <div class="col-md-6">
+                    <h3><%= number_to_currency CoopServicesModule::SavingProduct.total_balances %></h3>
+                    <small>TOTAL SAVINGS</small>
+                  </div>
+                  <div class="col-md-3">
+                    <small>METRICS</small>
+                    <h3 class="text-<%= CoopServicesModule::SavingProduct.metric_color%>"><i class="fa fa-arrow-<%=CoopServicesModule::SavingProduct.metric_chevron%>"></i> <%= number_to_currency CoopServicesModule::SavingProduct.metric(first_date: Date.today, second_date: Date.today.last_month), unit: "" %> % </h3>
+                    <small>SINCE LAST MONTH (<%= Date.today.last_month.strftime("%B %e, %Y") %>)</small>
+                  </div>
+                </div>
+                <hr>
+
           <h4>Savings Accounts Inactivity</h4>
           <div class="row">
             <div class="col-md-8">
