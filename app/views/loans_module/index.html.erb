@@ -34,16 +34,17 @@
 
 <h4>Loan Product </h4>
 
-
-
-
+<% months = [] %>
+      <% (DateTime.now.beginning_of_year..DateTime.now).each do |month| %>
+       <% months << month.beginning_of_month %>
+      <% end %>
 
 
 
 <% loans_maturity_balance_data = [] %>
-<% year_dates.uniq.each do |year| %>
-  <% LoansModule::Loan.matured(from_date: year.beginning_of_year, to_date: year.end_of_year).map{|loan| loan.balance }.sum %>
-  <% loans_maturity_balance_data << { year.strftime("%Y") => LoansModule::Loan.matured(from_date: year.beginning_of_year, to_date: year.end_of_year).balance } %>
+<% months.uniq.each do |month| %>
+  <% LoansModule::Loan.matured(from_date: month.beginning_of_month, to_date: month.end_of_month).map{|loan| loan.balance }.sum %>
+  <% loans_maturity_balance_data << { month.strftime("%B") => LoansModule::Loan.matured(from_date: month.beginning_of_month, to_date: month.end_of_month).balance } %>
 <% end %>
 <%= bar_chart (Hash[*loans_maturity_balance_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"}, legend: true, label: "Value" %>
 

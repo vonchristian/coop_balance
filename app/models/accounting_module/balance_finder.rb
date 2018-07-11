@@ -1,7 +1,6 @@
 module AccountingModule
   module BalanceFinder
     def balance(options={})
-      first_entry_date = AccountingModule::Entry.order(entry_date: :desc).last.try(:entry_date) || Date.today
       from_date = options[:from_date]
       to_date = options[:to_date]
       commercial_document = options[:commercial_document]
@@ -16,10 +15,9 @@ module AccountingModule
         balance_for(options).
         sum(:amount)
       elsif commercial_document.blank? && from_date.blank? && to_date.present?
-        entered_on(from_date: first_entry_date, to_date: options[:to_date]).
+        entered_on(from_date: AccountingModule::Entry.order(entry_date: :asc).first.try(:entry_date) || Date.today, to_date: options[:to_date]).
         sum(:amount)
       else
-        includes(:entry).
         sum(:amount)
       end
     end

@@ -2,15 +2,9 @@
   <div class="col-md-12">
     <div class="box box-solid">
       <div class="box-body">
-
-
-
-
-
    <h4>Expenses vs. Revenue</h4>
     <% month_dates = [] %>
-    <% start_date = Date.today.beginning_of_year %>
-    <% (start_date.to_date..Date.today.end_of_month).each do |date| %>
+    <% (Date.today.beginning_of_year..Date.today.end_of_month).each do |date| %>
 
       <% month_dates << date.end_of_month %>
     <% end %>
@@ -18,7 +12,7 @@
     <% month_dates.uniq.each do |month| %>
       <% revenues_accounts_data << { month.strftime("%B") => AccountingModule::Revenue.balance(to_date: month.end_of_month) } %>
     <% end %>
-    <%=  expenses_accounts_data = [] %>
+    <% expenses_accounts_data = [] %>
     <% month_dates.uniq.each do |month| %>
       <% expenses_accounts_data << { month.strftime("%B") => AccountingModule::Expense.balance(to_date: month.end_of_month) } %>
     <% end %>

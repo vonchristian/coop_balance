@@ -19,11 +19,11 @@ class Term < ApplicationRecord
   end
 
   def matured?
-    maturity_date < Time.zone.now
+    maturity_date <= Time.zone.now
   end
 
   def is_past_due?
-    number_of_days_past_due > 1
+    maturity_date <= Time.zone.now
   end
 
   def number_of_days_past_due

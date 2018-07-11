@@ -1,6 +1,5 @@
 module AccountingModule
   class Expense < Account
-
     self.normal_credit_balance = false
 
     def balance(options={})

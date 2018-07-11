@@ -80,7 +80,7 @@
                           <% end %>
                           <% else %>
                           <%= link_to accounting_module_account_activations_path(account), method: :post do %>
-                          <i class="fa fa-toggle-off fa-2x "></i>
+                          <i class="fa fa-toggle-off text-danger fa-2x "></i>
                           <% end %>
                           </td>
                         <% end %>
@@ -97,11 +97,11 @@
                         <td>
                           <% if account.active? %>
                           <%= link_to accounting_module_account_deactivations_path(account), method: :post do %>
-                            <i class="fa fa-toggle-on fa-2x"></i>
+                            <i class="fa fa-toggle-on fa-2x text-success"></i>
                           <% end %>
                           <% else %>
                           <%= link_to accounting_module_account_activations_path(account), method: :post do %>
-                          <i class="fa fa-toggle-off fa-2x "></i>
+                          <i class="fa fa-toggle-off fa-2x text-danger"></i>
                           <% end %>
                           </td>
                       <% end %>

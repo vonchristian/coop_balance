@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_10_082220) do
+ActiveRecord::Schema.define(version: 2018_07_11_014717) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -106,6 +106,7 @@ ActiveRecord::Schema.define(version: 2018_07_10_082220) do
     t.uuid "recorder_id"
     t.string "commercial_document_type"
     t.uuid "commercial_document_id"
+    t.datetime "entry_date"
     t.index ["account_id", "entry_id"], name: "index_amounts_on_account_id_and_entry_id"
     t.index ["account_id"], name: "index_amounts_on_account_id"
     t.index ["commercial_document_id", "commercial_document_type"], name: "index_commercial_documents_on_accounting_amounts"

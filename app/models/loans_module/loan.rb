@@ -34,6 +34,7 @@ module LoansModule
                                         dependent: :destroy
     has_many :voucher_amounts,          class_name: "Vouchers::VoucherAmount", as: :commercial_document # for adding amounts on voucher
     has_many :amortization_schedules,   dependent: :destroy
+    has_many :amounts, as: :commercial_document, class_name: "AccountingModule::Amount"
 
     has_many :terms,                    as: :termable
     has_many :notices,                  class_name: "LoansModule::Notice",
@@ -76,6 +77,7 @@ module LoansModule
       disbursement_voucher.entry.recorder
     end
 
+
     def self.not_archived
       where(archived: false)
     end
@@ -96,15 +98,24 @@ module LoansModule
     end
 
     def self.current_loans
-      self.where.not(disbursement_date: nil).
-      joins(:terms).where.not('terms.maturity_date < ?', Date.today)
+      disbursed.not_matured
     end
 
-    def self.not_matured(options={})
+    def self.not_matured
+        joins(:terms).where('terms.maturity_date > ?', Date.today)
     end
 
     def self.past_due(options={})
-      all.select { |a| a.is_past_due? }
+      if options[:from_date] && options[:to_date]
+        from_date = options[:from_date]
+        to_date   = options[:to_date]
+        range     = DateRange.new(from_date: from_date, to_date: to_date)
+        self.where.not(disbursement_date: nil).
+        joins(:terms).where('terms.maturity_date' => range.start_date..range.end_date )
+      else
+        self.where.not(disbursement_date: nil).
+        joins(:terms).where('terms.maturity_date < ?', Date.today)
+      end
     end
 
     def self.disbursed(options={})
@@ -227,7 +238,8 @@ module LoansModule
     end
 
     def disbursed?
-      loan_product.loans_receivable_current_account.debit_amounts.where(commercial_document: self).present?
+      loan_product.loans_receivable_current_account.debit_amounts.where(commercial_document: self).present? &&
+      disbursement_date.present?
     end
     def disbursement_entry
       loan_product.loans_receivable_current_account.debit_amounts.where(commercial_document: self).first.entry
@@ -246,9 +258,9 @@ module LoansModule
     end
 
     def balance
-      principal_balance +
-      interest_receivable_balance +
-      penalties_balance
+      principal_balance
+      # interest_receivable_balance +
+      # penalties_balance
     end
 
     def status_color

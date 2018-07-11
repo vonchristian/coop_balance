@@ -28,6 +28,14 @@ module LoansModule
 
     validates :name, uniqueness: true
     validates :maximum_loanable_amount, numericality: true
+    def self.total_balances(args={})
+      accounts_balance = BigDecimal.new('0')
+      all.each do |loan_product|
+        accounts_balance += loan_product.loans_receivable_current_account.balance(args)
+      end
+      accounts_balance
+    end
+
     def self.loan_payments(options={})
       entries = []
       self.all.each do |loan_product|

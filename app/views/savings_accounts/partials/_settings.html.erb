@@ -1,5 +1,5 @@
  <div class="tab-pane <%= 'active' if current_page? savings_account_settings_path(@savings_account) %>">
-   <%=link_to "New Adjusting Entry", new_savings_account_adjusting_entry_path(@savings_account) %>
+   <%=link_to "New Adjusting Entry", new_accounting_module_adjusting_entry_path(commercial_document_type: @savings_account.class.to_s, commercial_document_id: @savings_account.id) %>
    <hr>
    <h4>Merge Account</h4>
    <%= link_to 'Merge Account', new_savings_account_account_merging_path(@savings_account), class: "btn btn-danger" %>

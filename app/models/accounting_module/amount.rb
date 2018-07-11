@@ -10,7 +10,8 @@ module AccountingModule
     validates :amount, numericality: true
 
     delegate :name, to: :account, prefix: true
-    delegate :entry_date, :recorder, :reference_number, :description,  to: :entry
+    delegate :recorder, :reference_number, :description,  to: :entry
+    before_save :set_default_date
     def self.for(account)
       where(account: account)
     end
@@ -24,12 +25,15 @@ module AccountingModule
     end
 
     def self.entered_on(options={})
-      first_entry_date = AccountingModule::Entry.order(entry_date: :desc).last.try(:entry_date) || Date.today
-      from_date = options[:from_date] || first_entry_date
-      to_date = options[:to_date] || Date.today
+      from_date = options[:from_date]
+      to_date = options[:to_date]
       date_range = DateRange.new(from_date: from_date, to_date: to_date)
-      includes(:entry).
-      where('entries.entry_date' => date_range.start_date..date_range.end_date)
+      where('entry_date' => date_range.start_date..date_range.end_date)
+    end
+
+    private
+    def set_default_date
+      self.entry_date = self.entry.entry_date
     end
   end
 end
