@@ -21,7 +21,7 @@
                     <div class="col-md-8">
                       <%=form_tag savings_accounts_path, method: :get, class: "search-form" do %>
                           <div class="input-group">
-                            <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Account Number ", id: 'account-search-form' %>
+                            <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Savings Account ", id: 'account-search-form' %>
                             <span class="input-group-btn">
                               <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
                                 <i class="fa fa-search"></i>
@@ -48,6 +48,8 @@
                 <div class="col-md-5">
                   <p class=""><%= savings_account.depositor.name.try(:upcase) %></p>
                   <small class=""> <%= savings_account.saving_product_name %></small><br><br>
+
+                  <span class="label bg-gray"><%= savings_account.number_of_days_inactive %> days inactive </span>
                     <% if policy([:savings_accounts, :deposit]).new? %>
                       <%= link_to 'Deposit', new_savings_account_deposit_path(savings_account), class: "btn btn-xs btn-success" %>
                     <% end %>
@@ -60,8 +62,7 @@
                 </div>
                 <div class="col-md-3">
                   <h4 class="text-muted"><center><%=number_to_currency savings_account.balance %></center></h4>
-                  <br />
-                  <span class="label bg-red"><%= savings_account.number_of_days_inactive %> Days inactive </span>
+
                 </div>
               </div>
               <hr>

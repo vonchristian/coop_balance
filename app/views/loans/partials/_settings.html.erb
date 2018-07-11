@@ -20,3 +20,8 @@
 <% if policy([:loans_module, :loans, :archiving]).new? && !@loan.archived? %>
   <%= link_to "Archive Loan", loans_module_loan_archivings_path(@loan), method: :post, data: { confirm_with: "Are you sure you want to archive this loan?" }, class: "btn btn-danger" %>
 <% end %>
+<% if @loan.amounts.blank? %>
+<h4> Delete Loan </h4>
+<p class="text-muted"> Deleting this loan will remove it from records. Please be careful. </p>
+  <%= link_to 'Delete Loan', loans_module_loan_path(@loan), method: :delete, data: { confirm_with: "Are you sure you want to delete this loan? " }, class: "btn btn-danger" %>
+<% end %>

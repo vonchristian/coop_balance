@@ -46,6 +46,24 @@ module LoansModule
 
     end
 
+    it ".past_due(args={})" do
+      employee = create(:user, role: 'teller')
+      past_due_loan = create(:loan, disbursement_date: Date.today - 2.months)
+      past_due_term = create(:term, termable: past_due_loan, maturity_date: Date.today.last_month)
+      voucher = create(:voucher, payee: past_due_loan)
+      disbursement = build(:entry, commercial_document: voucher, entry_date: Date.today)
+      disbursement.debit_amounts << create(:debit_amount, amount: 5_000, commercial_document: past_due_loan, account: past_due_loan.loan_product.loans_receivable_current_account)
+      disbursement.credit_amounts << create(:credit_amount, amount: 5_000, commercial_document: past_due_loan, account: employee.cash_on_hand_account)
+      disbursement.save
+
+      loan = create(:loan)
+
+      expect(past_due_loan.disbursed?).to be true
+      expect(described_class.past_due.pluck(:id)).to include(past_due_loan.id)
+      expect(described_class.past_due.pluck(:id)).to_not include(loan.id)
+    end
+
+
     it "#current_term" do
       loan = create(:loan)
       old_term = create(:term, termable: loan, effectivity_date: Date.today.last_month)

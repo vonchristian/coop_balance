@@ -1,5 +1,19 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box box-solid">
+        <div class="box-body">
+          <ul class="nav nav-tabs">
+            <li class="<%='active' if current_page?(loans_path(from_date: "", to_date: "")) %>"><%=link_to 'All Loans', loans_path(from_date: nil, to_date: nil) %></li>
+            <li class="<%='active' if current_page?(loans_path(from_date: Date.today - 60.days, to_date: Date.today.yesterday))%>"><%=link_to '1 - 60 Days Past Due', loans_path(from_date: Date.today - 60.days, to_date: Date.today.yesterday) %></li>
+            <li class="<%='active' if current_page?(loans_path(from_date: Date.today - 180.days, to_date: Date.today - 61.days))%>"><%=link_to '61 - 180 Days Past Due', loans_path(from_date: Date.today - 180.days, to_date: Date.today - 61.days) %></li>
+            <li class="<%='active' if current_page?(loans_path(from_date: Date.today - 363.days, to_date: Date.today - 181.days))%>"><%=link_to '181 - 363 Days Past Due', loans_path(from_date: Date.today - 363.days, to_date: Date.today - 181.days) %></li>
+            <li class="<%='active' if current_page?(loans_path(from_date: Date.today - 999.years, to_date: Date.today - 364.days))%>"><%=link_to 'Over 1 Year', loans_path(from_date: Date.today - 999.years, to_date: Date.today - 364.days) %></li>
+            <li class="<%='active' if current_page?(loans_module_monitoring_metrics_path)%>"><%=link_to 'Dashboard', loans_module_monitoring_metrics_path %></li>
+          </ul>
+          <br/>
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-md-12">
     <div class="box box-solid">
       <div class="box-header">
         <div class="row">
@@ -38,7 +52,11 @@
                     <small class="text-muted">Loan Balance</small><br>
                   </div>
                   <div class="col-md-2">
-
+                    <span class="label bg-red">
+                      <%= loan.number_of_days_past_due %> Days
+                    </span>
+                    <br>
+                    <small class="text-danger"> PAST DUE </small>
                   </div>
                 </div>
                 <br>
@@ -48,23 +66,4 @@
         </div>
       </div>
     </div>
-        <div class="col-md-4">
-          <div class="box box-default">
-            <div class="box-header">
-              <h3 class="title">Barangays</h3>
-            </div>
-            <div class="box-body">
-              <% Addresses::Barangay.all.each do |barangay| %>
-                <div class="row">
-                  <div class="col-md-8">
-                    <%= link_to barangay.name, barangay_loans_path(barangay) %>
-                  </div>
-                  <div class="col-md-3">
-                    <%= barangay.loans.count %>
-                  </div>
-                </div>
-                <br>
-              <% end %>
-
-            </div>
-      </div>
+  </div>

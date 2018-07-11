@@ -94,7 +94,7 @@ Rails.application.routes.draw do
       resources :payment_schedules, only: [:new, :create], module: :schedules
     end
 
-    resources :loans, except: [:destroy] do
+    resources :loans do
       resources :first_notices, only: [:show], module: :notices
       resources :archivings, only: [:create], module: :loans
       resources :share_capital_build_ups,       only: [:new, :create], module: :loans
