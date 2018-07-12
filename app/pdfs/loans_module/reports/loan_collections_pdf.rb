@@ -39,7 +39,7 @@ module LoansModule
 
       def collections_table
         if @collections.any?
-          table(table_data, header: true, cell_style: { size: 9, font: "Helvetica"}) do
+          table(table_data, header: true, cell_style: { size: 9, font: "Helvetica"}, table_widths: [200,100]) do
             column(1).align = :right
             row(0).font_style = :bold
             row(0).background_color = 'DDDDDD'
@@ -51,9 +51,9 @@ module LoansModule
 
     def table_data
       move_down 5
-      [["Borrower", "Type of Loan",  "Date", "OR Number", "Employee", "Amount"]] +
-      @table_data ||= @collections.uniq.map { |e| [e.commercial_document.try(:name), e.commercial_document.try(:loan_product_name), e.entry_date.strftime("%B %e, %Y"), e.reference_number, e.recorder_name, price(e.debit_amounts.sum(&:amount))] } +
-      [["", "", "", "", "", "#{price(@collections.uniq.map{|a| a.debit_amounts.sum(&:amount)}.sum) }"]]
+      [["Borrower", "Type of Loan",  "Payment Date", "OR Number", "Employee", "Amount"]] +
+      @table_data ||= @collections.uniq.map { |e| [e.commercial_document.try(:name), e.commercial_document.try(:loan_product_name), e.entry_date.strftime("%B %e, %Y"), e.reference_number, e.recorder_name, price(e.amount)] } +
+      [["", "", "", "", "", "#{price(@collections.uniq.map{|a| a.amount}.sum) }"]]
     end
     end
   end

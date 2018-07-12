@@ -26,27 +26,17 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
           <li class="header"> LOANS DEPARTMENT </li>
-
           <li class=<%= 'active' if current_page?(loans_module_loan_products_path) %> ><a href="/loans_module/loan_products"><i class="fa fa-tag"></i> <span>Loan Products </span></a></li>
           <li class=<%= 'active' if current_page?(members_path) %> ><a href="/members"><i class="fa fa-users"></i> <span>Members</span></a></li>
           <li class=<%= 'active' if current_page?(loans_module_loans_path) %> ><a href="/loans"><i class="fa fa-credit-card"></i> <span> Loans</span></a></li>
-
-
-             <li class=<%= 'active' if current_page?(organizations_path) %> ><a href="/organizations"><i class="fa fa-sitemap"></i> <span> Organizations</span></a></li>
-
-
+          <li class=<%= 'active' if current_page?(organizations_path) %> ><a href="/organizations"><i class="fa fa-sitemap"></i> <span> Organizations</span></a></li>
           <li class=<%= 'active' if current_page?(loans_module_schedules_path) %> ><a href="/loans_module/schedules"><i class="fa fa-calendar"></i> <span> Schedules</span></a></li>
-
-
-          <li class=<%#= 'active' if current_page?(admin_settings_path) %> ><a href="/loans_module/aging_loans"><i class="fa fa-hourglass-end"></i> <span> Aging Loans</span></a></li>
           <li class=<%= 'active' if current_page?(loans_module_reports_path) %> ><a href="/loans_module/reports"><i class="fa fa-folder"></i> <span>  &nbsp;Reports</span></a></li>
-          <li class=<%= 'active' if current_page?(loans_module_monitoring_metrics_path) %> ><a href="/loans_module/monitoring/metrics"><i class="fa fa-folder"></i> <span> Monitoring</span></a></li>
-
-<li class="header"> MONITORING </li>
-             <li class=<%= 'active' if current_page?(loans_module_monitoring_metrics_path) %> ><a href="/loans_module/monitoring/metrics"><i class="fa fa-circle"></i> <span> Loans Portfolio</span></a></li>
-             <li class=<%= 'active' if current_page?(savings_accounts_dashboards_path) %> ><a href="/savings_accounts_dashboards"><i class="fa fa-circle"></i> <span> Savings Portfolio</span></a></li>
-             <li class=<%= 'active' if current_page?(share_capitals_section_dashboards_path) %> ><a href="/share_capitals_section/dashboards"><i class="fa fa-circle"></i> <span> Share Capitals Portfolio</span></a></li>
-             <li class=<%= 'active' if current_page?(cooperative_services_path) %> ><a href="/cooperative_services"><i class="fa fa-circle"></i> <span> Services Portfolio</span></a></li>
+          <li class="header"> MONITORING </li>
+          <li class=<%= 'active' if current_page?(loans_module_monitoring_metrics_path) %> ><a href="/loans_module/monitoring/metrics"><i class="fa fa-circle"></i> <span> Loans Portfolio</span></a></li>
+          <li class=<%= 'active' if current_page?(savings_accounts_dashboards_path) %> ><a href="/savings_accounts_dashboards"><i class="fa fa-circle"></i> <span> Savings Portfolio</span></a></li>
+          <li class=<%= 'active' if current_page?(share_capitals_section_dashboards_path) %> ><a href="/share_capitals_section/dashboards"><i class="fa fa-circle"></i> <span> Share Capitals Portfolio</span></a></li>
+          <li class=<%= 'active' if current_page?(cooperative_services_path) %> ><a href="/cooperative_services"><i class="fa fa-circle"></i> <span> Services Portfolio</span></a></li>
 
 
 

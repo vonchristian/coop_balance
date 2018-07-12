@@ -12,6 +12,7 @@ module AccountingModule
 
     delegate :name, to: :account, prefix: true
     delegate :recorder, :reference_number, :description,  to: :entry
+    delegate :name, to: :recorder, prefix: true
     before_save :set_default_date
     def self.for(account)
       where(account: account)
