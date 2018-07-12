@@ -5,5 +5,5 @@
   </div>
   <button type="submit" class="btn btn-default">Generate Report</button>
 <% end %>
-<%= link_to 'View (PDF)', cooperative_service_balance_sheets_path(format: "pdf", to_date: @to_date) %>
+<%= link_to 'View (PDF)', cooperative_service_balance_sheets_path(format: "pdf", to_date: @to_date), class: "btn btn-default" %>
   <%= render 'cooperative_services/partials/account', :name => "Assets", :accounts => @assets %>

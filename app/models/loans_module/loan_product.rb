@@ -28,12 +28,15 @@ module LoansModule
 
     validates :name, uniqueness: true
     validates :maximum_loanable_amount, numericality: true
-    def self.total_balances(args={})
-      accounts_balance = BigDecimal.new('0')
-      all.each do |loan_product|
-        accounts_balance += loan_product.loans_receivable_current_account.balance(args)
-      end
-      accounts_balance
+    def self.total_balance(args={})
+      accounts.balance(args)
+    end
+
+    def self.total_debits_balance(args={})
+      accounts.debits_balance(args)
+    end
+    def self.total_credits_balance(args={})
+      accounts.credits_balance(args)
     end
 
     def self.loan_payments(options={})
@@ -78,10 +81,10 @@ module LoansModule
     end
 
     def self.accounts
-      all.map{|a| a.loans_receivable_current_account } +
-      all.map{|a| a.interest_revenue_account } +
-      all.map{ |a| a.penalty_receivable_account }
+      accounts = self.all.pluck(:loans_receivable_current_account_id)
+      AccountingModule::Account.where(id: accounts)
     end
+
     def self.loans_receivable_current_accounts
       all.map{|a| a.loans_receivable_current_account }
     end

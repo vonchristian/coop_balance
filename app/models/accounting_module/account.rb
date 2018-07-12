@@ -73,6 +73,33 @@ module AccountingModule
       end
       accounts_balance
     end
+
+    def self.debits_balance(options={})
+      accounts_balance = BigDecimal.new('0')
+      accounts = self.all
+      accounts.each do |account|
+        if account.contra
+          accounts_balance -= account.debits_balance(options)
+        else
+          accounts_balance += account.debits_balance(options)
+        end
+      end
+      accounts_balance
+    end
+
+    def self.credits_balance(options={})
+      accounts_balance = BigDecimal.new('0')
+      accounts = self.all
+      accounts.each do |account|
+        if account.contra
+          accounts_balance -= account.credits_balance(options)
+        else
+          accounts_balance += account.credits_balance(options)
+        end
+      end
+      accounts_balance
+    end
+
     def self.trial_balance
       if self.new.class == AccountingModule::Account
         AccountingModule::Asset.balance - (AccountingModule::Liability.balance + AccountingModule::Equity.balance + AccountingModule::Revenue.balance - AccountingModule::Expense.balance)

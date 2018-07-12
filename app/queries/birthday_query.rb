@@ -3,11 +3,11 @@ class BirthdayQuery
   def initialize(relation)
     @relation = relation
   end
-  def has_birth_month_on(options={})
-    relation.where(birth_month: options[:birth_month])
+  def has_birth_month_on(birth_month:)
+    relation.where(birth_month: birth_month)
   end
 
-  def has_birth_day_on(options={})
-    relation.where(birth_day: options[:birth_day])
+  def has_birth_day_on(birth_day:)
+    relation.where(birth_day: birth_day)
   end
 end

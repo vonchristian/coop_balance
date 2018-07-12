@@ -15,10 +15,16 @@ module LoansModule
 
 
     def past_due(options={})
-      from_date = options[:from_date] || relation.order(application_date: :desc).first.disbursement_date
-      to_date   = options[:to_date] || Date.today
-      range     = DateRange.new(from_date: from_date, to_date: to_date)
-      relation.joins(:terms).where('terms.maturity_date' => range.start_date..range.end_date )
+     if options[:from_date] && options[:to_date]
+        from_date = options[:from_date]
+        to_date   = options[:to_date]
+        range     = DateRange.new(from_date: from_date, to_date: to_date)
+        self.where.not(disbursement_date: nil).
+        joins(:terms).where('terms.maturity_date' => range.start_date..range.end_date )
+      else
+        self.where.not(disbursement_date: nil).
+        joins(:terms).where('terms.maturity_date < ?', Date.today)
+      end
     end
 
     def disbursed(options={})
@@ -31,20 +37,6 @@ module LoansModule
       else
         relation.where.not(disbursement_date: nil)
       end
-    end
-
-
-    def aging(options={})
-      aging_loans = []
-      min_num = options[:start_num] || 1
-      max_num = options[:end_num] || 999_999
-      range = min_num..max_num
-      relation.past_due.each do |loan|
-        if range.include?(loan.number_of_days_past_due)
-          aging_loans << loan
-      end
-      end
-      aging_loans
     end
   end
 end

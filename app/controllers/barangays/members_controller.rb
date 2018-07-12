@@ -1,3 +1,4 @@
+require 'will_paginate/array'
 module Barangays
   class MembersController < ApplicationController
     def index
