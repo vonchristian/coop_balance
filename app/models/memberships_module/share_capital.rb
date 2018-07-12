@@ -47,8 +47,8 @@ module MembershipsModule
     end
 
     def capital_build_ups(args={})
-      share_capital_product_paid_up_account.credit_amounts.where(commercial_document: self).entered_on(args) +
-      share_capital_product_paid_up_account.credit_amounts.where(commercial_document: self.subscriber).entered_on(args)
+      share_capital_product_paid_up_account.credit_amounts.where(commercial_document: self) +
+      share_capital_product_paid_up_account.credit_amounts.where(commercial_document: self.subscriber)
     end
 
     def self.balance
