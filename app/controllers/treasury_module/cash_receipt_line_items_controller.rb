@@ -22,7 +22,7 @@ module TreasuryModule
     private
     def disbursement_params
       params.require(:treasury_module_cash_receipt_line_item_processing).
-      permit(:amount, :account_id, :description, :amount_type, :employee_id)
+      permit(:amount, :account_id, :description, :employee_id)
     end
   end
 end

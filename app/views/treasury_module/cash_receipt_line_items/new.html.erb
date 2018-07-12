@@ -7,14 +7,11 @@
       <div class="box-body">
         <%= simple_form_for @cash_receipt_line_item, url: :treasury_module_cash_receipt_line_items do |f| %>
           <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-6">
               <%= f.input :account_id, label: false, placeholder: "Account", collection: AccountingModule::Account.all.map{|a| [a.name, a.id] }, prompt: "Select Account" %>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
               <%= f.input :amount, label: false, placeholder: 'Amount', as: :currency  %>
-            </div>
-            <div class="col-md-2">
-              <%= f.input :amount_type, label: false, collection: Vouchers::VoucherAmount.amount_types.keys.to_a.map{|a| [a.titleize, a] } %>
             </div>
             <div class="col-md-2">
               <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
@@ -102,10 +99,7 @@
     $("#treasury_module_cash_receipt_line_item_processing_account_id").select2({
       theme: "bootstrap"
     });
-    $("#treasury_module_cash_receipt_line_item_processing_amount_type").select2({
-      theme: "bootstrap"
-    });
-     $("#treasury_module_cash_receipt_line_item_processing_payee_id").select2({
+     $("#vouchers_disbursement_processing_payee_id").select2({
       theme: "bootstrap"
     });
   });

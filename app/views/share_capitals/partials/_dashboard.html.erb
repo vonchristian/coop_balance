@@ -1,6 +1,6 @@
 <div class="row">
                   <div class="col-md-6">
-                    <h3><%= number_to_currency CoopServicesModule::ShareCapitalProduct.total_balances %></h3>
+                    <h3><%= number_to_currency CoopServicesModule::ShareCapitalProduct.total_balance %></h3>
                     <small>TOTAL PAID UP SHARE CAPITALS</small>
 
                   </div>
@@ -28,14 +28,17 @@
 <hr>
 <h4>Balances vs Month </h4>
 <% months = [] %>
-      <% (DateTime.now.beginning_of_year..DateTime.now).each do |month| %>
+      <% (DateTime.now.beginning_of_year..DateTime.now.end_of_month).each do |month| %>
        <% months << month.beginning_of_month %>
       <% end %>
       <% balances_data = [] %>
+      <% deposit_balances_data = [] %>
       <% months.uniq.each do |month| %>
-        <% CoopServicesModule::ShareCapitalProduct.all.each do |share_capital_product| %>
-        <% balances_data << { month.strftime("%B %Y") => share_capital_product.paid_up_account.balance(to_date: month.end_of_month) } %>
-      <% end %>
+
+        <% balances_data << { month.strftime("%B %Y") => CoopServicesModule::ShareCapitalProduct.total_balance(to_date: month.end_of_month) } %>
+        <% deposit_balances_data << { month.strftime("%B %Y") => CoopServicesModule::ShareCapitalProduct.total_debits_balance(to_date: month.end_of_month) } %>
+
+
       <% end %>
 
-<%= line_chart (Hash[*balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"}, download: true, curve: false, thousands: "," %>
+<%= line_chart [(Hash[*balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}), (Hash[*deposit_balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?})]%>

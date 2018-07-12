@@ -31,6 +31,7 @@ module MembershipsModule
     delegate :name,
              to: :office,
              prefix: true
+    delegate :avatar, to: :depositor
 
     before_save :set_depositor_name, on: [:create]
     def entries
