@@ -1,4 +1,6 @@
 <div class="tab-pane <%= 'active' if current_page?(time_deposit_settings_path(@time_deposit)) %>">
+  <%=link_to "New Adjusting Entry", new_accounting_module_adjusting_entry_path(commercial_document_type: @time_deposit.class.to_s, commercial_document_id: @time_deposit.id) %>
+  <hr>
   <div class="row">
     <div class="col-md-6">
       <% if policy([:time_deposits, :break_contract]).new? && !@time_deposit.current_term_matured? && !@time_deposit.withdrawn? %>
