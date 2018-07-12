@@ -276,6 +276,14 @@ module LoansModule
       # penalties_balance
     end
 
+    def debits_balance
+      loan_product.loans_receivable_current_account.debits_balance(commercial_document: self)
+    end
+
+    def credits_balance
+      loan_product.loans_receivable_current_account.credits_balance(commercial_document: self)
+    end
+
     def status_color
       if is_past_due?
         'red'

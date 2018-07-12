@@ -64,31 +64,54 @@
     <tbody>
       <tr>
         <td> 1-60 Days Past Due</td>
-        <td><%= number_to_currency LoansModule::Loan.past_due(from_date: Date.today - 60.days, to_date: Date.today - 1.days).sum(&:balance)  %></td>
-        <td><%= LoansModule::Loan.past_due(from_date: Date.today - 60.days, to_date: Date.today - 1.days).count %></td>
+        <td><%= number_to_currency @loans.past_due(from_date: Date.today - 60.days, to_date: Date.today - 1.days).sum(&:balance)  %></td>
+        <td><%= @loans.past_due(from_date: Date.today - 60.days, to_date: Date.today - 1.days).count %></td>
       </tr>
       <tr>
         <td> 61-180 Days Past Due</td>
-        <td><%= number_to_currency LoansModule::Loan.past_due(from_date: Date.today - 180.days, to_date: Date.today - 61.days).sum(&:balance)  %></td>
-        <td><%= LoansModule::Loan.past_due(from_date: Date.today - 180.days, to_date: Date.today - 61.days).count %></td>
+        <td><%= number_to_currency @loans.past_due(from_date: Date.today - 180.days, to_date: Date.today - 61.days).sum(&:balance)  %></td>
+        <td><%= @loans.past_due(from_date: Date.today - 180.days, to_date: Date.today - 61.days).count %></td>
       </tr>
       <tr>
         <td> 181 to 363 Days Past Due</td>
-        <td><%= number_to_currency LoansModule::Loan.past_due(from_date: Date.today - 363.days, to_date: Date.today - 181.days).sum(&:balance)  %></td>
-        <td><%= LoansModule::Loan.past_due(from_date: Date.today - 363.days, to_date: Date.today - 181.days).count %></td>
+        <td><%= number_to_currency @loans.past_due(from_date: Date.today - 363.days, to_date: Date.today - 181.days).sum(&:balance)  %></td>
+        <td><%= @loans.past_due(from_date: Date.today - 363.days, to_date: Date.today - 181.days).count %></td>
       </tr>
       <tr>
         <td> Above 1 Year Past Due</td>
-        <td><%= number_to_currency LoansModule::Loan.past_due(from_date: Date.today - 999.years, to_date: Date.today - 364.days).sum(&:balance)  %></td>
-        <td><%= LoansModule::Loan.past_due(from_date: Date.today - 999.years, to_date: Date.today - 364.days).count %></td>
+        <td><%= number_to_currency @loans.past_due(from_date: Date.today - 999.years, to_date: Date.today - 364.days).sum(&:balance)  %></td>
+        <td><%= @loans.past_due(from_date: Date.today - 999.years, to_date: Date.today - 364.days).count %></td>
       </tr>
       <tr>
         <td> Total Past Due</td>
-        <td><%= number_to_currency LoansModule::Loan.past_due.sum(&:balance)  %></td>
-        <td><%= LoansModule::Loan.past_due(from_date: Date.today - 999.years, to_date: Date.today.yesterday).count %></td>
+        <td><%= number_to_currency @loans.past_due.sum(&:balance)  %></td>
+        <td><%= @loans.past_due(from_date: Date.today - 999.years, to_date: Date.today.yesterday).count %></td>
       </tr>
     </tbody>
   </table>
 </div>
-
+<hr>
+<h4>Loans</h4>
+<div class="table table-responsive">
+  <table class="table table-hover table-striped">
+    <thead>
+      <tr>
+        <th>Borrower</th>
+        <th>Loan Amount</th>
+        <th>Payments</th>
+        <th>Balance</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @loans.each do |loan| %>
+        <tr>
+          <td><%= link_to loan.borrower_name, loan_path(loan) %></td>
+          <td><%= number_to_currency loan.debits_balance %></td>
+          <td><%= number_to_currency loan.credits_balance %></td>
+          <td><%= number_to_currency loan.balance %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 
