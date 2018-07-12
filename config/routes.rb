@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     root :to => 'accounting_module#index', :constraints => lambda { |request| request.env['warden'].user.nil? }, as: :unauthenticated_root
   end
   devise_for :users, controllers: { sessions: 'users/sessions', registrations: "management_module/settings/employees"}
-  root :to => 'treasury_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'treasurer' if request.env['warden'].user }, as: :treasury_root
+  root :to => 'members#index', :constraints => lambda { |request| request.env['warden'].user.role == 'treasurer' if request.env['warden'].user }, as: :treasury_root
   root :to => 'accounting_module/entries#index', :constraints => lambda { |request| request.env['warden'].user.role == 'bookkeeper' if request.env['warden'].user }, as: :bookkeeper_module_root
   root :to => 'accounting_module#index', :constraints => lambda { |request| request.env['warden'].user.role == 'accountant' if request.env['warden'].user }, as: :accountant_module_root
 
