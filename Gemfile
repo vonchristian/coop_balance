@@ -87,6 +87,7 @@ group :test do
   gem 'shoulda-matchers'
   gem 'database_rewinder'
   gem 'launchy'
+  gem 'selenium-webdriver'
 end
 
 gem 'rack-mini-profiler', require: false

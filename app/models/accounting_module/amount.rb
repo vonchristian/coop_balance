@@ -27,12 +27,10 @@ module AccountingModule
     end
 
     def self.entered_on(options={})
-      if options[:from_date] && options[:to_date]
-        from_date = options[:from_date]
-        to_date = options[:to_date]
-        date_range = DateRange.new(from_date: from_date, to_date: to_date)
-        where('entry_date' => date_range.start_date..date_range.end_date)
-      end
+      from_date = options[:from_date] || Date.today - 999.years
+      to_date = options[:to_date] || Date.today
+      date_range = DateRange.new(from_date: from_date, to_date: to_date)
+      where('entry_date' => date_range.start_date..date_range.end_date)
     end
 
     private

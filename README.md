@@ -1,3 +1,9 @@
+CHECK
+Loan amortization PDF
+
+Add system tests
+
+
 move loan product to coop_services_module
 
 TODO

@@ -6,6 +6,7 @@ module LoansModule
     end
 
     def create
+      @borrower = Borrower.find(params[:loans_module_loan_application_form][:borrower_id])
       @loan = LoansModule::LoanApplicationForm.new(loan_params)
       if @loan.valid?
         @loan.save

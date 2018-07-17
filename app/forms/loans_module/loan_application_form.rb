@@ -12,6 +12,8 @@ module LoansModule
                   :application_date,
                   :account_number,
                   :preparer_id
+    validates :term, :loan_amount, presence: true, numericality: true
+    validates :loan_product_id, :mode_of_payment, presence: true
     def save
       ActiveRecord::Base.transaction do
         save_loan

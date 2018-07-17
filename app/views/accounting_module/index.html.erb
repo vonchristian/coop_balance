@@ -21,3 +21,10 @@
       {name: "Revenues", data: (Hash[*revenues_accounts_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}) },
       {name: "Expenses", data: (Hash[*expenses_accounts_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}) }
     ], curve: false, thousands: "," %>
+    <hr>
+<h4> Top 10 Expenses </h4>
+<% expenses_data = [] %>
+<% AccountingModule::Expense.active.all.sort_by(&:balance).reverse.first(10).each do |expense_account| %>
+<% expenses_data << { expense_account.name => expense_account.balance } %>
+<% end %>
+<%= pie_chart (Hash[*expenses_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}) %>

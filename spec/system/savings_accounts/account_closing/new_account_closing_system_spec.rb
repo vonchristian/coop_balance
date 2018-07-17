@@ -11,17 +11,17 @@ describe 'New savings account closing' do
     visit savings_account_url(@savings_account)
     click_link "New Deposit"
     fill_in "Amount", with: 100_000
-    fill_in 'Reference number', with: '909045'
+    fill_in 'OR number', with: '909045'
     fill_in 'Date', with: Date.today
 
     click_button "Save Deposit"
 
     expect(@savings_account.balance).to eql 100_000
-
+    visit savings_account_settings_url(@savings_account)
     click_link "Close Account"
   end
   it 'with valid attributes' do
-    fill_in 'Reference number', with: '909045'
+    fill_in 'OR number', with: '909045'
     fill_in 'Date', with: Date.today
 
     click_button "Close Account"

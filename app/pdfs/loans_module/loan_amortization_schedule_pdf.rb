@@ -70,7 +70,7 @@ module LoansModule
       column(1).align = :right
     end
 
-    table([["Maturity Date", "#{@loan.maturity_date.strftime("%B %e, %Y")}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 100]) do
+    table([["Maturity Date", "#{@loan.maturity_date.try(:strftime, ("%B %e, %Y"))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 100]) do
       cells.borders = []
       column(1).align = :right
     end

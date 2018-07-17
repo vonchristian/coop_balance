@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :loan_product, class: "LoansModule::LoanProduct" do
-      sequence(:name) { |n| "loan_product " +  ('a'..'z').to_a.shuffle.join }
+    sequence(:name) { |n| "loan_product " +  ('a'..'z').to_a.shuffle.join }
     description "MyString"
     maximum_loanable_amount 1_000_000
     association :loans_receivable_current_account, factory: :asset

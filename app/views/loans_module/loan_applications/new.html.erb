@@ -22,8 +22,9 @@
   <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
   <div class="box-footer">
     <%= button_tag( :class => "btn btn-primary pull-right") do %>
-      Proceed  &nbsp;<i class="icon-arrow-right-circle"></i>
+      Proceed  &nbsp;<i class="fa fa-arrow-right"></i>
     <% end %>
+    <%= link_to 'Cancel Loan Application', member_path(@borrower), class: "btn btn-default pull-left" %>
   </div>
 <% end %>
 

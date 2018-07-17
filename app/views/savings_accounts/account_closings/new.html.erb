@@ -45,7 +45,7 @@
           <%= f.error_notification %>
           <%= f.input :amount, input_html: { value: @savings_account.balance -  CoopConfigurationsModule::SavingsAccountConfig.default_closing_account_fee }, as: :hidden %>
           <%= f.input :closing_account_fee, input_html: { value: CoopConfigurationsModule::SavingsAccountConfig.default_closing_account_fee }, as: :hidden %>
-          <%= f.input :reference_number %>
+          <%= f.input :reference_number, label: "OR number" %>
           <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
           <%= f.input :savings_account_id, input_html: { value: @savings_account.id },as: :hidden %>
           <%= f.input :recorder_id, input_html: { value: current_user.id },as: :hidden %>
