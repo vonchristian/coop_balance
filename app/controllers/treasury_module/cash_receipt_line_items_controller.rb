@@ -24,6 +24,7 @@ module TreasuryModule
       params.require(:treasury_module_cash_receipt_line_item_processing).
       permit(:amount, :account_id, :description, :employee_id)
     end
+
   end
 end
 

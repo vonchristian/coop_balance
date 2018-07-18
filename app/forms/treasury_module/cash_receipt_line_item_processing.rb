@@ -2,7 +2,6 @@ module TreasuryModule
   class CashReceiptLineItemProcessing
     include ActiveModel::Model
     attr_accessor :amount, :account_id, :description, :amount_type, :employee_id
-
     def save
       ActiveRecord::Base.transaction do
         create_cash_receipt_line_item
