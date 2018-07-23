@@ -155,6 +155,7 @@ Rails.application.routes.draw do
   resources :member_registrations, only: [:new, :create]
 
   namespace :management_module do
+    resources :account_budgets, only: [:index, :new, :create]
     resources :savings_account_registries, only: [:new, :create]
     resources :share_capital_registries, only: [:new, :create]
     resources :loan_registries, only: [:new, :create]

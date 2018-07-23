@@ -10,12 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_11_115505) do
+ActiveRecord::Schema.define(version: 2018_07_19_101208) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "account_budgets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "account_id"
+    t.decimal "proposed_amount"
+    t.integer "year"
+    t.uuid "cooperative_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_account_budgets_on_account_id"
+    t.index ["cooperative_id"], name: "index_account_budgets_on_cooperative_id"
+  end
 
   create_table "accountable_accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "accountable_type"
@@ -1424,6 +1435,8 @@ ActiveRecord::Schema.define(version: 2018_07_11_115505) do
     t.index ["raw_material_id"], name: "index_work_in_progress_materials_on_raw_material_id"
   end
 
+  add_foreign_key "account_budgets", "accounts"
+  add_foreign_key "account_budgets", "cooperatives"
   add_foreign_key "accountable_accounts", "accounts"
   add_foreign_key "accounts", "accounts", column: "main_account_id"
   add_foreign_key "addresses", "barangays"

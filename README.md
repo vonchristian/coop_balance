@@ -1,3 +1,11 @@
+single cash on hand on LOAN PAYMENT
+
+net surplus line chart
+
+loan disbursements chart (laon balance)
+loan maturity chart (loan balance)
+
+
 CHECK
 Loan amortization PDF
 

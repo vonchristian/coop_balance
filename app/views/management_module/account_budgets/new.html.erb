@@ -1,0 +1,9 @@
+<% @accounts.each do |account| %>
+  <%= account.name %>
+<%= simple_form_for @account_budget, url: :management_module_account_budgets do |f| %>
+  <%= f.input :account_id, input_html: { value: account.id }, as: :hidden %>
+  <%= f.input :year %>
+  <%= f.input :proposed_amount %>
+  <%= f.submit "Set Budget" %>
+<% end %>
+<% end %>

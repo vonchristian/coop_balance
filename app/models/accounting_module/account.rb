@@ -14,7 +14,7 @@ module AccountingModule
     has_many :credit_entries,       :through => :credit_amounts, :source => :entry, :class_name => 'AccountingModule::Entry'
     has_many :debit_entries,        :through => :debit_amounts, :source => :entry, :class_name => 'AccountingModule::Entry'
     has_many :subsidiary_accounts,  class_name: "AccountingModule::Account", foreign_key: 'main_account_id'
-
+    has_many :account_budgets
     validates :type, :name, :code, presence: true
     validates :name, uniqueness: true
     validates :code, uniqueness: { case_sensitive: false }
@@ -108,6 +108,10 @@ module AccountingModule
       end
     end
 
+    def self.net_surplus(args={})
+      AccountingModule::Revenue.balance(args) - AccountingModule::Expense.balance(args)
+    end
+
     def balance(options={})
       if self.class == AccountingModule::Account
         raise(NoMethodError, "undefined method 'balance'")
@@ -125,6 +129,9 @@ module AccountingModule
     end
     def debits_balance(args={})
       debit_amounts.balance(args)
+    end
+    def current_account_budget
+      account_budgets.current
     end
   end
 end
