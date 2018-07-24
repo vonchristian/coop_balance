@@ -53,6 +53,9 @@ module Memberships
       def update_share_capital_status
         find_share_capital.set_balance_status
       end
+      def set_last_transaction_date
+        find_share_capital.update_attributes!(last_transaction_date: date)
+      end
     end
   end
 end

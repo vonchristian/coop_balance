@@ -28,7 +28,8 @@ module Memberships
       savings_account = MembershipsModule::Saving.create(
         depositor: find_depositor,
         saving_product_id: saving_product_id,
-        account_number: account_number)
+        account_number: account_number,
+        last_transaction_date: date)
       AccountingModule::Entry.create!(
         origin: find_employee.office,
         commercial_document: find_depositor,

@@ -9,6 +9,7 @@ module Memberships
       def save
         ActiveRecord::Base.transaction do
           save_deposit
+          set_last_transaction_date
         end
       end
       def find_saving
@@ -51,6 +52,9 @@ module Memberships
         end
       def credit_account
         find_saving.saving_product_account
+      end
+      def set_last_transaction_date
+        find_saving.update_attributes!(last_transaction_date: date)
       end
     end
   end

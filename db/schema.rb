@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_19_101208) do
+ActiveRecord::Schema.define(version: 2018_07_24_011305) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -1101,6 +1101,7 @@ ActiveRecord::Schema.define(version: 2018_07_19_101208) do
     t.datetime "date_opened"
     t.uuid "barangay_id"
     t.boolean "has_minimum_balance", default: false
+    t.datetime "last_transaction_date"
     t.index ["account_number"], name: "index_savings_on_account_number", unique: true
     t.index ["account_owner_name"], name: "index_savings_on_account_owner_name"
     t.index ["barangay_id"], name: "index_savings_on_barangay_id"
@@ -1163,6 +1164,7 @@ ActiveRecord::Schema.define(version: 2018_07_19_101208) do
     t.string "subscriber_type"
     t.uuid "subscriber_id"
     t.boolean "has_minimum_balance", default: false
+    t.datetime "last_transaction_date"
     t.index ["account_number"], name: "index_share_capitals_on_account_number", unique: true
     t.index ["office_id"], name: "index_share_capitals_on_office_id"
     t.index ["share_capital_product_id"], name: "index_share_capitals_on_share_capital_product_id"

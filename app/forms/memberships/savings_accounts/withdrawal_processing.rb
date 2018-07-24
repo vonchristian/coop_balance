@@ -12,6 +12,7 @@ module Memberships
       def save
         ActiveRecord::Base.transaction do
           save_withdraw
+          set_last_transaction_date
         end
       end
       def find_saving
@@ -55,6 +56,10 @@ module Memberships
 
       def amount_less_than_current_cash_on_hand?
         errors[:amount] << "Amount exceeded current cash on hand" if (amount.to_i) > find_employee.cash_on_hand_account_balance
+      end
+
+      def set_last_transaction_date
+        find_saving.update_attributes!(last_transaction_date: date)
       end
     end
   end

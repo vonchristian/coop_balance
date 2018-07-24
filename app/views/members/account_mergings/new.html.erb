@@ -3,3 +3,10 @@
 <%= f.input :merger_id, input_html: { value: @merger.id } %>
 <%= f.submit "Merge Account", class: "btn btn-primary" %>
 <% end %>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#account_merging_mergee_id").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>

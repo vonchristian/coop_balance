@@ -37,7 +37,8 @@ module Memberships
         subscriber: find_subscriber,
         account_number: account_number,
         share_capital_product: find_share_capital_product,
-        date_opened: date
+        date_opened: date,
+        last_transaction_date: date
         )
       create_entry(share_capital)
     end
