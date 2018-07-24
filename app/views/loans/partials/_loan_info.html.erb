@@ -124,34 +124,38 @@
               </div>
             </div>
             <hr>
+            <h4> Loan Charges Details </h4>
             <div class="row">
-              <div class="col-md-8">
-                <h4 class="condensed-text"> LOAN CO MAKERS </h4>
-              </div>
-              <div class="col-md-4">
-                <%= link_to new_loan_loan_co_maker_path(@loan) do %>
-                  <span class="btn btn-default pull-right"><i class="fa fa-user-plus"></i> Add / Remove</span>
-                <% end %>
-              </div>
-            </div>
-            <br>
-            <% @loan.loan_co_makers.each do |loan_co_maker| %>
-              <div class="row">
-                <div class="col-md-3">
-                  <%= image_tag(loan_co_maker.co_maker.avatar.url(:thumb), class: "img-circle", height: 40, width: 40) %>
-                </div>
-                <div class="col-md-9">
-                  <% if loan_co_maker.co_maker.kind_of?(Member) %>
-                  <b><%=link_to loan_co_maker.co_maker.name.try(:titleize), member_path(loan_co_maker.co_maker) %></b>
-                  <% elsif loan_co_maker.co_maker.kind_of?(User) %>
-                    <b><%=link_to loan_co_maker.co_maker.name.try(:titleize), employee_path(loan_co_maker.co_maker) %></b>
-                  <% end %>
-                  <br>
-                  <small class="text-muted"> <%= loan_co_maker.current_occupation.try(:titleize).try(:upcase) %></small>
+    <div class="col-md-3">
+      &nbsp; &nbsp; Loan Amount
+    </div>
+    <div class="col-md-3">
+      <%= number_to_currency @loan.loan_amount %>
+    </div>
+  </div>
+  <br>
+  <p class="text-danger">LOAN CHARGES </p>
+  <% @loan.loan_charges.each do |loan_charge| %>
+    <div class="row">
+      <div class="col-md-3">
+        &nbsp; &nbsp; <%= loan_charge.charge.try(:name) %>
+      </div>
+      <div class="col-md-3">
+          <%= number_to_currency loan_charge.charge_amount_with_adjustment %>
+      </div>
 
-                </div>
-              </div>
-              <br>
-            <% end %>
-            <hr>
-          </div>
+
+     </div>
+     <br>
+  <% end %>
+  <hr />
+  <div class="row">
+    <div class="col-md-3">
+      &nbsp; &nbsp; Net Proceed
+    </div>
+    <div class="col-md-3">
+      <%= number_to_currency @loan.net_proceed %>
+    </div>
+  </div>
+
+

@@ -11,7 +11,7 @@
     <div class="nav-tabs-navigation">
       <ul class="nav nav-tabs">
         <li class="<%= 'active' if current_page?(loan_path(@loan))%>"><%= link_to 'Info', loan_path(@loan) %></li>
-        <li class="<%= 'active' if current_page?(loan_disbursements_path(@loan))%>"><%= link_to 'Disbursement / Charges', loan_disbursements_path(@loan) %></li>
+
         <li class="<%= 'active' if current_page?(loans_module_loan_amortization_schedules_path(@loan))%>"><%= link_to 'Amortization', loans_module_loan_amortization_schedules_path(@loan) %></li>
         <li class="<%= 'active' if current_page?(loan_payments_path(@loan))%>"><%= link_to 'Payments', loan_payments_path(@loan) %></li>
         <li class="<%= 'active' if current_page?(loan_settings_path(@loan))%>"><%= link_to 'Settings', loan_settings_path(@loan) %></li>
@@ -20,9 +20,7 @@
         <% if current_page?(loan_path(@loan)) %>
           <%=render 'loans/partials/loan_info' %>
         <% end %>
-        <% if current_page?(loan_disbursements_path(@loan)) %>
-          <%=render 'loans/partials/loan_disbursement' %>
-        <% end %>
+
 
         <% if current_page?(loans_module_loan_amortization_schedules_path(@loan)) %>
           <%=render 'loans/partials/amortization_schedule' %>

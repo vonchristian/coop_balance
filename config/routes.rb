@@ -57,6 +57,7 @@ Rails.application.routes.draw do
 
   resources :loans_module, only: [:index]
   namespace :loans_module do
+    resources :disbursement_vouchers, only: [:create]
     namespace :monitoring do
       resources :disbursements, only: [:index]
       resources :loan_product_portfolios, only: [:index]
@@ -368,7 +369,6 @@ namespace :share_capitals_section do
     resources :real_properties,       only: [:new, :create, :show],  module: :loans
     resources :loan_co_makers,        only: [:index, :new, :create], module: :loans
     resources :approvals,             only: [:new, :create],         module: :loans
-    resources :disbursements,         only: [:new, :create, :index], module: :loans
     resources :disbursement_vouchers, only: [:new, :create, :show],  module: :loans
     resources :payments,              only: [:index, :new, :create], module: :loans
     resources :collaterals,           only: [:index, :new, :create], module: :loans
