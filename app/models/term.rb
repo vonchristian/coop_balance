@@ -4,18 +4,15 @@ class Term < ApplicationRecord
   delegate :disbursed?, to: :termable, allow_nil: true
 
   def self.past_due
-    all.select{ |a| a.is_past_due? }
+    where('maturity_date < ?', Date.today)
   end
 
   def number_of_months
-    if termable.is_a?(MembershipsModule::TimeDeposit)
-      term
-    elsif termable.is_a?(LoansModule::Loan)
-      term
-    end
+    term
   end
+
   def self.current
-    order(effectivity_date: :asc).last
+    order(effectivity_date: :desc).first
   end
 
   def matured?
@@ -23,7 +20,7 @@ class Term < ApplicationRecord
   end
 
   def is_past_due?
-    maturity_date <= Time.zone.now
+    matured?
   end
 
   def number_of_days_past_due

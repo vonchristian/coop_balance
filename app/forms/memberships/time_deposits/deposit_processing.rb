@@ -15,6 +15,7 @@ module Memberships
       def susbscribe!
         ActiveRecord::Base.transaction do
           create_time_deposit
+          set_last_transaction_date
         end
       end
       def find_time_deposit
@@ -72,6 +73,10 @@ module Memberships
       end
       def find_time_deposit_product
         CoopServicesModule::TimeDepositProduct.find_by_id(time_deposit_product_id)
+      end
+      def set_last_transaction_date
+        find_time_deposit.update_attributes!(last_transaction_date: date)
+        find_time_deposit.depositor.update_attributes!(last_transaction_date: date)
       end
     end
   end

@@ -1,9 +1,7 @@
 Rails.application.routes.draw do
   # devise_for :cooperators
-  mount Delayed::Web::Engine, at: '/jobs'
-  mount PgHero::Engine, at: "pghero"
   unauthenticated :user do
-    root :to => 'accounting_module#index', :constraints => lambda { |request| request.env['warden'].user.nil? }, as: :unauthenticated_root
+    root :to => 'home#index', :constraints => lambda { |request| request.env['warden'].user.nil? }, as: :unauthenticated_root
   end
   devise_for :users, controllers: { sessions: 'users/sessions', registrations: "management_module/settings/employees"}
   root :to => 'members#index', :constraints => lambda { |request| request.env['warden'].user.role == 'treasurer' if request.env['warden'].user }, as: :treasury_root
@@ -179,6 +177,7 @@ Rails.application.routes.draw do
     resources :entries, only: [:index, :show]
     resources :accounts, only: [:index, :show]
     resources :employees, only: [:new, :create], module: :settings
+
     resources :share_capital_products, only: [:new, :create], module: :settings do
       resources :shares, only: [:new, :create]
     end
@@ -201,13 +200,7 @@ Rails.application.routes.draw do
     resources :share_capitals, only: [:index, :show] do
       resources :capital_build_ups, only: [:new, :create]
     end
-    # resources :savings_accounts, only: [:index, :show] do
-    #   resources :withdrawals, only: [:new, :create], module: :savings_accounts
-    #   resources :sections, only: [:edit, :update], module: :savings_accounts
-    # end
-    # resources :time_deposits, only: [:index, :show] do
 
-    # end
     resources :entries, only: [:index, :show]
   end
 
@@ -439,8 +432,9 @@ namespace :share_capitals_section do
     resources :audit_reports, only: [:index]
   end
   resources :cooperative_services, only: [:index, :new, :create, :show] do
-    resources :balance_sheets,  only: [:index],         module: :cooperative_services
-    resources :settings,        only: [:index],         module: :cooperative_services
+    resources :balance_sheets,  only: [:index],        module: :cooperative_services
+    resources :settings,        only: [:index],        module: :cooperative_services
+
     resources :accounts,        only: [:new, :create], module: :cooperative_services do
       resources :activations,   only: [:create],       module: :accounts
       resources :deactivations, only: [:create],       module: :accounts

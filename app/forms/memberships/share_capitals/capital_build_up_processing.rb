@@ -55,6 +55,7 @@ module Memberships
       end
       def set_last_transaction_date
         find_share_capital.update_attributes!(last_transaction_date: date)
+        find_share_capital.subscriber.update_attributes!(last_transaction_date: date)
       end
     end
   end

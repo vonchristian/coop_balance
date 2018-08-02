@@ -1,5 +1,0 @@
-<%= simple_form_for @employee, url: :hr_module_employee_employee_salary_grade do |f| %>
-  <%= f.error_notification %>
-  <%= f.input :salary_grade_id, collection: SalaryGrade.all.map{|a| [a.name.titleize, a.id] } %>
-  <%= f.submit "Set Salary Grade", class: "btn btn-primary" %>
-<% end %>

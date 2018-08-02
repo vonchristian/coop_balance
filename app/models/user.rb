@@ -28,7 +28,6 @@ class User < ApplicationRecord
   has_one :tin,                       as: :tinable
   belongs_to :cooperative
   belongs_to :office,                 class_name: "CoopConfigurationsModule::Office"
-  belongs_to :salary_grade,           class_name: "HrModule::SalaryGrade"
   has_many :purchases,                class_name: "StoreFrontModule::Orders::SalesOrder", as: :commercial_document
   has_many :sold_orders,              class_name: "StoreFrontModule::Orders::SalesOrder",
                                       foreign_key: 'employee_id'
@@ -53,7 +52,6 @@ class User < ApplicationRecord
   has_many :program_subscriptions,    class_name: "MembershipsModule::ProgramSubscription", as: :subscriber
   has_many :subscribed_programs,      through: :program_subscriptions, class_name: "CoopServicesModule::Program"
 
-  delegate :name, :amount, to: :salary_grade, prefix: true, allow_nil: true
   delegate :name, to: :department, prefix: true, allow_nil: true
   delegate :name, :address, :contact_number, :logo, to: :cooperative, prefix: true
   delegate :name, to: :office, prefix: true, allow_nil: true

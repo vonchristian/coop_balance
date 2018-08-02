@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_24_011305) do
+ActiveRecord::Schema.define(version: 2018_08_02_113701) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -751,6 +751,7 @@ ActiveRecord::Schema.define(version: 2018_07_24_011305) do
     t.string "email", default: "", null: false
     t.uuid "office_id"
     t.integer "birth_year"
+    t.datetime "last_transaction_date"
     t.index ["office_id"], name: "index_members_on_office_id"
     t.index ["sex"], name: "index_members_on_sex"
     t.index ["slug"], name: "index_members_on_slug", unique: true
@@ -902,6 +903,7 @@ ActiveRecord::Schema.define(version: 2018_07_24_011305) do
     t.string "avatar_content_type"
     t.integer "avatar_file_size"
     t.datetime "avatar_updated_at"
+    t.datetime "last_transaction_date"
   end
 
   create_table "penalty_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1300,6 +1302,7 @@ ActiveRecord::Schema.define(version: 2018_07_24_011305) do
     t.string "depositor_type"
     t.uuid "depositor_id"
     t.datetime "date_deposited"
+    t.datetime "last_transaction_date"
     t.index ["account_number"], name: "index_time_deposits_on_account_number", unique: true
     t.index ["depositor_type", "depositor_id"], name: "index_time_deposits_on_depositor_type_and_depositor_id"
     t.index ["membership_id"], name: "index_time_deposits_on_membership_id"
@@ -1409,10 +1412,12 @@ ActiveRecord::Schema.define(version: 2018_07_24_011305) do
     t.string "commercial_document_type"
     t.uuid "commercial_document_id"
     t.boolean "unearned", default: false
+    t.string "token"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_vouchers"
     t.index ["disburser_id"], name: "index_vouchers_on_disburser_id"
     t.index ["payee_type", "payee_id"], name: "index_vouchers_on_payee_type_and_payee_id"
     t.index ["preparer_id"], name: "index_vouchers_on_preparer_id"
+    t.index ["token"], name: "index_vouchers_on_token"
     t.index ["type"], name: "index_vouchers_on_type"
     t.index ["user_id"], name: "index_vouchers_on_user_id"
   end

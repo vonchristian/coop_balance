@@ -5,10 +5,8 @@ RSpec.describe User, type: :model do
     it { is_expected.to belong_to :cash_on_hand_account }
     it { is_expected.to belong_to :cooperative }
     it { is_expected.to belong_to :store_front }
-    it { is_expected.to belong_to :salary_grade }
     it { is_expected.to belong_to :office }
     it { is_expected.to have_many :entries }
-    it { is_expected.to have_many :appraised_properties }
     it { is_expected.to have_many :sales_orders  }
     it { is_expected.to have_many :loans  }
     it { is_expected.to have_many :savings }
@@ -19,7 +17,6 @@ RSpec.describe User, type: :model do
     it { is_expected.to have_many :vouchers }
     it { is_expected.to have_many :prepared_vouchers }
     it { is_expected.to have_many :disbursed_vouchers }
-    it { is_expected.to have_many :real_properties }
     it { is_expected.to have_many :organization_memberships }
     it { is_expected.to have_many :organizations }
     it { is_expected.to have_one :current_address }
@@ -27,9 +24,7 @@ RSpec.describe User, type: :model do
   end
 
   describe 'delegations' do
-    it { is_expected.to delegate_method(:amount).to(:salary_grade).with_prefix }
     it { is_expected.to delegate_method(:name).to(:office).with_prefix }
-    it { is_expected.to delegate_method(:name).to(:salary_grade).with_prefix }
     it { is_expected.to delegate_method(:name).to(:cooperative).with_prefix }
     it { is_expected.to delegate_method(:abbreviated_name).to(:cooperative).with_prefix }
   end
@@ -51,7 +46,6 @@ RSpec.describe User, type: :model do
               :sales_clerk,
               :treasurer,
               :accountant,
-              :human_resource_officer,
               :accounting_clerk,
               :collector,
               :sales_manager])

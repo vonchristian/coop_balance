@@ -1,4 +1,0 @@
-<%= simple_form_for @employee, url: :hr_module_employee_branch_office do |f| %>
-  <%= f.input :branch_office_id, collection: current_user.cooperative.branch_offices.map{|a| [ a.name.titleize, a.id] }, as: :radio_buttons %>
-  <%= f.submit "Update Branch Office" %>
-<% end %>

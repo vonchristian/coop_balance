@@ -1,9 +1,0 @@
-<%= simple_form_for @finished_good, url: :warehouse_department_finished_goods do |f| %>
-  <%= f.error_notification %>
-  <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
-  <%= f.input :raw_material_id, collection: RawMaterial.all.map{ |a| [ a.name.titleize, a.id] } %>
-  <%= f.input :quantity %>
-  <%= f.input :unit_cost %>
-  <%= f.input :total_cost %>
-  <%= f.submit %>
-<% end %>

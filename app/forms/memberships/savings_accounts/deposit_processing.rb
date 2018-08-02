@@ -55,6 +55,7 @@ module Memberships
       end
       def set_last_transaction_date
         find_saving.update_attributes!(last_transaction_date: date)
+        find_saving.depositor.update_attributes!(last_transaction_date: date)
       end
     end
   end
