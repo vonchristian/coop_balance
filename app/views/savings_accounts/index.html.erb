@@ -46,11 +46,11 @@
                 <div class="col-md-2">
                   <center> <%=image_tag(savings_account.depositor.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-4">
                   <p class=""><b><%= savings_account.depositor.name.try(:upcase) %></b></p>
-                  <small class=""> <%= savings_account.saving_product_name %></small>
+                  <small class=""> <%= savings_account.saving_product_name %></small><br><br>
 
-                  <span class="label bg-gray"><%= savings_account.number_of_days_inactive %> days inactive </span><br><br>
+
                     <% if policy([:savings_accounts, :deposit]).new? %>
                       <%= link_to 'Deposit', new_savings_account_deposit_path(savings_account), class: "btn btn-success" %>
                     <% end %>
@@ -60,6 +60,9 @@
                     <% end %>
 
                   <br>
+                </div>
+                <div class="col-md-2">
+                   <span class="label bg-red"><%= savings_account.number_of_days_inactive %> days inactive </span>
                 </div>
                 <div class="col-md-3">
                     <h4 class="text-muted"><%=number_to_currency savings_account.balance %></h4>

@@ -10,72 +10,63 @@ module LoansModule
                 :date,
                 :description,
                 :employee_id
-    validates :principal_amount, :interest_amount, :penalty_amount, presence: true, numericality: true
-    validates :reference_number, :description, presence: true
+      validates :principal_amount, :interest_amount, :penalty_amount, presence: true, numericality: true
+      validates :reference_number, :description, presence: true
 
-    def save
-      ActiveRecord::Base.transaction do
-        save_payment
+      def process!
+        ActiveRecord::Base.transaction do
+          save_payment
+        end
       end
-    end
-    def find_loan
-      LoansModule::Loan.find_by_id(loan_id)
-    end
-    def find_employee
-      User.find_by_id(employee_id)
-    end
-    private
-    def save_payment
-      interest_revenue_account = find_loan.loan_product_interest_revenue_account
-      penalty_account = find_loan.loan_product_penalty_revenue_account
-
-      entry = AccountingModule::Entry.new(
-        origin: find_employee.office,
+      def find_loan
+        LoansModule::Loan.find_by_id(loan_id)
+      end
+      def find_employee
+        User.find_by_id(employee_id)
+      end
+      private
+      def save_payment
+        interest_revenue_account = find_loan.loan_product_interest_revenue_account
+        penalty_account          = find_loan.loan_product_penalty_revenue_account
+        debit_account            = find_employee.cash_on_hand_account
+        entry = AccountingModule::Entry.new(
+        origin:              find_employee.office,
         commercial_document: find_loan,
-        reference_number: reference_number,
-        :description => description,
-        recorder: find_employee,
-        entry_date: date)
-      interest_credit_amount = AccountingModule::CreditAmount.new(
-        amount: interest_amount,
-        account: interest_revenue_account,
-        commercial_document: find_loan)
-      penalty_credit_amount = AccountingModule::CreditAmount.new(
-        amount: penalty_amount,
-        account: penalty_account,
-        commercial_document: find_loan)
-      principal_credit_amount = AccountingModule::CreditAmount.new(
-        amount: principal_amount,
-        account: find_loan.loan_product_loans_receivable_current_account,
-        commercial_document: find_loan)
-      principal_debit_amount = AccountingModule::DebitAmount.new(
-        amount: principal_amount,
-        account: find_employee.cash_on_hand_account,
-        commercial_document: find_loan)
-      interest_debit_amount = AccountingModule::DebitAmount.new(
-        amount: interest_amount,
-        account: find_employee.cash_on_hand_account,
-        commercial_document: find_loan)
-      penalty_debit_amount = AccountingModule::DebitAmount.new(
-        amount: penalty_amount,
-        account: find_employee.cash_on_hand_account,
-        commercial_document: find_loan)
-      entry.debit_amounts << principal_debit_amount
-      if interest_amount.to_f > 0
-        entry.debit_amounts << interest_debit_amount
-        entry.credit_amounts << interest_credit_amount
-      end
-      if penalty_amount.to_f > 0
-        entry.debit_amounts << penalty_debit_amount
-        entry.credit_amounts << penalty_credit_amount
-      end
-      entry.credit_amounts << principal_credit_amount
-      entry.save!
-    end
+        reference_number:    reference_number,
+        description:         description,
+        recorder:            find_employee,
+        entry_date:          date)
 
-    def debit_account
-      find_employee.cash_on_hand_account
+        if interest_amount.to_f > 0
+          entry.credit_amounts.build(
+          amount:              interest_amount.to_f,
+          account:             interest_revenue_account,
+          commercial_document: find_loan)
+        end
+        if penalty_amount.to_f > 0
+          entry.credit_amounts.build(
+          amount:              penalty_amount.to_f,
+          account:             penalty_account,
+          commercial_document: find_loan)
+        end
+        if principal_amount.to_f > 0
+          entry.credit_amounts.build(
+          amount:              principal_amount.to_f,
+          account:             find_loan.loan_product_loans_receivable_current_account,
+          commercial_document: find_loan)
+        end
+
+        entry.debit_amounts.build(
+        amount:              total_amount,
+        account:             debit_account,
+        commercial_document: find_loan)
+        entry.save
+      end
+      def total_amount
+        principal_amount.to_f
+        interest_amount.to_f +
+        penalty_amount.to_f
+      end
     end
   end
-end
 end

@@ -13,7 +13,7 @@ module Loans
       @loan = LoansModule::Loan.find(params[:loan_id])
       @payment = LoansModule::Loans::PaymentProcessing.new(payment_params)
       if @payment.valid?
-        @payment.save
+        @payment.process!
         redirect_to loan_payments_url(@loan), notice: "Loan payment saved successfully."
       else
         render :new

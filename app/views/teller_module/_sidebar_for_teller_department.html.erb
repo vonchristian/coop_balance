@@ -27,7 +27,7 @@
       <li class="header"> TELLER SECTION </li>
 
       <li class=<%= 'active' if current_page?(vouchers_path) %> ><a href="/vouchers"><i class="far fa-folder"></i> <span> Vouchers</span></a></li>
-      <li class=<%= 'active' if current_page?(treasury_module_disbursements_path) %> ><a href="/treasury_module/disbursements"><i class="fa fa-chevron-left"></i> <span> Disbursements</span></a></li>
+      <li class=<%= 'active' if current_page?(treasury_module_disbursements_path) %> ><a href="/treasury_module/disbursements"><i class="fa fa-chevron-left"></i> <span> Cash Disbursements</span></a></li>
           <li class=<%= 'active' if current_page?(treasury_module_cash_receipts_path) %> ><a href="/treasury_module/cash_receipts"><i class="fa fa-chevron-right"></i> <span> Cash Receipts</span></a></li>
 
       <li class=<%= 'active' if current_page?(members_path) %> ><a href="/members"><i class="fa fa-users"></i> <span> Members</span></a></li>
@@ -35,13 +35,15 @@
       <li class=<%= 'active' if current_page?(savings_accounts_path) %> ><a href="/savings_accounts"><i class="fa fa-suitcase"></i> <span> Savings Accounts</span></a></li>
       <li class=<%= 'active' if current_page?(share_capitals_path) %> ><a href="/share_capitals"><i class="fa fa-suitcase"></i> <span> Share Capitals </span></a></li>
       <li class=<%= 'active' if current_page?(time_deposits_path) %> ><a href="/time_deposits"><i class="fa fa-hourglass"></i> <span> Time Deposits</span></a></li>
-      <li class=<%= 'active' if current_page?(loans_path) %> ><a href="/loans"><i class="fa fa-suitcase"></i> <span> Loans</span></a></li>
+      <li class=<%= 'active' if current_page?(loans_path) %> ><a href="/loans"><i class="fa fa-credit-card"></i> <span> Loans</span></a></li>
 
        <li class="header"> MONITORING </li>
              <li class=<%= 'active' if current_page?(loans_module_monitoring_metrics_path) %> ><a href="/loans_module/monitoring/metrics"><i class="fa fa-circle"></i> <span> Loans Portfolio</span></a></li>
              <li class=<%= 'active' if current_page?(savings_accounts_dashboards_path) %> ><a href="/savings_accounts_dashboards"><i class="fa fa-circle"></i> <span> Savings Portfolio</span></a></li>
              <li class=<%= 'active' if current_page?(share_capitals_section_dashboards_path) %> ><a href="/share_capitals_section/dashboards"><i class="fa fa-circle"></i> <span> Share Capitals Portfolio</span></a></li>
              <li class=<%= 'active' if current_page?(cooperative_services_path) %> ><a href="/cooperative_services"><i class="fa fa-circle"></i> <span> Services Portfolio</span></a></li>
+             <li class=<%= 'active' if current_page?(management_module_account_budgets_path) %> ><a href="/management_module/account_budgets"><i class="fa fa-circle"></i> <span> Budgets </span></a></li>
+
 
     </ul>
   </section>
