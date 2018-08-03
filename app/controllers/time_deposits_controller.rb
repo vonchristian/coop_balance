@@ -22,6 +22,13 @@ class TimeDepositsController < ApplicationController
   end
   def show
     @time_deposit = MembershipsModule::TimeDeposit.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.pdf do
+        pdf = TimeDepositPdf.new(@time_deposit, view_context)
+        send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Time Deposit.pdf"
+      end
+    end
   end
 
   private

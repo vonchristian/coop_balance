@@ -1,8 +1,11 @@
 <div class="row">
   <div class="col-md-12">
     <div class="box box-solid">
+      <div class="box-header">
+        <h3 class="box-title"> Time Deposits </h3>
+      </div>
       <div class="box-body">
-        <div class="col-md-6 border-right">
+        <div class="col-md-12">
           <%=form_tag time_deposits_path, class: "sidebar-form", method: :get do %>
                 <div class="input-group">
                   <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Depositor, Account Number", id: 'account-search-form' %>

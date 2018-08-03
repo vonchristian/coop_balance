@@ -1,6 +1,6 @@
 <% content_for(:html_title) { "#{@time_deposit.depositor_name} | New Term Extension" } %>
 <div class="row">
-  <div class="col-md-4 col-md-offset-4">
+  <div class="col-md-8 col-md-offset-2">
     <div class="box box-default">
       <div class="box-header">
         <h3 class="box-title"> New Term Extension Details </h3>
@@ -10,13 +10,13 @@
         </center>
       </div>
       <div class="box-body">
+        Maturity Date: <%= @time_deposit.current_term.maturity_date.strftime("%B %e, %Y") %>
 <%= simple_form_for [@time_deposit, @renewal], url: :time_deposit_term_extensions do |f| %>
   <%= f.error_notification %>
   <%= f.input :time_deposit_id, input_html: { value: @time_deposit.id }, as: :hidden %>
   <%= f.input :member_id, input_html: { value: @time_deposit.depositor.id }, as: :hidden %>
-  <%= f.input :date_deposited, label: "Date Renewed:", as: :string, input_html: { class: "datepicker" } %>
-  <%= f.input :amount, input_html: { value: @time_deposit.balance }, as: :currency %>
-  <%= f.input :number_of_days %>
+  <%= f.input :renewal_date, as: :string, input_html: { class: "datepicker" } %>
+  <%= f.input :term %>
   <div class="box-footer">
     <%= f.submit "Save Term Extension", class: "btn btn-primary pull-right", data: { disable_with: "Processing..."} %>
   </div>

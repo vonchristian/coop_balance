@@ -31,10 +31,10 @@
       <%= term.maturity_date.strftime("%B %e, %Y") %>
     </div>
     <div class="col-md-2">
-      <%= term.number_of_months %> Days
+      <%= term.number_of_months %> Months
     </div>
     <div class="col-md-2">
-     <% if @time_deposit.terms.current == term %>
+     <% if @time_deposit.current_term == term %>
        <span class="label bg-green"> Current </span>
       <% end %>
     </div>

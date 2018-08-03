@@ -2,14 +2,14 @@ module Memberships
   module TimeDeposits
     class DepositProcessing
       include ActiveModel::Model
-      attr_accessor :reference_number, :account_number, :date, :amount,:depositor_id, :employee_id, :number_of_days, :time_deposit_product_id
+      attr_accessor :reference_number, :account_number, :date, :amount,:depositor_id, :employee_id, :term, :time_deposit_product_id
       validates :depositor_id,
                 :date,
                 :amount,
                 :reference_number,
                 presence: true
       validates :amount,
-                :number_of_days,
+                :term,
                 numericality: true
 
       def susbscribe!
@@ -41,9 +41,9 @@ module Memberships
           time_deposit_product_id: time_deposit_product_id)
           Term.create!(
           termable: time_deposit,
-          term: number_of_days,
+          term: term,
           effectivity_date: date,
-          maturity_date: (date.to_date + (number_of_days.to_i.days)))
+          maturity_date: (date.to_date + (term.to_i.months)))
         create_entry(time_deposit)
       end
 

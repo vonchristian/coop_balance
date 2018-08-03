@@ -47,23 +47,23 @@
                   <center> <%=image_tag(savings_account.depositor.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center>
                 </div>
                 <div class="col-md-5">
-                  <p class=""><%= savings_account.depositor.name.try(:upcase) %></p>
-                  <small class=""> <%= savings_account.saving_product_name %></small><br><br>
+                  <p class=""><b><%= savings_account.depositor.name.try(:upcase) %></b></p>
+                  <small class=""> <%= savings_account.saving_product_name %></small>
 
-                  <span class="label bg-gray"><%= savings_account.number_of_days_inactive %> days inactive </span>
+                  <span class="label bg-gray"><%= savings_account.number_of_days_inactive %> days inactive </span><br><br>
                     <% if policy([:savings_accounts, :deposit]).new? %>
-                      <%= link_to 'Deposit', new_savings_account_deposit_path(savings_account), class: "btn btn-xs btn-success" %>
+                      <%= link_to 'Deposit', new_savings_account_deposit_path(savings_account), class: "btn btn-success" %>
                     <% end %>
                        &nbsp; &nbsp;
                     <% if policy([:savings_accounts, :withdrawal]).new? %>
-                      <%= link_to 'Withdraw', new_savings_account_withdrawal_path(savings_account), class: "btn btn-xs btn-warning" %>
+                      <%= link_to 'Withdraw', new_savings_account_withdrawal_path(savings_account), class: "btn btn-warning" %>
                     <% end %>
 
                   <br>
                 </div>
                 <div class="col-md-3">
-                  <h4 class="text-muted"><center><%=number_to_currency savings_account.balance %></center></h4>
-
+                    <h4 class="text-muted"><%=number_to_currency savings_account.balance %></h4>
+                    <small>BALANCE</small>
                 </div>
               </div>
               <hr>

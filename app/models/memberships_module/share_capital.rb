@@ -1,6 +1,7 @@
 module MembershipsModule
   class ShareCapital < ApplicationRecord
     include PgSearch
+    include InactivityMonitoring
     pg_search_scope :text_search, :against => [:account_number, :account_owner_name]
     multisearchable against: [:account_number, :account_owner_name]
     belongs_to :subscriber, polymorphic: true, touch: true
@@ -120,9 +121,7 @@ module MembershipsModule
       self.save
     end
 
-    def number_of_days_inactive
-      ((Time.zone.now - updated_at)/86_400.0).round
-    end
+
 
     private
 

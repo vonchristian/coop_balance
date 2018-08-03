@@ -17,7 +17,7 @@ module TimeDeposits
 
     private
     def term_params
-      params.require(:time_deposits_term_extension).permit(:time_deposit_id, :account_number, :or_number, :amount, :date, :member_id, :recorder_id, :number_of_days, :date_deposited)
+      params.require(:time_deposits_term_extension).permit(:time_deposit_id, :recorder_id, :term, :renewal_date)
     end
   end
 end

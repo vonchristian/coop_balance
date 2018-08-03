@@ -1,6 +1,7 @@
 module MembershipsModule
   class Saving < ApplicationRecord
     include PgSearch
+    include InactivityMonitoring
     pg_search_scope :text_search, against: [:account_number, :account_owner_name]
     multisearchable against: [:account_number, :account_owner_name]
 
@@ -51,9 +52,7 @@ module MembershipsModule
       saving_product_closing_account.amounts.where(commercial_document: self).present?
     end
 
-    def number_of_days_inactive
-      ((Time.zone.now - updated_at)/86_400.0).round
-    end
+
 
     def interest_posted?(date)
       saving_product.
@@ -116,13 +115,7 @@ module MembershipsModule
       end
     end
 
-    def last_transaction_date
-      if entries.any?
-        entries.sort_by(&:entry_date).reverse.first.entry_date.strftime("%B %e, %Y")
-      else
-        "No Transactions"
-      end
-    end
+
     def average_daily_balance(options={})
       balances = []
       date_range = options[:date].beginning_of_quarter..options[:date].end_of_quarter

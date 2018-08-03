@@ -25,7 +25,8 @@ class Voucher < ApplicationRecord
   def self.payees
     User.all +
     Member.all +
-    Organization.all
+    Organization.all +
+    Supplier.all
   end
   def self.unused
     where(commercial_document_id: nil)
