@@ -36,20 +36,7 @@
               </div>
             </div>
             <br />
-            <div class="row">
-              <div class="col-md-1">
-              </div>
-              <div class="col-md-4">
-                Maturity Date
-              </div>
-              <div class="col-md-6">
-                <span class="pull-left">
-                  <%= @time_deposit.current_term_maturity_date.strftime("%B %e, %Y")  %>
-                </span>
-              </div>
-            </div>
-            <br>
-           <div class="row">
+          <div class="row">
             <div class="col-md-1">
             </div>
             <div class="col-md-4">
@@ -59,18 +46,37 @@
               <%= @time_deposit.account_number %>
             </div>
           </div>
+          <br>
+          <div class="row">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-10">
+            <%= link_to time_deposit_path(@time_deposit, format: "pdf") do %>
+              <span class="btn btn-default"><i class="fa fa-certificate"></i> Time Deposit Certificate </span>
+              <% end %>
+            </div>
+          </div>
         </div>
         <div class="col-md-4">
-          <small>BALANCE</small>
+          <small>AMOUNT DEPOSITED</small>
           <h3><%= number_to_currency @time_deposit.balance %></h3>
-
-            <% if policy([:savings_accounts, :withdrawal]).new? %>
-              <%= link_to 'New Withdrawal', new_time_deposit_withdrawal_path(@time_deposit), class: "btn btn-warning" %>
-
+          <% if policy([:time_deposits, :withdrawal]).new? %>
+            <%= link_to 'New Withdrawal', new_time_deposit_withdrawal_path(@time_deposit), class: "btn btn-warning" %>
           <% end %>
         </div>
 
+        <div class="col-md-2">
+          <small>MATURITY DATE</small>
+          <p><i class="fa fa-calendar"></i>
+            <%= @time_deposit.current_term_maturity_date.strftime("%B %e, %Y")  %>
+          </p>
+          <h3 class="box-title">
+            <%= @time_deposit.current_term_remaining_term %>
+          </h3>
+            <small>DAYS TO MATURE</small>
+        </div>
       </div>
+
     <hr />
 
     <br>

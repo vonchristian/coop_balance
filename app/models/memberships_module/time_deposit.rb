@@ -26,6 +26,7 @@ module MembershipsModule
     delegate :maturity_date,
              :effectivity_date,
              :matured?,
+             :remaining_term,
              to: :current_term,
              prefix: true, allow_nil: true
     delegate :name,
@@ -78,6 +79,9 @@ module MembershipsModule
 
     def amount_deposited
       balance
+    end
+    def disbursed?
+      true
     end
 
     def balance
