@@ -1,29 +1,38 @@
 <div class="tab-pane <%= 'active' if current_page? loan_settings_path(@loan) %>">
-  Settings
-  <%=link_to "New Adjusting Entry", new_accounting_module_adjusting_entry_path(commercial_document_type: @loan.class.to_s, commercial_document_id: @loan.id) %>
-  <hr>
+
+  <h4>Barangay Settings</h4>
+  <p class="text-muted">
+    Set barangay to which this loan belongs to for monitoring purposes and generation of reports.
+  </p>
   <%= @loan.barangay_name %>
-  <%= link_to 'Set Barangay', edit_loan_barangay_path(id: @loan.id), class: "btn btn-danger" %>
+  <%= link_to 'Set Barangay', edit_loan_barangay_path(id: @loan.id), class: "btn btn-sm btn-danger" %>
   <hr>
-  <p>Loss</p>
-  <%= link_to 'Set as Loss', new_loans_module_loan_loss_path(@loan), class: "btn btn-danger" %>
-</div>
+  <h4>Set Loan as Loss</h4>
+  <p class="text-muted">
+    Set this loan as loss
+  </p>
+  <%= link_to 'Set as Loss', new_loans_module_loan_loss_path(@loan), class: "btn btn-sm btn-danger" %>
+<hr />
 <h4>Loan Term</h4>
-<span class="text-muted"> Extend loan terms </span>
+<p class="text-muted"> Create new  loan terms </p>
+<%= link_to 'New Extension', new_loans_module_loan_term_path(@loan), class: "btn btn-sm btn-danger" %>
+<br />
 <br>
 <% @loan.terms.each do |term| %>
   <%= term.effectivity_date.strftime("%B %e %Y") %>
   <%= term.maturity_date.strftime("%B %e, %Y") %>
 <% end %>
-  <%= link_to 'New Extension', new_loans_module_loan_term_path(@loan), class: "btn btn-danger" %>
 <hr>
 <h4>Archive</h4>
 <span class="text-muted"> Archive paid loans </span>
 <% if policy([:loans_module, :loans, :archiving]).new? && !@loan.archived? %>
-  <%= link_to "Archive Loan", loans_module_loan_archivings_path(@loan), method: :post, data: { confirm_with: "Are you sure you want to archive this loan?" }, class: "btn btn-danger" %>
+  <%= link_to "Archive Loan", loans_module_loan_archivings_path(@loan), method: :post, data: { confirm_with: "Are you sure you want to archive this loan?" }, class: "btn btn-sm btn-danger" %>
 <% end %>
 <% if @loan.amounts.blank? %>
 <h4> Delete Loan </h4>
+<p class="text-muted">
+  Remove loans not approved or duplicated loan
+</p>
 <p class="text-muted"> Deleting this loan will remove it from records. Please be careful. </p>
   <%= link_to 'Delete Loan', loans_module_loan_path(@loan), method: :delete, data: { confirm_with: "Are you sure you want to delete this loan? " }, class: "btn btn-danger" %>
 <% end %>
@@ -33,3 +42,10 @@
   Enter tracking number to distinguish loans during payments
 </p>
 <%=link_to "Add Tracking Number", edit_loans_module_loan_tracking_number_path(id: @loan.id), class: "btn btn-danger btn-sm" %>
+<hr />
+<h4>Adjustment Entries</h4>
+<p class="text-muted">
+  Make adjusting entries for this loan.
+</p>
+<%=link_to "New Adjusting Entry", new_accounting_module_adjusting_entry_path(commercial_document_type: @loan.class.to_s, commercial_document_id: @loan.id), class: "btn btn-sm btn-danger" %>
+<hr>
