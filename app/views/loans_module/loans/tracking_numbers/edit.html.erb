@@ -1,0 +1,5 @@
+<%= simple_form_for @loan, url: :loans_module_loan_tracking_number do |f| %>
+  <%= f.input :tracking_number %>
+  <%= f.input :loan_id, input_html: { value: @loan.id }, as: :hidden %>
+  <%= f.submit "Save Tracking Number", class: "btn btn-danger" %>
+<% end %>

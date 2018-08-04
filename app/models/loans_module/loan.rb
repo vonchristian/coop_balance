@@ -6,7 +6,7 @@ module LoansModule
     include LoansModule::Loans::Penalty
     include LoansModule::Loans::Amortization
 
-    pg_search_scope :text_search, :against => [:borrower_full_name]
+    pg_search_scope :text_search, :against => [:borrower_full_name, :tracking_number]
     multisearchable against: [:borrower_full_name]
     enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
     has_one :disbursement_voucher, class_name: "Voucher", as: :payee

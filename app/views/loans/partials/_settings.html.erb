@@ -27,3 +27,9 @@
 <p class="text-muted"> Deleting this loan will remove it from records. Please be careful. </p>
   <%= link_to 'Delete Loan', loans_module_loan_path(@loan), method: :delete, data: { confirm_with: "Are you sure you want to delete this loan? " }, class: "btn btn-danger" %>
 <% end %>
+<hr />
+<h4 class="box-title"> Tracking Number</h4>
+<p class="text-muted">
+  Enter tracking number to distinguish loans during payments
+</p>
+<%=link_to "Add Tracking Number", edit_loans_module_loan_tracking_number_path(id: @loan.id), class: "btn btn-danger btn-sm" %>

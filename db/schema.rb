@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_02_113701) do
+ActiveRecord::Schema.define(version: 2018_08_04_000211) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -703,6 +703,7 @@ ActiveRecord::Schema.define(version: 2018_08_02_113701) do
     t.boolean "archived", default: false
     t.text "purpose"
     t.datetime "archiving_date"
+    t.string "tracking_number"
     t.index ["account_number"], name: "index_loans_on_account_number", unique: true
     t.index ["barangay_id"], name: "index_loans_on_barangay_id"
     t.index ["borrower_type", "borrower_id"], name: "index_loans_on_borrower_type_and_borrower_id"

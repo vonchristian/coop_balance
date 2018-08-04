@@ -112,6 +112,7 @@ Rails.application.routes.draw do
       resources :borrower_subscription_charges, only: [:new, :create]
       resources :payments,                      only: [:new, :create]
       resources :losses,                        only: [:new, :create], module: :loans
+      resources :tracking_numbers,              only: [:edit, :update], module: :loans
     end
     resources :members, only: [:index, :show] do
       resources :loan_applications, only: [:new, :create], module: :member_loans

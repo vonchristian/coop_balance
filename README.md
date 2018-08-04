@@ -1,3 +1,18 @@
+Records Problems
+
+duplicated member records
+
+savings balances with adjustments
+
+loans with no tracking number
+
+time deposit treated as savings
+
+
+
+
+
+
 single cash on hand on LOAN PAYMENT
 
 net surplus line chart
