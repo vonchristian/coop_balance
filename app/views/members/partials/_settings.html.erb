@@ -4,8 +4,24 @@
   <span class="text-muted">Update profile details of this member. </span><br>
   <%= link_to "Update Profile", edit_member_path(@member), class: "btn btn-default btn-sm" %>
   <hr>
-  <span class="text-muted"> Update occupation </span>
-  <hr>
+
 <h4>Merge Account</h4>
 <%=link_to "Merge Account", new_member_account_merging_path(@member) %>
+<hr>
+<h4 class="box-title">Membership Details</h4>
+  <% if @member.memberships.where(cooperative: current_cooperative).blank? %>
+    <%= link_to 'New Membership', new_member_membership_path(@member), class: "btn btn-primary" %>
+  <% end %>
+
+<% @member.memberships.each do |membership| %>
+  <div class="row">
+    <div class="col-md-8">
+      <%= membership.membership_type.try(:titleize) %><br>
+      Since: <%= membership.membership_date.try(:strftime, ("%B %e, %Y")) %>
+    </div>
+    <div class="col-md-4">
+      <%= link_to 'Update Membership', edit_member_membership_path(id: membership.id, member_id: @member.id, cooperative_id: current_cooperative.id), class: "btn btn-warning btn-xs" %>
+    </div>
+  </div>
+<% end %>
 </div>

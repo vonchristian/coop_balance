@@ -2,15 +2,15 @@ module Members
   class MembershipsController < ApplicationController
     def new
       @member = Member.find(params[:member_id])
-      @membership = @member.build_membership
+      @membership = @member.memberships.build
     end
 
     def create
        @member = Member.find(params[:member_id])
-      @membership = @member.create_membership(membership_params)
+      @membership = @member.memberships.create(membership_params)
       if @membership.valid?
         @membership.save
-        redirect_to member_url(@member), notice: "Membership saved successfully."
+        redirect_to member_settings_url(@member), notice: "Membership saved successfully."
       else
         render :new
       end
@@ -18,14 +18,16 @@ module Members
 
     def edit
       @member = Member.find(params[:member_id])
-      @membership = @member.membership
+      @membership = Membership.where(cooperative_id: params[:cooperative_id]).last
     end
+
     def update
-       @member = Member.find(params[:member_id])
-      @membership = @member.create_membership(membership_params)
+      @member = Member.find(params[:member_id])
+      @membership = Membership.find(params[:id])
+      @membership.update(membership_params)
       if @membership.valid?
         @membership.save
-        redirect_to member_url(@member), notice: "Membership saved successfully."
+        redirect_to member_settings_url(@member), notice: "Membership updated successfully."
       else
         render :new
       end
@@ -33,7 +35,7 @@ module Members
 
     private
     def membership_params
-      params.require(:membership).permit(:membership_type, :account_number)
+      params.require(:membership).permit(:membership_type, :account_number, :cooperative_id, :membership_date)
     end
   end
 end

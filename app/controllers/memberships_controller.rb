@@ -9,4 +9,7 @@ class MembershipsController < ApplicationController
   def show
     @membership = Membership.find(params[:id])
   end
+  def edit
+    @membership = Membership.find(params[:id])
+  end
 end
