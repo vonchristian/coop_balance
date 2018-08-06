@@ -49,7 +49,6 @@ module LoansModule
           term: term])
       create_loan_product_charges(loan)
       create_amortization_schedule(loan)
-      # create_documentary_stamp_tax(loan)
     end
 
     def create_loan_product_charges(loan)
@@ -65,30 +64,11 @@ module LoansModule
       loan.loan_charges.create!(charge: tax, commercial_document: loan)
     end
 
-    # def set_loan_protection_fund
-    #   LoansModule::LoanProtectionFund.set_loan_protection_fund_for(self)
-    # end
-
     def create_amortization_schedule(loan)
       if loan.amortization_schedules.present?
         loan.amortization_schedules.destroy_all
       end
       LoansModule::AmortizationSchedule.create_schedule_for(loan)
     end
-
-    # def set_borrower_full_name
-    #   self.borrower_full_name = self.borrower.name
-    #   self.save
-    # end
-
-    # def set_organization
-    #   self.organization_id = self.borrower.organization_memberships.current.try(:organization_id)
-    #   self.save
-    # end
-
-    # def set_barangay
-    #   self.barangay_id = self.borrower.current_address.try(:barangay_id)
-    #   self.save
-    # end
   end
 end

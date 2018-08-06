@@ -19,7 +19,7 @@ module LoansModule
       private
       def interest_params
         params.require(:loans_module_loans_interest_posting).
-        permit(:date, :reference_number, :description, :amount, :employee_id, :loan_id)
+        permit(:date, :description, :amount, :employee_id, :loan_id)
       end
     end
   end

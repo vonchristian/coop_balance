@@ -6,7 +6,7 @@ module LoansModule
       describe 'associations' do
         it { is_expected.to belong_to :loan_product }
         it { is_expected.to belong_to :interest_revenue_account }
-        it { is_expected.to belong_to :unearned_interest_income_account}
+
       end
 
       describe "validations" do

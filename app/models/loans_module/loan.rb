@@ -31,8 +31,7 @@ module LoansModule
                                         dependent: :destroy
     has_many :loan_charge_payment_schedules, through: :loan_charges
     has_many :charges,                  through: :loan_charges
-    has_many :loan_co_makers,           class_name: "LoansModule::LoanCoMaker",
-                                        dependent: :destroy
+
     has_many :voucher_amounts,          class_name: "Vouchers::VoucherAmount", as: :commercial_document # for adding amounts on voucher
     has_many :amortization_schedules,   dependent: :destroy
     has_many :amounts, as: :commercial_document, class_name: "AccountingModule::Amount"
@@ -42,6 +41,7 @@ module LoansModule
                                         as: :notified
     has_many :loan_interests,           class_name: "LoansModule::Loans::LoanInterest"
     has_many :loan_penalties,           class_name: "LoansModule::Loans::LoanPenalty"
+    has_many :loan_discounts,           class_name: "LoansModule::Loans::LoanDiscount"
 
 
     delegate :name, :age, :contact_number, :current_address,  :first_name, to: :borrower,  prefix: true, allow_nil: true
@@ -277,9 +277,21 @@ module LoansModule
     end
 
     def balance
-      principal_balance
-      # interest_receivable_balance +
-      # penalties_balance
+      principal_balance +
+      loan_interests_balance +
+      loan_penalties_balance
+    end
+
+    def loan_interests_balance
+      loan_interests.total -
+      loan_discounts.interest.total -
+      interest_payments
+    end
+
+    def loan_penalties_balance
+      loan_penalties.total -
+      loan_discounts.penalty.total -
+      penalty_payments
     end
 
     def debits_balance

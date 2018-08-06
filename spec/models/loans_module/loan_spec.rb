@@ -23,6 +23,8 @@ module LoansModule
       it { is_expected.to have_many :terms }
       it { is_expected.to have_many :loan_interests }
       it { is_expected.to have_many :loan_penalties }
+      it { is_expected.to have_many :loan_discounts }
+
     end
     describe 'validations' do
       it { is_expected.to validate_presence_of :loan_product_id }

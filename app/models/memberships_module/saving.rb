@@ -27,8 +27,8 @@ module MembershipsModule
 
     scope :has_minimum_balance, -> { SavingsQuery.new.has_minimum_balance  }
 
-    before_save :set_account_owner_name, :set_date_opened
-    after_commit :check_balance
+    before_save :set_account_owner_name, :set_date_opened #move to saving opening
+    after_commit :check_balance, #move to deposit withdrawal
 
     def self.below_minimum_balance
       where(has_minimum_balance: false)

@@ -96,6 +96,9 @@ Rails.application.routes.draw do
     end
 
     resources :loans do
+      resources :loan_penalty_discounts, only: [:new, :create], module: :loans
+      resources :loan_interest_discounts, only: [:new, :create], module: :loans
+
       resources :first_notices, only: [:show], module: :notices
       resources :archivings, only: [:create], module: :loans
       resources :share_capital_build_ups,       only: [:new, :create], module: :loans

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_06_053621) do
+ActiveRecord::Schema.define(version: 2018_08_06_114142) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -503,8 +503,6 @@ ActiveRecord::Schema.define(version: 2018_08_06_053621) do
     t.boolean "add_on_interest"
     t.uuid "interest_revenue_account_id"
     t.uuid "unearned_interest_income_account_id"
-    t.uuid "interest_receivable_account_id"
-    t.index ["interest_receivable_account_id"], name: "index_interest_configs_on_interest_receivable_account_id"
     t.index ["interest_revenue_account_id"], name: "index_interest_configs_on_interest_revenue_account_id"
     t.index ["loan_product_id"], name: "index_interest_configs_on_loan_product_id"
     t.index ["unearned_interest_income_account_id"], name: "index_interest_configs_on_unearned_interest_income_account_id"
@@ -610,6 +608,20 @@ ActiveRecord::Schema.define(version: 2018_08_06_053621) do
     t.index ["loan_id"], name: "index_loan_co_makers_on_loan_id"
   end
 
+  create_table "loan_discounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "loan_id"
+    t.datetime "date"
+    t.integer "discount_type"
+    t.text "description"
+    t.uuid "computed_by_id"
+    t.decimal "amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["computed_by_id"], name: "index_loan_discounts_on_computed_by_id"
+    t.index ["discount_type"], name: "index_loan_discounts_on_discount_type"
+    t.index ["loan_id"], name: "index_loan_discounts_on_loan_id"
+  end
+
   create_table "loan_interests", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "loan_id"
     t.decimal "amount"
@@ -617,6 +629,8 @@ ActiveRecord::Schema.define(version: 2018_08_06_053621) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "computed_by_id"
+    t.index ["computed_by_id"], name: "index_loan_interests_on_computed_by_id"
     t.index ["loan_id"], name: "index_loan_interests_on_loan_id"
   end
 
@@ -627,6 +641,8 @@ ActiveRecord::Schema.define(version: 2018_08_06_053621) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "computed_by_id"
+    t.index ["computed_by_id"], name: "index_loan_penalties_on_computed_by_id"
     t.index ["loan_id"], name: "index_loan_penalties_on_loan_id"
   end
 
@@ -937,14 +953,10 @@ ActiveRecord::Schema.define(version: 2018_08_06_053621) do
   create_table "penalty_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "loan_product_id"
     t.decimal "rate"
-    t.uuid "penalty_receivable_account_id"
     t.uuid "penalty_revenue_account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "penalty_discount_account_id"
     t.index ["loan_product_id"], name: "index_penalty_configs_on_loan_product_id"
-    t.index ["penalty_discount_account_id"], name: "index_penalty_configs_on_penalty_discount_account_id"
-    t.index ["penalty_receivable_account_id"], name: "index_penalty_configs_on_penalty_receivable_account_id"
     t.index ["penalty_revenue_account_id"], name: "index_penalty_configs_on_penalty_revenue_account_id"
   end
 
@@ -1513,7 +1525,6 @@ ActiveRecord::Schema.define(version: 2018_08_06_053621) do
   add_foreign_key "finished_good_materials", "products"
   add_foreign_key "finished_good_materials", "raw_materials"
   add_foreign_key "fixed_terms", "time_deposits"
-  add_foreign_key "interest_configs", "accounts", column: "interest_receivable_account_id"
   add_foreign_key "interest_configs", "accounts", column: "interest_revenue_account_id"
   add_foreign_key "interest_configs", "accounts", column: "unearned_interest_income_account_id"
   add_foreign_key "interest_configs", "loan_products"
@@ -1530,8 +1541,12 @@ ActiveRecord::Schema.define(version: 2018_08_06_053621) do
   add_foreign_key "loan_charges", "charges"
   add_foreign_key "loan_charges", "loans"
   add_foreign_key "loan_co_makers", "loans"
+  add_foreign_key "loan_discounts", "loans"
+  add_foreign_key "loan_discounts", "users", column: "computed_by_id"
   add_foreign_key "loan_interests", "loans"
+  add_foreign_key "loan_interests", "users", column: "computed_by_id"
   add_foreign_key "loan_penalties", "loans"
+  add_foreign_key "loan_penalties", "users", column: "computed_by_id"
   add_foreign_key "loan_product_charges", "charges"
   add_foreign_key "loan_product_charges", "loan_products"
   add_foreign_key "loan_products", "accounts", column: "loans_receivable_current_account_id"
@@ -1561,8 +1576,6 @@ ActiveRecord::Schema.define(version: 2018_08_06_053621) do
   add_foreign_key "orders", "store_fronts"
   add_foreign_key "orders", "users", column: "employee_id"
   add_foreign_key "organization_members", "organizations"
-  add_foreign_key "penalty_configs", "accounts", column: "penalty_discount_account_id"
-  add_foreign_key "penalty_configs", "accounts", column: "penalty_receivable_account_id"
   add_foreign_key "penalty_configs", "accounts", column: "penalty_revenue_account_id"
   add_foreign_key "penalty_configs", "loan_products"
   add_foreign_key "products", "categories"

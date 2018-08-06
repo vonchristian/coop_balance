@@ -9,7 +9,7 @@ module LoansModule
       end
 
       def interest_payments
-        loan_product_interest_receivable_account.credits_balance(commercial_document: self)
+        loan_product_interest_revenue_account.credits_balance(commercial_document: self)
       end
       def payments_total
         loan.entries.map{|a| a.credit_amounts.distinct.where(account: loan_product.interest_account).sum(&:amount)}.sum

@@ -8,15 +8,15 @@
         </center>
       </div>
       <div class="box-body">
-        <%= simple_form_for [@loan, @penalty_posting], url: :loans_module_loan_penalty_postings do |f| %>
+        <%= simple_form_for [@loan, @loan_discount], url: :loans_module_loan_loan_interest_discounts do |f| %>
           <%= f.error_notification %>
           <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
           <%= f.input :amount %>
           <%= f.input :description %>
-          <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+          <%= f.input :computed_by_id, input_html: { value: current_user.id }, as: :hidden %>
           <%= f.input :loan_id, input_html: { value: @loan.id }, as: :hidden %>
           <div class="box-footer">
-            <%= f.submit "Post Penalty", class: "btn btn-danger pull-right" %>
+            <%= f.submit "Save Discount", class: "btn btn-danger pull-right" %>
           </div>
         <% end %>
       </div>

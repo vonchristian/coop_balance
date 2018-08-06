@@ -20,7 +20,7 @@ module LoansModule
       private
       def penalty_params
         params.require(:loans_module_loans_penalty_posting).
-        permit(:date, :reference_number, :description, :amount, :employee_id, :loan_id)
+        permit(:date, :description, :amount, :employee_id, :loan_id)
       end
     end
   end

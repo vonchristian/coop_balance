@@ -1,47 +1,84 @@
 <% content_for(:html_title) { "#{@loan.borrower_name} | #{@loan.loan_product_name }" } %>
 <div class="tab-pane <%='active' if current_page?(loan_path(@loan))%>" id="loan-info">
-<div class="row">
-  <div class="col-md-12">
-    <div class="box box-solid">
-      <div class="box-header">
-      </div>
-      <div class="box-body">
+
+        <h4 class="box-title">SUMMARY </h4>
         <div class="row">
           <div class="col-md-3">
-            <small class="text-muted">PRINCIPAL</small>
             <h3><%= number_to_currency @loan.loan_amount %></h3>
+            <small class="text-muted">LOAN AMOUNT</small>
+
           </div>
            <div class="col-md-2">
-            <small class="text-muted">INTEREST RECEIVABLE</small>
+            <h3><%= number_to_currency @loan.loan_interests_balance %> </h3>
+            <small class="text-muted">INTERESTS </small>
 
-            <h5><%= number_to_currency @loan.interest_receivable_debits_balance %></h5>
-            <small> INTEREST PAID</small>
-            <h5><%= number_to_currency @loan.interest_payments %></h5>
-            <small> INTEREST BALANCE</small>
-            <h5><%= number_to_currency @loan.interest_receivable_balance %></h5>
-
-            <small class="text-muted">UNEARNED INTERESTS</small>
-            <h5><%= number_to_currency @loan.unearned_interests %></h5>
-
-            <%=link_to 'New Interest', new_loans_module_loan_interest_posting_path(@loan), class: "btn btn-xs btn-danger" %><br>
-            <%=link_to 'New Rebate', new_loans_module_loan_interest_rebate_posting_path(@loan), class: "btn btn-xs btn-default" %><br>
 
           </div>
           <div class="col-md-2">
+            <h3><%= number_to_currency @loan.loan_penalties_balance %> </h3>
             <small class="text-muted">PENALTIES</small>
-            <h5><%= number_to_currency @loan.penalties_debits_balance %></h5>
-            <%=link_to 'New Penalty', new_loans_module_loan_penalty_posting_path(@loan), class: "btn btn-xs btn-danger" %><br>
           </div>
           <div class="col-md-2">
-            <small class="text-muted">PAYMENTS</small>
             <h3><%= number_to_currency @loan.payments_total %></h3>
+            <small class="text-muted">PAYMENTS</small>
+
           </div>
           <div class="col-md-3">
-            <small class="text-red">BALANCE</small>
             <h3 class="text-red"><%= number_to_currency @loan.balance %></h3>
+            <small class="text-red">BALANCE</small>
           </div>
         </div>
         <hr />
+        <h5>INTEREST</h5>
+        <div class="row">
+          <div class="col-md-3">
+            <h5><%= number_to_currency @loan.loan_interests.total %></h5>
+            <small>TOTAL INTERESTS</small>
+          </div>
+          <div class="col-md-2">
+            <h5><%= number_to_currency @loan.loan_discounts.interest.total %></h5>
+            <small>DISCOUNTS</small><br><br>
+             <%=link_to 'New Discount', new_loans_module_loan_loan_interest_discount_path(@loan), class: "btn btn-sm btn-success" %>
+          </div>
+          <div class="col-md-2">
+             <h5><%= number_to_currency @loan.interest_payments %></h5>
+            <small>PAYMENTS</small>
+          </div>
+          <div class="col-md-2">
+            <h5><%= number_to_currency @loan.loan_interests_balance %></h5>
+            <small>BALANCE</small>
+          </div>
+          <div class="col-md-3">
+             <%=link_to 'New Interest', new_loans_module_loan_interest_posting_path(@loan), class: "btn btn-sm btn-danger" %>
+          </div>
+        </div>
+        <hr>
+        <h5> PENALTY </h5>
+         <div class="row">
+          <div class="col-md-3">
+            <h5><%= number_to_currency @loan.loan_penalties.total %></h5>
+            <small>TOTAL PENALTIES</small>
+          </div>
+          <div class="col-md-2">
+            <h5><%= number_to_currency @loan.loan_discounts.penalty.total %></h5>
+            <small>DISCOUNTS</small><br><br>
+            <%=link_to 'New Discount', new_loans_module_loan_loan_penalty_discount_path(@loan), class: "btn btn-sm btn-success" %>
+          </div>
+           <div class="col-md-2">
+            <h5><%= number_to_currency @loan.penalty_payments %></h5>
+            <small> PAYMENTS</small>
+          </div>
+          <div class="col-md-2">
+            <h5><%= number_to_currency @loan.loan_penalties_balance %></h5>
+            <small>BALANCE</small>
+          </div>
+          <div class="col-md-3">
+            <%=link_to 'New Penalty', new_loans_module_loan_penalty_posting_path(@loan), class: "btn btn-sm btn-danger" %><br><br>
+
+          </div>
+        </div>
+        <hr>
+
         <div class="row">
                 <h4 class="condensed-text">LOAN DETAILS </h4>
             <div class="row">
