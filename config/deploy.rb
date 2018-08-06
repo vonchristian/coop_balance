@@ -5,7 +5,7 @@ require 'mina/rbenv'
 require 'mina/puma'
 
 set :whenever_name, 'production'
-set :domain,        '192.168.254.126'
+set :domain,        '192.168.254.110'
 set :deploy_to,     '/var/www/coopcatalyst'
 set :repository,    'https://github.com/vonchristian/coopcatalyst2.git'
 set :branch,        'master'

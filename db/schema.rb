@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_04_000211) do
+ActiveRecord::Schema.define(version: 2018_08_06_001150) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -412,6 +412,8 @@ ActiveRecord::Schema.define(version: 2018_08_04_000211) do
     t.string "origin_type"
     t.uuid "origin_id"
     t.boolean "offline_receipt", default: false
+    t.boolean "cleared", default: false
+    t.datetime "cleared_at"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_entry"
     t.index ["entry_date"], name: "index_entries_on_entry_date"
     t.index ["origin_type", "origin_id"], name: "index_entries_on_origin_type_and_origin_id"

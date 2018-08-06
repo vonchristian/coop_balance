@@ -47,7 +47,9 @@ Rails.application.routes.draw do
       resources :entries, only: [:index], module: :accounts
     end
     resources :assets, controller: 'accounts', type: 'AccountingModule::Asset'
-    resources :entries
+    resources :entries do
+      resources :clearances, only: [:create], module: :entries
+    end
     resources :debit_amounts, only: [:edit, :update]
     resources :credit_amounts, only: [:edit, :update]
 
