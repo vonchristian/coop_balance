@@ -7,6 +7,7 @@ module AccountingModule
     has_one :official_receipt, as: :receiptable
     belongs_to :commercial_document, :polymorphic => true, touch: true
     belongs_to :origin, :polymorphic => true, touch: true
+    belongs_to :cleared_by, class_name: "User", foreign_key: 'cleared_by_id'
     belongs_to :recorder, foreign_key: 'recorder_id', class_name: "User"
     has_many :credit_amounts, extend: AccountingModule::BalanceFinder, :class_name => 'AccountingModule::CreditAmount', :inverse_of => :entry, dependent: :destroy
     has_many :debit_amounts, extend: AccountingModule::BalanceFinder, :class_name => 'AccountingModule::DebitAmount', :inverse_of => :entry, dependent: :destroy
@@ -39,7 +40,7 @@ module AccountingModule
       end
       amounts
     end
-    
+
     def self.loan_disbursements(options={})
       amounts = []
       User.cash_on_hand_accounts.each do |account|

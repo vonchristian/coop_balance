@@ -24,7 +24,7 @@
                   <%= image_tag(time_deposit.depositor.avatar.url(:thumb), class: "img-circle", height: 50, width: 50) %>
                 </div>
                 <div class="col-md-4">
-                  <p><%= time_deposit.depositor_name.upcase %></p>
+                  <p><%= time_deposit.depositor_name.try(:upcase) %></p>
 
                   <% if time_deposit.withdrawn? %>
                    <span class="text-danger"> Withdrawn last <%= time_deposit.withdrawal_date.strftime("%B %e, %Y") %></span>

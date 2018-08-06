@@ -35,6 +35,7 @@ module Memberships
       private
       def create_time_deposit
         time_deposit = MembershipsModule::TimeDeposit.create!(
+          depositor_name: find_depositor.full_name,
           depositor: find_depositor,
           account_number: account_number,
           date_deposited: date,

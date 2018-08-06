@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_06_001150) do
+ActiveRecord::Schema.define(version: 2018_08_06_014241) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -414,6 +414,8 @@ ActiveRecord::Schema.define(version: 2018_08_06_001150) do
     t.boolean "offline_receipt", default: false
     t.boolean "cleared", default: false
     t.datetime "cleared_at"
+    t.uuid "cleared_by_id"
+    t.index ["cleared_by_id"], name: "index_entries_on_cleared_by_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_entry"
     t.index ["entry_date"], name: "index_entries_on_entry_date"
     t.index ["origin_type", "origin_id"], name: "index_entries_on_origin_type_and_origin_id"
@@ -1306,6 +1308,7 @@ ActiveRecord::Schema.define(version: 2018_08_06_001150) do
     t.uuid "depositor_id"
     t.datetime "date_deposited"
     t.datetime "last_transaction_date"
+    t.string "depositor_name"
     t.index ["account_number"], name: "index_time_deposits_on_account_number", unique: true
     t.index ["depositor_type", "depositor_id"], name: "index_time_deposits_on_depositor_type_and_depositor_id"
     t.index ["membership_id"], name: "index_time_deposits_on_membership_id"
@@ -1479,6 +1482,7 @@ ActiveRecord::Schema.define(version: 2018_08_06_001150) do
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "credit_account_id"
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "debit_account_id"
   add_foreign_key "entries", "store_fronts"
+  add_foreign_key "entries", "users", column: "cleared_by_id"
   add_foreign_key "entries", "users", column: "recorder_id"
   add_foreign_key "entries", "vouchers"
   add_foreign_key "farm_owners", "farms"

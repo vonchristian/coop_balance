@@ -18,9 +18,11 @@
 <%= link_to 'New Extension', new_loans_module_loan_term_path(@loan), class: "btn btn-sm btn-danger" %>
 <br />
 <br>
-<% @loan.terms.each do |term| %>
-  <%= term.effectivity_date.strftime("%B %e %Y") %>
-  <%= term.maturity_date.strftime("%B %e, %Y") %>
+<% if @loan.terms.present? %>
+  <% @loan.terms.each do |term| %>
+    <%= term.effectivity_date.try(:strftime, ("%B %e %Y")) %>
+    <%= term.maturity_date.try(:strftime, ("%B %e, %Y")) %>
+  <% end %>
 <% end %>
 <hr>
 <h4>Archive</h4>

@@ -3,8 +3,8 @@ module MembershipsModule
     enum status: [:withdrawn]
     include PgSearch
     pg_search_scope :text_search,
-                    against: [:account_number],
-                    :associated_against => { :depositor => [:first_name, :last_name ] }
+                    against: [:account_number, :depositor_name]
+
 
     belongs_to :depositor,            polymorphic: true, touch: true
     belongs_to :office,               class_name: "CoopConfigurationsModule::Office"
@@ -18,17 +18,19 @@ module MembershipsModule
              :break_contract_fee,
              to: :time_deposit_product,
              prefix: true
-    delegate :name,
-             :full_name,
+
+    delegate :full_name,
              :first_and_last_name,
              to: :depositor,
              prefix: true
+
     delegate :maturity_date,
              :effectivity_date,
              :matured?,
              :remaining_term,
              to: :current_term,
              prefix: true, allow_nil: true
+
     delegate :name,
              to: :office,
              prefix: true
