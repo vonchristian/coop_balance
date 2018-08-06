@@ -5,7 +5,7 @@ class LoansController < ApplicationController
       @to_date = DateTime.parse(params[:to_date])
       @loans = LoansModule::Loan.disbursed.not_archived.past_due(from_date: @from_date, to_date: @to_date).paginate(:page => params[:page], :per_page => 20)
     elsif params[:search].present?
-      @loans = LoansModule::Loan.text_search(params[:search]).paginate(page: params[:page], per_page: 30)
+      @loans = LoansModule::Loan.text_search(params[:search]).paginate(page: params[:page], per_page: 20)
     else
       @loans = LoansModule::Loan.
       all.not_archived.

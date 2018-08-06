@@ -116,5 +116,13 @@ module AccountingModule
         end
       end
     end
+    it ".not_cleared" do
+      entry = create(:entry_with_credit_and_debit, cleared: false)
+      cleared_entry = create(:entry_with_credit_and_debit, cleared: true)
+
+      expect(described_class.not_cleared).to include(entry)
+      expect(described_class.not_cleared).to_not include(cleared_entry)
+    end
+
   end
 end

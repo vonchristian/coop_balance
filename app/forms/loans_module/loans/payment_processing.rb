@@ -16,6 +16,7 @@ module LoansModule
       def process!
         ActiveRecord::Base.transaction do
           save_payment
+          update_last_transaction_date
         end
       end
       def find_loan
@@ -66,6 +67,9 @@ module LoansModule
         principal_amount.to_f +
         interest_amount.to_f +
         penalty_amount.to_f
+      end
+      def update_last_transaction_date
+        find_loan.update_attributes!(last_transaction_date: date)
       end
     end
   end

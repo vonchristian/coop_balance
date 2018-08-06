@@ -13,23 +13,41 @@
   </p>
   <%= link_to 'Set as Loss', new_loans_module_loan_loss_path(@loan), class: "btn btn-sm btn-danger" %>
 <hr />
-<h4>Loan Term</h4>
+<h4>Loan Terms Details <span class="badge bg-red"><%= @loan.terms.count %></span> </h4>
 <p class="text-muted"> Create new  loan terms </p>
-<%= link_to 'New Extension', new_loans_module_loan_term_path(@loan), class: "btn btn-sm btn-danger" %>
+<%= link_to 'New Term Extension', new_loans_module_loan_term_path(@loan), class: "btn btn-sm btn-danger" %>
 <br />
 <br>
 <% if @loan.terms.present? %>
-  <% @loan.terms.each do |term| %>
-    <%= term.effectivity_date.try(:strftime, ("%B %e %Y")) %>
-    <%= term.maturity_date.try(:strftime, ("%B %e, %Y")) %>
-  <% end %>
+  <table class="table table-responsive">
+    <thead>
+      <tr>
+        <th>Effectivity Date</th>
+        <th>Maturity Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @loan.terms.each do |term| %>
+        <tr>
+          <td><%= term.effectivity_date.try(:strftime, ("%B %e, %Y")) %></td>
+          <td><%= term.maturity_date.try(:strftime, ("%B %e, %Y")) %></td>
+          <td>
+            <% if @loan.current_term == term %>
+              <span class="label bg-green"> Current </span>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 <% end %>
 <hr>
+<% if @loan.paid? %>
 <h4>Archive Loan</h4>
 <p class="text-muted"> Archive paid loans </p>
 <% if policy([:loans_module, :loans, :archiving]).new? && !@loan.archived? %>
   <%= link_to "Archive Loan", loans_module_loan_archivings_path(@loan), method: :post, data: { confirm: "Are you sure you want to archive this loan?" }, class: "btn btn-sm btn-danger" %>
-<% else %>
+<% elsif @loan.archived? %>
   <div class="row">
     <div class="col-md-6">
       <b>Status</b>
@@ -56,6 +74,7 @@
       <%= @loan.archived_by.try(:name) %>
     </div>
   </div>
+<% end %>
 <% end %>
 <% if @loan.amounts.blank? %>
 <h4> Delete Loan </h4>

@@ -40,6 +40,9 @@ module LoansModule
     has_many :terms,                    as: :termable
     has_many :notices,                  class_name: "LoansModule::Notice",
                                         as: :notified
+    has_many :loan_interests,           class_name: "LoansModule::Loans::LoanInterest"
+    has_many :loan_penalties,           class_name: "LoansModule::Loans::LoanPenalty"
+
 
     delegate :name, :age, :contact_number, :current_address,  :first_name, to: :borrower,  prefix: true, allow_nil: true
     delegate :name,  to: :loan_product, prefix: true
@@ -69,7 +72,9 @@ module LoansModule
 
     delegate :is_past_due?, :number_of_days_past_due, :remaining_term, :terms_elapsed, :maturity_date, to: :current_term, allow_nil: true
     delegate :number_of_months, to: :current_term, prefix: true
-
+    def self.active
+      where(archived: false)
+    end
     def self.total_balance
       ids = pluck(:id)
       LoansModule::LoanProduct.total_balance(commercial_document: ids)

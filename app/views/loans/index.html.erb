@@ -52,13 +52,15 @@
                     <span class="text-red"><%= number_to_currency loan.balance %></span><br>
                     <small class="text-muted">Loan Balance</small><br>
                   </div>
-                  <div class="col-md-2">
-                    <span class="label bg-red">
-                      <%= loan.number_of_days_past_due %> Days
-                    </span>
-                    <br>
-                    <small class="text-danger"> PAST DUE </small>
-                  </div>
+                  <% if !loan.archived? && loan.is_past_due? %>
+                    <div class="col-md-2">
+                      <span class="label bg-red">
+                        <%= loan.number_of_days_past_due %> Days
+                      </span>
+                      <br>
+                      <small class="text-danger"> PAST DUE </small>
+                    </div>
+                  <% end %>
                 </div>
                 <br>
             <% end %>

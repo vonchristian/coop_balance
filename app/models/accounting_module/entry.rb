@@ -30,6 +30,9 @@ module AccountingModule
     delegate :number, to: :voucher, prefix: true, allow_nil: true
     delegate :name, to: :origin, prefix: true, allow_nil: true
     delegate :name, to: :recorder, prefix: true, allow_nil: true
+    def self.not_cleared
+      where(cleared: false)
+    end
 
     def self.loan_payments(options={})
       amounts = []

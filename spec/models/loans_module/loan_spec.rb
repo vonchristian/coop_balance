@@ -21,6 +21,8 @@ module LoansModule
       it { is_expected.to have_many :real_properties }
       it { is_expected.to have_many :loan_protection_funds }
       it { is_expected.to have_many :terms }
+      it { is_expected.to have_many :loan_interests }
+      it { is_expected.to have_many :loan_penalties }
     end
     describe 'validations' do
       it { is_expected.to validate_presence_of :loan_product_id }
@@ -45,6 +47,15 @@ module LoansModule
       it { is_expected.to delegate_method(:name).to(:barangay).with_prefix }
 
     end
+
+    it ".active" do
+      loan = create(:loan)
+      archived_loan = create(:loan, archived: true)
+
+      expect(described_class.active).to include(loan)
+      expect(described_class.active).to_not include(archived_loan)
+    end
+
 
     it ".past_due(args={})" do
       employee = create(:user, role: 'teller')

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_06_023610) do
+ActiveRecord::Schema.define(version: 2018_08_06_053621) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -610,6 +610,26 @@ ActiveRecord::Schema.define(version: 2018_08_06_023610) do
     t.index ["loan_id"], name: "index_loan_co_makers_on_loan_id"
   end
 
+  create_table "loan_interests", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "loan_id"
+    t.decimal "amount"
+    t.datetime "date"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["loan_id"], name: "index_loan_interests_on_loan_id"
+  end
+
+  create_table "loan_penalties", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "loan_id"
+    t.decimal "amount"
+    t.datetime "date"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["loan_id"], name: "index_loan_penalties_on_loan_id"
+  end
+
   create_table "loan_product_charges", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "charge_id"
     t.uuid "loan_product_id"
@@ -709,6 +729,7 @@ ActiveRecord::Schema.define(version: 2018_08_06_023610) do
     t.datetime "archiving_date"
     t.string "tracking_number"
     t.uuid "archived_by_id"
+    t.datetime "last_transaction_date"
     t.index ["account_number"], name: "index_loans_on_account_number", unique: true
     t.index ["archived_by_id"], name: "index_loans_on_archived_by_id"
     t.index ["barangay_id"], name: "index_loans_on_barangay_id"
@@ -1509,6 +1530,8 @@ ActiveRecord::Schema.define(version: 2018_08_06_023610) do
   add_foreign_key "loan_charges", "charges"
   add_foreign_key "loan_charges", "loans"
   add_foreign_key "loan_co_makers", "loans"
+  add_foreign_key "loan_interests", "loans"
+  add_foreign_key "loan_penalties", "loans"
   add_foreign_key "loan_product_charges", "charges"
   add_foreign_key "loan_product_charges", "loan_products"
   add_foreign_key "loan_products", "accounts", column: "loans_receivable_current_account_id"
