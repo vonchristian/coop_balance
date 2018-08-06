@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_06_014241) do
+ActiveRecord::Schema.define(version: 2018_08_06_023610) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -708,7 +708,9 @@ ActiveRecord::Schema.define(version: 2018_08_06_014241) do
     t.text "purpose"
     t.datetime "archiving_date"
     t.string "tracking_number"
+    t.uuid "archived_by_id"
     t.index ["account_number"], name: "index_loans_on_account_number", unique: true
+    t.index ["archived_by_id"], name: "index_loans_on_archived_by_id"
     t.index ["barangay_id"], name: "index_loans_on_barangay_id"
     t.index ["borrower_type", "borrower_id"], name: "index_loans_on_borrower_type_and_borrower_id"
     t.index ["loan_product_id"], name: "index_loans_on_loan_product_id"
@@ -1521,6 +1523,7 @@ ActiveRecord::Schema.define(version: 2018_08_06_014241) do
   add_foreign_key "loans", "municipalities"
   add_foreign_key "loans", "organizations"
   add_foreign_key "loans", "streets"
+  add_foreign_key "loans", "users", column: "archived_by_id"
   add_foreign_key "loans", "users", column: "preparer_id"
   add_foreign_key "mark_up_prices", "unit_of_measurements"
   add_foreign_key "member_occupations", "members"

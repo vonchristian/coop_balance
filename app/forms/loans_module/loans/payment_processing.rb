@@ -60,10 +60,10 @@ module LoansModule
         amount:              total_amount,
         account:             debit_account,
         commercial_document: find_loan)
-        entry.save
+        entry.save!
       end
       def total_amount
-        principal_amount.to_f
+        principal_amount.to_f +
         interest_amount.to_f +
         penalty_amount.to_f
       end

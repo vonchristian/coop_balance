@@ -9,8 +9,9 @@ module LoansModule
     pg_search_scope :text_search, :against => [:borrower_full_name, :tracking_number]
     multisearchable against: [:borrower_full_name]
     enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
-    has_one :disbursement_voucher, class_name: "Voucher", as: :payee
 
+    has_one :disbursement_voucher,      class_name: "Voucher", as: :payee
+    belongs_to :archived_by,            class_name: "User", foreign_key: 'archived_by_id'
     belongs_to :borrower,               polymorphic: true
     belongs_to :loan_product,           class_name: "LoansModule::LoanProduct"
     belongs_to :street,                 class_name: "Addresses::Street",

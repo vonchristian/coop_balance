@@ -5,7 +5,11 @@ module ManagementModule
       @revenues = AccountingModule::Revenue.all
     end
     def new
-      @accounts = AccountingModule::Expense.all + AccountingModule::Revenue.all
+      if params[:search].present?
+        @accounts = AccountingModule::Account.text_search(params[:search]).paginate(page: params[:page], per_page: 25)
+      else
+        @accounts = AccountingModule::Account.all.paginate(page: params[:page], per_page: 25)
+      end
       @account_budget = AccountBudgetProcessing.new
     end
     def create
