@@ -1,5 +1,6 @@
 module StoreFrontModule
   class Cart < ApplicationRecord
+    has_many :savings, class_name: "MembershipsModule::Saving"
     belongs_to :employee,                         class_name: 'User', foreign_key: 'user_id'
     has_many :line_items,                         class_name: "StoreFrontModule::LineItem",
                                                   dependent: :destroy

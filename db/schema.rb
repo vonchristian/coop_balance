@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_07_051420) do
+ActiveRecord::Schema.define(version: 2018_08_07_131105) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -1145,9 +1145,11 @@ ActiveRecord::Schema.define(version: 2018_08_07_051420) do
     t.uuid "barangay_id"
     t.boolean "has_minimum_balance", default: false
     t.datetime "last_transaction_date"
+    t.uuid "cart_id"
     t.index ["account_number"], name: "index_savings_on_account_number", unique: true
     t.index ["account_owner_name"], name: "index_savings_on_account_owner_name"
     t.index ["barangay_id"], name: "index_savings_on_barangay_id"
+    t.index ["cart_id"], name: "index_savings_on_cart_id"
     t.index ["depositor_type", "depositor_id"], name: "index_savings_on_depositor_type_and_depositor_id"
     t.index ["office_id"], name: "index_savings_on_office_id"
     t.index ["saving_product_id"], name: "index_savings_on_saving_product_id"
@@ -1591,6 +1593,7 @@ ActiveRecord::Schema.define(version: 2018_08_07_051420) do
   add_foreign_key "saving_products", "accounts", column: "closing_account_id"
   add_foreign_key "saving_products", "accounts", column: "interest_expense_account_id"
   add_foreign_key "savings", "barangays"
+  add_foreign_key "savings", "carts"
   add_foreign_key "savings", "offices"
   add_foreign_key "savings", "saving_products"
   add_foreign_key "savings_account_configs", "accounts", column: "closing_account_id"

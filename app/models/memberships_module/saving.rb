@@ -5,6 +5,7 @@ module MembershipsModule
     pg_search_scope :text_search, against: [:account_number, :account_owner_name]
     multisearchable against: [:account_number, :account_owner_name]
 
+    belongs_to :cart, optional: true, class_name: "StoreFrontModule::Cart"
     belongs_to :barangay, optional: true, class_name: "Addresses::Barangay"
     belongs_to :depositor,        polymorphic: true,  touch: true
     belongs_to :saving_product,   class_name: "CoopServicesModule::SavingProduct"
@@ -28,7 +29,7 @@ module MembershipsModule
     scope :has_minimum_balance, -> { SavingsQuery.new.has_minimum_balance  }
 
     before_save :set_account_owner_name, :set_date_opened #move to saving opening
-    after_commit :check_balance, #move to deposit withdrawal
+    # after_commit :check_balance, #move to deposit withdrawal
 
     def self.below_minimum_balance
       where(has_minimum_balance: false)
@@ -86,6 +87,9 @@ module MembershipsModule
     def name
       depositor_name
     end
+    def name_and_balance
+      "#{name} - #{balance.to_f}"
+    end
     def post_interests_earned(date)
       InterestPosting.new.post_interests_earned(self, date)
     end
@@ -130,9 +134,9 @@ module MembershipsModule
     private
     def check_balance
       if balance >= saving_product.minimum_balance
-        self.has_minimum_balance = true
+        self.update_attributes!(has_minimum_balance:  true)
       elsif balance < saving_product.minimum_balance
-        self.has_minimum_balance = false
+        self.update_attributes!(has_minimum_balance:  false)
       end
     end
 

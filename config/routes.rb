@@ -307,7 +307,8 @@ namespace :share_capitals_section do
 
   resources :savings_accounts, only: [:index, :show] do
     resources :settings,          only: [:index],        module: :savings_accounts
-    resources :account_mergings,  only: [:new, :create], module: :savings_accounts
+    resources :account_mergings,  only: [:create], module: :savings_accounts
+    resources :merging_line_items, only: [:new, :create, :destroy], module: :savings_accounts
     resources :deposits,          only: [:new, :create], module: :savings_accounts
     resources :withdrawals,       only: [:new, :create], module: :savings_accounts
     resources :account_closings,  only: [:new, :create], module: :savings_accounts

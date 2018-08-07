@@ -1,7 +1,7 @@
 module SavingsAccounts
   class AccountMerging
     include ActiveModel::Model
-    attr_accessor :merger_id, :mergee_id
+    attr_accessor :saving_id, :cart_id
 
     def merge!
       ActiveRecord::Base.transaction do
@@ -11,14 +11,17 @@ module SavingsAccounts
 
     private
     def merge_accounts
-      find_merger.debit_amounts << find_mergee.debit_amounts
-      find_merger.credit_amounts << find_mergee.credit_amounts
+      find_cart.savings.each do |saving|
+        find_saving.debit_amounts << saving.debit_amounts
+        find_saving.credit_amounts << saving.credit_amounts
+        saving.destroy
+      end
     end
-    def find_merger
-      MembershipsModule::Saving.find_by_id(merger_id)
+    def find_saving
+      MembershipsModule::Saving.find(saving_id)
     end
-    def find_mergee
-      MembershipsModule::Saving.find_by_id(mergee_id)
+    def find_cart
+      StoreFrontModule::Cart.find(cart_id)
     end
   end
 end
