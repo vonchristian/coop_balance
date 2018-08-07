@@ -28,6 +28,10 @@ module LoansModule
 
     validates :name, uniqueness: true
     validates :maximum_loanable_amount, numericality: true
+    def self.current_accounts
+      ids = all.pluck(:loans_receivable_current_account_id)
+      AccountingModule::Account.where(id: ids)
+    end
     def self.total_balance(args={})
       accounts.balance(args)
     end

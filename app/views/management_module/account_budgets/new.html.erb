@@ -26,7 +26,7 @@
               <%= f.input :year, label: false, placeholder: "Year" %>
             </div>
             <div class="col-md-4">
-              <%= f.input :proposed_amount, label: false, placeholder: "Proposed Amount" %>
+              <%= f.input :proposed_amount, label: false, placeholder: "Proposed Amount", as: :currency %>
             </div>
             <div class="col-md-2">
               <%= f.submit "Set Budget", class: "btn btn-primary" %>

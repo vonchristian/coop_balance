@@ -1,3 +1,13 @@
+edit entries
+
+
+efficiency target
+
+total loans receivable / total loan payments
+
+low past due rate
+
+
 
 background job for penalty computation
 

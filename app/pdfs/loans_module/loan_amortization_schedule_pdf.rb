@@ -44,12 +44,14 @@ module LoansModule
     bounding_box [300, 930], width: 50 do
       image "#{Rails.root}/app/assets/images/kccmc_logo.jpg", width: 50, height: 50
     end
-    bounding_box [370, 930], width: 200 do
-        text "KCCMC", style: :bold, size: 24
+    bounding_box [360, 930], width: 200 do
+        text "Kalanguya Cultural Community", style: :bold, size: 10
+        text "Multipurpose Cooperative", style: :bold, size: 10
+        move_down 5
         text "Poblacion, Tinoc, Ifugao", size: 10
     end
     bounding_box [0, 930], width: 400 do
-      text "AMORTIZATION SCHEDULE", style: :bold, size: 14
+      text "LOAN STATEMENT AND AMORTIZATION SCHEDULE", style: :bold, size: 10
       move_down 3
 
       move_down 3
@@ -65,26 +67,26 @@ module LoansModule
     end
   end
   def loan_charges_details
-    table([["Application Date", "#{@loan.application_date.strftime("%B %e, %Y")}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 100]) do
+    table([["Application Date", "#{@loan.application_date.strftime("%B %e, %Y")}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [160, 100]) do
       cells.borders = []
       column(1).align = :right
     end
 
-    table([["Maturity Date", "#{@loan.maturity_date.try(:strftime, ("%B %e, %Y"))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 100]) do
+    table([["Maturity Date", "#{@loan.maturity_date.try(:strftime, ("%B %e, %Y"))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [160, 100]) do
       cells.borders = []
       column(1).align = :right
     end
-    table([["LOAN AMOUNT", "#{price(@loan.loan_amount)}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 100]) do
+    table([["LOAN AMOUNT", "#{price(@loan.loan_amount)}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [160, 100]) do
       cells.borders = []
       column(1).align = :right
 
     end
-    table([["<b>Less Charges</b>"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 100]) do
+    table([["<b>Less Charges</b>"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [160, 100]) do
       cells.borders = []
       column(1).align = :right
     end
 
-    table(loan_charges_data, cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 100]) do
+    table(loan_charges_data, cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [160, 100]) do
       cells.borders = []
       column(1).align = :right
 
@@ -97,19 +99,26 @@ module LoansModule
       stroke_horizontal_rule
       move_down 5
     end
-    table([["<b>NET PROCEED</b>", "<b>#{price @loan.net_proceed}</b>"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 100]) do
+    table([["<b>NET PROCEED</b>", "<b>#{price @loan.net_proceed}</b>"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [160, 100]) do
       cells.borders = []
       column(1).align = :right
 
     end
-    move_down 30
+    move_down 10
 
   end
   def loan_charges_data
     @loan_charges_data ||= @loan.loan_charges.map{|a| [a.name, price(a.charge_amount_with_adjustment)]}
   end
     def amortization_schedule
-      table(amortization_schedule_data, header: true, cell_style: { size: 9, font: "Helvetica"}, column_widths: [90, 100, 100, 60, 70, 90]) do
+      stroke do
+      stroke_color '24292E'
+      line_width 1
+      stroke_horizontal_rule
+      move_down 10
+    end
+      text "PAYMENT SCHEDULE", size: 10, style: :bold
+      table(amortization_schedule_data, header: true, cell_style: { size: 8, font: "Helvetica"}, column_widths: [90, 100, 100, 60, 70, 90]) do
 
         row(0).font_style = :bold
         column(0).align = :right

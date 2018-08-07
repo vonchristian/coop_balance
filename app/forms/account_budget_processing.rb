@@ -9,7 +9,7 @@ class AccountBudgetProcessing
 
   private
   def create_account_budget
-    AccountBudget.create(
+    AccountBudget.create!(
       account_id: account_id,
       year: year,
       proposed_amount: proposed_amount)

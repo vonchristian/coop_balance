@@ -49,9 +49,7 @@ module LoansModule
     delegate :unearned_interest_income_account,
              :loans_receivable_current_account,
              :penalty_revenue_account,
-             :penalty_receivable_account,
              :interest_revenue_account,
-             :interest_receivable_account,
              :interest_rebate_account,
              :interest_rate,
              :penalty_rate,
@@ -93,7 +91,9 @@ module LoansModule
     end
 
     def disburser
-      disbursement_voucher.entry.recorder
+      if disbursed?
+        disbursement_voucher.entry.recorder
+      end
     end
 
 
@@ -174,10 +174,10 @@ module LoansModule
       loan_product_loans_receivable_current_account.credit_amounts.where(commercial_document: self).each do |amount|
         entries << amount.entry
       end
-      loan_product_interest_receivable_account.credit_amounts.where(commercial_document: self).each do |amount|
+      loan_product_interest_revenue_account.credit_amounts.where(commercial_document: self).each do |amount|
         entries << amount.entry
       end
-      loan_product_penalty_receivable_account.credit_amounts.where(commercial_document: self).each do |amount|
+      loan_product_penalty_revenue_account.credit_amounts.where(commercial_document: self).each do |amount|
         entries << amount.entry
       end
       entries.uniq
