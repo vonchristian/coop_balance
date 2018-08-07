@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_06_114142) do
+ActiveRecord::Schema.define(version: 2018_08_07_051420) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -860,6 +860,7 @@ ActiveRecord::Schema.define(version: 2018_08_06_114142) do
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "date"
     t.index ["noteable_type", "noteable_id"], name: "index_notes_on_noteable_type_and_noteable_id"
     t.index ["noter_id"], name: "index_notes_on_noter_id"
   end

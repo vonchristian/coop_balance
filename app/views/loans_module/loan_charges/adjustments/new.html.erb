@@ -27,6 +27,10 @@
         <%=simple_form_for [@loan_charge, @adjustment], url: :loans_module_loan_charge_adjustments do |f| %>
           <div class="row">
             <div class="col-md-10 col-md-offset-1">
+              <%= f.input :loan_id, input_html: { value: @loan_charge.loan_id }, as: :hidden %>
+              <%= f.input :loan_charge_id, input_html: { value: @loan_charge.id }, as: :hidden %>
+              <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+
               <%= f.input :amount, as: :currency %>
               <%= f.input :percent, label: "Percent to be deducted" %>
               <%= f.input :number_of_payments %>

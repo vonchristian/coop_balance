@@ -94,16 +94,18 @@ module LoansModule
     end
 
     def self.update_amortization_schedule(loan)
-      loan.amortization_schedules.order(date: :asc).first(loan.number_of_interest_payments_prededucted).each do |schedule|
-        schedule.has_prededucted_interest = true
-        schedule.interest = interest_computation(schedule, loan)
-        schedule.debit_account_id = schedule.default_debit_account
-        schedule.debit_account_id = schedule.default_credit_account
-        schedule.save
-      end
-      loan.amortization_schedules.where(prededucted_interest: false).order(date: :asc).each do |schedule|
-        schedule.interest = interest_computation(schedule, loan)
-        schedule.save
+      if loan.amortization_schedules.present?
+        loan.amortization_schedules.order(date: :asc).first(loan.number_of_interest_payments_prededucted).each do |schedule|
+          schedule.has_prededucted_interest = true
+          schedule.interest = interest_computation(schedule, loan)
+          schedule.debit_account_id = schedule.default_debit_account
+          schedule.debit_account_id = schedule.default_credit_account
+          schedule.save
+        end
+        loan.amortization_schedules.where(prededucted_interest: false).order(date: :asc).each do |schedule|
+          schedule.interest = interest_computation(schedule, loan)
+          schedule.save
+        end
       end
     end
 

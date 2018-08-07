@@ -1,3 +1,11 @@
+
+if loan is archived?
+   disable all buttons
+   show archived on loan show
+   end
+merging of savings account
+check loan interest on loan
+fix amortization schedule
 edit entries
 
 

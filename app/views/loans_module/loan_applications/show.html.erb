@@ -14,14 +14,12 @@
         </div>
       </div>
       <div class="box-body">
-
-        <p class="text-purple">LOAN APPLICATION DETAILS </p>
     		<div class="row">
     		  <div class="col-md-5 col-md-offset-1">
-    				<p class="condensed-text">AMOUNT APPLIED </p>
+    				<h4 class="box-title">AMOUNT APPLIED </h4>
           </div>
           <div class="col-md-3">
-            <span class="pull-right"> <%= number_to_currency @loan.loan_amount %></span>
+            <h4 class="box-title"> <span class="pull-right"> <%= number_to_currency @loan.loan_amount %></span></h4>
           </div>
         </div>
         <br>
@@ -29,7 +27,7 @@
           <div class="col-md-6">
   				  <p class="text-danger condensed-text">LESS CHARGES</p>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-5">
             <%= link_to 'Add Charge', new_loans_module_loan_additional_charge_path(@loan), class: "btn btn-danger btn-sm pull-right" %><br>
           </div>
         </div>
@@ -87,16 +85,57 @@
             <%= f.input :description, input_html: { value: "Loan disbursement voucher of #{@loan.borrower_name}" }, as: :text %>
         <%= f.input :number, input_html: { value: Voucher.generate_number_for(@voucher) } %>
         <%= f.input :preparer_id, input_html: { value: current_user.id }, as: :hidden %>
-            <%= f.input :loan_id, input_html: { value: @loan.id } %>
+            <%= f.input :loan_id, input_html: { value: @loan.id }, as: :hidden %>
             <%= f.input :preparer_id, input_html: { value: current_user.id }, as: :hidden %>
-            <%= f.submit "Create Disbursement Voucher", class: "btn btn-primary pull-right" %>
-
-            <%= link_to 'Cancel Application', loans_module_loan_application_path(@loan), method: :delete, class: "btn btn btn-danger pull-left" %>
+            <div class="box-footer">
+              <%= f.submit "Create Disbursement Voucher", class: "btn btn-primary btn-lg pull-right" %>
+              <%= link_to 'Cancel Application', loans_module_loan_application_path(@loan), method: :delete, class: "btn pull-left" %>
+            </div>
 
 				    <% end %>
 
 
 			  </div>
+      </div>
+      <div class="box box-solid">
+        <div class="box-header">
+          <h4 class="box-title">Amortization Schedule <span class="badge bg-blue"><%= @loan.amortization_schedules.count %></span> </h4>
+        </div>
+        <div class="box-body">
+          <div class="table table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Principal</th>
+                  <th>Interest</th>
+                  <th>Total</th>
+                  <th>Balance</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @loan.amortization_schedules.order(created_at: :asc).each do |schedule| %>
+                  <tr>
+                    <td><%= schedule.date.strftime("%B %e, %Y") %>
+                    </td>
+                    <td><%= number_to_currency schedule.principal %></td>
+                    <td>
+                      <% if schedule.has_prededucted_interest? %>
+                       <span class="label bg-red">
+                       PREDEDUCTED </span>
+                      <% else %>
+                        <%= number_to_currency schedule.interest %>
+                      <% end %>
+                    </td>
+
+                    <td><%= number_to_currency schedule.total_amortization %> </td>
+                    <td><%= number_to_currency @loan.balance_for(schedule) %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   <div class="col-md-5">
@@ -168,3 +207,4 @@
       </div>
     </div>
   </div>
+

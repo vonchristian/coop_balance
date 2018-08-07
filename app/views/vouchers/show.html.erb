@@ -1,5 +1,5 @@
  <div class="row">
- <div class="col-md-8 col-md-offset-2">
+ <div class="col-md-9 col-md-offset-2">
     <div class="box box-solid">
       <div class="box-header bg-gray">
 
@@ -37,11 +37,30 @@
         <hr>
         <div class="row">
           <div class="col-md-10 col-md-offset-1">
+            <div class="row">
+              <div class="col-md-4">
+                Description
+              </div>
+              <div class="col-md-3">
+                Account
+              </div>
+              <div class="col-md-2">
+                Debit
+              </div>
+              <div class="col-md-2">
+                Credit
+              </div>
+            </div>
+            <br>
+
 
             <div class="table table-responsive">
-              <table class="table table-hover table-striped">
+              <table class="table table-hover">
                 <thead>
                   <tr>
+                    <% if !@voucher.disbursed? %>
+                      <th>Description</th>
+                    <% end %>
                     <th>Account</th>
                     <th>Debit</th>
                     <th>Credit</th>
@@ -59,7 +78,7 @@
                           </td>
                         <td>
                           <% if amount.kind_of?(AccountingModule::CreditAmount) %>
-                          <%= number_to_currency amount.amount %>
+                            <span class="pull-right"><%= number_to_currency amount.amount %></span>
                           <% end %>
                         </td>
                       </tr>
@@ -90,7 +109,7 @@
                       <td><b><%= number_to_currency @voucher.voucher_amounts.credit.sum(:amount) %></b></td>
                     </tr>
                     <tr>
-                      <td></td>
+
                       <td></td>
                       <td></td>
                       <td></td>
@@ -111,6 +130,8 @@
         </div>
       </div>
     </div>
+
+
 
 
 

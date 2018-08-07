@@ -42,6 +42,7 @@ module LoansModule
     has_many :loan_interests,           class_name: "LoansModule::Loans::LoanInterest"
     has_many :loan_penalties,           class_name: "LoansModule::Loans::LoanPenalty"
     has_many :loan_discounts,           class_name: "LoansModule::Loans::LoanDiscount"
+    has_many :notes,                    as: :noteable
 
 
     delegate :name, :age, :contact_number, :current_address,  :first_name, to: :borrower,  prefix: true, allow_nil: true
@@ -60,7 +61,7 @@ module LoansModule
     delegate :maximum_loanable_amount, to: :loan_product
     delegate :avatar, to: :borrower
 
-    delegate :number_of_interest_payments_prededucted, to: :interest_on_loan_charge
+
     delegate :name, to: :barangay, prefix: true, allow_nil: true
     validates :loan_product_id,  :loan_amount, :borrower_id, presence: true
     validates :loan_amount, numericality: { less_than_or_equal_to: :maximum_loanable_amount }
@@ -70,6 +71,13 @@ module LoansModule
 
     delegate :is_past_due?, :number_of_days_past_due, :remaining_term, :terms_elapsed, :maturity_date, to: :current_term, allow_nil: true
     delegate :number_of_months, to: :current_term, prefix: true
+    def number_of_interest_payments_prededucted
+      if interest_on_loan_charge.present?
+        interest_on_loan_charge.number_of_interest_payments_prededucted
+      else
+        0
+      end
+    end
     def self.active
       where(archived: false)
     end
@@ -210,11 +218,6 @@ module LoansModule
       borrower_name
     end
 
-
-
-    def arrears(options={})
-      amortization_schedules.scheduled_for(options).sum(&:total_amortization)
-    end
 
     def total_deductions(options={})
       amortized_principal_for(options) +

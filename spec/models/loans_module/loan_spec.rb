@@ -24,6 +24,7 @@ module LoansModule
       it { is_expected.to have_many :loan_interests }
       it { is_expected.to have_many :loan_penalties }
       it { is_expected.to have_many :loan_discounts }
+      it { is_expected.to have_many :notes }
 
     end
     describe 'validations' do

@@ -4,23 +4,22 @@ module LoansModule
 			def new
 				@loan_charge = LoansModule::LoanCharge.find(params[:loan_charge_id])
         @loan = @loan_charge.loan
-				@adjustment = @loan_charge.build_charge_adjustment
+				@adjustment = LoansModule::Loans::AdjustmentProcessing.new
 			end
 			def create
 				@loan_charge = LoansModule::LoanCharge.find(params[:loan_charge_id])
         @loan = @loan_charge.loan
-				@adjustment = @loan_charge.build_charge_adjustment(charge_adjustment_params)
+				@adjustment = LoansModule::Loans::AdjustmentProcessing.new(charge_adjustment_params)
 				if @adjustment.valid?
 					@adjustment.save
 					redirect_to loans_module_loan_application_url(@loan_charge.loan), notice: "Adjustment saved successfully."
-        LoansModule::AmortizationSchedule.create_schedule_for(@loan)
 				else
 					render :new
 				end
 			end
 			private
 			def charge_adjustment_params
-				params.require(:loans_module_charge_adjustment).permit(:percent, :amount, :amortize_balance, :number_of_payments)
+				params.require(:loans_module_loans_adjustment_processing).permit(:loan_id, :loan_charge_id, :percent, :amount, :amortize_balance, :number_of_payments, :employee_id)
 			end
 		end
 	end

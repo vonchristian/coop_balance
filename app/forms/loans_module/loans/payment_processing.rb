@@ -28,7 +28,7 @@ module LoansModule
       private
       def save_payment
         interest_revenue_account = find_loan.loan_product_interest_revenue_account
-        penalty_account          = find_loan.loan_product_penalty_revenue_account
+        penalty_revenue_account          = find_loan.loan_product_penalty_revenue_account
         debit_account            = find_employee.cash_on_hand_account
         entry = AccountingModule::Entry.new(
         origin:              find_employee.office,
@@ -47,7 +47,7 @@ module LoansModule
         if penalty_amount.to_f > 0
           entry.credit_amounts.build(
           amount:              penalty_amount.to_f,
-          account:             penalty_account,
+          account:             penalty_revenue_account,
           commercial_document: find_loan)
         end
         if principal_amount.to_f > 0

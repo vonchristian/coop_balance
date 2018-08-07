@@ -26,13 +26,7 @@ module LoansModule
 
     private
     def find_borrower
-      employee_borrower = User.find_by_id(borrower_id)
-      member_borrower = Member.find_by_id(borrower_id)
-      if member_borrower.present?
-        member_borrower
-      elsif employee_borrower.present?
-        employee_borrower
-      end
+      Borrower.find(borrower_id)
     end
 
     def save_loan
@@ -47,8 +41,9 @@ module LoansModule
         account_number: account_number,
         terms_attributes: [
           term: term])
-      create_loan_product_charges(loan)
       create_amortization_schedule(loan)
+      create_loan_product_charges(loan)
+
     end
 
     def create_loan_product_charges(loan)

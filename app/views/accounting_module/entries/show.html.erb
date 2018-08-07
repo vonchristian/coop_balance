@@ -144,7 +144,7 @@
                   <%= @entry.cleared_by.try(:full_name) %>
                 </div>
               </div>
-              <%= link_to 'Clear', accounting_module_entry_clearances_path(@entry), method: :create, class: "btn btn-success", data: { confirm: "Are you sure you want to clear this entry?"} %>
+              <%= link_to 'Clear', accounting_module_entry_clearances_path(@entry), method: :create, class: "btn btn-success btn-block", data: { confirm: "Are you sure you want to clear this entry?"} %>
             <% end %>
           <% end %>
 

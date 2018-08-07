@@ -25,7 +25,7 @@ module LoansModule
 
       private
       def interest_amount_for(loan)
-        loan.loan_product_monthly_interest_rate * loan.loan_amount * loan.current_term_number_of_months
+        loan.amortization_schedules.sum(:interest)
       end
     end
   end

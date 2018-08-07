@@ -12,6 +12,7 @@ module LoansModule
       def self.balance
         total - loan_discounts.total
       end
+
     end
   end
 end

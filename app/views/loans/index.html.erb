@@ -49,7 +49,7 @@
                     <small>Loan Amount</small>
                   </div>
                   <div class="col-md-2">
-                    <span class="text-red"><%= number_to_currency loan.balance %></span><br>
+                    <span class="text-red"><%= number_to_currency loan.principal_balance %></span><br>
                     <small class="text-muted">Loan Balance</small><br>
                   </div>
                   <% if !loan.archived? && loan.is_past_due? %>

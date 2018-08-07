@@ -7,6 +7,7 @@ module LoansModule
       def process!
         ActiveRecord::Base.transaction do
           create_voucher
+          create_loan_interest
         end
       end
 
@@ -26,6 +27,16 @@ module LoansModule
       def find_preparer
         User.find_by_id(preparer_id)
       end
+      def create_loan_interest # for monitoring purposes
+          find_loan.loan_interests.find_or_create_by!(
+            amount:      find_loan.interest_on_loan_charge.try(:amount),
+            description: "Interest receivable",
+            date:        Date.today,
+            computed_by: find_preparer)
+
+      end
+
+
       def add_amounts(voucher)
         voucher.voucher_amounts.create!(
         amount_type: 'debit',

@@ -26,7 +26,8 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
           <li class="header"> LOANS DEPARTMENT </li>
-          <li class=<%= 'active' if current_page?(loans_module_loan_products_path) %> ><a href="/loans_module/loan_products"><i class="fa fa-tag"></i> <span>Loan Products </span></a></li>
+           <li class=<%= 'active' if current_page?(loans_module_loan_products_path) %> ><a href="/loans_module"><i class="fa fa-home"></i> <span>Dashboard </span></a></li>
+          <li class=<%= 'active' if current_page?(loans_module_index_path) %> ><a href="/loans_module/loan_products"><i class="fa fa-tag"></i> <span>Loan Products </span></a></li>
           <li class=<%= 'active' if current_page?(members_path) %> ><a href="/members"><i class="fa fa-users"></i> <span>Members</span></a></li>
           <li class=<%= 'active' if current_page?(loans_module_loans_path) %> ><a href="/loans"><i class="fa fa-credit-card"></i> <span> Loans</span></a></li>
           <li class=<%= 'active' if current_page?(organizations_path) %> ><a href="/organizations"><i class="fa fa-sitemap"></i> <span> Organizations</span></a></li>

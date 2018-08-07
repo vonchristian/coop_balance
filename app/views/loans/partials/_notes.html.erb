@@ -1,0 +1,19 @@
+<h4 class="box-title"> Notes </h4>
+<%= link_to 'New Note', new_loan_note_path(@loan), class: "btn btn-primary" %>
+<hr>
+<% @notes.each do |note| %>
+  <div class="row">
+    <div class="col-md-2">
+      <%= note.date.strftime("%B %e, %Y %M:%I") %>
+    </div>
+    <div class="col-md-8">
+      <b><%= note.title %></b><br>
+      <span class="text-muted">
+        <%= note.content %>
+      </span>
+      <br>
+      <%= note.noter.try(:name) %>
+    </div>
+  </div>
+  <hr>
+<% end %>

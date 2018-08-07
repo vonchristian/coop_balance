@@ -1,82 +1,83 @@
 <% content_for(:html_title) { "#{@loan.borrower_name} | #{@loan.loan_product_name }" } %>
 <div class="tab-pane <%='active' if current_page?(loan_path(@loan))%>" id="loan-info">
 
-        <h4 class="box-title">SUMMARY </h4>
+        <h4 class="box-title">PRINCIPAL </h4>
         <div class="row">
           <div class="col-md-3">
-            <h3><%= number_to_currency @loan.loan_amount %></h3>
+            <% if @loan.disbursed? %>
+              <h3><%= number_to_currency @loan.principal_debits_balance %></h3>
+            <% else %>
+              <h3><%= number_to_currency @loan.loan_amount %></h3>
+            <% end %>
+
             <small class="text-muted">LOAN AMOUNT</small>
 
           </div>
-           <div class="col-md-2">
-            <h3><%= number_to_currency @loan.loan_interests_balance %> </h3>
-            <small class="text-muted">INTERESTS </small>
-
-
-          </div>
           <div class="col-md-2">
-            <h3><%= number_to_currency @loan.loan_penalties_balance %> </h3>
-            <small class="text-muted">PENALTIES</small>
-          </div>
-          <div class="col-md-2">
-            <h3><%= number_to_currency @loan.payments_total %></h3>
+            <h3><%= number_to_currency @loan.principal_payments %></h3>
             <small class="text-muted">PAYMENTS</small>
 
           </div>
           <div class="col-md-3">
-            <h3 class="text-red"><%= number_to_currency @loan.balance %></h3>
+            <% if @loan.disbursed? %>
+              <h3 class="text-red"><%= number_to_currency @loan.principal_balance %></h3>
+            <% else %>
+              <h3 class="text-red"><%= number_to_currency @loan.loan_amount %></h3>
+            <% end %>
             <small class="text-red">BALANCE</small>
           </div>
         </div>
         <hr />
-        <h5>INTEREST</h5>
-        <div class="row">
-          <div class="col-md-3">
-            <h5><%= number_to_currency @loan.loan_interests.total %></h5>
-            <small>TOTAL INTERESTS</small>
+        <% if @loan.disbursed? %>
+          <h5>INTEREST</h5>
+          <div class="row">
+            <div class="col-md-3">
+              <h5><%= number_to_currency @loan.loan_interests.total %></h5>
+              <small>TOTAL INTERESTS</small>
+            </div>
+            <div class="col-md-2">
+              <h5><%= number_to_currency @loan.loan_discounts.interest.total %></h5>
+              <small>DISCOUNTS</small><br><br>
+               <%=link_to 'New Discount', new_loans_module_loan_loan_interest_discount_path(@loan), class: "btn btn-sm btn-success" %>
+            </div>
+            <div class="col-md-2">
+               <h5><%= number_to_currency @loan.interest_payments %></h5>
+              <small>PAYMENTS</small>
+            </div>
+            <div class="col-md-2">
+              <h5><%= number_to_currency @loan.loan_interests_balance %></h5>
+              <small>BALANCE</small>
+            </div>
+            <div class="col-md-3">
+               <%=link_to 'New Interest', new_loans_module_loan_interest_posting_path(@loan), class: "btn btn-sm btn-danger" %>
+            </div>
           </div>
-          <div class="col-md-2">
-            <h5><%= number_to_currency @loan.loan_discounts.interest.total %></h5>
-            <small>DISCOUNTS</small><br><br>
-             <%=link_to 'New Discount', new_loans_module_loan_loan_interest_discount_path(@loan), class: "btn btn-sm btn-success" %>
-          </div>
-          <div class="col-md-2">
-             <h5><%= number_to_currency @loan.interest_payments %></h5>
-            <small>PAYMENTS</small>
-          </div>
-          <div class="col-md-2">
-            <h5><%= number_to_currency @loan.loan_interests_balance %></h5>
-            <small>BALANCE</small>
-          </div>
-          <div class="col-md-3">
-             <%=link_to 'New Interest', new_loans_module_loan_interest_posting_path(@loan), class: "btn btn-sm btn-danger" %>
-          </div>
-        </div>
-        <hr>
-        <h5> PENALTY </h5>
-         <div class="row">
-          <div class="col-md-3">
-            <h5><%= number_to_currency @loan.loan_penalties.total %></h5>
-            <small>TOTAL PENALTIES</small>
-          </div>
-          <div class="col-md-2">
-            <h5><%= number_to_currency @loan.loan_discounts.penalty.total %></h5>
-            <small>DISCOUNTS</small><br><br>
-            <%=link_to 'New Discount', new_loans_module_loan_loan_penalty_discount_path(@loan), class: "btn btn-sm btn-success" %>
-          </div>
-           <div class="col-md-2">
-            <h5><%= number_to_currency @loan.penalty_payments %></h5>
-            <small> PAYMENTS</small>
-          </div>
-          <div class="col-md-2">
-            <h5><%= number_to_currency @loan.loan_penalties_balance %></h5>
-            <small>BALANCE</small>
-          </div>
-          <div class="col-md-3">
-            <%=link_to 'New Penalty', new_loans_module_loan_penalty_posting_path(@loan), class: "btn btn-sm btn-danger" %><br><br>
+          <hr>
+          <h5> PENALTY </h5>
+           <div class="row">
+            <div class="col-md-3">
+              <h5><%= number_to_currency @loan.loan_penalties.total %></h5>
+              <small>TOTAL PENALTIES</small>
+            </div>
+            <div class="col-md-2">
+              <h5><%= number_to_currency @loan.loan_discounts.penalty.total %></h5>
+              <small>DISCOUNTS</small><br><br>
+              <%=link_to 'New Discount', new_loans_module_loan_loan_penalty_discount_path(@loan), class: "btn btn-sm btn-success" %>
+            </div>
+             <div class="col-md-2">
+              <h5><%= number_to_currency @loan.penalty_payments %></h5>
+              <small> PAYMENTS</small>
+            </div>
+            <div class="col-md-2">
+              <h5><%= number_to_currency @loan.loan_penalties_balance %></h5>
+              <small>BALANCE</small>
+            </div>
+            <div class="col-md-3">
+              <%=link_to 'New Penalty', new_loans_module_loan_penalty_posting_path(@loan), class: "btn btn-sm btn-danger" %><br><br>
 
+            </div>
           </div>
-        </div>
+        <% end %>
         <hr>
 
         <div class="row">

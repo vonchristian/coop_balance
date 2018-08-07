@@ -363,6 +363,7 @@ namespace :share_capitals_section do
     resources :loans, only: [:index], module: :employees
   end
   resources :loans, only: [:index, :show] do
+    resources :notes,                 only: [:index, :new, :create],         module: :loans
     resources :barangays,             only: [:edit, :update],        module: :loans
     resources :settings,              only: [:index],                module: :loans
     resources :real_properties,       only: [:new, :create, :show],  module: :loans
@@ -372,7 +373,7 @@ namespace :share_capitals_section do
     resources :payments,              only: [:index, :new, :create], module: :loans
     resources :collaterals,           only: [:index, :new, :create], module: :loans
   end
-  resources :loan_co_makers, only: [:destroy]
+
   resources :vouchers, only: [:index, :show, :destroy] do
     resources :disbursements, only: [:new, :create], module: :vouchers
     resources :loan_disbursements, only: [:new, :create], module: :vouchers
