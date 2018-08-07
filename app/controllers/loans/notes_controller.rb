@@ -22,7 +22,7 @@ module Loans
     private
     def note_params
       params.require(:note).
-      permit(:date, :title, :content)
+      permit(:date, :title, :content, :noter_id)
     end
   end
 end

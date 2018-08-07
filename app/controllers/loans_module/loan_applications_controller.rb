@@ -17,6 +17,9 @@ module LoansModule
     end
     def show
       @loan = LoansModule::Loan.find(params[:id])
+      if @loan.disbursed?
+        redirect_to loan_url(@loan)
+      end
       @borrower = @loan.borrower
       @voucher = Loans::DisbursementVoucher.new
     end

@@ -16,7 +16,11 @@ class Term < ApplicationRecord
   end
 
   def matured?
-    maturity_date <= Time.zone.now
+    if maturity_date.present?
+      maturity_date <= Time.zone.now
+    else
+      false
+    end
   end
 
   def is_past_due?

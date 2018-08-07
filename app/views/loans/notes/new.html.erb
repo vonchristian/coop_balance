@@ -13,7 +13,9 @@
               <%= f.input :title %>
               <%= f.input :content, as: :text %>
               <%= f.input :noter_id, input_html: { value: current_user.id }, as: :hidden %>
-              <%= f.submit "Save Note", class: "btn btn-primary pull-right" %>
+              <div class="box-footer">
+                <%= f.submit "Save Note", class: "btn btn-primary pull-right" %>
+              </div>
             <% end %>
           </div>
         </div>

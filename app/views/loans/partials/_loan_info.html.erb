@@ -1,99 +1,43 @@
 <% content_for(:html_title) { "#{@loan.borrower_name} | #{@loan.loan_product_name }" } %>
 <div class="tab-pane <%='active' if current_page?(loan_path(@loan))%>" id="loan-info">
 
-        <h4 class="box-title">PRINCIPAL </h4>
         <div class="row">
-          <div class="col-md-3">
+          <div class="col-md-3 border-right">
             <% if @loan.disbursed? %>
-              <h3><%= number_to_currency @loan.principal_debits_balance %></h3>
+              <h4><%= number_to_currency @loan.principal_balance %></h4>
             <% else %>
-              <h3><%= number_to_currency @loan.loan_amount %></h3>
+              <h4><%= number_to_currency @loan.loan_amount %> </h4>
             <% end %>
-
-            <small class="text-muted">LOAN AMOUNT</small>
-
+            <small>PRINCIPAL BALANCE</small>
           </div>
-          <div class="col-md-2">
-            <h3><%= number_to_currency @loan.principal_payments %></h3>
-            <small class="text-muted">PAYMENTS</small>
-
+          <div class="col-md-3 border-right">
+            <h4><%= number_to_currency @loan.loan_interests_balance %></h4>
+            <small>INTERESTS</small>
           </div>
-          <div class="col-md-3">
-            <% if @loan.disbursed? %>
-              <h3 class="text-red"><%= number_to_currency @loan.principal_balance %></h3>
-            <% else %>
-              <h3 class="text-red"><%= number_to_currency @loan.loan_amount %></h3>
-            <% end %>
-            <small class="text-red">BALANCE</small>
+          <div class="col-md-3 border-right">
+            <h4><%= number_to_currency @loan.loan_penalties_balance %></h4>
+            <small>PENALTIES</small>
+          </div>
+          <div class="col-md-3 border-right">
+            <h4 class="text-danger"><%= number_to_currency @loan.balance %></h4>
+            <small>RECEIVABLES</small>
           </div>
         </div>
-        <hr />
-        <% if @loan.disbursed? %>
-          <h5>INTEREST</h5>
-          <div class="row">
-            <div class="col-md-3">
-              <h5><%= number_to_currency @loan.loan_interests.total %></h5>
-              <small>TOTAL INTERESTS</small>
-            </div>
-            <div class="col-md-2">
-              <h5><%= number_to_currency @loan.loan_discounts.interest.total %></h5>
-              <small>DISCOUNTS</small><br><br>
-               <%=link_to 'New Discount', new_loans_module_loan_loan_interest_discount_path(@loan), class: "btn btn-sm btn-success" %>
-            </div>
-            <div class="col-md-2">
-               <h5><%= number_to_currency @loan.interest_payments %></h5>
-              <small>PAYMENTS</small>
-            </div>
-            <div class="col-md-2">
-              <h5><%= number_to_currency @loan.loan_interests_balance %></h5>
-              <small>BALANCE</small>
-            </div>
-            <div class="col-md-3">
-               <%=link_to 'New Interest', new_loans_module_loan_interest_posting_path(@loan), class: "btn btn-sm btn-danger" %>
-            </div>
-          </div>
-          <hr>
-          <h5> PENALTY </h5>
-           <div class="row">
-            <div class="col-md-3">
-              <h5><%= number_to_currency @loan.loan_penalties.total %></h5>
-              <small>TOTAL PENALTIES</small>
-            </div>
-            <div class="col-md-2">
-              <h5><%= number_to_currency @loan.loan_discounts.penalty.total %></h5>
-              <small>DISCOUNTS</small><br><br>
-              <%=link_to 'New Discount', new_loans_module_loan_loan_penalty_discount_path(@loan), class: "btn btn-sm btn-success" %>
-            </div>
-             <div class="col-md-2">
-              <h5><%= number_to_currency @loan.penalty_payments %></h5>
-              <small> PAYMENTS</small>
-            </div>
-            <div class="col-md-2">
-              <h5><%= number_to_currency @loan.loan_penalties_balance %></h5>
-              <small>BALANCE</small>
-            </div>
-            <div class="col-md-3">
-              <%=link_to 'New Penalty', new_loans_module_loan_penalty_posting_path(@loan), class: "btn btn-sm btn-danger" %><br><br>
-
-            </div>
-          </div>
-        <% end %>
         <hr>
-
         <div class="row">
-                <h4 class="condensed-text">LOAN DETAILS </h4>
+          <div class="col-md-6 border-right">
+            <h4>Loan Details </h4>
             <div class="row">
               <div class="col-md-6">
                 Borrower
               </div>
               <div class="col-md-6">
-                <%= image_tag(@loan.borrower.avatar.url(:medium), class: 'img-circle', height: 40, width: 40 ) %> &nbsp;
+
                 <% if @loan.borrower.kind_of?(Member) %>
                   <b> <%=link_to @loan.borrower_name, member_path(@loan.borrower)%></b>
                 <% elsif @loan.borrower.kind_of?(User) %>
                   <b> <%=link_to @loan.borrower_name, employee_path(@loan.borrower)%></b>
                 <% end %>
-
               </div>
             </div>
             <br>
@@ -117,7 +61,7 @@
             <br>
             <div class="row">
               <div class="col-md-6">
-                Interest Rate
+                Annual Interest Rate
               </div>
               <div class="col-md-6">
                 <%=  @loan.loan_product_interest_rate %>
@@ -133,27 +77,30 @@
               </div>
             </div>
             <br>
-            <div class="row">
-              <div class="col-md-6">
-                Application Date
+            <% if @loan.disbursed? %>
+              <p class="text-muted">LOAN TERM</p>
+              <div class="row">
+                <div class="col-md-6">
+                  Disbursement Date
+                </div>
+                <div class="col-md-6">
+                  <%=  @loan.disbursement_date.strftime("%B %e, %Y") %>
+                </div>
               </div>
-              <div class="col-md-6">
-                <%=  @loan.application_date.strftime("%B %e, %Y") %>
+              <br>
+              <div class="row">
+                <div class="col-md-6">
+                  Maturity Date
+                </div>
+                <div class="col-md-6">
+                  <% if @loan.disbursed? %>
+                    <%=  @loan.maturity_date.try(:strftime, ("%B %e, %Y")) %>
+                  <% end %>
+                </div>
               </div>
-            </div>
+            <% end %>
             <br>
             <div class="row">
-              <div class="col-md-6">
-                Maturity Date
-              </div>
-              <div class="col-md-6">
-                <% if @loan.disbursed? %>
-                  <%=  @loan.maturity_date.try(:strftime, ("%B %e, %Y")) %>
-                <% end %>
-              </div>
-            </div>
-            <br>
-             <div class="row">
               <div class="col-md-6">
                 Organization
               </div>
@@ -161,39 +108,150 @@
                 <%=  @loan.organization_name %>
               </div>
             </div>
-            <hr>
-            <h4> Loan Charges Details </h4>
+          </div>
+          <div class="col-md-6">
+            <h4>Loan Charges</h4>
             <div class="row">
-    <div class="col-md-3">
-      &nbsp; &nbsp; Loan Amount
-    </div>
-    <div class="col-md-3">
-      <%= number_to_currency @loan.loan_amount %>
-    </div>
-  </div>
-  <br>
-  <p class="text-danger">LOAN CHARGES </p>
-  <% @loan.loan_charges.each do |loan_charge| %>
-    <div class="row">
-      <div class="col-md-3">
-        &nbsp; &nbsp; <%= loan_charge.charge.try(:name) %>
-      </div>
-      <div class="col-md-3">
-          <%= number_to_currency loan_charge.charge_amount_with_adjustment %>
-      </div>
+              <div class="col-md-6">
+                Loan Amount
+              </div>
+              <div class="col-md-5">
+                <span class="pull-right">
+                  <%= number_to_currency @loan.loan_amount %>
+                </span>
+              </div>
+            </div>
+            <br>
+            <p class="text-muted">LOAN CHARGES </p>
+            <% @loan.loan_charges.each do |loan_charge| %>
+              <div class="row">
+                <div class="col-md-6">
+                  &nbsp; &nbsp; <%= loan_charge.charge.try(:name) %>
+                </div>
+                <div class="col-md-5">
+                    <span class="pull-right">
+                      <%= number_to_currency loan_charge.charge_amount_with_adjustment %>
+                    </span>
+                </div>
+               </div>
+               <br>
+            <% end %>
+            <hr>
+            <div class="row">
+              <div class="col-md-6">
+                <h4>Net Proceed</h4>
+              </div>
+              <div class="col-md-5">
+                <h4><span class="pull-right"><%= number_to_currency @loan.net_proceed %></span></h4>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr>
+
+        <div class="row">
+          <div class="col-md-6 border-right">
+            <div class="row">
+              <div class="col-md-6">
+                <h4 class="box-title"> Loan Interest</h4>
+              </div>
+              <div class="col-md-5">
+                 <%=link_to 'New Interest', new_loans_module_loan_interest_posting_path(@loan), class: "btn btn-sm btn-danger pull-right" %>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-6">
+                Total Interests
+              </div>
+              <div class="col-md-5">
+                <span class="pull-right"> <%= number_to_currency @loan.loan_interests.total %></span>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-6">
+                Interest Discounts
+                <br>
+                <br>
+                <%=link_to 'New Discount', new_loans_module_loan_loan_interest_discount_path(@loan), class: "btn btn-sm btn-success" %>
+              </div>
+              <div class="col-md-5">
+                <span class="pull-right"><%= number_to_currency @loan.loan_discounts.interest.total %></span>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-6">
+                Interest Payments
+              </div>
+              <div class="col-md-5">
+                <span class="pull-right"> <%= number_to_currency @loan.interest_payments %></span>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-6">
+                Interest Balance
+              </div>
+              <div class="col-md-5">
+                <span class="pull-right"> <%= number_to_currency @loan.loan_interests_balance %></span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-6">
+                <h4 class="box-title">Loan Penalty </h4>
+              </div>
+              <div class="col-md-5">
+                <%=link_to 'New Penalty', new_loans_module_loan_penalty_posting_path(@loan), class: "btn btn-sm btn-danger pull-right" %>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-6">
+                Total Penalties
+              </div>
+              <div class="col-md-5">
+                <span class="pull-right"> <%= number_to_currency @loan.loan_penalties.total %></span>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-6">
+                Penalty Discounts <br>
+                <br> <%=link_to 'New Discount', new_loans_module_loan_loan_penalty_discount_path(@loan), class: "btn btn-sm btn-success" %>
+              </div>
+              <div class="col-md-5">
+                <span class="pull-right"> <%= number_to_currency @loan.loan_discounts.penalty.total %></span>
+                 <br><br>
+
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-6">
+                Penalty Payments
+              </div>
+              <div class="col-md-5">
+                <span class="pull-right"> <%= number_to_currency @loan.penalty_payments %></span>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-6">
+                <p><b>Penalty Balance</b></p>
+              </div>
+              <div class="col-md-5">
+                <span class="pull-right"><b> <%= number_to_currency @loan.loan_penalties_balance %></b></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr>
 
 
-     </div>
-     <br>
-  <% end %>
-  <hr />
-  <div class="row">
-    <div class="col-md-3">
-      &nbsp; &nbsp; Net Proceed
-    </div>
-    <div class="col-md-3">
-      <%= number_to_currency @loan.net_proceed %>
-    </div>
-  </div>
+
 
 

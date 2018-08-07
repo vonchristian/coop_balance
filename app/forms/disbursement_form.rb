@@ -49,7 +49,7 @@ class DisbursementForm
     end
   end
   def update_loan
-    payee.update_attributes(disbursement_date: date, tracking_number: reference_number)
+    payee.update_attributes!(disbursement_date: date, last_transaction_date: date, tracking_number: reference_number)
     LoansModule::AmortizationSchedule.create_schedule_for(payee)
     payee.current_term.update_attributes(effectivity_date: date, maturity_date: maturity_date)
   end

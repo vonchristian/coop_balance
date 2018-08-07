@@ -1,12 +1,38 @@
 <div class="row">
   <div class="col-md-12">
     <div class="box box-solid">
-      <div class="box-header">
-        <b>Tracking #: <%= @loan.tracking_number %></b>
-        <center>
-          <%= image_tag(@loan.borrower.avatar.url(:medium), height: 60, width: 60, class: 'profile-img img-circle') %><br>
-          <h4 class="box-title"><%= @loan.borrower_name %></h4>
-        </center>
+      <div class="box-header bg-<%= @loan.status_color %>">
+        <br>
+        <div class="row">
+          <div class="col-md-3 border-right">
+            <center>
+            <p><b><%= @loan.tracking_number %></b></p>
+            <small>TRACKING #</small>
+          </center>
+          </div>
+          <div class="col-md-3 border-right">
+            <center>
+            <%= @loan.last_transaction_date.try(:strftime, ("%B %e, %Y")) %><br>
+            <small>LAST PAYMENT DATE</small>
+          </center>
+          </div>
+          <div class="col-md-3">
+            <% if @loan.is_past_due? %>
+              <center>
+                <h2><%= @loan.number_of_days_past_due %>
+                </h2>
+                <small> DAYS PAST DUE </small>
+              </center>
+            <% elsif @loan.current? %>
+            <center>
+                <h2><%= @loan.remaining_term %>
+                </h2>
+                <small> REMAINING TERM (DAYS) </small>
+              </center>
+            <% end %>
+          </div>
+        </div>
+        <br>
       </div>
       <div class="box-body">
     <div class="nav-tabs-navigation">

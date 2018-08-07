@@ -190,10 +190,10 @@ module LoansModule
       end
       entries.uniq
     end
-
-    def approved?
-      approvers.pluck(:id) == User.loan_approvers.pluck(:id)
+    def current?
+      !is_past_due?
     end
+
 
     def payment_schedules
       amortization_schedules +
@@ -210,19 +210,8 @@ module LoansModule
       interest_on_loan_charge.balance
     end
 
-    def co_makers
-      LoansModule::CoMaker.all
-    end
-
     def name
       borrower_name
-    end
-
-
-    def total_deductions(options={})
-      amortized_principal_for(options) +
-      amortized_interest_for(options) +
-      arrears(options)
     end
 
     def taxable_amount # for documentary_stamp_tax
@@ -263,6 +252,7 @@ module LoansModule
       loan_product.loans_receivable_current_account.debit_amounts.where(commercial_document: self).present? &&
       disbursement_date.present?
     end
+
     def disbursement_entry
       loan_product.loans_receivable_current_account.debit_amounts.where(commercial_document: self).first.entry
     end
@@ -284,6 +274,7 @@ module LoansModule
       loan_interests_balance +
       loan_penalties_balance
     end
+
 
     def loan_interests_balance
       loan_interests.total -
@@ -326,8 +317,14 @@ module LoansModule
     def paid?
       disbursed? && balance.zero?
     end
+
     def loan_penalty_computation
-      daily_rate = (loan_product_penalty_rate / 100.0) / 30.0
+      daily_rate = loan_product_penalty_rate / 30.0
+      (principal_balance * daily_rate) * number_of_days_past_due
+    end
+
+    def loan_interest_computation
+      daily_rate = loan_product_interest_rate / 30.0
       (principal_balance * daily_rate) * number_of_days_past_due
     end
 

@@ -1,5 +1,12 @@
-<h4 class="box-title"> Notes </h4>
-<%= link_to 'New Note', new_loan_note_path(@loan), class: "btn btn-primary" %>
+<div class="row">
+  <div class="col-md-8">
+    <h4 class="box-title"> Notes </h4>
+    <span class="text-muted"> Document actions taken for this loan for monitoring purposes. </span>
+  </div>
+  <div class="col-md-4">
+    <%= link_to 'New Note', new_loan_note_path(@loan), class: "btn btn-primary pull-right" %>
+  </div>
+</div>
 <hr>
 <% @notes.each do |note| %>
   <div class="row">
@@ -12,7 +19,7 @@
         <%= note.content %>
       </span>
       <br>
-      <%= note.noter.try(:name) %>
+      <i class="fa fa-user"></i> <%= note.noter.try(:name) %>
     </div>
   </div>
   <hr>
