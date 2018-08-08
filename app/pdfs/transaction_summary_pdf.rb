@@ -209,7 +209,7 @@ class TransactionSummaryPdf < Prawn::Document
   end
   def loan_releases
     text "Loan Releases", style: :bold, size: 10, color: "DB4437"
-    if @employee.disbursed_loan_vouchers.disbursed(from_date: @date.beginning_of_day, to_date: @date.end_of_day).present?
+    if LoansModule::Loan.disbursed(from_date: @from_date, to_date: @to_date).disbursed_by(employee_id: @employee.id).present?
 
       table(loan_releases_data, header: true, cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [40, 160, 100, 110, 100]) do
         cells.borders = []
@@ -227,11 +227,10 @@ class TransactionSummaryPdf < Prawn::Document
   end
 
   def loan_releases_data
-    if @employee.disbursed_loan_vouchers.disbursed(from_date: @date.beginning_of_day, to_date: @date.end_of_day).present?
+    if LoansModule::Loan.disbursed(from_date: @from_date, to_date: @to_date).disbursed_by(employee_id: @employee.id).present?
        [["", "Borrower", "Voucher #", "Loan Amount", "Net Proceed"]] +
-      @loan_releases_data ||= @employee.disbursed_loan_vouchers.disbursed(from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{|a| ["", a.payee_name, a.number, price(a.payee.loan_amount), price(a.payee.net_proceed)]} +
-      [["", "", "<b>TOTAL</b>", "<b>#{price(@employee.disbursed_loan_vouchers.disbursed(from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{|a| a.payee.loan_amount}.sum) }</b>",  "<b>#{price(@employee.disbursed_loan_vouchers.disbursed(from_date: @date.beginning_of_day, to_date: @date.end_of_day).map{|a| a.payee.net_proceed}.sum) }</b>"]]
-    end
+      @loan_releases_data ||= LoansModule::Loan.disbursed(from_date: @from_date, to_date: @to_date).disbursed_by(employee_id: @employee.id).map{|a| ["", a.borrower_name, "", price(a.loan_amount), price(a.net_proceed)]}
+       end
   end
 
    def loan_collections
@@ -255,8 +254,7 @@ class TransactionSummaryPdf < Prawn::Document
   def loan_collections_data
     if AccountingModule::Entry.loan_payments(employee_id: @employee.id, from_date: @date.beginning_of_day, to_date: @date.end_of_day).present?
        [["", "Borrower", "OR #", "Amount", ""]] +
-      @loan_collections_data ||= AccountingModule::Entry.loan_payments(employee_id: @employee.id, from_date: @date.beginning_of_day, to_date: @date.end_of_day).uniq.map{|a| ["", a.commercial_document.try(:name), a.reference_number, price(a.debit_amounts.sum(&:amount))]} +
-    [["", "", "<b>TOTAL</b>", "<b>#{price(AccountingModule::Entry.loan_payments(employee_id: @employee.id, from_date: @date.beginning_of_day, to_date: @date.end_of_day).uniq.map{|a| a.debit_amounts.sum(:amount)}.sum)}</b>", ""]]
+      @loan_collections_data ||= AccountingModule::Entry.loan_payments(employee_id: @employee.id, from_date: @date.beginning_of_day, to_date: @date.end_of_day).uniq.map{|a| ["", a.commercial_document.try(:name), a.reference_number, price(a.amount)]}
     else
       [[""]]
     end

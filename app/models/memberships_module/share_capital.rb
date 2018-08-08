@@ -25,6 +25,7 @@ module MembershipsModule
     delegate :name, to: :subscriber, prefix: true
     delegate :avatar, to: :subscriber
     before_save :set_account_owner_name, on: [:create, :update]
+
     def self.inactive(options={})
       updated_at(options)
     end

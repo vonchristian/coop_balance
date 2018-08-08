@@ -13,7 +13,7 @@ module Metricable
         "success"
       end
     end
-    def metric_chevron
+    def arrow_sign
       if metric.negative?
         "down"
       elsif metric.positive?

@@ -11,7 +11,7 @@
             <div class="col-md-10 col-md-offset-1">
               <center>
                 <center><%=image_tag("default.png", class: "img-circle", height: 60, width: 60) %></center>
-                <%= f.input :avatar, as: :file %>
+                <%= f.input :avatar, as: :file, label: "Profile Photo" %>
               </center>
           <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
           <%= f.input :membership_type, collection: Membership.membership_types.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
@@ -22,25 +22,12 @@
           <%= f.input :sex, collection: Member.sexes.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
 
           <%= f.input :date_of_birth, as: :string, input_html: { class: "datepicker" } %>
-          <%= f.input :place_of_birth %>
+
           <%= f.input :contact_number %>
           <%= f.input :email %>
-          <p> Father's Information</p>
-          <%= f.input :father_first_name, label: "First Name" %>
-          <%= f.input :father_middle_name, label: "Middle name" %>
-          <%= f.input :father_last_name, label: "Last Name" %>
-          <%= f.input :father_occupation, label: "Occupation" %>
-          <%= f.input :father_address, label: "Address" %>
+          <%= f.input :tin_number %>
 
-          <hr>
-          <p>Mother's Information</p>
-          <%= f.input :mother_first_name, label: "First Name" %>
-          <%= f.input :mother_middle_name, label: "Middle Name" %>
-          <%= f.input :mother_maiden_name, label: "Mother's Maiden Name" %>
-          <%= f.input :mother_occupation, label: "Occupation" %>
-          <%= f.input :share_capital_product_id, input_html: { value: CoopServicesModule::ShareCapitalProduct.default_product.id }, as: :hidden %>
-
-          <%= f.input :office_id, collection: CoopConfigurationsModule::Office.all.map{|a| [a.name, a.id] }, as: :radio_buttons %>
+          <%= f.input :office_id, input_html: { value: current_user.office_id }, as: :hidden %>
           <%= f.input :cooperative_id, input_html: { value: current_user.cooperative_id }, as: :hidden %>
           <div class="box-footer">
             <%= f.submit "Save Membership Application",  class: "btn btn-primary pull-right" %>

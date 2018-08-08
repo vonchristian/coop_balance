@@ -36,7 +36,9 @@
               <%= link_to loan_path(loan) do %>
                 <div class="row">
                   <div class="col-md-2">
+
                     <%= image_tag(loan.borrower.avatar.url(:medium), height: 60, width: 60, class: "img-circle") %>
+
                   </div>
                   <div class="col-md-4">
                     <b><%= loan.borrower_name.try(:upcase) %></b><br>

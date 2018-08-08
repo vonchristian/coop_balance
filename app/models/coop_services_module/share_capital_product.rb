@@ -2,6 +2,7 @@ module CoopServicesModule
   class ShareCapitalProduct < ApplicationRecord
     extend Metricable
     extend Totalable
+    extend VarianceMonitoring
     belongs_to :paid_up_account, class_name: "AccountingModule::Account"
     belongs_to :closing_account, class_name: "AccountingModule::Account"
     belongs_to :subscription_account, class_name: "AccountingModule::Account"
@@ -18,7 +19,9 @@ module CoopServicesModule
     validates :cost_per_share, numericality: true
     delegate :name, to: :paid_up_account, prefix: true
     delegate :name, to: :subscription_account, prefix: true
-    # after_commit :update_share_capitals
+
+
+
     def self.total_balance(args={})
       accounts.balance(args)
     end

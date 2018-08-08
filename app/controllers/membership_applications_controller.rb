@@ -6,51 +6,25 @@ class MembershipApplicationsController < ApplicationController
     @membership = MembershipApplication.new(membership_params)
     if @membership.valid?
       @membership.save
-      redirect_to new_membership_application_contribution_url(@membership.find_membership), notice: "Membership application saved successfully"
+      redirect_to member_url(id: @membership.find_member.id), notice: "Member information saved successfully"
     else
       render :new
     end
   end
-  def show
-    @membership = Membership.find(params[:membership_application_id])
-  end
+
 
   private
   def membership_params
     params.require(:membership_application).permit(:first_name, :middle_name, :last_name,
       :date_of_birth,
       :account_number,
-      :pmes_date,
       :membership_type,
-      :place_of_birth,
-      :address,
       :civil_status,
       :sex,
       :contact_number,
       :email,
-      :educational_attainment,
-      :employer_address,
-      :father_first_name,
-      :father_middle_name,
-      :father_last_name,
-      :father_occupation,
-      :father_address,
-      :mother_first_name,
-      :mother_middle_name,
-      :mother_maiden_name,
-      :mother_occupation,
-      :mother_address,
-      :spouse_first_name,
-      :spouse_middle_name,
-      :spouse_last_name,
-      :spouses_occupation,
-      :spouses_date_of_birth,
-      :spouse_educational_attainment,
-      :spouses_occupation,
-      :application_date,
-      :share_capital_product_id,
-      :membership_type,
+      :tin_number,
       :office_id,
       :cooperative_id )
-      end
+  end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_08_053902) do
+ActiveRecord::Schema.define(version: 2018_08_08_100147) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -797,6 +797,8 @@ ActiveRecord::Schema.define(version: 2018_08_08_053902) do
     t.integer "birth_year"
     t.datetime "last_transaction_date"
     t.uuid "cart_id"
+    t.string "account_number"
+    t.index ["account_number"], name: "index_members_on_account_number", unique: true
     t.index ["cart_id"], name: "index_members_on_cart_id"
     t.index ["office_id"], name: "index_members_on_office_id"
     t.index ["sex"], name: "index_members_on_sex"

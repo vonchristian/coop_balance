@@ -13,7 +13,7 @@ module StoreFrontModule
 
       private
       def create_purchase_order
-        order = find_supplier.purchase_orders.create(voucher: find_voucher, employee_id: employee_id)
+        order = find_supplier.purchase_orders.create!(voucher: find_voucher, employee_id: employee_id)
         find_cart.purchase_line_items.each do |line_item|
           line_item.cart_id = nil
           order.purchase_line_items << line_item
@@ -27,7 +27,7 @@ module StoreFrontModule
         store_front = find_employee.store_front
         accounts_payable = store_front.accounts_payable_account
         merchandise_inventory = store_front.merchandise_inventory_account
-        find_employee.entries.create(
+        find_employee.entries.create!(
           origin: find_employee.office,
           commercial_document: find_supplier,
           entry_date: order.date,

@@ -149,9 +149,10 @@ module LoansModule
       LoansModule::LoansQuery.new.disbursed(options)
     end
 
-    def self.disbursed_by(employee)
-      User.find_by(id: employee.id).disbursed_loans
+    def self.disbursed_by(args={})
+      joins(:disbursement_voucher).where('vouchers.disburser_id' => args[:employee_id])
     end
+
 
     def self.matured(options={})
       if options[:from_date] && options[:to_date]

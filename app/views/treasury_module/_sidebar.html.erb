@@ -25,7 +25,7 @@
       <!-- /.search form -->
       <ul class="sidebar-menu">
           <li class="header"> TREASURY SECTION </li>
-          <li class=<%= 'active' if current_page?(employee_path(current_user)) %> ><a href="/employees/<%=current_user.id %>"><i class="fa fa-cog"></i> <span> Account</span></a></li>
+          <li class=<%= 'active' if current_page?(treasury_module_index_path) %> ><a href="/treasury_module/"><i class="fa fa-chart-line"></i> <span> Transactions Summary</span></a></li>
           <li class=<%= 'active' if current_page?(vouchers_path) %> ><a href="/vouchers"><i class="fa fa-folder"></i> <span> Vouchers</span></a></li>
           <li class=<%= 'active' if current_page?(members_path) %> ><a href="/members"><i class="fa fa-users"></i> <span> Members</span></a></li>
           <li class=<%= 'active' if current_page?(treasury_module_disbursements_path) %> ><a href="/treasury_module/disbursements"><i class="fa fa-chevron-left"></i> <span> Disbursements</span></a></li>

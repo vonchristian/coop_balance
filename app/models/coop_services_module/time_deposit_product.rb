@@ -1,5 +1,8 @@
 module CoopServicesModule
 	class TimeDepositProduct < ApplicationRecord
+    extend Totalable
+    extend Metricable
+    extend VarianceMonitoring
 	  enum time_deposit_product_type: [:for_member, :for_non_member]
     belongs_to :account, class_name: "AccountingModule::Account"
     belongs_to :interest_expense_account, class_name: "AccountingModule::Account"
@@ -26,7 +29,21 @@ module CoopServicesModule
     validates :name,
               :account_id,
               uniqueness: true
+    def self.accounts
+      ids = all.pluck(:account_id)
+      AccountingModule::Account.where(id: ids)
+    end
+    def self.total_balance(args={})
+      accounts.balance(args)
+    end
 
+    def self.total_debits_balance(args={})
+      accounts.debits_balance(args)
+    end
+
+    def self.total_credits_balance(args={})
+      accounts.credits_balance(args)
+    end
 
     def amount_range
       minimum_deposit..maximum_deposit
@@ -40,21 +57,5 @@ module CoopServicesModule
       rate = annual_interest_rate || 0.02
       rate / 12.0
     end
-
-    private
-   #  def self.set_time_deposit_product_for_member(time_deposit)
-	  #   time_deposit_product = for_member.select{ |a| a.amount_range.include?(time_deposit.amount_deposited) }.first
-	  #   if time_deposit_product.present?
-	  #     time_deposit.time_deposit_product = time_deposit_product
-	  #     time_deposit.save
-	  #   end
-	  # end
-   #   def self.set_time_deposit_product_for_non_member(time_deposit)
-   #    time_deposit_product = for_non_member.select{ |a| a.amount_range.include?(time_deposit.amount_deposited) }.first
-   #    if time_deposit_product.present?
-   #      time_deposit.time_deposit_product = time_deposit_product
-   #      time_deposit.save
-   #    end
-   #  end
 	end
 end

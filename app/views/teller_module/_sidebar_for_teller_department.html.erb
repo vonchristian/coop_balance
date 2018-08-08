@@ -25,8 +25,8 @@
     <!-- /.search form -->
     <ul class="sidebar-menu">
       <li class="header"> TELLER SECTION </li>
-
-      <li class=<%= 'active' if current_page?(vouchers_path) %> ><a href="/vouchers"><i class="far fa-folder"></i> <span> Vouchers</span></a></li>
+      <li class=<%= 'active' if current_page?(treasury_module_index_path) %> ><a href="/treasury_module/"><i class="far fa-line-chart"></i> <span> Transactions Summary</span></a></li>
+      <li class=<%= 'active' if current_page?(vouchers_path) %> ><a href="/vouchers"><i class="fa fa-folder"></i> <span> Vouchers</span></a></li>
       <li class=<%= 'active' if current_page?(treasury_module_disbursements_path) %> ><a href="/treasury_module/disbursements"><i class="fa fa-chevron-left"></i> <span> Cash Disbursements</span></a></li>
           <li class=<%= 'active' if current_page?(treasury_module_cash_receipts_path) %> ><a href="/treasury_module/cash_receipts"><i class="fa fa-chevron-right"></i> <span> Cash Receipts</span></a></li>
 

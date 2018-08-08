@@ -1,4 +1,4 @@
-module StoreFrontModule
+ module StoreFrontModule
   module Orders
     class SalesOrderProcessing
       include ActiveModel::Model
