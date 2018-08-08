@@ -1,0 +1,24 @@
+  <div class="row">
+    <div class="col-md-12">
+      <div class="box box-default">
+        <div class="box-header">
+          <center>
+            <%=image_tag(@share_capital.subscriber.avatar.url(:medium), class: "img-circle", height: 60, width: 60) %>
+            <h4><%= @share_capital.subscriber_name %></h4>
+          </center>
+        <ul class="nav nav-tabs">
+          <li class="<%= 'active' if current_page?(share_capital_path(@share_capital))%>"><%= link_to 'Info', share_capital_path(@share_capital) %></li>
+          <li class="<%= 'active' if current_page?(share_capital_settings_path(@share_capital))%>"><%= link_to 'Settings', share_capital_settings_path(@share_capital) %></li>
+        </ul>
+      </div>
+      <div class="box-body">
+        <% if current_page? share_capital_path(@share_capital) %>
+          <%= render 'share_capitals/partials/info' %>
+        <% end %>
+        <% if current_page? share_capital_settings_path(@share_capital) %>
+          <%= render 'share_capitals/partials/settings' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

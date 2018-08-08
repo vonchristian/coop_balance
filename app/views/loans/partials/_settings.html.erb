@@ -95,5 +95,7 @@
 <p class="text-muted">
   Make adjusting entries for this loan.
 </p>
-<%=link_to "New Adjusting Entry", new_accounting_module_adjusting_entry_path(commercial_document_type: @loan.class.to_s, commercial_document_id: @loan.id), class: "btn btn-sm btn-danger" %>
+<% if current_user.bookkeeper? || current_user.accountant? %>
+  <%=link_to "New Adjusting Entry", new_accounting_module_adjusting_entry_path(commercial_document_type: @loan.class.to_s, commercial_document_id: @loan.id), class: "btn btn-sm btn-danger" %>
+<% end %>
 <hr>

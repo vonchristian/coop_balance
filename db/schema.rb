@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_07_131105) do
+ActiveRecord::Schema.define(version: 2018_08_08_053902) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -796,6 +796,8 @@ ActiveRecord::Schema.define(version: 2018_08_07_131105) do
     t.uuid "office_id"
     t.integer "birth_year"
     t.datetime "last_transaction_date"
+    t.uuid "cart_id"
+    t.index ["cart_id"], name: "index_members_on_cart_id"
     t.index ["office_id"], name: "index_members_on_office_id"
     t.index ["sex"], name: "index_members_on_sex"
     t.index ["slug"], name: "index_members_on_slug", unique: true
@@ -1210,8 +1212,14 @@ ActiveRecord::Schema.define(version: 2018_08_07_131105) do
     t.uuid "subscriber_id"
     t.boolean "has_minimum_balance", default: false
     t.datetime "last_transaction_date"
+    t.uuid "cart_id"
+    t.uuid "barangay_id"
+    t.uuid "organization_id"
     t.index ["account_number"], name: "index_share_capitals_on_account_number", unique: true
+    t.index ["barangay_id"], name: "index_share_capitals_on_barangay_id"
+    t.index ["cart_id"], name: "index_share_capitals_on_cart_id"
     t.index ["office_id"], name: "index_share_capitals_on_office_id"
+    t.index ["organization_id"], name: "index_share_capitals_on_organization_id"
     t.index ["share_capital_product_id"], name: "index_share_capitals_on_share_capital_product_id"
     t.index ["status"], name: "index_share_capitals_on_status"
     t.index ["subscriber_type", "subscriber_id"], name: "index_share_capitals_on_subscriber_type_and_subscriber_id"
@@ -1569,6 +1577,7 @@ ActiveRecord::Schema.define(version: 2018_08_07_131105) do
   add_foreign_key "mark_up_prices", "unit_of_measurements"
   add_foreign_key "member_occupations", "members"
   add_foreign_key "member_occupations", "occupations"
+  add_foreign_key "members", "carts"
   add_foreign_key "members", "offices"
   add_foreign_key "membership_beneficiaries", "memberships"
   add_foreign_key "memberships", "cooperatives"
@@ -1602,7 +1611,10 @@ ActiveRecord::Schema.define(version: 2018_08_07_131105) do
   add_foreign_key "share_capital_products", "accounts", column: "interest_payable_account_id"
   add_foreign_key "share_capital_products", "accounts", column: "paid_up_account_id"
   add_foreign_key "share_capital_products", "accounts", column: "subscription_account_id"
+  add_foreign_key "share_capitals", "barangays"
+  add_foreign_key "share_capitals", "carts"
   add_foreign_key "share_capitals", "offices"
+  add_foreign_key "share_capitals", "organizations"
   add_foreign_key "share_capitals", "share_capital_products"
   add_foreign_key "store_front_configs", "accounts", column: "accounts_payable_account_id"
   add_foreign_key "store_front_configs", "accounts", column: "accounts_receivable_account_id"

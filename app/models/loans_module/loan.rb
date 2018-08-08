@@ -182,6 +182,7 @@ module LoansModule
       loan_product_loans_receivable_current_account.credit_amounts.where(commercial_document: self).each do |amount|
         entries << amount.entry
       end
+
       loan_product_interest_revenue_account.credit_amounts.where(commercial_document: self).each do |amount|
         entries << amount.entry
       end

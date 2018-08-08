@@ -31,25 +31,25 @@ module AccountingModule
         origin: find_employee.office,
         recorder: find_employee,
         description: "ADJUSTING ENTRY: #{description}",
-        commercial_document_id: commercial_document_id,
-        commercial_document_type: commercial_document_type,
+        commercial_document: find_commercial_document,
         reference_number: reference_number,
         debit_amounts_attributes: [
           amount: amount,
           account_id: debit_account_id,
-          commercial_document_id: commercial_document_id,
-          commercial_document_type: commercial_document_type
+          commercial_document: find_commercial_document
         ],
         credit_amounts_attributes: [
           amount: amount,
           account_id: credit_account_id,
-          commercial_document_id: commercial_document_id,
-          commercial_document_type: commercial_document_type
+          commercial_document: find_commercial_document
         ]
       )
     end
     def find_employee
       User.find_by_id(employee_id)
+    end
+    def find_commercial_document
+      commercial_document_type.constantize.find(commercial_document_id)
     end
   end
 end

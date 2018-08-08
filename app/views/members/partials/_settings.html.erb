@@ -6,7 +6,13 @@
   <hr>
 
 <h4>Merge Account</h4>
-<%=link_to "Merge Account", new_member_account_merging_path(@member) %>
+  <span class="text-muted"> Merge duplicated member accounts</span>
+  <% if policy([:members, :merging]).new? %>
+    <%=link_to "Merge Account", new_member_merging_line_item_path(@member), class: "btn btn-danger" %>
+  <% else %>
+  <br>
+    <span class="text-danger"> Only manager account can merge duplicated member accounts </span>
+  <% end %>
 <hr>
 <h4 class="box-title">Membership Details</h4>
   <% if @member.memberships.where(cooperative: current_cooperative).blank? %>
@@ -25,3 +31,9 @@
   </div>
 <% end %>
 </div>
+<hr>
+<h4 class="box-title"> Delete Account </h4>
+<span class="text-muted"> Check Savings, Share Capital, Loans, and Time Deposits are not present before deleting this account. </span>
+<br>
+<br>
+<%= link_to 'Delete Account', member_path(@member), class: "btn btn-danger", method: :delete, data: { confirm: "Are you sure you want to delete this member's account?" } %>

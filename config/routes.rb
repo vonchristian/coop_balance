@@ -130,11 +130,17 @@ Rails.application.routes.draw do
     resources :notices, only: [:index, :show]
   end
   resources :share_capitals do
+    resources :barangays, only: [:edit, :update], module: :share_capitals
+    resources :settings, only: [:index], module: :share_capitals
+    resources :mergings, only: [:create], module: :share_capitals
+    resources :merging_line_items, only: [:new, :create], module: :share_capitals
     resources :capital_build_ups, only: [:new, :create], module: :share_capitals
     resources :account_closings, only: [:new, :create], module: :share_capitals
     resources :offices, only: [:edit, :update], module: :share_capitals
   end
   resources :members do
+    resources :merging_line_items, only: [:new, :create], module: :members
+    resources :mergings,         only: [:create],         module: :members
     resources :contacts,         only: [:new, :create],                 module: :members
     resources :tins,             only: [:new, :create],                 module: :members
     resources :relationships,    only: [:new, :create],                 module: :members

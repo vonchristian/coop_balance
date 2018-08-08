@@ -1,6 +1,9 @@
 module StoreFrontModule
   class Cart < ApplicationRecord
-    has_many :savings, class_name: "MembershipsModule::Saving"
+    has_many :savings, class_name: "MembershipsModule::Saving", dependent: :destroy #for merging
+    has_many :share_capitals, class_name: "MembershipsModule::ShareCapital", dependent: :destroy #for merging
+
+    has_many :members, dependent: :destroy # for merging
     belongs_to :employee,                         class_name: 'User', foreign_key: 'user_id'
     has_many :line_items,                         class_name: "StoreFrontModule::LineItem",
                                                   dependent: :destroy

@@ -1,0 +1,4 @@
+<%= simple_form_for @share_capital, url: :share_capital_barangay do |f| %>
+  <%= f.input :barangay_id, collection: Addresses::Barangay.all.map{|a| [a.name, a.id] } %>
+  <%= f.submit "Update Barangay", class: "btn btn-danger" %>
+<% end %>

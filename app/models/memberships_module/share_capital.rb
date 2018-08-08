@@ -7,7 +7,10 @@ module MembershipsModule
     belongs_to :subscriber, polymorphic: true, touch: true
     belongs_to :share_capital_product, class_name: "CoopServicesModule::ShareCapitalProduct"
     belongs_to :office, class_name: "CoopConfigurationsModule::Office"
+    belongs_to :barangay, class_name: "Addresses::Barangay", optional: true
+    belongs_to :organization, optional: true
     has_many :amounts, as: :commercial_document, class_name: "AccountingModule::Amount"
+    delegate :name, to: :barangay, prefix: true, allow_nil: true
     delegate :name,
             :paid_up_account,
             :subscription_account,

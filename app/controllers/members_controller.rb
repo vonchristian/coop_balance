@@ -25,6 +25,18 @@ class MembersController < ApplicationController
     end
   end
 
+  def destroy
+    @member = Member.find(params[:id])
+    if @member.savings.present? &&
+       @member.time_deposits.present? &&
+       @member.share_capitals.present? &&
+       @member.loans.present?
+       redirect_to member_url(@member), alert: "Savings, share capitals, time deposits and loans are still present."
+     else
+      @member.destroy
+      redirect_to members_url, notice: "Member account deleted successfully."
+    end
+  end
 
   private
   def member_params

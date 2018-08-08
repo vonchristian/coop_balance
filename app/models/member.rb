@@ -5,7 +5,7 @@ class Member < ApplicationRecord
   multisearchable against: [:first_name, :last_name, :middle_name]
   enum sex: [:male, :female, :other]
   enum civil_status: [:single, :married, :widower, :divorced]
-
+  has_one_attached :signature_specimen
   belongs_to :office,                 class_name: "CoopConfigurationsModule::Office"
   has_many :tins,                     as: :tinable
   has_many :entries,                  class_name: "AccountingModule::Entry",
@@ -26,8 +26,6 @@ class Member < ApplicationRecord
   has_many :occupations,              through: :member_occupations
   has_many :loans,                    class_name: "LoansModule::Loan",
                                       as: :borrower
-  has_many :co_makered_loans,         class_name: "LoansModule::LoanCoMaker",
-                                      as: :co_maker
   has_many :addresses,                as: :addressable
   has_many :subscribed_programs,      class_name: "CoopServicesModule::Program",
                                       through: :program_subscriptions,

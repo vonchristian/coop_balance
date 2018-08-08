@@ -1,0 +1,83 @@
+<div class="row">
+  <div class="col-md-6">
+    <div class="box box-default">
+      <div class="box-header">
+        <center>
+          <%= image_tag(@current_share_capital.subscriber.avatar.url(:medium), class: "img-circle", height: 60, width: 60) %><br>
+           <h3 class="box-title"><%= @current_share_capital.subscriber_name %></h3>
+           <hr>
+           <h4><%= number_to_currency @current_share_capital.paid_up_balance %></h4>
+           <small>PAID UP BALANCE</small>
+        </center>
+        <hr>
+      </div>
+      <div class="box-body">
+        <h4>Accounts to Be Merged</h4>
+          <i class="fa fa-info-circle text-danger"></i>
+          <span class="text-danger">
+            Please be careful in selecting accounts to be merged. Once the account is merged it can not be undone.
+          </span>
+           <hr>
+        <% current_cart.share_capitals.each do |share_capital| %>
+          <div class="row">
+            <div class="col-md-8 col-md-offset-1">
+              <b><%= share_capital.subscriber_name %></b><br>
+              <span class="text-success">
+                <%= number_to_currency share_capital.paid_up_balance %>
+              </span>
+            </div>
+          </div>
+          <hr>
+        <% end %>
+        <br>
+        <%= simple_form_for @merging, url: :share_capital_mergings do |f| %>
+          <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
+          <%= f.input :current_share_capital_id, input_html: { value: @current_share_capital.id }, as: :hidden %>
+          <div class="box-footer">
+            <%= f.submit "Merge Share Capital Accounts", class: "btn btn-danger btn btn-block" %>
+          </div>
+
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="box box-solid">
+      <div class="box-body">
+        <%=form_tag new_share_capital_merging_line_item_path(@current_share_capital), method: :get do %>
+            <div class="input-group">
+              <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search First Name, Last Name ", id: 'account-search-form' %>
+              <span class="input-group-btn">
+                <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                  <i class="fa fa-search"></i>
+                <% end %>
+              </span>
+            </div>
+          <% end %>
+          <br>
+        <% @share_capitals.each do |share_capital| %>
+          <div class="row">
+            <div class="col-md-8 col-md-offset-1">
+              <b><%= share_capital.subscriber_name %></b><br>
+              <h4>
+                <%= number_to_currency share_capital.paid_up_balance %>
+              </h4>
+            </div>
+            <div class="col-md-3">
+              <%= simple_form_for @merging_line_item, url: :share_capital_merging_line_items do |f| %>
+                <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
+                <%= f.input :old_share_capital_id, input_html: { value: share_capital.id }, as: :hidden %>
+                <% if current_cart.share_capitals.include?(share_capital) %>
+                  <span class="text-success"><i class="fa fa-check"></i> Selected </span>
+                <% else %>
+                  <%= f.submit "Select", class: "btn btn-success" %>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+          <hr>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
