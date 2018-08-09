@@ -1,4 +1,6 @@
 
+credit rating per loan
+credit rating per borrower
 if loan is archived?
    disable all buttons
    show archived on loan show

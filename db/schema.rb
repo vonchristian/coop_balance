@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_08_100147) do
+ActiveRecord::Schema.define(version: 2018_08_09_013733) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -108,10 +108,12 @@ ActiveRecord::Schema.define(version: 2018_08_08_100147) do
     t.uuid "credit_account_id"
     t.string "commercial_document_type"
     t.uuid "commercial_document_id"
+    t.integer "payment_status"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_amortization_schedules"
     t.index ["credit_account_id"], name: "index_amortization_schedules_on_credit_account_id"
     t.index ["debit_account_id"], name: "index_amortization_schedules_on_debit_account_id"
     t.index ["loan_id"], name: "index_amortization_schedules_on_loan_id"
+    t.index ["payment_status"], name: "index_amortization_schedules_on_payment_status"
     t.index ["schedule_type"], name: "index_amortization_schedules_on_schedule_type"
   end
 

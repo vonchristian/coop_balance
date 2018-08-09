@@ -1,0 +1,94 @@
+<%= @amortization_schedule.payment_status %>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="box box-solid">
+      <div class="box-header">
+        <center>
+          <%= image_tag(@amortization_schedule.avatar.url(:medium), class: "img-circle") %>
+          <h3><%= @amortization_schedule.borrower_name %></h3>
+        </center>
+      </div>
+      <div class="box-body">
+        <h4 class="box-title"> Loan Details </h4>
+        <div class="row">
+          <div class="col-md-6">
+            Loan Amount
+          </div>
+          <div class="col-md-5">
+            <span class="pull-right">
+              <%= number_to_currency @amortization_schedule.loan.loan_amount %>
+            </span>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-6">
+            Principal Balance
+          </div>
+          <div class="col-md-5">
+            <span class="pull-right">
+              <%= number_to_currency @amortization_schedule.loan.principal_balance %>
+            </span>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-6">
+            Loan Product
+          </div>
+          <div class="col-md-5">
+            <span class="pull-right">
+              <%= @amortization_schedule.loan.loan_product_name %>
+            </span>
+          </div>
+        </div>
+        <hr>
+        <h4 class="box-title"> Amortization Schedule Details </h4>
+        <div class="row">
+          <div class="col-md-6">
+            Date
+          </div>
+          <div class="col-md-5">
+            <span class="pull-right">
+              <%= @amortization_schedule.date.strftime("%B %e, %Y") %>
+            </span>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-6">
+            Principal
+          </div>
+          <div class="col-md-5">
+            <span class="pull-right">
+              <%= number_to_currency @amortization_schedule.principal %>
+            </span>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-6">
+            Interest
+          </div>
+          <div class="col-md-5">
+            <span class="pull-right">
+              <%= number_to_currency @amortization_schedule.interest %>
+            </span>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-6">
+            Total Amortization
+          </div>
+          <div class="col-md-5">
+            <span class="pull-right">
+              <%= number_to_currency @amortization_schedule.total_amortization %>
+            </span>
+          </div>
+        </div>
+        <br>
+      </div>
+    </div>
+  </div>
+</div>
