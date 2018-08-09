@@ -35,7 +35,7 @@
         <h3 class="box-title"> Matured Loans  <i class="badge bg-red"><%= @loans.count %></i> </h3>
       </div>
       <div class="box-body">
-        <div class="box-body">
+          <p> Select Dates </p>
           <%= form_tag({:action => "index", controller: "loans_module/matured_loans"}, {:method => :get})  do %>
               <div class="row">
                 <div class="col-md-5">
@@ -53,7 +53,9 @@
                 </div>
               </div>
             <% end %>
+            <%= link_to 'Export (Excel)', matured_loans_path(from_date: @from_date, to_date: @to_date, format: 'xlsx'), class: "btn btn-default" %>
             <hr>
+
           <% @loans.each do |loan| %>
               <%= link_to loan_path(loan) do %>
                 <div class="row">
