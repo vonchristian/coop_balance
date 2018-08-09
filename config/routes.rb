@@ -94,7 +94,6 @@ Rails.application.routes.draw do
       resources :adjustments, only: [:new, :create], module: :loan_charges
       resources :payment_schedules, only: [:new, :create], module: :schedules
     end
-
     resources :loans do
       resources :loan_penalty_discounts, only: [:new, :create], module: :loans
       resources :loan_interest_discounts, only: [:new, :create], module: :loans
@@ -418,6 +417,7 @@ namespace :share_capitals_section do
     resources :store_fronts, only: [:index]
   end
   resources :filtered_loans, only: [:index], module: :loans_module
+  resources :matured_loans, only: [:index],  module: :loans_module
   resources :barangays, only: [:index, :show] do
     resources :loans, only: [:index], module: :barangays
     resources :savings, only: [:index], module: :barangays

@@ -1,9 +1,116 @@
 <div class="row">
   <div class="col-md-4">
-    <div class="box box-solid">
+    <div class="box box-primary">
+      <div class="box-body">
+        <h4 class="box-title"> Loans </h4>
+        <div class="row">
+          <div class="col-md-7">
+            <p>Beginning Balance </p>
+          </div>
+          <div class="col-md-4">
+            <span class="pull-right">
+              <%= number_to_currency LoansModule::LoanProduct.total_balance(to_date: Date.today.yesterday) %>
+            </span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-7">
+          <p class="text-success">&nbsp; &nbsp; <i class="fa fa-plus-circle"></i> Add Disbursements </p>
+        </div>
+        <div class="col-md-4">
+          <span class="text-success pull-right"><%= number_to_currency LoansModule::LoanProduct.total_debits_balance(from_date: Date.today.beginning_of_day, to_date: Date.today.end_of_day) %></span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-7">
+          <p class="text-danger">&nbsp; &nbsp; <i class="fa fa-minus-circle"></i> Less Payments </p>
+        </div>
+        <div class="col-md-4">
+          <span class="text-danger pull-right"><%= number_to_currency LoansModule::LoanProduct.total_credits_balance(from_date: Date.today.beginning_of_day, to_date: Date.today.end_of_day) %></span>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-md-7">
+          <p><b>Ending Balance </b> </p>
+        </div>
+        <div class="col-md-4">
+          <span class="pull-right"><b><%= number_to_currency LoansModule::LoanProduct.total_balance(to_date: Date.today.end_of_day) %></b></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="box box-danger">
+    <div class="box-header">
+      <h3 class="box-title"> Matured Loans </h3><br>
+      <span class="text-muted"> For this day <%= Date.today.strftime("%B %e, %Y") %></span>
+    </div>
+    <div class="box-body">
+      <% LoansModule::Loan.past_due(from_date: Date.today, to_date: Date.today).first(10).each do |loan| %>
+        <%= link_to loan_path(loan) do %>
+          <div class="row">
+            <div class="col-md-8">
+              <b><%= loan.borrower_name %></b><br>
+              <small><%= loan.loan_product_name.try(:upcase) %></small>
+            </div>
+            <div class="col-md-4">
+              <%= number_to_currency loan.principal_balance %>
+            </div>
+          </div>
+          <hr>
+        <% end %>
+      <% end %>
+      <center>
+        <%= link_to 'View All', matured_loans_path(from_date: Date.today, to_date: Date.today), class: "btn btn-default" %>
+      </center>
+    </div>
+  </div>
+  <div class="box box-warning">
+    <div class="box-header">
+      <h3 class="box-title"> Loans that will mature next week </h3><br>
+      <span class="text-muted"> From <%= Date.today.next_week.beginning_of_week.strftime("%B %e, %Y") %> - <%= Date.today.next_week.end_of_week.strftime("%B %e, %Y") %> </span>
+    </div>
+    <div class="box-body">
+      <% LoansModule::Loan.past_due(from_date: Date.today.next_week.beginning_of_week, to_date: Date.today.next_week.end_of_week).first(10).each do |loan| %>
+        <%= link_to loan_path(loan) do %>
+          <div class="row">
+            <div class="col-md-8">
+              <b><%= loan.borrower_name %></b><br>
+              <small><%= loan.loan_product_name.try(:upcase) %></small>
+            </div>
+            <div class="col-md-4">
+              <%= number_to_currency loan.principal_balance %>
+            </div>
+          </div>
+          <hr>
+        <% end %>
+      <% end %>
+      <center>
+        <%= link_to 'View All', matured_loans_path(from_date: Date.today.next_week.beginning_of_week, to_date: Date.today.next_week.end_of_week), class: "btn btn-default" %>
+      </center>
     </div>
   </div>
 </div>
+<div class="col-md-8">
+  <div class="box box-solid">
+    <div class="box-header">
+      <h3 class="box-title"> Loan Transactions Summary </h3><br>
+      <span class="text-muted"> For this day <%= Date.today.strftime("%B %e, %Y") %></span>
+    </div>
+    <div class="box-body">
+      <div class="row">
+        <div class="col-md-3 border-right">
+          <h3><%= LoansModule::Loan.disbursed(from_date: Date.today, to_date: Date.today).count %></h3>
+          <small>LOAN RELEASES</small>
+        </div>
+        <div class="col-md-3 border-right">
+          <h3><%= LoansModule::Loan.past_due(from_date: Date.today, to_date: Date.today).count %></h3>
+          <small>MATURED</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
 <div class="row">
   <div class="col-md-12">
     <div class="box box-solid">

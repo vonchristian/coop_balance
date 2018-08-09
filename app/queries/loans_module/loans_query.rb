@@ -2,7 +2,7 @@ module LoansModule
   class LoansQuery
     attr_reader :relation
 
-    def initialize(relation = LoansModule::Loan.all)
+    def initialize(relation = LoansModule::Loan.active)
       @relation = relation
     end
 

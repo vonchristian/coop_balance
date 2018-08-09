@@ -1,0 +1,97 @@
+<div class="row">
+  <div class="col-md-4">
+    <div class="box box-danger">
+      <div class="box-header">
+        <h3 class="box-title"> Loans Maturity Summary </h3>
+      </div>
+      <div class="box-header">
+        <h2><%= @loans.count %></h2>
+        <small>MATURED LOANS</small>
+        <hr>
+        <div class="row">
+          <div class="col-md-6">
+            Start Date
+          </div>
+          <div class="col-md-6">
+            <%= @from_date.strftime("%B %e, %Y") %>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+        <div class="col-md-6">
+            End Date
+          </div>
+          <div class="col-md-6">
+            <%= @to_date.strftime("%B %e, %Y") %>
+          </div>
+        </div>
+        <br>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <div class="box box-danger">
+      <div class="box-header">
+        <h3 class="box-title"> Matured Loans  <i class="badge bg-red"><%= @loans.count %></i> </h3>
+      </div>
+      <div class="box-body">
+        <div class="box-body">
+          <%= form_tag({:action => "index", controller: "loans_module/matured_loans"}, {:method => :get})  do %>
+              <div class="row">
+                <div class="col-md-5">
+                  <div class="form-group">
+                    <%= text_field_tag :from_date, @from_date, :class => 'datepicker form-control border-input', :placeholder => "From " %>
+                  </div>
+                </div>
+                <div class="col-md-5">
+                  <div class="form-group">
+                    <%= text_field_tag :to_date, @to_date, :class => 'form-control border-input datepicker', :placeholder => "To " %>
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <button type="submit" class="btn btn-default"> Go</button>
+                </div>
+              </div>
+            <% end %>
+            <hr>
+          <% @loans.each do |loan| %>
+              <%= link_to loan_path(loan) do %>
+                <div class="row">
+                  <div class="col-md-2">
+
+                    <%= image_tag(loan.borrower.avatar.url(:medium), height: 60, width: 60, class: "img-circle") %>
+
+                  </div>
+                  <div class="col-md-4">
+                    <b><%= loan.borrower_name.try(:upcase) %></b><br>
+                    <small class="text-muted"><%= loan.loan_product_name %></small><br>
+                    <b class="text-info">#<%= loan.tracking_number %></b>
+
+                  </div>
+                  <div class="col-md-2">
+                    <b><%= number_to_currency loan.loan_amount %></b><br>
+                    <small>Loan Amount</small>
+                  </div>
+                  <div class="col-md-2">
+                    <span class="text-red"><%= number_to_currency loan.principal_balance %></span><br>
+                    <small class="text-muted">Loan Balance</small><br>
+                  </div>
+                  <% if !loan.archived? && loan.is_past_due? %>
+                    <div class="col-md-2">
+                      <span class="label bg-red">
+                        <%= loan.number_of_days_past_due %> Days
+                      </span>
+                      <br>
+                      <small class="text-danger"> PAST DUE </small>
+                    </div>
+                  <% end %>
+                </div>
+                <hr>
+            <% end %>
+          <% end %>
+          <center><%= will_paginate @loans %></center>
+      </div>
+    </div>
+  </div>
+</div>
+

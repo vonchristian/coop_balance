@@ -1,26 +1,39 @@
-
-  <div class="row">
-    <div class="col-md-12">
-      <div class="box box-solid">
-        <div class="box-header">
-        </div>
-        <div class="box-body">
-          <%= month_calendar do |date| %>
-          <%=link_to loans_module_schedule_path(date)  do %>
-            <p><%=date.day %></p>
-              <% LoansModule::AmortizationSchedule.scheduled_for(from_date: date.beginning_of_day, to_date: date.end_of_day).each do |schedule| %>
-                <span class="text-<%= schedule.color%>" data-toggle="tooltip" title="<%= schedule.loan.borrower_name%>"><i class="fa fa-circle"></i></span>
-              <% end %>
-               <% LoansModule::Notice.for(date.beginning_of_day, date.end_of_day).count.times do %>
-                <span class="text-red"><i class="fa fa-circle"></i></span>
-              <% end %>
-          <% end %>
-          <% end %>
-        </div>
+<div class="row">
+  <div class="col-md-4">
+    <div class="box box-solid">
+      <div class="box-header">
+        <h3 class="box-title"> Schedules for this day </h3>
+      </div>
+      <div class="box-body">
+        <h3><%= @amortization_schedules.count %></h3>
       </div>
     </div>
+    <div class="box box-solid">
+      <div class="box-header">
+        <h3 class="box-title"> Schedules for this month </h3>
+      </div>
+      <div class="box-body">
+        <h3><%= LoansModule::AmortizationSchedule.scheduled_for(from_date: @from_date.beginning_of_month, to_date: @to_date.end_of_month).count %></h3>
+      </div>
     </div>
-    </div>
-SHOW FROM DATE TO DATE OPTIONS
-
   </div>
+  <div class="col-md-8">
+    <div class="box box-solid">
+      <div class="box-header">
+      </div>
+      <div class="box-body">
+        <%= month_calendar do |date| %>
+        <%=link_to loans_module_schedule_path(date)  do %>
+          <p><%=date.day %></p>
+            <% LoansModule::AmortizationSchedule.scheduled_for(from_date: date.beginning_of_day, to_date: date.end_of_day).each do |schedule| %>
+              <span class="text-<%= schedule.color%>" data-toggle="tooltip" title="<%= schedule.loan.borrower_name%>"><i class="fa fa-circle"></i></span>
+            <% end %>
+             <% LoansModule::Notice.for(date.beginning_of_day, date.end_of_day).count.times do %>
+              <span class="text-red"><i class="fa fa-circle"></i></span>
+            <% end %>
+        <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
