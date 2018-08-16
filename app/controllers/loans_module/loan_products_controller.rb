@@ -43,12 +43,9 @@ module LoansModule
       :loans_receivable_past_due_account_id,
       :interest_rate,
       :interest_revenue_account_id,
-      :interest_receivable_account_id,
       :unearned_interest_income_account_id,
       :penalty_rate,
-      :penalty_receivable_account_id,
-      :penalty_revenue_account_id,
-      :penalty_discount_account_id)
+      :penalty_revenue_account_id)
     end
   end
 end

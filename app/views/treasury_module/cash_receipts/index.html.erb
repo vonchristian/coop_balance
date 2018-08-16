@@ -9,7 +9,7 @@
           <div class="col-md-6">
             <%=form_tag treasury_module_cash_receipts_path, method: :get do %>
               <div class="input-group">
-                <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search cash_receipts ", id: 'account-search-form' %>
+                <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search OR #, description", id: 'account-search-form' %>
                 <span class="input-group-btn">
                   <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
                     <i class="fa fa-search"></i>
@@ -26,30 +26,34 @@
         </div>
       </div>
       <div class="box-body">
-        <% @cash_receipts.each do |cash_receipt| %>
-          <%= link_to accounting_module_entry_path(cash_receipt) do %>
-            <div class="row">
-              <div class="col-md-1">
-                <% if cash_receipt.commercial_document.present? && cash_receipt.commercial_document.avatar.present? %>
-                  <%= image_tag(cash_receipt.commercial_document.avatar.url(:medium), class: "img-circle", height: 45, width: 45) %>
-                <% end %>
-              </div>
-              <div class="col-md-5">
-                  <b><%= cash_receipt.description %></b><br>
-                  <span class="text-muted">
-                    <i class="fa fa-clock-o"></i> <%= cash_receipt.entry_date.strftime("%B %e, %Y") %> &nbsp;
-                    <i class="fa fa-note"></i> <%= cash_receipt.reference_number %>
-                  </span>
-                  <br>
-                  <b class="text-muted"><i class="fa fa-user"></i> &nbsp;<%= cash_receipt.commercial_document.try(:name) %></b>
-              </div>
-              <div class="col-md-3">
-                <h4><%= number_to_currency cash_receipt.amounts.where(account: current_user.cash_on_hand_account).sum(&:amount) %></h4>
-              </div>
-            </div>
-            <br>
-        <% end %>
-        <% end %>
+        <div class="table table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Reference #</th>
+                <th>Date</th>
+                <th>Member/Payee</th>
+                <th>Description</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @cash_receipts.each do |cash_receipt| %>
+                <tr>
+                  <td><%= link_to cash_receipt.reference_number, accounting_module_entry_path(cash_receipt) %></td>
+                  <td><%= cash_receipt.entry_date.strftime("%B %e, %Y") %></td>
+                  <td><%= cash_receipt.commercial_document.try(:name) %></td>
+                  <td><%= cash_receipt.description %></td>
+                  <td>
+                    <span class="pull-right">
+                      <%= number_to_currency cash_receipt.amounts.where(account: current_user.cash_on_hand_account).sum(:amount) %>
+                    </span>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
         <center><%= will_paginate @cash_receipts %></center>
       </div>
     </div>

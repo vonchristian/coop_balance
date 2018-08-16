@@ -56,30 +56,35 @@
         </div>
       </div>
       <div class="box-body">
-        <% @disbursements.each do |disbursement| %>
-            <%= link_to accounting_module_entry_path(disbursement) do %>
-              <div class="row">
-                <div class="col-md-1">
-                  <% if disbursement.commercial_document.present? && disbursement.commercial_document.avatar.present? %>
-                    <%= image_tag(disbursement.commercial_document.avatar.url(:medium), class: "img-circle", height: 45, width: 45) %>
-                  <% end %>
-                </div>
-                <div class="col-md-5">
-                    <b><%= disbursement.description %></b><br>
-                    <span class="text-muted">
-                      <i class="fa fa-clock-o"></i> <%= disbursement.entry_date.strftime("%B %e, %Y") %> &nbsp;
-                      <i class="fa fa-note"></i> <%= disbursement.reference_number %>
+        <div class="table table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Reference #</th>
+                <th>Date</th>
+                <th>Member/Payee</th>
+                <th>Description</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @cash_disbursements.each do |cash_disbursement| %>
+                <tr>
+                  <td><%= link_to cash_disbursement.reference_number, accounting_module_entry_path(cash_disbursement) %></td>
+                  <td><%= cash_disbursement.entry_date.strftime("%B %e, %Y") %></td>
+                  <td><%= cash_disbursement.commercial_document.try(:name) %></td>
+                  <td><%= cash_disbursement.description %></td>
+                  <td>
+                    <span class="pull-right">
+                      <%= number_to_currency cash_disbursement.amounts.where(account: current_user.cash_on_hand_account).sum(:amount) %>
                     </span>
-                    <br>
-                    <b class="text-muted"><i class="fa fa-user"></i> &nbsp; <%= disbursement.commercial_document.try(:name) %></b>
-                </div>
-                <div class="col-md-3">
-                  <h4><%= number_to_currency disbursement.amounts.where(account: current_user.cash_on_hand_account).sum(&:amount) %></h4>
-                </div>
-              </div>
-              <hr>
-          <% end %>
-        <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <center><%= will_paginate @cash_disbursements %></center>
       </div>
     </div>
   </div>

@@ -3,7 +3,6 @@ AccountingModule::Asset.create(code: 11110, name: "Cash on Hand")
 AccountingModule::Asset.create(code: 111101, name: "Cash on Hand - Main (Treasury)")
 AccountingModule::Asset.create(code: 111102, name: "Cash on Hand (Teller)")
 AccountingModule::Asset.create(code: 111103, name: "Cash on Hand (Vault)")
-AccountingModule::Asset.create(code: 1111031, name: "Cash on Hand (Vault) - Poblacion")
 
 AccountingModule::Asset.create(code: 11120, name: "Checks and Other Cash Items (COCI)")
 AccountingModule::Asset.create(code: 11130, name: "Cash in Bank")
@@ -28,19 +27,7 @@ AccountingModule::Asset.create(code: 117113, name: "Loans Receivable - Current (
 AccountingModule::Asset.create(code: 117114, name: "Loans Receivable - Current (Contractors Loan)")
 AccountingModule::Asset.create(code: 117115, name: "Loans Receivable - Current (Special Loan)")
 AccountingModule::Asset.create(code: 117116, name: "Loans Receivable - Current (Agri Input Loan)")
-
-
-
 AccountingModule::Asset.create(code: 117113, name: "Loans Receivable - Current (OFW Loan)")
-
-AccountingModule::Asset.create(code: 117114, name: "Loan Penalties Receivable - (Regular Loan)")
-AccountingModule::Asset.create(code: 117115, name: "Loan Penalties Receivable - (Emergency Loan)")
-AccountingModule::Asset.create(code: 117116, name: "Loan Penalties Receivable - (Salary Loan)")
-AccountingModule::Asset.create(code: 117117, name: "Loan Penalties Receivable - (Contractors Loan)")
-AccountingModule::Asset.create(code: 117118, name: "Loan Penalties Receivable - (Agri Input Loan)")
-AccountingModule::Asset.create(code: 117118, name: "Loan Penalties Receivable - (Special Loan)")
-
-
 
 AccountingModule::Asset.create(code: 11712, name: "Loans Receivable - Past Due")
 AccountingModule::Asset.create(code: 1171211, name: "Loans Receivable - Past Due (Regular Loan)")
@@ -73,23 +60,6 @@ AccountingModule::Asset.create(code: 11722, name: "Accounts Receivables Trade - 
 AccountingModule::Asset.create(code: 11723, name: "Accounts Receivables Trade - Restructured")
 AccountingModule::Asset.create(code: 11724, name: "Accounts Receivables Trade - in Litigation")
 AccountingModule::Asset.create(code: 11725, name: "Allowance for Probable Losses on Accounts Receivable Trade")
-AccountingModule::Asset.create(code: 11726, name: "Interests on Loan Receivables")
-AccountingModule::Asset.create(code: 117261, name: "Interests on Loan Receivables - Regular Loan")
-AccountingModule::Asset.create(code: 117262, name: "Interests on Loan Receivables - Salary Loan")
-AccountingModule::Asset.create(code: 117263, name: "Interests on Loan Receivables - Contractors Loan")
-AccountingModule::Asset.create(code: 117264, name: "Interests on Loan Receivables - Agri Input Loan")
-AccountingModule::Asset.create(code: 117265, name: "Interests on Loan Receivables - Special Loan")
-AccountingModule::Asset.create(code: 117266, name: "Interests on Loan Receivables - Emergency Loan")
-
-
-AccountingModule::Asset.create(code: 11727, name: "Penalties on Loan Receivables")
-AccountingModule::Asset.create(code: 117271, name: "Penalties on Loan Receivables - Regular Loan")
-AccountingModule::Asset.create(code: 117272, name: "Penalties on Loan Receivables - Salary Loan")
-AccountingModule::Asset.create(code: 117273, name: "Penalties on Loan Receivables - Contractors Loan")
-AccountingModule::Asset.create(code: 117274, name: "Penalties on Loan Receivables - Emergency Loan")
-AccountingModule::Asset.create(code: 117275, name: "Penalties on Loan Receivables - Agri Input Loan")
-AccountingModule::Asset.create(code: 117276, name: "Penalties on Loan Receivables - Special Loan")
-
 AccountingModule::Asset.create(code: 11730, name: "Installment Receivables - Current")
 AccountingModule::Asset.create(code: 11731, name: "Installment Receivables - Past Due")
 AccountingModule::Asset.create(code: 11733, name: "Installment Receivables - Restructured")
@@ -104,9 +74,6 @@ AccountingModule::Asset.create(code: 11770,  name: "Finance Lease Receivable")
 AccountingModule::Asset.create(code: 11780,  name: "Other Current Receivables")
 AccountingModule::Asset.create(code: 11800,  name: "Inventories")
 AccountingModule::Asset.create(code: 11810,  name: "Merchandise Inventory")
-AccountingModule::Asset.create(code: 118101,  name: "Merchandise Inventory (Poblacion)")
-AccountingModule::Asset.create(code: 118102,  name: "Merchandise Inventory (Mansoyosoy)")
-AccountingModule::Asset.create(code: 118103,  name: "Merchandise Inventory (Tukucan)")
 
 AccountingModule::Asset.create(code: 11820,  name: "Reposessed Inventories")
 AccountingModule::Asset.create(code: 11830,  name: "Spare Parts/Materials and Other Goods Inventory")
@@ -146,8 +113,7 @@ AccountingModule::Asset.create(code: 14121,  name: "Accumulated Depreciation - L
 AccountingModule::Asset.create(code: 14130,  name: "Building and Improvements")
 AccountingModule::Asset.create(code: 14131,  name: "Accumulated Depreciation - Land Improvements")
 AccountingModule::Asset.create(code: 14140,  name: "Building on Leased/Usufruct Land")
-AccountingModule::Asset.create(code: 14141,  name: "Accumulated
- Depreciation - Building on Leased/Usufruct Land", contra: true )
+AccountingModule::Asset.create(code: 14141,  name: "Accumulated Depreciation - Building on Leased/Usufruct Land", contra: true )
  AccountingModule::Asset.create(code: 14150,  name: "Utility Plant")
  AccountingModule::Asset.create(code: 14151,  name: "Accumulated Depreciation - Utility Plant", contra: true)
  AccountingModule::Asset.create(code: 14160,  name: "Property, Plant and Equipment - Under Finance Lease")
@@ -187,15 +153,10 @@ AccountingModule::Asset.create(code: 14141,  name: "Accumulated
  AccountingModule::Asset.create(code: 17900,  name: "Miscellaneous Assets")
 
 
-
 #Liability
 AccountingModule::Liability.create(code: 21000, name: 'Current Liabilities')
 AccountingModule::Liability.create(code: 21100, name: 'Savings Deposits')
-AccountingModule::Liability.create(code: 211001, name: 'Savings Deposits - Regular Savings')
-
 AccountingModule::Liability.create(code: 21200, name: 'Time Deposits')
-AccountingModule::Liability.create(code: 21201, name: 'Time Deposits - Members ( 10,000 upto 200,000 for 90Days)')
-
 AccountingModule::Liability.create(code: 21300, name: 'Accounts Payable-Trade')
 AccountingModule::Liability.create(code: 21400, name: 'Accounts Payable-Non Trade')
 AccountingModule::Liability.create(code: 21500, name: 'Loans Payable - Current')
@@ -300,15 +261,6 @@ AccountingModule::Revenue.create(code: 40310, name: 'Sales')
 AccountingModule::Revenue.create(code: 40320, name: 'Installment Sales')
 AccountingModule::Revenue.create(code: 40330, name: 'Sales Returns and Allowances', contra: true)
 AccountingModule::Revenue.create(code: 40340, name: 'Sales Discounts', contra: true)
-AccountingModule::Revenue.create(code: 40350, name: 'Penalties Discounts', contra: true)
-AccountingModule::Revenue.create(code: 403501, name: 'Penalties Discounts - Regular Loan', contra: true)
-AccountingModule::Revenue.create(code: 403502, name: 'Penalties Discounts - Emergency Loan', contra: true)
-AccountingModule::Revenue.create(code: 403503, name: 'Penalties Discounts - Salary Loan', contra: true)
-AccountingModule::Revenue.create(code: 403504, name: 'Penalties Discounts - Contractors Loan', contra: true)
-AccountingModule::Revenue.create(code: 403505, name: 'Penalties Discounts - Agri Input Loan', contra: true)
-AccountingModule::Revenue.create(code: 403506, name: 'Penalties Discounts - Special Loan', contra: true)
-
-
 AccountingModule::Revenue.create(code: 40400, name: 'Other Income')
 AccountingModule::Revenue.create(code: 40410, name: 'Income/Interest from Investment/Deposits')
 AccountingModule::Revenue.create(code: 40420, name: 'Membership Fee')
@@ -348,12 +300,6 @@ AccountingModule::Expense.create(code: 62490, name: "Gas, Oil, and Lubricants (M
 AccountingModule::Expense.create(code: 62530, name: "Depreciation (Marketing Dept.)")
 AccountingModule::Expense.create(code: 62540, name: "Amortization (Marketing Dept.)")
 AccountingModule::Expense.create(code: 62590, name: "Impairment Loss (Marketing Dept.)")
-
-
-
-
-
-
 
 
 AccountingModule::Expense.create(code: 70000, name: "Financing Cost")

@@ -1,7 +1,7 @@
 module AccountingModule
   module Reports
     class BalanceSheetPdf < Prawn::Document
-      attr_reader :assets, :liabilities, :equity
+      attr_reader :assets, :liabilities, :equity, :view_context, :to_date
       def initialize(from_date, to_date, assets, liabilities, equity, view_context)
         super(margin: 40, page_size: "A4", page_layout: :portrait)
         @from_date = from_date
@@ -18,7 +18,7 @@ module AccountingModule
 
       private
       def price(number)
-        @view_context.number_to_currency(number, :unit => "P ")
+        view_context.number_to_currency(number, :unit => "P ")
       end
 
       def heading
@@ -29,7 +29,7 @@ module AccountingModule
         bounding_box [0, 760], width: 400 do
           text "Balance Sheet", style: :bold, size: 14
           move_down 5
-          text "As of #{@to_date.strftime("%B %e, %Y")} ", size: 10
+          text "As of #{to_date.strftime("%B %e, %Y")} ", size: 10
           move_down 5
         end
         move_down 10
@@ -56,8 +56,8 @@ module AccountingModule
         end
       end
       def assets_data
-        @assets_data ||= assets.map{|a| [a.name, price(a.balance(to_date: @to_date))] } +
-        [["TOTAL ASSETS", "#{price(assets.balance(to_date: @to_date))}"]]
+        @assets_data ||= assets.map{|a| [a.name, price(a.balance(to_date: to_date))] } +
+        [["TOTAL ASSETS", "#{price(assets.balance(to_date: to_date))}"]]
       end
        def liabilities_table
         text "Liabilities", style: :bold
@@ -75,8 +75,8 @@ module AccountingModule
         end
       end
       def liabilities_data
-        @liabilities_data ||= liabilities.map{|a| [a.name, price(a.balance(to_date: @to_date))] } +
-        [["TOTAL LIABILITIES", "#{price(liabilities.balance(to_date: @to_date))}"]]
+        @liabilities_data ||= liabilities.map{|a| [a.name, price(a.balance(to_date: to_date))] } +
+        [["TOTAL LIABILITIES", "#{price(liabilities.balance(to_date: to_date))}"]]
 
       end
      def equities_table
@@ -95,8 +95,9 @@ module AccountingModule
         end
       end
       def equities_data
-        @equities_data ||= @equity.map{|a| [a.name, price(a.balance(to_date: @to_date))] } +
-        [["TOTAL EQUITY", "#{price(equity.balance(to_date: @to_date))}"]]
+        @equities_data ||= equity.map{|a| [a.name, price(a.balance(to_date: @to_date))] } +
+        [["TOTAL EQUITY", "#{price(equity.balance(to_date: to_date))}"]] +
+        [["TOTAL EQUITY AND LIABILITIES", "#{price(equity.balance(to_date: to_date) + liabilities.balance(to_date: to_date))}"]]
 
       end
     end

@@ -10,7 +10,7 @@ module Vouchers
     end
     private
     def create_cash_receipt_line_item
-      Vouchers::VoucherAmount.create(
+      Vouchers::VoucherAmount.create!(
         amount: amount,
         account_id: account_id,
         amount_type: amount_type,

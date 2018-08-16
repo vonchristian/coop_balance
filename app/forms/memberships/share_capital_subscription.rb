@@ -43,7 +43,7 @@ module Memberships
       create_entry(share_capital)
     end
     def create_entry(share_capital)
-      AccountingModule::Entry.create(
+      AccountingModule::Entry.create!(
         origin: find_employee.office,
         recorder: find_employee,
         description: description,

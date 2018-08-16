@@ -68,6 +68,7 @@
           <div class="row">
             <div class="col-md-5 col-md-offset-1">
               <%= debit.account.try(:name) %><br>
+              <span class="label bg-gray"><%= debit.account.try(:normalized_type) %></span>
             </div>
             <div class="col-md-4">
               <%= number_to_currency debit.amount %>
@@ -87,7 +88,9 @@
         <% @entry.credit_amounts.each do |credit| %>
           <div class="row">
             <div class="col-md-5 col-md-offset-1">
-              <%= credit.account.try(:name) %>
+              <%= credit.account.try(:name) %><br>
+              <span class="label bg-gray"><%= credit.account.try(:normalized_type) %></span>
+
             </div>
             <div class="col-md-4">
               <%= number_to_currency credit.amount %>
@@ -115,9 +118,9 @@
           <% end %>
           <% if current_user.bookkeeper? || current_user.accountant? %>
           <hr>
-          <h4 class="box-details">Clearance Details </h4>
-            <span class="text-muted"></span>
             <% if @entry.cleared? %>
+          <h4 class="box-details">Clearance Details </h4>
+
               <div class="row">
                 <div class="col-md-6">
                   <b>Status</b>
@@ -129,7 +132,7 @@
               <br>
               <div class="row">
                 <div class="col-md-6">
-                  <b>Clearance Data</b>
+                  <b>Clearance Date</b>
                 </div>
                 <div class="col-md-6">
                   <%= @entry.cleared_at.strftime("%B %e, %Y") %>
@@ -144,7 +147,11 @@
                   <%= @entry.cleared_by.try(:full_name) %>
                 </div>
               </div>
-              <%= link_to 'Clear', accounting_module_entry_clearances_path(@entry), method: :create, class: "btn btn-success btn-block", data: { confirm: "Are you sure you want to clear this entry?"} %>
+            <% else %>
+              <span class="text-danger "> <i class="fa fa-info-circle"></i> Please double check this entry before clearing. Once an entry is cleared it cannot be deleted. </span>
+              <br>
+              <br>
+              <%= link_to 'Clear this Entry', accounting_module_entry_clearances_path(@entry), method: :create, class: "btn btn-success btn-block", data: { confirm: "Are you sure you want to clear this entry?"} %>
             <% end %>
           <% end %>
 

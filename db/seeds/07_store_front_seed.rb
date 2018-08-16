@@ -2,7 +2,7 @@ poblacion = StoreFront.new(name: "KCCMC Poblacion Storefront", address: "Poblaci
 tukucan = StoreFront.new(name: "KCCMC Tukucan Storefront", address: "Tukucan, Tinoc, Ifugao", contact_number: "")
 mansoyosoy = StoreFront.new(name: "KCCMC Mansoyosoy Storefront", address: "Mansoyosoy, Tinoc, Ifugao", contact_number: "")
 
-poblacion.merchandise_inventory_account = AccountingModule::Asset.create(code: 118101,  name: "Merchandise Inventory (Poblacion Storefront)")
+poblacion.merchandise_inventory_account = AccountingModule::Asset.create!(code: 118101,  name: "Merchandise Inventory (Poblacion Storefront)")
 tukucan.merchandise_inventory_account = AccountingModule::Asset.create(code: 118102,  name: "Merchandise Inventory (Tukucan Storefront)")
 mansoyosoy.merchandise_inventory_account = AccountingModule::Asset.create(code: 118103,  name: "Merchandise Inventory (Mansoyosoy Storefront)")
 

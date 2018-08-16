@@ -127,9 +127,11 @@ module AccountingModule
     def credits_balance(args={})
       credit_amounts.balance(args)
     end
+
     def debits_balance(args={})
       debit_amounts.balance(args)
     end
+
     def current_account_budget
       account_budgets.current
     end

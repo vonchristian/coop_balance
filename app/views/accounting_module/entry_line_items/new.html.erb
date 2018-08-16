@@ -25,33 +25,41 @@
         <% end %>
         <hr>
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-4">
             <b>ACCOUNT </b>
           </div>
           <div class="col-md-3">
-            <b>DEBIT</b>
+            <span class="pull-right">
+              <b>DEBIT</b>
+            </span>
           </div>
           <div class="col-md-3">
-            <b>CREDIT</b>
+            <span class="pull-right">
+              <b>CREDIT</b>
+            </span>
           </div>
         </div>
         <br>
         <% current_user.voucher_amounts.each do |amount| %>
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
               <%= amount.account_name %>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
               <% if amount.debit? %>
-                <%= number_to_currency amount.amount %>
+                <span class="pull-right">
+                  <%= number_to_currency amount.amount %>
+                </span>
               <% end %>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
               <% if amount.credit? %>
-                <%= number_to_currency amount.amount %>
+                <span class="pull-right">
+                  <%= number_to_currency amount.amount %>
+                </span>
               <% end %>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-1">
               <%= link_to accounting_module_entry_line_item_path(amount), method: :delete do %>
                 <span title="Remove" data-toggle="tooltip" class="fa fa-trash text-danger"></span>
               <% end %>
@@ -61,14 +69,19 @@
         <% end %>
         <hr>
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-4">
             <b>TOTAL </b>
           </div>
           <div class="col-md-3">
-            <b><%= number_to_currency current_user.voucher_amounts.debit.sum(&:amount) %></b>
+            <span class="pull-right">
+              <b><%= number_to_currency current_user.voucher_amounts.debit.sum(&:amount) %></b>
+            </span>
           </div>
           <div class="col-md-3">
-            <b><%= number_to_currency current_user.voucher_amounts.credit.sum(&:amount) %></b>
+            <span class="pull-right">
+              <b><%= number_to_currency current_user.voucher_amounts.credit.sum(&:amount) %></b>
+            </span>
+
           </div>
         </div>
         <br>
@@ -85,7 +98,7 @@
           <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
           <%= f.input :description, as: :text %>
           <%= f.input :reference_number %>
-          <%= f.input :payee_id, label: "Payee", collection: Voucher.payees.map{|a| [a.name, a.id] } %>
+          <%= f.input :payee_id, label: "Member", collection: Voucher.payees.map{|a| [a.name, a.id] } %>
           <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
           <div class="box-footer">
             <% if current_user.voucher_amounts.present? %>

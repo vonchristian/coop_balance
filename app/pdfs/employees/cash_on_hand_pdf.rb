@@ -1,5 +1,6 @@
 module Employees
   class CashOnHandPdf < Prawn::Document
+    attr_reader :entries, :employee, :from_date, :to_date, :title, :view_context
     def initialize(entries, employee, from_date, to_date, title, view_context)
        super(margin: 20, page_size: "A4", page_layout: :portrait)
 
@@ -16,7 +17,7 @@ module Employees
     end
     private
     def price(number)
-      @view_context.number_to_currency(number, :unit => "P ")
+      view_context.number_to_currency(number, :unit => "P ")
     end
     def display_commercial_document_for(entry)
       if entry.commercial_document.try(:member).present?
@@ -35,16 +36,16 @@ module Employees
       image "#{Rails.root}/app/assets/images/kccmc_logo.jpg", width: 50, height: 50
     end
     bounding_box [370, 800], width: 200 do
-        text "#{@employee.cooperative_abbreviated_name}", style: :bold, size: 24
-        text "#{@employee.cooperative_name}", size: 10
+        text "#{employee.cooperative_abbreviated_name}", style: :bold, size: 24
+        text "#{employee.cooperative_name}", size: 10
     end
     bounding_box [0, 800], width: 400 do
-      text "#{@title}", style: :bold, size: 12
+      text "#{title}", style: :bold, size: 12
       move_down 3
-      text "#{@from_date.strftime("%B %e, %Y")} TO #{@to_date.strftime("%B %e, %Y")} ", size: 10
+      text "#{from_date.strftime("%B %e, %Y")} To #{to_date.strftime("%B %e, %Y")} ", size: 10
       move_down 3
 
-      text "Employee: #{@employee.name}", size: 10
+      text "Employee: #{employee.name}", size: 10
     end
     move_down 15
     stroke do
@@ -69,14 +70,14 @@ module Employees
     end
     end
     def accounts_data
-      [["", "Account", "#{@employee.cash_on_hand_account.try(:name)}"]] +
-      [["","Transactions Count ", "#{@entries.count}"]] +
-      [["", "Start Date", "#{@from_date.strftime("%B %e, %Y")}"]] +
-      [["", "End Date", "#{@to_date.strftime("%B %e, %Y")}"]] +
-      [["", "Beginning Balance",  "#{price(@employee.cash_on_hand_account.balance(to_date: @from_date.yesterday.end_of_day))}"]] +
-      [["", "Cash Disbursements", "#{price(@employee.cash_on_hand_account.credits_balance(from_date: @from_date.beginning_of_day, to_date: @to_date.end_of_day))}"]] +
-      [["", "Cash Receipts", "#{price(@employee.cash_on_hand_account.debits_balance(from_date: @from_date.beginning_of_day, to_date: @to_date.end_of_day))}"]] +
-      [["", "Ending Balance", "#{price(@employee.cash_on_hand_account.balance(to_date: @to_date.end_of_day))}" ]]
+      [["", "Account", "#{employee.cash_on_hand_account.try(:name)}"]] +
+      [["","Transactions Count ", "#{entries.count}"]] +
+      [["", "Start Date", "#{from_date.strftime("%B %e, %Y")}"]] +
+      [["", "End Date", "#{to_date.strftime("%B %e, %Y")}"]] +
+      [["", "Beginning Balance",  "#{price(employee.cash_on_hand_account.balance(to_date: from_date.yesterday.end_of_day))}"]] +
+      [["", "Cash Disbursements", "#{price(employee.cash_on_hand_account.credits_balance(from_date: from_date.beginning_of_day, to_date: to_date.end_of_day))}"]] +
+      [["", "Cash Receipts", "#{price(employee.cash_on_hand_account.debits_balance(from_date: from_date.beginning_of_day, to_date: to_date.end_of_day))}"]] +
+      [["", "Ending Balance", "#{price(employee.cash_on_hand_account.balance(to_date: to_date.end_of_day))}" ]]
     end
 
     def sundries_summary
@@ -92,14 +93,14 @@ module Employees
   end
   def sundries_summary_data
     [["", "Code", "Account Title ", "Debits", "Credits"]] +
-    @sundries_summary ||= AccountingModule::Account.updated_at(from_date: @from_date.beginning_of_day, to_date: @to_date.end_of_day).updated_by(@employee).uniq.map{ |a| ["", a.code, a.name, price(a.debits_balance(from_date: @from_date.beginning_of_day, to_date: @to_date.end_of_day)), price(a.credits_balance(from_date: @from_date.beginning_of_day, to_date: @to_date.end_of_day))]} +
+    @sundries_summary ||= AccountingModule::Account.updated_at(from_date: from_date.beginning_of_day, to_date: to_date.end_of_day).updated_by(employee).uniq.map{ |a| ["", a.code, a.name, price(a.debits_balance(from_date: from_date.beginning_of_day, to_date: to_date.end_of_day)), price(a.credits_balance(from_date: from_date.beginning_of_day, to_date: to_date.end_of_day))]} +
     [["", "", "<b>TOTAL</b>",
-      "<b>#{price(AccountingModule::Account.updated_at(from_date: @from_date.beginning_of_day, to_date: @to_date.end_of_day).updated_by(@employee).uniq.map{|a| a.debits_balance(from_date: @from_date.beginning_of_day, to_date: @to_date.end_of_day)}.sum )}</b>",
-      "<b>#{price(AccountingModule::Account.updated_at(from_date: @from_date.beginning_of_day, to_date: @to_date.end_of_day).updated_by(@employee).uniq.map{|a| a.credits_balance(from_date: @from_date.beginning_of_day, to_date: @to_date.end_of_day)}.sum )}</b>"]]
+      "<b>#{price(AccountingModule::Account.updated_at(from_date: from_date.beginning_of_day, to_date: to_date.end_of_day).updated_by(employee).uniq.map{|a| a.debits_balance(to_date: to_date.end_of_day)}.sum )}</b>",
+      "<b>#{price(AccountingModule::Account.updated_at(from_date: from_date.beginning_of_day, to_date: to_date.end_of_day).updated_by(employee).uniq.map{|a| a.credits_balance(to_date: to_date.end_of_day)}.sum )}</b>"]]
 
   end
     def entries_table
-    if !@entries.any?
+    if !entries.any?
       move_down 10
       text "No entries data.", align: :center
     else
@@ -118,7 +119,7 @@ module Employees
         row(0).background_color = 'DDDDDD'
         column(-1).align = :right
       end
-      @entries.uniq.each do |entry|
+      entries.uniq.each do |entry|
         table([["#{entry.entry_date.strftime("%b %e, %Y")}", "#{entry.description}", "#{entry.reference_number}",  "#{display_commercial_document_for(entry).try(:upcase)}", "#{entry.recorder.try(:first_and_last_name).try(:upcase)}"]], cell_style: { size: 8, padding: [5,5,4,0]}, column_widths: [50, 100, 50,  100, 50, 120, 80]) do
           cells.borders = []
         end
