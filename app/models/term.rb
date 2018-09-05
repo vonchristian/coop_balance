@@ -36,7 +36,11 @@ class Term < ApplicationRecord
   end
 
   def remaining_term
-    ((maturity_date - Time.zone.now)/86400.0).to_i
+    if maturity_date.present?
+      ((maturity_date - Time.zone.now)/86400.0).to_i
+    else
+      0
+    end
   end
 
   def terms_elapsed
