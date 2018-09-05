@@ -1,30 +1,28 @@
 <div class="row">
   <div class="col-md-12">
-    <div class="box box-solid">
-      <div class="box-header">
-        <h3 class="box-title">Barangay <%= @barangay.name %></h3>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Barangay <%= @barangay.name %></h3>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <ul class="nav nav-tabs">
           <li class="<%= 'active' if current_page?(barangay_path(@barangay))%>"><%= link_to 'Profile', barangay_path(@barangay) %></li>
           <li class="<%= 'active' if current_page?(barangay_members_path(@barangay))%>"><%= link_to 'Members', barangay_members_path(@barangay) %></li>
           <li class="<%= 'active' if current_page?(barangay_savings_path(@barangay))%>"><%= link_to 'Savings', barangay_savings_path(@barangay) %></li>
            <li class="<%= 'active' if current_page?(barangay_loans_path(@barangay))%>"><%= link_to 'Loans', barangay_loans_path(@barangay) %></li>
         </ul>
-        <div class="tab-content">
-          <% if current_page? barangay_path(@barangay) %>
-            <%= render 'barangays/partials/profile' %>
-          <% end %>
-          <% if current_page? barangay_members_path(@barangay) %>
-            <%= render 'barangays/partials/members' %>
-          <% end %>
-          <% if current_page? barangay_savings_path(@barangay) %>
-            <%= render 'barangays/partials/savings' %>
-          <% end %>
-          <% if current_page? barangay_loans_path(@barangay) %>
-            <%= render 'barangays/partials/loans' %>
-          <% end %>
-        </div>
+        <% if current_page? barangay_path(@barangay) %>
+          <%= render 'barangays/partials/profile' %>
+        <% end %>
+        <% if current_page? barangay_members_path(@barangay) %>
+          <%= render 'barangays/partials/members' %>
+        <% end %>
+        <% if current_page? barangay_savings_path(@barangay) %>
+          <%= render 'barangays/partials/savings' %>
+        <% end %>
+        <% if current_page? barangay_loans_path(@barangay) %>
+          <%= render 'barangays/partials/loans' %>
+        <% end %>
       </div>
     </div>
   </div>

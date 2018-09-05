@@ -1,15 +1,14 @@
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <div class="nav-tabs-custom">
-      <div class="box-header">
-        <h3 class="box-title"> Withdraw Details </h3> <br><br>
+      <div class="card-header">
+        <h3 class="card-title"> Withdraw Details </h3> <br><br>
         <h4><%=number_to_currency @bank_account.balance %></h4>
         <b> <%= @bank_account.bank_name %></b><br>
         <small><%= @bank_account.account_number %></small><br>
         <small><%= @bank_account.bank_address %></small>
         <hr />
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <%= simple_form_for [@bank_account, @entry], url: :bank_account_withdrawals do |f| %>
           <%= f.error_notification %>
           <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
@@ -21,9 +20,9 @@
           <%= f.input :credit_account_id, input_html: { value: @bank_account.account_id }, as: :hidden %>
           <%= f.input :debit_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id]} %>
 
-          <div class="box-footer">
-            <%= f.submit "Save Withdraw", class: "btn btn-danger pull-right" %>
-          </div>
+
+            <%= f.submit "Save Withdraw", class: "btn btn-danger float-right" %>
+
         <% end %>
       </div>
     </div>

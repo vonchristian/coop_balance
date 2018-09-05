@@ -1,12 +1,12 @@
  <div class="container-fluid">
   <div class="row">
     <div class="col-xs-12">
-      <div class="box box-solid">
-        <section class="box box-header">
-          <h3 class="box-title"> <%= @cooperative_service.title %></h3>
+      <div class="card">
+        <section class="card-header">
+          <h3 class="card-title"> <%= @cooperative_service.title %></h3>
         </section>
 
-        <div class="box-body">
+        <div class="card-body">
           <ul class="nav nav-tabs">
             <li class="<%='active' if current_page?(cooperative_service_balance_sheets_path(@cooperative_service))%>"><%=link_to 'Balance Sheet', cooperative_service_balance_sheets_path(@cooperative_service) %></li>
             <li class="<%='active' if current_page?(cooperative_service_settings_path(@cooperative_service))%>"><%=link_to 'Settings', cooperative_service_settings_path(@cooperative_service) %></li>

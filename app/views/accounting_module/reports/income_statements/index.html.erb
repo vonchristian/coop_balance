@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-md-12">
-    <div class="box box-solid">
+    <div class="card">
       <div class="row">
         <div class="col-md-10 col-md-offset-1">
           <div class="box-header">
@@ -22,7 +22,7 @@
               <span class="btn btn-default btn-sm"><i class="fa fa-print"></i> Print (PDF) </span>
             <% end %>
           </div>
-          <div class="box-body">
+          <div class="card-body">
           <br>
           <%= render 'accounting_module/accounts/account', :name => "Revenues", :accounts => @revenues %>
           <%= render 'accounting_module/accounts/account', :name => "Expenses", :accounts => @expenses %>

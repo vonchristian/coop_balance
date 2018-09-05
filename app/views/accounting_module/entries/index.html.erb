@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-12">
-    <div class="box box-solid">
-      <div class="box-body">
+    <div class="card">
+      <div class="card-body">
         <div class="row">
           <div class="col-md-8">
             <%=form_tag accounting_module_entries_path, method: :get, class: "sidebar-form" do %>
@@ -22,7 +22,7 @@
         <br>
         <div class="row">
           <div class="col-md-5">
-            <%=link_to 'Yesterday', accounting_module_entries_path(from_date: Time.zone.now.yesterday.beginning_of_day, to_date: Time.zone.now.yesterday.end_of_day ), class: "btn btn-default btn-sm"  %>
+            <%=link_to 'Yesterday', accounting_module_entries_path(from_date: Time.zone.now.yesterday.beginning_of_day, to_date: Time.zone.now.yesterday.end_of_day ), class: "btn btn-outline-default btn-sm"  %>
 
             <%=link_to 'This Day', accounting_module_entries_path(from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day ), class: "btn btn-default btn-sm"  %>
             <%=link_to 'This Week', accounting_module_entries_path(from_date: Time.zone.now.beginning_of_week.beginning_of_day, to_date: Time.zone.now.end_of_week.end_of_day ), class: "btn btn-default btn-sm"  %>
@@ -55,11 +55,11 @@
 </div>
 <div class="row">
   <div class="col-md-12">
-    <div class="box box-default">
-      <div class="box-header">
-        <h3 class="box-title"> Journal Entries </h3>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"> Journal Entries </h3>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <div class="table table-responsive">
           <table class="table table-striped">
             <thead>

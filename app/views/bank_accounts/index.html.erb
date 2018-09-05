@@ -1,10 +1,10 @@
 <div class="row">
   <div class="col-md-8">
-    <div class="box box-solid">
-      <div class="box-header">
+    <div class="card">
+      <div class="card-header">
         <div class="row">
           <div class="col-md-3">
-            <h3 class="box-title">Bank Accounts </h3>
+            <h3 class="card-title">Bank Accounts </h3>
           </div>
           <div class="col-md-6">
           </div>
@@ -15,7 +15,7 @@
           </div>
         </div>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <% @bank_accounts.each do |account| %>
           <%= link_to bank_account_url(account) do %>
             <div class="row">

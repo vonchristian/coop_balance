@@ -1,10 +1,10 @@
 <div class="row">
   <div class="col-md-12">
-    <div class="box box-solid">
-      <div class="box-header">
-        <h3 class="box-title"> Add / Remove Accounts </h3>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"> Add / Remove Accounts </h3>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <%= link_to 'Back to Cooperative Service', cooperative_service_path(@cooperative_service), class: "btn btn-default" %>
         <hr>
         <%=form_tag new_cooperative_service_account_path(@cooperative_service), method: :get, class: "search-form" do %>
