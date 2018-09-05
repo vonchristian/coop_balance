@@ -1,15 +1,15 @@
 <% content_for(:html_title) { "#{@time_deposit.depositor_name} | New Term Extension" } %>
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
-    <div class="box box-default">
-      <div class="box-header">
-        <h3 class="box-title"> New Term Extension Details </h3>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"> New Term Extension Details </h3>
         <center>
           <%= image_tag(@time_deposit.depositor.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %>
           <h3><%= @time_deposit.depositor_name %></h3>
         </center>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         Maturity Date: <%= @time_deposit.current_term.maturity_date.strftime("%B %e, %Y") %>
 <%= simple_form_for [@time_deposit, @renewal], url: :time_deposit_term_extensions do |f| %>
   <%= f.error_notification %>

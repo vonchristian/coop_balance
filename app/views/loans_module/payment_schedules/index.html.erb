@@ -1,10 +1,10 @@
 <div class="row">
   <div class="col-md-12">
-    <div class="box box-solid">
-      <div class="box-header with-border">
-        <h3 class="box-title"> Payment Schedules </h3>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"> Payment Schedules </h3>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <%= form_tag({:action => "index", controller: "loans_module/payment_schedules"}, {:method => :get})  do %>
               <div class="row">
                 <div class="col-md-3">

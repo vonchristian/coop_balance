@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <div class="box box-solid">
-    <div class="box-header bg-gray">
+    <div class="card">
+    <div class="card-header">
       <div class="row">
         <div class="col-md-3">
           <center><%= image_tag(@loan.borrower.avatar.url(:medium), style: 'width:80px;height:80px;', class: 'media-object img-circle') %></center>
@@ -13,7 +13,7 @@
         </div>
       </div>
     </div>
-    <div class="box-body">
+    <div class="card-body">
       <div class="row">
         <div class="col-md-10 col-md-offset-1">
           <h4><%= number_to_currency @savings_account.balance %></h4>
@@ -26,7 +26,7 @@
             <%= f.input :loan_id, input_html: { value: @loan.id } %>
 
             <div class="box-footer">
-              <%= f.submit "Add Deposit", class: "btn btn-primary pull-right" %>
+              <%= f.submit "Add Deposit", class: "btn btn-primary float-right" %>
             </div>
           <% end %>
         </div>

@@ -1,8 +1,8 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-xs-12">
-      <div class="box box-solid">
-        <div class="box-body">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
           <ul class="nav nav-tabs">
             <ul class="nav nav-tabs">
               <li class="<%='active' if current_page?(savings_accounts_path(from_date: nil, to_date: nil)) %>"><%=link_to 'All Savings', savings_accounts_path %></li>
@@ -37,7 +37,7 @@
                 </div>
                 <hr>
 
-          <h4>Savings Accounts Inactivity</h4>
+          <h4 class="card-title">Savings Accounts Inactivity</h4>
           <div class="row">
             <div class="col-md-8">
               <% savings_inactivity_data = [] %>

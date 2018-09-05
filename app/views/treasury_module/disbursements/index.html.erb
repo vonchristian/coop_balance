@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-4">
-    <div class="box box-solid">
-      <div class="box-body">
+    <div class="card">
+      <div class="card-body">
         <div class="row">
           <div class="col-md-8 border-right">
             <h4><%= number_to_currency current_user.cash_on_hand_account.credits_balance(from_date: Date.today, to_date: Date.today) %></h4>
@@ -19,10 +19,10 @@
     </div>
   </div>
   <div class="col-md-8">
-    <div class="box box-solid">
-      <div class="box-header">
+    <div class="card">
+      <div class="card-header">
       </div>
-      <div class="box-body">
+      <div class="card-body">
     </div>
   </div>
 </div>
@@ -30,11 +30,11 @@
 
 <div class="row">
   <div class="col-md-12">
-    <div class="box box-danger">
-      <div class="box-header with-border">
+    <div class="card">
+      <div class="card-header">
         <div class="row">
           <div class="col-md-2">
-            <h3 class="box-title"> Disbursements </h3>
+            <h3 class="card-title"> Disbursements </h3>
           </div>
           <div class="col-md-6">
             <%=form_tag treasury_module_disbursements_path, method: :get do %>
@@ -55,7 +55,7 @@
           </div>
         </div>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <div class="table table-responsive">
           <table class="table table-hover">
             <thead>

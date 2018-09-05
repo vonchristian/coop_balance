@@ -1,9 +1,9 @@
 <div class="row">
   <div class="col-md-12">
-    <div class="box box-solid">
-      <div class="box-header">
+    <div class="card">
+      <div class="card-header">
       </div>
-      <div class="box-body">
+      <div class="card-body">
 <%= simple_form_for @payment_schedule, url: :loans_module_payment_schedule do |f| %>
   <%= f.simple_fields_for :notes do |n| %>
     <%= n.input :content, as: :trix_editor %>

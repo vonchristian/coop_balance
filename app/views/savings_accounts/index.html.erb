@@ -1,8 +1,8 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-xs-12">
-      <div class="box box-solid">
-        <div class="box-body">
+      <div class="card">
+        <div class="card-body">
           <ul class="nav nav-tabs">
             <li class="<%='active' if current_page?(savings_accounts_path(from_date: nil, to_date: nil)) %>"><%=link_to 'All Savings', savings_accounts_path %></li>
             <li class="<%='active' if current_page?(savings_accounts_path(from_date: Date.today - 30.days, to_date: Date.today))%>"><%=link_to '1 - 30 Days Inactive', savings_accounts_path(from_date: Date.today - 30.days, to_date: Date.today) %></li>
@@ -15,8 +15,8 @@
           <br/>
           <div class="row">
             <div class="col-md-12">
-              <div class="box box-solid">
-                <div class="box-header">
+              <div class="card">
+                <div class="card-header">
                   <div class="row">
                     <div class="col-md-8">
                       <%=form_tag savings_accounts_path, method: :get, class: "search-form" do %>
@@ -38,7 +38,7 @@
                 <hr />
 
 
-      <div class="box-body">
+      <div class="card-body">
         <% @savings_accounts.each do |savings_account| %>
           <%=link_to savings_account_path(savings_account) do %>
             <% cache(savings_account) do %>

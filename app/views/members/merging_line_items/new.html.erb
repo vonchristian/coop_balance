@@ -1,11 +1,11 @@
 <div class="row">
   <div class="col-md-6">
-    <div class="box box-solid">
-      <div class="box-header bg-red">
+    <div class="card">
+      <div class="card-header bg-red">
         <h4><center><%= image_tag(@current_member.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center></h4>
          <h3><center><%= @current_member.name %></center></h3>
       </div>
-        <div class="box-body">
+        <div class="card-body">
           <span class="text-danger">
             Please be careful in selecting accounts to be merged. Once merged it can not be undone.
           </span>
@@ -55,21 +55,21 @@
             <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
             <%= f.input :current_member_id, input_html: { value: @current_member.id }, as: :hidden %>
 
-            <div class="box-footer">
+
               <% if current_cart.members.present? %>
                 <%= f.submit "Merge Accounts", class: "btn btn-danger btn-block btn-lg" %>
               <% end %>
-            </div>
+
           <% end %>
         </div>
       </div>
     </div>
     <div class="col-md-6">
-      <div class="box box-solid">
-        <div class="box-header">
-          <h3 class="box-title"> Search Members </h3>
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title"> Search Members </h3>
         </div>
-        <div class="box-body">
+        <div class="card-body">
           <%=form_tag new_member_merging_line_item_path(@current_member), method: :get do %>
             <div class="input-group">
               <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search First Name, Last Name ", id: 'account-search-form' %>

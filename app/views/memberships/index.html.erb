@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-6">
-    <div class="box box-default">
-      <div class="box-header">
+    <div class="card">
+      <div class="card-header">
         <div class="row">
           <div class="col-md-9">
             <%=form_tag memberships_path, method: :get do %>
@@ -22,7 +22,7 @@
           </div>
         </div>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <% @memberships.each do |membership| %>
         <% cache do %>
           <%=link_to membership_path(membership) do %>

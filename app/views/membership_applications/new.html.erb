@@ -1,10 +1,10 @@
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <div class="box box-solid">
-      <div class="box-header">
-        <h3 class="box-title">New Membership Application Details </h3>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">New Membership Application Details </h3>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <%= simple_form_for @membership, multipart: true, url: :membership_applications do |f| %>
           <%= f.error_notification %>
           <div class="row">
@@ -29,7 +29,5 @@
 
           <%= f.input :office_id, input_html: { value: current_user.office_id }, as: :hidden %>
           <%= f.input :cooperative_id, input_html: { value: current_user.cooperative_id }, as: :hidden %>
-          <div class="box-footer">
-            <%= f.submit "Save Membership Application",  class: "btn btn-primary pull-right" %>
-          </div>
+            <%= f.submit "Save Membership Application",  class: "btn btn-primary float-right" %>
         <% end %>

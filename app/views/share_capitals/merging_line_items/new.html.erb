@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-6">
-    <div class="box box-default">
-      <div class="box-header">
+    <div class="card">
+      <div class="card-header">
         <center>
           <%= image_tag(@current_share_capital.subscriber.avatar.url(:medium), class: "img-circle", height: 60, width: 60) %><br>
            <h3 class="box-title"><%= @current_share_capital.subscriber_name %></h3>
@@ -11,7 +11,7 @@
         </center>
         <hr>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <h4>Accounts to Be Merged</h4>
           <i class="fa fa-info-circle text-danger"></i>
           <span class="text-danger">
@@ -42,8 +42,8 @@
     </div>
   </div>
   <div class="col-md-6">
-    <div class="box box-solid">
-      <div class="box-body">
+    <div class="card">
+      <div class="card-body">
         <%=form_tag new_share_capital_merging_line_item_path(@current_share_capital), method: :get do %>
             <div class="input-group">
               <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search First Name, Last Name ", id: 'account-search-form' %>

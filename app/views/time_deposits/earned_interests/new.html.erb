@@ -1,11 +1,11 @@
 <div class="row">
   <div class="col-md-5 col-md-offset-3">
-    <div class="nav-tabs-custom">
-      <div class="box-header">
+
+      <div class="card-header">
         <h4><center><%= image_tag(@time_deposit.depositor.avatar.url(:medium), class: 'media-object img-circle', height: 60, width: 60) %></center></h4>
         <h3><center><%= @time_deposit.depositor.first_and_last_name %></center></h3>
       </div>
-      <div class="box-body">
+      <div class="cards-body">
         <%= simple_form_for [@time_deposit, @earned_interest], url: :time_deposit_earned_interests do |f| %>
           <%= f.error_notification %>
           <%= f.input :amount, input_html: { value: @time_deposit.balance } %>
@@ -14,7 +14,7 @@
           <%= f.input :time_deposit_id, input_html: { value: @time_deposit.id },as: :hidden %>
           <%= f.input :recorder_id, input_html: { value: current_user.id },as: :hidden %>
           <div class="footer">
-            <%= f.submit "Save Earned Interest", class: "btn btn-primary pull-right", data: {disable_with: "Processing..." } %>
+            <%= f.submit "Save Earned Interest", class: "btn btn-primary float-right", data: {disable_with: "Processing..." } %>
           </div>
         <% end %>
       </div>

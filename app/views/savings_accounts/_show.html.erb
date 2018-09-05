@@ -1,11 +1,11 @@
 <% content_for(:html_title) { "#{@savings_account.depositor_name} | #{@savings_account.saving_product_name}" } %>
 <div class="row">
   <div class="col-md-12">
-    <div class="box box-solid">
-      <div class="box-header">
-        <h3 class="box-title"> Savings Account Details </h3>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"> Savings Account Details </h3>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <ul class="nav nav-tabs">
           <li class="<%= 'active' if current_page?(savings_account_path(@savings_account))%>"><%= link_to 'Info', savings_account_path(@savings_account) %></li>
           <li class="<%= 'active' if current_page?(savings_account_settings_path(@savings_account))%>"><%= link_to 'Settings', savings_account_settings_path(@savings_account) %></li>

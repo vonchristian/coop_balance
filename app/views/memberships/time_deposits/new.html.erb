@@ -1,13 +1,13 @@
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
     <div class="nav-tabs-custom">
-      <div class="box-header">
-          <h3 class="box-title"> New Time Deposit Details </h3>
+      <div class="card-header">
+          <h3 class="card-title"> New Time Deposit Details </h3>
            <h4><center><%= image_tag(@membership.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center></h4>
 
             <h3><center><%= @membership.name %></center></h3>
       </div>
-     <div class="box-body">
+     <div class="card-body">
       <div class="row">
         <div class="col-md-10 col-md-offset-1">
 <%= simple_form_for [@membership, @time_deposit], url: :membership_time_deposits do |f| %>

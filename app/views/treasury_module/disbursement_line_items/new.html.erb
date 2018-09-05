@@ -1,10 +1,10 @@
 <div class="row">
   <div class="col-md-8">
-    <div class="box box-danger">
-      <div class="box-header">
-        <h3 class="box-title"> Disbursement Details </h3>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"> Disbursement Details </h3>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <%= simple_form_for @disbursement_line_item, url: :treasury_module_disbursement_line_items do |f| %>
           <div class="row">
             <div class="col-md-6">
@@ -73,22 +73,20 @@
     </div>
   </div>
   <div class="col-md-4">
-    <div class="box box-danger">
-      <div class="box-header">
-        <h3 class="box-title"> Payee Details </h3>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"> Payee Details </h3>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <%=simple_form_for @disbursement, url: :treasury_module_disbursement_processings do |f| %>
           <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
           <%= f.input :description, as: :text %>
           <%= f.input :reference_number %>
           <%= f.input :payee_id, label: "Payee", collection: Voucher.payees.map{|a| [a.name, a.id] } %>
           <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
-          <div class="box-footer">
             <% if current_user.voucher_amounts.present? %>
               <%= f.submit "Disburse Amount", class: "btn btn-danger pull-right" %>
             <% end %>
-          </div>
         <% end %>
       </div>
     </div>

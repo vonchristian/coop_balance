@@ -1,10 +1,10 @@
 <div class="row">
   <div class="col-md-12">
-    <div class="box box-solid">
-      <div class="box-header">
-        <h4 class="box-title"> Loans Section Reports</h4>
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title"> Loans Section Reports</h4>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <h4><b>Loan Releases</b></h4>
         <%= form_tag({:action => "index", controller: "loans_module/reports/loan_releases", format: 'pdf'}, {:method => :get})  do %>
         <div class="row">
@@ -25,7 +25,7 @@
       </div>
     <% end %>
     <hr>
-    <h4><b>Loan Payments</b></h4>
+    <h4 class="card-title">Loan Payments</h4>
         <%= form_tag({:action => "index", controller: "loans_module/reports/loan_collections", format: 'pdf'}, {:method => :get})  do %>
         <div class="row">
           <div class="col-md-3">

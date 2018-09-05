@@ -1,6 +1,6 @@
 <div class="col-md-6">
-  <div  class="box box-default">
-    <div class="box-header">
+  <div  class="card">
+    <div class="card-header">
       <small>SAVINGS ACCOUNTS METRICS</small>
       <% if  @saving_metric.negative? %>
       <h1 class="text-danger"><%= number_to_currency @saving_metric %> % <span class="fa fa-arrow-down"></span></h1>
@@ -27,8 +27,8 @@
   </div>
 </div>
 <div class="col-md-6">
-  <div  class="box box-default">
-    <div class="box-header">
+  <div  class="card">
+    <div class="card-header">
       <small>SHARE CAPITAL METRICS</small>
       <% if  @share_capital_metric.negative? %>
       <h1 class="text-danger"><%= number_to_currency @share_capital_metric %> % <span class="fa fa-arrow-down"></span></h1>
@@ -60,11 +60,11 @@
         </ul>
 <div class="row">
   <div class="col-md-12">
-    <div class="box box-solid">
-      <div class="box-header">
+    <div class="card">
+      <div class="card-header">
       </div>
-      <div class="box-body">
-        <h4>Served Members</h4>
+      <div class="card-body">
+        <h4 class="card-title">Active Members</h4>
         <h2><%=number_to_currency @members.count, unit: "", precision: 0 %></h2>
         FROM <%= @from_date.strftime("%B %e, %Y") %>
         TO <%= @to_date.strftime("%B %e, %Y") %>

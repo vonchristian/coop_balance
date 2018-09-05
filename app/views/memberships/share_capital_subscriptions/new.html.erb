@@ -1,13 +1,13 @@
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <div class="box box-solid">
-      <div class="box-header with-border">
+    <div class="card">
+      <div class="card-header">
         <center>
           <%= image_tag(@membership.avatar.url(:medium), class: "img-responsive img-circle", height: 60, width: 60) %>
           <h3 class="condensed-text text-purple"><%= @membership.cooperator_name.try(:upcase)%></h3>
         </center>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <%= simple_form_for @share_capital, url: :membership_share_capital_subscriptions do |f| %>
           <%= f.error_notification %>
           <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
@@ -18,9 +18,7 @@
           <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
           <%= f.input :account_number, input_html: { value: AccountNumberGenerator.generate_account_number(@share_capital) }, as: :hidden %>
 
-          <div class="box-footer">
-            <%= f.submit "Save Subscription", class: "btn btn-primary pull-right" %>
-          </div>
+            <%= f.submit "Save Subscription", class: "btn btn-primary float-right" %>
         <% end %>
       </div>
     </div>

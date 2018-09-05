@@ -1,7 +1,7 @@
 
         <h4> Disbursements Per Year </h4>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <%= line_chart LoansModule::Loan.group_by_year(:disbursement_date).count, curve: false, download: true %>
       </div>
 <% year_dates = [] %>

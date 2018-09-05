@@ -1,10 +1,10 @@
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <div class="box box-primary">
-      <div class="box-header">
-        <h3 class="box-title"> Edit Member Details </h3>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"> Edit Member Details </h3>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <%= simple_form_for @member, multipart: true do |f| %>
           <%if @member.avatar.blank? %>
             <center><%=image_tag("default.png", height: 80, width: 80, :class=>"img-circle") %></center>
@@ -28,7 +28,7 @@
           <h4 class="box-title"> Signature Specimen </h4>
           <%= f.input :signature_specimen, as: :file %>
           <div class="box-footer">
-            <%= f.submit "Save Member", class: "btn btn-primary pull-right" %>
+            <%= f.submit "Save Member", class: "btn btn-primary float-right" %>
           </div>
         <% end %>
       </div>

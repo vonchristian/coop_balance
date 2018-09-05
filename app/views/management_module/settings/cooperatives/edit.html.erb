@@ -1,10 +1,10 @@
 <div class="row">
   <div class="col-md-6 col-md-offset-">
-    <div class="box box-solid">
-      <div class="box-header">
-        <h3 class="box-title">Edit Cooperative Details </h3>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Edit Cooperative Details </h3>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <%= image_tag(@cooperative.logo.url(:medium)) %>
         <%= simple_form_for @cooperative, url: :management_module_settings_cooperative do |f| %>
           <%= f.input :logo %>

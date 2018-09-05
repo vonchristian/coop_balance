@@ -1,10 +1,10 @@
 <div class="row">
   <div class="col-md-12">
-    <div class="box box-danger">
-      <div class="box-header">
-        <h3 class="box-title">Settings </h3>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Settings </h3>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <div class="row">
           <div class="col-md-4">
             <p class="text-purple"> SHARE CAPITAL PRODUCTS </p>
@@ -76,11 +76,11 @@
 
 <div class="row">
   <div class="col-md-4">
-    <div class="box box-danger">
-      <div class="box-header">
+    <div class="card">
+      <div class="card-header">
         <div class="row">
           <div class="col-md-6">
-            <h3 class="box-title"> Savings Products</h3>
+            <h3 class="card-title"> Savings Products</h3>
           </div>
           <div class="col-md-6">
             <%= link_to new_management_module_saving_product_path do  %>
@@ -89,7 +89,7 @@
           </div>
         </div>
       </div>
-      <div class="box-body">
+      <div class="card-body">
       <% CoopServicesModule::SavingProduct.all.each do |saving_product| %>
         <%= saving_product.name %>
       </div>
@@ -97,11 +97,11 @@
     </div>
   </div>
 <div class="col-md-4">
-  <div class="box box-danger">
-    <div class="box-header">
+  <div class="card">
+    <div class="card-header">
       <div class="row">
         <div class="col-md-6">
-          <h3 class="box-title"> Store Fronts</h3>
+          <h3 class="card-title"> Store Fronts</h3>
         </div>
         <div class="col-md-6">
           <%= link_to new_management_module_settings_store_front_path do  %>
@@ -110,7 +110,7 @@
         </div>
       </div>
     </div>
-    <div class="box-body">
+    <div class="card-body">
     <% StoreFront.all.each do |store_front| %>
       <%= store_front.name %>
     </div>

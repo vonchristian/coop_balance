@@ -1,11 +1,11 @@
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <div class="box box-primary">
-      <div class="box-header">
+    <div class="card">
+      <div class="card-header">
         <%= image_tag(@member.avatar.url(:thumb), class: "profile-user-img img-responsive img-circle") %>
         <h3 class="profile-username text-center"><%= @member.first_and_last_name %></h3>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <%= simple_form_for [@member, @saving], url: :member_savings_accounts do |f| %>
           <%= f.error_notification %>
           <%= f.input :date, label: "Date Opened", as: :string, input_html: { class: "datepicker" } %>
@@ -15,9 +15,9 @@
           <%= f.input :depositor_id, input_html: { value: @member.id }, as: :hidden %>
           <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
           <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
-          <div class="box-footer">
-            <%= f.submit "Open Savings Account", class: "btn btn-primary pull-right" %>
-          </div>
+
+            <%= f.submit "Open Savings Account", class: "btn btn-primary float-right" %>
+
         <% end %>
       </div>
     </div>

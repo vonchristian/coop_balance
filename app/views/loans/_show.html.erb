@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-12">
-    <div class="box box-solid">
-      <div class="box-header bg-<%= @loan.status_color %>">
+    <div class="card">
+      <div class="card-header bg-<%= @loan.status_color %>">
         <br>
         <div class="row">
           <div class="col-md-3 border-right">
@@ -34,7 +34,7 @@
         </div>
         <br>
       </div>
-      <div class="box-body">
+      <div class="card-body">
     <div class="nav-tabs-navigation">
       <ul class="nav nav-tabs">
         <li class="<%= 'active' if current_page?(loan_path(@loan))%>"><%= link_to 'Info', loan_path(@loan) %></li>
@@ -44,7 +44,6 @@
         <li class="<%= 'active' if current_page?(loan_notes_path(@loan))%>"><%= link_to 'Notes', loan_notes_path(@loan) %></li>
         <li class="<%= 'active' if current_page?(loan_settings_path(@loan))%>"><%= link_to 'Settings', loan_settings_path(@loan) %></li>
       </ul>
-      <div class="tab-content">
         <% if current_page?(loan_path(@loan)) %>
           <%=render 'loans/partials/loan_info' %>
         <% end %>
@@ -64,7 +63,6 @@
         <% if current_page? loan_notes_path(@loan) %>
           <%= render 'loans/partials/notes' %>
         <% end %>
-      </div>
     </div>
   </div>
 </div>

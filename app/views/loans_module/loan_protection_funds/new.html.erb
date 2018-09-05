@@ -1,5 +1,0 @@
-<%= simple_form_for [@loan, @loan_protection_fund], url: :loans_module_loan_loan_protection_funds do |f| %>
-  <%= f.input :amount, input_html: { value: LoansModule::LoanProtectionFund.set_amount_for(@loan)} %>
-  <%= f.input :date, as: :string, input_html: { value: Time.zone.now.strftime("%B %e, %Y"), class: "datepicker" } %>
-  <%= f.submit "Save" %>
-<% end %>

@@ -1,19 +1,19 @@
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
-    <div class="box box-solid">
-      <div class="box-header bg-gray">
+    <div class="card">
+      <div class="card-header bg-gray">
         <div class="row">
           <div class="col-md-2 col-md-offset-1">
             <%=image_tag(@loan.borrower.avatar.url(:medium), class: "img-circle", height: 80, width: 80) %>
           </div>
           <div class="col-md-8">
             <br>
-            <h3 class="box-title"><%= @loan.borrower.first_and_last_name.try(:upcase) %></h3><br>
+            <h3 class="card-title"><%= @loan.borrower.first_and_last_name.try(:upcase) %></h3><br>
             <small><i class="fa fa-map-marker"></i> <%= @loan.borrower.current_address %></small>
           </div>
         </div>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <div class="row">
           <div class="col-md-10 col-md-offset-1">
         <%= simple_form_for [@loan, @additional_charge], url: :loans_module_loan_store_credit_payments do |f| %>

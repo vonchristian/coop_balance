@@ -1,9 +1,9 @@
 <div class="row">
-  <div class="box box-solid">
-    <div class="box-header">
-      <h3 class="box-title"> Budget Details </h3>
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title"> Budget Details </h3>
     </div>
-    <div class="box-body">
+    <div class="card-body">
       <%=form_tag new_management_module_account_budget_path, class: "sidebar-form", method: :get do %>
         <div class="input-group">
           <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Account Name", id: 'account-search-form' %>

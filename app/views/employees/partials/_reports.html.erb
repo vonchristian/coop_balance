@@ -27,7 +27,7 @@
               </div>
             <% end %>
 <hr>
-<h4>Transaction Summary Report</h4>
+<h4 class="card-title">Transaction Summary Report</h4>
 <%= form_tag({:action => "index", format: 'pdf', controller: "employees/reports", employee_id: @employee.id, date: params[:date]}, {:method => :get})  do %>
               <div class="row">
                 <div class="col-md-3">
@@ -41,7 +41,7 @@
               </div>
             <% end %>
 <hr>
-<h4>Cash Disbursements</h4>
+<h4 class="card-title">Cash Disbursements</h4>
 <%= form_tag({:action => "index", format: 'pdf', controller: "employees/cash_disbursements", employee_id: @employee.id, to_date: params[:to_date]}, {:method => :get})  do %>
               <div class="row">
                 <div class="col-md-3">
@@ -60,7 +60,7 @@
               </div>
             <% end %>
           <hr>
-          <h4>Cash Receipts</h4>
+          <h4 class="card-title">Cash Receipts</h4>
 <%= form_tag({:action => "index", format: 'pdf', controller: "employees/cash_receipts", employee_id: @employee.id, to_date: params[:to_date]}, {:method => :get})  do %>
               <div class="row">
                 <div class="col-md-3">
@@ -79,7 +79,7 @@
               </div>
             <% end %>
 
-             <p>Blotter</p>
+             <h4 class="card-title">Blotter</h4>>
 <%= form_tag({:action => "index", controller: "employees/blotters", employee_id: @employee.id, date: params[:date]}, {:method => :get})  do %>
               <div class="row">
                 <div class="col-md-3">
@@ -93,7 +93,7 @@
               </div>
             <% end %>
             <hr>
-            <h4>Audit Report</h4>
+            <h4 class="card-title">Audit Report</h4>
 <%= form_tag({:action => "index",  controller: "reports/audit_reports", to_date: params[:to_date]}, {:method => :get})  do %>
               <div class="row">
                 <div class="col-md-3">

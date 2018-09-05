@@ -1,11 +1,11 @@
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <div class="box box-solid">
-      <div class="box-header">
+    <div class="card">
+      <div class="card-header">
         <h4><center><%= image_tag(@member.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center></h4>
          <h3><center><%= @member.name %></center></h3>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <div class="row">
           <div class="col-md-10 col-md-offset-1">
             <%= simple_form_for [@member, @address], url: :member_addresses do |f| %>
@@ -15,7 +15,7 @@
               <%= f.input :province_id, collection: Addresses::Province.all.map{ |a| [a.name, a.id] }  %>
               <%= f.input :current %>
               <div class="box-footer">
-                <%= f.submit "Save Address", class: "btn btn-primary pull-right", disable_with: "Saving..." %>
+                <%= f.submit "Save Address", class: "btn btn-primary float-right", disable_with: "Saving..." %>
               </div>
             <% end %>
           </div>

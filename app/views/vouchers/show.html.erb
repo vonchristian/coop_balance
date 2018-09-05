@@ -1,13 +1,13 @@
  <div class="row">
  <div class="col-md-9 col-md-offset-2">
-    <div class="box box-solid">
-      <div class="box-header bg-gray">
+    <div class="card">
+      <div class="card-header">
 
            <h4><center><%= image_tag(@voucher.payee.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center></h4>
 
             <h3><center><%= @voucher.payee.try(:name) %></center></h3>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <div class="row">
           <div class="col-md-5 col-md-offset-1">
             Payee
@@ -120,14 +120,12 @@
             </div>
           </div>
         </div>
-        <div class="box-footer">
           <%=link_to 'Print(PDF)', voucher_path(@voucher, format: "pdf"), class: "btn btn-default btn-sm btn-flat" %>
           <% if !@voucher.disbursed? %>
             <%= link_to 'Disburse', new_voucher_disbursement_path(@voucher), class: "btn btn-primary pull-right" %>
           <% else %>
             <span class="label bg-green pull-right"> Disbursed </span>
           <% end %>
-        </div>
       </div>
     </div>
 
