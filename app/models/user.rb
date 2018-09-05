@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   include PgSearch
+  has_one_attached :avatar
   pg_search_scope :text_search, :against => [:first_name, :last_name]
   multisearchable against: [:first_name, :last_name]
   LOAN_APPROVERS = ["Manager", "Loan Officer"]
@@ -58,17 +59,6 @@ class User < ApplicationRecord
   delegate :abbreviated_name, :name, to: :cooperative, prefix: true
   delegate :number, to: :tin, prefix: true, allow_nil: true
   delegate :name, :abbreviated_name, to: :cooperative, prefix: true
-  has_attached_file :avatar,
-  styles: { large: "120x120>",
-           medium: "70x70>",
-           thumb: "40x40>",
-           small: "30x30>",
-           x_small: "20x20>"},
-  default_url: ":style/profile_default.jpg",
-  :path => ":rails_root/public/system/:attachment/:id/:basename_:style.:extension",
-  :url => "/system/:attachment/:id/:basename_:style.:extension"
-  validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
-  # validates :cash_on_hand_account_id, uniqueness: true
 
   def self.has_birthdays_on(month)
     where(birth_month: month).order(:birth_day)

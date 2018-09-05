@@ -1,12 +1,10 @@
-@import "bootstrap-sprockets";
-@import "bootstrap-datepicker3";
 @import "bootstrap";
-@import 'bootstrap-datetimepicker';
-@import "adminlte";
-@import "skin";
 @import "font-awesome-sprockets";
 @import "font-awesome";
-@import 'overrides';
+@import "adminlte";
+@import "overrides";
+@import "bootstrap-datepicker3";
+@import 'bootstrap-datetimepicker';
 @import 'select2';
-@import 'select2-bootstrap';
+@import "select2-bootstrap";
 @import 'simple_calendar';

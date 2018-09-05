@@ -1,4 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+<title><%= content_for?(:html_title) ? yield(:html_title) : "CoopCatalyst" %></title>
+    <%= csrf_meta_tags %>
 
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+  </head>
+  <body class="hold-transition skin-black-light sidebar-mini">
+    <div class="wrapper">
+      <%=render "layouts/shared/header" %>
+      <% if current_user.bookkeeper? || current_user.accountant? %>
+        <%=render "accounting_module/sidebar" %>
+      <% end %>
+      <% if current_user.loan_officer? %>
+        <%=render "loans_module/sidebar_for_loans_department" %>
+      <% end %>
+      <% if current_user.general_manager? %>
+        <%=render "management_module/sidebar_for_management_department" %>
+      <% end %>
+      <% if current_user.teller? %>
+        <%=render "teller_module/sidebar_for_teller_department" %>
+      <% end %>
+      <% if current_user.stock_custodian? %>
+        <%=render "store_front_module/sidebar_for_stock_custodian" %>
+      <% end %>
+      <% if current_user.sales_clerk? %>
+        <%=render "store_front_module/sidebar_for_sales_clerk" %>
+      <% end %>
+      <% if current_user.sales_manager? %>
+        <%=render "store_front_module/sidebar_for_store" %>
+      <% end %>
+       <% if current_user.treasurer? %>
+        <%=render "treasury_module/sidebar" %>
+      <% end %>
+      <% if current_user.accounting_clerk? %>
+        <%=render "clerk_module/sidebar" %>
+      <% end %>
+       <% if current_user.collector? %>
+        <%=render "collector_module/sidebar" %>
+      <% end %>
+      <div class="content-wrapper">
+        <section class="content">
+          <%=render "layouts/shared/flash_messages" %>
+          <%= yield %>
+        </section>
+      </div>
+        <%=render 'layouts/shared/footer', cached: true %>
+    </div>
+
+  </body>
+</html>
 credit rating per loan
 credit rating per borrower
 if loan is archived?

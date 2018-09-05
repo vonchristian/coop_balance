@@ -1,27 +1,27 @@
 <div class="row">
   <div class="col-md-4">
-    <div class="box box-solid">
-      <div class="box-header">
-        <h3 class="box-title"> Schedules for this day </h3>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"> Schedules for this day </h3>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <h3><%= @amortization_schedules.count %></h3>
       </div>
     </div>
-    <div class="box box-solid">
-      <div class="box-header">
-        <h3 class="box-title"> Schedules for this month </h3>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"> Schedules for this month </h3>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <h3><%= LoansModule::AmortizationSchedule.scheduled_for(from_date: @from_date.beginning_of_month, to_date: @to_date.end_of_month).count %></h3>
       </div>
     </div>
   </div>
   <div class="col-md-8">
-    <div class="box box-solid">
-      <div class="box-header">
+    <div class="card">
+      <div class="card-header">
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <%= month_calendar do |date| %>
         <%=link_to loans_module_schedule_path(date)  do %>
           <p><%=date.day %></p>

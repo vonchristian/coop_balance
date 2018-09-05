@@ -1,8 +1,15 @@
-<%= simple_form_for [@loan_product, @interest_configuration], url: :loans_module_loan_product_interest_configurations do |f| %>
-  <%= f.input :rate %>
-  <%= f.input :interest_revenue_account_id, collection: AccountingModule::Revenue.all.map{|a| [a.name, a.id] } %>
-  <%= f.input :unearned_interest_income_account_id, collection: AccountingModule::Asset.all.map{|a| [a.name, a.id] } %>
-  <%= f.input :interest_receivable_account_id, collection: AccountingModule::Asset.all.map{|a| [a.name, a.id] } %>
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title"> New Interest Configuration Details </h3>
+  </div>
+  <div class="card-body">
+    <%= simple_form_for [@loan_product, @interest_configuration], url: :loans_module_loan_product_interest_configurations do |f| %>
+      <%= f.input :rate %>
+      <%= f.input :interest_revenue_account_id, collection: AccountingModule::Revenue.all.map{|a| [a.name, a.id] } %>
+      <%= f.input :unearned_interest_income_account_id, collection: AccountingModule::Asset.all.map{|a| [a.name, a.id] } %>
 
-  <%= f.submit "Save Interest Configuration" %>
-<% end %>
+      <%= f.submit "Save Interest Configuration" %>
+    <% end %>
+  </div>
+</div>
+

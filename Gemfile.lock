@@ -62,11 +62,12 @@ GEM
     bcrypt (3.1.12)
     bootsnap (1.3.1)
       msgpack (~> 1.0)
+    bootstrap (4.1.3)
+      autoprefixer-rails (>= 6.0.3)
+      popper_js (>= 1.12.9, < 2)
+      sass (>= 3.5.2)
     bootstrap-datepicker-rails (1.8.0.1)
       railties (>= 3.0)
-    bootstrap-sass (3.3.7)
-      autoprefixer-rails (>= 5.2.1)
-      sass (>= 3.3.4)
     bootstrap-slider-rails (9.8.0)
       railties (>= 3.2, < 6.0)
     bootstrap3-datetimepicker-rails (4.17.47)
@@ -269,6 +270,7 @@ GEM
       arel (>= 6)
     pghero (2.2.0)
       activerecord
+    popper_js (1.14.3)
     prawn (2.2.2)
       pdf-core (~> 0.7.0)
       ttfunk (~> 1.5)
@@ -421,6 +423,9 @@ GEM
     trix (0.10.1)
       rails
     ttfunk (1.5.1)
+    turbolinks (5.2.0)
+      turbolinks-source (~> 5.2)
+    turbolinks-source (5.2.0)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
     uglifier (4.1.18)
@@ -448,8 +453,8 @@ DEPENDENCIES
   axlsx_rails
   barby
   bootsnap
+  bootstrap (~> 4.1.1)
   bootstrap-datepicker-rails
-  bootstrap-sass
   bootstrap-slider-rails
   bootstrap3-datetimepicker-rails
   bullet
@@ -520,6 +525,7 @@ DEPENDENCIES
   spring-watcher-listen
   traceroute
   trix
+  turbolinks (~> 5)
   uglifier
   underscore-rails
   whenever

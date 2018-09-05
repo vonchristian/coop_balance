@@ -1,3 +1,5 @@
+
+
 // This is a manifest file that'll be compiled into application.js, which will include all the files
 // listed below.
 //
@@ -10,19 +12,31 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery
-//= require jquery_ujs
-//= require bootstrap-sprockets
+//= require rails-ujs
+//= require activestorage
+//= require turbolinks
+//= require jquery3
+//= require popper
+//= require bootstrap
 //= require bootstrap-datepicker
-//= require moment
-//= require bootstrap-datetimepicker
-//= require select2
-//= require trix
-//= require bootstrap-slider
+//= require activestorage
 //= require autonumeric
 //= require rails.validations
 //= require rails.validations.simple_form
 //= require Chart.bundle
-//= require highcharts
 //= require chartkick
+//= require select2
 //= require_tree .
+var ready = function () {
+  var o;
+  o = $.AdminLTE.options;
+  if (o.sidebarPushMenu) {
+    $.AdminLTE.pushMenu.activate(o.sidebarToggleSelector);
+  }
+  return $.AdminLTE.layout.activate();
+};
+document.addEventListener('turbolinks:load', ready);
+var ready = function () {
+    return $(window).trigger('resize');
+};
+document.addEventListener('turbolinks:load', ready);

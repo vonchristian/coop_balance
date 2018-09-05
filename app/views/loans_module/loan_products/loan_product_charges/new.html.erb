@@ -1,14 +1,16 @@
 <div class="row">
-  <div class="col-md-4 col-md-offset-4">
-    <div class="box box-solid">
-      <div class="box-header with-border">
-        <h3 class="box-title"> Charge Details </h3>
+  <div class="col-md-3">
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"> Charge Details </h3>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <%= simple_form_for [@loan_product, @loan_product_charge], url: :loans_module_loan_product_loan_product_charges do |f| %>
           <%= f.simple_fields_for :charge do |ff| %>
            <%= ff.input :name %>
-          <%= ff.input :charge_type, collection: Charge.charge_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
+          <%= ff.input :charge_type, collection: Charge.charge_types.keys.to_a.map{|a| [a.titleize, a] } %>
           <%= ff.input :percent %>
           <%= ff.input :amount %>
           <%= ff.input :account_id, collection: AccountingModule::Account.all.map{ |a| [a.name.titleize, a.id] }, input_html: { id: 'loan_product_charge_account_id' } %>

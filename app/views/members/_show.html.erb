@@ -1,24 +1,26 @@
 
   <div class="row">
     <div class="col-md-12">
-      <div class="box box-default">
-        <div class="box-header">
+      <div class="card">
+        <div class="card-header">
           <center>
             <%=image_tag(@member.avatar.url(:medium), class: "img-circle", height: 60, width: 60) %>
             <h4><%= @member.name %></h4>
           </center>
-        <ul class="nav nav-tabs">
-          <li class="<%= 'active' if current_page?(member_info_index_path(@member))%>"><%= link_to 'Info', member_info_index_path(@member) %></li>
-          <li class="<%= 'active' if current_page?(member_loans_path(@member))%>"><%= link_to 'Loans & Credit', member_loans_path(@member) %></li>
-          <li class="<%= 'active' if current_page?(member_savings_accounts_path(@member))%>"><%= link_to 'Savings', member_savings_accounts_path(@member) %></li>
-          <li class="<%= 'active' if current_page?(member_share_capitals_path(@member))%>"><%= link_to 'Share Capitals', member_share_capitals_path(@member) %></li>
-          <li class="<%= 'active' if current_page?(member_time_deposits_path(@member))%>"><%= link_to 'Time Deposits', member_time_deposits_path(@member) %></li>
-          <li class="<%= 'active' if current_page?(member_subscriptions_path(@member))%>"><%= link_to 'Program Subscriptions', member_subscriptions_path(@member) %></li>
-          <li class="<%= 'active' if current_page?(member_purchases_path(@member))%>"><%= link_to 'Purchases', member_purchases_path(@member) %></li>
-           <li class="<%= 'active' if current_page?(member_settings_path(@member))%>"><%= link_to 'Settings', member_settings_path(@member) %></li>
+          <br>
+
+        <ul class="nav nav-tabs card-header-tabs">
+          <li class="nav-item <%= 'active' if current_page?(member_info_index_path(@member))%>"><%= link_to 'Info', member_info_index_path(@member), class: "nav-link" %></li>
+          <li class="nav-item <%= 'active' if current_page?(member_loans_path(@member))%>"><%= link_to 'Loans & Credit', member_loans_path(@member), class: "nav-link"%></li>
+          <li class="nav-item <%= 'active' if current_page?(member_savings_accounts_path(@member))%>"><%= link_to 'Savings', member_savings_accounts_path(@member), class: "nav-link" %></li>
+          <li class="nav-item <%= 'active' if current_page?(member_share_capitals_path(@member))%>"><%= link_to 'Share Capitals', member_share_capitals_path(@member), class: "nav-link" %></li>
+          <li class="nav-item <%= 'active' if current_page?(member_time_deposits_path(@member))%>"><%= link_to 'Time Deposits', member_time_deposits_path(@member), class: "nav-link" %></li>
+          <li class="nav-item <%= 'active' if current_page?(member_subscriptions_path(@member))%>"><%= link_to 'Program Subscriptions', member_subscriptions_path(@member), class: "nav-link" %></li>
+          <li class="nav-item <%= 'active' if current_page?(member_purchases_path(@member))%>"><%= link_to 'Purchases', member_purchases_path(@member), class: "nav-link" %></li>
+           <li class="nav-item <%= 'active' if current_page?(member_settings_path(@member))%>"><%= link_to 'Settings', member_settings_path(@member), class: "nav-link" %></li>
         </ul>
       </div>
-        <div class="tab-content box-body">
+        <div class="card-body">
           <% if current_page?(member_info_index_path(@member)) %>
             <%= render 'members/partials/info', member: @member %>
           <% end %>

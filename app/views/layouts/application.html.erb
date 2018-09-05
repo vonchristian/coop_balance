@@ -1,54 +1,56 @@
-<!DOCTYPE html>
-<html>
-  <head>
-<title><%= content_for?(:html_title) ? yield(:html_title) : "CoopCatalyst" %></title>
-    <%= csrf_meta_tags %>
 
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title><%= content_for?(:html_title) ? yield(:html_title) : "Catalyst" %></title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-
   </head>
-  <body class="hold-transition skin-black-light sidebar-mini">
-    <div class="wrapper">
-      <%=render "layouts/shared/header" %>
-      <% if current_user.bookkeeper? || current_user.accountant? %>
-        <%=render "accounting_module/sidebar" %>
-      <% end %>
-      <% if current_user.loan_officer? %>
-        <%=render "loans_module/sidebar_for_loans_department" %>
-      <% end %>
-      <% if current_user.general_manager? %>
-        <%=render "management_module/sidebar_for_management_department" %>
-      <% end %>
-      <% if current_user.teller? %>
-        <%=render "teller_module/sidebar_for_teller_department" %>
-      <% end %>
-      <% if current_user.stock_custodian? %>
-        <%=render "store_front_module/sidebar_for_stock_custodian" %>
-      <% end %>
-      <% if current_user.sales_clerk? %>
-        <%=render "store_front_module/sidebar_for_sales_clerk" %>
-      <% end %>
-      <% if current_user.sales_manager? %>
-        <%=render "store_front_module/sidebar_for_store" %>
-      <% end %>
-       <% if current_user.treasurer? %>
-        <%=render "treasury_module/sidebar" %>
-      <% end %>
-      <% if current_user.accounting_clerk? %>
-        <%=render "clerk_module/sidebar" %>
-      <% end %>
-       <% if current_user.collector? %>
-        <%=render "collector_module/sidebar" %>
-      <% end %>
-      <div class="content-wrapper">
-        <section class="content">
-          <%=render "layouts/shared/flash_messages" %>
-          <%= yield %>
-        </section>
-      </div>
-        <%=render 'layouts/shared/footer', cached: true %>
-    </div>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+  <!-- Navbar -->
+  <%= render 'layouts/shared/navbar' %>
 
-  </body>
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-collapse sidebar-light-primary elevation-6">
+    <%= render 'layouts/shared/brand' %>
+    <% if current_user.loan_officer? %>
+      <%= render 'layouts/shared/sidebar_for_loans_department' %>
+    <% end %>
+  </aside>
+
+  <div class="content-wrapper">
+    <div class="content">
+      <div class="content-header">
+
+      </div>
+      <div class="container-fluid">
+        <%= render 'layouts/shared/flash_messages' %>
+        <%= yield %>
+      </div>
+    </div>
+    <!-- /.content -->
+  </div>
+
+  <footer class="main-footer">
+    <!-- To the right -->
+    <div class="float-right d-none d-sm-block-down">
+      Anything you want
+    </div>
+    <!-- Default to the left -->
+    <strong>Copyright &copy; 2018 <a href="https://adminlte.io">Catalyst</a>.</strong> All rights reserved.
+  </footer>
+</div>
+
+
+</body>
+
+
 </html>
+

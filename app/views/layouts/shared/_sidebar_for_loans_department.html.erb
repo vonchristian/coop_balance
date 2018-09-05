@@ -1,0 +1,34 @@
+<!-- Sidebar -->
+<div class="sidebar">
+  <!-- Sidebar user panel (optional) -->
+  <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+    <div class="image">
+      <% if current_user.avatar.attachment.present? %>
+        <%= image_tag(current_user.avatar) %>
+      <% else %>
+        <%= image_tag("default_avatar.png", class: "img-circle") %>
+      <% end %>
+    </div>
+    <div class="info">
+      <a href="#" class="d-block"><%= current_user.first_and_last_name %></a>
+      <small><%= current_user.designation %></small>
+    </div>
+  </div>
+
+  <!-- Sidebar Menu -->
+  <nav class="mt-2">
+    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+      <!-- Add icons to the links using the .nav-icon class
+           with font-awesome or any other icon font library -->
+
+      <li class= "nav-item" <%= 'active' if current_page?(loans_module_index_path) %> ><a href="/loans_module" class="nav-link"><i class="nav-icon fa fa-home"></i> <span>Dashboard </span></a></li>
+     <li class="nav-item"<%= 'active' if current_page?(matured_loans_path) %> ><a href="/matured_loans" class="nav-link"><i class="nav-icon fa fa-eye"></i> <span>Loans Maturity </span></a></li>
+     <li class="nav-item"<%= 'active' if current_page?(loans_module_schedules_path) %> ><a href="/loans_module/schedules" class="nav-link"><i class="nav-icon fa fa-calendar"></i> <span> Amortization Schedules</span></a></li>
+     <li class="nav-item"<%= 'active' if current_page?(loans_module_index_path) %> ><a href="/loans_module/loan_products" class="nav-link"><i class="nav-icon fa fa-tag"></i> <span>Loan Products </span></a></li>
+
+<li class= "nav-item"<%= 'active' if current_page?(members_path) %> ><a href="/members" class="nav-link"><i class="nav-icon fa fa-users"></i> <span>Members</span></a></li>
+    </ul>
+  </nav>
+  <!-- /.sidebar-menu -->
+</div>
+<!-- /.sidebar -->
