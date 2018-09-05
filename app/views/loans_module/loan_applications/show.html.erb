@@ -1,25 +1,25 @@
 <div class="row">
   <div class="col-md-7">
-    <div class="box box-solid">
-      <div class="box-header bg-gray">
+    <div class="card">
+      <div class="card-header">
         <div class="row">
           <div class="col-md-2 col-md-offset-1">
             <%=image_tag(@loan.borrower.avatar.url(:medium), class: "img-circle", height: 80, width: 80) %>
           </div>
           <div class="col-md-8">
             <br>
-            <h3 class="box-title"><%= @loan.borrower.first_and_last_name.try(:upcase) %></h3><br>
+            <h3 class="card-title"><%= @loan.borrower.first_and_last_name.try(:upcase) %></h3><br>
             <small><i class="fa fa-map-marker"></i> <%= @loan.borrower.current_address %></small>
           </div>
         </div>
       </div>
-      <div class="box-body">
+      <div class="card-body">
     		<div class="row">
     		  <div class="col-md-5 col-md-offset-1">
-    				<h4 class="box-title">AMOUNT APPLIED </h4>
+    				<h4 class="card-title">AMOUNT APPLIED </h4>
           </div>
           <div class="col-md-3">
-            <h4 class="box-title"> <span class="pull-right"> <%= number_to_currency @loan.loan_amount %></span></h4>
+            <h4 class="card-title"> <span class="pull-right"> <%= number_to_currency @loan.loan_amount %></span></h4>
           </div>
         </div>
         <br>
@@ -87,7 +87,7 @@
         <%= f.input :preparer_id, input_html: { value: current_user.id }, as: :hidden %>
             <%= f.input :loan_id, input_html: { value: @loan.id }, as: :hidden %>
             <%= f.input :preparer_id, input_html: { value: current_user.id }, as: :hidden %>
-            <div class="box-footer">
+            <div class="card-footer">
               <%= f.submit "Create Disbursement Voucher", class: "btn btn-primary btn-lg pull-right" %>
               <%= link_to 'Cancel Application', loans_module_loan_application_path(@loan), method: :delete, class: "btn pull-left" %>
             </div>
@@ -97,11 +97,11 @@
 
 			  </div>
       </div>
-      <div class="box box-solid">
-        <div class="box-header">
-          <h4 class="box-title">Amortization Schedule <span class="badge bg-blue"><%= @loan.amortization_schedules.count %></span> </h4>
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Amortization Schedule <span class="badge bg-blue"><%= @loan.amortization_schedules.count %></span> </h4>
         </div>
-        <div class="box-body">
+        <div class="card-body">
           <div class="table table-responsive">
             <table class="table table-hover">
               <thead>
@@ -139,24 +139,24 @@
       </div>
     </div>
   <div class="col-md-5">
-    <div class="box box-solid">
-      <div class="box-header with-border">
-        <h3 class="box-title"> Share Capital </h3>
+    <div class="card card-solid">
+      <div class="card-header with-border">
+        <h3 class="card-title"> Share Capital </h3>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <% @borrower.share_capitals.each do |share_capital| %>
           <h4><%= number_to_currency share_capital.paid_up_balance %></h4>
-          <div class="box-footer">
+          <div class="card-footer">
             <%=link_to 'Add Capital Build Up', new_loans_module_loan_share_capital_build_up_path(share_capital_id: share_capital.id, loan_id: @loan.id), class: "btn btn-warning btn-sm" %>
           </div>
         <% end %>
       </div>
     </div>
-    <div class="box box-solid">
-      <div class="box-header">
-        <h3 class="box-title"> Previous Loans </h3>
+    <div class="card card-solid">
+      <div class="card-header">
+        <h3 class="card-title"> Previous Loans </h3>
       </div>
-      <div class="box-body">
+      <div class="card-body">
          <p class="text-muted">PREVIOUS LOANS </p>
         <% @borrower.loans.disbursed(from_date: Date.today, to_date: Date.today).each do |loan| %>
           <%= number_to_currency loan.balance %>
@@ -164,11 +164,11 @@
         <%end %>
       </div>
     </div>
-    <div class="box box-solid">
-      <div class="box-header">
-        <h3 class="box-title"> Program Subscriptions </h3>
+    <div class="card card-solid">
+      <div class="card-header">
+        <h3 class="card-title"> Program Subscriptions </h3>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <% @loan.borrower.program_subscriptions.unpaid.each do |subscription| %>
           <div class="row">
             <div class="col-md-6">
@@ -185,22 +185,22 @@
         <% end %>
       </div>
     </div>
-    <div class="box box-solid">
-      <div class="box-header with-border">
-        <h3 class="box-title"> Savings </h3>
+    <div class="card card-solid">
+      <div class="card-header with-border">
+        <h3 class="card-title"> Savings </h3>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <% @borrower.savings.each do |savings_account| %>
         <h4><%= number_to_currency savings_account.balance %></h4>
         <%= link_to "Add Deposit", new_loans_module_loan_savings_account_deposit_path(savings_account_id: savings_account.id, loan_id: @loan.id), class: "btn btn-warning btn-sm" %>
         <% end %>
       </div>
     </div>
-    <div class="box box-solid">
-      <div class="box-header">
-        <h3 class="box-title"> Accounts Receivable Store </h3>
+    <div class="card card-solid">
+      <div class="card-header">
+        <h3 class="card-title"> Accounts Receivable Store </h3>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <% current_user.cooperative.store_fronts.each do |store_front| %>
         <%= store_front.name %>
         <% end %>
