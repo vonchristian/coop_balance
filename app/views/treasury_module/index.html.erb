@@ -15,7 +15,7 @@
         </div>
         <div class="row">
           <div class="col-md-7">
-            <p class="text-success">&nbsp; &nbsp; <i class="fa fa-plus-circle"></i> Add Cash Receipts </p>
+            <p class="text-success">&nbsp; &nbsp; <i class="fa fa-plus-circle"></i> Cash Receipts </p>
           </div>
           <div class="col-md-4">
             <span class="text-success float-right"><%= number_to_currency current_user.cash_on_hand_account.debits_balance(from_date: Date.today.beginning_of_day, to_date: Date.today.end_of_day) %></span>
@@ -23,7 +23,7 @@
         </div>
         <div class="row">
         <div class="col-md-7">
-          <p class="text-danger">&nbsp; &nbsp; <i class="fa fa-minus-circle"></i> Less Withdrawals </p>
+          <p class="text-danger">&nbsp; &nbsp; <i class="fa fa-minus-circle"></i> Withdrawals </p>
         </div>
         <div class="col-md-4">
           <span class="text-danger float-right"><%= number_to_currency current_user.cash_on_hand_account.credits_balance(from_date: Date.today.beginning_of_day, to_date: Date.today.end_of_day) %></span>
@@ -249,7 +249,7 @@
     </div>
     <div class="row">
       <div class="col-md-7">
-        <p class="text-success">&nbsp; &nbsp; <i class="fa fa-plus-circle"></i> Add Deposits </p>
+        <p class="text-success">&nbsp; &nbsp; <i class="fa fa-plus-circle"></i> Deposits </p>
       </div>
       <div class="col-md-4">
         <span class="text-success float-right"><%= number_to_currency CoopServicesModule::ShareCapitalProduct.total_credits_balance(from_date: Date.today.beginning_of_day, to_date: Date.today.end_of_day) %></span>
@@ -257,7 +257,7 @@
     </div>
     <div class="row">
       <div class="col-md-7">
-        <p class="text-danger">&nbsp; &nbsp; <i class="fa fa-minus-circle"></i> Less Withdrawals </p>
+        <p class="text-danger">&nbsp; &nbsp; <i class="fa fa-minus-circle"></i> Withdrawals </p>
       </div>
       <div class="col-md-4">
         <span class="text-danger float-right"><%= number_to_currency CoopServicesModule::ShareCapitalProduct.total_debits_balance(from_date: Date.today.beginning_of_day, to_date: Date.today.end_of_day) %></span>

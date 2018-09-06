@@ -2,7 +2,7 @@
   <tr>
     <td>
       <% if entry.recorder.present? %>
-        <%=image_tag(entry.recorder.avatar.url(:thumb), class: "img-circle", height: 30, width: 30)%>
+
         <b><%= entry.recorder_first_and_last_name %></b>
       <% end %>
     </td>

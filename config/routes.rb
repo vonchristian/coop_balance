@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :member_accounts, controllers: { sessions: 'member_accounts/sessions', registrations: 'member_accounts/registrations'}
   # devise_for :cooperators
   unauthenticated :user do
     root :to => 'home#index', :constraints => lambda { |request| request.env['warden'].user.nil? }, as: :unauthenticated_root
@@ -453,5 +454,8 @@ namespace :share_capitals_section do
       resources :activations,   only: [:create],       module: :accounts
       resources :deactivations, only: [:create],       module: :accounts
     end
+  end
+  namespace :coop_module do
+    resources :search_results, only: [:index]
   end
 end

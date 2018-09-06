@@ -1,0 +1,41 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title><%= content_for?(:html_title) ? yield(:html_title) : "Catalyst" %></title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+  <!-- Navbar -->
+      <div class="container-fluid">
+        <%= render 'layouts/shared/flash_messages' %>
+        <%= yield %>
+      </div>
+    </div>
+    <!-- /.content -->
+  </div>
+
+  <footer class="main-footer">
+    <!-- To the right -->
+    <div class="float-right d-none d-sm-block-down">
+      Anything you want
+    </div>
+    <!-- Default to the left -->
+    <strong>Copyright &copy; 2018 <a href="https://adminlte.io">Catalyst</a>.</strong> All rights reserved.
+  </footer>
+</div>
+
+
+</body>
+
+
+</html>
+

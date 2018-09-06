@@ -6,6 +6,8 @@ class Member < ApplicationRecord
   enum sex: [:male, :female, :other]
   enum civil_status: [:single, :married, :widower, :divorced]
   has_one_attached :signature_specimen
+
+  has_one :member_account
   belongs_to :office,                 class_name: "CoopConfigurationsModule::Office"
   has_many :tins,                     as: :tinable
   has_many :entries,                  class_name: "AccountingModule::Entry",

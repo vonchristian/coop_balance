@@ -1,4 +1,5 @@
 class MembersController < ApplicationController
+  layout 'application'
   def index
     if params[:search].present?
       @members = Member.text_search(params[:search]).order(:last_name).paginate(page: params[:page], per_page: 35)
