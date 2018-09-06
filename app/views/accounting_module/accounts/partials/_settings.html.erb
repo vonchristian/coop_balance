@@ -1,0 +1,20 @@
+
+      <h3 class="card-title"> Account Settings </h3>
+      <br>
+      <div class="row">
+        <div class="col-md-8">
+          <p class="text-muted"> Activate / Deactivate this account. </p>
+        </div>
+        <div class="col-md-3">
+          <% if @account.active? %>
+            <%= link_to accounting_module_account_deactivations_path(@account), method: :post do %>
+                <span data-toggle="tooltip" title="Deactivate Account"><i class="fa fa-toggle-on fa-2x text-success"></i></span>
+            <% end %>
+          <% else %>
+            <%= link_to accounting_module_account_activations_path(@account), method: :post do %>
+              <span data-toggle="tooltip" title="Activate Account"><i class="fa fa-toggle-off fa-2x text-danger"></i></span>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+

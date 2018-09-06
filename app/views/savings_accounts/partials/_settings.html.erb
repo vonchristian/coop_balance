@@ -13,3 +13,4 @@
 <% if policy([:savings_accounts, :account_closing]).new? && !@savings_account.closed? %>
   <%= link_to 'Close Account', new_savings_account_account_closing_path(@savings_account), class: "btn btn-danger btn-xs" %>
 <% end %>
+

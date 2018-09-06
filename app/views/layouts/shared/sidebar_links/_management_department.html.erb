@@ -1,0 +1,24 @@
+ <li class= "nav-item" <%= 'active' if current_page?(members_path) %> ><a href="/members" class="nav-link"><i class="nav-icon fa fa-users"></i> <span>Members </span></a></li>
+
+
+          <li class="nav-item" <%= 'active' if current_page?(share_capitals_path) %> ><a href="/share_capitals" class="nav-link"><i class="nav-icon fa fa-briefcase"></i> <span> Share Capitals</span></a></li>
+          <li class="nav-item" <%= 'active' if current_page?(savings_accounts_path) %> ><a href="/savings_accounts" class="nav-link"><i class="nav-icon fa fa-briefcase"></i> <span> Savings </span></a></li>
+          <li class="nav-item"<%= 'active' if current_page?(time_deposits_path) %> ><a href="/time_deposits" class="nav-link"><i class="nav-icon fa fa-hourglass"></i> <span> Time Deposits </span></a></li>
+          <li class="nav-item" <%= 'active' if current_page?(loans_path) %> ><a href="/loans" class="nav-link"><i class="nav-icon fa fa-credit-card"></i> <span> Loans </span></a></li>
+          <li class="nav-item"<%= 'active' if current_page?(barangays_path) %> ><a href="/barangays" class="nav-link"><i class="nav-icon fa fa-map-marker"></i> <span> Barangays </span></a></li>
+
+          <li class="nav-item"<%= 'active' if current_page?(calendars_path) %> ><a href="/calendars" class="nav-link"><i class="nav-icon fa fa-calendar"></i> <span> Birthday Calendar</span></a></li>
+
+
+
+
+
+
+             <li class="nav-item"<%= 'active' if current_page?(organizations_path) %> ><a href="/organizations" class="nav-link"><i class="nav-icon fa fa-sitemap"></i> <span> Organizations</span></a></li>
+
+              <%= render 'layouts/shared/sidebar_links/monitoring' %>
+
+              <li class="header"> SETTINGS </li>
+
+              <li class="nav-item" <%= 'active' if current_page?(management_module_settings_path) %> ><a href="/management_module/settings" class="nav-link"><i class="nav-icon fa fa-cog"></i> <span> Settings</span></a></li>
+              <li class="nav-item" <%= 'active' if current_page?(management_module_account_budgets_path) %> ><a href="/management_module/account_budgets" class="nav-link"><i class="nav-icon fa fa-coins"></i> <span> Proposed Budgets</span></a></li>

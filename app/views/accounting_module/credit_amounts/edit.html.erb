@@ -48,7 +48,7 @@
                 Employee
               </div>
               <div class="col-md-5">
-                <%= image_tag(@entry.recorder.avatar.url(:thumb), class: "img-circle", height: 35, width: 35)%> &nbsp; <%= @entry.recorder.try(:first_and_last_name) %>
+                <%= @entry.recorder.try(:first_and_last_name) %>
               </div>
             </div>
             <br />

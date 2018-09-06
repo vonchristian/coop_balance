@@ -1,3 +1,13 @@
+User roles
+  accounting_officer
+  collection_officer
+  loan_officer
+  management_officer
+  sales_officer
+  inventory_officer
+
+
+
 <!DOCTYPE html>
 <html>
   <head>

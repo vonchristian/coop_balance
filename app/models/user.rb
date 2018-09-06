@@ -106,7 +106,7 @@ class User < ApplicationRecord
   end
 
   def self.with_cash_on_hands
-    all.select{|a| WITH_CASH_ON_HAND.include?(a.role.titleize) }
+    where.not(cash_on_hand_account_id: nil)
   end
 
   def self.loan_approvers

@@ -5,7 +5,7 @@ module AccountingModule
         @account = AccountingModule::Account.find(params[:account_id])
         @account.active = true
         @account.save
-        redirect_to accounting_module_accounts_url, notice: "Activated successfully."
+        redirect_to accounting_module_account_settings_url(@account), notice: "Activated successfully."
       end
     end
   end

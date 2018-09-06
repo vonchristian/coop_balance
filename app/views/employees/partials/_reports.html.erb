@@ -1,8 +1,9 @@
 <div class="tab-pane <%= 'active' if current_page?(employee_reports_path(@employee)) %>" id="employee-reports">
-  <h4>
+  <h3 class="card-title">
     Transactions Report
   </h4>
-  <%=link_to 'This Day', employee_entries_path(@employee, format: 'pdf', from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day), class: "btn btn-sm btn-default"  %> &nbsp;
+  <p class="text-muted"> Generate transactions report </p>
+  <%=link_to 'This Day', employee_entries_path(@employee, format: 'pdf', from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day), class: "btn btn-sm btn-outline-default"  %> &nbsp;
 
   <%=link_to 'This Week', employee_entries_path(@employee, format: 'pdf', from_date: Time.zone.now.beginning_of_week.beginning_of_day, to_date: Time.zone.now.end_of_week.end_of_day), class: "btn btn-sm btn-default"  %> &nbsp;
    <%=link_to 'This Month', employee_entries_path(@employee, format: 'pdf', from_date: Time.zone.now.beginning_of_month.beginning_of_day, to_date: Time.zone.now.end_of_month.end_of_day), class: "btn btn-sm btn-default"  %> &nbsp;

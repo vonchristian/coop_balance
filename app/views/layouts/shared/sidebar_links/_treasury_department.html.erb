@@ -16,8 +16,9 @@
 
 
           <li class="nav-item"<%= 'active' if current_page?(employee_entries_path(current_user)) %> ><a href="/employees/<%="#{current_user.id}"%>/entries" class="nav-link"><i class="nav-icon fa fa-credit-card"></i> <span> Entries</span></a></li>
-          <li class="nav-item"<%= 'active' if current_page?(employee_reports_path(current_user)) %> ><a href="/employees/<%="#{current_user.id}"%>/reports" class="nav-link"><i class="nav-icon fa fa-folder"></i> <span> Reports</span></a></li>
+          <li class="nav-item"<%= 'active' if current_page?(employee_reports_path(current_user)) %> ><a href="/employees/<%="#{current_user.id}"%>/reports" class="nav-link"><i class="nav-icon far fa-folder"></i> <span> Reports</span></a></li>
 
 
           <li class="nav-item"<%= 'active' if current_page?(employees_path) %> ><a href="/employees" class="nav-link"><i class="nav-icon fa fa-users"></i> <span> Employees</span></a></li>
           <li class="nav-item"<%= 'active' if current_page?(suppliers_path) %> ><a href="/suppliers" class="nav-link"><i class="nav-icon fa fa-truck"></i> <span> Suppliers</span></a></li>
+<%= render 'layouts/shared/sidebar_links/monitoring' %>
