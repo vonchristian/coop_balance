@@ -1,17 +1,11 @@
-<div class="row">
-  <div class="col-md-12">
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title"> Share Capital Details </h3>
-      </div>
-      <div class="card-body">
+
         <div class="row">
           <div class="col-md-6">
           <div class="row">
             <div class="col-md-1">
             </div>
             <div class="col-md-4">
-              Share Capital
+              Share Capital Product
             </div>
             <div class="col-md-6">
               <b><%= @share_capital.share_capital_product_name.try(:upcase) %></b>
@@ -96,7 +90,7 @@
 
 
                     <td><% if entry.recorder %>
-                      <%=image_tag(entry.recorder.avatar.url(:thumb), class: "img-circle", height: 35, width: 35) %> &nbsp;
+
                       <%= entry.recorder.try(:name) %>
                       <% end %>
                      </td>

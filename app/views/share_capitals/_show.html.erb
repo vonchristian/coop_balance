@@ -6,10 +6,17 @@
             <%=image_tag(@share_capital.subscriber.avatar.url(:medium), class: "img-circle", height: 60, width: 60) %>
             <h4><%= @share_capital.subscriber_name %></h4>
           </center>
+
         <ul class="nav nav-tabs">
-          <li class="<%= 'active' if current_page?(share_capital_path(@share_capital))%>"><%= link_to 'Info', share_capital_path(@share_capital) %></li>
-          <li class="<%= 'active' if current_page?(share_capital_settings_path(@share_capital))%>"><%= link_to 'Settings', share_capital_settings_path(@share_capital) %></li>
-        </ul>
+
+  <li class="nav-item">
+    <a class="nav-link <%= 'active' if current_page?(share_capital_path(@share_capital))%>" href="/share_capitals/<%=@share_capital.id%>">Info</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link <%= 'active' if current_page?(share_capital_settings_path(@share_capital))%>" href="/share_capitals/<%=@share_capital.id%>/settings">Settings</a>
+  </li>
+
+</ul>
       </div>
       <div class="card-body">
         <% if current_page? share_capital_path(@share_capital) %>

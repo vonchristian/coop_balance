@@ -20,9 +20,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-collapse sidebar-light-primary elevation-6">
     <%= render 'layouts/shared/brand' %>
-    <% if current_user.loan_officer? %>
-      <%= render 'layouts/shared/sidebar_for_loans_department' %>
-    <% end %>
+      <%= render 'layouts/shared/sidebar' %>
   </aside>
 
   <div class="content-wrapper">

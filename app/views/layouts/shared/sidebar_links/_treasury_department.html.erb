@@ -1,0 +1,24 @@
+ <li class= "nav-item" <%= 'active' if current_page?(treasury_module_index_path) %> ><a href="/treasury_module" class="nav-link"><i class="nav-icon fa fa-chart-line"></i> <span>Transactions Summary </span></a></li>
+
+
+<li class=<%= 'active' if current_page?(treasury_module_index_path) %> ><a href="/treasury_module/"><i class="fa fa-chart-line"></i> <span> Transactions Summary</span></a></li>
+          <li class=<%= 'active' if current_page?(vouchers_path) %> ><a href="/vouchers"><i class="fa fa-folder"></i> <span> Vouchers</span></a></li>
+          <li class=<%= 'active' if current_page?(members_path) %> ><a href="/members"><i class="fa fa-users"></i> <span> Members</span></a></li>
+          <li class=<%= 'active' if current_page?(treasury_module_disbursements_path) %> ><a href="/treasury_module/disbursements"><i class="fa fa-chevron-left"></i> <span> Disbursements</span></a></li>
+          <li class=<%= 'active' if current_page?(treasury_module_cash_receipts_path) %> ><a href="/treasury_module/cash_receipts"><i class="fa fa-chevron-right"></i> <span> Cash Receipts</span></a></li>
+          <li class=<%= 'active' if current_page?(loans_path) %> ><a href="/loans"><i class="fa fa-credit-card"></i> <span> Loans</span></a></li>
+
+
+          <li class=<%= 'active' if current_page?(savings_accounts_path) %> ><a href="/savings_accounts"><i class="fa fa-suitcase"></i> <span> Savings Accounts</span></a></li>
+
+          <li class=<%= 'active' if current_page?(share_capitals_path) %> ><a href="/share_capitals"><i class="fa fa-suitcase"></i> <span> Share Capitals </span></a></li>
+          <li class=<%= 'active' if current_page?(time_deposits_path) %> ><a href="/time_deposits"><i class="fa fa-suitcase"></i> <span> Time Deposits</span></a></li>
+          <li class=<%= 'active' if current_page?(bank_accounts_path) %> ><a href="/bank_accounts"><i class="fa fa-building"></i> <span> Bank Accounts</span></a></li>
+
+
+          <li class=<%= 'active' if current_page?(employee_entries_path(current_user)) %> ><a href="/employees/<%="#{current_user.id}"%>/entries"><i class="fa fa-credit-card"></i> <span> Entries</span></a></li>
+          <li class=<%= 'active' if current_page?(employee_reports_path(current_user)) %> ><a href="/employees/<%="#{current_user.id}"%>/reports"><i class="fa fa-folder"></i> <span> Reports</span></a></li>
+
+
+          <li class=<%= 'active' if current_page?(employees_path) %> ><a href="/employees"><i class="fa fa-users"></i> <span> Employees</span></a></li>
+          <li class=<%= 'active' if current_page?(suppliers_path) %> ><a href="/suppliers"><i class="fa fa-truck"></i> <span> Suppliers</span></a></li>
