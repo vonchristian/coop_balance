@@ -2,6 +2,7 @@
 
 
           <li class="nav-item" <%= 'active' if current_page?(accounting_module_index_path) %> ><a href="/accounting_module" class="nav-link"><i class="nav-icon fa fa-home"></i> <span>Dashboard</span></a></li>
+          <li class="nav-item"<%= 'active' if current_page?(accounting_module_accounts_path) %> ><a href="/accounting_module/accounts" class="nav-link"><i class="nav-icon fa fa-server"></i> <span> Chart of Accounts </span></a></li>
           <li class="nav-item" <%= 'active' if current_page?(accounting_module_entries_path) %> ><a href="/accounting_module/entries" class="nav-link"><i class="nav-icon fa fa-credit-card"></i> <span>Entries</span></a></li>
           <li class="nav-item"<%= 'active' if current_page?(vouchers_path) %> ><a href="/vouchers" class="nav-link"><i class="nav-icon fa fa-folder"></i> <span>Vouchers</span></a></li>
           <li class="nav-item"<%= 'active' if current_page?(employees_path) %> ><a href="/employees" class="nav-link"><i class="nav-icon fa fa-users"></i> <span>Employees</span></a></li>
@@ -13,7 +14,7 @@
 
 
           <li class="header"> REPORTS </li>
-          <li class="nav-item"<%= 'active' if current_page?(accounting_module_accounts_path) %> ><a href="/accounting_module/accounts" class="nav-link"><i class="nav-icon fa fa-circle"></i> <span> General Ledger </span></a></li>
+
           <li class="nav-item" <%= 'active' if current_page?(accounting_module_reports_financial_conditions_path) %> ><a href="/accounting_module/reports/financial_conditions" class="nav-link"><i class="nav-icon fa fa-circle"></i> <span> Financial Statement </span></a></li>
           <li class="nav-item" <%= 'active' if current_page?(accounting_module_reports_path) %> ><a href="/accounting_module/reports" class="nav-link"><i class="nav-icon fa fa-folder"></i> <span> Reports</span></a></li>
           <%= render 'layouts/shared/sidebar_links/monitoring' %>
