@@ -1,41 +1,21 @@
-<div class="container-fluid">
+
   <div class="row">
     <div class="col-md-12">
       <div class="card">
         <div class="card-body">
-          <ul class="nav nav-tabs">
-            <ul class="nav nav-tabs">
-              <li class="<%='active' if current_page?(savings_accounts_path(from_date: nil, to_date: nil)) %>"><%=link_to 'All Savings', savings_accounts_path %></li>
-              <li class="<%='active' if current_page?(savings_accounts_path(from_date: Date.today - 30.days, to_date: Date.today))%>"><%=link_to '1 - 30 Days Inactive', savings_accounts_path(from_date: Date.today - 30.days, to_date: Date.today) %></li>
-            <li class="<%='active' if current_page?(savings_accounts_path(from_date: Date.today - 60.days, to_date: Date.today - 31.days))%>"><%=link_to '31 - 60 Days Inactive', savings_accounts_path(from_date: Date.today - 60.days, to_date: Date.today - 31.days) %></li>
-              <li class="<%='active' if current_page?(savings_accounts_path(from_date: Date.today - 90.days, to_date: Date.today - 61.days))%>"><%=link_to '61 - 90 Days Inactive', savings_accounts_path(from_date: Date.today - 90.days, to_date: Date.today - 61.days) %></li>
-              <li class="<%='active' if current_page?(savings_accounts_path(from_date: Date.today - 363.days, to_date: Date.today - 91.days))%>"><%=link_to 'Over 1 Year', savings_accounts_path(from_date: Date.today - 999.years, to_date: Date.today - 363.days) %></li>
-              <li class="<%='active' if current_page?(savings_accounts_below_minimum_balances_path)%>"><%=link_to 'Below Min. Balance', savings_accounts_dashboards_path %></li>
-              <li class="<%='active' if current_page?(savings_accounts_dashboards_path)%>"><%=link_to 'Dashboard', savings_accounts_dashboards_path %></li>
-
-
-          </ul>
+          <%= render 'savings_accounts/partials/navbar_links' %>
           <br />
           <div class="row">
-            <div class="col-md-8">
-
+            <div class="col-md-6">
+              <h3 class="card-title"><%= number_to_currency CoopServicesModule::SavingProduct.total_balances %></h3>
+              <small>TOTAL SAVINGS</small>
             </div>
-            <div class="col-md-4">
-
+            <div class="col-md-3">
+              <h3 class="card-title text-<%= CoopServicesModule::SavingProduct.metric_color%>"><i class="fa fa-arrow-<%=CoopServicesModule::SavingProduct.arrow_sign %>"></i> <%= number_to_currency CoopServicesModule::SavingProduct.metric(first_date: Date.today, second_date: Date.today.last_month), unit: "" %> % </h3>
+              <small>SINCE LAST MONTH (<%= Date.today.last_month.strftime("%B %e, %Y") %>)</small>
             </div>
           </div>
-          <div class="row">
-                  <div class="col-md-6">
-                    <h3><%= number_to_currency CoopServicesModule::SavingProduct.total_balances %></h3>
-                    <small>TOTAL SAVINGS</small>
-                  </div>
-                  <div class="col-md-3">
-                    <small>METRICS</small>
-                    <h3 class="text-<%= CoopServicesModule::SavingProduct.metric_color%>"><i class="fa fa-arrow-<%=CoopServicesModule::SavingProduct.metric_chevron%>"></i> <%= number_to_currency CoopServicesModule::SavingProduct.metric(first_date: Date.today, second_date: Date.today.last_month), unit: "" %> % </h3>
-                    <small>SINCE LAST MONTH (<%= Date.today.last_month.strftime("%B %e, %Y") %>)</small>
-                  </div>
-                </div>
-                <hr>
+          <hr>
 
           <h4 class="card-title">Savings Accounts Inactivity</h4>
           <div class="row">
@@ -57,14 +37,13 @@
               <%= pie_chart (Hash[*savings_inactivity_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"}, download: true %>
             </div>
             <div class="col-md-4">
-              <h5><i class="fa fa-chart-pie"></i> INACTIVITY STATISTICS</h5>
+              <h3 class="card-title"><i class="fa fa-chart-pie"></i> Stats</h3>
               <div class="row">
                 <div class="col-md-8">
                   1-30 Days Inactive
                 </div>
                 <div class="col-md-3">
                   <%= @savings_accounts.updated_at(from_date: Date.today - 30.days, to_date: Date.today.yesterday).size %>
-
                 </div>
               </div>
               <br />
@@ -74,7 +53,7 @@
                   31-60 Days Inactive
                 </div>
                 <div class="col-md-3">
-                  <%= @savings_accounts.updated_at(from_date: Date.today - 60.days, to_date: Date.today - 31.days).count %>
+                  <%= @savings_accounts.updated_at(from_date: Date.today - 60.days, to_date: Date.today - 31.days).size %>
                 </div>
               </div>
               <br />
@@ -115,14 +94,15 @@
               </div>
             </div>
           </div>
-        </div>
-          <div class="box-body">
-            <h4>Savings Accounts Transactions / Month</h4>
-            <%= line_chart @savings_accounts.group_by_quarter(:updated_at).count, download: true, curve: false %>
+          <hr>
+
+            <h4 class="card-title">Transactions / Month</h4>
+            <br>
+            <%= line_chart @savings_accounts.group_by_quarter(:last_transaction_date).count, download: true, curve: false %>
             <hr>
             <h4>Balances vs Month </h4>
 <% months = [] %>
-      <% (DateTime.now.beginning_of_year..DateTime.now).each do |month| %>
+      <% (DateTime.now.beginning_of_year..DateTime.now.end_of_year).each do |month| %>
        <% months << month.beginning_of_month %>
       <% end %>
       <% balances_data = [] %>

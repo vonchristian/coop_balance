@@ -25,6 +25,7 @@ module MembershipsModule
     delegate :name, to: :barangay, prefix: true, allow_nil: true
 
     delegate :avatar, to: :depositor, allow_nil: true
+    delegate :dormancy_number_of_days, to: :saving_product
 
     scope :has_minimum_balance, -> { SavingsQuery.new.has_minimum_balance  }
 
@@ -52,28 +53,22 @@ module MembershipsModule
     def closed?
       saving_product_closing_account.amounts.where(commercial_document: self).present?
     end
+    def dormant?
+      dormancy_number_of_days < number_of_days_inactive
+    end
 
-
-
-    def interest_posted?(date)
+    def interest_posted?(args={})
       saving_product.
       interest_expense_account.
       credit_amounts.
       entries_for(commercial_document: self).
-      entered_on(from_date: date.beginning_of_quarter, to_date: date.end_of_quarter).present?
-    end
-
-
-
-    def self.set_inactive_accounts
-      #to do find accounts not within saving product interest posting date range
-      # did not save for a set time
+      entered_on(from_date: args[:from_date].beginning_of_quarter, to_date: args[:to_date].end_of_quarter).present?
     end
 
     def self.updated_at(options={})
       if options[:from_date] && options[:to_date]
         date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
-        where('updated_at' => (date_range.start_date..date_range.end_date))
+        where('last_transaction_date' => (date_range.start_date..date_range.end_date))
       else
         all
       end
@@ -95,8 +90,8 @@ module MembershipsModule
     end
 
     def balance(options={})
-      saving_product_account.balance(commercial_document: self, from_date: nil, to_date: nil) +
-      saving_product_interest_expense_account.debits_balance(commercial_document: self, from_date: nil, to_date: nil)
+      saving_product_account.balance(commercial_document: self, from_date: options[:from_date], to_date: options[:to_date]) +
+      saving_product_interest_expense_account.debits_balance(commercial_document: self, from_date: options[:from_date], to_date: options[:to_date])
     end
 
     def deposits

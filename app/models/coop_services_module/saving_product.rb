@@ -31,16 +31,6 @@
              :debits_balance,
              :credits_balance, to: :account
 
-    def self.total_balance(args={})
-      accounts.balance(args)
-    end
-    def self.total_debits_balance(args={})
-      accounts.debits_balance(args)
-    end
-     def self.total_credits_balance(args={})
-      accounts.credits_balance(args)
-    end
-
     def self.accounts_opened(options={})
       SavingProductQuery.new.accounts_opened(options)
     end

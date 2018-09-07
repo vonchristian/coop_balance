@@ -6,7 +6,7 @@ class Member < ApplicationRecord
   enum sex: [:male, :female, :other]
   enum civil_status: [:single, :married, :widower, :divorced]
   has_one_attached :signature_specimen
-
+  has_one_attached :avatar
   has_one :member_account
   belongs_to :office,                 class_name: "CoopConfigurationsModule::Office"
   has_many :tins,                     as: :tinable
@@ -49,16 +49,7 @@ class Member < ApplicationRecord
   delegate :name, to: :office, prefix: true, allow_nil: true
   delegate :number, to: :current_contact, prefix: true, allow_nil: true
   delegate :number, to: :current_tin, prefix: true, allow_nil: true
-  has_attached_file :avatar,
-  styles: { large: "120x120>",
-           medium: "70x70>",
-           thumb: "40x40>",
-           small: "30x30>",
-           x_small: "20x20>"},
-  default_url: ":style/profile_default.jpg",
-  :path => ":rails_root/public/system/:attachment/:id/:style/:filename",
-  :url => "/system/:attachment/:id/:style/:filename"
-  validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
+
 
   before_save :update_birth_date_fields
   def self.updated_at(options={})

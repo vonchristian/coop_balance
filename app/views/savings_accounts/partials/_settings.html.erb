@@ -1,5 +1,7 @@
- <div class="tab-pane <%= 'active' if current_page? savings_account_settings_path(@savings_account) %>">
-   <%=link_to "New Adjusting Entry", new_accounting_module_adjusting_entry_path(commercial_document_type: @savings_account.class.to_s, commercial_document_id: @savings_account.id) %>
+
+<% if policy([:accounting_module, :entry]).new? %>
+   <%=link_to "New Adjusting Entry", new_accounting_module_adjusting_entry_path(commercial_document_type: @savings_account.class.to_s, commercial_document_id: @savings_account.id), class: "btn btn-outline-danger" %>
+<% end %>
    <hr>
    <h4>Merge Account</h4>
    <span class="text-muted"> Merge savings accounts that are duplicated. </span><br>
@@ -9,7 +11,7 @@
   <h4>Set Barangay</h4>
   <%= @savings_account.barangay_name %>
     <%= link_to 'Set Barangay', edit_savings_account_barangay_setting_path(id: @savings_account), class: "btn btn-danger" %>
-</div>
+
 <% if policy([:savings_accounts, :account_closing]).new? && !@savings_account.closed? %>
   <%= link_to 'Close Account', new_savings_account_account_closing_path(@savings_account), class: "btn btn-danger btn-xs" %>
 <% end %>

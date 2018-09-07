@@ -2,21 +2,22 @@
 <div class="row">
   <div class="col-md-12">
     <div class="card">
-      <div class="card-header">
-        <h3 class="card-title"> Savings Account Details </h3>
+      <div class="card-header bg-primary">
       </div>
       <div class="card-body">
         <ul class="nav nav-tabs">
-          <li class="<%= 'active' if current_page?(savings_account_path(@savings_account))%>"><%= link_to 'Info', savings_account_path(@savings_account) %></li>
-          <li class="<%= 'active' if current_page?(savings_account_settings_path(@savings_account))%>"><%= link_to 'Settings', savings_account_settings_path(@savings_account) %></li>
+          <li class="nav-item"><%= link_to 'Info', savings_account_path(@savings_account), class: "nav-link #{'active' if current_page?(savings_account_path(@savings_account))}" %></li>
+          <li class="nav-item"><%= link_to 'Settings', savings_account_settings_path(@savings_account), class: "nav-link #{'active' if current_page?(savings_account_settings_path(@savings_account))}" %></li>
         </ul>
-        <div class="tab-content">
-          <% if current_page? savings_account_path(@savings_account) %>
-            <%= render 'savings_accounts/partials/info' %>
-          <% end %>
-          <% if current_page? savings_account_settings_path(@savings_account) %>
-            <%= render 'savings_accounts/partials/settings' %>
-          <% end %>
+        <br>
+        <% if current_page? savings_account_path(@savings_account) %>
+          <%= render 'savings_accounts/partials/info' %>
+        <% end %>
+        <% if current_page? savings_account_settings_path(@savings_account) %>
+          <%= render 'savings_accounts/partials/settings' %>
+        <% end %>
       </div>
     </div>
   </div>
+</div>
+

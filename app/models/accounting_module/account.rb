@@ -108,9 +108,6 @@ module AccountingModule
       end
     end
 
-    def self.net_surplus(args={})
-      AccountingModule::Revenue.balance(args) - AccountingModule::Expense.balance(args)
-    end
 
     def balance(options={})
       if self.class == AccountingModule::Account

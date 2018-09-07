@@ -2,7 +2,9 @@
   <% cache(share_capital) do %>
     <div class="row">
       <div class="col-md-2">
-        <center> <%= image_tag(share_capital.subscriber.avatar.url(:large), style: 'width:90px;height:90px;', class: 'media-object img-circle') %></center>
+        <% if share_capital.subscriber.avatar.attachment.present? %>
+          <center> <%= image_tag(share_capital.subscriber.avatar, style: 'width:90px;height:90px;', class: 'media-object img-circle') %></center>
+        <% end %>
       </div>
       <div class="col-md-4">
         <p><b><%= share_capital.subscriber_name.try(:upcase) %></b></p>
@@ -12,12 +14,13 @@
         <% end %>
         <br>
       </div>
-      <div class="col-md-1">
-        <span class="label bg-red">
-          <%= share_capital.number_of_days_inactive %> days inactive </span>
+      <div class="col-md-2">
+        <span class="badge bg-danger">
+          <%= share_capital.number_of_days_inactive %> day inactive </span>
       </div>
       <div class="col-md-3">
-        <h4><center><%=number_to_currency share_capital.paid_up_balance %></center></h4>
+        <h4 class="card-title"><%=number_to_currency share_capital.paid_up_balance %></h4>
+        <small>PAID UP BALANCE</small>
       </div>
     </div>
     <hr>

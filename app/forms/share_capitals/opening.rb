@@ -60,8 +60,9 @@ module ShareCapitals
           commercial_document: share_capital]
         )
     end
+
     def find_employee
-      User.find_by_id(employee_id)
+      User.find(employee_id)
     end
 
     def debit_account
@@ -69,13 +70,7 @@ module ShareCapitals
     end
 
     def find_subscriber
-      employee_subscriber = User.find_by_id(subscriber_id)
-      member_subscriber = Member.find_by_id(subscriber_id)
-      if employee_subscriber.present?
-        employee_subscriber
-      elsif member_subscriber.present?
-        member_subscriber
-      end
+      Subscriber.find(subscriber_id)
     end
 
     def credit_account

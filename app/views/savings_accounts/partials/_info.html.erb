@@ -56,14 +56,14 @@
 
           <div class="col-md-3 border-right">
             <small class="text-muted">DEPOSITS </small>
-            <h4><%= number_to_currency @savings_account.deposits %></h4>
+            <h4 class="card-title"><%= number_to_currency @savings_account.deposits %></h4><br>
             <% if policy([:savings_accounts, :deposit]).new? && !@savings_account.closed? %>
               <%= link_to 'New Deposit', new_savings_account_deposit_path(@savings_account), class: "btn btn-success" %>
             <% end %>
           </div>
           <div class="col-md-3 border-right">
             <small class="text-muted">WITHDRAWALS </small>
-            <h4><%= number_to_currency @savings_account.withdrawals %></h4>
+            <h4 class="card-title"><%= number_to_currency @savings_account.withdrawals %></h4><br>
             <% if policy([:savings_accounts, :withdrawal]).new? && !@savings_account.closed? %>
               <%= link_to 'New Withdrawal', new_savings_account_withdrawal_path(@savings_account), class: "btn btn-warning" %>
             <% end %>
@@ -71,21 +71,32 @@
 
           <div class="col-md-3 border-right">
             <small class="condensed-text">BALANCE </small>
-            <h3><i class="fa fa-circle text-green"></i> <%= number_to_currency @savings_account.balance %></h3>
+            <h3 class="card-title"><%= number_to_currency @savings_account.balance %></h3>
           </div>
         </div>
          <hr>
+         <br>
+        <% month_dates = [] %>
+        <% (Date.today.beginning_of_year..Date.today.end_of_month).each do |date| %>
+          <% month_dates << date.end_of_month %>
+        <% end %>
+        <% monthly_balances_data = [] %>
+        <% month_dates.uniq.each do |month| %>
+          <% monthly_balances_data << { month.strftime("%B") => @savings_account.balance(to_date: month.end_of_month) } %>
+        <% end %>
+        <%= line_chart (Hash[*monthly_balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"}, thousands: ",", curve: false %>
+        <br>
          <div class="row">
             <div class="col-md-12">
               <p class="text-muted">TRANSACTIONS HISTORY </p>
               <div class="table table-responsive">
-                <table class="table table-hover table-striped">
+                <table class="table table-hover">
                   <thead>
                     <tr>
                       <th> Date </th>
                       <th>Reference Number</th>
                       <th> Amount </th>
-                      <th> Type </th>
+                      <th> Description </th>
                       <th> Employee </th>
                     </tr>
                   </thead>
@@ -102,7 +113,6 @@
                               <%= entry.payment_type.to_s.titleize %>
                           </td>
                           <td><% if entry.recorder %>
-                            <%=image_tag(entry.recorder.avatar.url(:thumb), class: "img-circle", height: 35, width: 35) %> &nbsp;
                             <%= entry.recorder_first_and_last_name %>
                             <% end %>
                            </td>

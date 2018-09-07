@@ -1,0 +1,63 @@
+
+<div class="card">
+  <div class="card-body">
+     <%= render 'savings_accounts/partials/navbar_links' %>
+      <br/>
+      <div class="row">
+        <div class="col-md-8">
+          <%=form_tag savings_accounts_path, method: :get, class: "search-form" do %>
+              <div class="input-group">
+                <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Savings Account ", id: 'account-search-form' %>
+                <span class="input-group-btn">
+                  <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                    <i class="fa fa-search"></i>
+                  <% end %>
+                </span>
+              </div>
+            <% end %>
+          </div>
+          <div class="col-md-4">
+            <%= link_to 'New Account', new_treasury_module_savings_account_path, class: "btn btn-primary pull-right" %>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div class="card-body">
+        <% savings_accounts.each do |savings_account| %>
+          <%=link_to savings_account_path(savings_account) do %>
+            <% cache(savings_account) do %>
+              <div class="row">
+                <div class="col-md-1">
+                </div>
+                <div class="col-md-5">
+                  <p class=""><b><%= savings_account.depositor.name.try(:upcase) %></b></p>
+                  <small class=""> <%= savings_account.saving_product_name %></small><br><br>
+
+
+                    <% if policy([:savings_accounts, :deposit]).new? %>
+                      <%= link_to 'Deposit', new_savings_account_deposit_path(savings_account), class: "btn btn-success" %>
+                    <% end %>
+                       &nbsp; &nbsp;
+                    <% if policy([:savings_accounts, :withdrawal]).new? %>
+                      <%= link_to 'Withdraw', new_savings_account_withdrawal_path(savings_account), class: "btn btn-warning" %>
+                    <% end %>
+
+                  <br>
+                </div>
+                <div class="col-md-2">
+                   <span class="badge bg-danger"><%= savings_account.number_of_days_inactive %> days inactive </span>
+                </div>
+                <div class="col-md-3">
+                    <h4 class="text-muted"><%=number_to_currency savings_account.balance %></h4>
+                    <small>BALANCE</small>
+                </div>
+              </div>
+              <hr>
+            <% end %>
+          <% end %>
+        <% end %>
+        <center><%= will_paginate savings_accounts %> </center>
+      </div>
+    </div>
+  </div>
+</div>

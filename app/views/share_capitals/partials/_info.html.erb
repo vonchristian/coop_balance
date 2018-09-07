@@ -53,16 +53,18 @@
         </div>
         <div class="col-md-4">
           <small>PAID UP BALANCE</small>
-          <h3><%= number_to_currency @share_capital.paid_up_balance %></h3>
+          <h3 class="card-title"><%= number_to_currency @share_capital.paid_up_balance %></h3>
+          <br>
           <% if !@share_capital.closed? %>
               <%= link_to 'New Capital Build Up', new_share_capital_capital_build_up_path(@share_capital), class: "btn btn-success" %>
             <% end %>
         </div>
         <div class="col-md-2">
           <small>INACTIVITY</small>
-          <h4 class="text-danger"><%= @share_capital.number_of_days_inactive %> Days</h4>
+          <h4 class="card-title"><%= @share_capital.number_of_days_inactive %> Days</h4>
+          <br>
           <small>Last Transaction Date</small><br>
-          <i class="fa fa-calendar"></i> &nbsp; <%= @share_capital.last_transaction_date.strftime("%B %e, %Y") %>
+          <i class="fa fa-calendar"></i> &nbsp; <%= @share_capital.last_transaction_date.strftime("%b %e, %Y") %>
         </div>
 
       </div>
