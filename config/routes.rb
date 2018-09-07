@@ -58,6 +58,8 @@ Rails.application.routes.draw do
 
   resources :loans_module, only: [:index]
   namespace :loans_module do
+    resources :archived_loans, only: [:index]
+
     resources :disbursement_vouchers, only: [:create]
     namespace :monitoring do
       resources :disbursements, only: [:index]

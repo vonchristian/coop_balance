@@ -43,7 +43,7 @@
                     <% if !voucher.disbursed? %>
                       <%= link_to 'Disburse', new_voucher_disbursement_path(voucher), class: "btn btn-primary btn-sm" %>
                     <% else %>
-                      <span class="label bg-green"> Disbursed </span>
+                      <span class="badge bg-success"><i class="fa fa-check-circle"></i> Disbursed </span>
                     <% end %>
 
                       </td>

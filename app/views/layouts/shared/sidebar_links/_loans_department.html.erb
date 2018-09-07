@@ -6,3 +6,4 @@
 <li class= "nav-item"<%= 'active' if current_page?(members_path) %> ><a href="/members" class="nav-link"><i class="nav-icon fa fa-users"></i> <span>Members</span></a></li>
 <li class='nav-item' <%= 'active' if current_page?(loans_module_loans_path) %> ><a href="/loans" class="nav-link"><i class="nav-icon fa fa-credit-card"></i> <span> Loans</span></a></li>
 <%= render 'layouts/shared/sidebar_links/monitoring' %>
+<li class='nav-item' <%= 'active' if current_page?(loans_module_archived_loans_path) %> ><a href="/loans_module/archived_loans" class="nav-link"><i class="nav-icon fa fa-folder"></i> <span> Archived Loans</span></a></li>

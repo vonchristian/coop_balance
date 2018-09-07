@@ -15,34 +15,40 @@
       </div>
       <div class="card-body">
     		<div class="row">
-    		  <div class="col-md-5 col-md-offset-1">
-    				<h4 class="card-title">AMOUNT APPLIED </h4>
+          <div class="col-md-1">
+          </div>
+    		  <div class="col-md-6">
+    				<h4 class="card-title">Amount Applied </h4>
           </div>
           <div class="col-md-3">
-            <h4 class="card-title"> <span class="pull-right"> <%= number_to_currency @loan.loan_amount %></span></h4>
+            <h4 class="card-title"> <span class="float-right"> <%= number_to_currency @loan.loan_amount %></span></h4>
           </div>
         </div>
         <br>
         <div class="row">
+          <div class="col-md-1">
+          </div>
           <div class="col-md-6">
-  				  <p class="text-danger condensed-text">LESS CHARGES</p>
+  				  <p class="text-danger">LESS CHARGES</p>
           </div>
           <div class="col-md-5">
-            <%= link_to 'Add Charge', new_loans_module_loan_additional_charge_path(@loan), class: "btn btn-danger btn-sm pull-right" %><br>
+            <%= link_to 'Add Charge', new_loans_module_loan_additional_charge_path(@loan), class: "btn btn-outline-primary btn-sm float-right" %><br>
           </div>
         </div>
         <br>
 				<% @loan.loan_charges.each do |loan_charge| %>
 				  <div class="row">
-				    <div class="col-md-5 col-md-offset-1">
+            <div class="col-md-1">
+            </div>
+				    <div class="col-md-5">
 					    <span class=""><%= loan_charge.charge.try(:name) %></span>
 					  </div>
 					  <div class="col-md-3">
 					    <% if loan_charge.charge_adjustment.present? %>
-					    <strike class="text-danger pull-right"><%= number_to_currency loan_charge.regular_charge_amount, class: "pull-right" %></strike><br>
-					    <span class="pull-right"><%= number_to_currency loan_charge.charge_amount_with_adjustment %></span>
+					    <strike class="text-danger float-right"><%= number_to_currency loan_charge.regular_charge_amount, class: "float-right" %></strike><br>
+					    <span class="float-right"><%= number_to_currency loan_charge.charge_amount_with_adjustment %></span>
 					    <% else %>
-					      <span class="pull-right"><%= number_to_currency loan_charge.regular_charge_amount %></span>
+					      <span class="float-right"><%= number_to_currency loan_charge.regular_charge_amount %></span>
 					    <% end %>
 					  </div>
 					  <div class="col-md-2">
@@ -67,31 +73,28 @@
 
         <hr />
         <div class="row">
-          <div class="col-md-5 col-md-offset-1">
-				    <h4 class="condensed-text">NET PROCEED</h4>
+          <div class="col-md-1">
+          </div>
+          <div class="col-md-6">
+				    <h4 class="card-title">Net Proceed</h4>
           </div>
           <div class="col-md-3">
-            <h4 class="pull-right"> <%= number_to_currency @loan.net_proceed %></h4>
+            <h4 class="card-title float-right"> <%= number_to_currency @loan.net_proceed %></h4>
           </div>
         </div>
         <hr>
 
 
-        <h4> Disbursement Voucher Details </h4>
-
-
-            <%= simple_form_for [@loan, @voucher], url: :loans_module_disbursement_vouchers do |f| %>
+        <h3 class="card-title"> Disbursement Voucher Details </h3>
+          <%= simple_form_for [@loan, @voucher], url: :loans_module_disbursement_vouchers do |f| %>
             <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
             <%= f.input :description, input_html: { value: "Loan disbursement voucher of #{@loan.borrower_name}" }, as: :text %>
-        <%= f.input :number, input_html: { value: Voucher.generate_number_for(@voucher) } %>
-        <%= f.input :preparer_id, input_html: { value: current_user.id }, as: :hidden %>
+            <%= f.input :number, input_html: { value: Voucher.generate_number_for(@voucher) } %>
+            <%= f.input :preparer_id, input_html: { value: current_user.id }, as: :hidden %>
             <%= f.input :loan_id, input_html: { value: @loan.id }, as: :hidden %>
             <%= f.input :preparer_id, input_html: { value: current_user.id }, as: :hidden %>
-            <div class="card-footer">
-              <%= f.submit "Create Disbursement Voucher", class: "btn btn-primary btn-lg pull-right" %>
-              <%= link_to 'Cancel Application', loans_module_loan_application_path(@loan), method: :delete, class: "btn pull-left" %>
-            </div>
-
+              <%= f.submit "Create Voucher", class: "btn btn-primary btn-lg float-right" %>
+              <%= link_to 'Cancel ', loans_module_loan_application_path(@loan), method: :delete, class: "btn float-left" %>
 				    <% end %>
 
 
@@ -207,4 +210,4 @@
       </div>
     </div>
   </div>
-
+</div>

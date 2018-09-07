@@ -1,133 +1,118 @@
  <div class="row">
- <div class="col-md-9 col-md-offset-2">
+  <div class="col-md-2">
+  </div>
+ <div class="col-md-8">
     <div class="card">
       <div class="card-header">
-
-           <h4><center><%= image_tag(@voucher.payee.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center></h4>
-
-            <h3><center><%= @voucher.payee.try(:name) %></center></h3>
+        <center>
+          <%= image_tag(@voucher.payee.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %>
+        </center>
+        <h3 class="card-title"><center><%= @voucher.payee.try(:name) %></center></h3>
       </div>
       <div class="card-body">
         <div class="row">
-          <div class="col-md-5 col-md-offset-1">
+          <div class="col-md-3">
             Payee
           </div>
-          <div class="col-md-6">
+          <div class="col-md-9">
             <%= @voucher.payee_name %>
           </div>
         </div>
         <br>
         <div class="row">
-          <div class="col-md-5 col-md-offset-1">
+          <div class="col-md-3">
             Description
           </div>
-          <div class="col-md-6">
+          <div class="col-md-9">
             <%= @voucher.description %>
           </div>
         </div>
         <br>
         <div class="row">
-          <div class="col-md-5 col-md-offset-1">
+          <div class="col-md-3">
             Date
           </div>
-          <div class="col-md-6">
+          <div class="col-md-9">
             <%= @voucher.date.strftime("%B %e, %Y") %>
           </div>
         </div>
-        <hr>
-        <div class="row">
-          <div class="col-md-10 col-md-offset-1">
-            <div class="row">
-              <div class="col-md-4">
-                Description
-              </div>
-              <div class="col-md-3">
-                Account
-              </div>
-              <div class="col-md-2">
-                Debit
-              </div>
-              <div class="col-md-2">
-                Credit
-              </div>
-            </div>
-            <br>
-
-
-            <div class="table table-responsive">
-              <table class="table table-hover">
-                <thead>
+        <br>
+        <div class="table table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <% if !@voucher.disbursed? %>
+                  <th>Description</th>
+                <% end %>
+                <th>Account</th>
+                <th>Debit</th>
+                <th>Credit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if @voucher.disbursed? %>
+                <% @voucher.entry.amounts.each do |amount| %>
                   <tr>
-                    <% if !@voucher.disbursed? %>
-                      <th>Description</th>
-                    <% end %>
-                    <th>Account</th>
-                    <th>Debit</th>
-                    <th>Credit</th>
+                    <td><%= amount.account_name %></td>
+                    <td>
+                      <% if amount.kind_of?(AccountingModule::DebitAmount) %>
+                        <%= number_to_currency amount.amount %>
+                      <% end %>
+                    </td>
+                    <td>
+                      <% if amount.kind_of?(AccountingModule::CreditAmount) %>
+                        <span class="pull-right"><%= number_to_currency amount.amount %></span>
+                      <% end %>
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  <% if @voucher.disbursed? %>
-                    <% @voucher.entry.amounts.each do |amount| %>
-                      <tr>
-                        <td><%= amount.account_name %></td>
-                        <td>
-                          <% if amount.kind_of?(AccountingModule::DebitAmount) %>
-                          <%= number_to_currency amount.amount %>
-                          <% end %>
-                          </td>
-                        <td>
-                          <% if amount.kind_of?(AccountingModule::CreditAmount) %>
-                            <span class="pull-right"><%= number_to_currency amount.amount %></span>
-                          <% end %>
-                        </td>
-                      </tr>
-                    <% end %>
-                  <% else %>
-                    <% @voucher.voucher_amounts.each do |voucher_amount| %>
-                      <tr>
-                        <td><%= voucher_amount.description %></td>
-                        <td><%= voucher_amount.account_name %></td>
-                        <td>
-                          <% if voucher_amount.debit? %>
-                            <%= number_to_currency voucher_amount.amount %>
-                          <% end %>
-                        </td>
-                         <td>
-                          <% if voucher_amount.credit? %>
-                            <%= number_to_currency voucher_amount.amount %>
-                          <% end %>
-                        </td>
-                      </tr>
-                    <% end %>
-                  <% end %>
-                  <% if @voucher.voucher_amounts.present? %>
-                     <tr>
-                      <td></td>
-                      <td>TOTAL</td>
-                      <td><b><%= number_to_currency @voucher.voucher_amounts.debit.sum(:amount) %></b></td>
-                      <td><b><%= number_to_currency @voucher.voucher_amounts.credit.sum(:amount) %></b></td>
-                    </tr>
-                    <tr>
-
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                  <% end %>
-                </tbody>
-              </table>
-            </div>
-          </div>
+                <% end %>
+              <% else %>
+                <% @voucher.voucher_amounts.each do |voucher_amount| %>
+                  <tr>
+                    <td><%= voucher_amount.description %></td>
+                    <td><%= voucher_amount.account_name %></td>
+                    <td>
+                      <% if voucher_amount.debit? %>
+                        <span class="float-right"><%= number_to_currency voucher_amount.amount %></span>
+                      <% end %>
+                    </td>
+                     <td>
+                      <% if voucher_amount.credit? %>
+                        <%= number_to_currency voucher_amount.amount %>
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              <% end %>
+              <% if @voucher.voucher_amounts.present? %>
+                <tr>
+                  <td></td>
+                  <td>TOTAL</td>
+                  <td><b><%= number_to_currency @voucher.voucher_amounts.debit.sum(:amount) %></b></td>
+                  <td><b><%= number_to_currency @voucher.voucher_amounts.credit.sum(:amount) %></b></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
         </div>
-          <%=link_to 'Print(PDF)', voucher_path(@voucher, format: "pdf"), class: "btn btn-default btn-sm btn-flat" %>
-          <% if !@voucher.disbursed? %>
-            <%= link_to 'Disburse', new_voucher_disbursement_path(@voucher), class: "btn btn-primary pull-right" %>
-          <% else %>
-            <span class="label bg-green pull-right"> Disbursed </span>
-          <% end %>
+        <br>
+        <%=link_to 'View (PDF)', voucher_path(@voucher, format: "pdf"), class: "btn float-left" %>
+        <% if !@voucher.disbursed? %>
+          <%= link_to 'Disburse Voucher', new_voucher_disbursement_path(@voucher), class: "btn btn-primary float-right" %>
+        <% else %>
+          <span class="badge bg-success float-right"> Disbursed </span>
+        <% end %>
       </div>
     </div>
+  </div>
+</div>
+
 
 
 

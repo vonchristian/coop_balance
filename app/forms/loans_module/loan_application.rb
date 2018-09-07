@@ -1,7 +1,6 @@
 module LoansModule
-  class LoanApplicationForm
+  class LoanApplication
     include ActiveModel::Model
-    include ActiveModel::Callbacks
     attr_accessor :borrower_id,
                   :borrower_type,
                   :term,
@@ -16,7 +15,7 @@ module LoansModule
     validates :loan_product_id, :mode_of_payment, presence: true
     def save
       ActiveRecord::Base.transaction do
-        save_loan
+        create_loan
       end
     end
 
@@ -28,8 +27,7 @@ module LoansModule
     def find_borrower
       Borrower.find(borrower_id)
     end
-
-    def save_loan
+    def create_loan
       loan = LoansModule::Loan.create!(
         borrower_id: borrower_id,
         borrower_type: borrower_type,
@@ -43,9 +41,7 @@ module LoansModule
           term: term])
       create_amortization_schedule(loan)
       create_loan_product_charges(loan)
-
     end
-
     def create_loan_product_charges(loan)
       loan_charges = LoansModule::LoanCharge.where(loan: loan)
       if loan_charges.present?
@@ -53,12 +49,10 @@ module LoansModule
       end
       loan.loan_product.create_charges_for(loan)
     end
-
     def create_documentary_stamp_tax(loan)
-       tax = Charge.amount_type.create!(name: 'Documentary Stamp Tax', amount: DocumentaryStampTax.set(loan), account: AccountingModule::Account.find_by(name: "Documentary Stamp Taxes"))
+      tax = Charge.amount_type.create!(name: 'Documentary Stamp Tax', amount: DocumentaryStampTax.set(loan), account: AccountingModule::Account.find_by(name: "Documentary Stamp Taxes"))
       loan.loan_charges.create!(charge: tax, commercial_document: loan)
     end
-
     def create_amortization_schedule(loan)
       if loan.amortization_schedules.present?
         loan.amortization_schedules.destroy_all

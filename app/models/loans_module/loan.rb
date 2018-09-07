@@ -106,7 +106,7 @@ module LoansModule
 
 
     def self.not_archived
-      disbursed.where(archived: false)
+      where(archived: false)
     end
 
     def self.archived
@@ -300,9 +300,11 @@ module LoansModule
 
     def status_color
       if is_past_due?
-        'red'
+        'danger'
       elsif paid?
-        'green'
+        'success'
+      else
+        'gray'
       end
     end
 
