@@ -58,7 +58,9 @@
           </div>
         </div>
         <hr>
-        <%= line_chart current_user.entries.entered_on(from_date: Date.today.beginning_of_month, to_date: Date.today.end_of_month).group_by_day(:entry_date).count, download: true %>
+
+        <%= line_chart current_user.entries.group_by_month(:entry_date).count %>
+
         <%= form_tag({:action => "index", format: 'pdf', controller: "employees/reports", employee_id: current_user.id, date: params[:date]}, {:method => :get})  do %>
               <div class="row">
                 <div class="col-md-3">
@@ -97,7 +99,7 @@
           </div>
           <div class="col-md-4">
             <span class="float-right">
-              <%= number_to_currency CoopServicesModule::SavingProduct.total_balance(to_date: Date.today.yesterday) %>
+              <%= number_to_currency CoopServicesModule::SavingProduct.total_balances(to_date: Date.today.yesterday) %>
             </span>
         </div>
       </div>
@@ -123,7 +125,7 @@
           <p><b>Ending Balance </b> </p>
         </div>
         <div class="col-md-4">
-          <span class="float-right"><b><%= number_to_currency CoopServicesModule::SavingProduct.total_balance(to_date: Date.today.end_of_day) %></b></span>
+          <span class="float-right"><b><%= number_to_currency CoopServicesModule::SavingProduct.total_balances %></b></span>
         </div>
       </div>
     </div>

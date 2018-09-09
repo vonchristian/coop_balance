@@ -14,7 +14,9 @@ class ApplicationController < ActionController::Base
   end
 
   def current_cooperative
-    current_user.cooperative
+    if current_user
+      current_user.cooperative
+    end
   end
 
 

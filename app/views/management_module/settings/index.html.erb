@@ -2,57 +2,127 @@
   <div class="col-md-12">
     <div class="card">
       <div class="card-header">
-        <h3 class="card-title">Settings </h3>
+        <h3 class="card-title"> Settings </h3>
       </div>
-      <div class="card-body">
+    </div>
+  </div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
         <div class="row">
-          <div class="col-md-4">
-            <p class="text-purple"> SHARE CAPITAL PRODUCTS </p>
+          <div class="col-md-9">
+            <h3 class="card-title"> Share Capital Products </h3>
           </div>
-          <div class="col-md-4">
-          </div>
-          <div class="col-md-4">
+          <div class="col-md-3">
             <%= link_to  new_management_module_share_capital_product_path do %>
-              <span class="btn btn-default pull-right"><i class="fa fa-plus"></i> Add </span>
+              <span class="btn btn-outline-danger btn-sm float-right"><i class="fa fa-plus-circle"></i> New </span>
             <% end %>
           </div>
         </div>
-<% @share_capital_products.each do |share_capital_product| %>
-  <div class="row">
-    <div class="col-md-5">
-      &nbsp; &nbsp; <%= share_capital_product.name %>
-    </div>
-    <div class="col-md-3">
-      <%= share_capital_product.cost_per_share %>
-    </div>
-    <div class="col-md-3">
-      <%= link_to 'New Shares', new_management_module_share_capital_product_share_path(share_capital_product), class: "btn btn-warning" %>
+      </div>
+      <div class="card-body">
+        <% @share_capital_products.each do |share_capital_product| %>
+          <div class="row">
+            <div class="col-md-5">
+              &nbsp; &nbsp; <%= share_capital_product.name %>
+            </div>
+            <div class="col-md-3">
+              <%= share_capital_product.cost_per_share %>
+            </div>
+            <div class="col-md-3">
+              <%= link_to 'New Shares', new_management_module_share_capital_product_share_path(share_capital_product), class: "btn btn-warning" %>
+            </div>
+          </div>
+          <br>
+        <% end %>
+      </div>
     </div>
   </div>
-  <br>
-<% end %>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-md-9">
+            <h3 class="card-title"> Time Deposit Products </h3>
+          </div>
+          <div class="col-md-3">
+            <%= link_to new_management_module_settings_time_deposit_product_path do %>
+              <span class="btn btn-outline-danger btn-sm float-right" title="New Time Deposit Product" data-toggle="tooltip">
+                <i class="fa fa-plus-circle"></i> New
+              </span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <% @time_deposit_products.each do |time_deposit_product| %>
+          <%= link_to time_deposit_product.name, management_module_settings_time_deposit_product_path(time_deposit_product) %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-md-9">
+            <h3 class="card-title"> Programs / Fee Schedules </h3>
+          </div>
+          <div class="col-md-3">
+            <%= link_to new_management_module_program_path do %>
+              <span class="btn btn-outline-danger btn-sm float-right" title="New Program/Fee" data-toggle="tooltip">
+                <i class="fa fa-plus-circle"></i> New
+              </span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"> Cooperative Details </h3>
+      </div>
+      <div class="card-body">
+        <%= link_to 'Update', edit_management_module_settings_cooperative_path(@cooperative), class: "btn btn-warning" %>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"> Data Migration </h3>
+      </div>
+      <div class="card-header">
+      </div>
+      <div class="card-body">
+        <h3 class="card-title"> Savings Accounts </h3>
+        <p class="text-muted"> Migrate Savings Accounts from your Excel spreadsheet </p>
+        <%= simple_form_for @savings_registry, url: :management_module_savings_account_registries do |f| %>
+          <%= f.input :spreadsheet, label: "Excel File" %>
+          <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+            <%= f.submit "Upload Savings", class: "btn btn-outline-danger" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+
+
 <hr>
-<% @time_deposit_products.each do |time_deposit_product| %>
-  <%= link_to time_deposit_product.name, management_module_settings_time_deposit_product_path(time_deposit_product) %>
-<% end %>
-<hr>
-<%= link_to 'New Time Deposit Product', new_management_module_settings_time_deposit_product_path, class: "btn btn-primary" %>
-<%= link_to 'New Program / Fees', new_management_module_program_path, class: "btn btn-primary" %>
 
 
 
 <%= link_to 'Set Grace Period', new_management_module_grace_period_path %>
 <%= link_to 'New Employee', new_user_registration_path %>
 <%#= link_to "New Committee", new_management_module_committee_path %>
-<%= link_to 'Update Cooperative Details', edit_management_module_settings_cooperative_path(@cooperative), class: "btn btn-warning" %>
 <%= link_to 'Set Savings Accounts Configuration', new_management_module_settings_savings_account_config_path, class: "btn btn-danger" %>
 <%= link_to current_user.cooperative_name, management_module_settings_cooperative_path(current_user.cooperative) %>
 
-<%= simple_form_for @savings_registry, url: :management_module_savings_account_registries do |f| %>
-  <%= f.input :spreadsheet %>
-  <%= f.input :employee_id, input_html: { value: current_user.id } %>
-  <%= f.submit "Upload Savings" %>
-<% end %>
 
 
 
