@@ -12,7 +12,7 @@
 
           <li class="nav-item"<%= 'active' if current_page?(share_capitals_path) %> ><a href="/share_capitals" class="nav-link"><i class="nav-icon fa fa-suitcase"></i> <span> Share Capitals </span></a></li>
           <li class="nav-item"<%= 'active' if current_page?(time_deposits_path) %> ><a href="/time_deposits" class="nav-link"><i class="nav-icon fa fa-suitcase"></i> <span> Time Deposits</span></a></li>
-          <li class="nav-item"<%= 'active' if current_page?(bank_accounts_path) %> ><a href="/bank_accounts" class="nav-link"><i class="nav-icon fa fa-building"></i> <span> Bank Accounts</span></a></li>
+          <li class="nav-item"><a href="/bank_accounts" class="nav-link <%= 'active' if current_page?(bank_accounts_path) %> "><i class="nav-icon fa fa-building"></i> <span> Bank Accounts</span></a></li>
 
 
           <li class="nav-item"<%= 'active' if current_page?(employee_entries_path(current_user)) %> ><a href="/employees/<%="#{current_user.id}"%>/entries" class="nav-link"><i class="nav-icon fa fa-credit-card"></i> <span> Entries</span></a></li>
