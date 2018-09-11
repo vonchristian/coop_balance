@@ -1,5 +1,6 @@
 class Cooperative < ApplicationRecord
   has_one_attached :logo
+  belongs_to :interest_amortization_config
   has_many :offices, class_name: "CoopConfigurationsModule::Office"
   has_many :cooperative_services, class_name: "CoopServicesModule::CooperativeService"
   has_many :store_fronts, as: :business

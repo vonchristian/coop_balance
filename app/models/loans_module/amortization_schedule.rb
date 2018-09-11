@@ -72,9 +72,9 @@ module LoansModule
       loan.amortization_schedules.select { |a| (from_date.beginning_of_day..to_date.end_of_day).cover?(a.date) }.sum(&:principal)
     end
 
-    def self.scheduled_for(options={})
-			if options[:from_date].present? && options[:to_date].present?
-				date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
+    def self.scheduled_for(args={})
+			if args[:from_date].present? && args[:to_date].present?
+				date_range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])
         where('date' => (date_range.start_date..date_range.end_date))
       end
     end
@@ -114,10 +114,15 @@ module LoansModule
     end
 
     def self.interest_computation(schedule, loan)
-      if loan.lumpsum?
-        loan.loan_amount * loan.loan_product_monthly_interest_rate * loan.current_term_number_of_months
-      else
-        (loan.principal_balance_for(schedule) * loan.loan_product_monthly_interest_rate)
+      if loan.cooperative.interest_amortization_config.straight_balance?
+        if loan.lumpsum?
+          loan.loan_amount * loan.loan_product_monthly_interest_rate * loan.current_term_number_of_months
+        else
+          (loan.principal_balance_for(schedule) * loan.loan_product_monthly_interest_rate)
+        end
+      elsif loan.cooperative.interest_amortization_config.annually?
+        loan.principal_balance_for(schedule) * loan.loan_product_annual_rate
+
       end
     end
 

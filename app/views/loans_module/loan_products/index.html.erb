@@ -13,7 +13,7 @@
       </div>
       <div class="card-body">
         <% @loan_products.each do |loan_product| %>
-          <%= link_to loans_module_loan_product_path(loan_product) do %>
+          <%= link_to loans_module_loan_product_loans_path(loan_product) do %>
             <div class="row">
               <div class="col-md-6">
                 <%= loan_product.name.try(:upcase) %>

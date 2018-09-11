@@ -13,7 +13,7 @@ module LoansModule
     has_many :organization_borrowers, through: :loans, source: :borrower, source_type: 'Organization'
     has_many :charges, through: :loan_product_charges
 #DO NOT ALLOW NIL RATE AND ACCOUNTS
-    delegate :rate, to: :current_interest_config, prefix: true
+    delegate :rate, :annual_rate, to: :current_interest_config, prefix: true
     delegate :rate, to: :current_penalty_config, prefix: true
 
     delegate :interest_revenue_account,

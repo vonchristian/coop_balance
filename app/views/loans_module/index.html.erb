@@ -139,7 +139,7 @@
       {name: "Loan Payments", data: (Hash[*loan_payments_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}) }
     ], thousands: "," %>
         <hr>
-        <h4 class="box-title"> Loan Realeases (Actual vs Target Comparison) </h4>
+        <h4 class="card-title"> Loan Realeases (Actual vs Target Comparison) </h4>
         <div class="row">
           <div class="col-md-3">
             Loan Product

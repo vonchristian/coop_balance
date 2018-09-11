@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_07_070316) do
+ActiveRecord::Schema.define(version: 2018_09_11_075658) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -265,7 +265,9 @@ ActiveRecord::Schema.define(version: 2018_09_07_070316) do
     t.bigint "logo_file_size"
     t.datetime "logo_updated_at"
     t.string "abbreviated_name"
+    t.uuid "interest_amortization_config_id"
     t.index ["abbreviated_name"], name: "index_cooperatives_on_abbreviated_name", unique: true
+    t.index ["interest_amortization_config_id"], name: "index_cooperatives_on_interest_amortization_config_id"
   end
 
   create_table "cooperators", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -392,6 +394,14 @@ ActiveRecord::Schema.define(version: 2018_09_07_070316) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "interest_amortization_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "amortization_type"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["amortization_type"], name: "index_interest_amortization_configs_on_amortization_type"
+  end
+
   create_table "interest_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "loan_product_id"
     t.decimal "rate"
@@ -400,6 +410,7 @@ ActiveRecord::Schema.define(version: 2018_09_07_070316) do
     t.boolean "add_on_interest"
     t.uuid "interest_revenue_account_id"
     t.uuid "unearned_interest_income_account_id"
+    t.decimal "annual_rate"
     t.index ["interest_revenue_account_id"], name: "index_interest_configs_on_interest_revenue_account_id"
     t.index ["loan_product_id"], name: "index_interest_configs_on_loan_product_id"
     t.index ["unearned_interest_income_account_id"], name: "index_interest_configs_on_unearned_interest_income_account_id"
@@ -1250,6 +1261,7 @@ ActiveRecord::Schema.define(version: 2018_09_07_070316) do
   add_foreign_key "charge_adjustments", "loan_charges"
   add_foreign_key "charges", "accounts"
   add_foreign_key "cooperative_services", "cooperatives"
+  add_foreign_key "cooperatives", "interest_amortization_configs"
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "credit_account_id"
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "debit_account_id"
   add_foreign_key "entries", "store_fronts"
