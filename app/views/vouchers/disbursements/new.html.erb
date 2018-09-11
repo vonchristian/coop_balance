@@ -3,7 +3,7 @@
     <div class="card">
       <div class="card-header">
 
-           <h4><center><%= image_tag(@voucher.payee.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center></h4>
+           <h4><center><%= image_tag(@voucher.payee.avatar, style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center></h4>
 
             <h3 class="card-title"><center><%= @voucher.payee.try(:name) %></center></h3>
       </div>

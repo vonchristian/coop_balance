@@ -1,18 +1,12 @@
 <%=link_to share_capital_path(share_capital) do %>
-  <% cache(share_capital) do %>
+
     <div class="row">
-      <div class="col-md-2">
-
-          <center> <%= image_tag(share_capital.subscriber.avatar, style: 'width:40px;height:40px;', class: 'media-object img-circle') %></center>
-
+      <div class="col-md-1">
+        <%= image_tag(share_capital.subscriber.avatar, style: 'width:40px;height:40px;', class: 'media-object img-circle') %>
       </div>
       <div class="col-md-4">
-        <p><b><%= share_capital.subscriber_name.try(:upcase) %></b></p>
-        <small class="text-muted"> <%= share_capital.share_capital_product_name.try(:upcase) %></small><br><br>
-        <% if policy([:share_capitals, :capital_build_up]).new? %>
-          <%= link_to 'New Capital Build Up', new_share_capital_capital_build_up_path(share_capital), class: "btn btn-success" %>
-        <% end %>
-        <br>
+        <b><%= share_capital.subscriber_name.try(:upcase) %></b>
+        <small class="text-muted"> <%= share_capital.share_capital_product_name.try(:upcase) %></small>
       </div>
       <div class="col-md-2">
         <span class="badge bg-danger">
@@ -22,7 +16,12 @@
         <h4 class="card-title"><%=number_to_currency share_capital.paid_up_balance %></h4>
         <small>PAID UP BALANCE</small>
       </div>
+      <div class="col-md-2">
+        <% if policy([:share_capitals, :capital_build_up]).new? %>
+          <%= link_to 'New Capital Build Up', new_share_capital_capital_build_up_path(share_capital), class: "btn btn-success" %>
+        <% end %>
+      </div>
     </div>
     <hr>
-  <% end %>
+
 <% end %>

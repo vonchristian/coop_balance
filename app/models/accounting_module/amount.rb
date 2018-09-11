@@ -30,7 +30,7 @@ module AccountingModule
       from_date = options[:from_date]
       to_date = options[:to_date]
       date_range = DateRange.new(from_date: from_date, to_date: to_date)
-      includes(:entry).where('entries.entry_date' => date_range.start_date..date_range.end_date)
+      where('entry_date' => date_range.start_date..date_range.end_date)
     end
 
     private

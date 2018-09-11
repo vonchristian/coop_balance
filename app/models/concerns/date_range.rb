@@ -3,9 +3,9 @@ DateRange = Struct.new(:from_date, :to_date, keyword_init: true) do
     start_date..end_date
   end
   def start_date
-    Chronic.parse(from_date.strftime('%Y-%m-%d 00:00:00'))
+    DateTime.parse(from_date.strftime('%Y-%m-%d 00:00:00'))
   end
   def end_date
-    Chronic.parse(to_date.strftime('%Y-%m-%d 23:59:59'))
+    DateTime.parse(to_date.strftime('%Y-%m-%d 23:59:59'))
   end
 end

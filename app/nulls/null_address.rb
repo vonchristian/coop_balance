@@ -1,6 +1,6 @@
 class NullAddress
   def details
-    "No"
+    "No address entered"
   end
   def address
     'No address entered'

@@ -10,6 +10,7 @@
       <li class="nav-item"><%=link_to 'Below Min. Balance', share_capitals_below_minimum_balances_path, class: "nav-link #{'active' if current_page?(share_capitals_below_minimum_balances_path)}" %></li>
       <li class="nav-item"><%=link_to 'Dashboard', share_capitals_section_dashboards_path, class: "nav-link #{'active' if current_page?(share_capitals_section_dashboards_path)}" %></li>
     </ul>
+    <br>
       <%=form_tag share_capitals_path, method: :get, class: "search-form" do %>
           <div class="input-group">
             <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Share Capital... ", id: 'account-search-form' %>
@@ -27,11 +28,30 @@
         <% @share_capitals.each do |share_capital| %>
           <div class="card">
             <div class="card-body">
-              <%= render 'share_capitals/share_capital', share_capital: share_capital %>
+                <div class="row">
+                  <div class="col-md-1">
+                    <%= image_tag(share_capital.subscriber.avatar, style: 'width:40px;height:40px;', class: 'media-object img-circle') %>
+                  </div>
+                  <div class="col-md-4">
+                    <%=link_to share_capital_path(share_capital) do %>
+                      <b><%= share_capital.subscriber_name.try(:upcase) %></b><br>
+                      <small class="text-muted"><i class="fa fa-server"></i> <%= share_capital.share_capital_product_name.try(:upcase) %></small>
+                    <% end %>
+                  </div>
+                  <div class="col-md-3">
+                    <h4 class="card-title"><%=number_to_currency share_capital.paid_up_balance %></h4>
+                    <small>PAID UP BALANCE</small>
+                  </div>
+                  <div class="col-md-4">
+                     <% if policy([:share_capitals, :capital_build_up]).new? %>
+                      <%= link_to 'New Capital Build Up', new_share_capital_capital_build_up_path(share_capital), class: "btn btn-success btn-sm" %>
+                    <% end %>
+                  </div>
+                </div>
+
             </div>
           </div>
         <% end %>
-        <center><%= will_paginate @share_capitals %> </center>
       <% end %>
       <% if current_page? share_capitals_below_minimum_balances_path %>
         <%= render 'share_capitals/partials/below_minimum_balances' %>
