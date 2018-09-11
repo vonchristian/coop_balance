@@ -51,7 +51,7 @@ class Member < ApplicationRecord
   delegate :number, to: :current_tin, prefix: true, allow_nil: true
 
 
-  before_save :update_birth_date_fields
+  before_save :update_birth_date_fields, :set_default_image
   def self.updated_at(options={})
     if options[:from_date] && options[:to_date]
       date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
@@ -147,6 +147,11 @@ class Member < ApplicationRecord
   end
 
   private
+  def set_default_image
+    if avatar.attachment.blank?
+      self.avatar.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'default.png')), filename: 'default-image.png', content_type: 'image/png')
+    end
+  end
   def set_fullname
     self.fullname = self.full_name #used for slugs
   end

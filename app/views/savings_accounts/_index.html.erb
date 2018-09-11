@@ -21,42 +21,59 @@
           </div>
         </div>
       </div>
-      <hr />
-      <div class="card-body">
+    </div>
         <% savings_accounts.each do |savings_account| %>
-          <%=link_to savings_account_path(savings_account) do %>
-            <% cache(savings_account) do %>
-              <div class="row">
-                <div class="col-md-1">
-                </div>
-                <div class="col-md-5">
-                  <p class=""><b><%= savings_account.depositor.name.try(:upcase) %></b></p>
-                  <small class=""> <%= savings_account.saving_product_name %></small><br><br>
 
 
+            <div class="card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-5">
+                <%=link_to savings_account_path(savings_account) do %>
+                   <%=image_tag(savings_account.avatar, height: 35, width: 35, class: "img-circle")%>&nbsp; &nbsp; <b><%= savings_account.depositor.name.try(:upcase) %></b><br>
+                  <div class="row">
+                    <div class="col-md-5">
+                      <small class="text-muted"><i class="fa fa-server"></i> <%= savings_account.saving_product_name %></small>
+                    </div>
+                    <div class="col-md-6">
+                      <small class="text-muted"><i class="fa fa-clock"></i> Last Transaction: <%= savings_account.last_transaction_date.strftime("%b %e, %Y") %></small>
+                    </div>
+                  </div>
+                <% end %>
+                  </div>
+                  <div class="col-md-3">
+                    <h4 class="card-title"><%=number_to_currency savings_account.balance %></h4>
+                    <small class="text-muted"> BALANCE </small>
+                  </div>
+                  <div class="col-md-4">
                     <% if policy([:savings_accounts, :deposit]).new? %>
-                      <%= link_to 'Deposit', new_savings_account_deposit_path(savings_account), class: "btn btn-success" %>
-                    <% end %>
-                       &nbsp; &nbsp;
-                    <% if policy([:savings_accounts, :withdrawal]).new? %>
-                      <%= link_to 'Withdraw', new_savings_account_withdrawal_path(savings_account), class: "btn btn-warning" %>
+                      <%= link_to 'Deposit', new_savings_account_deposit_path(savings_account), class: "btn btn-success btn-sm" %>
                     <% end %>
 
-                  <br>
+                    <% if policy([:savings_accounts, :withdrawal]).new? %>
+                      <%= link_to 'Withdraw', new_savings_account_withdrawal_path(savings_account), class: "btn btn-warning btn-sm" %>
+                    <% end %>
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-light btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        More
+                      </button>
+                      <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Close Account</a>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div class="col-md-2">
-                   <span class="badge bg-danger"><%= savings_account.number_of_days_inactive %> days inactive </span>
-                </div>
-                <div class="col-md-3">
-                    <h4 class="text-muted"><%=number_to_currency savings_account.balance %></h4>
-                    <small>BALANCE</small>
-                </div>
+
               </div>
-              <hr>
-            <% end %>
-          <% end %>
+            </div>
+
+
         <% end %>
-        <center><%= will_paginate savings_accounts %> </center>
+
       </div>
     </div>
   </div>

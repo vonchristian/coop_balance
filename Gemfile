@@ -7,6 +7,7 @@ end
 gem 'bootsnap', require: false
 gem 'rubyzip', '~> 1.1.0'
 gem 'axlsx', '2.1.0.pre'
+gem 'pagy'
 gem 'axlsx_rails'
 gem 'client_side_validations'
 gem 'client_side_validations-simple_form'

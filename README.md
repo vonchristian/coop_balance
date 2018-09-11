@@ -1,3 +1,29 @@
+<% savings_accounts.each do |savings_account| %>
+        <%=link_to savings_account_path(savings_account) do %>
+          <% cache(savings_account) do %>
+            <div class="row">
+              <div class="col-md-1">
+              </div>
+              <div class="col-md-6">
+                <p><%= savings_account.depositor.name.try(:upcase) %></p>
+                <small> <%= savings_account.saving_product_name %></small>
+                <span class="badge bg-danger"><%= savings_account.number_of_days_inactive %> days inactive </span>
+                <br>
+              </div>
+              <div class="col-md-5">
+                <h4 class="card-title"><%=number_to_currency savings_account.balance %></h4>
+                <% if policy([:savings_accounts, :withdrawal]).new? %>
+                  <%= link_to 'Withdraw', new_savings_account_withdrawal_path(savings_account), class: "btn btn-danger btn-sm" %>
+                <% end %>
+                <% if policy([:savings_accounts, :deposit]).new? %>
+                  <%= link_to 'Deposit', new_savings_account_deposit_path(savings_account), class: "btn btn-success btn-sm" %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
+
 User roles
   accounting_officer
   collection_officer

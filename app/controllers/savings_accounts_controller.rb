@@ -6,9 +6,9 @@ class SavingsAccountsController < ApplicationController
       @to_date = DateTime.parse(params[:to_date])
       @savings_accounts = MembershipsModule::Saving.inactive(from_date: @from_date, to_date: @to_date).paginate(:page => params[:page], :per_page => 20)
     elsif params[:search].present?
-      @savings_accounts = MembershipsModule::Saving.text_search(params[:search]).paginate(:page => params[:page], :per_page => 20)  
+      @savings_accounts = MembershipsModule::Saving.text_search(params[:search]).paginate(:page => params[:page], :per_page => 20)
     else
-      @savings_accounts = MembershipsModule::Saving.includes([:depositor, :saving_product =>[:account, :interest_expense_account]]).order(:account_owner_name).all.paginate(:page => params[:page], :per_page => 20)
+      @pagy, @savings_accounts = pagy(MembershipsModule::Saving.includes([:depositor, :saving_product =>[:account, :interest_expense_account]]).order(:account_owner_name).all)
     end
   end
 

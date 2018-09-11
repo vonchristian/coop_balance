@@ -30,9 +30,16 @@ class MembershipApplication
     contact_number: contact_number,
     email: email,
     office_id: office_id,
-    avatar: avatar)
+    avatar: avatar_asset)
     create_membership(member)
     create_tin(member)
+  end
+  def avatar_asset
+    if avatar.present?
+      avatar
+    else
+      File.open("app/assets/images/logo.png")
+    end
   end
 
   def create_membership(cooperator)
