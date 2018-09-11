@@ -9,6 +9,7 @@ module Memberships
         ActiveRecord::Base.transaction do
           save_capital_build_up
           update_share_capital_status
+          set_last_transaction_date
         end
       end
 

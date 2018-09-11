@@ -2,9 +2,9 @@
   <% cache(share_capital) do %>
     <div class="row">
       <div class="col-md-2">
-        <% if share_capital.subscriber.avatar.attachment.present? %>
-          <center> <%= image_tag(share_capital.subscriber.avatar, style: 'width:90px;height:90px;', class: 'media-object img-circle') %></center>
-        <% end %>
+
+          <center> <%= image_tag(share_capital.subscriber.avatar, style: 'width:40px;height:40px;', class: 'media-object img-circle') %></center>
+
       </div>
       <div class="col-md-4">
         <p><b><%= share_capital.subscriber_name.try(:upcase) %></b></p>

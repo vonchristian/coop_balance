@@ -2,6 +2,7 @@
   <div class="card-body">
     <div class="row">
       <div class="col-md-1">
+        <%= image_tag(@member.avatar, height: 45, width: 45, class: "img-circle") %>
       </div>
       <div class="col-md-11">
         <h3 class="card-title"> <%= @member.full_name.upcase %></h3>

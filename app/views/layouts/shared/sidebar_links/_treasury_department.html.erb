@@ -1,4 +1,4 @@
- <li class= "nav-item" <%= 'active' if current_page?(treasury_module_index_path) %> ><a href="/treasury_module" class="nav-link"><i class="nav-icon fa fa-chart-line"></i> <span>Transactions Summary </span></a></li>
+ <li class= "nav-item"><a href="/treasury_module" class="nav-link <%= 'active' if current_page?(treasury_module_index_path) %> "><i class="nav-icon fa fa-chart-line"></i> <span>Transactions Summary </span></a></li>
 
 
           <li class="nav-item" <%= 'active' if current_page?(vouchers_path) %> ><a href="/vouchers" class="nav-link"><i class="nav-icon fa fa-folder"></i> <span> Vouchers</span></a></li>
@@ -8,7 +8,7 @@
           <li class="nav-item"<%= 'active' if current_page?(loans_path) %> ><a href="/loans" class="nav-link"><i class="nav-icon fa fa-credit-card"></i> <span> Loans</span></a></li>
 
 
-          <li class="nav-item"<%= 'active' if current_page?(savings_accounts_path) %> ><a href="/savings_accounts" class="nav-link"><i class="nav-icon fa fa-suitcase"></i> <span> Savings Accounts</span></a></li>
+          <li class="nav-item" ><a href="/savings_accounts" class="nav-link <%= 'active' if current_page?(savings_accounts_path) %>"><i class="nav-icon fa fa-suitcase"></i> <span> Savings Accounts</span></a></li>
 
           <li class="nav-item"<%= 'active' if current_page?(share_capitals_path) %> ><a href="/share_capitals" class="nav-link"><i class="nav-icon fa fa-suitcase"></i> <span> Share Capitals </span></a></li>
           <li class="nav-item"<%= 'active' if current_page?(time_deposits_path) %> ><a href="/time_deposits" class="nav-link"><i class="nav-icon fa fa-suitcase"></i> <span> Time Deposits</span></a></li>

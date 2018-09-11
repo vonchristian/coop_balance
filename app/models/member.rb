@@ -49,7 +49,7 @@ class Member < ApplicationRecord
   delegate :name, to: :office, prefix: true, allow_nil: true
   delegate :number, to: :current_contact, prefix: true, allow_nil: true
   delegate :number, to: :current_tin, prefix: true, allow_nil: true
-
+  delegate :details, to: :current_address, prefix: true, allow_nil: true
 
   before_save :update_birth_date_fields, :set_default_image
   def self.updated_at(options={})
@@ -70,6 +70,7 @@ class Member < ApplicationRecord
   def current_contact
     contacts.current
   end
+
 
   def current_tin
     tins.current
@@ -142,9 +143,7 @@ class Member < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
-  def current_address
-    addresses.order(created_at: :asc).last.try(:details) || "Not Yet Entered"
-  end
+
 
   private
   def set_default_image

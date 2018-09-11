@@ -8,6 +8,7 @@ module AccountingModule
         balance_for(options).
         entered_on(options).
         sum(:amount)
+
       elsif commercial_document.blank? && from_date.present? && to_date.present?
         entered_on(options).
         sum(:amount)
@@ -17,22 +18,13 @@ module AccountingModule
       elsif commercial_document.blank? && from_date.blank? && to_date.present?
         entered_on(from_date: Date.today - 999.years, to_date: options[:to_date]).
         sum(:amount)
-      elsif commercial_document.present? && from_date.blank? && to_date.present?
-        balance_for(options).
-        entered_on(options).
-        sum(:amount)
+
       elsif options[:cooperative_service].present?
         includes(:cooperative_service).where(cooperative_service: options[:cooperative_service]).
         sum(:amount)
       else
         sum(:amount)
       end
-    end
-
-    def balance_with_commercial_document_and_to_date(args={})
-      balance_for(options).
-      entered_on(options).
-      sum(:amount)
     end
 
     def balance_for(options={})

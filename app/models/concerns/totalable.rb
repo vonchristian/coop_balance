@@ -1,5 +1,5 @@
 module Totalable
-  def total_balances(args={})
+  def total_balance(args={})
     accounts.balance(args)
   end
   def total_debits_balance(args={})

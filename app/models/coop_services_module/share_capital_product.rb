@@ -20,18 +20,6 @@ module CoopServicesModule
     delegate :name, to: :paid_up_account, prefix: true
     delegate :name, to: :subscription_account, prefix: true
 
-
-
-    def self.total_balance(args={})
-      accounts.balance(args)
-    end
-    def self.total_debits_balance(args={})
-      accounts.debits_balance(args)
-    end
-    def self.total_credits_balance(args={})
-      accounts.credits_balance(args)
-    end
-
     def self.accounts
       accounts = self.pluck(:paid_up_account_id)
       AccountingModule::Account.where('accounts.id' => accounts)

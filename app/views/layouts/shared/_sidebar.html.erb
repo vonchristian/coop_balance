@@ -3,10 +3,10 @@
   <!-- Sidebar user panel (optional) -->
   <div class="user-panel mt-3 pb-3 mb-3 d-flex">
     <div class="image">
+      <%=image_tag(current_user.avatar, height: 45, width: 45, class: "img-circle") %>
     </div>
     <div class="info">
       <a href="#" class="d-block"><%= link_to current_user.first_and_last_name, employee_path(current_user) %></a>
-      <small><%= current_user.designation %></small>
     </div>
   </div>
 

@@ -10,7 +10,6 @@
       <li class="nav-item"><%=link_to 'Below Min. Balance', share_capitals_below_minimum_balances_path, class: "nav-link #{'active' if current_page?(share_capitals_below_minimum_balances_path)}" %></li>
       <li class="nav-item"><%=link_to 'Dashboard', share_capitals_section_dashboards_path, class: "nav-link #{'active' if current_page?(share_capitals_section_dashboards_path)}" %></li>
     </ul>
-    <div class="card-body">
       <%=form_tag share_capitals_path, method: :get, class: "search-form" do %>
           <div class="input-group">
             <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Share Capital... ", id: 'account-search-form' %>
@@ -22,9 +21,15 @@
           </div>
         <% end %>
         <br>
+      </div>
+    </div>
       <% if current_page? share_capitals_path %>
         <% @share_capitals.each do |share_capital| %>
-          <%= render 'share_capitals/share_capital', share_capital: share_capital %>
+          <div class="card">
+            <div class="card-body">
+              <%= render 'share_capitals/share_capital', share_capital: share_capital %>
+            </div>
+          </div>
         <% end %>
         <center><%= will_paginate @share_capitals %> </center>
       <% end %>

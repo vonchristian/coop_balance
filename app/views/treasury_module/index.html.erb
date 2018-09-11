@@ -99,7 +99,7 @@
           </div>
           <div class="col-md-4">
             <span class="float-right">
-              <%= number_to_currency CoopServicesModule::SavingProduct.total_balances(to_date: Date.today.yesterday) %>
+              <%= number_to_currency CoopServicesModule::SavingProduct.total_balance(to_date: Date.today.yesterday.end_of_day) %>
             </span>
         </div>
       </div>
@@ -125,7 +125,7 @@
           <p><b>Ending Balance </b> </p>
         </div>
         <div class="col-md-4">
-          <span class="float-right"><b><%= number_to_currency CoopServicesModule::SavingProduct.total_balances %></b></span>
+          <span class="float-right"><b><%= number_to_currency CoopServicesModule::SavingProduct.total_balance %></b></span>
         </div>
       </div>
     </div>
