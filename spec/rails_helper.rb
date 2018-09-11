@@ -5,7 +5,6 @@ require File.expand_path('../../config/environment', __FILE__)
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
 require 'capybara/rspec'
-require "paperclip/matchers"
 require 'pry'
 
 Dir[Rails.root.join("spec/models/shared_examples/**/*.rb")].each {|f| require f}
@@ -16,7 +15,6 @@ ActiveRecord::Migration.maintain_test_schema!
 RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
   config.include ActiveSupport::Testing::TimeHelpers
-  config.include Paperclip::Shoulda::Matchers
   config.include FactoryBot::Syntax::Methods
   config.include Warden::Test::Helpers
   config.include Devise::Test::IntegrationHelpers, :type => :system
@@ -43,4 +41,3 @@ Shoulda::Matchers.configure do |config|
     with.library :rails
   end
 end
-

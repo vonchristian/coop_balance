@@ -19,26 +19,24 @@ module AccountingModule
     validates :name, uniqueness: true
     validates :code, uniqueness: { case_sensitive: false }
 
-
+    scope :assets, -> { where(type: 'AccountingModule::Asset') }
     scope :liabilities, -> { where(type: 'AccountingModule::Liability') }
     scope :equities,    -> { where(type: 'AccountingModule::Equity') }
     scope :revenues,    -> { where(type: 'AccountingModule::Revenue') }
     scope :expenses,    -> { where(type: 'AccountingModule::Expense') }
 
-    def self.assets
-      where(type: 'AccountingModule::Asset')
-    end
 
     def self.active
       where(active: true)
     end
+
     def self.inactive
-      where.not(active: true)
+      where(active: false)
     end
-    def self.updated_at(options={})
-      if options[:from_date] && options[:to_date]
-        date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
-        where('updated_at' => (date_range.start_date)..(date_range.end_date))
+    def self.updated_at(args={})
+      if args[:from_date] && args[:to_date]
+        date_range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])
+        where('last_transaction_date' => (date_range.start_date)..(date_range.end_date))
       end
     end
 
@@ -49,6 +47,7 @@ module AccountingModule
     def account_name
       name
     end
+
     def normalized_type
       type.gsub("AccountingModule::", "")
     end
