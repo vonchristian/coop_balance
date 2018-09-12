@@ -15,6 +15,7 @@ module AccountingModule
     has_many :debit_entries,        :through => :debit_amounts, :source => :entry, :class_name => 'AccountingModule::Entry'
     has_many :subsidiary_accounts,  class_name: "AccountingModule::Account", foreign_key: 'main_account_id'
     has_many :account_budgets
+
     validates :type, :name, :code, presence: true
     validates :name, uniqueness: true
     validates :code, uniqueness: { case_sensitive: false }

@@ -21,7 +21,7 @@
             <%= link_to time_deposit_path(time_deposit) do %>
               <div class="row">
                 <div class="col-md-1">
-                  <%= image_tag(time_deposit.depositor.avatar.url(:thumb), class: "img-circle", height: 50, width: 50) %>
+                  <%= image_tag(time_deposit.depositor.avatar, class: "img-circle", height: 50, width: 50) %>
                 </div>
                 <div class="col-md-4">
                   <p><%= time_deposit.depositor_name.try(:upcase) %></p>

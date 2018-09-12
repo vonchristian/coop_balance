@@ -7,8 +7,8 @@ class Customer
     Member.text_search(search) +
     User.text_search(search)
   end
-  def self.find_by_id(customer_id)
-    return User.find_by_id(customer_id) if User.find_by_id(customer_id).present?
-    return Member.find_by_id(customer_id) if Member.find_by_id(customer_id).present?
+  def self.find(customer_id)
+    return User.find(customer_id) if User.find(customer_id).present?
+    return Member.find(customer_id) if Member.find(customer_id).present?
   end
 end

@@ -15,7 +15,7 @@
         <% @entries.each do |entry| %>
           <tr>
             <td><%= link_to entry.entry_date.strftime("%B %e, %Y"), accounting_module_entry_path(entry) %></td>
-            <td><%= image_tag(entry.recorder.avatar.url(:thumb), class: "img-circle", height: 35, width: 35)%> <%= entry.recorder.try(:name)%> </td>
+            <td><%= image_tag(entry.recorder.avatar, class: "img-circle", height: 35, width: 35)%> <%= entry.recorder.try(:name)%> </td>
             <td><%= entry.description %></td>
             <td><%= entry.reference_number %></td>
             <td><%= number_to_currency entry.debit_amounts.distinct.sum(:amount) %></td>

@@ -3,8 +3,8 @@ module AccountingModule
     class EntriesController < ApplicationController
       def index
         @account = AccountingModule::Account.find(params[:account_id])
-        @from_date = Chronic.parse(params[:from_date])
-        @to_date = Chronic.parse(params[:to_date])
+        @from_date = params[:from_date] ? DateTime.parse(params[:from_date]) : Date.today
+        @to_date = params[:to_date] ? DateTime.parse(params[:to_date]) : Date.today
         if params[:from_date] && params[:to_date]
           @entries = @account.entries.entered_on(from_date: @from_date, to_date: @to_date).paginate(page: params[:page], per_page: 50)
         else

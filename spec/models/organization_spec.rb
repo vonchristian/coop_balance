@@ -6,6 +6,9 @@ RSpec.describe Organization, type: :model do
     it { is_expected.to have_many :member_memberships }
     it { is_expected.to have_many :employee_memberships }
     it { is_expected.to have_many :loans }
+    it { is_expected.to have_many :savings }
+    it { is_expected.to have_many :time_deposits }
+    it { is_expected.to have_many :share_capitals }
   end
   it ".members" do
     organization = create(:organization)
