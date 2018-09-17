@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_11_075658) do
+ActiveRecord::Schema.define(version: 2018_09_12_070025) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -410,8 +410,9 @@ ActiveRecord::Schema.define(version: 2018_09_11_075658) do
     t.boolean "add_on_interest"
     t.uuid "interest_revenue_account_id"
     t.uuid "unearned_interest_income_account_id"
-    t.decimal "annual_rate"
+    t.integer "interest_type"
     t.index ["interest_revenue_account_id"], name: "index_interest_configs_on_interest_revenue_account_id"
+    t.index ["interest_type"], name: "index_interest_configs_on_interest_type"
     t.index ["loan_product_id"], name: "index_interest_configs_on_loan_product_id"
     t.index ["unearned_interest_income_account_id"], name: "index_interest_configs_on_unearned_interest_income_account_id"
   end

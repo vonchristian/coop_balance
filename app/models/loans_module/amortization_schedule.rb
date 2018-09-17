@@ -115,18 +115,34 @@ module LoansModule
 
     def self.interest_computation(schedule, loan)
       if loan.cooperative.interest_amortization_config.straight_balance?
-        if loan.lumpsum?
-          loan.loan_amount * loan.loan_product_monthly_interest_rate * loan.current_term_number_of_months
-        else
-          (loan.principal_balance_for(schedule) * loan.loan_product_monthly_interest_rate)
-        end
+        straight_balance_interest_computation(schedule, loan)
       elsif loan.cooperative.interest_amortization_config.annually?
-        loan.principal_balance_for(schedule) * loan.loan_product_annual_rate
-
+        annual_interest_computation(schedule, loan)
       end
     end
 
+
 		private
+    def self.straight_balance_interest_computation(schedule, loan)
+      if loan.lumpsum?
+        loan.loan_amount * loan.loan_product_monthly_interest_rate * loan.current_term_number_of_months
+      else
+        (loan.principal_balance_for(schedule) * loan.loan_product_monthly_interest_rate)
+      end
+    end
+    def self.annual_interest_computation(schedule, loan)
+      if loan.term <= 36
+        loan.principal_balance_for(schedule) * loan.loan_product_annual_rate +
+        loan.principal_balance_for(schedule) * loan.loan_product_annual_rate +
+        loan.principal_balance_for(schedule) * loan.loan_product_annual_rate
+      elsif loan.term <= 24
+        loan.principal_balance_for(schedule) * loan.loan_product_annual_rate +
+        loan.principal_balance_for(schedule) * loan.loan_product_annual_rate
+      elsif loan.term <= 12
+        loan.principal_balance_for(schedule) * loan.loan_product_annual_rate
+      end
+    end
+
 		def self.starting_date(loan)
       if loan.disbursed?
         loan.disbursement_date
