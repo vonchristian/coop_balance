@@ -7,8 +7,14 @@ class Organization < ApplicationRecord
   has_many :savings, class_name: "MembershipsModule::Saving", as: :depositor
   has_many :share_capitals, class_name: "MembershipsModule::ShareCapital", as: :subscriber
   has_many :time_deposits, class_name: "MembershipsModule::TimeDeposit", as: :depositor
-
+  before_save :set_default_image
   def members
     member_memberships + employee_memberships
+  end
+  private
+  def set_default_image
+    if avatar.attachment.blank?
+      self.avatar.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'default.png')), filename: 'default-image.png', content_type: 'image/png')
+    end
   end
 end

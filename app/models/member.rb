@@ -1,6 +1,6 @@
-require 'csv'
 class Member < ApplicationRecord
   include PgSearch
+  include Addressable
   pg_search_scope :text_search, :against => [ :first_name, :middle_name, :last_name]
   multisearchable against: [:first_name, :last_name, :middle_name]
   enum sex: [:male, :female, :other]
@@ -28,7 +28,6 @@ class Member < ApplicationRecord
   has_many :occupations,              through: :member_occupations
   has_many :loans,                    class_name: "LoansModule::Loan",
                                       as: :borrower
-  has_many :addresses,                as: :addressable
   has_many :subscribed_programs,      class_name: "CoopServicesModule::Program",
                                       through: :program_subscriptions,
                                       source: :program
@@ -43,20 +42,26 @@ class Member < ApplicationRecord
   has_many :relationships,            as: :relationee
   has_many :relations,                as: :relationer
   has_many :contacts, as: :contactable
+  has_many :addresses, as: :addressable
 
 
   delegate :number, to: :tin, prefix: true, allow_nil: true
   delegate :name, to: :office, prefix: true, allow_nil: true
   delegate :number, to: :current_contact, prefix: true, allow_nil: true
   delegate :number, to: :current_tin, prefix: true, allow_nil: true
-  delegate :details, to: :current_address, prefix: true, allow_nil: true
+  delegate :details, :complete_address, :barangay_name, :street_name, to: :current_address, prefix: true, allow_nil: true
 
-  before_save :update_birth_date_fields, :set_default_image
+  before_save :update_birth_date_fields
+  before_save :set_default_image, on: :create
   def self.updated_at(options={})
     if options[:from_date] && options[:to_date]
       date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
       where('updated_at' => (date_range.start_date)..(date_range.end_date))
     end
+  end
+
+  def self.has_no_tin
+    joins(:tins).where('tins.tinable_type')
   end
 
   def self.has_birth_month_on(args= {})
@@ -69,6 +74,10 @@ class Member < ApplicationRecord
 
   def current_contact
     contacts.current
+  end
+
+  def current_address
+    addresses.current_address
   end
 
 
@@ -113,10 +122,6 @@ class Member < ApplicationRecord
     occupations.order(created_at: :asc).last
   end
 
-  def current_address
-    addresses.current_address
-  end
-
   def recommended_co_makers
     Member.where(last_name: self.last_name)
   end
@@ -151,6 +156,7 @@ class Member < ApplicationRecord
       self.avatar.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'default.png')), filename: 'default-image.png', content_type: 'image/png')
     end
   end
+
   def set_fullname
     self.fullname = self.full_name #used for slugs
   end

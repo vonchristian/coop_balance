@@ -43,7 +43,7 @@
           <small>INACTIVITY</small>
           <h4 class="text-danger"><%= @savings_account.number_of_days_inactive %> Days</h4>
           <small>Last Transaction Date</small><br>
-          <i class="fa fa-calendar"></i> &nbsp; <%= @savings_account.last_transaction_date.strftime("%B %e, %Y") %>
+          <i class="fa fa-calendar"></i> &nbsp; <%= @savings_account.default_last_transaction_date.strftime("%B %e, %Y") %>
         </div>
 
       </div>

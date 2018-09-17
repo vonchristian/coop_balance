@@ -64,7 +64,7 @@
           <h4 class="card-title"><%= @share_capital.number_of_days_inactive %> Days</h4>
           <br>
           <small>Last Transaction Date</small><br>
-          <i class="fa fa-calendar"></i> &nbsp; <%= @share_capital.last_transaction_date.strftime("%b %e, %Y") %>
+          <i class="fa fa-calendar"></i> &nbsp; <%= @share_capital.default_last_transaction_date.strftime("%b %e, %Y") %>
         </div>
 
       </div>

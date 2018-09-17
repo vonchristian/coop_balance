@@ -107,6 +107,31 @@
           <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
             <%= f.submit "Upload Savings", class: "btn btn-outline-danger" %>
         <% end %>
+        <hr>
+        <h3 class="card-title"> Share Capital Accounts </h3>
+        <p class="text-muted"> Migrate Share Capital accounts from your Excel spreadsheet. </p>
+        <%= simple_form_for Registries::ShareCapitalRegistry.new, url: :management_module_share_capital_registries do |f| %>
+          <%= f.input :spreadsheet, label: 'Share Capital Registry' %>
+          <%= f.input :employee_id, input_html: { value: current_user.id } %>
+          <%= f.submit "Upload Share Capitals", class: "btn btn-outline-danger" %>
+        <% end %>
+        <hr>
+        <h3 class="card-title"> Loan Accounts </h3>
+        <p class="text-muted"> Migrate Loans from your Excel spreadsheet. </p>
+        <%= simple_form_for Registries::LoanRegistry.new, url: :management_module_loan_registries do |f| %>
+          <%= f.input :spreadsheet %>
+          <%= f.input :employee_id, input_html: { value: current_user.id } %>
+          <%= f.submit "Upload Loan Accounts", class: "btn btn-outline-danger" %>
+        <% end %>
+        <hr>
+        <h3 class="card-title"> Time Deposit Accounts </h3>
+        <p class="text-muted"> Migrate time deposit accounts from your excel spreadsheet. </p>
+        <%= simple_form_for Registries::TimeDepositRegistry.new, url: :management_module_time_deposit_registries do |f| %>
+          <%= f.input :spreadsheet %>
+          <%= f.input :employee_id, input_html: { value: current_user.id } %>
+          <%= f.submit "Upload Time Deposits", class: "btn btn-outline-danger" %>
+        <% end %>
+        <hr>
       </div>
     </div>
   </div>
@@ -126,11 +151,6 @@
 
 
 
-<%= simple_form_for Registries::ShareCapitalRegistry.new, url: :management_module_share_capital_registries do |f| %>
-  <%= f.input :spreadsheet, label: 'Share Capital Registry' %>
-  <%= f.input :employee_id, input_html: { value: current_user.id } %>
-  <%= f.submit %>
-<% end %>
 
 <%= link_to 'New Store Front', new_management_module_settings_store_front_path %>
 <hr>
@@ -189,16 +209,6 @@
 </div>
 </div>
 <hr>
-<%= simple_form_for Registries::LoanRegistry.new, url: :management_module_loan_registries do |f| %>
-  <%= f.input :spreadsheet %>
-  <%= f.input :employee_id, input_html: { value: current_user.id } %>
-  <%= f.submit %>
-<% end %>
-<h4>Time Deposit Registry</h4>
-<%= simple_form_for Registries::TimeDepositRegistry.new, url: :management_module_time_deposit_registries do |f| %>
-  <%= f.input :spreadsheet %>
-  <%= f.input :employee_id, input_html: { value: current_user.id } %>
-  <%= f.submit %>
-<% end %>
+
 <h4> Cooperative Services </h4>
 <%= link_to 'New Cooperative Service', new_cooperative_service_path, class: "btn btn-danger" %>

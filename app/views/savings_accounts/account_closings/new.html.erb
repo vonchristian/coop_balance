@@ -1,19 +1,19 @@
 <div class="row">
-  <div class="col-md-5 col-md-offset-3">
+  <div class="col-md-3">
+  </div>
+  <div class="col-md-5">
     <div class="card">
       <div class="card-header">
-        <h4><center><%= image_tag(@savings_account.depositor.avatar.url(:medium), style: 'width:80px;height:80px;', class: 'media-object img-circle') %></center></h4>
+        <h4><center><%= image_tag(@savings_account.depositor.avatar, style: 'width:80px;height:80px;', class: 'media-object img-circle') %></center></h4>
         <center><h3 class="box-title"><%= @savings_account.depositor_name %></h3></center>
       </div>
       <div class="card-body">
-        <div class="row">
-          <div class="col-md-9 col-md-offset-2">
             <div class="row">
               <div class="col-md-5">
                 Balance
               </div>
               <div class="col-md-5">
-                <span class="pull-right">
+                <span class="float-right">
                   <%= number_to_currency @savings_account.balance %>
                 </span>
               </div>
@@ -24,7 +24,7 @@
                 Closing Account Fee
               </div>
               <div class="col-md-5">
-                <span class="pull-right">
+                <span class="float-right">
                   <%=number_to_currency CoopConfigurationsModule::SavingsAccountConfig.default_closing_account_fee %>
                 </span>
               </div>
@@ -35,7 +35,7 @@
                 <b>Amount to Disburse</b>
               </div>
               <div class="col-md-5">
-                <span class="pull-right">
+                <span class="float-right">
                   <b><%= number_to_currency @savings_account.balance -  CoopConfigurationsModule::SavingsAccountConfig.default_closing_account_fee %></b>
                 </span>
               </div>

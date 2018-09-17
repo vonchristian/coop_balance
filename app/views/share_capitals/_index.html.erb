@@ -30,7 +30,9 @@
             <div class="card-body">
                 <div class="row">
                   <div class="col-md-1">
-                    <%= image_tag(share_capital.subscriber.avatar, style: 'width:40px;height:40px;', class: 'media-object img-circle') %>
+                    <% if share_capital.subscriber.avatar.attachment.present? %>
+                      <%= image_tag(share_capital.subscriber.avatar, style: 'width:40px;height:40px;', class: 'media-object img-circle') %>
+                    <% end %>
                   </div>
                   <div class="col-md-5">
                     <%=link_to share_capital_path(share_capital) do %>
@@ -40,7 +42,7 @@
                           <small class="text-muted"><i class="fa fa-server"></i> <%= share_capital.share_capital_product_name.try(:upcase) %></small>
                         </div>
                         <div class="col-md-6">
-                          <small class="text-muted"><i class="fa fa-clock"></i> <%= share_capital.last_transaction_date.strftime("%B %e, %Y") %></small>
+                          <small class="text-muted"><i class="fa fa-clock"></i> <%= share_capital.default_last_transaction_date.strftime("%B %e, %Y") %></small>
                         </div>
                       </div>
                     <% end %>

@@ -1,4 +1,6 @@
 <div class="row">
+  <div class="col-md-3">
+  </div>
   <div class="col-md-6 col-md-offset-3">
     <div class="card">
       <div class="card-header">
@@ -9,7 +11,7 @@
           <%if @member.avatar.blank? %>
             <center><%=image_tag("default.png", height: 80, width: 80, :class=>"img-circle") %></center>
           <% else %>
-            <center><%= image_tag @member.avatar.url(:large), class: 'center-block img-responsive img-circle'%></center>
+            <center><%= image_tag @member.avatar, class: 'center-block img-responsive img-circle'%></center>
           <% end %>
           <center><%= f.input :avatar, as: :file, label: "Upload photo" %></center>
           <%= f.error_notification %>

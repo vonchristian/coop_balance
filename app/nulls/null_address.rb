@@ -1,4 +1,7 @@
 class NullAddress
+  def complete_address
+    "No addresses entered"
+  end
   def details
     "No address entered"
   end

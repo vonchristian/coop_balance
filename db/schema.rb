@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_12_070025) do
+ActiveRecord::Schema.define(version: 2018_09_17_021100) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -87,6 +87,7 @@ ActiveRecord::Schema.define(version: 2018_09_12_070025) do
     t.uuid "barangay_id"
     t.uuid "municipality_id"
     t.uuid "province_id"
+    t.string "complete_address"
     t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id"
     t.index ["barangay_id"], name: "index_addresses_on_barangay_id"
     t.index ["municipality_id"], name: "index_addresses_on_municipality_id"

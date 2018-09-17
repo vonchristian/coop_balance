@@ -4,7 +4,7 @@ class MembersController < ApplicationController
     if params[:search].present?
       @members = Member.text_search(params[:search]).order(:last_name).paginate(page: params[:page], per_page: 35)
     else
-      @members = Member.all.includes([:addresses]).order(:last_name).paginate(page: params[:page], per_page: 35)
+      @members = Member.all.order(:last_name).paginate(page: params[:page], per_page: 35)
     end
     @membership_applications = Membership.pending
   end
@@ -41,7 +41,6 @@ class MembersController < ApplicationController
 
   private
   def member_params
-    params.require(:member).permit(:civil_status, :membership_date, :first_name, :middle_name, :last_name, :sex, :date_of_birth, :contact_number, :avatar, tin_attributes: [:number], membership_attributes: [:membership_type],
-      addresses_attributes: [:street, :barangay, :municipality, :province])
+    params.require(:member).permit(:civil_status, :membership_date, :first_name, :middle_name, :last_name, :sex, :date_of_birth, :contact_number, :avatar, :signature_specimen, tin_attributes: [:number])
   end
 end
