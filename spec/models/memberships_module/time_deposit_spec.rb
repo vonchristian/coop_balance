@@ -3,10 +3,11 @@ require 'rails_helper'
 module MembershipsModule
   describe TimeDeposit do
     context 'associations' do
+      it { is_expected.to belong_to :cooperative }
     	it { is_expected.to belong_to :depositor }
     	it { is_expected.to belong_to :time_deposit_product }
     	it { is_expected.to have_many :entries }
-      it { is_expected.to have_many :fixed_terms }
+      it { is_expected.to have_many :terms }
       it { is_expected.to belong_to :office }
     end
 

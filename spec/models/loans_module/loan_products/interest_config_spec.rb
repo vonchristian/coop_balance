@@ -4,8 +4,10 @@ module LoansModule
   module LoanProducts
     describe InterestConfig, type: :model do
       describe 'associations' do
+        it { is_expected.to belong_to :cooperative }
         it { is_expected.to belong_to :loan_product }
         it { is_expected.to belong_to :interest_revenue_account }
+        it { is_expected.to belong_to :unearned_interest_revenue_account }
 
       end
 
@@ -23,6 +25,7 @@ module LoansModule
         expect(described_class.current).to eql current_interest_config
         expect(described_class.current).to_not eql interest_config
       end
+      it { is_expected.to define_enum_for}
     end
   end
 end

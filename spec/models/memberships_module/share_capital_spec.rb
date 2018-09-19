@@ -3,6 +3,7 @@ require 'rails_helper'
 module MembershipsModule
   describe ShareCapital do
     context 'associations' do
+      it { is_expected.to belong_to :cooperative }
     	it { is_expected.to belong_to :subscriber }
     	it { is_expected.to belong_to :share_capital_product }
       it { is_expected.to belong_to :office }

@@ -3,6 +3,7 @@ module CoopServicesModule
     extend Metricable
     extend Totalable
     extend VarianceMonitoring
+    belongs_to :cooperative
     belongs_to :paid_up_account, class_name: "AccountingModule::Account"
     belongs_to :closing_account, class_name: "AccountingModule::Account"
     belongs_to :subscription_account, class_name: "AccountingModule::Account"

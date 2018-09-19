@@ -5,6 +5,7 @@
     extend VarianceMonitoring
 	  enum interest_recurrence: [:daily, :weekly, :monthly, :quarterly, :semi_annually, :annually]
 
+    belongs_to :cooperative
 	  has_many :subscribers,                class_name: "MembershipsModule::Saving"
 	  belongs_to :account,                  class_name: "AccountingModule::Account"
     belongs_to :closing_account,          class_name: "AccountingModule::Account"
@@ -31,8 +32,8 @@
              :debits_balance,
              :credits_balance, to: :account
 
-    def self.accounts_opened(options={})
-      SavingProductQuery.new.accounts_opened(options)
+    def self.accounts_opened(args={})
+      SavingProductQuery.new.accounts_opened(args)
     end
 
     def self.total_subscribers
@@ -48,13 +49,13 @@
       AccountingModule::Account.where('accounts.id' => accounts)
     end
 
-    def interest_posted?(options={})
+    def interest_posted?(args={})
       interest_expense_account.
       credit_amounts.
       entries_for(commercial_document: self).
       entered_on(
-        from_date: beginning_date_for(options[:date]),
-        to_date: ending_date_for(options[:date])).present?
+        from_date: beginning_date_for(args[:date]),
+        to_date: ending_date_for(args[:date])).present?
     end
 
     def quarterly_interest_rate

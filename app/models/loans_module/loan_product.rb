@@ -1,5 +1,6 @@
 module LoansModule
   class LoanProduct < ApplicationRecord
+    belongs_to :cooperative
     belongs_to :loans_receivable_current_account, class_name: "AccountingModule::Account"
     belongs_to :loans_receivable_past_due_account, class_name: "AccountingModule::Account"
 
@@ -28,10 +29,12 @@ module LoansModule
 
     validates :name, uniqueness: true
     validates :maximum_loanable_amount, numericality: true
+
     def self.current_accounts
       ids = all.pluck(:loans_receivable_current_account_id)
       AccountingModule::Account.where(id: ids)
     end
+
     def self.total_balance(args={})
       accounts.balance(args)
     end
@@ -69,13 +72,14 @@ module LoansModule
 
     def post_penalties #daily
       if !penalty_posted?
-        PenaltyPosting
+        PenaltyPosting.post
       end
     end
 
     def current_interest_config
       interest_configs.current
     end
+
     def current_penalty_config
       penalty_configs.current
     end
@@ -87,21 +91,9 @@ module LoansModule
     def interest_rate
       current_interest_config_rate
     end
+
     def penalty_rate
       current_penalty_config_rate
-    end
-
-    def self.accounts
-      accounts = self.all.pluck(:loans_receivable_current_account_id)
-      AccountingModule::Account.where(id: accounts)
-    end
-
-    def self.loans_receivable_current_accounts
-      all.map{|a| a.loans_receivable_current_account }
-    end
-
-    def borrowers
-      member_borrowers + employee_borrowers + organization_borrowers
     end
 
     def create_charges_for(loan)
@@ -114,6 +106,7 @@ module LoansModule
       current_interest_config.create_charges_for(loan)
     end
 
+    private
     def create_charges_that_depends_on_loan_amount(loan)
       charges.depends_on_loan_amount.includes_loan_amount(loan).each do |charge|
           loan.loan_charges.create!(

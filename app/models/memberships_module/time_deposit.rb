@@ -1,42 +1,22 @@
 module MembershipsModule
   class TimeDeposit < ApplicationRecord
     enum status: [:withdrawn]
+    include TermMonitoring
     include PgSearch
-    pg_search_scope :text_search,
-                    against: [:account_number, :depositor_name]
+    pg_search_scope :text_search, against: [:account_number, :depositor_name]
 
-
+    belongs_to :cooperative
     belongs_to :depositor,            polymorphic: true, touch: true
     belongs_to :office,               class_name: "CoopConfigurationsModule::Office"
     belongs_to :time_deposit_product, class_name: "CoopServicesModule::TimeDepositProduct"
-    has_many :terms,                  as: :termable, dependent: :destroy
 
-    delegate :name,
-             :interest_rate,
-             :account,
-             :interest_expense_account,
-             :break_contract_fee,
-             to: :time_deposit_product,
-             prefix: true
-
-    delegate :full_name,
-             :first_and_last_name,
-             to: :depositor,
-             prefix: true
-
-    delegate :maturity_date,
-             :effectivity_date,
-             :matured?,
-             :remaining_term,
-             to: :current_term,
-             prefix: true, allow_nil: true
-
-    delegate :name,
-             to: :office,
-             prefix: true
+    delegate :name, :interest_rate, :account, :interest_expense_account, :break_contract_fee, to: :time_deposit_product, prefix: true
+    delegate :full_name, :first_and_last_name, to: :depositor, prefix: true
+    delegate :name, to: :office, prefix: true
     delegate :avatar, to: :depositor
 
     before_save :set_depositor_name, on: [:create]
+
     def entries
       accounting_entries = []
       time_deposit_product_account.amounts.where(commercial_document: self).each do |amount|
@@ -44,16 +24,15 @@ module MembershipsModule
       end
       accounting_entries
     end
+
     def can_be_extended?
       !withdrawn? && current_term_matured?
     end
+
     def withdrawal_date
       if withdrawn?
         entries.sort_by(&:entry_date).reverse.first.entry_date
       end
-    end
-    def current_term
-      terms.current
     end
 
     def member?

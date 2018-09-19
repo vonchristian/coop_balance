@@ -4,7 +4,7 @@ module MembershipsModule
     include InactivityMonitoring
     pg_search_scope :text_search, against: [:account_number, :account_owner_name]
     multisearchable against: [:account_number, :account_owner_name]
-
+    belongs_to :cooperative
     belongs_to :cart, optional: true, class_name: "StoreFrontModule::Cart"
     belongs_to :barangay, optional: true, class_name: "Addresses::Barangay"
     belongs_to :depositor,        polymorphic: true,  touch: true
@@ -30,14 +30,14 @@ module MembershipsModule
     scope :has_minimum_balance, -> { SavingsQuery.new.has_minimum_balance  }
 
     before_save :set_account_owner_name, :set_date_opened #move to saving opening
-    # after_commit :check_balance, #move to deposit withdrawal
+
 
     def self.below_minimum_balance
       where(has_minimum_balance: false)
     end
 
-    def self.inactive(options={})
-      updated_at(options)
+    def self.inactive(args={})
+      updated_at(args)
     end
 
     def entries
@@ -53,6 +53,7 @@ module MembershipsModule
     def closed?
       saving_product_closing_account.amounts.where(commercial_document: self).present?
     end
+
     def dormant?
       dormancy_number_of_days < number_of_days_inactive
     end
@@ -65,17 +66,17 @@ module MembershipsModule
       entered_on(from_date: args[:from_date].beginning_of_quarter, to_date: args[:to_date].end_of_quarter).present?
     end
 
-    def self.updated_at(options={})
-      if options[:from_date] && options[:to_date]
-        date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
+    def self.updated_at(args={})
+      if args[:from_date] && args[:to_date]
+        date_range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])
         where('last_transaction_date' => (date_range.start_date..date_range.end_date))
       else
         all
       end
     end
 
-    def self.top_savers(options={})
-      limiting_num = options[:limiting_num] || 10
+    def self.top_savers(args={})
+      limiting_num = args[:limiting_num] || 10
       all.to_a.sort_by(&:balance).reverse.first(limiting_num)
     end
 
@@ -89,9 +90,9 @@ module MembershipsModule
       InterestPosting.new.post_interests_earned(self, date)
     end
 
-    def balance(options={})
-      saving_product_account.balance(commercial_document: self, from_date: options[:from_date], to_date: options[:to_date]) +
-      saving_product_interest_expense_account.debits_balance(commercial_document: self, from_date: options[:from_date], to_date: options[:to_date])
+    def balance(args={})
+      saving_product_account.balance(commercial_document: self, from_date: args[:from_date], to_date: args[:to_date])
+      # saving_product_interest_expense_account.debits_balance(commercial_document: self, from_date: args[:from_date], to_date: args[:to_date])
     end
 
     def deposits
@@ -100,6 +101,7 @@ module MembershipsModule
     def withdrawals
       saving_product_account.debits_balance(commercial_document: self)
     end
+
     def interests_earned
       saving_product_interest_expense_account.debits_balance(commercial_document: self)
     end
@@ -108,16 +110,10 @@ module MembershipsModule
       !closed? && balance > 0.0
     end
 
-    def first_transaction_date
-      if entries.any?
-        entries.sort_by(&:entry_date).first.entry_date
-      end
-    end
 
-
-    def average_daily_balance(options={})
+    def average_daily_balance(args={})
       balances = []
-      date_range = options[:date].beginning_of_quarter..options[:date].end_of_quarter
+      date_range = args[:date].beginning_of_quarter..args[:date].end_of_quarter
       (date_range).each do |date|
         daily_balance = saving_product.balance(commercial_document: self, from_date: self.first_transaction_date, to_date: date.end_of_day)
         balances << daily_balance

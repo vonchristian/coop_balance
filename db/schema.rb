@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_19_031234) do
+ActiveRecord::Schema.define(version: 2018_09_19_093153) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -412,6 +412,8 @@ ActiveRecord::Schema.define(version: 2018_09_19_031234) do
     t.uuid "interest_revenue_account_id"
     t.uuid "unearned_interest_income_account_id"
     t.integer "interest_type"
+    t.uuid "cooperative_id"
+    t.index ["cooperative_id"], name: "index_interest_configs_on_cooperative_id"
     t.index ["interest_revenue_account_id"], name: "index_interest_configs_on_interest_revenue_account_id"
     t.index ["interest_type"], name: "index_interest_configs_on_interest_type"
     t.index ["loan_product_id"], name: "index_interest_configs_on_loan_product_id"
@@ -547,6 +549,8 @@ ActiveRecord::Schema.define(version: 2018_09_19_031234) do
     t.string "slug"
     t.uuid "loans_receivable_current_account_id"
     t.uuid "loans_receivable_past_due_account_id"
+    t.uuid "cooperative_id"
+    t.index ["cooperative_id"], name: "index_loan_products_on_cooperative_id"
     t.index ["loans_receivable_current_account_id"], name: "index_loan_products_on_loans_receivable_current_account_id"
     t.index ["loans_receivable_past_due_account_id"], name: "index_loan_products_on_loans_receivable_past_due_account_id"
     t.index ["name"], name: "index_loan_products_on_name", unique: true
@@ -817,6 +821,8 @@ ActiveRecord::Schema.define(version: 2018_09_19_031234) do
     t.uuid "penalty_revenue_account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "cooperative_id"
+    t.index ["cooperative_id"], name: "index_penalty_configs_on_cooperative_id"
     t.index ["loan_product_id"], name: "index_penalty_configs_on_loan_product_id"
     t.index ["penalty_revenue_account_id"], name: "index_penalty_configs_on_penalty_revenue_account_id"
   end
@@ -928,8 +934,10 @@ ActiveRecord::Schema.define(version: 2018_09_19_031234) do
     t.uuid "interest_expense_account_id"
     t.boolean "has_closing_account_fee", default: false
     t.integer "dormancy_number_of_days", default: 0
+    t.uuid "cooperative_id"
     t.index ["account_id"], name: "index_saving_products_on_account_id"
     t.index ["closing_account_id"], name: "index_saving_products_on_closing_account_id"
+    t.index ["cooperative_id"], name: "index_saving_products_on_cooperative_id"
     t.index ["interest_expense_account_id"], name: "index_saving_products_on_interest_expense_account_id"
     t.index ["name"], name: "index_saving_products_on_name", unique: true
   end
@@ -948,10 +956,12 @@ ActiveRecord::Schema.define(version: 2018_09_19_031234) do
     t.boolean "has_minimum_balance", default: false
     t.datetime "last_transaction_date"
     t.uuid "cart_id"
+    t.uuid "cooperative_id"
     t.index ["account_number"], name: "index_savings_on_account_number", unique: true
     t.index ["account_owner_name"], name: "index_savings_on_account_owner_name"
     t.index ["barangay_id"], name: "index_savings_on_barangay_id"
     t.index ["cart_id"], name: "index_savings_on_cart_id"
+    t.index ["cooperative_id"], name: "index_savings_on_cooperative_id"
     t.index ["depositor_type", "depositor_id"], name: "index_savings_on_depositor_type_and_depositor_id"
     t.index ["office_id"], name: "index_savings_on_office_id"
     t.index ["saving_product_id"], name: "index_savings_on_saving_product_id"
@@ -981,7 +991,9 @@ ActiveRecord::Schema.define(version: 2018_09_19_031234) do
     t.uuid "closing_account_id"
     t.uuid "interest_payable_account_id"
     t.decimal "minimum_balance", default: "0.0"
+    t.uuid "cooperative_id"
     t.index ["closing_account_id"], name: "index_share_capital_products_on_closing_account_id"
+    t.index ["cooperative_id"], name: "index_share_capital_products_on_cooperative_id"
     t.index ["interest_payable_account_id"], name: "index_share_capital_products_on_interest_payable_account_id"
     t.index ["name"], name: "index_share_capital_products_on_name"
     t.index ["paid_up_account_id"], name: "index_share_capital_products_on_paid_up_account_id"
@@ -1005,9 +1017,11 @@ ActiveRecord::Schema.define(version: 2018_09_19_031234) do
     t.uuid "cart_id"
     t.uuid "barangay_id"
     t.uuid "organization_id"
+    t.uuid "cooperative_id"
     t.index ["account_number"], name: "index_share_capitals_on_account_number", unique: true
     t.index ["barangay_id"], name: "index_share_capitals_on_barangay_id"
     t.index ["cart_id"], name: "index_share_capitals_on_cart_id"
+    t.index ["cooperative_id"], name: "index_share_capitals_on_cooperative_id"
     t.index ["office_id"], name: "index_share_capitals_on_office_id"
     t.index ["organization_id"], name: "index_share_capitals_on_organization_id"
     t.index ["share_capital_product_id"], name: "index_share_capitals_on_share_capital_product_id"
@@ -1109,8 +1123,10 @@ ActiveRecord::Schema.define(version: 2018_09_19_031234) do
     t.decimal "maximum_deposit"
     t.decimal "break_contract_rate"
     t.decimal "annual_interest_rate"
+    t.uuid "cooperative_id"
     t.index ["account_id"], name: "index_time_deposit_products_on_account_id"
     t.index ["break_contract_account_id"], name: "index_time_deposit_products_on_break_contract_account_id"
+    t.index ["cooperative_id"], name: "index_time_deposit_products_on_cooperative_id"
     t.index ["interest_expense_account_id"], name: "index_time_deposit_products_on_interest_expense_account_id"
     t.index ["name"], name: "index_time_deposit_products_on_name", unique: true
   end
@@ -1128,7 +1144,9 @@ ActiveRecord::Schema.define(version: 2018_09_19_031234) do
     t.datetime "date_deposited"
     t.datetime "last_transaction_date"
     t.string "depositor_name"
+    t.uuid "cooperative_id"
     t.index ["account_number"], name: "index_time_deposits_on_account_number", unique: true
+    t.index ["cooperative_id"], name: "index_time_deposits_on_cooperative_id"
     t.index ["depositor_type", "depositor_id"], name: "index_time_deposits_on_depositor_type_and_depositor_id"
     t.index ["membership_id"], name: "index_time_deposits_on_membership_id"
     t.index ["office_id"], name: "index_time_deposits_on_office_id"
@@ -1278,6 +1296,7 @@ ActiveRecord::Schema.define(version: 2018_09_19_031234) do
   add_foreign_key "entries", "vouchers"
   add_foreign_key "interest_configs", "accounts", column: "interest_revenue_account_id"
   add_foreign_key "interest_configs", "accounts", column: "unearned_interest_income_account_id"
+  add_foreign_key "interest_configs", "cooperatives"
   add_foreign_key "interest_configs", "loan_products"
   add_foreign_key "line_items", "carts"
   add_foreign_key "line_items", "line_items", column: "referenced_line_item_id"
@@ -1299,6 +1318,7 @@ ActiveRecord::Schema.define(version: 2018_09_19_031234) do
   add_foreign_key "loan_product_charges", "loan_products"
   add_foreign_key "loan_products", "accounts", column: "loans_receivable_current_account_id"
   add_foreign_key "loan_products", "accounts", column: "loans_receivable_past_due_account_id"
+  add_foreign_key "loan_products", "cooperatives"
   add_foreign_key "loans", "barangays"
   add_foreign_key "loans", "cooperatives"
   add_foreign_key "loans", "loan_products"
@@ -1323,6 +1343,7 @@ ActiveRecord::Schema.define(version: 2018_09_19_031234) do
   add_foreign_key "orders", "users", column: "employee_id"
   add_foreign_key "organization_members", "organizations"
   add_foreign_key "penalty_configs", "accounts", column: "penalty_revenue_account_id"
+  add_foreign_key "penalty_configs", "cooperatives"
   add_foreign_key "penalty_configs", "loan_products"
   add_foreign_key "products", "categories"
   add_foreign_key "program_subscriptions", "programs"
@@ -1332,8 +1353,10 @@ ActiveRecord::Schema.define(version: 2018_09_19_031234) do
   add_foreign_key "saving_products", "accounts"
   add_foreign_key "saving_products", "accounts", column: "closing_account_id"
   add_foreign_key "saving_products", "accounts", column: "interest_expense_account_id"
+  add_foreign_key "saving_products", "cooperatives"
   add_foreign_key "savings", "barangays"
   add_foreign_key "savings", "carts"
+  add_foreign_key "savings", "cooperatives"
   add_foreign_key "savings", "offices"
   add_foreign_key "savings", "saving_products"
   add_foreign_key "savings_account_configs", "accounts", column: "closing_account_id"
@@ -1341,8 +1364,10 @@ ActiveRecord::Schema.define(version: 2018_09_19_031234) do
   add_foreign_key "share_capital_products", "accounts", column: "interest_payable_account_id"
   add_foreign_key "share_capital_products", "accounts", column: "paid_up_account_id"
   add_foreign_key "share_capital_products", "accounts", column: "subscription_account_id"
+  add_foreign_key "share_capital_products", "cooperatives"
   add_foreign_key "share_capitals", "barangays"
   add_foreign_key "share_capitals", "carts"
+  add_foreign_key "share_capitals", "cooperatives"
   add_foreign_key "share_capitals", "offices"
   add_foreign_key "share_capitals", "organizations"
   add_foreign_key "share_capitals", "share_capital_products"
@@ -1364,6 +1389,8 @@ ActiveRecord::Schema.define(version: 2018_09_19_031234) do
   add_foreign_key "time_deposit_products", "accounts"
   add_foreign_key "time_deposit_products", "accounts", column: "break_contract_account_id"
   add_foreign_key "time_deposit_products", "accounts", column: "interest_expense_account_id"
+  add_foreign_key "time_deposit_products", "cooperatives"
+  add_foreign_key "time_deposits", "cooperatives"
   add_foreign_key "time_deposits", "memberships"
   add_foreign_key "time_deposits", "offices"
   add_foreign_key "time_deposits", "time_deposit_products"

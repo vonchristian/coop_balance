@@ -4,6 +4,8 @@ module CoopServicesModule
     extend Metricable
     extend VarianceMonitoring
 	  enum time_deposit_product_type: [:for_member, :for_non_member]
+
+    belongs_to :cooperative
     belongs_to :account, class_name: "AccountingModule::Account"
     belongs_to :interest_expense_account, class_name: "AccountingModule::Account"
     belongs_to :break_contract_account, class_name: "AccountingModule::Account"

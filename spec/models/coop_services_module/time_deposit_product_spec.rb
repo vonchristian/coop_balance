@@ -2,6 +2,7 @@ require 'rails_helper'
 module CoopServicesModule
   describe TimeDepositProduct do
     describe 'associations' do
+      it { is_expected.to belong_to :cooperative }
       it { is_expected.to belong_to :account }
       it { is_expected.to belong_to :interest_expense_account }
       it { is_expected.to belong_to :break_contract_account }

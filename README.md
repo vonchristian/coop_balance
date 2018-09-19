@@ -1,6 +1,11 @@
 
 TINOC MIGRATION
 migrate voucher entry
+add cooperative to
+savings
+loans
+share capitals
+time deposits
 
 
 User roles

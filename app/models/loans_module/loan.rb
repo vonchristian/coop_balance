@@ -1,6 +1,7 @@
 module LoansModule
   class Loan < ApplicationRecord
     include PgSearch
+    include TermMonitoring
     include LoansModule::Loans::Interest
     include LoansModule::Loans::Principal
     include LoansModule::Loans::Penalty
@@ -37,7 +38,6 @@ module LoansModule
     has_many :amortization_schedules,   dependent: :destroy
     has_many :amounts, as: :commercial_document, class_name: "AccountingModule::Amount"
 
-    has_many :terms,                    as: :termable
     has_many :notices,                  class_name: "LoansModule::Notice",
                                         as: :notified
     has_many :loan_interests,           class_name: "LoansModule::Loans::LoanInterest"
