@@ -4,7 +4,7 @@
       <div class="card-header">
         <div class="row">
           <div class="col-md-2 col-md-offset-1">
-            <%=image_tag(@loan.borrower.avatar.url(:medium), class: "img-circle", height: 80, width: 80) %>
+            <%=image_tag(@loan.borrower.avatar, class: "img-circle", height: 80, width: 80) %>
           </div>
           <div class="col-md-8">
             <br>
@@ -161,7 +161,7 @@
       </div>
       <div class="card-body">
          <p class="text-muted">PREVIOUS LOANS </p>
-        <% @borrower.loans.disbursed(from_date: Date.today, to_date: Date.today).each do |loan| %>
+        <% @borrower.loans.disbursed.each do |loan| %>
           <%= number_to_currency loan.balance %>
           <%=link_to 'New Payment', new_loans_module_loan_previous_loan_payment_path(previous_loan_id: loan.id, loan_id: @loan.id) %>
         <%end %>

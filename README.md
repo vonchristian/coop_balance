@@ -1,4 +1,7 @@
 
+TINOC MIGRATION
+migrate voucher entry
+
 
 User roles
   accounting_officer
@@ -8,7 +11,36 @@ User roles
   sales_officer
   inventory_officer
 
-
+<div class="row">
+  <div class="col-md-3 border-right">
+    <center>
+      <p><b><%= @loan.tracking_number %></b></p>
+      <small>TRACKING #</small>
+    </center>
+  </div>
+  <div class="col-md-3 border-right">
+    <center>
+      <%= @loan.last_transaction_date.try(:strftime, ("%B %e, %Y")) %><br>
+      <small>LAST PAYMENT DATE</small>
+    </center>
+  </div>
+  <div class="col-md-3">
+    <% if @loan.is_past_due? %>
+      <center>
+        <h3 class="card-title"><%= @loan.number_of_days_past_due %>
+        </h3>
+        <small> DAYS PAST DUE </small>
+      </center>
+    <% elsif @loan.current? %>
+      <center>
+        <h3 class="card-title"><%= @loan.remaining_term %>
+        </h3>
+        <small> REMAINING TERM (DAYS) </small>
+      </center>
+    <% end %>
+  </div>
+</div>
+<hr>
 
 <!DOCTYPE html>
 <html>

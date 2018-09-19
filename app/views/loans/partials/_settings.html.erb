@@ -1,21 +1,21 @@
-<div class="tab-pane <%= 'active' if current_page? loan_settings_path(@loan) %>">
-
-  <h4>Barangay Settings</h4>
-  <p class="text-muted">
-    Set barangay to which this loan belongs to for monitoring purposes and generation of reports.
-  </p>
-  <%= @loan.barangay_name %>
-  <%= link_to 'Set Barangay', edit_loan_barangay_path(id: @loan.id), class: "btn btn-sm btn-danger" %>
+<div class="card">
+  <div class="card-body">
+    <h4 class="card-title">Barangay Settings</h4>
+    <p class="text-muted">
+      Set barangay to which this loan belongs to for monitoring purposes and generation of reports.
+    </p>
+    <%= @loan.barangay_name %>
+    <%= link_to 'Set Barangay', edit_loan_barangay_path(id: @loan.id), class: "btn btn-sm btn-outline-danger" %>
   <hr>
-  <h4>Set Loan as Loss</h4>
+  <h4 class="card-title">Set Loan as Loss</h4>
   <p class="text-muted">
     Set this loan as loss
   </p>
-  <%= link_to 'Set as Loss', new_loans_module_loan_loss_path(@loan), class: "btn btn-sm btn-danger" %>
+  <%= link_to 'Set as Loss', new_loans_module_loan_loss_path(@loan), class: "btn btn-sm btn-outline-danger" %>
 <hr />
-<h4>Loan Terms Details <span class="badge bg-red"><%= @loan.terms.count %></span> </h4>
+<h4 class="card-title">Loan Terms Details <span class="badge bg-danger"><%= @loan.terms.count %></span> </h4>
 <p class="text-muted"> Create new  loan terms </p>
-<%= link_to 'New Term Extension', new_loans_module_loan_term_path(@loan), class: "btn btn-sm btn-danger" %>
+<%= link_to 'Extend Term', new_loans_module_loan_term_path(@loan), class: "btn btn-sm btn-outline-danger" %>
 <br />
 <br>
 <% if @loan.terms.present? %>
@@ -43,10 +43,10 @@
 <% end %>
 <hr>
 <% if @loan.paid? %>
-<h4>Archive Loan</h4>
+<h4 class="card-title">Archive Loan</h4>
 <p class="text-muted"> Archive paid loans </p>
 <% if policy([:loans_module, :loans, :archiving]).new? && !@loan.archived? %>
-  <%= link_to "Archive Loan", loans_module_loan_archivings_path(@loan), method: :post, data: { confirm: "Are you sure you want to archive this loan?" }, class: "btn btn-sm btn-danger" %>
+  <%= link_to "Archive Loan", loans_module_loan_archivings_path(@loan), method: :post, data: { confirm: "Are you sure you want to archive this loan?" }, class: "btn btn-sm btn-outline-danger" %>
 <% elsif @loan.archived? %>
   <div class="row">
     <div class="col-md-6">
@@ -82,20 +82,20 @@
   Remove loans not approved or duplicated loan
 </p>
 <p class="text-muted"> Deleting this loan will remove it from records. Please be careful. </p>
-  <%= link_to 'Delete Loan', loans_module_loan_path(@loan), method: :delete, data: { confirm_with: "Are you sure you want to delete this loan? " }, class: "btn btn-danger" %>
+  <%= link_to 'Delete Loan', loans_module_loan_path(@loan), method: :delete, data: { confirm_with: "Are you sure you want to delete this loan? " }, class: "btn btn-outline-danger" %>
 <% end %>
 <hr />
-<h4 class="box-title"> Tracking Number</h4>
+<h4 class="card-title"> Tracking Number</h4>
 <p class="text-muted">
   Enter tracking number to distinguish loans during payments
 </p>
-<%=link_to "Add Tracking Number", edit_loans_module_loan_tracking_number_path(id: @loan.id), class: "btn btn-danger btn-sm" %>
+<%=link_to "Add Tracking Number", edit_loans_module_loan_tracking_number_path(id: @loan.id), class: "btn btn-outline-danger btn-sm" %>
 <hr />
 <h4>Adjustment Entries</h4>
 <p class="text-muted">
   Make adjusting entries for this loan.
 </p>
 <% if current_user.bookkeeper? || current_user.accountant? %>
-  <%=link_to "New Adjusting Entry", new_accounting_module_adjusting_entry_path(commercial_document_type: @loan.class.to_s, commercial_document_id: @loan.id), class: "btn btn-sm btn-danger" %>
+  <%=link_to "New Adjusting Entry", new_accounting_module_adjusting_entry_path(commercial_document_type: @loan.class.to_s, commercial_document_id: @loan.id), class: "btn btn-sm btn-outline-danger" %>
 <% end %>
 <hr>

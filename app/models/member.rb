@@ -52,7 +52,7 @@ class Member < ApplicationRecord
   delegate :details, :complete_address, :barangay_name, :street_name, to: :current_address, prefix: true, allow_nil: true
 
   before_save :update_birth_date_fields
-  before_save :set_default_image, on: :create
+  # before_save :set_default_image, on: :create
   def self.updated_at(options={})
     if options[:from_date] && options[:to_date]
       date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
@@ -69,7 +69,8 @@ class Member < ApplicationRecord
   end
 
   def self.has_birth_day_on(args= {})
-    BirthdayQuery.new(self).has_birth_day_on(args)
+    BirthdayQuery.new(self).has_birth_d
+    ay_on(args)
   end
 
   def current_contact

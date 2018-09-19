@@ -31,47 +31,7 @@
         </div>
       </div>
           <% loans.each do |loan| %>
-            <div class="card">
-              <div class="card-body">
-                  <%= link_to loan_path(loan) do %>
-                    <div class="row">
-                      <div class="col-md-1">
-                        <%=image_tag(loan.borrower.avatar, height: 45, width: 45, class: "img-circle") %>
-                      </div>
-                      <div class="col-md-6">
-                        <b><%= loan.borrower_name.try(:upcase) %></b><br>
-                        <div class="row">
-                          <div class="col-md-4">
-                            <small class="text-muted"><i class="fa fa-server"></i> <%= loan.loan_product_name %></small>
-                          </div>
-                          <div class="col-md-3">
-                            <span class="badge bg-<%=loan.status_color%>"> <%= loan.status_text %></span>
-                          </div>
-                        </div>
-
-                      </div>
-                      <div class="col-md-2">
-                        <b><%= number_to_currency loan.loan_amount %></b><br>
-                        <small>Loan Amount</small>
-                      </div>
-                      <div class="col-md-2">
-                        <span class="text-red"><%= number_to_currency loan.principal_balance %></span><br>
-                        <small class="text-muted">Loan Balance</small><br>
-                      </div>
-                      <% if !loan.archived? && loan.is_past_due? %>
-                        <div class="col-md-2">
-                          <span class="label bg-red">
-                            <%= loan.number_of_days_past_due %> Days
-                          </span>
-                          <br>
-                          <small class="text-danger"> PAST DUE </small>
-                        </div>
-                      <% end %>
-                    </div>
-
-                <% end %>
-              </div>
-            </div>
+            <%= render 'loans/partials/header', loan: loan %>
           <% end %>
           <center><%= will_paginate loans %></center>
         </div>

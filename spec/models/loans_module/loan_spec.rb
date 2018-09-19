@@ -2,6 +2,9 @@ require 'rails_helper'
 module LoansModule
   describe Loan do
     context 'associations' do
+      it { is_expected.to have_one :disbursement_voucher }
+      it { is_expected.to belong_to :archived_by }
+      it { is_expected.to belong_to :cooperative }
     	it { is_expected.to belong_to :borrower }
     	it { is_expected.to belong_to :loan_product }
       it { is_expected.to belong_to :street }
@@ -9,18 +12,12 @@ module LoansModule
       it { is_expected.to belong_to :municipality }
       it { is_expected.to belong_to :organization }
       it { is_expected.to belong_to :preparer }
-      it { is_expected.to have_one :disbursement_voucher }
-    	it { is_expected.to have_many :loan_approvals }
-    	it { is_expected.to have_many :approvers }
     	it { is_expected.to have_many :entries }
       it { is_expected.to have_many :loan_charges }
       it { is_expected.to have_many :loan_charge_payment_schedules }
       it { is_expected.to have_many :charges }
-      it { is_expected.to have_many :loan_co_makers }
-      it { is_expected.to have_many :collaterals }
-      it { is_expected.to have_many :real_properties }
-      it { is_expected.to have_many :loan_protection_funds }
       it { is_expected.to have_many :terms }
+      it { is_expected.to have_many :notices }
       it { is_expected.to have_many :loan_interests }
       it { is_expected.to have_many :loan_penalties }
       it { is_expected.to have_many :loan_discounts }
@@ -112,6 +109,19 @@ module LoansModule
         expect(LoansModule::Loan.disbursed(from_date: date, to_date: date)).to include(disbursed_loan)
         expect(LoansModule::Loan.disbursed(from_date: date, to_date: date)).to_not include(undisbursed_loan)
       end
+
+      it ".disbursed_by(args={})" do
+        employee = create(:user)
+        loan = create(:loan)
+        voucher = create(:voucher, disburser: employee)
+        entry = create(:entry_with_credit_and_debit)
+        voucher.accounting_entry = entry
+        loan.voucher = voucher
+
+        expect(loan.disbursed?).to eql true
+        expect(described_class.disbursed).to include(loan)
+        # expect(described_class.disbursed_by(employee_id: employee.id)).to include(loan)
+      end
     end
 
     it "#taxable_amount" do
@@ -121,24 +131,6 @@ module LoansModule
     end
 
     it '#terms_elapsed' do
-    end
-
-    it "#maturity_date" do
-      loan_product = create(:loan_product_with_interest_config)
-      loan = create(:loan_with_interest_on_loan_charge, term: 12, mode_of_payment: 'monthly', loan_product: loan_product, loan_amount: 100_000)
-      date = Date.today
-      cash_on_hand_account = create(:asset)
-      entry = build(:entry, commercial_document: loan, entry_date: date)
-      create(:debit_amount, entry: entry, commercial_document: loan,  account: loan_product.loans_receivable_current_account)
-      create(:credit_amount, entry: entry, commercial_document: loan, account: cash_on_hand_account )
-      entry.save
-      loan.update_attributes(disbursement_date: date)
-      loan.update_attributes(maturity_date: date + loan.term.to_i.months)
-
-      LoansModule::AmortizationSchedule.create_schedule_for(loan)
-      expect(loan.amortization_schedules).to be_present
-      expect(loan.maturity_date.to_date).to eql((date + loan.term.to_i.months).to_date)
-      expect(loan.disbursed?).to be true
     end
   end
 end

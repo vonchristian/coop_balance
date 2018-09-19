@@ -2,7 +2,7 @@
   <div class="col-md-5 col-md-offset-3">
 
       <div class="card-header">
-        <h4><center><%= image_tag(@time_deposit.depositor.avatar.url(:medium), class: 'media-object img-circle', height: 60, width: 60) %></center></h4>
+        <h4><center><%= image_tag(@time_deposit.depositor, class: 'media-object img-circle', height: 60, width: 60) %></center></h4>
         <h3><center><%= @time_deposit.depositor.first_and_last_name %></center></h3>
       </div>
       <div class="cards-body">

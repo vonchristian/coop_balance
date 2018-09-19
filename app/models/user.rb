@@ -59,7 +59,7 @@ class User < ApplicationRecord
   delegate :abbreviated_name, :name, to: :cooperative, prefix: true
   delegate :number, to: :tin, prefix: true, allow_nil: true
   delegate :name, :abbreviated_name, to: :cooperative, prefix: true
-  before_save :set_default_image
+  # before_save :set_default_image
   def self.has_birthdays_on(month)
     where(birth_month: month).order(:birth_day)
   end

@@ -3,11 +3,9 @@ module Loans
     def index
       @loan = LoansModule::Loan.find(params[:loan_id])
       @notes = @loan.notes.paginate(page: params[:page], per_page: 25)
-    end
-    def new
-      @loan = LoansModule::Loan.find(params[:loan_id])
       @note = @loan.notes.build
     end
+
     def create
       @loan = LoansModule::Loan.find(params[:loan_id])
       @note = @loan.notes.create(note_params)

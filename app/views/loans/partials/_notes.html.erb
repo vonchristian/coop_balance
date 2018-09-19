@@ -1,26 +1,33 @@
-<div class="row">
-  <div class="col-md-8">
+<div class="card">
+  <div class="card-body">
     <h4 class="card-title"> Notes </h4>
-    <span class="text-muted"> Document actions taken for this loan for monitoring purposes. </span>
-  </div>
-  <div class="col-md-4">
-    <%= link_to 'New Note', new_loan_note_path(@loan), class: "btn btn-primary pull-right" %>
+    <span class="text-muted"> Actions taken for this loan for monitoring purposes. </span>
+  <hr>
+    <%= simple_form_for [@loan, @note], url: :loan_notes do |f| %>
+          <%= f.input :title %>
+          <%= f.input :content, as: :text %>
+          <%= f.input :noter_id, input_html: { value: current_user.id }, as: :hidden %>
+            <%= f.submit "Save Note", class: "btn btn-primary float-right" %>
+        <% end %>
+        <hr>
+
+    <% @notes.each do |note| %>
+      <div class="row">
+        <div class="col-md-1">
+          <%=image_tag(note.noter.avatar, class: "img-circle", height:45, width: 45) %>
+        </div>
+        <div class="col-md-8">
+          <h3 class="card-title"><%= note.title %></h3>
+          <span class="text-muted">
+            <%= note.content %>
+
+          </span>
+          <br>
+          <%= note.noter.try(:name) %> &nbsp; &nbsp;
+          <%= note.date.strftime("%b %e, %Y %M:%I") %>
+        </div>
+      </div>
+      <hr>
+    <% end %>
   </div>
 </div>
-<hr>
-<% @notes.each do |note| %>
-  <div class="row">
-    <div class="col-md-2">
-      <%= note.date.strftime("%B %e, %Y %M:%I") %>
-    </div>
-    <div class="col-md-8">
-      <b><%= note.title %></b><br>
-      <span class="text-muted">
-        <%= note.content %>
-      </span>
-      <br>
-      <i class="fa fa-user"></i> <%= note.noter.try(:name) %>
-    </div>
-  </div>
-  <hr>
-<% end %>

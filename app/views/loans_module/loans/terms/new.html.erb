@@ -5,7 +5,7 @@
       <div class="card-header">
         <h3 class="card-title"> New Term Extension Details </h3>
         <center>
-          <%= image_tag(@loan.borrower.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %>
+          <%= image_tag(@loan.borrower.avatar, style: 'width:60px;height:60px;', class: 'media-object img-circle') %>
           <h3><%= @loan.borrower_name %></h3>
         </center>
       </div>

@@ -10,7 +10,8 @@ module LoansModule
                   :mode_of_payment,
                   :application_date,
                   :account_number,
-                  :preparer_id
+                  :preparer_id,
+                  :cooperative_id
     validates :term, :loan_amount, presence: true, numericality: true
     validates :loan_product_id, :mode_of_payment, presence: true
     def save
@@ -29,6 +30,7 @@ module LoansModule
     end
     def create_loan
       loan = LoansModule::Loan.create!(
+        cooperative_id: cooperative_id,
         borrower_id: borrower_id,
         borrower_type: borrower_type,
         loan_product_id: loan_product_id,
@@ -58,6 +60,9 @@ module LoansModule
         loan.amortization_schedules.destroy_all
       end
       LoansModule::AmortizationSchedule.create_schedule_for(loan)
+    end
+    def find_preparer
+      User.find(preparer_id)
     end
   end
 end

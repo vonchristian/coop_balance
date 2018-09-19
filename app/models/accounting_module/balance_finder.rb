@@ -1,35 +1,34 @@
 module AccountingModule
   module BalanceFinder
-    def balance(options={})
-      from_date = options[:from_date]
-      to_date = options[:to_date]
-      commercial_document = options[:commercial_document]
+    def balance(args={})
+      from_date = args[:from_date]
+      to_date = args[:to_date]
+      commercial_document = args[:commercial_document]
       if commercial_document.present? && from_date.present? && to_date.present?
-        balance_for(options).
-        entered_on(options).
+        balance_for(args).
+        entered_on(args).
         sum(:amount)
-
       elsif commercial_document.blank? && from_date.present? && to_date.present?
-        entered_on(options).
+        entered_on(args).
         sum(:amount)
       elsif commercial_document.present? && from_date.blank? && to_date.blank?
-        balance_for(options).
+        balance_for(args).
         sum(:amount)
       elsif commercial_document.blank? && from_date.blank? && to_date.present?
-        entered_on(from_date: Date.today - 999.years, to_date: options[:to_date]).
+        entered_on(from_date: Date.today - 999.years, to_date: args[:to_date]).
         sum(:amount)
 
-      elsif options[:cooperative_service].present?
-        includes(:cooperative_service).where(cooperative_service: options[:cooperative_service]).
+      elsif args[:cooperative_service].present?
+        includes(:cooperative_service).where(cooperative_service: args[:cooperative_service]).
         sum(:amount)
       else
         sum(:amount)
       end
     end
 
-    def balance_for(options={})
+    def balance_for(args={})
       includes(:entry).
-      where(commercial_document: options[:commercial_document])
+      where(commercial_document: args[:commercial_document])
     end
 
 

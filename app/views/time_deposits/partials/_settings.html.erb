@@ -1,4 +1,4 @@
-<div class="tab-pane <%= 'active' if current_page?(time_deposit_settings_path(@time_deposit)) %>">
+
   <%=link_to "New Adjusting Entry", new_accounting_module_adjusting_entry_path(commercial_document_type: @time_deposit.class.to_s, commercial_document_id: @time_deposit.id) %>
   <hr>
   <div class="row">
@@ -46,4 +46,4 @@
   <hr />
   <h4>Earned Interests</h4>
     <%= link_to 'New Earned Interest', new_time_deposit_earned_interest_path(@time_deposit), class: "btn btn-danger" %>
-</div>
+

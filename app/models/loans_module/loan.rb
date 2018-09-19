@@ -11,6 +11,8 @@ module LoansModule
     enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
 
     has_one :disbursement_voucher,      class_name: "Voucher", as: :payee
+    belongs_to :cooperative
+    belongs_to :voucher
     belongs_to :archived_by,            class_name: "User", foreign_key: 'archived_by_id'
     belongs_to :borrower,               polymorphic: true
     belongs_to :loan_product,           class_name: "LoansModule::LoanProduct"
@@ -31,7 +33,6 @@ module LoansModule
                                         dependent: :destroy
     has_many :loan_charge_payment_schedules, through: :loan_charges
     has_many :charges,                  through: :loan_charges
-
     has_many :voucher_amounts,          class_name: "Vouchers::VoucherAmount", as: :commercial_document # for adding amounts on voucher
     has_many :amortization_schedules,   dependent: :destroy
     has_many :amounts, as: :commercial_document, class_name: "AccountingModule::Amount"
@@ -60,9 +61,10 @@ module LoansModule
     delegate :full_name, :cooperative, :current_occupation, to: :preparer, prefix: true
     delegate :maximum_loanable_amount, to: :loan_product
     delegate :avatar, to: :borrower
-
-
+    delegate :disbursement_entry, to: :voucher, allow_nil: true
+    delegate :disburser, to: :voucher, allow_nil: true
     delegate :name, to: :barangay, prefix: true, allow_nil: true
+
     validates :loan_product_id,  :loan_amount, :borrower_id, presence: true
     validates :loan_amount, numericality: { less_than_or_equal_to: :maximum_loanable_amount }
     before_save :set_borrower_full_name
@@ -98,12 +100,6 @@ module LoansModule
       terms.current
     end
 
-    def disburser
-      if disbursed?
-        disbursement_voucher.entry.recorder
-      end
-    end
-
 
     def self.not_archived
       where(archived: false)
@@ -129,7 +125,7 @@ module LoansModule
     end
 
     def self.not_matured
-        joins(:terms).where('terms.maturity_date > ?', Date.today)
+        active.joins(:terms).where('terms.maturity_date > ?', Date.today)
     end
 
     def self.past_due(options={})
@@ -150,7 +146,7 @@ module LoansModule
     end
 
     def self.disbursed_by(args={})
-      joins(:disbursement_voucher).where('vouchers.disburser_id' => args[:employee_id])
+      joins(:voucher).where('vouchers.disburser_id' => args[:employee_id])
     end
 
 
@@ -174,6 +170,7 @@ module LoansModule
     def self.payments_total
       all.map{|loan| loan.payments_total }.sum
     end
+
     def self.loan_payments(options={})
       all.map{|a| a.loan_payments(options)}
     end
@@ -192,6 +189,7 @@ module LoansModule
       end
       entries.uniq
     end
+
     def current?
       !is_past_due?
     end
@@ -251,24 +249,17 @@ module LoansModule
     end
 
     def disbursed?
-      loan_product.loans_receivable_current_account.debit_amounts.where(commercial_document: self).present? &&
-      disbursement_date.present?
+      voucher && voucher.disbursed?
+      # loan_product.loans_receivable_current_account.debit_amounts.where(commercial_document: self).present? &&
+      # disbursement_date.present?
     end
 
-    def disbursement_entry
-      loan_product.loans_receivable_current_account.debit_amounts.where(commercial_document: self).first.entry
-    end
+
 
     def payments_total
       principal_payments +
       interest_payments +
       penalty_payments
-    end
-
-    def disbursement
-      if disbursement_voucher.present?
-         disbursement_voucher.entry
-      end
     end
 
     def balance
@@ -291,11 +282,11 @@ module LoansModule
     end
 
     def debits_balance
-      loan_product.loans_receivable_current_account.debits_balance(commercial_document: self)
+      loan_product_loans_receivable_current_account.debits_balance(commercial_document: self)
     end
 
     def credits_balance
-      loan_product.loans_receivable_current_account.credits_balance(commercial_document: self)
+      loan_product_loans_receivable_current_account.credits_balance(commercial_document: self)
     end
 
     def status_color

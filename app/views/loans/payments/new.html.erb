@@ -1,9 +1,10 @@
+<%= render 'loans/partials/header', loan: @loan %>
 <div class="row">
   <div class="col-md-12">
     <div class="card">
   <div class="card">
     <center>
-      <%= image_tag(@loan.borrower.avatar.url(:medium), height: 60, width: 60, class: "img-circle") %>
+      <%= image_tag(@loan.borrower.avatar, height: 60, width: 60, class: "img-circle") %>
       <h4><%= @loan.borrower_name %>
     </center>
   </div>
@@ -13,7 +14,7 @@
       <div class="col-md-6 col-md-offset-1">
         <div class="row">
           <div class="col-md-6">
-            <h4>PRINCIPAL</h4>
+            <h4 class="card-title">PRINCIPAL</h4>
           </div>
           <div class="col-md-5">
             <span class="pull-right"><h4><%= number_to_currency @loan.principal_balance %></h4></span>
@@ -21,7 +22,7 @@
         </div>
          <div class="row">
           <div class="col-md-6">
-            <h4>INTERESTS</h4>
+            <h4 class="card-title">INTERESTS</h4>
           </div>
           <div class="col-md-5">
             <span class="pull-right"><h4><%= number_to_currency @loan.loan_interests_balance %></h4></span>
@@ -29,7 +30,7 @@
         </div>
         <div class="row">
           <div class="col-md-6">
-            <h4>PENALTIES</h4>
+            <h4 class="card-title">PENALTIES</h4>
           </div>
           <div class="col-md-5">
             <span class="pull-right"><h4><%= number_to_currency @loan.loan_penalties_balance %></h4></span>

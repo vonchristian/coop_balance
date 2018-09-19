@@ -5,7 +5,7 @@
     <div class="card">
       <div class="card-header">
         <center>
-          <%= image_tag(@borrower.avatar.url(:medium), class: "img-circle", height: 60, width: 60) %><br>
+          <%= image_tag(@borrower.avatar, class: "img-circle", height: 60, width: 60) %><br>
           <h3 class="card-title"> <%= @borrower.name %> </h3>
         </center>
       </div>
@@ -18,15 +18,17 @@
           <%= f.input :borrower_type, input_html: { value: @borrower.class.to_s }, as: :hidden %>
           <%= f.input :loan_amount, as: :currency %>
           <%= f.input :term, label: "Loan Term (in months)" %>
-          <%= f.input :mode_of_payment, collection: LoansModule::Loan.mode_of_payments.keys.to_a.map{ |a| [a.titleize, a] } %>
+          <%= f.input :mode_of_payment, collection: LoansModule::Loan.mode_of_payments.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
           <%= f.input :application_date, as: :string, input_html: { class: "datepicker", value: Time.zone.now.strftime("%B %e, %Y") } %>
           <%= f.input :preparer_id, input_html: { value: current_user.id }, as: :hidden %>
+          <%= f.input :cooperative_id, input_html: { value: current_user.cooperative_id }, as: :hidden %>
+
           <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
 
             <%= button_tag( :class => "btn btn-primary float-right") do %>
               Proceed  &nbsp;<i class="fa fa-arrow-right"></i>
             <% end %>
-            <%= link_to 'Cancel', member_path(@borrower), class: "btn btn-default float-left" %>
+            <%= link_to 'Cancel Application', member_path(@borrower), class: "btn btn-default float-left" %>
         <% end %>
       </div>
     </div>

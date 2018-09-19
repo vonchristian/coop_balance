@@ -33,6 +33,7 @@ module LoansModule
     private
     def loan_params
       params.require(:loans_module_loan_application).permit(
+                  :cooperative_id,
                   :borrower_id,
                   :borrower_type,
                   :term,

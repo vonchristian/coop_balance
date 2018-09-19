@@ -1,44 +1,46 @@
-
-  <div class="card">
-    <div class="card-header bg-<%= @loan.status_color %>">
-    </div>
-    <div class="card-body">
-      <ul class="nav nav-tabs">
-        <li class="nav-item">
-          <%= link_to 'Info', loan_path(@loan), class: "nav-link #{'active' if current_page?(loan_path(@loan))}" %>
-        </li>
-        <li class="nav-item">
-          <%= link_to 'Amortization', loans_module_loan_amortization_schedules_path(@loan), class: "nav-link #{'active' if current_page?(loans_module_loan_amortization_schedules_path(@loan))}" %>
-        </li>
-        <li class="nav-item">
-          <%= link_to 'Payments', loan_payments_path(@loan), class: "nav-link #{'active' if current_page?(loan_payments_path(@loan))}" %>
-        </li>
-        <li class="nav-item">
-          <%= link_to 'Notes', loan_notes_path(@loan), class: "nav-link #{'active' if current_page?(loan_notes_path(@loan))}"%>
-        </li>
-        <li class="nav-item">
-          <%= link_to 'Settings', loan_settings_path(@loan), class: "nav-link #{'active' if current_page?(loan_settings_path(@loan))}" %>
-        </li>
-      </ul>
-      <br>
-      <% if current_page?(loan_path(@loan)) %>
-        <%=render 'loans/partials/loan_info' %>
-      <% end %>
-      <% if current_page?(loans_module_loan_amortization_schedules_path(@loan)) %>
-        <%=render 'loans/partials/amortization_schedule' %>
-      <% end %>
-      <% if current_page?(loan_payments_path(@loan)) %>
-        <%= render 'loans/partials/payments' %>
-      <% end %>
-      <% if current_page? loan_settings_path(@loan) %>
-        <%= render 'loans/partials/settings' %>
-      <% end %>
-      <% if current_page? loan_notes_path(@loan) %>
-        <%= render 'loans/partials/notes' %>
-      <% end %>
+<%=render 'loans/partials/header', loan: @loan %>
+<div class="row">
+  <div class="col-md-3">
+    <div class="card">
+      <div class="card-body">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <%= link_to 'Info', loan_path(@loan), class: "nav-link #{'active' if current_page?(loan_path(@loan))}" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'Amortization', loans_module_loan_amortization_schedules_path(@loan), class: "nav-link #{'active' if current_page?(loans_module_loan_amortization_schedules_path(@loan))}" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'Payments', loan_payments_path(@loan), class: "nav-link #{'active' if current_page?(loan_payments_path(@loan))}" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'Notes', loan_notes_path(@loan), class: "nav-link #{'active' if current_page?(loan_notes_path(@loan))}"%>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'Settings', loan_settings_path(@loan), class: "nav-link #{'active' if current_page?(loan_settings_path(@loan))}" %>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
-
+  <div class="col-md-9">
+    <% if current_page?(loan_path(@loan)) %>
+      <%=render 'loans/partials/loan_info' %>
+    <% end %>
+    <% if current_page?(loans_module_loan_amortization_schedules_path(@loan)) %>
+      <%=render 'loans/partials/amortization_schedule' %>
+    <% end %>
+    <% if current_page?(loan_payments_path(@loan)) %>
+      <%= render 'loans/partials/payments' %>
+    <% end %>
+    <% if current_page? loan_settings_path(@loan) %>
+      <%= render 'loans/partials/settings' %>
+    <% end %>
+    <% if current_page? loan_notes_path(@loan) %>
+      <%= render 'loans/partials/notes' %>
+    <% end %>
+  </div>
+</div>
 
 
 

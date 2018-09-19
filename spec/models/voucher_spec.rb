@@ -27,7 +27,8 @@ RSpec.describe Voucher, type: :model do
   it "#disbursed?" do
     voucher = create(:voucher)
     voucher_2 = create(:voucher)
-    entry = create(:entry_with_credit_and_debit, commercial_document: voucher)
+    entry = create(:entry_with_credit_and_debit)
+    voucher.accounting_entry = entry
 
     expect(voucher.disbursed?).to eql true
     expect(voucher_2.disbursed?).to eql false
@@ -37,8 +38,10 @@ RSpec.describe Voucher, type: :model do
     voucher = create(:voucher)
     another_voucher = create(:voucher)
     undisbursed_voucher = create(:voucher)
-    entry = create(:entry_with_credit_and_debit, entry_date: Date.today.beginning_of_day, commercial_document: voucher)
-    another_entry = create(:entry_with_credit_and_debit, entry_date: Date.today.tomorrow, commercial_document: another_voucher)
+    entry = create(:entry_with_credit_and_debit, entry_date: Date.today.beginning_of_day)
+    another_entry = create(:entry_with_credit_and_debit, entry_date: Date.today.tomorrow)
+    voucher.accounting_entry = entry
+    another_voucher.accounting_entry = another_entry
 
     expect(Voucher.disbursed(from_date: Date.today.beginning_of_day, to_date: Date.today.end_of_day).pluck(:id)).to include(voucher.id)
     expect(Voucher.disbursed(from_date: Date.today.beginning_of_day, to_date: Date.today.end_of_day).pluck(:id)).to_not include(another_voucher.id)
