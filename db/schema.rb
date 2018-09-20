@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_19_093153) do
+ActiveRecord::Schema.define(version: 2018_09_20_004247) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -881,7 +881,9 @@ ActiveRecord::Schema.define(version: 2018_09_19_093153) do
     t.datetime "updated_at", null: false
     t.uuid "account_id"
     t.integer "payment_schedule_type"
+    t.uuid "cooperative_id"
     t.index ["account_id"], name: "index_programs_on_account_id"
+    t.index ["cooperative_id"], name: "index_programs_on_cooperative_id"
     t.index ["payment_schedule_type"], name: "index_programs_on_payment_schedule_type"
   end
 
@@ -1348,6 +1350,7 @@ ActiveRecord::Schema.define(version: 2018_09_19_093153) do
   add_foreign_key "products", "categories"
   add_foreign_key "program_subscriptions", "programs"
   add_foreign_key "programs", "accounts"
+  add_foreign_key "programs", "cooperatives"
   add_foreign_key "registries", "suppliers"
   add_foreign_key "registries", "users", column: "employee_id"
   add_foreign_key "saving_products", "accounts"

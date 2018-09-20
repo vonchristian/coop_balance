@@ -1,10 +1,9 @@
 module LoansModule
 	class AmortizationSchedule < ApplicationRecord
+    include LoansModule::InterestComputation
     enum payment_status: [:full_payment, :partial_payment, :unpaid]
 
     belongs_to :loan
-    belongs_to :debit_account, class_name: "AccountingModule::Account"
-    belongs_to :credit_account, class_name: "AccountingModule::Account"
 
     has_many :payment_notices, as: :notified
     has_many :notes, as: :noteable
@@ -12,6 +11,7 @@ module LoansModule
     accepts_nested_attributes_for :notes
 
     delegate :avatar, :borrower_name, to: :loan
+
     def color
       if missed_payment?
         "red"
@@ -26,8 +26,8 @@ module LoansModule
       !payment_made?
     end
 
-    def payment_made?
-      loan.loan_payments(from_date: self.date.beginning_of_week, to_date: self.date.end_of_week).present?
+    def payment_made?(args={})
+      loan.loan_payments(from_date: args[:from_date], to_date: args[:to_date]).present?
     end
 
     def previous_schedule

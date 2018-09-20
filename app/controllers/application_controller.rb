@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   before_action :authenticate_user!
   rescue_from Pundit::NotAuthorizedError, with: :permission_denied
   helper_method :current_cooperative, :current_cart
+
   private
   def current_cart
       StoreFrontModule::Cart.find(session[:cart_id])
@@ -29,6 +30,6 @@ class ApplicationController < ActionController::Base
     registry
   end
   def permission_denied
-    redirect_to "/", alert: 'Sorry but you are not allowed to access this feature.'
+    redirect_to "/", alert: 'Sorry but you are not allowed to access this page.'
   end
 end
