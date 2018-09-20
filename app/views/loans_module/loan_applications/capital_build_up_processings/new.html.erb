@@ -4,12 +4,12 @@
     <div class="card-header bg-gray">
       <div class="row">
         <div class="col-md-3">
-          <center><%= image_tag(@loan.borrower.avatar.url(:medium), style: 'width:80px;height:80px;', class: 'media-object img-circle') %></center>
+          <center><%= image_tag(@loan_application.borrower.avatar, style: 'width:80px;height:80px;', class: 'media-object img-circle') %></center>
         </div>
         <div class="col-md-9">
           <br>
-          <h3 class="card-title"><%= @loan.borrower_name.upcase %></h3><br>
-           <i class="fa fa-map-marker"></i> Address: <%= @loan.borrower.try(:current_address) %>
+          <h3 class="card-title"><%= @loan_application.borrower_name.upcase %></h3><br>
+           <i class="fa fa-map-marker"></i> Address: <%= @loan_application.borrower.try(:current_address) %>
         </div>
       </div>
     </div>
@@ -19,11 +19,11 @@
           <h4><%= number_to_currency @share_capital.paid_up_balance %></h4>
           <small class="text-muted"> SHARE CAPITAL </small>
           <hr>
-          <%= simple_form_for [@share_capital, @capital_build_up], url: :loans_module_loan_share_capital_build_ups do |f| %>
+          <%= simple_form_for [@share_capital, @capital_build_up], url: :loans_module_loan_application_capital_build_up_processings do |f| %>
             <%= f.error_notification %>
             <%= f.input :amount %>
             <%= f.input :share_capital_id, input_html: { value: @share_capital.id }, as: :hidden %>
-            <%= f.input :loan_id, input_html: { value: @loan.id }, as: :hidden %>
+            <%= f.input :loan_application_id, input_html: { value: @loan_application.id }, as: :hidden %>
 
             <div class="box-footer">
               <%= f.submit "Add Capital Build Up", class: "btn btn-primary float-right" %>

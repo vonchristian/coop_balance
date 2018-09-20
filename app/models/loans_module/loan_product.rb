@@ -96,33 +96,35 @@ module LoansModule
       current_penalty_config_rate
     end
 
-    def create_charges_for(loan)
-      create_charges_that_depends_on_loan_amount(loan)
-      create_charges_that_does_not_depends_on_loan_amount(loan)
-      create_interest_on_loan_charge_for(loan)
+    def create_charges_for(loan_application)
+      create_charges_that_depends_on_loan_amount(loan_application)
+      create_charges_that_does_not_depends_on_loan_amount(loan_application)
+      create_interest_on_loan_charge_for(loan_application)
     end
 
-    def create_interest_on_loan_charge_for(loan)
-      current_interest_config.create_charges_for(loan)
+    def create_interest_on_loan_charge_for(loan_application)
+      current_interest_config.create_charges_for(loan_application)
     end
 
     private
-    def create_charges_that_depends_on_loan_amount(loan)
-      charges.depends_on_loan_amount.includes_loan_amount(loan).each do |charge|
-          loan.loan_charges.create!(
-          charge: charge,
-          commercial_document: loan,
-          amount_type: 'credit'
+    def create_charges_that_depends_on_loan_amount(loan_application)
+      charges.depends_on_loan_amount.includes_loan_amount(loan_application).each do |charge|
+          loan_application.voucher_amounts.find_or_create_by(
+          description: charge.name,
+          amount: charge.amount_for(loan_application),
+          amount_type: 'credit',
+          account: charge.account
           )
       end
     end
 
-    def create_charges_that_does_not_depends_on_loan_amount(loan)
+    def create_charges_that_does_not_depends_on_loan_amount(loan_application)
      charges.not_depends_on_loan_amount.each do |charge|
-        loan.loan_charges.find_or_create_by!(
-          charge: charge,
-          commercial_document: loan,
-          amount_type: 'credit')
+        loan_application.voucher_amounts.find_or_create_by!(
+          description:  charge.name,
+          amount: charge.amount_for(loan_application),
+          amount_type: 'credit',
+          account: charge.account)
       end
     end
   end

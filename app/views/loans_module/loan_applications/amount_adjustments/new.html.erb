@@ -1,0 +1,12 @@
+<div class="card">
+  <div class="card-body">
+    <%= @voucher_amount.description %>
+<%= simple_form_for [@voucher_amount, @adjustment], url: :loans_module_voucher_amount_amount_adjustments do |f| %>
+  <%= f.input :amount %>
+  <%= f.input :percent %>
+  <%= f.input :number_of_payments %>
+  <%= f.input :loan_application_id, input_html: { value: @loan_application.id } %>
+  <%= f.input :voucher_amount_id, input_html: { value: @voucher_amount.id } %>
+
+  <%= f.submit "Save" %>
+<% end %>

@@ -2,12 +2,12 @@ module LoansModule
   class LoanApplicationsController < ApplicationController
     def new
       @borrower = Borrower.find(params[:borrower_id])
-      @loan = LoansModule::LoanApplication.new
+      @loan = LoansModule::LoanApplicationProcessing.new
     end
 
     def create
-      @borrower = Borrower.find(params[:loans_module_loan_application][:borrower_id])
-      @loan = LoansModule::LoanApplication.new(loan_params)
+      @borrower = Borrower.find(params[:loans_module_loan_application_processing][:borrower_id])
+      @loan = LoansModule::LoanApplicationProcessing.new(loan_params)
       if @loan.valid?
         @loan.save
         redirect_to loans_module_loan_application_url(@loan.find_loan), notice: "Loan application saved successfully."
@@ -16,11 +16,8 @@ module LoansModule
       end
     end
     def show
-      @loan = LoansModule::Loan.find(params[:id])
-      if @loan.disbursed?
-        redirect_to loan_url(@loan)
-      end
-      @borrower = @loan.borrower
+      @loan_application = LoansModule::LoanApplication.find(params[:id])
+      @borrower = @loan_application.borrower
       @voucher = Loans::DisbursementVoucher.new
     end
 
@@ -32,7 +29,7 @@ module LoansModule
 
     private
     def loan_params
-      params.require(:loans_module_loan_application).permit(
+      params.require(:loans_module_loan_application_processing).permit(
                   :cooperative_id,
                   :borrower_id,
                   :borrower_type,

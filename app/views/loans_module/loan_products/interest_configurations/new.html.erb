@@ -7,6 +7,10 @@
       <%= f.input :rate %>
       <%= f.input :interest_revenue_account_id, collection: AccountingModule::Revenue.all.map{|a| [a.name, a.id] } %>
       <%= f.input :unearned_interest_income_account_id, collection: AccountingModule::Asset.all.map{|a| [a.name, a.id] } %>
+      <%= f.input :calculation_type, collection: LoansModule::LoanProducts::InterestConfig.calculation_types.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
+      <%= f.input :prededuction_type, collection: LoansModule::LoanProducts::InterestConfig.prededuction_types.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
+      <%= f. input :prededucted_rate %>
+
 
       <%= f.submit "Save Interest Configuration" %>
     <% end %>

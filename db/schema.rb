@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_20_004247) do
+ActiveRecord::Schema.define(version: 2018_09_20_063126) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -110,12 +110,26 @@ ActiveRecord::Schema.define(version: 2018_09_20_004247) do
     t.string "commercial_document_type"
     t.uuid "commercial_document_id"
     t.integer "payment_status"
+    t.uuid "loan_application_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_amortization_schedules"
     t.index ["credit_account_id"], name: "index_amortization_schedules_on_credit_account_id"
     t.index ["debit_account_id"], name: "index_amortization_schedules_on_debit_account_id"
+    t.index ["loan_application_id"], name: "index_amortization_schedules_on_loan_application_id"
     t.index ["loan_id"], name: "index_amortization_schedules_on_loan_id"
     t.index ["payment_status"], name: "index_amortization_schedules_on_payment_status"
     t.index ["schedule_type"], name: "index_amortization_schedules_on_schedule_type"
+  end
+
+  create_table "amount_adjustments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "voucher_amount_id"
+    t.uuid "loan_application_id"
+    t.decimal "amount"
+    t.decimal "percent"
+    t.integer "number_of_payments"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["loan_application_id"], name: "index_amount_adjustments_on_loan_application_id"
+    t.index ["voucher_amount_id"], name: "index_amount_adjustments_on_voucher_amount_id"
   end
 
   create_table "amounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -413,10 +427,15 @@ ActiveRecord::Schema.define(version: 2018_09_20_004247) do
     t.uuid "unearned_interest_income_account_id"
     t.integer "interest_type"
     t.uuid "cooperative_id"
+    t.integer "calculation_type"
+    t.integer "prededuction_type"
+    t.decimal "prededucted_rate"
+    t.index ["calculation_type"], name: "index_interest_configs_on_calculation_type"
     t.index ["cooperative_id"], name: "index_interest_configs_on_cooperative_id"
     t.index ["interest_revenue_account_id"], name: "index_interest_configs_on_interest_revenue_account_id"
     t.index ["interest_type"], name: "index_interest_configs_on_interest_type"
     t.index ["loan_product_id"], name: "index_interest_configs_on_loan_product_id"
+    t.index ["prededuction_type"], name: "index_interest_configs_on_prededuction_type"
     t.index ["unearned_interest_income_account_id"], name: "index_interest_configs_on_unearned_interest_income_account_id"
   end
 
@@ -457,6 +476,25 @@ ActiveRecord::Schema.define(version: 2018_09_20_004247) do
     t.index ["sales_line_item_id"], name: "index_line_items_on_sales_line_item_id"
     t.index ["type"], name: "index_line_items_on_type"
     t.index ["unit_of_measurement_id"], name: "index_line_items_on_unit_of_measurement_id"
+  end
+
+  create_table "loan_applications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "borrower_type"
+    t.uuid "borrower_id"
+    t.integer "term"
+    t.decimal "loan_amount"
+    t.datetime "application_date"
+    t.integer "mode_of_payment"
+    t.string "account_number"
+    t.uuid "preparer_id"
+    t.uuid "cooperative_id"
+    t.uuid "loan_product_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["borrower_type", "borrower_id"], name: "index_loan_applications_on_borrower_type_and_borrower_id"
+    t.index ["cooperative_id"], name: "index_loan_applications_on_cooperative_id"
+    t.index ["loan_product_id"], name: "index_loan_applications_on_loan_product_id"
+    t.index ["preparer_id"], name: "index_loan_applications_on_preparer_id"
   end
 
   create_table "loan_charge_payment_schedules", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -560,12 +598,10 @@ ActiveRecord::Schema.define(version: 2018_09_20_004247) do
   create_table "loans", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "loan_product_id"
     t.decimal "loan_amount"
-    t.decimal "loan_term"
     t.integer "mode_of_payment"
     t.datetime "application_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.decimal "term"
     t.uuid "barangay_id"
     t.uuid "street_id"
     t.uuid "municipality_id"
@@ -1232,7 +1268,9 @@ ActiveRecord::Schema.define(version: 2018_09_20_004247) do
     t.datetime "updated_at", null: false
     t.string "description"
     t.integer "amount_type", default: 0
+    t.uuid "amount_adjustment_id"
     t.index ["account_id"], name: "index_voucher_amounts_on_account_id"
+    t.index ["amount_adjustment_id"], name: "index_voucher_amounts_on_amount_adjustment_id"
     t.index ["amount_type"], name: "index_voucher_amounts_on_amount_type"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_voucher_amount"
     t.index ["voucher_id"], name: "index_voucher_amounts_on_voucher_id"
@@ -1276,7 +1314,10 @@ ActiveRecord::Schema.define(version: 2018_09_20_004247) do
   add_foreign_key "addresses", "streets"
   add_foreign_key "amortization_schedules", "accounts", column: "credit_account_id"
   add_foreign_key "amortization_schedules", "accounts", column: "debit_account_id"
+  add_foreign_key "amortization_schedules", "loan_applications"
   add_foreign_key "amortization_schedules", "loans"
+  add_foreign_key "amount_adjustments", "loan_applications"
+  add_foreign_key "amount_adjustments", "voucher_amounts"
   add_foreign_key "amounts", "accounts"
   add_foreign_key "amounts", "cooperative_services"
   add_foreign_key "amounts", "entries"
@@ -1305,6 +1346,9 @@ ActiveRecord::Schema.define(version: 2018_09_20_004247) do
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items", "products"
   add_foreign_key "line_items", "unit_of_measurements"
+  add_foreign_key "loan_applications", "cooperatives"
+  add_foreign_key "loan_applications", "loan_products"
+  add_foreign_key "loan_applications", "users", column: "preparer_id"
   add_foreign_key "loan_charge_payment_schedules", "amortization_schedules"
   add_foreign_key "loan_charge_payment_schedules", "loan_charges"
   add_foreign_key "loan_charge_payment_schedules", "loans"
@@ -1403,6 +1447,7 @@ ActiveRecord::Schema.define(version: 2018_09_20_004247) do
   add_foreign_key "users", "offices"
   add_foreign_key "users", "store_fronts"
   add_foreign_key "voucher_amounts", "accounts"
+  add_foreign_key "voucher_amounts", "amount_adjustments"
   add_foreign_key "voucher_amounts", "vouchers"
   add_foreign_key "vouchers", "entries"
   add_foreign_key "vouchers", "users"

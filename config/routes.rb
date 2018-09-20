@@ -45,6 +45,9 @@ Rails.application.routes.draw do
 
   resources :loans_module, only: [:index]
   namespace :loans_module do
+    resources :voucher_amounts, shallow: true do
+      resources :amount_adjustments, only: [:new, :create], module: :loan_applications
+    end
     resources :archived_loans, only: [:index]
 
     resources :disbursement_vouchers, only: [:create]
@@ -71,7 +74,9 @@ Rails.application.routes.draw do
     resources :loan_registries, only: [:new, :create]
     resources :aging_loans, only: [:index, :show]
     resources :loan_calculator, only: [:index]
-    resources :loan_applications, only: [:new, :create, :show, :destroy]
+    resources :loan_applications, only: [:new, :create, :show, :destroy] do
+      resources :capital_build_up_processings,       only: [:new, :create], module: :loan_applications
+    end
     resources :dashboard, only: [:index]
     resources :loan_products, except:[:destroy] do
       resources :interest_configurations, only: [:new, :create], module: :loan_products
@@ -84,13 +89,13 @@ Rails.application.routes.draw do
       resources :adjustments, only: [:new, :create], module: :loan_charges
       resources :payment_schedules, only: [:new, :create], module: :schedules
     end
+
     resources :loans do
       resources :loan_penalty_discounts, only: [:new, :create], module: :loans
       resources :loan_interest_discounts, only: [:new, :create], module: :loans
 
       resources :first_notices, only: [:show], module: :notices
       resources :archivings, only: [:create], module: :loans
-      resources :share_capital_build_ups,       only: [:new, :create], module: :loans
       resources :savings_account_deposits,      only: [:new, :create], module: :loans
       resources :terms,                         only: [:new, :create], module: :loans
       resources :interest_postings,             only: [:new, :create], module: :loans

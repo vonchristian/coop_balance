@@ -1,9 +1,9 @@
 module LoansModule
 	class AmortizationSchedule < ApplicationRecord
-    include LoansModule::InterestComputation
     enum payment_status: [:full_payment, :partial_payment, :unpaid]
 
     belongs_to :loan
+    belongs_to :loan_application
 
     has_many :payment_notices, as: :notified
     has_many :notes, as: :noteable
@@ -11,7 +11,48 @@ module LoansModule
     accepts_nested_attributes_for :notes
 
     delegate :avatar, :borrower_name, to: :loan
+    ###########################
+    def self.principal_balance(args={})
+      if args[:from_date] && args[:to_date]
+        from_date = args[:from_date]
+        to_date =  args[:to_date]
+        scheduled_for(from_date: from_date, to_date: to_date).to_a.sum(&:principal)
+      end
+    end
 
+    def self.create_amort_schedule_for(loan_application)
+      create_first_amort_schedule(loan_application)
+      create_succeeding_amort_schedule(loan_application)
+      update_int_amount(loan_application)
+
+    end
+    def self.create_first_amort_schedule(loan_application)
+      loan_application.amortization_schedules.create!(
+        date: first_amortization_date_for(loan_application),
+        principal: principal_amount_for(loan_application)
+      )
+    end
+    def self.create_succeeding_amort_schedule(loan_application)
+      if !loan_application.lumpsum?
+        ActiveRecord::Base.transaction do
+          number_of_remaining_schedules_for(loan_application).times do
+            loan_application.amortization_schedules.create!(
+              date: schedule_date_for(loan_application),
+              principal: principal_amount_for(loan_application)
+            )
+          end
+        end
+      end
+    end
+    def self.update_int_amount(loan_application)
+      loan_application.amortization_schedules.each do |schedule|
+        schedule.update_attributes!(interest: loan_application.interest_balance / loan_application.term)
+      end
+    end
+    def self.interest_for_first_year(loan_application)
+      loan_application.loan_amount * loan_application.annual_interest_rate
+    end
+    ###########################
     def color
       if missed_payment?
         "red"
@@ -117,7 +158,7 @@ module LoansModule
       if loan.cooperative.interest_amortization_config.straight_balance?
         straight_balance_interest_computation(schedule, loan)
       elsif loan.cooperative.interest_amortization_config.annually?
-        annual_interest_computation(schedule, loan)
+        annual_interest_computation(loan)
       end
     end
 
@@ -130,16 +171,17 @@ module LoansModule
         (loan.principal_balance_for(schedule) * loan.loan_product_monthly_interest_rate)
       end
     end
-    def self.annual_interest_computation(schedule, loan)
-      if loan.term <= 36
-        loan.principal_balance_for(schedule) * loan.loan_product_annual_rate +
-        loan.principal_balance_for(schedule) * loan.loan_product_annual_rate +
-        loan.principal_balance_for(schedule) * loan.loan_product_annual_rate
-      elsif loan.term <= 24
-        loan.principal_balance_for(schedule) * loan.loan_product_annual_rate +
-        loan.principal_balance_for(schedule) * loan.loan_product_annual_rate
-      elsif loan.term <= 12
-        loan.principal_balance_for(schedule) * loan.loan_product_annual_rate
+    def self.annual_interest_computation(loan)
+      if loan.term < 36
+        0
+        # loan.principal_balance_for(loan.amortization_schedules.order(date: :desc)[12]) * loan.loan_product_annual_rate
+      #   loan.principal_balance_for(schedule) * loan.loan_product_annual_rate +
+      #   loan.principal_balance_for(schedule) * loan.loan_product_annual_rate
+      # # elsif loan.term < 24
+      #   loan.principal_balance_for(schedule) * loan.loan_product_annual_rate +
+      #   loan.principal_balance_for(schedule) * loan.loan_product_annual_rate
+      # elsif loan.term < 12
+      #   loan.principal_balance_for(schedule) * loan.loan_product_annual_rate
       end
     end
 
@@ -177,7 +219,7 @@ module LoansModule
 
     def self.number_of_payments(loan)
       if loan.monthly?
-        loan.current_term_number_of_months.to_i
+        loan.term.to_i
       elsif loan.quarterly?
         loan.current_term_number_of_months.to_i / 4
       elsif loan.semi_annually?

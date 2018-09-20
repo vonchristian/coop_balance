@@ -1,7 +1,6 @@
 module LoansModule
   class Loan < ApplicationRecord
     include PgSearch
-    include TermMonitoring
     include LoansModule::Loans::Interest
     include LoansModule::Loans::Principal
     include LoansModule::Loans::Penalty
@@ -44,7 +43,9 @@ module LoansModule
     has_many :loan_penalties,           class_name: "LoansModule::Loans::LoanPenalty"
     has_many :loan_discounts,           class_name: "LoansModule::Loans::LoanDiscount"
     has_many :notes,                    as: :noteable
+    has_many :terms, as: :termable
 
+    delegate  :effectivity_date, :is_past_due?, :number_of_days_past_due, :remaining_term, :terms_elapsed, :maturity_date, to: :current_term, allow_nil: true
 
     delegate :name, :age, :contact_number, :current_address,  :first_name, to: :borrower,  prefix: true, allow_nil: true
     delegate :name,  to: :loan_product, prefix: true
@@ -69,10 +70,13 @@ module LoansModule
     validates :loan_amount, numericality: { less_than_or_equal_to: :maximum_loanable_amount }
     before_save :set_borrower_full_name
 
-    accepts_nested_attributes_for :terms, allow_destroy: true
 
     delegate :is_past_due?, :number_of_days_past_due, :remaining_term, :terms_elapsed, :maturity_date, to: :current_term, allow_nil: true
     delegate :number_of_months, to: :current_term, prefix: true
+    delegate :term, to: :current_term
+    def current_term
+      terms.current
+    end
     def number_of_interest_payments_prededucted
       if interest_on_loan_charge.present?
         interest_on_loan_charge.number_of_interest_payments_prededucted
