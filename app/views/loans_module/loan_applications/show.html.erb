@@ -3,20 +3,16 @@
   <div class="col-md-8">
     <div class="card">
       <div class="card-body">
-<%= number_to_currency @loan_application.adjusted_interest_on_loan %>
-
-
-<hr>
         <%= number_to_currency @loan_application.loan_amount %>
        <br>
         <% @loan_application.voucher_amounts.each do |voucher_amount| %>
         <div class="row">
           <div class="col-md-4">
-            <%= voucher_amount.amount %>
-            <%= voucher_amount.adjusted_amount %>
+            <%= voucher_amount.description %>
           </div>
           <div class="col-md-3">
-            <%= voucher_amount.description %>
+            <%= number_to_currency voucher_amount.amount %>
+
           </div>
           <div class="col-md-3">
             <%= link_to 'Adjust', new_loans_module_voucher_amount_amount_adjustment_path(voucher_amount_id: voucher_amount.id, loan_application_id: @loan_application.id) %>
@@ -26,6 +22,22 @@
         <% end %>
         <hr>
         <%= @loan_application.net_proceed %>
+        <hr>
+        <%= simple_form_for [@loan_application, @voucher], url: :loans_module_disbursement_vouchers do |f| %>
+            <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+            <%= f.input :description, input_html: { value: "Loan disbursement voucher of #{@loan_application.borrower_name}" }, as: :text %>
+            <%= f.input :number, input_html: { value: Voucher.generate_number_for(@voucher) } %>
+            <%= f.input :preparer_id, input_html: { value: current_user.id }, as: :hidden %>
+
+            <%= f.input :preparer_id, input_html: { value: current_user.id }, as: :hidden %>
+            <%= f.input :loan_application_id, input_html: { value: @loan_application.id }, as: :hidden %>
+            <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
+            <%= f.input :net_proceed, input_html: { value: @loan_application.net_proceed }, as: :hidden %>
+
+
+              <%= f.submit "Create Voucher", class: "btn btn-primary btn-lg float-right" %>
+              <%= link_to 'Cancel ', loans_module_loan_application_path(@loan_application), method: :delete, class: "btn float-left" %>
+            <% end %>
       </div>
     </div>
   </div>

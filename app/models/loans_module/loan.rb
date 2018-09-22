@@ -224,7 +224,7 @@ module LoansModule
 
     def net_proceed
       if !disbursed?
-        loan_amount - loan_charges.total
+        loan_amount - voucher_amounts.sum(&:adjusted_amount)
       else
         amounts = []
         User.cash_on_hand_accounts.each do |account|

@@ -1,11 +1,13 @@
 module LoansModule
   class LoanAmortizationSchedulePdf < Prawn::Document
-    def initialize(loan, amortization_schedules, employee, view_context)
+    attr_reader :loan, :amortization_schedules, :employee, :view_context, :voucher
+    def initialize(args)
       super(margin: 50, page_size: "LEGAL", page_layout: :portrait)
-      @loan = loan
-      @amortization_schedules = amortization_schedules
-      @employee = employee
-      @view_context = view_context
+      @loan = args[:loan]
+      @voucher = @loan.voucher
+      @amortization_schedules = args[:amortization_schedules]
+      @employee = args[:employee]
+      @view_context = args[:view_context]
       heading
       loan_charges_details
       amortization_schedule
@@ -22,9 +24,9 @@ module LoansModule
     end
 
     def interest_amount_for(a)
-      if @loan.interest_on_loan_charge.charge_adjustment.present? && @loan.interest_on_loan_charge.charge_adjustment.number_of_payments.present?
-        number_of_payments = @loan.interest_on_loan_charge.charge_adjustment.number_of_payments
-        if @loan.amortization_schedules.order(date: :asc).first(number_of_payments).include?(a)
+      if loan.interest_on_loan_charge.charge_adjustment.present? && loan.interest_on_loan_charge.charge_adjustment.number_of_payments.present?
+        number_of_payments = loan.interest_on_loan_charge.charge_adjustment.number_of_payments
+        if loan.amortization_schedules.order(date: :asc).first(number_of_payments).include?(a)
           "#{price(a.interest)} - PREDEDUCTED"
         else
           price(a.interest)
@@ -66,14 +68,7 @@ module LoansModule
       cells.borders = []
       column(1).align = :right
     end
-    table([["Loan Amount", "#{price(@loan.loan_amount)}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [160, 100]) do
-      cells.borders = []
-      column(1).align = :right
-    end
-    table([["<b>Less Charges</b>"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [160, 100]) do
-      cells.borders = []
-      column(1).align = :right
-    end
+
 
     table(loan_charges_data, cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [160, 100]) do
       cells.borders = []
@@ -81,18 +76,13 @@ module LoansModule
 
 
     end
-
-    table([["<b>NET PROCEED</b>", "<b>#{price @loan.net_proceed}</b>"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [160, 100]) do
-      cells.borders = []
-      column(1).align = :right
-
-    end
     move_down 5
 
   end
   def loan_charges_data
-    @loan_charges_data ||= @loan.loan_charges.map{|a| [a.name, price(a.charge_amount_with_adjustment)]}
+    @loan_charges_data ||= loan.voucher_amounts.map{|a| [a.description, price(a.adjusted_amount)]}
   end
+
     def amortization_schedule
 
       table(amortization_schedule_data, header: true, cell_style: { size: 8, font: "Helvetica"}, column_widths: [90, 80, 80, 70, 90, 100]) do

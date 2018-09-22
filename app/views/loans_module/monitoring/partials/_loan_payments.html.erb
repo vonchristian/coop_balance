@@ -1,5 +1,6 @@
-
-<h4>Loan Payments</h4>
+<div class="card">
+  <div class="card-body">
+<h3 class="card-title">Loan Payments</h3>
 <% year_dates = [] %>
 <% start_date = LoansModule::Loan.order(disbursement_date: :desc).last.disbursement_date %>
 <% (start_date.to_date..Date.today).each do |date| %>

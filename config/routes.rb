@@ -74,6 +74,7 @@ Rails.application.routes.draw do
     resources :loan_registries, only: [:new, :create]
     resources :aging_loans, only: [:index, :show]
     resources :loan_calculator, only: [:index]
+    resources :disbursement_vouchers, only: [:create], module: :loan_applications
     resources :loan_applications, only: [:new, :create, :show, :destroy] do
       resources :capital_build_up_processings,       only: [:new, :create], module: :loan_applications
     end

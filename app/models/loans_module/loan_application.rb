@@ -6,10 +6,10 @@ module LoansModule
     belongs_to :preparer
     belongs_to :cooperative
     belongs_to :loan_product
-    has_many :voucher_amounts, as: :commercial_document, class_name: "Vouchers::VoucherAmount"
-    has_many :amortization_schedules
+    has_many :voucher_amounts, as: :commercial_document, class_name: "Vouchers::VoucherAmount", dependent: :nullify
+    has_many :amortization_schedules, dependent: :nullify
     delegate :name, to: :borrower, prefix: true
-    delegate :interest_revenue_account, to: :loan_product, prefix: true
+    delegate :interest_revenue_account, :loans_receivable_current_account, to: :loan_product, prefix: true
     delegate :current_interest_config, to: :loan_product
 
     def principal_balance(args={})
@@ -21,15 +21,19 @@ module LoansModule
     def total_interest
       current_interest_config.total_interest(self)
     end
+
     def interest_balance
       current_interest_config.interest_balance(self)
     end
+
     def first_year_interest
       current_interest_config.first_year_interest(self)
     end
+
     def second_year_interest
       current_interest_config.second_year_interest(self)
     end
+
     def third_year_interest
       current_interest_config.third_year_interest(self)
     end

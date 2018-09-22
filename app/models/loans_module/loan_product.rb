@@ -36,7 +36,7 @@ module LoansModule
     end
 
     def self.total_balance(args={})
-      accounts.balance(args)
+      current_accounts.balance(args)
     end
     def self.total_loan_releases(args={})
       current_accounts.debits_balance(args)
