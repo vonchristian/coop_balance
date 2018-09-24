@@ -1,91 +1,59 @@
-<div class="row">
-  <div class="col-md-4">
-    <div class="card">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-md-8 border-right">
-            <h4><%= number_to_currency current_user.cash_on_hand_account.credits_balance(from_date: Date.today, to_date: Date.today) %></h4>
-            <small>CASH DISBURSEMENTS</small>
-          </div>
-          <div class="col-md-4">
-            <center>
-              <h3><%= Date.today.strftime("%e") %></h3>
-              <small><%= Date.today.strftime("%b").upcase %></small>
-            </center>
-          </div>
-        </div>
-        <hr>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-8">
-    <div class="card">
-      <div class="card-header">
-      </div>
-      <div class="card-body">
-    </div>
-  </div>
-</div>
-</div>
 
-<div class="row">
-  <div class="col-md-12">
-    <div class="card">
-      <div class="card-header">
-        <div class="row">
-          <div class="col-md-2">
-            <h3 class="card-title"> Disbursements </h3>
-          </div>
-          <div class="col-md-6">
-            <%=form_tag treasury_module_disbursements_path, method: :get do %>
-              <div class="input-group">
-                <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search disbursements ", id: 'account-search-form' %>
-                <span class="input-group-btn">
-                  <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
-                    <i class="fa fa-search"></i>
-                  <% end %>
-                </span>
-              </div>
-            <% end %>
-          </div>
-          <div class="col-md-4">
-            <span class="pull-right">
-              <%=link_to 'New Disbursement', new_treasury_module_disbursement_line_item_path, class: "btn btn-danger pull-right" %>
+<div class="card">
+  <div class="card-header">
+    <div class="row">
+      <div class="col-md-2">
+        <h3 class="card-title"> Disbursements </h3>
+      </div>
+      <div class="col-md-6">
+        <%=form_tag treasury_module_disbursements_path, method: :get do %>
+          <div class="input-group">
+            <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search disbursements ", id: 'account-search-form' %>
+            <span class="input-group-btn">
+              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                <i class="fa fa-search"></i>
+              <% end %>
             </span>
           </div>
-        </div>
+        <% end %>
       </div>
-      <div class="card-body">
-        <div class="table table-responsive">
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th>Reference #</th>
-                <th>Date</th>
-                <th>Member/Payee</th>
-                <th>Description</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @cash_disbursements.each do |cash_disbursement| %>
-                <tr>
-                  <td><%= link_to cash_disbursement.reference_number, accounting_module_entry_path(cash_disbursement) %></td>
-                  <td><%= cash_disbursement.entry_date.strftime("%B %e, %Y") %></td>
-                  <td><%= cash_disbursement.commercial_document.try(:name) %></td>
-                  <td><%= cash_disbursement.description %></td>
-                  <td>
-                    <span class="pull-right">
-                      <%= number_to_currency cash_disbursement.amounts.where(account: current_user.cash_on_hand_account).sum(:amount) %>
-                    </span>
-                  </td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-        </div>
-        <center><%= will_paginate @cash_disbursements %></center>
+      <div class="col-md-4">
+        <span class="float-right">
+          <%=link_to 'New Disbursement', new_treasury_module_disbursement_line_item_path, class: "btn btn-danger pull-right" %>
+        </span>
       </div>
     </div>
   </div>
+  <div class="card-body">
+    <div class="table table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Reference #</th>
+            <th>Date</th>
+            <th>Member/Payee</th>
+            <th>Description</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @cash_disbursements.each do |cash_disbursement| %>
+            <tr>
+              <td><%= link_to cash_disbursement.reference_number, accounting_module_entry_path(cash_disbursement) %></td>
+              <td><%= cash_disbursement.entry_date.strftime("%B %e, %Y") %></td>
+              <td><%= cash_disbursement.commercial_document.try(:name) %></td>
+              <td><%= cash_disbursement.description %></td>
+              <td>
+                <span class="pull-right">
+                  <%= number_to_currency cash_disbursement.amounts.where(account: current_user.cash_on_hand_account).sum(:amount) %>
+                </span>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <center><%= will_paginate @cash_disbursements %></center>
+  </div>
 </div>
+

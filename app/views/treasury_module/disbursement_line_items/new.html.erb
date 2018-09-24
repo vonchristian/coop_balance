@@ -6,6 +6,8 @@
       </div>
       <div class="card-body">
         <%= simple_form_for @disbursement_line_item, url: :treasury_module_disbursement_line_items do |f| %>
+              <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+
           <div class="row">
             <div class="col-md-6">
               <%= f.input :account_id, label: false, placeholder: "Account", collection: AccountingModule::Account.all.map{|a| [a.name, a.id] }, prompt: "Select Account" %>
@@ -14,8 +16,7 @@
               <%= f.input :amount, label: false, placeholder: 'Amount', as: :currency  %>
             </div>
             <div class="col-md-2">
-              <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
-              <%= f.submit "Add", class: "btn btn-danger" %>
+              <%= f.submit "Add", class: "btn btn-danger float-right" %>
             </div>
           </div>
           <br>
@@ -85,7 +86,7 @@
           <%= f.input :payee_id, label: "Payee", collection: Voucher.payees.map{|a| [a.name, a.id] } %>
           <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
             <% if current_user.voucher_amounts.present? %>
-              <%= f.submit "Disburse Amount", class: "btn btn-danger pull-right" %>
+              <%= f.submit "Disburse Amount", class: "btn btn-danger float-right" %>
             <% end %>
         <% end %>
       </div>

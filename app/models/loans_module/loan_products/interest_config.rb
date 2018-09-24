@@ -20,7 +20,7 @@ module LoansModule
       end
 
       def total_interest(loan_application)
-        if loan_application.term <= 12
+        if loan_application.term <= 12 || loan_application.lumpsum?
           first_year_interest(loan_application)
         elsif loan_application.term <= 24
           first_year_interest(loan_application) +

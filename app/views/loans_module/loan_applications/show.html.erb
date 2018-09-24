@@ -2,17 +2,33 @@
 <div class="row">
   <div class="col-md-8">
     <div class="card">
+      <div class="card-header">
+        <center>
+          <%= image_tag(@loan_application.avatar, class: "img-circle", height: 60, width: 60) %><br>
+          <h3 class="card-title"> <%= @borrower.name %> </h3>
+        </center>
+      </div>
       <div class="card-body">
-        <%= number_to_currency @loan_application.loan_amount %>
+        <div class="row">
+          <div class="col-md-6">
+            <h3 class="card-title">Loan Amount </h3>
+          </div>
+          <div class="col-md-6">
+            <h3 class="card-title"><%= number_to_currency @loan_application.loan_amount %></h3>
+          </div>
+        </div>
        <br>
         <% @loan_application.voucher_amounts.each do |voucher_amount| %>
         <div class="row">
+          <div class="col-md-1">
+          </div>
           <div class="col-md-4">
             <%= voucher_amount.description %>
           </div>
           <div class="col-md-3">
-            <%= number_to_currency voucher_amount.amount %>
-
+            <span class="float-right">
+              <%= number_to_currency voucher_amount.amount %>
+            </span>
           </div>
           <div class="col-md-3">
             <%= link_to 'Adjust', new_loans_module_voucher_amount_amount_adjustment_path(voucher_amount_id: voucher_amount.id, loan_application_id: @loan_application.id) %>
@@ -21,7 +37,14 @@
         <br>
         <% end %>
         <hr>
-        <%= @loan_application.net_proceed %>
+        <div class="row">
+          <div class="col-md-6">
+            <h3 class="card-title"> Net Proceed </h3>
+          </div>
+          <div class="col-md-6">
+            <h3 class="card-title"><%= number_to_currency @loan_application.net_proceed %></h3>
+          </div>
+        </div>
         <hr>
         <%= simple_form_for [@loan_application, @voucher], url: :loans_module_disbursement_vouchers do |f| %>
             <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
@@ -57,6 +80,11 @@
     </div>
   </div>
 </div>
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title"> Amortization Schedules </h3>
+  </div>
+  <div class="card-body">
 <table class="table table-hover">
   <thead>
 

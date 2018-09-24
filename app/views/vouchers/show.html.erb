@@ -56,12 +56,14 @@
                     <td><%= amount.account_name %></td>
                     <td>
                       <% if amount.kind_of?(AccountingModule::DebitAmount) %>
-                        <%= number_to_currency amount.amount %>
+                        <span class="float-right">
+                          <%= number_to_currency amount.amount %>
+                        </span>
                       <% end %>
                     </td>
                     <td>
                       <% if amount.kind_of?(AccountingModule::CreditAmount) %>
-                        <span class="pull-right"><%= number_to_currency amount.amount %></span>
+                        <span class="float-right"><%= number_to_currency amount.amount %></span>
                       <% end %>
                     </td>
                   </tr>

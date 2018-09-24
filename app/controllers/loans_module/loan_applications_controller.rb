@@ -22,8 +22,8 @@ module LoansModule
     end
 
     def destroy
-      @loan = LoansModule::Loan.find(params[:id])
-      @loan.destroy
+      @loan_application = LoansModule::LoanApplication.find(params[:id])
+      @loan_application.destroy
       redirect_to loans_url, notice: "Loan application cancelled successfully"
     end
 

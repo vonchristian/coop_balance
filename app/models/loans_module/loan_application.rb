@@ -8,10 +8,12 @@ module LoansModule
     belongs_to :loan_product
     has_many :voucher_amounts, as: :commercial_document, class_name: "Vouchers::VoucherAmount", dependent: :nullify
     has_many :amortization_schedules, dependent: :nullify
+    has_many :terms, as: :termable
+    has_many :amount_adjustments, class_name: "Vouchers::AmountAdjustment", dependent: :destroy
     delegate :name, to: :borrower, prefix: true
     delegate :interest_revenue_account, :loans_receivable_current_account, to: :loan_product, prefix: true
     delegate :current_interest_config, to: :loan_product
-
+    delegate :avatar, :name, to: :borrower
     def principal_balance(args={})
       amortization_schedules.principal_balance(
           from_date: args[:from_date],

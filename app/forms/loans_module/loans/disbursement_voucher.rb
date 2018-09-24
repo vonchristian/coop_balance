@@ -18,6 +18,7 @@ module LoansModule
       private
       def create_loan
         loan = LoansModule::Loan.create!(
+          mode_of_payment: find_loan_application.mode_of_payment,
           cooperative: find_loan_application.cooperative,
           loan_amount: find_loan_application.loan_amount,
           application_date: find_loan_application.application_date,
@@ -28,16 +29,19 @@ module LoansModule
           )
         loan.amortization_schedules << find_loan_application.amortization_schedules
         loan.voucher_amounts << find_loan_application.voucher_amounts
+        loan.terms.create(
+          term: find_loan_application.term)
       end
 
       def create_voucher
-        voucher = Voucher.create!(
+        voucher = Voucher.new(
           date: date,
           number: number,
           description: description,
           payee: find_loan,
           preparer: find_preparer)
         add_amounts(voucher)
+        voucher.save!
       end
       def find_loan_application
         LoansModule::LoanApplication.find(loan_application_id)
@@ -47,20 +51,21 @@ module LoansModule
       end
 
       def add_amounts(voucher)
-        voucher.voucher_amounts.create!(
+        Vouchers::VoucherAmount.create!(
+        voucher: voucher,
         amount_type: 'debit',
         amount: find_loan.loan_amount,
         description: 'Loan Amount',
         account: find_loan.loan_product_loans_receivable_current_account,
         commercial_document: find_loan)
 
-        voucher.voucher_amounts.create!(
+        Vouchers::VoucherAmount.create!(
+        voucher: voucher,
         amount_type: 'credit',
         amount: net_proceed,
         description: 'Net Proceed',
         account: AccountingModule::Account.find_by(name: "Cash on Hand - Main (Treasury)"),
         commercial_document: find_loan)
-
         voucher.voucher_amounts << find_loan.voucher_amounts
       end
       def delete_loan_application

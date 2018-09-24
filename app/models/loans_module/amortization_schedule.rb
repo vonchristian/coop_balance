@@ -45,8 +45,14 @@ module LoansModule
       end
     end
     def self.update_int_amount(loan_application)
-      loan_application.amortization_schedules.each do |schedule|
-        schedule.update_attributes!(interest: loan_application.interest_balance / loan_application.term)
+      if  loan_application.lumpsum?
+        loan_application.amortization_schedules.each do |schedule|
+          schedule.update_attributes!(interest: loan_application.interest_balance)
+        end
+      else
+        loan_application.amortization_schedules.each do |schedule|
+          schedule.update_attributes!(interest: loan_application.interest_balance / loan_application.term)
+        end
       end
     end
     def self.interest_for_first_year(loan_application)
@@ -251,7 +257,7 @@ module LoansModule
 			elsif loan.semi_annually?
 				starting_date(loan).next_quarter.next_quarter
 			elsif loan.lumpsum?
-				starting_date(loan) + loan.current_term_number_of_months.to_i.months
+				starting_date(loan) + loan.term
 			end
 		end
 

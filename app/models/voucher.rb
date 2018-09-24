@@ -1,3 +1,4 @@
+#ensure debits and credits are equal
 class Voucher < ApplicationRecord
   include PgSearch
   has_secure_token
@@ -18,6 +19,9 @@ class Voucher < ApplicationRecord
   delegate :avatar, to: :payee, allow_nil: true
 
   before_save :set_default_date
+  # validate :has_credit_amounts?
+  # validate :has_debit_amounts?
+  validate :amounts_cancel?
 
   def self.unearned
     where(unearned: true)
@@ -79,5 +83,16 @@ class Voucher < ApplicationRecord
   private
   def set_default_date
     self.date ||= Time.zone.now
+  end
+  def has_credit_amounts?
+    errors[:base] << "Voucher must have at least one credit amount" if self.voucher_amounts.credit.blank?
+  end
+
+  def has_debit_amounts?
+    errors[:base] << "Voucher must have at least one debit amount" if self.voucher_amounts.debit.blank?
+  end
+
+  def amounts_cancel?
+    errors[:base] << "The credit and debit amounts are not equal" if voucher_amounts.credit.balance_for_new_record != voucher_amounts.debit.balance_for_new_record
   end
 end

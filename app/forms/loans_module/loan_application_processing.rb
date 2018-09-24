@@ -12,7 +12,7 @@ module LoansModule
                   :preparer_id,
                   :cooperative_id
     validates :term, :loan_amount, presence: true, numericality: true
-    validates :loan_product_id, :mode_of_payment, presence: true
+    validates :loan_product_id, :mode_of_payment, :term, :loan_amount, :application_date, presence: true
     def save
       ActiveRecord::Base.transaction do
         create_loan
@@ -55,7 +55,7 @@ module LoansModule
       create_charges(loan_application)
     end
     def create_charges(loan_application)
-      loan_application.loan_product.create_charges_for(loan_application)
+      find_loan_product.create_charges_for(loan_application)
     end
     def create_documentary_stamp_tax(loan)
       tax = Charge.amount_type.create!(name: 'Documentary Stamp Tax', amount: DocumentaryStampTax.set(loan), account: AccountingModule::Account.find_by(name: "Documentary Stamp Taxes"))
@@ -69,6 +69,9 @@ module LoansModule
     end
     def find_preparer
       User.find(preparer_id)
+    end
+    def find_loan_product
+      LoansModule::LoanProduct.find(loan_product_id)
     end
   end
 end

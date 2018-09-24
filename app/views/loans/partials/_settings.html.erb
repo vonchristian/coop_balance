@@ -22,6 +22,7 @@
   <table class="table table-responsive">
     <thead>
       <tr>
+        <th>No. of Months</th>
         <th>Effectivity Date</th>
         <th>Maturity Date</th>
       </tr>
@@ -29,11 +30,12 @@
     <tbody>
       <% @loan.terms.each do |term| %>
         <tr>
+          <td><%= term.term %></td>
           <td><%= term.effectivity_date.try(:strftime, ("%B %e, %Y")) %></td>
           <td><%= term.maturity_date.try(:strftime, ("%B %e, %Y")) %></td>
           <td>
             <% if @loan.current_term == term %>
-              <span class="label bg-green"> Current </span>
+              <span class="badge bg-success"> Current </span>
             <% end %>
           </td>
         </tr>
@@ -41,7 +43,7 @@
     </tbody>
   </table>
 <% end %>
-<hr>
+
 <% if @loan.paid? %>
 <h4 class="card-title">Archive Loan</h4>
 <p class="text-muted"> Archive paid loans </p>
