@@ -1,0 +1,11 @@
+<%= @share_capital.paid_up_balance %>
+<%= @share_capital.name %>
+<%= simple_form_for @balance_transfer, url: :share_capital_balance_transfers do |f| %>
+  <%= f.input :amount %>
+  <%= f.input :destination_id, collection: MembershipsModule::ShareCapital.all.map{|a| [a.name, a.id] } %>
+  <%= f.input :origin_id, input_html: { value: @share_capital.id }, as: :hidden %>
+  <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+  <%= f.input :employee_id, input_html: { value: current_user.id } %>
+  <%= f.input :reference_number %>
+  <%= f.submit %>
+<% end %>

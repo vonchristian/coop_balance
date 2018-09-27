@@ -7,6 +7,8 @@
    <span class="text-muted"> Merge savings accounts that are duplicated. </span><br>
    <br>
    <%= link_to 'Merge Account', new_savings_account_merging_line_item_path(@savings_account), class: "btn btn-danger" %>
+   <%= link_to 'Balance Transfer', new_savings_account_balance_transfer_path(@savings_account), class: "btn btn-danger" %>
+
    <hr>
   <h4>Set Barangay</h4>
   <%= @savings_account.barangay_name %>

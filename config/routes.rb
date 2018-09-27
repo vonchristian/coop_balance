@@ -132,6 +132,7 @@ Rails.application.routes.draw do
     resources :capital_build_ups, only: [:new, :create], module: :share_capitals
     resources :account_closings, only: [:new, :create], module: :share_capitals
     resources :offices, only: [:edit, :update], module: :share_capitals
+    resources :balance_transfers, only: [:new, :create], module: :share_capitals
   end
   resources :members do
     resources :merging_line_items, only: [:new, :create], module: :members
@@ -307,6 +308,7 @@ namespace :share_capitals_section do
 
 
   resources :savings_accounts, only: [:index, :show] do
+    resources :balance_transfers, only: [:new, :create], module: :savings_accounts
     resources :settings,          only: [:index],        module: :savings_accounts
     resources :account_mergings,  only: [:create], module: :savings_accounts
     resources :merging_line_items, only: [:new, :create, :destroy], module: :savings_accounts
