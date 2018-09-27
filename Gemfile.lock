@@ -72,7 +72,7 @@ GEM
     bullet (5.7.6)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11.0)
-    capybara (3.8.1)
+    capybara (3.8.2)
       addressable
       mini_mime (>= 0.1.3)
       nokogiri (~> 1.8)
@@ -305,9 +305,9 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
-    sassc (1.12.1)
+    sassc (2.0.0)
       ffi (~> 1.9.6)
-      sass (>= 3.3.0)
+      rake
     searchkick (3.1.1)
       activemodel (>= 4.2)
       elasticsearch (>= 5)
@@ -345,7 +345,7 @@ GEM
     thor (0.20.0)
     thread_safe (0.3.6)
     tilt (2.0.8)
-    traceroute (0.7.0)
+    traceroute (0.7.1)
       rails (>= 3.0.0)
     trix (0.10.1)
       rails

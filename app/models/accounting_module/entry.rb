@@ -24,12 +24,13 @@ module AccountingModule
 
     accepts_nested_attributes_for :credit_amounts, :debit_amounts, allow_destroy: true
 
-    before_save :set_default_date, :set_office
+    before_save :set_default_date, :set_office, :set_amounts_date
 
     delegate :first_and_last_name, to: :recorder, prefix: true, allow_nil: true
     delegate :number, to: :voucher, prefix: true, allow_nil: true
     delegate :name, to: :origin, prefix: true, allow_nil: true
     delegate :name, to: :recorder, prefix: true, allow_nil: true
+
     def self.not_cleared
       where(cleared: false)
     end
@@ -74,7 +75,6 @@ module AccountingModule
     end
 
     private
-
       def set_office
         self.origin = self.recorder.office
       end
@@ -82,6 +82,13 @@ module AccountingModule
       def set_default_date
         todays_date = ActiveRecord::Base.default_timezone == :utc ? Time.now.utc : Time.now
         self.entry_date ||= todays_date
+      end
+
+      def set_amounts_date
+        todays_date = ActiveRecord::Base.default_timezone == :utc ? Time.now.utc : Time.now
+        amounts.each do |amount|
+          amount.update_attributes!(entry_date: todays_date)
+        end
       end
 
       def has_credit_amounts?

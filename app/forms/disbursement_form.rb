@@ -10,6 +10,7 @@ class DisbursementForm
       disburse_voucher
     end
   end
+  private
   def save_cash_disbursement
     entry = AccountingModule::Entry.new(
       commercial_document: find_voucher,
@@ -33,6 +34,7 @@ class DisbursementForm
       entry.credit_amounts << credit_amount
     end
     entry.save!
+    set_voucher_entry(entry)
   end
 
   def credit_account_for(amount)
@@ -68,7 +70,10 @@ class DisbursementForm
   def find_employee
     User.find_by(id: recorder_id)
   end
-  private
+
+  def set_voucher_entry(entry)
+    find_voucher.update_attributes!(entry_id: entry.id)
+  end
   def amount_less_than_current_cash_on_hand?
     errors[:total_amount] << "Amount exceeded current cash on hand" if BigDecimal.new(total_amount) > find_employee.cash_on_hand_account_balance
   end

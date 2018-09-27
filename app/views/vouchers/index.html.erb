@@ -1,64 +1,66 @@
-<div class="row">
-  <div class="col-md-12">
-    <div class="card">
-      <div class="card-header">
-        <div class="row">
-          <div class="col-md-3">
-            <h3 class="card-title"> Vouchers </h3>
-          </div>
-          <div class="col-md-6">
-            <%=form_tag vouchers_path, method: :get do %>
-              <div class="input-group">
-                <%= text_field_tag :search, params[:search],  autofocus: true, class: "form-control", placeholder: "Search for Number, Description", id: 'account-search-form' %>
-                <span class="input-group-btn">
-                  <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
-                    <i class="fa fa-search"></i>
-                  <% end %>
-                </span>
-              </div>
-            <% end %>
-          </div>
-        </div>
 
+<div class="card">
+  <div class="card-header">
+    <div class="row">
+      <div class="col-md-3">
+        <h3 class="card-title"> Vouchers </h3>
       </div>
-      <div class="card-body">
-        <div class="table table-responsive">
-          <table class="table table-hover table-striped">
-            <thead>
-              <tr>
-                <th> Payee</th>
-                <th>Date</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @vouchers.each do |voucher| %>
-                 <tr data-link="<%=voucher_path(voucher)%>" class="myClass">
-                  <td><%#=image_tag(voucher.payee.avatar.url(:thumb), class: "img-circle", height: 40, width: 40) %>&nbsp; <%= voucher.payee.try(:name) %></td>
-                  <td><%= voucher.date.strftime("%B %e, %Y") %></td>
+      <div class="col-md-6">
+        <%=form_tag vouchers_path, method: :get do %>
+          <div class="input-group">
+            <%= text_field_tag :search, params[:search],  autofocus: true, class: "form-control", placeholder: "Search for Number, Description", id: 'account-search-form' %>
+            <span class="input-group-btn">
+              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                <i class="fa fa-search"></i>
+              <% end %>
+            </span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
 
-                  <td><%=link_to voucher.description, voucher_path(voucher) %></td>
+        <% @vouchers.each do |voucher| %>
+            <div class="card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-1">
+                <%= link_to voucher_path(voucher) do %>
 
-                  <td>
+                    <% if voucher.payee && voucher.payee.avatar.attachment.present? %>
+                      <%=image_tag(voucher.payee.avatar, class: "img-circle", height: 40, width: 40) %>
+                    <% end %>
+                    <% end %>
+                  </div>
+                  <div class="col-md-3">
+                <%= link_to voucher_path(voucher) do %>
+
+                    <%= voucher.payee.try(:name) %><br>
+                    <small class="text-muted">
+                      <i class="fa fa-clock"></i> <%= voucher.date.strftime("%B %e, %Y") %>
+                    </small>
+                    <% end %>
+                  </div>
+                  <div class="col-md-5">
+                <%= link_to voucher_path(voucher) do %>
+                    <p><%= voucher.description %></p>
+                  <% end %>
+                  </div>
+                  <div class="col-md-3">
                     <% if !voucher.disbursed? %>
                       <%= link_to 'Disburse', new_voucher_disbursement_path(voucher), class: "btn btn-primary btn-sm" %>
                     <% else %>
                       <span class="badge bg-success"><i class="fa fa-check-circle"></i> Disbursed </span>
                     <% end %>
+                  </div>
+                </div>
 
-                      </td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<script type="text/javascript">
-  $("tr").click(function() {
-  window.location = $(this).data("link")
-});
-  $('.myClass').css('cursor', 'pointer');
-</script>
+
+              </div>
+            </div>
+        <% end %>
+       </div>
+     </div>
+   </div>
+ </div>

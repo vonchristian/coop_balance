@@ -34,7 +34,7 @@ module LoansModule
         range     = DateRange.new(from_date: from_date, to_date: to_date)
         relation.where.not(voucher_id: nil).
         joins(:voucher).
-        where('vouchers.disbursement_date' => range.start_date..range.end_date)
+        where('vouchers.date' => range.start_date..range.end_date)
       else
         relation.where.not(disbursement_date: nil)
       end

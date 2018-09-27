@@ -1,5 +1,6 @@
 module LoansModule
   class LoanProduct < ApplicationRecord
+    extend Totalable
     belongs_to :cooperative
     belongs_to :loans_receivable_current_account, class_name: "AccountingModule::Account"
     belongs_to :loans_receivable_past_due_account, class_name: "AccountingModule::Account"
@@ -30,28 +31,11 @@ module LoansModule
     validates :name, uniqueness: true
     validates :maximum_loanable_amount, numericality: true
 
-    def self.current_accounts
+    def self.accounts
       ids = all.pluck(:loans_receivable_current_account_id)
       AccountingModule::Account.where(id: ids)
     end
 
-    def self.total_balance(args={})
-      current_accounts.balance(args)
-    end
-    def self.total_loan_releases(args={})
-      current_accounts.debits_balance(args)
-    end
-
-    def self.total_loan_payments(args={})
-      current_accounts.credits_balance(args)
-    end
-
-    def self.total_debits_balance(args={})
-      accounts.debits_balance(args)
-    end
-    def self.total_credits_balance(args={})
-      accounts.credits_balance(args)
-    end
 
     def self.loan_payments(options={})
       entries = []
