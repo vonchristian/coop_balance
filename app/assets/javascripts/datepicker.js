@@ -8,6 +8,8 @@ $( document ).on('turbolinks:load', function() {
 });
 
 $( document ).on('turbolinks:load', function() {
-  $('.datetimepicker').datetimepicker();
-    daysOfWeekDisabled: [0, 6]
-});
+  $('[data-toggle="tooltip"]').tooltip()
+})
+$( document ).on('turbolinks:load', function() {
+  $('[data-toggle="popover"]').popover()
+})

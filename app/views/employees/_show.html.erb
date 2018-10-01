@@ -22,6 +22,8 @@
           <li class="nav-item"><%= link_to 'Time Deposits', employee_time_deposits_path(@employee), class: "nav-link #{'active' if current_page?(employee_time_deposits_path(@employee))}" %></li>
         </ul>
         <br>
+      </div>
+    </div>
         <% if current_page?(employee_path(@employee)) %>
           <%=render 'employees/partials/employee_info' %>
         <% end %>

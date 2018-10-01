@@ -8,7 +8,7 @@ class SavingsAccountsController < ApplicationController
     elsif params[:search].present?
       @savings_accounts = MembershipsModule::Saving.text_search(params[:search]).paginate(:page => params[:page], :per_page => 20)
     else
-      @pagy, @savings_accounts = pagy(MembershipsModule::Saving.includes([:depositor, :saving_product =>[:account, :interest_expense_account]]).order(:account_owner_name).all)
+      @savings_accounts = MembershipsModule::Saving.includes([:depositor, :saving_product =>[:account, :interest_expense_account]]).order(:account_owner_name).paginate(:page => params[:page], :per_page => 20)
     end
   end
 

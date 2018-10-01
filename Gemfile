@@ -5,10 +5,10 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 gem 'bootsnap', require: false
+gem 'webpacker', '~> 3.5'
 gem 'rubyzip', '~> 1.1.0'
 gem 'axlsx', '2.1.0.pre'
 gem 'paperclip'
-gem 'pagy'
 gem 'axlsx_rails'
 gem 'trix'
 gem 'autonumeric-rails'
@@ -33,7 +33,6 @@ gem 'bootstrap-datepicker-rails'
 gem 'momentjs-rails'
 gem 'bootstrap3-datetimepicker-rails'
 gem 'pg_search'
-gem 'searchkick'
 gem 'will_paginate'
 gem 'pundit'
 gem 'prawn'

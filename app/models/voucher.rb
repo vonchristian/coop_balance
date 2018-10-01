@@ -17,11 +17,13 @@ class Voucher < ApplicationRecord
   delegate :full_name, :current_occupation, to: :disburser, prefix: true, allow_nil: true
   delegate :name, to: :payee, prefix: true
   delegate :avatar, to: :payee, allow_nil: true
-
   before_save :set_default_date
   # validate :has_credit_amounts?
   # validate :has_debit_amounts?
   validate :amounts_cancel?
+  def name
+    payee_name
+  end
 
   def self.unearned
     where(unearned: true)

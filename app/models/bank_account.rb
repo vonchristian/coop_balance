@@ -8,6 +8,9 @@ class BankAccount < ApplicationRecord
   validates :account_id, :earned_interest_account_id, presence: true
   has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
   before_save :set_default_image
+  def name
+    bank_name
+  end
   def balance
    account.balance(commercial_document: self)
   end

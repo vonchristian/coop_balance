@@ -1,10 +1,11 @@
-<div class="tab-pane <%= 'active' if current_page?(employee_path(@employee)) %>" id="employee-info">
-<%= link_to 'Print Employee Info', employee_info_index_path(@employee, format: 'pdf') %>
-  <% if current_user.cash_on_hand_account.present? %>
-      <h3><%= number_to_currency current_user.cash_on_hand_account_balance %></h3>
-      <small class="text-muted"><%= current_user.cash_on_hand_account.try(:name).try(:upcase)%></small><br>
-      <%=link_to 'View Transactions', accounting_module_account_path(current_user.cash_on_hand_account), class: "btn btn-default btn-xs" %>
-      <hr>
-  <% end %>
-
-</div>
+<div class="card">
+  <div class="card-body">
+    <%= link_to 'Print Employee Info', employee_info_index_path(@employee, format: 'pdf') %>
+      <% if current_user.cash_on_hand_account.present? %>
+          <h3><%= number_to_currency current_user.cash_on_hand_account_balance %></h3>
+          <small class="text-muted"><%= current_user.cash_on_hand_account.try(:name).try(:upcase)%></small><br>
+          <%=link_to 'View Transactions', accounting_module_account_path(current_user.cash_on_hand_account), class: "btn btn-default btn-xs" %>
+          <hr>
+      <% end %>
+    </div>
+  </div>

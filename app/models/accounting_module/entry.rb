@@ -30,6 +30,7 @@ module AccountingModule
     delegate :number, to: :voucher, prefix: true, allow_nil: true
     delegate :name, to: :origin, prefix: true, allow_nil: true
     delegate :name, to: :recorder, prefix: true, allow_nil: true
+    delegate :name, to: :commercial_document, prefix: true
 
     def self.not_cleared
       where(cleared: false)

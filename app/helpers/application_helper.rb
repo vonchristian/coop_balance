@@ -1,5 +1,4 @@
 module ApplicationHelper
-  include Pagy::Frontend
 
   def root_path
     if user_signed_in?
