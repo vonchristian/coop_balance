@@ -10,7 +10,7 @@ class Membership < ApplicationRecord
   has_many :beneficiaries, through: :membership_beneficiaries
 
   validates :cooperator_id, :cooperator_type, presence: true
-  validates :account_number, presence: true, uniqueness: true
+  # validates :account_number, presence: true, uniqueness: true
   validates :cooperative_id, presence: true, uniqueness: { scope: :cooperator_id }
 
   delegate :avatar, to: :cooperator

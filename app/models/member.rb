@@ -150,7 +150,7 @@ class Member < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
-  
+
 
   private
   def set_default_image
