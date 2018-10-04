@@ -168,7 +168,6 @@ Rails.application.routes.draw do
     resources :share_capital_registries, only: [:new, :create]
     resources :loan_registries, only: [:new, :create]
     resources :time_deposit_registries, only: [:new, :create]
-    resources :organization_registries, only: [:create]
     resources :member_registries, only: [:create]
 
 

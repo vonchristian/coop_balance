@@ -14,7 +14,7 @@ class Member < ApplicationRecord
                                       as: :commercial_document
   has_many :voucher_amounts,          class_name: "Vouchers::VoucherAmount",
                                       as: :commercial_document
-  has_many :memberships,              as: :cooperator
+  has_many :memberships,              as: :cooperator, dependent: :destroy
   has_many :savings,                  class_name: "MembershipsModule::Saving",
                                       as: :depositor
   has_many :share_capitals,           class_name: "MembershipsModule::ShareCapital",
@@ -43,7 +43,7 @@ class Member < ApplicationRecord
   has_many :relations,                as: :relationer
   has_many :contacts, as: :contactable
   has_many :addresses, as: :addressable
-  has_many :beneficiaries
+  has_many :beneficiaries, dependent: :destroy
 
 
   delegate :number, to: :tin, prefix: true, allow_nil: true
