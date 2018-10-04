@@ -52,7 +52,7 @@ class Member < ApplicationRecord
   delegate :details, :complete_address, :barangay_name, :street_name, to: :current_address, prefix: true, allow_nil: true
 
   before_save :update_birth_date_fields
-  # before_save :set_default_image, on: :create
+  before_save :set_default_image, on: :create
   def self.updated_at(options={})
     if options[:from_date] && options[:to_date]
       date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
@@ -149,17 +149,7 @@ class Member < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
-  def self.import(file)
-    spreadsheet = Roo::Spreadsheet.open(file.path)
-    header = spreadsheet.row(2)
-    (3..spreadsheet.last_row).each do |i|
-      row = Hash[[header, spreadsheet.row(i)].transpose]
-      member = Member.where(first_name: row['First Name'], last_name: row['Last Name'], middle_name: row['Middle Initial']).first_or_create! do |m|
-        
-        
-      end
-    end
-  end
+  
 
   private
   def set_default_image

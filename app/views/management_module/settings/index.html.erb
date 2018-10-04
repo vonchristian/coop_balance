@@ -132,6 +132,22 @@
           <%= f.submit "Upload Time Deposits", class: "btn btn-outline-danger" %>
         <% end %>
         <hr>
+        <h3 class="card-title"> Organizations </h3>
+        <p class="text-muted"> Migrate organizations from your excel spreadsheet. </p>
+        <%= simple_form_for Registries::OrganizationRegistry.new, url: :management_module_organization_registries do |f| %>
+          <%= f.input :spreadsheet %>
+          <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+          <%= f.submit "Upload Organizations", class: "btn btn-outline-danger" %>
+        <% end %>
+        <hr>
+        <h3 class="card-title"> Members </h3>
+        <p class="text-muted"> Migrate members from your excel spreadsheet. </p>
+        <%= simple_form_for Registries::MemberRegistry.new, url: :management_module_member_registries do |f| %>
+          <%= f.input :spreadsheet %>
+          <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+          <%= f.submit "Upload Members", class: "btn btn-outline-danger" %>
+        <% end %>
+        <hr>
       </div>
     </div>
   </div>

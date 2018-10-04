@@ -39,15 +39,6 @@ class MembersController < ApplicationController
     end
   end
 
-  def import
-    begin
-      Member.import(params[:file])
-      redirect_to members_url, notice: 'Students Imported'
-    rescue
-      redirect_to members_url, notice: 'Invalid Excel File.'
-    end
-  end
-
   private
   def member_params
     params.require(:member).permit(:civil_status, :membership_date, :first_name, :middle_name, :last_name, :sex, :date_of_birth, :contact_number, :avatar, :signature_specimen, tin_attributes: [:number])

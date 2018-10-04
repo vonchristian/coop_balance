@@ -261,6 +261,9 @@ GEM
     responders (2.4.0)
       actionpack (>= 4.2.0, < 5.3)
       railties (>= 4.2.0, < 5.3)
+    roo (2.7.1)
+      nokogiri (~> 1)
+      rubyzip (~> 1.1, < 2.0.0)
     rqrcode (0.10.1)
       chunky_png (~> 1.0)
     rspec-core (3.8.0)
@@ -409,6 +412,7 @@ DEPENDENCIES
   rack-mini-profiler
   rails (= 5.2.0)
   redis
+  roo (~> 2.7.0)
   rqrcode
   rspec-rails
   rubyzip (~> 1.1.0)
@@ -434,4 +438,4 @@ RUBY VERSION
    ruby 2.5.1p57
 
 BUNDLED WITH
-   1.16.2
+   1.16.4
