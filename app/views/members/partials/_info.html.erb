@@ -1,35 +1,38 @@
 <div class="tab-pane <%='active' if current_page?(member_info_index_path(@member)) %>">
-<div class="row">
-  <div class="col-md-6">
+
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-3">
         <strong>
           <i class="fa fa-map-marker"></i> Current Address
         </strong>
       </div>
       <div class="col-md-6">
         <%= @member.current_address_complete_address %><br>
-          <%= link_to 'Update', new_member_address_path(@member), class: "btn btn-default btn-xs" %>
-
+      </div>
+      <div class="col-md-3">
+        <%= link_to 'Update', new_member_address_path(@member), class: "btn btn-outline-warning btn-sm" %>
       </div>
     </div>
     <br>
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-3">
         <strong><i class="fa fa-phone"></i> Account Number </strong>
       </div>
       <div class="col-md-6">
         <%= @member.account_number %>
       </div>
+      <div class="col-md-3"></div>
     </div>
     <br>
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-3">
         <strong><i class="fa fa-phone"></i> Contact Info </strong>
       </div>
       <div class="col-md-6">
-        <%= @member.current_contact_number %><br>
-        <%= link_to 'Update', new_member_contact_path(@member), class: "btn btn-default btn-xs" %>
+        <%= @member.current_contact_number %>
+      </div>
+      <div class="col-md-3">
+        <%= link_to 'Update', new_member_contact_path(@member), class: "btn btn-outline-warning btn-sm" %>
       </div>
     </div>
     <br>
@@ -98,6 +101,22 @@
       </div>
       <div class="col-md-6">
         <%= @member.memberships.pluck(:membership_date).last.strftime("%B %e, %Y") %>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-6">
+        <strong><i class="fa fa-info"></i> Beneficiaries </strong>
+      </div>
+      <div class="col-md-6">
+        <table>
+          <% @member.beneficiaries.each do |beneficiary| %>
+            <tr>
+              <td style="width:120px"><%= beneficiary.full_name %></td>
+              <td style="width:120px"><%= beneficiary.relationship %></td>
+            </tr>
+          <% end %>
+        </table>
       </div>
     </div>
   </div>

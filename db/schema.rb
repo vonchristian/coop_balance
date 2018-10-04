@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_20_063126) do
+ActiveRecord::Schema.define(version: 2018_10_04_060402) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -180,6 +180,15 @@ ActiveRecord::Schema.define(version: 2018_09_20_063126) do
     t.datetime "updated_at", null: false
     t.index ["municipality_id"], name: "index_barangays_on_municipality_id"
     t.index ["name"], name: "index_barangays_on_name"
+  end
+
+  create_table "beneficiaries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "member_id"
+    t.string "full_name"
+    t.string "relationship"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["member_id"], name: "index_beneficiaries_on_member_id"
   end
 
   create_table "carts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1326,6 +1335,7 @@ ActiveRecord::Schema.define(version: 2018_09_20_063126) do
   add_foreign_key "bank_accounts", "accounts", column: "earned_interest_account_id"
   add_foreign_key "bank_accounts", "cooperatives"
   add_foreign_key "barangays", "municipalities"
+  add_foreign_key "beneficiaries", "members"
   add_foreign_key "carts", "users"
   add_foreign_key "charge_adjustments", "loan_charges"
   add_foreign_key "charges", "accounts"

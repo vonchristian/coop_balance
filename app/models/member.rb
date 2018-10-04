@@ -4,7 +4,7 @@ class Member < ApplicationRecord
   pg_search_scope :text_search, :against => [ :first_name, :middle_name, :last_name]
   multisearchable against: [:first_name, :last_name, :middle_name]
   enum sex: [:male, :female, :other]
-  enum civil_status: [:single, :married, :widower, :divorced]
+  enum civil_status: [:single, :married, :widow, :divorced]
   has_one_attached :signature_specimen
   has_one_attached :avatar
   has_one :member_account
@@ -43,6 +43,7 @@ class Member < ApplicationRecord
   has_many :relations,                as: :relationer
   has_many :contacts, as: :contactable
   has_many :addresses, as: :addressable
+  has_many :beneficiaries
 
 
   delegate :number, to: :tin, prefix: true, allow_nil: true
