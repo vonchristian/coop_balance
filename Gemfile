@@ -52,7 +52,6 @@ gem 'mini_magick'
 gem 'chartkick'
 gem 'groupdate'
 gem "highcharts-rails"
-
 group :development, :test do
   gem 'rspec-rails'
   gem 'capybara'

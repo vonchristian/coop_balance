@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Voucher, type: :model do
   describe 'associations' do
-    it { is_expected.to have_one :entry }
+    it { is_expected.to belong_to :accounting_entry }
     it { is_expected.to belong_to :payee }
     it { is_expected.to belong_to :commercial_document }
     it { is_expected.to belong_to :preparer }
@@ -34,22 +34,38 @@ RSpec.describe Voucher, type: :model do
     expect(voucher_2.disbursed?).to eql false
   end
 
-  it '.disbursed(options)' do
-    voucher = create(:voucher)
-    another_voucher = create(:voucher)
+  it '.disbursed' do
+    disbursed_voucher = create(:voucher)
     undisbursed_voucher = create(:voucher)
-    entry = create(:entry_with_credit_and_debit, entry_date: Date.today.beginning_of_day)
-    another_entry = create(:entry_with_credit_and_debit, entry_date: Date.today.tomorrow)
-    voucher.accounting_entry = entry
-    another_voucher.accounting_entry = another_entry
+    entry = create(:entry_with_credit_and_debit, entry_date: Date.today)
+    disbursed_voucher.accounting_entry = entry
+    disbursed_voucher.save
 
-    expect(Voucher.disbursed(from_date: Date.today.beginning_of_day, to_date: Date.today.end_of_day).pluck(:id)).to include(voucher.id)
-    expect(Voucher.disbursed(from_date: Date.today.beginning_of_day, to_date: Date.today.end_of_day).pluck(:id)).to_not include(another_voucher.id)
-    expect(Voucher.disbursed(from_date: Date.today.beginning_of_day, to_date: Date.today.end_of_day).pluck(:id)).to_not include(undisbursed_voucher.id)
+    expect(described_class.disbursed).to include(disbursed_voucher)
+    expect(described_class.disbursed).to_not include(undisbursed_voucher)
 
-    expect(Voucher.disbursed(from_date: Date.today.tomorrow.beginning_of_day, to_date: Date.today.tomorrow.end_of_day).pluck(:id)).to include(another_voucher.id)
-    expect(Voucher.disbursed(from_date: Date.today.tomorrow.beginning_of_day, to_date: Date.today.tomorrow.end_of_day).pluck(:id)).to_not include(voucher.id)
-    expect(Voucher.disbursed(from_date: Date.today.tomorrow.beginning_of_day, to_date: Date.today.tomorrow.end_of_day).pluck(:id)).to_not include(undisbursed_voucher.id)
+  end
+  it '.disbursed_on(args={})' do
+    disbursed_voucher = create(:voucher)
+    another_disbursed_voucher = create(:voucher)
+    undisbursed_voucher = create(:voucher)
+
+    entry = create(:entry_with_credit_and_debit, entry_date: Date.today)
+    another_entry = create(:entry_with_credit_and_debit, entry_date: Date.today + 1.day)
+
+    disbursed_voucher.accounting_entry = entry
+    another_disbursed_voucher.accounting_entry = another_entry
+    disbursed_voucher.save
+    another_disbursed_voucher.save
+
+    expect(described_class.disbursed_on(from_date: Date.today, to_date: Date.today)).to include(disbursed_voucher)
+    expect(described_class.disbursed_on(from_date: Date.today, to_date: Date.today)).to_not include(undisbursed_voucher)
+    expect(described_class.disbursed_on(from_date: Date.today, to_date: Date.today)).to_not include(another_disbursed_voucher)
+
+    expect(described_class.disbursed_on(from_date: Date.today + 1.day, to_date: Date.today + 1.day)).to include(another_disbursed_voucher)
+    expect(described_class.disbursed_on(from_date: Date.today + 1.day, to_date: Date.today + 1.day)).to_not include(disbursed_voucher)
+    expect(described_class.disbursed_on(from_date: Date.today + 1.day, to_date: Date.today + 1.day)).to_not include(undisbursed_voucher)
+
   end
 
 

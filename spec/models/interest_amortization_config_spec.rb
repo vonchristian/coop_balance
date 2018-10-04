@@ -1,5 +1,5 @@
 require 'rails_helper'
 
 RSpec.describe InterestAmortizationConfig, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it { is_expected.to define_enum_for(:amortization_type).with([:annually, :straight_balance]) }
 end
