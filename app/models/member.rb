@@ -149,7 +149,17 @@ class Member < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
-
+  def self.import(file)
+    spreadsheet = Roo::Spreadsheet.open(file.path)
+    header = spreadsheet.row(2)
+    (3..spreadsheet.last_row).each do |i|
+      row = Hash[[header, spreadsheet.row(i)].transpose]
+      member = Member.where(first_name: row['First Name'], last_name: row['Last Name'], middle_name: row['Middle Initial']).first_or_create! do |m|
+        
+        
+      end
+    end
+  end
 
   private
   def set_default_image

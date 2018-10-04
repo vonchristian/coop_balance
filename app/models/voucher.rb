@@ -54,13 +54,13 @@ class Voucher < ApplicationRecord
   end
 
   def self.disbursed
-    self.where.not(entry_id: nil)
+    where.not(entry_id: nil)
   end
 
   def self.disbursed_on(args={})
     if args[:from_date] && args[:to_date]
       range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])
-      self.where.not(entry_id: nil).joins(:accounting_entry).where('entries.entry_date' => (range.start_date..range.end_date))
+      where.not(entry_id: nil).joins(:accounting_entry).where('entries.entry_date' => (range.start_date..range.end_date))
     else
       disbursed
     end
