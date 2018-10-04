@@ -158,7 +158,7 @@ Rails.application.routes.draw do
 
     resources :purchases,        only: [:index, :show],                 module: :members
     resources :account_mergings, only: [:new, :create],                 module: :members
-    collection { post :import}
+    collection { post :import_member_profile}
   end
   resources :member_registrations, only: [:new, :create]
 
@@ -168,6 +168,8 @@ Rails.application.routes.draw do
     resources :share_capital_registries, only: [:new, :create]
     resources :loan_registries, only: [:new, :create]
     resources :time_deposit_registries, only: [:new, :create]
+    resources :organization_registries, only: [:create]
+    resources :member_registries, only: [:create]
 
 
     namespace :settings do

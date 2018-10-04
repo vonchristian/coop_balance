@@ -11,6 +11,6 @@ class Address < ApplicationRecord
   end
 
   def details
-    "#{street.try(:name)}, #{barangay.try(:name)}, #{municipality.try(:name)}, #{province.try(:name)}"
+    complete_address
   end
 end
