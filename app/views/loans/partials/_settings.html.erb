@@ -1,18 +1,32 @@
-<div class="card">
+<div class="card card-danger">
+  <div class="card-header">
+  </div>
   <div class="card-body">
-    <h4 class="card-title">Barangay Settings</h4>
-    <p class="text-muted">
-      Set barangay to which this loan belongs to for monitoring purposes and generation of reports.
-    </p>
-    <%= @loan.barangay_name %>
-    <%= link_to 'Set Barangay', edit_loan_barangay_path(id: @loan.id), class: "btn btn-sm btn-outline-danger" %>
+    <div class="row">
+      <div class="col-md-9">
+        <h4 class="card-title">Barangay Details</h4>
+        <p class="text-muted">
+          Set barangay for monitoring purposes and generation of reports.
+        </p>
+        <%= @loan.barangay_name %>
+      </div>
+      <div class="col-md-3">
+        <%= link_to 'Set Barangay', edit_loan_barangay_path(id: @loan.id), class: "btn btn-sm btn-outline-danger float-right" %>
+      </div>
+    </div>
   <hr>
-  <h4 class="card-title">Set Loan as Loss</h4>
-  <p class="text-muted">
-    Set this loan as loss
-  </p>
-  <%= link_to 'Set as Loss', new_loans_module_loan_loss_path(@loan), class: "btn btn-sm btn-outline-danger" %>
-<hr />
+  <div class="row">
+    <div class="col-md-9">
+      <h4 class="card-title">Set Loan as Loss</h4>
+      <p class="text-muted">
+        Set this loan as loss
+      </p>
+    </div>
+    <div class="col-md-3">
+      <%= link_to 'Set as Loss', new_loans_module_loan_loss_path(@loan), class: "btn btn-sm btn-outline-danger float-right" %>
+    </div>
+  </div>
+  <hr />
 <h4 class="card-title">Loan Terms Details <span class="badge bg-danger"><%= @loan.terms.count %></span> </h4>
 <p class="text-muted"> Create new  loan terms </p>
 <%= link_to 'Extend Term', new_loans_module_loan_term_path(@loan), class: "btn btn-sm btn-outline-danger" %>
@@ -78,15 +92,7 @@
   </div>
 <% end %>
 <% end %>
-<% if @loan.amounts.blank? %>
-<h4> Delete Loan </h4>
-<p class="text-muted">
-  Remove loans not approved or duplicated loan
-</p>
-<p class="text-muted"> Deleting this loan will remove it from records. Please be careful. </p>
-  <%= link_to 'Delete Loan', loans_module_loan_path(@loan), method: :delete, data: { confirm_with: "Are you sure you want to delete this loan? " }, class: "btn btn-outline-danger" %>
-<% end %>
-<hr />
+
 <h4 class="card-title"> Tracking Number</h4>
 <p class="text-muted">
   Enter tracking number to distinguish loans during payments

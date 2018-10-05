@@ -10,7 +10,7 @@
         </center>
       </div>
       <div class="card-body">
-        <%= simple_form_for @loan, url: :loans_module_loan_applications do |f| %>
+        <%= simple_form_for @loan, url: :loans_module_loan_applications, html: { autocomplete: 'off' } do |f| %>
           <%= f.error_notification %>
             <%= f.input :loan_product_id, validate: { presence: true }, label: 'Select Type of Loan', collection: LoansModule::LoanProduct.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanProductSelect' } %>
 

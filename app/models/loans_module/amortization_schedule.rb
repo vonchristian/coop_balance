@@ -136,14 +136,9 @@ module LoansModule
 
     def total_amortization(options = {})
        principal +
-       interest_computation +
-       total_other_charges_for(self.date)
+       interest_computation
     end
-
-    def total_other_charges_for(date)
-      loan.loan_charge_payment_schedules.scheduled_for(date).sum(:amount)
-    end
-
+    
     def self.update_amortization_schedule(loan)
       if loan.amortization_schedules.present?
         loan.amortization_schedules.order(date: :asc).first(loan.number_of_interest_payments_prededucted).each do |schedule|
