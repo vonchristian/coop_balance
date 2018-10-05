@@ -32,7 +32,7 @@
       </tr>
       <tr>
         <td style="width:200px"><strong><i class="fa fa-calendar"></i> Sex </strong></td>
-        <td><%= @member.sex.titleize %><br></td>
+        <td><%= @member.sex.try(:titleize) %><br></td>
         <td></td>
       </tr>
       <tr>
@@ -61,8 +61,10 @@
       </tr>
       <tr>
         <td style="width:200px"><strong><i class="fa fa-calendar"></i> Membership Date </strong></td>
-        <td><%= @member.memberships.pluck(:membership_date).last.strftime("%B %e, %Y") || "N/A" %></td>
-        <td></td>
+        <% if @member.memberships.present? %>
+          <td><%= @member.memberships.pluck(:membership_date).last.strftime("%B %e, %Y") || "N/A" %></td>
+          <td></td>
+        <% end %>
       </tr>
       <tr>
         <td style="width:200px"><strong><i class="fa fa-info"></i> Beneficiaries </strong></td>

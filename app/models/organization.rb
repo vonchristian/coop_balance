@@ -7,7 +7,7 @@ class Organization < ApplicationRecord
   has_many :savings, class_name: "MembershipsModule::Saving", as: :depositor
   has_many :share_capitals, class_name: "MembershipsModule::ShareCapital", as: :subscriber
   has_many :time_deposits, class_name: "MembershipsModule::TimeDeposit", as: :depositor
-  before_save :set_default_image
+  before_save :set_default_image, on: :create
   def members
     member_memberships + employee_memberships
   end

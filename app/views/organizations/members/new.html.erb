@@ -1,14 +1,9 @@
+<%= render 'organizations/partials/header', organization: @organization %>
 <div class="row">
-  <div class="col-md-6 col-md-offset-3">
+  <div class="col-md-12">
     <div class="card">
-      <div class="card-header with-border">
-        <%=link_to organization_path(@organization), title: "Back" do %>
-          <span class="btn btn-default pull-left"><i class="fa fa-chevron-left"></i> Back </span>
-        <% end %> &nbsp; &nbsp;
-        <h3 class="card-title"><%= @organization.name %></h3>
-      </div>
       <div class="card-body">
-       <%=form_tag new_organization_member_path, method: :get, class: "sidebar-form" do %>
+       <%= form_tag new_organization_member_path, method: :get, class: "sidebar-form" do %>
               <div class="input-group">
                 <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search for First name, Last name", id: 'taxpayer-search-form' %>
                 <span class="input-group-btn">
@@ -19,32 +14,46 @@
               </div>
             <% end %>
             <br>
+      </div>
+    </div>
 <% @members.each do |member| %>
-  <div class="row">
-    <div class="col-md-2 col-md-offset-1">
-      <%= image_tag(member.avatar.url(:medium), class: "img-circle", height: 50, width: 50) %>
-    </div>
-    <div class="col-md-5">
-      <b><%= member.name %></b><br>
-      <small class="text-muted"><%= member.current_occupation.try(:upcase) %></small>
-    </div>
-    <div class="col-md-2">
-      <%= simple_form_for [@organization, @member], url: :organization_members do |f| %>
-        <%= f.input :organization_membership_id, input_html: { value: member.id }, as: :hidden %>
-        <%= f.input :organization_membership_type, input_html: { value: member.class }, as: :hidden %>
-        <% if @organization.organization_members.pluck(:organization_membership_id).exclude?(member.id) %>
-                <%= button_tag(class: "btn btn-default btn-sm") do %>
-                  <i class="icon-user-follow"></i> Add Member
-                <% end %>
-              <% else %>
-                <%= button_tag(class: "btn btn-success btn-sm disabled")do %>
-                  <i class="icon-user-following"></i> Member Added
-                <% end %>
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-1">
+        <%= image_tag(member.avatar, height: 45, width: 45, class: "img-circle") %>
+      </div>
+      <div class="col-md-8">
+        <h3 class="card-title"> <%= member.full_name.upcase %></h3>
+        <div class="row">
+          <div class="col-md-3">
+            <small class="text-muted"><i class="fa fa-map-marker"></i>&nbsp;  <%= member.current_address_complete_address %></small>
+          </div>
+          <div class="col-md-3">
+            <small class="text-muted">
+              <i class="fa fa-phone"></i>&nbsp;  <%= member.current_contact_number %>
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <%= simple_form_for [@organization, @member], url: :organization_members do |f| %>
+          <%= f.input :organization_membership_id, input_html: { value: member.id }, as: :hidden %>
+          <%= f.input :organization_membership_type, input_html: { value: member.class }, as: :hidden %>
+          <% if @organization.organization_members.pluck(:organization_membership_id).exclude?(member.id) %>
+                  <%= button_tag(class: "btn btn-default btn-sm") do %>
+                    <i class="fa fa-user-plus"></i> Add Member
+                  <% end %>
+                <% else %>
+                  <%= button_tag(class: "btn btn-success btn-sm disabled")do %>
+                    <i class="fa fa-user-check"></i> Member Added
+                  <% end %>
 
-              <% end %>
-      <% end %>
+                <% end %>
+        <% end %>
+      </div>
     </div>
   </div>
-  <br>
+</div>
 <% end %>
 <%=will_paginate @members %>

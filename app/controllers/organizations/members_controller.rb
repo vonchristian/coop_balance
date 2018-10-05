@@ -17,12 +17,11 @@ module Organizations
       @member = @organization.organization_members.build(member_params)
       @member.save
       redirect_to new_organization_member_url(@organization), notice: "Member added successfully."
-      @organization.add_loans_of(@member.organization_membership)
     end
 
     private
     def member_params
-      params.require(:organization_member).permit(:organization_membership_id, :organization_membership_type)
+      params.require(:organizations_organization_member).permit(:organization_membership_id, :organization_membership_type)
     end
   end
 end

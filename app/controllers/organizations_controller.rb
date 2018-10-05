@@ -1,7 +1,7 @@
 require 'will_paginate/array'
 class OrganizationsController < ApplicationController
   def index
-    @organizations = Organization.all
+    @organizations = Organization.all.paginate(page: params[:page], per_page: 25)
   end
   def new
     @organization = Organization.new
@@ -17,7 +17,11 @@ class OrganizationsController < ApplicationController
   end
   def show
     @organization = Organization.find(params[:id])
-    @members = @organization.members.paginate(page: params[:page], per_page: 50)
+    if params[:search].present?
+      @members = @organization.member_memberships.text_search(params[:search]).paginate(page: params[:page], per_page: 25)
+    else
+      @members = @organization.members.uniq.paginate(page: params[:page], per_page: 25)
+    end
   end
 
   private
