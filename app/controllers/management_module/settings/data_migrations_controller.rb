@@ -3,11 +3,11 @@ module ManagementModule
 		class DataMigrationsController < ApplicationController
 
 			def index
-				@cooperative = current_user.cooperative
-				@share_capital_products = CoopServicesModule::ShareCapitalProduct.all
-      	@time_deposit_products = CoopServicesModule::TimeDepositProduct.all
-      	@programs = CoopServicesModule::Program.all
       	@savings_registry = Registries::SavingsAccountRegistry.new
+      	@share_capital_registry = Registries::ShareCapitalRegistry.new
+      	@loan_registry = Registries::LoanRegistry.new
+      	@time_deposit_registry = Registries::TimeDepositRegistry.new
+      	@member_registry = Registries::MemberRegistry.new
 			end
 		end
 	end

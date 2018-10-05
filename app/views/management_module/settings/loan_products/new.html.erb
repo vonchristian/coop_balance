@@ -1,15 +1,15 @@
 <div class="row">
-  <div class="col-md-8 offset-md-2">
+  <div class="col-md-6 offset-md-3">
     <div class="card">
       <div class="card-header">
         <h3 class="card-title">New Loan Product Details </h3>
       </div>
       <div class="card-body">
-        <%= simple_form_for @loan_product, url: :management_module_settings_loan_products do |f| %>
+        <%= simple_form_for @loan_product, url: :management_module_settings_loan_products, html: { autocomplete: "off" } do |f| %>
           <%= f.error_notification %>
           <%= f.input :name %>
           <%= f.input :description, as: :text %>
-          <%= f.input :maximum_loanable_amount,  as: :currency %>
+          <%= f.input :maximum_loanable_amount,  as: :currency, input_html: { style: "width:100%" } %>
 
           <%= f.input :loans_receivable_current_account_id, label: "Select Loans Receivable (Current) Account", collection: AccountingModule::Asset.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanAccountSelect'} %>
           <%= f.input :loans_receivable_past_due_account_id, label: "Select Loans Receivable (Past Due) Account", collection: AccountingModule::Asset.all.map{|a| [a.name.titleize, a.id] } %>
@@ -20,9 +20,8 @@
           <h4>Penalty Configuration</h4>
           <%= f.input :penalty_rate %>
           <%= f.input :penalty_revenue_account_id,  collection: AccountingModule::Revenue.all.map{|a| [a.name, a.id] } %>
-          <div class="box-footer">
-            <%= f.submit "Create Loan Product", class: "btn btn-primary float-right" %>
-          </div>
+          <hr>
+          <%= f.submit "Create Loan Product", class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
         <% end %>
       </div>
     </div>

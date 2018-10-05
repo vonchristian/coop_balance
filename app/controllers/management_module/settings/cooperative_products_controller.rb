@@ -6,8 +6,8 @@ module ManagementModule
 				@cooperative = current_user.cooperative
 				@share_capital_products = CoopServicesModule::ShareCapitalProduct.all
       	@time_deposit_products = CoopServicesModule::TimeDepositProduct.all
-      	@programs = CoopServicesModule::Program.all
-      	@savings_registry = Registries::SavingsAccountRegistry.new
+      	@loan_products = LoansModule::LoanProduct.all
+      	@saving_products = CoopServicesModule::SavingProduct.all
 			end
 		end
 	end

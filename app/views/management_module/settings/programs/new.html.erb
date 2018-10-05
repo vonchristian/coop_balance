@@ -1,11 +1,11 @@
 <div class="row">
-  <div class="col-md-4 col-md-offset-4">
+  <div class="col-md-6 offset-md-3">
     <div class="card">
       <div class="card-header">
         <h3 class="card-title">Program Details </h3>
       </div>
       <div class="card-body">
-        <%= simple_form_for @program, url: :management_module_programs do |f| %>
+        <%= simple_form_for @program, url: :management_module_programs, html: {autocomplete: "off"} do |f| %>
           <%= f.error_notification %>
           <%= f.input :name %>
           <%= f.input :description %>
@@ -13,17 +13,18 @@
           <%= f.input :default_program %>
           <%= f.input :payment_schedule_type, collection: CoopServicesModule::Program.payment_schedule_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
           <%= f.input :account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] }, input_html: { id: 'programAccountSelect' } %>
-          <%= f.submit "Create Program", class: "btn btn-primary" %>
+          <hr>
+          <%= f.submit "Create Program", class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
         <% end %>
       </div>
     </div>
   </div>
 </div>
 
-        <script type="text/javascript">
-          $(document).ready(function() {
-            $("#programAccountSelect").select2({
-              theme: "bootstrap"
-            });
-          });
-        </script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#programAccountSelect").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>

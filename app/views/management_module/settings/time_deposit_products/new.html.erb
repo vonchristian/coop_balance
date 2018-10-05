@@ -1,11 +1,11 @@
 <div class="row">
-  <div class="col-md-6 col-md-offset-3">
+  <div class="col-md-6 offset-md-3">
     <div class="card">
       <div class="card-header">
         <h3 class="card-title"> Time Deposit Product Details </h3>
       </div>
       <div class="card-body">
-        <%= simple_form_for @time_deposit_product, url: :management_module_settings_time_deposit_products do |f| %>
+        <%= simple_form_for @time_deposit_product, url: :management_module_settings_time_deposit_products, html: {autocomplete: "off"} do |f| %>
           <%= f.error_notification %>
           <%= f.input :name %>
           <%= f.input :minimum_deposit, as: :currency %>
@@ -18,9 +18,8 @@
           <%= f.input :break_contract_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
           <%= f.input :break_contract_fee %>
           <%= f.input :break_contract_rate %>
-          <div class="box-footer">
-            <%= f.submit "Create Time Deposit Product", class: "btn btn-danger float-right" %>
-          </div>
+          <hr>
+          <%= f.submit "Create Time Deposit Product", class: "btn btn-danger float-right", data: { disable_with: "Processing..." } %>
         <% end %>
       </div>
     </div>
