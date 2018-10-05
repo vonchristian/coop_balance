@@ -3,7 +3,7 @@ module ManagementModule
     def create
       @registry = Registries::MemberRegistry.create(registry_params)
       if @registry.save
-        redirect_to management_module_settings_url, notice: "Member uploaded successfully."
+        redirect_to management_module_settings_data_migrations_url, notice: "Member uploaded successfully."
         @registry.parse_for_records
       else
         render :new

@@ -3,7 +3,7 @@ module ManagementModule
     def create
       @registry = Registries::LoanRegistry.create(registry_params)
       if @registry.save
-        redirect_to management_module_settings_url, notice: "Loans uploaded successfully."
+        redirect_to management_module_settings_data_migrations_url, notice: "Loans uploaded successfully."
         @registry.parse_for_records
       else
         render :new

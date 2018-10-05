@@ -1,21 +1,39 @@
- <li class= "nav-item"><a href="/treasury_module" class="nav-link <%= 'active' if current_page?(treasury_module_index_path) %> "><i class="nav-icon fa fa-chart-line"></i> <span>Transactions Summary </span></a></li>
-
-
-          <li class="nav-item" <%= 'active' if current_page?(vouchers_path) %> ><a href="/vouchers" class="nav-link"><i class="nav-icon fa fa-folder"></i> <span> Vouchers</span></a></li>
-          <li class="nav-item"<%= 'active' if current_page?(members_path) %> ><a href="/members" class="nav-link"><i class="nav-icon fa fa-users"></i> <span> Members</span></a></li>
-          <li class="nav-item"<%= 'active' if current_page?(treasury_module_disbursements_path) %> ><a href="/treasury_module/disbursements" class="nav-link"><i class="nav-icon fa fa-chevron-left"></i> <span> Disbursements</span></a></li>
-          <li class="nav-item"<%= 'active' if current_page?(treasury_module_cash_receipts_path) %> ><a href="/treasury_module/cash_receipts" class="nav-link"><i class="nav-icon fa fa-chevron-right"></i> <span> Cash Receipts</span></a></li>
-          <li class="nav-item" ><a href="/loans" class="nav-link <%= 'active' if current_page?(loans_path) %>"><i class="nav-icon fa fa-credit-card"></i> <span> Loans</span></a></li>
-
-
-          <li class="nav-item" ><a href="/savings_accounts" class="nav-link <%= 'active' if current_page?(savings_accounts_path) %>"><i class="nav-icon fa fa-suitcase"></i> <span> Savings Accounts</span></a></li>
-
-          <li class="nav-item"<%= 'active' if current_page?(share_capitals_path) %> ><a href="/share_capitals" class="nav-link"><i class="nav-icon fa fa-suitcase"></i> <span> Share Capitals </span></a></li>
-          <li class="nav-item"<%= 'active' if current_page?(time_deposits_path) %> ><a href="/time_deposits" class="nav-link"><i class="nav-icon fa fa-suitcase"></i> <span> Time Deposits</span></a></li>
-          <li class="nav-item"><a href="/bank_accounts" class="nav-link <%= 'active' if current_page?(bank_accounts_path) %> "><i class="nav-icon fa fa-building"></i> <span> Bank Accounts</span></a></li>
-
-
-          <li class="nav-item"<%= 'active' if current_page?(employee_entries_path(current_user)) %> ><a href="/employees/<%="#{current_user.id}"%>/entries" class="nav-link"><i class="nav-icon fa fa-credit-card"></i> <span> Entries</span></a></li>
-          <li class="nav-item"<%= 'active' if current_page?(employee_reports_path(current_user)) %> ><a href="/employees/<%="#{current_user.id}"%>/reports" class="nav-link"><i class="nav-icon far fa-folder"></i> <span> Reports</span></a></li>
+<li class= "nav-item">
+  <a href="/treasury_module" class="nav-link <%= 'active' if current_page?(treasury_module_index_path) %> "><i class="nav-icon fa fa-chart-line"></i><span>Transactions Summary </span></a>
+</li>
+<li class="nav-item">
+  <a href="/vouchers" class="nav-link <%= 'active' if current_page?(vouchers_path) %>"><i class="nav-icon fa fa-folder"></i><span> Vouchers</span></a>
+</li>
+<li class="nav-item">
+  <a href="/members" class="nav-link <%= 'active' if current_page?(members_path) %>"><i class="nav-icon fa fa-users"></i><span> Members</span></a>
+</li>
+<li class="nav-item">
+  <a href="/treasury_module/disbursements" class="nav-link <%= 'active' if current_page?(treasury_module_disbursements_path) %>"><i class="nav-icon fa fa-chevron-left"></i><span> Disbursements</span></a>
+</li>
+<li class="nav-item">
+  <a href="/treasury_module/cash_receipts" class="nav-link <%= 'active' if current_page?(treasury_module_cash_receipts_path) %>"><i class="nav-icon fa fa-chevron-right"></i><span> Cash Receipts</span></a>
+</li>
+<li class="nav-item" >
+  <a href="/loans" class="nav-link <%= 'active' if current_page?(loans_path) %>"><i class="nav-icon fa fa-credit-card"></i><span> Loans</span></a>
+</li>
+<li class="nav-item" >
+  <a href="/savings_accounts" class="nav-link <%= 'active' if current_page?(savings_accounts_path) %>"><i class="nav-icon fa fa-suitcase"></i><span> Savings Accounts</span></a>
+</li>
+<li class="nav-item">
+  <a href="/share_capitals" class="nav-link <%= 'active' if current_page?(share_capitals_path) %>"><i class="nav-icon fa fa-suitcase"></i><span> Share Capitals </span></a>
+ </li>
+<li class="nav-item" >
+  <a href="/time_deposits" class="nav-link <%= 'active' if current_page?(time_deposits_path) %>"><i class="nav-icon fa fa-suitcase"></i><span> Time Deposits</span></a>
+</li>
+<li class="nav-item">
+  <a href="/bank_accounts" class="nav-link <%= 'active' if current_page?(bank_accounts_path) %> "><i class="nav-icon fa fa-building"></i><span> Bank Accounts</span></a>
+</li>
+<li class="nav-item">
+  <a href="/employees/<%="#{current_user.id}"%>/entries" class="nav-link <%= 'active' if current_page?(employee_entries_path(current_user)) %>"><i class="nav-icon fa fa-credit-card"></i><span> Entries</span></a>
+</li>
+<li class="nav-item">
+  <a href="/employees/<%="#{current_user.id}"%>/reports" class="nav-link <%= 'active' if current_page?(employee_reports_path(current_user)) %>">
+  <i class="nav-icon far fa-folder"></i><span> Reports</span></a>
+</li>
 
 <%= render 'layouts/shared/sidebar_links/monitoring' %>
