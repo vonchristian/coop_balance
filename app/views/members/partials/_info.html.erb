@@ -1,132 +1,93 @@
 <div class="tab-pane <%='active' if current_page?(member_info_index_path(@member)) %>">
-
-    <div class="row">
-      <div class="col-md-3">
-        <strong>
-          <i class="fa fa-map-marker"></i> Current Address
-        </strong>
-      </div>
-      <div class="col-md-6">
-        <%= @member.current_address_complete_address %><br>
-      </div>
-      <div class="col-md-3">
-        <%= link_to 'Update', new_member_address_path(@member), class: "btn btn-outline-warning btn-sm" %>
-      </div>
-    </div>
-    <br>
-    <div class="row">
-      <div class="col-md-3">
-        <strong><i class="fa fa-phone"></i> Account Number </strong>
-      </div>
-      <div class="col-md-6">
-        <%= @member.account_number %>
-      </div>
-      <div class="col-md-3"></div>
-    </div>
-    <br>
-    <div class="row">
-      <div class="col-md-3">
-        <strong><i class="fa fa-phone"></i> Contact Info </strong>
-      </div>
-      <div class="col-md-6">
-        <%= @member.current_contact_number %>
-      </div>
-      <div class="col-md-3">
-        <%= link_to 'Update', new_member_contact_path(@member), class: "btn btn-outline-warning btn-sm" %>
-      </div>
-    </div>
-    <br>
-    <div class="row">
-      <div class="col-md-6">
-        <strong><i class="fa fa-calendar"></i> Date of Birth </strong>
-      </div>
-      <div class="col-md-6">
-        <%= @member.date_of_birth.try(:strftime, "%B %e, %Y") %><br>
-        <%= @member.age %> Years Old  <br>
-        <%= link_to 'Update', edit_member_path(@member), class: "btn btn-default btn-xs" %>
-      </div>
-    </div>
-    <br>
-    <div class="row">
-      <div class="col-md-6">
-        <strong><i class="fa fa-calendar"></i> Sex </strong>
-      </div>
-      <div class="col-md-6">
-        <%= @member.sex.titleize %><br>
-      </div>
-    </div>
-    <br>
-    <div class="row">
-      <div class="col-md-6">
-        <strong><i class="fa fa-calendar"></i> Civil Status </strong>
-      </div>
-      <div class="col-md-6">
-        <%= @member.civil_status.titleize %>
-      </div>
-    </div>
-    <br>
-    <div class="row">
-      <div class="col-md-6">
-        <strong><i class="fa fa-info"></i> TIN Number </strong>
-      </div>
-      <div class="col-md-6">
-        <%= @member.current_tin_number %><br>
-        <%= link_to 'Update', new_member_tin_path(@member), class: "btn btn-default btn-xs" %>
-      </div>
-    </div>
-    <br>
-    <div class="row">
-      <div class="col-md-6">
-        <strong><i class="fa fa-info"></i> Office </strong>
-      </div>
-      <div class="col-md-6">
-        <%= @member.office_name %>
-      </div>
-    </div>
-    <br>
-    <div class="row">
-      <div class="col-md-6">
-        <strong><i class="fa fa-info"></i> Organizations </strong>
-      </div>
-      <div class="col-md-6">
-        <% @member.organizations.each do |organization| %>
-          <p><%= organization.name %></p>
-        <% end %>
-      </div>
-    </div>
-    <br>
-    <div class="row">
-      <div class="col-md-6">
-        <strong><i class="fa fa-calendar"></i> Membership Date </strong>
-      </div>
-      <div class="col-md-6">
-        <%= @member.memberships.pluck(:membership_date).last.strftime("%B %e, %Y") %>
-      </div>
-    </div>
-    <br>
-    <div class="row">
-      <div class="col-md-6">
-        <strong><i class="fa fa-info"></i> Beneficiaries </strong>
-      </div>
-      <div class="col-md-6">
-        <table>
-          <% @member.beneficiaries.each do |beneficiary| %>
-            <tr>
-              <td style="width:120px"><%= beneficiary.full_name %></td>
-              <td style="width:120px"><%= beneficiary.relationship %></td>
-            </tr>
+  <h4 class="card-title"> Information </h4>
+  <br>
+  <table class="table">
+    <tbody>
+      <tr>
+        <td style="width:200px"><strong><i class="fa fa-map-marker"></i> Current Address</strong></td>
+        <td><%= @member.current_address_complete_address || "N/A" %></td>
+        <td>
+          <%= link_to 'Update', new_member_address_path(@member), class: "btn btn-outline-warning btn-sm" %>
+        </td>
+      </tr>
+      <tr>
+        <td style="width:200px"><strong><i class="fa fa-phone"></i> Account Number </strong></td>
+        <td><%= @member.account_number || "N/A" %></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td style="width:200px"><strong><i class="fa fa-phone"></i> Contact Info </strong></td>
+        <td><%= @member.current_contact_number || "N/A" %></td>
+        <td><%= link_to 'Update', new_member_contact_path(@member), class: "btn btn-outline-warning btn-sm" %></td>
+      </tr>
+      <tr>
+        <td style="width:200px"><strong><i class="fa fa-calendar"></i> Date of Birth </strong></td>
+        <td><%= @member.date_of_birth.try(:strftime, "%B %e, %Y") || "N/A" %></td>
+        <td><%= link_to 'Update', edit_member_path(@member), class: "btn btn-outline-warning btn-sm" %></td>
+      </tr>
+      <tr>
+        <td style="width:200px"><strong><i class="fa fa-calendar"></i> Age </strong></td>
+        <td><%= @member.date_of_birth.present? ? @member.age.to_s + "Years Old" : "N/A" %></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td style="width:200px"><strong><i class="fa fa-calendar"></i> Sex </strong></td>
+        <td><%= @member.sex.titleize %><br></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td style="width:200px"><strong><i class="fa fa-calendar"></i> Civil Status </strong></td>
+        <td><%= @member.civil_status.try(:titleize) || "N/A" %></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td style="width:200px"><strong><i class="fa fa-info"></i> TIN Number </strong></td>
+        <td><%= @member.current_tin_number || "N/A"%></td>
+        <td><%= link_to 'Update', new_member_tin_path(@member), class: "btn btn-outline-warning btn-sm" %></td>
+      </tr>
+      <tr>
+        <td style="width:200px"><strong><i class="fa fa-info"></i> Office </strong></td>
+        <td><%= @member.office_name || "N/A" %></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td style="width:200px"><strong><i class="fa fa-info"></i> Organizations </strong></td>
+        <td>
+          <% @member.organizations.each do |organization| %>
+            <p><%= organization.name || "N/A" %></p>
           <% end %>
-        </table>
-      </div>
-    </div>
-  </div>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td style="width:200px"><strong><i class="fa fa-calendar"></i> Membership Date </strong></td>
+        <td><%= @member.memberships.pluck(:membership_date).last.strftime("%B %e, %Y") || "N/A" %></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td style="width:200px"><strong><i class="fa fa-info"></i> Beneficiaries </strong></td>
+        <td>
+          <% @member.beneficiaries.each do |beneficiary| %>
+            <div class="row">
+              <div class="col-md-6">
+                <p><%= beneficiary.full_name %></p>
+              </div>
+              <div class="col-md-6">
+                <p><%= beneficiary.relationship.try(:titleize) %></p>
+              </div>
+            </div>
+          <% end %>
+        </td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <hr>
+  <h3 class="card-title"> Signature Specimen </h3>
+  <br>
+  <% if @member.signature_specimen.attachment.present? %>
+    <%= image_tag(@member.signature_specimen, height: 300, width: 500) %>
+  <% end %>
+  <hr>
+  <%= link_to 'Print Member Info', member_info_index_path(@member, format: 'pdf'), class: 'btn btn-success float-right' %>
 </div>
-<hr>
-<h3 class="card-title"> Signature Specimen </h3>
-<br>
-<% if @member.signature_specimen.attachment.present? %>
-  <%= image_tag(@member.signature_specimen, height: 300, width: 500) %>
-<% end %>
-<hr>
-<%= link_to 'Print Member Info', member_info_index_path(@member, format: 'pdf') %>
-<hr>

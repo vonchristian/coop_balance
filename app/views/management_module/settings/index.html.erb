@@ -6,6 +6,7 @@
       </div>
     </div>
   </div>
+</div>
 <div class="row">
   <div class="col-md-6">
     <div class="card">
@@ -62,6 +63,90 @@
       </div>
     </div>
   </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-md-6">
+            <h3 class="card-title">Loan Products</h3>
+          </div>
+          <div class="col-md-6">
+            <%= link_to new_management_module_settings_loan_product_path do  %>
+              <span class="btn btn-outline-danger btn-sm float-right" data-toggle="tooltip" title="New Loan Product"><i class="fa fa-plus-circle"></i> New </span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-md-6">
+            <h3 class="card-title"> Savings Products</h3>
+          </div>
+          <div class="col-md-6">
+            <%= link_to new_management_module_saving_product_path do  %>
+              <span class="btn btn-outline-danger btn-sm float-right" data-toggle="tooltip" title="New Savings Product"><i class="fa fa-plus-circle"></i> New </span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <% CoopServicesModule::SavingProduct.all.each do |saving_product| %>
+          <%= saving_product.name %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-md-10">
+            <h3 class="card-title"> Grace Period Configuration </h3>
+          </div>
+          <div class="col-md-2">
+            <%= link_to new_management_module_grace_period_path do %>
+              <span class="btn btn-sm btn-outline-danger float-right" data-toggle="tooltip" title="Set Grace Period"><i class="fa fa-edit"> Set</i></span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-md-10">
+            <h3 class="card-title"> Savings Account Configuration </h3>
+          </div>
+          <div class="col-md-2">
+            <%= link_to new_management_module_settings_savings_account_config_path do %>
+              <span class="btn btn-sm btn-outline-danger float-right" data-toggle="tooltip" title="Set Savings Accounts Configuration"><i class="fa fa-edit"> Set</i></span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
   <div class="col-md-6">
     <div class="card">
       <div class="card-header">
@@ -85,64 +170,113 @@
   <div class="col-md-6">
     <div class="card">
       <div class="card-header">
-        <h3 class="card-title"> Cooperative Details </h3>
+        <div class="row">
+          <div class="col-md-6">
+            <h3 class="card-title"> Cooperative Details </h3>
+          </div>
+          <div class="col-md-6">
+            <%= link_to edit_management_module_settings_cooperative_path(@cooperative) do %>
+              <span class="btn btn-sm btn-outline-warning float-right" data-toggle="tooltip" title="Update Cooperative Details"><i class="fa fa-edit"> Update</i></span>
+            <% end %>
+          </div>
+        </div>
       </div>
       <div class="card-body">
-        <%= link_to 'Update', edit_management_module_settings_cooperative_path(@cooperative), class: "btn btn-warning" %>
+        
       </div>
     </div>
   </div>
+</div>
+<div class="row">
   <div class="col-md-6">
     <div class="card">
       <div class="card-header">
         <h3 class="card-title"> Data Migration </h3>
       </div>
-      <div class="card-header">
-      </div>
       <div class="card-body">
         <h3 class="card-title"> Savings Accounts </h3>
         <p class="text-muted"> Migrate Savings Accounts from your Excel spreadsheet </p>
         <%= simple_form_for @savings_registry, url: :management_module_savings_account_registries do |f| %>
-          <%= f.input :spreadsheet, label: "Excel File" %>
-          <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
-            <%= f.submit "Upload Savings", class: "btn btn-outline-danger" %>
+          <div class="row">
+            <div class="col-md-6">
+              <%= f.input :spreadsheet, label: false %>
+              <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+            </div>
+            <div class="col-md-6">
+              <%= f.submit "Upload Savings", class: "btn btn-sm btn-outline-danger float-right" %>
+            </div>
+          </div>
         <% end %>
-        <hr>
+      </div>
+      <hr>
+      <div class="card-body">
         <h3 class="card-title"> Share Capital Accounts </h3>
         <p class="text-muted"> Migrate Share Capital accounts from your Excel spreadsheet. </p>
         <%= simple_form_for Registries::ShareCapitalRegistry.new, url: :management_module_share_capital_registries do |f| %>
-          <%= f.input :spreadsheet, label: 'Share Capital Registry' %>
-          <%= f.input :employee_id, input_html: { value: current_user.id } %>
-          <%= f.submit "Upload Share Capitals", class: "btn btn-outline-danger" %>
+          <div class="row">
+            <div class="col-md-6">
+              <%= f.input :spreadsheet, label: false %>
+              <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+            </div>
+            <div class="col-md-6">
+              <%= f.submit "Upload Share Capitals", class: "btn btn-sm btn-outline-danger float-right" %>
+            </div>
+          </div>
         <% end %>
-        <hr>
+      </div>
+      <hr>
+      <div class="card-body">
         <h3 class="card-title"> Loan Accounts </h3>
         <p class="text-muted"> Migrate Loans from your Excel spreadsheet. </p>
         <%= simple_form_for Registries::LoanRegistry.new, url: :management_module_loan_registries do |f| %>
-          <%= f.input :spreadsheet %>
-          <%= f.input :employee_id, input_html: { value: current_user.id } %>
-          <%= f.submit "Upload Loan Accounts", class: "btn btn-outline-danger" %>
+          <div class="row">
+            <div class="col-md-6">
+              <%= f.input :spreadsheet, label: false %>
+              <%= f.input :employee_id, input_html: { value: current_user.id },as: :hidden %>
+            </div>
+            <div class="col-md-6">
+              <%= f.submit "Upload Loan Accounts", class: "btn btn-sm btn-outline-danger float-right" %>
+            </div>
+          </div>
         <% end %>
-        <hr>
+      </div>
+      <hr>
+      <div class="card-body">
         <h3 class="card-title"> Time Deposit Accounts </h3>
         <p class="text-muted"> Migrate time deposit accounts from your excel spreadsheet. </p>
         <%= simple_form_for Registries::TimeDepositRegistry.new, url: :management_module_time_deposit_registries do |f| %>
-          <%= f.input :spreadsheet %>
-          <%= f.input :employee_id, input_html: { value: current_user.id } %>
-          <%= f.submit "Upload Time Deposits", class: "btn btn-outline-danger" %>
+          <div class="row">
+            <div class="col-md-6">
+              <%= f.input :spreadsheet, label: false %>
+              <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+            </div>
+            <div class="col-md-6">
+              <%= f.submit "Upload Time Deposits", class: "btn btn-sm btn-outline-danger float-right" %>
+            </div>
+          </div>
         <% end %>
-        <hr>
+      </div>
+      <hr>
+      <div class="card-body">
         <h3 class="card-title"> Members </h3>
         <p class="text-muted"> Migrate members from your excel spreadsheet. </p>
         <%= simple_form_for Registries::MemberRegistry.new, url: :management_module_member_registries do |f| %>
-          <%= f.input :spreadsheet %>
-          <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
-          <%= f.submit "Upload Members", class: "btn btn-outline-danger" %>
+          <div class="row">
+            <div class="col-md-6">
+              <%= f.input :spreadsheet, label: false %>
+              <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+            </div>
+            <div class="col-md-6">
+              <%= f.submit "Upload Members", class: "btn btn-sm btn-outline-danger float-right" %>
+            </div>
+          </div>
         <% end %>
-        <hr>
       </div>
     </div>
   </div>
+  <div class="col-md-6">
+  </div>
+</div>
 
 
 
@@ -150,10 +284,8 @@
 
 
 
-<%= link_to 'Set Grace Period', new_management_module_grace_period_path %>
 <%= link_to 'New Employee', new_user_registration_path %>
 <%#= link_to "New Committee", new_management_module_committee_path %>
-<%= link_to 'Set Savings Accounts Configuration', new_management_module_settings_savings_account_config_path, class: "btn btn-danger" %>
 <%= link_to current_user.cooperative_name, management_module_settings_cooperative_path(current_user.cooperative) %>
 
 
@@ -168,33 +300,7 @@
   <%= program.account.name %>
 <% end %>
 <hr>
-</div>
-</div>
-</div>
-
-<div class="row">
-  <div class="col-md-4">
-    <div class="card">
-      <div class="card-header">
-        <div class="row">
-          <div class="col-md-6">
-            <h3 class="card-title"> Savings Products</h3>
-          </div>
-          <div class="col-md-6">
-            <%= link_to new_management_module_saving_product_path do  %>
-            <span class="btn btn-danger btn-xs pull-right" data-toggle="tooltip" title="New Savings Product"><i class="fa fa-plus"></i> New </span>
-            <% end %>
-          </div>
-        </div>
-      </div>
-      <div class="card-body">
-      <% CoopServicesModule::SavingProduct.all.each do |saving_product| %>
-        <%= saving_product.name %>
-      </div>
-      <% end %>
-    </div>
-  </div>
-<div class="col-md-4">
+<div class="col-md-6">
   <div class="card">
     <div class="card-header">
       <div class="row">
@@ -203,7 +309,7 @@
         </div>
         <div class="col-md-6">
           <%= link_to new_management_module_settings_store_front_path do  %>
-          <span class="btn btn-danger btn-xs pull-right" data-toggle="tooltip" title="New Savings Product"><i class="fa fa-plus"></i> New </span>
+          <span class="btn btn-danger btn-sm float-right" data-toggle="tooltip" title="New Savings Product"><i class="fa fa-plus"></i> New </span>
           <% end %>
         </div>
       </div>

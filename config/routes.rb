@@ -170,8 +170,8 @@ Rails.application.routes.draw do
     resources :time_deposit_registries, only: [:new, :create]
     resources :member_registries, only: [:create]
 
-
     namespace :settings do
+      resources :loan_products, only: [:new, :create]
       resources :store_fronts, only: [:new, :create]
       resources :cooperatives, only: [:edit, :update, :show] do
         resources :offices, only: [:new, :create]
