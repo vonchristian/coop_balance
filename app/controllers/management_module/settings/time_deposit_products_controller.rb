@@ -9,7 +9,7 @@ module ManagementModule
         @time_deposit_product = CoopServicesModule::TimeDepositProduct.create(time_deposit_product_params)
         if @time_deposit_product.valid?
           @time_deposit_product.save
-          redirect_to management_module_settings_url, notice: "Succeess"
+          redirect_to management_module_settings_cooperative_products_url, notice: "Succeess"
         else
           render :new
         end

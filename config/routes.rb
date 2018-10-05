@@ -171,6 +171,11 @@ Rails.application.routes.draw do
     resources :member_registries, only: [:create]
 
     namespace :settings do
+      resources :generals, only: [:index]
+      resources :account_budgets, only: [:index]
+      resources :cooperative_products, only: [:index]
+      resources :configurations, only: [:index]
+      resources :data_migrations, only: [:index]
       resources :loan_products, only: [:new, :create]
       resources :store_fronts, only: [:new, :create]
       resources :cooperatives, only: [:edit, :update, :show] do

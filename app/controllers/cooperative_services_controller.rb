@@ -9,7 +9,7 @@ class CooperativeServicesController < ApplicationController
     @cooperative_service = current_cooperative.cooperative_services.create(cooperative_service_params)
     if @cooperative_service.valid?
       @cooperative_service.save
-      redirect_to management_module_settings_url, notice: "Cooperative Service created successfully."
+      redirect_to management_module_settings_configurations_url, notice: "Cooperative Service created successfully."
     else
       render :new
     end

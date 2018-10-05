@@ -9,7 +9,7 @@ module ManagementModule
         @cooperative = current_user.cooperative
         @store_front = @cooperative.store_fronts.create(store_front_params)
         if @store_front.valid?
-          redirect_to management_module_settings_url, notice: "Store Front created successfully."
+          redirect_to management_module_settings_configurations_url, notice: "Store Front created successfully."
         else
           render :new
         end

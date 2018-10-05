@@ -9,7 +9,7 @@ module ManagementModule
 				@grace_period.update(grace_period_params)
 				if @grace_period.valid?
 					@grace_period.save 
-					redirect_to management_module_settings_url, notice: "Grace period created successfully."
+					redirect_to management_module_settings_configurations_url, notice: "Grace period created successfully."
 				else 
 					render :new 
 				end 

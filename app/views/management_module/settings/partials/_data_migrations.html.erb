@@ -1,0 +1,158 @@
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"> Savings Accounts </h3>
+        <p class="text-muted"> Migrate Savings Accounts from your Excel spreadsheet </p>
+      </div>
+      <div class="card-body">
+        <%= simple_form_for @savings_registry, url: :management_module_savings_account_registries do |f| %>
+          <div class="row">
+            <div class="col-md-9">
+              <%= f.input :spreadsheet, label: false %>
+              <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+            </div>
+            <div class="col-md-3">
+              <%= button_tag(class: "btn btn-sm btn-outline-danger float-right", id:"s-upload") do %>
+                <span><i class="fa fa-arrow-alt-circle-up"></i> Upload</span>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"> Share Capital Accounts </h3>
+        <p class="text-muted"> Migrate Share Capital accounts from your Excel spreadsheet. </p>
+      </div>
+      <div class="card-body">
+        <%= simple_form_for @share_capital_registry, url: :management_module_share_capital_registries do |f| %>
+          <div class="row">
+            <div class="col-md-9">
+              <%= f.input :spreadsheet, label: false %>
+              <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+            </div>
+            <div class="col-md-3">
+              <%= button_tag(class: "btn btn-sm btn-outline-danger float-right", id:"sc-upload") do %>
+                <span><i class="fa fa-arrow-alt-circle-up"></i> Upload</span>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"> Loan Accounts </h3>
+        <p class="text-muted"> Migrate Loans from your Excel spreadsheet. </p>
+      </div>
+      <div class="card-body">
+        <%= simple_form_for @loan_registry, url: :management_module_loan_registries do |f| %>
+          <div class="row">
+            <div class="col-md-9">
+              <%= f.input :spreadsheet, label: false %>
+              <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+            </div>
+            <div class="col-md-3">
+              <%= button_tag(class: "btn btn-sm btn-outline-danger float-right", id:"l-upload") do %>
+                <span><i class="fa fa-arrow-alt-circle-up"></i> Upload</span>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"> Time Deposit Accounts </h3>
+        <p class="text-muted"> Migrate time deposit accounts from your excel spreadsheet. </p>
+      </div>
+      <div class="card-body">
+        <%= simple_form_for @time_deposit_registry, url: :management_module_time_deposit_registries do |f| %>
+          <div class="row">
+            <div class="col-md-9">
+              <%= f.input :spreadsheet, label: false %>
+              <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+            </div>
+            <div class="col-md-3">
+              <%= button_tag(class: "btn btn-sm btn-outline-danger float-right", id:"td-upload") do %>
+                <span><i class="fa fa-arrow-alt-circle-up"></i> Upload</span>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <h3 class="card-title"> Members </h3>
+        <p class="text-muted"> Migrate members from your excel spreadsheet. </p>
+        <%= simple_form_for @member_registry, url: :management_module_member_registries do |f| %>
+          <div class="row">
+            <div class="col-md-9">
+              <%= f.input :spreadsheet, label: false %>
+              <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+            </div>
+            <div class="col-md-3">
+              <%= button_tag(class: "btn btn-sm btn-outline-danger float-right", id: 'm-upload') do %>
+                <span><i class="fa fa-arrow-alt-circle-up"></i> Upload</span>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#s-upload').prop('disabled',true);
+    $('#registries_savings_account_registry_spreadsheet').change(function(){
+      $('#s-upload').prop('disabled', this.value == "" ? true : false);     
+    })
+  });
+
+  $(document).ready(function(){
+    $('#td-upload').prop('disabled',true);
+    $('#registries_time_deposit_registry_spreadsheet').change(function(){
+      $('#td-upload').prop('disabled', this.value == "" ? true : false);     
+    })
+  });
+
+  $(document).ready(function(){
+    $('#sc-upload').prop('disabled',true);
+    $('#registries_share_capital_registry_spreadsheet').change(function(){
+      $('#sc-upload').prop('disabled', this.value == "" ? true : false);     
+    })
+  });
+
+  $(document).ready(function(){
+    $('#l-upload').prop('disabled',true);
+    $('#registries_loan_account_registry_spreadsheet').change(function(){
+      $('#l-upload').prop('disabled', this.value == "" ? true : false);     
+    })
+  });
+
+  $(document).ready(function(){
+    $('#m-upload').prop('disabled',true);
+    $('#registries_member_registry_spreadsheet').change(function(){
+      $('#m-upload').prop('disabled', this.value == "" ? true : false);     
+    })
+  });
+</script> 

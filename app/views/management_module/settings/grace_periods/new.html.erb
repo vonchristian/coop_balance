@@ -1,5 +1,17 @@
-<%= simple_form_for @grace_period, url: :management_module_grace_periods do |f| %>
-  <%= f.error_notification %>
-  <%= f.input :number_of_days %>
-  <%= f.submit "Save Grace Period", class: "btn btn-danger" %>
-<% end %>
+<div class="row">
+	<div class="col-md-6 offset-md-3">
+		<div class="card">
+			<div class="card-header">
+				<h3 class="card-title">New Grace Period</h3>
+			</div>
+			<div class="card-body">
+				<%= simple_form_for @grace_period, url: :management_module_grace_periods do |f| %>
+				  <%= f.error_notification %>
+				  <%= f.input :number_of_days %>
+				  <hr>
+				  <%= f.submit "Save Grace Period", class: "btn btn-danger float-right", data: { disable_with: "Processing..." } %>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</div>

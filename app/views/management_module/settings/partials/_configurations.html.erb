@@ -1,0 +1,165 @@
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-md-10">
+            <h3 class="card-title"> Grace Period Configuration </h3>
+          </div>
+          <div class="col-md-2">
+            <%= link_to new_management_module_grace_period_path do %>
+              <span class="btn btn-sm btn-outline-danger float-right" data-toggle="tooltip" title="Set Grace Period"><i class="fa fa-edit"> Set</i></span>
+            <% end if @grace_period.nil? %>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            Grace Period
+          </div>
+          <div class="col-md-6">
+            <%= @grace_period.nil? ? "" : @grace_period.number_of_days.to_s + " days" %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-md-9">
+            <h3 class="card-title"> Programs / Fee Schedules </h3>
+          </div>
+          <div class="col-md-3">
+            <%= link_to new_management_module_program_path do %>
+              <span class="btn btn-outline-danger btn-sm float-right" title="New Program/Fee" data-toggle="tooltip">
+                <i class="fa fa-plus-circle"></i> New
+              </span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="table">
+          <% @programs.each do |program| %>
+            <tr>
+              <td><%= program.description %></td>
+              <td><%= number_to_currency program.contribution %></td>
+              <td><%= program.account.name %></td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-md-6">
+            <h3 class="card-title"> Store Fronts</h3>
+          </div>
+          <div class="col-md-6">
+            <%= link_to new_management_module_settings_store_front_path do  %>
+              <span class="btn btn-danger btn-sm float-right" data-toggle="tooltip" title="New Savings Product"><i class="fa fa-plus"></i> New </span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <% @store_fronts.all.each do |store_front| %>
+          <%= store_front.name %>
+        <% end %>
+      </div>
+    </div>
+
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-md-10">
+            <h3 class="card-title"> Savings Account Configuration </h3>
+          </div>
+          <div class="col-md-2">
+            <%= link_to new_management_module_settings_savings_account_config_path do %>
+              <span class="btn btn-sm btn-outline-danger float-right" data-toggle="tooltip" title="Set Savings Accounts Configuration"><i class="fa fa-edit"> Set</i></span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="co-md-12">
+            <label>Closing Account</label>
+          </div>
+        </div>
+        <div class="row justify-content-end">
+          <div class="col-md-11">
+            <%= @savings_account_config.closing_account.name %>
+          </div>
+        </div>
+      </div>
+      <hr class="no-margin">
+      <div class="card-body">
+        <div class="row">
+          <div class="co-md-12">
+            <label>Interest Expense Account</label>
+          </div>
+        </div>
+        <div class="row justify-content-end">
+          <div class="col-md-11">
+            <%= @savings_account_config.interest_expense_account.name %>
+          </div>
+        </div>
+      </div>
+      <hr class="no-margin">
+      <div class="card-body">
+        <div class="row">
+          <div class="co-md-12">
+            <label>Number of Days to be Dormant</label>
+          </div>
+        </div>
+        <div class="row justify-content-end">
+          <div class="col-md-11">
+            <%= @savings_account_config.number_of_days_to_be_dormant %>
+          </div>
+        </div>
+      </div>
+      <hr class="no-margin">
+      <div class="card-body">
+        <div class="row">
+          <div class="co-md-12">
+            <label>Closing Fee</label>
+          </div>
+        </div>
+        <div class="row justify-content-end">
+          <div class="col-md-11">
+            <%= number_to_currency @savings_account_config.closing_account_fee %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-md-9">
+            <h3 class="card-title"> Cooperative Services </h3>
+          </div>
+          <div class="col-md-3">
+            <%= link_to new_cooperative_service_path do %>
+              <span class="btn btn-sm btn-outline-danger float-right" data-toggle="tooltip" title="New Cooperative Service"><i class="fa fa-plus-circle"> New</i></span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+      <% @cooperative_services.each do |cooperative_service| %>
+        <p><%= cooperative_service.title %></p>
+      <% end %>
+      </div>
+    </div>
+
+  </div>
+</div>
