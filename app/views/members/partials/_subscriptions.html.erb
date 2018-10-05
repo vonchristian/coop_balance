@@ -1,24 +1,25 @@
-<div class="tab-pane <%='active' if current_page?(member_subscriptions_path(@member)) %>" id='subscriptions'>
-  <p class="text-muted"> COOPERATIVE PROGRAMS </p>
-  <% @programs.each do |program| %>
-    <div class="row">
-      <div class="col-md-5">
-        <h4><%= program.name %></h4>
-        <span class="text-muted"><%= program.description %></span>
-      </div>
-      <div class="col-md-5">
-        <% if member.subscribed_programs.include?(program) %>
-          <span data-toggle="tooltip" title="Subscribed"><i class="fa fa-toggle-on fa-2x text-green"></i>
-        <% else %>
-          <%= link_to  member_program_subscriptions_path(program_id: program.id, member_id: @member.id), method: :create  do %>
-          <span data-toggle="tooltip" title="Subscribe"><i class="fa fa-toggle-off fa-2x"></i></span>
+<div class="card">
+  <div class="card-body">
+    <h3 class="card-title"> Cooperative Programs</p>
+    <% @programs.each do |program| %>
+      <div class="row">
+        <div class="col-md-5">
+          <b><%= program.name %></b>
+          <span class="text-muted"><%= program.description %></span>
+        </div>
+        <div class="col-md-5">
+          <% if member.subscribed_programs.include?(program) %>
+            <span data-toggle="tooltip" title="Subscribed"><i class="fa fa-toggle-on fa-2x text-green"></i>
+          <% else %>
+            <%= link_to  member_program_subscriptions_path(program_id: program.id, member_id: @member.id), method: :create  do %>
+            <span data-toggle="tooltip" title="Subscribe"><i class="fa fa-toggle-off fa-2x"></i></span>
+            <% end %>
           <% end %>
-        <% end %>
+        </div>
       </div>
-    </div>
-    <br>
-  <% end %>
-  <p class="text-muted"> SUBSCRIBED PROGRAMS </p>
+      <br>
+    <% end %>
+  <h3 class="card-title"> Program Subscriptions </p>
   <% @member.program_subscriptions.each do |program_subscription| %>
     <div class="row">
       <div class="col-md-6">

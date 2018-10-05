@@ -26,40 +26,7 @@
     </div>
       <% if current_page? share_capitals_path %>
         <% @share_capitals.each do |share_capital| %>
-          <div class="card">
-            <div class="card-body">
-                <div class="row">
-                  <div class="col-md-1">
-                    <% if share_capital.subscriber.avatar.attachment.present? %>
-                      <%= image_tag(share_capital.subscriber.avatar, style: 'width:40px;height:40px;', class: 'media-object img-circle') %>
-                    <% end %>
-                  </div>
-                  <div class="col-md-5">
-                    <%=link_to share_capital_path(share_capital) do %>
-                      <b><%= share_capital.subscriber_name.try(:upcase) %></b><br>
-                      <div class="row">
-                        <div class="col-md-6">
-                          <small class="text-muted"><i class="fa fa-server"></i> <%= share_capital.share_capital_product_name.try(:upcase) %></small>
-                        </div>
-                        <div class="col-md-6">
-                          <small class="text-muted"><i class="fa fa-clock"></i> <%= share_capital.default_last_transaction_date.strftime("%B %e, %Y") %></small>
-                        </div>
-                      </div>
-                    <% end %>
-                  </div>
-                  <div class="col-md-2">
-                    <h4 class="card-title"><%=number_to_currency share_capital.paid_up_balance %></h4>
-                    <small>PAID UP BALANCE</small>
-                  </div>
-                  <div class="col-md-4">
-                     <% if policy([:share_capitals, :capital_build_up]).new? %>
-                      <%= link_to 'New Capital Build Up', new_share_capital_capital_build_up_path(share_capital), class: "btn btn-success btn-sm float-right" %>
-                    <% end %>
-                  </div>
-                </div>
-
-            </div>
-          </div>
+          <%= render 'share_capitals/partials/header', share_capital: share_capital %>
         <% end %>
       <% end %>
       <% if current_page? share_capitals_below_minimum_balances_path %>
@@ -71,5 +38,3 @@
     </div>
   </div>
 </div>
-
-

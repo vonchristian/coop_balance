@@ -1,39 +1,63 @@
-<div class="tab-pane <%= 'active' if current_page? member_settings_path(@member) %>">
-  <h4>Settings</h4>
-  <p class="text-muted"><b>Profile</b></p>
-  <span class="text-muted">Update profile details of this member. </span><br>
-  <%= link_to "Update Profile", edit_member_path(@member), class: "btn btn-default btn-sm" %>
-  <hr>
-
-<h4>Merge Account</h4>
-  <span class="text-muted"> Merge duplicated member accounts</span>
-  <% if policy([:members, :merging]).new? %>
-    <%=link_to "Merge Account", new_member_merging_line_item_path(@member), class: "btn btn-danger" %>
-  <% else %>
-  <br>
-    <span class="text-danger"> Only manager account can merge duplicated member accounts </span>
-  <% end %>
-<hr>
-<h4 class="box-title">Membership Details</h4>
-  <% if @member.memberships.where(cooperative: current_cooperative).blank? %>
-    <%= link_to 'New Membership', new_member_membership_path(@member), class: "btn btn-primary" %>
-  <% end %>
-
-<% @member.memberships.each do |membership| %>
-  <div class="row">
-    <div class="col-md-8">
-      <%= membership.membership_type.try(:titleize) %><br>
-      Since: <%= membership.membership_date.try(:strftime, ("%B %e, %Y")) %>
+<div class="card card-danger">
+  <div class="card-header">
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-9">
+        <h4 class="card-title">Settings</h4>
+        <span class="text-muted">Update profile details of this member. </span><br>
+      </div>
+      <div class="col-md-3">
+        <%= link_to "Update Profile", edit_member_path(@member), class: "btn btn-outline-danger btn-sm" %>
+      </div>
     </div>
-    <div class="col-md-4">
-      <%= link_to 'Update Membership', edit_member_membership_path(id: membership.id, member_id: @member.id, cooperative_id: current_cooperative.id), class: "btn btn-warning btn-xs" %>
+    <hr>
+    <div class="row">
+      <div class="col-md-9">
+        <h4 class="card-title">Account Merging</h4>
+        <span class="text-muted"> Merge duplicated member accounts</span>
+      </div>
+      <div class="col-md-3">
+        <% if policy([:members, :merging]).new? %>
+          <%=link_to "Merge Account", new_member_merging_line_item_path(@member), class: "btn btn-outline-danger btn-sm" %>
+        <% else %>
+          <br>
+          <span class="text-danger"> Only manager account can merge duplicated member accounts </span>
+        <% end %>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-md-9">
+        <h4 class="card-title">Memberships </h4>
+        <br>
+        <% @member.memberships.each do |membership| %>
+          <div class="row">
+            <div class="col-md-8">
+              <%= membership.membership_type.try(:titleize) %><br>
+              Since: <%= membership.membership_date.try(:strftime, ("%B %e, %Y")) %>
+            </div>
+            <div class="col-md-4">
+              <%= link_to 'Update Membership', edit_member_membership_path(id: membership.id, member_id: @member.id, cooperative_id: current_cooperative.id), class: "btn btn-warning btn-xs" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div class="col-md-3">
+        <% if @member.memberships.where(cooperative: current_cooperative).blank? %>
+          <%= link_to 'New Membership', new_member_membership_path(@member), class: "btn btn-outline-danger btn-sm" %>
+        <% end %>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-md-9">
+        <h4 class="box-title"> Account Deletion </h4>
+        <span class="text-muted"> Check Savings, Share Capital, Loans, and Time Deposits are not present before deleting this account. </span>
+      </div>
+      <div class="col-md-3">
+        <%= link_to 'Delete Account', member_path(@member), class: "btn btn-outline-danger btn-sm", method: :delete, data: { confirm: "Are you sure you want to delete this member's account?" } %>
+      </div>
     </div>
   </div>
-<% end %>
 </div>
-<hr>
-<h4 class="box-title"> Delete Account </h4>
-<span class="text-muted"> Check Savings, Share Capital, Loans, and Time Deposits are not present before deleting this account. </span>
-<br>
-<br>
-<%= link_to 'Delete Account', member_path(@member), class: "btn btn-danger", method: :delete, data: { confirm: "Are you sure you want to delete this member's account?" } %>

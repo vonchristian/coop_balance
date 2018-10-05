@@ -19,6 +19,11 @@ class Membership < ApplicationRecord
   def self.for(options={})
     where(cooperative: options[:cooperative])
   end
+  
+  def self.for_cooperative(cooperative)
+    where(cooperative: cooperative)
+  end
+
   def name
     cooperator_name
   end
