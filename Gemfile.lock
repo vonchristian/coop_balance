@@ -376,6 +376,7 @@ DEPENDENCIES
   bullet
   capybara
   chartkick
+  chronic
   coffee-rails
   database_rewinder
   delayed-web

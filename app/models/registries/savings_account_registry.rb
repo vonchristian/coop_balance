@@ -9,11 +9,11 @@ module Registries
         upload_savings(row)
       end
     end
-    private
     def upload_savings(row)
        savings = MembershipsModule::Saving.create!(
         depositor: find_depositor(row),
         saving_product: find_saving_product(row),
+        last_transaction_date: cut_off_date,
         account_number: SecureRandom.uuid)
        create_entry(savings, row)
     end
@@ -26,19 +26,16 @@ module Registries
       entry_date: cut_off_date,
       debit_amounts_attributes: [
         account: debit_account,
-        amount: row["Deposit Amount"].to_f,
+        amount: row["Balance"].to_f,
         commercial_document: savings],
       credit_amounts_attributes: [
         account: credit_account(row),
-        amount: row["Deposit Amount"].to_f,
+        amount: row["Balance"].to_f,
         commercial_document: savings])
     end
-    def find_saving_product(row)
-      CoopServicesModule::SavingProduct.find_by(name: row["Savings Product"])
-    end
 
-    def cut_off_date
-      Date.parse("31/09/18")
+    def find_saving_product(row)
+      CoopServicesModule::SavingProduct.find_by(name: row["Saving Product"])
     end
 
     def find_depositor(row)
@@ -56,6 +53,9 @@ module Registries
 
     def credit_account(row)
       find_saving_product(row).account
+    end
+    def cut_off_date
+      Chronic.parse('09/30/2018')
     end
   end
 end

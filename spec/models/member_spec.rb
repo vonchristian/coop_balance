@@ -6,7 +6,6 @@ describe Member, type: :model do
     it { is_expected.to belong_to :office }
     it { is_expected.to have_many :memberships }
   	it { is_expected.to have_many :loans }
-  	it { is_expected.to have_many :addresses }
   	it { is_expected.to have_many :savings }
   	it { is_expected.to have_many :share_capitals }
   	it { is_expected.to have_many :time_deposits }
@@ -14,12 +13,12 @@ describe Member, type: :model do
   	it { is_expected.to have_many :subscribed_programs }
     it { is_expected.to have_many :sales_orders }
     it { is_expected.to have_many :sales_return_orders }
-    it { is_expected.to have_many :real_properties }
     it { is_expected.to have_many :organization_memberships }
     it { is_expected.to have_many :organizations }
-    it { is_expected.to have_many :relationships }
-    it { is_expected.to have_many :relations }
     it { is_expected.to have_many :contacts }
+    it { is_expected.to have_many :addresses }
+    it { is_expected.to have_many :beneficiaries }
+
   end
   describe 'delegations' do
     it { is_expected.to delegate_method(:name).to(:office).with_prefix }

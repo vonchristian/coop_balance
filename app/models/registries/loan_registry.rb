@@ -22,9 +22,9 @@ module Registries
                   disbursement_date: disbursement_date(row)
               )
         Term.create(
-          term: term(row), 
-          termable: loan, 
-          effectivity_date: disbursement_date(row), 
+          term: term(row),
+          termable: loan,
+          effectivity_date: disbursement_date(row),
           maturity_date: maturity_date(row)
           )
         #disbursement
@@ -65,7 +65,7 @@ module Registries
     end
 
     def cut_off_date(row)
-      Date.parse("31/09/18")
+      Chronic.parse('09/30/2018')
     end
 
     def find_organization(row)

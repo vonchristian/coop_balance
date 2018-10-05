@@ -5,8 +5,10 @@ class Member < ApplicationRecord
   multisearchable against: [:first_name, :last_name, :middle_name]
   enum sex: [:male, :female, :other]
   enum civil_status: [:single, :married, :widow, :divorced]
+
   has_one_attached :signature_specimen
   has_one_attached :avatar
+
   has_one :member_account
   belongs_to :office,                 class_name: "CoopConfigurationsModule::Office"
   has_many :tins,                     as: :tinable
