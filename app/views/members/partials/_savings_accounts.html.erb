@@ -1,19 +1,9 @@
-<div class="tab-pane <%='active' if current_page?(member_savings_accounts_path(@member)) %>" id="savings-accounts">
-  <% if policy([:members, :savings_account]).new? %>
-   <%=link_to 'New Savings Account', new_member_savings_account_path(@member), class: "btn btn-primary" %>
-  <% end %>
-   <hr>
-  <% @member.savings.each do |savings_account| %>
-    <%= link_to savings_account_path(savings_account) do %>
-      <small class="text-muted condensed-text"> <%= savings_account.saving_product_name.try(:upcase) %></small><br>
-        <h3 class="no-padding"><%= number_to_currency savings_account.balance %></h3>
-        <% if policy([:savings_accounts, :deposit]).new? %>
-          <%= link_to 'Deposit', new_savings_account_deposit_path(savings_account), class: "btn btn-success" %> &nbsp; &nbsp;
-          <%= link_to 'Withdraw', new_savings_account_withdrawal_path(savings_account), class: "btn btn-warning" %>
-        <% end %>
-      <hr />
+
+    <% if policy([:members, :savings_account]).new? %>
+     <%=link_to 'New Savings Account', new_member_savings_account_path(@member), class: "btn btn-primary float-right" %>
     <% end %>
-  <% end %>
-
-
-</div>
+     <hr>
+    <% @member.savings.each do |savings_account| %>
+      <%= render 'savings_accounts/partials/header', savings_account: savings_account %>
+    <% end %>
+  

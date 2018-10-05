@@ -1,5 +1,5 @@
 module Members
-  class MergingLineItem
+  class AccountMerging
     include ActiveModel::Model
     attr_accessor :current_member_id, :old_member_id, :cart_id
 

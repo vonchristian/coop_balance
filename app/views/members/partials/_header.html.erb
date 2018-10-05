@@ -6,7 +6,7 @@
           <%= image_tag(member.avatar, height: 45, width: 45, class: "img-circle") %>
         </div>
         <div class="col-md-11">
-          <h3 class="card-title"> <%= member.full_name.upcase %></h3>
+          <p class="lead"> <%= member.full_name %></p>
           <div class="row">
             <div class="col-md-3">
               <small class="text-muted"><i class="fa fa-map-marker"></i>&nbsp;  <%= member.current_address_complete_address %></small>

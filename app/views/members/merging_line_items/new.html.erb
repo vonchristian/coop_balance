@@ -1,9 +1,9 @@
+<%= render 'members/partials/header', member: @current_member %>
 <div class="row">
   <div class="col-md-6">
     <div class="card">
       <div class="card-header bg-red">
-        <h4><center><%= image_tag(@current_member.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center></h4>
-         <h3><center><%= @current_member.name %></center></h3>
+
       </div>
         <div class="card-body">
           <span class="text-danger">
