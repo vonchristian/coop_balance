@@ -152,6 +152,9 @@ class Member < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
+  def default_last_transaction_date
+    last_transaction_date || updated_at
+  end
 
 
   private

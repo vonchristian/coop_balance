@@ -29,7 +29,7 @@ module Members
       bounding_box [0, 760], width: 400 do
         text "MEMBER'S DATA SHEET", style: :bold, size: 14
         move_down 5
-        text "As of #{@member.updated_at.strftime("%B %e, %Y")}", size: 10
+        text "As of #{@member.default_last_transaction_date.strftime("%B %e, %Y")}", size: 10
       end
       move_down 20
       stroke do
@@ -47,7 +47,7 @@ module Members
       table([["", "Contact Number", @member.contact_number]], cell_style: { inline_format: true, size: 10, font: "Helvetica" }, column_widths: [20, 150, 100]) do
           cells.borders = []
       end
-      table([["", "Address", @member.current_address]], cell_style: { inline_format: true, size: 10, font: "Helvetica" }, column_widths: [20, 150, 100]) do
+      table([["", "Address", @member.current_address_complete_address]], cell_style: { inline_format: true, size: 10, font: "Helvetica" }, column_widths: [20, 150, 100]) do
           cells.borders = []
       end
       table([["", "Date of Birth", @member.date_of_birth.try(:strftime, ("%B %e, %Y"))]], cell_style: { inline_format: true, size: 10, font: "Helvetica" }, column_widths: [20, 150, 100]) do

@@ -1,11 +1,11 @@
 <% content_for(:html_title) { "#{@program_subscription.subscriber_name} | New Payment" } %>
 <div class="row">
-  <div class="col-md-4 col-md-offset-4">
+  <div class="col-md-4 offset-md-4">
     <div class="card">
       <div class="card-header">
         <h3 class="card-title"> New Payment Details </h3>
         <center>
-          <%= image_tag(@program_subscription.subscriber.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %>
+          <%= image_tag(@program_subscription.subscriber.avatar, style: 'width:60px;height:60px;', class: 'media-object img-circle') %>
           <h3><%= @program_subscription.subscriber_name %></h3>
         </center>
       </div>

@@ -1,6 +1,7 @@
 <div class="card">
   <div class="card-body">
-    <h3 class="card-title"> Cooperative Programs</p>
+    <h3 class="card-title"> Cooperative Programs</h3>
+    <p class="text-muted"> List of cooperative programs/fees. </p>
     <% @programs.each do |program| %>
       <div class="row">
         <div class="col-md-5">
@@ -9,7 +10,7 @@
         </div>
         <div class="col-md-5">
           <% if member.subscribed_programs.include?(program) %>
-            <span data-toggle="tooltip" title="Subscribed"><i class="fa fa-toggle-on fa-2x text-green"></i>
+            <span data-toggle="tooltip" title="Subscribed"><i class="fa fa-toggle-on fa-2x text-success"></i>
           <% else %>
             <%= link_to  member_program_subscriptions_path(program_id: program.id, member_id: @member.id), method: :create  do %>
             <span data-toggle="tooltip" title="Subscribe"><i class="fa fa-toggle-off fa-2x"></i></span>
@@ -19,22 +20,25 @@
       </div>
       <br>
     <% end %>
-  <h3 class="card-title"> Program Subscriptions </p>
-  <% @member.program_subscriptions.each do |program_subscription| %>
-    <div class="row">
-      <div class="col-md-6">
-        <%= program_subscription.name %><br>
-        <span class="text-muted"><%= program_subscription.description %></span>
-      </div>
-      <div class="col-md-6">
-        <%= number_to_currency program_subscription.contribution %>
-        <% if program_subscription.paid?(from_date: Date.today.beginning_of_year, to_date: Date.today.end_of_year) %>
-          <span class="label label-success"> Paid </span>
-        <% else %>
-          <%= link_to 'Pay Contribution', new_program_subscription_payment_path(program_subscription, member_id: @member.id), class: "btn btn-sm btn-flat btn-primary" %>
-        <% end %>
-      </div>
-    </div>
     <hr>
-  <% end %>
+    <h3 class="card-title"> Program Subscriptions </h3>
+    <br>
+    <% @member.program_subscriptions.each do |program_subscription| %>
+      <div class="row">
+        <div class="col-md-6">
+          <%= program_subscription.name %><br>
+          <span class="text-muted"><%= program_subscription.description %></span>
+        </div>
+        <div class="col-md-6">
+          <%= number_to_currency program_subscription.contribution %>
+          <% if program_subscription.paid?(from_date: Date.today.beginning_of_year, to_date: Date.today.end_of_year) %>
+            <span class="badge bg-success"> Paid </span>
+          <% else %>
+            <%= link_to 'Pay Contribution', new_program_subscription_payment_path(program_subscription, member_id: @member.id), class: "btn btn-sm btn-flat btn-primary" %>
+          <% end %>
+        </div>
+      </div>
+      <hr>
+    <% end %>
+  </div>
 </div>

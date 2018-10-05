@@ -31,7 +31,7 @@
               </div>
               <div class="col-md-6">
                 <span class="pull-left">
-                  <%= @time_deposit.current_term_effectivity_date.strftime("%B %e, %Y") %>
+                  <%= @time_deposit.effectivity_date.strftime("%B %e, %Y") %>
                 </span>
               </div>
             </div>
@@ -68,10 +68,10 @@
         <div class="col-md-2">
           <small>MATURITY DATE</small>
           <p><i class="fa fa-calendar"></i>
-            <%= @time_deposit.current_term_maturity_date.strftime("%B %e, %Y")  %>
+            <%= @time_deposit.maturity_date.strftime("%B %e, %Y")  %>
           </p>
           <h3 class="box-title">
-            <%= @time_deposit.current_term_remaining_term %>
+            <%= @time_deposit.remaining_term %>
           </h3>
             <small>DAYS TO MATURE</small>
         </div>
