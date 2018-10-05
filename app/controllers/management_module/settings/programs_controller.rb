@@ -8,7 +8,7 @@ module ManagementModule
 				@program = CoopServicesModule::Program.create(program_params)
 				if @program.save
            CoopServicesModule::Program.delay.subscribe_members(@program)
-					redirect_to management_module_settings_url, notice: "Program created successfully."
+					redirect_to management_module_settings_configurations_url, notice: "Program created successfully."
 				else
 				  render :new
 				end

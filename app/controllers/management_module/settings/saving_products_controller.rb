@@ -8,7 +8,7 @@ module ManagementModule
         @saving_product =  CoopServicesModule::SavingProduct.create(saving_product_params)
         if @saving_product.valid?
           @saving_product.save
-          redirect_to management_module_settings_url, notice: "Saving Product created successfully"
+          redirect_to management_module_settings_cooperative_products_url, notice: "Saving Product created successfully"
         else
           render :new
         end

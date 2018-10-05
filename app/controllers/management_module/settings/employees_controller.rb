@@ -8,7 +8,7 @@ module ManagementModule
         @employee = User.create(employee_params)
         if @employee.valid?
           @employee.save 
-          redirect_to employee_url(@employee), notice: "Employee registered successfully."
+          redirect_to management_module_settings_employees_url, notice: "Employee registered successfully."
         else 
           render :new 
         end 

@@ -1,6 +1,30 @@
-<%=simple_form_for @savings_account_config, url: :management_module_settings_savings_account_configs do |f| %>
-  <%= f.input :closing_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
-  <%= f.input :interest_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
-  <%= f.input :closing_account_fee, as: :string %>
-  <%= f.submit "Save Configuration" %>
-<% end %>
+<div class="row">
+	<div class="col-md-6 offset-md-3">
+		<div class="card">
+			<div class="card-header">
+				<h3 class="card-title">Savings Account Configuration</h3>
+			</div>
+			<div class="card-body">
+				<%=simple_form_for @savings_account_config, url: :management_module_settings_savings_account_configs do |f| %>
+				  <%= f.input :closing_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
+				  <%= f.input :interest_expense_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
+				  <%= f.input :closing_account_fee, as: :string %>
+				  <%= f.input :number_of_days_to_be_dormant %>
+				  <hr>
+				  <%= f.submit "Save Configuration", class: 'btn btn-danger float-right', data: { disable_with: "Processing..." } %>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#coop_configurations_module_savings_account_config_closing_account_id").select2({
+      theme: "bootstrap"
+    });
+    $("#coop_configurations_module_savings_account_config_interest_expense_account_id").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>

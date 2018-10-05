@@ -11,7 +11,7 @@ module ManagementModule
         @loan_product = LoansModule::LoanProductRegistration.new(loan_product_params)
         if @loan_product.valid?
           @loan_product.register!
-          redirect_to management_module_settings_url, notice: "Loan Product created successfully."
+          redirect_to management_module_settings_cooperative_products_url, notice: "Loan Product created successfully."
         else
           render :new
         end

@@ -9,7 +9,7 @@ module CoopServicesModule
     has_many :subscribers, class_name: "MembershipsModule::ShareCapital"
 
     validates :name,
-              :paid_account_id,
+              :paid_up_account_id,
               :subscription_account_id,
               :cost_per_share,
               presence: true

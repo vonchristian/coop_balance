@@ -19,7 +19,7 @@
           <%= f.input :address %>
           <%= f.input :contact_number %>
           <hr>
-          <%= f.submit "Save Cooperative Details", class: "btn btn-primary float-right" %>
+          <%= f.submit "Save Cooperative Details", class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
         <% end %>
       </div>
     </div>

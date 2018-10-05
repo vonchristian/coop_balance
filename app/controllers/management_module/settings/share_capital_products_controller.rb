@@ -8,7 +8,7 @@ module ManagementModule
         @share_capital_product = CoopServicesModule::ShareCapitalProduct.create(share_capital_product_params)
         if @share_capital_product.valid?
           @share_capital_product.save!
-          redirect_to management_module_settings_url, notice: "Share Capital Product created succesfully."
+          redirect_to management_module_settings_cooperative_products_url, notice: "Share Capital Product created succesfully."
         else
           render :new
         end

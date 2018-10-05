@@ -4,10 +4,11 @@ module ManagementModule
 
 			def index
 				@cooperative = current_user.cooperative
-				@share_capital_products = CoopServicesModule::ShareCapitalProduct.all
-      	@time_deposit_products = CoopServicesModule::TimeDepositProduct.all
       	@programs = CoopServicesModule::Program.all
-      	@savings_registry = Registries::SavingsAccountRegistry.new
+      	@savings_account_config = CoopConfigurationsModule::SavingsAccountConfig.last
+      	@cooperative_services = CoopServicesModule::CooperativeService.all
+      	@store_fronts = StoreFront.all
+      	@grace_period = CoopConfigurationsModule::GracePeriod.last
 			end
 		end
 	end

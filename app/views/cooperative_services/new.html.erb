@@ -1,4 +1,16 @@
-<%= simple_form_for [current_cooperative, @cooperative_service], url: :cooperative_services do |f| %>
-  <%= f.input :title %>
-  <%= f.submit "Create Cooperative Service" %>
-<% end %>
+<div class="row">
+	<div class="col-md-6 offset-md-3">
+		<div class="card">
+			<div class="card-header">
+				<h3 class="card-title">Cooperative Services</h3>
+			</div>
+			<div class="card-body">
+				<%= simple_form_for [current_cooperative, @cooperative_service], url: :cooperative_services do |f| %>
+				  <%= f.input :title %>
+				  <hr>
+				  <%= f.submit "Create Cooperative Service", class: 'btn btn-danger float-right' %>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</div>
