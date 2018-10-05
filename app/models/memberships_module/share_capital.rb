@@ -16,8 +16,6 @@ module MembershipsModule
     delegate :name,
             :paid_up_account,
             :subscription_account,
-            :closing_account,
-            :interest_payable_account,
             :closing_account_fee,
             :default_paid_up_account,
             :default_product?,
@@ -79,11 +77,6 @@ module MembershipsModule
         balances << average_monthly_balance(date: month.beginning_of_month)
       end
       balances.sum / balances.size
-    end
-
-    def closed?
-      share_capital_product_closing_account.entries.where(commercial_document: self).present? ||
-      share_capital_product_closing_account.entries.where(commercial_document: self.subscriber).present?
     end
 
     def entries

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_04_060402) do
+ActiveRecord::Schema.define(version: 2018_10_05_015826) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1035,13 +1035,9 @@ ActiveRecord::Schema.define(version: 2018_10_04_060402) do
     t.decimal "cost_per_share"
     t.boolean "has_closing_account_fee", default: false
     t.decimal "closing_account_fee", default: "0.0"
-    t.uuid "closing_account_id"
-    t.uuid "interest_payable_account_id"
     t.decimal "minimum_balance", default: "0.0"
     t.uuid "cooperative_id"
-    t.index ["closing_account_id"], name: "index_share_capital_products_on_closing_account_id"
     t.index ["cooperative_id"], name: "index_share_capital_products_on_cooperative_id"
-    t.index ["interest_payable_account_id"], name: "index_share_capital_products_on_interest_payable_account_id"
     t.index ["name"], name: "index_share_capital_products_on_name"
     t.index ["paid_up_account_id"], name: "index_share_capital_products_on_paid_up_account_id"
     t.index ["subscription_account_id"], name: "index_share_capital_products_on_subscription_account_id"
@@ -1053,8 +1049,8 @@ ActiveRecord::Schema.define(version: 2018_10_04_060402) do
     t.datetime "date_opened"
     t.string "type"
     t.string "account_owner_name"
-    t.datetime "created_at", default: "2018-08-09 11:46:34", null: false
-    t.datetime "updated_at", default: "2018-08-09 11:46:34", null: false
+    t.datetime "created_at", default: "2018-09-26 07:34:19", null: false
+    t.datetime "updated_at", default: "2018-09-26 07:34:19", null: false
     t.integer "status"
     t.uuid "office_id"
     t.string "subscriber_type"
@@ -1417,8 +1413,6 @@ ActiveRecord::Schema.define(version: 2018_10_04_060402) do
   add_foreign_key "savings", "offices"
   add_foreign_key "savings", "saving_products"
   add_foreign_key "savings_account_configs", "accounts", column: "closing_account_id"
-  add_foreign_key "share_capital_products", "accounts", column: "closing_account_id"
-  add_foreign_key "share_capital_products", "accounts", column: "interest_payable_account_id"
   add_foreign_key "share_capital_products", "accounts", column: "paid_up_account_id"
   add_foreign_key "share_capital_products", "accounts", column: "subscription_account_id"
   add_foreign_key "share_capital_products", "cooperatives"
