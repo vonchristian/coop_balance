@@ -51,11 +51,11 @@ def heading
       end
 
       stroke do
-          stroke_color 'CCCCCC'
-          line_width 0.2
-          stroke_horizontal_rule
-          move_down 15
-        end
+        stroke_color 'CCCCCC'
+        line_width 0.2
+        stroke_horizontal_rule
+        move_down 15
+      end
   end
   def approver
     User.general_manager.last

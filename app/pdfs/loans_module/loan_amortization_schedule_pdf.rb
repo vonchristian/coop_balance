@@ -1,19 +1,22 @@
+
 module LoansModule
   class LoanAmortizationSchedulePdf < Prawn::Document
     attr_reader :loan, :amortization_schedules, :employee, :view_context, :voucher
     def initialize(args)
-      super(margin: 50, page_size: "LEGAL", page_layout: :portrait)
+      super(margin: 30, page_size: "LEGAL", page_layout: :portrait)
       @loan = args[:loan]
       @voucher = @loan.voucher
       @amortization_schedules = args[:amortization_schedules]
       @employee = args[:employee]
       @view_context = args[:view_context]
       heading
+      loan_details
       loan_charges_details
       amortization_schedule
       signatory_details
     end
     private
+
 
     def formatted_interest(schedule)
       if schedule.has_prededucted_interest?
@@ -37,21 +40,19 @@ module LoansModule
       @view_context.number_to_currency(number, :unit => "P ")
     end
     def heading
-
-    bounding_box [360, 930], width: 200 do
+    bounding_box [320, 930], width: 200 do
       text "#{loan.current_term.effectivity_date}"
-        text "#{loan.cooperative_name.try(:upcase)}", style: :bold, size: 8
+        text "#{loan.cooperative_name.try(:upcase)}", style: :bold, size: 9
 
         move_down 3
-        text "#{loan.cooperative_address}", size: 7
+        text "#{loan.cooperative_address}", size: 8
         move_down 3
-        text "#{loan.cooperative_contact_number}", size: 7
+        text "#{loan.cooperative_contact_number}", size: 8
     end
-    bounding_box [0, 930], width: 400 do
-      text "LOAN DISCLOSURE STATEMENT AND AMORTIZATION SCHEDULE", style: :bold, size: 10
+    bounding_box [0, 930], width: 200 do
+      text "LOAN DISCLOSURE STATEMENT AND AMORTIZATION SCHEDULE", style: :bold, size: 12
       move_down 6
-
-      text "Borrower: #{@loan.borrower_name}", size: 10
+      text "BORROWER: #{loan.borrower_name.try(:upcase)}", size: 10
     end
     move_down 15
     stroke do
@@ -61,34 +62,50 @@ module LoansModule
       move_down 5
     end
   end
+  def loan_details
+    bounding_box [0, 850], width: 500 do
+      text "LOAN DETAILS", size: 9, style: :bold
+      table([["Loan Product", "#{loan.loan_product_name}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 100]) do
+        cells.borders = []
+      end
+      table([["Loan Amount ", "#{loan.loan_amount.to_f.to_words.titleize} Pesos (#{price(loan.loan_amount)})"]], cell_style: { padding: [0,0,0,0],inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 200]) do
+        cells.borders = []
+      end
+      table([["Term ", "#{loan.current_term.term} Months"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 300]) do
+        cells.borders = []
+      end
+      table([["Disbursement Date ", "#{loan.loan_amount.to_f.to_words.titleize} Pesos"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 300]) do
+        cells.borders = []
+      end
+      table([["Maturity Date ", "#{loan.loan_amount.to_f.to_words.titleize} Pesos"]], cell_style: { padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 300]) do
+        cells.borders = []
+      end
+    end
+  end
   def loan_charges_details
-    table([["Disbursement Date", "#{@loan.application_date.strftime("%B %e, %Y")}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [160, 100]) do
-      cells.borders = []
-      column(1).align = :right
+    bounding_box [300, 850], width: 500 do
+      text "LOAN CHARGES DETAILS", style: :bold, size: 9
+
+      table(loan_charges_data, cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 100]) do
+        cells.borders = []
+        column(1).align = :right
+      end
     end
-
-    table([["Maturity Date", "#{@loan.maturity_date.try(:strftime, ("%B %e, %Y"))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [160, 100]) do
-      cells.borders = []
-      column(1).align = :right
-    end
-
-
-    table(loan_charges_data, cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [160, 100]) do
-      cells.borders = []
-      column(1).align = :right
-
-
-    end
-    move_down 5
-
   end
   def loan_charges_data
-    @loan_charges_data ||= loan.voucher_amounts.map{|a| [a.description, price(a.adjusted_amount)]}
+    @loan_charges_data ||= loan.voucher_amounts.order(created_at: :desc).map{|a| [a.description, price(a.adjusted_amount)]}
   end
 
     def amortization_schedule
-
-      table(amortization_schedule_data, header: true, cell_style: { size: 8, font: "Helvetica"}, column_widths: [90, 80, 80, 70, 90, 100]) do
+      move_down 20
+      stroke do
+        stroke_color 'CCCCCC'
+        line_width 0.2
+        stroke_horizontal_rule
+        move_down 15
+      end
+      text "AMORTIZATION SCHEDULE", size: 9, style: :bold
+      table(amortization_schedule_data, header: true, cell_style: { size: 8, font: "Helvetica"}, column_widths: [90, 80, 80, 70, 90, 120]) do
 
         row(0).font_style = :bold
         column(0).align = :right
@@ -126,7 +143,7 @@ module LoansModule
     [["PREPARED BY", "", "APPROVED BY", "", "DISBURSED BY", "", "RECEIVED BY"]] +
     [["", ""]] +
     [["", ""]] +
-    [["DIPANIO MOCATI JR", "", "AGUSTIN C. CALYA-EN", "", "JOY BALANGUI", "", "#{@loan.borrower.try(:first_and_last_name).try(:upcase)}"]] +
+    [["#{loan.preparer_first_and_last_name}", "", "AGUSTIN C. CALYA-EN", "", "JOY BALANGUI", "", "#{@loan.borrower.try(:first_and_last_name).try(:upcase)}"]] +
     [["#{@loan.preparer_current_occupation.try(:titleize)}", "", "#{approver.current_occupation.to_s.titleize}", "", "Treasurer", "", "Borrower"]]
   end
   end

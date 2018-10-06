@@ -54,6 +54,7 @@ gem 'groupdate'
 gem "highcharts-rails"
 gem 'roo', "~> 2.7.0"
 gem 'chronic'
+gem 'numbers_and_words'
 group :development, :test do
   gem 'rspec-rails'
   gem 'capybara'
