@@ -21,6 +21,7 @@ class MembersController < ApplicationController
     if @member.valid?
       @member.save
       redirect_to member_settings_url(@member), notice: "Member updated successfully."
+
       # @member.memberships.each(&:save) #update search terms on memberships table
     else
       render :edit

@@ -8,11 +8,7 @@
       </div>
       <div class="card-body">
         <%= simple_form_for @member, multipart: true do |f| %>
-          <%if @member.avatar.blank? %>
-            <center><%=image_tag("default.png", height: 80, width: 80, :class=>"img-circle") %></center>
-          <% else %>
             <center><%= image_tag @member.avatar, class: 'center-block img-responsive img-circle'%></center>
-          <% end %>
           <center><%= f.input :avatar, as: :file, label: "Upload photo" %></center>
           <%= f.error_notification %>
           <%= f.input :first_name %>

@@ -9,7 +9,7 @@ class Member < ApplicationRecord
   has_one_attached :signature_specimen
   has_one_attached :avatar
 
-  has_one :member_account
+  has_one :member_account #for devise login
   belongs_to :office,                 class_name: "CoopConfigurationsModule::Office"
   has_many :tins,                     as: :tinable
   has_many :entries,                  class_name: "AccountingModule::Entry",
@@ -55,7 +55,7 @@ class Member < ApplicationRecord
   delegate :details, :complete_address, :barangay_name, :street_name, to: :current_address, prefix: true, allow_nil: true
 
   before_save :update_birth_date_fields
-  before_save :set_default_image, on: :create
+  # before_save :set_default_image, on: :create
   def self.updated_at(options={})
     if options[:from_date] && options[:to_date]
       date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
@@ -158,11 +158,6 @@ class Member < ApplicationRecord
 
 
   private
-  def set_default_image
-    if avatar.attachment.blank?
-      self.avatar.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'default.png')), filename: 'default-image.png', content_type: 'image/png')
-    end
-  end
 
   def set_fullname
     self.fullname = self.full_name #used for slugs
