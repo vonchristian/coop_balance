@@ -135,6 +135,7 @@ Rails.application.routes.draw do
     resources :balance_transfers, only: [:new, :create], module: :share_capitals
   end
   resources :members do
+    resources :beneficiaries, only: [:new, :create], module: :members
     resources :merging_line_items, only: [:new, :create], module: :members
     resources :mergings,         only: [:create],         module: :members
     resources :contacts,         only: [:new, :create],                 module: :members

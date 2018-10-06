@@ -7,20 +7,18 @@
         <h3 class="card-title">New Membership Application Details </h3>
       </div>
       <div class="card-body">
-        <%= simple_form_for @membership, multipart: true, url: :membership_applications do |f| %>
+        <%= simple_form_for @membership, multipart: true, html: { autocomplete: 'off' }, url: :membership_applications do |f| %>
           <%= f.error_notification %>
-
-              <center>
-                <center><%=image_tag("default.png", class: "img-circle", height: 60, width: 60) %></center>
-                <%= f.input :avatar, as: :file, label: "Profile Photo" %>
-              </center>
+            <%=image_tag("default.png", class: "img-circle", height: 60, width: 60) %>
+            <%= f.input :avatar, as: :file, label: "Profile Photo" %>
+            <br>
           <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
-          <%= f.input :membership_type, collection: Membership.membership_types.keys.to_a.map{ |a| [a.titleize, a] } %>
+          <%= f.input :membership_type, collection: Membership.membership_types.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
           <%= f.input :first_name %>
           <%= f.input :middle_name %>
           <%= f.input :last_name %>
-          <%= f.input :civil_status, collection: Member.civil_statuses.keys.to_a.map{|a| [a.titleize, a] } %>
-          <%= f.input :sex, collection: Member.sexes.keys.to_a.map{|a| [a.titleize, a] } %>
+          <%= f.input :civil_status, collection: Member.civil_statuses.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
+          <%= f.input :sex, collection: Member.sexes.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
 
           <%= f.input :date_of_birth, as: :string, input_html: { class: "datepicker" } %>
 

@@ -1,12 +1,12 @@
 class MembersController < ApplicationController
   layout 'application'
+
   def index
     if params[:search].present?
-      @members = Member.text_search(params[:search]).order(:last_name).paginate(page: params[:page], per_page: 35)
+      @members = current_cooperative.member_memberships.text_search(params[:search]).order(:last_name).paginate(page: params[:page], per_page: 35)
     else
-      @members = Member.all.order(:last_name).paginate(page: params[:page], per_page: 35)
+      @members = current_cooperative.member_memberships.order(:last_name).paginate(page: params[:page], per_page: 35)
     end
-    @membership_applications = Membership.pending
   end
 
   def show
@@ -18,9 +18,10 @@ class MembersController < ApplicationController
   def update
     @member = Member.find(params[:id])
     @member.update(member_params)
-    if @member.save
-      redirect_to member_info_index_url(@member), notice: "Member updated successfully."
-      @member.memberships.each(&:save) #update search terms on memberships table
+    if @member.valid?
+      @member.save
+      redirect_to member_settings_url(@member), notice: "Member updated successfully."
+      # @member.memberships.each(&:save) #update search terms on memberships table
     else
       render :edit
     end

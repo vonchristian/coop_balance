@@ -19,7 +19,6 @@ RSpec.describe Membership, type: :model do
     it { is_expected.to delegate_method(:savings).to(:cooperator) }
     it { is_expected.to delegate_method(:share_capitals).to(:cooperator) }
     it { is_expected.to delegate_method(:account_receivable_store_balance).to(:cooperator) }
-
-
+    it { is_expected.to delegate_method(:name).to(:cooperative).with_prefix }
   end
 end

@@ -4,7 +4,7 @@ class MembershipApplication
   :date_of_birth, :account_number, :membership_type, :civil_status, :sex,
   :contact_number, :email, :office_id, :cooperative_id
 
-  validates :first_name, :middle_name, :last_name, :sex, :date_of_birth, :cooperative_id, presence: true
+  validates :first_name, :middle_name, :last_name, :sex, :civil_status, :date_of_birth, :cooperative_id, presence: true
   validate :unique_full_name
 
   def save
@@ -19,18 +19,18 @@ class MembershipApplication
 
   private
   def create_member
-    member = Member.create(
+    member = Member.create!(
     account_number: account_number,
-    first_name: first_name,
-    middle_name: middle_name,
-    last_name: last_name,
-    civil_status: civil_status,
-    sex: sex,
-    date_of_birth: date_of_birth,
+    first_name:     first_name,
+    middle_name:    middle_name,
+    last_name:      last_name,
+    civil_status:   civil_status,
+    sex:            sex,
+    date_of_birth:  date_of_birth,
     contact_number: contact_number,
-    email: email,
-    office_id: office_id,
-    avatar: avatar_asset)
+    email:          email,
+    office_id:      office_id,
+    avatar:         avatar_asset)
     create_membership(member)
     create_tin(member)
   end
@@ -44,14 +44,14 @@ class MembershipApplication
 
   def create_membership(cooperator)
     Membership.create!(
-      cooperator: cooperator,
-      account_number: SecureRandom.uuid,
-      membership_type: membership_type,
-      cooperative_id: cooperative_id)
+      cooperator:       cooperator,
+      account_number:   SecureRandom.uuid,
+      membership_type:  membership_type,
+      cooperative_id:   cooperative_id)
   end
 
   def create_tin(member)
-    member.tins.create(number: tin_number)
+    member.tins.create!(number: tin_number)
   end
 
 

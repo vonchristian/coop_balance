@@ -62,8 +62,8 @@
         </tr>
         <tr>
           <td style="width:200px"><strong><i class="fa fa-calendar"></i> Membership Date </strong></td>
-          <% if @member.memberships.for_cooperative(current_user.cooperative).present? %>
-            <td><%= @member.memberships.for_cooperative(current_user.cooperative) %></td>
+          <% @member.memberships.for_cooperative(current_user.cooperative).each do |membership| %>
+            <td><%= membership.membership_date.try(:strftime, ("%B %e, %Y")) %></td>
             <td></td>
           <% end %>
         </tr>
@@ -81,7 +81,12 @@
               </div>
             <% end %>
           </td>
-          <td></td>
+          <td><%= link_to new_member_beneficiary_path(@member) do %>
+                <span class="btn btn-outline-warning btn-sm" data-toggle="tooltip" title="Add Beneficiary"><i class="fa fa-plus-circle"></i> Add
+                </span>
+              <% end %>
+          </td>
+
         </tr>
       </tbody>
     </table>

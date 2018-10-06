@@ -15,11 +15,9 @@ class Membership < ApplicationRecord
 
   delegate :avatar, to: :cooperator
   delegate :name, to: :cooperator, prefix: true
+  delegate :name, to: :cooperative, prefix: true
   delegate :savings, :share_capitals, :account_receivable_store_balance, to: :cooperator
-  def self.for(options={})
-    where(cooperative: options[:cooperative])
-  end
-  
+
   def self.for_cooperative(cooperative)
     where(cooperative: cooperative)
   end

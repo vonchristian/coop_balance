@@ -15,7 +15,10 @@ class MembershipApplicationsController < ApplicationController
 
   private
   def membership_params
-    params.require(:membership_application).permit(:first_name, :middle_name, :last_name,
+    params.require(:membership_application).permit(
+      :first_name,
+      :middle_name,
+      :last_name,
       :avatar,
       :date_of_birth,
       :account_number,
