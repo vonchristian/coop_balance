@@ -16,7 +16,6 @@ module Memberships
       private
       def save_balance_transfer
          AccountingModule::Entry.create!(
-        origin: find_employee.office,
         commercial_document: find_origin,
         recorder: find_employee,
         description: "Balance transfer from #{find_origin.name} to #{find_destination.name}",

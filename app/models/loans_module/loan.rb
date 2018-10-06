@@ -85,9 +85,11 @@ module LoansModule
     def current_term
       terms.current
     end
+    
     def disbursement_date
-      current_term.effectivity_date
+      disbursement_voucher.date
     end
+
     def maturity_date
       current_term.maturity_date
     end

@@ -54,7 +54,6 @@ module Memberships
 
       def create_entry(time_deposit)
         AccountingModule::Entry.create!(
-        origin: find_employee.office,
         commercial_document: find_depositor,
         recorder: find_employee,
         description: 'Time deposit',

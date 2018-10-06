@@ -35,7 +35,6 @@ module Memberships
         last_transaction_date: date,
         account_number: account_number)
       AccountingModule::Entry.create!(
-        origin: find_employee.office,
         commercial_document: find_depositor,
         recorder: find_employee,
         description: "Savings deposit  of #{find_depositor.name}",

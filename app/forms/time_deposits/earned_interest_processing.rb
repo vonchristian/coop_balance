@@ -11,7 +11,6 @@ module TimeDeposits
     private
     def save_earned_interest
       AccountingModule::Entry.create!(
-        origin: find_employee.office,
         recorder: find_employee,
         description: "Earned interests on #{date.to_date.strftime("%B %e, %Y")}",
         commercial_document: find_time_deposit,

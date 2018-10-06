@@ -28,7 +28,6 @@ module AccountingModule
     def create_entry
       AccountingModule::Entry.create!(
         entry_date: entry_date,
-        origin: find_employee.office,
         recorder: find_employee,
         description: "ADJUSTING ENTRY: #{description}",
         commercial_document: find_commercial_document,

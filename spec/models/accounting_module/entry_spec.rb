@@ -4,15 +4,30 @@ module AccountingModule
   describe Entry do
   	describe 'associations' do
   		it { is_expected.to belong_to :commercial_document }
-      it { is_expected.to belong_to :origin }
+      it { is_expected.to belong_to :office }
+      it { is_expected.to belong_to :cooperative }
+      it { is_expected.to belong_to :cleared_by }
+      it { is_expected.to belong_to :recorder }
+
+      it { is_expected.to have_many :credit_amounts }
+      it { is_expected.to have_many :debit_amounts }
+      it { is_expected.to have_many :debit_accounts }
+      it { is_expected.to have_many :credit_accounts }
+      it { is_expected.to have_many :accounts }
+      it { is_expected.to have_many :amounts }
   	end
 
     describe 'validations' do
       it { is_expected.to validate_presence_of :description }
+      it { is_expected.to validate_presence_of :office_id }
+      it { is_expected.to validate_presence_of :cooperative_id }
     end
 
     describe 'delegations' do
-      it { is_expected.to delegate_method(:name).to(:origin).with_prefix }
+      it { is_expected.to delegate_method(:first_and_last_name).to(:recorder).with_prefix }
+      it { is_expected.to delegate_method(:name).to(:cooperative).with_prefix }
+      it { is_expected.to delegate_method(:name).to(:office).with_prefix }
+      it { is_expected.to delegate_method(:name).to(:commercial_document).with_prefix }
     end
 
     context 'without credit and debit' do

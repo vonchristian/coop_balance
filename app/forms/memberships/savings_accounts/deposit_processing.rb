@@ -21,7 +21,6 @@ module Memberships
       private
       def save_deposit
         entry = AccountingModule::Entry.create!(
-          origin: find_employee.office,
           commercial_document: find_saving.depositor,
           payment_type: payment_type,
           recorder: find_employee,

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_06_065300) do
+ActiveRecord::Schema.define(version: 2018_10_06_091924) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -139,19 +139,14 @@ ActiveRecord::Schema.define(version: 2018_10_06_065300) do
     t.string "type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "recorder_id"
     t.string "commercial_document_type"
     t.uuid "commercial_document_id"
-    t.datetime "entry_date"
-    t.uuid "cooperative_service_id"
     t.index ["account_id", "entry_id"], name: "index_amounts_on_account_id_and_entry_id"
     t.index ["account_id"], name: "index_amounts_on_account_id"
     t.index ["commercial_document_id", "commercial_document_type"], name: "index_commercial_documents_on_accounting_amounts"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_amounts_on_commercial_document"
-    t.index ["cooperative_service_id"], name: "index_amounts_on_cooperative_service_id"
     t.index ["entry_id", "account_id"], name: "index_amounts_on_entry_id_and_account_id"
     t.index ["entry_id"], name: "index_amounts_on_entry_id"
-    t.index ["recorder_id"], name: "index_amounts_on_recorder_id"
     t.index ["type"], name: "index_amounts_on_type"
   end
 
@@ -397,16 +392,17 @@ ActiveRecord::Schema.define(version: 2018_10_06_065300) do
     t.uuid "voucher_id"
     t.uuid "store_front_id"
     t.integer "payment_type", default: 0
-    t.string "origin_type"
-    t.uuid "origin_id"
     t.boolean "offline_receipt", default: false
     t.boolean "cleared", default: false
     t.datetime "cleared_at"
     t.uuid "cleared_by_id"
+    t.uuid "office_id"
+    t.uuid "cooperative_id"
     t.index ["cleared_by_id"], name: "index_entries_on_cleared_by_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_entry"
+    t.index ["cooperative_id"], name: "index_entries_on_cooperative_id"
     t.index ["entry_date"], name: "index_entries_on_entry_date"
-    t.index ["origin_type", "origin_id"], name: "index_entries_on_origin_type_and_origin_id"
+    t.index ["office_id"], name: "index_entries_on_office_id"
     t.index ["payment_type"], name: "index_entries_on_payment_type"
     t.index ["recorder_id"], name: "index_entries_on_recorder_id"
     t.index ["store_front_id"], name: "index_entries_on_store_front_id"
@@ -1088,8 +1084,8 @@ ActiveRecord::Schema.define(version: 2018_10_06_065300) do
     t.datetime "date_opened"
     t.string "type"
     t.string "account_owner_name"
-    t.datetime "created_at", default: "2018-09-26 07:34:19", null: false
-    t.datetime "updated_at", default: "2018-09-26 07:34:19", null: false
+    t.datetime "created_at", default: "2018-08-09 11:46:34", null: false
+    t.datetime "updated_at", default: "2018-08-09 11:46:34", null: false
     t.integer "status"
     t.uuid "office_id"
     t.string "subscriber_type"
@@ -1367,9 +1363,7 @@ ActiveRecord::Schema.define(version: 2018_10_06_065300) do
   add_foreign_key "amount_adjustments", "loan_applications"
   add_foreign_key "amount_adjustments", "voucher_amounts"
   add_foreign_key "amounts", "accounts"
-  add_foreign_key "amounts", "cooperative_services"
   add_foreign_key "amounts", "entries"
-  add_foreign_key "amounts", "users", column: "recorder_id"
   add_foreign_key "bank_accounts", "accounts"
   add_foreign_key "bank_accounts", "accounts", column: "earned_interest_account_id"
   add_foreign_key "bank_accounts", "cooperatives"
@@ -1382,6 +1376,8 @@ ActiveRecord::Schema.define(version: 2018_10_06_065300) do
   add_foreign_key "cooperatives", "interest_amortization_configs"
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "credit_account_id"
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "debit_account_id"
+  add_foreign_key "entries", "cooperatives"
+  add_foreign_key "entries", "offices"
   add_foreign_key "entries", "store_fronts"
   add_foreign_key "entries", "users", column: "cleared_by_id"
   add_foreign_key "entries", "users", column: "recorder_id"
