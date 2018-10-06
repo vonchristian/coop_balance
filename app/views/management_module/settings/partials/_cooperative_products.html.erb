@@ -66,7 +66,7 @@
                   <%= number_to_currency loan_product.maximum_loanable_amount %>
                 </div>
               </div>
-              <hr class="no-margin">
+              <hr class="min-margin">
               <div class="row">
                 <div class="col-md-6">
                   <label class="no-margin-bottom">Minimum Loanable Amount</label>
@@ -104,7 +104,6 @@
         </div>
       </div>
       <% @time_deposit_products.each do |time_deposit_product| %>
-
           <div class="card-body">
           <h4 class="card-title"><%= link_to time_deposit_product.name, management_module_settings_time_deposit_product_path(time_deposit_product) %></h4>
           <hr class="no-margin-top">
@@ -115,10 +114,10 @@
                   <label class="no-margin-bottom">Annual Interest Rate</label>
                 </div>
                 <div class="col-md-6">
-                  <%= time_deposit_product.interest_rate/100 %> %
+                  <%= time_deposit_product.annual_interest_rate*100 %>%
                 </div>
               </div>
-              <hr class="no-margin">
+              <hr class="min-margin">
               <div class="row">
                 <div class="col-md-6">
                   <label class="no-margin-bottom">Minimum Deposit</label>
@@ -127,7 +126,7 @@
                   <%= number_to_currency time_deposit_product.minimum_deposit %>
                 </div>
               </div>
-              <hr class="no-margin">
+              <hr class="min-margin">
               <div class="row">
                 <div class="col-md-6">
                   <label class="no-margin-bottom">Maximum Deposit</label>
@@ -136,16 +135,16 @@
                   <%= number_to_currency time_deposit_product.maximum_deposit %>
                 </div>
               </div>
-              <hr class="no-margin">
+              <hr class="min-margin">
               <div class="row">
                 <div class="col-md-6">
                   <label class="no-margin-bottom">Number of Days</label>
                 </div>
                 <div class="col-md-6">
-                  <%= time_deposit_product.number_of_days %>
+                  <%= time_deposit_product.number_of_days %> days
                 </div>
               </div>
-              <hr class="no-margin">
+              <hr class="min-margin">
               <div class="row">
                 <div class="col-md-6">
                   <label class="no-margin-bottom">Break Contract Fee</label>
@@ -190,10 +189,10 @@
                   <label class="no-margin-bottom">Interest Rate</label>
                 </div>
                 <div class="col-md-6">
-                  <%= saving_product.interest_rate %>
+                  <%= saving_product.interest_rate*100 %>%
                 </div>
               </div>
-              <hr class="no-margin">
+              <hr class="min-margin">
               <div class="row">
                 <div class="col-md-6">
                   <label class="no-margin-bottom">Interest Recurrence</label>
@@ -202,13 +201,13 @@
                   <%= saving_product.interest_recurrence %>
                 </div>
               </div>
-              <hr class="no-margin">
+              <hr class="min-margin">
               <div class="row">
                 <div class="col-md-6">
                   <label class="no-margin-bottom">Minimum Balance</label>
                 </div>
                 <div class="col-md-6">
-                  <%= saving_product.minimum_balance %>
+                  <%= number_to_currency saving_product.minimum_balance %>
                 </div>
               </div>
               <!-- <div class="col-md-3"> -->

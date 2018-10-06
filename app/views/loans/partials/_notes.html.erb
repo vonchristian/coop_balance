@@ -1,16 +1,19 @@
 <div class="card">
-  <div class="card-body">
+  <div class="card-header">
     <h4 class="card-title"> Notes </h4>
     <span class="text-muted"> Actions taken for this loan for monitoring purposes. </span>
-  <hr>
+  </div>
+  <div class="card-body">
     <%= simple_form_for [@loan, @note], url: :loan_notes do |f| %>
-          <%= f.input :title %>
-          <%= f.input :content, as: :text %>
-          <%= f.input :noter_id, input_html: { value: current_user.id }, as: :hidden %>
-            <%= f.submit "Save Note", class: "btn btn-primary float-right" %>
-        <% end %>
-        <hr>
-
+      <%= f.input :title %>
+      <%= f.input :content, as: :text %>
+      <%= f.input :noter_id, input_html: { value: current_user.id }, as: :hidden %>
+      <hr>
+      <%= f.submit "Save Note", class: "btn btn-primary float-right" %>
+    <% end %>
+  </div>
+  <hr class="no-margin">
+  <div class="card-body">
     <% @notes.each do |note| %>
       <div class="row">
         <div class="col-md-1">
