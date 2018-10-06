@@ -74,9 +74,11 @@ module LoansModule
     delegate :is_past_due?, :number_of_days_past_due, :remaining_term, :terms_elapsed, :maturity_date, to: :current_term, allow_nil: true
     delegate :number_of_months, to: :current_term, prefix: true
     delegate :term, to: :current_term
+
     def current_term
       terms.current
     end
+
     def number_of_interest_payments_prededucted
       if interest_on_loan_charge.present?
         interest_on_loan_charge.number_of_interest_payments_prededucted
@@ -84,9 +86,11 @@ module LoansModule
         0
       end
     end
+
     def self.active
       where(archived: false)
     end
+
     def self.total_balance
       ids = pluck(:id)
       LoansModule::LoanProduct.total_balance(commercial_document: ids)
@@ -100,10 +104,6 @@ module LoansModule
       ids = pluck(:id)
       LoansModule::LoanProduct.total_credits_balance(commercial_document: ids)
     end
-    def current_term
-      terms.current
-    end
-
 
     def self.not_archived
       where(archived: false)
