@@ -175,6 +175,11 @@ select.form-control + .chosen-container-multi .chosen-results li.result-selected
     margin-bottom: 0;
 }
 
+.min-margin {
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
 .input-group-prepend {
     width: 100%;
 }
@@ -208,4 +213,17 @@ input[type="checkbox"]:hover, input[type="radio"]:hover, .form-check label:hover
 
 .col-form-label {
     font-weight: 700;
+}
+
+input[type="file"].choose-btn {
+    width: 95px;
+    z-index: -1000;
+    position: absolute;
+}
+
+.btn-group-xs > .btn, .btn-xs {
+  padding  : .25rem .4rem;
+  font-size  : .875rem;
+  line-height  : .7;
+  border-radius : .2rem;
 }
