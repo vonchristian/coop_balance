@@ -1,5 +1,5 @@
 <ul class="nav nav-tabs">
-  <li class="nav-item"><%=link_to 'All', savings_accounts_path, class: "nav-link #{'active' if current_page?(savings_accounts_path(from_date: nil, to_date: nil))}" %></li>
+  <li class="nav-item"><%=link_to 'All', savings_accounts_path(from_date: "", to_date: ""), class: "nav-link #{'active' if current_page?(savings_accounts_path(from_date: "", to_date: ""))}" %></li>
   <li class="nav-item <%=%>"><%=link_to '1 - 30 Days Inactive', savings_accounts_path(from_date: Date.today - 30.days, to_date: Date.today), class: "nav-link #{'active' if current_page?(savings_accounts_path(from_date: Date.today - 30.days, to_date: Date.today))}" %></li>
   <li class="nav-item"><%=link_to '31 - 60 Days Inactive', savings_accounts_path(from_date: Date.today - 60.days, to_date: Date.today - 31.days), class: "nav-link #{'active' if current_page?(savings_accounts_path(from_date: Date.today - 60.days, to_date: Date.today - 31.days))}" %></li>
   <li class="nav-item"><%=link_to '61 - 90 Days Inactive', savings_accounts_path(from_date: Date.today - 90.days, to_date: Date.today - 61.days), class: "nav-link #{'active' if current_page?(savings_accounts_path(from_date: Date.today - 90.days, to_date: Date.today - 61.days))}" %></li>

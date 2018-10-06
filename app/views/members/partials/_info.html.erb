@@ -90,8 +90,21 @@
         </tr>
       </tbody>
     </table>
-    <hr>
-    <h3 class="card-title"> Signature Specimen </h3>
+  </div>
+  <hr>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-6">
+        <h3 class="card-title"> Signature Specimen </h3>
+      </div>
+      <div class="col-md-6">
+        <%= simple_form_for Member.new, url: member_signature_specimens_path(@member) do |f| %>
+          <%= f.input :signature_specimen, as: :file, label: false, input_html: { class: 'choose-btn center-block' } %>
+          <a class="btn btn-xm btn-outline-warning float-right" id="browse">Update Signature Specimen</a>
+          
+        <% end %>
+      </div>
+    </div>
     <br>
     <% if @member.signature_specimen.attachment.present? %>
       <%= image_tag(@member.signature_specimen, height: 300, width: 500) %>
@@ -100,3 +113,16 @@
     <%= link_to 'Print Member Info', member_info_index_path(@member, format: 'pdf'), class: 'btn btn-success float-right' %>
   </div>
 </div>
+<script type="text/javascript">
+  $('#browse').click(function(e) {
+    $('#member_signature_specimen').click();
+    e.preventDefault();
+    e.stopPropagation();
+    $('#member_signature_specimen').change(function() {
+      var val = $('#member_signature_specimen').val();
+      if (val != ''){
+        $('#new_member').submit();
+      }
+    });
+  });
+</script>

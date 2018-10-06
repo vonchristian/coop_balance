@@ -15,16 +15,20 @@
       </div>
       <% @share_capital_products.each do |share_capital_product| %>
         <div class="card-body">
-          <div class="col-md-12">
-            <h4 class="card-title"><%= share_capital_product.name %></h4>
-            <hr class="no-margin-top">
-            <label>Cost Per Share</label>
-            <div class="row justify-content-end">
-              <div class="col-md-10">
-                <%= number_to_currency share_capital_product.cost_per_share %>
+          <h4 class="card-title"><%= share_capital_product.name %></h4>
+          <hr class="no-margin-top">
+          <div class="row justify-content-end">
+            <div class="col-md-11">
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="no-margin-bottom">Cost Per Share</label>
+                </div>
+                <div class="col-md-6">
+                  <%= number_to_currency share_capital_product.cost_per_share %>
+                </div>
               </div>
             </div>
-              <!-- <div class="col-md-3"> -->
+            <!-- <div class="col-md-3"> -->
                 <%#= link_to 'New Shares', new_management_module_share_capital_product_share_path(share_capital_product), class: "btn btn-warning btn-sm" %>
               <!-- </div> -->
           </div>
@@ -48,9 +52,39 @@
           </div>
         </div>
       </div>
-      <div class="card-body">
-        
-      </div>
+      <% @loan_products.each do |loan_product| %>
+        <div class="card-body">
+          <h4 class="card-title"><%= loan_product.name %></h4>
+          <hr class="no-margin-top">
+          <div class="row justify-content-end">
+            <div class="col-md-11">
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="no-margin-bottom">Maximum Loanable Amount</label>
+                </div>
+                <div class="col-md-6">
+                  <%= number_to_currency loan_product.maximum_loanable_amount %>
+                </div>
+              </div>
+              <hr class="no-margin">
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="no-margin-bottom">Minimum Loanable Amount</label>
+                </div>
+                <div class="col-md-6">
+                  <%= number_to_currency loan_product.minimum_loanable_amount %>
+                </div>
+              </div>
+              <!-- <div class="col-md-3"> -->
+                <%#= link_to 'New Shares', new_management_module_share_capital_product_share_path(share_capital_product), class: "btn btn-warning btn-sm" %>
+              <!-- </div> -->
+            </div>
+          </div>
+        </div>
+        <% if @saving_products.last == @saving_products.last %>
+          <hr class="no-margin">
+        <% end %>
+      <% end %>
     </div>
   </div>
   <div class="col-md-6">
@@ -69,11 +103,67 @@
           </div>
         </div>
       </div>
-      <div class="card-body">
-        <% @time_deposit_products.each do |time_deposit_product| %>
-          <%= link_to time_deposit_product.name, management_module_settings_time_deposit_product_path(time_deposit_product) %>
+      <% @time_deposit_products.each do |time_deposit_product| %>
+
+          <div class="card-body">
+          <h4 class="card-title"><%= link_to time_deposit_product.name, management_module_settings_time_deposit_product_path(time_deposit_product) %></h4>
+          <hr class="no-margin-top">
+          <div class="row justify-content-end">
+            <div class="col-md-11">
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="no-margin-bottom">Annual Interest Rate</label>
+                </div>
+                <div class="col-md-6">
+                  <%= time_deposit_product.interest_rate/100 %> %
+                </div>
+              </div>
+              <hr class="no-margin">
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="no-margin-bottom">Minimum Deposit</label>
+                </div>
+                <div class="col-md-6">
+                  <%= number_to_currency time_deposit_product.minimum_deposit %>
+                </div>
+              </div>
+              <hr class="no-margin">
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="no-margin-bottom">Maximum Deposit</label>
+                </div>
+                <div class="col-md-6">
+                  <%= number_to_currency time_deposit_product.maximum_deposit %>
+                </div>
+              </div>
+              <hr class="no-margin">
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="no-margin-bottom">Number of Days</label>
+                </div>
+                <div class="col-md-6">
+                  <%= time_deposit_product.number_of_days %>
+                </div>
+              </div>
+              <hr class="no-margin">
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="no-margin-bottom">Break Contract Fee</label>
+                </div>
+                <div class="col-md-6">
+                  <%= number_to_currency time_deposit_product.break_contract_fee %>
+                </div>
+              </div>
+              <!-- <div class="col-md-3"> -->
+                <%#= link_to 'New Shares', new_management_module_share_capital_product_share_path(share_capital_product), class: "btn btn-warning btn-sm" %>
+              <!-- </div> -->
+            </div>
+          </div>
+        </div>
+        <% if @time_deposit_products.last == @time_deposit_products.last %>
+          <hr class="no-margin">
         <% end %>
-      </div>
+      <% end %>
     </div>
 
     <div class="card">
@@ -89,11 +179,48 @@
           </div>
         </div>
       </div>
-      <div class="card-body">
-        <% CoopServicesModule::SavingProduct.all.each do |saving_product| %>
-          <%= saving_product.name %>
+      <% @saving_products.all.each do |saving_product| %>
+        <div class="card-body">
+          <h4 class="card-title"><%= saving_product.name %></h4>
+          <hr class="no-margin-top">
+          <div class="row justify-content-end">
+            <div class="col-md-11">
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="no-margin-bottom">Interest Rate</label>
+                </div>
+                <div class="col-md-6">
+                  <%= saving_product.interest_rate %>
+                </div>
+              </div>
+              <hr class="no-margin">
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="no-margin-bottom">Interest Recurrence</label>
+                </div>
+                <div class="col-md-6">
+                  <%= saving_product.interest_recurrence %>
+                </div>
+              </div>
+              <hr class="no-margin">
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="no-margin-bottom">Minimum Balance</label>
+                </div>
+                <div class="col-md-6">
+                  <%= saving_product.minimum_balance %>
+                </div>
+              </div>
+              <!-- <div class="col-md-3"> -->
+                <%#= link_to 'New Shares', new_management_module_share_capital_product_share_path(share_capital_product), class: "btn btn-warning btn-sm" %>
+              <!-- </div> -->
+            </div>
+          </div>
+        </div>
+        <% if @saving_products.last == @saving_products.last %>
+          <hr class="no-margin">
         <% end %>
-      </div>
+      <% end %>
     </div>
   </div>
 </div>
