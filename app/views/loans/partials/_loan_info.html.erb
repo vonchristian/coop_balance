@@ -1,6 +1,7 @@
 <% content_for(:html_title) { "#{@loan.borrower_name} | #{@loan.loan_product_name }" } %>
 <div class="card">
   <div class="card-header">
+    <br>
     <div class="row">
       <div class="col-md-3">
         <% if @loan.disbursed? %>

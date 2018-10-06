@@ -1,5 +1,6 @@
 module LoansModule
   class Loan < ApplicationRecord
+    audited
     include PgSearch
     include LoansModule::Loans::Interest
     include LoansModule::Loans::Principal
