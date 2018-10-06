@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_06_091924) do
+ActiveRecord::Schema.define(version: 2018_10_06_114010) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1082,7 +1082,6 @@ ActiveRecord::Schema.define(version: 2018_10_06_091924) do
     t.uuid "share_capital_product_id"
     t.string "account_number"
     t.datetime "date_opened"
-    t.string "type"
     t.string "account_owner_name"
     t.datetime "created_at", default: "2018-09-26 07:34:19", null: false
     t.datetime "updated_at", default: "2018-09-26 07:34:19", null: false
@@ -1105,7 +1104,6 @@ ActiveRecord::Schema.define(version: 2018_10_06_091924) do
     t.index ["share_capital_product_id"], name: "index_share_capitals_on_share_capital_product_id"
     t.index ["status"], name: "index_share_capitals_on_status"
     t.index ["subscriber_type", "subscriber_id"], name: "index_share_capitals_on_subscriber_type_and_subscriber_id"
-    t.index ["type"], name: "index_share_capitals_on_type"
   end
 
   create_table "store_fronts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1323,20 +1321,15 @@ ActiveRecord::Schema.define(version: 2018_10_06_091924) do
     t.uuid "payee_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "user_id"
     t.string "description"
     t.decimal "payable_amount"
-    t.string "type"
     t.uuid "preparer_id"
     t.uuid "disburser_id"
-    t.string "commercial_document_type"
-    t.uuid "commercial_document_id"
     t.boolean "unearned", default: false
     t.string "token"
     t.uuid "entry_id"
     t.uuid "office_id"
     t.uuid "cooperative_id"
-    t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_vouchers"
     t.index ["cooperative_id"], name: "index_vouchers_on_cooperative_id"
     t.index ["disburser_id"], name: "index_vouchers_on_disburser_id"
     t.index ["entry_id"], name: "index_vouchers_on_entry_id"
@@ -1344,8 +1337,6 @@ ActiveRecord::Schema.define(version: 2018_10_06_091924) do
     t.index ["payee_type", "payee_id"], name: "index_vouchers_on_payee_type_and_payee_id"
     t.index ["preparer_id"], name: "index_vouchers_on_preparer_id"
     t.index ["token"], name: "index_vouchers_on_token"
-    t.index ["type"], name: "index_vouchers_on_type"
-    t.index ["user_id"], name: "index_vouchers_on_user_id"
   end
 
   add_foreign_key "account_budgets", "accounts"
@@ -1500,7 +1491,6 @@ ActiveRecord::Schema.define(version: 2018_10_06_091924) do
   add_foreign_key "vouchers", "cooperatives"
   add_foreign_key "vouchers", "entries"
   add_foreign_key "vouchers", "offices"
-  add_foreign_key "vouchers", "users"
   add_foreign_key "vouchers", "users", column: "disburser_id"
   add_foreign_key "vouchers", "users", column: "preparer_id"
 end
