@@ -45,6 +45,8 @@ GEM
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
     arel (9.0.0)
+    audited (4.8.0)
+      activerecord (>= 4.0, < 5.3)
     autonumeric-rails (2.0.0.1)
       jquery-rails (>= 2.0.2)
     autoprefixer-rails (9.1.4)
@@ -367,6 +369,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  audited (~> 4.7)
   autonumeric-rails
   axlsx (= 2.1.0.pre)
   axlsx_rails
