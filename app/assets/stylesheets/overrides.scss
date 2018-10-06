@@ -227,3 +227,19 @@ input[type="file"].choose-btn {
   line-height  : .7;
   border-radius : .2rem;
 }
+
+.set-visibility {
+  visibility: hidden;
+}
+
+@media (max-width: 576px) {
+  .set-visibility {
+    visibility: visible;
+  }
+}
+
+@media (max-width: 767px) {
+  .set-visibility {
+    visibility: visible;
+  }
+}
