@@ -14,7 +14,6 @@ module Memberships
       private
       def save_payment
         AccountingModule::Entry.create!(
-          origin: find_employee.office,
           recorder: find_employee,
           description: "Payment of #{find_program_subscription.name}",
           reference_number: reference_number,

@@ -6,18 +6,18 @@ class DisbursementForm
 
   def save
     ActiveRecord::Base.transaction do
-      save_cash_disbursement
+      create_entry
       disburse_voucher
     end
   end
   private
-  def save_cash_disbursement
+  def create_entry
     entry = AccountingModule::Entry.new(
       commercial_document: find_voucher,
-      :description => description,
-      reference_number: reference_number,
-      recorder: find_employee,
-      origin: find_employee.office,
+      description:         description,
+      reference_number:    reference_number,
+      recorder:            find_employee,
+      origin:              find_employee.office,
       entry_date: date)
     find_voucher.voucher_amounts.debit.each do |amount|
       debit_amount = AccountingModule::DebitAmount.new(
@@ -55,7 +55,7 @@ class DisbursementForm
       find_loan.update_attributes!(
         last_transaction_date: date,
         tracking_number: reference_number)
-      LoansModule::AmortizationSchedule.create_schedule_for(payee)
+      LoansModule::AmortizationSchedule.create_schedule_for(find_loan)
       find_loan_application.current_term.update_attributes!(
         effectivity_date: date,
         maturity_date: maturity_date)

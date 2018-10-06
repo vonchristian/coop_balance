@@ -77,7 +77,7 @@ module LoansModule
       table([["Term ", "#{loan.current_term.term} Months"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 300]) do
         cells.borders = []
       end
-      table([["Disbursement Date ", "#{loan.loan_amount.to_f.to_words.titleize} Pesos"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 300]) do
+      table([["Disbursement Date ", "#{loan.disbursement_date.strftime("%B %e, %Y")}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 300]) do
         cells.borders = []
       end
       table([["Maturity Date ", "#{loan.loan_amount.to_f.to_words.titleize} Pesos"]], cell_style: { padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 300]) do

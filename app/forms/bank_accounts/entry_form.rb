@@ -18,7 +18,6 @@ module BankAccounts
 
     def save_entry
       find_bank_account.entries.create!(
-      origin: find_employee.office,
       recorder: find_employee,
       description: description, reference_number: reference_number, entry_date: date,
       debit_amounts_attributes: [account_id: debit_account_id, amount: amount, commercial_document: find_bank_account],

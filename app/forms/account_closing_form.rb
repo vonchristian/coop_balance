@@ -24,7 +24,6 @@ class AccountClosingForm
 
   def save_withdraw
     AccountingModule::Entry.create!(
-      origin: find_employee.office,
       recorder: find_employee,
       description: 'Closing of savings account',
       reference_number: reference_number,

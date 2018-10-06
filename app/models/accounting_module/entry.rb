@@ -3,12 +3,17 @@ module AccountingModule
     include PgSearch
     pg_search_scope :text_search, :against => [:reference_number, :description]
     multisearchable against: [:reference_number, :description]
+
     enum payment_type: [:cash, :check]
+
     has_one :official_receipt, as: :receiptable
+
     belongs_to :commercial_document, :polymorphic => true, touch: true
-    belongs_to :origin, :polymorphic => true, touch: true
+    belongs_to :office, class_name: "CoopConfigurationsModule::Office"
+    belongs_to :cooperative
     belongs_to :cleared_by, class_name: "User", foreign_key: 'cleared_by_id'
     belongs_to :recorder, foreign_key: 'recorder_id', class_name: "User"
+
     has_many :credit_amounts, extend: AccountingModule::BalanceFinder, :class_name => 'AccountingModule::CreditAmount', :inverse_of => :entry, dependent: :destroy
     has_many :debit_amounts, extend: AccountingModule::BalanceFinder, :class_name => 'AccountingModule::DebitAmount', :inverse_of => :entry, dependent: :destroy
     has_many :credit_accounts, :through => :credit_amounts, :source => :account, :class_name => 'AccountingModule::Account'
@@ -17,19 +22,18 @@ module AccountingModule
     has_many :accounts, class_name: "AccountingModule::Account", through: :amounts
 
     validates :description, presence: true
-    validates :origin_id, :recorder_id, presence: true
+    validates :office_id, :cooperative_id, :recorder_id, presence: true
     validate :has_credit_amounts?
     validate :has_debit_amounts?
     validate :amounts_cancel?
 
     accepts_nested_attributes_for :credit_amounts, :debit_amounts, allow_destroy: true
 
-    before_save :set_default_date, :set_office, :set_amounts_date
+    before_save :set_default_date
 
-    delegate :first_and_last_name, to: :recorder, prefix: true, allow_nil: true
-    delegate :number, to: :voucher, prefix: true, allow_nil: true
-    delegate :name, to: :origin, prefix: true, allow_nil: true
-    delegate :name, to: :recorder, prefix: true, allow_nil: true
+    delegate :name, :first_and_last_name, to: :recorder, prefix: true, allow_nil: true
+    delegate :name, to: :cooperative, prefix: true
+    delegate :name, to: :office, prefix: true
     delegate :name, to: :commercial_document, prefix: true
 
     def self.not_cleared
@@ -71,13 +75,15 @@ module AccountingModule
     def total
       credit_amounts.sum(:amount)
     end
+
     def unbalanced?
       credit_amounts.sum(:amount) != debit_amounts.sum(:amount)
     end
 
     private
-      def set_office
-        self.origin = self.recorder.office
+      def set_origin
+        self.office = self.recorder.office
+        self.cooperative = self.recorder.cooperative
       end
 
       def set_default_date
@@ -85,12 +91,6 @@ module AccountingModule
         self.entry_date ||= todays_date
       end
 
-      def set_amounts_date
-        todays_date = ActiveRecord::Base.default_timezone == :utc ? Time.now.utc : Time.now
-        amounts.each do |amount|
-          amount.update_attributes!(entry_date: todays_date)
-        end
-      end
 
       def has_credit_amounts?
         errors[:base] << "Entry must have at least one credit amount" if self.credit_amounts.blank?
