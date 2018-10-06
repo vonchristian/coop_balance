@@ -69,10 +69,19 @@
               <hr class="min-margin">
               <div class="row">
                 <div class="col-md-6">
-                  <label class="no-margin-bottom">Minimum Loanable Amount</label>
+                  <label class="no-margin-bottom">Interest Rate</label>
                 </div>
                 <div class="col-md-6">
-                  <%= number_to_currency loan_product.minimum_loanable_amount %>
+                  <%= loan_product.interest_rate*100 %>%
+                </div>
+              </div>
+              <hr class="min-margin">
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="no-margin-bottom">Penalty Rate</label>
+                </div>
+                <div class="col-md-6">
+                  <%= loan_product.penalty_rate*100 %>%
                 </div>
               </div>
               <!-- <div class="col-md-3"> -->

@@ -1,20 +1,15 @@
 <div class="card">
-  <div class="card-body">
-    <ul class="nav nav-tabs">
-      <li class="nav-item">
-        <a class="nav-link <%= 'active' if current_page?(share_capital_path(@share_capital))%>" href="/share_capitals/<%=@share_capital.id%>">Info</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link <%= 'active' if current_page?(share_capital_settings_path(@share_capital))%>" href="/share_capitals/<%=@share_capital.id%>/settings">Settings</a>
-      </li>
-    </ul>
-    <br>
-    <% if current_page? share_capital_path(@share_capital) %>
-      <%= render 'share_capitals/partials/info' %>
-    <% end %>
-    <% if current_page? share_capital_settings_path(@share_capital) %>
-      <%= render 'share_capitals/partials/settings' %>
-    <% end %>
+  <div class="card-header">
+    <nav class="nav nav-pills flex-column flex-md-row">
+      <a class="text-sm-center nav-link <%= 'active' if current_page?(share_capital_path(@share_capital))%>" href="/share_capitals/<%=@share_capital.id%>">Info</a>
+      <a class="text-sm-center nav-link <%= 'active' if current_page?(share_capital_settings_path(@share_capital))%>" href="/share_capitals/<%=@share_capital.id%>/settings">Settings</a>
+    </nav>
   </div>
+  <% if current_page? share_capital_path(@share_capital) %>
+    <%= render 'share_capitals/partials/info' %>
+  <% end %>
+  <% if current_page? share_capital_settings_path(@share_capital) %>
+    <%= render 'share_capitals/partials/settings' %>
+  <% end %>
 </div>
 
