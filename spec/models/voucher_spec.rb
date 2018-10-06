@@ -2,6 +2,8 @@ require 'rails_helper'
 
 RSpec.describe Voucher, type: :model do
   describe 'associations' do
+    it { is_expected.to belong_to :cooperative }
+    it { is_expected.to belong_to :office }
     it { is_expected.to belong_to :accounting_entry }
     it { is_expected.to belong_to :payee }
     it { is_expected.to belong_to :commercial_document }
@@ -12,6 +14,12 @@ RSpec.describe Voucher, type: :model do
 
 
   describe 'delegations' do
+    it { is_expected.to delegate_method(:name).to(:cooperative).with_prefix }
+    it { is_expected.to delegate_method(:abbreviated_name).to(:cooperative).with_prefix }
+    it { is_expected.to delegate_method(:address).to(:cooperative).with_prefix }
+    it { is_expected.to delegate_method(:contact_number).to(:cooperative).with_prefix }
+    it { is_expected.to delegate_method(:address).to(:cooperative).with_prefix }
+    it { is_expected.to delegate_method(:contact_number).to(:cooperative).with_prefix }
     it { is_expected.to delegate_method(:full_name).to(:preparer).with_prefix }
     it { is_expected.to delegate_method(:full_name).to(:disburser).with_prefix }
     it { is_expected.to delegate_method(:current_occupation).to(:preparer).with_prefix }

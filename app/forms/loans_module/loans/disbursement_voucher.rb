@@ -7,7 +7,6 @@ module LoansModule
       def process!
         ActiveRecord::Base.transaction do
           create_loan
-          create_voucher
           delete_loan_application
         end
       end
@@ -20,6 +19,7 @@ module LoansModule
         loan = LoansModule::Loan.create!(
           mode_of_payment: find_loan_application.mode_of_payment,
           cooperative: find_loan_application.cooperative,
+          office: find_loan_application.office,
           loan_amount: find_loan_application.loan_amount,
           application_date: find_loan_application.application_date,
           borrower: find_loan_application.borrower,
@@ -31,17 +31,24 @@ module LoansModule
         loan.voucher_amounts << find_loan_application.voucher_amounts
         loan.terms.create(
           term: find_loan_application.term)
+
+        create_voucher(loan)
+        create_loan_interests(loan) #prededucted interest - interest balance
       end
 
-      def create_voucher
+      def create_voucher(loan)
         voucher = Voucher.new(
+          cooperative: find_loan_application.cooperative,
+          office: find_loan_application.office,
           date: date,
           number: number,
           description: description,
-          payee: find_loan,
+          payee: loan.borrower,
           preparer: find_preparer)
         add_amounts(voucher)
         voucher.save!
+        loan.disbursement_voucher = voucher
+        loan.save
       end
       def find_loan_application
         LoansModule::LoanApplication.find(loan_application_id)
@@ -70,6 +77,13 @@ module LoansModule
       end
       def delete_loan_application
         find_loan_application.destroy
+      end
+      def create_loan_interests(loan)
+        loan.loan_interests.create!(
+          amount: find_loan_application.total_interest,
+          date: date,
+          description: "Interest balance",
+          computed_by: find_preparer)
       end
     end
   end

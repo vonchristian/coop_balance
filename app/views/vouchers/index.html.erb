@@ -26,12 +26,7 @@
               <div class="card-body">
                 <div class="row">
                   <div class="col-md-1">
-                <%= link_to voucher_path(voucher) do %>
-
-                    <% if voucher.payee && voucher.payee.avatar.attachment.present? %>
-                      <%=image_tag(voucher.payee.avatar, class: "img-circle", height: 40, width: 40) %>
-                    <% end %>
-                    <% end %>
+              
                   </div>
                   <div class="col-md-3">
                 <%= link_to voucher_path(voucher) do %>

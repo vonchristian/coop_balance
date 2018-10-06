@@ -2,9 +2,10 @@ require 'rails_helper'
 module LoansModule
   describe Loan do
     context 'associations' do
-      it { is_expected.to have_one :disbursement_voucher }
+      it { is_expected.to belong_to :disbursement_voucher }
       it { is_expected.to belong_to :archived_by }
       it { is_expected.to belong_to :cooperative }
+      it { is_expected.to belong_to :office }
     	it { is_expected.to belong_to :borrower }
     	it { is_expected.to belong_to :loan_product }
       it { is_expected.to belong_to :street }

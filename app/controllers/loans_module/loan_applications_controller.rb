@@ -18,7 +18,7 @@ module LoansModule
     def show
       @loan_application = LoansModule::LoanApplication.find(params[:id])
       @borrower = @loan_application.borrower
-      @voucher = Loans::DisbursementVoucher.new
+      @voucher = LoansModule::Loans::DisbursementVoucher.new
     end
 
     def destroy

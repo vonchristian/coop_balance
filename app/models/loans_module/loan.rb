@@ -10,8 +10,9 @@ module LoansModule
     multisearchable against: [:borrower_full_name]
     enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
 
-    has_one :disbursement_voucher,      class_name: "Voucher", as: :payee
+    belongs_to :disbursement_voucher,      class_name: "Voucher", foreign_key: 'disbursement_voucher_id'
     belongs_to :cooperative
+    belongs_to :office, class_name: "CoopConfigurationsModule::Office"
     belongs_to :voucher
     belongs_to :archived_by,            class_name: "User", foreign_key: 'archived_by_id'
     belongs_to :borrower,               polymorphic: true
@@ -45,6 +46,8 @@ module LoansModule
     has_many :notes,                    as: :noteable
     has_many :terms, as: :termable
 
+    delegate :name, :address, :contact_number, to: :cooperative, prefix: true
+    delegate :disbursed?, to: :disbursement_voucher, allow_nil: true
     delegate  :effectivity_date, :is_past_due?, :number_of_days_past_due, :remaining_term, :terms_elapsed, :maturity_date, to: :current_term, allow_nil: true
 
     delegate :name, :age, :contact_number, :current_address,  :first_name, to: :borrower,  prefix: true, allow_nil: true
@@ -74,11 +77,19 @@ module LoansModule
     delegate :is_past_due?, :number_of_days_past_due, :remaining_term, :terms_elapsed, :maturity_date, to: :current_term, allow_nil: true
     delegate :number_of_months, to: :current_term, prefix: true
     delegate :term, to: :current_term
-
+    def self.disbursement_vouchers
+      ids = pluck(:disbursement_voucher_id)
+      Voucher.where(id: ids)
+    end
     def current_term
       terms.current
     end
-
+    def disbursement_date
+      current_term.effectivity_date
+    end
+    def maturity_date
+      current_term.maturity_date
+    end
     def number_of_interest_payments_prededucted
       if interest_on_loan_charge.present?
         interest_on_loan_charge.number_of_interest_payments_prededucted
@@ -125,7 +136,7 @@ module LoansModule
     end
 
     def self.current_loans
-      disbursed.not_matured
+      active.joins(:terms).where('terms.maturity_date > ?', Date.today)
     end
 
     def self.not_matured
@@ -145,8 +156,8 @@ module LoansModule
       end
     end
 
-    def self.disbursed(options={})
-      LoansModule::LoansQuery.new.disbursed(options)
+    def self.disbursed
+      joins(:dibursement_voucher).merge(Voucher.disbursed)
     end
 
     def self.disbursed_by(args={})
@@ -251,13 +262,6 @@ module LoansModule
     def total_loan_charges
       loan_charges.total
     end
-
-    def disbursed?
-      voucher && voucher.disbursed?
-      # loan_product.loans_receivable_current_account.debit_amounts.where(commercial_document: self).present? &&
-      # disbursement_date.present?
-    end
-
 
 
     def payments_total

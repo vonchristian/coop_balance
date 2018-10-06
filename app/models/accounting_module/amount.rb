@@ -33,6 +33,12 @@ module AccountingModule
       date_range = DateRange.new(from_date: from_date, to_date: to_date)
       where('entry_date' => date_range.range)
     end
+    def debit?
+      type == "AccountingModule::DebitAmount"
+    end
+    def credit?
+      type == "AccountingModule::CreditAmount"
+    end
 
     private
     def set_default_date

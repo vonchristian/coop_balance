@@ -5,16 +5,19 @@ class Voucher < ApplicationRecord
   pg_search_scope :text_search, :against => [:number, :description]
   multisearchable against: [:number, :description]
 
+  belongs_to :cooperative
+  belongs_to :office, class_name: "CoopConfigurationsModule::Office"
+
   belongs_to :accounting_entry, class_name: "AccountingModule::Entry", foreign_key: 'entry_id'
   belongs_to :payee,         polymorphic: true
   belongs_to :commercial_document,         polymorphic: true #orders
   belongs_to :preparer,      class_name: "User", foreign_key: 'preparer_id'
   belongs_to :disburser,     class_name: "User", foreign_key: 'disburser_id'
   has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", dependent: :destroy
-
+  delegate :name, :abbreviated_name, :address, :contact_number, to: :cooperative, prefix: true
   delegate :full_name, :current_occupation, to: :preparer, prefix: true
   delegate :full_name, :current_occupation, to: :disburser, prefix: true, allow_nil: true
-  delegate :name, to: :payee, prefix: true
+  delegate :name, to: :payee, prefix: true, allow_nil: true
   delegate :avatar, to: :payee, allow_nil: true
 
   before_save :set_default_date

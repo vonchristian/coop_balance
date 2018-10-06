@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_05_081428) do
+ActiveRecord::Schema.define(version: 2018_10_06_052112) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -500,9 +500,11 @@ ActiveRecord::Schema.define(version: 2018_10_05_081428) do
     t.uuid "loan_product_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "office_id"
     t.index ["borrower_type", "borrower_id"], name: "index_loan_applications_on_borrower_type_and_borrower_id"
     t.index ["cooperative_id"], name: "index_loan_applications_on_cooperative_id"
     t.index ["loan_product_id"], name: "index_loan_applications_on_loan_product_id"
+    t.index ["office_id"], name: "index_loan_applications_on_office_id"
     t.index ["preparer_id"], name: "index_loan_applications_on_preparer_id"
   end
 
@@ -619,9 +621,7 @@ ActiveRecord::Schema.define(version: 2018_10_05_081428) do
     t.uuid "borrower_id"
     t.string "borrower_full_name"
     t.uuid "preparer_id"
-    t.datetime "disbursement_date"
     t.string "account_number"
-    t.datetime "maturity_date"
     t.boolean "archived", default: false
     t.text "purpose"
     t.datetime "archiving_date"
@@ -630,13 +630,17 @@ ActiveRecord::Schema.define(version: 2018_10_05_081428) do
     t.datetime "last_transaction_date"
     t.uuid "voucher_id"
     t.uuid "cooperative_id"
+    t.uuid "disbursement_voucher_id"
+    t.uuid "office_id"
     t.index ["account_number"], name: "index_loans_on_account_number", unique: true
     t.index ["archived_by_id"], name: "index_loans_on_archived_by_id"
     t.index ["barangay_id"], name: "index_loans_on_barangay_id"
     t.index ["borrower_type", "borrower_id"], name: "index_loans_on_borrower_type_and_borrower_id"
     t.index ["cooperative_id"], name: "index_loans_on_cooperative_id"
+    t.index ["disbursement_voucher_id"], name: "index_loans_on_disbursement_voucher_id"
     t.index ["loan_product_id"], name: "index_loans_on_loan_product_id"
     t.index ["municipality_id"], name: "index_loans_on_municipality_id"
+    t.index ["office_id"], name: "index_loans_on_office_id"
     t.index ["organization_id"], name: "index_loans_on_organization_id"
     t.index ["preparer_id"], name: "index_loans_on_preparer_id"
     t.index ["street_id"], name: "index_loans_on_street_id"
@@ -1301,9 +1305,13 @@ ActiveRecord::Schema.define(version: 2018_10_05_081428) do
     t.boolean "unearned", default: false
     t.string "token"
     t.uuid "entry_id"
+    t.uuid "office_id"
+    t.uuid "cooperative_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_vouchers"
+    t.index ["cooperative_id"], name: "index_vouchers_on_cooperative_id"
     t.index ["disburser_id"], name: "index_vouchers_on_disburser_id"
     t.index ["entry_id"], name: "index_vouchers_on_entry_id"
+    t.index ["office_id"], name: "index_vouchers_on_office_id"
     t.index ["payee_type", "payee_id"], name: "index_vouchers_on_payee_type_and_payee_id"
     t.index ["preparer_id"], name: "index_vouchers_on_preparer_id"
     t.index ["token"], name: "index_vouchers_on_token"
@@ -1356,6 +1364,7 @@ ActiveRecord::Schema.define(version: 2018_10_05_081428) do
   add_foreign_key "line_items", "unit_of_measurements"
   add_foreign_key "loan_applications", "cooperatives"
   add_foreign_key "loan_applications", "loan_products"
+  add_foreign_key "loan_applications", "offices"
   add_foreign_key "loan_applications", "users", column: "preparer_id"
   add_foreign_key "loan_charge_payment_schedules", "amortization_schedules"
   add_foreign_key "loan_charge_payment_schedules", "loan_charges"
@@ -1377,11 +1386,13 @@ ActiveRecord::Schema.define(version: 2018_10_05_081428) do
   add_foreign_key "loans", "cooperatives"
   add_foreign_key "loans", "loan_products"
   add_foreign_key "loans", "municipalities"
+  add_foreign_key "loans", "offices"
   add_foreign_key "loans", "organizations"
   add_foreign_key "loans", "streets"
   add_foreign_key "loans", "users", column: "archived_by_id"
   add_foreign_key "loans", "users", column: "preparer_id"
   add_foreign_key "loans", "vouchers"
+  add_foreign_key "loans", "vouchers", column: "disbursement_voucher_id"
   add_foreign_key "mark_up_prices", "unit_of_measurements"
   add_foreign_key "member_occupations", "members"
   add_foreign_key "member_occupations", "occupations"
@@ -1456,7 +1467,9 @@ ActiveRecord::Schema.define(version: 2018_10_05_081428) do
   add_foreign_key "voucher_amounts", "accounts"
   add_foreign_key "voucher_amounts", "amount_adjustments"
   add_foreign_key "voucher_amounts", "vouchers"
+  add_foreign_key "vouchers", "cooperatives"
   add_foreign_key "vouchers", "entries"
+  add_foreign_key "vouchers", "offices"
   add_foreign_key "vouchers", "users"
   add_foreign_key "vouchers", "users", column: "disburser_id"
   add_foreign_key "vouchers", "users", column: "preparer_id"

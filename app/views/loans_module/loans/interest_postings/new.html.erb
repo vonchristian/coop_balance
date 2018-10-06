@@ -3,7 +3,7 @@
     <div class="card">
       <div class="card-header bg-red">
         <center>
-          <%=image_tag(@loan.borrower.avatar.url(:medium), height: 60, width: 60, class: "img-circle") %>
+          <%=image_tag(@loan.borrower, height: 60, width: 60, class: "img-circle") %>
           <h4><%= @loan.borrower_name %></h4>
         </center>
       </div>
@@ -23,7 +23,9 @@
             Disbursement Date
           </div>
           <div class="col-md-6">
-            <%= @loan.disbursement_date.strftime("%B %w, %Y") %>
+            <% if @loan.disbursed? %>
+              <%= @loan.disbursement_voucher.date.strftime("%B %w, %Y") %>
+            <% end %>
           </div>
         </div>
         <br>
@@ -32,7 +34,7 @@
             Maturity Date
           </div>
           <div class="col-md-6">
-            <%= @loan.maturity_date.strftime("%B %w, %Y") %>
+            <%#= @loan.maturity_date.strftime("%B %w, %Y") %>
           </div>
         </div>
         <br>
@@ -59,7 +61,7 @@
           <%= f.error_notification %>
           <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
           <%= f.input :amount, input_html: { value: @loan.loan_interest_computation }, as: :currency %>
-           <%= f.input :description, input_html: { value: "Loan interests from #{@loan.maturity_date.strftime("%B %e, %Y")} to #{Date.today.strftime("%B %e, %Y")}"}, as: :text %>
+           <%= f.input :description, input_html: { value: "Loan interests"}, as: :text %>
           <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
           <%= f.input :loan_id, input_html: { value: @loan.id }, as: :hidden %>
           <div class="box-footer">

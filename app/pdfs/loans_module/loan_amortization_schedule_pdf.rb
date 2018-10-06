@@ -39,10 +39,13 @@ module LoansModule
     def heading
 
     bounding_box [360, 930], width: 200 do
-        text "KALANGUYA CULTURAL COMMUNITY", style: :bold, size: 8
-        text "MULTIPURPOSE COOPERATIVE", style: :bold, size: 8
-        move_down 5
-        text "Poblacion, Tinoc, Ifugao", size: 7
+      text "#{loan.current_term.effectivity_date}"
+        text "#{loan.cooperative_name.try(:upcase)}", style: :bold, size: 8
+
+        move_down 3
+        text "#{loan.cooperative_address}", size: 7
+        move_down 3
+        text "#{loan.cooperative_contact_number}", size: 7
     end
     bounding_box [0, 930], width: 400 do
       text "LOAN DISCLOSURE STATEMENT AND AMORTIZATION SCHEDULE", style: :bold, size: 10
@@ -59,7 +62,7 @@ module LoansModule
     end
   end
   def loan_charges_details
-    table([["Application Date", "#{@loan.application_date.strftime("%B %e, %Y")}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [160, 100]) do
+    table([["Disbursement Date", "#{@loan.application_date.strftime("%B %e, %Y")}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [160, 100]) do
       cells.borders = []
       column(1).align = :right
     end

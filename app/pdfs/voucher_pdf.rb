@@ -2,6 +2,7 @@ require 'barby'
 require 'barby/barcode/code_128'
 require 'barby/outputter/prawn_outputter'
 class VoucherPdf < Prawn::Document
+  attr_reader :voucher
   def initialize(voucher, view_context)
     super(margin: 30, page_size: "A4", page_layout: :portrait)
     @voucher = voucher
@@ -18,21 +19,17 @@ class VoucherPdf < Prawn::Document
   end
 def heading
     bounding_box [300, 780], width: 50 do
-      image "#{Rails.root}/app/assets/images/kccmc_logo.jpg", width: 50, height: 50
+      # image "#{Rails.root}/app/assets/images/kccmc_logo.jpg", width: 50, height: 50
     end
-    bounding_box [370, 780], width: 200 do
-        text "KCCMC", style: :bold, size: 24
-        text "Tinoc Community Multipurpose Cooperative", size: 10
+    bounding_box [300, 780], width: 300 do
+        text "#{voucher.cooperative_abbreviated_name }", style: :bold, size: 20
+        text "#{voucher.cooperative_name.try(:upcase)}", size: 8
+        text "#{voucher.cooperative_address}", size: 8
     end
     bounding_box [0, 780], width: 400 do
       text "CASH DISBURSEMENT VOUCHER", style: :bold, size: 12
-      move_down 30
-      barcode = Barby::Code128.new(@voucher.number)
-      barcode.annotate_pdf(self, height: 30)
-      move_down 3
-      text "VOUCHER #: #{@voucher.number}", size: 8
-      move_down 5
     end
+    move_down 30
     stroke do
       stroke_color '24292E'
       line_width 1
@@ -52,9 +49,7 @@ def heading
       table([["", "Date:", "#{@voucher.date.strftime("%B %e, %Y")}"]], cell_style: { inline_format: true, size: 9, font: "Helvetica"}, column_widths: [20, 100, 200]) do
         cells.borders = []
       end
-      table([["", "Type:", "#{@voucher.class.to_s.gsub("Vouchers::", "").titleize}"]], cell_style: { inline_format: true, size: 9, font: "Helvetica"}, column_widths: [20, 100, 200]) do
-        cells.borders = []
-      end
+
       stroke do
           stroke_color 'CCCCCC'
           line_width 0.2
@@ -77,38 +72,37 @@ def heading
   end
 
   def voucher_details
-    text "ENTRY DETAILS", style: :bold, size: 10
     move_down 10
-    table([["DESCRIPTION","ACCOUNT", "DEBIT", "CREDIT"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"},  column_widths: [200, 130, 100, 100]) do
+    table([["DEBIT", "ACCOUNT", "CREDIT"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"},  column_widths: [100, 300, 100]) do
       row(0).background_color = "DDDDDD"
       row(0).font_style = :bold
     end
     if @voucher.disbursed?
-      @voucher.entry.amounts.each do |amount|
-      table([[@voucher.description, "#{amount.account.try(:name)}", "#{price(debit_amount_for(amount))}",  "#{price(credit_amount_for(amount))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [200, 130, 100, 100]) do
+      @voucher.accounting_entry.amounts.each do |amount|
+      table([["#{price(debit_amount_for(amount))}", "#{amount.account.try(:name)}",  "#{price(credit_amount_for(amount))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [100, 300, 100]) do
         # cells.borders = []
+        column(0).align = :right
         column(2).align = :right
-        column(3).align = :right
       end
     end
     else
       @voucher.voucher_amounts.each do |amount|
-        table([[amount.description, "#{amount.account.try(:name)}", "#{price(debit_amount_for(amount))}",  "#{price(credit_amount_for(amount))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [200, 130, 100, 100]) do
+        table([[amount.description, "#{amount.account.try(:name)}", "#{price(debit_amount_for(amount))}",  "#{price(credit_amount_for(amount))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [100, 300, 100]) do
           # cells.borders = []
+          column(0).align = :right
           column(2).align = :right
-          column(3).align = :right
         end
       end
     end
     if @voucher.disbursed?
-      table([["","TOTAL", "#{price(@voucher.entry.debit_amounts.sum(:amount))}", "#{price(@voucher.entry.credit_amounts.sum(:amount))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"},  column_widths: [200, 130, 100, 100]) do
+      table([["#{price(@voucher.accounting_entry.debit_amounts.sum(:amount))}", "", "#{price(@voucher.accounting_entry.credit_amounts.sum(:amount))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"},  column_widths: [100, 300, 100]) do
       # cells.borders = []
       row(0).font_style = :bold
+      column(0).align = :right
       column(2).align = :right
-      column(3).align = :right
      end
     else
-    table([["","TOTAL", "#{price(@voucher.voucher_amounts.debit.sum(:amount))}", "#{price(@voucher.voucher_amounts.debit.sum(:amount))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"},  column_widths: [200, 130, 100, 100]) do
+    table([["#{price(@voucher.voucher_amounts.debit.sum(:amount))}", "#{price(@voucher.voucher_amounts.debit.sum(:amount))}", "#{price(@voucher.voucher_amounts.debit.sum(:amount))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"},  column_widths: [100, 300, 100]) do
       # cells.borders = []
       row(0).font_style = :bold
       column(2).align = :right
@@ -118,7 +112,7 @@ def heading
   end
   def signatory_details
     move_down 50
-      table(signatory, cell_style: { inline_format: true, size: 9, font: "Helvetica"}, column_widths: [130, 130, 130, 130]) do
+      table(signatory, cell_style: { inline_format: true, size: 9, font: "Helvetica"}, column_widths: [100, 300, 100]) do
         cells.borders = []
         row(3).font_style = :bold
      end

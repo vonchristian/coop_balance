@@ -51,9 +51,18 @@ class DisbursementForm
     end
   end
   def update_loan
-    payee.update_attributes!(disbursement_date: date, last_transaction_date: date, tracking_number: reference_number)
-    LoansModule::AmortizationSchedule.create_schedule_for(payee)
-    payee.current_term.update_attributes(effectivity_date: date, maturity_date: maturity_date)
+    if find_loan.present?
+      find_loan.update_attributes!(
+        last_transaction_date: date,
+        tracking_number: reference_number)
+      LoansModule::AmortizationSchedule.create_schedule_for(payee)
+      find_loan_application.current_term.update_attributes!(
+        effectivity_date: date,
+        maturity_date: maturity_date)
+    end
+  end
+  def find_loan
+    LoansModule::Loan.find_by(disbursement_voucher_id: find_voucher.id)
   end
 
   def maturity_date
@@ -61,7 +70,7 @@ class DisbursementForm
   end
 
   def find_voucher
-    Voucher.find_by_id(voucher_id)
+    Voucher.find(voucher_id)
   end
   def payee
     find_voucher.payee
@@ -74,6 +83,7 @@ class DisbursementForm
   def set_voucher_entry(entry)
     find_voucher.update_attributes!(entry_id: entry.id)
   end
+
   def amount_less_than_current_cash_on_hand?
     errors[:total_amount] << "Amount exceeded current cash on hand" if BigDecimal.new(total_amount) > find_employee.cash_on_hand_account_balance
   end

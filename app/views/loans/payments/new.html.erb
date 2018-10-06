@@ -1,13 +1,5 @@
 <%= render 'loans/partials/header', loan: @loan %>
-<div class="row">
-  <div class="col-md-12">
-    <div class="card">
-  <div class="card">
-    <center>
-      <%= image_tag(@loan.borrower.avatar, height: 60, width: 60, class: "img-circle") %>
-      <h4><%= @loan.borrower_name %>
-    </center>
-  </div>
+<div class="card">
   <div class="card-body">
     <br>
     <div class="row">
@@ -61,4 +53,3 @@
             <%= f.submit "Save Payment", class: "btn btn-primary pull-right", data: {disable_with: "Processing Payment..."} %>
           </div>
         <% end %>
-
