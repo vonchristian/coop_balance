@@ -1,0 +1,2 @@
+class LoanProtectionFund < ApplicationRecord
+end

@@ -3,7 +3,7 @@ module LoansModule
   class LoanAmortizationSchedulePdf < Prawn::Document
     attr_reader :loan, :amortization_schedules, :employee, :view_context, :voucher
     def initialize(args)
-      super(margin: 30, page_size: "LEGAL", page_layout: :portrait)
+      super(margin: 40, page_size: "LEGAL", page_layout: :portrait)
       @loan = args[:loan]
       @voucher = @loan.voucher
       @amortization_schedules = args[:amortization_schedules]
@@ -42,7 +42,7 @@ module LoansModule
     def heading
     bounding_box [320, 930], width: 200 do
       text "#{loan.current_term.effectivity_date}"
-        text "#{loan.cooperative_name.try(:upcase)}", style: :bold, size: 9
+        text "#{loan.cooperative_name.try(:upcase)}", style: :bold, size: 12
 
         move_down 3
         text "#{loan.cooperative_address}", size: 8
@@ -50,7 +50,7 @@ module LoansModule
         text "#{loan.cooperative_contact_number}", size: 8
     end
     bounding_box [0, 930], width: 200 do
-      text "LOAN DISCLOSURE STATEMENT AND AMORTIZATION SCHEDULE", style: :bold, size: 12
+      text "LOAN DISCLOSURE STATEMENT AND AMORTIZATION SCHEDULE", style: :bold, size: 10
       move_down 6
       text "BORROWER: #{loan.borrower_name.try(:upcase)}", size: 10
     end
@@ -59,16 +59,19 @@ module LoansModule
       stroke_color '24292E'
       line_width 1
       stroke_horizontal_rule
-      move_down 5
+      move_down 1
     end
   end
   def loan_details
-    bounding_box [0, 850], width: 500 do
+    bounding_box [0, 865], width: 450 do
       text "LOAN DETAILS", size: 9, style: :bold
       table([["Loan Product", "#{loan.loan_product_name}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 100]) do
         cells.borders = []
       end
-      table([["Loan Amount ", "#{loan.loan_amount.to_f.to_words.titleize} Pesos (#{price(loan.loan_amount)})"]], cell_style: { padding: [0,0,0,0],inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 200]) do
+      table([["Loan Amount ", "#{price(loan.loan_amount)}"]], cell_style: { padding: [0,0,0,0],inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 200]) do
+        cells.borders = []
+      end
+      table([["Loan Amount (in words)", "#{loan.loan_amount.to_f.to_words.titleize} Pesos"]], cell_style: { padding: [0,0,0,0],inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 200]) do
         cells.borders = []
       end
       table([["Term ", "#{loan.current_term.term} Months"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 300]) do
@@ -83,7 +86,7 @@ module LoansModule
     end
   end
   def loan_charges_details
-    bounding_box [300, 850], width: 500 do
+    bounding_box [300, 865], width: 500 do
       text "LOAN CHARGES DETAILS", style: :bold, size: 9
 
       table(loan_charges_data, cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 100]) do
