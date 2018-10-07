@@ -4,6 +4,7 @@ module TimeDeposits
       @time_deposit = MembershipsModule::TimeDeposit.find(params[:time_deposit_id])
       @entry = AccountingModule::AdjustingEntry.new
     end
+
     def create
       @time_deposit = MembershipsModule::TimeDeposit.find(params[:time_deposit_id])
       @entry = AccountingModule::AdjustingEntry.new(adjusting_entry_params)

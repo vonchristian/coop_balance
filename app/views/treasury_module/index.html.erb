@@ -53,7 +53,7 @@
             <small>TRANSACTIONS</small>
           </div>
           <div class="col-md-3">
-            <h4><%= LoansModule::Loan.disbursed.disbursed_by(employee_id: current_user.id).disbursed(from_date: Date.today.beginning_of_day, to_date: Date.today.end_of_day).count %></h4>
+            <h4><%#= LoansModule::Loan.disbursed.disbursed_by(employee_id: current_user.id).disbursed(from_date: Date.today.beginning_of_day, to_date: Date.today.end_of_day).count %></h4>
             <small>LOAN RELEASES</small>
           </div>
         </div>

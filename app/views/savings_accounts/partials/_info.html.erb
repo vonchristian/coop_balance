@@ -43,7 +43,7 @@
             <%= link_to 'New Deposit', new_savings_account_deposit_path(@savings_account), class: "btn btn-success" %>
           <% end %>
           <% if policy([:savings_accounts, :withdrawal]).new? && !@savings_account.closed? %>
-            <%= link_to 'New Withdrawal', new_savings_account_withdrawal_path(@savings_account), class: "btn btn-warning" %>
+            <%= link_to 'New Withdrawal', new_savings_account_withdrawal_path(@savings_account), class: "btn btn-danger" %>
           <% end %>
         </div>
         <div class="col-md-2">
@@ -59,25 +59,6 @@
       <% if @savings_account.closed? %>
         <div class="corner-ribbon top-left red">Closed</div>
       <% end %>
-        <div class="row">
-
-          <div class="col-md-3 border-right">
-            <small class="text-muted">DEPOSITS </small>
-            <h4 class="card-title"><%= number_to_currency @savings_account.deposits %></h4><br>
-
-          </div>
-          <div class="col-md-3 border-right">
-            <small class="text-muted">WITHDRAWALS </small>
-            <h4 class="card-title"><%= number_to_currency @savings_account.withdrawals %></h4><br>
-
-          </div>
-
-          <div class="col-md-3 border-right">
-            <small class="condensed-text">BALANCE </small>
-            <h3 class="card-title"><%= number_to_currency @savings_account.balance %></h3>
-          </div>
-        </div>
-         <hr>
          <br>
         <% month_dates = [] %>
         <% (Date.today.beginning_of_year..Date.today.end_of_month).each do |date| %>

@@ -352,8 +352,6 @@ namespace :share_capitals_section do
     resources :term_extensions, only: [:new, :create], module: :time_deposits
     resources :break_contracts, only: [:new, :create], module: :time_deposits
     resources :settings, only: [:index], module: :time_deposits
-    resources :earned_interests, only: [:new, :create], module: :time_deposits
-
   end
   resources :employees, only: [:index, :show, :edit, :update] do
     resources :info, only: [:index], module: :employees
