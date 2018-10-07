@@ -12,6 +12,8 @@ RSpec.describe Cooperative, type: :model do
     it { is_expected.to have_many :memberships }
     it { is_expected.to have_many :member_memberships }
     it { is_expected.to have_many :bank_accounts }
+    it { is_expected.to have_many :loans }
+
   end
 
   describe 'validations' do

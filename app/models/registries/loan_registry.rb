@@ -15,6 +15,8 @@ module Registries
       if loan_amount(row).present? && term(row).present? && disbursement_date(row).present?
         loan = LoansModule::Loan.create!(
                   forwarded_loan: true,
+                  cooperative: self.employee.cooperative,
+                  office: self.employee.office,
                   borrower: find_borrower(row),
                   loan_product: find_loan_product(row),
                   barangay: find_barangay(row),
@@ -31,7 +33,7 @@ module Registries
         #disbursement
         AccountingModule::Entry.create!(
         office: self.employee.office,
-        cooperative: self.employee.office,
+        cooperative: self.employee.cooperative,
         recorder: self.employee,
         commercial_document: loan.borrower,
         description: "Forwarded loan disbursement as of #{cut_off_date(row)}",
