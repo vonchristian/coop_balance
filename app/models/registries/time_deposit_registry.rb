@@ -26,8 +26,9 @@ module Registries
 
     def create_entry(time_deposit, row)
       AccountingModule::Entry.create!(
+      office: self.employee.office,
+      cooperative: self.employee.office,
       commercial_document: find_depositor(row),
-      origin: self.employee.office,
       recorder: self.employee,
       description: "Time deposit on #{DateTime.parse(row[6].to_s).strftime("%B %e, %Y")}",
       entry_date: Date.today.last_year.end_of_year,

@@ -30,19 +30,20 @@ module Registries
         last_transaction_date: cut_off_date,
         share_capital_product: find_share_capital_product(row))
       AccountingModule::Entry.create!(
-        origin: find_employee.office,
+        office: self.employee.office,
+        cooperative: self.employee.office,
         recorder: find_employee,
         commercial_document: find_subscriber(row),
         description: "Forwarded balance of share capital as of #{cut_off_date.strftime("%B %e, %Y")}",
         entry_date: cut_off_date,
         debit_amounts_attributes: [
-                account: debit_account, 
-                amount: row["Balance"].to_f, 
+                account: debit_account,
+                amount: row["Balance"].to_f,
                 commercial_document: share_capital
                 ],
         credit_amounts_attributes: [
-                account: credit_account(row), 
-                amount: row["Balance"].to_f, 
+                account: credit_account(row),
+                amount: row["Balance"].to_f,
                 commercial_document: share_capital
                 ])
     end

@@ -30,7 +30,8 @@ module Registries
           )
         #disbursement
         AccountingModule::Entry.create!(
-        origin: self.employee.office,
+        office: self.employee.office,
+        cooperative: self.employee.office,
         recorder: self.employee,
         commercial_document: loan.borrower,
         description: "Forwarded loan disbursement as of #{cut_off_date(row)}",

@@ -20,7 +20,8 @@ module Registries
     def create_entry(savings, row)
       AccountingModule::Entry.create!(
       commercial_document: find_depositor(row),
-      origin: self.employee.office,
+      office: self.employee.office,
+      cooperative: self.employee.office,
       recorder: self.employee,
       description: "Forwarded balance of savings deposit as of #{cut_off_date}",
       entry_date: cut_off_date,
