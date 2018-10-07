@@ -11,6 +11,8 @@ module TimeDeposits
     private
     def save_earned_interest
       AccountingModule::Entry.create!(
+        office: find_employee.office,
+        cooperative: find_employee.cooperative,
         recorder: find_employee,
         description: "Earned interests on #{date.to_date.strftime("%B %e, %Y")}",
         commercial_document: find_time_deposit,

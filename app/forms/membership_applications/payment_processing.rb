@@ -18,7 +18,8 @@ module MembershipApplications
     end
     def save_entry
       entry = AccountingModule::Entry.new(
-        origin:              find_employee.office,
+        office: find_employee.office,
+        cooperative: find_employee.cooperative,
         commercial_document: find_membership.cooperator,
         description:         description,
         recorder:            find_employee,

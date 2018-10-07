@@ -44,6 +44,8 @@ module Memberships
     end
     def create_entry(share_capital)
       AccountingModule::Entry.create!(
+        office: find_employee.office,
+        cooperative: find_employee.cooperative,
         recorder: find_employee,
         description: description,
         entry_date: date,

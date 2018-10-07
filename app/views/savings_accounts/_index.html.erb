@@ -54,7 +54,7 @@
               <% end %>
 
               <% if policy([:savings_accounts, :withdrawal]).new? %>
-                <%= link_to 'Withdraw', new_savings_account_withdrawal_path(savings_account), class: "btn btn-warning btn-sm" %>
+                <%= link_to 'Withdraw', new_savings_account_withdrawal_path(savings_account), class: "btn btn-danger btn-sm" %>
               <% end %>
               <div class="btn-group">
                 <button type="button" class="btn btn-light btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

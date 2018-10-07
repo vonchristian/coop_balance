@@ -22,6 +22,8 @@ module Memberships
       def save_deposit
         entry = AccountingModule::Entry.create!(
           commercial_document: find_saving.depositor,
+          office: find_employee.office,
+          cooperative: find_employee.cooperative,
           payment_type: payment_type,
           recorder: find_employee,
           description: 'Savings deposit',

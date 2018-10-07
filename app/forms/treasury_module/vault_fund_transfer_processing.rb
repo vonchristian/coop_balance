@@ -24,6 +24,8 @@ module TreasuryModule
     end
     def save_fund_transfer
       AccountingModule::Entry.create!(
+        office: find_employee.office,
+        cooperative: find_employee.cooperative,
         recorder: find_employee,
         commercial_document: find_employee,
         description: description,

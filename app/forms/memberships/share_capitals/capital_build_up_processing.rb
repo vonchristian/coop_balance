@@ -20,6 +20,8 @@ module Memberships
       private
       def save_capital_build_up
       AccountingModule::Entry.create!(
+        office: find_employee.office,
+        cooperative: find_employee.cooperative,
         commercial_document: find_subscriber,
         recorder: find_employee,
         description: 'Payment of capital build up',

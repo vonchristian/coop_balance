@@ -15,6 +15,8 @@ module Memberships
           saving_product_id: saving_product_id,
           account_number: account_number)
         AccountingModule::Entry.create!(
+          office: find_employee.office,
+          cooperative: find_employee.cooperative,
           commercial_document: find_depositor,
           recorder: find_employee,
           description: "Time deposit transferred to Savings account of #{find_depositor.name}",

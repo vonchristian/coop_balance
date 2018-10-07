@@ -22,6 +22,8 @@ module TimeDeposits
 
     def save_withdraw
       AccountingModule::Entry.create!(
+        office: find_employee.office,
+        cooperative: find_employee.cooperative,
         recorder: find_employee,
         commercial_document: find_time_deposit,
         description: 'Withdraw time deposit',

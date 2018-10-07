@@ -13,6 +13,8 @@ class DisbursementForm
   private
   def create_entry
     entry = AccountingModule::Entry.new(
+      office: find_employee.office,
+      cooperative: find_employee.cooperative,
       commercial_document: find_voucher,
       description:         description,
       reference_number:    reference_number,

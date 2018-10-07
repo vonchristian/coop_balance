@@ -9,7 +9,7 @@ module AccountingModule
     validates :amount, numericality: { greater_than: 0.01 }
 
     delegate :name, to: :account, prefix: true
-    delegate :recorder, :reference_number, :description,  to: :entry
+    delegate :recorder, :reference_number, :description, :entry_date,  to: :entry
     delegate :name, to: :recorder, prefix: true
 
     def self.for_account(args={})

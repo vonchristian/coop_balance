@@ -14,6 +14,8 @@ module Employees
     def save_cash_transfer
       AccountingModule::Entry.create(
         entry_date: date,
+        office: find_employee.office,
+        cooperative: find_employee.cooperative,
         reference_number: reference_number,
         description: description,
         commercial_document: find_employee,

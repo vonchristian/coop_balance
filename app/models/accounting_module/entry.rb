@@ -81,10 +81,6 @@ module AccountingModule
     end
 
     private
-      def set_origin
-        self.office = self.recorder.office
-        self.cooperative = self.recorder.cooperative
-      end
 
       def set_default_date
         todays_date = ActiveRecord::Base.default_timezone == :utc ? Time.now.utc : Time.now

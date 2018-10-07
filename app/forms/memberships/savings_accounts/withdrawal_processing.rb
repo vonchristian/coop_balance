@@ -24,6 +24,8 @@ module Memberships
       private
       def save_withdraw
         AccountingModule::Entry.create!(
+          office: find_employee.office,
+          cooperative: find_employee.cooperative,
           commercial_document: find_saving.depositor,
           payment_type: payment_type,
           recorder: find_employee,

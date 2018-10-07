@@ -56,6 +56,8 @@ module Memberships
         AccountingModule::Entry.create!(
         commercial_document: find_depositor,
         recorder: find_employee,
+        office: find_employee.office,
+        cooperative: find_employee.cooperative,
         description: 'Time deposit',
         reference_number: reference_number,
         entry_date: date,

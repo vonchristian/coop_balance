@@ -29,6 +29,8 @@ module AccountingModule
       AccountingModule::Entry.create!(
         entry_date: entry_date,
         recorder: find_employee,
+        office: find_employee.office,
+        cooperative: find_employee.cooperative,
         description: "ADJUSTING ENTRY: #{description}",
         commercial_document: find_commercial_document,
         reference_number: reference_number,

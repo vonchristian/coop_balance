@@ -1,24 +1,27 @@
 <div class="row">
-  <div class="col-md-4 col-md-offset-4">
+  <div class="col-md-4 offset-md-4">
     <div class="card">
       <div class="card-header">
-          <center>
-            <%= image_tag(@share_capital.subscriber.avatar, class: "profile-user-img img-responsive img-circle") %><br>
-             <h3 class="box-title"><%= @share_capital.subscriber_name %></h3>
-          </center>
+        <center>
+          <%= image_tag(@share_capital.subscriber.avatar, class: "profile-user-img img-responsive img-circle") %><br>
+           <h3 class="box-title"><%= @share_capital.subscriber_name %></h3>
+        </center>
       </div>
       <div class="card-body">
+      <p class="text-muted">CAPITAL BUILD UP DETAILS </p>
+      <%= simple_form_for @capital_build_up, url: :share_capital_capital_build_ups do |f| %>
+        <%= f.error_notification %>
+        <%= f.input :date, as: :string, input_html: { autocomplete: 'off' , value: Time.zone.now.strftime("%B %e, %Y"), class: "datepicker" } %>
+        <%= f.input :share_capital_id, input_html: {value: @share_capital.id },as: :hidden %>
+        <%= f.input :amount, as: :currency, input_html: { autocomplete: 'off' } %>
+        <%= f.input :or_number, input_html: { autocomplete: 'off' } %>
+        <%= f.input :employee_id, input_html: { value: current_user.id },as: :hidden %>
 
-<p class="text-muted">CAPITAL BUILD UP DETAILS </p>
-<%= simple_form_for @capital_build_up, url: :share_capital_capital_build_ups do |f| %>
-  <%= f.error_notification %>
-  <%= f.input :date, as: :string, input_html: { autocomplete: 'off' , value: Time.zone.now.strftime("%B %e, %Y"), class: "datepicker" } %>
-  <%= f.input :share_capital_id, input_html: {value: @share_capital.id },as: :hidden %>
-  <%= f.input :amount, as: :currency, input_html: { autocomplete: 'off' } %>
-  <%= f.input :or_number, input_html: { autocomplete: 'off' } %>
-  <%= f.input :employee_id, input_html: { value: current_user.id },as: :hidden %>
 
+          <%= f.submit "Save Capital Build Up", class: "btn btn-primary float-right", data: { disable_with: "Processing..."} %>
 
-    <%= f.submit "Save Capital Build Up", class: "btn btn-primary float-right", data: { disable_with: "Processing..."} %>
-
-<% end %>
+      <% end %>
+    </div>
+  </div>
+</div>
+</div>

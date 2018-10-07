@@ -14,7 +14,10 @@ class ProgramSubscriptionPaymentForm
   end
 
   def save_payment
-    find_program_subscription.entries.create!(recorder_id: recorder_id, description: 'Savings deposit', reference_number: reference_number, entry_date: date,
+    find_program_subscription.entries.create!(
+      office: find_employee.office,
+      cooperative: find_employee.cooperative,
+      recorder_id: find_employee, description: 'Savings deposit', reference_number: reference_number, entry_date: date,
     debit_amounts_attributes: [account: debit_account, amount: amount],
     credit_amounts_attributes: [account: credit_account, amount: amount])
   end
@@ -23,5 +26,8 @@ class ProgramSubscriptionPaymentForm
   end
   def credit_account
     AccountingDepartment::Account.find_by(name: "Members' Benefit and Other Funds Payable")
+  end
+  def find_employee
+    User.find(recorder_id)
   end
 end

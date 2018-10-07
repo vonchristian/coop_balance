@@ -25,6 +25,8 @@ module TimeDeposits
 
     def save_withdraw
        find_time_deposit.entries.create!(
+         office: find_employee.office,
+         cooperative: find_employee.cooperative,
         recorder: find_employee,
         description: 'Withdraw time deposit with break contract fee',
         reference_number: reference_number,

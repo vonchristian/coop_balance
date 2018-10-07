@@ -31,6 +31,8 @@ module LoansModule
         penalty_revenue_account          = find_loan.loan_product_penalty_revenue_account
         debit_account            = find_employee.cash_on_hand_account
         entry = AccountingModule::Entry.new(
+        office: find_employee.office,
+        cooperative: find_employee.cooperative,
         commercial_document: find_loan,
         reference_number:    reference_number,
         description:         description,

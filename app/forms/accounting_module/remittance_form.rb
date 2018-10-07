@@ -13,7 +13,11 @@ module AccountingModule
     end
 
     def save_remittance
-      AccountingModule::Entry.create!(recorder: find_recorder, commercial_document: find_remitted_to,  description: description, reference_number: reference_number, entry_date: entry_date,
+      AccountingModule::Entry.create!(
+        recorder: find_recorder,
+        office: find_employee.office,
+        cooperative: find_employee.cooperative,
+        commercial_document: find_remitted_to,  description: description, reference_number: reference_number, entry_date: entry_date,
       debit_amounts_attributes: [account_id: debit_account_id, amount: amount, commercial_document: find_recorder],
       credit_amounts_attributes: [account_id: credit_account_id, amount: amount, commercial_document: find_recorder])
     end

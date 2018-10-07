@@ -11,6 +11,8 @@ module Vouchers
     private
     def save_disbursement
       entry = AccountingModule::Entry.new(
+        office: find_employee.office,
+        cooperative: find_employee.cooperative,
         commercial_document: find_payee,
         :description => description,
         recorder: find_employee,
