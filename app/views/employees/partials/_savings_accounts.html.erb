@@ -1,13 +1,12 @@
-<div class="tab-pane <%= 'active' if current_page?(employee_savings_accounts_path(@employee))%>">
-  <% if policy([:employees, :savings_account]).new? %>
-    <%= link_to 'Open Savings Account', new_employee_savings_account_path(@employee) %>
-  <% end %>
-  <hr>
-  <% if @employee.savings.present? %>
-    <% @employee.savings.each do |saving| %>
-      <%=link_to savings_account_url(saving) do %>
-        <%= saving.balance %>
+<div class="card">
+  <div class="card-body">
+    <% if policy([:employees, :savings_account]).new? %>
+      <%= link_to 'Open Savings Account', new_employee_savings_account_path(@employee), class: "btn btn-primary float-right" %>
+    <% end %>
+  </div>
+</div>
+    <% if @employee.savings.present? %>
+      <% @employee.savings.each do |savings_account| %>
+        <%= render 'savings_accounts/partials/header', savings_account: savings_account %>
       <% end %>
     <% end %>
-  <% end %>
-  </div>

@@ -1,22 +1,26 @@
-module AccountingModule 
-  class EntriesPdf < Prawn::Document 
+module AccountingModule
+  class EntriesPdf < Prawn::Document
+
+    attr_reader :entries, :employee, :view_context
+
     def initialize(entries, employee, view_context)
-       super(margin: 40, page_size: "A4", page_layout: :portrait)
-      @entries = entries 
+      super(margin: 40, page_size: "A4", page_layout: :portrait)
+      @entries = entries
       @employee = employee
       @view_context = view_context
-      heading 
+      heading
       entries_table
-    end 
-    private 
-    def price(number)
-      @view_context.number_to_currency(number, :unit => "P ")
     end
-    def heading 
+
+    private
+    def price(number)
+      view_context.number_to_currency(number, :unit => "P ")
+    end
+    def heading
       image "#{Rails.root}/app/assets/images/logo_grayscale.jpg", width: 50, height: 50
       move_down 5
       text "DISBURSEMENT REPORT"
-    end 
+    end
     def entries_table
     if !@entries.any?
       move_down 10
@@ -30,7 +34,7 @@ module AccountingModule
       move_down 15
       end
       table(table_data, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [100]) do
-        
+
         # row(0).font_style = :bold
         # row(0).background_color = 'DDDDDD'
         column(0).align = :right
@@ -45,5 +49,5 @@ module AccountingModule
     [["DATE", "DESCRIPTION", "REFERENCE NUMBER", "AMOUNT", "MEMBER", "EMPLOYEE"]] +
     @table_data ||= @entries.map { |e| [ e.entry_date.strftime("%B %e, %Y"), e.description, e.reference_number, price(e.debit_amounts.sum(&:amount)), e.commercial_document.try(:member).try(:full_name), e.recorder.try(:first_and_last_name)]}
   end
-  end 
-end 
+  end
+end

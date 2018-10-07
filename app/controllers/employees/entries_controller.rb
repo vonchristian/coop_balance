@@ -19,8 +19,13 @@ module Employees
       respond_to do |format|
         format.html
         format.pdf do
-          pdf = AccountingModule::CollectionReportPdf.new(@entries, @employee, @from_date, @to_date, view_context)
-          send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Disbursement.pdf"
+          pdf = Employees::Reports::EntriesPdf.new(
+            entries:      @entries,
+            employee:     @employee,
+            from_date:    @from_date,
+            to_date:      @to_date,
+            view_context: view_context)
+          send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Entries Report.pdf"
         end
       end
     end

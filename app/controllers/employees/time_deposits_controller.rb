@@ -22,7 +22,7 @@ module Employees
     private
     def time_deposit_params
       params.require(:memberships_time_deposits_deposit_processing).
-      permit(:employee_id, :amount, :reference_number, :date, :depositor_id, :account_number, :number_of_days, :time_deposit_product_id)
+      permit(:employee_id, :amount, :reference_number, :date, :depositor_id, :account_number, :term, :time_deposit_product_id)
     end
   end
 end

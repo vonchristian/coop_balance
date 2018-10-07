@@ -1,13 +1,13 @@
-<div class="tab-pane <%= 'active' if current_page?(employee_share_capitals_path(@employee))%>">
-  <% if policy([:employees, :share_capital]).new? %>
-    <%= link_to 'New Share Capital', new_employee_share_capital_path(@employee) %>
-  <% end %>
-  <hr>
+<div class="card">
+  <div class="card-header">
+    <% if policy([:employees, :share_capital]).new? %>
+      <%= link_to 'New Share Capital', new_employee_share_capital_path(@employee), class: "btn btn-primary float-right" %>
+    <% end %>
+  </div>
+</div>
   <% if @employee.share_capitals.present? %>
     <% @employee.share_capitals.each do |share_capital| %>
-    <%= link_to share_capital_path(share_capital) do %>
-        <%= share_capital.balance %>
-    <% end %>
+      <%= render 'share_capitals/partials/header', share_capital: share_capital %>
     <% end %>
   <% end %>
   </div>
