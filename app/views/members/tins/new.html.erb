@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-md-6 col-md-offset-3">
+  <div class="col-md-6 offset-md-3">
     <div class="card">
       <div class="card-header">
         <h4><center><%= image_tag(@member.avatar, style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center></h4>
@@ -8,8 +8,9 @@
       <div class="card-body">
         <%= simple_form_for [@member, @tin], url: :member_tins do |f| %>
           <%= f.error_notification %>
-          <%= f.input :number %>
-          <%= f.submit "Save TIN", class: "btn btn-primary pull-right" %>
+          <%= f.input :number, label: 'TIN Number' %>
+          <hr>
+          <%= f.submit "Save TIN", class: "btn btn-primary float-right" %>
         <% end %>
       </div>
     </div>

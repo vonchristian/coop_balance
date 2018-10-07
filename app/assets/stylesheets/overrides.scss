@@ -232,6 +232,40 @@ input[type="file"].choose-btn {
   visibility: hidden;
 }
 
+.profile-wrapper:hover .option-overlay {
+  opacity: 1;
+}
+
+.profile-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.option-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  transition: .3s ease;
+  height: 40px;
+  width: 150px;
+  top: 70%;
+  bottom: 0;
+  margin-bottom: 0px;
+  opacity: 0;
+  background-color: rgba(0,0,0,0.3);
+  padding: 10px;
+  border-radius: 0 0 0.25rem 0.25rem;
+}
+
+.option-overlay a:visited, a:hover, a:active {
+  text-decoration: none;
+}
+
+.text-white {
+  color: #FFF;
+}
+
 @media (max-width: 576px) {
   .set-visibility {
     visibility: visible;
@@ -241,5 +275,11 @@ input[type="file"].choose-btn {
 @media (max-width: 767px) {
   .set-visibility {
     visibility: visible;
+  }
+
+  .option-overlay {
+    width: 150px;
+    margin: auto;
+    bottom: -2px;
   }
 }

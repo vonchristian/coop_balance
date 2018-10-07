@@ -151,16 +151,21 @@ module LoansModule
         from_date = options[:from_date]
         to_date   = options[:to_date]
         range     = DateRange.new(from_date: from_date, to_date: to_date)
-        self.active.where.not(disbursement_date: nil).
+        not_archived.disbursed.
         joins(:terms).where('terms.maturity_date' => range.start_date..range.end_date )
       else
-        self.active.where.not(disbursement_date: nil).
+        not_archived.disbursed.
         joins(:terms).where('terms.maturity_date < ?', Date.today)
       end
     end
 
+    def self.forwarded_loans
+      where(forwarded_loan: true)
+    end
+
     def self.disbursed
-      joins(:dibursement_voucher).merge(Voucher.disbursed)
+      forwarded_loans 
+      # joins(:dibursement_voucher).merge(Voucher.disbursed)
     end
 
     def self.disbursed_by(args={})

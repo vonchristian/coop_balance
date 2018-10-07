@@ -19,10 +19,10 @@ module LoansModule
         from_date = args[:from_date]
         to_date   = args[:to_date]
         range     = DateRange.new(from_date: from_date, to_date: to_date)
-        self.where.not(disbursement_date: nil).
+        not_archived.disbursed.
         joins(:terms).where('terms.maturity_date' => range.start_date..range.end_date )
       else
-        self.where.not(disbursement_date: nil).
+        not_archived.disbursed.
         joins(:terms).where('terms.maturity_date < ?', Date.today)
       end
     end

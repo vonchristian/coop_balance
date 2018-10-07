@@ -160,6 +160,7 @@ Rails.application.routes.draw do
     resources :purchases,        only: [:index, :show],                 module: :members
     resources :account_mergings, only: [:new, :create],                 module: :members
     resources :signature_specimens, module: :members
+    resources :avatars, module: :members
     collection { post :import_member_profile}
   end
   resources :member_registrations, only: [:new, :create]
