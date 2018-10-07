@@ -1,8 +1,8 @@
 <div class="content">
   <div class="row">
     <div class="col-md-4">
-      <div class="box box-solid">
-        <div class="box-body">
+      <div class="card card-solid">
+        <div class="card-body">
           <%=form_tag employees_path, method: :get, class: "sidebar-form" do %>
               <div class="input-group">
                 <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Employee", id: 'taxpayer-search-form' %>
@@ -19,7 +19,7 @@
               <%= link_to employee_path(employee) do %>
                 <div class="row">
                   <div class="col-md-2 col-md-offset-1">
-                    <%= image_tag(employee.avatar.url(:medium), class: "img-circle", height: 45, width: 45) %>
+                    <%= image_tag(employee.avatar, class: "img-circle", height: 45, width: 45) %>
                   </div>
                   <div class="col-md-9">
                     <p class="text-purple"><b><%= employee.first_and_last_name %></b></p>

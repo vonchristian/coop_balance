@@ -1,0 +1,18 @@
+<%= link_to accounting_module_entry_path(entry) do %>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-3">
+          <%= entry.commercial_document_name %>
+        </div>
+        <div class="col-md-6">
+          <%= entry.description %><br>
+          <small class="text-muted"><i class="fa fa-clock"></i> <%= entry.entry_date.strftime("%B %e, %Y") %> &nbsp; &nbsp; # <%= entry.reference_number %></small>
+        </div>
+        <div class="col-md-3">
+          <%= number_to_currency  entry.debit_amounts.sum(:amount) %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

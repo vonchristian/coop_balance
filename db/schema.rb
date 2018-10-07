@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_07_101828) do
+ActiveRecord::Schema.define(version: 2018_10_07_103021) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1214,6 +1214,7 @@ ActiveRecord::Schema.define(version: 2018_10_07_101828) do
     t.datetime "last_transaction_date"
     t.string "depositor_name"
     t.uuid "cooperative_id"
+    t.boolean "withdrawn", default: false
     t.index ["account_number"], name: "index_time_deposits_on_account_number", unique: true
     t.index ["cooperative_id"], name: "index_time_deposits_on_cooperative_id"
     t.index ["depositor_type", "depositor_id"], name: "index_time_deposits_on_depositor_type_and_depositor_id"

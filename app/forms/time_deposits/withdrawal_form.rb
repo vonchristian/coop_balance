@@ -10,6 +10,7 @@ module TimeDeposits
       ActiveRecord::Base.transaction do
         if amount_is_less_than_balance
           save_withdraw
+          set_time_deposit_as_withdrawn
         else
           false
         end
@@ -31,6 +32,10 @@ module TimeDeposits
         entry_date: date,
       debit_amounts_attributes: [account: debit_account, amount: amount, commercial_document: find_time_deposit],
       credit_amounts_attributes: [account: credit_account, amount: amount, commercial_document: find_time_deposit])
+    end
+    
+    def set_time_deposit_as_withdrawn
+      find_time_deposit.update(withdrawn: true)
     end
 
     def credit_account

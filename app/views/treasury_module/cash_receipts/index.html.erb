@@ -25,35 +25,13 @@
           </div>
         </div>
       </div>
-      <div class="card-body">
-        <div class="table table-responsive">
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th>Reference #</th>
-                <th>Date</th>
-                <th>Member/Payee</th>
-                <th>Description</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @cash_receipts.each do |cash_receipt| %>
-                <tr>
-                  <td><%= link_to cash_receipt.reference_number, accounting_module_entry_path(cash_receipt) %></td>
-                  <td><%= cash_receipt.entry_date.strftime("%B %e, %Y") %></td>
-                  <td><%= cash_receipt.commercial_document.try(:name) %></td>
-                  <td><%= cash_receipt.description %></td>
-                  <td>
-                    <span class="pull-right">
-                      <%= number_to_currency cash_receipt.amounts.where(account: current_user.cash_on_hand_account).sum(:amount) %>
-                    </span>
-                  </td>
-                </tr>
+    </div>
+              <% @cash_receipts.each do |entry| %>
+                <% cache(entry) do %>
+                  <%= render 'accounting_module/entries/partials/header', entry: entry %>
+                <% end %>
               <% end %>
-            </tbody>
-          </table>
-        </div>
+          
         <center><%= will_paginate @cash_receipts %></center>
       </div>
     </div>
