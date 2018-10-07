@@ -56,23 +56,7 @@
     <hr />
 
     <div class="row">
-      <div class="col-md-6">
-        <p class="text-muted">TRANSACTIONS HISTORY </p>
-      </div>
-      <div class="col-md-6">
-        <div class="dropdown">
-          <button class="btn btn-primary dropdown-toggle pull-right" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            New Entry
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-            <li><%= link_to 'New Bank Charge', new_bank_account_bank_charge_path(@bank_account)%></li>
-            <li><%= link_to 'New Earned Interest', new_bank_account_bank_earned_interest_path(@bank_account)%></li>
-
-            <li role="separator" class="divider"></li>
-          </ul>
-        </div>
-      </div>
+      <p class="text-muted">TRANSACTIONS HISTORY </p>
       <div class="table table-responsive content">
         <table class="table table-hover table-striped">
           <thead>
@@ -98,8 +82,9 @@
             <% end %>
           </tbody>
         </table>
-    </div>
-    </div>
+      </div>
     </div>
   </div>
+</div>
+</div>
 </div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_06_131459) do
+ActiveRecord::Schema.define(version: 2018_10_07_092531) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -181,10 +181,6 @@ ActiveRecord::Schema.define(version: 2018_10_06_131459) do
     t.datetime "updated_at", null: false
     t.uuid "account_id"
     t.uuid "earned_interest_account_id"
-    t.string "avatar_file_name"
-    t.string "avatar_content_type"
-    t.bigint "avatar_file_size"
-    t.datetime "avatar_updated_at"
     t.index ["account_id"], name: "index_bank_accounts_on_account_id"
     t.index ["cooperative_id"], name: "index_bank_accounts_on_cooperative_id"
     t.index ["earned_interest_account_id"], name: "index_bank_accounts_on_earned_interest_account_id"
@@ -301,10 +297,6 @@ ActiveRecord::Schema.define(version: 2018_10_06_131459) do
     t.datetime "updated_at", null: false
     t.string "contact_number"
     t.string "address"
-    t.string "logo_file_name"
-    t.string "logo_content_type"
-    t.bigint "logo_file_size"
-    t.datetime "logo_updated_at"
     t.string "abbreviated_name"
     t.uuid "interest_amortization_config_id"
     t.index ["abbreviated_name"], name: "index_cooperatives_on_abbreviated_name", unique: true
@@ -1272,10 +1264,6 @@ ActiveRecord::Schema.define(version: 2018_10_06_131459) do
     t.integer "role"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "avatar_file_name"
-    t.string "avatar_content_type"
-    t.bigint "avatar_file_size"
-    t.datetime "avatar_updated_at"
     t.string "contact_number"
     t.date "date_of_birth"
     t.integer "sex"

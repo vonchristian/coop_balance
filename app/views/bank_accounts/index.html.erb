@@ -1,52 +1,30 @@
-<div class="row">
-  <div class="col-md-12">
-    <div class="card">
-      <div class="card-header">
-        <div class="row">
-          <div class="col-md-3">
-            <h3 class="card-title">Bank Accounts </h3>
+
+<div class="card">
+  <div class="card-header">
+    <div class="row">
+      <div class="col-md-3">
+        <h3 class="card-title">Bank Accounts </h3>
+      </div>
+      <div class="col-md-6">
+        <%=form_tag bank_accounts_path, method: :get do %>
+          <div class="input-group">
+            <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search... ", id: 'account-search-form' %>
+            <span class="input-group-btn">
+              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                <i class="fa fa-search"></i>
+              <% end %>
+            </span>
           </div>
-          <div class="col-md-6">
-          </div>
-          <div class="col-md-3">
-            <% if policy(:bank_account).new? %>
-              <%= link_to 'New Bank Account', new_bank_account_path, class: "btn btn-primary btn-flat" %>
-            <% end %>
-          </div>
-        </div>
+        <% end %>
+      </div>
+      <div class="col-md-3">
+        <% if policy(:bank_account).new? %>
+          <%= link_to 'New Bank Account', new_bank_account_path, class: "btn btn-primary float-right" %>
+        <% end %>
       </div>
     </div>
   </div>
 </div>
 <% @bank_accounts.each do |bank_account| %>
-  <div class="card">
-    <div class="card-body">
-      <div class="row">
-        <div class="col-md-1">
-          <%=image_tag(bank_account.avatar, height: 45, width: 45, class: "img-circle") %>
-        </div>
-        <div class="col-md-5">
-          <%= link_to bank_account_url(bank_account) do %>
-            <b><%= bank_account.bank_name.try(:upcase) %></b><br>
-            <div class="row">
-              <div class="col-md-6">
-                <small class="text-muted"><i class="fa fa-map-marker"></i> <%= bank_account.bank_address %> </small>
-              </div>
-              <div class="col-md-6">
-                <small class="text-muted"><i class="fa fa-credit-card"></i> <%= bank_account.account_number %></small>
-              </div>
-            </div>
-          <% end %>
-        </div>
-        <div class="col-md-3">
-          <h3 class="card-title"> <%= number_to_currency bank_account.balance %></h3>
-          <small class="text-muted">BALANCE</small>
-        </div>
-        <div class="col-md-3">
-          <%= link_to 'Deposit', new_bank_account_deposit_path(bank_account), class: "btn btn-success btn-sm"%>
-          <%= link_to 'Withdraw', new_bank_account_withdrawal_path(bank_account), class: "btn btn-danger btn-sm" %>
-        </div>
-      </div>
-    </div>
-  </div>
+  <%= render 'bank_accounts/partials/header', bank_account: bank_account %>
 <% end %>

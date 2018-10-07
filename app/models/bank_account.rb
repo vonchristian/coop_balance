@@ -1,11 +1,10 @@
 class BankAccount < ApplicationRecord
+  include PgSearch
+  pg_search_scope :text_search, against: [:bank_name]
   has_one_attached :avatar
   belongs_to :cooperative
   belongs_to :account,                 class_name: "AccountingModule::Account"
   belongs_to :earned_interest_account, class_name: "AccountingModule::Account"
-
-  validates :bank_name, :bank_address, :account_number, presence: true
-  validates :account_id, :earned_interest_account_id, presence: true
   has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
   before_save :set_default_image
   def name
@@ -26,6 +25,7 @@ class BankAccount < ApplicationRecord
   def earned_interests
     earned_interest_account.balance(commercial_document: self)
   end
+  
   private
   def set_default_image
     if avatar.attachment.blank?

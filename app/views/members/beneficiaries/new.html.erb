@@ -6,7 +6,7 @@
          <h3><center><%= @member.name %></center></h3>
       </div>
       <div class="card-body">
-        <%= simple_form_for [@member, @beneficiary], url: :member_beneficiaries do |f| %>
+        <%= simple_form_for [@member, @beneficiary], url: :member_beneficiaries, html: { autocomplete: "off" } do |f| %>
           <%= f.input :full_name %>
           <%= f.input :relationship %>
           <%= f. submit "Save Beneficiary", class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>

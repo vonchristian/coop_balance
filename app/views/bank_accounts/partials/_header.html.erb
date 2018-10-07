@@ -1,0 +1,30 @@
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-1">
+        <%=image_tag(bank_account.avatar, height: 45, width: 45, class: "img-circle") %>
+      </div>
+      <div class="col-md-5">
+        <%= link_to bank_account_url(bank_account) do %>
+          <b><%= bank_account.bank_name.try(:upcase) %></b><br>
+          <div class="row">
+            <div class="col-md-6">
+              <small class="text-muted"><i class="fa fa-map-marker"></i> <%= bank_account.bank_address %> </small>
+            </div>
+            <div class="col-md-6">
+              <small class="text-muted"><i class="fa fa-credit-card"></i> <%= bank_account.account_number %></small>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div class="col-md-3">
+        <h3 class="card-title"> <%= number_to_currency bank_account.balance %></h3>
+        <small class="text-muted">BALANCE</small>
+      </div>
+      <div class="col-md-3">
+        <%= link_to 'Deposit', new_bank_account_deposit_path(bank_account), class: "btn btn-success btn-sm"%>
+        <%= link_to 'Withdraw', new_bank_account_withdrawal_path(bank_account), class: "btn btn-danger btn-sm" %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -6,8 +6,8 @@
          <h3><center><%= @member.name %></center></h3>
       </div>
       <div class="card-body">
-        <%= simple_form_for [@member, @contact], url: :member_contacts do |f| %>
-          <%= f.input :number, as: :string %>
+        <%= simple_form_for [@member, @contact], url: :member_contacts, html: { autocomplete: "off" } do |f| %>
+          <%= f.input :number, as: :string, label: "Contact Number" %>
           <hr>
           <%= f.submit "Update Contact Info", class: "btn btn-primary float-right" %>
         <% end %>

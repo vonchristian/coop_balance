@@ -12,6 +12,7 @@ module Memberships
           set_last_transaction_date
         end
       end
+
       def find_saving
         MembershipsModule::Saving.find_by_id(saving_id)
       end

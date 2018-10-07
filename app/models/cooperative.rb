@@ -8,6 +8,7 @@ class Cooperative < ApplicationRecord
   has_many :accounts, through: :accountable_accounts, class_name: "AccountingModule::Account"
   has_many :memberships
   has_many :member_memberships, through: :memberships, source: :cooperator, source_type: 'Member'
+  has_many :bank_accounts
   validates :name, :abbreviated_name, presence: true
   validates :name, uniqueness: true
   validates :registration_number, presence: true, uniqueness: true

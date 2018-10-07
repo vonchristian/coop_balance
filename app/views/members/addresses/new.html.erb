@@ -8,7 +8,7 @@
       <div class="card-body">
         <div class="row">
           <div class="col-md-10 offset-md-1">
-            <%= simple_form_for [@member, @address], url: :member_addresses do |f| %>
+            <%= simple_form_for [@member, @address], url: :member_addresses, html: { autocomplete: "off" } do |f| %>
               <%= f.input :complete_address %>
               <%= f.input :street_id, collection: Addresses::Street.all.map{ |a| [a.name, a.id] } %>
               <%= f.input :barangay_id, collection: Addresses::Barangay.all.map{ |a| [a.name, a.id] }  %>
