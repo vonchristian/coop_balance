@@ -7,9 +7,7 @@
         <h3 class="card-title"> Edit Member Details </h3>
       </div>
       <div class="card-body">
-        <%= simple_form_for @member, multipart: true do |f| %>
-            <center><%= image_tag @member.avatar, class: 'center-block img-responsive img-circle'%></center>
-          <center><%= f.input :avatar, as: :file, label: "Upload photo" %></center>
+        <%= simple_form_for @member, html: { autocomplete: "off" } do |f| %>
           <%= f.error_notification %>
           <%= f.input :first_name %>
           <%= f.input :middle_name %>
@@ -23,11 +21,8 @@
           <%= f.simple_fields_for :tin do |t| %>
           <%= t.input :number, label: "TIN Number" %>
           <% end %>
-          <h4 class="box-title"> Signature Specimen </h4>
-          <%= f.input :signature_specimen, as: :file %>
-          <div class="box-footer">
-            <%= f.submit "Save Member", class: "btn btn-primary float-right" %>
-          </div>
+          <hr>
+          <%= f.submit "Save Member", class: "btn btn-primary float-right" %>
         <% end %>
       </div>
     </div>

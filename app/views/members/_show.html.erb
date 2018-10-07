@@ -1,17 +1,19 @@
 <%#= render 'members/partials/header', member: @member %>
 <div class="row">
-  <div class="col-md-3">
+  <div class="col-lg-3">
     <div class="card">
       <div class="card-header">
-        <%= image_tag(@member.avatar.variant(resize: "200x200"), class: "img-circle img-fluid mx-auto d-block") %>
-        <%= simple_form_for Member.new, url: member_path(@member) do |f| %>
-          <%= f.input :avatar, as: :file, label: false, input_html: { class: 'choose-btn center-block' } %>
-          <div class="overlay option-overlay">
-            <div class="col-xs-6 text-center">
-              <a href="" title="Update Photo"><span id="browse" class="text-white fa fa-photo fa-lg"></span></a>
+        <div class="profile-wrapper">
+          <%= image_tag(@member.avatar.variant(resize: "150x150"), class: "img-rounded mx-auto d-block") %>
+          <%= simple_form_for Member.new, url: member_avatars_path(@member), html: {id: "update-avatar"} do |f| %>
+            <%= f.input :avatar, as: :file, label: false, input_html: { class: 'choose-btn center-block' } %>
+            <div class="option-overlay">
+              <div class="col-md-12 text-center">
+                <a href="" title="Update Photo"><span id="browse-image" class="text-white">Update Photo</span></a>
+              </div>
             </div>
-          </div>
-        <% end %>
+          <% end %>
+        </div>
       </div>
       <div class="card-body">
         <nav class="nav flex-column nav-pills">
@@ -53,3 +55,17 @@
     <% end %>
   </div>
 </div>
+
+<script type="text/javascript">
+  $('#browse-image').click(function(e) {
+    $('#member_avatar').click();
+    e.preventDefault();
+    e.stopPropagation();
+    $('#member_avatar').change(function() {
+      var val = $('#member_avatar').val();
+      if (val != ''){
+        $('#update-avatar').submit();
+      }
+    });
+  });
+</script>

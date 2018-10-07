@@ -14,6 +14,7 @@ module Registries
     def upload_loan(row)
       if loan_amount(row).present? && term(row).present? && disbursement_date(row).present?
         loan = LoansModule::Loan.create!(
+                  forwarded_loan: true,
                   borrower: find_borrower(row),
                   loan_product: find_loan_product(row),
                   barangay: find_barangay(row),

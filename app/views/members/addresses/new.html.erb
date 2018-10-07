@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-md-6 col-md-offset-3">
+  <div class="col-md-6 offset-md-3">
     <div class="card">
       <div class="card-header">
         <h4><center><%= image_tag(@member.avatar, style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center></h4>
@@ -7,7 +7,7 @@
       </div>
       <div class="card-body">
         <div class="row">
-          <div class="col-md-10 col-md-offset-1">
+          <div class="col-md-10 offset-md-1">
             <%= simple_form_for [@member, @address], url: :member_addresses do |f| %>
               <%= f.input :complete_address %>
               <%= f.input :street_id, collection: Addresses::Street.all.map{ |a| [a.name, a.id] } %>
@@ -15,9 +15,8 @@
               <%= f.input :municipality_id, collection: Addresses::Municipality.all.map{ |a| [a.name, a.id] }  %>
               <%= f.input :province_id, collection: Addresses::Province.all.map{ |a| [a.name, a.id] }  %>
               <%= f.input :current %>
-              <div class="box-footer">
-                <%= f.submit "Save Address", class: "btn btn-primary float-right", disable_with: "Saving..." %>
-              </div>
+              <hr>
+              <%= f.submit "Save Address", class: "btn btn-primary float-right", disable_with: "Saving..." %>
             <% end %>
           </div>
         </div>

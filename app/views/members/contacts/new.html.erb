@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-md-6 col-md-offset-3">
+  <div class="col-md-6 offset-md-3">
     <div class="card">
       <div class="card-header">
         <h4><center><%= image_tag(@member.avatar, style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center></h4>
@@ -8,9 +8,8 @@
       <div class="card-body">
         <%= simple_form_for [@member, @contact], url: :member_contacts do |f| %>
           <%= f.input :number, as: :string %>
-          <div class="box-footer">
-            <%= f.submit "Update Contact Info", class: "btn btn-primary pull-right" %>
-          </div>
+          <hr>
+          <%= f.submit "Update Contact Info", class: "btn btn-primary float-right" %>
         <% end %>
       </div>
     </div>
