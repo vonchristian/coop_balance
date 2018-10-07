@@ -1,25 +1,47 @@
 <div class="row">
-  <div class="col-md-4 offset-md-4">
+  <div class="col-md-6 offset-md-3">
     <div class="card">
       <div class="card-header">
-          <h3 class="card-title"> Deposit Details </h3> <br><br>
-            <b> <%= @bank_account.bank_name %></b><br>
-            <small><%= @bank_account.account_number %></small><br>
-            <small><%= @bank_account.bank_address %></small>
-            <hr />
+        <h3 class="card-title"> Deposit Details </h3>
+        <hr class="no-margin-top">
+        <div class="row">
+          <div class="col-md-4 col-sm-4">
+            <label>Name of Bank:</label>
+          </div>
+          <div class="col-md-8 col-sm-8">
+            <%= @bank_account.bank_name %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4 col-sm-4">
+            <label>Account Number:</label>
+          </div>
+          <div class="col-md-8 col-sm-8">
+            <%= @bank_account.account_number %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4 col-sm-4">
+            <label>Bank Address:</label>
+          </div>
+          <div class="col-md-8 col-sm-8">
+            <%= @bank_account.bank_address %>
+          </div>
+        </div>
       </div>
-     <div class="card-body">
-      <%= simple_form_for [@bank_account, @entry], url: :bank_account_deposits, html: { autocomplete: 'off' } do |f| %>
-        <%= f.error_notification %>
-        <%= f.input :amount, as: :currency %>
-        <%= f.input :reference_number %>
-        <%= f.input :description %>
-        <%= f.input :entry_type, input_html: { value: 'bank_deposit' }, as: :hidden %>
-        <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
-        <%= f.input :bank_account_id, input_html: { value: @bank_account.id },as: :hidden %>
-        <%= f.input :recorder_id, input_html: { value: current_user.id },as: :hidden %>
-        <%= f.submit "Save Deposit", class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
-      <% end %>
+      <div class="card-body">
+        <%= simple_form_for [@bank_account, @entry], url: :bank_account_deposits, html: { autocomplete: 'off' } do |f| %>
+          <%= f.error_notification %>
+          <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+          <%= f.input :amount, as: :currency %>
+          <%= f.input :reference_number %>
+          <%= f.input :description %>
+          <%= f.input :entry_type, input_html: { value: 'bank_deposit' }, as: :hidden %>
+          <%= f.input :bank_account_id, input_html: { value: @bank_account.id },as: :hidden %>
+          <%= f.input :recorder_id, input_html: { value: current_user.id },as: :hidden %>
+          <%= f.submit "Save Deposit", class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>
