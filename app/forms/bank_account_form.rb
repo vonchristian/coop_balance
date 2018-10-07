@@ -4,7 +4,7 @@ class BankAccountForm
   attr_accessor :bank_name, :bank_address, :account_number,  :amount, :recorder_id, :account_id, :earned_interest_account_id, :date, :reference_number, :description
 
   validates :account_id, :earned_interest_account_id, presence: true
-
+  validates :amount, numericality: true
   def save
     ActiveRecord::Base.transaction do
       create_bank_account

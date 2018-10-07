@@ -6,7 +6,7 @@
          <h3><center><%= @member.name %></center></h3>
       </div>
       <div class="card-body">
-        <%= simple_form_for [@member, @tin], url: :member_tins do |f| %>
+        <%= simple_form_for [@member, @tin], url: :member_tins, html: { autocomplete: "off"} do |f| %>
           <%= f.error_notification %>
           <%= f.input :number, label: 'TIN Number' %>
           <hr>

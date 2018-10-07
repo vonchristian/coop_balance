@@ -21,6 +21,6 @@ class BankAccountsController < ApplicationController
 
   private
   def bank_account_params
-    params.require(:bank_account_form).permit(:bank_name, :bank_address, :account_number,  :amount, :recorder_id, :account_id, :earned_interest_account_id, :date, :reference_number, :description)
+    params.require(:bank_account_form).permit(:bank_name, :bank_address, :account_number, :amount, :recorder_id, :account_id, :earned_interest_account_id, :date, :reference_number, :description)
   end
 end
