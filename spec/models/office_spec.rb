@@ -5,14 +5,18 @@ module CoopConfigurationsModule
     describe 'associations' do
       it { is_expected.to belong_to :cash_in_vault_account }
       it { is_expected.to belong_to :cooperative }
+      it { is_expected.to have_many :loans }
+      it { is_expected.to have_many :savings }
+      it { is_expected.to have_many :time_deposits }
+      it { is_expected.to have_many :share_capitals }
+      it { is_expected.to have_many :entries }
+
     end
     describe 'validations' do
       it { is_expected.to validate_presence_of :name }
       it { is_expected.to validate_presence_of :contact_number }
       it { is_expected.to validate_presence_of :address }
       it { is_expected.to validate_uniqueness_of :name }
-      it { is_expected.to validate_uniqueness_of :cash_in_vault_account_id }
-
     end
   end
 end
