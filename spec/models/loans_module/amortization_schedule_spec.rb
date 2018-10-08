@@ -8,24 +8,34 @@ module LoansModule
       it { is_expected.to have_many :notes }
     end
 
+    describe 'validations' do
+      it { is_expected.to validate_presence_of :principal }
+      it { is_expected.to validate_presence_of :interest }
+      it { is_expected.to validate_numericality_of(:principal).is_greater_than(0.01) }
+      it { is_expected.to validate_numericality_of(:interest).is_greater_than(0.01) }
+    end
+
 
     describe '.create_schedule_for(loan)' do
       it 'monthly' do
-        monthly_loan = create(:loan_with_interest_on_loan_charge, mode_of_payment: 'monthly', term: 36, application_date: Date.today)
+        monthly_loan = create(:loan_with_interest_on_loan_charge, mode_of_payment: 'monthly',  application_date: Date.today)
+        term = create(:term, termable: monthly_loan, term: 36)
         LoansModule::AmortizationSchedule.create_schedule_for(monthly_loan)
 
         expect(monthly_loan.amortization_schedules.count).to eql 36
       end
 
       it 'quarterly' do
-        quarterly_loan = create(:loan_with_interest_on_loan_charge, mode_of_payment: 'quarterly', term: 36, application_date: Date.today)
+        quarterly_loan = create(:loan_with_interest_on_loan_charge, mode_of_payment: 'quarterly',  application_date: Date.today)
+        term = create(:term, termable: quarterly_loan, term: 9)
         LoansModule::AmortizationSchedule.create_schedule_for(quarterly_loan)
 
         expect(quarterly_loan.amortization_schedules.count).to eql 9
       end
 
       it 'semi_annually' do
-        semi_annually_loan = create(:loan_with_interest_on_loan_charge, mode_of_payment: 'semi_annually', term: 36, application_date: Date.today)
+        semi_annually_loan = create(:loan_with_interest_on_loan_charge, mode_of_payment: 'semi_annually', application_date: Date.today)
+        term = create(:term, termable: semi_annually_loan, term: 6)
         LoansModule::AmortizationSchedule.create_schedule_for(semi_annually_loan)
 
         expect(semi_annually_loan.amortization_schedules.count).to eql 6

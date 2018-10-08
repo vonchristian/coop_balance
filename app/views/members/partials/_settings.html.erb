@@ -53,6 +53,18 @@
     <hr>
     <div class="row">
       <div class="col-md-9">
+        <h3 class="card-title"> Organizations </h3>
+        <p class="text-muted"> Update organization of this member </p>
+        <br>
+        <b><%= @member.current_organization_name %></b>
+      </div>
+      <div class="col-md-3">
+        <%= link_to 'Update', new_member_organization_path(@member), class: "btn btn-outline-danger btn-sm" %>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-md-9">
         <h4 class="card-title"> Account Deletion </h4>
         <span class="text-muted"> Check Savings, Share Capital, Loans, and Time Deposits are not present before deleting this account. </span>
       </div>

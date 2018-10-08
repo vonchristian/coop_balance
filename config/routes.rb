@@ -132,9 +132,10 @@ Rails.application.routes.draw do
     resources :balance_transfers, only: [:new, :create], module: :share_capitals
   end
   resources :members do
-    resources :beneficiaries, only: [:new, :create], module: :members
-    resources :merging_line_items, only: [:new, :create], module: :members
-    resources :mergings,         only: [:create],         module: :members
+    resources :organizations,      only: [:new, :create], module: :members
+    resources :beneficiaries,      only: [:new, :create],  module: :members
+    resources :merging_line_items, only: [:new, :create],  module: :members
+    resources :mergings,         only: [:create],          module: :members
     resources :contacts,         only: [:new, :create],                 module: :members
     resources :tins,             only: [:new, :create],                 module: :members
     resources :relationships,    only: [:new, :create],                 module: :members
@@ -304,9 +305,7 @@ Rails.application.routes.draw do
       resources :fund_transfers, only: [:new, :create]
     end
     resources :search_results, only: [:index]
-    # resources :savings_accounts, only: [:index, :show] do
-    #   resources :deposits, only: [:new, :create]
-    # end
+
     resources :entries, only: [:index, :show]
   end
   resources :savings_accounts_dashboards, only: [:index]

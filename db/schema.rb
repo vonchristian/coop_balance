@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_08_055404) do
+ActiveRecord::Schema.define(version: 2018_10_08_081505) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -514,10 +514,12 @@ ActiveRecord::Schema.define(version: 2018_10_08_055404) do
     t.datetime "updated_at", null: false
     t.uuid "office_id"
     t.text "purpose"
+    t.uuid "organization_id"
     t.index ["borrower_type", "borrower_id"], name: "index_loan_applications_on_borrower_type_and_borrower_id"
     t.index ["cooperative_id"], name: "index_loan_applications_on_cooperative_id"
     t.index ["loan_product_id"], name: "index_loan_applications_on_loan_product_id"
     t.index ["office_id"], name: "index_loan_applications_on_office_id"
+    t.index ["organization_id"], name: "index_loan_applications_on_organization_id"
     t.index ["preparer_id"], name: "index_loan_applications_on_preparer_id"
   end
 
@@ -1087,8 +1089,8 @@ ActiveRecord::Schema.define(version: 2018_10_08_055404) do
     t.string "account_number"
     t.datetime "date_opened"
     t.string "account_owner_name"
-    t.datetime "created_at", default: "2018-09-26 07:34:19", null: false
-    t.datetime "updated_at", default: "2018-09-26 07:34:19", null: false
+    t.datetime "created_at", default: "2018-08-09 11:46:34", null: false
+    t.datetime "updated_at", default: "2018-08-09 11:46:34", null: false
     t.integer "status"
     t.uuid "office_id"
     t.string "subscriber_type"
@@ -1388,6 +1390,7 @@ ActiveRecord::Schema.define(version: 2018_10_08_055404) do
   add_foreign_key "loan_applications", "cooperatives"
   add_foreign_key "loan_applications", "loan_products"
   add_foreign_key "loan_applications", "offices"
+  add_foreign_key "loan_applications", "organizations"
   add_foreign_key "loan_applications", "users", column: "preparer_id"
   add_foreign_key "loan_charge_payment_schedules", "amortization_schedules"
   add_foreign_key "loan_charge_payment_schedules", "loan_charges"

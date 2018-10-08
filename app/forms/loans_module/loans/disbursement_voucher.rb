@@ -19,6 +19,7 @@ module LoansModule
         loan = LoansModule::Loan.create!(
           mode_of_payment: find_loan_application.mode_of_payment,
           cooperative: find_loan_application.cooperative,
+          organization: find_loan_application.organization,
           office: find_loan_application.office,
           loan_amount: find_loan_application.loan_amount,
           application_date: find_loan_application.application_date,

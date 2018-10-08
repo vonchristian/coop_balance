@@ -15,7 +15,7 @@ module LoansModule
                   :office_id
     validates :term, :loan_amount, presence: true, numericality: true
     validates :loan_product_id, :mode_of_payment, :term, :loan_amount, :application_date, presence: true
-    
+
     def save
       ActiveRecord::Base.transaction do
         create_loan
@@ -34,9 +34,9 @@ module LoansModule
       loan_application = LoansModule::LoanApplication.create!(
         cooperative_id: find_preparer.cooperative,
         office: find_preparer.office,
+        organization: find_borrower.current_organization,
         purpose: purpose,
-        borrower_id: borrower_id,
-        borrower_type: borrower_type,
+        borrower: find_borrower,
         loan_product_id: loan_product_id,
         loan_amount: loan_amount,
         application_date: application_date,
@@ -58,6 +58,9 @@ module LoansModule
       #     term: term])
       create_amortization_schedule(loan_application)
       create_charges(loan_application)
+    end
+    def find_borrower
+      Borrower.find(borrower_id)
     end
     def create_charges(loan_application)
       find_loan_product.create_charges_for(loan_application)

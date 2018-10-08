@@ -10,6 +10,7 @@ class Cooperative < ApplicationRecord
   has_many :member_memberships, through: :memberships, source: :cooperator, source_type: 'Member'
   has_many :bank_accounts
   has_many :loans, class_name: "LoansModule::Loan"
+  has_many :vouchers
   validates :name, :abbreviated_name, presence: true
   validates :name, uniqueness: true
   validates :registration_number, presence: true, uniqueness: true

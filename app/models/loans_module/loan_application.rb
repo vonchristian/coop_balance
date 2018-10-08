@@ -7,6 +7,7 @@ module LoansModule
     belongs_to :cooperative
     belongs_to :office, class_name: "CoopConfigurationsModule::Office"
     belongs_to :loan_product
+    belongs_to :organization
     has_many :voucher_amounts, as: :commercial_document, class_name: "Vouchers::VoucherAmount", dependent: :nullify
     has_many :amortization_schedules, dependent: :nullify
     has_many :terms, as: :termable, dependent: :destroy
@@ -16,6 +17,7 @@ module LoansModule
     delegate :current_interest_config, to: :loan_product
     delegate :avatar, :name, to: :borrower
 
+    validates :cooperative_id, presence: true
     def principal_balance(args={})
       amortization_schedules.principal_balance(
           from_date: args[:from_date],

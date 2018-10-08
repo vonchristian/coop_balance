@@ -87,7 +87,9 @@ module LoansModule
     end
 
     def disbursement_date
-      disbursement_voucher.date
+      if disbursed?
+        disbursement_voucher.date
+      end
     end
 
     def maturity_date
@@ -163,11 +165,17 @@ module LoansModule
       where(forwarded_loan: true)
     end
     def self.disbursed
-      joins(:disbursement_voucher)
+      LoansModule::Loan.joins(:disbursement_voucher).merge(Voucher.disbursed)
+    end
+    def self.disbursed_on(args={})
+      from_date = args[:from_date]
+      to_date   = args[:to_date]
+      range     = DateRange.new(from_date: from_date, to_date: to_date)
+      disbursed.joins(:disbursement_voucher).where('vouchers.date' => range.start_date..range.end_date)
     end
 
     def self.disbursed_by(args={})
-      joins(:voucher).where('vouchers.disburser_id' => args[:employee_id])
+      joins(:disbursement_voucher).where('vouchers.disburser_id' => args[:employee_id])
     end
 
 
@@ -240,17 +248,16 @@ module LoansModule
     end
 
     def net_proceed
-      if !disbursed?
         loan_amount - voucher_amounts.sum(&:adjusted_amount)
-      else
-        amounts = []
-        User.cash_on_hand_accounts.each do |account|
-          disbursement_entry.credit_amounts.where(account: account).each do |amount|
-            amounts << amount
-          end
-        end
-        amounts.uniq.sum(&:amount)
-      end
+      # else
+      #   amounts = []
+      #   User.cash_on_hand_accounts.each do |account|
+      #     disbursement_entry.credit_amounts.where(account: account).each do |amount|
+      #       amounts << amount
+      #     end
+      #   end
+      #   amounts.uniq.sum(&:amount)
+      # end
     end
 
     def balance_for(schedule)

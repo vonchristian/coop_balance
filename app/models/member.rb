@@ -53,9 +53,13 @@ class Member < ApplicationRecord
   delegate :number, to: :current_contact, prefix: true, allow_nil: true
   delegate :number, to: :current_tin, prefix: true, allow_nil: true
   delegate :details, :complete_address, :barangay_name, :street_name, to: :current_address, prefix: true, allow_nil: true
-
+  delegate :name, to: :current_organization, prefix: true, allow_nil: true
   before_save :update_birth_date_fields
   # before_save :set_default_image, on: :create
+  def current_organization
+    organizations.current
+  end
+  
   def self.updated_at(options={})
     if options[:from_date] && options[:to_date]
       date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])

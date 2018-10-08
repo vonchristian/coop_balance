@@ -6,7 +6,7 @@ module AccountingModule
     belongs_to :commercial_document, polymorphic: true, touch: true
 
     validates :type, :amount, :entry, :account, :commercial_document_id, :commercial_document_type,  presence: true
-    validates :amount, numericality: { greater_than: 0.01 }
+    validates :amount, numericality: true
 
     delegate :name, to: :account, prefix: true
     delegate :recorder, :reference_number, :description, :entry_date,  to: :entry
@@ -25,8 +25,8 @@ module AccountingModule
     end
 
     def self.entered_on(options={})
-      from_date = options[:from_date]
-      to_date = options[:to_date]
+      from_date = options[:from_date] || Date.today - 999.years
+      to_date = options[:to_date] || Date.today
       date_range = DateRange.new(from_date: from_date, to_date: to_date)
       includes(:entry).where('entries.entry_date' => date_range.range)
     end

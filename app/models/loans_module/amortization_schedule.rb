@@ -8,8 +8,8 @@ module LoansModule
     has_many :payment_notices, as: :notified
     has_many :notes, as: :noteable
 
-    validates :principal, :interest, presence: true, numericality: { greater_than: 0.01 }
-
+    # validates :principal, :interest, presence: true, numericality: { greater_than: 0.01
+    # validates :loan_id, presence: true
     accepts_nested_attributes_for :notes
 
     delegate :avatar, :borrower_name, to: :loan
