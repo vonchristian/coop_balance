@@ -18,7 +18,8 @@ module BankAccounts
         bank_address:               bank_address,
         account_number:             account_number,
         account_id:                 account_id,
-        earned_interest_account_id: earned_interest_account_id)
+        earned_interest_account_id: earned_interest_account_id,
+        cooperative:             find_employee.cooperative)
 
       AccountingModule::Entry.create!(
         commercial_document: bank_account,

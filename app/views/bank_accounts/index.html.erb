@@ -19,7 +19,7 @@
       </div>
       <div class="col-md-3">
         <% if policy(:bank_account).new? %>
-          <%= link_to 'New Bank Account', new_bank_account_path, class: "btn btn-primary float-right" %>
+          <%= link_to 'New Bank Account', new_bank_account_path, class: "btn btn-primary float-right", data: {turbolinks: false} %>
         <% end %>
       </div>
     </div>
