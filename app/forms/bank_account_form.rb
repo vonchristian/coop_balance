@@ -4,7 +4,6 @@ class BankAccountForm
   attr_accessor :bank_name, :bank_address, :account_number,  :amount, :recorder_id, :account_id, :earned_interest_account_id, :date, :reference_number, :description
 
   validates :account_id, :earned_interest_account_id, presence: true
-  validates :amount, numericality: true
   def save
     ActiveRecord::Base.transaction do
       create_bank_account
@@ -24,7 +23,7 @@ class BankAccountForm
   end
 
   def parsed_amount
-    amount.delete('^0-9/.')
+    amount.delete('^0-9/.').to_f
   end
   def find_employee
     User.find_by_id(recorder_id)

@@ -1,6 +1,6 @@
 <div class="card">
   <div class="card-body">
-    <%= image_tag(@employee.avatar.url(:medium), class: "profile-user-img img-responsive img-circle") %>
+    <%= image_tag(@employee.avatar, class: "profile-user-img img-responsive img-circle") %>
     <h3 class="profile-username text-center"><%= @employee.first_and_last_name %></h3>
     <hr>
     <strong><i class="fa fa-phone margin-r-5"></i> Contact Number</strong>

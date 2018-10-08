@@ -25,7 +25,6 @@
 //= require select2
 //= require_tree .
 
-document.addEventListener('turbolinks:load', ready);
 var ready = function () {
     return $(window).trigger('resize');
 };

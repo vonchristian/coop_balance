@@ -9,7 +9,7 @@
             <hr />
       </div>
      <div class="card-body">
-    <%= simple_form_for [@bank_account, @entry], url: :bank_account_deposits do |f| %>
+    <%= simple_form_for [@bank_account, @entry], url: :bank_account_deposits, html: {autocomplete: "off"} do |f| %>
       <%= f.error_notification %>
       <%= f.input :amount %>
       <%= f.input :reference_number %>

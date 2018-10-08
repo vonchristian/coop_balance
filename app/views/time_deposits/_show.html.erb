@@ -1,18 +1,18 @@
-<%= render 'time_deposits/partials/header', time_deposit: @time_deposit %>
-<div class="card">
-      <div class="card-body">
-        <ul class="nav nav-tabs">
-          <li class="nav-item"><%= link_to 'Info',time_deposit_path(@time_deposit), class: "nav-link #{'active' if current_page?(time_deposit_path(@time_deposit))}" %></li>
-           <li class="nav-item"><%= link_to 'Settings',time_deposit_settings_path(@time_deposit), class: "nav-link #{ 'active' if current_page?(time_deposit_settings_path(@time_deposit))}" %></li>
-        </ul>
-        <br>
-
-          <% if current_page? time_deposit_path(@time_deposit) %>
-            <%= render 'time_deposits/partials/info' %>
-          <% end %>
-          <% if current_page? time_deposit_settings_path(@time_deposit) %>
-            <%= render 'time_deposits/partials/settings' %>
-          <% end %>
-
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <nav class="nav nav-pills flex-column flex-md-row">
+          <%= link_to 'Info',time_deposit_path(@time_deposit), class: "text-sm-center nav-link #{'active' if current_page?(time_deposit_path(@time_deposit))}" %></li>
+          <%= link_to 'Settings',time_deposit_settings_path(@time_deposit), class: "text-sm-center nav-link #{ 'active' if current_page?(time_deposit_settings_path(@time_deposit))}" %></li>
+        </nav>
+      </div>
+      <% if current_page? time_deposit_path(@time_deposit) %>
+        <%= render 'time_deposits/partials/info' %>
+      <% end %>
+      <% if current_page? time_deposit_settings_path(@time_deposit) %>
+        <%= render 'time_deposits/partials/settings' %>
+      <% end %>
+    </div>
   </div>
 </div>
