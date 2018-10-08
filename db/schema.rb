@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_08_003553) do
+ActiveRecord::Schema.define(version: 2018_10_08_005439) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -390,11 +390,13 @@ ActiveRecord::Schema.define(version: 2018_10_08_003553) do
     t.uuid "cleared_by_id"
     t.uuid "office_id"
     t.uuid "cooperative_id"
+    t.uuid "official_receipt_id"
     t.index ["cleared_by_id"], name: "index_entries_on_cleared_by_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_entry"
     t.index ["cooperative_id"], name: "index_entries_on_cooperative_id"
     t.index ["entry_date"], name: "index_entries_on_entry_date"
     t.index ["office_id"], name: "index_entries_on_office_id"
+    t.index ["official_receipt_id"], name: "index_entries_on_official_receipt_id"
     t.index ["payment_type"], name: "index_entries_on_payment_type"
     t.index ["recorder_id"], name: "index_entries_on_recorder_id"
     t.index ["store_front_id"], name: "index_entries_on_store_front_id"
@@ -846,10 +848,8 @@ ActiveRecord::Schema.define(version: 2018_10_08_003553) do
   create_table "official_receipts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "number", null: false
     t.string "receiptable_type"
-    t.uuid "receiptable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["receiptable_type", "receiptable_id"], name: "index_official_receipts_on_receiptable_type_and_receiptable_id"
   end
 
   create_table "orders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1370,6 +1370,7 @@ ActiveRecord::Schema.define(version: 2018_10_08_003553) do
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "debit_account_id"
   add_foreign_key "entries", "cooperatives"
   add_foreign_key "entries", "offices"
+  add_foreign_key "entries", "official_receipts"
   add_foreign_key "entries", "store_fronts"
   add_foreign_key "entries", "users", column: "cleared_by_id"
   add_foreign_key "entries", "users", column: "recorder_id"

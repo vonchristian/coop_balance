@@ -14,21 +14,7 @@
             </thead>
             <tbody>
               <% @loans.each do |loan| %>
-                <tr data-link="<%=loan_path(loan)%>" class="myClass">
-                  <td>
-                    <% if loan.borrower.present? %>
-                    <b><%=loan.borrower_name %></b>
-                    <% end %>
-
-                    </td>
-                  <td><%= number_to_currency loan.loan_amount %></td>
-                  <td><%= number_to_currency loan.net_proceed %></td>
-                  <td><%= loan.loan_product_name %></td>
-                  <td>
-                    <%= loan.application_date.strftime("%B %e, %Y") %>
-
-                    </td>
-                </tr>
+                <%= render 'loans/partials/header', loan: loan %>
               <% end %>
             </tbody>
           </table>

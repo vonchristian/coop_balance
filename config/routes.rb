@@ -80,9 +80,6 @@ Rails.application.routes.draw do
     end
     resources :dashboard, only: [:index]
     resources :loan_products, except:[:destroy] do
-      resources :interest_configurations, only: [:new, :create], module: :loan_products
-      resources :penalty_configurations, only: [:new, :create], module: :loan_products
-      resources :loan_product_charges, only: [:new, :create], module: :loan_products
       resources :loans, only: [:index], module: :loan_products
     end
     resources :adjustments, only: [:destroy]
@@ -179,7 +176,11 @@ Rails.application.routes.draw do
       resources :cooperative_products, only: [:index]
       resources :configurations, only: [:index]
       resources :data_migrations, only: [:index]
-      resources :loan_products, only: [:new, :create]
+      resources :loan_products, only: [:new, :create] do
+        resources :charges, only: [:edit, :update], module: :loan_products
+        resources :interest_configurations, only: [:new, :create], module: :loan_products
+        resources :penalty_configurations, only: [:new, :create], module: :loan_products
+      end
       resources :store_fronts, only: [:new, :create]
       resources :cooperatives, only: [:edit, :update, :show] do
         resources :offices, only: [:new, :create]

@@ -6,7 +6,7 @@ module AccountingModule
 
     enum payment_type: [:cash, :check]
 
-    has_one :official_receipt, as: :receiptable
+    belongs_to :official_receipt, optional: true
 
     belongs_to :commercial_document, :polymorphic => true, touch: true
     belongs_to :office, class_name: "CoopConfigurationsModule::Office"

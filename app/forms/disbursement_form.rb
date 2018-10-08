@@ -19,7 +19,6 @@ class DisbursementForm
       description:         description,
       reference_number:    reference_number,
       recorder:            find_employee,
-      origin:              find_employee.office,
       entry_date: date)
     find_voucher.voucher_amounts.debit.each do |amount|
       debit_amount = AccountingModule::DebitAmount.new(
