@@ -42,19 +42,13 @@ module AccountingModule
     def self.credit_amounts
       AccountingModule::CreditAmount.where(id: self.pluck(:id))
     end
-
-    def self.loan_disbursements(options={})
-      amounts = []
-      User.cash_on_hand_accounts.each do |account|
-        AccountingModule::CreditAmount.where(commercial_document_type: "LoansModule::Loan").where(account: account).entered_on(options).each do |amount|
-          amounts << amount
-        end
-      end
-      amounts
+    def self.debit_amounts
+      AccountingModule::DebitAmount.where(id: self.pluck(:id))
     end
 
-    def self.entered_on(options={})
-      EntriesQuery.new.entered_on(options)
+    
+    def self.entered_on(args={})
+      EntriesQuery.new.entered_on(args)
     end
 
     def self.recorded_by(employee_id)

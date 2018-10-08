@@ -203,7 +203,7 @@ module LoansModule
     def self.loan_payments(args={})
     LoansModule::LoanProduct.accounts.credit_entries.entered_on(args) +
             LoansModule::LoanProducts::InterestConfig.interest_revenue_accounts.debit_entries.entered_on(args) +
-            LoansModule::LoanProducts::PenaltyConfig.penalty_revenue_accounts.debit_entries.entered_on(args) 
+            LoansModule::LoanProducts::PenaltyConfig.penalty_revenue_accounts.debit_entries.entered_on(args)
 
 
     end
@@ -222,6 +222,9 @@ module LoansModule
       #   entries << amount.entry
       # end
       # entries.uniq
+    end
+    def self.disbursement_entries(args={})
+      LoansModule::LoanProduct.accounts.debit_entries.entered_on(args)
     end
 
     def current?
