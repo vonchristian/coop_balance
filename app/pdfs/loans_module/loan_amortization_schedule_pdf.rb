@@ -108,16 +108,20 @@ module LoansModule
         move_down 15
       end
       text "AMORTIZATION SCHEDULE", size: 9, style: :bold
-      table(amortization_schedule_data, header: true, cell_style: { size: 8, font: "Helvetica"}, column_widths: [90, 80, 80, 70, 90, 120]) do
+      if loan.forwarded_loan? || loan.amortization_schedules.blank?
+        text "No data Available"
+      else
+        table(amortization_schedule_data, header: true, cell_style: { size: 8, font: "Helvetica"}, column_widths: [90, 80, 80, 70, 90, 120]) do
 
-        row(0).font_style = :bold
-        column(0).align = :right
-        column(1).align = :right
-        column(2).align = :right
-        column(3).align = :right
-        column(4).align = :right
+          row(0).font_style = :bold
+          column(0).align = :right
+          column(1).align = :right
+          column(2).align = :right
+          column(3).align = :right
+          column(4).align = :right
 
 
+        end
       end
     end
     def amortization_schedule_data

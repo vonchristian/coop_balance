@@ -1,4 +1,8 @@
 <li class= "nav-item">
+	<a href="/members" class="nav-link <%= 'active' if current_page?(members_path) %> "><i class="nav-icon fa fa-users"></i><span> Members</span></a>
+</li>
+
+<li class= "nav-item">
  	<a href="/loans_module" class="nav-link <%= 'active' if current_page?(loans_module_index_path) %>"><i class="nav-icon fa fa-home"></i><span>Dashboard </span></a>
 </li>
 <li class='nav-item' >
@@ -12,9 +16,6 @@
 </li>
 <li class="nav-item">
 	<a href="/loans_module/loan_products" class="nav-link <%= 'active' if current_page?(loans_module_loan_products_path) %>"><i class="nav-icon fa fa-tag"></i><span> Loan Products </span></a>
-</li>
-<li class= "nav-item">
-	<a href="/members" class="nav-link <%= 'active' if current_page?(members_path) %> "><i class="nav-icon fa fa-users"></i><span> Members</span></a>
 </li>
 <%= render 'layouts/shared/sidebar_links/monitoring' %>
 <li class="nav-item <%= 'active' if current_page?(loans_module_archived_loans_path) %>">

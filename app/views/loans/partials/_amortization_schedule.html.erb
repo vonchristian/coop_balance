@@ -5,7 +5,9 @@
         <h4 class="card-title"> AMORTIZATION SCHEDULE </h4>
       </div>
       <div class="col-md-3">
-        <%=link_to 'View Schedule(PDF)', loans_module_loan_amortization_schedules_path(@loan, format: 'pdf'), class: 'btn btn-outline-success' %>
+        <% if !@loan.forwarded_loan? %>
+          <%=link_to 'View Schedule(PDF)', loans_module_loan_amortization_schedules_path(@loan, format: 'pdf'), class: 'btn btn-outline-success' %>
+        <% end %>
       </div>
     </div>
   </div>
@@ -26,6 +28,7 @@
             </tr>
           </thead>
           <tbody>
+
             <% @loan.amortization_schedules.order(created_at: :asc).each do |schedule| %>
               <tr>
                 <td></td>

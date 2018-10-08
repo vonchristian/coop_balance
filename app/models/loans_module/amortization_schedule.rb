@@ -8,9 +8,12 @@ module LoansModule
     has_many :payment_notices, as: :notified
     has_many :notes, as: :noteable
 
+    validates :principal, :interest, presence: true, numericality: { greater_than: 0.01 }
+
     accepts_nested_attributes_for :notes
 
     delegate :avatar, :borrower_name, to: :loan
+
     ###########################
     def self.principal_balance(args={})
       if args[:from_date] && args[:to_date]
@@ -138,7 +141,7 @@ module LoansModule
        principal +
        interest_computation
     end
-    
+
     def self.update_amortization_schedule(loan)
       if loan.amortization_schedules.present?
         loan.amortization_schedules.order(date: :asc).first(loan.number_of_interest_payments_prededucted).each do |schedule|
@@ -160,6 +163,8 @@ module LoansModule
         straight_balance_interest_computation(schedule, loan)
       elsif loan.cooperative.interest_amortization_config.annually?
         annual_interest_computation(loan)
+      else
+        0
       end
     end
 

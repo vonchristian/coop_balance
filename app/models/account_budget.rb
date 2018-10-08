@@ -11,7 +11,7 @@ class AccountBudget < ApplicationRecord
 
   def self.current_proposed_amount
     return 0 if self.blank?
-    current.proposed_amount
+    current.try(:proposed_amount) || 0
   end
   def self.for(args={})
     where(year: args[:year]).last

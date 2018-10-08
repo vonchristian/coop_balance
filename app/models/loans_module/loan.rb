@@ -162,10 +162,8 @@ module LoansModule
     def self.forwarded_loans
       where(forwarded_loan: true)
     end
-
     def self.disbursed
-      forwarded_loans
-      # joins(:dibursement_voucher).merge(Voucher.disbursed)
+      joins(:disbursement_voucher)
     end
 
     def self.disbursed_by(args={})

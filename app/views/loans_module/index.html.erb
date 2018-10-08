@@ -100,7 +100,7 @@
     <div class="card-body">
       <div class="row">
         <div class="col-md-3 border-right">
-          <h3><%= LoansModule::Loan.disbursed(from_date: Date.today, to_date: Date.today).count %></h3>
+          <h3><%= Voucher.loan_disbursement_vouchers.disbursed_on(from_date: Date.today, to_date: Date.today).count %></h3>
           <small>LOAN RELEASES</small>
         </div>
         <div class="col-md-3 border-right">
@@ -125,12 +125,12 @@
               <% end %>
               <% loan_releases_data = [] %>
               <% months.uniq.each do |month| %>
-                <% loan_releases_data << { month.strftime("%B %Y") => LoansModule::LoanProduct.total_loan_releases(from_date: month.beginning_of_month, to_date: month.end_of_month) } %>
+                <% loan_releases_data << { month.strftime("%B %Y") => LoansModule::LoanProduct.total_debits_balance(from_date: month.beginning_of_month, to_date: month.end_of_month) } %>
               <% end %>
 
               <% loan_payments_data = [] %>
               <% months.uniq.each do |month| %>
-                <% loan_payments_data << { month.strftime("%B %Y") => LoansModule::LoanProduct.total_loan_payments(from_date: month.beginning_of_month, to_date: month.end_of_month) } %>
+                <% loan_payments_data << { month.strftime("%B %Y") => LoansModule::LoanProduct.total_credits_balance(from_date: month.beginning_of_month, to_date: month.end_of_month) } %>
               <% end %>
 
 
@@ -154,7 +154,7 @@
             Variance
           </div>
         </div>
-        <% LoansModule::LoanProduct.current_accounts.each do |account| %>
+        <% LoansModule::LoanProduct.accounts.each do |account| %>
           <div class="row">
             <div class="col-md-3">
               <%= account.name %>
@@ -177,4 +177,3 @@
 </div>
 </div>
 </div>
-

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_08_044952) do
+ActiveRecord::Schema.define(version: 2018_10_08_055404) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -98,8 +98,6 @@ ActiveRecord::Schema.define(version: 2018_10_08_044952) do
   create_table "amortization_schedules", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "loan_id"
     t.datetime "date"
-    t.decimal "principal"
-    t.decimal "interest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "schedule_type"
@@ -111,6 +109,8 @@ ActiveRecord::Schema.define(version: 2018_10_08_044952) do
     t.uuid "commercial_document_id"
     t.integer "payment_status"
     t.uuid "loan_application_id"
+    t.decimal "principal", default: "0.0"
+    t.decimal "interest", default: "0.0"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_amortization_schedules"
     t.index ["credit_account_id"], name: "index_amortization_schedules_on_credit_account_id"
     t.index ["debit_account_id"], name: "index_amortization_schedules_on_debit_account_id"
