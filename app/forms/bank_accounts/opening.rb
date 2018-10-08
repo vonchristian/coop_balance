@@ -33,7 +33,7 @@ module BankAccounts
           amount:              amount,
           commercial_document: bank_account],
         debit_amounts_attributes: [
-          account:             account_id,
+          account_id:             account_id,
           amount:              amount,
           commercial_document: bank_account])
     end
