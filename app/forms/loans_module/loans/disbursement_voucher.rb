@@ -23,7 +23,7 @@ module LoansModule
           loan_amount: find_loan_application.loan_amount,
           application_date: find_loan_application.application_date,
           borrower: find_loan_application.borrower,
-          loan_product: find_loan_application.loan_product,
+          loan_product: find_loan_product,
           preparer: find_preparer,
           account_number: account_number
           )
@@ -34,6 +34,10 @@ module LoansModule
 
         create_voucher(loan)
         create_loan_interests(loan) #prededucted interest - interest balance
+      end
+
+      def find_loan_product
+        find_loan_application.loan_product
       end
 
       def create_voucher(loan)
@@ -50,9 +54,11 @@ module LoansModule
         loan.disbursement_voucher = voucher
         loan.save
       end
+
       def find_loan_application
         LoansModule::LoanApplication.find(loan_application_id)
       end
+
       def find_preparer
         User.find_by_id(preparer_id)
       end
@@ -75,6 +81,7 @@ module LoansModule
         commercial_document: find_loan)
         voucher.voucher_amounts << find_loan.voucher_amounts
       end
+
       def delete_loan_application
         find_loan_application.destroy
       end

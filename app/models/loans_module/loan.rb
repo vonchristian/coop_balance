@@ -85,7 +85,7 @@ module LoansModule
     def current_term
       terms.current
     end
-    
+
     def disbursement_date
       disbursement_voucher.date
     end
@@ -164,7 +164,7 @@ module LoansModule
     end
 
     def self.disbursed
-      forwarded_loans 
+      forwarded_loans
       # joins(:dibursement_voucher).merge(Voucher.disbursed)
     end
 
@@ -345,6 +345,7 @@ module LoansModule
     def second_notice_date
       first_notice_date + 10.days
     end
+
 
     private
     def set_default_date

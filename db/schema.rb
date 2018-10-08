@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_07_103021) do
+ActiveRecord::Schema.define(version: 2018_10_07_233300) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -609,6 +609,7 @@ ActiveRecord::Schema.define(version: 2018_10_07_103021) do
     t.uuid "loans_receivable_current_account_id"
     t.uuid "loans_receivable_past_due_account_id"
     t.uuid "cooperative_id"
+    t.boolean "has_loan_protection_fund"
     t.index ["cooperative_id"], name: "index_loan_products_on_cooperative_id"
     t.index ["loans_receivable_current_account_id"], name: "index_loan_products_on_loans_receivable_current_account_id"
     t.index ["loans_receivable_past_due_account_id"], name: "index_loan_products_on_loans_receivable_past_due_account_id"

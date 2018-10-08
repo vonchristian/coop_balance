@@ -66,6 +66,10 @@ module LoansModule
         loan_amount - amortization_schedules.principal_for(schedule.previous_schedule, self)
       end
     end
+
+    def number_of_thousands # for Loan Protection fund computation
+      loan_amount / 1_000
+    end
   end
 
 end

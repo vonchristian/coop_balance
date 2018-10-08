@@ -20,6 +20,8 @@
           <h4>Penalty Configuration</h4>
           <%= f.input :penalty_rate %>
           <%= f.input :penalty_revenue_account_id,  collection: AccountingModule::Revenue.all.map{|a| [a.name, a.id] } %>
+          <h4 class="card-title">
+            <%= f.input :has_loan_protection_fund, as: :boolean %>
           <div class="box-footer">
             <%= f.submit "Create Loan Product", class: "btn btn-primary btn-flat" %>
           </div>

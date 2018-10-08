@@ -1,3 +1,7 @@
+TODO
+refactor LPF 
+
+
 Growth happens.
 
 Growth makes a lot of things more difficult - people don't know each other as well, information is harder to find, stuff gets lost, communication becomes muddled, it becomes harder to stay on top of everything that's going on, etc. What worked for 3 or 5 people, doesn't work as well at 6 or 8. And certainly not 10, 15, 25 or more.

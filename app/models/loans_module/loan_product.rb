@@ -84,6 +84,7 @@ module LoansModule
       create_charges_that_depends_on_loan_amount(loan_application)
       create_charges_that_does_not_depends_on_loan_amount(loan_application)
       create_interest_on_loan_charge_for(loan_application)
+      create_loan_protection_fund(loan_application)
     end
 
     def create_interest_on_loan_charge_for(loan_application)
@@ -91,6 +92,14 @@ module LoansModule
     end
 
     private
+    def create_loan_protection_fund(loan_application)
+        loan_application.voucher_amounts.find_or_create_by(
+        amount_type: 'credit',
+        amount: LoanProtectionFund.compute_amount(loan_application),
+        account: AccountingModule::Liability.find_by(name: 'Loan Protection Fund Payable'), # REFACTOR
+        description: 'Loan Protection Fund'
+        )
+      end
     def create_charges_that_depends_on_loan_amount(loan_application)
       charges.depends_on_loan_amount.includes_loan_amount(loan_application).each do |charge|
           loan_application.voucher_amounts.find_or_create_by(

@@ -45,7 +45,8 @@ module LoansModule
       :interest_revenue_account_id,
       :unearned_interest_income_account_id,
       :penalty_rate,
-      :penalty_revenue_account_id)
+      :penalty_revenue_account_id,
+      :has_loan_protection_fund)
     end
   end
 end
