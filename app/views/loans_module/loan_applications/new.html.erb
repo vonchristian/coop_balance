@@ -19,6 +19,7 @@
           <%= f.input :loan_amount, as: :currency %>
           <%= f.input :term, label: "Loan Term (in months)" %>
           <%= f.input :mode_of_payment, collection: LoansModule::Loan.mode_of_payments.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
+          <%= f.input :purpose, as: :text, label: "Purpose of Loan" %>
           <%= f.input :application_date, as: :string, input_html: { class: "datepicker", value: Time.zone.now.strftime("%B %e, %Y") } %>
           <%= f.input :preparer_id, input_html: { value: current_user.id }, as: :hidden %>
           <%= f.input :cooperative_id, input_html: { value: current_user.cooperative_id }, as: :hidden %>

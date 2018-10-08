@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_08_005439) do
+ActiveRecord::Schema.define(version: 2018_10_08_044952) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -513,6 +513,7 @@ ActiveRecord::Schema.define(version: 2018_10_08_005439) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "office_id"
+    t.text "purpose"
     t.index ["borrower_type", "borrower_id"], name: "index_loan_applications_on_borrower_type_and_borrower_id"
     t.index ["cooperative_id"], name: "index_loan_applications_on_cooperative_id"
     t.index ["loan_product_id"], name: "index_loan_applications_on_loan_product_id"
@@ -1086,8 +1087,8 @@ ActiveRecord::Schema.define(version: 2018_10_08_005439) do
     t.string "account_number"
     t.datetime "date_opened"
     t.string "account_owner_name"
-    t.datetime "created_at", default: "2018-09-26 07:34:19", null: false
-    t.datetime "updated_at", default: "2018-09-26 07:34:19", null: false
+    t.datetime "created_at", default: "2018-08-09 11:46:34", null: false
+    t.datetime "updated_at", default: "2018-08-09 11:46:34", null: false
     t.integer "status"
     t.uuid "office_id"
     t.string "subscriber_type"

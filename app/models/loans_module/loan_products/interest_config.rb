@@ -58,6 +58,8 @@ module LoansModule
       def prededucted_interest_amount_for(loan_application)
         if prededucted?
           compute_prededucted_interest(loan_application)
+        else
+          0
         end
       end
 

@@ -4,6 +4,7 @@ module LoansModule
     attr_accessor :borrower_id,
                   :borrower_type,
                   :term,
+                  :purpose,
                   :loan_product_id,
                   :loan_amount,
                   :application_date,
@@ -31,6 +32,7 @@ module LoansModule
     def create_loan
       loan_application = LoansModule::LoanApplication.create!(
         cooperative_id: cooperative_id,
+        purpose: purpose,
         office_id: office_id,
         borrower_id: borrower_id,
         borrower_type: borrower_type,

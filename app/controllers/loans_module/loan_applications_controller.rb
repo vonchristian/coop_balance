@@ -34,6 +34,7 @@ module LoansModule
                   :borrower_id,
                   :borrower_type,
                   :term,
+                  :purpose,
                   :loan_product_id,
                   :loan_amount,
                   :application_date,

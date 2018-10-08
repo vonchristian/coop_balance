@@ -79,6 +79,15 @@
           </div>
         </div>
         <hr class="min-margin">
+        <div class="row">
+          <div class="col-md-4 col-sm-6">
+            <b>Purpose of Loan</b>
+          </div>
+          <div class="col-md-6 col-sm-6">
+            <%= sanitize @loan.purpose %>
+          </div>
+        </div>
+        <hr class="min-margin">
         <% if @loan.disbursed? %>
           <p class="text-muted">LOAN TERM</p>
           <div class="row">

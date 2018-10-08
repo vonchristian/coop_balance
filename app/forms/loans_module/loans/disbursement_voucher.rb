@@ -25,7 +25,8 @@ module LoansModule
           borrower: find_loan_application.borrower,
           loan_product: find_loan_product,
           preparer: find_preparer,
-          account_number: account_number
+          account_number: account_number,
+          purpose: find_loan_application.purpose
           )
         loan.amortization_schedules << find_loan_application.amortization_schedules
         loan.voucher_amounts << find_loan_application.voucher_amounts
