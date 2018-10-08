@@ -1,120 +1,55 @@
 <div class="row">
-  <div class="col-md-3">
-  </div>
-  <div class="col-md-6">
+  <div class="col-md-8 offset-md-2">
     <div class="card">
       <div class="card-header">
         <h3 class="card-title"> Entry Details </h3>
       </div>
       <div class="card-body">
-        <div class="row">
-          <div class="col-md-10 col-md-offset-1">
-            <div class="row">
-              <div class="col-md-5">
-                Member/Payee
-              </div>
-              <div class="col-md-5">
-                <%#= image_tag(@entry.commercial_document.depositor.avatar.url(:thumb), class: "img-circle", height: 35, width: 35)%> &nbsp; <%= @entry.commercial_document.try(:name) %>
-              </div>
-            </div>
-            <br>
-            <div class="row">
-              <div class="col-md-5">
-                Date
-              </div>
-              <div class="col-md-5">
-                <%=@entry.entry_date.strftime("%B %e, %Y") %>
-              </div>
-            </div>
-            <br>
-            <div class="row">
-              <div class="col-md-5">
-                Description
-              </div>
-              <div class="col-md-6">
-                <%=@entry.description %>
-              </div>
-            </div>
-            <br>
-
-
-            <div class="row">
-              <div class="col-md-5">
-                Reference Number
-              </div>
-              <div class="col-md-5">
-               #<%= @entry.reference_number %>
-              </div>
-            </div>
-            <br>
-            <div class="row">
-              <div class="col-md-5">
-                Employee
-              </div>
-              <div class="col-md-5">
-               <%= @entry.recorder.try(:first_and_last_name) %>
-              </div>
-            </div>
-            <br />
-            <div class="row">
-              <div class="col-md-5">
-                Origin
-              </div>
-              <div class="col-md-5">
-                <%= @entry.office_name %>
-              </div>
-            </div>
-          </div>
-        </div>
-        <hr />
+        <%= render "accounting_module/amounts_update_header" %>
+      </div>
+      <hr class="no-margin">
+      <div class="card-body">
         <h3 class="card-title">Debits</h3>
-        <br>
-        <% @entry.debit_amounts.each do |debit| %>
-          <div class="row">
-            <div class="col-md-5 col-md-offset-1">
-              <%= debit.account.try(:name) %><br>
-              <span class="badge bg-gray"><%= debit.account.try(:normalized_type) %></span>
-            </div>
-            <div class="col-md-4">
-              <span class="float-right">
-                <%= number_to_currency debit.amount %>
-              </span>
-            </div>
-            <div class="col-md-2">
-              <% if current_user.bookkeeper? || current_user.accountant? || current_user == @entry.recorder %>
-                <% if !@entry.cleared? %>
-                  <%=link_to "Edit", edit_accounting_module_debit_amount_path(debit), class: "btn btn-outline-warning btn-sm" %>
-                <% end %>
-              <% end %>
-            </div>
-          </div>
-          <br>
-        <% end %>
-        <hr>
-        <h3 class="card-title"> Credits </h3>
-        <br>
-        <% @entry.credit_amounts.each do |credit| %>
-          <div class="row">
-            <div class="col-md-5 col-md-offset-1">
-              <%= credit.account.try(:name) %><br>
-              <span class="badge bg-gray"><%= credit.account.try(:normalized_type) %></span>
-
-            </div>
-            <div class="col-md-4">
-              <span class="float-right">
-                <%= number_to_currency credit.amount %>
-              </span>
-            </div>
-            <div class="col-md-2">
-              <% if current_user.bookkeeper? || current_user.accountant? || current_user == @entry.recorder %>
-                <% if !@entry.cleared? %>
-                  <%=link_to "Edit", edit_accounting_module_credit_amount_path(credit), class: "btn btn-outline-warning btn-sm" %>
-                <% end %>
-              <% end %>
-            </div>
-          </div>
-          <br>
-        <% end %>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Debit</th>
+              <th>Account</th>
+              <th>Credit</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @entry.amounts.each do |amount| %>
+              <tr>
+                <td>
+                  <% if amount.is_a?(AccountingModule::DebitAmount) %>
+                    <%= number_to_currency amount.amount %>
+                  <% end %>                  
+                </td>
+                <td><%= amount.account_name %></td>
+                <td>
+                  <% if amount.is_a?(AccountingModule::CreditAmount) %>
+                    <%= number_to_currency amount.amount %>
+                  <% end %>
+                </td>
+                <td>
+                  <% if current_user.bookkeeper? || current_user.accountant? || current_user == @entry.recorder %>
+                    <% if !@entry.cleared? %>
+                      <%=link_to "Update", amount.is_a?(AccountingModule::DebitAmount) ?edit_accounting_module_debit_amount_path(amount) : edit_accounting_module_credit_amount_path(amount), class: "btn btn-outline-warning btn-xs" %>
+                    <% end %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+            <tr>
+              <td><%= number_to_currency @entry.debit_amounts.sum(:amount) %></td>
+              <td></td>
+              <td><%= number_to_currency @entry.credit_amounts.sum(:amount) %></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
           <hr>
           <% if current_user.bookkeeper? || current_user.accountant? || @entry.recorder==current_user %>
             <% if !@entry.cleared? %>

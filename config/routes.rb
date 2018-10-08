@@ -406,6 +406,7 @@ namespace :share_capitals_section do
     resources :withdrawals, only: [:new, :create], module: :bank_accounts
     resources :bank_charges, only: [:new, :create], module: :bank_accounts
     resources :bank_earned_interests, only: [:new, :create], module: :bank_accounts
+    resources :settings, only: [:index], module: :bank_accounts
   end
 
   resources :calendars, only: [:index, :show]

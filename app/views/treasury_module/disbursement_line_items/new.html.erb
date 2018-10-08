@@ -6,8 +6,7 @@
       </div>
       <div class="card-body">
         <%= simple_form_for @disbursement_line_item, url: :treasury_module_disbursement_line_items do |f| %>
-              <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
-
+          <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
           <div class="row">
             <div class="col-md-6">
               <%= f.input :account_id, label: false, placeholder: "Account", collection: AccountingModule::Account.all.map{|a| [a.name, a.id] }, prompt: "Select Account" %>
@@ -19,57 +18,48 @@
               <%= f.submit "Add", class: "btn btn-danger float-right" %>
             </div>
           </div>
-          <br>
         <% end %>
-        <hr>
-        <div class="row">
-          <div class="col-md-6">
-            <b>ACCOUNT </b>
-          </div>
-          <div class="col-md-3">
-            <b>DEBIT</b>
-          </div>
-          <div class="col-md-3">
-            <b>CREDIT</b>
-          </div>
-        </div>
-        <br>
-        <% current_user.voucher_amounts.each do |amount| %>
-          <div class="row">
-            <div class="col-md-6">
-              <%= amount.account_name %>
-            </div>
-            <div class="col-md-2">
-              <% if amount.debit? %>
-                <%= number_to_currency amount.amount %>
-              <% end %>
-            </div>
-            <div class="col-md-2">
-              <% if amount.credit? %>
-                <%= number_to_currency amount.amount %>
-              <% end %>
-            </div>
-            <div class="col-md-2">
-              <%= link_to treasury_module_disbursement_line_item_path(amount), method: :delete do %>
-                <span title="Remove" data-toggle="tooltip" class="fa fa-trash text-danger"></span>
-              <% end %>
-            </div>
-          </div>
-          <br>
-        <% end %>
-        <hr>
-        <div class="row">
-          <div class="col-md-6">
-            <b>TOTAL </b>
-          </div>
-          <div class="col-md-3">
-            <b><%= number_to_currency current_user.voucher_amounts.debit.sum(&:amount) %></b>
-          </div>
-          <div class="col-md-3">
-            <b><%= number_to_currency current_user.voucher_amounts.credit.sum(&:amount) %></b>
-          </div>
-        </div>
-        <br>
+      </div>
+      <hr class="no-magrin">
+      <div class="card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ACCOUNT</th>
+              <th class="text-right">DEBIT</th>
+              <th class="text-right">CREDIT</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% current_user.voucher_amounts.each do |amount| %>
+              <tr>
+                <td><%= amount.account_name %></td>
+                <td class="text-right">
+                  <% if amount.debit? %>
+                    <%= number_to_currency amount.amount %>
+                  <% end %>
+                </td>
+                <td class="text-right">
+                  <% if amount.credit? %>
+                    <%= number_to_currency amount.amount %>
+                  <% end %>
+                </td>
+                <td class="text-right" class="text-right">
+                  <%= link_to treasury_module_disbursement_line_item_path(amount), method: :delete do %>
+                    <span title="Remove" data-toggle="tooltip" class="fa fa-trash text-danger"></span>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+            <tr>
+              <th>TOTAL</th>
+              <th class="text-right"><%= number_to_currency current_user.voucher_amounts.debit.sum(&:amount) %></th>
+              <th class="text-right"><%= number_to_currency current_user.voucher_amounts.credit.sum(&:amount) %></th>
+              <th></th>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -85,9 +75,10 @@
           <%= f.input :reference_number %>
           <%= f.input :payee_id, label: "Payee", collection: Voucher.payees.map{|a| [a.name, a.id] } %>
           <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
-            <% if current_user.voucher_amounts.present? %>
-              <%= f.submit "Disburse Amount", class: "btn btn-danger float-right" %>
-            <% end %>
+          <hr>
+          <% if current_user.voucher_amounts.present? %>
+            <%= f.submit "Disburse Amount", class: "btn btn-danger float-right" %>
+          <% end %>
         <% end %>
       </div>
     </div>

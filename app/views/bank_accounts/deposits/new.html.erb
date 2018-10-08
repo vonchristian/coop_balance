@@ -33,7 +33,7 @@
         <%= simple_form_for [@bank_account, @entry], url: :bank_account_deposits, html: { autocomplete: 'off' } do |f| %>
           <%= f.error_notification %>
           <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
-          <%= f.input :amount, as: :currency %>
+          <%= f.input :amount, as: :numeric %>
           <%= f.input :reference_number %>
           <%= f.input :description %>
           <%= f.input :entry_type, input_html: { value: 'bank_deposit' }, as: :hidden %>

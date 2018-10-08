@@ -20,7 +20,7 @@
           <h5 class="no-margin-bottom">Deposit Details</h5>
           <hr class="no-margin-top">
           <%= f.input :date, input_html: { class: "datepicker" } %>
-          <%= f.input :amount, as: :numeric %>
+          <%= f.input :amount %>
           <%= f.input :reference_number %>
           <%= f.input :recorder_id, input_html: { value: current_user.id }, as: :hidden %>
           <%= f.input :description %>

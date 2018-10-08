@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <nav class="nav nav-pills flex-column flex-md-row">
+          <%= link_to 'Bank Account Details', bank_account_path(@bank_account), class: "text-sm-center nav-link #{'active' if current_page?(bank_account_path(@bank_account))}" %>
+          <%= link_to 'Settings', bank_account_settings_path(@bank_account), class: "text-sm-center nav-link #{ 'active' if current_page?(bank_account_settings_path(@bank_account))}" %>
+        </nav>
+      </div>
+      <% if current_page? bank_account_path(@bank_account) %>
+        <%= render 'bank_accounts/partials/info' %>
+      <% end %>
+      <% if current_page? bank_account_settings_path(@bank_account) %>
+        <%= render 'bank_accounts/partials/settings' %>
+      <% end %>
+    </div>
+  </div>
+</div>

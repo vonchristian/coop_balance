@@ -14,18 +14,20 @@
 //
 //= require rails-ujs
 //= require jquery3
+//= require turbolinks
 //= require autonumeric
 //= require popper
 //= require bootstrap
 //= require bootstrap-datepicker
-//= require turbolinks
 //= require activestorage
 //= require Chart.bundle
 //= require chartkick
 //= require select2
 //= require_tree .
 
+
 var ready = function () {
     return $(window).trigger('resize');
+    return $(document).trigger('refresh_autonumeric');
 };
 document.addEventListener('turbolinks:load', ready);

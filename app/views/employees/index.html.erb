@@ -1,34 +1,37 @@
-<div class="content">
-  <div class="row">
-    <div class="col-md-4">
-      <div class="card card-solid">
-        <div class="card-body">
-          <%=form_tag employees_path, method: :get, class: "sidebar-form" do %>
-              <div class="input-group">
-                <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Employee", id: 'taxpayer-search-form' %>
-                <span class="input-group-btn">
-                  <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
-                    <i class="fa fa-search"></i>
-                  <% end %>
-                </span>
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <%=form_tag employees_path, method: :get, class: "sidebar-form" do %>
+          <div class="input-group">
+            <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Employee", id: 'taxpayer-search-form' %>
+            <span class="input-group-btn">
+              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                <i class="fa fa-search"></i>
+              <% end %>
+            </span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <% @employees.each do |employee| %>
+      <% cache employee do %>
+        <div class="card">
+          <div class="card-header">
+            <%= link_to employee_path(employee) do %>
+              <div class="row justify-content-end">
+                <div class="col-md-2">
+                  <%= image_tag(employee.avatar.variant(resize: "45x45"), class: "img-circle") if employee.avatar.attached? %>
+                </div>
+                <div class="col-md-9">
+                  <p class="text-purple"><b><%= employee.first_and_last_name %></b></p>
+                  <small class="text-black"><%= employee.role.try(:titleize).try(:upcase) %></small>
+                </div>
               </div>
             <% end %>
-            <br>
-          <% @employees.each do |employee| %>
-            <% cache employee do %>
-              <%= link_to employee_path(employee) do %>
-                <div class="row">
-                  <div class="col-md-2 col-md-offset-1">
-                    <%= image_tag(employee.avatar, class: "img-circle", height: 45, width: 45) %>
-                  </div>
-                  <div class="col-md-9">
-                    <p class="text-purple"><b><%= employee.first_and_last_name %></b></p>
-                    <small class="text-black"><%= employee.role.try(:titleize).try(:upcase) %></small>
-                  </div>
-                </div>
-                <hr>
-              <% end %>
-            <% end %>
-          <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
   </div>
 </div>
