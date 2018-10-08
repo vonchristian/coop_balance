@@ -1,0 +1,8 @@
+<%= link_to loans_module_organization_path(organization) do %>
+  <div class="card">
+    <div class="card-body">
+      <%= organization.name %>
+      <%= organization.member_loans.count %>
+    </div>
+  </div>
+<% end %>

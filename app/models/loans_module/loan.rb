@@ -200,23 +200,28 @@ module LoansModule
       all.map{|loan| loan.payments_total }.sum
     end
 
-    def self.loan_payments(options={})
-      all.map{|a| a.loan_payments(options)}
+    def self.loan_payments(args={})
+    LoansModule::LoanProduct.accounts.credit_entries.entered_on(args) +
+            LoansModule::LoanProducts::InterestConfig.interest_revenue_accounts.debit_entries.entered_on(args) +
+            LoansModule::LoanProducts::PenaltyConfig.penalty_revenue_accounts.debit_entries.entered_on(args) 
+
+
     end
 
-    def loan_payments(options={})
-      entries = []
-      loan_product_loans_receivable_current_account.credit_amounts.where(commercial_document: self).each do |amount|
-        entries << amount.entry
-      end
-
-      loan_product_interest_revenue_account.credit_amounts.where(commercial_document: self).each do |amount|
-        entries << amount.entry
-      end
-      loan_product_penalty_revenue_account.credit_amounts.where(commercial_document: self).each do |amount|
-        entries << amount.entry
-      end
-      entries.uniq
+    def loan_payments(args={})
+      LoansModule::LoanProduct.accounts.debit_amounts.where(commercial_document: self).entered_on(args)
+      # entries = []
+      # loan_product_loans_receivable_current_account.credit_amounts.where(commercial_document: self).each do |amount|
+      #   entries << amount.entry
+      # end
+      #
+      # loan_product_interest_revenue_account.credit_amounts.where(commercial_document: self).each do |amount|
+      #   entries << amount.entry
+      # end
+      # loan_product_penalty_revenue_account.credit_amounts.where(commercial_document: self).each do |amount|
+      #   entries << amount.entry
+      # end
+      # entries.uniq
     end
 
     def current?

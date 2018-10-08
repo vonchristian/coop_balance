@@ -36,21 +36,14 @@ module LoansModule
       AccountingModule::Account.where(id: ids)
     end
 
+    def self.interest_revenue_accounts
+      LoansModule::LoanProducts::InterestConfig.interest_revenue_accounts
+    end
+
 
     def self.loan_payments(options={})
-      entries = []
-      self.all.each do |loan_product|
-        loan_product.loans_receivable_current_account.credit_amounts.entered_on(options).recorded_by(options).each do |amount|
-          entries << amount.entry
-        end
-        loan_product.interest_receivable_account.credit_amounts.entered_on(options).recorded_by(options).each do |amount|
-          entries << amount.entry
-        end
-        loan_product.penalty_receivable_account.credit_amounts.entered_on(options).recorded_by(options).each do |amount|
-          entries << amount.entry
-        end
-      end
-      entries.uniq
+      accounts.debit_entries  +
+      interest_revenue_accounts.debit_entries
     end
 
 

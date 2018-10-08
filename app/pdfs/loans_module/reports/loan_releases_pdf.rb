@@ -1,13 +1,14 @@
 module LoansModule
   module Reports
     class LoanReleasesPdf < Prawn::Document
-      attr_reader :loans, :from_date, :to_date, :cooperative, :view_context
+      attr_reader :loans, :from_date, :to_date, :cooperative, :organization, :view_context
       def initialize(args={})
         super(margin: 40, page_size: "A4", page_layout: :portrait)
         @loans        = args[:loans]
         @from_date    = args[:from_date]
         @to_date      = args[:to_date]
         @cooperative  = args[:cooperative]
+        @organization = args[:organization]
         @view_context = args[:view_context]
         heading
         loans_table
@@ -29,6 +30,7 @@ module LoansModule
             text "LOAN DISBURSEMENTS REPORT", style: :bold, size: 12
             text "From: #{from_date.strftime("%B %e, %Y")}", style: :bold, size: 10
             text "To: #{to_date.strftime("%B %e, %Y")}", style: :bold, size: 10
+            text "Organization: #{organization.name.try(:upcase)}", size: 10
 
           end
           move_down 20

@@ -18,6 +18,9 @@
 	<a href="/loans_module/loan_products" class="nav-link <%= 'active' if current_page?(loans_module_loan_products_path) %>"><i class="nav-icon fa fa-tag"></i><span> Loan Products </span></a>
 </li>
 <li class="nav-item">
+	<a href="/loans_module/organizations" class="nav-link <%= 'active' if current_page?(loans_module_organizations_path) %>"><i class="nav-icon fa fa-sitemap"></i><span> Organizations </span></a>
+</li>
+<li class="nav-item">
 	<a href="/loans_module/reports" class="nav-link <%= 'active' if current_page?(loans_module_reports_path) %>"><i class="nav-icon fa fa-folder"></i><span> Reports </span></a>
 </li>
 <%= render 'layouts/shared/sidebar_links/monitoring' %>

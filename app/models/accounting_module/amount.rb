@@ -13,27 +13,28 @@ module AccountingModule
     delegate :name, to: :recorder, prefix: true
 
     def self.for_account(args={})
-      where(account: args[:account])
+      where(account_id: args[:account_id])
     end
 
-    def self.recorded_by(recorder_id)
-      where(recorder_id: recorder_id)
+    def self.for_recorder(args={})
+      joins(:entry).where('entries.recorder_id' => args[:recorder_id])
     end
 
-    def self.entries_for_commercial_document(options={})
-      where(commercial_document: options[:commercial_document])
+    def self.for_commercial_document(args={})
+      where(commercial_document: args[:commercial_document])
     end
 
-    def self.entered_on(options={})
-      from_date = options[:from_date] || Date.today - 999.years
-      to_date = options[:to_date] || Date.today
+    def self.entered_on(args={})
+      from_date = args[:from_date] || Date.today - 999.years
+      to_date = args[:to_date] || Date.today
       date_range = DateRange.new(from_date: from_date, to_date: to_date)
-      includes(:entry).where('entries.entry_date' => date_range.range)
+      includes(:entry).where('entries.entry_date' => date_range.start_date..date_range.end_date)
     end
 
     def debit?
       type == "AccountingModule::DebitAmount"
     end
+
     def credit?
       type == "AccountingModule::CreditAmount"
     end

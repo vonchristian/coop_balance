@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_08_081505) do
+ActiveRecord::Schema.define(version: 2018_10_08_092505) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -897,6 +897,8 @@ ActiveRecord::Schema.define(version: 2018_10_08_081505) do
     t.bigint "avatar_file_size"
     t.datetime "avatar_updated_at"
     t.datetime "last_transaction_date"
+    t.uuid "cooperative_id"
+    t.index ["cooperative_id"], name: "index_organizations_on_cooperative_id"
   end
 
   create_table "penalty_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1435,6 +1437,7 @@ ActiveRecord::Schema.define(version: 2018_10_08_081505) do
   add_foreign_key "orders", "store_fronts"
   add_foreign_key "orders", "users", column: "employee_id"
   add_foreign_key "organization_members", "organizations"
+  add_foreign_key "organizations", "cooperatives"
   add_foreign_key "penalty_configs", "accounts", column: "penalty_revenue_account_id"
   add_foreign_key "penalty_configs", "cooperatives"
   add_foreign_key "penalty_configs", "loan_products"

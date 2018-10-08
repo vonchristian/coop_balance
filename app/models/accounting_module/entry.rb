@@ -35,19 +35,12 @@ module AccountingModule
     delegate :name, to: :cooperative, prefix: true
     delegate :name, to: :office, prefix: true
     delegate :name, to: :commercial_document, prefix: true
-
     def self.not_cleared
       where(cleared: false)
     end
 
-    def self.loan_payments(options={})
-      amounts = []
-      User.cash_on_hand_accounts.each do |account|
-        AccountingModule::DebitAmount.where(commercial_document_type: "LoansModule::Loan").where(account: account).entered_on(options).each do |amount|
-          amounts << amount
-        end
-      end
-      amounts
+    def self.credit_amounts
+      AccountingModule::CreditAmount.where(id: self.pluck(:id))
     end
 
     def self.loan_disbursements(options={})

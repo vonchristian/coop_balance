@@ -7,8 +7,6 @@ FactoryBot.define do
     closing_account_fee 150
     has_closing_account_fee true
     association :paid_up_account, factory: :equity
-    association :interest_payable_account, factory: :equity
-    association :closing_account, factory: :revenue
     association :subscription_account, factory: :equity
 
   end

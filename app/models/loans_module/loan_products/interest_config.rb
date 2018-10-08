@@ -13,6 +13,10 @@ module LoansModule
       def self.current
         all.order(created_at: :desc).first
       end
+      def self.interest_revenue_accounts
+        ids = pluck(:interest_revenue_account_id)
+        AccountingModule::Account.where(id: ids)
+      end
 
       def interest_balance(loan_application)
         total_interest(loan_application) -

@@ -8,6 +8,10 @@ module LoansModule
         order(created_at: :desc).first
       end
 
+      def self.penalty_revenue_accounts
+        AccountingModule::Account.where(id: self.pluck(:penalty_revenue_account_id))
+      end
+
       def daily_rate
         rate / 30.0
       end

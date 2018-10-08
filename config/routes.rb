@@ -45,6 +45,13 @@ Rails.application.routes.draw do
 
   resources :loans_module, only: [:index]
   namespace :loans_module do
+    resources :organizations, only: [:index, :show] do
+      resources :loans, only: [:index], module: :organizations
+      resources :reports, only: [:index], module: :organizations
+      resources :loan_payments, only: [:index], module: :organizations
+      resources :loan_releases, only: [:index], module: :organizations
+
+    end
     resources :voucher_amounts, shallow: true do
       resources :amount_adjustments, only: [:new, :create], module: :loan_applications
     end
@@ -89,6 +96,7 @@ Rails.application.routes.draw do
     end
 
     resources :loans do
+      resources :organizations, only: [:edit, :update], module: :loans
       resources :loan_penalty_discounts, only: [:new, :create], module: :loans
       resources :loan_interest_discounts, only: [:new, :create], module: :loans
 
@@ -292,6 +300,7 @@ Rails.application.routes.draw do
   resources :schedules, only: [:index, :show]
   resources :treasury_module, only: [:index]
   namespace :treasury_module do
+    resources :reports, only: [:index]
     resources :savings_accounts, only: [:new, :create]
     resources :disbursements, only: [:index]
     resources :cash_receipts, only: [:index]
@@ -299,7 +308,6 @@ Rails.application.routes.draw do
     resources :cash_receipt_line_items, only: [:new, :create, :destroy]
     resources :disbursement_processings, only: [:create]
     resources :cash_receipt_processings, only: [:create]
-
     resources :employees, only: [:index, :show] do
       resources :remittances, only: [:new, :create]
       resources :fund_transfers, only: [:new, :create]
@@ -308,6 +316,7 @@ Rails.application.routes.draw do
 
     resources :entries, only: [:index, :show]
   end
+
   resources :savings_accounts_dashboards, only: [:index]
   resources :savings_accounts_below_minimum_balances, only: [:index]
   resources :share_capitals_below_minimum_balances, only: [:index]

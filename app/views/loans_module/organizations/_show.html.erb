@@ -1,0 +1,24 @@
+<%= render 'loans_module/organizations/partials/header', organization: @organization %>
+<div class="card">
+  <div class="card-body">
+    <ul class="nav nav-tabs nav-pills">
+      <li class="nav-item">
+        <%= link_to 'Info', loans_module_organization_path(@organization), class: "nav-link #{'active' if current_page?(loans_module_organization_path(@organization))}" %>
+      </li>
+      <li class="nav-item">
+        <%= link_to 'Loans', loans_module_organization_loans_path(@organization), class: "nav-link #{'active' if current_page?(loans_module_organization_loans_path(@organization))}" %>
+      </li>
+      <li class="nav-item">
+        <%= link_to 'Reports', loans_module_organization_reports_path(@organization), class: "nav-link #{'active' if current_page?(loans_module_organization_reports_path(@organization))}" %>
+      </li>
+    </ul>
+  </div>
+</div>
+    <% if current_page?(loans_module_organization_loans_path(@organization)) %>
+      <%= render 'loans_module/organizations/partials/loans' %>
+    <% end %>
+    <% if current_page?(loans_module_organization_reports_path(@organization)) %>
+      <%= render 'loans_module/organizations/partials/reports' %>
+    <% end %>
+  </div>
+</div>
