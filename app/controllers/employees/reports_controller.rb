@@ -6,7 +6,10 @@ module Employees
       respond_to do |format|
         format.html
         format.pdf do
-          pdf = TransactionSummaryPdf.new(employee: @employee, date: @date, view_context: view_context)
+          pdf = TransactionSummaryPdf.new(
+            employee: @employee,
+            date: @date,
+            view_context: view_context)
           send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Report.pdf"
         end
       end

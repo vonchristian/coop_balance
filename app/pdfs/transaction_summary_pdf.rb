@@ -1,10 +1,11 @@
 class TransactionSummaryPdf < Prawn::Document
-  attr_reader :employee, :date, :view_context
+  attr_reader :employee, :date, :view_context, :cooperative
   def initialize(args={})
     super(margin: 40, page_size: "A4", page_layout: :portrait)
-    employee = args[:employee]
-    date = args[:date]
-    view_context = args[:view_context]
+    @employee = args[:employee]
+    @cooperative = @employee.cooperative
+    @date = args[:date]
+    @view_context = args[:view_context]
     heading
     fund_transfers
     savings_deposits
@@ -23,29 +24,24 @@ class TransactionSummaryPdf < Prawn::Document
     view_context.number_to_currency(number, :unit => "P ")
   end
   def heading
-    bounding_box [300, 780], width: 50 do
-      # image "#{Rails.root}/app/assets/images/kccmc_logo.jpg", width: 50, height: 50
+    bounding_box [300, 770], width: 50 do
+      image "#{Rails.root}/app/assets/images/#{cooperative.abbreviated_name.downcase}_logo.jpg", width: 50, height: 50
     end
-    bounding_box [370, 780], width: 200 do
-        text "KCCMC", style: :bold, size: 24
-        text "Kalanguya Cultural Community", size: 10
-        text "Multipurpose Cooperative", size: 10
-
+    bounding_box [360, 770], width: 200 do
+        text "#{cooperative.abbreviated_name }", style: :bold, size: 20
+        text "#{cooperative.name.try(:upcase)}", size: 8
+        text "#{cooperative.address}", size: 8
     end
-    bounding_box [0, 780], width: 400 do
-      text "Transactions Summary", style: :bold, size: 14
-      move_down 3
-      text "#{date.strftime("%B %e, %Y")}", size: 10
-      move_down 3
-
-      text "Employee: #{employee.name}", size: 10
+    bounding_box [0, 770], width: 400 do
+      text "TRANSACTIONS SUMMARY", style: :bold, size: 12
+      text "Date: #{date.strftime("%B %e, %Y")}", style: :bold, size: 10
     end
-    move_down 15
+    move_down 30
     stroke do
       stroke_color '24292E'
       line_width 1
       stroke_horizontal_rule
-      move_down 20
+      move_down 5
     end
   end
   def fund_transfers
@@ -197,20 +193,20 @@ class TransactionSummaryPdf < Prawn::Document
     end
   end
   def share_capital_beginning_balance
-    [["", "Beginning Balance", "#{price(CoopServicesModule::ShareCapitalProduct.all.map{ |share_capital_product| share_capital_product.paid_up_account.balance(to_date: date.yesterday.end_of_day) }.sum)}"]]
+    [["", "Beginning Balance", "#{price(CoopServicesModule::ShareCapitalProduct.total_balance(to_date: date.yesterday.end_of_day))}"]]
   end
   def additional_share_capital
-    [["", "", "Additional Share Capital", "#{price(CoopServicesModule::ShareCapitalProduct.all.map{ |share_capital_product| share_capital_product.paid_up_account.credits_balance(from_date: date.beginning_of_day, to_date: date.end_of_day) }.sum)}"]]
+    [["", "", "Additional Share Capital", "#{price(CoopServicesModule::ShareCapitalProduct.total_credits_balance(from_date: date, to_date: date))}"]]
   end
   def total_share_capitals
-    [["", "", "Total Share Capitals", "#{price(CoopServicesModule::ShareCapitalProduct.all.map{ |share_capital_product| share_capital_product.paid_up_account.balance(from_date: date.beginning_of_day, to_date: date.end_of_day) }.sum)}"]]
+    [["", "", "Total Share Capitals", "#{price(CoopServicesModule::ShareCapitalProduct.total_balance(to_date: date.end_of_day))}"]]
   end
   def share_capital_withdrawals
-    [["", "", "Less Withdrawals", "#{price(CoopServicesModule::ShareCapitalProduct.all.map{ |share_capital_product| share_capital_product.paid_up_account.debits_balance(to_date: date.end_of_day) }.sum)}"]]
+    [["", "", "Less Withdrawals", "#{price(CoopServicesModule::ShareCapitalProduct.total_debits_balance(from_date: date, to_date: date))}"]]
   end
   def loan_releases
     text "Loan Releases", style: :bold, size: 10, color: "DB4437"
-    if LoansModule::Loan.disbursed(from_date: from_date, to_date: to_date).disbursed_by(employee_id: employee.id).present?
+    if LoansModule::Loan.disbursed.disbursed_on(from_date: date, to_date: date).disbursed_by(employee_id: employee.id).present?
 
       table(loan_releases_data, header: true, cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [40, 160, 100, 110, 100]) do
         cells.borders = []
@@ -236,7 +232,7 @@ class TransactionSummaryPdf < Prawn::Document
 
    def loan_collections
     text "Loan Collections", style: :bold, size: 10, color: "DB4437"
-    if AccountingModule::Entry.loan_payments(employee_id: employee.id, from_date: date.beginning_of_day, to_date: date.end_of_day).present?
+    if LoansModule::Loan.loan_payments(employee_id: employee.id, from_date: date.beginning_of_day, to_date: date.end_of_day).present?
       table(loan_collections_data, header: true, cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [40, 160, 100, 110, 100]) do
         cells.borders = []
       end

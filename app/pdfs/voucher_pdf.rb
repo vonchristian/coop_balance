@@ -3,11 +3,11 @@ require 'barby/barcode/code_128'
 require 'barby/outputter/prawn_outputter'
 class VoucherPdf < Prawn::Document
   attr_reader :voucher, :cooperative
-  def initialize(voucher, view_context)
+  def initialize(args={})
     super(margin: 40, page_size: "A4", page_layout: :portrait)
-    @voucher = voucher
+    @voucher = args[:voucher]
     @cooperative = @voucher.cooperative
-    @view_context = view_context
+    @view_context = args[:view_context]
     heading
     payee_details
     voucher_details
@@ -18,7 +18,7 @@ class VoucherPdf < Prawn::Document
   def price(number)
     @view_context.number_to_currency(number, :unit => "P ")
   end
-def heading
+  def heading
     bounding_box [300, 770], width: 50 do
       image "#{Rails.root}/app/assets/images/#{cooperative.abbreviated_name.downcase}_logo.jpg", width: 50, height: 50
     end

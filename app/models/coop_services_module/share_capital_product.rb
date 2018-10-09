@@ -22,7 +22,7 @@ module CoopServicesModule
 
     def self.accounts
       accounts = self.pluck(:paid_up_account_id)
-      AccountingModule::Account.where('accounts.id' => accounts)
+      AccountingModule::Account.where(id: accounts)
     end
 
     def self.subscribe(subscriber)

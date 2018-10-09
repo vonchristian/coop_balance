@@ -209,19 +209,18 @@ module LoansModule
     end
 
     def loan_payments(args={})
-      LoansModule::LoanProduct.accounts.debit_amounts.where(commercial_document: self).entered_on(args)
-      # entries = []
-      # loan_product_loans_receivable_current_account.credit_amounts.where(commercial_document: self).each do |amount|
-      #   entries << amount.entry
-      # end
-      #
-      # loan_product_interest_revenue_account.credit_amounts.where(commercial_document: self).each do |amount|
-      #   entries << amount.entry
-      # end
-      # loan_product_penalty_revenue_account.credit_amounts.where(commercial_document: self).each do |amount|
-      #   entries << amount.entry
-      # end
-      # entries.uniq
+      entries = []
+      loan_product_loans_receivable_current_account.credit_amounts.where(commercial_document: self).each do |amount|
+        entries << amount.entry
+      end
+
+      loan_product_interest_revenue_account.credit_amounts.where(commercial_document: self).each do |amount|
+        entries << amount.entry
+      end
+      loan_product_penalty_revenue_account.credit_amounts.where(commercial_document: self).each do |amount|
+        entries << amount.entry
+      end
+      entries.uniq
     end
     def self.disbursement_entries(args={})
       LoansModule::LoanProduct.accounts.debit_entries.entered_on(args)
