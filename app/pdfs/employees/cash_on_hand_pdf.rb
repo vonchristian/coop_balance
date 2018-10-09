@@ -1,11 +1,11 @@
 module Employees
   class CashOnHandPdf < Prawn::Document
-    attr_reader :entries, :employee, :from_date, :to_date, :title, :view_context
+    attr_reader :entries, :employee, :from_date, :to_date, :title, :view_context, :cooperative
     def initialize(entries, employee, from_date, to_date, title, view_context)
-       super(margin: 20, page_size: "A4", page_layout: :portrait)
-
+      super(margin: 20, page_size: "A4", page_layout: :portrait)
       @entries = entries
       @employee = employee
+      @cooperative = @employee.cooperative
       @from_date = from_date
       @to_date = to_date
       @title = title
@@ -36,8 +36,8 @@ module Employees
       image "#{Rails.root}/app/assets/images/kccmc_logo.jpg", width: 50, height: 50
     end
     bounding_box [370, 800], width: 200 do
-        text "#{employee.cooperative_abbreviated_name}", style: :bold, size: 24
-        text "#{employee.cooperative_name}", size: 10
+        text "#{cooperative.abbreviated_name}", style: :bold, size: 24
+        text "#{cooperative.name}", size: 10
     end
     bounding_box [0, 800], width: 400 do
       text "#{title}", style: :bold, size: 12

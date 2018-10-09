@@ -1,13 +1,14 @@
 
 module LoansModule
   class LoanAmortizationSchedulePdf < Prawn::Document
-    attr_reader :loan, :amortization_schedules, :employee, :view_context, :voucher
+    attr_reader :loan, :amortization_schedules, :employee, :view_context, :voucher, :cooperative
     def initialize(args)
       super(margin: 40, page_size: "LEGAL", page_layout: :portrait)
       @loan = args[:loan]
       @voucher = @loan.voucher
       @amortization_schedules = args[:amortization_schedules]
       @employee = args[:employee]
+      @cooperative = @employee.cooperative
       @view_context = args[:view_context]
       heading
       loan_details
@@ -37,17 +38,16 @@ module LoansModule
       end
     end
     def price(number)
-      @view_context.number_to_currency(number, :unit => "P ")
+      view_context.number_to_currency(number, :unit => "P ")
     end
     def heading
     bounding_box [320, 930], width: 200 do
-      text "#{loan.current_term.effectivity_date}"
-        text "#{loan.cooperative_name.try(:upcase)}", style: :bold, size: 12
+        text "#{cooperative.name.try(:upcase)}", style: :bold, size: 12
 
         move_down 3
-        text "#{loan.cooperative_address}", size: 8
+        text "#{cooperative.address}", size: 8
         move_down 3
-        text "#{loan.cooperative_contact_number}", size: 8
+        text "#{cooperative.contact_number}", size: 8
     end
     bounding_box [0, 930], width: 200 do
       text "LOAN DISCLOSURE STATEMENT AND AMORTIZATION SCHEDULE", style: :bold, size: 10

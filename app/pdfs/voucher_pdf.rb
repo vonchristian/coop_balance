@@ -23,9 +23,9 @@ class VoucherPdf < Prawn::Document
       image "#{Rails.root}/app/assets/images/#{cooperative.abbreviated_name.downcase}_logo.jpg", width: 50, height: 50
     end
     bounding_box [360, 770], width: 200 do
-        text "#{voucher.cooperative_abbreviated_name }", style: :bold, size: 20
-        text "#{voucher.cooperative_name.try(:upcase)}", size: 8
-        text "#{voucher.cooperative_address}", size: 8
+        text "#{cooperative.abbreviated_name }", style: :bold, size: 20
+        text "#{cooperative.name.try(:upcase)}", size: 8
+        text "#{cooperative.address}", size: 8
     end
     bounding_box [0, 770], width: 400 do
       text "CASH DISBURSEMENT VOUCHER", style: :bold, size: 12

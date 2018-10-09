@@ -9,7 +9,6 @@
       </div>
       <hr class="no-margin">
       <div class="card-body">
-        <h3 class="card-title">Debits</h3>
         <table class="table">
           <thead>
             <tr>
@@ -24,13 +23,17 @@
               <tr>
                 <td>
                   <% if amount.is_a?(AccountingModule::DebitAmount) %>
-                    <%= number_to_currency amount.amount %>
-                  <% end %>                  
+                    <span class="float-right">
+                      <%= number_to_currency amount.amount %>
+                    </span>
+                  <% end %>
                 </td>
                 <td><%= amount.account_name %></td>
                 <td>
                   <% if amount.is_a?(AccountingModule::CreditAmount) %>
-                    <%= number_to_currency amount.amount %>
+                    <span class="float-right">
+                      <%= number_to_currency amount.amount %>
+                    </span>
                   <% end %>
                 </td>
                 <td>

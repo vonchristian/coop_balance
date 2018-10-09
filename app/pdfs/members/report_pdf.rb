@@ -1,10 +1,14 @@
 require 'prawn/qrcode'
 module Members
   class ReportPdf < Prawn::Document
-    def initialize(member, view_context)
-      super(margin: 30, page_size: 'A4', page_layout: :portrait)
-      @member = member
-      @view_context = view_context
+
+    attr_reader :member, :view_context, :cooperative
+
+    def initialize(args={})
+      super(margin: 40, page_size: 'A4', page_layout: :portrait)
+      @member = args[:member]
+      @cooperative = args[:cooperative]
+      @view_context = args[:view_context]
       heading
       profile
       investment_details
@@ -13,31 +17,28 @@ module Members
 
     private
     def price(number)
-      @view_context.number_to_currency(number, :unit => "P ")
+      view_context.number_to_currency(number, :unit => "P ")
     end
     def heading
-      bounding_box [310, 780], width: 60 do
-       image "#{Rails.root}/app/assets/images/kccmc_logo.jpg", width: 60, height: 60
+      bounding_box [300, 770], width: 50 do
+        image "#{Rails.root}/app/assets/images/#{cooperative.abbreviated_name.downcase}_logo.jpg", width: 50, height: 50
       end
-      bounding_box [390, 770], width: 150 do
-          text "KCCMC", style: :bold, size: 22
-          text "Kalanguya Cultural Community", size: 10
-          text "Multipurpose Cooperative", size: 10
-          move_down 2
-          text "Poblacion, Tinoc, Ifugao", size: 9, style: :italic
+      bounding_box [360, 770], width: 200 do
+          text "#{cooperative.abbreviated_name }", style: :bold, size: 20
+          text "#{cooperative.name.try(:upcase)}", size: 8
+          text "#{cooperative.address}", size: 8
       end
-      bounding_box [0, 760], width: 400 do
-        text "MEMBER'S DATA SHEET", style: :bold, size: 14
-        move_down 5
-        text "As of #{@member.default_last_transaction_date.strftime("%B %e, %Y")}", size: 10
+      bounding_box [0, 770], width: 400 do
+        text "MEMBER'S DATA SHEET", style: :bold, size: 12
+        text "", style: :bold, size: 10
       end
-      move_down 20
+      move_down 40
       stroke do
-      stroke_color '24292E'
-      line_width 1
-      stroke_horizontal_rule
-      move_down 20
-    end
+        stroke_color '24292E'
+        line_width 1
+        stroke_horizontal_rule
+        move_down 5
+      end
     end
     def profile
       text "MEMBER'S PROFILE", style: :bold
@@ -103,7 +104,7 @@ module Members
     end
     def loans
       text "LOANS", style: :bold
-      @member.loans.each do |loan|
+      @member.loans.disbursed.not_archived.each do |loan|
         table([["", loan.loan_product_name.try(:upcase), price(loan.balance)]], cell_style: { inline_format: true, size: 10, font: "Helvetica" }, column_widths: [20, 150, 100]) do
           cells.borders = []
         end
