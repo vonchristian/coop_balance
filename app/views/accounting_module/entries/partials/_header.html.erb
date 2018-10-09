@@ -2,12 +2,21 @@
   <div class="card">
     <div class="card-body">
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-1">
+          <% if entry.commercial_document.avatar.present? && entry.commercial_document.avatar.attached? %>
+            <%= image_tag(entry.commercial_document.avatar, class: "img-circle", height: 45, width: 45) %>
+          <% end %>
+        </div>
+        <div class="col-md-2">
           <%= entry.commercial_document_name %>
         </div>
         <div class="col-md-6">
           <%= entry.description %><br>
           <small class="text-muted"><i class="fa fa-clock"></i> <%= entry.entry_date.strftime("%B %e, %Y") %> &nbsp; &nbsp; # <%= entry.reference_number %></small>
+          <br>
+          <% if entry.cancelled? %>
+            <span class="badge bg-danger">Cancelled </span>
+          <% end %>
         </div>
         <div class="col-md-3">
           <%= number_to_currency  entry.debit_amounts.sum(:amount) %>

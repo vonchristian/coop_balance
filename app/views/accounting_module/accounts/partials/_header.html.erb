@@ -1,0 +1,28 @@
+<%= link_to accounting_module_account_path(account) do %>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <b><%= account.name %></b><br>
+          <small class="text-muted">
+            <i class="fa fa-clock"></i> Last Transaction
+            <i class="fa fa-server"></i> <%= account.code %>
+            <span class="badge bg-gray"><%= account.normalized_type %></span>
+          </small>
+        </div>
+        <div class="col-md-2">
+          <small>DEBITS BALANCE </small><br>
+          <%= number_to_currency account.debits_balance %>
+        </div>
+        <div class="col-md-2">
+          <small>CREDITS BALANCE </small><br>
+          <%= number_to_currency account.credits_balance %>
+        </div>
+        <div class="col-md-2">
+          <small>BALANCE </small><br>
+          <%= number_to_currency account.balance %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
