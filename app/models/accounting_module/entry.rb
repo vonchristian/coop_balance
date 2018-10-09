@@ -11,7 +11,7 @@ module AccountingModule
     belongs_to :commercial_document, :polymorphic => true, touch: true
     belongs_to :office, class_name: "CoopConfigurationsModule::Office"
     belongs_to :cooperative
-    belongs_to :cleared_by, class_name: "User", foreign_key: 'cleared_by_id'
+    belongs_to :cancelled_by, class_name: "User", foreign_key: 'cancelled_by_id'
     belongs_to :recorder, foreign_key: 'recorder_id', class_name: "User"
 
     has_many :credit_amounts, extend: AccountingModule::BalanceFinder, :class_name => 'AccountingModule::CreditAmount', :inverse_of => :entry, dependent: :destroy
@@ -35,8 +35,8 @@ module AccountingModule
     delegate :name, to: :cooperative, prefix: true
     delegate :name, to: :office, prefix: true
     delegate :name, to: :commercial_document, prefix: true
-    def self.not_cleared
-      where(cleared: false)
+    def self.not_cancelled
+      where(cancelled: false)
     end
 
     def self.credit_amounts
@@ -46,7 +46,7 @@ module AccountingModule
       AccountingModule::DebitAmount.where(id: self.pluck(:id))
     end
 
-    
+
     def self.entered_on(args={})
       EntriesQuery.new.entered_on(args)
     end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_08_092505) do
+ActiveRecord::Schema.define(version: 2018_10_09_025238) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -385,13 +385,13 @@ ActiveRecord::Schema.define(version: 2018_10_08_092505) do
     t.uuid "store_front_id"
     t.integer "payment_type", default: 0
     t.boolean "offline_receipt", default: false
-    t.boolean "cleared", default: false
-    t.datetime "cleared_at"
-    t.uuid "cleared_by_id"
     t.uuid "office_id"
     t.uuid "cooperative_id"
     t.uuid "official_receipt_id"
-    t.index ["cleared_by_id"], name: "index_entries_on_cleared_by_id"
+    t.boolean "cancelled", default: false
+    t.datetime "cancelled_at"
+    t.uuid "cancelled_by_id"
+    t.index ["cancelled_by_id"], name: "index_entries_on_cancelled_by_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_entry"
     t.index ["cooperative_id"], name: "index_entries_on_cooperative_id"
     t.index ["entry_date"], name: "index_entries_on_entry_date"
@@ -1377,7 +1377,7 @@ ActiveRecord::Schema.define(version: 2018_10_08_092505) do
   add_foreign_key "entries", "offices"
   add_foreign_key "entries", "official_receipts"
   add_foreign_key "entries", "store_fronts"
-  add_foreign_key "entries", "users", column: "cleared_by_id"
+  add_foreign_key "entries", "users", column: "cancelled_by_id"
   add_foreign_key "entries", "users", column: "recorder_id"
   add_foreign_key "entries", "vouchers"
   add_foreign_key "interest_configs", "accounts", column: "interest_revenue_account_id"

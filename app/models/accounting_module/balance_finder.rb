@@ -27,7 +27,7 @@ module AccountingModule
     end
 
     def balance_for(args={})
-      includes(:entry).
+      includes(:entry).where('entries.cancelled' => false).
       where(commercial_document: args[:commercial_document])
     end
 

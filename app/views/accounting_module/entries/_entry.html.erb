@@ -8,8 +8,8 @@
     </td>
     <td><%=entry.entry_date.strftime("%B %e, %Y") %></td>
     <td><%=link_to entry.description, accounting_module_entry_path(entry) %><br>
-      <% if entry.cleared? %>
-        <span class="label bg-green"> Cleared </span>
+      <% if entry.cancelled? %>
+        <span class="badge bg-danger"> Cancelled </span>
       <% end %>
     </td>
     <td><%= entry.reference_number %></td>

@@ -53,36 +53,10 @@
     </div>
   </div>
 </div>
-<div class="row">
-  <div class="col-md-12">
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title"> Journal Entries </h3>
-      </div>
-      <div class="card-body">
-        <div class="table table-responsive">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th></th>
-                <th> Date </th>
-                <th> Description </th>
-                <th> Reference # </th>
-                <th> Amount </th>
-                <th> Member </th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @entries.each do |entry| %>
-                <%= render 'accounting_module/entries/entry', entry: entry %>
-              <% end %>
-            </tbody>
-          </table>
-          <% if @entries.exists? %>
-            <center><%= will_paginate @entries %></center>
-          <% end %>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+
+<% @entries.each do |entry| %>
+  <%= render 'accounting_module/entries/partials/header', entry: entry %>
+<% end %>
+  <% if @entries.exists? %>
+    <center><%= will_paginate @entries %></center>
+  <% end %>
