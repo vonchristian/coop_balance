@@ -49,6 +49,16 @@ module AccountingModule
       name
     end
 
+    def set_as_inactive
+      if balance == 0
+        self.active = false
+        self.save
+      else
+        false
+      end
+    end
+
+
     def normalized_type
       type.gsub("AccountingModule::", "")
     end
