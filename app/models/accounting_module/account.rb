@@ -63,7 +63,7 @@ module AccountingModule
 
     def self.balance(options={})
       accounts_balance = BigDecimal.new('0')
-      accounts = self.all
+      accounts = self.active.all
       accounts.each do |account|
         if account.contra
           accounts_balance -= account.balance(options)
@@ -94,7 +94,7 @@ module AccountingModule
 
     def self.debits_balance(options={})
       accounts_balance = BigDecimal.new('0')
-      accounts = self.all
+      accounts = self.active.all
       accounts.each do |account|
         if account.contra
           accounts_balance -= account.debits_balance(options)
@@ -107,7 +107,7 @@ module AccountingModule
 
     def self.credits_balance(options={})
       accounts_balance = BigDecimal.new('0')
-      accounts = self.all
+      accounts = self.active.all
       accounts.each do |account|
         if account.contra
           accounts_balance -= account.credits_balance(options)
@@ -124,6 +124,10 @@ module AccountingModule
       else
         raise(NoMethodError, "undefined method 'trial_balance'")
       end
+    end
+
+    def self.net_surplus(args={})
+      AccountingModule::Revenue.active.balance(args) - AccountingModule::Expense.active.balance(args)
     end
 
 

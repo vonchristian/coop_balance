@@ -12,7 +12,13 @@ module AccountingModule
         respond_to do |format|
           format.html # index.html.erb
           format.pdf do
-            pdf = IncomeStatementPdf.new(@revenues, @expenses, @employee, @from_date, @to_date, view_context)
+            pdf = IncomeStatementPdf.new(
+              revenues: @revenues,
+              expenses: @expenses,
+              employee: @employee,
+              from_date: @from_date,
+              to_date: @to_date,
+              view_context: view_context)
             send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Income Statement.pdf"
           end
         end

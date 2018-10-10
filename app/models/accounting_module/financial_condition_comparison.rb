@@ -1,6 +1,6 @@
 module AccountingModule
   class FinancialConditionComparison < ApplicationRecord
-    enum comparison_type: [:monthly, :quarterly, :yearly]
+    enum comparison_type: [:daily, :weekly, :monthly, :quarterly, :semi_annually, :yearly]
 
     def first_date_display_title
       if monthly?

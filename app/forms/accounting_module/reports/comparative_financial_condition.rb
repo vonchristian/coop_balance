@@ -20,4 +20,3 @@ module AccountingModule
     end
   end
 end
-
