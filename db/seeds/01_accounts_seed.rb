@@ -1,3 +1,4 @@
+AccountingModule::Asset.create(code: 1110000, name: "Temp Account (Uploading Purposes)")
 AccountingModule::Asset.create(code: 11100, name: "Cash and Cash Equivalents")
 AccountingModule::Asset.create(code: 11110, name: "Cash on Hand")
 AccountingModule::Asset.create(code: 111101, name: "Cash on Hand - Main (Treasury)")
@@ -6,7 +7,9 @@ AccountingModule::Asset.create(code: 111103, name: "Cash on Hand (Vault)")
 
 AccountingModule::Asset.create(code: 11120, name: "Checks and Other Cash Items (COCI)")
 AccountingModule::Asset.create(code: 11130, name: "Cash in Bank")
-AccountingModule::Asset.create(code: 111301, name: "Cash in Bank(LMDC/LBP)")
+AccountingModule::Asset.create(code: 111301, name: "Cash in Bank(LMDC)")
+AccountingModule::Asset.create(code: 111302, name: "Cash in Bank(LBP)")
+
 
 AccountingModule::Asset.create(code: 11140, name: "Cash in Cooperative Federation")
 AccountingModule::Asset.create(code: 11150, name: "Petty Cash Fund")

@@ -49,7 +49,7 @@ module Registries
 
 
     def debit_account
-      AccountingModule::Account.find_by(name: "Cash on Hand")
+      AccountingModule::Account.find_by(name: "Temp Account (Uploading Purposes)")
     end
 
     def credit_account(row)
