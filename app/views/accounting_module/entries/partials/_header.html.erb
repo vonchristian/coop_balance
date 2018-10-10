@@ -17,6 +17,9 @@
           <% if entry.cancelled? %>
             <span class="badge bg-danger">Cancelled </span>
           <% end %>
+          <% if entry.cooperative_service.present? %>
+            <small class="text-muted"> <%= entry.cooperative_service_title %></small>
+          <% end %>
         </div>
         <div class="col-md-3">
           <%= number_to_currency  entry.debit_amounts.sum(:amount) %>

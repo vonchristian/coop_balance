@@ -36,6 +36,7 @@ module AccountingModule
     delegate :name, to: :cooperative, prefix: true
     delegate :name, to: :office, prefix: true
     delegate :name, to: :commercial_document, prefix: true
+    delegate :title, to: :cooperative_service, prefix: true, allow_nil: true
     def self.not_cancelled
       where(cancelled: false)
     end
