@@ -31,7 +31,7 @@
                 <%= link_to member_info_index_path(member) do %>
                   <div class="row">
                     <div class="col-md-1">
-                      <%= image_tag(member.avatar, height: 60 ,width: 60, class: "img-circle") %>
+                      <%= image_tag(member.avatar.variant(resize: "60x60"), class: "img-circle") if member.avatar.attached? %>
                     </div>
                     <div class="col-md-9">
                       <b><%= member.full_name.upcase %></b><br><br>

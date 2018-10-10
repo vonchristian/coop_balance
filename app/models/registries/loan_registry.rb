@@ -38,8 +38,8 @@ module Registries
         cooperative: self.employee.cooperative,
         recorder: self.employee,
         commercial_document: loan.borrower,
-        description: "Forwarded loan disbursement as of #{cut_off_date(row)}",
-        entry_date: cut_off_date(row),
+        description: "Forwarded loan disbursement as of #{cut_off_date.strftime('%B %e, %Y')}",
+        entry_date: cut_off_date,
         debit_amounts_attributes: [
           { amount: loan_amount(row),
             account: find_loan_product(row).loans_receivable_current_account,
@@ -70,7 +70,7 @@ module Registries
       LoansModule::LoanProduct.find_by(name: row["Loan Product"])
     end
 
-    def cut_off_date(row)
+    def cut_off_date
       Chronic.parse('09/30/2018')
     end
 
@@ -113,6 +113,5 @@ module Registries
     def balance_amount(row)
       row['Balance'].to_f
     end
-  end
   end
 end

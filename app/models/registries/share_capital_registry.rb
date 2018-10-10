@@ -27,8 +27,10 @@ module Registries
       share_capital = MembershipsModule::ShareCapital.create(
         subscriber: find_subscriber(row),
         account_number: SecureRandom.uuid,
+        office: self.employee.office,
         last_transaction_date: cut_off_date,
         share_capital_product: find_share_capital_product(row))
+
       AccountingModule::Entry.create!(
         office: self.employee.office,
         cooperative: self.employee.office,
