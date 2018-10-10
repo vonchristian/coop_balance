@@ -49,10 +49,14 @@ module Registries
 
     def find_depositor(row)
       if row["Depositor Type"] == "Member"
-        Member.find_or_create_by(last_name: row["Last Name"], first_name: row["First Name"])
+        find_cooperative.members.find_or_create_by(last_name: row["Last Name"], first_name: row["First Name"])
       elsif row["Depositor Type"] == "Organization"
-        Organization.find_or_create_by(name: row["Last Name"])
+        find_cooperative.organizations.find_or_create_by(name: row["Last Name"])
       end
+    end
+
+    def find_cooperative
+      self.employee.cooperative
     end
 
     def debit_account
