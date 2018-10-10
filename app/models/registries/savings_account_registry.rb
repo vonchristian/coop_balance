@@ -40,11 +40,9 @@ module Registries
     end
 
     def find_depositor(row)
-      # if row["Depositor Type"] == "Member"
-      if row["First Name"].present?
+      if row["Depositor Type"] == "Member"
         Member.find_or_create_by(last_name: row["Last Name"], first_name: row["First Name"])
-      # elsif row["Depositor Type"] == "Organization"
-      else
+      elsif row["Depositor Type"] == "Organization"
         Organization.find_or_create_by(name: row["Last Name"])
       end
     end
