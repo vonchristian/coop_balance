@@ -900,6 +900,7 @@ ActiveRecord::Schema.define(version: 2018_10_10_075513) do
     t.datetime "avatar_updated_at"
     t.datetime "last_transaction_date"
     t.uuid "cooperative_id"
+    t.string "abbreviated_name"
     t.index ["cooperative_id"], name: "index_organizations_on_cooperative_id"
   end
 
@@ -1103,8 +1104,8 @@ ActiveRecord::Schema.define(version: 2018_10_10_075513) do
     t.string "account_number"
     t.datetime "date_opened"
     t.string "account_owner_name"
-    t.datetime "created_at", default: "2018-08-09 11:46:34", null: false
-    t.datetime "updated_at", default: "2018-08-09 11:46:34", null: false
+    t.datetime "created_at", default: "2018-09-26 07:34:19", null: false
+    t.datetime "updated_at", default: "2018-09-26 07:34:19", null: false
     t.integer "status"
     t.uuid "office_id"
     t.string "subscriber_type"
