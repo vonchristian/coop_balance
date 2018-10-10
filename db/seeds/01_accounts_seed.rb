@@ -1,4 +1,3 @@
-AccountingModule::Asset.create(code: 1110000, name: "Temp Account (Uploading Purposes)")
 AccountingModule::Asset.create(code: 11100, name: "Cash and Cash Equivalents")
 AccountingModule::Asset.create(code: 11110, name: "Cash on Hand")
 AccountingModule::Asset.create(code: 111101, name: "Cash on Hand - Main (Treasury)")
@@ -224,6 +223,8 @@ AccountingModule::Liability.create(code: 248201, name: "Members' Benefit and Oth
 
 AccountingModule::Liability.create(code: 24830, name: 'Due to Head Office/Branch/Subsidiary')
 AccountingModule::Liability.create(code: 24840, name: 'Other Non Current Liabilities')
+AccountingModule::Liability.create(code: 250000, name: "Temp Account (Uploading Purposes)")
+
 
 #Equity
 AccountingModule::Equity.create(code: 30000, name: 'Equity')

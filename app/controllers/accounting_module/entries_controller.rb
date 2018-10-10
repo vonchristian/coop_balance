@@ -2,25 +2,19 @@ require 'will_paginate/array'
 module AccountingModule
   class EntriesController < ApplicationController
     def index
-      if params[:entry_type].present?
-        @entries = AccountingModule::Entry.where(entry_type: params[:entry_type].to_sym).paginate(:page => params[:page], :per_page => 50)
-      elsif params[:from_date].present? && params[:to_date].present?
+      if params[:from_date].present? && params[:to_date].present?
         @from_date = DateTime.parse(params[:from_date])
         @to_date = DateTime.parse(params[:to_date])
-        @entries = AccountingModule::Entry.entered_on(from_date: @from_date, to_date: @to_date).paginate(:page => params[:page], :per_page => 50)
-      elsif params[:from_date].present? && params[:to_date].present?
-        @from_date = DateTime.parse(params[:from_date])
-        @to_date = DateTime.parse(params[:to_date])
-        entries = AccountingModule::Entry.entered_on(from_date: @from_date, to_date: @to_date)
-        @entries = entries.paginate(:page => params[:page], per_page: 50)
+        @entries = current_cooperative.entries.entered_on(from_date: @from_date, to_date: @to_date).paginate(:page => params[:page], :per_page => 50)
       elsif params[:search].present?
-        @entries = AccountingModule::Entry.text_search(params[:search]).paginate(:page => params[:page], :per_page => 50)
+        @entries = current_cooperative.entries.text_search(params[:search]).paginate(:page => params[:page], :per_page => 50)
       elsif params[:recorder].present?
-        @entries = User.find(id: params[:recorder_id]).entries
-      elsif params[:branch_office_id].present?
-        @entries = CoopConfigurationsModule::BranchOffice.find(params[:branch_office_id]).entries
+        @recorder = User.find(params[:recorder])
+        @entries = current_cooperative.entries.recorded_by(recorder: @recorder).paginate(:page => params[:page], :per_page => 50)
+      elsif params[:office_id].present?
+        @entries = current_cooperative.offices.find(params[:office_id]).entries.paginate(:page => params[:page], :per_page => 50)
       else
-        @entries = AccountingModule::Entry.all.order(entry_date: :desc).paginate(:page => params[:page], :per_page => 50)
+        @entries = current_cooperative.entries.order(entry_date: :desc).paginate(:page => params[:page], :per_page => 50)
       end
     end
     def new

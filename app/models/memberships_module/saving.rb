@@ -8,6 +8,9 @@ module MembershipsModule
     belongs_to :cart, optional: true, class_name: "StoreFrontModule::Cart"
     belongs_to :barangay, optional: true, class_name: "Addresses::Barangay"
     belongs_to :depositor,        polymorphic: true,  touch: true
+    has_many :ownerships, as: :ownable
+    has_many :co_depositors, through: :ownerships, source: :owner
+
     belongs_to :saving_product,   class_name: "CoopServicesModule::SavingProduct"
     belongs_to :office,           class_name: "CoopConfigurationsModule::Office"
     has_many :debit_amounts,      class_name: "AccountingModule::DebitAmount", as: :commercial_document

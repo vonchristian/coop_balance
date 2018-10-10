@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_10_022125) do
+ActiveRecord::Schema.define(version: 2018_10_10_075513) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -901,6 +901,16 @@ ActiveRecord::Schema.define(version: 2018_10_10_022125) do
     t.datetime "last_transaction_date"
     t.uuid "cooperative_id"
     t.index ["cooperative_id"], name: "index_organizations_on_cooperative_id"
+  end
+
+  create_table "ownerships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "owner_id"
+    t.string "ownable_type"
+    t.uuid "ownable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ownable_type", "ownable_id"], name: "index_ownerships_on_ownable_type_and_ownable_id"
+    t.index ["owner_id"], name: "index_ownerships_on_owner_id"
   end
 
   create_table "penalty_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

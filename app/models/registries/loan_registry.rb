@@ -101,8 +101,8 @@ module Registries
       Date.parse(row["Disbursement Date"].to_s)
     end
 
-    def debit_account
-      AccountingModule::Account.find_by(name: "Temp Account (Uploading Purposes)")
+    def cash_on_hand_account
+      AccountingModule::Account.find_by(name: "Cash on Hand")
     end
 
     def payment_amount(row)
@@ -112,5 +112,6 @@ module Registries
     def balance_amount(row)
       row['Balance'].to_f
     end
+  end
   end
 end

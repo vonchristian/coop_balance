@@ -1,0 +1,10 @@
+<h3 class="card-title"> Net Surplus </h3>
+<% month_dates = [] %>
+<% (Date.today.beginning_of_year..Date.today.end_of_month).each do |date| %>
+  <% month_dates << date.end_of_month %>
+<% end %>
+<% monthly_balances_data = [] %>
+<% month_dates.uniq.each do |month| %>
+  <% monthly_balances_data << { month.strftime("%B") => @cooperative_service.accounts.net_surplus(to_date: month.end_of_month) } %>
+<% end %>
+<%= line_chart (Hash[*monthly_balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"}, thousands: ",", curve: false %>

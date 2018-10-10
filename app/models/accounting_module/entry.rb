@@ -35,7 +35,7 @@ module AccountingModule
     delegate :name, :first_and_last_name, to: :recorder, prefix: true, allow_nil: true
     delegate :name, to: :cooperative, prefix: true
     delegate :name, to: :office, prefix: true
-    delegate :name, to: :commercial_document, prefix: true
+    delegate :name, to: :commercial_document, prefix: true, allow_nil: true
     delegate :title, to: :cooperative_service, prefix: true, allow_nil: true
     def self.not_cancelled
       where(cancelled: false)
@@ -53,8 +53,8 @@ module AccountingModule
       EntriesQuery.new.entered_on(args)
     end
 
-    def self.recorded_by(employee_id)
-      where(recorder_id: employee_id )
+    def self.recorded_by(args={})
+      where(recorder: args[:recorder] )
     end
 
     def self.total

@@ -1,79 +1,102 @@
 <div class="row">
-  <div class="col-md-2">
-  </div>
-  <div class="col-md-8">
-    <div class="card">
-      <div class="card-header">
-
-           <h4><center><%= @voucher.description %></center></h4>
-
-            
-      <div class="card-body">
-          <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th>Description</th>
-                  <th>Account</th>
-                  <th>Debit</th>
-                  <th>Credit</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <% @voucher.voucher_amounts.each do |voucher_amount| %>
-                  <tr>
-                    <td><%= voucher_amount.description %></td>
-                    <td><%= voucher_amount.account_name %></td>
+<div class="col-md-8 offset-md-2">
+   <div class="card">
+     <div class="card-header">
+       <div class="row">
+         <div class="col-md-8">
+           <h3 class="card-title"><%= @voucher.description %></h3>
+           <p class="text-muted"> <i class="fa fa-clock"></i> <%= @voucher.date.strftime("%B %e, %Y") %></p>
+         </div>
+         <div class="col-md-4">
+           <%=link_to 'View (PDF)', voucher_path(@voucher, format: "pdf"), class: "btn btn-default float-right" %>
+         </div>
+       </div>
+     </div>
+     <div class="card-body">
+       <div class="row">
+         <div class="col-md-3">
+           Payee
+         </div>
+         <div class="col-md-9">
+           <%= @voucher.payee_name %>
+         </div>
+       </div>
+       <br>
+       <div class="row">
+         <div class="col-md-3">
+           Description
+         </div>
+         <div class="col-md-9">
+           <%= @voucher.description %>
+         </div>
+       </div>
+       <br>
+       <div class="row">
+         <div class="col-md-3">
+           Date
+         </div>
+         <div class="col-md-9">
+           <%= @voucher.date.strftime("%B %e, %Y") %>
+         </div>
+       </div>
+       <br>
+       <div class="table table-responsive">
+         <table class="table table-hover">
+             <thead>
+               <tr>
+                 <th>Debit</th>
+                 <th>Account</th>
+                 <th> <span class="float-right">
+                   Credit
+                 </span></th>
+                 <th></th>
+               </tr>
+             </thead>
+             <tbody>
+               <% @voucher.voucher_amounts.each do |voucher_amount| %>
+                 <tr>
+                   <td>
+                     <% if voucher_amount.debit? %>
+                       <%= number_to_currency voucher_amount.amount %>
+                     <% end %>
+                   </td>
+                   <td><%= voucher_amount.account_name %></td>
                     <td>
-                      <% if voucher_amount.debit? %>
-                        <%= number_to_currency voucher_amount.amount %>
-                      <% end %>
-                    </td>
-                     <td>
-                      <% if voucher_amount.credit? %>
-                        <span class="pull-right"><%= number_to_currency voucher_amount.amount %></span>
-                      <% end %>
-                    </td>
-                    <td>
-                    </td>
-                  </tr>
-                <% end %>
-                <% if @voucher.voucher_amounts.present? %>
-                   <tr>
-                    <td></td>
-                    <td>TOTAL</td>
-                    <td><b><%= number_to_currency @voucher.voucher_amounts.debit.sum(:amount) %></b></td>
-                    <td><b class="pull-right"><%= number_to_currency @voucher.voucher_amounts.credit.sum(:amount) %></b></td>
-                  </tr>
+                     <% if voucher_amount.credit? %>
+                       <span class="float-right"><%= number_to_currency voucher_amount.amount %></span>
+                     <% end %>
+                   </td>
+
+                 </tr>
+               <% end %>
+               <% if @voucher.voucher_amounts.present? %>
                   <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                <% end %>
-              </tbody>
-            </table>
+                   <td><b><%= number_to_currency @voucher.voucher_amounts.debit.sum(:amount) %></b></td>
+                   <td></td>
+                   <td><b class="float-right"><%= number_to_currency @voucher.voucher_amounts.credit.sum(:amount) %></b></td>
+                 </tr>
+               <% end %>
+             </tbody>
+           </table>
 
+       </div>
 
-            <%= simple_form_for [@voucher, @disbursement], url: :voucher_disbursements do |f| %>
-              <%= f.error_notification %>
-              <%= f.input :voucher_id, input_html: { value: @voucher.id }, as: :hidden %>
-              <%= f.input :voucherable_id, input_html: { value: @voucher.payee_id }, as: :hidden %>
-              <%= f.input :amount, input_html: { value: @voucher.payable_amount }, as: :hidden %>
-              <%= f.input :description, required: true, input_html: { value: @voucher.description } %>
-              <%= f.input :reference_number %>
-              <%= f.input :date, label: "Date Disbursed", as: :string, input_html: { class: "datepicker" } %>
-              <%= f.input :recorder_id, input_html: { value: current_user.id }, as: :hidden %>
-              <%= f.input :total_amount, input_html: { value: @voucher.voucher_amounts.where(account_id: User.cash_on_hand_accounts).sum(:amount) }, as: :hidden %>
-              <div class="box-footer">
-                <%= link_to 'Back', voucher_path(@voucher), class: "btn btn-default float-left" %>
-                <%= f.submit "Disburse Voucher", class: "btn btn-primary float-right" %>
-              </div>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+       <%= simple_form_for [@voucher, @disbursement], url: :voucher_disbursements, html: { autocomplete: 'off' } do |f| %>
+         <%= f.error_notification %>
+         <%= f.input :voucher_id, input_html: { value: @voucher.id }, as: :hidden %>
+         <%= f.input :voucherable_id, input_html: { value: @voucher.payee_id }, as: :hidden %>
+         <%= f.input :amount, input_html: { value: @voucher.payable_amount }, as: :hidden %>
+         <%= f.input :description, required: true, input_html: { value: @voucher.description } %>
+         <%= f.input :reference_number %>
+         <%= f.input :date, label: "Date Disbursed", as: :string, input_html: { class: "datepicker" } %>
+         <%= f.input :recorder_id, input_html: { value: current_user.id }, as: :hidden %>
+         <%= f.input :total_amount, input_html: { value: @voucher.voucher_amounts.where(account_id: User.cash_on_hand_accounts).sum(:amount) }, as: :hidden %>
+         <div class="box-footer">
+           <%= link_to 'Back', voucher_path(@voucher), class: "btn btn-default float-left" %>
+           <%= f.submit "Disburse Voucher", class: "btn btn-primary float-right" %>
+         </div>
+       <% end %>
+     </div>
+   </div>
+ </div>
 </div>

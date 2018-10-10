@@ -13,6 +13,7 @@ class Cooperative < ApplicationRecord
   has_many :entries, class_name: "AccountingModule::Entry"
   has_many :organizations
   has_many :vouchers
+  has_many :users 
   validates :name, :abbreviated_name, presence: true
   validates :name, uniqueness: true
   validates :registration_number, presence: true, uniqueness: true
