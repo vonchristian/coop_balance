@@ -20,7 +20,7 @@ module AccountingModule
     validates :name, uniqueness: true
     validates :code, uniqueness: { case_sensitive: false }
 
-    scope :assets, -> { where(type: 'AccountingModule::Asset') }
+    scope :assets,      -> { where(type: 'AccountingModule::Asset') }
     scope :liabilities, -> { where(type: 'AccountingModule::Liability') }
     scope :equities,    -> { where(type: 'AccountingModule::Equity') }
     scope :revenues,    -> { where(type: 'AccountingModule::Revenue') }
@@ -37,7 +37,7 @@ module AccountingModule
     def self.updated_at(args={})
       if args[:from_date] && args[:to_date]
         date_range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])
-        where('last_transaction_date' => (date_range.start_date)..(date_range.end_date))
+        active.where('last_transaction_date' => (date_range.start_date)..(date_range.end_date))
       end
     end
 
@@ -48,6 +48,16 @@ module AccountingModule
     def account_name
       name
     end
+
+    def set_as_inactive
+      if balance == 0
+        self.active = false
+        self.save
+      else
+        false
+      end
+    end
+
 
     def normalized_type
       type.gsub("AccountingModule::", "")
@@ -63,7 +73,7 @@ module AccountingModule
 
     def self.balance(options={})
       accounts_balance = BigDecimal.new('0')
-      accounts = self.all
+      accounts = self.active.all
       accounts.each do |account|
         if account.contra
           accounts_balance -= account.balance(options)
@@ -94,7 +104,7 @@ module AccountingModule
 
     def self.debits_balance(options={})
       accounts_balance = BigDecimal.new('0')
-      accounts = self.all
+      accounts = self.active.all
       accounts.each do |account|
         if account.contra
           accounts_balance -= account.debits_balance(options)
@@ -107,7 +117,7 @@ module AccountingModule
 
     def self.credits_balance(options={})
       accounts_balance = BigDecimal.new('0')
-      accounts = self.all
+      accounts = self.active.all
       accounts.each do |account|
         if account.contra
           accounts_balance -= account.credits_balance(options)
@@ -124,6 +134,15 @@ module AccountingModule
       else
         raise(NoMethodError, "undefined method 'trial_balance'")
       end
+    end
+
+    def self.net_surplus(args={})
+      AccountingModule::Revenue.active.balance(args) -
+      AccountingModule::Expense.active.balance(args)
+    end
+    def self.total_equity_and_liabilities(args={})
+      AccountingModule::Equity.balance(args) +
+      AccountingModule::Liability.balance(args)
     end
 
 

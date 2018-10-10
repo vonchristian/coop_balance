@@ -1,7 +1,7 @@
 module Vouchers
   class DisbursementProcessing
     include ActiveModel::Model
-    attr_accessor :date, :reference_number, :description, :payee_id, :employee_id
+    attr_accessor :date, :reference_number, :description, :payee_id, :employee_id, :cooperative_service_id
     validates :date, :reference_number, :description,  presence: true
     def disburse!
       ActiveRecord::Base.transaction do
@@ -11,6 +11,7 @@ module Vouchers
     private
     def save_disbursement
       entry = AccountingModule::Entry.new(
+        cooperative_service: find_cooperative_service,
         office: find_employee.office,
         cooperative: find_employee.cooperative,
         commercial_document: find_payee,
@@ -52,6 +53,9 @@ module Vouchers
 
     def find_employee
       User.find_by_id(employee_id)
+    end
+    def find_cooperative_service
+      CoopServicesModule::CooperativeService.find_by(id: cooperative_service_id)
     end
   end
 end

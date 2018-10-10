@@ -5,6 +5,7 @@ class IncomeStatementPdf < Prawn::Document
     @revenues     = args[:revenues]
     @expenses     = args[:expenses]
     @employee     = args[:employee]
+    @cooperative  = @employee.cooperative
     @from_date    = args[:from_date]
     @to_date      = args[:to_date]
     @view_context = args[:view_context]
@@ -29,8 +30,8 @@ class IncomeStatementPdf < Prawn::Document
         text "#{cooperative.address}", size: 8
     end
     bounding_box [0, 770], width: 400 do
-      text "Income Statement", style: :bold, size: 12
-
+      text "INCOME STATEMENT", style: :bold, size: 12
+      text "#{from_date.strftime("%B %e, %Y")} - #{to_date.strftime("%B %e, %Y")}", size: 10
     end
     move_down 30
     stroke do
@@ -85,7 +86,8 @@ class IncomeStatementPdf < Prawn::Document
       stroke_horizontal_rule
       move_down 15
     end
-    table([["NET SURPLUS", "#{price(AccountingModule::Revenue.balance(to_date: to_date) - AccountingModule::Expense.balance(to_date: to_date))}"]], cell_style: { inline_format: true, size: 11, font: "Helvetica", :padding => [2,5,2,5]}, column_widths: [300, 100]) do
+    
+    table([["NET SURPLUS", "#{price(AccountingModule::Account.net_surplus(to_date: to_date))}"]], cell_style: { inline_format: true, size: 11, font: "Helvetica", :padding => [2,5,2,5]}, column_widths: [300, 100]) do
       row(0).font_style = :bold
       cells.borders = []
       column(1).align =:right

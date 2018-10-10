@@ -2,19 +2,105 @@
   <div class="col-md-8 offset-md-2">
     <div class="card">
       <div class="card-header">
-        <h3 class="card-title"> Entry Details </h3>
+        <div class="row">
+          <div class="col-md-9">
+            <h3 class="card-title"> <%= @entry.description %> </h3>
+            <span class="text-muted">
+              <i class="fa fa-clock"></i> <%= @entry.entry_date.strftime("%B %e, %Y")%> &nbsp; &nbsp;
+              <i class="fa fa-user"></i> <%= @entry.recorder_first_and_last_name.try(:titleize) %>
+            </span>
+
+          </div>
+          <div class="col-md-3">
+            <div class="dropdown">
+              <button class="btn btn-outline-danger dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Options
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                <% if current_user.bookkeeper? || current_user.accountant? || current_user == @entry.recorder %>
+                  <% if !@entry.cancelled? %>
+                    <%= link_to "Delete Entry", accounting_module_entry_path(@entry), method: :delete, data: { confirm: "Are you sure you want to delete this entry?"}, class: "dropdown-item" %>
+                    <%= link_to 'Cancel Entry', accounting_module_entry_cancellations_path(@entry), method: :create, class: "dropdown-item", data: { confirm: "Are you sure you want to cancel this entry?"} %>
+                    <%= link_to "Edit Entry", edit_accounting_module_entry_path(@entry), class: "dropdown-item" %>
+
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="card-body">
-        <%= render "accounting_module/amounts_update_header" %>
-      </div>
-      <hr class="no-margin">
-      <div class="card-body">
+        <div class="row">
+          <div class="col-md-4">
+            <label class="no-margin-bottom">Member/Payee</label>
+          </div>
+          <div class="col-md-8">
+            <%#= image_tag(@entry.commercial_document.avatar.variant(resize: '30x30'), class: "img-circle") if @entry.commercial_document.avatar.attached? %> &nbsp; <%= @entry.commercial_document.try(:name) %>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-4">
+            <label class="no-margin-bottom">Date</label>
+          </div>
+          <div class="col-md-8">
+            <%=@entry.entry_date.strftime("%B %e, %Y") %>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-4">
+            <label class="no-margin-bottom">Description</label>
+          </div>
+          <div class="col-md-8">
+            <%=@entry.description %>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-4">
+            <label class="no-margin-bottom">Reference Number</label>
+          </div>
+          <div class="col-md-8">
+           #<%= @entry.reference_number %>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-4">
+            <label class="no-margin-bottom">Employee</label>
+          </div>
+          <div class="col-md-8">
+            <%= @entry.recorder.try(:first_and_last_name) %>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-4">
+            <label class="no-margin-bottom">Office</label>
+          </div>
+          <div class="col-md-8">
+            <%= @entry.office_name %>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-4">
+            <label class="no-margin-bottom">Cooperative Service</label>
+          </div>
+          <div class="col-md-8">
+            <%= @entry.cooperative_service_title %>
+          </div>
+        </div>
+        <hr>
+      <h3 class="card-title"> Debits and Credits </h3>
         <table class="table">
           <thead>
             <tr>
-              <th>Debit</th>
+              <th><span class="float-right">Debit</span></th>
               <th>Account</th>
-              <th>Credit</th>
+              <th><span class="float-right">Credit</span></th>
               <th></th>
             </tr>
           </thead>
@@ -22,7 +108,7 @@
             <% @entry.amounts.each do |amount| %>
               <tr>
                 <td>
-                  <% if amount.is_a?(AccountingModule::DebitAmount) %>
+                  <% if amount.debit? %>
                     <span class="float-right">
                       <%= number_to_currency amount.amount %>
                     </span>
@@ -30,7 +116,7 @@
                 </td>
                 <td><%= amount.account_name %></td>
                 <td>
-                  <% if amount.is_a?(AccountingModule::CreditAmount) %>
+                  <% if amount.credit? %>
                     <span class="float-right">
                       <%= number_to_currency amount.amount %>
                     </span>
@@ -38,70 +124,59 @@
                 </td>
                 <td>
                   <% if current_user.bookkeeper? || current_user.accountant? || current_user == @entry.recorder %>
-                    <% if !@entry.cleared? %>
-                      <%=link_to "Update", amount.is_a?(AccountingModule::DebitAmount) ?edit_accounting_module_debit_amount_path(amount) : edit_accounting_module_credit_amount_path(amount), class: "btn btn-outline-warning btn-xs" %>
+                    <% if !@entry.cancelled? %>
+                      <%=link_to "Update", amount.is_a?(AccountingModule::DebitAmount) ?edit_accounting_module_debit_amount_path(amount) : edit_accounting_module_credit_amount_path(amount), class: "btn btn-outline-warning btn-sm" %>
                     <% end %>
                   <% end %>
                 </td>
               </tr>
             <% end %>
             <tr>
-              <td><%= number_to_currency @entry.debit_amounts.sum(:amount) %></td>
+              <td>
+                <span class="float-right">
+                  <b><%= number_to_currency @entry.debit_amounts.sum(:amount) %></b>
+                </span>
+              </td>
               <td></td>
-              <td><%= number_to_currency @entry.credit_amounts.sum(:amount) %></td>
+              <td>
+                <span class="float-right">
+                  <b><%= number_to_currency @entry.credit_amounts.sum(:amount) %></b></span>
+                </td>
               <td></td>
             </tr>
           </tbody>
         </table>
-          <hr>
-          <% if current_user.bookkeeper? || current_user.accountant? || @entry.recorder==current_user %>
-            <% if !@entry.cleared? %>
-              <%= link_to "Edit Entry", edit_accounting_module_entry_path(@entry), class: "btn btn-warning float-right" %>
-            <% end %>
-          <% end %>
-
-          <% if current_user.bookkeeper? || current_user.accountant? || current_user == @entry.recorder %>
-
-            <% if !@entry.cleared? %>
-              <%= link_to "Delete Entry", accounting_module_entry_path(@entry), method: :delete, data: { confirm: "Are you sure you want to delete this entry?"}, class: "btn btn-danger" %>
-            <% end %>
-          <% end %>
-          <% if current_user.bookkeeper? || current_user.accountant? %>
-          <hr>
-            <% if @entry.cleared? %>
-          <h4 class="box-details">Clearance Details </h4>
+        <hr>
+        <% if current_user.bookkeeper? || current_user.accountant? %>
+            <% if @entry.cancelled? %>
+          <h4 class="card-title">Cancellation Details </h4>
 
               <div class="row">
                 <div class="col-md-6">
                   <b>Status</b>
                 </div>
                 <div class="col-md-6">
-                  <span class="label bg-green">Cleared</span>
+                  <span class="badge bg-danger">Cancelled</span>
                 </div>
               </div>
               <br>
               <div class="row">
                 <div class="col-md-6">
-                  <b>Clearance Date</b>
+                  <b>Cancelled Date</b>
                 </div>
                 <div class="col-md-6">
-                  <%= @entry.cleared_at.strftime("%B %e, %Y") %>
+                  <%= @entry.cancelled_at.strftime("%B %e, %Y") %>
                 </div>
               </div>
               <br>
               <div class="row">
                 <div class="col-md-6">
-                  <b>Cleared By</b>
+                  <b>Cancelled By</b>
                 </div>
                 <div class="col-md-6">
-                  <%= @entry.cleared_by.try(:full_name) %>
+                  <%= @entry.cancelled_by.try(:full_name) %>
                 </div>
               </div>
-            <% else %>
-              <span class="text-danger "> <i class="fa fa-info-circle"></i> Please double check this entry before clearing. Once an entry is cleared it cannot be deleted. </span>
-              <br>
-              <br>
-              <%= link_to 'Clear this Entry', accounting_module_entry_clearances_path(@entry), method: :create, class: "btn btn-success btn-block", data: { confirm: "Are you sure you want to clear this entry?"} %>
             <% end %>
           <% end %>
         </div>

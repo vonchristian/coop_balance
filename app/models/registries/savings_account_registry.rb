@@ -6,33 +6,41 @@ module Registries
       header = savings_spreadsheet.row(2)
       (3..savings_spreadsheet.last_row).each do |i|
         row = Hash[[header, savings_spreadsheet.row(i)].transpose]
-        upload_savings(row)
+        if row["Depositor Type"] == "Member"
+          depositor = Member.find_or_create_by(last_name: row["Last Name"], first_name: row["First Name"])
+        elsif row["Depositor Type"] == "Organization"
+          depositor = Organization.find_or_create_by(name: row["Last Name"])
+        end
+        upload_savings(depositor, row)
       end
     end
-    def upload_savings(row)
-       savings = MembershipsModule::Saving.create!(
-        depositor: find_depositor(row),
+    def upload_savings(depositor, row)
+      unless row["Balance"].to_f.zero? || row["Balance"].nil?
+        savings = MembershipsModule::Saving.create!(
+        depositor: depositor,
+        office: self.employee.office,
         saving_product: find_saving_product(row),
         last_transaction_date: cut_off_date,
         account_number: SecureRandom.uuid)
-       create_entry(savings, row)
+        create_entry(depositor, savings, row)
+      end
     end
-    def create_entry(savings, row)
+    def create_entry(depositor, savings, row)
       AccountingModule::Entry.create!(
-      commercial_document: find_depositor(row),
-      office: self.employee.office,
-      cooperative: self.employee.office,
-      recorder: self.employee,
-      description: "Forwarded balance of savings deposit as of #{cut_off_date}",
-      entry_date: cut_off_date,
-      debit_amounts_attributes: [
-        account: debit_account,
-        amount: row["Balance"].to_f,
-        commercial_document: savings],
-      credit_amounts_attributes: [
-        account: credit_account(row),
-        amount: row["Balance"].to_f,
-        commercial_document: savings])
+        commercial_document: depositor,
+        office: self.employee.office,
+        cooperative: self.employee.cooperative,
+        recorder: self.employee,
+        description: "Forwarded balance of savings deposit as of #{cut_off_date.strftime('%B %e, %Y')}",
+        entry_date: cut_off_date,
+        debit_amounts_attributes: [
+          account: debit_account,
+          amount: row["Balance"].to_f,
+          commercial_document: savings],
+        credit_amounts_attributes: [
+          account: credit_account(row),
+          amount: row["Balance"].to_f,
+          commercial_document: savings])
     end
 
     def find_saving_product(row)
@@ -47,9 +55,8 @@ module Registries
       end
     end
 
-
     def debit_account
-      AccountingModule::Account.find_by(name: "Cash on Hand")
+      AccountingModule::Account.find_by(name: "Temp Account (Uploading Purposes)")
     end
 
     def credit_account(row)

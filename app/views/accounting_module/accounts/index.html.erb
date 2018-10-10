@@ -1,115 +1,31 @@
-<div class="row">
-  <div class="col-md-12">
-    <div class="card">
-      <div class="card-header">
-        <div class="row">
-          <div class="col-md-2">
-            <p class="text-muted">ACCOUNTS </p>
-          </div>
-          <div class="col-md-6">
-            <%=form_tag accounting_module_accounts_path, method: :get, class: "sidebar-form" do %>
-            <div class="input-group">
-              <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Account..", id: 'account-search-form' %>
-              <span class="input-group-btn">
-                <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
-                  <i class="fa fa-search"></i>
-                <% end %>
-              </span>
-            </div>
-          <% end %>
-          </div>
-          <div class="col-md-4">
-            <%= link_to new_accounting_module_account_path do %>
-              <span class="btn btn-primary btn-flat pull-right"><i class="fa fa-plus-circle"></i> New Account</span>
-            <% end %>
-          </div>
-        </div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="row">
+      <div class="col-md-2">
+        <h3 class="card-title">Accounts </h3>
       </div>
-      <div class="card-body">
-        <div class="table table-responsive">
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th> Account Code </th>
-                <th> Account </th>
-                <th></th>
-                <th> Type </th>
-                <th> Debits Balance </th>
-                <th> Credits Balance </th>
-                <th> Balance </th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @accounts.each do |account| %>
-                  <% if account.subsidiary_accounts.present? %>
-                     <tr data-link="<%=accounting_module_account_path(account)%>" class="myClass">
-                      <td> <%= account.code %><br>
-                        <% account.subsidiary_accounts.each do |sub_account| %>
-                        &nbsp; &nbsp;  <%= sub_account.code %><br>
-                        <% end %>
-                      </td>
-                      <td> <%= account.name %><br>
-                        <% account.subsidiary_accounts.each do |sub_account| %>
-                        &nbsp; &nbsp;  <%= sub_account.name %><br>
-                        <% end %>
-                      </td>
-                      <td>
-
-                      </td>
-                      <td> <%= account.type.gsub("AccountingModule::", "")%></td>
-                      <td> <%= number_to_currency account.debits_balance %><br>
-                        <% account.subsidiary_accounts.each do |sub_account| %>
-                        &nbsp; &nbsp;  <%= number_to_currency sub_account.debits_balance %><br>
-                        <% end %>
-                      </td>
-                      <td> <%= number_to_currency account.credits_balance %><br>
-                        <% account.subsidiary_accounts.each do |sub_account| %>
-                        &nbsp; &nbsp;  <%= number_to_currency sub_account.credits_balance %><br>
-                        <% end %>
-                      </td>
-                      <td> <%= number_to_currency account.balance %><br>
-                        <% account.subsidiary_accounts.each do |sub_account| %>
-                        &nbsp; &nbsp;  <%= number_to_currency sub_account.credits_balance %><br>
-                        <% end %>
-                      </td>
-                       <td>
-                          <% if account.active? %>
-                          <%= link_to accounting_module_account_deactivations_path(account), method: :post do %>
-                            <i class="fa fa-toggle-on fa-2x"></i>
-                          <% end %>
-                          <% else %>
-                          <%= link_to accounting_module_account_activations_path(account), method: :post do %>
-                          <i class="fa fa-toggle-off text-danger fa-2x "></i>
-                          <% end %>
-                          </td>
-                        <% end %>
-                    </tr>
-                  <% elsif account.main_account.blank? %>
-                     <tr data-link="<%=accounting_module_account_path(account)%>" class="myClass">
-                      <td> <%= account.code %></td>
-                      <td> <%= account.name %><td>
-                      <td> <%= account.type.gsub("AccountingModule::", "")%></td>
-                      <td> <%= number_to_currency account.debits_balance %></td>
-                      <td> <%= number_to_currency account.credits_balance %></td>
-                      <td> <%= number_to_currency account.balance %></td>
-
-
-
-                    </tr>
-                  <% end %>
-              <% end %>
-            </tbody>
-          </table>
-          <center><%= will_paginate @accounts %></center>
+      <div class="col-md-6">
+        <%=form_tag accounting_module_accounts_path, method: :get, class: "sidebar-form" do %>
+        <div class="input-group">
+          <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Account..", id: 'account-search-form' %>
+          <span class="input-group-btn">
+            <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+              <i class="fa fa-search"></i>
+            <% end %>
+          </span>
         </div>
+      <% end %>
+      </div>
+      <div class="col-md-4">
+        <%= link_to new_accounting_module_account_path do %>
+          <span class="btn btn-primary btn-flat float-right"><i class="fa fa-plus-circle"></i> New Account</span>
+        <% end %>
       </div>
     </div>
   </div>
 </div>
-<script type="text/javascript">
-  $("tr").click(function() {
-  window.location = $(this).data("link")
-});
-  $('.myClass').css('cursor', 'pointer');
-</script>
+<% @accounts.each do |account| %>
+  <%= render 'accounting_module/accounts/partials/header', account: account %>
+<% end %>
+<center><%= will_paginate @accounts %></center>

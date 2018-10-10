@@ -8,7 +8,7 @@
         </center>
       </div>
       <div class="card-body">
-        <%= simple_form_for [@employee, @time_deposit], url: :employee_time_deposits do |f| %>
+        <%= simple_form_for [@employee, @time_deposit], url: :employee_time_deposits, html: { autocomplete: 'off' } do |f| %>
           <%= f.error_notification %>
           <%= f.input :date, as: :string, input_html: { value: Time.zone.now.strftime("%B %e, %Y"), class: "datepicker" } %>
           <%= f.input :amount, as: :currency %>

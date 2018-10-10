@@ -2,12 +2,28 @@
   <div class="card">
     <div class="card-body">
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-1">
+          <% if entry.commercial_document.present? %>
+            <% if entry.commercial_document.avatar.present? && entry.commercial_document.avatar.attached? %>
+              <%= image_tag(entry.commercial_document.avatar, class: "img-circle", height: 45, width: 45) %>
+            <% end %>
+          <% end %>
+        </div>
+        <div class="col-md-2">
           <%= entry.commercial_document_name %>
         </div>
         <div class="col-md-6">
           <%= entry.description %><br>
-          <small class="text-muted"><i class="fa fa-clock"></i> <%= entry.entry_date.strftime("%B %e, %Y") %> &nbsp; &nbsp; # <%= entry.reference_number %></small>
+          <small class="text-muted"><i class="fa fa-clock"></i> <%= entry.entry_date.strftime("%B %e, %Y") %> &nbsp; &nbsp;
+            # <%= entry.reference_number %> &nbsp;
+          <i class="fa fa-user-circle"></i> <%= entry.recorder_first_and_last_name %></small>
+          <br>
+          <% if entry.cancelled? %>
+            <span class="badge bg-danger">Cancelled </span>
+          <% end %>
+          <% if entry.cooperative_service.present? %>
+            <small class="text-muted"> <%= entry.cooperative_service_title %></small>
+          <% end %>
         </div>
         <div class="col-md-3">
           <%= number_to_currency  entry.debit_amounts.sum(:amount) %>

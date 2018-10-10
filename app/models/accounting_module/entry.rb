@@ -9,9 +9,10 @@ module AccountingModule
     belongs_to :official_receipt, optional: true
 
     belongs_to :commercial_document, :polymorphic => true, touch: true
-    belongs_to :office, class_name: "CoopConfigurationsModule::Office"
+    belongs_to :office, class_name: "CoopConfigurationsModule::Offices::MainOffice"
     belongs_to :cooperative
-    belongs_to :cleared_by, class_name: "User", foreign_key: 'cleared_by_id'
+    belongs_to :cooperative_service, optional: true, class_name: "CoopServicesModule::CooperativeService"
+    belongs_to :cancelled_by, class_name: "User", foreign_key: 'cancelled_by_id'
     belongs_to :recorder, foreign_key: 'recorder_id', class_name: "User"
 
     has_many :credit_amounts, extend: AccountingModule::BalanceFinder, :class_name => 'AccountingModule::CreditAmount', :inverse_of => :entry, dependent: :destroy
@@ -34,9 +35,10 @@ module AccountingModule
     delegate :name, :first_and_last_name, to: :recorder, prefix: true, allow_nil: true
     delegate :name, to: :cooperative, prefix: true
     delegate :name, to: :office, prefix: true
-    delegate :name, to: :commercial_document, prefix: true
-    def self.not_cleared
-      where(cleared: false)
+    delegate :name, to: :commercial_document, prefix: true, allow_nil: true
+    delegate :title, to: :cooperative_service, prefix: true, allow_nil: true
+    def self.not_cancelled
+      where(cancelled: false)
     end
 
     def self.credit_amounts
@@ -46,13 +48,13 @@ module AccountingModule
       AccountingModule::DebitAmount.where(id: self.pluck(:id))
     end
 
-    
+
     def self.entered_on(args={})
       EntriesQuery.new.entered_on(args)
     end
 
-    def self.recorded_by(employee_id)
-      where(recorder_id: employee_id )
+    def self.recorded_by(args={})
+      where(recorder: args[:recorder] )
     end
 
     def self.total

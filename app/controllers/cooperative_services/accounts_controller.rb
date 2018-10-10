@@ -5,7 +5,7 @@ module CooperativeServices
       if params[:search].present?
         @accounts = AccountingModule::Account.text_search(params[:search]).paginate(page: params[:page], per_page: 50)
       else
-        @accounts = AccountingModule::Account.all.order(:code).paginate(page: params[:page], per_page: 50)
+        @accounts = AccountingModule::Account.active.order(:code)
       end
     end
   end

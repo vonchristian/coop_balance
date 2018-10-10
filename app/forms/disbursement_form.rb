@@ -22,7 +22,7 @@ class DisbursementForm
       entry_date: date)
     find_voucher.voucher_amounts.debit.each do |amount|
       debit_amount = AccountingModule::DebitAmount.new(
-        account_id: amount.account_id,
+        account: amount.account,
         amount: amount.amount,
         commercial_document: amount.commercial_document)
       entry.debit_amounts << debit_amount

@@ -10,6 +10,10 @@ FactoryBot.define do
     association :cooperative
     association :office
     association :cash_on_hand_account, factory: :asset
+    after(:build) do |u|
+      u.avatar.attach(io: File.open(Rails.root.join('spec', 'support', 'images', 'default.png')), filename: 'avatar.png', content_type: 'image/png')
+    end
+
     factory :loan_officer do
       role 'loan_officer'
     end

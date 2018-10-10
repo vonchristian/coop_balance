@@ -14,23 +14,25 @@ module Registries
     def upload_loan(row)
       if loan_amount(row).present? && term(row).present? && disbursement_date(row).present?
         loan = LoansModule::Loan.create!(
-                  forwarded_loan: true,
-                  cooperative: self.employee.cooperative,
-                  office: self.employee.office,
-                  borrower: find_borrower(row),
-                  loan_product: find_loan_product(row),
-                  barangay: find_barangay(row),
-                  organization: find_organization(row),
-                  loan_amount: loan_amount(row),
-                  disbursement_date: disbursement_date(row)
-              )
+          forwarded_loan: true,
+          cooperative: self.employee.cooperative,
+          office: self.employee.office,
+          borrower: find_borrower(row),
+          loan_product: find_loan_product(row),
+          barangay: find_barangay(row),
+          organization: find_organization(row),
+          municipality: find_municipality(row),
+          loan_amount: loan_amount(row),
+          disbursement_date: disbursement_date(row)
+        )
         Term.create(
           term: term(row),
           termable: loan,
           effectivity_date: disbursement_date(row),
           maturity_date: maturity_date(row)
-          )
-        #disbursement
+        )
+
+        #disbursement entry
         AccountingModule::Entry.create!(
         office: self.employee.office,
         cooperative: self.employee.cooperative,
@@ -58,7 +60,7 @@ module Registries
 
     def find_borrower(row)
       if row["Borrower Type"] == "Member"
-        Member.find_or_create_by(last_name: row["Last Name"], first_name: row["First Name"])
+        Member.find_or_create_by(last_name: row["Last Name"], first_name: row["First Name"], middle_name: row["Middle Name"])
       elsif row["Borrower Type"] == "Organization"
         Organization.find_or_create_by(name: row["Last Name"])
       end
@@ -77,7 +79,11 @@ module Registries
     end
 
     def find_barangay(row)
-      Addresses::Barangay.find_or_create_by(name: row[7].to_s)
+      Addresses::Barangay.find_or_create_by(name: row["Barangay"])
+    end
+
+    def find_municipality(row)
+      Addresses::Municipality.find_or_create_by(name: row["Municipality"])
     end
 
     def loan_amount(row)
@@ -89,7 +95,7 @@ module Registries
     end
 
     def maturity_date(row)
-      disbursement_date(row) + term(row).months
+      disbursement_date(row) + term(row).to_i.months
     end
 
     def disbursement_date(row)
@@ -107,5 +113,6 @@ module Registries
     def balance_amount(row)
       row['Balance'].to_f
     end
+  end
   end
 end

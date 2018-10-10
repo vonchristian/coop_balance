@@ -1,0 +1,18 @@
+<h3 class="card-title"><%=name%></h3>
+<table class="table table-hover">
+  <tbody>
+    <% running_total = 0 %>
+    <% accounts.each do |account| %>
+      <% balance = account.balance(cooperative_service_id: @cooperative_service.id, to_date: @to_date) %>
+      <tr>
+        <td><%=h account.name %></td>
+        <td><%=number_to_currency h balance.round(2) %></td>
+        <% running_total += balance %>
+      </tr>
+    <% end %>
+    <tr>
+      <td><b>Total <%= name %></b></td>
+      <td><%= number_to_currency running_total.round(2) %></td>
+    </tr>
+  </tbody>
+</table>

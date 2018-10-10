@@ -1,11 +1,16 @@
  <div class="row">
-  <div class="col-md-2">
-  </div>
- <div class="col-md-8">
+ <div class="col-md-8 offset-md-2">
     <div class="card">
       <div class="card-header">
-
-        <h3 class="card-title"><center><%= @voucher.description %></center></h3>
+        <div class="row">
+          <div class="col-md-8">
+            <h3 class="card-title"><%= @voucher.description %></h3>
+            <p class="text-muted"> <i class="fa fa-clock"></i> <%= @voucher.date.strftime("%B %e, %Y") %></p>
+          </div>
+          <div class="col-md-4">
+            <%=link_to 'View (PDF)', voucher_path(@voucher, format: "pdf"), class: "btn btn-default float-right" %>
+          </div>
+        </div>
       </div>
       <div class="card-body">
         <div class="row">
@@ -39,26 +44,26 @@
           <table class="table table-hover">
               <thead>
                 <tr>
-                  <th>Description</th>
-                  <th>Account</th>
                   <th>Debit</th>
-                  <th>Credit</th>
+                  <th>Account</th>
+                  <th> <span class="float-right">
+                    Credit
+                  </span></th>
                   <th></th>
                 </tr>
               </thead>
               <tbody>
                 <% @voucher.voucher_amounts.each do |voucher_amount| %>
                   <tr>
-                    <td><%= voucher_amount.description %></td>
-                    <td><%= voucher_amount.account_name %></td>
                     <td>
                       <% if voucher_amount.debit? %>
                         <%= number_to_currency voucher_amount.amount %>
                       <% end %>
                     </td>
+                    <td><%= voucher_amount.account_name %></td>
                      <td>
                       <% if voucher_amount.credit? %>
-                        <span class="pull-right"><%= number_to_currency voucher_amount.amount %></span>
+                        <span class="float-right"><%= number_to_currency voucher_amount.amount %></span>
                       <% end %>
                     </td>
                     <td>
@@ -67,10 +72,9 @@
                 <% end %>
                 <% if @voucher.voucher_amounts.present? %>
                    <tr>
-                    <td></td>
-                    <td>TOTAL</td>
                     <td><b><%= number_to_currency @voucher.voucher_amounts.debit.sum(:amount) %></b></td>
-                    <td><b class="pull-right"><%= number_to_currency @voucher.voucher_amounts.credit.sum(:amount) %></b></td>
+                    <td></td>
+                    <td><b class="float-right"><%= number_to_currency @voucher.voucher_amounts.credit.sum(:amount) %></b></td>
                   </tr>
                   <tr>
                     <td></td>
@@ -84,9 +88,10 @@
 
         </div>
         <br>
-        <%=link_to 'View (PDF)', voucher_path(@voucher, format: "pdf"), class: "btn float-left" %>
-        <% if !@voucher.disbursed? %>
-          <%= link_to 'Disburse Voucher', new_voucher_disbursement_path(@voucher), class: "btn btn-primary float-right" %>
+        <% if !@voucher.disbursed?%>
+          <% if current_user.cash_on_hand_account.present? %>
+            <%= link_to 'Disburse Voucher', new_voucher_disbursement_path(@voucher), class: "btn btn-primary float-right" %>
+          <% end %>
         <% else %>
           <span class="badge bg-success float-right"> Disbursed </span>
         <% end %>

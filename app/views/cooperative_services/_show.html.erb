@@ -1,6 +1,4 @@
- <div class="container-fluid">
-  <div class="row">
-    <div class="col-xs-12">
+
       <div class="card">
         <section class="card-header">
           <h3 class="card-title"> <%= @cooperative_service.title %></h3>
@@ -8,12 +6,25 @@
 
         <div class="card-body">
           <ul class="nav nav-tabs">
-            <li class="<%='active' if current_page?(cooperative_service_balance_sheets_path(@cooperative_service))%>"><%=link_to 'Balance Sheet', cooperative_service_balance_sheets_path(@cooperative_service) %></li>
-            <li class="<%='active' if current_page?(cooperative_service_settings_path(@cooperative_service))%>"><%=link_to 'Settings', cooperative_service_settings_path(@cooperative_service) %></li>
+            <li class="nav-item"><%= link_to 'Info', cooperative_service_path(@cooperative_service), class: "nav-link #{ 'active' if current_page?(cooperative_service_path(@cooperative_service))}" %>
+            <li class="nav-item"><%=link_to 'Entries', cooperative_service_entries_path(@cooperative_service), class: "nav-link #{'active' if current_page?(cooperative_service_entries_path(@cooperative_service))}" %></li>
+            <li class="nav-item"><%=link_to 'Income Statement', cooperative_service_income_statements_path(@cooperative_service), class: "nav-link #{'active' if current_page?(cooperative_service_income_statements_path(@cooperative_service))}" %></li>
+            <li class="nav-item"><%=link_to 'Balance Sheet', cooperative_service_balance_sheets_path(@cooperative_service), class: "nav-link #{'active' if current_page?(cooperative_service_balance_sheets_path(@cooperative_service))}" %></li>
+            <li class="nav-item"><%=link_to 'Settings', cooperative_service_settings_path(@cooperative_service), class: "nav-link #{'active' if current_page?(cooperative_service_settings_path(@cooperative_service))}" %></li>
           </ul>
-          <div class="tab-content">
+          <br>
+          <% if current_page?(cooperative_service_path(@cooperative_service)) %>
+            <%= render 'cooperative_services/partials/info' %>
+          <% end %>
+          <% if current_page?(cooperative_service_entries_path(@cooperative_service)) %>
+            <%= render 'cooperative_services/partials/entries', cooperative_service: @cooperative_service %>
+          <% end %>
             <% if current_page? cooperative_service_balance_sheets_path(@cooperative_service) %>
               <%= render 'cooperative_services/partials/balance_sheets' %>
+            <% end %>
+            <% if current_page? cooperative_service_income_statements_path(@cooperative_service) %>
+              <%= render 'cooperative_services/partials/income_statements', cooperative_service: @cooperative_service %>
+
             <% end %>
             <% if current_page? cooperative_service_settings_path(@cooperative_service) %>
               <%= render 'cooperative_services/partials/settings' %>
@@ -21,5 +32,3 @@
         </div>
       </div>
     </div>
-  </div>
-</div>

@@ -22,9 +22,9 @@
       {name: "Expenses", data: (Hash[*expenses_accounts_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}) }
     ], curve: false, thousands: "," %>
     <hr>
-<h4> Top 10 Expenses </h4>
-<% expenses_data = [] %>
-<% AccountingModule::Expense.active.all.sort_by(&:balance).reverse.first(10).each do |expense_account| %>
-<% expenses_data << { expense_account.name => expense_account.balance } %>
+<h3 class="card-title"> Net Surplus </h3>
+<% net_surplus_data = [] %>
+<% month_dates.uniq.each do |month| %>
+  <% net_surplus_data << { month.strftime("%B") => AccountingModule::Account.net_surplus(to_date: month.end_of_month) } %>
 <% end %>
-<%= pie_chart (Hash[*expenses_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}) %>
+<%= line_chart (Hash[*net_surplus_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"}, thousands: ",", curve: false %>

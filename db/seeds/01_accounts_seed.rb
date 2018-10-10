@@ -6,6 +6,10 @@ AccountingModule::Asset.create(code: 111103, name: "Cash on Hand (Vault)")
 
 AccountingModule::Asset.create(code: 11120, name: "Checks and Other Cash Items (COCI)")
 AccountingModule::Asset.create(code: 11130, name: "Cash in Bank")
+AccountingModule::Asset.create(code: 111301, name: "Cash in Bank(LMDC)")
+AccountingModule::Asset.create(code: 111302, name: "Cash in Bank(LBP)")
+
+
 AccountingModule::Asset.create(code: 11140, name: "Cash in Cooperative Federation")
 AccountingModule::Asset.create(code: 11150, name: "Petty Cash Fund")
 AccountingModule::Asset.create(code: 11160, name: "Revolving Fund")
@@ -55,6 +59,14 @@ AccountingModule::Asset.create(code: 117156, contra: true, name: "Unearned Inter
 
 AccountingModule::Asset.create(code: 11716, name: "Allowance for Probable Losses on Loans")
 AccountingModule::Asset.create(code: 11721, name: "Accounts Receivables Trade - Current")
+AccountingModule::Asset.create(code: 117211, name: "Catering Receivables - Current")
+AccountingModule::Asset.create(code: 117212, name: "Restaurant Receivables - Current")
+AccountingModule::Asset.create(code: 117213, name: "Catering Receivables - Prior")
+AccountingModule::Asset.create(code: 117214, name: "Restaurant Receivables - Prior")
+
+
+
+
 
 AccountingModule::Asset.create(code: 11722, name: "Accounts Receivables Trade - Past Due")
 AccountingModule::Asset.create(code: 11723, name: "Accounts Receivables Trade - Restructured")
@@ -72,6 +84,8 @@ AccountingModule::Asset.create(code: 11750,  name: "Advances to Officers, Employ
 AccountingModule::Asset.create(code: 11760,  name: "Due from Accountable Officers and Employees")
 AccountingModule::Asset.create(code: 11770,  name: "Finance Lease Receivable")
 AccountingModule::Asset.create(code: 11780,  name: "Other Current Receivables")
+AccountingModule::Asset.create(code: 117801,  name: "Other Current Receivables - Bagsakan Center")
+
 AccountingModule::Asset.create(code: 11800,  name: "Inventories")
 AccountingModule::Asset.create(code: 11810,  name: "Merchandise Inventory")
 
@@ -97,6 +111,12 @@ AccountingModule::Asset.create(code: 13210,  name: "Accumulated Gains/Losses - A
 AccountingModule::Asset.create(code: 13220,  name: "Allowance for Probable Losses - AFS FA")
 AccountingModule::Asset.create(code: 13300,  name: "Unquoted Debt Securities Classified As Loans")
 AccountingModule::Asset.create(code: 13400,  name: "Investment in Non-Marketable Equity Securities (INMES)")
+AccountingModule::Asset.create(code: 134001,  name: "Investment in Non-Marketable Equity Securities (INMES) - NORLUCEDEC")
+AccountingModule::Asset.create(code: 134002,  name: "Investment in Non-Marketable Equity Securities (INMES) - IFEDECO")
+AccountingModule::Asset.create(code: 134003,  name: "Investment in Non-Marketable Equity Securities (INMES) - CLIMBS")
+
+
+
 AccountingModule::Asset.create(code: 13410,  name: "Allowance for Probable Losses - INMES")
 AccountingModule::Asset.create(code: 13500,  name: "Investment in Subsidiaries/Associates and Joint Ventures")
 AccountingModule::Asset.create(code: 13600,  name: "Investment Property")
@@ -124,6 +144,10 @@ AccountingModule::Asset.create(code: 14141,  name: "Accumulated Depreciation - B
  AccountingModule::Asset.create(code: 14190,  name: "Machineries, Tools and Equipment")
  AccountingModule::Asset.create(code: 14191,  name: "Accumulated Depreciation - Machineries, Tools and Equipment", contra: true)
  AccountingModule::Asset.create(code: 14200,  name: "Kitchen, Canteen and Catering Equipment/Utensils")
+ AccountingModule::Asset.create(code: 142001,  name: "Catering Equipment")
+ AccountingModule::Asset.create(code: 142002,  name: "Bagsakan Center Equipment")
+
+
  AccountingModule::Asset.create(code: 14201,  name: "Accumulated Depreciation - Kitchen, Canteen and Catering Equipment/Utensils", contra: true)
  AccountingModule::Asset.create(code: 14210,  name: "Transportation Equipment")
  AccountingModule::Asset.create(code: 14211,  name: "Accumulated Depreciation - Transportation Equipment", contra: true)
@@ -158,6 +182,8 @@ AccountingModule::Liability.create(code: 21000, name: 'Current Liabilities')
 AccountingModule::Liability.create(code: 21100, name: 'Savings Deposits')
 AccountingModule::Liability.create(code: 21200, name: 'Time Deposits')
 AccountingModule::Liability.create(code: 21300, name: 'Accounts Payable-Trade')
+AccountingModule::Liability.create(code: 213001, name: 'Other Payables - PLGU')
+
 AccountingModule::Liability.create(code: 21400, name: 'Accounts Payable-Non Trade')
 AccountingModule::Liability.create(code: 21500, name: 'Loans Payable - Current')
 AccountingModule::Liability.create(code: 21600, name: 'Finance Lease Payable - Current')
@@ -179,7 +205,10 @@ AccountingModule::Liability.create(code: 22800, name: 'Deposits from Customers')
 AccountingModule::Liability.create(code: 22900, name: 'Advances from Customers')
 AccountingModule::Liability.create(code: 23000, name: 'School Program Support Fund Payable')
 AccountingModule::Liability.create(code: 23100, name: 'Other Current Liabilities')
+
 AccountingModule::Liability.create(code: 24000, name: 'Non-Current Liabilities')
+AccountingModule::Liability.create(code: 240001, name: 'Mortuary Aid Fund')
+
 AccountingModule::Liability.create(code: 24100, name: 'Loans Payable')
 AccountingModule::Liability.create(code: 24200, name: 'Discounts on Loans Payable', contra: true)
 AccountingModule::Liability.create(code: 24300, name: 'Bonds Payable')
@@ -190,8 +219,12 @@ AccountingModule::Liability.create(code: 24700, name: 'Finance Lease Payable - L
 AccountingModule::Liability.create(code: 24800, name: 'Other Non-Current Liabilities')
 AccountingModule::Liability.create(code: 24810, name: 'Project Subsidy Fund')
 AccountingModule::Liability.create(code: 24820, name: "Members' Benefit and Other Funds Payable")
+AccountingModule::Liability.create(code: 248201, name: "Members' Benefit and Other Funds Payable - (CLIMBS)")
+
 AccountingModule::Liability.create(code: 24830, name: 'Due to Head Office/Branch/Subsidiary')
 AccountingModule::Liability.create(code: 24840, name: 'Other Non Current Liabilities')
+AccountingModule::Liability.create(code: 250000, name: "Temp Account (Uploading Purposes)")
+
 
 #Equity
 AccountingModule::Equity.create(code: 30000, name: 'Equity')
@@ -212,17 +245,25 @@ AccountingModule::Equity.create(code: 30230, name: 'Deposit for Share Capital Su
 AccountingModule::Equity.create(code: 30300, name: 'Undivided Net Surplus')
 AccountingModule::Equity.create(code: 30400, name: 'Net Loss')
 AccountingModule::Equity.create(code: 30500, name: 'Donations/Grants')
+AccountingModule::Equity.create(code: 305001, name: 'Subsidy From DA')
+
 AccountingModule::Equity.create(code: 30600, name: 'Statutory Funds')
 AccountingModule::Equity.create(code: 30610, name: 'Reserve Fund')
 AccountingModule::Equity.create(code: 30620, name: 'Coop. Education and Training Fund')
 AccountingModule::Equity.create(code: 30630, name: 'Community Development Fund')
 AccountingModule::Equity.create(code: 30640, name: 'Optional Fund')
+AccountingModule::Equity.create(code: 306401, name: 'Land and Building Fund')
+AccountingModule::Equity.create(code: 306402, name: 'Loan Redemption Fund')
+
+
 AccountingModule::Equity.create(code: 30700, name: 'Unrealized Gains/Losses')
 
 #Revenue
 
 AccountingModule::Revenue.create(code: 40000, name: 'Revenue Items')
 AccountingModule::Revenue.create(code: 40100, name: 'Income from Operations')
+AccountingModule::Revenue.create(code: 401001, name: 'Income from Lease Agreement - Building Rentals')
+
 AccountingModule::Revenue.create(code: 40110, name: 'Interest Income from Loans')
 AccountingModule::Revenue.create(code: 401101, name: 'Interest Income from Loans - Salary Loan')
 AccountingModule::Revenue.create(code: 401102, name: 'Interest Income from Loans - Regular Loan')
@@ -262,6 +303,8 @@ AccountingModule::Revenue.create(code: 40320, name: 'Installment Sales')
 AccountingModule::Revenue.create(code: 40330, name: 'Sales Returns and Allowances', contra: true)
 AccountingModule::Revenue.create(code: 40340, name: 'Sales Discounts', contra: true)
 AccountingModule::Revenue.create(code: 40400, name: 'Other Income')
+AccountingModule::Revenue.create(code: 404001, name: 'Catering Income')
+
 AccountingModule::Revenue.create(code: 40410, name: 'Income/Interest from Investment/Deposits')
 AccountingModule::Revenue.create(code: 40420, name: 'Membership Fee')
 AccountingModule::Revenue.create(code: 40430, name: 'Commission Income')
@@ -271,6 +314,10 @@ AccountingModule::Revenue.create(code: 40450, name: 'Miscellaneous Income')
 #Expense Accounts
 AccountingModule::Expense.create(code: 50000, name: 'Cost of Goods Sold')
 AccountingModule::Expense.create(code: 51110, name: 'Purchases')
+AccountingModule::Expense.create(code: 511101, name: 'Food Commodities')
+AccountingModule::Expense.create(code: 511102, name: 'Cooking Gas')
+
+
 AccountingModule::Expense.create(code: 51120, name: 'Raw Material Purchases')
 AccountingModule::Expense.create(code: 51130, name: 'Purchase Returns and Allowances', contra: true)
 AccountingModule::Expense.create(code: 51140, name: 'Purchase Discounts', contra: true)
@@ -379,6 +426,8 @@ AccountingModule::Expense.create(code: 73600, name: "Bank Charges", main_account
 AccountingModule::Expense.create(code: 73610, name: "General Assembly Expenses", main_account_id: AccountingModule::Account.find_by_name('Administrative Cost').id)
 AccountingModule::Expense.create(code: 73620, name: "Members Benefit Expenses", main_account_id: AccountingModule::Account.find_by_name('Administrative Cost').id)
 AccountingModule::Expense.create(code: 73630, name: "Affiliation Fee", main_account_id: AccountingModule::Account.find_by_name('Administrative Cost').id)
+AccountingModule::Expense.create(code: 736301, name: "Affiliation Fee - NORLU/IFEDECO", main_account_id: AccountingModule::Account.find_by_name('Administrative Cost').id)
+
 AccountingModule::Expense.create(code: 73640, name: "Social and Community Service Expense",  main_account_id: AccountingModule::Account.find_by_name('Administrative Cost').id)
 AccountingModule::Expense.create(code: 73650, name: "Provisions for CGF(KBGF)", main_account_id: AccountingModule::Account.find_by_name('Administrative Cost').id)
 AccountingModule::Expense.create(code: 80000, name: 'Other Items - Subsidy/Gain (Losses)')
