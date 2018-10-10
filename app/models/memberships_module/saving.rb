@@ -30,6 +30,8 @@ module MembershipsModule
     delegate :avatar, to: :depositor, allow_nil: true
     delegate :dormancy_number_of_days, to: :saving_product
 
+    validates :depositor, presence: true
+
     scope :has_minimum_balance, -> { SavingsQuery.new.has_minimum_balance  }
 
     before_save :set_account_owner_name, :set_date_opened #move to saving opening

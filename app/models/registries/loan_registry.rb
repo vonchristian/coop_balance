@@ -84,6 +84,7 @@ module Registries
 
     def find_municipality(row)
       Addresses::Municipality.find_or_create_by(name: row["Municipality"])
+    end
 
     def loan_amount(row)
       row["Loan Amount"].to_f
