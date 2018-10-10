@@ -6,11 +6,7 @@ module Registries
       header = savings_spreadsheet.row(2)
       (3..savings_spreadsheet.last_row).each do |i|
         row = Hash[[header, savings_spreadsheet.row(i)].transpose]
-        if row["Depositor Type"] == "Member"
-          depositor = Member.find_or_create_by(last_name: row["Last Name"], first_name: row["First Name"])
-        elsif row["Depositor Type"] == "Organization"
-          depositor = Organization.find_or_create_by(name: row["Last Name"])
-        end
+        depositor = find_depositor(row)
         upload_savings(depositor, row)
       end
     end
@@ -49,7 +45,7 @@ module Registries
 
     def find_depositor(row)
       if row["Depositor Type"] == "Member"
-        find_cooperative.members.find_or_create_by(last_name: row["Last Name"], first_name: row["First Name"])
+        find_cooperative.member_memberships.find_or_create_by(last_name: row["Last Name"], first_name: row["First Name"])
       elsif row["Depositor Type"] == "Organization"
         find_cooperative.organizations.find_or_create_by(name: row["Last Name"])
       end
@@ -66,6 +62,7 @@ module Registries
     def credit_account(row)
       find_saving_product(row).account
     end
+    
     def cut_off_date
       Chronic.parse('09/30/2018')
     end
