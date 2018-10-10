@@ -1,9 +1,9 @@
 <%= form_tag({:action => "index", controller: "cooperative_services/balance_sheets"}, {:method => :get, :class => 'form-inline'}) do%>
   <div class="form-group">
-    <%= label_tag :date, nil, class: 'sr-only'%>
-    <%= text_field_tag :date, @to_date, :class => 'datepicker form-control' %>
+    <%= label_tag :to_date, nil, class: 'sr-only'%>
+    <%= text_field_tag :to_date, @to_date.strftime("%B %e, %Y"), :class => 'datepicker form-control' %>
   </div>
   <button type="submit" class="btn btn-default">Generate Report</button>
 <% end %>
 <%= link_to 'View (PDF)', cooperative_service_balance_sheets_path(format: "pdf", to_date: @to_date), class: "btn btn-default" %>
-  <%= render 'cooperative_services/partials/account', :name => "Assets", :accounts => @assets %>
+  <%= render 'cooperative_services/partials/accounts', :name => "Assets", :accounts => @accounts %>

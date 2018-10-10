@@ -1,24 +1,29 @@
 
-<div class="row">
-  <div class="col-md-12">
-    <div class="card">
-    <div class="card-header">
-      <h3 class="card-title"> Balance Sheet </h3>
+
+<div class="card">
+  <div class="card-header">
+    <div class="row">
+      <div class="col-md-9">
+        <h3 class="card-title"> Balance Sheet </h3>
+        <p class="text-muted"> As of <%= @to_date.strftime("%B %e, %Y") %></p>
+      </div>
+      <div class="col-md-3">
+        <%= link_to "View (PDF)", accounting_module_reports_balance_sheets_path(format: 'pdf', to_date: @to_date), class: "btn btn-default float-right" %>
+      </div>
     </div>
+  </div>
     <div class="card-body">
     <%= form_tag({:action => 'index'}, {:method => :get, :class => 'form-inline'}) do%>
       <div class="form-group">
-      <%= label_tag :date, nil, class: 'sr-only'%>
-      <%= text_field_tag :date, @to_date, :class => 'datepicker form-control' %>
+      <%= label_tag :to_date, nil, class: 'sr-only'%>
+      <%= text_field_tag :to_date, @to_date.strftime("%B %e, %Y"), :class => 'datepicker form-control' %>
       </div>
-      <button type="submit" class="btn btn-default">Get Report</button>
+      <button type="submit" class="btn btn-primary">Generate</button>
     <% end %>
-    <%= link_to "Print(PDF)", accounting_module_reports_balance_sheets_path(format: 'pdf', to_date: @to_date), class: "btn btn-default" %>
   <br>
-  <div class="table table-responsive">
-    <%= render 'account', :name => "Assets", :accounts => @assets %>
-    <%= render 'account', :name => "Liabilities", :accounts => @liabilities %>
-    <%= render 'account', :name => "Equity", :accounts => @equity %>
-  </div>
+    <%= render 'accounting_module/accounts/account', :name => "Assets", :accounts => @assets, cooperative_service_id: @cooperative_service.id %>
+    <%= render 'accounting_module/accounts/account', :name => "Liabilities", :accounts => @liabilities %>
+    <%= render 'accounting_module/accounts/account', :name => "Equity", :accounts => @equity %>
+
 
 </div>

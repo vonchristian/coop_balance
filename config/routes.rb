@@ -462,7 +462,10 @@ namespace :share_capitals_section do
     resources :audit_reports, only: [:index]
   end
   resources :cooperative_services, only: [:index, :new, :create, :show] do
+    resources :entries, only: [:index], module: :cooperative_services
     resources :balance_sheets,  only: [:index],        module: :cooperative_services
+    resources :income_statements,  only: [:index],        module: :cooperative_services
+
     resources :settings,        only: [:index],        module: :cooperative_services
 
     resources :accounts,        only: [:new, :create], module: :cooperative_services do

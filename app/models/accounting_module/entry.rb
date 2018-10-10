@@ -11,6 +11,7 @@ module AccountingModule
     belongs_to :commercial_document, :polymorphic => true, touch: true
     belongs_to :office, class_name: "CoopConfigurationsModule::Office"
     belongs_to :cooperative
+    belongs_to :cooperative_service, optional: true, class_name: "CoopServicesModule::CooperativeService"
     belongs_to :cancelled_by, class_name: "User", foreign_key: 'cancelled_by_id'
     belongs_to :recorder, foreign_key: 'recorder_id', class_name: "User"
 

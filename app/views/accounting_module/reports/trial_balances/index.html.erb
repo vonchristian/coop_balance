@@ -1,118 +1,36 @@
-<div class="row">
-  <div class="col-md-12">
-    <div class="card">
-      <div class="card-header">
-        <div class="row">
-          <div class="col-md-2">
-            <p class="condensed-text">ACCOUNTS </p>
-          </div>
-          <div class="col-md-6">
-            <%=form_tag accounting_module_accounts_path, method: :get, class: "sidebar-form" do %>
-            <div class="input-group">
-              <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Account..", id: 'account-search-form' %>
-              <span class="input-group-btn">
-                <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
-                  <i class="fa fa-search"></i>
-                <% end %>
-              </span>
-            </div>
-          <% end %>
-          </div>
-          <div class="col-md-4">
-           <%= link_to 'PDF', accounting_module_reports_trial_balances_path(format: 'pdf') %>
-           <%= link_to 'Excel', accounting_module_reports_trial_balances_path(format: 'xlsx') %>
-           <%= form_tag({:action => "index", format: 'pdf', controller: "accounting_module/reports/trial_balances", to_date: params[:to_date]}, {:method => :get})  do %>
-              <div class="row">
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <%= text_field_tag :to_date, @to_date, :class => 'form-control border-input datepicker', :placeholder => "To " %>
-                  </div>
-                </div>
-                <div class="col-md-1">
-                  <button type="submit" class="btn btn-default"> Go</button>
-                </div>
-              </div>
-            <% end %>
-          </div>
-        </div>
-      </div>
-      <div class="card-body">
-        <div class="table table-responsive">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th> Account Code </th>
-                <th> Account </th>
-                <th></th>
-                <th> Type </th>
-                <th> Beginning Balance </th>
-                <th> Debits </th>
-                <th> Credits  </th>
-                <th> Ending Balance </th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @accounts.each do |account| %>
-                <% cache account do %>
-                  <% if account.sub_accounts.present? %>
-                     <tr data-link="<%=accounting_module_account_path(account)%>" class="myClass">
-                      <td> <%= account.code %><br>
-                        <% account.sub_accounts.each do |sub_account| %>
-                        &nbsp; &nbsp;  <%= sub_account.code %><br>
-                        <% end %>
-                      </td>
-                      <td> <%= account.name %><br>
-                        <% account.sub_accounts.each do |sub_account| %>
-                        &nbsp; &nbsp;  <%= sub_account.name %><br>
-                        <% end %>
-                      </td>
 
-                      <td> <%= account.type.gsub("AccountingModule::", "")%></td>
-                      <td></td>
-                      <td><%= number_to_currency account.balance(to_date: Date.today.yesterday.end_of_day) %>
-                        <% account.sub_accounts.each do |sub_account| %>
-                        &nbsp; &nbsp;  <%= number_to_currency sub_account.balance(to_date: Date.today.yesterday.end_of_day) %><br>
-                        <% end %>
-                      </td>
-                      <td> <%= number_to_currency account.debits_balance %><br>
-                        <% account.sub_accounts.each do |sub_account| %>
-                        &nbsp; &nbsp;  <%= number_to_currency sub_account.debits_balance %><br>
-                        <% end %>
-                      </td>
-                      <td> <%= number_to_currency account.credits_balance %><br>
-                        <% account.sub_accounts.each do |sub_account| %>
-                        &nbsp; &nbsp;  <%= number_to_currency sub_account.credits_balance %><br>
-                        <% end %>
-                      </td>
-                      <td> <%= number_to_currency account.balance %><br>
-                        <% account.sub_accounts.each do |sub_account| %>
-                        &nbsp; &nbsp;  <%= number_to_currency sub_account.credits_balance %><br>
-                        <% end %>
-                      </td>
-                    </tr>
-                  <% elsif account.main_account.blank? %>
-                     <tr data-link="<%=accounting_module_account_path(account)%>" class="myClass">
-                      <td> <%= account.code %></td>
-                      <td> <%= account.name %><td>
-                      <td> <%= account.type.gsub("AccountingModule::", "")%></td>
-                      <td> <%= number_to_currency account.debits_balance %></td>
-                      <td> <%= number_to_currency account.credits_balance %></td>
-                      <td> <%= number_to_currency account.balance %></td>
-                    </tr>
-                  <% end %>
-                <% end %>
-              <% end %>
-            </tbody>
-          </table>
-          <center><%= will_paginate @accounts %></center>
-        </div>
+<div class="card">
+  <div class="card-header">
+    <div class="row">
+      <div class="col-md-9">
+        <h3 class="card-title">Trial Balance </h3>
+        <p class="text-muted"> As of <%= @to_date.strftime("%B %e, %Y") %></p>
+      </div>
+      <div class="col-md-3">
+       <%= link_to 'View (PDF)', accounting_module_reports_trial_balances_path(format: 'pdf'), class: "btn btn-default float-right" %>
+       <%= link_to 'Excel', accounting_module_reports_trial_balances_path(format: 'xlsx') %>
+
       </div>
     </div>
   </div>
+  <div class="card-body">
+    <%= form_tag({:action => "index", controller: "accounting_module/reports/trial_balances", to_date: params[:to_date]}, {:method => :get})  do %>
+       <div class="row">
+         <div class="col-md-3">
+           <div class="form-group">
+             <%= text_field_tag :to_date, @to_date.strftime("%B %e, %Y"), :class => 'form-control border-input datepicker', :placeholder => "To " %>
+           </div>
+         </div>
+         <div class="col-md-1">
+           <button type="submit" class="btn btn-primary"> Generate</button>
+         </div>
+       </div>
+     <% end %>
+  </div>
 </div>
-<script type="text/javascript">
-  $("tr").click(function() {
-  window.location = $(this).data("link")
-});
-  $('.myClass').css('cursor', 'pointer');
-</script>
+     <% @accounts.each do |account| %>
+       <%= render 'accounting_module/accounts/partials/header', account: account %>
+     <% end %>
+    </div>
+  </div>
+</div>

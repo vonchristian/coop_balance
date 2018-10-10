@@ -83,7 +83,7 @@
                   <label class="no-margin-bottom">Penalty Rate</label>
                 </div>
                 <div class="col-md-6">
-                  <%= loan_product.penalty_rate*100 %>%
+                  <%= loan_product.try(:penalty_rate) %>
                   <%= link_to "Set Penalty Rate", new_management_module_settings_loan_product_penalty_configuration_path(loan_product),class: "btn btn-outline-danger" %>
                 </div>
               </div>

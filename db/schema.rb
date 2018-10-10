@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_09_025238) do
+ActiveRecord::Schema.define(version: 2018_10_10_022125) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -391,9 +391,11 @@ ActiveRecord::Schema.define(version: 2018_10_09_025238) do
     t.boolean "cancelled", default: false
     t.datetime "cancelled_at"
     t.uuid "cancelled_by_id"
+    t.uuid "cooperative_service_id"
     t.index ["cancelled_by_id"], name: "index_entries_on_cancelled_by_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_entry"
     t.index ["cooperative_id"], name: "index_entries_on_cooperative_id"
+    t.index ["cooperative_service_id"], name: "index_entries_on_cooperative_service_id"
     t.index ["entry_date"], name: "index_entries_on_entry_date"
     t.index ["office_id"], name: "index_entries_on_office_id"
     t.index ["official_receipt_id"], name: "index_entries_on_official_receipt_id"
@@ -1373,6 +1375,7 @@ ActiveRecord::Schema.define(version: 2018_10_09_025238) do
   add_foreign_key "cooperatives", "interest_amortization_configs"
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "credit_account_id"
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "debit_account_id"
+  add_foreign_key "entries", "cooperative_services"
   add_foreign_key "entries", "cooperatives"
   add_foreign_key "entries", "offices"
   add_foreign_key "entries", "official_receipts"

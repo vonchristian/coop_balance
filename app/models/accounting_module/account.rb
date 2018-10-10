@@ -20,7 +20,7 @@ module AccountingModule
     validates :name, uniqueness: true
     validates :code, uniqueness: { case_sensitive: false }
 
-    scope :assets, -> { where(type: 'AccountingModule::Asset') }
+    scope :assets,      -> { where(type: 'AccountingModule::Asset') }
     scope :liabilities, -> { where(type: 'AccountingModule::Liability') }
     scope :equities,    -> { where(type: 'AccountingModule::Equity') }
     scope :revenues,    -> { where(type: 'AccountingModule::Revenue') }
@@ -37,7 +37,7 @@ module AccountingModule
     def self.updated_at(args={})
       if args[:from_date] && args[:to_date]
         date_range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])
-        where('last_transaction_date' => (date_range.start_date)..(date_range.end_date))
+        active.where('last_transaction_date' => (date_range.start_date)..(date_range.end_date))
       end
     end
 
@@ -137,7 +137,12 @@ module AccountingModule
     end
 
     def self.net_surplus(args={})
-      AccountingModule::Revenue.active.balance(args) - AccountingModule::Expense.active.balance(args)
+      AccountingModule::Revenue.active.balance(args) -
+      AccountingModule::Expense.active.balance(args)
+    end
+    def self.total_equity_and_liabilities(args={})
+      AccountingModule::Equity.balance(args) +
+      AccountingModule::Liability.balance(args)
     end
 
 

@@ -1,43 +1,27 @@
-<div class="row">
-  <div class="col-md-12">
+
     <div class="card">
       <div class="card-header">
         <h4 class="card-title"> Accounting Section Reports </h4>
       </div>
       <div class="card-body">
-        <div class="row">
-          <div class="col-md-10 col-md-offset-1">
-            <h4><b>Trial Balance Report</b></h4>
-            <p class="text-muted"> Generate report for trial balance of accounts. </p>
-            <%= form_tag({:controller => 'accounting_module/reports/trial_balances', action: 'index', format: 'pdf'}, {:method => :get, :class => 'form-inline'}) do %>
-              <div class="form-group">
-                <%= label_tag :to_date, nil, class: 'sr-only'%>
-                <%= text_field_tag :to_date, Time.zone.now.strftime("%B %e, %Y"), :class => 'datepicker form-control' %>
-              </div>
-              <button type="submit" class="btn btn-default">Get Report</button>
-            <% end %>
-            <hr>
-            <h4><b>Income Statement</b></h4>
-            <p class="text-muted"> Generate report for income statement. </p>
-            <%= form_tag({:controller => 'accounting_module/reports/income_statements', action: 'index', format: 'pdf'}, {:method => :get, :class => 'form-inline'}) do %>
-              <div class="form-group">
 
-                <%= label_tag :to_date, nil, class: 'sr-only'%>
-                <%= text_field_tag :to_date, Time.zone.now.strftime("%B %e, %Y"), :class => 'datepicker form-control' %>
+            
+            <%= link_to accounting_module_reports_income_statements_path do %>
+              <h3 class="card-title">Income Statement</h3>
+              <p class="text-muted"> Generate report for income statement. </p>
+            <% end %>
 
-              </div>
-              <button type="submit" class="btn btn-default">Get Report</button>
-            <% end %>
             <hr>
-            <h4><b>Balance Sheet</b></h4>
-            <p class="text-muted">Generate report for balance sheet statement. </p>
-            <%= form_tag({ controller: 'accounting_module/reports/balance_sheets', action: 'index', format: 'pdf'}, {:method => :get, :class => 'form-inline'}) do%>
-              <div class="form-group">
-                <%= label_tag :to_date, nil, class: 'sr-only'%>
-                <%= text_field_tag :to_date, Time.zone.now.strftime("%B %e, %Y"), :class => 'datepicker form-control' %>
-              </div>
-              <button type="submit" class="btn btn-default">Get Report</button>
+            <%= link_to accounting_module_reports_balance_sheets_path do %>
+              <h4 class="card-title">Balance Sheet</h4>
+              <p class="text-muted">Generate report for balance sheet statement. </p>
             <% end %>
+
+            <%= link_to accounting_module_reports_trial_balances_path do %>
+              <h4 class="card-title">Trial Balance</h4>
+              <p class="text-muted">Generate report for trialb balance of accounts. </p>
+            <% end %>
+
             <hr>
             <h4 class="card-title">Proofsheet Report</h4>
             <p class="text-muted">Generate report for consolidated proofsheet report. </p>
