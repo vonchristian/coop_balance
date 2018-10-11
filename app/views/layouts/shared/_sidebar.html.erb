@@ -6,7 +6,8 @@
       <%=image_tag(current_user.avatar, height: 45, width: 45, class: "img-circle") if current_user.avatar.attached? %>
     </div>
     <div class="info">
-      <a href="#" class="d-block"><%= link_to current_user.first_and_last_name, employee_path(current_user) %></a>
+      <a href="#" class="d-block"><%= link_to current_user.first_and_last_name.try(:titleize), employee_path(current_user) %></a>
+      <small><a class="d-block"><%= current_user.designation %></a></small>
     </div>
   </div>
 
