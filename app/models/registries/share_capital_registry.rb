@@ -33,7 +33,7 @@ module Registries
 
       AccountingModule::Entry.create!(
         office: self.employee.office,
-        cooperative: self.employee.office,
+        cooperative: self.employee.cooperative,
         recorder: find_employee,
         commercial_document: find_subscriber(row),
         description: "Forwarded balance of share capital as of #{cut_off_date.strftime("%B %e, %Y")}",
