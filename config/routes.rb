@@ -410,10 +410,13 @@ namespace :share_capitals_section do
   end
 
   resources :calendars, only: [:index, :show]
+
   resources :organizations, only: [:index, :show, :new, :create] do
     resources :members, only: [:new, :create], module: :organizations
     resources :loans, only: [:index], module: :organizations
     resources :reports, only: [:index], module: :organizations
+    resources :share_capitals, only: [:index], module: :organizations
+
   end
 
   resources :membership_applications, only: [:new, :create, :show] do

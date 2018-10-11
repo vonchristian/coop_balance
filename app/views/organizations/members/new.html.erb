@@ -21,10 +21,10 @@
   <div class="card-body">
     <div class="row">
       <div class="col-md-1">
-        <%= image_tag(member.avatar, height: 45, width: 45, class: "img-circle") %>
+        <%#= image_tag(member.avatar, height: 45, width: 45, class: "img-circle") %>
       </div>
       <div class="col-md-8">
-        <h3 class="card-title"> <%= member.full_name.upcase %></h3>
+        <b> <%= member.full_name %></b>
         <div class="row">
           <div class="col-md-3">
             <small class="text-muted"><i class="fa fa-map-marker"></i>&nbsp;  <%= member.current_address_complete_address %></small>
@@ -41,7 +41,7 @@
           <%= f.input :organization_membership_id, input_html: { value: member.id }, as: :hidden %>
           <%= f.input :organization_membership_type, input_html: { value: member.class }, as: :hidden %>
           <% if @organization.organization_members.pluck(:organization_membership_id).exclude?(member.id) %>
-                  <%= button_tag(class: "btn btn-default btn-sm") do %>
+                  <%= button_tag(class: "btn btn-primary btn-sm") do %>
                     <i class="fa fa-user-plus"></i> Add Member
                   <% end %>
                 <% else %>

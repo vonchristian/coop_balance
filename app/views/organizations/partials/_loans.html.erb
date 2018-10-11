@@ -1,21 +1,6 @@
 <div class="tab-pane <%= 'active' if current_page?(organization_loans_path(@organization)) %>">
-  Loans of Members
-  <hr>
-  <%= link_to 'Excel', organization_loans_path(@organization, format: 'xlsx') %>
-<%= form_tag({:action => "index", format: 'pdf', controller: "organizations/loans", organization_id: @organization.id, date: params[:date]}, {:method => :get})  do %>
-              <div class="row">
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <%= text_field_tag :date, @date, :class => 'datepicker form-control border-input', :placeholder => "Date" %>
-                  </div>
-                </div>
-                <div class="col-md-1">
-                  <button type="submit" class="btn btn-default"> Generate Billing Statement</button>
-                </div>
-              </div>
-            <% end %>
-  <%=link_to 'Billing Statement', organization_loans_path(@organization, format: 'pdf') %>
+
   <% @loans.each do |loan| %>
-  <%= loan.borrower_name %>
+    <%= render 'loans/partials/header', loan: loan %>
 <% end %>
 </div>

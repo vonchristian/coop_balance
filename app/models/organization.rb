@@ -1,4 +1,6 @@
 class Organization < ApplicationRecord
+  include PgSearch
+  pg_search_scope :text_search, against: [:name]
   has_one_attached :avatar
   belongs_to :cooperative
   has_many :organization_members, class_name: "Organizations::OrganizationMember"
@@ -9,17 +11,21 @@ class Organization < ApplicationRecord
   has_many :savings, class_name: "MembershipsModule::Saving", as: :depositor
   has_many :share_capitals, class_name: "MembershipsModule::ShareCapital", as: :subscriber
   has_many :time_deposits, class_name: "MembershipsModule::TimeDeposit", as: :depositor
+
   before_save :set_default_image, on: :create
+
   def self.current
     last
   end
+
   def members
     member_memberships + employee_memberships
   end
+
   private
   def set_default_image
     if avatar.attachment.blank?
-      self.avatar.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'default.png')), filename: 'default-image.png', content_type: 'image/png')
+      self.avatar.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'default_business_logo.jpg')), filename: 'default-image.jpg', content_type: 'image/jpg')
     end
   end
 end
