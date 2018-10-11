@@ -5,7 +5,14 @@
         <h4 class="card-title"> Information</h4>
       </div>
       <div class="col-md-6">
-        <%= link_to 'Update Info', edit_member_path(@member), class: "btn btn-outline-warning btn-sm float-right" %>
+        <div class="row">
+          <div class="col-md-6">
+            <%= link_to 'View (PDF)', member_info_index_path(@member, format: 'pdf'), class: 'btn btn-default btn-sm float-right' %>
+          </div>
+          <div class="col-md-6">
+            <%= link_to 'Update Profile', edit_member_path(@member), class: "btn btn-outline-warning btn-sm float-right" %>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -13,70 +20,70 @@
     <table class="table">
       <tbody>
         <tr>
-          <td style="width:200px"><i class="fa fa-map-marker"></i> Current Address</td>
+          <td style="width:200px"><i class="fa fa-map-marker"></i> &nbsp; Current Address</td>
           <td><%= @member.current_address_complete_address %></td>
           <td>
             <%= link_to 'Update', new_member_address_path(@member), class: "btn btn-outline-warning btn-sm" %>
           </td>
         </tr>
         <tr>
-          <td style="width:200px"><i class="fa fa-phone"></i> Account Number </td>
-          <td><%= @member.account_number || "N/A" %></td>
+          <td style="width:200px"><i class="fa fa-phone"></i> &nbsp; Account Number </td>
+          <td><%= @member.account_number %></td>
           <td></td>
         </tr>
         <tr>
-          <td style="width:200px"><i class="fa fa-phone"></i> Contact Info </td>
-          <td><%= @member.current_contact_number || "N/A" %></td>
-          <td><%= link_to 'Update', new_member_contact_path(@member), class: "btn btn-outline-success btn-xs" %></td>
+          <td style="width:200px"><i class="fa fa-phone"></i>  &nbsp; Contact Info </td>
+          <td><%= @member.current_contact_number %></td>
+          <td><%= link_to 'Update', new_member_contact_path(@member), class: "btn btn-outline-warning btn-sm" %></td>
         </tr>
         <tr>
-          <td style="width:200px"><i class="fa fa-calendar"></i> Date of Birth </td>
-          <td><%= @member.date_of_birth.try(:strftime, "%B %e, %Y") || "N/A" %></td>
+          <td style="width:200px"><i class="fa fa-calendar"></i> &nbsp; Date of Birth </td>
+          <td><%= @member.date_of_birth.try(:strftime, "%B %e, %Y") %></td>
           <td></td>
         </tr>
         <tr>
-          <td style="width:200px"><i class="fa fa-calendar"></i> Age </td>
-          <td><%= @member.date_of_birth.present? ? @member.age.to_s + "Years Old" : "N/A" %></td>
+          <td style="width:200px"><i class="fa fa-calendar"></i> &nbsp; Age </td>
+          <td><%= @member.age %></td>
           <td></td>
         </tr>
         <tr>
-          <td style="width:200px"><i class="fa fa-calendar"></i> Sex </td>
+          <td style="width:200px"><i class="fa fa-circle"></i> &nbsp; Sex </td>
           <td><%= @member.sex.try(:titleize) %></td>
           <td></td>
         </tr>
         <tr>
-          <td style="width:200px"><i class="fa fa-calendar"></i> Civil Status </td>
-          <td><%= @member.civil_status.try(:titleize) || "N/A" %></td>
+          <td style="width:200px"><i class="fa fa-calendar"></i> &nbsp; Civil Status </td>
+          <td><%= @member.civil_status.try(:titleize) %></td>
           <td></td>
         </tr>
         <tr>
-          <td style="width:200px"><i class="fa fa-info"></i> TIN Number </td>
-          <td><%= @member.current_tin_number || "N/A"%></td>
-          <td><%= link_to 'Update', new_member_tin_path(@member), class: "btn btn-outline-success btn-xs" %></td>
+          <td style="width:200px"><i class="fa fa-info"></i>  &nbsp; TIN Number </td>
+          <td><%= @member.current_tin_number %></td>
+          <td><%= link_to 'Update', new_member_tin_path(@member), class: "btn btn-outline-warning btn-sm" %></td>
         </tr>
         <tr>
-          <td style="width:200px"><i class="fa fa-info"></i> Office </td>
-          <td><%= @member.office_name || "N/A" %></td>
+          <td style="width:200px"><i class="fa fa-info"></i> &nbsp; Office </td>
+          <td><%= @member.office_name  %></td>
           <td></td>
         </tr>
         <tr>
-          <td style="width:200px"><i class="fa fa-info"></i> Organizations </td>
+          <td style="width:200px"><i class="fa fa-sitemap"></i> &nbsp; Organizations </td>
           <td>
             <% @member.organizations.each do |organization| %>
-              <p><%= organization.name || "N/A" %></p>
+              <p><%= organization.name  %></p>
             <% end %>
           </td>
           <td></td>
         </tr>
         <tr>
-          <td style="width:200px"><i class="fa fa-calendar"></i> Membership Date </td>
+          <td style="width:200px"><i class="fa fa-calendar"></i>  &nbsp; Membership Date </td>
           <% @member.memberships.for_cooperative(current_user.cooperative).each do |membership| %>
             <td><%= membership.membership_date.try(:strftime, ("%B %e, %Y")) %></td>
             <td></td>
           <% end %>
         </tr>
         <tr>
-          <td style="width:200px"><i class="fa fa-info"></i> Beneficiaries </td>
+          <td style="width:200px"><i class="fa fa-users"></i>  &nbsp; Beneficiaries </td>
           <td>
             <% @member.beneficiaries.each do |beneficiary| %>
               <div class="row">
@@ -90,7 +97,7 @@
             <% end %>
           </td>
           <td><%= link_to new_member_beneficiary_path(@member) do %>
-                <span class="btn btn-outline-warning btn-xs" data-toggle="tooltip" title="Add Beneficiary"><i class="fa fa-plus-circle"></i> Add
+                <span class="btn btn-outline-warning btn-sm" data-toggle="tooltip" title="Add Beneficiary"><i class="fa fa-plus-circle"></i> Add
                 </span>
               <% end %>
           </td>
@@ -98,9 +105,6 @@
         </tr>
       </tbody>
     </table>
-  </div>
-  <div class="card-footer">
-    <%= link_to 'Print Member Info', member_info_index_path(@member, format: 'pdf'), class: 'btn btn-success float-right' %>
   </div>
 </div>
 <div class="card">
