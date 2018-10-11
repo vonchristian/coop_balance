@@ -2,7 +2,7 @@
   <div class="col-md-6 offset-md-3">
     <div class="card">
       <div class="card-header">
-        <h4><center><%= image_tag(@member.avatar, style: 'width:60px;height:60px;', class: 'media-object img-circle') %></center></h4>
+        <h4><center><%= image_tag(@member.avatar.variant(resize: '60x60'), class: 'media-object img-circle') if @member.avatar.attached? %></center></h4>
          <h3><center><%= @member.name %></center></h3>
       </div>
       <div class="card-body">
@@ -10,6 +10,7 @@
           <%= f.error_notification %>
           <%= f.input :number, label: 'TIN Number' %>
           <hr>
+          <%= link_to "Cancel", member_path(@member), class: 'btn btn-default' %>
           <%= f.submit "Save TIN", class: "btn btn-primary float-right" %>
         <% end %>
       </div>

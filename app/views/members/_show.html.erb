@@ -4,7 +4,11 @@
     <div class="card">
       <div class="card-header">
         <div class="profile-wrapper">
-          <%= image_tag(@member.avatar.variant(resize: "150x150"), class: "img-rounded mx-auto d-block") %>
+          <% if @member.avatar.attached? %>
+            <%= image_tag(@member.avatar.variant(resize: "150x150"), class: "img-rounded mx-auto d-block") %>
+          <% else %>
+            <%= image_tag("default.png", width: '150', height: '150', class: 'img-rounded mx-auto d-block') %>
+          <% end %>
           <%= simple_form_for Member.new, url: member_avatars_path(@member), html: {id: "update-avatar"} do |f| %>
             <%= f.input :avatar, as: :file, label: false, input_html: { class: 'choose-btn center-block' } %>
             <div class="option-overlay">
