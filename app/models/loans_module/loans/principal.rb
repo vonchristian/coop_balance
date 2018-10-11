@@ -2,7 +2,7 @@ module LoansModule
   module Loans
     module Principal
       def principal_balance
-        if disbursed?
+        if disbursed? || forwarded_loan?
           loan_product.loans_receivable_current_account.balance(commercial_document: self)
         else
           loan_amount

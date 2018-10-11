@@ -23,13 +23,13 @@ class User < ApplicationRecord
               :accounting_clerk,
               :collector,
               :sales_manager]
-              
+
   belongs_to :store_front, optional: true
   belongs_to :cash_on_hand_account,   class_name: "AccountingModule::Account", foreign_key: 'cash_on_hand_account_id'
   has_one :current_address,           as: :addressable, class_name: "Address"
   has_one :tin,                       as: :tinable
   belongs_to :cooperative
-  belongs_to :office,                 class_name: "CoopConfigurationsModule::Offices::MainOffice"
+  belongs_to :office,                 class_name: "CoopConfigurationsModule::Office"
   has_many :purchases,                class_name: "StoreFrontModule::Orders::SalesOrder", as: :commercial_document
   has_many :sold_orders,              class_name: "StoreFrontModule::Orders::SalesOrder",
                                       foreign_key: 'employee_id'

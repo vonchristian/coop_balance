@@ -51,8 +51,9 @@ module Registries
     end
 
     def debit_account
-      AccountingModule::Account.find_by(name: "Temp Account (Uploading Purposes)")
+      AccountingModule::Account.find_by(name: "Deposit in Transit")
     end
+    
     def credit_account(row)
       find_share_capital_product(row).paid_up_account
     end

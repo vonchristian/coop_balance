@@ -170,6 +170,8 @@ AccountingModule::Asset.create(code: 14141,  name: "Accumulated Depreciation - B
  AccountingModule::Asset.create(code: 17200,  name: "Product/Business Development Cost")
  AccountingModule::Asset.create(code: 17300,  name: "Computerization Cost")
  AccountingModule::Asset.create(code: 17400,  name: "Other Funds and Deposits")
+ AccountingModule::Asset.create(code: 174001,  name: "Deposit in Transit")
+
  AccountingModule::Asset.create(code: 17500,  name: "Finance Lease Receivable")
  AccountingModule::Asset.create(code: 17600,  name: "Due from Head Office/Branch/Subsidiary")
  AccountingModule::Asset.create(code: 17700,  name: "Assets Held for Sale")
@@ -223,8 +225,6 @@ AccountingModule::Liability.create(code: 248201, name: "Members' Benefit and Oth
 
 AccountingModule::Liability.create(code: 24830, name: 'Due to Head Office/Branch/Subsidiary')
 AccountingModule::Liability.create(code: 24840, name: 'Other Non Current Liabilities')
-AccountingModule::Liability.create(code: 250000, name: "Temp Account (Uploading Purposes)")
-
 
 #Equity
 AccountingModule::Equity.create(code: 30000, name: 'Equity')

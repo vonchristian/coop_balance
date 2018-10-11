@@ -1,21 +1,41 @@
 <div class="card-body">
-	<h4 class="card-title"> Merge Account </h4>
-  <span class="text-muted">Merge share capital accounts that are duplicated. </span>
-  <br>
-  <br>
-	<%= link_to "Merge Account", new_share_capital_merging_line_item_path(@share_capital), class: "btn btn-danger" %>
-	<%= link_to "Balance Transfer", new_share_capital_balance_transfer_path(@share_capital), class: "btn btn-danger" %>
+  <div class="row">
+    <div class="col-md-9">
+	    <h4 class="card-title"> Merge Account </h4>
+      <span class="text-muted">Merge share capital accounts that are duplicated. </span>
+    </div>
+    <div class="col-md-3">
+      <%= link_to "Merge Account", new_share_capital_merging_line_item_path(@share_capital), class: "btn btn-outline-danger" %>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-md-9">
+      <h3 class="card-title"> Balance Transfer </h3>
+      <p class="text-muted"> Transfer balance to other share capital account </p>
+    </div>
+    <div class="col-md-3">
+	    <%= link_to "Balance Transfer", new_share_capital_balance_transfer_path(@share_capital), class: "btn btn-outline-danger" %>
+    </div>
+  </div>
 	<hr>
-	<h4 class="card-title">Barangay Details</h4>
-	<span class="text-muted"> Set barangay for this share capital </span><br>
-	<br>
-	  <b>Barangay</b>
-	  <%= @share_capital.barangay_name %>
-	  <br>
-	<br>
-	<%= link_to 'Set Barangay', edit_share_capital_barangay_path(id: @share_capital.id), class: "btn btn-danger" %>
+  <div class="row">
+    <div class="col-md-9">
+	    <h4 class="card-title">Barangay Details</h4>
+	    <span class="text-muted"> Set barangay for this share capital </span><br>
+      <b>Barangay</b>
+      <%= @share_capital.barangay_name %>
+      <br>
+    </div>
+    <div class="col-md-3">
+      <%= link_to 'Set Barangay', edit_share_capital_barangay_path(id: @share_capital.id), class: "btn btn-outline-danger" %>
+    </div>
+  </div>
 	<hr>
-	<h4>Adjustment Entries</h4>
+  <div class="row">
+    <div class="col-md-9">
+	    <h3 class="card-title">Adjustment Entries</h3>
+    </div>
 	<p class="text-muted">
 	  Make adjusting entries for this share capital.
 	</p>
@@ -23,4 +43,3 @@
 	  <%=link_to "New Adjusting Entry", new_accounting_module_adjusting_entry_path(commercial_document_type: @share_capital.class.to_s, commercial_document_id: @share_capital.id), class: "btn btn-sm btn-danger" %>
 	<% end %>
 </div>
-

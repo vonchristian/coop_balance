@@ -12,8 +12,8 @@ module Registries
 
     private
     def upload_loan(row)
-      if loan_amount(row).present? && term(row).present? && disbursement_date(row).present?
-        loan = LoansModule::Loan.create!(
+        loan = find_cooperative.loans.create!(
+          loan_amount: loan_amount(row),
           forwarded_loan: true,
           cooperative: self.employee.cooperative,
           office: self.employee.office,
@@ -22,52 +22,49 @@ module Registries
           barangay: find_barangay(row),
           organization: find_organization(row),
           municipality: find_municipality(row),
-          loan_amount: loan_amount(row),
-          disbursement_date: disbursement_date(row)
+          loan_amount: loan_amount(row)
         )
+        if disbursement_date(row).present? && term(row).present?
+
         Term.create(
           term: term(row),
           termable: loan,
           effectivity_date: disbursement_date(row),
           maturity_date: maturity_date(row)
         )
-
-        #disbursement entry
-        AccountingModule::Entry.create!(
+      end
+        find_cooperative.entries.create!(
         office: self.employee.office,
         cooperative: self.employee.cooperative,
         recorder: self.employee,
         commercial_document: loan.borrower,
-        description: "Forwarded loan disbursement as of #{cut_off_date.strftime('%B %e, %Y')}",
+        description: "Forwarded loan balance as of #{cut_off_date.strftime('%B %e, %Y')}",
         entry_date: cut_off_date,
         debit_amounts_attributes: [
-          { amount: loan_amount(row),
-            account: find_loan_product(row).loans_receivable_current_account,
-            commercial_document: loan },
-          { amount: payment_amount(row),
-            account: cash_on_hand_account,
-            commercial_document: loan }],
-        credit_amounts_attributes: [
-          { amount: loan_amount(row),
-          account: cash_on_hand_account,
-          commercial_document: loan },
-          { amount: payment_amount(row),
+          amount: loan_balance(row),
           account: find_loan_product(row).loans_receivable_current_account,
-          commercial_document: loan }
-          ])
-      end
+          commercial_document: loan ],
+        credit_amounts_attributes: [
+          amount: loan_balance(row),
+          account: credit_account,
+          commercial_document: loan
+          ]
+        )
     end
 
     def find_borrower(row)
       if row["Borrower Type"] == "Member"
-        Member.find_or_create_by(last_name: row["Last Name"], first_name: row["First Name"], middle_name: row["Middle Name"])
+        find_cooperative.member_memberships.find_or_create_by(last_name: row["Last Name"], first_name: row["First Name"], middle_name: row["Middle Name"])
       elsif row["Borrower Type"] == "Organization"
-        Organization.find_or_create_by(name: row["Last Name"])
+        find_cooperative.organizations.find_or_create_by(name: row["Last Name"])
       end
+    end
+    def find_cooperative
+      self.employee.cooperative
     end
 
     def find_loan_product(row)
-      LoansModule::LoanProduct.find_by(name: row["Loan Product"])
+      find_cooperative.loan_products.find_by(name: row["Loan Product"])
     end
 
     def cut_off_date
@@ -75,7 +72,7 @@ module Registries
     end
 
     def find_organization(row)
-      Organization.find_or_create_by(name: row["Organization"])
+      find_cooperative.organizations.find_or_create_by(name: row["Organization"])
     end
 
     def find_barangay(row)
@@ -84,6 +81,10 @@ module Registries
 
     def find_municipality(row)
       Addresses::Municipality.find_or_create_by(name: row["Municipality"])
+    end
+
+    def loan_balance(row)
+      row["Loan Balance"].to_f
     end
 
     def loan_amount(row)
@@ -95,23 +96,19 @@ module Registries
     end
 
     def maturity_date(row)
-      disbursement_date(row) + term(row).to_i.months
+      if disbursement_date(row).present? && term(row).present?
+        disbursement_date(row) + term(row).to_i.months
+      end
     end
 
     def disbursement_date(row)
-      Date.parse(row["Disbursement Date"].to_s)
+      if row["Disbursement Date"].present?
+        Date.parse(row["Disbursement Date"].to_s)
+      end
     end
 
-    def cash_on_hand_account
-      AccountingModule::Account.find_by(name: "Cash on Hand")
-    end
-
-    def payment_amount(row)
-      loan_amount(row) - balance_amount(row)
-    end
-
-    def balance_amount(row)
-      row['Balance'].to_f
+    def credit_account
+      AccountingModule::Account.find_by(name: "Deposit in Transit")
     end
   end
 end

@@ -97,7 +97,6 @@ module MembershipsModule
 
     def balance(args={})
       saving_product_account.balance(commercial_document: self, from_date: args[:from_date], to_date: args[:to_date])
-      # saving_product_interest_expense_account.debits_balance(commercial_document: self, from_date: args[:from_date], to_date: args[:to_date])
     end
 
     def deposits

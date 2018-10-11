@@ -12,7 +12,7 @@ module Registries
     end
     def upload_savings(depositor, row)
       unless row["Balance"].to_f.zero? || row["Balance"].nil?
-        savings = MembershipsModule::Saving.create!(
+        savings = find_cooperative.savings.create!(
         depositor: depositor,
         office: self.employee.office,
         saving_product: find_saving_product(row),
@@ -25,7 +25,7 @@ module Registries
       AccountingModule::Entry.create!(
         commercial_document: depositor,
         office: self.employee.office,
-        cooperative: self.employee.cooperative,
+        cooperative: find_cooperative,
         recorder: self.employee,
         description: "Forwarded balance of savings deposit as of #{cut_off_date.strftime('%B %e, %Y')}",
         entry_date: cut_off_date,
@@ -43,6 +43,10 @@ module Registries
       CoopServicesModule::SavingProduct.find_by(name: row["Saving Product"])
     end
 
+    def find_cooperative
+      self.employee.cooperative
+    end
+
     def find_depositor(row)
       if row["Depositor Type"] == "Member"
         find_cooperative.member_memberships.find_or_create_by(last_name: row["Last Name"], first_name: row["First Name"])
@@ -51,18 +55,14 @@ module Registries
       end
     end
 
-    def find_cooperative
-      self.employee.cooperative
-    end
-
     def debit_account
-      AccountingModule::Account.find_by(name: "Temp Account (Uploading Purposes)")
+      AccountingModule::Account.find_by(name: "Deposit in Transit")
     end
 
     def credit_account(row)
       find_saving_product(row).account
     end
-    
+
     def cut_off_date
       Chronic.parse('09/30/2018')
     end

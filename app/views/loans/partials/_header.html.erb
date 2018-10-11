@@ -3,10 +3,13 @@
                   <%= link_to loan_path(loan) do %>
                     <div class="row">
                       <div class="col-md-1">
-                        <%=image_tag(loan.borrower.avatar, height: 45, width: 45, class: "img-circle") %>
+                        <%#=image_tag(loan.borrower.avatar, height: 45, width: 45, class: "img-circle") %>
                       </div>
                       <div class="col-md-6">
                         <b><%=  loan.borrower_name.try(:upcase) %></b><br>
+                        <% if loan.forwarded_loan? %>
+                        <span class="badge bg-warning"> Forwarded Loan </span>
+                        <% end %>
                         <div class="row">
                           <div class="col-md-4">
                             <small class="text-muted"><i class="fa fa-server"></i> <%= loan.loan_product_name %></small>
