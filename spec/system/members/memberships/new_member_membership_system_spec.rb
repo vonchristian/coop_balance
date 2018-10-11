@@ -4,8 +4,8 @@ describe 'New member membership' do
   before(:each) do
     user = create(:user, role: 'teller')
     login_as(user, scope: :user)
-    @member = create(:member)
-    visit member_url(@member)
+    member = create(:member)
+    visit member_url(member)
   end
 
   it 'with valid attributes' do

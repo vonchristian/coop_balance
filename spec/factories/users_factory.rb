@@ -4,9 +4,9 @@ FactoryBot.define do
     middle_name { Faker::Name.last_name }
     last_name   { Faker::Name.last_name }
     email       { Faker::Internet.email }
-    password    'secretpassword'
-    password_confirmation 'secretpassword'
-    role 0
+    password    { 'secretpassword' }
+    password_confirmation { 'secretpassword' }
+    role { 0 }
     association :cooperative
     association :office
     association :cash_on_hand_account, factory: :asset
@@ -15,16 +15,16 @@ FactoryBot.define do
     end
 
     factory :loan_officer do
-      role 'loan_officer'
+      role { 'loan_officer' }
     end
     factory :manager do
-      role 'manager'
+      role { 'manager' }
     end
     factory :sales_clerk do
-      role 'sales_clerk'
+      role { 'sales_clerk' }
     end
     factory :treasurer do
-      role 'treasurer'
+      role { 'treasurer' }
     end
   end
 end
