@@ -10,11 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< Updated upstream
-ActiveRecord::Schema.define(version: 2018_10_10_075513) do
-=======
-ActiveRecord::Schema.define(version: 2018_10_10_044617) do
->>>>>>> Stashed changes
+ActiveRecord::Schema.define(version: 2018_10_11_092834) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -195,6 +191,8 @@ ActiveRecord::Schema.define(version: 2018_10_10_044617) do
     t.uuid "municipality_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "cooperative_id"
+    t.index ["cooperative_id"], name: "index_barangays_on_cooperative_id"
     t.index ["municipality_id"], name: "index_barangays_on_municipality_id"
     t.index ["name"], name: "index_barangays_on_name"
   end
@@ -396,6 +394,7 @@ ActiveRecord::Schema.define(version: 2018_10_10_044617) do
     t.datetime "cancelled_at"
     t.uuid "cancelled_by_id"
     t.uuid "cooperative_service_id"
+    t.string "cancellation_description"
     t.index ["cancelled_by_id"], name: "index_entries_on_cancelled_by_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_entry"
     t.index ["cooperative_id"], name: "index_entries_on_cooperative_id"
@@ -804,6 +803,8 @@ ActiveRecord::Schema.define(version: 2018_10_10_044617) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "province_id"
+    t.uuid "cooperative_id"
+    t.index ["cooperative_id"], name: "index_municipalities_on_cooperative_id"
     t.index ["name"], name: "index_municipalities_on_name"
     t.index ["province_id"], name: "index_municipalities_on_province_id"
   end
@@ -1108,8 +1109,8 @@ ActiveRecord::Schema.define(version: 2018_10_10_044617) do
     t.string "account_number"
     t.datetime "date_opened"
     t.string "account_owner_name"
-    t.datetime "created_at", default: "2018-09-26 07:34:19", null: false
-    t.datetime "updated_at", default: "2018-09-26 07:34:19", null: false
+    t.datetime "created_at", default: "2018-08-09 11:46:34", null: false
+    t.datetime "updated_at", default: "2018-08-09 11:46:34", null: false
     t.integer "status"
     t.uuid "office_id"
     t.string "subscriber_type"
@@ -1381,6 +1382,7 @@ ActiveRecord::Schema.define(version: 2018_10_10_044617) do
   add_foreign_key "bank_accounts", "accounts"
   add_foreign_key "bank_accounts", "accounts", column: "earned_interest_account_id"
   add_foreign_key "bank_accounts", "cooperatives"
+  add_foreign_key "barangays", "cooperatives"
   add_foreign_key "barangays", "municipalities"
   add_foreign_key "beneficiaries", "members"
   add_foreign_key "carts", "users"
@@ -1448,6 +1450,7 @@ ActiveRecord::Schema.define(version: 2018_10_10_044617) do
   add_foreign_key "members", "offices"
   add_foreign_key "membership_beneficiaries", "memberships"
   add_foreign_key "memberships", "cooperatives"
+  add_foreign_key "municipalities", "cooperatives"
   add_foreign_key "municipalities", "provinces"
   add_foreign_key "notes", "users", column: "noter_id"
   add_foreign_key "offices", "accounts", column: "cash_in_vault_account_id"

@@ -10,20 +10,6 @@
 <% end %>
 <br>
 <% @members.each do |member| %>
-          <% cache member do %>
-            <%= link_to member_info_index_path(member) do %>
-              <div class="row">
-                <div class="col-md-3">
-                  <center><%= image_tag(member.avatar.url(:medium), class: "img-circle", height: 80, width: 80) %></center>
-                </div>
-                <div class="col-md-6">
-                  <b><%= member.full_name.upcase %></b><br><br>
-                  <span class="text-muted"> <i class="fa fa-phone"></i> <%= member.contact_number || 'Not Set' %> &nbsp;</span>
-                  <span class="text-muted"> <i class="fa fa-map-marker"></i> <%=member.current_address || 'Not Set' %></span>
-              </div>
-              </div>
-              <hr>
-            <% end %>
-          <% end %>
-        <% end %>
-        <center><%= will_paginate @members %> </center>
+  <%= render 'members/partials/header', member: member %>
+<% end %>
+<center><%= will_paginate @members %> </center>

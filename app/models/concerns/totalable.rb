@@ -10,3 +10,4 @@ module Totalable
   end
 
 end
+ 

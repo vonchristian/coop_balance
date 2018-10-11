@@ -1,4 +1,6 @@
-<h4> Total Savings  <%= number_to_currency @savings.sum(&:balance) %></h4>
+<div class="card">
+  <div class="card-body">
+<h4 class="card-title"> Total Savings  <%= number_to_currency @savings.sum(&:balance) %></h4>
 <hr>
 <h4>Savings Inactivity Statistics </h4>
 <%= line_chart @savings.group_by_month(:updated_at).count, download: true, curve: false %>

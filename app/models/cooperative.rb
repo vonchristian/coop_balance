@@ -23,6 +23,8 @@ class Cooperative < ApplicationRecord
   has_many :savings,                class_name: "MembershipsModule::Saving"
   has_many :share_capitals,         class_name: "MembershipsModule::ShareCapital"
   has_many :time_deposits,          class_name: "MembershipsModule::TimeDeposit"
+  has_many :barangays,              class_name: "Addresses::Barangay"
+  has_many :municipalities,         class_name: "Addresses::Municipality"
 
   validates :name, :abbreviated_name, presence: true
   validates :name, uniqueness: true

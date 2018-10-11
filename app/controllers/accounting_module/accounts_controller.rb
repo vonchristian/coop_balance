@@ -53,7 +53,7 @@ module AccountingModule
     end
 
     def type_class
-        type.constantize
+      type.constantize
     end
     def account_params
       if @account && @account.type == "AccountingModule::Asset"

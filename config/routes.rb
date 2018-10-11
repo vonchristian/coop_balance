@@ -99,7 +99,6 @@ Rails.application.routes.draw do
       resources :organizations, only: [:edit, :update], module: :loans
       resources :loan_penalty_discounts, only: [:new, :create], module: :loans
       resources :loan_interest_discounts, only: [:new, :create], module: :loans
-
       resources :first_notices, only: [:show], module: :notices
       resources :archivings, only: [:create], module: :loans
       resources :savings_account_deposits,      only: [:new, :create], module: :loans
@@ -423,12 +422,13 @@ namespace :share_capitals_section do
     resources :contributions, only: [:new, :create], module: :membership_applications
     resources :payments, only: [:new, :create], module: :membership_applications
   end
-  resources :cooperatives, only: [:show]
+  resources :cooperatives, only: [:show] do
+    resources :barangays, only: [:new, :create], module: :cooperatives
+  end
   resources :offices, only: [:index, :show] do
       resources :sections, only: [:new, :create], module: :offices
     end
 
-  mount ActionCable.server => '/cable'
   resources :monitoring, only: [:index]
   namespace :monitoring do
     resources :share_capitals, only: [:index]
@@ -481,7 +481,11 @@ namespace :share_capitals_section do
     resources :search_results, only: [:index]
   end
   devise_for :member_accounts, controllers: { sessions: 'member_accounts/sessions', registrations: 'member_accounts/registrations'}
-unauthenticated :user do
+
+  unauthenticated :user do
     root :to => 'home#index', :constraints => lambda { |request| request.env['warden'].user.nil? }, as: :unauthenticated_root
   end
+
+  mount ActionCable.server => '/cable'
+
 end

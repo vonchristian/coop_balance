@@ -14,7 +14,7 @@
               <%= f.input :barangay_id, collection: Addresses::Barangay.all.map{ |a| [a.name, a.id] }  %>
               <%= f.input :municipality_id, collection: Addresses::Municipality.all.map{ |a| [a.name, a.id] }  %>
               <%= f.input :province_id, collection: Addresses::Province.all.map{ |a| [a.name, a.id] }  %>
-              <%= f.input :current %>
+              <%= f.input :current, input_html: { checked: true } %>
               <hr>
               <%= link_to "Cancel", member_path(@member), class: 'btn btn-default' %>
               <%= f.submit "Save Address", class: "btn btn-primary float-right", disable_with: "Saving..." %>
@@ -25,4 +25,3 @@
     </div>
   </div>
 </div>
-

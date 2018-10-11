@@ -25,28 +25,10 @@
       </div>
     </div>
         <% @members.each do |member| %>
-          <div class="card">
-            <div class="card-body">
-              <% cache member do %>
-                <%= link_to member_info_index_path(member) do %>
-                  <div class="row">
-                    <div class="col-md-1">
-                      <%= image_tag(member.avatar.variant(resize: "60x60"), class: "img-circle") if member.avatar.attached? %>
-                    </div>
-                    <div class="col-md-9">
-                      <b><%= member.full_name.upcase %></b><br><br>
-                      <span class="text-muted"> <i class="fa fa-phone"></i> <%= member.current_contact_number %> &nbsp;</span>
-                      <span class="text-muted"> <i class="fa fa-map-marker"></i> <%=member.current_address_details %></span>
-                    </div>
-                  </div>
-                <% end %>
-              <% end %>
-            </div>
-          </div>
+          <%= render 'members/partials/header', member: member %>
         <% end %>
         <center><%= will_paginate @members %> </center>
       </div>
     </div>
   </div>
 </div>
-

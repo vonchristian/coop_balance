@@ -1,0 +1,6 @@
+<%= simple_form_for @barangay, url: :cooperative_barangays, multipart: true, html: { autcomplete: 'off' } do |f| %>
+  <%= f.input :avatar, as: :file %>
+  <%= f.input :name %>
+  <%= f.input :municipality_id, collection: current_cooperative.municipalities.map{|a| [a.name, a.id] } %>
+  <%= f.submit "Save Barangay", class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
+<% end %>
