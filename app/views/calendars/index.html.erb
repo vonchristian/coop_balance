@@ -9,7 +9,7 @@
         <%=link_to calendar_path(date) do %>
             <p><%=date.day %></p>
           <% Member.has_birth_month_on(birth_month: date.month).has_birth_day_on(birth_day: date.day).each do |member| %>
-            <%= image_tag(member.avatar.url(:medium), class: "img-circle", height: 30, width: 30) %> <%= member.first_name %><br>
+            <%= image_tag(member.avatar, class: "img-circle", height: 30, width: 30) %> <%= member.first_name %><br>
           <% end %>
         <% end %>
       <% end %>

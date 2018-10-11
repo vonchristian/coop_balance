@@ -55,11 +55,11 @@ class Member < ApplicationRecord
   delegate :details, :complete_address, :barangay_name, :street_name, to: :current_address, prefix: true, allow_nil: true
   delegate :name, to: :current_organization, prefix: true, allow_nil: true
   before_save :update_birth_date_fields
-  # before_save :set_default_image, on: :create
+  before_save :set_default_image, on: :create
   def current_organization
     organizations.current
   end
-  
+
   def self.updated_at(options={})
     if options[:from_date] && options[:to_date]
       date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
@@ -76,8 +76,7 @@ class Member < ApplicationRecord
   end
 
   def self.has_birth_day_on(args= {})
-    BirthdayQuery.new(self).has_birth_d
-    ay_on(args)
+    BirthdayQuery.new(self).has_birth_day_on(args)
   end
 
   def current_contact
@@ -162,7 +161,11 @@ class Member < ApplicationRecord
 
 
   private
-
+  def set_default_image
+    if avatar.attachment.blank?
+      self.avatar.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'default.png')), filename: 'default-image.png', content_type: 'image/png')
+    end
+  end
   def set_fullname
     self.fullname = self.full_name #used for slugs
   end

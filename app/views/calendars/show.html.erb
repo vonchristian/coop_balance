@@ -6,23 +6,7 @@
       </div>
       <div class="box-body">
         <% @members.each do |member| %>
-
-          <div class="row">
-            <div class="col-md-3">
-              <center><%=image_tag(member.avatar.url(:medium), class: "img-circle", height: 60, width: 60) %></center>
-            </div>
-            <div class="col-md-5">
-              <b><%= member.full_name %></b><br>
-               <i class="fa fa-map-marker"></i> <%= member.current_address %><br>
-              <i class="fa fa-phone"></i> <%= member.current_contact_number %>
-            </div>
-            <div class="col-md-3">
-              <%=member.date_of_birth.strftime("%B %e, %Y") %><br>
-              <%= member.age %> Years Old
-            </div>
-
-          </div>
-          <br>
+          <%= render 'members/partials/header', member: member %>
         <% end %>
       </div>
     </div>

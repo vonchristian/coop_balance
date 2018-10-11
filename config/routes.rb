@@ -428,6 +428,7 @@ namespace :share_capitals_section do
   mount ActionCable.server => '/cable'
   resources :monitoring, only: [:index]
   namespace :monitoring do
+    resources :share_capitals, only: [:index]
     resources :savings_products, only: [:index]
     resources :loan_products, only: [:index]
     resources :store_fronts, only: [:index]
