@@ -10,21 +10,22 @@ module Registries
         create_entry(row)
       end
     end
+    
     private
     def find_share_capital_product(row)
-      CoopServicesModule::ShareCapitalProduct.find_by(name: row["Share Capital Product"])
+      find_cooperative.share_capital_products.find_by(name: row["Share Capital Product"])
     end
 
     def find_subscriber(row)
       if row["Subscriber Type"] == "Member"
-        Member.find_or_create_by(last_name: row["Last Name"], first_name: row["First Name"])
+        find_cooperative.member_memberships.find_or_create_by(last_name: row["Last Name"], first_name: row["First Name"])
       elsif row["Subscriber Type"] == "Organization"
-        Organization.find_or_create_by(name: row["Last Name"])
+      find_cooperative.organizations.find_or_create_by(name: row["Last Name"])
       end
     end
 
     def create_entry(row)
-      share_capital = MembershipsModule::ShareCapital.create(
+      share_capital = find_cooperative.share_capitals.create(
         subscriber: find_subscriber(row),
         account_number: SecureRandom.uuid,
         office: self.employee.office,
@@ -34,7 +35,7 @@ module Registries
       AccountingModule::Entry.create!(
         office: self.employee.office,
         cooperative: self.employee.cooperative,
-        recorder: find_employee,
+        recorder: self.employee,
         commercial_document: find_subscriber(row),
         description: "Forwarded balance of share capital as of #{cut_off_date.strftime("%B %e, %Y")}",
         entry_date: cut_off_date,
@@ -53,12 +54,9 @@ module Registries
     def debit_account
       AccountingModule::Account.find_by(name: "Deposit in Transit")
     end
-    
+
     def credit_account(row)
       find_share_capital_product(row).paid_up_account
-    end
-    def find_employee
-      User.find_by_id(employee_id)
     end
 
     def cut_off_date
