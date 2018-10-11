@@ -24,8 +24,13 @@
   <%= render 'cooperative_services/partials/accounts', accounts: @accounts.revenues, name: "Revenues" %>
   <hr>
   <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-4">
       <h3 class="card-title"> Net Surplus </h3>
     </div>
     <div class="col-md-3">
-      <%= number_to_currency @cooperative_service.accounts.net_surplus(cooperative_service_id: @cooperative_service.id, to_date: @to_date) %>
+      <span class="float-right">
+        <%= number_to_currency @cooperative_service.accounts.net_surplus(cooperative_service_id: @cooperative_service.id, to_date: @to_date) %>
+      </span>
+    </div>
+  </div>
+</div>
