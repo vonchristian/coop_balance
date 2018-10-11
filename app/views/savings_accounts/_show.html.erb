@@ -1,12 +1,13 @@
 <% content_for(:html_title) { "#{@savings_account.depositor_name} | #{@savings_account.saving_product_name}" } %>
+<%= render 'savings_accounts/partials/header', savings_account: @savings_account %>
 <div class="row">
   <div class="col-md-12">
     <div class="card">
       <div class="card-header">
-        <nav class="nav nav-pills flex-column flex-md-row">
-          <%= link_to 'Savings Details', savings_account_path(@savings_account), class: "text-sm-center nav-link #{'active' if current_page?(savings_account_path(@savings_account))}" %>
-          <%= link_to 'Settings', savings_account_settings_path(@savings_account), class: "text-sm-center nav-link #{'active' if current_page?(savings_account_settings_path(@savings_account))}" %>
-        </nav>
+        <ul class="nav nav-tabs">
+          <li class="nav-item"><%= link_to 'Details', savings_account_path(@savings_account), class: "text-sm-center nav-link #{'active' if current_page?(savings_account_path(@savings_account))}" %></li>
+          <li class="nav-item"><%= link_to 'Settings', savings_account_settings_path(@savings_account), class: "text-sm-center nav-link #{'active' if current_page?(savings_account_settings_path(@savings_account))}" %></li>
+        </ul>
       </div>
       <% if current_page? savings_account_path(@savings_account) %>
         <%= render 'savings_accounts/partials/info' %>
@@ -17,4 +18,3 @@
     </div>
   </div>
 </div>
-

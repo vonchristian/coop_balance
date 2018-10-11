@@ -29,7 +29,7 @@
         <div class="card-body">
           <div class="row">
             <div class="col-md-1">
-             <%#=image_tag(savings_account.avatar.variant(resize: "45x45"), class: "img-circle") if savings_account.avatar.attached? %>
+             <%=image_tag(savings_account.avatar.variant(resize: "45x45"), class: "img-circle") if savings_account.avatar.attached? %>
             </div>
             <div class="col-md-4">
               <%=link_to savings_account_path(savings_account) do %>
@@ -56,18 +56,7 @@
               <% if policy([:savings_accounts, :withdrawal]).new? %>
                 <%= link_to 'Withdraw', new_savings_account_withdrawal_path(savings_account), class: "btn btn-danger btn-sm" %>
               <% end %>
-              <div class="btn-group">
-                <button type="button" class="btn btn-light btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  More
-                </button>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">Close Account</a>
-                </div>
-              </div>
+
             </div>
           </div>
         </div>

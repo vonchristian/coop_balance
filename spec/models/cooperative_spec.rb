@@ -23,11 +23,6 @@ RSpec.describe Cooperative, type: :model do
     it { is_expected.to have_many :share_capital_products }
     it { is_expected.to have_many :programs }
     it { is_expected.to have_many :cooperative_services }
-
-
-
-
-
   end
 
   describe 'validations' do

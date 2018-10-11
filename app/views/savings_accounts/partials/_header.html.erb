@@ -29,21 +29,8 @@
         <% if policy([:savings_accounts, :withdrawal]).new? %>
           <%= link_to 'Withdraw', new_savings_account_withdrawal_path(savings_account), class: "btn btn-warning btn-sm" %>
         <% end %>
-        <div class="btn-group">
-          <button type="button" class="btn btn-light btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            More
-          </button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Close Account</a>
-          </div>
-        </div>
       </div>
     </div>
 
   </div>
 </div>
-
