@@ -2,7 +2,7 @@ module Memberships
   module TimeDeposits
     class DepositProcessing
       include ActiveModel::Model
-      attr_accessor :reference_number, :account_number, :date, :amount,:depositor_id, :employee_id, :term, :time_deposit_product_id
+      attr_accessor :reference_number, :account_number, :date, :amount,:depositor_id, :employee_id, :term, :time_deposit_product_id, :cash_account_id
       validates :depositor_id,
                 :date,
                 :amount,
@@ -62,7 +62,7 @@ module Memberships
         reference_number: reference_number,
         entry_date: date,
         debit_amounts_attributes: [
-          account: find_employee.cash_on_hand_account,
+          account: cash_account,
           amount: amount,
           commercial_document: time_deposit],
         credit_amounts_attributes: [
@@ -73,12 +73,15 @@ module Memberships
       def credit_account
         find_time_deposit_product.account
       end
+      def cash_account
+        AccountingModule::Account.find(cash_account_id)
+      end
       def find_time_deposit_product
         CoopServicesModule::TimeDepositProduct.find_by_id(time_deposit_product_id)
       end
       def set_last_transaction_date
         find_time_deposit.update_attributes!(last_transaction_date: date)
-        find_time_deposit.depositor.update_attributes!(last_transaction_date: date)
+        find_time_deposit.depositor.update_attributes(last_transaction_date: date)
       end
     end
   end

@@ -10,7 +10,10 @@
           <% end %>
         </div>
         <div class="col-md-2">
-          <%= entry.commercial_document_name %>
+          <% if entry.commercial_document.present? %>
+
+            <%= entry.commercial_document_name %>
+          <% end %>
         </div>
         <div class="col-md-6">
           <%= entry.description %><br>

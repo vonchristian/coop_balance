@@ -83,17 +83,7 @@
       </thead>
       <tbody>
         <% @entries.each do |entry| %>
-          <tr>
-            <td><%= entry.entry_date.strftime("%B %e, %Y") %></td>
-            <td><%= entry.reference_number %></td>
-            <td><%= number_to_currency entry.amount %></td>
-            <td><%= entry.description %></td>
-            <td>
-              <% if entry.recorder %>
-                <%= entry.recorder.try(:name) %>
-              <% end %>
-            </td>
-          </tr>
+          <%= render 'accounting_module/entries/partials/header', entry: entry %>
         <% end %>
       </tbody>
     </table>

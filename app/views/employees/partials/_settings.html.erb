@@ -1,0 +1,6 @@
+<h3 class="card-title">Cash Accounts</h3>
+<% @employee.employee_cash_accounts.each do |account| %>
+  <%= account.name %>
+  <%= link_to 'Remove', employee_cash_account_path(id: account.id, employee_id: @employee.id), method: :delete %>
+<% end %>
+  <%= link_to 'New Account', new_employee_cash_account_path(@employee) %>

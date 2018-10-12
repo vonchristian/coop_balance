@@ -83,6 +83,7 @@
 
        <%= simple_form_for [@voucher, @disbursement], url: :voucher_disbursements, html: { autocomplete: 'off' } do |f| %>
          <%= f.error_notification %>
+         <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] } %>
          <%= f.input :voucher_id, input_html: { value: @voucher.id }, as: :hidden %>
          <%= f.input :voucherable_id, input_html: { value: @voucher.payee_id }, as: :hidden %>
          <%= f.input :amount, input_html: { value: @voucher.payable_amount }, as: :hidden %>

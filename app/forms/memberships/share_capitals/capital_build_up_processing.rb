@@ -2,9 +2,10 @@ module Memberships
   module ShareCapitals
     class CapitalBuildUpProcessing
       include ActiveModel::Model
-      attr_accessor :or_number, :amount, :date, :share_capital_id, :employee_id
+      attr_accessor :or_number, :amount, :date, :share_capital_id, :employee_id, :cash_account_id
       validates :amount, presence: true, numericality: { greater_than: 0.01 }
       validates :or_number, presence: true
+
       def save
         ActiveRecord::Base.transaction do
           save_capital_build_up
@@ -17,6 +18,7 @@ module Memberships
         MembershipsModule::ShareCapital.find_by_id(share_capital_id)
       end
 
+
       private
       def save_capital_build_up
       AccountingModule::Entry.create!(
@@ -28,7 +30,7 @@ module Memberships
         reference_number: or_number,
         entry_date: date,
         debit_amounts_attributes: [
-          account: debit_account,
+          account: cash_account,
           amount: amount,
           commercial_document: find_share_capital],
         credit_amounts_attributes: [
@@ -37,8 +39,8 @@ module Memberships
           commercial_document: find_share_capital])
       end
 
-      def debit_account
-        find_employee.cash_on_hand_account
+      def cash_account
+        AccountingModule::Account.find(cash_account_id)
       end
 
       def credit_account

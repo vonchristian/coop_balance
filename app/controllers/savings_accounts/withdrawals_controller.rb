@@ -20,7 +20,7 @@ module SavingsAccounts
     private
     def withdrawal_params
       params.require(:memberships_savings_accounts_withdrawal_processing).
-      permit(:amount, :or_number, :date, :saving_id, :employee_id, :payment_type)
+      permit(:amount, :or_number, :date, :saving_id, :employee_id, :payment_type, :cash_account_id)
     end
   end
 end

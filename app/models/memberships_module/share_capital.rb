@@ -80,8 +80,12 @@ module MembershipsModule
     end
 
     def entries
-      share_capital_product_paid_up_account.entries.where(commercial_document: self) +
-      share_capital_product_closing_account.entries.where(commercial_document: self)
+      accounting_entries = []
+      share_capital_product_paid_up_account.amounts.includes(:entry => [:credit_amounts]).where(commercial_document: self).each do |amount|
+        accounting_entries << amount.entry
+      end
+
+      accounting_entries.uniq
     end
 
     def self.subscribed_shares

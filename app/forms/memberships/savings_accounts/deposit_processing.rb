@@ -2,7 +2,7 @@ module Memberships
   module SavingsAccounts
     class DepositProcessing
       include ActiveModel::Model
-      attr_accessor :saving_id, :employee_id, :amount, :or_number, :date, :payment_type, :offline_receipt
+      attr_accessor :saving_id, :employee_id, :amount, :or_number, :date, :payment_type, :offline_receipt, :cash_account_id
       validates :amount, presence: true, numericality: { greater_than: 0.01 }
       validates :or_number, presence: true
 
@@ -50,7 +50,7 @@ module Memberships
       end
 
       def debit_account
-        find_employee.cash_on_hand_account
+        AccountingModule::Account.find(cash_account_id)
         end
       def credit_account
         find_saving.saving_product_account

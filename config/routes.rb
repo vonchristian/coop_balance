@@ -366,6 +366,8 @@ namespace :share_capitals_section do
     resources :settings, only: [:index], module: :time_deposits
   end
   resources :employees, only: [:index, :show, :edit, :update] do
+    resources :settings, only: [:index], module: :employees
+    resources :cash_accounts, only: [:new, :create, :destroy], module: :employees
     resources :info, only: [:index], module: :employees
     resources :blotters, only: [:index], module: :employees
     resources :cash_disbursements, only: [:index], module: :employees

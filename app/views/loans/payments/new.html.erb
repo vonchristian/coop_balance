@@ -49,6 +49,8 @@
           <%= f.input :reference_number %>
           <%= f.input :loan_id, input_html: { value: @loan.id },as: :hidden %>
           <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+          <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] } %>
+
           <%= f.submit "Save Payment", class: "btn btn-primary float-right", data: {disable_with: "Processing Payment..."} %>
         <% end %>
       </div>

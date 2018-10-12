@@ -2,7 +2,7 @@ module TimeDeposits
   class WithdrawalForm
     include ActiveModel::Model
     include ActiveModel::Validations::Callbacks
-    attr_accessor :amount, :or_number, :date, :recorder_id, :time_deposit_id
+    attr_accessor :amount, :or_number, :date, :recorder_id, :time_deposit_id, :cash_account_id
     validates :amount, presence: true, numericality: true
     validates :or_number, presence: true
 
@@ -31,15 +31,15 @@ module TimeDeposits
         reference_number: or_number,
         entry_date: date,
       debit_amounts_attributes: [account: debit_account, amount: amount, commercial_document: find_time_deposit],
-      credit_amounts_attributes: [account: credit_account, amount: amount, commercial_document: find_time_deposit])
+      credit_amounts_attributes: [account: cash_account, amount: amount, commercial_document: find_time_deposit])
     end
-    
+
     def set_time_deposit_as_withdrawn
       find_time_deposit.update(withdrawn: true)
     end
 
-    def credit_account
-      find_employee.cash_on_hand_account
+    def cash_account
+      AccountingModule::Account.find(cash_account_id)
     end
 
     def debit_account

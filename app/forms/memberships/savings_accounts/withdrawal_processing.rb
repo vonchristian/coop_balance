@@ -3,7 +3,7 @@ module Memberships
     class WithdrawalProcessing
       include ActiveModel::Model
       include ActiveModel::Validations::Callbacks
-      attr_accessor :saving_id, :amount, :or_number, :date, :employee_id, :payment_type
+      attr_accessor :saving_id, :amount, :or_number, :date, :employee_id, :payment_type, :cash_account_id
       validates :amount, presence: true, numericality: true
       validates :or_number, presence: true
       validate :amount_less_than_current_cash_on_hand?
@@ -37,13 +37,13 @@ module Memberships
           amount: amount,
           commercial_document: find_saving],
         credit_amounts_attributes: [
-          account: credit_account,
+          account: cash_account,
           amount: amount,
           commercial_document: find_saving])
       end
 
-      def credit_account
-        find_employee.cash_on_hand_account
+      def cash_account
+        AccountingModule::Account.find(cash_account_id)
       end
 
       def debit_account
@@ -56,12 +56,12 @@ module Memberships
       end
 
       def amount_less_than_current_cash_on_hand?
-        errors[:amount] << "Amount exceeded current cash on hand" if (amount.to_i) > find_employee.cash_on_hand_account_balance
+        errors[:amount] << "Amount exceeded current cash on hand" if (amount.to_i) > cash_account.balance
       end
 
       def set_last_transaction_date
         find_saving.update_attributes!(last_transaction_date: date)
-        find_saving.depositor.update_attributes!(last_transaction_date: date)
+        find_saving.depositor.update_attributes(last_transaction_date: date)
       end
     end
   end

@@ -23,7 +23,7 @@ module Loans
     private
     def payment_params
       params.require(:loans_module_loans_payment_processing).
-      permit(:principal_amount, :interest_amount, :penalty_amount, :description, :employee_id, :loan_id, :reference_number, :date)
+      permit(:principal_amount, :interest_amount, :penalty_amount, :description, :employee_id, :loan_id, :reference_number, :date, :cash_account_id)
     end
   end
 end

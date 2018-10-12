@@ -1,6 +1,6 @@
 class DisbursementForm
   include ActiveModel::Model
-  attr_accessor  :voucher_id, :voucherable_id, :amount, :reference_number, :date, :recorder_id, :description, :total_amount
+  attr_accessor  :voucher_id, :voucherable_id, :amount, :reference_number, :date, :recorder_id, :description, :total_amount, :cash_account_id
   validates :reference_number, presence: true
   # validate :amount_less_than_current_cash_on_hand?
 
@@ -40,10 +40,13 @@ class DisbursementForm
 
   def credit_account_for(amount)
     if amount.account.name.downcase.include?("cash") || amount.account.name.downcase.include?("Cash")
-      find_employee.cash_on_hand_account
+      cash_account
     else
       amount.account
     end
+  end
+  def cash_account
+    AccountingModule::Account.find(cash_account_id)
   end
   def disburse_voucher
     find_voucher.update_attributes(disburser: find_employee)

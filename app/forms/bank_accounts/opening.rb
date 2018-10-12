@@ -1,7 +1,7 @@
 module BankAccounts
   class Opening
     include ActiveModel::Model
-    attr_accessor :bank_name, :bank_address, :account_number,  :amount, :recorder_id, :account_id, :earned_interest_account_id, :date, :reference_number, :description
+    attr_accessor :bank_name, :bank_address, :account_number,  :amount, :recorder_id, :account_id, :earned_interest_account_id, :date, :reference_number, :description, :cash_account_id
     validates :amount, presence: true, numericality: { greater_than: 0.01 }
     validates :bank_name, :bank_address, :account_number, :account_id, :earned_interest_account_id, :date, :reference_number, :description, presence: true
 
@@ -30,11 +30,11 @@ module BankAccounts
         reference_number:    reference_number,
         description:         description,
         credit_amounts_attributes: [
-          account:             credit_account,
+          account:             cash_account,
           amount:              amount,
           commercial_document: bank_account],
         debit_amounts_attributes: [
-          account_id:             account_id,
+          account_id:          account_id,
           amount:              amount,
           commercial_document: bank_account])
     end
@@ -42,9 +42,9 @@ module BankAccounts
     def find_employee
       User.find(recorder_id)
     end
-    
-    def credit_account
-      find_employee.cash_on_hand_account
+
+    def cash_account
+      AccountingModule::Account.find(cash_account_id)
     end
   end
 end

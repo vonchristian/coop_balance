@@ -20,7 +20,7 @@ module SavingsAccounts
 
     private
     def deposit_params
-      params.require(:memberships_savings_accounts_deposit_processing).permit(:amount, :or_number, :date, :saving_id, :employee_id, :payment_type,:offline_receipt)
+      params.require(:memberships_savings_accounts_deposit_processing).permit(:amount, :or_number, :date, :saving_id, :employee_id, :payment_type,:offline_receipt, :cash_account_id)
     end
   end
 end

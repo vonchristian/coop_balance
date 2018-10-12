@@ -17,7 +17,7 @@ module TimeDeposits
 
     private
     def withdrawal_params
-      params.require(:time_deposits_withdrawal_form).permit(:or_number, :date, :time_deposit_id, :recorder_id, :amount)
+      params.require(:time_deposits_withdrawal_form).permit(:or_number, :date, :time_deposit_id, :recorder_id, :amount, :cash_account_id)
     end
   end
 end

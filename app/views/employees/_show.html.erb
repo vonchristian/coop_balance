@@ -20,6 +20,7 @@
           <li class="nav-item"><%= link_to 'Savings', employee_savings_accounts_path(@employee), class: "nav-link #{'active' if current_page?(employee_savings_accounts_path(@employee))}" %></li>
           <li class="nav-item"><%= link_to 'Share Capitals', employee_share_capitals_path(@employee), class: "nav-link #{'active' if current_page?(employee_share_capitals_path(@employee))}" %></li>
           <li class="nav-item"><%= link_to 'Time Deposits', employee_time_deposits_path(@employee), class: "nav-link #{'active' if current_page?(employee_time_deposits_path(@employee))}" %></li>
+          <li class="nav-item"><%= link_to 'Settings', employee_settings_path(@employee), class: "nav-link #{'active' if current_page?(employee_settings_path(@employee))}" %></li>
         </ul>
         <br>
       </div>
@@ -48,8 +49,11 @@
         <% if current_page?(employee_share_capitals_path(@employee)) %>
           <%= render 'employees/partials/share_capitals' %>
         <% end %>
-         <% if current_page?(employee_time_deposits_path(@employee)) %>
+        <% if current_page?(employee_time_deposits_path(@employee)) %>
           <%= render 'employees/partials/time_deposits' %>
+        <% end %>
+        <% if current_page?(employee_settings_path(@employee)) %>
+          <%= render 'employees/partials/settings' %>
         <% end %>
       </div>
     </div>

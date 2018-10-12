@@ -9,7 +9,8 @@ module LoansModule
                 :reference_number,
                 :date,
                 :description,
-                :employee_id
+                :employee_id,
+                :cash_account_id
       validates :principal_amount, :interest_amount, :penalty_amount, presence: true, numericality: true
       validates :reference_number, :description, presence: true
 
@@ -29,7 +30,7 @@ module LoansModule
       def save_payment
         interest_revenue_account = find_loan.loan_product_interest_revenue_account
         penalty_revenue_account          = find_loan.loan_product_penalty_revenue_account
-        debit_account            = find_employee.cash_on_hand_account
+        debit_account            = find_cash_account
         entry = AccountingModule::Entry.new(
         office: find_employee.office,
         cooperative: find_employee.cooperative,
@@ -64,6 +65,11 @@ module LoansModule
         commercial_document: find_loan)
         entry.save!
       end
+      
+      def find_cash_account
+        AccountingModule::Account.find(cash_account_id)
+      end
+
       def total_amount
         principal_amount.to_f +
         interest_amount.to_f +

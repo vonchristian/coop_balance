@@ -19,9 +19,8 @@
           <%= f.input :or_number, label: 'OR number' %>
           <%= f.input :saving_id, input_html: { value: @savings_account.id },as: :hidden %>
           <%= f.input :employee_id, input_html: { value: current_user.id },as: :hidden %>
-          <div class="box-footer">
-            <%= f.submit "Save Withdrawal", class: "btn btn-primary float-right", data: { disable_with: 'Processing...' } %>
-          </div>
+          <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] } %>
+          <%= f.submit "Save Withdrawal", class: "btn btn-primary float-right", data: { disable_with: 'Processing...' } %>
         <% end %>
       </div>
     </div>
