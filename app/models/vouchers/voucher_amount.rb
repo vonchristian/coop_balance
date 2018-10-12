@@ -14,6 +14,17 @@ module Vouchers
       sum(:amount)
     end
 
+    def self.total_cash_amount
+      amounts = []
+      self.all.each do |amount|
+        if Employees::EmployeeCashAccount.cash_accounts.include?(amount.account)
+          amounts << amount.amount
+        end
+      end
+      amounts.sum
+    end
+
+
     def self.with_no_vouchers
       select{ |a| a.voucher.nil? }
     end

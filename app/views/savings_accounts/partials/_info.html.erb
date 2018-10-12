@@ -38,7 +38,7 @@
         <div class="col-md-7 col-sm-6 col-auto">
           <small>BALANCE</small>
           <h2><%= number_to_currency @savings_account.balance %></h2>
-          
+
         </div>
         <div class="col-md-4 col-sm-6 col-auto">
           <small>INACTIVITY</small>
@@ -56,7 +56,7 @@
     <div class="corner-ribbon top-left red">Closed</div>
   <% end %>
     <% month_dates = [] %>
-    <% (Date.today.beginning_of_year..Date.today.end_of_month).each do |date| %>
+    <% (Date.today.beginning_of_year..Date.today.end_of_year).each do |date| %>
       <% month_dates << date.end_of_month %>
     <% end %>
     <% monthly_balances_data = [] %>
@@ -68,38 +68,12 @@
 <hr class="no-margin">
 <div class="card-body">
   <p class="text-muted">TRANSACTIONS HISTORY </p>
-  <div class="table table-responsive">
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th> Date </th>
-          <th>Reference Number</th>
-          <th> Amount </th>
-          <th> Description </th>
-          <th> Employee </th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @entries.each do |entry| %>
-          <% cache(entry) do %>
-            <tr>
-              <td><%= link_to entry.entry_date.strftime("%B %e, %Y"), accounting_module_entry_path(entry) %></td>
-              <td><%= entry.reference_number %></td>
-              <td>
-                <%= number_to_currency entry.credit_amounts.sum(&:amount) %></td>
 
-              <td><%= entry.description %> /
-                <%= entry.payment_type.to_s.titleize %>
-              </td>
-              <td><% if entry.recorder %>
-                <%= entry.recorder_first_and_last_name %>
-                <% end %>
-              </td>
-            </tr>
-          <% end %>
+
+        <% @entries.each do |entry| %>
+          <%= render 'accounting_module/entries/partials/header', entry: entry %>
         <% end %>
-      </tbody>
-    </table>
+
     <center><%= will_paginate @entries %></center>
   </div>
 </div>

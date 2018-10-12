@@ -5,15 +5,20 @@
   <div class="col-md-4">
     <div class="card">
       <div class="card-header">
-        <h3 class="card-title"> New Deposit Details </h3>
         <center>
-
-          <h3><%= @savings_account.depositor_name %></h3>
+            <%= image_tag(@savings_account.depositor.avatar, class: "img-circle", height: 45, width: 45) %>
+          <h3 class="card-title"><%= @savings_account.depositor_name %></h3>
         </center>
       </div>
       <div class="card-body">
+        <small>SAVINGS ACCOUNT BALANCE</small>
+        <h3 class="card-title"><%= number_to_currency @savings_account.balance %></h3>
+        <hr>
+        <h3 class="card-title"> Deposit Details </h3>
         <%= simple_form_for [@savings_account, @deposit], url: :savings_account_deposits do |f| %>
           <%= f.error_notification %>
+          <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] } %>
+          <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
           <%= f.input :date, as: :string, input_html: { class: "datepicker", autocomplete: "off" } %>
           <%= f.input :amount, as: :currency, input_html: { autocomplete: "off" } %>
           <%= f.input :payment_type, label: 'Type', collection: AccountingModule::Entry.payment_types.keys.to_a.map{|a| [a.titleize, a] }, selected: AccountingModule::Entry.payment_types.keys.first %>
@@ -21,9 +26,7 @@
           <%= f.input :or_number, label: 'OR number', input_html: { autocomplete: "off" } %>
           <%= f.input :saving_id, input_html: { value: @savings_account.id },as: :hidden %>
           <%= f.input :employee_id, input_html: { value: current_user.id },as: :hidden %>
-          <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] } %>
-          
-            <%= f.submit "Save Deposit", class: "btn btn-primary float-right", data: { disable_with: "Processing..."} %>
+          <%= f.submit "Proceed", class: "btn btn-primary btn-block", data: { disable_with: "Processing..."} %>
         <% end %>
       </div>
     </div>
@@ -32,7 +35,10 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
-    $("#memberships_savings_accounts_deposit_processing_payment_type").select2({
+    $("#memberships_savings_accounts_deposit_line_item_processing_cash_account_id").select2({
+      theme: "bootstrap"
+    });
+    $("#memberships_savings_accounts_deposit_line_item_processing_payment_type").select2({
       theme: "bootstrap"
     });
   });

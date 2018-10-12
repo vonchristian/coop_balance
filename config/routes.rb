@@ -302,10 +302,8 @@ Rails.application.routes.draw do
     resources :cash_accounts, only: [:show] do
       resources :cash_receipt_line_items, only: [:new, :create, :destroy], module: :cash_accounts
       resources :cash_disbursement_line_items, only: [:new, :create, :destroy], module: :cash_accounts
-
     end
     resources :reports, only: [:index]
-    resources :savings_accounts, only: [:new, :create]
     resources :disbursements, only: [:index]
     resources :cash_receipts, only: [:index]
     resources :disbursement_processings, only: [:create]
@@ -330,6 +328,7 @@ namespace :share_capitals_section do
 
 
   resources :savings_accounts, only: [:index, :show] do
+    resources :vouchers, only: [:show, :destroy], module: :savings_accounts
     resources :balance_transfers, only: [:new, :create], module: :savings_accounts
     resources :settings,          only: [:index],        module: :savings_accounts
     resources :account_mergings,  only: [:create], module: :savings_accounts
@@ -339,6 +338,7 @@ namespace :share_capitals_section do
     resources :account_closings,  only: [:new, :create], module: :savings_accounts
     resources :barangay_settings,  only: [:edit, :update], module: :savings_accounts
 
+    resources :deposit_confirmations, only: [:create, :show], module: :savings_accounts
   end
 
   resources :search_results, only: [:index, :show]
