@@ -21,6 +21,8 @@ RSpec.describe User, type: :model do
     it { is_expected.to have_many :organizations }
     it { is_expected.to have_one :current_address }
     it { is_expected.to have_many :memberships }
+    it { is_expected.to have_many :employee_cash_accounts }
+    it { is_expected.to have_many :cash_accounts }
   end
 
   describe 'delegations' do

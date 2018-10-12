@@ -19,8 +19,17 @@
             <% end %>
           </div>
           <div class="col-md-4">
-            <span class="pull-right">
-              <%=link_to 'New Cash Receipt', new_treasury_module_cash_receipt_line_item_path, class: "btn btn-primary float-right" %>
+            <span class="float-right">
+              <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  New Cash Receipt
+                </button>
+                <div class="dropdown-menu">
+                  <% current_user.cash_accounts.each do |cash_account| %>
+                    <%= link_to cash_account.name, new_treasury_module_cash_account_cash_receipt_line_item_path(cash_account), class: "dropdown-item" %>
+                  <% end %>
+                </div>
+              </div>
             </span>
           </div>
         </div>
@@ -31,7 +40,7 @@
                   <%= render 'accounting_module/entries/partials/header', entry: entry %>
                 <% end %>
               <% end %>
-          
+
         <center><%= will_paginate @cash_receipts %></center>
       </div>
     </div>

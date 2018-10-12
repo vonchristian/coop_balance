@@ -14,7 +14,7 @@ module CoopCatalyst
     config.time_zone = 'Asia/Manila'
     config.active_record.default_timezone = :utc
     config.active_job.queue_adapter = :delayed_job
-
+    config.middleware.insert_after ActionDispatch::Static, Rack::Deflater
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.

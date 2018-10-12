@@ -299,14 +299,18 @@ Rails.application.routes.draw do
   resources :schedules, only: [:index, :show]
   resources :treasury_module, only: [:index]
   namespace :treasury_module do
+    resources :cash_accounts, only: [:show] do
+      resources :cash_receipt_line_items, only: [:new, :create, :destroy], module: :cash_accounts
+      resources :cash_disbursement_line_items, only: [:new, :create, :destroy], module: :cash_accounts
+
+    end
     resources :reports, only: [:index]
     resources :savings_accounts, only: [:new, :create]
     resources :disbursements, only: [:index]
     resources :cash_receipts, only: [:index]
-    resources :disbursement_line_items, only: [:new, :create, :destroy]
-    resources :cash_receipt_line_items, only: [:new, :create, :destroy]
     resources :disbursement_processings, only: [:create]
     resources :cash_receipt_processings, only: [:create]
+
     resources :employees, only: [:index, :show] do
       resources :remittances, only: [:new, :create]
       resources :fund_transfers, only: [:new, :create]

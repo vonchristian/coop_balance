@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_11_122701) do
+ActiveRecord::Schema.define(version: 2018_10_12_015659) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -372,6 +372,15 @@ ActiveRecord::Schema.define(version: 2018_10_11_122701) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["uploader_type", "uploader_id"], name: "index_documents_on_uploader_type_and_uploader_id"
+  end
+
+  create_table "employee_cash_accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "employee_id"
+    t.uuid "cash_account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cash_account_id"], name: "index_employee_cash_accounts_on_cash_account_id"
+    t.index ["employee_id"], name: "index_employee_cash_accounts_on_employee_id"
   end
 
   create_table "entries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1392,6 +1401,8 @@ ActiveRecord::Schema.define(version: 2018_10_11_122701) do
   add_foreign_key "cooperatives", "interest_amortization_configs"
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "credit_account_id"
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "debit_account_id"
+  add_foreign_key "employee_cash_accounts", "accounts", column: "cash_account_id"
+  add_foreign_key "employee_cash_accounts", "users", column: "employee_id"
   add_foreign_key "entries", "cooperative_services"
   add_foreign_key "entries", "cooperatives"
   add_foreign_key "entries", "offices"

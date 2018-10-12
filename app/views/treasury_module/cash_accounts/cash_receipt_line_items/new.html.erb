@@ -2,20 +2,23 @@
   <div class="col-md-8">
     <div class="card">
       <div class="card-header">
-        <h3 class="card-title"> Disbursement Details </h3>
+        <h3 class="card-title"><%= number_to_currency @cash_account.balance %></h3>
+        <p class="text-muted"> <%= @cash_account.name %> </p>
       </div>
       <div class="card-body">
-        <%= simple_form_for @disbursement_line_item, url: :treasury_module_disbursement_line_items, html: { autocomplete: 'off' } do |f| %>
-          <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+        <%= simple_form_for @cash_receipt_line_item, url: :treasury_module_cash_account_cash_receipt_line_items do |f| %>
           <div class="row">
             <div class="col-md-6">
               <%= f.input :account_id, label: false, placeholder: "Account", collection: AccountingModule::Account.all.map{|a| [a.name, a.id] }, prompt: "Select Account" %>
+              <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+              <%= f.input :cash_account_id, input_html: { value: @cash_account.id }, as: :hidden %>
+
             </div>
             <div class="col-md-4">
               <%= f.input :amount, label: false, placeholder: 'Amount', as: :currency  %>
             </div>
             <div class="col-md-2">
-              <%= f.submit "Add", class: "btn btn-danger float-right" %>
+              <%= f.submit "Add", class: "btn btn-success" %>
             </div>
           </div>
         <% end %>
@@ -26,7 +29,7 @@
           <thead>
             <tr>
               <th>DEBIT</th>
-              <th class="text-right">ACCOUNT</th>
+              <th>ACCOUNT</th>
               <th class="text-right">CREDIT</th>
               <th></th>
             </tr>
@@ -34,11 +37,12 @@
           <tbody>
             <% current_user.voucher_amounts.each do |amount| %>
               <tr>
-                <td class="text-right">
+                <td>
                   <% if amount.debit? %>
                     <%= number_to_currency amount.amount %>
                   <% end %>
                 </td>
+
                 <td><%= amount.account_name %></td>
 
                 <td class="text-right">
@@ -46,16 +50,15 @@
                     <%= number_to_currency amount.amount %>
                   <% end %>
                 </td>
-                <td class="text-right" class="text-right">
-                  <%= link_to treasury_module_disbursement_line_item_path(amount), method: :delete do %>
+                <td class="text-right">
+                  <%= link_to treasury_module_cash_account_cash_receipt_line_item_path(id: @cash_account.id, amount_id: amount.id, employee_id: current_user.id), method: :delete do %>
                     <span title="Remove" data-toggle="tooltip" class="fa fa-trash text-danger"></span>
                   <% end %>
                 </td>
               </tr>
             <% end %>
             <tr>
-
-              <th class="text-right"><%= number_to_currency current_user.voucher_amounts.debit.sum(&:amount) %></th>
+              <th><%= number_to_currency current_user.voucher_amounts.debit.sum(&:amount) %></th>
               <th></th>
               <th class="text-right"><%= number_to_currency current_user.voucher_amounts.credit.sum(&:amount) %></th>
               <th></th>
@@ -71,7 +74,7 @@
         <h3 class="card-title"> Payee Details </h3>
       </div>
       <div class="card-body">
-        <%=simple_form_for @disbursement, url: :treasury_module_disbursement_processings, html: { autocomplete: 'off' } do |f| %>
+        <%=simple_form_for @cash_receipt, url: :treasury_module_cash_receipt_processings, html: { autcomplete: 'off' } do |f| %>
           <%= f.input :cooperative_service_id, collection: current_cooperative.cooperative_services.map{|a| [a.title, a.id] } %>
           <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
           <%= f.input :description, as: :text %>
@@ -80,8 +83,9 @@
           <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
           <hr>
           <% if current_user.voucher_amounts.present? %>
-            <%= f.submit "Disburse Amount", class: "btn btn-danger float-right" %>
+            <%= f.submit "Save Cash Receipt", class: "btn btn-primary btn-block" %>
           <% end %>
+
         <% end %>
       </div>
     </div>
@@ -89,13 +93,13 @@
 </div>
 <script type="text/javascript">
   $(document).ready(function() {
-    $("#treasury_module_cash_disbursement_line_item_processing_account_id").select2({
-      theme: "bootstrap"
-    });
-    $("#vouchers_disbursement_processing_payee_id").select2({
+    $("#treasury_module_cash_receipt_line_item_processing_account_id").select2({
       theme: "bootstrap"
     });
     $("#vouchers_disbursement_processing_cooperative_service_id").select2({
+      theme: "bootstrap"
+    });
+    $("#vouchers_disbursement_processing_payee_id").select2({
       theme: "bootstrap"
     });
   });

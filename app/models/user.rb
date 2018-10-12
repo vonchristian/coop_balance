@@ -54,6 +54,9 @@ class User < ApplicationRecord
   has_many :program_subscriptions,    class_name: "MembershipsModule::ProgramSubscription", as: :subscriber
   has_many :subscribed_programs,      through: :program_subscriptions, class_name: "CoopServicesModule::Program"
 
+  has_many :employee_cash_accounts,   class_name: "Employees::EmployeeCashAccount", foreign_key: 'employee_id'
+  has_many :cash_accounts,            class_name: "AccountingModule::Account", through: :employee_cash_accounts, source: :cash_account
+
   delegate :name, to: :department, prefix: true, allow_nil: true
   delegate :name, :address, :contact_number, :logo, to: :cooperative, prefix: true
   delegate :name, to: :office, prefix: true, allow_nil: true

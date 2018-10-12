@@ -19,7 +19,16 @@
       </div>
       <div class="col-md-4">
         <span class="float-right">
-          <%=link_to 'New Disbursement', new_treasury_module_disbursement_line_item_path, class: "btn btn-danger pull-right" %>
+          <div class="btn-group">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              New Cash Disbursement
+            </button>
+            <div class="dropdown-menu">
+              <% current_user.cash_accounts.each do |cash_account| %>
+                <%= link_to cash_account.name, new_treasury_module_cash_account_cash_disbursement_line_item_path(cash_account), class: "dropdown-item" %>
+              <% end %>
+            </div>
+          </div>
         </span>
       </div>
     </div>
