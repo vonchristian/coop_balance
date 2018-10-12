@@ -3,7 +3,7 @@ class VouchersController < ApplicationController
     if params[:search].present?
       @vouchers = Voucher.text_search(params[:search]).paginate(page: params[:page], per_page: 50)
     else
-      @vouchers = Voucher.all.order(date: :desc).paginate(page: params[:page], per_page: 50)
+      @vouchers = Voucher.includes(:payee).all.order(date: :desc).paginate(page: params[:page], per_page: 50)
     end
   end
   def show
