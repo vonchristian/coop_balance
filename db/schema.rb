@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_13_005546) do
+ActiveRecord::Schema.define(version: 2018_10_13_050938) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1208,6 +1208,23 @@ ActiveRecord::Schema.define(version: 2018_10_13_005546) do
     t.index ["termable_type", "termable_id"], name: "index_terms_on_termable_type_and_termable_id"
   end
 
+  create_table "time_deposit_applications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "depositor_type"
+    t.uuid "depositor_id"
+    t.string "account_number"
+    t.datetime "date_deposited"
+    t.decimal "term"
+    t.decimal "amount"
+    t.uuid "voucher_id"
+    t.uuid "time_deposit_product_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_number"], name: "index_time_deposit_applications_on_account_number", unique: true
+    t.index ["depositor_type", "depositor_id"], name: "index_depositor_on_time_deposit_applications"
+    t.index ["time_deposit_product_id"], name: "index_time_deposit_applications_on_time_deposit_product_id"
+    t.index ["voucher_id"], name: "index_time_deposit_applications_on_voucher_id"
+  end
+
   create_table "time_deposit_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "break_contract_account_id"
     t.uuid "interest_account_id"
@@ -1517,6 +1534,8 @@ ActiveRecord::Schema.define(version: 2018_10_13_005546) do
   add_foreign_key "store_fronts", "accounts", column: "spoilage_account_id"
   add_foreign_key "streets", "barangays"
   add_foreign_key "streets", "municipalities"
+  add_foreign_key "time_deposit_applications", "time_deposit_products"
+  add_foreign_key "time_deposit_applications", "vouchers"
   add_foreign_key "time_deposit_configs", "accounts"
   add_foreign_key "time_deposit_configs", "accounts", column: "break_contract_account_id"
   add_foreign_key "time_deposit_configs", "accounts", column: "interest_account_id"

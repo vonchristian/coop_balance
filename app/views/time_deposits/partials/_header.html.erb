@@ -3,7 +3,7 @@
     <%= link_to time_deposit_path(time_deposit) do %>
       <div class="row">
         <div class="col-md-1">
-          <%= image_tag(time_deposit.depositor.avatar, class: "img-circle", height: 45, width: 45) %>
+          <%#= image_tag(time_deposit.depositor.avatar, class: "img-circle", height: 45, width: 45) %>
         </div>
         <div class="col-md-3">
           <b><%= time_deposit.depositor_name.try(:upcase) %></b><br>

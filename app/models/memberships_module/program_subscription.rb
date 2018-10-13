@@ -4,7 +4,7 @@
 	  belongs_to :subscriber,          polymorphic: true
 	  has_many :subscription_payments, class_name: "AccountingModule::Entry", as: :commercial_document
 	  delegate :name,
-             :contribution,
+             :amount,
              :account,
              :description,
              :one_time_payment?,

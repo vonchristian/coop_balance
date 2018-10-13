@@ -377,7 +377,7 @@ namespace :share_capitals_section do
     resources :loans, only: [:new, :create], module: :employees
     resources :memberships, only: [:new, :create, :edit, :update], module: :employees
     resources :cash_on_hand_accounts, only: [:edit, :update], module: :employees
-    resources :time_deposits, only: [:index, :new, :create], module: :employees
+    resources :time_deposits, only: [:index], module: :employees
     resources :savings_accounts, only: [:index, :new, :create], module: :employees
     resources :share_capitals, only: [:index, :new, :create], module: :employees
     resources :entries, only: [:index, :show], module: :employees
@@ -494,6 +494,12 @@ namespace :share_capitals_section do
   unauthenticated :user do
     root :to => 'home#index', :constraints => lambda { |request| request.env['warden'].user.nil? }, as: :unauthenticated_root
   end
+
+  resources :time_deposit_applications, only: [:new, :create] do
+    resources :vouchers, only: [:show, :destroy], module: :time_deposit_applications
+    resources :voucher_confirmations, only: [:create], module: :time_deposit_applications
+  end
+
 
   mount ActionCable.server => '/cable'
 
