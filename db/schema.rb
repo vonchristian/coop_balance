@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_12_063959) do
+ActiveRecord::Schema.define(version: 2018_10_13_005546) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1340,10 +1340,12 @@ ActiveRecord::Schema.define(version: 2018_10_12_063959) do
     t.string "description"
     t.integer "amount_type", default: 0
     t.uuid "amount_adjustment_id"
+    t.uuid "recorder_id"
     t.index ["account_id"], name: "index_voucher_amounts_on_account_id"
     t.index ["amount_adjustment_id"], name: "index_voucher_amounts_on_amount_adjustment_id"
     t.index ["amount_type"], name: "index_voucher_amounts_on_amount_type"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_voucher_amount"
+    t.index ["recorder_id"], name: "index_voucher_amounts_on_recorder_id"
     t.index ["voucher_id"], name: "index_voucher_amounts_on_voucher_id"
   end
 
@@ -1364,8 +1366,10 @@ ActiveRecord::Schema.define(version: 2018_10_12_063959) do
     t.uuid "office_id"
     t.uuid "cooperative_id"
     t.string "account_number"
+    t.uuid "cooperative_service_id"
     t.index ["account_number"], name: "index_vouchers_on_account_number", unique: true
     t.index ["cooperative_id"], name: "index_vouchers_on_cooperative_id"
+    t.index ["cooperative_service_id"], name: "index_vouchers_on_cooperative_service_id"
     t.index ["disburser_id"], name: "index_vouchers_on_disburser_id"
     t.index ["entry_id"], name: "index_vouchers_on_entry_id"
     t.index ["office_id"], name: "index_vouchers_on_office_id"
@@ -1531,7 +1535,9 @@ ActiveRecord::Schema.define(version: 2018_10_12_063959) do
   add_foreign_key "users", "store_fronts"
   add_foreign_key "voucher_amounts", "accounts"
   add_foreign_key "voucher_amounts", "amount_adjustments"
+  add_foreign_key "voucher_amounts", "users", column: "recorder_id"
   add_foreign_key "voucher_amounts", "vouchers"
+  add_foreign_key "vouchers", "cooperative_services"
   add_foreign_key "vouchers", "cooperatives"
   add_foreign_key "vouchers", "entries"
   add_foreign_key "vouchers", "offices"

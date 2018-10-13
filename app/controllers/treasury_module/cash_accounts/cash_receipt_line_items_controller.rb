@@ -3,12 +3,12 @@ module TreasuryModule
     class CashReceiptLineItemsController < ApplicationController
       def new
         @cash_account = AccountingModule::Account.find(params[:cash_account_id])
-        @cash_receipt_line_item = TreasuryModule::CashReceiptLineItemProcessing.new
-        @cash_receipt = Vouchers::DisbursementProcessing.new
+        @cash_receipt_line_item = Vouchers::VoucherAmountProcessing.new
+        @cash_receipt = Vouchers::VoucherProcessing.new
       end
       def create
         @cash_account = AccountingModule::Account.find(params[:cash_account_id])
-        @cash_receipt_line_item = TreasuryModule::CashReceiptLineItemProcessing.new(cash_receipt_params)
+        @cash_receipt_line_item = Vouchers::VoucherAmountProcessing.new(cash_receipt_params)
         if @cash_receipt_line_item.valid?
           @cash_receipt_line_item.save
           redirect_to new_treasury_module_cash_account_cash_receipt_line_item_url(cash_account_id: @cash_account.id), notice: "Added successfully"
@@ -25,8 +25,8 @@ module TreasuryModule
 
       private
       def cash_receipt_params
-        params.require(:treasury_module_cash_receipt_line_item_processing).
-        permit(:amount, :account_id, :description, :employee_id, :cash_account_id)
+        params.require(:vouchers_voucher_amount_processing).
+        permit(:amount, :account_id, :description, :employee_id, :cash_account_id, :account_number, :amount_type)
       end
 
     end

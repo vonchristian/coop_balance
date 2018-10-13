@@ -309,8 +309,7 @@ Rails.application.routes.draw do
     resources :reports, only: [:index]
     resources :disbursements, only: [:index]
     resources :cash_receipts, only: [:index]
-    resources :disbursement_processings, only: [:create]
-    resources :cash_receipt_processings, only: [:create]
+    resources :voucher_processings, only: [:create]
 
     resources :employees, only: [:index, :show] do
       resources :remittances, only: [:new, :create]
@@ -405,6 +404,7 @@ namespace :share_capitals_section do
 
   resources :vouchers, only: [:index, :show, :destroy] do
     resources :disbursements, only: [:new, :create], module: :vouchers
+    resources :confirmations, only: [:create], module: :vouchers
     resources :loan_disbursements, only: [:new, :create], module: :vouchers
 
   end

@@ -1,0 +1,91 @@
+<div class="row">
+  <div class="col-md-3">
+    Payee
+  </div>
+  <div class="col-md-9">
+    <%= voucher.payee_name %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-3">
+    Description
+  </div>
+  <div class="col-md-9">
+    <%= voucher.description %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-3">
+    Date
+  </div>
+  <div class="col-md-9">
+    <%= voucher.date.strftime("%B %e, %Y") %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-3">
+    Employee
+  </div>
+  <div class="col-md-9">
+    <%= voucher.preparer_full_name %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-3">
+    Reference #
+  </div>
+  <div class="col-md-9">
+    <%= voucher.number %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-3">
+    Cooperative Service
+  </div>
+  <div class="col-md-9">
+    <%= voucher.cooperative_service_title %>
+  </div>
+</div>
+<br>
+<div class="table table-responsive">
+  <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Debit</th>
+          <th>Account</th>
+          <th> <span class="float-right">
+            Credit
+          </span></th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <% voucher.voucher_amounts.each do |voucher_amount| %>
+          <tr>
+            <td>
+              <% if voucher_amount.debit? %>
+                <%= number_to_currency voucher_amount.amount %>
+              <% end %>
+            </td>
+            <td><%= voucher_amount.account_name %></td>
+             <td>
+              <% if voucher_amount.credit? %>
+                <span class="float-right"><%= number_to_currency voucher_amount.amount %></span>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+        <% if voucher.voucher_amounts.present? %>
+           <tr>
+            <td><b><%= number_to_currency voucher.voucher_amounts.debit.sum(:amount) %></b></td>
+            <td></td>
+            <td><b class="float-right"><%= number_to_currency voucher.voucher_amounts.credit.sum(:amount) %></b></td>
+          </tr>
+
+        <% end %>
+      </tbody>
+    </table>

@@ -3,6 +3,7 @@ module Vouchers
     enum amount_type: [:debit, :credit]
     belongs_to :account, class_name: "AccountingModule::Account"
     belongs_to :voucher
+    belongs_to :recorder, class_name: "User", foreign_key: 'recorder_id'
     belongs_to :commercial_document, polymorphic: true
     delegate :name, to: :account, prefix: true
     belongs_to :amount_adjustment, class_name: "Vouchers::AmountAdjustment"

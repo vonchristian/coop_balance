@@ -1,97 +1,23 @@
  <div class="row">
- <div class="col-md-8 offset-md-2">
+ <div class="col-md-6 offset-md-3">
     <div class="card">
-      <div class="card-header">
-        <div class="row">
-          <div class="col-md-8">
-            <h3 class="card-title"><%= @voucher.description %></h3>
-            <p class="text-muted"> <i class="fa fa-clock"></i> <%= @voucher.date.strftime("%B %e, %Y") %></p>
-          </div>
-          <div class="col-md-4">
-            <%=link_to 'View (PDF)', voucher_path(@voucher, format: "pdf"), class: "btn btn-default float-right" %>
-          </div>
-        </div>
+      <div class="card-header bg-light">
+          <h3 class="card-title"> Voucher Details </h3>
+        <%=link_to 'View (PDF)', voucher_path(@voucher, format: "pdf"), class: "btn btn-default float-right" %>
       </div>
       <div class="card-body">
-        <div class="row">
-          <div class="col-md-3">
-            Payee
-          </div>
-          <div class="col-md-9">
-            <%= @voucher.payee_name %>
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="col-md-3">
-            Description
-          </div>
-          <div class="col-md-9">
-            <%= @voucher.description %>
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="col-md-3">
-            Date
-          </div>
-          <div class="col-md-9">
-            <%= @voucher.date.strftime("%B %e, %Y") %>
-          </div>
-        </div>
-        <br>
-        <div class="table table-responsive">
-          <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th>Debit</th>
-                  <th>Account</th>
-                  <th> <span class="float-right">
-                    Credit
-                  </span></th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <% @voucher.voucher_amounts.each do |voucher_amount| %>
-                  <tr>
-                    <td>
-                      <% if voucher_amount.debit? %>
-                        <%= number_to_currency voucher_amount.amount %>
-                      <% end %>
-                    </td>
-                    <td><%= voucher_amount.account_name %></td>
-                     <td>
-                      <% if voucher_amount.credit? %>
-                        <span class="float-right"><%= number_to_currency voucher_amount.amount %></span>
-                      <% end %>
-                    </td>
-                    <td>
-                    </td>
-                  </tr>
-                <% end %>
-                <% if @voucher.voucher_amounts.present? %>
-                   <tr>
-                    <td><b><%= number_to_currency @voucher.voucher_amounts.debit.sum(:amount) %></b></td>
-                    <td></td>
-                    <td><b class="float-right"><%= number_to_currency @voucher.voucher_amounts.credit.sum(:amount) %></b></td>
-                  </tr>
-                  <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                <% end %>
-              </tbody>
-            </table>
-
-        </div>
-        <br>
+        <%= render 'vouchers/partials/body', voucher: @voucher %>
+      </div>
+      <hr />
         <% if !@voucher.disbursed?%>
-          <% if current_user.cash_on_hand_account.present? %>
-            <%= link_to 'Disburse Voucher', new_voucher_disbursement_path(@voucher), class: "btn btn-primary float-right" %>
-          <% end %>
+
+        <p>  <i class="fa fa-info-circle  text-primary"></i>
+          Click "Confirm" to post this journal entry</p>
+
+
+                <%= link_to "Confirm", voucher_confirmations_path(@voucher), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
+                <%= link_to "Cancel", voucher_path(@voucher), method: :delete, class: "btn text-danger float-left" %>
+
         <% else %>
           <span class="badge bg-success float-right"> Disbursed </span>
         <% end %>

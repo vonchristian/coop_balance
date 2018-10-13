@@ -12,9 +12,8 @@ class Payee
   end
 
   def self.find_by_id(payee_id)
-    return User.find_by_id(payee_id) if User.find_by_id(payee_id).present?
-    return Member.find_by_id(payee_id) if Member.find_by_id(payee_id).present?
-    return Organization.find_by_id(payee_id) if Organization.find_by_id(payee_id).present?
+    return User.find(payee_id) if User.find(payee_id).present?
+    return Member.find(payee_id) if Member.find(payee_id).present?
+    return Organization.find(payee_id) if Organization.find(payee_id).present?
   end
 end
-
