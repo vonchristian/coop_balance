@@ -26,7 +26,7 @@ class User < ApplicationRecord
 
   belongs_to :store_front, optional: true
   belongs_to :cash_on_hand_account,   class_name: "AccountingModule::Account", foreign_key: 'cash_on_hand_account_id'
-  has_one :current_address,           as: :addressable, class_name: "Address"
+  has_many :addresses,           as: :addressable, class_name: "Address"
   has_one :tin,                       as: :tinable
   belongs_to :cooperative
   belongs_to :office,                 class_name: "CoopConfigurationsModule::Office"
@@ -63,6 +63,12 @@ class User < ApplicationRecord
   delegate :abbreviated_name, :name, to: :cooperative, prefix: true
   delegate :number, to: :tin, prefix: true, allow_nil: true
   delegate :name, :abbreviated_name, to: :cooperative, prefix: true
+
+  delegate :complete_address, to: :current_address, prefix: true, allow_nil: true
+  def current_address
+    addresses.current_address
+  end
+
   # before_save :set_default_image
   def self.has_birthdays_on(month)
     where(birth_month: month).order(:birth_day)

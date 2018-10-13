@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_13_050938) do
+ActiveRecord::Schema.define(version: 2018_10_13_064852) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1082,6 +1082,19 @@ ActiveRecord::Schema.define(version: 2018_10_13_050938) do
     t.index ["saving_product_id"], name: "index_savings_on_saving_product_id"
   end
 
+  create_table "savings_account_applications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "depositor_type"
+    t.uuid "depositor_id"
+    t.uuid "saving_product_id"
+    t.datetime "date_opened"
+    t.decimal "initial_deposit"
+    t.string "account_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["depositor_type", "depositor_id"], name: "index_depositor_on_savings_account_applications"
+    t.index ["saving_product_id"], name: "index_savings_account_applications_on_saving_product_id"
+  end
+
   create_table "savings_account_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.decimal "closing_account_fee"
     t.datetime "created_at", null: false
@@ -1511,6 +1524,7 @@ ActiveRecord::Schema.define(version: 2018_10_13_050938) do
   add_foreign_key "savings", "cooperatives"
   add_foreign_key "savings", "offices"
   add_foreign_key "savings", "saving_products"
+  add_foreign_key "savings_account_applications", "saving_products"
   add_foreign_key "savings_account_configs", "accounts", column: "closing_account_id"
   add_foreign_key "savings_account_configs", "accounts", column: "interest_expense_account_id"
   add_foreign_key "share_capital_products", "accounts", column: "paid_up_account_id"
