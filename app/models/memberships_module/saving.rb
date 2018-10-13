@@ -97,7 +97,7 @@ module MembershipsModule
 
     def balance(args={})
       from_date = args[:from_date] || Date.today - 999.years
-      to_date   = args[:to_date] || self.last_transaction_date
+      to_date   = args[:to_date] || Date.today + 999.years
       saving_product_account.balance(commercial_document: self, from_date: from_date, to_date: to_date)
     end
 

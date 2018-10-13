@@ -161,7 +161,7 @@ Rails.application.routes.draw do
     resources :share_capitals,   only: [:index, :new, :create],         module: :members
     resources :occupations,      only: [:new, :create],                 module: :members
     resources :share_capitals,   only: [:index, :new, :create]
-    resources :savings_accounts, only: [:index, :new, :create],         module: :members
+    resources :savings_accounts, only: [:index],         module: :members
     resources :subscriptions,    only: [:index],                        module: :members
     resources :program_subscriptions,    only: [:create],                       module: :members
 
@@ -498,6 +498,11 @@ namespace :share_capitals_section do
   resources :time_deposit_applications, only: [:new, :create] do
     resources :vouchers, only: [:show, :destroy], module: :time_deposit_applications
     resources :voucher_confirmations, only: [:create], module: :time_deposit_applications
+  end
+
+  resources :savings_account_applications, only: [:new, :create] do
+    resources :vouchers, only: [:show, :destroy], module: :savings_account_applications
+    resources :voucher_confirmations, only: [:create], module: :savings_account_applications
   end
 
 
