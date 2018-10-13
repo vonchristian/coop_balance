@@ -22,6 +22,7 @@ class Voucher < ApplicationRecord
   delegate :name, to: :payee, prefix: true, allow_nil: true
   delegate :avatar, to: :payee, allow_nil: true
 
+  validates :account_number, presence: true, uniqueness: true
   before_save :set_default_date
   # validate :has_credit_amounts?
   # validate :has_debit_amounts?

@@ -14,7 +14,7 @@ module Loans
       @payment = LoansModule::Loans::PaymentProcessing.new(payment_params)
       if @payment.valid?
         @payment.process!
-        redirect_to loan_payments_url(@loan), notice: "Loan payment saved successfully."
+        redirect_to voucher_url(id: @payment.find_voucher.id), notice: "payment voucher successfully."
       else
         render :new
       end
@@ -23,7 +23,7 @@ module Loans
     private
     def payment_params
       params.require(:loans_module_loans_payment_processing).
-      permit(:principal_amount, :interest_amount, :penalty_amount, :description, :employee_id, :loan_id, :reference_number, :date, :cash_account_id)
+      permit(:principal_amount, :interest_amount, :penalty_amount, :description, :employee_id, :loan_id, :reference_number, :date, :cash_account_id, :account_number)
     end
   end
 end

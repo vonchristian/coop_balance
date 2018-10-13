@@ -10,62 +10,73 @@ module LoansModule
                 :date,
                 :description,
                 :employee_id,
-                :cash_account_id
+                :cash_account_id,
+                :account_number
       validates :principal_amount, :interest_amount, :penalty_amount, presence: true, numericality: true
       validates :reference_number, :description, presence: true
 
       def process!
         ActiveRecord::Base.transaction do
-          save_payment
-          update_last_transaction_date
+          create_voucher_amount
+          # update_last_transaction_date
         end
       end
+
+      def find_voucher
+        Voucher.find_by(account_number: account_number)
+      end
+
       def find_loan
         LoansModule::Loan.find_by_id(loan_id)
       end
+
       def find_employee
         User.find_by_id(employee_id)
       end
+
       private
-      def save_payment
+      def create_voucher_amount
         interest_revenue_account = find_loan.loan_product_interest_revenue_account
         penalty_revenue_account          = find_loan.loan_product_penalty_revenue_account
         debit_account            = find_cash_account
-        entry = AccountingModule::Entry.new(
+        voucher = Voucher.new(
+        account_number: account_number,
         office: find_employee.office,
         cooperative: find_employee.cooperative,
-        commercial_document: find_loan,
-        reference_number:    reference_number,
+        payee: find_loan.borrower,
+        number:    reference_number,
         description:         description,
-        recorder:            find_employee,
-        entry_date:          date)
+        preparer:            find_employee,
+        date:          date)
 
         if interest_amount.to_f > 0
-          entry.credit_amounts.build(
+          voucher.voucher_amounts.credit.build(
           amount:              interest_amount.to_f,
           account:             interest_revenue_account,
           commercial_document: find_loan)
         end
+
         if penalty_amount.to_f > 0
-          entry.credit_amounts.build(
+          voucher.voucher_amounts.credit.build(
           amount:              penalty_amount.to_f,
           account:             penalty_revenue_account,
           commercial_document: find_loan)
         end
+
         if principal_amount.to_f > 0
-          entry.credit_amounts.build(
+          voucher.voucher_amounts.credit.build(
           amount:              principal_amount.to_f,
           account:             find_loan.loan_product_loans_receivable_current_account,
           commercial_document: find_loan)
         end
 
-        entry.debit_amounts.build(
+        voucher.voucher_amounts.debit.build(
         amount:              total_amount,
-        account:             debit_account,
+        account:             find_cash_account,
         commercial_document: find_loan)
-        entry.save!
+        voucher.save!
       end
-      
+
       def find_cash_account
         AccountingModule::Account.find(cash_account_id)
       end
