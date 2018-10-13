@@ -1,7 +1,7 @@
-
+<%= render 'loans/partials/header', loan: @loan %>
 <div class="card">
   <div class="card-body">
-    <br>
+    <h3 class="card-title">Loan Details </h3>
     <div class="row">
       <div class="col-md-6 border-right">
         <div class="row">
@@ -31,7 +31,7 @@
         <hr>
         <div class="row">
           <div class="col-md-6">
-            <h4 class="card-title">Balance</h4>
+            <h4 class="card-title">Total Receivable</h4>
           </div>
           <div class="col-md-5">
             <span class="float-right"><h4><%= number_to_currency @loan.balance %></h4></span>
@@ -41,6 +41,7 @@
       <div class="col-md-4 offset-md-1">
         <%= simple_form_for [@loan, @payment], html: { autocomplete: 'off' }, url: :loan_payments do |f| %>
           <%= f.error_notification %>
+          <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] } %>
           <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
           <%= f.input :description %>
           <%= f.input :date, as: :string, input_html: { value: Time.zone.now.strftime("%B %e, %Y"), class: "datepicker" } %>
@@ -50,9 +51,7 @@
           <%= f.input :reference_number %>
           <%= f.input :loan_id, input_html: { value: @loan.id },as: :hidden %>
           <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
-          <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] } %>
-
-          <%= f.submit "Save Payment", class: "btn btn-primary float-right", data: {disable_with: "Processing Payment..."} %>
+          <%= f.submit "Proceed", class: "btn btn-primary float-right", data: {disable_with: "Processing..." } %>
         <% end %>
       </div>
     </div>

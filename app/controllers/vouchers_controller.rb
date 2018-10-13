@@ -20,7 +20,12 @@ class VouchersController < ApplicationController
   end
   def destroy
     @voucher = Voucher.find(params[:id])
-    @voucher.destroy
-    redirect_to "/", notice: "Voucher cancelled successfully."
+    if !@voucher.disbursed?
+      @voucher.destroy
+      delete_time_deposit
+      redirect_to "/", notice: "Voucher cancelled successfully."
+    else
+      redirect_to "/", alert: "Cannot delete voucher. Already disbursed."
+    end
   end
 end

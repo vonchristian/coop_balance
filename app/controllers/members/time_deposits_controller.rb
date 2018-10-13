@@ -14,7 +14,7 @@ module Members
       @time_deposit = Memberships::TimeDeposits::DepositProcessing.new(time_deposit_params)
       if @time_deposit.valid?
         @time_deposit.susbscribe!
-        redirect_to time_deposit_url(@time_deposit.find_time_deposit), notice: "Time deposit saved successfully."
+        redirect_to voucher_url(id: @time_deposit.find_voucher.id), notice: " Time deposit voucher created successfully."
       else
         render :new
       end
@@ -23,7 +23,7 @@ module Members
     private
     def time_deposit_params
       params.require(:memberships_time_deposits_deposit_processing).
-      permit(:employee_id, :amount, :reference_number, :date, :depositor_id, :account_number, :term, :time_deposit_product_id, :cash_account_id)
+      permit(:employee_id, :amount, :reference_number, :date, :depositor_id, :account_number, :term, :time_deposit_product_id, :cash_account_id, :voucher_account_number)
     end
   end
 end

@@ -2,7 +2,9 @@ module Memberships
   module TimeDeposits
     class DepositProcessing
       include ActiveModel::Model
-      attr_accessor :reference_number, :account_number, :date, :amount,:depositor_id, :employee_id, :term, :time_deposit_product_id, :cash_account_id
+      attr_accessor :reference_number, :account_number, :date, :amount,
+      :depositor_id, :employee_id, :term, :time_deposit_product_id,
+      :cash_account_id, :voucher_account_number
       validates :depositor_id,
                 :date,
                 :amount,
@@ -15,8 +17,10 @@ module Memberships
       def susbscribe!
         ActiveRecord::Base.transaction do
           create_time_deposit
-          set_last_transaction_date
         end
+      end
+      def find_voucher
+        Voucher.find_by(account_number: voucher_account_number)
       end
       def find_time_deposit
         find_depositor.time_deposits.find_by(account_number: account_number)
@@ -45,43 +49,45 @@ module Memberships
           term: term,
           effectivity_date: date,
           maturity_date: (date.to_date + (term.to_i.months)))
-        create_entry(time_deposit)
+        create_voucher(time_deposit)
       end
 
       def find_employee
         User.find_by_id(employee_id)
       end
 
-      def create_entry(time_deposit)
-        AccountingModule::Entry.create!(
-        commercial_document: find_depositor,
-        recorder: find_employee,
-        office: find_employee.office,
-        cooperative: find_employee.cooperative,
-        description: 'Time deposit',
-        reference_number: reference_number,
-        entry_date: date,
-        debit_amounts_attributes: [
+      def create_voucher(time_deposit)
+        voucher = Voucher.new(
+          account_number: voucher_account_number,
+          payee: find_depositor,
+          preparer: find_employee,
+          office: find_employee.office,
+          cooperative: find_employee.cooperative,
+          description: 'Time deposit',
+          number: reference_number,
+          date: date
+        )
+        voucher.voucher_amounts.debit.build(
           account: cash_account,
           amount: amount,
-          commercial_document: time_deposit],
-        credit_amounts_attributes: [
+          commercial_document: time_deposit
+        )
+        voucher.voucher_amounts.credit.build(
           account: credit_account,
           amount: amount,
-          commercial_document: time_deposit])
+          commercial_document: time_deposit)
+        voucher.save!
       end
+
       def credit_account
         find_time_deposit_product.account
       end
       def cash_account
         AccountingModule::Account.find(cash_account_id)
       end
+
       def find_time_deposit_product
         CoopServicesModule::TimeDepositProduct.find_by_id(time_deposit_product_id)
-      end
-      def set_last_transaction_date
-        find_time_deposit.update_attributes!(last_transaction_date: date)
-        find_time_deposit.depositor.update_attributes(last_transaction_date: date)
       end
     end
   end
