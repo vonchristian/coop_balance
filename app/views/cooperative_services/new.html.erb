@@ -8,7 +8,8 @@
 				<%= simple_form_for [current_cooperative, @cooperative_service], url: :cooperative_services do |f| %>
 				  <%= f.input :title %>
 				  <hr>
-				  <%= f.submit "Create Cooperative Service", class: 'btn btn-danger float-right' %>
+				  <%= link_to "Cancel", management_module_settings_configurations_path, class: 'btn btn-default' %>
+				  <%= f.submit "Create Cooperative Service", class: 'btn btn-primary float-right' %>
 				<% end %>
 			</div>
 		</div>

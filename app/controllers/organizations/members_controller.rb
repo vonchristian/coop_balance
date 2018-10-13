@@ -1,6 +1,7 @@
 require 'will_paginate/array'
 module Organizations
   class MembersController < ApplicationController
+    
     def new
       @organization = Organization.find(params[:organization_id])
       @member = @organization.organization_members.build

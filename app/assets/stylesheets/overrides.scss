@@ -283,3 +283,35 @@ input[type="file"].choose-btn {
     bottom: -2px;
   }
 }
+
+.simple-calendar .calendar-heading {
+  height: 50px;
+  padding: 5px;
+  margin-bottom: 20px;
+  vertical-align: middle;
+}
+
+.simple-calendar .calendar-heading .calendar-title {
+  font-size: 24px;
+}
+
+.simple-calendar table thead {
+  background-color: #007bff !important;
+}
+
+.simple-calendar table thead tr th {
+  color: #FFF;
+}
+
+/* line 60, /home/neu/.rbenv/versions/2.5.1/lib/ruby/gems/2.5.0/gems/simple_calendar-2.3.0/app/assets/stylesheets/simple_calendar.scss */
+.simple-calendar .today {
+  background: #FFFFC0;
+}
+/* line 69, /home/neu/.rbenv/versions/2.5.1/lib/ruby/gems/2.5.0/gems/simple_calendar-2.3.0/app/assets/stylesheets/simple_calendar.scss */
+.simple-calendar .prev-month {
+  background: #DDD;
+}
+/* line 72, /home/neu/.rbenv/versions/2.5.1/lib/ruby/gems/2.5.0/gems/simple_calendar-2.3.0/app/assets/stylesheets/simple_calendar.scss */
+.simple-calendar .next-month {
+  background: #DDD;
+}

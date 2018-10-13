@@ -45,7 +45,7 @@
           <% @programs.each do |program| %>
             <tr>
               <td><%= program.description %></td>
-              <td><%= number_to_currency program.contribution %></td>
+              <td><%= number_to_currency program.try(:contribution) %></td>
               <td><%= program.account.name %></td>
             </tr>
           <% end %>
