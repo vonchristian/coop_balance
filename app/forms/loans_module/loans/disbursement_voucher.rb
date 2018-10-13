@@ -2,7 +2,7 @@ module LoansModule
   module Loans
     class DisbursementVoucher
       include ActiveModel::Model
-      attr_accessor :loan_application_id, :preparer_id, :date, :description, :number, :account_number, :net_proceed
+      attr_accessor :loan_application_id, :preparer_id, :date, :description, :number, :account_number, :net_proceed, :cash_account_id
 
       def process!
         ActiveRecord::Base.transaction do
@@ -79,7 +79,7 @@ module LoansModule
         amount_type: 'credit',
         amount: net_proceed,
         description: 'Net Proceed',
-        account: AccountingModule::Account.find_by(name: "Cash on Hand - Main (Treasury)"),
+        account_id: cash_account_id,
         commercial_document: find_loan)
         voucher.voucher_amounts << find_loan.voucher_amounts
       end

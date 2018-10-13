@@ -32,7 +32,7 @@ module LoansModule
     end
     def create_loan
       loan_application = LoansModule::LoanApplication.create!(
-        cooperative_id: find_preparer.cooperative,
+        cooperative: find_preparer.cooperative,
         office: find_preparer.office,
         organization: find_borrower.current_organization,
         purpose: purpose,

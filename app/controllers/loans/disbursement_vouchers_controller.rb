@@ -29,7 +29,7 @@ module Loans
 
 		private
 		def voucher_params
-			params.require(:vouchers_loan_disbursement_voucher).permit(:number, :date, :description, :number, :preparer_id)
+			params.require(:vouchers_loan_disbursement_voucher).permit(:number, :date, :description, :number, :preparer_id, :cash_account_id)
 		end
 	end
 end

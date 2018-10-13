@@ -1,21 +1,25 @@
 <div class="card">
               <div class="card-body">
-                  <%= link_to loan_path(loan) do %>
+
                     <div class="row">
                       <div class="col-md-1">
-                        <%#=image_tag(loan.borrower.avatar, height: 45, width: 45, class: "img-circle") %>
-                      </div>
-                      <div class="col-md-6">
-                        <b><%=  loan.borrower_name.try(:upcase) %></b><br>
-                        <% if loan.forwarded_loan? %>
-                        <span class="badge bg-warning"> Forwarded Loan </span>
+                        <% if loan.borrower.avatar.attachment.present? %>
+                          <%=image_tag(loan.borrower.avatar, height: 45, width: 45, class: "img-circle") %>
                         <% end %>
+                      </div>
+                      <div class="col-md-5">
+                        <%= link_to loan_path(loan) do %>
+                        <b><%=  loan.borrower_name.try(:upcase) %></b><br>
+                        <% end %>
+
                         <div class="row">
                           <div class="col-md-4">
                             <small class="text-muted"><i class="fa fa-server"></i> <%= loan.loan_product_name %></small>
                           </div>
-                          <div class="col-md-3">
-                            <span class="badge bg-<%=loan.status_color%>"> <%= loan.status_text %></span>
+                          <div class="col-md-4">
+                            <% if loan.forwarded_loan? %>
+                              <span class="badge bg-warning"> Forwarded Loan </span>
+                            <% end %>
                           </div>
                         </div>
 
@@ -28,17 +32,13 @@
                         <span class="text-red"><%= number_to_currency loan.principal_balance %></span><br>
                         <small class="text-muted">PRINCIPAL BALANCE</small><br>
                       </div>
-                      <% if !loan.archived? && loan.is_past_due? %>
-                        <div class="col-md-2">
-                          <span class="label bg-red">
-                            <%= loan.number_of_days_past_due %> Days
-                          </span>
-                          <br>
-                          <small class="text-danger"> PAST DUE </small>
-                        </div>
-                      <% end %>
+                      <div class="col-md-2">
+                        <% if !loan.disbursed? && loan.disbursement_voucher_id.present? %>
+                          <%= link_to 'Disburse Loan', voucher_path(id: loan.disbursement_voucher_id), class: "btn btn-primary btn-sm" %>
+                        <% end %>
+                      </div>
                     </div>
 
-                <% end %>
+
               </div>
             </div>
