@@ -3,14 +3,15 @@
     <div class="card">
       <div class="card-header">
         <center>
-          <%= image_tag(@share_capital.subscriber.avatar, class: "profile-user-img img-responsive img-circle") %><br>
-           <h3 class="box-title"><%= @share_capital.subscriber_name %></h3>
+          <%= image_tag(@share_capital.subscriber.avatar, class: "img-circle", height: 45, width: 45) %><br>
+           <h3 class="card-title"><%= @share_capital.subscriber_name %></h3>
         </center>
       </div>
       <div class="card-body">
-      <p class="text-muted">CAPITAL BUILD UP DETAILS </p>
+      <h3 class="card-title">CBU Details </h3>
       <%= simple_form_for @capital_build_up, url: :share_capital_capital_build_ups do |f| %>
         <%= f.error_notification %>
+        <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
         <%= f.input :date, as: :string, input_html: { autocomplete: 'off' , value: Time.zone.now.strftime("%B %e, %Y"), class: "datepicker" } %>
         <%= f.input :share_capital_id, input_html: {value: @share_capital.id },as: :hidden %>
         <%= f.input :amount, as: :currency, input_html: { autocomplete: 'off' } %>

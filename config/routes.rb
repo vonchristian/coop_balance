@@ -129,6 +129,9 @@ Rails.application.routes.draw do
     resources :notices, only: [:index, :show]
   end
   resources :share_capitals do
+    resources :vouchers, only: [:show, :destroy], module: :share_capitals do
+      resources :confirmations, only: [:create], module: :vouchers
+    end
     resources :barangays, only: [:edit, :update], module: :share_capitals
     resources :settings, only: [:index], module: :share_capitals
     resources :mergings, only: [:create], module: :share_capitals

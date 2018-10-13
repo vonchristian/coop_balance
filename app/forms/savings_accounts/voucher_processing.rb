@@ -1,5 +1,5 @@
 module SavingsAccounts
-  class DepositProcessing
+  class VoucherProcessing
     include ActiveModel::Model
     attr_accessor :voucher_id
 
