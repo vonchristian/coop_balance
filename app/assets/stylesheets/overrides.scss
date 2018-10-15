@@ -303,15 +303,65 @@ input[type="file"].choose-btn {
   color: #FFF;
 }
 
-/* line 60, /home/neu/.rbenv/versions/2.5.1/lib/ruby/gems/2.5.0/gems/simple_calendar-2.3.0/app/assets/stylesheets/simple_calendar.scss */
 .simple-calendar .today {
   background: #FFFFC0;
 }
-/* line 69, /home/neu/.rbenv/versions/2.5.1/lib/ruby/gems/2.5.0/gems/simple_calendar-2.3.0/app/assets/stylesheets/simple_calendar.scss */
+
 .simple-calendar .prev-month {
   background: #DDD;
 }
-/* line 72, /home/neu/.rbenv/versions/2.5.1/lib/ruby/gems/2.5.0/gems/simple_calendar-2.3.0/app/assets/stylesheets/simple_calendar.scss */
+
 .simple-calendar .next-month {
   background: #DDD;
+}
+
+.pagination a, .pagination em.current, .pagination span.previous_page, .pagination span.next_page, .pagination span.current, .pagination span.gap {
+  float: left;
+  padding: 0 8px;
+  line-height: 32px;
+  text-decoration: none;
+  background-color: white;
+  border: 1px solid #DDD;
+  border-left-width: 0;
+}
+
+.pagination span.disabled {
+  color: #6c757d !important;
+}
+
+.pagination em.current {
+  background-color: #007bff !important;
+  color: white;
+}
+
+.pagination {
+  margin: 0;
+  margin-bottom: 10px;
+  border-left: 1px solid #ddd;
+  display: inline-flex;
+  .first {
+    padding : 0;
+    float: none;
+    border: none;
+  }
+  .prev {
+    padding : 0;
+    float: none;
+    border: none;
+  }
+  .page{
+    padding : 0;
+    float: none;
+    border: none;
+  }
+  .next{
+    padding : 0;
+    float: none;
+    border: none;
+  }
+  .last{
+    padding : 0;
+    float: none;
+    border: none;
+  }
 }

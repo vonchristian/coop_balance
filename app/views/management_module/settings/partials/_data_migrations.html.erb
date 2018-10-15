@@ -140,12 +140,12 @@
     })
   });
 
-  // $(document).ready(function(){
-  //   $('#l-upload').prop('disabled',true);
-  //   $('#registries_loan_account_registry_spreadsheet').change(function(){
-  //     $('#l-upload').prop('disabled', this.value == "" ? true : false);
-  //   })
-  // });
+  $(document).ready(function(){
+    $('#l-upload').prop('disabled',true);
+    $('#registries_loan_registry_spreadsheet').change(function(){
+      $('#l-upload').prop('disabled', this.value == "" ? true : false);
+    })
+  });
 
   $(document).ready(function(){
     $('#m-upload').prop('disabled',true);

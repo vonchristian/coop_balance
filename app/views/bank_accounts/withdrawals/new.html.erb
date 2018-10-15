@@ -2,42 +2,19 @@
   <div class="col-md-6 offset-md-3">
     <div class="card">
       <div class="card-header">
-        <h3 class="card-title"> Widthraw Details </h3>
-        <hr class="no-margin-top">
-        <div class="row">
-          <div class="col-md-4 col-sm-4">
-            <label>Balance:</label>
-          </div>
-          <div class="col-md-8 col-sm-8">
-            <h5><%=number_to_currency @bank_account.balance %></h5>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-4 col-sm-4">
-            <label>Name of Bank:</label>
-          </div>
-          <div class="col-md-8 col-sm-8">
-            <%= @bank_account.bank_name %>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-4 col-sm-4">
-            <label>Account Number:</label>
-          </div>
-          <div class="col-md-8 col-sm-8">
-            <%= @bank_account.account_number %>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-4 col-sm-4">
-            <label>Bank Address:</label>
-          </div>
-          <div class="col-md-8 col-sm-8">
-            <%= @bank_account.bank_address %>
-          </div>
-        </div>
+        <center>
+          <%= image_tag("bank", width: 45, height: 45, class: "img-circle") %>
+          <h3 class="card-title"><%= @bank_account.bank_name %></h3>
+          <small><%= @bank_account.bank_address %></small><br>
+          <small><%= @bank_account.account_number %></small>
+          <hr class="no-margin">
+          <small class="text-muted">ACCOUNT BALANCE</small>
+          <h3 class="card-title"><%= number_to_currency @bank_account.balance %></h3>
+        </center>
       </div>
       <div class="card-body">
+        <h3 class="card-title"> Widthraw Details </h3>
+        <hr class="no-margin-top">
         <%= simple_form_for [@bank_account, @entry], url: :bank_account_withdrawals, html: { auticomplete: "off" } do |f| %>
           <%= f.error_notification %>
           <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
