@@ -4,7 +4,6 @@ class User < ApplicationRecord
   pg_search_scope :text_search, :against => [:first_name, :last_name]
   multisearchable against: [:first_name, :last_name]
   LOAN_APPROVERS = ["Manager", "Loan Officer"]
-  WITH_CASH_ON_HAND = ["Treasurer", "Teller", "Sales Clerk"]
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :lockable,
@@ -25,7 +24,6 @@ class User < ApplicationRecord
               :sales_manager]
 
   belongs_to :store_front, optional: true
-  belongs_to :cash_on_hand_account,   class_name: "AccountingModule::Account", foreign_key: 'cash_on_hand_account_id'
   has_many :addresses,           as: :addressable, class_name: "Address"
   has_one :tin,                       as: :tinable
   belongs_to :cooperative
@@ -74,19 +72,6 @@ class User < ApplicationRecord
     where(birth_month: month).order(:birth_day)
   end
 
-  def self.with_cash_on_hand_accounts
-    where.not(cash_on_hand_account_id: nil)
-  end
-  def self.cash_on_hand_accounts
-    user_accounts = all.collect{|a| a.cash_on_hand_account_id }.compact
-    accounts = []
-    user_accounts.each do |account|
-      accounts << AccountingModule::Account.find(account)
-      accounts << AccountingModule::Account.find_by(name: "Cash on Hand")
-    end
-    accounts.uniq
-  end
-
   def current_occupation
     role
   end
@@ -107,17 +92,11 @@ class User < ApplicationRecord
  def account_receivable_store_balance
    AccountsReceivableStore.new.balance(self)
   end
-  def cash_on_hand_account_balance(options = {})
-    default_cash_on_hand_account.balance
-  end
 
   def cash_advance_total
     AccountingModule::Account.find_by(name: "Advances to Officers, Employees and Members").debit_entries.where(commercial_document_id: self.id)
   end
 
-  def self.with_cash_on_hands
-    where.not(cash_on_hand_account_id: nil)
-  end
 
   def self.loan_approvers
     all.select{|a| User::LOAN_APPROVERS.include?(a.role.titleize)}
@@ -138,29 +117,6 @@ class User < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
-  def default_cash_on_hand_account
-    if cash_on_hand_account.present?
-      cash_on_hand_account
-    else
-      User.default_cash_on_hand_account_for(self)
-    end
-  end
-  def self.default_cash_on_hand_account_for(employee)
-    if employee.treasurer?
-      AccountingModule::Asset.find_by(name: "Cash on Hand (Treasury)")
-    elsif employee.teller? || employee.sales_clerk?
-      AccountingModule::Asset.find_by(name: "Cash on Hand (Teller)")
-    end
-  end
-
-  def set_cash_on_hand_account
-    if treasurer?
-      self.cash_on_hand_account = AccountingModule::Asset.find_by(name: "Cash on Hand (Treasury)")
-    elsif teller? || sales_clerk?
-      self.cash_on_hand_account = AccountingModule::Asset.find_by(name: "Cash on Hand (Teller)")
-    end
-    self.save
-  end
   def latest_purchase_date
     orders.last.date || Time.zone.now
   end

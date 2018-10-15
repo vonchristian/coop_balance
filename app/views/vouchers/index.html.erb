@@ -44,9 +44,9 @@
                   </div>
                   <div class="col-md-3">
                     <% if !voucher.disbursed? %>
-                      <% if current_user.cash_on_hand_account.present? %>
+
                         <%= link_to 'Disburse', new_voucher_disbursement_path(voucher), class: "btn btn-primary btn-sm" %>
-                      <% end %>
+                    
                     <% else %>
                       <span class="badge bg-success"><i class="fa fa-check-circle"></i> Disbursed </span>
                     <% end %>

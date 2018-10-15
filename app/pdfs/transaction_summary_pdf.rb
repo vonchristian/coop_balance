@@ -15,7 +15,6 @@ class TransactionSummaryPdf < Prawn::Document
     loan_collections
     expenses
     revenues
-    summary_report
     summary_of_accounts
 
   end
@@ -249,9 +248,9 @@ class TransactionSummaryPdf < Prawn::Document
   end
 
   def loan_collections_data
-    if AccountingModule::Entry.loan_payments(employee_id: employee.id, from_date: date.beginning_of_day, to_date: date.end_of_day).present?
+    if LoansModule::Loan.loan_payments(employee_id: employee.id, from_date: date.beginning_of_day, to_date: date.end_of_day).present?
        [["", "Borrower", "OR #", "Amount", ""]] +
-      loan_collections_data ||= AccountingModule::Entry.loan_payments(employee_id: employee.id, from_date: date.beginning_of_day, to_date: date.end_of_day).uniq.map{|a| ["", a.commercial_document.try(:name), a.reference_number, price(a.amount)]}
+      loan_collections_data ||= LoansModule::Loan.loan_payments(employee_id: employee.id, from_date: date.beginning_of_day, to_date: date.end_of_day).uniq.map{|a| ["", a.commercial_document.try(:name), a.reference_number, price(a.debit_amounts.sum(:amount))]}
     else
       [[""]]
     end
@@ -309,35 +308,6 @@ class TransactionSummaryPdf < Prawn::Document
     [["", "", "<b>TOTAL</b>", "#{AccountingModule::Revenue.updated_at(from_date: date.beginning_of_day, to_date: date.end_of_day).map{|a| a.credits_balance(from_date: date, to_date: date) }.sum}"]]
   end
 
-  def summary_report
-    text "CASH ON HAND SUMMARY REPORT", style: :bold, size: 10
-    table(summary_data, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 10, 290, 90]) do
-        cells.borders = []
-    end
-    stroke do
-      stroke_color 'CCCCCC'
-      line_width 0.2
-      stroke_horizontal_rule
-      move_down 15
-    end
-   table(total_summary_data, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 10, 290, 90]) do
-        cells.borders = []
-    end
-    stroke do
-      stroke_color 'CCCCCC'
-      line_width 0.2
-      stroke_horizontal_rule
-      move_down 15
-    end
-  end
-  def summary_data
-    [["", "", "Beginning Balance", "#{price(employee.cash_on_hand_account.balance(to_date: date.yesterday.end_of_day))}"]] +
-    [["", "", "Cash Receipts", "#{price(employee.cash_on_hand_account.debits_balance(from_date: date.beginning_of_day, to_date: date.end_of_day))}"]] +
-    [["", "", "Cash Disbursements", "#{price(employee.cash_on_hand_account.credits_balance(from_date: date.beginning_of_day, to_date: date.end_of_day))}"]]
-  end
-  def total_summary_data
-    [["", "", "Ending Balance", "#{price(employee.cash_on_hand_account_balance(to_date: date.end_of_day))}"]]
-  end
 
   def summary_of_accounts
     text "Summary of Accounts", style: :bold, size: 10

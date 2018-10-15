@@ -376,7 +376,7 @@ namespace :share_capitals_section do
     resources :cash_receipts, only: [:index], module: :employees
     resources :loans, only: [:new, :create], module: :employees
     resources :memberships, only: [:new, :create, :edit, :update], module: :employees
-    resources :cash_on_hand_accounts, only: [:edit, :update], module: :employees
+  
     resources :time_deposits, only: [:index], module: :employees
     resources :savings_accounts, only: [:index, :new, :create], module: :employees
     resources :share_capitals, only: [:index, :new, :create], module: :employees
@@ -410,6 +410,7 @@ namespace :share_capitals_section do
   end
   resources :voucher_amounts, only: [:destroy]
   resources :bank_accounts, only: [:index, :show, :new, :create, :edit, :update] do
+    resources :vouchers, only: [:show, :destroy], module: :bank_accounts
     resources :deposits, only: [:new, :create], module: :bank_accounts
     resources :withdrawals, only: [:new, :create], module: :bank_accounts
     resources :bank_charges, only: [:new, :create], module: :bank_accounts

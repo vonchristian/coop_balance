@@ -22,6 +22,13 @@ class Membership < ApplicationRecord
     where(cooperative: cooperative)
   end
 
+  def self.memberships_for(args={})
+    from_date = args[:from_date]
+    to_date   = args[:to_date]
+    range     = DateRange.new(start_date: from_date, end_date: to_date)
+    where('approval_date' > range.range)
+  end
+
   def name
     cooperator_name
   end

@@ -1,47 +1,6 @@
 <div class="row">
-  <div class="col-md-4">
-    <div class="card">
-      <div class="card-body">
-        <h4 class="card-title"> Cash On Hand </h4>
-        <div class="row">
-          <div class="col-md-7">
-            <p>Beginning Balance </p>
-          </div>
-          <div class="col-md-4">
-            <span class="float-right">
-              <%= number_to_currency current_user.cash_on_hand_account.balance(to_date: Date.today.yesterday) %>
-            </span>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-7">
-            <p class="text-success">&nbsp; &nbsp; <i class="fa fa-plus-circle"></i> Cash Receipts </p>
-          </div>
-          <div class="col-md-4">
-            <span class="text-success float-right"><%= number_to_currency current_user.cash_on_hand_account.debits_balance(from_date: Date.today.beginning_of_day, to_date: Date.today.end_of_day) %></span>
-          </div>
-        </div>
-        <div class="row">
-        <div class="col-md-7">
-          <p class="text-danger">&nbsp; &nbsp; <i class="fa fa-minus-circle"></i> Withdrawals </p>
-        </div>
-        <div class="col-md-4">
-          <span class="text-danger float-right"><%= number_to_currency current_user.cash_on_hand_account.credits_balance(from_date: Date.today.beginning_of_day, to_date: Date.today.end_of_day) %></span>
-        </div>
-      </div>
-      <hr>
-      <div class="row">
-        <div class="col-md-7">
-          <p><b>Ending Balance </b> </p>
-        </div>
-        <div class="col-md-4">
-          <span class="float-right"><b><%= number_to_currency current_user.cash_on_hand_account.balance(to_date: Date.today.end_of_day) %></b></span>
-        </div>
-      </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-8">
+
+  <div class="col-md-12">
     <div class="card">
       <div class="card-header">
         <h3 class="card-title"> Transactions Summary </h3>

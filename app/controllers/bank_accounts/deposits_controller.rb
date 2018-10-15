@@ -2,14 +2,14 @@ module BankAccounts
   class DepositsController < ApplicationController
     def new
       @bank_account = BankAccount.find(params[:bank_account_id])
-      @entry = BankAccounts::DepositProcessing.new
+      @entry = BankAccounts::DepositLineItemProcessing.new
     end
     def create
       @bank_account = BankAccount.find(params[:bank_account_id])
-      @entry = BankAccounts::DepositProcessing.new(entry_params)
+      @entry = BankAccounts::DepositLineItemProcessing.new(entry_params)
       if @entry.valid?
         @entry.save
-        redirect_to bank_account_url(@bank_account), notice: "Entry saved successfully."
+        redirect_to bank_account_voucher_url(@bank_account), notice: "Entry saved successfully."
       else
         render :new
       end
@@ -17,7 +17,10 @@ module BankAccounts
 
     private
     def entry_params
-      params.require(:bank_accounts_deposit_processing).permit(:amount, :date, :bank_account_id, :description, :recorder_id, :reference_number)
+      params.require(:bank_accounts_deposit_line_item_processing).
+      permit(:bank_account_id, :employee_id, :amount, :description,
+      :reference_number, :account_number, :date, :payment_type,
+       :offline_receipt, :cash_account_id, :account_number, :payee_id)
     end
   end
 end

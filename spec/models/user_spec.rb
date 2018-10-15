@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   describe 'associations' do
-    it { is_expected.to belong_to :cash_on_hand_account }
     it { is_expected.to belong_to :cooperative }
     it { is_expected.to belong_to :store_front }
     it { is_expected.to belong_to :office }

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_13_064852) do
+ActiveRecord::Schema.define(version: 2018_10_15_040943) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1344,12 +1344,10 @@ ActiveRecord::Schema.define(version: 2018_10_13_064852) do
     t.date "date_or_birth"
     t.integer "birth_month"
     t.integer "birth_day"
-    t.uuid "cash_on_hand_account_id"
     t.uuid "office_id"
     t.uuid "store_front_id"
     t.string "designation"
     t.datetime "last_transaction_date"
-    t.index ["cash_on_hand_account_id"], name: "index_users_on_cash_on_hand_account_id"
     t.index ["cooperative_id"], name: "index_users_on_cooperative_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["office_id"], name: "index_users_on_office_id"
@@ -1562,7 +1560,6 @@ ActiveRecord::Schema.define(version: 2018_10_13_064852) do
   add_foreign_key "time_deposits", "offices"
   add_foreign_key "time_deposits", "time_deposit_products"
   add_foreign_key "unit_of_measurements", "products"
-  add_foreign_key "users", "accounts", column: "cash_on_hand_account_id"
   add_foreign_key "users", "cooperatives"
   add_foreign_key "users", "offices"
   add_foreign_key "users", "store_fronts"

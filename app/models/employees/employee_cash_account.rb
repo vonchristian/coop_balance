@@ -9,5 +9,6 @@ module Employees
       ids = pluck(:cash_account_id)
       AccountingModule::Asset.where(id: ids)
     end
+    
   end
 end
