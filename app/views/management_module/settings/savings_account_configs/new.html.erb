@@ -11,7 +11,8 @@
 				  <%= f.input :closing_account_fee, as: :string %>
 				  <%= f.input :number_of_days_to_be_dormant %>
 				  <hr>
-				  <%= f.submit "Save Configuration", class: 'btn btn-danger float-right', data: { disable_with: "Processing..." } %>
+				  <%= link_to "Cancel", management_module_settings_configurations_path, class: 'btn btn-default' %>
+				  <%= f.submit "Save Configuration", class: 'btn btn-primary float-right', data: { disable_with: "Processing..." } %>
 				<% end %>
 			</div>
 		</div>

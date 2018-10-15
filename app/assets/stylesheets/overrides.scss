@@ -283,3 +283,85 @@ input[type="file"].choose-btn {
     bottom: -2px;
   }
 }
+
+.simple-calendar .calendar-heading {
+  height: 50px;
+  padding: 5px;
+  margin-bottom: 20px;
+  vertical-align: middle;
+}
+
+.simple-calendar .calendar-heading .calendar-title {
+  font-size: 24px;
+}
+
+.simple-calendar table thead {
+  background-color: #007bff !important;
+}
+
+.simple-calendar table thead tr th {
+  color: #FFF;
+}
+
+.simple-calendar .today {
+  background: #FFFFC0;
+}
+
+.simple-calendar .prev-month {
+  background: #DDD;
+}
+
+.simple-calendar .next-month {
+  background: #DDD;
+}
+
+.pagination a, .pagination em.current, .pagination span.previous_page, .pagination span.next_page, .pagination span.current, .pagination span.gap {
+  float: left;
+  padding: 0 8px;
+  line-height: 32px;
+  text-decoration: none;
+  background-color: white;
+  border: 1px solid #DDD;
+  border-left-width: 0;
+}
+
+.pagination span.disabled {
+  color: #6c757d !important;
+}
+
+.pagination em.current {
+  background-color: #007bff !important;
+  color: white;
+}
+
+.pagination {
+  margin: 0;
+  margin-bottom: 10px;
+  border-left: 1px solid #ddd;
+  display: inline-flex;
+  .first {
+    padding : 0;
+    float: none;
+    border: none;
+  }
+  .prev {
+    padding : 0;
+    float: none;
+    border: none;
+  }
+  .page{
+    padding : 0;
+    float: none;
+    border: none;
+  }
+  .next{
+    padding : 0;
+    float: none;
+    border: none;
+  }
+  .last{
+    padding : 0;
+    float: none;
+    border: none;
+  }
+}

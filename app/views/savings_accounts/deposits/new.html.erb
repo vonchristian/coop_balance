@@ -1,32 +1,32 @@
 <% content_for(:html_title) { "#{@savings_account.depositor_name} | New Deposit" } %>
 <div class="row">
-  <div class="col-md-4">
-  </div>
-  <div class="col-md-4">
+  <div class="col-md-6 offset-md-3">
     <div class="card">
       <div class="card-header">
         <center>
-            <%= image_tag(@savings_account.depositor.avatar, class: "img-circle", height: 45, width: 45) %>
+          <%= image_tag(@savings_account.depositor.avatar.variant(resize: "45x45"), class: "img-circle") if @savings_account.depositor.avatar.attached? %>
           <h3 class="card-title"><%= @savings_account.depositor_name %></h3>
+          <hr class="no-margin">
+          <small>SAVINGS ACCOUNT BALANCE</small>
+          <h3 class="card-title"><%= number_to_currency @savings_account.balance %></h3>
         </center>
       </div>
       <div class="card-body">
-        <small>SAVINGS ACCOUNT BALANCE</small>
-        <h3 class="card-title"><%= number_to_currency @savings_account.balance %></h3>
-        <hr>
-        <h3 class="card-title"> Deposit Details </h3>
-        <%= simple_form_for [@savings_account, @deposit], url: :savings_account_deposits do |f| %>
+        <h3 class="card-title"> Savings Deposit Details </h3>
+        <hr class="no-margin-top">
+        <%= simple_form_for [@savings_account, @deposit], url: :savings_account_deposits, html: { autocomplete: "off" } do |f| %>
           <%= f.error_notification %>
           <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] } %>
           <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
-          <%= f.input :date, as: :string, input_html: { class: "datepicker", autocomplete: "off" } %>
-          <%= f.input :amount, as: :currency, input_html: { autocomplete: "off" } %>
+          <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+          <%= f.input :amount, as: :numeric %>
           <%= f.input :payment_type, label: 'Type', collection: AccountingModule::Entry.payment_types.keys.to_a.map{|a| [a.titleize, a] }, selected: AccountingModule::Entry.payment_types.keys.first %>
           <%= f.input :offline_receipt, as: :boolean, input_html: { checked: true }, as: :hidden %>
-          <%= f.input :or_number, label: 'OR number', input_html: { autocomplete: "off" } %>
+          <%= f.input :or_number, label: 'OR number' %>
           <%= f.input :saving_id, input_html: { value: @savings_account.id },as: :hidden %>
           <%= f.input :employee_id, input_html: { value: current_user.id },as: :hidden %>
-          <%= f.submit "Proceed", class: "btn btn-primary btn-block", data: { disable_with: "Processing..."} %>
+          <hr>
+          <%= f.submit "Proceed", class: "btn btn-primary float-right", data: { disable_with: "Processing..."} %>
         <% end %>
       </div>
     </div>

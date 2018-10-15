@@ -33,16 +33,10 @@
       </div>
     </div>
   </div>
-  </div>
-
-          <% @cash_disbursements.each do |entry| %>
-          <%= link_to accounting_module_entry_path(entry) do %>
-            <%= render 'accounting_module/entries/partials/header', entry: entry %>
-          <% end %>
-        <% end %>
-        </tbody>
-      </table>
-    </div>
-    <center><%= will_paginate @cash_disbursements %></center>
-  </div>
 </div>
+<% @cash_disbursements.each do |entry| %>
+  <%= link_to accounting_module_entry_path(entry) do %>
+    <%= render 'accounting_module/entries/partials/header', entry: entry %>
+  <% end %>
+<% end %>
+<center><%= will_paginate @cash_disbursements %></center>

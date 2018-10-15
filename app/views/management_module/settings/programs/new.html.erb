@@ -9,11 +9,12 @@
           <%= f.error_notification %>
           <%= f.input :name %>
           <%= f.input :description %>
-          <%= f.input :contribution, label: "Amount" %>
+          <%= f.input :amount, label: "Amount" %>
           <%= f.input :default_program %>
           <%= f.input :payment_schedule_type, collection: CoopServicesModule::Program.payment_schedule_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
           <%= f.input :account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] }, input_html: { id: 'programAccountSelect' } %>
           <hr>
+          <%= link_to "Cancel", management_module_settings_configurations_path, class: 'btn btn-default' %>
           <%= f.submit "Create Program", class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
         <% end %>
       </div>

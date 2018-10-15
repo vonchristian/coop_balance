@@ -1,17 +1,26 @@
-<div class="card">
-  <div class="card-body">
-    <h4 class="card-title">Reports</h4>
-    <%= link_to 'Excel', organization_loans_path(@organization, format: 'xlsx') %>
-    <%= form_tag({:action => "index", format: 'pdf', controller: "organizations/loans", organization_id: @organization.id, date: params[:date]}, {:method => :get, autocomplete: 'off' })  do %>
-                <div class="row">
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <%= text_field_tag :date, @date, :class => 'datepicker form-control border-input', :placeholder => "Date" %>
-                    </div>
-                  </div>
-                  <div class="col-md-1">
-                    <button type="submit" class="btn btn-default"> Generate Billing Statement</button>
-                  </div>
-                </div>
-              <% end %>
-    <%=link_to 'Billing Statement', organization_loans_path(@organization, format: 'pdf') %>
+<div class="card-body">
+  <div class="row">
+    <div class="col-md-6">
+      <h4 class="card-title">Reports</h4>
+    </div>
+    <div class="col-md-6">
+      <%= link_to 'Excel', organization_loans_path(@organization, format: 'xlsx'), class: 'btn btn-default' %>
+    </div>
+  </div>
+</div>
+<hr class="no-margin">
+<div class="card-body">
+  <%= form_tag({:action => "index", format: 'pdf', controller: "organizations/loans", organization_id: @organization.id, date: params[:date]}, {:method => :get, autocomplete: 'off' }) do %>
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <%= text_field_tag :date, @date, :class => 'datepicker form-control border-input', :placeholder => "Date" %>
+        </div>
+      </div>
+      <div class="col-md-1">
+        <button type="submit" class="btn btn-default"> Generate Billing Statement</button>
+      </div>
+    </div>
+  <% end %>
+  <%=link_to 'Billing Statement (PDF)', organization_loans_path(@organization, format: 'pdf'), class: 'btn btn-info float-right' %>
+</div>

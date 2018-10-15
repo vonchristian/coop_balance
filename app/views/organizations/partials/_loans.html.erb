@@ -1,6 +1,5 @@
-<div class="tab-pane <%= 'active' if current_page?(organization_loans_path(@organization)) %>">
-
+<div class="card-body">
   <% @loans.each do |loan| %>
     <%= render 'loans/partials/header', loan: loan %>
-<% end %>
+	<% end %>
 </div>
