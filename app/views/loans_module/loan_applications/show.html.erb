@@ -18,7 +18,18 @@
           </div>
         </div>
        <br>
-
+       <div class="row">
+        <div class="col-md-8">
+          <p class="text-danger"> Loan Charges </p>
+        </div>
+        <div class="col-md-4">
+          <%= link_to new_loans_module_loan_application_voucher_amount_path(@loan_application) do %>
+            <span class="btn btn-outline-danger btn-sm" data-toggle="tooltip" title="Add Charges">
+              <i class="fa fa-plus-circle"></i> Add
+            </span>
+          <% end %>
+        </div>
+      </div>
         <% @loan_application.voucher_amounts.each do |voucher_amount| %>
         <div class="row">
           <div class="col-md-5">
