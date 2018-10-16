@@ -29,7 +29,7 @@
       <p class="text-muted"> Transfer balance to other savings accounts. </p>
     </div>
     <div class="col-md-3">
-      <%= link_to 'Balance Transfer', new_savings_account_balance_transfer_path(@savings_account), class: "btn btn-outline-danger" %>
+      <%= link_to 'Balance Transfer', new_savings_account_balance_transfer_destination_account_path(origin_saving_id: @savings_account.id), class: "btn btn-outline-danger" %>
     </div>
   </div>
   <hr>
@@ -51,7 +51,7 @@
     </div>
     <div class="col-md-3">
       <% if policy([:savings_accounts, :account_closing]).new? && !@savings_account.closed? %>
-        <%= link_to 'Close Account', new_savings_account_account_closing_path(@savings_account), class: "btn btn-danger btn-xs" %>
+        <%= link_to 'Close Account', new_savings_account_account_closing_path(@savings_account), class: "btn btn-outline-danger" %>
       <% else %>
       <p class="text-danger"> Only Teller or Treasurer account can close this savings account. </p>
       <% end %>

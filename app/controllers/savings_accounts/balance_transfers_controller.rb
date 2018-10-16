@@ -1,15 +1,17 @@
 module SavingsAccounts
   class BalanceTransfersController < ApplicationController
     def new
-      @savings_account = MembershipsModule::Saving.find(params[:savings_account_id])
-      @balance_transfer = Memberships::SavingsAccounts::BalanceTransferProcessing.new
+      @origin_saving = MembershipsModule::Saving.find(params[:savings_account_id])
+      @destination_saving = MembershipsModule::Saving.find(params[:destination_saving_id])
+
+      @balance_transfer = SavingsAccounts::BalanceTransferProcessing.new
     end
     def create
-      @savings_account = MembershipsModule::Saving.find(params[:savings_account_id])
-      @balance_transfer = Memberships::SavingsAccounts::BalanceTransferProcessing.new(balance_transfer_params)
+      @origin_saving = MembershipsModule::Saving.find(params[:savings_account_id])
+      @balance_transfer = SavingsAccounts::BalanceTransferProcessing.new(balance_transfer_params)
       if @balance_transfer.valid?
         @balance_transfer.process!
-        redirect_to savings_account_url(@savings_account), notice: "Balance transfer saved successfully."
+        redirect_to savings_account_balance_transfer_voucher_url(id: @origin_saving.id, voucher_id: @balance_transfer.find_voucher.id, destination_saving_id: @balance_transfer.find_destination_saving.id), notice: "saved successfully."
       else
         render :new
       end
@@ -17,9 +19,9 @@ module SavingsAccounts
 
     private
     def balance_transfer_params
-      params.require(:memberships_savings_accounts_balance_transfer_processing).
-      permit(:origin_id, :destination_id, :reference_number, :amount, :date, :employee_id)
+      params.require(:savings_accounts_balance_transfer_processing).
+      permit(:origin_id, :destination_id, :employee_id, :amount,
+      :reference_number, :account_number, :date)
     end
   end
 end
-

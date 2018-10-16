@@ -330,6 +330,8 @@ namespace :share_capitals_section do
 
 
   resources :savings_accounts, only: [:index, :show] do
+    resources :balance_transfer_vouchers, only: [:show], module: :savings_accounts
+    resources :balance_transfer_destination_accounts, only: [:new, :create], module: :savings_accounts
     resources :vouchers, only: [:show, :destroy], module: :savings_accounts
     resources :balance_transfers, only: [:new, :create], module: :savings_accounts
     resources :settings,          only: [:index],        module: :savings_accounts
@@ -338,6 +340,7 @@ namespace :share_capitals_section do
     resources :deposits,          only: [:new, :create], module: :savings_accounts
     resources :withdrawals,       only: [:new, :create], module: :savings_accounts
     resources :account_closings,  only: [:new, :create], module: :savings_accounts
+
     resources :barangay_settings,  only: [:edit, :update], module: :savings_accounts
 
     resources :deposit_confirmations, only: [:create, :show], module: :savings_accounts
@@ -376,7 +379,7 @@ namespace :share_capitals_section do
     resources :cash_receipts, only: [:index], module: :employees
     resources :loans, only: [:new, :create], module: :employees
     resources :memberships, only: [:new, :create, :edit, :update], module: :employees
-  
+
     resources :time_deposits, only: [:index], module: :employees
     resources :savings_accounts, only: [:index, :new, :create], module: :employees
     resources :share_capitals, only: [:index, :new, :create], module: :employees

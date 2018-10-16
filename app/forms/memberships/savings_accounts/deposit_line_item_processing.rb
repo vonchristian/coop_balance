@@ -2,7 +2,7 @@ module Memberships
   module SavingsAccounts
     class DepositLineItemProcessing
       include ActiveModel::Model
-      attr_accessor :saving_id, :employee_id, :amount, :or_number, :account_number, :date, :payment_type, :offline_receipt, :cash_account_id, :account_number
+      attr_accessor :saving_id, :employee_id, :amount, :or_number, :account_number, :date, :payment_type, :offline_receipt, :cash_account_id
       validates :amount, presence: true, numericality: { greater_than: 0.01 }
       validates :or_number, presence: true
 
@@ -22,7 +22,7 @@ module Memberships
       def find_employee
         User.find_by_id(employee_id)
       end
-      
+
       private
       def create_deposit_voucher
         voucher = Voucher.new(
