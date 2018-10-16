@@ -129,6 +129,7 @@ Rails.application.routes.draw do
     resources :notices, only: [:index, :show]
   end
   resources :share_capitals do
+    resources :balance_transfer_destination_accounts, only: [:new, :create], module: :share_capitals
     resources :vouchers, only: [:show, :destroy], module: :share_capitals do
       resources :confirmations, only: [:create], module: :vouchers
     end
