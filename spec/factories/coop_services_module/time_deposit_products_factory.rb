@@ -5,7 +5,6 @@ FactoryBot.define do
     annual_interest_rate 2
     break_contract_fee 150
     break_contract_rate 5
-    time_deposit_product_type 'for_member'
     name  { Faker::Company.catch_phrase }
     association :account, factory: :liability
     association :interest_expense_account, factory: :expense

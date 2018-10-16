@@ -3,7 +3,6 @@ module CoopServicesModule
     extend Totalable
     extend Metricable
     extend VarianceMonitoring
-	  enum time_deposit_product_type: [:for_member, :for_non_member]
 
     belongs_to :cooperative
     belongs_to :account, class_name: "AccountingModule::Account"
@@ -11,6 +10,7 @@ module CoopServicesModule
     belongs_to :break_contract_account, class_name: "AccountingModule::Account"
 
     delegate :name, to: :account, prefix: true
+
     validates :account_id,
               :interest_expense_account_id,
               :break_contract_account_id,
@@ -20,7 +20,6 @@ module CoopServicesModule
               :annual_interest_rate,
               :break_contract_fee,
               :break_contract_rate,
-              :time_deposit_product_type,
               presence: true
     validates :break_contract_fee,
               :break_contract_rate,
@@ -29,7 +28,6 @@ module CoopServicesModule
               :annual_interest_rate,
               numericality: true
     validates :name,
-              :account_id,
               uniqueness: true
     def self.accounts
       ids = all.pluck(:account_id)

@@ -25,7 +25,6 @@ module ManagementModule
                :annual_interest_rate,
                :minimum_deposit,
                :maximum_deposit,
-               :time_deposit_product_type,
                :number_of_days,
                :break_contract_fee,
                :break_contract_rate,
