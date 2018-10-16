@@ -7,7 +7,7 @@ module AccountingModule
     enum payment_type: [:cash, :check]
 
     belongs_to :official_receipt, optional: true
-
+    belongs_to :previous_entry, class_name: "AccountingModule::Entry", optional: true
     belongs_to :commercial_document, :polymorphic => true, touch: true
     belongs_to :office, class_name: "CoopConfigurationsModule::Office"
     belongs_to :cooperative
@@ -69,7 +69,45 @@ module AccountingModule
       credit_amounts.sum(:amount) != debit_amounts.sum(:amount)
     end
 
+    def hashes_valid?
+      encrypted_hash == Digest::SHA256.hexdigest(self.digestable)
+    end
+
+    def digestable
+      created_at.to_s +
+      updated_at.to_s +
+      amounts.count.to_s +
+      amounts.sum(:amount).to_s +
+      entry_date.to_s +
+      cooperative_id.to_s +
+      default_previous_hash
+    end
+
+    def default_previous_hash
+      if prev_entry = AccountingModule::Entry.where.not(id: self.id).order(created_at: :desc).first.present?
+        AccountingModule::Entry.where.not(id: self.id).order(created_at: :desc).first.encrypted_hash
+      else
+        "Genesis Block"
+      end
+    end
+
+    def set_hashes!
+      if previous_entry.present?
+        self.previous_entry_hash = previous_entry.encrypted_hash
+        self.encrypted_hash = Digest::SHA256.hexdigest(self.digestable + previous_entry.encrypted_hash)
+        self.save
+      else
+        self.previous_entry_hash = "Genesis Block"
+        self.encrypted_hash = Digest::SHA256.hexdigest(self.digestable + "Genesis")
+        self.save
+      end
+    end
+
     private
+
+    def set_previous_entry
+      self.previous_entry = AccountingModule::Entry.where.not(id: self.id).order(created_at: :desc).first
+    end
 
       def set_default_date
         todays_date = ActiveRecord::Base.default_timezone == :utc ? Time.now.utc : Time.now

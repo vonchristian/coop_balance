@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_15_121127) do
+ActiveRecord::Schema.define(version: 2018_10_16_043741) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -404,14 +404,20 @@ ActiveRecord::Schema.define(version: 2018_10_15_121127) do
     t.uuid "cancelled_by_id"
     t.uuid "cooperative_service_id"
     t.string "cancellation_description"
+    t.uuid "previous_entry_id"
+    t.string "previous_entry_hash"
+    t.string "encrypted_hash"
     t.index ["cancelled_by_id"], name: "index_entries_on_cancelled_by_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_entry"
     t.index ["cooperative_id"], name: "index_entries_on_cooperative_id"
     t.index ["cooperative_service_id"], name: "index_entries_on_cooperative_service_id"
+    t.index ["encrypted_hash"], name: "index_entries_on_encrypted_hash", unique: true
     t.index ["entry_date"], name: "index_entries_on_entry_date"
     t.index ["office_id"], name: "index_entries_on_office_id"
     t.index ["official_receipt_id"], name: "index_entries_on_official_receipt_id"
     t.index ["payment_type"], name: "index_entries_on_payment_type"
+    t.index ["previous_entry_hash"], name: "index_entries_on_previous_entry_hash", unique: true
+    t.index ["previous_entry_id"], name: "index_entries_on_previous_entry_id"
     t.index ["recorder_id"], name: "index_entries_on_recorder_id"
     t.index ["store_front_id"], name: "index_entries_on_store_front_id"
     t.index ["voucher_id"], name: "index_entries_on_voucher_id"
@@ -1441,6 +1447,7 @@ ActiveRecord::Schema.define(version: 2018_10_15_121127) do
   add_foreign_key "employee_cash_accounts", "users", column: "employee_id"
   add_foreign_key "entries", "cooperative_services"
   add_foreign_key "entries", "cooperatives"
+  add_foreign_key "entries", "entries", column: "previous_entry_id"
   add_foreign_key "entries", "offices"
   add_foreign_key "entries", "official_receipts"
   add_foreign_key "entries", "store_fronts"
