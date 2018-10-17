@@ -1,19 +1,8 @@
-<div class="row">
-  <div class="col-md-6 offset-md-3">
-    <div class="card">
-      <div class="card-header">
-        <h4><center><%= image_tag(@member.avatar.variant(resize: "60x60"), class: 'media-object img-circle') if @member.avatar.attached? %></center></h4>
-         <h3><center><%= @member.name %></center></h3>
-      </div>
-      <div class="card-body">
-        <%= simple_form_for [@member, @beneficiary], url: :member_beneficiaries, html: { autocomplete: "off" } do |f| %>
-          <%= f.input :full_name %>
-          <%= f.input :relationship %>
-          <hr>
-          <%= link_to "Cancel", member_path(@member), class: 'btn btn-default' %>
-          <%= f. submit "Save Beneficiary", class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
-        <% end %>
-      </div>
-    </div>
-  </div>
+
+<div class="modal-header">
+  <h4><center><%= image_tag(@member.avatar.variant(resize: "60x60"), class: 'media-object img-circle') if @member.avatar.attached? %></center></h4>
+   <h3><center><%= @member.name %></center></h3>
+</div>
+<div class="modal-body">
+  <%= render 'form', beneficiary: @beneficiary %>
 </div>

@@ -128,16 +128,18 @@
     <hr class="no-margin-top">
     <div class="row justify-content-end">
       <div class="col-md-11 col-sm-11">
-        <% @loan.voucher_amounts.each do |voucher_amount| %>
-          <div class="row">
-            <div class="col-md-4 col-sm-6">
-              &nbsp; &nbsp; <%= voucher_amount.description %>
+        <% if @loan.voucher.present? %>
+          <% @loan.voucher_amounts.each do |voucher_amount| %>
+            <div class="row">
+              <div class="col-md-4 col-sm-6">
+                &nbsp; &nbsp; <%= voucher_amount.description %>
+              </div>
+              <div class="col-md-2 col-sm-6">
+                <span class="float-right"><%= number_to_currency voucher_amount.adjusted_amount %></span>
+              </div>
             </div>
-            <div class="col-md-2 col-sm-6">
-              <span class="float-right"><%= number_to_currency voucher_amount.adjusted_amount %></span>
-            </div>
-          </div>
-          <hr class="min-margin">
+            <hr class="min-margin">
+          <% end %>
         <% end %>
       </div>
     </div>
