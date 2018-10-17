@@ -69,7 +69,7 @@ class TimeDepositPdf < Prawn::Document
   def body
     bounding_box([50,310], :width => 532, :height => 80) do
       # stroke_bounds
-      text content, size: 15, inline_format: true
+      text content, size: 15, align: :justify, inline_format: true
     end
   end
 
@@ -89,7 +89,7 @@ class TimeDepositPdf < Prawn::Document
     end
     bounding_box([362,220], :width => 220, :height => 80) do
       # stroke_bounds
-      text policy, size: 13, inline_format: true 
+      text policy, size: 13, align: :justify, inline_format: true 
     end
   end
 
@@ -116,7 +116,7 @@ class TimeDepositPdf < Prawn::Document
   end
 
   def interest_rate
-    (time_deposit.time_deposit_product.annual_interest_rate.to_f * 100).to_i
+    (time_deposit.time_deposit_product.interest_rate.to_f * 100).to_i
   end
 
   def depositor_name_title
@@ -136,7 +136,7 @@ class TimeDepositPdf < Prawn::Document
   end
 
   def content
-    "This is to certify that <b><u>#{depositor_name_title} #{depositor_name}</u></b> has deposited in this cooperative the sum of <b><u>#{amount_in_words}</u></b> repayable to him <b><u>#{terms_in_days}</u></b> after date upon return of this Certificate properly endorsed."
+    "This is to certify that <b><u><font size='16'>#{depositor_name_title} #{depositor_name}</font></u></b> has deposited in this cooperative the sum of <b><u>#{amount_in_words}</u></b> repayable to him <b><u>#{terms_in_days}</u></b> after date upon return of this Certificate properly endorsed."
   end
 
   def policy

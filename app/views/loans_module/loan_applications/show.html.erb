@@ -4,7 +4,7 @@
     <div class="card">
       <div class="card-header">
         <center>
-          <%= image_tag(@loan_application.avatar, class: "img-circle", height: 60, width: 60) %><br>
+          <%= image_tag(@loan_application.avatar.variant(resize: '60x60'), class: "img-circle") if @loan_application.avatar.attached? %><br>
           <h3 class="card-title"> <%= @borrower.name %> </h3>
         </center>
       </div>
