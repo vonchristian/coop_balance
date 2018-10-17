@@ -9,9 +9,19 @@
         <%= link_to 'New Account', new_employee_cash_account_path(@employee), class: "btn btn-outline-danger" %>
       </div>
     </div>
-    <% @employee.employee_cash_accounts.each do |account| %>
-      <%= account.name %>
-      <%= link_to 'Remove', employee_cash_account_path(id: account.id, employee_id: @employee.id), method: :delete %>
-    <% end %>
+    <div class="row">
+      <div class="col-md-8">
+        <table class="table">
+          <tbody>
+            <% @employee.employee_cash_accounts.each do |account| %>
+              <tr>
+                <td><%= account.name %></td>
+                <td><%= link_to 'Remove', employee_cash_account_path(id: account.id, employee_id: @employee.id), method: :delete, class: 'btn btn-outline-danger btn-xs' %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>

@@ -3,13 +3,12 @@
     <div class="card">
       <div class="card-header">
         <center>
-          <%= image_tag(@current_share_capital.subscriber.avatar.url(:medium), class: "img-circle", height: 60, width: 60) %><br>
-           <h3 class="box-title"><%= @current_share_capital.subscriber_name %></h3>
+          <%= image_tag(@current_share_capital.subscriber.avatar.variant(resize: "60x60"), class: "img-circle") if @current_share_capital.subscriber.avatar.attached? %><br>
+           <h3 class="card-title"><%= @current_share_capital.subscriber_name %></h3>
            <hr>
-           <h4><%= number_to_currency @current_share_capital.paid_up_balance %></h4>
+           <h4 class="no-margin-bottom"><%= number_to_currency @current_share_capital.paid_up_balance %></h4>
            <small>PAID UP BALANCE</small>
         </center>
-        <hr>
       </div>
       <div class="card-body">
         <h4>Accounts to Be Merged</h4>
@@ -45,16 +44,18 @@
     <div class="card">
       <div class="card-body">
         <%=form_tag new_share_capital_merging_line_item_path(@current_share_capital), method: :get do %>
-            <div class="input-group">
-              <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search First Name, Last Name ", id: 'account-search-form' %>
-              <span class="input-group-btn">
-                <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
-                  <i class="fa fa-search"></i>
-                <% end %>
-              </span>
-            </div>
-          <% end %>
-          <br>
+          <div class="input-group">
+            <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search First Name, Last Name ", id: 'account-search-form' %>
+            <span class="input-group-btn">
+              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                <i class="fa fa-search"></i>
+              <% end %>
+            </span>
+          </div>
+        <% end %>
+      </div>
+      <hr class="no-margin">
+      <div class="card-body">
         <% @share_capitals.each do |share_capital| %>
           <div class="row">
             <div class="col-md-8 col-md-offset-1">

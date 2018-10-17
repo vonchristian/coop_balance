@@ -30,7 +30,8 @@ module ManagementModule
                :break_contract_rate,
                :account_id,
                :interest_expense_account_id,
-               :break_contract_account_id
+               :break_contract_account_id,
+               :cooperative_id
                )
       end
     end

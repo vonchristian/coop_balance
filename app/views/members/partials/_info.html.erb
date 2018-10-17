@@ -85,15 +85,21 @@
         <tr>
           <td style="width:200px"><i class="fa fa-users"></i>  &nbsp; Beneficiaries </td>
           <td>
+            <br>
+            <br>
             <% @member.beneficiaries.each do |beneficiary| %>
               <div class="row">
                 <div class="col-md-6">
-                  <p><%= beneficiary.full_name %></p>
+                  <p class="no-margin-bottom"><%= beneficiary.full_name %></p>
                 </div>
-                <div class="col-md-6">
-                  <p><%= beneficiary.relationship.try(:titleize) %></p>
+                <div class="col-md-3 col-sm-6">
+                  <p class="no-margin-bottom"><%= beneficiary.relationship.try(:titleize) %></p>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                  <a href="" class="btn btn-outline-warning btn-xs">Update</a>
                 </div>
               </div>
+              <hr class="min-margin">
             <% end %>
           </td>
           <td><%= link_to new_member_beneficiary_path(@member) do %>
@@ -101,7 +107,6 @@
                 </span>
               <% end %>
           </td>
-
         </tr>
       </tbody>
     </table>

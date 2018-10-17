@@ -5,7 +5,7 @@
         <h3 class="card-title">Select share capital you want to tranfer balance to. </h3>
       </div>
       <div class="card-body">
-        <%=form_tag new_share_capital_balance_transfer_destination_account_path, method: :get do %>
+        <%=form_tag new_share_capital_balance_transfer_destination_account_path, method: :get, class: "search-form" do %>
           <div class="input-group">
             <%= hidden_field_tag :origin_saving_id, @origin_share_capital.id %>
             <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search First Name, Last Name ", id: 'account-search-form' %>
@@ -16,19 +16,21 @@
             </span>
           </div>
         <% end %>
-        <br>
+      </div>
+      <hr class="no-margin">
+      <div class="card-body">
         <% @share_capitals.each do |share_capital| %>
           <div class="row">
             <div class="col-md-2">
-              <%= image_tag(share_capital.avatar, class: "img-circle", height: 45, width: 45) %>
+              <%= image_tag(share_capital.avatar.variant(resize: '45x45'), class: "img-circle") if share_capital.avatar.attached? %>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-7">
               <%= share_capital.subscriber_name %>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
               <%= simple_form_for @destination_share_capital, url: :share_capital_balance_transfer_destination_accounts do |f| %>
                 <%= f.input :destination_share_capital_id, input_html: { value: share_capital.id }, as: :hidden %>
-                <%= f.submit "Select", class: "btn btn-outline-danger float-right", data: { disable_with: "Processing..." } %>
+                <%= f.submit "Select", class: "btn btn-outline-danger btn-sm", data: { disable_with: "Processing..." } %>
               <% end %>
             </div>
           </div>
