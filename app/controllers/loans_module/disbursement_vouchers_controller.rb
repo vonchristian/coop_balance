@@ -14,7 +14,7 @@ module LoansModule
     private
     def disbursement_params
       params.require(:loans_module_loans_disbursement_voucher).
-      permit(:date, :loan_application_id, :description, :number, :preparer_id, :account_number, :net_proceed, :cash_account_id)
+      permit(:date, :loan_application_id, :description, :number, :preparer_id, :account_number, :cash_account_id)
     end
   end
 end

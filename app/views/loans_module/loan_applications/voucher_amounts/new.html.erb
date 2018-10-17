@@ -1,7 +1,23 @@
-<%= simple_form_for [@loan_application, @charge], url: :loans_module_loan_application_voucher_amounts do |f| %>
-  <%= f.input :description %>
-  <%= f.input :amount %>
-  <%= f.input :account_id, collection: AccountingModule::Account.all.map{ |a| [a.name, a.id] } %>
-  <%= f.input :loan_application_id, input_html: { value: @loan_application.id }, as: :hidden %>
-  <%= f.submit "Add" %>
-<% end %>
+<% content_for :title, "New Charge Details" %>
+<div class="modal-header">
+  <%= image_tag(@loan_application.avatar, class: "img-circle", height: 60, width: 60) %>
+  <h5 class="modal-title"><%= @loan_application.borrower_name %></h5>
+</div>
+
+<div class="modal-body">
+  <%= simple_form_for [@loan_application, @charge], url: :loans_module_loan_application_voucher_amounts, html: { autocomplete: 'off' } do |f| %>
+    <%= f.input :description %>
+    <%= f.input :amount, as: :currency %>
+    <%= f.input :account_id, collection: AccountingModule::Account.all.map{ |a| [a.name, a.id] } %>
+    <%= f.input :loan_application_id, input_html: { value: @loan_application.id }, as: :hidden %>
+    <hr>
+    <%= f.submit "Add Charge", class: "btn btn-primary float-right" %>
+  <% end %>
+</div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#loans_module_loan_applications_voucher_amount_processing_account_id").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>

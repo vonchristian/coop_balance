@@ -23,9 +23,9 @@
           <p class="text-danger"> Loan Charges </p>
           <br>
         </div>
-        <div class="col-md-4">
-          <%= link_to new_loans_module_loan_application_voucher_amount_path(@loan_application) do %>
-            <span class="btn btn-outline-danger btn-sm" data-toggle="tooltip" title="Add Charges">
+        <div class="col-md-3">
+          <%= link_to new_loans_module_loan_application_voucher_amount_path(@loan_application), data: { modal: true } do %>
+            <span class="btn btn-outline-danger btn-sm float-right" data-toggle="tooltip" title="Add Charges">
               <i class="fa fa-plus-circle"></i> Add
             </span>
           <% end %>
@@ -34,15 +34,10 @@
       </div>
         <% @loan_application.voucher_amounts.each do |voucher_amount| %>
         <div class="row">
-          <div class="col-md-5">
+          <div class="col-md-6">
             <%= voucher_amount.description %>
           </div>
-          <div class="col-md-3">
-            <span class="float-right">
-              <%= number_to_currency voucher_amount.adjusted_amount %>
-            </span>
-          </div>
-          <div class="col-md-3">
+          <div class="col-md-2">
             <%= link_to new_loans_module_voucher_amount_amount_adjustment_path(voucher_amount_id: voucher_amount.id, loan_application_id: @loan_application.id) do %>
               <span data-toggle="tooltip" title="Adjust"><i class="fa fa-edit"></i>
               </span>
@@ -53,6 +48,12 @@
               </span>
             <% end %>
           </div>
+          <div class="col-md-3">
+            <span class="float-right">
+              <%= number_to_currency voucher_amount.adjusted_amount %>
+            </span>
+          </div>
+
         </div>
         <br>
         <% end %>
@@ -75,7 +76,6 @@
             <%= f.input :preparer_id, input_html: { value: current_user.id }, as: :hidden %>
             <%= f.input :loan_application_id, input_html: { value: @loan_application.id }, as: :hidden %>
             <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
-            <%= f.input :net_proceed, input_html: { value: @loan_application.net_proceed }, as: :hidden %>
             <%= f.input :cash_account_id, collection: Employees::EmployeeCashAccount.cash_accounts.map{|a| [a.name, a.id] } %>
 
               <%= f.submit "Create Voucher", class: "btn btn-primary btn-lg float-right" %>

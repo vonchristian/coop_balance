@@ -23,7 +23,7 @@
           <td style="width:200px"><i class="fa fa-map-marker"></i> &nbsp; Current Address</td>
           <td><%= @member.current_address_complete_address %></td>
           <td>
-            <%= link_to 'Update', new_member_address_path(@member), class: "btn btn-outline-warning btn-sm" %>
+            <%= link_to 'Update', new_member_address_path(@member), class: "btn btn-outline-warning btn-sm", data: { modal: true } %>
           </td>
         </tr>
         <tr>

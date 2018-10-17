@@ -419,6 +419,7 @@ DEPENDENCIES
   rack-mini-profiler
   rails (= 5.2.0)
   redis
+  responders
   roo (~> 2.7.0)
   rqrcode
   rspec-rails

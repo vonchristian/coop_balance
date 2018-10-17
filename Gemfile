@@ -56,6 +56,7 @@ gem 'roo', "~> 2.7.0"
 gem 'chronic'
 gem 'numbers_and_words'
 gem "audited", "~> 4.7"
+gem "responders"
 group :development, :test do
   gem 'rspec-rails'
   gem 'capybara'
