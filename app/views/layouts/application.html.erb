@@ -13,8 +13,9 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 <body class="hold-transition sidebar-mini">
-<div class="wrapper">
 
+<div class="wrapper">
+<div id="modal-holder"></div>
   <!-- Navbar -->
   <%= render 'layouts/shared/navbar' %>
 
@@ -36,7 +37,7 @@
     </div>
     <!-- /.content -->
   </div>
-  <div id="modal-holder"></div>
+  
   
 
   <%= render 'layouts/shared/footer' %>

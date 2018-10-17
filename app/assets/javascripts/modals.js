@@ -4,6 +4,8 @@ $(function() {
 
   $(document).on('click', 'a[data-modal]', function() {
     const location = $(this).attr('href');
+    // Send sidebar to back
+    $('.main-sidebar').css("z-index", 0);
     // Load modal dialog from server
     $.get(
       location,
