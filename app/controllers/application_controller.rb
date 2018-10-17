@@ -25,6 +25,7 @@ class ApplicationController < ActionController::Base
       current_user.office
     end
   end
+  
 
 
   def current_stock_registry

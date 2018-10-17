@@ -16,6 +16,12 @@ module LoansModule
           render :new
         end
       end
+      def destroy
+        @loan_application = LoanApplication.find(params[:loan_application_id])
+        @voucher_amount = Vouchers::VoucherAmount.find(params[:voucher_amount_id])
+        @voucher_amount.destroy
+        redirect_to loans_module_loan_application_url(@loan_application), alert: 'Removed successfully.'
+      end
 
       private
       def charge_params

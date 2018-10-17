@@ -17,7 +17,7 @@ module CoopServicesModule
               :name,
               :minimum_deposit,
               :maximum_deposit,
-              :annual_interest_rate,
+              :interest_rate,
               :break_contract_fee,
               :break_contract_rate,
               presence: true
@@ -25,7 +25,7 @@ module CoopServicesModule
               :break_contract_rate,
               :minimum_deposit,
               :maximum_deposit,
-              :annual_interest_rate,
+              :interest_rate,
               numericality: true
     validates :name,
               uniqueness: true
@@ -54,8 +54,8 @@ module CoopServicesModule
     end
 
     def monthly_interest_rate
-      rate = annual_interest_rate || 0.02
-      rate / 12.0
+      months = number_of_days / 30
+      interest_rate / months
     end
 	end
 end

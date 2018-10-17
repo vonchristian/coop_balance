@@ -6,7 +6,7 @@
       </div>
       <div class="col-md-6">
         <% if policy([:members, :loan]).new? %>
-          <%= link_to 'New Loan Application', new_loans_module_loan_application_path(borrower_id: @member.id, borrower_type: @member.class.to_s), class: "btn btn-primary float-right" %>
+          <%= link_to 'New Loan Application', new_loans_module_loan_application_path(borrower_id: @member.id, borrower_type: @member.class.to_s), 'data-turbolinks' => false, class: "btn btn-primary float-right" %>
         <% end %>
       </div>
     </div>

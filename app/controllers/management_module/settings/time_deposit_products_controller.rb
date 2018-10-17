@@ -22,7 +22,7 @@ module ManagementModule
       def time_deposit_product_params
         params.require(:coop_services_module_time_deposit_product).
         permit(:name,
-               :annual_interest_rate,
+               :interest_rate,
                :minimum_deposit,
                :maximum_deposit,
                :number_of_days,
