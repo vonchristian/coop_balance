@@ -20,6 +20,8 @@ module CoopServicesModule
               :interest_rate,
               :break_contract_fee,
               :break_contract_rate,
+              :time_deposit_product_type,
+              :cooperative_id,
               presence: true
     validates :break_contract_fee,
               :break_contract_rate,

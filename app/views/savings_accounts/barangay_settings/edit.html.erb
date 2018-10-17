@@ -1,4 +1,16 @@
-<%= simple_form_for @savings_account, url: :savings_account_barangay_setting do |f| %>
-  <%= f.input :barangay_id, collection: Addresses::Barangay.all.map{|a| [a.name, a.id] } %>
-  <%= f.submit "Set Barangay", class: "btn btn-danger" %>
-<% end %>
+<div class="row">
+	<div class="col-md-6 offset-md-3">
+		<div class="card">
+			<div class="card-header">
+				<h4 class="card-title">Set Barangay</h4>
+			</div>
+			<div class="card-body">
+				<%= simple_form_for @savings_account, url: :savings_account_barangay_setting do |f| %>
+				  <%= f.input :barangay_id, collection: Addresses::Barangay.all.map{|a| [a.name, a.id] } %>
+				  <hr>
+				  <%= f.submit "Set Barangay", class: "btn btn-danger float-right" %>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</div>

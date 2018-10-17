@@ -112,13 +112,23 @@ class User < ApplicationRecord
   def name  #for voucher index
     first_and_last_name
   end
+
   def first_and_last_name
     "#{first_name} #{last_name}"
+  end
+
+  def first_middle_and_last_name #for time deposit certificate signatory(general manager)
+    if middle_name.present?
+      "#{first_name.titleize} #{middle_name.first.upcase}. #{last_name.titleize}"
+    else
+      "#{first_name.titleize} #{last_name.titleize}"
+    end
   end
 
   def latest_purchase_date
     orders.last.date || Time.zone.now
   end
+
   private
   def set_default_image
     if avatar.attachment.blank?

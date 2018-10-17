@@ -6,94 +6,96 @@
       </div>
       <div class="card-body">
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-4">
             Payee/Member
           </div>
-          <div class="col-md-6">
+          <div class="col-md-8">
             <%= @voucher.payee_name %>
           </div>
         </div>
+        <hr class="min-margin">
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-4">
             Reference #
           </div>
-          <div class="col-md-6">
+          <div class="col-md-8">
             <%= @voucher.number %>
           </div>
         </div>
+        <hr class="min-margin">
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-4">
             Date
           </div>
-          <div class="col-md-6">
+          <div class="col-md-8">
             <%= @voucher.date.strftime("%B %e, %Y") %>
           </div>
         </div>
+        <hr class="min-margin">
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-4">
             Description
           </div>
-          <div class="col-md-6">
+          <div class="col-md-8">
             <%= @voucher.description %>
           </div>
         </div>
+        <hr class="min-margin">
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-4">
             Recorder
           </div>
-          <div class="col-md-6">
+          <div class="col-md-8">
             <%= @voucher.preparer_full_name %>
           </div>
         </div>
-        <br>
-
+      </div>
+      <hr class="no-margin">
+      <div class="card-body">
         <table class="table table-hover">
-            <thead>
+          <thead>
+            <tr>
+              <th>Debit</th>
+              <th class="text-center">Account</th>
+              <th>
+                <span class="float-right">Credit</span>
+              </th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @voucher.voucher_amounts.each do |voucher_amount| %>
               <tr>
-                <th>Debit</th>
-                <th>Account</th>
-                <th> <span class="float-right">
-                  Credit
-                </span></th>
-                <th></th>
+                <td>
+                  <% if voucher_amount.debit? %>
+                    <%= number_to_currency voucher_amount.amount %>
+                  <% end %>
+                </td>
+                <td class="text-center"><%= voucher_amount.account_name %></td>
+                 <td>
+                  <% if voucher_amount.credit? %>
+                    <span class="float-right"><%= number_to_currency voucher_amount.amount %></span>
+                  <% end %>
+                </td>
+                <td>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              <% @voucher.voucher_amounts.each do |voucher_amount| %>
-                <tr>
-                  <td>
-                    <% if voucher_amount.debit? %>
-                      <%= number_to_currency voucher_amount.amount %>
-                    <% end %>
-                  </td>
-                  <td><%= voucher_amount.account_name %></td>
-                   <td>
-                    <% if voucher_amount.credit? %>
-                      <span class="float-right"><%= number_to_currency voucher_amount.amount %></span>
-                    <% end %>
-                  </td>
-                  <td>
-                  </td>
-                </tr>
-              <% end %>
-              <% if @voucher.voucher_amounts.present? %>
-                 <tr>
-                  <td><b><%= number_to_currency @voucher.voucher_amounts.debit.sum(:amount) %></b></td>
-                  <td></td>
-                  <td><b class="float-right"><%= number_to_currency @voucher.voucher_amounts.credit.sum(:amount) %></b></td>
-                  <td></td>
-                </tr>
-
-              <% end %>
-            </tbody>
-          </table>
-          <hr>
-            <% if @voucher.accounting_entry.blank? %>
-              <%= link_to "Confirm", savings_account_deposit_confirmations_path(savings_account_id: @savings_account.id, voucher_id: @voucher.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
-              <%= link_to "Cancel", savings_account_voucher_path(savings_account_id: @savings_account.id, voucher_id: @voucher.id), method: :delete, class: "btn text-danger float-left" %>
             <% end %>
-          </div>
-        </div>
+            <% if @voucher.voucher_amounts.present? %>
+              <tr>
+                <td><b><%= number_to_currency @voucher.voucher_amounts.debit.sum(:amount) %></b></td>
+                <td class="text-center"></td>
+                <td><b class="float-right"><%= number_to_currency @voucher.voucher_amounts.credit.sum(:amount) %></b></td>
+                <td></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <hr>
+        <% if @voucher.accounting_entry.blank? %>
+          <%= link_to "Confirm", savings_account_deposit_confirmations_path(savings_account_id: @savings_account.id, voucher_id: @voucher.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
+          <%= link_to "Cancel", savings_account_voucher_path(savings_account_id: @savings_account.id, voucher_id: @voucher.id), method: :delete, class: "btn text-danger float-left" %>
+        <% end %>
       </div>
     </div>
   </div>

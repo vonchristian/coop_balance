@@ -1,46 +1,46 @@
 <div class="row">
-  <div class="col-md-3">
-  </div>
-  <div class="col-md-5">
+  <div class="col-md-6 offset-md-3">
     <div class="card">
       <div class="card-header">
-        <h4><center><%= image_tag(@savings_account.depositor.avatar, style: 'width:80px;height:80px;', class: 'media-object img-circle') %></center></h4>
+        <h4><center><%= image_tag(@savings_account.depositor.avatar.variant(resize: '80x80'),  class: 'media-object img-circle') if @savings_account.depositor.avatar.attached? %></center></h4>
         <center><h3 class="box-title"><%= @savings_account.depositor_name %></h3></center>
       </div>
       <div class="card-body">
-            <div class="row">
-              <div class="col-md-5">
-                Balance
-              </div>
-              <div class="col-md-5">
-                <span class="float-right">
-                  <%= number_to_currency @savings_account.balance %>
-                </span>
-              </div>
-            </div>
-            <br>
-            <div class="row">
-              <div class="col-md-5">
-                Closing Account Fee
-              </div>
-              <div class="col-md-5">
-                <span class="float-right">
-                  <%=number_to_currency CoopConfigurationsModule::SavingsAccountConfig.default_closing_account_fee %>
-                </span>
-              </div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-md-5">
-                <b>Amount to Disburse</b>
-              </div>
-              <div class="col-md-5">
-                <span class="float-right">
-                  <b><%= number_to_currency @savings_account.balance -  CoopConfigurationsModule::SavingsAccountConfig.default_closing_account_fee %></b>
-                </span>
-              </div>
-            </div>
-            <br>
+        <div class="row">
+          <div class="col-md-5">
+            <small>BALANCE</small>
+          </div>
+          <div class="col-md-5">
+            <span class="float-right">
+              <label><%= number_to_currency @savings_account.balance %></label>
+            </span>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-5">
+            <small>CLOSING ACCOUNT FEE</small>
+          </div>
+          <div class="col-md-5">
+            <span class="float-right">
+              <label><%=number_to_currency CoopConfigurationsModule::SavingsAccountConfig.default_closing_account_fee %></label>
+            </span>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-5">
+            <small>AMOUNT TO BE DISBURSED</small>
+          </div>
+          <div class="col-md-5">
+            <span class="float-right">
+              <label><%= number_to_currency @savings_account.balance -  CoopConfigurationsModule::SavingsAccountConfig.default_closing_account_fee %></label>
+            </span>
+          </div>
+        </div>
+      </div>
+      <hr class="no-margin">
+      <div class="card-body">
         <%= simple_form_for [@savings_account, @account_closing], url: :savings_account_account_closings do |f| %>
           <%= f.error_notification %>
           <%= f.input :amount, input_html: { value: @savings_account.balance -  CoopConfigurationsModule::SavingsAccountConfig.default_closing_account_fee }, as: :hidden %>
@@ -51,10 +51,8 @@
           <%= f.input :recorder_id, input_html: { value: current_user.id },as: :hidden %>
           <%= f.input :account_number, input_html: { value: SecureRandom.uuid },as: :hidden %>
           <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] } %>
-          <div class="footer">
-            <%= f.submit "Close Account", class: "btn btn-danger btn-block btn-lg", data: {disable_with: "Processing..." } %>
-          </div>
-          <br>
+          <hr>
+          <%= f.submit "Close Account", class: "btn btn-danger btn-block btn-lg", data: {disable_with: "Processing..." } %>
         <% end %>
       </div>
     </div>
