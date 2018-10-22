@@ -1,0 +1,8 @@
+<div class="modal-header">
+  <%= image_tag(@employee.avatar.variant(resize: '45x45'), class: "img-circle") if @employee.avatar.attached? %>
+  
+  <h4 class="modal-title card-title" id="mainModalLabel" style="margin-left: 10px">
+    <%= @employee.name %>
+  </h4>
+  <button type="button" class="close float-right" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+</div>

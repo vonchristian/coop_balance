@@ -1,18 +1,19 @@
 module ManagementModule
 	module Settings 
-		class GracePeriodsController < ApplicationController 
+		class GracePeriodsController < ApplicationController
+			respond_to :html, :json
+
 			def new 
 				@grace_period = CoopConfigurationsModule::GracePeriod.new 
+				respond_modal_with @grace_period
 			end 
+
 			def create 
 				@grace_period = CoopConfigurationsModule::GracePeriod.new 
 				@grace_period.update(grace_period_params)
-				if @grace_period.valid?
-					@grace_period.save 
-					redirect_to management_module_settings_configurations_url, notice: "Grace period created successfully."
-				else 
-					render :new 
-				end 
+				respond_modal_with @grace_period, 
+					location: management_module_settings_configurations_url, 
+					notice: "Grace period created successfully."
 			end 
 
 			private 

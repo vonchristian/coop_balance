@@ -11,102 +11,141 @@
         <%= @loan.barangay_name %>
       </div>
       <div class="col-md-3">
-        <%= link_to 'Set Barangay', edit_loan_barangay_path(id: @loan.id), class: "btn btn-sm btn-outline-danger float-right" %>
+        <%= link_to 'Set Barangay', edit_loan_barangay_path(id: @loan.id), class: "btn btn-sm btn-outline-danger float-right", data: {modal: true} %>
       </div>
     </div>
-  <hr>
-  <div class="row">
-    <div class="col-md-9">
-      <h4 class="card-title">Set Loan as Loss</h4>
-      <p class="text-muted">
-        Set this loan as loss
-      </p>
-    </div>
-    <div class="col-md-3">
-      <%= link_to 'Set as Loss', new_loans_module_loan_loss_path(@loan), class: "btn btn-sm btn-outline-danger float-right" %>
+  </div>
+  <hr class="no-margin">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-9">
+        <h4 class="card-title">Set Loan as Loss</h4>
+        <p class="text-muted">
+          Set this loan as loss
+        </p>
+      </div>
+      <div class="col-md-3">
+        <%= link_to 'Set as Loss', new_loans_module_loan_loss_path(@loan), class: "btn btn-sm btn-outline-danger float-right", data: {modal: true} %>
+      </div>
     </div>
   </div>
-  <hr />
-<h4 class="card-title">Loan Terms Details <span class="badge bg-danger"><%= @loan.terms.count %></span> </h4>
-<p class="text-muted"> Create new  loan terms </p>
-<%= link_to 'Extend Term', new_loans_module_loan_term_path(@loan), class: "btn btn-sm btn-outline-danger" %>
-<br />
-<br>
-<% if @loan.terms.present? %>
-  <table class="table table-responsive">
-    <thead>
-      <tr>
-        <th>No. of Months</th>
-        <th>Effectivity Date</th>
-        <th>Maturity Date</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @loan.terms.each do |term| %>
-        <tr>
-          <td><%= term.term %></td>
-          <td><%= term.effectivity_date.try(:strftime, ("%B %e, %Y")) %></td>
-          <td><%= term.maturity_date.try(:strftime, ("%B %e, %Y")) %></td>
-          <td>
-            <% if @loan.current_term == term %>
-              <span class="badge bg-success"> Current </span>
-            <% end %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% end %>
-
-<% if @loan.paid? %>
-<h4 class="card-title">Archive Loan</h4>
-<p class="text-muted"> Archive paid loans </p>
-<% if policy([:loans_module, :loans, :archiving]).new? && !@loan.archived? %>
-  <%= link_to "Archive Loan", loans_module_loan_archivings_path(@loan), method: :post, data: { confirm: "Are you sure you want to archive this loan?" }, class: "btn btn-sm btn-outline-danger" %>
-<% elsif @loan.archived? %>
-  <div class="row">
-    <div class="col-md-6">
-      <b>Status</b>
+  <hr class="no-margin">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-9">
+        <h4 class="card-title">Loan Terms Details
+          <span class="badge bg-danger"><%= @loan.terms.count %></span>
+        </h4>
+        <p class="text-muted"> Create new  loan terms </p>
+      </div>
+      <div class="col-md-3">
+        <%= link_to 'Extend Term', new_loans_module_loan_term_path(@loan), class: "btn btn-sm btn-outline-danger float-right", data: {modal: true} %>
+      </div>
     </div>
-    <div class="col-md-6">
-      <span class="label bg-green"> Archived </span><br>
+    <div class="row">
+      <div class="col-md-8">
+        <% if @loan.terms.present? %>
+          <table class="table table-responsive">
+            <thead>
+              <tr>
+                <th>No. of Months</th>
+                <th>Effectivity Date</th>
+                <th>Maturity Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @loan.terms.each do |term| %>
+                <tr>
+                  <td><%= term.term %></td>
+                  <td><%= term.effectivity_date.try(:strftime, ("%B %e, %Y")) %></td>
+                  <td><%= term.maturity_date.try(:strftime, ("%B %e, %Y")) %></td>
+                  <td>
+                    <% if @loan.current_term == term %>
+                      <span class="badge bg-success"> Current </span>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        <% end %>
+        <hr>
+        <% if @loan.paid? %>
+          <h4 class="card-title">Archive Loan</h4>
+          <p class="text-muted"> Archive paid loans </p>
+          <% if policy([:loans_module, :loans, :archiving]).new? && !@loan.archived? %>
+            <%= link_to "Archive Loan", loans_module_loan_archivings_path(@loan), method: :post, data: { confirm: "Are you sure you want to archive this loan?" }, class: "btn btn-sm btn-outline-danger" %>
+          <% elsif @loan.archived? %>
+            <div class="row">
+              <div class="col-md-6">
+                <b>Status</b>
+              </div>
+              <div class="col-md-6">
+                <span class="label bg-green"> Archived </span><br>
+              </div>
+            </div>
+            <hr class="min-margin">
+            <div class="row">
+              <div class="col-md-6">
+                <b>Archiving Date </b>
+              </div>
+              <div class="col-md-6">
+                <%= @loan.archiving_date.strftime("%B %e, %Y") %>
+              </div>
+            </div>
+            <hr class="min-margin">
+            <div class="row">
+              <div class="col-md-6">
+                <b>Archived By </b>
+              </div>
+              <div class="col-md-6">
+                <%= @loan.archived_by.try(:name) %>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
     </div>
   </div>
-  <br>
-  <div class="row">
-    <div class="col-md-6">
-      <b>Archiving Date </b>
-    </div>
-    <div class="col-md-6">
-      <%= @loan.archiving_date.strftime("%B %e, %Y") %>
-    </div>
-  </div>
-  <br>
-  <div class="row">
-    <div class="col-md-6">
-      <b>Archived By </b>
-    </div>
-    <div class="col-md-6">
-      <%= @loan.archived_by.try(:name) %>
+  <hr class="no-margin">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-9">
+        <h4 class="card-title"> Tracking Number</h4>
+        <p class="text-muted">
+          Enter tracking number to distinguish loans during payments
+        </p>
+      </div>
+      <div class="col-md-3">
+        <%=link_to "Add Tracking Number", edit_loans_module_loan_tracking_number_path(id: @loan.id), class: "btn btn-outline-danger btn-sm float-right", data: {modal: true} %>
+      </div>
     </div>
   </div>
-<% end %>
-<% end %>
-
-<h4 class="card-title"> Tracking Number</h4>
-<p class="text-muted">
-  Enter tracking number to distinguish loans during payments
-</p>
-<%=link_to "Add Tracking Number", edit_loans_module_loan_tracking_number_path(id: @loan.id), class: "btn btn-outline-danger btn-sm" %>
-<hr />
-<h3 class="card-title"> Organization </h3>
-<%= link_to 'Set Organization', edit_loans_module_loan_organization_path(id: @loan.id), class: "btn btn-outline-danger btn-sm" %>
-<hr>
-<h4 class="card-title">Adjustment Entries</h4>
-<p class="text-muted">
-  Make adjusting entries for this loan.
-</p>
-<% if current_user.bookkeeper? || current_user.accountant? %>
-  <%=link_to "New Adjusting Entry", new_accounting_module_adjusting_entry_path(commercial_document_type: @loan.class.to_s, commercial_document_id: @loan.id), class: "btn btn-sm btn-outline-danger" %>
-<% end %>
-<hr>
+  <hr class="no-margin">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-9">
+        <h3 class="card-title"> Organization </h3>
+      </div>
+      <div class="col-md-3">
+        <%= link_to 'Set Organization', edit_loans_module_loan_organization_path(id: @loan.id), class: "btn btn-outline-danger btn-sm float-right", data: {modal: true} %>
+      </div>
+    </div>
+  </div>
+  <hr class="no-margin">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-9">
+        <h4 class="card-title">Adjustment Entries</h4>
+        <p class="text-muted">
+          Make adjusting entries for this loan.
+        </p>
+      </div>
+      <div class="col-md-3">
+        <% if current_user.bookkeeper? || current_user.accountant? %>
+          <%=link_to "New Adjusting Entry", new_accounting_module_adjusting_entry_path(commercial_document_type: @loan.class.to_s, commercial_document_id: @loan.id), class: "btn btn-sm btn-outline-danger float-right" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

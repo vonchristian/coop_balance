@@ -1,12 +1,13 @@
 module Members
   class AddressesController < ApplicationController
     respond_to :html, :json
+    
     def new
       @member = Member.find(params[:member_id])
       @address = @member.addresses.build
       respond_modal_with @address
-
     end
+
     def create
       @member = Member.find(params[:member_id])
       @address = @member.addresses.create(address_params)

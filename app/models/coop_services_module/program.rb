@@ -30,7 +30,8 @@ module CoopServicesModule
       end
     end
 
-		def self.subscribe_subscribers(program)
+    # self.subscribe_subscribers(program) :before
+		def self.subscribe_members(program)
 			return false if !program.default_program?
 			subscribers.each do |subscriber|
 				subscriber.program_subscriptions.find_or_create_by!(program: program)

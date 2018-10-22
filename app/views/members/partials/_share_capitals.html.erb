@@ -1,11 +1,17 @@
-
+<div class="card">
+  <div class="card-header">
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-6">
+        <h4 class="card-title">Share Capital</h4>
+      </div>
+      <div class="col-md-6">
         <% if policy([:members, :share_capital]).new? %>
           <%= link_to 'New Share Capital', new_member_share_capital_path(@member), class: "btn btn-primary btn-flat pull-right" %>
         <% end %>
       </div>
     </div>
-    <% @member.share_capitals.each do |share_capital| %>
-      <%= render 'share_capitals/partials/header', share_capital: share_capital %>
-    <% end %>
+  </div>
+</div>
+<% @member.share_capitals.each do |share_capital| %>
+  <%= render 'share_capitals/partials/header', share_capital: share_capital %>
+<% end %>

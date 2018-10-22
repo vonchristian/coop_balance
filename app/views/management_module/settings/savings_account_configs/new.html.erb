@@ -1,31 +1,17 @@
-<div class="row">
-	<div class="col-md-6 offset-md-3">
-		<div class="card">
-			<div class="card-header">
-				<h3 class="card-title">Savings Account Configuration</h3>
-			</div>
-			<div class="card-body">
-				<%=simple_form_for @savings_account_config, url: :management_module_settings_savings_account_configs do |f| %>
-				  <%= f.input :closing_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
-				  <%= f.input :interest_expense_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
-				  <%= f.input :closing_account_fee, as: :string %>
-				  <%= f.input :number_of_days_to_be_dormant %>
-				  <hr>
-				  <%= link_to "Cancel", management_module_settings_configurations_path, class: 'btn btn-default' %>
-				  <%= f.submit "Save Configuration", class: 'btn btn-primary float-right', data: { disable_with: "Processing..." } %>
-				<% end %>
-			</div>
-		</div>
-	</div>
+<div class="modal-header">
+  <h4 class="modal-title card-title" id="mainModalLabel">
+    Savings Account Configuration
+  </h4>
+  <button type="button" class="close float-right" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 </div>
-
-<script type="text/javascript">
-  $(document).ready(function() {
-    $("#coop_configurations_module_savings_account_config_closing_account_id").select2({
-      theme: "bootstrap"
-    });
-    $("#coop_configurations_module_savings_account_config_interest_expense_account_id").select2({
-      theme: "bootstrap"
-    });
-  });
-</script>
+<%=simple_form_for @savings_account_config, html: { autocomplete: "off", data: { modal: true } }, remote: request.xhr?, url: :management_module_settings_savings_account_configs do |f| %>
+	<div class="modal-body">
+	  <%= f.input :closing_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
+	  <%= f.input :interest_expense_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
+	  <%= f.input :closing_account_fee, as: :string %>
+	  <%= f.input :number_of_days_to_be_dormant %>
+	</div>
+	<div class="modal-footer">
+	  <%= f.submit "Save Configuration", class: 'btn btn-primary float-right', data: { disable_with: "Processing..." } %>
+	</div>
+<% end %>

@@ -1,0 +1,104 @@
+<script type="text/javascript">
+	// datepicker
+  $('.datepicker').datepicker({
+    format: "MM dd, yyyy",
+    orientation: "auto",
+    todayHighlight: 'true',
+    autoclose: 'true'
+  });
+
+	// Member Address
+	$(document).ready(function() {
+	  $("#address_street_id").select2({
+	    theme: "bootstrap"
+	  });
+
+	  $("#address_barangay_id").select2({
+	    theme: "bootstrap"
+	  });
+
+	  $("#address_municipality_id").select2({
+	    theme: "bootstrap"
+	  });
+
+	  $("#address_province_id").select2({
+	    theme: "bootstrap"
+	  });
+
+	  $("#barangay_id").select2({
+	    theme: "bootstrap"
+	  });
+
+	  $("#credit_account_id").select2({
+	    theme: "bootstrap"
+	  });
+
+	  $("#debit_account_id").select2({
+	    theme: "bootstrap"
+	  });
+
+	  $("#organization_id").select2({
+	    theme: "bootstrap"
+	  });
+	});
+
+	$(document).ready(function() {
+    $("#loans_module_loan_applications_voucher_amount_processing_account_id").select2({
+      theme: "bootstrap"
+    });
+
+    $("#loans_module_loan_barangay_id").select2({
+      theme: "bootstrap"
+    });
+
+    $("#loans_module_loan_organization_id").select2({
+      theme: "bootstrap"
+    });
+
+    $("#employees_employee_cash_account_cash_account_id").select2({
+      theme: "bootstrap"
+    });
+  });
+
+  $(document).ready(function() {
+    $("#coop_services_module_share_capital_product_paid_up_account_id").select2({
+      theme: "bootstrap"
+    });
+     $("#coop_services_module_share_capital_product_subscription_account_id").select2({
+      theme: "bootstrap"
+    });
+    $("#coop_services_module_share_capital_product_closing_account_id").select2({
+      theme: "bootstrap"
+    });
+    $("#coop_services_module_share_capital_product_interest_payable_account_id").select2({
+      theme: "bootstrap"
+    });
+  });
+
+  $(document).ready(function() {
+    $("#loans_module_loan_products_penalty_config_penalty_revenue_account_id").select2({
+      theme: "bootstrap"
+    });
+    $("#loans_module_loan_products_interest_config_interest_revenue_account_id").select2({
+      theme: "bootstrap"
+    });
+    $("#loans_module_loan_products_interest_config_unearned_interest_income_account_id").select2({
+      theme: "bootstrap"
+    });
+    $("#programAccountSelect").select2({
+      theme: "bootstrap"
+    });
+    $("#coop_configurations_module_savings_account_config_closing_account_id").select2({
+      theme: "bootstrap"
+    });
+    $("#coop_configurations_module_savings_account_config_interest_expense_account_id").select2({
+      theme: "bootstrap"
+    });
+  });
+
+  $(document).ready(function() {
+    $("#organizations_organization_member_organization_id").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>

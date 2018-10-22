@@ -1,17 +1,17 @@
 module Members
   class TinsController < ApplicationController
+    respond_to :html, :json
+
     def new
       @member = Member.find(params[:member_id])
       @tin = @member.tins.build
+      respond_modal_with @tin
     end
+
     def create
       @member = Member.find(params[:member_id])
       @tin = @member.tins.create(tin_params)
-      if @tin.save
-        redirect_to member_info_index_url(@member), notice: "TIN number updated successfully"
-      else
-        render :new
-      end
+      respond_modal_with @tin, location: member_info_index_url(@member), notice: "TIN Number updated successfully"
     end
 
     private

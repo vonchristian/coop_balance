@@ -1,40 +1,22 @@
-<div class="row">
-  <div class="col-md-6 offset-md-3">
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title">New Share Capital Product Details </h3>
-      </div>
-      <div class="card-body">
-        <%= simple_form_for @share_capital_product, url: :management_module_share_capital_products, html: {autocomplete: "off"} do |f| %>
-          <%= f.error_notification %>
-          <%= f.input :name %>
-          <%= f.input :minimum_number_of_subscribed_share %>
-          <%= f.input :minimum_number_of_paid_share %>
-          <%= f.input :cost_per_share %>
-          <%= f.input :default_product %>
-          <%= f.input :paid_up_account_id, collection: AccountingModule::Account.all.map{|a| [a.name.titleize, a.id] } %>
-          <%= f.input :subscription_account_id, collection: AccountingModule::Account.all.map{|a| [a.name.titleize, a.id] } %>
-          <hr>
-          <%= f.submit "Create Share Capital Product", class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
-        <% end %>
-      </div>
-    </div>
-  </div>
+<div class="modal-header">
+  <h4 class="modal-title card-title" id="mainModalLabel">
+    Share Capital Product Details
+  </h4>
+  <button type="button" class="close float-right" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 </div>
-<script type="text/javascript">
-  $(document).ready(function() {
-    $("#coop_services_module_share_capital_product_paid_up_account_id").select2({
-      theme: "bootstrap"
-    });
-     $("#coop_services_module_share_capital_product_subscription_account_id").select2({
-      theme: "bootstrap"
-    });
-    $("#coop_services_module_share_capital_product_closing_account_id").select2({
-      theme: "bootstrap"
-    });
-    $("#coop_services_module_share_capital_product_interest_payable_account_id").select2({
-      theme: "bootstrap"
-    });
-  });
-</script>
+<%= simple_form_for @share_capital_product, html: { autocomplete: "off", data: { modal: true } }, remote: request.xhr?, url: :management_module_share_capital_products do |f| %>
+  <div class="modal-body">
+    <%= f.error_notification %>
+    <%= f.input :name %>
+    <%= f.input :minimum_number_of_subscribed_share %>
+    <%= f.input :minimum_number_of_paid_share %>
+    <%= f.input :cost_per_share %>
+    <%= f.input :paid_up_account_id, collection: AccountingModule::Account.all.map{|a| [a.name.titleize, a.id] } %>
+    <%= f.input :subscription_account_id, collection: AccountingModule::Account.all.map{|a| [a.name.titleize, a.id] } %>
+    <%= f.input :default_product %>
+  </div>
+  <div class="modal-footer">
+    <%= f.submit "Create Share Capital Product", class: "btn btn-danger float-right", data: { disable_with: "Processing..." } %>
+  </div>
+<% end %>
 

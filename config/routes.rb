@@ -146,7 +146,7 @@ Rails.application.routes.draw do
   end
   resources :members do
     resources :organizations,      only: [:new, :create], module: :members
-    resources :beneficiaries,      only: [:new, :create],  module: :members
+    resources :beneficiaries,      only: [:new, :create, :destroy],  module: :members
     resources :merging_line_items, only: [:new, :create],  module: :members
     resources :mergings,         only: [:create],          module: :members
     resources :contacts,         only: [:new, :create],                 module: :members

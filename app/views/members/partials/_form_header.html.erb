@@ -1,0 +1,4 @@
+<center>
+  <%= image_tag(@member.avatar.variant(resize: '60x60'), class: 'media-object img-circle') if @member.avatar.attached? %>
+  <h4 class="card-title"><%= @member.name %></h4>
+</center>

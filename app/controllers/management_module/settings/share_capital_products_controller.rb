@@ -1,17 +1,18 @@
 module ManagementModule
   module Settings
     class ShareCapitalProductsController < ApplicationController
+      respond_to :html, :json
+
       def new
         @share_capital_product = CoopServicesModule::ShareCapitalProduct.new
+        respond_modal_with @share_capital_product
       end
+
       def create
         @share_capital_product = CoopServicesModule::ShareCapitalProduct.create(share_capital_product_params)
-        if @share_capital_product.valid?
-          @share_capital_product.save!
-          redirect_to management_module_settings_cooperative_products_url, notice: "Share Capital Product created succesfully."
-        else
-          render :new
-        end
+        respond_modal_with @share_capital_product, 
+          location: management_module_settings_cooperative_products_url, 
+          notice: "Share Capital Product created succesfully."
       end
 
       private

@@ -1,16 +1,14 @@
-<div class="row">
-	<div class="col-md-6 offset-md-3">
-		<div class="card">
-			<div class="card-header">
-				<h4 class="card-title">Set Barangay</h4>
-			</div>
-			<div class="card-body">
-				<%= simple_form_for @savings_account, url: :savings_account_barangay_setting do |f| %>
-				  <%= f.input :barangay_id, collection: Addresses::Barangay.all.map{|a| [a.name, a.id] } %>
-				  <hr>
-				  <%= f.submit "Set Barangay", class: "btn btn-danger float-right" %>
-				<% end %>
-			</div>
-		</div>
-	</div>
+<div class="modal-header">
+  <h4 class="modal-title card-title" id="mainModalLabel">
+    Set Barangay
+  </h4>
+  <button type="button" class="close float-right" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 </div>
+<%= simple_form_for @savings_account, url: :savings_account_barangay_setting do |f| %>
+	<div class="modal-body">
+		<%= f.input :barangay_id, collection: Addresses::Barangay.all.map{|a| [a.name, a.id] }, input_html: { id: "barangay_id" } %>
+	</div>
+	<div class="modal-footer">
+		<%= f.submit "Update Barangay", class: "btn btn-danger float-right" %>
+	</div>
+<% end %>

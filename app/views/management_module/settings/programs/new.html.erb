@@ -1,31 +1,22 @@
-<div class="row">
-  <div class="col-md-6 offset-md-3">
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title">Program Details </h3>
-      </div>
-      <div class="card-body">
-        <%= simple_form_for @program, url: :management_module_programs, html: {autocomplete: "off"} do |f| %>
-          <%= f.error_notification %>
-          <%= f.input :name %>
-          <%= f.input :description %>
-          <%= f.input :amount, label: "Amount" %>
-          <%= f.input :default_program %>
-          <%= f.input :payment_schedule_type, collection: CoopServicesModule::Program.payment_schedule_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
-          <%= f.input :account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] }, input_html: { id: 'programAccountSelect' } %>
-          <hr>
-          <%= link_to "Cancel", management_module_settings_configurations_path, class: 'btn btn-default' %>
-          <%= f.submit "Create Program", class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
-        <% end %>
-      </div>
-    </div>
-  </div>
+<div class="modal-header">
+  <h4 class="modal-title card-title" id="mainModalLabel">
+    Program Details
+  </h4>
+  <button type="button" class="close float-right" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 </div>
+<%= simple_form_for @program, html: { autocomplete: "off", data: { modal: true } }, remote: request.xhr?, url: :management_module_programs do |f| %>
+  <div class="modal-body">
+    <%= f.error_notification %>
+    <%= f.input :cooperative_id, input_html: { value: current_cooperative.id }, as: :hidden %>
+    <%= f.input :name %>
+    <%= f.input :description %>
+    <%= f.input :amount, label: "Amount" %>
+    <%= f.input :default_program %>
+    <%= f.input :payment_schedule_type, collection: CoopServicesModule::Program.payment_schedule_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
+    <%= f.input :account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] }, input_html: { id: 'programAccountSelect' } %>
+  </div>
+  <div class="modal-footer">
+    <%= f.submit "Create Program", class: "btn btn-danger float-right", data: { disable_with: "Processing..." } %>
+  </div>
+<% end %>
 
-<script type="text/javascript">
-  $(document).ready(function() {
-    $("#programAccountSelect").select2({
-      theme: "bootstrap"
-    });
-  });
-</script>

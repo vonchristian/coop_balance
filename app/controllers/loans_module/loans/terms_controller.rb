@@ -1,19 +1,19 @@
 module LoansModule
   module Loans
     class TermsController < ApplicationController
+      respond_to :html, :json
+
       def new
         @loan = LoansModule::Loan.find(params[:loan_id])
         @term_extension = LoansModule::Loans::Term.new
+        respond_modal_with @term_extension
       end
+
       def create
         @loan = LoansModule::Loan.find(params[:loan_id])
         @term_extension = LoansModule::Loans::Term.new(term_params)
-        if @term_extension.valid?
-          @term_extension.extend!
-          redirect_to loan_url(@loan), notice: "Loan term extension saved successfully."
-        else
-          render :new
-        end
+        @term_extension.extend!
+        respond_modal_with @term_extension, location: loan_settings_url(@loan), notice: "Loan term extension saved successfully."
       end
 
       private

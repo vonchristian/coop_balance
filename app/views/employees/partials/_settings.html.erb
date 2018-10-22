@@ -6,7 +6,7 @@
         <p class="text-muted"> Set cash accounts for this employee. </p>
       </div>
       <div class="col-md-3">
-        <%= link_to 'New Account', new_employee_cash_account_path(@employee), class: "btn btn-outline-danger" %>
+        <%= link_to 'New Account', new_employee_cash_account_path(@employee), class: "btn btn-outline-danger", data: {modal: true} %>
       </div>
     </div>
     <div class="row">

@@ -1,0 +1,7 @@
+<div class="modal-body">
+  <center>
+    <%= image_tag(@loan.borrower.avatar.variant(resize: '60x60'), class: 'media-object img-circle') if @loan.borrower.avatar.attached? %>
+    <h4 class="card-title"><%= @loan.borrower_name %></h4>
+  </center>
+</div>
+<hr class="no-margin">

@@ -1,17 +1,17 @@
 module SavingsAccounts
   class BarangaySettingsController < ApplicationController
+    respond_to :html, :json
+
     def edit
       @savings_account = MembershipsModule::Saving.find(params[:savings_account_id])
+      respond_modal_with @savings_account
     end
     def update
       @savings_account = MembershipsModule::Saving.find(params[:savings_account_id])
       @savings_account.update(barangay_params)
-      if @savings_account.valid?
-        @savings_account.save
-        redirect_to savings_account_url(@savings_account), notice: "Barangay set successfully."
-      else
-        render :edit
-      end
+      respond_modal_with @savings_account, 
+        location: savings_account_url(@savings_account), 
+        notice: "Barangay set successfully."
     end
 
     private

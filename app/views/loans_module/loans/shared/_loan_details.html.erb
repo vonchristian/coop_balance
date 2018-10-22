@@ -1,0 +1,48 @@
+<div class="modal-body">
+  <h4 class="card-title">Loan Details</h4>
+  <hr>
+  <div class="row">
+    <div class="col-md-5">
+      Loan Balance
+    </div>
+    <div class="col-md-7">
+      <h6><%= number_to_currency @loan.principal_balance %></h6>
+    </div>
+  </div>
+  <hr class="min-margin">
+  <div class="row">
+    <div class="col-md-5">
+      Disbursement Date
+    </div>
+    <div class="col-md-7">
+      <h6>
+        <% if @loan.disbursed? %>
+          <%= @loan.disbursement_voucher.date.strftime("%B %w, %Y") %>
+        <% end %>
+      </h6>
+    </div>
+  </div>
+  <hr class="min-margin">
+  <div class="row">
+    <div class="col-md-5">
+      Maturity Date
+    </div>
+    <div class="col-md-7">
+      <h6><%#= @loan.maturity_date.strftime("%B %w, %Y") %></h6>
+    </div>
+  </div>
+  <hr class="min-margin">
+  <div class="row">
+    <div class="col-md-5">
+      Number of Days Past Due
+    </div>
+    <div class="col-md-7">
+      <h6><%= @loan.number_of_days_past_due  %></h6>
+    </div>
+  </div>
+  <hr class="min-margin">
+  <div class="row">
+    <%= render "loans_module/loans/shared/interest_rate" %>
+  </div>
+</div>
+<hr class="no-margin">

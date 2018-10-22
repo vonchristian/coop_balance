@@ -1,0 +1,28 @@
+<h5 class="min-margin"><%= member.full_name %></h5>
+<hr class="min-margin">
+<div class="row">
+  <div class="col-md-8">
+    <i class="fa fa-briefcase"></i>&nbsp; Savings Account
+  </div>
+  <div class="col-md-4">
+    <%= member.savings.count %>
+  </div>
+</div>
+<hr class="min-margin">
+<div class="row">
+  <div class="col-md-8">
+    <i class="fa fa-briefcase"></i>&nbsp; Share Capitals
+  </div>
+  <div class="col-md-4">
+    <%= member.share_capitals.count %>
+  </div>
+</div>
+<hr class="min-margin">
+<div class="row">
+  <div class="col-md-8">
+    <i class="fa fa-credit-card"></i>&nbsp; Loans
+  </div>
+  <div class="col-md-4">
+    <%= member.loans.count %>
+  </div>
+</div>
