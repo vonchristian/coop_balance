@@ -1,42 +1,37 @@
-<div class="row">
-  <div class="col-md-6 col-md-offset-3">
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title"> Loan Loss Details </h3>
-      </div>
-      <div class="card-body">
-        <center>
-          <%= image_tag(@loan.borrower.avatar.url(:medium), class: "img-circle", height: 60, width: 60) %>
-          <h4><%= @loan.borrower_name %></h4>
-          <hr>
-        </center>
-        <div class="row">
-          <div class="col-md-6">
-            <b>Date Disbursed</b>
-          </div>
-          <div class="col-md-6">
-            <%= @loan.disbursement_date.strftime("%B %e, %Y") %>
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="col-md-6">
-            <b>Balance</b>
-          </div>
-          <div class="col-md-6">
-            <%= number_to_currency @loan.balance %>
-          </div>
-        </div>
-        <hr>
-        <%= simple_form_for [@loan, @loss], url: :loans_module_loan_losses do |f| %>
-          <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
-          <%= f.input :description, as: :text %>
-          <%= f.input :reference_number %>
-          <div class="box-footer">
-            <%= f.submit "Set Loan as Loss", class: "btn btn-danger pull-right" %>
-          </div>
+<%= render 'loans_module/loans/shared/borrower_avatar' %>
+<div class="modal-body">
+  <h4 class="card-title">Loan Details</h4>
+  <hr>
+  <div class="row">
+    <div class="col-md-5">
+      Loan Balance
+    </div>
+    <div class="col-md-7">
+      <h6><%= number_to_currency @loan.principal_balance %></h6>
+    </div>
+  </div>
+  <hr class="min-margin">
+  <div class="row">
+    <div class="col-md-5">
+      Disbursement Date
+    </div>
+    <div class="col-md-7">
+      <h6>
+        <% if @loan.disbursed? %>
+          <%= @loan.disbursement_voucher.date.strftime("%B %w, %Y") %>
         <% end %>
-      </div>
+      </h6>
     </div>
   </div>
 </div>
+<hr class="no-margin">
+<%= simple_form_for [@loan, @loss], url: :loans_module_loan_losses do |f| %>
+  <div class="modal-body">
+    <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+    <%= f.input :description, as: :text %>
+    <%= f.input :reference_number %>
+  </div>
+  <div class="modal-footer">
+    <%= f.submit "Set Loan as Loss", class: "btn btn-danger pull-right" %>
+  </div>
+<% end %>

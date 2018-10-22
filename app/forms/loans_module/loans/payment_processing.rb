@@ -37,7 +37,7 @@ module LoansModule
       private
       def create_voucher_amount
         interest_revenue_account = find_loan.loan_product_interest_revenue_account
-        penalty_revenue_account          = find_loan.loan_product_penalty_revenue_account
+        penalty_revenue_account  = find_loan.loan_product_penalty_revenue_account
         debit_account            = find_cash_account
         voucher = Voucher.new(
         account_number: account_number,

@@ -19,12 +19,12 @@
               presence: true
 	  validates :name,
               presence: true,
-              uniqueness: true
+              uniqueness: { scope: :cooperative_id }
 	  validates :account_id,
               :interest_expense_account_id,
               :closing_account_id,
               presence: true
-
+    validates :cooperative_id, presence: true
     validates :minimum_balance, presence: true, numericality: true
 
     delegate :name, to: :account, prefix: true

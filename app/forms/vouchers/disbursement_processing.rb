@@ -33,6 +33,7 @@ module Vouchers
           commercial_document: amount.commercial_document)
       end
       entry.save!
+      entry.set_hashes!
       find_voucher.update_attributes(entry_id: entry.id)
     end
     def find_voucher

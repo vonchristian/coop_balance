@@ -12,35 +12,27 @@
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
-<body class="hold-transition sidebar-mini">
-<div class="wrapper">
-  <!-- Navbar -->
-  <%= render 'layouts/shared/navbar' %>
-
-  <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-collapse sidebar-dark-primary elevation-6">
-    <%= render 'layouts/shared/brand' %>
-      <%= render 'layouts/shared/sidebar' %>
-  </aside>
-
-  <div class="content-wrapper">
-    <div class="content">
-      <div class="content-header">
-
+  <body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+      <div id="modal-holder"></div>
+      <!-- Navbar -->
+      <%= render 'layouts/shared/navbar' %>
+      <!-- Main Sidebar Container -->
+      <aside class="main-sidebar sidebar-collapse sidebar-dark-primary elevation-6">
+        <%= render 'layouts/shared/brand' %>
+        <%= render 'layouts/shared/sidebar' %>
+      </aside>
+      <div class="content-wrapper">
+        <div class="content">
+          <div class="content-header">
+          </div>
+          <div class="container-fluid">
+            <%= render 'layouts/shared/flash_messages' %>
+            <%= yield %>
+          </div>
+        </div>
       </div>
-      <div class="container-fluid">
-        <%= render 'layouts/shared/flash_messages' %>
-        <%= yield %>
-      </div>
+      <%= render 'layouts/shared/footer' %>
     </div>
-    <!-- /.content -->
-  </div>
-
-  <%= render 'layouts/shared/footer' %>
-</div>
-
-
-</body>
-
-
+  </body>
 </html>

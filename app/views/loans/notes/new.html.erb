@@ -1,0 +1,16 @@
+<div class="modal-header">
+  <h4 class="modal-title card-title" id="mainModalLabel">
+    Note Details
+  </h4>
+  <button type="button" class="close float-right" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+</div>
+<%= simple_form_for [@loan, @note], url: :loan_notes do |f| %>
+	<div class="modal-body">
+    <%= f.input :title %>
+    <%= f.input :content, as: :text %>
+    <%= f.input :noter_id, input_html: { value: current_user.id }, as: :hidden %>
+  </div>
+  <div class="card-footer">
+  	<%= f.submit "Save Note", class: "btn btn-primary float-right" %>
+  </div>
+<% end %>

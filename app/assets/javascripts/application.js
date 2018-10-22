@@ -14,8 +14,8 @@
 //
 //= require rails-ujs
 //= require jquery3
-//= require turbolinks
 //= require autonumeric
+//= require turbolinks
 //= require popper
 //= require bootstrap
 //= require bootstrap-datepicker

@@ -3,11 +3,11 @@ module ManagementModule
 		class CooperativeProductsController < ApplicationController
 
 			def index
-				@cooperative = current_user.cooperative
-				@share_capital_products = CoopServicesModule::ShareCapitalProduct.all
-      	@time_deposit_products = CoopServicesModule::TimeDepositProduct.all
-      	@loan_products = LoansModule::LoanProduct.all
-      	@saving_products = CoopServicesModule::SavingProduct.all
+				@cooperative = current_cooperative
+				@share_capital_products = current_cooperative.share_capital_products
+      	@time_deposit_products = current_cooperative.time_deposit_products
+      	@loan_products = current_cooperative.loan_products
+      	@saving_products = current_cooperative.saving_products
 			end
 		end
 	end

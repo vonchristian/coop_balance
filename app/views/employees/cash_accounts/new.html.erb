@@ -1,5 +1,11 @@
-
-  <%= simple_form_for @cash_account, url: :employee_cash_accounts do |f| %>
-    <%= f.input :cash_account_id, collection: AccountingModule::Asset.all.map{|a| [a.name, a.id] }  %>
-    <%= f.submit "Save" %>
-  <% end %>
+<%= render 'employees/shared/form_header' %>
+<%= simple_form_for @cash_account, url: :employee_cash_accounts do |f| %>
+	<div class="modal-body">
+		<h4 class="card-title">New Cash Account</h4>
+		<hr>
+	  <%= f.input :cash_account_id, collection: AccountingModule::Asset.all.map{|a| [a.name, a.id] }  %>
+	</div>
+	<div class="modal-footer">
+	  <%= f.submit "Set Cash Account", class: 'btn btn-danger float-right' %>
+	</div>
+<% end %>

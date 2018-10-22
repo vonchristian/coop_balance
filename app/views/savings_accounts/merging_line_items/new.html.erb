@@ -5,12 +5,18 @@
         <h3 class="card-title"> Savings Account Details </h3>
       </div>
       <div class="card-body">
-        <h4><%= number_to_currency @current_saving.balance %></h4>
-        <%= @current_saving.depositor_name %>
-        <hr>
+        <center>
+          <h4 class="card-title"><%= @current_saving.depositor_name %></h4>
+          <hr>
+          <h4 class="no-margin-bottom"><%= number_to_currency @current_saving.balance %></h4>
+          <small>BALANCE</small>
+        </center>
+      </div>
+      <hr class="no-margin">
+      <div class="card-body">
         <h4>Accounts to be Merged</h4>
-         <i class="fa fa-info-circle text-danger"></i> <span class="text-danger">Please be careful in selecting accounts to be merged. Once the account is merged it can not be undone. </span>
-         <hr>
+        <i class="fa fa-info-circle text-danger"></i> <span class="text-danger">Please be careful in selecting accounts to be merged. Once the account is merged it can not be undone. </span>
+        <hr>
         <% current_cart.savings.each do |saving| %>
           <div class="row">
             <div class="col-md-2">
@@ -28,15 +34,12 @@
           <hr>
         <% end %>
         <% if current_cart.savings.present? %>
-
           <%= simple_form_for @merging, url: :savings_account_account_mergings do |f| %>
             <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
             <%= f.input :saving_id, input_html: { value: @current_saving.id }, as: :hidden %>
-            <div class="box-footer">
-              <%= f.submit "Merge Accounts", class: "btn btn-danger btn-block" %>
-            </div>
+            <hr>
+            <%= f.submit "Merge Accounts", class: "btn btn-danger btn-block" %>
           <% end %>
-
         <% end %>
       </div>
     </div>
@@ -46,37 +49,35 @@
       <div class="card-header">
         <h3 class="card-title"> Accounts to be Merged </h3>
       </div>
-
       <div class="card-body">
-
-         <br>
-         <br>
-         <%=form_tag new_savings_account_merging_line_item_path(@current_saving), method: :get, class: "search-form" do %>
-                          <div class="input-group">
-                            <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Savings Account ", id: 'account-search-form' %>
-                            <span class="input-group-btn">
-                              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
-                                <i class="fa fa-search"></i>
-                              <% end %>
-                            </span>
-                          </div>
-                        <% end %>
+        <%=form_tag new_savings_account_merging_line_item_path(@current_saving), method: :get, class: "search-form" do %>
+          <div class="input-group">
+            <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Savings Account ", id: 'account-search-form' %>
+            <span class="input-group-btn">
+              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                <i class="fa fa-search"></i>
+              <% end %>
+            </span>
+          </div>
+        <% end %>
+      </div>
+      <hr class="no-margin">
+      <div class="card-body">
         <% @savings_accounts.each do |saving| %>
           <% if !current_cart.savings.include?(saving) %>
           <div class="row">
+            <div class="col-md-8">
+              <h4 class="no-margin"><%= number_to_currency saving.balance %></h4>
+              <p class="no-margin-bottom"><%= saving.depositor_name.try(:upcase) %></p>
+              <small><%= saving.saving_product_name %></small>
+            </div>
             <div class="col-md-3">
               <%= simple_form_for @merging_line_item, url: :savings_account_merging_line_items do |f| %>
                 <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
                 <%= f.input :old_saving_id, input_html: { value: saving.id }, as: :hidden %>
                 <br>
                 <%= f.submit "Select", class: "btn btn-success" %>
-
               <% end %>
-            </div>
-            <div class="col-md-8">
-              <h4><%= number_to_currency saving.balance %></h4>
-              <small><%= saving.depositor_name.try(:upcase) %></small><br>
-              <small><%= saving.saving_product_name %></small>
             </div>
           </div>
           <hr>

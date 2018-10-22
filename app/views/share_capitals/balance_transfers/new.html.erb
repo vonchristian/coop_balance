@@ -20,7 +20,7 @@
   <%= f.input :destination_id, input_html: { value: @destination_share_capital.id }, as: :hidden %>
   <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
   <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
-  <%= f.input :employee_id, input_html: { value: current_user.id } %>
+  <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
   <%= f.input :reference_number %>
   <%= f.submit "Proceed", class: "btn btn-danger float-right", data: { disable_with: "Processing..." } %>
 <% end %>

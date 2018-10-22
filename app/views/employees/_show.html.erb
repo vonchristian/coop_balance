@@ -1,61 +1,55 @@
 <div class="row">
-    <div class="col-md-12">
-      <div class="card">
-        <div class="card-header">
-          <center>
-
-            <h4><%= @employee.name %></h4>
-          </center>
-        </div>
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <center>
+          <h4><%= @employee.name %></h4>
+        </center>
+      </div>
       <div class="card-body">
-        <ul class="nav nav-tabs">
-          <li class="nav-item">
-              <%= link_to 'Info', employee_path(@employee), class: "nav-link #{'active' if current_page?(employee_path(@employee))}" %>
-          </li>
-          <li class="nav-item"><%= link_to 'Entries', employee_entries_path(@employee), class: "nav-link #{'active' if current_page?(employee_entries_path(@employee))}" %></li>
-          <li class="nav-item"><%= link_to 'Reports', employee_reports_path(@employee), class: "nav-link #{'active' if current_page?(employee_reports_path(@employee))}" %></li>
-          <li class="nav-item"><%= link_to 'Vouchers', employee_vouchers_path(@employee), class: "nav-link #{'active' if current_page?(employee_vouchers_path(@employee))}" %></li>
-          <li class="nav-item"><%= link_to 'Purchases', employee_orders_path(@employee), class: "nav-link #{'active' if current_page?(employee_orders_path(@employee))}" %></li>
-          <li class="nav-item"><%= link_to 'Loans & Credit', employee_loans_path(@employee), class: "nav-link #{'active' if current_page?(employee_loans_path(@employee))}" %></li>
-          <li class="nav-item"><%= link_to 'Savings', employee_savings_accounts_path(@employee), class: "nav-link #{'active' if current_page?(employee_savings_accounts_path(@employee))}" %></li>
-          <li class="nav-item"><%= link_to 'Share Capitals', employee_share_capitals_path(@employee), class: "nav-link #{'active' if current_page?(employee_share_capitals_path(@employee))}" %></li>
-          <li class="nav-item"><%= link_to 'Time Deposits', employee_time_deposits_path(@employee), class: "nav-link #{'active' if current_page?(employee_time_deposits_path(@employee))}" %></li>
-          <li class="nav-item"><%= link_to 'Settings', employee_settings_path(@employee), class: "nav-link #{'active' if current_page?(employee_settings_path(@employee))}" %></li>
-        </ul>
-        <br>
+        <nav class="nav nav-pills flex-column flex-md-row">
+          <%= link_to 'Info', employee_path(@employee), class: "text-sm-center nav-link #{'active' if current_page?(employee_path(@employee))}" %>
+          <%= link_to 'Entries', employee_entries_path(@employee), class: "text-sm-center nav-link #{'active' if current_page?(employee_entries_path(@employee))}" %>
+          <%= link_to 'Reports', employee_reports_path(@employee), class: "text-sm-center nav-link #{'active' if current_page?(employee_reports_path(@employee))}" %>
+          <%= link_to 'Vouchers', employee_vouchers_path(@employee), class: "text-sm-center nav-link #{'active' if current_page?(employee_vouchers_path(@employee))}" %>
+          <%= link_to 'Purchases', employee_orders_path(@employee), class: "text-sm-center nav-link #{'active' if current_page?(employee_orders_path(@employee))}" %>
+          <%= link_to 'Loans & Credit', employee_loans_path(@employee), class: "text-sm-center nav-link #{'active' if current_page?(employee_loans_path(@employee))}" %>
+          <%= link_to 'Savings', employee_savings_accounts_path(@employee), class: "text-sm-center nav-link #{'active' if current_page?(employee_savings_accounts_path(@employee))}" %>
+          <%= link_to 'Share Capitals', employee_share_capitals_path(@employee), class: "text-sm-center nav-link #{'active' if current_page?(employee_share_capitals_path(@employee))}" %>
+          <%= link_to 'Time Deposits', employee_time_deposits_path(@employee), class: "text-sm-center nav-link #{'active' if current_page?(employee_time_deposits_path(@employee))}" %>
+          <%= link_to 'Settings', employee_settings_path(@employee), class: "text-sm-center nav-link #{'active' if current_page?(employee_settings_path(@employee))}" %>
+        </nav>
       </div>
     </div>
-        <% if current_page?(employee_path(@employee)) %>
-          <%=render 'employees/partials/employee_info' %>
-        <% end %>
-        <% if current_page?(employee_entries_path(@employee)) %>
-          <%= render 'employees/partials/entries'%>
-        <% end %>
-        <% if current_page?(employee_reports_path(@employee)) %>
-          <%= render 'employees/partials/reports'%>
-        <% end %>
-        <% if current_page?(employee_vouchers_path(@employee)) %>
-          <%= render 'employees/partials/vouchers'%>
-        <% end %>
-        <% if current_page?(employee_orders_path(@employee)) %>
-          <%=render 'employees/partials/orders' %>
-        <% end %>
-        <% if current_page?(employee_loans_path(@employee)) %>
-          <%= render 'employees/partials/loans' %>
-        <% end %>
-        <% if current_page?(employee_savings_accounts_path(@employee)) %>
-          <%= render 'employees/partials/savings_accounts' %>
-        <% end %>
-        <% if current_page?(employee_share_capitals_path(@employee)) %>
-          <%= render 'employees/partials/share_capitals' %>
-        <% end %>
-        <% if current_page?(employee_time_deposits_path(@employee)) %>
-          <%= render 'employees/partials/time_deposits' %>
-        <% end %>
-        <% if current_page?(employee_settings_path(@employee)) %>
-          <%= render 'employees/partials/settings' %>
-        <% end %>
-      </div>
-    </div>
+    <% if current_page?(employee_path(@employee)) %>
+      <%=render 'employees/partials/employee_info' %>
+    <% end %>
+    <% if current_page?(employee_entries_path(@employee)) %>
+      <%= render 'employees/partials/entries'%>
+    <% end %>
+    <% if current_page?(employee_reports_path(@employee)) %>
+      <%= render 'employees/partials/reports'%>
+    <% end %>
+    <% if current_page?(employee_vouchers_path(@employee)) %>
+      <%= render 'employees/partials/vouchers'%>
+    <% end %>
+    <% if current_page?(employee_orders_path(@employee)) %>
+      <%=render 'employees/partials/orders' %>
+    <% end %>
+    <% if current_page?(employee_loans_path(@employee)) %>
+      <%= render 'employees/partials/loans' %>
+    <% end %>
+    <% if current_page?(employee_savings_accounts_path(@employee)) %>
+      <%= render 'employees/partials/savings_accounts' %>
+    <% end %>
+    <% if current_page?(employee_share_capitals_path(@employee)) %>
+      <%= render 'employees/partials/share_capitals' %>
+    <% end %>
+    <% if current_page?(employee_time_deposits_path(@employee)) %>
+      <%= render 'employees/partials/time_deposits' %>
+    <% end %>
+    <% if current_page?(employee_settings_path(@employee)) %>
+      <%= render 'employees/partials/settings' %>
+    <% end %>
   </div>
 </div>

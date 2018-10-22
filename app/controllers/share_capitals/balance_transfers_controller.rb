@@ -10,7 +10,7 @@ module ShareCapitals
       @balance_transfer = ShareCapitals::BalanceTransferProcessing.new(balance_transfer_params)
       if @balance_transfer.valid?
         @balance_transfer.process!
-        redirect_to share_capital_voucher_url(share_capital_id: @share_capital.id, id: @balance_transfer.find_voucher.id), notice: "Capital build up saved successfully."
+        redirect_to share_capital_voucher_url(share_capital_id: @share_capital.id, id: @balance_transfer.find_voucher.id), notice: " balance transfer created successfully."
       else
         render :new
       end

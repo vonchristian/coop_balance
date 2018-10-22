@@ -1,5 +1,6 @@
 module AccountingModule
   class Amount < ApplicationRecord
+    audited
     extend AccountingModule::BalanceFinder
     belongs_to :entry, :class_name => 'AccountingModule::Entry', touch: true
     belongs_to :account, :class_name => 'AccountingModule::Account', touch: true

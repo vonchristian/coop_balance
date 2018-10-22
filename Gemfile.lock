@@ -382,6 +382,7 @@ DEPENDENCIES
   capybara
   chartkick
   chronic
+  coderay (~> 1.1.2)
   coffee-rails
   database_rewinder
   delayed-web
@@ -419,9 +420,10 @@ DEPENDENCIES
   rack-mini-profiler
   rails (= 5.2.0)
   redis
+  responders
   roo (~> 2.7.0)
   rqrcode
-  rspec-rails
+  rspec-rails (~> 3.8.0)
   rubyzip (~> 1.1.0)
   sass-rails
   select2-rails

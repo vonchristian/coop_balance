@@ -8,8 +8,8 @@ module LoansModule
     belongs_to :office, class_name: "CoopConfigurationsModule::Office"
     belongs_to :loan_product
     belongs_to :organization
-    has_many :voucher_amounts, as: :commercial_document, class_name: "Vouchers::VoucherAmount", dependent: :nullify
-    has_many :amortization_schedules, dependent: :nullify
+    has_many :voucher_amounts, as: :commercial_document, class_name: "Vouchers::VoucherAmount", dependent: :destroy
+    has_many :amortization_schedules, dependent: :destroy
     has_many :terms, as: :termable, dependent: :destroy
     has_many :amount_adjustments, class_name: "Vouchers::AmountAdjustment", dependent: :destroy
     delegate :name, to: :borrower, prefix: true

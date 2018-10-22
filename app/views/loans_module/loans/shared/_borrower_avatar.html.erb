@@ -1,0 +1,8 @@
+<div class="modal-header">
+  <%=image_tag(@loan.borrower.avatar.variant(resize: '60x60'), class: "img-circle") if @loan.borrower.avatar.attached? %>
+  
+  <h4 class="modal-title card-title" id="mainModalLabel" style="margin-left: 10px">
+    <%= @loan.borrower_name %>
+  </h4>
+  <button type="button" class="close float-right" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+</div>

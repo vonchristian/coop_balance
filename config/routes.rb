@@ -84,6 +84,8 @@ Rails.application.routes.draw do
     resources :disbursement_vouchers, only: [:create], module: :loan_applications
     resources :loan_applications, only: [:new, :create, :show, :destroy] do
       resources :capital_build_up_processings,       only: [:new, :create], module: :loan_applications
+      resources :voucher_amounts,       only: [:new, :create, :destroy], module: :loan_applications
+
     end
     resources :dashboard, only: [:index]
     resources :loan_products, except:[:destroy] do
@@ -144,7 +146,7 @@ Rails.application.routes.draw do
   end
   resources :members do
     resources :organizations,      only: [:new, :create], module: :members
-    resources :beneficiaries,      only: [:new, :create],  module: :members
+    resources :beneficiaries,      only: [:new, :create, :destroy],  module: :members
     resources :merging_line_items, only: [:new, :create],  module: :members
     resources :mergings,         only: [:create],          module: :members
     resources :contacts,         only: [:new, :create],                 module: :members
@@ -494,11 +496,8 @@ namespace :share_capitals_section do
   namespace :coop_module do
     resources :search_results, only: [:index]
   end
-  devise_for :member_accounts, controllers: { sessions: 'member_accounts/sessions', registrations: 'member_accounts/registrations'}
 
-  unauthenticated :user do
-    root :to => 'home#index', :constraints => lambda { |request| request.env['warden'].user.nil? }, as: :unauthenticated_root
-  end
+
 
   resources :time_deposit_applications, only: [:new, :create] do
     resources :vouchers, only: [:show, :destroy], module: :time_deposit_applications
@@ -509,7 +508,18 @@ namespace :share_capitals_section do
     resources :vouchers, only: [:show, :destroy], module: :savings_account_applications
     resources :voucher_confirmations, only: [:create], module: :savings_account_applications
   end
+  devise_for :member_accounts, controllers: { sessions: 'member_accounts/sessions', registrations: 'member_accounts/registrations'}
 
+  authenticated :member_account do
+    root to: 'member_accounts#show'
+  end
+
+  unauthenticated :user do
+    root :to => 'home#index', :constraints => lambda { |request| request.env['warden'].user.nil? }, as: :unauthenticated_root
+  end
+  unauthenticated :member_account do
+    root :to => 'home#index', :constraints => lambda { |request| request.env['warden'].member_account.nil? }, as: :unauthenticated_member_root
+  end
 
   mount ActionCable.server => '/cable'
 

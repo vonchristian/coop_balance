@@ -1,0 +1,19 @@
+<% content_for :title, "New Charge Details" %>
+<div class="modal-header">
+  <%= image_tag(@loan_application.avatar.variant(resize: '45x45'), class: "img-circle") if @loan_application.avatar.attached? %>
+  <h4 class="modal-title card-title" id="mainModalLabel" style="margin-left: 10px">
+    <%= @loan_application.borrower_name %>
+  </h4>
+  <button type="button" class="close float-right" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+</div>
+<%= simple_form_for [@loan_application, @charge], url: :loans_module_loan_application_voucher_amounts, html: { autocomplete: 'off' } do |f| %>
+  <div class="modal-body">
+    <%= f.input :description %>
+    <%= f.input :amount, as: :currency %>
+    <%= f.input :account_id, collection: AccountingModule::Account.all.map{ |a| [a.name, a.id] } %>
+    <%= f.input :loan_application_id, input_html: { value: @loan_application.id }, as: :hidden %>
+  </div>
+  <div class="modal-footer">
+    <%= f.submit "Add Charge", class: "btn btn-primary float-right" %>
+  </div>
+<% end %>

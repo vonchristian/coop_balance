@@ -1,99 +1,65 @@
-<div class="tab-pane <%='active' if current_page?(employee_entries_path(@employee)) %>" id="employee-entries">
-
-          <div class="row">
-            <div class="col-md-12">
-              <%=form_tag employee_entries_path(@employee), method: :get, class: "sidebar-form" do %>
-                <div class="input-group">
-                  <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Entry...", id: 'taxpayer-search-form' %>
-                  <span class="input-group-btn">
-                    <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
-                      <i class="fa fa-search"></i>
-                    <% end %>
-                  </span>
-                </div>
-              <% end %>
-            </div>
-            <div class="col-md-4">
-              <%#= link_to "New Entry", new_accounting_module_entry_path, class: "btn btn-primary pull-right" %>
-            </div>
-          </div>
-          <hr>
-          <div class="row">
-            <div class="col-md-5">
-              <span class="text-muted condensed-text"> SHOW ACTIVITY: </span> &nbsp;
-              <%=link_to 'Yesterday', employee_entries_path(@employee, from_date: Time.zone.now.yesterday.beginning_of_day, to_date: Time.zone.now.yesterday.end_of_day ), class: "btn btn-default"  %>
-               <%=link_to 'This Day', employee_entries_path(@employee, from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day ), class: "btn btn-default"  %>
-              <%=link_to 'This Week', employee_entries_path(@employee,from_date: Time.zone.now.beginning_of_week.beginning_of_day, to_date: Time.zone.now.end_of_week.end_of_day ), class: "btn btn-default"  %>
-              <%=link_to 'This Month', employee_entries_path(@employee, from_date: Time.zone.now.beginning_of_week.beginning_of_day, to_date: Time.zone.now.end_of_week.end_of_day ), class: "btn btn-default"  %>
-            </div>
-            <div class="col-md-7">
-              <%= form_tag({:action => "index", controller: "employees/entries", employee_id: @employee.id}, {:method => :get})  do %>
-                <div class="row">
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <%= text_field_tag :from_date, @from_date, :class => 'datepicker form-control border-input', :placeholder => "From " %>
-                    </div>
-                  </div>
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <%= text_field_tag :to_date, @to_date, :class => 'form-control border-input datepicker', :placeholder => "To " %>
-                    </div>
-                  </div>
-                  <div class="col-md-1">
-                    <button type="submit" class="btn btn-default"> Go</button>
-                  </div>
-                </div>
-              <% end %>
-            </div>
-          </div>
-          <hr>
-        </div>
-        <% @entries.each do |entry| %>
-          <%= link_to accounting_module_entry_path(entry) do %>
-            <div class="card">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-md-3">
-                    <%= entry.commercial_document_name %>
-                  </div>
-                  <div class="col-md-6">
-                    <%= entry.description %><br>
-                    <small class="text-muted"><i class="fa fa-clock"></i> <%= entry.entry_date.strftime("%B %e, %Y") %> &nbsp; &nbsp; # <%= entry.reference_number %></small>
-                  </div>
-                  <div class="col-md-3">
-                    <%= number_to_currency  entry.debit_amounts.sum(:amount) %>
-                  </div>
-                </div>
-              </div>
-            </div>
+<div class="row">
+  <div class="col-md-12">
+    <%=form_tag employee_entries_path(@employee), method: :get, class: "sidebar-form" do %>
+      <div class="input-group">
+        <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Entry...", id: 'taxpayer-search-form' %>
+        <span class="input-group-btn">
+          <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+            <i class="fa fa-search"></i>
           <% end %>
-        <% end %>
-
-          <div class="table table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th> Employee </th>
-                  <th> Date </th>
-                  <th> Description </th>
-                  <th> Reference Number </th>
-                  <th> Amount </th>
-                  <th> Customer </th>
-                </tr>
-              </thead>
-              <tbody>
-                <% @entries.each do |entry| %>
-                  <% cache entry do %>
-                    <%= render 'accounting_module/entries/entry', entry: entry %>
-                  <% end %>
-                <% end %>
-              </tbody>
-            </table>
-            <% if @entries.exists? %>
-              <center><%= will_paginate @entries %></center>
-            <% end %>
+        </span>
+      </div>
+    <% end %>
+  </div>
+  <div class="col-md-4">
+    <%#= link_to "New Entry", new_accounting_module_entry_path, class: "btn btn-primary pull-right" %>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-md-7">
+    <span class="text-muted condensed-text"> SHOW ACTIVITY: </span> &nbsp;
+    <%=link_to 'Yesterday', employee_entries_path(@employee, from_date: Time.zone.now.yesterday.beginning_of_day, to_date: Time.zone.now.yesterday.end_of_day ), class: "btn btn-default"  %>
+     <%=link_to 'This Day', employee_entries_path(@employee, from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day ), class: "btn btn-default"  %>
+    <%=link_to 'This Week', employee_entries_path(@employee,from_date: Time.zone.now.beginning_of_week.beginning_of_day, to_date: Time.zone.now.end_of_week.end_of_day ), class: "btn btn-default"  %>
+    <%=link_to 'This Month', employee_entries_path(@employee, from_date: Time.zone.now.beginning_of_week.beginning_of_day, to_date: Time.zone.now.end_of_week.end_of_day ), class: "btn btn-default"  %>
+  </div>
+  <div class="col-md-5">
+    <%= form_tag({:action => "index", controller: "employees/entries", employee_id: @employee.id}, {:method => :get})  do %>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <%= text_field_tag :from_date, @from_date, :class => 'datepicker form-control border-input', :placeholder => "From " %>
           </div>
         </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <%= text_field_tag :to_date, @to_date, :class => 'form-control border-input datepicker', :placeholder => "To " %>
+          </div>
+        </div>
+        <div class="col-md-1">
+          <button type="submit" class="btn btn-default"> Go</button>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+<hr>
+
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Transactions</h4>
+
+
+              <% @entries.each do |entry| %>
+                <% cache entry do %>
+                  <%= render 'accounting_module/entries/partials/header', entry: entry %>
+                <% end %>
+              <% end %>
+        
+        <% if @entries.exists? %>
+          <center><%= will_paginate @entries %></center>
+        <% end %>
       </div>
     </div>
   </div>

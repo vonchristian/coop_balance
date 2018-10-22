@@ -5,7 +5,7 @@
       <p class="text-muted"> Journal entry for earned interests or adjusting entry for this time deposit. </p>
     </div>
     <div class="col-md-3">
-      <%=link_to "New Adjusting Entry", new_time_deposit_adjusting_entry_path(@time_deposit), class: "btn btn-outline-danger" %>
+      <%=link_to "New Adjusting Entry", new_time_deposit_adjusting_entry_path(@time_deposit), class: "btn btn-outline-danger", data: {modal:true} %>
     </div>
   </div>
   <hr>
@@ -28,7 +28,7 @@
       <p class="text-muted"> Time deposit terms and extensions </p>
     </div>
     <div class="col-md-3">
-        <%= link_to 'New Term Extension', new_time_deposit_term_extension_path(@time_deposit), class: "btn btn-outline-danger" %>
+        <%= link_to 'New Term Extension', new_time_deposit_term_extension_path(@time_deposit), class: "btn btn-outline-danger", data: {modal:true} %>
     </div>
   </div>
   <div class="row">

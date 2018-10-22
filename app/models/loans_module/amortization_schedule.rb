@@ -77,7 +77,10 @@ module LoansModule
     end
 
     def payment_made?(args={})
-      loan.loan_payments(from_date: args[:from_date], to_date: args[:to_date]).present?
+      loan = args[:loan]
+      if loan.present?
+        loan.loan_payments(from_date: args[:from_date], to_date: args[:to_date]).present?
+      end
     end
 
     def previous_schedule

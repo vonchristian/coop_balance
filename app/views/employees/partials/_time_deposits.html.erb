@@ -1,9 +1,12 @@
-<div class="card">
-  <div class="card-body">
-    <%= link_to 'New Time Deposit', new_time_deposit_application_path(depositor_id: @employee.id, depositor_type: @employee.class.to_s), class: "btn btn-primary float-right" %>
-  </div>
+<div class="row">
+	<div class="col-md-12">
+		<div class="card">
+		  <div class="card-body">
+		    <%= link_to 'New Time Deposit', new_time_deposit_application_path(depositor_id: @employee.id, depositor_type: @employee.class.to_s), class: "btn btn-primary float-right" %>
+		  </div>
+		</div>
+	</div>
 </div>
-  <% @time_deposits.each do |time_deposit| %>
-    <%=render 'time_deposits/partials/header', time_deposit: time_deposit %>
-  <% end %>
-</div>
+<% @time_deposits.each do |time_deposit| %>
+  <%=render 'time_deposits/partials/header', time_deposit: time_deposit %>
+<% end %>

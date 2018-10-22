@@ -1,18 +1,19 @@
 module Members
   class OrganizationsController < ApplicationController
+    respond_to :html, :json
+
     def new
       @member = Member.find(params[:member_id])
       @organization = @member.organization_memberships.build
+      respond_modal_with @organization
     end
+
     def create
       @member = Member.find(params[:member_id])
       @organization = @member.organization_memberships.create(organization_params)
-      if @organization.valid?
-        @organization.save
-        redirect_to member_settings_url(@member), notice: "Organization updated successfully."
-      else
-        render :new
-      end
+      respond_modal_with @organization, 
+        location: member_settings_url(@member), 
+        notice: "Organization updated successfully."
     end
 
     private

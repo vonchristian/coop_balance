@@ -8,7 +8,7 @@
         <span class="text-muted">Update profile details of this member. </span><br>
       </div>
       <div class="col-md-3">
-        <%= link_to "Update Profile", edit_member_path(@member), class: "btn btn-outline-danger btn-sm" %>
+        <%= link_to "Update Profile", edit_member_path(@member), class: "btn btn-outline-danger btn-sm", data: {modal: true} %>
       </div>
     </div>
     <hr>
@@ -34,12 +34,12 @@
         <% @member.memberships.each do |membership| %>
           <div class="row">
             <div class="col-md-9">
-              <%= membership.cooperative_name %>
+              <%= membership.cooperative_name.upcase %><br>
               <%= membership.membership_type.try(:titleize) %><br>
               Since: <%= membership.membership_date.try(:strftime, ("%B %e, %Y")) %>
             </div>
             <div class="col-md-3">
-              <%= link_to 'Update Membership', edit_member_membership_path(id: membership.id, member_id: @member.id, cooperative_id: current_cooperative.id), class: "btn btn-outline-danger btn-sm float-right" %>
+              <%= link_to 'Update Membership', edit_member_membership_path(id: membership.id, member_id: @member.id, cooperative_id: current_cooperative.id), class: "btn btn-outline-danger btn-sm float-right", data: { modal: true } %>
             </div>
           </div>
         <% end %>
@@ -59,7 +59,7 @@
         <b><%= @member.current_organization_name %></b>
       </div>
       <div class="col-md-3">
-        <%= link_to 'Update', new_member_organization_path(@member), class: "btn btn-outline-danger btn-sm" %>
+        <%= link_to 'Update', new_member_organization_path(@member), class: "btn btn-outline-danger btn-sm", data: {modal: true} %>
       </div>
     </div>
     <hr>

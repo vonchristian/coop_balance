@@ -2,7 +2,7 @@ module LoansModule
   module Loans
     class DisbursementVoucher
       include ActiveModel::Model
-      attr_accessor :loan_application_id, :preparer_id, :date, :description, :number, :account_number, :net_proceed, :cash_account_id
+      attr_accessor :loan_application_id, :preparer_id, :date, :description, :number, :account_number, :cash_account_id
 
       def process!
         ActiveRecord::Base.transaction do
@@ -47,6 +47,7 @@ module LoansModule
           cooperative: find_loan_application.cooperative,
           office: find_loan_application.office,
           date: date,
+          account_number: account_number,
           number: number,
           description: description,
           payee: loan.borrower,
@@ -66,6 +67,8 @@ module LoansModule
       end
 
       def add_amounts(voucher)
+        voucher.voucher_amounts << find_loan_application.voucher_amounts
+
         Vouchers::VoucherAmount.create!(
         voucher: voucher,
         amount_type: 'debit',
@@ -77,11 +80,10 @@ module LoansModule
         Vouchers::VoucherAmount.create!(
         voucher: voucher,
         amount_type: 'credit',
-        amount: net_proceed,
+        amount: find_loan_application.net_proceed,
         description: 'Net Proceed',
         account_id: cash_account_id,
         commercial_document: find_loan)
-        voucher.voucher_amounts << find_loan.voucher_amounts
       end
 
       def delete_loan_application

@@ -2,12 +2,12 @@ module ManagementModule
   module Settings
     class TimeDepositProductsController < ApplicationController
       def new
-        @time_deposit_product = CoopServicesModule::TimeDepositProduct.new
+        @time_deposit_product = current_cooperative.time_deposit_products.build
       end
 
       def create
-        @time_deposit_product = CoopServicesModule::TimeDepositProduct.create(time_deposit_product_params)
-        if @time_deposit_product.valid?
+        @time_deposit_product = current_cooperative.time_deposit_products.create(time_deposit_product_params)
+        if @time_deposit_product.save!
           @time_deposit_product.save
           redirect_to management_module_settings_cooperative_products_url, notice: "Succeess"
         else
@@ -22,16 +22,16 @@ module ManagementModule
       def time_deposit_product_params
         params.require(:coop_services_module_time_deposit_product).
         permit(:name,
-               :annual_interest_rate,
+               :interest_rate,
                :minimum_deposit,
                :maximum_deposit,
-               :time_deposit_product_type,
                :number_of_days,
                :break_contract_fee,
                :break_contract_rate,
                :account_id,
                :interest_expense_account_id,
-               :break_contract_account_id
+               :break_contract_account_id,
+               :cooperative_id
                )
       end
     end

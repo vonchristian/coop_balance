@@ -1,5 +1,6 @@
 module AccountingModule
   class Entry < ApplicationRecord
+    audited
     include PgSearch
     pg_search_scope :text_search, :against => [:reference_number, :description]
     multisearchable against: [:reference_number, :description]
@@ -30,7 +31,7 @@ module AccountingModule
 
     accepts_nested_attributes_for :credit_amounts, :debit_amounts, allow_destroy: true
 
-    before_save :set_default_date
+    before_save :set_default_date, :set_previous_entry
 
     delegate :name, :first_and_last_name, to: :recorder, prefix: true, allow_nil: true
     delegate :name, to: :cooperative, prefix: true
@@ -80,31 +81,25 @@ module AccountingModule
       amounts.sum(:amount).to_s +
       entry_date.to_s +
       cooperative_id.to_s +
+      office_id.to_s +
+      commercial_document_id.to_s +
+      commercial_document_type.to_s +
+      recorder_id.to_s +
       default_previous_hash
     end
 
     def default_previous_hash
-      if prev_entry = AccountingModule::Entry.where.not(id: self.id).order(created_at: :desc).first.present?
-        AccountingModule::Entry.where.not(id: self.id).order(created_at: :desc).first.encrypted_hash
-      else
-        "Genesis Block"
-      end
+      return "Genesis Block" if previous_entry.blank?
+      previous_entry.encrypted_hash
     end
 
     def set_hashes!
-      if previous_entry.present?
-        self.previous_entry_hash = previous_entry.encrypted_hash
-        self.encrypted_hash = Digest::SHA256.hexdigest(self.digestable + previous_entry.encrypted_hash)
-        self.save
-      else
-        self.previous_entry_hash = "Genesis Block"
-        self.encrypted_hash = Digest::SHA256.hexdigest(self.digestable + "Genesis")
-        self.save
-      end
+      self.previous_entry_hash = default_previous_hash
+      self.encrypted_hash = Digest::SHA256.hexdigest(self.digestable)
+      self.save!
     end
 
     private
-
     def set_previous_entry
       self.previous_entry = AccountingModule::Entry.where.not(id: self.id).order(created_at: :desc).first
     end

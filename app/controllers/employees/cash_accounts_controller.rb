@@ -1,14 +1,17 @@
 module Employees
   class CashAccountsController < ApplicationController
+    respond_to :html, :json
+
     def new
       @employee = User.find(params[:employee_id])
       @cash_account = @employee.employee_cash_accounts.build
+      respond_modal_with @cash_account
     end
     def create
       @employee = User.find(params[:employee_id])
       @cash_account = @employee.employee_cash_accounts.create(cash_account_params)
       @cash_account.save
-      redirect_to employee_settings_url(@employee), notice: "Cash Account saved successfully."
+      respond_modal_with @cash_account, location: employee_settings_url(@employee), notice: "Cash Account saved successfully."
     end
 
     def destroy

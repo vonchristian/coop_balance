@@ -2,10 +2,10 @@ module ManagementModule
   module Settings
     class SavingProductsController < ApplicationController
       def new
-        @saving_product = CoopServicesModule::SavingProduct.new
+        @saving_product = current_cooperative.saving_products.build
       end
       def create
-        @saving_product =  CoopServicesModule::SavingProduct.create(saving_product_params)
+        @saving_product =  current_cooperative.saving_products.create(saving_product_params)
         if @saving_product.valid?
           @saving_product.save
           redirect_to management_module_settings_cooperative_products_url, notice: "Saving Product created successfully"

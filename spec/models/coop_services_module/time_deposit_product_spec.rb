@@ -24,8 +24,6 @@ module CoopServicesModule
       it { is_expected.to validate_presence_of :account_id }
       it { is_expected.to validate_presence_of :interest_expense_account_id }
       it { is_expected.to validate_presence_of :break_contract_account_id }
-
-      it { is_expected.to validate_presence_of :time_deposit_product_type }
       it { is_expected.to validate_presence_of :name }
       it { is_expected.to validate_uniqueness_of :name }
       it { is_expected.to validate_uniqueness_of(:account_id) }

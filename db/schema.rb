@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_16_043741) do
+ActiveRecord::Schema.define(version: 2018_10_22_094709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -363,17 +363,6 @@ ActiveRecord::Schema.define(version: 2018_10_16_043741) do
     t.index ["taxable_type", "taxable_id"], name: "index_documentary_stamp_taxes_on_taxable_type_and_taxable_id"
   end
 
-  create_table "documents", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
-    t.text "title"
-    t.datetime "date"
-    t.string "uploader_type"
-    t.uuid "uploader_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["uploader_type", "uploader_id"], name: "index_documents_on_uploader_type_and_uploader_id"
-  end
-
   create_table "employee_cash_accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "employee_id"
     t.uuid "cash_account_id"
@@ -393,8 +382,6 @@ ActiveRecord::Schema.define(version: 2018_10_16_043741) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "voucher_id"
-    t.uuid "store_front_id"
-    t.integer "payment_type", default: 0
     t.boolean "offline_receipt", default: false
     t.uuid "office_id"
     t.uuid "cooperative_id"
@@ -415,11 +402,9 @@ ActiveRecord::Schema.define(version: 2018_10_16_043741) do
     t.index ["entry_date"], name: "index_entries_on_entry_date"
     t.index ["office_id"], name: "index_entries_on_office_id"
     t.index ["official_receipt_id"], name: "index_entries_on_official_receipt_id"
-    t.index ["payment_type"], name: "index_entries_on_payment_type"
     t.index ["previous_entry_hash"], name: "index_entries_on_previous_entry_hash", unique: true
     t.index ["previous_entry_id"], name: "index_entries_on_previous_entry_id"
     t.index ["recorder_id"], name: "index_entries_on_recorder_id"
-    t.index ["store_front_id"], name: "index_entries_on_store_front_id"
     t.index ["voucher_id"], name: "index_entries_on_voucher_id"
   end
 
@@ -1060,7 +1045,6 @@ ActiveRecord::Schema.define(version: 2018_10_16_043741) do
     t.index ["closing_account_id"], name: "index_saving_products_on_closing_account_id"
     t.index ["cooperative_id"], name: "index_saving_products_on_cooperative_id"
     t.index ["interest_expense_account_id"], name: "index_saving_products_on_interest_expense_account_id"
-    t.index ["name"], name: "index_saving_products_on_name", unique: true
   end
 
   create_table "savings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1139,8 +1123,8 @@ ActiveRecord::Schema.define(version: 2018_10_16_043741) do
     t.string "account_number"
     t.datetime "date_opened"
     t.string "account_owner_name"
-    t.datetime "created_at", default: "2018-08-09 11:46:34", null: false
-    t.datetime "updated_at", default: "2018-08-09 11:46:34", null: false
+    t.datetime "created_at", default: "2018-10-22 09:50:58", null: false
+    t.datetime "updated_at", default: "2018-10-22 09:50:58", null: false
     t.integer "status"
     t.uuid "office_id"
     t.string "subscriber_type"
@@ -1271,8 +1255,8 @@ ActiveRecord::Schema.define(version: 2018_10_16_043741) do
     t.decimal "minimum_deposit"
     t.decimal "maximum_deposit"
     t.decimal "break_contract_rate"
-    t.decimal "annual_interest_rate"
     t.uuid "cooperative_id"
+    t.decimal "interest_rate"
     t.index ["account_id"], name: "index_time_deposit_products_on_account_id"
     t.index ["break_contract_account_id"], name: "index_time_deposit_products_on_break_contract_account_id"
     t.index ["cooperative_id"], name: "index_time_deposit_products_on_cooperative_id"
@@ -1450,7 +1434,6 @@ ActiveRecord::Schema.define(version: 2018_10_16_043741) do
   add_foreign_key "entries", "entries", column: "previous_entry_id"
   add_foreign_key "entries", "offices"
   add_foreign_key "entries", "official_receipts"
-  add_foreign_key "entries", "store_fronts"
   add_foreign_key "entries", "users", column: "cancelled_by_id"
   add_foreign_key "entries", "users", column: "recorder_id"
   add_foreign_key "entries", "vouchers"

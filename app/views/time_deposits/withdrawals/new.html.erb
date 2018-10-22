@@ -1,30 +1,31 @@
 <div class="row">
-  <div class="col-md-5 col-md-offset-3">
+  <div class="col-md-6 offset-md-3">
     <div class="card">
       <div class="card-header">
-        <h4><center><%= image_tag(@time_deposit.depositor, style: 'width:80px;height:80px;', class: 'media-object img-circle') %></center></h4>
+        <h4><center><%= image_tag(@time_deposit.depositor.avatar.variant(resize: '80x80'), class: 'media-object img-circle') if @time_deposit.depositor.avatar.attached? %></center></h4>
         <center>
           <h3 class="card-title"><center><%= @time_deposit.depositor.first_and_last_name %></h3>
         </center>
       </div>
       <div class="card-body">
         <center>
-          <h4><%= number_to_currency @time_deposit.balance %>
+          <h4 class="card-title"><%= number_to_currency @time_deposit.balance %>
           </h4>
           <small>BALANCE</small>
         </center>
         <hr>
-        <%= simple_form_for [@time_deposit, @withdrawal], url: :time_deposit_withdrawals do |f| %>
+        <%= simple_form_for [@time_deposit, @withdrawal], url: :time_deposit_withdrawals, html: { autocomplete: "off" } do |f| %>
         <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] } %>
         <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
-        <%= f.input :date, as: :string, input_html: { class: "datepicker", autocomplete: "off" } %>
-        <%= f.input :amount, as: :currency, input_html: { autocomplete: "off" } %>
+        <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+        <%= f.input :amount, as: :numeric %>
         <%= f.input :payment_type, label: 'Type', collection: AccountingModule::Entry.payment_types.keys.to_a.map{|a| [a.titleize, a] }, selected: AccountingModule::Entry.payment_types.keys.first %>
         <%= f.input :offline_receipt, as: :boolean, input_html: { checked: true }, as: :hidden %>
-        <%= f.input :or_number, label: 'OR number', input_html: { autocomplete: "off" } %>
+        <%= f.input :or_number, label: 'OR number' %>
         <%= f.input :time_deposit_id, input_html: { value: @time_deposit.id },as: :hidden %>
         <%= f.input :employee_id, input_html: { value: current_user.id },as: :hidden %>
-        <%= f.submit "Proceed", class: "btn btn-primary btn-block", data: { disable_with: 'Processing...' } %>
+        <hr>
+        <%= f.submit "Proceed", class: "btn btn-primary float-right", data: { disable_with: 'Processing...' } %>
         <% end %>
       </div>
     </div>

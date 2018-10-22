@@ -1,16 +1,18 @@
 module ManagementModule
   module Settings
     class SavingsAccountConfigsController < ApplicationController
+      respond_to :html, :json
+
       def new
         @savings_account_config = CoopConfigurationsModule::SavingsAccountConfig.new
+        respond_modal_with @savings_account_config
       end
+      
       def create
         @savings_account_config = CoopConfigurationsModule::SavingsAccountConfig.create(config_params)
-        if @savings_account_config.save
-          redirect_to management_module_settings_configurations_url, notice: "Savings Configuration saved successfully."
-        else
-          render :new
-        end
+        respond_modal_with @savings_account_config, 
+          location: management_module_settings_configurations_url, 
+          notice: "Savings Configuration saved successfully."
       end
 
       private
