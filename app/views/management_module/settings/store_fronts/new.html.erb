@@ -1,20 +1,33 @@
-<%= simple_form_for @store_front, url: :management_module_settings_store_fronts do |f| %>
-  <%= f.input :name %>
-  <%= f.input :address %>
-  <%= f.input :contact_number %>
-  <%= f.input :accounts_receivable_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
-  <%= f.input :merchandise_inventory_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
-  <%= f.input :cost_of_goods_sold_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
-  <%= f.input :sales_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
-  <%= f.input :sales_return_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
-  <%= f.input :accounts_payable_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
-  <%= f.input :spoilage_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
-<%= f.input :sales_discount_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
-
-
-
-  <%= f.submit "Create Store Front" %>
-<% end %>
+<div class="row">
+  <div class="col-md-6 offset-md-3">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">
+          Store Front Details
+        </h4>
+      </div>
+      <div class="card-body">
+        <%= simple_form_for @store_front, url: :management_module_settings_store_fronts do |f| %>
+          <%= f.error_notification %>
+          <%= f.input :name %>
+          <%= f.input :address %>
+          <%= f.input :contact_number %>
+          <%= f.input :accounts_receivable_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
+          <%= f.input :merchandise_inventory_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
+          <%= f.input :cost_of_goods_sold_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
+          <%= f.input :sales_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
+          <%= f.input :sales_return_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
+          <%= f.input :accounts_payable_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
+          <%= f.input :spoilage_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
+          <%= f.input :sales_discount_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
+          <hr>
+          <%= link_to "Cancel", management_module_settings_configurations_path, class: 'btn btn-default' %>
+          <%= f.submit "Create Store Front", class: 'btn btn-danger float-right' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script type="text/javascript">
   $(document).ready(function() {

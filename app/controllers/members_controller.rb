@@ -1,5 +1,7 @@
 class MembersController < ApplicationController
   layout 'application'
+  
+  respond_to :html, :json
 
   def index
     if params[:search].present?
@@ -12,20 +14,16 @@ class MembersController < ApplicationController
   def show
     @member = Member.find(params[:id])
   end
+
   def edit
     @member = Member.find(params[:id])
+    respond_modal_with @member
   end
+
   def update
     @member = Member.find(params[:id])
     @member.update(member_params)
-    if @member.valid?
-      @member.save
-      redirect_to member_settings_url(@member), notice: "Member updated successfully."
-
-      # @member.memberships.each(&:save) #update search terms on memberships table
-    else
-      render :edit
-    end
+    respond_modal_with @member, location: member_url(@member), notice: "Member updated successfully."
   end
 
   def destroy
@@ -43,6 +41,11 @@ class MembersController < ApplicationController
 
   private
   def member_params
-    params.require(:member).permit(:civil_status, :membership_date, :first_name, :middle_name, :last_name, :sex, :date_of_birth, :contact_number, :avatar, :signature_specimen, tin_attributes: [:number])
+    params.require(:member).permit(
+      :civil_status, :membership_date, 
+      :first_name, :middle_name, :last_name, 
+      :sex, :date_of_birth, :avatar, 
+      :signature_specimen, 
+      tin_attributes: [:number])
   end
 end

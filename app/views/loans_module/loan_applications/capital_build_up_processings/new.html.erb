@@ -1,10 +1,10 @@
 <div class="row">
-  <div class="col-md-6 col-md-offset-3">
+  <div class="col-md-6 offset-md-3">
     <div class="card">
-    <div class="card-header bg-gray">
+      <div class="card-header bg-gray">
       <div class="row">
         <div class="col-md-3">
-          <center><%= image_tag(@loan_application.borrower.avatar, style: 'width:80px;height:80px;', class: 'media-object img-circle') %></center>
+          <center><%= image_tag(@loan_application.borrower.avatar.variant(resize: '80x80'), class: 'media-object img-circle') if @loan_application.borrower.avatar.attached? %></center>
         </div>
         <div class="col-md-9">
           <br>
@@ -12,23 +12,22 @@
            <i class="fa fa-map-marker"></i> Address: <%= @loan_application.borrower.try(:current_address) %>
         </div>
       </div>
-    </div>
-    <div class="card-body">
-      <div class="row">
-        <div class="col-md-10 col-md-offset-1">
-          <h4><%= number_to_currency @share_capital.paid_up_balance %></h4>
-          <small class="text-muted"> SHARE CAPITAL </small>
-          <hr>
-          <%= simple_form_for [@share_capital, @capital_build_up], url: :loans_module_loan_application_capital_build_up_processings do |f| %>
-            <%= f.error_notification %>
-            <%= f.input :amount %>
-            <%= f.input :share_capital_id, input_html: { value: @share_capital.id }, as: :hidden %>
-            <%= f.input :loan_application_id, input_html: { value: @loan_application.id }, as: :hidden %>
-
-            <div class="box-footer">
-              <%= f.submit "Add Capital Build Up", class: "btn btn-primary float-right" %>
-            </div>
-          <% end %>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-10 offset-md-1">
+            <h4 class="card-title"><%= number_to_currency @share_capital.paid_up_balance %></h4>
+            <small class="text-muted"> SHARE CAPITAL </small>
+            <hr>
+            <%= simple_form_for [@share_capital, @capital_build_up], url: :loans_module_loan_application_capital_build_up_processings do |f| %>
+              <%= f.error_notification %>
+              <%= f.input :amount %>
+              <%= f.input :share_capital_id, input_html: { value: @share_capital.id }, as: :hidden %>
+              <%= f.input :loan_application_id, input_html: { value: @loan_application.id }, as: :hidden %>
+              <hr>
+                <%= f.submit "Add Capital Build Up", class: "btn btn-primary float-right" %>
+            <% end %>
+          </div>
         </div>
       </div>
     </div>

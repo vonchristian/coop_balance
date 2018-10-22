@@ -1,19 +1,18 @@
 module TimeDeposits
   class AdjustingEntriesController < ApplicationController
+    respond_to :html, :json
+
     def new
       @time_deposit = MembershipsModule::TimeDeposit.find(params[:time_deposit_id])
       @entry = AccountingModule::AdjustingEntry.new
+      respond_modal_with @entry
     end
 
     def create
       @time_deposit = MembershipsModule::TimeDeposit.find(params[:time_deposit_id])
-      @entry = AccountingModule::AdjustingEntry.new(adjusting_entry_params)
-      if @entry.valid?
-        @entry.save
-        redirect_to time_deposit_url(@time_deposit), notice: "Adjusting Entry saved successfully."
-      else
-        render :new
-      end
+      @entry = AccountingModule::AdjustingEntry.new(adjusting_entry_params).save
+      respond_modal_with @entry, location: time_deposit_settings_url(@time_deposit), 
+          notice: "Adjusting Entry saved successfully."
     end
 
     private

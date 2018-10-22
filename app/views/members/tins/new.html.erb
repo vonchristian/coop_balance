@@ -1,19 +1,19 @@
-<div class="row">
-  <div class="col-md-6 offset-md-3">
-    <div class="card">
-      <div class="card-header">
-        <h4><center><%= image_tag(@member.avatar.variant(resize: '60x60'), class: 'media-object img-circle') if @member.avatar.attached? %></center></h4>
-         <h3><center><%= @member.name %></center></h3>
-      </div>
-      <div class="card-body">
-        <%= simple_form_for [@member, @tin], url: :member_tins, html: { autocomplete: "off"} do |f| %>
-          <%= f.error_notification %>
-          <%= f.input :number, label: 'TIN Number' %>
-          <hr>
-          <%= link_to "Cancel", member_path(@member), class: 'btn btn-default' %>
-          <%= f.submit "Save TIN", class: "btn btn-primary float-right" %>
-        <% end %>
-      </div>
-    </div>
-  </div>
+<div class="modal-header">
+  <h4 class="modal-title card-title" id="mainModalLabel">
+    TIN Details
+  </h4>
+  <button type="button" class="close float-right" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 </div>
+<div class="modal-body">
+  <%= render 'members/partials/form_header' %>
+</div>
+<hr class="no-margin">
+<%= simple_form_for [@member, @tin], url: :member_tins, html: { autocomplete: "off"} do |f| %>
+<%= f.error_notification %>
+  <div class="modal-body">
+    <%= f.input :number, label: 'TIN Number' %>
+  </div>
+  <div class="modal-footer">
+    <%= f.submit "Update TIN", class: "btn btn-primary float-right" %>
+  </div>
+<% end %>

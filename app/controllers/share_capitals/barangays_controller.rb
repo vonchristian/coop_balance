@@ -1,17 +1,18 @@
 module ShareCapitals
   class BarangaysController < ApplicationController
+    respond_to :html, :json
+
     def edit
       @share_capital = MembershipsModule::ShareCapital.find(params[:share_capital_id])
+      respond_modal_with @share_capital
     end
+
     def update
       @share_capital = MembershipsModule::ShareCapital.find(params[:share_capital_id])
       @share_capital.update(share_capital_params)
-      if @share_capital.valid?
-        @share_capital.save
-        redirect_to share_capital_url(@share_capital), notice: "Barangay updated successfully."
-      else
-        render :edit
-      end
+      respond_modal_with @share_capital, 
+        location: share_capital_url(@share_capital), 
+        notice: "Barangay updated successfully."
     end
 
     private

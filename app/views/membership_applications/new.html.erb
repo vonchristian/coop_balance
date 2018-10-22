@@ -17,11 +17,15 @@
           <%= f.input :first_name %>
           <%= f.input :middle_name %>
           <%= f.input :last_name %>
-          <%= f.input :civil_status, collection: Member.civil_statuses.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
-          <%= f.input :sex, collection: Member.sexes.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
-
+          <div class="row">
+            <div class="col-md-6">
+              <%= f.input :sex, collection: Member.sexes.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
+            </div>
+            <div class="col-md-6">
+              <%= f.input :civil_status, collection: Member.civil_statuses.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
+            </div>
+          </div>
           <%= f.input :date_of_birth, as: :string, input_html: { class: "datepicker" } %>
-
           <%= f.input :contact_number %>
           <%= f.input :email %>
           <%= f.input :tin_number, label: "TIN Number" %>

@@ -1,8 +1,9 @@
-
-<%= simple_form_for [@member, @beneficiary], url: :member_beneficiaries, remote: request.xhr?, html: { data: { modal: true } } do |f| %>
-  <%= f.input :full_name %>
-  <%= f.input :relationship %>
-  <hr>
-  <%= link_to "Cancel", member_path(@member), class: 'btn btn-default' %>
-  <%= f. submit "Save Beneficiary", class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
+<%= simple_form_for [@member, @beneficiary], url: @beneficiary.persisted? ? :member_beneficiary : :member_beneficiaries, remote: request.xhr?, html: { data: { modal: true } } do |f| %>
+	<div class="modal-body">
+	  <%= f.input :full_name %>
+	  <%= f.input :relationship %>
+	</div>
+	<div class="modal-footer">
+	  <%= f.submit "Save Beneficiary", class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
+	</div>
 <% end %>

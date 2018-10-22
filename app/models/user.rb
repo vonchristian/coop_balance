@@ -131,7 +131,7 @@ class User < ApplicationRecord
 
   private
   def set_default_image
-    if avatar.attachment.blank?
+    if avatar.attached?
       self.avatar.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'default.png')), filename: 'default-image.png', content_type: 'image/png')
     end
   end

@@ -1,26 +1,11 @@
-<div class="row">
-	<div class="col-md-6 offset-md-3">
-		<div class="card">
-			<div class="card-header">
-				<h4 class="card-title">
-					Cash Account Details
-				</h4>
-			</div>
-			<div class="card-body">
-			  <%= simple_form_for @cash_account, url: :employee_cash_accounts do |f| %>
-			    <%= f.input :cash_account_id, collection: AccountingModule::Asset.all.map{|a| [a.name, a.id] }  %>
-			    <hr>
-			    <%= f.submit "Save", class: 'btn btn-danger float-right' %>
-			  <% end %>
-			</div>
-		</div>
+<%= render 'employees/shared/form_header' %>
+<%= simple_form_for @cash_account, url: :employee_cash_accounts do |f| %>
+	<div class="modal-body">
+		<h4 class="card-title">New Cash Account</h4>
+		<hr>
+	  <%= f.input :cash_account_id, collection: AccountingModule::Asset.all.map{|a| [a.name, a.id] }  %>
 	</div>
-</div>
-
-<script type="text/javascript">
-  $(document).ready(function() {
-    $("#employees_employee_cash_account_cash_account_id").select2({
-      theme: "bootstrap"
-    });
-  });
-</script>
+	<div class="modal-footer">
+	  <%= f.submit "Save", class: 'btn btn-danger float-right' %>
+	</div>
+<% end %>

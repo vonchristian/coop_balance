@@ -3,130 +3,68 @@
   <div class="col-md-6">
     <div class="card">
       <div class="card-header bg-red">
-
+        <span class="text-danger">
+          Please be careful in selecting accounts to be merged. Once merged it can not be undone.
+        </span>
       </div>
-        <div class="card-body">
-          <span class="text-danger">
-            Please be careful in selecting accounts to be merged. Once merged it can not be undone.
-          </span>
-          <br>
-          <br>
-          <% current_cart.members.each do |member| %>
-            <div class="row">
-              <div class="col-md-2">
-              </div>
-              <div class="col-md-7">
-                <b><%= member.full_name %></b>
-                <br>
-                <br>
-                <div class="row">
-                  <div class="col-md-8">
-                    <i class="fa fa-briefcase"></i>&nbsp; Savings Account
-                  </div>
-                  <div class="col-md-4">
-                    <%= member.savings.count %>
-                  </div>
-                </div>
-                <br>
-                <div class="row">
-                  <div class="col-md-8">
-                    <i class="fa fa-briefcase"></i>&nbsp; Share Capitals
-                  </div>
-                  <div class="col-md-4">
-                    <%= member.share_capitals.count %>
-                  </div>
-                </div>
-                <br>
-                <div class="row">
-                  <div class="col-md-8">
-                    <i class="fa fa-credit-card"></i>&nbsp; Loans
-                  </div>
-                  <div class="col-md-4">
-                    <%= member.loans.count %>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-2">
-              </div>
+      <div class="card-body">
+        <% current_cart.members.each do |member| %>
+          <div class="row">
+            <div class="col-md-8 offset-md-2">
+              <%= render 'members/merging_line_items/member_details', member: member %>
             </div>
-            <hr>
+          </div>
+          <hr>
+        <% end %>
+        <%= simple_form_for @merging, url: :member_mergings do |f| %>
+          <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
+          <%= f.input :current_member_id, input_html: { value: @current_member.id }, as: :hidden %>
+          <% if current_cart.members.present? %>
+            <%= f.submit "Merge Accounts", class: "btn btn-danger btn-block btn-lg" %>
           <% end %>
-          <%= simple_form_for @merging, url: :member_mergings do |f| %>
-            <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
-            <%= f.input :current_member_id, input_html: { value: @current_member.id }, as: :hidden %>
-
-
-              <% if current_cart.members.present? %>
-                <%= f.submit "Merge Accounts", class: "btn btn-danger btn-block btn-lg" %>
-              <% end %>
-
-          <% end %>
-        </div>
+        <% end %>
       </div>
     </div>
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-header">
-          <h3 class="card-title"> Search Members </h3>
-        </div>
-        <div class="card-body">
-          <%=form_tag new_member_merging_line_item_path(@current_member), method: :get do %>
-            <div class="input-group">
-              <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search First Name, Last Name ", id: 'account-search-form' %>
-              <span class="input-group-btn">
-                <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
-                  <i class="fa fa-search"></i>
-                <% end %>
-              </span>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"> Search Members </h3>
+      </div>
+      <div class="card-body">
+        <%=form_tag new_member_merging_line_item_path(@current_member), method: :get do %>
+          <div class="input-group">
+            <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search First Name, Last Name ", id: 'account-search-form' %>
+            <span class="input-group-btn">
+              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                <i class="fa fa-search"></i>
+              <% end %>
+            </span>
+          </div>
+        <% end %>
+        <br>
+        <% @members.each do |member| %>
+          <div class="row">
+            <div class="col-md-2">
             </div>
-          <% end %>
-          <br>
-          <% @members.each do |member| %>
-            <div class="row">
-              <div class="col-md-2">
-              </div>
-              <div class="col-md-7">
-                <b><%= member.full_name %></b>
-                <br>
-                <br>
-                <div class="row">
-                  <div class="col-md-8">
-                    <i class="fa fa-briefcase"></i>&nbsp; Savings Account
-                  </div>
-                  <div class="col-md-4">
-                    <%= member.savings.count %>
-                  </div>
-                </div>
-                <br>
-                <div class="row">
-                  <div class="col-md-8">
-                    <i class="fa fa-briefcase"></i>&nbsp; Share Capitals
-                  </div>
-                  <div class="col-md-4">
-                    <%= member.share_capitals.count %>
-                  </div>
-                </div>
-                <br>
-                <div class="row">
-                  <div class="col-md-8">
-                    <i class="fa fa-credit-card"></i>&nbsp; Loans
-                  </div>
-                  <div class="col-md-4">
-                    <%= member.loans.count %>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-2">
-                <%= simple_form_for @merging_line_item, url: :member_merging_line_items do |f| %>
-                  <%= f.input :old_member_id, input_html: { value: member.id }, as: :hidden %>
-                  <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
-                  <% if current_cart.members.include?(member) %>
-                    <span class="label bg-success"> Selected </span>
-                  <% else %>
-                    <%= f.submit "Select", class: "btn btn-danger" %>
-                  <% end %>
-                <% end %>
-              </div>
+            <div class="col-md-8">
+              <%= render 'members/merging_line_items/member_details', member: member %>
             </div>
-            <hr>
-          <% end %>
+            <div class="col-md-2">
+              <%= simple_form_for @merging_line_item, url: :member_merging_line_items do |f| %>
+                <%= f.input :old_member_id, input_html: { value: member.id }, as: :hidden %>
+                <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
+                <% if current_cart.members.include?(member) %>
+                  <span class="label bg-success"> Selected </span>
+                <% else %>
+                  <%= f.submit "Select", class: "btn btn-danger" %>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+          <hr>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

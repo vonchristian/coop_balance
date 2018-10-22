@@ -18,6 +18,7 @@ module AccountingModule
               :credit_account_id,
               presence: true
     validates :amount, numericality: true
+    
     def save
       ActiveRecord::Base.transaction do
         create_entry

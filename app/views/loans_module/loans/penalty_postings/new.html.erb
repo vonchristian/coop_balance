@@ -1,76 +1,17 @@
-<div class="row">
-  <div class="col-md-6 col-md-offset-3">
-    <div class="card">
-      <div class="card-header bg-red">
-        <center>
-          <%=image_tag(@loan.borrower.avatar.url(:medium), height: 60, width: 60, class: "img-circle") %>
-          <h4><%= @loan.borrower_name %></h4>
-        </center>
-      </div>
-      <div class="card-body">
-        <h4 class="card-title"> Loan Details </h4>
-        <div class="row">
-          <div class="col-md-5 col-md-offset-1">
-            Loan Balance
-          </div>
-          <div class="col-md-6">
-            <%= number_to_currency @loan.principal_balance  %>
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="col-md-5 col-md-offset-1">
-            Disbursement Date
-          </div>
-          <div class="col-md-6">
-            <%= @loan.disbursement_date.strftime("%B %w, %Y") %>
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="col-md-5 col-md-offset-1">
-            Maturity Date
-          </div>
-          <div class="col-md-6">
-            <%= @loan.maturity_date.strftime("%B %w, %Y") %>
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="col-md-5 col-md-offset-1">
-            Number of Days Past Due
-          </div>
-          <div class="col-md-6">
-            <%= @loan.number_of_days_past_due  %>
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="col-md-5 col-md-offset-1">
-            Penalty Rate
-          </div>
-          <div class="col-md-6">
-            <%= @loan.loan_product_penalty_rate  %>
-          </div>
-        </div>
-        <br>
-        <hr>
-        <%= simple_form_for [@loan, @penalty_posting], url: :loans_module_loan_penalty_postings do |f| %>
-          <div class="row">
-            <div class="col-md-10 col-md-offset-1">
-              <%= f.error_notification %>
-              <%= f.input :date, as: :string, input_html: { class: "datepicker", value: Date.today.strftime("%B %e, %Y") } %>
-              <%= f.input :amount, input_html: { value: @loan.loan_penalty_computation }, as: :currency %>
-              <%= f.input :description, input_html: { value: "Loan penalties from #{@loan.maturity_date.strftime("%B %e, %Y")} to #{Date.today.strftime("%B %e, %Y")}"}, as: :text %>
-              <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
-              <%= f.input :loan_id, input_html: { value: @loan.id }, as: :hidden %>
-              <div class="box-footer">
-                <%= f.submit "Post Penalty", class: "btn btn-danger pull-right" %>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    </div>
+<%= render 'loans_module/loans/shared/borrower_avatar' %>
+<%= render 'loans_module/loans/shared/loan_details' %>
+<%= simple_form_for [@loan, @penalty_posting], html: { autocomplete: "off", data: { modal: true } }, remote: request.xhr?, url: :loans_module_loan_penalty_postings do |f| %>
+  <div class="modal-body">
+    <h4 class="card-title">Penalty Posting Details</h4>
+    <hr>
+    <%= f.error_notification %>
+    <%= f.input :date, as: :string, input_html: { class: "datepicker", value: Date.today.strftime("%B %e, %Y") } %>
+    <%= f.input :amount, input_html: { value: @loan.loan_penalty_computation }, as: :currency %>
+    <%= f.input :description, input_html: { value: "Loan penalties from #{@loan.try(:maturity_date).try(:strftime, "%B %e, %Y")} to #{Date.today.strftime("%B %e, %Y")}"}, as: :text %>
+    <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+    <%= f.input :loan_id, input_html: { value: @loan.id }, as: :hidden %>
   </div>
-</div>
+  <div class="modal-footer">
+    <%= f.submit "Post Penalty", class: "btn btn-danger pull-right" %>
+  </div>
+<% end %>

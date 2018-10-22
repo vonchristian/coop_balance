@@ -1,23 +1,27 @@
 <% content_for(:html_title) { "#{@time_deposit.depositor_name} | New Term Extension" } %>
-<div class="row">
-  <div class="col-md-8 col-md-offset-2">
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title"> New Term Extension Details </h3>
-        <center>
-          <%= image_tag(@time_deposit.depositor.avatar, style: 'width:60px;height:60px;', class: 'media-object img-circle') %>
-          <h3><%= @time_deposit.depositor_name %></h3>
-        </center>
-      </div>
-      <div class="card-body">
-        Maturity Date: <%= @time_deposit.current_term.maturity_date.strftime("%B %e, %Y") %>
-<%= simple_form_for [@time_deposit, @renewal], url: :time_deposit_term_extensions do |f| %>
-  <%= f.error_notification %>
-  <%= f.input :time_deposit_id, input_html: { value: @time_deposit.id }, as: :hidden %>
-  <%= f.input :member_id, input_html: { value: @time_deposit.depositor.id }, as: :hidden %>
-  <%= f.input :renewal_date, as: :string, input_html: { class: "datepicker" } %>
-  <%= f.input :term %>
-  <div class="box-footer">
+<div class="modal-header">
+  <h4 class="modal-title card-title" id="mainModalLabel">
+    New Term Extension Details
+  </h4>
+  <button type="button" class="close float-right" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+</div>
+<div class="modal-body">
+  <center>
+    <%= image_tag(@time_deposit.avatar, height: 55, width: 55, class: "img-circle") %>
+    <h3 class="card-title"><%= @time_deposit.name %></h3>
+  </center>
+</div>
+<hr class="no-margin">
+<%= simple_form_for [@time_deposit, @renewal], html: { autocomplete: "off", data: { modal: true } }, remote: request.xhr?, url: :time_deposit_term_extensions do |f| %>
+  <div class="modal-body">
+    <h6>Maturity Date: <%= @time_deposit.current_term.maturity_date.strftime("%B %e, %Y") %></h6>
+    <%= f.error_notification %>
+    <%= f.input :time_deposit_id, input_html: { value: @time_deposit.id }, as: :hidden %>
+    <%= f.input :member_id, input_html: { value: @time_deposit.depositor.id }, as: :hidden %>
+    <%= f.input :renewal_date, as: :string, input_html: { class: "datepicker" } %>
+    <%= f.input :term %>
+  </div>
+  <div class="modal-footer">
     <%= f.submit "Save Term Extension", class: "btn btn-primary pull-right", data: { disable_with: "Processing..."} %>
   </div>
 <% end %>

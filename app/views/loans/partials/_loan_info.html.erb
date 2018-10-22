@@ -151,7 +151,7 @@
         <h4 class="card-title"> Loan Interest</h4>
       </div>
       <div class="col-md-5 col-sm-6">
-        <%=link_to 'New Interest', new_loans_module_loan_interest_posting_path(@loan), class: "btn btn-sm btn-outline-danger float-right" %>
+        <%=link_to 'New Interest', new_loans_module_loan_interest_posting_path(@loan), class: "btn btn-sm btn-outline-danger float-right", data: { modal: true } %>
       </div>
     </div>
     <hr class="no-margin-top">
@@ -174,7 +174,7 @@
             <span class="float-right"><%= number_to_currency @loan.loan_discounts.interest.total %>
           </div>
           <div class="col-md-5 col-sm-3">
-            <%=link_to 'New Discount', new_loans_module_loan_loan_interest_discount_path(@loan), class: "btn btn-xs btn-outline-success float-right" %>
+            <%=link_to 'New Discount', new_loans_module_loan_loan_interest_discount_path(@loan), class: "btn btn-xs btn-outline-warning float-right", data: { modal: true } %>
           </div>
         </div>
         <hr class="min-margin">
@@ -189,10 +189,10 @@
         <hr class="min-margin">
         <div class="row">
           <div class="col-md-3 col-sm-6">
-            Interest Balance
+            <h6>Interest Balance</h6>
           </div>
           <div class="col-md-2 col-sm-6">
-            <span class="float-right"><%= number_to_currency @loan.loan_interests_balance %></span>
+            <h6 class="float-right"><%= number_to_currency @loan.loan_interests_balance %></h6>
           </div>
         </div>
       </div>
@@ -205,7 +205,7 @@
         <h4 class="card-title">Loan Penalty </h4>
       </div>
       <div class="col-md-5 col-sm-6">
-        <%=link_to 'New Penalty', new_loans_module_loan_penalty_posting_path(@loan), class: "btn btn-sm btn-outline-danger pull-right" %>
+        <%=link_to 'New Penalty', new_loans_module_loan_penalty_posting_path(@loan), class: "btn btn-sm btn-outline-danger float-right", data: { modal: true } %>
       </div>
     </div>
     <hr class="no-margin-top">
@@ -228,7 +228,7 @@
             <span class="float-right"><%= number_to_currency @loan.loan_discounts.penalty.total %></span>
           </div>
           <div class="col-md-5 col-sm-3">
-            <%=link_to 'New Discount', new_loans_module_loan_loan_penalty_discount_path(@loan), class: "btn btn-xs btn-outline-success float-right" %>
+            <%=link_to 'New Discount', new_loans_module_loan_loan_penalty_discount_path(@loan), class: "btn btn-xs btn-outline-warning float-right", data: { modal: true } %>
           </div>
         </div>
         <hr class="min-margin">
@@ -243,10 +243,10 @@
         <hr class="min-margin">
         <div class="row">
           <div class="col-md-3 col-sm-6">
-            <p><b>Penalty Balance</b></p>
+            <h6>Penalty Balance</h6>
           </div>
           <div class="col-md-2 col-sm-6">
-            <span class="float-right"><%= number_to_currency @loan.loan_penalties_balance %></span>
+            <h6 class="float-right"><%= number_to_currency @loan.loan_penalties_balance %></h6>
           </div>
         </div>
       </div>

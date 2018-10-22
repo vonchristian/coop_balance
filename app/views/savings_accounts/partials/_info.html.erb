@@ -65,15 +65,10 @@
     <% end %>
     <%= line_chart (Hash[*monthly_balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"}, thousands: ",", curve: false %>
 </div>
-<hr class="no-margin">
-<div class="card-body">
-  <p class="text-muted">TRANSACTIONS HISTORY </p>
-
-
-        <% @entries.each do |entry| %>
-          <%= render 'accounting_module/entries/partials/header', entry: entry %>
-        <% end %>
-
-    <center><%= will_paginate @entries %></center>
-  </div>
 </div>
+<p class="text-muted">TRANSACTIONS HISTORY </p>
+<% @entries.each do |entry| %>
+  <%= render 'accounting_module/entries/partials/header', entry: entry %>
+<% end %>
+<center><%= will_paginate @entries %></center>
+

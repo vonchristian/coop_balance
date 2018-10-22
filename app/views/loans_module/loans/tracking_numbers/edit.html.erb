@@ -1,5 +1,15 @@
-<%= simple_form_for @loan, url: :loans_module_loan_tracking_number do |f| %>
-  <%= f.input :tracking_number %>
-  <%= f.input :loan_id, input_html: { value: @loan.id }, as: :hidden %>
-  <%= f.submit "Save Tracking Number", class: "btn btn-danger" %>
+<div class="modal-header">
+  <h4 class="modal-title card-title" id="mainModalLabel">
+    Set Tracking Number
+  </h4>
+  <button type="button" class="close float-right" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+</div>
+<%= simple_form_for @loan, html: { autocomplete: "off", data: { modal: true } }, remote: request.xhr?, url: :loans_module_loan_tracking_number do |f| %>
+	<div class="modal-body">
+	  <%= f.input :tracking_number %>
+	  <%= f.input :loan_id, input_html: { value: @loan.id }, as: :hidden %>
+	</div>
+	<div class="modal-footer">
+  	<%= f.submit "Save Tracking Number", class: "btn btn-danger" %>
+  </div>
 <% end %>

@@ -1,18 +1,18 @@
-<div class="row">
-  <div class="col-md-3">
-  </div>
-  <div class="col-md-6">
-    <div class="card">
-      <div class="card-header">
-        <h3 class="profile-username text-center"><%= @member.first_and_last_name %></h3>
-      </div>
-      <div class="card-body">
-        <%= simple_form_for [@member, @organization], url: :member_organizations do |f| %>
-          <%= f.error_notification %>
-          <%= f.input :organization_id, collection: Organization.all.map{|a| [a.name, a.id] }%>
-            <%= f.submit "Update", class: "btn btn-primary float-right" %>
-        <% end %>
-      </div>
-    </div>
-  </div>
+<div class="modal-header">
+  <h4 class="modal-title card-title" id="mainModalLabel">
+    Set Organization
+  </h4>
+  <button type="button" class="close float-right" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 </div>
+<div class="modal-body">
+  <%= render 'members/partials/form_header', member: @member %>
+</div>
+<%= simple_form_for [@member, @organization], url: :member_organizations do |f| %>
+  <div class="modal-body">
+    <%= f.error_notification %>
+    <%= f.input :organization_id, collection: Organization.all.map{|a| [a.name, a.id] }%>
+  </div>
+  <div class="modal-footer">
+    <%= f.submit "Update", class: "btn btn-primary float-right" %>
+  </div>
+<% end %>

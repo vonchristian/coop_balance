@@ -1,36 +1,33 @@
 <div class="card">
   <div class="card-header">
-    <h4 class="card-title"> Notes </h4>
-    <span class="text-muted"> Actions taken for this loan for monitoring purposes. </span>
+    <div class="row">
+      <div class="col-md-8">
+        <h4 class="card-title"> Notes </h4>
+        <span class="text-muted"> Actions taken for this loan for monitoring purposes. </span>
+      </div>
+      <div class="col-md-4">
+        <%= link_to "Add Note", new_loan_note_path(@loan), class: 'btn btn-primary float-right', data: {modal: true} %>
+      </div>
+    </div>
   </div>
-  <div class="card-body">
-    <%= simple_form_for [@loan, @note], url: :loan_notes do |f| %>
-      <%= f.input :title %>
-      <%= f.input :content, as: :text %>
-      <%= f.input :noter_id, input_html: { value: current_user.id }, as: :hidden %>
-      <hr>
-      <%= f.submit "Save Note", class: "btn btn-primary float-right" %>
-    <% end %>
-  </div>
-  <hr class="no-margin">
-  <div class="card-body">
-    <% @notes.each do |note| %>
+</div>
+<% @notes.each do |note| %>
+  <div class="card">
+    <div class="card-body">
       <div class="row">
         <div class="col-md-1">
-          <%=image_tag(note.noter.avatar, class: "img-circle", height:45, width: 45) %>
+          <%=image_tag(note.noter.avatar.variant(resize: '45x45'), class: "img-circle") if note.noter.avatar.attached? %>
         </div>
         <div class="col-md-8">
           <h3 class="card-title"><%= note.title %></h3>
           <span class="text-muted">
             <%= note.content %>
-
           </span>
           <br>
           <%= note.noter.try(:name) %> &nbsp; &nbsp;
-          <%= note.date.strftime("%b %e, %Y %M:%I") %>
+          <%= note.date.strftime("%a, %b %e, %Y %H:%M") %>
         </div>
       </div>
-      <hr>
-    <% end %>
+    </div>
   </div>
-</div>
+<% end %>
