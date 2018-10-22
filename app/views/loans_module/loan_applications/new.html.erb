@@ -17,11 +17,11 @@
 
           <%= f.input :borrower_id, input_html: { value: @borrower.id }, as: :hidden %>
           <%= f.input :borrower_type, input_html: { value: @borrower.class.to_s }, as: :hidden %>
-          <%= f.input :loan_amount, as: :numeric %>
+          <%= f.input :loan_amount, as: :currency %>
           <%= f.input :term, label: "Loan Term (in months)" %>
           <%= f.input :mode_of_payment, collection: LoansModule::Loan.mode_of_payments.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
           <%= f.input :purpose, as: :text, label: "Purpose of Loan" %>
-          
+
           <%= f.input :preparer_id, input_html: { value: current_user.id }, as: :hidden %>
           <%= f.input :cooperative_id, input_html: { value: current_user.cooperative_id }, as: :hidden %>
 

@@ -78,7 +78,7 @@
             <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
             <%= f.input :cash_account_id, collection: Employees::EmployeeCashAccount.cash_accounts.map{|a| [a.name, a.id] } %>
 
-              <%= f.submit "Create Voucher", class: "btn btn-primary btn-lg float-right" %>
+              <%= f.submit "Create Voucher", class: "btn btn-primary float-right" %>
               <%= link_to 'Cancel ', loans_module_loan_application_path(@loan_application), method: :delete, class: "btn float-left" %>
             <% end %>
       </div>

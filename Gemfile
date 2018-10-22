@@ -58,10 +58,11 @@ gem 'numbers_and_words'
 gem "audited", "~> 4.7"
 gem "responders"
 group :development, :test do
-  gem 'rspec-rails'
+  gem 'rspec-rails', '~> 3.8.0'
   gem 'capybara'
   gem 'factory_bot_rails'
   gem 'faker'
+  gem 'coderay', '~> 1.1.2'
 end
 
 group :development do
