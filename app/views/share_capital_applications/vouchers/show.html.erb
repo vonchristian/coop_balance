@@ -1,0 +1,29 @@
+<div class="row">
+<div class="col-md-6 offset-md-3">
+   <div class="card">
+     <div class="card-header bg-light">
+         <h3 class="card-title"> Savings Account Opening Details </h3>
+       <%=link_to 'View (PDF)', voucher_path(@voucher, format: "pdf"), class: "btn btn-default float-right" %>
+     </div>
+     <div class="card-body">
+       <%= render 'vouchers/partials/body', voucher: @voucher %>
+
+
+       <% if !@voucher.disbursed?%>
+       <p>  <i class="fa fa-info-circle  text-primary"></i>
+         Click "Confirm" to post this journal entry</p>
+
+
+
+             <%= link_to "Confirm", share_capital_application_voucher_disbursements_path(voucher_id: @voucher.id, share_capital_application_id: @share_capital_application.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
+
+              <%= link_to "Cancel", share_capital_application_voucher_path(id: @voucher.id, share_capital_application_id: @share_capital_application.id), method: :delete, class: "btn text-danger float-left" %>
+
+
+       <% else %>
+         <span class="badge bg-success float-right"> Disbursed </span>
+       <% end %>
+     </div>
+   </div>
+ </div>
+</div>

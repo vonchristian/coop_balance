@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="col-md-6 offset-md-3">
+    <div class="card">
+      <div class="card-header">
+        <center>
+          <%= image_tag(@subscriber.avatar, class: "profile-user-img img-responsive img-circle") %>
+          <h3 class="box-title"><%= @subscriber.name %></h3>
+        </center>
+      </div>
+      <div class="card-body">
+        <%= simple_form_for @share_capital_application, url: :share_capital_applications do |f| %>
+          <%= f.input :subscriber_id, input_html: { value: @subscriber.id }, as: :hidden %>
+          <%= f.input :subscriber_type, input_html: { value: @subscriber.class.to_s }, as: :hidden %>
+          <%= f.input :share_capital_product_id, collection: current_cooperative.share_capital_products.map{|a| [a.name, a.id] }, as: :radio_buttons %>
+          <%= f.input :date_opened, as: :string, input_html: { value: Time.zone.now.strftime("%B %e, %Y"), class: "datepicker" } %>
+          <%= f.input :amount, as: :currency %>
+          <%= f.input :reference_number %>
+          <%= f.input :description, input_html: { value: "Opening of share capital account of #{@subscriber.name}"} %>
+          <%= f.input :employee_id, input_html: { value: current_user.id },as: :hidden %>
+          <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
+          <%= f.input :voucher_account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
+
+          <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] } %>
+          <%= f.submit "Proceed", class: "btn btn-primary float-right" %>
+          <%= link_to "Cancel", root_path, class: "btn text-danger float-left" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
