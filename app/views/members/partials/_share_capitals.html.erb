@@ -6,7 +6,7 @@
       </div>
       <div class="col-md-6">
         <% if policy([:members, :share_capital]).new? %>
-          <%= link_to 'New Share Capital', new_member_share_capital_path(@member), class: "btn btn-primary btn-flat pull-right" %>
+          <%= link_to 'New Share Capital', new_share_capital_application_path(subscriber_id: @member.id, subscriber_type: @member.class.to_s), class: "btn btn-primary btn-flat float-right" %>
         <% end %>
       </div>
     </div>

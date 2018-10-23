@@ -508,6 +508,8 @@ namespace :share_capitals_section do
     resources :vouchers, only: [:show, :destroy], module: :savings_account_applications
     resources :voucher_confirmations, only: [:create], module: :savings_account_applications
   end
+  resources :share_capital_applications, only: [:new, :create] do
+  end
   devise_for :member_accounts, controllers: { sessions: 'member_accounts/sessions', registrations: 'member_accounts/registrations'}
 
   authenticated :member_account do

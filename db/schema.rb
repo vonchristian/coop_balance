@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_22_094709) do
+ActiveRecord::Schema.define(version: 2018_10_23_013128) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1098,6 +1098,23 @@ ActiveRecord::Schema.define(version: 2018_10_22_094709) do
     t.index ["interest_expense_account_id"], name: "index_savings_account_configs_on_interest_expense_account_id"
   end
 
+  create_table "share_capital_applications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "subscriber_type"
+    t.uuid "subscriber_id"
+    t.uuid "share_capital_product_id"
+    t.uuid "cooperative_id"
+    t.uuid "office_id"
+    t.decimal "initial_capital"
+    t.string "account_number"
+    t.datetime "date_opened"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cooperative_id"], name: "index_share_capital_applications_on_cooperative_id"
+    t.index ["office_id"], name: "index_share_capital_applications_on_office_id"
+    t.index ["share_capital_product_id"], name: "index_share_capital_applications_on_share_capital_product_id"
+    t.index ["subscriber_type", "subscriber_id"], name: "index_subscriber_in_share_capital_applications"
+  end
+
   create_table "share_capital_products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -1517,6 +1534,9 @@ ActiveRecord::Schema.define(version: 2018_10_22_094709) do
   add_foreign_key "savings_account_applications", "saving_products"
   add_foreign_key "savings_account_configs", "accounts", column: "closing_account_id"
   add_foreign_key "savings_account_configs", "accounts", column: "interest_expense_account_id"
+  add_foreign_key "share_capital_applications", "cooperatives"
+  add_foreign_key "share_capital_applications", "offices"
+  add_foreign_key "share_capital_applications", "share_capital_products"
   add_foreign_key "share_capital_products", "accounts", column: "paid_up_account_id"
   add_foreign_key "share_capital_products", "accounts", column: "subscription_account_id"
   add_foreign_key "share_capital_products", "cooperatives"

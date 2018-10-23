@@ -60,7 +60,7 @@ module Memberships
       def find_employee
         User.find_by_id(employee_id)
       end
-    
+
     end
   end
 end

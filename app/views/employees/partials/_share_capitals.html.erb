@@ -3,7 +3,7 @@
     <div class="card">
       <div class="card-header">
         <% if policy([:employees, :share_capital]).new? %>
-          <%= link_to 'New Share Capital', new_employee_share_capital_path(@employee), class: "btn btn-primary float-right" %>
+          <%= link_to 'New Share Capital', new_share_capital_path(subscriber_id: @employee.id, subscriber_type: @employee.class.to_s), class: "btn btn-primary float-right" %>
         <% end %>
       </div>
     </div>
