@@ -6,6 +6,8 @@ module LoansModule
       it { is_expected.to belong_to :borrower }
       it { is_expected.to belong_to :preparer }
       it { is_expected.to belong_to :cooperative }
+      it { is_expected.to belong_to :office }
+
       it { is_expected.to belong_to :loan_product }
       it { is_expected.to have_many :voucher_amounts }
       it { is_expected.to have_many :amortization_schedules }

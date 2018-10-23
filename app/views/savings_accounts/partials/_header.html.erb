@@ -25,10 +25,14 @@
       </div>
       <div class="col-md-4">
         <% if policy([:savings_accounts, :deposit]).new? %>
-          <%= link_to 'Deposit', new_savings_account_deposit_path(savings_account), class: "btn btn-success" %>
+          <%= link_to new_savings_account_deposit_path(savings_account) do %>
+            <span class="btn btn-success"><i class="fa fa-arrow-circle-down"></i> Deposit </span>
+          <% end %>
         <% end %>
         <% if policy([:savings_accounts, :withdrawal]).new? %>
-          <%= link_to 'Withdraw', new_savings_account_withdrawal_path(savings_account), class: "btn btn-danger" %>
+          <%= link_to new_savings_account_withdrawal_path(savings_account) do %>
+          <span class="btn btn-danger"><i class="fa fa-arrow-circle-up"></i> Withdraw </span>
+          <% end %>
         <% end %>
       </div>
     </div>
