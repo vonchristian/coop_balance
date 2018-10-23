@@ -43,7 +43,7 @@ module ShareCapitals
       create_entry(share_capital)
     end
     def create_entry(share_capital)
-      AccountingModule::Entry.create!(
+      entry = AccountingModule::Entry.create!(
         office: find_employee.office,
         cooperative: find_employee.cooperative,
         recorder: find_employee,
@@ -60,6 +60,9 @@ module ShareCapitals
           amount: amount,
           commercial_document: share_capital]
         )
+  
+        entry.set_previous_entry!
+        entry.set_hashes!
     end
 
     def find_employee

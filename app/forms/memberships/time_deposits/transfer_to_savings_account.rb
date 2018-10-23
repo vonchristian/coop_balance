@@ -14,7 +14,7 @@ module Memberships
           depositor: find_depositor,
           saving_product_id: saving_product_id,
           account_number: account_number)
-        AccountingModule::Entry.create!(
+        entry = AccountingModule::Entry.create!(
           office: find_employee.office,
           cooperative: find_employee.cooperative,
           commercial_document: find_depositor,
@@ -30,6 +30,9 @@ module Memberships
           account: credit_account,
           amount: amount,
           commercial_document: savings_account])
+
+          entry.set_previous_entry!
+          entry.set_hashes!
       end
       def find_depositor
         find_time_deposit.depositor

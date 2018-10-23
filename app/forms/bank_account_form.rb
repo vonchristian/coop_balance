@@ -13,13 +13,17 @@ class BankAccountForm
   private
   def create_bank_account
     bank_account = BankAccount.find_or_create_by(bank_name: bank_name, bank_address: bank_address, account_number: account_number, account_id: account_id, earned_interest_account_id: earned_interest_account_id)
-    bank_account.entries.create!(
+    entry = bank_account.entries.create!(
       office: find_employee.office,
       cooperative: find_employee.cooperative,
       recorder: find_employee,
       entry_date: date, reference_number: reference_number, description: description,
       credit_amounts_attributes: [account: credit_account, amount: parsed_amount, commercial_document: bank_account],
       debit_amounts_attributes: [account_id: account_id, amount: parsed_amount, commercial_document: bank_account])
+
+
+      entry.set_previous_entry!
+      entry.set_hashes!
   end
 
   def parsed_amount

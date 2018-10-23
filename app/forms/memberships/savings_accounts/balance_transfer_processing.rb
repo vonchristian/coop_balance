@@ -15,7 +15,7 @@ module Memberships
 
       private
       def save_balance_transfer
-         AccountingModule::Entry.create!(
+         entry = AccountingModule::Entry.create!(
         commercial_document: find_origin,
         office: find_employee.office,
         cooperative: find_employee.cooperative,
@@ -31,6 +31,10 @@ module Memberships
           account: find_destination.saving_product_account,
           amount: amount,
           commercial_document: find_destination])
+
+
+          entry.set_previous_entry!
+          entry.set_hashes!
       end
 
       def find_employee

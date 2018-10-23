@@ -18,7 +18,7 @@ module AccountingModule
               :credit_account_id,
               presence: true
     validates :amount, numericality: true
-    
+
     def save
       ActiveRecord::Base.transaction do
         create_entry
@@ -27,7 +27,7 @@ module AccountingModule
 
     private
     def create_entry
-      AccountingModule::Entry.create!(
+      entry = AccountingModule::Entry.create!(
         entry_date: entry_date,
         recorder: find_employee,
         office: find_employee.office,
@@ -46,6 +46,8 @@ module AccountingModule
           commercial_document: find_commercial_document
         ]
       )
+      entry.set_previous_entry!
+      entry.set_hashes!
     end
     def find_employee
       User.find_by_id(employee_id)

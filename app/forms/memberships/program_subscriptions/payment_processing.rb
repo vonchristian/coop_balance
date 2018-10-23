@@ -13,7 +13,7 @@ module Memberships
       end
       private
       def save_payment
-        AccountingModule::Entry.create!(
+        entry = AccountingModule::Entry.create!(
           recorder: find_employee,
           office: find_employee.office,
           cooperative: find_employee.cooperative,
@@ -30,6 +30,8 @@ module Memberships
           amount: amount,
           commercial_document: find_program_subscription]
         )
+        entry.set_previous_entry!
+        entry.set_hashes!
       end
       def debit_account
        find_employee.cash_on_hand_account

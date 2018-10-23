@@ -24,7 +24,7 @@ module TimeDeposits
     end
 
     def save_withdraw
-       find_time_deposit.entries.create!(
+       entry = find_time_deposit.entries.create!(
          office: find_employee.office,
          cooperative: find_employee.cooperative,
         recorder: find_employee,
@@ -43,6 +43,10 @@ module TimeDeposits
         { account: break_contract_account,
         amount: break_contract_amount,
         commercial_document: find_time_deposit }])
+
+  
+        entry.set_previous_entry!
+        entry.set_hashes!
     end
     def close_account
       find_time_deposit.withdrawn!

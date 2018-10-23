@@ -10,9 +10,9 @@ module AccountingModule
         balance_for(args).
         entered_on(args).
         sum(:amount)
-        
+
       elsif args[:cooperative_service_id].present? && to_date.present?
-        joins(:entry).where('entries.cooperative_service_id' => args[:cooperative_service_id]).
+        joins(:entry).where('entries.cancelled' => false).where('entries.cooperative_service_id' => args[:cooperative_service_id]).
         entered_on(from_date: Date.today - 999.years, to_date: args[:to_date]).
         sum(:amount)
 
@@ -29,17 +29,16 @@ module AccountingModule
         sum(:amount)
 
       elsif args[:cooperative_service_id].present? && to_date.present?
-        joins(:entry).where('entries.cooperative_service_id' => args[:cooperative_service_id]).
+        joins(:entry).where('entries.cancelled' => false).where('entries.cooperative_service_id' => args[:cooperative_service_id]).
         entered_on(from_date: Date.today - 999.years, to_date: args[:to_date]).
         sum(:amount)
 
       elsif args[:cooperative_service_id].present? && to_date.blank?
-        joins(:entry).where('entries.cooperative_service_id' => args[:cooperative_service_id]).
+        joins(:entry).where('entries.cancelled' => false).where('entries.cooperative_service_id' => args[:cooperative_service_id]).
         sum(:amount)
-
 
       else
-        sum(:amount)
+        joins(:entry).where('entries.cancelled' => false).sum(:amount)
       end
     end
 

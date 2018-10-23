@@ -17,7 +17,7 @@ module BankAccounts
     end
 
     def save_entry
-      AccountingModule::Entry.create!(
+      entry = AccountingModule::Entry.create!(
       commercial_document: find_bank_account,
       recorder: find_employee,
       office: find_employee.office,
@@ -33,6 +33,8 @@ module BankAccounts
         account: debit_account,
         amount: amount,
         commercial_document: find_bank_account])
+        entry.set_previous_entry!
+        entry.set_hashes!
     end
 
     def find_employee

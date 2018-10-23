@@ -22,7 +22,7 @@ module AccountingModule
     has_many :debit_accounts, :through => :debit_amounts, :source => :account, :class_name => 'AccountingModule::Account'
     has_many :amounts, class_name: "AccountingModule::Amount"
     has_many :accounts, class_name: "AccountingModule::Account", through: :amounts
-
+    has_one :voucher, foreign_key: 'entry_id', dependent: :destroy
     validates :description, presence: true
     validates :office_id, :cooperative_id, :recorder_id, presence: true
     validate :has_credit_amounts?
@@ -31,7 +31,7 @@ module AccountingModule
 
     accepts_nested_attributes_for :credit_amounts, :debit_amounts, allow_destroy: true
 
-    before_save :set_default_date, :set_previous_entry
+    before_save :set_default_date, on: :create
 
     delegate :name, :first_and_last_name, to: :recorder, prefix: true, allow_nil: true
     delegate :name, to: :cooperative, prefix: true
@@ -99,10 +99,15 @@ module AccountingModule
       self.save!
     end
 
-    private
-    def set_previous_entry
-      self.previous_entry = AccountingModule::Entry.where.not(id: self.id).order(created_at: :desc).first
+    def set_previous_entry!
+      if previous_entry.blank?
+        self.previous_entry = AccountingModule::Entry.where.not(id: self.id).order(created_at: :desc).first
+        self.save
+      end
     end
+
+    private
+
 
       def set_default_date
         todays_date = ActiveRecord::Base.default_timezone == :utc ? Time.now.utc : Time.now

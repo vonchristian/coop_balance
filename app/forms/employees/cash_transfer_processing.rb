@@ -12,7 +12,7 @@ module Employees
 
     private
     def save_cash_transfer
-      AccountingModule::Entry.create(
+      entry = AccountingModule::Entry.create(
         entry_date: date,
         office: find_employee.office,
         cooperative: find_employee.cooperative,
@@ -31,6 +31,8 @@ module Employees
           commercial_document: find_transferred_to
         ]
       )
+      entry.set_previous_entry!
+      entry.set_hashes!
     end
 
     def find_employee

@@ -1,4 +1,3 @@
-<%= @entry.hashes_valid? %>
 <div class="row">
   <div class="col-md-8 offset-md-2">
     <div class="card">
@@ -13,21 +12,24 @@
 
           </div>
           <div class="col-md-3">
-            <div class="dropdown">
-              <button class="btn btn-outline-danger dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Options
-              </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                <% if current_user.bookkeeper? || current_user.accountant? || current_user == @entry.recorder %>
-                  <% if !@entry.cancelled? %>
-                    <%= link_to "Delete Entry", accounting_module_entry_path(@entry), method: :delete, data: { confirm: "Are you sure you want to delete this entry?"}, class: "dropdown-item" %>
-                    <%= link_to 'Cancel Entry', accounting_module_entry_cancellations_path(@entry), method: :create, class: "dropdown-item", data: { confirm: "Are you sure you want to cancel this entry?"} %>
-                    <%= link_to "Edit Entry", edit_accounting_module_entry_path(@entry), class: "dropdown-item" %>
+            <% if current_user.bookkeeper? || current_user.accountant? %>
 
+              <div class="dropdown">
+                <button class="btn btn-outline-danger dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Options
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                  <% if current_user.bookkeeper? || current_user.accountant? || current_user == @entry.recorder %>
+                    <% if !@entry.cancelled? %>
+                      <%= link_to "Delete Entry", accounting_module_entry_path(@entry), method: :delete, data: { confirm: "Are you sure you want to delete this entry?"}, class: "dropdown-item" %>
+                      <%= link_to 'Cancel Entry', accounting_module_entry_cancellations_path(@entry), method: :create, class: "dropdown-item", data: { confirm: "Are you sure you want to cancel this entry?"} %>
+                      <%= link_to "Edit Entry", edit_accounting_module_entry_path(@entry), class: "dropdown-item" %>
+
+                    <% end %>
                   <% end %>
-                <% end %>
+                </div>
               </div>
-            </div>
+            <% end %>
           </div>
         </div>
       </div>
@@ -107,6 +109,7 @@
           </thead>
           <tbody>
             <% @entry.amounts.each do |amount| %>
+
               <tr>
                 <td>
                   <% if amount.debit? %>
@@ -124,11 +127,11 @@
                   <% end %>
                 </td>
                 <td>
-                  <% if current_user.bookkeeper? || current_user.accountant? || current_user == @entry.recorder %>
-                    <% if !@entry.cancelled? %>
-                      <%=link_to "Update", amount.is_a?(AccountingModule::DebitAmount) ?edit_accounting_module_debit_amount_path(amount) : edit_accounting_module_credit_amount_path(amount), class: "btn btn-outline-warning btn-sm" %>
-                    <% end %>
-                  <% end %>
+                  <%# if current_user.bookkeeper? || current_user.accountant? || current_user == @entry.recorder %>
+                    <%# if !@entry.cancelled? %>
+                      <%#=link_to "Update", amount.is_a?(AccountingModule::DebitAmount) ?edit_accounting_module_debit_amount_path(amount) : edit_accounting_module_credit_amount_path(amount), class: "btn btn-outline-warning btn-sm" %>
+                    <%# end %>
+                  <%# end %>
                 </td>
               </tr>
             <% end %>
@@ -180,6 +183,7 @@
               </div>
             <% end %>
           <% end %>
+
         </div>
       </div>
     </div>

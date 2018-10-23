@@ -21,7 +21,7 @@ module BankAccounts
         earned_interest_account_id: earned_interest_account_id,
         cooperative:             find_employee.cooperative)
 
-      AccountingModule::Entry.create!(
+      entry = AccountingModule::Entry.create!(
         commercial_document: bank_account,
         office:              find_employee.office,
         cooperative:         find_employee.cooperative,
@@ -37,6 +37,9 @@ module BankAccounts
           account_id:          account_id,
           amount:              amount,
           commercial_document: bank_account])
+
+        entry.set_previous_entry!
+        entry.set_hashes!
     end
 
     def find_employee

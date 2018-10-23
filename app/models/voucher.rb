@@ -74,12 +74,11 @@ class Voucher < ApplicationRecord
   def self.disbursed_on(args={})
     if args[:from_date] && args[:to_date]
       range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])
-      where.not(entry_id: nil).joins(:accounting_entry).where('entries.entry_date' => (range.start_date..range.end_date))
+      disbursed.joins(:accounting_entry).where('entries.entry_date' => (range.start_date..range.end_date))
     else
       disbursed
     end
   end
-
 
   def disbursed?
     accounting_entry.present?
@@ -89,15 +88,6 @@ class Voucher < ApplicationRecord
       accounting_entry.entry_date
     end
   end
-
-  # def add_amounts(payee)
-  #   self.voucher_amounts << payee.voucher_amounts
-  #   payee.voucher_amounts.each do |v|
-  #     v.commercial_document_id = nil
-  #     v.commercial_document_type = nil
-  #     v.save
-  #   end
-  # end
 
   def self.generate_number_for(voucher)
     return  voucher.number = Voucher.order(created_at: :asc).last.number.succ if Voucher.exists? && Voucher.order(created_at: :asc).last.number.present?

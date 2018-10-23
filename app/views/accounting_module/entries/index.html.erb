@@ -22,7 +22,7 @@
         <% current_cooperative.users.each do |user| %>
           <%= link_to accounting_module_entries_path(recorder: user) do %>
             <span data-toggle="tooltip" title="<%= user.first_and_last_name %>">
-              <%= image_tag(user.avatar, class: "img-circle", height: 45, width: 45) %> &nbsp;
+              <%#= image_tag(user.avatar, class: "img-circle", height: 45, width: 45) %> &nbsp;
             </span>
           <% end %>
         <% end %>

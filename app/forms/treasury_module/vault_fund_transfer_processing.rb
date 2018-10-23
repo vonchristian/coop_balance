@@ -23,7 +23,7 @@ module TreasuryModule
       find_employee.office
     end
     def save_fund_transfer
-      AccountingModule::Entry.create!(
+      entry = AccountingModule::Entry.create!(
         office: find_employee.office,
         cooperative: find_employee.cooperative,
         recorder: find_employee,
@@ -39,6 +39,10 @@ module TreasuryModule
         account: credit_account,
         amount: amount,
         commercial_document: find_office])
+
+
+        entry.set_previous_entry!
+        entry.set_hashes!
     end
 
     def debit_account
