@@ -8,7 +8,8 @@ module ShareCapitals
                   :reference_number,
                   :date,
                   :description,
-                  :account_number
+                  :account_number,
+                  :cash_account_id
     validates :share_capital_product_id,
               :employee_id,
               :amount,
@@ -60,7 +61,7 @@ module ShareCapitals
           amount: amount,
           commercial_document: share_capital]
         )
-  
+
         entry.set_previous_entry!
         entry.set_hashes!
     end
@@ -70,7 +71,7 @@ module ShareCapitals
     end
 
     def debit_account
-      find_employee.cash_on_hand_account
+      find_employee.cash_accounts.find(cash_account_id)
     end
 
     def find_subscriber

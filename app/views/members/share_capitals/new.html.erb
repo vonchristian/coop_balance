@@ -10,14 +10,14 @@
       <div class="card-body">
         <%= simple_form_for @share_capital, url: :member_share_capitals do |f| %>
           <%= f.input :subscriber_id, input_html: { value: @member.id }, as: :hidden %>
-          <%= f.input :share_capital_product_id, collection: CoopServicesModule::ShareCapitalProduct.all.map{|a| [a.name, a.id] }, as: :radio_buttons %>
+          <%= f.input :share_capital_product_id, collection: current_cooperative.share_capital_products.map{|a| [a.name, a.id] }, as: :radio_buttons %>
           <%= f.input :date, as: :string, input_html: { value: Time.zone.now.strftime("%B %e, %Y"), class: "datepicker" } %>
           <%= f.input :amount, as: :currency %>
           <%= f.input :reference_number %>
           <%= f.input :description, input_html: { value: "Payment of capital build up of #{@member.name}"} %>
           <%= f.input :employee_id, input_html: { value: current_user.id },as: :hidden %>
           <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
-
+          <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] } %>
             <%= f.submit "Save Share Capital", class: "btn btn-primary float-right" %>
 
         <% end %>

@@ -26,12 +26,12 @@ module Memberships
       private
       def create_deposit_voucher
         voucher = Voucher.new(
-          payee: find_share_capital.subscriber,
-          office: find_employee.office,
-          cooperative: find_employee.cooperative,
-          preparer: find_employee,
-          description: "Capital build up transaction of #{find_share_capital.subscriber.full_name}",
-          number: or_number,
+          payee:          find_share_capital.subscriber,
+          office:         find_employee.office,
+          cooperative:    find_employee.cooperative,
+          preparer:       find_employee,
+          description:    "Capital build up transaction of #{find_share_capital.subscriber.full_name}",
+          number:         or_number,
           account_number: account_number,
           date: date)
         voucher.voucher_amounts.debit.build(
@@ -60,13 +60,7 @@ module Memberships
       def find_employee
         User.find_by_id(employee_id)
       end
-      # def update_share_capital_status
-      #   find_share_capital.set_balance_status
-      # end
-      # def set_last_transaction_date
-      #   find_share_capital.update_attributes!(last_transaction_date: date)
-      #   find_share_capital.subscriber.update_attributes!(last_transaction_date: date)
-      # end
+    
     end
   end
 end

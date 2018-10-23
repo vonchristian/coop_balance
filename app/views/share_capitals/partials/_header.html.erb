@@ -25,7 +25,9 @@
       </div>
       <div class="col-md-2">
          <% if policy([:share_capitals, :capital_build_up]).new? %>
-          <%= link_to 'New CBU', new_share_capital_capital_build_up_path(share_capital), class: "btn btn-success btn-sm float-right" %>
+          <%= link_to new_share_capital_capital_build_up_path(share_capital) do %>
+            <span class="btn btn-success float-right"><i class="fa fa-plus-circle"></i> Add Capital </span>
+          <% end %>
         <% end %>
       </div>
     </div>
