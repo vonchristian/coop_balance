@@ -2,9 +2,9 @@ module AccountingModule
   class Amount < ApplicationRecord
     audited
     extend AccountingModule::BalanceFinder
-    belongs_to :entry, :class_name => 'AccountingModule::Entry', touch: true
-    belongs_to :account, :class_name => 'AccountingModule::Account', touch: true
-    belongs_to :commercial_document, polymorphic: true, touch: true
+    belongs_to :entry, :class_name => 'AccountingModule::Entry'
+    belongs_to :account, :class_name => 'AccountingModule::Account'
+    belongs_to :commercial_document, polymorphic: true
 
     validates :type, :amount, :entry, :account, :commercial_document_id, :commercial_document_type,  presence: true
     validates :amount, numericality: true

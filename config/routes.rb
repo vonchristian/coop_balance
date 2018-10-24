@@ -410,7 +410,6 @@ namespace :share_capitals_section do
 
   resources :vouchers, only: [:index, :show, :destroy] do
     resources :disbursements, only: [:new, :create], module: :vouchers
-    resources :confirmations, only: [:create], module: :vouchers
     resources :loan_disbursements, only: [:new, :create], module: :vouchers
 
   end

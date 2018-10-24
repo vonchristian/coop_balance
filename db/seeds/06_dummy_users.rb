@@ -23,3 +23,11 @@ User.teller.create(
   first_name: "Tell",
   last_name: "er",
   cooperative: Cooperative.last)
+
+  User.bookkeeper.create(
+    email: 'bookkeeper@coopcatalyst.ph',
+    password: '11111111',
+    password_confirmation: '11111111',
+    first_name: "Tell",
+    last_name: "er",
+    cooperative: Cooperative.last)

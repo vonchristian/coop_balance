@@ -22,7 +22,6 @@ class VouchersController < ApplicationController
     @voucher = Voucher.find(params[:id])
     if !@voucher.disbursed?
       @voucher.destroy
-      delete_time_deposit
       redirect_to "/", notice: "Voucher cancelled successfully."
     else
       redirect_to "/", alert: "Cannot delete voucher. Already disbursed."

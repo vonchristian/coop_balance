@@ -49,7 +49,7 @@ GEM
       activerecord (>= 4.0, < 5.3)
     autonumeric-rails (2.0.0.1)
       jquery-rails (>= 2.0.2)
-    autoprefixer-rails (9.2.0)
+    autoprefixer-rails (9.3.0)
       execjs
     axlsx (2.1.0.pre)
       htmlentities (~> 4.3.1)
@@ -278,7 +278,7 @@ GEM
     rspec-mocks (3.8.0)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.8.0)
-    rspec-rails (3.8.0)
+    rspec-rails (3.8.1)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       railties (>= 3.0)

@@ -15,23 +15,25 @@ module AccountingModule
     belongs_to :cooperative_service, optional: true, class_name: "CoopServicesModule::CooperativeService"
     belongs_to :cancelled_by, class_name: "User", foreign_key: 'cancelled_by_id'
     belongs_to :recorder, foreign_key: 'recorder_id', class_name: "User"
-
+    has_many :referenced_entries, class_name: "AccountingModule::Entry", foreign_key: 'previous_entry_id', dependent: :nullify
     has_many :credit_amounts, extend: AccountingModule::BalanceFinder, :class_name => 'AccountingModule::CreditAmount', :inverse_of => :entry, dependent: :destroy
     has_many :debit_amounts, extend: AccountingModule::BalanceFinder, :class_name => 'AccountingModule::DebitAmount', :inverse_of => :entry, dependent: :destroy
     has_many :credit_accounts, :through => :credit_amounts, :source => :account, :class_name => 'AccountingModule::Account'
     has_many :debit_accounts, :through => :debit_amounts, :source => :account, :class_name => 'AccountingModule::Account'
-    has_many :amounts, class_name: "AccountingModule::Amount"
+    has_many :amounts, class_name: "AccountingModule::Amount", dependent: :destroy
     has_many :accounts, class_name: "AccountingModule::Account", through: :amounts
-    has_one :voucher, foreign_key: 'entry_id', dependent: :destroy
-    validates :description, presence: true
+    has_one :voucher, foreign_key: 'entry_id', dependent: :nullify
+    validates :description, :previous_entry_id, presence: true
     validates :office_id, :cooperative_id, :recorder_id, presence: true
+
     validate :has_credit_amounts?
     validate :has_debit_amounts?
     validate :amounts_cancel?
 
     accepts_nested_attributes_for :credit_amounts, :debit_amounts, allow_destroy: true
 
-    before_save :set_default_date, on: :create
+    before_validation :set_default_date, :set_previous_entry, on: :create
+    after_commit :set_hashes, on: :create
 
     delegate :name, :first_and_last_name, to: :recorder, prefix: true, allow_nil: true
     delegate :name, to: :cooperative, prefix: true
@@ -75,39 +77,33 @@ module AccountingModule
     end
 
     def digestable
-      created_at.to_s +
-      updated_at.to_s +
-      amounts.count.to_s +
-      amounts.sum(:amount).to_s +
-      entry_date.to_s +
-      cooperative_id.to_s +
-      office_id.to_s +
-      commercial_document_id.to_s +
-      commercial_document_type.to_s +
-      recorder_id.to_s +
-      default_previous_hash
-    end
-
-    def default_previous_hash
-      return "Genesis Block" if previous_entry.blank?
-      previous_entry.encrypted_hash
-    end
-
-    def set_hashes!
-      self.previous_entry_hash = default_previous_hash
-      self.encrypted_hash = Digest::SHA256.hexdigest(self.digestable)
-      self.save!
-    end
-
-    def set_previous_entry!
-      if previous_entry.blank?
-        self.previous_entry = AccountingModule::Entry.where.not(id: self.id).order(created_at: :desc).first
-        self.save
-      end
+      "#{created_at.to_s}
+      #{updated_at.to_s}
+      #{amounts.count.to_s}
+      #{amounts.sum(:amount).to_s}
+      #{entry_date.to_s}
+      #{cooperative_id.to_s}
+      #{office_id.to_s}
+      #{commercial_document_id.to_s}
+      #{commercial_document_type.to_s}
+      #{recorder_id.to_s}
+      #{previous_entry_hash}"
     end
 
     private
 
+    def set_previous_entry
+      if previous_entry.blank?
+        self.previous_entry = AccountingModule::Entry.where.not(id: self.id).order(created_at: :desc).first
+      end
+    end
+
+    def set_hashes
+      if encrypted_hash.blank?
+        self.previous_entry_hash = previous_entry.encrypted_hash
+        self.encrypted_hash = Digest::SHA256.hexdigest(self.digestable)
+      end
+    end
 
       def set_default_date
         todays_date = ActiveRecord::Base.default_timezone == :utc ? Time.now.utc : Time.now
@@ -126,5 +122,9 @@ module AccountingModule
       def amounts_cancel?
         errors[:base] << "The credit and debit amounts are not equal" if credit_amounts.balance_for_new_record != debit_amounts.balance_for_new_record
       end
+      # def destroy
+      #   # raise "Cannot destroy entry"
+      #   # super
+      # end
   end
 end

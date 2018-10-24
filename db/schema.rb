@@ -1112,7 +1112,7 @@ ActiveRecord::Schema.define(version: 2018_10_23_013128) do
     t.index ["cooperative_id"], name: "index_share_capital_applications_on_cooperative_id"
     t.index ["office_id"], name: "index_share_capital_applications_on_office_id"
     t.index ["share_capital_product_id"], name: "index_share_capital_applications_on_share_capital_product_id"
-    t.index ["subscriber_type", "subscriber_id"], name: "index_subscriber_in_share_capital_applications"
+    t.index ["subscriber_type", "subscriber_id"], name: "index_subscriber_on_share_capital_applications"
   end
 
   create_table "share_capital_products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1140,8 +1140,8 @@ ActiveRecord::Schema.define(version: 2018_10_23_013128) do
     t.string "account_number"
     t.datetime "date_opened"
     t.string "account_owner_name"
-    t.datetime "created_at", default: "2018-10-22 09:50:58", null: false
-    t.datetime "updated_at", default: "2018-10-22 09:50:58", null: false
+    t.datetime "created_at", default: "2018-10-24 03:43:32", null: false
+    t.datetime "updated_at", default: "2018-10-24 03:43:32", null: false
     t.integer "status"
     t.uuid "office_id"
     t.string "subscriber_type"

@@ -3,7 +3,6 @@ module AccountingModule
     def balance(args={})
       from_date = args[:from_date]
       to_date = args[:to_date]
-
       commercial_document = args[:commercial_document]
 
       if commercial_document.present? && from_date.present? && to_date.present?
@@ -12,7 +11,7 @@ module AccountingModule
         sum(:amount)
 
       elsif args[:cooperative_service_id].present? && to_date.present?
-        joins(:entry).where('entries.cancelled' => false).where('entries.cooperative_service_id' => args[:cooperative_service_id]).
+        includes(:entry).where('entries.cancelled' => false).where('entries.cooperative_service_id' => args[:cooperative_service_id]).
         entered_on(from_date: Date.today - 999.years, to_date: args[:to_date]).
         sum(:amount)
 
@@ -29,16 +28,16 @@ module AccountingModule
         sum(:amount)
 
       elsif args[:cooperative_service_id].present? && to_date.present?
-        joins(:entry).where('entries.cancelled' => false).where('entries.cooperative_service_id' => args[:cooperative_service_id]).
+        includes(:entry).where('entries.cancelled' => false).where('entries.cooperative_service_id' => args[:cooperative_service_id]).
         entered_on(from_date: Date.today - 999.years, to_date: args[:to_date]).
         sum(:amount)
 
       elsif args[:cooperative_service_id].present? && to_date.blank?
-        joins(:entry).where('entries.cancelled' => false).where('entries.cooperative_service_id' => args[:cooperative_service_id]).
+        includes(:entry).where('entries.cooperative_service_id' => args[:cooperative_service_id]).
         sum(:amount)
 
       else
-        joins(:entry).where('entries.cancelled' => false).sum(:amount)
+        includes(:entry).where('entries.cancelled' => false).sum(:amount)
       end
     end
 

@@ -30,15 +30,11 @@ module AccountingModule
 
     end
 
-    it ".entered_on(args={})" do
-      employee = create(:user, role: 'teller')
-      updated_saving = create(:saving)
-      deposit = build(:entry, commercial_document: updated_saving, entry_date: Date.today)
-      debit = deposit.credit_amounts << create(:credit_amount, amount: 5_000, commercial_document: updated_saving, account: updated_saving.saving_product_account)
-      deposit.debit_amounts << create(:debit_amount, amount: 5_000, commercial_document: updated_saving, account: employee.cash_on_hand_account)
-      deposit.save
+    it "#entered_on(args)" do
+      entry = create(:entry_with_credit_and_debit, entry_date: Date.today)
 
-      expect(AccountingModule::Amount.entered_on(from_date: Date.today, to_date: Date.today)).to include(deposit.amounts)
+      expect(AccountingModule::Amount.entered_on(from_date: Date.today, to_date: Date.today).pluck(:id)).to include(entry.amounts.pluck(:id))
+
     end
 
     it "#debit?" do

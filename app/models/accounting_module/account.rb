@@ -90,7 +90,7 @@ module AccountingModule
     end
 
     def self.debit_entries(args={})
-      ids = AccountingModule::CreditAmount.for_account(account_id: self.pluck(:id)).pluck(:entry_id)
+      ids = AccountingModule::DebitAmount.for_account(account_id: self.pluck(:id)).pluck(:entry_id)
       AccountingModule::Entry.where(id: ids)
     end
 
@@ -128,9 +128,9 @@ module AccountingModule
       accounts_balance
     end
 
-    def self.trial_balance
+    def self.trial_balance(args={})
       if self.new.class == AccountingModule::Account
-        AccountingModule::Asset.balance - (AccountingModule::Liability.balance + AccountingModule::Equity.balance + AccountingModule::Revenue.balance - AccountingModule::Expense.balance)
+        AccountingModule::Asset.balance(args) - (AccountingModule::Liability.balance(args) + AccountingModule::Equity.balance(args) + AccountingModule::Revenue.balance(args) - AccountingModule::Expense.balance(args))
       else
         raise(NoMethodError, "undefined method 'trial_balance'")
       end

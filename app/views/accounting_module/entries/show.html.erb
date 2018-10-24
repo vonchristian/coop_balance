@@ -11,27 +11,28 @@
             </span>
 
           </div>
+
           <div class="col-md-3">
-            <% if current_user.bookkeeper? || current_user.accountant? %>
 
               <div class="dropdown">
                 <button class="btn btn-outline-danger dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Options
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                  <% if current_user.bookkeeper? || current_user.accountant? || current_user == @entry.recorder %>
-                    <% if !@entry.cancelled? %>
+
                       <%= link_to "Delete Entry", accounting_module_entry_path(@entry), method: :delete, data: { confirm: "Are you sure you want to delete this entry?"}, class: "dropdown-item" %>
-                      <%= link_to 'Cancel Entry', accounting_module_entry_cancellations_path(@entry), method: :create, class: "dropdown-item", data: { confirm: "Are you sure you want to cancel this entry?"} %>
+                      <% if !@entry.cancelled? %>
+                        <%= link_to 'Cancel Entry', accounting_module_entry_cancellations_path(@entry), method: :create, class: "dropdown-item", data: { confirm: "Are you sure you want to cancel this entry?"} %>
+                      <% end %>
                       <%= link_to "Edit Entry", edit_accounting_module_entry_path(@entry), class: "dropdown-item" %>
 
-                    <% end %>
-                  <% end %>
+        
                 </div>
               </div>
-            <% end %>
           </div>
         </div>
+
+
       </div>
       <div class="card-body">
         <div class="row">

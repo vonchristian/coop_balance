@@ -33,7 +33,7 @@ module MembershipsModule
     def self.updated_at(options={})
       if options[:from_date] && options[:to_date]
         date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
-        where('updated_at' => (date_range.start_date..date_range.end_date))
+        where('last_transaction_date' => (date_range.start_date..date_range.end_date))
       else
         all
       end
@@ -47,18 +47,12 @@ module MembershipsModule
       self.where(has_minimum_balance: false)
     end
 
-    def self.default
-      select {|a| a.share_capital_product_default_product? }
-    end
 
     def capital_build_ups(args={})
       share_capital_product_paid_up_account.amounts.where(commercial_document: self) +
       share_capital_product_paid_up_account.amounts.where(commercial_document: self.subscriber)
     end
 
-    def self.balance
-      sum(&:balance)
-    end
 
     def average_monthly_balance(args = {})
       first_entry_date = AccountingModule::Entry.order(entry_date: :desc).last.try(:entry_date) || Date.today

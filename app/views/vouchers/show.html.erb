@@ -6,13 +6,13 @@
         <%=link_to 'View (PDF)', voucher_path(@voucher, format: "pdf"), class: "btn btn-default float-right" %>
       </div>
       <%= render 'vouchers/partials/body', voucher: @voucher %>
-      <hr class="no-margin">
+      <br class="no-margin">
       <div class="card-body">
         <% if !@voucher.disbursed?%>
           <p><i class="fa fa-info-circle  text-primary"></i>
           Click "Confirm" to post this journal entry</p>
           <hr class="min-magrin">
-          <%= link_to "Confirm", voucher_confirmations_path(@voucher), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
+          <%= link_to "Disburse", voucher_disbursements_path(voucher_id: @voucher.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
           <%= link_to "Cancel", voucher_path(@voucher), method: :delete, class: "btn text-danger float-left" %>
         <% else %>
           <span class="badge bg-success float-right"> Disbursed </span>

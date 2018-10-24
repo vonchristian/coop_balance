@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :entry, :class => AccountingModule::Entry do |entry|
-    entry.description 'factory description'
+    entry.description 'entry description'
     association :recorder, factory: :user
     association :office
     association :cooperative

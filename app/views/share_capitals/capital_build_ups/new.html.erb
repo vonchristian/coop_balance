@@ -8,7 +8,7 @@
         </center>
       </div>
       <div class="card-body">
-      <h3 class="card-title">CBU Details </h3>
+      <h3 class="card-title">Capital Build Up Details </h3>
       <%= simple_form_for @capital_build_up, url: :share_capital_capital_build_ups, html: {autocomplete: "off"} do |f| %>
         <%= f.error_notification %>
         <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>

@@ -34,18 +34,25 @@
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-4">
-        <div class="card">
-          <div class="card-body">
-            <h3 class="card-title">Cash Accounts </h3>
-            <% current_user.cash_accounts.each do |account| %>
-              <%= number_to_currency account.balance %>
-              <%= account.name %>
-          </div>
+      <h3 class="card-title">Cash Accounts </h3>
+      <div class="no-margin">
+      </div>
+<div class="row">
+  <% current_user.cash_accounts.each do |account| %>
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <%= link_to new_treasury_module_cash_account_cash_receipt_line_item_path(account) do %>
+            <h3 class="card-title"><%= number_to_currency account.balance %></h3>
+            <%= account.name %>
+          <% end %>
         </div>
       </div>
-      <div class="col-md-8">
+    </div>
+  <% end %>
+</div>
+<h3 class="card-title"> Transactions </h3>
+<br class="no-margin">
         <% @cash_receipts.each do |entry| %>
           <% cache(entry) do %>
             <%= render 'accounting_module/entries/partials/header', entry: entry %>

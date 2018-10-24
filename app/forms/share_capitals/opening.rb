@@ -23,8 +23,9 @@ module ShareCapitals
         subscriber: subscriber,
         account_number: share_capital_application.account_number,
         date_opened: share_capital_application.date_opened,
-        share_capital_product: share_capital_application.share_capital_product
-)
+        share_capital_product: share_capital_application.share_capital_product,
+        last_transaction_date: share_capital_application.date_opened
+      )
       update_voucher(share_capital)
     end
 

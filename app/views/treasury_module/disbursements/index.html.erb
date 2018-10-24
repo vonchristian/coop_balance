@@ -34,6 +34,20 @@
     </div>
   </div>
 </div>
+<div class="row">
+  <% current_user.cash_accounts.each do |account| %>
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <%= link_to new_treasury_module_cash_account_cash_disbursement_line_item_path(account) do %>
+            <h3 class="card-title"><%= number_to_currency account.balance %></h3>
+            <%= account.name %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
 <% @cash_disbursements.each do |entry| %>
   <%= link_to accounting_module_entry_path(entry) do %>
     <%= render 'accounting_module/entries/partials/header', entry: entry %>

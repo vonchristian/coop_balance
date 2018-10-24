@@ -6,7 +6,7 @@ FactoryBot.define do
     association :account, factory: :liability
     association :interest_expense_account, factory: :expense
     association :closing_account, factory: :revenue
-
+    association :cooperative
     minimum_balance 100
   end
 end

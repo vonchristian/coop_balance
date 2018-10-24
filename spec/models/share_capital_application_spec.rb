@@ -1,5 +1,19 @@
 require 'rails_helper'
 
-RSpec.describe ShareCapitalApplication, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+describe ShareCapitalApplication do
+  describe 'associations' do
+    it { is_expected.to belong_to :subscriber }
+    it { is_expected.to belong_to :share_capital_product }
+    it { is_expected.to belong_to :cooperative }
+    it { is_expected.to belong_to :office }
+  end
+
+  describe 'validations' do
+    it { is_expected.to validate_presence_of :subscriber_id }
+    it { is_expected.to validate_presence_of :subscriber_type }
+    it { is_expected.to validate_presence_of :share_capital_product_id }
+    it { is_expected.to validate_presence_of :office_id }
+
+  end
+
 end

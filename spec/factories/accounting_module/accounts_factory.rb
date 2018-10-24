@@ -4,6 +4,7 @@ FactoryBot.define do
     code  { Faker::Number.number(12) }
     contra false
 
+
     factory :asset, class: AccountingModule::Asset do
     end
 

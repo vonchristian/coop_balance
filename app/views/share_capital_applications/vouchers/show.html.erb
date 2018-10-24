@@ -15,7 +15,7 @@
 
 
 
-             <%= link_to "Confirm", share_capital_application_voucher_disbursements_path(voucher_id: @voucher.id, share_capital_application_id: @share_capital_application.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
+             <%= link_to "Disburse", share_capital_application_voucher_disbursements_path(voucher_id: @voucher.id, share_capital_application_id: @share_capital_application.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
 
               <%= link_to "Cancel", share_capital_application_voucher_path(id: @voucher.id, share_capital_application_id: @share_capital_application.id), method: :delete, class: "btn text-danger float-left" %>
 

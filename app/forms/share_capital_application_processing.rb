@@ -25,7 +25,9 @@ class ShareCapitalApplicationProcessing
       subscriber_type: subscriber_type,
       date_opened: date_opened,
       account_number: account_number,
-      initial_capital: amount
+      initial_capital: amount,
+      cooperative: find_employee.cooperative,
+      office: find_employee.office
     )
     create_voucher(share_capital_application)
   end
