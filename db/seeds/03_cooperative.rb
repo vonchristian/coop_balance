@@ -13,10 +13,10 @@ genesis_account = AccountingModule::Asset.create(name: "Genesis Account", active
     office:              office,
     cooperative:         coop,
     commercial_document: coop,
-    description:         "Genesis Block",
+    description:         "Genesis entry",
     recorder:            general_manager,
     reference_number:    "Genesis",
-    previous_entry_id:   "Genesis previous entry id",
+    previous_entry_id:   "",
     previous_entry_hash:   "Genesis previous entry hash",
     encrypted_hash:      "Genesis encryted hash",
     entry_date:          Date.today)

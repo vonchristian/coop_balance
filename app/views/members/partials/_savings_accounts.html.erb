@@ -6,7 +6,9 @@
       </div>
       <div class="col-md-6">
 		    <% if policy([:members, :savings_account]).new? %>
-		     <%=link_to 'New Savings Account', new_savings_account_application_path(depositor_id: @member.id, depositor_type: @member.class.to_s), class: "btn btn-primary float-right" %>
+		      <%=link_to new_savings_account_application_path(depositor_id: @member.id, depositor_type: @member.class.to_s) do %>
+            <span class="btn btn-primary float-right"><i class="fa fa-plus-circle"></i> New Savings Account </span>
+          <% end %>
 		    <% end %>
       </div>
 		</div>

@@ -1,5 +1,5 @@
 module SavingsAccounts
-  class DepositConfirmationsController < ApplicationController
+  class VoucherConfirmationsController < ApplicationController
     def create
       @voucher = current_cooperative.vouchers.find(params[:voucher_id])
       @savings_account = MembershipsModule::Saving.find(params[:savings_account_id])

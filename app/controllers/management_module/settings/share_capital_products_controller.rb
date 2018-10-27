@@ -9,7 +9,7 @@ module ManagementModule
       end
 
       def create
-        @share_capital_product = current_cooperative.share_capital_products.create(share_capital_product_params)
+        @share_capital_product = current_cooperative.share_capital_products.create!(share_capital_product_params)
         respond_modal_with @share_capital_product,
           location: management_module_settings_cooperative_products_url,
           notice: "Share Capital Product created succesfully."

@@ -346,7 +346,7 @@ namespace :share_capitals_section do
 
     resources :barangay_settings,  only: [:edit, :update], module: :savings_accounts
 
-    resources :deposit_confirmations, only: [:create, :show], module: :savings_accounts
+    resources :voucher_confirmations, only: [:create, :show], module: :savings_accounts
   end
 
   resources :search_results, only: [:index, :show]

@@ -23,7 +23,8 @@ module AccountingModule
     has_many :amounts, class_name: "AccountingModule::Amount", dependent: :destroy
     has_many :accounts, class_name: "AccountingModule::Account", through: :amounts
     has_one :voucher, foreign_key: 'entry_id', dependent: :nullify
-    validates :description, :previous_entry_id, presence: true
+    validates :description, presence: true
+    validates :previous_entry_id, presence: true, if: :entries_present?
     validates :office_id, :cooperative_id, :recorder_id, presence: true
 
     validate :has_credit_amounts?
@@ -67,6 +68,10 @@ module AccountingModule
 
     def self.total
       all.map{|a| a.total }.sum
+    end
+
+    def entries_present?
+      AccountingModule::Entry.exists?
     end
 
     def total
