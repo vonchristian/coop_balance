@@ -43,7 +43,7 @@ module AccountingModule
     delegate :title, to: :cooperative_service, prefix: true, allow_nil: true
 
     def self.recent
-      not_cancelled.order(created_at: :desc).first
+      order(created_at: :desc).first
     end
 
     def self.not_cancelled

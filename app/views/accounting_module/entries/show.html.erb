@@ -40,7 +40,7 @@
             <label class="no-margin-bottom">Member/Payee</label>
           </div>
           <div class="col-md-8">
-            <%#= image_tag(@entry.commercial_document.avatar.variant(resize: '30x30'), class: "img-circle") if @entry.commercial_document.avatar.attached? %> &nbsp; <%= @entry.commercial_document.try(:name) %>
+            <%= image_tag(@entry.commercial_document.avatar.variant(resize: '30x30'), class: "img-circle") if @entry.commercial_document.avatar.attached? %> &nbsp; <%= @entry.commercial_document.try(:name) %>
           </div>
         </div>
         <hr>

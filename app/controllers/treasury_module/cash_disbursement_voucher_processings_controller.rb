@@ -1,9 +1,9 @@
 module TreasuryModule
-  class VoucherProcessingsController < ApplicationController
+  class CashDisbursementVoucherProcessingsController < ApplicationController
     def create
       @cash_receipt = Vouchers::VoucherProcessing.new(cash_receipt_params)
       @cash_receipt.process!
-      redirect_to voucher_url(@cash_receipt.find_voucher.id), notice: "Voucher created successfully."
+      redirect_to treasury_module_cash_disbursement_voucher_url(id: @cash_receipt.find_voucher.id), notice: "Disbursement saved successfully."
     end
     private
     def cash_receipt_params

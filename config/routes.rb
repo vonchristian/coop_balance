@@ -312,7 +312,16 @@ Rails.application.routes.draw do
     resources :reports, only: [:index]
     resources :disbursements, only: [:index]
     resources :cash_receipts, only: [:index]
-    resources :voucher_processings, only: [:create]
+    resources :cash_disbursement_voucher_processings, only: [:create]
+    resources :cash_receipt_voucher_processings, only: [:create]
+    resources :cash_disbursement_vouchers, only: [:show, :destroy] do
+      resources :confirmations, only: [:create], module: :cash_disbursement_vouchers
+    end
+    resources :cash_receipt_vouchers, only: [:show, :destroy] do
+      resources :confirmations, only: [:create], module: :cash_receipt_vouchers
+    end
+
+
 
     resources :employees, only: [:index, :show] do
       resources :remittances, only: [:new, :create]

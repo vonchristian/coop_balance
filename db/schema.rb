@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_23_013128) do
+ActiveRecord::Schema.define(version: 2018_10_27_083012) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -381,7 +381,6 @@ ActiveRecord::Schema.define(version: 2018_10_23_013128) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "voucher_id"
     t.boolean "offline_receipt", default: false
     t.uuid "office_id"
     t.uuid "cooperative_id"
@@ -405,7 +404,6 @@ ActiveRecord::Schema.define(version: 2018_10_23_013128) do
     t.index ["previous_entry_hash"], name: "index_entries_on_previous_entry_hash", unique: true
     t.index ["previous_entry_id"], name: "index_entries_on_previous_entry_id"
     t.index ["recorder_id"], name: "index_entries_on_recorder_id"
-    t.index ["voucher_id"], name: "index_entries_on_voucher_id"
   end
 
   create_table "financial_condition_comparisons", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1453,7 +1451,6 @@ ActiveRecord::Schema.define(version: 2018_10_23_013128) do
   add_foreign_key "entries", "official_receipts"
   add_foreign_key "entries", "users", column: "cancelled_by_id"
   add_foreign_key "entries", "users", column: "recorder_id"
-  add_foreign_key "entries", "vouchers"
   add_foreign_key "interest_configs", "accounts", column: "interest_revenue_account_id"
   add_foreign_key "interest_configs", "accounts", column: "unearned_interest_income_account_id"
   add_foreign_key "interest_configs", "cooperatives"

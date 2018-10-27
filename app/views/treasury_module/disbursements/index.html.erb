@@ -34,7 +34,9 @@
     </div>
   </div>
 </div>
-<div class="row">
+
+  <h3 class="card-title"> Cash Accounts </h3>
+  <br>
   <% current_user.cash_accounts.each do |account| %>
     <div class="col-md-4">
       <div class="card">
@@ -47,7 +49,8 @@
       </div>
     </div>
   <% end %>
-</div>
+<h3 class="card-title"> Transactions</h3>
+<br>
 <% @cash_disbursements.each do |entry| %>
   <%= link_to accounting_module_entry_path(entry) do %>
     <%= render 'accounting_module/entries/partials/header', entry: entry %>
