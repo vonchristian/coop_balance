@@ -6,7 +6,7 @@ module AccountingModule
   		it { is_expected.to belong_to :commercial_document }
       it { is_expected.to belong_to :office }
       it { is_expected.to belong_to :cooperative }
-      it { is_expected.to belong_to :cleared_by }
+      it { is_expected.to belong_to :cancelled_by }
       it { is_expected.to belong_to :recorder }
 
       it { is_expected.to have_many :credit_amounts }
@@ -29,15 +29,39 @@ module AccountingModule
       it { is_expected.to delegate_method(:name).to(:office).with_prefix }
       it { is_expected.to delegate_method(:name).to(:commercial_document).with_prefix }
     end
-    
-    describe 'scopes' do
+
+    context 'scopes' do
       it '.recent' do
-        recent_entry = create(:entry_with_credit_and_debit, created_at: Date.today)
         old_entry    = create(:entry_with_credit_and_debit, created_at: Date.today.yesterday)
+        recent_entry = create(:entry_with_credit_and_debit, created_at: Date.today, previous_entry: old_entry)
 
         expect(described_class.recent).to eql recent_entry
         expect(described_class.recent).to_not eql old_entry
       end
+
+      it '.not_cancelled' do
+        entry = create(:entry_with_credit_and_debit, cancelled: false)
+        cancelled_entry = create(:entry_with_credit_and_debit, cancelled: true, cancelled_at: Date.today, cancellation_description: 'wrong entry', previous_entry: entry)
+
+        expect(described_class.not_cancelled).to include(entry)
+        expect(described_class.not_cancelled).to_not include(cancelled_entry)
+      end
+
+      it '.recorder_by(args={})' do
+        teller = create(:teller)
+        bookkeeper = create(:bookkeeper)
+
+        entry = create(:entry_with_credit_and_debit, recorder: teller)
+        another_entry = create(:entry_with_credit_and_debit, recorder: bookkeeper, previous_entry: entry)
+
+        expect(described_class.recorded_by(recorder: teller)).to include(entry)
+        expect(described_class.recorded_by(recorder: teller)).to_not include(another_entry)
+
+        expect(described_class.recorded_by(recorder: bookkeeper)).to include(another_entry)
+        expect(described_class.recorded_by(recorder: bookkeeper)).to_not include(entry)
+
+      end
+
     end
 
     context 'without credit and debit' do
@@ -141,13 +165,5 @@ module AccountingModule
         end
       end
     end
-    it ".not_cleared" do
-      entry = create(:entry_with_credit_and_debit, cleared: false)
-      cleared_entry = create(:entry_with_credit_and_debit, cleared: true)
-
-      expect(described_class.not_cleared).to include(entry)
-      expect(described_class.not_cleared).to_not include(cleared_entry)
-    end
-
   end
 end

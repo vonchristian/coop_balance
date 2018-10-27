@@ -16,6 +16,12 @@ FactoryBot.define do
     factory :loan_officer do
       role { 'loan_officer' }
     end
+    factory :teller do
+      role { 'teller' }
+    end
+    factory :bookkeeper do
+      role { 'bookkeeper' }
+    end
     factory :manager do
       role { 'manager' }
     end
