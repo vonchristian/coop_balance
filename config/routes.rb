@@ -36,7 +36,7 @@ Rails.application.routes.draw do
     end
     resources :assets, controller: 'accounts', type: 'AccountingModule::Asset'
     resources :entries do
-      resources :cancellations, only: [:create], module: :entries
+      resources :cancellations, only: [:new, :create], module: :entries
     end
     resources :debit_amounts, only: [:edit, :update]
     resources :credit_amounts, only: [:edit, :update]
