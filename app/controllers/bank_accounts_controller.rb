@@ -1,3 +1,4 @@
+require 'will_paginate/array'
 class BankAccountsController < ApplicationController
   def index
     if params[:search].present?
@@ -21,7 +22,7 @@ class BankAccountsController < ApplicationController
   end
   def show
     @bank_account = BankAccount.find(params[:id])
-    @entries = @bank_account.entries.order(entry_date: :desc).paginate(page: params[:page], per_page: 35)
+    @entries = @bank_account.entries.paginate(page: params[:page], per_page: 35)
   end
 
   private

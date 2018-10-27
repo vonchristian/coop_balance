@@ -1,7 +1,19 @@
 <div class="card-body">
 
 
-
+  <div class="col-md-6">
+    <div class="dropdown">
+      <button class="btn btn-primary dropdown-toggle float-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        New Entry
+        <span class="caret"></span>
+      </button>
+      <div class="dropdown-menu">
+        <%= link_to 'New Bank Charge', new_bank_account_bank_charge_path(@bank_account), class: 'dropdown-item' %>
+        <%= link_to 'New Earned Interest', new_bank_account_bank_earned_interest_path(@bank_account), class: 'dropdown-item' %>
+        <div role="separator" class="dropdown-divider"></div>
+      </div>
+    </div>
+  </div>
 
 
 </div>

@@ -416,6 +416,7 @@ namespace :share_capitals_section do
   resources :voucher_amounts, only: [:destroy]
   resources :bank_accounts, only: [:index, :show, :new, :create, :edit, :update] do
     resources :vouchers, only: [:show, :destroy], module: :bank_accounts
+    resources :voucher_confirmations, only: [:create], module: :bank_accounts
     resources :deposits, only: [:new, :create], module: :bank_accounts
     resources :withdrawals, only: [:new, :create], module: :bank_accounts
     resources :bank_charges, only: [:new, :create], module: :bank_accounts
@@ -523,7 +524,7 @@ namespace :share_capitals_section do
   unauthenticated :member_account do
     root :to => 'home#index', :constraints => lambda { |request| request.env['warden'].member_account.nil? }, as: :unauthenticated_member_root
   end
-
+  resources :bank_account_applications, only: [:new, :create]
   mount ActionCable.server => '/cable'
 
 end

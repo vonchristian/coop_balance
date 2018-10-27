@@ -5,8 +5,11 @@ class BankAccount < ApplicationRecord
   belongs_to :cooperative
   belongs_to :account,                 class_name: "AccountingModule::Account"
   belongs_to :earned_interest_account, class_name: "AccountingModule::Account"
-  has_many :entries, class_name: "AccountingModule::Entry", as: :commercial_document, dependent: :destroy
+
   before_save :set_default_image
+  def entries
+    account.entries.uniq
+  end
   def name
     bank_name
   end
@@ -25,7 +28,7 @@ class BankAccount < ApplicationRecord
   def earned_interests
     earned_interest_account.balance(commercial_document: self)
   end
-  
+
   private
   def set_default_image
     if avatar.attachment.blank?

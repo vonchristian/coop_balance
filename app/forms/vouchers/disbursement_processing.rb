@@ -18,8 +18,8 @@ module Vouchers
         description:         find_voucher.description,
         recorder:            find_voucher.preparer,
         reference_number:    find_voucher.number,
-        previous_entry:      find_cooperative.entries.recent,
-        previous_entry_hash: find_cooperative.entries.recent.encrypted_hash,
+        previous_entry:      find_recent_entry,
+        previous_entry_hash: find_recent_entry.encrypted_hash,
         entry_date:          find_voucher.date)
 
         find_voucher.voucher_amounts.debit.each do |amount|
@@ -42,6 +42,9 @@ module Vouchers
 
     def find_voucher
       Voucher.find(voucher_id)
+    end
+    def find_recent_entry
+      find_cooperative.entries.recent
     end
 
     def find_employee

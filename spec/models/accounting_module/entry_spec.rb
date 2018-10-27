@@ -29,6 +29,16 @@ module AccountingModule
       it { is_expected.to delegate_method(:name).to(:office).with_prefix }
       it { is_expected.to delegate_method(:name).to(:commercial_document).with_prefix }
     end
+    
+    describe 'scopes' do
+      it '.recent' do
+        recent_entry = create(:entry_with_credit_and_debit, created_at: Date.today)
+        old_entry    = create(:entry_with_credit_and_debit, created_at: Date.today.yesterday)
+
+        expect(described_class.recent).to eql recent_entry
+        expect(described_class.recent).to_not eql old_entry
+      end
+    end
 
     context 'without credit and debit' do
       it 'is not valid' do

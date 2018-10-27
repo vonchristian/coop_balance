@@ -4,11 +4,11 @@
       <div class="col-md-1">
         <%=image_tag(bank_account.avatar, height: 45, width: 45, class: "img-circle") %>
       </div>
-      <div class="col-md-5">
+      <div class="col-md-4">
         <%= link_to bank_account_url(bank_account) do %>
           <b><%= bank_account.bank_name.try(:upcase) %></b><br>
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-5">
               <small class="text-muted"><i class="fa fa-map-marker"></i> <%= bank_account.bank_address %> </small>
             </div>
             <div class="col-md-6">
@@ -21,9 +21,13 @@
         <h3 class="card-title"> <%= number_to_currency bank_account.balance %></h3>
         <small class="text-muted">BALANCE</small>
       </div>
-      <div class="col-md-3">
-        <%= link_to 'Deposit', new_bank_account_deposit_path(bank_account), class: "btn btn-success btn-sm"%>
-        <%= link_to 'Withdraw', new_bank_account_withdrawal_path(bank_account), class: "btn btn-danger btn-sm" %>
+      <div class="col-md-4">
+        <%= link_to new_bank_account_deposit_path(bank_account) do %>
+          <span class="btn btn-success"><i class="fa fa-arrow-circle-down"></i> Deposit </span>
+        <% end %>
+        <%= link_to new_bank_account_withdrawal_path(bank_account) do %>
+          <span class="btn btn-danger"><i class="fa fa-arrow-circle-up"></i> Withdraw </span>
+        <% end %>
       </div>
     </div>
   </div>

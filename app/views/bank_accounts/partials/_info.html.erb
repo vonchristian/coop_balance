@@ -39,8 +39,6 @@
                 <small>BALANCE</small>
                 <h3><%= number_to_currency @bank_account.balance %></h3>
                 <br>
-                <%= link_to 'New Deposit', new_bank_account_deposit_path(@bank_account), class: "btn btn-success"%> &nbsp; &nbsp;
-                <%= link_to 'New Withdraw', new_bank_account_withdrawal_path(@bank_account), class: "btn btn-danger" %>
 
               </div>
               <div class="col-md-4 col-sm-6 col-auto">
@@ -56,19 +54,6 @@
         <div class="row">
           <div class="col-md-6">
             <p class="text-muted">TRANSACTIONS HISTORY </p>
-          </div>
-          <div class="col-md-6">
-            <div class="dropdown">
-              <button class="btn btn-primary dropdown-toggle float-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                New Entry
-                <span class="caret"></span>
-              </button>
-              <div class="dropdown-menu">
-                <%= link_to 'New Bank Charge', new_bank_account_bank_charge_path(@bank_account), class: 'dropdown-item' %>
-                <%= link_to 'New Earned Interest', new_bank_account_bank_earned_interest_path(@bank_account), class: 'dropdown-item' %>
-                <div role="separator" class="dropdown-divider"></div>
-              </div>
-            </div>
           </div>
         </div>
         <% @entries.each do |entry| %>

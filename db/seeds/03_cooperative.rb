@@ -1,5 +1,5 @@
 coop = Cooperative.find_or_create_by(name: 'Ifugao Public Servants Multipurpose Cooperative', abbreviated_name: "IPSMPC", address: "Capitol Compound", contact_number: "0915-699-0481", registration_number: '12313213')
-
+coop.accounts << AccountingModule::Account.all
 office = coop.main_offices.create(name: "Main Offce", address: "Capitol Compound", contact_number: '23e2312')
 general_manager = User.general_manager.create!(
   email: 'general_manager2@coopcatalyst.ph',

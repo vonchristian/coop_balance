@@ -1,16 +1,15 @@
 
 module BankAccounts
-  class DepositLineItemProcessing
+  class WithdrawLineItemProcessing
     include ActiveModel::Model
     attr_accessor :bank_account_id, :employee_id, :amount, :description,
-    :reference_number, :account_number, :date, :payment_type,
-     :offline_receipt, :cash_account_id, :account_number, :payee_id
+    :reference_number, :account_number, :date, :offline_receipt, :cash_account_id, :account_number, :payee_id
     validates :amount, presence: true, numericality: { greater_than: 0.01 }
     validates :reference_number, presence: true
 
-    def save
+    def process!
       ActiveRecord::Base.transaction do
-        create_deposit_voucher
+        create_voucher
       end
     end
 
@@ -26,7 +25,7 @@ module BankAccounts
     end
 
     private
-    def create_deposit_voucher
+    def create_voucher
       voucher = Voucher.new(
         payee: find_payee,
         office: find_employee.office,
@@ -51,11 +50,11 @@ module BankAccounts
       User.find(payee_id)
     end
 
-    def credit_account
+    def debit_account
       AccountingModule::Account.find(cash_account_id)
     end
 
-    def debit_account
+    def credit_account
       find_bank_account.account
     end
   end

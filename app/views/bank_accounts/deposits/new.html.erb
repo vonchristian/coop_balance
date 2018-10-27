@@ -12,7 +12,7 @@
       <div class="card-body">
         <h3 class="card-title">Bank Deposit Details</h3>
         <hr class="no-margin-top">
-        <%= simple_form_for [@bank_account, @entry], url: :bank_account_deposits, html: { autocomplete: 'off' } do |f| %>
+        <%= simple_form_for [@bank_account, @deposit], url: :bank_account_deposits, html: { autocomplete: 'off' } do |f| %>
           <%= f.error_notification %>
           <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
           <%= f.input :amount, as: :numeric %>

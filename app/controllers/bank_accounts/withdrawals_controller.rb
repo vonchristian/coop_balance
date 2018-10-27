@@ -2,22 +2,25 @@ module BankAccounts
   class WithdrawalsController < ApplicationController
     def new
       @bank_account = BankAccount.find(params[:bank_account_id])
-      @entry = BankAccounts::EntryForm.new
+      @withdrawal = BankAccounts::WithdrawLineItemProcessing.new
     end
     def create
       @bank_account = BankAccount.find(params[:bank_account_id])
-      @entry = BankAccounts::EntryForm.new(entry_params)
-      if @entry.valid?
-        @entry.save
-        redirect_to bank_account_url(@bank_account), notice: "Entry saved successfully."
+      @withdrawal = BankAccounts::WithdrawLineItemProcessing.new(withdrawal_params)
+      if @withdrawal.valid?
+        @withdrawal.process!
+        redirect_to bank_account_voucher_url(id: @withdrawal.find_voucher.id, bank_account_id: @bank_account.id), notice: "Entry saved successfully."
       else
         render :new
       end
     end
 
     private
-    def entry_params
-      params.require(:bank_accounts_entry_form).permit(:amount, :reference_number, :date, :bank_account_id,  :description, :recorder_id, :debit_account_id, :credit_account_id)
+    def withdrawal_params
+      params.require(:bank_accounts_withdraw_line_item_processing).
+      permit(:bank_account_id, :employee_id, :amount, :description,
+      :reference_number, :account_number, :date, :payment_type,
+       :offline_receipt, :cash_account_id, :account_number, :payee_id)
     end
   end
 end
