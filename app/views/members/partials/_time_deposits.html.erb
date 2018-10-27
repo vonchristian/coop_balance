@@ -8,7 +8,9 @@
       </div>
       <div class="col-md-6">
         <% if policy([:members, :time_deposit]).new? %>
-          <%= link_to 'New Time Deposit', new_time_deposit_application_path(depositor_id: @member.id, depositor_type: @member.class.to_s), class: "btn btn-primary btn-flat pull-right" %>
+          <%= link_to new_time_deposit_application_path(depositor_id: @member.id, depositor_type: @member.class.to_s) do %>
+            <span class="btn btn-primary float-right"><i class="fa fa-plus-circle"></i> New Time Deposit </span>
+          <% end %>
         <% end %>
       </div>
     </div>

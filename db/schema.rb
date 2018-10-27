@@ -363,17 +363,6 @@ ActiveRecord::Schema.define(version: 2018_10_23_013128) do
     t.index ["taxable_type", "taxable_id"], name: "index_documentary_stamp_taxes_on_taxable_type_and_taxable_id"
   end
 
-  create_table "documents", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
-    t.text "title"
-    t.datetime "date"
-    t.string "uploader_type"
-    t.uuid "uploader_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["uploader_type", "uploader_id"], name: "index_documents_on_uploader_type_and_uploader_id"
-  end
-
   create_table "employee_cash_accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "employee_id"
     t.uuid "cash_account_id"
@@ -1151,8 +1140,8 @@ ActiveRecord::Schema.define(version: 2018_10_23_013128) do
     t.string "account_number"
     t.datetime "date_opened"
     t.string "account_owner_name"
-    t.datetime "created_at", default: "2018-09-26 07:34:19", null: false
-    t.datetime "updated_at", default: "2018-09-26 07:34:19", null: false
+    t.datetime "created_at", default: "2018-10-27 01:16:20", null: false
+    t.datetime "updated_at", default: "2018-10-27 01:16:20", null: false
     t.integer "status"
     t.uuid "office_id"
     t.string "subscriber_type"

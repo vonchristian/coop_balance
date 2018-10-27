@@ -32,14 +32,19 @@ module AccountingModule
 
     accepts_nested_attributes_for :credit_amounts, :debit_amounts, allow_destroy: true
 
-    before_validation :set_default_date, :set_previous_entry, on: :create
-    after_commit :set_hashes, on: :create
+    before_validation :set_default_date, on: :create
+    after_commit :set_hashes!
 
     delegate :name, :first_and_last_name, to: :recorder, prefix: true, allow_nil: true
     delegate :name, to: :cooperative, prefix: true
     delegate :name, to: :office, prefix: true
     delegate :name, to: :commercial_document, prefix: true, allow_nil: true
     delegate :title, to: :cooperative_service, prefix: true, allow_nil: true
+
+    def self.recent
+      order(entry_date: :desc).first
+    end
+
     def self.not_cancelled
       where(cancelled: false)
     end
@@ -86,22 +91,16 @@ module AccountingModule
       #{office_id.to_s}
       #{commercial_document_id.to_s}
       #{commercial_document_type.to_s}
+      #{previous_entry_id}
       #{recorder_id.to_s}
       #{previous_entry_hash}"
     end
 
     private
 
-    def set_previous_entry
-      if previous_entry.blank?
-        self.previous_entry = AccountingModule::Entry.where.not(id: self.id).order(created_at: :desc).first
-      end
-    end
-
-    def set_hashes
+    def set_hashes!
       if encrypted_hash.blank?
-        self.previous_entry_hash = previous_entry.encrypted_hash
-        self.encrypted_hash = Digest::SHA256.hexdigest(self.digestable)
+        self.update_attributes(encrypted_hash: Digest::SHA256.hexdigest(digestable))
       end
     end
 

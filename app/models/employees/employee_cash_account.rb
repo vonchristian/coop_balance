@@ -6,9 +6,9 @@ module Employees
     validates :cash_account_id, uniqueness: { scope: :employee_id }
 
     def self.cash_accounts
-      ids = pluck(:cash_account_id)
-      AccountingModule::Asset.where(id: ids)
+      accounts = pluck(:cash_account_id)
+      AccountingModule::Asset.where(id: accounts)
     end
-    
+
   end
 end

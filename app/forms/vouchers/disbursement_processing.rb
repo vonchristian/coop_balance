@@ -13,11 +13,13 @@ module Vouchers
       entry = AccountingModule::Entry.new(
         cooperative_service: find_voucher.cooperative_service,
         office:              find_voucher.office,
-        cooperative:         find_voucher.cooperative,
+        cooperative:         find_cooperative,
         commercial_document: find_voucher.payee,
         description:         find_voucher.description,
         recorder:            find_voucher.preparer,
         reference_number:    find_voucher.number,
+        previous_entry:      find_cooperative.entries.recent,
+        previous_entry_hash: find_cooperative.entries.recent.encrypted_hash,
         entry_date:          find_voucher.date)
 
         find_voucher.voucher_amounts.debit.each do |amount|
@@ -44,6 +46,9 @@ module Vouchers
 
     def find_employee
       User.find(employee_id)
+    end
+    def find_cooperative
+      find_voucher.cooperative
     end
   end
 end

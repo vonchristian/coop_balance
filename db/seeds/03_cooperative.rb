@@ -16,9 +16,9 @@ genesis_account = AccountingModule::Asset.create(name: "Genesis Account", active
     description:         "Genesis Block",
     recorder:            general_manager,
     reference_number:    "Genesis",
-    previous_entry_id:   "Genesis previous entry",
+    previous_entry_id:   "Genesis previous entry id",
     previous_entry_hash:   "Genesis previous entry hash",
-    encrypted_hash:      "Genesis hash",
+    encrypted_hash:      "Genesis encryted hash",
     entry_date:          Date.today)
     entry.debit_amounts.build(
         account: genesis_account,
