@@ -30,8 +30,7 @@ module Memberships
           amount: amount,
           commercial_document: find_program_subscription]
         )
-        entry.set_previous_entry!
-        entry.set_hashes!
+
       end
       def debit_account
        find_employee.cash_on_hand_account

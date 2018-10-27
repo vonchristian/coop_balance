@@ -40,9 +40,6 @@ module TreasuryModule
         amount: amount,
         commercial_document: find_office])
 
-
-        entry.set_previous_entry!
-        entry.set_hashes!
     end
 
     def debit_account

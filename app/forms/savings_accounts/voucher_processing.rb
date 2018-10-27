@@ -33,8 +33,6 @@ module SavingsAccounts
           commercial_document: amount.commercial_document)
         entry.credit_amounts << credit_amount
       end
-      entry.save!
-      entry.set_hashes!
       set_voucher_entry(entry)
     end
 

@@ -46,8 +46,6 @@ module AccountingModule
           commercial_document: find_commercial_document
         ]
       )
-      entry.set_previous_entry!
-      entry.set_hashes!
     end
     def find_employee
       User.find_by_id(employee_id)

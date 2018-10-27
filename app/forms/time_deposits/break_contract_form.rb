@@ -44,9 +44,6 @@ module TimeDeposits
         amount: break_contract_amount,
         commercial_document: find_time_deposit }])
 
-  
-        entry.set_previous_entry!
-        entry.set_hashes!
     end
     def close_account
       find_time_deposit.withdrawn!

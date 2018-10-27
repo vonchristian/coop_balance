@@ -60,9 +60,6 @@ module Memberships
           amount: amount,
           commercial_document: share_capital]
         )
-
-        entry.set_previous_entry!
-        entry.set_hashes!
     end
     def find_employee
       User.find_by_id(employee_id)

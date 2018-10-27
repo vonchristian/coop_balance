@@ -30,9 +30,6 @@ module Memberships
           account: credit_account,
           amount: amount,
           commercial_document: savings_account])
-
-          entry.set_previous_entry!
-          entry.set_hashes!
       end
       def find_depositor
         find_time_deposit.depositor

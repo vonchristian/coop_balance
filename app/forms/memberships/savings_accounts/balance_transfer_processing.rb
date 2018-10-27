@@ -32,9 +32,6 @@ module Memberships
           amount: amount,
           commercial_document: find_destination])
 
-
-          entry.set_previous_entry!
-          entry.set_hashes!
       end
 
       def find_employee

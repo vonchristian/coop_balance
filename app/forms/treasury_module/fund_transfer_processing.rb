@@ -43,8 +43,6 @@ module TreasuryModule
         commercial_document: find_receiver])
 
 
-        entry.set_previous_entry!
-        entry.set_hashes!
     end
 
     def debit_account

@@ -31,8 +31,7 @@ module Employees
           commercial_document: find_transferred_to
         ]
       )
-      entry.set_previous_entry!
-      entry.set_hashes!
+
     end
 
     def find_employee

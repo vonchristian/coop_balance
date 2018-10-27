@@ -28,8 +28,7 @@ module ShareCapitals
       debit_amounts_attributes: [{ account_id: debit_account_id, amount: find_share_capital.balance, commercial_document: find_share_capital }],
       credit_amounts_attributes: [{account_id: credit_account_id, amount: amount, commercial_document: find_share_capital}, { account_id: closing_account_id, amount: closing_account_fee, commercial_document: find_share_capital }])
 
-      entry.set_previous_entry!
-      entry.set_hashes!
+
     end
 
     def closing_account_fee

@@ -24,8 +24,7 @@ module BankAccounts
       description: description, reference_number: reference_number, entry_date: date,
       debit_amounts_attributes: [account_id: debit_account_id, amount: amount, commercial_document: find_bank_account],
       credit_amounts_attributes: [account_id: credit_account_id, amount: amount, commercial_document: find_bank_account])
-      entry.set_previous_entry!
-      entry.set_hashes!
+
     end
     def find_employee
       User.find_by_id(recorder_id)

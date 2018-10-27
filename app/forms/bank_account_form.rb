@@ -21,9 +21,6 @@ class BankAccountForm
       credit_amounts_attributes: [account: credit_account, amount: parsed_amount, commercial_document: bank_account],
       debit_amounts_attributes: [account_id: account_id, amount: parsed_amount, commercial_document: bank_account])
 
-
-      entry.set_previous_entry!
-      entry.set_hashes!
   end
 
   def parsed_amount

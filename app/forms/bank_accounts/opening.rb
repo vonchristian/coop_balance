@@ -38,8 +38,6 @@ module BankAccounts
           amount:              amount,
           commercial_document: bank_account])
 
-        entry.set_previous_entry!
-        entry.set_hashes!
     end
 
     def find_employee

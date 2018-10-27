@@ -22,8 +22,6 @@ module TimeDeposits
       credit_amounts_attributes: [account: credit_account, amount: amount, commercial_document: find_time_deposit])
 
 
-      entry.set_previous_entry!
-      entry.set_hashes!
     end
     def debit_account
       find_time_deposit.time_deposit_product_interest_expense_account

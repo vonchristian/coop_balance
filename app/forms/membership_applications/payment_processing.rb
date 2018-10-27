@@ -38,8 +38,7 @@ module MembershipApplications
         entry.debit_amounts << debit_amount
       end
       entry.save!
-      entry.set_previous_entry!
-      entry.set_hashes!
+
       find_membership.cooperator.voucher_amounts.each do |v|
         v.commercial_document_id = nil
         v.commercial_document_type = nil
