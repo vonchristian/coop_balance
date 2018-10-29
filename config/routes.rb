@@ -85,6 +85,7 @@ Rails.application.routes.draw do
     resources :loan_applications, only: [:new, :create, :show, :destroy] do
       resources :capital_build_up_processings,       only: [:new, :create], module: :loan_applications
       resources :voucher_amounts,       only: [:new, :create, :destroy], module: :loan_applications
+      resources :vouchers, only: [:new, :create], module: :loan_applications
 
     end
     resources :dashboard, only: [:index]
@@ -406,6 +407,9 @@ namespace :share_capitals_section do
     resources :loans, only: [:index], module: :employees
   end
   resources :loans, only: [:index, :show] do
+    resources :vouchers, only: [:show], module: :loans do
+      resources :confirmations, only: [:create], module: :vouchers
+    end
     resources :notes,                 only: [:index, :new, :create],         module: :loans
     resources :barangays,             only: [:edit, :update],        module: :loans
     resources :settings,              only: [:index],                module: :loans
@@ -521,11 +525,14 @@ namespace :share_capitals_section do
     resources :vouchers, only: [:show, :destroy], module: :share_capital_applications
     resources :voucher_disbursements, only: [:create], module: :share_capital_applications
   end
+
   devise_for :member_accounts, controllers: { sessions: 'member_accounts/sessions', registrations: 'member_accounts/registrations'}
 
   authenticated :member_account do
     root to: 'member_accounts#show'
   end
+
+
 
   unauthenticated :user do
     root :to => 'home#index', :constraints => lambda { |request| request.env['warden'].user.nil? }, as: :unauthenticated_root

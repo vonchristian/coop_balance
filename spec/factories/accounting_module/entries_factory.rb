@@ -11,5 +11,6 @@ FactoryBot.define do
         t.debit_amounts << build(:debit_amount, :entry => t)
       end
     end
+
   end
 end

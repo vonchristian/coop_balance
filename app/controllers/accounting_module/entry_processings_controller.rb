@@ -1,7 +1,7 @@
 module AccountingModule
   class EntryProcessingsController < ApplicationController
     def create
-      @entry = Vouchers::DisbursementProcessing.new(entry_params)
+      @entry = Vouchers::EntryProcessing.new(entry_params)
       if @entry.valid?
         @entry.disburse!
         redirect_to accounting_module_entries_url, notice: "Adjusting entry saved successfully."

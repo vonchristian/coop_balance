@@ -1,35 +1,40 @@
 module Vouchers
-  class DisbursementProcessing
+  class EntryProcessing
     include ActiveModel::Model
-    attr_accessor :voucher_id, :employee_id
-
+    attr_reader :voucher, :employee, :updateable
+    def initialize(args)
+      @voucher    = args[:voucher]
+      @employee   = args[:employee]
+      @updateable = args[:updateable]
+    end
     def process!
       ActiveRecord::Base.transaction do
         create_entry
+        update_last_transaction_date
       end
     end
     private
     def create_entry
       entry = AccountingModule::Entry.new(
-        cooperative_service: find_voucher.cooperative_service,
-        office:              find_voucher.office,
+        cooperative_service: voucher.cooperative_service,
+        office:              voucher.office,
         cooperative:         find_cooperative,
-        commercial_document: find_voucher.payee,
-        description:         find_voucher.description,
-        recorder:            find_voucher.preparer,
-        reference_number:    find_voucher.number,
+        commercial_document: voucher.payee,
+        description:         voucher.description,
+        recorder:            voucher.preparer,
+        reference_number:    voucher.number,
         previous_entry:      find_recent_entry,
         previous_entry_hash: find_recent_entry.encrypted_hash,
-        entry_date:          find_voucher.date)
+        entry_date:          voucher.date)
 
-        find_voucher.voucher_amounts.debit.each do |amount|
+        voucher.voucher_amounts.debit.each do |amount|
           entry.debit_amounts.build(
             account_id: amount.account_id,
             amount: amount.amount,
             commercial_document: amount.commercial_document)
         end
 
-        find_voucher.voucher_amounts.credit.each do |amount|
+        voucher.voucher_amounts.credit.each do |amount|
           entry.credit_amounts.build(
             account: amount.account,
             amount: amount.amount,
@@ -37,12 +42,16 @@ module Vouchers
         end
       entry.save!
 
-      find_voucher.update_attributes!(accounting_entry: entry)
+      voucher.update_attributes!(accounting_entry: entry)
     end
 
-    def find_voucher
-      Voucher.find(voucher_id)
+    def update_last_transaction_date
+      if updateable.present?
+        updateable.update_attributes!(last_transaction_date: voucher.date)
+      end
     end
+
+
     def find_recent_entry
       find_cooperative.entries.recent
     end
@@ -51,7 +60,7 @@ module Vouchers
       User.find(employee_id)
     end
     def find_cooperative
-      find_voucher.cooperative
+      voucher.cooperative
     end
   end
 end

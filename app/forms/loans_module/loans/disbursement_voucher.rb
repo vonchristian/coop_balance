@@ -13,6 +13,9 @@ module LoansModule
       def find_loan
         LoansModule::Loan.find_by(account_number: account_number)
       end
+      def find_voucher
+        Voucher.find_by(account_number: account_number)
+      end
 
       private
       def create_loan
@@ -67,7 +70,9 @@ module LoansModule
       end
 
       def add_amounts(voucher)
-        voucher.voucher_amounts << find_loan_application.voucher_amounts
+        find_loan_application.voucher_amounts.each do |amount|
+          voucher.voucher_amounts << amount
+        end
 
         Vouchers::VoucherAmount.create!(
         voucher: voucher,

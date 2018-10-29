@@ -30,10 +30,23 @@ module AccountingModule
 
     end
 
+    context 'scopes' do
+      it '.for_account' do
+        asset = create(:asset)
+        equity = create(:equity)
+        amount = create(:debit_amount, account: asset)
+
+        expect(described_class.for_account(account_id: asset.id)).to include(amount)
+        expect(described_class.for_account(account_id: equity.id)).to_not include(amount)
+
+      end
+    end
+
+
     it "#entered_on(args)" do
       entry = create(:entry_with_credit_and_debit, entry_date: Date.today)
 
-      expect(AccountingModule::Amount.entered_on(from_date: Date.today, to_date: Date.today).pluck(:id)).to include(entry.amounts.pluck(:id))
+      expect(described_class.entered_on(from_date: Date.today, to_date: Date.today).pluck(:id)).to include(entry.amounts.pluck(:id))
 
     end
 

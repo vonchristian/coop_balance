@@ -10,7 +10,7 @@
         </center>
       </div>
       <div class="card-body">
-        <%= simple_form_for @loan, url: :loans_module_loan_applications, html: { autocomplete: 'off' } do |f| %>
+        <%= simple_form_for @loan_application, url: :loans_module_loan_applications, html: { autocomplete: 'off' } do |f| %>
           <%= f.error_notification %>
           <%= f.input :application_date, as: :string, input_html: { class: "datepicker", value: Time.zone.now.strftime("%B %e, %Y") } %>
           <%= f.input :loan_product_id, validate: { presence: true }, label: 'Select Type of Loan', collection: LoansModule::LoanProduct.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanProductSelect' } %>
@@ -23,7 +23,7 @@
           <%= f.input :purpose, as: :text, label: "Purpose of Loan" %>
 
           <%= f.input :preparer_id, input_html: { value: current_user.id }, as: :hidden %>
-          <%= f.input :cooperative_id, input_html: { value: current_user.cooperative_id }, as: :hidden %>
+          <%= f.input :cooperative_id, input_html: { value: current_cooperative.id }, as: :hidden %>
 
           <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
           <hr>

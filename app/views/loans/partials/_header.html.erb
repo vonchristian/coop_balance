@@ -34,7 +34,7 @@
                       </div>
                       <div class="col-md-2">
                         <% if !loan.disbursed? && loan.disbursement_voucher_id.present? && current_user.cash_accounts.present? %>
-                          <%= link_to 'Disburse Loan', voucher_path(id: loan.disbursement_voucher_id), class: "btn btn-primary btn-sm" %>
+                          <%= link_to 'Disburse Loan', loan_voucher_path(loan_id: loan.id, id: loan.disbursement_voucher_id), class: "btn btn-primary btn-sm" %>
                         <% end %>
                       </div>
                     </div>

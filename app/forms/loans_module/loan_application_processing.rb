@@ -15,8 +15,10 @@ module LoansModule
                   :office_id
     validates :term, :loan_amount, presence: true, numericality: true
     validates :loan_product_id, :mode_of_payment, :term, :loan_amount, :application_date, presence: true
-
-    def save
+    def find_loan_application
+      LoansModule::LoanApplication.find_by(account_number: account_number)
+    end
+    def process!
       ActiveRecord::Base.transaction do
         create_loan
       end

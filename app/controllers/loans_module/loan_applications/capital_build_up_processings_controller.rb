@@ -12,7 +12,7 @@ module LoansModule
         @capital_build_up = LoansModule::LoanApplications::CapitalBuildUpProcessing.new(capital_build_up_params)
         if @capital_build_up.valid?
           @capital_build_up.process!
-          redirect_to loans_module_loan_application_url(@loan_application), notice: "Capital Build Up added successfully"
+          redirect_to new_loans_module_loan_application_voucher_url(@loan_application), notice: "Capital Build Up added successfully"
         else
           render :new
         end

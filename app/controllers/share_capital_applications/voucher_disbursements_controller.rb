@@ -5,7 +5,7 @@ module ShareCapitalApplications
       @voucher = Voucher.find(params[:voucher_id])
       ActiveRecord::Base.transaction do
         ShareCapitals::Opening.new(share_capital_application: @share_capital_application, employee: current_user, voucher: @voucher).process!
-        Vouchers::DisbursementProcessing.new(voucher_id: @voucher.id, employee_id: current_user.id).process!
+        Vouchers::EntryProcessing.new(voucher_id: @voucher.id, employee_id: current_user.id).process!
         redirect_to vouchers_url, notice: "Voucher disbursed successfully."
       end
     end
