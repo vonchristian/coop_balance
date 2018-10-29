@@ -20,7 +20,6 @@ class Cooperative < ApplicationRecord
   has_many :time_deposit_products,  class_name: "CoopServicesModule::TimeDepositProduct"
   has_many :share_capital_products, class_name: "CoopServicesModule::ShareCapitalProduct"
   has_many :programs,               class_name: "CoopServicesModule::Program"
-  has_many :cooperative_services,   class_name: "CoopServicesModule::CooperativeService"
   has_many :savings,                class_name: "MembershipsModule::Saving"
   has_many :share_capitals,         class_name: "MembershipsModule::ShareCapital"
   has_many :time_deposits,          class_name: "MembershipsModule::TimeDeposit"

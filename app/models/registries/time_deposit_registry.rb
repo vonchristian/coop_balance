@@ -30,6 +30,7 @@ module Registries
       cooperative: self.employee.office,
       commercial_document: find_depositor(row),
       recorder: self.employee,
+      previous_entry: find_cooperative.entries.recent,
       description: "Time deposit on #{DateTime.parse(row[6].to_s).strftime("%B %e, %Y")}",
       entry_date: Date.today.last_year.end_of_year,
       debit_amounts_attributes: [

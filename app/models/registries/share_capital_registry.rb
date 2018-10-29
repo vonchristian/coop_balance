@@ -12,6 +12,10 @@ module Registries
     end
     
     private
+    def find_cooperative
+      self.employee.cooperative
+    end
+
     def find_share_capital_product(row)
       find_cooperative.share_capital_products.find_by(name: row["Share Capital Product"])
     end
@@ -36,6 +40,7 @@ module Registries
         office: self.employee.office,
         cooperative: self.employee.cooperative,
         recorder: self.employee,
+        previous_entry: find_cooperative.entries.recent,
         commercial_document: find_subscriber(row),
         description: "Forwarded balance of share capital as of #{cut_off_date.strftime("%B %e, %Y")}",
         entry_date: cut_off_date,

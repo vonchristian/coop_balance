@@ -1,70 +1,29 @@
-<div class="row">
-  <div class="col-md-6 col-md-offset-3">
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title">New Loan Product Details </h3>
-      </div>
-      <div class="card-body">
-        <%= simple_form_for @loan_product, url: :loans_module_loan_products do |f| %>
-          <%= f.error_notification %>
-          <%= f.input :name %>
-          <%= f.input :description, as: :text %>
-          <%= f.input :maximum_loanable_amount,  as: :currency %>
-
-          <%= f.input :loans_receivable_current_account_id, label: "Select Loans Receivable (Current) Account", collection: AccountingModule::Asset.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanAccountSelect'} %>
-          <%= f.input :loans_receivable_past_due_account_id, label: "Select Loans Receivable (Past Due) Account", collection: AccountingModule::Asset.all.map{|a| [a.name.titleize, a.id] } %>
-          <h4>Interest Configuration</h4>
-          <%= f.input :interest_rate %>
-          <%= f.input :unearned_interest_income_account_id,  collection: AccountingModule::Asset.all.map{|a| [a.name, a.id] } %>
-          <%= f.input :interest_revenue_account_id,  collection: AccountingModule::Revenue.all.map{|a| [a.name, a.id] } %>
-          <h4>Penalty Configuration</h4>
-          <%= f.input :penalty_rate %>
-          <%= f.input :penalty_revenue_account_id,  collection: AccountingModule::Revenue.all.map{|a| [a.name, a.id] } %>
-          <h4 class="card-title">
-            <%= f.input :has_loan_protection_fund, as: :boolean %>
-          <div class="box-footer">
-            <%= f.submit "Create Loan Product", class: "btn btn-primary btn-flat" %>
-          </div>
-        <% end %>
-      </div>
-    </div>
-  </div>
+<div class="modal-header">
+  <h4 class="modal-title card-title" id="mainModalLabel">
+    Loan Product Details
+  </h4>
+  <button type="button" class="close float-right" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 </div>
-<script type="text/javascript">
-  $(document).ready(function() {
-    $("#loanAccountSelect").select2({
-      theme: "bootstrap"
-    });
-    $("#loans_module_loan_product_registration_loans_receivable_past_due_account_id").select2({
-      theme: "bootstrap"
-    });
-    $("#loans_module_loan_product_registration_unearned_interest_income_account_id").select2({
-      theme: "bootstrap"
-    });
-    $("#loans_module_loan_product_registration_interest_revenue_account_id").select2({
-      theme: "bootstrap"
-    });
-    $("#loans_module_loan_product_registration_interest_receivable_account_id").select2({
-      theme: "bootstrap"
-    });
-    $("#loans_module_loan_product_registration_penalty_receivable_account_id").select2({
-      theme: "bootstrap"
-    });
-    $("#loans_module_loan_product_registration_penalty_revenue_account_id").select2({
-      theme: "bootstrap"
-    });
-    $("#loans_module_loan_product_registration_penalty_discount_account_id").select2({
-      theme: "bootstrap"
-    });
-  });
-  $(document).ready(function() {
-    $("#loanInterestAccountSelect").select2({
-      theme: "bootstrap"
-    });
-  });
-  $(document).ready(function() {
-    $("#loanPenaltyAccountSelect").select2({
-      theme: "bootstrap"
-    });
-  });
-</script>
+<%= simple_form_for @loan_product, html: { autocomplete: "off", data: { modal: true } }, remote: request.xhr?, url: :loans_module_loan_products do |f| %>
+  <div class="modal-body">
+    <%= f.error_notification %>
+    <%= f.input :name %>
+    <%= f.input :description, as: :text %>
+    <%= f.input :maximum_loanable_amount,  as: :currency %>
+
+    <%= f.input :loans_receivable_current_account_id, label: "Select Loans Receivable (Current) Account", collection: AccountingModule::Asset.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanAccountSelect'} %>
+    <%= f.input :loans_receivable_past_due_account_id, label: "Select Loans Receivable (Past Due) Account", collection: AccountingModule::Asset.all.map{|a| [a.name.titleize, a.id] } %>
+    <h4 class="card-title">Interest Configuration</h4>
+    <%= f.input :interest_rate %>
+    <%= f.input :unearned_interest_income_account_id,  collection: AccountingModule::Asset.all.map{|a| [a.name, a.id] } %>
+    <%= f.input :interest_revenue_account_id,  collection: AccountingModule::Revenue.all.map{|a| [a.name, a.id] } %>
+    <h4 class="card-title">Penalty Configuration</h4>
+    <%= f.input :penalty_rate %>
+    <%= f.input :penalty_revenue_account_id,  collection: AccountingModule::Revenue.all.map{|a| [a.name, a.id] } %>
+    <h4 class="card-title"></h4>
+    <%= f.input :has_loan_protection_fund, as: :boolean %>
+  </div>
+  <div class="modal-footer">
+    <%= f.submit "Create Loan Product", class: "btn btn-primary btn-flat" %>
+  </div>
+<% end %>

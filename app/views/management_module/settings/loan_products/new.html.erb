@@ -7,6 +7,7 @@
       <div class="card-body">
         <%= simple_form_for @loan_product, url: :management_module_settings_loan_products, html: { autocomplete: "off" } do |f| %>
           <%= f.error_notification %>
+          <%= f.input :cooperative_id, input_html: { value: current_user.cooperative.id }, as: :hidden %>
           <%= f.input :name %>
           <%= f.input :description, as: :text %>
           <%= f.input :maximum_loanable_amount,  as: :currency, input_html: { style: "width:100%" } %>
@@ -21,7 +22,8 @@
           <%= f.input :penalty_rate %>
           <%= f.input :penalty_revenue_account_id,  collection: AccountingModule::Revenue.all.map{|a| [a.name, a.id] } %>
           <hr>
-          <%= f.submit "Create Loan Product", class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
+          <%= link_to "Cancel", management_module_settings_cooperative_products_path, class: 'btn btn-default' %>
+          <%= f.submit "Create Loan Product", class: "btn btn-danger float-right", data: { disable_with: "Processing..." } %>
         <% end %>
       </div>
     </div>

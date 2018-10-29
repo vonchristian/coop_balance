@@ -1,27 +1,20 @@
-<div class="row">
-  <div class="col-md-6 offset-md-3">
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title">Edit Cooperative Details </h3>
-      </div>
-      <div class="card-body">
-        <center>
-          <% if @cooperative.logo.attachment.present? %>
-            <%= image_tag(@cooperative.logo, width: 200, height: 200) %>
-          <% end %>
-        </center>
-        <%= simple_form_for @cooperative, url: :management_module_settings_cooperative do |f| %>
-          <%= f.input :logo %>
-          <%= f.input :name %>
-          <%= f.input :abbreviated_name %>
-
-          <%= f.input :registration_number %>
-          <%= f.input :address %>
-          <%= f.input :contact_number %>
-          <hr>
-          <%= f.submit "Save Cooperative Details", class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
-        <% end %>
-      </div>
-    </div>
-  </div>
+<div class="modal-header">
+  <h4 class="modal-title card-title" id="mainModalLabel">
+    Cooperative Details
+  </h4>
+  <button type="button" class="close float-right" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 </div>
+<%= simple_form_for @cooperative, html: { autocomplete: "off", data: { modal: true } }, remote: request.xhr?, url: :management_module_settings_cooperative do |f| %>
+  <div class="modal-body">
+    <%= f.error_notification %>
+    <%= f.input :name %>
+    <%= f.input :abbreviated_name %>
+
+    <%= f.input :registration_number %>
+    <%= f.input :address %>
+    <%= f.input :contact_number %>
+  </div>
+  <div class="modal-footer">
+    <%= f.submit "Save Cooperative Details", class: "btn btn-danger float-right", data: { disable_with: "Processing..." } %>
+  </div>
+<% end %>

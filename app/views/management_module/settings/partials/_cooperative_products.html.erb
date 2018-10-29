@@ -17,15 +17,39 @@
       </div>
       <% @share_capital_products.each do |share_capital_product| %>
         <div class="card-body">
-          <h4 class="card-title"><%= share_capital_product.name %></h4>
+          <h4 class="card-title text-primary"><%= share_capital_product.name %></h4>
           <hr class="no-margin-top">
           <div class="row justify-content-end">
             <div class="col-md-11">
-              <div class="row">
-                <div class="col-md-6">
+              <div class="row min-margin-bottom">
+                <div class="col-md-7">
+                  <label class="no-margin-bottom">Min. No. of Subscribed Share</label>
+                </div>
+                <div class="col-md-5">
+                  <%= share_capital_product.minimum_number_of_subscribed_share.to_i %>
+                </div>
+              </div>
+              <div class="row min-margin-bottom">
+                <div class="col-md-7">
+                  <label class="no-margin-bottom">Min. No. of Paid Share</label>
+                </div>
+                <div class="col-md-5">
+                  <%= share_capital_product.minimum_number_of_paid_share.to_i %>
+                </div>
+              </div>
+              <div class="row min-margin-bottom">
+                <div class="col-md-7">
                   <label class="no-margin-bottom">Cost Per Share</label>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-5">
+                  <%= number_to_currency share_capital_product.cost_per_share %>
+                </div>
+              </div>
+              <div class="row min-margin-bottom">
+                <div class="col-md-7">
+                  <label class="no-margin-bottom">Cost Per Share</label>
+                </div>
+                <div class="col-md-5">
                   <%= number_to_currency share_capital_product.cost_per_share %>
                 </div>
               </div>
@@ -56,11 +80,11 @@
       </div>
       <% @loan_products.each do |loan_product| %>
         <div class="card-body">
-          <h4 class="card-title"><%= loan_product.name %></h4>
+          <h4 class="card-title text-primary"><%= loan_product.name %></h4>
           <hr class="no-margin-top">
           <div class="row justify-content-end">
             <div class="col-md-11">
-              <div class="row">
+              <div class="row min-margin-bottom">
                 <div class="col-md-6">
                   <label class="no-margin-bottom">Maximum Loanable Amount</label>
                 </div>
@@ -68,19 +92,16 @@
                   <%= number_to_currency loan_product.maximum_loanable_amount %>
                 </div>
               </div>
-              <hr class="min-margin">
-              <div class="row">
+              <div class="row min-margin-bottom">
                 <div class="col-md-6">
                   <label class="no-margin-bottom">Interest Rate</label>
                 </div>
                 <div class="col-md-6">
-                  <%= loan_product.interest_rate * 100 %>%
+                  <%= loan_product.interest_rate %>
                   <%= link_to "Set Interest Rate", new_management_module_settings_loan_product_interest_configuration_path(loan_product),class: "btn btn-outline-danger btn-xs float-right", data: { modal: true } %>
-
                 </div>
               </div>
-              <hr class="min-margin">
-              <div class="row">
+              <div class="row min-margin-bottom">
                 <div class="col-md-6">
                   <label class="no-margin-bottom">Penalty Rate</label>
                 </div>
@@ -89,7 +110,6 @@
                   <%= link_to "Set Penalty Rate", new_management_module_settings_loan_product_penalty_configuration_path(loan_product),class: "btn btn-outline-danger btn-xs float-right", data: { modal: true } %>
                 </div>
               </div>
-              <hr class="min-margin">
             </div>
             <div class="col-md-12">
               <p class="text-muted">LOAN CHARGES </p>
@@ -133,7 +153,7 @@
             <h3 class="card-title"> Time Deposit Products </h3>
           </div>
           <div class="col-md-3">
-            <%= link_to new_management_module_settings_time_deposit_product_path do %>
+            <%= link_to new_management_module_settings_time_deposit_product_path, data: {modal: true} do %>
               <span class="btn btn-outline-danger btn-sm float-right" title="New Time Deposit Product" data-toggle="tooltip">
                 <i class="fa fa-plus-circle"></i> New
               </span>
@@ -143,11 +163,11 @@
       </div>
       <% @time_deposit_products.each do |time_deposit_product| %>
           <div class="card-body">
-          <h4 class="card-title"><%= link_to time_deposit_product.name, management_module_settings_time_deposit_product_path(time_deposit_product) %></h4>
+          <h4 class="card-title text-primary"><%= time_deposit_product.name %></h4>
           <hr class="no-margin-top">
           <div class="row justify-content-end">
             <div class="col-md-11">
-              <div class="row">
+              <div class="row min-margin-bottom">
                 <div class="col-md-6">
                   <label class="no-margin-bottom">Interest Rate</label>
                 </div>
@@ -155,8 +175,7 @@
                   <%= time_deposit_product.interest_rate %>
                 </div>
               </div>
-              <hr class="min-margin">
-              <div class="row">
+              <div class="row min-margin-bottom">
                 <div class="col-md-6">
                   <label class="no-margin-bottom">Minimum Deposit</label>
                 </div>
@@ -164,8 +183,7 @@
                   <%= number_to_currency time_deposit_product.minimum_deposit %>
                 </div>
               </div>
-              <hr class="min-margin">
-              <div class="row">
+              <div class="row min-margin-bottom">
                 <div class="col-md-6">
                   <label class="no-margin-bottom">Maximum Deposit</label>
                 </div>
@@ -173,8 +191,7 @@
                   <%= number_to_currency time_deposit_product.maximum_deposit %>
                 </div>
               </div>
-              <hr class="min-margin">
-              <div class="row">
+              <div class="row min-margin-bottom">
                 <div class="col-md-6">
                   <label class="no-margin-bottom">Number of Days</label>
                 </div>
@@ -182,13 +199,20 @@
                   <%= time_deposit_product.number_of_days %> days
                 </div>
               </div>
-              <hr class="min-margin">
-              <div class="row">
+              <div class="row min-margin-bottom">
                 <div class="col-md-6">
                   <label class="no-margin-bottom">Break Contract Fee</label>
                 </div>
                 <div class="col-md-6">
                   <%= number_to_currency time_deposit_product.break_contract_fee %>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="no-margin-bottom">Break Contract Rate</label>
+                </div>
+                <div class="col-md-6">
+                  <%= number_to_currency time_deposit_product.break_contract_rate %>
                 </div>
               </div>
               <!-- <div class="col-md-3"> -->
@@ -210,7 +234,7 @@
             <h3 class="card-title"> Saving Products</h3>
           </div>
           <div class="col-md-6">
-            <%= link_to new_management_module_saving_product_path do  %>
+            <%= link_to new_management_module_saving_product_path, data: {modal: true} do  %>
               <span class="btn btn-outline-danger btn-sm float-right" data-toggle="tooltip" title="New Savings Product"><i class="fa fa-plus-circle"></i> New </span>
             <% end %>
           </div>
@@ -218,11 +242,11 @@
       </div>
       <% @saving_products.all.each do |saving_product| %>
         <div class="card-body">
-          <h4 class="card-title"><%= saving_product.name %></h4>
+          <h4 class="card-title text-primary"><%= saving_product.name %></h4>
           <hr class="no-margin-top">
           <div class="row justify-content-end">
             <div class="col-md-11">
-              <div class="row">
+              <div class="row min-margin-bottom">
                 <div class="col-md-6">
                   <label class="no-margin-bottom">Interest Rate</label>
                 </div>
@@ -230,8 +254,7 @@
                   <%= saving_product.interest_rate*100 %>%
                 </div>
               </div>
-              <hr class="min-margin">
-              <div class="row">
+              <div class="row min-margin-bottom">
                 <div class="col-md-6">
                   <label class="no-margin-bottom">Interest Recurrence</label>
                 </div>
@@ -239,8 +262,7 @@
                   <%= saving_product.interest_recurrence %>
                 </div>
               </div>
-              <hr class="min-margin">
-              <div class="row">
+              <div class="row min-margin-bottom">
                 <div class="col-md-6">
                   <label class="no-margin-bottom">Minimum Balance</label>
                 </div>

@@ -47,7 +47,7 @@ class Member < ApplicationRecord
   has_many :addresses, as: :addressable
   has_many :beneficiaries, dependent: :destroy
 
-  validates :last_name, :first_name, :middle_name, presence: true, on: :update
+  validates :last_name, :first_name, presence: true, on: :update
 
   delegate :number, to: :tin, prefix: true, allow_nil: true
   delegate :name, to: :office, prefix: true, allow_nil: true
@@ -162,7 +162,7 @@ class Member < ApplicationRecord
 
   private
   def set_default_image
-    if avatar.attached?
+    if !avatar.attached?
       self.avatar.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'default.png')), filename: 'default-image.png', content_type: 'image/png')
     end
   end

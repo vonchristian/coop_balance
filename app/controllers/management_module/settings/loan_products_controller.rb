@@ -1,12 +1,15 @@
 module ManagementModule
   module Settings
     class LoanProductsController < ApplicationController
+
       def index
         @loan_products = LoansModule::LoanProduct.all
       end
+
       def new
         @loan_product = LoansModule::LoanProductRegistration.new
       end
+
       def create
         @loan_product = LoansModule::LoanProductRegistration.new(loan_product_params)
         if @loan_product.valid?
@@ -29,7 +32,8 @@ module ManagementModule
         :interest_revenue_account_id,
         :unearned_interest_income_account_id,
         :penalty_rate,
-        :penalty_revenue_account_id)
+        :penalty_revenue_account_id,
+        :cooperative_id)
       end
     end
   end

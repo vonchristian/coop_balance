@@ -38,6 +38,7 @@ module Registries
         cooperative: self.employee.cooperative,
         recorder: self.employee,
         commercial_document: loan.borrower,
+        previous_entry: find_cooperative.entries.recent,
         description: "Forwarded loan balance as of #{cut_off_date.strftime('%B %e, %Y')}",
         entry_date: cut_off_date,
         debit_amounts_attributes: [

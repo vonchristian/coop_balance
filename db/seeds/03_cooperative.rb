@@ -7,7 +7,8 @@ general_manager = User.general_manager.create!(
   password_confirmation: '11111111',
   first_name: "General",
   last_name: "Manager",
-  cooperative: coop)
+  cooperative: coop,
+  office: office)
 genesis_account = AccountingModule::Asset.create(name: "Genesis Account", active: false, code: "Genesis Code")
   entry = AccountingModule::Entry.new(
     office:              office,

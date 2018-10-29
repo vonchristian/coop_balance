@@ -449,6 +449,7 @@ namespace :share_capitals_section do
   end
   resources :cooperatives, only: [:show] do
     resources :barangays, only: [:new, :create], module: :cooperatives
+    resources :logos, module: :cooperatives
   end
   resources :offices, only: [:index, :show] do
       resources :sections, only: [:new, :create], module: :offices

@@ -1,7 +1,5 @@
 <!-- Brand Logo -->
     <a href="/" class="brand-link">
-      <% if current_cooperative.logo.attachment.present? %>
-        <%= image_tag(current_cooperative.logo, class: "brand-image img-circle elevation-1") %>
-      <% end %>
+      <%= image_tag(current_cooperative.logo, class: "brand-image img-circle elevation-1") if current_cooperative.logo.attached? %>
       <span class="brand-text font-weight-light"><%= current_cooperative.abbreviated_name %></span>
     </a>

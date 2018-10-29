@@ -1,43 +1,67 @@
 <div class="card">
-      <div class="card-header">
-        <div class="row">
-          <div class="col-md-9">
-            <h3 class="card-title"> Cooperative Details </h3>
-          </div>
-          <div class="col-md-3">
-            <%= link_to edit_management_module_settings_cooperative_path(@cooperative) do %>
-              <span class="btn btn-sm btn-outline-danger float-right" data-toggle="tooltip" title="Update Cooperative Details"><i class="fa fa-edit"> Update</i></span>
-            <% end %>
-          </div>
-        </div>
+  <div class="card-header">
+    <div class="row">
+      <div class="col-md-9">
+        <h3 class="card-title"> Cooperative Details </h3>
       </div>
-      <div class="card-body">
-        <div class="row">
-          <div class="col-md-3">
-            <% if @cooperative.logo.attachment.present? %>
-              <%= image_tag(@cooperative.logo, width: 150, height: 150) %>
-            <% end %>
-          </div>
-          <div class="col-md-9">
-            <br>
-            <h4><%= link_to current_user.cooperative_name, management_module_settings_cooperative_path(current_user.cooperative) %></h4>
-            <table class="table">
-              <tbody>
-                <tr>
-                  <td>Address:</td>
-                  <td><%= @cooperative.address %></td>
-                </tr>
-                <tr>
-                  <td>Contact Number:</td>
-                  <td><%= @cooperative.contact_number%></td>
-                </tr>
-                <tr>
-                  <td>Registration Number:</td>
-                  <td><%= @cooperative.registration_number %></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+      <div class="col-md-3">
+        <%= link_to edit_management_module_settings_cooperative_path(@cooperative), data: {modal: true} do %>
+          <span class="btn btn-sm btn-outline-danger float-right" data-toggle="tooltip" title="Update Cooperative Details"><i class="fa fa-edit"> Update</i></span>
+        <% end %>
       </div>
     </div>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-3">
+        <% if @cooperative.logo.attached? %>
+          <%= image_tag(@cooperative.logo.variant(resize: "150x150"), class: "img-rounded mx-auto d-block") %>
+        <% else %>
+          <%= image_tag("bank.png", width: '150', height: '150', class: 'img-rounded mx-auto d-block') %>
+        <% end %>
+        <%= simple_form_for Cooperative.new, url: cooperative_logos_path(@cooperative), html: {id: "update-logo"} do |f| %>
+          <%= f.input :logo, as: :file, label: false, input_html: { class: 'choose-btn center-block' } %>
+          <div class="col-md-12 text-center">
+            <a href="" title="Update Logo" class="btn btn-default btn-sm">
+              <span id="browse-image">Update Logo</span>
+            </a>
+          </div>
+        <% end %>
+      </div>
+      <div class="col-md-9">
+        <br>
+        <h4><%= link_to current_user.cooperative_name, management_module_settings_cooperative_path(current_user.cooperative) %></h4>
+        <table class="table">
+          <tbody>
+            <tr>
+              <td>Address:</td>
+              <td><%= @cooperative.address %></td>
+            </tr>
+            <tr>
+              <td>Contact Number:</td>
+              <td><%= @cooperative.contact_number%></td>
+            </tr>
+            <tr>
+              <td>Registration Number:</td>
+              <td><%= @cooperative.registration_number %></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $('#browse-image').click(function(e) {
+    $('#cooperative_logo').click();
+    e.preventDefault();
+    e.stopPropagation();
+    $('#cooperative_logo').change(function() {
+      var val = $('#cooperative_logo').val();
+      if (val != ''){
+        $('#update-logo').submit();
+      }
+    });
+  });
+</script>

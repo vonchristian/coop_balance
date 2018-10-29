@@ -1,19 +1,20 @@
 module ManagementModule
   module Settings
     class TimeDepositProductsController < ApplicationController
+      respond_to :html, :json
+
       def new
         @time_deposit_product = current_cooperative.time_deposit_products.build
+        respond_modal_with @time_deposit_product
       end
 
       def create
         @time_deposit_product = current_cooperative.time_deposit_products.create(time_deposit_product_params)
-        if @time_deposit_product.save!
-          @time_deposit_product.save
-          redirect_to management_module_settings_cooperative_products_url, notice: "Succeess"
-        else
-          render :new
-        end
+        respond_modal_with @time_deposit_product,
+          location: management_module_settings_cooperative_products_url, 
+          notice: "Time Deposit product saved successfully."
       end
+
       def show
         @time_deposit_product = CoopServicesModule::TimeDepositProduct.find(params[:id])
       end

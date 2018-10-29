@@ -4,7 +4,8 @@ User.general_manager.create(
   password_confirmation: '11111111',
   first_name: "General",
   last_name: "Manager",
-  cooperative: Cooperative.last)
+  cooperative: Cooperative.last,
+  office: CoopConfigurationsModule::Office.last)
 
 
 User.sales_clerk.create(
@@ -13,7 +14,8 @@ User.sales_clerk.create(
   password_confirmation: '11111111',
   first_name: "Sales",
   last_name: "Clerk",
-  cooperative: Cooperative.last)
+  cooperative: Cooperative.last,
+  office: CoopConfigurationsModule::Office.last)
 
 
 User.teller.create(
@@ -22,7 +24,8 @@ User.teller.create(
   password_confirmation: '11111111',
   first_name: "Tell",
   last_name: "er",
-  cooperative: Cooperative.last)
+  cooperative: Cooperative.last,
+  office: CoopConfigurationsModule::Office.last)
 
   User.bookkeeper.create(
     email: 'bookkeeper@coopcatalyst.ph',
@@ -30,4 +33,5 @@ User.teller.create(
     password_confirmation: '11111111',
     first_name: "Tell",
     last_name: "er",
-    cooperative: Cooperative.last)
+    cooperative: Cooperative.last,
+  office: CoopConfigurationsModule::Office.last)

@@ -3,8 +3,8 @@
     <div class="card-body">
       <div class="row">
         <div class="col-md-1">
-          <% if entry.commercial_document.present? && entry.commercial_document.avatar.attached? %>
-            <%= image_tag(entry.commercial_document.avatar.variant(resize: "45x45"), class: "img-circle")%>
+          <% if entry.commercial_document.present? %>
+            <%#= image_tag(entry.commercial_document.avatar.variant(resize: "45x45"), class: "img-circle")%>
           <% end %>
         </div>
         <div class="col-md-2">
