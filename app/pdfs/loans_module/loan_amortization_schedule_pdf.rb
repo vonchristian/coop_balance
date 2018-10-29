@@ -5,7 +5,7 @@ module LoansModule
     def initialize(args)
       super(margin: 40, page_size: "LEGAL", page_layout: :portrait)
       @loan = args[:loan]
-      @voucher = @loan.voucher
+      @voucher = @loan.disbursement_voucher
       @amortization_schedules = args[:amortization_schedules]
       @employee = args[:employee]
       @cooperative = @employee.cooperative
@@ -16,9 +16,8 @@ module LoansModule
       amortization_schedule
       signatory_details
     end
+
     private
-
-
     def formatted_interest(schedule)
       if schedule.has_prededucted_interest?
         "#{price(schedule.interest)} - PREDEDUCTED"
@@ -40,19 +39,17 @@ module LoansModule
     def price(number)
       view_context.number_to_currency(number, :unit => "P ")
     end
+
     def heading
     bounding_box [320, 930], width: 200 do
         text "#{cooperative.name.try(:upcase)}", style: :bold, size: 12
 
-        move_down 3
-        text "#{cooperative.address}", size: 8
-        move_down 3
-        text "#{cooperative.contact_number}", size: 8
+
+        text "#{cooperative.address} . #{cooperative.contact_number}", size: 8
     end
     bounding_box [0, 930], width: 200 do
       text "LOAN DISCLOSURE STATEMENT AND AMORTIZATION SCHEDULE", style: :bold, size: 10
       move_down 6
-      text "BORROWER: #{loan.borrower_name.try(:upcase)}", size: 10
     end
     move_down 15
     stroke do
@@ -80,23 +77,47 @@ module LoansModule
       table([["Disbursement Date ", "#{loan.disbursement_date.strftime("%B %e, %Y")}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 300]) do
         cells.borders = []
       end
-      table([["Maturity Date ", "#{loan.loan_amount.to_f.to_words.titleize} Pesos"]], cell_style: { padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 300]) do
+      table([["Maturity Date ", "#{loan.maturity_date.strftime("%B %e, %Y")}"]], cell_style: { padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 300]) do
         cells.borders = []
       end
     end
   end
   def loan_charges_details
-    bounding_box [300, 865], width: 500 do
-      text "LOAN CHARGES DETAILS", style: :bold, size: 9
-
-      table(loan_charges_data, cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 100]) do
+    bounding_box [300, 865], width: 220 do
+      text "CHARGES DETAILS", style: :bold, size: 9
+      table(loan_amount_data, cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 100]) do
         cells.borders = []
         column(1).align = :right
       end
+      move_down 4
+      table(loan_charges_data, cell_style: {padding: [0,0,2,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 100]) do
+        cells.borders = []
+        column(1).align = :right
+      end
+      move_down 4
+      stroke do
+        stroke_color 'CCCCCC'
+        line_width 0.2
+        stroke_horizontal_rule
+        move_down 4
+      end
+      table(loan_net_proceed_data, cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 100]) do
+        cells.borders = []
+        column(1).align = :right
+        column(1).font_style = :bold
+        column(0).font_style = :bold
+
+      end
     end
   end
+  def loan_amount_data
+    voucher.voucher_amounts.for_account(account: loan.loan_product_loans_receivable_current_account).map{ |a| [a.description, price(a.adjusted_amount)] }
+  end
+  def loan_net_proceed_data
+    voucher.voucher_amounts.for_account(account: Employees::EmployeeCashAccount.cash_accounts).map{ |a| [a.description, price(a.adjusted_amount)] }
+  end
   def loan_charges_data
-    @loan_charges_data ||= loan.voucher_amounts.order(created_at: :desc).map{|a| [a.description, price(a.adjusted_amount)]}
+    @loan_charges_data ||= loan.voucher_amounts_excluding_loan_amount_and_net_proceed.map{|a| [a.description, price(a.adjusted_amount)]}
   end
 
     def amortization_schedule

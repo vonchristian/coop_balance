@@ -56,9 +56,6 @@ module Vouchers
       find_cooperative.entries.recent
     end
 
-    def find_employee
-      User.find(employee_id)
-    end
     def find_cooperative
       voucher.cooperative
     end

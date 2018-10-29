@@ -1,0 +1,13 @@
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title"> New Charge Details </h3>
+  </div>
+  <div class="card-body">
+    <%= simple_form_for [@loan_product, @charge], url: :management_module_settings_loan_product_charges do |f| %>
+      <%= f.input :charge_type, collection: LoansModule::LoanProducts::LoanProductCharge.charge_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
+      <%= f.input :name %>
+      <%= f.input :rate %>
+      <%= f.input :amount %>
+      <%= f.input :account_id, collection: current_cooperative.accounts.map{|a| [a.name, a.id]} %>
+      <%= f.submit "Create Charge", class: "btn btn-danger float-right" %>
+    <% end %>

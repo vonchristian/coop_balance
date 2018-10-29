@@ -24,19 +24,15 @@
                         </div>
 
                       </div>
-                      <div class="col-md-2">
+                      <div class="col-md-3">
                         <b><%= number_to_currency loan.loan_amount %></b><br>
                         <small class="text-muted">LOAN AMOUNT</small>
                       </div>
-                      <div class="col-md-2">
+                      <div class="col-md-3">
                         <span class="text-red"><%= number_to_currency loan.principal_balance %></span><br>
                         <small class="text-muted">PRINCIPAL BALANCE</small><br>
                       </div>
-                      <div class="col-md-2">
-                        <% if !loan.disbursed? && loan.disbursement_voucher_id.present? && current_user.cash_accounts.present? %>
-                          <%= link_to 'Disburse Loan', loan_voucher_path(loan_id: loan.id, id: loan.disbursement_voucher_id), class: "btn btn-primary btn-sm" %>
-                        <% end %>
-                      </div>
+
                     </div>
 
 

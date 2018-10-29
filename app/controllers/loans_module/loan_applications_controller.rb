@@ -1,5 +1,8 @@
 module LoansModule
   class LoanApplicationsController < ApplicationController
+    def index
+      @loan_applications = current_cooperative.loan_applications
+    end
     def new
       @borrower = Borrower.find(params[:borrower_id])
       @loan_application = LoansModule::LoanApplicationProcessing.new

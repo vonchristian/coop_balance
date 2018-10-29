@@ -1,9 +1,7 @@
 <li class= "nav-item">
   <a href="/treasury_module" class="nav-link <%= 'active' if current_page?(treasury_module_index_path) %> "><i class="nav-icon fa fa-chart-line"></i><span>Transactions Summary </span></a>
 </li>
-<li class="nav-item">
-  <a href="/vouchers" class="nav-link <%= 'active' if current_page?(vouchers_path) %>"><i class="nav-icon fa fa-folder"></i><span> Vouchers</span></a>
-</li>
+
 <li class="nav-item">
   <a href="/members" class="nav-link <%= 'active' if current_page?(members_path) %>"><i class="nav-icon fa fa-users"></i><span> Members</span></a>
 </li>
@@ -18,6 +16,9 @@
 </li>
 <li class="nav-item" >
   <a href="/loans" class="nav-link <%= 'active' if current_page?(loans_path) %>"><i class="nav-icon fa fa-credit-card"></i><span> Loans</span></a>
+</li>
+<li class="nav-item" >
+  <a href="/loans_module/loan_applications" class="nav-link <%= 'active' if current_page?(loans_module_loan_applications_path) %>"><i class="nav-icon fa fa-credit-card"></i><span> Loan Applications</span></a>
 </li>
 <li class="nav-item" >
   <a href="/savings_accounts" class="nav-link <%= 'active' if current_page?(savings_accounts_path) %>"><i class="nav-icon fa fa-suitcase"></i><span> Savings Accounts</span></a>

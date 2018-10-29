@@ -8,6 +8,7 @@ module LoansModule
     belongs_to :office, class_name: "CoopConfigurationsModule::Office"
     belongs_to :loan_product
     belongs_to :organization
+    belongs_to :voucher
     has_many :voucher_amounts, as: :commercial_document, class_name: "Vouchers::VoucherAmount", dependent: :destroy
     has_many :amortization_schedules, dependent: :destroy
     has_many :terms, as: :termable, dependent: :destroy
@@ -18,6 +19,7 @@ module LoansModule
     delegate :avatar, :name, to: :borrower
 
     validates :cooperative_id, presence: true
+
     def principal_balance(args={})
       amortization_schedules.principal_balance(
           from_date: args[:from_date],
@@ -52,7 +54,7 @@ module LoansModule
       loan_amount - voucher_amounts.sum(&:adjusted_amount)
     end
     def disbursed?
-      false
+      voucher && voucher.disbursed?
     end
     def annual_interest_rate
       loan_product.current_interest_config_rate

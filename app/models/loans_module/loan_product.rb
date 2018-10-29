@@ -13,7 +13,7 @@ module LoansModule
     has_many :member_borrowers, through: :loans, source: :borrower, source_type: 'Member'
     has_many :employee_borrowers, through: :loans, source: :borrower, source_type: 'User'
     has_many :organization_borrowers, through: :loans, source: :borrower, source_type: 'Organization'
-    has_many :charges, through: :loan_product_charges
+
 #DO NOT ALLOW NIL RATE AND ACCOUNTS
     delegate :rate, :annual_rate, to: :current_interest_config, prefix: true
     delegate :rate, to: :current_penalty_config, prefix: true, allow_nil: true
@@ -74,8 +74,8 @@ module LoansModule
     end
 
     def create_charges_for(loan_application)
-      create_charges_that_depends_on_loan_amount(loan_application)
-      create_charges_that_does_not_depends_on_loan_amount(loan_application)
+      create_percent_based_charges(loan_application)
+      create_amount_based_charges(loan_application)
       create_interest_on_loan_charge_for(loan_application)
       create_loan_protection_fund(loan_application)
     end
@@ -93,11 +93,21 @@ module LoansModule
         description: 'Loan Protection Fund'
         )
       end
-    def create_charges_that_depends_on_loan_amount(loan_application)
-      charges.depends_on_loan_amount.includes_loan_amount(loan_application).each do |charge|
+    def create_percent_based_charges(loan_application)
+      loan_product_charges.percent_based.each do |charge|
           loan_application.voucher_amounts.find_or_create_by(
           description: charge.name,
-          amount: charge.amount_for(loan_application),
+          amount: charge.rate * loan_application.loan_amount,
+          amount_type: 'credit',
+          account: charge.account
+          )
+      end
+    end
+    def create_amount_based_charges(loan_application)
+      loan_product_charges.amount_based.each do |charge|
+          loan_application.voucher_amounts.find_or_create_by(
+          description: charge.name,
+          amount: charge.amount,
           amount_type: 'credit',
           account: charge.account
           )

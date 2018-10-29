@@ -56,7 +56,8 @@
                   </span>
                 </div>
               </div>
-              <hr class="min-margin">
+              <div class="min-margin">
+              </div>
             </div>
           </div>
         <% end %>
@@ -80,6 +81,7 @@
 
           <%= f.input :borrower_id, input_html: { value: @loan_application.borrower_id }, as: :hidden %>
           <%= f.input :borrower_type, input_html: { value: @loan_application.borrower.class.to_s }, as: :hidden %>
+          <%= f.input :net_proceed, input_html: { value: @loan_application.net_proceed.round(2) }%>
 
           <%= f.input :loan_application_id, input_html: { value: @loan_application.id }, as: :hidden %>
           <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>

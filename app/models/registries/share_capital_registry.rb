@@ -10,7 +10,7 @@ module Registries
         create_entry(row)
       end
     end
-    
+
     private
     def find_share_capital_product(row)
       find_cooperative.share_capital_products.find_by(name: row["Share Capital Product"])

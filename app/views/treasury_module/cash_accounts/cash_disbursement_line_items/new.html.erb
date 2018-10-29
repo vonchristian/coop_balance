@@ -2,8 +2,8 @@
   <div class="col-md-8">
     <div class="card">
       <div class="card-header">
+        <small><%= @cash_account.name.upcase %></small>
         <h3 class="card-title"> <%= number_to_currency @cash_account.balance %></h3>
-        <p class="text-muted"> <%= @cash_account.name.try(:upcase) %> BALANCE</p>
       </div>
       <div class="card-body">
         <%= simple_form_for @disbursement_line_item, url: :treasury_module_cash_account_cash_disbursement_line_items, html: { autocomplete: 'off' } do |f| %>
@@ -22,14 +22,12 @@
             </div>
           </div>
         <% end %>
-      </div>
-      <hr class="no-magrin">
-      <div class="card-body">
-        <table class="table">
+
+        <table class="table table-hover">
           <thead>
             <tr>
               <th>DEBIT</th>
-              <th class="text-right">ACCOUNT</th>
+              <th>ACCOUNT</th>
               <th class="text-right">CREDIT</th>
               <th></th>
             </tr>
@@ -83,7 +81,7 @@
           <%= f.input :payee_id, label: "Payee", collection: Voucher.payees.map{|a| [a.name, a.id] } %>
           <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
           <hr>
-            <%= f.submit "Proceed", class: "btn btn-primary btn-block float-right" %>
+            <%= f.submit "Proceed", class: "btn btn-primary btn-block float-right", data: { disable_with: "Processing..." } %>
         <% end %>
       </div>
     </div>

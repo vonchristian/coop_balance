@@ -4,7 +4,7 @@ module LoansModule
       include ActiveModel::Model
       attr_accessor :loan_application_id, :preparer_id, :date, :description,
       :number, :account_number, :voucher_account_number, :cash_account_id, :borrower_id,
-      :borrower_type
+      :borrower_type, :net_proceed
 
       def process!
         ActiveRecord::Base.transaction do
@@ -12,6 +12,9 @@ module LoansModule
         end
       end
 
+      def find_voucher
+        Voucher.find_by(account_number: voucher_account_number)
+      end
       private
       def create_voucher
         voucher = Voucher.new(
@@ -27,13 +30,10 @@ module LoansModule
         )
         add_amounts(voucher)
         voucher.save!
+        find_loan_application.update_attributes!(voucher_id: voucher.id)
       end
 
       def add_amounts(voucher)
-        find_loan_application.voucher_amounts.each do |amount|
-          voucher.voucher_amounts << amount
-        end
-
         Vouchers::VoucherAmount.create!(
         voucher: voucher,
         amount_type: 'debit',
@@ -42,10 +42,12 @@ module LoansModule
         account: find_loan_application.loan_product_loans_receivable_current_account,
         commercial_document: find_loan_application)
 
+        voucher.voucher_amounts << find_loan_application.voucher_amounts
+
         Vouchers::VoucherAmount.create!(
         voucher: voucher,
         amount_type: 'credit',
-        amount: find_loan_application.net_proceed,
+        amount: net_proceed,
         description: 'Net Proceed',
         account_id: cash_account_id,
         commercial_document: find_loan_application)

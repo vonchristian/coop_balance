@@ -11,7 +11,6 @@ module LoansModule
       it { is_expected.to have_many :employee_borrowers }
       it { is_expected.to have_many :organization_borrowers }
     	it { is_expected.to have_many :loan_product_charges }
-    	it { is_expected.to have_many :charges }
       it { is_expected.to have_many :interest_configs }
       it { is_expected.to have_many :penalty_configs }
     end

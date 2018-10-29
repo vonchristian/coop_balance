@@ -82,10 +82,10 @@ Rails.application.routes.draw do
     resources :aging_loans, only: [:index, :show]
     resources :loan_calculator, only: [:index]
     resources :disbursement_vouchers, only: [:create], module: :loan_applications
-    resources :loan_applications, only: [:new, :create, :show, :destroy] do
+    resources :loan_applications, only: [:index, :new, :create, :show, :destroy] do
       resources :capital_build_up_processings,       only: [:new, :create], module: :loan_applications
       resources :voucher_amounts,       only: [:new, :create, :destroy], module: :loan_applications
-      resources :vouchers, only: [:new, :create], module: :loan_applications
+      resources :vouchers, only: [:new, :create, :show], module: :loan_applications
 
     end
     resources :dashboard, only: [:index]
@@ -192,7 +192,7 @@ Rails.application.routes.draw do
       resources :configurations, only: [:index]
       resources :data_migrations, only: [:index]
       resources :loan_products, only: [:new, :create] do
-        resources :charges, only: [:edit, :update], module: :loan_products
+        resources :charges, only: [:new, :create, :edit, :update], module: :loan_products
         resources :interest_configurations, only: [:new, :create], module: :loan_products
         resources :penalty_configurations, only: [:new, :create], module: :loan_products
       end
@@ -407,9 +407,8 @@ namespace :share_capitals_section do
     resources :loans, only: [:index], module: :employees
   end
   resources :loans, only: [:index, :show] do
-    resources :vouchers, only: [:show], module: :loans do
-      resources :confirmations, only: [:create], module: :vouchers
-    end
+    resources :payment_vouchers, only: [:show], module: :loans
+    resources :payment_voucher_confirmations, only: [:create]
     resources :notes,                 only: [:index, :new, :create],         module: :loans
     resources :barangays,             only: [:edit, :update],        module: :loans
     resources :settings,              only: [:index],                module: :loans
@@ -524,6 +523,11 @@ namespace :share_capitals_section do
   resources :share_capital_applications, only: [:new, :create] do
     resources :vouchers, only: [:show, :destroy], module: :share_capital_applications
     resources :voucher_disbursements, only: [:create], module: :share_capital_applications
+  end
+
+  resources :loan_applications, only: [:show] do
+    resources :vouchers, only: [:show], module: :loan_applications
+    resources :voucher_confirmations, only: [:create], module: :loan_applications
   end
 
   devise_for :member_accounts, controllers: { sessions: 'member_accounts/sessions', registrations: 'member_accounts/registrations'}
