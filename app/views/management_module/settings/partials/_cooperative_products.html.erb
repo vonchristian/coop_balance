@@ -112,23 +112,23 @@
               </div>
             </div>
             <div class="col-md-12">
-              <p class="text-muted">LOAN CHARGES </p>
-              <% loan_product.charges.each do |charge| %>
+              <p class="text-muted">CHARGES </p>
+              <%= link_to new_management_module_settings_loan_product_charge_path(loan_product) do %>
+                <span class="btn btn-outline-danger btn-sm float-right"><i class="fa fa-plus-circle"></i> Add </span>
+              <% end %>
+              <% loan_product.loan_product_charges.each do |charge| %>
                 <div class="row">
                   <div class="col-md-5 col-md-offset-1">
                     <%= charge.name %><br>
-                    <%= charge.minimum_loan_amount %> -
-                    <%= charge.maximum_loan_amount %>
+
                   </div>
                   <div class="col-md-3">
                     <%= number_to_currency charge.amount %>
-                    <% if charge.percent_type? %>
-                      <%= charge.percent %> %
-                    <% end %>
+                    Rate <%= number_to_currency charge.rate %>
 
-                    <% if charge.depends_on_loan_amount? %>
-                      <span class="text-muted"> Depends on Loan Amount </span>
-                    <% end %>
+
+
+
                   </div>
                   <div class="col-md-2">
                     <%= link_to 'Edit', edit_management_module_settings_loan_product_charge_path(id: charge.id, loan_product_id: loan_product.id), class: 'btn btn-outline-danger btn-xs' %>

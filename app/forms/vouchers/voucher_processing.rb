@@ -1,8 +1,8 @@
 module Vouchers
   class VoucherProcessing
     include ActiveModel::Model
-    attr_accessor :date, :reference_number, :description, :payee_id, :employee_id, :cooperative_service_id, :account_number
-
+    attr_accessor :date, :reference_number, :description, :payee_id, :employee_id, :cooperative_service_id, :account_number, :cash_account_id
+    validates :date, :description, presence: true
     def process!
       ActiveRecord::Base.transaction do
         create_voucher

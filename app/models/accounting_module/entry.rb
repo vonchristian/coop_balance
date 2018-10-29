@@ -35,7 +35,7 @@ module AccountingModule
     accepts_nested_attributes_for :credit_amounts, :debit_amounts, allow_destroy: true
 
     before_validation :set_default_date, on: :create
-    after_commit :set_hashes!
+    after_commit :set_encrypted_hash!
 
     delegate :name, :first_and_last_name, to: :recorder, prefix: true, allow_nil: true
     delegate :name, to: :cooperative, prefix: true
@@ -104,9 +104,9 @@ module AccountingModule
 
     private
 
-    def set_hashes!
+    def set_encrypted_hash!
       if encrypted_hash.blank?
-        self.update_attributes(encrypted_hash: Digest::SHA256.hexdigest(digestable))
+        self.update_attributes!(encrypted_hash: Digest::SHA256.hexdigest(digestable))
       end
     end
 

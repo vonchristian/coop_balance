@@ -20,7 +20,8 @@
           <i class="fa fa-user-circle"></i> <%= entry.recorder_first_and_last_name %></small>
           <br>
           <% if entry.cancelled? %>
-            <span class="badge bg-danger">Cancelled </span>
+            <span class="badge bg-danger">Cancelled </span><br>
+            <small class="text-danger"> <%= entry.cancellation_description %></small>
           <% end %>
           <% if entry.cooperative_service.present? %>
             <small class="text-muted"> <%= entry.cooperative_service_title %></small>

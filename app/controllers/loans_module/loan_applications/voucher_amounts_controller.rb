@@ -13,14 +13,14 @@ module LoansModule
         @loan_application = LoanApplication.find(params[:loan_application_id])
         @charge           = LoanApplications::VoucherAmountProcessing.new(charge_params)
         @charge.process!
-        respond_modal_with @charge, location: loans_module_loan_application_url(@loan_application)
+        respond_modal_with @charge, location: new_loans_module_loan_application_voucher_url(@loan_application)
       end
 
       def destroy
         @loan_application = LoanApplication.find(params[:loan_application_id])
         @voucher_amount = Vouchers::VoucherAmount.find(params[:voucher_amount_id])
         @voucher_amount.destroy
-        redirect_to loans_module_loan_application_url(@loan_application), alert: 'Removed successfully.'
+        redirect_to new_loans_module_loan_application_voucher_url(@loan_application), alert: 'Removed successfully.'
       end
 
       private

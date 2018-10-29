@@ -1,9 +1,14 @@
 module TreasuryModule
   class CashDisbursementVoucherProcessingsController < ApplicationController
     def create
-      @cash_receipt = Vouchers::VoucherProcessing.new(cash_receipt_params)
-      @cash_receipt.process!
-      redirect_to treasury_module_cash_disbursement_voucher_url(id: @cash_receipt.find_voucher.id), notice: "Disbursement saved successfully."
+      @cash_account = params[:cash_account_id]
+      @cash_disbursement = Vouchers::VoucherProcessing.new(cash_receipt_params)
+      if @cash_disbursement.valid?
+        @cash_disbursement.process!
+        redirect_to treasury_module_cash_disbursement_voucher_url(id: @cash_receipt.find_voucher.id), notice: "Disbursement saved successfully."
+      else
+        redirect_to new_treasury_module_cash_account_cash_disbursement_line_item_url(@cash_account), notice: "Error"
+      end
     end
     private
     def cash_receipt_params

@@ -11,10 +11,9 @@ module LoansModule
     multisearchable against: [:borrower_full_name]
     enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
 
-    belongs_to :disbursement_voucher,      class_name: "Voucher", foreign_key: 'disbursement_voucher_id'
+    belongs_to :disbursement_voucher,   class_name: "Voucher", foreign_key: 'disbursement_voucher_id'
     belongs_to :cooperative
-    belongs_to :office, class_name: "CoopConfigurationsModule::Office"
-    belongs_to :voucher
+    belongs_to :office,                 class_name: "CoopConfigurationsModule::Office"
     belongs_to :archived_by,            class_name: "User", foreign_key: 'archived_by_id'
     belongs_to :borrower,               polymorphic: true
     belongs_to :loan_product,           class_name: "LoansModule::LoanProduct"
@@ -31,11 +30,9 @@ module LoansModule
     has_many :entries,                  class_name: "AccountingModule::Entry",
                                         as: :commercial_document,
                                         dependent: :destroy
-    has_many :loan_charges,             class_name: "LoansModule::LoanCharge",
-                                        dependent: :destroy
-    has_many :loan_charge_payment_schedules, through: :loan_charges
-    has_many :charges,                  through: :loan_charges
+
     has_many :voucher_amounts,          class_name: "Vouchers::VoucherAmount", as: :commercial_document # for adding amounts on voucher
+
     has_many :amortization_schedules,   dependent: :destroy
     has_many :amounts, as: :commercial_document, class_name: "AccountingModule::Amount"
 
@@ -66,8 +63,7 @@ module LoansModule
     delegate :full_name, :cooperative, :current_occupation, to: :preparer, prefix: true
     delegate :maximum_loanable_amount, to: :loan_product
     delegate :avatar, to: :borrower
-    delegate :disbursement_entry, to: :voucher, allow_nil: true
-    delegate :disburser, to: :voucher, allow_nil: true
+    delegate :accounting_entry, to: :disbursement_voucher, allow_nil: true
     delegate :name, to: :barangay, prefix: true, allow_nil: true
 
     validates :loan_product_id,  :loan_amount, :borrower_id, presence: true
@@ -82,6 +78,7 @@ module LoansModule
       ids = pluck(:disbursement_voucher_id)
       Voucher.where(id: ids)
     end
+
     def current_term
       terms.current
     end
@@ -95,13 +92,7 @@ module LoansModule
     def maturity_date
       current_term.maturity_date
     end
-    def number_of_interest_payments_prededucted
-      if interest_on_loan_charge.present?
-        interest_on_loan_charge.number_of_interest_payments_prededucted
-      else
-        0
-      end
-    end
+
 
     def self.active
       where(archived: false)
@@ -129,19 +120,23 @@ module LoansModule
       disbursed.where(archived: true)
     end
 
-    def self.balance(options={})
-      self.for(options).sum(&:balance)
-    end
 
-    def self.for(options={})
-      where(street:       options[:street]).
-      where(barangay:     options[:barangay]).
-      where(organization: options[:organization]).
-      where(municipality: options[:municipality])
+
+    def self.for_street(args={})
+      where(street: args[:street])
+    end
+    def for_barangay(args={})
+      where(barangay:     args[:barangay])
+    end
+    def for_organization(args={})
+      where(organization: args[:organization])
+    end
+    def for_municipality(args={})
+      where(municipality: args[:municipality])
     end
 
     def self.current_loans
-      active.joins(:terms).where('terms.maturity_date > ?', Date.today)
+      not_matured
     end
 
     def self.not_matured
@@ -201,11 +196,9 @@ module LoansModule
     end
 
     def self.loan_payments(args={})
-    LoansModule::LoanProduct.accounts.credit_entries.entered_on(args) +
-            LoansModule::LoanProducts::InterestConfig.interest_revenue_accounts.debit_entries.entered_on(args) +
-            LoansModule::LoanProducts::PenaltyConfig.penalty_revenue_accounts.debit_entries.entered_on(args)
-
-
+      LoansModule::LoanProduct.accounts.credit_entries.entered_on(args) +
+      LoansModule::LoanProducts::InterestConfig.interest_revenue_accounts.debit_entries.entered_on(args) +
+      LoansModule::LoanProducts::PenaltyConfig.penalty_revenue_accounts.debit_entries.entered_on(args)
     end
 
     def loan_payments(args={})
@@ -222,8 +215,17 @@ module LoansModule
       end
       entries.uniq
     end
+
     def self.disbursement_entries(args={})
       LoansModule::LoanProduct.accounts.debit_entries.entered_on(args)
+    end
+    def voucher_amounts_excluding_loan_amount_and_net_proceed
+      accounts = []
+      Employees::EmployeeCashAccount.cash_accounts.each do |account|
+        accounts << account
+      end
+      accounts << loan_product_loans_receivable_current_account
+      voucher_amounts.excluding_account(account: accounts )
     end
 
     def current?
@@ -238,8 +240,7 @@ module LoansModule
 
 
     def interest_on_loan_charge
-      interest = charges.where(account: loan_product_interest_revenue_account)
-      loan_charges.find_by(charge: interest)
+      voucher_amounts.where(account: loan_product_interest_revenue_account).try(:amount)
     end
 
     def interest_on_loan_balance
@@ -255,16 +256,17 @@ module LoansModule
     end
 
     def net_proceed
+      if !disbursed?
         loan_amount - voucher_amounts.sum(&:adjusted_amount)
-      # else
-      #   amounts = []
-      #   User.cash_on_hand_accounts.each do |account|
-      #     disbursement_entry.credit_amounts.where(account: account).each do |amount|
-      #       amounts << amount
-      #     end
-      #   end
-      #   amounts.uniq.sum(&:amount)
-      # end
+      else
+        amounts = []
+        Employees::EmployeeCashAccount.cash_accounts.each do |account|
+          accounting_entry.credit_amounts.where(account: account).each do |amount|
+            amounts << amount
+          end
+        end
+        amounts.uniq.sum(&:amount)
+      end
     end
 
     def balance_for(schedule)
@@ -279,9 +281,7 @@ module LoansModule
       end
     end
 
-    def total_loan_charges
-      loan_charges.total
-    end
+
 
 
     def payments_total
@@ -351,18 +351,10 @@ module LoansModule
       (principal_balance * daily_rate) * number_of_days_past_due
     end
 
-    def first_notice_date
-      maturity_date + 10.days
-    end
-    def second_notice_date
-      first_notice_date + 10.days
-    end
 
 
     private
-    def set_default_date
-      self.application_date ||= Time.zone.now
-    end
+
     def set_borrower_full_name
       self.borrower_full_name = self.borrower.full_name
     end

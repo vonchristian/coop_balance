@@ -13,7 +13,6 @@
           </div>
 
           <div class="col-md-3">
-
               <div class="dropdown">
                 <button class="btn btn-outline-danger dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Options
@@ -40,10 +39,11 @@
             <label class="no-margin-bottom">Member/Payee</label>
           </div>
           <div class="col-md-8">
-            <%= image_tag(@entry.commercial_document.avatar.variant(resize: '30x30'), class: "img-circle") if @entry.commercial_document.avatar.attached? %> &nbsp; <%= @entry.commercial_document.try(:name) %>
+            <%= image_tag(@entry.commercial_document.avatar.variant(resize: '30x30'), class: "img-circle") if @entry.commercial_document.avatar.attached? %> <%= @entry.commercial_document.try(:name) %>
           </div>
         </div>
-        <hr>
+        <div class="min-margin">
+        </div>
         <div class="row">
           <div class="col-md-4">
             <label class="no-margin-bottom">Date</label>
@@ -52,7 +52,8 @@
             <%=@entry.entry_date.strftime("%B %e, %Y") %>
           </div>
         </div>
-        <hr>
+        <div class="min-margin">
+        </div>
         <div class="row">
           <div class="col-md-4">
             <label class="no-margin-bottom">Description</label>
@@ -61,7 +62,8 @@
             <%=@entry.description %>
           </div>
         </div>
-        <hr>
+        <div class="min-margin">
+        </div>
         <div class="row">
           <div class="col-md-4">
             <label class="no-margin-bottom">Reference Number</label>
@@ -70,7 +72,8 @@
            #<%= @entry.reference_number %>
           </div>
         </div>
-        <hr>
+        <div class="min-margin">
+        </div>
         <div class="row">
           <div class="col-md-4">
             <label class="no-margin-bottom">Employee</label>
@@ -79,7 +82,8 @@
             <%= @entry.recorder.try(:first_and_last_name) %>
           </div>
         </div>
-        <hr>
+        <div class="min-margin">
+        </div>
         <div class="row">
           <div class="col-md-4">
             <label class="no-margin-bottom">Office</label>
@@ -88,7 +92,8 @@
             <%= @entry.office_name %>
           </div>
         </div>
-        <hr>
+        <div class="min-margin">
+        </div>
         <div class="row">
           <div class="col-md-4">
             <label class="no-margin-bottom">Cooperative Service</label>
@@ -96,6 +101,8 @@
           <div class="col-md-8">
             <%= @entry.cooperative_service_title %>
           </div>
+        </div>
+        <div class="min-margin">
         </div>
         <hr>
       <h3 class="card-title"> Debits and Credits </h3>

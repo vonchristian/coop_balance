@@ -8,7 +8,7 @@ class Voucher < ApplicationRecord
   belongs_to :cooperative
   belongs_to :cooperative_service, class_name: "CoopServicesModule::CooperativeService"
   belongs_to :office, class_name: "CoopConfigurationsModule::Office"
-
+  has_many :loan_applications,  class_name: "LoansModule::LoanApplication", dependent: :destroy
   belongs_to :accounting_entry, class_name: "AccountingModule::Entry", foreign_key: 'entry_id'
   belongs_to :payee,         polymorphic: true
   belongs_to :commercial_document,         polymorphic: true #orders
@@ -26,7 +26,7 @@ class Voucher < ApplicationRecord
   before_save :set_default_date
   # validate :has_credit_amounts?
   # validate :has_debit_amounts?
-  validate :amounts_cancel?
+  # validate :amounts_cancel?
   def self.loan_disbursement_vouchers
     ids = LoansModule::Loan.pluck(:disbursement_voucher_id)
     where(id: ids)
@@ -88,6 +88,7 @@ class Voucher < ApplicationRecord
       accounting_entry.entry_date
     end
   end
+
 
   def self.generate_number_for(voucher)
     return  voucher.number = Voucher.order(created_at: :asc).last.number.succ if Voucher.exists? && Voucher.order(created_at: :asc).last.number.present?

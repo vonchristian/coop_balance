@@ -14,7 +14,7 @@ module Loans
       @payment = LoansModule::Loans::PaymentProcessing.new(payment_params)
       if @payment.valid?
         @payment.process!
-        redirect_to voucher_url(id: @payment.find_voucher.id), notice: "payment voucher successfully."
+        redirect_to loan_payment_voucher_url(loan_id: @loan.id, id: @payment.find_voucher.id), notice: "Payment voucher created successfully."
       else
         render :new
       end

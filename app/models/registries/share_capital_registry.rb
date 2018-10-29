@@ -10,7 +10,7 @@ module Registries
         create_entry(row)
       end
     end
-    
+
     private
     def find_cooperative
       self.employee.cooperative

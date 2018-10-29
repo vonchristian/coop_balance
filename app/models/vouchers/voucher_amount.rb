@@ -14,15 +14,16 @@ module Vouchers
     def self.total
       sum(:amount)
     end
+    def self.for_account(args={})
+      where(account: args[:account])
+    end
+
+    def self.excluding_account(args={})
+      where.not(account: args[:account])
+    end
 
     def self.total_cash_amount
-      amounts = []
-      self.all.each do |amount|
-        if Employees::EmployeeCashAccount.cash_accounts.include?(amount.account)
-          amounts << amount.amount
-        end
-      end
-      amounts.sum
+      for_account(account: Employees::EmployeeCashAccount.cash_accounts).sum(:amount)
     end
 
 
