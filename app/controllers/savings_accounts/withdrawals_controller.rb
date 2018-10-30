@@ -11,7 +11,7 @@ module SavingsAccounts
       authorize [:savings_accounts, :withdrawal]
       if @withdrawal.valid?
         @withdrawal.save
-        redirect_to savings_account_voucher_path(savings_account_id: @savings_account.id, id: @withdrawal.find_voucher.id), notice: "Withdraw transaction saved successfully."
+        redirect_to savings_account_withdrawal_voucher_path(savings_account_id: @savings_account.id, id: @withdrawal.find_voucher.id), notice: "Withdraw transaction created successfully."
       else
          render :new
       end

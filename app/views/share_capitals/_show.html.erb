@@ -1,8 +1,10 @@
+<% content_for(:html_title) { "Share Capital | #{@share_capital.subscriber_name}" } %>
+
 <%= render 'share_capitals/partials/header', share_capital: @share_capital %>
 <div class="row">
   <div class="col-md-12">
     <div class="card">
-      <div class="card-header">
+      <div class="card-header no-border">
         <ul class="nav nav-tabs">
           <li class="nav-item"><%= link_to 'Details', share_capital_path(@share_capital), class: "nav-link #{ 'active' if current_page?(share_capital_path(@share_capital))}" %></li>
           <li class="nav-item"><%= link_to 'Settings', share_capital_settings_path(@share_capital), class: "nav-link #{ 'active' if current_page?(share_capital_settings_path(@share_capital))}" %></li>

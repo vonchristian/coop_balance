@@ -29,6 +29,7 @@
             <span class="btn btn-success"><i class="fa fa-arrow-circle-down"></i> Deposit </span>
           <% end %>
         <% end %>
+        &nbsp;
         <% if policy([:savings_accounts, :withdrawal]).new? %>
           <%= link_to new_savings_account_withdrawal_path(savings_account) do %>
           <span class="btn btn-danger"><i class="fa fa-arrow-circle-up"></i> Withdraw </span>

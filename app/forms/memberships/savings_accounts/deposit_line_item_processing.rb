@@ -17,7 +17,7 @@ module Memberships
       end
 
       def find_saving
-        MembershipsModule::Saving.find_by_id(saving_id)
+        MembershipsModule::Saving.find(saving_id)
       end
       def find_employee
         User.find_by_id(employee_id)
@@ -47,7 +47,7 @@ module Memberships
 
 
       def debit_account
-        AccountingModule::Account.find(cash_account_id)
+        find_employee.cash_accounts.find(cash_account_id)
       end
 
       def credit_account

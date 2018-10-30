@@ -11,7 +11,7 @@ module SavingsAccounts
       authorize [:savings_accounts, :deposit]
       if @deposit.valid?
         @deposit.save
-        redirect_to savings_account_voucher_url(savings_account_id: @savings_account.id, id: @deposit.find_voucher.id), notice: "Savings deposit saved successfully"
+        redirect_to savings_account_deposit_voucher_url(savings_account_id: @savings_account.id, id: @deposit.find_voucher.id), notice: "Savings deposit transaction created successfully."
       else
         render :new
       end

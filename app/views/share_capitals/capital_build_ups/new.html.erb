@@ -1,28 +1,56 @@
+<% content_for(:html_title) { "#{@share_capital.subscriber_name} | New Deposit" } %>
 <div class="row">
-  <div class="col-md-6 offset-md-3">
+  <div class="col-md-8 offset-md-2">
     <div class="card">
-      <div class="card-header">
-        <center>
-          <%= image_tag(@share_capital.subscriber.avatar.variant(resize: '45x45'), class: "img-circle") if @share_capital.subscriber.avatar.attached? %><br>
-           <h3 class="card-title"><%= @share_capital.subscriber_name %></h3>
-        </center>
+      <div class="card-header no-border">
+        <div class="row">
+          <div class="col-md-3 offset-md-1">
+            <%= image_tag(@share_capital.subscriber.avatar.variant(resize: "45x45"), class: "img-circle") if @share_capital.subscriber.avatar.attached? %>
+          </div>
+          <div class="col-md-6">
+            <h3 class="card-title"><%= @share_capital.subscriber_name %></h3>
+            <small class="text-muted">
+              <i class="fa fa-map-marker"></i> <%= @share_capital.subscriber.try(:current_address_complete_address) %>
+              &nbsp;
+              <i class="fa fa-phone"></i> <%= @share_capital.subscriber.try(:current_contact_number) %>
+            </small>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-10 offset-md-1">
+            <small>SHARE CAPITAL BALANCE</small>
+            <h3 class="card-title"><%= number_to_currency @share_capital.paid_up_balance %></h3>
+          </div>
+        </div>
       </div>
       <div class="card-body">
-      <h3 class="card-title">Capital Build Up Details </h3>
-      <%= simple_form_for @capital_build_up, url: :share_capital_capital_build_ups, html: {autocomplete: "off"} do |f| %>
-        <%= f.error_notification %>
-        <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
-        <%= f.input :date, as: :string, input_html: { value: Time.zone.now.strftime("%B %e, %Y"), class: "datepicker" } %>
-        <%= f.input :share_capital_id, input_html: {value: @share_capital.id }, as: :hidden %>
-        <%= f.input :amount, as: :numeric %>
-        <%= f.input :or_number %>
-        <%= f.input :employee_id, input_html: { value: current_user.id },as: :hidden %>
-        <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] } %>
-        <hr>
-        <%= f.submit "Save Capital Build Up", class: "btn btn-primary float-right", data: { disable_with: "Processing..."} %>
-
-      <% end %>
+        <div class="row">
+          <div class="col-md-10 offset-md-1">
+            <%= simple_form_for @capital_build_up, url: :share_capital_capital_build_ups, html: {autocomplete: "off"} do |f| %>
+              <%= f.error_notification %>
+              <%= f.input :cash_account_id, default: current_user.cash_accounts.first, collection: current_user.cash_accounts.map{|a| [a.name, a.id] } %>
+              <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
+              <%= f.input :date, as: :string, input_html: { value: Date.today.strftime("%B %e, %Y"), class: "datepicker" } %>
+              <%= f.input :share_capital_id, input_html: {value: @share_capital.id }, as: :hidden %>
+              <%= f.input :amount, as: :currency %>
+              <%= f.input :or_number %>
+              <%= f.input :employee_id, input_html: { value: current_user.id },as: :hidden %>
+              <hr>
+              <%= f.submit "Save Capital Build Up", class: "btn btn-primary float-right", data: { disable_with: "Processing..."} %>
+            <% end %>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
-</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#memberships_share_capitals_capital_build_up_processing_cash_account_id").select2({
+      theme: "bootstrap"
+    });
+    
+  });
+</script>

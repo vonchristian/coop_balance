@@ -5,7 +5,7 @@ module Memberships
       attr_accessor :saving_id, :employee_id, :amount, :or_number, :account_number, :date, :payment_type, :offline_receipt, :cash_account_id, :account_number
       validates :amount, presence: true, numericality: { greater_than: 0.01 }
       validates :or_number, presence: true
-
+      validate :amount_does_not_exceed_balance?
       def save
         ActiveRecord::Base.transaction do
           create_deposit_voucher
@@ -51,6 +51,10 @@ module Memberships
 
       def debit_account
         find_saving.saving_product_account
+      end
+
+      def amount_does_not_exceed_balance?
+        errors[:amount] << "Exceeded available balance" if amount.to_f > find_saving.balance
       end
     end
   end

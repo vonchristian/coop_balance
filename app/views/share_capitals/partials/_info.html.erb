@@ -3,7 +3,7 @@
     <div class="col-md-6">
       <div class="row justify-content-end">
         <div class="col-md-11">
-          <div class="row">
+          <div class="row min-margin">
             <div class="col-md-5">
               <label>Share Capital Product</label>
             </div>
@@ -11,8 +11,7 @@
               <b><%= @share_capital.share_capital_product_name.try(:upcase) %></b>
             </div>
           </div>
-          <hr class="min-margin">
-          <div class="row">
+          <div class="row min-margin">
             <div class="col-md-5">
               <label>Subscriber</label>
             </div>
@@ -26,8 +25,7 @@
               <% end %>
             </div>
           </div>
-          <hr class="min-margin">
-          <div class="row">
+          <div class="row min-margin">
             <div class="col-md-5">
               <label>Account Number</label>
             </div>
@@ -35,13 +33,12 @@
               <%= @share_capital.account_number %>
             </div>
           </div>
-          <hr class="min-margin">
-          <div class="row">
+          <div class="row min-margin">
             <div class="col-md-5">
               <label>Paid Up Shares</label>
             </div>
             <div class="col-md-6">
-              <%= number_to_currency @share_capital.paid_up_shares %>
+              <%= @share_capital.paid_up_shares %>
             </div>
           </div>
         </div>

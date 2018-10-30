@@ -42,8 +42,8 @@
       <div class="card">
         <div class="card-body">
           <%= link_to new_treasury_module_cash_account_cash_receipt_line_item_path(account) do %>
+          <small><%= account.name.upcase %></small>
             <h3 class="card-title"><%= number_to_currency account.balance %></h3>
-            <%= account.name %>
           <% end %>
         </div>
       </div>

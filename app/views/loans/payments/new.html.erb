@@ -3,6 +3,31 @@
   <div class="col-md-6">
     <div class="card">
       <div class="card-header">
+        <h3 class="card-title">Loan Payment Details </h3>
+      </div>
+      <div class="card-body">
+        <%= simple_form_for [@loan, @payment], html: { autocomplete: 'off' }, url: :loan_payments do |f| %>
+          <%= f.error_notification %>
+          <%= f.input :date, as: :string, input_html: { value: Time.zone.now.strftime("%B %e, %Y"), class: "datepicker" } %>
+          <%= f.input :cash_account_id, default: current_user.cash_accounts.first, collection: current_user.cash_accounts.map{|a| [a.name, a.id] } %>
+          <%= f.input :description, as: :text %>
+          <%= f.input :principal_amount,  input_html: { value: 0 }, as: :currency  %>
+          <%= f.input :interest_amount, input_html: { value: 0 }, as: :currency  %>
+          <%= f.input :penalty_amount,  input_html: { value: 0 }, as: :currency  %>
+          <%= f.input :reference_number %>
+          <%= f.input :loan_id, input_html: { value: @loan.id },as: :hidden %>
+          <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+          <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
+          <hr>
+          <%= f.submit "Proceed", class: "btn btn-primary float-right", data: {disable_with: "Processing..." } %>
+          <%= link_to 'Cancel', loan_path(@loan), class: "text-danger float-left" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
         <h3 class="card-title">Loan Details </h3>
       </div>
       <div class="card-body">
@@ -74,32 +99,6 @@
             <% end %>
           </tbody>
         </table>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-md-6">
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title">Loan Payment Details </h3>
-      </div>
-      <div class="card-body">
-        <%= simple_form_for [@loan, @payment], html: { autocomplete: 'off' }, url: :loan_payments do |f| %>
-          <%= f.error_notification %>
-          <%= f.input :date, as: :string, input_html: { value: Time.zone.now.strftime("%B %e, %Y"), class: "datepicker" } %>
-          <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] } %>
-          <%= f.input :description, as: :text %>
-          <%= f.input :principal_amount,  input_html: { value: 0 }, as: :currency  %>
-          <%= f.input :interest_amount, input_html: { value: 0 }, as: :currency  %>
-          <%= f.input :penalty_amount,  input_html: { value: 0 }, as: :currency  %>
-          <%= f.input :reference_number %>
-          <%= f.input :loan_id, input_html: { value: @loan.id },as: :hidden %>
-          <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
-          <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
-          <hr>
-          <%= f.submit "Proceed", class: "btn btn-primary float-right", data: {disable_with: "Processing..." } %>
-          <%= link_to 'Cancel', loan_path(@loan), class: "text-danger float-left" %>
-        <% end %>
       </div>
     </div>
   </div>
