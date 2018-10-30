@@ -136,6 +136,9 @@ Rails.application.routes.draw do
     resources :vouchers, only: [:show, :destroy], module: :share_capitals do
       resources :confirmations, only: [:create]
     end
+    resources :balance_transfer_vouchers, only: [:show, :destroy], module: :share_capitals do
+      resources :confirmations, only: [:create]
+    end
     resources :barangays, only: [:edit, :update], module: :share_capitals
     resources :settings, only: [:index], module: :share_capitals
     resources :mergings, only: [:create], module: :share_capitals

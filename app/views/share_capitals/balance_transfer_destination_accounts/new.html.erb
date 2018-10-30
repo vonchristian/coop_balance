@@ -1,8 +1,8 @@
 <div class="row">
-  <div class="col-md-6 offset-md-3">
+  <div class="col-md-8 offset-md-2">
     <div class="card card-danger">
-      <div class="card-header">
-        <h3 class="card-title">Select share capital you want to tranfer balance to. </h3>
+      <div class="card-header no-border">
+        <h3 class="card-title">Select Share Capital you want to transfer balance to. </h3>
       </div>
       <div class="card-body">
         <%=form_tag new_share_capital_balance_transfer_destination_account_path, method: :get, class: "search-form" do %>
@@ -19,7 +19,7 @@
       </div>
       <hr class="no-margin">
       <div class="card-body">
-        <% @share_capitals.each do |share_capital| %>
+        <% @share_capitals.where.not(id: @origin_share_capital.id).each do |share_capital| %>
           <div class="row">
             <div class="col-md-2">
               <%= image_tag(share_capital.avatar.variant(resize: '45x45'), class: "img-circle") if share_capital.avatar.attached? %>

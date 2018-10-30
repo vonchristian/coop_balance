@@ -3,8 +3,11 @@ module ShareCapitals
   class BalanceTransferProcessing
     include ActiveModel::Model
 
-    attr_accessor :origin_id, :destination_id, :amount, :date, :employee_id, :reference_number, :account_number
+    attr_accessor :origin_id, :destination_id, :amount, :date, :employee_id, :reference_number, :account_number, :description
+    validates :amount, presence: true, numericality: true
+    validates :reference_number, :description, :date, presence: true
     validate :amount_is_less_than_or_equal_to_balance?
+
     def process!
       ActiveRecord::Base.transaction do
         create_voucher
@@ -13,6 +16,9 @@ module ShareCapitals
 
     def find_voucher
       Voucher.find_by(account_number: account_number)
+    end
+    def find_destination_share_capital
+      MembershipsModule::ShareCapital.find(destination_id)
     end
 
     private
