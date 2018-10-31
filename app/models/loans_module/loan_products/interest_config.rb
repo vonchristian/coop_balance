@@ -18,41 +18,13 @@ module LoansModule
         AccountingModule::Account.where(id: ids)
       end
 
+      def monthly_rate
+        rate / 12.0
+      end
+
       def interest_balance(loan_application)
-        total_interest(loan_application) -
-        prededucted_interest_amount_for(loan_application)
-      end
-
-      def total_interest(loan_application)
-        if loan_application.term <= 1 && loan_application.term <= 12
-          first_year_interest(loan_application)
-        elsif loan_application.term >= 13 && loan_application.term <= 24
-          first_year_interest(loan_application) +
-          second_year_interest(loan_application)
-        elsif loan_application.term >=25 && loan_application.term <=36
-          first_year_interest(loan_application) +
-          second_year_interest(loan_application) +
-          third_year_interest(loan_application)
-        end
-      end
-
-      def first_year_interest(loan_application)
-        loan_application.loan_amount * rate
-      end
-
-      def second_year_interest(loan_application)
-        if loan_application.term >= 13 && loan_application.term <= 23
-          loan_application.principal_balance(
-            to_date: loan_application.amortization_schedules.order(date: :desc)[11].date,
-            from_date:  loan_application.amortization_schedules.order(date: :desc)[23].date) * rate
-        end
-      end
-      def third_year_interest(loan_application)
-        if loan_application.amortization_schedules.count > 23
-          loan_application.principal_balance(
-            to_date: loan_application.amortization_schedules.order(date: :desc)[23].date,
-            from_date:  loan_application.amortization_schedules.order(date: :desc)[35].date) * rate
-        end
+        total_interest(loan_application)
+        # prededucted_interest_amount_for(loan_application)
       end
 
       def create_charges_for(loan_application)
@@ -63,6 +35,40 @@ module LoansModule
         amount_type: 'credit' )
       end
 
+
+      def total_interest(loan_application)
+        if loan_application.term_is_within_one_year?
+          first_year_interest(loan_application)
+        elsif loan_application.term_is_within_two_years?
+          first_year_interest(loan_application) +
+          second_year_interest(loan_application)
+        elsif loan_application.term_is_within_three_years?
+          first_year_interest(loan_application) +
+          second_year_interest(loan_application) +
+          third_year_interest(loan_application)
+        end
+      end
+
+      def first_year_interest(loan_application)
+        loan_application.loan_amount * monthly_rate * loan_application.term
+      end
+
+      def second_year_interest(loan_application)
+        if loan_application.term_is_within_two_years?
+          loan_application.principal_balance(
+            to_date: loan_application.amortization_schedules.order(date: :desc)[12].date,
+            from_date:  loan_application.amortization_schedules.order(date: :desc)[23].date) * rate
+        end
+      end
+
+      def third_year_interest(loan_application)
+        if loan_application.amortization_schedules.count > 23
+          loan_application.principal_balance(
+            to_date: loan_application.amortization_schedules.order(date: :desc)[23].date,
+            from_date:  loan_application.amortization_schedules.order(date: :desc)[35].date) * rate
+        end
+      end
+
       def prededucted_interest_amount_for(loan_application)
         if prededucted?
           compute_prededucted_interest(loan_application)
@@ -71,7 +77,6 @@ module LoansModule
         end
       end
 
-      private
       def compute_prededucted_interest(loan_application)
         if percentage?
         #for kcmdc

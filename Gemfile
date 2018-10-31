@@ -57,6 +57,7 @@ gem 'chronic'
 gem 'numbers_and_words'
 gem "audited", "~> 4.7"
 gem "responders"
+gem 'money-rails', '~>1.12'
 group :development, :test do
   gem 'rspec-rails', '~> 3.8.0'
   gem 'capybara'

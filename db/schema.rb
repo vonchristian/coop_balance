@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_29_061540) do
+ActiveRecord::Schema.define(version: 2018_10_31_065639) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -519,6 +519,8 @@ ActiveRecord::Schema.define(version: 2018_10_29_061540) do
     t.text "purpose"
     t.uuid "organization_id"
     t.uuid "voucher_id"
+    t.integer "loan_amount_cents", default: 0, null: false
+    t.string "loan_amount_currency", default: "PHP", null: false
     t.index ["borrower_type", "borrower_id"], name: "index_loan_applications_on_borrower_type_and_borrower_id"
     t.index ["cooperative_id"], name: "index_loan_applications_on_cooperative_id"
     t.index ["loan_product_id"], name: "index_loan_applications_on_loan_product_id"
@@ -1144,8 +1146,8 @@ ActiveRecord::Schema.define(version: 2018_10_29_061540) do
     t.string "account_number"
     t.datetime "date_opened"
     t.string "account_owner_name"
-    t.datetime "created_at", default: "2018-10-29 07:23:23", null: false
-    t.datetime "updated_at", default: "2018-10-29 07:23:23", null: false
+    t.datetime "created_at", default: "2018-10-27 03:34:25", null: false
+    t.datetime "updated_at", default: "2018-10-27 03:34:25", null: false
     t.integer "status"
     t.uuid "office_id"
     t.string "subscriber_type"

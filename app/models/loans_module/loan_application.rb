@@ -1,5 +1,6 @@
 module LoansModule
   class LoanApplication < ApplicationRecord
+    monetize :loan_amount_cents
     enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
 
     belongs_to :borrower, polymorphic: true
@@ -22,6 +23,17 @@ module LoansModule
     def current_term_number_of_months
       term
     end
+
+    def term_is_within_one_year?
+      1.upto(12).include?(term)
+    end
+    def term_is_within_two_years?
+      13.upto(24).include?(term)
+    end
+    def term_is_within_three_years?
+      25.upto(36).include?(term)
+    end
+
     def principal_balance(args={})
       amortization_schedules.principal_balance(
           from_date: args[:from_date],
