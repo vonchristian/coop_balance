@@ -19,7 +19,7 @@ genesis_account = AccountingModule::Asset.create(name: "Genesis Account", active
     reference_number:    "Genesis",
     previous_entry_id:   "",
     previous_entry_hash:   "Genesis previous entry hash",
-    encrypted_hash:      "Genesis encryted hash",
+    encrypted_hash:      "Genesis encrypted hash",
     entry_date:          Date.today)
     entry.debit_amounts.build(
         account: genesis_account,

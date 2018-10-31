@@ -35,7 +35,7 @@ module AccountingModule
     accepts_nested_attributes_for :credit_amounts, :debit_amounts, allow_destroy: true
 
     before_validation :set_default_date, on: :create
-    after_commit :set_encrypted_hash!
+    after_commit :set_encrypted_hash!, if: :entries_present?
 
     delegate :name, :first_and_last_name, to: :recorder, prefix: true, allow_nil: true
     delegate :name, to: :cooperative, prefix: true
@@ -50,14 +50,6 @@ module AccountingModule
     def self.not_cancelled
       where(cancelled: false)
     end
-
-    # def self.credit_amounts
-    #   AccountingModule::CreditAmount.where(id: self.pluck(:id))
-    # end
-    # def self.debit_amounts
-    #   AccountingModule::DebitAmount.where(id: self.pluck(:id))
-    # end
-
 
     def self.entered_on(args={})
       EntriesQuery.new.entered_on(args)

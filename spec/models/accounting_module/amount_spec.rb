@@ -44,9 +44,10 @@ module AccountingModule
 
 
     it "#entered_on(args)" do
-      entry = create(:entry_with_credit_and_debit, entry_date: Date.today)
+      origin_entry = create(:origin_entry)
+      entry = create(:entry_with_credit_and_debit, previous_entry: origin_entry, entry_date: Date.today)
 
-      expect(described_class.entered_on(from_date: Date.today, to_date: Date.today).pluck(:id)).to include(entry.amounts.pluck(:id))
+      expect(described_class.entered_on(from_date: Date.today, to_date: Date.today)).to include(entry.amounts)
 
     end
 
