@@ -11,8 +11,7 @@
               <%= @time_deposit.time_deposit_product_name.try(:upcase) %>
             </div>
           </div>
-          <hr class="min-margin">
-          <div class="row">
+          <div class="row min-margin">
             <div class="col-md-5">
               <label>Depositor</label>
             </div>
@@ -20,8 +19,7 @@
               <%= @time_deposit.depositor_name %>
             </div>
           </div>
-          <hr class="min-margin">
-          <div class="row">
+          <div class="row min-margin">
             <div class="col-md-5">
               <label>Account Number</label>
             </div>
@@ -29,8 +27,7 @@
               <%= @time_deposit.account_number %>
             </div>
           </div>
-          <hr class="min-margin">
-          <div class="row">
+          <div class="row min-margin">
             <div class="col-md-5">
               <label>Date Deposited</label>
             </div>
@@ -38,8 +35,7 @@
               <%= @time_deposit.effectivity_date.strftime("%B %e, %Y") %>
             </div>
           </div>
-          <hr class="min-margin">
-          <div class="row">
+          <div class="row min-margin">
             <div class="col-md-11">
               <%= link_to time_deposit_path(@time_deposit, format: "pdf") do %>
                 <span class="btn btn-default"><i class="fa fa-certificate"></i> Time Deposit Certificate </span>
