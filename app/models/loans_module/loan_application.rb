@@ -19,7 +19,9 @@ module LoansModule
     delegate :avatar, :name, to: :borrower
 
     validates :cooperative_id, presence: true
-
+    def current_term_number_of_months
+      term
+    end
     def principal_balance(args={})
       amortization_schedules.principal_balance(
           from_date: args[:from_date],

@@ -6,7 +6,7 @@ module LoansModule
       belongs_to :loan_product,                     class_name: "LoansModule::LoanProduct"
       belongs_to :interest_revenue_account,         class_name: "AccountingModule::Account"
       belongs_to :unearned_interest_income_account, class_name: "AccountingModule::Account"
-
+      belongs_to :cooperative
       validates :rate, :interest_revenue_account_id, :unearned_interest_income_account_id, presence: true
       validates :rate, numericality: true
 
@@ -24,12 +24,12 @@ module LoansModule
       end
 
       def total_interest(loan_application)
-        if loan_application.term <= 12 || loan_application.lumpsum?
+        if loan_application.term <= 1 && loan_application.term <= 12
           first_year_interest(loan_application)
-        elsif loan_application.term <= 24
+        elsif loan_application.term >= 13 && loan_application.term <= 24
           first_year_interest(loan_application) +
           second_year_interest(loan_application)
-        elsif loan_application.term <=36
+        elsif loan_application.term >=25 && loan_application.term <=36
           first_year_interest(loan_application) +
           second_year_interest(loan_application) +
           third_year_interest(loan_application)
@@ -41,14 +41,18 @@ module LoansModule
       end
 
       def second_year_interest(loan_application)
-        loan_application.principal_balance(
+        if loan_application.term >= 13 && loan_application.term <= 23
+          loan_application.principal_balance(
             to_date: loan_application.amortization_schedules.order(date: :desc)[11].date,
             from_date:  loan_application.amortization_schedules.order(date: :desc)[23].date) * rate
+        end
       end
       def third_year_interest(loan_application)
-        loan_application.principal_balance(
+        if loan_application.amortization_schedules.count > 23
+          loan_application.principal_balance(
             to_date: loan_application.amortization_schedules.order(date: :desc)[23].date,
             from_date:  loan_application.amortization_schedules.order(date: :desc)[35].date) * rate
+        end
       end
 
       def create_charges_for(loan_application)

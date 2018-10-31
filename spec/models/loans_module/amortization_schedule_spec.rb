@@ -18,19 +18,17 @@ module LoansModule
 
     describe '.create_schedule_for(loan)' do
       it 'monthly' do
-        monthly_loan = create(:loan_with_interest_on_loan_charge, mode_of_payment: 'monthly',  application_date: Date.today)
-        term = create(:term, termable: monthly_loan, term: 36)
-        LoansModule::AmortizationSchedule.create_schedule_for(monthly_loan)
+        monthly_loan = create(:loan_application, mode_of_payment: 'monthly',  application_date: Date.today, term: 36)
+        LoansModule::AmortizationSchedule.create_amort_schedule_for(monthly_loan)
 
         expect(monthly_loan.amortization_schedules.count).to eql 36
       end
 
       it 'quarterly' do
-        quarterly_loan = create(:loan_with_interest_on_loan_charge, mode_of_payment: 'quarterly',  application_date: Date.today)
-        term = create(:term, termable: quarterly_loan, term: 9)
-        LoansModule::AmortizationSchedule.create_schedule_for(quarterly_loan)
+        quarterly_loan = create(:loan_application, mode_of_payment: 'quarterly',  application_date: Date.today, term: 16)
+        LoansModule::AmortizationSchedule.create_amort_schedule_for(quarterly_loan)
 
-        expect(quarterly_loan.amortization_schedules.count).to eql 9
+        expect(quarterly_loan.amortization_schedules.count).to eql 4
       end
 
       it 'semi_annually' do

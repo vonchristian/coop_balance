@@ -1,15 +1,12 @@
 module LoansModule
 	class AmortizationSchedule < ApplicationRecord
     enum payment_status: [:full_payment, :partial_payment, :unpaid]
-
     belongs_to :loan
     belongs_to :loan_application
-
     has_many :payment_notices, as: :notified
     has_many :notes, as: :noteable
 
-    # validates :principal, :interest, presence: true, numericality: { greater_than: 0.01
-    # validates :loan_id, presence: true
+    validates :principal,  presence: true, numericality: { greater_than: 0.01 }
     accepts_nested_attributes_for :notes
 
     delegate :avatar, :borrower_name, to: :loan
