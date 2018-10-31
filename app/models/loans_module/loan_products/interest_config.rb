@@ -80,7 +80,7 @@ module LoansModule
       def compute_prededucted_interest(loan_application)
         if percentage?
         #for kcmdc
-          (loan_application.loan_amount * rate) * prededucted_rate
+          (loan_application.loan_amount.amount * rate) * prededucted_rate
         elsif number_of_payment?
           #for kccmc
           loan_application.amortization_schedules.order(date: :desc).take(number_of_payment).sum(:interest)

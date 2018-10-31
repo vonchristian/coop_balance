@@ -13,8 +13,8 @@ module LoansModule
                   :preparer_id,
                   :cooperative_id,
                   :office_id
-    validates :term, :loan_amount, presence: true, numericality: true
-    validates :loan_product_id, :mode_of_payment, :term, :loan_amount, :application_date, presence: true
+    validates :term,  presence: true, numericality: true
+    validates :loan_product_id, :mode_of_payment, :term, :application_date, presence: true
     def find_loan_application
       LoansModule::LoanApplication.find_by(account_number: account_number)
     end
@@ -46,7 +46,7 @@ module LoansModule
         preparer_id: preparer_id,
         account_number: account_number,
         term: term)
-    
+
       create_amortization_schedule(loan_application)
       create_charges(loan_application)
     end

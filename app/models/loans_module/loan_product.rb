@@ -97,7 +97,7 @@ module LoansModule
       loan_product_charges.percent_based.each do |charge|
           loan_application.voucher_amounts.find_or_create_by(
           description: charge.name,
-          amount: charge.rate * loan_application.loan_amount,
+          amount: charge.rate * loan_application.loan_amount.amount,
           amount_type: 'credit',
           account: charge.account
           )

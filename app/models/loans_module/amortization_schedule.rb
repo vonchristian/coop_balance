@@ -6,7 +6,8 @@ module LoansModule
     has_many :payment_notices, as: :notified
     has_many :notes, as: :noteable
 
-    validates :principal,  presence: true, numericality: { greater_than: 0.01 }
+
+
     accepts_nested_attributes_for :notes
 
     delegate :avatar, :borrower_name, to: :loan
@@ -56,7 +57,7 @@ module LoansModule
       end
     end
     def self.interest_for_first_year(loan_application)
-      loan_application.loan_amount * loan_application.annual_interest_rate
+      loan_application.loan_amount.amount * loan_application.annual_interest_rate
     end
     ###########################
     def color
@@ -110,7 +111,7 @@ module LoansModule
 
     def self.average_monthly_payment(loan)
       if loan.lumpsum?
-        loan.loan_amount
+        loan.loan_amount.amount
       else
         all.collect{ |a| a.total_amortization }.sum / loan.current_term_number_of_months
       end
@@ -172,7 +173,7 @@ module LoansModule
 		private
     def self.straight_balance_interest_computation(schedule, loan)
       if loan.lumpsum?
-        loan.loan_amount * loan.loan_product_monthly_interest_rate * loan.current_term_number_of_months
+        loan.loan_amount.amount * loan.loan_product_monthly_interest_rate * loan.current_term_number_of_months
       else
         (loan.principal_balance_for(schedule) * loan.loan_product_monthly_interest_rate)
       end
@@ -219,7 +220,7 @@ module LoansModule
 			end
 		end
 		def self.principal_amount_for(loan)
-			(loan.loan_amount / number_of_payments(loan))
+			(loan.loan_amount.amount / number_of_payments(loan))
 		end
 
 

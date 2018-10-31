@@ -1,6 +1,7 @@
 module LoansModule
   class LoanApplication < ApplicationRecord
-    monetize :loan_amount_cents
+    monetize :loan_amount_cents, as: "loan_amount"
+
     enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
 
     belongs_to :borrower, polymorphic: true
@@ -41,7 +42,7 @@ module LoansModule
     end
 
     def balance_for(schedule)
-      loan_amount - LoansModule::AmortizationSchedule.principal_for(schedule, self)
+      loan_amount.amount - LoansModule::AmortizationSchedule.principal_for(schedule, self)
     end
 
     def total_interest
@@ -65,7 +66,7 @@ module LoansModule
     end
 
     def net_proceed
-      loan_amount - voucher_amounts.sum(&:adjusted_amount)
+      loan_amount.amount - voucher_amounts.sum(&:adjusted_amount)
     end
     def disbursed?
       voucher && voucher.disbursed?
@@ -79,14 +80,14 @@ module LoansModule
 
     def self.principal_balance_for(schedule) #used to compute interest
       if schedule == self.amortization_schedules.order(date: :asc).first
-        loan_amount
+        loan_amount.amount
       else
-        loan_amount - amortization_schedules.principal_for(schedule.previous_schedule, self)
+        loan_amount.amount - amortization_schedules.principal_for(schedule.previous_schedule, self)
       end
     end
 
     def number_of_thousands # for Loan Protection fund computation
-      loan_amount / 1_000
+      loan_amount.amount / 1_000
     end
   end
 

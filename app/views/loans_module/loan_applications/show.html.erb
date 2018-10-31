@@ -14,7 +14,7 @@
             <h3 class="card-title">Loan Amount </h3>
           </div>
           <div class="col-md-3">
-            <h3 class="card-title float-right"><%= number_to_currency @loan_application.loan_amount %></h3>
+            <h3 class="card-title float-right"><%= humanized_money_with_symbol @loan_application.loan_amount %></h3>
           </div>
         </div>
         <hr>

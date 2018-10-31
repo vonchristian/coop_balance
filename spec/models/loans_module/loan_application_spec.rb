@@ -14,6 +14,9 @@ module LoansModule
       it { is_expected.to have_many :terms }
       it { is_expected.to have_many :amount_adjustments }
     end
+    describe 'validations' do
+     it {is_expected.to monetize(:loan_amount) }
+    end
 
     describe 'delegations' do
       it { is_expected.to delegate_method(:name).to(:borrower).with_prefix }
