@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_29_061540) do
+ActiveRecord::Schema.define(version: 2018_11_01_140446) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -749,10 +749,6 @@ ActiveRecord::Schema.define(version: 2018_10_29_061540) do
     t.string "contact_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "avatar_file_name"
-    t.string "avatar_content_type"
-    t.bigint "avatar_file_size"
-    t.datetime "avatar_updated_at"
     t.string "slug"
     t.integer "birth_month"
     t.integer "birth_day"

@@ -56,7 +56,7 @@ class Member < ApplicationRecord
   delegate :details, :complete_address, :barangay_name, :street_name, to: :current_address, prefix: true, allow_nil: true
   delegate :name, to: :current_organization, prefix: true, allow_nil: true
   before_save :update_birth_date_fields
-  before_save :set_default_image, on: :create
+  # before_save :set_default_image, on: :create
 
   def current_organization
     organizations.current

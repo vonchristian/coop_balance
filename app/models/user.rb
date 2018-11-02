@@ -62,6 +62,9 @@ class User < ApplicationRecord
   delegate :name, :abbreviated_name, to: :cooperative, prefix: true
 
   delegate :complete_address, to: :current_address, prefix: true, allow_nil: true
+
+  before_save :set_default_image, on: :create
+
   def current_address
     addresses.current_address
   end
@@ -131,7 +134,7 @@ class User < ApplicationRecord
 
   private
   def set_default_image
-    if avatar.attached?
+    if !avatar.attached?
       self.avatar.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'default.png')), filename: 'default-image.png', content_type: 'image/png')
     end
   end

@@ -1,6 +1,27 @@
 <div class="card">
-  <div class="card-body">
-    <%= link_to 'Print Employee Info', employee_info_index_path(@employee, format: 'pdf') %>
-    
-    </div>
+  <div class="card-header">
+    <%= link_to 'Print Employee Info', employee_info_index_path(@employee, format: 'pdf'), class: "btn btn-default float-right" %>
   </div>
+  <div class="card-body">
+  	<table class="table">
+  		<tbody>
+  			<tr>
+  				<td style="width:200px">
+  					Name
+  				</td>
+  				<td>
+  					<%= @employee.first_and_last_name %>
+  				</td>
+  			</tr>
+  			<tr>
+  				<td style="width:200px">
+  					Role
+  				</td>
+  				<td>
+  					<span class="text-muted"><%= @employee.role.try(:titleize).try(:upcase) %></span>
+  				</td>
+  			</tr>
+  		</tbody>
+  	</table>
+  </div>
+</div>

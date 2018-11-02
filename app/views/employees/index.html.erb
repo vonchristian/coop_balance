@@ -16,21 +16,7 @@
     </div>
     <% @employees.each do |employee| %>
       <% cache employee do %>
-        <div class="card">
-          <div class="card-header">
-            <%= link_to employee_path(employee) do %>
-              <div class="row justify-content-end">
-                <div class="col-md-2">
-                  <%= image_tag(employee.avatar.variant(resize: "45x45"), class: "img-circle") if employee.avatar.attached? %>
-                </div>
-                <div class="col-md-9">
-                  <p class="text-purple"><b><%= employee.first_and_last_name %></b></p>
-                  <small class="text-black"><%= employee.role.try(:titleize).try(:upcase) %></small>
-                </div>
-              </div>
-            <% end %>
-          </div>
-        </div>
+        <%= render 'employees/partials/header', employee: employee %>
       <% end %>
     <% end %>
   </div>

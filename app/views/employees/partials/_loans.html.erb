@@ -1,17 +1,22 @@
 <div class="row">
   <div class="col-md-12">
     <div class="card">
-      <div class="card-body">
+      <div class="card-header">
         <small>ACCOUNTS RECEIVABLE (STORE)</small>
-        <h3 class="box-title"><%=number_to_currency @employee.account_receivable_store_balance %></h3>
-        <hr>
-        <h4 class="condensed-text">LOANS </h4>
+        <h3 class="card-title">
+          <%=number_to_currency @employee.account_receivable_store_balance %>
+        </h3>
+      </div>
+      <div class="card-header">
+        <h4 class="card-title">LOANS </h4>
         <% if policy([:members, :loan]).new? %>
           <%= link_to 'New Loan Application', new_employee_loan_path(@employee), class: "btn btn-primary" %>
         <% end %>
+      </div>
+      <div class="card-body">
         <% @employee.loans.each do |loan| %>
           <%=link_to loan_path(loan) do %>
-            <%=loan.loan_product_name %>
+            <%= render 'loans/partials/header', loan: loan %>
           <% end %>
           <hr class="min-width">
         <% end %>

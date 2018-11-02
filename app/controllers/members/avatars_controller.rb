@@ -3,7 +3,7 @@ module Members
 
 		def create
 			@member = Member.find(params[:member_id])
-			@avatar = @member.update(avatar_params)
+			@avatar = @member.update!(avatar_params)
 			redirect_to member_info_index_path(@member), notice: 'Avatar updated.'
 		end
 
