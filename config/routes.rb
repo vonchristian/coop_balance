@@ -313,6 +313,7 @@ Rails.application.routes.draw do
       resources :cash_receipt_line_items, only: [:new, :create, :destroy], module: :cash_accounts
       resources :cash_disbursement_line_items, only: [:new, :create, :destroy], module: :cash_accounts
     end
+    
     resources :reports, only: [:index]
     resources :disbursements, only: [:index]
     resources :cash_receipts, only: [:index]
@@ -321,11 +322,10 @@ Rails.application.routes.draw do
     resources :cash_disbursement_vouchers, only: [:show, :destroy] do
       resources :confirmations, only: [:create], module: :cash_disbursement_vouchers
     end
+
     resources :cash_receipt_vouchers, only: [:show, :destroy] do
       resources :confirmations, only: [:create], module: :cash_receipt_vouchers
     end
-
-
 
     resources :employees, only: [:index, :show] do
       resources :remittances, only: [:new, :create]
@@ -339,7 +339,7 @@ Rails.application.routes.draw do
   resources :savings_accounts_dashboards, only: [:index]
   resources :savings_accounts_below_minimum_balances, only: [:index]
   resources :share_capitals_below_minimum_balances, only: [:index]
-namespace :share_capitals_section do
+  namespace :share_capitals_section do
     resources :dashboards, only: [:index]
   end
 
@@ -369,13 +369,13 @@ namespace :share_capitals_section do
   resources :disbursements, only: [:index, :show, :new, :create]
   resources :collections, only: [:index, :show]
   resources :suppliers, only: [:index, :show, :new, :create, :edit, :update] do
-      resources :vouchers, only: [:index, :show, :new, :create], module: :suppliers
-      resources :purchases, only: [:index, :new, :create], module: :suppliers
-      resources :purchase_processings, only: [:create], module: :suppliers
-      resources :delivery_vouchers, only: [:create], module: :suppliers
-      resources :purchase_returns, only: [:index, :new, :create], module: :suppliers
-      resources :amounts, only: [:create, :destroy], module: :suppliers
-    end
+    resources :vouchers, only: [:index, :show, :new, :create], module: :suppliers
+    resources :purchases, only: [:index, :new, :create], module: :suppliers
+    resources :purchase_processings, only: [:create], module: :suppliers
+    resources :delivery_vouchers, only: [:create], module: :suppliers
+    resources :purchase_returns, only: [:index, :new, :create], module: :suppliers
+    resources :amounts, only: [:create, :destroy], module: :suppliers
+  end
   resources :registries, only: [:create]
 
   resources :programs, only: [:index, :show] do
@@ -410,6 +410,7 @@ namespace :share_capitals_section do
     resources :amounts, only: [:new, :create, :destroy], module: :employees
     resources :orders, only: [:index], module: :employees
     resources :loans, only: [:index], module: :employees
+    resources :avatars, module: :employees
   end
   resources :loans, only: [:index, :show] do
     resources :payment_vouchers, only: [:show], module: :loans

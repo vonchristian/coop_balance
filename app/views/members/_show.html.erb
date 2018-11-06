@@ -9,8 +9,8 @@
           <% else %>
             <%= image_tag("default.png", width: '150', height: '150', class: 'img-rounded mx-auto d-block') %>
           <% end %>
-          <%= simple_form_for Member.new, url: member_avatars_path(@member), html: {id: "update-avatar"} do |f| %>
-            <%= f.input :avatar, as: :file, label: false, input_html: { class: 'choose-btn center-block' } %>
+          <%= simple_form_for Member.new, url: member_avatars_path(@member), html: {id: "update-member-avatar"} do |f| %>
+            <%= f.input :avatar, as: :file, label: false, input_html: {id: "member-avatar", class: 'choose-btn center-block' } %>
             <div class="option-overlay">
               <div class="col-md-12 text-center">
                 <a href="" title="Update Photo"><span id="browse-image" class="text-white">Update Photo</span></a>
@@ -62,13 +62,13 @@
 
 <script type="text/javascript">
   $('#browse-image').click(function(e) {
-    $('#member_avatar').click();
+    $('#member-avatar').click();
     e.preventDefault();
     e.stopPropagation();
-    $('#member_avatar').change(function() {
-      var val = $('#member_avatar').val();
+    $('#member-avatar').change(function() {
+      var val = $('#member-avatar').val();
       if (val != ''){
-        $('#update-avatar').submit();
+        $('#update-member-avatar').submit();
       }
     });
   });

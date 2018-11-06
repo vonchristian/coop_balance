@@ -164,28 +164,36 @@ select.form-control + .chosen-container-multi .chosen-results li.result-selected
 }
 
 .no-margin {
-    margin: 0 !important;
+  margin: 0px !important;
 }
 
 .no-margin-top {
-    margin-top: 0 !important;
+  margin-top: 0px !important;
 }
 
 .no-margin-bottom {
-    margin-bottom: 0 !important;
+  margin-bottom: 0px !important;
 }
 
 .min-margin {
-    margin-top: 4px !important;
-    margin-bottom: 4px !important;
+  margin-top: 4px !important;
+  margin-bottom: 4px !important;
 }
 
 .min-margin-bottom {
-  margin-bottom: 5px !important;
+  margin-bottom: 6px !important;
+}
+
+.no-padding-bottom {
+  padding-bottom: 0 !important;
+}
+
+.no-padding-top {
+  padding-top: 0 !important;
 }
 
 .input-group-prepend {
-    width: 100%;
+  width: 100%;
 }
 
 input[type="checkbox"] {

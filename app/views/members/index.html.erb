@@ -24,11 +24,9 @@
         <br>
       </div>
     </div>
-        <% @members.each do |member| %>
-          <%= render 'members/partials/header', member: member %>
-        <% end %>
-        <center><%= will_paginate @members %> </center>
-      </div>
-    </div>
+    <% @members.each do |member| %>
+      <%= render 'members/partials/header', member: member %>
+    <% end %>
+    <center><%= will_paginate @members %> </center>
   </div>
 </div>

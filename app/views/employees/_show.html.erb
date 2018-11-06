@@ -1,26 +1,61 @@
+<%= render 'employees/partials/header', employee: @employee %>
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-lg-3">
     <div class="card">
       <div class="card-header">
-        <center>
-          <h4><%= @employee.name %></h4>
-        </center>
+        <div class="profile-wrapper">
+          <% if @employee.avatar.attached? %>
+            <%= image_tag(@employee.avatar.variant(resize: "150x150"), class: "img-rounded mx-auto d-block") %>
+          <% else %>
+            <%= image_tag("default.png", width: '150', height: '150', class: 'img-rounded mx-auto d-block') %>
+          <% end %>
+          <%= simple_form_for User.new, url: employee_avatars_path(@employee), html: {id: "update-user-avatar"} do |f| %>
+            <%= f.input :avatar, as: :file, label: false, input_html: { class: 'choose-btn center-block' } %>
+            <div class="option-overlay">
+              <div class="col-md-12 text-center">
+                <a href="" title="Update Photo"><span id="browse-image" class="text-white">Update Photo</span></a>
+              </div>
+            </div>
+          <% end %>
+        </div>
       </div>
       <div class="card-body">
-        <nav class="nav nav-pills flex-column flex-md-row">
-          <%= link_to 'Info', employee_path(@employee), class: "text-sm-center nav-link #{'active' if current_page?(employee_path(@employee))}" %>
-          <%= link_to 'Entries', employee_entries_path(@employee), class: "text-sm-center nav-link #{'active' if current_page?(employee_entries_path(@employee))}" %>
-          <%= link_to 'Reports', employee_reports_path(@employee), class: "text-sm-center nav-link #{'active' if current_page?(employee_reports_path(@employee))}" %>
-          <%= link_to 'Vouchers', employee_vouchers_path(@employee), class: "text-sm-center nav-link #{'active' if current_page?(employee_vouchers_path(@employee))}" %>
-          <%= link_to 'Purchases', employee_orders_path(@employee), class: "text-sm-center nav-link #{'active' if current_page?(employee_orders_path(@employee))}" %>
-          <%= link_to 'Loans & Credit', employee_loans_path(@employee), class: "text-sm-center nav-link #{'active' if current_page?(employee_loans_path(@employee))}" %>
-          <%= link_to 'Savings', employee_savings_accounts_path(@employee), class: "text-sm-center nav-link #{'active' if current_page?(employee_savings_accounts_path(@employee))}" %>
-          <%= link_to 'Share Capitals', employee_share_capitals_path(@employee), class: "text-sm-center nav-link #{'active' if current_page?(employee_share_capitals_path(@employee))}" %>
-          <%= link_to 'Time Deposits', employee_time_deposits_path(@employee), class: "text-sm-center nav-link #{'active' if current_page?(employee_time_deposits_path(@employee))}" %>
-          <%= link_to 'Settings', employee_settings_path(@employee), class: "text-sm-center nav-link #{'active' if current_page?(employee_settings_path(@employee))}" %>
+        <nav class="nav flex-column nav-pills">
+          <li class="nav-item">
+            <%= link_to 'Info', employee_path(@employee), class: "nav-link #{'active' if current_page?(employee_path(@employee))}" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'Entries', employee_entries_path(@employee), class: "nav-link #{'active' if current_page?(employee_entries_path(@employee))}" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'Reports', employee_reports_path(@employee), class: "nav-link #{'active' if current_page?(employee_reports_path(@employee))}" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'Vouchers', employee_vouchers_path(@employee), class: "nav-link #{'active' if current_page?(employee_vouchers_path(@employee))}" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'Purchases', employee_orders_path(@employee), class: "nav-link #{'active' if current_page?(employee_orders_path(@employee))}" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'Loans & Credit', employee_loans_path(@employee), class: "nav-link #{'active' if current_page?(employee_loans_path(@employee))}" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'Savings', employee_savings_accounts_path(@employee), class: "nav-link #{'active' if current_page?(employee_savings_accounts_path(@employee))}" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'Share Capitals', employee_share_capitals_path(@employee), class: "nav-link #{'active' if current_page?(employee_share_capitals_path(@employee))}" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'Time Deposits', employee_time_deposits_path(@employee), class: "nav-link #{'active' if current_page?(employee_time_deposits_path(@employee))}" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'Settings', employee_settings_path(@employee), class: "nav-link #{'active' if current_page?(employee_settings_path(@employee))}" %>
+          </li>
         </nav>
       </div>
     </div>
+  </div>
+  <div class="col-md-9">
     <% if current_page?(employee_path(@employee)) %>
       <%=render 'employees/partials/employee_info' %>
     <% end %>
@@ -53,3 +88,17 @@
     <% end %>
   </div>
 </div>
+
+<script type="text/javascript">
+  $('#browse-image').click(function(e) {
+    $('#user_avatar').click();
+    e.preventDefault();
+    e.stopPropagation();
+    $('#user_avatar').change(function() {
+      var val = $('#user_avatar').val();
+      if (val != ''){
+        $('#update-user-avatar').submit();
+      }
+    });
+  });
+</script>

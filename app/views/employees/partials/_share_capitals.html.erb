@@ -2,9 +2,16 @@
   <div class="col-md-12">
     <div class="card">
       <div class="card-header">
-        <% if policy([:employees, :share_capital]).new? %>
-          <%= link_to 'New Share Capital', new_share_capital_path(subscriber_id: @employee.id, subscriber_type: @employee.class.to_s), class: "btn btn-primary float-right" %>
-        <% end %>
+        <div class="row">
+          <div class="col-md-6">
+            <h4 class="card-title">Share Capital</h4>
+          </div>
+          <div class="col-md-6">
+            <% if policy([:employees, :share_capital]).new? %>
+              <%= link_to 'New Share Capital', new_share_capital_path(subscriber_id: @employee.id, subscriber_type: @employee.class.to_s), class: "btn btn-primary float-right" %>
+            <% end %>
+          </div>
+        </div>
       </div>
     </div>
   </div>
