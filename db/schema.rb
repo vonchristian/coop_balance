@@ -10,11 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 2018_10_31_065639) do
-=======
-ActiveRecord::Schema.define(version: 2018_11_01_140446) do
->>>>>>> 3d70dcf813f0c33483e6b0dad3c6c4c14173b4a9
+ActiveRecord::Schema.define(version: 2018_11_06_004018) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -128,10 +124,12 @@ ActiveRecord::Schema.define(version: 2018_11_01_140446) do
     t.uuid "voucher_amount_id"
     t.uuid "loan_application_id"
     t.decimal "amount"
-    t.decimal "percent"
     t.integer "number_of_payments"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "adjustment_type"
+    t.decimal "rate"
+    t.index ["adjustment_type"], name: "index_amount_adjustments_on_adjustment_type"
     t.index ["loan_application_id"], name: "index_amount_adjustments_on_loan_application_id"
     t.index ["voucher_amount_id"], name: "index_amount_adjustments_on_voucher_amount_id"
   end

@@ -12,7 +12,6 @@ module Vouchers
     validates :amount, :account_id, :amount_type, presence: true
     validates :amount, numericality: true
 
-
     def self.total
       sum(:amount)
     end
@@ -29,19 +28,17 @@ module Vouchers
       for_account(account: Employees::EmployeeCashAccount.cash_accounts).sum(:amount)
     end
 
-
     def self.with_no_vouchers
       select{ |a| a.voucher.nil? }
     end
 
     def adjusted_amount
       if amount_adjustment
-        amount_adjustment.adjusted_amount
+        amount_adjustment.adjusted_amount(voucher_amount: self)
       else
         amount
       end
     end
-    
 
     def self.balance_for_new_record
       balance = BigDecimal.new('0')
