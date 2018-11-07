@@ -3,10 +3,13 @@ module LoansModule
     class VoucherAmountProcessing
       include ActiveModel::Model
       attr_accessor :amount, :account_id, :description, :loan_application_id
+      validates :amount, :account_id, presence: true
 
       def process!
-        ActiveRecord::Base.transaction do
-          create_voucher_amount
+        if valid?
+          ActiveRecord::Base.transaction do
+            create_voucher_amount
+          end
         end
       end
 

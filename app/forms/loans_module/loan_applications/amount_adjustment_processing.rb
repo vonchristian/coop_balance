@@ -4,10 +4,13 @@ module LoansModule
       include ActiveModel::Model
       attr_accessor :loan_application_id, :voucher_amount_id, :amount, :rate, :adjustment_type, :number_of_payments
 
-      validates :loan_application_id, :voucher_amount_id, presence: true
+      validates :amount, :rate, :adjustment_type, :number_of_payments, :loan_application_id, :voucher_amount_id, presence: true
+
       def process!
-        ActiveRecord::Base.transaction do
-          create_adjustment
+        if valid?
+          ActiveRecord::Base.transaction do
+            create_adjustment
+          end
         end
       end
 
@@ -20,7 +23,6 @@ module LoansModule
           rate: rate,
           adjustment_type: adjustment_type,
           number_of_payments: number_of_payments)
-        # find_voucher_amount.update_attributes!(amount_adjustment: amount_adjustment)
       end
       def find_voucher_amount
         Vouchers::VoucherAmount.find(voucher_amount_id)

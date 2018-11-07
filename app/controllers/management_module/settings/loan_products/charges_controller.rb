@@ -2,25 +2,27 @@ module ManagementModule
   module Settings
     module LoanProducts
       class ChargesController < ApplicationController
+        respond_to :html, :json
+
         def new
           @loan_product = current_cooperative.loan_products.find(params[:loan_product_id])
           @charge = @loan_product.loan_product_charges.build
+          respond_modal_with @charge
         end
+
         def create
           @loan_product = current_cooperative.loan_products.find(params[:loan_product_id])
           @charge = @loan_product.loan_product_charges.build(charge_params)
-          if @charge.valid?
-            @charge.save
-            redirect_to management_module_settings_cooperative_products_url, notice: "saved successfully"
-          else
-            render :new
-          end
+          @charge.save
+          respond_modal_with @charge,
+            location: management_module_settings_cooperative_products_url
         end
 
         def edit
           @loan_product = LoansModule::LoanProduct.find(params[:loan_product_id])
     			@charge = @loan_product.charges.find(params[:id])
     		end
+        
     		def update
           @loan_product = LoansModule::LoanProduct.find(params[:loan_product_id])
     			@charge = @loan_product.charges.find(params[:id])

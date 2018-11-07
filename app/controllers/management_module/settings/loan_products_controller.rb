@@ -1,6 +1,7 @@
 module ManagementModule
   module Settings
     class LoanProductsController < ApplicationController
+      respond_to :html, :json
 
       def index
         @loan_products = LoansModule::LoanProduct.all
@@ -8,16 +9,14 @@ module ManagementModule
 
       def new
         @loan_product = LoansModule::LoanProductRegistration.new
+        respond_modal_with @loan_product
       end
 
       def create
         @loan_product = LoansModule::LoanProductRegistration.new(loan_product_params)
-        if @loan_product.valid?
-          @loan_product.register!
-          redirect_to management_module_settings_cooperative_products_url, notice: "Loan Product created successfully."
-        else
-          render :new
-        end
+        @loan_product.register!
+        respond_modal_with @loan_product,
+          location: loans_module_loan_products_url
       end
 
       private
