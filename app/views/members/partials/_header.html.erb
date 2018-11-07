@@ -3,7 +3,7 @@
     <div class="card-body">
       <div class="row">
         <div class="col-md-1">
-          <%= image_tag(member.avatar.variant(resize: "55x55"), class: "img-circle") if member.avatar.attached? %>
+          <%= image_tag(member.avatar, height: 45, width: 45, class: "img-circle") if member.avatar.attached? %>
         </div>
         <div class="col-md-11">
           <b> <%= member.full_name %></b><br>

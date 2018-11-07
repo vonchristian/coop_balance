@@ -12,7 +12,7 @@ module LoansModule
         @voucher = LoansModule::LoanApplications::VoucherProcessing.new(voucher_params)
         if @voucher.valid?
           @voucher.process!
-          redirect_to loans_module_loan_application_voucher_url(loan_application_id: @loan_application.id, id: @voucher.find_voucher.id), notice: "Loan application saved successfully."
+          redirect_to loans_module_loan_applications_url, notice: "Loan application saved successfully."
         else
           render :new
         end

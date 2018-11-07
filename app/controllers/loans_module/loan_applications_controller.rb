@@ -1,7 +1,7 @@
 module LoansModule
   class LoanApplicationsController < ApplicationController
     def index
-      @loan_applications = current_cooperative.loan_applications
+      @loan_applications = current_cooperative.loan_applications.order(application_date: :desc)
     end
     def new
       @borrower = Borrower.find(params[:borrower_id])

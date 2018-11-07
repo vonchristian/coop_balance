@@ -74,14 +74,14 @@
       <hr class="no-margin">
       <div class="card-body">
         <%= simple_form_for [@loan_application, @voucher], url: :loans_module_loan_application_vouchers, html: { autocomplete: 'off' } do |f| %>
-          <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+          <%= f.input :date, as: :string, input_html: { class: "datepicker", value: Date.today.strftime("%B %e, %Y") } %>
           <%= f.input :description, input_html: { value: "#{@loan_application.loan_product_name} disbursement voucher of #{@loan_application.borrower_name}" }, as: :text %>
           <%= f.input :number, input_html: { value: Voucher.generate_number_for(@voucher) } %>
           <%= f.input :preparer_id, input_html: { value: current_user.id }, as: :hidden %>
 
           <%= f.input :borrower_id, input_html: { value: @loan_application.borrower_id }, as: :hidden %>
           <%= f.input :borrower_type, input_html: { value: @loan_application.borrower.class.to_s }, as: :hidden %>
-          <%= f.input :net_proceed, input_html: { value: @loan_application.net_proceed.round(2) }%>
+          <%= f.input :net_proceed, input_html: { value: @loan_application.net_proceed.round(2) }, as: :hidden %>
 
           <%= f.input :loan_application_id, input_html: { value: @loan_application.id }, as: :hidden %>
           <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
@@ -89,7 +89,7 @@
           <%= f.input :cash_account_id, collection: Employees::EmployeeCashAccount.cash_accounts.map{|a| [a.name, a.id] } %>
           <hr>
           <%= f.submit "Create Voucher", class: "btn btn-primary btn-lg float-right" %>
-          <%= link_to 'Cancel ', loans_module_loan_application_path(@loan_application), method: :delete, class: "btn float-left" %>
+          <%= link_to 'Cancel Application', loans_module_loan_application_path(@loan_application), method: :delete, class: "btn float-left text-danger" %>
         <% end %>
       </div>
     </div>

@@ -5,7 +5,7 @@ module Vouchers
     belongs_to :voucher
     belongs_to :recorder, class_name: "User", foreign_key: 'recorder_id'
     belongs_to :commercial_document, polymorphic: true
-    belongs_to :amount_adjustment, class_name: "Vouchers::AmountAdjustment"
+    has_many :amount_adjustments, class_name: "Vouchers::AmountAdjustment", dependent: :destroy
 
     delegate :name, to: :account, prefix: true
 
@@ -14,6 +14,10 @@ module Vouchers
 
     def self.total
       sum(:amount)
+    end
+
+    def recent_amount_adjustment
+      amount_adjustments.recent
     end
 
     def self.for_account(args={})
@@ -33,8 +37,8 @@ module Vouchers
     end
 
     def adjusted_amount
-      if amount_adjustment
-        amount_adjustment.adjusted_amount(voucher_amount: self)
+      if recent_amount_adjustment.present?
+        recent_amount_adjustment.adjusted_amount(adjustable: self)
       else
         amount
       end

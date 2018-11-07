@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.5.1'
+ruby '2.5.3'
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
   "https://github.com/#{repo_name}.git"
@@ -12,7 +12,7 @@ gem 'paperclip'
 gem 'axlsx_rails'
 gem 'trix'
 gem 'autonumeric-rails'
-gem 'rails', '5.2.0'
+gem 'rails', '5.2.1'
 gem 'pg', '0.21'
 gem 'puma', '~> 3.7', group: [:development, :production]
 gem 'sass-rails'

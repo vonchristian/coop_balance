@@ -28,6 +28,13 @@ RSpec.describe Voucher, type: :model do
     it { is_expected.to delegate_method(:avatar).to(:payee) }
   end
 
+  it '.loan_disbursement_vouchers' do
+    disbursement_voucher = create(:voucher)
+    loan = create(:loan, disbursement_voucher: disbursement_voucher)
+
+    expect(described_class.loan_disbursement_vouchers).to include(disbursement_voucher)
+  end
+
   it ".payees" do
   end
 

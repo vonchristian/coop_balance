@@ -20,7 +20,7 @@ module LoansModule
       private
       def adjustment_params
         params.require(:loans_module_loan_applications_amount_adjustment_processing).
-        permit(:amount, :percent, :number_of_payments, :loan_application_id, :voucher_amount_id)
+        permit(:amount, :rate, :adjustment_type, :number_of_payments, :loan_application_id, :voucher_amount_id)
       end
     end
   end

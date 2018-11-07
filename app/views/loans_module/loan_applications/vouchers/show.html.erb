@@ -15,7 +15,9 @@
       <% if !@voucher.disbursed?%>
         <%= render 'vouchers/partials/alert_message' %>
         <div class="card-body">
-          <%= link_to "Disburse", voucher_disbursements_path(voucher_id: @voucher.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
+          <% if current_user.can_disburse?(voucher: @voucher) %>
+            <%= link_to "Disburse", voucher_disbursements_path(voucher_id: @voucher.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
+          <% end %>
           <%= link_to "Cancel", voucher_path(@voucher), method: :delete, class: "btn text-danger float-left" %>
         </div>
       <% else %>
