@@ -43,13 +43,14 @@ module LoansModule
         account: find_loan_application.loan_product_loans_receivable_current_account,
         commercial_document: find_loan_application)
         find_loan_application.voucher_amounts.each do |voucher_amount|
-        voucher.voucher_amounts.create!(
-          amount: voucher_amount.adjusted_amount,
-          cooperative: voucher_amount.cooperative,
-          amount_type: voucher_amount.amount_type,
-          account: voucher_amount.account,
-          commercial_document: voucher_amount.commercial_document
-          )
+          voucher.voucher_amounts.create!(
+            amount: voucher_amount.adjusted_amount,
+            cooperative: voucher_amount.cooperative,
+            amount_type: voucher_amount.amount_type,
+            account: voucher_amount.account,
+            commercial_document: voucher_amount.commercial_document
+            )
+        end
 
         Vouchers::VoucherAmount.create!(
         cooperative: find_loan_application.cooperative,

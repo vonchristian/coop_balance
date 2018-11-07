@@ -6,7 +6,7 @@ module LoansModule
       def new
         @loan_application = current_cooperative.loan_applications.find(params[:loan_application_id])
         @voucher_amount = current_cooperative.voucher_amounts.find(params[:voucher_amount_id])
-        @adjustment = LoansModule::LoanApplications::AmountAdjustmentProcessing.new
+        @adjustment = LoansModule::LoanApplications::AmountAdjustmentProcessing.new(voucher_amount: @voucher_amount)
         respond_modal_with @adjustment
       end
 
