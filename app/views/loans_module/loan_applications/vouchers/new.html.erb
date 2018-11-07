@@ -40,7 +40,7 @@
                   <%= voucher_amount.description %>
                 </div>
                 <div class="col-md-2">
-                  <%= link_to new_loans_module_voucher_amount_amount_adjustment_path(voucher_amount_id: voucher_amount.id, loan_application_id: @loan_application.id) do %>
+                  <%= link_to new_loans_module_voucher_amount_amount_adjustment_path(voucher_amount_id: voucher_amount.id, loan_application_id: @loan_application.id), data: { modal: true } do %>
                     <span data-toggle="tooltip" title="Adjust"><i class="fa fa-edit"></i>
                     </span>
                   <% end %>
