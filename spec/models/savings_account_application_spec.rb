@@ -1,5 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe SavingsAccountApplication, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+describe SavingsAccountApplication do
+  describe 'associations' do
+    it { is_expected.to belongs_to :cooperative }
+  end
 end

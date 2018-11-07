@@ -2,7 +2,7 @@ module LoansModule
   module Loans
     class ArchivingsController < ApplicationController
       def create
-        @loan = LoansModule::Loan.find(params[:loan_id])
+        @loan = current_cooperative.loans.find(params[:loan_id])
         @loan.update_attributes!(
           archived: true,
           archiving_date: Date.today,

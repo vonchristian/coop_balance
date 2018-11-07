@@ -4,7 +4,7 @@ module LoansModule
     	respond_to :html, :json
 
       def new
-        @loan = LoansModule::Loan.find(params[:loan_id])
+        @loan = current_cooperative.loans.find(params[:loan_id])
         @loss = LoansModule::Loans::LossProcessing.new
         respond_modal_with @loss
       end

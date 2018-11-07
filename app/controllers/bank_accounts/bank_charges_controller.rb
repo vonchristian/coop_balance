@@ -1,11 +1,11 @@
 module BankAccounts
   class BankChargesController < ApplicationController
     def new
-      @bank_account = BankAccount.find(params[:bank_account_id])
+      @bank_account = current_cooperative.bank_accounts.find(params[:bank_account_id])
       @entry = BankAccounts::EntryForm.new
     end
     def create
-      @bank_account = BankAccount.find(params[:bank_account_id])
+      @bank_account = current_cooperative.bank_accounts.find(params[:bank_account_id])
       @entry = BankAccounts::EntryForm.new(entry_params)
       if @entry.valid?
         @entry.save

@@ -3,20 +3,20 @@ module Members
     respond_to :html, :json
 
     def new
-      @member = Member.find(params[:member_id])
+      @member = current_cooperative.member_memberships.find(params[:member_id])
       @beneficiary = @member.beneficiaries.build
       respond_modal_with @beneficiary
     end
 
     def create
-      @member = Member.find(params[:member_id])
+      @member = current_cooperative.member_memberships.find(params[:member_id])
       @beneficiary = @member.beneficiaries.create(beneficiary_params)
       respond_modal_with @beneficiary, location: member_url(@member), notice: "Beneficiary added successfully."
     end
 
     def destroy
-      @member = Member.find(params[:member_id])
-      @beneficiary = Beneficiary.find(params[:id])
+      @member = current_cooperative.member_memberships.find(params[:member_id])
+      @beneficiary = current_cooperative.beneficiaries.find(params[:id])
       @beneficiary.destroy
       redirect_to member_url(@member), notice: "Beneficiary deleted successfully."
     end

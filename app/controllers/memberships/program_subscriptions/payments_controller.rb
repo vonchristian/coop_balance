@@ -2,12 +2,12 @@ module Memberships
   module ProgramSubscriptions
     class PaymentsController < ApplicationController
       def new
-        @membership = Membership.find(params[:membership_id])
+        @membership = current_cooperative.memberships.find(params[:membership_id])
         @program_subscription = MembershipsModule::ProgramSubscription.find(params[:program_subscription_id])
         @payment = Memberships::ProgramSubscriptions::PaymentProcessing.new
       end
       def create
-        @membership = Membership.find(params[:membership_id])
+        @membership = current_cooperative.memberships.find(params[:membership_id])
         @program_subscription = MembershipsModule::ProgramSubscription.find(params[:program_subscription_id])
         @payment = Memberships::ProgramSubscriptions::PaymentProcessing.new(payment_params)
         if @payment.valid?

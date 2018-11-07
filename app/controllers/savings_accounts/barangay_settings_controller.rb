@@ -3,14 +3,14 @@ module SavingsAccounts
     respond_to :html, :json
 
     def edit
-      @savings_account = MembershipsModule::Saving.find(params[:savings_account_id])
+      @savings_account = current_cooperative.savings.find(params[:savings_account_id])
       respond_modal_with @savings_account
     end
     def update
-      @savings_account = MembershipsModule::Saving.find(params[:savings_account_id])
+      @savings_account = current_cooperative.savings.find(params[:savings_account_id])
       @savings_account.update(barangay_params)
-      respond_modal_with @savings_account, 
-        location: savings_account_url(@savings_account), 
+      respond_modal_with @savings_account,
+        location: savings_account_url(@savings_account),
         notice: "Barangay set successfully."
     end
 

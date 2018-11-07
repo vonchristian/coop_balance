@@ -1,3 +1,9 @@
+Add qr code for payment
+
+add policies
+
+add membership_application model
+
 refactor creation of voucher form
 
 click the same button capybara

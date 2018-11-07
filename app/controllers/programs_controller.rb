@@ -1,8 +1,8 @@
 class ProgramsController < ApplicationController
   def index
-    @programs = CoopServicesModule::Program.all
+    @programs = current_cooperative.programs
   end
   def show
-    @program = CoopServicesModule::Program.find(params[:id])
+    @program = current_cooperative.programs.find(params[:id])
   end
 end

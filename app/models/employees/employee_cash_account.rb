@@ -2,6 +2,7 @@ module Employees
   class EmployeeCashAccount < ApplicationRecord
     belongs_to :employee, class_name: "User"
     belongs_to :cash_account, class_name: "AccountingModule::Account"
+    belongs_to :cooperative
     delegate :name, to: :cash_account
     validates :cash_account_id, uniqueness: { scope: :employee_id }
 

@@ -2,7 +2,7 @@ module LoansModule
   module Loans
     class AmortizationSchedulesController < ApplicationController
       def index
-        @loan = LoansModule::Loan.includes(:amortization_schedules).find(params[:loan_id])
+        @loan = current_cooperative.loans.includes(:amortization_schedules).find(params[:loan_id])
         @amortization_schedules = @loan.amortization_schedules
         @employee = current_user
         respond_to do |format|

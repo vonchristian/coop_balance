@@ -2,11 +2,11 @@ module Members
   class AccountMergingsController < ApplicationController
     def new
       @merging = AccountMerging.new
-      @merger = Member.find(params[:member_id])
+      @merger = current_cooperative.member_memberships.find(params[:member_id])
     end
     def create
       @merging = AccountMerging.new(account_merging_params)
-      @merger = Member.find(params[:member_id])
+      @merger = current_cooperative.member_memberships.find(params[:member_id])
       if @merging.valid?
         @merging.merge!
         redirect_to member_url(@merger), notice: "Account merged successfully."

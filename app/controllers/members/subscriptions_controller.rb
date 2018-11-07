@@ -1,8 +1,8 @@
 module Members
   class SubscriptionsController < ApplicationController
     def index
-      @programs = CoopServicesModule::Program.all
-      @member = Member.find(params[:member_id])
+      @programs = current_cooperative.programs
+      @member = current_cooperative.member_memberships.find(params[:member_id])
     end
   end
 end

@@ -2,12 +2,12 @@ module TreasuryModule
   module CashAccounts
     class CashDisbursementLineItemsController < ApplicationController
       def new
-        @cash_account = AccountingModule::Account.find(params[:cash_account_id])
+        @cash_account = current_cooperative.accounts.find(params[:cash_account_id])
         @disbursement_line_item = Vouchers::VoucherAmountProcessing.new
         @disbursement = Vouchers::VoucherProcessing.new
       end
       def create
-        @cash_account = AccountingModule::Account.find(params[:cash_account_id])
+        @cash_account = current_cooperative.accounts.find(params[:cash_account_id])
         @disbursement_line_item = Vouchers::VoucherAmountProcessing.new(disbursement_params)
         if @disbursement_line_item.valid?
           @disbursement_line_item.save
@@ -17,8 +17,8 @@ module TreasuryModule
         end
       end
       def destroy
-        @cash_account = AccountingModule::Account.find(params[:cash_account_id])
-        @amount = Vouchers::VoucherAmount.find(params[:amount_id])
+        @cash_account = current_cooperative.accounts.find(params[:cash_account_id])
+        @amount = current_cooperative.voucher_accounts.find(params[:amount_id])
         @amount.destroy
         redirect_to new_treasury_module_cash_account_cash_disbursement_line_item_url(@cash_account), notice: "removed successfully"
       end

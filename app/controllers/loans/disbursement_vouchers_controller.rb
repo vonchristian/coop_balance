@@ -1,11 +1,11 @@
 module Loans
 	class DisbursementVouchersController < ApplicationController
 		def new
-			@loan = LoansModule::Loan.find(params[:loan_id])
+			@loan = current_cooperative.loans.find(params[:loan_id])
 			@voucher = Vouchers::LoanDisbursementVoucher.new
 		end
 		def create
-			@loan = LoansModule::Loan.find(params[:loan_id])
+			@loan = current_cooperative.loans.find(params[:loan_id])
 			@voucher = Vouchers::LoanDisbursementVoucher.create(voucher_params)
       @voucher.payee = @loan
 			if @voucher.valid?
@@ -17,7 +17,7 @@ module Loans
 			end
 		end
 		def show
-			@loan = LoansModule::Loan.find(params[:loan_id])
+			@loan = current_cooperative.loans.find(params[:loan_id])
 			@voucher = @loan.disbursement_voucher
 			respond_to do |format|
 				format.pdf do

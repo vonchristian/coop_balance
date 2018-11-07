@@ -1,13 +1,12 @@
 module SavingsAccounts
   class BalanceTransfersController < ApplicationController
     def new
-      @origin_saving = MembershipsModule::Saving.find(params[:savings_account_id])
-      @destination_saving = MembershipsModule::Saving.find(params[:destination_saving_id])
-
-      @balance_transfer = SavingsAccounts::BalanceTransferProcessing.new
+      @origin_saving      = current_cooperative.savings.find(params[:savings_account_id])
+      @destination_saving = current_cooperative.savings.find(params[:destination_saving_id])
+      @balance_transfer   = SavingsAccounts::BalanceTransferProcessing.new
     end
     def create
-      @origin_saving = MembershipsModule::Saving.find(params[:savings_account_id])
+      @origin_saving    = current_cooperative.savings.find(params[:savings_account_id])
       @balance_transfer = SavingsAccounts::BalanceTransferProcessing.new(balance_transfer_params)
       if @balance_transfer.valid?
         @balance_transfer.process!

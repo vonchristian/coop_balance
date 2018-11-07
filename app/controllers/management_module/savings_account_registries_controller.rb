@@ -1,7 +1,7 @@
 module ManagementModule
   class SavingsAccountRegistriesController < ApplicationController
     def create
-      @registry = Registries::SavingsAccountRegistry.create(registry_params)
+      @registry = current_cooperative.savings_account_registries.create(registry_params)
       if @registry.save
         redirect_to management_module_settings_data_migrations_url, notice: "Savings Account registry saved successfully"
         @registry.parse_for_records

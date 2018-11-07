@@ -3,10 +3,10 @@ module AccountingModule
   module Reports
     class IncomeStatementsController < ApplicationController
       def index
-        @from_date = params[:from_date] ? DateTime.parse(params[:from_date]) : AccountingModule::Entry.order(entry_date: :desc).last.try(:entry_date)
+        @from_date = params[:from_date] ? DateTime.parse(params[:from_date]) : current_cooperative.entries.order(entry_date: :desc).last.try(:entry_date)
         @to_date = params[:to_date] ? DateTime.parse(params[:to_date]) : Date.today
-        @revenues = AccountingModule::Revenue.active
-        @expenses = AccountingModule::Expense.active
+        @revenues = current_cooperative.accounts.revenues.active
+        @expenses = current_cooperative.accounts.expenses.active
         @employee = current_user
 
         respond_to do |format|

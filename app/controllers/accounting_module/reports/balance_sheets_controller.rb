@@ -2,12 +2,12 @@ module AccountingModule
   module Reports
     class BalanceSheetsController < ApplicationController
       def index
-        first_entry = AccountingModule::Entry.order('entry_date ASC').first
+        first_entry = current_cooperative.entries.order('entry_date ASC').first
         @from_date = first_entry ? DateTime.parse(first_entry.entry_date.strftime("%B %e, %Y")) : Time.zone.now
         @to_date = params[:to_date] ? DateTime.parse(params[:to_date]) : Time.zone.now
-        @assets = AccountingModule::Asset.active.order(:code).all
-        @liabilities = AccountingModule::Liability.active.order(:code).all
-        @equity = AccountingModule::Equity.active.order(:code).all
+        @assets = current_cooperative.accounts.assets.active.order(:code).all
+        @liabilities = current_cooperative.accounts.liabilities.active.order(:code).all
+        @equity = current_cooperative.accounts.equities.active.order(:code).all
         @cooperative = current_cooperative
         respond_to do |format|
           format.html # index.html.erb

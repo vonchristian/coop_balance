@@ -3,31 +3,31 @@ module Members
     respond_to :html, :json
 
     def new
-      @member = Member.find(params[:member_id])
+      @member = current_cooperative.member_memberships.find(params[:member_id])
       @membership = @member.memberships.build
       respond_modal_with @membership
     end
 
     def create
-      @member = Member.find(params[:member_id])
+      @member = current_cooperative.member_memberships.find(params[:member_id])
       @membership = @member.memberships.create(membership_params)
-      respond_modal_with @membership, 
-        location: member_settings_url(@member), 
+      respond_modal_with @membership,
+        location: member_settings_url(@member),
         notice: "Membership saved successfully."
     end
 
     def edit
-      @member = Member.find(params[:member_id])
-      @membership = Membership.where(cooperative_id: params[:cooperative_id]).last
+      @member = current_cooperative.member_memberships.find(params[:member_id])
+      @membership = current_cooperative.memberships.where(cooperative: current_cooperative).last
       respond_modal_with @membership
     end
 
     def update
-      @member = Member.find(params[:member_id])
-      @membership = Membership.find(params[:id])
+      @member = current_cooperative.member_memberships.find(params[:member_id])
+      @membership = current_cooperative.memberships.find(params[:id])
       @membership.update(membership_params)
-      respond_modal_with @membership, 
-        location: member_settings_url(@member), 
+      respond_modal_with @membership,
+        location: member_settings_url(@member),
         notice: "Membership updated successfully."
     end
 

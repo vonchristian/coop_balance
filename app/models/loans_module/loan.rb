@@ -11,6 +11,7 @@ module LoansModule
     multisearchable against: [:borrower_full_name]
     enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
 
+    belongs_to :loan_application, class_name: "LoansModule::LoanApplication"
     belongs_to :disbursement_voucher,   class_name: "Voucher", foreign_key: 'disbursement_voucher_id'
     belongs_to :cooperative
     belongs_to :office,                 class_name: "CoopConfigurationsModule::Office"

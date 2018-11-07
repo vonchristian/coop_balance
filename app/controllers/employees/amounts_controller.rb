@@ -1,15 +1,15 @@
 module Employees
   class AmountsController < ApplicationController
     def create
-      @employee = User.find(params[:employee_id])
-      @amount = Vouchers::VoucherAmount.create(amount_params)
+      @employee = current_cooperative.users.find(params[:employee_id])
+      @amount = current_cooperative.voucher_amounts.create(amount_params)
       @amount.commercial_document = @employee
       @amount.save
       redirect_to new_employee_voucher_url(@employee), notice: "Added successfully."
     end
     def destroy
-      @employee = User.find(params[:employee_id])
-      @voucher_amount = Vouchers::VoucherAmount.find(params[:id])
+      @employee = current_cooperative.users.find(params[:employee_id])
+      @voucher_amount = current_cooperative.voucher_amounts.find(params[:id])
       @voucher_amount.destroy
       redirect_to new_employee_voucher_url(@employee), notice:"Removed successfully."
   end

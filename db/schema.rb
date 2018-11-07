@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_07_001332) do
+ActiveRecord::Schema.define(version: 2018_11_07_043938) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -111,7 +111,9 @@ ActiveRecord::Schema.define(version: 2018_11_07_001332) do
     t.uuid "loan_application_id"
     t.decimal "principal", default: "0.0"
     t.decimal "interest", default: "0.0"
+    t.uuid "cooperative_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_amortization_schedules"
+    t.index ["cooperative_id"], name: "index_amortization_schedules_on_cooperative_id"
     t.index ["credit_account_id"], name: "index_amortization_schedules_on_credit_account_id"
     t.index ["debit_account_id"], name: "index_amortization_schedules_on_debit_account_id"
     t.index ["loan_application_id"], name: "index_amortization_schedules_on_loan_application_id"
@@ -205,6 +207,8 @@ ActiveRecord::Schema.define(version: 2018_11_07_001332) do
     t.string "relationship"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "cooperative_id"
+    t.index ["cooperative_id"], name: "index_beneficiaries_on_cooperative_id"
     t.index ["member_id"], name: "index_beneficiaries_on_member_id"
   end
 
@@ -370,7 +374,9 @@ ActiveRecord::Schema.define(version: 2018_11_07_001332) do
     t.uuid "cash_account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "cooperative_id"
     t.index ["cash_account_id"], name: "index_employee_cash_accounts_on_cash_account_id"
+    t.index ["cooperative_id"], name: "index_employee_cash_accounts_on_cooperative_id"
     t.index ["employee_id"], name: "index_employee_cash_accounts_on_employee_id"
   end
 
@@ -682,12 +688,14 @@ ActiveRecord::Schema.define(version: 2018_11_07_001332) do
     t.uuid "disbursement_voucher_id"
     t.uuid "office_id"
     t.boolean "forwarded_loan", default: false
+    t.uuid "loan_application_id"
     t.index ["account_number"], name: "index_loans_on_account_number", unique: true
     t.index ["archived_by_id"], name: "index_loans_on_archived_by_id"
     t.index ["barangay_id"], name: "index_loans_on_barangay_id"
     t.index ["borrower_type", "borrower_id"], name: "index_loans_on_borrower_type_and_borrower_id"
     t.index ["cooperative_id"], name: "index_loans_on_cooperative_id"
     t.index ["disbursement_voucher_id"], name: "index_loans_on_disbursement_voucher_id"
+    t.index ["loan_application_id"], name: "index_loans_on_loan_application_id"
     t.index ["loan_product_id"], name: "index_loans_on_loan_product_id"
     t.index ["municipality_id"], name: "index_loans_on_municipality_id"
     t.index ["office_id"], name: "index_loans_on_office_id"
@@ -1014,6 +1022,8 @@ ActiveRecord::Schema.define(version: 2018_11_07_001332) do
     t.uuid "supplier_id"
     t.string "number"
     t.uuid "employee_id"
+    t.uuid "cooperative_id"
+    t.index ["cooperative_id"], name: "index_registries_on_cooperative_id"
     t.index ["employee_id"], name: "index_registries_on_employee_id"
     t.index ["supplier_id"], name: "index_registries_on_supplier_id"
     t.index ["type"], name: "index_registries_on_type"
@@ -1087,6 +1097,8 @@ ActiveRecord::Schema.define(version: 2018_11_07_001332) do
     t.string "account_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "cooperative_id"
+    t.index ["cooperative_id"], name: "index_savings_account_applications_on_cooperative_id"
     t.index ["depositor_type", "depositor_id"], name: "index_depositor_on_savings_account_applications"
     t.index ["saving_product_id"], name: "index_savings_account_applications_on_saving_product_id"
   end
@@ -1245,7 +1257,9 @@ ActiveRecord::Schema.define(version: 2018_11_07_001332) do
     t.uuid "time_deposit_product_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "cooperative_id"
     t.index ["account_number"], name: "index_time_deposit_applications_on_account_number", unique: true
+    t.index ["cooperative_id"], name: "index_time_deposit_applications_on_cooperative_id"
     t.index ["depositor_type", "depositor_id"], name: "index_depositor_on_time_deposit_applications"
     t.index ["time_deposit_product_id"], name: "index_time_deposit_applications_on_time_deposit_product_id"
     t.index ["voucher_id"], name: "index_time_deposit_applications_on_voucher_id"
@@ -1427,6 +1441,7 @@ ActiveRecord::Schema.define(version: 2018_11_07_001332) do
   add_foreign_key "addresses", "streets"
   add_foreign_key "amortization_schedules", "accounts", column: "credit_account_id"
   add_foreign_key "amortization_schedules", "accounts", column: "debit_account_id"
+  add_foreign_key "amortization_schedules", "cooperatives"
   add_foreign_key "amortization_schedules", "loan_applications"
   add_foreign_key "amortization_schedules", "loans"
   add_foreign_key "amount_adjustments", "loan_applications"
@@ -1438,6 +1453,7 @@ ActiveRecord::Schema.define(version: 2018_11_07_001332) do
   add_foreign_key "bank_accounts", "cooperatives"
   add_foreign_key "barangays", "cooperatives"
   add_foreign_key "barangays", "municipalities"
+  add_foreign_key "beneficiaries", "cooperatives"
   add_foreign_key "beneficiaries", "members"
   add_foreign_key "carts", "users"
   add_foreign_key "charge_adjustments", "loan_charges"
@@ -1447,6 +1463,7 @@ ActiveRecord::Schema.define(version: 2018_11_07_001332) do
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "credit_account_id"
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "debit_account_id"
   add_foreign_key "employee_cash_accounts", "accounts", column: "cash_account_id"
+  add_foreign_key "employee_cash_accounts", "cooperatives"
   add_foreign_key "employee_cash_accounts", "users", column: "employee_id"
   add_foreign_key "entries", "cooperative_services"
   add_foreign_key "entries", "cooperatives"
@@ -1490,6 +1507,7 @@ ActiveRecord::Schema.define(version: 2018_11_07_001332) do
   add_foreign_key "loan_protection_plan_providers", "accounts"
   add_foreign_key "loans", "barangays"
   add_foreign_key "loans", "cooperatives"
+  add_foreign_key "loans", "loan_applications"
   add_foreign_key "loans", "loan_products"
   add_foreign_key "loans", "municipalities"
   add_foreign_key "loans", "offices"
@@ -1522,6 +1540,7 @@ ActiveRecord::Schema.define(version: 2018_11_07_001332) do
   add_foreign_key "program_subscriptions", "programs"
   add_foreign_key "programs", "accounts"
   add_foreign_key "programs", "cooperatives"
+  add_foreign_key "registries", "cooperatives"
   add_foreign_key "registries", "suppliers"
   add_foreign_key "registries", "users", column: "employee_id"
   add_foreign_key "saving_products", "accounts"
@@ -1533,6 +1552,7 @@ ActiveRecord::Schema.define(version: 2018_11_07_001332) do
   add_foreign_key "savings", "cooperatives"
   add_foreign_key "savings", "offices"
   add_foreign_key "savings", "saving_products"
+  add_foreign_key "savings_account_applications", "cooperatives"
   add_foreign_key "savings_account_applications", "saving_products"
   add_foreign_key "savings_account_configs", "accounts", column: "closing_account_id"
   add_foreign_key "savings_account_configs", "accounts", column: "interest_expense_account_id"
@@ -1560,6 +1580,7 @@ ActiveRecord::Schema.define(version: 2018_11_07_001332) do
   add_foreign_key "store_fronts", "accounts", column: "spoilage_account_id"
   add_foreign_key "streets", "barangays"
   add_foreign_key "streets", "municipalities"
+  add_foreign_key "time_deposit_applications", "cooperatives"
   add_foreign_key "time_deposit_applications", "time_deposit_products"
   add_foreign_key "time_deposit_applications", "vouchers"
   add_foreign_key "time_deposit_configs", "accounts"

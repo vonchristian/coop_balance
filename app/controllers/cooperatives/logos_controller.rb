@@ -2,7 +2,7 @@ module Cooperatives
 	class LogosController < ApplicationController
 
 		def create
-			@cooperative = Cooperative.find(params[:cooperative_id])
+			@cooperative = current_cooperative
 			@logo = @cooperative.update(logo_params)
 			redirect_to management_module_settings_path, notice: 'Logo updated.'
 		end

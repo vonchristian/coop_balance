@@ -2,7 +2,7 @@ module AccountingModule
   module Accounts
     class ReportsController < ApplicationController
       def index
-        @account = AccountingModule::Account.find(params[:account_id])
+        @account = current_cooperative.accounts.find(params[:account_id])
       end
     end
   end

@@ -1,7 +1,7 @@
 module ShareCapitals
   class MergingsController < ApplicationController
     def create
-      @current_share_capital = MembershipsModule::ShareCapital.find(params[:share_capital_id])
+      @current_share_capital = current_cooperative.share_capitals.find(params[:share_capital_id])
       @merging = ShareCapitals::Merging.new(merging_params)
       @merging.merge!
       redirect_to share_capital_url(@current_share_capital), notice: "Share capital accounts merged successfully."

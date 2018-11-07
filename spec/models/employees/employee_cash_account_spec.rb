@@ -5,6 +5,8 @@ module Employees
     describe 'associations' do
       it { is_expected.to belong_to :employee }
       it { is_expected.to belong_to :cash_account }
+      it { is_expected.to belong_to :cooperative }
+
     end
 
     it ".cash_accounts" do

@@ -1,11 +1,11 @@
 module BankAccounts
   class WithdrawalsController < ApplicationController
     def new
-      @bank_account = BankAccount.find(params[:bank_account_id])
+      @bank_account = current_cooperative.bank_accounts.find(params[:bank_account_id])
       @withdrawal = BankAccounts::WithdrawLineItemProcessing.new
     end
     def create
-      @bank_account = BankAccount.find(params[:bank_account_id])
+      @bank_account = current_cooperative.bank_accounts.find(params[:bank_account_id])
       @withdrawal = BankAccounts::WithdrawLineItemProcessing.new(withdrawal_params)
       if @withdrawal.valid?
         @withdrawal.process!

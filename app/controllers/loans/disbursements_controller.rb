@@ -1,15 +1,15 @@
 module Loans
   class DisbursementsController < ApplicationController
     def index
-      @loan = LoansModule::Loan.find(params[:loan_id])
+      @loan = current_cooperative.loans.find(params[:loan_id])
     end
 
     def new
-      @loan = LoansModule::Loan.find(params[:loan_id])
+      @loan = current_cooperative.loans.find(params[:loan_id])
       @disbursement = LoanDisbursementForm.new
     end
     def create
-      @loan = LoansModule::Loan.find(params[:loan_id])
+      @loan = current_cooperative.loans.find(params[:loan_id])
       @disbursement = LoanDisbursementForm.new(disbursement_params)
       if @disbursement.valid?
         @disbursement.save

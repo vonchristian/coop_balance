@@ -1,16 +1,16 @@
 module Members
   class TimeDepositsController < ApplicationController
     def index
-      @member = Member.find(params[:member_id])
+      @member = current_cooperative.member_memberships.find(params[:member_id])
       @time_deposits = @member.time_deposits
     end
     def new
-      @member = Member.find(params[:member_id])
+      @member = current_cooperative.member_memberships.find(params[:member_id])
       @time_deposit = Memberships::TimeDeposits::DepositProcessing.new
     end
 
     def create
-      @member = Member.find(params[:member_id])
+      @member = current_cooperative.member_memberships.find(params[:member_id])
       @time_deposit = Memberships::TimeDeposits::DepositProcessing.new(time_deposit_params)
       if @time_deposit.valid?
         @time_deposit.susbscribe!

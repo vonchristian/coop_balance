@@ -1,23 +1,23 @@
-module Members 
+module Members
   class OccupationsController < ApplicationController
-    def new 
-      @member = Member.find(params[:member_id])
-      @occupation = @member.occupations.build 
-    end 
+    def new
+      @member = current_cooperative.member_memberships.find(params[:member_id])
+      @occupation = @member.occupations.build
+    end
     def create
-      @member = Member.find(params[:member_id])
+      @member = current_cooperative.member_memberships.find(params[:member_id])
       @occupation = @member.occupations.create(occupation_params)
       if @occupation.valid?
         @occupation.save
         redirect_to member_url(@member), notice: "Occupation added successfully."
-      else 
-        render :new 
-      end 
+      else
+        render :new
+      end
     end
 
-    private 
+    private
     def occupation_params
       params.require(:occupation).permit(:title)
     end
-  end 
+  end
 end

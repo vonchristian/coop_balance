@@ -1,6 +1,6 @@
 class MembersController < ApplicationController
   layout 'application'
-  
+
   respond_to :html, :json
 
   def index
@@ -12,22 +12,22 @@ class MembersController < ApplicationController
   end
 
   def show
-    @member = Member.find(params[:id])
+    @member = current_cooperative.member_memberships.find(params[:id])
   end
 
   def edit
-    @member = Member.find(params[:id])
+    @member = current_cooperative.member_memberships.find(params[:id])
     respond_modal_with @member
   end
 
   def update
-    @member = Member.find(params[:id])
+    @member = current_cooperative.member_memberships.find(params[:id])
     @member.update(member_params)
     respond_modal_with @member, location: member_url(@member), notice: "Member updated successfully."
   end
 
   def destroy
-    @member = Member.find(params[:id])
+    @member = current_cooperative.member_memberships.find(params[:id])
     if @member.savings.present? &&
        @member.time_deposits.present? &&
        @member.share_capitals.present? &&
@@ -42,10 +42,10 @@ class MembersController < ApplicationController
   private
   def member_params
     params.require(:member).permit(
-      :civil_status, :membership_date, 
-      :first_name, :middle_name, :last_name, 
-      :sex, :date_of_birth, :avatar, 
-      :signature_specimen, 
+      :civil_status, :membership_date,
+      :first_name, :middle_name, :last_name,
+      :sex, :date_of_birth, :avatar,
+      :signature_specimen,
       tin_attributes: [:number])
   end
 end

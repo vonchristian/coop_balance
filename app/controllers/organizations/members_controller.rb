@@ -1,9 +1,9 @@
 require 'will_paginate/array'
 module Organizations
   class MembersController < ApplicationController
-    
+
     def new
-      @organization = Organization.find(params[:organization_id])
+      @organization = current_cooperative.organizations.find(params[:organization_id])
       @member = @organization.organization_members.build
       if params[:search].present?
         @employee_members = User.text_search(params[:search])
@@ -14,7 +14,7 @@ module Organizations
       end
     end
     def create
-      @organization = Organization.find(params[:organization_id])
+      @organization = current_cooperative.organizationsn.find(params[:organization_id])
       @member = @organization.organization_members.build(member_params)
       @member.save
       redirect_to new_organization_member_url(@organization), notice: "Member added successfully."

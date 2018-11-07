@@ -1,10 +1,10 @@
 module Members
   class OfficesController < ApplicationController
     def edit
-      @member = Member.find(params[:member_id])
+      @member = current_cooperative.member_memberships.find(params[:member_id])
     end
     def update
-      @member = Member.find(params[:member_id])
+      @member = current_cooperative.member_memberships.find(params[:member_id])
       @member.update(office_params)
       if @member.save
         redirect_to member_url(@member), notice: "Office updated successfully"

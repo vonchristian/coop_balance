@@ -30,10 +30,10 @@ module AccountingModule
       end
     end
     def edit
-      @entry = AccountingModule::Entry.find(params[:id])
+      @entry = current_cooperative.entries.find(params[:id])
     end
     def update
-      @entry = AccountingModule::Entry.find(params[:id])
+      @entry = current_cooperative.entries.find(params[:id])
       @entry.update(edit_entry_params)
       if @entry.valid?
         @entry.save
@@ -45,10 +45,10 @@ module AccountingModule
 
 
     def show
-      @entry = AccountingModule::Entry.find(params[:id])
+      @entry = current_cooperative.entries.find(params[:id])
     end
     def destroy
-      @entry = AccountingModule::Entry.find(params[:id])
+      @entry = current_cooperative.entries.find(params[:id])
       @entry.destroy
       redirect_to accounting_module_entries_url, notice: "Entry destroyed successfully."
     end

@@ -11,6 +11,7 @@ module LoansModule
     belongs_to :loan_product
     belongs_to :organization
     belongs_to :voucher
+    has_one    :loan, class_name: "LoansModule::Loan"
     has_many :voucher_amounts, as: :commercial_document, class_name: "Vouchers::VoucherAmount", dependent: :destroy
     has_many :amount_adjustments, through: :voucher_amounts, dependent: :destroy, class_name: "Vouchers::AmountAdjustment"
     has_many :amortization_schedules, dependent: :destroy
@@ -67,7 +68,11 @@ module LoansModule
     end
 
     def net_proceed
-      loan_amount.amount - voucher_amounts.sum(&:adjusted_amount)
+      if voucher.blank?
+        loan_amount.amount - voucher_amounts.sum(&:adjusted_amount)
+      else
+        voucher.total_cash_amount
+      end
     end
     def disbursed?
       voucher && voucher.disbursed?

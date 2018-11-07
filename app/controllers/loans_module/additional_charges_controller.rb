@@ -1,11 +1,11 @@
 module LoansModule
 	class AdditionalChargesController < ApplicationController
 		def new
-			@loan = LoansModule::Loan.find(params[:loan_id])
+			@loan = current_cooperative.loans.find(params[:loan_id])
 			@additional_charge = Charge.new
 		end
 		def create
-			@loan = LoansModule::Loan.find(params[:loan_id])
+			@loan = current_cooperative.loans.find(params[:loan_id])
 			@additional_charge = Charge.amount_type.new(additional_charge_params)
 			if @additional_charge.valid?
 				@additional_charge.save

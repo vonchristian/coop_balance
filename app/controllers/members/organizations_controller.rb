@@ -3,16 +3,16 @@ module Members
     respond_to :html, :json
 
     def new
-      @member = Member.find(params[:member_id])
+      @member = current_cooperative.member_memberships.find(params[:member_id])
       @organization = @member.organization_memberships.build
       respond_modal_with @organization
     end
 
     def create
-      @member = Member.find(params[:member_id])
+      @member = current_cooperative.member_memberships.find(params[:member_id])
       @organization = @member.organization_memberships.create(organization_params)
-      respond_modal_with @organization, 
-        location: member_settings_url(@member), 
+      respond_modal_with @organization,
+        location: member_settings_url(@member),
         notice: "Organization updated successfully."
     end
 

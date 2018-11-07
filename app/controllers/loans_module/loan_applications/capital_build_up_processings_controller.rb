@@ -2,13 +2,13 @@ module LoansModule
   module LoanApplications
     class CapitalBuildUpProcessingsController < ApplicationController
       def new
-        @loan_application = LoansModule::LoanApplication.find(params[:loan_application_id])
-        @share_capital = MembershipsModule::ShareCapital.find(params[:share_capital_id])
+        @loan_application = current_cooperative.loan_applications.find(params[:loan_application_id])
+        @share_capital = current_cooperative.share_capitals.find(params[:share_capital_id])
         @capital_build_up = LoansModule::LoanApplications::CapitalBuildUpProcessing.new
       end
       def create
-        @loan_application = LoansModule::LoanApplication.find(params[:loans_module_loan_applications_capital_build_up_processing][:loan_application_id])
-        @share_capital = MembershipsModule::ShareCapital.find(params[:loans_module_loan_applications_capital_build_up_processing][:share_capital_id])
+        @loan_application =current_cooperative.loan_applications.find(params[:loans_module_loan_applications_capital_build_up_processing][:loan_application_id])
+        @share_capital = current_cooperative.share_capitals.find(params[:loans_module_loan_applications_capital_build_up_processing][:share_capital_id])
         @capital_build_up = LoansModule::LoanApplications::CapitalBuildUpProcessing.new(capital_build_up_params)
         if @capital_build_up.valid?
           @capital_build_up.process!

@@ -1,6 +1,6 @@
 class AccountingModuleController < ApplicationController
   def index
-    @revenues = AccountingModule::Revenue.active.all
-    @expenses = AccountingModule::Expense.active.all
+    @revenues = current_cooperative.accounts.revenues.active
+    @expenses = current_cooperative.accounts.expenses.active.all
   end
 end

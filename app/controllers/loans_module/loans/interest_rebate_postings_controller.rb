@@ -2,11 +2,11 @@ module LoansModule
   module Loans
     class InterestRebatePostingsController < ApplicationController
       def new
-        @loan = LoansModule::Loan.find(params[:loan_id])
+        @loan = current_cooperative.loans.find(params[:loan_id])
         @rebate = LoansModule::Loans::InterestRebatePosting.new
       end
       def create
-        @loan = LoansModule::Loan.find(params[:loan_id])
+        @loan = current_cooperative.loans.find(params[:loan_id])
         @rebate = LoansModule::Loans::InterestRebatePosting.new(rebate_params)
         if @rebate.valid?
           @rebate.save
