@@ -3,13 +3,13 @@ module Members
     respond_to :html, :json
 
     def new
-      @member = Member.find(params[:member_id])
+      @member = current_cooperative.member_memberships.find(params[:member_id])
       @tin = @member.tins.build
       respond_modal_with @tin
     end
 
     def create
-      @member = Member.find(params[:member_id])
+      @member = current_cooperative.member_memberships.find(params[:member_id])
       @tin = @member.tins.create(tin_params)
       respond_modal_with @tin, location: member_info_index_url(@member), notice: "TIN Number updated successfully"
     end

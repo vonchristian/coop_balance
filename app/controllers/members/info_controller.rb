@@ -1,7 +1,7 @@
 module Members
   class InfoController < ApplicationController
     def index
-      @member = Member.find(params[:member_id])
+      @member = Mcurrent_cooperative.member_memberships.find(params[:member_id])
       @cooperative = current_cooperative
       respond_to do |format|
         format.html

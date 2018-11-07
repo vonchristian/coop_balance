@@ -1,8 +1,8 @@
 class BranchOfficesController < ApplicationController
   def index
-    @branch_offices = CoopConfigurationsModule::BranchOffice.all
+    @branch_offices = current_cooperative.branch_offices
   end
   def show
-    @branch_office = CoopConfigurationsModule::BranchOffice.find(params[:id])
+    @branch_office = current_cooperative.branch_offices.find(params[:id])
   end
 end

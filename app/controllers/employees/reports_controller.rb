@@ -1,7 +1,7 @@
 module Employees
   class ReportsController < ApplicationController
     def index
-      @employee = User.find(params[:employee_id])
+      @employee = current_cooperative.users.find(params[:employee_id])
       @date = params[:date] ? DateTime.parse(params[:date]) : Date.today.strftime("%B %e, %Y")
       respond_to do |format|
         format.html

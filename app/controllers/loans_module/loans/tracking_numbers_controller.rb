@@ -4,13 +4,13 @@ module LoansModule
       respond_to :html, :json
 
       def edit
-        @loan = LoansModule::Loan.find(params[:loan_id])
+        @loan = current_cooperative.loans.find(params[:loan_id])
         @tracking_number = LoansModule::Loans::TrackingNumberProcessing.new
         respond_modal_with @tracking_number
       end
 
       def update
-        @loan = LoansModule::Loan.find(params[:loan_id])
+        @loan = current_cooperative.loans.find(params[:loan_id])
         @tracking_number = LoansModule::Loans::TrackingNumberProcessing.new(tracking_number_params)
         @tracking_number.save
         respond_modal_with @tracking_number, location: loan_settings_url(@loan), notice: "Loan tracking number saved successfully."

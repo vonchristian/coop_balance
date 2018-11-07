@@ -1,12 +1,12 @@
 module SavingsAccounts
   class WithdrawalsController < ApplicationController
     def new
-      @savings_account = MembershipsModule::Saving.find(params[:savings_account_id])
+      @savings_account = current_cooperative.savings.find(params[:savings_account_id])
       @withdrawal = Memberships::SavingsAccounts::WithdrawalLineItemProcessing.new
       authorize [:savings_accounts, :withdrawal]
     end
     def create
-      @savings_account = MembershipsModule::Saving.find(params[:savings_account_id])
+      @savings_account = current_cooperative.savings.find(params[:savings_account_id])
       @withdrawal = Memberships::SavingsAccounts::WithdrawalLineItemProcessing.new(withdrawal_params)
       authorize [:savings_accounts, :withdrawal]
       if @withdrawal.valid?

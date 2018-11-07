@@ -70,6 +70,7 @@ GEM
       railties (>= 3.0)
     bootstrap3-datetimepicker-rails (4.17.47)
       momentjs-rails (>= 2.8.1)
+    brakeman (4.3.1)
     builder (3.2.3)
     bullet (5.8.1)
       activesupport (>= 3.0.0)
@@ -389,6 +390,7 @@ DEPENDENCIES
   bootstrap (~> 4.1.1)
   bootstrap-datepicker-rails
   bootstrap3-datetimepicker-rails
+  brakeman
   bullet
   capybara
   chartkick

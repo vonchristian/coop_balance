@@ -2,11 +2,11 @@ module AccountingModule
   module Entries
     class CancellationsController < ApplicationController
       def new
-        @entry = AccountingModule::Entry.find(params[:entry_id])
+        @entry = current_cooperative.entries.find(params[:entry_id])
         @cancellation = AccountingModule::Entries::CancellationProcessing.new
       end
       def create
-        @entry = AccountingModule::Entry.find(params[:entry_id])
+        @entry = current_cooperative.entries.find(params[:entry_id])
         @cancellation = AccountingModule::Entries::CancellationProcessing.new(cancellation_params)
         if @cancellation.valid?
           @cancellation.process!

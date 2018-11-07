@@ -1,12 +1,12 @@
 module Employees
   class MembershipsController < ApplicationController
     def new
-      @employee = User.find(params[:employee_id])
+      @employee = current_cooperative.users.find(params[:employee_id])
       @membership = @employee.build_membership
     end
 
     def create
-       @employee = User.find(params[:employee_id])
+       @employee = current_cooperative.users.find(params[:employee_id])
       @membership = @employee.create_membership(membership_params)
       if @membership.valid?
         @membership.save
@@ -17,11 +17,11 @@ module Employees
     end
 
     def edit
-      @employee = User.find(params[:employee_id])
+      @employee = current_cooperative.users.find(params[:employee_id])
       @membership = @employee.membership
     end
     def update
-       @employee = User.find(params[:employee_id])
+       @employee = current_cooperative.users.find(params[:employee_id])
       @membership = @employee.create_membership(membership_params)
       if @membership.valid?
         @membership.save

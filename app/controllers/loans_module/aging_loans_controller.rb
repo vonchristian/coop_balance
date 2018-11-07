@@ -5,9 +5,9 @@ module LoansModule
       if params[:start_num].present? && params[:end_num].present?
         @start_num = params[:start_num].to_i
         @end_num = params[:end_num].to_i
-        @loans = LoansModule::Loan.aging(start_num: @start_num, end_num: @end_num).paginate(page: params[:page],per_page:30)
+        @loans = current_cooperative.loans.aging(start_num: @start_num, end_num: @end_num).paginate(page: params[:page],per_page:30)
       else
-        @loans = LoansModule::Loan.aging.paginate(page: params[:page],per_page:30)
+        @loans = current_cooperative.loans.aging.paginate(page: params[:page],per_page:30)
       end
       respond_to do |format|
         format.html

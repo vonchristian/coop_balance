@@ -4,15 +4,15 @@ module LoansModule
       respond_to :html, :json
 
       def new
-        @loan_application = LoansModule::LoanApplication.find(params[:loan_application_id])
-        @voucher_amount = Vouchers::VoucherAmount.find(params[:voucher_amount_id])
+        @loan_application = current_cooperative.loan_applications.find(params[:loan_application_id])
+        @voucher_amount = current_cooperative.voucher_amounts.find(params[:voucher_amount_id])
         @adjustment = LoansModule::LoanApplications::AmountAdjustmentProcessing.new
         respond_modal_with @adjustment
       end
 
       def create
-        @loan_application = LoansModule::LoanApplication.find(params[:loans_module_loan_applications_amount_adjustment_processing][:loan_application_id])
-        @voucher_amount = Vouchers::VoucherAmount.find(params[:voucher_amount_id])
+        @loan_application = current_cooperative.loan_applications.find(params[:loans_module_loan_applications_amount_adjustment_processing][:loan_application_id])
+        @voucher_amount = current_cooperative.voucher_amounts.find(params[:voucher_amount_id])
         @adjustment = LoansModule::LoanApplications::AmountAdjustmentProcessing.new(adjustment_params)
         @adjustment.process!
         respond_modal_with @adjustment,

@@ -1,10 +1,10 @@
 module TreasuryModule
   class EmployeesController < ApplicationController
     def index
-      @employees = User.all
-    end 
-    def show 
-      @employee = User.find(params[:id])
+      @employees = current_cooperative.users
     end
-  end 
-end 
+    def show
+      @employee = current_cooperative.users.find(params[:id])
+    end
+  end
+end

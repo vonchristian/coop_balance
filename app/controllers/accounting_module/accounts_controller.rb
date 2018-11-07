@@ -10,11 +10,11 @@ module AccountingModule
       end
     end
     def new
-      @account = AccountingModule::Account.new
+      @account = current_cooperative.accounts.new
       authorize [:accounting_module, :account]
     end
     def create
-      @account = AccountingModule::Account.create(account_params)
+      @account = current_cooperative.accounts.create(account_params)
       authorize [:accounting_module, :account]
       if @account.valid?
         @account.save
@@ -25,13 +25,13 @@ module AccountingModule
     end
 
     def show
-      @account = AccountingModule::Account.find(params[:id])
+      @account = current_cooperative.accounts.find(params[:id])
     end
     def edit
       @account = type_class.find(params[:id])
     end
     def update
-      @account = AccountingModule::Account.find(params[:id])
+      @account = current_cooperative.accounts.find(params[:id])
       @account.update(account_params)
       if @account.save
         redirect_to accounting_module_account_url(@account), notice: "Account details updated successfully."
@@ -49,7 +49,7 @@ module AccountingModule
     end
 
     def type
-        AccountingModule::Account.types.include?(params[:type]) ? params[:type] : "AccountingModule::Account"
+        current_cooperative.accounts.types.include?(params[:type]) ? params[:type] : "AccountingModule::Account"
     end
 
     def type_class

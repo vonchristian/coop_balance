@@ -21,7 +21,7 @@ class BankAccountsController < ApplicationController
     end
   end
   def show
-    @bank_account = BankAccount.find(params[:id])
+    @bank_account = current_cooperative.bank_accounts.find(params[:id])
     @entries = @bank_account.entries.paginate(page: params[:page], per_page: 35)
   end
 

@@ -2,15 +2,15 @@ require 'will_paginate/array'
 module Loans
   class PaymentsController < ApplicationController
     def index
-      @loan = LoansModule::Loan.find(params[:loan_id])
+      @loan = current_cooperative.loans.find(params[:loan_id])
       @payments = @loan.loan_payments.sort_by(&:entry_date).reverse.paginate(page: params[:page], per_page: 25)
     end
     def new
-      @loan = LoansModule::Loan.find(params[:loan_id])
+      @loan = current_cooperative.loans.find(params[:loan_id])
       @payment = LoansModule::Loans::PaymentProcessing.new
     end
     def create
-      @loan = LoansModule::Loan.find(params[:loan_id])
+      @loan = current_cooperative.loans.find(params[:loan_id])
       @payment = LoansModule::Loans::PaymentProcessing.new(payment_params)
       if @payment.valid?
         @payment.process!

@@ -76,7 +76,10 @@ module AccountingModule
     end
 
     def hashes_valid?
-      encrypted_hash == Digest::SHA256.hexdigest(self.digestable)
+      encrypted_hash == digested_hash
+    end
+    def digested_hash
+      Digest::SHA256.hexdigest(self.digestable)
     end
 
     def digestable
@@ -98,7 +101,7 @@ module AccountingModule
 
     def set_encrypted_hash!
       if encrypted_hash.blank?
-        self.update_attributes!(encrypted_hash: Digest::SHA256.hexdigest(digestable))
+      encrypted_hash = digested_hash
       end
     end
 

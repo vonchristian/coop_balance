@@ -1,7 +1,7 @@
 module Members
   class SavingsAccountsController < ApplicationController
     def index
-      @member = Member.find(params[:member_id])
+      @member = current_cooperative.member_memberships.find(params[:member_id])
       @savings = @member.savings
     end
   end

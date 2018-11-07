@@ -22,6 +22,7 @@ module LoansModule
     private
     def create_loan
       loan = LoansModule::Loan.create!(
+        loan_application: loan_application,
         mode_of_payment:  loan_application.mode_of_payment,
         cooperative:      loan_application.cooperative,
         organization:     loan_application.organization,

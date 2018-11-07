@@ -1,12 +1,12 @@
 module Vouchers
   class LoanDisbursementsController < ApplicationController
     def new
-      @voucher = Voucher.find(params[:voucher_id])
+      @voucher = current_cooperative.vouchers.find(params[:voucher_id])
       @disbursement = Vouchers::LoanDisbursementForm.new
     end
 
     def create
-      @voucher = Voucher.find(params[:voucher_id])
+      @voucher = current_cooperative.vouchers.find(params[:voucher_id])
       @disbursement = Vouchers::LoanDisbursementForm.new(disbursement_params)
       if @disbursement.valid?
         @disbursement.save

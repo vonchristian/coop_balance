@@ -1,11 +1,11 @@
 module BankAccounts
   class DepositsController < ApplicationController
     def new
-      @bank_account = BankAccount.find(params[:bank_account_id])
+      @bank_account = current_cooperative.bank_accounts.find(params[:bank_account_id])
       @deposit = BankAccounts::DepositLineItemProcessing.new
     end
     def create
-      @bank_account = BankAccount.find(params[:bank_account_id])
+      @bank_account = current_cooperative.bank_accounts.find(params[:bank_account_id])
       @deposit = BankAccounts::DepositLineItemProcessing.new(entry_params)
       if @deposit.valid?
         @deposit.save

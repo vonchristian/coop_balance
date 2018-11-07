@@ -1,11 +1,12 @@
 module ShareCapitals
   class Opening
     include ActiveModel::Model
-    attr_reader :voucher, :share_capital_application, :employee, :subscriber
+    attr_reader :voucher, :share_capital_application, :employee, :subscriber, :cooperative
     def initialize(args)
       @voucher = args[:voucher]
       @share_capital_application = args[:share_capital_application]
       @employee = args[:employee]
+      @cooperative = @employee.cooperative
       @subscriber = @share_capital_application.subscriber
     end
 
@@ -15,9 +16,13 @@ module ShareCapitals
       end
     end
 
+    def find_share_capital
+      cooperative.share_capitals.find_by(account_number: share_capital_application.account_number)
+    end
+
     private
     def create_share_capital
-      share_capital = MembershipsModule::ShareCapital.create!(
+      share_capital = cooperative.share_capitals.create!(
         account_owner_name: subscriber.name,
         cooperative: employee.cooperative,
         subscriber: subscriber,

@@ -2,10 +2,10 @@ module AccountingModule
   module Reports
     class TrialBalancesController < ApplicationController
       def index
-        first_entry = AccountingModule::Entry.order(entry_date:  :desc).first
+        first_entry = current_cooperative.entries.order(entry_date:  :desc).first
         @from_date = first_entry ? DateTime.parse(first_entry.entry_date.strftime("%B %e, %Y")) : Date.today
         @to_date = params[:to_date] ? Chronic.parse(params[:to_date]) : Time.zone.now
-        @accounts = AccountingModule::Account.active.order(:code)
+        @accounts = current_cooperative.accounts.active.order(:code)
         @cooperative = current_cooperative
         respond_to do |format|
           format.html

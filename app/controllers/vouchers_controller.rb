@@ -1,13 +1,13 @@
 class VouchersController < ApplicationController
   def index
     if params[:search].present?
-      @vouchers = Voucher.text_search(params[:search]).paginate(page: params[:page], per_page: 50)
+      @vouchers = current_cooperative.vouchers.text_search(params[:search]).paginate(page: params[:page], per_page: 50)
     else
-      @vouchers = Voucher.includes(:payee).all.order(date: :desc).paginate(page: params[:page], per_page: 50)
+      @vouchers = current_cooperative.vouchers.includes(:payee).all.order(date: :desc).paginate(page: params[:page], per_page: 50)
     end
   end
   def show
-    @voucher = Voucher.find(params[:id])
+    @voucher = current_cooperative.vouchers.find(params[:id])
     respond_to do |format|
       format.html
       format.pdf do
@@ -19,7 +19,7 @@ class VouchersController < ApplicationController
     end
   end
   def destroy
-    @voucher = Voucher.find(params[:id])
+    @voucher = current_cooperative.vouchers.find(params[:id])
     if !@voucher.disbursed?
       @voucher.destroy
       redirect_to "/", notice: "Voucher cancelled successfully."

@@ -5,7 +5,10 @@ module LoansModule
     describe 'associations' do
       it { is_expected.to have_many :payment_notices }
     	it { is_expected.to belong_to :loan }
+      it { is_expected.to belong_to :loan_application }
+      it { is_expected.to belong_to :cooperative }
       it { is_expected.to have_many :notes }
+
     end
 
     describe 'validations' do

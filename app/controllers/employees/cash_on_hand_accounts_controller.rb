@@ -1,11 +1,11 @@
 module Employees
   class CashOnHandAccountsController < ApplicationController
     def edit
-      @employee = User.find(params[:employee_id])
+      @employee = current_cooperative.users.find(params[:employee_id])
     end
 
     def update
-      @employee = User.find(params[:employee_id])
+      @employee = current_cooperative.users.find(params[:employee_id])
       @employee.update_attributes(employee_params)
       if @employee.save
         redirect_to employee_url(@employee), notice: "Cash on Hand Account saved successfully."

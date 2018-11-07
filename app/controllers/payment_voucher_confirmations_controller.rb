@@ -1,7 +1,7 @@
 
   class PaymentVoucherConfirmationsController < ApplicationController
     def create
-      @loan = LoansModule::Loan.find(params[:loan_id])
+      @loan = current_cooperative.loans.find(params[:loan_id])
       @voucher = current_cooperative.vouchers.find(params[:voucher_id])
       Vouchers::EntryProcessing.new(
         voucher:    @voucher,

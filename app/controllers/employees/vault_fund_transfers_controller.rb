@@ -1,11 +1,11 @@
 module Employees
   class VaultFundTransfersController < ApplicationController
     def new
-      @employee = User.find(params[:employee_id])
+      @employee = current_cooperative.users.find(params[:employee_id])
       @entry = TreasuryModule::VaultFundTransferProcessing.new
     end
     def create
-      @employee = User.find(params[:employee_id])
+      @employee = current_cooperative.users.find(params[:employee_id])
       @entry = TreasuryModule::VaultFundTransferProcessing.new(remittance_params)
       if @entry.valid?
         @entry.save

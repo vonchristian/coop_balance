@@ -1,10 +1,10 @@
 module LoansModule
   class FilteredLoansController < ApplicationController
     def index
-      @loans = LoansModule::Loan.all
-       @barangays = Addresses::Barangay.all
-    @municipalities = Addresses::Municipality.all
-    @organizations = Organization.all
+      @loans = current_cooperative.loans
+       @barangays = current_cooperative.barangays
+    @municipalities = current_cooperative.municipalities
+    @organizations = current_cooperative.organizations
     end
   end
 end

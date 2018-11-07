@@ -1,7 +1,7 @@
 module Members
   class SettingsController < ApplicationController
     def index
-      @member = Member.find(params[:member_id])
+      @member = current_cooperative.member_memberships.find(params[:member_id])
     end
   end
 end

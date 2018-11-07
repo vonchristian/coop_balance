@@ -19,11 +19,11 @@ module LoansModule
       end
     end
     def show
-      @loan_application = LoansModule::LoanApplication.find(params[:id])
+      @loan_application = current_cooperative.loan_applications.find(params[:id])
     end
 
     def destroy
-      @loan_application = LoansModule::LoanApplication.find(params[:id])
+      @loan_application = current_cooperative.loan_applications.find(params[:id])
       @loan_application.destroy
       redirect_to loans_url, notice: "Loan application cancelled successfully"
     end

@@ -1,3 +1,0 @@
-class VoucherAmountsController < ApplicationController
-  
-end 

@@ -2,6 +2,7 @@ module LoansModule
 	class AmortizationSchedule < ApplicationRecord
     enum payment_status: [:full_payment, :partial_payment, :unpaid]
     belongs_to :loan
+    belongs_to :cooperative
     belongs_to :loan_application
     has_many :payment_notices, as: :notified
     has_many :notes, as: :noteable
@@ -29,6 +30,7 @@ module LoansModule
     end
     def self.create_first_amort_schedule(loan_application)
       loan_application.amortization_schedules.create!(
+        cooperative: loan_application.cooperative,
         date: first_amortization_date_for(loan_application),
         principal: principal_amount_for(loan_application)
       )
@@ -38,6 +40,7 @@ module LoansModule
         ActiveRecord::Base.transaction do
           number_of_remaining_schedules_for(loan_application).times do
             loan_application.amortization_schedules.create!(
+              cooperative: loan_application.cooperative,
               date: schedule_date_for(loan_application),
               principal: principal_amount_for(loan_application)
             )

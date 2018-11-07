@@ -1,5 +1,5 @@
 class LoansModuleController < ApplicationController
   def index
-    @loan_products = LoansModule::LoanProduct.all
+    @loan_products = current_cooperative.loan_products
   end
 end

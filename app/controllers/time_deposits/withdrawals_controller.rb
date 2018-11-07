@@ -1,12 +1,12 @@
 module TimeDeposits
   class WithdrawalsController < ApplicationController
     def new
-      @time_deposit = MembershipsModule::TimeDeposit.find(params[:time_deposit_id])
-      @withdrawal = TimeDeposits::WithdrawalLineItemProcessing.new
+      @time_deposit = current_cooperative.time_deposits.find(params[:time_deposit_id])
+      @withdrawal   = TimeDeposits::WithdrawalLineItemProcessing.new
     end
     def create
-      @time_deposit = MembershipsModule::TimeDeposit.find(params[:time_deposit_id])
-      @withdrawal = TimeDeposits::WithdrawalLineItemProcessing.new(withdrawal_params)
+      @time_deposit = current_cooperative.time_deposits.find(params[:time_deposit_id])
+      @withdrawal   = TimeDeposits::WithdrawalLineItemProcessing.new(withdrawal_params)
       if @withdrawal.valid?
         @withdrawal.process!
         redirect_to voucher_url(id: @withdrawal.find_voucher.id), notice: "Voucher created successfully"

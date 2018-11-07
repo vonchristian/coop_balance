@@ -32,27 +32,32 @@ module AccountingModule
 
     context 'scopes' do
       it '.recent' do
-        old_entry    = create(:entry_with_credit_and_debit, created_at: Date.today.yesterday)
-        recent_entry = create(:entry_with_credit_and_debit, created_at: Date.today, previous_entry: old_entry)
+        cooperative = create(:cooperative)
+        origin_entry = create(:origin_entry, cooperative: cooperative, created_at: Date.today.last_month)
+        old_entry    = create(:entry_with_credit_and_debit, created_at: Date.today.yesterday, cooperative: cooperative, previous_entry: origin_entry)
+        recent_entry = create(:entry_with_credit_and_debit, created_at: Date.today, previous_entry: old_entry, cooperative: cooperative)
 
         expect(described_class.recent).to eql recent_entry
         expect(described_class.recent).to_not eql old_entry
       end
 
       it '.not_cancelled' do
-        entry = create(:entry_with_credit_and_debit, cancelled: false)
-        cancelled_entry = create(:entry_with_credit_and_debit, cancelled: true, cancelled_at: Date.today, cancellation_description: 'wrong entry', previous_entry: entry)
+        cooperative = create(:cooperative)
+        origin_entry = create(:origin_entry, cooperative: cooperative, created_at: Date.today.last_month)
+        entry = create(:entry_with_credit_and_debit, cancelled: false, cooperative: cooperative, previous_entry: origin_entry)
+        cancelled_entry = create(:entry_with_credit_and_debit, cancelled: true, cancelled_at: Date.today, cancellation_description: 'wrong entry', previous_entry: entry, cooperative: cooperative)
 
         expect(described_class.not_cancelled).to include(entry)
         expect(described_class.not_cancelled).to_not include(cancelled_entry)
       end
 
       it '.recorder_by(args={})' do
+        cooperative = create(:cooperative)
         teller = create(:teller)
         bookkeeper = create(:bookkeeper)
-
-        entry = create(:entry_with_credit_and_debit, recorder: teller)
-        another_entry = create(:entry_with_credit_and_debit, recorder: bookkeeper, previous_entry: entry)
+        origin_entry = create(:origin_entry, cooperative: cooperative)
+        entry = create(:entry_with_credit_and_debit, recorder: teller, cooperative: cooperative, previous_entry: origin_entry)
+        another_entry = create(:entry_with_credit_and_debit, recorder: bookkeeper, cooperative: cooperative, previous_entry: entry)
 
         expect(described_class.recorded_by(recorder: teller)).to include(entry)
         expect(described_class.recorded_by(recorder: teller)).to_not include(another_entry)

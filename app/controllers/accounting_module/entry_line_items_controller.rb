@@ -14,7 +14,7 @@ module AccountingModule
       end
     end
     def destroy
-      @amount = Vouchers::VoucherAmount.find(params[:id])
+      @amount = current_cooperative.voucher_amounts.find(params[:id])
       @amount.destroy
       redirect_to new_accounting_module_entry_line_item_url, notice: "removed successfully"
     end

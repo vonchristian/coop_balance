@@ -1,11 +1,11 @@
 module Employees
   class RemittancesController < ApplicationController
     def new
-      @employee = User.find(params[:employee_id])
+      @employee = current_cooperative.users.find(params[:employee_id])
       @entry = AccountingModule::RemittanceForm.new
     end
     def create
-      @employee = User.find(params[:employee_id])
+      @employee = current_cooperative.users.find(params[:employee_id])
       @entry = AccountingModule::RemittanceForm.new(remittance_params)
       if @entry.save
         @entry.save

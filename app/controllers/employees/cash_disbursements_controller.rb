@@ -1,7 +1,7 @@
 module Employees
   class CashDisbursementsController < ApplicationController
     def index
-      @employee = User.find(params[:employee_id])
+      @employee = current_cooperative.users.find(params[:employee_id])
       @from_date = params[:from_date] ? Chronic.parse(params[:from_date]).beginning_of_day : DateTime.now.beginning_of_day
       @to_date = Chronic.parse(params[:to_date]).end_of_day
       @entries = @employee.cash_on_hand_account.credit_entries.entered_on(from_date: @from_date, to_date: @to_date)

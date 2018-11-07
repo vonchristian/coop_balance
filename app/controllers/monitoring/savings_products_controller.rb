@@ -1,7 +1,7 @@
 module Monitoring
   class SavingsProductsController < ApplicationController
     def index
-      @saving_products = CoopServicesModule::SavingProduct.all
+      @saving_products = current_cooperative.saving_products
       respond_to do |format|
         format.html
         format.pdf do

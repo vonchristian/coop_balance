@@ -4,12 +4,12 @@ module LoansModule
       respond_to :html, :json
 
       def edit
-        @loan = LoansModule::Loan.find(params[:loan_id])
+        @loan = current_cooperative.loans.find(params[:loan_id])
         respond_modal_with @loan
       end
 
       def update
-        @loan = LoansModule::Loan.find(params[:loan_id])
+        @loan = current_cooperative.loans.find(params[:loan_id])
         @loan.update(organization_params)
         respond_modal_with @loan, location: loan_settings_url(@loan), notice: "Loan organization updated successfully."
       end

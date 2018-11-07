@@ -313,7 +313,7 @@ Rails.application.routes.draw do
       resources :cash_receipt_line_items, only: [:new, :create, :destroy], module: :cash_accounts
       resources :cash_disbursement_line_items, only: [:new, :create, :destroy], module: :cash_accounts
     end
-    
+
     resources :reports, only: [:index]
     resources :disbursements, only: [:index]
     resources :cash_receipts, only: [:index]
@@ -460,9 +460,6 @@ Rails.application.routes.draw do
     resources :barangays, only: [:new, :create], module: :cooperatives
     resources :logos, module: :cooperatives
   end
-  resources :offices, only: [:index, :show] do
-      resources :sections, only: [:new, :create], module: :offices
-    end
 
   resources :monitoring, only: [:index]
   namespace :monitoring do

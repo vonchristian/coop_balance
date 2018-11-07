@@ -1,13 +1,13 @@
 module LoansModule
   class LoansController < ApplicationController
     def index
-      @loans = LoansModule::Loan.all
+      @loans = current_cooperative.loans.paginate(page: params[:page], per_page: 25)
     end
     def show
-      @loan = LoansModule::Loan.find(params[:id])
+      @loan = current_cooperative.loans.find(params[:id])
     end
     def destroy
-      @loan = LoansModule::Loan.find(params[:id])
+      @loan = current_cooperative.loans.find(params[:id])
       @loan.destroy
       redirect_to loans_url, alert: "Loan deleted successfully."
     end

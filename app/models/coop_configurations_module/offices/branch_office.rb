@@ -1,6 +1,6 @@
 module CoopConfigurationsModule
   module Offices
-    class Branchffice < Office
+    class BranchOffice < Office
     end
   end
 end

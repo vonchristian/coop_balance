@@ -1,10 +1,10 @@
 module ManagementModule
   class SettingsController < ApplicationController
     def index
-      @cooperative = current_user.cooperative
-      @share_capital_products = CoopServicesModule::ShareCapitalProduct.all
-      @time_deposit_products = CoopServicesModule::TimeDepositProduct.all
-      @programs = CoopServicesModule::Program.all
+      @cooperative = current_cooperative
+      @share_capital_products = current_cooperative.share_capital_products
+      @time_deposit_products = current_cooperative.time_deposit_products
+      @programs = current_cooperative.programs
       @savings_registry = Registries::SavingsAccountRegistry.new
     end
   end

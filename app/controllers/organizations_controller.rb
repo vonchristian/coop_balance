@@ -20,7 +20,7 @@ class OrganizationsController < ApplicationController
     end
   end
   def show
-    @organization = Organization.find(params[:id])
+    @organization = current_cooperative.organizations.find(params[:id])
     if params[:search].present?
       @members = @organization.member_memberships.text_search(params[:search]).paginate(page: params[:page], per_page: 25)
     else
