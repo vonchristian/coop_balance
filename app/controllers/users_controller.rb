@@ -10,7 +10,6 @@ class UsersController < ApplicationController
   def update
     @user = current_cooperative.users.find(params[:id])
     authorize @user
-
     @user.update(user_params)
     if @user.save
       redirect_to @user, notice: "Password updated successfully."

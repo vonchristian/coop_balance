@@ -67,6 +67,7 @@ group :development, :test do
 end
 
 group :development do
+  gem 'brakeman'
   gem 'pry-rails'
   gem 'listen'
   gem 'spring'
