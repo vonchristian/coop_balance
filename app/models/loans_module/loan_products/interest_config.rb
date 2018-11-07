@@ -28,7 +28,8 @@ module LoansModule
       end
 
       def create_charges_for(loan_application)
-        loan_application.voucher_amounts.find_or_create_by(
+        loan_application.voucher_amounts.create(
+        cooperative: loan_application.cooperative,
         description: "Interest on Loan",
         amount: prededucted_interest_amount_for(loan_application),
         account: interest_revenue_account,

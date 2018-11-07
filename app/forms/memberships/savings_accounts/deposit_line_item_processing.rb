@@ -35,10 +35,12 @@ module Memberships
           account_number: account_number,
           date: date)
         voucher.voucher_amounts.debit.build(
+          cooperative: find_employee.cooperative,
           account: debit_account,
           amount: amount,
           commercial_document: find_saving)
         voucher.voucher_amounts.credit.build(
+          cooperative: find_employee.cooperative,
           account: credit_account,
           amount: amount,
           commercial_document: find_saving)

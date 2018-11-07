@@ -44,11 +44,13 @@ class ShareCapitalApplicationProcessing
     date: date_opened
   )
   voucher.voucher_amounts.debit.build(
+    cooperative: find_employee.cooperative,
     account: cash_account,
     amount: amount,
     commercial_document: share_capital_application
   )
   voucher.voucher_amounts.credit.build(
+    cooperative: find_employee.cooperative,
     account: credit_account,
     amount: amount,
     commercial_document: share_capital_application)

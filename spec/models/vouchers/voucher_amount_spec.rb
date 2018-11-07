@@ -6,6 +6,8 @@ module Vouchers
       it { is_expected.to belong_to :account }
       it { is_expected.to belong_to :voucher }
       it { is_expected.to belong_to :commercial_document }
+      it { is_expected.to belong_to :cooperative }
+
     end
     describe 'validations' do
       it { is_expected.to validate_presence_of :account_id }

@@ -68,7 +68,7 @@ module AccountingModule
     end
 
     def total
-      credit_amounts.sum(:amount)
+      credit_amounts.total
     end
 
     def unbalanced?

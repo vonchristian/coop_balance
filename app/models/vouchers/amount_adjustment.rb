@@ -1,7 +1,7 @@
 module Vouchers
   class AmountAdjustment < ApplicationRecord
     enum adjustment_type: [:amount_based, :percentage_based, :number_of_payments_based]
-    belongs_to :loan_application, class_name: "LoansModule::LoanApplication"
+    belongs_to :loan_application, class_name: "LoansModule::LoanApplication", dependent: :destroy
     belongs_to :voucher_amount, class_name: "Vouchers::VoucherAmount"
 
     def self.recent
@@ -11,9 +11,9 @@ module Vouchers
     def adjusted_amount(args={})
       adjustable = args[:adjustable]
       if amount_based?
-        adjustable.amount - amount
+        adjustable.amount.amount - amount
       elsif percentage_based?
-        adjustable.amount * rate
+        adjustable.amount.amount * rate
       elsif  number_of_payments_based?
       adjustable.amortization_schedules.order(date: :desc).take(number_of_payments).sum(:amount)
       end

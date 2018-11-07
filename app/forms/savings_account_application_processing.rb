@@ -43,11 +43,13 @@ class SavingsAccountApplicationProcessing
       date: date
     )
     voucher.voucher_amounts.debit.build(
+      cooperative: find_employee.cooperative,
       account: cash_account,
       amount: amount,
       commercial_document: savings_account_application
     )
     voucher.voucher_amounts.credit.build(
+      cooperative: find_employee.cooperative,
       account: credit_account,
       amount: amount,
       commercial_document: savings_account_application)

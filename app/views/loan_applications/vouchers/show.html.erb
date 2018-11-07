@@ -12,7 +12,7 @@
         </div>
       </div>
         <div class="card-body">
-
+      <%= render 'vouchers/partials/alert_message' %>
       <%= render 'vouchers/partials/body', voucher: @voucher %>
       <% if !@voucher.disbursed?%>
 

@@ -20,7 +20,7 @@ module LoansModule
           rate: rate,
           adjustment_type: adjustment_type,
           number_of_payments: number_of_payments)
-        find_voucher_amount.update_attributes!(amount_adjustment: amount_adjustment)
+        # find_voucher_amount.update_attributes!(amount_adjustment: amount_adjustment)
       end
       def find_voucher_amount
         Vouchers::VoucherAmount.find(voucher_amount_id)

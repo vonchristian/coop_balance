@@ -86,7 +86,9 @@ module LoansModule
 
     private
     def create_loan_protection_fund(loan_application)
-        loan_application.voucher_amounts.find_or_create_by(
+        loan_application.voucher_amounts.create!(
+        cooperative: loan_application.cooperative,
+        commercial_document: loan_application,
         amount_type: 'credit',
         amount: LoanProtectionFund.compute_amount(loan_application),
         account: AccountingModule::Liability.find_by(name: 'Loan Protection Fund Payable'), # REFACTOR
@@ -95,7 +97,9 @@ module LoansModule
       end
     def create_percent_based_charges(loan_application)
       loan_product_charges.percent_based.each do |charge|
-          loan_application.voucher_amounts.find_or_create_by(
+         loan_application.voucher_amounts.create!(
+          cooperative: loan_application.cooperative,
+          commercial_document: loan_application,
           description: charge.name,
           amount: charge.rate * loan_application.loan_amount.amount,
           amount_type: 'credit',
@@ -105,7 +109,9 @@ module LoansModule
     end
     def create_amount_based_charges(loan_application)
       loan_product_charges.amount_based.each do |charge|
-          loan_application.voucher_amounts.find_or_create_by(
+          loan_application.voucher_amounts.create!(
+          cooperative: loan_application.cooperative,
+          commercial_document: loan_application,
           description: charge.name,
           amount: charge.amount,
           amount_type: 'credit',
@@ -116,7 +122,9 @@ module LoansModule
 
     def create_charges_that_does_not_depends_on_loan_amount(loan_application)
      charges.not_depends_on_loan_amount.each do |charge|
-        loan_application.voucher_amounts.find_or_create_by!(
+        loan_application.voucher_amounts.create!(
+          cooperative: loan_application.cooperative,
+          commercial_document: loan_application,
           description:  charge.name,
           amount: charge.amount_for(loan_application),
           amount_type: 'credit',

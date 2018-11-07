@@ -8,11 +8,12 @@
             Amount
           </div>
           <div class="col-md-4">
-            <b><%= number_to_currency @voucher.voucher_amounts.for_account(account: @share_capital.share_capital_product_paid_up_account).sum(:amount) %></b>
+            <b><%= number_to_currency @voucher.voucher_amounts.for_account(account: @share_capital.share_capital_product_paid_up_account).total %></b>
           </div>
         </div>
       </div>
       <div class="card-body">
+        <%= render 'vouchers/partials/alert_message', voucher: @voucher %>
         <%= render 'vouchers/partials/body', voucher: @voucher %>
         <% if @voucher.accounting_entry.blank? %>
           <%= link_to "Confirm", share_capital_voucher_confirmations_path(share_capital_id: @share_capital.id, voucher_id: @voucher.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>

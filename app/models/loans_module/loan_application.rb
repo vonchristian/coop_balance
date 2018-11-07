@@ -1,6 +1,6 @@
 module LoansModule
   class LoanApplication < ApplicationRecord
-    monetize :loan_amount_cents, as: "loan_amount"
+    monetize :loan_amount_cents, as: :loan_amount
 
     enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
 
