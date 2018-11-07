@@ -7,7 +7,7 @@ FactoryBot.define do
     entry.reference_number "Genesis"
     entry.previous_entry_id ""
     entry.previous_entry_hash "Genesis previous entry hash"
-    entry.encrypted_hash "Genesis encrypted hash"
+    entry.encrypted_hash Digest::SHA256.hexdigest(SecureRandom.uuid)
     entry.entry_date  Date.today
     entry.after(:build) do |t|
       t.credit_amounts << build(:credit_amount, entry: t, amount: 0)

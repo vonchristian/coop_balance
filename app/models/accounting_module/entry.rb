@@ -9,7 +9,7 @@ module AccountingModule
 
     belongs_to :official_receipt, optional: true
     belongs_to :previous_entry, class_name: "AccountingModule::Entry", optional: true
-    belongs_to :commercial_document, :polymorphic => true, touch: true
+    belongs_to :commercial_document, :polymorphic => true
     belongs_to :office, class_name: "CoopConfigurationsModule::Office"
     belongs_to :cooperative
     belongs_to :cooperative_service, optional: true, class_name: "CoopServicesModule::CooperativeService"
@@ -64,7 +64,7 @@ module AccountingModule
     end
 
     def entries_present?
-      AccountingModule::Entry.exists?
+      cooperative.entries.exists?
     end
 
     def total
@@ -78,15 +78,11 @@ module AccountingModule
     def hashes_valid?
       encrypted_hash == digested_hash
     end
-    def digested_hash
-      Digest::SHA256.hexdigest(self.digestable)
-    end
 
     def digestable
-      "#{created_at.to_s}
-      #{updated_at.to_s}
-      #{amounts.count.to_s}
-      #{amounts.sum(:amount).to_s}
+      "#{amounts.count.to_s}
+      #{amounts.sum(:amount_cents).to_s}
+      #{amounts.pluck(:account_id).join("," "")}
       #{entry_date.to_s}
       #{cooperative_id.to_s}
       #{office_id.to_s}
@@ -96,13 +92,16 @@ module AccountingModule
       #{recorder_id.to_s}
       #{previous_entry_hash}"
     end
-
     private
 
     def set_encrypted_hash!
       if encrypted_hash.blank?
-      encrypted_hash = digested_hash
+        self.update_attributes!(encrypted_hash: digested_hash, updated_at: self.created_at.strftime("%B %e, %Y"))
       end
+    end
+
+    def digested_hash
+      Digest::SHA256.hexdigest(self.digestable)
     end
 
       def set_default_date

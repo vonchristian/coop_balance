@@ -146,13 +146,13 @@
             <tr>
               <td>
                 <span class="float-right">
-                  <b><%= number_to_currency @entry.debit_amounts.sum(:amount) %></b>
+                  <b><%= number_to_currency @entry.debit_amounts.total %></b>
                 </span>
               </td>
               <td></td>
               <td>
                 <span class="float-right">
-                  <b><%= number_to_currency @entry.credit_amounts.sum(:amount) %></b></span>
+                  <b><%= number_to_currency @entry.credit_amounts.total %></b></span>
                 </td>
               <td></td>
             </tr>

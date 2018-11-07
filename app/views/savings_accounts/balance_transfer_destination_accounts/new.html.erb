@@ -23,7 +23,8 @@
               <%= image_tag(savings_account.avatar, class: "img-circle", height: 45, width: 45) %>
             </div>
             <div class="col-md-8">
-              <%= savings_account.depositor_name %>
+              <%= savings_account.depositor_name %><br>
+              <%= number_to_currency savings_account.balance %>
             </div>
             <div class="col-md-2">
               <%= simple_form_for @destination_saving, url: :savings_account_balance_transfer_destination_accounts do |f| %>

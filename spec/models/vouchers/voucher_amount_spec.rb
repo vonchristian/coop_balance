@@ -8,10 +8,9 @@ module Vouchers
       it { is_expected.to belong_to :commercial_document }
     end
     describe 'validations' do
-      it { is_expected.to validate_presence_of :amount }
       it { is_expected.to validate_presence_of :account_id }
       it { is_expected.to validate_presence_of :amount_type }
-      it { is_expected.to validate_numericality_of :amount }
+      it { is_expected.to monetize(:amount) }
     end
 
     describe 'delegations' do

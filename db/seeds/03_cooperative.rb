@@ -9,8 +9,8 @@ general_manager = User.general_manager.create!(
   last_name: "Manager",
   cooperative: coop,
   office: office)
-genesis_account = AccountingModule::Asset.create(name: "Genesis Account", active: false, code: "Genesis Code")
-  entry = AccountingModule::Entry.new(
+genesis_account = coop.accounts.assets.create(name: "Genesis Account", active: false, code: "Genesis Code")
+  origin_entry = coop.entries.new(
     office:              office,
     cooperative:         coop,
     commercial_document: coop,
@@ -21,12 +21,12 @@ genesis_account = AccountingModule::Asset.create(name: "Genesis Account", active
     previous_entry_hash:   "Genesis previous entry hash",
     encrypted_hash:      "Genesis encrypted hash",
     entry_date:          Date.today)
-    entry.debit_amounts.build(
+    origin_entry.debit_amounts.build(
         account: genesis_account,
         amount: 0,
         commercial_document: coop)
-    entry.credit_amounts.build(
+    origin_entry.credit_amounts.build(
         account: genesis_account,
         amount: 0,
         commercial_document: coop)
-  entry.save!
+  origin_entry.save!

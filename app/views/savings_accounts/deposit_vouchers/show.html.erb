@@ -8,7 +8,7 @@
             Amount
           </div>
           <div class="col-md-4">
-            <b><%= number_to_currency @voucher.voucher_amounts.for_account(account: @savings_account.saving_product_account).sum(:amount) %></b>
+            <b><%= number_to_currency @voucher.voucher_amounts.for_account(account: @savings_account.saving_product_account).total %></b>
           </div>
         </div>
       </div>

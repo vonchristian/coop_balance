@@ -80,9 +80,9 @@
         <% end %>
         <% if voucher.voucher_amounts.present? %>
            <tr>
-            <td><b><%= number_to_currency voucher.voucher_amounts.debit.sum(:amount) %></b></td>
+            <td><b><%= number_to_currency voucher.voucher_amounts.debit.total %></b></td>
             <td></td>
-            <td><b class="float-right"><%= number_to_currency voucher.voucher_amounts.credit.sum(:amount) %></b></td>
+            <td><b class="float-right"><%= number_to_currency voucher.voucher_amounts.credit.total %></b></td>
           </tr>
         <% end %>
       </tbody>

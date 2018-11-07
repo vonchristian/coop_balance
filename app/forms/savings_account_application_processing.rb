@@ -25,7 +25,8 @@ class SavingsAccountApplicationProcessing
       depositor_type: depositor_type,
       date_opened: date,
       account_number: account_number,
-      initial_deposit: amount
+      initial_deposit: amount,
+      cooperative: find_employee.cooperative
     )
     create_voucher(savings_account_application)
   end

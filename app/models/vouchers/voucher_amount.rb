@@ -1,5 +1,8 @@
 module Vouchers
   class VoucherAmount < ApplicationRecord
+      monetize :amount_cents, as: :amount, numericality: {
+              greater_than_or_equal_to: 0
+            }
     enum amount_type: [:debit, :credit]
     belongs_to :account, class_name: "AccountingModule::Account"
     belongs_to :voucher
@@ -13,7 +16,7 @@ module Vouchers
     validates :amount, numericality: true
 
     def self.total
-      sum(:amount)
+      all.map{ |a| a.amount.amount }.sum
     end
 
     def recent_amount_adjustment
@@ -29,7 +32,7 @@ module Vouchers
     end
 
     def self.total_cash_amount
-      for_account(account: Employees::EmployeeCashAccount.cash_accounts).sum(:amount)
+      for_account(account: Employees::EmployeeCashAccount.cash_accounts).total
     end
 
     def self.with_no_vouchers

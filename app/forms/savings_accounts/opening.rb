@@ -15,6 +15,10 @@ module SavingsAccounts
       end
     end
 
+    def find_savings_account
+      employee.cooperative.savings.find_by(account_number: savings_account_application.account_number)
+    end
+
     private
     def create_savings_account
       savings_account = MembershipsModule::Saving.create!(

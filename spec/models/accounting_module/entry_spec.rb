@@ -30,6 +30,67 @@ module AccountingModule
       it { is_expected.to delegate_method(:name).to(:commercial_document).with_prefix }
     end
 
+    it "#entries_present?" do
+      cooperative = create(:cooperative)
+      expect(cooperative.entries.exists?).to be false
+
+      origin_entry = create(:origin_entry, cooperative: cooperative)
+
+      expect(origin_entry.entries_present?).to eql true
+    end
+
+    it "#digestable" do
+      date =  Date.today.strftime("%B %e, %Y")
+      AccountingModule::Entry.destroy_all
+      cooperative = create(:cooperative, id: '76b0ff55-2ede-45c1-87f9-c02ec497fe59')
+      office = create(:office, cooperative: cooperative, id: '76b0ff55-2ede-45c1-87f9-c02ec497fe59')
+      employee = create(:user, role: 'teller', cooperative:cooperative, id: '76b0ff55-2ede-45c1-87f9-c02ec497fe59')
+
+      genesis_account = cooperative.accounts.assets.create(name: "Genesis Account", active: false, code: "Genesis Code")
+  origin_entry = cooperative.entries.new(
+    office:              office,
+    cooperative:         cooperative,
+    commercial_document: cooperative,
+    description:         "Genesis entry",
+    recorder:            employee,
+    reference_number:    "Genesis",
+    previous_entry_id:   "",
+    previous_entry_hash:   "Genesis previous entry hash",
+    encrypted_hash:      "Genesis encrypted hash",
+    entry_date:         date)
+    origin_entry.debit_amounts.build(
+        account: genesis_account,
+        amount: 0,
+        commercial_document: cooperative)
+    origin_entry.credit_amounts.build(
+        account: genesis_account,
+        amount: 0,
+        commercial_document: cooperative)
+  origin_entry.save!
+
+      employee_cash_account = create(:employee_cash_account, employee: employee)
+      saving = create(:saving, cooperative: cooperative, id: '76b0ff55-2ede-45c1-87f9-c02ec497fe59')
+
+      deposit = build(:entry,
+        office: office,
+        cooperative: cooperative,
+        recorder: employee,
+        entry_date: date,
+        created_at: date,
+        updated_at: date,
+        commercial_document: saving,
+        previous_entry: origin_entry,
+        previous_entry_hash: origin_entry.encrypted_hash)
+      deposit.credit_amounts << build(:credit_amount, amount: 5_000, commercial_document: saving, account: saving.saving_product_account)
+      deposit.debit_amounts << build(:debit_amount, amount: 5_000, commercial_document: saving, account: employee_cash_account.cash_account)
+      deposit.save!
+
+      puts deposit.digestable
+      puts Digest::SHA256.hexdigest(deposit.digestable)
+      puts deposit.encrypted_hash
+
+    end
+
     context 'scopes' do
       it '.recent' do
         cooperative = create(:cooperative)
