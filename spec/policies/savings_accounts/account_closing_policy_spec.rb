@@ -5,7 +5,7 @@ module SavingsAccounts
     subject { SavingsAccounts::AccountClosingPolicy.new(user, record) }
     let(:record) { create(:entry_with_credit_and_debit) }
     context 'manager' do
-      let(:user) { create(:user, role: 'manager') }
+      let(:user) { create(:user, role: 'general_manager') }
 
       it { is_expected.to_not permit_action(:new)}
       it { is_expected.to_not permit_action(:create)}

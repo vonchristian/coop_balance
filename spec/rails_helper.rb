@@ -23,6 +23,7 @@ RSpec.configure do |config|
   config.include Devise::Test::ControllerHelpers, :type => :controllers
   config.before(:suite) do
     DatabaseRewinder.clean_all
+    FactoryBot.reload
   end
 
   config.after(:each) do

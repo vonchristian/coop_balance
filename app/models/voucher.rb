@@ -8,13 +8,12 @@ class Voucher < ApplicationRecord
   belongs_to :cooperative
   belongs_to :cooperative_service, class_name: "CoopServicesModule::CooperativeService"
   belongs_to :office, class_name: "CoopConfigurationsModule::Office"
-  has_many :loan_applications,  class_name: "LoansModule::LoanApplication", dependent: :destroy
   belongs_to :accounting_entry, class_name: "AccountingModule::Entry", foreign_key: 'entry_id'
   belongs_to :payee,         polymorphic: true
-  belongs_to :commercial_document,         polymorphic: true #orders
   belongs_to :preparer,      class_name: "User", foreign_key: 'preparer_id'
   belongs_to :disburser,     class_name: "User", foreign_key: 'disburser_id'
   has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", dependent: :destroy
+
   delegate :title, to: :cooperative_service, prefix: true, allow_nil: true
   delegate :name, :abbreviated_name, :address, :contact_number, to: :cooperative, prefix: true
   delegate :full_name, :current_occupation, to: :preparer, prefix: true

@@ -3,7 +3,7 @@ require 'rails_helper'
 module AccountingModule
   describe AccountPolicy do
     subject { AccountingModule::AccountPolicy.new(user, record) }
-    let(:record) { create(:account) }
+    let(:record) { create(:asset) }
 
     context 'accountant' do
       let(:user) { create(:user, role: 'accountant') }

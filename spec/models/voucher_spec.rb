@@ -3,10 +3,10 @@ require 'rails_helper'
 RSpec.describe Voucher, type: :model do
   describe 'associations' do
     it { is_expected.to belong_to :cooperative }
+    it { is_expected.to belong_to :cooperative_service }
     it { is_expected.to belong_to :office }
     it { is_expected.to belong_to :accounting_entry }
     it { is_expected.to belong_to :payee }
-    it { is_expected.to belong_to :commercial_document }
     it { is_expected.to belong_to :preparer }
     it { is_expected.to belong_to :disburser }
     it { is_expected.to have_many :voucher_amounts }
@@ -43,7 +43,7 @@ RSpec.describe Voucher, type: :model do
     voucher = create(:voucher)
     voucher_2 = create(:voucher)
     entry = create(:entry_with_credit_and_debit)
-    voucher.accounting_entry = entry
+    voucher.update_attributes(accounting_entry: entry)
 
     expect(voucher.disbursed?).to eql true
     expect(voucher_2.disbursed?).to eql false

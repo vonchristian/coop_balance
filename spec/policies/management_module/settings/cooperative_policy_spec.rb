@@ -1,12 +1,12 @@
 require 'rails_helper'
 
-module ManagementModule 
+module ManagementModule
   module Settings
     describe CooperativePolicy do
       subject { ManagementModule::Settings::CooperativePolicy.new(user, record) }
       let(:record) { create(:cooperative) }
       context 'manager' do
-        let(:user) { create(:user, role: 'manager') }
+        let(:user) { create(:user, role: 'general_manager') }
 
         it { is_expected.to permit_action(:edit)}
         it { is_expected.to permit_action(:update)}
