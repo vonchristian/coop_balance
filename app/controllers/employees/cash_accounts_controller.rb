@@ -22,7 +22,7 @@ module Employees
     end
     private
     def cash_account_params
-      params.require(:employees_employee_cash_account).permit(:cash_account_id)
+      params.require(:employees_employee_cash_account).permit(:cash_account_id, :cooperative_id)
     end
   end
 end

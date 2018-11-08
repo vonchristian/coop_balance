@@ -21,7 +21,7 @@
       <button type="submit" class="btn btn-primary">Generate</button>
     <% end %>
   <br>
-    <%= render 'accounting_module/accounts/account', :name => "Assets", :accounts => @assets, cooperative_service_id: @cooperative_service.id %>
+    <%= render 'accounting_module/accounts/account', :name => "Assets", :accounts => @assets %>
     <%= render 'accounting_module/accounts/account', :name => "Liabilities", :accounts => @liabilities %>
     <%= render 'accounting_module/accounts/account', :name => "Equity", :accounts => @equity %>
 

@@ -14,7 +14,13 @@ module AccountingModule
         respond_to do |format|
           format.html
           format.pdf do
-            pdf = AccountingModule::Accounts::EntriesReportPdf.new(@entries, @account, @employee, @from_date, @to_date, view_context)
+            pdf = AccountingModule::Accounts::EntriesReportPdf.new(
+              entries: @entries,
+              account: @account,
+              employee: @employee,
+              from_date: @from_date,
+              to_date: @to_date,
+              view_context: view_context)
             send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Entries Report.pdf"
           end
         end

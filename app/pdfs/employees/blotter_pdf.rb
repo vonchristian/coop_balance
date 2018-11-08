@@ -1,10 +1,12 @@
 module Employees
   class BlotterPdf < Prawn::Document
-    def initialize(employee, date, view_context)
+    attr_reader :employee, :date, :view_context
+    def initialize(args)
       super(margin: 40, page_size: "A4", page_layout: :portrait)
-      @employee = employee
-      @date = date
-      @view_context = view_context
+      @employee     = args[:employee]
+      @accounts     = @employee.cash_accounts
+      @date         = args[:date]
+      @view_context = args[:view_context]
       heading
       summary
       amounts_received_table
@@ -14,7 +16,7 @@ module Employees
 
     private
     def price(number)
-      @view_context.number_to_currency(number, :unit => "P ")
+      view_context.number_to_currency(number, :unit => "P ")
     end
 
     def display_commercial_document_for(entry)
@@ -40,12 +42,12 @@ module Employees
           text "Kalanguya Cultural Community Multipurpose Cooperative", size: 10
       end
       bounding_box [0, 780], width: 400 do
-        text "#{@employee.role.titleize}'s Blotter Report", style: :bold, size: 14
+        text "#{employee.role.titleize}'s Blotter Report", style: :bold, size: 14
         move_down 3
-        text "#{@date.strftime("%B %e, %Y")}", size: 10
+        text "#{date.strftime("%B %e, %Y")}", size: 10
         move_down 3
 
-        text "Employee: #{@employee.name}", size: 10
+        text "Employee: #{employee.name}", size: 10
       end
       move_down 15
       stroke do
@@ -57,12 +59,12 @@ module Employees
     end
     def summary
       text "Summary", style: :bold, size: 10
-      table([["", "TOTAL AMOUNTS PAID", "#{price(@employee.cash_on_hand_account.credit_entries.recorded_by(@employee).map{|a| a.amounts.where(account: @employee.cash_on_hand_account).sum(&:amount) }.sum)}"]], cell_style: {size: 9, column_widths: [20, 90, 100]}) do
+      table([["", "TOTAL AMOUNTS PAID", "#{price(employee.cash_accounts.credits_balance)}"]], cell_style: {size: 9, column_widths: [20, 90, 100]}) do
         cells.borders = []
         column(2).align = :right
       end
-      table([["", "TOTAL AMOUNTS RECEIVED", "#{price(@employee.cash_on_hand_account.debit_entries.recorded_by(@employee).map{|a| a.amounts.where(account: @employee.cash_on_hand_account).sum(&:amount) }.sum)}"]], cell_style: {size: 9, column_widths: [20, 150, 100]}) do
-        cells.borders = []
+      table([["", "TOTAL AMOUNTS RECEIVED", "#{price(employee.cash_accounts.debits_balance)}"]], cell_style: {size: 9, column_widths: [20, 90, 100]}) do
+      cells.borders = []
         column(2).align = :right
 
       end
@@ -87,8 +89,8 @@ module Employees
     end
     def amounts_received_data
       [["Date", "Payee", "Description", "Type", "Amount"]] +
-      @amounts_received_data ||= @employee.cash_on_hand_account.debit_entries.recorded_by(@employee).map{|a| [a.entry_date.strftime("%B %e, %Y"), display_commercial_document_for(a), a.description, a.payment_type, price(a.amounts.where(account: @employee.cash_on_hand_account).sum(&:amount)) ] } +
-      [["", "", "", "TOTAL", "#{price(@employee.cash_on_hand_account.debit_entries.recorded_by(@employee).map{|a| a.amounts.where(account: @employee.cash_on_hand_account).sum(&:amount) }.sum)}"]]
+      @amounts_received_data ||= employee.cash_accounts.debit_entries.recorded_by(employee).map{|a| [a.entry_date.strftime("%B %e, %Y"), display_commercial_document_for(a), a.description, a.payment_type, price(a.amounts.where(account: @employee.cash_on_hand_account).sum(&:amount)) ] } +
+      [["", "", "", "TOTAL", ""]]
     end
 
     def amounts_paid_table
@@ -104,8 +106,8 @@ module Employees
     end
     def amounts_paid_data
       [["Date", "Payee", "Description", "Type", "Amount"]] +
-      @amounts_paid_data ||= @employee.cash_on_hand_account.credit_entries.recorded_by(@employee).map{|a| [a.entry_date.strftime("%B %e, %Y"), a.commercial_document.try(:name), a.description, a.payment_type, price(a.amounts.where(account: @employee.cash_on_hand_account).sum(&:amount)) ] } +
-      [["", "", "", "TOTAL", "#{price(@employee.cash_on_hand_account.credit_entries.recorded_by(@employee).map{|a| a.amounts.where(account: @employee.cash_on_hand_account).sum(&:amount) }.sum) }"]]
+      @amounts_paid_data ||= employee.cash_accounts.credit_entries.recorded_by(employee).map{|a| [a.entry_date.strftime("%B %e, %Y"), a.commercial_document.try(:name), a.description, a.payment_type, price(a.amounts.where(account: @employee.cash_on_hand_account).sum(&:amount)) ] } +
+      [["", "", "", "TOTAL", ""]]
     end
   end
 end

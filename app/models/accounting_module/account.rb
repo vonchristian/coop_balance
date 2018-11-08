@@ -37,7 +37,7 @@ module AccountingModule
     def self.updated_at(args={})
       if args[:from_date] && args[:to_date]
         date_range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])
-        active.where('last_transaction_date' => (date_range.start_date)..(date_range.end_date))
+        where('last_transaction_date' => date_range.start_date..date_range.end_date)
       end
     end
 
@@ -130,19 +130,19 @@ module AccountingModule
 
     def self.trial_balance(args={})
       if self.new.class == AccountingModule::Account
-        AccountingModule::Asset.balance(args) - (AccountingModule::Liability.balance(args) + AccountingModule::Equity.balance(args) + AccountingModule::Revenue.balance(args) - AccountingModule::Expense.balance(args))
+        assets.balance(args) - (liabilities.balance(args) + equities.balance(args) + revenues.balance(args) - expenses.balance(args))
       else
         raise(NoMethodError, "undefined method 'trial_balance'")
       end
     end
 
     def self.net_surplus(args={})
-      AccountingModule::Revenue.active.balance(args) -
-      AccountingModule::Expense.active.balance(args)
+      revenues.balance(args) -
+      expenses.balance(args)
     end
     def self.total_equity_and_liabilities(args={})
-      AccountingModule::Equity.balance(args) +
-      AccountingModule::Liability.balance(args)
+      equities.balance(args) +
+      liabilities.balance(args)
     end
 
 

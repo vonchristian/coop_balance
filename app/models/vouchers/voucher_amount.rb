@@ -31,6 +31,11 @@ module Vouchers
       where.not(account: args[:account])
     end
 
+    def self.accounts
+      ids = pluck(:account_id)
+      AccountingModule::Account.where(id: ids)
+    end
+
     def self.total_cash_amount
       for_account(account: Employees::EmployeeCashAccount.cash_accounts).total
     end

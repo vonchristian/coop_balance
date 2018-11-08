@@ -3,7 +3,7 @@ module AccountingModule
     class TrialBalancesPdf < Prawn::Document
       attr_reader :accounts, :to_date, :view_context, :cooperative
       def initialize(args)
-        super(margin: 40, page_size: "A4", page_layout: :portrait)
+        super(margin: 30, page_size: "A4", page_layout: :portrait)
         @accounts     = args[:accounts]
         @to_date      = args[:to_date]
         @view_context = args[:view_context]
@@ -14,7 +14,7 @@ module AccountingModule
 
       private
       def price(number)
-        @view_context.number_to_currency(number, :unit => "P ")
+        view_context.number_to_currency(number, :unit => "P ")
       end
 
       def heading
@@ -27,8 +27,8 @@ module AccountingModule
             text "#{cooperative.address}", size: 8
         end
         bounding_box [0, 770], width: 400 do
-          text "TRIAL BALANCE", style: :bold, size: 12
-          text "#{to_date.strftime("%B %e, %Y")}", size: 10
+          text "Trial Balance", style: :bold, size: 12
+          text "Date: #{to_date.strftime("%B %e, %Y")}", size: 10
         end
         move_down 30
         stroke do
@@ -57,7 +57,11 @@ module AccountingModule
         move_down 4
       end
       table([["TOTAL", "",
-        "#{price(accounts.balance(from_date: to_date, to_date: to_date))}"]], cell_style: { inline_format: true, size: 8, font: "Helvetica", :padding => [2,5,2,5]}, column_widths: [45, 150, 80, 80, 80, 80]) do
+        "#{price(accounts.balance(to_date: to_date.yesterday.end_of_day))}",
+        "#{price(accounts.debits_balance(to_date: to_date))}",
+        "#{price(accounts.credits_balance(to_date: to_date))}",
+        "#{price(accounts.balance(to_date: to_date))}",
+        ""]], cell_style: { inline_format: true, size: 8, font: "Helvetica", :padding => [2,5,2,5]}, column_widths: [45, 150, 80, 80, 80, 80]) do
         cells.borders = []
         column(2).align = :right
         column(3).align = :right
@@ -68,7 +72,7 @@ module AccountingModule
     end
     def accounts_data
       [["CODE", "ACCOUNT TITLE", "BEGINNING BALANCE", "DEBITS", "CREDITS", "ENDING BALANCE"]] +
-      @accounts_data ||= accounts.map{|a| [a.code, a.name, price(a.balance(to_date: to_date)), price(a.debits_balance(to_date: to_date)), price(a.credits_balance(to_date: to_date)), price(a.balance(to_date: @to_date))] }
+      @accounts_data ||= accounts.map{|a| [a.code, a.name, price(a.balance(to_date: to_date.yesterday.end_of_day)), price(a.debits_balance(to_date: to_date)), price(a.credits_balance(to_date: to_date)), price(a.balance(to_date: @to_date))] }
     end
     end
   end

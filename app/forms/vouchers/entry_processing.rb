@@ -11,6 +11,7 @@ module Vouchers
       ActiveRecord::Base.transaction do
         create_entry
         update_last_transaction_date
+        update_accounts_last_transaction_date
       end
     end
     private
@@ -48,6 +49,12 @@ module Vouchers
     def update_last_transaction_date
       if updateable.present?
         updateable.update_attributes!(last_transaction_date: voucher.date)
+      end
+    end
+
+    def update_accounts_last_transaction_date
+      voucher.voucher_amounts.accounts.each do |account|
+        account.update_attributes!(last_transaction_date: voucher.date)
       end
     end
 

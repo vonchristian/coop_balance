@@ -32,7 +32,7 @@ module AccountingModule
             text "#{cooperative.address}", size: 8
         end
         bounding_box [0, 770], width: 400 do
-          text "BALANCE SHEET", style: :bold, size: 12
+          text "Balance Sheet", style: :bold, size: 12
           text "As of: #{to_date.strftime("%B %e, %Y")} ", style: :bold, size: 10
         end
         move_down 30
@@ -108,7 +108,7 @@ module AccountingModule
       end
 
       def total_equity_and_liabilities_data
-        [["TOTAL EQUITY AND LIABILITIES", "#{price(AccountingModule::Account.total_equity_and_liabilities(to_date: to_date))}"]]
+        [["TOTAL EQUITY AND LIABILITIES", "#{price(cooperative.accounts.total_equity_and_liabilities(to_date: to_date))}"]]
       end
     end
   end

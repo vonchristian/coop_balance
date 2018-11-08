@@ -1,6 +1,5 @@
 module Employees
 	class AvatarsController < ApplicationController
-
 		def create
 			@employee = current_cooperative.users.find(params[:employee_id])
 			@avatar = @employee.update(avatar_params)

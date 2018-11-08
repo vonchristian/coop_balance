@@ -52,7 +52,7 @@
       <div class="card-body">
         <h4 class="card-title">Cash Disbursements</h4>
         <br>
-        <%= form_tag({:action => "index", format: 'pdf', controller: "employees/cash_disbursements", employee_id: @employee.id, to_date: params[:to_date]}, {:method => :get})  do %>
+        <%= form_tag({:action => "index", format: 'pdf', controller: "employees/reports/cash_disbursements", employee_id: @employee.id, to_date: params[:to_date]}, {:method => :get})  do %>
           <div class="row">
             <div class="col-md-3">
               <div class="form-group">
@@ -74,7 +74,7 @@
       <div class="card-body">
         <h4 class="card-title">Cash Receipts</h4>
         <br>
-        <%= form_tag({:action => "index", format: 'pdf', controller: "employees/cash_receipts", employee_id: @employee.id, to_date: params[:to_date]}, {:method => :get})  do %>
+        <%= form_tag({:action => "index", format: 'pdf', controller: "employees/reports/cash_receipts", employee_id: @employee.id, to_date: params[:to_date]}, {:method => :get})  do %>
           <div class="row">
             <div class="col-md-3">
               <div class="form-group">

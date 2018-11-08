@@ -4,6 +4,7 @@
 		<h4 class="card-title">New Cash Account</h4>
 		<hr>
 	  <%= f.input :cash_account_id, collection: AccountingModule::Asset.all.map{|a| [a.name, a.id] }  %>
+    <%= f.input :cooperative_id, input_html: { value: current_cooperative.id }, as: :hidden %>
 	</div>
 	<div class="modal-footer">
 	  <%= f.submit "Set Cash Account", class: 'btn btn-danger float-right' %>
