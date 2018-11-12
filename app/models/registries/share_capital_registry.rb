@@ -7,7 +7,11 @@ module Registries
       header = share_capital_spreadsheet.row(2)
       (3..share_capital_spreadsheet.last_row).each do |i|
         row = Hash[[header, share_capital_spreadsheet.row(i)].transpose]
-        create_entry(row)
+        if row["Balance"].to_f.zero?
+          find_subscriber(row)
+        else
+          create_entry(row)
+        end
       end
     end
 
@@ -36,7 +40,7 @@ module Registries
         last_transaction_date: cut_off_date,
         share_capital_product: find_share_capital_product(row))
 
-      AccountingModule::Entry.create!(
+      AccountingModule::Entry.create(
         office: self.employee.office,
         cooperative: self.employee.cooperative,
         recorder: self.employee,

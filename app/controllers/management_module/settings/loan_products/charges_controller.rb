@@ -19,19 +19,17 @@ module ManagementModule
         end
 
         def edit
-          @loan_product = LoansModule::LoanProduct.find(params[:loan_product_id])
-    			@charge = @loan_product.charges.find(params[:id])
+          @loan_product = current_cooperative.loan_products.find(params[:loan_product_id])
+    			@charge = @loan_product.loan_product_charges.find(params[:id])
+          respond_modal_with @charge
     		end
         
     		def update
-          @loan_product = LoansModule::LoanProduct.find(params[:loan_product_id])
-    			@charge = @loan_product.charges.find(params[:id])
+          @loan_product = current_cooperative.loan_products.find(params[:loan_product_id])
+    			@charge = @loan_product.loan_product_charges.find(params[:id])
     			@charge.update(charge_params)
-    			if @charge.save
-    				redirect_to management_module_settings_cooperative_products_url, notice: "Charge updated successfully."
-    			else
-    				render :edit
-    			end
+          respond_modal_with @charge,
+    				location: management_module_settings_cooperative_products_url
     		end
 
     		private

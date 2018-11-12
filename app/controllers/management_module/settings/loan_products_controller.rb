@@ -16,13 +16,13 @@ module ManagementModule
         @loan_product = LoansModule::LoanProductRegistration.new(loan_product_params)
         @loan_product.register!
         respond_modal_with @loan_product,
-          location: loans_module_loan_products_url
+          location: management_module_settings_cooperative_products_url
       end
 
       private
       def loan_product_params
-        params.require(:loans_module_loan_product_registration).
-        permit(:name,
+        params.require(:loans_module_loan_product_registration).permit(
+        :name,
         :description,
         :maximum_loanable_amount,
         :loans_receivable_current_account_id,

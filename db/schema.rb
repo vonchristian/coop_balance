@@ -1114,13 +1114,8 @@ ActiveRecord::Schema.define(version: 2018_11_07_211541) do
     t.string "account_number"
     t.datetime "date_opened"
     t.string "account_owner_name"
-<<<<<<< HEAD
-    t.datetime "created_at", default: "2018-11-07 11:18:55", null: false
-    t.datetime "updated_at", default: "2018-11-07 11:18:55", null: false
-=======
-    t.datetime "created_at", default: "2018-10-29 07:23:23", null: false
-    t.datetime "updated_at", default: "2018-10-29 07:23:23", null: false
->>>>>>> bd1a45f8e7a1c1a0dd2607cbfa9ffc053ad60aca
+    t.datetime "created_at", default: "2018-11-09 08:12:49", null: false
+    t.datetime "updated_at", default: "2018-11-09 08:12:49", null: false
     t.integer "status"
     t.uuid "office_id"
     t.string "subscriber_type"

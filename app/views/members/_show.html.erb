@@ -4,7 +4,7 @@
     <div class="card">
       <div class="card-header">
         <div class="profile-wrapper">
-          <% if @member.avatar.attached? %>
+          <% if @member.avatar.present? %>
             <%= image_tag(@member.avatar.variant(resize: "150x150"), class: "img-rounded mx-auto d-block") %>
           <% else %>
             <%= image_tag("default.png", width: '150', height: '150', class: 'img-rounded mx-auto d-block') %>

@@ -7,7 +7,7 @@
 <%= simple_form_for [@loan_product, @charge], html: { autocomplete: "off", data: { modal: true } }, remote: request.xhr?, url: :management_module_settings_loan_product_charges do |f| %>
   <div class="modal-body">
     <%= f.error_notification %>
-    <%= f.input :charge_type, collection: LoansModule::LoanProducts::LoanProductCharge.charge_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons, input_html: { checked: LoansModule::LoanProducts::LoanProductCharge.charge_types.first } %>
+    <%= f.input :charge_type, collection: LoansModule::LoanProducts::LoanProductCharge.charge_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons, checked: LoansModule::LoanProducts::LoanProductCharge.charge_types.first %>
     <%= f.input :name %>
     <%= f.input :rate %>
     <%= f.input :amount %>

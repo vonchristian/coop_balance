@@ -1,13 +1,48 @@
-<%= link_to 'Sign in', new_user_session_path, class: "btn btn-primary" %>
-<h1>Coop Catalyst </h1>
-<p> Transform the way you manage your cooperative. Integrate your services in one platform
-so that managing your cooperative is simpler, easier, and more transparent.</p>
-<%= link_to 'Request for Demo', class: 'btn btn-primary' %>
-
-Features
-Loans Management
-Members Equities Management
-Consumer Services Management
-Administrative Tasks
-CDA Compliance
-Contact Us
+<%= render "home/shared/navbar" %>
+<div class="container">
+	<br>
+	<br>
+	<br>
+	<div class="row">
+		<div class="col-md-6">
+			<h1>Coop Catalyst </h1>
+			<br>
+			<h5 class="text-justify"> Transform the way you manage your cooperative. Integrate your services in one platform so that managing your cooperative is simpler, easier, and more transparent.</h5>
+			<%= link_to 'Request for Demo', class: 'btn btn-primary' %>
+		</div>
+		<div class="col-md-6">
+		</div>
+	</div>
+	<hr>
+	<div class="row">
+		<div class="col-md-12">
+			<h4>Features</h4>
+			<br>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="row justify-content-end">
+						<div class="col-md-11">
+							<ul>
+								<li><h4 class="card-title">Loans Management</h4><br></li>
+								<li><h4 class="card-title">Members Equities Management</h4><br></li>
+								<li><h4 class="card-title">Consumer Services Management</h4><br></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="row justify-content-end">
+						<div class="col-md-11">
+							<ul>
+								<li><h4 class="card-title">Administrative Tasks</h4><br></li>
+								<li><h4 class="card-title">CDA Compliance</h4><br></li>
+								<li><h4 class="card-title">Contact Us</h4><br></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<%= render "home/shared/footer" %>

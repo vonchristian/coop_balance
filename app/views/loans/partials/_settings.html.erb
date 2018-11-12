@@ -36,7 +36,7 @@
         <h4 class="card-title">Loan Terms Details
           <span class="badge bg-danger"><%= @loan.terms.count %></span>
         </h4>
-        <p class="text-muted"> Create new  loan terms </p>
+        <p class="text-muted"> Create new loan terms </p>
       </div>
       <div class="col-md-3">
         <%= link_to 'Extend Term', new_loans_module_loan_term_path(@loan), class: "btn btn-sm btn-outline-danger float-right", data: {modal: true} %>

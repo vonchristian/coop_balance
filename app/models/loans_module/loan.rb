@@ -32,7 +32,8 @@ module LoansModule
                                         as: :commercial_document,
                                         dependent: :destroy
 
-    has_many :voucher_amounts,          class_name: "Vouchers::VoucherAmount", as: :commercial_document # for adding amounts on voucher
+    has_many :voucher_amounts,          class_name: "Vouchers::VoucherAmount", as: :commercial_document, 
+                                        dependent: :destroy # for adding amounts on voucher
 
     has_many :amortization_schedules,   dependent: :destroy
     has_many :amounts, as: :commercial_document, class_name: "AccountingModule::Amount"
