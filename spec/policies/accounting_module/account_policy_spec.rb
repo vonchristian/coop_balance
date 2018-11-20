@@ -10,6 +10,8 @@ module AccountingModule
 
       it { is_expected.to permit_action(:new) }
       it { is_expected.to permit_action(:create) }
+      it { is_expected.to permit_action(:edit) }
+      it { is_expected.to permit_action(:update) }
     end
 
     context 'sales clerk' do
@@ -17,6 +19,16 @@ module AccountingModule
 
       it { is_expected.to_not permit_action(:new) }
       it { is_expected.to_not permit_action(:create) }
+      it { is_expected.to_not permit_action(:edit) }
+      it { is_expected.to_not permit_action(:update) }
+    end
+    context 'loans officer' do
+      let(:user) { create(:user, role: 'sales_clerk') }
+
+      it { is_expected.to_not permit_action(:new) }
+      it { is_expected.to_not permit_action(:create) }
+      it { is_expected.to_not permit_action(:edit) }
+      it { is_expected.to_not permit_action(:update) }
     end
   end
 end

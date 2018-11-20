@@ -19,8 +19,7 @@
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
 
-                      <%= link_to "Delete Entry", accounting_module_entry_path(@entry), method: :delete, data: { confirm: "Are you sure you want to delete this entry?"}, class: "dropdown-item" %>
-                      <% if !@entry.cancelled? %>
+                      <% if policy([:accounting_module, :entries, :cancellation]).new? %>
                         <%= link_to 'Cancel Entry', new_accounting_module_entry_cancellation_path(@entry), class: "dropdown-item", data: { confirm: "Are you sure you want to cancel this entry?"} %>
                       <% end %>
                       <%= link_to "Edit Entry", edit_accounting_module_entry_path(@entry), class: "dropdown-item" %>

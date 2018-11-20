@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :voucher do
-    number "MyString"
+    number { SecureRandom.uuid }
     association :preparer, factory: :user
     association :disburser, factory: :user
     account_number { SecureRandom.uuid }

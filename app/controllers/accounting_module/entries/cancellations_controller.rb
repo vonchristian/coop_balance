@@ -4,10 +4,13 @@ module AccountingModule
       def new
         @entry = current_cooperative.entries.find(params[:entry_id])
         @cancellation = AccountingModule::Entries::CancellationProcessing.new
+        authorize [:accounting_module, :entries, :cancellation]
       end
+
       def create
         @entry = current_cooperative.entries.find(params[:entry_id])
         @cancellation = AccountingModule::Entries::CancellationProcessing.new(cancellation_params)
+        authorize [:accounting_module, :entries, :cancellation]
         if @cancellation.valid?
           @cancellation.process!
           redirect_to accounting_module_entry_url(@entry), notice: "Entry cancelled successfully."
