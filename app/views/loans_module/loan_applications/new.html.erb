@@ -4,11 +4,15 @@
   <div class="col-md-6">
     <div class="card">
       <div class="card-header">
+        <h4 class="card-title">Loan Application</h4>
+      </div>
+      <div class="card-body">
         <center>
           <%= image_tag(@borrower.avatar.variant(resize: '60x60'), class: "img-circle") if @borrower.avatar.attached? %><br>
           <h3 class="card-title"> <%= @borrower.name %> </h3>
         </center>
       </div>
+      <hr class="no-margin">
       <div class="card-body">
         <%= simple_form_for @loan_application, url: :loans_module_loan_applications, html: { autocomplete: 'off' } do |f| %>
           <%= f.error_notification %>

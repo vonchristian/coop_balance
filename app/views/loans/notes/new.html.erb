@@ -4,7 +4,7 @@
   </h4>
   <button type="button" class="close float-right" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 </div>
-<%= simple_form_for [@loan, @note], url: :loan_notes do |f| %>
+<%= simple_form_for [@loan, @note], html: { autocomplete: "off", data: { modal: true } }, remote: request.xhr?, url: :loan_notes do |f| %>
 	<div class="modal-body">
     <%= f.input :title %>
     <%= f.input :content, as: :text %>
