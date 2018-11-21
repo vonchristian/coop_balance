@@ -4,6 +4,7 @@ class User < ApplicationRecord
   pg_search_scope :text_search, :against => [:first_name, :last_name]
   multisearchable against: [:first_name, :last_name]
   LOAN_APPROVERS = ["Manager", "Loan Officer"]
+  TREASURY_PERSONNELS = ["Teller", "Treasurer"]
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :lockable,
@@ -89,6 +90,7 @@ class User < ApplicationRecord
     end
     cash_accounts_array.present?
   end
+
   def total_savings
     savings.sum(&:balance)
   end

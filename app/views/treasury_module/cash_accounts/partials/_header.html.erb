@@ -7,11 +7,15 @@
 
         <h3 class="card-title"><%= number_to_currency cash_account.balance %></h3>
         <br>
-        <%= link_to new_treasury_module_cash_account_cash_receipt_line_item_path(cash_account) do %>
-        <span class="btn btn-success"><i class="fa fa-arrow-down"></i> Receive </span>
+        <% if policy([:treasury_module, :cash_receipt]).new? %>
+          <%= link_to new_treasury_module_cash_account_cash_receipt_line_item_path(cash_account) do %>
+          <span class="btn btn-success"><i class="fa fa-arrow-down"></i> Receive </span>
+          <% end %>
         <% end %>
-        <%= link_to new_treasury_module_cash_account_cash_disbursement_line_item_path(cash_account) do %>
-        <span class="btn btn-danger"><i class="fa fa-arrow-up"></i> Disburse </span>
+        <% if policy([:treasury_module, :cash_disbursement]).new? %>
+          <%= link_to new_treasury_module_cash_account_cash_disbursement_line_item_path(cash_account) do %>
+          <span class="btn btn-danger"><i class="fa fa-arrow-up"></i> Disburse </span>
+          <% end %>
         <% end %>
       </div>
       <div class="col-md-9">

@@ -1,10 +1,14 @@
 module TreasuryModule
   class CashAccountsController < ApplicationController
     def index
-      @cash_accounts = current_user.cash_accounts
+      if current_user.general_manager?
+        @cash_accounts = current_cooperative.cash_accounts
+      else
+        @cash_accounts = current_user.cash_accounts
+      end
     end
     def show
-      @cash_account = current_user.cash_accounts.find(params[:id])
+      @cash_account = current_cooperative.cash_accounts.find(params[:id])
     end
   end
 end

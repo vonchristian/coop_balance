@@ -5,10 +5,12 @@ module TreasuryModule
         @cash_account = current_cooperative.accounts.find(params[:cash_account_id])
         @disbursement_line_item = Vouchers::VoucherAmountProcessing.new
         @disbursement = Vouchers::VoucherProcessing.new
+        authorize [:treasury_module, :cash_disbursement]
       end
       def create
         @cash_account = current_cooperative.accounts.find(params[:cash_account_id])
         @disbursement_line_item = Vouchers::VoucherAmountProcessing.new(disbursement_params)
+        authorize [:treasury_module, :cash_disbursement]
         if @disbursement_line_item.valid?
           @disbursement_line_item.save
           redirect_to new_treasury_module_cash_account_cash_disbursement_line_item_url(@cash_account), notice: "Added successfully"

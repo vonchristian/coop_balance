@@ -194,7 +194,9 @@
                   <b>Cancellation Description</b>
                 </div>
                 <div class="col-md-6">
-                  <%= @entry.cancellation_description %>
+                  <span class="text-danger">
+                    <%= @entry.cancellation_description %>
+                  </span>
                 </div>
               </div>
             <% end %>

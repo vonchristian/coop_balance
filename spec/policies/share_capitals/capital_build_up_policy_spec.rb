@@ -1,11 +1,18 @@
 require 'rails_helper'
 
-module SavingsAccounts
-  describe DepositPolicy do
-    subject { SavingsAccounts::DepositPolicy.new(user, record) }
+module ShareCapitals
+  describe CapitalBuildUpPolicy do
+    subject { ShareCapitals::CapitalBuildUpPolicy.new(user, record) }
     let(:record) { create(:saving) }
     context 'manager' do
       let(:user) { create(:user, role: 'general_manager') }
+
+      it { is_expected.to_not permit_action(:new)}
+      it { is_expected.to_not permit_action(:create)}
+    end
+
+    context 'loan_officer' do
+      let(:user) { create(:user, role: 'loan_officer') }
 
       it { is_expected.to_not permit_action(:new)}
       it { is_expected.to_not permit_action(:create)}
