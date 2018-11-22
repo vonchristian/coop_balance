@@ -4,6 +4,9 @@ class TimeDepositApplicationProcessing
   :cash_account_id, :reference_number, :date, :amount, :description, :term,
   :employee_id, :voucher_account_number, :account_number
 
+  validates :reference_number, :time_deposit_product_id, :amount, :date, :description, :term, :cash_account_id, presence: true
+  validates :amount, :term, numericality: true
+
   def process!
     ActiveRecord::Base.transaction do
       create_time_deposit_application
@@ -26,7 +29,8 @@ class TimeDepositApplicationProcessing
       term: term,
       date_deposited: date,
       account_number: account_number,
-      amount: amount
+      amount: amount,
+      cooperative: find_employee.cooperative
     )
     create_voucher(time_deposit_application)
   end

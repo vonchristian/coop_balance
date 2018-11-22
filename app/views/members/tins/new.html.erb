@@ -11,7 +11,7 @@
 <%= simple_form_for [@member, @tin], url: :member_tins, html: { autocomplete: "off"} do |f| %>
 <%= f.error_notification %>
   <div class="modal-body">
-    <%= f.input :number, label: 'TIN Number' %>
+    <%= f.input :number, label: 'TIN Number', input_html: { value: @member.current_tin_number } %>
   </div>
   <div class="modal-footer">
     <%= f.submit "Update TIN", class: "btn btn-primary float-right" %>

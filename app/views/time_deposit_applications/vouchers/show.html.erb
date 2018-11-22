@@ -11,9 +11,9 @@
           </div>
         </div>
       </div>
+      <%= render 'vouchers/partials/alert_message' %>
       <%= render 'vouchers/partials/body', voucher: @voucher %>
       <% if !@voucher.disbursed?%>
-        <%= render 'vouchers/partials/alert_message' %>
         <div class="card-body">
           <%= link_to "Confirm", time_deposit_application_voucher_confirmations_path(voucher_id: @voucher.id, time_deposit_application_id: @time_deposit_application.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
           <%= link_to "Cancel", time_deposit_application_voucher_path(id: @voucher.id, time_deposit_application_id: @time_deposit_application.id), method: :delete, class: "btn text-danger float-left" %>

@@ -22,8 +22,9 @@
   <!-- Right navbar links -->
   <ul class="navbar-nav ml-auto">
     <li class="nav-item dropdown">
+
       <a class="nav-link" data-toggle="dropdown" href="#">
-        <i class="fa fa-user"></i>
+         <%= image_tag(current_user.avatar, height: 35, width: 35, class: "img-circle") %>
       </a>
 
       <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">

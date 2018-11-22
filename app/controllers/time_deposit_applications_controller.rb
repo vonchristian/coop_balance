@@ -5,6 +5,7 @@ class TimeDepositApplicationsController < ApplicationController
   end
 
   def create
+    @depositor = params[:time_deposit_application_processing][:depositor_type].constantize.find(params[:time_deposit_application_processing][:depositor_id])
     @time_deposit_application = TimeDepositApplicationProcessing.new(time_deposit_application_params)
     if @time_deposit_application.valid?
       @time_deposit_application.process!

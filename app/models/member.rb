@@ -1,6 +1,8 @@
 class Member < ApplicationRecord
   include PgSearch
-  include Addressable
+  include CurrentAddress
+  include CurrentTin
+
   pg_search_scope :text_search, :against => [ :first_name, :middle_name, :last_name]
   multisearchable against: [:first_name, :last_name, :middle_name]
   enum sex: [:male, :female, :other]
@@ -11,7 +13,6 @@ class Member < ApplicationRecord
 
   has_one :member_account #for devise login
   belongs_to :office,                 class_name: "CoopConfigurationsModule::Office"
-  has_many :tins,                     as: :tinable
   has_many :entries,                  class_name: "AccountingModule::Entry",
                                       as: :commercial_document
   has_many :voucher_amounts,          class_name: "Vouchers::VoucherAmount",
@@ -49,10 +50,8 @@ class Member < ApplicationRecord
 
   validates :last_name, :first_name, presence: true, on: :update
 
-  delegate :number, to: :tin, prefix: true, allow_nil: true
   delegate :name, to: :office, prefix: true, allow_nil: true
   delegate :number, to: :current_contact, prefix: true, allow_nil: true
-  delegate :number, to: :current_tin, prefix: true, allow_nil: true
   delegate :details, :complete_address, :barangay_name, :street_name, to: :current_address, prefix: true, allow_nil: true
   delegate :name, to: :current_organization, prefix: true, allow_nil: true
   before_save :update_birth_date_fields
@@ -70,7 +69,7 @@ class Member < ApplicationRecord
   end
 
   def self.has_no_tin
-    joins(:tins).where('tins.tinable_type')
+    joins(:tins).where('tins.tinable_type'=> 'Member')
   end
 
   def self.has_birth_month_on(args= {})
@@ -87,10 +86,6 @@ class Member < ApplicationRecord
 
   def current_address
     addresses.current_address
-  end
-
-  def current_tin
-    tins.current
   end
 
   def name

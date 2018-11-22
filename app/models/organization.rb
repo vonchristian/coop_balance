@@ -1,5 +1,7 @@
 class Organization < ApplicationRecord
   include PgSearch
+  include CurrentTin
+
   pg_search_scope :text_search, against: [:name]
   has_one_attached :avatar
   belongs_to :cooperative

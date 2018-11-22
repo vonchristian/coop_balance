@@ -1,10 +1,13 @@
-module Members 
+module Members
   class TimeDepositPolicy < ApplicationPolicy
     def new?
-      user.teller? || user.treasurer?
+      can_receive_cash?
     end
     def create?
       new?
+    end
+    def can_receive_cash?
+      user.teller? || user.treasurer?
     end
   end
 end

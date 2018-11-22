@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  include CurrentAddress
+  include CurrentTin
   include PgSearch
   has_one_attached :avatar
   pg_search_scope :text_search, :against => [:first_name, :last_name]
@@ -25,8 +27,7 @@ class User < ApplicationRecord
               :sales_manager]
 
   belongs_to :store_front, optional: true
-  has_many :addresses,           as: :addressable, class_name: "Address"
-  has_one :tin,                       as: :tinable
+
   belongs_to :cooperative
   belongs_to :office,                 class_name: "CoopConfigurationsModule::Office"
   has_many :purchases,                class_name: "StoreFrontModule::Orders::SalesOrder", as: :commercial_document
@@ -35,7 +36,6 @@ class User < ApplicationRecord
   has_many :returned_sales_orders,    class_name: "StoreFrontModule::Orders::SalesReturnOrder",
                                       foreign_key: 'employee_id'
   has_many :loans,                    class_name: "LoansModule::Loan", as: :borrower
-  has_many :co_makered_loans,         class_name: "LoansModule::LoanCoMaker", as: :co_maker
   has_many :memberships,              as: :cooperator
   has_many :savings,                  class_name: "MembershipsModule::Saving", as: :depositor
   has_many :share_capitals,           class_name: "MembershipsModule::ShareCapital", as: :subscriber
@@ -56,19 +56,14 @@ class User < ApplicationRecord
   has_many :employee_cash_accounts,   class_name: "Employees::EmployeeCashAccount", foreign_key: 'employee_id'
   has_many :cash_accounts,            class_name: "AccountingModule::Account", through: :employee_cash_accounts, source: :cash_account
 
-  delegate :name, :address, :contact_number, :logo, to: :cooperative, prefix: true
+  delegate :name, :address, :contact_number, :abbreviated_name, :logo, to: :cooperative, prefix: true
   delegate :name, to: :office, prefix: true, allow_nil: true
-  delegate :abbreviated_name, :name, to: :cooperative, prefix: true
-  delegate :number, to: :tin, prefix: true, allow_nil: true
-  delegate :name, :abbreviated_name, to: :cooperative, prefix: true
 
-  delegate :complete_address, to: :current_address, prefix: true, allow_nil: true
+  delegate :name, :abbreviated_name, to: :cooperative, prefix: true
 
   before_save :set_default_image, on: :create
 
-  def current_address
-    addresses.current_address
-  end
+
 
   # before_save :set_default_image
   def self.has_birthdays_on(month)
@@ -101,13 +96,10 @@ class User < ApplicationRecord
     sales_orders.total(options)
   end
 
- def account_receivable_store_balance
-   AccountsReceivableStore.new.balance(self)
+  def account_receivable_store_balance
+    AccountsReceivableStore.new.balance(self)
   end
 
-  def cash_advance_total
-    AccountingModule::Account.find_by(name: "Advances to Officers, Employees and Members").debit_entries.where(commercial_document_id: self.id)
-  end
 
 
   def self.loan_approvers

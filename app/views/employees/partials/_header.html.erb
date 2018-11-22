@@ -3,7 +3,7 @@
     <div class="card-header">
       <div class="row justify-content-end">
         <div class="col-md-2">
-          <%= image_tag(employee.avatar.variant(resize: "55x55"), class: "img-circle float-right") if employee.avatar.attached? %>
+          <%= image_tag(employee.avatar, height: 50, width: 50, class: "img-circle float-right") if employee.avatar.attached? %>
         </div>
         <div class="col-md-9">
           <p class="text-purple min-margin-bottom"><b><%= employee.first_and_last_name %></b></p>
