@@ -2,8 +2,12 @@
   <div class="col-md-8 offset-md-2">
     <div class="card">
       <div class="card-header no-border">
+
         <h3 class="card-title"><i class="fa fa-info-circle"></i> Balance Transfer Transaction </h3>
-        <p class="text-muted"> Origin Account </p>
+        <br>
+        <%= render 'vouchers/partials/alert_message' %>
+
+        <h3 class="card-title"> Origin Account </h3>
         <div class="row">
           <div class="col-md-2 offset-md-1">
             <%= image_tag(@origin_share_capital.subscriber.avatar, height: 45, width: 45, class: "img-circle") %>
@@ -15,7 +19,7 @@
             <%= number_to_currency @origin_share_capital.paid_up_balance %>
           </div>
         </div>
-        <p class="text-muted"> Destination Account </p>
+        <h3 class="card-title"> Destination Account </h3>
         <div class="row min-margin">
           <div class="col-md-2 offset-md-1">
             <%= image_tag(@destination_share_capital.subscriber.avatar, height: 45, width: 45, class: "img-circle") %>
@@ -27,6 +31,7 @@
             <%= number_to_currency @destination_share_capital.paid_up_balance %>
           </div>
         </div>
+        <hr>
         <div class="row min-margin">
           <div class="col-md-4 offset-md-1">
             Amount

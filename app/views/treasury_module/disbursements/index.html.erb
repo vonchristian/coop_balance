@@ -3,7 +3,7 @@
   <div class="card-header">
     <div class="row">
       <div class="col-md-2">
-        <h3 class="card-title"> Disbursements </h3>
+        <h3 class="card-title"> Cash Disbursements </h3>
       </div>
       <div class="col-md-6">
         <%=form_tag treasury_module_disbursements_path, method: :get do %>
@@ -34,22 +34,7 @@
     </div>
   </div>
 </div>
-
-  <h3 class="card-title"> Cash Accounts </h3>
-  <br>
-  <% current_user.cash_accounts.each do |account| %>
-    <div class="col-md-4">
-      <div class="card">
-        <div class="card-body">
-          <%= link_to new_treasury_module_cash_account_cash_disbursement_line_item_path(account) do %>
-            <small><%= account.name.upcase %></small>
-            <h3 class="card-title"><%= number_to_currency account.balance %></h3>
-          <% end %>
-        </div>
-      </div>
-    </div>
-  <% end %>
-<h3 class="card-title"> Transactions</h3>
+<h3 class="card-title"> Transactions History</h3>
 <br>
 <% @cash_disbursements.each do |entry| %>
   <%= link_to accounting_module_entry_path(entry) do %>

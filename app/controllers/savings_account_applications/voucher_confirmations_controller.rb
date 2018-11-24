@@ -7,7 +7,7 @@ module SavingsAccountApplications
         SavingsAccounts::Opening.new(savings_account_application: @savings_account_application, employee: current_user, voucher: @voucher).process!
         Vouchers::EntryProcessing.new(voucher: @voucher, employee: current_user).process!
         @savings_account = current_cooperative.savings.find_by(account_number: @savings_account_application.account_number)
-        redirect_to savings_account_url(@savings_account), notice: "confirmed successfully."
+        redirect_to savings_account_url(@savings_account), notice: "Savings account opened successfully."
       end
     end
   end

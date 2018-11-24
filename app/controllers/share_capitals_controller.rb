@@ -15,7 +15,7 @@ class ShareCapitalsController < ApplicationController
   def show
     @employee = current_user
     @share_capital = current_cooperative.share_capitals.find(params[:id])
-    @entries = @share_capital.entries.paginate(page: params[:page], per_page: 25)
+    @entries = @share_capital.entries.sort_by(&:entry_date).reverse.paginate(page: params[:page], per_page: 25)
     respond_to do |format|
       format.html
       format.pdf do

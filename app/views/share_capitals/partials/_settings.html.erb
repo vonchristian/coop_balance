@@ -5,7 +5,11 @@
       <span class="text-muted">Merge share capital accounts that are duplicated. </span>
     </div>
     <div class="col-md-3">
-      <%= link_to "Merge Account", new_share_capital_merging_line_item_path(@share_capital), class: "btn btn-outline-danger" %>
+      <% if policy([:share_capitals, :account_merging]).new? %>
+        <%= link_to "Merge Account", new_share_capital_merging_line_item_path(@share_capital), class: "btn btn-outline-danger" %>
+      <% else %>
+         <span class="text-danger"> Only General Manager account can do this action. </span>
+      <% end %>
     </div>
   </div>
   <hr>
@@ -15,7 +19,11 @@
       <p class="text-muted"> Transfer balance to another share capital account </p>
     </div>
     <div class="col-md-3">
-	    <%= link_to "Balance Transfer", new_share_capital_balance_transfer_destination_account_path(@share_capital), class: "btn btn-outline-danger" %>
+      <% if policy([:share_capitals, :balance_transfer]).new? %>
+	      <%= link_to "Balance Transfer", new_share_capital_balance_transfer_destination_account_path(@share_capital), class: "btn btn-outline-danger" %>
+      <% else %>
+        <span class="text-danger"> Only Accountant / Bookkeeper account can do this action. </span>
+      <% end %>
     </div>
   </div>
 	<hr>

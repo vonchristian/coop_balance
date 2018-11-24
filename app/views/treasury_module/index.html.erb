@@ -4,6 +4,11 @@
     <div class="card">
       <div class="card-header">
         <h3 class="card-title"> Transactions Summary </h3>
+        <ul class="nav nav-tabs">
+          <li class="nav-item"><%= link_to 'Summary', treasury_module_index_path, class: "nav-link #{ 'active' if current_page?(treasury_module_index_path)}" %></li>
+           <li class="nav-item"><%= link_to 'Cash Receipts', treasury_module_cash_receipts_path, class: "nav-link #{ 'active' if current_page?(treasury_module_cash_receipts_path)}" %></li>
+           <li class="nav-item"><%= link_to 'Cash Disbursements', treasury_module_disbursements_path, class: "nav-link #{ 'active' if current_page?(treasury_module_disbursements_path)}" %></li>
+        </ul>
       </div>
       <div class="card-body">
         <div class="row">

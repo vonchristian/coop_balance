@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-md-1">
         <% if savings_account.present? %>
-          <%=image_tag(savings_account.avatar.variant(resize: "45x45"), class: "img-circle") if savings_account.avatar.attached? %>
+          <%=image_tag(savings_account.avatar, height: 45, width: 45, class: "img-circle") if savings_account.avatar.attached? %>
         <% end %>
       </div>
       <div class="col-md-4">

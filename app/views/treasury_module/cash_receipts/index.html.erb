@@ -34,23 +34,8 @@
         </div>
       </div>
     </div>
-      <h3 class="card-title">Cash Accounts </h3>
-      <br>
-<div class="row">
-  <% current_user.cash_accounts.each do |account| %>
-    <div class="col-md-4">
-      <div class="card">
-        <div class="card-body">
-          <%= link_to new_treasury_module_cash_account_cash_receipt_line_item_path(account) do %>
-          <small><%= account.name.upcase %></small>
-            <h3 class="card-title"><%= number_to_currency account.balance %></h3>
-          <% end %>
-        </div>
-      </div>
-    </div>
-  <% end %>
-</div>
-<h3 class="card-title"> Transactions </h3>
+
+<h3 class="card-title"> Transactions History </h3>
 <br class="no-margin">
         <% @cash_receipts.each do |entry| %>
           <% cache(entry) do %>

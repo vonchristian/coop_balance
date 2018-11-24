@@ -7,7 +7,7 @@ module ShareCapitalApplications
         ShareCapitals::Opening.new(share_capital_application: @share_capital_application, employee: current_user, voucher: @voucher).process!
         @share_capital = current_cooperative.share_capitals.find_by(account_number: @share_capital_application.account_number)
         Vouchers::EntryProcessing.new(updateable: @share_capital, voucher: @voucher, employee: current_user).process!
-        redirect_to share_capital_url(id: @share_capital.id), notice: "Share capital account successfully."
+        redirect_to share_capital_url(id: @share_capital.id), notice: "Share capital account opened successfully."
       end
     end
   end
