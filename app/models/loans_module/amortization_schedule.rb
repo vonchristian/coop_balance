@@ -25,8 +25,6 @@ module LoansModule
     def self.create_amort_schedule_for(loan_application)
       create_first_amort_schedule(loan_application)
       create_succeeding_amort_schedule(loan_application)
-      update_int_amount(loan_application)
-
     end
     def self.create_first_amort_schedule(loan_application)
       loan_application.amortization_schedules.create!(
@@ -49,14 +47,15 @@ module LoansModule
       end
     end
     def self.update_int_amount(loan_application)
-      if  loan_application.lumpsum?
-        loan_application.amortization_schedules.each do |schedule|
-          schedule.update_attributes!(interest: loan_application.interest_balance)
-        end
+      loan_application.amortization_schedules.each do |schedule|
+        schedule.update_attributes!(interest: interest_amount_update(loan_application))
+      end
+    end
+    def self.interest_amount_update(loan_application)
+      if loan_application.lumpsum?
+        loan_application.interest_balance
       else
-        loan_application.amortization_schedules.each do |schedule|
-          schedule.update_attributes!(interest: loan_application.interest_balance / loan_application.term)
-        end
+        loan_application.interest_balance / loan_application.term
       end
     end
     def self.interest_for_first_year(loan_application)

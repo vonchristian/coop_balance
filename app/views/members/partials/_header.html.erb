@@ -6,7 +6,7 @@
           <%= image_tag(member.avatar, height: 45, width: 45, class: "img-circle") if member.avatar.attached? %>
         </div>
         <div class="col-md-11">
-          <b> <%= member.full_name %></b><br>
+          <b><%= member.full_name %></b><br>
           <div class="row">
             <div class="col-md-3">
               <small class="text-muted"><i class="fa fa-map-marker"></i>&nbsp;  <%= member.current_address_complete_address %></small>

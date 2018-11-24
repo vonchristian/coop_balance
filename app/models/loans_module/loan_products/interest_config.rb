@@ -14,8 +14,8 @@ module LoansModule
         all.order(created_at: :desc).first
       end
       def self.interest_revenue_accounts
-        ids = pluck(:interest_revenue_account_id)
-        AccountingModule::Account.where(id: ids)
+        accounts = pluck(:interest_revenue_account_id)
+        AccountingModule::Account.where(id: accounts)
       end
 
       def monthly_rate
@@ -23,8 +23,8 @@ module LoansModule
       end
 
       def interest_balance(loan_application)
-        total_interest(loan_application)
-        # prededucted_interest_amount_for(loan_application)
+       total_interest(loan_application).to_f
+       loan_application.voucher_amounts.for_account(account: interest_revenue_account).sum(&:amount).to_f -
       end
 
       def create_charges_for(loan_application)
@@ -49,25 +49,19 @@ module LoansModule
           third_year_interest(loan_application)
         end
       end
-
       def first_year_interest(loan_application)
-        loan_application.loan_amount * monthly_rate * loan_application.term
+        term = loan_application.term
+        loan_application.amortization_schedules.take(term).sum(&:principal) * rate
       end
 
       def second_year_interest(loan_application)
-        if loan_application.term_is_within_two_years?
-          loan_application.principal_balance(
-            to_date: loan_application.amortization_schedules.order(date: :desc)[12].date,
-            from_date:  loan_application.amortization_schedules.order(date: :desc)[23].date) * rate
-        end
+        term = loan_application.term - 12
+        loan_application.amortization_schedules.take(term).sum(&:principal) * rate
       end
 
       def third_year_interest(loan_application)
-        if loan_application.amortization_schedules.count > 23
-          loan_application.principal_balance(
-            to_date: loan_application.amortization_schedules.order(date: :desc)[23].date,
-            from_date:  loan_application.amortization_schedules.order(date: :desc)[35].date) * rate
-        end
+        term = loan_application.term - 24
+        loan_application.amortization_schedules.take(term).sum(&:principal) * rate
       end
 
       def prededucted_interest_amount_for(loan_application)

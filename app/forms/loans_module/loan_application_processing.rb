@@ -49,6 +49,7 @@ module LoansModule
 
       create_amortization_schedule(loan_application)
       create_charges(loan_application)
+      update_amortization_schedule(loan_application)
     end
     def find_borrower
       Borrower.find(borrower_id)
@@ -71,6 +72,9 @@ module LoansModule
     end
     def find_loan_product
       LoansModule::LoanProduct.find(loan_product_id)
+    end
+    def update_amortization_schedule(loan_application)
+      LoansModule::AmortizationSchedule.update_int_amount(loan_application)
     end
   end
 end

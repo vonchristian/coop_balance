@@ -47,6 +47,15 @@ module LoansModule
       loan_amount.amount - LoansModule::AmortizationSchedule.principal_for(schedule, self)
     end
 
+    def voucher_amounts_excluding_loan_amount_and_net_proceed
+      accounts = []
+      Employees::EmployeeCashAccount.cash_accounts.each do |account|
+        accounts << account
+      end
+      accounts << loan_product_loans_receivable_current_account
+      voucher_amounts.excluding_account(account: accounts)
+    end
+
     def total_interest
       current_interest_config.total_interest(self)
     end
