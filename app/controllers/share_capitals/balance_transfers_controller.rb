@@ -3,8 +3,7 @@ module ShareCapitals
     def new
       @share_capital             = current_cooperative.share_capitals.find(params[:share_capital_id])
       @destination_share_capital = current_cooperative.share_capitals.find(params[:destination_share_capital_id])
-      @balance_transfer          = ShareCapitals::BalanceTransferProcessing.new
-    end
+      @balance_transfer          = ShareCapitals::BalanceTransferProcessing.new    end
     def create
       @share_capital             = current_cooperative.share_capitals.find(params[:share_capital_id])
       @destination_share_capital = current_cooperative.share_capitals.find(params[:share_capitals_balance_transfer_processing][:destination_id])
