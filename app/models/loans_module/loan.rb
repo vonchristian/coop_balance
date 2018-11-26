@@ -247,15 +247,6 @@ module LoansModule
       loan_charge_payment_schedules
     end
 
-
-    def interest_on_loan_charge
-      voucher_amounts.where(account: loan_product_interest_revenue_account).try(:amount)
-    end
-
-    def interest_on_loan_balance
-      interest_on_loan_charge.balance
-    end
-
     def name
       borrower_name
     end
@@ -269,7 +260,7 @@ module LoansModule
         loan_amount - voucher_amounts.sum(&:adjusted_amount)
       else
         amounts = []
-        Employees::EmployeeCashAccount.cash_accounts.each do |account|
+        cooperative.cash_accounts.each do |account|
           accounting_entry.credit_amounts.where(account: account).each do |amount|
             amounts << amount
           end
@@ -281,17 +272,6 @@ module LoansModule
     def balance_for(schedule)
       loan_amount - LoansModule::AmortizationSchedule.principal_for(schedule, self)
     end
-
-    def principal_balance_for(schedule) #used to compute interest
-      if schedule == self.amortization_schedules.order(date: :asc).first
-        loan_amount
-      else
-        loan_amount - amortization_schedules.principal_for(schedule.previous_schedule, self)
-      end
-    end
-
-
-
 
     def payments_total
       principal_payments +

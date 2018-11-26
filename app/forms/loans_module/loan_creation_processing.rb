@@ -49,7 +49,7 @@ module LoansModule
 
     def create_loan_interests(loan)
       loan.loan_interests.create!(
-        amount: loan_application.total_interest,
+        amount: loan_application.interest_balance,
         description: "Interest balance",
         computed_by: employee)
     end

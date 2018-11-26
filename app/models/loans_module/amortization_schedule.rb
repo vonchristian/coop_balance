@@ -25,6 +25,7 @@ module LoansModule
     def self.create_amort_schedule_for(loan_application)
       create_first_amort_schedule(loan_application)
       create_succeeding_amort_schedule(loan_application)
+      update_amortization_schedule(loan_application)
     end
     def self.create_first_amort_schedule(loan_application)
       loan_application.amortization_schedules.create!(
@@ -46,11 +47,7 @@ module LoansModule
         end
       end
     end
-    def self.update_int_amount(loan_application)
-      loan_application.amortization_schedules.each do |schedule|
-        schedule.update_attributes!(interest: interest_amount_update(loan_application))
-      end
-    end
+
     def self.interest_amount_update(loan_application)
       if loan_application.lumpsum?
         loan_application.interest_balance
@@ -59,7 +56,7 @@ module LoansModule
       end
     end
     def self.interest_for_first_year(loan_application)
-      loan_application.loan_amount.amount * loan_application.annual_interest_rate
+      loan_application.first_year_interest
     end
     ###########################
     def color
@@ -83,11 +80,11 @@ module LoansModule
       end
     end
 
-    def previous_schedule
-      from_date = loan.amortization_schedules.order(date: :asc).first.date
+    def previous_schedule(loan_application)
+      from_date = loan_application.amortization_schedules.order(date: :asc).first.date
       to_date = self.date
-      count = loan.amortization_schedules.select { |a| (from_date.beginning_of_day..to_date.end_of_day).cover?(a.date) }.count
-      loan.amortization_schedules.order(date: :asc).take(count-1).last
+      count = loan_application.amortization_schedules.select { |a| (from_date.beginning_of_day..to_date.end_of_day).cover?(a.date) }.count
+      loan_application.amortization_schedules.order(date: :asc).take(count-1).last
     end
 
     def default_debit_account
@@ -133,7 +130,7 @@ module LoansModule
     end
 
     def interest_computation
-      if has_prededucted_interest?
+      if prededucted_interest?
         0
       else
         interest
@@ -145,27 +142,22 @@ module LoansModule
        interest_computation
     end
 
-    def self.update_amortization_schedule(loan)
-      if loan.amortization_schedules.present?
-        loan.amortization_schedules.order(date: :asc).first(loan.number_of_interest_payments_prededucted).each do |schedule|
-          schedule.has_prededucted_interest = true
-          schedule.interest = interest_computation(schedule, loan)
-          schedule.debit_account_id = schedule.default_debit_account
-          schedule.debit_account_id = schedule.default_credit_account
-          schedule.save
-        end
-        loan.amortization_schedules.where(prededucted_interest: false).order(date: :asc).each do |schedule|
-          schedule.interest = interest_computation(schedule, loan)
-          schedule.save
+    def self.update_amortization_schedule(loan_application)
+      loan_application.amortization_schedules.each do |schedule|
+        schedule.update_attributes(interest: interest_computation(schedule, loan_application))
+      end
+      if loan_application.current_interest_config.prededucted? && loan_application.current_interest_config.number_of_payment?
+        loan_application.amortization_schedules.order(date: :asc).first(loan_application.current_interest_config_prededucted_number_of_payments).each do |schedule|
+          schedule.update_attributes!(prededucted_interest: true)
         end
       end
     end
 
-    def self.interest_computation(schedule, loan)
-      if loan.cooperative.interest_amortization_config.straight_balance?
-        straight_balance_interest_computation(schedule, loan)
-      elsif loan.cooperative.interest_amortization_config.annually?
-        annual_interest_computation(loan)
+    def self.interest_computation(schedule, loan_application)
+      if loan_application.current_interest_config_straight_balance?
+        straight_balance_interest_computation(schedule, loan_application)
+      elsif loan_application.current_interest_config_annually?
+        annual_interest_computation(loan_application)
       else
         0
       end
@@ -180,17 +172,12 @@ module LoansModule
         (loan.principal_balance_for(schedule) * loan.loan_product_monthly_interest_rate)
       end
     end
-    def self.annual_interest_computation(loan)
-      if loan.term < 36
-        0
-        # loan.principal_balance_for(loan.amortization_schedules.order(date: :desc)[12]) * loan.loan_product_annual_rate
-      #   loan.principal_balance_for(schedule) * loan.loan_product_annual_rate +
-      #   loan.principal_balance_for(schedule) * loan.loan_product_annual_rate
-      # # elsif loan.term < 24
-      #   loan.principal_balance_for(schedule) * loan.loan_product_annual_rate +
-      #   loan.principal_balance_for(schedule) * loan.loan_product_annual_rate
-      # elsif loan.term < 12
-      #   loan.principal_balance_for(schedule) * loan.loan_product_annual_rate
+
+    def self.annual_interest_computation(loan_application)
+      if loan_application.lumpsum?
+        loan_application.interest_balance
+      else
+        loan_application.interest_balance / loan_application.term
       end
     end
 

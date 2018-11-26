@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_26_061348) do
+ActiveRecord::Schema.define(version: 2018_11_26_124744) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -101,7 +101,6 @@ ActiveRecord::Schema.define(version: 2018_11_26_061348) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "schedule_type"
-    t.boolean "has_prededucted_interest"
     t.boolean "prededucted_interest", default: false
     t.uuid "debit_account_id"
     t.uuid "credit_account_id"
@@ -281,9 +280,7 @@ ActiveRecord::Schema.define(version: 2018_11_26_061348) do
     t.string "contact_number"
     t.string "address"
     t.string "abbreviated_name"
-    t.uuid "interest_amortization_config_id"
     t.index ["abbreviated_name"], name: "index_cooperatives_on_abbreviated_name", unique: true
-    t.index ["interest_amortization_config_id"], name: "index_cooperatives_on_interest_amortization_config_id"
   end
 
   create_table "cooperators", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -437,6 +434,10 @@ ActiveRecord::Schema.define(version: 2018_11_26_061348) do
     t.integer "calculation_type"
     t.integer "prededuction_type"
     t.decimal "prededucted_rate"
+    t.integer "amortization_type", default: 0
+    t.integer "prededucted_number_of_payments"
+    t.decimal "prededucted_amount"
+    t.index ["amortization_type"], name: "index_interest_configs_on_amortization_type"
     t.index ["calculation_type"], name: "index_interest_configs_on_calculation_type"
     t.index ["cooperative_id"], name: "index_interest_configs_on_cooperative_id"
     t.index ["interest_revenue_account_id"], name: "index_interest_configs_on_interest_revenue_account_id"
@@ -1420,7 +1421,6 @@ ActiveRecord::Schema.define(version: 2018_11_26_061348) do
   add_foreign_key "beneficiaries", "members"
   add_foreign_key "carts", "users"
   add_foreign_key "cooperative_services", "cooperatives"
-  add_foreign_key "cooperatives", "interest_amortization_configs"
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "credit_account_id"
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "debit_account_id"
   add_foreign_key "employee_cash_accounts", "accounts", column: "cash_account_id"

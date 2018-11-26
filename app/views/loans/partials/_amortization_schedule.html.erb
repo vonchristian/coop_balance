@@ -2,11 +2,11 @@
   <div class="card-header">
     <div class="row">
       <div class="col-md-9">
-        <h4 class="card-title"> AMORTIZATION SCHEDULE </h4>
+        <h4 class="card-title"> Amortization Schedules </h4>
       </div>
       <div class="col-md-3">
         <% if !@loan.forwarded_loan? %>
-          <%=link_to 'View Schedule(PDF)', loans_module_loan_amortization_schedules_path(@loan, format: 'pdf'), class: 'btn btn-outline-success' %>
+          <%=link_to 'View Schedule(PDF)', loans_module_loan_amortization_schedules_path(@loan, format: 'pdf'), class: 'btn btn-outline-default' %>
         <% end %>
       </div>
     </div>
@@ -37,8 +37,10 @@
                 </td>
                 <td><%= number_to_currency schedule.principal %></td>
                 <td>
-                  <% if schedule.has_prededucted_interest? %>
-                    <span class="label bg-red"> PREDEDUCTED </span>
+                  <% if schedule.prededucted_interest? %>
+                    <%= number_to_currency schedule.interest %>
+
+                    <span class="badge bg-danger"> Prededucted</span>
                   <% else %>
                     <%= number_to_currency schedule.interest %>
                   <% end %> </td>

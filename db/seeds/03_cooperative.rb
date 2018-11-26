@@ -67,7 +67,7 @@ regular_loan_product.interest_configs.create(
 )
 
 regular_loan_product.penalty_configs.create(
-  rate: 0.03,
+  rate: 0.01,
   penalty_revenue_account: penalty_revenue_account
 )
 

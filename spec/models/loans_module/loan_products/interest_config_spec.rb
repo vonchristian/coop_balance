@@ -4,6 +4,7 @@ module LoansModule
   module LoanProducts
     describe InterestConfig, type: :model do
       it { is_expected.to define_enum_for(:calculation_type).with([:add_on, :prededucted])}
+      it { is_expected.to define_enum_for(:amortization_type).with([:annually, :straight_balance])}
 
       describe 'associations' do
         it { is_expected.to belong_to :cooperative }
@@ -32,26 +33,22 @@ module LoansModule
 
         expect(described_class.interest_revenue_accounts).to include(interest_config.interest_revenue_account)
       end
-      it "#total_interest(loan_application)" do
-        interest_config = create(:interest_config, rate: 0.12, calculation_type: 'prededucted')
-        loan_product = create(:loan_product)
-        loan_product.interest_configs << interest_config
-        one_year_loan_application = create(:loan_application, term: 12, loan_amount: 100_000, mode_of_payment: 'monthly', loan_product: loan_product)
-        six_month_loan_application = create(:loan_application, term: 6, loan_amount: 100_000, mode_of_payment: 'monthly', loan_product: loan_product)
-        two_month_loan_application = create(:loan_application, term: 2, loan_amount: 10_000, mode_of_payment: 'monthly', loan_product: loan_product)
+      describe "#total_interest(loan_application)" do
+          let (:loan_product)  { create(:loan_product) }
+          let (:interest_config) { create(:interest_config, rate: 0.12, calculation_type: 'prededucted', loan_product: loan_product) }
 
-        expect(interest_config.total_interest(one_year_loan_application)).to eql 12_000
-        expect(interest_config.total_interest(six_month_loan_application)).to eql 6_000
-        expect(interest_config.total_interest(two_month_loan_application)).to eql 200
+        it 'one year' do
+          one_year_loan_application = create(:loan_application, term: 12, loan_amount: 100_000, mode_of_payment: 'monthly', loan_product: loan_product)
+          LoansModule::AmortizationSchedule.create_amort_schedule_for(one_year_loan_application)
 
-        two_year_loan_application = create(:loan_application, term: 24, loan_amount: 100_000, mode_of_payment: 'monthly', loan_product: loan_product)
-        LoansModule::AmortizationSchedule.create_amort_schedule_for(two_year_loan_application)
+          expect(interest_config.total_interest(one_year_loan_application)).to eql 12_000.0
+        end
+        it 'two year' do
+          two_year_loan_application = create(:loan_application, term: 24, loan_amount: 100_000, mode_of_payment: 'monthly', loan_product: loan_product)
+          LoansModule::AmortizationSchedule.create_amort_schedule_for(two_year_loan_application)
 
-        puts interest_config.second_year_interest(two_year_loan_application)
-        puts two_year_loan_application.principal_balance(
-            to_date: two_year_loan_application.amortization_schedules.order(date: :desc)[11].date,
-            from_date:  two_year_loan_application.amortization_schedules.order(date: :desc)[23].date)
-        expect(interest_config.total_interest(two_year_loan_application)).to eql 24_000
+          expect(interest_config.total_interest(two_year_loan_application)).to eql 18_000.0
+        end
       end
     end
   end

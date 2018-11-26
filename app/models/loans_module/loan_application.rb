@@ -17,16 +17,26 @@ module LoansModule
     has_many :amortization_schedules, dependent: :destroy
     has_many :terms, as: :termable, dependent: :destroy
     has_many :amount_adjustments, class_name: "Vouchers::AmountAdjustment", dependent: :destroy
+
     delegate :name, to: :borrower, prefix: true
     delegate :name, :interest_revenue_account, :loans_receivable_current_account, to: :loan_product, prefix: true
-    delegate :current_interest_config, to: :loan_product
+    delegate  :monthly_interest_rate, to: :loan_product, prefix: true
+    delegate :current_interest_config,  to: :loan_product
     delegate :avatar, :name, to: :borrower
     delegate :entry, to: :voucher, allow_nil: true
-
+    delegate :straight_balance?, :annually?, :prededucted_number_of_payments, to: :current_interest_config, prefix: true
 
     validates :cooperative_id, presence: true
     def current_term_number_of_months
       term
+    end
+
+     def principal_balance_for(schedule) #used to compute interest
+      if schedule == self.amortization_schedules.order(date: :asc).first
+        loan_amount.amount
+      else
+        loan_amount.amount - amortization_schedules.principal_for(schedule.previous_schedule(self), self)
+      end
     end
 
     def term_is_within_one_year?

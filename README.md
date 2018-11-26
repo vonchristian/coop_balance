@@ -1,3 +1,4 @@
+move loan product to coop services module
 Add qr code for payment
 
 add policies

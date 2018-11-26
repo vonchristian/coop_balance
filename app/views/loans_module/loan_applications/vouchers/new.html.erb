@@ -1,3 +1,10 @@
+<%= @loan_application.total_interest %>
+<%= @loan_application.interest_balance %>
+<%= @loan_application.first_year_interest %>
+<%= @loan_application.second_year_interest %>
+
+
+<%= @loan_application.third_year_interest %>
 
 <div class="row">
   <div class="col-md-7">
@@ -87,8 +94,9 @@
           <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
           <%= f.input :voucher_account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
           <%= f.input :cash_account_id, collection: Employees::EmployeeCashAccount.cash_accounts.map{|a| [a.name, a.id] } %>
+          <span class="help-block text-muted"> Please select cash account for disbursing this loan. </span>
           <hr>
-          <%= f.submit "Create Voucher", class: "btn btn-primary btn-lg float-right" %>
+          <%= f.submit "Create Voucher", class: "btn btn-primary btn-lg float-right", data: { disable_with: "Processing..." } %>
           <%= link_to 'Cancel Application', loans_module_loan_application_path(@loan_application), method: :delete, class: "btn float-left text-danger" %>
         <% end %>
       </div>
@@ -187,8 +195,12 @@
               <tr>
                 <td><%= amortization_schedule.date.strftime("%B %e, %Y") %></td>
                 <td><%= number_to_currency amortization_schedule.principal %></td>
-                <td><%= number_to_currency amortization_schedule.interest %></td>
-                <td><%= number_to_currency amortization_schedule.total_amortization %></td>
+                <td><%= number_to_currency amortization_schedule.interest %>
+                  <% if amortization_schedule.prededucted_interest? %>
+                    <span class="badge bg-danger"> Prededucted </span>
+                  <% end %>
+                </td>
+              <td><%= number_to_currency amortization_schedule.total_amortization %></td>
                 <td><%= number_to_currency @loan_application.balance_for(amortization_schedule) %></td>
               </tr>
             <% end %>
@@ -198,3 +210,10 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#loans_module_loan_applications_voucher_processing_cash_account_id").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>

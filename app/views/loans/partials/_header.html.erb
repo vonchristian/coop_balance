@@ -17,10 +17,16 @@
                             <small class="text-muted"><i class="fa fa-tag"></i> <%= loan.loan_product_name %></small>
                           </div>
                           <div class="col-md-4">
+                            <small class="text-muted" data-toggle="tooltip" title="Disbursement Date">
+                              <i class="fa fa-calendar"></i> <%= loan.disbursement_date.strftime("%B %e, %Y") %>
+                            </small>
+                          </div>
+                          <div class="col-md-4">
                             <% if loan.forwarded_loan? %>
                               <span class="badge bg-warning"> Forwarded Loan </span>
                             <% end %>
                           </div>
+
                         </div>
 
                       </div>

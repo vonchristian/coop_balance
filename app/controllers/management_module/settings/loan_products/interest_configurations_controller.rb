@@ -13,8 +13,8 @@ module ManagementModule
         def create
           @loan_product = LoansModule::LoanProduct.find(params[:loan_product_id])
           @interest_configuration = @loan_product.interest_configs.create(interest_configuration_params)
-          respond_modal_with @interest_configuration, 
-            location: management_module_settings_cooperative_products_url, 
+          respond_modal_with @interest_configuration,
+            location: management_module_settings_cooperative_products_url,
             notice: "Interest Configuration saved successfully"
         end
 
@@ -24,7 +24,10 @@ module ManagementModule
           permit(:rate,
                  :calculation_type,
                  :prededuction_type,
+                 :amortization_type,
                  :prededucted_rate,
+                 :prededucted_number_of_payments,
+                 :prededucted_amount,
                  :interest_revenue_account_id,
                  :unearned_interest_income_account_id,
                  :interest_receivable_account_id,

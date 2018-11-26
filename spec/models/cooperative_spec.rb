@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe Cooperative, type: :model do
 
   describe 'associations' do
-    it { is_expected.to belong_to :interest_amortization_config }
     it { is_expected.to have_many :offices }
     it { is_expected.to have_many :store_fronts }
     it { is_expected.to have_many :cooperative_services }

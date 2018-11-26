@@ -7,7 +7,8 @@ module LoansModule
       it { is_expected.to belong_to :preparer }
       it { is_expected.to belong_to :cooperative }
       it { is_expected.to belong_to :office }
-
+      it { is_expected.to belong_to :organization }
+      it { is_expected.to have_one :loan }
       it { is_expected.to belong_to :loan_product }
       it { is_expected.to have_many :voucher_amounts }
       it { is_expected.to have_many :amortization_schedules }
@@ -24,6 +25,8 @@ module LoansModule
       it { is_expected.to delegate_method(:loans_receivable_current_account).to(:loan_product).with_prefix }
       it { is_expected.to delegate_method(:current_interest_config).to(:loan_product) }
       it { is_expected.to delegate_method(:avatar).to(:borrower) }
+      it { is_expected.to delegate_method(:straight_balance?).to(:current_interest_config).with_prefix }
+      it { is_expected.to delegate_method(:annually?).to(:current_interest_config).with_prefix }
 
     end
   end
