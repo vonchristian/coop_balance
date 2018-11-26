@@ -21,6 +21,8 @@ module LoansModule
     delegate :name, :interest_revenue_account, :loans_receivable_current_account, to: :loan_product, prefix: true
     delegate :current_interest_config, to: :loan_product
     delegate :avatar, :name, to: :borrower
+    delegate :entry, to: :voucher, allow_nil: true
+
 
     validates :cooperative_id, presence: true
     def current_term_number_of_months
@@ -49,9 +51,7 @@ module LoansModule
 
     def voucher_amounts_excluding_loan_amount_and_net_proceed
       accounts = []
-      Employees::EmployeeCashAccount.cash_accounts.each do |account|
-        accounts << account
-      end
+      accounts << cooperative.cash_accounts
       accounts << loan_product_loans_receivable_current_account
       voucher_amounts.excluding_account(account: accounts)
     end
@@ -77,11 +77,17 @@ module LoansModule
     end
 
     def net_proceed
-      if voucher.blank?
-        loan_amount.amount - voucher_amounts.sum(&:adjusted_amount)
+      if entry.present?
+        entry.total_cash_amount
       else
-        voucher.total_cash_amount
+       loan_amount.amount - voucher_amounts.sum(&:adjusted_amount)
       end
+    end
+    def total_charges
+      accounts = []
+      accounts << cooperative.cash_accounts
+      accounts << loan_product_loans_receivable_current_account
+      voucher_amounts.excluding_account(account: accounts).total
     end
     def disbursed?
       voucher && voucher.disbursed?

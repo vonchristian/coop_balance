@@ -34,26 +34,30 @@ module LoansModule
       end
 
       def add_amounts(voucher)
-        Vouchers::VoucherAmount.create!(
-        cooperative: find_loan_application.cooperative,
-        voucher: voucher,
-        amount_type: 'debit',
-        amount: find_loan_application.loan_amount,
-        description: 'Loan Amount',
-        account: find_loan_application.loan_product_loans_receivable_current_account,
-        commercial_document: find_loan_application)
         find_loan_application.voucher_amounts.each do |voucher_amount|
-          voucher.voucher_amounts.create!(
+          Vouchers::VoucherAmount.create!(
+            voucher: voucher,
             amount: voucher_amount.adjusted_amount,
-            cooperative: voucher_amount.cooperative,
+            cooperative: find_cooperative,
             amount_type: voucher_amount.amount_type,
             account: voucher_amount.account,
+            description: voucher_amount.description,
             commercial_document: voucher_amount.commercial_document
             )
         end
 
         Vouchers::VoucherAmount.create!(
-        cooperative: find_loan_application.cooperative,
+        cooperative: find_cooperative,
+        voucher: voucher,
+        amount_type: 'debit',
+        amount: find_loan_application.loan_amount.amount,
+        description: 'Loan Amount',
+        account: find_loan_application.loan_product_loans_receivable_current_account,
+        commercial_document: find_loan_application)
+
+
+        Vouchers::VoucherAmount.create!(
+        cooperative: find_cooperative,
         voucher: voucher,
         amount_type: 'credit',
         amount: net_proceed,
@@ -62,7 +66,10 @@ module LoansModule
         commercial_document: find_loan_application)
       end
       def find_loan_application
-        LoansModule::LoanApplication.find(loan_application_id)
+        find_cooperative.loan_applications.find(loan_application_id)
+      end
+      def find_cooperative
+        find_employee.cooperative
       end
       def find_employee
         User.find(preparer_id)

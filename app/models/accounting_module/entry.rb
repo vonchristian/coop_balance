@@ -51,6 +51,7 @@ module AccountingModule
       where(cancelled: false)
     end
 
+
     def self.entered_on(args={})
       EntriesQuery.new.entered_on(args)
     end
@@ -69,6 +70,9 @@ module AccountingModule
 
     def total
       credit_amounts.total
+    end
+    def total_cash_amount
+      amounts.total_cash_amount
     end
 
     def unbalanced?

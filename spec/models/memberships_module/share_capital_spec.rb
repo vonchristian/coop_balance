@@ -24,14 +24,18 @@ module MembershipsModule
     end
 
     it '#balance' do
+      cash_account = create(:asset)
       employee = create(:user, role: 'teller')
+      employee.cash_accounts << cash_account
       share_capital = create(:share_capital)
       deposit = build(:entry, commercial_document: share_capital)
-      deposit.credit_amounts << create(:credit_amount, amount: 5_000, commercial_document: share_capital, account: share_capital.share_capital_product_default_paid_up_account)
-      deposit.debit_amounts << create(:debit_amount, amount: 5_000, commercial_document: share_capital, account: employee.cash_on_hand_account)
-      deposit.save
+      credit_amount = build(:credit_amount, amount: 5_000, commercial_document: share_capital, account: share_capital.share_capital_product_default_paid_up_account)
+      debit_amount = build(:debit_amount,  amount: 5_000, commercial_document: share_capital, account: cash_account)
+      deposit.debit_amounts << debit_amount
+      deposit.credit_amounts << credit_amount
+      deposit.save!
 
-      expect(share_capital.paid_up_balance).to eq(5000)
+      expect(share_capital.paid_up_balance).to eq(5_000)
     end
     it '#closed?' do
       employee = create(:user, role: 'teller')

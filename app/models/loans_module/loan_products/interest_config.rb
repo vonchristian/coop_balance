@@ -23,8 +23,8 @@ module LoansModule
       end
 
       def interest_balance(loan_application)
-       total_interest(loan_application).to_f
        loan_application.voucher_amounts.for_account(account: interest_revenue_account).sum(&:amount).to_f -
+       total_interest(loan_application).to_f
       end
 
       def create_charges_for(loan_application)

@@ -30,6 +30,9 @@ class Voucher < ApplicationRecord
     ids = LoansModule::Loan.pluck(:disbursement_voucher_id)
     where(id: ids)
   end
+  def entry
+    accounting_entry
+  end
 
   def total_cash_amount
     voucher_amounts.total_cash_amount

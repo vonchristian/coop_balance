@@ -8,8 +8,10 @@
                         <% end %>
                       </div>
                       <div class="col-md-5">
-                        <%= link_to loans_module_loan_application_path(loan_application) do %>
-                        <b><%=  loan_application.borrower_name.try(:upcase) %></b><br>
+                        <% if loan_application.voucher.present? %>
+                          <%= link_to voucher_path(id: loan_application.voucher_id) do %>
+                          <b><%=  loan_application.borrower_name.try(:upcase) %></b><br>
+                          <% end %>
                         <% end %>
 
                         <div class="row">

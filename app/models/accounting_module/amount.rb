@@ -19,6 +19,9 @@ module AccountingModule
     def self.for_account(args={})
       where(account_id: args[:account_id])
     end
+    def self.total_cash_amount
+      where(account: Employees::EmployeeCashAccount.cash_accounts).total
+    end
 
     def self.for_recorder(args={})
       joins(:entry).where('entries.recorder_id' => args[:recorder_id])

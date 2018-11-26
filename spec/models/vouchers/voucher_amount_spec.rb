@@ -38,11 +38,21 @@ module Vouchers
         expect(described_class.excluding_account(account: revenue_account)).to_not include(revenue_amount)
       end
     end
-    it ".total" do
-      voucher_amount = create(:voucher_amount, amount: 100)
-      another_voucher_amount = create(:voucher_amount, amount: 100)
+    describe ".total" do
+      it '.with no amount adjustment' do
+        voucher_amount = create(:voucher_amount, amount: 100)
+        another_voucher_amount = create(:voucher_amount, amount: 100)
 
-      expect(described_class.total).to eql 200
+        expect(described_class.total).to eql 200
+      end
+
+      it '.with amount adjustment' do
+        voucher_amount = create(:voucher_amount, amount: 100)
+        amount_adjustment = create(:amount_adjustment, voucher_amount: voucher_amount, adjustment_type: 'amount_based', amount: 20)
+
+        expect(described_class.total).to eql 80
+      end
+
     end
   end
 end

@@ -12,11 +12,12 @@ module Vouchers
     has_many :amount_adjustments, class_name: "Vouchers::AmountAdjustment", dependent: :destroy
 
     delegate :name, to: :account, prefix: true
+    delegate :entry, to: :voucher, allow_nil: true
 
     validates :account_id, :amount_type, presence: true
 
     def self.total
-      all.map{ |a| a.amount.amount }.sum
+      sum(&:adjusted_amount)
     end
 
     def recent_amount_adjustment
@@ -32,8 +33,8 @@ module Vouchers
     end
 
     def self.accounts
-      ids = pluck(:account_id)
-      AccountingModule::Account.where(id: ids)
+      accounts = pluck(:account_id)
+      AccountingModule::Account.where(id: accounts)
     end
 
     def self.total_cash_amount

@@ -1,4 +1,6 @@
-<hr class="no-margin">
-<div class="card-footer">
-  <span class="badge bg-success float-right"> Disbursed </span>
-</div>
+<% if voucher.disbursed? %>
+  <hr class="no-margin">
+  <div class="card-footer">
+    <span class="badge bg-success float-right"> Disbursed </span>
+  </div>
+<% end %>
