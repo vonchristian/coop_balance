@@ -3,7 +3,9 @@ module LoansModule
     class VouchersController < ApplicationController
       def new
         @loan_application = current_cooperative.loan_applications.find(params[:loan_application_id])
-        @share_capitals = @loan_application.borrower.share_capitals
+        @borrower = @loan_application.borrower
+        @share_capitals = @borrower.share_capitals
+        @savings_accounts = @borrower.savings
         @voucher = LoansModule::LoanApplications::VoucherProcessing.new
       end
       def create

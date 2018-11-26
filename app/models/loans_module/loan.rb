@@ -32,7 +32,7 @@ module LoansModule
                                         as: :commercial_document,
                                         dependent: :destroy
 
-    has_many :voucher_amounts,          class_name: "Vouchers::VoucherAmount", as: :commercial_document, 
+    has_many :voucher_amounts,          class_name: "Vouchers::VoucherAmount", as: :commercial_document,
                                         dependent: :destroy # for adding amounts on voucher
 
     has_many :amortization_schedules,   dependent: :destroy
@@ -79,6 +79,13 @@ module LoansModule
     def self.disbursement_vouchers
       ids = pluck(:disbursement_voucher_id)
       Voucher.where(id: ids)
+    end
+
+    def net_proceed_and_loans_receivable_account
+      accounts = []
+      accounts << cooperative.cash_accounts
+      accounts << loan_product_loans_receivable_current_account
+      accounts
     end
 
     def current_term

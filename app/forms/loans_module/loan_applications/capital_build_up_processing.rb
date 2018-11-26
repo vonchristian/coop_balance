@@ -17,6 +17,7 @@ module LoansModule
         amount: amount,
         account: find_share_capital.share_capital_product_paid_up_account,
         commercial_document: find_share_capital,
+        cooperative: find_loan_application.cooperative,
         amount_type: 'credit')
       end
 
@@ -25,7 +26,7 @@ module LoansModule
       end
 
       def find_share_capital
-        MembershipsModule::ShareCapital.find_by_id(share_capital_id)
+        MembershipsModule::ShareCapital.find(share_capital_id)
       end
     end
   end

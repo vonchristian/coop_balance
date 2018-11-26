@@ -2,9 +2,10 @@ require 'barby'
 require 'barby/barcode/code_128'
 require 'barby/outputter/prawn_outputter'
 class VoucherPdf < Prawn::Document
-  attr_reader :voucher, :cooperative
+  attr_reader :voucher, :cooperative, :view_context, :title
   def initialize(args={})
     super(margin: 40, page_size: "A4", page_layout: :portrait)
+    @title = args[:title] || "Cash Disbursement Voucher"
     @voucher = args[:voucher]
     @cooperative = @voucher.cooperative
     @view_context = args[:view_context]
@@ -16,7 +17,7 @@ class VoucherPdf < Prawn::Document
 
   private
   def price(number)
-    @view_context.number_to_currency(number, :unit => "P ")
+    view_context.number_to_currency(number, :unit => "P ")
   end
   def heading
     bounding_box [300, 770], width: 50 do
@@ -28,7 +29,7 @@ class VoucherPdf < Prawn::Document
         text "#{cooperative.address}", size: 8
     end
     bounding_box [0, 770], width: 400 do
-      text "CASH DISBURSEMENT VOUCHER", style: :bold, size: 12
+      text "#{title.upcase}", style: :bold, size: 12
       text "CDV No: #{voucher.number}", style: :bold, size: 10
     end
     move_down 30
@@ -98,14 +99,14 @@ class VoucherPdf < Prawn::Document
       end
     end
     if voucher.disbursed?
-      table([["#{price(voucher.accounting_entry.debit_amounts.sum(:amount))}", "", "#{price(@voucher.accounting_entry.credit_amounts.sum(:amount))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"},  column_widths: [100, 300, 100]) do
+      table([["#{price(voucher.accounting_entry.debit_amounts.sum(:amount))}", "", "#{price(voucher.accounting_entry.credit_amounts.sum(:amount))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"},  column_widths: [100, 300, 100]) do
       # cells.borders = []
       row(0).font_style = :bold
       column(0).align = :right
       column(2).align = :right
      end
     else
-    table([["#{price(voucher.voucher_amounts.debit.sum(:amount))}", "#{price(@voucher.voucher_amounts.debit.sum(:amount))}", "#{price(voucher.voucher_amounts.debit.sum(:amount))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"},  column_widths: [100, 300, 100]) do
+    table([["#{price(voucher.voucher_amounts.debit.sum(&:amount))}", "", "#{price(voucher.voucher_amounts.debit.sum(&:amount))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"},  column_widths: [100, 300, 100]) do
       # cells.borders = []
       row(0).font_style = :bold
       column(2).align = :right

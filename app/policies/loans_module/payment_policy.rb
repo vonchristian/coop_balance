@@ -6,7 +6,7 @@ module LoansModule
       @loan = loan
     end
     def new?
-      user.cash_on_hand_account.present?
+      user.cash_accounts.present?
     end
 
     def create?

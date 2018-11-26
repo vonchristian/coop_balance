@@ -36,12 +36,17 @@ module LoansModule
         purpose:          loan_application.purpose
         )
       loan.amortization_schedules << loan_application.amortization_schedules
-      loan.voucher_amounts        << loan_application.voucher_amounts
-      loan.update_attributes(disbursement_voucher_id: loan_application.voucher_id)
+      create_voucher_amounts(loan)
+      loan.update_attributes(disbursement_voucher: loan_application.voucher)
       loan.terms.create(
         term: loan_application.term)
       create_loan_interests(loan)
     end
+
+    def create_voucher_amounts(loan)
+      loan.voucher_amounts << loan_application.voucher_amounts
+    end
+
     def create_loan_interests(loan)
       loan.loan_interests.create!(
         amount: loan_application.total_interest,

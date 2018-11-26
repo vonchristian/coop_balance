@@ -14,7 +14,8 @@ module LoansModule
                   :cooperative_id,
                   :office_id
     validates :term,  presence: true, numericality: true
-    validates :loan_product_id, :mode_of_payment, :term, :application_date, presence: true
+    validates :loan_amount, presence: true, numericality: true
+    validates :loan_product_id, :mode_of_payment, :term, :application_date, :purpose, presence: true
     def find_loan_application
       LoansModule::LoanApplication.find_by(account_number: account_number)
     end

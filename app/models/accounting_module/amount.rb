@@ -7,9 +7,9 @@ module AccountingModule
     extend AccountingModule::BalanceFinder
     belongs_to :entry, :class_name => 'AccountingModule::Entry'
     belongs_to :account, :class_name => 'AccountingModule::Account'
-    belongs_to :commercial_document, polymorphic: true
+    belongs_to :commercial_document, polymorphic: true, optional: true
 
-    validates :type, :amount, :entry, :account, :commercial_document_id, :commercial_document_type,  presence: true
+    validates :type, :amount, :entry, :account,  presence: true
     validates :amount, numericality: true
 
     delegate :name, to: :account, prefix: true

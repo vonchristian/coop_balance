@@ -81,7 +81,7 @@
 
           <%= f.input :borrower_id, input_html: { value: @loan_application.borrower_id }, as: :hidden %>
           <%= f.input :borrower_type, input_html: { value: @loan_application.borrower.class.to_s }, as: :hidden %>
-          <%= f.input :net_proceed, input_html: { value: @loan_application.net_proceed.round(2) } %>
+          <%= f.input :net_proceed, input_html: { value: @loan_application.net_proceed.round(2) }, as: :hidden %>
 
           <%= f.input :loan_application_id, input_html: { value: @loan_application.id }, as: :hidden %>
           <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
@@ -101,9 +101,65 @@
       </div>
       <div class="card-body">
         <% @share_capitals.each do |share_capital| %>
-          <h4><%= number_to_currency share_capital.paid_up_balance %></h4>
+          <div class="row">
+            <div class="col-md-2">
+              <% if share_capital.subscriber.avatar.attachment.present? %>
+                <%= image_tag(share_capital.subscriber.avatar, style: 'width:40px;height:40px;', class: 'media-object img-circle') %>
+              <% end %>
+            </div>
+            <div class="col-md-6">
+              <h3 class="card-title"><%= number_to_currency share_capital.paid_up_balance %></h3>
+              <span class="text-muted"><%= share_capital.subscriber_name %></span><br>
+              <% if @loan_application.voucher_amounts.for_account(account: share_capital.share_capital_product_paid_up_account).present? %>
+                <span class="text-success"> <i class="fa fa-plus"></i>
+                <%= number_to_currency @loan_application.voucher_amounts.for_account(account: share_capital.share_capital_product_paid_up_account).where(commercial_document: share_capital).total %>
+                </span>
+              <% end %>
+            </div>
+            <div class="col-md-3">
+               <%=link_to new_loans_module_loan_application_capital_build_up_processing_path(share_capital_id: share_capital.id, loan_application_id: @loan_application.id) do %>
+                 <span class="btn btn-outline-warning float-right"><i class="fa fa-plus-circle"></i> Add </span>
+               <% end %>
+            </div>
+          </div>
           <hr>
-          <%=link_to 'Add Capital Build Up', new_loans_module_loan_application_capital_build_up_processing_path(share_capital_id: share_capital.id, loan_application_id: @loan_application.id), class: "btn btn-warning btn-sm float-right" %>
+        <% end %>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"> Savings Accounts </h3>
+      </div>
+      <div class="card-body">
+        <% @savings_accounts.each do |savings_account| %>
+          <div class="row">
+            <div class="col-md-2">
+              <% if savings_account.depositor.avatar.attachment.present? %>
+                <%= image_tag(savings_account.depositor.avatar, style: 'width:40px;height:40px;', class: 'media-object img-circle') %>
+              <% end %>
+            </div>
+            <div class="col-md-7">
+              <h3 class="card-title">
+                <%= number_to_currency savings_account.balance %>
+              </h3>
+                <span class="text-muted">
+                  <%= savings_account.depositor_name %>
+                </span>
+              <br>
+              <% if @loan_application.voucher_amounts.for_account(account: savings_account.saving_product_account).present? %>
+                <span class="text-success"> <i class="fa fa-plus"></i>
+                <%= number_to_currency @loan_application.voucher_amounts.for_account(account: savings_account.saving_product_account).where(commercial_document: savings_account).total %>
+                </span>
+              <% end %>
+
+            </div>
+            <div class="col-md-2">
+              <%=link_to new_loans_module_loan_application_savings_account_deposit_processing_path(saving_id: savings_account.id, loan_application_id: @loan_application.id) do %>
+                 <span class="btn btn-outline-warning float-right"><i class="fa fa-plus-circle"></i> Add </span>
+               <% end %>
+            </div>
+          </div>
+          <hr>
         <% end %>
       </div>
     </div>

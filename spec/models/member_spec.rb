@@ -18,6 +18,8 @@ describe Member, type: :model do
     it { is_expected.to have_many :contacts }
     it { is_expected.to have_many :addresses }
     it { is_expected.to have_many :beneficiaries }
+    it { is_expected.to have_many :loan_applications }
+
 
   end
   describe 'delegations' do

@@ -117,11 +117,22 @@
   <hr class="no-margin">
   <div class="card-body">
     <h4 class="card-title">Charge Details</h4>
-    <hr class="no-margin">
+    <hr class="min-margin">
     <div class="row min-margin justify-content-end">
       <div class="col-md-11 col-sm-11">
-        <% if @loan.disbursement_voucher.present? %>
-          <% @loan.disbursement_voucher.voucher_amounts.each do |voucher_amount| %>
+        <% if @loan.disbursed? %>
+          <div class="row">
+            <div class="col-md-3">
+              Loan Amount
+            </div>
+            <div class="col-md-2">
+              <span class="float-right">
+                <%= number_to_currency @loan.disbursement_voucher.voucher_amounts.for_account(account: @loan.loan_product_loans_receivable_current_account).total %>
+              </span>
+            </div>
+          </div>
+          <div class="min-margin"></div>
+          <% @loan.disbursement_voucher.voucher_amounts.excluding_account(account: @loan.loan_product_loans_receivable_current_account).excluding_account(account: current_cooperative.cash_accounts).each do |voucher_amount| %>
             <div class="row">
               <div class="col-md-3 col-sm-6">
                 <%= voucher_amount.description %>
@@ -132,6 +143,17 @@
             </div>
           <% end %>
         <% end %>
+        <hr class="min-margin">
+        <div class="row">
+            <div class="col-md-3">
+              Net Proceed
+            </div>
+            <div class="col-md-2">
+              <span class="float-right">
+                <%= number_to_currency @loan.disbursement_voucher.voucher_amounts.for_account(account: current_cooperative.cash_accounts).total %>
+              </span>
+            </div>
+          </div>
       </div>
     </div>
   </div>

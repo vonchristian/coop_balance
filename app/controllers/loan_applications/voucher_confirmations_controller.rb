@@ -5,7 +5,10 @@ module LoanApplications
       @voucher = current_cooperative.vouchers.find(params[:voucher_id])
       LoansModule::LoanCreationProcessing.new(loan_application: @loan_application, account_number: SecureRandom.uuid).process!
       @loan = LoansModule::LoanCreationProcessing.new(loan_application: @loan_application).find_loan
-      LoansModule::LoanApplications::EntryProcessing.new(loan: @loan, voucher: @voucher, employee: @employee).process!
+      LoansModule::LoanApplications::EntryProcessing.new(
+        loan: @loan,
+        voucher: @voucher,
+        employee: @employee).process!
       redirect_to "/", notice: 'Loan disbursed succesfully.'
     end
   end

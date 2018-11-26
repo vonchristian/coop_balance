@@ -12,7 +12,7 @@ module LoansModule
     belongs_to :organization
     belongs_to :voucher
     has_one    :loan, class_name: "LoansModule::Loan", dependent: :destroy
-    has_many :voucher_amounts, as: :commercial_document, class_name: "Vouchers::VoucherAmount", dependent: :destroy
+    has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", dependent: :destroy
     has_many :amount_adjustments, through: :voucher_amounts, dependent: :destroy, class_name: "Vouchers::AmountAdjustment"
     has_many :amortization_schedules, dependent: :destroy
     has_many :terms, as: :termable, dependent: :destroy

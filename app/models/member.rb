@@ -47,6 +47,7 @@ class Member < ApplicationRecord
   has_many :contacts, as: :contactable
   has_many :addresses, as: :addressable
   has_many :beneficiaries, dependent: :destroy
+  has_many :loan_applications, class_name: "LoansModule::LoanApplication", as: :borrower
 
   validates :last_name, :first_name, presence: true, on: :update
 

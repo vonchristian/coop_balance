@@ -25,18 +25,18 @@
         <hr>
         <div class="row">
           <div class="col-md-10 offset-md-1">
-            <h4 class="card-title"><%= number_to_currency @share_capital.paid_up_balance %></h4>
-            <small class="text-muted"> SHARE CAPITAL </small>
+            <h4 class="card-title"><%= number_to_currency @savings_account.balance %></h4>
+            <small class="text-muted"> SAVINGS </small>
           </div>
         </div>
         <hr>
-            <%= simple_form_for [@share_capital, @capital_build_up], url: :loans_module_loan_application_capital_build_up_processings, html: { autocomplete: 'off' } do |f| %>
+            <%= simple_form_for [@savings_account, @deposit], url: :loans_module_loan_application_savings_account_deposit_processings, html: { autocomplete: 'off' } do |f| %>
               <%= f.error_notification %>
               <%= f.input :amount %>
-              <%= f.input :share_capital_id, input_html: { value: @share_capital.id }, as: :hidden %>
+              <%= f.input :savings_account_id, input_html: { value: @savings_account.id }, as: :hidden %>
               <%= f.input :loan_application_id, input_html: { value: @loan_application.id }, as: :hidden %>
               <hr>
-                <%= f.submit "Add Capital Build Up", class: "btn btn-primary float-right" %>
+                <%= f.submit "Add Deposit", class: "btn btn-primary float-right" %>
             <% end %>
           </div>
         </div>
@@ -44,10 +44,4 @@
     </div>
   </div>
 </div>
-<script type="text/javascript">
-  $(document).ready(function() {
-    $("#charge_account_id").select2({
-      theme: "bootstrap"
-    });
-  });
-</script>
+

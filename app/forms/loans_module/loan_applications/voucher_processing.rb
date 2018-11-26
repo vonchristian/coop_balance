@@ -28,24 +28,17 @@ module LoansModule
           number:         number,
           date:           date
         )
-        add_amounts(voucher)
+        create_charges(voucher)
         voucher.save!
-        find_loan_application.update_attributes!(voucher_id: voucher.id)
+        find_loan_application.update_attributes!(voucher: voucher)
       end
 
-      def add_amounts(voucher)
-        find_loan_application.voucher_amounts.each do |voucher_amount|
-          Vouchers::VoucherAmount.create!(
-            voucher: voucher,
-            amount: voucher_amount.adjusted_amount,
-            cooperative: find_cooperative,
-            amount_type: voucher_amount.amount_type,
-            account: voucher_amount.account,
-            description: voucher_amount.description,
-            commercial_document: voucher_amount.commercial_document
-            )
-        end
-
+      def create_charges(voucher)
+        create_loan_charges(voucher)
+        create_loans_receivable(voucher)
+        create_net_proceed(voucher)
+      end
+      def create_loans_receivable(voucher)
         Vouchers::VoucherAmount.create!(
         cooperative: find_cooperative,
         voucher: voucher,
@@ -54,8 +47,8 @@ module LoansModule
         description: 'Loan Amount',
         account: find_loan_application.loan_product_loans_receivable_current_account,
         commercial_document: find_loan_application)
-
-
+      end
+      def create_net_proceed(voucher)
         Vouchers::VoucherAmount.create!(
         cooperative: find_cooperative,
         voucher: voucher,
@@ -65,6 +58,21 @@ module LoansModule
         account_id: cash_account_id,
         commercial_document: find_loan_application)
       end
+
+      def create_loan_charges(voucher)
+        find_loan_application.voucher_amounts.each do |voucher_amount|
+          Vouchers::VoucherAmount.create!(
+            voucher:             voucher,
+            amount:              voucher_amount.adjusted_amount,
+            cooperative:         find_cooperative,
+            amount_type:         voucher_amount.amount_type,
+            account:             voucher_amount.account,
+            description:         voucher_amount.description,
+            commercial_document: voucher_amount.commercial_document
+          )
+        end
+      end
+
       def find_loan_application
         find_cooperative.loan_applications.find(loan_application_id)
       end

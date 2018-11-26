@@ -84,6 +84,7 @@ Rails.application.routes.draw do
     resources :disbursement_vouchers, only: [:create], module: :loan_applications
     resources :loan_applications, only: [:index, :new, :create, :show, :destroy] do
       resources :capital_build_up_processings,       only: [:new, :create], module: :loan_applications
+      resources :savings_account_deposit_processings, only: [:new, :create], module: :loan_applications
       resources :voucher_amounts,       only: [:new, :create, :destroy], module: :loan_applications
       resources :vouchers, only: [:new, :create, :show], module: :loan_applications
 
