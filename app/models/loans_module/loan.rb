@@ -116,6 +116,7 @@ module LoansModule
       ids = pluck(:id)
       LoansModule::LoanProduct.total_debits_balance(commercial_document: ids)
     end
+    
      def self.total_credits_balance
       ids = pluck(:id)
       LoansModule::LoanProduct.total_credits_balance(commercial_document: ids)
@@ -126,20 +127,21 @@ module LoansModule
     end
 
     def self.archived
-      disbursed.where(archived: true)
+      where(archived: true)
     end
-
-
 
     def self.for_street(args={})
       where(street: args[:street])
     end
+
     def for_barangay(args={})
-      where(barangay:     args[:barangay])
+      where(barangay: args[:barangay])
     end
+
     def for_organization(args={})
       where(organization: args[:organization])
     end
+
     def for_municipality(args={})
       where(municipality: args[:municipality])
     end

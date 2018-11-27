@@ -65,7 +65,7 @@ module AccountingModule
     end
 
     def entries_present?
-      cooperative.entries.exists?
+      AccountingModule::Entry.exists?
     end
 
     def total
