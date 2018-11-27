@@ -24,7 +24,7 @@ module LoansModule
     delegate :current_interest_config,  to: :loan_product
     delegate :avatar, :name, to: :borrower
     delegate :entry, to: :voucher, allow_nil: true
-    delegate :straight_balance?, :annually?, :prededucted_number_of_payments, to: :current_interest_config, prefix: true
+    delegate :rate, :straight_balance?, :annually?, :prededucted_number_of_payments, to: :current_interest_config, prefix: true
 
     validates :cooperative_id, presence: true
     def current_term_number_of_months
@@ -67,24 +67,59 @@ module LoansModule
     end
 
     def total_interest
-      current_interest_config.total_interest(self)
+      if current_interest_config_annually?
+        annually_total_interest
+      elsif current_interest_config_straight_balance?
+        straight_balance_total_interest
+      end
+    end
+
+    def annually_total_interest
+      if term_is_within_one_year?
+        first_year_interest
+      elsif term_is_within_two_years?
+        first_year_interest +
+        second_year_interest
+      elsif term_is_within_three_years?
+        first_year_interest +
+        second_year_interest +
+        third_year_interest
+      end
+    end
+
+
+    def straight_balance_total_interest
+      amortization_schedules.sum(&:interest)
     end
 
     def interest_balance
-      current_interest_config.interest_balance(self)
+      total_interest.to_f -
+      voucher_amounts.for_account(account: current_interest_config.interest_revenue_account).total
     end
 
     def first_year_interest
-      current_interest_config.first_year_interest(self)
+      (amortization_schedules.take(term).sum(&:principal) * current_interest_config_rate).to_f
     end
 
     def second_year_interest
-      current_interest_config.second_year_interest(self)
+      (amortization_schedules.take(term - 12).sum(&:principal) * current_interest_config_rate).to_f
     end
 
     def third_year_interest
-      current_interest_config.third_year_interest(self)
+      (amortization_schedules.take(term - 24).sum(&:principal) * current_interest_config_rate).to_f
     end
+
+
+    def prededucted_interest
+      if current_interest_config.percentage? && current_interest_config.prededucted_rate.present?
+        (loan_amount.amount * rate) * prededucted_rate
+      elsif current_interest_config.number_of_payment? && current_interest_config.prededucted_number_of_payments.present?
+        amortization_schedules.order(date: :asc).first(current_interest_config.prededucted_number_of_payments).sum(&:interest)
+      else
+        0
+      end
+    end
+
 
     def net_proceed
       if entry.present?
@@ -107,14 +142,6 @@ module LoansModule
     end
     def adjusted_interest_on_loan
       voucher_amounts.where(account: loan_product_interest_revenue_account).first.try(:adjusted_amount)
-    end
-
-    def self.principal_balance_for(schedule) #used to compute interest
-      if schedule == self.amortization_schedules.order(date: :asc).first
-        loan_amount.amount
-      else
-        loan_amount.amount - amortization_schedules.principal_for(schedule.previous_schedule, self)
-      end
     end
 
     def number_of_thousands # for Loan Protection fund computation
