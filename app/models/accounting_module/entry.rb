@@ -7,6 +7,7 @@ module AccountingModule
 
     enum payment_type: [:cash, :check]
 
+    has_one :voucher, foreign_key: 'entry_id', dependent: :nullify
     belongs_to :official_receipt, optional: true
     belongs_to :previous_entry, class_name: "AccountingModule::Entry", optional: true
     belongs_to :commercial_document, :polymorphic => true
@@ -22,7 +23,6 @@ module AccountingModule
     has_many :debit_accounts, :through => :debit_amounts, :source => :account, :class_name => 'AccountingModule::Account'
     has_many :amounts, class_name: "AccountingModule::Amount", dependent: :destroy
     has_many :accounts, class_name: "AccountingModule::Account", through: :amounts
-    has_one :voucher, foreign_key: 'entry_id', dependent: :nullify
 
     validates :description, presence: true
     validates :previous_entry_id, presence: true, if: :entries_present?

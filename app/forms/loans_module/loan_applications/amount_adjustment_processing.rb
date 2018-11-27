@@ -9,6 +9,7 @@ module LoansModule
       def initialize(args)
         @voucher_amount = args[:voucher_amount]
       end
+
       def process!
         if valid?
           ActiveRecord::Base.transaction do

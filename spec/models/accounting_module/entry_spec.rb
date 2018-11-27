@@ -3,12 +3,17 @@ require 'rails_helper'
 module AccountingModule
   describe Entry do
   	describe 'associations' do
+      it { is_expected.to have_one :voucher }
+      it { is_expected.to belong_to :official_receipt }
+      it { is_expected.to belong_to :previous_entry }
   		it { is_expected.to belong_to :commercial_document }
       it { is_expected.to belong_to :office }
       it { is_expected.to belong_to :cooperative }
+      it { is_expected.to belong_to :cooperative_service }
       it { is_expected.to belong_to :cancelled_by }
       it { is_expected.to belong_to :recorder }
 
+      it { is_expected.to have_many :referenced_entries }
       it { is_expected.to have_many :credit_amounts }
       it { is_expected.to have_many :debit_amounts }
       it { is_expected.to have_many :debit_accounts }
