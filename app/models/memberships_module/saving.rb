@@ -18,6 +18,8 @@ module MembershipsModule
 
     delegate :name, :current_occupation, to: :depositor, prefix: true, allow_nil: true
     delegate :name,
+             :closing_account,
+             :closing_account_fee,
              :account,
              :closing_account,
              :interest_rate,

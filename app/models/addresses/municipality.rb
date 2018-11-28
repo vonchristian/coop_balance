@@ -1,8 +1,9 @@
 module Addresses
   class Municipality < ApplicationRecord
+    belongs_to :province
     has_many :barangays
     has_many :streets
-    belongs_to :province
+
     validates :name, presence: true, uniqueness: { scope: :province_id }
 
   end

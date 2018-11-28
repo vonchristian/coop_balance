@@ -6,9 +6,12 @@ module Addresses
     has_many :streets
     has_many :loans, class_name: "LoansModule::Loan"
     has_many :savings, class_name: "MembershipsModule::Saving"
-    validates :name, presence: true, uniqueness: true
+    has_many :share_capitals, class_name: "MembershipsModule::ShareCapital"
     has_many :addresses
     has_many :members, through: :addresses, source: :addressable, source_type: "Member"
+
+    validates :name, presence: true, uniqueness: true
+
     before_save :set_default_avatar, on: :create
 
     delegate :name, to: :municipality, prefix: true, allow_nil: true

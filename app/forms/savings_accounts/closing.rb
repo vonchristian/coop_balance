@@ -58,7 +58,7 @@ module SavingsAccounts
 
 
     def closing_fee_account
-      CoopConfigurationsModule::SavingsAccountConfig.default_closing_account
+      find_savings_account.saving_product_closing_account
     end
 
     def cash_account

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_28_000146) do
+ActiveRecord::Schema.define(version: 2018_11_28_230209) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -414,6 +414,14 @@ ActiveRecord::Schema.define(version: 2018_11_28_000146) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "interest_amortization_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "amortization_type"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["amortization_type"], name: "index_interest_amortization_configs_on_amortization_type"
+  end
+
   create_table "interest_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "loan_product_id"
     t.decimal "rate"
@@ -813,8 +821,6 @@ ActiveRecord::Schema.define(version: 2018_11_28_000146) do
     t.string "contact_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "cash_in_vault_account_id"
-    t.index ["cash_in_vault_account_id"], name: "index_offices_on_cash_in_vault_account_id"
     t.index ["cooperative_id"], name: "index_offices_on_cooperative_id"
     t.index ["type"], name: "index_offices_on_type"
   end
@@ -1007,6 +1013,7 @@ ActiveRecord::Schema.define(version: 2018_11_28_000146) do
     t.boolean "has_closing_account_fee", default: true
     t.integer "dormancy_number_of_days", default: 0
     t.uuid "cooperative_id"
+    t.decimal "closing_account_fee", default: "0.0"
     t.index ["account_id"], name: "index_saving_products_on_account_id"
     t.index ["closing_account_id"], name: "index_saving_products_on_closing_account_id"
     t.index ["cooperative_id"], name: "index_saving_products_on_cooperative_id"
@@ -1108,8 +1115,8 @@ ActiveRecord::Schema.define(version: 2018_11_28_000146) do
     t.string "account_number"
     t.datetime "date_opened"
     t.string "account_owner_name"
-    t.datetime "created_at", default: "2018-11-28 05:22:59", null: false
-    t.datetime "updated_at", default: "2018-11-28 05:22:59", null: false
+    t.datetime "created_at", default: "2018-11-07 11:18:55", null: false
+    t.datetime "updated_at", default: "2018-11-07 11:18:55", null: false
     t.integer "status"
     t.uuid "office_id"
     t.string "subscriber_type"
@@ -1478,7 +1485,6 @@ ActiveRecord::Schema.define(version: 2018_11_28_000146) do
   add_foreign_key "municipalities", "cooperatives"
   add_foreign_key "municipalities", "provinces"
   add_foreign_key "notes", "users", column: "noter_id"
-  add_foreign_key "offices", "accounts", column: "cash_in_vault_account_id"
   add_foreign_key "offices", "cooperatives"
   add_foreign_key "orders", "store_fronts"
   add_foreign_key "orders", "users", column: "employee_id"

@@ -3,7 +3,6 @@ require 'rails_helper'
 module CoopConfigurationsModule
   describe Office do
     describe 'associations' do
-      it { is_expected.to belong_to :cash_in_vault_account }
       it { is_expected.to belong_to :cooperative }
       it { is_expected.to have_many :loans }
       it { is_expected.to have_many :savings }
