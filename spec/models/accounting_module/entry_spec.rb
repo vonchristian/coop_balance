@@ -24,15 +24,46 @@ module AccountingModule
 
     describe 'validations' do
       it { is_expected.to validate_presence_of :description }
+      it { is_expected.to validate_presence_of :previous_entry_id }
+      it { is_expected.to validate_presence_of :recorder_id }
       it { is_expected.to validate_presence_of :office_id }
       it { is_expected.to validate_presence_of :cooperative_id }
-      it '#has_credit_amounts' do
+
+      it '#has_credit_amounts?' do
         entry = build(:entry)
-        debit_amount = build(:debit_amount, entry: entry)
+        credit_amount = build(:credit_amount, entry: entry)
         entry.save
 
         expect(entry).to_not be_valid
       end
+
+      it '#has_debit_amounts?' do
+        entry = build(:entry)
+        debit_amount = build(:debit_amount, entry: entry, amount: 100)
+        entry.save
+
+        expect(entry).to_not be_valid
+      end
+
+      it "#amounts_cancel?" do
+        cooperative = create(:cooperative)
+        employee = create(:user, role: 'teller', cooperative: cooperative)
+        cash_on_hand = create(:asset, name: "Cash on Hand")
+        revenue = create(:revenue)
+        deprecation = create(:asset)
+        property = create(:asset)
+        employee.cash_accounts << cash_on_hand
+
+        entry = build(:entry, cooperative: cooperative)
+        entry.debit_amounts.build(account: cash_on_hand)
+        entry.credit_amounts.build(account: revenue)
+        entry.save!
+
+        expect(entry).to be_valid
+
+
+      end
+
     end
 
     describe 'delegations' do
@@ -42,6 +73,12 @@ module AccountingModule
       it { is_expected.to delegate_method(:name).to(:office).with_prefix }
       it { is_expected.to delegate_method(:name).to(:commercial_document).with_prefix }
       it { is_expected.to delegate_method(:title).to(:cooperative_service).with_prefix }
+    end
+
+    describe 'nested_attributes' do
+      it { is_expected.to accept_nested_attributes_for(:debit_amounts) }
+      it { is_expected.to accept_nested_attributes_for(:credit_amounts) }
+
     end
 
     it "#entries_present?" do
@@ -271,6 +308,29 @@ module AccountingModule
           end
         end
       end
+    end
+    it '.without_cash_accounts' do
+      cooperative = create(:cooperative)
+      employee = create(:user, role: 'teller', cooperative: cooperative)
+      cash_on_hand = create(:asset, name: "Cash on Hand")
+      revenue = create(:revenue)
+      deprecation = create(:asset)
+      property = create(:asset)
+      employee.cash_accounts << cash_on_hand
+
+      entry_with_cash_account = build(:entry, cooperative: cooperative)
+      entry_with_cash_account.debit_amounts.build(account: cash_on_hand)
+      entry_with_cash_account.credit_amounts.build(account: revenue)
+      entry_with_cash_account.save
+
+      entry_without_cash_account = build(:entry, cooperative: cooperative, previous_entry: entry_with_cash_account)
+      entry_without_cash_account.debit_amounts.build(account: deprecation)
+      entry_without_cash_account.credit_amounts.build(account: property)
+      entry_without_cash_account.save
+
+      expect(described_class.without_cash_accounts).to include(entry_without_cash_account)
+      expect(described_class.without_cash_accounts).to_not include(entry_with_cash_account)
+
     end
   end
 end

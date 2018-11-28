@@ -68,7 +68,7 @@ module AccountingModule
 
     def self.without_cash_accounts
       entries = []
-      self.all.each do |entry|
+      self.find_each.each do |entry|
         if (entry.amounts.pluck(:account_id) & accounts.cash_accounts.ids).empty?
           entries << entry
         end
