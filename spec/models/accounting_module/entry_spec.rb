@@ -26,13 +26,22 @@ module AccountingModule
       it { is_expected.to validate_presence_of :description }
       it { is_expected.to validate_presence_of :office_id }
       it { is_expected.to validate_presence_of :cooperative_id }
+      it '#has_credit_amounts' do
+        entry = build(:entry)
+        debit_amount = build(:debit_amount, entry: entry)
+        entry.save
+
+        expect(entry).to_not be_valid
+      end
     end
 
     describe 'delegations' do
       it { is_expected.to delegate_method(:first_and_last_name).to(:recorder).with_prefix }
+      it { is_expected.to delegate_method(:name).to(:recorder).with_prefix }
       it { is_expected.to delegate_method(:name).to(:cooperative).with_prefix }
       it { is_expected.to delegate_method(:name).to(:office).with_prefix }
       it { is_expected.to delegate_method(:name).to(:commercial_document).with_prefix }
+      it { is_expected.to delegate_method(:title).to(:cooperative_service).with_prefix }
     end
 
     it "#entries_present?" do
@@ -44,7 +53,7 @@ module AccountingModule
       expect(origin_entry.entries_present?).to eql true
     end
 
-    it "#digestable" do
+    it "#hashes_valid?" do
       date =  Date.today.strftime("%B %e, %Y")
       AccountingModule::Entry.destroy_all
       cooperative = create(:cooperative, id: '76b0ff55-2ede-45c1-87f9-c02ec497fe59')
@@ -132,6 +141,16 @@ module AccountingModule
 
         expect(described_class.not_cancelled).to include(entry)
         expect(described_class.not_cancelled).to_not include(cancelled_entry)
+      end
+
+      it '.cancelled' do
+        cooperative = create(:cooperative)
+        origin_entry = create(:origin_entry, cooperative: cooperative, created_at: Date.today.last_month)
+        not_cancelled_entry = create(:entry_with_credit_and_debit, cancelled: false, cooperative: cooperative, previous_entry: origin_entry)
+        cancelled_entry = create(:entry_with_credit_and_debit, cancelled: true, cancelled_at: Date.today, cancellation_description: 'wrong entry', previous_entry: not_cancelled_entry, cooperative: cooperative)
+
+        expect(described_class.cancelled).to_not include(not_cancelled_entry)
+        expect(described_class.cancelled).to include(cancelled_entry)
       end
 
       it '.recorder_by(args={})' do

@@ -51,6 +51,10 @@ module AccountingModule
       where(cancelled: false)
     end
 
+    def self.cancelled
+      where(cancelled: true)
+    end
+
     def self.not_archived
       where(archived: false)
     end
