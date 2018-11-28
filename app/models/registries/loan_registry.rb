@@ -40,7 +40,7 @@ module Registries
         commercial_document: loan.borrower,
         previous_entry: find_cooperative.entries.recent,
         description: "Forwarded loan balance as of #{cut_off_date.strftime('%B %e, %Y')}",
-        entry_date: cut_off_date,
+        entry_date: cut_off_date(row),
         debit_amounts_attributes: [
           amount: loan_balance(row),
           account: find_loan_product(row).loans_receivable_current_account,
@@ -68,8 +68,8 @@ module Registries
       find_cooperative.loan_products.find_by(name: row["Loan Product"])
     end
 
-    def cut_off_date
-      Chronic.parse('09/30/2018')
+    def cut_off_date(row)
+      Date.parse(row['Cut-off Date'])
     end
 
     def find_organization(row)

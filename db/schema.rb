@@ -414,14 +414,6 @@ ActiveRecord::Schema.define(version: 2018_11_28_000146) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "interest_amortization_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.integer "amortization_type"
-    t.string "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["amortization_type"], name: "index_interest_amortization_configs_on_amortization_type"
-  end
-
   create_table "interest_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "loan_product_id"
     t.decimal "rate"
@@ -1116,8 +1108,8 @@ ActiveRecord::Schema.define(version: 2018_11_28_000146) do
     t.string "account_number"
     t.datetime "date_opened"
     t.string "account_owner_name"
-    t.datetime "created_at", default: "2018-11-09 08:12:49", null: false
-    t.datetime "updated_at", default: "2018-11-09 08:12:49", null: false
+    t.datetime "created_at", default: "2018-11-28 05:22:59", null: false
+    t.datetime "updated_at", default: "2018-11-28 05:22:59", null: false
     t.integer "status"
     t.uuid "office_id"
     t.string "subscriber_type"

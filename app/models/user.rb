@@ -63,9 +63,6 @@ class User < ApplicationRecord
 
   before_save :set_default_image, on: :create
 
-
-
-  # before_save :set_default_image
   def self.has_birthdays_on(month)
     where(birth_month: month).order(:birth_day)
   end
