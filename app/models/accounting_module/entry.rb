@@ -51,6 +51,14 @@ module AccountingModule
       where(cancelled: false)
     end
 
+    def self.not_archived
+      where(archived: false)
+    end
+
+    def self.archived
+      where(archived: true)
+    end
+
 
     def self.entered_on(args={})
       EntriesQuery.new.entered_on(args)

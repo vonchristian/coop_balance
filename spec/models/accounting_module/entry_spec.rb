@@ -52,26 +52,26 @@ module AccountingModule
       employee = create(:user, role: 'teller', cooperative:cooperative, id: '76b0ff55-2ede-45c1-87f9-c02ec497fe59')
 
       genesis_account = cooperative.accounts.assets.create(name: "Genesis Account", active: false, code: "Genesis Code")
-  origin_entry = cooperative.entries.new(
-    office:              office,
-    cooperative:         cooperative,
-    commercial_document: cooperative,
-    description:         "Genesis entry",
-    recorder:            employee,
-    reference_number:    "Genesis",
-    previous_entry_id:   "",
-    previous_entry_hash:   "Genesis previous entry hash",
-    encrypted_hash:      "Genesis encrypted hash",
-    entry_date:         date)
-    origin_entry.debit_amounts.build(
+      origin_entry = cooperative.entries.new(
+      office:              office,
+      cooperative:         cooperative,
+      commercial_document: cooperative,
+      description:         "Genesis entry",
+      recorder:            employee,
+      reference_number:    "Genesis",
+      previous_entry_id:   "",
+      previous_entry_hash:   "Genesis previous entry hash",
+      encrypted_hash:      "Genesis encrypted hash",
+      entry_date:         date)
+      origin_entry.debit_amounts.build(
         account: genesis_account,
         amount: 0,
         commercial_document: cooperative)
-    origin_entry.credit_amounts.build(
+      origin_entry.credit_amounts.build(
         account: genesis_account,
         amount: 0,
         commercial_document: cooperative)
-  origin_entry.save!
+      origin_entry.save!
 
       employee_cash_account = create(:employee_cash_account, employee: employee)
       saving = create(:saving, cooperative: cooperative, id: '76b0ff55-2ede-45c1-87f9-c02ec497fe59')
@@ -90,13 +90,30 @@ module AccountingModule
       deposit.debit_amounts << build(:debit_amount, amount: 5_000, commercial_document: saving, account: employee_cash_account.cash_account)
       deposit.save!
 
-      puts deposit.digestable
-      puts Digest::SHA256.hexdigest(deposit.digestable)
-      puts deposit.encrypted_hash
-
+      expect(deposit.encrypted_hash).to eql Digest::SHA256.hexdigest(deposit.digestable)
     end
 
     context 'scopes' do
+      it '.not_archived' do
+        cooperative = create(:cooperative)
+        origin_entry = create(:origin_entry, cooperative: cooperative, created_at: Date.today.last_month)
+        unarchived_entry = create(:entry_with_credit_and_debit, cooperative: cooperative, previous_entry: origin_entry, archived: false)
+        archived_entry = create(:entry_with_credit_and_debit, cooperative: cooperative, previous_entry: unarchived_entry, archived: true)
+
+        expect(described_class.not_archived).to include(unarchived_entry)
+        expect(described_class.not_archived).to_not include(archived_entry)
+      end
+
+      it '.archived' do
+        cooperative = create(:cooperative)
+        origin_entry = create(:origin_entry, cooperative: cooperative, created_at: Date.today.last_month)
+        unarchived_entry = create(:entry_with_credit_and_debit, cooperative: cooperative, previous_entry: origin_entry, archived: false)
+        archived_entry = create(:entry_with_credit_and_debit, cooperative: cooperative, previous_entry: unarchived_entry, archived: true)
+
+        expect(described_class.archived).to include(archived_entry)
+        expect(described_class.archived).to_not include(unarchived_entry)
+      end
+
       it '.recent' do
         cooperative = create(:cooperative)
         origin_entry = create(:origin_entry, cooperative: cooperative, created_at: Date.today.last_month)

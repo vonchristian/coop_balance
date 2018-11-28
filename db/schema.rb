@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_26_124744) do
+ActiveRecord::Schema.define(version: 2018_11_28_000146) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -373,6 +373,7 @@ ActiveRecord::Schema.define(version: 2018_11_26_124744) do
     t.uuid "previous_entry_id"
     t.string "previous_entry_hash"
     t.string "encrypted_hash"
+    t.boolean "archived", default: false
     t.index ["cancelled_by_id"], name: "index_entries_on_cancelled_by_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_entry"
     t.index ["cooperative_id"], name: "index_entries_on_cooperative_id"

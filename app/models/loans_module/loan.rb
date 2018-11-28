@@ -116,10 +116,10 @@ module LoansModule
       ids = pluck(:id)
       LoansModule::LoanProduct.total_debits_balance(commercial_document: ids)
     end
-    
+
      def self.total_credits_balance
-      ids = pluck(:id)
-      LoansModule::LoanProduct.total_credits_balance(commercial_document: ids)
+      loans = pluck(:id)
+      LoansModule::LoanProduct.total_credits_balance(commercial_document: loans)
     end
 
     def self.not_archived
