@@ -103,8 +103,6 @@ module AccountingModule
       expect(asset.account_name).to eql "Cash on Hand"
     end
 
-
-
     let(:account) { build(:account) }
     subject { account }
 

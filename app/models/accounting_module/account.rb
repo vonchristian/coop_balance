@@ -29,7 +29,7 @@ module AccountingModule
     def self.cash_accounts
       Employees::EmployeeCashAccount.cash_accounts
     end
-    
+
     def self.active
       where(active: true)
     end
@@ -53,9 +53,8 @@ module AccountingModule
     end
 
     def set_as_inactive
-      if balance == 0
-        self.active = false
-        self.save
+      if balance.zero?
+        self.update_attributes(active: false)
       else
         false
       end
