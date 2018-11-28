@@ -21,8 +21,13 @@ module AccountingModule
     end
 
     def self.excluding_account(args={})
-      where.not(account: args[:account])
+      where.not(account_id: args[:account_id])
     end
+
+    def self.without_cash_accounts
+      excluding_account(account_id: Employees::EmployeeCashAccount.cash_accounts.ids)
+    end
+
 
     def self.total_cash_amount
       where(account: Employees::EmployeeCashAccount.cash_accounts).total

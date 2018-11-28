@@ -2,7 +2,7 @@ module AccountingModule
   class EntryLineItemsController < ApplicationController
     def new
       @line_item = Vouchers::VoucherAmountProcessing.new
-      @entry = Vouchers::EntryProcessing.new
+      @voucher = Vouchers::VoucherProcessing.new
     end
     def create
       @line_item = Vouchers::VoucherAmountProcessing.new(disbursement_params)
@@ -26,4 +26,3 @@ module AccountingModule
     end
   end
 end
-

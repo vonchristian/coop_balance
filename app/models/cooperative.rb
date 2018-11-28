@@ -11,6 +11,10 @@ class Cooperative < ApplicationRecord
   has_many :bank_accounts
   has_many :loans,                  class_name: "LoansModule::Loan"
   has_many :entries,                class_name: "AccountingModule::Entry"
+  has_many :amounts,                class_name: "AccountingModule::Amount", through: :entries
+  has_many :debit_amounts,          class_name: "AccountingModule::DebitAmount", through: :entries
+  has_many :credit_amounts,         class_name: "AccountingModule::CreditAmount", through: :entries
+
   has_many :organizations
   has_many :vouchers
   has_many :voucher_amounts,        class_name: "Vouchers::VoucherAmount"
@@ -27,7 +31,7 @@ class Cooperative < ApplicationRecord
   has_many :municipalities,         class_name: "Addresses::Municipality"
   has_many :loan_applications,      class_name: "LoansModule::LoanApplication"
   has_many :employee_cash_accounts, class_name: "Employees::EmployeeCashAccount"
-  has_many :cash_accounts,          through: :employee_cash_accounts, class_name: "AccountingModule::Account"
+  has_many :cash_accounts,          through: :employee_cash_accounts, source: :cash_account, class_name: "AccountingModule::Account"
   has_many :amortization_schedules, class_name: "LoansModule::AmortizationSchedule"
   has_many :registries
   has_many :loan_registries,         class_name: "Registries::LoanRegistry"

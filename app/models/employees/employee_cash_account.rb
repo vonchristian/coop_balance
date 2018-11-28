@@ -7,6 +7,7 @@ module Employees
     delegate :name, to: :cash_account
     validates :cash_account_id, uniqueness: { scope: :employee_id, message: "Already taken" }
     validate :asset_account?
+
     def self.cash_accounts
       accounts = pluck(:cash_account_id)
       AccountingModule::Asset.where(id: accounts)

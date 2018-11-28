@@ -17,7 +17,9 @@ module Vouchers
         commercial_document: find_employee,
         recorder: find_employee
         )
-      create_cash_account_line_item
+        if cash_account_id.present?
+          create_cash_account_line_item
+        end
     end
     def create_cash_account_line_item
       voucher_amounts = find_employee.voucher_amounts.where(account: cash_account)

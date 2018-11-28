@@ -10,7 +10,7 @@ module AccountingModule
     has_many :amounts,              class_name: "AccountingModule::Amount"
     has_many :credit_amounts,       :extend => AccountingModule::BalanceFinder, :class_name => 'AccountingModule::CreditAmount'
     has_many :debit_amounts,        :extend => AccountingModule::BalanceFinder, :class_name => 'AccountingModule::DebitAmount'
-    has_many :entries,              through: :amounts, source: :entry
+    has_many :entries,              through: :amounts, source: :entry, class_name: "AccountingModule::Entry"
     has_many :credit_entries,       :through => :credit_amounts, :source => :entry, :class_name => 'AccountingModule::Entry'
     has_many :debit_entries,        :through => :debit_amounts, :source => :entry, :class_name => 'AccountingModule::Entry'
     has_many :subsidiary_accounts,  class_name: "AccountingModule::Account", foreign_key: 'main_account_id'
@@ -26,7 +26,10 @@ module AccountingModule
     scope :revenues,    -> { where(type: 'AccountingModule::Revenue') }
     scope :expenses,    -> { where(type: 'AccountingModule::Expense') }
 
-
+    def self.cash_accounts
+      Employees::EmployeeCashAccount.cash_accounts
+    end
+    
     def self.active
       where(active: true)
     end
@@ -82,6 +85,16 @@ module AccountingModule
         end
       end
       accounts_balance
+    end
+
+    def self.except_account(args={})
+      accounts = args[:account]
+      where.not(id: accounts)
+    end
+
+    def self.entries(args={})
+      ids = AccountingModule::Amount.for_account(account_id: self.pluck(:id)).pluck(:entry_id)
+      AccountingModule::Entry.where(id: ids)
     end
 
     def self.credit_entries(args={})
@@ -140,6 +153,7 @@ module AccountingModule
       revenues.balance(args) -
       expenses.balance(args)
     end
+
     def self.total_equity_and_liabilities(args={})
       equities.balance(args) +
       liabilities.balance(args)

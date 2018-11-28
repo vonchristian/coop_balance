@@ -43,6 +43,7 @@ module AccountingModule
     delegate :name, to: :commercial_document, prefix: true, allow_nil: true
     delegate :title, to: :cooperative_service, prefix: true, allow_nil: true
 
+
     def self.recent
       order(created_at: :desc).first
     end
@@ -53,6 +54,26 @@ module AccountingModule
 
     def self.cancelled
       where(cancelled: true)
+    end
+
+    def self.amounts
+      ids = self.pluck(:id)
+      AccountingModule::Amount.where(entry_id: ids)
+    end
+
+    def self.accounts
+      accounts = amounts.pluck(:account_id)
+      AccountingModule::Account.where(id: accounts)
+    end
+
+    def self.without_cash_accounts
+      entries = []
+      self.all.each do |entry|
+        if (entry.amounts.pluck(:account_id) & accounts.cash_accounts.ids).empty?
+          entries << entry
+        end
+      end
+      entries
     end
 
     def self.not_archived

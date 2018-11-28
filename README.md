@@ -1,3 +1,7 @@
+Cash Receipts Journal (CRJ)
+Cash Disbursements Journal (CDJ)
+Journal Entry Vouchers (JEV)
+
 move loan product to coop services module
 Add qr code for payment
 
