@@ -102,11 +102,19 @@ module LoansModule
     end
 
     def second_year_interest
-      (amortization_schedules.take(term - 12).sum(&:principal) * current_interest_config_rate).to_f
+      if term_is_within_two_years?
+        (amortization_schedules.take(term - 12).sum(&:principal) * current_interest_config_rate).to_f
+      else
+        0
+      end
     end
 
     def third_year_interest
-      (amortization_schedules.take(term - 24).sum(&:principal) * current_interest_config_rate).to_f
+      if term_is_within_three_years?
+        (amortization_schedules.take(term - 24).sum(&:principal) * current_interest_config_rate).to_f
+      else
+        0
+      end
     end
 
 
