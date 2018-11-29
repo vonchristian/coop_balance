@@ -6,6 +6,7 @@ module LoansModule
     include LoansModule::Loans::Principal
     include LoansModule::Loans::Penalty
     include LoansModule::Loans::Amortization
+    include InactivityMonitoring
 
     pg_search_scope :text_search, :against => [:borrower_full_name, :tracking_number]
     multisearchable against: [:borrower_full_name]

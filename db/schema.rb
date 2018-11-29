@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_28_230209) do
+ActiveRecord::Schema.define(version: 2018_11_28_233426) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -412,14 +412,6 @@ ActiveRecord::Schema.define(version: 2018_11_28_230209) do
     t.decimal "number_of_days"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "interest_amortization_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.integer "amortization_type"
-    t.string "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["amortization_type"], name: "index_interest_amortization_configs_on_amortization_type"
   end
 
   create_table "interest_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -880,13 +872,14 @@ ActiveRecord::Schema.define(version: 2018_11_28_230209) do
   end
 
   create_table "ownerships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "owner_type"
     t.uuid "owner_id"
     t.string "ownable_type"
     t.uuid "ownable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["ownable_type", "ownable_id"], name: "index_ownerships_on_ownable_type_and_ownable_id"
-    t.index ["owner_id"], name: "index_ownerships_on_owner_id"
+    t.index ["owner_type", "owner_id"], name: "index_ownerships_on_owner_type_and_owner_id"
   end
 
   create_table "penalty_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1062,17 +1055,6 @@ ActiveRecord::Schema.define(version: 2018_11_28_230209) do
     t.index ["saving_product_id"], name: "index_savings_account_applications_on_saving_product_id"
   end
 
-  create_table "savings_account_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.decimal "closing_account_fee"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.uuid "closing_account_id"
-    t.decimal "number_of_days_to_be_dormant"
-    t.uuid "interest_expense_account_id"
-    t.index ["closing_account_id"], name: "index_savings_account_configs_on_closing_account_id"
-    t.index ["interest_expense_account_id"], name: "index_savings_account_configs_on_interest_expense_account_id"
-  end
-
   create_table "share_capital_applications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "subscriber_type"
     t.uuid "subscriber_id"
@@ -1115,8 +1097,8 @@ ActiveRecord::Schema.define(version: 2018_11_28_230209) do
     t.string "account_number"
     t.datetime "date_opened"
     t.string "account_owner_name"
-    t.datetime "created_at", default: "2018-11-07 11:18:55", null: false
-    t.datetime "updated_at", default: "2018-11-07 11:18:55", null: false
+    t.datetime "created_at", default: "2018-11-28 23:36:36", null: false
+    t.datetime "updated_at", default: "2018-11-28 23:36:36", null: false
     t.integer "status"
     t.uuid "office_id"
     t.string "subscriber_type"
@@ -1511,8 +1493,6 @@ ActiveRecord::Schema.define(version: 2018_11_28_230209) do
   add_foreign_key "savings", "saving_products"
   add_foreign_key "savings_account_applications", "cooperatives"
   add_foreign_key "savings_account_applications", "saving_products"
-  add_foreign_key "savings_account_configs", "accounts", column: "closing_account_id"
-  add_foreign_key "savings_account_configs", "accounts", column: "interest_expense_account_id"
   add_foreign_key "share_capital_applications", "cooperatives"
   add_foreign_key "share_capital_applications", "offices"
   add_foreign_key "share_capital_applications", "share_capital_products"

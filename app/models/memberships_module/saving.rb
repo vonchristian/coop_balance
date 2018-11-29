@@ -2,21 +2,23 @@ module MembershipsModule
   class Saving < ApplicationRecord
     include PgSearch
     include InactivityMonitoring
+
     pg_search_scope :text_search, against: [:account_number, :account_owner_name]
     multisearchable against: [:account_number, :account_owner_name]
+
     belongs_to :cooperative
     belongs_to :cart, optional: true, class_name: "StoreFrontModule::Cart"
     belongs_to :barangay, optional: true, class_name: "Addresses::Barangay"
     belongs_to :depositor,        polymorphic: true,  touch: true
     has_many :ownerships, as: :ownable
-    has_many :co_depositors, through: :ownerships, source: :owner
+    has_many :member_co_depositors, through: :ownerships, source: :owner, source_type: "Member"
 
     belongs_to :saving_product,   class_name: "CoopServicesModule::SavingProduct"
     belongs_to :office,           class_name: "CoopConfigurationsModule::Office"
     has_many :debit_amounts,      class_name: "AccountingModule::DebitAmount", as: :commercial_document
     has_many :credit_amounts,      class_name: "AccountingModule::CreditAmount", as: :commercial_document
 
-    delegate :name, :current_occupation, to: :depositor, prefix: true, allow_nil: true
+    delegate :name, :current_occupation, to: :depositor, prefix: true
     delegate :name,
              :closing_account,
              :closing_account_fee,
@@ -110,8 +112,8 @@ module MembershipsModule
       saving_product_account.debits_balance(commercial_document: self)
     end
 
-    def interests_earned
-      saving_product_interest_expense_account.debits_balance(commercial_document: self)
+    def interests_earned(args={})
+      saving_product_interest_expense_account.debits_balance(commercial_document: self, from_date: args[:from_date], to_date: args[:to_date])
     end
 
     def can_withdraw?
