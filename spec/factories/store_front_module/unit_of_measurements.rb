@@ -3,13 +3,13 @@ FactoryBot.define do
     product nil
     code "kg"
     description "MyString"
-    quantity 1
+    base_quantity 1
     conversion_quantity 50
     base_measurement false
 
     factory :base_measurement do
       base_measurement true
-      quantity 1
+      base_quantity 1
     end
     factory :measurement_with_conversion_multiplier do
       base_measurement false

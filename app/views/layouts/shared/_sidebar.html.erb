@@ -27,7 +27,9 @@
       <% end %>
       <% if current_user.bookkeeper? %>
         <%=render 'layouts/shared/sidebar_links/accounting_department' %>
-
+      <% end %>
+      <% if current_user.sales_clerk? %>
+        <%= render 'layouts/shared/sidebar_links/store_department' %>
       <% end %>
     </ul>
   </nav>

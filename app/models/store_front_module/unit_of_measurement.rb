@@ -3,18 +3,25 @@ module StoreFrontModule
     belongs_to :product
     has_many :mark_up_prices, class_name: "StoreFrontModule::MarkUpPrice",
                               dependent: :destroy
+    validates :code, :base_quantity, presence: true
+    delegate :price, to: :current_mark_up_price
 
     def self.base_measurement
-      where(base_measurement: true).order(created_at: :asc).last
+      where(base_measurement: true)
     end
 
-    def price
-      mark_up_prices.current.try(:price)
+    def self.recent
+      order(created_at: :desc).first
     end
 
-    def quantity_and_code
-      "#{quantity} / #{code}"
+    def current_mark_up_price
+      mark_up_prices.current
     end
+
+    def base_quantity_and_code
+      "#{base_quantity} / #{code}"
+    end
+
 
     def base_selling_price
       if base_measurement?
@@ -26,9 +33,9 @@ module StoreFrontModule
 
     def conversion_multiplier
       if base_measurement?
-        quantity
+        base_quantity
       else
-        conversion_quantity || 1
+        conversion_quantity
       end
     end
   end

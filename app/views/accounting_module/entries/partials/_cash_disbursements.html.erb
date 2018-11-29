@@ -1,0 +1,28 @@
+<div class="card">
+  <div class="card-header">
+    <div class="row">
+      <div class="col-md-3">
+        <h3 class="card-title"> Cash Disbursements </h3>
+        <% if @from_date && @to_date %>
+          <p class="text-muted"> <%= @from_date.strftime("%B %e, %Y") %> - <%= @to_date.strftime("%B %e, %Y") %></p>
+        <% end %>
+      </div>
+      <div class="col-md-6">
+        <%=form_tag accounting_module_cash_disbursements_path, method: :get, class: "sidebar-form" do %>
+          <div class="input-group">
+            <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Entry...", id: 'taxpayer-search-form' %>
+            <span class="input-group-btn">
+              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                <i class="fa fa-search"></i>
+              <% end %>
+            </span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <p class="text-muted"> Filter by Account </p>
+    <% current_cooperative.cash_accounts.each do |cash_account| %>
+      <%= link_to cash_account.name,  accounting_module_cash_receipts_path(account_id: cash_account.id), class: "btn btn-sm btn-outline-primary" %>
+    <% end %>
+  </div>
+</div>

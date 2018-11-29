@@ -1,3 +1,8 @@
+clean up
+  controllers
+  views
+  forms
+  
 Cash Receipts Journal (CRJ)
 Cash Disbursements Journal (CDJ)
 Journal Entry Vouchers (JEV)

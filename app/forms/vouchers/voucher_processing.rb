@@ -18,7 +18,6 @@ module Vouchers
     def create_voucher
        voucher = Voucher.create!(
         payee: find_payee,
-        cooperative: find_employee.cooperative,
         cooperative_service_id: cooperative_service_id,
         office: find_employee.office,
         cooperative: find_employee.cooperative,

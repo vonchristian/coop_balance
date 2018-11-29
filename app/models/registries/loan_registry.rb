@@ -13,7 +13,6 @@ module Registries
     private
     def upload_loan(row)
         loan = find_cooperative.loans.create!(
-          loan_amount: loan_amount(row),
           forwarded_loan: true,
           cooperative: self.employee.cooperative,
           office: self.employee.office,

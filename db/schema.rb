@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_28_233426) do
+ActiveRecord::Schema.define(version: 2018_11_29_130555) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -918,10 +918,6 @@ ActiveRecord::Schema.define(version: 2018_11_28_233426) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "photo_file_name"
-    t.string "photo_content_type"
-    t.bigint "photo_file_size"
-    t.datetime "photo_updated_at"
     t.string "name"
     t.uuid "category_id"
     t.string "unit_of_measurement"
@@ -1277,11 +1273,11 @@ ActiveRecord::Schema.define(version: 2018_11_28_233426) do
     t.uuid "product_id"
     t.string "code"
     t.string "description"
-    t.decimal "quantity"
-    t.decimal "conversion_quantity"
     t.boolean "base_measurement", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "base_quantity"
+    t.decimal "conversion_quantity", default: "1.0"
     t.index ["product_id"], name: "index_unit_of_measurements_on_product_id"
   end
 

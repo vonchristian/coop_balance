@@ -4,8 +4,6 @@ Rails.application.routes.draw do
   authenticated :user do
     root :to => 'members#index'
   end
-
-  resources :customer_registrations, only: [:new, :create]
   resources :home, only: [:index]
 
   resources :accounting_module, only: [:index]
@@ -16,7 +14,6 @@ Rails.application.routes.draw do
 
     resources :adjusting_entries, only: [:new, :create]
     resources :interests_earned_postings, only: [:create]
-    resources :schedules, only: [:index]
     resources :entry_line_items, only: [:new, :create, :destroy]
     resources :entry_processings, only: [:create]
     resources :financial_condition_comparisons, only: [:new, :create, :show]
@@ -28,10 +25,9 @@ Rails.application.routes.draw do
       resources :balance_sheets,       only: [:index]
       resources :financial_conditions, only: [:index]
     end
-    resources :offices, only: [:index, :show]
     resources :settings, only: [:index]
     resources :loan_protection_fund_configs, only: [:new, :create]
-    resources :accounts do
+    resources :accounts, except: [:index,:destroy] do
       resources :activations, only: [:create], module: :accounts
       resources :deactivations, only: [:create], module: :accounts
       resources :reports, only: [:index], module: :accounts
@@ -52,21 +48,14 @@ Rails.application.routes.draw do
     resources :organizations, only: [:index, :show] do
       resources :loans, only: [:index], module: :organizations
       resources :reports, only: [:index], module: :organizations
-      resources :loan_payments, only: [:index], module: :organizations
-      resources :loan_releases, only: [:index], module: :organizations
+    end
 
-    end
-    resources :voucher_amounts, shallow: true do
-      resources :amount_adjustments, only: [:new, :create], module: :loan_applications
-    end
     resources :archived_loans, only: [:index]
-
     resources :disbursement_vouchers, only: [:create]
     namespace :monitoring do
-      resources :disbursements, only: [:index]
-      resources :loan_product_portfolios, only: [:index]
-      resources :loans_per_barangays, only: [:index]
-      resources :loan_payments, only: [:index]
+
+
+
       resources :metrics, only: [:index]
     end
     resources :search_results, only: [:index]
@@ -78,14 +67,8 @@ Rails.application.routes.draw do
       resources :loan_collections, only: [:index]
     end
     resources :member_borrowers, only: [:index, :show]
-    resources :employee_borrowers, only: [:index, :show]
-    resources :organization_borrowers, only: [:index, :show]
-
     resources :reports, only: [:index]
-    resources :loan_registries, only: [:new, :create]
     resources :aging_loans, only: [:index, :show]
-    resources :loan_calculator, only: [:index]
-    resources :disbursement_vouchers, only: [:create], module: :loan_applications
     resources :loan_applications, only: [:index, :new, :create, :show, :destroy] do
       resources :capital_build_up_processings,       only: [:new, :create], module: :loan_applications
       resources :savings_account_deposit_processings, only: [:new, :create], module: :loan_applications
@@ -94,49 +77,33 @@ Rails.application.routes.draw do
 
     end
     resources :dashboard, only: [:index]
-    resources :loan_products, except:[:destroy] do
+    resources :loan_products, only:[:index] do
       resources :loans, only: [:index], module: :loan_products
     end
-    resources :adjustments, only: [:destroy]
-    resources :loan_charges do
-      resources :adjustments, only: [:new, :create], module: :loan_charges
-      resources :payment_schedules, only: [:new, :create], module: :schedules
-    end
 
-    resources :loans do
+    resources :loans, only: [:index, :show] do
       resources :organizations, only: [:edit, :update], module: :loans
       resources :loan_penalty_discounts, only: [:new, :create], module: :loans
       resources :loan_interest_discounts, only: [:new, :create], module: :loans
-      resources :first_notices, only: [:show], module: :notices
       resources :archivings, only: [:create], module: :loans
-      resources :savings_account_deposits,      only: [:new, :create], module: :loans
+
       resources :terms,                         only: [:new, :create], module: :loans
       resources :interest_postings,             only: [:new, :create], module: :loans
       resources :penalty_postings,              only: [:new, :create], module: :loans
       resources :interest_rebate_postings,      only: [:new, :create], module: :loans
-      resources :previous_loan_payments,        only: [:new, :create]
-      resources :store_credit_payments,         only: [:new, :create]
+
+
       resources :loan_protection_funds,         only: [:new, :create]
       resources :amortization_schedules,        only: [:index],        module: :loans
-      resources :first_notices,                 only: [:new, :create]
-      resources :processings,                   only: [:create]
-      resources :additional_charges,            only: [:new, :create]
-      resources :borrower_subscription_charges, only: [:new, :create]
+
+
+
       resources :payments,                      only: [:new, :create]
       resources :losses,                        only: [:new, :create], module: :loans
       resources :tracking_numbers,              only: [:edit, :update], module: :loans
     end
-    resources :members, only: [:index, :show] do
-      resources :loan_applications, only: [:new, :create], module: :member_loans
-      resources :real_properties, only: [:new, :create]
-    end
-    resources :settings, only: [:index]
-    resources :charges, only: [:new, :create]
-    resources :loan_product_charges, only: [:new, :create]
-    resources :loan_calculator, only: [:index]
-    resources :notices, only: [:index, :show]
   end
-  resources :share_capitals do
+  resources :share_capitals, only: [:index, :show] do
     resources :balance_transfer_destination_accounts, only: [:new, :create], module: :share_capitals
     resources :vouchers, only: [:show, :destroy], module: :share_capitals do
       resources :confirmations, only: [:create]
@@ -153,44 +120,39 @@ Rails.application.routes.draw do
     resources :offices, only: [:edit, :update], module: :share_capitals
     resources :balance_transfers, only: [:new, :create], module: :share_capitals
   end
-  resources :members do
+  resources :members, only: [:index, :show, :edit, :update] do
     resources :organizations,      only: [:new, :create], module: :members
     resources :beneficiaries,      only: [:new, :create, :destroy],  module: :members
     resources :merging_line_items, only: [:new, :create],  module: :members
     resources :mergings,         only: [:create],          module: :members
     resources :contacts,         only: [:new, :create],                 module: :members
     resources :tins,             only: [:new, :create],                 module: :members
-    resources :relationships,    only: [:new, :create],                 module: :members
     resources :time_deposits,    only: [:index, :new, :create],         module: :members
     resources :tins,             only: [:new, :create],                 module: :members
-    resources :offices,          only: [:new, :create, :edit, :update], module: :members
-    resources :addresses,        only: [:new, :create, :edit, :update], module: :members
+    resources :offices,          only: [:edit, :update], module: :members
+    resources :addresses,        only: [:new, :create], module: :members
     resources :memberships,      only: [:edit, :update, :new, :create], module: :members
     resources :info,             only: [:index],                        module: :members
     resources :settings,         only: [:index],                        module: :members
-    resources :loans,            only: [:index, :new, :create],         module: :members
-    resources :real_properties,  only: [:index, :new, :create],         module: :members
-    resources :share_capitals,   only: [:index, :new, :create],         module: :members
+    resources :loans,            only: [:index],         module: :members
+    resources :share_capitals,   only: [:index],         module: :members
     resources :occupations,      only: [:new, :create],                 module: :members
-    resources :share_capitals,   only: [:index, :new, :create]
     resources :savings_accounts, only: [:index],         module: :members
     resources :subscriptions,    only: [:index],                        module: :members
     resources :program_subscriptions,    only: [:create],                       module: :members
-
     resources :purchases,        only: [:index, :show],                 module: :members
     resources :account_mergings, only: [:new, :create],                 module: :members
-    resources :signature_specimens, module: :members
-    resources :avatars, module: :members
-    collection { post :import_member_profile}
+    resources :signature_specimens, only: [:create], module: :members
+    resources :avatars, only: [:create], module: :members
   end
   resources :member_registrations, only: [:new, :create]
 
   namespace :management_module do
     resources :account_budgets, only: [:index, :new, :create]
-    resources :savings_account_registries, only: [:new, :create]
-    resources :share_capital_registries, only: [:new, :create]
-    resources :loan_registries, only: [:new, :create]
-    resources :time_deposit_registries, only: [:new, :create]
+    resources :savings_account_registries, only: [:create]
+    resources :share_capital_registries, only: [:create]
+    resources :loan_registries, only: [:create]
+    resources :time_deposit_registries, only: [:create]
     resources :member_registries, only: [:create]
 
     namespace :settings do
@@ -208,16 +170,10 @@ Rails.application.routes.draw do
       resources :cooperatives, only: [:edit, :update, :show] do
         resources :offices, only: [:new, :create]
       end
-      resources :savings_account_configs, only: [:new, :create]
       resources :time_deposit_products, only: [:new, :create, :show]
     end
-    resources :accounting, only: [:index]
-    resources :share_capitals, only: [:index, :show]
     resources :employees, only: [:index, :show]
-    resources :savings, only: [:index, :show]
-    resources :time_deposits, only: [:index, :show]
-    resources :entries, only: [:index, :show]
-    resources :accounts, only: [:index, :show]
+
     resources :employees, only: [:new, :create], module: :settings
 
     resources :share_capital_products, only: [:new, :create], module: :settings do
@@ -226,25 +182,10 @@ Rails.application.routes.draw do
     resources :saving_products, only: [:new, :create], module: :settings
     resources :programs, only: [:new, :create], module: :settings
     resources :settings, only: [:index]
-    resources :members, only: [:index, :show, :new, :create] do
-      collection { post :import }
-      end
+
     resources :grace_periods, only: [:new, :create], module: :settings
   end
   resources :teller_module, only: [:index]
-  namespace :teller_module do
-
-    resources :members, only: [:index, :show, :new, :create] do
-      resources :savings, only: [:new, :create]
-      resources :time_deposits, only: [:new, :create]
-    end
-
-    resources :share_capitals, only: [:index, :show] do
-      resources :capital_build_ups, only: [:new, :create]
-    end
-
-    resources :entries, only: [:index, :show]
-  end
 
   resources :users, only: [:show]
 
@@ -260,13 +201,11 @@ Rails.application.routes.draw do
     end
     resources :purchases,                only: [:index, :show, :create],   module: :orders
     resources :sales,                    only: [:index, :show, :create],   module: :orders
-    resources :credit_sales,             only: [:index, :show, :create],   module: :orders
+    resources :credit_sales,             only: [:create],   module: :orders
     resources :sales_returns,            only: [:index, :show, :create],   module: :orders
-    resources :purchase_returns,         only: [:index, :show, :create],   module: :orders
-    resources :spoilages,                only: [:index, :show, :create],   module: :orders
-    resources :internal_uses,            only: [:index, :show, :create],   module: :orders
-    resources :stock_transfers,          only: [:index, :show, :create],   module: :orders
-    resources :received_stock_transfers, only: [:index, :show, :create],   module: :orders
+    resources :purchase_returns,         only: [:index, :create],   module: :orders
+    resources :spoilages,                only: [:index, :create],   module: :orders
+    resources :stock_transfers,          only: [:index],   module: :orders
 
     resources :purchase_line_items,                only: [:new, :create, :destroy], module: :line_items
     resources :sales_line_items,                   only: [:new, :create, :destroy], module: :line_items
@@ -284,12 +223,10 @@ Rails.application.routes.draw do
     resources :purchases_reports,         only: [:index], module: :reports
     resources :spoilages_reports,         only: [:index], module: :reports
 
-    resources :suppliers,      only: [:index, :new, :create]
     resources :employees,      only: [:show]
     resources :settings,       only: [:index]
-    resources :reports,        only: [:index]
+    resources :reports,         only: [:index]
     resources :search_results, only: [:index]
-    resources :members,        only: [:index, :show, :new, :create]
 
     resources :products, only: [:index, :show, :new, :create] do
       resources :purchases,                only: [:index, :new, :create], module: :products
@@ -303,7 +240,7 @@ Rails.application.routes.draw do
       resources :received_stock_transfers, only: [:index],                module: :products
       resources :unit_of_measurements, only: [:new, :create]
     end
-    resources :unit_of_measurements, shallow: true do
+    resources :unit_of_measurements, only: [:show] do
       resources :mark_up_prices, only: [:new, :create]
     end
     resources :customers, only: [:index, :show] do
@@ -315,12 +252,10 @@ Rails.application.routes.draw do
   resources :treasury_module, only: [:index]
   namespace :treasury_module do
     resources :cash_accounts, only: [:index, :show] do
-      resources :reports, only: [:index], module: :cash_accounts
       resources :cash_receipt_line_items, only: [:new, :create, :destroy], module: :cash_accounts
       resources :cash_disbursement_line_items, only: [:new, :create, :destroy], module: :cash_accounts
     end
 
-    resources :reports, only: [:index]
     resources :disbursements, only: [:index]
     resources :cash_receipts, only: [:index]
     resources :cash_disbursement_voucher_processings, only: [:create]
@@ -332,14 +267,6 @@ Rails.application.routes.draw do
     resources :cash_receipt_vouchers, only: [:show, :destroy] do
       resources :confirmations, only: [:create], module: :cash_receipt_vouchers
     end
-
-    resources :employees, only: [:index, :show] do
-      resources :remittances, only: [:new, :create]
-      resources :fund_transfers, only: [:new, :create]
-    end
-    resources :search_results, only: [:index]
-
-    resources :entries, only: [:index, :show]
   end
 
   resources :savings_accounts_dashboards, only: [:index]
@@ -367,26 +294,18 @@ Rails.application.routes.draw do
 
     resources :barangay_settings,  only: [:edit, :update], module: :savings_accounts
 
-    resources :voucher_confirmations, only: [:create, :show], module: :savings_accounts
+    resources :voucher_confirmations, only: [:create], module: :savings_accounts
   end
 
   resources :search_results, only: [:index, :show]
-  resources :occupations, only: [:index, :show]
-  resources :disbursements, only: [:index, :show, :new, :create]
-  resources :collections, only: [:index, :show]
-  resources :suppliers, only: [:index, :show, :new, :create, :edit, :update] do
+
+
+  resources :suppliers, only: [:index, :show, :new, :create] do
     resources :vouchers, only: [:index, :show, :new, :create], module: :suppliers
     resources :purchases, only: [:index, :new, :create], module: :suppliers
-    resources :purchase_processings, only: [:create], module: :suppliers
-    resources :delivery_vouchers, only: [:create], module: :suppliers
-    resources :purchase_returns, only: [:index, :new, :create], module: :suppliers
     resources :amounts, only: [:create, :destroy], module: :suppliers
   end
-  resources :registries, only: [:create]
 
-  resources :programs, only: [:index, :show] do
-    resources :payments, only: [:new, :create], module: :programs
-  end
   resources :time_deposits, only: [:index, :show] do
     resources :adjusting_entries, only: [:new, :create], module: :time_deposits
     resources :withdrawals, only: [:new, :create], module: :time_deposits
@@ -395,28 +314,26 @@ Rails.application.routes.draw do
     resources :settings, only: [:index], module: :time_deposits
   end
   resources :employees, only: [:index, :show, :edit, :update] do
-    resources :settings, only: [:index], module: :employees
-    resources :cash_accounts, only: [:new, :create, :destroy], module: :employees
-    resources :info, only: [:index], module: :employees
-    resources :blotters, only: [:index], module: :employees
-    resources :cash_disbursements, only: [:index], module: [:employees, :reports]
-    resources :cash_receipts, only: [:index], module: [:employees, :reports]
-    resources :loans, only: [:new, :create], module: :employees
-    resources :memberships, only: [:new, :create, :edit, :update], module: :employees
-
-    resources :time_deposits, only: [:index], module: :employees
-    resources :savings_accounts, only: [:index, :new, :create], module: :employees
-    resources :share_capitals, only: [:index, :new, :create], module: :employees
-    resources :entries, only: [:index, :show], module: :employees
-    resources :remittances, only: [:new, :create], module: :employees
-    resources :cash_transfers, only: [:new, :create], module: :employees
-    resources :vault_fund_transfers, only: [:new, :create], module: :employees
-    resources :reports, only: [:index], module: :employees
-    resources :vouchers, only: [:index, :new, :create], module: :employees
-    resources :amounts, only: [:new, :create, :destroy], module: :employees
-    resources :orders, only: [:index], module: :employees
-    resources :loans, only: [:index], module: :employees
-    resources :avatars, module: :employees
+    resources :settings,             only: [:index],                        module: :employees
+    resources :cash_accounts,        only: [:new, :create, :destroy],       module: :employees
+    resources :info,                 only: [:index],                        module: :employees
+    resources :blotters,             only: [:index],                        module: :employees
+    resources :cash_disbursements,   only: [:index],                        module: [:employees, :reports]
+    resources :cash_receipts,        only: [:index],                        module: [:employees, :reports]
+    resources :memberships,          only: [:new, :create, :edit, :update], module: :employees
+    resources :time_deposits,        only: [:index],                        module: :employees
+    resources :savings_accounts,     only: [:index],                        module: :employees
+    resources :share_capitals,       only: [:index],                        module: :employees
+    resources :entries,              only: [:index, :show],                 module: :employees
+    resources :remittances,          only: [:new, :create],                 module: :employees
+    resources :cash_transfers,       only: [:new, :create],                 module: :employees
+    resources :vault_fund_transfers, only: [:new, :create],                 module: :employees
+    resources :reports,              only: [:index],                        module: :employees
+    resources :vouchers,             only: [:index, :new, :create],         module: :employees
+    resources :amounts,              only: [:new, :create, :destroy],       module: :employees
+    resources :orders,               only: [:index],                        module: :employees
+    resources :loans,                only: [:index],                        module: :employees
+    resources :avatars,              only: [:create],                       module: :employees
   end
   resources :loans, only: [:index, :show] do
     resources :payment_vouchers, only: [:show], module: :loans
@@ -424,21 +341,14 @@ Rails.application.routes.draw do
     resources :notes,                 only: [:index, :new, :create],         module: :loans
     resources :barangays,             only: [:edit, :update],        module: :loans
     resources :settings,              only: [:index],                module: :loans
-    resources :real_properties,       only: [:new, :create, :show],  module: :loans
-    resources :loan_co_makers,        only: [:index, :new, :create], module: :loans
-    resources :approvals,             only: [:new, :create],         module: :loans
-    resources :disbursement_vouchers, only: [:new, :create, :show],  module: :loans
-    resources :payments,              only: [:index, :new, :create], module: :loans
-    resources :collaterals,           only: [:index, :new, :create], module: :loans
+    resources :payments,              only: [:index], module: :loans
   end
-
   resources :vouchers, only: [:index, :show, :destroy] do
-    resources :disbursements, only: [:new, :create], module: :vouchers
+    resources :disbursements, only: [:create], module: :vouchers
     resources :loan_disbursements, only: [:new, :create], module: :vouchers
 
   end
-  resources :voucher_amounts, only: [:destroy]
-  resources :bank_accounts, only: [:index, :show, :new, :create, :edit, :update] do
+  resources :bank_accounts, only: [:index, :show, :new, :create] do
     resources :vouchers, only: [:show, :destroy], module: :bank_accounts
     resources :voucher_confirmations, only: [:create], module: :bank_accounts
     resources :deposits, only: [:new, :create], module: :bank_accounts
@@ -458,13 +368,10 @@ Rails.application.routes.draw do
 
   end
 
-  resources :membership_applications, only: [:new, :create, :show] do
-    resources :contributions, only: [:new, :create], module: :membership_applications
-    resources :payments, only: [:new, :create], module: :membership_applications
-  end
+  resources :membership_applications, only: [:new, :create]
   resources :cooperatives, only: [:show] do
     resources :barangays, only: [:new, :create], module: :cooperatives
-    resources :logos, module: :cooperatives
+    resources :logos, only: [:create], module: :cooperatives
   end
 
   resources :monitoring, only: [:index]
@@ -482,18 +389,17 @@ Rails.application.routes.draw do
     resources :members, only: [:index], module: :barangays
   end
   resources :memberships, only: [:index, :show] do
-    resources :time_deposits, only: [:new, :create], module: :memberships
+
     resources :share_capital_subscriptions, only: [:new, :create], module: :memberships
     resources :program_subscriptions, only: [:create], module: :memberships do
       resources :payments, only: [:new, :create], module: :program_subscriptions
     end
   end
-  resources :cooperators, only: [:show]
   namespace :cooperators do
     resources :accounts, only: [:show]
-    resources :sign_ups, only: [:new, :create]
+    resources :sign_ups, only: [:new]
   end
-  resources :program_subscriptions, shallow: true do
+  resources :program_subscriptions, only: [:show] do
       resources :payments, only: [:new, :create], module: :program_subscriptions
     end
   resources :metrics, only: [:index]
@@ -535,12 +441,11 @@ Rails.application.routes.draw do
     resources :voucher_disbursements, only: [:create], module: :share_capital_applications
   end
 
-  resources :loan_applications, only: [:show] do
+  resources :loan_applications, only: [:destroy] do
     resources :vouchers, only: [:show], module: :loan_applications
     resources :voucher_confirmations, only: [:create], module: :loan_applications
   end
 
-  devise_for :member_accounts, controllers: { sessions: 'member_accounts/sessions', registrations: 'member_accounts/registrations'}
 
   authenticated :member_account do
     root to: 'member_accounts#show'

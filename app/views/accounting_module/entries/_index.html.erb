@@ -43,6 +43,10 @@
       <%= render 'accounting_module/entries/partials/all_entries', entries: @entries %>
     <% elsif current_page? accounting_module_cash_receipts_path %>
       <%= render 'accounting_module/entries/partials/cash_receipts', entries: @entries %>
+    <% elsif current_page? accounting_module_cash_disbursements_path %>
+      <%= render 'accounting_module/entries/partials/cash_disbursements', entries: @entries %>
+    <% elsif current_page? accounting_module_journal_entry_vouchers_path %>
+      <%= render 'accounting_module/entries/partials/journal_entry_vouchers', entries: @entries %>
     <% end %>
 
     <% entries.each do |entry| %>
