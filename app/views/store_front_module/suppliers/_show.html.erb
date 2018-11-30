@@ -1,21 +1,17 @@
+<%= render 'store_front_module/suppliers/partials/header', supplier: @supplier %>
 <div class="row">
-    <div class="col-md-12">
-      <div class="box box-default">
-      <div class="box-header">
-        <center>
-          <%= image_tag(@supplier.avatar, class: "img-responsive img-circle", height: 60, width: 60) %>
-          <h3 class="box-title"><%= @supplier.owner_name %></h3>
-        </center>
+  <div class="col-md-3">
+    <div class="card">
+      <div class="card-body">
+        <nav class="nav flex-column nav-pills">
+          <li class="nav-item"><%= link_to 'Info', store_front_module_supplier_path(@supplier), class: "nav-link #{ 'active' if current_page?(store_front_module_supplier_path(@supplier)) }" %></li>
+          <li class="nav-item"><%= link_to 'Purchases', store_front_module_supplier_purchase_deliveries_path(@supplier), class: "nav-link #{ 'active' if current_page?(store_front_module_supplier_purchase_deliveries_path(@supplier)) }" %></li>
+          <li class="nav-item"><%= link_to 'Vouchers', store_front_module_supplier_vouchers_path(@supplier), class: "nav-link #{'active' if current_page?(store_front_module_supplier_vouchers_path(@supplier)) }" %></li>
+        </nav>
       </div>
-
-      <div class="tab-content box-body">
-        <div class="nav-tabs-navigation">
-        <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
-          <li class="<%= 'active' if current_page?(store_front_module_supplier_path(@supplier))%>"><%= link_to 'Info', store_front_module_supplier_path(@supplier) %></li>
-          <li class="<%= 'active' if current_page?(store_front_module_supplier_purchase_deliveries_path(@supplier))%>"><%= link_to 'Purchases', store_front_module_supplier_purchase_deliveries_path(@supplier) %></li>
-          <li class="<%= 'active' if current_page?(store_front_module_supplier_vouchers_path(@supplier))%>"><%= link_to 'Vouchers', store_front_module_supplier_vouchers_path(@supplier) %></li>
-        </ul>
-      </div>
+    </div>
+  </div>
+  <div class="col-md-9">
         <% if current_page?(store_front_module_supplier_path(@supplier)) %>
           <%=render 'store_front_module/suppliers/partials/supplier_info' %>
         <% end %>

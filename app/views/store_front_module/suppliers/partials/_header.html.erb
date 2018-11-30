@@ -1,0 +1,14 @@
+<%= link_to store_front_module_supplier_path(supplier) do %>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-2">
+          <%= image_tag(supplier.avatar, class: "img-responsive img-circle", height: 40, width: 40) %>
+        </div>
+        <div class="col-md-4">
+          <%= supplier.business_name %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

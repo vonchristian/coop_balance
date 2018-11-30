@@ -1,0 +1,106 @@
+<div class="row">
+  <div class="col-md-8">
+    <div class="card card-solid">
+      <div class="card-header">
+        <h3 class="card-title"> New Voucher Details </h3>
+      </div>
+      <div class="card-body">
+        <div class="table table-responsive">
+          <table class="table table-hover">
+
+            <tbody>
+              <%= simple_form_for @amount, url: :store_front_module_supplier_voucher_amounts do |f| %>
+                <%= f.input :cooperative_id, input_html: { value: current_cooperative.id }, as: :hidden %>
+                <%= f.input :supplier_id, input_html: { value: @supplier.id }, as: :hidden %>
+
+              <div class="row">
+                <div class="col-md-5">
+                  <%= f.input :account_id, label: false, placeholder: "Account", collection: current_cooperative.accounts.except_account(account: current_cooperative.cash_accounts).map{|a| [a.name, a.id] }, prompt: "Select Account" %>
+                </div>
+                <div class="col-md-3">
+                  <%= f.input :amount, label: false, placeholder: 'Amount', as: :currency  %>
+                </div>
+                <div class="col-md-2">
+                  <%= f.input :amount_type, label: false, collection: Vouchers::VoucherAmount.amount_types.keys.to_a.map{|a| [a.titleize, a] } %>
+                </div>
+                <div class="col-md-2">
+                  <%= f.submit "Add", class: "btn btn-primary", data: { disable_with: "Adding..." } %>
+                </div>
+              </div>
+              <br>
+            <% end %>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th> Debit </th>
+                  <th> Account </th>
+                  <th> Credit </th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @supplier.voucher_amounts.each do |amount| %>
+                  <tr>
+                    <td>
+                      <% if amount.debit? %>
+                      <%= number_to_currency amount.amount %>
+                      <% end %>
+                    </td>
+                    <td><%= amount.account_name %></td>
+                    <td>
+                      <% if amount.credit? %>
+                        <%= number_to_currency amount.amount %>
+                      <% end %>
+                    </td>
+                    <td><%= link_to accounting_module_entry_line_item_path(amount), method: :delete do %>
+                      <span title="Remove" data-toggle="tooltip" class="fa fa-trash text-danger"></span>
+                    <% end %></td>
+                  </tr>
+                <% end %>
+                <tr>
+                  <td><b><%= number_to_currency @supplier.voucher_amounts.debit.sum(&:amount) %></b></td>
+                  <td></td>
+                  <td><b><%= number_to_currency @supplier.voucher_amounts.credit.sum(&:amount) %></b></td>
+              </tbody>
+            </table>
+        </div>
+      </div>
+    </div>
+  </div>
+    <div class="col-md-4">
+      <div class="card card-default">
+        <div class="card-header">
+          <center>
+            <%=image_tag(@supplier.avatar, class: "img-circle", height: 50, width: 50) %>
+            <p><%= @supplier.business_name.try(:upcase) %></p>
+          </center>
+        </div>
+        <div class="card-body">
+
+
+
+        <% if @supplier.voucher_amounts.present? %>
+          <%= simple_form_for @voucher, url: :store_front_module_supplier_vouchers do |f| %>
+          <tr>
+          <td><%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+          <%= f.input :description, as: :text %>
+          <%= f.input :supplier_id, input_html: { value: @supplier.id }, as: :hidden %>
+          <%= f.input :reference_number %>
+          <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
+
+          <%= f.input :preparer_id, input_html: { value: current_user.id }, as: :hidden %>
+          <div class="card-footer">
+            <%= f.submit "Create Voucher", class: "btn btn-primary pull-right" %>
+          </div>
+          <% end %>
+        <% end %>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#suppliers_voucher_amount_processing_account_id").select2({
+      theme: "bootstrap"
+    });
+    $("#suppliers_voucher_amount_processing_amount_type").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>

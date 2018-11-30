@@ -1,6 +1,6 @@
-<div class="tab-pane <%= 'active' if current_page?(supplier_purchases_path(@supplier))%>">
-            <%= link_to 'New Purchase', new_supplier_purchase_path(@supplier), class: "btn btn-primary btn-flat pull-right" %>
-            <%= link_to 'New Purchase Return', new_supplier_purchase_return_path(@supplier), class: "btn btn-primary btn-flat pull-right" %>
+<%=link_to 'New Purchase', new_store_front_module_supplier_purchase_line_item_path(@supplier), class: "btn btn-primary pull-right" %>
+
+            <%= link_to 'New Purchase Return', new_store_front_module_supplier_purchase_return_path(@supplier), class: "btn btn-primary btn-flat pull-right" %>
 
         <div class="table table-responsive">
           <table class="table table-hover table-striped">
@@ -29,5 +29,3 @@
 });
   $('.purchaseOrderIndex').css('cursor', 'pointer');
 </script>
-
-

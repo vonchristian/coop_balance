@@ -2,6 +2,7 @@ class Supplier < ApplicationRecord
   include PgSearch
   pg_search_scope :text_search, against: [:business_name]
   has_one_attached :avatar
+  belongs_to :cooperative
   has_many :addresses, as: :addressable
   has_many :entries,                class_name: "AccountingModule::Entry",
                                     as: :commercial_document

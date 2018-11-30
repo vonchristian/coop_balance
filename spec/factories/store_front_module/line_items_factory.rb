@@ -2,10 +2,11 @@ FactoryBot.define do
   factory :line_item, class: "StoreFrontModule::LineItem" do
     association :product
     association :unit_of_measurement
-    unit_cost "9.99"
-    total_cost "9.99"
-    date "2017-06-12 13:15:14"
-    expiry_date Date.today.next_year
+    quantity  { 1 }
+    unit_cost {"9.99"}
+    total_cost {"9.99"}
+    date {"2017-06-12 13:15:14"}
+    expiry_date {Date.today.next_year}
 
     factory :purchase_line_item_with_base_measurement, class: "StoreFrontModule::LineItems::PurchaseLineItem" do
       association :unit_of_measurement, factory: :base_measurement

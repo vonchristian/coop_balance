@@ -10,7 +10,8 @@
                      :cart_id,
                      :discount_amount,
                      :total_cost,
-                     :reference_number
+                     :reference_number,
+                     :cash_account_id
 
       validates :employee_id, :customer_id, :cash_tendered, :order_change, presence: true
 
@@ -37,7 +38,7 @@
       end
 
       def find_customer
-        Customer.find_by_id(customer_id)
+        Customer.find(customer_id)
       end
 
       def find_cart

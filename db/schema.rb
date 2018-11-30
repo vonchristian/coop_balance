@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_30_031825) do
+ActiveRecord::Schema.define(version: 2018_11_30_231138) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -347,6 +347,7 @@ ActiveRecord::Schema.define(version: 2018_11_30_031825) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "cooperative_id"
+    t.boolean "default_account", default: false
     t.index ["cash_account_id"], name: "index_employee_cash_accounts_on_cash_account_id"
     t.index ["cooperative_id"], name: "index_employee_cash_accounts_on_cooperative_id"
     t.index ["employee_id"], name: "index_employee_cash_accounts_on_employee_id"
@@ -469,7 +470,9 @@ ActiveRecord::Schema.define(version: 2018_11_30_031825) do
     t.uuid "purchase_line_item_id"
     t.uuid "sales_line_item_id"
     t.datetime "expiry_date"
+    t.uuid "cooperative_id"
     t.index ["cart_id"], name: "index_line_items_on_cart_id"
+    t.index ["cooperative_id"], name: "index_line_items_on_cooperative_id"
     t.index ["order_id"], name: "index_line_items_on_order_id"
     t.index ["product_id"], name: "index_line_items_on_product_id"
     t.index ["purchase_line_item_id"], name: "index_line_items_on_purchase_line_item_id"
@@ -921,7 +924,9 @@ ActiveRecord::Schema.define(version: 2018_11_30_031825) do
     t.string "name"
     t.uuid "category_id"
     t.string "unit_of_measurement"
+    t.uuid "cooperative_id"
     t.index ["category_id"], name: "index_products_on_category_id"
+    t.index ["cooperative_id"], name: "index_products_on_cooperative_id"
     t.index ["name"], name: "index_products_on_name", unique: true
   end
 
@@ -1166,6 +1171,8 @@ ActiveRecord::Schema.define(version: 2018_11_30_031825) do
     t.string "business_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "cooperative_id"
+    t.index ["cooperative_id"], name: "index_suppliers_on_cooperative_id"
   end
 
   create_table "terms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1358,7 +1365,11 @@ ActiveRecord::Schema.define(version: 2018_11_30_031825) do
     t.uuid "cooperative_id"
     t.string "account_number"
     t.uuid "cooperative_service_id"
+    t.string "reference_number"
+    t.string "commercial_document_type"
+    t.uuid "commercial_document_id"
     t.index ["account_number"], name: "index_vouchers_on_account_number", unique: true
+    t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_vouchers"
     t.index ["cooperative_id"], name: "index_vouchers_on_cooperative_id"
     t.index ["cooperative_service_id"], name: "index_vouchers_on_cooperative_service_id"
     t.index ["disburser_id"], name: "index_vouchers_on_disburser_id"
@@ -1412,6 +1423,7 @@ ActiveRecord::Schema.define(version: 2018_11_30_031825) do
   add_foreign_key "interest_configs", "cooperatives"
   add_foreign_key "interest_configs", "loan_products"
   add_foreign_key "line_items", "carts"
+  add_foreign_key "line_items", "cooperatives"
   add_foreign_key "line_items", "line_items", column: "referenced_line_item_id"
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items", "products"
@@ -1468,6 +1480,7 @@ ActiveRecord::Schema.define(version: 2018_11_30_031825) do
   add_foreign_key "penalty_configs", "cooperatives"
   add_foreign_key "penalty_configs", "loan_products"
   add_foreign_key "products", "categories"
+  add_foreign_key "products", "cooperatives"
   add_foreign_key "program_subscriptions", "programs"
   add_foreign_key "programs", "accounts"
   add_foreign_key "programs", "cooperatives"
@@ -1509,6 +1522,7 @@ ActiveRecord::Schema.define(version: 2018_11_30_031825) do
   add_foreign_key "store_fronts", "accounts", column: "spoilage_account_id"
   add_foreign_key "streets", "barangays"
   add_foreign_key "streets", "municipalities"
+  add_foreign_key "suppliers", "cooperatives"
   add_foreign_key "time_deposit_applications", "cooperatives"
   add_foreign_key "time_deposit_applications", "time_deposit_products"
   add_foreign_key "time_deposit_applications", "vouchers"

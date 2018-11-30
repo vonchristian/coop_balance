@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Voucher, type: :model do
   describe 'associations' do
+    it { is_expected.to belong_to :commercial_document }
     it { is_expected.to belong_to :cooperative }
     it { is_expected.to belong_to :cooperative_service }
     it { is_expected.to belong_to :office }
@@ -97,14 +98,19 @@ RSpec.describe Voucher, type: :model do
     it 'for first voucher' do
       Voucher.delete_all
       voucher = Voucher.new
-      Voucher.generate_number_for(voucher)
+      voucher.number = Voucher.generate_number
       voucher.save
       expect(voucher.number).to eql('000000000001')
     end
     it 'for succeeding voucher' do
+      Voucher.delete_all
+      voucher = Voucher.new
+      voucher.number = Voucher.generate_number
+      voucher.save
+      
       first_voucher = Voucher.create(number: '000000000001')
       second_voucher = Voucher.new
-      Voucher.generate_number_for(second_voucher)
+      second_voucher.number = Voucher.generate_number
       second_voucher.save
 
       expect(second_voucher.number).to eql('000000000002')

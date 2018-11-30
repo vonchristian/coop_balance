@@ -45,7 +45,9 @@ class Cooperative < ApplicationRecord
   has_many :time_deposit_applications
   has_many :branch_offices, class_name: "CoopConfigurationsModule::Offices::BranchOffice"
   has_many :satellite_offices, class_name: "CoopConfigurationsModule::Offices::SatelliteOffice"
-
+  has_many :suppliers
+  has_many :products, class_name: "StoreFrontModule::Product"
+  has_many :purchase_line_items, class_name: "StoreFrontModule::LineItems::PurchaseLineItem"
 
   validates :name, :abbreviated_name, presence: true
   validates :name, uniqueness: true

@@ -10,6 +10,7 @@ class Voucher < ApplicationRecord
   belongs_to :office, class_name: "CoopConfigurationsModule::Office"
   belongs_to :accounting_entry, class_name: "AccountingModule::Entry", foreign_key: 'entry_id'
   belongs_to :payee,         polymorphic: true
+  belongs_to :commercial_document, polymorphic: true #attaching voucher to orders
   belongs_to :preparer,      class_name: "User", foreign_key: 'preparer_id'
   belongs_to :disburser,     class_name: "User", foreign_key: 'disburser_id'
   has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", dependent: :destroy
@@ -66,7 +67,7 @@ class Voucher < ApplicationRecord
   end
 
   def number_and_total
-    "#{number} - #{total}"
+    "#{reference_number} - #{total}"
   end
 
   def self.disbursed
@@ -91,10 +92,13 @@ class Voucher < ApplicationRecord
     end
   end
 
+  def self.latest
+    order(created_at: :desc)
+  end
 
-  def self.generate_number_for(voucher)
-    return  voucher.number = Voucher.order(created_at: :asc).last.number.succ if Voucher.exists? && Voucher.order(created_at: :asc).last.number.present?
-    voucher.number = "000000000001"
+  def self.generate_number
+    return  latest.last.number.succ if self.exists? && latest.last.number.present?
+    "000000000001"
   end
 
   def valid_for?(cart)

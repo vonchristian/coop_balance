@@ -1,12 +1,12 @@
  <div class="col-md-8 col-md-offset-2">
-    <div class="box box-solid">
-      <div class="box-header bg-gray">
+    <div class="card card-solid">
+      <div class="card-header bg-gray">
         <center>
-          <h4><%= image_tag(@supplier.avatar.url(:medium), style: 'width:60px;height:60px;', class: 'media-object img-circle') %></h4>
+          <h4><%= image_tag(@supplier.avatar, style: 'width:60px;height:60px;', class: 'media-object img-circle') %></h4>
           <h3><%= @supplier.business_name %></h3>
         </center>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <div class="row">
           <div class="col-md-10 col-md-offset-1">
             <div class="row">
@@ -80,3 +80,12 @@
           </div>
         </div>
           <hr>
+          <%= render 'vouchers/partials/alert_message', voucher: @voucher %>
+          <%= render 'vouchers/partials/body', voucher: @voucher %>
+          <% if !@voucher.disbursed?%>
+              <%= link_to "Confirm", store_front_module_supplier_voucher_confirmations_path(voucher_id: @voucher.id, supplier_id: @supplier.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
+              <%= link_to "Cancel", store_front_module_supplier_voucher_path(id: @voucher.id, supplier_id: @supplier.id), method: :delete, class: "btn text-danger float-left" %>
+            </div>
+          <% else %>
+            <%= render 'vouchers/partials/status', voucher: @voucher %>
+          <% end %>

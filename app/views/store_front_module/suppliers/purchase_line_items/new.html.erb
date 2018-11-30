@@ -94,11 +94,11 @@
         <div class="box-body">
         <% if @purchase_line_items.present? %>
           <%= simple_form_for @purchase_order, url: :store_front_module_purchases do |f| %>
-            <%= f.input :supplier_id, collection: Supplier.all.map{|a| [ a.name, a.id] } %>
+            <%= f.input :supplier_id, input_html: { value: @supplier.id }, as: :hidden %>
             <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
-            
-            <%= f.input :description, as: :text %>
 
+            <%= f.input :description, as: :text %>
+            <%= f.input :voucher_id, collection: @supplier.vouchers.unused.map{|a| [a.number_and_total, a.id] } %>
             <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
             <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
         <%=f.submit "Save Purchase", class: "btn btn-primary btn-block btn-lg", :accesskey => "C" %>

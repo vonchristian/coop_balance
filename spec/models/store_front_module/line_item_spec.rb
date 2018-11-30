@@ -11,7 +11,14 @@ module StoreFrontModule
     describe 'validations' do
       it { is_expected.to validate_presence_of :unit_of_measurement_id }
       it { is_expected.to validate_presence_of :product_id }
+      it { is_expected.to validate_presence_of :quantity }
+      it { is_expected.to validate_presence_of :unit_cost }
+      it { is_expected.to validate_presence_of :total_cost }
+      it { is_expected.to validate_numericality_of :quantity }
+      it { is_expected.to validate_numericality_of :unit_cost }
+      it { is_expected.to validate_numericality_of :total_cost }
     end
+
     describe 'delegations' do
       it { is_expected.to delegate_method(:balance).to(:product).with_prefix }
       it { is_expected.to delegate_method(:conversion_multiplier).to(:unit_of_measurement) }
@@ -54,7 +61,7 @@ module StoreFrontModule
 
         expect(line_item.converted_quantity).to eql 100
       end
-      it "unit of measurement is has conversion" do
+      it "unit of measurement is not base measurement" do
         not_base_measurement = create(:unit_of_measurement, base_measurement: false, base_quantity: 1, conversion_quantity: 10)
         line_item = create(:line_item, unit_of_measurement: not_base_measurement, quantity: 100)
 

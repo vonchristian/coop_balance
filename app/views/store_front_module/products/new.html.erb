@@ -15,6 +15,7 @@
           <%= f.input :unit_of_measurement_code %>
           <%= f.input :unit_of_measurement_description %>
           <%= f.input :price, label: "Selling Price" %>
+          <%= f.input :cooperative_id, input_html: { value: current_cooperative.id }, as: :hidden %>
           <div class="card-footer">
             <%= f.submit "Create Product", class: "btn btn-primary pull-right" %>
           </div>

@@ -28,6 +28,7 @@
           </div>
            <div class="col-md-6">
             <%=f.input :contact_number %>
+            <%= f.input :cooperative_id, input_html: { value: current_cooperative.id }, as: :hidden %>
           </div>
         </div>
       <div class="modal-footer">

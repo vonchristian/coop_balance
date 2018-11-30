@@ -12,6 +12,7 @@ module StoreFrontModule
                                      foreign_key: 'order_id'
 
     validates :unit_of_measurement_id, :product_id, presence: true
+    validates :quantity, :unit_cost, :total_cost, presence: true, numericality: true
 
     delegate :name,                   to: :product
     delegate :code,                   to: :unit_of_measurement,
@@ -26,13 +27,15 @@ module StoreFrontModule
       where.not(order_id: nil)
     end
 
+    def self.unprocessed
+      where(order_id: nil)
+    end
+
     def self.total_converted_quantity
-      processed.
       sum(&:converted_quantity)
     end
 
     def self.total_cost
-      processed.
       sum(:total_cost)
     end
 

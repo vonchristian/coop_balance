@@ -191,9 +191,12 @@ Rails.application.routes.draw do
 
   namespace :store_front_module do
     resources :suppliers, only: [:index, :show, :new, :create] do
-      resources :vouchers, only: [:index, :show, :new, :create], module: :suppliers
+      resources :vouchers, only: [:index, :show, :create, :destroy], module: :suppliers
+      resources :voucher_confirmations, only: [:create], module: :suppliers
       resources :purchase_deliveries, only: [:index, :new, :create], module: :suppliers
-      resources :amounts, only: [:create, :destroy], module: :suppliers
+      resources :purchase_returns, only: [:index, :new, :create], module: :suppliers
+      resources :voucher_amounts, only: [:new, :create, :destroy], module: :suppliers
+      resources :purchase_line_items, only: [:new, :create], module: :suppliers
     end
     resources :inventories, only: [:index, :show] do
       resources :sales,            only: [:index], module: :inventories

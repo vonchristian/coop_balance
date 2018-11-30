@@ -30,6 +30,7 @@ module StoreFrontModule
       def show
         @purchase_order = StoreFrontModule::Orders::PurchaseOrder.find(params[:id])
         @supplier = @purchase_order.commercial_document
+        @voucher = @purchase_order.voucher
       end
 
 

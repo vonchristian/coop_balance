@@ -43,6 +43,9 @@ RSpec.describe Cooperative, type: :model do
     it { is_expected.to have_many :share_capital_applications }
     it { is_expected.to have_many :branch_offices }
     it { is_expected.to have_many :satellite_offices }
+    it { is_expected.to have_many :suppliers }
+    it { is_expected.to have_many :products }
+    it { is_expected.to have_many :purchase_line_items }
   end
 
   describe 'validations' do

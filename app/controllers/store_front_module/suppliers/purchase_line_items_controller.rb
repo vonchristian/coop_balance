@@ -1,17 +1,17 @@
 module StoreFrontModule
-  module LineItems
+  module Suppliers
     class PurchaseLineItemsController < ApplicationController
       def new
+        @supplier = current_cooperative.suppliers.find(params[:supplier_id])
         @products = current_cooperative.products.text_search(params[:search]).all.paginate(page: params[:page], per_page: 30)
         @line_items = current_cooperative.purchase_line_items.text_search(params[:search]).paginate(page: params[:page], per_page: 30)
         @cart = current_cart
         @purchase_line_item = StoreFrontModule::LineItems::PurchaseLineItemProcessing.new
         @purchase_order = StoreFrontModule::Orders::PurchaseOrderProcessing.new
         @purchase_line_items = @cart.purchase_line_items.includes(:unit_of_measurement, :product).order(created_at: :desc)
-        @vouchers = Voucher.includes(:entry =>[:debit_amounts]).unused
       end
-
       def create
+        @supplier = current_cooperative.suppliers.find(params[:supplier_id])
         @cart = current_cart
         @purchase_order_line_item = StoreFrontModule::LineItems::PurchaseLineItemProcessing.new(line_item_params)
         if @purchase_order_line_item.valid?
@@ -20,27 +20,6 @@ module StoreFrontModule
         else
           render :new
         end
-      end
-      def destroy
-        @cart = current_cart
-        @line_item = StoreFrontModule::LineItems::PurchaseLineItem.find(params[:id])
-        @line_item.destroy
-        redirect_to new_store_front_module_purchase_line_item_url
-      end
-
-      private
-      def line_item_params
-        params.require(:store_front_module_line_items_purchase_line_item_processing).
-        permit(:unit_of_measurement_id,
-               :quantity,
-               :unit_cost,
-               :total_cost,
-               :product_id,
-               :referenced_line_item_id,
-               :barcode,
-               :cart_id,
-               :expiry_date)
-      end
     end
   end
 end

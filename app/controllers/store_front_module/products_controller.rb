@@ -41,7 +41,8 @@ module StoreFrontModule
                   :unit_of_measurement_code,
                   :unit_of_measurement_description,
                   :base_quantity,
-                  :price)
+                  :price,
+                  :cooperative_id)
     end
   end
 end

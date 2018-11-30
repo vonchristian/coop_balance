@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Supplier do
   describe 'associations' do
+    it { is_expected.to belong_to :cooperative }
     it { is_expected.to have_many :vouchers }
     it { is_expected.to have_many :voucher_amounts }
     it { is_expected.to have_many :addresses }

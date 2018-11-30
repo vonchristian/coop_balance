@@ -83,6 +83,12 @@ class User < ApplicationRecord
     cash_accounts_array.present?
   end
 
+  def default_cash_account
+    if employee_cash_accounts.present?
+      employee_cash_accounts.default_cash_account
+    end
+  end
+
   def total_savings
     savings.sum(&:balance)
   end
