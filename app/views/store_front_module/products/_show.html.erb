@@ -1,54 +1,49 @@
-<div class="content">
-  <div class="row">
-    <div class="col-md-12">
-      <div class="box box-default">
-        <div class="box-header with-border">
-          <h3 class="box-title"><%= @product.name %></h3>
-        </div>
-        <div class="box-body">
-          <div class="nav-tabs">
-             <ul class="nav nav-tabs">
-              <li class="<%= 'active' if current_page?(store_front_module_product_path(@product))%>"><%= link_to 'Info', store_front_module_product_path(@product) %></li>
-              <li class="<%= 'active' if current_page?(store_front_module_product_purchases_path(@product))%>"><%= link_to 'Purchases', store_front_module_product_purchases_path(@product) %></li>
-               <li class="<%= 'active' if current_page?(store_front_module_product_sales_path(@product))%>"><%= link_to 'Sales', store_front_module_product_sales_path(@product) %></li>
-               <li class="<%= 'active' if current_page?(store_front_module_product_purchase_returns_path(@product))%>"><%= link_to 'Purchase Returns', store_front_module_product_purchase_returns_path(@product) %></li>
-               <li class="<%= 'active' if current_page?(store_front_module_product_sales_returns_path(@product))%>"><%= link_to 'Sales Returns', store_front_module_product_sales_returns_path(@product) %></li>
-               <li class="<%= 'active' if current_page?(store_front_module_product_stock_transfers_path(@product))%>"><%= link_to 'Stock Transfers', store_front_module_product_stock_transfers_path(@product) %></li>
-               <li class="<%= 'active' if current_page?(store_front_module_product_internal_uses_path(@product))%>"><%= link_to 'Internal Uses', store_front_module_product_internal_uses_path(@product) %></li>
-               <li class="<%= 'active' if current_page?(store_front_module_product_spoilages_path(@product))%>"><%= link_to 'Spoilages', store_front_module_product_spoilages_path(@product) %></li>
-               <li class="<%= 'active' if current_page?(store_front_module_product_settings_path(@product))%>"><%= link_to 'Settings', store_front_module_product_settings_path(@product) %></li>
-            </ul>
-            <div class="tab-content">
-              <% if current_page? store_front_module_product_path(@product) %>
-                <%= render 'store_front_module/products/partials/info' %>
-              <% end %>
-              <% if current_page? store_front_module_product_purchases_path(@product) %>
-                <%= render 'store_front_module/products/partials/purchases' %>
-              <% end %>
-              <% if current_page? store_front_module_product_sales_path(@product) %>
-                <%= render 'store_front_module/products/partials/sales' %>
-              <% end %>
-              <% if current_page? store_front_module_product_purchase_returns_path(@product) %>
-                <%= render 'store_front_module/products/partials/purchase_returns' %>
-              <% end %>
-              <% if current_page? store_front_module_product_sales_returns_path(@product) %>
-                <%= render 'store_front_module/products/partials/sales_returns' %>
-              <% end %>
-              <% if current_page? store_front_module_product_settings_path(@product) %>
-                <%= render 'store_front_module/products/partials/settings' %>
-              <% end %>
-              <% if current_page? store_front_module_product_stock_transfers_path(@product) %>
-                <%= render 'store_front_module/products/partials/stock_transfers' %>
-              <% end %>
-              <% if current_page? store_front_module_product_internal_uses_path(@product) %>
-                <%= render 'store_front_module/products/partials/internal_uses' %>
-              <% end %>
-              <% if current_page? store_front_module_product_spoilages_path(@product) %>
-                <%= render 'store_front_module/products/partials/spoilages' %>
-              <% end %>
-          </div>
-        </div>
+<%= render 'store_front_module/products/partials/header', product: @product %>
+<div class="row">
+  <div class="col-md-3">
+    <div class="card">
+      <div class="card-body">
+        <nav class="nav flex-column nav-pills">
+          <li class="nav-item"><%= link_to 'Info', store_front_module_product_path(@product), class: "nav-link #{'active' if current_page?(store_front_module_product_path(@product))}" %></li>
+          <li class="nav-item"><%= link_to 'Purchases', store_front_module_product_purchases_path(@product), class: "nav-link #{'active' if current_page?(store_front_module_product_purchases_path(@product))}" %></li>
+           <li class="nav-item"><%= link_to 'Sales', store_front_module_product_sales_path(@product), class: "nav-link #{ 'active' if current_page?(store_front_module_product_sales_path(@product))}" %></li>
+           <li class="nav-item"><%= link_to 'Purchase Returns', store_front_module_product_purchase_returns_path(@product), class: "nav-link #{ 'active' if current_page?(store_front_module_product_purchase_returns_path(@product)) }" %></li>
+           <li class="nav-item"><%= link_to 'Sales Returns', store_front_module_product_sales_returns_path(@product), class: "nav-link #{ 'active' if current_page?(store_front_module_product_sales_returns_path(@product)) }" %></li>
+           <li class="nav-item"><%= link_to 'Stock Transfers', store_front_module_product_stock_transfers_path(@product), class: "nav-link #{ 'active' if current_page?(store_front_module_product_stock_transfers_path(@product)) }" %></li>
+           <li class="nav-item"><%= link_to 'Internal Uses', store_front_module_product_internal_uses_path(@product), class: "nav-link #{ 'active' if current_page?(store_front_module_product_internal_uses_path(@product)) }" %></li>
+           <li class="nav-item"><%= link_to 'Spoilages', store_front_module_product_spoilages_path(@product), class: "nav-link #{ 'active' if current_page?(store_front_module_product_spoilages_path(@product)) }" %></li>
+           <li class="nav-item"><%= link_to 'Settings', store_front_module_product_settings_path(@product), class: "nav-link #{ 'active' if current_page?(store_front_module_product_settings_path(@product)) }" %></li>
+        </nav>
       </div>
     </div>
+  </div>
+  <div class="col-md-9">
+    <% if current_page? store_front_module_product_path(@product) %>
+      <%= render 'store_front_module/products/partials/info' %>
+    <% end %>
+    <% if current_page? store_front_module_product_purchases_path(@product) %>
+      <%= render 'store_front_module/products/partials/purchases' %>
+    <% end %>
+    <% if current_page? store_front_module_product_sales_path(@product) %>
+      <%= render 'store_front_module/products/partials/sales' %>
+    <% end %>
+    <% if current_page? store_front_module_product_purchase_returns_path(@product) %>
+      <%= render 'store_front_module/products/partials/purchase_returns' %>
+    <% end %>
+    <% if current_page? store_front_module_product_sales_returns_path(@product) %>
+      <%= render 'store_front_module/products/partials/sales_returns' %>
+    <% end %>
+    <% if current_page? store_front_module_product_settings_path(@product) %>
+      <%= render 'store_front_module/products/partials/settings' %>
+    <% end %>
+    <% if current_page? store_front_module_product_stock_transfers_path(@product) %>
+      <%= render 'store_front_module/products/partials/stock_transfers' %>
+    <% end %>
+    <% if current_page? store_front_module_product_internal_uses_path(@product) %>
+      <%= render 'store_front_module/products/partials/internal_uses' %>
+    <% end %>
+    <% if current_page? store_front_module_product_spoilages_path(@product) %>
+      <%= render 'store_front_module/products/partials/spoilages' %>
+    <% end %>
   </div>
 </div>

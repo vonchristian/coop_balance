@@ -1,4 +1,7 @@
-<h4>Quantities</h4>
+<div class="card">
+  <div class="card-body">
+<h3 class="card-title">Monitoring</h3>
+<p class="text-muted"><%=@product.purchases_balance %></p>
 <div class="row">
             <div class="col-md-3 border-right">
               <h3 class="no-padding"><center><%= @product.purchases_balance %></center></h3>
@@ -27,7 +30,7 @@
 <% @product.unit_of_measurements.each do |unit_of_measurement| %>
   <div class="row">
     <div class="col-md-4">
-      <%= unit_of_measurement.quantity_and_code %>
+      <%= unit_of_measurement.base_quantity_and_code %>
       <% if unit_of_measurement.base_measurement %>
         <span class="badge bg-green"> Base Measurement </span>
       <% end %>

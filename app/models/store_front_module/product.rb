@@ -51,7 +51,7 @@ module StoreFrontModule
                                                 through: :received_stock_transfers,
                                                 source: :received_stock_transfer_order
 
-    
+
     validates :name, presence: true, uniqueness: true
     delegate :code, :price, to: :base_measurement, prefix: true
 
@@ -60,7 +60,7 @@ module StoreFrontModule
     end
 
     def base_measurement
-      unit_of_measurements.base_measurement
+      unit_of_measurements.base_measurement.recent
     end
 
     def out_of_stock?

@@ -6,10 +6,10 @@ module StoreFrontModule
                   :description,
                   :unit_of_measurement_code,
                   :unit_of_measurement_description,
-                  :quantity,
+                  :base_quantity,
                   :price
-    validates :name, :unit_of_measurement_code, :quantity, :price, presence: true
-    validates :quantity, :price, numericality: true
+    validates :name, :unit_of_measurement_code, :base_quantity, :price, presence: true
+    validates :base_quantity, :price, numericality: true
     def register!
       ActiveRecord::Base.transaction do
         create_product
@@ -26,7 +26,7 @@ module StoreFrontModule
         product: product,
         code: unit_of_measurement_code,
         description: unit_of_measurement_description,
-        quantity: quantity,
+        base_quantity: base_quantity,
         base_measurement: true
         )
       unit_of_measurement.mark_up_prices.create(price: price)

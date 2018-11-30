@@ -26,7 +26,7 @@ module StoreFrontModule
       where.not(order_id: nil)
     end
 
-    def self.total
+    def self.total_converted_quantity
       processed.
       sum(&:converted_quantity)
     end

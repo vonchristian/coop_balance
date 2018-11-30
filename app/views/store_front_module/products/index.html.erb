@@ -20,8 +20,8 @@
     </div>
   </div>
   <div class="col-md-9">
-    <div class="card card-solid">
-      <div class="card-header with-border">
+    <div class="card">
+      <div class="card-header">
         <div class="row">
           <div class="col-md-2">
             <h3 class="card-title"> Products </h3>
@@ -29,7 +29,7 @@
           <div class="col-md-5">
             <%=form_tag store_front_module_products_path, method: :get do %>
               <div class="input-group">
-              <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search First Name, Last Name ", id: 'product-search-form' %>
+              <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Product...", id: 'product-search-form' %>
                 <span class="input-group-btn">
                   <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
                     <i class="fa fa-search"></i> Search
@@ -37,30 +37,18 @@
                 </span>
               </div>
             <% end %>
-            </div>
+          </div>
           <div class="col-md-4">
             <%=link_to 'New Product', new_store_front_module_product_path, class: "btn btn-primary pull-right" %>
           </div>
         </div>
       </div>
-      <div class="card-body">
-        <div class="table table-responsive">
-          <table class="table table-hover table-striped">
-            <thead>
-            	<tr>
-            		<th> Name </th>
-            	</tr>
-            </thead>
-            <tbody>
-							<% @products.each do |product| %>
-							  <tr>
-								  <% cache product do %>
-								    <td><%=link_to product.name, store_front_module_product_path(product) %></td>
-                    <td><%= product.balance %></td>
-								  <% end %>
-								</tr>
-							<% end %>
-						</tbody>
-					</table>
-          <center><%= will_paginate @products %></center>
-				</div>
+    </div>
+    <% @products.each do |product| %>
+      <% cache(product) do %>
+        <%= render 'store_front_module/products/partials/header', product: product %>
+      <% end %>
+    <% end %>
+    <center><%= will_paginate @products %></center>
+  </div>
+</div>

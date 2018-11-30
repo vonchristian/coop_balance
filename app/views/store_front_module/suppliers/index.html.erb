@@ -10,7 +10,7 @@
                                   <p class="category">List of suppliers</p>
                                 </div>
                                 <div class="col-md-7">
-                                  <%=form_tag suppliers_path, method: :get, id: "sidebar-form" do %>
+                                  <%=form_tag store_front_module_suppliers_path, method: :get, id: "sidebar-form" do %>
                                     <div class="input-group">
                                       <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search supplier...", type: "search" %>
                                       <span class="input-group-btn">
@@ -22,7 +22,7 @@
                                   <% end %>
                                 </div>
                                 <div class="col-md-2">
-                                  <%=link_to 'New Supplier', new_supplier_path, class: "btn btn-primary pull-right", remote: true %>
+                                  <%=link_to 'New Supplier', new_store_front_module_supplier_path, class: "btn btn-primary pull-right", remote: true %>
                                 </div>
                               </div>
                             <div class="content table-responsive table-full-width">
@@ -38,7 +38,7 @@
                                     <tbody>
                                       <% @suppliers.each do |supplier| %>
                                         <tr>
-                                          <td><%= link_to supplier.business_name, supplier %></td>
+                                          <td><%= link_to supplier.business_name, store_front_module_supplier_path(supplier) %></td>
                                           <td><%= supplier.owner_name %></td>
                                           <td><%= supplier.address %></td>
                                           <td><%= supplier.contact_number %></td>

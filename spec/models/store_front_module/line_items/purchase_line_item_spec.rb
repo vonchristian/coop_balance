@@ -26,7 +26,7 @@ module StoreFrontModule
         it 'not converted' do
           base_unit_of_measurement = create(:unit_of_measurement,
                                             base_measurement: true,
-                                            quantity: 1)
+                                            base_quantity: 1)
           purchase_line_item =       create(:purchase_line_item, quantity: 100,
                                             unit_of_measurement: base_unit_of_measurement)
           sales_line_item =          create(:sales_line_item,
@@ -63,7 +63,7 @@ module StoreFrontModule
         it "returns FALSE if available quantity > 0" do
          base_unit_of_measurement = create(:unit_of_measurement,
                                             base_measurement: true,
-                                            quantity: 1)
+                                            base_quantity: 1)
           purchase_line_item =       create(:purchase_line_item, quantity: 100,
                                             unit_of_measurement: base_unit_of_measurement)
           sales_line_item =          create(:sales_line_item,
@@ -77,7 +77,7 @@ module StoreFrontModule
           expect(purchase_line_item.sold_quantity). to eql 10
         end
         it 'returns TRUE if quantity = 0' do
-          unit_of_measurement_2 = create(:unit_of_measurement, base_measurement: true, quantity: 1)
+          unit_of_measurement_2 = create(:unit_of_measurement, base_measurement: true, base_quantity: 1)
           purchase_line_item_2 = create(:purchase_line_item, quantity: 100, unit_of_measurement: unit_of_measurement_2)
           sales_line_item_2 = create(:sales_line_item, unit_of_measurement: unit_of_measurement_2, quantity: 100)
           referenced =                  create(:referenced_purchase_line_item,
@@ -93,7 +93,7 @@ module StoreFrontModule
         it "not_converted" do
          base_unit_of_measurement = create(:unit_of_measurement,
                                             base_measurement: true,
-                                            quantity: 1)
+                                            base_quantity: 1)
           purchase_line_item =       create(:purchase_line_item, quantity: 100,
                                             unit_of_measurement: base_unit_of_measurement)
           sales_line_item =          create(:sales_line_item,

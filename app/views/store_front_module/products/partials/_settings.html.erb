@@ -1,21 +1,37 @@
 
-<h4>Unit of Measurements</h4>
-<span class="help-block"> Unit of measurements are used for price mark ups and converting quantities to base measurements (e.g. 1 sack to 50 kgs)</span>
-<%= link_to "Add Unit of Measurement", new_store_front_module_product_unit_of_measurement_path(@product), class: "btn btn-primary" %>
-<hr>
-<% @product.unit_of_measurements.each do |unit_of_measurement| %>
-  <div class="row">
-    <div class="col-md-4">
-      <%= unit_of_measurement.quantity_and_code %>
-      <% if unit_of_measurement.base_measurement %>
-        <span class="badge bg-green"> Base Measurement </span>
-      <% end %>
-    </div>
-    <div class="col-md-3">
-      <%= number_to_currency unit_of_measurement.price %> <br>
-
-      <%= link_to 'Update Price', new_store_front_module_unit_of_measurement_mark_up_price_path(unit_of_measurement), class: "btn btn-sm btn-default" %>
-    </div>
+<div class="card card-outline-danger">
+  <div class="card-header">
+    <h3 class="card-title"> Product Settings </h3>
   </div>
-  <br>
-<% end %>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-9">
+        <h4 class="card-title">Unit of Measurements (UOM)</h4>
+        <span class="text-muted"> Set Unit of measurements and  quantity conversions  (e.g. 1 sack to 50 kgs) for this product.</span>
+      </div>
+      <div class="col-md-3">
+        <%= link_to new_store_front_module_product_unit_of_measurement_path(@product) do %>
+          <span class="btn btn-outline-danger btn-sm float-right" data-toggle="tooltip" title="Add Unit of Measurement"><i class="fa fa-plus-circle"></i> Add </span>
+        <% end %>
+      </div>
+    </div>
+    <hr>
+    <% @product.unit_of_measurements.each do |unit_of_measurement| %>
+      <div class="row">
+        <div class="col-md-4">
+          <%= unit_of_measurement.base_quantity_and_code %>
+          <% if unit_of_measurement.base_measurement %>
+            <span class="badge bg-success"> Base Measurement </span>
+          <% end %>
+        </div>
+        <div class="col-md-3">
+          <%= number_to_currency unit_of_measurement.price %> <br>
+        </div>
+        <div class="col-md-2">
+          <%= link_to 'Update Price', new_store_front_module_unit_of_measurement_mark_up_price_path(unit_of_measurement), class: "btn btn-sm btn-default" %>
+        </div>
+      </div>
+      <br>
+    <% end %>
+  </div>
+</div>

@@ -190,6 +190,11 @@ Rails.application.routes.draw do
   resources :users, only: [:show]
 
   namespace :store_front_module do
+    resources :suppliers, only: [:index, :show, :new, :create] do
+      resources :vouchers, only: [:index, :show, :new, :create], module: :suppliers
+      resources :purchase_deliveries, only: [:index, :new, :create], module: :suppliers
+      resources :amounts, only: [:create, :destroy], module: :suppliers
+    end
     resources :inventories, only: [:index, :show] do
       resources :sales,            only: [:index], module: :inventories
       resources :sales_returns,    only: [:index], module: :inventories
@@ -298,13 +303,6 @@ Rails.application.routes.draw do
   end
 
   resources :search_results, only: [:index, :show]
-
-
-  resources :suppliers, only: [:index, :show, :new, :create] do
-    resources :vouchers, only: [:index, :show, :new, :create], module: :suppliers
-    resources :purchases, only: [:index, :new, :create], module: :suppliers
-    resources :amounts, only: [:create, :destroy], module: :suppliers
-  end
 
   resources :time_deposits, only: [:index, :show] do
     resources :adjusting_entries, only: [:new, :create], module: :time_deposits

@@ -40,7 +40,7 @@ module StoreFrontModule
                   :description,
                   :unit_of_measurement_code,
                   :unit_of_measurement_description,
-                  :quantity,
+                  :base_quantity,
                   :price)
     end
   end

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Supplier, type: :model do
+RSpec.describe Supplier do
   describe 'associations' do
     it { is_expected.to have_many :vouchers }
     it { is_expected.to have_many :voucher_amounts }

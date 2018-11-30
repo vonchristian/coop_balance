@@ -17,6 +17,7 @@ module StoreFrontModule
 
       expect(described_class.current).to eql(new_price)
     end
+
     it ".set_default_date" do
       price = create(:mark_up_price)
 

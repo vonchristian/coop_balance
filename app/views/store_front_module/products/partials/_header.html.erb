@@ -1,0 +1,15 @@
+<%= link_to store_front_module_product_path(product) do %>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-4">
+          <%= product.name %>
+        </div>
+        <div class="col-md-4">
+          <span class="badge bg-success"><%= product.available_quantity %></span>
+          <small>AVAILABLE QTY </small>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

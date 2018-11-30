@@ -21,11 +21,11 @@ module StoreFrontModule
       it { is_expected.to delegate_method(:name).to(:employee).with_prefix }
     end
 
-    it ".total" do
+    it ".total_converted_quantity" do
      line_item = create(:sales_line_item_with_base_measurement, quantity: 10)
       another_line_item = create(:sales_line_item_with_base_measurement, quantity: 10)
 
-      expect(described_class.total).to eql(20)
+      expect(described_class.total_converted_quantity).to eql(20)
     end
     it ".processed" do
       line_item = create(:line_item, order_id: nil)
@@ -49,13 +49,13 @@ module StoreFrontModule
     end
     describe 'converted_quantity' do
       it "unit of measurement is base measurement" do
-        base_measurement = create(:unit_of_measurement, base_measurement: true, quantity: 1)
+        base_measurement = create(:unit_of_measurement, base_measurement: true, base_quantity: 1)
         line_item = create(:line_item, unit_of_measurement: base_measurement, quantity: 100)
 
         expect(line_item.converted_quantity).to eql 100
       end
       it "unit of measurement is has conversion" do
-        not_base_measurement = create(:unit_of_measurement, base_measurement: false, quantity: 1, conversion_quantity: 10)
+        not_base_measurement = create(:unit_of_measurement, base_measurement: false, base_quantity: 1, conversion_quantity: 10)
         line_item = create(:line_item, unit_of_measurement: not_base_measurement, quantity: 100)
 
         expect(line_item.converted_quantity).to eql 1000

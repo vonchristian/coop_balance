@@ -46,28 +46,28 @@ module StoreFrontModule
         spoilages_quantity
       end
       def sold_quantity
-        sales.total
+        sales.total_converted_quantity
       end
 
       def purchase_returns_quantity
-        purchase_returns.total
+        purchase_returns.total_converted_quantity
       end
       def internal_uses_quantity
-        internal_uses.total
+        internal_uses.total_converted_quantity
       end
       def stock_transfers_quantity
-        stock_transfers.total
+        stock_transfers.total_converted_quantity
       end
       def spoilages_quantity
-        spoilages.total
+        spoilages.total_converted_quantity
       end
 
       def sales_returns_quantity
-        sales_returns.total
+        sales_returns.total_converted_quantity
       end
 
       def received_stock_transfers_quantity
-        received_stock_transfers.total
+        received_stock_transfers.total_converted_quantity
       end
 
       def purchase_cost

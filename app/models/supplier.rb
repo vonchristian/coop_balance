@@ -18,20 +18,20 @@ class Supplier < ApplicationRecord
 
   validates :business_name, presence: true, uniqueness: true
 
+  before_save :set_default_image, on: :create
 
   def name
     business_name
   end
 
   def owner_name
-    [first_name, last_name].join(" ")
+    "#{first_name} #{last_name}"
   end
 
-  def balance
-    deliveries_total - payments_total
-  end
-
-  def payments_total
-    vouchers.disbursed.map{|a| a.payable_amount }.compact.sum
+  private
+  def set_default_image
+    if !avatar.attached?
+      self.avatar.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'default.png')), filename: 'default-image.png', content_type: 'image/png')
+    end
   end
 end

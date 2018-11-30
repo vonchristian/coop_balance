@@ -1,4 +1,7 @@
 <li class="nav-item">
+  <a href="/store_front_module/sales_line_items/new" class="nav-link <%= 'active' if current_page?(new_store_front_module_sales_line_item_path) %>"><i class="nav-icon fa fa-store"></i><span> Store</span></a>
+</li>
+<li class="nav-item">
   <a href="/members" class="nav-link <%= 'active' if current_page?(members_path) %>"><i class="nav-icon fa fa-users"></i><span> Members</span></a>
 </li>
 <li class="nav-item">
@@ -6,3 +9,35 @@
     <i class="nav-icon fa fa-cubes"></i><span> Products</span>
   </a>
 </li>
+<li class="nav-item has-treeview">
+           <a href="#" class="nav-link">
+             <i class="nav-icon fa fa-shopping-cart"></i>
+             <p>
+               Orders
+               <i class="right fa fa-angle-left"></i>
+             </p>
+           </a>
+           <ul class="nav nav-treeview">
+             <li class="nav-item">
+               <a href="/store_front_module/sales" class="nav-link">
+                 <i class="fa fa-circle-o nav-icon"></i>
+                 <p>Sales</p>
+               </a>
+             </li>
+             <li class="nav-item">
+               <a href="../../index2.html" class="nav-link">
+                 <i class="fa fa-circle-o nav-icon"></i>
+                 <p>Dashboard v2</p>
+               </a>
+             </li>
+             <li class="nav-item">
+               <a href="../../index3.html" class="nav-link">
+                 <i class="fa fa-circle-o nav-icon"></i>
+                 <p>Dashboard v3</p>
+               </a>
+             </li>
+           </ul>
+         </li>
+         <li class="nav-item">
+           <a href="/store_front_module/suppliers" class="nav-link <%= 'active' if current_page?(store_front_module_suppliers_path) %>"><i class="nav-icon fa fa-truck"></i><span> Suppliers</span></a>
+         </li>

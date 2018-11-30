@@ -9,7 +9,7 @@ module StoreFrontModule
       elsif options[:purchase_line_item].present?
         where(purchase_line_item: options[:purchase_line_item]).processed.total
       else
-        joins(:order).processed.total
+        joins(:order).processed.total_converted_quantity
       end
     end
   end
