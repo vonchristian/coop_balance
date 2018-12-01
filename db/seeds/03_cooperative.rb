@@ -48,27 +48,80 @@ coop.share_capital_products.create!(
 # Loan Products
 loans_receivable_current_regular_account = AccountingModule::Account.find_by(name: "Loans Receivable - Current (Regular Loan)")
 loans_receivable_past_due_regular_account = AccountingModule::Account.find_by(name: "Loans Receivable - Past Due (Regular Loan)")
-interest_revenue_account = AccountingModule::Account.find_by(name: "Interest Income from Loans - Regular Loan")
-unearned_interest_income_account = AccountingModule::Account.find_by(name: "Unearned Interests - Regular Loan")
-penalty_revenue_account = AccountingModule::Account.find_by(name: "Loan Penalties Income - Regular Loan")
+interest_revenue_regular_account = AccountingModule::Account.find_by(name: "Interest Income from Loans - Regular Loan")
+unearned_interest_income_regular_account = AccountingModule::Account.find_by(name: "Unearned Interests - Regular Loan")
+penalty_revenue_regular_account = AccountingModule::Account.find_by(name: "Loan Penalties Income - Regular Loan")
 
+loans_receivable_current_emergency_account = AccountingModule::Account.find_by(name: "Loans Receivable Current (Emergency Loan)")
+loans_receivable_past_due_emergency_account = AccountingModule::Account.find_by(name: "Loans Receivable Past Due (Emergency Loan)")
+interest_revenue_emergency_account = AccountingModule::Account.find_by(name: "Interest Income from Loans - Emergency Loan")
+unearned_interest_income_emergency_account = AccountingModule::Account.find_by(name: "Unearned Interests - Emergency Loan")
+penalty_revenue_emergency_account = AccountingModule::Account.find_by(name: "Loan Penalties Income - Emergency Loan")
+
+loans_receivable_current_short_term_account = AccountingModule::Account.find_by(name: "Loans Receivable Current (Short-Term Loan)")
+loans_receivable_past_due_short_term_account = AccountingModule::Account.find_by(name: "Loans Receivable Past Due (Short-Term Loan)")
+interest_revenue_short_term_account = AccountingModule::Account.find_by(name: "Interest Income from Loans - Short-Term Loan")
+unearned_interest_income_short_term_account = AccountingModule::Account.find_by(name: "Unearned Interests - Short-Term Loan")
+penalty_revenue_short_term_account = AccountingModule::Account.find_by(name: "Loan Penalties Income - Short-Term Loan")
+
+# Loan Product (Regular Loan)
 regular_loan_product = coop.loan_products.create!(
   name: "Regular Loan",
   description: "",
-  maximum_loanable_amount: 20000.00,
+  maximum_loanable_amount: 300000.00,
   loans_receivable_current_account: loans_receivable_current_regular_account,
   loans_receivable_past_due_account: loans_receivable_past_due_regular_account
 )
 
 regular_loan_product.interest_configs.create(
   rate: 0.12,
-  interest_revenue_account: interest_revenue_account,
-  unearned_interest_income_account: unearned_interest_income_account
+  interest_revenue_account: interest_revenue_regular_account,
+  unearned_interest_income_account: unearned_interest_income_regular_account
 )
 
 regular_loan_product.penalty_configs.create(
   rate: 0.01,
-  penalty_revenue_account: penalty_revenue_account
+  penalty_revenue_account: penalty_revenue_regular_account
+)
+
+# Loan Product (Emergency Loan)
+emergency_loan_product = coop.loan_products.create!(
+  name: "Emergency Loan",
+  description: "",
+  maximum_loanable_amount: 20000.00,
+  loans_receivable_current_account: loans_receivable_current_emergency_account,
+  loans_receivable_past_due_account: loans_receivable_past_due_emergency_account
+)
+
+emergency_loan_product.interest_configs.create(
+  rate: 0.12,
+  interest_revenue_account: interest_revenue_emergency_account,
+  unearned_interest_income_account: unearned_interest_income_emergency_account
+)
+
+emergency_loan_product.penalty_configs.create(
+  rate: 0.01,
+  penalty_revenue_account: penalty_revenue_emergency_account
+)
+
+# Loan Product (Short-Term Loan)
+short_term_loan_product = coop.loan_products.create!(
+  name: "Short-Term Loan",
+  description: "",
+  maximum_loanable_amount: 100000.00,
+  loans_receivable_current_account: loans_receivable_current_short_term_account,
+  loans_receivable_past_due_account: loans_receivable_past_due_short_term_account
+)
+
+short_term_loan_product.interest_configs.create(
+  rate: 0.12,
+  interest_revenue_account: interest_revenue_short_term_account,
+  unearned_interest_income_account: unearned_interest_income_short_term_account
+)
+
+short_term_loan_product.penalty_configs.create(
+  rate: 0.01,
+  penalty_revenue_account: penalty_revenue_short_term_account
 )
 
 # Time Deposit
