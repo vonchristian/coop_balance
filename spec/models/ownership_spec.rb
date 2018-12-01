@@ -1,5 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe Ownership, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
-end
+describe Ownership, type: :model do
+  describe 'associations' do 
+  	it { is_expected.to belong_to :ownable }
+  	it { is_expected.to belong_to :owner }
+  end 
+end 
