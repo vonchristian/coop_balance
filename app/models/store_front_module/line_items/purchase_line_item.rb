@@ -3,8 +3,7 @@ module StoreFrontModule
     class PurchaseLineItem < LineItem
       belongs_to :purchase_order,         class_name: "StoreFrontModule::Orders::PurchaseOrder",
                                           foreign_key: 'order_id'
-      has_many :sales,                    class_name: "StoreFrontModule::LineItems::ReferencedPurchaseLineItem",
-                                          foreign_key: 'purchase_line_item_id'
+      has_many :sales_purchase_line_items, class_name: "SalesPurchaseLineItem", foreign_key: 'purchase_line_item'
       has_many :purchase_returns,         class_name: "StoreFrontModule::LineItems::PurchaseReturnLineItem",
                                           foreign_key: 'purchase_line_item_id'
       has_many :internal_uses,            class_name: "StoreFrontModule::LineItems::InternalUseLineItem",
@@ -36,9 +35,9 @@ module StoreFrontModule
       end
 
       def available_quantity
+        converted_quantity +
         sales_returns_quantity +
-        received_stock_transfers_quantity +
-        converted_quantity -
+        received_stock_transfers_quantity -
         sold_quantity -
         purchase_returns_quantity -
         internal_uses_quantity -
@@ -46,28 +45,28 @@ module StoreFrontModule
         spoilages_quantity
       end
       def sold_quantity
-        sales.total_converted_quantity
+        sales_purchase_line_items.total_quantity
       end
 
       def purchase_returns_quantity
-        purchase_returns.total_converted_quantity
+        purchase_returns.processed.total_converted_quantity
       end
       def internal_uses_quantity
-        internal_uses.total_converted_quantity
+        internal_uses.processed.total_converted_quantity
       end
       def stock_transfers_quantity
-        stock_transfers.total_converted_quantity
+        stock_transfers.processed.total_converted_quantity
       end
       def spoilages_quantity
-        spoilages.total_converted_quantity
+        spoilages.processed.total_converted_quantity
       end
 
       def sales_returns_quantity
-        sales_returns.total_converted_quantity
+        sales_returns.processed.total_converted_quantity
       end
 
       def received_stock_transfers_quantity
-        received_stock_transfers.total_converted_quantity
+        received_stock_transfers.processed.total_converted_quantity
       end
 
       def purchase_cost

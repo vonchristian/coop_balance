@@ -3,8 +3,8 @@ module StoreFrontModule
     class SalesLineItemsController < ApplicationController
       def new
         if params[:search].present?
-          @products = StoreFrontModule::Product.text_search(params[:search]).all
-          @line_items = StoreFrontModule::LineItems::PurchaseLineItem.includes(:unit_of_measurement).text_search(params[:search])
+          @products = current_cooperative.products.text_search(params[:search]).all
+          @line_items = current_cooperative.purchase_line_items.processed.includes(:unit_of_measurement).text_search(params[:search])
         end
         @cart = current_cart
         @sales_line_item = StoreFrontModule::LineItems::SalesLineItemProcessing.new

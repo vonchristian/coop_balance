@@ -7,7 +7,11 @@
     </div>
     <div class="info">
       <a href="#" class="d-block"><%= link_to current_user.first_and_last_name.try(:titleize), employee_path(current_user) %></a>
-      <small><a class="d-block"><%= current_user.designation %></a></small>
+      <a href="#" class="d-block"><%= current_user.designation %></a>
+      <hr>
+      <a href="#" class="d-block card-title"><%= number_to_currency current_user.default_cash_account.balance %></a>
+      <a href="#" class="d-block"><%= current_user.default_cash_account.name %></a>
+
     </div>
   </div>
 
@@ -30,7 +34,7 @@
       <% end %>
       <% if current_user.sales_clerk? %>
         <%= render 'layouts/shared/sidebar_links/store_department' %>
-      <% end %>
+      <% end %>\
     </ul>
   </nav>
   <!-- /.sidebar-menu -->

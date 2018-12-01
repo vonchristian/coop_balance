@@ -48,6 +48,7 @@ class Cooperative < ApplicationRecord
   has_many :suppliers
   has_many :products, class_name: "StoreFrontModule::Product"
   has_many :purchase_line_items, class_name: "StoreFrontModule::LineItems::PurchaseLineItem"
+  has_many :sales_orders, class_name: "StoreFrontModule::Orders::SalesOrder"
 
   validates :name, :abbreviated_name, presence: true
   validates :name, uniqueness: true

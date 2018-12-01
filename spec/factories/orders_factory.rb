@@ -13,6 +13,7 @@ FactoryBot.define do
     factory :sales_order, class: "StoreFrontModule::Orders::SalesOrder" do
       association :commercial_document, factory: :member
     end
+
     factory :sales_return_order, class: "StoreFrontModule::Orders::SalesReturnOrder" do
       association :commercial_document, factory: :member
     end

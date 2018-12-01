@@ -7,7 +7,9 @@ module StoreFrontModule
       it { is_expected.to belong_to :unit_of_measurement }
       it { is_expected.to belong_to :product }
       it { is_expected.to belong_to :order }
+      it { is_expected.to belong_to :cooperative }
     end
+    
     describe 'validations' do
       it { is_expected.to validate_presence_of :unit_of_measurement_id }
       it { is_expected.to validate_presence_of :product_id }

@@ -9,6 +9,7 @@ module StoreFrontModule
       def process!
         ActiveRecord::Base.transaction do
           create_voucher
+          remove_voucher_amount_reference
         end
       end
       def find_voucher
@@ -36,6 +37,13 @@ module StoreFrontModule
       end
       def find_employee
         User.find(preparer_id)
+      end
+      def remove_voucher_amount_reference
+        find_supplier.voucher_amounts.each do |voucher_amount|
+          voucher_amount.commercial_document_id = nil
+          voucher_amount.commercial_document_type = nil
+          voucher_amount.save
+        end
       end
     end
   end

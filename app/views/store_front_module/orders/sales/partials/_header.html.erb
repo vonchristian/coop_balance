@@ -1,0 +1,15 @@
+<%= link_to store_front_module_sale_path(id: order.id)  do %>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-2">
+          <%=image_tag(order.customer.avatar, height: 40, width: 40, class: 'img-circle') %>
+        </div>
+        <div class="col-md-5">
+          <%= order.date.strftime("%B %e, %Y") %>
+          <%= order.id %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

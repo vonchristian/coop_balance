@@ -2,12 +2,12 @@ module StoreFrontModule
   module Products
     class SalesController < ApplicationController
       def index
-        @product = StoreFrontModule::Product.find(params[:product_id])
-        @orders = @product.
-        sales.
+        @product = current_cooperative.products.find(params[:product_id])
+        @sales_orders = @product.
+        sales_orders.
         processed.
-        all.
-        paginate(page: params[:page], per_page: 50)
+        order(date: :desc).
+        paginate(page: params[:page], per_page: 25)
       end
     end
   end

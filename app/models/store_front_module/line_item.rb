@@ -10,7 +10,7 @@ module StoreFrontModule
                                      touch: true
     belongs_to :order,               class_name: "StoreFrontModule::Order",
                                      foreign_key: 'order_id'
-
+    belongs_to :cooperative
     validates :unit_of_measurement_id, :product_id, presence: true
     validates :quantity, :unit_cost, :total_cost, presence: true, numericality: true
 
@@ -40,7 +40,7 @@ module StoreFrontModule
     end
 
     def processed?
-      order.present?
+      order.processed?
     end
 
     def converted_quantity

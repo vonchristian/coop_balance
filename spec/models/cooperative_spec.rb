@@ -46,6 +46,7 @@ RSpec.describe Cooperative, type: :model do
     it { is_expected.to have_many :suppliers }
     it { is_expected.to have_many :products }
     it { is_expected.to have_many :purchase_line_items }
+    it { is_expected.to have_many :sales_orders }
   end
 
   describe 'validations' do

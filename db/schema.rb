@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_01_013243) do
+ActiveRecord::Schema.define(version: 2018_12_01_054632) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -844,11 +844,15 @@ ActiveRecord::Schema.define(version: 2018_12_01_013243) do
     t.boolean "credit", default: true
     t.string "commercial_document_name"
     t.uuid "store_front_id"
+    t.uuid "cooperative_id"
+    t.uuid "voucher_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_orders"
+    t.index ["cooperative_id"], name: "index_orders_on_cooperative_id"
     t.index ["employee_id"], name: "index_orders_on_employee_id"
     t.index ["pay_type"], name: "index_orders_on_pay_type"
     t.index ["store_front_id"], name: "index_orders_on_store_front_id"
     t.index ["type"], name: "index_orders_on_type"
+    t.index ["voucher_id"], name: "index_orders_on_voucher_id"
   end
 
   create_table "organization_members", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -994,6 +998,16 @@ ActiveRecord::Schema.define(version: 2018_12_01_013243) do
     t.index ["relationee_type", "relationee_id"], name: "index_relationships_on_relationee_type_and_relationee_id"
     t.index ["relationer_type", "relationer_id"], name: "index_relationships_on_relationer_type_and_relationer_id"
     t.index ["relationship_type"], name: "index_relationships_on_relationship_type"
+  end
+
+  create_table "sales_purchase_line_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "sales_line_item_id"
+    t.uuid "purchase_line_item_id"
+    t.decimal "quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["purchase_line_item_id"], name: "index_sales_purchase_line_items_on_purchase_line_item_id"
+    t.index ["sales_line_item_id"], name: "index_sales_purchase_line_items_on_sales_line_item_id"
   end
 
   create_table "saving_products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1474,8 +1488,10 @@ ActiveRecord::Schema.define(version: 2018_12_01_013243) do
   add_foreign_key "municipalities", "provinces"
   add_foreign_key "notes", "users", column: "noter_id"
   add_foreign_key "offices", "cooperatives"
+  add_foreign_key "orders", "cooperatives"
   add_foreign_key "orders", "store_fronts"
   add_foreign_key "orders", "users", column: "employee_id"
+  add_foreign_key "orders", "vouchers"
   add_foreign_key "organization_members", "organizations"
   add_foreign_key "organizations", "cooperatives"
   add_foreign_key "penalty_configs", "accounts", column: "penalty_revenue_account_id"
@@ -1489,6 +1505,8 @@ ActiveRecord::Schema.define(version: 2018_12_01_013243) do
   add_foreign_key "registries", "cooperatives"
   add_foreign_key "registries", "suppliers"
   add_foreign_key "registries", "users", column: "employee_id"
+  add_foreign_key "sales_purchase_line_items", "line_items", column: "purchase_line_item_id"
+  add_foreign_key "sales_purchase_line_items", "line_items", column: "sales_line_item_id"
   add_foreign_key "saving_products", "accounts"
   add_foreign_key "saving_products", "accounts", column: "closing_account_id"
   add_foreign_key "saving_products", "accounts", column: "interest_expense_account_id"

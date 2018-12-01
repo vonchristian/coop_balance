@@ -6,6 +6,8 @@ module StoreFrontModule
     	it { is_expected.to belong_to :commercial_document }
       it { is_expected.to belong_to :employee }
       it { is_expected.to belong_to :store_front }
+      it { is_expected.to belong_to :cooperative }
+      it { is_expected.to belong_to :voucher }
     	it { is_expected.to have_one :official_receipt }
       it { is_expected.to have_one :invoice }
     	it { is_expected.to have_many :line_items }

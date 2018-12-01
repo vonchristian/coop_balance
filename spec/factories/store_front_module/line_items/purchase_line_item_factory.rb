@@ -3,6 +3,8 @@ FactoryBot.define do
     association :product
     association :unit_of_measurement
     expiry_date Date.today.next_year
+    quantity   { 1 }
+    unit_cost  { 100 }
+    total_cost { 100 }
   end
 end
-
