@@ -317,6 +317,7 @@ Rails.application.routes.draw do
   resources :employees, only: [:index, :show, :edit, :update] do
     resources :settings,             only: [:index],                        module: :employees
     resources :cash_accounts,        only: [:new, :create, :destroy],       module: :employees
+    resources :store_fronts,         only: [:edit, :update],                 module: [:employees, :settings]
     resources :info,                 only: [:index],                        module: :employees
     resources :blotters,             only: [:index],                        module: :employees
     resources :cash_disbursements,   only: [:index],                        module: [:employees, :reports]

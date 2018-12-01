@@ -55,7 +55,7 @@
               <tbody>
 
 
-                <% @cart.sales_line_items.each do |line_item| %>
+                <% @cart.sales_line_items.unprocessed.each do |line_item| %>
                   <tr>
                     <td>
 
@@ -90,20 +90,20 @@
   </div>
   <div class="col-md-5">
     <div class="card card-solid">
-      <% if @cart.sales_line_items.present? %>
+      <% if @sales_line_items.present? %>
       <div class="card-header">
         <div class="row">
           <div class="col-md-4 col-md-offset-2">
             <h3><b> TOTAL </b></h3>
           </div>
           <div class="col-md-5">
-            <h3><b><span class="pull-right"><%=number_to_currency @cart.sales_line_items.total_cost %></span></b></h3>
+            <h3><b><span class="pull-right"><%=number_to_currency @sales_line_items.unprocessed.total_cost %></span></b></h3>
           </div>
         </div>
       </div>
       <div class="card-body">
         <div class="card-footer">
-          <%= simple_form_for @sales_order, url: :store_front_module_sales do |f| %>
+          <%= simple_form_for @sales_order, url: :store_front_module_sales, html: { autocomplete: 'off' } do |f| %>
             <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
                   <%= f.input :customer_id, collection: Customer.all.map{ |a| [a.full_name, a.id] } %>
                   <%= f.input :cash_tendered, input_html: { id: 'cash_tendered', oninput: 'calculateOrderTotalCost()',  class: "input-lg" } %>
@@ -113,7 +113,11 @@
                   <%= f.input :total_cost, input_html: { id: 'total_cost', value: @cart.total_cost }, as: :hidden %>
                   <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
                   <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
-                  <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] }, default: current_user.default_cash_account %>
+                  <% if current_user.cash_accounts.count == 1 %>
+                    <%= f.input :cash_account_id, input_html: { value: current_user.default_cash_account.id } %>
+                  <% else %>
+                    <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] }, default: current_user.default_cash_account %>
+                  <% end %>
                   <%= f.submit "Save Order", class: "btn btn-lg btn-success btn-block" %>
         <% end %>
       </div>

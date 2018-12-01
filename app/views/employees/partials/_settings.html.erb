@@ -23,5 +23,8 @@
         </table>
       </div>
     </div>
+    <h3 class="card-title">Store Front Settings </h3>
+    <%= @employee.store_front_name %>
+      <%= link_to "Set Store Front", edit_employee_store_front_path(id: @employee.id), class: "btn btn-outline-danger", data: { modal: true } %>
   </div>
 </div>

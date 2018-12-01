@@ -51,13 +51,15 @@
 
       def create_entry(order)
         store_front = find_employee.store_front
-        cash_on_hand = find_employee.cash_on_hand_account
+        cash_on_hand = find_cash_account
         cost_of_goods_sold = store_front.cost_of_goods_sold_account
         sales = store_front.sales_account
         sales_discount = store_front.sales_discount_account
         merchandise_inventory = store_front.merchandise_inventory_account
         find_employee.entries.create!(
-          origin: find_employee.office,
+          office: find_employee.office,
+          cooperative: find_employee.cooperative,
+          previous_entry: find_employee.cooperative.entries.recent,
           recorder: find_employee,
           commercial_document: find_customer,
           entry_date: order.date,
@@ -80,6 +82,9 @@
       end
       def total_cost_less_discount(order)
         order.total_cost - discount_amount.to_f
+      end
+      def find_cash_account
+        find_employee.cash_accounts.find(cash_account_id)
       end
     end
   end

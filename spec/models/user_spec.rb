@@ -35,7 +35,7 @@ RSpec.describe User, type: :model do
     it { is_expected.to delegate_method(:contact_number).to(:cooperative).with_prefix }
     it { is_expected.to delegate_method(:abbreviated_name).to(:cooperative).with_prefix }
     it { is_expected.to delegate_method(:logo).to(:cooperative).with_prefix }
-
+    it { is_expected.to delegate_method(:name).to(:store_front).with_prefix }
   end
 
   describe 'enums' do

@@ -60,7 +60,7 @@ class User < ApplicationRecord
   delegate :name, to: :office, prefix: true, allow_nil: true
 
   delegate :name, :abbreviated_name, to: :cooperative, prefix: true
-
+  delegate :name, to: :store_front, prefix: true, allow_nil: true
   before_save :set_default_image, on: :create
 
   def self.has_birthdays_on(month)

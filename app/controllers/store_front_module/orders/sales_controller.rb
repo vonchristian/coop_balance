@@ -49,7 +49,7 @@ module StoreFrontModule
       private
       def order_processing_params
         params.require(:store_front_module_orders_sales_order_processing).
-        permit(:customer_id, :date, :cash_tendered, :order_change, :total_cost, :employee_id, :cart_id, :discount_amount)
+        permit(:cash_account_id, :customer_id, :date, :cash_tendered, :order_change, :total_cost, :employee_id, :cart_id, :discount_amount)
       end
     end
   end

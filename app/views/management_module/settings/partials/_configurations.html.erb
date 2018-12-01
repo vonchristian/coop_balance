@@ -74,72 +74,7 @@
     </div>
 
   </div>
-  <div class="col-md-6">
-    <div class="card">
-      <div class="card-header">
-        <div class="row">
-          <div class="col-md-10">
-            <h3 class="card-title"> Savings Account Configuration </h3>
-          </div>
-          <div class="col-md-2">
-            <%= link_to new_management_module_settings_savings_account_config_path, data: {modal: true} do %>
-              <span class="btn btn-sm btn-outline-danger float-right" data-toggle="tooltip" title="Set Savings Accounts Configuration"><i class="fa fa-edit"> Set</i></span>
-            <% end %>
-          </div>
-        </div>
-      </div>
-      <div class="card-body">
-        <div class="row">
-          <div class="co-md-12">
-            <label>Closing Account</label>
-          </div>
-        </div>
-        <div class="row justify-content-end">
-          <div class="col-md-11">
-            <%= @savings_account_config.try(:closing_account).try(:name) %>
-          </div>
-        </div>
-      </div>
-      <hr class="no-margin">
-      <div class="card-body">
-        <div class="row">
-          <div class="co-md-12">
-            <label>Interest Expense Account</label>
-          </div>
-        </div>
-        <div class="row justify-content-end">
-          <div class="col-md-11">
-            <%= @savings_account_config.try(:interest_expense_account).try(:name) %>
-          </div>
-        </div>
-      </div>
-      <hr class="no-margin">
-      <div class="card-body">
-        <div class="row">
-          <div class="co-md-12">
-            <label>Number of Days to be Dormant</label>
-          </div>
-        </div>
-        <div class="row justify-content-end">
-          <div class="col-md-11">
-            <%= @savings_account_config.number_of_days_to_be_dormant.to_s + " days" if @savings_account_config.present? %>
-          </div>
-        </div>
-      </div>
-      <hr class="no-margin">
-      <div class="card-body">
-        <div class="row">
-          <div class="co-md-12">
-            <label>Closing Fee</label>
-          </div>
-        </div>
-        <div class="row justify-content-end">
-          <div class="col-md-11">
-            <%= number_to_currency @savings_account_config.try(:closing_account_fee) %>
-          </div>
-        </div>
-      </div>
-    </div>
+
 
     <div class="card">
       <div class="card-header">

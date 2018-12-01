@@ -1,0 +1,11 @@
+<%= render 'employees/shared/form_header' %>
+<%= simple_form_for @employee, url: :employee_store_front do |f| %>
+	<div class="modal-body">
+		<h4 class="card-title">Store Front </h4>
+		<hr>
+	  <%= f.input :store_front_id, collection: current_cooperative.store_fronts.all.map{|a| [a.name, a.id] }  %>
+	</div>
+	<div class="modal-footer">
+	  <%= f.submit "Set Store Front", class: 'btn btn-danger float-right' %>
+	</div>
+<% end %>

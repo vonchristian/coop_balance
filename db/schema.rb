@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_30_231138) do
+ActiveRecord::Schema.define(version: 2018_12_01_013243) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -822,9 +822,11 @@ ActiveRecord::Schema.define(version: 2018_11_30_231138) do
 
   create_table "official_receipts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "number", null: false
-    t.string "receiptable_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "receiptable_type"
+    t.uuid "receiptable_id"
+    t.index ["receiptable_type", "receiptable_id"], name: "index_official_receipts_on_receiptable_type_and_receiptable_id"
   end
 
   create_table "orders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
