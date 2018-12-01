@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :contact do
     contactable nil
-    contact_number "MyString"
+    number  { Faker::Number.number(11) }
   end
 end

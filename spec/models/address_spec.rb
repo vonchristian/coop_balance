@@ -9,24 +9,34 @@ describe Address do
     it { is_expected.to belong_to :province }
   end
 
-  describe 'validations' do
-    it { is_expected.to validate_presence_of :street_id }
-    it { is_expected.to validate_presence_of :barangay_id }
-    it { is_expected.to validate_presence_of :municipality_id }
-    it { is_expected.to validate_presence_of :province_id }
-  end
-  it '.current_address' do
-    address = create(:address, current: false)
+  it '.current' do
     current_address = create(:address, current: true)
-    expect(Address.current_address).to eql(current_address)
-  end
-  it "#details" do
-    province = create(:province, name: "Ifugao")
-    municipality = create(:municipality, name: "Lamut")
-    barangay = create(:barangay, name: "Poblacion West", municipality: municipality)
-    street = create(:street, name: "Poblacion", barangay: barangay)
-  	address = build(:address, street: street, barangay: barangay, municipality: municipality, province: province)
+    not_current_address = create(:address, current: false)
 
-  	expect(address.details).to eql("Poblacion, Poblacion West, Lamut, Ifugao")
+    expect(described_class.current).to include(current_address)
+    expect(described_class.current).to_not include(not_current_address)
+  end
+  it '.recent' do
+    recent_address = create(:address, created_at: Date.today)
+    old_address = build_stubbed(:address, created_at: Date.today.yesterday)
+
+    expect(described_class.recent).to eql(recent_address)
+    expect(described_class.recent).to_not eql(old_address)
+  end
+
+  describe '.current_address' do
+    it '#with no address' do
+      expect(described_class.current_address.class).to eql(NullAddress)
+    end
+
+    it '#with address' do
+      not_current_address    = create(:address, current: false)
+      recent_current_address = create(:address, current: true, created_at: Date.today)
+      old_current_address    = create(:address, current: true, created_at: Date.today.yesterday)
+
+      expect(described_class.current_address).to eql(recent_current_address)
+      expect(described_class.current_address).to_not eql(old_current_address)
+      expect(described_class.current_address).to_not eql(not_current_address)
+    end
   end
 end

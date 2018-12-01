@@ -1,4 +1,6 @@
-check voucher generate number 
+update last transaction date of members / organizations 
+
+check voucher generate number
 
 clean up
   controllers

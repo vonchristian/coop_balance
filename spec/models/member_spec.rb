@@ -66,4 +66,17 @@ describe Member, type: :model do
     expect(Member.has_birthdays_on(3).pluck(:id)).to include(march.id)
   end
 
+  it '.updated_at(args={})' do
+    recent_member = create(:member, last_transaction_date: Date.today)
+    old_member = create(:member, last_transaction_date: Date.today.last_month)
+
+    expect(described_class.updated_at(from_date: Date.today, to_date: Date.today)).to include(recent_member)
+    expect(described_class.updated_at(from_date: Date.today, to_date: Date.today)).to_not include(old_member)
+
+    expect(described_class.updated_at(from_date: Date.today.last_month, to_date: Date.today.last_month)).to include(old_member)
+    expect(described_class.updated_at(from_date: Date.today.last_month, to_date: Date.today.last_month)).to_not include(recent_member)
+
+  end
+
+
 end

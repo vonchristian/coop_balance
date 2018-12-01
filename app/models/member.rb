@@ -58,14 +58,11 @@ class Member < ApplicationRecord
   before_save :update_birth_date_fields
   before_save :set_default_image, on: :create
 
-  def current_organization
-    organizations.current
-  end
 
   def self.updated_at(options={})
     if options[:from_date] && options[:to_date]
       date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
-      where('updated_at' => (date_range.start_date)..(date_range.end_date))
+      where('last_transaction_date' => (date_range.start_date)..(date_range.end_date))
     end
   end
 
@@ -89,6 +86,10 @@ class Member < ApplicationRecord
     addresses.current_address
   end
 
+  def current_organization
+    organizations.current
+  end
+
   def name
     full_name
   end
@@ -105,25 +106,13 @@ class Member < ApplicationRecord
     all.select{|a| a.loans.present? }
   end
 
-  def total_savings
-    savings.sum(&:balance)
-  end
-
-  def total_share_capitals
-    share_capitals.sum(&:balance)
-  end
-
-  def total_purchases(options={})
-    sales_orders.total(options)
-  end
 
   def subscribed?(program)
     subscribed_programs.include?(program)
   end
 
   def current_occupation
-    return "No Occupation entered" if occupations.blank?
-    occupations.order(created_at: :asc).last
+    occupations.current
   end
 
   def recommended_co_makers

@@ -5,9 +5,16 @@ class Address < ApplicationRecord
   belongs_to :municipality, class_name: "Addresses::Municipality", optional: true
   belongs_to :province,     class_name: "Addresses::Province", optional: true
 
+  def self.current
+    where(current: true)
+  end
+
+  def self.recent
+    order(created_at: :desc).first
+  end
 
   def self.current_address
-    order(created_at: :desc).where(current: true).first || NullAddress.new
+    current.recent || NullAddress.new
   end
 
   def details
