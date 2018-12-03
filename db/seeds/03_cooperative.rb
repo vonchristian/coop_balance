@@ -90,8 +90,29 @@ regular_loan_product.penalty_configs.find_or_create_by(
   penalty_revenue_account: penalty_revenue_regular_account
 )
 
+# Loan Product (Emergency Loan)
+emergency_loan_product = coop.loan_products.find_or_create_by!(
+  name: "Emergency Loan",
+  description: "",
+  maximum_loanable_amount: 300000.00,
+  loans_receivable_current_account: loans_receivable_current_regular_account,
+  loans_receivable_past_due_account: loans_receivable_past_due_regular_account
+)
+
+emergency_loan_product.interest_configs.find_or_create_by(
+  rate: 0.025,
+  interest_revenue_account: interest_revenue_regular_account,
+  unearned_interest_income_account: unearned_interest_income_regular_account
+)
+
+emergency_loan_product.penalty_configs.find_or_create_by(
+  rate: 0.01,
+  penalty_revenue_account: penalty_revenue_regular_account
+)
+
 # Loan Product (Short-Term Loan) Member
-short_term_loan_product = coop.loan_products.find_or_create_by!(
+# RAILS_ENV=production bundle exec rails db:seed
+member_short_term_loan = coop.loan_products.find_or_create_by!(
   name: "Short-Term Loan(Member)",
   description: "",
   maximum_loanable_amount: 100000.00,
@@ -99,19 +120,19 @@ short_term_loan_product = coop.loan_products.find_or_create_by!(
   loans_receivable_past_due_account: loans_receivable_past_due_short_term_account
 )
 
-short_term_loan_product.interest_configs.find_or_create_by(
+member_short_term_loan.interest_configs.find_or_create_by(
   rate: 0.025,
   interest_revenue_account: interest_revenue_short_term_account,
   unearned_interest_income_account: unearned_interest_income_short_term_account
 )
 
-short_term_loan_product.penalty_configs.find_or_create_by(
+member_short_term_loan.penalty_configs.find_or_create_by(
   rate: 0.01,
   penalty_revenue_account: penalty_revenue_short_term_account
 )
 
 # Loan Product (Short-Term Loan) Non-Member
-short_term_loan_product = coop.loan_products.find_or_create_by!(
+non_member_short_term_loan = coop.loan_products.find_or_create_by!(
   name: "Short-Term Loan(Non-Member)",
   description: "",
   maximum_loanable_amount: 100000.00,
