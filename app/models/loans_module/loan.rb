@@ -42,9 +42,9 @@ module LoansModule
 
     has_many :notices,                  class_name: "LoansModule::Notice",
                                         as: :notified
-    has_many :loan_interests,           class_name: "LoansModule::Loans::LoanInterest"
-    has_many :loan_penalties,           class_name: "LoansModule::Loans::LoanPenalty"
-    has_many :loan_discounts,           class_name: "LoansModule::Loans::LoanDiscount"
+    has_many :loan_interests,           class_name: "LoansModule::Loans::LoanInterest", dependent: :destroy
+    has_many :loan_penalties,           class_name: "LoansModule::Loans::LoanPenalty",  dependent: :destroy
+    has_many :loan_discounts,           class_name: "LoansModule::Loans::LoanDiscount", dependent: :destroy
     has_many :notes,                    as: :noteable
     has_many :terms, as: :termable
 

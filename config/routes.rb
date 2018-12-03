@@ -49,13 +49,9 @@ Rails.application.routes.draw do
       resources :loans, only: [:index], module: :organizations
       resources :reports, only: [:index], module: :organizations
     end
-
     resources :archived_loans, only: [:index]
     resources :disbursement_vouchers, only: [:create]
     namespace :monitoring do
-
-
-
       resources :metrics, only: [:index]
     end
     resources :search_results, only: [:index]
@@ -70,12 +66,13 @@ Rails.application.routes.draw do
     resources :reports, only: [:index]
     resources :aging_loans, only: [:index, :show]
     resources :loan_applications, only: [:index, :new, :create, :show, :destroy] do
-      resources :capital_build_up_processings,       only: [:new, :create], module: :loan_applications
-      resources :savings_account_deposit_processings, only: [:new, :create], module: :loan_applications
-      resources :voucher_amounts,       only: [:new, :create, :destroy], module: :loan_applications
-      resources :vouchers, only: [:new, :create, :show], module: :loan_applications
-
+    resources :capital_build_up_processings,       only: [:new, :create], module: :loan_applications
+    resources :savings_account_deposit_processings, only: [:new, :create], module: :loan_applications
+    resources :voucher_amounts,       only: [:new, :create, :destroy], module: :loan_applications do
+      resources :adjustments, only: [:new, :create]
     end
+    resources :vouchers, only: [:new, :create, :show, :destroy], module: :loan_applications
+  end
     resources :dashboard, only: [:index]
     resources :loan_products, only:[:index] do
       resources :loans, only: [:index], module: :loan_products

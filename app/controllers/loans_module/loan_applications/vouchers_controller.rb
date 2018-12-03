@@ -24,6 +24,18 @@ module LoansModule
         @voucher = Voucher.find(params[:id])
       end
 
+      def destroy
+        @loan_application = current_cooperative.loan_applications.find(params[:loan_application_id])
+        @voucher = @loan_application.voucher
+        @loan = @loan_application.loan
+        @loan_application.destroy
+        @voucher.destroy
+        if !@loan.disbursement_voucher.disbursed? 
+          @loan.destroy
+        end
+        redirect_to loans_module_loan_applications_url, notice: "Voucher cancelled succesfully."
+      end
+
 
       private
       def voucher_params

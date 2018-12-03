@@ -19,7 +19,7 @@ module LoansModule
 
     private
     def formatted_interest(schedule)
-      if schedule.has_prededucted_interest?
+      if schedule.prededucted_interest?
         "#{price(schedule.interest)} - PREDEDUCTED"
       else
         price(schedule.interest)
@@ -128,7 +128,8 @@ module LoansModule
         stroke_horizontal_rule
         move_down 15
       end
-      text "AMORTIZATION SCHEDULE", size: 9, style: :bold
+      text "LOAN AMORTIZATION SCHEDULE", size: 9, style: :bold
+      move_down 10
       if loan.forwarded_loan? || loan.amortization_schedules.blank?
         text "No data Available"
       else

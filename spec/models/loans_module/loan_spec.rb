@@ -47,6 +47,10 @@ module LoansModule
 
     end
 
+    describe 'enums' do
+      it { is_expected.to define_enum_for(:status).with([:current_loan, :past_due]) }
+    end
+
     describe "#principal_account" do
       it "current loan" do
         loans_receivable_current_account = create(:asset)

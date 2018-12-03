@@ -3,10 +3,11 @@ module LoansModule
     class EntryProcessing
       include ActiveModel::Model
       attr_reader :voucher, :employee, :loan, :loan_application
+
       def initialize(args)
-        @voucher    = args[:voucher]
-        @employee   = args[:employee]
-        @loan       = args[:loan]
+        @voucher          = args[:voucher]
+        @employee         = args[:employee]
+        @loan             = args[:loan]
         @loan_application = args[:loan_application]
       end
       def process!
@@ -64,7 +65,7 @@ module LoansModule
       def update_terms
         loan.current_term.update_attributes!(
           effectivity_date: voucher.date,
-          maturity_date: voucher.date + loan.current_term.term.to_i.months)
+          maturity_date: voucher.date + loan_application.term.to_i.months)
       end
 
 

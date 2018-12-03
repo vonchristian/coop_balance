@@ -15,15 +15,16 @@ module LoansModule
 
       private
       def create_voucher_amount
-        Vouchers::VoucherAmount.create(
+        Vouchers::VoucherAmount.credit.create(
           commercial_document: find_loan_application,
+          loan_application: find_loan_application,
           amount:              amount,
           account_id:          account_id,
           description:         description
         )
       end
       def find_loan_application
-        LoanApplication.find(loan_application_id)
+        LoansModule::LoanApplication.find(loan_application_id)
       end
     end
   end

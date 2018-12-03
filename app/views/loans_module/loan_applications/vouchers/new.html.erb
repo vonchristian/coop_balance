@@ -39,7 +39,7 @@
                   <%= voucher_amount.description %>
                 </div>
                 <div class="col-md-2">
-                  <%= link_to new_loans_module_voucher_amount_amount_adjustment_path(voucher_amount_id: voucher_amount.id, loan_application_id: @loan_application.id), data: { modal: true } do %>
+                  <%= link_to new_loans_module_loan_application_voucher_amount_adjustment_path(voucher_amount_id: voucher_amount.id, loan_application_id: @loan_application.id), data: { modal: true } do %>
                     <span data-toggle="tooltip" title="Adjust"><i class="fa fa-edit"></i>
                     </span>
                   <% end %>
@@ -63,6 +63,17 @@
         <hr>
         <div class="row">
           <div class="col-md-8">
+            Total Charges
+          </div>
+          <div class="col-md-3">
+            <span class="float-right text-danger">
+              <%= number_to_currency @loan_application.voucher_amounts.total %>
+            </span>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-8">
             <h3 class="card-title"> Net Proceed </h3>
           </div>
           <div class="col-md-3">
@@ -75,7 +86,7 @@
         <%= simple_form_for [@loan_application, @voucher], url: :loans_module_loan_application_vouchers, html: { autocomplete: 'off' } do |f| %>
           <%= f.input :date, as: :string, input_html: { class: "datepicker", value: Date.today.strftime("%B %e, %Y") } %>
           <%= f.input :description, input_html: { value: "#{@loan_application.loan_product_name} disbursement voucher of #{@loan_application.borrower_name}" }, as: :text %>
-          <%= f.input :number, input_html: { value: Voucher.generate_number_for(@voucher) } %>
+          <%= f.input :number, input_html: { value: Voucher.generate_number } %>
           <%= f.input :preparer_id, input_html: { value: current_user.id }, as: :hidden %>
 
           <%= f.input :borrower_id, input_html: { value: @loan_application.borrower_id }, as: :hidden %>
