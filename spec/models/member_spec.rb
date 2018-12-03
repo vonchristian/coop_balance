@@ -58,12 +58,12 @@ describe Member, type: :model do
     expect(member.subscribed?(program2)).to eql false
   end
 
-  it ".has_birthdays_on(month)" do
+  it ".has_birthday_on(month)" do
     january = create(:member, date_of_birth: '01/01/1990')
     march = create(:member, date_of_birth: '01/03/1990')
 
-    expect(Member.has_birthdays_on(1).pluck(:id)).to include(january.id)
-    expect(Member.has_birthdays_on(3).pluck(:id)).to include(march.id)
+    expect(Member.has_birthday_on(1).ids).to include(january.id)
+    expect(Member.has_birthday_on(3).ids).to include(march.id)
   end
 
   it '.updated_at(args={})' do
@@ -75,7 +75,24 @@ describe Member, type: :model do
 
     expect(described_class.updated_at(from_date: Date.today.last_month, to_date: Date.today.last_month)).to include(old_member)
     expect(described_class.updated_at(from_date: Date.today.last_month, to_date: Date.today.last_month)).to_not include(recent_member)
+  end
 
+  it '.with_tin' do
+    member_with_tin    = create(:member)
+    member_with_no_tin = create(:member)
+    tin = create(:tin, tinable: member_with_tin)
+
+    expect(described_class.with_tin).to include(member_with_tin)
+    expect(described_class.with_tin).to_not include(member_with_no_tin)
+  end
+
+  it '.with_no_tin' do
+    member_with_tin    = create(:member)
+    member_with_no_tin = create(:member)
+    tin = create(:tin, tinable: member_with_tin)
+
+    expect(described_class.with_no_tin).to include(member_with_no_tin)
+    expect(described_class.with_no_tin).to_not include(member_with_tin)
   end
 
 

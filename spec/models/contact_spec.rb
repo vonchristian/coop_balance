@@ -17,5 +17,5 @@ describe Contact do
     it 'with no contact' do
       expect(described_class.current.class).to eql(NullContact)
     end
-  end 
+  end
 end

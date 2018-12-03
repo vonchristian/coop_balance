@@ -2,6 +2,7 @@ class Member < ApplicationRecord
   include PgSearch
   include CurrentAddress
   include CurrentTin
+  extend TinMonitoring
 
   pg_search_scope :text_search, :against => [ :first_name, :middle_name, :last_name]
   multisearchable against: [:first_name, :last_name, :middle_name]
@@ -66,16 +67,12 @@ class Member < ApplicationRecord
     end
   end
 
-  def self.has_no_tin
-    joins(:tins).where('tins.tinable_type'=> 'Member')
-  end
-
   def self.has_birth_month_on(args= {})
     BirthdayQuery.new(self).has_birth_month_on(args)
   end
 
-  def self.has_birth_day_on(args= {})
-    BirthdayQuery.new(self).has_birth_day_on(args)
+  def self.has_birthday_on(args= {})
+    where(birth_day: args[:birth_day])
   end
 
   def current_contact

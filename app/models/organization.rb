@@ -1,4 +1,5 @@
 class Organization < ApplicationRecord
+  extend TinMonitoring
   include PgSearch
   include CurrentTin
 
