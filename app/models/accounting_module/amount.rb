@@ -1,9 +1,7 @@
 module AccountingModule
   class Amount < ApplicationRecord
     audited
-    monetize :amount_cents, as: :amount, numericality: {
-              greater_than_or_equal_to: 0
-            }
+    monetize :amount_cents, as: :amount, numericality: true
     extend AccountingModule::BalanceFinder
     belongs_to :entry, :class_name => 'AccountingModule::Entry'
     belongs_to :account, :class_name => 'AccountingModule::Account'

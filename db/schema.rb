@@ -607,15 +607,6 @@ ActiveRecord::Schema.define(version: 2018_12_01_054632) do
     t.index ["cooperative_id"], name: "index_loan_protection_funds_on_cooperative_id"
   end
 
-  create_table "loan_protection_plan_providers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
-    t.uuid "account_id"
-    t.decimal "rate"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["account_id"], name: "index_loan_protection_plan_providers_on_account_id"
-  end
-
   create_table "loans", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "loan_product_id"
     t.decimal "loan_amount"
@@ -1114,8 +1105,8 @@ ActiveRecord::Schema.define(version: 2018_12_01_054632) do
     t.string "account_number"
     t.datetime "date_opened"
     t.string "account_owner_name"
-    t.datetime "created_at", default: "2018-12-01 06:24:47", null: false
-    t.datetime "updated_at", default: "2018-12-01 06:24:47", null: false
+    t.datetime "created_at", default: "2018-12-03 03:15:38", null: false
+    t.datetime "updated_at", default: "2018-12-03 03:15:38", null: false
     t.integer "status"
     t.uuid "office_id"
     t.string "subscriber_type"
@@ -1464,7 +1455,6 @@ ActiveRecord::Schema.define(version: 2018_12_01_054632) do
   add_foreign_key "loan_products", "accounts", column: "loans_receivable_past_due_account_id"
   add_foreign_key "loan_products", "cooperatives"
   add_foreign_key "loan_protection_funds", "cooperatives"
-  add_foreign_key "loan_protection_plan_providers", "accounts"
   add_foreign_key "loans", "barangays"
   add_foreign_key "loans", "cooperatives"
   add_foreign_key "loans", "loan_applications"
