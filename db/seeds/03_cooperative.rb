@@ -179,7 +179,7 @@ coop.time_deposit_products.find_or_create_by!(
 
 # 180-Days TD(10,000 - 99,999)
 coop.time_deposit_products.find_or_create_by!(
-  name: "180 Days Regular Time Deposit",
+  name: "180 Days Regular Time Deposit(10,000 - 99,999)",
   minimum_deposit: 10000.00,
   maximum_deposit: 99999.00,
   interest_rate: 0.045,
@@ -193,7 +193,7 @@ coop.time_deposit_products.find_or_create_by!(
 
 # 180-Days TD(100,000 - 199,999)
 coop.time_deposit_products.find_or_create_by!(
-  name: "180 Days Regular Time Deposit",
+  name: "180 Days Regular Time Deposit(100,000 - 199,999)",
   minimum_deposit: 100000.00,
   maximum_deposit: 199999.00,
   interest_rate: 0.05,
@@ -207,7 +207,7 @@ coop.time_deposit_products.find_or_create_by!(
 
 # 180-Days TD(200,000 - above)
 coop.time_deposit_products.find_or_create_by!(
-  name: "180 Days Regular Time Deposit",
+  name: "180 Days Regular Time Deposit(200,000 - above)",
   minimum_deposit: 200000.00,
   maximum_deposit: 999999999.00,
   interest_rate: 0.055,
@@ -221,7 +221,7 @@ coop.time_deposit_products.find_or_create_by!(
 
 # 360-Days TD(10,000 - 99,999)
 coop.time_deposit_products.find_or_create_by!(
-  name: "360 Days Regular Time Deposit",
+  name: "360 Days Regular Time Deposit(10,000 - 99,999)",
   minimum_deposit: 10000.00,
   maximum_deposit: 99999.00,
   interest_rate: 0.05,
@@ -235,7 +235,7 @@ coop.time_deposit_products.find_or_create_by!(
 
 # 360-Days TD(100,000 - 199,999)
 coop.time_deposit_products.find_or_create_by!(
-  name: "360 Days Regular Time Deposit",
+  name: "360 Days Regular Time Deposit(100,000 - 199,999)",
   minimum_deposit: 100000.00,
   maximum_deposit: 199999.00,
   interest_rate: 0.055,
@@ -249,7 +249,7 @@ coop.time_deposit_products.find_or_create_by!(
 
 # 360-Days TD(200,000 - above)
 coop.time_deposit_products.find_or_create_by!(
-  name: "360 Days Regular Time Deposit",
+  name: "360 Days Regular Time Deposit(200,000 - above)",
   minimum_deposit: 200000.00,
   maximum_deposit: 999999999.00,
   interest_rate: 0.06,
@@ -278,8 +278,8 @@ coop.time_deposit_products.find_or_create_by!(
   name: "3 Years Special Time Deposit(1,000,000 and above",
   minimum_deposit: 1000000.00,
   maximum_deposit: 999999990.00,
-  interest_rate: 0.07,
-  number_of_days: 720,
+  interest_rate: 0.08,
+  number_of_days: 1080,
   account: time_deposit_account,
   interest_expense_account: time_deposit_interest_expense_account,
   break_contract_account: time_deposit_break_contract_account,
