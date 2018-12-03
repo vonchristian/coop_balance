@@ -39,7 +39,11 @@
         </p>
       </div>
       <div class="col-md-3">
-        <%= link_to 'Set as Past Due', new_loans_module_loan_past_due_path(@loan), class: "btn btn-sm btn-outline-danger float-right", data: {modal: true} %>
+        <% if @loan.past_due? %>
+          <span class="text-danger"> This loan is already set to Past Due </span>
+        <% else %>
+          <%= link_to 'Set as Past Due', new_loans_module_loan_past_due_voucher_path(@loan), class: "btn btn-sm btn-outline-danger float-right", data: {modal: true} %>
+        <% end %>
       </div>
     </div>
   </div>

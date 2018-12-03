@@ -66,7 +66,7 @@ module LoansModule
         if principal_amount.to_f > 0
           voucher.voucher_amounts.credit.build(
           amount:              principal_amount.to_f,
-          account:             find_loan.loan_product_loans_receivable_current_account,
+          account:             find_loan.principal_account,
           commercial_document: find_loan)
         end
 

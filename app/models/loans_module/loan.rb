@@ -1,5 +1,6 @@
 module LoansModule
   class Loan < ApplicationRecord
+    enum status: [:current_loan, :past_due]
     audited
     include PgSearch
     include LoansModule::Loans::Interest
@@ -55,6 +56,7 @@ module LoansModule
     delegate :name,  to: :loan_product, prefix: true
     delegate :unearned_interest_income_account,
              :loans_receivable_current_account,
+             :loans_receivable_past_due_account,
              :penalty_revenue_account,
              :interest_revenue_account,
              :interest_rebate_account,
@@ -86,6 +88,14 @@ module LoansModule
       accounts << cooperative.cash_accounts
       accounts << loan_product_loans_receivable_current_account
       accounts
+    end
+
+    def principal_account
+      if current_loan?
+        loan_product_loans_receivable_current_account
+      elsif past_due?
+        loan_product_loans_receivable_past_due_account
+      end
     end
 
     def current_term
@@ -154,7 +164,7 @@ module LoansModule
         active.joins(:terms).where('terms.maturity_date > ?', Date.today)
     end
 
-    def self.past_due(options={})
+    def self.past_due_loans(options={})
       if options[:from_date] && options[:to_date]
         from_date = options[:from_date]
         to_date   = options[:to_date]
@@ -208,6 +218,7 @@ module LoansModule
 
     def self.loan_payments(args={})
       LoansModule::LoanProduct.accounts.credit_entries.entered_on(args) +
+      LoansModule::LoanProduct.past_due_accounts.credit_entries.entered_on(args) +
       LoansModule::LoanProducts::InterestConfig.interest_revenue_accounts.debit_entries.entered_on(args) +
       LoansModule::LoanProducts::PenaltyConfig.penalty_revenue_accounts.debit_entries.entered_on(args)
     end
@@ -215,6 +226,10 @@ module LoansModule
     def loan_payments(args={})
       entries = []
       loan_product_loans_receivable_current_account.credit_amounts.where(commercial_document: self).each do |amount|
+        entries << amount.entry
+      end
+
+      loan_product_loans_receivable_past_due_account.credit_amounts.where(commercial_document: self).each do |amount|
         entries << amount.entry
       end
 

@@ -2,19 +2,16 @@ module LoansModule
   class LoanProduct < ApplicationRecord
     extend Totalable
     belongs_to :cooperative
-    belongs_to :loans_receivable_current_account, class_name: "AccountingModule::Account"
+    belongs_to :loans_receivable_current_account,  class_name: "AccountingModule::Account"
     belongs_to :loans_receivable_past_due_account, class_name: "AccountingModule::Account"
+    has_many :interest_configs,                    class_name: "LoansModule::LoanProducts::InterestConfig", dependent: :destroy
+    has_many :penalty_configs,                     class_name: "LoansModule::LoanProducts::PenaltyConfig",dependent: :destroy
+    has_many :loan_product_charges,                class_name: "LoansModule::LoanProducts::LoanProductCharge",dependent: :destroy
+    has_many :loans,                               class_name: "LoansModule::Loan", dependent: :destroy
+    has_many :member_borrowers,                    through: :loans, source: :borrower, source_type: 'Member'
+    has_many :employee_borrowers,                  through: :loans, source: :borrower, source_type: 'User'
+    has_many :organization_borrowers,              through: :loans, source: :borrower, source_type: 'Organization'
 
-    has_many :interest_configs,      class_name: "LoansModule::LoanProducts::InterestConfig", dependent: :destroy
-    has_many :penalty_configs,       class_name: "LoansModule::LoanProducts::PenaltyConfig",dependent: :destroy
-    has_many :loan_product_charges,  class_name: "LoansModule::LoanProducts::LoanProductCharge",dependent: :destroy
-
-    has_many :loans, dependent: :destroy
-    has_many :member_borrowers, through: :loans, source: :borrower, source_type: 'Member'
-    has_many :employee_borrowers, through: :loans, source: :borrower, source_type: 'User'
-    has_many :organization_borrowers, through: :loans, source: :borrower, source_type: 'Organization'
-
-#DO NOT ALLOW NIL RATE AND ACCOUNTS
     delegate :rate, :annual_rate, to: :current_interest_config, prefix: true
     delegate :rate, to: :current_penalty_config, prefix: true, allow_nil: true
 
@@ -33,6 +30,11 @@ module LoansModule
 
     def self.accounts
       ids = all.pluck(:loans_receivable_current_account_id)
+      AccountingModule::Account.where(id: ids)
+    end
+
+    def self.past_due_accounts
+      ids = all.pluck(:loans_receivable_past_due_account_id)
       AccountingModule::Account.where(id: ids)
     end
 

@@ -14,6 +14,7 @@ module Registries
     def upload_loan(row)
         loan = find_cooperative.loans.create!(
           forwarded_loan: true,
+          status: 'current_loan',
           cooperative: self.employee.cooperative,
           office: self.employee.office,
           borrower: find_borrower(row),

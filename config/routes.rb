@@ -82,11 +82,12 @@ Rails.application.routes.draw do
     end
 
     resources :loans, only: [:index, :show] do
-      resources :past_dues, only: [:new, :create], module: :loans
-      resources :organizations, only: [:edit, :update], module: :loans
-      resources :loan_penalty_discounts, only: [:new, :create], module: :loans
-      resources :loan_interest_discounts, only: [:new, :create], module: :loans
-      resources :archivings, only: [:create], module: :loans
+      resources :past_due_vouchers,              only: [:new, :create, :show, :destroy], module: :loans
+      resources :past_due_voucher_confirmations, only: [:create],                        module: :loans
+      resources :organizations,                  only: [:edit, :update],                 module: :loans
+      resources :loan_penalty_discounts,         only: [:new, :create],                  module: :loans
+      resources :loan_interest_discounts,        only: [:new, :create],                  module: :loans
+      resources :archivings,                     only: [:create],                        module: :loans
 
       resources :terms,                         only: [:new, :create], module: :loans
       resources :interest_postings,             only: [:new, :create], module: :loans
@@ -344,7 +345,7 @@ Rails.application.routes.draw do
     resources :notes,                 only: [:index, :new, :create],         module: :loans
     resources :barangays,             only: [:edit, :update],        module: :loans
     resources :settings,              only: [:index],                module: :loans
-    resources :payments,              only: [:index], module: :loans
+    resources :payments,              only: [:index, :new, :create], module: :loans
   end
   resources :vouchers, only: [:index, :show, :destroy] do
     resources :disbursements, only: [:create], module: :vouchers

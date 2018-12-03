@@ -15,7 +15,7 @@
           </div>
           <div class="col-md-3">
             <span class="float-right">
-              <%= number_to_currency @voucher.voucher_amounts.for_account(account: @loan.loan_product_loans_receivable_current_account).total %>
+              <%= number_to_currency @voucher.voucher_amounts.for_account(account: @loan.principal_account).total %>
             </span>
           </div>
         </div>

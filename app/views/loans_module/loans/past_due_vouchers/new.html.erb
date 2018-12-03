@@ -25,12 +25,17 @@
   </div>
 </div>
 <hr class="no-margin">
-<%= simple_form_for [@loan, @past_due], html: { autocomplete: "off", data: { modal: true } }, remote: request.xhr?, url: :loans_module_loan_past_dues do |f| %>
+<%= simple_form_for [@loan, @past_due_voucher], html: { autocomplete: "off", data: { modal: true } }, remote: request.xhr?, url: :loans_module_loan_past_due_vouchers do |f| %>
   <div class="modal-body">
     <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
-    <%= f.input :loan_id, as: :string, input_html: { value: @loan }, as: :hidden %>
+    <%= f.input :description, as: :text %>
+    <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+    <%= f.input :cooperative_id, input_html: { value: current_cooperative.id }, as: :hidden %>
+    <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
+    <%= f.input :loan_id, as: :string, input_html: { value: @loan.id }, as: :hidden %>
+    <%= f.input :reference_number %>
   </div>
   <div class="modal-footer">
-    <%= f.submit "Set Loan as Loss", class: "btn btn-danger pull-right" %>
+    <%= f.submit "Set Loan as Past Due", class: "btn btn-danger pull-right" %>
   </div>
 <% end %>

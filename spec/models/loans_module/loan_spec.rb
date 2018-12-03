@@ -47,6 +47,25 @@ module LoansModule
 
     end
 
+    describe "#principal_account" do
+      it "current loan" do
+        loans_receivable_current_account = create(:asset)
+        loan_product = create(:loan_product_with_interest_config, loans_receivable_current_account: loans_receivable_current_account)
+        loan = create(:loan, status: 'current_loan', loan_product: loan_product)
+
+        expect(loan.principal_account).to eql(loans_receivable_current_account)
+      end
+
+      it "past due loan" do
+        loans_receivable_past_due_account = create(:asset)
+        loan_product = create(:loan_product_with_interest_config, loans_receivable_past_due_account: loans_receivable_past_due_account)
+        loan = create(:loan, status: 'past_due', loan_product: loan_product)
+
+        expect(loan.principal_account).to eql(loans_receivable_past_due_account)
+      end
+    end
+
+
     it ".active" do
       loan = create(:loan)
       archived_loan = create(:loan, archived: true)
