@@ -90,9 +90,9 @@ regular_loan_product.penalty_configs.find_or_create_by(
   penalty_revenue_account: penalty_revenue_regular_account
 )
 
-# Loan Product (Short-Term Loan) Member - 2.5%, Non-Member - 3%
+# Loan Product (Short-Term Loan) Member
 short_term_loan_product = coop.loan_products.find_or_create_by!(
-  name: "Short-Term Loan",
+  name: "Short-Term Loan(Member)",
   description: "",
   maximum_loanable_amount: 100000.00,
   loans_receivable_current_account: loans_receivable_current_short_term_account,
@@ -110,25 +110,126 @@ short_term_loan_product.penalty_configs.find_or_create_by(
   penalty_revenue_account: penalty_revenue_short_term_account
 )
 
-# Loan Product (productive Loan)
-productive_loan_product = coop.loan_products.find_or_create_by!(
-  name: "Productive Loan",
+# Loan Product (Short-Term Loan) Non-Member
+short_term_loan_product = coop.loan_products.find_or_create_by!(
+  name: "Short-Term Loan(Non-Member)",
   description: "",
-  maximum_loanable_amount: 1000000.00,
+  maximum_loanable_amount: 100000.00,
+  loans_receivable_current_account: loans_receivable_current_short_term_account,
+  loans_receivable_past_due_account: loans_receivable_past_due_short_term_account
+)
+
+short_term_loan_product.interest_configs.find_or_create_by(
+  rate: 0.03,
+  interest_revenue_account: interest_revenue_short_term_account,
+  unearned_interest_income_account: unearned_interest_income_short_term_account
+)
+
+short_term_loan_product.penalty_configs.find_or_create_by(
+  rate: 0.01,
+  penalty_revenue_account: penalty_revenue_short_term_account
+)
+
+# Loan Product (productive Loan)
+# Productive Loan - Swine Raising(40,000-100,000)
+swine_raising_loan = coop.loan_products.find_or_create_by!(
+  name: "Productive Loan - Swine Raising(40,000-100,000)",
+  description: "",
+  maximum_loanable_amount: 100000.00,
   loans_receivable_current_account: loans_receivable_current_productive_account,
   loans_receivable_past_due_account: loans_receivable_past_due_productive_account
 )
 
-productive_loan_product.interest_configs.find_or_create_by(
+swine_raising_loan.interest_configs.find_or_create_by(
   rate: 0.1,
   interest_revenue_account: interest_revenue_productive_account,
   unearned_interest_income_account: unearned_interest_income_productive_account
 )
 
-productive_loan_product.penalty_configs.find_or_create_by(
+swine_raising_loan.penalty_configs.find_or_create_by(
   rate: 0.02,
   penalty_revenue_account: penalty_revenue_productive_account
 )
+
+# Productive Loan - Duck/Paultry Raising(20,000-40,000)
+paultry_raising_loan = coop.loan_products.find_or_create_by!(
+  name: "Productive Loan - Duck/Paultry Raising(20,000-40,000)",
+  description: "",
+  maximum_loanable_amount: 40000.00,
+  loans_receivable_current_account: loans_receivable_current_productive_account,
+  loans_receivable_past_due_account: loans_receivable_past_due_productive_account
+)
+
+paultry_raising_loan.interest_configs.find_or_create_by(
+  rate: 0.1,
+  interest_revenue_account: interest_revenue_productive_account,
+  unearned_interest_income_account: unearned_interest_income_productive_account
+)
+
+paultry_raising_loan.penalty_configs.find_or_create_by(
+  rate: 0.02,
+  penalty_revenue_account: penalty_revenue_productive_account
+)
+
+# Productive Loan - Vegetable Gardening(20,000-30,000)
+vegetable_loan = coop.loan_products.find_or_create_by!(
+  name: "Productive Loan - Vegetable Gardening(20,000-30,000)",
+  description: "",
+  maximum_loanable_amount: 30000.00,
+  loans_receivable_current_account: loans_receivable_current_productive_account,
+  loans_receivable_past_due_account: loans_receivable_past_due_productive_account
+)
+
+vegetable_loan.interest_configs.find_or_create_by(
+  rate: 0.1,
+  interest_revenue_account: interest_revenue_productive_account,
+  unearned_interest_income_account: unearned_interest_income_productive_account
+)
+
+vegetable_loan.penalty_configs.find_or_create_by(
+  rate: 0.02,
+  penalty_revenue_account: penalty_revenue_productive_account
+)
+
+# Productive Loan - Tilapia Growing(50,000-100,000)
+tilapia_loan = coop.loan_products.find_or_create_by!(
+  name: "Productive Loan - Tilapia Growing(50,000-100,000)",
+  description: "",
+  maximum_loanable_amount: 100000.00,
+  loans_receivable_current_account: loans_receivable_current_productive_account,
+  loans_receivable_past_due_account: loans_receivable_past_due_productive_account
+)
+
+tilapia_loan.interest_configs.find_or_create_by(
+  rate: 0.1,
+  interest_revenue_account: interest_revenue_productive_account,
+  unearned_interest_income_account: unearned_interest_income_productive_account
+)
+
+tilapia_loan.penalty_configs.find_or_create_by(
+  rate: 0.02,
+  penalty_revenue_account: penalty_revenue_productive_account
+)
+
+# Productive Loan - Rice/Corn Production(50,000-100,000)
+rice_corn_loan = coop.loan_products.find_or_create_by!(
+  name: "Productive Loan - Rice/Corn Production(50,000-100,000)",
+  description: "",
+  maximum_loanable_amount: 100000.00,
+  loans_receivable_current_account: loans_receivable_current_productive_account,
+  loans_receivable_past_due_account: loans_receivable_past_due_productive_account
+)
+
+rice_corn_loan.interest_configs.find_or_create_by(
+  rate: 0.1,
+  interest_revenue_account: interest_revenue_productive_account,
+  unearned_interest_income_account: unearned_interest_income_productive_account
+)
+
+rice_corn_loan.penalty_configs.find_or_create_by(
+  rate: 0.02,
+  penalty_revenue_account: penalty_revenue_productive_account
+) 
 
 # Time Deposit
 time_deposit_account = AccountingModule::Account.find_by(name: "Time Deposits")
