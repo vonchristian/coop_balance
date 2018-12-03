@@ -1,4 +1,6 @@
-update last transaction date of members / organizations 
+edit share capital product
+
+update last transaction date of members / organizations
 
 check voucher generate number
 

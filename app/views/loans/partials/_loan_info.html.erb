@@ -55,7 +55,11 @@
             <b>Loan Amount</b>
           </div>
           <div class="col-md-6 col-sm-6">
-            <%=number_to_currency @loan.loan_amount %>
+            <% if @loan.forwarded_loan? %>
+              <span class="badge bg-warning"> Forwarded Loan </span>
+            <% else %>
+              <%= number_to_currency @loan.loan_amount %>
+            <% end %>
           </div>
         </div>
         <div class="row min-margin">

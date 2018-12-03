@@ -31,8 +31,11 @@
 
                       </div>
                       <div class="col-md-3">
-                        <b><%= number_to_currency loan.loan_amount %></b><br>
-                        <small class="text-muted">LOAN AMOUNT</small>
+                        <% if !loan.forwarded_loan? %>
+                        
+                          <b><%= number_to_currency loan.loan_amount %></b><br>
+                          <small class="text-muted">LOAN AMOUNT</small>
+                        <% end %>
                       </div>
                       <div class="col-md-3">
                         <span class="text-red"><%= number_to_currency loan.principal_balance %></span><br>

@@ -1,0 +1,36 @@
+<%= render 'loans_module/loans/shared/borrower_avatar' %>
+<div class="modal-body">
+  <h4 class="card-title">Loan Details</h4>
+  <hr>
+  <div class="row">
+    <div class="col-md-5">
+      Loan Balance
+    </div>
+    <div class="col-md-7">
+      <h6><%= number_to_currency @loan.principal_balance %></h6>
+    </div>
+  </div>
+  <hr class="min-margin">
+  <div class="row">
+    <div class="col-md-5">
+      Disbursement Date
+    </div>
+    <div class="col-md-7">
+      <h6>
+        <% if @loan.disbursed? %>
+          <%= @loan.disbursement_voucher.date.strftime("%B %w, %Y") %>
+        <% end %>
+      </h6>
+    </div>
+  </div>
+</div>
+<hr class="no-margin">
+<%= simple_form_for [@loan, @past_due], html: { autocomplete: "off", data: { modal: true } }, remote: request.xhr?, url: :loans_module_loan_past_dues do |f| %>
+  <div class="modal-body">
+    <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+    <%= f.input :loan_id, as: :string, input_html: { value: @loan }, as: :hidden %>
+  </div>
+  <div class="modal-footer">
+    <%= f.submit "Set Loan as Loss", class: "btn btn-danger pull-right" %>
+  </div>
+<% end %>

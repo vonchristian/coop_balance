@@ -33,6 +33,20 @@
   <div class="card-body">
     <div class="row">
       <div class="col-md-9">
+        <h4 class="card-title">Set Loan as Past Due</h4>
+        <p class="text-muted">
+          Set this loan as past due
+        </p>
+      </div>
+      <div class="col-md-3">
+        <%= link_to 'Set as Past Due', new_loans_module_loan_past_due_path(@loan), class: "btn btn-sm btn-outline-danger float-right", data: {modal: true} %>
+      </div>
+    </div>
+  </div>
+  <hr class="no-margin">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-9">
         <h4 class="card-title">Loan Terms Details
           <span class="badge bg-danger"><%= @loan.terms.count %></span>
         </h4>
