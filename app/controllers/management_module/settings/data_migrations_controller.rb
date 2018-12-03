@@ -1,7 +1,6 @@
 module ManagementModule
 	module Settings
 		class DataMigrationsController < ApplicationController
-
 			def index
       	@savings_registry = Registries::SavingsAccountRegistry.new
       	@share_capital_registry = Registries::ShareCapitalRegistry.new

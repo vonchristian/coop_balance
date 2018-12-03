@@ -36,9 +36,9 @@ class Cooperative < ApplicationRecord
   has_many :registries
   has_many :loan_registries,         class_name: "Registries::LoanRegistry"
   has_many :member_registries,       class_name: "Registries::MemberRegistry"
-  has_many :savings_account_registries,       class_name: "Registries::SavingsAccountRegistry"
-  has_many :share_capital_registries,       class_name: "Registries::ShareCapitalRegistry"
-  has_many :time_deposit_registries,       class_name: "Registries::TimeDepositRegistry"
+  has_many :savings_account_registries,class_name: "Registries::SavingsAccountRegistry"
+  has_many :share_capital_registries,  class_name: "Registries::ShareCapitalRegistry"
+  has_many :time_deposit_registries,   class_name: "Registries::TimeDepositRegistry"
   has_many :beneficiaries
   has_many :savings_account_applications
   has_many :share_capital_applications

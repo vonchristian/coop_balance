@@ -27,7 +27,7 @@ Rails.application.routes.draw do
     end
     resources :settings, only: [:index]
     resources :loan_protection_fund_configs, only: [:new, :create]
-    resources :accounts, except: [:index,:destroy] do
+    resources :accounts, except: [:destroy] do
       resources :activations, only: [:create], module: :accounts
       resources :deactivations, only: [:create], module: :accounts
       resources :reports, only: [:index], module: :accounts

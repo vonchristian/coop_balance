@@ -1,13 +1,10 @@
 module ManagementModule
   class ShareCapitalRegistriesController < ApplicationController
     def create
-      @registry = current_cooperative.share_capital_registries.create(registry_params)
-      if @registry.save
-        redirect_to management_module_settings_data_migrations_url, notice: "Share Capital registry saved successfully"
-        @registry.parse_for_records
-      else
-        render :new
-      end
+      @registry = current_cooperative.share_capital_registries.create!(registry_params)
+      @registry.save
+      @registry.parse_for_records
+      redirect_to management_module_settings_data_migrations_url, notice: "Share Capital registry saved successfully"
     end
 
     private
@@ -16,4 +13,3 @@ module ManagementModule
     end
   end
 end
-

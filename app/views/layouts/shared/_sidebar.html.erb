@@ -9,9 +9,10 @@
       <a href="#" class="d-block"><%= link_to current_user.first_and_last_name.try(:titleize), employee_path(current_user) %></a>
       <a href="#" class="d-block"><%= current_user.designation %></a>
       <hr>
-      <a href="#" class="d-block card-title"><%= number_to_currency current_user.default_cash_account.balance %></a>
-      <a href="#" class="d-block"><%= current_user.default_cash_account.name %></a>
-
+      <% if current_user.default_cash_account.present? %>
+        <a href="#" class="d-block card-title"><%= number_to_currency current_user.default_cash_account.balance %></a>
+        <a href="#" class="d-block"><%= current_user.default_cash_account.name %></a>
+      <% end %>
     </div>
   </div>
 

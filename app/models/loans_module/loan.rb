@@ -69,8 +69,7 @@ module LoansModule
     delegate :accounting_entry, to: :disbursement_voucher, allow_nil: true
     delegate :name, to: :barangay, prefix: true, allow_nil: true
 
-    validates :loan_product_id,  :loan_amount, :borrower_id, presence: true
-    validates :loan_amount, numericality: { less_than_or_equal_to: :maximum_loanable_amount }
+    validates :loan_product_id, :borrower_id, presence: true
     before_save :set_borrower_full_name
 
 

@@ -55,7 +55,7 @@ module MembershipsModule
 
 
     def average_monthly_balance(args = {})
-      first_entry_date = AccountingModule::Entry.order(entry_date: :desc).last.try(:entry_date) || Date.today
+      first_entry_date = Date.today - 999.years
       date = args[:date]
       paid_up_balance(from_date: first_entry_date, to_date: date.beginning_of_month.last_month.end_of_month, commercial_document: self) +
       capital_build_ups(commercial_document: self, from_date: date.beginning_of_month, to_date: (date.beginning_of_month + 14.days)).sum(&:amount)
