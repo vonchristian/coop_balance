@@ -11,18 +11,18 @@
           </div>
         </div>
       </div>
-      <%= render 'vouchers/partials/body', voucher: @voucher %>
-      <% if !@voucher.disbursed?%>
-        <%= render 'vouchers/partials/alert_message' %>
-        <div class="card-body">
-          <% if current_user.can_disburse?(voucher: @voucher) %>
-            <%= link_to "Disburse", voucher_disbursements_path(voucher_id: @voucher.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
-          <% end %>
-          <%= link_to "Cancel", voucher_path(@voucher), method: :delete, class: "btn text-danger float-left" %>
-        </div>
-      <% else %>
-        <%= render 'vouchers/partials/status' %>
-      <% end %>
+      <div class="card-body">
+        <%= render 'vouchers/partials/alert_message', voucher: @voucher %>
+        <%= render 'vouchers/partials/body', voucher: @voucher %>
+        <% if !@voucher.disbursed?%>
+          <hr class="no-margin">
+            <%= link_to "Cancel Voucher", loans_module_loan_application_voucher_path(loan_application_id: @loan_application.id, id: @voucher.id), method: :delete, class: "btn text-danger float-left" %>
+            <%= link_to "Disburse", loans_module_loan_application_voucher_confirmations_path(loan_application_id: @loan_application.id, voucher_id: @voucher.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
+          </div>
+        <% else %>
+          <%= render 'vouchers/partials/status' %>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>

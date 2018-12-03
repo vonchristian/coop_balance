@@ -21,7 +21,7 @@ module LoansModule
       end
       def show
         @loan_application = current_cooperative.loan_applications.find(params[:loan_application_id])
-        @voucher = Voucher.find(params[:id])
+        @voucher = @loan_application.voucher
       end
 
       def destroy
@@ -30,7 +30,7 @@ module LoansModule
         @loan = @loan_application.loan
         @loan_application.destroy
         @voucher.destroy
-        if !@loan.disbursement_voucher.disbursed? 
+        if !@loan.disbursement_voucher.disbursed?
           @loan.destroy
         end
         redirect_to loans_module_loan_applications_url, notice: "Voucher cancelled succesfully."

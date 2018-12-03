@@ -65,13 +65,15 @@ Rails.application.routes.draw do
     resources :member_borrowers, only: [:index, :show]
     resources :reports, only: [:index]
     resources :aging_loans, only: [:index, :show]
+
     resources :loan_applications, only: [:index, :new, :create, :show, :destroy] do
     resources :capital_build_up_processings,       only: [:new, :create], module: :loan_applications
     resources :savings_account_deposit_processings, only: [:new, :create], module: :loan_applications
+    resources :vouchers, only: [:new, :create, :show, :destroy], module: :loan_applications
+    resources :voucher_confirmations, only: [:create], module: :loan_applications
     resources :voucher_amounts,       only: [:new, :create, :destroy], module: :loan_applications do
       resources :adjustments, only: [:new, :create]
     end
-    resources :vouchers, only: [:new, :create, :show, :destroy], module: :loan_applications
   end
     resources :dashboard, only: [:index]
     resources :loan_products, only:[:index] do
@@ -442,10 +444,6 @@ Rails.application.routes.draw do
     resources :voucher_disbursements, only: [:create], module: :share_capital_applications
   end
 
-  resources :loan_applications, only: [:destroy] do
-    resources :vouchers, only: [:show], module: :loan_applications
-    resources :voucher_confirmations, only: [:create], module: :loan_applications
-  end
 
 
   authenticated :member_account do
