@@ -186,6 +186,8 @@ AccountingModule::Asset.create(code: 14141,  name: "Accumulated Depreciation - B
  AccountingModule::Asset.create(code: 17700,  name: "Assets Held for Sale")
  AccountingModule::Asset.create(code: 17800,  name: "Deposits on Returnable Containers")
  AccountingModule::Asset.create(code: 17900,  name: "Miscellaneous Assets")
+ AccountingModule::Asset.create(code: 179001,  name: "Temporary Loans Account")
+
 
 
 #Liability
@@ -234,6 +236,10 @@ AccountingModule::Liability.create(code: 248201, name: "Members' Benefit and Oth
 
 AccountingModule::Liability.create(code: 24830, name: 'Due to Head Office/Branch/Subsidiary')
 AccountingModule::Liability.create(code: 24840, name: 'Other Non Current Liabilities')
+AccountingModule::Liability.create(code: 248401, name: 'Temporary Savings Deposit Account')
+AccountingModule::Liability.create(code: 248402, name: 'Temporary Time Deposit Account')
+
+
 
 #Equity
 AccountingModule::Equity.create(code: 30000, name: 'Equity')
@@ -266,6 +272,8 @@ AccountingModule::Equity.create(code: 306402, name: 'Loan Redemption Fund')
 
 
 AccountingModule::Equity.create(code: 30700, name: 'Unrealized Gains/Losses')
+AccountingModule::Equity.create(code: 307001, name: 'Temporary Share Capital Account')
+
 
 #Revenue
 
