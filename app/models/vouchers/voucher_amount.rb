@@ -1,7 +1,6 @@
 module Vouchers
   class VoucherAmount < ApplicationRecord
-      monetize :amount_cents, as: :amount, numericality: {
-              greater_than_or_equal_to: 0
+      monetize :amount_cents, as: :amount, numericality: true
             }
     enum amount_type: [:debit, :credit]
     belongs_to :account, class_name: "AccountingModule::Account"

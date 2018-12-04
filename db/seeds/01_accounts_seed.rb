@@ -22,6 +22,7 @@ AccountingModule::Asset.create(code: 11410, name: "Accumulated Gains/Losses - AF
 AccountingModule::Asset.create(code: 11420, name: "Allowance for Probable Losses - AFS FA")
 AccountingModule::Asset.create(code: 11500, name: "Unquoted Debt Securities Classified As Loans")
 AccountingModule::Asset.create(code: 11600, name: "Investment in Non-Marketable Equity (INMES)")
+
 AccountingModule::Asset.create(code: 11610, name: "Allowance for Probable Losses -  INMES")
 AccountingModule::Asset.create(code: 11700, name: "Loans and Receivables")
 AccountingModule::Asset.create(code: 11711, name: "Loans Receivable - Current")
@@ -34,8 +35,6 @@ AccountingModule::Asset.create(code: 117116, name: "Loans Receivable - Current (
 AccountingModule::Asset.create(code: 117117, name: "Loans Receivable - Current (OFW Loan)")
 AccountingModule::Asset.create(code: 117118, name: "Loans Receivable - Current (Short-Term Loan)")
 AccountingModule::Asset.create(code: 117119, name: "Loans Receivable - Current (Productive Loan)")
-
-
 AccountingModule::Asset.create(code: 11712, name: "Loans Receivable - Past Due")
 AccountingModule::Asset.create(code: 1171211, name: "Loans Receivable - Past Due (Regular Loan)")
 AccountingModule::Asset.create(code: 1171212, name: "Loans Receivable - Past Due (Emergency Loan)")
@@ -45,11 +44,6 @@ AccountingModule::Asset.create(code: 1171215, name: "Loans Receivable - Past Due
 AccountingModule::Asset.create(code: 1171216, name: "Loans Receivable - Past Due (Agri Input Loan)")
 AccountingModule::Asset.create(code: 1171217, name: "Loans Receivable - Past Due (Short-Term Loan)")
 AccountingModule::Asset.create(code: 1171218, name: "Loans Receivable - Past Due (Productive Loan)")
-
-
-
-
-
 AccountingModule::Asset.create(code: 11713, name: "Loans Receivable - Restructured")
 AccountingModule::Asset.create(code: 11714, name: "Loans Receivable - Loans in Litigation")
 AccountingModule::Asset.create(code: 11715, contra: true, name: "Unearned Interests and Discounts")
@@ -61,22 +55,14 @@ AccountingModule::Asset.create(code: 117155, contra: true, name: "Unearned Inter
 AccountingModule::Asset.create(code: 117156, contra: true, name: "Unearned Interests - Agri Input Loan")
 AccountingModule::Asset.create(code: 117157, contra: true, name: "Unearned Interests - Short-Term Loan")
 AccountingModule::Asset.create(code: 117158, contra: true, name: "Unearned Interests - Productive Loan")
-
-
-
-
-
 AccountingModule::Asset.create(code: 11716, name: "Allowance for Probable Losses on Loans")
 AccountingModule::Asset.create(code: 11721, name: "Accounts Receivables Trade - Current")
+AccountingModule::Asset.create(code: 117215, name: "Accounts Receivables (Appliance Financing)")
+
 AccountingModule::Asset.create(code: 117211, name: "Catering Receivables - Current")
 AccountingModule::Asset.create(code: 117212, name: "Restaurant Receivables - Current")
 AccountingModule::Asset.create(code: 117213, name: "Catering Receivables - Prior")
 AccountingModule::Asset.create(code: 117214, name: "Restaurant Receivables - Prior")
-
-
-
-
-
 AccountingModule::Asset.create(code: 11722, name: "Accounts Receivables Trade - Past Due")
 AccountingModule::Asset.create(code: 11723, name: "Accounts Receivables Trade - Restructured")
 AccountingModule::Asset.create(code: 11724, name: "Accounts Receivables Trade - in Litigation")
@@ -143,49 +129,46 @@ AccountingModule::Asset.create(code: 14130,  name: "Building and Improvements")
 AccountingModule::Asset.create(code: 14131,  name: "Accumulated Depreciation - Land Improvements")
 AccountingModule::Asset.create(code: 14140,  name: "Building on Leased/Usufruct Land")
 AccountingModule::Asset.create(code: 14141,  name: "Accumulated Depreciation - Building on Leased/Usufruct Land", contra: true )
- AccountingModule::Asset.create(code: 14150,  name: "Utility Plant")
- AccountingModule::Asset.create(code: 14151,  name: "Accumulated Depreciation - Utility Plant", contra: true)
- AccountingModule::Asset.create(code: 14160,  name: "Property, Plant and Equipment - Under Finance Lease")
- AccountingModule::Asset.create(code: 14161,  name: "Accumulated Depreciation - Property, Plant and Equipment - Under Finance Lease", contra: true)
- AccountingModule::Asset.create(code: 14170,  name: "Construction in Progress")
- AccountingModule::Asset.create(code: 14180,  name: "Furniture, Fixtures and Equipment (FFE)")
- AccountingModule::Asset.create(code: 14181,  name: "Accumulated Depreciation - FFE", contra: true)
- AccountingModule::Asset.create(code: 14190,  name: "Machineries, Tools and Equipment")
- AccountingModule::Asset.create(code: 14191,  name: "Accumulated Depreciation - Machineries, Tools and Equipment", contra: true)
- AccountingModule::Asset.create(code: 14200,  name: "Kitchen, Canteen and Catering Equipment/Utensils")
- AccountingModule::Asset.create(code: 142001,  name: "Catering Equipment")
- AccountingModule::Asset.create(code: 142002,  name: "Bagsakan Center Equipment")
-
-
- AccountingModule::Asset.create(code: 14201,  name: "Accumulated Depreciation - Kitchen, Canteen and Catering Equipment/Utensils", contra: true)
- AccountingModule::Asset.create(code: 14210,  name: "Transportation Equipment")
- AccountingModule::Asset.create(code: 14211,  name: "Accumulated Depreciation - Transportation Equipment", contra: true)
- AccountingModule::Asset.create(code: 14220,  name: "Lines and Uniforms")
- AccountingModule::Asset.create(code: 14221,  name: "Accumulated Depreciation - Lines and Uniforms", contra: true)
- AccountingModule::Asset.create(code: 14230,  name: "Nursery/Greenhouses")
- AccountingModule::Asset.create(code: 14231,  name: "Accumulated Depreciation - Nursery/Greenhouses", contra: true)
- AccountingModule::Asset.create(code: 14240,  name: "Leasehold Rights and Improvements")
- AccountingModule::Asset.create(code: 15100,  name: "Biological Assets - Animals")
- AccountingModule::Asset.create(code: 15101,  name: "Accumulated Depreciation - Biological Assets - Animals", contra: true)
- AccountingModule::Asset.create(code: 15200,  name: "Biological Assets - Plants")
- AccountingModule::Asset.create(code: 15201,  name: "Accumulated Depreciation - Biological Assets - Plants", contra: true)
- AccountingModule::Asset.create(code: 16000,  name: "Intangible Assets")
- AccountingModule::Asset.create(code: 16100,  name: "Franchise")
- AccountingModule::Asset.create(code: 16200,  name: "Franchise Cost")
- AccountingModule::Asset.create(code: 16300,  name: "Copyright")
- AccountingModule::Asset.create(code: 16400,  name: "Patent")
- AccountingModule::Asset.create(code: 17000,  name: "Other Non-Current Assets")
- AccountingModule::Asset.create(code: 17100,  name: "Cooperative Development Cost")
- AccountingModule::Asset.create(code: 17200,  name: "Product/Business Development Cost")
- AccountingModule::Asset.create(code: 17300,  name: "Computerization Cost")
- AccountingModule::Asset.create(code: 17400,  name: "Other Funds and Deposits")
- AccountingModule::Asset.create(code: 174001,  name: "Deposit in Transit")
-
- AccountingModule::Asset.create(code: 17500,  name: "Finance Lease Receivable")
- AccountingModule::Asset.create(code: 17600,  name: "Due from Head Office/Branch/Subsidiary")
- AccountingModule::Asset.create(code: 17700,  name: "Assets Held for Sale")
- AccountingModule::Asset.create(code: 17800,  name: "Deposits on Returnable Containers")
- AccountingModule::Asset.create(code: 17900,  name: "Miscellaneous Assets")
+AccountingModule::Asset.create(code: 14150,  name: "Utility Plant")
+AccountingModule::Asset.create(code: 14151,  name: "Accumulated Depreciation - Utility Plant", contra: true)
+AccountingModule::Asset.create(code: 14160,  name: "Property, Plant and Equipment - Under Finance Lease")
+AccountingModule::Asset.create(code: 14161,  name: "Accumulated Depreciation - Property, Plant and Equipment - Under Finance Lease", contra: true)
+AccountingModule::Asset.create(code: 14170,  name: "Construction in Progress")
+AccountingModule::Asset.create(code: 14180,  name: "Furniture, Fixtures and Equipment (FFE)")
+AccountingModule::Asset.create(code: 14181,  name: "Accumulated Depreciation - FFE", contra: true)
+AccountingModule::Asset.create(code: 14190,  name: "Machineries, Tools and Equipment")
+AccountingModule::Asset.create(code: 14191,  name: "Accumulated Depreciation - Machineries, Tools and Equipment", contra: true)
+AccountingModule::Asset.create(code: 14200,  name: "Kitchen, Canteen and Catering Equipment/Utensils")
+AccountingModule::Asset.create(code: 142001,  name: "Catering Equipment")
+AccountingModule::Asset.create(code: 142002,  name: "Bagsakan Center Equipment")
+AccountingModule::Asset.create(code: 14201,  name: "Accumulated Depreciation - Kitchen, Canteen and Catering Equipment/Utensils", contra: true)
+AccountingModule::Asset.create(code: 14210,  name: "Transportation Equipment")
+AccountingModule::Asset.create(code: 14211,  name: "Accumulated Depreciation - Transportation Equipment", contra: true)
+AccountingModule::Asset.create(code: 14220,  name: "Lines and Uniforms")
+AccountingModule::Asset.create(code: 14221,  name: "Accumulated Depreciation - Lines and Uniforms", contra: true)
+AccountingModule::Asset.create(code: 14230,  name: "Nursery/Greenhouses")
+AccountingModule::Asset.create(code: 14231,  name: "Accumulated Depreciation - Nursery/Greenhouses", contra: true)
+AccountingModule::Asset.create(code: 14240,  name: "Leasehold Rights and Improvements")
+AccountingModule::Asset.create(code: 15100,  name: "Biological Assets - Animals")
+AccountingModule::Asset.create(code: 15101,  name: "Accumulated Depreciation - Biological Assets - Animals", contra: true)
+AccountingModule::Asset.create(code: 15200,  name: "Biological Assets - Plants")
+AccountingModule::Asset.create(code: 15201,  name: "Accumulated Depreciation - Biological Assets - Plants", contra: true)
+AccountingModule::Asset.create(code: 16000,  name: "Intangible Assets")
+AccountingModule::Asset.create(code: 16100,  name: "Franchise")
+AccountingModule::Asset.create(code: 16200,  name: "Franchise Cost")
+AccountingModule::Asset.create(code: 16300,  name: "Copyright")
+AccountingModule::Asset.create(code: 16400,  name: "Patent")
+AccountingModule::Asset.create(code: 17000,  name: "Other Non-Current Assets")
+AccountingModule::Asset.create(code: 17100,  name: "Cooperative Development Cost")
+AccountingModule::Asset.create(code: 17200,  name: "Product/Business Development Cost")
+AccountingModule::Asset.create(code: 17300,  name: "Computerization Cost")
+AccountingModule::Asset.create(code: 17400,  name: "Other Funds and Deposits")
+AccountingModule::Asset.create(code: 174001,  name: "Deposit in Transit")
+AccountingModule::Asset.create(code: 17500,  name: "Finance Lease Receivable")
+AccountingModule::Asset.create(code: 17600,  name: "Due from Head Office/Branch/Subsidiary")
+AccountingModule::Asset.create(code: 17700,  name: "Assets Held for Sale")
+AccountingModule::Asset.create(code: 17800,  name: "Deposits on Returnable Containers")
+AccountingModule::Asset.create(code: 17900,  name: "Miscellaneous Assets")
 
 
 #Liability
@@ -193,6 +176,8 @@ AccountingModule::Liability.create(code: 21000, name: 'Current Liabilities')
 AccountingModule::Liability.create(code: 21100, name: 'Savings Deposits')
 AccountingModule::Liability.create(code: 21200, name: 'Time Deposits')
 AccountingModule::Liability.create(code: 21300, name: 'Accounts Payable-Trade')
+AccountingModule::Liability.create(code: 213002, name: 'Accrued Interest Payable')
+
 AccountingModule::Liability.create(code: 213001, name: 'Other Payables - PLGU')
 
 AccountingModule::Liability.create(code: 21400, name: 'Accounts Payable-Non Trade')
@@ -219,6 +204,8 @@ AccountingModule::Liability.create(code: 23100, name: 'Other Current Liabilities
 
 AccountingModule::Liability.create(code: 24000, name: 'Non-Current Liabilities')
 AccountingModule::Liability.create(code: 240001, name: 'Mortuary Aid Fund')
+AccountingModule::Liability.create(code: 240002, name: 'Cooperative Guarantee Fund')
+
 
 AccountingModule::Liability.create(code: 24100, name: 'Loans Payable')
 AccountingModule::Liability.create(code: 24200, name: 'Discounts on Loans Payable', contra: true)
