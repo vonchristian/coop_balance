@@ -2,17 +2,15 @@ module AccountingModule
   module Reports
     class TrialBalancesController < ApplicationController
       def index
-        first_entry = current_cooperative.entries.order(entry_date:  :desc).first
-        @from_date = first_entry ? DateTime.parse(first_entry.entry_date.strftime("%B %e, %Y")) : Date.today
-        @to_date = params[:to_date] ? Chronic.parse(params[:to_date]) : Time.zone.now
-        @accounts = current_cooperative.accounts.active.order(:code)
+        @to_date = params[:to_date] ? DateTime.parse(params[:to_date]) : Time.zone.now
+        @accounts = current_cooperative.accounts.joins(:entries).active.order(:code).paginate(page: params[:page], per_page: 25)
         @cooperative = current_cooperative
         respond_to do |format|
           format.html
           format.xlsx
           format.pdf do
             pdf = AccountingModule::Reports::TrialBalancesPdf.new(
-              accounts:     @accounts,
+              accounts:     current_cooperative.accounts,
               to_date:      @to_date,
               cooperative:  @cooperative,
               view_context: view_context)

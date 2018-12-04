@@ -1,3 +1,4 @@
+fix notices template
 edit share capital product
 
 update last transaction date of members / organizations

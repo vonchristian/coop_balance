@@ -6,7 +6,7 @@ module AccountingModule
       if params[:search].present?
         @accounts = type_class.text_search(params[:search]).paginate(:page => params[:page], :per_page => 30)
       else
-        @accounts = type_class.all.order(:code).paginate(:page => params[:page], :per_page => 30)
+        @accounts = type_class.all.active.order(:code).paginate(:page => params[:page], :per_page => 30)
       end
     end
     def new

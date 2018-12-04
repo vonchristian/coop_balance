@@ -32,10 +32,10 @@ module AccountingModule
         end
         move_down 30
         stroke do
-          stroke_color '24292E'
-          line_width 1
+          stroke_color 'CCCCCC'
+          line_width 0.2
           stroke_horizontal_rule
-          move_down 5
+          move_down 15
         end
       end
 

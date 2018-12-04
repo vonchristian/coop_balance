@@ -4,11 +4,16 @@
       <div class="row">
         <div class="col-md-6">
           <b><%= account.name %></b><br>
+
           <small class="text-muted">
             <i class="fa fa-clock"></i> Last Transaction
             <i class="fa fa-server"></i> <%= account.code %>
-            <span class="badge bg-gray"><%= account.normalized_type %></span>
           </small>
+          <span class="badge bg-gray"><%= account.normalized_type %></span>
+
+          <% if !account.active? %>
+            &nbsp; <span class="badge bg-danger"> Inactive </span>
+          <% end %>
         </div>
         <div class="col-md-2">
           <small>DEBITS BALANCE </small><br>

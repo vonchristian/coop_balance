@@ -7,7 +7,7 @@
         <p class="text-muted"> As of <%= @to_date.strftime("%B %e, %Y") %></p>
       </div>
       <div class="col-md-3">
-       <%= link_to 'View (PDF)', accounting_module_reports_trial_balances_path(format: 'pdf'), class: "btn btn-default float-right" %>
+       <%= link_to 'View (PDF)', accounting_module_reports_trial_balances_path(format: 'pdf'), to_date: @to_date, class: "btn btn-default float-right" %>
        <%= link_to 'Excel', accounting_module_reports_trial_balances_path(format: 'xlsx') %>
 
       </div>
@@ -31,6 +31,8 @@
      <% @accounts.each do |account| %>
        <%= render 'accounting_module/accounts/partials/header', account: account %>
      <% end %>
+     <center><%= will_paginate @accounts %></center>
+
     </div>
   </div>
 </div>

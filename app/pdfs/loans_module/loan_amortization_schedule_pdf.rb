@@ -41,24 +41,22 @@ module LoansModule
     end
 
     def heading
-    bounding_box [320, 930], width: 200 do
-        text "#{cooperative.name.try(:upcase)}", style: :bold, size: 12
-
-
-        text "#{cooperative.address} . #{cooperative.contact_number}", size: 8
+      bounding_box [320, 930], width: 200 do
+          text "#{cooperative.name.try(:upcase)}", style: :bold, size: 12
+          text "#{cooperative.address} . #{cooperative.contact_number}", size: 8
+      end
+      bounding_box [0, 930], width: 200 do
+        text "LOAN DISCLOSURE STATEMENT AND AMORTIZATION SCHEDULE", style: :bold, size: 10
+        move_down 6
+      end
+      move_down 15
+      stroke do
+        stroke_color '24292E'
+        line_width 1
+        stroke_horizontal_rule
+        move_down 1
+      end
     end
-    bounding_box [0, 930], width: 200 do
-      text "LOAN DISCLOSURE STATEMENT AND AMORTIZATION SCHEDULE", style: :bold, size: 10
-      move_down 6
-    end
-    move_down 15
-    stroke do
-      stroke_color '24292E'
-      line_width 1
-      stroke_horizontal_rule
-      move_down 1
-    end
-  end
   def loan_details
     bounding_box [0, 865], width: 450 do
       text "LOAN DETAILS", size: 9, style: :bold

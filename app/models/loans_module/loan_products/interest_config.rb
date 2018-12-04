@@ -31,7 +31,7 @@ module LoansModule
         amount: loan_application.prededucted_interest,
         account: interest_revenue_account,
         amount_type: 'credit' )
-      end
+      end 
     end
   end
 end

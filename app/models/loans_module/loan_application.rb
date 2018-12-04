@@ -120,7 +120,7 @@ module LoansModule
 
     def prededucted_interest
       if current_interest_config.percentage? && current_interest_config.prededucted_rate.present?
-        (loan_amount.amount * rate) * prededucted_rate
+        (loan_amount.amount * current_interest_config.rate) * current_interest_config.prededucted_rate
       elsif current_interest_config.number_of_payment? && current_interest_config.prededucted_number_of_payments.present?
         amortization_schedules.order(date: :asc).first(current_interest_config.prededucted_number_of_payments).sum(&:interest)
       else

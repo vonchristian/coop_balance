@@ -114,7 +114,7 @@ emergency_loan_product.penalty_configs.find_or_create_by(
 member_short_term_loan = coop.loan_products.find_or_create_by!(
   name: "Short-Term Loan(Member)",
   description: "",
-  maximum_loanable_amount: 100000.00,
+  maximum_loanable_amount: 100_000.00,
   loans_receivable_current_account: loans_receivable_current_short_term_account,
   loans_receivable_past_due_account: loans_receivable_past_due_short_term_account
 )

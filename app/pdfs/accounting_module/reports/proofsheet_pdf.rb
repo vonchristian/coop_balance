@@ -1,12 +1,14 @@
 module AccountingModule
   module Reports
     class ProofsheetPdf < Prawn::Document
-      attr_reader :to_date, :accounts, :view_context
+      attr_reader :to_date, :accounts, :view_context, :employee, :cooperative
       def initialize(args)
         super(margin: 40, page_size: "A4", page_layout: :portrait)
-        @to_date = args[:to_date]
-        @accounts = args[:accounts]
+        @to_date      = args[:to_date]
+        @accounts     = args[:accounts]
+        @employee     = args[:employee]
         @view_context = args[:view_context]
+        @cooperative  = @employee.cooperative
         heading
         accounts_table
       end
@@ -18,11 +20,11 @@ module AccountingModule
 
       def heading
         bounding_box [300, 760], width: 50 do
-          image "#{Rails.root}/app/assets/images/kccmc_logo.jpg", width: 40, height: 40
+          image "#{Rails.root}/app/assets/images/#{cooperative.abbreviated_name.downcase}_logo.jpg", width: 40, height: 40
         end
         bounding_box [350, 760], width: 150 do
-            text "KCCMC", style: :bold, size: 22
-            text "Poblacion, Tinoc, Ifugao", size: 10
+            text "#{cooperative.abbreviated_name.upcase}", style: :bold, size: 22
+            text "#{cooperative.address}", size: 10
         end
         bounding_box [0, 760], width: 400 do
           text "Consolidated Proofsheet Report", style: :bold, size: 14
@@ -43,6 +45,8 @@ module AccountingModule
           cells.borders =[]
           column(0).align = :right
           column(3).align = :right
+          row(0).font_style = :bold
+
         end
         stroke do
           move_down 5
@@ -51,7 +55,7 @@ module AccountingModule
           stroke_horizontal_rule
           move_down 5
         end
-        table([["#{price(accounts.credits_balance )}", "", "", "#{price(accounts.debits_balance )}"]], cell_style: { inline_format: true, size: 11, font: "Helvetica", :padding => [2,5,2,5]}, column_widths: [100, 20, 280, 100])do
+        table([["#{price(accounts.credits_balance(to_date: to_date) )}", "", "", "#{price(accounts.debits_balance(to_date: to_date) )}"]], cell_style: { inline_format: true, size: 11, font: "Helvetica", :padding => [2,5,2,5]}, column_widths: [100, 20, 280, 100])do
           cells.borders =[]
           column(0).align = :right
           column(3).align = :right

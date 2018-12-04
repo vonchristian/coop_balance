@@ -8,12 +8,19 @@ module AccountingModule
         @to_date = params[:entry_date] ? DateTime.parse(params[:entry_date]) : Time.zone.now
         @assets = current_cooperative.accounts.assets.active.order(:code).all
         @liabilities = current_cooperative.accounts.liabilities.active.order(:code).all
-        @equity =current_cooperative.accounts.equities.active.order(:code).all
+        @equities =current_cooperative.accounts.equities.active.order(:code).all
         @employee = current_user
         respond_to do |format|
           format.html
           format.pdf do
-            pdf = AccountingModule::Reports::FinancialConditionPdf.new(@from_date, @to_date, @assets, @liabilities, @equity, @employee, view_context)
+            pdf = AccountingModule::Reports::FinancialConditionPdf.new(
+              from_date:    @from_date,
+              to_date:      @to_date,
+              assets:       @assets,
+              liabilities:  @liabilities,
+              equities:     @equities,
+              employee:     @employee,
+              view_context: view_context)
             send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Financial Statement.pdf"
           end
         end

@@ -58,12 +58,12 @@ describe Member, type: :model do
     expect(member.subscribed?(program2)).to eql false
   end
 
-  it ".has_birthday_on(month)" do
+  it ".has_birthday_on(args)" do
     january = create(:member, date_of_birth: '01/01/1990')
     march = create(:member, date_of_birth: '01/03/1990')
 
-    expect(Member.has_birthday_on(1).ids).to include(january.id)
-    expect(Member.has_birthday_on(3).ids).to include(march.id)
+    expect(Member.has_birthday_on(birth_day: 1).ids).to include(january.id)
+    expect(Member.has_birthday_on(birth_day: 3).ids).to include(march.id)
   end
 
   it '.updated_at(args={})' do
