@@ -11,8 +11,9 @@ Rails.application.routes.draw do
     resources :cash_receipts, module: :entries,     only: [:index]
     resources :cash_disbursements, module: :entries, only: [:index]
     resources :journal_entry_vouchers,  module: :entries, only: [:index]
-
-    resources :adjusting_entries, only: [:new, :create]
+    resources :entry_line_item_vouchers, only: [:create, :show, :destroy], module: :entries do
+      resources :confirmations, only: [:create], module: :entry_line_item_vouchers
+    end
     resources :interests_earned_postings, only: [:create]
     resources :entry_line_items, only: [:new, :create, :destroy]
     resources :entry_processings, only: [:create]
@@ -309,6 +310,10 @@ Rails.application.routes.draw do
   resources :search_results, only: [:index, :show]
 
   resources :time_deposits, only: [:index, :show] do
+    resources :transfers, only: [:new, :create], module: :time_deposits
+    resources :transfer_vouchers, only: [:show, :destroy], module: :time_deposits do
+      resources :confirmations, only: [:create], module: :transfer_vouchers
+    end
     resources :adjusting_entries, only: [:new, :create], module: :time_deposits
     resources :withdrawals, only: [:new, :create], module: :time_deposits
     resources :term_extensions, only: [:new, :create], module: :time_deposits

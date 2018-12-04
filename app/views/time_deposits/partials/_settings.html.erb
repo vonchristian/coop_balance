@@ -24,6 +24,15 @@
   <hr>
   <div class="row">
     <div class="col-md-9">
+      <h3 class="card-title"> Transfer to Savings </h3>
+      <p class="text-muted"> Transfer this time deposit to Regular Savings </p>
+    </div>
+    <div class="col-md-3">
+      <%= link_to 'Transfer', new_time_deposit_transfer_path(@time_deposit), class: "btn btn-outline-danger" %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-9">
       <h4 class="card-title">Time Deposit Terms</h4>
       <p class="text-muted"> Time deposit terms and extensions </p>
     </div>

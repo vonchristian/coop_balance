@@ -1,12 +1,10 @@
 module AccountingModule
   class AdjustingEntriesController < ApplicationController
     def new
-      @commercial_document = params[:commercial_document_type].constantize.find(params[:commercial_document_id])
       @entry = AccountingModule::AdjustingEntry.new
     end
 
     def create
-      @commercial_document = params[:accounting_module_adjusting_entry][:commercial_document_type].constantize.find(params[:accounting_module_adjusting_entry][:commercial_document_id])
       @entry = AccountingModule::AdjustingEntry.new(adjusting_entry_params)
       if @entry.valid?
         @entry.save
@@ -18,7 +16,7 @@ module AccountingModule
 
     private
     def adjusting_entry_params
-      params.require(:accounting_module_adjusting_entry).
+      params.require(:vouchers_voucher_processing).
       permit(:entry_date,
              :employee_id,
              :reference_number,

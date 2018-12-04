@@ -1,3 +1,72 @@
+<div class="card">
+  <div class="card-body">
+    <nav class="nav nav-pills flex-column flex-md-row">
+      <%=link_to 'This Year', loans_module_index_path(from_date: Date.today.beginning_of_year, to_date: Date.today.end_of_year), class: "flex-sm-fill nav-link #{'active' if current_page?(loans_module_index_path(from_date: Date.today.beginning_of_year, to_date: Date.today.end_of_year))}" %>
+      <%=link_to 'This Quarter', loans_module_index_path(from_date: Date.today.beginning_of_quarter, to_date: Date.today.end_of_quarter), class: "flex-sm-fill nav-link #{'active' if current_page?(loans_module_index_path(from_date: Date.today.beginning_of_quarter, to_date: Date.today.end_of_quarter)) }" %>
+      <%=link_to 'This Month', loans_module_index_path(from_date: Date.today.beginning_of_month, to_date: Date.today.end_of_month), class: "flex-sm-fill nav-link #{'active' if current_page?(loans_module_index_path(from_date: Date.today.beginning_of_month, to_date: Date.today.end_of_month)) }" %>
+      <%=link_to 'This Week', loans_module_index_path(from_date: nil, to_date: nil), class: "flex-sm-fill nav-link #{'active' if current_page?(loans_path) && @from_date.nil? && @to_date.nil? }" %>
+      <%=link_to 'This Day', loans_module_index_path(from_date: nil, to_date: nil), class: "flex-sm-fill nav-link #{'active' if current_page?(loans_path) && @from_date.nil? && @to_date.nil? }" %>
+
+    </nav>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"> Loan Releases vs Loan Payments </h3>
+      </div>
+      <div class="card-body">
+        <% if @from_date == Date.today.beginning_of_month && @to_date == Date.today.end_of_month %>
+          <%= render 'loans_module/charts/monthly' %>
+        <% else %>
+          <% disbursements_data = [] %>
+          <% months = [] %>
+          <% (@from_date.to_date..@to_date.to_date).each do |month| %>
+           <% months << month.beginning_of_month %>
+          <% end %>
+          <% loan_releases_data = [] %>
+          <% months.uniq.each do |month| %>
+            <% loan_releases_data << { month.strftime("%B %Y") => current_cooperative.loan_products.total_debits_balance(from_date: month.beginning_of_month.beginning_of_day, to_date: month.end_of_month.end_of_day) } %>
+          <% end %>
+
+          <% loan_payments_data = [] %>
+          <% months.uniq.each do |month| %>
+            <% loan_payments_data << { month.strftime("%B %Y") => current_cooperative.loan_products.total_credits_balance(from_date: month.beginning_of_month.beginning_of_day, to_date: month.end_of_month.end_of_day) } %>
+          <% end %>
+          <%= line_chart [
+          {name: "Loan Releases", data: (Hash[*loan_releases_data.collect{|h| h.to_a }.flatten].delete_if{|k,v| v.blank?}) },
+          {name: "Loan Payments", data: (Hash[*loan_payments_data.collect{|h| h.to_a }.flatten].delete_if{|k,v| v.blank?}) }
+          ], thousands: "," %>
+        <% end %>
+  </div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title"> Matured Loans </h3><br>
+    <span class="text-muted"> From <%= @from_date.strftime("%B %e, %Y") %> - <%= @to_date.strftime("%B %e, %Y") %></span>
+  </div>
+  <div class="card-body">
+    <% current_cooperative.loans.past_due_loans(from_date: @from_date, to_date: @to_date).first(10).each do |loan| %>
+      <%= link_to loan_path(loan) do %>
+        <div class="row">
+          <div class="col-md-8">
+            <b><%= loan.borrower_name %></b><br>
+            <small><%= loan.loan_product_name.try(:upcase) %></small>
+          </div>
+          <div class="col-md-4">
+            <%= number_to_currency loan.principal_balance %>
+          </div>
+        </div>
+        <hr>
+      <% end %>
+    <% end %>
+    <center>
+      <%= link_to 'View All', matured_loans_path(from_date: Date.today, to_date: Date.today), class: "btn btn-default" %>
+    </center>
+  </div>
+</div>
 <div class="row">
   <div class="col-md-4">
     <div class="card">
@@ -9,16 +78,16 @@
           </div>
           <div class="col-md-4">
             <span class="pull-right">
-              <%= number_to_currency LoansModule::LoanProduct.total_balance(to_date: Date.today.yesterday) %>
+              <%= number_to_currency @loan_products.total_balance(to_date: Date.today.yesterday) %>
             </span>
         </div>
       </div>
-      <div class="row">
+      <div class="row min-margin">
         <div class="col-md-7">
           <p class="text-success">&nbsp; &nbsp; <i class="fa fa-plus-circle"></i> Disbursements </p>
         </div>
         <div class="col-md-4">
-          <span class="text-success pull-right"><%= number_to_currency LoansModule::LoanProduct.total_debits_balance(from_date: Date.today.beginning_of_day, to_date: Date.today.end_of_day) %></span>
+          <span class="text-success pull-right"><%= number_to_currency @loan_products.total_debits_balance(from_date: Date.today.beginning_of_day, to_date: Date.today.end_of_day) %></span>
         </div>
       </div>
       <div class="row">
@@ -26,7 +95,7 @@
           <p class="text-danger">&nbsp; &nbsp; <i class="fa fa-minus-circle"></i> Payments </p>
         </div>
         <div class="col-md-4">
-          <span class="text-danger pull-right"><%= number_to_currency LoansModule::LoanProduct.total_credits_balance(from_date: Date.today.beginning_of_day, to_date: Date.today.end_of_day) %></span>
+          <span class="text-danger pull-right"><%= number_to_currency @loan_products.total_credits_balance(from_date: Date.today.beginning_of_day, to_date: Date.today.end_of_day) %></span>
         </div>
       </div>
       <hr>
@@ -35,43 +104,19 @@
           <p><b>Ending Balance </b> </p>
         </div>
         <div class="col-md-4">
-          <span class="pull-right"><b><%= number_to_currency LoansModule::LoanProduct.total_balance(to_date: Date.today.end_of_day) %></b></span>
+          <span class="pull-right"><b><%= number_to_currency @loan_products.total_balance %></b></span>
         </div>
       </div>
     </div>
   </div>
-  <div class="card">
-    <div class="card-header">
-      <h3 class="card-title"> Matured Loans </h3><br>
-      <span class="text-muted"> For this day <%= Date.today.strftime("%B %e, %Y") %></span>
-    </div>
-    <div class="card-body">
-      <% LoansModule::Loan.past_due(from_date: Date.today, to_date: Date.today).first(10).each do |loan| %>
-        <%= link_to loan_path(loan) do %>
-          <div class="row">
-            <div class="col-md-8">
-              <b><%= loan.borrower_name %></b><br>
-              <small><%= loan.loan_product_name.try(:upcase) %></small>
-            </div>
-            <div class="col-md-4">
-              <%= number_to_currency loan.principal_balance %>
-            </div>
-          </div>
-          <hr>
-        <% end %>
-      <% end %>
-      <center>
-        <%= link_to 'View All', matured_loans_path(from_date: Date.today, to_date: Date.today), class: "btn btn-default" %>
-      </center>
-    </div>
-  </div>
+
   <div class="card">
     <div class="card-header">
       <h3 class="card-title"> Loans that will mature next week </h3><br>
       <span class="text-muted"> From <%= Date.today.next_week.beginning_of_week.strftime("%B %e, %Y") %> - <%= Date.today.next_week.end_of_week.strftime("%B %e, %Y") %> </span>
     </div>
     <div class="card-body">
-      <% LoansModule::Loan.past_due(from_date: Date.today.next_week.beginning_of_week, to_date: Date.today.next_week.end_of_week).first(10).each do |loan| %>
+      <% current_cooperative.loans.past_due_loans(from_date: Date.today.next_week.beginning_of_week, to_date: Date.today.next_week.end_of_week).first(10).each do |loan| %>
         <%= link_to loan_path(loan) do %>
           <div class="row">
             <div class="col-md-8">
@@ -100,44 +145,21 @@
     <div class="card-body">
       <div class="row">
         <div class="col-md-3 border-right">
-          <h3><%= Voucher.loan_disbursement_vouchers.disbursed_on(from_date: Date.today, to_date: Date.today).count %></h3>
+          <h3><%= current_cooperative.vouchers.loan_disbursement_vouchers.disbursed_on(from_date: Date.today, to_date: Date.today).count %></h3>
           <small>LOAN RELEASES</small>
         </div>
         <div class="col-md-3 border-right">
-          <h3><%= LoansModule::Loan.past_due(from_date: Date.today, to_date: Date.today).count %></h3>
+          <h3><%= current_cooperative.loans.past_due_loans(from_date: Date.today, to_date: Date.today).count %></h3>
           <small>MATURED</small>
         </div>
       </div>
     </div>
   </div>
-
-<div class="row">
-  <div class="col-md-12">
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title"> Loan Releases vs Loan Payments </h3>
-      </div>
-      <div class="card-body">
-        <% disbursements_data = [] %>
-        <% months = [] %>
-              <% (DateTime.now.beginning_of_year..DateTime.now).each do |month| %>
-               <% months << month.beginning_of_month %>
-              <% end %>
-              <% loan_releases_data = [] %>
-              <% months.uniq.each do |month| %>
-                <% loan_releases_data << { month.strftime("%B %Y") => LoansModule::LoanProduct.total_debits_balance(from_date: month.beginning_of_month, to_date: month.end_of_month) } %>
-              <% end %>
-
-              <% loan_payments_data = [] %>
-              <% months.uniq.each do |month| %>
-                <% loan_payments_data << { month.strftime("%B %Y") => LoansModule::LoanProduct.total_credits_balance(from_date: month.beginning_of_month, to_date: month.end_of_month) } %>
-              <% end %>
+  <div class="card">
+    <div class="card-body">
 
 
-           <%= line_chart [
-      {name: "Loan Releases", data: (Hash[*loan_releases_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}) },
-      {name: "Loan Payments", data: (Hash[*loan_payments_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}) }
-    ], thousands: "," %>
+
         <hr>
         <h4 class="card-title"> Loan Realeases (Actual vs Target Comparison) </h4>
         <div class="row">
@@ -154,7 +176,7 @@
             Variance
           </div>
         </div>
-        <% LoansModule::LoanProduct.accounts.each do |account| %>
+        <% @loan_products.accounts.each do |account| %>
           <div class="row">
             <div class="col-md-3">
               <%= account.name %>

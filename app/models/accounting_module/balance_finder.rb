@@ -6,39 +6,46 @@ module AccountingModule
       commercial_document = args[:commercial_document]
 
       if commercial_document.present? && from_date.present? && to_date.present?
-        balance_for(args).
-        entered_on(args).map{|a| a.amount.amount }.sum
+        balance_for_commercial_document(args).
+        entered_on(args).total_amount
 
       elsif args[:cooperative_service_id].present? && to_date.present?
-        includes(:entry).where('entries.cancelled' => false).where('entries.cooperative_service_id' => args[:cooperative_service_id]).
+        balance_for_cooperative_service(args).
         entered_on(from_date: Date.today - 999.years, to_date: args[:to_date]).
-        map{|a| a.amount.amount }.sum
-
+        total_amount
 
       elsif commercial_document.blank? && from_date.present? && to_date.present?
         entered_on(args).
-        map{|a| a.amount.amount }.sum
+        total_amount
 
       elsif commercial_document.present? && from_date.blank? && to_date.blank?
-        balance_for(args).
-        map{|a| a.amount.amount }.sum
+        balance_for_commercial_document(args).
+        total_amount
 
       elsif commercial_document.blank? && from_date.blank? && to_date.present?
         entered_on(from_date: Date.today - 999.years, to_date: args[:to_date]).
-        map{|a| a.amount.amount }.sum
+        total_amount
 
       elsif args[:cooperative_service_id].present? && to_date.blank?
-        includes(:entry).where('entries.cooperative_service_id' => args[:cooperative_service_id]).
-        map{ |a| a.amount.amount }.sum
-
+        balance_for_cooperative_service(args).
+        total_amount
       else
-        includes(:entry).where('entries.cancelled' => false).map{ |a| a.amount.amount }.sum
+        includes(:entry).where('entries.cancelled' => false).
+        total_amount
       end
     end
 
-    def balance_for(args={})
+    def total_amount
+      map{ |a| a.amount.amount }.sum
+    end
+
+    def balance_for_commercial_document(args={})
       includes(:entry).where('entries.cancelled' => false).
       where(commercial_document: args[:commercial_document])
+    end
+
+    def balance_for_cooperative_service(args={})
+      includes(:entry).where('entries.cancelled' => false).where('entries.cooperative_service_id' => args[:cooperative_service_id])
     end
 
 

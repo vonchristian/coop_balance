@@ -13,6 +13,9 @@
       </div>
       <div class="card-body">
         <%= render 'vouchers/partials/alert_message', voucher: @voucher %>
+          <br>
+        <%= render 'loans_module/loan_applications/partials/body', loan_application: @loan_application %>
+          <hr>
         <%= render 'vouchers/partials/body', voucher: @voucher %>
         <% if !@voucher.disbursed?%>
           <hr class="no-margin">

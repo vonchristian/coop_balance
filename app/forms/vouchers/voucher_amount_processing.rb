@@ -46,7 +46,7 @@ module Vouchers
     end
 
     def find_employee
-      User.find_by_id(employee_id)
+      User.find(employee_id)
     end
 
     def cash_account

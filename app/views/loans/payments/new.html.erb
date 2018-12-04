@@ -87,7 +87,7 @@
                 </td>
                 <td><%= number_to_currency schedule.principal %></td>
                 <td>
-                  <% if schedule.has_prededucted_interest? %>
+                  <% if schedule.prededucted_interest? %>
                     <span class="label bg-red"> PREDEDUCTED </span>
                   <% else %>
                     <%= number_to_currency schedule.interest %>

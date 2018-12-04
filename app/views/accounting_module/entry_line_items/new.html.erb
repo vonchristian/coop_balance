@@ -71,11 +71,12 @@
         <h3 class="card-title"> Entry Details </h3>
       </div>
       <div class="card-body">
-        <%=simple_form_for @voucher, url: :accounting_module_adjusting_entries, html: { autocomplete: 'off' } do |f| %>
+        <%=simple_form_for @voucher, url: :accounting_module_entry_line_item_vouchers, html: { autocomplete: 'off' } do |f| %>
           <%= f.input :cooperative_service_id, collection: current_cooperative.cooperative_services.map{|a| [a.title, a.id] } %>
           <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
           <%= f.input :description, as: :text %>
           <%= f.input :reference_number %>
+          <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
           <%= f.input :payee_id, label: "Payee/Member", collection: Voucher.payees.map{|a| [a.name, a.id] } %>
           <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
             <% if current_user.voucher_amounts.present? %>
@@ -88,10 +89,10 @@
 </div>
 <script type="text/javascript">
   $(document).ready(function() {
-    $("#vouchers_voucher_amount_processing_account_id").select2({
+    $("#accounting_module_entries_voucher_amount_processing_account_id").select2({
       theme: "bootstrap"
     });
-    $("#vouchers_voucher_amount_processing_amount_type").select2({
+    $("#accounting_module_entries_voucher_amount_processing_amount_type").select2({
       theme: "bootstrap"
     });
     $("#vouchers_disbursement_processing_payee_id").select2({

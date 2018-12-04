@@ -1,13 +1,13 @@
 module AccountingModule
   class EntryLineItemsController < ApplicationController
     def new
-      @line_item = Vouchers::VoucherAmountProcessing.new
+      @line_item = AccountingModule::Entries::VoucherAmountProcessing.new
       @voucher = Vouchers::VoucherProcessing.new
     end
     def create
-      @line_item = Vouchers::VoucherAmountProcessing.new(disbursement_params)
+      @line_item = AccountingModule::Entries::VoucherAmountProcessing.new(amount_params)
       if @line_item.valid?
-        @line_item.save
+        @line_item.process!
         redirect_to new_accounting_module_entry_line_item_url, notice: "Added successfully"
       else
         render :new
@@ -20,8 +20,8 @@ module AccountingModule
     end
 
     private
-    def disbursement_params
-      params.require(:vouchers_voucher_amount_processing).
+    def amount_params
+      params.require(:accounting_module_entries_voucher_amount_processing).
       permit(:amount, :account_id, :description, :amount_type, :employee_id)
     end
   end

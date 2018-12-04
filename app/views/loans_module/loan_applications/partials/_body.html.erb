@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="col-md-8">
+    <h3 class="card-title">Loan Amount </h3>
+  </div>
+  <div class="col-md-3">
+    <h3 class="card-title float-right"><%= humanized_money_with_symbol loan_application.loan_amount %></h3>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-md-8">
+    <h4 class="card-title text-danger"> Loan Charges </h4>
+  </div>
+</div>
+<% loan_application.voucher_amounts.each do |voucher_amount| %>
+  <div class="row justify-content-end">
+    <div class="col-md-11">
+      <div class="row min-margin">
+        <div class="col-md-6">
+          <%= voucher_amount.description %>
+        </div>
+        <div class="col-md-2">
+
+        </div>
+        <div class="col-md-3">
+          <span class="float-right">
+            <%= number_to_currency voucher_amount.adjusted_amount %>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+<hr>
+<div class="row">
+  <div class="col-md-8">
+    <h3 class="card-title"> Net Proceed </h3>
+  </div>
+  <div class="col-md-3">
+    <h3 class="card-title float-right"><%=number_to_currency loan_application.net_proceed %></h3>
+  </div>
+</div>

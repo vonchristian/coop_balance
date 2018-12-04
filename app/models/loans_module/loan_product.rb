@@ -29,7 +29,9 @@ module LoansModule
     validates :maximum_loanable_amount, numericality: true
 
     def self.accounts
-      ids = all.pluck(:loans_receivable_current_account_id)
+      current_ids = all.pluck(:loans_receivable_current_account_id)
+      past_due_ids = all.pluck(:loans_receivable_past_due_account_id)
+      ids = current_ids + past_due_ids
       AccountingModule::Account.where(id: ids)
     end
 

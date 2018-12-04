@@ -1,0 +1,22 @@
+<% disbursements_data = [] %>
+<% days = [] %>
+      <% (Date.today.beginning_of_month..Date.today.end_of_month).each do |day| %>
+       <% days << day.beginning_of_day %>
+      <% end %>
+      <% loan_releases_data = [] %>
+      <% days.uniq.each do |day| %>
+        <% loan_releases_data << { day.strftime("%B %e, %Y") => current_cooperative.loan_products.total_debits_balance(from_date: day.beginning_of_day, to_date: day.end_of_day) } %>
+      <% end %>
+
+      <% loan_payments_data = [] %>
+      <% days.uniq.each do |day| %>
+        <% loan_payments_data << { day.strftime("%B %e, %Y") => current_cooperative.loan_products.total_credits_balance(from_date: day.beginning_of_day, to_date: day.end_of_day) } %>
+      <% end %>
+
+
+
+
+ <%= line_chart [
+{name: "Loan Releases", data: (Hash[*loan_releases_data.collect{|h| h.to_a }.flatten].delete_if{|k,v| v.blank?}) },
+{name: "Loan Payments", data: (Hash[*loan_payments_data.collect{|h| h.to_a }.flatten].delete_if{|k,v| v.blank?}) }
+], thousands: "," %>
