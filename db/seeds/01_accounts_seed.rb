@@ -163,7 +163,7 @@ AccountingModule::Asset.create(code: 17100,  name: "Cooperative Development Cost
 AccountingModule::Asset.create(code: 17200,  name: "Product/Business Development Cost")
 AccountingModule::Asset.create(code: 17300,  name: "Computerization Cost")
 AccountingModule::Asset.create(code: 17400,  name: "Other Funds and Deposits")
-AccountingModule::Asset.create(code: 174001,  name: "Deposit in Transit")
+
 AccountingModule::Asset.create(code: 17500,  name: "Finance Lease Receivable")
 AccountingModule::Asset.create(code: 17600,  name: "Due from Head Office/Branch/Subsidiary")
 AccountingModule::Asset.create(code: 17700,  name: "Assets Held for Sale")
@@ -203,8 +203,7 @@ AccountingModule::Asset.create(code: 17900,  name: "Miscellaneous Assets")
  AccountingModule::Asset.create(code: 17200,  name: "Product/Business Development Cost")
  AccountingModule::Asset.create(code: 17300,  name: "Computerization Cost")
  AccountingModule::Asset.create(code: 17400,  name: "Other Funds and Deposits")
- AccountingModule::Asset.create(code: 174001,  name: "Deposit in Transit")
-
+ 
  AccountingModule::Asset.create(code: 17500,  name: "Finance Lease Receivable")
  AccountingModule::Asset.create(code: 17600,  name: "Due from Head Office/Branch/Subsidiary")
  AccountingModule::Asset.create(code: 17700,  name: "Assets Held for Sale")
