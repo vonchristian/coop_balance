@@ -26,6 +26,11 @@ module AccountingModule
       excluding_account(account_id: Employees::EmployeeCashAccount.cash_accounts.ids)
     end
 
+    def self.accounts
+      accounts = pluck(:account_id)
+      AccountingModule::Account.where(id: accounts)
+    end
+
 
     def self.total_cash_amount
       where(account: Employees::EmployeeCashAccount.cash_accounts).total

@@ -69,7 +69,7 @@ module AccountingModule
     def self.without_cash_accounts
       entries = []
       self.find_each.each do |entry|
-        if (entry.amounts.pluck(:account_id) & accounts.cash_accounts.ids).empty?
+        if entry.contains_cash_account?
           entries << entry
         end
       end
@@ -104,16 +104,21 @@ module AccountingModule
     def total
       credit_amounts.total
     end
+
     def total_cash_amount
       amounts.total_cash_amount
     end
 
-    def unbalanced?
-      credit_amounts.sum(:amount) != debit_amounts.sum(:amount)
-    end
-
     def hashes_valid?
       encrypted_hash == digested_hash
+    end
+
+    def contains_cash_account?
+      (accounts & accounts.cash_accounts.ids).empty?
+    end
+
+    def accounts
+      amounts.accounts
     end
 
     def digestable
@@ -129,11 +134,12 @@ module AccountingModule
       #{recorder_id.to_s}
       #{previous_entry_hash}"
     end
+
     private
 
     def set_encrypted_hash!
       if encrypted_hash.blank?
-        self.update_attributes!(encrypted_hash: digested_hash, updated_at: self.created_at.strftime("%B %e, %Y"))
+        self.update_attributes!(encrypted_hash: digested_hash)
       end
     end
 

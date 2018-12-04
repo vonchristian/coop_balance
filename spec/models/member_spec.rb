@@ -59,11 +59,11 @@ describe Member, type: :model do
   end
 
   it ".has_birthday_on(args)" do
-    january = create(:member, date_of_birth: '01/01/1990')
-    march = create(:member, date_of_birth: '01/03/1990')
-
-    expect(Member.has_birthday_on(birth_day: 1).ids).to include(january.id)
-    expect(Member.has_birthday_on(birth_day: 3).ids).to include(march.id)
+    january_member = create(:member, date_of_birth: '01/01/1990')
+    march_member   = create(:member, date_of_birth: '03/01/1990')
+    
+    expect(described_class.has_birthday_on(birth_day: 1)).to include(january_member)
+    expect(described_class.has_birthday_on(birth_day: 3)).to include(march_member)
   end
 
   it '.updated_at(args={})' do

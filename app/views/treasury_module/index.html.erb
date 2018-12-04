@@ -166,7 +166,7 @@
         <p class="text-success">&nbsp; &nbsp; <i class="fa fa-plus-circle"></i> Disbursements </p>
       </div>
       <div class="col-md-4">
-        <span class="text-success float-right"><%= number_to_currency LoansModule::LoanProduct.total_debits_balance(from_date: Date.today.beginning_of_day, to_date: Date.today.end_of_day) %></span>
+        <span class="text-success float-right"><%= number_to_currency @loan_products.total_debits_balance(from_date: Date.today.beginning_of_day, to_date: Date.today.end_of_day) %></span>
       </div>
     </div>
     <div class="row">
@@ -174,7 +174,7 @@
         <p class="text-danger">&nbsp; &nbsp; <i class="fa fa-minus-circle"></i> Payments </p>
       </div>
       <div class="col-md-4">
-        <span class="text-danger float-right"><%= number_to_currency LoansModule::LoanProduct.total_credits_balance(from_date: Date.today.beginning_of_day, to_date: Date.today.end_of_day) %></span>
+        <span class="text-danger float-right"><%= number_to_currency @loan_products.total_credits_balance(from_date: Date.today.beginning_of_day, to_date: Date.today.end_of_day) %></span>
       </div>
     </div>
     <hr>
@@ -183,7 +183,7 @@
         <p><b>Ending Balance </b> </p>
       </div>
       <div class="col-md-4">
-        <span class="float-right"><b><%= number_to_currency LoansModule::LoanProduct.total_balance(to_date: Date.today.end_of_day) %></b></span>
+        <span class="float-right"><b><%= number_to_currency @loan_products.total_balance(to_date: Date.today.end_of_day) %></b></span>
       </div>
     </div>
   </div>

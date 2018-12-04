@@ -63,23 +63,19 @@ group :development, :test do
   gem 'capybara'
   gem 'factory_bot_rails'
   gem 'faker'
-  gem 'coderay', '~> 1.1.2'
 end
 
 group :development do
-  gem 'brakeman'
-  gem 'pry-rails'
   gem 'listen'
   gem 'spring'
   gem 'spring-watcher-listen'
   gem 'spring-commands-rspec'
   gem 'bullet'
+  gem 'pry-rails'
 end
 group :test do
   gem 'shoulda-matchers'
   gem 'database_rewinder'
-  gem 'launchy'
-  gem 'selenium-webdriver'
 end
 
 gem 'rack-mini-profiler', require: false

@@ -37,6 +37,7 @@ module AccountingModule
     def self.inactive
       where(active: false)
     end
+
     def self.updated_at(args={})
       if args[:from_date] && args[:to_date]
         date_range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])

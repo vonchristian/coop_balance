@@ -4,6 +4,8 @@ module Vouchers
     belongs_to :loan_application, class_name: "LoansModule::LoanApplication", dependent: :destroy
     belongs_to :voucher_amount, class_name: "Vouchers::VoucherAmount"
 
+    validates :voucher_amount_id, presence: true
+    
     def self.recent
       order(created_at: :desc).first
     end
@@ -18,6 +20,7 @@ module Vouchers
         adjustable.amortization_schedules.order(date: :desc).take(number_of_payments).sum(:amount)
       end
     end
+
     private
     def amount_based_adjustment(adjustable)
       adjustable.amount.amount - amount

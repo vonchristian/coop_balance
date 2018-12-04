@@ -1,3 +1,5 @@
+<% content_for(:html_title) { "Cash Accounts" } %>
+
 <% @cash_accounts.each do |cash_account| %>
   <%= render 'treasury_module/cash_accounts/partials/header', cash_account: cash_account %>
 <% end %>
