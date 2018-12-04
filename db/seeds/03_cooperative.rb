@@ -36,7 +36,7 @@ share_capital_paid_up_common_account = AccountingModule::Account.find_by(name: "
 subscribed_share_capital_commom_account = AccountingModule::Account.find_by(name: "Subscribed Share Capital - Common")
 
 coop.share_capital_products.find_or_create_by!(
-  name: "Share Capital - Common",
+  name: "Paid-up Share Capital - Common",
   cost_per_share: 100,
   minimum_number_of_subscribed_share: 100,
   minimum_number_of_paid_share: 100,
@@ -100,7 +100,7 @@ emergency_loan_product = coop.loan_products.find_or_create_by!(
 )
 
 emergency_loan_product.interest_configs.find_or_create_by(
-  rate: 0.025,
+  rate: 0.03,
   interest_revenue_account: interest_revenue_regular_account,
   unearned_interest_income_account: unearned_interest_income_regular_account
 )
@@ -111,7 +111,6 @@ emergency_loan_product.penalty_configs.find_or_create_by(
 )
 
 # Loan Product (Short-Term Loan) Member
-# RAILS_ENV=production bundle exec rails db:seed
 member_short_term_loan = coop.loan_products.find_or_create_by!(
   name: "Short-Term Loan(Member)",
   description: "",
@@ -140,13 +139,13 @@ non_member_short_term_loan = coop.loan_products.find_or_create_by!(
   loans_receivable_past_due_account: loans_receivable_past_due_short_term_account
 )
 
-short_term_loan_product.interest_configs.find_or_create_by(
+non_member_short_term_loan.interest_configs.find_or_create_by(
   rate: 0.03,
   interest_revenue_account: interest_revenue_short_term_account,
   unearned_interest_income_account: unearned_interest_income_short_term_account
 )
 
-short_term_loan_product.penalty_configs.find_or_create_by(
+non_member_short_term_loan.penalty_configs.find_or_create_by(
   rate: 0.01,
   penalty_revenue_account: penalty_revenue_short_term_account
 )
@@ -397,7 +396,7 @@ coop.time_deposit_products.find_or_create_by!(
 )
 
 coop.time_deposit_products.find_or_create_by!(
-  name: "3 Years Special Time Deposit(1,000,000 and above",
+  name: "3 Years Special Time Deposit(1,000,000 and above)",
   minimum_deposit: 1000000.00,
   maximum_deposit: 999999990.00,
   interest_rate: 0.08,

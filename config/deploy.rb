@@ -4,6 +4,8 @@ require 'mina/git'
 require 'mina/rbenv'
 require 'mina/puma'
 
+# RAILS_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1 bundle exec rails db:drop
+
 set :whenever_name, 'production'
 set :domain,        '192.168.254.133'
 set :deploy_to,     '/var/www/coopcatalyst'
