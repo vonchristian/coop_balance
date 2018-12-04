@@ -211,6 +211,8 @@ AccountingModule::Asset.create(code: 17900,  name: "Miscellaneous Assets")
  AccountingModule::Asset.create(code: 17800,  name: "Deposits on Returnable Containers")
  AccountingModule::Asset.create(code: 17900,  name: "Miscellaneous Assets")
  AccountingModule::Asset.create(code: 179001,  name: "Temporary Loans Account")
+ AccountingModule::Asset.create(code: 179002,  name: "Temporary Bank Account")
+
 
 #Liability
 AccountingModule::Liability.create(code: 21000, name: 'Current Liabilities')
