@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_03_073231) do
+ActiveRecord::Schema.define(version: 2018_12_04_104802) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1107,8 +1107,8 @@ ActiveRecord::Schema.define(version: 2018_12_03_073231) do
     t.string "account_number"
     t.datetime "date_opened"
     t.string "account_owner_name"
-    t.datetime "created_at", default: "2018-12-03 13:59:53", null: false
-    t.datetime "updated_at", default: "2018-12-03 13:59:53", null: false
+    t.datetime "created_at", default: "2018-12-03 04:46:06", null: false
+    t.datetime "updated_at", default: "2018-12-03 04:46:06", null: false
     t.integer "status"
     t.uuid "office_id"
     t.string "subscriber_type"
@@ -1334,7 +1334,7 @@ ActiveRecord::Schema.define(version: 2018_12_03_073231) do
   end
 
   create_table "voucher_amounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.integer "amount_cents", default: 0, null: false
+    t.bigint "amount_cents", default: 0, null: false
     t.string "amount_currency", default: "PHP", null: false
     t.uuid "account_id"
     t.uuid "voucher_id"
