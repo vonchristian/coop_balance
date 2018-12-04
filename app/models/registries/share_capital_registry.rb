@@ -21,7 +21,7 @@ module Registries
       subscriber = find_subscriber(row)
       share_capital_product = find_share_capital_product(row)
       credit_account = find_share_capital_product(row).paid_up_account
-      debit_account = AccountingModule::Account.find_by(name: "Deposit in Transit")
+      debit_account = AccountingModule::Account.find_by(name: "Temporary Share Capital Account")
 
       share_capital = cooperative.share_capitals.create!(
       subscriber: subscriber,

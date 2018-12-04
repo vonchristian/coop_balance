@@ -108,7 +108,7 @@ module Registries
     end
 
     def credit_account
-      AccountingModule::Account.find_by(name: "Deposit in Transit")
+      AccountingModule::Account.find_by(name: "Temporary Loans Account")
     end
   end
 end
