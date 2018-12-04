@@ -36,7 +36,7 @@ share_capital_paid_up_common_account = AccountingModule::Account.find_by(name: "
 subscribed_share_capital_commom_account = AccountingModule::Account.find_by(name: "Subscribed Share Capital - Common")
 
 coop.share_capital_products.find_or_create_by!(
-  name: "Share Capital - Common",
+  name: "Paid-up Share Capital - Common",
   cost_per_share: 100,
   minimum_number_of_subscribed_share: 100,
   minimum_number_of_paid_share: 100,
@@ -90,8 +90,28 @@ regular_loan_product.penalty_configs.find_or_create_by(
   penalty_revenue_account: penalty_revenue_regular_account
 )
 
+# Loan Product (Emergency Loan)
+emergency_loan_product = coop.loan_products.find_or_create_by!(
+  name: "Emergency Loan",
+  description: "",
+  maximum_loanable_amount: 300000.00,
+  loans_receivable_current_account: loans_receivable_current_emergency_account,
+  loans_receivable_past_due_account: loans_receivable_past_due_emergency_account
+)
+
+emergency_loan_product.interest_configs.find_or_create_by(
+  rate: 0.03,
+  interest_revenue_account: interest_revenue_regular_account,
+  unearned_interest_income_account: unearned_interest_income_emergency_account
+)
+
+emergency_loan_product.penalty_configs.find_or_create_by(
+  rate: 0.01,
+  penalty_revenue_account: penalty_revenue_emergency_account
+)
+
 # Loan Product (Short-Term Loan) Member
-short_term_loan_product = coop.loan_products.find_or_create_by!(
+member_short_term_loan = coop.loan_products.find_or_create_by!(
   name: "Short-Term Loan(Member)",
   description: "",
   maximum_loanable_amount: 100000.00,
@@ -99,19 +119,19 @@ short_term_loan_product = coop.loan_products.find_or_create_by!(
   loans_receivable_past_due_account: loans_receivable_past_due_short_term_account
 )
 
-short_term_loan_product.interest_configs.find_or_create_by(
+member_short_term_loan.interest_configs.find_or_create_by(
   rate: 0.025,
   interest_revenue_account: interest_revenue_short_term_account,
   unearned_interest_income_account: unearned_interest_income_short_term_account
 )
 
-short_term_loan_product.penalty_configs.find_or_create_by(
+member_short_term_loan.penalty_configs.find_or_create_by(
   rate: 0.01,
   penalty_revenue_account: penalty_revenue_short_term_account
 )
 
 # Loan Product (Short-Term Loan) Non-Member
-short_term_loan_product = coop.loan_products.find_or_create_by!(
+non_member_short_term_loan = coop.loan_products.find_or_create_by!(
   name: "Short-Term Loan(Non-Member)",
   description: "",
   maximum_loanable_amount: 100000.00,
@@ -119,13 +139,13 @@ short_term_loan_product = coop.loan_products.find_or_create_by!(
   loans_receivable_past_due_account: loans_receivable_past_due_short_term_account
 )
 
-short_term_loan_product.interest_configs.find_or_create_by(
+non_member_short_term_loan.interest_configs.find_or_create_by(
   rate: 0.03,
   interest_revenue_account: interest_revenue_short_term_account,
   unearned_interest_income_account: unearned_interest_income_short_term_account
 )
 
-short_term_loan_product.penalty_configs.find_or_create_by(
+non_member_short_term_loan.penalty_configs.find_or_create_by(
   rate: 0.01,
   penalty_revenue_account: penalty_revenue_short_term_account
 )
@@ -246,8 +266,8 @@ coop.time_deposit_products.find_or_create_by!(
   account: time_deposit_account,
   interest_expense_account: time_deposit_interest_expense_account,
   break_contract_account: time_deposit_break_contract_account,
-  break_contract_fee: 100,
-  break_contract_rate: 0.03
+  break_contract_fee: 0.00,
+  break_contract_rate: 0.00
 )
 
 # 90-Days TD(100,000 - 199,999)
@@ -260,8 +280,8 @@ coop.time_deposit_products.find_or_create_by!(
   account: time_deposit_account,
   interest_expense_account: time_deposit_interest_expense_account,
   break_contract_account: time_deposit_break_contract_account,
-  break_contract_fee: 100,
-  break_contract_rate: 0.03
+  break_contract_fee: 0.00,
+  break_contract_rate: 0.00
 )
 
 # 90-Days TD(200,000 - above)
@@ -274,8 +294,8 @@ coop.time_deposit_products.find_or_create_by!(
   account: time_deposit_account,
   interest_expense_account: time_deposit_interest_expense_account,
   break_contract_account: time_deposit_break_contract_account,
-  break_contract_fee: 100,
-  break_contract_rate: 0.03
+  break_contract_fee: 0.00,
+  break_contract_rate: 0.00
 )
 
 # 180-Days TD(10,000 - 99,999)
@@ -288,8 +308,8 @@ coop.time_deposit_products.find_or_create_by!(
   account: time_deposit_account,
   interest_expense_account: time_deposit_interest_expense_account,
   break_contract_account: time_deposit_break_contract_account,
-  break_contract_fee: 100,
-  break_contract_rate: 0.03
+  break_contract_fee: 0.00,
+  break_contract_rate: 0.00
 )
 
 # 180-Days TD(100,000 - 199,999)
@@ -302,8 +322,8 @@ coop.time_deposit_products.find_or_create_by!(
   account: time_deposit_account,
   interest_expense_account: time_deposit_interest_expense_account,
   break_contract_account: time_deposit_break_contract_account,
-  break_contract_fee: 100,
-  break_contract_rate: 0.03
+  break_contract_fee: 0.00,
+  break_contract_rate: 0.00
 )
 
 # 180-Days TD(200,000 - above)
@@ -316,8 +336,8 @@ coop.time_deposit_products.find_or_create_by!(
   account: time_deposit_account,
   interest_expense_account: time_deposit_interest_expense_account,
   break_contract_account: time_deposit_break_contract_account,
-  break_contract_fee: 100,
-  break_contract_rate: 0.03
+  break_contract_fee: 0.00,
+  break_contract_rate: 0.00
 )
 
 # 360-Days TD(10,000 - 99,999)
@@ -330,8 +350,8 @@ coop.time_deposit_products.find_or_create_by!(
   account: time_deposit_account,
   interest_expense_account: time_deposit_interest_expense_account,
   break_contract_account: time_deposit_break_contract_account,
-  break_contract_fee: 100,
-  break_contract_rate: 0.03
+  break_contract_fee: 0.00,
+  break_contract_rate: 0.00
 )
 
 # 360-Days TD(100,000 - 199,999)
@@ -344,8 +364,8 @@ coop.time_deposit_products.find_or_create_by!(
   account: time_deposit_account,
   interest_expense_account: time_deposit_interest_expense_account,
   break_contract_account: time_deposit_break_contract_account,
-  break_contract_fee: 100,
-  break_contract_rate: 0.03
+  break_contract_fee: 0.00,
+  break_contract_rate: 0.00
 )
 
 # 360-Days TD(200,000 - above)
@@ -358,8 +378,8 @@ coop.time_deposit_products.find_or_create_by!(
   account: time_deposit_account,
   interest_expense_account: time_deposit_interest_expense_account,
   break_contract_account: time_deposit_break_contract_account,
-  break_contract_fee: 100,
-  break_contract_rate: 0.03
+  break_contract_fee: 0.00,
+  break_contract_rate: 0.00
 )
 
 coop.time_deposit_products.find_or_create_by!(
@@ -371,12 +391,12 @@ coop.time_deposit_products.find_or_create_by!(
   account: time_deposit_account,
   interest_expense_account: time_deposit_interest_expense_account,
   break_contract_account: time_deposit_break_contract_account,
-  break_contract_fee: 100,
-  break_contract_rate: 0.03
+  break_contract_fee: 0.00,
+  break_contract_rate: 0.00
 )
 
 coop.time_deposit_products.find_or_create_by!(
-  name: "3 Years Special Time Deposit(1,000,000 and above",
+  name: "3 Years Special Time Deposit(1,000,000 and above)",
   minimum_deposit: 1000000.00,
   maximum_deposit: 999999990.00,
   interest_rate: 0.08,
@@ -384,8 +404,8 @@ coop.time_deposit_products.find_or_create_by!(
   account: time_deposit_account,
   interest_expense_account: time_deposit_interest_expense_account,
   break_contract_account: time_deposit_break_contract_account,
-  break_contract_fee: 100,
-  break_contract_rate: 0.03
+  break_contract_fee: 0.00,
+  break_contract_rate: 0.00
 )
 
 # Saving Products

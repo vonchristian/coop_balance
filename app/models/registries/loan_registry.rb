@@ -12,20 +12,19 @@ module Registries
 
     private
     def upload_loan(row)
-        loan = find_cooperative.loans.create!(
-          forwarded_loan: true,
-          status: 'current_loan',
-          cooperative: self.employee.cooperative,
-          office: self.employee.office,
-          borrower: find_borrower(row),
-          loan_product: find_loan_product(row),
-          barangay: find_barangay(row),
-          organization: find_organization(row),
-          municipality: find_municipality(row),
-          loan_amount: loan_amount(row)
-        )
-        if disbursement_date(row).present? && term(row).present?
-
+      loan = find_cooperative.loans.create!(
+        forwarded_loan: true,
+        status: 'current_loan',
+        cooperative: self.employee.cooperative,
+        office: self.employee.office,
+        borrower: find_borrower(row),
+        loan_product: find_loan_product(row),
+        barangay: find_barangay(row),
+        organization: find_organization(row),
+        municipality: find_municipality(row),
+        loan_amount: loan_amount(row)
+      )
+      if disbursement_date(row).present? && term(row).present?
         Term.create(
           term: term(row),
           termable: loan,
