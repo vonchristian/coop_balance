@@ -34,7 +34,7 @@ class TimeDepositPdf < Prawn::Document
   end
 
   def details
-    date_of_deposit = time_deposit.date_deposited.strftime('%B %e, %Y')
+    date_of_deposit = time_deposit.terms.last.effectivity_date.strftime('%B %e, %Y')
     maturity_date = time_deposit.maturity_date.strftime('%B %e, %Y')
     amount_of_deposit = price(time_deposit.balance)
 
@@ -42,24 +42,24 @@ class TimeDepositPdf < Prawn::Document
                       [["Rate", ":", "#{interest_rate}% per annum"]]
     details_right ||= [["Amount", ":", amount_of_deposit]] + 
                       [["Date", ":", date_of_deposit]]
-    bounding_box([50,380], :width => 352, :height => 60) do
+    bounding_box([50,380], :width => 342, :height => 60) do
       # stroke_bounds
       table(details_left, cell_style: { 
         :padding => [2,0,0,2], 
         size: 13, font: "Helvetica", 
         inline_format: true }, 
-        column_widths: [60, 10, 200] ) do
+        column_widths: [60, 10, 190] ) do
         cells.borders = []
         column(2).font_style = :bold
       end
     end
-    bounding_box([402,380], :width => 180, :height => 60) do
+    bounding_box([402,380], :width => 190, :height => 60) do
       # stroke_bounds
       table(details_right, cell_style: { 
         :padding => [2,0,0,2], 
         size: 13, font: "Helvetica", 
         inline_format: true }, 
-        column_widths: [50, 10, 120] ) do
+        column_widths: [50, 10, 130] ) do
         cells.borders = []
         column(2).font_style = :bold
       end
@@ -67,9 +67,9 @@ class TimeDepositPdf < Prawn::Document
   end
 
   def body
-    bounding_box([50,310], :width => 532, :height => 80) do
+    bounding_box([50,310], :width => 532, :height => 90) do
       # stroke_bounds
-      text content, size: 15, align: :justify, inline_format: true
+      text content, size: 14, align: :justify, inline_format: true
     end
   end
 

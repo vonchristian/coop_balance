@@ -33,7 +33,7 @@ module Registries
       cooperative: self.employee.cooperative,
       commercial_document: find_depositor(row),
       recorder: self.employee,
-      previous_entry: find_cooperative.entries.recent,
+      previous_entry: self.employee.cooperative.entries.recent,
       description: "Forwarded time deposit as of #{cut_off_date.strftime("%B %e, %Y")}",
       entry_date: cut_off_date,
       debit_amounts_attributes: [
@@ -52,7 +52,7 @@ module Registries
 
     def find_depositor(row)
       if row["Depositor Type"] == "Member"
-        Member.find_or_create_by(last_name: row["Last Name"], first_name: row["First Name"], middle_name: row["Middle Name"])
+        Member.find_or_create_by(last_name: row["Last Name"], first_name: row["First Name"])
       elsif row["Depositor Type"] == "Organization"
         Organization.find_or_create_by(name: row["Last Name"])
       end
