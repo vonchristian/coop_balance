@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_04_112458) do
+ActiveRecord::Schema.define(version: 2018_12_05_034606) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -431,6 +431,7 @@ ActiveRecord::Schema.define(version: 2018_12_04_112458) do
     t.integer "amortization_type", default: 0
     t.integer "prededucted_number_of_payments"
     t.decimal "prededucted_amount"
+    t.integer "rate_type"
     t.index ["amortization_type"], name: "index_interest_configs_on_amortization_type"
     t.index ["calculation_type"], name: "index_interest_configs_on_calculation_type"
     t.index ["cooperative_id"], name: "index_interest_configs_on_cooperative_id"
@@ -438,6 +439,7 @@ ActiveRecord::Schema.define(version: 2018_12_04_112458) do
     t.index ["interest_type"], name: "index_interest_configs_on_interest_type"
     t.index ["loan_product_id"], name: "index_interest_configs_on_loan_product_id"
     t.index ["prededuction_type"], name: "index_interest_configs_on_prededuction_type"
+    t.index ["rate_type"], name: "index_interest_configs_on_rate_type"
     t.index ["unearned_interest_income_account_id"], name: "index_interest_configs_on_unearned_interest_income_account_id"
   end
 
@@ -485,7 +487,7 @@ ActiveRecord::Schema.define(version: 2018_12_04_112458) do
   create_table "loan_applications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "borrower_type"
     t.uuid "borrower_id"
-    t.integer "term"
+    t.decimal "term", null: false
     t.decimal "loan_amount"
     t.datetime "application_date"
     t.integer "mode_of_payment"
@@ -1107,8 +1109,8 @@ ActiveRecord::Schema.define(version: 2018_12_04_112458) do
     t.string "account_number"
     t.datetime "date_opened"
     t.string "account_owner_name"
-    t.datetime "created_at", default: "2018-12-03 13:59:53", null: false
-    t.datetime "updated_at", default: "2018-12-03 13:59:53", null: false
+    t.datetime "created_at", default: "2018-12-04 22:30:30", null: false
+    t.datetime "updated_at", default: "2018-12-04 22:30:30", null: false
     t.integer "status"
     t.uuid "office_id"
     t.string "subscriber_type"

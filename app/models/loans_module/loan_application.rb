@@ -42,9 +42,11 @@ module LoansModule
     def term_is_within_one_year?
       1.upto(12).include?(term)
     end
+
     def term_is_within_two_years?
       13.upto(24).include?(term)
     end
+
     def term_is_within_three_years?
       25.upto(36).include?(term)
     end
@@ -96,7 +98,7 @@ module LoansModule
       total_interest.to_f -
       voucher_interest_amount
     end
-    
+
     def voucher_interest_amount
       voucher_amounts.for_account(account: current_interest_config.interest_revenue_account).total
     end
@@ -121,10 +123,19 @@ module LoansModule
       end
     end
 
+    def multipliable_term
+      if term > 12
+        12
+      else
+        term
+      end
+    end
+
 
     def prededucted_interest
       if current_interest_config.percentage? && current_interest_config.prededucted_rate.present?
-        (loan_amount.amount * current_interest_config.rate) * current_interest_config.prededucted_rate
+        (loan_amount.amount * current_interest_config.monthly_rate * multipliable_term) * current_interest_config.prededucted_rate
+
       elsif current_interest_config.number_of_payment? && current_interest_config.prededucted_number_of_payments.present?
         amortization_schedules.order(date: :asc).first(current_interest_config.prededucted_number_of_payments).sum(&:interest)
       else

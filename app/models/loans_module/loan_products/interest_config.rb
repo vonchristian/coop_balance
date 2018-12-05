@@ -3,6 +3,7 @@ module LoansModule
     class InterestConfig < ApplicationRecord
       enum amortization_type: [:annually, :straight_balance]
       enum calculation_type: [:add_on, :prededucted]
+      enum rate_type: [:monthly_rate, :annual_rate]
       enum prededuction_type: [:percentage, :amount, :number_of_payment]
       belongs_to :loan_product,                     class_name: "LoansModule::LoanProduct"
       belongs_to :interest_revenue_account,         class_name: "AccountingModule::Account"
@@ -20,7 +21,11 @@ module LoansModule
       end
 
       def monthly_rate
-        rate / 12.0
+        if monthly_rate?
+          rate
+        elsif annual_rate?
+          rate / 12.0
+        end
       end
 
 
@@ -31,7 +36,7 @@ module LoansModule
         amount: loan_application.prededucted_interest,
         account: interest_revenue_account,
         amount_type: 'credit' )
-      end 
+      end
     end
   end
 end
