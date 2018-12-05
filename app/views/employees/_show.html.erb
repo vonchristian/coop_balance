@@ -9,14 +9,6 @@
           <% else %>
             <%= image_tag("default.png", width: '150', height: '150', class: 'img-rounded mx-auto d-block') %>
           <% end %>
-          <%= simple_form_for User.new, url: employee_avatars_path(@employee), html: {id: "update-user-avatar"} do |f| %>
-            <%= f.input :avatar, as: :file, label: false, input_html: { class: 'choose-btn center-block' } %>
-            <div class="option-overlay">
-              <div class="col-md-12 text-center">
-                <a href="" title="Update Photo"><span id="browse-image" class="text-white">Update Photo</span></a>
-              </div>
-            </div>
-          <% end %>
         </div>
       </div>
       <div class="card-body">
