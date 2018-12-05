@@ -22,6 +22,8 @@ module LoansModule
         scheduled_for(from_date: from_date, to_date: to_date).to_a.sum(&:principal)
       elsif args[:number_of_months]
         take(args[:number_of_months]).sum(&:principal)
+      else
+        sum(&:principal)
       end
     end
 
@@ -90,17 +92,6 @@ module LoansModule
       loan_application.amortization_schedules.order(date: :asc).take(count-1).last
     end
 
-    def default_debit_account
-      if prededucted_interest?
-        loan.loan_product_unearned_interest_income_account
-      end
-    end
-
-    def default_credit_account
-      if prededucted_interest?
-        loan.loan_product_interest_revenue_account
-      end
-    end
 
 		def self.create_schedule_for(loan)
       if loan.amortization_schedules.present?

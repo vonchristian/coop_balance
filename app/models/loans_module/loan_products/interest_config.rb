@@ -20,6 +20,17 @@ module LoansModule
         AccountingModule::Account.where(id: accounts)
       end
 
+      def total_interest(loan_application)
+        total = []
+        total << loan_application.first_year_interest
+        number = loan_application.term
+        while number > 12 do
+          number -= 12
+          total << interest_computation(loan_application.principal_balance(number_of_months: number), number)
+        end
+        total.sum
+      end
+
       def monthly_rate
         if monthly_rate?
           rate
@@ -28,21 +39,26 @@ module LoansModule
         end
       end
 
-      def interest_computation(balance)
-        (balance * rate).to_f
+      def interest_computation(balance, term)
+        if monthly_rate?
+          ((balance * monthly_rate) * term).to_f
+        else
+          ((balance * rate)).to_f
+        end
       end
 
-      def prededucted_interest(amount)
+      def prededucted_interest(amount, term)
         if prededucted?
-          compute_prededucted_interest(amount)
+          compute_prededucted_interest(amount, term)
         else
           0
         end
       end
 
-      def compute_prededucted_interest(amount)
+
+      def compute_prededucted_interest(amount, term)
         if percentage? && prededucted_rate.present?
-          percentage_prededucted_interest(amount)
+          percentage_prededucted_interest(amount, term)
         else
           0
         end
@@ -60,8 +76,8 @@ module LoansModule
 
 
       private
-      def percentage_prededucted_interest(amount)
-        interest_computation(amount) * prededucted_rate
+      def percentage_prededucted_interest(amount, term)
+        interest_computation(amount, term) * prededucted_rate
       end
     end
   end
