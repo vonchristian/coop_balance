@@ -26,6 +26,7 @@ module ManagementModule
                  :prededuction_type,
                  :amortization_type,
                  :prededucted_rate,
+                 :rate_type,
                  :prededucted_number_of_payments,
                  :prededucted_amount,
                  :interest_revenue_account_id,

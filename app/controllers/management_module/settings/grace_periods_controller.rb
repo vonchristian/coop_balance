@@ -12,8 +12,7 @@ module ManagementModule
 				@grace_period = CoopConfigurationsModule::GracePeriod.new 
 				@grace_period.update(grace_period_params)
 				respond_modal_with @grace_period, 
-					location: management_module_settings_configurations_url, 
-					notice: "Grace period created successfully."
+					location: management_module_settings_configurations_url
 			end 
 
 			private 

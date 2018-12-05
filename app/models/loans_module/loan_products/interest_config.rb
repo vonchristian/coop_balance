@@ -28,6 +28,26 @@ module LoansModule
         end
       end
 
+      def interest_computation(balance)
+        (balance * rate).to_f
+      end
+
+      def prededucted_interest(amount)
+        if prededucted?
+          compute_prededucted_interest(amount)
+        else
+          0
+        end
+      end
+
+      def compute_prededucted_interest(amount)
+        if percentage? && prededucted_rate.present?
+          percentage_prededucted_interest(amount)
+        else
+          0
+        end
+      end
+
 
       def create_charges_for(loan_application)
         loan_application.voucher_amounts.create(
@@ -36,6 +56,12 @@ module LoansModule
         amount: loan_application.prededucted_interest,
         account: interest_revenue_account,
         amount_type: 'credit' )
+      end
+
+
+      private
+      def percentage_prededucted_interest(amount)
+        interest_computation(amount) * prededucted_rate
       end
     end
   end

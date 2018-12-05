@@ -1,5 +1,5 @@
 <%= render 'employees/shared/form_header' %>
-<%= simple_form_for @employee, url: :employee, html: { autocomplete: "off", data: { modal: true } } do |f| %>
+<%= simple_form_for @employee, url: :employee, remote: request.xhr?, html: { autocomplete: "off", data: { modal: true } } do |f| %>
 	<div class="modal-body">
 		<h4 class="card-title">Employee Details</h4>
 		<hr>
@@ -7,7 +7,7 @@
 	  <%= f.input :last_name %>
 	  <%= f.input :first_name %>
 	  <%= f.input :middle_name %>
-	  <%= f.input :role, collection: User.roles.keys.to_a.map {|u| [u.titleize, u]} %>
+	  <%= f.input :role, collection: User.roles.keys.to_a.map {|u| [u.titleize, u]} if current_user.general_manager? %>
 	</div>
 	<div class="modal-footer">
   	<%= f.submit "Update", class: 'btn btn-danger float-right' %>

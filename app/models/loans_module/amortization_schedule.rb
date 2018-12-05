@@ -14,11 +14,14 @@ module LoansModule
     delegate :avatar, :borrower_name, to: :loan
 
     ###########################
+
     def self.principal_balance(args={})
       if args[:from_date] && args[:to_date]
         from_date = args[:from_date]
         to_date =  args[:to_date]
         scheduled_for(from_date: from_date, to_date: to_date).to_a.sum(&:principal)
+      elsif args[:number_of_months]
+        take(args[:number_of_months]).sum(&:principal)
       end
     end
 

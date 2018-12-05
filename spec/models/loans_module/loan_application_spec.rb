@@ -50,5 +50,23 @@ module LoansModule
       expect(twenty_four_month_loan_application.term_is_within_two_years?).to be true
       expect(twenty_five_month_loan_application.term_is_within_two_years?).to be false
     end
+
+    it "#first_interest" do
+      interest_revenue_account = create(:revenue)
+      unearned_interest_income_account  = create(:asset)
+      loan_product = create(:loan_product)
+      loan_product.interest_configs.create!(
+        rate: 0.03,
+        rate_type: 'monthly_rate',
+        amortization_type: 'annually',
+        interest_revenue_account: interest_revenue_account,
+        unearned_interest_income_account: unearned_interest_income_account)
+      loan_application = create(:loan_application, mode_of_payment: 'monthly',  term: 24, loan_amount: 50_000, loan_product: loan_product)
+      LoansModule::AmortizationSchedule.create_amort_schedule_for(loan_application)
+      puts loan_application.principal_balance(number_of_months: 12)
+      expect(loan_application.first_year_interest).to eql 1500.0
+      expect(loan_application.second_year_interest).to eql 750.0
+
+    end
   end
 end

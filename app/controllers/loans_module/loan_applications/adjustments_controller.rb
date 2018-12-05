@@ -15,6 +15,7 @@ module LoansModule
         @voucher_amount = current_cooperative.voucher_amounts.find(params[:voucher_amount_id])
         @adjustment = LoansModule::LoanApplications::AmountAdjustmentProcessing.new(adjustment_params)
         @adjustment.process!
+        
         respond_modal_with @adjustment,
           location: new_loans_module_loan_application_voucher_url(@loan_application)
       end

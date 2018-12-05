@@ -118,7 +118,8 @@
         <%= simple_form_for [@loan_application, @voucher], url: :loans_module_loan_application_vouchers, html: { autocomplete: 'off' } do |f| %>
           <%= f.input :date, as: :string, input_html: { class: "datepicker", value: Date.today.strftime("%B %e, %Y") } %>
           <%= f.input :description, input_html: { value: "#{@loan_application.loan_product_name} disbursement voucher of #{@loan_application.borrower_name}" }, as: :text %>
-          <%= f.input :number, input_html: { value: Voucher.generate_number } %>
+          <%= f.input :number, input_html: { value: Voucher.generate_number }, as: :hidden %>
+          <%= f.input :reference_number %>
           <%= f.input :preparer_id, input_html: { value: current_user.id }, as: :hidden %>
 
           <%= f.input :borrower_id, input_html: { value: @loan_application.borrower_id }, as: :hidden %>
@@ -137,6 +138,7 @@
       </div>
     </div>
   </div>
+  
   <div class="col-md-5">
     <div class="card">
       <div class="card-header with-border">

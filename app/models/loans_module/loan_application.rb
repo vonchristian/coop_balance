@@ -52,9 +52,7 @@ module LoansModule
     end
 
     def principal_balance(args={})
-      amortization_schedules.principal_balance(
-          from_date: args[:from_date],
-          to_date: args[:to_date])
+      amortization_schedules.principal_balance(args)
     end
 
     def balance_for(schedule)
@@ -77,18 +75,10 @@ module LoansModule
     end
 
     def annually_total_interest
-      if term_is_within_one_year?
-        first_year_interest
-      elsif term_is_within_two_years?
-        first_year_interest +
-        second_year_interest
-      elsif term_is_within_three_years?
         first_year_interest +
         second_year_interest +
         third_year_interest
-      end
     end
-
 
     def straight_balance_total_interest
       amortization_schedules.sum(&:interest)
@@ -104,12 +94,14 @@ module LoansModule
     end
 
     def first_year_interest
-      (amortization_schedules.take(term).sum(&:principal) * current_interest_config_rate).to_f
+      balance = principal_balance(number_of_months: term)
+      current_interest_config.interest_computation(balance)
     end
 
     def second_year_interest
       if term >= 24
-        (amortization_schedules.take(term - 12).sum(&:principal) * current_interest_config_rate).to_f
+        balance = principal_balance(number_of_months: term - 12)
+        current_interest_config.interest_computation(balance)
       else
         0
       end
@@ -117,7 +109,8 @@ module LoansModule
 
     def third_year_interest
       if term >=36
-        (amortization_schedules.take(term - 24).sum(&:principal) * current_interest_config_rate).to_f
+        balance = principal_balance(number_of_months: term - 24)
+        current_interest_config.interest_computation(balance)
       else
         0
       end
@@ -125,7 +118,17 @@ module LoansModule
 
     def fourth_year_interest
       if term >= 48
-        (amortization_schedules.take(term - 48).sum(&:principal) * current_interest_config_rate).to_f
+        balance = principal_balance(number_of_months: term - 36)
+        current_interest_config.interest_computation(balance)
+      else
+        0
+      end
+    end
+
+    def fifth_year_interest
+      if term >= 60
+        balance = principal_balance(number_of_months: term - 48)
+        current_interest_config.interest_computation(balance)
       else
         0
       end
@@ -141,14 +144,7 @@ module LoansModule
 
 
     def prededucted_interest
-      if current_interest_config.percentage? && current_interest_config.prededucted_rate.present?
-        (loan_amount.amount * current_interest_config.monthly_rate * multipliable_term) * current_interest_config.prededucted_rate
-
-      elsif current_interest_config.number_of_payment? && current_interest_config.prededucted_number_of_payments.present?
-        amortization_schedules.order(date: :asc).first(current_interest_config.prededucted_number_of_payments).sum(&:interest)
-      else
-        0
-      end
+      current_interest_config.prededucted_interest(self.loan_amount)
     end
 
 
