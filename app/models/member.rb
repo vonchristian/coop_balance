@@ -67,6 +67,10 @@ class Member < ApplicationRecord
     end
   end
 
+  def self.active_at(args={})
+    updated_at(args)
+  end
+
   def self.has_birth_month_on(args= {})
     BirthdayQuery.new(self).has_birth_month_on(args)
   end
