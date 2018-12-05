@@ -47,9 +47,9 @@ module LoansModule
         preparer_id: preparer_id,
         account_number: account_number,
         term: term)
-        create_charges(loan_application)
 
-      create_amortization_schedule(loan_application)
+        create_charges(loan_application)
+        create_amortization_schedule(loan_application)
     end
     def find_borrower
       Borrower.find(borrower_id)
@@ -57,10 +57,10 @@ module LoansModule
     def create_charges(loan_application)
       find_loan_product.create_charges_for(loan_application)
     end
-    def create_documentary_stamp_tax(loan)
-      tax = Charge.amount_type.create!(name: 'Documentary Stamp Tax', amount: DocumentaryStampTax.set(loan), account: AccountingModule::Account.find_by(name: "Documentary Stamp Taxes"))
-      loan.loan_charges.create!(charge: tax, commercial_document: loan)
-    end
+    # def create_documentary_stamp_tax(loan)
+    #   tax = Charge.amount_type.create!(name: 'Documentary Stamp Tax', amount: DocumentaryStampTax.set(loan), account: AccountingModule::Account.find_by(name: "Documentary Stamp Taxes"))
+    #   loan.loan_charges.create!(charge: tax, commercial_document: loan)
+    # end
     def create_amortization_schedule(loan_application)
       if loan_application.amortization_schedules.present?
         loan_application.amortization_schedules.destroy_all

@@ -89,6 +89,11 @@ module LoansModule
     end
 
     def first_year_interest
+      if term > 12
+        multipliable_term = 12
+      else
+        multipliable_term = term
+      end
       current_interest_config.interest_computation(principal_balance, multipliable_term)
     end
 
@@ -120,41 +125,29 @@ module LoansModule
       current_interest_config.interest_computation(balance, number)
     end
 
-    def multipliable_term
-      if term > 12
-        12
-      else
-        term
-      end
-    end
-
     def prededucted_interest
       current_interest_config.prededucted_interest(loan_amount, term)
     end
 
 
     def net_proceed
-      if entry.present?
-        entry.total_cash_amount
-      else
-       loan_amount.amount - voucher_amounts.sum(&:adjusted_amount)
-      end
+      loan_amount.amount - voucher_amounts.sum(&:adjusted_amount)
     end
+
     def total_charges
       accounts = []
       accounts << cooperative.cash_accounts
       accounts << loan_product_loans_receivable_current_account
       voucher_amounts.excluding_account(account: accounts).total
     end
+
     def disbursed?
       voucher && voucher.disbursed?
     end
-    def annual_interest_rate
-      loan_product.current_interest_config_rate
-    end
-    def adjusted_interest_on_loan
-      voucher_amounts.where(account: loan_product_interest_revenue_account).first.try(:adjusted_amount)
-    end
+
+    # def adjusted_interest_on_loan
+    #   voucher_amounts.where(account: loan_product_interest_revenue_account).first.try(:adjusted_amount)
+    # end
 
     def number_of_thousands # for Loan Protection fund computation
       loan_amount.amount / 1_000

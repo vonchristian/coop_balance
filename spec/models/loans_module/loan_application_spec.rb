@@ -31,6 +31,95 @@ module LoansModule
       it { is_expected.to delegate_method(:annually?).to(:current_interest_config).with_prefix }
     end
 
+    it "#net_proceed" do
+      interest_revenue_account         = create(:revenue)
+      unearned_interest_income_account = create(:asset)
+      loan_protection_account          = create(:liability)
+      regular_loan                     = create(:loan_product)
+      interest_config                  = create(:interest_config,
+                                         loan_product: regular_loan,
+                                         rate: 0.12,
+                                         rate_type: 'annual_rate',
+                                         amortization_type: 'annually',
+                                         prededuction_type: 'percentage',
+                                         prededucted_rate: 1,
+                                         calculation_type: 'prededucted',
+                                         interest_revenue_account: interest_revenue_account,
+                                         unearned_interest_income_account: unearned_interest_income_account)
+
+      regular_loan_application = create(:loan_application,
+        mode_of_payment: 'monthly',
+        term: 36,
+        loan_amount: 200_000,
+        loan_product: regular_loan)
+
+      regular_loan.create_charges_for(regular_loan_application)
+      LoansModule::AmortizationSchedule.create_amort_schedule_for(regular_loan_application)
+      lpp = create(:voucher_amount, amount: 1_000, account: loan_protection_account, loan_application: regular_loan_application)
+      expect(regular_loan_application.total_interest).to eq 48_000
+      expect(regular_loan_application.voucher_interest_amount).to eq 24_000
+      expect(regular_loan_application.interest_balance).to eq 24_000
+      expect(regular_loan_application.net_proceed).to eql 175_000
+    end
+
+    describe '#interest balance computation' do
+      let (:interest_revenue_account)         { create(:revenue) }
+      let (:unearned_interest_income_account) { create(:asset) }
+      let (:short_term_loan)                     { create(:loan_product) }
+      let (:regular_loan)                     { create(:loan_product) }
+
+      it 'with zero balance' do
+        create(:interest_config,
+          loan_product: short_term_loan,
+          rate: 0.03,
+          rate_type: 'monthly_rate',
+          amortization_type: 'annually',
+          prededuction_type: 'percentage',
+          prededucted_rate: 1,
+          calculation_type: 'prededucted',
+          interest_revenue_account: interest_revenue_account,
+          unearned_interest_income_account: unearned_interest_income_account)
+
+        short_term_loan_application = create(:loan_application,
+          mode_of_payment: 'monthly',
+          term: 1.5,
+          loan_amount: 5_000,
+          loan_product: short_term_loan)
+
+        short_term_loan.create_charges_for(short_term_loan_application)
+        LoansModule::AmortizationSchedule.create_amort_schedule_for(short_term_loan_application)
+
+        expect(short_term_loan_application.total_interest).to eql 225.0
+        expect(short_term_loan_application.voucher_interest_amount).to eql 225.0
+        expect(short_term_loan_application.interest_balance).to eql 0
+      end
+      it "#with balance" do
+        create(:interest_config,
+               loan_product: regular_loan,
+               rate: 0.12,
+               rate_type: 'annual_rate',
+               amortization_type: 'annually',
+               prededuction_type: 'percentage',
+               prededucted_rate: 1,
+               calculation_type: 'prededucted',
+               interest_revenue_account: interest_revenue_account,
+               unearned_interest_income_account: unearned_interest_income_account)
+
+        regular_loan_application = create(:loan_application,
+          mode_of_payment: 'monthly',
+          term: 36,
+          loan_amount: 200_000,
+          loan_product: regular_loan)
+
+        regular_loan.create_charges_for(regular_loan_application)
+        LoansModule::AmortizationSchedule.create_amort_schedule_for(regular_loan_application)
+
+        expect(regular_loan_application.total_interest).to eq 48_000
+        expect(regular_loan_application.voucher_interest_amount).to eq 24_000
+        expect(regular_loan_application.interest_balance).to eq 24_000
+
+      end
+    end
     it "#term_is_within_one_year?" do
       one_month_loan_application      = create(:loan_application, term: 1)
       twelve_month_loan_application   = create(:loan_application, term: 12)
