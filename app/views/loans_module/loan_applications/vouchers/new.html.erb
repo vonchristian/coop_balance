@@ -96,7 +96,7 @@
           <%= f.input :loan_application_id, input_html: { value: @loan_application.id }, as: :hidden %>
           <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
           <%= f.input :voucher_account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
-          <%= f.input :cash_account_id, collection: Employees::EmployeeCashAccount.cash_accounts.map{|a| [a.name, a.id] } %>
+          <%= f.input :cash_account_id, collection: Employees::EmployeeCashAccount.cash_accounts.map{ |a| [a.name, a.id] } %>
           <span class="help-block text-muted"> Please select cash account for disbursing this loan. </span>
           <hr>
           <%= f.submit "Create Voucher", class: "btn btn-primary btn-lg float-right", data: { disable_with: "Processing..." } %>

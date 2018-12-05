@@ -47,9 +47,9 @@ module LoansModule
         preparer_id: preparer_id,
         account_number: account_number,
         term: term)
+        create_charges(loan_application)
 
       create_amortization_schedule(loan_application)
-      create_charges(loan_application)
     end
     def find_borrower
       Borrower.find(borrower_id)

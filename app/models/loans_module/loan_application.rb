@@ -94,6 +94,10 @@ module LoansModule
 
     def interest_balance
       total_interest.to_f -
+      voucher_interest_amount
+    end
+    
+    def voucher_interest_amount
       voucher_amounts.for_account(account: current_interest_config.interest_revenue_account).total
     end
 
