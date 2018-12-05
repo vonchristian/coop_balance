@@ -47,6 +47,8 @@ module LoansModule
     has_many :loan_discounts,           class_name: "LoansModule::Loans::LoanDiscount", dependent: :destroy
     has_many :notes,                    as: :noteable
     has_many :terms, as: :termable
+    has_many :loan_co_makers,           class_name: "LoansModule::LoanCoMaker"
+    has_many :member_co_makers,         through: :loan_co_makers, source: :co_maker, source_type: "Member"
 
     delegate :name, :address, :contact_number, to: :cooperative, prefix: true
     delegate :disbursed?, to: :disbursement_voucher, allow_nil: true

@@ -19,7 +19,39 @@
         <hr>
         <div class="row">
           <div class="col-md-8">
-            <h4 class="card-title text-danger"> Loan Charges </h4>
+            <h3 class="card-title"> Interests </h3>
+          </div>
+          <div class="col-md-3">
+          </div>
+        </div>
+        <div class="row justify-content-end">
+          <div class="col-md-8">
+            First Year
+          </div>
+          <div class="col-md-3">
+            <%= number_to_currency @loan_application.first_year_interest %>
+          </div>
+        </div>
+        <div class="row justify-content-end">
+          <div class="col-md-8">
+            Second Year
+          </div>
+          <div class="col-md-3">
+            <%= number_to_currency @loan_application.second_year_interest %>
+          </div>
+        </div>
+        <div class="row justify-content-end">
+          <div class="col-md-8">
+            Third Year
+          </div>
+          <div class="col-md-3">
+            <%= number_to_currency @loan_application.third_year_interest %>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-8">
+            <h4 class="card-title text-danger"> Loan Deductions </h4>
             <br>
           </div>
           <div class="col-md-3">

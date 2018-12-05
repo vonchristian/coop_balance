@@ -5,6 +5,7 @@ module LoansModule
     describe InterestConfig, type: :model do
       it { is_expected.to define_enum_for(:calculation_type).with([:add_on, :prededucted])}
       it { is_expected.to define_enum_for(:amortization_type).with([:annually, :straight_balance])}
+      it { is_expected.to define_enum_for(:rate_type).with([:monthly_rate, :annual_rate])}
 
       describe 'associations' do
         it { is_expected.to belong_to :cooperative }

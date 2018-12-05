@@ -115,7 +115,36 @@
             <%=  @loan.organization_name %>
           </div>
         </div>
-      </div>
+        <div class="row min-margin">
+          <div class="col-md-4">
+            <b> Co Makers </b>
+          </div>
+          <div class="col-md-6">
+            <%= link_to new_loans_module_loan_co_maker_path(@loan) do %>
+              <span class="btn btn-outline-warning btn-sm" data-toggle="tooltip" title="Add Co Maker"><i class="fa fa-user-plus"></i> Add </span>
+            <% end %>
+          </div>
+        </div>
+        <br>
+      <% @loan.loan_co_makers.each do |co_maker| %>
+        <div class="row min-margin">
+          <div class="col-md-3 offset-md-1">
+            <%= image_tag(co_maker.avatar, height: 45, width: 45, class: "img-circle") %>
+          </div>
+          <div class="col-md-6">
+            <% if co_maker.co_maker_type == "Member" %>
+              <%= link_to co_maker.name,  member_path(id: co_maker.co_maker_id) %>
+            <% elsif co_maker.co_maker_type == "User" %>
+              <%= link_to co_maker.name,  employee_path(id: co_maker.co_maker_id) %>
+            <% else %>
+              <%= co_maker.name %>
+            <% end %>
+          </div>
+          <div class="col-md-3">
+          </div>
+        </div>
+        <br>
+      <% end %>
     </div>
   </div>
   <hr class="no-margin">
