@@ -25,9 +25,6 @@
           <% if entry.cooperative_service.present? %>
             <small class="text-muted"> <%= entry.cooperative_service_title %></small>
           <% end %>
-          <% if !entry.hashes_valid? && !entry.cancelled? %>
-            <span class="badge bg-danger"> Invalid Entry </span>
-          <% end %>
         </div>
         <div class="col-md-3">
           <%= number_to_currency entry.debit_amounts.total %>

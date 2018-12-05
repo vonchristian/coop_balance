@@ -121,6 +121,10 @@ module AccountingModule
       amounts.accounts
     end
 
+    def digested_hash
+      Digest::SHA256.hexdigest(self.digestable)
+    end
+
     def digestable
       "#{amounts.count.to_s}
       #{amounts.sum(:amount_cents).to_s}
@@ -139,12 +143,11 @@ module AccountingModule
 
     def set_encrypted_hash!
       if encrypted_hash.blank?
-        self.update_attributes!(encrypted_hash: digested_hash)
+        self.update_attributes!(
+          encrypted_hash: digested_hash,
+          updated_at: created_at.strftime("%B %e, %Y")
+        )
       end
-    end
-
-    def digested_hash
-      Digest::SHA256.hexdigest(self.digestable)
     end
 
       def set_default_date
