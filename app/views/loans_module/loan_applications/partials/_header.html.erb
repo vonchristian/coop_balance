@@ -31,7 +31,7 @@
                           <%= link_to 'Disburse Loan', loans_module_loan_application_voucher_path(loan_application_id: loan_application.id, id: loan_application.voucher_id), class: "btn btn-primary btn-sm" %>
                         <% end %>
                         <% if !loan_application.disbursed? && loan_application.voucher_id.nil? %>
-                          <%= link_to 'Cancel Loan', loans_module_loan_application_path(loan_application), method: :delete, class: "btn btn-primary btn-sm" %>
+                          <%= link_to 'Cancel Loan', loans_module_loan_application_path(loan_application), method: :delete, class: "btn btn-danger btn-sm" %>
                         <% end %>
                       </div>
                     </div>

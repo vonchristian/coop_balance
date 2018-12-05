@@ -82,7 +82,7 @@ module LoansModule
   end
   def loan_charges_details
     bounding_box [300, 865], width: 220 do
-      text "CHARGES DETAILS", style: :bold, size: 9
+      text "LOAN DEDUCTIONS", style: :bold, size: 9
       table(loan_amount_data, cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 100]) do
         cells.borders = []
         column(1).align = :right
