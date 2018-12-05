@@ -9,7 +9,7 @@
           <% else %>
             <%= image_tag("default.png", width: '150', height: '150', class: 'img-rounded mx-auto d-block') %>
           <% end %>
-          <%= simple_form_for @member, url: member_avatar_path(@member), html: {id: "update-member-avatar"} do |f| %>
+          <%= simple_form_for @member, url: member_avatar_path(member_id: @member, id: @member), html: {id: "update-member-avatar"} do |f| %>
             <%= f.input :avatar, as: :file, label: false, input_html: {id: "member-avatar", class: 'choose-btn center-block' } %>
             <div class="option-overlay">
               <div class="col-md-12 text-center">
