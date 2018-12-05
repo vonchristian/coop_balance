@@ -14,6 +14,7 @@ module AccountingModule
       it { is_expected.to validate_presence_of     :type }
       it { is_expected.to validate_presence_of     :account }
       it { is_expected.to validate_presence_of     :entry }
+      it { is_expected.to validate_presence_of     :amount }
     end
 
     describe 'delegations' do
@@ -115,8 +116,8 @@ module AccountingModule
 
       expect(described_class.for_account(account_id: revenue.id)).to include(recent_credit_amount)
       expect(described_class.for_account(account_id: revenue.id)).to_not include(recent_debit_amount)
-
     end
+
 
     it ".excluding_account(args={})" do
       cooperative = create(:cooperative)
@@ -133,8 +134,43 @@ module AccountingModule
 
       expect(described_class.excluding_account(account_id: revenue.id)).to include(recent_debit_amount)
       expect(described_class.excluding_account(account_id: revenue.id)).to_not include(recent_credit_amount)
-
     end
+
+    it ".with_cash_accounts" do
+      cooperative = create(:cooperative)
+      cash_on_hand = create(:asset)
+      employee = create(:teller)
+      employee.cash_accounts << cash_on_hand
+      revenue = create(:revenue)
+      origin_entry = create(:origin_entry, cooperative: cooperative)
+      entry = build(:entry, cooperative: cooperative, previous_entry: origin_entry, entry_date: Date.today )
+      cash_on_hand_amount = entry.debit_amounts.build(account: cash_on_hand, amount: 1_000)
+      revenue_amount = entry.credit_amounts.build(amount: 1_000, account: revenue )
+      entry.save!
+
+      expect(described_class.with_cash_accounts).to include(cash_on_hand_amount)
+      expect(described_class.with_cash_accounts).to_not include(revenue_amount)
+
+      expect(described_class.without_cash_accounts).to include(revenue_amount)
+      expect(described_class.without_cash_accounts).to_not include(cash_on_hand_amount)
+    end
+
+    it ".without_cash_accounts" do
+      cooperative = create(:cooperative)
+      cash_on_hand = create(:asset)
+      employee = create(:teller)
+      employee.cash_accounts << cash_on_hand
+      revenue = create(:revenue)
+      origin_entry = create(:origin_entry, cooperative: cooperative)
+      entry = build(:entry, cooperative: cooperative, previous_entry: origin_entry, entry_date: Date.today )
+      cash_on_hand_amount = entry.debit_amounts.build(account: cash_on_hand, amount: 1_000)
+      revenue_amount = entry.credit_amounts.build(amount: 1_000, account: revenue )
+      entry.save!
+
+      expect(described_class.without_cash_accounts).to include(revenue_amount)
+      expect(described_class.without_cash_accounts).to_not include(cash_on_hand_amount)
+    end
+
 
 
     it "#debit?" do

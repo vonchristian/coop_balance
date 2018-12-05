@@ -8,8 +8,7 @@ module AccountingModule
     belongs_to :commercial_document, polymorphic: true, optional: true
 
     validates :type, :amount, :entry, :account, presence: true
-    validates :amount, numericality: true
-
+    
     delegate :name, to: :account, prefix: true
     delegate :recorder, :reference_number, :description, :entry_date,  to: :entry
     delegate :name, to: :recorder, prefix: true
@@ -29,6 +28,10 @@ module AccountingModule
     def self.accounts
       accounts = pluck(:account_id)
       AccountingModule::Account.where(id: accounts)
+    end
+
+    def self.with_cash_accounts
+      for_account(account_id: Employees::EmployeeCashAccount.cash_accounts.ids)
     end
 
 

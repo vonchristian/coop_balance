@@ -114,7 +114,7 @@ module AccountingModule
     end
 
     def contains_cash_account?
-      (accounts & accounts.cash_accounts.ids).empty?
+      amounts.with_cash_accounts.present?
     end
 
     def accounts
