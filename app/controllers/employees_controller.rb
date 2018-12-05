@@ -18,7 +18,7 @@ class EmployeesController < ApplicationController
     @employee = current_cooperative.users.find(params[:id])
     @employee.update(employee_params)
     respond_modal_with @employee,
-    location: employee_url(@employee)
+      location: employee_url(@employee)
   end
 
   private

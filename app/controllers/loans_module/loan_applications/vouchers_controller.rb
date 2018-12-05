@@ -40,7 +40,7 @@ module LoansModule
       private
       def voucher_params
         params.require(:loans_module_loan_applications_voucher_processing).
-        permit(:loan_application_id, :preparer_id, :date, :description, :number,
+        permit(:loan_application_id, :preparer_id, :date, :description, :number, :reference_number,
           :account_number, :voucher_account_number, :cash_account_id, :borrower_id, :borrower_type, :net_proceed)
       end
     end

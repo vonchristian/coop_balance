@@ -3,7 +3,7 @@ module LoansModule
     class VoucherProcessing
       include ActiveModel::Model
       attr_accessor :loan_application_id, :preparer_id, :date, :description,
-      :number, :account_number, :voucher_account_number, :cash_account_id, :borrower_id,
+      :number, :reference_number, :account_number, :voucher_account_number, :cash_account_id, :borrower_id,
       :borrower_type, :net_proceed
 
       def process!
@@ -26,6 +26,7 @@ module LoansModule
           cooperative:    find_employee.cooperative,
           description:    description,
           number:         number,
+          reference_number: reference_number,
           date:           date
         )
         create_charges(voucher)

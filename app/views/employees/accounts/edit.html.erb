@@ -1,5 +1,5 @@
 <%= render 'employees/shared/form_header' %>
-<%= simple_form_for @employee, url: :employee_account, html: { autocomplete: "off", data: { modal: true } } do |f| %>
+<%= simple_form_for @employee, url: :employee_account, remote: request.xhr?, html: { autocomplete: "off", data: { modal: true } } do |f| %>
 	<div class="modal-body">
 		<h4 class="card-title">Account Details</h4>
 		<hr>

@@ -10,7 +10,8 @@ module Employees
 		def update
 			@employee = current_cooperative.users.find(params[:employee_id])
 			@employee.update(password_params)
-			respond_modal_with @employee, location: employee_settings_url(@employee)
+			respond_modal_with @employee, 
+				location: employee_settings_url(@employee)
 		end
 
 		private
