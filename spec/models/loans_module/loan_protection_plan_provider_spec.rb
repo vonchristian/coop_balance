@@ -11,6 +11,8 @@ module LoansModule
     describe 'validations' do
       it { is_expected.to validate_presence_of :business_name }
       it { is_expected.to validate_uniqueness_of(:business_name).scoped_to(:cooperative_id) }
+      it { is_expected.to validate_presence_of :rate }
+      it { is_expected.to validate_numericality_of :rate }
     end
   end
 end

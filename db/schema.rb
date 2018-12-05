@@ -622,6 +622,7 @@ ActiveRecord::Schema.define(version: 2018_12_05_131310) do
 
   create_table "loan_protection_plan_providers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "business_name"
+    t.decimal "rate"
     t.uuid "cooperative_id"
     t.uuid "accounts_payable_id"
     t.datetime "created_at", null: false

@@ -6,7 +6,7 @@ module LoansModule
     has_many   :loans,            through: :loan_products, class_name: "LoansModule::Loan"
 
     validates :business_name, presence: true, uniqueness: { scope: :cooperative_id }
-
+    validates :rate, presence: true, numericality: true
     def create_charges_for(loan_application)
       loan_application.voucher_amounts.create!(
       cooperative: loan_application.cooperative,
@@ -17,9 +17,9 @@ module LoansModule
       description: 'Loan Protection Fund'
       )
     end
-    
+
     def amount_for(loan_application)
-      1.35 * loan_application.number_of_thousands * loan_application.term
+      rate * loan_application.number_of_thousands * loan_application.term
     end
   end
 end
