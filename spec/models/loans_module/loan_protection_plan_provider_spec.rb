@@ -14,5 +14,9 @@ module LoansModule
       it { is_expected.to validate_presence_of :rate }
       it { is_expected.to validate_numericality_of :rate }
     end
+    describe 'delegations' do
+      it { is_expected.to delegate_method(:name).to(:accounts_payable).with_prefix }
+    end
+    end
   end
 end

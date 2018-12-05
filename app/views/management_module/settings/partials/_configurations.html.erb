@@ -70,11 +70,11 @@
       </div>
       <div class="card-body">
         <table class="table">
-          <% @programs.each do |program| %>
+          <% @loan_protection_plan_providers.each do |provider| %>
             <tr>
-              <td><%= program.name %></td>
-              <td><%= number_to_currency program.try(:amount) %></td>
-              <td><%= program.account.name %></td>
+              <td><%= provider.business_name %></td>
+              <td><%= number_to_currency provider.rate, unit: "" %></td>
+              <td><%= provider.accounts_payable_name %></td>
             </tr>
           <% end %>
         </table>
