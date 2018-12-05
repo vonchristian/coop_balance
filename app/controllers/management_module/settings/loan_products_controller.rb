@@ -32,6 +32,7 @@ module ManagementModule
         :unearned_interest_income_account_id,
         :penalty_rate,
         :penalty_revenue_account_id,
+        :loan_protection_plan_provider_id,
         :cooperative_id)
       end
     end

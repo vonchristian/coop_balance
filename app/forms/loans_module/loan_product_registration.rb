@@ -11,6 +11,7 @@ module LoansModule
     :unearned_interest_income_account_id,
     :penalty_rate,
     :penalty_revenue_account_id,
+    :loan_protection_plan_provider_id
     :cooperative_id
 
     validates :name, :maximum_loanable_amount,
@@ -40,8 +41,9 @@ module LoansModule
         maximum_loanable_amount: maximum_loanable_amount,
         loans_receivable_current_account_id: loans_receivable_current_account_id,
         loans_receivable_past_due_account_id: loans_receivable_past_due_account_id,
-        cooperative_id: cooperative_id)
-      
+        cooperative_id: cooperative_id,
+        loan_protection_plan_provider_id: loan_protection_plan_provider_id)
+
       loan_product.interest_configs.create(
         rate: interest_rate,
         interest_revenue_account_id: interest_revenue_account_id,
@@ -53,5 +55,3 @@ module LoansModule
     end
   end
 end
-
-
