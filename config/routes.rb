@@ -145,7 +145,7 @@ Rails.application.routes.draw do
     resources :purchases,        only: [:index, :show],                 module: :members
     resources :account_mergings, only: [:new, :create],                 module: :members
     resources :signature_specimens, only: [:create], module: :members
-    resources :avatars, only: [:create], module: :members
+    resources :avatars, only: [:update], module: :members
   end
   resources :member_registrations, only: [:new, :create]
 
@@ -341,7 +341,8 @@ Rails.application.routes.draw do
     resources :amounts,              only: [:new, :create, :destroy],       module: :employees
     resources :orders,               only: [:index],                        module: :employees
     resources :loans,                only: [:index],                        module: :employees
-    resources :avatars,              only: [:create],                       module: :employees
+    resources :avatars,              only: [:update],                       module: :employees
+    resources :accounts,            only: [:edit, :update],                       module: :employees
   end
   resources :loans, only: [:index, :show] do
     resources :payment_vouchers, only: [:show], module: :loans
