@@ -5,6 +5,7 @@ module LoansModule
     describe InterestConfig, type: :model do
       it { is_expected.to define_enum_for(:calculation_type).with([:add_on, :prededucted])}
       it { is_expected.to define_enum_for(:amortization_type).with([:annually, :straight_balance])}
+      it { is_expected.to define_enum_for(:rate_type).with([:monthly_rate, :annual_rate])}
 
       describe 'associations' do
         it { is_expected.to belong_to :cooperative }
@@ -33,21 +34,36 @@ module LoansModule
 
         expect(described_class.interest_revenue_accounts).to include(interest_config.interest_revenue_account)
       end
-      describe "#total_interest(loan_application)" do
-          let (:loan_product)  { create(:loan_product) }
-          let (:interest_config) { create(:interest_config, rate: 0.12, calculation_type: 'prededucted', loan_product: loan_product) }
+      it "#monthly_rate" do
+        monthly_interest_config = create(:interest_config, rate_type: 'monthly_rate', rate: 0.03)
+        annual_interest_config  = create(:interest_config, rate_type: 'annual_rate', rate: 0.12)
 
-        it 'one year' do
-          one_year_loan_application = create(:loan_application, term: 12, loan_amount: 100_000, mode_of_payment: 'monthly', loan_product: loan_product)
-          LoansModule::AmortizationSchedule.create_amort_schedule_for(one_year_loan_application)
+        expect(monthly_interest_config.monthly_rate).to eql 0.03
+        expect(annual_interest_config.monthly_rate). to eql 0.01
+      end
 
-          expect(interest_config.total_interest(one_year_loan_application)).to eql 12_000.0
+      it "#interest_computation(balance)" do
+        monthly_interest_config = create(:interest_config, rate_type: 'monthly_rate', rate: 0.03)
+        annual_interest_config  = create(:interest_config, rate_type: 'annual_rate', rate: 0.12)
+
+        expect(monthly_interest_config.interest_computation(5_000)).to eq 150
+        expect(monthly_interest_config.interest_computation(10_000)).to eq 300
+        expect(annual_interest_config.interest_computation(100_000)).to eq 12_000
+        expect(annual_interest_config.interest_computation(200_000)).to eq 24_000
+      end
+      describe '#prededucted_interest(loan_application)' do
+        it 'addon interest' do
+          interest_config = create(:interest_config, calculation_type: 'add_on')
+
+          expect(interest_config.prededucted_interest(100_000)).to eql 0
         end
-        it 'two year' do
-          two_year_loan_application = create(:loan_application, term: 24, loan_amount: 100_000, mode_of_payment: 'monthly', loan_product: loan_product)
-          LoansModule::AmortizationSchedule.create_amort_schedule_for(two_year_loan_application)
 
-          expect(interest_config.total_interest(two_year_loan_application)).to eql 18_000.0
+        it "#percentage" do
+          interest_config = create(:interest_config, prededuction_type: 'percentage', calculation_type: 'prededucted', prededucted_rate: 1.0, rate: 0.12, rate_type: 'annual_rate')
+
+          expect(interest_config.prededucted_interest(100_000)).to eql 12_000
+          expect(interest_config.prededucted_interest(200_000)).to eql 24_000
+
         end
       end
     end

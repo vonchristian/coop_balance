@@ -59,7 +59,7 @@ module LoansModule
 
       def update_last_transaction_date
           loan.update_attributes!(last_transaction_date: voucher.date)
-
+          loan.borrower.update_attributes!(last_transaction_date: voucher.date)
       end
 
       def update_terms

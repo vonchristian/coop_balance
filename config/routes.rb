@@ -27,7 +27,6 @@ Rails.application.routes.draw do
       resources :financial_conditions, only: [:index]
     end
     resources :settings, only: [:index]
-    resources :loan_protection_fund_configs, only: [:new, :create]
     resources :accounts, except: [:destroy] do
       resources :activations, only: [:create], module: :accounts
       resources :deactivations, only: [:create], module: :accounts
@@ -60,7 +59,6 @@ Rails.application.routes.draw do
     resources :amortization_schedules, only: [:show], module: :schedules
     namespace :reports do
       resources :loan_releases, only: [:index]
-      resources :loan_protection_funds, only: [:index]
       resources :loan_collections, only: [:index]
     end
     resources :member_borrowers, only: [:index, :show]
@@ -82,6 +80,7 @@ Rails.application.routes.draw do
     end
 
     resources :loans, only: [:index, :show] do
+      resources :co_makers,                 only: [:new, :create], module: :loans
       resources :past_due_vouchers,              only: [:new, :create, :show, :destroy], module: :loans
       resources :past_due_voucher_confirmations, only: [:create],                        module: :loans
       resources :organizations,                  only: [:edit, :update],                 module: :loans
@@ -93,9 +92,6 @@ Rails.application.routes.draw do
       resources :interest_postings,             only: [:new, :create], module: :loans
       resources :penalty_postings,              only: [:new, :create], module: :loans
       resources :interest_rebate_postings,      only: [:new, :create], module: :loans
-
-
-      resources :loan_protection_funds,         only: [:new, :create]
       resources :amortization_schedules,        only: [:index],        module: :loans
 
 
@@ -156,6 +152,7 @@ Rails.application.routes.draw do
     resources :loan_registries, only: [:create]
     resources :time_deposit_registries, only: [:create]
     resources :member_registries, only: [:create]
+    resources :loan_protection_plan_providers, only: [:new, :create], module: :configurations
 
     namespace :settings do
       resources :generals, only: [:index]

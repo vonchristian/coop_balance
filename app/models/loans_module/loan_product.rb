@@ -1,6 +1,7 @@
 module LoansModule
   class LoanProduct < ApplicationRecord
     extend Totalable
+    belongs_to :loan_protection_plan_provider,    class_name: "LoansModule::LoanProtectionPlanProvider"
     belongs_to :cooperative
     belongs_to :loans_receivable_current_account,  class_name: "AccountingModule::Account"
     belongs_to :loans_receivable_past_due_account, class_name: "AccountingModule::Account"
@@ -81,7 +82,9 @@ module LoansModule
       create_percent_based_charges(loan_application)
       create_amount_based_charges(loan_application)
       create_interest_on_loan_charge_for(loan_application)
-      create_loan_protection_fund(loan_application)
+      if loan_protection_plan_provider.present?
+        create_loan_protection_fund(loan_application)
+      end
     end
 
     def create_interest_on_loan_charge_for(loan_application)
@@ -90,15 +93,8 @@ module LoansModule
 
     private
     def create_loan_protection_fund(loan_application)
-        loan_application.voucher_amounts.create!(
-        cooperative: loan_application.cooperative,
-        commercial_document: loan_application,
-        amount_type: 'credit',
-        amount: LoanProtectionFund.compute_amount(loan_application),
-        account: AccountingModule::Liability.find_by(name: 'Loan Protection Fund Payable'), # REFACTOR
-        description: 'Loan Protection Fund'
-        )
-      end
+      loan_protection_plan_provider.create_charges_for(loan_application)
+    end
     def create_percent_based_charges(loan_application)
       loan_product_charges.percent_based.each do |charge|
          loan_application.voucher_amounts.create!(

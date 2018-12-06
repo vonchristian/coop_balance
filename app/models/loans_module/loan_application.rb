@@ -40,21 +40,27 @@ module LoansModule
     end
 
     def term_is_within_one_year?
-      1.upto(12).include?(term)
+      (1..12).include?(term)
     end
 
     def term_is_within_two_years?
-      13.upto(24).include?(term)
+      (13..24).include?(term)
     end
 
     def term_is_within_three_years?
-      25.upto(36).include?(term)
+      (25..36).include?(term)
+    end
+
+    def term_is_within_four_years?
+      (36..48).include?(term)
+    end
+
+    def term_is_within_five_years?
+      (48..60).include?(term)
     end
 
     def principal_balance(args={})
-      amortization_schedules.principal_balance(
-          from_date: args[:from_date],
-          to_date: args[:to_date])
+      amortization_schedules.principal_balance(args)
     end
 
     def balance_for(schedule)
@@ -69,33 +75,12 @@ module LoansModule
     end
 
     def total_interest
-      if current_interest_config_annually?
-        annually_total_interest
-      elsif current_interest_config_straight_balance?
-        straight_balance_total_interest
-      end
+      current_interest_config.total_interest(self)
     end
 
-    def annually_total_interest
-      if term_is_within_one_year?
-        first_year_interest
-      elsif term_is_within_two_years?
-        first_year_interest +
-        second_year_interest
-      elsif term_is_within_three_years?
-        first_year_interest +
-        second_year_interest +
-        third_year_interest
-      end
-    end
-
-
-    def straight_balance_total_interest
-      amortization_schedules.sum(&:interest)
-    end
 
     def interest_balance
-      total_interest.to_f -
+      total_interest -
       voucher_interest_amount
     end
 
@@ -104,68 +89,65 @@ module LoansModule
     end
 
     def first_year_interest
-      (amortization_schedules.take(term).sum(&:principal) * current_interest_config_rate).to_f
+      if term > 12
+        multipliable_term = 12
+      else
+        multipliable_term = term
+      end
+      current_interest_config.interest_computation(principal_balance, multipliable_term)
     end
 
     def second_year_interest
-      if term_is_within_two_years?
-        (amortization_schedules.take(term - 12).sum(&:principal) * current_interest_config_rate).to_f
-      else
-        0
-      end
+      return 0 if term <= 12
+      number = term - 12
+      balance = principal_balance(number_of_months: number)
+      current_interest_config.interest_computation(balance, number)
     end
 
     def third_year_interest
-      if term_is_within_three_years?
-        (amortization_schedules.take(term - 24).sum(&:principal) * current_interest_config_rate).to_f
-      else
-        0
-      end
+      return 0 if term <= 24
+      number = term - 24
+      balance = principal_balance(number_of_months: number)
+      current_interest_config.interest_computation(balance, number)
     end
 
-    def multipliable_term
-      if term > 12
-        12
-      else
-        term
-      end
+    def fourth_year_interest
+      return 0 if term <= 36
+      number = term - 36
+      balance = principal_balance(number_of_months: number)
+      current_interest_config.interest_computation(balance, number)
     end
 
+    def fifth_year_interest
+      return 0 if term <= 48
+      number = term - 4
+      balance = principal_balance(number_of_months: number)
+      current_interest_config.interest_computation(balance, number)
+    end
 
     def prededucted_interest
-      if current_interest_config.percentage? && current_interest_config.prededucted_rate.present?
-        (loan_amount.amount * current_interest_config.monthly_rate * multipliable_term) * current_interest_config.prededucted_rate
-
-      elsif current_interest_config.number_of_payment? && current_interest_config.prededucted_number_of_payments.present?
-        amortization_schedules.order(date: :asc).first(current_interest_config.prededucted_number_of_payments).sum(&:interest)
-      else
-        0
-      end
+      current_interest_config.prededucted_interest(loan_amount, term)
     end
 
 
     def net_proceed
-      if entry.present?
-        entry.total_cash_amount
-      else
-       loan_amount.amount - voucher_amounts.sum(&:adjusted_amount)
-      end
+      loan_amount.amount - voucher_amounts.sum(&:adjusted_amount)
     end
+
     def total_charges
       accounts = []
       accounts << cooperative.cash_accounts
       accounts << loan_product_loans_receivable_current_account
       voucher_amounts.excluding_account(account: accounts).total
     end
+
     def disbursed?
       voucher && voucher.disbursed?
     end
-    def annual_interest_rate
-      loan_product.current_interest_config_rate
-    end
-    def adjusted_interest_on_loan
-      voucher_amounts.where(account: loan_product_interest_revenue_account).first.try(:adjusted_amount)
-    end
+
+    # def adjusted_interest_on_loan
+    #   voucher_amounts.where(account: loan_product_interest_revenue_account).first.try(:adjusted_amount)
+    # end
 
     def number_of_thousands # for Loan Protection fund computation
       loan_amount.amount / 1_000

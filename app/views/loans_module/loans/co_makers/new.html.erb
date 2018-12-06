@@ -1,0 +1,31 @@
+<%= render 'loans/partials/header', loan: @loan %>
+<div class="row">
+  <div class="col-md-6 offset-md-3">
+    <div class="card">
+      <div class="card-body">
+        <% @co_makers.each do |co_maker| %>
+          <div class="row min-margin">
+            <div class="col-md-3">
+              <%= image_tag(co_maker.avatar, height: 45, width: 45, class: "img-circle") %>
+            </div>
+            <div class="col-md-6">
+              <%= co_maker.name %>
+            </div>
+            <div class="col-md-3">
+              <%= simple_form_for [@loan, @co_maker], url: :loans_module_loan_co_makers do |f| %>
+                <%= f.input :co_maker_id, input_html: { value: co_maker.id }, as: :hidden %>
+                <%= f.input :co_maker_type, input_html: { value: co_maker.class.to_s }, as: :hidden %>
+                <% if @loan.loan_co_makers.pluck(:co_maker_id).include?(co_maker.id) %>
+                  <span class="badge bg-success"> Selected </span>
+                <% else %>
+                  <%= f.submit "Select", class: "btn btn-primary", data: { disable_with: "Processing..." } %>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+          <hr>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

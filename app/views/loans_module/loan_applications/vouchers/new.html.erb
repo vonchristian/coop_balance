@@ -8,6 +8,27 @@
         </center>
       </div>
       <div class="card-body">
+        <div class="row min-margin">
+          <div class="col-md-5 offset-md-1"> Loan Product </div>
+          <div class="col-md-5"> <%= @loan_application.loan_product_name %></div>
+        </div>
+        <div class="row min-margin">
+          <div class="col-md-5 offset-md-1"> Loan Term </div>
+          <div class="col-md-5"> <%= @loan_application.term %></div>
+        </div>
+        <div class="row min-margin">
+          <div class="col-md-5 offset-md-1"> Mode of Payment </div>
+          <div class="col-md-5"> <%= @loan_application.mode_of_payment.titleize %></div>
+        </div>
+        <div class="row min-margin">
+          <div class="col-md-5 offset-md-1"> Application Date </div>
+          <div class="col-md-5"> <%= @loan_application.application_date.strftime("%B %e, %Y") %></div>
+        </div>
+        <div class="row min-margin">
+          <div class="col-md-5 offset-md-1"> Purpose of Loan </div>
+          <div class="col-md-5"> <%= @loan_application.purpose %></div>
+        </div>
+        <hr>
         <div class="row">
           <div class="col-md-8">
             <h3 class="card-title">Loan Amount </h3>
@@ -19,7 +40,92 @@
         <hr>
         <div class="row">
           <div class="col-md-8">
-            <h4 class="card-title text-danger"> Loan Charges </h4>
+            <h3 class="card-title"> Interests </h3>
+          </div>
+          <div class="col-md-3">
+          </div>
+        </div>
+        <div class="row justify-content-end">
+          <div class="col-md-8">
+            First Year
+          </div>
+          <div class="col-md-3">
+            <%= number_to_currency @loan_application.first_year_interest %>
+          </div>
+        </div>
+        <% if @loan_application.term > 12  %>
+          <div class="row justify-content-end">
+            <div class="col-md-8">
+              Second Year
+            </div>
+            <div class="col-md-3">
+              <%= number_to_currency @loan_application.second_year_interest %>
+            </div>
+          </div>
+        <% end %>
+        <% if @loan_application.term >= 36 %>
+          <div class="row justify-content-end">
+            <div class="col-md-8">
+              Third Year
+            </div>
+            <div class="col-md-3">
+              <%= number_to_currency @loan_application.third_year_interest %>
+            </div>
+          </div>
+        <% end %>
+        <% if @loan_application.term >= 48 %>
+          <div class="row justify-content-end">
+            <div class="col-md-8">
+              Fourth Year
+            </div>
+            <div class="col-md-3">
+              <%= number_to_currency @loan_application.fourth_year_interest %>
+            </div>
+          </div>
+        <% end %>
+        <% if @loan_application.term >=60 %>
+          <div class="row justify-content-end">
+            <div class="col-md-8">
+              Fifth Year
+            </div>
+            <div class="col-md-3">
+              <%= number_to_currency @loan_application.fifth_year_interest %>
+            </div>
+          </div>
+        <% end %>
+        <hr class="min-margin">
+        <div class="row justify-content-end">
+          <div class="col-md-8">
+            Total Interest
+          </div>
+          <div class="col-md-3">
+            <%= number_to_currency @loan_application.total_interest %>
+          </div>
+        </div>
+        <div class="row justify-content-end">
+          <div class="col-md-8">
+            <span class="text-success">Prededucted </span>
+          </div>
+          <div class="col-md-3">
+            <span class="text-success">
+              <%= number_to_currency @loan_application.voucher_interest_amount %>
+            </span>
+          </div>
+        </div>
+        <div class="row justify-content-end">
+          <div class="col-md-8">
+            <span class="text-danger">Amortized </span>
+          </div>
+          <div class="col-md-3">
+            <span class="text-danger">
+              <%= number_to_currency @loan_application.interest_balance %>
+            </span>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-8">
+            <h4 class="card-title text-danger"> Loan Deductions </h4>
             <br>
           </div>
           <div class="col-md-3">
@@ -30,7 +136,7 @@
             <% end %>
           </div>
         </div>
-        <hr class="min-margin">
+        <br>
         <% @loan_application.voucher_amounts.each do |voucher_amount| %>
           <div class="row justify-content-end">
             <div class="col-md-11">
@@ -106,6 +212,7 @@
       </div>
     </div>
   </div>
+
   <div class="col-md-5">
     <div class="card">
       <div class="card-header with-border">

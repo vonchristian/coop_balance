@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_05_034606) do
+ActiveRecord::Schema.define(version: 2018_12_05_131310) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -525,6 +525,16 @@ ActiveRecord::Schema.define(version: 2018_12_05_034606) do
     t.index ["schedule_type"], name: "index_loan_charge_payment_schedules_on_schedule_type"
   end
 
+  create_table "loan_co_makers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "loan_id"
+    t.string "co_maker_type"
+    t.uuid "co_maker_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["co_maker_type", "co_maker_id"], name: "index_loan_co_makers_on_co_maker_type_and_co_maker_id"
+    t.index ["loan_id"], name: "index_loan_co_makers_on_loan_id"
+  end
+
   create_table "loan_discounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "loan_id"
     t.datetime "date"
@@ -590,8 +600,9 @@ ActiveRecord::Schema.define(version: 2018_12_05_034606) do
     t.uuid "loans_receivable_current_account_id"
     t.uuid "loans_receivable_past_due_account_id"
     t.uuid "cooperative_id"
-    t.boolean "has_loan_protection_fund"
+    t.uuid "loan_protection_plan_provider_id"
     t.index ["cooperative_id"], name: "index_loan_products_on_cooperative_id"
+    t.index ["loan_protection_plan_provider_id"], name: "index_loan_products_on_loan_protection_plan_provider_id"
     t.index ["loans_receivable_current_account_id"], name: "index_loan_products_on_loans_receivable_current_account_id"
     t.index ["loans_receivable_past_due_account_id"], name: "index_loan_products_on_loans_receivable_past_due_account_id"
     t.index ["name"], name: "index_loan_products_on_name", unique: true
@@ -607,6 +618,17 @@ ActiveRecord::Schema.define(version: 2018_12_05_034606) do
     t.datetime "updated_at", null: false
     t.index ["computation_type"], name: "index_loan_protection_funds_on_computation_type"
     t.index ["cooperative_id"], name: "index_loan_protection_funds_on_cooperative_id"
+  end
+
+  create_table "loan_protection_plan_providers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "business_name"
+    t.decimal "rate"
+    t.uuid "cooperative_id"
+    t.uuid "accounts_payable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["accounts_payable_id"], name: "index_loan_protection_plan_providers_on_accounts_payable_id"
+    t.index ["cooperative_id"], name: "index_loan_protection_plan_providers_on_cooperative_id"
   end
 
   create_table "loans", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1447,6 +1469,7 @@ ActiveRecord::Schema.define(version: 2018_12_05_034606) do
   add_foreign_key "loan_applications", "vouchers"
   add_foreign_key "loan_charge_payment_schedules", "amortization_schedules"
   add_foreign_key "loan_charge_payment_schedules", "loans"
+  add_foreign_key "loan_co_makers", "loans"
   add_foreign_key "loan_discounts", "loans"
   add_foreign_key "loan_discounts", "users", column: "computed_by_id"
   add_foreign_key "loan_interests", "loans"
@@ -1458,7 +1481,10 @@ ActiveRecord::Schema.define(version: 2018_12_05_034606) do
   add_foreign_key "loan_products", "accounts", column: "loans_receivable_current_account_id"
   add_foreign_key "loan_products", "accounts", column: "loans_receivable_past_due_account_id"
   add_foreign_key "loan_products", "cooperatives"
+  add_foreign_key "loan_products", "loan_protection_plan_providers"
   add_foreign_key "loan_protection_funds", "cooperatives"
+  add_foreign_key "loan_protection_plan_providers", "accounts", column: "accounts_payable_id"
+  add_foreign_key "loan_protection_plan_providers", "cooperatives"
   add_foreign_key "loans", "barangays"
   add_foreign_key "loans", "cooperatives"
   add_foreign_key "loans", "loan_applications"

@@ -8,7 +8,7 @@
           </div>
           <div class="col-md-2">
             <%= link_to new_management_module_grace_period_path, data: {modal: true} do %>
-              <span class="btn btn-sm btn-outline-danger float-right" data-toggle="tooltip" title="Set Grace Period"><i class="fa fa-edit"> Set</i></span>
+              <span class="btn btn-danger float-right" data-toggle="tooltip" title="Set Grace Period"><i class="fa fa-plus-circle"></i> New </span>
             <% end %>
           </div>
         </div>
@@ -33,7 +33,7 @@
           </div>
           <div class="col-md-3">
             <%= link_to new_management_module_program_path, data: {modal: true} do %>
-              <span class="btn btn-outline-danger btn-sm float-right" title="New Program/Fee" data-toggle="tooltip">
+              <span class="btn btn-danger float-right" title="New Program/Fee" data-toggle="tooltip">
                 <i class="fa fa-plus-circle"></i> New
               </span>
             <% end %>
@@ -56,12 +56,40 @@
     <div class="card">
       <div class="card-header">
         <div class="row">
+          <div class="col-md-9">
+            <h3 class="card-title"> Loan Protection Plan Providers </h3>
+          </div>
+          <div class="col-md-3">
+            <%= link_to new_management_module_loan_protection_plan_provider_path, data: {modal: true} do %>
+              <span class="btn btn-danger float-right" title="New Loan Protection Plan Provider" data-toggle="tooltip">
+                <i class="fa fa-plus-circle"></i> New
+              </span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="table">
+          <% @loan_protection_plan_providers.each do |provider| %>
+            <tr>
+              <td><%= provider.business_name %></td>
+              <td><%= number_to_currency provider.rate, unit: "" %></td>
+              <td><%= provider.accounts_payable_name %></td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
           <div class="col-md-6">
             <h3 class="card-title"> Store Fronts</h3>
           </div>
           <div class="col-md-6">
             <%= link_to new_management_module_settings_store_front_path do  %>
-              <span class="btn btn-danger btn-sm float-right" data-toggle="tooltip" title="New Savings Product"><i class="fa fa-plus"></i> New </span>
+              <span class="btn btn-danger float-right" data-toggle="tooltip" title="New Savings Product"><i class="fa fa-plus-circle"></i> New </span>
             <% end %>
           </div>
         </div>
@@ -84,7 +112,7 @@
           </div>
           <div class="col-md-3">
             <%= link_to new_cooperative_service_path, data: {modal: true} do %>
-              <span class="btn btn-sm btn-outline-danger float-right" data-toggle="tooltip" title="New Cooperative Service"><i class="fa fa-plus-circle"> New</i></span>
+              <span class="btn btn-danger float-right" data-toggle="tooltip" title="New Cooperative Service"><i class="fa fa-plus-circle"></i> New </span>
             <% end %>
           </div>
         </div>

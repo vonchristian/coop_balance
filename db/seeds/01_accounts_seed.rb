@@ -203,7 +203,7 @@ AccountingModule::Asset.create(code: 17900,  name: "Miscellaneous Assets")
  AccountingModule::Asset.create(code: 17200,  name: "Product/Business Development Cost")
  AccountingModule::Asset.create(code: 17300,  name: "Computerization Cost")
  AccountingModule::Asset.create(code: 17400,  name: "Other Funds and Deposits")
- 
+
  AccountingModule::Asset.create(code: 17500,  name: "Finance Lease Receivable")
  AccountingModule::Asset.create(code: 17600,  name: "Due from Head Office/Branch/Subsidiary")
  AccountingModule::Asset.create(code: 17700,  name: "Assets Held for Sale")
@@ -359,6 +359,8 @@ AccountingModule::Revenue.create(code: 40420, name: 'Membership Fee')
 AccountingModule::Revenue.create(code: 40430, name: 'Commission Income')
 AccountingModule::Revenue.create(code: 40440, name: 'Realized Gross Margin')
 AccountingModule::Revenue.create(code: 40450, name: 'Miscellaneous Income')
+AccountingModule::Revenue.create(code: 404501, name: 'Accrued Income(Financing-Appliance)')
+
 
 #Expense Accounts
 AccountingModule::Expense.create(code: 50000, name: 'Cost of Goods Sold')
@@ -475,7 +477,18 @@ AccountingModule::Expense.create(code: 73600, name: "Bank Charges", main_account
 AccountingModule::Expense.create(code: 73610, name: "General Assembly Expenses", main_account_id: AccountingModule::Account.find_by_name('Administrative Cost').id)
 AccountingModule::Expense.create(code: 73620, name: "Members Benefit Expenses", main_account_id: AccountingModule::Account.find_by_name('Administrative Cost').id)
 AccountingModule::Expense.create(code: 73630, name: "Affiliation Fee", main_account_id: AccountingModule::Account.find_by_name('Administrative Cost').id)
+
 AccountingModule::Expense.create(code: 736301, name: "Affiliation Fee - NORLU/IFEDECO", main_account_id: AccountingModule::Account.find_by_name('Administrative Cost').id)
+AccountingModule::Expense.create(code: 736302, name: "Clothing Allowance", main_account_id: AccountingModule::Account.find_by_name('Administrative Cost').id)
+AccountingModule::Expense.create(code: 736303, name: "Personnel Economic Relief Allowance(PERA)", main_account_id: AccountingModule::Account.find_by_name('Administrative Cost').id)
+AccountingModule::Expense.create(code: 736304, name: "13th Month Pay", main_account_id: AccountingModule::Account.find_by_name('Administrative Cost').id)
+AccountingModule::Expense.create(code: 736305, name: "Cash Gift", main_account_id: AccountingModule::Account.find_by_name('Administrative Cost').id)
+AccountingModule::Expense.create(code: 736306, name: "SSS Employers' Share", main_account_id: AccountingModule::Account.find_by_name('Administrative Cost').id)
+AccountingModule::Expense.create(code: 736307, name: "PhilHealth Employers' Share", main_account_id: AccountingModule::Account.find_by_name('Administrative Cost').id)
+AccountingModule::Expense.create(code: 736308, name: "PAGIBIG Fund Employers' Share", main_account_id: AccountingModule::Account.find_by_name('Administrative Cost').id)
+AccountingModule::Expense.create(code: 736309, name: "Uniform Allowance", main_account_id: AccountingModule::Account.find_by_name('Administrative Cost').id)
+AccountingModule::Expense.create(code: 7363010, name: "Other Personnel Benefits", main_account_id: AccountingModule::Account.find_by_name('Administrative Cost').id)
+
 
 AccountingModule::Expense.create(code: 73640, name: "Social and Community Service Expense",  main_account_id: AccountingModule::Account.find_by_name('Administrative Cost').id)
 AccountingModule::Expense.create(code: 73650, name: "Provisions for CGF(KBGF)", main_account_id: AccountingModule::Account.find_by_name('Administrative Cost').id)

@@ -23,6 +23,10 @@ module LoansModule
       it { is_expected.to have_many :loan_penalties }
       it { is_expected.to have_many :loan_discounts }
       it { is_expected.to have_many :notes }
+      it { is_expected.to have_many :loan_co_makers }
+      it { is_expected.to have_many :member_co_makers }
+
+
     end
     describe 'validations' do
       it { is_expected.to validate_presence_of :loan_product_id }

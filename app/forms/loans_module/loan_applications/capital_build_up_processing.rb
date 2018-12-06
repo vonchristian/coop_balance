@@ -7,6 +7,7 @@ module LoansModule
       def process!
         ActiveRecord::Base.transaction do
           save_loan_charge
+          update_amortization_schedule
         end
       end
 
@@ -27,6 +28,12 @@ module LoansModule
 
       def find_share_capital
         MembershipsModule::ShareCapital.find(share_capital_id)
+      end
+      def update_amortization_schedule
+        if find_loan_application.amortization_schedules.present?
+          find_loan_application.amortization_schedules.destroy_all
+        end
+        LoansModule::AmortizationSchedule.create_amort_schedule_for(find_loan_application)
       end
     end
   end
