@@ -1,14 +1,15 @@
 
 module LoansModule
   class LoanAmortizationSchedulePdf < Prawn::Document
-    attr_reader :loan, :amortization_schedules, :employee, :view_context, :voucher, :cooperative
+    attr_reader :loan, :amortization_schedules, :employee, :view_context, :voucher, :cooperative, :voucher, :term
     def initialize(args)
       super(margin: 40, page_size: "LEGAL", page_layout: :portrait)
       @loan = args[:loan]
-      @voucher = @loan.disbursement_voucher
+      @voucher = args[:voucher] || @loan.disbursement_voucher
       @amortization_schedules = args[:amortization_schedules]
-      @employee = args[:employee]
-      @cooperative = @employee.cooperative
+      @employee = args[:employee],
+      @cooperative = @loan.cooperative,
+      @term        = args[:term],
       @view_context = args[:view_context]
       heading
       loan_details
@@ -64,18 +65,27 @@ module LoansModule
       table([["Loan Product", "#{loan.loan_product_name}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 100]) do
         cells.borders = []
       end
+      move_down 3
+      
       table([["Loan Amount ", "#{price(loan.loan_amount)}"]], cell_style: { padding: [0,0,0,0],inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 200]) do
         cells.borders = []
       end
+      move_down 3
+
       table([["Loan Amount (in words)", "#{loan.loan_amount.to_f.to_words.titleize} Pesos"]], cell_style: { padding: [0,0,0,0],inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 200]) do
         cells.borders = []
       end
-      table([["Term ", "#{loan.current_term.term} Months"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 300]) do
+      move_down 3
+
+      table([["Term ", "#{term} Months"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 300]) do
         cells.borders = []
       end
+      move_down 3
+
       table([["Disbursement Date ", "#{loan.disbursement_date.strftime("%B %e, %Y")}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 300]) do
         cells.borders = []
       end
+      move_down 3
       table([["Maturity Date ", "#{loan.maturity_date.strftime("%B %e, %Y")}"]], cell_style: { padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 300]) do
         cells.borders = []
       end
@@ -171,7 +181,7 @@ module LoansModule
      User.teller.last
    end
    def preparer
-     @loan.loan_application.preparer
+     @loan.preparer
    end
    def signatory
     [["PREPARED BY", "", "APPROVED BY", "", "DISBURSED BY", "", "RECEIVED BY"]] +

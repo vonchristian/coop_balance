@@ -27,6 +27,16 @@ module LoansModule
     delegate :rate, :straight_balance?, :annually?, :prededucted_number_of_payments, to: :current_interest_config, prefix: true
 
     validates :cooperative_id, presence: true
+    def forwarded_loan? #check on amortization_schedule pdf
+      false
+    end
+    def disbursement_date
+      amortization_schedules.order(date: :asc).first.date
+    end
+
+    def maturity_date
+      amortization_schedules.order(date: :asc).last.date
+    end
     def current_term_number_of_months
       term
     end
