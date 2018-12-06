@@ -11,4 +11,10 @@ class TermParser
     return 0 if term.is_a?(Integer)
     ((term.to_s.split(".").last.to_f) / 30 * 100).floor
   end
+  def add_months
+    number_of_months.months
+  end
+  def add_days
+    number_of_days.days
+  end
 end

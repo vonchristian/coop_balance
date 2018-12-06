@@ -2,13 +2,14 @@ module LoansModule
   module LoanApplications
     class EntryProcessing
       include ActiveModel::Model
-      attr_reader :voucher, :employee, :loan, :loan_application
+      attr_reader :voucher, :employee, :loan, :loan_application, :cooperative
 
       def initialize(args)
         @voucher          = args[:voucher]
         @employee         = args[:employee]
         @loan             = args[:loan]
         @loan_application = args[:loan_application]
+        @cooperative      = @employee.cooperative
       end
       def process!
         ActiveRecord::Base.transaction do
@@ -17,12 +18,13 @@ module LoansModule
           update_terms
         end
       end
+      
       private
       def create_entry
         entry = AccountingModule::Entry.new(
           cooperative_service: voucher.cooperative_service,
           office:              voucher.office,
-          cooperative:         find_cooperative,
+          cooperative:         cooperative,
           commercial_document: voucher.payee,
           description:         voucher.description,
           recorder:            voucher.preparer,
@@ -53,7 +55,6 @@ module LoansModule
           end
 
         entry.save!
-
         voucher.update_attributes!(accounting_entry: entry)
       end
 
@@ -65,16 +66,17 @@ module LoansModule
       def update_terms
         loan.current_term.update_attributes!(
           effectivity_date: voucher.date,
-          maturity_date: voucher.date + loan_application.term.to_i.months)
+          maturity_date: proper_date)
       end
 
+      def proper_date
+        voucher.date +
+        TermParser.new(loan.term).add_months +
+        TermParser.new(loan.term).add_days
+      end
 
       def find_recent_entry
-        find_cooperative.entries.recent
-      end
-
-      def find_cooperative
-        voucher.cooperative
+        cooperative.entries.recent
       end
     end
   end
