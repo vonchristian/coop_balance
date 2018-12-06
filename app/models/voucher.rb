@@ -86,7 +86,7 @@ class Voucher < ApplicationRecord
   def disbursed?
     accounting_entry.present?
   end
-  
+
   def disbursement_date
     if disbursed?
       accounting_entry.entry_date
@@ -94,12 +94,15 @@ class Voucher < ApplicationRecord
   end
 
   def self.latest
-    order(created_at: :desc)
+    all.pluck(:number).max
   end
 
   def self.generate_number
-    return  latest.last.number.next if self.exists? && latest.last.number.present?
-    "000000000001"
+    if self.exists?
+      all.pluck(:number).max.next
+    else
+      "000000000001"
+    end
   end
 
   def valid_for?(cart)
