@@ -9,6 +9,7 @@ module ManagementModule
       	@store_fronts                   = current_cooperative.store_fronts
       	@grace_period                   = CoopConfigurationsModule::GracePeriod.last
         @loan_protection_plan_providers = current_cooperative.loan_protection_plan_providers
+        @net_income_distributions       = current_cooperative.net_income_distributions
 			end
 		end
 	end

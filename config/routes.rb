@@ -20,12 +20,14 @@ Rails.application.routes.draw do
     resources :financial_condition_comparisons, only: [:new, :create, :show]
     resources :reports, only: [:index]
     namespace :reports do
+      resources :net_income_distributions, only: [:index]
       resources :trial_balances,       only: [:index]
       resources :proofsheets,          only: [:index]
       resources :income_statements,    only: [:index]
       resources :balance_sheets,       only: [:index]
       resources :financial_conditions, only: [:index]
     end
+
     resources :settings, only: [:index]
     resources :accounts, except: [:destroy] do
       resources :activations, only: [:create], module: :accounts
@@ -166,6 +168,7 @@ Rails.application.routes.draw do
         resources :penalty_configurations, only: [:new, :create], module: :loan_products
       end
       resources :store_fronts, only: [:new, :create]
+      resources :net_income_distributions, only: [:new, :create]
       resources :cooperatives, only: [:edit, :update, :show] do
         resources :offices, only: [:new, :create]
       end

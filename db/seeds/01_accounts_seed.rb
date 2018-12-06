@@ -353,6 +353,10 @@ AccountingModule::Revenue.create(code: 40330, name: 'Sales Returns and Allowance
 AccountingModule::Revenue.create(code: 40340, name: 'Sales Discounts', contra: true)
 AccountingModule::Revenue.create(code: 40400, name: 'Other Income')
 AccountingModule::Revenue.create(code: 404001, name: 'Catering Income')
+AccountingModule::Revenue.create(code: 404002, name: 'Catering and Restaurant Income')
+AccountingModule::Revenue.create(code: 404003, name: 'Sales on Account-Catering')
+
+
 
 AccountingModule::Revenue.create(code: 40410, name: 'Income/Interest from Investment/Deposits')
 AccountingModule::Revenue.create(code: 40420, name: 'Membership Fee')
