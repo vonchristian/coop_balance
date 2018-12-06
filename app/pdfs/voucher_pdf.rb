@@ -99,7 +99,7 @@ class VoucherPdf < Prawn::Document
       end
     end
     if voucher.disbursed?
-      table([["#{price(voucher.accounting_entry.debit_amounts.sum(:amount))}", "", "#{price(voucher.accounting_entry.credit_amounts.sum(:amount))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"},  column_widths: [100, 300, 100]) do
+      table([["#{price(voucher.accounting_entry.debit_amounts.sum(&:amount))}", "", "#{price(voucher.accounting_entry.credit_amounts.sum(&:amount))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"},  column_widths: [100, 300, 100]) do
       # cells.borders = []
       row(0).font_style = :bold
       column(0).align = :right

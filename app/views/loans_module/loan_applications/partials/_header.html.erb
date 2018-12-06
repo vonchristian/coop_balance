@@ -29,9 +29,8 @@
                   </div>
 
                   <div class="col-md-3">
-                    <% if !loan_application.disbursed? && loan_application.voucher_id.present? && current_user.cash_accounts.present? %>
-                      <%= link_to 'Disburse Loan', loans_module_loan_application_voucher_path(loan_application_id: loan_application.id, id: loan_application.voucher_id), class: "btn btn-primary btn-sm" %>
-                    <% end %>
+
+                    <%= link_to 'View Voucher', loans_module_loan_application_voucher_path(loan_application_id: loan_application.id, id: loan_application.voucher_id), class: "btn btn-primary btn-sm" %>
                     <% if !loan_application.disbursed? %>
                       <%= link_to loans_module_loan_application_path(loan_application), method: :delete do %>
                         <span title="Cancel Loan" data-toggle="tooltip" class="fa fa-trash text-danger"></span>

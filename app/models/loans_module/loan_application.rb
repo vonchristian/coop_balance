@@ -31,7 +31,7 @@ module LoansModule
       false
     end
     def disbursement_date
-      amortization_schedules.order(date: :asc).first.date
+      application_date
     end
 
     def maturity_date
