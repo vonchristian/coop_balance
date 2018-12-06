@@ -26,7 +26,7 @@ module LoansModule
           commercial_document: voucher.payee,
           description:         voucher.description,
           recorder:            voucher.preparer,
-          reference_number:    voucher.number,
+          reference_number:    voucher.reference_number,
           previous_entry:      find_recent_entry,
           previous_entry_hash: find_recent_entry.encrypted_hash,
           entry_date:          voucher.date)

@@ -10,7 +10,7 @@ module LoansModule
     belongs_to :office, class_name: "CoopConfigurationsModule::Office"
     belongs_to :loan_product
     belongs_to :organization
-    belongs_to :voucher
+    belongs_to :voucher, dependent: :destroy
     has_one    :loan, class_name: "LoansModule::Loan", dependent: :destroy
     has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", dependent: :destroy
     has_many :amount_adjustments, through: :voucher_amounts, dependent: :destroy, class_name: "Vouchers::AmountAdjustment"

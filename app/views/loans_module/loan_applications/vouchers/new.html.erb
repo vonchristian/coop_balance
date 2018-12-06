@@ -190,7 +190,7 @@
       <hr class="no-margin">
       <div class="card-body">
         <%= simple_form_for [@loan_application, @voucher], url: :loans_module_loan_application_vouchers, html: { autocomplete: 'off' } do |f| %>
-          <%= f.input :date, as: :string, input_html: { class: "datepicker", value: Date.today.strftime("%B %e, %Y") } %>
+          <%= f.input :date, as: :string, input_html: { class: "datepicker", value: @loan_application.application_date.strftime("%B %e, %Y") } %>
           <%= f.input :description, input_html: { value: "#{@loan_application.loan_product_name} disbursement voucher of #{@loan_application.borrower_name}" }, as: :text %>
           <%= f.input :number, input_html: { value: Voucher.generate_number }, as: :hidden %>
           <%= f.input :reference_number %>

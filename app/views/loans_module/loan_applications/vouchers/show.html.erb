@@ -19,7 +19,7 @@
         <%= render 'vouchers/partials/body', voucher: @voucher %>
         <% if !@voucher.disbursed?%>
           <hr class="no-margin">
-            <%= link_to "Cancel Voucher", loans_module_loan_application_voucher_path(loan_application_id: @loan_application.id, id: @voucher.id), method: :delete, class: "btn text-danger float-left" %>
+            <%= link_to "Cancel Voucher", loans_module_loan_application_path(@loan_application), method: :delete, class: "btn text-danger float-left" %>
             <%= link_to "Disburse", loans_module_loan_application_voucher_confirmations_path(loan_application_id: @loan_application.id, voucher_id: @voucher.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
           </div>
         <% else %>
