@@ -1,3 +1,7 @@
+0ae21820-9382-4ef4-aec1-1b8684b32c4d
+
+
+show savings and share capitals on top on info
 fix notices template
 edit share capital product
 

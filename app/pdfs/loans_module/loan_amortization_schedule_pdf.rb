@@ -54,7 +54,7 @@ module LoansModule
       move_down 10
       stroke do
         stroke_color 'CCCCCC'
-        line_width 0.03
+        line_width 0.2
         stroke_horizontal_rule
         move_down 1
       end
@@ -66,7 +66,7 @@ module LoansModule
         cells.borders = []
       end
       move_down 3
-      
+
       table([["Loan Amount ", "#{price(loan.loan_amount)}"]], cell_style: { padding: [0,0,0,0],inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 200]) do
         cells.borders = []
       end
