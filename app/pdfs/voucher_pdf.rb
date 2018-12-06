@@ -30,7 +30,7 @@ class VoucherPdf < Prawn::Document
     end
     bounding_box [0, 770], width: 400 do
       text "#{title.upcase}", style: :bold, size: 12
-      text "CDV No: #{voucher.number}", style: :bold, size: 10
+      text "CDV No: #{voucher.reference_number}", style: :bold, size: 10
     end
     move_down 30
     stroke do

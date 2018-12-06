@@ -48,11 +48,12 @@ module LoansModule
       bounding_box [0, 930], width: 200 do
         text "LOAN DISCLOSURE STATEMENT AND AMORTIZATION SCHEDULE", style: :bold, size: 10
         move_down 6
+        text "Borrower: #{@loan.borrower_name.try(:upcase)}", size: 10
       end
-      move_down 15
+      move_down 10
       stroke do
-        stroke_color '24292E'
-        line_width 1
+        stroke_color 'CCCCCC'
+        line_width 0.03
         stroke_horizontal_rule
         move_down 1
       end
@@ -164,7 +165,7 @@ module LoansModule
      end
    end
    def approver
-     User.general_manager.last
+     User.general_manager.first
    end
    def disburser
      User.teller.last
