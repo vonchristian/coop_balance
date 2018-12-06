@@ -49,10 +49,10 @@ module Vouchers
     def update_last_transaction_date
       if updateable.present?
         updateable.update_attributes!(last_transaction_date: voucher.date)
-        if updateable.depositor.present?
+        if updateable.try(:depositor).present?
           updateable.depositor.update_attributes!(last_transaction_date: voucher.date)
         end
-        if updateable.subscriber.present?
+        if updateable.try(:subscriber).present?
           updateable.subscriber.update_attributes!(last_transaction_date: voucher.date)
         end
       end

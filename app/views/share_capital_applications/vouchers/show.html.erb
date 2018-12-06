@@ -21,7 +21,7 @@
           <%= link_to "Cancel", share_capital_application_voucher_path(id: @voucher.id, share_capital_application_id: @share_capital_application.id), method: :delete, class: "btn text-danger float-left" %>
         </div>
       <% else %>
-        <%= render 'vouchers/partials/status' %>
+        <%= render 'vouchers/partials/status', voucher: @voucher %>
       <% end %>
     </div>
   </div>

@@ -166,12 +166,18 @@ module LoansModule
    def approver
      User.general_manager.last
    end
+   def disburser
+     User.teller.last
+   end
+   def preparer
+     @loan.loan_application.preparer
+   end
    def signatory
     [["PREPARED BY", "", "APPROVED BY", "", "DISBURSED BY", "", "RECEIVED BY"]] +
     [["", ""]] +
     [["", ""]] +
-    [["#{loan.preparer_first_and_last_name}", "", "AGUSTIN C. CALYA-EN", "", "JOY BALANGUI", "", "#{@loan.borrower.try(:first_and_last_name).try(:upcase)}"]] +
-    [["#{@loan.preparer_current_occupation.try(:titleize)}", "", "#{approver.current_occupation.to_s.titleize}", "", "Treasurer", "", "Borrower"]]
+    [["#{preparer.first_and_last_name.try(:upcase)}", "", approver.full_name.try(:upcase), "", disburser.full_name.upcase, "", "#{@loan.borrower.try(:first_and_last_name).try(:upcase)}"]] +
+    [["#{preparer.designation.try(:titleize)}", "", "#{approver.designation.try(:titleize) }", "", "#{disburser.designation.try(:titleize)}", "", "Borrower"]]
   end
   end
 end
