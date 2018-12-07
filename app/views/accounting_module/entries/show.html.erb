@@ -128,7 +128,7 @@
                 <td><%= amount.account_name %></td>
                 <td>
                   <% if amount.credit? %>
-                    <span class="float-right">
+                    <span class="float-right number">
                       <%= number_to_currency amount.amount %>
                     </span>
                   <% end %>
@@ -144,13 +144,13 @@
             <% end %>
             <tr>
               <td>
-                <span class="float-right">
+                <span class="float-right number">
                   <b><%= number_to_currency @entry.debit_amounts.total %></b>
                 </span>
               </td>
               <td></td>
               <td>
-                <span class="float-right">
+                <span class="float-right number">
                   <b><%= number_to_currency @entry.credit_amounts.total %></b></span>
                 </td>
               <td></td>
