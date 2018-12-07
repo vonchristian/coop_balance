@@ -41,7 +41,11 @@ module LoansModule
       term
     end
 
-     def principal_balance_for(schedule) #used to compute interest
+    def reference_number
+      self.voucher.try(:reference_number)
+    end
+
+    def principal_balance_for(schedule) #used to compute interest
       if schedule == self.amortization_schedules.order(date: :asc).first
         loan_amount.amount
       else

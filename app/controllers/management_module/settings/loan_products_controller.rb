@@ -19,6 +19,20 @@ module ManagementModule
           location: management_module_settings_cooperative_products_url
       end
 
+      def edit
+        @loan_product = current_cooperative.loan_products.find(params[:id])
+        @edit_product = LoansModule::LoanProductRegistration.new("id" => @loan_product.id)
+        respond_modal_with @loan_product
+      end
+
+      def update
+        @loan_product = current_cooperative.loan_products.find(params[:id])
+        @update_product = LoansModule::LoanProductRegistration.new(loan_product_params.merge("id" => @loan_product.id))
+        @update_product.update!
+        respond_modal_with @loan_product,
+          location: management_module_settings_cooperative_products_url
+      end
+
       private
       def loan_product_params
         params.require(:loans_module_loan_product_registration).permit(
@@ -33,7 +47,9 @@ module ManagementModule
         :penalty_rate,
         :penalty_revenue_account_id,
         :loan_protection_plan_provider_id,
-        :cooperative_id)
+        :cooperative_id,
+        :grace_period,
+        :loan_type)
       end
     end
   end

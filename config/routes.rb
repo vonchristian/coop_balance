@@ -164,7 +164,7 @@ Rails.application.routes.draw do
       resources :cooperative_products, only: [:index]
       resources :configurations, only: [:index]
       resources :data_migrations, only: [:index]
-      resources :loan_products, only: [:new, :create] do
+      resources :loan_products, only: [:new, :create, :edit, :update] do
         resources :charges, only: [:new, :create, :edit, :update], module: :loan_products
         resources :interest_configurations, only: [:new, :create], module: :loan_products
         resources :penalty_configurations, only: [:new, :create], module: :loan_products
@@ -174,7 +174,7 @@ Rails.application.routes.draw do
       resources :cooperatives, only: [:edit, :update, :show] do
         resources :offices, only: [:new, :create]
       end
-      resources :time_deposit_products, only: [:new, :create, :show]
+      resources :time_deposit_products, only: [:new, :create, :show, :edit, :update]
     end
     resources :employees, only: [:index, :show]
 

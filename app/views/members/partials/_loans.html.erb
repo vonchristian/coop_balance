@@ -1,4 +1,21 @@
 <div class="card">
+  <div class="card-body">
+    <div class="row">
+      <% @loan_types.each do |loan_type| %>
+        <div class="col-md-3">
+          <center>
+            <span class="text-red">
+              <%= number_to_currency @loan_products.where(loan_type: loan_type).sum{ |l| l.loans.where(borrower_id: @member.id).sum(&:principal_balance)} %>
+            </span><br>
+            <small class="text-muted"><%= loan_type.titleize.upcase %></small><br>
+            <small class="text-muted">BALANCE</small>
+          </center>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<div class="card">
   <div class="card-header">
     <div class="row">
       <div class="col-md-6">

@@ -32,8 +32,6 @@ class ApplicationController < ActionController::Base
     respond_with *args, options, &blk
   end
 
-
-
   def current_stock_registry
     StockRegistry.find(session[:stock_registry_id])
     rescue ActiveRecord::RecordNotFound

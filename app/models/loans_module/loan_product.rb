@@ -13,6 +13,7 @@ module LoansModule
     has_many :employee_borrowers,                  through: :loans, source: :borrower, source_type: 'User'
     has_many :organization_borrowers,              through: :loans, source: :borrower, source_type: 'Organization'
 
+    enum loan_type: [:regular_loan, :emergency_loan, :short_term_loan, :productive_loan]
     delegate :rate, :annual_rate, to: :current_interest_config, prefix: true
     delegate :rate, to: :current_penalty_config, prefix: true, allow_nil: true
 
@@ -76,6 +77,26 @@ module LoansModule
 
     def penalty_rate
       current_penalty_config_rate
+    end
+
+    def calculation_type
+      current_interest_config.try(:calculation_type).try(:titleize)
+    end
+
+    def prededuction_type
+      current_interest_config.try(:prededuction_type).try(:titleize)
+    end
+
+    def prededucted_rate
+      current_interest_config.try(:prededucted_rate)
+    end
+
+    def amortization_type
+      current_interest_config.try(:amortization_type).try(:titleize)
+    end
+
+    def rate_type
+      current_interest_config.try(:rate_type).try(:titleize)
     end
 
     def create_charges_for(loan_application)

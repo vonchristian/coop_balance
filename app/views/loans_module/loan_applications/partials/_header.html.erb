@@ -1,5 +1,4 @@
 <div class="card">
-<<<<<<< HEAD
               <div class="card-body">
                 <div class="row">
                   <div class="col-md-1">
@@ -41,51 +40,4 @@
                 </div>
               </div>
             </div>
-=======
-  <div class="card-body">
-    <div class="row">
-      <div class="col-md-1 col-sm-1">
-        <% if loan_application.borrower.avatar.attachment.present? %>
-          <%=image_tag(loan_application.borrower.avatar, height: 45, width: 45, class: "img-circle") %>
-        <% end %>
-      </div>
-      <div class="col-md-5 col-sm-8">
-        <div class="row">
-          <div class="col-md-6 col-sm-6">
-            <% if loan_application.voucher.present? %>
-              <%= link_to loans_module_loan_application_path(loan_application) do %>
-              <b><%=  loan_application.borrower_name.try(:upcase) %></b><br>
-              <% end %>
-            <% end %>
-            <small class="text-muted"><i class="fa fa-tag"></i> <%= loan_application.loan_product_name %></small>
-          </div>
-          <div class="col-md-6 col-sm-6">
-            <b><%= number_to_currency loan_application.loan_amount %></b><br>
-            <small class="text-muted">LOAN AMOUNT</small>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 col-sm-3">
-        <% if loan_application.voucher.present? %>
-          <b><%= loan_application.voucher.reference_number %></b><br>
-          <small class="text-muted">REF. NO.</small>
-        <% end %>
-      </div>
-      <div class="col-md-3 col-sm-12">
-        <div class="row justify-content-end">
-          <div class="col-md-12 col-sm-6">
-            <% if !loan_application.disbursed? %>
-              <%= link_to loans_module_loan_application_path(loan_application), method: :delete do %>
-                <h5 title="Cancel Loan Application" data-toggle="tooltip" class="fa fa-times text-danger"></h5>
-              <% end %>
-            <% end %>
-            <% if !loan_application.disbursed? && loan_application.voucher_id.present? && current_user.cash_accounts.present? %>
-              <%= link_to 'Disburse Loan', loans_module_loan_application_voucher_path(loan_application_id: loan_application.id, id: loan_application.voucher_id), class: "btn btn-primary btn-sm float-right" %>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
->>>>>>> 6a645d103bbb144fd6db271f7b38d1ed9ed16911
+

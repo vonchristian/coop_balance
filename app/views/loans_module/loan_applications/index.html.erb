@@ -2,3 +2,4 @@
 <% @loan_applications.each do |loan_application| %>
   <%= render 'loans_module/loan_applications/partials/header', loan_application: loan_application %>
 <% end %>
+<center><%= will_paginate @loan_applications %></center>
