@@ -9,6 +9,10 @@ module AccountingModule
         balance_for_commercial_document(args).
         entered_on(args).total_amount
 
+      elsif commercial_document.present? && from_date.blank? && to_date.present?
+          balance_for_commercial_document(args).
+          entered_on(args).total_amount
+
       elsif args[:cooperative_service_id].present? && to_date.present?
         balance_for_cooperative_service(args).
         entered_on(from_date: Date.today - 999.years, to_date: args[:to_date]).

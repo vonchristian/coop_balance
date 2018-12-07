@@ -17,12 +17,11 @@ module MembershipsModule
             :paid_up_account,
             :subscription_account,
             :closing_account_fee,
-            :default_paid_up_account,
             :default_product?,
             :cost_per_share,
-            :default_subscription_account, to: :share_capital_product, prefix: true
+             to: :share_capital_product, prefix: true
     delegate :name, to: :office, prefix: true
-    delegate :name, to: :subscriber, prefix: true
+    delegate :name, :current_address_complete_address, :current_contact_number, to: :subscriber, prefix: true
     delegate :avatar, to: :subscriber
     before_save :set_account_owner_name, on: [:create, :update]
 
@@ -90,8 +89,7 @@ module MembershipsModule
     end
 
     def paid_up_balance(args={})
-      share_capital_product_default_paid_up_account.balance(from_date: args[:from_date], to_date: args[:to_date], commercial_document: self) +
-      share_capital_product_default_paid_up_account.balance(from_date: args[:from_date], to_date: args[:to_date], commercial_document: self.subscriber)
+      share_capital_product_paid_up_account.balance(from_date: args[:from_date], to_date: args[:to_date], commercial_document: self)
     end
 
     def subscription_balance

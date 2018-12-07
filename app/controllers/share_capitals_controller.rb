@@ -19,8 +19,10 @@ class ShareCapitalsController < ApplicationController
     respond_to do |format|
       format.html
       format.pdf do
-        pdf = ShareCapitalPdf.new(@share_capital, @employee, view_context)
-        send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Share Capital PDF.pdf"
+        pdf = ShareCapitals::StatementOfAccountPdf.new(
+        share_capital: @share_capital,
+        view_context:    view_context)
+        send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Statement of Account.pdf"
       end
     end
   end

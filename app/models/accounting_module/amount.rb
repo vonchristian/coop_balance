@@ -8,11 +8,13 @@ module AccountingModule
     belongs_to :commercial_document, polymorphic: true, optional: true
 
     validates :type, :amount, :entry, :account, presence: true
-    
+
     delegate :name, to: :account, prefix: true
     delegate :recorder, :reference_number, :description, :entry_date,  to: :entry
     delegate :name, to: :recorder, prefix: true
-
+    def self.not_cancelled
+      joins(:entry).where('entries.cancelled' => false)
+    end
     def self.for_account(args={})
       where(account_id: args[:account_id])
     end

@@ -1,7 +1,6 @@
 class IncomeStatementPdf < Prawn::Document
   attr_reader :revenues, :expenses, :employee, :from_date, :to_date, :view_context, :cooperative
   def initialize(args={})
-    font Rails.root.join("app/assets/fonts/open_sans_light.ttf")
     super(margin: 40, page_size: "A4", page_layout: :portrait)
     @revenues     = args[:revenues]
     @expenses     = args[:expenses]
@@ -14,6 +13,7 @@ class IncomeStatementPdf < Prawn::Document
     show_revenues
     show_expenses
     net_surplus
+    font Rails.root.join("app/assets/fonts/open_sans_light.ttf")
   end
 
   private
@@ -32,7 +32,7 @@ class IncomeStatementPdf < Prawn::Document
     end
     bounding_box [0, 770], width: 400 do
       text "INCOME STATEMENT", style: :bold, size: 12
-      text "#{from_date.strftime("%B %e, %Y")} - #{to_date.strftime("%B %e, %Y")}", size: 10
+      text "Date Covered: #{from_date.strftime("%b. %e, %Y")} - #{to_date.strftime("%b. %e, %Y")}", size: 10
     end
     move_down 30
     stroke do

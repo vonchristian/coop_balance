@@ -10,7 +10,7 @@ module CoopServicesModule
 
     validates :name, :paid_up_account_id, :subscription_account_id,
               :cost_per_share, presence: true
-    validates :name, uniqueness: true
+    validates :name, uniqueness: { scope: :cooperative_id }
     validates :cost_per_share, numericality: true
     delegate :name, to: :paid_up_account, prefix: true
     delegate :name, to: :subscription_account, prefix: true
@@ -18,7 +18,7 @@ module CoopServicesModule
     def self.accounts
       paid_up_accounts
     end
-    
+
     def self.paid_up_accounts
       accounts = self.pluck(:paid_up_account_id)
       AccountingModule::Account.where(id: accounts)
@@ -29,32 +29,12 @@ module CoopServicesModule
       AccountingModule::Account.where(id: accounts)
     end
 
-    def self.subscribe(subscriber)
-      subscriber.share_capitals.find_or_create_by(share_capital_product: self.default_product)
-    end
-
-    def minimum_payment
-      cost_per_share * minimum_number_of_paid_share
-    end
-
     def self.default_product
       where(default_product: true).last
     end
 
-    def default_paid_up_account
-      if paid_up_account.present?
-        paid_up_account
-      else
-        AccountingModule::Account.find_by(name: "Paid-up Share Capital - Common")
-      end
-    end
-
-    def default_subscription_account
-      if subscription_account.present?
-        subscription_account
-      else
-        AccountingModule::Account.find_by(name: "Subscribed Share Capital - Common")
-      end
+    def minimum_balance
+      cost_per_share * minimum_number_of_paid_share
     end
   end
 end

@@ -28,6 +28,20 @@ module AccountingModule
     end
 
     context 'scopes' do
+      it ".not_cancelled" do
+        cooperative = create(:cooperative)
+        employee = create(:user, role: 'teller', cooperative: cooperative)
+        cash_on_hand = create(:asset)
+        revenue = create(:revenue)
+        employee.cash_accounts << cash_on_hand
+        not_cancelled_entry = build(:entry, cooperative: cooperative, recorder: employee )
+        not_cancelled_debit_amount = entry.debit_amounts.build(account: cash_on_hand, amount: 1_000)
+        not_cancelled_credit_amount = entry.credit_amounts.build(amount: 1_000, account: revenue )
+        not_cancelled_entry.save!
+
+        expect(described_class.not_cancelled).to include(not_cancelled_ebit_amount)
+        expect(described_class.not_cancelled).to include(not_cancelled_credit_amount)
+      end
       it ".for_recorder(args={})" do
         cooperative = create(:cooperative)
         employee = create(:user, role: 'teller', cooperative: cooperative)

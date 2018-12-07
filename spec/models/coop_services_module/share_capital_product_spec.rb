@@ -13,7 +13,6 @@ module CoopServicesModule
       it { is_expected.to validate_uniqueness_of :name }
       it { is_expected.to validate_presence_of :paid_up_account_id }
       it { is_expected.to validate_presence_of :subscription_account_id }
-      it { is_expected.to validate_presence_of :name }
       it { is_expected.to validate_presence_of :cost_per_share }
       it { is_expected.to validate_numericality_of :cost_per_share }
     end
@@ -23,10 +22,10 @@ module CoopServicesModule
       it { is_expected.to delegate_method(:name).to(:subscription_account).with_prefix }
     end
 
-    it "#minimum_payment" do
+    it "#minimum_balance" do
       share_capital_product = build(:share_capital_product, cost_per_share: 100, minimum_number_of_paid_share: 10)
 
-      expect(share_capital_product.minimum_payment).to eql 1_000
+      expect(share_capital_product.minimum_balance).to eql 1_000
     end
 
     it ".paid_up_accounts" do

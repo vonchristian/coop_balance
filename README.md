@@ -1,3 +1,9 @@
+Interest Posting
+   create voucher
+   post entr
+   
+
+
 show savings and share capitals on top on info
 fix notices template
 edit share capital product
