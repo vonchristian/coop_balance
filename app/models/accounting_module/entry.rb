@@ -105,7 +105,7 @@ module AccountingModule
       credit_amounts.total
     end
 
-    def total_cash_amount
+    def total_cash_amount(args={})
       amounts.total_cash_amount
     end
 

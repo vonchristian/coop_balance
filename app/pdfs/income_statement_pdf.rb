@@ -1,6 +1,7 @@
 class IncomeStatementPdf < Prawn::Document
   attr_reader :revenues, :expenses, :employee, :from_date, :to_date, :view_context, :cooperative
   def initialize(args={})
+    font Rails.root.join("app/assets/fonts/open_sans_light.ttf")
     super(margin: 40, page_size: "A4", page_layout: :portrait)
     @revenues     = args[:revenues]
     @expenses     = args[:expenses]
@@ -86,7 +87,7 @@ class IncomeStatementPdf < Prawn::Document
       stroke_horizontal_rule
       move_down 15
     end
-    
+
     table([["NET SURPLUS", "#{price(AccountingModule::Account.net_surplus(to_date: to_date))}"]], cell_style: { inline_format: true, size: 11, font: "Helvetica", :padding => [2,5,2,5]}, column_widths: [300, 100]) do
       row(0).font_style = :bold
       cells.borders = []

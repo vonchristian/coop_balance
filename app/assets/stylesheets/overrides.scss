@@ -1,3 +1,7 @@
+.number {
+  font-family: 'open_sans_light';
+}
+
 .card-columns {
   @include media-breakpoint-only(lg) {
     column-count: 4;

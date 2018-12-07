@@ -4,7 +4,7 @@ git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
   "https://github.com/#{repo_name}.git"
 end
-gem 'chronic'
+gem 'prawn-icon'
 gem 'bootsnap', require: false
 gem 'webpacker', '~> 3.5'
 gem 'rubyzip', '~> 1.1.0'
@@ -13,7 +13,7 @@ gem 'paperclip'
 gem 'axlsx_rails'
 gem 'trix'
 gem 'autonumeric-rails'
-gem 'rails', '5.2.1'
+gem 'rails', '5.2.2'
 gem 'pg', '0.21'
 gem 'puma', '~> 3.7', group: [:development, :production]
 gem 'sass-rails'

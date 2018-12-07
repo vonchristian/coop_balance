@@ -18,7 +18,7 @@ module MembershipsModule
     has_many :debit_amounts,      class_name: "AccountingModule::DebitAmount", as: :commercial_document
     has_many :credit_amounts,      class_name: "AccountingModule::CreditAmount", as: :commercial_document
 
-    delegate :name, :current_occupation, to: :depositor, prefix: true
+    delegate :name, :current_address_complete_address, :current_contact_number, :current_occupation, to: :depositor, prefix: true
     delegate :name,
              :closing_account,
              :closing_account_fee,
