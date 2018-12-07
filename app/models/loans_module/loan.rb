@@ -80,6 +80,7 @@ module LoansModule
     delegate :is_past_due?, :number_of_days_past_due, :remaining_term, :terms_elapsed, :maturity_date, to: :current_term, allow_nil: true
     delegate :number_of_months, to: :current_term, prefix: true
     delegate :term, to: :current_term
+
     def self.disbursement_vouchers
       ids = pluck(:disbursement_voucher_id)
       Voucher.where(id: ids)

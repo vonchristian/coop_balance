@@ -2,12 +2,10 @@ module LoansModule
 	class AmortizationSchedule < ApplicationRecord
     enum payment_status: [:full_payment, :partial_payment, :unpaid]
     belongs_to :loan
-    belongs_to :cooperative
     belongs_to :loan_application
+    belongs_to :cooperative
     has_many :payment_notices, as: :notified
     has_many :notes, as: :noteable
-
-
 
     accepts_nested_attributes_for :notes
 
@@ -28,87 +26,78 @@ module LoansModule
     end
 
     def self.create_amort_schedule_for(loan_application)
-      create_first_amort_schedule(loan_application)
-      create_succeeding_amort_schedule(loan_application)
-      update_amortization_schedule(loan_application)
+      create_first_schedule(loan_application)
+      create_succeeding_schedule(loan_application)
+      set_interests(loan_application)
+      set_proper_dates(loan_application)
     end
-    def self.create_first_amort_schedule(loan_application)
+
+    def self.create_first_schedule(loan_application)
       loan_application.amortization_schedules.create!(
         cooperative: loan_application.cooperative,
         date: first_amortization_date_for(loan_application),
         principal: principal_amount_for(loan_application)
       )
     end
-    def self.create_succeeding_amort_schedule(loan_application)
-      if !loan_application.lumpsum?
-        ActiveRecord::Base.transaction do
-          number_of_remaining_schedules_for(loan_application).times do
-            loan_application.amortization_schedules.create!(
-              cooperative: loan_application.cooperative,
-              date: schedule_date_for(loan_application),
-              principal: principal_amount_for(loan_application)
-            )
-          end
+
+    def self.create_succeeding_schedule(loan_application)
+      return false if loan_application.lumpsum?
+      ActiveRecord::Base.transaction do
+        number_of_remaining_schedules_for(loan_application).times do
+          loan_application.amortization_schedules.create!(
+            cooperative: loan_application.cooperative,
+            date: schedule_date_for(loan_application),
+            principal: principal_amount_for(loan_application)
+          )
         end
       end
     end
 
-    def self.interest_amount_update(loan_application)
-      if loan_application.lumpsum?
-        loan_application.interest_balance
+    def self.set_interests(loan_application)
+      loan_application.amortization_schedules.each do |schedule|
+        schedule.update_attributes(
+          interest: interest_computation(schedule, loan_application),
+          date: ProperDateFinder.new(schedule.date, loan_application.cooperative).proper_date)
+      end
+      if loan_application.current_interest_config.prededucted? && loan_application.current_interest_config.number_of_payment?
+        loan_application.amortization_schedules.order(date: :asc).first(loan_application.current_interest_config_prededucted_number_of_payments).each do |schedule|
+          schedule.update_attributes!(prededucted_interest: true)
+        end
+      end
+    end
+
+    def self.set_proper_dates(loan_application)
+      loan_application.amortization_schedules.each do |schedule|
+        schedule.update_attributes(
+          date: ProperDateFinder.new(schedule.date, loan_application.cooperative.operating_days).proper_date)
+      end
+    end
+
+    def self.interest_computation(schedule, loan_application)
+      if loan_application.current_interest_config_straight_balance?
+        straight_balance_interest_computation(schedule, loan_application)
+      elsif loan_application.current_interest_config_annually?
+        annual_interest_computation(loan_application)
       else
-        loan_application.interest_balance / loan_application.term
-      end
-    end
-    def self.interest_for_first_year(loan_application)
-      loan_application.first_year_interest
-    end
-    ###########################
-    def color
-      if missed_payment?
-        "red"
-      elsif payment_made?
-        "green"
-      else
-        "yellow"
+        0
       end
     end
 
-    def missed_payment?
-      !payment_made?
-    end
-
-    def payment_made?(args={})
-      loan = args[:loan]
-      if loan.present?
-        loan.loan_payments(from_date: args[:from_date], to_date: args[:to_date]).present?
-      end
-    end
-
-    def previous_schedule(loan_application)
-      from_date = loan_application.amortization_schedules.order(date: :asc).first.date
-      to_date = self.date
-      count = loan_application.amortization_schedules.select { |a| (from_date.beginning_of_day..to_date.end_of_day).cover?(a.date) }.count
-      loan_application.amortization_schedules.order(date: :asc).take(count-1).last
-    end
+    # def previous_schedule(loan_application)
+    #   from_date = loan_application.amortization_schedules.order(date: :asc).first.date
+    #   to_date = self.date
+    #   count = loan_application.amortization_schedules.select { |a| (from_date.beginning_of_day..to_date.end_of_day).cover?(a.date) }.count
+    #   loan_application.amortization_schedules.order(date: :asc).take(count-1).last
+    # end
 
 
-		def self.create_schedule_for(loan)
-      if loan.amortization_schedules.present?
-        loan.amortization_schedules.destroy_all
-      end
-			create_first_schedule(loan)
-      create_succeeding_schedule(loan)
-      update_amortization_schedule(loan)
-    end
-
-    def self.average_monthly_payment(loan)
-      if loan.lumpsum?
-        loan.loan_amount.amount
-      else
-        all.collect{ |a| a.total_amortization }.sum / loan.current_term_number_of_months
-      end
-    end
+    # def self.average_monthly_payment(loan)
+    #   if loan.lumpsum?
+    #     loan.loan_amount.amount
+    #   else
+    #     all.collect{ |a| a.total_amortization }.sum / loan.current_term_number_of_months
+    #   end
+    # end
 
     def self.principal_for(schedule, loan)
       from_date = loan.amortization_schedules.order(date: :asc).first.date
@@ -131,37 +120,18 @@ module LoansModule
       end
     end
 
-    def total_amortization(options = {})
+    def total_amortization
        principal +
        interest_computation
     end
 
-    def self.update_amortization_schedule(loan_application)
-      loan_application.amortization_schedules.each do |schedule|
-        schedule.update_attributes(interest: interest_computation(schedule, loan_application))
-      end
-      if loan_application.current_interest_config.prededucted? && loan_application.current_interest_config.number_of_payment?
-        loan_application.amortization_schedules.order(date: :asc).first(loan_application.current_interest_config_prededucted_number_of_payments).each do |schedule|
-          schedule.update_attributes!(prededucted_interest: true)
-        end
-      end
-    end
 
-    def self.interest_computation(schedule, loan_application)
-      if loan_application.current_interest_config_straight_balance?
-        straight_balance_interest_computation(schedule, loan_application)
-      elsif loan_application.current_interest_config_annually?
-        annual_interest_computation(loan_application)
-      else
-        0
-      end
-    end
 
 
 		private
     def self.straight_balance_interest_computation(schedule, loan)
       if loan.lumpsum?
-        loan.loan_amount.amount * loan.loan_product_monthly_interest_rate * loan.current_term_number_of_months
+        loan.loan_amount.amount * loan.loan_product_monthly_interest_rate * loan.term
       else
         (loan.principal_balance_for(schedule) * loan.loan_product_monthly_interest_rate)
       end
@@ -183,25 +153,6 @@ module LoansModule
       end
     end
 
-		def self.create_first_schedule(loan)
-			loan.amortization_schedules.create!(
-				date: first_amortization_date_for(loan),
-				principal: principal_amount_for(loan)
-			)
-		end
-
-		def self.create_succeeding_schedule(loan)
-			if !loan.lumpsum?
-				ActiveRecord::Base.transaction do
-					number_of_remaining_schedules_for(loan).times do
-						loan.amortization_schedules.create!(
-							date: schedule_date_for(loan),
-							principal: principal_amount_for(loan)
-						)
-					end
-				end
-			end
-		end
 		def self.principal_amount_for(loan)
 			(loan.loan_amount.amount / number_of_payments(loan))
 		end
@@ -230,20 +181,30 @@ module LoansModule
 				loan.amortization_schedules.order(date: :asc).last.date.next_quarter
 			elsif loan.semi_annually?
 				loan.amortization_schedules.order(date: :asc).last.date + 6.months
-			end
-		end
+      elsif loan.lumpsum?
+        loan.amortization_schedules.order(date: :asc).last.date + add_months + add_days
+      end
+    end
 
 		def self.first_amortization_date_for(loan)
 			if loan.monthly?
-			  starting_date(loan).next_month
+        starting_date(loan).next_month
 			elsif loan.quarterly?
 				starting_date(loan).next_quarter
 			elsif loan.semi_annually?
 				starting_date(loan).next_quarter.next_quarter
 			elsif loan.lumpsum?
-				starting_date(loan) + loan.term
+				starting_date(loan) + add_months(loan) + add_days(loan)
 			end
 		end
+
+    def self.add_months(loan)
+      TermParser.new(loan.term).number_of_months.months
+    end
+
+    def self.add_days(loan)
+      TermParser.new(loan.term).number_of_days.days
+    end
 
     def self.proper_date_for(date)
       if date.sunday?

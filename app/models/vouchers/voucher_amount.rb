@@ -32,8 +32,12 @@ module Vouchers
       AccountingModule::Account.where(id: accounts)
     end
 
+    def self.contains_cash_accounts
+      for_account(account: Employees::EmployeeCashAccount.cash_accounts)
+    end
+
     def self.total_cash_amount
-      for_account(account: Employees::EmployeeCashAccount.cash_accounts).total
+      contains_cash_accounts.total
     end
 
     def self.with_no_vouchers
@@ -47,7 +51,7 @@ module Vouchers
         amount.amount
       end
     end
-    
+
     def recent_amount_adjustment
       amount_adjustments.recent
     end

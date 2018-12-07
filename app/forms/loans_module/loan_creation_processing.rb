@@ -33,7 +33,8 @@ module LoansModule
         preparer:             employee,
         account_number:       loan_application.account_number,
         purpose:              loan_application.purpose,
-        disbursement_voucher: loan_application.voucher
+        disbursement_voucher: loan_application.voucher,
+        last_transaction_date: loan_application.application_date
         )
       create_amortization_schedules(loan)
       create_voucher_amounts(loan)

@@ -12,7 +12,7 @@ class VoucherPdf < Prawn::Document
     heading
     payee_details
     voucher_details
-     signatory_details
+    signatory_details
   end
 
   private
@@ -64,6 +64,9 @@ class VoucherPdf < Prawn::Document
   def approver
     User.general_manager.last
   end
+
+
+
   def debit_amount_for(amount)
     if amount.debit?
       amount.amount
@@ -122,9 +125,15 @@ class VoucherPdf < Prawn::Document
      end
    end
    def signatory
-    [["PREPARED BY", "DISBURSED BY", "APPROVED BY", "RECEIVED BY"]] +
+    [["PREPARED BY", "APPROVED BY","DISBURSED BY", "RECEIVED BY"]] +
     [["", ""]] +
-    [["#{voucher.preparer_full_name.to_s.try(:upcase)}", "#{voucher.disburser_full_name.to_s.try(:upcase)}", "#{approver.name.to_s.upcase}", "#{voucher.payee_name.try(:upcase)}"]] +
-    [["#{voucher.preparer_current_occupation.try(:titleize)}", "#{voucher.disburser_current_occupation.try(:titleize)}", "#{approver.current_occupation.to_s.titleize}", "Payee"]]
+    [["#{voucher.preparer_full_name.to_s.try(:upcase)}",
+      "#{approver.name.to_s.upcase}",
+      "#{voucher.disbursing_officer.try(:full_name).try(:upcase)}",
+      "#{voucher.payee_name.try(:upcase)}"]] +
+    [["#{voucher.preparer_current_occupation.try(:titleize)}",
+      "#{approver.current_occupation.to_s.titleize}",
+      "#{voucher.disbursing_officer.try(:designation)}",
+      "Payee"]]
   end
 end

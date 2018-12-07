@@ -1,3 +1,4 @@
+show savings and share capitals on top on info
 fix notices template
 edit share capital product
 
@@ -9,10 +10,6 @@ clean up
   controllers
   views
   forms
-
-Cash Receipts Journal (CRJ)
-Cash Disbursements Journal (CDJ)
-Journal Entry Vouchers (JEV)
 
 move loan product to coop services module
 Add qr code for payment
@@ -28,20 +25,6 @@ TODO
 refactor LPF
 time deposit certificate
 
-
-Growth happens.
-
-Growth makes a lot of things more difficult - people don't know each other as well, information is harder to find, stuff gets lost, communication becomes muddled, it becomes harder to stay on top of everything that's going on, etc. What worked for 3 or 5 people, doesn't work as well at 6 or 8. And certainly not 10, 15, 25 or more.
-
-At some point, growing small businesses need a system, something to stay organized, something to grow with so they don't lose control of themselves along the way. Company-wide communication, team-based communication, and project work needs a home.
-
-Most companies cobble together a laticework of separate tools as they grow, but the weight of disorganization and lack of order collapses and eventually catches up to them. Email doesn't cut it anymore. More meetings aren't going to solve the problem. And increasingly, incessant chatting creates exponentially more communication without the necessary structure and context to make it useful.
-
-This is where Basecamp comes in.
-
-Basecamp helps growing companies organize their projects, internal communications, and client work in one place so they have a central source of truth. People know what to do, they know where things are, it’s clear where things stand, and everyone’s accountable.
-
-This is what we do here. It takes many forms, and we're always working towards a more perfect system, but we help groups of people get their shit together - and keep it together - so they can do their best work with their team, in their company, for their own customers.
 
 
 TINOC MIGRATION
@@ -509,62 +492,4 @@ filter members per barangay, per municipality export to excel
 
 Fix time deposits on transactio nsummary
 Statement of accounts per member
-
 refactor transactions summary pdf
-
-
-The man doesnt know how to give upkms316
-in 6 months (july 2018)
-10 coops sign up
-
-
-rename store_front_module to store_front_module
-remove status of savings
-if savings closed? the same with share capitals closed
-
-
-At CoopCatalyst, we're all about automation. We're on a mission to make cooperative management fast and easy. Driven by numerous conversations with our customers and our own experiences, we've built a new CI feature that can automatically parallelize any test suite and cut its runtime to just a few minutes - Semaphore Boosters. Learn more and try it out.
-
-
-
-BIG REDESIGN
-Rename store_front_module to store_front_module DONE
-remove entry_type
-
-
-Research
-include modules rails
-
-entry for loan disbursement
-if earned interest income
-unearned interest income
-amortized interest
-
-render :back
-
-
-STORE CART
-<% @sales_order_line_items.each do |line_item| %>
-                  <tr>
-                    <td>
-                      <%= line_item.quantity %> <%= line_item.unit_of_measurement_code %>
-                    </td>
-                    <td width="300px"><%= line_item.name.try(:titleize) %> <span class="text-muted"><%= line_item.barcode %></span>
-                    </td>
-                    <td>
-                      <span class="pull-right">
-                        <%= number_to_currency line_item.unit_cost %></td>
-                      </span>
-                    <td>
-                      <span class="pull-right"><%=number_to_currency line_item.total_cost %></span>
-                    </td>
-                    <td>
-                    <%= link_to store_front_module_sales_order_line_item_path(line_item), method: :delete do %>
-                      <span class="fa fa-trash"></span>
-                    <% end %>
-                    </td>
-                  </tr>
-                <% end %>
-
-
-add stats on product show page

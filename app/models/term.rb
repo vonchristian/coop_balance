@@ -16,40 +16,37 @@ class Term < ApplicationRecord
   end
 
   def matured?
-    if maturity_date.present?
-      maturity_date <= Time.zone.now
-    else
-      false
-    end
+    maturity_date <= Time.zone.now
   end
 
   def is_past_due?
     matured?
   end
+  def past_due?
+    maturity_date < Time.zone.now
+  end
+  
+  def grace_period_past_due?(grace_period = 0)
+    maturity_date < Time.zone.now + grace_period.days
+  end
 
   def number_of_days_past_due
-    if maturity_date.present?
-      ((Time.zone.now - maturity_date)/86400.0).to_i
-    else
-      0
-    end
+    ((Time.zone.now - maturity_date)/86400.0).to_i
   end
 
   def remaining_term
-    if maturity_date.present?
-      ((maturity_date - Time.zone.now)/86400.0).to_i
-    else
-      0
-    end
+    ((maturity_date - Time.zone.now)/86400.0).to_i
   end
 
   def terms_elapsed
-    if disbursed?
-      (Time.zone.now.year * 12 + Time.zone.now.month) - (effectivity_date.year * 12 + effectivity_date.month)
-    end
+    (Time.zone.now.year * 12 + Time.zone.now.month) - (effectivity_date.year * 12 + effectivity_date.month)
   end
 
   def number_of_months_past_due
     number_of_days_past_due / 30
+  end
+
+  def past_due_in_years
+    number_of_months_past_due / 12
   end
 end

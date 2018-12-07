@@ -15,5 +15,14 @@ class SavingsAccountsController < ApplicationController
   def show
     @savings_account = current_cooperative.savings.find(params[:id])
     @entries = @savings_account.entries.sort_by(&:entry_date).reverse.paginate(page: params[:page], per_page: 25)
+    respond_to do |format|
+      format.html
+      format.pdf do
+        pdf = SavingsAccounts::StatementOfAccountPdf.new(
+        savings_account: @savings_account,
+        view_context:    view_context)
+        send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Statement of Account.pdf"
+      end
+    end
   end
 end

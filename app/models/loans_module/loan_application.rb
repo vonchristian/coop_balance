@@ -37,9 +37,6 @@ module LoansModule
     def maturity_date
       amortization_schedules.order(date: :asc).last.date
     end
-    def current_term_number_of_months
-      term
-    end
 
     def reference_number
       self.voucher.try(:reference_number)

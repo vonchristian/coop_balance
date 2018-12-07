@@ -5,22 +5,23 @@
     <div class="row">
       <div class="col-md-3">
         <% if @loan.disbursed? %>
-          <h4 class="card-title"><%= number_to_currency @loan.principal_balance %></h4>
+          <h4 class="card-title number"><%= number_to_currency @loan.principal_balance %></h4>
         <% else %>
-          <h4 class="card-title"><%= number_to_currency @loan.loan_amount %> </h4>
+          <h4 class="card-title number"><%= number_to_currency @loan.loan_amount %> </h4>
         <% end %>
         <small>PRINCIPAL</small>
       </div>
       <div class="col-md-3">
-        <h4 class="card-title"><%= number_to_currency @loan.loan_interests_balance %></h4>
+        <h4 class="card-title number"><%= number_to_currency @loan.loan_interests_balance %></h4>
         <small>INTERESTS</small>
       </div>
       <div class="col-md-3">
-        <h4 class="card-title"><%= number_to_currency @loan.loan_penalties_balance %></h4>
+        <h4 class="card-title number"><%= number_to_currency @loan.loan_penalties_balance %></h4>
         <small>PENALTIES</small>
       </div>
       <div class="col-md-3">
-        <h4 class="card-title text-danger"><%= number_to_currency @loan.balance %></h4>
+        <h4 class="card-title text-danger number"><%= number_to_currency @loan.balance %></h4>
+
         <small class="text-danger">RECEIVABLES</small>
       </div>
     </div>

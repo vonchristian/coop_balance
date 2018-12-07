@@ -19,6 +19,20 @@ module Vouchers
       it { is_expected.to delegate_method(:name).to(:account).with_prefix }
     end
     describe 'scopes' do
+      it '.contains_cash_accounts' do
+        cash_on_hand = create(:asset)
+        revenue      = create(:revenue)
+        liability    = create(:liability)
+        employee     = create(:user)
+        employee.cash_accounts << cash_on_hand
+
+        cash_amount = create(:voucher_amount, account: cash_on_hand)
+        non_cash_amount = create(:voucher_amount, account: revenue)
+
+        expect(described_class).to include(cash_amount)
+        expect(described_class).to_not include(non_cash_amount)
+      end
+      
       it '.for_account(args={})' do
         revenue_account = create(:revenue)
         expense_account = create(:expense)

@@ -39,6 +39,27 @@ RSpec.describe Voucher, type: :model do
   it ".payees" do
   end
 
+  it 'contains_cash_accounts' do
+    cash_on_hand = create(:asset, name: "Cash on Hand")
+    employee = create(:user)
+    employee.cash_accounts << cash_on_hand
+    liability    = create(:liability)
+    revenue      = create(:revenue)
+    cash_voucher = build(:voucher)
+    non_cash_voucher = create(:voucher)
+    cash_amount = create(:voucher_amount, account: cash_on_hand, voucher: cash_voucher)
+    cash_revenue_amount = create(:voucher_amount, account: revenue, voucher: cash_voucher)
+
+    liability_amount = create(:voucher_amount, account: liability, voucher: non_cash_voucher)
+    liability_amount = create(:voucher_amount, account: liability, voucher: non_cash_voucher)
+    non_cash_voucher.save!
+    cash_voucher.save!
+
+    expect(described_class.contains_cash_accounts).to include(cash_voucher)
+    expect(described_class.contains_cash_accounts).to_not include(non_cash_voucher)
+
+  end
+
 
   it "#disbursed?" do
     voucher = create(:voucher)
@@ -107,7 +128,7 @@ RSpec.describe Voucher, type: :model do
       voucher = Voucher.new
       voucher.number = Voucher.generate_number
       voucher.save
-      
+
       first_voucher = Voucher.create(number: '000000000001')
       second_voucher = Voucher.new
       second_voucher.number = Voucher.generate_number

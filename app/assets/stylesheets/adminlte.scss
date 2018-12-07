@@ -1,3 +1,31 @@
+@font-face {
+    font-family: 'roboto-condensed-webfont';
+    src: font-url('roboto-condensed-webfont.eot');
+    src: font-url('roboto-condensed-webfont.eot?#iefix') format('embedded-opentype'),
+         font-url('roboto-condensed-webfont.woff') format('woff'),
+         font-url('roboto-condensed-webfont.ttf') format('truetype'),
+         font-url('roboto-condensed-webfont.svg#roboto-condensed-webfont') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+    font-family: 'open_sans_light';
+    src: font-url('open_sans_light.eot');
+    src: font-url('open_sans_light.eot?#iefix') format('embedded-opentype'),
+         font-url('open_sans_light.woff') format('woff'),
+         font-url('open_sans_light.ttf') format('truetype'),
+         font-url('open_sans_light.svg#open_sans_light') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+    font-family: 'open_sans_regular';
+    src: font-url('open_sans_regular.eot');
+    src: font-url('open_sans_regular.eot?#iefix') format('embedded-opentype'),
+         font-url('open_sans_regular.woff') format('woff'),
+         font-url('open_sans_regular.ttf') format('truetype'),
+         font-url('open_sans_regular.svg#open_sans_regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
 
 :root {
   --blue: #007bff;
@@ -26,7 +54,7 @@
   --breakpoint-md: 768px;
   --breakpoint-lg: 992px;
   --breakpoint-xl: 1200px;
-  --font-family-sans-serif: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --font-family-sans-serif: "open_sans_regular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
@@ -37,7 +65,7 @@
 }
 
 html {
-  font-family: sans-serif;
+  font-family: 'open_sans_regular', sans-serif;
   line-height: 1.15;
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
@@ -55,7 +83,7 @@ article, aside, dialog, figcaption, figure, footer, header, hgroup, main, nav, s
 
 body {
   margin: 0;
-  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: "open_sans_regular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-size: 0.9rem;
   font-weight: 300;
   line-height: 1.5;
@@ -5177,7 +5205,7 @@ button.close, button.mailbox-attachment-close {
   z-index: 1070;
   display: block;
   margin: 0;
-  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: "open_sans_regular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -5290,7 +5318,7 @@ button.close, button.mailbox-attachment-close {
   z-index: 1060;
   display: block;
   max-width: 276px;
-  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: "open_sans_regular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
