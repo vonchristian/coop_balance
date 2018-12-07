@@ -602,6 +602,8 @@ ActiveRecord::Schema.define(version: 2018_12_07_090159) do
     t.uuid "loans_receivable_past_due_account_id"
     t.uuid "cooperative_id"
     t.uuid "loan_protection_plan_provider_id"
+    t.decimal "grace_period", default: "0.0"
+    t.integer "loan_type"
     t.index ["cooperative_id"], name: "index_loan_products_on_cooperative_id"
     t.index ["loan_protection_plan_provider_id"], name: "index_loan_products_on_loan_protection_plan_provider_id"
     t.index ["loans_receivable_current_account_id"], name: "index_loan_products_on_loans_receivable_current_account_id"

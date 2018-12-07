@@ -14,8 +14,7 @@ module ManagementModule
           @loan_product = LoansModule::LoanProduct.find(params[:loan_product_id])
           @interest_configuration = @loan_product.interest_configs.create(interest_configuration_params)
           respond_modal_with @interest_configuration,
-            location: management_module_settings_cooperative_products_url,
-            notice: "Interest Configuration saved successfully"
+            location: management_module_settings_cooperative_products_url
         end
 
         private

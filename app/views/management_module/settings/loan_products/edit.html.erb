@@ -4,7 +4,7 @@
   </h4>
   <button type="button" class="close float-right" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 </div>
-<%= simple_form_for @loan_product, html: { autocomplete: "off", data: { modal: true } }, remote: request.xhr?, url: :management_module_settings_loan_products do |f| %>
+<%= simple_form_for @loan_product, html: { autocomplete: "off", data: { modal: true } }, remote: request.xhr?, url: :management_module_settings_loan_product do |f| %>
   <div class="modal-body">
     <%= f.error_notification %>
     <%= f.input :cooperative_id, input_html: { value: current_user.cooperative.id }, as: :hidden %>
@@ -15,19 +15,10 @@
 
     <%= f.input :loans_receivable_current_account_id, label: "Select Loans Receivable (Current) Account", collection: current_cooperative.accounts.assets.active.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanAccountSelect'} %>
     <%= f.input :loans_receivable_past_due_account_id, label: "Select Loans Receivable (Past Due) Account", collection: current_cooperative.accounts.assets.active.all.map{|a| [a.name.titleize, a.id] } %>
-    <h4 class="card-title">Interest Configuration</h4>
-    <div class="min-margin"></div>
-    <%= f.input :interest_rate, label: "Annual Interest Rate (APR):" %>
-    <%= f.input :unearned_interest_income_account_id,  collection: current_cooperative.accounts.assets.active.all.map{|a| [a.name, a.id] } %>
-    <%= f.input :interest_revenue_account_id,  collection: current_cooperative.accounts.revenues.active.all.map{|a| [a.name, a.id] } %>
-    <h4>Penalty Configuration</h4>
-    <%= f.input :penalty_rate %>
-    <%= f.input :penalty_revenue_account_id,  collection: current_cooperative.accounts.revenues.active.all.map{|a| [a.name, a.id] } %>
-    <%= f.input :loan_protection_plan_provider_id,  collection: current_cooperative.loan_protection_plan_providers.all.map{|a| [a.business_name, a.id] } %>
     <%= f.input :loan_type, label: "Type", collection: loan_types %>
 
   </div>
   <div class="modal-footer">
-    <%= f.submit "Create Loan Product", class: "btn btn-danger float-right", data: { disable_with: "Processing..." } %>
+    <%= f.submit "Update Loan Product", class: "btn btn-danger float-right", data: { disable_with: "Processing..." } %>
   </div>
 <% end %>
