@@ -13,7 +13,6 @@ module LoansModule
     :penalty_revenue_account_id,
     :loan_protection_plan_provider_id,
     :cooperative_id,
-    :loan_type,
     :grace_period
 
     validates :name, :maximum_loanable_amount,
@@ -25,7 +24,6 @@ module LoansModule
     :penalty_rate,
     :penalty_revenue_account_id,
     :cooperative_id,
-    :loan_type,
     :grace_period, presence: true
 
     validates :maximum_loanable_amount, :grace_period, :interest_rate, :penalty_rate, numericality: true
@@ -71,8 +69,7 @@ module LoansModule
         loans_receivable_past_due_account_id: loans_receivable_past_due_account_id,
         cooperative_id: cooperative_id,
         loan_protection_plan_provider_id: loan_protection_plan_provider_id,
-        grace_period: grace_period,
-        loan_type: loan_type)
+        grace_period: grace_period)
 
       loan_product.interest_configs.create(
         rate: interest_rate,
@@ -93,8 +90,7 @@ module LoansModule
         loans_receivable_past_due_account_id: loans_receivable_past_due_account_id,
         cooperative_id: cooperative_id,
         loan_protection_plan_provider_id: loan_protection_plan_provider_id,
-        grace_period: grace_period,
-        loan_type: loan_type)
+        grace_period: grace_period)
     end
   end
 end

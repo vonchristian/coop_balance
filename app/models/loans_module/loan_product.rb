@@ -13,7 +13,6 @@ module LoansModule
     has_many :employee_borrowers,                  through: :loans, source: :borrower, source_type: 'User'
     has_many :organization_borrowers,              through: :loans, source: :borrower, source_type: 'Organization'
 
-    enum loan_type: [:regular_loan, :emergency_loan, :short_term_loan, :productive_loan]
     delegate :rate, :annual_rate, to: :current_interest_config, prefix: true
     delegate :rate, to: :current_penalty_config, prefix: true, allow_nil: true
 

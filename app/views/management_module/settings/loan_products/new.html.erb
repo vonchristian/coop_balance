@@ -24,7 +24,6 @@
     <%= f.input :penalty_rate %>
     <%= f.input :penalty_revenue_account_id,  collection: current_cooperative.accounts.revenues.active.all.map{|a| [a.name, a.id] } %>
     <%= f.input :loan_protection_plan_provider_id,  collection: current_cooperative.loan_protection_plan_providers.all.map{|a| [a.business_name, a.id] } %>
-    <%= f.input :loan_type, label: "Type", collection: loan_types %>
 
   </div>
   <div class="modal-footer">

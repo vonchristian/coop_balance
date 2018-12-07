@@ -48,8 +48,7 @@ module ManagementModule
         :penalty_revenue_account_id,
         :loan_protection_plan_provider_id,
         :cooperative_id,
-        :grace_period,
-        :loan_type)
+        :grace_period)
       end
     end
   end

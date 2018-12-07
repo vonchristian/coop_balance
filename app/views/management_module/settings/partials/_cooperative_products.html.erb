@@ -66,34 +66,34 @@
       </div>
     </div>
     <hr>
-    <div id="accordion">
+    <div id="accordion" class="accordion">
       <% @loan_products.each do |loan_product| %>
         <div class="card">
           <div class="card-header" id="<%= 'heading_' + loan_product.name.gsub(/[^0-9A-Za-z]/, '')%>">
             <h5 class="mb-0">
-              <button class="btn btn-link collapsed" data-toggle="collapse" data-target="<%= '#collapse_' + loan_product.name.gsub(/[^0-9A-Za-z]/, '')%>" aria-expanded="false" aria-controls="collapseOne">
+              <button class="btn btn-link collapsed" data-toggle="collapse" data-target="<%= '#collapse_' + loan_product.name.gsub(/[^0-9A-Za-z]/, '')%>" aria-expanded="true" aria-controls="collapseOne">
                 <%= loan_product.name %>
               </button>
-              <%= link_to edit_management_module_settings_loan_product_path(loan_product), data: {modal: true} do  %>
-                <span class="btn btn-outline-danger btn-sm float-right" data-toggle="tooltip" title="Edit Loan Product"><i class="fa fa-edit"></i></span>
-              <% end %>
             </h5>
           </div>
           <div id="<%= 'collapse_' + loan_product.name.gsub(/[^0-9A-Za-z]/, '')%>" class="collapse" aria-labelledby="<%= 'heading_' + loan_product.name.gsub(/[^0-9A-Za-z]/, '')%>" data-parent="#accordion" style="">
             <div class="card-body">
+              <%= link_to edit_management_module_settings_loan_product_path(loan_product), data: {modal: true} do  %>
+                <span class="btn btn-outline-danger btn-sm float-right" data-toggle="tooltip" title="Edit Loan Product"><i class="fa fa-edit"></i></span>
+              <% end %>
               <div class="row min-margin-bottom">
-                <div class="col-md-6">
+                <div class="col-md-6 col-sm-6">
                   <label class="no-margin-bottom">Maximum Loanable Amount</label>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 col-sm-6">
                   <%= number_to_currency loan_product.maximum_loanable_amount %>
                 </div>
               </div>
               <div class="row min-margin-bottom">
-                <div class="col-md-6">
+                <div class="col-md-6 col-sm-6">
                   <label class="no-margin-bottom">Grace Period</label>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 col-sm-6">
                   <%= loan_product.grace_period %> days
                 </div>
               </div>
@@ -103,7 +103,9 @@
                   <p class="text-muted">INTEREST CONFIG </p>
                 </div>
                 <div class="col-md-6">
-                  <%= link_to "Set Interest", new_management_module_settings_loan_product_interest_configuration_path(loan_product),class: "btn btn-outline-danger btn-xs float-right", data: { modal: true } %>
+                  <%= link_to new_management_module_settings_loan_product_interest_configuration_path(loan_product), data: { modal: true } do %>
+                    <span class="btn btn-outline-danger btn-xs float-right" data-toggle="tooltip" title="Set Interest Rate"><i class="fa fa-edit"></i> Set </span>
+                  <% end %>
                 </div>
                 <div class="col-md-12">
                   <div class="row justify-content-end">
@@ -234,7 +236,7 @@
       </div>
       <div class="col-md-5">
         <%= link_to new_management_module_settings_time_deposit_product_path, data: {modal: true} do %>
-          <span class="btn btn-outline-danger btn-sm" title="New Time Deposit Product" data-toggle="tooltip">
+          <span class="btn btn-danger btn-sm" title="New Time Deposit Product" data-toggle="tooltip">
             <i class="fa fa-plus-circle"></i> New
           </span>
         <% end %>
@@ -249,13 +251,13 @@
               <button class="btn btn-link collapsed" data-toggle="collapse" data-target="<%= '#collapse_' + time_deposit_product.name.gsub(/[^0-9A-Za-z]/, '')%>" aria-expanded="false" aria-controls="collapseOne">
                 <%= time_deposit_product.name %>
               </button>
-              <%= link_to edit_management_module_settings_time_deposit_product_path(time_deposit_product), data: {modal: true} do  %>
-                <span class="btn btn-outline-danger btn-sm float-right" data-toggle="tooltip" title="Edit Loan Product"><i class="fa fa-edit"></i></span>
-              <% end %>
             </h5>
           </div>
           <div id="<%= 'collapse_' + time_deposit_product.name.gsub(/[^0-9A-Za-z]/, '')%>" class="collapse" aria-labelledby="<%= 'heading_' + time_deposit_product.name.gsub(/[^0-9A-Za-z]/, '')%>" data-parent="#accordion" style="">
             <div class="card-body">
+              <%= link_to edit_management_module_settings_time_deposit_product_path(time_deposit_product), data: {modal: true} do  %>
+                <span class="btn btn-outline-danger btn-sm float-right" data-toggle="tooltip" title="Edit Time Deposit Product"><i class="fa fa-edit"></i></span>
+              <% end %>
               <div class="row justify-content-end">
                 <div class="col-md-11">
                   <div class="row min-margin-bottom">
@@ -318,12 +320,12 @@
     </div>
 
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-7">
         <h3 class="card-title"> Savings Deposit Products</h3>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-5">
         <%= link_to new_management_module_saving_product_path, data: {modal: true} do  %>
-          <span class="btn btn-outline-danger btn-sm float-right" data-toggle="tooltip" title="New Savings Product"><i class="fa fa-plus-circle"></i> New </span>
+          <span class="btn btn-danger btn-sm" data-toggle="tooltip" title="New Savings Product"><i class="fa fa-plus-circle"></i> New </span>
         <% end %>
       </div>
     </div>
@@ -372,3 +374,9 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+  $('#myCollapsible').on('hidden.bs.collapse', function () {
+    // do something…
+  })
+</script>
