@@ -1,7 +1,6 @@
 <div class="card-body">
   <div class="row">
     <div class="col-md-6">
-      <hr class="min-margin set-visibility">
       <div class="row justify-content-end">
         <div class="col-md-7 col-sm-6 col-auto">
           <small>CURRENT BALANCE</small>
@@ -9,12 +8,15 @@
 
         </div>
         <div class="col-md-4 col-sm-6 col-auto">
-          <small>INACTIVITY</small>
-          <h4 class="text-danger"><%= @savings_account.number_of_days_inactive %> Days</h4>
-          <small>Last Transaction Date</small><br>
-          <i class="fa fa-calendar"></i> &nbsp; <%= @savings_account.default_last_transaction_date.strftime("%B %e, %Y") %>
+          <small>DAYS INACTIVE</small>
+          <h4 class=" card-title number text-danger"><%= @savings_account.number_of_days_inactive %></h4>
+          <small>Last Transaction</small><br>
+          <i class="fa fa-calendar"></i> &nbsp; <%= @savings_account.last_transaction_date.strftime("%B %e, %Y") %>
         </div>
       </div>
+    </div>
+    <div class="col-md-6">
+      <%=link_to 'Statement of Account', savings_account_path(@savings_account, format: 'pdf') %>
     </div>
   </div>
 </div>

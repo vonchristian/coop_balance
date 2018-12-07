@@ -15,14 +15,14 @@
           <small class="text-muted"><i class="fa fa-server"></i> <%= savings_account.saving_product_name %></small>
         </div>
         <div class="col-md-6">
-          <small class="text-muted"><i class="fa fa-clock" data-toggle="tooltip" title="Last Transaction Date"></i> <%= savings_account.default_last_transaction_date.strftime("%b %e, %Y") %></small>
+          <small class="text-muted"><i class="fa fa-clock" data-toggle="tooltip" title="Last Transaction Date"></i> <%= savings_account.last_transaction_date.strftime("%b %e, %Y") %></small>
         </div>
       </div>
     <% end %>
       </div>
       <div class="col-md-3">
         <h4 class="card-title"><%=number_to_currency savings_account.balance %></h4>
-        <small class="text-muted"> BALANCE </small>
+        <small class="text-muted"> CURRENT BALANCE </small>
 
       </div>
       <div class="col-md-4">

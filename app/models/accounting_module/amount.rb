@@ -12,6 +12,7 @@ module AccountingModule
     delegate :name, to: :account, prefix: true
     delegate :recorder, :reference_number, :description, :entry_date,  to: :entry
     delegate :name, to: :recorder, prefix: true
+
     def self.not_cancelled
       joins(:entry).where('entries.cancelled' => false)
     end
@@ -56,7 +57,7 @@ module AccountingModule
       from_date = args[:from_date] || Date.today - 999.years
       to_date = args[:to_date] || Date.today
       date_range = DateRange.new(from_date: from_date, to_date: to_date)
-      joins(:entry).where('entries.cancelled' => false).where('entries.entry_date' => date_range.start_date..date_range.end_date)
+      not_cancelled.where('entries.entry_date' => date_range.start_date..date_range.end_date)
     end
 
     def debit?

@@ -1,6 +1,6 @@
 require 'prawn/icon'
-module ShareCapitals
-  class StatementOfAccountPdf < Prawn::Document
+module StatementOfAccounts
+  class ShareCapitalPdf < Prawn::Document
     attr_reader :share_capital, :cooperative, :view_context
 
     def initialize(args)
@@ -49,7 +49,7 @@ module ShareCapitals
         icon "<icon size='10'>fa-mobile</icon>  #{share_capital.subscriber_current_contact_number}", inline_format: true, size: 10
 
       end
-      move_down 15
+      move_down 20
       stroke do
         stroke_color 'CCCCCC'
         line_width 0.5
@@ -58,8 +58,9 @@ module ShareCapitals
       end
     end
     def share_capital_details
-      text "#{price share_capital.paid_up_balance}", size: 16
-      text "BALANCE", size: 10
+      text "PAID UP BALANCE", size: 8
+      move_down 5
+      text "#{price share_capital.paid_up_balance}", size: 18
     end
     def transaction_details
       move_down 10
@@ -76,8 +77,8 @@ module ShareCapitals
       end
     end
     def transactions_data
-      [["Date", "Description", "Ref #", "Debit Amount", "Credit Amount", "Balance"]] +
-      @transactions_data ||= share_capital.entries.sort_by(&:entry_date).reverse.map{ |a|
+      [["Date", "Description", "Ref #", "Debits", "Credits", "Balance"]] +
+      @transactions_data ||= share_capital.entries.sort_by(&:entry_date).map{ |a|
        [ a.entry_date.strftime("%b %e, %Y"),
          a.description,
          a.reference_number,

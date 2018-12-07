@@ -1,55 +1,11 @@
 <div class="card-body">
   <div class="row">
     <div class="col-md-6">
-      <div class="row justify-content-end">
-        <div class="col-md-11">
-          <div class="row min-margin">
-            <div class="col-md-5">
-              <label>Share Capital Product</label>
-            </div>
-            <div class="col-md-6">
-              <b><%= @share_capital.share_capital_product_name.try(:upcase) %></b>
-            </div>
-          </div>
-          <div class="row min-margin">
-            <div class="col-md-5">
-              <label>Subscriber</label>
-            </div>
-            <div class="col-md-6">
-              <% if @share_capital.subscriber.is_a?(Member) %>
-                <%=link_to @share_capital.subscriber_name, member_info_index_path(@share_capital.subscriber) %>
-              <% elsif @share_capital.subscriber.is_a?(User) %>
-                <%=link_to @share_capital.subscriber_name, employee_path(@share_capital.subscriber) %>
-              <% elsif @share_capital.subscriber.is_a?(Organization) %>
-                <%=link_to @share_capital.subscriber_name, organization_path(@share_capital.subscriber) %>
-              <% end %>
-            </div>
-          </div>
-          <div class="row min-margin">
-            <div class="col-md-5">
-              <label>Account Number</label>
-            </div>
-            <div class="col-md-6">
-              <%= @share_capital.account_number %>
-            </div>
-          </div>
-          <div class="row min-margin">
-            <div class="col-md-5">
-              <label>Paid Up Shares</label>
-            </div>
-            <div class="col-md-6">
-              <%= @share_capital.paid_up_shares %>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6">
       <hr class="min-margin set-visibility">
       <div class="row justify-content-end">
         <div class="col-md-7 col-sm-6 col-auto">
           <small>PAID UP BALANCE</small>
-          <h3 class="card-title"><%= number_to_currency @share_capital.paid_up_balance %></h3>
+          <h2 class="number"><%= number_to_currency @share_capital.paid_up_balance %></h2>
         </div>
         <div class="col-md-4 col-sm-6 col-auto">
           <small>INACTIVITY</small>
@@ -64,9 +20,7 @@
 </div>
 </div>
 <p class="text-muted">TRANSACTIONS HISTORY</p>
-
-      <% @entries.each do |entry| %>
-        <%= render 'accounting_module/entries/partials/header', entry: entry %>
-      <% end %>
-
-  <center><%= will_paginate @entries %></center>
+<% @entries.each do |entry| %>
+  <%= render 'accounting_module/entries/partials/header', entry: entry %>
+<% end %>
+<center><%= will_paginate @entries %></center>

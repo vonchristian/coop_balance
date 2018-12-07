@@ -18,7 +18,7 @@ class SavingsAccountsController < ApplicationController
     respond_to do |format|
       format.html
       format.pdf do
-        pdf = SavingsAccounts::StatementOfAccountPdf.new(
+        pdf = StatementOfAccounts::SavingsAccountPdf.new(
         savings_account: @savings_account,
         view_context:    view_context)
         send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Statement of Account.pdf"

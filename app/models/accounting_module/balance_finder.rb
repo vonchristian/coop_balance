@@ -34,7 +34,7 @@ module AccountingModule
         balance_for_cooperative_service(args).
         total_amount
       else
-        includes(:entry).where('entries.cancelled' => false).
+        not_cancelled.
         total_amount
       end
     end
@@ -44,12 +44,12 @@ module AccountingModule
     end
 
     def balance_for_commercial_document(args={})
-      includes(:entry).where('entries.cancelled' => false).
+      not_cancelled.
       where(commercial_document: args[:commercial_document])
     end
 
     def balance_for_cooperative_service(args={})
-      includes(:entry).where('entries.cancelled' => false).where('entries.cooperative_service_id' => args[:cooperative_service_id])
+      not_cancelled.where('entries.cooperative_service_id' => args[:cooperative_service_id])
     end
 
 

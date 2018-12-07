@@ -1,6 +1,6 @@
 require 'prawn/icon'
-module SavingsAccounts
-  class StatementOfAccountPdf < Prawn::Document
+module StatementOfAccounts
+  class SavingsAccountPdf < Prawn::Document
     attr_reader :savings_account, :cooperative, :view_context
 
     def initialize(args)
@@ -17,7 +17,7 @@ module SavingsAccounts
       view_context.number_to_currency(number, :unit => "P ")
     end
     def debit_cash_amount(entry)
-      amount = entry.debit_amounts.total_cash_amount
+      amount = entry.debit_amounts.for_account(account_id: savings_account.saving_product_account.id).sum(&:amount)
       if amount.zero?
         ""
       else
@@ -25,7 +25,7 @@ module SavingsAccounts
       end
     end
     def credit_cash_amount(entry)
-      amount = entry.credit_amounts.total_cash_amount
+      amount = entry.credit_amounts.for_account(account_id: savings_account.saving_product_account.id).sum(&:amount)
       if amount.zero?
         ""
       else
@@ -33,23 +33,23 @@ module SavingsAccounts
       end
     end
     def heading
-      bounding_box [0, 770], width: 50 do
+      bounding_box [270, 770], width: 50 do
         image "#{Rails.root}/app/assets/images/#{cooperative.abbreviated_name.downcase}_logo.jpg", width: 55, height: 55
       end
-      bounding_box [70, 770], width: 200 do
+      bounding_box [340, 770], width: 200 do
           text "#{cooperative.abbreviated_name }", style: :bold, size: 20
           text "#{cooperative.name.try(:upcase)}", size: 8
           text "#{cooperative.address}", size: 8
       end
-      bounding_box [320, 770], width: 400 do
+      bounding_box [0, 770], width: 400 do
         text "STATEMENT OF ACCOUNT", style: :bold, size: 12
-        text "#{savings_account.depositor_name.upcase}", size: 10
+        text "ACCOUNT OWNER: #{savings_account.depositor_name.upcase}", size: 10
         icon "<icon size='10'>fa-map-marker</icon>  #{savings_account.depositor_current_address_complete_address}", inline_format: true, size: 10
         move_down 2
         icon "<icon size='10'>fa-mobile</icon>  #{savings_account.depositor_current_contact_number}", inline_format: true, size: 10
 
       end
-      move_down 15
+      move_down 20
       stroke do
         stroke_color 'CCCCCC'
         line_width 0.5
@@ -58,26 +58,50 @@ module SavingsAccounts
       end
     end
     def savings_account_details
-      text "#{price savings_account.balance}", size: 16
-      text "BALANCE", size: 10
+      table([["Depositor", "#{savings_account.depositor_name}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10}, column_widths: [120, 200]) do
+        cells.borders = []
+      end
+      table([["Savings Product", "#{savings_account.saving_product_name}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10}, column_widths: [120, 200]) do
+        cells.borders = []
+      end
+      table([["Last Transaction", "#{savings_account.last_transaction_date.strftime("%B %e, %Y")}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10}, column_widths: [120, 200]) do
+        cells.borders = []
+      end
+      table([["Days Inactive", "#{savings_account.number_of_days_inactive}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10}, column_widths: [120, 200]) do
+        cells.borders = []
+      end
+      bounding_box [270, 690], width: 400 do
+        text "CURRENT BALANCE", size: 8
+        move_down 5
+        text "#{price savings_account.balance}", size: 18
+      end
+
+      move_down 20
+      stroke do
+        stroke_color 'CCCCCC'
+        line_width 0.5
+        stroke_horizontal_rule
+      end
     end
     def transaction_details
       move_down 10
       text "TRANSACTIONS HISTORY", size: 10, style: :bold
-      move_down 2
-      table(transactions_data, cell_style: { inline_format: true, size: 10, :padding => [2,5,2,5]}, column_widths: [70, 150, 60, 70, 70, 90]) do
+      move_down 5
+      table(transactions_data, cell_style: { inline_format: true, size: 10, :padding => [2,5,2,5]}, column_widths: [70, 130, 80, 70, 70, 90]) do
         column(2).align = :right
         column(3).align = :right
         column(4).align = :right
         column(5).align = :right
+        row(0).font_style = :bold
+
 
 
 
       end
     end
     def transactions_data
-      [["Date", "Description", "Ref #", "Debit Amount", "Credit Amount", "Balance"]] +
-      @transactions_data ||= savings_account.entries.sort_by(&:entry_date).reverse.map{ |a|
+      [["DATE", "DESCRIPTION", " REFERENCE #", "Debits", "Credits", "Balance"]] +
+      @transactions_data ||= savings_account.entries.sort_by(&:entry_date).map{ |a|
        [ a.entry_date.strftime("%b %e, %Y"),
          a.description,
          a.reference_number,
