@@ -1,9 +1,9 @@
 class ProperDateFinder
   attr_reader :date, :operating_days
-
-  def initialize(date, operating_days)
-    @date = date
-    @operating_days = operating_days
+  
+  def initialize(args)
+    @date           = args[:date]
+    @operating_days = args[:operating_days]
   end
   def proper_date
     return date if (date.strftime("%A")).in?(operating_days)

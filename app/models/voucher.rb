@@ -31,7 +31,7 @@ class Voucher < ApplicationRecord
     vouchers = LoansModule::Loan.pluck(:disbursement_voucher_id)
     where(id: vouchers)
   end
-  
+
   def self.contains_cash_accounts
     vouchers = Vouchers::VoucherAmount.contains_cash_accounts.pluck(:voucher_id)
     where(id: vouchers)
@@ -119,8 +119,8 @@ class Voucher < ApplicationRecord
     if disbursed?
       disburser
     else
-      id = voucher.voucher_amounts.contains_cash_accounts.pluck(:account_id).first
-      employee = Employees::EmployeeCashAccount.cash_accounts.where(cash_account_id: id).first.employee
+      id = voucher_amounts.contains_cash_accounts.pluck(:account_id).first
+      employee = Employees::EmployeeCashAccount.where(cash_account_id: id).first.employee
     end
   end
 

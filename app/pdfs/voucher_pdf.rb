@@ -13,6 +13,8 @@ class VoucherPdf < Prawn::Document
     payee_details
     voucher_details
     signatory_details
+    font Rails.root.join("app/assets/fonts/open_sans_regular.ttf")
+    
   end
 
   private

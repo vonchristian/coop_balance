@@ -3,7 +3,9 @@ module LoansModule
   class LoanAmortizationSchedulePdf < Prawn::Document
     attr_reader :loan, :amortization_schedules, :employee, :view_context, :voucher, :cooperative, :voucher, :term
     def initialize(args)
+
       super(margin: 40, page_size: "LEGAL", page_layout: :portrait)
+
       @loan = args[:loan]
       @voucher = args[:voucher] || @loan.disbursement_voucher
       @amortization_schedules = args[:amortization_schedules]
@@ -16,6 +18,8 @@ module LoansModule
       loan_charges_details
       amortization_schedule
       signatory_details
+      font Rails.root.join("app/assets/fonts/open_sans_regular.ttf")
+
     end
 
     private
@@ -142,7 +146,7 @@ module LoansModule
       if loan.forwarded_loan? || loan.amortization_schedules.blank?
         text "No data Available"
       else
-        table(amortization_schedule_data, header: true, cell_style: { size: 8, font: "Helvetica"}, column_widths: [90, 80, 80, 70, 90, 120]) do
+        table(amortization_schedule_data, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [100, 80, 80, 70, 90, 110]) do
 
           row(0).font_style = :bold
           column(0).align = :right
@@ -156,7 +160,7 @@ module LoansModule
       end
     end
     def amortization_schedule_data
-      [["DATE", "PRINCIPAL", "INTEREST", "TOTAL AMORTIZATION", "BALANCE", "NOTES"]] +
+      [["DATE", "PRINCIPAL", "INTEREST", "TOTAL", "BALANCE", "NOTES"]] +
       [["", "","", "", "#{price(@loan.loan_amount)}", ""]] +
       @table_date ||= @amortization_schedules.order(date: :asc).map{|a|
         [ a.date.strftime("%B %e, %Y"),

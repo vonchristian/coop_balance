@@ -57,7 +57,4 @@ class Cooperative < ApplicationRecord
   def avatar
     logo
   end
-  def operating_days
-    ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
-  end
 end

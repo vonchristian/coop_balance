@@ -29,7 +29,6 @@ module LoansModule
       create_first_schedule(loan_application)
       create_succeeding_schedule(loan_application)
       set_interests(loan_application)
-      set_proper_dates(loan_application)
     end
 
     def self.create_first_schedule(loan_application)
@@ -56,8 +55,7 @@ module LoansModule
     def self.set_interests(loan_application)
       loan_application.amortization_schedules.each do |schedule|
         schedule.update_attributes(
-          interest: interest_computation(schedule, loan_application),
-          date: ProperDateFinder.new(schedule.date, loan_application.cooperative).proper_date)
+          interest: interest_computation(schedule, loan_application))
       end
       if loan_application.current_interest_config.prededucted? && loan_application.current_interest_config.number_of_payment?
         loan_application.amortization_schedules.order(date: :asc).first(loan_application.current_interest_config_prededucted_number_of_payments).each do |schedule|
@@ -69,7 +67,7 @@ module LoansModule
     def self.set_proper_dates(loan_application)
       loan_application.amortization_schedules.each do |schedule|
         schedule.update_attributes(
-          date: ProperDateFinder.new(schedule.date, loan_application.cooperative.operating_days).proper_date)
+          date: ProperDateFinder.new(date: schedule.date, operating_days: loan_application.cooperative.operating_days).proper_date)
       end
     end
 

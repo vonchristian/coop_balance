@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_06_005222) do
+ActiveRecord::Schema.define(version: 2018_12_07_090159) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -280,6 +280,7 @@ ActiveRecord::Schema.define(version: 2018_12_06_005222) do
     t.string "contact_number"
     t.string "address"
     t.string "abbreviated_name"
+    t.string "operating_days", default: [], array: true
     t.index ["abbreviated_name"], name: "index_cooperatives_on_abbreviated_name", unique: true
   end
 
@@ -1142,8 +1143,8 @@ ActiveRecord::Schema.define(version: 2018_12_06_005222) do
     t.string "account_number"
     t.datetime "date_opened"
     t.string "account_owner_name"
-    t.datetime "created_at", default: "2018-12-03 13:59:53", null: false
-    t.datetime "updated_at", default: "2018-12-03 13:59:53", null: false
+    t.datetime "created_at", default: "2018-12-04 22:30:30", null: false
+    t.datetime "updated_at", default: "2018-12-04 22:30:30", null: false
     t.integer "status"
     t.uuid "office_id"
     t.string "subscriber_type"

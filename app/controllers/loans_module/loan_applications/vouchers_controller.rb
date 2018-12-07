@@ -23,6 +23,14 @@ module LoansModule
       def show
         @loan_application = current_cooperative.loan_applications.find(params[:loan_application_id])
         @voucher = @loan_application.voucher
+        respond_to do |format|
+          format.pdf do
+            pdf = VoucherPdf.new(
+              voucher: @voucher,
+              view_context: view_context)
+            send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Voucher.pdf"
+          end
+        end
       end
 
       def destroy
