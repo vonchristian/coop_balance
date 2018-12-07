@@ -4,7 +4,7 @@
       <div class="card-header">
         <div class="row">
           <div class="col-md-9">
-            <h3 class="card-title"> <%= @entry.description %> </h3>
+            <h4 class="card-title"> <%= @entry.description %> </h4>
             <span class="text-muted">
               <i class="fa fa-clock"></i> <%= @entry.entry_date.strftime("%B %e, %Y")%> &nbsp; &nbsp;
               <i class="fa fa-user"></i> <%= @entry.recorder_first_and_last_name.try(:titleize) %>
@@ -13,20 +13,17 @@
           </div>
 
           <div class="col-md-3">
+            <% if policy([:accounting_module, :entries, :cancellation]).new? %>
               <div class="dropdown">
                 <button class="btn btn-outline-danger dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Options
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-
-                      <% if policy([:accounting_module, :entries, :cancellation]).new? %>
-                        <%= link_to 'Cancel Entry', new_accounting_module_entry_cancellation_path(@entry), class: "dropdown-item", data: { confirm: "Are you sure you want to cancel this entry?"} %>
-                      <% end %>
-                      <%= link_to "Edit Entry", edit_accounting_module_entry_path(@entry), class: "dropdown-item" %>
-
-
+                  <%= link_to 'Cancel Entry', new_accounting_module_entry_cancellation_path(@entry), class: "dropdown-item", data: { confirm: "Are you sure you want to cancel this entry?"} %>
+                  <%= link_to "Edit Entry", edit_accounting_module_entry_path(@entry), class: "dropdown-item" %>
                 </div>
               </div>
+            <% end %>
           </div>
         </div>
 
@@ -38,7 +35,7 @@
             <label class="no-margin-bottom">Member/Payee</label>
           </div>
           <div class="col-md-8">
-            <%= image_tag(@entry.commercial_document.avatar.variant(resize: '30x30'), class: "img-circle") if @entry.commercial_document.avatar.attached? %> <%= @entry.commercial_document.try(:name) %>
+            <%= image_tag(@entry.commercial_document.avatar, class: "img-circle", height: 35, width: 35) if @entry.commercial_document.avatar.attached? %> <%= @entry.commercial_document.try(:name) %>
           </div>
         </div>
         <div class="min-margin">

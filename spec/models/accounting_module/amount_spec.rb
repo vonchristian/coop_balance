@@ -35,12 +35,48 @@ module AccountingModule
         revenue = create(:revenue)
         employee.cash_accounts << cash_on_hand
         not_cancelled_entry = build(:entry, cooperative: cooperative, recorder: employee )
-        not_cancelled_debit_amount = entry.debit_amounts.build(account: cash_on_hand, amount: 1_000)
-        not_cancelled_credit_amount = entry.credit_amounts.build(amount: 1_000, account: revenue )
+        not_cancelled_debit_amount = not_cancelled_entry.debit_amounts.build(account: cash_on_hand, amount: 1_000)
+        not_cancelled_credit_amount = not_cancelled_entry.credit_amounts.build(amount: 1_000, account: revenue )
         not_cancelled_entry.save!
 
-        expect(described_class.not_cancelled).to include(not_cancelled_ebit_amount)
+        expect(described_class.not_cancelled).to include(not_cancelled_debit_amount)
         expect(described_class.not_cancelled).to include(not_cancelled_credit_amount)
+      end
+      it ".cancelled and not_cancelled scopes" do
+        cooperative = create(:cooperative)
+        origin_entry = create(:origin_entry, cooperative: cooperative)
+        employee = create(:user, role: 'teller', cooperative: cooperative)
+        cash_on_hand = create(:asset)
+        revenue = create(:revenue)
+        employee.cash_accounts << cash_on_hand
+        not_cancelled_entry = build(:entry, cooperative: cooperative, recorder: employee, previous_entry: origin_entry )
+        not_cancelled_debit_amount = not_cancelled_entry.debit_amounts.build(account: cash_on_hand, amount: 1_000)
+        not_cancelled_credit_amount = not_cancelled_entry.credit_amounts.build(amount: 1_000, account: revenue )
+        not_cancelled_entry.save!
+
+        cooperative = create(:cooperative)
+        employee = create(:user, role: 'teller', cooperative: cooperative)
+        cash_on_hand = create(:asset)
+        revenue = create(:revenue)
+        employee.cash_accounts << cash_on_hand
+        cancelled_entry = build(:entry, cooperative: cooperative, recorder: employee, previous_entry: not_cancelled_entry )
+        cancelled_debit_amount = cancelled_entry.debit_amounts.build(account: cash_on_hand, amount: 1_000)
+        cancelled_credit_amount = cancelled_entry.credit_amounts.build(amount: 1_000, account: revenue )
+        cancelled_entry.cancelled = true
+        cancelled_entry.save!
+
+        expect(described_class.cancelled).to include(cancelled_debit_amount)
+        expect(described_class.cancelled).to include(cancelled_credit_amount)
+        expect(described_class.cancelled).to_not include(not_cancelled_debit_amount)
+        expect(described_class.cancelled).to_not include(not_cancelled_credit_amount)
+
+        expect(described_class.not_cancelled).to_not include(cancelled_debit_amount)
+        expect(described_class.not_cancelled).to_not include(cancelled_credit_amount)
+
+        expect(described_class.not_cancelled).to include(not_cancelled_debit_amount)
+        expect(described_class.not_cancelled).to include(not_cancelled_credit_amount)
+
+
       end
       it ".for_recorder(args={})" do
         cooperative = create(:cooperative)

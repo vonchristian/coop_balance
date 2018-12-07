@@ -1,7 +1,10 @@
+generate debit entries pdf report per account 
+generate credit entries report per account
+
 Interest Posting
    create voucher
    post entr
-   
+
 
 
 show savings and share capitals on top on info

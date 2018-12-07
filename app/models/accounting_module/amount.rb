@@ -15,6 +15,9 @@ module AccountingModule
     def self.not_cancelled
       joins(:entry).where('entries.cancelled' => false)
     end
+    def self.cancelled
+      joins(:entry).where('entries.cancelled' => true)
+    end
     def self.for_account(args={})
       where(account_id: args[:account_id])
     end
