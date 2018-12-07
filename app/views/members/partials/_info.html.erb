@@ -1,21 +1,11 @@
 <div class="card">
   <div class="card-body">
     <div class="row">
-      <div class="col-md-3">
-        <span class="text-red">
-          <%= number_to_currency @member.loans.sum{|l| l.principal_balance} %>
-        </span><br>
-        <small class="text-muted">LOANS</small>
-      </div>
-      <div class="col-md-3">
+      <div class="col-md-6">
         <span class="text-red"><%= number_to_currency @member.savings.sum{|s| s.balance} %></span><br>
         <small class="text-muted">SAVINGS DEPOSITS</small>
       </div>
-      <div class="col-md-3">
-        <span class="text-red"><%= number_to_currency @member.time_deposits.sum{|t| t.balance} %></span><br>
-        <small class="text-muted">TIME DEPOSITS</small>
-      </div>
-      <div class="col-md-3">
+      <div class="col-md-6">
         <span class="text-red"><%= number_to_currency @member.share_capitals.sum{|l| l.paid_up_balance} %></span><br>
         <small class="text-muted">SHARE CAPITAL</small>
       </div>
