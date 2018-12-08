@@ -1,10 +1,10 @@
 module LoansModule
   module Loans
     module Interest
-      def interest_receivable_balance
+      def interest_receivable_balance(args={})
         loan_product_interest_receivable_account.balance(commercial_document: self)
       end
-      def interest_receivable_debits_balance
+      def interest_receivable_debits_balance(args={})
         loan_product_interest_receivable_account.debits_balance(commercial_document: self)
       end
 

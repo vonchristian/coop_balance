@@ -18,6 +18,13 @@ module LoansModule
       it { is_expected.to validate_numericality_of(:interest).is_greater_than(0.01) }
     end
 
+    describe 'delegations' do
+      it { is_expected.to delegate_method(:borrower).to(:loan) }
+      it { is_expected.to delegate_method(:name).to(:borrower).with_prefix }
+      it { is_expected.to delegate_method(:current_contact_number).to(:borrower).with_prefix }
+      it { is_expected.to delegate_method(:current_address_complete_address).to(:borrower).with_prefix }
+    end
+
 
     describe '.create_schedule_for(loan)' do
       it 'monthly' do

@@ -1,0 +1,10 @@
+
+<div class="row">
+  <div class="col-md-3">
+  </div>
+  <div class="col-md-9">
+    <% @amortization_schedules.each do |schedule| %>
+    <%= render 'loans_module/amortization_schedules/partials/header', schedule: schedule %>
+    <% end %>
+  </div>
+</div>

@@ -24,6 +24,15 @@ class LoansController < ApplicationController
   end
 
   def show
-    @loan = LoansModule::Loan.find(params[:id])
+    @loan = current_cooperative.loans.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.pdf do
+        pdf = StatementOfAccounts::LoanPdf.new(
+        loan:         @loan,
+        view_context: view_context)
+        send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Statement of Account.pdf"
+      end
+    end
   end
 end

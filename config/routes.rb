@@ -47,6 +47,8 @@ Rails.application.routes.draw do
 
   resources :loans_module, only: [:index]
   namespace :loans_module do
+    resources :amortization_schedules, only: [:index, :show]
+    resources :amortization_schedule_date_filters, only: [:index]
     resources :organizations, only: [:index, :show] do
       resources :loans, only: [:index], module: :organizations
       resources :reports, only: [:index], module: :organizations
@@ -57,8 +59,6 @@ Rails.application.routes.draw do
       resources :metrics, only: [:index]
     end
     resources :search_results, only: [:index]
-    resources :schedules, only: [:index, :show]
-    resources :amortization_schedules, only: [:show], module: :schedules
     namespace :reports do
       resources :loan_releases, only: [:index]
       resources :loan_collections, only: [:index]

@@ -9,10 +9,12 @@ module LoansModule
 
     accepts_nested_attributes_for :notes
 
-    delegate :avatar, :borrower_name, to: :loan
-
+    delegate :borrower, to: :loan
+    delegate :avatar, :name, :current_contact_number, :current_address_complete_address, to: :borrower, prefix: true
     ###########################
-
+    def self.for_loans
+      where.not(loan_id: nil)
+    end
     def self.principal_balance(args={})
       if args[:from_date] && args[:to_date]
         from_date = args[:from_date]
@@ -106,7 +108,7 @@ module LoansModule
     def self.scheduled_for(args={})
 			if args[:from_date].present? && args[:to_date].present?
 				date_range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])
-        where('date' => (date_range.start_date..date_range.end_date))
+        where(date: date_range.start_date..date_range.end_date)
       end
     end
 

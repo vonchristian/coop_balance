@@ -1,0 +1,69 @@
+<%= link_to loans_module_amortization_schedule_path(schedule), class: "text-muted" do %>
+  <div class="card">
+    <div class="card-body">
+      <%=image_tag(schedule.borrower_avatar, height: 35, width: 35, class: "img-circle float-right") %>
+      <div class="row">
+        <div class="col-md-4">
+          <small class="text-muted">
+            <i class="fa fa-user"></i> <%= schedule.borrower_name %>
+          </small>
+        </div>
+        <div class="col-md-3">
+          <small class="text-muted">
+            <i class="fa fa-phone"></i> <%= schedule.borrower_current_contact_number %>
+          </small>
+        </div>
+        <div class="col-md-5">
+          <small class="text-muted">
+            <i class="fa fa-map-marker"></i> <%= schedule.borrower_current_address_complete_address %>
+          </small>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-3">
+
+            <small>  DUE DATE </small><br>
+
+            <h4 class="card-title">
+              <%= schedule.date.strftime("%b. %e, %Y") %>
+            </h4>
+
+        </div>
+        <div class="col-md-5">
+          <div class="row min-margin">
+            <div class="col-md-6">
+              <small>PRINCIPAL</small><br>
+            </div>
+            <div class="col-md-6">
+              <span class="number float-right">
+                <%= number_to_currency schedule.principal %>
+              </span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <small>INTEREST</small><br>
+            </div>
+            <div class="col-md-6">
+              <span class="number float-right">
+                <%= number_to_currency schedule.interest %>
+              </span>
+            </div>
+          </div>
+          <hr class="min-margin">
+          <div class="row">
+            <div class="col-md-6">
+              <small>TOTAL AMORTIZATION</small><br>
+            </div>
+            <div class="col-md-6">
+              <span class="number float-right">
+                <%= number_to_currency schedule.total_amortization %>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

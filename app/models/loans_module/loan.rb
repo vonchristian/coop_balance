@@ -30,10 +30,6 @@ module LoansModule
     belongs_to :preparer,               class_name: "User",
                                         foreign_key: 'preparer_id'
 
-    has_many :entries,                  class_name: "AccountingModule::Entry",
-                                        as: :commercial_document,
-                                        dependent: :destroy
-
     has_many :voucher_amounts,          class_name: "Vouchers::VoucherAmount", as: :commercial_document,
                                         dependent: :destroy # for adding amounts on voucher
 
@@ -54,7 +50,7 @@ module LoansModule
     delegate :disbursed?, to: :disbursement_voucher, allow_nil: true
     delegate  :effectivity_date, :is_past_due?, :number_of_days_past_due, :remaining_term, :terms_elapsed, :maturity_date, to: :current_term, allow_nil: true
     delegate :first_and_last_name, to: :preparer, prefix: true
-    delegate :name, :age, :contact_number, :current_address,  :first_name, to: :borrower,  prefix: true, allow_nil: true
+    delegate :name, :age, :contact_number, :current_address, :current_address_complete_address, :current_contact_number,  :first_name, to: :borrower,  prefix: true, allow_nil: true
     delegate :name,  to: :loan_product, prefix: true
     delegate :unearned_interest_income_account,
              :loans_receivable_current_account,
@@ -299,20 +295,20 @@ module LoansModule
       penalty_payments
     end
 
-    def balance
-      principal_balance +
-      loan_interests_balance +
-      loan_penalties_balance
+    def balance(args={})
+      principal_balance(args) +
+      loan_interests_balance(args) +
+      loan_penalties_balance(args)
     end
 
 
-    def loan_interests_balance
+    def loan_interests_balance(args={})
       loan_interests.total -
       loan_discounts.interest.total -
       interest_payments
     end
 
-    def loan_penalties_balance
+    def loan_penalties_balance(args={})
       loan_penalties.total -
       loan_discounts.penalty.total -
       penalty_payments
