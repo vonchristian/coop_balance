@@ -9,7 +9,7 @@ module LoansModule
 
     accepts_nested_attributes_for :notes
 
-    delegate :borrower, to: :loan
+    delegate :borrower, :loan_product_name, to: :loan
     delegate :avatar, :name, :current_contact_number, :current_address_complete_address, to: :borrower, prefix: true
     ###########################
     def self.for_loans

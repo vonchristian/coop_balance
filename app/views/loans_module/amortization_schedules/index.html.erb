@@ -6,10 +6,9 @@
         <%=link_to loans_module_amortization_schedule_date_filters_path(from_date: date, to_date: date)  do %>
           <p><%=date.day %></p>
             <% current_cooperative.amortization_schedules.for_loans.scheduled_for(from_date: date, to_date: date).each do |schedule| %>
-              <span class="" data-toggle="tooltip" title="<%= schedule.loan_application.borrower_name %>"><i class="fa fa-circle"></i></span>
-            <% end %>
-             <% LoansModule::Notice.for(date.beginning_of_day, date.end_of_day).count.times do %>
-              <span class="text-red"><i class="fa fa-circle"></i></span>
+              <span class="" data-toggle="tooltip" title="<%= schedule.borrower_name %>">
+                <%= image_tag(schedule.borrower_avatar, class: "img-circle", height: 25, width: 25) %>
+              </span>
             <% end %>
         <% end %>
         <% end %>

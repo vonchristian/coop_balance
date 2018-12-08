@@ -20,6 +20,7 @@ module LoansModule
 
     describe 'delegations' do
       it { is_expected.to delegate_method(:borrower).to(:loan) }
+      it { is_expected.to delegate_method(:loan_product_name).to(:loan) }
       it { is_expected.to delegate_method(:name).to(:borrower).with_prefix }
       it { is_expected.to delegate_method(:current_contact_number).to(:borrower).with_prefix }
       it { is_expected.to delegate_method(:current_address_complete_address).to(:borrower).with_prefix }
