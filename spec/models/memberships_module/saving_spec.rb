@@ -15,13 +15,14 @@ module MembershipsModule
     end
     context 'delegations' do
     	it { is_expected.to delegate_method(:name).to(:saving_product).with_prefix }
+      it { is_expected.to delegate_method(:applicable_rate).to(:saving_product).with_prefix }
       it { is_expected.to delegate_method(:interest_expense_account).to(:saving_product).with_prefix }
       it { is_expected.to delegate_method(:closing_account).to(:saving_product).with_prefix }
       it { is_expected.to delegate_method(:name).to(:office).with_prefix }
       it { is_expected.to delegate_method(:account).to(:saving_product).with_prefix }
       it { is_expected.to delegate_method(:name).to(:depositor).with_prefix }
       it { is_expected.to delegate_method(:current_address_complete_address).to(:depositor).with_prefix }
-      it { is_expected.to delegate_method(:current_contact_number).to(:depositor).with_prefix }  
+      it { is_expected.to delegate_method(:current_contact_number).to(:depositor).with_prefix }
       it { is_expected.to delegate_method(:current_occupation).to(:depositor).with_prefix }
     	it { is_expected.to delegate_method(:interest_rate).to(:saving_product).with_prefix }
     end

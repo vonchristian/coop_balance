@@ -48,6 +48,48 @@
       accounts = self.pluck(:account_id)
       AccountingModule::Account.where('accounts.id' => accounts)
     end
+    def applicable_rate
+      interest_rate  / rate_divisor
+    end
+
+    def rate_divisor
+      if daily?
+        364
+      elsif monthly?
+        12.0
+      elsif quarterly?
+          4.0
+      elsif semi_annually?
+        2.0
+      elsif annually?
+        1.0
+      end
+    end
+    
+    def starting_date(date)
+      if daily?
+        date.beginning_of_day
+      elsif monthly?
+        date.beginning_of_month
+      elsif quarterly?
+        date.beginning_of_quarter
+      elsif annually?
+        date.beginning_of_year
+      end
+    end
+
+    def ending_date(date)
+      if daily?
+        date.end_of_day
+      elsif monthly?
+        date.end_of_month
+      elsif quarterly?
+        date.end_of_quarter
+      elsif annually?
+        date.end_of_year
+      end
+    end
+
 
     def interest_posted?(args={})
       interest_expense_account.

@@ -8,6 +8,10 @@ Rails.application.routes.draw do
 
   resources :accounting_module, only: [:index]
   namespace :accounting_module do
+    resources :scheduled_entries, only: [:index]
+    namespace :scheduled_entries do
+      resources :savings_accounts_interest_postings, only: [:new, :create]
+    end
     resources :cash_receipts, module: :entries,     only: [:index]
     resources :cash_disbursements, module: :entries, only: [:index]
     resources :journal_entry_vouchers,  module: :entries, only: [:index]

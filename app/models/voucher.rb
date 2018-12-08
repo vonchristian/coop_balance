@@ -124,6 +124,10 @@ class Voucher < ApplicationRecord
     end
   end
 
+  def contains_cash_accounts?
+    voucher_amounts.contains_cash_accounts.present?
+  end
+
 
   private
   def set_default_date

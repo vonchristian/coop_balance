@@ -1,4 +1,5 @@
-generate debit entries pdf report per account 
+only debit active accounts 
+generate debit entries pdf report per account
 generate credit entries report per account
 
 Interest Posting

@@ -56,5 +56,50 @@ module CoopServicesModule
 
       expect(saving_product.total_subscribers).to eql 1
     end
+
+    it "#rate_divisor" do
+      daily_saving_product = build(:saving_product, interest_recurrence: 'daily')
+      monthly_saving_product = build(:saving_product, interest_recurrence: 'monthly')
+      quarterly_saving_product = build(:saving_product, interest_recurrence: 'quarterly')
+      semi_annual_saving_product = build(:saving_product, interest_recurrence: 'semi_annually')
+      annual_saving_product = build(:saving_product, interest_recurrence: 'annually')
+
+
+      expect(daily_saving_product.rate_divisor).to eql 360.0
+      expect(monthly_saving_product.rate_divisor).to eql 12.0
+      expect(quarterly_saving_product.rate_divisor).to eql 4.0
+      expect(semi_annual_saving_product.rate_divisor).to eql 2.0
+      expect(annual_saving_product.rate_divisor).to eql 1.0
+    end
+    it '#applicable_rate' do
+      quarterly_saving_product = build(:saving_product, interest_recurrence: 'quarterly', interest_rate: 0.02)
+
+      expect(quarterly_saving_product.applicable_rate).to eql(0.005)
+    end
+    it '#starting_date(date)' do
+      daily_saving_product = build(:saving_product, interest_recurrence: 'daily')
+      monthly_saving_product = build(:saving_product, interest_recurrence: 'monthly')
+      quarterly_saving_product = build(:saving_product, interest_recurrence: 'quarterly')
+      semi_annual_saving_product = build(:saving_product, interest_recurrence: 'semi_annually')
+      annual_saving_product = build(:saving_product, interest_recurrence: 'annually')
+
+      expect(daily_saving_product.starting_date(Date.today)).to eql Date.today.beginning_of_day
+      expect(monthly_saving_product.starting_date(Date.today)).to eql Date.today.beginning_of_month
+      expect(quarterly_saving_product.starting_date(Date.today)).to eql Date.today.beginning_of_quarter
+      expect(annual_saving_product.starting_date(Date.today)).to eql Date.today.beginning_of_year
+    end
+
+    it '#end_date(date)' do
+      daily_saving_product = build(:saving_product, interest_recurrence: 'daily')
+      monthly_saving_product = build(:saving_product, interest_recurrence: 'monthly')
+      quarterly_saving_product = build(:saving_product, interest_recurrence: 'quarterly')
+      semi_annual_saving_product = build(:saving_product, interest_recurrence: 'semi_annually')
+      annual_saving_product = build(:saving_product, interest_recurrence: 'annually')
+
+      expect(daily_saving_product.ending_date(Date.today)).to eql Date.today.end_of_day
+      expect(monthly_saving_product.ending_date(Date.today)).to eql Date.today.end_of_month
+      expect(quarterly_saving_product.ending_date(Date.today)).to eql Date.today.end_of_quarter
+      expect(annual_saving_product.ending_date(Date.today)).to eql Date.today.end_of_year
+    end
   end
 end

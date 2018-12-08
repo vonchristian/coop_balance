@@ -31,6 +31,7 @@ module LoansModule
       create_first_schedule(loan_application)
       create_succeeding_schedule(loan_application)
       set_interests(loan_application)
+      set_proper_dates(loan_application)
     end
 
     def self.create_first_schedule(loan_application)

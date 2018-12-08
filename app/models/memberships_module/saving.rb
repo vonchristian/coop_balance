@@ -20,6 +20,7 @@ module MembershipsModule
 
     delegate :name, :current_address_complete_address, :current_contact_number, :current_occupation, to: :depositor, prefix: true
     delegate :name,
+             :applicable_rate,
              :closing_account,
              :closing_account_fee,
              :account,
@@ -122,15 +123,23 @@ module MembershipsModule
 
 
     def average_daily_balance(args={})
-      balances = []
-      date_range = args[:date].beginning_of_quarter..args[:date].end_of_quarter
-      (date_range).each do |date|
-        daily_balance = saving_product.balance(commercial_document: self, from_date: self.first_transaction_date, to_date: date.end_of_day)
-        balances << daily_balance
+      balances =[]
+      to_date = args[:to_date]
+      starting_date = saving_product.starting_date(to_date)
+      ending_date = saving_product.ending_date(to_date)
+
+
+       (starting_date..ending_date).each do |date|
+        balances << saving_product_account.balance(commercial_document: self, to_date: date)
       end
 
-      balances.sum / 365
+      balances.sum / (starting_date..ending_date).count.to_f
     end
+
+    def computed_interest(args={})
+      average_daily_balance(to_date: args[:to_date]) * saving_product_applicable_rate
+    end
+
 
     private
     def check_balance
