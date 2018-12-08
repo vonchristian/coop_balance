@@ -67,13 +67,13 @@ module AccountingModule
     end
 
     def self.without_cash_accounts
-      entries = []
-      self.find_each.each do |entry|
-        if entry.contains_cash_account?
-          entries << entry
-        end
-      end
-      entries
+      ids = amounts.without_cash_accounts.pluck(:entry_id)
+      where(id: ids)
+    end
+
+    def self.with_cash_accounts
+      ids = amounts.with_cash_accounts.pluck(:entry_id)
+      where(id: ids)
     end
 
     def self.not_archived

@@ -24,6 +24,7 @@ module LoansModule
         @loan_application = current_cooperative.loan_applications.find(params[:loan_application_id])
         @voucher = @loan_application.voucher
         respond_to do |format|
+          format.html
           format.pdf do
             pdf = VoucherPdf.new(
               voucher: @voucher,

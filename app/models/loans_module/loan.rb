@@ -216,14 +216,17 @@ module LoansModule
     end
 
     def self.loan_payments(args={})
-      LoansModule::LoanProduct.accounts.credit_entries.entered_on(args) +
-      LoansModule::LoanProduct.past_due_accounts.credit_entries.entered_on(args) +
-      LoansModule::LoanProducts::InterestConfig.interest_revenue_accounts.debit_entries.entered_on(args) +
-      LoansModule::LoanProducts::PenaltyConfig.penalty_revenue_accounts.debit_entries.entered_on(args)
+      LoansModule::LoanProduct.accounts.credit_entries.not_cancelled.entered_on() +
+      LoansModule::LoanProduct.past_due_accounts.credit_entries.not_cancelled.entered_on(args) +
+      LoansModule::LoanProducts::InterestConfig.interest_revenue_accounts.debit_entries.not_cancelled.entered_on(args) +
+      LoansModule::LoanProducts::PenaltyConfig.penalty_revenue_accounts.debit_entries.not_cancelled.entered_on(args)
     end
 
     def loan_payments(args={})
       entries = []
+      loan_product_loans_receivable_current_account.credit_amounts.where(commercial_document: self).each do |amount|
+        entries << amount.entry
+      end
       loan_product_loans_receivable_current_account.credit_amounts.where(commercial_document: self).each do |amount|
         entries << amount.entry
       end

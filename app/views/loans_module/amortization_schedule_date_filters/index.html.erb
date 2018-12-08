@@ -1,6 +1,23 @@
 <%= link_to 'View PDF', loans_module_amortization_schedule_date_filters_path(from_date: @from_date, to_date: @to_date, format: 'pdf') %>
 <div class="row">
   <div class="col-md-3">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Date Covered </h4>
+        <p>Start Date </p>
+        <%= form_tag({:action => 'index'}, {:method => :get, class: "form-inline"}) do %>
+          <%= label_tag :from_date,  "From Date", class: 'sr-only'%>
+          <%= text_field_tag :from_date, @from_date.strftime("%B %e, %Y"), :class => 'datepicker form-control', :placeholder => "From" %>
+        <p> End Date </p>
+            <%= label_tag :to_date, nil, class: 'sr-only'%>
+            <%= text_field_tag :to_date, @to_date.strftime("%B %e, %Y"), :class => 'datepicker form-control', :placeholder => "To" %>
+            <br>
+            <br>
+            <br>
+          <button type="submit" class="btn btn-primary btn-block">Generate</button>
+        <% end %>
+      </div>
+    </div>
   </div>
   <div class="col-md-9">
     <% @amortization_schedules.each do |schedule| %>

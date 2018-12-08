@@ -1,3 +1,28 @@
+<div class="card">
+  <div class="card-body">
+    <h3 class="card-title"> Statistics </h3>
+    <%= link_to 'View PDF', loans_module_amortization_schedule_date_filters_path(from_date: @start_date.beginning_of_month, to_date: @start_date.end_of_month, format: 'pdf'), class: "btn btn-default float-right" %>
+    <span class="text-muted">Date Covered <%= @start_date.beginning_of_month.strftime("%B %e, %Y") %> - <%= @start_date.end_of_month.strftime("%B %e, %Y") %> </span><br>
+    <br>
+    <div class="row">
+      <div class="col-md-3">
+        <small>AMORTIZATION COUNT</small>
+        <h4 class="number"><%= @amortization_schedules.count %></h4>
+      </div>
+      <div class="col-md-3">
+        <small>TOTAL PRINCIPAL </small>
+        <h4 class="number"><%= number_to_currency @amortization_schedules.sum(&:principal) %></h4>
+      </div>
+      <div class="col-md-3">
+        <small>TOTAL INTEREST </small>
+        <h4 class="number"><%= number_to_currency @amortization_schedules.sum(&:interest) %></h4>
+      </div><div class="col-md-3">
+        <small>TOTAL AMORTIZATION </small>
+        <h4 class="number"><%= number_to_currency @amortization_schedules.sum(&:total_amortization) %></h4>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="row">
   <div class="col-md-12">
     <div class="card">

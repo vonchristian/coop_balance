@@ -11,54 +11,70 @@ module LoansModule
         @organization = args[:organization]
         @view_context = args[:view_context]
         heading
+        summary
         loans_table
+        font Rails.root.join("app/assets/fonts/open_sans_light.ttf")
       end
       private
       def price(number)
         view_context.number_to_currency(number, :unit => "P ")
       end
       def heading
-          bounding_box [300, 770], width: 50 do
-            image "#{Rails.root}/app/assets/images/#{cooperative.abbreviated_name.downcase}_logo.jpg", width: 50, height: 50
-          end
-          bounding_box [360, 770], width: 200 do
-              text "#{cooperative.abbreviated_name }", style: :bold, size: 20
-              text "#{cooperative.name.try(:upcase)}", size: 8
-              text "#{cooperative.address}", size: 8
-          end
-          bounding_box [0, 770], width: 400 do
-            text "LOAN DISBURSEMENTS REPORT", style: :bold, size: 12
-            text "From: #{from_date.strftime("%B %e, %Y")}", style: :bold, size: 10
-            text "To: #{to_date.strftime("%B %e, %Y")}", style: :bold, size: 10
-            text "Organization: #{organization.name.try(:upcase)}", size: 10
-
-          end
-          move_down 20
-          stroke do
-            stroke_color '24292E'
-            line_width 1
-            stroke_horizontal_rule
-            move_down 5
-          end
+        bounding_box [280, 770], width: 50 do
+          image "#{Rails.root}/app/assets/images/#{cooperative.abbreviated_name.downcase}_logo.jpg", width: 55, height: 55
         end
+        bounding_box [340, 770], width: 200 do
+            text "#{cooperative.abbreviated_name }", style: :bold, size: 20
+            text "#{cooperative.name.try(:upcase)}", size: 8
+            text "#{cooperative.address}", size: 8
+        end
+        bounding_box [0, 770], width: 400 do
+          text "LOAN RELEASES", style: :bold, size: 12
+          move_down 2
+          text "Date Covered: #{from_date.strftime("%b. %e, %Y")} - #{to_date.strftime("%b. %e, %Y")}", size: 10
+        end
+        move_down 35
+        stroke do
+          stroke_color 'CCCCCC'
+          line_width 0.5
+          stroke_horizontal_rule
+          move_down 20
+        end
+      end
+      def summary
+        text "SUMMARY", size: 10, style: :bold
+        table([["Loan Count", "#{loans.count}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10}, column_widths: [120, 100]) do
+          cells.borders = []
+          column(1).align = :right
+        end
+        table([["Total Loan Amount", "#{price loans.sum(&:loan_amount)}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10}, column_widths: [120, 100]) do
+          cells.borders = []
+          column(1).align = :right
+        end
+        table([["Total Net Proceed", "#{price loans.sum(&:net_proceed)}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10}, column_widths: [120, 100]) do
+          cells.borders = []
+          column(1).align = :right
+        end
+        move_down 10
+      end
 
       def loans_table
         if loans.any?
-          table(table_data, header: true, cell_style: { size: 9, font: "Helvetica"}) do
-            column(1).align = :right
+          table(table_data, header: true, cell_style: { size: 9}, column_widths: [110, 110, 100, 95, 95]) do
+            column(3).align = :right
+            column(4).align = :right
             row(0).font_style = :bold
             row(0).background_color = 'DDDDDD'
           end
         else
-          "NO Loan Releases"
+          "No Loan Releases"
         end
       end
 
     def table_data
       move_down 5
-      [["Borrower", "Type of Loan", "Organization", "Date Disbursed", "Loan Amount", "Net Proceed"]] +
-      @table_data ||= loans.map { |e| [e.borrower_name, e.loan_product_name, e.organization_name, e.disbursement_date.try(:strftime, ("%B %e, %Y")), price(e.loan_amount), price(e.net_proceed)]} +
-      [["", "","", "#{price(loans.sum(&:loan_amount))}", "#{price(loans.sum(&:net_proceed))}"]]
+      [["Borrower", "Type of Loan", "Date Disbursed", "Loan Amount", "Net Proceed"]] +
+      @table_data ||= loans.map { |e| [e.borrower_name, e.loan_product_name, e.disbursement_date.try(:strftime, ("%B %e, %Y")), price(e.loan_amount), price(e.net_proceed)] }
     end
     end
   end

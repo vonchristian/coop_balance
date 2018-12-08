@@ -1,6 +1,8 @@
 module LoansModule
   module LoanProducts
     class InterestConfig < ApplicationRecord
+      extend Totalable
+
       enum amortization_type: [:annually, :straight_balance]
       enum calculation_type: [:add_on, :prededucted]
       enum rate_type: [:monthly_rate, :annual_rate]
@@ -15,8 +17,12 @@ module LoansModule
       def self.current
         all.order(created_at: :desc).first
       end
+
+      def self.accounts
+        interest_revenue_accounts
+      end
       def self.interest_revenue_accounts
-        accounts = pluck(:interest_revenue_account_id)
+        accounts = pluck(:interest_revenue_account_id).uniq
         AccountingModule::Account.where(id: accounts)
       end
 

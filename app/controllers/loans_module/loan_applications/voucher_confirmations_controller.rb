@@ -4,6 +4,7 @@ module LoansModule
       def create
         @loan_application = current_cooperative.loan_applications.find(params[:loan_application_id])
         @voucher = current_cooperative.vouchers.find(params[:voucher_id])
+        @employee = current_user
         ActiveRecord::Base.transaction do
           LoansModule::LoanCreationProcessing.new(loan_application: @loan_application, employee: current_user).process!
           @loan = LoansModule::LoanCreationProcessing.new(loan_application: @loan_application, employee: current_user).find_loan

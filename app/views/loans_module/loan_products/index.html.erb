@@ -23,3 +23,24 @@
     </div>
   </div>
 </div>
+<% sample_data = [] %>
+  <% @loan_products.all.each do |loan_product| %>
+
+    <% sample_data << { loan_product.name => loan_product.loans.current_loans.count } %>
+  <% end %>
+  <%= pie_chart (Hash[*sample_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"}, legend: true, label: "Value" %>
+  <hr>
+  <% loan_product_current_loans_data = [] %>
+  <% LoansModule::LoanProduct.all.each do |loan_product| %>
+    <% loan_product_current_loans_data << { loan_product.name => loan_product.loans.current_loans.count } %>
+  <% end %>
+
+  <% loan_product_past_loans_data = [] %>
+  <% LoansModule::LoanProduct.all.each do |loan_product| %>
+    <% loan_product_past_loans_data << { loan_product.name => loan_product.loans.past_due.count } %>
+  <% end %>
+
+  <%= bar_chart [
+    {name: "Current Loans", data: (Hash[*loan_product_current_loans_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}) },
+    {name: "Past Due", data: (Hash[*loan_product_past_loans_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}) }
+  ], width: "1000px", height: "800px" %>

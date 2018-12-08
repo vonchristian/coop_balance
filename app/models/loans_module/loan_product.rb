@@ -45,6 +45,10 @@ module LoansModule
       LoansModule::LoanProducts::InterestConfig.interest_revenue_accounts
     end
 
+    def self.penalty_revenue_accounts
+      LoansModule::LoanProducts::PenaltyConfig.penalty_revenue_accounts
+    end
+
 
     def self.loan_payments(options={})
       accounts.debit_entries  +
