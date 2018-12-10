@@ -50,9 +50,10 @@ module LoansModule
     end
 
 
-    def self.loan_payments(options={})
-      accounts.debit_entries  +
-      interest_revenue_accounts.debit_entries
+    def self.loan_payments(args={})
+      accounts.credits_balance(args) +
+      interest_revenue_accounts.credits_balance(args) +
+      penalty_revenue_accounts.credits_balance(args)
     end
 
 

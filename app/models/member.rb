@@ -3,6 +3,7 @@ class Member < ApplicationRecord
   include CurrentAddress
   include CurrentTin
   extend TinMonitoring
+  extend PercentActive
 
   pg_search_scope :text_search, :against => [ :first_name, :middle_name, :last_name]
   multisearchable against: [:first_name, :last_name, :middle_name]
@@ -67,9 +68,7 @@ class Member < ApplicationRecord
     end
   end
 
-  def self.percent_active(args={})
-    (updated_at(args).count / self.count.to_f) * 100
-  end
+  
 
   def self.active_at(args={})
     updated_at(args)

@@ -8,6 +8,7 @@ module LoansModule
     include LoansModule::Loans::Penalty
     include LoansModule::Loans::Amortization
     include InactivityMonitoring
+    extend PercentActive
 
     pg_search_scope :text_search, :against => [:borrower_full_name, :tracking_number]
     multisearchable against: [:borrower_full_name]
@@ -116,6 +117,12 @@ module LoansModule
       where(archived: false)
     end
 
+    def self.for_entry(args={})
+      entry = args[:entry]
+      ids   = entry.amounts.for_loans.pluck(:commercial_document_id)
+      where(id: ids.uniq.flatten)
+    end
+
     def self.total_balance
       ids = pluck(:id)
       LoansModule::LoanProduct.total_balance(commercial_document: ids)
@@ -213,13 +220,6 @@ module LoansModule
 
     def self.payments_total
       all.map{|loan| loan.payments_total }.sum
-    end
-
-    def self.loan_payments(args={})
-      LoansModule::LoanProduct.accounts.credit_entries.not_cancelled.entered_on() +
-      LoansModule::LoanProduct.past_due_accounts.credit_entries.not_cancelled.entered_on(args) +
-      LoansModule::LoanProducts::InterestConfig.interest_revenue_accounts.debit_entries.not_cancelled.entered_on(args) +
-      LoansModule::LoanProducts::PenaltyConfig.penalty_revenue_accounts.debit_entries.not_cancelled.entered_on(args)
     end
 
     def loan_payments(args={})

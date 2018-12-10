@@ -1,5 +1,10 @@
-Active Members 
+Active Members
 <h4 class="card-title"> <%= Member.percent_active(from_date: Date.today.beginning_of_year, to_date: Date.today.end_of_year) %> %
+Active Savings
+  <h4 class="card-title"> <%= MembershipsModule::Saving.percent_active(from_date: Date.today.beginning_of_year, to_date: Date.today.end_of_year) %> %
+Active Share Capitals
+<h4 class="card-title"> <%= MembershipsModule::ShareCapital.percent_active(from_date: Date.today.beginning_of_year, to_date: Date.today.end_of_year) %> %
+
 <div class="col-md-6">
   <div  class="card">
     <div class="card-header">

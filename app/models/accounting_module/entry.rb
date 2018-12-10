@@ -48,6 +48,11 @@ module AccountingModule
       order(created_at: :desc).first
     end
 
+    def self.loan_payments(args={})
+      ids = amounts.where(commercial_document_type: 'LoansModule::Loan').pluck(:entry_id)
+      where(id: ids.uniq.flatten)
+    end
+
     def self.not_cancelled
       where(cancelled: false)
     end

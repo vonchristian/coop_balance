@@ -18,7 +18,7 @@ module LoansModule
           update_terms
         end
       end
-      
+
       private
       def create_entry
         entry = AccountingModule::Entry.new(
@@ -27,7 +27,7 @@ module LoansModule
           cooperative:         cooperative,
           commercial_document: voucher.payee,
           description:         voucher.description,
-          recorder:            voucher.preparer,
+          recorder:            employee,
           reference_number:    voucher.reference_number,
           previous_entry:      find_recent_entry,
           previous_entry_hash: find_recent_entry.encrypted_hash,
@@ -40,11 +40,18 @@ module LoansModule
               commercial_document: amount.commercial_document)
           end
 
-          voucher.voucher_amounts.credit.each do |amount|
+          voucher.voucher_amounts.credit.excluding_account(account: loan.loan_product_interest_revenue_account).each do |amount|
             entry.credit_amounts.build(
               account: amount.account,
               amount: amount.amount,
               commercial_document: amount.commercial_document)
+          end
+
+          voucher.voucher_amounts.credit.for_account(account: loan.loan_product_interest_revenue_account).each do |amount|
+            entry.credit_amounts.build(
+              account: amount.account,
+              amount: amount.amount,
+              commercial_document: loan)
           end
 
           voucher.voucher_amounts.debit.for_account(account: loan.loan_product_loans_receivable_current_account).each do |amount|

@@ -27,6 +27,25 @@ module MembershipsModule
     	it { is_expected.to delegate_method(:interest_rate).to(:saving_product).with_prefix }
     end
 
+    it "#entries" do
+      updated_saving = create(:saving)
+      not_updated_saving = create(:saving)
+      employee = create(:user, role: 'teller')
+      cash_on_hand = create(:asset)
+      employee.cash_accounts << cash_on_hand
+      deposit = build(:entry, commercial_document: updated_saving, entry_date: Date.today)
+      deposit.credit_amounts << build(:credit_amount,  amount: 5_000, commercial_document: updated_saving, account: updated_saving.saving_product_account)
+      deposit.debit_amounts << build(:debit_amount, amount: 5_000, commercial_document: updated_saving, account: cash_on_hand)
+      deposit.save
+
+      expect(updated_saving.entries).to include(deposit)
+      expect(not_updated_saving.entries).to_not include(deposit)
+
+    end
+
+
+
+
     it '.updated_at' do
       updated_saving = create(:saving)
       not_updated_saving = create(:saving)

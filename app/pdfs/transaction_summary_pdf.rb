@@ -1,7 +1,8 @@
+require 'prawn/icon'
 class TransactionSummaryPdf < Prawn::Document
   attr_reader :employee, :date, :view_context, :cooperative
   def initialize(args={})
-    super(margin: 40, page_size: "A4", page_layout: :portrait)
+    super(margin: 30, page_size: "A4", page_layout: :portrait)
     @employee = args[:employee]
     @cooperative = @employee.cooperative
     @date = args[:date]
@@ -16,7 +17,7 @@ class TransactionSummaryPdf < Prawn::Document
     expenses
     revenues
     summary_of_accounts
-
+    font Rails.root.join("app/assets/fonts/open_sans_light.ttf")
   end
   private
   def price(number)
@@ -44,10 +45,13 @@ class TransactionSummaryPdf < Prawn::Document
     end
   end
   def cash_books
-    text "Cash Books",  color: "4A86CF", style: :bold, size: 10
-    table(cash_books_data, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 150, 100]) do
+    text "Cash Accounts",  color: "4A86CF", style: :bold, size: 10
+    table(cash_books_data, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [10, 140, 110, 110, 110]) do
       cells.borders = []
       column(2).align = :right
+      column(3).align = :right
+      column(4).align = :right
+
 
     end
     stroke do
@@ -58,7 +62,8 @@ class TransactionSummaryPdf < Prawn::Document
     end
   end
   def cash_books_data
-    [["", "Fund Transfer from Treasury"]]
+    [["", "ACCOUNT", "DEBITS", "CREDITS", "BALANCE"]] +
+    @cash_books_data ||= cooperative.cash_accounts.map{ |a|["", a.name, price(a.debits_balance(to_date: date)), price(a.credits_balance(to_date: date)), price(a.balance(to_date: date))]}
   end
     def savings_deposits
      text "Savings Deposits", style: :bold, size: 10,  color: "4A86CF"
@@ -207,7 +212,7 @@ class TransactionSummaryPdf < Prawn::Document
     text "Loan Releases", style: :bold, size: 10, color: "DB4437"
     if LoansModule::Loan.disbursed.disbursed_on(from_date: date, to_date: date).disbursed_by(employee_id: employee.id).present?
 
-      table(loan_releases_data, header: true, cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [40, 160, 100, 110, 100]) do
+      table(loan_releases_data, header: true, cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [10, 150, 50, 100, 100, 100, 100]) do
         cells.borders = []
       end
     else
@@ -231,29 +236,45 @@ class TransactionSummaryPdf < Prawn::Document
 
    def loan_collections
     text "Loan Collections", style: :bold, size: 10, color: "DB4437"
-    if cooperative.loans.loan_payments(employee_id: employee.id, from_date: date.beginning_of_day, to_date: date.end_of_day).present?
-      table(loan_collections_data, header: true, cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [40, 160, 100, 110, 100]) do
+    # if cooperative.entries.loan_payments.recorded_by(recorder: employee).entered_on(from_date: date, to_date: date).present?
+      table([["", "Borrower", "OR #", "Principal", "Interest", "Penalty", "Total"]], header: true, cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [10, 120, 70, 70, 70, 70, 100]) do
         cells.borders = []
+        column(3).align = :right
+        column(4).align = :right
+        column(5).align = :right
+        column(6).align = :right
+
+
       end
-    else
-      move_down 5
-      text "    No Loan Collections for #{date.strftime("%B %e, %Y")}", size: 10
-    end
+    # else
+    #   move_down 5
+    #   text "    No Loan Collections for #{date.strftime("%B %e, %Y")}", size: 10
+    # end
     stroke do
       stroke_color 'CCCCCC'
       line_width 0.2
       stroke_horizontal_rule
       move_down 5
     end
-  end
 
-  def loan_collections_data
-    if cooperative.loans.loan_payments(employee_id: employee.id, from_date: date.beginning_of_day, to_date: date.end_of_day).present?
-       [["", "Borrower", "OR #", "Amount", ""]] +
-      loan_collections_data ||= cooperative.loans.loan_payments(employee_id: employee.id, from_date: date.beginning_of_day, to_date: date.end_of_day).uniq.map{|a| ["", a.commercial_document.try(:name), a.reference_number, price(a.debit_amounts.sum(:amount))]}
-    else
-      [[""]]
+    cooperative.entries.loan_payments.recorded_by(recorder: employee).entered_on(from_date: date, to_date: date).order(entry_date: :desc).each do |entry|
+      table(
+        cooperative.loans.for_entry(entry: entry).map{ |a| ["", "#{a.borrower_name}","#{entry.reference_number}", price(entry.credit_amounts.loan_principal_amount(loan: a)), price(entry.credit_amounts.loan_interest_amount(loan: a)), price(entry.credit_amounts.loan_penalty_amount(loan: a)), price(entry.credit_amounts.total_loan_payment(loan: a))] }, column_widths: [10, 120, 70, 70, 70, 70, 100], cell_style: { inline_format: true, size: 9, padding: [0,0,0,0]}) do
+        cells.borders = []
+        column(3).align = :right
+        column(4).align = :right
+        column(5).align = :right
+        column(6).align = :right
+      end
+    table(
+      cooperative.loans.for_entry(entry: entry).map{ |a| ["", "","", price(entry.credit_amounts.loan_principal_amount), price(entry.credit_amounts.loan_interest_amount(loan: a)), price(entry.credit_amounts.loan_penalty_amount(loan: a)), price(entry.credit_amounts.total_loan_payment(loan: a))] }, column_widths: [10, 120, 70, 70, 70, 70, 100], cell_style: { inline_format: true, size: 9, padding: [0,0,0,0]}) do
+      cells.borders = []
+      column(3).align = :right
+      column(4).align = :right
+      column(5).align = :right
+      column(6).align = :right
     end
+  end
   end
 
 
@@ -339,8 +360,8 @@ class TransactionSummaryPdf < Prawn::Document
     [["",
       "",
       "",
-      "#{price cooperative.accounts.updated_at(from_date: date.beginning_of_day, to_date: date.end_of_day).updated_by(employee).debits_balance }",
-      "#{price cooperative.accounts.updated_at(from_date: date.beginning_of_day, to_date: date.end_of_day).updated_by(employee).credits_balance }"]]
+      "#{price cooperative.accounts.updated_at(from_date: date.beginning_of_day, to_date: date.end_of_day).updated_by(employee).debits_balance(from_date: @date, to_date: @date) }",
+      "#{price cooperative.accounts.updated_at(from_date: date.beginning_of_day, to_date: date.end_of_day).updated_by(employee).credits_balance(from_date: @date, to_date: @date) }"]]
 
   end
 

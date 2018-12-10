@@ -7,7 +7,7 @@ require 'mina/puma'
 # RAILS_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1 bundle exec rails db:drop
 
 set :whenever_name, 'production'
-set :domain,        '192.168.254.110'
+set :domain,        '192.168.254.131'
 set :deploy_to,     '/var/www/coopcatalyst'
 set :repository,    'git@gitlab.com:vonchristian/coop_catalyst.git'
 set :branch,        'master'

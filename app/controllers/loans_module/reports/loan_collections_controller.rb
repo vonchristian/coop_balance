@@ -4,7 +4,7 @@ module LoansModule
       def index
         @from_date = params[:from_date] ? DateTime.parse(params[:from_date]) : DateTime.now.at_beginning_of_month
         @to_date = params[:to_date] ? DateTime.parse(params[:to_date]) : DateTime.now
-        @collections = current_cooperative.loans.loan_payments(from_date: @from_date, to_date: @to_date)
+        @collections = current_cooperative.entries.loan_payments.entered_on(from_date: @from_date, to_date: @to_date).order(entry_date: :desc)
         @cooperative = current_cooperative
         respond_to do |format|
           format.html

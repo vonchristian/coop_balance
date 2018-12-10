@@ -2,7 +2,7 @@
 class Voucher < ApplicationRecord
   include PgSearch
   has_secure_token
-  pg_search_scope :text_search, :against => [:number, :description]
+  pg_search_scope :text_search, :against => [:reference_number, :description]
   multisearchable against: [:number, :description]
 
   belongs_to :cooperative

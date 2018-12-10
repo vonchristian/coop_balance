@@ -2,6 +2,8 @@ module MembershipsModule
   class ShareCapital < ApplicationRecord
     include PgSearch
     include InactivityMonitoring
+    extend  PercentActive
+
     pg_search_scope :text_search, :against => [:account_number, :account_owner_name]
     multisearchable against: [:account_number, :account_owner_name]
 
@@ -73,11 +75,9 @@ module MembershipsModule
     end
 
     def entries
-      accounting_entries = []
-      share_capital_product_paid_up_account.amounts.includes(:entry => [:credit_amounts]).where(commercial_document: self).each do |amount|
-        accounting_entries << amount.entry
-      end
-      accounting_entries.uniq
+      entry_ids = []
+      entry_ids << share_capital_product_paid_up_account.amounts.where(commercial_document: self).pluck(:entry_id)
+      AccountingModule::Entry.where(id: entry_ids.uniq.flatten)
     end
 
     def self.subscribed_shares

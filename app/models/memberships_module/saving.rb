@@ -2,6 +2,7 @@ module MembershipsModule
   class Saving < ApplicationRecord
     include PgSearch
     include InactivityMonitoring
+    extend  PercentActive
 
     pg_search_scope :text_search, against: [:account_number, :account_owner_name]
     multisearchable against: [:account_number, :account_owner_name]
@@ -51,15 +52,12 @@ module MembershipsModule
     end
 
     def entries
-      accounting_entries = []
-      saving_product_account.amounts.includes(:entry => [:credit_amounts]).where(commercial_document: self).each do |amount|
-        accounting_entries << amount.entry
-      end
-      saving_product_interest_expense_account.amounts.includes(:entry =>[:credit_amounts]).where(commercial_document: self).each do |amount|
-        accounting_entries << amount.entry
-      end
-      accounting_entries.uniq
+      entry_ids = []
+      entry_ids << saving_product_account.amounts.where(commercial_document: self).pluck(:entry_id)
+      entry_ids << saving_product_interest_expense_account.amounts.where(commercial_document: self).pluck(:entry_id)
+      AccountingModule::Entry.where(id: entry_ids.uniq.flatten)
     end
+
     def closed?
       saving_product_closing_account.amounts.where(commercial_document: self).present?
     end
@@ -96,9 +94,6 @@ module MembershipsModule
     def name_and_balance
       "#{name} - #{balance.to_f}"
     end
-    def post_interests_earned(date)
-      InterestPosting.new.post_interests_earned(self, date)
-    end
 
     def balance(args={})
       from_date = args[:from_date] || Date.today - 999.years
@@ -121,38 +116,26 @@ module MembershipsModule
       !closed? && balance > 0.0
     end
 
-
-    def average_daily_balance(args={})
+    def averaged_balance(args={})
       balances =[]
       to_date = args[:to_date]
-      starting_date = saving_product.starting_date(to_date)
-      ending_date = saving_product.ending_date(to_date)
+      starting_date = to_date.beginning_of_year
+      ending_date = to_date.end_of_year
 
-
+      months = []
        (starting_date..ending_date).each do |date|
-        balances << saving_product_account.balance(commercial_document: self, to_date: date)
+        months << date.end_of_month
       end
 
-      balances.sum / (starting_date..ending_date).count.to_f
-    end
-
-    def average_monthly_balance(args={})
-      balances =[]
-      to_date = args[:to_date]
-      starting_date = saving_product.starting_date(to_date)
-      ending_date = saving_product.ending_date(to_date)
-
-
-       (starting_date..ending_date).each do |date|
-        balances << saving_product_account.balance(commercial_document: self, to_date: date.end_of_month)
+      months.uniq.each do |month|
+        balances <<  balance(to_date: month.end_of_month)
       end
-
-      balances.sum / (starting_date..ending_date).count.to_f
+      balances.sum / 12.0
     end
 
 
     def computed_interest(args={})
-      average_daily_balance(to_date: args[:to_date]) * saving_product_applicable_rate
+      averaged_balance(to_date: args[:to_date]) * saving_product_applicable_rate
     end
 
 

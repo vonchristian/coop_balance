@@ -11,22 +11,17 @@
              :annually?,
              to: :program
     delegate :name, to: :subscriber, prefix: true
-    def self.for(options={})
+
+    def self.for_program(options={})
       where(program: options[:program])
     end
-    def percent_type?
-      false
-    end
 
-    def regular?
-      false
-    end
-    def amount
-      contribution
-    end
 
 	  def self.unpaid(options={})
-      all.select{|a| a.unpaid?(options) }
+      member_ids = Member.pluck(:id)
+      account = args[:account]
+      unpaid = account.amounts.where.not(commercial_document_id: member_ids)
+      Member.where(id: unpaid)
     end
     def self.paid(options={})
       all.select{|a| a.paid?(options) }

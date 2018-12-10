@@ -1,3 +1,45 @@
-<% @cash_account.entries.each do |entry| %>
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-6">
+        <p> Transactions Summary (Date: Covered
+          <%= @from_date.strftime("%b. %e, %Y") %> - <%= @to_date.strftime("%b. %e, %Y") %>
+        )</p>
+        <time datetime="2014-09-24" class="date-as-calendar inline-flex size0_75x">
+        <span class="weekday"><%= @from_date.strftime("%A") %></span>
+        <span class="day"><%= @from_date.strftime("%e") %></span>
+        <span class="month"><%= @from_date.strftime("%B") %> </span>
+        <span class="year"><%= @from_date.strftime("%Y") %></span>
+        </time>
+      </div>
+      <div class="col-md-6">
+        <%= link_to 'This Day', treasury_module_cash_account_path(cash_account, from_date: Date.today, to_date: Date.today), class: "btn btn-outline-primary btn-sm" %>
+        <%= link_to 'Yesterday', treasury_module_cash_account_path(cash_account, from_date: Date.today.yesterday, to_date: Date.today.yesterday), class: "btn btn-outline-primary btn-sm" %>
+
+        <%= link_to 'This Month', treasury_module_cash_account_path(cash_account, from_date: Date.today.beginning_of_month, to_date: Date.today.end_of_month), class: "btn btn-outline-primary btn-sm" %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <small>RECEIPTS</small>
+        <h4 class="card-title number text-success">
+          <%= number_to_currency cash_account.debits_balance(from_date: @from_date, to_date: @to_date) %>
+        </h4>
+      </div>
+      <div class="col-md-3">
+        <small>DISBURSEMENTS</small>
+        <h4 class="card-title number text-danger">
+          <%= number_to_currency cash_account.credits_balance(from_date: @from_date, to_date: @to_date) %>
+        </h4>
+      </div>
+      <div class="col-md-3">
+        <small>TRANSACTION COUNT</small>
+          <h3 class="card-title number"> <%= @entries.count %></h3>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+<% @entries.each do |entry| %>
   <%= render 'accounting_module/entries/partials/header', entry: entry %>
 <% end %>

@@ -30,7 +30,7 @@
           <span class="text-muted"><%= program_subscription.description %></span>
         </div>
         <div class="col-md-6">
-          <%= number_to_currency program_subscription.contribution %>
+          <%= number_to_currency program_subscription.amount %>
           <% if program_subscription.paid?(from_date: Date.today.beginning_of_year, to_date: Date.today.end_of_year) %>
             <span class="badge bg-success"> Paid </span>
           <% else %>

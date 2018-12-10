@@ -9,11 +9,12 @@
         </ul>
       </div>
     </div>
+
       <% if current_page? treasury_module_cash_account_path(cash_account) %>
-        <%= render 'treasury_module/cash_accounts/partials/transactions' %>
+        <%= render 'treasury_module/cash_accounts/partials/transactions', cash_account: @cash_account %>
       <% end %>
-      <% if current_page? treasury_module_cash_account_path(cash_account) %>
-        <%= render 'treasury_module/cash_accounts/partials/reports' %>
+      <% if current_page? treasury_module_cash_account_reports_path(cash_account) %>
+        <%= render 'treasury_module/cash_accounts/partials/reports', cash_account: @cash_account %>
       <% end %>
     </div>
   </div>

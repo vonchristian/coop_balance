@@ -52,7 +52,7 @@ module LoansModule
     end
 
     def create_voucher_amounts(loan)
-      loan.voucher_amounts << loan_application.voucher_amounts
+      loan.amortization_schedules << loan_application.amortization_schedules
     end
 
     def create_loan_interests(loan)

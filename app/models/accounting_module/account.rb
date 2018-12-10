@@ -130,7 +130,7 @@ module AccountingModule
 
     def self.credits_balance(options={})
       accounts_balance = BigDecimal.new('0')
-      accounts = self.active.all
+      accounts = self.all
       accounts.each do |account|
         if account.contra
           accounts_balance -= account.credits_balance(options)

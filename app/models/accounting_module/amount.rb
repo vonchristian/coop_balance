@@ -60,6 +60,41 @@ module AccountingModule
       not_cancelled.where('entries.entry_date' => date_range.start_date..date_range.end_date)
     end
 
+    def self.loan_principal_amount(args={})
+      account_ids = LoansModule::LoanProduct.accounts.ids
+      if args[:loan].present?
+        where(commercial_document: args[:loan]).where(account_id: account_ids).total
+      else
+        where(account_id: account_ids).total
+      end
+    end
+    def self.for_loans
+      where(commercial_document_type: "LoansModule::Loan")
+    end
+
+    def self.loan_interest_amount(args={})
+      account_ids = LoansModule::LoanProduct.interest_revenue_accounts.ids
+      if args[:loan].present?
+        where(commercial_document: args[:loan]).where(account_id: account_ids).total
+      else
+        where(account_id: account_ids).total
+      end
+    end
+
+    def self.loan_penalty_amount(args={})
+      account_ids = LoansModule::LoanProduct.penalty_revenue_accounts.ids
+      if args[:loan].present?
+        where(commercial_document: args[:loan]).where(account_id: account_ids).total
+      else
+        where(account_id: account_ids).total
+      end
+    end
+    def self.total_loan_payment(args={})
+      loan_principal_amount(args) +
+      loan_interest_amount(args) +
+      loan_penalty_amount(args)
+    end
+
     def debit?
       type == "AccountingModule::DebitAmount"
     end
