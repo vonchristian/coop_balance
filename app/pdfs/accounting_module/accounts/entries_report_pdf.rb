@@ -57,7 +57,7 @@ module AccountingModule
           move_down 10
           text "No entries data.", align: :center
         else
-          table([["DATE", "DESCRIPTION", "REFERENCE #", "MEMBER/PAYEE",  "ACCOUNT", "AMOUNT"]], cell_style: { inline_format: true, size: 6, font: "Helvetica"}, column_widths: [50, 150, 50, 100,  100, 80]) do
+          table([["DATE", "DESCRIPTION", "REFERENCE", "MEMBER/PAYEE",  "ACCOUNT", "AMOUNT"]], cell_style: { inline_format: true, size: 6, font: "Helvetica"}, column_widths: [50, 150, 50, 100,  100, 80]) do
             row(0).font_style= :bold
             row(0).background_color = 'DDDDDD'
           end
@@ -85,4 +85,3 @@ module AccountingModule
     end
   end
 end
-

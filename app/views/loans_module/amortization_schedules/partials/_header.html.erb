@@ -22,12 +22,12 @@
       <br>
       <div class="row">
         <div class="col-md-3">
-
-            <small>  DUE DATE </small><br>
-
-            <h4 class="card-title">
-              <%= schedule.date.strftime("%b. %e, %Y") %>
-            </h4>
+            <time datetime="2014-09-24" class="date-as-calendar inline-flex size1_25x">
+            <span class="weekday"><%= schedule.date.strftime("%A") %></span>
+            <span class="day"><%= schedule.date.strftime("%e") %></span>
+            <span class="month"><%= schedule.date.strftime("%B") %> </span>
+            <span class="year"><%= schedule.date.strftime("%Y") %></span>
+            </time>
 
         </div>
         <div class="col-md-5">
@@ -66,8 +66,9 @@
         </div>
 
       </div>
+      <br>
       <%= link_to 'View Details', loans_module_amortization_schedule_path(schedule), class: "btn btn-primary" %>
-      
+
     </div>
   </div>
 <% end %>

@@ -5,7 +5,7 @@ module AccountingModule
       super(margin: 30, page_size: "A4", page_layout: :portrait)
       @entries      = args[:entries]
       @employee     = args[:employee]
-      @cooperative  = @employee.cooperative
+      @cooperative  = args[:cooperative]
       @view_context = args[:view_context]
       @from_date    = args[:from_date]
       @to_date      = args[:to_date]
@@ -57,6 +57,7 @@ module AccountingModule
       text "ENTRIES COUNT", size: 8
       text "#{entries.count}", size: 14
       move_down 5
+      text "#{employee.full_name}"
       stroke do
         stroke_color 'CCCCCC'
         line_width 0.5
@@ -65,7 +66,7 @@ module AccountingModule
       end
     end
     def entries_table
-      if !@entries.any?
+      if !entries.any?
         move_down 10
         text "No entries data.", align: :center
       else
@@ -73,7 +74,7 @@ module AccountingModule
           row(0).font_style= :bold
           row(0).background_color = 'DDDDDD'
         end
-        @entries.order(entry_date: :desc).each do |entry|
+        entries.order(entry_date: :desc).each do |entry|
           table([["#{entry.entry_date.strftime("%B %e, %Y")}", "#{entry.description} #{entry.cancellation_text} - #{entry.cancellation_description}", "#{entry.reference_number}",  "#{display_commercial_document_for(entry).try(:upcase)}",]], cell_style: { size: 9, padding: [5,5,4,0]}, column_widths: [50, 150, 50,  100,  100, 80]) do
             cells.borders = []
           end

@@ -67,6 +67,10 @@ class Member < ApplicationRecord
     end
   end
 
+  def self.percent_active(args={})
+    (updated_at(args).count / self.count.to_f) * 100
+  end
+
   def self.active_at(args={})
     updated_at(args)
   end

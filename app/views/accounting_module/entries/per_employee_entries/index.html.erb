@@ -1,0 +1,12 @@
+<% current_cooperative.users.each do |user| %>
+  <%= link_to accounting_module_per_employee_entries_path(recorder_id: user.id) do %>
+    <span title="<%= user.first_name%>" data-toggle="tooltip"> <%= image_tag(user.avatar, height: 50, width: 50, class: "img-circle") %></span>
+  <% end %>
+<% end %>
+<%= link_to 'View Pdf', accounting_module_per_employee_entries_path(format: 'pdf', recorder_id: @employee.id) %>
+<% @entries.each do |entry| %>
+  <%= render 'accounting_module/entries/partials/header', entry: entry %>
+<% end %>
+<% if @entries.any? %>
+  <center><%= will_paginate @entries %></center>
+<% end %>
