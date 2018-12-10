@@ -1,0 +1,12 @@
+<% current_cooperative.offices.each do |office| %>
+  <%= link_to accounting_module_per_office_entries_path(office_id: @office.id) do %>
+    <%= office.name %>
+  <% end %>
+<% end %>
+<%= link_to 'View Pdf', accounting_module_per_office_entries_path(format: 'pdf', office_id: @office.id) %>
+<% @entries.each do |entry| %>
+  <%= render 'accounting_module/entries/partials/header', entry: entry %>
+<% end %>
+<% if @entries.any? %>
+  <center><%= will_paginate @entries %></center>
+<% end %>

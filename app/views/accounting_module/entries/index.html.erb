@@ -1,3 +1,12 @@
+<div class="card">
+  <div class="card-body">
+    <% current_cooperative.users.each do |user| %>
+      <%= link_to accounting_module_per_employee_entries_path(recorder_id: user.id) do %>
+        <span title="<%= user.first_name%>" data-toggle="tooltip"> <%= image_tag(user.avatar, height: 50, width: 50, class: "img-circle") %></span>
+      <% end %>
+    <% end %>
+  </div>
+</div>
 <div class="row">
   <div class="col-md-3">
     <div class="card">
@@ -41,20 +50,22 @@
     </div>
     <div class="card">
       <div class="card-body">
+        <h3 class="card-title"> Employees </h3>
+        <% current_cooperative.users.each do |user| %>
+          <%= image_tag(user.avatar, height: 50, width: 50, class: "img-circle") %>
+        <% end %>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
         <h3 class="card-title"> Reports </h3>
 
-          <%= link_to 'View (PDF)', accounting_module_entries_path(format: 'pdf', from_date: @from_date, to_date: @to_date, entries: @entries) %>
+          <%= link_to 'View (PDF)', accounting_module_entries_path(format: 'pdf') %>
       </div>
     </div>
   </div>
 
   <div class="col-md-9">
-    <%= @from_date.strftime("%B %e, %Y") %>
-    <%= @to_date.strftime("%B %e, %Y") %>
-
-    <%= @entries.count %>
-    <%= current_cooperative.entries.entered_on(from_date: @from_date, to_date: @to_date).count %>
-
     <% @entries.each do |entry| %>
       <%= render 'accounting_module/entries/partials/header', entry: entry %>
     <% end %>

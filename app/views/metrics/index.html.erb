@@ -1,3 +1,5 @@
+Active Members 
+<h4 class="card-title"> <%= Member.percent_active(from_date: Date.today.beginning_of_year, to_date: Date.today.end_of_year) %> %
 <div class="col-md-6">
   <div  class="card">
     <div class="card-header">
@@ -18,7 +20,7 @@
       <% end %>
       <% savings_balances_data = [] %>
       <% year_dates.uniq.each do |year| %>
-      <% savings_balances_data << { year.end_of_year.strftime("%B %Y") => CoopServicesModule::SavingProduct.total_balances(to_date: year.end_of_year) } %>
+      <% savings_balances_data << { year.end_of_year.strftime("%B %Y") => CoopServicesModule::SavingProduct.total_balance(to_date: year.end_of_year) } %>
       <% end %>
       <%= line_chart (Hash[*savings_balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"} %>
 
@@ -46,7 +48,7 @@
       <% end %>
       <% share_capital_balances_data = [] %>
       <% year_dates.uniq.each do |year| %>
-      <% share_capital_balances_data << { year.end_of_year.strftime("%B %Y") => CoopServicesModule::ShareCapitalProduct.total_balances(to_date: year.end_of_year) } %>
+      <% share_capital_balances_data << { year.end_of_year.strftime("%B %Y") => CoopServicesModule::ShareCapitalProduct.total_balance(to_date: year.end_of_year) } %>
       <% end %>
       <%= line_chart (Hash[*share_capital_balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"} %>
 
