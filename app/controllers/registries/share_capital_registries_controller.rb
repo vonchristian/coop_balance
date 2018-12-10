@@ -1,4 +1,4 @@
-module ManagementModule
+module Registries
   class ShareCapitalRegistriesController < ApplicationController
     def create
       @registry = current_cooperative.share_capital_registries.create!(registry_params)

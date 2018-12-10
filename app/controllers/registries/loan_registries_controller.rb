@@ -1,4 +1,4 @@
-module ManagementModule
+module Registries
   class LoanRegistriesController < ApplicationController
     def create
       @registry = current_cooperative.loan_registries.create(registry_params)
@@ -16,4 +16,3 @@ module ManagementModule
     end
   end
 end
-

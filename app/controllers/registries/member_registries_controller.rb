@@ -1,4 +1,4 @@
-module ManagementModule
+module Registries
   class MemberRegistriesController < ApplicationController
     def create
       @registry = current_cooperative.member_registries.create(registry_params)

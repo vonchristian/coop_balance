@@ -1,9 +1,9 @@
-module ManagementModule
+module Registries
   class TimeDepositRegistriesController < ApplicationController
     def create
       @registry = current_cooperative.time_deposit_registries.create(registry_params)
       if @registry.save
-        redirect_to management_module_settings_url, notice: "Time Deposits uploaded successfully."
+        redirect_to management_module_settings_data_migrations_url, notice: "Time Deposits uploaded successfully."
         @registry.parse_for_records
       else
         render :new
@@ -16,4 +16,3 @@ module ManagementModule
     end
   end
 end
-

@@ -18,11 +18,11 @@ class BankAccount < ApplicationRecord
    cash_account.balance(commercial_document: self)
   end
 
-  def deposits
+  def debits_balance(args={})
    cash_account.debits_balance(commercial_document: self)
   end
 
-  def withdrawals
+  def credits_balance(args={})
     cash_account.credits_balance(commercial_document: self)
   end
 

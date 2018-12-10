@@ -1,4 +1,4 @@
-module ManagementModule
+module Registries
   class SavingsAccountRegistriesController < ApplicationController
     def create
       @registry = current_cooperative.savings_account_registries.create(registry_params)
