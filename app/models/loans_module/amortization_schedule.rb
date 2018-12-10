@@ -147,11 +147,7 @@ module LoansModule
     end
 
 		def self.starting_date(loan)
-      if loan.disbursed?
-        loan.disbursement_date
-      else
-        loan.application_date
-      end
+      loan.application_date
     end
 
 		def self.principal_amount_for(loan)
