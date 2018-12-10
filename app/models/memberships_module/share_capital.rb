@@ -18,6 +18,7 @@ module MembershipsModule
             :subscription_account,
             :closing_account_fee,
             :default_product?,
+            :interest_payable_account,
             :cost_per_share,
              to: :share_capital_product, prefix: true
     delegate :name, to: :office, prefix: true
@@ -48,8 +49,7 @@ module MembershipsModule
 
 
     def capital_build_ups(args={})
-      share_capital_product_paid_up_account.amounts.where(commercial_document: self) +
-      share_capital_product_paid_up_account.amounts.where(commercial_document: self.subscriber)
+      share_capital_product_paid_up_account.amounts.where(commercial_document: self)
     end
 
 
@@ -104,6 +104,12 @@ module MembershipsModule
     end
     def name
       account_owner_name || subscriber_name
+    end
+
+
+    def computed_interest(args={})
+      net_income_distributable = args[:net_income_distributable]
+      averaged_monthly_balances / net_income_distributable
     end
 
     def set_balance_status

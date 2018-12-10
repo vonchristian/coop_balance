@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_07_103304) do
+ActiveRecord::Schema.define(version: 2018_12_09_235905) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -183,11 +183,14 @@ ActiveRecord::Schema.define(version: 2018_12_07_103304) do
     t.string "account_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "account_id"
-    t.uuid "earned_interest_account_id"
-    t.index ["account_id"], name: "index_bank_accounts_on_account_id"
+    t.uuid "interest_revenue_account_id"
+    t.uuid "cash_account_id"
+    t.uuid "office_id"
+    t.datetime "last_transaction_date"
+    t.index ["cash_account_id"], name: "index_bank_accounts_on_cash_account_id"
     t.index ["cooperative_id"], name: "index_bank_accounts_on_cooperative_id"
-    t.index ["earned_interest_account_id"], name: "index_bank_accounts_on_earned_interest_account_id"
+    t.index ["interest_revenue_account_id"], name: "index_bank_accounts_on_interest_revenue_account_id"
+    t.index ["office_id"], name: "index_bank_accounts_on_office_id"
   end
 
   create_table "barangays", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1133,7 +1136,9 @@ ActiveRecord::Schema.define(version: 2018_12_07_103304) do
     t.decimal "closing_account_fee", default: "0.0"
     t.decimal "minimum_balance", default: "0.0"
     t.uuid "cooperative_id"
+    t.uuid "interest_payable_account_id"
     t.index ["cooperative_id"], name: "index_share_capital_products_on_cooperative_id"
+    t.index ["interest_payable_account_id"], name: "index_share_capital_products_on_interest_payable_account_id"
     t.index ["name"], name: "index_share_capital_products_on_name"
     t.index ["paid_up_account_id"], name: "index_share_capital_products_on_paid_up_account_id"
     t.index ["subscription_account_id"], name: "index_share_capital_products_on_subscription_account_id"
@@ -1443,9 +1448,10 @@ ActiveRecord::Schema.define(version: 2018_12_07_103304) do
   add_foreign_key "amount_adjustments", "voucher_amounts"
   add_foreign_key "amounts", "accounts"
   add_foreign_key "amounts", "entries"
-  add_foreign_key "bank_accounts", "accounts"
-  add_foreign_key "bank_accounts", "accounts", column: "earned_interest_account_id"
+  add_foreign_key "bank_accounts", "accounts", column: "cash_account_id"
+  add_foreign_key "bank_accounts", "accounts", column: "interest_revenue_account_id"
   add_foreign_key "bank_accounts", "cooperatives"
+  add_foreign_key "bank_accounts", "offices"
   add_foreign_key "barangays", "cooperatives"
   add_foreign_key "barangays", "municipalities"
   add_foreign_key "beneficiaries", "cooperatives"
@@ -1556,6 +1562,7 @@ ActiveRecord::Schema.define(version: 2018_12_07_103304) do
   add_foreign_key "share_capital_applications", "cooperatives"
   add_foreign_key "share_capital_applications", "offices"
   add_foreign_key "share_capital_applications", "share_capital_products"
+  add_foreign_key "share_capital_products", "accounts", column: "interest_payable_account_id"
   add_foreign_key "share_capital_products", "accounts", column: "paid_up_account_id"
   add_foreign_key "share_capital_products", "accounts", column: "subscription_account_id"
   add_foreign_key "share_capital_products", "cooperatives"

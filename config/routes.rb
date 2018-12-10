@@ -11,7 +11,9 @@ Rails.application.routes.draw do
     resources :scheduled_entries, only: [:index]
     namespace :scheduled_entries do
       resources :savings_accounts_interest_postings, only: [:new, :create]
+      resources :share_capital_dividend_postings, only: [:new, :create]
     end
+
     resources :cash_receipts, module: :entries,     only: [:index]
     resources :cash_disbursements, module: :entries, only: [:index]
     resources :journal_entry_vouchers,  module: :entries, only: [:index]
@@ -153,13 +155,15 @@ Rails.application.routes.draw do
   end
   resources :member_registrations, only: [:new, :create]
 
+  resources :savings_account_registries, only: [:create], module: [:registries]
+  resources :share_capital_registries, only: [:create], module: [:registries]
+  resources :loan_registries, only: [:create], module: [:registries]
+  resources :time_deposit_registries, only: [:create], module: [:registries]
+  resources :member_registries, only: [:create], module: [:registries]
+  resources :bank_account_registries, only: [:create], module: [:registries]
   namespace :management_module do
     resources :account_budgets, only: [:index, :new, :create]
-    resources :savings_account_registries, only: [:create]
-    resources :share_capital_registries, only: [:create]
-    resources :loan_registries, only: [:create]
-    resources :time_deposit_registries, only: [:create]
-    resources :member_registries, only: [:create]
+
     resources :loan_protection_plan_providers, only: [:new, :create], module: :configurations
 
     namespace :settings do

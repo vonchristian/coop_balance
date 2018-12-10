@@ -3,8 +3,9 @@ require 'rails_helper'
 RSpec.describe BankAccount, type: :model do
   describe 'associations' do
     it { is_expected.to belong_to :cooperative }
-    it { is_expected.to belong_to :account }
-    it { is_expected.to belong_to :earned_interest_account }
+    it { is_expected.to belong_to :office }
+    it { is_expected.to belong_to :cash_account }
+    it { is_expected.to belong_to :interest_revenue_account }
   end
 
   describe 'validations' do

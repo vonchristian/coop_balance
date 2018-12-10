@@ -1,32 +1,33 @@
 class BankAccount < ApplicationRecord
   include PgSearch
-  pg_search_scope :text_search, against: [:bank_name]
+  pg_search_scope :text_search, against: [:bank_name, :bank_address, :account_number]
   has_one_attached :avatar
   belongs_to :cooperative
-  belongs_to :account,                 class_name: "AccountingModule::Account"
-  belongs_to :earned_interest_account, class_name: "AccountingModule::Account"
-
+  belongs_to :office,                   class_name: "CoopConfigurationsModule::Office"
+  belongs_to :cash_account,             class_name: "AccountingModule::Account"
+  belongs_to :interest_revenue_account, class_name: "AccountingModule::Account"
+  validates :bank_name, :bank_address, :account_number, presence: true
   before_save :set_default_image
   def entries
-    account.entries.uniq
+    cash_account.entries.uniq
   end
   def name
     bank_name
   end
-  def balance
-   account.balance(commercial_document: self)
+  def balance(args={})
+   cash_account.balance(commercial_document: self)
   end
 
   def deposits
-   account.debits_balance(commercial_document: self)
+   cash_account.debits_balance(commercial_document: self)
   end
 
   def withdrawals
-    account.credits_balance(commercial_document: self)
+    cash_account.credits_balance(commercial_document: self)
   end
 
   def earned_interests
-    earned_interest_account.balance(commercial_document: self)
+    interest_revenue_account.balance(commercial_document: self)
   end
 
   private

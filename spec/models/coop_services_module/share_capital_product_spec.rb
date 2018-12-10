@@ -6,11 +6,12 @@ module CoopServicesModule
       it { is_expected.to belong_to :cooperative }
       it { is_expected.to belong_to :paid_up_account }
       it { is_expected.to belong_to :subscription_account }
+      it { is_expected.to belong_to :interest_payable_account }
 	  	it { is_expected.to have_many :subscribers }
 	  end
     describe 'validations' do
       it { is_expected.to validate_presence_of :name }
-      it { is_expected.to validate_uniqueness_of :name }
+      it { is_expected.to validate_uniqueness_of(:name).scoped_to(:cooperative_id) }
       it { is_expected.to validate_presence_of :paid_up_account_id }
       it { is_expected.to validate_presence_of :subscription_account_id }
       it { is_expected.to validate_presence_of :cost_per_share }
