@@ -30,7 +30,7 @@ module Memberships
           cooperative: find_employee.cooperative,
           preparer: find_employee,
           description: "Savings withdrawal transaction of #{find_saving.depositor.full_name}",
-          number: or_number,
+          reference_number: or_number,
           account_number: account_number,
           date: date)
         voucher.voucher_amounts.debit.build(

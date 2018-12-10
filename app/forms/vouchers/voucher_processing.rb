@@ -23,7 +23,7 @@ module Vouchers
         cooperative: find_employee.cooperative,
         preparer: find_employee,
         description: description,
-        number: reference_number,
+        reference_number: reference_number,
         account_number: account_number,
         date: date
       )
