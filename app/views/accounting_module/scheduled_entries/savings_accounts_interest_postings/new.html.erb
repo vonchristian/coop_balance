@@ -1,3 +1,10 @@
+<%= @from_date %>
+<%= @to_date %>
+
+<% month_dates = [] %>
+<% (@from_date..@to_date).each do |date| %>
+  <% month_dates << date.end_of_month %>
+<% end %>
 <p> Posting Date </p>
 <%= form_tag({:action => 'new'}, {:method => :get, class: "form-inline"}) do %>
     <%= label_tag :to_date, nil, class: 'sr-only'%>
@@ -7,10 +14,13 @@
     <br>
   <button type="submit" class="btn btn-primary btn-block">Generate</button>
 <% end %>
-<table class="table">
+<table class="table table-responsive">
   <thead>
     <tr>
       <th>Balance </th>
+      <% month_dates.uniq.each do |date| %>
+        <th> <%= date.strftime("%B") %></th>
+      <% end %>
       <th>Averaged Balance </th>
       <th> Applicable Rate </th>
       <th> Computed Interest </th>

@@ -2,8 +2,9 @@ module AccountingModule
   module ScheduledEntries
     class SavingsAccountsInterestPostingsController < ApplicationController
       def new
-        @journal_entry_voucher = AccountingModule::SavingsInterestPostingVoucher.new
-        @to_date = params[:to_date] ? DateTime.parse(params[:to_date]) : Date.today
+        @journal_entry_voucher = AccountingModule::ScheduledEntries::SavingsInterestPostingVoucher.new
+        @from_date = params[:from_date] ? DateTime.parse(params[:from_date]) : Date.today.beginning_of_year
+        @to_date    = params[:to_date]    ? DateTime.parse(params[:to_date]) : Date.today.end_of_year
         @cooperative = current_cooperative
         @savings_accounts = current_cooperative.savings
       end

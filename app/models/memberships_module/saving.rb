@@ -136,9 +136,25 @@ module MembershipsModule
       balances.sum / (starting_date..ending_date).count.to_f
     end
 
+    def average_monthly_balance(args={})
+      balances =[]
+      to_date = args[:to_date]
+      starting_date = saving_product.starting_date(to_date)
+      ending_date = saving_product.ending_date(to_date)
+
+
+       (starting_date..ending_date).each do |date|
+        balances << saving_product_account.balance(commercial_document: self, to_date: date.end_of_month)
+      end
+
+      balances.sum / (starting_date..ending_date).count.to_f
+    end
+
+
     def computed_interest(args={})
       average_daily_balance(to_date: args[:to_date]) * saving_product_applicable_rate
     end
+
 
 
     private

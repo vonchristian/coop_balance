@@ -26,6 +26,7 @@ Rails.application.routes.draw do
     resources :financial_condition_comparisons, only: [:new, :create, :show]
     resources :reports, only: [:index]
     namespace :reports do
+      resources :entries, only: [:index]
       resources :net_income_distributions, only: [:index]
       resources :trial_balances,       only: [:index]
       resources :proofsheets,          only: [:index]

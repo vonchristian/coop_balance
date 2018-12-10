@@ -86,7 +86,12 @@ module AccountingModule
 
 
     def self.entered_on(args={})
-      EntriesQuery.new.entered_on(args)
+      if args[:from_date] && args[:to_date]
+        date_range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])
+        where('entry_date' => (date_range.start_date..date_range.end_date))
+      else
+        all
+      end
     end
 
     def self.recorded_by(args={})
@@ -137,6 +142,14 @@ module AccountingModule
       #{previous_entry_id}
       #{recorder_id.to_s}
       #{previous_entry_hash}"
+    end
+
+    def cancellation_text #show on pdf reports
+      if cancelled?
+        "CANCELLED"
+      else
+        ""
+      end
     end
 
     private
