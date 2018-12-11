@@ -16,7 +16,7 @@ module LoansModule
           amount: amount,
           date: date,
           description: description,
-          computed_by: find_employee)
+          employee: find_employee)
       end
 
       def find_employee

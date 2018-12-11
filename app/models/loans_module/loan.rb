@@ -78,10 +78,7 @@ module LoansModule
     delegate :number_of_months, to: :current_term, prefix: true
     delegate :term, to: :current_term
 
-    def self.disbursement_vouchers
-      ids = pluck(:disbursement_voucher_id)
-      Voucher.where(id: ids)
-    end
+
 
     def net_proceed_and_loans_receivable_account
       accounts = []
@@ -261,16 +258,15 @@ module LoansModule
     end
 
 
-    def payment_schedules
-      amortization_schedules +
-      loan_charge_payment_schedules
-    end
+    # def payment_schedules
+    #   amortization_schedules
+    # end
 
     def name
       borrower_name
     end
 
-    def taxable_amount # for documentary_stamp_tax
+    def documentary_stamp_taxable_amount
       loan_amount
     end
 
@@ -278,13 +274,13 @@ module LoansModule
       if !disbursed?
         loan_amount - voucher_amounts.sum(&:adjusted_amount)
       else
-        amounts = []
+        amounts = BigDecimal.new("0")
         cooperative.cash_accounts.each do |account|
           accounting_entry.credit_amounts.where(account: account).each do |amount|
-            amounts << amount
+            amounts += amount
           end
         end
-        amounts.uniq.sum(&:amount)
+        amounts
       end
     end
 
@@ -294,7 +290,7 @@ module LoansModule
 
     def payments_total
       principal_payments +
-      interest_payments +
+      total_interest_payments +
       penalty_payments
     end
 
@@ -306,16 +302,32 @@ module LoansModule
 
 
     def loan_interests_balance(args={})
-      loan_interests.total -
-      loan_discounts.interest.total -
-      interest_payments
+      total_loan_interests -
+      total_interest_discounts -
+      total_interest_payments
+    end
+
+    def total_loan_interests
+      loan_interests.total_interests
+    end
+
+    def total_interest_discounts
+      loan_discounts.interest.total
     end
 
     def loan_penalties_balance(args={})
-      loan_penalties.total -
-      loan_discounts.penalty.total -
-      penalty_payments
+      total_loan_penalties -
+      total_penalty_discounts -
+      total_penalty_payments
     end
+    def total_loan_penalties
+      loan_penalties.total_amount
+    end
+
+    def total_penalty_discounts
+      loan_discounts.penalty.total
+    end
+
 
     def debits_balance
       loan_product_loans_receivable_current_account.debits_balance(commercial_document: self)

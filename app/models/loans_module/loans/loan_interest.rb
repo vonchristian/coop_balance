@@ -2,16 +2,21 @@ module LoansModule
   module Loans
     class LoanInterest < ApplicationRecord
       belongs_to :loan
-      belongs_to :computed_by, class_name: "User", foreign_key: 'computed_by_id', optional: true
+      belongs_to :employee, class_name: "User", foreign_key: 'computed_by_id', optional: true
+      validates :loan_id, :computed_by_id, :description, :date, :amount, presence: true
+      validates :amount, numericality: true
 
-      def self.total
+      delegate :name, to: :employee, prefix: true
+
+      def self.total_interests
         sum(:amount)
       end
 
       def self.balance
-        total - loan_discounts.total
+        total_interests -
+        total_interest_discounts.total -
+        total_interest_payments
       end
-
     end
   end
 end

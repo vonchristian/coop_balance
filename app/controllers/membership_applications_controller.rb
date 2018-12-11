@@ -29,6 +29,7 @@ class MembershipApplicationsController < ApplicationController
       :email,
       :tin_number,
       :office_id,
-      :cooperative_id )
+      :cooperative_id,
+      :membership_date )
   end
 end

@@ -57,9 +57,10 @@ module LoansModule
 
     def create_loan_interests(loan)
       loan.loan_interests.create!(
+        date: loan_application.application_date,
         amount: loan_application.interest_balance,
-        description: "Interest balance",
-        computed_by: employee)
+        description: "Computed loan interests on #{loan_application.application_date.strftime("%B %e, %Y")}",
+        employee: employee)
     end
   end
 end

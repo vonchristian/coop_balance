@@ -1,0 +1,54 @@
+<%= render 'loans/partials/header', loan: @loan %>
+<div class="card">
+  <div class="card-body">
+    <p>LOAN PENALTY DETAILS </p>
+    <div class="row">
+      <div class="col-md-3">
+        <small>INTERESTS</small>
+        <h3 class="card-title number"><%= number_to_currency @loan.total_loan_penalties %></h3><br>
+        <%=link_to 'New Penalty', new_loans_module_loan_penalty_posting_path(@loan), class: "btn btn-sm btn-outline-danger", data: { modal: true } %>
+
+      </div>
+      <div class="col-md-3">
+        <small>DISCOUNTS</small>
+        <h3 class="card-title number"><%= number_to_currency @loan.total_penalty_discounts %></h3>
+        <p></p>
+        <%=link_to 'New Discount', new_loans_module_loan_loan_penalty_discount_path(@loan), class: "btn btn-outline-warning btn-sm", data: { modal: true } %>
+
+      </div>
+      <div class="col-md-3">
+        <small>PAYMENTS</small>
+        <h3 class="card-title number"><%= number_to_currency @loan.total_penalty_payments %></h3>
+      </div>
+      <div class="col-md-3">
+        <small>BALANCE</small>
+        <h3 class="card-title number"><%= number_to_currency @loan.loan_penalties_balance %></h3>
+      </div>
+    </div>
+    <hr>
+    <p class="text-muted">Computations History </p>
+      <div class="table table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Description </th>
+              <th> Employee </th>
+              <th> Amount </th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @loan.loan_penalties.each do |penalty| %>
+              <tr>
+                <td><%= penalty.date.strftime("%B %e, %Y") %></td>
+                <td><%= penalty.description %></td>
+                <td><%= penalty.employee_name %></td>
+                <td><%= number_to_currency penalty.amount %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

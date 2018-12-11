@@ -30,7 +30,7 @@ module LoansModule
         recorder:            employee,
         reference_number:    voucher.reference_number,
         previous_entry:      cooperative.entries.recent,
-        previous_entry_hash: find_recent_entry.encrypted_hash,
+        previous_entry_hash: cooperative.entries.recent.encrypted_hash,
         entry_date:          voucher.date)
 
         voucher.voucher_amounts.debit.excluding_account(account: loan.loan_product_loans_receivable_current_account).each do |amount|

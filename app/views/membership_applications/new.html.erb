@@ -26,6 +26,7 @@
 
           <%= f.input :office_id, input_html: { value: current_user.office_id }, as: :hidden %>
           <%= f.input :cooperative_id, input_html: { value: current_user.cooperative_id }, as: :hidden %>
+          <%= f.input :membership_date, as: :string, input_html: { class: "datepicker" } %>
             <%= f.submit "Save Membership Application",  class: "btn btn-primary float-right" %>
         <% end %>
 

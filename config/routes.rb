@@ -94,6 +94,9 @@ Rails.application.routes.draw do
     end
 
     resources :loans, only: [:index, :show] do
+      resources :interests, only: [:index], module: :loans
+      resources :penalties, only: [:index], module: :loans
+
       resources :co_makers,                 only: [:new, :create], module: :loans
       resources :past_due_vouchers,              only: [:new, :create, :show, :destroy], module: :loans
       resources :past_due_voucher_confirmations, only: [:create],                        module: :loans

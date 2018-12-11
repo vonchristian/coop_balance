@@ -4,6 +4,6 @@ FactoryBot.define do
     amount 1000
     date Date.today
     description "Loan interest"
-    association :computed_by, factory: :employee
+    association :employee, factory: :employee
   end
 end

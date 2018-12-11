@@ -2,7 +2,7 @@ class MembershipApplication
   include ActiveModel::Model
   attr_accessor :first_name, :middle_name, :last_name, :avatar, :tin_number,
   :date_of_birth, :account_number, :membership_type, :civil_status, :sex,
-  :contact_number, :email, :office_id, :cooperative_id
+  :contact_number, :email, :office_id, :cooperative_id, :membership_date
 
   validates :first_name, :last_name, :sex, :civil_status, :date_of_birth, :cooperative_id, presence: true
   validate :unique_full_name
@@ -47,6 +47,7 @@ class MembershipApplication
       cooperator:       cooperator,
       account_number:   SecureRandom.uuid,
       membership_type:  membership_type,
+      membership_date: membership_date,
       cooperative_id:   cooperative_id)
   end
 

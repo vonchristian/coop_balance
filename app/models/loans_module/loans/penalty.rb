@@ -7,7 +7,7 @@ module LoansModule
       def penalties_balance
         loan_penalties.total
       end
-      def penalty_payments
+      def total_penalty_payments
         loan_product_penalty_revenue_account.credits_balance(commercial_document: self)
       end
       def payments_total(loan)
