@@ -1,11 +1,12 @@
 module Vouchers
   class EntryProcessing
     include ActiveModel::Model
-    attr_reader :voucher, :employee, :updateable
+    attr_reader :voucher, :employee, :updateable, :cooperative
     def initialize(args)
-      @voucher    = args[:voucher]
-      @employee   = args[:employee]
-      @updateable = args[:updateable]
+      @voucher     = args[:voucher]
+      @employee    = args[:employee]
+      @cooperative = @employee.cooperative
+      @updateable  = args[:updateable]
     end
     def process!
       ActiveRecord::Base.transaction do
@@ -17,32 +18,32 @@ module Vouchers
     private
     def create_entry
       entry = AccountingModule::Entry.new(
-        cooperative_service: voucher.cooperative_service,
-        office:              voucher.office,
-        cooperative:         find_cooperative,
-        commercial_document: voucher.payee,
-        description:         voucher.description,
-        recorder:            voucher.preparer,
-        reference_number:    voucher.number,
-        previous_entry:      find_recent_entry,
-        previous_entry_hash: find_recent_entry.encrypted_hash,
-        entry_date:          voucher.date)
+      cooperative_service: voucher.cooperative_service,
+      office:              voucher.office,
+      cooperative:         cooperative,
+      commercial_document: voucher.payee,
+      description:         voucher.description,
+      recorder:            voucher.preparer,
+      reference_number:    voucher.number,
+      previous_entry:      cooperative.entries.recent,
+      previous_entry_hash: find_recent_entry.encrypted_hash,
+      entry_date:          voucher.date)
 
-        voucher.voucher_amounts.debit.each do |amount|
-          entry.debit_amounts.build(
-            account: amount.account,
-            amount: amount.amount,
-            commercial_document: amount.commercial_document)
-        end
+      voucher.voucher_amounts.debit.each do |amount|
+        entry.debit_amounts.build(
+        account:             amount.account,
+        amount:              amount.amount,
+        commercial_document: amount.commercial_document)
+      end
 
-        voucher.voucher_amounts.credit.each do |amount|
-          entry.credit_amounts.build(
-            account: amount.account,
-            amount: amount.amount,
-            commercial_document: amount.commercial_document)
-        end
+      voucher.voucher_amounts.credit.each do |amount|
+        entry.credit_amounts.build(
+        account:             amount.account,
+        amount:              amount.amount,
+        commercial_document: amount.commercial_document)
+      end
+
       entry.save!
-
       voucher.update_attributes!(accounting_entry: entry, disburser: employee)
     end
 
@@ -62,15 +63,6 @@ module Vouchers
       voucher.voucher_amounts.accounts.each do |account|
         account.update_attributes!(last_transaction_date: voucher.date)
       end
-    end
-
-
-    def find_recent_entry
-      find_cooperative.entries.recent
-    end
-
-    def find_cooperative
-      voucher.cooperative
     end
   end
 end

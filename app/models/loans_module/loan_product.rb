@@ -13,13 +13,22 @@ module LoansModule
     has_many :employee_borrowers,                  through: :loans, source: :borrower, source_type: 'User'
     has_many :organization_borrowers,              through: :loans, source: :borrower, source_type: 'Organization'
 
-    delegate :rate, :annual_rate, to: :current_interest_config, prefix: true
+    delegate :rate,
+             :annual_rate,
+             :calculation_type,
+             :prededuction_type,
+             :prededucted_rate,
+             :amortization_type,
+             :rate_type,
+             to: :current_interest_config, prefix: true
+
     delegate :rate, to: :current_penalty_config, prefix: true, allow_nil: true
 
     delegate :interest_revenue_account,
              :interest_receivable_account,
              :unearned_interest_income_account,
              to: :current_interest_config
+
     delegate :penalty_receivable_account,
              :penalty_revenue_account,
              to: :current_penalty_config, allow_nil: true
@@ -33,7 +42,7 @@ module LoansModule
       current_ids = all.pluck(:loans_receivable_current_account_id)
       past_due_ids = all.pluck(:loans_receivable_past_due_account_id)
       ids = current_ids + past_due_ids
-      AccountingModule::Account.where(id: ids)
+      AccountingModule::Account.where(id: ids.uniq.flatten)
     end
 
     def self.past_due_accounts
@@ -49,6 +58,15 @@ module LoansModule
       LoansModule::LoanProducts::PenaltyConfig.penalty_revenue_accounts
     end
 
+    def self.accounts_with_revenue_accounts
+      ids = []
+      ids << all.pluck(:loans_receivable_current_account_id)
+      ids << all.pluck(:loans_receivable_past_due_account_id)
+      ids << LoansModule::LoanProducts::InterestConfig.interest_revenue_accounts.ids
+      ids << LoansModule::LoanProducts::PenaltyConfig.penalty_revenue_accounts.ids
+      AccountingModule::Account.where(id: ids.uniq.flatten)
+    end
+
 
     def self.loan_payments(args={})
       accounts.credits_balance(args) +
@@ -56,12 +74,6 @@ module LoansModule
       penalty_revenue_accounts.credits_balance(args)
     end
 
-
-    def post_penalties #daily
-      if !penalty_posted?
-        PenaltyPosting.post
-      end
-    end
 
     def current_interest_config
       interest_configs.current
@@ -81,26 +93,6 @@ module LoansModule
 
     def penalty_rate
       current_penalty_config_rate
-    end
-
-    def calculation_type
-      current_interest_config.try(:calculation_type).try(:titleize)
-    end
-
-    def prededuction_type
-      current_interest_config.try(:prededuction_type).try(:titleize)
-    end
-
-    def prededucted_rate
-      current_interest_config.try(:prededucted_rate)
-    end
-
-    def amortization_type
-      current_interest_config.try(:amortization_type).try(:titleize)
-    end
-
-    def rate_type
-      current_interest_config.try(:rate_type).try(:titleize)
     end
 
     def create_charges_for(loan_application)
@@ -142,18 +134,6 @@ module LoansModule
           amount_type: 'credit',
           account: charge.account
           )
-      end
-    end
-
-    def create_charges_that_does_not_depends_on_loan_amount(loan_application)
-     charges.not_depends_on_loan_amount.each do |charge|
-        loan_application.voucher_amounts.create!(
-          cooperative: loan_application.cooperative,
-          commercial_document: loan_application,
-          description:  charge.name,
-          amount: charge.amount_for(loan_application),
-          amount_type: 'credit',
-          account: charge.account)
       end
     end
   end

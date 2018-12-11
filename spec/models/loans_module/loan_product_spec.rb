@@ -19,6 +19,11 @@ module LoansModule
     describe 'delegations' do
       let(:loan_product) { create(:loan_product_with_interest_config)}
         it { is_expected.to delegate_method(:rate).to(:current_interest_config).with_prefix }
+        it { is_expected.to delegate_method(:amortization_type).to(:current_interest_config).with_prefix }
+        it { is_expected.to delegate_method(:prededuction_type).to(:current_interest_config).with_prefix }
+        it { is_expected.to delegate_method(:prededucted_rate).to(:current_interest_config).with_prefix }
+        it { is_expected.to delegate_method(:calculation_type).to(:current_interest_config).with_prefix }
+        it { is_expected.to delegate_method(:rate_type).to(:current_interest_config).with_prefix }
         it { is_expected.to delegate_method(:interest_revenue_account).to(:current_interest_config) }
         it { is_expected.to delegate_method(:interest_receivable_account).to(:current_interest_config) }
         it { is_expected.to delegate_method(:unearned_interest_income_account).to(:current_interest_config) }

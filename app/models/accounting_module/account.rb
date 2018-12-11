@@ -55,7 +55,7 @@ module AccountingModule
 
     def set_as_inactive
       if balance.zero?
-        self.update_attributes(active: false)
+        self.update_attributes!(active: false)
       else
         false
       end
@@ -76,7 +76,7 @@ module AccountingModule
 
     def self.balance(options={})
       accounts_balance = BigDecimal.new('0')
-      accounts = self.active.all
+      accounts = self.all
       accounts.each do |account|
         if account.contra
           accounts_balance -= account.balance(options)
@@ -117,7 +117,7 @@ module AccountingModule
 
     def self.debits_balance(options={})
       accounts_balance = BigDecimal.new('0')
-      accounts = self.active.all
+      accounts = self.all
       accounts.each do |account|
         if account.contra
           accounts_balance -= account.debits_balance(options)
