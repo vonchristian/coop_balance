@@ -4,7 +4,7 @@ module Organizations
 
     def new
       @organization = current_cooperative.organizations.find(params[:organization_id])
-      @member = @organization.organization_members.build
+      @member = Organizations::MembershipProcessing.new(organization_id: @organization.id)
       if params[:search].present?
         @employee_members = User.text_search(params[:search])
         @member_members = Member.text_search(params[:search])
@@ -14,15 +14,20 @@ module Organizations
       end
     end
     def create
-      @organization = current_cooperative.organizationsn.find(params[:organization_id])
-      @member = @organization.organization_members.build(member_params)
-      @member.save
+      @organization = current_cooperative.organizations.find(params[:organization_id])
+      @member = Organizations::MembershipProcessing.new(
+        member_params.merge(
+          organization_id: @organization.id,
+          cooperative_id: current_cooperative.id
+        )
+      )
+      @member.process!
       redirect_to new_organization_member_url(@organization), notice: "Member added successfully."
     end
 
     private
     def member_params
-      params.require(:organizations_organization_member).permit(:organization_membership_id, :organization_membership_type)
+      params.require(:organizations_membership_processing).permit(:organization_membership_id, :organization_membership_type)
     end
   end
 end

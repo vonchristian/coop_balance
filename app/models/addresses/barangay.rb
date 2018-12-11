@@ -7,6 +7,7 @@ module Addresses
     has_many :loans, class_name: "LoansModule::Loan"
     has_many :savings, class_name: "MembershipsModule::Saving"
     has_many :share_capitals, class_name: "MembershipsModule::ShareCapital"
+    has_many :time_deposits, class_name: "MembershipsModule::TimeDeposit"
     has_many :addresses
     has_many :members, through: :addresses, source: :addressable, source_type: "Member"
 

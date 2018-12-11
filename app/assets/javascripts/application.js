@@ -1,6 +1,6 @@
 
 
-// This is a manifest file that'll be compiled into application.js, which will include all the files
+// This is a manifest file that'll se compiled into application.js, which will include all the files
 // listed below.
 //
 // Any JavaScript/Coffee file within this directory, lib/assets/javascripts, or any plugin's
@@ -13,9 +13,10 @@
 // about supported directives.
 //
 //= require rails-ujs
-//= require jquery3
-//= require autonumeric
+
 //= require turbolinks
+//= require jquery3
+//= require chosen-jquery
 //= require popper
 //= require bootstrap
 //= require bootstrap-datepicker

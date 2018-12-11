@@ -20,44 +20,34 @@
     </div>
   </div>
 </div>
-
-        <% @vouchers.each do |voucher| %>
-            <div class="card">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-md-1">
-
-                  </div>
-                  <div class="col-md-3">
-                <%= link_to voucher_path(voucher) do %>
-
-                    <%= voucher.payee.try(:name) %><br>
-                    <small class="text-muted">
-                      <i class="fa fa-clock"></i> <%= voucher.date.strftime("%B %e, %Y") %>
-                    </small>
-                    <% end %>
-                  </div>
-                  <div class="col-md-5">
-                <%= link_to voucher_path(voucher) do %>
-                    <p><%= voucher.description %></p>
-                  <% end %>
-                  </div>
-                  <div class="col-md-3">
-                    <% if !voucher.disbursed? %>
-
-                        <%= link_to 'Disburse', voucher_path(voucher), class: "btn btn-primary btn-sm" %>
-
-                    <% else %>
-                      <span class="badge bg-success"><i class="fa fa-check-circle"></i> Disbursed </span>
-                    <% end %>
-                  </div>
-                </div>
-
-
-              </div>
-            </div>
-        <% end %>
-       </div>
-     </div>
-   </div>
- </div>
+<% @vouchers.each do |voucher| %>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-1 col-sm-1">
+        </div>
+        <div class="col-md-3 col-sm-3">
+          <%= link_to voucher_path(voucher) do %>
+            <%= voucher.payee.try(:name) %><br>
+            <small class="text-muted">
+              <i class="fa fa-clock"></i> <%= voucher.date.strftime("%B %e, %Y") %>
+            </small>
+          <% end %>
+        </div>
+        <div class="col-md-5 col-sm-5">
+          <%= link_to voucher_path(voucher) do %>
+            <p><%= voucher.description %></p>
+            <p class="text-muted">#<%= voucher.reference_number %></p>
+          <% end %>
+        </div>
+        <div class="col-md-3 col-sm-3">
+          <% if !voucher.disbursed? %>
+            <%= link_to 'Disburse', voucher_path(voucher), class: "btn btn-primary btn-sm" %>
+          <% else %>
+            <span class="badge bg-success"><i class="fa fa-check-circle"></i> Disbursed </span>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

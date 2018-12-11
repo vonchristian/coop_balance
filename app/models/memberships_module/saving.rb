@@ -13,6 +13,7 @@ module MembershipsModule
     belongs_to :depositor,        polymorphic: true,  touch: true
     has_many :ownerships, as: :ownable
     has_many :member_co_depositors, through: :ownerships, source: :owner, source_type: "Member"
+    belongs_to :organization
 
     belongs_to :saving_product,   class_name: "CoopServicesModule::SavingProduct"
     belongs_to :office,           class_name: "CoopConfigurationsModule::Office"

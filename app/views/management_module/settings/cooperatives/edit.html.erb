@@ -13,6 +13,7 @@
     <%= f.input :registration_number %>
     <%= f.input :address %>
     <%= f.input :contact_number %>
+    <%= f.input :operating_days, collection: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], include_blank: false , input_html: { multiple: true }, as: :check_boxes %>
   </div>
   <div class="modal-footer">
     <%= f.submit "Save Cooperative Details", class: "btn btn-danger float-right", data: { disable_with: "Processing..." } %>

@@ -9,6 +9,8 @@ module MembershipsModule
     belongs_to :depositor,            polymorphic: true, touch: true
     belongs_to :office,               class_name: "CoopConfigurationsModule::Office"
     belongs_to :time_deposit_product, class_name: "CoopServicesModule::TimeDepositProduct"
+    belongs_to :organization,         optional: true
+    belongs_to :barangay,             optional: true, class_name: "Addresses::Barangay"
 
     delegate :name, :interest_rate, :account, :interest_expense_account, :break_contract_fee, to: :time_deposit_product, prefix: true
     delegate :full_name, :first_and_last_name, to: :depositor, prefix: true
