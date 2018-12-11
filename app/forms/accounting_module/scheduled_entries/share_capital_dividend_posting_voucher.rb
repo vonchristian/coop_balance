@@ -26,12 +26,13 @@ module AccountingModule
           date: to_date
         )
         find_cooperative.share_capitals.each do |share_capital|
-        voucher.voucher_amounts.debit.build(
-          cooperative: find_cooperative,
-          account: share_capital.share_capital_product_interest_payable_account,
-          amount: share_capital.computed_interest(to_date: DateTime.parse(to_date)),
-          commercial_document: share_capital
-        )
+          voucher.voucher_amounts.debit.build(
+            cooperative: find_cooperative,
+            account: share_capital.share_capital_product_interest_payable_account,
+            amount: share_capital.computed_interest(to_date: DateTime.parse(to_date)),
+            commercial_document: share_capital
+          )
+        end
         voucher.voucher_amounts.credit.build(
           cooperative: find_cooperative,
           account: share_capital.share_capital_product_paid_up_account,
@@ -39,7 +40,6 @@ module AccountingModule
           commercial_document: share_capital)
         voucher.save!
       end
-    end
       def find_cooperative
         Cooperative.find(cooperative_id)
       end
@@ -48,3 +48,4 @@ module AccountingModule
       end
     end
   end
+end

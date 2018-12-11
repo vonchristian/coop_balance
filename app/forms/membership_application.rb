@@ -4,7 +4,7 @@ class MembershipApplication
   :date_of_birth, :account_number, :membership_type, :civil_status, :sex,
   :contact_number, :email, :office_id, :cooperative_id
 
-  validates :first_name, :middle_name, :last_name, :sex, :civil_status, :date_of_birth, :cooperative_id, presence: true
+  validates :first_name, :last_name, :sex, :civil_status, :date_of_birth, :cooperative_id, presence: true
   validate :unique_full_name
 
   def save
