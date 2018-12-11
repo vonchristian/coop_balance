@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_09_235905) do
+ActiveRecord::Schema.define(version: 2018_12_11_010500) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1069,6 +1069,7 @@ ActiveRecord::Schema.define(version: 2018_12_09_235905) do
     t.uuid "cooperative_id"
     t.boolean "archived"
     t.datetime "archived_at"
+    t.uuid "organization_id"
     t.index ["account_number"], name: "index_savings_on_account_number", unique: true
     t.index ["account_owner_name"], name: "index_savings_on_account_owner_name"
     t.index ["barangay_id"], name: "index_savings_on_barangay_id"
@@ -1076,6 +1077,7 @@ ActiveRecord::Schema.define(version: 2018_12_09_235905) do
     t.index ["cooperative_id"], name: "index_savings_on_cooperative_id"
     t.index ["depositor_type", "depositor_id"], name: "index_savings_on_depositor_type_and_depositor_id"
     t.index ["office_id"], name: "index_savings_on_office_id"
+    t.index ["organization_id"], name: "index_savings_on_organization_id"
     t.index ["saving_product_id"], name: "index_savings_on_saving_product_id"
   end
 
@@ -1294,11 +1296,15 @@ ActiveRecord::Schema.define(version: 2018_12_09_235905) do
     t.string "depositor_name"
     t.uuid "cooperative_id"
     t.boolean "withdrawn", default: false
+    t.uuid "organization_id"
+    t.uuid "barangay_id"
     t.index ["account_number"], name: "index_time_deposits_on_account_number", unique: true
+    t.index ["barangay_id"], name: "index_time_deposits_on_barangay_id"
     t.index ["cooperative_id"], name: "index_time_deposits_on_cooperative_id"
     t.index ["depositor_type", "depositor_id"], name: "index_time_deposits_on_depositor_type_and_depositor_id"
     t.index ["membership_id"], name: "index_time_deposits_on_membership_id"
     t.index ["office_id"], name: "index_time_deposits_on_office_id"
+    t.index ["organization_id"], name: "index_time_deposits_on_organization_id"
     t.index ["status"], name: "index_time_deposits_on_status"
     t.index ["time_deposit_product_id"], name: "index_time_deposits_on_time_deposit_product_id"
   end
@@ -1544,6 +1550,7 @@ ActiveRecord::Schema.define(version: 2018_12_09_235905) do
   add_foreign_key "savings", "carts"
   add_foreign_key "savings", "cooperatives"
   add_foreign_key "savings", "offices"
+  add_foreign_key "savings", "organizations"
   add_foreign_key "savings", "saving_products"
   add_foreign_key "savings_account_applications", "cooperatives"
   add_foreign_key "savings_account_applications", "saving_products"
@@ -1583,9 +1590,11 @@ ActiveRecord::Schema.define(version: 2018_12_09_235905) do
   add_foreign_key "time_deposit_products", "accounts", column: "break_contract_account_id"
   add_foreign_key "time_deposit_products", "accounts", column: "interest_expense_account_id"
   add_foreign_key "time_deposit_products", "cooperatives"
+  add_foreign_key "time_deposits", "barangays"
   add_foreign_key "time_deposits", "cooperatives"
   add_foreign_key "time_deposits", "memberships"
   add_foreign_key "time_deposits", "offices"
+  add_foreign_key "time_deposits", "organizations"
   add_foreign_key "time_deposits", "time_deposit_products"
   add_foreign_key "unit_of_measurements", "products"
   add_foreign_key "users", "cooperatives"

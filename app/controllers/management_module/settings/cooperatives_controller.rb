@@ -25,7 +25,7 @@ module ManagementModule
 
       private
       def cooperative_params
-        params.require(:cooperative).permit(:name, :registration_number, :address, :contact_number)
+        params.require(:cooperative).permit(:name, :registration_number, :address, :contact_number, :operating_days => [])
       end
       
       def current_cooperative
