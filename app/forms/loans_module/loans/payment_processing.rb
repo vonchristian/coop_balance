@@ -13,12 +13,11 @@ module LoansModule
                 :cash_account_id,
                 :account_number
       validates :principal_amount, :interest_amount, :penalty_amount, presence: true, numericality: true
-      validates :reference_number, :description, presence: true
+      validates :reference_number, :date, :description, presence: true
 
       def process!
         ActiveRecord::Base.transaction do
           create_voucher_amount
-          # update_last_transaction_date
         end
       end
 
@@ -27,11 +26,11 @@ module LoansModule
       end
 
       def find_loan
-        LoansModule::Loan.find_by_id(loan_id)
+        LoansModule::Loan.find(loan_id)
       end
 
       def find_employee
-        User.find_by_id(employee_id)
+        User.find(employee_id)
       end
 
       private
@@ -40,14 +39,14 @@ module LoansModule
         penalty_revenue_account  = find_loan.loan_product_penalty_revenue_account
         debit_account            = find_cash_account
         voucher = Voucher.new(
-        account_number: account_number,
-        office: find_employee.office,
-        cooperative: find_employee.cooperative,
-        payee: find_loan.borrower,
-        number:    reference_number,
-        description:         description,
-        preparer:            find_employee,
-        date:          date)
+        account_number:   account_number,
+        office:           find_employee.office,
+        cooperative:      find_employee.cooperative,
+        payee:            find_loan.borrower,
+        reference_number: reference_number,
+        description:      description,
+        preparer:         find_employee,
+        date:             date)
 
         if interest_amount.to_f > 0
           voucher.voucher_amounts.credit.build(
@@ -85,9 +84,6 @@ module LoansModule
         principal_amount.to_f +
         interest_amount.to_f +
         penalty_amount.to_f
-      end
-      def update_last_transaction_date
-        find_loan.update_attributes!(last_transaction_date: date)
       end
     end
   end
