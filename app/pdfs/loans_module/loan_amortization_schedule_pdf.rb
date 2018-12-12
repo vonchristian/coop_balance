@@ -99,7 +99,7 @@ module LoansModule
     end
   end
   def loan_charges_details
-    bounding_box [300, 865], width: 220, height: 100 do
+    bounding_box [300, 865], width: 220 do
       text "LOAN DEDUCTIONS", style: :bold, size: 9
       table(loan_amount_data, cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 100]) do
         cells.borders = []
@@ -134,6 +134,7 @@ module LoansModule
   def loan_charges_data
     @loan_charges_data ||= voucher.voucher_amounts.excluding_account(account: loan.loan_product_loans_receivable_current_account).excluding_account(account: cooperative.cash_accounts).map{|a| [a.description, price(a.adjusted_amount)]}
   end
+
     def amortization_schedule
       move_down 20
       stroke do
@@ -147,7 +148,7 @@ module LoansModule
       if loan.forwarded_loan? || loan.amortization_schedules.blank?
         text "No data Available"
       else
-        table(amortization_schedule_data, header: true, cell_style: { size: 10, font: "Helvetica"}, column_widths: [100, 80, 80, 70, 90, 110]) do
+        table(amortization_schedule_data, header: true, cell_style: { size: 10 }, column_widths: [100, 80, 80, 70, 90, 110]) do
 
           row(0).font_style = :bold
           column(0).align = :right

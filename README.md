@@ -1,10 +1,41 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+   <h4>Expenses vs. Revenue</h4>
+    <% month_dates = [] %>
+    <% (Date.today.beginning_of_year..Date.today.end_of_month).each do |date| %>
+
+      <% month_dates << date.end_of_month %>
+    <% end %>
+    <% revenues_accounts_data = [] %>
+    <% month_dates.uniq.each do |month| %>
+      <% revenues_accounts_data << { month.strftime("%B") => AccountingModule::Revenue.balance(to_date: month.end_of_month) } %>
+    <% end %>
+    <% expenses_accounts_data = [] %>
+    <% month_dates.uniq.each do |month| %>
+      <% expenses_accounts_data << { month.strftime("%B") => AccountingModule::Expense.balance(to_date: month.end_of_month) } %>
+    <% end %>
+
+    <%= line_chart [
+      {name: "Revenues", data: (Hash[*revenues_accounts_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}) },
+      {name: "Expenses", data: (Hash[*expenses_accounts_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}) }
+    ], curve: false, thousands: "," %>
+    <hr>
+<h3 class="card-title"> Net Surplus </h3>
+<% net_surplus_data = [] %>
+<% month_dates.uniq.each do |month| %>
+  <% net_surplus_data << { month.strftime("%B") => AccountingModule::Account.net_surplus(to_date: month.end_of_month) } %>
+<% end %>
+<%= line_chart (Hash[*net_surplus_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"}, thousands: ",", curve: false %>
+
 only debit active accounts
 generate debit entries pdf report per account
 generate credit entries report per account
 
 Interest Posting done
    create voucher done
-   post entry done 
+   post entry done
 
 
 

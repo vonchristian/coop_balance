@@ -1,6 +1,7 @@
 module LoansModule
   class LoanProduct < ApplicationRecord
     extend Totalable
+    extend PastDuePercentage
     belongs_to :loan_protection_plan_provider,    class_name: "LoansModule::LoanProtectionPlanProvider"
     belongs_to :cooperative
     belongs_to :loans_receivable_current_account,  class_name: "AccountingModule::Account"
