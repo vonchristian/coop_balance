@@ -9,9 +9,9 @@
     <%= f.error_notification %>
     <%= f.input :charge_type, collection: LoansModule::LoanProducts::LoanProductCharge.charge_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons, checked: LoansModule::LoanProducts::LoanProductCharge.charge_types.first %>
     <%= f.input :name %>
-    <%= f.input :rate %>
-    <%= f.input :amount %>
-    <%= f.input :account_id, collection: current_cooperative.accounts.map{|a| [a.name, a.id]} %>
+    <%= f.input :rate, input_html: { value: 0 } %>
+    <%= f.input :amount, input_html: { value: 0 } %>
+    <%= f.input :account_id, collection: current_cooperative.accounts.active.map{|a| [a.name, a.id]} %>
   </div>
   <div class="modal-footer">
     <%= f.submit "Create Charge", class: "btn btn-danger float-right" %>

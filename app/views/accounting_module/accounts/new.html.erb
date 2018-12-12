@@ -9,6 +9,7 @@
       <%= f.input :name %>
       <%= f.input :code %>
       <%= f.input :type, collection: AccountingModule::Account.types %>
+      <%= f.input :contra %>
       <%= f.submit "Create Account", class: "btn btn-primary btn-flat", data: { disable_with: "Creating Account..." } %>
     <% end %>
   </div>

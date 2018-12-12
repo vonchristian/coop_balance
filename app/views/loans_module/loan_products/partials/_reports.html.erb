@@ -1,0 +1,20 @@
+<%= loan_product.name %>
+<h4 class="card-title">Loan Payments</h4>
+    <%= form_tag({:action => "index", controller: "loans_module/reports/loan_collections", format: 'pdf'}, {:method => :get})  do %>
+    <div class="row">
+      <div class="col-md-3">
+      <div class="form-group">
+        <%= hidden_field_tag :loan_product_id, @loan_product.id %>
+        <%= text_field_tag :from_date, @from_date, :class => 'datepicker form-control border-input', :placeholder => "From " %>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="form-group">
+        <%= text_field_tag :to_date, @to_date, :class => 'form-control border-input datepicker', :placeholder => "To " %>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <button type="submit" class="btn btn-warning btn-sm"> Generate Report</button>
+    </div>
+  </div>
+<% end %>

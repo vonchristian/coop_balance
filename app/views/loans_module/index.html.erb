@@ -1,3 +1,51 @@
+<div class="row">
+  <div class="col-md-3">
+    <div class="card">
+      <div class="card-body">
+        <p class="text-muted">Loans Disbursed </p>
+
+        <h3 class="number">
+          <%= current_cooperative.vouchers.loan_disbursement_vouchers.disbursed_on(from_date: Date.today, to_date: Date.today).count %>
+        </h3>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card">
+      <div class="card-body">
+        <p class="text-muted">Loans Disbursed </p>
+
+        <h3 class="number">
+          <%= current_cooperative.vouchers.loan_disbursement_vouchers.disbursed_on(from_date: Date.today, to_date: Date.today).count %>
+        </h3>
+
+      </div>
+    </div>
+  </div><div class="col-md-3">
+    <div class="card">
+      <div class="card-body">
+        <p class="text-muted">Loans Disbursed </p>
+
+        <h3 class="number">
+          <%= current_cooperative.vouchers.loan_disbursement_vouchers.disbursed_on(from_date: Date.today, to_date: Date.today).count %>
+        </h3>
+
+      </div>
+    </div>
+  </div><div class="col-md-3">
+    <div class="card">
+      <div class="card-body">
+        <p class="text-muted">Past Due </p>
+
+        <h2 class="number">
+          <%= number_to_currency current_cooperative.loan_products.past_due_percent, unit: ''%> %
+        </h2>
+
+      </div>
+    </div>
+  </div>
+</div>
 <div class="card">
   <div class="card-body">
     <nav class="nav nav-pills flex-column flex-md-row">
@@ -136,7 +184,7 @@
     </div>
   </div>
 </div>
-<div class="col-md-8">
+<div class="col-md-12">
   <div class="card">
     <div class="card-header">
       <h3 class="card-title"> Loan Transactions Summary </h3><br>
@@ -156,44 +204,33 @@
     </div>
   </div>
   <div class="card">
+    <div class="card-header">
+      <h3 class="card-title"> Actual vs. Target </h3>
+    </div>
     <div class="card-body">
-
-
-
-        <hr>
-        <h4 class="card-title"> Loan Realeases (Actual vs Target Comparison) </h4>
-        <div class="row">
-          <div class="col-md-3">
-            Loan Product
-          </div>
-          <div class="col-md-3">
-            Target
-          </div>
-          <div class="col-md-3">
-            Actual
-          </div>
-          <div class="col-md-3">
-            Variance
-          </div>
+        <div class="table table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th> Loan Product </th>
+                <th> Target </th>
+                <th> Actual </th>
+                <th> Variance </th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @loan_products.current_accounts.each do |account| %>
+                <tr>
+                  <td><%= account.name %></td>
+                  <td><%= number_to_currency account.account_budgets.current.try(:proposed_amount) %></td>
+                  <td><%= number_to_currency account.debits_balance(from_date: Date.today.beginning_of_year, to_date: Date.today.end_of_year) %></td>
+                  <td><%= number_to_currency account.debits_balance(from_date: Date.today.beginning_of_year, to_date: Date.today.end_of_year) - account.account_budgets.current_proposed_amount %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
         </div>
-        <% @loan_products.accounts.each do |account| %>
-          <div class="row">
-            <div class="col-md-3">
-              <%= account.name %>
-            </div>
-            <div class="col-md-3">
-              <%= number_to_currency account.account_budgets.current.try(:proposed_amount) %>
-            </div>
-            <div class="col-md-3">
-              <%= number_to_currency account.debits_balance(from_date: Date.today.beginning_of_year, to_date: Date.today.end_of_year) %>
-            </div>
-            <div class="col-md-3">
-              <%= number_to_currency account.debits_balance(from_date: Date.today.beginning_of_year, to_date: Date.today.end_of_year) - account.account_budgets.current_proposed_amount %>
-            </div>
-          </div>
-          <br>
-        <% end %>
-      </div>
+
     </div>
   </div>
 </div>

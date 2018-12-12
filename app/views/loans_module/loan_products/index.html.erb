@@ -28,7 +28,7 @@
 
     <% sample_data << { loan_product.name => loan_product.loans.current_loans.count } %>
   <% end %>
-  <%= pie_chart (Hash[*sample_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"}, legend: true, label: "Value" %>
+  <%= pie_chart (Hash[*sample_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"}, legend: 'right', label: "Value", donut: true %>
   <hr>
   <% loan_product_current_loans_data = [] %>
   <% LoansModule::LoanProduct.all.each do |loan_product| %>

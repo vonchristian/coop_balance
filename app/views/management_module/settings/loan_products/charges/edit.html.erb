@@ -9,7 +9,7 @@
     <%= f.error_notification %>
     <%= f.input :rate %>
     <%= f.input :amount %>
-    <%= f.input :account_id, collection: current_cooperative.accounts.map{|a| [a.name, a.id]} %>
+    <%= f.input :account_id, collection: current_cooperative.accounts.active.map{|a| [a.name, a.id]} %>
   </div>
   <div class="modal-footer">
     <%= f.submit "Update Charge", class: "btn btn-danger float-right" %>

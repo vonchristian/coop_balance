@@ -10,6 +10,11 @@ module LoansModule
       describe 'validations' do
         it { is_expected.to validate_presence_of :name }
         it { is_expected.to validate_presence_of :account_id }
+        it { is_expected.to validate_presence_of :rate }
+        it { is_expected.to validate_presence_of :amount }
+        it { is_expected.to validate_numericality_of :rate }
+        it { is_expected.to validate_numericality_of :amount }
+
       end
     end
   end

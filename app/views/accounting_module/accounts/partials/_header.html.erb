@@ -6,13 +6,16 @@
           <b><%= account.name %></b><br>
 
           <small class="text-muted">
-            <i class="fa fa-clock"></i> Last Transaction
+            <i class="fa fa-clock"></i> Last Transaction <%= account.default_last_transaction_date.strftime("%B %e, %Y") %>
             <i class="fa fa-server"></i> <%= account.code %>
           </small>
           <span class="badge bg-gray"><%= account.normalized_type %></span>
 
           <% if !account.active? %>
             &nbsp; <span class="badge bg-danger"> Inactive </span>
+          <% end %>
+          <% if account.contra? %>
+            <span class="badge bg-warning"> Contra </span>
           <% end %>
         </div>
         <div class="col-md-2">

@@ -164,6 +164,8 @@ module LoansModule
         loan.current_term_number_of_months.to_i / 6
       elsif loan.lumpsum?
         1
+      elsif loan.weekly?
+        (loan.term * 4).to_i
       end
     end
 
@@ -180,6 +182,8 @@ module LoansModule
 				loan.amortization_schedules.order(date: :asc).last.date + 6.months
       elsif loan.lumpsum?
         loan.amortization_schedules.order(date: :asc).last.date + add_months + add_days
+      elsif loan.weekly?
+        loan.amortization_schedules.order(date: :asc).last.date.next_week
       end
     end
 
@@ -192,6 +196,8 @@ module LoansModule
 				starting_date(loan).next_quarter.next_quarter
 			elsif loan.lumpsum?
 				starting_date(loan) + add_months(loan) + add_days(loan)
+      elsif loan.weekly?
+        starting_date(loan).next_month
 			end
 		end
 

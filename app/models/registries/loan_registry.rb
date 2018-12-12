@@ -43,7 +43,7 @@ module Registries
         entry_date: cut_off_date,
         debit_amounts_attributes: [
           amount: loan_balance(row),
-          account: find_loan_product(row).loans_receivable_current_account,
+          account: loan.principal_account,
           commercial_document: loan ],
         credit_amounts_attributes: [
           amount: loan_balance(row),
@@ -100,9 +100,7 @@ module Registries
     def loan_status(row)
       row["Status"].gsub(" ", "_")
     end
-    def loan_amount(row)
-      row["Loan Amount"].to_f
-    end
+
     def maturity_date(row)
       Date.parse(row["Maturity Date"].to_s)
     end

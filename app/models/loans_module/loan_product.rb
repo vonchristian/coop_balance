@@ -45,6 +45,14 @@ module LoansModule
       ids = current_ids + past_due_ids
       AccountingModule::Account.where(id: ids.uniq.flatten)
     end
+    def self.principal_accounts
+      accounts
+    end
+
+    def self.current_accounts
+      current_ids = all.pluck(:loans_receivable_current_account_id)
+      AccountingModule::Account.where(id: current_ids)
+    end
 
     def self.past_due_accounts
       ids = all.pluck(:loans_receivable_past_due_account_id)
@@ -66,6 +74,28 @@ module LoansModule
       ids << LoansModule::LoanProducts::InterestConfig.interest_revenue_accounts.ids
       ids << LoansModule::LoanProducts::PenaltyConfig.penalty_revenue_accounts.ids
       AccountingModule::Account.where(id: ids.uniq.flatten)
+    end
+
+    def accounts_with_revenue_accounts
+      ids = []
+      ids << loans_receivable_current_account_id
+      ids << loans_receivable_past_due_account_id
+      ids << interest_revenue_account.id
+      ids << penalty_revenue_account.id
+      AccountingModule::Account.where(id: ids)
+    end
+
+    def entries
+      loan_ids = loans.pluck(:id)
+      entries = AccountingModule::Amount.where(commercial_document_id: loan_ids).pluck(:entry_id)
+      AccountingModule::Entry.where(id: entries)
+    end
+
+    def principal_accounts
+      ids = []
+      ids << loans_receivable_current_account_id
+      ids << loans_receivable_past_due_account_id
+      AccountingModule::Account.where(id: ids)
     end
 
 

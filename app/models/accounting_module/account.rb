@@ -184,5 +184,8 @@ module AccountingModule
     def current_account_budget
       account_budgets.current
     end
+    def default_last_transaction_date
+      last_transaction_date || updated_at
+    end
   end
 end

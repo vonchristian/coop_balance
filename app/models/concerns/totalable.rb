@@ -8,5 +8,4 @@ module Totalable
    def total_credits_balance(args={})
     accounts.credits_balance(args)
   end
-
 end

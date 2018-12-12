@@ -4,5 +4,6 @@
   <%= f.input :code %>
   <%= f.input :type, collection: AccountingModule::Account.types %>
   <%= f.input :main_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
-  <%= f.submit "Create Account", class: "btn btn-primary btn-flat", data: { disable_with: "Creating Account..." } %>
+  <%= f.input :contra %>
+  <%= f.submit "Update Account", class: "btn btn-primary btn-flat", data: { disable_with: "Creating Account..." } %>
 <% end %>

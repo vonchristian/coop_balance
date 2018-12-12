@@ -27,7 +27,7 @@ module Registries
       subscriber: subscriber,
       account_number: SecureRandom.uuid,
       office: office,
-      last_transaction_date: cut_off_date,
+      last_transaction_date: cut_off_date(row),
       share_capital_product: share_capital_product)
 
       cooperative.entries.create!(
@@ -35,8 +35,8 @@ module Registries
         recorder: employee,
         previous_entry: cooperative.entries.recent,
         commercial_document: subscriber,
-        description: "Forwarded balance of share capital as of #{cut_off_date.strftime("%B %e, %Y")}",
-        entry_date: cut_off_date,
+        description: "Forwarded balance of share capital as of #{cut_off_date(row).strftime("%B %e, %Y")}",
+        entry_date: cut_off_date(row),
         debit_amounts_attributes: [
                 account: debit_account,
                 amount: row["Balance"].to_f,
@@ -49,8 +49,8 @@ module Registries
                 ])
     end
 
-    def cut_off_date
-      Date.parse("#{Time.now.year}-09-30")
+    def cut_off_date(row)
+      Date.parse(row["Cut-off Date"].to_s)
     end
 
     def find_share_capital_product(row)

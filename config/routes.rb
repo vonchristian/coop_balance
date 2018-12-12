@@ -90,8 +90,9 @@ Rails.application.routes.draw do
     end
   end
     resources :dashboard, only: [:index]
-    resources :loan_products, only:[:index] do
+    resources :loan_products, only:[:index, :show] do
       resources :loans, only: [:index], module: :loan_products
+      resources :reports, only: [:index], module: :loan_products
     end
 
     resources :loans, only: [:index, :show] do
