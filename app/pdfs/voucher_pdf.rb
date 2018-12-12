@@ -45,33 +45,33 @@ class VoucherPdf < Prawn::Document
   def payee_details
     text "VOUCHER DETAILS", style: :bold, size: 10
     move_down 5
-      table([["", "Payee:", "<b>#{voucher.payee.try(:name).try(:upcase)}</b>"]], cell_style: { inline_format: true, size: 10, font: "Helvetica", :padding => [2, 4, 2, 4]}, column_widths: [20, 100, 300]) do
-        cells.borders = []
-      end
+    table([["", "Payee:", "<b>#{voucher.payee.try(:name).try(:upcase)}</b>", "Date:", "#{voucher.date.strftime("%B %e, %Y")}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica", :padding => [2, 4, 2, 4]}, column_widths: [20, 100, 180, 115, 100]) do
+      cells.borders = []
+    end
 
-      table([["", "Office:", "#{voucher.payee.current_organization.name}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica", :padding => [2, 4, 2, 4]}, column_widths: [20, 100, 300]) do
-        cells.borders = []
-      end
+    table([["", "Office:", "#{voucher.payee.current_organization.try(:name)}", "Loan Amount Applied:", "<b>#{price(voucher.accounting_entry.debit_amounts.sum(&:amount))}</b>"]], cell_style: { inline_format: true, size: 10, font: "Helvetica", :padding => [2, 4, 2, 4]}, column_widths: [20, 100, 180, 115, 100]) do
+      cells.borders = []
+    end
 
-      table([["", "Address:", "#{voucher.payee.current_address.complete_address}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica", :padding => [2, 4, 2, 4]}, column_widths: [20, 100, 300]) do
-        cells.borders = []
-      end
+    table([["", "Address:", "#{voucher.payee.current_address.try(:complete_address)}", "", ""]], cell_style: { inline_format: true, size: 10, font: "Helvetica", :padding => [2, 4, 2, 4]}, column_widths: [20, 100, 200, 95, 100]) do
+      cells.borders = []
+    end
 
-      table([["", "Description:", "#{voucher.description}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica", :padding => [2, 4, 2, 4]}, column_widths: [20, 100, 300]) do
-        cells.borders = []
-      end
-      
-      table([["", "Date:", "#{voucher.date.strftime("%B %e, %Y")}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica", :padding => [2, 4, 2, 4]}, column_widths: [20, 100, 300]) do
-        cells.borders = []
-      end
+    table([["", "Contact #:", "#{voucher.payee.current_contact.try(:number)}", "", ""]], cell_style: { inline_format: true, size: 10, font: "Helvetica", :padding => [2, 4, 2, 4]}, column_widths: [20, 100, 200, 95, 100]) do
+      cells.borders = []
+    end
 
-      stroke do
-        move_down 5
-        stroke_color 'CCCCCC'
-        line_width 0.2
-        stroke_horizontal_rule
-        move_down 5
-      end
+    table([["", "Description:", "#{voucher.description}", "", ""]], cell_style: { inline_format: true, size: 10, font: "Helvetica", :padding => [2, 4, 2, 4]}, column_widths: [20, 100, 200, 95, 100]) do
+      cells.borders = []
+    end
+
+    stroke do
+      move_down 5
+      stroke_color 'CCCCCC'
+      line_width 0.2
+      stroke_horizontal_rule
+      move_down 5
+    end
   end
   def approver
     User.general_manager.last
@@ -131,21 +131,26 @@ class VoucherPdf < Prawn::Document
   end
   def signatory_details
     move_down 50
-      table(signatory, cell_style: { inline_format: true, size: 9, font: "Helvetica"}, column_widths: [120, 120, 120, 140]) do
+    table([["PREPARED BY", "APPROVED BY", "DISBURSED BY", "RECEIVED BY"]], 
+      cell_style: { inline_format: true, size: 10, font: "Helvetica", :padding => [2, 4, 2, 4]}, 
+      column_widths: [120, 120, 120, 140]) do
         cells.borders = []
-        row(2).font_style = :bold
-     end
-   end
-   def signatory
-    [["PREPARED BY", "APPROVED BY", "DISBURSED BY", "RECEIVED BY"]] +
-    [["", ""]] +
-    [["#{voucher.preparer.first_middle_and_last_name.to_s.try(:upcase)}",
-      "#{approver.first_middle_and_last_name.to_s.upcase}",
-      "#{voucher.disbursing_officer.try(:first_middle_and_last_name).try(:upcase)}",
-      "#{voucher.payee.first_middle_and_last_name.try(:upcase)}"]] +
-    [["#{voucher.preparer_current_occupation.try(:titleize)}",
-      "#{approver.current_occupation.to_s.titleize}",
-      "#{voucher.disbursing_officer.try(:designation)}",
-      "Payee"]]
+    end
+    move_down 30
+    table(signatory, cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [2, 4, 2, 4]}, column_widths: [120, 120, 120, 140]) do
+      cells.borders = []
+      row(0).font_style = :bold
+    end
+  end
+
+  def signatory
+  [["#{voucher.preparer.first_middle_and_last_name.to_s.try(:upcase)}",
+    "#{approver.first_middle_and_last_name.to_s.upcase}",
+    "#{voucher.disbursing_officer.try(:first_middle_and_last_name).try(:upcase)}",
+    "#{voucher.payee.first_middle_and_last_name.try(:upcase)}"]] +
+  [["#{voucher.preparer_current_occupation.try(:titleize)}",
+    "#{approver.current_occupation.to_s.titleize}",
+    "#{voucher.disbursing_officer.try(:designation)}",
+    "Payee"]]
   end
 end
