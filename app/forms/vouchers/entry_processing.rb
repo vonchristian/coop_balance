@@ -20,13 +20,13 @@ module Vouchers
       entry = AccountingModule::Entry.new(
         cooperative_service: voucher.cooperative_service,
         office:              voucher.office,
-        cooperative:         find_cooperative,
+        cooperative:         cooperative,
         commercial_document: voucher.payee,
         description:         voucher.description,
         recorder:            voucher.preparer,
         reference_number:    voucher.reference_number,
-        previous_entry:      find_recent_entry,
-        previous_entry_hash: find_recent_entry.encrypted_hash,
+        previous_entry:      cooperative.entries.recent,
+        previous_entry_hash: cooperative.entries.recent.encrypted_hash,
         entry_date:          voucher.date)
 
       voucher.voucher_amounts.debit.each do |amount|

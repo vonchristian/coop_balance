@@ -27,14 +27,14 @@ module LoansModule
       end
 
       def total_interest(loan_application)
-        total = []
-        total << loan_application.first_year_interest
+        total = BigDecimal.new("0")
+        total += loan_application.first_year_interest
         number = loan_application.term
         while number > 12 do
           number -= 12
-          total << interest_computation(loan_application.principal_balance(number_of_months: number), number)
+          total += interest_computation(loan_application.principal_balance(number_of_months: number), number)
         end
-        total.sum
+        total
       end
 
       def monthly_rate

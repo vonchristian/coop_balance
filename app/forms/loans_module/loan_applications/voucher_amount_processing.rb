@@ -29,7 +29,7 @@ module LoansModule
         if find_loan_application.amortization_schedules.present?
           find_loan_application.amortization_schedules.destroy_all
         end
-        LoansModule::AmortizationSchedule.create_schedule_for(find_loan_application)
+        LoansModule::AmortizationSchedule.create_amort_schedule_for(find_loan_application)
       end
 
       def find_loan_application

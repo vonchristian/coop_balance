@@ -282,6 +282,7 @@ Rails.application.routes.draw do
       resources :reports, only: [:index], module: :cash_accounts
       resources :cash_receipt_line_items, only: [:new, :create, :destroy], module: :cash_accounts
       resources :cash_disbursement_line_items, only: [:new, :create, :destroy], module: :cash_accounts
+      resources :cash_disbursement_vouchers, only: [:show], module: :cash_accounts
     end
 
     resources :disbursements, only: [:index]

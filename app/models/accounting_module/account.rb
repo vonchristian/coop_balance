@@ -1,6 +1,7 @@
 module AccountingModule
   class Account < ApplicationRecord
     include PgSearch
+    extend ProfitPercentage
     pg_search_scope :text_search, :against => [:name, :code]
     multisearchable against: [:name, :code]
 
