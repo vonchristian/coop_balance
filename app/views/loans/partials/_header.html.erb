@@ -27,7 +27,7 @@
         </div>
       </div>
       <div class="col-md-3">
-        <% if !loan.forwarded_loan? %>
+        <% if loan.loan_amount.present? %>
             <h4 class="card-title"><%=number_to_currency loan.loan_amount %></h4>
           <small class="text-muted">LOAN AMOUNT</small>
         <% end %>

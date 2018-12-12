@@ -14,7 +14,6 @@ module Registries
     def upload_loan(row)
       loan = find_cooperative.loans.create!(
         forwarded_loan: true,
-        status: 'current_loan',
         cooperative: self.employee.cooperative,
         office: self.employee.office,
         borrower: find_borrower(row),
@@ -22,7 +21,9 @@ module Registries
         barangay: find_barangay(row),
         organization: find_organization(row),
         municipality: find_municipality(row),
-        loan_amount: loan_amount(row)
+        loan_amount: loan_amount(row),
+        status: loan_status(row)
+
       )
       if disbursement_date(row).present? && term(row).present?
         Term.create(
@@ -59,6 +60,7 @@ module Registries
         find_cooperative.organizations.find_or_create_by(name: row["Last Name"])
       end
     end
+
     def find_cooperative
       self.employee.cooperative
     end
@@ -84,7 +86,7 @@ module Registries
     end
 
     def loan_balance(row)
-      row["Balance"].to_f
+      row["Loan Balance"].to_f
     end
 
     def loan_amount(row)
@@ -92,19 +94,21 @@ module Registries
     end
 
     def term(row)
-      row["Term"].to_i
+      row["Term"].to_f
     end
 
+    def loan_status(row)
+      row["Status"].gsub(" ", "_")
+    end
+    def loan_amount(row)
+      row["Loan Amount"].to_f
+    end
     def maturity_date(row)
-      if disbursement_date(row).present? && term(row).present?
-        disbursement_date(row) + term(row).to_i.months
-      end
+      Date.parse(row["Maturity Date"].to_s)
     end
 
     def disbursement_date(row)
-      if row["Disbursement Date"].present?
-        Date.parse(row["Disbursement Date"].to_s)
-      end
+      Date.parse(row["Disbursement Date"].to_s)
     end
 
     def credit_account
