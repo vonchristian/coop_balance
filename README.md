@@ -1,3 +1,5 @@
+disable destroy of voucher amounts if voucher is disbursed
+
 set loan as loss
 <div class="row">
   <div class="col-md-12">

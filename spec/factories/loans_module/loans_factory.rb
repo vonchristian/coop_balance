@@ -12,5 +12,11 @@ FactoryBot.define do
       association :loan_product, factory: :loan_product_with_interest_config
 
     end
+    
+    factory :disbursed_loan, class: LoansModule::Loan do
+    end
+
+    factory :disbursed_loan_with_amortization_schedules, class: LoansModule::Loan do
+    end
   end
 end
