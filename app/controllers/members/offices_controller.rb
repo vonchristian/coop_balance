@@ -1,16 +1,16 @@
 module Members
   class OfficesController < ApplicationController
+    respond_to :html, :json
+
     def edit
       @member = current_cooperative.member_memberships.find(params[:member_id])
+      respond_modal_with @contact
     end
     def update
       @member = current_cooperative.member_memberships.find(params[:member_id])
-      @member.update(office_params)
-      if @member.save
-        redirect_to member_url(@member), notice: "Office updated successfully"
-      else
-        render :edit
-      end
+      @office = @member.update(office_params)
+      respond_modal_with @office, 
+        location: member_info_index_url(@member)
     end
     private
     def office_params

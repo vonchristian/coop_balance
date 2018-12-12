@@ -175,7 +175,7 @@ module LoansModule
     end
     def signatory_details
     move_down 20
-      table(signatory, cell_style: { inline_format: true, size: 9, font: "Helvetica"}, column_widths: [120, 10, 120, 10, 120, 10, 120]) do
+      table(signatory, cell_style: { inline_format: true, size: 9, font: "Helvetica"}, column_widths: [120, 10, 120, 10, 120, 10, 140]) do
         cells.borders = []
         row(3).font_style = :bold
      end

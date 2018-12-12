@@ -7,10 +7,10 @@
 <div class="modal-body">
   <%= render 'members/partials/form_header', member: @member %>
 </div>
-<%= simple_form_for [@member, @organization], url: :member_organizations do |f| %>
+<%= simple_form_for [@member, @organization], url: :member_organizations, html: { data: { modal: true } } do |f| %>
   <div class="modal-body">
     <%= f.error_notification %>
-    <%= f.input :organization_id, collection: Organization.all.map{|a| [a.name, a.id] }%>
+    <%= f.input :organization_id, collection: Organization.all.map{|a| ["#{a.name} (#{a.abbreviated_name})", a.id] }%>
   </div>
   <div class="modal-footer">
     <%= f.submit "Update", class: "btn btn-primary float-right" %>
