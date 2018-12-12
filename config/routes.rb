@@ -197,10 +197,10 @@ Rails.application.routes.draw do
 
     resources :employees, only: [:new, :create], module: :settings
 
-    resources :share_capital_products, only: [:new, :create], module: :settings do
+    resources :share_capital_products, only: [:new, :create, :edit, :update], module: :settings do
       resources :shares, only: [:new, :create]
     end
-    resources :saving_products, only: [:new, :create], module: :settings
+    resources :saving_products, only: [:new, :create, :edit, :update], module: :settings
     resources :programs, only: [:new, :create], module: :settings
     resources :settings, only: [:index]
 
@@ -416,7 +416,7 @@ Rails.application.routes.draw do
   resources :barangays, only: [:index, :show] do
     resources :loans, only: [:index], module: :barangays
     resources :savings, only: [:index], module: :barangays
-    resources :members, only: [:index], module: :barangays
+    resources :members, only: [:index, :new, :create], module: :barangays
   end
   resources :memberships, only: [:index, :show] do
 

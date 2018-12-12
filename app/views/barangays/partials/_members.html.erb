@@ -1,15 +1,27 @@
-<%=form_tag barangay_members_path(@barangay), method: :get do %>
-  <div class="input-group">
-    <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search First Name, Last Name ", id: 'account-search-form' %>
-    <span class="input-group-btn">
-      <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
-        <i class="fa fa-search"></i>
+<div class="card-body">
+  <div class="row">
+    <div class="col-md-8">
+      <%= form_tag barangay_path, method: :get, class: "sidebar-form" do %>
+        <div class="input-group">
+         <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search for First name, Last name", id: 'taxpayer-search-form' %>
+         <span class="input-group-btn">
+           <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+             <i class="fa fa-search"></i>
+           <% end %>
+         </span>
+       </div>
       <% end %>
-    </span>
+    </div>
+    <div class="col-md-4">
+      <%= link_to new_barangay_member_path(@barangay) do %>
+        <span class="btn btn-primary" data-toggle="tooltip" title="Add Member" %>
+          <i class="fa fa-user-plus"></i> Add Member
+        </span>
+      <% end %>
+    </div>
   </div>
-<% end %>
-<br>
-<% @members.each do |member| %>
+</div>
+<% @paginated.each do |member| %>
   <%= render 'members/partials/header', member: member %>
 <% end %>
-<center><%= will_paginate @members %> </center>
+<%=will_paginate @members %>

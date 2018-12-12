@@ -8,6 +8,9 @@ module Addresses
     has_many :savings, class_name: "MembershipsModule::Saving"
     has_many :share_capitals, class_name: "MembershipsModule::ShareCapital"
     has_many :time_deposits, class_name: "MembershipsModule::TimeDeposit"
+    has_many :barangay_members, class_name: "Barangays::BarangayMember"
+    has_many :member_memberships, through: :barangay_members, source: :barangay_membership, source_type: "Member"
+    has_many :employee_memberships, through: :barangay_members, source: :barangay_membership, source_type: "User"
     has_many :addresses
     has_many :members, through: :addresses, source: :addressable, source_type: "Member"
 

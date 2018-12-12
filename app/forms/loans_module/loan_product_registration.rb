@@ -60,7 +60,7 @@ module LoansModule
       end
     end
 
-    def update_form!
+    def update!
       if valid?
         ActiveRecord::Base.transaction do
           update_loan_product
@@ -90,7 +90,7 @@ module LoansModule
     end
 
     def update_loan_product
-      loan_product = current_cooperative.loan_products.update!(
+      loan_product = @loan_product.update!(
         name: name,
         description: description,
         maximum_loanable_amount: maximum_loanable_amount,

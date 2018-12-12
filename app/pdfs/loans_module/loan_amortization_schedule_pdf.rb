@@ -193,7 +193,7 @@ module LoansModule
     [["PREPARED BY", "", "APPROVED BY", "", "DISBURSED BY", "", "RECEIVED BY"]] +
     [["", ""]] +
     [["", ""]] +
-    [["#{preparer.first_and_last_name.try(:upcase)}", "", approver.full_name.try(:upcase), "", disburser.full_name.upcase, "", "#{@loan.borrower.try(:first_and_last_name).try(:upcase)}"]] +
+    [["#{preparer.first_middle_and_last_name.try(:upcase)}", "", approver.first_middle_and_last_name.try(:upcase), "", disburser.first_middle_and_last_name.upcase, "", "#{@loan.borrower.first_middle_and_last_name.try(:upcase)}"]] +
     [["#{preparer.designation.try(:titleize)}", "", "#{approver.designation.try(:titleize) }", "", "#{disburser.designation.try(:titleize)}", "", "Borrower"]]
   end
   end

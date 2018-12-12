@@ -20,14 +20,16 @@ module ManagementModule
       end
 
       def edit
-        @loan_product = LoansModule::LoanProductRegistration.new("id" => params[:id])
-        respond_modal_with @loan_product
+        @loan_product = current_cooperative.loan_products.find(params[:id])
+        @loan_product_form = LoansModule::LoanProductRegistration.new("id" => @loan_product.id)
+        respond_modal_with @loan_product_form
       end
 
       def update
-        @loan_product = LoansModule::LoanProductRegistration.new(loan_product_params.merge("id" => params[:id]))
-        @loan_product.update_form!
-        respond_modal_with @loan_product,
+        @loan_product = current_cooperative.loan_products.find(params[:id])
+        @loan_product_form = LoansModule::LoanProductRegistration.new(loan_product_params.merge("id" => params[:id]))
+        @loan_product_form.update!
+        respond_modal_with @loan_product_form,
           location: management_module_settings_cooperative_products_url
       end
 

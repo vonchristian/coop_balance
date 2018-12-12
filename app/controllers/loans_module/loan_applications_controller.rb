@@ -1,7 +1,8 @@
 module LoansModule
   class LoanApplicationsController < ApplicationController
     def index
-      @loan_applications = current_cooperative.loan_applications.order(application_date: :desc).paginate(page: params[:page], per_page: 20)
+      @ordered_loan_applications = current_cooperative.loan_applications.all.includes(:voucher).order("vouchers.reference_number DESC")
+      @loan_applications = @ordered_loan_applications.paginate(page: params[:page], per_page: 20)
     end
     def new
       @borrower = Borrower.find(params[:borrower_id])

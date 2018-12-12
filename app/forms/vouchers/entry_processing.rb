@@ -64,5 +64,9 @@ module Vouchers
         account.update_attributes!(last_transaction_date: voucher.date)
       end
     end
+
+    def find_recent_entry
+      cooperative.entries.recent
+    end
   end
 end

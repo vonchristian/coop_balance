@@ -78,7 +78,7 @@
           </div>
           <div id="<%= 'collapse_' + loan_product.name.gsub(/[^0-9A-Za-z]/, '')%>" class="collapse" aria-labelledby="<%= 'heading_' + loan_product.name.gsub(/[^0-9A-Za-z]/, '')%>" data-parent="#accordion" style="">
             <div class="card-body">
-              <%= link_to edit_management_module_settings_loan_product_path(loan_product), data: {modal: true} do  %>
+              <%= link_to edit_management_module_settings_loan_product_path(id: loan_product.id), data: {modal: true} do  %>
                 <span class="btn btn-outline-danger btn-sm float-right" data-toggle="tooltip" title="Edit Loan Product"><i class="fa fa-edit"></i></span>
               <% end %>
               <div class="row min-margin-bottom">
@@ -333,43 +333,50 @@
     <div id="accordion">
       <% @saving_products.all.each do |saving_product| %>
         <div class="card">
-          <h4 class="card-title text-primary"><%= saving_product.name %></h4>
-          <hr class="no-margin-top">
-          <div class="row justify-content-end">
-            <div class="col-md-11">
-              <div class="row min-margin-bottom">
-                <div class="col-md-6">
-                  <label class="no-margin-bottom">Interest Rate</label>
+          <div class="card-body">
+            <%= link_to edit_management_module_saving_product_path(saving_product), data: {modal: true} do  %>
+              <span class="btn btn-outline-danger btn-sm float-right" data-toggle="tooltip" title="Edit Savings Deposit Product"><i class="fa fa-edit"></i></span>
+            <% end %>
+            <h5 class="text-primary"><%= saving_product.name %></h5>
+          </div>
+          <hr class="no-margin">
+          <div class="card-body">
+            <div class="row justify-content-end">
+              <div class="col-md-11">
+                <div class="row min-margin-bottom">
+                  <div class="col-md-6">
+                    <label class="no-margin-bottom">Interest Rate</label>
+                  </div>
+                  <div class="col-md-6">
+                    <%= saving_product.interest_rate*100 %>%
+                  </div>
                 </div>
-                <div class="col-md-6">
-                  <%= saving_product.interest_rate*100 %>%
+                <div class="row min-margin-bottom">
+                  <div class="col-md-6">
+                    <label class="no-margin-bottom">Interest Recurrence</label>
+                  </div>
+                  <div class="col-md-6">
+                    <%= saving_product.interest_recurrence %>
+                  </div>
                 </div>
+                <div class="row min-margin-bottom">
+                  <div class="col-md-6">
+                    <label class="no-margin-bottom">Minimum Balance</label>
+                  </div>
+                  <div class="col-md-6">
+                    <%= number_to_currency saving_product.minimum_balance %>
+                  </div>
+                </div>
+                <!-- <div class="col-md-3"> -->
+                  <%#= link_to 'New Shares', new_management_module_share_capital_product_share_path(share_capital_product), class: "btn btn-warning btn-sm" %>
+                <!-- </div> -->
               </div>
-              <div class="row min-margin-bottom">
-                <div class="col-md-6">
-                  <label class="no-margin-bottom">Interest Recurrence</label>
-                </div>
-                <div class="col-md-6">
-                  <%= saving_product.interest_recurrence %>
-                </div>
-              </div>
-              <div class="row min-margin-bottom">
-                <div class="col-md-6">
-                  <label class="no-margin-bottom">Minimum Balance</label>
-                </div>
-                <div class="col-md-6">
-                  <%= number_to_currency saving_product.minimum_balance %>
-                </div>
-              </div>
-              <!-- <div class="col-md-3"> -->
-                <%#= link_to 'New Shares', new_management_module_share_capital_product_share_path(share_capital_product), class: "btn btn-warning btn-sm" %>
-              <!-- </div> -->
             </div>
           </div>
+          <% if @saving_products.last == @saving_products.last %>
+            <hr class="no-margin">
+          <% end %>
         </div>
-        <% if @saving_products.last == @saving_products.last %>
-          <hr class="no-margin">
-        <% end %>
       <% end %>
     </div>
   </div>

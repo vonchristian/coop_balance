@@ -12,7 +12,7 @@
     <% if current_page? barangay_path(@barangay) %>
       <%= render 'barangays/partials/profile' %>
     <% end %>
-    <% if current_page? barangay_members_path(@barangay) %>
+    <% if current_page? barangay_members_path(id: @barangay.id, barangay_id: @barangay.id) %>
       <%= render 'barangays/partials/members' %>
     <% end %>
     <% if current_page? barangay_savings_path(@barangay) %>

@@ -126,7 +126,6 @@ class Member < ApplicationRecord
     Member.where(last_name: self.last_name)
   end
 
-
   def age
     return "No Date of Birth" if date_of_birth.nil?
     ((Time.zone.now - date_of_birth.to_time) / 1.year.seconds).floor
@@ -143,6 +142,14 @@ class Member < ApplicationRecord
 
   def first_and_last_name
     "#{first_name} #{last_name}"
+  end
+
+  def first_middle_and_last_name #for pdf signatories
+    if middle_name.present?
+      "#{first_name.titleize} #{middle_name.first.upcase}. #{last_name.titleize}"
+    else
+      "#{first_name.titleize} #{last_name.titleize}"
+    end
   end
 
   def default_last_transaction_date

@@ -1,0 +1,60 @@
+<%= render 'barangays/partials/header', barangay: @barangay %>
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <%= form_tag new_bayangay_member_path, method: :get, class: "sidebar-form" do %>
+          <div class="input-group">
+            <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search for First name, Last name", id: 'taxpayer-search-form' %>
+            <span class="input-group-btn">
+              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+                <i class="fa fa-search"></i>
+              <% end %>
+            </span>
+          </div>
+        <% end %>
+        <br>
+      </div>
+    </div>
+    <% @members.each do |member| %>
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-1">
+              <%#= image_tag(member.avatar, height: 45, width: 45, class: "img-circle") %>
+            </div>
+            <div class="col-md-8">
+              <b> <%= member.full_name %></b>
+              <div class="row">
+                <div class="col-md-3">
+                  <small class="text-muted"><i class="fa fa-map-marker"></i>&nbsp;  <%= member.current_address_complete_address %></small>
+                </div>
+                <div class="col-md-3">
+                  <small class="text-muted">
+                    <i class="fa fa-phone"></i>&nbsp;  <%= member.current_contact_number %>
+                  </small>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <%= simple_form_for [@barangay, @member], url: :barangay_members do |f| %>
+                <%= f.input :barangay_membership_id, input_html: { value: member.id }, as: :hidden %>
+                <%= f.input :barangay_membership_type, input_html: { value: member.class }, as: :hidden %>
+                <% if @barangay.barangay_members.pluck(:barangay_membership_id).exclude?(member.id) %>
+                  <%= button_tag(class: "btn btn-primary btn-sm") do %>
+                    <i class="fa fa-user-plus"></i> Add Member
+                  <% end %>
+                <% else %>
+                  <%= button_tag(class: "btn btn-success btn-sm disabled")do %>
+                    <i class="fa fa-user-check"></i> Member Added
+                  <% end %>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+<%=will_paginate @members %>

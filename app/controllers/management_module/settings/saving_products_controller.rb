@@ -15,6 +15,18 @@ module ManagementModule
           notice: "Saving Product created successfully"
       end
 
+      def edit
+        @saving_product = current_cooperative.saving_products.find(params[:id])
+        respond_modal_with @saving_product
+      end
+
+      def update
+        @saving_product = current_cooperative.saving_products.find(params[:id])
+        @saving_product.update(saving_product_params)
+        respond_modal_with @saving_product,
+          location: management_module_settings_cooperative_products_url
+      end
+
       private
       def saving_product_params
         params.require(:coop_services_module_saving_product).permit(

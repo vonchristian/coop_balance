@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_11_010500) do
+ActiveRecord::Schema.define(version: 2018_12_11_022718) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -191,6 +191,17 @@ ActiveRecord::Schema.define(version: 2018_12_11_010500) do
     t.index ["cooperative_id"], name: "index_bank_accounts_on_cooperative_id"
     t.index ["interest_revenue_account_id"], name: "index_bank_accounts_on_interest_revenue_account_id"
     t.index ["office_id"], name: "index_bank_accounts_on_office_id"
+  end
+
+  create_table "barangay_members", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "barangay_id"
+    t.string "member_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "barangay_membership_type"
+    t.uuid "barangay_membership_id"
+    t.index ["barangay_id"], name: "index_barangay_members_on_barangay_id"
+    t.index ["barangay_membership_type", "barangay_membership_id"], name: "index_on_barangay_members_membership"
   end
 
   create_table "barangays", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1447,6 +1458,7 @@ ActiveRecord::Schema.define(version: 2018_12_11_010500) do
   add_foreign_key "bank_accounts", "accounts", column: "interest_revenue_account_id"
   add_foreign_key "bank_accounts", "cooperatives"
   add_foreign_key "bank_accounts", "offices"
+  add_foreign_key "barangay_members", "barangays"
   add_foreign_key "barangays", "cooperatives"
   add_foreign_key "barangays", "municipalities"
   add_foreign_key "beneficiaries", "cooperatives"
