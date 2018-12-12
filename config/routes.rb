@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   resources :accounting_module, only: [:index]
   namespace :accounting_module do
+    resources :adjusting_entries, only: [:new, :create]
     resources :per_employee_entries, only: [:index], module: :entries
     resources :per_office_entries, only: [:index], module: :entries
 
@@ -94,6 +95,7 @@ Rails.application.routes.draw do
     end
 
     resources :loans, only: [:index, :show] do
+      resources :loss_vouchers, only: [:show], module: :loans
       resources :interests, only: [:index], module: :loans
       resources :penalties, only: [:index], module: :loans
 

@@ -10,6 +10,7 @@ module Vouchers
     private
     def create_voucher_amount
       Vouchers::VoucherAmount.create(
+        cooperative: find_employee.cooperative,
         amount: amount,
         account_id: account_id,
         amount_type: amount_type,
@@ -31,7 +32,9 @@ module Vouchers
           amount_type: amount_type_contra,
           description: description,
           commercial_document: find_employee,
-          recorder: find_employee
+          recorder: find_employee,
+          cooperative: find_employee.cooperative
+
           )
       else
         Vouchers::VoucherAmount.create(
@@ -40,7 +43,8 @@ module Vouchers
           amount_type: amount_type_contra,
           description: description,
           commercial_document: find_employee,
-          recorder: find_employee
+          recorder: find_employee,
+          cooperative: find_employee.cooperative
           )
       end
     end

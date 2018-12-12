@@ -79,6 +79,7 @@ end
 group :test do
   gem 'shoulda-matchers'
   gem 'database_rewinder'
+  gem 'pdf-inspector', require: "pdf/inspector"
 end
 
 gem 'rack-mini-profiler', require: false

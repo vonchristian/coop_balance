@@ -20,7 +20,7 @@ module TreasuryModule
       end
       def destroy
         @cash_account = current_cooperative.accounts.find(params[:cash_account_id])
-        @amount = current_cooperative.voucher_accounts.find(params[:amount_id])
+        @amount = current_cooperative.voucher_amounts.find(params[:amount_id])
         @amount.destroy
         redirect_to new_treasury_module_cash_account_cash_disbursement_line_item_url(@cash_account), notice: "removed successfully"
       end
