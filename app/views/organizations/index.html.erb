@@ -24,9 +24,9 @@
         </div>
       </div>
     </div>
-      <% @organizations.each do |organization| %>
-        <%= render 'organizations/partials/header', organization: organization %>
-      <% end %>
-    </div>
+    <% @organizations.each do |organization| %>
+      <%= render 'organizations/partials/header', organization: organization %>
+    <% end %>
+    <center><%= will_paginate @organizations %></center>
   </div>
 </div>

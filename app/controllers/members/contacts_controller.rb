@@ -11,7 +11,8 @@ module Members
     def create
       @member = current_cooperative.member_memberships.find(params[:member_id])
       @contact = @member.contacts.create(contact_params)
-      respond_modal_with @contact, location: member_info_index_url(@member), notice: "Contact Number updated successfully"
+      respond_modal_with @contact, 
+        location: member_info_index_url(@member)
     end
 
     private

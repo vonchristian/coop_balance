@@ -47,7 +47,7 @@
             </tr>
             <tr>
               <td>Operating Days:</td>
-              <td><%= @cooperative.operating_days.reject!(&:empty?).join(", ") %></td>
+              <td><%= @cooperative.operating_days.join(", ") if @cooperative.operating_days.present? %></td>
             </tr>
           </tbody>
         </table>

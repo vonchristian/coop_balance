@@ -1,4 +1,18 @@
-<%= simple_form_for @member, url: :member_office do |f| %>
-  <%= f.input :office_id, collection: CoopConfigurationsModule::Office.all.map{|a| [a.branch_name, a.id] }, as: :radio_buttons %>
-  <%= f.submit "Update Branch Office" %>
+<div class="modal-header">
+  <h4 class="modal-title card-title" id="mainModalLabel">
+    Ofice Details
+  </h4>
+  <button type="button" class="close float-right" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+</div>
+<div class="modal-body">
+  <%= render 'members/partials/form_header' %>
+</div>
+<hr class="no-margin">
+<%= simple_form_for @member, url: :member_office, html: { data: { modal: true } } do |f| %>
+	<div class="modal-body">
+  	<%= f.input :office_id, collection: CoopConfigurationsModule::Office.all.map{|a| [a.name, a.id] }, as: :radio_buttons %>
+  </div>
+  <div class="modal-footer">
+  	<%= f.submit "Update Branch Office" %>
+  </div>
 <% end %>
