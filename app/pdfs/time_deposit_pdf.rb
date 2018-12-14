@@ -74,7 +74,7 @@ class TimeDepositPdf < Prawn::Document
   end
 
   def beneficiaries_and_policy
-    beneficiaries = time_deposit.depositor.beneficiaries.map {|b| ["", b.full_name]}
+    beneficiaries = time_deposit.beneficiaries.map {|b| ["", b]}
     beneficiaries_data ||=  [["", ""], *beneficiaries]
     bounding_box([50,220], :width => 312, :height => 80) do
       # stroke_bounds
@@ -96,7 +96,7 @@ class TimeDepositPdf < Prawn::Document
   def signatories
     bounding_box([50,110], :width => 312, :height => 90) do
       # stroke_bounds
-      text "No. ", size: 13
+      text "No. #{time_deposit.certificate_number}", size: 13
       move_down 60
       text "Authorized Signature: ______________________", size: 13, style: :bold
     end

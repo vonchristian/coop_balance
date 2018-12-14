@@ -20,6 +20,7 @@ class TimeDepositApplicationsController < ApplicationController
     params.require(:time_deposit_application_processing).
     permit(:time_deposit_product_id, :depositor_id, :depositor_type,
     :cash_account_id, :reference_number, :date, :amount, :description, :term,
-    :employee_id, :voucher_account_number, :account_number)
+    :employee_id, :voucher_account_number, :account_number, 
+    :certificate_number, :beneficiaries => [])
   end
 end

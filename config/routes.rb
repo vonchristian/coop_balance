@@ -138,7 +138,7 @@ Rails.application.routes.draw do
     resources :offices, only: [:edit, :update], module: :share_capitals
     resources :balance_transfers, only: [:new, :create], module: :share_capitals
   end
-  resources :members, only: [:index, :show, :edit, :update] do
+  resources :members, only: [:index, :show, :edit, :update, :destroy] do
     resources :organizations,      only: [:new, :create], module: :members
     resources :beneficiaries,      only: [:new, :create, :destroy],  module: :members
     resources :merging_line_items, only: [:new, :create],  module: :members

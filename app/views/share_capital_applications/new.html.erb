@@ -2,16 +2,21 @@
   <div class="col-md-6 offset-md-3">
     <div class="card">
       <div class="card-header">
-        <center>
-          <%= image_tag(@subscriber.avatar, class: "profile-user-img img-responsive img-circle") %>
-          <h3 class="box-title"><%= @subscriber.name %></h3>
-        </center>
+        <div class="row">
+          <div class="col-md-2">
+            <%= image_tag(@subscriber.avatar, class: "img-circle", height: 45, width: 45) %>
+          </div>
+          <div class="col-md-10">
+            <h3 class="card-title"><%= @subscriber.name %></h3>
+            <i class="fa fa-map-marker"></i> <%= @subscriber.current_address_complete_address %>
+          </div>
+        </div>
       </div>
       <div class="card-body">
         <%= simple_form_for @share_capital_application, url: :share_capital_applications do |f| %>
           <%= f.input :subscriber_id, input_html: { value: @subscriber.id }, as: :hidden %>
           <%= f.input :subscriber_type, input_html: { value: @subscriber.class.to_s }, as: :hidden %>
-          <%= f.input :share_capital_product_id, collection: current_cooperative.share_capital_products.map{|a| [a.name, a.id] }, as: :radio_buttons %>
+          <%= f.input :share_capital_product_id, collection: current_cooperative.share_capital_products.map{|a| [a.name, a.id] }, as: :radio_buttons, checked: current_cooperative.share_capital_products.first.id %>
           <%= f.input :date_opened, as: :string, input_html: { value: Time.zone.now.strftime("%B %e, %Y"), class: "datepicker" } %>
           <%= f.input :amount, as: :currency %>
           <%= f.input :reference_number %>

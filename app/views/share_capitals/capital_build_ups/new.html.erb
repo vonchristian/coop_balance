@@ -34,7 +34,7 @@
               <%= f.input :date, as: :string, input_html: { value: Date.today.strftime("%B %e, %Y"), class: "datepicker" } %>
               <%= f.input :share_capital_id, input_html: {value: @share_capital.id }, as: :hidden %>
               <%= f.input :amount, as: :currency %>
-              <%= f.input :or_number %>
+              <%= f.input :or_number, label: "Reference Number" %>
               <%= f.input :employee_id, input_html: { value: current_user.id },as: :hidden %>
               <hr>
               <%= f.submit "Save Capital Build Up", class: "btn btn-primary float-right", data: { disable_with: "Processing..."} %>

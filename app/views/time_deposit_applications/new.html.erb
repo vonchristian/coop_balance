@@ -19,6 +19,7 @@
           <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] } %>
           <%= f.input :date, label: "Date Deposited", as: :string, input_html: { class: "datepicker" } %>
           <%= f.input :reference_number %>
+          <%= f.input :certificate_number %>
           <%= f.input :amount, as: :currency %>
           <%= f.input :description, as: :text %>
           <%= f.input :time_deposit_product_id, collection: current_cooperative.time_deposit_products.map{ |a| [a.name, a.id] } %>
@@ -28,6 +29,7 @@
           <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
           <%= f.input :depositor_id, input_html: { value: @depositor.id }, as: :hidden %>
           <%= f.input :depositor_type, input_html: { value: @depositor.class.to_s }, as: :hidden %>
+          <%= f.input :beneficiaries, collection: @depositor.beneficiaries.map {|b| [b.full_name, b.full_name] } , input_html: { multiple: true }, include_blank: false, placeholder: "Select Beneficiaries" %>
 
           <%= f.submit "Proceed", class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
         <% end %>
@@ -49,5 +51,13 @@
       theme: "bootstrap"
     });
 
+  });
+</script>
+
+<script type="text/javascript">
+  $('#time_deposit_application_processing_beneficiaries').chosen({
+    allow_single_deselect: true,
+    no_results_text: 'No results matched',
+    width: '100%',
   });
 </script>

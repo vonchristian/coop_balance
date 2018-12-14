@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_11_022718) do
+ActiveRecord::Schema.define(version: 2018_12_14_053500) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1262,6 +1262,8 @@ ActiveRecord::Schema.define(version: 2018_12_11_022718) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "cooperative_id"
+    t.string "certificate_number"
+    t.string "beneficiaries", default: [], array: true
     t.index ["account_number"], name: "index_time_deposit_applications_on_account_number", unique: true
     t.index ["cooperative_id"], name: "index_time_deposit_applications_on_cooperative_id"
     t.index ["depositor_type", "depositor_id"], name: "index_depositor_on_time_deposit_applications"
@@ -1320,6 +1322,8 @@ ActiveRecord::Schema.define(version: 2018_12_11_022718) do
     t.boolean "withdrawn", default: false
     t.uuid "organization_id"
     t.uuid "barangay_id"
+    t.string "certificate_number"
+    t.string "beneficiaries", default: [], array: true
     t.index ["account_number"], name: "index_time_deposits_on_account_number", unique: true
     t.index ["barangay_id"], name: "index_time_deposits_on_barangay_id"
     t.index ["cooperative_id"], name: "index_time_deposits_on_cooperative_id"
