@@ -3,7 +3,7 @@ class Organization < ApplicationRecord
   include PgSearch
   include CurrentTin
 
-  pg_search_scope :text_search, against: [:name]
+  pg_search_scope :text_search, against: [:name, :abbreviated_name]
   has_one_attached :avatar
   belongs_to :cooperative
   has_many :organization_members, class_name: "Organizations::OrganizationMember"

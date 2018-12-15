@@ -3,16 +3,16 @@ module Barangays
   class MembersController < ApplicationController
     def index
       @barangay = current_cooperative.barangays.find(params[:barangay_id])
-      @members = @barangay.members
+      @members = @barangay.members.paginate(page: params[:page], per_page: 25)
     end
 
     def new
       @barangay = current_cooperative.barangays.find(params[:barangay_id])
       @member = Barangays::MembershipProcessing.new(barangay_id: @barangay.id)
       if params[:search].present?
-        @members = @barangay.members.text_search(params[:search]).order(:last_name).uniq.paginate(page: params[:page], per_page: 35)
+        @members = Member.text_search(params[:search]).order(:last_name).paginate(page: params[:page], per_page: 35)
       else
-        @members = @barangay.members.uniq.paginate(page: params[:page], per_page: 25)
+        @members = Member.paginate(page: params[:page], per_page: 25)
       end
     end
 
