@@ -8,7 +8,9 @@
           </div>
           <div class="col-md-10">
             <h3 class="card-title"><%= @depositor.name %></h3>
-            <i class="fa fa-map-marker"></i> <%= @depositor.current_address_complete_address %>
+            <% if @depositor.class.name == "Member" %>
+              <i class="fa fa-map-marker"></i> <%= @depositor.current_address_complete_address %>
+            <% end %>
           </div>
         </div>
       </div>

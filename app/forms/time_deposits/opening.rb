@@ -17,7 +17,7 @@ module TimeDeposits
     private
     def create_time_deposit
       time_deposit = MembershipsModule::TimeDeposit.create!(
-        depositor_name: find_depositor.full_name,
+        depositor_name: depositor_name,
         cooperative: employee.cooperative,
         depositor: find_depositor,
         account_number: time_deposit_application.account_number,
@@ -36,6 +36,14 @@ module TimeDeposits
 
     def find_depositor
       time_deposit_application.depositor
+    end
+
+    def depositor_name
+      if savings_account_application.depositor_type == "Organization"
+        find_depositor.name
+      else
+        find_depositor.full_name
+      end
     end
 
     def entry_date

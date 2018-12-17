@@ -113,7 +113,7 @@
       <div class="card-body">
         <h4 class="card-title">Audit Report</h4>
         <br>
-        <%= form_tag({:action => "index",  controller: "reports/audit_reports", to_date: params[:to_date]}, {:method => :get})  do %>
+        <%= form_tag({:action => "index", format: 'pdf',  controller: "reports/audit_reports", employee_id: @employee.id, from_date: params[:from_date], to_date: params[:to_date]}, {:method => :get})  do %>
           <div class="row">
             <div class="col-md-3">
               <div class="form-group">

@@ -5,29 +5,37 @@
       <div class="col-md-10">
         <nav class="nav flex-column nav-pills flex-md-row">
           <%= link_to 'Info', organization_path(@organization), class: "nav-link #{'active' if current_page?(organization_path(@organization))}" %>
+          <%= link_to 'Savings', organization_savings_accounts_path(@organization), class: "nav-link #{'active' if current_page?(organization_savings_accounts_path(@organization))}" %>
           <%= link_to 'Loans', organization_loans_path(@organization), class: "nav-link #{'active' if current_page?(organization_loans_path(@organization))}" %>
           <%= link_to 'Reports', organization_reports_path(@organization), class: "nav-link #{'active' if current_page?(organization_reports_path(@organization))}" %>
           <%= link_to 'Settings', organization_settings_path(@organization), class: "nav-link #{'active' if current_page?(organization_settings_path(@organization))}" %>
-
         </nav>
       </div>
       <div class="col-md-2">
+        <%= link_to 'Edit Organization', edit_organization_path(@organization), class: "btn btn-primary float-right" if current_page?(organization_path(@organization)) %>
+        <% if policy([:organizations, :savings_account]).new? && current_page?(organization_savings_accounts_path(@organization)) %>
+          <%=link_to new_savings_account_application_path(depositor_id: @organization.id, depositor_type: @organization.class.to_s) do %>
+            <span class="btn btn-primary float-right">
+              <i class="fa fa-plus-circle"></i> New Savings Account 
+            </span>
+          <% end %>
+        <% end %>
       </div>
     </div>
   </div>
-  <% if current_page?(organization_path(@organization)) %>
-    <%= render 'organizations/partials/info' %>
-  <% end %>
-
-  <% if current_page?(organization_loans_path(@organization)) %>
-    <%= render 'organizations/partials/loans' %>
-  <% end %>
-
-  <% if current_page?(organization_reports_path(@organization)) %>
-    <%= render 'organizations/partials/reports' %>
-  <% end %>
-
-  <% if current_page?(organization_settings_path(@organization)) %>
-    <%= render 'organizations/partials/settings' %>
-  <% end %>
 </div>
+<% if current_page?(organization_path(@organization)) %>
+  <%= render 'organizations/partials/info' %>
+<% end %>
+<% if current_page?(organization_savings_accounts_path(@organization)) %>
+  <%= render 'organizations/partials/savings_accounts' %>
+<% end %>
+<% if current_page?(organization_loans_path(@organization)) %>
+  <%= render 'organizations/partials/loans' %>
+<% end %>
+<% if current_page?(organization_reports_path(@organization)) %>
+  <%= render 'organizations/partials/reports' %>
+<% end %>
+<% if current_page?(organization_settings_path(@organization)) %>
+  <%= render 'organizations/partials/settings' %>
+<% end %>
