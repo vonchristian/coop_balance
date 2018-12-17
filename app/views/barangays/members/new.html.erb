@@ -3,7 +3,7 @@
   <div class="col-md-12">
     <div class="card">
       <div class="card-body">
-        <%= form_tag new_bayangay_member_path, method: :get, class: "sidebar-form" do %>
+        <%= form_tag new_barangay_member_path, method: :get, class: "sidebar-form" do %>
           <div class="input-group">
             <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search for First name, Last name", id: 'taxpayer-search-form' %>
             <span class="input-group-btn">
@@ -20,23 +20,23 @@
       <div class="card">
         <div class="card-body">
           <div class="row">
-            <div class="col-md-1">
-              <%#= image_tag(member.avatar, height: 45, width: 45, class: "img-circle") %>
+            <div class="col-md-1 col-sm-1">
+              <%= image_tag(member.avatar, height: 45, width: 45, class: "img-circle") if member.avatar.attached? %>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-8 col-sm-8">
               <b> <%= member.full_name %></b>
               <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-6 col-sm-6">
                   <small class="text-muted"><i class="fa fa-map-marker"></i>&nbsp;  <%= member.current_address_complete_address %></small>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-6 col-sm-6">
                   <small class="text-muted">
                     <i class="fa fa-phone"></i>&nbsp;  <%= member.current_contact_number %>
                   </small>
                 </div>
               </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 col-sm-3">
               <%= simple_form_for [@barangay, @member], url: :barangay_members do |f| %>
                 <%= f.input :barangay_membership_id, input_html: { value: member.id }, as: :hidden %>
                 <%= f.input :barangay_membership_type, input_html: { value: member.class }, as: :hidden %>
@@ -57,4 +57,4 @@
     <% end %>
   </div>
 </div>
-<%=will_paginate @members %>
+<center><%=will_paginate @members %></center>

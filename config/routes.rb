@@ -138,7 +138,7 @@ Rails.application.routes.draw do
     resources :offices, only: [:edit, :update], module: :share_capitals
     resources :balance_transfers, only: [:new, :create], module: :share_capitals
   end
-  resources :members, only: [:index, :show, :edit, :update] do
+  resources :members, only: [:index, :show, :edit, :update, :destroy] do
     resources :organizations,      only: [:new, :create], module: :members
     resources :beneficiaries,      only: [:new, :create, :destroy],  module: :members
     resources :merging_line_items, only: [:new, :create],  module: :members
@@ -416,7 +416,7 @@ Rails.application.routes.draw do
   end
   resources :filtered_loans, only: [:index], module: :loans_module
   resources :matured_loans, only: [:index],  module: :loans_module
-  resources :barangays, only: [:index, :show] do
+  resources :barangays, only: [:index, :show, :new, :create, :edit, :update] do
     resources :loans, only: [:index], module: :barangays
     resources :savings, only: [:index], module: :barangays
     resources :members, only: [:index, :new, :create], module: :barangays

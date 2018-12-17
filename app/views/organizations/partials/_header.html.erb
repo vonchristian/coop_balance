@@ -1,15 +1,18 @@
-<div class="card">
-  <div class="card-body">
-    <div class="row">
-      <div class="col-md-1">
-        <%= image_tag(organization.avatar, class: "img-circle", height: 60 ,width: 60) %>
-      </div>
-      <div class="col-md-11">
-        <b><%= link_to organization.name, organization_path(organization) %></b><br>
-        <span class="badge bg-primary">
-          <%= organization.members.uniq.count %> Members 
-        </span>
+<%= link_to organization_path(organization) do %>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-1 col-sm-1">
+          <%= image_tag(organization.avatar, class: "img-circle", height: 60 ,width: 60) %>
+        </div>
+        <div class="col-md-11 col-sm-11">
+          <h5 class="min-margin"><%= organization.abbreviated_name %></h5>
+          <b><%= organization.name %></b><br>
+          <span class="badge bg-primary">
+            <%= organization.members.uniq.count %> Members 
+          </span>
+        </div>
       </div>
     </div>
   </div>
-</div>
+<% end %>

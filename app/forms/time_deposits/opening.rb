@@ -22,7 +22,9 @@ module TimeDeposits
         depositor: find_depositor,
         account_number: time_deposit_application.account_number,
         date_deposited: time_deposit_application.date_deposited,
-        time_deposit_product: time_deposit_application.time_deposit_product
+        time_deposit_product: time_deposit_application.time_deposit_product,
+        certificate_number: time_deposit_application.certificate_number,
+        beneficiaries: time_deposit_application.beneficiaries
 )
         Term.create!(
         termable: time_deposit,

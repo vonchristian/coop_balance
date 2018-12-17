@@ -7,12 +7,7 @@ class BarangaysController < ApplicationController
     end
   end
   def show
-    @barangay = current_cooperative.barangays.find(params[:id])
-    if params[:search].present?
-      @members = @barangay.member_memberships.text_search(params[:search]).paginate(page: params[:page], per_page: 25)
-    else
-      @members = @barangay.member_memberships
-      @paginated = @members.uniq.paginate(page: params[:page], per_page: 25)
-    end
+    @barangay = current_cooperative.barangays.find(params[:barangay_id])
+    @members = @barangay.members.paginate(page: params[:page], per_page: 25)
   end
 end

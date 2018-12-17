@@ -387,8 +387,8 @@ input[type="file"].choose-btn {
 .date-as-calendar .month {
   font-family: "Oswald", sans-serif;
   text-transform: uppercase;
-  background: #B11;
-  background : linear-gradient(to bottom right, #D66 0%, #A00 100%);
+  background: #031B4D;
+  background : linear-gradient(to bottom right, #1a356d 0%, #031B4D 100%);
   color: white;
 }
 
@@ -528,4 +528,12 @@ input[type="file"].choose-btn {
 }
 .date-as-calendar.size3x {
   font-size: 48px;
+}
+
+.breadcrumb {
+  font-size: 1.25rem;
+}
+
+.breadcrumb li {
+  padding: 0 5px;
 }

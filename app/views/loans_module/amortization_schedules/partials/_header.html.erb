@@ -1,74 +1,70 @@
-<%= link_to loans_module_amortization_schedule_path(schedule), class: "text-muted" do %>
-  <div class="card">
-    <div class="card-body">
-      <%=image_tag(schedule.borrower_avatar, height: 35, width: 35, class: "img-circle float-right") %>
-      <div class="row">
-        <div class="col-md-4">
-          <small class="text-muted">
-            <i class="fa fa-user"></i> <%= schedule.borrower_name %>
-          </small>
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-5 col-sm-7">
+        <div class="row">
+          <div class="col-md-2 col-sm-2">
+            <%=image_tag(schedule.borrower_avatar, height: 45, width: 45, class: "img-circle") %>
+          </div>
+          <div class="col-md-10 col-sm-10">
+            <small class="text-muted">
+              <i class="fa fa-user"></i> <%= schedule.borrower_name %>
+            </small><br>
+            <small class="text-muted">
+              <i class="fa fa-phone"></i> <%= schedule.borrower_current_contact_number %>
+            </small><br>
+            <small class="text-muted">
+              <i class="fa fa-map-marker"></i> <%= schedule.borrower_current_address_complete_address %>
+            </small>
+          </div>
         </div>
-        <div class="col-md-3">
-          <small class="text-muted">
-            <i class="fa fa-phone"></i> <%= schedule.borrower_current_contact_number %>
-          </small>
-        </div>
-        <div class="col-md-5">
-          <small class="text-muted">
-            <i class="fa fa-map-marker"></i> <%= schedule.borrower_current_address_complete_address %>
-          </small>
+        <div class="row justify-content-end">
+          <div class="col-md-10 col-sm-10">
+            <%= link_to 'View Details', loans_module_amortization_schedule_path(schedule), class: "btn btn-primary btn-sm" %>
+          </div>
         </div>
       </div>
-      <br>
-      <div class="row">
-        <div class="col-md-3">
-            <time datetime="2014-09-24" class="date-as-calendar inline-flex size1_25x">
-            <span class="weekday"><%= schedule.date.strftime("%A") %></span>
-            <span class="day"><%= schedule.date.strftime("%e") %></span>
-            <span class="month"><%= schedule.date.strftime("%B") %> </span>
-            <span class="year"><%= schedule.date.strftime("%Y") %></span>
-            </time>
-
-        </div>
-        <div class="col-md-5">
-          <div class="row min-margin">
-            <div class="col-md-6">
-              <small>PRINCIPAL</small><br>
-            </div>
-            <div class="col-md-6">
-              <span class="number float-right">
-                <%= number_to_currency schedule.principal %>
-              </span>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <small>INTEREST</small><br>
-            </div>
-            <div class="col-md-6">
-              <span class="number float-right">
-                <%= number_to_currency schedule.interest %>
-              </span>
-            </div>
-          </div>
-          <hr class="min-margin">
-          <div class="row">
-            <div class="col-md-6">
-              <small>TOTAL AMORTIZATION</small><br>
-            </div>
-            <div class="col-md-6">
-              <span class="number float-right">
-                <%= number_to_currency schedule.total_amortization %>
-              </span>
-            </div>
-          </div>
-
-        </div>
-
+      <div class="col-md-2 col-sm-5">
+        <time datetime="2014-09-24" class="date-as-calendar inline-flex size1_25x">
+          <span class="weekday"><%= schedule.date.strftime("%A") %></span>
+          <span class="day"><%= schedule.date.strftime("%e") %></span>
+          <span class="month"><%= schedule.date.strftime("%B") %> </span>
+          <span class="year"><%= schedule.date.strftime("%Y") %></span>
+        </time>
       </div>
-      <br>
-      <%= link_to 'View Details', loans_module_amortization_schedule_path(schedule), class: "btn btn-primary" %>
-
+      <div class="col-md-5 col-sm-12">
+        <div class="row min-margin">
+          <div class="col-md-6 col-sm-6">
+            <small>PRINCIPAL</small><br>
+          </div>
+          <div class="col-md-6 col-sm-6">
+            <span class="number float-right">
+              <%= number_to_currency schedule.principal %>
+            </span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-sm-6">
+            <small>INTEREST</small><br>
+          </div>
+          <div class="col-md-6 col-sm-6">
+            <span class="number float-right">
+              <%= number_to_currency schedule.interest %>
+            </span>
+          </div>
+        </div>
+        <hr class="min-margin">
+        <div class="row">
+          <div class="col-md-6 col-sm-6">
+            <small>TOTAL AMORTIZATION</small><br>
+          </div>
+          <div class="col-md-6 col-sm-6">
+            <span class="number float-right">
+              <%= number_to_currency schedule.total_amortization %>
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-<% end %>
+</div>

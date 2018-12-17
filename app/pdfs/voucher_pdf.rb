@@ -144,13 +144,13 @@ class VoucherPdf < Prawn::Document
   end
 
   def signatory
-  [["#{voucher.preparer.first_middle_and_last_name.to_s.try(:upcase)}",
-    "#{approver.first_middle_and_last_name.to_s.upcase}",
-    "#{voucher.disbursing_officer.try(:first_middle_and_last_name).try(:upcase)}",
-    "#{voucher.payee.first_middle_and_last_name.try(:upcase)}"]] +
-  [["#{voucher.preparer_current_occupation.try(:titleize)}",
-    "#{approver.current_occupation.to_s.titleize}",
-    "#{voucher.disbursing_officer.try(:designation)}",
-    "Payee"]]
+    [["#{voucher.preparer.first_middle_and_last_name.to_s.try(:upcase)}",
+      "#{approver.first_middle_and_last_name.to_s.upcase}",
+      "#{voucher.disbursing_officer.try(:first_middle_and_last_name).try(:upcase)}",
+      "#{voucher.payee.first_middle_and_last_name.try(:upcase)}"]] +
+    [["#{voucher.preparer_current_occupation.try(:titleize)}",
+      "#{approver.current_occupation.to_s.titleize}",
+      "#{voucher.disbursing_officer.try(:designation)}",
+      "Payee"]]
   end
 end

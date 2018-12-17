@@ -1,27 +1,38 @@
-<%= link_to 'View PDF', loans_module_amortization_schedule_date_filters_path(from_date: @from_date, to_date: @to_date, format: 'pdf') %>
+
 <div class="row">
+  <div class="col-md-12">
+    <%= link_to 'View PDF', loans_module_amortization_schedule_date_filters_path(from_date: @from_date, to_date: @to_date, format: 'pdf'), class: "btn float-right" %>
+  </div>
   <div class="col-md-3">
     <div class="card">
-      <div class="card-body">
+      <div class="card-header">
         <h4 class="card-title">Date Covered </h4>
-        <p>Start Date </p>
+      </div>
+      <div class="card-body">
         <%= form_tag({:action => 'index'}, {:method => :get, class: "form-inline"}) do %>
-          <%= label_tag :from_date,  "From Date", class: 'sr-only'%>
-          <%= text_field_tag :from_date, @from_date.strftime("%B %e, %Y"), :class => 'datepicker form-control', :placeholder => "From" %>
-        <p> End Date </p>
-            <%= label_tag :to_date, nil, class: 'sr-only'%>
-            <%= text_field_tag :to_date, @to_date.strftime("%B %e, %Y"), :class => 'datepicker form-control', :placeholder => "To" %>
-            <br>
-            <br>
-            <br>
-          <button type="submit" class="btn btn-primary btn-block">Generate</button>
+          <div class="row">
+            <div class="col-md-12 col-sm-5">
+              <%= label_tag :from_date, "From Date", class: "float-left"%>
+              <%= text_field_tag :from_date, @from_date.strftime("%B %e, %Y"), :class => 'datepicker form-control', :placeholder => "From" %>
+            </div>
+            <div class="col-md-12 col-sm-5">
+              <%= label_tag :to_date, "To Date", class: "float-left"%>
+              <%= text_field_tag :to_date, @to_date.strftime("%B %e, %Y"), :class => 'datepicker form-control', :placeholder => "To" %>
+            </div>
+            <div class="col-md-12 col-sm-2">
+              <br>
+              <button type="submit" class="btn btn-primary float-right">Generate</button>
+            </div>
+          </div>
         <% end %>
       </div>
     </div>
   </div>
   <div class="col-md-9">
     <% @amortization_schedules.each do |schedule| %>
-    <%= render 'loans_module/amortization_schedules/partials/header', schedule: schedule %>
+      <%= link_to loans_module_amortization_schedule_path(schedule), class: "text-muted" do %>
+        <%= render 'loans_module/amortization_schedules/partials/header', schedule: schedule %>
+      <% end %>
     <% end %>
   </div>
 </div>

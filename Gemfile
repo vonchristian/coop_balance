@@ -60,6 +60,7 @@ gem "audited", "~> 4.7"
 gem "responders"
 gem 'money-rails', '~>1.12'
 gem "chosen-rails"
+gem "gretel"
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.8.0'
