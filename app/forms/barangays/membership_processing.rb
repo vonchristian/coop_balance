@@ -1,9 +1,9 @@
 module Barangays
 	class MembershipProcessing
 		include ActiveModel::Model
-	  attr_accessor :barangay_membership_id, 
-	  :barangay_membership_type, 
-	  :barangay_id, 
+	  attr_accessor :barangay_membership_id,
+	  :barangay_membership_type,
+	  :barangay_id,
 	  :cooperative_id
 
 
@@ -25,20 +25,19 @@ module Barangays
 
 	  private
 	  def add_member
-	  	find_barangay.barangay_members.create(
-	  		barangay_membership_id:   barangay_membership_id,
-	  		barangay_membership_type: barangay_membership_type
-	  	)
+	  	find_barangay.members << find_member
 	  end
 
 	  def find_member
-	  	find_cooperative.members.find(barangay_membership_id)
+	  	find_cooperative.member_memberships.find(barangay_membership_id)
 	  end
 
 	  def add_member_accounts_to_barangay
-	  	find_barangay.member_savings << find_member.savings
-	  	find_barangay.member_share_capitals << find_member.share_capitals
-	  	find_barangay.member_loans << find_member.loans
+	  	find_barangay.savings        << find_member.savings
+	  	find_barangay.share_capitals << find_member.share_capitals
+	  	find_barangay.loans          << find_member.loans
+      find_barangay.time_deposits  << find_member.time_deposits
+
 	  end
 	end
 end

@@ -2,6 +2,7 @@ class Organization < ApplicationRecord
   extend TinMonitoring
   include PgSearch
   include CurrentTin
+  include CurrentAddress
 
   pg_search_scope :text_search, against: [:name]
   has_one_attached :avatar
@@ -16,7 +17,7 @@ class Organization < ApplicationRecord
   has_many :member_savings, class_name: "MembershipsModule::Saving"
   has_many :member_share_capitals, class_name: "MembershipsModule::ShareCapital"
   has_many :member_loans, class_name: "LoansModule::Loan"
-
+  has_many :addresses, as: :addressable
 
   before_save :set_default_image, on: :create
 
