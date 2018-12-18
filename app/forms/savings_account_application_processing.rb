@@ -2,7 +2,7 @@ class SavingsAccountApplicationProcessing
   include ActiveModel::Model
   attr_accessor :saving_product_id, :depositor_id, :depositor_type,
   :cash_account_id, :reference_number, :date, :amount, :description,
-  :employee_id, :voucher_account_number, :account_number
+  :employee_id, :voucher_account_number, :account_number, :beneficiaries
 
   def process!
     ActiveRecord::Base.transaction do
@@ -27,6 +27,7 @@ class SavingsAccountApplicationProcessing
       account_number: account_number,
       initial_deposit: amount,
       cooperative: find_employee.cooperative
+      beneficiaries: beneficiaries
     )
     create_voucher(savings_account_application)
   end

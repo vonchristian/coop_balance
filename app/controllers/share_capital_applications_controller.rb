@@ -19,6 +19,6 @@ class ShareCapitalApplicationsController < ApplicationController
     params.require(:share_capital_application_processing).
     permit(:subscriber_id, :subscriber_type, :share_capital_product_id,
     :date_opened, :amount, :reference_number, :description, :employee_id, :account_number,
-    :cash_account_id, :voucher_account_number)
+    :cash_account_id, :voucher_account_number, :beneficiaries)
   end
 end

@@ -11,7 +11,7 @@ module Members
     def create
       @member = current_cooperative.member_memberships.find(params[:member_id])
       @address = @member.addresses.create(address_params)
-      respond_modal_with @address, location: member_info_index_url(@member), notice: "Address updated successfully"
+      respond_modal_with @address, location: member_info_index_url(@member)
     end
 
     private

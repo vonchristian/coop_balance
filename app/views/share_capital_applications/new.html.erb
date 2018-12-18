@@ -21,6 +21,7 @@
           <%= f.input :amount, as: :currency %>
           <%= f.input :reference_number %>
           <%= f.input :description, input_html: { value: "Opening of share capital account of #{@subscriber.name}"} %>
+          <%= f.input :beneficiaries, label: "Beneficiary/ies", placeholder: "Fullname", as: :text %>
           <%= f.input :employee_id, input_html: { value: current_user.id },as: :hidden %>
           <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
           <%= f.input :voucher_account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>

@@ -1,0 +1,15 @@
+<div class="modal-header">
+  <h4 class="modal-title card-title" id="mainModalLabel">
+    Beneficiaries
+  </h4>
+  <button type="button" class="close float-right" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+</div>
+<hr class="no-margin">
+<%= simple_form_for @time_deposit, url: :time_deposit_beneficiary, html: { autocomplete: "off" } do |f| %>
+  <div class="modal-body">
+    <%= f.input :beneficiaries, label: "Beneficiary/ies", placeholder: "Fullname", as: :text %>
+  </div>
+  <div class="modal-footer">
+    <%= f.submit "Update", class: "btn btn-primary float-right", disable_with: "Saving..." %>
+  </div>
+<% end %>
