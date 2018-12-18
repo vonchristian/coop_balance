@@ -1,6 +1,7 @@
 require 'rails_helper'
 module AccountingModule
   RSpec.describe Amount, type: :model do
+
     subject { build(:amount) }
     it { is_expected.to_not be_valid }
 
@@ -28,20 +29,6 @@ module AccountingModule
     end
 
     context 'scopes' do
-      it ".not_cancelled" do
-        cooperative = create(:cooperative)
-        employee = create(:user, role: 'teller', cooperative: cooperative)
-        cash_on_hand = create(:asset)
-        revenue = create(:revenue)
-        employee.cash_accounts << cash_on_hand
-        not_cancelled_entry = build(:entry, cooperative: cooperative, recorder: employee )
-        not_cancelled_debit_amount = not_cancelled_entry.debit_amounts.build(account: cash_on_hand, amount: 1_000)
-        not_cancelled_credit_amount = not_cancelled_entry.credit_amounts.build(amount: 1_000, account: revenue )
-        not_cancelled_entry.save!
-
-        expect(described_class.not_cancelled).to include(not_cancelled_debit_amount)
-        expect(described_class.not_cancelled).to include(not_cancelled_credit_amount)
-      end
       it ".cancelled and not_cancelled scopes" do
         cooperative = create(:cooperative)
         origin_entry = create(:origin_entry, cooperative: cooperative)
@@ -238,5 +225,23 @@ module AccountingModule
       expect(debit_amount.credit?).to be false
       expect(credit_amount.credit?).to be true
     end
+
+    it ".total" do
+      cooperative = create(:cooperative)
+      cash_on_hand = create(:asset)
+      employee = create(:teller)
+      employee.cash_accounts << cash_on_hand
+      revenue = create(:revenue)
+      origin_entry = create(:origin_entry, cooperative: cooperative)
+      entry = build(:entry, cooperative: cooperative, previous_entry: origin_entry, entry_date: Date.today )
+      cash_on_hand_amount = entry.debit_amounts.build(account: cash_on_hand, amount: 1_000)
+      revenue_amount = entry.credit_amounts.build(amount: 1_000, account: revenue )
+      entry.save!
+
+      expect(entry.amounts.total).to eql 2_000
+      expect(entry.debit_amounts.total).to eql 1_000
+      expect(entry.credit_amounts.total).to eql 1_000 
+    end
+
   end
 end

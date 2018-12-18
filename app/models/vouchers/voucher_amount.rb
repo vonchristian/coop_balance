@@ -14,6 +14,7 @@ module Vouchers
     delegate :entry, to: :voucher, allow_nil: true
 
     validates :account_id, :amount_type, presence: true
+    before_destroy :check_if_disbursed?
 
     def self.total
       sum(&:adjusted_amount)
@@ -54,6 +55,19 @@ module Vouchers
 
     def recent_amount_adjustment
       amount_adjustments.recent
+    end
+
+    def disbursed?
+      if voucher && voucher.disbursed?
+        true
+      else
+        false
+      end
+    end
+
+    private
+    def check_if_disbursed?
+      return false if disbursed?
     end
   end
 end

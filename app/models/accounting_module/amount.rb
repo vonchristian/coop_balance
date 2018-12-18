@@ -65,12 +65,6 @@ module AccountingModule
     end
 
 
-    def self.total_loan_payment(args={})
-      loan_principal_amount(args) +
-      loan_interest_amount(args) +
-      loan_penalty_amount(args)
-    end
-
     def debit?
       type == "AccountingModule::DebitAmount"
     end

@@ -32,7 +32,7 @@ module Vouchers
         expect(described_class).to include(cash_amount)
         expect(described_class).to_not include(non_cash_amount)
       end
-      
+
       it '.for_account(args={})' do
         revenue_account = create(:revenue)
         expense_account = create(:expense)
@@ -66,7 +66,18 @@ module Vouchers
 
         expect(described_class.total).to eql 80
       end
-
     end
+    it '#disbursed?' do
+      cooperative = create(:cooperative)
+      voucher  = create(:voucher, cooperative: cooperative)
+      disbursed_amount = create(:voucher_amount, voucher: voucher, cooperative: cooperative)
+      undisbursed_amount = create(:voucher_amount, cooperative: cooperative)
+      entry = create(:entry_with_credit_and_debit, cooperative: cooperative)
+      voucher.update_attributes(accounting_entry: entry)
+
+      expect(disbursed_amount.disbursed?).to be true
+      expect(undisbursed_amount.disbursed?).to be false
+    end
+
   end
 end

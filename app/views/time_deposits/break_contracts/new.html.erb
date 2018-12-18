@@ -1,8 +1,8 @@
 <div class="row">
-  <div class="col-md-5 col-md-offset-3">
-
+  <div class="col-md-5 offset-md-3">
+    <div class="card">
       <div class="card-header">
-        <h4><center><%= image_tag(@time_deposit.depositor, style: 'width:80px;height:80px;', class: 'media-object img-circle') %></center></h4>
+        <h4><center><%= image_tag(@time_deposit.avatar, width: 80, height: 80, class: 'media-object img-circle') %></center></h4>
         <h3 class="card-title"><center><%= @time_deposit.depositor.first_and_last_name %></center></h3>
       </div>
 
@@ -39,22 +39,20 @@
             Amount to Withdraw
           </div>
           <div class="col-md-5">
-            <%= number_to_currency @time_deposit.amount_deposited - @time_deposit.computed_break_contract_amount %>
+            <%= number_to_currency @time_deposit.amount_deposited + @time_deposit.computed_earned_interests - @time_deposit.computed_break_contract_amount %>
           </div>
         </div>
         <br>
         <%= simple_form_for [@time_deposit, @break_contract], url: :time_deposit_break_contracts do |f| %>
           <%= f.error_notification %>
-          <%= f.input :amount, input_html: { value: @time_deposit.amount_deposited - @time_deposit.computed_break_contract_amount }, as: :hidden %>
+          <%= f.input :amount, input_html: { value: @time_deposit.amount_deposited + @time_deposit.computed_earned_interests - @time_deposit.computed_break_contract_amount }, as: :hidden %>
           <%= f.input :break_contract_amount, input_html: { value: @time_deposit.computed_break_contract_amount }, as: :hidden %>
           <%= f.input :reference_number %>
           <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
           <%= f.input :time_deposit_id, input_html: { value: @time_deposit.id },as: :hidden %>
           <%= f.input :recorder_id, input_html: { value: current_user.id },as: :hidden %>
-          <div class="footer">
-            <%= f.submit "Withdraw Time Deposit", class: "btn btn-danger btn-block", data: {disable_with: "Processing..." } %>
-            <br>
-          </div>
+          <%= f.submit "Withdraw Time Deposit", class: "btn btn-danger btn-block", data: {disable_with: "Processing..." } %>
+
         <% end %>
       </div>
     </div>

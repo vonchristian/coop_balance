@@ -79,11 +79,11 @@ module MembershipsModule
       time_deposit_product.break_contract_rate * amount_deposited
     end
     def computed_earned_interests
-      if current_term_matured?
+      if current_term.matured?
         amount_deposited * rate
       else
         amount_deposited *
-        rate *
+        applicable_rate *
         days_elapsed
       end
     end
@@ -94,6 +94,10 @@ module MembershipsModule
 
     def rate
       time_deposit_product.monthly_interest_rate * current_term.number_of_months
+    end
+
+    def applicable_rate
+      0.02 / 360.0
     end
 
     private
