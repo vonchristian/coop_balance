@@ -31,7 +31,7 @@ module TimeDeposits
         term: time_deposit_application.term,
         effectivity_date: voucher.date,
         maturity_date: (voucher.date.to_date + (time_deposit_application.term.to_i.months)))
-      update_voucher(time_deposit)
+        update_voucher(time_deposit)
     end
 
     def find_depositor
@@ -57,5 +57,4 @@ module TimeDeposits
       end
     end
   end
-
 end

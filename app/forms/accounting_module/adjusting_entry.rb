@@ -32,6 +32,8 @@ module AccountingModule
         recorder: find_employee,
         office: find_employee.office,
         cooperative: find_employee.cooperative,
+        previous_entry: find_employee.cooperative.entries.recent,
+        previous_entry_hash: find_employee.cooperative.entries.recent.encryted_hash,
         description: "ADJUSTING ENTRY: #{description}",
         commercial_document: find_commercial_document,
         reference_number: reference_number,
@@ -48,7 +50,7 @@ module AccountingModule
       )
     end
     def find_employee
-      User.find_by_id(employee_id)
+      User.find(employee_id)
     end
     def find_commercial_document
       commercial_document_type.constantize.find(commercial_document_id)
