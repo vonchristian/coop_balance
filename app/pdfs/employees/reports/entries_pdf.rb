@@ -66,22 +66,25 @@ module Employees
         end
       end
 
+      def entries_table_header
+        table([["DATE", "DESCRIPTION", "REF. NO.", "MEMBER/PAYEE",  "", "", ""]], 
+          cell_style: { inline_format: true, size: 7, font: "Helvetica", padding: [4,1,4,1]}, 
+          column_widths: [40, 135, 50, 70, 100, 70, 70]) do
+            row(0).font_style= :bold
+            row(0).background_color = 'DDDDDD'
+            cells.borders = [:top]
+            column(5).align = :right
+            column(6).align = :right
+            column(2).align = :center
+        end
+      end
+
       def entries_table
         if !entries.any?
           move_down 10
           text "No entries data.", align: :center
         else
-
-          table([["DATE", "DESCRIPTION", "REF. NO.", "MEMBER/PAYEE",  "", "", ""]], 
-            cell_style: { inline_format: true, size: 7, font: "Helvetica", padding: [4,1,4,1]}, 
-            column_widths: [40, 135, 50, 70, 100, 70, 70]) do
-              row(0).font_style= :bold
-              row(0).background_color = 'DDDDDD'
-              cells.borders = [:top]
-              column(5).align = :right
-              column(6).align = :right
-              column(2).align = :center
-          end
+          entries_table_header
           entries.each do |entry| 
             table([["#{entry.entry_date.strftime("%b %e, %Y")}", 
               "#{entry.description.truncate(80)}", 

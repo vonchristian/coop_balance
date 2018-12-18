@@ -49,7 +49,7 @@ class VoucherPdf < Prawn::Document
       cells.borders = []
     end
 
-    table([["", "Office:", "#{voucher.payee.current_organization.try(:name)}", "Loan Amount Applied:", "<b>#{price(voucher.accounting_entry.debit_amounts.sum(&:amount))}</b>"]], cell_style: { inline_format: true, size: 10, font: "Helvetica", :padding => [2, 4, 2, 4]}, column_widths: [20, 100, 180, 115, 100]) do
+    table([["", "Office:", "#{voucher.payee.try(:current_organization).try(:name)}", "", ""]], cell_style: { inline_format: true, size: 10, font: "Helvetica", :padding => [2, 4, 2, 4]}, column_widths: [20, 100, 180, 115, 100]) do
       cells.borders = []
     end
 

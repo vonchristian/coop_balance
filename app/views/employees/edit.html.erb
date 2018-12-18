@@ -7,6 +7,7 @@
 	  <%= f.input :last_name %>
 	  <%= f.input :first_name %>
 	  <%= f.input :middle_name %>
+	  <%= f.input :designation %>
 	  <%= f.input :role, collection: User.roles.keys.to_a.map {|u| [u.titleize, u]} if current_user.general_manager? %>
 	</div>
 	<div class="modal-footer">

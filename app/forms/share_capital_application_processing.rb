@@ -27,7 +27,7 @@ class ShareCapitalApplicationProcessing
       account_number: account_number,
       initial_capital: amount,
       cooperative: find_employee.cooperative,
-      office: find_employee.office
+      office: find_employee.office,
       beneficiaries: beneficiaries
     )
     create_voucher(share_capital_application)
