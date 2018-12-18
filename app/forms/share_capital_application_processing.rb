@@ -40,7 +40,7 @@ class ShareCapitalApplicationProcessing
     office: find_employee.office,
     cooperative: find_employee.cooperative,
     description: description,
-    number: reference_number,
+    reference_number: reference_number,
     date: date_opened
   )
   voucher.voucher_amounts.debit.build(

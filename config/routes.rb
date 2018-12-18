@@ -397,7 +397,7 @@ Rails.application.routes.draw do
     resources :reports, only: [:index], module: :organizations
     resources :share_capitals, only: [:index], module: :organizations
     resources :settings, only: [:index], module: :organizations
-    
+    resources :savings_accounts, only: [:index], module: :organizations
 
   end
 
