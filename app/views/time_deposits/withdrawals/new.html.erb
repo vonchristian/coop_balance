@@ -21,7 +21,7 @@
         <%= f.input :amount, as: :numeric %>
         <%= f.input :payment_type, label: 'Type', collection: AccountingModule::Entry.payment_types.keys.to_a.map{|a| [a.titleize, a] }, selected: AccountingModule::Entry.payment_types.keys.first %>
         <%= f.input :offline_receipt, as: :boolean, input_html: { checked: true }, as: :hidden %>
-        <%= f.input :or_number, label: 'OR number' %>
+        <%= f.input :or_number, label: 'Reference Number / OR Number' %>
         <%= f.input :time_deposit_id, input_html: { value: @time_deposit.id },as: :hidden %>
         <%= f.input :employee_id, input_html: { value: current_user.id },as: :hidden %>
         <hr>
