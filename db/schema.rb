@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_14_053500) do
+ActiveRecord::Schema.define(version: 2018_12_18_061709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -625,6 +625,17 @@ ActiveRecord::Schema.define(version: 2018_12_14_053500) do
     t.index ["slug"], name: "index_loan_products_on_slug", unique: true
   end
 
+  create_table "loan_protection_funds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "rate"
+    t.string "name"
+    t.integer "computation_type"
+    t.uuid "cooperative_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["computation_type"], name: "index_loan_protection_funds_on_computation_type"
+    t.index ["cooperative_id"], name: "index_loan_protection_funds_on_cooperative_id"
+  end
+
   create_table "loan_protection_plan_providers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "business_name"
     t.decimal "rate"
@@ -1081,6 +1092,7 @@ ActiveRecord::Schema.define(version: 2018_12_14_053500) do
     t.boolean "archived"
     t.datetime "archived_at"
     t.uuid "organization_id"
+    t.string "beneficiaries"
     t.index ["account_number"], name: "index_savings_on_account_number", unique: true
     t.index ["account_owner_name"], name: "index_savings_on_account_owner_name"
     t.index ["barangay_id"], name: "index_savings_on_barangay_id"
@@ -1102,6 +1114,7 @@ ActiveRecord::Schema.define(version: 2018_12_14_053500) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "cooperative_id"
+    t.string "beneficiaries"
     t.index ["cooperative_id"], name: "index_savings_account_applications_on_cooperative_id"
     t.index ["depositor_type", "depositor_id"], name: "index_depositor_on_savings_account_applications"
     t.index ["saving_product_id"], name: "index_savings_account_applications_on_saving_product_id"
@@ -1118,6 +1131,7 @@ ActiveRecord::Schema.define(version: 2018_12_14_053500) do
     t.datetime "date_opened"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "beneficiaries"
     t.index ["cooperative_id"], name: "index_share_capital_applications_on_cooperative_id"
     t.index ["office_id"], name: "index_share_capital_applications_on_office_id"
     t.index ["share_capital_product_id"], name: "index_share_capital_applications_on_share_capital_product_id"
@@ -1151,8 +1165,8 @@ ActiveRecord::Schema.define(version: 2018_12_14_053500) do
     t.string "account_number"
     t.datetime "date_opened"
     t.string "account_owner_name"
-    t.datetime "created_at", default: "2018-12-11 04:47:15", null: false
-    t.datetime "updated_at", default: "2018-12-11 04:47:15", null: false
+    t.datetime "created_at", default: "2018-12-03 13:59:53", null: false
+    t.datetime "updated_at", default: "2018-12-03 13:59:53", null: false
     t.integer "status"
     t.uuid "office_id"
     t.string "subscriber_type"
@@ -1163,6 +1177,7 @@ ActiveRecord::Schema.define(version: 2018_12_14_053500) do
     t.uuid "barangay_id"
     t.uuid "organization_id"
     t.uuid "cooperative_id"
+    t.string "beneficiaries"
     t.index ["account_number"], name: "index_share_capitals_on_account_number", unique: true
     t.index ["barangay_id"], name: "index_share_capitals_on_barangay_id"
     t.index ["cart_id"], name: "index_share_capitals_on_cart_id"
@@ -1252,7 +1267,7 @@ ActiveRecord::Schema.define(version: 2018_12_14_053500) do
     t.datetime "updated_at", null: false
     t.uuid "cooperative_id"
     t.string "certificate_number"
-    t.string "beneficiaries", default: [], array: true
+    t.string "beneficiaries"
     t.index ["account_number"], name: "index_time_deposit_applications_on_account_number", unique: true
     t.index ["cooperative_id"], name: "index_time_deposit_applications_on_cooperative_id"
     t.index ["depositor_type", "depositor_id"], name: "index_depositor_on_time_deposit_applications"
@@ -1312,7 +1327,7 @@ ActiveRecord::Schema.define(version: 2018_12_14_053500) do
     t.uuid "organization_id"
     t.uuid "barangay_id"
     t.string "certificate_number"
-    t.string "beneficiaries", default: [], array: true
+    t.string "beneficiaries"
     t.index ["account_number"], name: "index_time_deposits_on_account_number", unique: true
     t.index ["barangay_id"], name: "index_time_deposits_on_barangay_id"
     t.index ["cooperative_id"], name: "index_time_deposits_on_cooperative_id"
@@ -1512,6 +1527,7 @@ ActiveRecord::Schema.define(version: 2018_12_14_053500) do
   add_foreign_key "loan_products", "accounts", column: "loans_receivable_past_due_account_id"
   add_foreign_key "loan_products", "cooperatives"
   add_foreign_key "loan_products", "loan_protection_plan_providers"
+  add_foreign_key "loan_protection_funds", "cooperatives"
   add_foreign_key "loan_protection_plan_providers", "accounts", column: "accounts_payable_id"
   add_foreign_key "loan_protection_plan_providers", "cooperatives"
   add_foreign_key "loans", "barangays"

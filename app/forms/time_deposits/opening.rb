@@ -17,33 +17,27 @@ module TimeDeposits
     private
     def create_time_deposit
       time_deposit = MembershipsModule::TimeDeposit.create!(
-        depositor_name: depositor_name,
-        cooperative: employee.cooperative,
-        depositor: find_depositor,
-        account_number: time_deposit_application.account_number,
-        date_deposited: time_deposit_application.date_deposited,
+        depositor_name:       find_depositor.name,
+        cooperative:          employee.cooperative,
+        depositor:            find_depositor,
+        account_number:       time_deposit_application.account_number,
+        date_deposited:       time_deposit_application.date_deposited,
         time_deposit_product: time_deposit_application.time_deposit_product,
-        certificate_number: time_deposit_application.certificate_number,
-        beneficiaries: time_deposit_application.beneficiaries
-)
-        Term.create!(
-        termable: time_deposit,
-        term: time_deposit_application.term,
+        certificate_number:   time_deposit_application.certificate_number,
+        beneficiaries:        time_deposit_application.beneficiaries
+      )
+      Term.create!(
+        termable:         time_deposit,
+        term:             time_deposit_application.term,
         effectivity_date: voucher.date,
-        maturity_date: (voucher.date.to_date + (time_deposit_application.term.to_i.months)))
+        maturity_date:    (voucher.date.to_date + (time_deposit_application.term.to_i.months))
+      )
+      
       update_voucher(time_deposit)
     end
 
     def find_depositor
       time_deposit_application.depositor
-    end
-
-    def depositor_name
-      if savings_account_application.depositor_type == "Organization"
-        find_depositor.name
-      else
-        find_depositor.full_name
-      end
     end
 
     def entry_date
