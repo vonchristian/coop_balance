@@ -3,7 +3,7 @@ class TimeDepositsController < ApplicationController
     if params[:search].present?
       @time_deposits = current_cooperative.time_deposits.text_search(params[:search]).paginate(page: params[:page], per_page: 20)
     else
-      @time_deposits = current_cooperative.time_deposits.paginate(page: params[:page], per_page: 20)
+      @time_deposits = current_cooperative.time_deposits.order(date_deposited: :asc).paginate(page: params[:page], per_page: 20)
     end
   end
 

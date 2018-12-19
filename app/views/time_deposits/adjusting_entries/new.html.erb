@@ -1,16 +1,23 @@
 <div class="modal-header">
   <h4 class="modal-title card-title" id="mainModalLabel">
-    Adjusting Entry Details
+    Time Deposit Adjusting Entry Details
   </h4>
   <button type="button" class="close float-right" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 </div>
 <div class="modal-body">
-    <%= image_tag(@time_deposit.avatar, height: 55, width: 55, class: "img-circle") %>
-    <h3 class="card-title"><%= @time_deposit.name %></h3>
+  <div class="row">
+    <div class="col-md-2 col-sm-2">
+      <%= image_tag(@time_deposit.avatar, height: 45, width: 45, class: "img-circle") %>
+    </div>
+    <div class="col-md-10 col-sm-10">
+      <h4 class="card-title no-margin-bottom"><%= @time_deposit.name %></h4>
+      <small class="text-muted">Depositor</small>
+    </div>
+  </div>
 </div>
 <hr class="no-margin">
 <%= simple_form_for @entry, html: { autocomplete: "off", data: { modal: true } }, remote: request.xhr?, url: :time_deposit_adjusting_entries do |f| %>
-  <div class="card-body">
+  <div class="modal-body">
     <%= f.error_notification %>
     <%= f.input :entry_date, as: :string, input_html: { class: "datepicker" } %>
     <%= f.input :reference_number, input_html: { value: "SYSTEM" }, as: :hidden %>

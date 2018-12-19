@@ -9,6 +9,8 @@
     <div class="col-md-3">
       <% if policy([:accounting_module, :entry]).new? %>
          <%=link_to "New Adjusting Entry", new_accounting_module_adjusting_entry_path(commercial_document_type: @savings_account.class.to_s, commercial_document_id: @savings_account.id), class: "btn btn-outline-danger" %>
+      <% else %>
+        <span class="text-danger"> Only Accountant / Bookkeeper account can do this action. </span>
       <% end %>
     </div>
   </div>

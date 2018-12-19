@@ -23,7 +23,7 @@ module TimeDeposits
         account_number:       time_deposit_application.account_number,
         date_deposited:       time_deposit_application.date_deposited,
         time_deposit_product: time_deposit_application.time_deposit_product,
-        certificate_number:   time_deposit_application.certificate_number,
+        certificate_number:   set_certificate_number,
         beneficiaries:        time_deposit_application.beneficiaries
       )
       Term.create!(
@@ -49,6 +49,13 @@ module TimeDeposits
         voucher_amount.commercial_document = time_deposit
         voucher_amount.save
       end
+    end
+
+    def set_certificate_number
+      date_deposited = time_deposit_application.date_deposited
+      datestamp = date_deposited.strftime("%Y%m%d")
+      recent_time_deposits = employee.cooperative.time_deposits.where(date_deposited: date_deposited)
+      datestamp.to_s << ("-0" + (recent_time_deposits.count+1).to_s)
     end
   end
 

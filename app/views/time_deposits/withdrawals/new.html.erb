@@ -2,18 +2,27 @@
   <div class="col-md-6 offset-md-3">
     <div class="card">
       <div class="card-header">
-        <h4><center><%= image_tag(@time_deposit.depositor.avatar.variant(resize: '80x80'), class: 'media-object img-circle') if @time_deposit.depositor.avatar.attached? %></center></h4>
-        <center>
-          <h3 class="card-title"><center><%= @time_deposit.depositor.first_and_last_name %></h3>
-        </center>
+        <h4 class="card-title">Time Deposit Withdrawal</h4>
       </div>
       <div class="card-body">
-        <center>
-          <h4 class="card-title"><%= number_to_currency @time_deposit.balance %>
-          </h4>
-          <small>BALANCE</small>
-        </center>
-        <hr>
+        <div class="row">
+          <div class="col-md-2">
+            <%= image_tag(@time_deposit.depositor.avatar, height: 45, width: 45, class: 'media-object img-circle') if @time_deposit.depositor.avatar.attached? %>
+          </div>
+          <div class="col-md-6">
+            <h4 class="card-title"><%= @time_deposit.depositor.first_and_last_name %></h4>
+          </div>
+          <div class="col-md-4">
+            <center>
+              <h4 class="card-title"><%= number_to_currency @time_deposit.balance %>
+              </h4>
+              <small>BALANCE</small>
+            </center>
+          </div>
+        </div>
+      </div>
+      <hr class="min-margin">
+      <div class="card-body">
         <%= simple_form_for [@time_deposit, @withdrawal], url: :time_deposit_withdrawals, html: { autocomplete: "off" } do |f| %>
         <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] } %>
         <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>

@@ -1,39 +1,61 @@
 <div class="card">
   <div class="card-body">
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-7">
         <div class="row justify-content-end">
           <div class="col-md-11">
             <div class="row">
-              <div class="col-md-5">
+              <div class="col-md-4">
                 <label>Time Deposit Product</label>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-7">
                 <%= @time_deposit.time_deposit_product_name.try(:upcase) %>
               </div>
             </div>
             <div class="row min-margin">
-              <div class="col-md-5">
+              <div class="col-md-4">
                 <label>Depositor</label>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-7">
                 <%= @time_deposit.depositor_name %>
               </div>
             </div>
             <div class="row min-margin">
-              <div class="col-md-5">
+              <div class="col-md-4">
                 <label>Account Number</label>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-7">
                 <%= @time_deposit.account_number %>
               </div>
             </div>
             <div class="row min-margin">
-              <div class="col-md-5">
+              <div class="col-md-4">
+                <label>Certificate Number</label>
+              </div>
+              <div class="col-md-7">
+                <%= @time_deposit.certificate_number %>
+              </div>
+            </div>
+            <div class="row min-margin">
+              <div class="col-md-4">
                 <label>Date Deposited</label>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-7">
                 <%= @time_deposit.effectivity_date.strftime("%B %e, %Y") %>
+              </div>
+            </div>
+            <div class="row min-margin">
+              <div class="col-md-4">
+                <label>Beneficiary/ies</label>
+              </div>
+              <div class="col-md-7">
+                <% if @time_deposit.beneficiaries.present? %>
+                  <% @time_deposit.beneficiaries.try(:split, (",")).each do |beneficary| %>
+                    <%= beneficary %><br>
+                  <% end %>
+                <% else %>
+                  <small class="text-muted">None</small>
+                <% end %>
               </div>
             </div>
             <div class="row min-margin">
@@ -46,7 +68,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-5">
         <hr class="min-margin set-visibility">
         <div class="row justify-content-end">
           <div class="col-md-7 col-sm-6 col-auto">
@@ -71,13 +93,7 @@
     </div>
   </div>
 </div>
-
-  <p class="text-muted">TRANSACTIONS HISTORY </p>
-
-
-        <% @time_deposit.entries.each do |entry| %>
-          <%= render 'accounting_module/entries/partials/header', entry: entry %>
-
-        <% end %>
-  </div>
-</div>
+<p class="text-muted">TRANSACTIONS HISTORY </p>
+<% @time_deposit.entries.each do |entry| %>
+  <%= render 'accounting_module/entries/partials/header', entry: entry %>
+<% end %>

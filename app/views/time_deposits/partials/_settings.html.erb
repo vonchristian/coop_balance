@@ -8,7 +8,9 @@
         <%=link_to "Update", edit_time_deposit_beneficiary_path(id: @time_deposit.id), class: "btn btn-outline-danger", data: {modal:true} %>
       </div>
     </div>
-    <hr>
+  </div>
+  <hr class="no-margin">
+  <div class="card-body">
     <div class="row">
       <div class="col-md-9">
         <h3 class="card-title"> Adjusting Entry/ Earned Interests </h3>
@@ -18,8 +20,9 @@
         <%=link_to "New Adjusting Entry", new_time_deposit_adjusting_entry_path(@time_deposit), class: "btn btn-outline-danger", data: {modal:true} %>
       </div>
     </div>
-    <hr>
-
+  </div>
+  <hr class="no-margin">
+  <div class="card-body">
     <div class="row">
       <div class="col-md-9">
         <h3 class="card-title"> Break Contract </h3>
@@ -31,7 +34,9 @@
         <% end %>
       </div>
     </div>
-    <hr>
+  </div>
+  <hr class="no-margin">
+  <div class="card-body">
     <div class="row">
       <div class="col-md-9">
         <h3 class="card-title"> Transfer to Savings </h3>
@@ -41,6 +46,9 @@
         <%= link_to 'Transfer', new_time_deposit_transfer_path(@time_deposit), class: "btn btn-outline-danger" %>
       </div>
     </div>
+  </div>
+  <hr class="no-margin">
+  <div class="card-body">
     <div class="row">
       <div class="col-md-9">
         <h4 class="card-title">Time Deposit Terms</h4>

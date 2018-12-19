@@ -48,6 +48,7 @@
     <div class="card">
       <div class="card-header">
         <h3 class="card-title"> Accounts to be Merged </h3>
+        <p class="no-margin-bottom">Please select accounts below to merge.</p>
       </div>
       <div class="card-body">
         <%=form_tag new_savings_account_merging_line_item_path(@current_saving), method: :get, class: "search-form" do %>
@@ -63,7 +64,7 @@
       </div>
       <hr class="no-margin">
       <div class="card-body">
-        <% @savings_accounts.each do |saving| %>
+        <% @savings_accounts.where.not(id: @current_saving.id).each do |saving| %>
           <% if !current_cart.savings.include?(saving) %>
           <div class="row">
             <div class="col-md-8">

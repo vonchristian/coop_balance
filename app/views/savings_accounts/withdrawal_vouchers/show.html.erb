@@ -5,18 +5,19 @@
     <div class="card">
       <div class="card-header">
         <h3 class="card-title">Savings Account Withdraw Transaction </h3>
-        <div class="row min-margin">
-          <div class="col-md-4 offset-md-1">
-            Amount
-          </div>
-          <div class="col-md-4">
-            <b><%= humanized_money_with_symbol @voucher.voucher_amounts.for_account(account: @savings_account.saving_product_account).total %></b>
-          </div>
-        </div>
       </div>
       <div class="card-body">
         <%= render 'vouchers/partials/alert_message', voucher: @voucher %>
-
+        <div class="card-body no-padding-top no-padding-bottom">
+          <div class="row">
+            <div class="col-md-4 col-sm-4">
+              <label>Amount</label>
+            </div>
+            <div class="col-md-8 col-sm-8">
+              <b><%= number_to_currency @voucher.voucher_amounts.for_account(account: @savings_account.saving_product_account).total %></b>
+            </div>
+          </div>
+        </div>
         <%= render 'vouchers/partials/body', voucher: @voucher %>
         <hr>
         <% if @voucher.accounting_entry.blank? %>
