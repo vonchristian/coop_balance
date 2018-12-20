@@ -35,6 +35,9 @@
 <li class="nav-item">
   <a href="/employees/<%="#{current_user.id}"%>/entries" class="nav-link <%= 'active' if current_page?(employee_entries_path(current_user)) %>"><i class="nav-icon fa fa-credit-card"></i><span> Entries</span></a>
 </li>
+<li class="nav-item" >
+  <a href="/vouchers" class="nav-link <%= 'active' if current_page?(vouchers_path) %>"><i class="nav-icon fa fa-credit-card"></i> <span>Vouchers</span></a>
+</li>
 <li class="nav-item">
   <a href="/employees/<%="#{current_user.id}"%>/reports" class="nav-link <%= 'active' if current_page?(employee_reports_path(current_user)) %>">
   <i class="nav-icon far fa-folder"></i><span> Reports</span></a>

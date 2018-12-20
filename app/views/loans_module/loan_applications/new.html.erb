@@ -7,10 +7,15 @@
         <h4 class="card-title">Loan Application</h4>
       </div>
       <div class="card-body">
-        <center>
-          <%= image_tag(@borrower.avatar.variant(resize: '60x60'), class: "img-circle") if @borrower.avatar.attached? %><br>
-          <h3 class="card-title"> <%= @borrower.name %> </h3>
-        </center>
+        <div class="row">
+          <div class="col-md-2 col-sm-2">
+            <%= image_tag(@borrower.avatar, width: 45, height: 45, class: "img-circle") if @borrower.avatar.attached? %>
+          </div>
+          <div class="col-md-10 col-sm-10">
+            <h3 class="card-title no-margin-bottom"> <%= @borrower.name %> </h3>
+            <small class="text-muted">Borrower</small>
+          </div>
+        </div>
       </div>
       <hr class="no-margin">
       <div class="card-body">
@@ -23,7 +28,7 @@
           <%= f.input :borrower_type, input_html: { value: @borrower.class.to_s }, as: :hidden %>
           <%= f.input :loan_amount, as: :currency %>
           <%= f.input :term, label: "Loan Term (in months)" %>
-          <%= f.input :mode_of_payment, collection: LoansModule::Loan.mode_of_payments.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
+          <%= f.input :mode_of_payment, collection: LoansModule::Loan.mode_of_payments.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons, input_html: { id: 'modePaymentSelect' } %>
           <%= f.input :purpose, as: :text, label: "Purpose of Loan" %>
 
           <%= f.input :preparer_id, input_html: { value: current_user.id }, as: :hidden %>
@@ -42,11 +47,18 @@
 </div>
 
 <script type="text/javascript">
-  $(document).ready(function() {
-    $("#loanProductSelect").select2({
-      theme: "bootstrap"
-    });
+  $('#loanProductSelect').on('change', function (e) {
+    var filter = $("#loanProductSelect option:selected").text();
+    if (filter == 'Short Term Loan(Non Member)' || filter == 'Short Term Loan(Member)') {
+      $('input[type="radio"][value="lumpsum"]').click();  
+    }
+    else {
+      $('input[type="radio"][value="monthly"]').click(); 
+    }
   });
+</script>
+
+<script type="text/javascript">
   $(document).ready(function() {
     $("#borrowerSelect").select2({
       theme: "bootstrap"

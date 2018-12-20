@@ -53,9 +53,9 @@ module TimeDeposits
 
     def set_certificate_number
       date_deposited = time_deposit_application.date_deposited
-      datestamp = date_deposited.strftime("%Y%m%d")
-      recent_time_deposits = employee.cooperative.time_deposits.where(date_deposited: date_deposited)
-      datestamp.to_s << ("-0" + (recent_time_deposits.count+1).to_s)
+      datestamp = date_deposited.strftime("%Y")
+      recent_annual_time_deposits = employee.cooperative.time_deposits.where(date_deposited: Date.today.beginning_of_year..Date.today.end_of_year)
+      Date.today.strftime("%Y").to_s << ("-" + (recent_annual_time_deposits.count+1).to_s)
     end
   end
 

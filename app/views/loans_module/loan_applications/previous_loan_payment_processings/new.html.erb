@@ -3,13 +3,12 @@
     <div class="card">
       <div class="card-header bg-gray">
       <div class="row">
-        <div class="col-md-3">
-          <center><%= image_tag(@loan_application.borrower.avatar.variant(resize: '80x80'), class: 'media-object img-circle') if @loan_application.borrower.avatar.attached? %></center>
+        <div class="col-md-2">
+          <%= image_tag(@loan_application.borrower.avatar, width: 45, height: 45, class: 'media-object img-circle') if @loan_application.borrower.avatar.attached? %>
         </div>
         <div class="col-md-9">
-          <br>
           <h3 class="card-title"><%= @loan_application.borrower_name.upcase %></h3><br>
-           <i class="fa fa-map-marker"></i> Address: <%= @loan_application.borrower.try(:current_address_complete_address) %>
+          <i class="fa fa-map-marker"></i> Address: <%= @loan_application.borrower.try(:current_address_complete_address) %>
         </div>
       </div>
       </div>

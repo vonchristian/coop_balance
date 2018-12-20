@@ -6,6 +6,8 @@ module LoansModule
       :number, :reference_number, :account_number, :voucher_account_number, :cash_account_id, :borrower_id,
       :borrower_type, :net_proceed
 
+      validates :reference_number, :cash_account_id, :date, presence: true
+
       def process!
         ActiveRecord::Base.transaction do
           create_voucher
