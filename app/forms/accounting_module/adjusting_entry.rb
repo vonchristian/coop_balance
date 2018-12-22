@@ -28,7 +28,6 @@ module AccountingModule
     private
     def create_entry
       entry = AccountingModule::Entry.create!(
-<<<<<<< HEAD
         entry_date: entry_date,
         recorder: find_employee,
         office: find_employee.office,
@@ -36,13 +35,6 @@ module AccountingModule
         previous_entry: find_employee.cooperative.entries.recent,
         previous_entry_hash: find_employee.cooperative.entries.recent.encryted_hash,
         description: "ADJUSTING ENTRY: #{description}",
-=======
-        entry_date:          entry_date,
-        recorder:            find_employee,
-        office:              find_employee.office,
-        cooperative:         find_employee.cooperative,
-        description:         "ADJUSTING ENTRY: #{description}",
->>>>>>> 3dee3183a2cd587b8e848e9c418a59322c82f8df
         commercial_document: find_commercial_document,
         reference_number:    reference_number,
         debit_amounts_attributes: [
@@ -61,7 +53,7 @@ module AccountingModule
     def find_employee
       User.find(employee_id)
     end
-    
+
     def find_commercial_document
       commercial_document_type.constantize.find(commercial_document_id)
     end
