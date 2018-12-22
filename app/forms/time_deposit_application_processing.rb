@@ -2,8 +2,7 @@ class TimeDepositApplicationProcessing
   include ActiveModel::Model
   attr_accessor :time_deposit_product_id, :depositor_id, :depositor_type,
   :cash_account_id, :reference_number, :date, :amount, :description, :term,
-  :employee_id, :voucher_account_number, :account_number, :certificate_number,
-  :beneficiaries
+  :employee_id, :voucher_account_number, :account_number, :beneficiaries
 
   validates :reference_number, :beneficiaries, :time_deposit_product_id, :amount, :date, :description, :term, :cash_account_id, presence: true
   validates :amount, :term, numericality: true
@@ -31,7 +30,6 @@ class TimeDepositApplicationProcessing
       date_deposited: date,
       account_number: account_number,
       amount: amount,
-      certificate_number: certificate_number,
       cooperative: find_employee.cooperative,
       beneficiaries: beneficiaries
     )

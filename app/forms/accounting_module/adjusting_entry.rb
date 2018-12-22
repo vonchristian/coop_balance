@@ -37,6 +37,8 @@ module AccountingModule
         description: "ADJUSTING ENTRY: #{description}",
         commercial_document: find_commercial_document,
         reference_number:    reference_number,
+        previous_entry:      cooperative.entries.recent,
+        previous_entry_hash: cooperative.entries.recent.encrypted_hash,
         debit_amounts_attributes: [
           amount:              amount,
           account_id:          debit_account_id,
@@ -54,6 +56,13 @@ module AccountingModule
       User.find(employee_id)
     end
 
+<<<<<<< HEAD
+=======
+    def cooperative
+      find_employee.cooperative
+    end
+    
+>>>>>>> dff408719098ccf1d77a1e0c0ab09a74daf46b7f
     def find_commercial_document
       commercial_document_type.constantize.find(commercial_document_id)
     end

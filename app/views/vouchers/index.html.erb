@@ -43,6 +43,7 @@
         <div class="col-md-3 col-sm-3">
           <% if !voucher.disbursed? %>
             <%= link_to 'Disburse', voucher_path(voucher), class: "btn btn-primary btn-sm" %>
+            <%= link_to "Cancel", voucher_path(voucher), method: :delete, class: "btn text-danger" %>
           <% else %>
             <span class="badge bg-success"><i class="fa fa-check-circle"></i> Disbursed </span>
           <% end %>
@@ -51,3 +52,4 @@
     </div>
   </div>
 <% end %>
+<center><%= will_paginate @vouchers %> </center>

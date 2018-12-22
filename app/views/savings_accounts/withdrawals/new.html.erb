@@ -1,13 +1,16 @@
 <% content_for(:html_title) { "#{@savings_account.depositor_name} | New Withdraw" } %>
 <div class="row">
-  <div class="col-md-8 offset-md-2">
+  <div class="col-md-6 offset-md-3">
     <div class="card">
-      <div class="card-header no-border">
+      <div class="card-header">
+        <h4 class="card-title">New Deposit to Savings Account</h4>
+      </div>
+      <div class="card-body">
         <div class="row">
-          <div class="col-md-3 offset-md-1">
+          <div class="col-md-2">
             <%= image_tag(@savings_account.depositor.avatar.variant(resize: "45x45"), class: "img-circle") if @savings_account.depositor.avatar.attached? %>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-10">
             <h3 class="card-title"><%= @savings_account.depositor_name %></h3>
             <small class="text-muted">
               <i class="fa fa-map-marker"></i> <%= @savings_account.depositor.try(:current_address_complete_address) %>
@@ -18,16 +21,14 @@
         </div>
         <br>
         <div class="row">
-          <div class="col-md-10 offset-md-1">
+          <div class="col-md-8 offset-md-2">
             <small>SAVINGS ACCOUNT BALANCE</small>
             <h3 class="card-title"><%= number_to_currency @savings_account.balance %></h3>
           </div>
         </div>
-
       </div>
+      <hr class="no-margin">
       <div class="card-body">
-        <div class="row">
-          <div class="col-md-10 offset-md-1">
         <%= simple_form_for [@savings_account, @withdrawal], html: { autocomplete: 'off' }, url: :savings_account_withdrawals do |f| %>
         <%= f.error_notification %>
         <%= f.input :cash_account_id, default: current_user.cash_accounts.first, collection: current_user.cash_accounts.map{|a| [a.name, a.id] } %>

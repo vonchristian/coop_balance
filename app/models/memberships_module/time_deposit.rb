@@ -100,10 +100,6 @@ module MembershipsModule
       0.02 / 360.0
     end
 
-    def certificate_number
-      
-    end
-
     private
     def set_depositor_name
       self.depositor_name ||= self.depositor_full_name
