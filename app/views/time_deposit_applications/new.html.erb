@@ -29,7 +29,7 @@
           <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
           <%= f.input :depositor_id, input_html: { value: @depositor.id }, as: :hidden %>
           <%= f.input :depositor_type, input_html: { value: @depositor.class.to_s }, as: :hidden %>
-          <%= f.input :beneficiaries, collection: @depositor.beneficiaries.map {|b| [b.full_name, b.full_name] } , input_html: { multiple: true }, include_blank: false, placeholder: "Select Beneficiaries" %>
+          <%= f.input :beneficiaries, label: "Beneficiary/ies", placeholder: "Fullname", as: :text %>
 
           <%= f.submit "Proceed", class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
         <% end %>

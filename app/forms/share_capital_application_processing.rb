@@ -2,7 +2,7 @@ class ShareCapitalApplicationProcessing
   include ActiveModel::Model
   attr_accessor :subscriber_id, :subscriber_type, :share_capital_product_id,
   :date_opened, :amount, :reference_number, :description, :employee_id, :account_number,
-  :cash_account_id, :voucher_account_number
+  :cash_account_id, :voucher_account_number, :beneficiaries
 
   def process!
     ActiveRecord::Base.transaction do
@@ -27,7 +27,8 @@ class ShareCapitalApplicationProcessing
       account_number: account_number,
       initial_capital: amount,
       cooperative: find_employee.cooperative,
-      office: find_employee.office
+      office: find_employee.office,
+      beneficiaries: beneficiaries
     )
     create_voucher(share_capital_application)
   end

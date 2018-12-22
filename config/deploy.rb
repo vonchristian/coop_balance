@@ -7,7 +7,7 @@ require 'mina/puma'
 # RAILS_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1 bundle exec rails db:drop
 
 set :whenever_name, 'production'
-set :domain,        '192.168.254.109'
+set :domain,        '192.168.254.103'
 set :deploy_to,     '/var/www/coopcatalyst'
 set :repository,    'git@gitlab.com:vonchristian/coop_catalyst.git'
 set :branch,        'master'
@@ -15,7 +15,7 @@ set :user,          'deploy'
 set :forward_agent, true
 set :app_path,      lambda { "#{fetch(:deploy_to)}/#{fetch(:current_path)}" }
 set :stage,         'production'
-set :shared_paths,  ['config/database.yml', 'config/secrets.yml', 'log', 'tmp/log', 'public/system', 'tmp/pids', 'tmp/sockets', '/storage']
+set :shared_paths,  ['config/database.yml', 'log', 'tmp/log', 'public/system', 'tmp/pids', 'tmp/sockets', '/storage']
 set :shared_dirs,   fetch(:shared_dirs, []).push('public/system')
 # Optional settings:
 #   set :user, 'foobar'    # Username in the server to SSH to.

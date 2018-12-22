@@ -59,10 +59,10 @@ module MembershipsModule
       TimeDepositsModule::InterestEarnedPosting.post_for(self)
     end
 
-
     def amount_deposited
       balance
     end
+    
     def disbursed?
       true
     end
@@ -98,6 +98,10 @@ module MembershipsModule
 
     def applicable_rate
       0.02 / 360.0
+    end
+
+    def certificate_number
+      
     end
 
     private

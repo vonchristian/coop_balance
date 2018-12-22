@@ -23,15 +23,24 @@ module TimeDeposits
 
     def save_withdraw
       entry = AccountingModule::Entry.create!(
-        office: find_employee.office,
-        cooperative: find_employee.cooperative,
-        recorder: find_employee,
+        office:              find_employee.office,
+        cooperative:         find_employee.cooperative,
+        recorder:            find_employee,
         commercial_document: find_time_deposit,
-        description: 'Withdraw time deposit',
-        reference_number: or_number,
-        entry_date: date,
-      debit_amounts_attributes: [account: debit_account, amount: amount, commercial_document: find_time_deposit],
-      credit_amounts_attributes: [account: cash_account, amount: amount, commercial_document: find_time_deposit])
+        description:         'Withdraw time deposit',
+        reference_number:    or_number,
+        entry_date:          date,
+        debit_amounts_attributes: [
+          account:             debit_account, 
+          amount:              amount, 
+          commercial_document: find_time_deposit
+        ],
+        credit_amounts_attributes: [
+          account:             cash_account, 
+          amount:              amount, 
+          commercial_document: find_time_deposit
+        ]
+      )
     end
 
     def set_time_deposit_as_withdrawn

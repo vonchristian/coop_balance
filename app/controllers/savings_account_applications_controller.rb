@@ -18,6 +18,6 @@ class SavingsAccountApplicationsController < ApplicationController
     params.require(:savings_account_application_processing).
     permit(:saving_product_id, :depositor_id, :depositor_type,
     :cash_account_id, :reference_number, :date, :amount, :description, :term,
-    :employee_id, :voucher_account_number, :account_number)
+    :employee_id, :voucher_account_number, :account_number, :beneficiaries)
   end
 end

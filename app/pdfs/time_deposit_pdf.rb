@@ -74,8 +74,7 @@ class TimeDepositPdf < Prawn::Document
   end
 
   def beneficiaries_and_policy
-    beneficiaries = time_deposit.beneficiaries.map {|b| ["", b]}
-    beneficiaries_data ||=  [["", ""], *beneficiaries]
+    beneficiaries_data ||=  [["", time_deposit.beneficiaries]]
     bounding_box([50,220], :width => 312, :height => 80) do
       # stroke_bounds
       text "Beneficiary/ies :", size: 13

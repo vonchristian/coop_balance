@@ -22,27 +22,20 @@ module SavingsAccounts
     private
     def create_savings_account
       savings_account = MembershipsModule::Saving.create!(
-        account_owner_name: depositor_name,
-        cooperative: employee.cooperative,
-        depositor: find_depositor,
-        account_number: savings_account_application.account_number,
-        date_opened: savings_account_application.date_opened,
-        saving_product: savings_account_application.saving_product,
-        last_transaction_date: savings_account_application.date_opened
+        account_owner_name:    find_depositor.name,
+        cooperative:           employee.cooperative,
+        depositor:             find_depositor,
+        account_number:        savings_account_application.account_number,
+        date_opened:           savings_account_application.date_opened,
+        saving_product:        savings_account_application.saving_product,
+        last_transaction_date: savings_account_application.date_opened,
+        beneficiaries:         savings_account_application.beneficiaries
       )
       update_voucher(savings_account)
     end
 
     def find_depositor
       savings_account_application.depositor
-    end
-
-    def depositor_name
-      if savings_account_application.depositor_type == "Organization"
-        find_depositor.name
-      else
-        find_depositor.full_name
-      end
     end
 
     def update_voucher(savings_account)
