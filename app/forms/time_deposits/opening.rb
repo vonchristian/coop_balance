@@ -32,7 +32,7 @@ module TimeDeposits
         effectivity_date: voucher.date,
         maturity_date:    (voucher.date.to_date + (time_deposit_application.term.to_i.months))
       )
-      
+
       update_voucher(time_deposit)
     end
 
@@ -58,5 +58,4 @@ module TimeDeposits
       Date.today.strftime("%Y").to_s << ("-" + (recent_annual_time_deposits.count+1).to_s)
     end
   end
-
 end

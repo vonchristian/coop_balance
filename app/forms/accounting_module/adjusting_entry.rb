@@ -28,11 +28,13 @@ module AccountingModule
     private
     def create_entry
       entry = AccountingModule::Entry.create!(
-        entry_date:          entry_date,
-        recorder:            find_employee,
-        office:              find_employee.office,
-        cooperative:         find_employee.cooperative,
-        description:         "ADJUSTING ENTRY: #{description}",
+        entry_date: entry_date,
+        recorder: find_employee,
+        office: find_employee.office,
+        cooperative: find_employee.cooperative,
+        previous_entry: find_employee.cooperative.entries.recent,
+        previous_entry_hash: find_employee.cooperative.entries.recent.encryted_hash,
+        description: "ADJUSTING ENTRY: #{description}",
         commercial_document: find_commercial_document,
         reference_number:    reference_number,
         previous_entry:      cooperative.entries.recent,
@@ -51,13 +53,16 @@ module AccountingModule
     end
 
     def find_employee
-      User.find_by_id(employee_id)
+      User.find(employee_id)
     end
 
+<<<<<<< HEAD
+=======
     def cooperative
       find_employee.cooperative
     end
     
+>>>>>>> dff408719098ccf1d77a1e0c0ab09a74daf46b7f
     def find_commercial_document
       commercial_document_type.constantize.find(commercial_document_id)
     end

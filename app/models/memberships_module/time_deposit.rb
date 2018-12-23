@@ -19,7 +19,6 @@ module MembershipsModule
     delegate :avatar, to: :depositor
 
     before_save :set_depositor_name, on: [:create]
-
     def entries
       accounting_entries = []
       time_deposit_product_account.amounts.where(commercial_document: self).each do |amount|
@@ -91,6 +90,7 @@ module MembershipsModule
     def days_elapsed
        (Time.zone.now - date_deposited) /86400
     end
+
 
     def rate
       time_deposit_product.monthly_interest_rate * current_term.number_of_months
