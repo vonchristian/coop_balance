@@ -33,4 +33,12 @@ class Membership < ApplicationRecord
     cooperator_name
   end
 
+  def to_s
+    membership_type
+  end
+
+  def self.current
+    order(created_at: :desc).first || NullMembership.new
+  end
+
 end

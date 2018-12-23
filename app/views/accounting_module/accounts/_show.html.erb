@@ -1,27 +1,23 @@
 <%= render 'accounting_module/accounts/partials/header', account: @account %>
 
-    <div class="card">
-      <div class="card-body">
-        <ul class="nav nav-tabs nav-pills">
-          <li class="nav-item"><%= link_to 'Entries', accounting_module_account_entries_path(@account), class: "nav-link #{'active' if current_page?(accounting_module_account_entries_path(@account))}" %></li>
-          <li class="nav-item"><%= link_to 'Reports', accounting_module_account_reports_path(@account), class: "nav-link #{'active' if current_page?(accounting_module_account_reports_path(@account))}"%></li>
-          <li class="nav-item"><%= link_to 'Settings', accounting_module_account_settings_path(@account), class: "nav-link #{'active' if current_page?(accounting_module_account_settings_path(@account))}" %></li>
-        </ul>
-      </div>
-    </div>
-          <% if current_page? accounting_module_account_path(@account) %>
-            <%= render 'accounting_module/accounts/partials/info' %>
-          <% end %>
-          <% if current_page? accounting_module_account_entries_path(@account) %>
-            <%= render 'accounting_module/accounts/partials/entries' %>
-          <% end %>
-          <% if current_page? accounting_module_account_reports_path(@account) %>
-            <%= render 'accounting_module/accounts/partials/reports' %>
-          <% end %>
-          <% if current_page? accounting_module_account_settings_path(@account) %>
-            <%= render 'accounting_module/accounts/partials/settings' %>
-          <% end %>
-
-
+<div class="card">
+  <div class="card-body">
+    <ul class="nav nav-tabs nav-pills">
+      <li class="nav-item"><%= link_to 'Entries', accounting_module_account_entries_path(@account), class: "nav-link #{'active' if current_page?(accounting_module_account_entries_path(@account))}" %></li>
+      <li class="nav-item"><%= link_to 'Reports', accounting_module_account_reports_path(@account), class: "nav-link #{'active' if current_page?(accounting_module_account_reports_path(@account))}"%></li>
+      <li class="nav-item"><%= link_to 'Settings', accounting_module_account_settings_path(@account), class: "nav-link #{'active' if current_page?(accounting_module_account_settings_path(@account))}" %></li>
+    </ul>
   </div>
 </div>
+<% if current_page? accounting_module_account_path(@account) %>
+  <%= render 'accounting_module/accounts/partials/info' %>
+<% end %>
+<% if current_page? accounting_module_account_entries_path(@account) %>
+  <%= render 'accounting_module/accounts/partials/entries' %>
+<% end %>
+<% if current_page? accounting_module_account_reports_path(@account) %>
+  <%= render 'accounting_module/accounts/partials/reports' %>
+<% end %>
+<% if current_page? accounting_module_account_settings_path(@account) %>
+  <%= render 'accounting_module/accounts/partials/settings' %>
+<% end %>

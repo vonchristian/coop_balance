@@ -394,7 +394,7 @@ AccountingModule::Expense.create(code: 61410, name: "Power Light and Water (Cost
 AccountingModule::Expense.create(code: 61430, name: "Insurance (Cost of Services)")
 AccountingModule::Expense.create(code: 62280, name: "Professional and Consultancy Fees (Cost of Services)")
 AccountingModule::Expense.create(code: 62370, name: "Supplies (Cost of Services)")
-AccountingModule::Expense.create(code: 62410, name: "Power, Light and Water (Cost of Se)")
+AccountingModule::Expense.create(code: 62410, name: "Power, Light and Water (Cost of Services)")
 AccountingModule::Expense.create(code: 62430, name: "Insurance (Marketing Dept.)")
 AccountingModule::Expense.create(code: 62440, name: "Repairs and Maintenance (Marketing Dept.)")
 AccountingModule::Expense.create(code: 62450, name: "Rentals (Marketing Dept.)")

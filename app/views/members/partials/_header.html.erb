@@ -2,10 +2,10 @@
   <div class="card">
     <div class="card-body">
       <div class="row">
-        <div class="col-md-1">
+        <div class="col-md-1 col-sm-1">
           <%= image_tag(member.avatar, height: 45, width: 45, class: "img-circle") if member.avatar.attached? %>
         </div>
-        <div class="col-md-11">
+        <div class="col-md-11 col-sm-11">
           <b><%= member.full_name %></b><br>
           <div class="row">
             <div class="col-md-3">

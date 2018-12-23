@@ -94,6 +94,10 @@ class Member < ApplicationRecord
     organizations.current
   end
 
+  def current_membership
+    memberships.current
+  end
+
   def name
     full_name
   end

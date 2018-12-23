@@ -1,11 +1,19 @@
+<% breadcrumb :new_loans_module_loan_application_voucher, @loan_application %>
 <div class="row">
   <div class="col-md-7">
     <div class="card">
       <div class="card-header">
-        <center>
-          <%= image_tag(@loan_application.avatar.variant(resize: '60x60'), class: "img-circle") if @loan_application.avatar.attached? %><br>
-          <h3 class="card-title"> <%= @loan_application.borrower_name %> </h3>
-        </center>
+        <div class="row">
+          <div class="col-md-1 col-sm-1">
+            <%= image_tag(@loan_application.borrower_avatar, width: 45, height: 45, class: "img-circle") if @borrower.avatar.attached? %>
+          </div>
+          <div class="col-md-11 col-sm-11">
+            <h3 class="card-title no-margin-bottom"> <%= @loan_application.borrower_name %> </h3>
+            <small class="text-muted">
+              <% @loan_application.borrower.memberships.present? ? @loan_application.borrower_current_membership.titleize : "Borrower"%>
+            </small>
+          </div>
+        </div>
       </div>
       <div class="card-body">
         <div class="row min-margin">

@@ -1,50 +1,51 @@
-
-    <div class="card">
-      <div class="card-header">
-        <h4 class="card-title"> Accounting Section Reports </h4>
+<div class="card">
+  <div class="card-header">
+    <h4 class="card-title"> Accounting Section Reports </h4>
+  </div>
+  <div class="card-body">
+    <%= link_to accounting_module_reports_income_statements_path do %>
+      <h3 class="card-title">Income Statement</h3>
+      <p class="text-muted"> Generate report for income statement. </p>
+    <% end %>
+  </div>
+  <hr class="no-margin">
+  <div class="card-body">
+    <%= link_to accounting_module_reports_balance_sheets_path do %>
+      <h4 class="card-title">Balance Sheet</h4>
+      <p class="text-muted">Generate report for balance sheet statement. </p>
+    <% end %>
+  </div>
+  <hr class="no-margin">
+  <div class="card-body">
+    <%= link_to accounting_module_reports_trial_balances_path do %>
+      <h4 class="card-title">Trial Balance</h4>
+      <p class="text-muted">Generate report for trialb balance of accounts. </p>
+    <% end %>
+  </div>
+  <hr class="no-margin">
+  <div class="card-body">
+    <h4 class="card-title">Proofsheet Report</h4>
+    <p class="text-muted">Generate report for consolidated proofsheet report. </p>
+     <%= form_tag({ controller: 'accounting_module/reports/proofsheets', action: 'index', format: 'pdf'}, {:method => :get, :class => 'form-inline'}) do%>
+      <div class="form-group">
+        <%= label_tag :to_date, nil, class: 'sr-only'%>
+        <%= text_field_tag :to_date, Time.zone.now.strftime("%B %e, %Y"), :class => 'datepicker form-control' %>
       </div>
-      <div class="card-body">
-
-
-            <%= link_to accounting_module_reports_income_statements_path do %>
-              <h3 class="card-title">Income Statement</h3>
-              <p class="text-muted"> Generate report for income statement. </p>
-            <% end %>
-
-            <hr>
-            <%= link_to accounting_module_reports_balance_sheets_path do %>
-              <h4 class="card-title">Balance Sheet</h4>
-              <p class="text-muted">Generate report for balance sheet statement. </p>
-            <% end %>
-
-            <%= link_to accounting_module_reports_trial_balances_path do %>
-              <h4 class="card-title">Trial Balance</h4>
-              <p class="text-muted">Generate report for trialb balance of accounts. </p>
-            <% end %>
-
-            <hr>
-
-            <h4 class="card-title">Proofsheet Report</h4>
-            <p class="text-muted">Generate report for consolidated proofsheet report. </p>
-             <%= form_tag({ controller: 'accounting_module/reports/proofsheets', action: 'index', format: 'pdf'}, {:method => :get, :class => 'form-inline'}) do%>
-              <div class="form-group">
-                <%= label_tag :to_date, nil, class: 'sr-only'%>
-                <%= text_field_tag :to_date, Time.zone.now.strftime("%B %e, %Y"), :class => 'datepicker form-control' %>
-              </div>
-              <button type="submit" class="btn btn-default">Get Report</button>
-            <% end %>
-            <hr>
-            <%= link_to accounting_module_reports_net_income_distributions_path do %>
-              <h3 class="card-title">Net Income Distribution</h3>
-              <p class="text-muted"> Generate report for net income distribution. </p>
-            <% end %>
-            <%= link_to accounting_module_reports_entries_path do %>
-              <h3 class="card-title">Entries</h3>
-              <p class="text-muted"> Generate report for entries. </p>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    </div>
+      <button type="submit" class="btn btn-default">Get Report</button>
+    <% end %>
+  </div>
+  <hr class="no-margin">
+  <div class="card-body">
+    <%= link_to accounting_module_reports_net_income_distributions_path do %>
+      <h3 class="card-title">Net Income Distribution</h3>
+      <p class="text-muted"> Generate report for net income distribution. </p>
+    <% end %>
+  </div>
+  <hr class="no-margin">
+  <div class="card-body">
+    <%= link_to accounting_module_reports_entries_path do %>
+      <h3 class="card-title">Entries</h3>
+      <p class="text-muted"> Generate report for entries. </p>
+    <% end %>
   </div>
 </div>

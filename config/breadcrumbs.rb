@@ -43,6 +43,16 @@ crumb :new_member_merging_line_item do |member|
   parent :member, member
 end
 
+crumb :new_loans_module_loan_application do |member|
+  link "New Loan Application", new_loans_module_loan_application_path(borrower_id: member.id, borrower_type: member.class.name)
+  parent :member_loans, member
+end
+
+crumb :new_loans_module_loan_application_voucher do |loan_application|
+  link "New Loan Application Voucher", new_loans_module_loan_application_voucher_path(loan_application_id: loan_application.id)
+  parent :member_loans, loan_application.borrower
+end
+
 # ORGANIZATIONS
 
 crumb :organizations do

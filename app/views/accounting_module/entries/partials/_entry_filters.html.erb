@@ -1,0 +1,61 @@
+<div class="card">
+  <div class="card-body">
+    <nav class="nav flex-column nav-pills">
+      <li class="nav-item"><%= link_to 'All Entries', accounting_module_entries_path, class: "nav-link #{'active' if current_page?(accounting_module_entries_path)}" %></li>
+      <li class="nav-item"><%= link_to 'Cash Receipts', accounting_module_cash_receipts_path, class: "nav-link #{'active' if current_page?(accounting_module_cash_receipts_path)}" %></li>
+      <li class="nav-item"><%= link_to 'Cash Disbursements', accounting_module_cash_disbursements_path, class: "nav-link #{'active' if current_page?(accounting_module_cash_disbursements_path)}" %></li>
+      <li class="nav-item"><%= link_to 'Journal Entry Vouchers', accounting_module_journal_entry_vouchers_path, class: "nav-link #{'active' if current_page?(accounting_module_journal_entry_vouchers_path)}" %></li>
+    </nav>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body">
+    <div class="dropdown">
+      <button class="btn btn-outline-default btn-block dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Options
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+        <%=link_to 'This Day', accounting_module_entries_path(from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day ), class: "dropdown-item"  %>
+
+        <%=link_to 'Yesterday', accounting_module_entries_path(from_date: Time.zone.now.yesterday.beginning_of_day, to_date: Time.zone.now.yesterday.end_of_day ), class: "dropdown-item"  %>
+
+        <%=link_to 'This Week', accounting_module_entries_path(from_date: Time.zone.now.beginning_of_week.beginning_of_day, to_date: Time.zone.now.end_of_week.end_of_day ), class: "dropdown-item"  %>
+
+        <%=link_to 'Last Week', accounting_module_entries_path(from_date: Time.zone.now.last_week.beginning_of_week.beginning_of_day, to_date: Time.zone.now.last_week.end_of_week.end_of_day ), class: "dropdown-item"  %>
+
+        <%=link_to 'This Month', accounting_module_entries_path(from_date: Time.zone.now.beginning_of_month.beginning_of_day, to_date: Time.zone.now.end_of_month.end_of_day ), class: "dropdown-item"  %>
+      </div>
+    </div>
+    <br>
+    <h4 class="card-title"> Choose Date </h4>
+    <%= form_tag({:action => "index", controller: "/accounting_module/entries"}, {:method => :get})  do %>
+      <div class="form-group">
+        <%= text_field_tag :from_date, @from_date, :class => 'datepicker form-control border-input', :placeholder => "From " %>
+      </div>
+
+      <div class="form-group">
+        <%= text_field_tag :to_date, @to_date, :class => 'form-control border-input datepicker', :placeholder => "To " %>
+      </div>
+
+      <button type="submit" class="btn btn-default float-right"> Go</button>
+    <% end %>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body">
+    <h3 class="card-title"> Employees </h3>
+    <hr class="min-margin">
+    <% current_cooperative.users.each do |user| %>
+      <%= link_to accounting_module_per_employee_entries_path(recorder_id: user.id) do %>
+        <span title="<%= user.first_name%>(<%=user.role.titleize%>)" data-toggle="tooltip"> <%= image_tag(user.avatar, height: 50, width: 50, class: "img-circle") %></span>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body">
+    <h3 class="card-title"> Reports </h3>
+    <hr class="min-margin">
+      <%= link_to 'View (PDF)', accounting_module_entries_path(format: 'pdf'), class: 'float-right' %>
+  </div>
+</div>

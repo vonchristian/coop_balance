@@ -1,11 +1,26 @@
 module AccountingModule
   module Entries
     class PerEmployeeEntriesController < ApplicationController
+
       def index
         @employee = params[:recorder_id] ? current_cooperative.users.find(params[:recorder_id]) : current_user
-        @from_date = params[:from_date] ? DateTime.parse(params[:from_date]) : current_cooperative.entries.order(entry_date: :asc).first.entry_date
-        @to_date = params[:to_date] ? DateTime.parse(params[:to_date]) : Date.today.end_of_year
-        @entries = @employee.entries.paginate(page: params[:page], per_page: 25)
+        @from_date = params[:from_date] ? DateTime.parse(params[:from_date]).beginning_of_day : DateTime.now.beginning_of_day
+        @to_date = params[:to_date] ? DateTime.parse(params[:to_date]).end_of_day : DateTime.now.end_of_day
+        if params[:entry_type].present?
+          @entries = @employee.entries.order(reference_number: :desc).where(entry_type: params[:entry_type].to_sym)
+          @paginated_entries = @entries.paginate(:page => params[:page], :per_page => 50)
+        elsif params[:from_date].present? && params[:to_date].present?
+          @from_date = DateTime.parse(params[:from_date])
+          @to_date = DateTime.parse(params[:to_date])
+          @entries = @employee.entries.order(reference_number: :desc).entered_on(from_date: @from_date, to_date: @to_date)
+          @paginated_entries = @entries.paginate(:page => params[:page], :per_page => 50)
+        elsif params[:search].present?
+          @entries = @employee.entries.text_search(params[:search])
+          @paginated_entries = @entries.paginate(:page => params[:page], :per_page => 50)
+        else
+          @entries = @employee.entries.all.order(reference_number: :desc)
+          @paginated_entries = @entries.paginate(:page => params[:page], :per_page => 50)
+        end
         respond_to do |format|
           format.html
           format.pdf do
@@ -20,6 +35,7 @@ module AccountingModule
           end
         end
       end
+
       def entries_for_pdf_report
         if params[:recorder_id].present?
           @employee = current_cooperative.users.find(params[:recorder_id])
@@ -28,7 +44,7 @@ module AccountingModule
         end
         @from_date = params[:from_date] ? DateTime.parse(params[:from_date]) : current_cooperative.entries.order(entry_date: :asc).first.entry_date
         @to_date = params[:to_date] ? DateTime.parse(params[:to_date]) : Date.today.end_of_year
-        @entries = @employee.entries
+        @entries = @employee.entries.order(reference_number: :desc)
       end
     end
   end

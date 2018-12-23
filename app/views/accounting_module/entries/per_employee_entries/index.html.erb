@@ -1,25 +1,73 @@
-<div class="card">
-	<div class="card-body">
-		<div class="row">
-			<div class="col-md-12">
-				<% current_cooperative.users.each do |user| %>
-				  <%= link_to accounting_module_per_employee_entries_path(recorder_id: user.id) do %>
-				    <span title="<%= user.first_name%>(<%= user.role.titleize%>)" data-toggle="tooltip"> <%= image_tag(user.avatar, height: 50, width: 50, class: "img-circle") %></span>
-				  <% end %>
-				<% end %>
-				<%= link_to 'View Pdf', accounting_module_per_employee_entries_path(format: 'pdf', recorder_id: @employee.id), class: "float-right"%>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-12">
-				<h4 class="card-title"><%= @employee.first_and_last_name %> - Entries</h4>
-			</div>
-		</div>
+<%= render "accounting_module/entries/partials/employee_tabs" %>
+<div class="row">
+	<div class="col-md-12">
+		<h4 class="card-title">Journal Entries - <%= @employee.name %></h4>
 	</div>
 </div>
-<% @entries.each do |entry| %>
+<div class="row">
+	<div class="col-md-4 offset-md-4">
+		<%=form_tag accounting_module_per_employee_entries_path, method: :get do %>
+      <div class="input-group">
+        <%= text_field_tag :search, params[:search],  autofocus: true, class: "form-control", placeholder: "Search for Reference Number, Description", id: 'account-search-form' %>
+        <%= text_field_tag :recorder_id, @employee.id, type: :hidden %>
+        <span class="input-group-btn">
+          <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+            <i class="fa fa-search"></i>
+          <% end %>
+        </span>
+      </div>
+    <% end %>
+	</div>
+</div>
+<hr>
+<div class="row">
+	<div class="col-md-3">
+		<div class="dropdown">
+		  <button class="btn btn-outline-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    Fixed date filters
+		  </button>
+		  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+		    <%=link_to 'This Day', accounting_module_per_employee_entries_path(recorder_id: @employee.id, from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day ), class: "dropdown-item"  %>
+
+		    <%=link_to 'Yesterday', accounting_module_per_employee_entries_path(recorder_id: @employee.id, from_date: Time.zone.now.yesterday.beginning_of_day, to_date: Time.zone.now.yesterday.end_of_day ), class: "dropdown-item"  %>
+
+		    <%=link_to 'This Week', accounting_module_per_employee_entries_path(recorder_id: @employee.id, from_date: Time.zone.now.beginning_of_week.beginning_of_day, to_date: Time.zone.now.end_of_week.end_of_day ), class: "dropdown-item"  %>
+
+		    <%=link_to 'Last Week', accounting_module_per_employee_entries_path(recorder_id: @employee.id, from_date: Time.zone.now.last_week.beginning_of_week.beginning_of_day, to_date: Time.zone.now.last_week.end_of_week.end_of_day ), class: "dropdown-item"  %>
+
+		    <%=link_to 'This Month', accounting_module_per_employee_entries_path(recorder_id: @employee.id, from_date: Time.zone.now.beginning_of_month.beginning_of_day, to_date: Time.zone.now.end_of_month.end_of_day ), class: "dropdown-item"  %>
+		    <%=link_to 'Last Month', accounting_module_per_employee_entries_path(recorder_id: @employee.id, from_date: Time.zone.now.last_month.beginning_of_month.beginning_of_day, to_date: Time.zone.now.last_month.end_of_month.end_of_day ), class: "dropdown-item"  %>
+		  </div>
+		</div>
+	</div>
+	<div class="col-md-6">
+    <%= form_tag({:action => "index", controller: "/accounting_module/entries/per_employee_entries"}, {:method => :get})  do %>
+      <div class="row">
+      	<div class="col-md-5">
+		      <div class="form-group">
+		        <%= text_field_tag :from_date, @from_date, :class => 'datepicker form-control border-input', :placeholder => "From " %>
+		        <%= text_field_tag :recorder_id, @employee, value: @employee.id, type: :hidden %>
+		      </div>
+		    </div>
+		    <div class="col-md-5">
+		      <div class="form-group">
+		        <%= text_field_tag :to_date, @to_date, :class => 'form-control border-input datepicker', :placeholder => "To " %>
+		      </div>
+		    </div>
+		    <div class="col-md-2">
+		      <button type="submit" class="btn btn-default float-right"> Go</button>
+		    </div>
+		  </div>
+    <% end %>
+  </div>
+  <div class="col-md-3">
+  	<%= link_to 'View Pdf', accounting_module_per_employee_entries_path(format: 'pdf', recorder_id: @employee.id), class: "btn btn-default float-right"%>
+  </div>
+</div>
+<hr class="min-margin">
+<% @paginated_entries.each do |entry| %>
   <%= render 'accounting_module/entries/partials/header', entry: entry %>
 <% end %>
-<% if @entries.any? %>
-  <center><%= will_paginate @entries %></center>
+<% if @paginated_entries.any? %>
+  <center><%= will_paginate @paginated_entries %></center>
 <% end %>

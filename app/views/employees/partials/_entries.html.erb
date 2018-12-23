@@ -46,21 +46,16 @@
 </div>
 <hr>
 
-    <div class="card">
-      <div class="card-body">
-        <h4 class="card-title">Transactions</h4>
-
-
-              <% @entries.each do |entry| %>
-                <% cache entry do %>
-                  <%= render 'accounting_module/entries/partials/header', entry: entry %>
-                <% end %>
-              <% end %>
-        
-        <% if @entries.exists? %>
-          <center><%= will_paginate @entries %></center>
-        <% end %>
-      </div>
-    </div>
+<div class="card">
+  <div class="card-body">
+    <h4 class="card-title">Transactions</h4>
+    <% @paginated_entries.each do |entry| %>
+      <% cache entry do %>
+        <%= render 'accounting_module/entries/partials/header', entry: entry %>
+      <% end %>
+    <% end %>
+    <% if @paginated_entries.exists? %>
+      <center><%= will_paginate @paginated_entries %></center>
+    <% end %>
   </div>
 </div>

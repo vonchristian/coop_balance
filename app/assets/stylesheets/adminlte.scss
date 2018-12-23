@@ -8855,13 +8855,15 @@ body,
 }
 
 .user-panel img {
-  width: 2.1rem;
+  width: 100%;
+  max-width: 45px;
+  min-width: 20px;
   height: auto;
 }
 
 .user-panel .info {
   display: inline-block;
-  padding: 5px 5px 5px 10px;
+  padding: 0px 5px 5px 10px;
 }
 
 .user-panel .status,

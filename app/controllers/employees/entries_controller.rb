@@ -5,16 +5,18 @@ module Employees
       @from_date = params[:from_date] ? DateTime.parse(params[:from_date]).beginning_of_day : DateTime.now.beginning_of_day
       @to_date = params[:to_date] ? DateTime.parse(params[:to_date]).end_of_day : DateTime.now.end_of_day
       if params[:entry_type].present?
-        @entries = @employee.entries.where(entry_type: params[:entry_type].to_sym).paginate(:page => params[:page], :per_page => 50)
+        @entries = @employee.entries.order(reference_number: :desc).where(entry_type: params[:entry_type].to_sym)
+        @paginated_entries = @entries.paginate(:page => params[:page], :per_page => 50)
       elsif params[:from_date].present? && params[:to_date].present?
         @from_date = DateTime.parse(params[:from_date])
         @to_date = DateTime.parse(params[:to_date])
-        entries = @employee.entries.entered_on(from_date: @from_date, to_date: @to_date)
-        @entries = entries.paginate(:page => params[:page])
+        @entries = @employee.entries.order(reference_number: :desc).entered_on(from_date: @from_date, to_date: @to_date)
+        @paginated_entries = @entries.paginate(:page => params[:page], :per_page => 50)
       elsif params[:search].present?
         @entries = @employee.entries.text_search(params[:search]).paginate(:page => params[:page], :per_page => 50)
       else
-        @entries = @employee.entries.all.order(entry_date: :desc).paginate(:page => params[:page], :per_page => 50)
+        @entries = @employee.entries.all.order(reference_number: :desc)
+        @paginated_entries = @entries.paginate(:page => params[:page], :per_page => 50)
       end
       respond_to do |format|
         format.html

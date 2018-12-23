@@ -1,4 +1,4 @@
-smodule Loans
+module Loans
   module Vouchers
     class ConfirmationsController < ApplicationController
       def create

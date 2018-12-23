@@ -5,7 +5,12 @@
     <div class="image">
       <%=image_tag(current_user.avatar, height: 45, width: 45, class: "img-circle") if current_user.avatar.attached? %>
     </div>
-    
+    <div class="info">
+      <%= link_to employee_path(current_user) do %>
+        <%= current_user.name %><br>
+        <small><i class="fa fa-circle text-success"></i> <%= current_user.role.titleize %></small>
+      <% end %>
+    </div>
   </div>
 
   <!-- Sidebar Menu -->

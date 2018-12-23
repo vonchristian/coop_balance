@@ -1,7 +1,7 @@
 class VouchersController < ApplicationController
   def index
     if params[:search].present?
-      @vouchers = current_cooperative.vouchers.text_search(params[:search]).paginate(page: params[:page], per_page: 50)
+      @vouchers = current_cooperative.vouchers.order(reference_number: :desc).text_search(params[:search]).paginate(page: params[:page], per_page: 50)
     else
       @vouchers = current_cooperative.vouchers.includes(:payee).all.order(reference_number: :desc).order(date: :desc).paginate(page: params[:page], per_page: 50)
     end
