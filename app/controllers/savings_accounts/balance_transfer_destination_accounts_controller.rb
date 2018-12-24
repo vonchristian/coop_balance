@@ -8,6 +8,7 @@ module SavingsAccounts
       else
         @savings_accounts = current_cooperative.savings.paginate(page: params[:page], per_page: 25)
       end
+      authorize [:savings_accounts, :balance_transfer_destination_account]
     end
     def create
       @origin_saving = current_cooperative.savings.find(params[:savings_account_id])

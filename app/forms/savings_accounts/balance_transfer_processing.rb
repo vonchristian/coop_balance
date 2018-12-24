@@ -26,7 +26,7 @@ module SavingsAccounts
         cooperative: find_employee.cooperative,
         preparer: find_employee,
         description: "Savings account balance transfer from #{find_origin_saving.name} to #{find_destination_saving.name}",
-        number: reference_number,
+        reference_number: reference_number,
         account_number: account_number,
         date: date)
       voucher.voucher_amounts.debit.build(

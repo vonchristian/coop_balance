@@ -1,16 +1,26 @@
+<% breadcrumb :savings_account_balance_transfer_form, @origin_saving %>
 <div class="card">
   <div class="card-header">
+    <h4 class="card-title">Savings Account | Balance Transfer</h4>
   </div>
   <div class="card-body">
     <div class="row">
       <div class="col-md-6 border-right">
         <h3 class="card-title"> From: </h3>
-        <h3 class="card-title"><%= number_to_currency @origin_saving.balance %></h3>
-        <%= @origin_saving.name %>
+        <div class="row justify-content-end">
+          <div class="col-md-8 col-sm-8">
+            <h3 class="card-title"><%= number_to_currency @origin_saving.balance %></h3>
+            <%= @origin_saving.name %>
+          </div>
+        </div>
         <hr>
         <h3 class="card-title"> To: </h3>
-        <h3 class="card-title"><%= number_to_currency @destination_saving.balance %></h3>
-        <p class="text-muted"><%= @destination_saving.name %></p>
+        <div class="row justify-content-end">
+          <div class="col-md-8 col-sm-8">
+            <h3 class="card-title"><%= number_to_currency @destination_saving.balance %></h3>
+            <p class="text-muted"><%= @destination_saving.name %></p>
+          </div>
+        </div>
       </div>
       <div class="col-md-6">
         <%= simple_form_for @balance_transfer, url: :savings_account_balance_transfers do |f| %>

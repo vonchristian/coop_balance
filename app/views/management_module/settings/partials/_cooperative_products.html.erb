@@ -71,12 +71,26 @@
         <div class="card">
           <div class="card-header" id="<%= 'heading_' + loan_product.name.gsub(/[^0-9A-Za-z]/, '')%>">
             <h5 class="mb-0">
-              <button class="btn btn-link collapsed" data-toggle="collapse" data-target="<%= '#collapse_' + loan_product.name.gsub(/[^0-9A-Za-z]/, '')%>" aria-expanded="true" aria-controls="collapseOne">
-                <%= loan_product.name %>
+              <button class="btn btn-link collapsed <%= loan_product.active? ? '' : 'text-muted' %>" data-toggle="collapse" data-target="<%= '#collapse_' + loan_product.name.gsub(/[^0-9A-Za-z]/, '')%>" aria-expanded="true" aria-controls="collapseOne">
+                  <%= loan_product.name %>
               </button>
             </h5>
           </div>
           <div id="<%= 'collapse_' + loan_product.name.gsub(/[^0-9A-Za-z]/, '')%>" class="collapse" aria-labelledby="<%= 'heading_' + loan_product.name.gsub(/[^0-9A-Za-z]/, '')%>" data-parent="#accordion" style="">
+            <div class="card-body">
+              <% if loan_product.active? %>
+                Active
+                <%= link_to management_module_settings_loan_product_deactivations_path(loan_product), class: "float-right", method: :post do %>
+                    <span data-toggle="tooltip" title="Deactivate Loan Product"><i class="fa fa-toggle-on fa-2x text-success"></i></span>
+                <% end %>
+              <% else %>
+                This loan product is inactive.
+                <%= link_to management_module_settings_loan_product_activations_path(loan_product), class: "float-right", method: :post do %>
+                  <span data-toggle="tooltip" title="Activate Loan Product"><i class="fa fa-toggle-off fa-2x text-danger"></i></span>
+                <% end %>
+              <% end %>
+            </div>
+            <hr class="no-margin">
             <div class="card-body">
               <%= link_to edit_management_module_settings_loan_product_path(id: loan_product.id), data: {modal: true} do  %>
                 <span class="btn btn-outline-danger btn-sm float-right" data-toggle="tooltip" title="Edit Loan Product"><i class="fa fa-edit"></i></span>

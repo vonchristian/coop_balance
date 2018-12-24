@@ -1,10 +1,10 @@
 module Employees
   module Reports
-    class EntriesPdf < Prawn::Document
+    class EntriesLandscapePdf < Prawn::Document
       attr_reader :entries, :employee, :from_date, :to_date, :view_context, :cooperative
 
       def initialize(args)
-        super(margin: 30, page_size: "A4", page_layout: :portrait)
+        super(margin: 30, page_size: "A4", page_layout: :landscape)
         @entries      = args[:entries]
         @employee     = args[:employee]
         @cooperative = @employee.cooperative
@@ -31,16 +31,16 @@ module Employees
       end
 
       def heading
-        bounding_box [300, 770], width: 50 do
+        bounding_box [300, 400], width: 50 do
           image "#{Rails.root}/app/assets/images/#{cooperative.abbreviated_name.downcase}_logo.jpg", width: 50, height: 50
         end
-        bounding_box [370, 770], width: 210 do
+        bounding_box [370, 400], width: 210 do
           text "#{cooperative.abbreviated_name}", style: :bold, size: 22
           text "#{cooperative.name}", size: 10
           move_down 10
         end
 
-        bounding_box [0, 770], width: 400 do
+        bounding_box [0, 400], width: 400 do
           text "TRANSACTIONS REPORT", style: :bold, size: 14
           move_down 5
           table([["Employee:", "#{employee.first_middle_and_last_name}"]], 
@@ -72,18 +72,49 @@ module Employees
         end
       end
 
+      def debit_accounts
+        accounts_array = []
+        entries.each do |entry|
+          entry.debit_accounts.each do |account|
+            accounts_array << account.name
+          end
+        end
+        accounts_array
+      end
+
+      def credit_accounts
+        accounts_array = []
+        entries.each do |entry|
+          entry.credit_accounts.each do |account|
+            accounts_array << account.name
+          end
+        end
+        accounts_array
+      end
+
+      # def entries_table_header
+      #   thead1 = [["", "", "", "", {content: "DEBIT", align: :center, colspan: debit_accounts.count }, {content: "CREDIT", align: :center, colspan: credit_accounts.count }]]
+      #   thead2 = [["DATE", "DESCRIPTION", "REF. NO.", "MEMBER/PAYEE"] + debit_accounts.select {|d| d.name} + credit_accounts.select {|c| c.name}]
+      #   table(thead1 + thead2, 
+      #     cell_style: { inline_format: true, size: 7, font: "Helvetica", padding: [4,1,4,1]}) do
+      #       row(0).font_style= :bold
+      #       row(1).font_style= :bold
+      #       row(0).background_color = 'DDDDDD'
+      #       row(1).background_color = 'DDDDDD'
+      #       cells.borders = []
+      #   end
+      # end
+
       def entries_table_header
-        table([["DATE", "DESCRIPTION", "REF. NO.", "MEMBER/PAYEE", "ACCOUNT", "DEBIT", "CREDIT"]], 
-          cell_style: { inline_format: true, size: 7, font: "Helvetica", padding: [4,1,4,1]}, 
-          column_widths: [40, 135, 50, 70, 100, 70, 70]) do
+        thead1 = [["", "", "", "", {content: "DEBIT", align: :center, colspan: debit_accounts.count }, {content: "CREDIT", align: :center, colspan: credit_accounts.count }]]
+        thead2 = [["DATE", "DESCRIPTION", "REF. NO.", "MEMBER/PAYEE"] + debit_accounts.select {|d| d} + credit_accounts.select {|c| c}]
+        table(thead2, 
+          cell_style: { inline_format: true, size: 7, font: "Helvetica", padding: [4,1,4,1]}) do
             row(0).font_style= :bold
+            row(1).font_style= :bold
             row(0).background_color = 'DDDDDD'
-            cells.borders = [:top, :bottom]
-            column(5).align = :right
-            column(6).align = :right
-            column(2).align = :center
-            column(1).align = :center
-            column(4).align = :center
+            row(1).background_color = 'DDDDDD'
+            cells.borders = []
         end
       end
 

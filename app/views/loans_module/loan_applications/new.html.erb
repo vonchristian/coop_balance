@@ -15,7 +15,7 @@
           <div class="col-md-10 col-sm-10">
             <h3 class="card-title no-margin-bottom"> <%= @borrower.name %> </h3>
             <small class="text-muted">
-              <% @borrower.memberships.present? ? @borrower.current_membership.titleize : "Borrower"%>
+              <%= @borrower.memberships.present? ? @borrower.current_membership.membership_type.try(:titleize) : "Borrower"%>
             </small>
           </div>
         </div>
@@ -25,7 +25,7 @@
         <%= simple_form_for @loan_application, url: :loans_module_loan_applications, html: { autocomplete: 'off' } do |f| %>
           <%= f.error_notification %>
           <%= f.input :application_date, as: :string, input_html: { class: "datepicker", value: Time.zone.now.strftime("%B %e, %Y") } %>
-          <%= f.input :loan_product_id, validate: { presence: true }, label: 'Select Type of Loan', collection: LoansModule::LoanProduct.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanProductSelect' } %>
+          <%= f.input :loan_product_id, validate: { presence: true }, label: 'Select Type of Loan', collection: LoansModule::LoanProduct.all.where(active: true).order(:name).map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanProductSelect' } %>
 
           <%= f.input :borrower_id, input_html: { value: @borrower.id }, as: :hidden %>
           <%= f.input :borrower_type, input_html: { value: @borrower.class.to_s }, as: :hidden %>

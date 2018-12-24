@@ -1,5 +1,5 @@
 
-
+<% breadcrumb :savings_account_settings, @savings_account %>
 <div class="card-body">
   <div class="row">
     <div class="col-md-9">
@@ -8,7 +8,7 @@
     </div>
     <div class="col-md-3">
       <% if policy([:accounting_module, :entry]).new? %>
-         <%=link_to "New Adjusting Entry", new_accounting_module_adjusting_entry_path(commercial_document_type: @savings_account.class.to_s, commercial_document_id: @savings_account.id), class: "btn btn-outline-danger" %>
+        <%=link_to "New Adjusting Entry", new_accounting_module_adjusting_entry_path(commercial_document_type: @savings_account.class.to_s, commercial_document_id: @savings_account.id), class: "btn btn-outline-danger" %>
       <% else %>
         <span class="text-danger"> Only Accountant / Bookkeeper account can do this action. </span>
       <% end %>
@@ -31,7 +31,11 @@
       <p class="text-muted"> Transfer balance to other savings accounts. </p>
     </div>
     <div class="col-md-3">
-      <%= link_to 'Balance Transfer', new_savings_account_balance_transfer_destination_account_path(origin_saving_id: @savings_account.id), class: "btn btn-outline-danger" %>
+      <% if policy([:savings_accounts, :balance_transfer_destination_account]).new? %>
+        <%= link_to 'Balance Transfer', new_savings_account_balance_transfer_destination_account_path(origin_saving_id: @savings_account.id), class: "btn btn-outline-danger" %>
+      <% else %>
+        <span class="text-danger"> Only Accountant / Treasurer account can do this action. </span>
+      <% end %>
     </div>
   </div>
   <hr>

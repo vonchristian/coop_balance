@@ -63,7 +63,7 @@
         </tr>
       </thead>
       <tbody>
-        <% voucher.voucher_amounts.order(:amount_type).each do |voucher_amount| %>
+        <% voucher.voucher_amounts.each do |voucher_amount| %>
           <tr>
             <td>
               <% if voucher_amount.debit? %>

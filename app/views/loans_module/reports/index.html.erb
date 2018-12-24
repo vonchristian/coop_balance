@@ -5,45 +5,46 @@
         <h4 class="card-title"> Loans Section Reports</h4>
       </div>
       <div class="card-body">
-        <h4><b>Loan Releases</b></h4>
+        <h4 class="card-title"><b>Loan Releases</b></h4>
         <%= form_tag({:action => "index", controller: "loans_module/reports/loan_releases", format: 'pdf'}, {:method => :get})  do %>
-        <div class="row">
-          <div class="col-md-3">
-          <div class="form-group">
-            <%= text_field_tag :from_date, @from_date, :class => 'datepicker form-control border-input', :placeholder => "From " %>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="form-group">
-            <%= text_field_tag :to_date, @to_date, :class => 'form-control border-input datepicker', :placeholder => "To " %>
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group">
+                <%= text_field_tag :from_date, @from_date, :class => 'datepicker form-control border-input', :placeholder => "From " %>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <%= text_field_tag :to_date, @to_date, :class => 'form-control border-input datepicker', :placeholder => "To " %>
 
+              </div>
+            </div>
+            <div class="col-md-2">
+              <button type="submit" class="btn btn-warning btn-sm"> Generate Report</button>
+            </div>
           </div>
-        </div>
-        <div class="col-md-2">
-          <button type="submit" class="btn btn-warning btn-sm"> Generate Report</button>
-        </div>
-      </div>
-    <% end %>
-    <hr>
-    <h4 class="card-title">Loan Payments</h4>
+        <% end %>
+        <hr>
+        <h4 class="card-title"><b>Loan Payments</b></h4>
         <%= form_tag({:action => "index", controller: "loans_module/reports/loan_collections", format: 'pdf'}, {:method => :get})  do %>
-        <div class="row">
-          <div class="col-md-3">
-          <div class="form-group">
-            <%= text_field_tag :from_date, @from_date, :class => 'datepicker form-control border-input', :placeholder => "From " %>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="form-group">
-            <%= text_field_tag :to_date, @to_date, :class => 'form-control border-input datepicker', :placeholder => "To " %>
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group">
+                <%= text_field_tag :from_date, @from_date, :class => 'datepicker form-control border-input', :placeholder => "From " %>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <%= text_field_tag :to_date, @to_date, :class => 'form-control border-input datepicker', :placeholder => "To " %>
 
+              </div>
+            </div>
+            <div class="col-md-2">
+              <button type="submit" class="btn btn-warning btn-sm"> Generate Report</button>
+            </div>
           </div>
-        </div>
-        <div class="col-md-2">
-          <button type="submit" class="btn btn-warning btn-sm"> Generate Report</button>
-        </div>
+        <% end %>
       </div>
-    <% end %>
     </div>
   </div>
 </div>

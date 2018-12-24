@@ -55,7 +55,7 @@ module LoansModule
           end
 
         entry.save!
-        voucher.update_attributes!(accounting_entry: entry)
+        voucher.update_attributes!(accounting_entry: entry, disburser: employee)
       end
 
       def update_last_transaction_date

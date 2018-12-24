@@ -119,8 +119,9 @@ class Voucher < ApplicationRecord
     if disbursed?
       disburser
     else
-      id = voucher_amounts.contains_cash_accounts.pluck(:account_id).first
-      employee = Employees::EmployeeCashAccount.where(cash_account_id: id).last.employee
+      # id = voucher_amounts.contains_cash_accounts.pluck(:account_id).last
+      # employee = Employees::EmployeeCashAccount.where(cash_account_id: id).last.employee
+      employee = Employees::EmployeeCashAccount.last.employee
     end
   end
 

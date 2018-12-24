@@ -10,7 +10,7 @@
           <div class="col-md-11 col-sm-11">
             <h3 class="card-title no-margin-bottom"> <%= @loan_application.borrower_name %> </h3>
             <small class="text-muted">
-              <% @loan_application.borrower.memberships.present? ? @loan_application.borrower_current_membership.titleize : "Borrower"%>
+              <%= @loan_application.borrower.memberships.present? ? @loan_application.borrower.current_membership.membership_type.try(:titleize) : "Borrower"%>
             </small>
           </div>
         </div>

@@ -1,8 +1,41 @@
+<% breadcrumb :savings_account_balance_transfer, @origin_saving %>
 <div class="row">
-  <div class="col-md-6 offset-md-3">
+  <div class="col-md-7">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-md-2 col-sm-2">
+            <%= image_tag(@origin_saving.avatar, width: 45, height: 45, class: "img-circle") if @origin_saving.avatar.attached? %>
+          </div>
+          <div class="col-md-10 col-sm-10">
+            <h3 class="card-title no-margin-bottom"> <%= @origin_saving.depositor_name %> </h3>
+            <small class="text-muted">
+              <%= @origin_saving.depositor.memberships.present? ? @origin_saving.depositor.current_membership.membership_type.try(:titleize) : "Depositor"%>
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row justify-content-end">
+          <div class="col-md-7 col-sm-6 col-auto">
+            <small>CURRENT BALANCE</small>
+            <h2 class="number"><%= number_to_currency @origin_saving.balance %></h2>
+
+          </div>
+          <div class="col-md-4 col-sm-6 col-auto">
+            <small>DAYS INACTIVE</small>
+            <h4 class=" card-title number text-danger"><%= @origin_saving.number_of_days_inactive %></h4>
+            <small>Last Transaction</small><br>
+            <i class="fa fa-calendar"></i> &nbsp; <%= @origin_saving.last_transaction_date.strftime("%B %e, %Y") %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-5">
     <div class="card card-danger">
       <div class="card-header">
-        <h3 class="card-title">Select savings account you want to tranfer balance to. </h3>
+        <h3 class="card-title">Please select savings account where you want to tranfer balance to. </h3>
       </div>
       <div class="card-body">
         <%=form_tag new_savings_account_balance_transfer_destination_account_path, method: :get do %>

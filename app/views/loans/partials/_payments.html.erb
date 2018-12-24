@@ -15,8 +15,7 @@
   </div>
 </div>
 
-          <% @payments.each do |payment| %>
-            <%= render 'accounting_module/entries/partials/header', entry: payment %>
-          <% end %>
-
-      <center><%= will_paginate @payments %></center>
+<% @payments.each do |payment| %>
+  <%= render 'accounting_module/entries/partials/header', entry: payment %>
+<% end %>
+<center><%= will_paginate @payments %></center>

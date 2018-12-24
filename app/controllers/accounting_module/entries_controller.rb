@@ -1,6 +1,8 @@
 require 'will_paginate/array'
 module AccountingModule
   class EntriesController < ApplicationController
+
+
     def index
       if params[:from_date].present? && params[:to_date].present?
         @from_date = params[:from_date] ? DateTime.parse(params[:from_date]) : current_cooperative.entries.order(entry_date: :asc).first.entry_date
@@ -37,6 +39,7 @@ module AccountingModule
     def new
       @line_item = Vouchers::VoucherAmountProcessing.new
     end
+
     def create
       @line_item = Vouchers::VoucherAmountProcessing.new(entry_params)
       if @line_item.valid?
@@ -46,24 +49,26 @@ module AccountingModule
         render :new
       end
     end
+
     def edit
       @entry = current_cooperative.entries.find(params[:id])
     end
+
     def update
       @entry = current_cooperative.entries.find(params[:id])
-      @entry.update(edit_entry_params)
-      if @entry.valid?
-        @entry.save
+      @entry_form = AccountingModule::Entries::UpdateProcessing.new(edit_entry_params)
+      if @entry_form.valid?
+        @entry_form.process!
         redirect_to accounting_module_entry_url(@entry), notice: "Entry updated successfully"
       else
         render :edit
       end
     end
 
-
     def show
       @entry = current_cooperative.entries.find(params[:id])
     end
+
     def destroy
       @entry = current_cooperative.entries.find(params[:id])
       @entry.destroy
@@ -74,10 +79,12 @@ module AccountingModule
     def entry_params
       params.require(:accounting_module_entry_form).permit(:recorder_id, :amount, :debit_account_id, :credit_account_id, :entry_date, :description, :reference_number, :entry_type)
     end
+
     def edit_entry_params
       params.require(:accounting_module_entry).
-      permit(:recorder_id, :reference_number, :description, :entry_date)
+      permit(:recorder_id, :reference_number, :description, :entry_date, :entry_id)
     end
+
     def entries_for_pdf
       if params[:from_date].present? && params[:to_date].present?
         @from_date = params[:from_date] ? DateTime.parse(params[:from_date]) : current_cooperative.entries.order(entry_date: :asc).first.entry_date

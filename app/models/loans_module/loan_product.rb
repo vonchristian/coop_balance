@@ -127,9 +127,9 @@ module LoansModule
     end
 
     def create_charges_for(loan_application)
+      create_interest_on_loan_charge_for(loan_application)
       create_percent_based_charges(loan_application)
       create_amount_based_charges(loan_application)
-      create_interest_on_loan_charge_for(loan_application)
       if loan_protection_plan_provider.present?
         create_loan_protection_fund(loan_application)
       end

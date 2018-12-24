@@ -36,13 +36,15 @@
         </div>
         <div class="col-md-5 col-sm-5">
           <%= link_to voucher_path(voucher) do %>
-            <p><%= voucher.description %></p>
-            <p class="text-muted">#<%= voucher.reference_number %></p>
+            <p class="no-margin"><%= voucher.description %></p>
+            <p class="text-muted no-margin">#<%= voucher.reference_number %></p>
           <% end %>
         </div>
         <div class="col-md-3 col-sm-3">
           <% if !voucher.disbursed? %>
-            <%= link_to 'Disburse', voucher_path(voucher), class: "btn btn-primary btn-sm" %>
+            <% if current_user.can_disburse?(voucher: voucher) %>
+              <%= link_to 'Disburse', voucher_path(voucher), class: "btn btn-primary btn-sm" %>
+            <% end %>
             <%= link_to "Cancel", voucher_path(voucher), method: :delete, class: "btn text-danger" %>
           <% else %>
             <span class="badge bg-success"><i class="fa fa-check-circle"></i> Disbursed </span>

@@ -1,0 +1,6 @@
+<% if current_user.can_disburse?(voucher: voucher) %>
+<div class="card-body no-padding-top no-padding-bottom">
+   <p class="alert alert-warning"><i class="fa fa-info-circle"></i> Please review the following details. If no errors are found, Click "Confirm" to post entry.</p>
+</div>
+<hr class="no-margin">
+<% end %>
