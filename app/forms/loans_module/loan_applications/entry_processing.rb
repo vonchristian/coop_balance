@@ -18,7 +18,7 @@ module LoansModule
           update_terms
         end
       end
-      
+
       private
       def create_entry
         entry = AccountingModule::Entry.new(
@@ -66,13 +66,13 @@ module LoansModule
       def update_terms
         loan.current_term.update_attributes!(
           effectivity_date: voucher.date,
-          maturity_date: proper_date)
+          maturity_date: maturity_date)
       end
 
-      def proper_date
+      def maturity_date
         voucher.date +
-        TermParser.new(loan.term).add_months +
-        TermParser.new(loan.term).add_days
+        TermParser.new(term: loan.term).add_months +
+        TermParser.new(term: loan.term).add_days
       end
 
       def find_recent_entry
