@@ -1,3 +1,4 @@
+<% breadcrumb :new_share_capital_capital_build_up, share_capital: @share_capital %>
 <% content_for(:html_title) { "#{@share_capital.subscriber_name} | New Deposit" } %>
 <div class="row">
   <div class="col-md-8 offset-md-2">
@@ -51,6 +52,6 @@
     $("#memberships_share_capitals_capital_build_up_processing_cash_account_id").select2({
       theme: "bootstrap"
     });
-    
+
   });
 </script>

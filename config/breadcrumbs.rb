@@ -126,5 +126,28 @@ crumb :organization_savings_accounts do |organization|
   link "Savings Accounts", organization_savings_accounts_path(organization)
   parent :organization, organization
 end
+crumb :accounting_dashboard do
+  link "Accounting", accounting_module_index_path
+end
+crumb :entries do
+  link 'Entries', accounting_module_entries_path
+  parent :accounting_dashboard
+end
 
+crumb :entry do |entry|
+  link "##{entry.reference_number}" || entry.description, accounting_module_entry_path(entry)
+  parent :entries
+end
 
+crumb :share_capitals do
+  link 'Share Capitals', share_capitals_path
+end
+
+crumb :share_capital do |share_capital|
+  link share_capital.subscriber_name, share_capital_path(share_capital)
+  parent :share_capitals
+end
+crumb :new_share_capital_capital_build_up do |share_capital|
+  link 'New Capital Build Up', new_share_capital_capital_build_up_path(share_capital)
+  # parent :share_capital, share_capital: share_capital
+end
