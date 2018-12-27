@@ -14,7 +14,6 @@ module AccountingModule
         heading
         entries_table
         font Rails.root.join("app/assets/fonts/open_sans_regular.ttf")
-
       end
 
       private
@@ -23,14 +22,17 @@ module AccountingModule
           price(amount.amount)
         end
       end
+
       def credit_amount_for(amount)
         if amount.credit?
           price(amount.amount)
         end
       end
+
       def price(number)
         view_context.number_to_currency(number, :unit => "P ")
       end
+
       def display_commercial_document_for(entry)
         if entry.commercial_document.try(:member).present?
           entry.commercial_document.try(:member).try(:full_name)
@@ -42,66 +44,94 @@ module AccountingModule
       end
 
       def heading
-    bounding_box [300, 770], width: 50 do
-      image "#{Rails.root}/app/assets/images/#{cooperative.abbreviated_name.downcase}_logo.jpg", width: 50, height: 50
-    end
-    bounding_box [360, 770], width: 200 do
-        text "#{cooperative.abbreviated_name }", style: :bold, size: 20
-        text "#{cooperative.name.try(:upcase)}", size: 8
-        text "#{cooperative.address}", size: 8
-    end
-    bounding_box [0, 770], width: 400 do
-      text "Entries Report", style: :bold, size: 12
-      text "Account: #{account.name.upcase}", size: 10
-      text "Date: #{from_date.strftime("%B %e, %Y")} - #{to_date.strftime("%B %e, %Y")}", size: 10
-    end
-    move_down 20
-    stroke do
-      stroke_color '24292E'
-      line_width 1
-      stroke_horizontal_rule
-      move_down 5
-    end
-  end
+        bounding_box [300, 770], width: 50 do
+          image "#{Rails.root}/app/assets/images/#{cooperative.abbreviated_name.downcase}_logo.jpg", width: 50, height: 50
+        end
+        bounding_box [360, 770], width: 200 do
+          text "#{cooperative.abbreviated_name }", style: :bold, size: 20
+          text "#{cooperative.name.try(:upcase)}", size: 8
+          text "#{cooperative.address}", size: 8
+        end
+        bounding_box [0, 770], width: 400 do
+          text "Entries Report", style: :bold, size: 12
+          text "Account: #{account.name.upcase}", size: 10
+          text "Date: #{from_date.strftime("%B %e, %Y")} - #{to_date.strftime("%B %e, %Y")}", size: 10
+        end
+        move_down 20
+        stroke do
+          stroke_color '24292E'
+          line_width 1
+          stroke_horizontal_rule
+          move_down 5
+        end
+      end
+      def entries_table_header
+          table([["DATE", "DESCRIPTION", "REF. NO.", "MEMBER/PAYEE", "ACCOUNT", "DEBIT", "CREDIT"]],
+            cell_style: { inline_format: true, size: 7, font: "Helvetica", padding: [4,1,4,1]},
+            column_widths: [40, 135, 50, 70, 100, 70, 70]) do
+              row(0).font_style= :bold
+              row(0).background_color = 'DDDDDD'
+              cells.borders = [:top, :bottom]
+              column(5).align = :right
+              column(6).align = :right
+              column(2).align = :center
+              column(1).align = :center
+              column(4).align = :center
+          end
+        end
 
       def entries_table
         if !entries.any?
           move_down 10
           text "No entries data.", align: :center
         else
-          table([["DATE", "DESCRIPTION", "REFERENCE", "MEMBER/PAYEE", 'DEBIT', "ACCOUNT", "CREDIT"]], cell_style: { inline_format: true, size: 6, font: "Helvetica"}, column_widths: [50, 100, 50,  80, 80, 90, 80]) do
-            row(0).font_style= :bold
-            row(0).background_color = 'DDDDDD'
-          end
+          entries_table_header
+
           entries.each do |entry|
-            table([["#{entry.entry_date.strftime("%b %e, %Y")}", "#{entry.description}", "#{entry.reference_number}",  "#{display_commercial_document_for(entry)}",]], cell_style: { size: 9, padding: [5,5,4,0]}, column_widths: [50, 100, 50,  80, 80, 90, 80]) do
-              cells.borders = []
-            end
+            row_count = entry.amounts.count + 1
+            debit_amounts_data = entry.debit_amounts.map{|a| [a.account.name, price(a.amount), ""] }
+            credit_amounts_data = entry.credit_amounts.map{|a| [a.account.name, "", price(a.amount)] }
+            sub_total = [[
+              "SUB-TOTAL",
+              "#{price(entry.debit_amounts.total)}",
+              "#{price(entry.credit_amounts.total)}"
+            ]]
+            entries_data = [[
+              {content: entry.entry_date.strftime("%b %e, %Y"), rowspan: row_count },
+              {content: entry.description, rowspan: row_count, valign: :center},
+              {content: "##{entry.reference_number}", rowspan: row_count},
+              {content: display_commercial_document_for(entry).try(:upcase), rowspan: row_count, valign: :center},
+              "", "", ""
+            ]]
 
-            table(entry.amounts.map{|a| ["", "", "", "",  debit_amount_for(a),  a.account.name, credit_amount_for(a)] }, column_widths: [50, 100, 50,  80, 80, 90, 80], cell_style: {inline_format: true, padding: [0,0,2,0], size: 8} ) do
+            table(entries_data + debit_amounts_data + credit_amounts_data,
+              cell_style: { inline_format: true, size: 8, padding: [1,1,3,1]},
+              column_widths: [40, 135, 50, 70, 100, 70, 70]) do
               cells.borders = []
-              column(-1).align = :right
-              column(4).align = :right
-            end
-            move_down 3
-            stroke do
-              stroke_color 'CCCCCC'
-              line_width 0.2
-              stroke_horizontal_rule
-            end
-
-            table([["", "", "", "",  price(entry.debit_amounts.total),  '', price(entry.credit_amounts.total)]], column_widths: [50, 100, 50,  80, 80, 90, 80], cell_style: {inline_format: true, padding: [0,0,2,0], size: 8} ) do
-              cells.borders = []
+              row(0).height = 1
+              column(2).align = :center
               column(6).align = :right
-              column(4).align = :right
+              column(5).align = :right
             end
-            move_down 3
-
-
             stroke do
-              stroke_color 'CCCCCC'
+              stroke_color '24292E'
+              line_width 0.5
+              stroke_horizontal_rule
+              move_down 1
+            end
+            table(sub_total, position: :right,
+              cell_style: { inline_format: true, size: 8, padding: [1,1,3,1]},
+              column_widths: [100, 70, 70]) do
+              cells.borders = []
+              row(0).font_style= :bold
+              column(1).align = :right
+              column(2).align = :right
+            end
+            stroke do
+              stroke_color '24292E'
               line_width 1
               stroke_horizontal_rule
+              move_down 1
             end
           end
         end

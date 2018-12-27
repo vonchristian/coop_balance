@@ -10,14 +10,13 @@ module AccountingModule
         else
           @entries = @account.entries.order(entry_date: :desc).paginate(page: params[:page], per_page: 50)
         end
-        @employee = current_user
         respond_to do |format|
           format.html
           format.pdf do
             pdf = AccountingModule::Accounts::EntriesReportPdf.new(
               entries: @entries,
               account: @account,
-              employee: @employee,
+              employee: current_user,
               from_date: @from_date,
               to_date: @to_date,
               view_context: view_context)
