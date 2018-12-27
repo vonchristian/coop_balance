@@ -63,6 +63,8 @@ gem "gretel"
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.8.0'
+  gem 'rubocop', require: false
+  gem 'rubocop-rspec'
   gem 'capybara'
   gem 'factory_bot_rails'
   gem 'faker'
