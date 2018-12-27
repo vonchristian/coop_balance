@@ -14,9 +14,7 @@ RSpec.describe StoreFront, type: :model do
     it { is_expected.to belong_to :purchase_return_account }
     it { is_expected.to belong_to :internal_use_account }
     it { is_expected.to belong_to :sales_discount_account }
-
-
-
+    it { is_expected.to have_many :products }
     it { is_expected.to have_many :entries }
   end
 

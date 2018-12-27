@@ -1,4 +1,3 @@
-require 'roo'
 module Registries
   class LoanRegistry < Registry
     def parse_for_records

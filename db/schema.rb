@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_23_102140) do
+ActiveRecord::Schema.define(version: 2018_12_27_061720) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -237,6 +237,8 @@ ActiveRecord::Schema.define(version: 2018_12_23_102140) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "cooperative_id"
+    t.index ["cooperative_id"], name: "index_categories_on_cooperative_id"
     t.index ["name"], name: "index_categories_on_name", unique: true
   end
 
@@ -965,9 +967,11 @@ ActiveRecord::Schema.define(version: 2018_12_23_102140) do
     t.uuid "category_id"
     t.string "unit_of_measurement"
     t.uuid "cooperative_id"
+    t.uuid "store_front_id"
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["cooperative_id"], name: "index_products_on_cooperative_id"
     t.index ["name"], name: "index_products_on_name", unique: true
+    t.index ["store_front_id"], name: "index_products_on_store_front_id"
   end
 
   create_table "program_subscriptions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1015,8 +1019,10 @@ ActiveRecord::Schema.define(version: 2018_12_23_102140) do
     t.string "number"
     t.uuid "employee_id"
     t.uuid "cooperative_id"
+    t.uuid "store_front_id"
     t.index ["cooperative_id"], name: "index_registries_on_cooperative_id"
     t.index ["employee_id"], name: "index_registries_on_employee_id"
+    t.index ["store_front_id"], name: "index_registries_on_store_front_id"
     t.index ["supplier_id"], name: "index_registries_on_supplier_id"
     t.index ["type"], name: "index_registries_on_type"
   end
@@ -1473,6 +1479,7 @@ ActiveRecord::Schema.define(version: 2018_12_23_102140) do
   add_foreign_key "beneficiaries", "cooperatives"
   add_foreign_key "beneficiaries", "members"
   add_foreign_key "carts", "users"
+  add_foreign_key "categories", "cooperatives"
   add_foreign_key "cooperative_services", "cooperatives"
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "credit_account_id"
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "debit_account_id"
@@ -1555,10 +1562,12 @@ ActiveRecord::Schema.define(version: 2018_12_23_102140) do
   add_foreign_key "penalty_configs", "loan_products"
   add_foreign_key "products", "categories"
   add_foreign_key "products", "cooperatives"
+  add_foreign_key "products", "store_fronts"
   add_foreign_key "program_subscriptions", "programs"
   add_foreign_key "programs", "accounts"
   add_foreign_key "programs", "cooperatives"
   add_foreign_key "registries", "cooperatives"
+  add_foreign_key "registries", "store_fronts"
   add_foreign_key "registries", "suppliers"
   add_foreign_key "registries", "users", column: "employee_id"
   add_foreign_key "sales_purchase_line_items", "line_items", column: "purchase_line_item_id"

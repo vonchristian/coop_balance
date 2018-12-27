@@ -15,15 +15,11 @@ class ApplicationController < ActionController::Base
   end
 
   def current_cooperative
-    if current_user
-      current_user.cooperative
-    end
+    current_user.cooperative
   end
 
   def current_office
-    if current_user
-      current_user.office
-    end
+    current_user.office
   end
 
   def respond_modal_with(*args, &blk)
@@ -42,4 +38,5 @@ class ApplicationController < ActionController::Base
   def permission_denied
     redirect_to "/", alert: 'Sorry but you are not allowed to access this page.'
   end
+  private :current_cooperative, :current_office
 end
