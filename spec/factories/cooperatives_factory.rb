@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :origin_cooperative, class: Cooperative do
-    name "Test Cooperative"
-    abbreviated_name "TC"
+    name { "Test Cooperative" }
+    abbreviated_name { "TC" }
     registration_number { "000-1110222" }
   end
   factory :cooperative do

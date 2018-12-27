@@ -4,7 +4,7 @@ FactoryBot.define do
     barangay
     municipality
     province
-    addressable nil
-    current false
+    addressable { nil }
+    current { false }
   end
 end

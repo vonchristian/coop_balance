@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :committee, class: "CoopConfigurationsModule::Committee" do
-    name "MyString"
+    name { "MyString" }
   end
 end

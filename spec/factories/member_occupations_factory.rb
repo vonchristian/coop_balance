@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :member_occupation do
-    member nil
-    occupation nil
+    member { nil }
+    occupation { nil }
   end
 end

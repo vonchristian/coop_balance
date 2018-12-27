@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :account, :class => AccountingModule::Account do |account|
     sequence(:name) { |n| "Account " +  ('a'..'z').to_a.shuffle.join }
     code  { Faker::Number.number(12) }
-    contra false
+    contra { false }
 
 
     factory :asset, class: AccountingModule::Asset do
