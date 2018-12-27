@@ -151,3 +151,14 @@ crumb :new_share_capital_capital_build_up do |share_capital|
   link 'New Capital Build Up', new_share_capital_capital_build_up_path(share_capital)
   # parent :share_capital, share_capital: share_capital
 end
+crumb :loans do
+  link 'Loans', loans_path
+end
+crumb :loan do |loan|
+  link "#{loan.borrower_name} - #{loan.loan_product_name}", loan_path(loan)
+  parent :loans
+end
+crumb :loan_interests do |loan|
+  link 'Interests', loan_path(loan)
+  parent :loan, loan
+end
