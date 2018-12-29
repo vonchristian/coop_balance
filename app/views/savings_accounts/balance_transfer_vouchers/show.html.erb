@@ -18,12 +18,8 @@
         <% if !@voucher.disbursed?%>
           <% if current_user.can_disburse?(voucher: @voucher) %>
             <%= link_to "Confirm", savings_account_voucher_confirmations_path(savings_account_id: @origin_saving.id, voucher_id: @voucher.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
-            <%= link_to "Cancel", savings_account_balance_transfer_voucher_path(savings_account_id: @origin_saving.id, voucher_id: @voucher.id), method: :delete, class: "btn text-danger float-left" %>
-
-          <% elsif current_user.bookkeeper? && !@voucher.contains_cash_accounts? %>
-            <%= link_to "Confirm", savings_account_voucher_confirmations_path(savings_account_id: @origin_saving.id, voucher_id: @voucher.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
-            <%= link_to "Cancel", savings_account_balance_transfer_voucher_path(savings_account_id: @origin_saving.id, voucher_id: @voucher.id), method: :delete, class: "btn text-danger float-left" %>
           <% end %>
+          <%= link_to "Cancel", savings_account_balance_transfer_voucher_path(savings_account_id: @origin_saving.id, voucher_id: @voucher.id), method: :delete, class: "btn text-danger float-left" %>
         <% else %>
           <%= render 'vouchers/partials/status', voucher: @voucher %>
         <% end %>

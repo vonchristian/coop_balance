@@ -23,13 +23,13 @@ module ShareCapitals
 
     private
     def create_voucher
-       voucher = Voucher.new(
+      voucher = Voucher.new(
       account_number: account_number,
       office: find_employee.office,
       cooperative: find_employee.cooperative,
       preparer: find_employee,
       description: "Balance transfer from #{find_origin.name} to #{find_destination.name}",
-      number: reference_number,
+      reference_number: reference_number,
       payee: find_destination.subscriber,
       date: date
     )

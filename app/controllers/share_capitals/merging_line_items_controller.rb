@@ -17,6 +17,14 @@ module ShareCapitals
       redirect_to new_share_capital_merging_line_item_path(@current_share_capital), notice: "Share capital account selected successfully."
     end
 
+    def destroy
+      @current_share_capital = current_cooperative.share_capitals.find(params[:current_share_capital_id])
+      @share_capital = current_cooperative.share_capitals.find(params[:share_capital_id])
+      @share_capital.cart_id = nil
+      @share_capital.save
+      redirect_to new_share_capital_merging_line_item_url(@current_share_capital), notice: "Removed successfully."
+    end
+
     private
     def merging_line_item_params
       params.require(:share_capitals_merging_line_item).

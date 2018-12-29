@@ -1,36 +1,73 @@
 <% breadcrumb :savings_account_balance_transfer_form, @origin_saving %>
-<div class="card">
-  <div class="card-header">
-    <h4 class="card-title">Savings Account | Balance Transfer</h4>
-  </div>
-  <div class="card-body">
-    <div class="row">
-      <div class="col-md-6 border-right">
+<div class="row">
+  <div class="col-md-7">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">Savings Account | Balance Transfer</h4>
+      </div>
+      <div class="card-body">
         <h3 class="card-title"> From: </h3>
         <div class="row justify-content-end">
-          <div class="col-md-8 col-sm-8">
-            <h3 class="card-title"><%= number_to_currency @origin_saving.balance %></h3>
-            <%= @origin_saving.name %>
+          <div class="col-md-6 col-sm-4">
+            <div class="row">
+              <div class="col-md-3 col-sm-3">
+                <%= image_tag(@origin_saving.avatar, width: 45, height: 45, class: "img-circle") if @origin_saving.avatar.attached? %>
+              </div>
+              <div class="col-md-9 col-sm-9">
+                <h3 class="card-title no-margin-bottom"> <%= @origin_saving.depositor_name %> </h3>
+                <small class="text-muted">
+                  <%= @origin_saving.depositor.memberships.present? ? @origin_saving.depositor.current_membership.membership_type.try(:titleize) : "Depositor"%>
+                </small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-4">
+            <center>
+              <small>CURRENT BALANCE</small>
+              <h3 class="number"><%= number_to_currency @origin_saving.balance %></h3>
+            </center>
           </div>
         </div>
         <hr>
         <h3 class="card-title"> To: </h3>
         <div class="row justify-content-end">
-          <div class="col-md-8 col-sm-8">
-            <h3 class="card-title"><%= number_to_currency @destination_saving.balance %></h3>
-            <p class="text-muted"><%= @destination_saving.name %></p>
+          <div class="col-md-6 col-sm-4">
+            <div class="row">
+              <div class="col-md-3 col-sm-3">
+                <%= image_tag(@destination_saving.avatar, width: 45, height: 45, class: "img-circle") if @destination_saving.avatar.attached? %>
+              </div>
+              <div class="col-md-9 col-sm-9">
+                <h3 class="card-title no-margin-bottom"> <%= @destination_saving.depositor_name %> </h3>
+                <small class="text-muted">
+                  <%= @destination_saving.depositor.memberships.present? ? @destination_saving.depositor.current_membership.membership_type.try(:titleize) : "Depositor"%>
+                </small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-4">
+            <center>
+              <small>CURRENT BALANCE</small>
+              <h3 class="number"><%= number_to_currency @destination_saving.balance %></h3>
+            </center>
           </div>
         </div>
       </div>
-      <div class="col-md-6">
+    </div>
+  </div>
+  <div class="col-md-5">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">Transaction Details</h4>
+      </div>
+      <div class="card-body">
         <%= simple_form_for @balance_transfer, url: :savings_account_balance_transfers do |f| %>
-          <%= f.input :amount %>
           <%= f.input :destination_id, input_html: { value: @destination_saving.id }, as: :hidden %>
           <%= f.input :origin_id, input_html: { value: @origin_saving.id }, as: :hidden %>
-          <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
           <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
-          <%= f.input :reference_number %>
           <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
+          <%= f.input :amount %>
+          <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+          <%= f.input :reference_number %>
           <%= f.submit 'Proceed', class: "btn btn-danger float-right", data: { disable_with: "Processing..." } %>
         <% end %>
       </div>

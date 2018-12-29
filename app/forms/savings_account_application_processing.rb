@@ -4,6 +4,8 @@ class SavingsAccountApplicationProcessing
   :cash_account_id, :reference_number, :date, :amount, :description,
   :employee_id, :voucher_account_number, :account_number, :beneficiaries
 
+  validates :reference_number, :amount, :date, :saving_product_id, presence: true
+
   def process!
     ActiveRecord::Base.transaction do
       create_savings_account_application

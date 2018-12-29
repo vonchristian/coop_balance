@@ -5,7 +5,7 @@ module SavingsAccounts
     :reference_number, :date, :recorder_id, :cash_account_id, :account_number
 
     validates :amount, presence: true, numericality: true
-    validates :reference_number, presence: true
+    validates :reference_number, :date, :cash_account_id, presence: true
     validate :amount_less_than_current_cash_on_hand?
     validate :amount_is_less_than_balance?
 
@@ -33,29 +33,30 @@ module SavingsAccounts
         cooperative: find_employee.cooperative,
         preparer: find_employee,
         description: 'Closing of savings account',
-        number: reference_number,
+        reference_number: reference_number,
         account_number: account_number,
         date: date,
         payee: find_savings_account.depositor
       )
-        voucher.voucher_amounts.debit.build(
-          account: debit_account,
-          amount: find_savings_account.balance,
-          commercial_document: find_savings_account
-        )
-        voucher.voucher_amounts.credit.build(
-          account: cash_account,
-          amount: amount,
-          commercial_document: find_savings_account
-        )
+      voucher.voucher_amounts.debit.build(
+        account: debit_account,
+        amount: find_savings_account.balance,
+        commercial_document: find_savings_account
+      )
+      voucher.voucher_amounts.credit.build(
+        account: cash_account,
+        amount: amount,
+        commercial_document: find_savings_account
+      )
+      if !closing_account_fee.nil? && !closing_account_fee.to_d.zero?
         voucher.voucher_amounts.credit.build(
           account: closing_fee_account,
-            amount: closing_account_fee,
-            commercial_document: find_savings_account
-          )
-        voucher.save!
+          amount: closing_account_fee,
+          commercial_document: find_savings_account
+        )
+      end
+      voucher.save!
     end
-
 
     def closing_fee_account
       find_savings_account.saving_product_closing_account

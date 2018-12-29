@@ -1,47 +1,60 @@
+<% breadcrumb :share_capital_merging, @current_share_capital %>
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-7">
     <div class="card">
       <div class="card-header">
-        <center>
-          <%= image_tag(@current_share_capital.subscriber.avatar.variant(resize: "60x60"), class: "img-circle") if @current_share_capital.subscriber.avatar.attached? %><br>
-           <h3 class="card-title"><%= @current_share_capital.subscriber_name %></h3>
-           <hr>
-           <h4 class="no-margin-bottom"><%= number_to_currency @current_share_capital.paid_up_balance %></h4>
-           <small>PAID UP BALANCE</small>
-        </center>
+        <%= render "share_capitals/shared/share_capital_info_header", share_capital: @current_share_capital %>
       </div>
       <div class="card-body">
-        <h4>Accounts to Be Merged</h4>
+        <%= render "share_capitals/shared/share_capital_info_body", share_capital: @current_share_capital %>
+      </div>
+      <% if current_cart.share_capitals.present? %>
+        <hr class="no-margin">
+        <div class="card-body">
+          <h4>Accounts to Be Merged</h4>
           <i class="fa fa-info-circle text-danger"></i>
           <span class="text-danger">
             Please be careful in selecting accounts to be merged. Once the account is merged it can not be undone.
           </span>
-           <hr>
-        <% current_cart.share_capitals.each do |share_capital| %>
-          <div class="row">
-            <div class="col-md-8 col-md-offset-1">
-              <b><%= share_capital.subscriber_name %></b><br>
-              <span class="text-success">
-                <%= number_to_currency share_capital.paid_up_balance %>
-              </span>
-            </div>
-          </div>
           <hr>
-        <% end %>
-        <br>
-        <%= simple_form_for @merging, url: :share_capital_mergings do |f| %>
-          <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
-          <%= f.input :current_share_capital_id, input_html: { value: @current_share_capital.id }, as: :hidden %>
-          <div class="box-footer">
-            <%= f.submit "Merge Share Capital Accounts", class: "btn btn-danger btn btn-block" %>
-          </div>
-
-        <% end %>
-      </div>
+          <% current_cart.share_capitals.each do |share_capital| %>
+            <div class="row">
+              <div class="col-md-6 col-sm-7">
+                <h4 class="card-title"><%= share_capital.subscriber_name %></h4>
+                <small>Account Hash</small><br>
+                <%= share_capital.account_number %>
+              </div>
+              <div class="col-md-5 col-sm-5 text-right">
+                <small>PAID UP BALANCE</small>
+                <h3 class="number text-success">
+                  <%= number_to_currency share_capital.paid_up_balance %>
+                </h3>
+              </div>
+              <div class="col-md-1 col-sm-1">
+                <%= link_to share_capital_merging_line_item_path(id: share_capital.id, share_capital_id: share_capital.id, current_share_capital_id: @current_share_capital.id), method: :delete, class: "btn btn-danger btn-sm" do %>
+                    <i title="Remove" data-toggle="tooltip" class="fa fa-times float-right"></i>
+                <% end %>
+              </div>
+            </div>
+            <hr>
+          <% end %>
+          <%= simple_form_for @merging, url: :share_capital_mergings do |f| %>
+            <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
+            <%= f.input :current_share_capital_id, input_html: { value: @current_share_capital.id }, as: :hidden %>
+            <div class="modal-footer">
+              <%= f.submit "Merge Share Capital Accounts", class: "btn btn-danger btn btn-block" %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
     </div>
   </div>
-  <div class="col-md-6">
-    <div class="card">
+  <div class="col-md-5">
+    <div class="card card-danger">
+      <div class="card-header">
+        <h4 class="card-title">Accounts Merge</h4>
+        <p class="no-margin-bottom">Please select share capital accounts below to be merged.</p>
+      </div>
       <div class="card-body">
         <%=form_tag new_share_capital_merging_line_item_path(@current_share_capital), method: :get do %>
           <div class="input-group">

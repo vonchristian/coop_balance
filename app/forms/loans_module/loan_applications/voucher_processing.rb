@@ -9,8 +9,10 @@ module LoansModule
       validates :reference_number, :cash_account_id, :date, presence: true
 
       def process!
-        ActiveRecord::Base.transaction do
-          create_voucher
+        if valid?
+          ActiveRecord::Base.transaction do
+            create_voucher
+          end
         end
       end
 
@@ -41,6 +43,7 @@ module LoansModule
         create_loans_receivable(voucher)
         create_net_proceed(voucher)
       end
+
       def create_loans_receivable(voucher)
         Vouchers::VoucherAmount.create!(
         cooperative: find_cooperative,
@@ -51,6 +54,7 @@ module LoansModule
         account: find_loan_application.loan_product_loans_receivable_current_account,
         commercial_document: find_loan_application)
       end
+
       def create_net_proceed(voucher)
         Vouchers::VoucherAmount.create!(
         cooperative: find_cooperative,

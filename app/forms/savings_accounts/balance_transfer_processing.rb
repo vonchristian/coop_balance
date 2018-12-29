@@ -3,6 +3,8 @@ module SavingsAccounts
     include ActiveModel::Model
     attr_accessor :origin_id, :destination_id, :employee_id, :amount,
     :reference_number, :account_number, :date
+    validates :amount, :reference_number, :date, presence: true
+    
     def process!
       ActiveRecord::Base.transaction do
         create_balance_transfer
