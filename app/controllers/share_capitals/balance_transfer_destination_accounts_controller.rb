@@ -1,16 +1,17 @@
 module ShareCapitals
   class BalanceTransferDestinationAccountsController < ApplicationController
-    def new
 
+    def new
       @origin_share_capital = current_cooperative.share_capitals.find(params[:share_capital_id])
       @destination_share_capital = ShareCapitals::BalanceTransferDestinationAccountProcessing.new
-      authorize @destination_share_capital, policy: ShareCapitals::BalanceTransferPolicy
+      authorize [:share_capitals, :balance_transfer]
       if params[:search].present?
         @share_capitals = current_cooperative.share_capitals.text_search(params[:search]).paginate(page: params[:page], per_page: 25)
       else
         @share_capitals = current_cooperative.share_capitals.paginate(page: params[:page], per_page: 25)
       end
     end
+
     def create
       @origin_share_capital      = current_cooperative.share_capitals.find(params[:share_capital_id])
       @destination_share_capital = ShareCapitals::BalanceTransferDestinationAccountProcessing.new(destination_params)

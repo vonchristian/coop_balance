@@ -1,7 +1,7 @@
 module LoansModule
   class LoanApplicationsController < ApplicationController
     def index
-      @ordered_loan_applications = current_cooperative.loan_applications.all.includes(:voucher).order("vouchers.reference_number DESC")
+      @ordered_loan_applications = current_cooperative.loan_applications.all.includes(:voucher).order("vouchers.reference_number DESC", "vouchers.date DESC")
       @loan_applications = @ordered_loan_applications.paginate(page: params[:page], per_page: 20)
     end
     def new

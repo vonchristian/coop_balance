@@ -1,6 +1,7 @@
 module LoansModule
   module LoanApplications
     class VouchersController < ApplicationController
+
       def new
         @loan_application = current_cooperative.loan_applications.find(params[:loan_application_id])
         @borrower = @loan_application.borrower
@@ -9,17 +10,18 @@ module LoansModule
         @previous_loans = @loan_application.borrower.loans
         @voucher = LoansModule::LoanApplications::VoucherProcessing.new
       end
+
       def create
         @loan_application = current_cooperative.loan_applications.find(params[:loan_application_id])
         @share_capitals = @loan_application.borrower.share_capitals
         @voucher = LoansModule::LoanApplications::VoucherProcessing.new(voucher_params)
-        if @voucher.valid?
-          @voucher.process!
+        if @voucher.process!
           redirect_to loans_module_loan_application_url(@loan_application), notice: "Loan application saved successfully."
         else
-          render :new
+          redirect_to new_loans_module_loan_application_voucher_url(@loan_application), alert: "Unable to proceed. Please fill up the required fields."
         end
       end
+
       def show
         @loan_application = current_cooperative.loan_applications.find(params[:loan_application_id])
         @voucher = @loan_application.voucher

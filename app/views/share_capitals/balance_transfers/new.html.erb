@@ -1,50 +1,77 @@
+<% breadcrumb :share_capital_balance_transfer_form, @share_capital %>
 <div class="row">
-  <div class="col-md-8 offset-md-2">
+  <div class="col-md-7">
     <div class="card">
-      <div class="card-header no-border">
-        <h3 class="card-title">Balance Transfer Transaction </h3>
+      <div class="card-header">
+        <h3 class="card-title">Share Capital | Balance Transfer</h3>
       </div>
       <div class="card-body">
-        <p class="text-muted"> Origin Account </p>
-        <div class="row">
-          <div class="col-md-2 offset-md-1">
-            <%= image_tag(@share_capital.subscriber.avatar, height: 45, width: 45, class: "img-circle") %>
+        <h3 class="card-title"> From: </h3>
+        <div class="row justify-content-end">
+          <div class="col-md-6 col-sm-4">
+            <div class="row">
+              <div class="col-md-3 col-sm-3">
+                <%= image_tag(@share_capital.avatar, width: 45, height: 45, class: "img-circle") if @share_capital.avatar.attached? %>
+              </div>
+              <div class="col-md-9 col-sm-9">
+                <h3 class="card-title no-margin-bottom"> <%= @share_capital.subscriber_name %> </h3>
+                <small class="text-muted">
+                  <%= @share_capital.subscriber.memberships.present? ? @share_capital.subscriber.current_membership.membership_type.try(:titleize) : "Subscriber"%>
+                </small>
+              </div>
+            </div>
           </div>
-          <div class="col-md-5">
-            <%= @share_capital.subscriber_name %>
-          </div>
-          <div class="col-md-4">
-            <%= number_to_currency @share_capital.paid_up_balance %>
-          </div>
-        </div>
-        <p class="text-muted"> Destination Account </p>
-        <div class="row min-margin">
-          <div class="col-md-2 offset-md-1">
-            <%= image_tag(@destination_share_capital.subscriber.avatar, height: 45, width: 45, class: "img-circle") %>
-          </div>
-          <div class="col-md-5">
-            <%= @destination_share_capital.subscriber_name %>
-          </div>
-          <div class="col-md-4">
-            <%= number_to_currency @destination_share_capital.paid_up_balance %>
+          <div class="col-md-4 col-sm-4">
+            <center>
+              <small>PAID UP BALANCE</small>
+              <h3 class="number"><%= number_to_currency @share_capital.paid_up_balance %></h3>
+            </center>
           </div>
         </div>
         <hr>
-        <div class="row">
-          <div class="col-md-10 offset-md-1">
-            <%= simple_form_for @balance_transfer, url: :share_capital_balance_transfers, html: { autocomplete: 'off' } do |f| %>
-              <%= f.input :amount, as: :currency %>
-              <%= f.input :origin_id, input_html: { value: @share_capital.id }, as: :hidden %>
-              <%= f.input :destination_id, input_html: { value: @destination_share_capital.id }, as: :hidden %>
-              <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
-              <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
-              <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
-              <%= f.input :reference_number %>
-              <%= f.input :description %>
-              <%= f.submit "Proceed", class: "btn btn-danger float-right", data: { disable_with: "Processing..." } %>
-            <% end %>
+        <h3 class="card-title"> To: </h3>
+        <div class="row justify-content-end">
+          <div class="col-md-6 col-sm-4">
+            <div class="row">
+              <div class="col-md-3 col-sm-3">
+                <%= image_tag(@destination_share_capital.avatar, width: 45, height: 45, class: "img-circle") if @destination_share_capital.avatar.attached? %>
+              </div>
+              <div class="col-md-9 col-sm-9">
+                <h3 class="card-title no-margin-bottom"> <%= @destination_share_capital.subscriber_name %> </h3>
+                <small class="text-muted">
+                  <%= @destination_share_capital.subscriber.memberships.present? ? @destination_share_capital.subscriber.current_membership.membership_type.try(:titleize) : "Depositor"%>
+                </small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-4">
+            <center>
+              <small>PAID UP BALANCE</small>
+              <h3 class="number"><%= number_to_currency @destination_share_capital.paid_up_balance %></h3>
+            </center>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-5">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">Transaction Details</h4>
+      </div>
+      <div class="card-body">
+        <%= simple_form_for @balance_transfer, url: :share_capital_balance_transfers, html: { autocomplete: 'off' } do |f| %>
+          <%= f.input :origin_id, input_html: { value: @share_capital.id }, as: :hidden %>
+          <%= f.input :destination_id, input_html: { value: @destination_share_capital.id }, as: :hidden %>
+          <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
+          <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+
+          <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+          <%= f.input :amount, as: :currency %>
+          <%= f.input :reference_number %>
+          <%= f.input :description, input_html: {value: "Share Capital balance transfer from #{@share_capital.subscriber_name} to #{@destination_share_capital.subscriber_name}"}, as: :hidden %>
+          <%= f.submit "Proceed", class: "btn btn-danger float-right", data: { disable_with: "Processing..." } %>
+        <% end %>
       </div>
     </div>
   </div>

@@ -1,0 +1,15 @@
+<div class="row justify-content-end">
+  <div class="col-md-7 col-sm-6 col-auto">
+    <small>CURRENT BALANCE</small>
+    <h2 class="number"><%= number_to_currency savings_account.balance %></h2>
+    <small>Account Hash</small><br>
+    <%= savings_account.account_number %>
+  </div>
+  <div class="col-md-4 col-sm-6 col-auto">
+    <small>INACTIVITY</small>
+    <h4 class=" card-title number text-danger"><%= savings_account.number_of_days_inactive %> Days</h4>
+    <br>
+    <small>Last Transaction</small><br>
+    <i class="fa fa-calendar"></i> &nbsp; <%= savings_account.last_transaction_date.strftime("%B %e, %Y") %>
+  </div>
+</div>

@@ -44,9 +44,10 @@ crumb :new_member_merging_line_item do |member|
 end
 
 #Member Loans
-crumb :new_loans_module_loan_application do |member|
-  link "New Loan Application", new_loans_module_loan_application_path(borrower_id: member.id, borrower_type: member.class.name)
-  parent :member_loans, member
+
+crumb :new_loans_module_loan_application do |borrower|
+  link "New Loan Application", new_loans_module_loan_application_path(borrower_id: borrower.id, borrower_type: borrower.class.name)
+  parent :member, borrower
 end
 
 crumb :new_loans_module_loan_application_voucher do |loan_application|
@@ -84,7 +85,16 @@ crumb :loans_module_amortization_schedule_details do |amortization_schedule|
   parent :loans_module_loan_amortization_schedules, amortization_schedule.loan
 end
 
-#Member Savings
+# Member Savings 
+
+crumb :new_savings_account_application do |depositor|
+  link "New Savings Account", new_savings_account_application_path(depositor_id: depositor.id, depositor_type: depositor.class.name)
+  if depositor.class.name == "Member"
+    parent :member, depositor
+  elsif depositor.class.name == "Organization"
+    parent :organization, depositor
+  end
+end
 
 crumb :savings_account_details do |savings_account|
   link "Details", savings_account_path(savings_account)
@@ -101,6 +111,21 @@ crumb :savings_account_merging do |savings_account|
   parent :savings_account_settings, savings_account
 end
 
+crumb :savings_account_closing do |savings_account|
+  link "Account Closing", new_savings_account_account_closing_path(savings_account_id: savings_account.id)
+  parent :savings_account_settings, savings_account
+end
+
+crumb :savings_account_deposit do |savings_account|
+  link "New Deposit", new_savings_account_deposit_path(savings_account_id: savings_account.id)
+  parent :member_savings_accounts, savings_account.depositor
+end
+
+crumb :savings_account_withdrawal do |savings_account|
+  link "Withdrawal", new_savings_account_withdrawal_path(savings_account_id: savings_account.id)
+  parent :member_savings_accounts, savings_account.depositor
+end
+
 crumb :savings_account_balance_transfer do |savings_account|
   link "Balance Transfer", new_savings_account_balance_transfer_destination_account_path(savings_account_id: savings_account.id)
   parent :savings_account_settings, savings_account
@@ -109,6 +134,38 @@ end
 crumb :savings_account_balance_transfer_form do |savings_account|
   link "Balance Transfer Form", new_savings_account_balance_transfer_path(savings_account_id: savings_account.id)
   parent :savings_account_settings, savings_account
+end
+
+# Member Share Capital
+
+crumb :new_share_capital_application do |subscriber|
+  link "Share Capital Openning", new_share_capital_application_path(depositor_id: subscriber.id, depositor_type: subscriber.class.name)
+  parent :member, subscriber
+end
+
+crumb :share_capital_details do |share_capital|
+  link "Details", share_capital_path(share_capital)
+  parent :member_share_capitals, share_capital.subscriber
+end
+
+crumb :share_capital_settings do |share_capital|
+  link "Settings", share_capital_settings_path(share_capital)
+  parent :member_share_capitals, share_capital.subscriber
+end
+
+crumb :share_capital_merging do |share_capital|
+  link "Accounts Merging", new_share_capital_merging_line_item_path(share_capital_id: share_capital.id)
+  parent :share_capital_settings, share_capital
+end
+
+crumb :share_capital_balance_transfer do |share_capital|
+  link "Balance Transfer", new_share_capital_balance_transfer_destination_account_path(share_capital_id: share_capital.id)
+  parent :share_capital_settings, share_capital
+end
+
+crumb :share_capital_balance_transfer_form do |share_capital|
+  link "Balance Transfer Form", new_share_capital_balance_transfer_path(share_capital_id: share_capital.id)
+  parent :share_capital_settings, share_capital
 end
 
 # ORGANIZATIONS

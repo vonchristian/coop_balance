@@ -1,0 +1,11 @@
+<div class="row">
+  <div class="col-md-2 col-sm-2">
+    <%= image_tag(share_capital.subscriber.avatar, width: 45, height: 45, class: "img-circle") if share_capital.subscriber.avatar.attached? %>
+  </div>
+  <div class="col-md-10 col-sm-10">
+    <h3 class="card-title no-margin-bottom"> <%= share_capital.subscriber_name %> </h3>
+    <small class="text-muted">
+      <%= share_capital.subscriber.memberships.present? ? share_capital.subscriber.current_membership.membership_type.try(:titleize) : "Depositor"%>
+    </small>
+  </div>
+</div>

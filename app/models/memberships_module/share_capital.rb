@@ -25,7 +25,7 @@ module MembershipsModule
              to: :share_capital_product, prefix: true
     delegate :name, to: :office, prefix: true
     delegate :name, :current_address_complete_address, :current_contact_number, to: :subscriber, prefix: true
-    delegate :avatar, to: :subscriber
+    delegate :avatar, :name, to: :subscriber
     before_save :set_account_owner_name, on: [:create, :update]
 
     def self.inactive(options={})

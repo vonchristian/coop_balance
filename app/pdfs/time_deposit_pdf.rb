@@ -229,7 +229,7 @@ class TimeDepositPdf < Prawn::Document
   end
 
   def interest_rate
-    (time_deposit.time_deposit_product.interest_rate.to_f * 100).to_i
+    (time_deposit.time_deposit_product.interest_rate.to_f * 100)
   end
 
   def depositor_pronoun

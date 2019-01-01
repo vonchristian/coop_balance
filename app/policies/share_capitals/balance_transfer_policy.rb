@@ -1,7 +1,7 @@
 module ShareCapitals
   class BalanceTransferPolicy < ApplicationPolicy
     def new?
-      user.accountant? || user.bookkeeper?
+      user.accountant? || user.teller?
     end
     def create?
       new?

@@ -68,8 +68,6 @@ class Member < ApplicationRecord
     end
   end
 
-  
-
   def self.active_at(args={})
     updated_at(args)
   end

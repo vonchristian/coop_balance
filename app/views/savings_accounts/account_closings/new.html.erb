@@ -1,56 +1,59 @@
+<% breadcrumb :savings_account_closing, @savings_account %>
 <div class="row">
-  <div class="col-md-6 offset-md-3">
+  <div class="col-md-7">
     <div class="card">
       <div class="card-header">
-        <h4><center><%= image_tag(@savings_account.depositor.avatar.variant(resize: '80x80'),  class: 'media-object img-circle') if @savings_account.depositor.avatar.attached? %></center></h4>
-        <center><h3 class="box-title"><%= @savings_account.depositor_name %></h3></center>
+        <%= render "savings_accounts/shared/savings_info_header", savings_account: @savings_account %>
       </div>
       <div class="card-body">
         <div class="row">
-          <div class="col-md-5">
-            <small>BALANCE</small>
+          <div class="col-md-5 col-sm-5">
+            <small>SAVINGS BALANCE</small>
           </div>
-          <div class="col-md-5">
-            <span class="float-right">
-              <label><%= number_to_currency @savings_account.balance %></label>
-            </span>
+          <div class="col-md-5 col-sm-5">
+            <h5 class="number float-right"><%= number_to_currency @savings_account.balance %></h5>
           </div>
         </div>
-        <br>
         <div class="row">
-          <div class="col-md-5">
+          <div class="col-md-5 col-sm-5">
             <small>CLOSING ACCOUNT FEE</small>
           </div>
-          <div class="col-md-5">
-            <span class="float-right">
-              <label><%=number_to_currency @savings_account.saving_product_closing_account_fee %></label>
-            </span>
+          <div class="col-md-5 col-sm-5">
+            <h5 class="number float-right">
+              <%=number_to_currency @savings_account.saving_product_closing_account_fee %>
+            </h5>
           </div>
         </div>
-        <hr>
+        <hr class="min-margin">
         <div class="row">
-          <div class="col-md-5">
+          <div class="col-md-5 col-sm-5">
             <small>AMOUNT TO BE DISBURSED</small>
           </div>
-          <div class="col-md-5">
-            <span class="float-right">
-              <label><%= number_to_currency @savings_account.balance -  @savings_account.saving_product_closing_account_fee %></label>
-            </span>
+          <div class="col-md-5 col-sm-5">
+            <h5 class="number float-right"><%= number_to_currency @savings_account.balance -  @savings_account.saving_product_closing_account_fee %>
+            </h5>
           </div>
         </div>
       </div>
-      <hr class="no-margin">
+    </div>
+  </div>
+  <div class="col-md-5">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">Savings Account Closing Details</h4>
+      </div>
       <div class="card-body">
         <%= simple_form_for [@savings_account, @account_closing], url: :savings_account_account_closings do |f| %>
           <%= f.error_notification %>
           <%= f.input :amount, input_html: { value: @savings_account.balance -  @savings_account.saving_product_closing_account_fee }, as: :hidden %>
           <%= f.input :closing_account_fee, input_html: { value: @savings_account.saving_product_closing_account_fee }, as: :hidden %>
-          <%= f.input :reference_number, label: "OR number" %>
-          <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
           <%= f.input :savings_account_id, input_html: { value: @savings_account.id },as: :hidden %>
           <%= f.input :recorder_id, input_html: { value: current_user.id },as: :hidden %>
           <%= f.input :account_number, input_html: { value: SecureRandom.uuid },as: :hidden %>
-          <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] } %>
+
+          <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+          <%= f.input :reference_number %>
+          <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] }, default: current_user.cash_accounts.first, hint: "Please select cash account for this savings." %>
           <hr>
           <%= f.submit "Close Account", class: "btn btn-danger btn-block btn-lg", data: {disable_with: "Processing..." } %>
         <% end %>

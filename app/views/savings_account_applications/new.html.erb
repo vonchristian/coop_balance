@@ -1,33 +1,33 @@
+<% breadcrumb :new_savings_account_application, @depositor %>
 <div class="row">
   <div class="col-md-6 offset-md-3">
     <div class="card">
       <div class="card-header">
         <div class="row">
-          <div class="col-md-2">
-            <%= image_tag(@depositor.avatar, class: "img-circle", height: 45, width: 45) %>
+          <div class="col-md-2 col-sm-2">
+            <%= image_tag(@depositor.avatar, width: 45, height: 45, class: "img-circle") if @depositor.avatar.attached? %>
           </div>
-          <div class="col-md-10">
-            <h3 class="card-title"><%= @depositor.name %></h3>
-            <% if @depositor.class.name == "Member" %>
-              <i class="fa fa-map-marker"></i> <%= @depositor.current_address_complete_address %>
-            <% end %>
+          <div class="col-md-10 col-sm-10">
+            <h3 class="card-title no-margin-bottom"> <%= @depositor.name %> </h3>
+            <small class="text-muted">
+              <%= @depositor.memberships.present? ? @depositor.current_membership.membership_type.try(:titleize) : "Borrower"%>
+            </small>
           </div>
         </div>
       </div>
       <div class="card-body">
         <%= simple_form_for @savings_account_application, url: :savings_account_applications, html: { autocomplete: 'off' } do |f| %>
-          <%= f.input :saving_product_id, collection: current_cooperative.saving_products.map{ |a| [a.name, a.id] }, prompt: "Please Select" %>
-          <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] }, prompt: "Please Select" %>
           <%= f.input :date, label: "Date Opened", as: :string, input_html: { class: "datepicker" } %>
+          <%= f.input :saving_product_id, label: "Savings Account Product", collection: current_cooperative.saving_products.map{ |a| [a.name, a.id] }, as: :radio_buttons, checked: current_cooperative.saving_products.first.id %>
           <%= f.input :reference_number %>
           <%= f.input :amount, as: :currency %>
-          <%= f.input :description, as: :text %>
+          <%= f.input :beneficiaries, label: "Beneficiary/ies", placeholder: "Fullname", as: :text %>
+          <%= f.input :cash_account_id, label: "Cash Account(Debit)", collection: current_user.cash_accounts.map{|a| [a.name, a.id] }, default: current_user.cash_accounts.first %>
           <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
           <%= f.input :voucher_account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
           <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
           <%= f.input :depositor_id, input_html: { value: @depositor.id }, as: :hidden %>
-          <%= f.input :depositor_type, input_html: { value: @depositor.class.to_s }, as: :hidden %>
-          <%= f.input :beneficiaries, label: "Beneficiary/ies", placeholder: "Fullname", as: :text %>
+          <%= f.input :depositor_type, input_html: { value: @depositor.class.to_s }, as: :hidden %>          <%= f.input :description, input_html: { value: "Savings account opening of #{@depositor.name}"}, as: :hidden %>
 
           <%= f.submit "Proceed", class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
         <% end %>
