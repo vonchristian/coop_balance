@@ -27,7 +27,7 @@ module LoansModule
       end
 
       def total_interest(loan_application)
-        total = BigDecimal.new("0")
+        total = BigDecimal("0")
         total += loan_application.first_year_interest
         number = loan_application.term
         while number > 12 do

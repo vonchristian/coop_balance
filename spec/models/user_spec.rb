@@ -41,11 +41,11 @@ RSpec.describe User, type: :model do
   describe 'enums' do
     it do
       should define_enum_for(:sex).
-      with([:male, :female])
+      with_values([:male, :female])
     end
     it do
       should define_enum_for(:role).
-        with([:system_administrator,
+        with_values([:system_administrator,
               :general_manager,
               :branch_manager,
               :loan_officer,

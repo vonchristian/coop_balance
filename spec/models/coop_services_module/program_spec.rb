@@ -31,7 +31,7 @@ module CoopServicesModule
 
     it do
       should define_enum_for(:payment_schedule_type).
-      with([:one_time_payment, :annually, :monthly, :quarterly])
+      with_values([:one_time_payment, :annually, :monthly, :quarterly])
     end
   end
 end
