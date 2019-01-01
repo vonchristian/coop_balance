@@ -11,6 +11,7 @@ module StoreFrontModule
     belongs_to :stock_registry,                 class_name: "Registries::StockRegistry", optional: true
     belongs_to :category,                       class_name: "StoreFrontModule::Category", optional: true
     has_many :unit_of_measurements,             class_name: "StoreFrontModule::UnitOfMeasurement", dependent: :destroy
+    has_many :mark_up_prices,                   through: :unit_of_measurements
     has_many :line_items,                       class_name: "StoreFrontModule::LineItem", dependent: :destroy
     has_many :purchases,                        class_name: 'StoreFrontModule::LineItems::PurchaseLineItem'
     has_many :purchase_returns,                 class_name: "StoreFrontModule::LineItems::PurchaseReturnLineItem"

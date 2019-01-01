@@ -7,7 +7,7 @@ Rails.application.configure do
   config.cache_classes = true
   config.active_storage.service = :local
 
-
+  config.require_master_key = true 
   # Eager load code on boot. This eager loads most of Rails and
   # your application in memory, allowing both threaded web servers
   # and those relying on copy on write to perform better.
