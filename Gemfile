@@ -79,7 +79,8 @@ group :development do
   gem 'pry-rails'
 end
 group :test do
-  gem 'shoulda-matchers'
+  gem 'shoulda-matchers', '4.0.0.rc1'
+  gem 'rails-controller-testing'
   gem 'database_rewinder'
   gem 'pdf-inspector', require: "pdf/inspector"
 end

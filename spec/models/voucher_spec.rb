@@ -83,12 +83,13 @@ RSpec.describe Voucher, type: :model do
 
   end
   it '.disbursed_on(args={})' do
+    cooperative = create(:cooperative)
     disbursed_voucher = create(:voucher)
     another_disbursed_voucher = create(:voucher)
     undisbursed_voucher = create(:voucher)
 
-    entry = create(:entry_with_credit_and_debit, entry_date: Date.today)
-    another_entry = create(:entry_with_credit_and_debit, entry_date: Date.today + 1.day)
+    entry = create(:entry_with_credit_and_debit, entry_date: Date.today, cooperative: cooperative)
+    another_entry = create(:entry_with_credit_and_debit, previous_entry: entry, entry_date: Date.today + 1.day, cooperative: cooperative)
 
     disbursed_voucher.accounting_entry = entry
     another_disbursed_voucher.accounting_entry = another_entry
@@ -112,29 +113,6 @@ RSpec.describe Voucher, type: :model do
 
       expect(voucher.date).to be_present
       expect(voucher.date.to_date).to eql Date.today
-    end
-  end
-
-  describe ".generate_number" do
-    it 'for first voucher' do
-      Voucher.delete_all
-      voucher = Voucher.new
-      voucher.number = Voucher.generate_number
-      voucher.save
-      expect(voucher.number).to eql('000000000001')
-    end
-    it 'for succeeding voucher' do
-      Voucher.delete_all
-      voucher = Voucher.new
-      voucher.number = Voucher.generate_number
-      voucher.save
-
-      first_voucher = Voucher.create(number: '000000000001')
-      second_voucher = Voucher.new
-      second_voucher.number = Voucher.generate_number
-      second_voucher.save
-
-      expect(second_voucher.number).to eql('000000000002')
     end
   end
 end

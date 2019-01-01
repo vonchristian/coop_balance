@@ -104,11 +104,8 @@ class Voucher < ApplicationRecord
   end
 
   def self.generate_number
-    if self.exists?
+    return "000000000001" if !self.exists?
       all.pluck(:number).reject!(&:nil?).max.next
-    else
-      "000000000001"
-    end
   end
 
   def valid_for?(cart)
