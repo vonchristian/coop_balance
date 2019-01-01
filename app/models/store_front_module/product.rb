@@ -6,16 +6,16 @@ module StoreFrontModule
     pg_search_scope :text_search,               against: [:name]
     pg_search_scope :text_search_with_barcode,  against: [:name],
                                                 associated_against:  { :line_items => [:barcode] }
-    belongs_to :cooperative
     belongs_to :store_front
+    belongs_to :cooperative
     belongs_to :stock_registry,                 class_name: "Registries::StockRegistry", optional: true
     belongs_to :category,                       class_name: "StoreFrontModule::Category", optional: true
     has_many :unit_of_measurements,             class_name: "StoreFrontModule::UnitOfMeasurement", dependent: :destroy
     has_many :line_items,                       class_name: "StoreFrontModule::LineItem", dependent: :destroy
     has_many :purchases,                        class_name: 'StoreFrontModule::LineItems::PurchaseLineItem'
+    has_many :purchase_returns,                 class_name: "StoreFrontModule::LineItems::PurchaseReturnLineItem"
     has_many :sales,                            class_name: 'StoreFrontModule::LineItems::SalesLineItem'
     has_many :sales_returns,                    class_name: "StoreFrontModule::LineItems::SalesReturnLineItem"
-    has_many :purchase_returns,                 class_name: "StoreFrontModule::LineItems::PurchaseReturnLineItem"
     has_many :spoilages,                        class_name: "StoreFrontModule::LineItems::SpoilageLineItem"
     has_many :internal_uses,                    class_name: "StoreFrontModule::LineItems::InternalUseLineItem"
     has_many :stock_transfers,                  class_name: "StoreFrontModule::LineItems::StockTransferLineItem"
@@ -67,15 +67,15 @@ module StoreFrontModule
       purchases.processed.order(created_at: :asc).last.try(:unit_cost)
     end
 
-    def balance(options={})
-      received_stock_transfers_balance(options) +
-      sales_returns_balance(options) +
-      purchases_balance(options) -
-      sales_balance(options) -
-      internal_uses_balance(options) -
-      spoilages_balance(options) -
-      stock_transfers_balance(options) -
-      purchase_returns_balance(options)
+    def balance(args={})
+      received_stock_transfers_balance(args) +
+      sales_returns_balance(args) +
+      purchases_balance(args) -
+      sales_balance(args) -
+      internal_uses_balance(args) -
+      spoilages_balance(args) -
+      stock_transfers_balance(args) -
+      purchase_returns_balance(args)
     end
 
     def sales_balance(options={})
