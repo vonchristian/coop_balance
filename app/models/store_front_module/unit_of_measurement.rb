@@ -1,10 +1,11 @@
 module StoreFrontModule
   class UnitOfMeasurement < ApplicationRecord
     belongs_to :product
-    has_many :mark_up_prices, class_name: "StoreFrontModule::MarkUpPrice",
-                              dependent: :destroy
+    has_many :mark_up_prices, class_name: "StoreFrontModule::MarkUpPrice", dependent: :destroy
+
     validates :code, :base_quantity, presence: true
-    delegate :price, to: :current_mark_up_price
+
+    delegate :price, to: :current_mark_up_price, allow_nil: true
 
     def self.base_measurement
       where(base_measurement: true)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_27_074943) do
+ActiveRecord::Schema.define(version: 2019_01_01_085031) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -499,6 +499,8 @@ ActiveRecord::Schema.define(version: 2018_12_27_074943) do
     t.uuid "sales_line_item_id"
     t.datetime "expiry_date"
     t.uuid "cooperative_id"
+    t.boolean "forwarded", default: false, null: false
+    t.uuid "store_front_id"
     t.index ["cart_id"], name: "index_line_items_on_cart_id"
     t.index ["cooperative_id"], name: "index_line_items_on_cooperative_id"
     t.index ["order_id"], name: "index_line_items_on_order_id"
@@ -506,6 +508,7 @@ ActiveRecord::Schema.define(version: 2018_12_27_074943) do
     t.index ["purchase_line_item_id"], name: "index_line_items_on_purchase_line_item_id"
     t.index ["referenced_line_item_id"], name: "index_line_items_on_referenced_line_item_id"
     t.index ["sales_line_item_id"], name: "index_line_items_on_sales_line_item_id"
+    t.index ["store_front_id"], name: "index_line_items_on_store_front_id"
     t.index ["type"], name: "index_line_items_on_type"
     t.index ["unit_of_measurement_id"], name: "index_line_items_on_unit_of_measurement_id"
   end
@@ -1563,6 +1566,7 @@ ActiveRecord::Schema.define(version: 2018_12_27_074943) do
   add_foreign_key "line_items", "line_items", column: "referenced_line_item_id"
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items", "products"
+  add_foreign_key "line_items", "store_fronts"
   add_foreign_key "line_items", "unit_of_measurements"
   add_foreign_key "loan_applications", "cooperatives"
   add_foreign_key "loan_applications", "loan_products"

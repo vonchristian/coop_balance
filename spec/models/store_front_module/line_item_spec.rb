@@ -8,8 +8,10 @@ module StoreFrontModule
       it { is_expected.to belong_to :product }
       it { is_expected.to belong_to :order }
       it { is_expected.to belong_to :cooperative }
+      it { is_expected.to belong_to :store_front }
+      it { is_expected.to have_many :barcodes }
     end
-    
+
     describe 'validations' do
       it { is_expected.to validate_presence_of :unit_of_measurement_id }
       it { is_expected.to validate_presence_of :product_id }
@@ -39,8 +41,10 @@ module StoreFrontModule
     it ".processed" do
       line_item = create(:line_item, order_id: nil)
       processed_line_item = create(:sales_line_item_with_base_measurement)
+      forwarded_line_item = create(:sales_line_item_with_base_measurement, forwarded: true)
 
       expect(described_class.processed).to include(processed_line_item)
+      expect(described_class.processed).to include(forwarded_line_item)
       expect(described_class.processed).to_not include(line_item)
     end
     it ".total_cost" do
@@ -52,9 +56,11 @@ module StoreFrontModule
     it "#processed?" do
       line_item = create(:line_item, order_id: nil)
       processed_line_item = create(:sales_line_item_with_base_measurement)
+      forwarded_line_item = create(:sales_line_item_with_base_measurement, forwarded: true)
 
       expect(line_item.processed?).to be false
       expect(processed_line_item.processed?).to be true
+      expect(forwarded_line_item.processed?).to be true
     end
     describe 'converted_quantity' do
       it "unit of measurement is base measurement" do

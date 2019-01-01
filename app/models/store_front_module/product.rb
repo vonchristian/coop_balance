@@ -50,7 +50,7 @@ module StoreFrontModule
 
 
     validates :name, presence: true, uniqueness: true
-    delegate :code, :price, to: :base_measurement, prefix: true
+    delegate :code, :price, to: :base_measurement, prefix: true, allow_nil: true
 
     def base_selling_price
       base_measurement.price
