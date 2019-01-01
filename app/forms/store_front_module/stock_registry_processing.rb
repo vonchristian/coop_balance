@@ -5,37 +5,30 @@ module StoreFrontModule
 
     def process!
       ActiveRecord::Base.transaction do
-        create_voucher
+        upload_stocks
       end
     end
 
     private
-    def create_voucher
-      voucher = Voucher.new(
-      account_number: SecureRandom.uuid,
-      payee: find_employee,
-      preparer: find_employee,
-      office: find_employee.office,
-      cooperative: find_employee.cooperative,
-      description: description,
-      reference_number: reference_number,
-      date: date
-      )
-      voucher.voucher_amounts.debit.build(
-        cooperative: find_employee.cooperative,
-        account: find_employee.store_front.merchandise_inventory_account,
-        amount: amount,
-        commercial_document: savings_account_application
-      )
-      voucher.voucher_amounts.credit.build(
-        cooperative: find_employee.cooperative,
-        account: AccountingModule::Account.find_by(name: "Temporary Merchandise Inventory Account"),
-        amount: amount,
-        commercial_document: savings_account_application)
-      voucher.save!
+    def upload_stocks
+      find_registry.temporary_products.each do |temporary_product|
+        create_or_find_product(temporary_product)
+        create_or_find_unit_of_measurement(temporary_product)
+        create_or_find_mark_up_price(temporary_product)
+        create_or_find_purchase_line_items(temporary_product)
+      end
     end
-    def find_employee
-      User.find(employee_id)
+
+    def create_or_find_product(temporary_product)
+      find_cooperative.products.find_or_create_by(name: temporary_product.name, category: find_category(temporary_product))
+    end
+    def create_or_find_unit_of_measurement(temporary_product)
+      create_or_find_product.unit_of_measurements.find_or_create_by(
+        unit_code: temporary_product.unit_of_measurement,
+        unit_cost:
+      )
+    def find_category(temporary_product)
+      find_cooperative.categories.find_by(name: temporary_product.category_name)
     end
   end
 end
