@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_27_061720) do
+ActiveRecord::Schema.define(version: 2018_12_27_074943) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -213,6 +213,15 @@ ActiveRecord::Schema.define(version: 2018_12_27_061720) do
     t.index ["cooperative_id"], name: "index_barangays_on_cooperative_id"
     t.index ["municipality_id"], name: "index_barangays_on_municipality_id"
     t.index ["name"], name: "index_barangays_on_name"
+  end
+
+  create_table "barcodes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "code"
+    t.string "barcodeable_type"
+    t.uuid "barcodeable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["barcodeable_type", "barcodeable_id"], name: "index_barcodes_on_barcodeable_type_and_barcodeable_id"
   end
 
   create_table "beneficiaries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -968,9 +977,11 @@ ActiveRecord::Schema.define(version: 2018_12_27_061720) do
     t.string "unit_of_measurement"
     t.uuid "cooperative_id"
     t.uuid "store_front_id"
+    t.uuid "stock_registry_id"
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["cooperative_id"], name: "index_products_on_cooperative_id"
     t.index ["name"], name: "index_products_on_name", unique: true
+    t.index ["stock_registry_id"], name: "index_products_on_stock_registry_id"
     t.index ["store_front_id"], name: "index_products_on_store_front_id"
   end
 
@@ -1183,6 +1194,56 @@ ActiveRecord::Schema.define(version: 2018_12_27_061720) do
     t.index ["share_capital_product_id"], name: "index_share_capitals_on_share_capital_product_id"
     t.index ["status"], name: "index_share_capitals_on_status"
     t.index ["subscriber_type", "subscriber_id"], name: "index_share_capitals_on_subscriber_type_and_subscriber_id"
+  end
+
+  create_table "stock_registries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "product_name"
+    t.string "category_name"
+    t.string "unit_of_measurement"
+    t.decimal "in_stock"
+    t.decimal "purchase_cost"
+    t.decimal "total_cost"
+    t.decimal "selling_cost"
+    t.string "barcodes", default: [], array: true
+    t.boolean "base_measurement"
+    t.decimal "base_quantity"
+    t.decimal "conversion_quantity"
+    t.datetime "date"
+    t.uuid "store_front_id"
+    t.uuid "registry_id"
+    t.uuid "employee_id"
+    t.uuid "cooperative_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cooperative_id"], name: "index_stock_registries_on_cooperative_id"
+    t.index ["employee_id"], name: "index_stock_registries_on_employee_id"
+    t.index ["registry_id"], name: "index_stock_registries_on_registry_id"
+    t.index ["store_front_id"], name: "index_stock_registries_on_store_front_id"
+  end
+
+  create_table "stock_registry_temporary_products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "product_name"
+    t.string "category_name"
+    t.string "unit_of_measurement"
+    t.decimal "in_stock"
+    t.decimal "purchase_cost"
+    t.decimal "total_cost"
+    t.decimal "selling_cost"
+    t.string "barcodes", default: [], array: true
+    t.boolean "base_measurement"
+    t.decimal "base_quantity"
+    t.decimal "conversion_quantity"
+    t.uuid "store_front_id"
+    t.uuid "cooperative_id"
+    t.uuid "employee_id"
+    t.uuid "stock_registry_id"
+    t.datetime "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cooperative_id"], name: "index_stock_registry_temporary_products_on_cooperative_id"
+    t.index ["employee_id"], name: "index_stock_registry_temporary_products_on_employee_id"
+    t.index ["stock_registry_id"], name: "index_stock_registry_temporary_products_on_stock_registry_id"
+    t.index ["store_front_id"], name: "index_stock_registry_temporary_products_on_store_front_id"
   end
 
   create_table "store_fronts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1562,6 +1623,7 @@ ActiveRecord::Schema.define(version: 2018_12_27_061720) do
   add_foreign_key "penalty_configs", "loan_products"
   add_foreign_key "products", "categories"
   add_foreign_key "products", "cooperatives"
+  add_foreign_key "products", "registries", column: "stock_registry_id"
   add_foreign_key "products", "store_fronts"
   add_foreign_key "program_subscriptions", "programs"
   add_foreign_key "programs", "accounts"
@@ -1597,6 +1659,14 @@ ActiveRecord::Schema.define(version: 2018_12_27_061720) do
   add_foreign_key "share_capitals", "offices"
   add_foreign_key "share_capitals", "organizations"
   add_foreign_key "share_capitals", "share_capital_products"
+  add_foreign_key "stock_registries", "cooperatives"
+  add_foreign_key "stock_registries", "registries"
+  add_foreign_key "stock_registries", "store_fronts"
+  add_foreign_key "stock_registries", "users", column: "employee_id"
+  add_foreign_key "stock_registry_temporary_products", "cooperatives"
+  add_foreign_key "stock_registry_temporary_products", "registries", column: "stock_registry_id"
+  add_foreign_key "stock_registry_temporary_products", "store_fronts"
+  add_foreign_key "stock_registry_temporary_products", "users", column: "employee_id"
   add_foreign_key "store_fronts", "accounts", column: "accounts_payable_account_id"
   add_foreign_key "store_fronts", "accounts", column: "accounts_receivable_account_id"
   add_foreign_key "store_fronts", "accounts", column: "cost_of_goods_sold_account_id"

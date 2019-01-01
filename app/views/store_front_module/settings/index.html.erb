@@ -1,9 +1,9 @@
 <h3> Store Settings </h3>
-<%= simple_form_for StoreFrontModule::StockRegistryProcessing.new, url: :store_front_module_stock_registries do |f| %>
+<%= simple_form_for Registries::StockRegistry.new, url: :store_front_module_stock_registries do |f| %>
   <%= f.input :spreadsheet, as: :file %>
-  <%= f.input :voucher_account_number, input_html: { value: SecureRandom.uuid } %>
   <%= f.input :store_front_id, input_html: { value: current_user.store_front_id } %>
   <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+  <%= f.input :cooperative_id, input_html: { value: current_cooperative.id }, as: :hidden %>
   <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
   <%= f.submit "Upload" %>
 <% end %>

@@ -11,6 +11,7 @@ module StoreFrontModule
     belongs_to :order,               class_name: "StoreFrontModule::Order",
                                      foreign_key: 'order_id'
     belongs_to :cooperative
+    has_many :barcodes,               as: :barcodeable
     validates :unit_of_measurement_id, :product_id, presence: true
     validates :quantity, :unit_cost, :total_cost, presence: true, numericality: true
 

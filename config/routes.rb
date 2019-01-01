@@ -238,7 +238,8 @@ Rails.application.routes.draw do
   resources :users, only: [:show]
 
   namespace :store_front_module do
-    resources :stock_registries, only: [:create], module: :settings
+    resources :stock_registry_processings, only: [:create]
+    resources :stock_registries, only: [:create, :show], module: :settings
     resources :suppliers, only: [:index, :show, :new, :create] do
       resources :vouchers, only: [:index, :show, :create, :destroy], module: :suppliers
       resources :voucher_confirmations, only: [:create], module: :suppliers

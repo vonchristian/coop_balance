@@ -54,7 +54,7 @@ class Cooperative < ApplicationRecord
   has_many :branch_offices, class_name: "CoopConfigurationsModule::Offices::BranchOffice"
   has_many :satellite_offices, class_name: "CoopConfigurationsModule::Offices::SatelliteOffice"
   has_many :suppliers
-  has_many :products, class_name: "StoreFrontModule::Product"
+  has_many :products,                    class_name: "StoreFrontModule::Product"
   has_many :purchase_line_items, class_name: "StoreFrontModule::LineItems::PurchaseLineItem"
   has_many :sales_orders, class_name: "StoreFrontModule::Orders::SalesOrder"
   has_many :loan_protection_plan_providers, class_name: "LoansModule::LoanProtectionPlanProvider"

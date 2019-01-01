@@ -8,9 +8,10 @@ module StoreFrontModule
                                                 associated_against:  { :line_items => [:barcode] }
     belongs_to :cooperative
     belongs_to :store_front
+    belongs_to :stock_registry,                 class_name: "Registries::StockRegistry", optional: true
     belongs_to :category,                       class_name: "StoreFrontModule::Category", optional: true
-    has_many :unit_of_measurements,             class_name: "StoreFrontModule::UnitOfMeasurement"
-    has_many :line_items,                       class_name: "StoreFrontModule::LineItem"
+    has_many :unit_of_measurements,             class_name: "StoreFrontModule::UnitOfMeasurement", dependent: :destroy
+    has_many :line_items,                       class_name: "StoreFrontModule::LineItem", dependent: :destroy
     has_many :purchases,                        class_name: 'StoreFrontModule::LineItems::PurchaseLineItem'
     has_many :sales,                            class_name: 'StoreFrontModule::LineItems::SalesLineItem'
     has_many :sales_returns,                    class_name: "StoreFrontModule::LineItems::SalesReturnLineItem"

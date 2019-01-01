@@ -1,3 +1,21 @@
+sales report
+date/customer/ref#/amount/total
+a/r report
+date/member/amount/items/total
+
+purchases report
+date / supplier/quantity/uom/items/unit cost/total/cost/selling price
+
+stock card
+name:
+uom:
+price:
+date/ref#/voucher #/ purchases/sold/returned/spoilage/balance 
+
+Stock Inventory Report
+as of :date
+
+product name / uom/ unit_cost/in stock/ cost of inventory
 disable destroy of voucher amounts if voucher is disbursed
 
 set loan as loss
