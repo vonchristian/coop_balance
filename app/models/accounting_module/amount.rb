@@ -54,8 +54,8 @@ module AccountingModule
     end
 
     def self.entered_on(args={})
-      from_date = args[:from_date] || Date.today - 999.years
-      to_date = args[:to_date] || Date.today
+      from_date  = args[:from_date] || Date.today - 999.years
+      to_date    = args[:to_date]   || Date.today
       date_range = DateRange.new(from_date: from_date, to_date: to_date)
       not_cancelled.where('entries.entry_date' => date_range.start_date..date_range.end_date)
     end
