@@ -36,17 +36,17 @@ module StoreFrontModule
             total_cost:          set_total_cost,
             unit_of_measurement: find_unit_of_measurement,
             product:             find_product)
-
+        sales.barcodes.create(code: barcode)
         requested_quantity = converted_quantity
 
         find_product.purchases.order(date: :asc).available.each do |purchase|
-          temp_sales = sales.referenced_purchase_line_items.create!(
+          temp_sales = sales.sales_purchase_line_items.create!(
             quantity:                 quantity_for(purchase, requested_quantity),
             unit_cost:                purchase.purchase_cost,
             total_cost:               total_cost_for(purchase, quantity),
             unit_of_measurement:      find_product.base_measurement,
             product_id:               product_id,
-            purchase_line_item: purchase)
+            purchase_line_item:       purchase)
           requested_quantity -= temp_sales.quantity
           break if requested_quantity.zero?
         end
@@ -58,17 +58,17 @@ module StoreFrontModule
           unit_cost:           selling_cost,
           total_cost:          set_total_cost,
           product_id:          product_id,
-          barcode:             barcode,
           unit_of_measurement: find_unit_of_measurement
           )
+        sales.barcodes.create(code: barcode)
+
         purchase = find_purchase_line_item
-        sales.referenced_purchase_line_items.create!(
+        sales.sales_purchase_line_items.create!(
             quantity:            converted_quantity,
             unit_cost:           purchase.purchase_cost,
             total_cost:          total_cost_for(purchase, quantity),
             unit_of_measurement: find_product.base_measurement,
             product_id:          product_id,
-            barcode:             barcode,
             purchase_line_item:  purchase)
       end
 
@@ -113,7 +113,7 @@ module StoreFrontModule
 
       def available_quantity
         if product_id.present? && barcode.blank?
-          find_product.available_quantity
+          find_product.balance
         elsif purchase_line_item_id.present? && barcode.present?
           find_purchase_line_item.available_quantity
         end

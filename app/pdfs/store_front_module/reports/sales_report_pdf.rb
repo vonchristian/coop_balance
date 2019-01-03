@@ -3,7 +3,7 @@ module StoreFrontModule
     class SalesReportPdf < Prawn::Document
       attr_reader :employee, :sales_orders, :from_date, :to_date, :view_context, :cooperative, :store_front
       def initialize(args)
-        super(margin: 30, page_size: "A4", page_layout: :portrait)
+        super(margin: 40, page_size: "A4", page_layout: :portrait)
         @employee     = args.fetch(:employee, nil)
         @sales_orders = args.fetch(:sales_orders)
         @from_date    = args.fetch(:from_date)
@@ -92,8 +92,13 @@ module StoreFrontModule
       def sales_table
         text "SALES TRANSACTIONS", size: 10, style: :bold, color: '0069D9'
         move_down 5
-        table([["DATE", "CUSTOMER", "REF #", "AMOUNT", "TOTAL"]], cell_style: { padding: [2,2], inline_format: true, size: 10}, column_widths: [80, 150, 50, 100, 100]) do
+        table(sales_data, cell_style: { padding: [4,4], inline_format: true, size: 10}, column_widths: [100, 200, 100, 100]) do
+          column(3).align = :right
         end
+      end
+      def sales_data
+        [["DATE", "CUSTOMER", "REF #", "TOTAL"]] +
+        sales_orders.map { |order| [order.date.strftime('%B %e, %Y'), order.customer_name, order.reference_number, price(order.total_cost)] }
       end
     end
   end

@@ -45,9 +45,9 @@
       </div>
     </div>
     <% @products.each do |product| %>
-      <% cache(product) do %>
+
         <%= render 'store_front_module/products/partials/header', product: product %>
-      <% end %>
+
     <% end %>
     <center><%= will_paginate @products %></center>
   </div>

@@ -27,6 +27,8 @@
           <li class="nav-item"><%= link_to 'Share Capitals', member_share_capitals_path(@member), class: "nav-link #{ 'active' if current_page?(member_share_capitals_path(@member))}" %></li>
           <li class="nav-item"><%= link_to 'Time Deposits', member_time_deposits_path(@member), class: "nav-link #{ 'active' if current_page?(member_time_deposits_path(@member)) }" %></li>
           <li class="nav-item"><%= link_to 'Program Subscriptions', member_subscriptions_path(@member), class: "nav-link #{ 'active' if current_page?(member_subscriptions_path(@member)) }" %></li>
+          <li class="nav-item"><%= link_to 'Sales', member_sales_path(@member), class: "nav-link #{ 'active' if current_page?(member_sales_path(@member)) }" %></li>
+
           <li class="nav-item"><%= link_to 'Settings', member_settings_path(@member), class: "nav-link #{ 'active' if current_page?(member_settings_path(@member))}" %></li>
         </nav>
       </div>
@@ -51,8 +53,8 @@
     <% if current_page?(member_subscriptions_path(@member)) %>
       <%=render 'members/partials/subscriptions', member: @member %>
     <% end %>
-    <% if current_page?(member_purchases_path(@member)) %>
-      <%= render 'members/partials/purchases', member: @member %>
+    <% if current_page?(member_sales_path(@member)) %>
+      <%= render 'members/partials/sales', member: @member %>
     <% end %>
     <% if current_page? member_settings_path(@member) %>
       <%= render 'members/partials/settings' %>

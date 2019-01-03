@@ -36,9 +36,9 @@ class Member < ApplicationRecord
   has_many :subscribed_programs,      class_name: "CoopServicesModule::Program",
                                       through: :program_subscriptions,
                                       source: :program
-  has_many :sales_orders,             class_name: "StoreFrontModule::Orders::SalesOrder",
+  has_many :sales,                    class_name: "StoreFrontModule::Orders::SalesOrder",
                                       as: :commercial_document
-  has_many :sales_return_orders,      class_name: "StoreFrontModule::Orders::SalesReturnOrder",
+  has_many :sales_returns,            class_name: "StoreFrontModule::Orders::SalesReturnOrder",
                                       as: :commercial_document
 
   has_many :organization_memberships, class_name: "Organizations::OrganizationMember",

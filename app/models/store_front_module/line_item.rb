@@ -2,7 +2,7 @@ module StoreFrontModule
   class LineItem < ApplicationRecord
     extend StoreFrontModule::QuantityBalanceFinder
     include PgSearch
-    pg_search_scope :text_search, against: [:barcode]
+    pg_search_scope :text_search, associated_against: { barcodes: [:code] }
 
     belongs_to :unit_of_measurement, class_name: "StoreFrontModule::UnitOfMeasurement"
     belongs_to :cart,                class_name: "StoreFrontModule::Cart"
@@ -11,7 +11,7 @@ module StoreFrontModule
                                      foreign_key: 'order_id'
     belongs_to :cooperative
     belongs_to :store_front
-    has_many :barcodes,               as: :barcodeable
+    has_many :barcodes,              dependent: :destroy
 
     validates :unit_of_measurement_id, :product_id, presence: true
     validates :quantity, :unit_cost, :total_cost, presence: true, numericality: true
@@ -25,7 +25,11 @@ module StoreFrontModule
 
 
     def self.processed
-      where.not(order_id: nil) || where(forwarded: true)
+      where.not(order_id: nil).or(forwarded)
+    end
+
+    def self.forwarded
+      where(forwarded: true)
     end
 
     def self.unprocessed
@@ -47,6 +51,9 @@ module StoreFrontModule
 
     def converted_quantity
       quantity * conversion_multiplier
+    end
+    def normalized_barcodes
+      barcodes.pluck(:code).join(",")
     end
   end
 end

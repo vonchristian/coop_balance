@@ -8,7 +8,7 @@
           <th>Quantity</th>
           <th>Unit Cost</th>
           <th>Total Cost</th>
-          <th>Barcode</th>
+          <th>Barcodes</th>
         </thead>
         <tbody>
           <% @purchases.each do |line_item| %>
@@ -16,11 +16,14 @@
               <td> <%= line_item.date.strftime("%B %e, %Y") %><br>
 
               </td>
-              <td> <%= line_item.supplier_name %></td>
+              <td> <%= line_item.supplier_name || "Forwarded Stock" %></td>
               <td> <%= line_item.quantity %> <%= line_item.unit_of_measurement_code %></td>
               <td> <%= number_to_currency line_item.unit_cost %></td>
               <td> <%= number_to_currency line_item.total_cost %></td>
-              <td> <%= line_item.barcode %></td>
+              <td> <% line_item.barcodes.each do |barcode| %>
+                <%= barcode.code %>
+                <% end %>
+              </td>
             </tr>
           <% end %>
         </tbody>

@@ -23,7 +23,7 @@ module Registries
         purchase_cost:       row["Purchase Cost"],
         total_cost:          row["Total Cost"],
         selling_cost:        row["Selling Cost"],
-        barcodes:            row["Barcodes"],
+        barcodes:            row["Barcodes"].split(','),
         base_measurement:    row["Base Measurement"],
         base_quantity:       row["Base Quantity"],
         conversion_quantity: row["Conversion Quantity"],

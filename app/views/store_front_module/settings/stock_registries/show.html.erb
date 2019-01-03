@@ -14,7 +14,9 @@
               <% @registry.temporary_products.each do |product| %>
                 <tr>
                   <td><%= product.product_name %></td>
-                  <td><%= product.category_name %></td>
+                  <td><%= product.category_name %>
+                    <%= product.barcodes %>
+                  </td>
                   <td><%= number_to_currency product.in_stock, unit: "" %></td>
                 </tr>
               <% end %>

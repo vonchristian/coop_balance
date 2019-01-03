@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_01_085031) do
+ActiveRecord::Schema.define(version: 2019_01_01_125422) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -217,11 +217,10 @@ ActiveRecord::Schema.define(version: 2019_01_01_085031) do
 
   create_table "barcodes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "code"
-    t.string "barcodeable_type"
-    t.uuid "barcodeable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["barcodeable_type", "barcodeable_id"], name: "index_barcodes_on_barcodeable_type_and_barcodeable_id"
+    t.uuid "line_item_id"
+    t.index ["line_item_id"], name: "index_barcodes_on_line_item_id"
   end
 
   create_table "beneficiaries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -493,7 +492,6 @@ ActiveRecord::Schema.define(version: 2019_01_01_085031) do
     t.datetime "updated_at", null: false
     t.uuid "unit_of_measurement_id"
     t.string "type"
-    t.string "barcode"
     t.uuid "referenced_line_item_id"
     t.uuid "purchase_line_item_id"
     t.uuid "sales_line_item_id"
@@ -1540,6 +1538,7 @@ ActiveRecord::Schema.define(version: 2019_01_01_085031) do
   add_foreign_key "barangay_members", "barangays"
   add_foreign_key "barangays", "cooperatives"
   add_foreign_key "barangays", "municipalities"
+  add_foreign_key "barcodes", "line_items"
   add_foreign_key "beneficiaries", "cooperatives"
   add_foreign_key "beneficiaries", "members"
   add_foreign_key "carts", "users"

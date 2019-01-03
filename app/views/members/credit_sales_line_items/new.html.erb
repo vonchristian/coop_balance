@@ -1,0 +1,43 @@
+<% content_for(:html_title) { "New Credit Sale | #{@member.full_name}" } %>
+<div class="row">
+  <div class="col-md-7">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"> Credit Sale Details </h3>
+      </div>
+      <div class="card-body">
+        <% if params[:search].present? %>
+          <%=form_tag new_member_credit_sales_line_item_path(@member), method: :get do %>
+            <div class="input-group">
+              <%= text_field_tag :search, params[:search], class: "form-control input-lg", placeholder: "Search Products..." %>
+              <span class="input-group-btn">
+                <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-primary") do %>
+                  <i class="fa fa-search"></i> Search
+                <% end %>
+              </span>
+            </div>
+          <% end %>
+        <% else %>
+          <%=form_tag new_member_credit_sales_line_item_path(@member), method: :get do %>
+            <div class="input-group">
+              <%= text_field_tag :search, params[:search], autofocus: true,  class: "form-control input-lg", placeholder: "Search Products..."  %>
+              <span class="input-group-btn">
+                <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-primary") do %>
+                  <i class="fa fa-search"></i> Search
+                <% end %>
+              </span>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+    <% if @products.present? %>
+      <%= render 'members/credit_sales_line_items/searched_product_results' %>
+    <% elsif @purchase_line_items.present? %>
+      <%= render 'members/credit_sales_line_items/searched_purchase_line_item_results' %>
+    <% end %>
+    <% if @cart.sales_line_items.present? %>
+      <%=render 'store_front_module/carts/sales_line_items', cart: @cart, member: @member %>
+    <% end %>
+  </div>
+</div>

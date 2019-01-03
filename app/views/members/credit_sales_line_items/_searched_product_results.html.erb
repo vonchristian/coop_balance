@@ -9,7 +9,7 @@
           <%= product.balance %>
         </div>
         <div class="col-md-5">
-          <%= simple_form_for @sales_line_item, url: :store_front_module_sales_line_items do |f| %>
+          <%= simple_form_for @sales_line_item, url: :member_credit_sales_line_items do |f| %>
             <% if !product.out_of_stock? %>
               <%= f.input :quantity, as: :string, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, label: false, autofocus: true %>
             <% end %>

@@ -25,7 +25,7 @@ module StoreFrontModule
         end
       end
       def show
-        @sales_order = current_cooperative.sales.find(params[:id])
+        @sales_order = StoreFrontModule::Orders::SalesOrder.find(params[:id])
         @customer = @sales_order.commercial_document
         respond_to do |format|
           format.html

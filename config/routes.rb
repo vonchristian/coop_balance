@@ -158,29 +158,30 @@ Rails.application.routes.draw do
   end
 
   resources :members, only: [:index, :show, :edit, :update, :destroy] do
-    resources :organizations,      only: [:new, :create], module: :members
-    resources :beneficiaries,      only: [:new, :create, :destroy],  module: :members
-    resources :merging_line_items, only: [:new, :create],  module: :members
-    resources :mergings,         only: [:create],          module: :members
-    resources :contacts,         only: [:new, :create],                 module: :members
-    resources :tins,             only: [:new, :create],                 module: :members
-    resources :time_deposits,    only: [:index, :new, :create],         module: :members
-    resources :tins,             only: [:new, :create],                 module: :members
-    resources :offices,          only: [:edit, :update], module: :members
-    resources :addresses,        only: [:new, :create], module: :members
-    resources :memberships,      only: [:edit, :update, :new, :create], module: :members
-    resources :info,             only: [:index],                        module: :members
-    resources :settings,         only: [:index],                        module: :members
-    resources :loans,            only: [:index],         module: :members
-    resources :share_capitals,   only: [:index],         module: :members
-    resources :occupations,      only: [:new, :create],                 module: :members
-    resources :savings_accounts, only: [:index],         module: :members
-    resources :subscriptions,    only: [:index],                        module: :members
-    resources :program_subscriptions,    only: [:create],               module: :members
-    resources :purchases,        only: [:index, :show],                 module: :members
-    resources :account_mergings, only: [:new, :create],                 module: :members
-    resources :signature_specimens, only: [:create],     module: :members
-    resources :avatars, only: [:update],                 module: :members
+    resources :organizations,         only: [:new, :create],                 module: :members
+    resources :beneficiaries,         only: [:new, :create, :destroy],       module: :members
+    resources :merging_line_items,    only: [:new, :create],                 module: :members
+    resources :mergings,              only: [:create],                       module: :members
+    resources :contacts,              only: [:new, :create],                 module: :members
+    resources :tins,                  only: [:new, :create],                 module: :members
+    resources :time_deposits,         only: [:index, :new, :create],         module: :members
+    resources :tins,                  only: [:new, :create],                 module: :members
+    resources :offices,               only: [:edit, :update],                module: :members
+    resources :addresses,             only: [:new, :create],                 module: :members
+    resources :memberships,           only: [:edit, :update, :new, :create], module: :members
+    resources :info,                  only: [:index],                        module: :members
+    resources :settings,              only: [:index],                        module: :members
+    resources :loans,                 only: [:index],                        module: :members
+    resources :share_capitals,        only: [:index],                        module: :members
+    resources :occupations,           only: [:new, :create],                 module: :members
+    resources :savings_accounts,      only: [:index],                        module: :members
+    resources :subscriptions,         only: [:index],                        module: :members
+    resources :program_subscriptions, only: [:create],                       module: :members
+    resources :sales,                 only: [:index, :show],                 module: :members
+    resources :credit_sales_line_items, only: [:new, :create, :destroy],     module: :members
+    resources :account_mergings,      only: [:new, :create],                 module: :members
+    resources :signature_specimens,   only: [:create],                       module: :members
+    resources :avatars,               only: [:update],                       module: :members
   end
 
   resources :member_registrations, only: [:new, :create]

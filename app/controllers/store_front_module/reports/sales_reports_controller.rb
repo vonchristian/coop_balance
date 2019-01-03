@@ -10,7 +10,7 @@ module StoreFrontModule
           format.pdf do
             pdf = StoreFrontModule::Reports::SalesReportPdf.new(
               employee: current_user,
-              sales_orders: current_cooperative.sales_orders,
+              sales_orders: current_cooperative.sales_orders.ordered_on(from_date: @from_date, to_date: @to_date),
               from_date: @from_date,
               to_date: @to_date,
               view_context: view_context)

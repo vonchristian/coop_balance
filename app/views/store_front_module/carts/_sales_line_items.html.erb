@@ -1,0 +1,42 @@
+<div class="card">
+  <div class="card-body">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>QTY</th>
+          <th>DESCRIPTION</th>
+          <th><span class="pull-right">UNIT COST</span></th>
+          <th><span class="pull-right">TOTAL COST</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% cart.sales_line_items.unprocessed.each do |line_item| %>
+          <tr>
+            <td><%= line_item.quantity %> <%= line_item.unit_of_measurement_code %></td>
+            <td width="300px"><%= line_item.name.try(:titleize) %>
+              <span class="text-muted"><%#= line_item.barcode %></span>
+            </td>
+            <td>
+              <span class="pull-right">
+                <%= number_to_currency line_item.unit_cost %>
+              </span>
+            <td>
+              <span class="pull-right"><%=number_to_currency line_item.total_cost %></span>
+            </td>
+            <td>
+            <% if member.present? %>
+              <%= link_to member_credit_sales_line_item_path(id: line_item.id, member_id: member.id), method: :delete do %>
+                <span class="fa fa-times text-danger"></span>
+              <% end %>
+            <% else %>
+              <%= link_to store_front_module_sales_line_item_path(line_item), method: :delete do %>
+                <span class="fa fa-trash"></span>
+              <% end %>
+            <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -11,8 +11,8 @@ describe Member, type: :model do
   	it { is_expected.to have_many :time_deposits }
   	it { is_expected.to have_many :program_subscriptions }
   	it { is_expected.to have_many :subscribed_programs }
-    it { is_expected.to have_many :sales_orders }
-    it { is_expected.to have_many :sales_return_orders }
+    it { is_expected.to have_many :sales }
+    it { is_expected.to have_many :sales_returns }
     it { is_expected.to have_many :organization_memberships }
     it { is_expected.to have_many :organizations }
     it { is_expected.to have_many :contacts }
@@ -61,7 +61,7 @@ describe Member, type: :model do
   it ".has_birthday_on(args)" do
     january_member = create(:member, date_of_birth: '01/01/1990')
     march_member   = create(:member, date_of_birth: '03/01/1990')
-    
+
     expect(described_class.has_birthday_on(birth_day: 1)).to include(january_member)
     expect(described_class.has_birthday_on(birth_day: 3)).to include(march_member)
   end
