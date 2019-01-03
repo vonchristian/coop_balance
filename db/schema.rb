@@ -638,6 +638,17 @@ ActiveRecord::Schema.define(version: 2019_01_01_125422) do
     t.index ["slug"], name: "index_loan_products_on_slug", unique: true
   end
 
+  create_table "loan_protection_funds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "rate"
+    t.string "name"
+    t.integer "computation_type"
+    t.uuid "cooperative_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["computation_type"], name: "index_loan_protection_funds_on_computation_type"
+    t.index ["cooperative_id"], name: "index_loan_protection_funds_on_cooperative_id"
+  end
+
   create_table "loan_protection_plan_providers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "business_name"
     t.decimal "rate"
@@ -1173,8 +1184,8 @@ ActiveRecord::Schema.define(version: 2019_01_01_125422) do
     t.string "account_number"
     t.datetime "date_opened"
     t.string "account_owner_name"
-    t.datetime "created_at", default: "2018-12-11 04:47:15", null: false
-    t.datetime "updated_at", default: "2018-12-11 04:47:15", null: false
+    t.datetime "created_at", default: "2018-12-03 13:59:53", null: false
+    t.datetime "updated_at", default: "2018-12-03 13:59:53", null: false
     t.integer "status"
     t.uuid "office_id"
     t.string "subscriber_type"
@@ -1588,6 +1599,7 @@ ActiveRecord::Schema.define(version: 2019_01_01_125422) do
   add_foreign_key "loan_products", "accounts", column: "loans_receivable_past_due_account_id"
   add_foreign_key "loan_products", "cooperatives"
   add_foreign_key "loan_products", "loan_protection_plan_providers"
+  add_foreign_key "loan_protection_funds", "cooperatives"
   add_foreign_key "loan_protection_plan_providers", "accounts", column: "accounts_payable_id"
   add_foreign_key "loan_protection_plan_providers", "cooperatives"
   add_foreign_key "loans", "barangays"
