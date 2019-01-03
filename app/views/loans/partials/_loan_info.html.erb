@@ -5,8 +5,8 @@
     <br>
     <div class="row">
       <div class="col-md-3">
-        <% if @loan.disbursed? %>
-          <h4 class="card-title number"><%= number_to_currency @loan.principal_balance %></h4>
+        <% if @loan.forwarded_loan? %>
+          <span class="badge bg-warning">Forwarded Loan </span>
         <% else %>
           <h4 class="card-title number"><%= number_to_currency @loan.loan_amount %> </h4>
         <% end %>

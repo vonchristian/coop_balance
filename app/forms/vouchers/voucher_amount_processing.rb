@@ -13,7 +13,7 @@ module Vouchers
         cooperative: find_employee.cooperative,
         amount: amount,
         account_id: account_id,
-        amount_type: amount_type,
+        amount_type: set_amount_type(amount_type),
         description: description,
         commercial_document: find_employee,
         recorder: find_employee
@@ -62,6 +62,18 @@ module Vouchers
         'debit'
       elsif amount_type == 'debit'
         'credit'
+      end
+    end
+    
+    def find_account
+      find_employee.cooperative.accounts.find(account_id)
+    end
+
+    def set_amount_type(amount_type)
+      if find_account.is_a?(AccountingModule::Revenue)
+        'credit'
+      else
+        amount_type
       end
     end
   end

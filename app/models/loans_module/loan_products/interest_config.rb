@@ -26,7 +26,7 @@ module LoansModule
         AccountingModule::Account.where(id: accounts)
       end
 
-      def total_interest(loan_application)
+      def total_interest(loan_application) #refactor
         total = BigDecimal("0")
         total += loan_application.first_year_interest
         number = loan_application.term
