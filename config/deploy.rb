@@ -4,10 +4,8 @@ require 'mina/git'
 require 'mina/rbenv'
 require 'mina/puma'
 
-# RAILS_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1 bundle exec rails db:drop
-
 set :whenever_name, 'production'
-set :domain,        '128.199.190.123'
+set :domain,        '192.168.254.110'
 set :deploy_to,     '/var/www/coopcatalyst'
 set :repository,    'git@gitlab.com:vonchristian/coop_catalyst.git'
 set :branch,        'master'
@@ -17,20 +15,9 @@ set :app_path,      lambda { "#{fetch(:deploy_to)}/#{fetch(:current_path)}" }
 set :stage,         'production'
 set :shared_paths,  ['config/database.yml', 'log', 'tmp/log', 'public/system', 'tmp/pids', 'tmp/sockets', '/storage']
 set :shared_dirs,   fetch(:shared_dirs, []).push('public/system')
-# Optional settings:
-#   set :user, 'foobar'    # Username in the server to SSH to.
-#   set :port, '30000'     # SSH port number.
-# set :forward_agent, true     # SSH forward_agent.
 
-# This task is the environment that is loaded for most commands, such as
-# `mina deploy` or `mina rake`.
 task :remote_environment do
-  # If you're using rbenv, use this to load the rbenv environment.
-  # Be sure to commit your .ruby-version or .rbenv-version to your repository.
   invoke :'rbenv:load'
-
-  # For those using RVM, use this to load an RVM version@gemset.
-  # invoke :'rvm:use[ruby-1.9.3-p125@default]'
 end
 
 # Put any custom mkdir's in here for when `mina setup` is ran.
@@ -94,7 +81,6 @@ end
 namespace :deploy do
   desc "reload the database with seed data"
   task :seed => :remote_environment do
-    invoke :'rbenv:load'
     command "cd #{fetch(:current_path)}; bundle exec rails db:seed RAILS_ENV=#{fetch(:stage)}"
   end
 end

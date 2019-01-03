@@ -15,6 +15,12 @@ module AccountingModule
         @voucher = current_cooperative.vouchers.find(params[:id])
       end
 
+      def destroy
+        @voucher = current_cooperative.vouchers.find(params[:id])
+        @voucher.destroy
+        redirect_to accounting_module_entry_line_item_url, notice: 'Deleted successfully.'
+      end
+      
       private
       def voucher_params
         params.require(:vouchers_voucher_processing).permit(:cash_account_id, :reference_number, :date, :description, :employee_id, :payee_id, :cooperative_service_id, :account_number)
