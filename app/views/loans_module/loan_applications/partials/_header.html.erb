@@ -38,12 +38,16 @@
       </div>
       <div class="col-md-2 col-sm-3">
         <center>
-          <% if !loan_application.disbursed? %>
+          <% if !loan_application.disbursed? && loan_application.voucher.blank? %>
             <%= link_to loans_module_loan_application_path(loan_application), method: :delete do %>
               <span title="Cancel Loan Application" data-toggle="tooltip" class="fa fa-times text-danger"> Cancel</span>
             <% end %>
           <% else %>
-            <span class="fa fa-check text-success"> Approved</span>
+            <% if loan_application.voucher.blank? %>
+              <span class="fa fa-exclamation text-warning" title="Please cancel these loan application." data-toggle="tooltip"> No Voucher</span>
+            <% else %>
+              <span class="fa fa-check text-success"> Approved</span>
+            <% end %>
           <% end %>
         </center>
       </div>

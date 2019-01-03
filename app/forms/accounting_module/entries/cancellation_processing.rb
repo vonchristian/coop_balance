@@ -18,6 +18,7 @@ module AccountingModule
           cancelled_by_id: cancelled_by_id,
           cancellation_description: cancellation_description
         )
+        find_entry.voucher.destroy
       end
       def find_entry
         AccountingModule::Entry.find(entry_id)
