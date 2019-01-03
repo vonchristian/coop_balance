@@ -1,6 +1,8 @@
 module LoansModule
   class LoanApplication < ApplicationRecord
     monetize :loan_amount_cents, as: :loan_amount
+    include PgSearch
+    pg_search_scope :text_search, :associated_against => { voucher: [:reference_number, :description] }
 
     enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
 
