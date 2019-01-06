@@ -45,20 +45,7 @@
           <% end %>
         </div>
         <div class="col-md-3 col-sm-3">
-          <% if !voucher.disbursed? %>
-            <% if current_user.can_disburse?(voucher: voucher) %>
-              <%= link_to 'Disburse', voucher_path(voucher), class: "btn btn-primary btn-sm" %>
-            <% end %>
-            <% if current_user.cooperative.loan_applications.where(voucher_id: voucher.id).nil? %>
-              <%= link_to voucher_path(voucher), method: :delete do %>
-                <span title="Cancel Voucher" data-toggle="tooltip" class="fa fa-times text-danger"> Cancel Voucher</span>
-              <% end %>
-            <% else %>
-              <%= link_to loans_module_loan_application_path(current_user.cooperative.loan_applications.where(voucher_id: voucher.id).last), method: :delete do %>
-                <span title="Cancel Voucher" data-toggle="tooltip" class="fa fa-times text-danger"> Cancel Voucher</span>
-              <% end %>
-            <% end %>
-          <% else %>
+          <% if voucher.disbursed? %>
             <span class="badge bg-success"><i class="fa fa-check-circle"></i> Disbursed </span>
           <% end %>
         </div>

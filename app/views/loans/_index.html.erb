@@ -29,11 +29,11 @@
           </div>
         </div>
       </div>
-          <% loans.each do |loan| %>
-            <%= render 'loans/partials/header', loan: loan %>
-          <% end %>
-          <center><%= will_paginate loans %></center>
-        </div>
+        <% loans.each do |loan| %>
+          <%= render 'loans/partials/header', loan: loan %>
+        <% end %>
+        <center><%= will_paginate loans %></center>
       </div>
     </div>
   </div>
+</div>

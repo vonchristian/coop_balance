@@ -70,6 +70,11 @@ crumb :loan_payments do |loan|
   parent :member_loans, loan.borrower
 end
 
+crumb :new_loan_payment do |loan|
+  link "New Payment", new_loan_payment_path(loan)
+  parent :member_loans, loan.borrower
+end
+
 crumb :loan_notes do |loan|
   link "Notes", loan_notes_path(loan)
   parent :member_loans, loan.borrower
@@ -166,6 +171,28 @@ end
 crumb :share_capital_balance_transfer_form do |share_capital|
   link "Balance Transfer Form", new_share_capital_balance_transfer_path(share_capital_id: share_capital.id)
   parent :share_capital_settings, share_capital
+end
+
+# Member Time Deposits
+
+crumb :new_time_deposit_application do |depositor|
+  link "Time Deposit Openning", new_time_deposit_application_path(depositor_id: depositor.id, depositor_type: depositor.class.name)
+  parent :member, depositor
+end
+
+crumb :time_deposit_details do |time_deposit|
+  link "Details", time_deposit_path(time_deposit)
+  parent :member_time_deposits, time_deposit.depositor
+end
+
+crumb :time_deposit_settings do |time_deposit|
+  link "Settings", time_deposit_settings_path(time_deposit)
+  parent :member_time_deposits, time_deposit.depositor
+end
+
+crumb :time_deposit_withdrawal do |time_deposit|
+  link "Withdrawal", new_time_deposit_withdrawal_path(time_deposit_id: time_deposit.id)
+  parent :member_time_deposits, time_deposit.depositor
 end
 
 # ORGANIZATIONS

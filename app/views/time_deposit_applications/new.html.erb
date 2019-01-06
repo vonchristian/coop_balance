@@ -1,3 +1,4 @@
+<% breadcrumb :new_time_deposit_application, @depositor %>
 <div class="row">
   <div class="col-md-6 offset-md-3">
     <div class="card">
@@ -18,7 +19,7 @@
       <hr class="no-margin">
       <div class="card-body">
         <%= simple_form_for @time_deposit_application, url: :time_deposit_applications, html: { autocomplete: 'off' } do |f| %>
-          <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] } %>
+          <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] }, default: current_user.cash_accounts.first %>
           <%= f.input :date, label: "Date Deposited", as: :string, input_html: { class: "datepicker" } %>
           <%= f.input :reference_number %>
           <%= f.input :amount, as: :currency %>

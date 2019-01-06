@@ -8,7 +8,7 @@
           </div>
           <div class="col-md-6">
             <% if policy([:employees, :share_capital]).new? %>
-              <%= link_to 'New Share Capital', new_share_capital_path(subscriber_id: @employee.id, subscriber_type: @employee.class.to_s), class: "btn btn-primary float-right" %>
+              <%= link_to 'New Share Capital', new_share_capital_application_path(subscriber_id: @employee.id, subscriber_type: @employee.class.to_s), class: "btn btn-primary float-right" %>
             <% end %>
           </div>
         </div>
