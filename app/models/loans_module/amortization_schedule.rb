@@ -202,11 +202,11 @@ module LoansModule
 		end
 
     def self.add_months(loan)
-      TermParser.new(loan.term).number_of_months.months
+      TermParser.new(term: loan.term.to_f).add_months
     end
 
     def self.add_days(loan)
-      TermParser.new(loan.term).number_of_days.days
+      TermParser.new(term: loan.term.to_f).add_days
     end
 	end
 end

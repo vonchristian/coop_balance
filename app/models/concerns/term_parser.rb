@@ -4,7 +4,6 @@ class TermParser
   def initialize(args)
     @term   = args[:term]
   end
-
   def add_months
     parser.new(term).number_of_months.months
   end
