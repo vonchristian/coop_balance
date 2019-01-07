@@ -7,11 +7,11 @@ module LoansModule
       end
 
       def principal_debits_balance(args={})
-        loan_product.loans_receivable_current_account.debits_balance(commercial_document: self)
+        principal_account.debits_balance(commercial_document: self)
       end
 
       def principal_credits_balance(args={})
-        loan_product.loans_receivable_current_account.credits_balance(commercial_document: self)
+        principal_account.credits_balance(commercial_document: self)
       end
     end
   end
