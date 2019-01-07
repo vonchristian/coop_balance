@@ -4,8 +4,13 @@ crumb :members do
 end
 
 crumb :member do |member|
-  link member.first_and_last_name, member_path(member)
-  parent :members
+  if member.class.name == "Member"
+    link member.first_and_last_name, member_path(member)
+    parent :members
+  elsif member.class.name == "Organization"
+    link member.try(:abbreviated_name) || member.name, organization_path(member)
+    parent :organizations
+  end
 end
 
 crumb :member_loans do |member|
@@ -14,8 +19,13 @@ crumb :member_loans do |member|
 end
 
 crumb :member_savings_accounts do |member|
-  link "Savings Deposits", member_savings_accounts_path(member)
-  parent :member, member
+  if member.class.name == "Member"
+    link "Savings Deposits", member_savings_accounts_path(member)
+    parent :member, member
+  elsif member.class.name == "Organization"
+    link "Savings Deposits", organization_savings_accounts_path(member)
+    parent :organization, member
+  end
 end
 
 crumb :member_share_capitals do |member|
