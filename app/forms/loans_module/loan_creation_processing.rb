@@ -34,12 +34,14 @@ module LoansModule
         account_number:        loan_application.account_number,
         purpose:               loan_application.purpose,
         disbursement_voucher:  loan_application.voucher,
-        last_transaction_date: loan_application.application_date
+        last_transaction_date: loan_application.application_date,
+        tracking_number:       loan_application.voucher.reference_number
         )
       create_amortization_schedules(loan)
       create_voucher_amounts(loan)
       create_term(loan)
       create_loan_interests(loan)
+      approve_loan_application
     end
 
     def create_amortization_schedules(loan)
@@ -61,6 +63,10 @@ module LoansModule
         amount: loan_application.interest_balance,
         description: "Computed loan interests on #{loan_application.application_date.strftime("%B %e, %Y")}",
         employee: employee)
+    end
+
+    def approve_loan_application
+      loan_application.update(approved: true)
     end
   end
 end

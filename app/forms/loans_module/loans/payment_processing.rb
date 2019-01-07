@@ -13,6 +13,7 @@ module LoansModule
                 :cash_account_id,
                 :account_number
       validates :principal_amount, :interest_amount, :penalty_amount, presence: true, numericality: true
+      validate :principal_amount_not_more_than_balance
       validates :reference_number, :date, :description, presence: true
 
       def process!
@@ -84,6 +85,10 @@ module LoansModule
         principal_amount.to_f +
         interest_amount.to_f +
         penalty_amount.to_f
+      end
+
+      def principal_amount_not_more_than_balance
+        errors[:principal_amount] << "Must be less than or equal to balance." if principal_amount.to_f > find_loan.principal_balance
       end
     end
   end

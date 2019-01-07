@@ -2,18 +2,13 @@
 <% content_for(:html_title) { "#{@loan.borrower_name} | #{@loan.loan_product_name }" } %>
 <div class="card">
   <div class="card-header">
-    <br>
     <div class="row">
       <div class="col-md-3">
-        <% if @loan.forwarded_loan? %>
-          <span class="badge bg-warning">Forwarded Loan </span>
-        <% else %>
-          <h4 class="card-title number"><%= number_to_currency @loan.loan_amount %> </h4>
-        <% end %>
+        <h4 class="card-title number"><%= number_to_currency (@loan.forwarded_loan? ? @loan.principal_debits_balance : @loan.loan_amount) %> </h4>
         <small>PRINCIPAL</small>
         <br>
         <br>
-        <%= link_to 'Statement of Account', loan_path(@loan, format: 'pdf') %>
+        <%= link_to 'Statement of Account', loan_path(@loan, format: 'pdf'), class: 'float-right' %>
       </div>
       <div class="col-md-3">
         <h4 class="card-title number"><%= number_to_currency @loan.loan_interests_balance %></h4>

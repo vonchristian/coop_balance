@@ -14,15 +14,16 @@
     </div>
   </div>
 </div>
-<% @member.loan_applications.each do |loan_application| %>
+<% @loan_applications.each do |loan_application| %>
   <%= render 'loans_module/loan_applications/partials/header', loan_application: loan_application %>
 <% end %>
-
+<center><%= will_paginate @loan_applications %></center>
 <div class="card">
   <div class="card-header">
     <h3 class="card-title">Loans </h3>
   </div>
 </div>
-<% @member.loans.each do |loan| %>
+<% @loans.each do |loan| %>
   <%= render 'loans/partials/header', loan: loan %>
 <% end %>
+<center><%= will_paginate @loans %></center>
