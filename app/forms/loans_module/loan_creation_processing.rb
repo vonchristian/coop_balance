@@ -26,7 +26,7 @@ module LoansModule
         cooperative:           loan_application.cooperative,
         organization:          loan_application.organization,
         office:                loan_application.office,
-        loan_amount:           loan_application.loan_amount,
+        loan_amount:           loan_application.loan_amount.amount,
         application_date:      loan_application.application_date,
         borrower:              loan_application.borrower,
         loan_product:          loan_application.loan_product,
