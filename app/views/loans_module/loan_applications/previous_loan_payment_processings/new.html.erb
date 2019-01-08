@@ -31,7 +31,7 @@
         <hr>
             <%= simple_form_for [@loan, @payment], url: :loans_module_loan_application_previous_loan_payment_processings, html: { autocomplete: 'off' } do |f| %>
               <%= f.error_notification %>
-              <%= f.input :amount, autofocus: true %>
+              <%= f.input :amount, autofocus: true, as: :currency %>
               <%= f.input :loan_id, input_html: { value: @loan.id }, as: :hidden %>
               <%= f.input :loan_application_id, input_html: { value: @loan_application.id }, as: :hidden %>
               <hr>

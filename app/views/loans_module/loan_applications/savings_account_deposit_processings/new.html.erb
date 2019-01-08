@@ -32,7 +32,7 @@
         <hr>
             <%= simple_form_for [@savings_account, @deposit], url: :loans_module_loan_application_savings_account_deposit_processings, html: { autocomplete: 'off' } do |f| %>
               <%= f.error_notification %>
-              <%= f.input :amount %>
+              <%= f.input :amount, as: :currency %>
               <%= f.input :savings_account_id, input_html: { value: @savings_account.id }, as: :hidden %>
               <%= f.input :loan_application_id, input_html: { value: @loan_application.id }, as: :hidden %>
               <hr>

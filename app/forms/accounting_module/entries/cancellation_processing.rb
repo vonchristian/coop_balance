@@ -18,7 +18,9 @@ module AccountingModule
           cancelled_by_id: cancelled_by_id,
           cancellation_description: cancellation_description
         )
-        find_entry.voucher.update(cancelled: true)
+        if find_entry.voucher.present?
+          find_entry.voucher.update(cancelled: true)
+        end
       end
       def find_entry
         AccountingModule::Entry.find(entry_id)

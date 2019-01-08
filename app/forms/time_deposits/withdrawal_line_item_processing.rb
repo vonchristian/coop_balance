@@ -29,7 +29,7 @@ module TimeDeposits
         cooperative: find_employee.cooperative,
         preparer: find_employee,
         description: "Time deposit withdrawal transaction of #{find_time_deposit.depositor.full_name}",
-        number: or_number,
+        reference_number: or_number,
         account_number: account_number,
         date: date)
       voucher.voucher_amounts.debit.build(

@@ -32,7 +32,7 @@
         <hr>
             <%= simple_form_for [@share_capital, @capital_build_up], url: :loans_module_loan_application_capital_build_up_processings, html: { autocomplete: 'off' } do |f| %>
               <%= f.error_notification %>
-              <%= f.input :amount, autofocus: true %>
+              <%= f.input :amount, autofocus: true, as: :currency %>
               <%= f.input :share_capital_id, input_html: { value: @share_capital.id }, as: :hidden %>
               <%= f.input :loan_application_id, input_html: { value: @loan_application.id }, as: :hidden %>
               <hr>
