@@ -5,7 +5,7 @@
       <div class="card-header">
         <div class="profile-wrapper">
           <% if @employee.avatar.attached? %>
-            <%= image_tag(@employee.avatar.variant(resize: "150x150"), class: "img-rounded mx-auto d-block") %>
+            <%= image_tag(@employee.avatar, width: 150, height: 150, class: "img-rounded mx-auto d-block") %>
           <% else %>
             <%= image_tag("default.png", width: '150', height: '150', class: 'img-rounded mx-auto d-block') %>
           <% end %>

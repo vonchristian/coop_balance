@@ -28,7 +28,7 @@ module TimeDeposits
         office: find_employee.office,
         cooperative: find_employee.cooperative,
         preparer: find_employee,
-        description: "Time deposit withdrawal transaction of #{find_time_deposit.depositor.full_name}",
+        description: "Time deposit withdrawal transaction of #{find_time_deposit.depositor.name}",
         reference_number: or_number,
         account_number: account_number,
         date: date)
@@ -43,6 +43,9 @@ module TimeDeposits
       voucher.save!
     end
 
+    def set_time_deposit_as_withdrawn
+      find_time_deposit.update(withdrawn: true)
+    end
 
     def credit_account
       AccountingModule::Account.find(cash_account_id)

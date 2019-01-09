@@ -6,7 +6,7 @@
       <div class="card-header no-border">
         <div class="row">
           <div class="col-md-3 offset-md-1">
-            <%= image_tag(@share_capital.subscriber.avatar.variant(resize: "45x45"), class: "img-circle") if @share_capital.subscriber.avatar.attached? %>
+            <%= image_tag(@share_capital.subscriber.avatar, width: 45, height: 45, class: "img-circle") if @share_capital.subscriber.avatar.attached? %>
           </div>
           <div class="col-md-6">
             <h3 class="card-title"><%= @share_capital.subscriber_name %></h3>

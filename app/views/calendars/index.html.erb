@@ -10,7 +10,7 @@
             <%=link_to calendar_path(date) do %>
               <p><%=date.day %></p>
               <% current_cooperative.member_memberships.has_birth_month_on(birth_month: date.month).has_birthday_on(birth_day: date.day).each do |member| %>
-                <%= image_tag(member.avatar.variant(resize: '30x30'), class: "img-circle") if member.avatar.attached? %> <%= member.first_name %><br>
+                <%= image_tag(member.avatar, width: 30, height: 30, class: "img-circle") if member.avatar.attached? %> <%= member.first_name %><br>
               <% end %>
             <% end %>
           <% end %>

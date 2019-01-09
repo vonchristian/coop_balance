@@ -4,7 +4,7 @@
       <div class="card-header bg-gray">
       <div class="row">
         <div class="col-md-3">
-          <center><%= image_tag(@loan_application.borrower.avatar.variant(resize: '80x80'), class: 'media-object img-circle') if @loan_application.borrower.avatar.attached? %></center>
+          <center><%= image_tag(@loan_application.borrower.avatar, width: 80, height: 80, class: 'media-object img-circle') if @loan_application.borrower.avatar.attached? %></center>
         </div>
         <div class="col-md-9">
           <br>

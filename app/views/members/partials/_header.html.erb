@@ -9,11 +9,16 @@
           <b><%= member.full_name %></b><br>
           <div class="row">
             <div class="col-md-3">
-              <small class="text-muted"><i class="fa fa-map-marker"></i>&nbsp;  <%= member.current_address_complete_address %></small>
+              <small class="text-muted">
+                <i class="fa fa-user"></i>&nbsp;  <%= member.memberships.first.membership_type.try(:titleize) if member.memberships.present? %>
+              </small>
             </div>
             <div class="col-md-3">
               <small class="text-muted">
                 <i class="fa fa-phone"></i>&nbsp;  <%= member.current_contact_number %>
+              </small><br>
+              <small class="text-muted">
+                <i class="fa fa-map-marker"></i>&nbsp;  <%= member.current_address_complete_address %>
               </small>
             </div>
             <div class="col-md-3">
