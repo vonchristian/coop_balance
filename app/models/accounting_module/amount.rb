@@ -2,7 +2,7 @@ module AccountingModule
   class Amount < ApplicationRecord
     audited
     monetize :amount_cents, as: :amount, numericality: true
-    extend AccountingModule::BalanceFinder
+    # extend AccountingModule::BalanceFinder
     belongs_to :entry, :class_name => 'AccountingModule::Entry'
     belongs_to :account, :class_name => 'AccountingModule::Account'
     belongs_to :commercial_document, polymorphic: true, optional: true
@@ -64,6 +64,10 @@ module AccountingModule
       where(commercial_document_type: "LoansModule::Loan")
     end
 
+    def self.balance(args={})
+      args_with_amounts = args.merge( { amounts: self })
+      balance_finder(args_with_amounts).new(args_with_amounts).compute
+    end
 
     def debit?
       type == "AccountingModule::DebitAmount"
@@ -75,6 +79,11 @@ module AccountingModule
 
     def self.total
       all.map{ |a| a.amount.amount }.sum
+    end
+    private
+    def self.balance_finder(opts={})
+    temp = opts.select{|key, value| !value.nil?}.keys.sort.map{ |key| key.to_s.titleize }.join.gsub(" ", "")
+        ("AccountingModule::BalanceFinders::" + temp).constantize
     end
   end
 end
