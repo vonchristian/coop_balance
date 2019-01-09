@@ -1,13 +1,31 @@
 <% breadcrumb :members, @members %>
 <div class="row">
   <div class="col-md-12">
+    <div class="card card-outline-left card-primary">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-3 border-right">
+            <small> TOTAL MEMBERS </small>
+            <h2 class="number"><%= current_cooperative.member_memberships.count %></h2>
+          </div>
+          <div class="col-md-2">
+            <small>ACTIVE</small>
+            <h2 class="number"> <%= number_to_currency current_cooperative.member_memberships.percent_active, unit: '' %> % </h2>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  <div class="col-md-12">
     <div class="card">
       <div class="card-header">
         <div class="row">
           <div class="col-md-8">
             <%=form_tag members_path, method: :get do %>
               <div class="input-group">
-                <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search First Name, Last Name ", id: 'account-search-form' %>
+                <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Taxpayer", id: 'account-search-form' %>
                 <span class="input-group-btn">
                   <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
                     <i class="fa fa-search"></i>
@@ -22,7 +40,7 @@
             <% end %>
           </div>
         </div>
-        <br>
+
       </div>
     </div>
     <% @members.each do |member| %>
