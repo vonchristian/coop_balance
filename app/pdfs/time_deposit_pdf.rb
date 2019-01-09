@@ -263,7 +263,14 @@ class TimeDepositPdf < Prawn::Document
   end
 
   def amount_in_words
-    time_deposit.balance.to_f.to_words.titleize + " Pesos" + " (#{price(time_deposit.balance)})"
+    if time_deposit.balance.to_f.to_s.split(".").to_a.last.to_i.zero?
+      time_deposit.balance.to_f.to_words.titleize + " Pesos" + " (#{price(time_deposit.balance)})"
+    else
+      time_deposit.balance.to_i.to_words.titleize +
+      " Pesos and" +
+      time_deposit.balance.to_f.to_words.split("and").map {|w| w}.last.titleize +
+      " (#{price(time_deposit.balance)})"
+    end
   end
 
   def terms_in_days

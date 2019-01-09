@@ -16,7 +16,7 @@
     <div class="card-body">
       <div class="row">
         <div class="col-md-1">
-          <%=image_tag(note.noter.avatar.variant(resize: '45x45'), class: "img-circle") if note.noter.avatar.attached? %>
+          <%=image_tag(note.noter.avatar, width: 45, height: 45, class: "img-circle") if note.noter.avatar.attached? %>
         </div>
         <div class="col-md-8">
           <h3 class="card-title"><%= note.title %></h3>
