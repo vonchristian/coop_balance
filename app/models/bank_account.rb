@@ -1,5 +1,6 @@
 class BankAccount < ApplicationRecord
   include PgSearch
+  include Balancer
   pg_search_scope :text_search, against: [:bank_name, :bank_address, :account_number]
   has_one_attached :avatar
   belongs_to :cooperative
@@ -8,14 +9,14 @@ class BankAccount < ApplicationRecord
   belongs_to :interest_revenue_account, class_name: "AccountingModule::Account"
   validates :bank_name, :bank_address, :account_number, presence: true
   before_save :set_default_image
-  def entries
-    cash_account.entries.uniq
-  end
+
+  delegate :entries, to: :cash_account
+
   def name
     bank_name
   end
   def balance(args={})
-   cash_account.balance(commercial_document: self)
+    cash_account.balance(commercial_document: self)
   end
 
   def debits_balance(args={})

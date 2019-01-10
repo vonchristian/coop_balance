@@ -1,11 +1,10 @@
 module AccountingModule
   module BalanceFinders
-    class AmountsCommercialDocumentToDate
-      attr_reader :commercial_document, :from_date, :to_date, :amounts
+    class AmountsCommercialDocumentToDate < BaseBalanceFinder
+      attr_reader :commercial_document, :from_date, :to_date
 
-      def initialize(args)
+      def post_initialize(args)
         @commercial_document = args.fetch(:commercial_document)
-        @amounts = args.fetch(:amounts)
         @from_date = 999.years.ago
         @to_date   = args.fetch(:to_date)
       end

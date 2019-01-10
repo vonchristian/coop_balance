@@ -13,4 +13,8 @@ RSpec.describe BankAccount, type: :model do
     it { is_expected.to validate_presence_of :bank_address }
     it { is_expected.to validate_presence_of :account_number }
   end
+
+  describe 'delegations' do
+    it { is_expected.to delegate_method(:entries).to(:cash_account) }
+  end
 end
