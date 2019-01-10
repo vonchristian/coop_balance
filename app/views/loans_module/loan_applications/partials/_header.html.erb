@@ -15,7 +15,7 @@
               <% end %>
             <% end %>
             <small class="text-muted"><i class="fa fa-tag"></i> <%= loan_application.loan_product_name %><br>
-             <i class="fa fa-calendar"></i> <%= loan_application.application_date.strftime("%B %e, %Y") %>
+             <i class="fa fa-calendar"></i> <%= loan_application.voucher.try(:date).try(:strftime, "%B %e, %Y") %>
             </small>
           </div>
           <div class="col-md-6 col-sm-5">

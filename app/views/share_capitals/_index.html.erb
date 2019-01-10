@@ -29,6 +29,7 @@
       <% @share_capitals.each do |share_capital| %>
         <%= render 'share_capitals/partials/header', share_capital: share_capital %>
       <% end %>
+      <center><%= will_paginate @share_capitals %> </center>
     <% end %>
     <% if current_page? share_capitals_below_minimum_balances_path %>
       <%= render 'share_capitals/partials/below_minimum_balances' %>

@@ -5,9 +5,11 @@ module LoansModule
       attr_accessor :amount, :loan_application_id, :loan_id, :employee_id
       validates :amount, numericality: true, presence: true
       def process!
-        ActiveRecord::Base.transaction do
-          save_loan_charge
-          update_amortization_schedule
+        if valid?
+          ActiveRecord::Base.transaction do
+            save_loan_charge
+            update_amortization_schedule
+          end
         end
       end
 

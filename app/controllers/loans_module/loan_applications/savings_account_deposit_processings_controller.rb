@@ -1,20 +1,20 @@
 module LoansModule
   module LoanApplications
     class SavingsAccountDepositProcessingsController < ApplicationController
+      respond_to :html, :json
+
       def new
         @loan_application = current_cooperative.loan_applications.find(params[:loan_application_id])
         @savings_account = current_cooperative.savings.find(params[:saving_id])
         @deposit         = LoansModule::LoanApplications::SavingsAccountDepositProcessing.new
+        respond_modal_with @deposit
       end
       def create
         @loan_application = current_cooperative.loan_applications.find(params[:loan_application_id])
         @deposit         = LoansModule::LoanApplications::SavingsAccountDepositProcessing.new(deposit_params)
-        if @deposit.valid?
-          @deposit.process!
-          redirect_to new_loans_module_loan_application_voucher_url(@loan_application), notice: "Savings deposit added successfully"
-        else
-          render :new
-        end
+        @deposit.process!
+        respond_modal_with @deposit,
+          location: new_loans_module_loan_application_voucher_url(@loan_application)
       end
 
       private
