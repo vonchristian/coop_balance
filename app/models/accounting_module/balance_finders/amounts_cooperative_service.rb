@@ -1,10 +1,9 @@
 module AccountingModule
   module BalanceFinders
-    class AmountsCooperativeService
-      attr_reader :amounts, :cooperative_service
+    class AmountsCooperativeService < BaseBalanceFinder
+      attr_reader :cooperative_service
 
-      def initialize(args)
-        @amounts             = args.fetch(:amounts)
+      def post_initialize(args)
         @cooperative_service = args.fetch(:cooperative_service)
       end
 

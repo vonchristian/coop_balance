@@ -1,9 +1,8 @@
 module AccountingModule
   module BalanceFinders
-    class AmountsFromDateToDate
-      attr_reader :amounts, :from_date, :to_date
+    class AmountsFromDateToDate < BaseBalanceFinder
+      attr_reader  :from_date, :to_date
       def initialize(args)
-        @amounts = args.fetch(:amounts)
         @from_date = args.fetch(:from_date)
         @to_date   = args.fetch(:to_date)
       end

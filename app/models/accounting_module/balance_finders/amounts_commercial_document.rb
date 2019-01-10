@@ -1,9 +1,9 @@
 module AccountingModule
   module BalanceFinders
-    class AmountsCommercialDocument
-      attr_reader :amounts, :commercial_document
-      def initialize(args)
-        @amounts = args.fetch(:amounts)
+    class AmountsCommercialDocument < BaseBalanceFinder
+      attr_reader :commercial_document
+
+      def post_initialize(args)
         @commercial_document = args.fetch(:commercial_document)
       end
 

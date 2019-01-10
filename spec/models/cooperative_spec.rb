@@ -4,6 +4,9 @@ RSpec.describe Cooperative, type: :model do
 
   describe 'associations' do
     it { is_expected.to have_many :offices }
+    it { is_expected.to have_many :main_offices }
+    it { is_expected.to have_many :branch_offices }
+    it { is_expected.to have_many :satellite_offices }
     it { is_expected.to have_many :store_fronts }
     it { is_expected.to have_many :cooperative_services }
     it { is_expected.to have_many :accountable_accounts }
@@ -13,16 +16,20 @@ RSpec.describe Cooperative, type: :model do
     it { is_expected.to have_many :bank_accounts }
     it { is_expected.to have_many :loans }
     it { is_expected.to have_many :entries }
+    it { is_expected.to have_many :amounts }
+    it { is_expected.to have_many :debit_amounts }
+    it { is_expected.to have_many :credit_amounts }
     it { is_expected.to have_many :organizations }
     it { is_expected.to have_many :vouchers }
     it { is_expected.to have_many :voucher_amounts }
     it { is_expected.to have_many :users }
     it { is_expected.to have_many :saving_products }
     it { is_expected.to have_many :loan_products }
+    it { is_expected.to have_many :interest_configs }
     it { is_expected.to have_many :time_deposit_products }
     it { is_expected.to have_many :share_capital_products }
     it { is_expected.to have_many :programs }
-    it { is_expected.to have_many :cooperative_services }
+    it { is_expected.to have_many :program_subscriptions }
     it { is_expected.to have_many :savings }
     it { is_expected.to have_many :share_capitals }
     it { is_expected.to have_many :time_deposits }
@@ -34,22 +41,24 @@ RSpec.describe Cooperative, type: :model do
     it { is_expected.to have_many :amortization_schedules }
     it { is_expected.to have_many :registries }
     it { is_expected.to have_many :loan_registries }
+    it { is_expected.to have_many :stock_registries }
     it { is_expected.to have_many :member_registries }
     it { is_expected.to have_many :savings_account_registries }
     it { is_expected.to have_many :share_capital_registries }
     it { is_expected.to have_many :time_deposit_registries }
+    it { is_expected.to have_many :bank_account_registries }
+    it { is_expected.to have_many :organization_registries }
+    it { is_expected.to have_many :categories }
     it { is_expected.to have_many :beneficiaries }
     it { is_expected.to have_many :savings_account_applications }
     it { is_expected.to have_many :share_capital_applications }
-    it { is_expected.to have_many :branch_offices }
-    it { is_expected.to have_many :satellite_offices }
+    it { is_expected.to have_many :time_deposit_applications }
     it { is_expected.to have_many :suppliers }
     it { is_expected.to have_many :products }
     it { is_expected.to have_many :purchase_line_items }
     it { is_expected.to have_many :sales_orders }
     it { is_expected.to have_many :loan_protection_plan_providers }
     it { is_expected.to have_many :net_income_distributions }
-    it { is_expected.to have_many :stock_registries }
 
   end
 
