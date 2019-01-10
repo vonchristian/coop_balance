@@ -1,9 +1,3 @@
-<%= render "accounting_module/entries/partials/employee_tabs" %>
-<div class="row">
-  <div class="col-md-3">
-    <%= render "accounting_module/entries/partials/entry_filters" %>
-  </div>
-
   <div class="col-md-9">
     <div class="card">
       <div class="card-body">
@@ -21,7 +15,6 @@
             <% end %>
           </div>
           <div class="col-md-4">
-            <%= link_to 'New Entry', new_accounting_module_entry_line_item_path, data: { turbolinks: false }, class: 'btn btn-primary float-right' %>
           </div>
         </div>
       </div>
@@ -34,4 +27,3 @@
       <center><%= will_paginate entries %></center>
     <% end %>
   </div>
-</div>

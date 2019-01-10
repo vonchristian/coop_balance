@@ -1,0 +1,29 @@
+<div class="card">
+  <div class="card-header">
+    <h4 class="card-title">Employee Filter</h4>
+  </div>
+  <div class="card-body">
+    <nav class="nav flex-column nav-pills">
+      <% current_cooperative.users.each do |user| %>
+        <li class="nav-item">
+          <%= link_to accounting_module_per_employee_entries_path(recorder_id: user.id), class: "nav-link" do %>
+            <center>
+              <span title="<%= user.role.titleize %>" data-toggle="tooltip"> <%= image_tag(user.avatar, height: 45, width: 45, class: "img-circle") %></span><br>
+              <small><%= user.first_name %></small>
+            </center>
+          <% end %>
+        </li>
+      <% end %>
+    </nav>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <h3 class="card-title"> Reports </h3>
+    <hr class="min-margin">
+      <%= link_to 'View (PDF)', accounting_module_entries_path(format: 'pdf', from_date: @from_date, to_date: @to_date), class: 'float-right' %>
+  </div>
+</div>
+
+<%#{'active' if current_page?(accounting_module_per_employee_entries_path(recorder_id: user.id))} %>

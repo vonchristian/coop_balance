@@ -1,1 +1,8 @@
-<%= render 'accounting_module/entries/index', entries: @entries %>
+<%= render "accounting_module/entries/partials/entry_filters" %>
+<div class="row">
+  <div class="col-md-3">
+    <%= render "accounting_module/entries/partials/date_filters_for_all_entries" %>
+    <%= render "accounting_module/entries/partials/employee_filters" %>
+  </div>
+  <%= render 'accounting_module/entries/index', entries: @entries %>
+</div>
