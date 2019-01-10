@@ -9,7 +9,7 @@ module TimeDeposits
       @withdrawal   = TimeDeposits::WithdrawalLineItemProcessing.new(withdrawal_params)
       if @withdrawal.valid?
         @withdrawal.process!
-        redirect_to voucher_url(id: @withdrawal.find_voucher.id), notice: "Voucher created successfully"
+        redirect_to time_deposit_withdrawal_voucher_url(time_deposit_id: @time_deposit.id, id: @withdrawal.find_voucher.id), notice: "Voucher created successfully"
       else
         render :new
       end

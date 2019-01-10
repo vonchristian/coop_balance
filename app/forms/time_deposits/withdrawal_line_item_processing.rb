@@ -54,5 +54,9 @@ module TimeDeposits
     def debit_account
       find_time_deposit.time_deposit_product_account
     end
+
+    def principal_amount_not_more_than_balance
+      errors[:amount] << "Must be less than or equal to balance." if amount.to_f > find_time_deposit.balance
+    end
   end
 end

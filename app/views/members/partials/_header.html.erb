@@ -6,9 +6,9 @@
           <%= image_tag(member.avatar, height: 45, width: 45, class: "img-circle") if member.avatar.attached? %>
         </div>
         <div class="col-md-11 col-sm-11">
-          <b><%= member.full_name %></b><br>
           <div class="row">
             <div class="col-md-3">
+              <b><%= member.full_name %></b><br>
               <small class="text-muted">
                 <i class="fa fa-user"></i>&nbsp;  <%= member.memberships.first.membership_type.try(:titleize) if member.memberships.present? %>
               </small>

@@ -29,7 +29,7 @@
         <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] }, default: current_user.cash_accounts.first %>
         <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
         <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
-        <%= f.input :amount, as: :currency %>
+        <%= f.input :amount, as: :currency, input_html: {value: @time_deposit.balance} %>
         <%= f.input :payment_type, label: 'Type', collection: AccountingModule::Entry.payment_types.keys.to_a.map{|a| [a.titleize, a] }, selected: AccountingModule::Entry.payment_types.keys.first %>
         <%= f.input :offline_receipt, as: :boolean, input_html: { checked: true }, as: :hidden %>
         <%= f.input :or_number, label: 'Reference Number / OR Number' %>
