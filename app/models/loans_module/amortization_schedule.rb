@@ -7,14 +7,13 @@ module LoansModule
     has_many :payment_notices, as: :notified
     has_many :notes, as: :noteable
 
-    accepts_nested_attributes_for :notes
-
     delegate :borrower, :loan_product_name, to: :loan
     delegate :avatar, :name, :current_contact_number, :current_address_complete_address, to: :borrower, prefix: true
     ###########################
     def self.for_loans
       where.not(loan_id: nil)
     end
+    
     def self.principal_balance(args={})
       if args[:from_date] && args[:to_date]
         from_date = args[:from_date]

@@ -8,7 +8,7 @@ module LoansModule
       it { is_expected.to belong_to :loan_application }
       it { is_expected.to belong_to :cooperative }
       it { is_expected.to have_many :notes }
-
+      it { is_expected.to belong_to :scheduleable }
     end
 
     describe 'validations' do
@@ -56,6 +56,7 @@ module LoansModule
 
         expect(amortization_schedule.interest_computation).to eql 0
       end
+
       it 'has no prededucted interest' do
         amortization_schedule = create(:amortization_schedule, has_prededucted_interest: false)
 

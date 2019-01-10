@@ -28,6 +28,9 @@ module LoansModule
 
     validates :maximum_loanable_amount, :grace_period, :interest_rate, :penalty_rate, numericality: true
 
+    def initialize(args)
+      @cooperative = args.fetch(:cooperative)
+    end
 
     def register!
       if valid?
@@ -46,13 +49,13 @@ module LoansModule
     end
 
     def create_loan_product
-      loan_product = find_cooperative.loan_products.create!(
+      loan_product = cooperative.loan_products.create!(
         name: name,
         description: description,
         maximum_loanable_amount: maximum_loanable_amount,
         current_account_id: current_account_id,
         past_due_account_id: past_due_account_id,
-        cooperative_id: cooperative_id,
+
         loan_protection_plan_provider_id: loan_protection_plan_provider_id,
         grace_period: grace_period)
 
@@ -66,28 +69,5 @@ module LoansModule
         penalty_revenue_account_id: penalty_revenue_account_id)
     end
 
-    def update_loan_product
-      loan_product = @loan_product.update!(
-        name: name,
-        description: description,
-        maximum_loanable_amount: maximum_loanable_amount,
-        current_account_id: current_account_id,
-        past_due_account_id: past_due_account_id,
-        cooperative_id: cooperative_id,
-        loan_protection_plan_provider_id: loan_protection_plan_provider_id,
-        grace_period: grace_period)
-
-      loan_product.interest_configs.create(
-        rate: interest_rate,
-        interest_revenue_account_id: interest_revenue_account_id,
-        unearned_interest_income_account_id: unearned_interest_income_account_id)
-
-      loan_product.penalty_configs.create(
-        rate: penalty_rate,
-        penalty_revenue_account_id: penalty_revenue_account_id)
-    end
-    def find_cooperative
-      Cooperative.find(cooperative_id)
-    end
   end
 end

@@ -7,10 +7,12 @@ module LoansModule
       enum calculation_type: [:add_on, :prededucted]
       enum rate_type: [:monthly_rate, :annual_rate]
       enum prededuction_type: [:percentage, :amount, :number_of_payment]
+
       belongs_to :loan_product,                     class_name: "LoansModule::LoanProduct"
       belongs_to :interest_revenue_account,         class_name: "AccountingModule::Account"
       belongs_to :unearned_interest_income_account, class_name: "AccountingModule::Account"
       belongs_to :cooperative
+
       validates :rate, :interest_revenue_account_id, :unearned_interest_income_account_id, presence: true
       validates :rate, numericality: true
 
@@ -21,6 +23,7 @@ module LoansModule
       def self.accounts
         interest_revenue_accounts
       end
+
       def self.interest_revenue_accounts
         accounts = pluck(:interest_revenue_account_id).uniq
         AccountingModule::Account.where(id: accounts)
@@ -29,9 +32,9 @@ module LoansModule
       def total_interest(loan_application) #refactor
         total = BigDecimal("0")
         total += loan_application.first_year_interest
-        number = loan_application.term
-        while number > 12 do
-          number -= 12
+        term = loan_application.term
+        while term > 12 do
+          term -= 12
           total += interest_computation(loan_application.principal_balance(number_of_months: number), number)
         end
         total
@@ -45,11 +48,11 @@ module LoansModule
         end
       end
 
-      def interest_computation(balance, term)
+      def interest_computation(amount, term)
         if monthly_rate?
-          ((balance * monthly_rate) * term).to_f
+          ((amount * monthly_rate) * term).to_f
         else
-          ((balance * rate)).to_f
+          ((amount * rate)).to_f
         end
       end
 
@@ -59,6 +62,9 @@ module LoansModule
         else
           0
         end
+      end
+
+      def applicable_rate
       end
 
 
@@ -72,12 +78,13 @@ module LoansModule
 
 
       def create_charges_for(loan_application)
-        loan_application.voucher_amounts.create(
+      q
+        loan_application.voucher_amounts.credit.create(
         cooperative: loan_application.cooperative,
         description: "Interest on Loan",
-        amount: prededucted_interest(loan_application.loan_amount.amount, loan_application.term),
-        account: interest_revenue_account,
-        amount_type: 'credit' )
+        amount:      prededucted_interest(loan_application.loan_amount.amount, loan_application.term),
+        account:     interest_revenue_account
+        )
       end
 
 

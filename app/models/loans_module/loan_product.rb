@@ -2,6 +2,7 @@ module LoansModule
   class LoanProduct < ApplicationRecord
     extend Totalable
     extend PastDuePercentage
+    #enum amortization_type: [:straight_line, :declining_balance]
     belongs_to :loan_protection_plan_provider,    class_name: "LoansModule::LoanProtectionPlanProvider"
     belongs_to :cooperative
     belongs_to :current_account,      class_name: "AccountingModule::Account"
@@ -15,7 +16,7 @@ module LoansModule
     has_many :member_borrowers,                    through: :loans, source: :borrower, source_type: 'Member'
     has_many :employee_borrowers,                  through: :loans, source: :borrower, source_type: 'User'
     has_many :organization_borrowers,              through: :loans, source: :borrower, source_type: 'Organization'
-
+    has_many :interest_predeductions
     delegate :rate,
              :annual_rate,
              :calculation_type,

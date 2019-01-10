@@ -15,6 +15,7 @@ module LoansModule
     	it { is_expected.to have_many :loan_product_charges }
       it { is_expected.to have_many :interest_configs }
       it { is_expected.to have_many :penalty_configs }
+      it { is_expected.to have_many :interest_predeductions }
     end
 
     describe 'delegations' do

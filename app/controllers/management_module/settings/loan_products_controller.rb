@@ -8,7 +8,7 @@ module ManagementModule
       end
 
       def new
-        @loan_product = LoansModule::LoanProductRegistration.new
+        @loan_product = LoansModule::LoanProductRegistration.new(cooperative: current_cooperative)
         respond_modal_with @loan_product
       end
 

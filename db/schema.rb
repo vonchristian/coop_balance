@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_10_063021) do
+ActiveRecord::Schema.define(version: 2019_01_10_104356) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -111,6 +111,8 @@ ActiveRecord::Schema.define(version: 2019_01_10_063021) do
     t.decimal "principal", default: "0.0"
     t.decimal "interest", default: "0.0"
     t.uuid "cooperative_id"
+    t.string "scheduleable_type"
+    t.uuid "scheduleable_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_amortization_schedules"
     t.index ["cooperative_id"], name: "index_amortization_schedules_on_cooperative_id"
     t.index ["credit_account_id"], name: "index_amortization_schedules_on_credit_account_id"
@@ -119,6 +121,7 @@ ActiveRecord::Schema.define(version: 2019_01_10_063021) do
     t.index ["loan_id"], name: "index_amortization_schedules_on_loan_id"
     t.index ["payment_status"], name: "index_amortization_schedules_on_payment_status"
     t.index ["schedule_type"], name: "index_amortization_schedules_on_schedule_type"
+    t.index ["scheduleable_type", "scheduleable_id"], name: "index_schedulable_on_amortization_schedules"
   end
 
   create_table "amount_adjustments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -457,6 +460,7 @@ ActiveRecord::Schema.define(version: 2019_01_10_063021) do
     t.integer "prededucted_number_of_payments"
     t.decimal "prededucted_amount"
     t.integer "rate_type"
+    t.string "type"
     t.index ["amortization_type"], name: "index_interest_configs_on_amortization_type"
     t.index ["calculation_type"], name: "index_interest_configs_on_calculation_type"
     t.index ["cooperative_id"], name: "index_interest_configs_on_cooperative_id"
@@ -465,7 +469,20 @@ ActiveRecord::Schema.define(version: 2019_01_10_063021) do
     t.index ["loan_product_id"], name: "index_interest_configs_on_loan_product_id"
     t.index ["prededuction_type"], name: "index_interest_configs_on_prededuction_type"
     t.index ["rate_type"], name: "index_interest_configs_on_rate_type"
+    t.index ["type"], name: "index_interest_configs_on_type"
     t.index ["unearned_interest_income_account_id"], name: "index_interest_configs_on_unearned_interest_income_account_id"
+  end
+
+  create_table "interest_predeductions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "loan_product_id"
+    t.integer "calculation_type"
+    t.decimal "rate"
+    t.decimal "amount"
+    t.integer "number_of_payments"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["calculation_type"], name: "index_interest_predeductions_on_calculation_type"
+    t.index ["loan_product_id"], name: "index_interest_predeductions_on_loan_product_id"
   end
 
   create_table "invoices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -621,9 +638,6 @@ ActiveRecord::Schema.define(version: 2019_01_10_063021) do
     t.datetime "updated_at", null: false
     t.string "name"
     t.decimal "minimum_loanable_amount"
-    t.string "depends_on_share_capital_balance"
-    t.decimal "minimum_share_capital_balance"
-    t.decimal "maximum_share_capital_balance"
     t.string "slug"
     t.uuid "current_account_id"
     t.uuid "past_due_account_id"
@@ -1566,6 +1580,7 @@ ActiveRecord::Schema.define(version: 2019_01_10_063021) do
   add_foreign_key "interest_configs", "accounts", column: "unearned_interest_income_account_id"
   add_foreign_key "interest_configs", "cooperatives"
   add_foreign_key "interest_configs", "loan_products"
+  add_foreign_key "interest_predeductions", "loan_products"
   add_foreign_key "line_items", "carts"
   add_foreign_key "line_items", "cooperatives"
   add_foreign_key "line_items", "line_items", column: "referenced_line_item_id"

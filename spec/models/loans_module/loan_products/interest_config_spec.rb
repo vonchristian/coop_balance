@@ -2,7 +2,7 @@ require 'rails_helper'
 
 module LoansModule
   module LoanProducts
-    describe InterestConfig, type: :model do
+    describe InterestConfig do
       it { is_expected.to define_enum_for(:calculation_type).with([:add_on, :prededucted])}
       it { is_expected.to define_enum_for(:amortization_type).with([:annually, :straight_balance])}
       it { is_expected.to define_enum_for(:rate_type).with([:monthly_rate, :annual_rate])}
@@ -51,6 +51,7 @@ module LoansModule
         expect(annual_interest_config.interest_computation(100_000)).to eq 12_000
         expect(annual_interest_config.interest_computation(200_000)).to eq 24_000
       end
+
       describe '#prededucted_interest(loan_application)' do
         it 'addon interest' do
           interest_config = create(:interest_config, calculation_type: 'add_on')
@@ -66,6 +67,8 @@ module LoansModule
 
         end
       end
+
+    
     end
   end
 end
