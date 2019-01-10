@@ -369,6 +369,10 @@ Rails.application.routes.draw do
       resources :confirmations, only: [:create],           module: :transfer_vouchers
     end
 
+    resources :withdrawal_vouchers, only: [:show, :destroy], module: :time_deposits do
+      resources :confirmations, only: [:create],             module: :withdrawal_vouchers
+    end
+
     resources :adjusting_entries, only: [:new, :create], module: :time_deposits
     resources :withdrawals, only: [:new, :create],       module: :time_deposits
     resources :term_extensions, only: [:new, :create],   module: :time_deposits

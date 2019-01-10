@@ -23,7 +23,7 @@
         <% @share_capitals.where.not(id: @origin_share_capital.id).each do |share_capital| %>
           <div class="row">
             <div class="col-md-2">
-              <%= image_tag(share_capital.avatar.variant(resize: '45x45'), class: "img-circle") if share_capital.avatar.attached? %>
+              <%= image_tag(share_capital.avatar, width: 45, height: 45, class: "img-circle") if share_capital.avatar.attached? %>
             </div>
             <div class="col-md-7">
               <%= share_capital.subscriber_name %><br>

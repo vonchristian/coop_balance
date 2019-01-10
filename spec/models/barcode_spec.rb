@@ -1,5 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe Barcode, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+describe Barcode do
+  describe 'associations' do
+    it { is_expected.to belong_to :line_item }
+  end
 end

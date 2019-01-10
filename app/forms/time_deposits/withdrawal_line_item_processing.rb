@@ -28,8 +28,8 @@ module TimeDeposits
         office: find_employee.office,
         cooperative: find_employee.cooperative,
         preparer: find_employee,
-        description: "Time deposit withdrawal transaction of #{find_time_deposit.depositor.full_name}",
-        number: or_number,
+        description: "Time deposit withdrawal transaction of #{find_time_deposit.depositor.name}",
+        reference_number: or_number,
         account_number: account_number,
         date: date)
       voucher.voucher_amounts.debit.build(
@@ -43,6 +43,9 @@ module TimeDeposits
       voucher.save!
     end
 
+    def set_time_deposit_as_withdrawn
+      find_time_deposit.update(withdrawn: true)
+    end
 
     def credit_account
       AccountingModule::Account.find(cash_account_id)
@@ -50,6 +53,10 @@ module TimeDeposits
 
     def debit_account
       find_time_deposit.time_deposit_product_account
+    end
+
+    def principal_amount_not_more_than_balance
+      errors[:amount] << "Must be less than or equal to balance." if amount.to_f > find_time_deposit.balance
     end
   end
 end

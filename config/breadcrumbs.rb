@@ -205,6 +205,11 @@ crumb :time_deposit_withdrawal do |time_deposit|
   parent :member_time_deposits, time_deposit.depositor
 end
 
+crumb :time_deposit_withdrawal_voucher do |time_deposit|
+  link "Withdrawal Voucher", time_deposit_withdrawal_voucher_path(time_deposit_id: time_deposit.id, id: Vouchers::VoucherAmount.debit.where(commercial_document: time_deposit).last.voucher.id)
+  parent :time_deposit_details, time_deposit
+end
+
 # ORGANIZATIONS
 
 crumb :organizations do

@@ -140,6 +140,6 @@ class Voucher < ApplicationRecord
   end
 
   def amounts_cancel?
-    errors[:base] << "The credit and debit amounts are not equal" if voucher_amounts.credit.balance_for_new_record != voucher_amounts.debit.balance_for_new_record
+    errors[:base] << "The credit and debit amounts are not equal" if voucher_amounts.credit.total != voucher_amounts.debit.total
   end
 end

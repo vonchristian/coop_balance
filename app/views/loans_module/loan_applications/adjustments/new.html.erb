@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <%= image_tag(@loan_application.avatar.variant(resize: '45x45'), class: "img-circle") if @loan_application.avatar.attached? %>
+  <%= image_tag(@loan_application.borrower_avatar, width: 45, height: 45, class: "img-circle") if @loan_application.borrower_avatar.attached? %>
   <h4 class="modal-title card-title" id="mainModalLabel" style="margin-left: 10px">
     <%= @loan_application.borrower_name %>
   </h4>

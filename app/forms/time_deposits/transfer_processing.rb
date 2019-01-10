@@ -35,7 +35,7 @@ module TimeDeposits
         office: find_employee.office,
         cooperative: find_employee.cooperative,
         description: description,
-        number: Voucher.generate_number,
+        reference_number: Voucher.generate_number,
         date: date
       )
       voucher.voucher_amounts.credit.build(

@@ -2,7 +2,7 @@ module AccountingModule
   class Amount < ApplicationRecord
     audited
     monetize :amount_cents, as: :amount, numericality: true
-    extend AccountingModule::BalanceFinder
+
     belongs_to :entry, :class_name => 'AccountingModule::Entry'
     belongs_to :account, :class_name => 'AccountingModule::Account'
     belongs_to :commercial_document, polymorphic: true, optional: true
@@ -49,9 +49,9 @@ module AccountingModule
       joins(:entry).where('entries.recorder_id' => args[:recorder_id])
     end
 
-    def self.for_commercial_document(args={})
-      where(commercial_document: args[:commercial_document])
-    end
+    # def self.for_commercial_document(args={})
+    #   where(commercial_document: args[:commercial_document])
+    # end
 
     def self.entered_on(args={})
       from_date  = args[:from_date] || Date.today - 999.years
@@ -64,6 +64,10 @@ module AccountingModule
       where(commercial_document_type: "LoansModule::Loan")
     end
 
+    def self.balance(args={})
+      args_with_amounts = args.merge({ amounts: self })
+      balance_finder(args_with_amounts).new(args_with_amounts).compute
+    end
 
     def debit?
       type == "AccountingModule::DebitAmount"
@@ -74,7 +78,12 @@ module AccountingModule
     end
 
     def self.total
-      all.map{ |a| a.amount.amount }.sum
+      not_cancelled.all.map{ |a| a.amount.amount }.sum
+    end
+    private
+    def self.balance_finder(opts={})
+    klass = opts.select{|key, value| !value.nil?}.keys.sort.map{ |key| key.to_s.titleize }.join.gsub(" ", "")
+        ("AccountingModule::BalanceFinders::" + klass).constantize
     end
   end
 end
