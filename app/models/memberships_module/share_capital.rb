@@ -28,6 +28,10 @@ module MembershipsModule
     delegate :avatar, :name, to: :subscriber
     before_save :set_account_owner_name, on: [:create, :update]
 
+    def balance
+      paid_up_balance
+    end
+
     def self.inactive(options={})
       updated_at(options)
     end

@@ -13,6 +13,7 @@
     <%= f.input :cost_per_share %>
     <%= f.input :paid_up_account_id, collection: AccountingModule::Account.all.map{|a| [a.name.titleize, a.id] } %>
     <%= f.input :subscription_account_id, collection: AccountingModule::Account.all.map{|a| [a.name.titleize, a.id] } %>
+    <%= f.input :minimum_balance, label: "Minimum Paid-Up Balance", as: :currency %>
     <%= f.input :default_product %>
   </div>
   <div class="modal-footer">
