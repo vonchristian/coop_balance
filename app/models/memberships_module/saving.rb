@@ -142,13 +142,7 @@ module MembershipsModule
 
 
     private
-    def check_balance
-      if balance >= saving_product.minimum_balance
-        self.update_attributes!(has_minimum_balance:  true)
-      elsif balance < saving_product.minimum_balance
-        self.update_attributes!(has_minimum_balance:  false)
-      end
-    end
+    
 
     def set_account_owner_name
       self.account_owner_name = self.depositor_name # depositor is polymorphic

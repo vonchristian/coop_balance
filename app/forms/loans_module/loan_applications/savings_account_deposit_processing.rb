@@ -5,8 +5,10 @@ module LoansModule
       attr_accessor :amount, :savings_account_id, :loan_application_id
       validates :amount, presence: true, numericality: true
       def process!
-        ActiveRecord::Base.transaction do
-          create_voucher_amount
+        if valid?
+          ActiveRecord::Base.transaction do
+            create_voucher_amount
+          end
         end
       end
 

@@ -11,8 +11,7 @@ module ManagementModule
       def create
         @share_capital_product = current_cooperative.share_capital_products.create(share_capital_product_params)
         respond_modal_with @share_capital_product,
-          location: management_module_settings_cooperative_products_url,
-          notice: "Share Capital Product created succesfully."
+          location: management_module_settings_cooperative_products_url
       end
 
       private
@@ -24,7 +23,8 @@ module ManagementModule
                         :minimum_number_of_paid_share,
                         :default_product,
                         :paid_up_account_id,
-                        :subscription_account_id)
+                        :subscription_account_id,
+                        :minimum_balance)
       end
     end
   end
