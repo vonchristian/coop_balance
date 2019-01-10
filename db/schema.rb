@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_04_064235) do
+ActiveRecord::Schema.define(version: 2019_01_10_063021) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -625,17 +625,19 @@ ActiveRecord::Schema.define(version: 2019_01_04_064235) do
     t.decimal "minimum_share_capital_balance"
     t.decimal "maximum_share_capital_balance"
     t.string "slug"
-    t.uuid "loans_receivable_current_account_id"
-    t.uuid "loans_receivable_past_due_account_id"
+    t.uuid "current_account_id"
+    t.uuid "past_due_account_id"
     t.uuid "cooperative_id"
     t.uuid "loan_protection_plan_provider_id"
     t.decimal "grace_period", default: "0.0"
     t.boolean "active", default: true
+    t.uuid "restructured_account_id"
     t.index ["cooperative_id"], name: "index_loan_products_on_cooperative_id"
+    t.index ["current_account_id"], name: "index_loan_products_on_current_account_id"
     t.index ["loan_protection_plan_provider_id"], name: "index_loan_products_on_loan_protection_plan_provider_id"
-    t.index ["loans_receivable_current_account_id"], name: "index_loan_products_on_loans_receivable_current_account_id"
-    t.index ["loans_receivable_past_due_account_id"], name: "index_loan_products_on_loans_receivable_past_due_account_id"
     t.index ["name"], name: "index_loan_products_on_name", unique: true
+    t.index ["past_due_account_id"], name: "index_loan_products_on_past_due_account_id"
+    t.index ["restructured_account_id"], name: "index_loan_products_on_restructured_account_id"
     t.index ["slug"], name: "index_loan_products_on_slug", unique: true
   end
 
@@ -679,6 +681,7 @@ ActiveRecord::Schema.define(version: 2019_01_04_064235) do
     t.boolean "forwarded_loan", default: false
     t.uuid "loan_application_id"
     t.integer "status"
+    t.string "type"
     t.index ["account_number"], name: "index_loans_on_account_number", unique: true
     t.index ["archived_by_id"], name: "index_loans_on_archived_by_id"
     t.index ["barangay_id"], name: "index_loans_on_barangay_id"
@@ -693,6 +696,7 @@ ActiveRecord::Schema.define(version: 2019_01_04_064235) do
     t.index ["preparer_id"], name: "index_loans_on_preparer_id"
     t.index ["status"], name: "index_loans_on_status"
     t.index ["street_id"], name: "index_loans_on_street_id"
+    t.index ["type"], name: "index_loans_on_type"
     t.index ["voucher_id"], name: "index_loans_on_voucher_id"
   end
 
@@ -1586,8 +1590,9 @@ ActiveRecord::Schema.define(version: 2019_01_04_064235) do
   add_foreign_key "loan_penalties", "users", column: "computed_by_id"
   add_foreign_key "loan_product_charges", "accounts"
   add_foreign_key "loan_product_charges", "loan_products"
-  add_foreign_key "loan_products", "accounts", column: "loans_receivable_current_account_id"
-  add_foreign_key "loan_products", "accounts", column: "loans_receivable_past_due_account_id"
+  add_foreign_key "loan_products", "accounts", column: "current_account_id"
+  add_foreign_key "loan_products", "accounts", column: "past_due_account_id"
+  add_foreign_key "loan_products", "accounts", column: "restructured_account_id"
   add_foreign_key "loan_products", "cooperatives"
   add_foreign_key "loan_products", "loan_protection_plan_providers"
   add_foreign_key "loan_protection_plan_providers", "accounts", column: "accounts_payable_id"

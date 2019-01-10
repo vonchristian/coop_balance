@@ -2,6 +2,7 @@ require 'rails_helper'
 module LoansModule
   describe Loan do
     context 'associations' do
+      it { is_expected.to belong_to :loan_application }
       it { is_expected.to belong_to :disbursement_voucher }
       it { is_expected.to belong_to :archived_by }
       it { is_expected.to belong_to :cooperative }
@@ -150,11 +151,7 @@ module LoansModule
       end
     end
 
-    it "#taxable_amount" do
-      loan = create(:loan, loan_amount: 100)
 
-      expect(loan.taxable_amount).to eql(100)
-    end
 
     it '#terms_elapsed' do
     end

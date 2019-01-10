@@ -10,7 +10,7 @@ class LoansController < ApplicationController
       @loans = current_cooperative.loans.
       not_archived.
       order(updated_at: :desc).
-      includes(:borrower, :loan_product => [:loans_receivable_current_account => [:subsidiary_accounts]]).
+      includes(:borrower, :loan_product => [:current_account => [:subsidiary_accounts]]).
       paginate(page: params[:page], per_page: 30)
     end
     respond_to do |format|

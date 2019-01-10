@@ -13,8 +13,8 @@
     <%= f.input :maximum_loanable_amount,  as: :currency, input_html: { style: "width:100%" } %>
     <%= f.input :grace_period %>
 
-    <%= f.input :loans_receivable_current_account_id, label: "Select Loans Receivable (Current) Account", collection: current_cooperative.accounts.assets.active.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanAccountSelect'} %>
-    <%= f.input :loans_receivable_past_due_account_id, label: "Select Loans Receivable (Past Due) Account", collection: current_cooperative.accounts.assets.active.all.map{|a| [a.name.titleize, a.id] } %>
+    <%= f.input :current_account_id, label: "Select Loans Receivable (Current) Account", collection: current_cooperative.accounts.assets.active.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanAccountSelect'} %>
+    <%= f.input :past_due_account_id, label: "Select Loans Receivable (Past Due) Account", collection: current_cooperative.accounts.assets.active.all.map{|a| [a.name.titleize, a.id] } %>
     <h4 class="card-title">Interest Configuration</h4>
     <div class="min-margin"></div>
     <%= f.input :interest_rate, label: "Annual Interest Rate (APR):" %>

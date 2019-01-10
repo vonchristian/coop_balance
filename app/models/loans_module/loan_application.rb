@@ -21,7 +21,7 @@ module LoansModule
     has_many :amount_adjustments, class_name: "Vouchers::AmountAdjustment", dependent: :destroy
 
     delegate :name, :current_membership, :avatar, to: :borrower, prefix: true
-    delegate :name, :interest_revenue_account, :loans_receivable_current_account, to: :loan_product, prefix: true
+    delegate :name, :interest_revenue_account, :current_account, to: :loan_product, prefix: true
     delegate :monthly_interest_rate, to: :loan_product, prefix: true
     delegate :current_interest_config,  to: :loan_product
     delegate :entry, to: :voucher, allow_nil: true
@@ -84,7 +84,7 @@ module LoansModule
     def voucher_amounts_excluding_loan_amount_and_net_proceed
       accounts = []
       accounts << cooperative.cash_accounts
-      accounts << loan_product_loans_receivable_current_account
+      accounts << loan_product_current_account
       voucher_amounts.excluding_account(account: accounts)
     end
 
@@ -151,7 +151,7 @@ module LoansModule
     def total_charges
       accounts = []
       accounts << cooperative.cash_accounts
-      accounts << loan_product_loans_receivable_current_account
+      accounts << loan_product_current_account
       voucher_amounts.excluding_account(account: accounts).total
     end
 
