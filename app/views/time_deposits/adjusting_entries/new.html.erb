@@ -20,7 +20,7 @@
   <div class="modal-body">
     <%= f.error_notification %>
     <%= f.input :entry_date, as: :string, input_html: { class: "datepicker" } %>
-    <%= f.input :reference_number, input_html: { value: "SYSTEM" }, as: :hidden %>
+    <%= f.input :reference_number, input_html: { value: "#{@time_deposit.entries.last.try(:reference_number).delete('^0-9/')}-INT" }, as: :hidden %>
     <%= f.input :description %>
     <%= f.input :amount, as: :currency %>
     <%= f.input :debit_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] }, input_html: {id: "debit_account_id"} %>

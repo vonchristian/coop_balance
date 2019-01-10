@@ -1,0 +1,101 @@
+<div class="card-body">
+  <div class="row min-margin-bottom">
+    <div class="col-md-4 col-sm-4">
+      <label class="no-margin-bottom">Payee</label>
+    </div>
+    <div class="col-md-8 col-sm-8">
+      <%= voucher.payee_name %>
+    </div>
+  </div>
+  <div class="row min-margin-bottom">
+    <div class="col-md-4 col-sm-4">
+      <label class="no-margin-bottom">Description</label>
+    </div>
+    <div class="col-md-8 col-sm-8">
+      <%= voucher.description %>
+    </div>
+  </div>
+  <div class="row min-margin-bottom">
+    <div class="col-md-4 col-sm-4">
+      <label class="no-margin-bottom">Date</label>
+    </div>
+    <div class="col-md-8 col-sm-8">
+      <%= voucher.date.strftime("%B %e, %Y") %>
+    </div>
+  </div>
+  <div class="row min-margin-bottom">
+    <div class="col-md-4 col-sm-4">
+      <label class="no-margin-bottom">Employee</label>
+    </div>
+    <div class="col-md-8 col-sm-8">
+      <%= voucher.preparer_full_name %>
+    </div>
+  </div>
+  <div class="row min-margin-bottom">
+    <div class="col-md-4 col-sm-4">
+      <label class="no-margin-bottom">Reference No.</label>
+    </div>
+    <div class="col-md-8 col-sm-8">
+      <%= voucher.reference_number %>
+    </div>
+  </div>
+  <div class="row min-margin-bottom">
+    <div class="col-md-4 col-sm-4">
+      <label class="no-margin-bottom">Cooperative Service</label>
+    </div>
+    <div class="col-md-8 col-sm-8">
+      <%= voucher.cooperative_service_title %>
+    </div>
+  </div>
+</div>
+<hr class="no-margin">
+<div class="card-body">
+  <h3 class="card-title">Entry Details </h3>
+  <div class="table table-responsive">
+    <table class="table table-hover no-margin-bottom">
+      <thead>
+        <tr>
+          <th>Debit</th>
+          <th class="text-center">Account</th>
+          <th>
+            <span class="float-right">Credit</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <%= number_to_currency time_deposit.deposited_amount %> 
+          </td>
+          <td>
+            <%= time_deposit.time_deposit_product_account.name %> 
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>
+            <%= number_to_currency time_deposit.interest_balance %> 
+          </td>
+          <td>Interest on Time Deposits</td>
+          <td></td>
+        </tr>
+        <% voucher.voucher_amounts.credit.order(:amount_type).each do |voucher_amount| %>
+          <tr>
+            <td></td>
+            <td><%= voucher_amount.account_name %></td>
+            <td>
+              <span class="float-right"><%= number_to_currency voucher_amount.amount %></span>
+            </td>
+          </tr>
+        <% end %>
+        <% if voucher.voucher_amounts.present? %>
+          <tr>
+            <th><b><%= number_to_currency voucher.voucher_amounts.debit.total %></b></th>
+            <td></td>
+            <th><b class="float-right"><%= number_to_currency voucher.voucher_amounts.credit.total %></b></th>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

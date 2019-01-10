@@ -20,8 +20,8 @@
           <small class="text-muted">MATURITY DATE</small>
         </div>
         <div class="col-md-2 col-sm-2">
-          #<%= Vouchers::VoucherAmount.where(commercial_document: time_deposit).last.voucher.try(:reference_number) if Vouchers::VoucherAmount.where(commercial_document: time_deposit).present? %>
-          <% if time_deposit.withdrawn? %>
+          #<%= time_deposit.entries.last.try(:reference_number) %>
+          <% if time_deposit.withdrawn == true %>
             <br>
             <span class="text-danger"> Withdrawn last <%= time_deposit.withdrawal_date.strftime("%B %e, %Y") %></span>
           <% end %>

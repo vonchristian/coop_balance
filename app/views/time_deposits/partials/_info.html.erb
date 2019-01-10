@@ -74,12 +74,18 @@
         <div class="row justify-content-end">
           <div class="col-md-7 col-sm-6 col-auto">
             <small>AMOUNT DEPOSITED</small>
-            <h3 class="card-title"><%= number_to_currency @time_deposit.balance %></h3>
-            <% if @time_deposit.withdrawn? %>
-              
-            <% else %>
-              <% if policy([:time_deposits, :withdrawal]).new? %>
-                <%= link_to 'Withdraw', new_time_deposit_withdrawal_path(@time_deposit), data: {turbolinks: false}, class: "btn btn-danger" %>
+            <h3 class="card-title"><%= number_to_currency @time_deposit.deposited_amount %></h3>
+            <br>
+            <% if @time_deposit.interest_balance.present? %>
+              <small>INTEREST</small>
+              <h3 class="card-title"><%= number_to_currency @time_deposit.interest_balance %></h3>
+              <br>
+              <% if @time_deposit.withdrawn == true && @time_deposit.balance == 0.0 %>
+                <h4 class="card-title"><span class="badge bg-success"> Withdrawn </span></h4>
+                <br>
+                <%= link_to 'Disbursement Voucher', time_deposit_withdrawal_voucher_path(time_deposit_id: @time_deposit.id, id: Vouchers::VoucherAmount.debit.where(commercial_document: @time_deposit).last.voucher.id), class: "btn btn-default" %>
+              <% else %>
+                <%= link_to 'Withdraw', new_time_deposit_withdrawal_path(@time_deposit), data: {turbolinks: false}, class: "btn btn-danger" if policy([:time_deposits, :withdrawal]).new? %>
               <% end %>
             <% end %>
           </div>
@@ -88,10 +94,10 @@
             <p><i class="fa fa-calendar"></i>
               <%= @time_deposit.maturity_date.strftime("%B %e, %Y")  %>
             </p>
+            <small>DAYS TO MATURE</small>
             <h3 class="card-title">
               <%= @time_deposit.remaining_term %>
             </h3>
-            <small>DAYS TO MATURE</small>
           </div>
         </div>
       </div>
