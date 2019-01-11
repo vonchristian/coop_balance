@@ -66,7 +66,7 @@ module AccountingModule
     end
 
     def show
-      @entry = current_cooperative.entries.find(params[:id])
+      @entry = current_cooperative.entries.includes(amounts: [:account]).find(params[:id])
     end
 
     def destroy

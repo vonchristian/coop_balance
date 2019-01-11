@@ -36,7 +36,7 @@
       </div>
       <div class="col-md-2 col-sm-3">
         <center>
-          <% if !loan_application.disbursed? && loan_application.voucher.entry.blank? %>
+          <% if !loan_application.disbursed? %>
             <%= link_to loans_module_loan_application_path(loan_application), method: :delete do %>
               <span title="Cancel Loan Application" data-toggle="tooltip" class="fa fa-times text-danger"> Cancel</span>
             <% end %>

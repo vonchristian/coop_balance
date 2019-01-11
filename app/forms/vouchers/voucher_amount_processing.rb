@@ -2,6 +2,8 @@ module Vouchers
   class VoucherAmountProcessing
     include ActiveModel::Model
     attr_accessor :amount, :account_id, :description, :amount_type, :employee_id, :cash_account_id, :amount_type
+    validates :amount, :account_id, presence: true
+    validates :amount, numericality: true
     def save
       ActiveRecord::Base.transaction do
         create_voucher_amount
@@ -64,7 +66,7 @@ module Vouchers
         'credit'
       end
     end
-    
+
     def find_account
       find_employee.cooperative.accounts.find(account_id)
     end

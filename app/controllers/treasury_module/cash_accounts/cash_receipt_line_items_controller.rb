@@ -5,11 +5,15 @@ module TreasuryModule
         @cash_account = current_cooperative.accounts.find(params[:cash_account_id])
         @cash_receipt_line_item = Vouchers::VoucherAmountProcessing.new
         @cash_receipt = Vouchers::VoucherProcessing.new
+        @voucher_amounts = current_user.voucher_amounts.includes(:account)
         authorize [:treasury_module, :cash_receipt]
       end
       def create
         @cash_account = current_cooperative.accounts.find(params[:cash_account_id])
         @cash_receipt_line_item = Vouchers::VoucherAmountProcessing.new(cash_receipt_params)
+        @cash_receipt = Vouchers::VoucherProcessing.new
+        @voucher_amounts = current_user.voucher_amounts.includes(:account)
+        
         authorize [:treasury_module, :cash_receipt]
         if @cash_receipt_line_item.valid?
           @cash_receipt_line_item.save

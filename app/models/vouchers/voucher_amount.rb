@@ -21,6 +21,10 @@ module Vouchers
     def self.total
       sum(&:adjusted_amount)
     end
+    
+    def self.valid?
+      debit.sum(&:amount) == credit.sum(&:amount)
+    end
 
     def self.for_account(args={})
       where(account: args[:account])

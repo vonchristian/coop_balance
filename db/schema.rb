@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_10_104356) do
+ActiveRecord::Schema.define(version: 2019_01_11_001641) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -122,6 +122,15 @@ ActiveRecord::Schema.define(version: 2019_01_10_104356) do
     t.index ["payment_status"], name: "index_amortization_schedules_on_payment_status"
     t.index ["schedule_type"], name: "index_amortization_schedules_on_schedule_type"
     t.index ["scheduleable_type", "scheduleable_id"], name: "index_schedulable_on_amortization_schedules"
+  end
+
+  create_table "amortization_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.integer "amortization_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["amortization_type"], name: "index_amortization_types_on_amortization_type"
   end
 
   create_table "amount_adjustments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -646,6 +655,8 @@ ActiveRecord::Schema.define(version: 2019_01_10_104356) do
     t.decimal "grace_period", default: "0.0"
     t.boolean "active", default: true
     t.uuid "restructured_account_id"
+    t.uuid "amortization_type_id"
+    t.index ["amortization_type_id"], name: "index_loan_products_on_amortization_type_id"
     t.index ["cooperative_id"], name: "index_loan_products_on_cooperative_id"
     t.index ["current_account_id"], name: "index_loan_products_on_current_account_id"
     t.index ["loan_protection_plan_provider_id"], name: "index_loan_products_on_loan_protection_plan_provider_id"
@@ -1035,6 +1046,12 @@ ActiveRecord::Schema.define(version: 2019_01_10_104356) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_provinces_on_name", unique: true
+  end
+
+  create_table "quotes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "registries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1608,6 +1625,7 @@ ActiveRecord::Schema.define(version: 2019_01_10_104356) do
   add_foreign_key "loan_products", "accounts", column: "current_account_id"
   add_foreign_key "loan_products", "accounts", column: "past_due_account_id"
   add_foreign_key "loan_products", "accounts", column: "restructured_account_id"
+  add_foreign_key "loan_products", "amortization_types"
   add_foreign_key "loan_products", "cooperatives"
   add_foreign_key "loan_products", "loan_protection_plan_providers"
   add_foreign_key "loan_protection_plan_providers", "accounts", column: "accounts_payable_id"

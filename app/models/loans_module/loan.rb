@@ -332,12 +332,12 @@ module LoansModule
     end
 
 
-    def debits_balance
-      loan_product_current_account.debits_balance(commercial_document: self)
+    def debits_balance(args)
+      loan_product_current_account.debits_balance(args.merge(commercial_document: self))
     end
 
-    def credits_balance
-      loan_product_current_account.credits_balance(commercial_document: self)
+    def credits_balance(args)
+      loan_product_current_account.credits_balance(args.merge(commercial_document: self))
     end
 
     def status_color
