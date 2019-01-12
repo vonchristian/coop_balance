@@ -212,7 +212,7 @@
           <%= f.input :loan_application_id, input_html: { value: @loan_application.id }, as: :hidden %>
           <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
           <%= f.input :voucher_account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
-        
+
           <hr>
           <%= f.submit "Create Voucher", class: "btn btn-primary btn-lg float-right", data: { disable_with: "Processing..." } %>
           <%= link_to 'Cancel Application', loans_module_loan_application_path(@loan_application), method: :delete, class: "btn float-left text-danger" %>
@@ -358,7 +358,7 @@
                   <% end %>
                 </td>
               <td><%= number_to_currency amortization_schedule.total_amortization %></td>
-                <td><%= number_to_currency @loan_application.balance_for(amortization_schedule) %></td>
+                <td><%= number_to_currency @loan_application.principal_balance_for(amortization_schedule) %></td>
               </tr>
             <% end %>
           </tbody>

@@ -1,9 +1,8 @@
-<div class="modal-header">
-  <h4 class="modal-title card-title" id="mainModalLabel">
-    Loan Product Details
-  </h4>
-  <button type="button" class="close float-right" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-</div>
+<div class="card card-outline card-danger">
+  <div class="card-header">
+    <h3 class="card-title"> Loan Product Details </h3>
+  </div>
+  <div class="card-body">
 <%= simple_form_for @loan_product, html: { autocomplete: "off", data: { modal: true } }, remote: request.xhr?, url: :management_module_settings_loan_products do |f| %>
   <div class="modal-body">
     <%= f.error_notification %>
@@ -20,10 +19,12 @@
     <%= f.input :interest_rate, label: "Annual Interest Rate (APR):" %>
     <%= f.input :unearned_interest_income_account_id,  collection: current_cooperative.accounts.assets.active.all.map{|a| [a.name, a.id] } %>
     <%= f.input :interest_revenue_account_id,  collection: current_cooperative.accounts.revenues.active.all.map{|a| [a.name, a.id] } %>
+    <%= f.input :interest_calculation_type, collection: LoansModule::LoanProducts::InterestConfig.calculation_types.keys.to_a.map{|a| [a.titleize, a] } %>
     <h4>Penalty Configuration</h4>
     <%= f.input :penalty_rate %>
     <%= f.input :penalty_revenue_account_id,  collection: current_cooperative.accounts.revenues.active.all.map{|a| [a.name, a.id] } %>
     <%= f.input :loan_protection_plan_provider_id,  collection: current_cooperative.loan_protection_plan_providers.all.map{|a| [a.business_name, a.id] } %>
+    <%= f.input :amortization_type_id,  collection: LoansModule::AmortizationType.all.map{|a| [a.calculation_type, a.id] } %>
 
   </div>
   <div class="modal-footer">

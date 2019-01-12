@@ -4,7 +4,7 @@ module LoansModule
       belongs_to :loan_product
 
       enum calculation_type: [:percent_based, :amount_based, :number_of_payments]
-
+      enum prededuction_scope: [:on_first_year]
       validates :calculation_type, presence: true
       validates :rate, :amount, :number_of_payments, numericality: true
 

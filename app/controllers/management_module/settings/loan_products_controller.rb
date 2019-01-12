@@ -1,22 +1,23 @@
 module ManagementModule
   module Settings
     class LoanProductsController < ApplicationController
-      respond_to :html, :json
 
       def index
         @loan_products = LoansModule::LoanProduct.all
       end
 
       def new
-        @loan_product = LoansModule::LoanProductRegistration.new(cooperative: current_cooperative)
-        respond_modal_with @loan_product
+        @loan_product = LoansModule::LoanProductRegistration.new
       end
 
       def create
         @loan_product = LoansModule::LoanProductRegistration.new(loan_product_params)
-        @loan_product.register!
-        respond_modal_with @loan_product,
-          location: management_module_settings_cooperative_products_url
+        if @loan_product.valid?
+          @loan_product.register!
+          redirect_to management_module_settings_cooperative_products_url, notice: "Loan product created successfully."
+        else
+          render :new
+        end
       end
 
       def edit
@@ -48,7 +49,9 @@ module ManagementModule
         :penalty_revenue_account_id,
         :loan_protection_plan_provider_id,
         :cooperative_id,
-        :grace_period)
+        :grace_period,
+        :amortization_type_id,
+        :interest_calculation_type)
       end
     end
   end

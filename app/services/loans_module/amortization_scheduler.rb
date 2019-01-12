@@ -10,9 +10,16 @@ module LoansModule
     def create_schedule!
       create_first_schedule
       create_succeeding_schedule
-      update_interests
     end
 
+    def update_interest_amounts!
+      scheduleable.amortization_schedules.each do |schedule|
+        schedule.interest = amortizeable_interest_for(schedule)
+        schedule.save!
+      end
+    end
+
+    private
     def create_first_schedule
       scheduleable.amortization_schedules.create(
         date:      scheduleable.first_amortization_date,
@@ -30,13 +37,6 @@ module LoansModule
             principal: scheduleable.amortizeable_principal
           )
         end
-      end
-    end
-
-    def update_interests
-      scheduleable.amortization_schedules.each do |schedule|
-        schedule.interest = amortizeable_interest_for(schedule)
-        schedule.save!
       end
     end
 

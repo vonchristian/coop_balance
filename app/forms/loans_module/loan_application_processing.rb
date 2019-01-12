@@ -30,9 +30,7 @@ module LoansModule
     end
 
     private
-    def find_borrower
-      Borrower.find(borrower_id)
-    end
+
     def create_loan_application
       loan_application = LoansModule::LoanApplication.create!(
         cooperative: find_preparer.cooperative,
@@ -47,31 +45,16 @@ module LoansModule
         preparer_id: preparer_id,
         account_number: account_number,
         term: term)
+        LoansModule::AmortizationScheduler.new(scheduleable: loan_application).create_schedule!
+        LoansModule::LoanApplicationChargeSetter.new(loan_application: loan_application).create_charges!
+        LoansModule::AmortizationScheduler.new(scheduleable: loan_application).update_interest_amounts!
 
-        create_charges(loan_application)
-        create_amortization_schedule(loan_application)
     end
     def find_borrower
       Borrower.find(borrower_id)
     end
-    def create_charges(loan_application)
-      find_loan_product.create_charges_for(loan_application)
-    end
-    # def create_documentary_stamp_tax(loan)
-    #   tax = Charge.amount_type.create!(name: 'Documentary Stamp Tax', amount: DocumentaryStampTax.set(loan), account: AccountingModule::Account.find_by(name: "Documentary Stamp Taxes"))
-    #   loan.loan_charges.create!(charge: tax, commercial_document: loan)
-    # end
-    def create_amortization_schedule(loan_application)
-      if loan_application.amortization_schedules.present?
-        loan_application.amortization_schedules.destroy_all
-      end
-      LoansModule::AmortizationSchedule.create_amort_schedule_for(loan_application)
-    end
     def find_preparer
       User.find(preparer_id)
-    end
-    def find_loan_product
-      LoansModule::LoanProduct.find(loan_product_id)
     end
   end
 end

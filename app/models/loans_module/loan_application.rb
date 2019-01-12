@@ -128,7 +128,7 @@ module LoansModule
 
 
     def prededucted_interest
-      total_interest * loan_product.current_interest_prededuction_rate
+      LoansModule::PredeductedInterestCalculator.new(loan_application: self).prededucted_interest
     end
 
     def total_amortizeable_interest
@@ -164,7 +164,7 @@ module LoansModule
       ("LoansModule::AmortizationDateSetters::" + mode_of_payment.titleize.gsub(" ", "")).constantize
     end
 
-  
+
     def first_amortization_date
       amortization_date_setter.new(date: application_date).start_date
     end

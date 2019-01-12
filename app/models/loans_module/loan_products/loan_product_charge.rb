@@ -6,6 +6,10 @@ module LoansModule
       belongs_to :account, class_name: "AccountingModule::Account"
       validates :name, :account_id, :amount, :rate, presence: true
       validates :rate, :amount, numericality: true
+
+      def charge_amount(loan_amount)
+        rate * amount
+      end
     end
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_12_035454) do
+ActiveRecord::Schema.define(version: 2019_01_12_142922) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -490,8 +490,10 @@ ActiveRecord::Schema.define(version: 2019_01_12_035454) do
     t.integer "number_of_payments"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "prededuction_scope", default: 0
     t.index ["calculation_type"], name: "index_interest_predeductions_on_calculation_type"
     t.index ["loan_product_id"], name: "index_interest_predeductions_on_loan_product_id"
+    t.index ["prededuction_scope"], name: "index_interest_predeductions_on_prededuction_scope"
   end
 
   create_table "invoices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
