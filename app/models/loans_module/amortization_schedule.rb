@@ -28,6 +28,9 @@ module LoansModule
     def self.oldest
       order(date: :asc).first
     end
+    def previous_schedule
+      
+    end
 
     def self.by_oldest_date
       order(date: :asc)

@@ -20,6 +20,14 @@
     <%= f.input :unearned_interest_income_account_id,  collection: current_cooperative.accounts.assets.active.all.map{|a| [a.name, a.id] } %>
     <%= f.input :interest_revenue_account_id,  collection: current_cooperative.accounts.revenues.active.all.map{|a| [a.name, a.id] } %>
     <%= f.input :interest_calculation_type, collection: LoansModule::LoanProducts::InterestConfig.calculation_types.keys.to_a.map{|a| [a.titleize, a] } %>
+    <h3 class="card-title">Interest Prededuction </h3>
+    <%= f.input :prededuction_calculation_type, collection: LoansModule::LoanProducts::InterestPrededuction.calculation_types.keys.to_a.map{ |a| [a.titleize, a] } %>
+    <%= f.input :prededuction_scope, collection: LoansModule::LoanProducts::InterestPrededuction.prededuction_scopes.keys.to_a.map{ |a| [a.titleize, a] } %>
+
+    <%= f.input :prededucted_rate %>
+    <%= f.input :prededucted_amount %>
+    <%= f.input :prededucted_number_of_payments %>
+    <hr>
     <h4>Penalty Configuration</h4>
     <%= f.input :penalty_rate %>
     <%= f.input :penalty_revenue_account_id,  collection: current_cooperative.accounts.revenues.active.all.map{|a| [a.name, a.id] } %>

@@ -51,7 +51,12 @@ module ManagementModule
         :cooperative_id,
         :grace_period,
         :amortization_type_id,
-        :interest_calculation_type)
+        :interest_calculation_type,
+        :prededuction_calculation_type,
+        :prededuction_scope,
+        :prededucted_rate,
+        :prededucted_amount,
+        :prededucted_number_of_payments)
       end
     end
   end
