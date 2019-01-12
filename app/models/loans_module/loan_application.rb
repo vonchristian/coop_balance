@@ -120,6 +120,12 @@ module LoansModule
       principal_balance_for(schedule)
     end
 
+    def fourth_year_principal_balance
+      return 0 if !term_is_within_three_years?
+      schedule = amortization_schedules.by_oldest_date[23]
+      principal_balance_for(schedule)
+    end
+
 
     def prededucted_interest
       total_interest * loan_product.current_interest_prededuction_rate

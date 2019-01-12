@@ -50,7 +50,7 @@ module LoansModule
     end
 
     def interest_amortization_calculator
-      ("LoansModule::InterestAmortizationCalculators::" + current_interest_prededuction_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
+      ("LoansModule::InterestCalculators::" + current_interest_prededuction_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
     end
 
     def self.accounts
