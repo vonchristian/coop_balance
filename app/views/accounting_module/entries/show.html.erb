@@ -32,70 +32,70 @@
       </div>
       <div class="card-body">
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-4 col-sm-4">
             <label class="no-margin-bottom">Member/Payee</label>
           </div>
-          <div class="col-md-8">
+          <div class="col-md-8 col-sm-8">
             <%= image_tag(@entry.commercial_document.avatar, class: "img-circle", height: 35, width: 35) if @entry.commercial_document.avatar.attached? %> <%= @entry.commercial_document.try(:name) %>
           </div>
         </div>
         <div class="min-margin">
         </div>
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-4 col-sm-4">
             <label class="no-margin-bottom">Date</label>
           </div>
-          <div class="col-md-8">
+          <div class="col-md-8 col-sm-8">
             <%=@entry.entry_date.strftime("%B %e, %Y") %>
           </div>
         </div>
         <div class="min-margin">
         </div>
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-4 col-sm-4">
             <label class="no-margin-bottom">Description</label>
           </div>
-          <div class="col-md-8">
+          <div class="col-md-8 col-sm-8">
             <%=@entry.description %>
           </div>
         </div>
         <div class="min-margin">
         </div>
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-4 col-sm-4">
             <label class="no-margin-bottom">Reference Number</label>
           </div>
-          <div class="col-md-8">
+          <div class="col-md-8 col-sm-8">
            #<%= @entry.reference_number %>
           </div>
         </div>
         <div class="min-margin">
         </div>
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-4 col-sm-4">
             <label class="no-margin-bottom">Employee</label>
           </div>
-          <div class="col-md-8">
+          <div class="col-md-8 col-sm-8">
             <%= @entry.recorder.try(:first_and_last_name) %>
           </div>
         </div>
         <div class="min-margin">
         </div>
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-4 col-sm-4">
             <label class="no-margin-bottom">Office</label>
           </div>
-          <div class="col-md-8">
+          <div class="col-md-8 col-sm-8">
             <%= @entry.office_name %>
           </div>
         </div>
         <div class="min-margin">
         </div>
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-4 col-sm-4">
             <label class="no-margin-bottom">Cooperative Service</label>
           </div>
-          <div class="col-md-8">
+          <div class="col-md-8 col-sm-8">
             <%= @entry.cooperative_service_title %>
           </div>
         </div>
@@ -164,10 +164,10 @@
           <h4 class="card-title">Cancellation Details </h4>
             <br>
               <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 col-sm-6">
                   <b>Status</b>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 col-sm-6">
                   <span class="badge bg-danger">Cancelled</span>
                 </div>
               </div>

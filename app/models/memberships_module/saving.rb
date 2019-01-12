@@ -134,16 +134,11 @@ module MembershipsModule
       balances.sum / 12.0
     end
 
-
     def computed_interest(args={})
       averaged_balance(to_date: args[:to_date]) * saving_product_applicable_rate
     end
 
-
-
     private
-    
-
     def set_account_owner_name
       self.account_owner_name = self.depositor_name # depositor is polymorphic
     end

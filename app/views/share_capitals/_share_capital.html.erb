@@ -1,27 +1,29 @@
 <%=link_to share_capital_path(share_capital) do %>
-
-    <div class="row">
-      <div class="col-md-1">
-        <%= image_tag(share_capital.subscriber.avatar, style: 'width:40px;height:40px;', class: 'media-object img-circle') %>
-      </div>
-      <div class="col-md-4">
-        <b><%= share_capital.subscriber_name.try(:upcase) %></b>
-        <small class="text-muted"> <%= share_capital.share_capital_product_name.try(:upcase) %></small>
-      </div>
-      <div class="col-md-2">
-        <span class="badge bg-danger">
-          <%= share_capital.number_of_days_inactive %> day inactive </span>
-      </div>
-      <div class="col-md-3">
-        <h4 class="card-title"><%=number_to_currency share_capital.paid_up_balance %></h4>
-        <small>PAID UP BALANCE</small>
-      </div>
-      <div class="col-md-2">
-        <% if policy([:share_capitals, :capital_build_up]).new? %>
-          <%= link_to 'New Capital Build Up', new_share_capital_capital_build_up_path(share_capital), class: "btn btn-success" %>
-        <% end %>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-1 col-sm-1">
+          <%= image_tag(share_capital.subscriber.avatar, style: 'width:40px;height:40px;', class: 'media-object img-circle') %>
+        </div>
+        <div class="col-md-4 col-sm-4">
+          <b><%= share_capital.subscriber_name.try(:upcase) %></b><br>
+          <small class="text-muted"> <%= share_capital.share_capital_product_name.try(:upcase) %></small>
+        </div>
+        <div class="col-md-2 col-sm-2">
+          <span class="badge bg-danger">
+            <%= share_capital.number_of_days_inactive %> day/s inactive
+          </span>
+        </div>
+        <div class="col-md-3 col-sm-3">
+          <h4 class="card-title"><%=number_to_currency share_capital.paid_up_balance %></h4>
+          <small>PAID UP BALANCE</small>
+        </div>
+        <div class="col-md-2 col-sm-2">
+          <% if policy([:share_capitals, :capital_build_up]).new? %>
+            <%= link_to 'New Capital Build Up', new_share_capital_capital_build_up_path(share_capital), class: "btn btn-success" %>
+          <% end %>
+        </div>
       </div>
     </div>
-    <hr>
-
+  </div>
 <% end %>
