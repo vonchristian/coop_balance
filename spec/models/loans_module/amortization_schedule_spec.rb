@@ -26,6 +26,14 @@ module LoansModule
       it { is_expected.to delegate_method(:current_address_complete_address).to(:borrower).with_prefix }
     end
 
+    it '.latest' do
+      old = create(:amortization_schedule, date: Date.current.last_month)
+      latest = create(:amortization_schedule, date: Date.current)
+
+      expect(described_class.latest).to eql latest
+      expect(described_class.latest).to_not eql old
+    end
+
 
     describe '.create_schedule_for(loan)' do
       it 'monthly' do

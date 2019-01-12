@@ -1,2 +1,0 @@
-class AmortizationType < ApplicationRecord
-end

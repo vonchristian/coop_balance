@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_11_001641) do
+ActiveRecord::Schema.define(version: 2019_01_12_075422) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -127,10 +127,10 @@ ActiveRecord::Schema.define(version: 2019_01_11_001641) do
   create_table "amortization_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "description"
-    t.integer "amortization_type"
+    t.integer "calculation_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["amortization_type"], name: "index_amortization_types_on_amortization_type"
+    t.index ["calculation_type"], name: "index_amortization_types_on_calculation_type"
   end
 
   create_table "amount_adjustments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1009,6 +1009,10 @@ ActiveRecord::Schema.define(version: 2019_01_11_001641) do
     t.uuid "cooperative_id"
     t.uuid "store_front_id"
     t.uuid "stock_registry_id"
+    t.integer "principal_cents", default: 0, null: false
+    t.string "principal_currency", default: "PHP", null: false
+    t.integer "interest_cents", default: 0, null: false
+    t.string "interest_currency", default: "PHP", null: false
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["cooperative_id"], name: "index_products_on_cooperative_id"
     t.index ["name"], name: "index_products_on_name", unique: true

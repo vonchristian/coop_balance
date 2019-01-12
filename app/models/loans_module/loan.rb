@@ -288,7 +288,7 @@ module LoansModule
     end
 
     def balance_for(schedule)
-      loan_amount - LoansModule::AmortizationSchedule.principal_for(schedule, self)
+      loan_amount - amortization_schedules.principal_for(schedule: schedule)
     end
 
     def payments_total

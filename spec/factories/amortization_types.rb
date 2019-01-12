@@ -1,7 +1,7 @@
 FactoryBot.define do
-  factory :amortization_type do
+  factory :amortization_type, class: LoansModule::AmortizationType do
     name { "MyString" }
     description { "MyString" }
-    amortization_type { 1 }
+    calculation_type { 1 }
   end
 end

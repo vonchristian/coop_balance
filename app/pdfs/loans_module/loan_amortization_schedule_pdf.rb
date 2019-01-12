@@ -132,7 +132,7 @@ module LoansModule
     voucher.voucher_amounts.for_account(account: cooperative.cash_accounts).map{ |a| [a.description, price(a.adjusted_amount)] }
   end
   def loan_charges_data
-    @loan_charges_data ||= voucher.voucher_amounts.excluding_account(account: loan.loan_product_loans_receivable_current_account).excluding_account(account: cooperative.cash_accounts).map{|a| [a.description, price(a.adjusted_amount)]}
+    @loan_charges_data ||= voucher.voucher_amounts.excluding_account(account: loan.loan_product_current_account).excluding_account(account: cooperative.cash_accounts).map{|a| [a.description, price(a.adjusted_amount)]}
   end
 
     def amortization_schedule
@@ -169,7 +169,7 @@ module LoansModule
           price(a.principal),
           (formatted_interest(a)),
           price(a.total_amortization),
-          price(@loan.balance_for(a)),
+          price(@loan.principal_balance_for(a)),
           ""
         ] }
     end

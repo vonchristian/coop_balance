@@ -7,6 +7,10 @@ module LoansModule
 
       validates :calculation_type, presence: true
       validates :rate, :amount, :number_of_payments, numericality: true
+
+      def self.current
+        order(created_at: :desc).first
+      end
     end
   end
 end

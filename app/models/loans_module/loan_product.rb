@@ -3,7 +3,8 @@ module LoansModule
     extend Totalable
     extend PastDuePercentage
     #enum amortization_type: [:straight_line, :declining_balance]
-    belongs_to :loan_protection_plan_provider,    class_name: "LoansModule::LoanProtectionPlanProvider"
+    belongs_to :amortization_type,             class_name: "LoansModule::AmortizationType"
+    belongs_to :loan_protection_plan_provider, class_name: "LoansModule::LoanProtectionPlanProvider"
     belongs_to :cooperative
     belongs_to :current_account,      class_name: "AccountingModule::Account"
     belongs_to :past_due_account,     class_name: "AccountingModule::Account"
@@ -16,7 +17,7 @@ module LoansModule
     has_many :member_borrowers,                    through: :loans, source: :borrower, source_type: 'Member'
     has_many :employee_borrowers,                  through: :loans, source: :borrower, source_type: 'User'
     has_many :organization_borrowers,              through: :loans, source: :borrower, source_type: 'Organization'
-    has_many :interest_predeductions
+    has_many :interest_predeductions,              class_name: "LoansModule::LoanProducts::InterestPrededuction"
     delegate :rate,
              :annual_rate,
              :calculation_type,
@@ -41,6 +42,16 @@ module LoansModule
 
     validates :name, uniqueness: true
     validates :maximum_loanable_amount, numericality: true
+
+    delegate :calculation_type, :rate, :number_of_payments, to: :current_interest_prededuction, prefix: true
+
+    def current_interest_prededuction
+      interest_predeductions.current
+    end
+
+    def interest_amortization_calculator
+      ("LoansModule::InterestAmortizationCalculators::" + current_interest_prededuction_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
+    end
 
     def self.accounts
       accounts = []

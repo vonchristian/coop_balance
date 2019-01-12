@@ -10,10 +10,33 @@ module LoansModule
     delegate :borrower, :loan_product_name, to: :loan
     delegate :avatar, :name, :current_contact_number, :current_address_complete_address, to: :borrower, prefix: true
     ###########################
+
+    validates :date, :principal, presence: true
+    def self.total_principal
+      sum(:total_principal)
+    end
+
+    def self.latest
+      order(date: :asc).last
+    end
+    def self.ordered_by_date
+      order(date: :asc)
+    end
+
+    def self.by_oldest_date
+      order(date: :asc)
+    end
+
     def self.for_loans
       where.not(loan_id: nil)
     end
-    
+
+    def self.total_principal_balance(args)
+      to_date   = args[:to_date]
+      from_date = args[:from_date]
+      scheduled_for(from_date: from_date, to_date: to_date).sum(&:principal)
+    end
+
     def self.principal_balance(args={})
       if args[:from_date] && args[:to_date]
         from_date = args[:from_date]
@@ -99,16 +122,17 @@ module LoansModule
     #   end
     # end
 
-    def self.principal_for(schedule, loan)
-      from_date = loan.amortization_schedules.order(date: :asc).first.date
+    def self.principal_for(args={})
+      schedule = args.fetch(:schedule)
+      from_date = by_oldest_date.first.date
       to_date = schedule.date
-      loan.amortization_schedules.select { |a| (from_date.beginning_of_day..to_date.end_of_day).cover?(a.date) }.sum(&:principal)
+      select { |a| (from_date.beginning_of_day..to_date.end_of_day).cover?(a.date) }.sum(&:principal)
     end
 
     def self.scheduled_for(args={})
-			if args[:from_date].present? && args[:to_date].present?
+			if args[:from_date] && args[:to_date]
 				date_range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])
-        where(date: date_range.start_date..date_range.end_date)
+        where('date' => date_range.range)
       end
     end
 

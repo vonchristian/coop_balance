@@ -29,40 +29,23 @@ module LoansModule
         AccountingModule::Account.where(id: accounts)
       end
 
-      def total_interest(loan_application) #refactor
-        total = BigDecimal("0")
-        total += loan_application.first_year_interest
-        term = loan_application.term
-        while term > 12 do
-          term -= 12
-          total += interest_computation(loan_application.principal_balance(number_of_months: number), number)
-        end
-        total
-      end
+
 
       def monthly_rate
-        if monthly_rate?
-          rate
-        elsif annual_rate?
-          rate / 12.0
-        end
+        rate / 12.0
       end
 
-      def interest_computation(amount, term)
-        if monthly_rate?
-          ((amount * monthly_rate) * term).to_f
-        else
-          ((amount * rate)).to_f
-        end
+      def compute_interest(amount)
+        amount * rate
       end
 
-      def prededucted_interest(amount, term)
-        if prededucted?
-          compute_prededucted_interest(amount, term)
-        else
-          0
-        end
-      end
+      # def prededucted_interest(amount, term)
+      #   if prededucted?
+      #     compute_prededucted_interest(amount, term)
+      #   else
+      #     0
+      #   end
+      # end
 
       def applicable_rate
       end
