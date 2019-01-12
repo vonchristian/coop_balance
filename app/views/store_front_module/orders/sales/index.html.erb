@@ -1,73 +1,71 @@
-<div class="row">
-  <div class="col-md-12">
-    <div class="box box-default">
-      <div class="box-header">
-        <div class="box-header">
-          <div class="row">
-            <div class="col-md-3">
-              <h4 class="title">Sales</h4>
-            </div>
-            <div class="col-md-7">
-              <%=form_tag store_front_module_sales_path, method: :get, id: "sidebar-form" do %>
-                <div class="input-group">
-                  <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search...", type: "search" %>
-                  <span class="input-group-btn">
-                    <%= button_tag(type: 'submit', class: "btn") do %>
-                      <i class="icon-magnifier"></i>
-                    <% end %>
-                  </span>
+<div class="card">
+  <div class="card-body">
+    <% month_dates = [] %>
+    <% ((Date.today - 6.months)..(Date.today + 6.months)).each do |date| %>
+    <% month_dates << date.end_of_month %>
+    <% end %>
+    <% monthly_sales_data = [] %>
+    <% month_dates.uniq.each do |month| %>
+      <% monthly_sales_data << { month.strftime("%B %Y") => @sales_orders.ordered_on(from_date: month.beginning_of_month, to_date: month.end_of_month).sum(&:total_cost) } %>
+    <% end %>
+    <%= line_chart [ { data: (Hash[*monthly_sales_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}) }, thousands: ",", legend: false ] %>
+    <br>
+    <div class="row">
+      <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-3">
+                  <h4 class="card-title">Sales</h4>
                 </div>
-              <% end %>
-            </div>
-            <div class="col-md-2">
-              <%=link_to 'New Sale', new_store_front_module_sales_line_item_path, class: "btn btn-primary pull-right" %>
-            </div>
-          </div>
-          <div class="box-body">
-            <div class="table table-responsive">
-              <table class="table table-hover table-striped">
-                <thead>
-                  <tr>
-                    <th>Customer</th>
-
-                    <th>Items</th>
-                    <th>Total Cost</th>
-                    <th>Employee</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% @sales_orders.each do |sales_order| %>
-                     <tr data-link="<%=store_front_module_sale_path(sales_order)%>" class="salesOrderIndex">
-                      <td><b class="text-primary"><%= sales_order.commercial_document_name %></b><br>
-                         <%= sales_order.date.try(:strftime, ("%B %e, %Y")) %><br>
-                        <% if sales_order.credit? %>
-                          <span class="badge bg-red"> Credit </span>
-                          <% else %>
-                          <span class="badge bg-green"><%= sales_order.pay_type %></span>
+                <div class="col-md-7">
+                  <%=form_tag store_front_module_sales_path, method: :get, id: "sidebar-form" do %>
+                    <div class="input-group">
+                      <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search...", type: "search" %>
+                      <span class="input-group-btn">
+                        <%= button_tag(type: 'submit', class: "btn") do %>
+                          <i class="icon-magnifier"></i>
                         <% end %>
-                      </td>
-
-                      <td>
-                        <% sales_order.sales_line_items.each do |sale| %>
-                          <div class="row">
-                            <div class="col-md-2">
-                              <%= sale.quantity %>
-                            </div>
-                            <div class="col-md-10">
-                              <%= sale.name %>
-                            </div>
-                          </div>
-
-                        <% end %>
-                      </td>
-                      <td><%= number_to_currency sales_order.total_cost %></td>
-                      <td><%= sales_order.employee_name %></td>
-
-                    </tr>
+                      </span>
+                    </div>
                   <% end %>
-                </tbody>
-              </table>
-              <center><%= will_paginate @sales_orders %></center>
+                </div>
+                <div class="col-md-2">
+                  <%=link_to 'New Sale', new_store_front_module_sales_line_item_path, class: "btn btn-primary pull-right" %>
+                </div>
+              </div>
+              <div class="card-body">
+                <% @sales_orders.each do |sales_order| %>
+                  <%= link_to store_front_module_sale_path(sales_order) do %>
+                    <div class="card text-muted">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-md-4">
+                            <%= sales_order.customer_name %><br>
+                            <%= sales_order.date.try(:strftime, ("%B %e, %Y")) %>
+                          </div>
+                          <div class="col-md-6">
+                            <% sales_order.sales_line_items.each do |sale| %>
+                              <div class="row">
+                                <div class="col-md-2">
+                                  <%= sale.quantity %>
+                                </div>
+                                <div class="col-md-10">
+                                  <%= sale.name %>
+                                </div>
+                              </div>
+                            <% end %>
+                          </div>
+                          <div class="col-md-2">
+                            <%= number_to_currency sales_order.total_cost %>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  <% end %>
+                <% end %>
+              
+                  <center><%= will_paginate @sales_orders %></center>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -75,9 +73,10 @@
     </div>
   </div>
 </div>
-<script type="text/javascript">
-  $("tr").click(function() {
-  window.location = $(this).data("link")
-});
-  $('.salesOrderIndex').css('cursor', 'pointer');
-</script>
+
+  <script type="text/javascript">
+    $("tr").click(function() {
+    window.location = $(this).data("link")
+  });
+    $('.salesOrderIndex').css('cursor', 'pointer');
+  </script>

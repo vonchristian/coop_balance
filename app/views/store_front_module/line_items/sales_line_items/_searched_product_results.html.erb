@@ -8,42 +8,24 @@
         <div class="col-md-2">
           <%= product.balance %>
         </div>
+        <div class="col-md-5">
+          <%= simple_form_for @sales_line_item, url: :store_front_module_sales_line_items do |f| %>
+            <% if !product.out_of_stock? %>
+              <%= f.input :quantity, as: :string, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, label: false, autofocus: true %>
+            <% end %>
+            <% if !product.out_of_stock? %>
+              <%= f.input :unit_of_measurement_id, input_html: { value: product.base_measurement }, label: false, collection: product.unit_of_measurements.all.map{|a| [a.code, a.id] }, selected: product.unit_of_measurements.base_measurement %>
+            <% end %>
+            <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
+            <%= f.input :product_id, input_html: { value: product.id }, as: :hidden %>
+            <% if !product.out_of_stock? %>
+              <%= f.submit "Add", class: "btn btn-primary btn-sm" %>
+            <% else %>
+              <span class="text-danger"><b>OUT OF STOCK</b></span>
+            <% end %>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>
-  <tr>
-                  <td>
-                    <b><%= product.name.try(:upcase) %></b><br>
-                    <% product.unit_of_measurements.each do |unit_of_measurement| %>
-                      <small class="text-success"><%= number_to_currency unit_of_measurement.price %> / <%= unit_of_measurement.code %></small>
-                    <% end %>
-                  </td>
-                  <td>
-
-                      <b class="text-danger"><%= product.balance %> <%= product.base_measurement_code.try(:upcase) %></b><br>
-                      <small>AVAILABLE</small>
-
-                  </td>
-                    <%= simple_form_for @sales_line_item, url: :store_front_module_sales_line_items do |f| %>
-                    <td width="100px">
-                      <% if !product.out_of_stock? %>
-                        <%= f.input :quantity, as: :string, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, label: false, autofocus: true %>
-
-                      <% end %>
-                    </td>
-                    <td><% if !product.out_of_stock? %>
-                        <%= f.input :unit_of_measurement_id, input_html: { value: product.base_measurement }, label: false, collection: product.unit_of_measurements.all.map{|a| [a.code, a.id] }, selected: product.unit_of_measurements.base_measurement %>
-                      <% end %></td>
-                      <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
-                      <%= f.input :product_id, input_html: { value: product.id }, as: :hidden %>
-                    <td>
-                      <% if !product.out_of_stock? %>
-                        <%= f.submit "Add", class: "btn btn-primary btn-sm" %>
-                      <% else %>
-                        <span class="text-danger"><b>OUT OF STOCK</b></span>
-                      <% end %>
-                    </td>
-                    <% end %>
-
-                </tr>
-              <% end %>
+<% end %>

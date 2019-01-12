@@ -1,8 +1,13 @@
 module LoansModule
   class LoanApplicationsController < ApplicationController
     def index
-      @ordered_loan_applications = current_cooperative.loan_applications.all.includes(:voucher).order("vouchers.reference_number DESC", "vouchers.date DESC")
-      @loan_applications = @ordered_loan_applications.paginate(page: params[:page], per_page: 20)
+      if params[:search].present?
+        @ordered_loan_applications = current_cooperative.loan_applications.text_search(params[:search])
+        @loan_applications = @ordered_loan_applications.paginate(page: params[:page], per_page: 20)
+      else
+        @ordered_loan_applications = current_cooperative.loan_applications.where(approved: false).includes(:voucher).order("vouchers.reference_number DESC", "vouchers.date DESC")
+        @loan_applications = @ordered_loan_applications.paginate(page: params[:page], per_page: 20)
+      end
     end
     def new
       @borrower = Borrower.find(params[:borrower_id])

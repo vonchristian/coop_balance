@@ -4,17 +4,17 @@ module StoreFrontModule
   describe Product do
     context "associations" do
       it { is_expected.to belong_to :store_front }
+      it { is_expected.to belong_to :cooperative }
       it { is_expected.to belong_to :stock_registry }
       it { is_expected.to belong_to :category }
-      it { is_expected.to belong_to :cooperative }
     	it { is_expected.to have_many :unit_of_measurements }
       it { is_expected.to have_many :line_items }
       it { is_expected.to have_many :purchases }
+      it { is_expected.to have_many :purchase_returns }
       it { is_expected.to have_many :sales }
       it { is_expected.to have_many :sales_returns }
-      it { is_expected.to have_many :purchase_returns }
-      it { is_expected.to have_many :internal_uses }
       it { is_expected.to have_many :spoilages }
+      it { is_expected.to have_many :internal_uses }
       it { is_expected.to have_many :stock_transfers }
       it { is_expected.to have_many :received_stock_transfers }
       it { is_expected.to have_many :orders }

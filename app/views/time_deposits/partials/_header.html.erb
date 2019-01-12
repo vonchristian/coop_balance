@@ -2,26 +2,29 @@
   <div class="card-body">
     <%= link_to time_deposit_path(time_deposit) do %>
       <div class="row">
-        <div class="col-md-1">
-          <%= image_tag(time_deposit.depositor.avatar.variant(resize: '45x45'), class: "img-circle") if time_deposit.depositor.avatar.attached? %>
+        <div class="col-md-1 col-sm-1">
+          <%= image_tag(time_deposit.depositor.avatar, width: 45, height: 45, class: "img-circle") if time_deposit.depositor.avatar.attached? %>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 col-sm-3">
           <b><%= time_deposit.depositor_name.try(:upcase) %></b><br>
-          <% if time_deposit.withdrawn? %>
-            <span class="text-danger"> Withdrawn last <%= time_deposit.withdrawal_date.strftime("%B %e, %Y") %></span>
-          <% end %>
+          <small class="text-muted"><%= time_deposit.effectivity_date.strftime("%B %e, %Y") %></small><br>
         </div>
-        <div class="col-md-3">
-            <h4 class="card-title"><%= number_to_currency time_deposit.balance %></h4>
+        <div class="col-md-3 col-sm-3">
+          <h4 class="card-title"><%= number_to_currency time_deposit.balance %></h4>
           <small class="text-muted">AMOUNT DEPOSITED</small>
-
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 col-sm-3">
           <% if time_deposit.current_term.present? %>
             <%= time_deposit.maturity_date.strftime("%B %e, %Y") %>
           <% end %><br>
           <small class="text-muted">MATURITY DATE</small>
-
+        </div>
+        <div class="col-md-2 col-sm-2">
+          #<%= time_deposit.entries.last.try(:reference_number) %>
+          <% if time_deposit.withdrawn == true %>
+            <br>
+            <span class="text-danger"> Withdrawn last <%= time_deposit.withdrawal_date.strftime("%B %e, %Y") %></span>
+          <% end %>
         </div>
       </div>
     <% end %>

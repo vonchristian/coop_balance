@@ -229,6 +229,80 @@ module LoansModule
         expect(regular_loan_application.second_year_interest).to eq 16_000
         expect(regular_loan_application.third_year_interest).to eq 8_000
       end
+
+      it "#schedule_counter" do
+        loan_application_daily = create(:loan_application, mode_of_payment: 'daily')
+        loan_application_weekly = create(:loan_application, mode_of_payment: 'weekly')
+        loan_application_monthly = create(:loan_application, mode_of_payment: 'monthly')
+        loan_application_quarterly = create(:loan_application, mode_of_payment: 'quarterly')
+        loan_application_semi_annually = create(:loan_application, mode_of_payment: 'semi_annually')
+        loan_application_lumpsum = create(:loan_application, mode_of_payment: 'lumpsum')
+
+        expect(loan_application_daily.schedule_counter).to eql LoansModule::ScheduleCounters::DailyCounter
+        expect(loan_application_weekly.schedule_counter).to eql LoansModule::ScheduleCounters::WeeklyCounter
+        expect(loan_application_monthly.schedule_counter).to eql LoansModule::ScheduleCounters::MonthlyCounter
+        expect(loan_application_quarterly.schedule_counter).to eql LoansModule::ScheduleCounters::QuarterlyCounter
+        expect(loan_application_semi_annually.schedule_counter).to eql LoansModule::ScheduleCounters::SemiAnnuallyCounter
+        expect(loan_application_lumpsum.schedule_counter).to eql LoansModule::ScheduleCounters::LumpsumCounter
+      end
+
+      it "#amortizeable_principal" do
+        loan_application_daily = create(:loan_application, term: 12, mode_of_payment: 'daily', loan_amount: 100_000)
+        loan_application_weekly = create(:loan_application, term: 12, mode_of_payment: 'weekly',loan_amount: 100_000)
+        loan_application_monthly = create(:loan_application, term: 12, mode_of_payment: 'monthly',loan_amount: 100_000)
+        loan_application_quarterly = create(:loan_application, term: 12, mode_of_payment: 'quarterly',loan_amount: 100_000)
+        loan_application_semi_annually = create(:loan_application, term: 12, mode_of_payment: 'semi_annually',loan_amount: 100_000)
+        loan_application_lumpsum = create(:loan_application, term: 12, mode_of_payment: 'lumpsum',loan_amount: 100_000)
+
+        expect(loan_application_daily.amortizeable_principal).to eql 277.78
+        expect(loan_application_weekly.amortizeable_principal).to eql 2_083.33
+        expect(loan_application_monthly.amortizeable_principal).to eql 8_333.33
+        expect(loan_application_quarterly.amortizeable_principal).to eql 25_000.00
+        expect(loan_application_semi_annually.amortizeable_principal).to eql 50_000.00
+        expect(loan_application_lumpsum.amortizeable_principal).to eql 100_000.00
+      end
+
+      it "#amortization_date_setter" do
+        loan_application_daily = create(:loan_application, mode_of_payment: 'daily')
+        loan_application_weekly = create(:loan_application, mode_of_payment: 'weekly')
+        loan_application_monthly = create(:loan_application, mode_of_payment: 'monthly')
+        loan_application_quarterly = create(:loan_application, mode_of_payment: 'quarterly')
+        loan_application_semi_annually = create(:loan_application, mode_of_payment: 'semi_annually')
+        loan_application_lumpsum = create(:loan_application, mode_of_payment: 'lumpsum')
+
+        expect(loan_application_daily.amortization_date_setter).to eql LoansModule::AmortizationDateSetters::Daily
+        expect(loan_application_weekly.amortization_date_setter).to eql LoansModule::AmortizationDateSetters::Weekly
+        expect(loan_application_monthly.amortization_date_setter).to eql LoansModule::AmortizationDateSetters::Monthly
+        expect(loan_application_quarterly.amortization_date_setter).to eql LoansModule::AmortizationDateSetters::Quarterly
+        expect(loan_application_semi_annually.amortization_date_setter).to eql LoansModule::AmortizationDateSetters::SemiAnnually
+        expect(loan_application_lumpsum.amortization_date_setter).to eql LoansModule::AmortizationDateSetters::Lumpsum
+      end
+
+      it "#interest_amortization_calculator" do
+        number_of_payments_loan_product = create(:loan_product)
+        percent_base_loan_product       = create(:loan_product)
+        number_of_payments              = create(:interest_prededuction, number_of_payments: 3, loan_product: number_of_payments_loan_product)
+        percent_based                   = create(:interest_prededuction, rate: 0.75, loan_product: percent_base_loan_product)
+        loan_application_1              = create(:loan_application, loan_product: number_of_payments_loan_product)
+        loan_application_2              = create(:loan_application, loan_product: percent_base_loan_product)
+
+        expect()
+      end
+
+      it "#principal_balance(schedule)" do
+        amortization_type     = create(:amortization_type, calculation_type: 'straight_line')
+        loan_product          = create(:loan_product, amortization_type: amortization_type)
+        interest_prededuction = create(:interest_prededuction, loan_product: loan_product, rate: 0.75, calculation_type: 'percent_based')
+        interest_config       = create(:interest_config, rate: 0.12, loan_product: loan_product, calculation_type: 'prededucted')
+        loan_application      = create(:loan_application, loan_product: loan_product, loan_amount: 100_000, term: 24, mode_of_payment: 'monthly', application_date: Date.current)
+
+        LoansModule::AmortizationScheduler.new(scheduleable: loan_application).create_schedule!
+        puts loan_application.schedule_count
+        puts loan_application.loan_amount.amount
+        schedule = loan_application.amortization_schedules.by_oldest_date[11]
+        expect(loan_application.principal_balance_for(schedule)).to eql 50_000.00
+      end
+
     end
   end
 end

@@ -1,6 +1,8 @@
 module LoansModule
   class LoanApplication < ApplicationRecord
     monetize :loan_amount_cents, as: :loan_amount
+    include PgSearch
+    pg_search_scope :text_search, :associated_against => { :voucher => [:reference_number, :description] }
 
     enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
 
@@ -19,12 +21,11 @@ module LoansModule
     has_many :amount_adjustments, class_name: "Vouchers::AmountAdjustment", dependent: :destroy
 
     delegate :name, :current_membership, :avatar, to: :borrower, prefix: true
-    delegate :name, :interest_revenue_account, :loans_receivable_current_account, to: :loan_product, prefix: true
+    delegate :name, :interest_revenue_account, :current_account, to: :loan_product, prefix: true
     delegate :monthly_interest_rate, to: :loan_product, prefix: true
-    delegate :current_interest_config,  to: :loan_product
+    delegate :interest_amortization_calculator, :current_interest_config, :interest_calculator,  to: :loan_product
     delegate :entry, to: :voucher, allow_nil: true
     delegate :rate, :straight_balance?, :annually?, :prededucted_number_of_payments, to: :current_interest_config, prefix: true
-
     validates :cooperative_id, presence: true
 
     def forwarded_loan? #check on amortization_schedule pdf
@@ -36,7 +37,7 @@ module LoansModule
     end
 
     def maturity_date
-      amortization_schedules.order(date: :asc).last.date
+      amortization_schedules.ordered_by_date.last.date
     end
 
     def reference_number
@@ -44,11 +45,7 @@ module LoansModule
     end
 
     def principal_balance_for(schedule) #used to compute interest
-      if schedule == self.amortization_schedules.order(date: :asc).first
-        loan_amount.amount
-      else
-        loan_amount.amount - amortization_schedules.principal_for(schedule.previous_schedule(self), self)
-      end
+      loan_amount.amount - amortization_schedules.principal_for(schedule: schedule)
     end
 
     def term_is_within_one_year?
@@ -71,23 +68,18 @@ module LoansModule
       (48..60).include?(term)
     end
 
-    def principal_balance(args={})
-      amortization_schedules.principal_balance(args)
-    end
-
-    def balance_for(schedule)
-      loan_amount.amount - LoansModule::AmortizationSchedule.principal_for(schedule, self)
-    end
 
     def voucher_amounts_excluding_loan_amount_and_net_proceed
       accounts = []
       accounts << cooperative.cash_accounts
-      accounts << loan_product_loans_receivable_current_account
+      accounts << loan_product_current_account
       voucher_amounts.excluding_account(account: accounts)
     end
 
     def total_interest
-      current_interest_config.total_interest(self)
+      first_year_interest +
+      second_year_interest +
+      third_year_interest
     end
 
 
@@ -101,44 +93,50 @@ module LoansModule
     end
 
     def first_year_interest
-      if term > 12
-        multipliable_term = 12
-      else
-        multipliable_term = term
-      end
-      current_interest_config.interest_computation(principal_balance, multipliable_term)
+      current_interest_config.compute_interest(first_year_principal_balance)
     end
 
     def second_year_interest
-      return 0 if term <= 12
-      number = term - 12
-      balance = principal_balance(number_of_months: number)
-      current_interest_config.interest_computation(balance, number)
+      current_interest_config.compute_interest(second_year_principal_balance)
     end
 
     def third_year_interest
-      return 0 if term <= 24
-      number = term - 24
-      balance = principal_balance(number_of_months: number)
-      current_interest_config.interest_computation(balance, number)
+      current_interest_config.compute_interest(third_year_principal_balance)
     end
 
-    def fourth_year_interest
-      return 0 if term <= 36
-      number = term - 36
-      balance = principal_balance(number_of_months: number)
-      current_interest_config.interest_computation(balance, number)
+    def first_year_principal_balance
+      loan_amount.amount
     end
 
-    def fifth_year_interest
-      return 0 if term <= 48
-      number = term - 4
-      balance = principal_balance(number_of_months: number)
-      current_interest_config.interest_computation(balance, number)
+    def second_year_principal_balance
+      return 0 if !term_is_within_two_years?
+      schedule = amortization_schedules.by_oldest_date[11]
+      principal_balance_for(schedule)
     end
+
+    def third_year_principal_balance
+      return 0 if !term_is_within_three_years?
+      schedule = amortization_schedules.by_oldest_date[23]
+      principal_balance_for(schedule)
+    end
+
+    def fourth_year_principal_balance
+      return 0 if !term_is_within_three_years?
+      schedule = amortization_schedules.by_oldest_date[23]
+      principal_balance_for(schedule)
+    end
+
 
     def prededucted_interest
-      current_interest_config.prededucted_interest(loan_amount, term)
+      LoansModule::PredeductedInterestCalculator.new(loan_application: self).prededucted_interest
+    end
+
+    def total_amortizeable_interest
+      total_interest - prededucted_interest
+    end
+
+    def amortizeable_interest_for(schedule)
+      principal_balance_for(schedule) * loan_product_monthly_interest_rate
     end
 
 
@@ -149,7 +147,7 @@ module LoansModule
     def total_charges
       accounts = []
       accounts << cooperative.cash_accounts
-      accounts << loan_product_loans_receivable_current_account
+      accounts << loan_product_current_account
       voucher_amounts.excluding_account(account: accounts).total
     end
 
@@ -157,12 +155,34 @@ module LoansModule
       voucher && voucher.disbursed?
     end
 
-    # def adjusted_interest_on_loan
-    #   voucher_amounts.where(account: loan_product_interest_revenue_account).first.try(:adjusted_amount)
-    # end
+    def schedule_counter
+      ("LoansModule::ScheduleCounters::" + mode_of_payment.titleize.gsub(" ", "") + "Counter").constantize
+    end
+
+
+    def amortization_date_setter
+      ("LoansModule::AmortizationDateSetters::" + mode_of_payment.titleize.gsub(" ", "")).constantize
+    end
+
+
+    def first_amortization_date
+      amortization_date_setter.new(date: application_date).start_date
+    end
+
+    def succeeding_amortization_date
+      amortization_date_setter.new(date: amortization_schedules.latest.date).start_date
+    end
+
+    def schedule_count
+      schedule_counter.new(loan_application: self).schedule_count
+    end
+
+    def amortizeable_principal
+      Money.new(loan_amount / schedule_count).amount
+    end
 
     def number_of_thousands # for Loan Protection fund computation
-      loan_amount.amount / 1_000
+      loan_amount.amount / 1_000.0
     end
   end
 

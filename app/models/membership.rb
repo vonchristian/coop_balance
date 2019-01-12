@@ -25,8 +25,11 @@ class Membership < ApplicationRecord
   def self.memberships_for(args={})
     from_date = args[:from_date]
     to_date   = args[:to_date]
-    range     = DateRange.new(start_date: from_date, end_date: to_date)
-    where('approval_date' > range.range)
+    date_range     = DateRange.new(start_date: from_date, end_date: to_date)
+    where('approval_date' => date_range.range)
+  end
+
+  def self.approved_memberships(args={})
   end
 
   def name

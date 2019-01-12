@@ -26,5 +26,6 @@
     <% savings_accounts.each do |savings_account| %>
       <%= render 'savings_accounts/partials/header', savings_account: savings_account %>
     <% end %>
+    <center><%= will_paginate @savings_accounts %> </center>
   </div>
 </div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_27_074943) do
+ActiveRecord::Schema.define(version: 2019_01_12_142922) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -108,9 +108,11 @@ ActiveRecord::Schema.define(version: 2018_12_27_074943) do
     t.uuid "commercial_document_id"
     t.integer "payment_status"
     t.uuid "loan_application_id"
-    t.decimal "principal", default: "0.0"
-    t.decimal "interest", default: "0.0"
     t.uuid "cooperative_id"
+    t.string "scheduleable_type"
+    t.uuid "scheduleable_id"
+    t.decimal "interest"
+    t.decimal "principal"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_amortization_schedules"
     t.index ["cooperative_id"], name: "index_amortization_schedules_on_cooperative_id"
     t.index ["credit_account_id"], name: "index_amortization_schedules_on_credit_account_id"
@@ -119,6 +121,16 @@ ActiveRecord::Schema.define(version: 2018_12_27_074943) do
     t.index ["loan_id"], name: "index_amortization_schedules_on_loan_id"
     t.index ["payment_status"], name: "index_amortization_schedules_on_payment_status"
     t.index ["schedule_type"], name: "index_amortization_schedules_on_schedule_type"
+    t.index ["scheduleable_type", "scheduleable_id"], name: "index_schedulable_on_amortization_schedules"
+  end
+
+  create_table "amortization_types", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.integer "calculation_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["calculation_type"], name: "index_amortization_types_on_calculation_type"
   end
 
   create_table "amount_adjustments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -217,11 +229,10 @@ ActiveRecord::Schema.define(version: 2018_12_27_074943) do
 
   create_table "barcodes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "code"
-    t.string "barcodeable_type"
-    t.uuid "barcodeable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["barcodeable_type", "barcodeable_id"], name: "index_barcodes_on_barcodeable_type_and_barcodeable_id"
+    t.uuid "line_item_id"
+    t.index ["line_item_id"], name: "index_barcodes_on_line_item_id"
   end
 
   create_table "beneficiaries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -458,6 +469,7 @@ ActiveRecord::Schema.define(version: 2018_12_27_074943) do
     t.integer "prededucted_number_of_payments"
     t.decimal "prededucted_amount"
     t.integer "rate_type"
+    t.string "type"
     t.index ["amortization_type"], name: "index_interest_configs_on_amortization_type"
     t.index ["calculation_type"], name: "index_interest_configs_on_calculation_type"
     t.index ["cooperative_id"], name: "index_interest_configs_on_cooperative_id"
@@ -466,7 +478,22 @@ ActiveRecord::Schema.define(version: 2018_12_27_074943) do
     t.index ["loan_product_id"], name: "index_interest_configs_on_loan_product_id"
     t.index ["prededuction_type"], name: "index_interest_configs_on_prededuction_type"
     t.index ["rate_type"], name: "index_interest_configs_on_rate_type"
+    t.index ["type"], name: "index_interest_configs_on_type"
     t.index ["unearned_interest_income_account_id"], name: "index_interest_configs_on_unearned_interest_income_account_id"
+  end
+
+  create_table "interest_predeductions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "loan_product_id"
+    t.integer "calculation_type"
+    t.decimal "rate"
+    t.decimal "amount"
+    t.integer "number_of_payments"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "prededuction_scope", default: 0
+    t.index ["calculation_type"], name: "index_interest_predeductions_on_calculation_type"
+    t.index ["loan_product_id"], name: "index_interest_predeductions_on_loan_product_id"
+    t.index ["prededuction_scope"], name: "index_interest_predeductions_on_prededuction_scope"
   end
 
   create_table "invoices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -493,12 +520,13 @@ ActiveRecord::Schema.define(version: 2018_12_27_074943) do
     t.datetime "updated_at", null: false
     t.uuid "unit_of_measurement_id"
     t.string "type"
-    t.string "barcode"
     t.uuid "referenced_line_item_id"
     t.uuid "purchase_line_item_id"
     t.uuid "sales_line_item_id"
     t.datetime "expiry_date"
     t.uuid "cooperative_id"
+    t.boolean "forwarded", default: false, null: false
+    t.uuid "store_front_id"
     t.index ["cart_id"], name: "index_line_items_on_cart_id"
     t.index ["cooperative_id"], name: "index_line_items_on_cooperative_id"
     t.index ["order_id"], name: "index_line_items_on_order_id"
@@ -506,6 +534,7 @@ ActiveRecord::Schema.define(version: 2018_12_27_074943) do
     t.index ["purchase_line_item_id"], name: "index_line_items_on_purchase_line_item_id"
     t.index ["referenced_line_item_id"], name: "index_line_items_on_referenced_line_item_id"
     t.index ["sales_line_item_id"], name: "index_line_items_on_sales_line_item_id"
+    t.index ["store_front_id"], name: "index_line_items_on_store_front_id"
     t.index ["type"], name: "index_line_items_on_type"
     t.index ["unit_of_measurement_id"], name: "index_line_items_on_unit_of_measurement_id"
   end
@@ -529,6 +558,7 @@ ActiveRecord::Schema.define(version: 2018_12_27_074943) do
     t.uuid "voucher_id"
     t.integer "loan_amount_cents", default: 0, null: false
     t.string "loan_amount_currency", default: "PHP", null: false
+    t.boolean "approved", default: false
     t.index ["borrower_type", "borrower_id"], name: "index_loan_applications_on_borrower_type_and_borrower_id"
     t.index ["cooperative_id"], name: "index_loan_applications_on_cooperative_id"
     t.index ["loan_product_id"], name: "index_loan_applications_on_loan_product_id"
@@ -619,21 +649,22 @@ ActiveRecord::Schema.define(version: 2018_12_27_074943) do
     t.datetime "updated_at", null: false
     t.string "name"
     t.decimal "minimum_loanable_amount"
-    t.string "depends_on_share_capital_balance"
-    t.decimal "minimum_share_capital_balance"
-    t.decimal "maximum_share_capital_balance"
     t.string "slug"
-    t.uuid "loans_receivable_current_account_id"
-    t.uuid "loans_receivable_past_due_account_id"
+    t.uuid "current_account_id"
+    t.uuid "past_due_account_id"
     t.uuid "cooperative_id"
     t.uuid "loan_protection_plan_provider_id"
     t.decimal "grace_period", default: "0.0"
     t.boolean "active", default: true
+    t.uuid "restructured_account_id"
+    t.uuid "amortization_type_id"
+    t.index ["amortization_type_id"], name: "index_loan_products_on_amortization_type_id"
     t.index ["cooperative_id"], name: "index_loan_products_on_cooperative_id"
+    t.index ["current_account_id"], name: "index_loan_products_on_current_account_id"
     t.index ["loan_protection_plan_provider_id"], name: "index_loan_products_on_loan_protection_plan_provider_id"
-    t.index ["loans_receivable_current_account_id"], name: "index_loan_products_on_loans_receivable_current_account_id"
-    t.index ["loans_receivable_past_due_account_id"], name: "index_loan_products_on_loans_receivable_past_due_account_id"
     t.index ["name"], name: "index_loan_products_on_name", unique: true
+    t.index ["past_due_account_id"], name: "index_loan_products_on_past_due_account_id"
+    t.index ["restructured_account_id"], name: "index_loan_products_on_restructured_account_id"
     t.index ["slug"], name: "index_loan_products_on_slug", unique: true
   end
 
@@ -677,6 +708,7 @@ ActiveRecord::Schema.define(version: 2018_12_27_074943) do
     t.boolean "forwarded_loan", default: false
     t.uuid "loan_application_id"
     t.integer "status"
+    t.string "type"
     t.index ["account_number"], name: "index_loans_on_account_number", unique: true
     t.index ["archived_by_id"], name: "index_loans_on_archived_by_id"
     t.index ["barangay_id"], name: "index_loans_on_barangay_id"
@@ -691,6 +723,7 @@ ActiveRecord::Schema.define(version: 2018_12_27_074943) do
     t.index ["preparer_id"], name: "index_loans_on_preparer_id"
     t.index ["status"], name: "index_loans_on_status"
     t.index ["street_id"], name: "index_loans_on_street_id"
+    t.index ["type"], name: "index_loans_on_type"
     t.index ["voucher_id"], name: "index_loans_on_voucher_id"
   end
 
@@ -1015,6 +1048,12 @@ ActiveRecord::Schema.define(version: 2018_12_27_074943) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_provinces_on_name", unique: true
+  end
+
+  create_table "quotes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "registries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1501,6 +1540,7 @@ ActiveRecord::Schema.define(version: 2018_12_27_074943) do
     t.string "reference_number"
     t.string "commercial_document_type"
     t.uuid "commercial_document_id"
+    t.boolean "cancelled", default: false
     t.index ["account_number"], name: "index_vouchers_on_account_number", unique: true
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_vouchers"
     t.index ["cooperative_id"], name: "index_vouchers_on_cooperative_id"
@@ -1537,6 +1577,7 @@ ActiveRecord::Schema.define(version: 2018_12_27_074943) do
   add_foreign_key "barangay_members", "barangays"
   add_foreign_key "barangays", "cooperatives"
   add_foreign_key "barangays", "municipalities"
+  add_foreign_key "barcodes", "line_items"
   add_foreign_key "beneficiaries", "cooperatives"
   add_foreign_key "beneficiaries", "members"
   add_foreign_key "carts", "users"
@@ -1558,11 +1599,13 @@ ActiveRecord::Schema.define(version: 2018_12_27_074943) do
   add_foreign_key "interest_configs", "accounts", column: "unearned_interest_income_account_id"
   add_foreign_key "interest_configs", "cooperatives"
   add_foreign_key "interest_configs", "loan_products"
+  add_foreign_key "interest_predeductions", "loan_products"
   add_foreign_key "line_items", "carts"
   add_foreign_key "line_items", "cooperatives"
   add_foreign_key "line_items", "line_items", column: "referenced_line_item_id"
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items", "products"
+  add_foreign_key "line_items", "store_fronts"
   add_foreign_key "line_items", "unit_of_measurements"
   add_foreign_key "loan_applications", "cooperatives"
   add_foreign_key "loan_applications", "loan_products"
@@ -1581,8 +1624,10 @@ ActiveRecord::Schema.define(version: 2018_12_27_074943) do
   add_foreign_key "loan_penalties", "users", column: "computed_by_id"
   add_foreign_key "loan_product_charges", "accounts"
   add_foreign_key "loan_product_charges", "loan_products"
-  add_foreign_key "loan_products", "accounts", column: "loans_receivable_current_account_id"
-  add_foreign_key "loan_products", "accounts", column: "loans_receivable_past_due_account_id"
+  add_foreign_key "loan_products", "accounts", column: "current_account_id"
+  add_foreign_key "loan_products", "accounts", column: "past_due_account_id"
+  add_foreign_key "loan_products", "accounts", column: "restructured_account_id"
+  add_foreign_key "loan_products", "amortization_types"
   add_foreign_key "loan_products", "cooperatives"
   add_foreign_key "loan_products", "loan_protection_plan_providers"
   add_foreign_key "loan_protection_plan_providers", "accounts", column: "accounts_payable_id"

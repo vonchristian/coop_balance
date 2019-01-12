@@ -37,14 +37,16 @@ module LoansModule
             entry.debit_amounts.build(
               account_id: amount.account_id,
               amount: amount.amount,
-              commercial_document: amount.commercial_document)
+              commercial_document: set_commercial_document(amount)
+            )
           end
 
           voucher.voucher_amounts.credit.each do |amount|
             entry.credit_amounts.build(
               account: amount.account,
               amount: amount.amount,
-              commercial_document: amount.commercial_document)
+              commercial_document: set_commercial_document(amount)
+            )
           end
 
           voucher.voucher_amounts.debit.for_account(account: loan.loan_product_loans_receivable_current_account).each do |amount|
@@ -77,6 +79,13 @@ module LoansModule
 
       def find_recent_entry
         cooperative.entries.recent
+      end
+      def set_commercial_document(amount)
+        if amount.commercial_document == loan_application
+          loan
+        else
+          amount.commercial_document
+        end
       end
     end
   end

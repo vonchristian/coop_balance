@@ -8,39 +8,39 @@
         <h3 class="card-title"><%= number_to_currency cash_account.balance %></h3>
         <br>
         <% if policy([:treasury_module, :cash_receipt]).new? %>
-          <%= link_to new_treasury_module_cash_account_cash_receipt_line_item_path(cash_account) do %>
+          <%= link_to new_treasury_module_cash_account_cash_receipt_line_item_path(cash_account), data: { turbolinks: false } do %>
           <span class="btn btn-success"><i class="fa fa-arrow-down"></i> Receive </span>
           <% end %>
         <% end %>
         <% if policy([:treasury_module, :cash_disbursement]).new? %>
-          <%= link_to new_treasury_module_cash_account_cash_disbursement_line_item_path(cash_account) do %>
+          <%= link_to new_treasury_module_cash_account_cash_disbursement_line_item_path(cash_account), data: { turbolinks: false } do %>
           <span class="btn btn-danger"><i class="fa fa-arrow-up"></i> Disburse </span>
           <% end %>
         <% end %>
       </div>
       <div class="col-md-9">
         <% month_dates = [] %>
-    <% (Date.today.beginning_of_year..Date.today.end_of_year).each do |date| %>
+    <% ((Date.today - 6.months)..(Date.today + 6.months)).each do |date| %>
       <% month_dates << date.end_of_month %>
     <% end %>
     <% monthly_debits_balances_data = [] %>
     <% monthly_credits_balances_data = [] %>
     <% monthly_balances_data = [] %>
     <% month_dates.uniq.each do |month| %>
-      <% monthly_balances_data << { month.strftime("%B") => cash_account.balance(to_date: month.end_of_month) } %>
+      <% monthly_balances_data << { month.strftime("%B %Y") => cash_account.balance(to_date: month.end_of_month) } %>
     <% end %>
     <% month_dates.uniq.each do |month| %>
-      <% monthly_debits_balances_data << { month.strftime("%B") => cash_account.debits_balance(to_date: month.end_of_month) } %>
+      <% monthly_debits_balances_data << { month.strftime("%B %Y") => cash_account.debits_balance(to_date: month.end_of_month) } %>
     <% end %>
     <% month_dates.uniq.each do |month| %>
-      <% monthly_credits_balances_data << { month.strftime("%B") => cash_account.credits_balance(to_date: month.end_of_month) } %>
+      <% monthly_credits_balances_data << { month.strftime("%B %Y") => cash_account.credits_balance(to_date: month.end_of_month) } %>
     <% end %>
 
     <%= line_chart [
       { name: "Debits", data: (Hash[*monthly_debits_balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"} },
       { name: "Credit", data: (Hash[*monthly_credits_balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"} },
       { name: "Balance", data: (Hash[*monthly_balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"} }
-      ], legend: 'bottom', thousands: ",", height: '200px', colors: ["#28A745", "#b00", "#0069D9"]%>
+      ], legend: 'right', thousands: ",", height: '200px', colors: ["#28A745", "#b00", "#0069D9"]%>
       </div>
     </div>
     <hr>

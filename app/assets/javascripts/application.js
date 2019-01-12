@@ -21,6 +21,8 @@
 //= require bootstrap
 //= require bootstrap-datepicker
 //= require activestorage
+//= require autonumeric
+
 //= require Chart.bundle
 //= require chartkick
 //= require select2

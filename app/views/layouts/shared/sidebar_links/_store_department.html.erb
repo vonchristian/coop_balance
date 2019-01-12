@@ -1,4 +1,17 @@
 
+<div class="user-panel mt-3 pb-3 mb-3 d-flex">
+  <div class="info">
+
+<span class="text-white">
+  <small>
+    <%= current_user.employee_cash_accounts.default_cash_account.name.try(:upcase) %>
+  </small><br>
+  <h3 class="card-title">
+    <%= number_to_currency current_user.employee_cash_accounts.default_cash_account.balance %>
+  </h3>
+</span>
+</div>
+</div>
 <li class="nav-item">
   <a href="/store_front_module/sales_line_items/new" class="nav-link <%= 'active' if current_page?(new_store_front_module_sales_line_item_path) %>"><i class="nav-icon fa fa-store"></i><span> Store</span></a>
 </li>
@@ -21,7 +34,7 @@
            <ul class="nav nav-treeview">
              <li class="nav-item">
                <a href="/store_front_module/sales" class="nav-link">
-                 <i class="fa fa-circle-o nav-icon"></i>
+                 <i class="far fa-circle-o nav-icon"></i>
                  <p>Sales</p>
                </a>
              </li>
@@ -44,4 +57,7 @@
          </li>
          <li class="nav-item">
            <a href="/store_front_module/settings" class="nav-link <%= 'active' if current_page?(store_front_module_settings_path) %>"><i class="nav-icon far fa-sliders"></i><span> Settings</span></a>
+         </li>
+         <li class="nav-item">
+           <a href="/store_front_module/reports" class="nav-link <%= 'active' if current_page?(store_front_module_reports_path) %>"><i class="nav-icon far fa-folder"></i><span> Reports</span></a>
          </li>

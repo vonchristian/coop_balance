@@ -4,8 +4,13 @@ crumb :members do
 end
 
 crumb :member do |member|
-  link member.first_and_last_name, member_path(member)
-  parent :members
+  if member.class.name == "Member"
+    link member.first_and_last_name, member_path(member)
+    parent :members
+  elsif member.class.name == "Organization"
+    link member.try(:abbreviated_name) || member.name, organization_path(member)
+    parent :organizations
+  end
 end
 
 crumb :member_loans do |member|
@@ -14,8 +19,13 @@ crumb :member_loans do |member|
 end
 
 crumb :member_savings_accounts do |member|
-  link "Savings Deposits", member_savings_accounts_path(member)
-  parent :member, member
+  if member.class.name == "Member"
+    link "Savings Deposits", member_savings_accounts_path(member)
+    parent :member, member
+  elsif member.class.name == "Organization"
+    link "Savings Deposits", organization_savings_accounts_path(member)
+    parent :organization, member
+  end
 end
 
 crumb :member_share_capitals do |member|
@@ -67,6 +77,11 @@ end
 
 crumb :loan_payments do |loan|
   link "Payments", loan_payments_path(loan)
+  parent :member_loans, loan.borrower
+end
+
+crumb :new_loan_payment do |loan|
+  link "New Payment", new_loan_payment_path(loan)
   parent :member_loans, loan.borrower
 end
 
@@ -166,6 +181,33 @@ end
 crumb :share_capital_balance_transfer_form do |share_capital|
   link "Balance Transfer Form", new_share_capital_balance_transfer_path(share_capital_id: share_capital.id)
   parent :share_capital_settings, share_capital
+end
+
+# Member Time Deposits
+
+crumb :new_time_deposit_application do |depositor|
+  link "Time Deposit Openning", new_time_deposit_application_path(depositor_id: depositor.id, depositor_type: depositor.class.name)
+  parent :member, depositor
+end
+
+crumb :time_deposit_details do |time_deposit|
+  link "Details", time_deposit_path(time_deposit)
+  parent :member_time_deposits, time_deposit.depositor
+end
+
+crumb :time_deposit_settings do |time_deposit|
+  link "Settings", time_deposit_settings_path(time_deposit)
+  parent :member_time_deposits, time_deposit.depositor
+end
+
+crumb :time_deposit_withdrawal do |time_deposit|
+  link "Withdrawal", new_time_deposit_withdrawal_path(time_deposit_id: time_deposit.id)
+  parent :member_time_deposits, time_deposit.depositor
+end
+
+crumb :time_deposit_withdrawal_voucher do |time_deposit|
+  link "Withdrawal Voucher", time_deposit_withdrawal_voucher_path(time_deposit_id: time_deposit.id, id: Vouchers::VoucherAmount.debit.where(commercial_document: time_deposit).last.voucher.id)
+  parent :time_deposit_details, time_deposit
 end
 
 # ORGANIZATIONS

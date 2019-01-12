@@ -32,8 +32,9 @@ module MembershipsModule
     end
 
     def withdrawal_date
-      if withdrawn?
-        entries.sort_by(&:entry_date).reverse.first.entry_date
+      if withdrawn == true
+        time_deposit_product_account.debit_entries.select {|e| e.amounts.where(commercial_document: self)}.first.entry_date
+        # entries.sort_by(&:entry_date).reverse.first.entry_date
       end
     end
 
@@ -69,6 +70,18 @@ module MembershipsModule
 
     def balance
       time_deposit_product_account.balance(commercial_document: self)
+    end
+
+    def credits_balance  # deposit amount
+      time_deposit_product_account.credits_balance(commercial_document: self)
+    end
+
+    def interest_balance
+      time_deposit_product.interest_expense_account.debits_balance(commercial_document: self)
+    end
+
+    def deposited_amount
+      credits_balance - interest_balance
     end
 
     def earned_interests

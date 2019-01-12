@@ -10,7 +10,7 @@ module StoreFrontModule
     belongs_to :store_front
     belongs_to :cooperative
     belongs_to :voucher
-    
+
     has_one :official_receipt,            as: :receiptable
     has_one :invoice,                     as: :invoiceable
     has_many :line_items,                 class_name: "StoreFrontModule::LineItem", dependent: :destroy
@@ -23,9 +23,11 @@ module StoreFrontModule
     delegate :first_and_last_name,        to: :commercial_document, prefix: true
     delegate :avatar,                     to: :commercial_document
     before_save :set_default_date, :set_commercial_document_name
+
     def self.processed
       joins(:voucher).merge(Voucher.disbursed)
     end
+
     def self.ordered_on(options={})
       if options[:from_date] && options[:to_date]
         date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
@@ -49,9 +51,8 @@ module StoreFrontModule
     end
 
     def processed?
-      voucher.disbursed?
+      voucher && voucher.disbursed?
     end
-
 
     def cost_of_goods_sold
       line_items.sum(&:cost_of_goods_sold)

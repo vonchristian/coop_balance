@@ -2,18 +2,13 @@
 <% content_for(:html_title) { "#{@loan.borrower_name} | #{@loan.loan_product_name }" } %>
 <div class="card">
   <div class="card-header">
-    <br>
     <div class="row">
       <div class="col-md-3">
-        <% if @loan.disbursed? %>
-          <h4 class="card-title number"><%= number_to_currency @loan.principal_balance %></h4>
-        <% else %>
-          <h4 class="card-title number"><%= number_to_currency @loan.loan_amount %> </h4>
-        <% end %>
+        <h4 class="card-title number"><%= number_to_currency (@loan.forwarded_loan? ? @loan.principal_debits_balance : @loan.loan_amount) %> </h4>
         <small>PRINCIPAL</small>
         <br>
         <br>
-        <%= link_to 'Statement of Account', loan_path(@loan, format: 'pdf') %>
+        <%= link_to 'Statement of Account', loan_path(@loan, format: 'pdf'), class: 'float-right' %>
       </div>
       <div class="col-md-3">
         <h4 class="card-title number"><%= number_to_currency @loan.loan_interests_balance %></h4>
@@ -30,6 +25,8 @@
       </div>
     </div>
   </div>
+</div>
+<div class="card">
   <div class="card-body">
     <h4 class="card-title">Loan Details </h4>
     <hr class="no-margin">
@@ -72,7 +69,7 @@
             <b>Annual Interest Rate</b>
           </div>
           <div class="col-md-6 col-sm-6">
-            <%= (@loan.loan_product_interest_rate*100).to_i %>%
+            <%= (@loan.loan_product_interest_rate*100).to_f %>%
           </div>
         </div>
         <div class="row min-margin">
@@ -165,13 +162,13 @@
             </div>
             <div class="col-md-2">
               <span class="float-right">
-                <%= number_to_currency @loan.disbursement_voucher.voucher_amounts.for_account(account: @loan.loan_product_loans_receivable_current_account).total %>
+                <%= number_to_currency @loan.loan_amount %>
               </span>
             </div>
           </div>
           <div class="min-margin"></div>
           <% if @loan.disbursement_voucher.present? %>
-            <% @loan.disbursement_voucher.voucher_amounts.excluding_account(account: @loan.loan_product_loans_receivable_current_account).excluding_account(account: current_cooperative.cash_accounts).each do |voucher_amount| %>
+            <% @loan.disbursement_voucher.voucher_amounts.excluding_account(account: @loan.loan_product_current_account).excluding_account(account: current_cooperative.cash_accounts).each do |voucher_amount| %>
               <div class="row">
                 <div class="col-md-3 col-sm-6">
                   <%= voucher_amount.description %>

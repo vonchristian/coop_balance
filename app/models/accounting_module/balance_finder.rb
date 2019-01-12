@@ -1,46 +1,43 @@
 module AccountingModule
   module BalanceFinder
     def balance(args={})
-      from_date = args[:from_date]
-      to_date = args[:to_date]
-      commercial_document = args[:commercial_document]
+      balance_finder(args).new.compute
+      # from_date = args[:from_date]
+      # to_date = args[:to_date]
+      # commercial_document = args[:commercial_document]
+      #
+      # if commercial_document.present? && from_date.present? && to_date.present?
+      #   balance_for_commercial_document(args).
+      #   entered_on(args).total
+      #
+      # elsif commercial_document.present? && from_date.blank? && to_date.present?
+      #     balance_for_commercial_document(args).
+      #     entered_on(args).total
+      #
+      # elsif args[:cooperative_service_id].present? && to_date.present?
+      #   balance_for_cooperative_service(args).
+      #   entered_on(from_date: Date.today - 999.years, to_date: args[:to_date]).
+      #   total
+      #
+      # elsif commercial_document.blank? && from_date.present? && to_date.present?
+      #   entered_on(args).
+      #   total
+      #
+      # elsif commercial_document.present? && from_date.blank? && to_date.blank?
+      #   balance_for_commercial_document(args).
+      #   total
+      #
+      # elsif commercial_document.blank? && from_date.blank? && to_date.present?
+      #   entered_on(from_date: Date.today - 999.years, to_date: args[:to_date]).
+      #   total
+      #
+      # elsif args[:cooperative_service_id].present? && to_date.blank?
+      #   balance_for_cooperative_service(args).
+      #   total
+      # else
+      #   not_cancelled.
+      #   total
 
-      if commercial_document.present? && from_date.present? && to_date.present?
-        balance_for_commercial_document(args).
-        entered_on(args).total_amount
-
-      elsif commercial_document.present? && from_date.blank? && to_date.present?
-          balance_for_commercial_document(args).
-          entered_on(args).total_amount
-
-      elsif args[:cooperative_service_id].present? && to_date.present?
-        balance_for_cooperative_service(args).
-        entered_on(from_date: Date.today - 999.years, to_date: args[:to_date]).
-        total_amount
-
-      elsif commercial_document.blank? && from_date.present? && to_date.present?
-        entered_on(args).
-        total_amount
-
-      elsif commercial_document.present? && from_date.blank? && to_date.blank?
-        balance_for_commercial_document(args).
-        total_amount
-
-      elsif commercial_document.blank? && from_date.blank? && to_date.present?
-        entered_on(from_date: Date.today - 999.years, to_date: args[:to_date]).
-        total_amount
-
-      elsif args[:cooperative_service_id].present? && to_date.blank?
-        balance_for_cooperative_service(args).
-        total_amount
-      else
-        not_cancelled.
-        total_amount
-      end
-    end
-
-    def total_amount
-      map{ |a| a.amount.amount }.sum
     end
 
     def balance_for_commercial_document(args={})

@@ -19,7 +19,7 @@
           <%= f.input :cash_account_id, input_html: { value: @cash_account.id }, as: :hidden %>
           <div class="row">
             <div class="col-md-6">
-              <%= f.input :account_id, label: false, placeholder: "Account", collection: AccountingModule::Account.all.map{|a| [a.name, a.id] }, prompt: "Select Account" %>
+              <%= f.input :account_id, label: false, placeholder: "Account", collection: AccountingModule::Account.active.all.map{|a| [a.name, a.id] }, prompt: "Select Account" %>
             </div>
             <div class="col-md-4">
               <%= f.input :amount, label: false, placeholder: 'Amount', as: :currency  %>

@@ -1,30 +1,8 @@
-<%= render "accounting_module/entries/partials/employee_tabs" %>
+<%= render "accounting_module/entries/partials/entry_filters" %>
 <div class="row">
   <div class="col-md-3">
-    <%= render "accounting_module/entries/partials/entry_filters" %>
+    <%= render "accounting_module/entries/partials/date_filters_for_all_entries" %>
+    <%= render "accounting_module/entries/partials/employee_filters" %>
   </div>
-
-  <div class="col-md-9">
-    <div class="row">
-      <div class="col-md-8 offset-md-2">
-        <%=form_tag accounting_module_entries_path, method: :get do %>
-          <div class="input-group">
-            <%= text_field_tag :search, params[:search],  autofocus: true, class: "form-control", placeholder: "Search for Reference Number, Description", id: 'account-search-form' %>
-            <span class="input-group-btn">
-              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
-                <i class="fa fa-search"></i>
-              <% end %>
-            </span>
-          </div>
-        <% end %>
-      </div>
-    </div>
-    <hr>
-    <% @entries.each do |entry| %>
-      <%= render 'accounting_module/entries/partials/header', entry: entry %>
-    <% end %>
-    <% if @entries.any? %>
-      <center><%= will_paginate @entries %></center>
-    <% end %>
-  </div>
+  <%= render 'accounting_module/entries/index', entries: @entries %>
 </div>

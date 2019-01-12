@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <%= image_tag(@employee.avatar.variant(resize: '45x45'), class: "img-circle") if @employee.avatar.attached? %>
+  <%= image_tag(@employee.avatar, width: 45, height: 45, class: "img-circle") if @employee.avatar.attached? %>
   
   <h4 class="modal-title card-title" id="mainModalLabel" style="margin-left: 10px">
     <%= @employee.name %>

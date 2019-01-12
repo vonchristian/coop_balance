@@ -27,12 +27,20 @@
         <div class="col-md-1 col-sm-1">
         </div>
         <div class="col-md-3 col-sm-3">
-          <%= link_to voucher_path(voucher) do %>
-            <%= voucher.payee.try(:name) %><br>
-            <small class="text-muted">
-              <i class="fa fa-clock"></i> <%= voucher.date.strftime("%B %e, %Y") %><br>
-              
-            </small>
+          <% if voucher.voucher_amounts.last.commercial_document_type == "MembershipsModule::TimeDeposit" %>
+            <%= link_to time_deposit_withdrawal_voucher_path(time_deposit_id: voucher.voucher_amounts.last.commercial_document.id, id: voucher.id) do %>
+              <%= voucher.payee.try(:name) %><br>
+              <small class="text-muted">
+                <i class="fa fa-clock"></i> <%= voucher.date.strftime("%B %e, %Y") %><br>
+              </small>
+            <% end %>
+          <% else %>
+            <%= link_to voucher_path(voucher) do %>
+              <%= voucher.payee.try(:name) %><br>
+              <small class="text-muted">
+                <i class="fa fa-clock"></i> <%= voucher.date.strftime("%B %e, %Y") %><br>
+              </small>
+            <% end %>
           <% end %>
         </div>
         <div class="col-md-1 col-sm-1">
@@ -40,26 +48,21 @@
           <small class="text-muted">REF NO.</small>
         </div>
         <div class="col-md-4 col-sm-5">
-          <%= link_to voucher_path(voucher) do %>
-            <p class="no-margin"><%= voucher.description %></p>
+          <% if voucher.voucher_amounts.last.commercial_document_type == "MembershipsModule::TimeDeposit" %>
+            <%= link_to time_deposit_withdrawal_voucher_path(time_deposit_id: voucher.voucher_amounts.last.commercial_document.id, id: voucher.id) do %>
+              <p class="no-margin"><%= voucher.description %></p>
+            <% end %>
+          <% else %>
+            <%= link_to voucher_path(voucher) do %>
+              <p class="no-margin"><%= voucher.description %></p>
+            <% end %>
           <% end %>
         </div>
         <div class="col-md-3 col-sm-3">
-          <% if !voucher.disbursed? %>
-            <% if current_user.can_disburse?(voucher: voucher) %>
-              <%= link_to 'Disburse', voucher_path(voucher), class: "btn btn-primary btn-sm" %>
-            <% end %>
-            <% if current_user.cooperative.loan_applications.where(voucher_id: voucher.id).nil? %>
-              <%= link_to voucher_path(voucher), method: :delete do %>
-                <span title="Cancel Voucher" data-toggle="tooltip" class="fa fa-times text-danger"> Cancel Voucher</span>
-              <% end %>
-            <% else %>
-              <%= link_to loans_module_loan_application_path(current_user.cooperative.loan_applications.where(voucher_id: voucher.id).last), method: :delete do %>
-                <span title="Cancel Voucher" data-toggle="tooltip" class="fa fa-times text-danger"> Cancel Voucher</span>
-              <% end %>
-            <% end %>
-          <% else %>
+          <% if voucher.disbursed? && !voucher.cancelled? %>
             <span class="badge bg-success"><i class="fa fa-check-circle"></i> Disbursed </span>
+          <% elsif voucher.disbursed? && voucher.cancelled? %>
+            <span class="badge bg-warning"><i class="fa fa-info-circle"></i> Cancelled </span>
           <% end %>
         </div>
       </div>

@@ -25,12 +25,10 @@ module StatementOfAccounts
       end
     end
     def credit_cash_amount(entry)
-      amount = entry.credit_amounts.for_account(account_id: loan.principal_account.id).sum(&:amount)
-      if amount.zero?
-        ""
-      else
+      amount = loan.credits_balance(to_date: entry.entry_date)
+
         price(amount)
-      end
+
     end
     def heading
       bounding_box [280, 770], width: 50 do
@@ -69,9 +67,9 @@ module StatementOfAccounts
         cells.borders = []
       end
       bounding_box [270, 690], width: 400 do
-        text "CURRENT BALANCE", size: 8
+        text "PRINCIPAL BALANCE", size: 8
         move_down 5
-        text "#{price loan.balance}", size: 18
+        text "#{price loan.principal_balance}", size: 18
       end
       move_down 20
       stroke do
@@ -99,9 +97,10 @@ module StatementOfAccounts
        [ a.entry_date.strftime("%b %e, %Y"),
          a.description,
          a.reference_number,
-         debit_cash_amount(a),
-         credit_cash_amount(a),
-         price(loan.balance(to_date: a.entry_date))] }
+         price(loan.principal_debits_balance(to_date: a.entry_date)),
+         price(loan.principal_credits_balance(to_date: a.entry_date)),
+         price(loan.principal_balance(to_date: a.entry_date))
+        ] }
     end
   end
 end

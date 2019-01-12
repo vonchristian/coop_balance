@@ -164,6 +164,8 @@ module AccountingModule
 
       context "when given correct entries" do
         before {
+          cooperative = create(:cooperative)
+          origin_entry = create(:origin_entry, cooperative: cooperative)
           # credit accounts
           liability      = create(:liability)
           equity         = create(:equity)
@@ -190,11 +192,11 @@ module AccountingModule
           da4 = build(:debit_amount, :account => contra_equity, :amount => 2)
           da5 = build(:debit_amount, :account => contra_revenue, :amount => 333)
 
-          create(:entry, :credit_amounts => [ca1], :debit_amounts => [da1])
-          create(:entry, :credit_amounts => [ca2], :debit_amounts => [da2])
-          create(:entry, :credit_amounts => [ca3], :debit_amounts => [da3])
-          create(:entry, :credit_amounts => [ca4], :debit_amounts => [da4])
-          create(:entry, :credit_amounts => [ca5], :debit_amounts => [da5])
+          create(:entry, :credit_amounts => [ca1], :debit_amounts => [da1], cooperative: cooperative, previous_entry: cooperative.entries.recent)
+          create(:entry, :credit_amounts => [ca2], :debit_amounts => [da2], cooperative: cooperative, previous_entry: cooperative.entries.recent)
+          create(:entry, :credit_amounts => [ca3], :debit_amounts => [da3], cooperative: cooperative, previous_entry: cooperative.entries.recent)
+          create(:entry, :credit_amounts => [ca4], :debit_amounts => [da4], cooperative: cooperative, previous_entry: cooperative.entries.recent)
+          create(:entry, :credit_amounts => [ca5], :debit_amounts => [da5], cooperative: cooperative, previous_entry: cooperative.entries.recent)
         }
 
         it { is_expected.to eql 0 }

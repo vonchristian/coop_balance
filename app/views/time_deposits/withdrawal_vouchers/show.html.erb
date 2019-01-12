@@ -1,0 +1,34 @@
+<% breadcrumb :time_deposit_withdrawal_voucher, @time_deposit %>
+<div class="row">
+  <div class="col-md-8 offset-md-2">
+    <div class="card">
+      <div class="card-header bg-light">
+        <div class="row">
+          <div class="col-md-6">
+            <h3 class="card-title"> Voucher Details </h3>
+          </div>
+          <div class="col-md-6">
+            <%=link_to 'View (PDF)', time_deposit_withdrawal_voucher_path(time_deposit_id: @time_deposit.id, id: @voucher.id, format: "pdf"), class: "btn btn-default float-right" %>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <% if !@voucher.disbursed? %>
+          <%= render 'vouchers/partials/alert_message', voucher: @voucher %>
+        <% end %>
+        <%= render 'time_deposits/withdrawal_vouchers/partials/body', voucher: @voucher, time_deposit: @time_deposit %>
+        <% if !@voucher.disbursed?%>
+          <% if current_user.can_disburse?(voucher: @voucher) %>
+            <%= link_to "Disburse", time_deposit_withdrawal_voucher_confirmations_path(time_deposit_id: @time_deposit.id, withdrawal_voucher_id: @voucher.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
+            <%= link_to "Cancel", voucher_path(@voucher), method: :delete, class: "btn text-danger float-left" %>
+          <% elsif current_user.bookkeeper? && !@voucher.contains_cash_accounts? %>
+            <%= link_to "Disburse", time_deposit_withdrawal_voucher_confirmations_path(time_deposit_id: @time_deposit.id, withdrawal_voucher_id: @voucher.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
+            <%= link_to "Cancel", voucher_path(@voucher), method: :delete, class: "btn text-danger float-left" %>
+          <% end %>
+        <% else %>
+          <%= render 'vouchers/partials/status', voucher: @voucher %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

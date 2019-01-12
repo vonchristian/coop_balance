@@ -83,7 +83,7 @@ class TimeDepositPdf < Prawn::Document
   end
 
   def beneficiaries_and_policy
-    beneficiaries_data ||=  time_deposit.beneficiaries.split(/\s*,\s*/).map { |b| ["", b]}
+    beneficiaries_data ||=  time_deposit.beneficiaries.split(/\s*,\s*/).map { |b| ["", b]} if time_deposit.beneficiaries.present?
     bounding_box([0,567], :width => 230, :height => 80) do
       # stroke_bounds
       text "Beneficiary/ies :", size: 12
@@ -93,7 +93,7 @@ class TimeDepositPdf < Prawn::Document
         inline_format: true }, 
         column_widths: [50, 150] ) do
         cells.borders = []
-      end
+      end if time_deposit.beneficiaries.present?
     end
     bounding_box([330,567], :width => 205, :height => 80) do
       # stroke_bounds
@@ -187,7 +187,7 @@ class TimeDepositPdf < Prawn::Document
   end
 
   def beneficiaries_and_policy_copy
-    beneficiaries_data ||=  time_deposit.beneficiaries.split(/\s*,\s*/).map { |b| ["", b]}
+    beneficiaries_data ||=  time_deposit.beneficiaries.split(/\s*,\s*/).map { |b| ["", b]} if time_deposit.beneficiaries.present?
     bounding_box([0,147], :width => 230, :height => 80) do
       # stroke_bounds
       text "Beneficiary/ies :", size: 12
@@ -197,7 +197,7 @@ class TimeDepositPdf < Prawn::Document
         inline_format: true }, 
         column_widths: [50, 150] ) do
         cells.borders = []
-      end
+      end if time_deposit.beneficiaries.present?
     end
     bounding_box([330,147], :width => 205, :height => 80) do
       # stroke_bounds
@@ -263,7 +263,14 @@ class TimeDepositPdf < Prawn::Document
   end
 
   def amount_in_words
-    time_deposit.balance.to_f.to_words.titleize + " Pesos" + " (#{price(time_deposit.balance)})"
+    if time_deposit.balance.to_f.to_s.split(".").to_a.last.to_i.zero?
+      time_deposit.balance.to_f.to_words.titleize + " Pesos" + " (#{price(time_deposit.balance)})"
+    else
+      time_deposit.balance.to_i.to_words.titleize +
+      " Pesos and" +
+      time_deposit.balance.to_f.to_words.split("and").map {|w| w}.last.titleize +
+      " (#{price(time_deposit.balance)})"
+    end
   end
 
   def terms_in_days

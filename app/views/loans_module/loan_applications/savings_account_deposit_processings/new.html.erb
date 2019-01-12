@@ -1,47 +1,47 @@
-<div class="row">
-  <div class="col-md-6 offset-md-3">
-    <div class="card">
-      <div class="card-header bg-gray">
-      <div class="row">
-        <div class="col-md-3">
-          <center><%= image_tag(@loan_application.borrower.avatar.variant(resize: '80x80'), class: 'media-object img-circle') if @loan_application.borrower.avatar.attached? %></center>
-        </div>
-        <div class="col-md-9">
-          <br>
-          <h3 class="card-title"><%= @loan_application.borrower_name.upcase %></h3><br>
-           <i class="fa fa-map-marker"></i> Address: <%= @loan_application.borrower.try(:current_address_complete_address) %>
-        </div>
-      </div>
-      </div>
-      <div class="card-body">
-        <div class="row">
-          <div class="col-md-10 offset-md-1">
-            <h3 class="card-title">
-              <%= number_to_currency @loan_application.net_proceed %>
-            </h3>
-            <small class="text-muted">NET PROCEED</small>
-          </div>
-        </div>
-        <hr>
-        <div class="row">
-          <div class="col-md-10 offset-md-1">
-            <h4 class="card-title"><%= number_to_currency @savings_account.balance %></h4>
-            <small class="text-muted"> SAVINGS </small>
-          </div>
-        </div>
-        <hr>
-            <%= simple_form_for [@savings_account, @deposit], url: :loans_module_loan_application_savings_account_deposit_processings, html: { autocomplete: 'off' } do |f| %>
-              <%= f.error_notification %>
-              <%= f.input :amount %>
-              <%= f.input :savings_account_id, input_html: { value: @savings_account.id }, as: :hidden %>
-              <%= f.input :loan_application_id, input_html: { value: @loan_application.id }, as: :hidden %>
-              <hr>
-                <%= f.submit "Add Deposit", class: "btn btn-primary float-right" %>
-            <% end %>
-          </div>
-        </div>
-      </div>
+<div class="modal-header">
+  <h4 class="modal-title card-title" id="mainModalLabel">
+    Savings Deposit
+  </h4>
+  <button type="button" class="close float-right" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-3">
+      <center><%= image_tag(@loan_application.borrower.avatar, width: 80, height: 80, class: 'media-object img-circle') if @loan_application.borrower.avatar.attached? %></center>
+    </div>
+    <div class="col-md-9">
+      <br>
+      <h3 class="card-title"><%= @loan_application.borrower_name.upcase %></h3><br>
+       <i class="fa fa-map-marker"></i> Address: <%= @loan_application.borrower.try(:current_address_complete_address) %>
     </div>
   </div>
 </div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-10 offset-md-1">
+      <h3 class="card-title">
+        <%= number_to_currency @loan_application.net_proceed %>
+      </h3>
+      <small class="text-muted">NET PROCEED</small>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-md-10 offset-md-1">
+      <h4 class="card-title"><%= number_to_currency @savings_account.balance %></h4>
+      <small class="text-muted"> SAVINGS </small>
+    </div>
+  </div>
+</div>
+<%= simple_form_for [@savings_account, @deposit], url: :loans_module_loan_application_savings_account_deposit_processings], html: { autocomplete: "off", data: { modal: true } }, remote: request.xhr? do |f| %>
+  <div class="modal-body">
+    <%= f.error_notification %>
+    <%= f.input :amount, as: :currency %>
+    <%= f.input :savings_account_id, input_html: { value: @savings_account.id }, as: :hidden %>
+    <%= f.input :loan_application_id, input_html: { value: @loan_application.id }, as: :hidden %>
+  </div>
+  <div class="modal-footer">
+    <%= f.submit "Add Deposit", class: "btn btn-primary float-right" %>
+  </div>
+<% end %>
 

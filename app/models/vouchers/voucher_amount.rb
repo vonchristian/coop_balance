@@ -1,7 +1,9 @@
 module Vouchers
   class VoucherAmount < ApplicationRecord
     monetize :amount_cents, as: :amount, numericality: true
+
     enum amount_type: [:debit, :credit]
+
     belongs_to :account, class_name: "AccountingModule::Account"
     belongs_to :voucher
     belongs_to :cooperative
@@ -19,6 +21,10 @@ module Vouchers
     def self.total
       sum(&:adjusted_amount)
     end
+    
+    def self.valid?
+      debit.sum(&:amount) == credit.sum(&:amount)
+    end
 
     def self.for_account(args={})
       where(account: args[:account])
@@ -34,11 +40,15 @@ module Vouchers
     end
 
     def self.contains_cash_accounts
+      with_cash_accounts
+    end
+
+    def self.with_cash_accounts
       for_account(account: Employees::EmployeeCashAccount.cash_accounts)
     end
 
     def self.total_cash_amount
-      contains_cash_accounts.total
+      cash_accounts.total
     end
 
     def self.with_no_vouchers

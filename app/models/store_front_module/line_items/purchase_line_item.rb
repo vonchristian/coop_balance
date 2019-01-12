@@ -17,10 +17,10 @@ module StoreFrontModule
       has_many :received_stock_transfers, class_name: "StoreFrontModule::LineItems::ReceivedStockTransferLineItem",
                                           foreign_key: 'purchase_line_item_id'
 
-      delegate :supplier_name, :date, to: :purchase_order, allow_nil: true
+      delegate :supplier_name, to: :purchase_order, allow_nil: true
 
       def sold?
-        sales.present? &&
+        sales_purchase_line_items.present? &&
         out_of_stock?
       end
 
@@ -29,7 +29,7 @@ module StoreFrontModule
       end
 
       def out_of_stock?
-        sales.any? &&
+        sales_purchase_line_items.any? &&
         available_quantity.zero?
       end
 

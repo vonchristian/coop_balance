@@ -1,3 +1,4 @@
+rename loan_creation_processing to loans::opening
 sales report
 date/customer/ref#/amount/total
 a/r report
@@ -10,7 +11,7 @@ stock card
 name:
 uom:
 price:
-date/ref#/voucher #/ purchases/sold/returned/spoilage/balance 
+date/ref#/voucher #/ purchases/sold/returned/spoilage/balance
 
 Stock Inventory Report
 as of :date

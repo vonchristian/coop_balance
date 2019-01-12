@@ -29,16 +29,16 @@
           </div>
         <% end %>
       <% end %>
-        <br>
-        <table class="table table-responsive">
-          <tbody>
+    </div>
+    </div>
+
             <% if @products.present? %>
               <%= render 'store_front_module/line_items/sales_line_items/searched_product_results' %>
             <% elsif @line_items.present? %>
+
               <%= render 'store_front_module/line_items/sales_line_items/searched_line_item_results' %>
             <% end %>
-          </tbody>
-        </table>
+
         <hr>
         <% if @sales_line_items.present? %>
           <p class="text-muted"> ORDER DETAILS </p>
@@ -62,7 +62,7 @@
                       <%= line_item.quantity %> <%= line_item.unit_of_measurement_code %>
                     </td>
                     <td width="300px"><%= line_item.name.try(:titleize) %>
-                      <span class="text-muted"><%= line_item.barcode %></span>
+                      <span class="text-muted"><%#= line_item.barcode %></span>
                     </td>
                     <td>
                       <span class="pull-right">

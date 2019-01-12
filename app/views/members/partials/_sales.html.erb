@@ -1,0 +1,4 @@
+<%= link_to 'New Credit Sale', new_member_credit_sales_line_item_path(@member), class: 'btn btn-primary' %>
+<% @sales.each do |sale| %>
+  <%= render 'store_front_module/orders/sales/partials/header', order: sale %>
+<% end %>

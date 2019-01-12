@@ -6,7 +6,7 @@
           <%=image_tag(loan_application.borrower.avatar, height: 45, width: 45, class: "img-circle") %>
         <% end %>
       </div>
-      <div class="col-md-5 col-sm-8">
+      <div class="col-md-6 col-sm-8">
         <div class="row">
           <div class="col-md-6 col-sm-7">
             <% if loan_application.voucher.present? %>
@@ -15,22 +15,20 @@
               <% end %>
             <% end %>
             <small class="text-muted"><i class="fa fa-tag"></i> <%= loan_application.loan_product_name %><br>
-             <i class="fa fa-calendar"></i> <%= loan_application.application_date.strftime("%B %e, %Y") %>
+             <i class="fa fa-calendar"></i> <%= loan_application.voucher.try(:date).try(:strftime, "%B %e, %Y") %>
             </small>
           </div>
           <div class="col-md-6 col-sm-5">
-            <b><%= number_to_currency loan_application.loan_amount %></b><br>
-            <small class="text-muted">LOAN AMOUNT</small>
+            <h4 class="text-info card-title"><%= number_to_currency loan_application.loan_amount %></h4>
+            <small class="text-muted">LOAN AMOUNT</small><br>
           </div>
         </div>
       </div>
-      <div class="col-md-2 col-sm-2">
+      <div class="col-md-1 col-sm-2">
         <% if loan_application.voucher.present? %>
-          <b><%= loan_application.voucher.reference_number %></b><br>
-          <small class="text-muted">REF. NO.</small>
+          <p class="text-muted"><%= "##{loan_application.voucher.reference_number}" %></p>
         <% end %>
       </div>
-
       <div class="col-md-2 col-sm-9">
         <% if loan_application.voucher.present? %>
           <%= link_to 'View Voucher', loans_module_loan_application_voucher_path(loan_application_id: loan_application.id, id: loan_application.voucher_id), class: "btn btn-primary btn-sm float-right" %>
@@ -43,7 +41,11 @@
               <span title="Cancel Loan Application" data-toggle="tooltip" class="fa fa-times text-danger"> Cancel</span>
             <% end %>
           <% else %>
-            <span class="fa fa-check text-success"> Approved</span>
+            <% if loan_application.voucher.entry.blank? %>
+              <span class="fa fa-exclamation text-warning" title="Please cancel these loan application." data-toggle="tooltip"> No Voucher</span>
+            <% else %>
+              <span class="fa fa-check text-success"> Approved</span>
+            <% end %>
           <% end %>
         </center>
       </div>

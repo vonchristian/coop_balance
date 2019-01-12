@@ -134,22 +134,11 @@ module MembershipsModule
       balances.sum / 12.0
     end
 
-
     def computed_interest(args={})
       averaged_balance(to_date: args[:to_date]) * saving_product_applicable_rate
     end
 
-
-
     private
-    def check_balance
-      if balance >= saving_product.minimum_balance
-        self.update_attributes!(has_minimum_balance:  true)
-      elsif balance < saving_product.minimum_balance
-        self.update_attributes!(has_minimum_balance:  false)
-      end
-    end
-
     def set_account_owner_name
       self.account_owner_name = self.depositor_name # depositor is polymorphic
     end

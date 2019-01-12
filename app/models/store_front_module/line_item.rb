@@ -2,22 +2,22 @@ module StoreFrontModule
   class LineItem < ApplicationRecord
     extend StoreFrontModule::QuantityBalanceFinder
     include PgSearch
-    pg_search_scope :text_search, against: [:barcode]
+    pg_search_scope :text_search, associated_against: { barcodes: [:code] }
 
     belongs_to :unit_of_measurement, class_name: "StoreFrontModule::UnitOfMeasurement"
     belongs_to :cart,                class_name: "StoreFrontModule::Cart"
-    belongs_to :product,             class_name: "StoreFrontModule::Product",
-                                     touch: true
+    belongs_to :product,             class_name: "StoreFrontModule::Product"
     belongs_to :order,               class_name: "StoreFrontModule::Order",
                                      foreign_key: 'order_id'
     belongs_to :cooperative
-    has_many :barcodes,               as: :barcodeable
+    belongs_to :store_front
+    has_many :barcodes,              dependent: :destroy
+
     validates :unit_of_measurement_id, :product_id, presence: true
     validates :quantity, :unit_cost, :total_cost, presence: true, numericality: true
 
     delegate :name,                   to: :product
-    delegate :code,                   to: :unit_of_measurement,
-                                      prefix: true
+    delegate :code,                   to: :unit_of_measurement,prefix: true
     delegate :conversion_multiplier,  to: :unit_of_measurement
     delegate :balance,                to: :product, prefix: true
     delegate :employee,               to: :order
@@ -25,7 +25,11 @@ module StoreFrontModule
 
 
     def self.processed
-      where.not(order_id: nil)
+      where.not(order_id: nil).or(forwarded)
+    end
+
+    def self.forwarded
+      where(forwarded: true)
     end
 
     def self.unprocessed
@@ -41,11 +45,15 @@ module StoreFrontModule
     end
 
     def processed?
-      order.processed?
+      return true if forwarded?
+      order.present? && order.processed?
     end
 
     def converted_quantity
       quantity * conversion_multiplier
+    end
+    def normalized_barcodes
+      barcodes.pluck(:code).join(",")
     end
   end
 end

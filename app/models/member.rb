@@ -36,9 +36,9 @@ class Member < ApplicationRecord
   has_many :subscribed_programs,      class_name: "CoopServicesModule::Program",
                                       through: :program_subscriptions,
                                       source: :program
-  has_many :sales_orders,             class_name: "StoreFrontModule::Orders::SalesOrder",
+  has_many :sales,                    class_name: "StoreFrontModule::Orders::SalesOrder",
                                       as: :commercial_document
-  has_many :sales_return_orders,      class_name: "StoreFrontModule::Orders::SalesReturnOrder",
+  has_many :sales_returns,            class_name: "StoreFrontModule::Orders::SalesReturnOrder",
                                       as: :commercial_document
 
   has_many :organization_memberships, class_name: "Organizations::OrganizationMember",
@@ -61,11 +61,11 @@ class Member < ApplicationRecord
   before_save :set_default_image, on: :create
 
 
-  def self.updated_at(options={})
-    if options[:from_date] && options[:to_date]
-      date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
-      where('last_transaction_date' => (date_range.start_date)..(date_range.end_date))
-    end
+  def self.updated_at(args={})
+    from_date = args[:from_date] || self.order(last_transaction_date: :asc).first.last_transaction_date
+    to_date   = args[:to_date]   || self.order(last_transaction_date: :desc).first.last_transaction_date
+    date_range = DateRange.new(from_date: from_date, to_date: to_date)
+    where('last_transaction_date' => (date_range.start_date)..(date_range.end_date))
   end
 
   def self.active_at(args={})
