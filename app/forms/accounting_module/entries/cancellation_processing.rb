@@ -18,9 +18,18 @@ module AccountingModule
           cancelled_by_id: cancelled_by_id,
           cancellation_description: cancellation_description
         )
+
         if find_entry.voucher.present?
-          find_entry.voucher.update(cancelled: true)
+          if loan_voucher?
+            find_entry.voucher.voucher_amounts.last.commercial_document.destroy
+          else
+            find_entry.voucher.destroy
+          end
         end
+      end
+
+      def loan_voucher?
+        find_entry.voucher.voucher_amounts.last.commercial_document_type == "LoansModule::LoanApplication"
       end
       def find_entry
         AccountingModule::Entry.find(entry_id)
