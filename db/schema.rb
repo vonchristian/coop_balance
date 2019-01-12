@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_12_075422) do
+ActiveRecord::Schema.define(version: 2019_01_12_035454) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -108,11 +108,11 @@ ActiveRecord::Schema.define(version: 2019_01_12_075422) do
     t.uuid "commercial_document_id"
     t.integer "payment_status"
     t.uuid "loan_application_id"
-    t.decimal "principal", default: "0.0"
-    t.decimal "interest", default: "0.0"
     t.uuid "cooperative_id"
     t.string "scheduleable_type"
     t.uuid "scheduleable_id"
+    t.decimal "interest"
+    t.decimal "principal"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_amortization_schedules"
     t.index ["cooperative_id"], name: "index_amortization_schedules_on_cooperative_id"
     t.index ["credit_account_id"], name: "index_amortization_schedules_on_credit_account_id"
@@ -1009,10 +1009,6 @@ ActiveRecord::Schema.define(version: 2019_01_12_075422) do
     t.uuid "cooperative_id"
     t.uuid "store_front_id"
     t.uuid "stock_registry_id"
-    t.integer "principal_cents", default: 0, null: false
-    t.string "principal_currency", default: "PHP", null: false
-    t.integer "interest_cents", default: 0, null: false
-    t.string "interest_currency", default: "PHP", null: false
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["cooperative_id"], name: "index_products_on_cooperative_id"
     t.index ["name"], name: "index_products_on_name", unique: true

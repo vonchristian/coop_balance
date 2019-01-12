@@ -144,6 +144,7 @@ GEM
     hashery (2.1.2)
     highcharts-rails (6.0.3)
       railties (>= 3.1)
+    hirb (0.7.3)
     htmlentities (4.3.4)
     i18n (1.1.1)
       concurrent-ruby (~> 1.0)
@@ -441,6 +442,7 @@ DEPENDENCIES
   gretel
   groupdate
   highcharts-rails
+  hirb
   jbuilder
   jquery-rails
   jquery-ui-rails

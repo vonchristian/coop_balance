@@ -31,6 +31,7 @@ module LoansModule
         it { is_expected.to delegate_method(:unearned_interest_income_account).to(:current_interest_config) }
         it { is_expected.to delegate_method(:penalty_receivable_account).to(:current_penalty_config) }
         it { is_expected.to delegate_method(:penalty_revenue_account).to(:current_penalty_config) }
+        it { is_expected.to delegate_method(:scheduler).to(:amortization_type).with_prefix }
     end
     describe 'validations' do
       it { is_expected.to validate_presence_of :name }
@@ -38,13 +39,23 @@ module LoansModule
       it { is_expected.to validate_presence_of :current_account_id }
     end
 
-    describe "#interest_amortization_calculator" do
+    describe '#amortization_scheduler' do
+      it 'returns number of payments declining_balance' do
+
+        amortization_type = create(:amortization_type, calculation_type: 'declining_balance')
+        loan_product = create(:loan_product, amortization_type: amortization_type)
+        interest_prededuction = create(:interest_prededuction, calculation_type: 'number_of_payments', loan_product: loan_product)
+        expect(amortization_type.scheduler).to eql LoansModule::AmortizationSchedulers::DecliningBalance
+      end
+    end
+
+    describe "#interest_calculator" do
       it 'returns percent based straight line for loan product with percent based interest prededuction and straight line amortization type' do
         straight_line_amortization_type = create(:amortization_type, calculation_type: 'straight_line')
         loan_product = create(:loan_product, amortization_type: straight_line_amortization_type)
         interest_prededuction = create(:interest_prededuction, loan_product: loan_product, calculation_type: 'percent_based')
 
-        expect(loan_product.interest_amortization_calculator).to eq LoansModule::InterestAmortizationCalculators::PercentBasedStraightLine
+        expect(loan_product.interest_amortization_calculator).to eq LoansModule::InterestCalculators::PercentBasedStraightLine
       end
 
       it 'returns percent based declining balance for loan product with percent based interest prededuction and declining_balance amortization type' do
@@ -52,7 +63,15 @@ module LoansModule
         loan_product = create(:loan_product, amortization_type: declining_balance_amortization_type)
         interest_prededuction = create(:interest_prededuction, loan_product: loan_product, calculation_type: 'percent_based')
 
-        expect(loan_product.interest_amortization_calculator).to eq LoansModule::InterestAmortizationCalculators::PercentBasedDecliningBalance
+        expect(loan_product.interest_amortization_calculator).to eq LoansModule::InterestCalculators::PercentBasedDecliningBalance
+      end
+
+      it 'returns number_of_payments based for loan product with number of payments based interest prededuction and declining_balance amortization type' do
+        declining_balance_amortization_type = create(:amortization_type, calculation_type: 'declining_balance')
+        loan_product = create(:loan_product, amortization_type: declining_balance_amortization_type)
+        interest_prededuction = create(:interest_prededuction, loan_product: loan_product, calculation_type: 'number_of_payments')
+
+        expect(loan_product.interest_amortization_calculator).to eq LoansModule::InterestCalculators::NumberOfPaymentsDecliningBalance
       end
     end
   end

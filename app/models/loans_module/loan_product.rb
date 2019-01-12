@@ -20,6 +20,7 @@ module LoansModule
     has_many :interest_predeductions,              class_name: "LoansModule::LoanProducts::InterestPrededuction"
     delegate :rate,
              :annual_rate,
+             :monthly_rate,
              :calculation_type,
              :prededuction_type,
              :prededucted_rate,
@@ -38,6 +39,8 @@ module LoansModule
              :penalty_revenue_account,
              to: :current_penalty_config, allow_nil: true
 
+    delegate :scheduler, to: :amortization_type, prefix: true
+
     validates :name,:current_account_id, :past_due_account_id, presence: true
 
     validates :name, uniqueness: true
@@ -52,6 +55,8 @@ module LoansModule
     def interest_amortization_calculator
       ("LoansModule::InterestCalculators::" + current_interest_prededuction_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
     end
+
+
 
     def self.accounts
       accounts = []
@@ -148,6 +153,10 @@ module LoansModule
       if loan_protection_plan_provider.present?
         create_loan_protection_fund(loan_application)
       end
+    end
+
+    def amortization_scheduler
+      ("LoansModule::AmortizationSchedulers::" + current_interest_prededuction_calculation_type.titleize.gsub(" ", "") + amortization_schedule.calculation_type.titleize.gsub(" ", "")).constantize
     end
 
     private

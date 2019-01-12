@@ -2,9 +2,9 @@
   "name": "coopcatalyst",
   "private": true,
   "dependencies": {
-
+    "@rails/webpacker": "3.5"
   },
   "devDependencies": {
-    
+    "webpack-dev-server": "2.11.2"
   }
 }

@@ -7,6 +7,7 @@ require 'rspec/rails'
 require 'capybara/rspec'
 require "money-rails/test_helpers"
 
+
 Dir[Rails.root.join("spec/models/shared_examples/**/*.rb")].each {|f| require f}
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 

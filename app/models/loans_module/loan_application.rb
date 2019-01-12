@@ -23,7 +23,7 @@ module LoansModule
     delegate :name, :current_membership, :avatar, to: :borrower, prefix: true
     delegate :name, :interest_revenue_account, :current_account, to: :loan_product, prefix: true
     delegate :monthly_interest_rate, to: :loan_product, prefix: true
-    delegate :interest_amortization_calculator, :current_interest_config,  to: :loan_product
+    delegate :interest_amortization_calculator, :current_interest_config, :interest_calculator,  to: :loan_product
     delegate :entry, to: :voucher, allow_nil: true
     delegate :rate, :straight_balance?, :annually?, :prededucted_number_of_payments, to: :current_interest_config, prefix: true
     validates :cooperative_id, presence: true
@@ -135,6 +135,10 @@ module LoansModule
       total_interest - prededucted_interest
     end
 
+    def amortizeable_interest_for(schedule)
+      principal_balance_for(schedule) * loan_product_monthly_interest_rate
+    end
+
 
     def net_proceed
       loan_amount.amount - voucher_amounts.sum(&:adjusted_amount)
@@ -155,10 +159,12 @@ module LoansModule
       ("LoansModule::ScheduleCounters::" + mode_of_payment.titleize.gsub(" ", "") + "Counter").constantize
     end
 
+
     def amortization_date_setter
       ("LoansModule::AmortizationDateSetters::" + mode_of_payment.titleize.gsub(" ", "")).constantize
     end
 
+  
     def first_amortization_date
       amortization_date_setter.new(date: application_date).start_date
     end
@@ -172,7 +178,7 @@ module LoansModule
     end
 
     def amortizeable_principal
-      loan_amount.amount / schedule_count
+      Money.new(loan_amount / schedule_count).amount
     end
 
     def number_of_thousands # for Loan Protection fund computation

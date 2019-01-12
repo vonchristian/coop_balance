@@ -20,6 +20,8 @@ module LoansModule
         interest_revenue_accounts
       end
 
+
+
       def self.interest_revenue_accounts
         accounts = pluck(:interest_revenue_account_id).uniq
         AccountingModule::Account.where(id: accounts)
@@ -29,10 +31,10 @@ module LoansModule
         amount * rate
       end
 
+      def monthly_rate
+        rate / 12.0
+      end
 
-
-
-      
     end
   end
 end
