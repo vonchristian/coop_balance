@@ -2,3 +2,4 @@
 <% @share_capitals.each do |share_capital| %>
   <%= render 'share_capitals/share_capital', share_capital: share_capital %>
 <% end %>
+<center><%= will_paginate @share_capitals %> </center>
