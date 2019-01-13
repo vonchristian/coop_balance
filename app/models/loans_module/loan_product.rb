@@ -20,7 +20,6 @@ module LoansModule
     has_many :interest_predeductions,              class_name: "LoansModule::LoanProducts::InterestPrededuction"
     delegate :rate,
              :annual_rate,
-             :monthly_rate,
              :calculation_type,
              :prededuction_type,
              :prededucted_rate,
@@ -34,6 +33,7 @@ module LoansModule
     delegate :interest_revenue_account,
              :interest_receivable_account,
              :unearned_interest_income_account,
+             :monthly_interest_rate,
              to: :current_interest_config
 
     delegate :penalty_receivable_account,

@@ -8,9 +8,9 @@ class LoansController < ApplicationController
       @loans = current_cooperative.loans.text_search(params[:search]).paginate(page: params[:page], per_page: 20)
     else
       @loans = current_cooperative.loans.
+      includes(:borrower, :disbursement_voucher, loan_product: [:current_account, :past_due_account]).
       not_archived.
       order(updated_at: :desc).
-      includes(:borrower, :loan_product => [:current_account => [:subsidiary_accounts]]).
       paginate(page: params[:page], per_page: 30)
     end
     respond_to do |format|

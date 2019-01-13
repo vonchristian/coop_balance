@@ -7,14 +7,14 @@ module AccountingModule
 
     class_attribute :normal_credit_balance
 
-    belongs_to :main_account,       class_name: "AccountingModule::Account", foreign_key: 'main_account_id'
+    # belongs_to :main_account,       class_name: "AccountingModule::Account", foreign_key: 'main_account_id'
     has_many :amounts,              class_name: "AccountingModule::Amount"
     has_many :credit_amounts,       :class_name => 'AccountingModule::CreditAmount'
     has_many :debit_amounts,       :class_name => 'AccountingModule::DebitAmount'
     has_many :entries,              through: :amounts, source: :entry, class_name: "AccountingModule::Entry"
     has_many :credit_entries,       :through => :credit_amounts, :source => :entry, :class_name => 'AccountingModule::Entry'
     has_many :debit_entries,        :through => :debit_amounts, :source => :entry, :class_name => 'AccountingModule::Entry'
-    has_many :subsidiary_accounts,  class_name: "AccountingModule::Account", foreign_key: 'main_account_id'
+    # has_many :subsidiary_accounts,  class_name: "AccountingModule::Account", foreign_key: 'main_account_id'
     has_many :account_budgets
 
     validates :type, :name, :code, presence: true

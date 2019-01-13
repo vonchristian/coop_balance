@@ -31,7 +31,7 @@ module LoansModule
         amount * rate
       end
 
-      def monthly_rate
+      def monthly_interest_rate
         rate / 12.0
       end
 
