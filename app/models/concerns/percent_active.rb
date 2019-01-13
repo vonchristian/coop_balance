@@ -1,5 +1,9 @@
 module PercentActive
   def percent_active(args={})
-    (updated_at(args).count / self.count.to_f) * 100
+    if updated_at(args).present?
+      (updated_at(args).count / self.count.to_f) * 100
+    else
+      0
+    end
   end
 end

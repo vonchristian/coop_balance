@@ -533,5 +533,5 @@ Rails.application.routes.draw do
   end
   resources :bank_account_applications, only: [:new, :create]
   mount ActionCable.server => '/cable'
-
+  resources :demo_requests, only: [:new, :create]
 end

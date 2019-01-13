@@ -140,40 +140,19 @@
                           <%= loan_product.current_interest_config_calculation_type %>
                         </div>
                       </div>
-                      <div class="row min-margin-bottom">
-                        <div class="col-md-6 col-sm-6">
-                          <p class="no-margin-bottom">Prededuction Type</p>
-                        </div>
-                        <div class="col-md-6 col-sm-6">
-                          <%= loan_product.current_interest_config_prededuction_type %>
-                        </div>
-                      </div>
-                      <div class="row min-margin-bottom">
-                        <div class="col-md-6 col-sm-6">
-                          <p class="no-margin-bottom">Amortization Type</p>
-                        </div>
-                        <div class="col-md-6 col-sm-6">
-                          <%= loan_product.current_interest_config_amortization_type %>
-                        </div>
-                      </div>
-                      <div class="row min-margin-bottom">
-                        <div class="col-md-6 col-sm-6">
-                          <p class="no-margin-bottom">Prededucted Rate</p>
-                        </div>
-                        <div class="col-md-6 col-sm-6">
-                          <%#= loan_product.current_interest_config.prededucted_rate * 100 %>%
-                        </div>
-                      </div>
-                      <div class="row min-margin-bottom">
-                        <div class="col-md-6 col-sm-6">
-                          <p class="no-margin-bottom">Rate Type</p>
-                        </div>
-                        <div class="col-md-6 col-sm-6">
-                          <%= loan_product.current_interest_config_rate_type %>
-                        </div>
-                      </div>
                     </div>
                   </div>
+                </div>
+              </div>
+              <div class="row min-margin-bottom">
+                <div class="col-md-6">
+                  <p class="text-muted">Interest Prededuction</p>
+                </div>
+                <div class="col-md-6">
+                  <%= loan_product.current_penalty_config_rate_in_percent %> %
+                  <%= link_to new_management_module_settings_loan_product_penalty_configuration_path(loan_product), data: { modal: true } do %>
+                    <span class="btn btn-outline-danger btn-xs float-right" data-toggle="tooltip" title="Set Penalty Rate"><i class="fa fa-edit"></i> Set </span>
+                  <% end %>
                 </div>
               </div>
               <hr class="min-margin">
