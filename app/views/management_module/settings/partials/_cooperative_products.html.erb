@@ -182,7 +182,7 @@
                   <p class="text-muted">PENALTY RATE </p>
                 </div>
                 <div class="col-md-6">
-                  <%= loan_product.try(:penalty_rate)*100 %>%
+                  <%= loan_product.current_penalty_config_rate_in_percent %> %
                   <%= link_to new_management_module_settings_loan_product_penalty_configuration_path(loan_product), data: { modal: true } do %>
                     <span class="btn btn-outline-danger btn-xs float-right" data-toggle="tooltip" title="Set Penalty Rate"><i class="fa fa-edit"></i> Set </span>
                   <% end %>

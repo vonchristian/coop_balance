@@ -29,7 +29,7 @@ module LoansModule
              :interest_revenue_account,
              to: :current_interest_config, prefix: true
 
-    delegate :rate, to: :current_penalty_config, prefix: true, allow_nil: true
+    delegate :rate, :rate_in_percent, to: :current_penalty_config, prefix: true, allow_nil: true
 
     delegate :interest_revenue_account,
              :interest_receivable_account,
@@ -49,20 +49,26 @@ module LoansModule
 
     delegate :calculation_type, :rate, :number_of_payments, to: :current_interest_prededuction, prefix: true
 
-    def current_interest_prededuction
-      interest_predeductions.current
-    end
-
-    def interest_amortization_calculator
+    def interest_calculator
       ("LoansModule::InterestCalculators::" + current_interest_prededuction_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
     end
 
+    def prededucted_interest_calculator
+      ("LoansModule::PredeductedInterestCalculators::" + current_interest_prededuction_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
+    end
 
+    def loan_processor
+      ("LoansModule::LoanProcessors::" + current_interest_prededuction_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
+    end
+
+    def amortization_scheduler
+      ("LoansModule::AmortizationSchedulers::" + current_interest_prededuction_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
+    end
 
     def self.accounts
       accounts = []
       accounts << all.pluck(:current_account_id)
-      accounts << all.pluck(:due_account_id)
+      accounts << all.pluck(:past_due_account_id)
       AccountingModule::Account.where(id: accounts.uniq.flatten)
     end
 
@@ -80,11 +86,11 @@ module LoansModule
       AccountingModule::Account.where(id: ids)
     end
 
-    def self.interest_revenue_accounts
+    def self.interest_revenue_accounts #move
       LoansModule::LoanProducts::InterestConfig.interest_revenue_accounts
     end
 
-    def self.penalty_revenue_accounts
+    def self.penalty_revenue_accounts #move
       LoansModule::LoanProducts::PenaltyConfig.penalty_revenue_accounts
     end
 
@@ -135,65 +141,8 @@ module LoansModule
       penalty_configs.current
     end
 
-    def monthly_interest_rate
-      interest_rate / 12.0
-    end
-
-    def interest_rate
-      current_interest_config_rate
-    end
-
-    def penalty_rate
-      current_penalty_config_rate
-    end
-
-    def create_charges_for(loan_application)
-      create_interest_on_loan_charge_for(loan_application)
-      create_percent_based_charges(loan_application)
-      create_amount_based_charges(loan_application)
-      if loan_protection_plan_provider.present?
-        create_loan_protection_fund(loan_application)
-      end
-    end
-
-    def amortization_scheduler
-      ("LoansModule::AmortizationSchedulers::" + current_interest_prededuction_calculation_type.titleize.gsub(" ", "") + amortization_schedule.calculation_type.titleize.gsub(" ", "")).constantize
-    end
-
-    private
-
-    def create_interest_on_loan_charge_for(loan_application)
-      current_interest_config.create_charges_for(loan_application)
-    end
-
-    def create_loan_protection_fund(loan_application)
-      loan_protection_plan_provider.create_charges_for(loan_application)
-    end
-
-    def create_percent_based_charges(loan_application)
-      loan_product_charges.percent_based.each do |charge|
-         loan_application.voucher_amounts.create!(
-          cooperative: loan_application.cooperative,
-          commercial_document: loan_application,
-          description: charge.name,
-          amount: charge.rate * loan_application.loan_amount.amount,
-          amount_type: 'credit',
-          account: charge.account
-          )
-      end
-    end
-
-    def create_amount_based_charges(loan_application)
-      loan_product_charges.amount_based.each do |charge|
-          loan_application.voucher_amounts.create!(
-          cooperative:         loan_application.cooperative,
-          commercial_document: loan_application,
-          description:         charge.name,
-          amount:              charge.amount,
-          amount_type:         'credit',
-          account:             charge.account
-          )
-      end
+    def current_interest_prededuction
+      interest_predeductions.current
     end
   end
 end

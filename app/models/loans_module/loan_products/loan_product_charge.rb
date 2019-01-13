@@ -7,9 +7,14 @@ module LoansModule
       validates :name, :account_id, :amount, :rate, presence: true
       validates :rate, :amount, numericality: true
 
-      def charge_amount(loan_amount)
-        rate * amount
+      def charge_amount(args={})
+        charge_calculator.new(args.merge(charge: self)).calculate
       end
+
+      def charge_calculator
+        ("LoansModule::LoanProductChargeCalculators::" + charge_type.titleize.gsub(" ", "")).constantize
+      end
+
     end
   end
 end

@@ -1,14 +1,18 @@
 module LoansModule
   module AmortizationSchedulers
     class NumberOfPaymentsDecliningBalance
-      attr_reader :scheduleable
+      attr_reader :scheduleable, :number_of_payments
       def initialize(args)
         @scheduleable = args.fetch(:scheduleable)
+        @loan_product = @scheduleable.loan_product
+        @number_of_payments = @loan_product.current_interest_prededuction_number_of_payments
+
       end
       def create_schedule!
         create_first_schedule
         create_succeeding_schedule
         update_interest_amounts
+        update_interests_status
       end
       private
       def create_first_schedule
@@ -35,8 +39,16 @@ module LoansModule
           schedule.save!
         end
       end
+
+      def update_interests_status
+          scheduleable.amortization_schedules.by_oldest_date.first(number_of_payments).each do |schedule|
+          schedule.prededucted_interest = true
+          schedule.save!
+        end
+      end
+
       def amortizeable_interest_for(schedule)
-        loan_product.interest_amortization_calculator.new(loan_application: scheduleable, schedule: schedule).monthly_amortization_interest
+        scheduleable.loan_product.interest_calculator.new(loan_application: scheduleable, schedule: schedule).monthly_amortization_interest
       end
     end
   end

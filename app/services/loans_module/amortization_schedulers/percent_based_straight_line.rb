@@ -10,7 +10,13 @@ module LoansModule
       def create_schedule!
         create_first_schedule
         create_succeeding_schedule
-        update_interest_amounts
+      end
+
+      def update_interests!
+        scheduleable.amortization_schedules.each do |schedule|
+          schedule.interest = amortizeable_interest_for(schedule)
+          schedule.save!
+        end
       end
 #
       private
@@ -34,15 +40,9 @@ module LoansModule
         end
       end
 
-      def update_interest_amounts
-        scheduleable.amortization_schedules.each do |schedule|
-          schedule.interest = amortizeable_interest_for(schedule)
-          schedule.save!
-        end
-      end
 
       def amortizeable_interest_for(schedule)
-        loan_product.interest_amortization_calculator.new(loan_application: scheduleable).monthly_amortization_interest
+        loan_product.interest_calculator.new(loan_application: scheduleable).monthly_amortization_interest
       end
     end
   end

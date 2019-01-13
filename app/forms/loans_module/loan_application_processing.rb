@@ -45,16 +45,17 @@ module LoansModule
         preparer_id: preparer_id,
         account_number: account_number,
         term: term)
-        LoansModule::AmortizationScheduler.new(scheduleable: loan_application).create_schedule!
-        LoansModule::LoanApplicationChargeSetter.new(loan_application: loan_application).create_charges!
-        LoansModule::AmortizationScheduler.new(scheduleable: loan_application).update_interest_amounts!
 
+        find_loan_product.loan_processor.new(loan: loan_application).process!
     end
     def find_borrower
       Borrower.find(borrower_id)
     end
     def find_preparer
       User.find(preparer_id)
+    end
+    def find_loan_product
+      LoansModule::LoanProduct.find(loan_product_id)
     end
   end
 end

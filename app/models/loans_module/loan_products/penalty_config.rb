@@ -15,6 +15,9 @@ module LoansModule
       def daily_rate
         rate / 30.0
       end
+      def rate_in_percent
+        rate * 100
+      end
     end
   end
 end

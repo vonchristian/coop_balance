@@ -26,11 +26,11 @@
         <div class="content">
           <div class="content-header">
           </div>
-          <div class="container-fluid">
-            <%= breadcrumbs pretext: "You are here:", separator: " &rsaquo;", style: :bootstrap %>
+
+            <small><%= breadcrumbs pretext: "You are here:", separator: " &rsaquo;", style: :bootstrap %></small>
             <%= render 'layouts/shared/flash_messages' %>
             <%= yield %>
-          </div>
+        
         </div>
       </div>
       <%= render 'layouts/shared/footer' %>

@@ -22,8 +22,8 @@ module LoansModule
 
     delegate :name, :current_membership, :avatar, to: :borrower, prefix: true
     delegate :name, :interest_revenue_account, :current_account, to: :loan_product, prefix: true
-    delegate :monthly_interest_rate, to: :loan_product, prefix: true
-    delegate :interest_amortization_calculator, :current_interest_config, :interest_calculator,  to: :loan_product
+    delegate :monthly_interest_rate,  to: :loan_product, prefix: true
+    delegate :current_interest_config, :interest_calculator, :prededucted_interest_calculator,  to: :loan_product
     delegate :entry, to: :voucher, allow_nil: true
     delegate :rate, :straight_balance?, :annually?, :prededucted_number_of_payments, to: :current_interest_config, prefix: true
     validates :cooperative_id, presence: true
@@ -37,7 +37,7 @@ module LoansModule
     end
 
     def maturity_date
-      amortization_schedules.ordered_by_date.last.date
+      amortization_schedules.latest.date
     end
 
     def reference_number
@@ -128,7 +128,7 @@ module LoansModule
 
 
     def prededucted_interest
-      LoansModule::PredeductedInterestCalculator.new(loan_application: self).prededucted_interest
+      prededucted_interest_calculator.new(loan_application: self).prededucted_interest
     end
 
     def total_amortizeable_interest
