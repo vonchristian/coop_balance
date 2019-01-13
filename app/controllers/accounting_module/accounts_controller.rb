@@ -37,7 +37,7 @@ module AccountingModule
     def update
       @account = current_cooperative.accounts.find(params[:id])
       @account.update(account_params)
-      respond_modal_with @account
+      respond_modal_with @account,
         location: accounting_module_account_url(@account)
     end
 
@@ -57,7 +57,7 @@ module AccountingModule
     def type_class
       type.constantize
     end
-    
+
     def account_params
       if @account && @account.type == "AccountingModule::Asset"
         params.require(:accounting_module_asset).permit(:name, :code, :type, :contra, :main_account_id)
