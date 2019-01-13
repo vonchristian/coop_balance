@@ -75,7 +75,7 @@ module LoansModule
       else
         interest
       end
-    end 
+    end
 
     def previous_schedule
       from_date = self.class.oldest.date

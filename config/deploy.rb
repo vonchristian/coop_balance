@@ -5,7 +5,7 @@ require 'mina/rbenv'
 require 'mina/puma'
 
 set :whenever_name, 'production'
-set :domain,        '192.168.254.124'
+set :domain,        '128.199.89.177'
 set :deploy_to,     '/var/www/coopcatalyst'
 set :repository,    'git@gitlab.com:vonchristian/coop_catalyst_private.git'
 set :branch,        'master'
@@ -68,7 +68,7 @@ task :deploy => :remote_environment do
     invoke :'deploy:link_shared_paths'
     invoke :'bundle:install'
     invoke :'rails:db_migrate'
-    # invoke :'rails:assets_precompile'
+    invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
 
     on :launch do

@@ -12,10 +12,7 @@
     <%= f.input :unearned_interest_income_account_id, label: 'Unearned Interest Income Account', collection: AccountingModule::Asset.all.map{|a| [a.name, a.id] } %>
     <%= f.input :calculation_type, label: 'Calculation Type', collection: LoansModule::LoanProducts::InterestConfig.calculation_types.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
 
-    <%= f.input :prededuction_type, label: 'Pre-Deduction Type', collection: LoansModule::LoanProducts::InterestConfig.prededuction_types.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
-     <%= f.input :amortization_type, label: 'Amortization Type', collection: LoansModule::LoanProducts::InterestConfig.amortization_types.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
-     <%= f.input :rate_type, label: 'Rate Type', collection: LoansModule::LoanProducts::InterestConfig.rate_types.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
-
+    
     <%= f. input :prededucted_rate, label: 'Pre-deducted Rate' %>
     <%= f. input :prededucted_number_of_payments, label: 'Pre-deducted Number of Payments' %>
     <%= f. input :prededucted_amount, label: 'Pre-deducted Amount' %>

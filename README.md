@@ -1,3 +1,7 @@
+.bg-indigo-dark
+#5661b3
+gray background
+#f1f5f8
 rename loan_creation_processing to loans::opening
 sales report
 date/customer/ref#/amount/total

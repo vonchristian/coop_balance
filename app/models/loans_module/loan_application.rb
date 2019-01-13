@@ -178,7 +178,7 @@ module LoansModule
     end
 
     def amortizeable_principal
-      Money.new(loan_amount / schedule_count).amount
+      loan_amount.amount / schedule_count
     end
 
     def number_of_thousands # for Loan Protection fund computation
