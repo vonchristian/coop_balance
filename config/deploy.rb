@@ -5,7 +5,7 @@ require 'mina/rbenv'
 require 'mina/puma'
 
 set :whenever_name, 'production'
-set :domain,        '192.168.8.128'
+set :domain,        '178.128.94.215'
 set :deploy_to,     '/var/www/coopcatalyst'
 set :repository,    'git@gitlab.com:vonchristian/coop_catalyst_private.git'
 set :branch,        'master'
@@ -72,7 +72,7 @@ task :deploy => :remote_environment do
     invoke :'deploy:cleanup'
 
     on :launch do
-      invoke :'puma:phased_restart'
+      # invoke :'puma:phased_restart'
       # invoke :'whenever:update'
     end
   end
