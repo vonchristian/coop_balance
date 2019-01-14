@@ -2,12 +2,12 @@
   "name": "coopcatalyst",
   "private": true,
   "dependencies": {
-    "@rails/webpacker": "^4.0.0-rc.2",
+    "@rails/webpacker": "https://github.com/rails/webpacker",
     "vue": "^2.5.22",
     "vue-loader": "14.2.2",
     "vue-template-compiler": "^2.5.22"
   },
   "devDependencies": {
-    "webpack-dev-server": "^2.11.1"
+    "webpack-dev-server": "^3.1.14"
   }
 }
