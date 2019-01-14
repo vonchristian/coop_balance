@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_12_142922) do
+ActiveRecord::Schema.define(version: 2019_01_14_010749) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -506,6 +506,13 @@ ActiveRecord::Schema.define(version: 2019_01_12_142922) do
     t.index ["invoiceable_type", "invoiceable_id"], name: "index_invoices_on_invoiceable_type_and_invoiceable_id"
     t.index ["number"], name: "index_invoices_on_number", unique: true
     t.index ["type"], name: "index_invoices_on_type"
+  end
+
+  create_table "leads", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "email"
+    t.string "contact_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "line_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

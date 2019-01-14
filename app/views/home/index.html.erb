@@ -9,7 +9,7 @@
   			<h1 class="text-open-sans-regular">Transform the way you manage your cooperative </h1>
   			<br>
   			<p class="lead"> Coop Catalyst integrates all your operations in one platform so that managing your cooperative is simpler, easier, and more transparent.</p>
-  			<%= link_to 'Request for Demo', new_demo_request_path, class: 'btn btn-primary btn-lg' %>
+
   		</div>
   		<div class="col-md-6">
   		</div>
@@ -255,7 +255,7 @@
     </div>
     <br>
     <br>
-    <div class="landing-mid-section bg-light-green">
+    <div class="landing-footer-section bg-light-green">
       <br>
       <br>
       <div class="container">
@@ -305,7 +305,15 @@
             </div>
           </div>
           <div class="col-md-3">
-            <%= link_to 'Request for Demo', new_demo_request_path, class: 'btn btn-primary btn-lg btn-block' %>
+            <div class="card">
+              <div class="card-body">
+                <%= simple_form_for Lead.new do |f| %>
+                  <%= f.input :email %>
+                  <%= f.input :contact_number %>
+                  <%= f.submit 'Request for Demo', class: 'btn btn-primary btn-lg btn-block' %>
+                <% end %>
+              </div>
+            </div>
           </div>
         </div>
         <br>
