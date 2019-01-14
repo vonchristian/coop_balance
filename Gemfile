@@ -6,7 +6,7 @@ git_source(:github) do |repo_name|
 end
 gem 'prawn-icon'
 gem 'bootsnap', require: false
-gem 'webpacker', '>= 4.0.x'
+gem 'webpacker', '~> 3.5'
 gem 'rubyzip', '~> 1.1.0'
 gem 'axlsx', '2.1.0.pre'
 gem 'paperclip'
