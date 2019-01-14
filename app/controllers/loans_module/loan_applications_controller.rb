@@ -5,8 +5,7 @@ module LoansModule
         @ordered_loan_applications = current_cooperative.loan_applications.text_search(params[:search])
         @loan_applications = @ordered_loan_applications.paginate(page: params[:page], per_page: 20)
       else
-        @ordered_loan_applications = current_cooperative.loan_applications.where(approved: false).includes(:voucher).order("vouchers.reference_number DESC", "vouchers.date DESC")
-        @loan_applications = @ordered_loan_applications.paginate(page: params[:page], per_page: 20)
+        @loan_applications = current_cooperative.loan_applications.not_approved.includes(:loan_product, :voucher =>[:accounting_entry]).order("vouchers.reference_number DESC", "vouchers.date DESC").paginate(page: params[:page], per_page: 20)
       end
     end
     def new

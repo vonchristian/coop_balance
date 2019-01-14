@@ -99,8 +99,9 @@ Rails.application.routes.draw do
       resources :vouchers, only: [:new, :create, :show, :destroy], module: :loan_applications
       resources :amortization_schedules, only: [:index], module: :loan_applications
       resources :voucher_confirmations, only: [:create], module: :loan_applications
+      resources :loan_amounts, only: [:new, :create], module: :loan_applications
 
-      resources :voucher_amounts,       only: [:new, :create, :destroy], module: :loan_applications do
+      resources :voucher_amounts,       only: [:new, :create, :edit, :update, :destroy], module: :loan_applications do
         resources :adjustments, only: [:new, :create]
       end
     end
@@ -199,6 +200,7 @@ Rails.application.routes.draw do
 
     namespace :settings do
       resources :general, only: [:index]
+      resources :offices, only: [:index]
       resources :saving_products, only: [:index]
       resources :share_capital_products, only: [:index]
       resources :time_deposit_products, only: [:index]

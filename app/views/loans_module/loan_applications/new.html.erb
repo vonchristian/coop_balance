@@ -42,7 +42,7 @@
           <%= button_tag( :class => "btn btn-primary float-right") do %>
             Proceed  &nbsp;<i class="fa fa-arrow-right"></i>
           <% end %>
-          <%= link_to 'Cancel Application', member_path(@borrower), class: "btn btn-default float-left" %>
+          <%= link_to 'Cancel Application', member_path(@borrower), class: "btn-link float-left" %>
         <% end %>
       </div>
     </div>
@@ -53,10 +53,10 @@
   $('#loanProductSelect').on('change', function (e) {
     var filter = $("#loanProductSelect option:selected").text();
     if (filter == 'Short Term Loan(Non Member)' || filter == 'Short Term Loan(Member)') {
-      $('input[type="radio"][value="lumpsum"]').click();  
+      $('input[type="radio"][value="lumpsum"]').click();
     }
     else {
-      $('input[type="radio"][value="monthly"]').click(); 
+      $('input[type="radio"][value="monthly"]').click();
     }
   });
 </script>

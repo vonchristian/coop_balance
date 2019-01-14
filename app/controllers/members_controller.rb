@@ -13,9 +13,6 @@ class MembersController < ApplicationController
 
   def show
     @member         = Member.find(params[:id])
-    @share_capitals = @member.share_capitals.includes(:share_capital_product)
-    @savings        = @member.savings.includes(:saving_product)
-
   end
 
   def edit

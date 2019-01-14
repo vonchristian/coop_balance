@@ -5,6 +5,8 @@
     <div class="card">
       <div class="card-body">
         <br>
+        <h3 class="card-title"> Cooperative, Offices,  and Products </h3>
+        <br>
         <div class="row">
           <div class="col-md-4">
             <%= link_to management_module_settings_general_index_path do %>
@@ -23,6 +25,23 @@
               </div>
             <% end %>
             <br>
+            <%= link_to management_module_settings_offices_path do %>
+              <div class="row">
+                <div class="col-md-3">
+                  <span class="btn btn-default">
+                    <i class="fa fa-building"></i>
+                  </span>
+                </div>
+                <div class="col-md-8">
+                  <b class="">Branch / Satellite Offices </b><br>
+                  <span class="text-muted">
+                    View and manage your cooperative branch and satellite offices.
+                  </span>
+                </div>
+              </div>
+            <% end %>
+            <br>
+
             <%= link_to management_module_settings_loan_products_path do %>
               <div class="row">
                 <div class="col-md-3">
@@ -156,43 +175,77 @@
           <% end %>
         </div>
       </div>
-    </div>
-  </div>
-</div>
-</div>
-<br>
-  <div class="container">
-    <div class="container-fluid">
-      <h2 class="text-open-sans-regular"> Data Migrations </h2>
+      <hr>
       <br>
-      <div class="card">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-md-4">
-              <b> Savings Accounts </b><br>
-              <span class="text-muted">
-                Migrate savings accounts of members from your spreadsheet.
-              </span>
-              <br>
-              <br>
-              <%= simple_form_for Registries::SavingsAccountRegistry.new, url: :savings_account_registries do |f| %>
-                <div class="row">
-                  <div class="col-md-9">
-                    <%= f.input :spreadsheet, label: false %>
-                    <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
-                  </div>
-                  <div class="col-md-3">
-                    <%= button_tag(class: "btn btn-sm btn-outline-danger float-right", id:"s-upload") do %>
-                      <span><i class="fa fa-arrow-alt-circle-up"></i> Upload</span>
-                    <% end %>
-                  </div>
-                </div>
-              <% end %>
+      <h3 class="card-title"> Monitoring, Member Locations </h3>
+      <br>
+      <div class="row">
+        <div class="col-md-4">
+          <%= link_to management_module_settings_cooperative_services_path do %>
+            <div class="row">
+              <div class="col-md-3">
+                <span class="btn btn-default">
+                  <i class="fa fa-list"></i>
+                </span>
+              </div>
+              <div class="col-md-8">
+                <b>Barangays</b><br>
+                <span class="text-muted">
+                  View and manage cooperative services. Set accounts for each services
+                  to generate separate financial statement, income statements.
+                </span>
+              </div>
             </div>
-          </div>
+          <% end %>
+          <br>
+          <%= link_to management_module_settings_cooperative_services_path do %>
+            <div class="row">
+              <div class="col-md-3">
+                <span class="btn btn-default">
+                  <i class="fa fa-users"></i>
+                </span>
+              </div>
+              <div class="col-md-8">
+                <b>Organizations</b><br>
+                <span class="text-muted">
+                  View and manage cooperative services. Set accounts for each services
+                  to generate separate financial statement, income statements.
+                </span>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <hr />
+      <br>
+      <h3 class="card-title"> Data Templates and Uploading </h3>
+      <br>
+      <div class="row">
+        <div class="col-md-4">
+          <b> Savings Accounts </b><br>
+          <span class="text-muted">
+            Migrate savings accounts of members from your spreadsheet.
+          </span>
+          <br>
+          <br>
+          <%= simple_form_for Registries::SavingsAccountRegistry.new, url: :savings_account_registries do |f| %>
+            <div class="row">
+              <div class="col-md-9">
+                <%= f.input :spreadsheet, label: false %>
+                <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+              </div>
+              <div class="col-md-3">
+                <%= button_tag(class: "btn btn-sm btn-outline-danger float-right", id:"s-upload") do %>
+                  <span><i class="fa fa-arrow-alt-circle-up"></i> Upload</span>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
         </div>
       </div>
     </div>
   </div>
 </div>
+</div>
+
 <%= render 'management_module/settings/index' %>

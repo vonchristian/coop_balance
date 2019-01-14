@@ -8,7 +8,6 @@ module LoansModule
         if valid?
           ActiveRecord::Base.transaction do
             save_loan_charge
-            update_amortization_schedule
           end
         end
       end
@@ -30,12 +29,6 @@ module LoansModule
 
       def find_loan
         LoansModule::Loan.find(loan_id)
-      end
-      def update_amortization_schedule
-        if find_loan_application.amortization_schedules.present?
-          find_loan_application.amortization_schedules.destroy_all
-        end
-        LoansModule::AmortizationSchedule.create_amort_schedule_for(find_loan_application)
       end
     end
   end

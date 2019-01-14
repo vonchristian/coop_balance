@@ -3,11 +3,14 @@ module LoansModule
     class VouchersController < ApplicationController
 
       def new
-        @loan_application = current_cooperative.loan_applications.find(params[:loan_application_id])
+        @loan_application = current_cooperative.loan_applications.includes(:loan_product).find(params[:loan_application_id])
+        if @loan_application.voucher.present?
+          redirect_to loans_module_loan_applications_url(@loan_application)
+        end
         @borrower = @loan_application.borrower
         @share_capitals = @borrower.share_capitals
         @savings_accounts = @borrower.savings
-        @previous_loans = @loan_application.borrower.loans
+        @previous_loans = @loan_application.borrower.loans.includes(:loan_product)
         @voucher = LoansModule::LoanApplications::VoucherProcessing.new
       end
 

@@ -16,6 +16,7 @@
       <br>
       <%= simple_form_for(resource, as: resource_name, :url => session_path(resource_name),
         wrapper_mappings: {boolean: :vertical_boolean }) do |f| %>
+        <%= f.error_notification %>
         <center>
         <%=image_tag("itworx.png", height: 140, width: 140, class: 'img-circle img-responsive') %>
       </center>

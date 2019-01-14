@@ -18,7 +18,7 @@ module LoansModule
           schedule.save!
         end
       end
-#
+      
       private
       def create_first_schedule
         scheduleable.amortization_schedules.create!(
@@ -30,7 +30,7 @@ module LoansModule
 
       def create_succeeding_schedule
         if !scheduleable.lumpsum?
-          (scheduleable.schedule_count - 1).to_i.times do
+          (scheduleable.schedule_count - 1).floor.times do
             scheduleable.amortization_schedules.create!(
               date:      scheduleable.succeeding_amortization_date,
               interest:  0,

@@ -8,7 +8,7 @@ module LoansModule
       end
 
       def start_date
-        date + term.months
+        date + term.floor.months
       end
     end
   end

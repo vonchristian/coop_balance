@@ -31,6 +31,9 @@ module LoansModule
     def forwarded_loan? #check on amortization_schedule pdf
       false
     end
+    def self.not_approved
+      where(approved: false)
+    end
 
     def disbursement_date
       application_date
@@ -77,9 +80,16 @@ module LoansModule
     end
 
     def total_interest
-      first_year_interest +
-      second_year_interest +
-      third_year_interest
+      if term_is_within_one_year?
+        first_year_interest
+      elsif term_is_within_three_years?
+        first_year_interest +
+        second_year_interest
+      elsif term_is_within_three_years?
+        first_year_interest +
+        second_year_interest +
+        third_year_interest
+      end 
     end
 
 
@@ -97,10 +107,12 @@ module LoansModule
     end
 
     def second_year_interest
+      return 0 if !term_is_within_two_years?
       current_interest_config.compute_interest(second_year_principal_balance)
     end
 
     def third_year_interest
+      return 0 if !term_is_within_three_years?
       current_interest_config.compute_interest(third_year_principal_balance)
     end
 
@@ -110,8 +122,16 @@ module LoansModule
 
     def second_year_principal_balance
       return 0 if !term_is_within_two_years?
-      schedule = amortization_schedules.by_oldest_date[11]
-      principal_balance_for(schedule)
+      if quarterly?
+        schedule = amortization_schedules.by_oldest_date[3]
+        principal_balance_for(schedule)
+      elsif monthly?
+        schedule = amortization_schedules.by_oldest_date[11]
+      elsif weekly?
+        schedule = amortization_schedules.by_oldest_date[48]
+        principal_balance_for(schedule)
+
+      end
     end
 
     def third_year_principal_balance
@@ -166,7 +186,7 @@ module LoansModule
 
 
     def first_amortization_date
-      amortization_date_setter.new(date: application_date).start_date
+      amortization_date_setter.new(date: application_date, term: term).start_date
     end
 
     def succeeding_amortization_date

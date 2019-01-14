@@ -1,159 +1,147 @@
-<div class="card">
-  <div class="card-body">
-    <div class="row">
-      <div class="col-md-5 border-right">
-        <h3 class="number"><%= number_to_currency @savings.sum{|s| s.balance } %></h3>
-        <small class="text-muted">SAVINGS DEPOSITS</small>
-      </div>
-
-      <div class="col-md-5 offset-md-1">
-        <h3 class="number"><%= number_to_currency @share_capitals.sum{|l| l.paid_up_balance } %></h3>
-        <small class="text-muted">SHARE CAPITAL</small>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="card">
-  <div class="card-header">
-    <div class="row">
-      <div class="col-md-6">
-        <h4 class="card-title"> Information</h4>
-      </div>
-      <div class="col-md-6">
+<div class="container">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header">
         <div class="row">
           <div class="col-md-6">
-            <%= link_to 'View (PDF)', member_info_index_path(@member, format: 'pdf'), class: 'btn btn-default btn-sm float-right' %>
+            <h4 class="card-title"> Information</h4>
           </div>
           <div class="col-md-6">
-            <%= link_to 'Update Profile', edit_member_path(@member), class: "btn btn-outline-warning btn-sm float-right", data: { modal: true } %>
+            <div class="row">
+              <div class="col-md-6">
+                <%= link_to 'View (PDF)', member_info_index_path(@member, format: 'pdf'), class: 'btn btn-default btn-sm float-right' %>
+              </div>
+              <div class="col-md-6">
+                <%= link_to 'Update Profile', edit_member_path(@member), class: "btn btn-outline-warning btn-sm float-right", data: { modal: true } %>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-  <div class="card-body">
-    <table class="table">
-      <tbody>
-        <tr>
-          <td style="width:200px"><i class="fa fa-map-marker"></i> &nbsp; Current Address</td>
-          <td><%= @member.current_address_complete_address %></td>
-          <td>
-            <%= link_to 'Update', new_member_address_path(@member), class: "btn btn-outline-warning btn-sm", data: { modal: true } %>
-          </td>
-        </tr>
-        <tr>
-          <td style="width:200px"><i class="fa fa-phone"></i> &nbsp; Account Number </td>
-          <td><%= @member.account_number %></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td style="width:200px"><i class="fa fa-phone"></i>  &nbsp; Contact Info </td>
-          <td><%= @member.current_contact_number %></td>
-          <td>
-            <%= link_to 'Update', new_member_contact_path(@member), class: "btn btn-outline-warning btn-sm", data: { modal: true } %>
-          </td>
-        </tr>
-        <tr>
-          <td style="width:200px"><i class="fa fa-calendar"></i> &nbsp; Date of Birth </td>
-          <td><%= @member.date_of_birth.try(:strftime, "%B %e, %Y") %></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td style="width:200px"><i class="fa fa-calendar"></i> &nbsp; Age </td>
-          <td><%= @member.age %></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td style="width:200px"><i class="fa fa-circle"></i> &nbsp; Sex </td>
-          <td><%= @member.sex.try(:titleize) %></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td style="width:200px"><i class="fa fa-calendar"></i> &nbsp; Civil Status </td>
-          <td><%= @member.civil_status.try(:titleize) %></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td style="width:200px"><i class="fa fa-info"></i>  &nbsp; TIN Number </td>
-          <td><%= @member.current_tin_number %></td>
-          <td>
-            <%= link_to 'Update', new_member_tin_path(@member), class: "btn btn-outline-warning btn-sm", data: { modal: true } %>
-          </td>
-        </tr>
-        <tr>
-          <td style="width:200px"><i class="fa fa-info"></i> &nbsp; Office </td>
-          <td><%= @member.office_name  %></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td style="width:200px"><i class="fa fa-sitemap"></i> &nbsp; Organizations </td>
-          <td>
-            <% @member.organizations.each do |organization| %>
-              <p><%= organization.name  %></p>
-            <% end %>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td style="width:200px"><i class="fa fa-calendar"></i>  &nbsp; Membership Date </td>
-          <% @member.memberships.for_cooperative(current_user.cooperative).each do |membership| %>
-            <td><%= membership.membership_date.try(:strftime, ("%B %e, %Y")) %></td>
-            <td></td>
-          <% end %>
-        </tr>
-        <tr>
-          <td style="width:200px"><i class="fa fa-users"></i>  &nbsp; Beneficiaries </td>
-          <td>
-            <br>
-            <br>
-            <% @member.beneficiaries.each do |beneficiary| %>
-              <div class="row">
-                <div class="col-md-6">
-                  <p class="no-margin-bottom"><%= beneficiary.full_name %></p>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                  <p class="no-margin-bottom"><%= beneficiary.relationship.try(:titleize) %></p>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                  <%= link_to member_beneficiary_path(member_id: @member.id, id: beneficiary.id), method: :delete, data: { confirm: "Are you sure?" } do %>
-                    <span data-toggle="tooltip" title="Remove">
-                      <i class="fa fa-times text-danger"></i>
-                    </span>
-                  <% end if current_user.general_manager? %>
-                </div>
-              </div>
-              <hr class="min-margin">
-            <% end %>
-          </td>
-          <td><%= link_to new_member_beneficiary_path(@member), data: { modal: true } do %>
-                <span class="btn btn-outline-warning btn-sm" data-toggle="tooltip" title="Add Beneficiary"><i class="fa fa-plus-circle"></i> Add
-                </span>
+      <div class="card-body">
+        <table class="table">
+          <tbody>
+            <tr>
+              <td style="width:200px"><i class="fa fa-map-marker"></i> &nbsp; Current Address</td>
+              <td><%= @member.current_address_complete_address %></td>
+              <td>
+                <%= link_to 'Update', new_member_address_path(@member), class: "btn btn-outline-warning btn-sm", data: { modal: true } %>
+              </td>
+            </tr>
+            <tr>
+              <td style="width:200px"><i class="fa fa-phone"></i> &nbsp; Account Number </td>
+              <td><%= @member.account_number %></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="width:200px"><i class="fa fa-phone"></i>  &nbsp; Contact Info </td>
+              <td><%= @member.current_contact_number %></td>
+              <td>
+                <%= link_to 'Update', new_member_contact_path(@member), class: "btn btn-outline-warning btn-sm", data: { modal: true } %>
+              </td>
+            </tr>
+            <tr>
+              <td style="width:200px"><i class="fa fa-calendar"></i> &nbsp; Date of Birth </td>
+              <td><%= @member.date_of_birth.try(:strftime, "%B %e, %Y") %></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="width:200px"><i class="fa fa-calendar"></i> &nbsp; Age </td>
+              <td><%= @member.age %></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="width:200px"><i class="fa fa-circle"></i> &nbsp; Sex </td>
+              <td><%= @member.sex.try(:titleize) %></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="width:200px"><i class="fa fa-calendar"></i> &nbsp; Civil Status </td>
+              <td><%= @member.civil_status.try(:titleize) %></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="width:200px"><i class="fa fa-info"></i>  &nbsp; TIN Number </td>
+              <td><%= @member.current_tin_number %></td>
+              <td>
+                <%= link_to 'Update', new_member_tin_path(@member), class: "btn btn-outline-warning btn-sm", data: { modal: true } %>
+              </td>
+            </tr>
+            <tr>
+              <td style="width:200px"><i class="fa fa-info"></i> &nbsp; Office </td>
+              <td><%= @member.office_name  %></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="width:200px"><i class="fa fa-sitemap"></i> &nbsp; Organizations </td>
+              <td>
+                <% @member.organizations.each do |organization| %>
+                  <p><%= organization.name  %></p>
+                <% end %>
+              </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="width:200px"><i class="fa fa-calendar"></i>  &nbsp; Membership Date </td>
+              <% @member.memberships.for_cooperative(current_user.cooperative).each do |membership| %>
+                <td><%= membership.membership_date.try(:strftime, ("%B %e, %Y")) %></td>
+                <td></td>
               <% end %>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-<div class="card">
-  <div class="card-header">
-    <div class="row">
-      <div class="col-md-6">
-        <h3 class="card-title"> Signature Specimen </h3>
+            </tr>
+            <tr>
+              <td style="width:200px"><i class="fa fa-users"></i>  &nbsp; Beneficiaries </td>
+              <td>
+                <br>
+                <br>
+                <% @member.beneficiaries.each do |beneficiary| %>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <p class="no-margin-bottom"><%= beneficiary.full_name %></p>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                      <p class="no-margin-bottom"><%= beneficiary.relationship.try(:titleize) %></p>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                      <%= link_to member_beneficiary_path(member_id: @member.id, id: beneficiary.id), method: :delete, data: { confirm: "Are you sure?" } do %>
+                        <span data-toggle="tooltip" title="Remove">
+                          <i class="fa fa-times text-danger"></i>
+                        </span>
+                      <% end if current_user.general_manager? %>
+                    </div>
+                  </div>
+                  <hr class="min-margin">
+                <% end %>
+              </td>
+              <td><%= link_to new_member_beneficiary_path(@member), data: { modal: true } do %>
+                    <span class="btn btn-outline-warning btn-sm" data-toggle="tooltip" title="Add Beneficiary"><i class="fa fa-plus-circle"></i> Add
+                    </span>
+                  <% end %>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <div class="col-md-6">
-        <%= simple_form_for Member.new, url: member_signature_specimens_path(@member) do |f| %>
-          <%= f.input :signature_specimen, as: :file, label: false, input_html: { class: 'choose-btn center-block' } %>
-          <a class="btn btn-sm btn-outline-warning float-right" id="browse">Update Signature Specimen</a>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-md-6">
+            <h3 class="card-title"> Signature Specimen </h3>
+          </div>
+          <div class="col-md-6">
+            <%= simple_form_for Member.new, url: member_signature_specimens_path(@member) do |f| %>
+              <%= f.input :signature_specimen, as: :file, label: false, input_html: { class: 'choose-btn center-block' } %>
+              <a class="btn btn-sm btn-outline-warning float-right" id="browse">Update Signature Specimen</a>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <% if @member.signature_specimen.attachment.present? %>
+          <%= image_tag(@member.signature_specimen, height: 300, width: 500) %>
         <% end %>
       </div>
     </div>
-  </div>
-  <div class="card-body">
-    <% if @member.signature_specimen.attachment.present? %>
-      <%= image_tag(@member.signature_specimen, height: 300, width: 500) %>
-    <% end %>
   </div>
 </div>
 <script type="text/javascript">
