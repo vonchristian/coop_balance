@@ -198,7 +198,18 @@ Rails.application.routes.draw do
     resources :loan_protection_plan_providers, only: [:new, :create], module: :configurations
 
     namespace :settings do
-      resources :generals, only: [:index]
+      resources :general, only: [:index]
+      resources :saving_products, only: [:index]
+      resources :share_capital_products, only: [:index]
+      resources :time_deposit_products, only: [:index]
+      resources :programs, only: [:index]
+      resources :store_fronts, only: [:index]
+      resources :cooperative_services, only: [:index]
+
+
+
+
+
       resources :account_budgets, only: [:index]
       resources :cooperative_products, only: [:index]
       resources :configurations, only: [:index]

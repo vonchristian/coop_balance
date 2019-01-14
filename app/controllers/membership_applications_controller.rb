@@ -5,8 +5,8 @@ class MembershipApplicationsController < ApplicationController
   def create
     @membership = MembershipApplication.new(membership_params)
     if @membership.valid?
-      @membership.save
-      redirect_to member_url(id: @membership.find_member.id), notice: "Member information saved successfully"
+      @membership.register!
+      redirect_to member_url(@membership.find_member), notice: "Member information saved successfully"
     else
       render :new
     end

@@ -1,1 +1,198 @@
+<div class="container">
+  <div class="container-fluid">
+    <h1 class="text-open-sans-regular">Settings </h1>
+    <br>
+    <div class="card">
+      <div class="card-body">
+        <br>
+        <div class="row">
+          <div class="col-md-4">
+            <%= link_to management_module_settings_general_index_path do %>
+              <div class="row">
+                <div class="col-md-3">
+                  <span class="btn btn-default">
+                    <i class="fa fa-cog"></i>
+                  </span>
+                </div>
+                <div class="col-md-8">
+                  <b class="">General</b><br>
+                  <span class="text-muted">
+                    View and update your cooperative details
+                  </span>
+                </div>
+              </div>
+            <% end %>
+            <br>
+            <%= link_to management_module_settings_loan_products_path do %>
+              <div class="row">
+                <div class="col-md-3">
+                  <span class="btn btn-default">
+                    <i class="fa fa-credit-card btn-btn-default"></i>
+                  </span>
+                </div>
+                <div class="col-md-8">
+                  <b class="">Loan Products</b><br>
+                  <span class="text-muted">
+                    Manage loan products, interest rates,
+                    loan predeductions, loan charges and amortization settings.
+                  </span>
+                </div>
+              </div>
+          <% end %>
+          <br>
+          <%= link_to management_module_settings_saving_products_path do %>
+            <div class="row">
+              <div class="col-md-3">
+                <span class="btn btn-default">
+                  <i class="fa fa-coins"></i>
+                </span>
+              </div>
+              <div class="col-md-8">
+                <b class="">Saving Products</b><br>
+                <span class="text-muted">
+                  Manage saving products, interests rates, account dormancy.
+                </span>
+              </div>
+            </div>
+          <% end %>
+        </div>
+          <div class="col-md-4">
+            <%=link_to management_module_settings_share_capital_products_path do %>
+              <div class="row">
+                <div class="col-md-3">
+                  <span class="btn btn-default">
+                    <i class="fa fa-coins"></i>
+                  </span>
+                </div>
+                <div class="col-md-8">
+                  <b class="">Share Capital Products</b><br>
+                  <span class="text-muted">
+                    View and manage share capital products, minimum paid up share capital.
+                  </span>
+                </div>
+              </div>
+            <% end %>
+            <br>
+            <%=link_to management_module_settings_time_deposit_products_path do %>
+              <div class="row">
+                <div class="col-md-3">
+                  <span class="btn btn-default">
+                    <i class="fa fa-hourglass"></i>
+                  </span>
+                </div>
+                <div class="col-md-8">
+                  <b class="">Time Deposit Products</b><br>
+                  <span class="text-muted">
+                    View and manage time deposit products, interest rates and time deposit terms.
+                  </span>
+                </div>
+              </div>
+            <% end %>
+            <br>
+            <%=link_to management_module_settings_programs_path do %>
+              <div class="row">
+                <div class="col-md-3">
+                  <span class="btn btn-default">
+                    <i class="fa fa-leaf"></i>
+                  </span>
+                </div>
+                <div class="col-md-8">
+                  <b class="">Programs</b><br>
+                  <span class="text-muted">
+                    View and update your cooperative programs and contributions, payment schedules.
+                  </span>
+                </div>
+              </div>
+            <% end %>
+          </div>
+          <div class="col-md-4">
+            <%= link_to management_module_settings_programs_path do %>
+              <div class="row">
+                <div class="col-md-3">
+                  <span class="btn btn-default">
+                    <i class="fa fa-user"></i>
+                  </span>
+                </div>
+                <div class="col-md-8">
+                  <b>Loan Protection Plan Providers</b><br>
+                  <span class="text-muted">
+                    View and manage loan protection plan providers, accounts payable and rates.
+                  </span>
+                </div>
+              </div>
+            <% end %>
+          <br>
+          <%= link_to management_module_settings_store_fronts_path do %>
+            <div class="row">
+              <div class="col-md-3">
+                <span class="btn btn-default">
+                  <i class="fa fa-store"></i>
+                </span>
+              </div>
+              <div class="col-md-8">
+                <b>Storefronts</b><br>
+                <span class="text-muted">
+                  View and manage storefront details, accounts, and locations.
+                </span>
+              </div>
+            </div>
+          <% end %>
+          <br>
+          <%= link_to management_module_settings_cooperative_services_path do %>
+            <div class="row">
+              <div class="col-md-3">
+                <span class="btn btn-default">
+                  <i class="fa fa-list"></i>
+                </span>
+              </div>
+              <div class="col-md-8">
+                <b>Cooperative Services</b><br>
+                <span class="text-muted">
+                  View and manage cooperative services. Set accounts for each services
+                  to generate separate financial statement, income statements.
+                </span>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<br>
+  <div class="container">
+    <div class="container-fluid">
+      <h2 class="text-open-sans-regular"> Data Migrations </h2>
+      <br>
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4">
+              <b> Savings Accounts </b><br>
+              <span class="text-muted">
+                Migrate savings accounts of members from your spreadsheet.
+              </span>
+              <br>
+              <br>
+              <%= simple_form_for Registries::SavingsAccountRegistry.new, url: :savings_account_registries do |f| %>
+                <div class="row">
+                  <div class="col-md-9">
+                    <%= f.input :spreadsheet, label: false %>
+                    <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+                  </div>
+                  <div class="col-md-3">
+                    <%= button_tag(class: "btn btn-sm btn-outline-danger float-right", id:"s-upload") do %>
+                      <span><i class="fa fa-arrow-alt-circle-up"></i> Upload</span>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <%= render 'management_module/settings/index' %>

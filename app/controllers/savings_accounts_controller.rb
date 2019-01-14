@@ -8,7 +8,7 @@ class SavingsAccountsController < ApplicationController
     elsif params[:search].present?
       @savings_accounts = current_cooperative.savings.text_search(params[:search]).paginate(:page => params[:page], :per_page => 20)
     else
-      @savings_accounts = current_cooperative.savings.includes([:depositor, :saving_product =>[:account, :interest_expense_account]]).order(:account_owner_name).paginate(:page => params[:page], :per_page => 20)
+      @savings_accounts = current_cooperative.savings.includes([:saving_product =>[:account], :depositor => [:avatar_attachment => [:blob]]]).order(:account_owner_name).paginate(:page => params[:page], :per_page => 20)
     end
   end
 

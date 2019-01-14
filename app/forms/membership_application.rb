@@ -7,9 +7,11 @@ class MembershipApplication
   validates :first_name, :last_name, :sex, :civil_status, :date_of_birth, :cooperative_id, presence: true
   validate :unique_full_name
 
-  def save
+  def register!
     ActiveRecord::Base.transaction do
       create_member
+      create_membership
+      create_tin
     end
   end
 
@@ -30,6 +32,7 @@ class MembershipApplication
     contact_number: contact_number,
     email:          email,
     office_id:      office_id,
+    last_transaction_date: Date.current,
     avatar:         avatar_asset)
     create_membership(member)
     create_tin(member)
@@ -42,19 +45,18 @@ class MembershipApplication
     end
   end
 
-  def create_membership(cooperator)
+  def create_membership
     Membership.create!(
-      cooperator:       cooperator,
+      cooperator:       find_member,
       account_number:   SecureRandom.uuid,
       membership_type:  membership_type,
       membership_date: membership_date,
       cooperative_id:   cooperative_id)
   end
 
-  def create_tin(member)
-    member.tins.create!(number: tin_number)
+  def create_tin
+    find_member.tins.create!(number: tin_number)
   end
-
 
   def unique_full_name
     errors[:last_name] << "Member already registered" if Member.find_by(first_name: first_name, middle_name: middle_name, last_name: last_name).present?
