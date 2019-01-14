@@ -19,7 +19,7 @@ class Organization < ApplicationRecord
   has_many :member_loans, class_name: "LoansModule::Loan"
   has_many :addresses, as: :addressable
 
-  before_save :set_default_image, on: :create
+  before_save :set_default_image
 
   def self.current
     last
@@ -31,8 +31,8 @@ class Organization < ApplicationRecord
 
   private
   def set_default_image
-    if avatar.attachment.blank?
+    # if avatar.attachment.blank?
       self.avatar.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'default_business_logo.jpg')), filename: 'default-image.jpg', content_type: 'image/jpg')
-    end
+    # end
   end
 end

@@ -26,8 +26,9 @@
       </div>
       <div class="col-md-1 col-sm-2">
         <% if loan_application.voucher.present? %>
-          <p class="text-muted"><%= "##{loan_application.voucher.reference_number}" %></p>
+          <p class="text-muted min-margin"><%= "##{loan_application.voucher.reference_number}" %></p>
         <% end %>
+        <small class="text-muted min-margin"><%= loan_application.try(:purpose) %></small>
       </div>
       <div class="col-md-2 col-sm-9">
         <% if loan_application.voucher.present? %>
@@ -41,8 +42,8 @@
               <span title="Cancel Loan Application" data-toggle="tooltip" class="fa fa-times text-danger"> Cancel</span>
             <% end %>
           <% else %>
-            <% if loan_application.voucher.entry.blank? %>
-              <span class="fa fa-exclamation text-warning" title="Please cancel these loan application." data-toggle="tooltip"> No Voucher</span>
+            <% if loan_application.cancelled == true %>
+              <span class="text-danger"> Cancelled</span>
             <% else %>
               <span class="fa fa-check text-success"> Approved</span>
             <% end %>

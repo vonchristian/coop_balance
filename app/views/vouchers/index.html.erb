@@ -59,9 +59,9 @@
           <% end %>
         </div>
         <div class="col-md-3 col-sm-3">
-          <% if voucher.disbursed? && !voucher.cancelled? %>
+          <% if voucher.disbursed? && voucher.cancelled == false %>
             <span class="badge bg-success"><i class="fa fa-check-circle"></i> Disbursed </span>
-          <% elsif voucher.disbursed? && voucher.cancelled? %>
+          <% elsif voucher.disbursed? && voucher.cancelled == true %>
             <span class="badge bg-warning"><i class="fa fa-info-circle"></i> Cancelled </span>
           <% end %>
         </div>

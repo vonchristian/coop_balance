@@ -85,77 +85,93 @@ module AccountingModule
     end
 
     def entries_table_header
-        table([["DATE", "DESCRIPTION", "REF. NO.", "MEMBER/PAYEE", "ACCOUNT", "DEBIT", "CREDIT"]], 
-          cell_style: { inline_format: true, size: 7, font: "Helvetica", padding: [4,1,4,1]}, 
-          column_widths: [40, 135, 50, 70, 100, 70, 70]) do
-            row(0).font_style= :bold
-            row(0).background_color = 'DDDDDD'
-            cells.borders = [:top, :bottom]
-            column(5).align = :right
-            column(6).align = :right
-            column(2).align = :center
-            column(1).align = :center
-            column(4).align = :center
-        end
+      table([["DATE", "DESCRIPTION", "REF. NO.", "MEMBER/PAYEE", "ACCOUNT", "DEBIT", "CREDIT"]], 
+        cell_style: { inline_format: true, size: 7, font: "Helvetica", padding: [4,1,4,1]}, 
+        column_widths: [40, 135, 50, 70, 100, 70, 70]) do
+          row(0).font_style= :bold
+          row(0).background_color = 'DDDDDD'
+          cells.borders = [:top, :bottom]
+          column(5).align = :right
+          column(6).align = :right
+          column(2).align = :center
+          column(1).align = :center
+          column(4).align = :center
       end
+    end
 
-      def entries_table
-        if !entries.any?
-          move_down 10
-          text "No entries data.", align: :center
-        else
-          entries_table_header
+    def entries_table_footer
+      table([["", "", "", "", "", price(entries.sum {|e| Money.new(e.debit_amounts.sum(:amount_cents)).amount}), price(entries.sum {|e| Money.new(e.credit_amounts.sum(:amount_cents)).amount})]], 
+        cell_style: { inline_format: true, size: 8, font: "Helvetica", padding: [4,1,4,1]}, 
+        column_widths: [40, 135, 50, 70, 100, 70, 70]) do
+          row(0).font_style= :bold
+          cells.borders = [:top, :bottom]
+          column(5).align = :right
+          column(6).align = :right
+          column(2).align = :center
+          column(1).align = :center
+          column(4).align = :center
+      end
+    end
 
-          entries.each do |entry|
-            row_count = entry.amounts.count + 1
-            debit_amounts_data = entry.debit_amounts.map{|a| [a.account.name, price(a.amount), ""] }
-            credit_amounts_data = entry.credit_amounts.map{|a| [a.account.name, "", price(a.amount)] }
-            sub_total = [[
-              "SUB-TOTAL", 
-              "#{price(entry.debit_amounts.sum{|a| a.amount})}", 
-              "#{price(entry.credit_amounts.sum{|a| a.amount})}"
-            ]]
-            entries_data = [[
-              {content: entry.entry_date.strftime("%b %e, %Y"), rowspan: row_count }, 
-              {content: entry.description, rowspan: row_count, valign: :center}, 
-              {content: "##{entry.reference_number}", rowspan: row_count},
-              {content: display_commercial_document_for(entry).try(:upcase), rowspan: row_count, valign: :center},
-              "", "", ""
-            ]]
+    def entries_table
+      if !entries.any?
+        move_down 10
+        text "No entries data.", align: :center
+      else
+        entries_table_header
 
-            table(entries_data + debit_amounts_data + credit_amounts_data, 
+        entries.each do |entry|
+          row_count = entry.amounts.count + 1
+          debit_amounts_data = entry.debit_amounts.map{|a| [a.account.name, price(a.amount), ""] }
+          credit_amounts_data = entry.credit_amounts.map{|a| [a.account.name, "", price(a.amount)] }
+          sub_total = [[
+            "SUB-TOTAL", 
+            "#{price(entry.debit_amounts.sum{|a| a.amount})}", 
+            "#{price(entry.credit_amounts.sum{|a| a.amount})}"
+          ]]
+          entries_data = [[
+            {content: entry.entry_date.strftime("%b %e, %Y"), rowspan: row_count }, 
+            {content: entry.description, rowspan: row_count, valign: :center}, 
+            {content: "##{entry.reference_number}", rowspan: row_count},
+            {content: display_commercial_document_for(entry).try(:upcase), rowspan: row_count, valign: :center},
+            "", "", ""
+          ]]
+
+          table(entries_data + debit_amounts_data + credit_amounts_data, 
+            cell_style: { inline_format: true, size: 8, padding: [1,1,3,1]}, 
+            column_widths: [40, 135, 50, 70, 100, 70, 70]) do
+            cells.borders = []
+            row(0).height = 1
+            column(2).align = :center
+            column(6).align = :right
+            column(5).align = :right
+          end
+          stroke do
+            stroke_color '24292E'
+            line_width 0.5
+            stroke_horizontal_rule
+            move_down 1
+          end
+          if entry.amounts.count > 2
+            table(sub_total, position: :right,
               cell_style: { inline_format: true, size: 8, padding: [1,1,3,1]}, 
-              column_widths: [40, 135, 50, 70, 100, 70, 70]) do
+              column_widths: [100, 70, 70]) do
               cells.borders = []
-              row(0).height = 1
-              column(2).align = :center
-              column(6).align = :right
-              column(5).align = :right
+              row(0).font_style= :bold
+              column(1).align = :right
+              column(2).align = :right
             end
             stroke do
               stroke_color '24292E'
-              line_width 0.5
+              line_width 1
               stroke_horizontal_rule
               move_down 1
             end
-            if entry.amounts.count > 2
-              table(sub_total, position: :right,
-                cell_style: { inline_format: true, size: 8, padding: [1,1,3,1]}, 
-                column_widths: [100, 70, 70]) do
-                cells.borders = []
-                row(0).font_style= :bold
-                column(1).align = :right
-                column(2).align = :right
-              end
-              stroke do
-                stroke_color '24292E'
-                line_width 1
-                stroke_horizontal_rule
-                move_down 1
-              end
-            end
           end
         end
+
+        entries_table_footer
       end
+    end
   end
 end

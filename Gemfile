@@ -60,6 +60,7 @@ gem "responders"
 gem 'money-rails', '~>1.12'
 gem "chosen-rails"
 gem "gretel"
+gem 'webdack-uuid_migration'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.8.0'
