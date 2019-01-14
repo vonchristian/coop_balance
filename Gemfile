@@ -61,6 +61,7 @@ gem 'money-rails', '~>1.12'
 gem "chosen-rails"
 gem "gretel"
 gem 'scss_lint', require: false
+gem 'webdack-uuid_migration'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.8.0'
@@ -87,6 +88,8 @@ group :test do
 end
 
 gem 'rack-mini-profiler', require: false
+gem 'flamegraph'
+gem 'stackprof'
 gem 'memory_profiler'
 gem 'whenever', :require => false
 

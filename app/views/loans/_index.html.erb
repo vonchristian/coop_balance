@@ -30,7 +30,9 @@
         </div>
       </div>
         <% loans.each do |loan| %>
-          <%= render 'loans/partials/header', loan: loan %>
+          <% cache(loan) do %>
+            <%= render 'loans/partials/header', loan: loan %>
+          <% end %>
         <% end %>
         <center><%= will_paginate loans %></center>
       </div>

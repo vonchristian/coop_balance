@@ -69,7 +69,7 @@
             <b>Annual Interest Rate</b>
           </div>
           <div class="col-md-6 col-sm-6">
-            <%= (@loan.loan_product_interest_rate*100).to_f %>%
+            <%= (@loan.loan_product.current_interest_config_rate*100).to_f %>%
           </div>
         </div>
         <div class="row min-margin">

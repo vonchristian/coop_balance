@@ -2,12 +2,12 @@
   <div class="card-body">
     <div class="row">
       <div class="col-md-5 border-right">
-        <h3 class="number"><%= number_to_currency @member.savings.sum{|s| s.balance} %></h3>
+        <h3 class="number"><%= number_to_currency @savings.sum{|s| s.balance } %></h3>
         <small class="text-muted">SAVINGS DEPOSITS</small>
       </div>
 
       <div class="col-md-5 offset-md-1">
-        <h3 class="number"><%= number_to_currency @member.share_capitals.sum{|l| l.paid_up_balance } %></h3>
+        <h3 class="number"><%= number_to_currency @share_capitals.sum{|l| l.paid_up_balance } %></h3>
         <small class="text-muted">SHARE CAPITAL</small>
       </div>
     </div>

@@ -15,7 +15,8 @@ module AccountingModule
       it { is_expected.to validate_presence_of     :type }
       it { is_expected.to validate_presence_of     :account }
       it { is_expected.to validate_presence_of     :entry }
-      it { is_expected.to validate_presence_of     :amount }
+      it {is_expected.to monetize(:amount) }
+
     end
 
     describe 'delegations' do
@@ -240,7 +241,7 @@ module AccountingModule
 
       expect(entry.amounts.total).to eql 2_000
       expect(entry.debit_amounts.total).to eql 1_000
-      expect(entry.credit_amounts.total).to eql 1_000 
+      expect(entry.credit_amounts.total).to eql 1_000
     end
 
   end

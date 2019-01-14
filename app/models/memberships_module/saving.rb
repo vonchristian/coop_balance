@@ -43,6 +43,8 @@ module MembershipsModule
 
     before_save :set_account_owner_name, :set_date_opened #move to saving opening
 
+    has_many :amounts,  class_name: "AccountingModule::Amount", as: :commercial_document
+    has_many :entries,  through: :amounts, class_name: "AccountingModule::Entry"
 
     def self.below_minimum_balance
       where(has_minimum_balance: false)
@@ -52,12 +54,12 @@ module MembershipsModule
       updated_at(args)
     end
 
-    def entries
-      entry_ids = []
-      entry_ids << saving_product_account.amounts.where(commercial_document: self).pluck(:entry_id)
-      entry_ids << saving_product_interest_expense_account.amounts.where(commercial_document: self).pluck(:entry_id)
-      AccountingModule::Entry.where(id: entry_ids.uniq.flatten)
-    end
+    # def entries
+    #   entry_ids = []
+    #   entry_ids << saving_product_account.amounts.where(commercial_document: self).pluck(:entry_id)
+    #   entry_ids << saving_product_interest_expense_account.amounts.where(commercial_document: self).pluck(:entry_id)
+    #   AccountingModule::Entry.where(id: entry_ids.uniq.flatten)
+    # end
 
     def closed?
       saving_product_closing_account.amounts.where(commercial_document: self).present?

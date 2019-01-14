@@ -5,14 +5,17 @@ class MembersController < ApplicationController
 
   def index
     if params[:search].present?
-      @members = current_cooperative.member_memberships.includes(:memberships).text_search(params[:search]).order(:last_name).paginate(page: params[:page], per_page: 35)
+      @members = current_cooperative.member_memberships.with_attached_avatar.includes(:memberships).text_search(params[:search]).order(:last_name).paginate(page: params[:page], per_page: 35)
     else
-      @members = current_cooperative.member_memberships.includes(:memberships).order(:last_name).paginate(page: params[:page], per_page: 35)
+      @members = current_cooperative.member_memberships.with_attached_avatar.includes(:memberships).order(:last_name).paginate(page: params[:page], per_page: 35)
     end
   end
 
   def show
-    @member = Member.find(params[:id])
+    @member         = Member.find(params[:id])
+    @share_capitals = @member.share_capitals.includes(:share_capital_product)
+    @savings        = @member.savings.includes(:saving_product)
+
   end
 
   def edit

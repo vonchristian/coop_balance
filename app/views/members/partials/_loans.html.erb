@@ -15,7 +15,7 @@
   </div>
 </div>
 <% @loan_applications.each do |loan_application| %>
-  <%= render 'loans_module/loan_applications/partials/header', loan_application: loan_application %>
+  <%= render 'loans_module/loan_applications/partials/header', loan_application: loan_application, cached: true %>
 <% end %>
 <center><%= will_paginate @loan_applications %></center>
 <div class="card">
@@ -24,6 +24,6 @@
   </div>
 </div>
 <% @loans.each do |loan| %>
-  <%= render 'loans/partials/header', loan: loan %>
+  <%= render 'loans/partials/header', loan: loan, cached: true %>
 <% end %>
 <center><%= will_paginate @loans %></center>

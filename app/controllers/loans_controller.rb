@@ -8,7 +8,7 @@ class LoansController < ApplicationController
       @loans = current_cooperative.loans.text_search(params[:search]).paginate(page: params[:page], per_page: 20)
     else
       @loans = current_cooperative.loans.
-      includes(:borrower, :disbursement_voucher, loan_product: [:current_account, :past_due_account]).
+      # includes(:disbursement_voucher, borrower: [:avatar_attachment], loan_product: [:current_account, :past_due_account]).
       not_archived.
       order(updated_at: :desc).
       paginate(page: params[:page], per_page: 30)
@@ -24,7 +24,7 @@ class LoansController < ApplicationController
   end
 
   def show
-    @loan = current_cooperative.loans.find(params[:id])
+    @loan = current_cooperative.loans.includes(:loan_co_makers =>[:co_maker]).find(params[:id])
     respond_to do |format|
       format.html
       format.pdf do
