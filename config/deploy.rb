@@ -14,7 +14,7 @@ set :forward_agent, true
 set :app_path,      lambda { "#{fetch(:deploy_to)}/#{fetch(:current_path)}" }
 set :stage,         'production'
 set :shared_paths,  ['config/database.yml', 'log', 'tmp/log', 'public/system', 'tmp/pids', 'tmp/sockets', '/storage']
-set :shared_dirs,   fetch(:shared_dirs, []).push('public/system')
+set :shared_dirs,   fetch(:shared_dirs, []).push('public/system', 'public/packs')
 
 task :remote_environment do
   invoke :'rbenv:load'
