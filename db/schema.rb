@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_04_064235) do
+ActiveRecord::Schema.define(version: 2019_01_13_052357) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -531,6 +531,7 @@ ActiveRecord::Schema.define(version: 2019_01_04_064235) do
     t.integer "loan_amount_cents", default: 0, null: false
     t.string "loan_amount_currency", default: "PHP", null: false
     t.boolean "approved", default: false
+    t.boolean "cancelled", default: false
     t.index ["borrower_type", "borrower_id"], name: "index_loan_applications_on_borrower_type_and_borrower_id"
     t.index ["cooperative_id"], name: "index_loan_applications_on_cooperative_id"
     t.index ["loan_product_id"], name: "index_loan_applications_on_loan_product_id"
@@ -690,6 +691,7 @@ ActiveRecord::Schema.define(version: 2019_01_04_064235) do
     t.boolean "forwarded_loan", default: false
     t.uuid "loan_application_id"
     t.integer "status"
+    t.boolean "cancelled", default: false
     t.index ["account_number"], name: "index_loans_on_account_number", unique: true
     t.index ["archived_by_id"], name: "index_loans_on_archived_by_id"
     t.index ["barangay_id"], name: "index_loans_on_barangay_id"

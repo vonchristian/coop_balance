@@ -20,10 +20,10 @@ module AccountingModule
         )
 
         if find_entry.voucher.present?
-          if loan_voucher?
-            find_entry.voucher.voucher_amounts.last.commercial_document.destroy
-          else
-            find_entry.voucher.destroy
+          find_entry.voucher.update(cancelled: true) #cancel voucher
+          if loan_voucher?                           
+            loan_application_voucher.commercial_document.update(cancelled: true)       #cancel loan_application
+            loan_application_voucher.commercial_document.loan.update(cancelled: true)  #cancel loan
           end
         end
       end
@@ -31,6 +31,11 @@ module AccountingModule
       def loan_voucher?
         find_entry.voucher.voucher_amounts.last.commercial_document_type == "LoansModule::LoanApplication"
       end
+
+      def loan_application_voucher
+        find_entry.voucher.voucher_amounts.where(commercial_document_type: "LoansModule::LoanApplication").last
+      end
+
       def find_entry
         AccountingModule::Entry.find(entry_id)
       end

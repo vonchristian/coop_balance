@@ -37,7 +37,7 @@ module AccountingModule
     def update
       @account = current_cooperative.accounts.find(params[:id])
       @account.update(account_params)
-      respond_modal_with @account
+      respond_modal_with @account,
         location: accounting_module_account_url(@account)
     end
 
