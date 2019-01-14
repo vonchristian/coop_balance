@@ -1,41 +1,75 @@
+<div class="container">
+  <div class="container-fluid">
 <div class="card card-outline card-danger">
   <div class="card-header">
     <h3 class="card-title"> Loan Product Details </h3>
   </div>
   <div class="card-body">
+
 <%= simple_form_for @loan_product, html: { autocomplete: "off", data: { modal: true } }, remote: request.xhr?, url: :management_module_settings_loan_products do |f| %>
-  <div class="modal-body">
-    <%= f.error_notification %>
-    <%= f.input :cooperative_id, input_html: { value: current_user.cooperative.id }, as: :hidden %>
-    <%= f.input :name %>
-    <%= f.input :description, as: :text %>
-    <%= f.input :maximum_loanable_amount,  as: :currency, input_html: { style: "width:100%" } %>
-    <%= f.input :grace_period %>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="card-title"> Loan Product Details </h3>
+    </div>
+    <div class="col-md-5">
+      <%= f.error_notification %>
+      <%= f.input :cooperative_id, input_html: { value: current_user.cooperative.id }, as: :hidden %>
+      <%= f.input :name %>
+      <%= f.input :description, as: :text %>
+      <%= f.input :maximum_loanable_amount,  as: :currency, input_html: { style: "width:100%" } %>
+      <%= f.input :grace_period %>
 
-    <%= f.input :current_account_id, label: "Select Loans Receivable (Current) Account", collection: current_cooperative.accounts.assets.active.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanAccountSelect'} %>
-    <%= f.input :past_due_account_id, label: "Select Loans Receivable (Past Due) Account", collection: current_cooperative.accounts.assets.active.all.map{|a| [a.name.titleize, a.id] } %>
-    <h4 class="card-title">Interest Configuration</h4>
-    <div class="min-margin"></div>
-    <%= f.input :interest_rate, label: "Annual Interest Rate (APR):" %>
-    <%= f.input :unearned_interest_income_account_id,  collection: current_cooperative.accounts.assets.active.all.map{|a| [a.name, a.id] } %>
-    <%= f.input :interest_revenue_account_id,  collection: current_cooperative.accounts.revenues.active.all.map{|a| [a.name, a.id] } %>
-    <%= f.input :interest_calculation_type, collection: LoansModule::LoanProducts::InterestConfig.calculation_types.keys.to_a.map{|a| [a.titleize, a] } %>
-    <h3 class="card-title">Interest Prededuction </h3>
-    <%= f.input :prededuction_calculation_type, collection: LoansModule::LoanProducts::InterestPrededuction.calculation_types.keys.to_a.map{ |a| [a.titleize, a] } %>
-    <%= f.input :prededuction_scope, collection: LoansModule::LoanProducts::InterestPrededuction.prededuction_scopes.keys.to_a.map{ |a| [a.titleize, a] } %>
-
-    <%= f.input :prededucted_rate %>
-    <%= f.input :prededucted_amount %>
-    <%= f.input :prededucted_number_of_payments %>
-    <hr>
-    <h4>Penalty Configuration</h4>
-    <%= f.input :penalty_rate %>
-    <%= f.input :penalty_revenue_account_id,  collection: current_cooperative.accounts.revenues.active.all.map{|a| [a.name, a.id] } %>
-    <%= f.input :loan_protection_plan_provider_id,  collection: current_cooperative.loan_protection_plan_providers.all.map{|a| [a.business_name, a.id] } %>
-    <%= f.input :amortization_type_id,  collection: LoansModule::AmortizationType.all.map{|a| [a.calculation_type, a.id] } %>
-
+      <%= f.input :current_account_id, label: "Select Loans Receivable (Current) Account", collection: current_cooperative.accounts.assets.active.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanAccountSelect'} %>
+      <%= f.input :past_due_account_id, label: "Select Loans Receivable (Past Due) Account", collection: current_cooperative.accounts.assets.active.all.map{|a| [a.name.titleize, a.id] } %>
+    </div>
   </div>
-  <div class="modal-footer">
-    <%= f.submit "Create Loan Product", class: "btn btn-danger float-right", data: { disable_with: "Processing..." } %>
+  <hr>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="card-title">Interest Configuration</h3>
+    </div>
+    <div class="col-md-5">
+      <%= f.input :interest_rate, label: "Annual Interest Rate (APR):" %>
+      <%= f.input :unearned_interest_income_account_id,  collection: current_cooperative.accounts.assets.active.all.map{|a| [a.name, a.id] } %>
+      <%= f.input :interest_revenue_account_id,  collection: current_cooperative.accounts.revenues.active.all.map{|a| [a.name, a.id] } %>
+      <%= f.input :interest_calculation_type, collection: LoansModule::LoanProducts::InterestConfig.calculation_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="card-sub-title">Interest Prededuction </h3>
+    </div>
+    <div class="col-md-5">
+      <%= f.input :prededuction_calculation_type, collection: LoansModule::LoanProducts::InterestPrededuction.calculation_types.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
+      <%= f.input :prededuction_scope, collection: LoansModule::LoanProducts::InterestPrededuction.prededuction_scopes.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
+
+      <%= f.input :prededucted_rate %>
+      <%= f.input :prededucted_amount %>
+      <%= f.input :prededucted_number_of_payments %>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-md-6">
+      <h4>Penalty Configuration</h4>
+    </div>
+    <div class="col-md-5">
+      <%= f.input :penalty_rate %>
+      <%= f.input :penalty_revenue_account_id,  collection: current_cooperative.accounts.revenues.active.all.map{|a| [a.name, a.id] } %>
+      <%= f.input :loan_protection_plan_provider_id,  collection: current_cooperative.loan_protection_plan_providers.all.map{|a| [a.business_name, a.id] } %>
+      <%= f.input :amortization_type_id,  collection: LoansModule::AmortizationType.all.map{|a| [a.calculation_type.titleize, a.id] }, as: :radio_buttons %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+    </div>
+    <div class="col-md-6">
+      <%= f.submit "Create Loan Product", class: "btn btn-danger float-right", data: { disable_with: "Processing..." } %>
+    </div>
   </div>
 <% end %>
+</div>
+</div>
+</div>
+</div>

@@ -18,6 +18,7 @@ module LoansModule
     has_many :employee_borrowers,                  through: :loans, source: :borrower, source_type: 'User'
     has_many :organization_borrowers,              through: :loans, source: :borrower, source_type: 'Organization'
     has_many :interest_predeductions,              class_name: "LoansModule::LoanProducts::InterestPrededuction"
+    delegate :calculation_type, to: :amortization_type, prefix: true
     delegate :rate,
              :annual_rate,
              :calculation_type,
@@ -41,7 +42,7 @@ module LoansModule
              to: :current_penalty_config, allow_nil: true
 
     delegate :scheduler, to: :amortization_type, prefix: true
-
+    delegate :calculation_type, to: :current_interest_prededuction, prefix: true
     validates :name,:current_account_id, :past_due_account_id, presence: true
 
     validates :name, uniqueness: true

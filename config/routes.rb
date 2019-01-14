@@ -217,7 +217,7 @@ Rails.application.routes.draw do
       resources :configurations, only: [:index]
       resources :data_migrations, only: [:index]
 
-      resources :loan_products, only: [:new, :create, :edit, :update] do
+      resources :loan_products, only: [:index, :new, :create, :edit, :update] do
         resources :charges, only: [:new, :create, :edit, :update], module: :loan_products
         resources :interest_configurations, only: [:new, :create], module: :loan_products
         resources :penalty_configurations, only: [:new, :create],  module: :loan_products

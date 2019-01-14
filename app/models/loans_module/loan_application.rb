@@ -89,7 +89,7 @@ module LoansModule
         first_year_interest +
         second_year_interest +
         third_year_interest
-      end 
+      end
     end
 
 
@@ -122,16 +122,12 @@ module LoansModule
 
     def second_year_principal_balance
       return 0 if !term_is_within_two_years?
-      if quarterly?
-        schedule = amortization_schedules.by_oldest_date[3]
-        principal_balance_for(schedule)
-      elsif monthly?
-        schedule = amortization_schedules.by_oldest_date[11]
-      elsif weekly?
-        schedule = amortization_schedules.by_oldest_date[48]
-        principal_balance_for(schedule)
+      schedule = second_year_principal_balance_schedule_finder.new(loan_application: self).find_schedule
+      principal_balance_for(schedule)
+    end
 
-      end
+    def second_year_principal_balance_schedule_finder
+      ("LoansModule::ScheduleFinders::SecondYear::" + mode_of_payment.titleize.gsub(" ", "")).constantize
     end
 
     def third_year_principal_balance

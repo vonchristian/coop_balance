@@ -31,6 +31,10 @@ module LoansModule
     :penalty_rate,
     :penalty_revenue_account_id,
     :cooperative_id,
+    :prededuction_calculation_type,
+    :prededuction_scope,
+    :prededucted_rate,
+    :prededucted_number_of_payments,
     :grace_period, presence: true
 
     validates :maximum_loanable_amount, :grace_period, :interest_rate, :penalty_rate, numericality: true

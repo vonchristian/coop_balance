@@ -33,7 +33,7 @@ module LoansModule
           previous_entry_hash: find_recent_entry.encrypted_hash,
           entry_date:          voucher.date)
 
-          voucher.voucher_amounts.debit.excluding_account(account: loan.loan_product_loans_receivable_current_account).each do |amount|
+          voucher.voucher_amounts.debit.excluding_account(account: loan.loan_product_current_account).each do |amount|
             entry.debit_amounts.build(
               account_id: amount.account_id,
               amount: amount.amount,
@@ -49,7 +49,7 @@ module LoansModule
             )
           end
 
-          voucher.voucher_amounts.debit.for_account(account: loan.loan_product_loans_receivable_current_account).each do |amount|
+          voucher.voucher_amounts.debit.for_account(account: loan.loan_product_current_account).each do |amount|
             entry.debit_amounts.build(
               account_id: amount.account_id,
               amount: amount.amount,
