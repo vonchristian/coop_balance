@@ -12,5 +12,6 @@ module LoansModule
           schedule = amortization_schedules.by_oldest_date[47]
         end
       end
+    end
   end
 end
