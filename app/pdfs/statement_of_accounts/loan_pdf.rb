@@ -16,20 +16,7 @@ module StatementOfAccounts
     def price(number)
       view_context.number_to_currency(number, :unit => "P ")
     end
-    def debit_cash_amount(entry)
-      amount = entry.debit_amounts.for_account(account_id: loan.principal_account.id).sum(&:amount)
-      if amount.zero?
-        ""
-      else
-        price(amount)
-      end
-    end
-    def credit_cash_amount(entry)
-      amount = loan.credits_balance(to_date: entry.entry_date)
 
-        price(amount)
-
-    end
     def heading
       bounding_box [280, 770], width: 50 do
         image "#{Rails.root}/app/assets/images/#{cooperative.abbreviated_name.downcase}_logo.jpg", width: 55, height: 55
@@ -80,9 +67,9 @@ module StatementOfAccounts
     end
     def transaction_details
       move_down 10
-      text "TRANSACTIONS HISTORY", size: 10, style: :bold
+      text "PAYMENTS HISTORY", size: 10, style: :bold
       move_down 5
-      table(transactions_data, cell_style: { inline_format: true, size: 10, :padding => [2,5,2,5]}, column_widths: [70, 130, 80, 70, 70, 90]) do
+      table(transactions_data, cell_style: { inline_format: true, size: 9, :padding => [2,5,2,5]}, column_widths: [70, 60, 70, 70, 70, 90]) do
         column(2).align = :right
         column(3).align = :right
         column(4).align = :right
@@ -91,15 +78,17 @@ module StatementOfAccounts
       end
     end
     def transactions_data
-      [["DATE", "DESCRIPTION", " REFERENCE #", "Debits", "Credits", "Balance"]] +
-      [["", "","", "","", "#{price(loan.loan_amount)}"]] +
-      @transactions_data ||= loan.loan_payments.sort_by(&:entry_date).map{ |a|
-       [ a.entry_date.strftime("%b %e, %Y"),
-         a.description,
-         a.reference_number,
-         price(loan.principal_debits_balance(to_date: a.entry_date)),
-         price(loan.principal_credits_balance(to_date: a.entry_date)),
-         price(loan.principal_balance(to_date: a.entry_date))
+      [["DATE", " REF #", "PRINCIPAL", "INTEREST", "PENALTY", "TOTAL", "PRINCIPAL
+         BALANCE"]] +
+      [["", "","", "","", "", "#{price(loan.loan_amount)}"]] +
+      @transactions_data ||= loan.loan_payments.sort_by(&:entry_date).map{ |entry|
+       [ entry.entry_date.strftime("%b %e, %Y"),
+         entry.reference_number,
+         price(LoansModule::PaymentClassifier.new(loan: loan, entry: entry).principal),
+         price(LoansModule::PaymentClassifier.new(loan: loan, entry: entry).interest),
+         price(LoansModule::PaymentClassifier.new(loan: loan, entry: entry).penalty),
+         price(LoansModule::PaymentClassifier.new(loan: loan, entry: entry).total_cash_payment),
+         price(loan.principal_balance(to_date: entry.entry_date))
         ] }
     end
   end

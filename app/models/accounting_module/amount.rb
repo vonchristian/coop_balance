@@ -39,7 +39,9 @@ module AccountingModule
     def self.with_cash_accounts
       for_account(account_id: Employees::EmployeeCashAccount.cash_accounts.ids)
     end
-
+    def self.cash_amounts
+      with_cash_accounts
+    end
 
     def self.total_cash_amount
       where(account: Employees::EmployeeCashAccount.cash_accounts).total
@@ -49,9 +51,9 @@ module AccountingModule
       joins(:entry).where('entries.recorder_id' => args[:recorder_id])
     end
 
-    # def self.for_commercial_document(args={})
-    #   where(commercial_document: args[:commercial_document])
-    # end
+    def self.for_commercial_document(args={})
+      where(commercial_document: args[:commercial_document])
+    end
 
     def self.entered_on(args={})
       from_date  = args[:from_date] || Date.today - 999.years

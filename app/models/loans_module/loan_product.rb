@@ -147,6 +147,3 @@ module LoansModule
     end
   end
 end
-
-
-#if interest is prededucted

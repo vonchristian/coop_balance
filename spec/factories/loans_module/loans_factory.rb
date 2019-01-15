@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :loan, class: LoansModule::Loan do
     association :borrower, factory: :member
-    association :loan_product, factory: :loan_product_with_interest_config
+    association :loan_product
     association :cooperative
     loan_amount { 100_000 }
     application_date { Date.today }

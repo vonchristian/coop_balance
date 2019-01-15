@@ -3,7 +3,7 @@ module LoansModule
     module Principal
 
       def principal_balance(args={})
-        principal_account.balance(commercial_document: self)
+        principal_account.balance(args.merge(commercial_document: self))
       end
 
       def principal_debits_balance(args={})

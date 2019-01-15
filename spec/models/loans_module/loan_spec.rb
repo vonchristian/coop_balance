@@ -132,7 +132,6 @@ module LoansModule
         disbursed_loan = create(:loan, disbursement_date: date)
         undisbursed_loan = create(:loan)
         entry = create(:entry_with_credit_and_debit, commercial_document: disbursed_loan, entry_date: date)
-
         expect(LoansModule::Loan.disbursed(from_date: date, to_date: date)).to include(disbursed_loan)
         expect(LoansModule::Loan.disbursed(from_date: date, to_date: date)).to_not include(undisbursed_loan)
       end
