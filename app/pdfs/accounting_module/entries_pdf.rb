@@ -130,7 +130,7 @@ module AccountingModule
             "#{price(entry.credit_amounts.sum{|a| a.amount})}"
           ]]
           entries_data = [[
-            {content: entry.entry_date.strftime("%b %e, %Y"), rowspan: row_count }, 
+            {content: entry.entry_date.strftime("%m %e, %Y"), rowspan: row_count }, 
             {content: entry.description, rowspan: row_count, valign: :center}, 
             {content: "##{entry.reference_number}", rowspan: row_count},
             {content: display_commercial_document_for(entry).try(:upcase), rowspan: row_count, valign: :center},

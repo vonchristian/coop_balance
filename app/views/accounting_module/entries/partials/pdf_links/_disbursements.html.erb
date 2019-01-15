@@ -1,0 +1,7 @@
+<div class="card">
+  <div class="card-body">
+    <h3 class="card-title"> Reports </h3>
+    <hr class="min-margin">
+    <%= link_to 'View (PDF)', accounting_module_cash_disbursements_path(format: 'pdf', from_date: @from_date, to_date: @to_date), class: 'btn btn-default float-right' %>
+  </div>
+</div>
