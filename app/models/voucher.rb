@@ -27,6 +27,7 @@ class Voucher < ApplicationRecord
   # validate :has_credit_amounts?
   # validate :has_debit_amounts?
   # validate :amounts_cancel?
+  
   def self.loan_disbursement_vouchers
     vouchers = LoansModule::Loan.pluck(:disbursement_voucher_id)
     where(id: vouchers)

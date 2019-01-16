@@ -5,17 +5,17 @@ DateRange = Struct.new(:from_date, :to_date, keyword_init: true) do
 
   def start_date
     if from_date.is_a?(Date) || from_date.is_a?(Time) || from_date.is_a?(DateTime)
-      from_date.strftime('%Y-%m-%d 00:00:00')
+      from_date.strftime('%Y-%m-%d 00:00:00 +0800')
     else
-      Time.zone.parse(from_date.strftime('%Y-%m-%d 00:00:00'))
+      Time.zone.parse(from_date).strftime('%Y-%m-%d 00:00:00 +0800')
     end
   end
 
   def end_date
-    if to_date.is_a?(Date) || to_date.is_a?(Time) || from_date.is_a?(DateTime)
-      to_date.strftime('%Y-%m-%d 23:59:59')
+    if to_date.is_a?(Date) || to_date.is_a?(Time) || to_date.is_a?(DateTime)
+      to_date.strftime('%Y-%m-%d 23:59:59 +0800')
     else
-      Time.zone.parse(to_date.strftime('%Y-%m-%d 23:59:59'))
+    Time.zone.parse(to_date).strftime('%Y-%m-%d 23:59:59 +0800')
     end
   end
 end

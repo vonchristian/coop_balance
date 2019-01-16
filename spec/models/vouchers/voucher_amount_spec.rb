@@ -2,6 +2,9 @@ require 'rails_helper'
 
 module Vouchers
   describe VoucherAmount do
+    subject { build(:voucher_amount) }
+    it { is_expected.to_not be_valid }
+
     describe 'associations' do
       it { is_expected.to belong_to :account }
       it { is_expected.to belong_to :voucher }
@@ -19,6 +22,26 @@ module Vouchers
     describe 'delegations' do
       it { is_expected.to delegate_method(:name).to(:account).with_prefix }
     end
+
+    it ".total" do
+      voucher_amount_1 = create(:voucher_amount, amount: 100)
+      voucher_amount_2 = create(:voucher_amount, amount: 100)
+
+      expect(described_class.total).to eql 200
+    end
+
+    it ".with_no_vouchers" do
+      voucher = create(:voucher)
+      voucher_amount_1 = create(:voucher_amount, amount: 100)
+      voucher_amount_2 = create(:voucher_amount, amount: 100, voucher: voucher)
+
+      expect(described_class.with_no_vouchers).to include(voucher_amount_1)
+      expect(described_class.with_no_vouchers).to_not include(voucher_amount_2)
+
+    end
+
+
+
     describe 'scopes' do
       it '.with_cash_accounts' do
         cash_on_hand = create(:asset)
@@ -53,21 +76,7 @@ module Vouchers
         expect(described_class.excluding_account(account: revenue_account)).to_not include(revenue_amount)
       end
     end
-    describe ".total" do
-      it '.with no amount adjustment' do
-        voucher_amount = create(:voucher_amount, amount: 100)
-        another_voucher_amount = create(:voucher_amount, amount: 100)
 
-        expect(described_class.total).to eql 200
-      end
-
-      it '.with amount adjustment' do
-        voucher_amount = create(:voucher_amount, amount: 100)
-        amount_adjustment = create(:amount_adjustment, voucher_amount: voucher_amount, adjustment_type: 'amount_based', amount: 20)
-
-        expect(described_class.total).to eql 80
-      end
-    end
     it '#disbursed?' do
       cooperative = create(:cooperative)
       voucher  = create(:voucher, cooperative: cooperative)

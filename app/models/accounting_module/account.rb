@@ -7,14 +7,14 @@ module AccountingModule
 
     class_attribute :normal_credit_balance
 
-    # belongs_to :main_account,       class_name: "AccountingModule::Account", foreign_key: 'main_account_id'
+    belongs_to :main_account,       class_name: "AccountingModule::Account", foreign_key: 'main_account_id'
     has_many :amounts,              class_name: "AccountingModule::Amount"
     has_many :credit_amounts,       :class_name => 'AccountingModule::CreditAmount'
     has_many :debit_amounts,       :class_name => 'AccountingModule::DebitAmount'
     has_many :entries,              through: :amounts, source: :entry, class_name: "AccountingModule::Entry"
     has_many :credit_entries,       :through => :credit_amounts, :source => :entry, :class_name => 'AccountingModule::Entry'
     has_many :debit_entries,        :through => :debit_amounts, :source => :entry, :class_name => 'AccountingModule::Entry'
-    # has_many :subsidiary_accounts,  class_name: "AccountingModule::Account", foreign_key: 'main_account_id'
+    has_many :subsidiary_accounts,  class_name: "AccountingModule::Account", foreign_key: 'main_account_id'
     has_many :account_budgets
 
     validates :type, :name, :code, presence: true
@@ -27,7 +27,7 @@ module AccountingModule
     scope :revenues,    -> { where(type: 'AccountingModule::Revenue') }
     scope :expenses,    -> { where(type: 'AccountingModule::Expense') }
 
-    def self.cash_accounts
+    def self.cash_accounts # remove
       Employees::EmployeeCashAccount.cash_accounts
     end
 
@@ -40,10 +40,10 @@ module AccountingModule
     end
 
     def self.updated_at(args={})
-      if args[:from_date] && args[:to_date]
+
         date_range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])
-        where('last_transaction_date' => date_range.start_date..date_range.end_date)
-      end
+        where(last_transaction_date: date_range.start_date..date_range.end_date)
+      # end
     end
 
     def self.updated_by(employee)
@@ -93,28 +93,28 @@ module AccountingModule
       where.not(id: accounts)
     end
 
-    def self.entries(args={})
-      ids = AccountingModule::Amount.for_account(account_id: self.pluck(:id)).pluck(:entry_id)
-      AccountingModule::Entry.where(id: ids)
-    end
-
-    def self.credit_entries(args={})
-      ids = AccountingModule::CreditAmount.for_account(account_id: self.pluck(:id)).pluck(:entry_id)
-      AccountingModule::Entry.where(id: ids)
-    end
-
-    def self.debit_entries(args={})
-      ids = AccountingModule::DebitAmount.for_account(account_id: self.pluck(:id)).pluck(:entry_id)
-      AccountingModule::Entry.where(id: ids)
-    end
-
-    def self.credit_amounts(args={})
-      AccountingModule::CreditAmount.where(account_id: pluck(:id))
-    end
-
-    def self.debit_amounts(args={})
-      AccountingModule::DebitAmount.where(account_id: pluck(:id))
-    end
+    # def self.entries(args={})
+    #   ids = AccountingModule::Amount.for_account(account_id: self.pluck(:id)).pluck(:entry_id)
+    #   AccountingModule::Entry.where(id: ids)
+    # end
+    #
+    # def self.credit_entries(args={})
+    #   ids = AccountingModule::CreditAmount.for_account(account_id: self.pluck(:id)).pluck(:entry_id)
+    #   AccountingModule::Entry.where(id: ids)
+    # end
+    #
+    # def self.debit_entries(args={})
+    #   ids = AccountingModule::DebitAmount.for_account(account_id: self.pluck(:id)).pluck(:entry_id)
+    #   AccountingModule::Entry.where(id: ids)
+    # end
+    #
+    # def self.credit_amounts(args={})
+    #   AccountingModule::CreditAmount.where(account_id: pluck(:id))
+    # end
+    #
+    # def self.debit_amounts(args={})
+    #   AccountingModule::DebitAmount.where(account_id: pluck(:id))
+    # end
 
     def self.debits_balance(options={})
       accounts_balance = BigDecimal('0')
@@ -184,6 +184,7 @@ module AccountingModule
     def current_account_budget
       account_budgets.current
     end
+
     def default_last_transaction_date
       last_transaction_date || updated_at
     end

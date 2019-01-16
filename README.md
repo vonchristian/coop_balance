@@ -1,4 +1,9 @@
 
+custom validator 
+
+
+
+
 sudo /home/deploy/.local/share/letsencrypt/bin/letsencrypt certonly --webroot --webroot-path /home/deploy/coopcatalyst/current/public --renew-by-default --email vc.halip@gmail.com --text --agree-tos -d coopcatalyst.co -d coopcatalyst.co
 
 

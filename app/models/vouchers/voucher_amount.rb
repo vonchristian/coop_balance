@@ -4,13 +4,12 @@ module Vouchers
 
     enum amount_type: [:debit, :credit]
 
-    belongs_to :account, class_name: "AccountingModule::Account"
+    belongs_to :account,          class_name: "AccountingModule::Account"
     belongs_to :voucher
     belongs_to :cooperative
     belongs_to :loan_application, class_name: "LoansModule::LoanApplication", optional: true
-    belongs_to :recorder, class_name: "User", foreign_key: 'recorder_id'
+    belongs_to :recorder,         class_name: "User", foreign_key: 'recorder_id'
     belongs_to :commercial_document, polymorphic: true
-    has_many :amount_adjustments, class_name: "Vouchers::AmountAdjustment", dependent: :destroy
 
     delegate :name, to: :account, prefix: true
     delegate :entry, to: :voucher, allow_nil: true
@@ -19,11 +18,7 @@ module Vouchers
     before_destroy :check_if_disbursed?
 
     def self.total
-      sum(&:adjusted_amount)
-    end
-    
-    def self.valid?
-      debit.sum(&:amount) == credit.sum(&:amount)
+      Money.new(sum(&:amount)).amount
     end
 
     def self.for_account(args={})
@@ -53,18 +48,6 @@ module Vouchers
 
     def self.with_no_vouchers
       where(voucher_id: nil)
-    end
-
-    def adjusted_amount
-      if recent_amount_adjustment.present?
-        recent_amount_adjustment.adjusted_amount(adjustable: self)
-      else
-        amount.amount
-      end
-    end
-
-    def recent_amount_adjustment
-      amount_adjustments.recent
     end
 
     def disbursed?

@@ -1,6 +1,6 @@
 require 'rails_helper'
 module AccountingModule
-  RSpec.describe Amount, type: :model do
+  describe Amount do
 
     subject { build(:amount) }
     it { is_expected.to_not be_valid }

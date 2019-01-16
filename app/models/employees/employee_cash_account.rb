@@ -6,7 +6,7 @@ module Employees
 
     delegate :name, to: :cash_account
     validates :cash_account_id, uniqueness: { scope: :employee_id, message: "Already taken" }
-    validate :asset_account?
+    # before_validation :validate_asset_account?, on: [:create, :update]
 
     def self.cash_accounts
       accounts = pluck(:cash_account_id)
@@ -25,7 +25,7 @@ module Employees
     end
 
     private
-    def asset_account?
+    def validate_asset_account?
       errors[:cash_account_id] << "Must be an asset account" if AccountingModule::Account.find(cash_account_id).type != "AccountingModule::Asset"
     end
   end

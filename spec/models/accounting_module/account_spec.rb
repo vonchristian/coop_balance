@@ -68,12 +68,14 @@ module AccountingModule
       end
     end
 
-    it ".updated_at(options)" do
-      account = create(:asset, updated_at: Date.today)
-      updated_account = create(:asset, updated_at: Date.today + 1.days)
+    it ".updated_at(args)" do
+      old_account = create(:asset, last_transaction_date: Date.current.prev_month)
+      updated_account = create(:asset, last_transaction_date: Date.current)
 
-      expect(described_class.updated_at(from_date: Date.tomorrow, to_date: Date.tomorrow)).to include(updated_account)
-      expect(described_class.updated_at(from_date: Date.tomorrow, to_date: Date.tomorrow)).to_not include(account)
+
+      expect(described_class.updated_at(from_date: Date.current, to_date: Date.current)).to include(updated_account)
+      expect(described_class.updated_at(from_date: Date.current, to_date: Date.current)).to_not include(old_account)
+
     end
 
     it ".updated_by(employee)" do

@@ -6,21 +6,20 @@ module Employees
       it { is_expected.to belong_to :employee }
       it { is_expected.to belong_to :cash_account }
       it { is_expected.to belong_to :cooperative }
-
     end
 
     describe 'validations' do
-      it 'asset_account?' do
-        cash_on_hand = create(:asset)
-        revenue = create(:revenue)
-        invalid_cash_account = build(:employee_cash_account, cash_account: revenue)
-        valid_cash_account = build(:employee_cash_account, cash_account: cash_on_hand)
-
-        expect(valid_cash_account).to be_valid
-        expect(invalid_cash_account).to_not be_valid
-
-        expect(invalid_cash_account.errors[:cash_account_id]).to eql(["Must be an asset account"])
-      end
+      # it 'asset_account?' do
+      #   cash_on_hand = create(:asset)
+      #   revenue = create(:revenue)
+      #   invalid_cash_account = build(:employee_cash_account, cash_account: revenue)
+      #   valid_cash_account = build(:employee_cash_account, cash_account: cash_on_hand)
+      #
+      #   expect(valid_cash_account).to be_valid
+      #   expect(invalid_cash_account).to_not be_valid
+      #
+      #   expect(invalid_cash_account.errors[:cash_account_id]).to eql(["Must be an asset account"])
+      # end
 
     end
 
