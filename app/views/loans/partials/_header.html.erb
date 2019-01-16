@@ -24,8 +24,7 @@
               <% else %>
                 <span class="text-muted" data-toggle="tooltip" title="Reference Number">
                   <%= "##{Voucher.find(loan.disbursement_voucher_id).try(:reference_number)}" %>
-                </span><br>
-                <small class="text-muted min-margin"><%= loan.try(:purpose) %></small>
+                </span>
               <% end %>
             </div>
           </div>
@@ -49,8 +48,9 @@
           <div class="row">
             <div class="col-md-12 col-sm-12">
               <% if loan.cancelled == true %>
-                <span class="fa fa-exclamation text-danger" title="Please cancel these loan application." data-toggle="tooltip">Cancelled</span>
+                <span class="fa fa-exclamation text-danger" title="Please cancel these loan application." data-toggle="tooltip">Cancelled</span><br>
               <% end %>
+              <small class="text-muted min-margin"><%= loan.try(:purpose) %></small>
             </div>
           </div>
         </div>
