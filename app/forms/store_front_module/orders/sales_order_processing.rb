@@ -50,6 +50,7 @@
         User.find(employee_id)
       end
       def create_voucher(order)
+        StoreFrontModule::Vouchers::SalesOrderVoucher.new(order: order).create_voucher!
         store_front = find_employee.store_front
         cash_on_hand = find_cash_account
         cost_of_goods_sold = store_front.cost_of_goods_sold_account

@@ -9,10 +9,10 @@
        <% if params[:search].present? %>
         <%=form_tag new_store_front_module_sales_line_item_path, method: :get do %>
           <div class="input-group">
-            <%= text_field_tag :search, params[:search], class: "form-control input-lg", placeholder: "Search Products..." %>
+            <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Products..." %>
             <span class="input-group-btn">
-              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-primary") do %>
-                <i class="fa fa-search"></i> Search
+              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-default") do %>
+                <i class="fa fa-search"></i> Browse Products
               <% end %>
             </span>
           </div>
@@ -20,10 +20,10 @@
         <% else %>
          <%=form_tag new_store_front_module_sales_line_item_path, method: :get do %>
           <div class="input-group">
-            <%= text_field_tag :search, params[:search], autofocus: true,  class: "form-control input-lg", placeholder: "Search Products..."  %>
+            <%= text_field_tag :search, params[:search], autofocus: true,  class: "form-control", placeholder: "Search Products..."  %>
             <span class="input-group-btn">
-              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-primary") do %>
-                <i class="fa fa-search"></i> Search
+              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-default") do %>
+                <i class="fa fa-search"></i> Browse Products
               <% end %>
             </span>
           </div>

@@ -1,3 +1,6 @@
+.text-indigo {
+  color: #5661b3;
+}
 
 .text-open-sans-regular {
   font-family: 'open_sans_regular';
@@ -403,6 +406,7 @@ input[type="file"].choose-btn {
   line-height: 1.0;
 }
 .date-as-calendar .month {
+  font-family: "Oswald", sans-serif;
   text-transform: uppercase;
   background: #031B4D;
   background : linear-gradient(to bottom right, #1a356d 0%, #031B4D 100%);

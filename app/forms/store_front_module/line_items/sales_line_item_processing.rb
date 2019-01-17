@@ -10,6 +10,7 @@ module StoreFrontModule
                     :total_cost,
                     :cart_id,
                     :barcode,
+                    :employee_id,
                     :purchase_line_item_id
 
       validates :quantity, numericality: { greater_than: 0.1 }
@@ -25,56 +26,58 @@ module StoreFrontModule
         if product_id.present? && barcode.blank?
           create_product_sales
         elsif purchase_line_item_id.present? && barcode.present?
-            decrease_purchase_line_item_quantity
+            create_purchase_line_item_sales
         end
       end
 
        def create_product_sales
-        sales = find_cart.sales_line_items.create!(
+        sales_line_item = find_cart.sales_line_items.create!(
             quantity:            quantity,
             unit_cost:           selling_cost,
             total_cost:          set_total_cost,
             unit_of_measurement: find_unit_of_measurement,
             product:             find_product)
-        sales.barcodes.create(code: barcode)
+        sales_line_item.barcodes.create(code: barcode)
         requested_quantity = converted_quantity
 
         find_product.purchases.order(date: :asc).available.each do |purchase|
-          temp_sales = sales.sales_purchase_line_items.create!(
+          temp_sales = sales_line_item.sales_purchase_line_items.create!(
             quantity:                 quantity_for(purchase, requested_quantity),
             unit_cost:                purchase.purchase_cost,
             total_cost:               total_cost_for(purchase, quantity),
             unit_of_measurement:      find_product.base_measurement,
             product_id:               product_id,
-            purchase_line_item:       purchase)
+            purchase_line_item:       purchase,
+            sales_line_item:          sales_line_item)
           requested_quantity -= temp_sales.quantity
           break if requested_quantity.zero?
         end
       end
 
-      def decrease_purchase_line_item_quantity
-        sales = find_cart.sales_line_items.create!(
+      def create_purchase_line_item_sales
+        sales_line_item = find_cart.sales_line_items.create!(
           quantity:            quantity,
           unit_cost:           selling_cost,
           total_cost:          set_total_cost,
           product_id:          product_id,
           unit_of_measurement: find_unit_of_measurement
           )
-        sales.barcodes.create(code: barcode)
+        sales_line_item.barcodes.create(code: barcode)
 
         purchase = find_purchase_line_item
-        sales.sales_purchase_line_items.create!(
+        sales_line_item.sales_purchase_line_items.create!(
             quantity:            converted_quantity,
             unit_cost:           purchase.purchase_cost,
             total_cost:          total_cost_for(purchase, quantity),
             unit_of_measurement: find_product.base_measurement,
             product_id:          product_id,
-            purchase_line_item:  purchase)
+            purchase_line_item:  purchase,
+            sales_line_item:     sales_line_item)
       end
 
       def quantity_for(purchase, requested_quantity)
-        if purchase.available_quantity >= BigDecimal.new(requested_quantity)
-          BigDecimal.new(requested_quantity)
+        if purchase.available_quantity >= BigDecimal(requested_quantity)
+          BigDecimal(requested_quantity)
         else
           purchase.available_quantity.to_f
         end
@@ -84,11 +87,15 @@ module StoreFrontModule
         find_unit_of_measurement.conversion_multiplier * quantity.to_f
       end
       def find_cart
-        StoreFrontModule::Cart.find_by_id(cart_id)
+        StoreFrontModule::Cart.find(cart_id)
       end
 
       def selling_cost
-        find_unit_of_measurement.price
+        if unit_cost.present?
+          unit_cost.to_f
+        else
+          find_unit_of_measurement.price
+        end
       end
 
       def set_total_cost
@@ -104,18 +111,26 @@ module StoreFrontModule
       end
 
       def find_product
-        Product.find_by_id(product_id)
+        Product.find(product_id)
       end
 
       def find_purchase_line_item
-        StoreFrontModule::LineItems::PurchaseLineItem.find_by_id(purchase_line_item_id)
+        StoreFrontModule::LineItems::PurchaseLineItem.find_by(id: purchase_line_item_id)
+      end
+
+      def find_employee
+        User.find(employee_id)
+      end
+
+      def find_store_front
+        find_employee.store_front
       end
 
       def available_quantity
         if product_id.present? && barcode.blank?
-          find_product.balance
+          find_product.balance(store_front: find_store_front)
         elsif purchase_line_item_id.present? && barcode.present?
-          find_purchase_line_item.available_quantity
+          find_purchase_line_item.available_quantity(store_front: find_store_front)
         end
       end
 

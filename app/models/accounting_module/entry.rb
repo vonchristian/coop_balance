@@ -91,8 +91,10 @@ module AccountingModule
 
 
     def self.entered_on(args={})
-      if args[:from_date] && args[:to_date]
-        date_range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])
+      from_date = args[:from_date]
+      to_date   = args[:to_date]
+      if from_date && to_date
+        date_range = DateRange.new(from_date: from_date, to_date: to_date)
         where('entry_date' => (date_range.start_date..date_range.end_date))
       else
         all

@@ -56,8 +56,9 @@ module AccountingModule
     end
 
     def self.entered_on(args={})
-      from_date  = args[:from_date] || Date.today - 999.years
-      to_date    = args[:to_date]   || Date.today
+      current_date = Date.current
+      from_date  = args[:from_date] || current_date - 999.years
+      to_date    = args[:to_date]   || current_date
       date_range = DateRange.new(from_date: from_date, to_date: to_date)
       not_cancelled.where('entries.entry_date' => date_range.start_date..date_range.end_date)
     end
@@ -80,11 +81,11 @@ module AccountingModule
     end
 
     def self.total
-      not_cancelled.all.map{ |a| a.amount.amount }.sum
+      not_cancelled.all.map{ |amount| amount.amount.amount }.sum
     end
     private
     def self.balance_finder(opts={})
-    klass = opts.select{|key, value| !value.nil?}.keys.sort.map{ |key| key.to_s.titleize }.join.gsub(" ", "")
+    klass = opts.compact.keys.sort.map{ |key| key.to_s.titleize }.join.gsub(" ", "")
         ("AccountingModule::BalanceFinders::" + klass).constantize
     end
   end

@@ -6,7 +6,7 @@
   <small>
     <%= current_user.employee_cash_accounts.default_cash_account.name.try(:upcase) %>
   </small><br>
-  <h3 class="card-title">
+  <h3 class="card-title number">
     <%= number_to_currency current_user.employee_cash_accounts.default_cash_account.balance %>
   </h3>
 </span>
