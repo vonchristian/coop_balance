@@ -61,7 +61,7 @@ class User < ApplicationRecord
 
   delegate :name, :abbreviated_name, to: :cooperative, prefix: true
   delegate :name, to: :store_front, prefix: true, allow_nil: true
-  before_save :set_default_image
+  before_save :set_default_image, on: :create
 
   def self.has_birthdays_on(month)
     where(birth_month: month).order(:birth_day)
@@ -142,8 +142,8 @@ class User < ApplicationRecord
 
   private
   def set_default_image
-    # if !avatar.attached?
+    if !avatar.attached?
       self.avatar.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'default.png')), filename: 'default-image.png', content_type: 'image/png')
-    # end
+    end
   end
 end

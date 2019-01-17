@@ -29,11 +29,11 @@ module AccountingModule
       end
 
       def loan_voucher?
-        find_entry.voucher.voucher_amounts.last.commercial_document_type == "LoansModule::LoanApplication"
+        find_entry.voucher.voucher_amounts.debit.last.commercial_document_type == "LoansModule::LoanApplication"
       end
 
       def loan_application_voucher
-        find_entry.voucher.voucher_amounts.where(commercial_document_type: "LoansModule::LoanApplication").last
+        find_entry.voucher.voucher_amounts.debit.where(commercial_document_type: "LoansModule::LoanApplication").last
       end
 
       def find_entry

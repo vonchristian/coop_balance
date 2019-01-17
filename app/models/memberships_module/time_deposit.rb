@@ -33,8 +33,8 @@ module MembershipsModule
 
     def withdrawal_date
       if withdrawn == true
-        time_deposit_product_account.debit_entries.select {|e| e.amounts.where(commercial_document: self)}.first.entry_date
-        # entries.sort_by(&:entry_date).reverse.first.entry_date
+        # time_deposit_product_account.debit_entries.select {|e| e.amounts.where(commercial_document: self)}.first.entry_date
+        entries.sort_by(&:created_at).reverse.first.entry_date
       end
     end
 

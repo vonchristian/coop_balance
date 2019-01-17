@@ -2,7 +2,7 @@ module Memberships
   module ShareCapitals
     class CapitalBuildUpProcessing
       include ActiveModel::Model
-      attr_accessor :or_number, :amount, :date, :share_capital_id, :employee_id, :cash_account_id, :account_number
+      attr_accessor :or_number, :amount, :date, :description, :share_capital_id, :employee_id, :cash_account_id, :account_number
       validates :amount, presence: true, numericality: { greater_than: 0.01 }
       validates :or_number, presence: true
 
@@ -30,7 +30,7 @@ module Memberships
           office:         find_employee.office,
           cooperative:    find_employee.cooperative,
           preparer:       find_employee,
-          description:    "Capital build up transaction of #{find_share_capital.subscriber.full_name}",
+          description:    description,
           reference_number: or_number,
           account_number: account_number,
           date: date)

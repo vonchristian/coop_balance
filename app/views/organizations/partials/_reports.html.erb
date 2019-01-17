@@ -10,11 +10,16 @@
 </div>
 <hr class="no-margin">
 <div class="card-body">
-  <%= form_tag({:action => "index", format: 'pdf', controller: "organizations/loans", organization_id: @organization.id, date: params[:date]}, {:method => :get, autocomplete: 'off' }) do %>
+  <%= form_tag({:action => "index", controller: "organizations/reports", organization_id: @organization.id, format: 'pdf'}, {:method => :get, autocomplete: 'off' }) do %>
     <div class="row">
       <div class="col-md-3">
         <div class="form-group">
           <%= text_field_tag :date, @date, :class => 'datepicker form-control border-input', :placeholder => "Date" %>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <%= select_tag :membership_type, options_for_select(Membership.whitelisted_membership_types.map {|m| [m.titleize.pluralize, m]}, params[:membership_type]), class: ' form-control border-input', prompt: false %>
         </div>
       </div>
       <div class="col-md-1">
@@ -22,5 +27,5 @@
       </div>
     </div>
   <% end %>
-  <%=link_to 'Billing Statement (PDF)', organization_loans_path(@organization, format: 'pdf'), class: 'btn btn-info float-right' %>
+  <%=link_to 'Billing Statement (PDF)', organization_loans_path(@organization, membership_type: @membership_type, date: @date, format: 'pdf'), class: 'btn btn-info float-right' %>
 </div>

@@ -474,8 +474,8 @@ input[type="file"].choose-btn {
   flex-wrap: nowrap;
   justify-content: space-between;
 
-  width: 4em;
-  height: 4em;
+  width: 5em;
+  height: 5em;
 }
 .inline-flex.date-as-calendar .weekday,
 .inline-flex.date-as-calendar .day,
@@ -492,6 +492,7 @@ input[type="file"].choose-btn {
 .inline-flex.date-as-calendar .weekday {
   order: 2;
   font-size: 0.6125em;
+  margin-top: 3px;
 }
 .inline-flex.date-as-calendar .day {
   order: 3;

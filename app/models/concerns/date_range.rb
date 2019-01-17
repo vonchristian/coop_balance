@@ -5,7 +5,7 @@ DateRange = Struct.new(:from_date, :to_date, keyword_init: true) do
 
   def start_date
     if from_date.is_a?(Date) || from_date.is_a?(Time) || from_date.is_a?(DateTime)
-      from_date.strftime('%Y-%m-%d 00:00:00')
+      from_date.yesterday.end_of_day.strftime('%Y-%m-%d 00:00:00')
     else
       DateTime.parse(from_date.strftime('%Y-%m-%d 00:00:00'))
     end

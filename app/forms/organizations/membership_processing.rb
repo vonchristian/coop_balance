@@ -6,11 +6,11 @@ module Organizations
 	  :organization_id, 
 	  :cooperative_id
 
-
 	  def process!
 	  	if valid?
 		  	ActiveRecord::Base.transaction do
 		      add_member
+		      add_member_accounts_to_organization
 		    end
 		  end
 	  end
@@ -25,6 +25,9 @@ module Organizations
 
 	  private
 	  def add_member
+	  	if find_member.organization_memberships.present?
+	  		find_member.organization_memberships.destroy_all
+	  	end
 	  	find_organization.organization_members.create(
 	  		organization_membership_id:   organization_membership_id,
 	  		organization_membership_type: organization_membership_type
@@ -32,7 +35,7 @@ module Organizations
 	  end
 
 	  def find_member
-	  	find_cooperative.members.find(organization_membership_id)
+	  	find_cooperative.member_memberships.find(organization_membership_id)
 	  end
 
 	  def add_member_accounts_to_organization
