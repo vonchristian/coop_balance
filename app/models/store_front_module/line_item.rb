@@ -1,4 +1,7 @@
 module StoreFrontModule
+  # The LineItem class is responsible for computing
+  # balances of line items
+
   class LineItem < ApplicationRecord
     include PgSearch
     pg_search_scope :text_search, associated_against: { barcodes: [:code] }
@@ -9,7 +12,6 @@ module StoreFrontModule
     belongs_to :order,               class_name: "StoreFrontModule::Order",
                                      foreign_key: 'order_id'
     belongs_to :cooperative
-    belongs_to :store_front
     has_many :barcodes,              dependent: :destroy
 
     validates :unit_of_measurement_id, :product_id, presence: true
@@ -19,7 +21,7 @@ module StoreFrontModule
     delegate :code,                   to: :unit_of_measurement,prefix: true
     delegate :conversion_multiplier,  to: :unit_of_measurement
     delegate :balance,                to: :product, prefix: true
-    delegate :employee, :store_front, to: :order
+    delegate :employee,  to: :order
     delegate :name,                   to: :employee, prefix: true
 
 
@@ -44,12 +46,18 @@ module StoreFrontModule
     end
 
     def self.balance(args={})
-      balance_finder.new(args).compute
-    end
-    def self.balance_finder(args)
+    balance_finder(args).new(args.merge(line_items: self)).compute
+  end
+
+
+  def self.balance_finder(args={})
+     if args.present?
       klass = args.select{|key, value| !value.nil?}.keys.sort.map{ |key| key.to_s.titleize }.join.gsub(" ", "")
-      ("StoreFrontModule::BalanceFinders::" + klass).constantize
+    else
+    klass = "DefaultQuantityCalculator"
     end
+      ("StoreFrontModule::QuantityCalculators::" + klass).constantize
+  end
 
     def converted_quantity
       quantity * conversion_multiplier

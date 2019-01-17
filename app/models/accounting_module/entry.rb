@@ -160,7 +160,6 @@ module AccountingModule
     end
 
     private
-
     def set_encrypted_hash!
       if encrypted_hash.blank?
         self.update_attributes!(
@@ -170,26 +169,21 @@ module AccountingModule
       end
     end
 
-      def set_default_date
-        todays_date = ActiveRecord::Base.default_timezone == :utc ? Time.now.utc : Time.now
-        self.entry_date ||= todays_date
-      end
+    def set_default_date
+      todays_date = ActiveRecord::Base.default_timezone == :utc ? Time.now.utc : Time.now
+      self.entry_date ||= todays_date
+    end
 
+    def has_credit_amounts?
+      errors[:base] << "Entry must have at least one credit amount" if self.credit_amounts.blank?
+    end
 
-      def has_credit_amounts?
-        errors[:base] << "Entry must have at least one credit amount" if self.credit_amounts.blank?
-      end
+    def has_debit_amounts?
+      errors[:base] << "Entry must have at least one debit amount" if self.debit_amounts.blank?
+    end
 
-      def has_debit_amounts?
-        errors[:base] << "Entry must have at least one debit amount" if self.debit_amounts.blank?
-      end
-
-      def amounts_cancel?
-        errors[:base] << "The credit and debit amounts are not equal" if credit_amounts.balance_for_new_record != debit_amounts.balance_for_new_record
-      end
-      # def destroy
-      #   # raise "Cannot destroy entry"
-      #   # super
-      # end
+    def amounts_cancel?
+      errors[:base] << "The credit and debit amounts are not equal" if credit_amounts.balance_for_new_record != debit_amounts.balance_for_new_record
+    end
   end
 end

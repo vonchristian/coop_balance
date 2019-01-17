@@ -14,7 +14,7 @@ module StoreFrontModule
       def create
         @cart = current_cart
         @sales_line_item = StoreFrontModule::LineItems::SalesLineItemProcessing.new(line_item_params)
-        if @sales_line_item.valid?
+        if @sales_line_item.process!
           @sales_line_item.process!
           redirect_to new_store_front_module_sales_line_item_url, notice: "Added to cart."
         else
@@ -36,7 +36,10 @@ module StoreFrontModule
                :product_id,
                :barcode,
                :cart_id,
+               :employee_id,
+               :store_front_id,
                :purchase_line_item_id)
+
       end
     end
   end

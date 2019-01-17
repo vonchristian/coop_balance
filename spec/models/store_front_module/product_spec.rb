@@ -5,8 +5,7 @@ module StoreFrontModule
     context "associations" do
       it { is_expected.to belong_to :store_front }
       it { is_expected.to belong_to :cooperative }
-      it { is_expected.to belong_to :stock_registry }
-      it { is_expected.to belong_to :category }
+      it { is_expected.to belong_to(:category).optional }
     	it { is_expected.to have_many :unit_of_measurements }
       it { is_expected.to have_many :line_items }
       it { is_expected.to have_many :purchases }
@@ -34,13 +33,6 @@ module StoreFrontModule
     describe 'delegations' do
       it { is_expected.to delegate_method(:code).to(:base_measurement).with_prefix }
     end
-
-    it { is_expected.to have_attached_file(:photo) }
-    it { is_expected.to validate_attachment_content_type(:photo).
-    	allowing('image/png', 'image/gif').
-    	rejecting('text/plain', 'text/xml') }
-    it { should validate_attachment_size(:photo).
-      less_than(4.megabytes) }
 
     it "#base_measurement" do
       product = create(:product)

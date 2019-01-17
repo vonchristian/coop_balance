@@ -7,19 +7,17 @@ module StoreFrontModule
                                                 associated_against:  { :line_items => [:barcode] }
     belongs_to :store_front
     belongs_to :cooperative
-    belongs_to :stock_registry,                 class_name: "Registries::StockRegistry", optional: true
     belongs_to :category,                       class_name: "StoreFrontModule::Category", optional: true
     has_many :unit_of_measurements,             class_name: "StoreFrontModule::UnitOfMeasurement", dependent: :destroy
     has_many :mark_up_prices,                   through: :unit_of_measurements
     has_many :line_items,                       class_name: "StoreFrontModule::LineItem", dependent: :destroy
-    has_many :purchases,                        class_name: 'StoreFrontModule::LineItems::PurchaseLineItem',              extend: StoreFrontModule::QuantityBalanceFinder
-    has_many :purchase_returns,                 class_name: "StoreFrontModule::LineItems::PurchaseReturnLineItem",        extend: StoreFrontModule::QuantityBalanceFinder
-    has_many :sales,                            class_name: 'StoreFrontModule::LineItems::SalesLineItem',                 extend: StoreFrontModule::QuantityBalanceFinder
-    has_many :sales_returns,                    class_name: "StoreFrontModule::LineItems::SalesReturnLineItem",           extend: StoreFrontModule::QuantityBalanceFinder
-    has_many :spoilages,                        class_name: "StoreFrontModule::LineItems::SpoilageLineItem",              extend: StoreFrontModule::QuantityBalanceFinder
-    has_many :internal_uses,                    class_name: "StoreFrontModule::LineItems::InternalUseLineItem",           extend: StoreFrontModule::QuantityBalanceFinder
-    has_many :stock_transfers,                  class_name: "StoreFrontModule::LineItems::StockTransferLineItem",         extend: StoreFrontModule::QuantityBalanceFinder
-    has_many :received_stock_transfers,         class_name: "StoreFrontModule::LineItems::ReceivedStockTransferLineItem", extend: StoreFrontModule::QuantityBalanceFinder
+    has_many :purchases,                        class_name: 'StoreFrontModule::LineItems::PurchaseLineItem'
+    has_many :purchase_returns,                 class_name: "StoreFrontModule::LineItems::PurchaseReturnLineItem"
+    has_many :sales,                            class_name: 'StoreFrontModule::LineItems::SalesLineItem'
+    has_many :sales_returns,                    class_name: "StoreFrontModule::LineItems::SalesReturnLineItem"
+    has_many :spoilages,                        class_name: "StoreFrontModule::LineItems::SpoilageLineItem"
+    has_many :internal_uses,                    class_name: "StoreFrontModule::LineItems::InternalUseLineItem"
+    has_many :stock_transfers,                  class_name: "StoreFrontModule::LineItems::StockTransferLineItem"
     has_many :orders,                           through: :line_items,
                                                 source: :order
     has_many :sales_orders,                     :through => :sales,
@@ -40,12 +38,6 @@ module StoreFrontModule
     has_many :spoilage_orders,                  class_name: "StoreFrontModule::Orders::SpoilageOrder",
                                                 through: :spoilages,
                                                 source: :spoilage_order
-    has_many :stock_transfer_orders,            class_name: "StoreFrontModule::Orders::StockTransferOrder",
-                                                through: :stock_transfers,
-                                                source: :stock_transfer_order
-    has_many :received_stock_transfer_orders,    class_name: "StoreFrontModule::Orders::ReceivedStockTransferOrder",
-                                                through: :received_stock_transfers,
-                                                source: :received_stock_transfer_order
 
 
     validates :name, presence: true, uniqueness: true
@@ -74,40 +66,50 @@ module StoreFrontModule
       sales_balance(args) -
       internal_uses_balance(args) -
       spoilages_balance(args) -
-      stock_transfers_balance(args) -
+      delivered_stock_transfers_balance -
       purchase_returns_balance(args)
     end
 
-    def sales_balance(options={})
-      sales.processed.balance(self)
+    def sales_balance(args={})
+      sales.balance(args)
     end
 
-    def purchases_balance(options={})
-      purchases.balance(self)
+    def purchases_balance(args={})
+      purchases.balance(args)
     end
 
-    def purchase_returns_balance(options={})
-      purchase_returns.balance(self)
+    def purchase_returns_balance(args={})
+      purchase_returns.balance(args)
     end
 
-    def sales_returns_balance(options={})
-      sales_returns.balance(self)
+    def sales_returns_balance(args={})
+      sales_returns.balance(args)
     end
 
-    def internal_uses_balance(options={})
-      internal_uses.balance(self)
+    def internal_uses_balance(args={})
+      internal_uses.balance(args)
     end
 
-    def stock_transfers_balance(options={})
-      stock_transfers.balance(self)
+    def received_stock_transfers_balance(args={})
+      store_front = args[:store_front]
+      if store_front
+        store_front.received_stock_transfer_line_items.balance(args)
+      else
+        0
+      end
     end
 
-    def received_stock_transfers_balance(options={})
-      received_stock_transfers.balance(self)
+    def delivered_stock_transfers_balance(args={})
+      store_front = args[:store_front]
+      if store_front
+        store_front.delivered_stock_transfer_line_items.balance(args)
+      else
+        0
+      end
     end
 
-    def spoilages_balance(options={})
-      spoilages.balance(self)
+    def spoilages_balance(args={})
+      spoilages.balance(args)
     end
   end
 end

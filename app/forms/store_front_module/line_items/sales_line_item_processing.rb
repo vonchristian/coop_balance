@@ -11,10 +11,12 @@ module StoreFrontModule
                     :cart_id,
                     :barcode,
                     :employee_id,
+                    :store_front_id,
                     :purchase_line_item_id
 
       validates :quantity, numericality: { greater_than: 0.1 }
       validate :ensure_quantity_is_less_than_or_equal_to_available_quantity?
+
       def process!
         ActiveRecord::Base.transaction do
           process_sales_line_item
@@ -37,10 +39,10 @@ module StoreFrontModule
             total_cost:          set_total_cost,
             unit_of_measurement: find_unit_of_measurement,
             product:             find_product)
-        sales_line_item.barcodes.create(code: barcode)
+        sales_line_item.barcodes.create!(code: barcode)
         requested_quantity = converted_quantity
 
-        find_product.purchases.order(date: :asc).available.each do |purchase|
+        find_product.purchases.order(created_at: :asc).available.each do |purchase|
           temp_sales = sales_line_item.sales_purchase_line_items.create!(
             quantity:                 quantity_for(purchase, requested_quantity),
             unit_cost:                purchase.purchase_cost,
@@ -76,10 +78,10 @@ module StoreFrontModule
       end
 
       def quantity_for(purchase, requested_quantity)
-        if purchase.available_quantity >= BigDecimal(requested_quantity)
+        if purchase.available_quantity(store_front: find_store_front) >= BigDecimal(requested_quantity)
           BigDecimal(requested_quantity)
         else
-          purchase.available_quantity.to_f
+          purchase.available_quantity(store_front: find_store_front).to_f
         end
       end
 
@@ -114,16 +116,16 @@ module StoreFrontModule
         Product.find(product_id)
       end
 
-      def find_purchase_line_item
-        StoreFrontModule::LineItems::PurchaseLineItem.find_by(id: purchase_line_item_id)
+      def find_store_front
+        find_employee.store_front
       end
 
       def find_employee
         User.find(employee_id)
       end
 
-      def find_store_front
-        find_employee.store_front
+      def find_purchase_line_item
+        StoreFrontModule::LineItems::PurchaseLineItem.find_by(id: purchase_line_item_id)
       end
 
       def available_quantity

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_16_140716) do
+ActiveRecord::Schema.define(version: 2019_01_17_032930) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -925,6 +925,7 @@ ActiveRecord::Schema.define(version: 2019_01_16_140716) do
     t.uuid "store_front_id"
     t.uuid "cooperative_id"
     t.uuid "voucher_id"
+    t.string "description"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_orders"
     t.index ["cooperative_id"], name: "index_orders_on_cooperative_id"
     t.index ["employee_id"], name: "index_orders_on_employee_id"
@@ -1011,11 +1012,10 @@ ActiveRecord::Schema.define(version: 2019_01_16_140716) do
     t.string "unit_of_measurement"
     t.uuid "cooperative_id"
     t.uuid "store_front_id"
-    t.uuid "stock_registry_id"
+    t.boolean "tracked", default: false
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["cooperative_id"], name: "index_products_on_cooperative_id"
     t.index ["name"], name: "index_products_on_name", unique: true
-    t.index ["stock_registry_id"], name: "index_products_on_stock_registry_id"
     t.index ["store_front_id"], name: "index_products_on_store_front_id"
   end
 
@@ -1542,6 +1542,7 @@ ActiveRecord::Schema.define(version: 2019_01_16_140716) do
     t.string "commercial_document_type"
     t.uuid "commercial_document_id"
     t.boolean "cancelled", default: false
+    t.uuid "store_front_id"
     t.index ["account_number"], name: "index_vouchers_on_account_number", unique: true
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_vouchers"
     t.index ["cooperative_id"], name: "index_vouchers_on_cooperative_id"
@@ -1551,6 +1552,7 @@ ActiveRecord::Schema.define(version: 2019_01_16_140716) do
     t.index ["office_id"], name: "index_vouchers_on_office_id"
     t.index ["payee_type", "payee_id"], name: "index_vouchers_on_payee_type_and_payee_id"
     t.index ["preparer_id"], name: "index_vouchers_on_preparer_id"
+    t.index ["store_front_id"], name: "index_vouchers_on_store_front_id"
     t.index ["token"], name: "index_vouchers_on_token"
   end
 
@@ -1667,7 +1669,6 @@ ActiveRecord::Schema.define(version: 2019_01_16_140716) do
   add_foreign_key "penalty_configs", "loan_products"
   add_foreign_key "products", "categories"
   add_foreign_key "products", "cooperatives"
-  add_foreign_key "products", "registries", column: "stock_registry_id"
   add_foreign_key "products", "store_fronts"
   add_foreign_key "program_subscriptions", "programs"
   add_foreign_key "programs", "accounts"
@@ -1753,6 +1754,7 @@ ActiveRecord::Schema.define(version: 2019_01_16_140716) do
   add_foreign_key "vouchers", "cooperatives"
   add_foreign_key "vouchers", "entries"
   add_foreign_key "vouchers", "offices"
+  add_foreign_key "vouchers", "store_fronts"
   add_foreign_key "vouchers", "users", column: "disburser_id"
   add_foreign_key "vouchers", "users", column: "preparer_id"
 end

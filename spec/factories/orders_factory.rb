@@ -1,7 +1,9 @@
 FactoryBot.define do
   factory :order, class: "StoreFrontModule::Order" do
     association :commercial_document, factory: :member
+    association :store_front
     date { "2017-06-12 13:20:12" }
+    description "Order"
 
     factory :purchase_order, class: "StoreFrontModule::Orders::PurchaseOrder" do
       association :commercial_document, factory: :supplier
@@ -12,6 +14,7 @@ FactoryBot.define do
 
     factory :sales_order, class: "StoreFrontModule::Orders::SalesOrder" do
       association :commercial_document, factory: :member
+      description 'Sales Order'
     end
 
     factory :sales_return_order, class: "StoreFrontModule::Orders::SalesReturnOrder" do

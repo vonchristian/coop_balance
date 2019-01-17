@@ -6,6 +6,7 @@ class Voucher < ApplicationRecord
   multisearchable against: [:number, :description]
 
   belongs_to :cooperative
+  belongs_to :store_front
   belongs_to :cooperative_service, class_name: "CoopServicesModule::CooperativeService"
   belongs_to :office, class_name: "CoopConfigurationsModule::Office"
   belongs_to :accounting_entry, class_name: "AccountingModule::Entry", foreign_key: 'entry_id'
@@ -27,7 +28,7 @@ class Voucher < ApplicationRecord
   # validate :has_credit_amounts?
   # validate :has_debit_amounts?
   # validate :amounts_cancel?
-  
+
   def self.loan_disbursement_vouchers
     vouchers = LoansModule::Loan.pluck(:disbursement_voucher_id)
     where(id: vouchers)
