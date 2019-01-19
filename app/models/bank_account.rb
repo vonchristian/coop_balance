@@ -1,6 +1,5 @@
 class BankAccount < ApplicationRecord
   include PgSearch
-  include Balancer
   pg_search_scope :text_search, against: [:bank_name, :bank_address, :account_number]
   has_one_attached :avatar
   belongs_to :cooperative

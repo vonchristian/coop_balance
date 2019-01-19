@@ -3,13 +3,8 @@ module StoreFrontModule
     class CreditSalesOrderForm
       include ActiveModel::Model
 
-      atrr_reader :employee, :cooperative
-      attr_accessor :reference_number,
-
-      def initialize(args)
-        @employee = args.fetch(:employee)
-        @cooperative = @employee.cooperative
-      end
+      attr_reader :employee, :cooperative
+      attr_accessor :reference_number
     end
   end
 end
