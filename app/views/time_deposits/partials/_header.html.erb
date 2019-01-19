@@ -23,7 +23,7 @@
           #<%= time_deposit.entries.last.try(:reference_number) %>
           <% if time_deposit.withdrawn == true %>
             <br>
-            <span class="text-danger"> Withdrawn last <%= time_deposit.withdrawal_date.strftime("%B %e, %Y") %></span>
+            <small class="text-danger"> Withdrawn last <%= time_deposit.withdrawal_date.strftime("%b %e, %Y") %></small>
           <% end %>
         </div>
       </div>

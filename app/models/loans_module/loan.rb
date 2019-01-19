@@ -81,7 +81,12 @@ module LoansModule
     delegate :number_of_months, to: :current_term, prefix: true
     delegate :term, to: :current_term
 
-
+    def self.filter_by(args={})
+      date = Date.parse(args[:date].to_s)
+      from_date = date.beginning_of_month.yesterday.end_of_day
+      to_date = date.end_of_month
+      all.where(cancelled: false).select {|l| l.balance > 0 && l.maturity_date >= from_date && l.maturity_date <= to_date && l.borrower.current_membership.membership_type == args[:membership_type]}
+    end
 
     def net_proceed_and_loans_receivable_account
       accounts = []
@@ -111,7 +116,6 @@ module LoansModule
     def maturity_date
       current_term.maturity_date
     end
-
 
     def self.active
       where(archived: false)

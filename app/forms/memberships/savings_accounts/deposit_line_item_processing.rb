@@ -2,7 +2,7 @@ module Memberships
   module SavingsAccounts
     class DepositLineItemProcessing
       include ActiveModel::Model
-      attr_accessor :saving_id, :employee_id, :amount, :or_number, :account_number, :date, :payment_type, :offline_receipt, :cash_account_id
+      attr_accessor :saving_id, :employee_id, :amount, :or_number, :account_number, :description, :date, :payment_type, :offline_receipt, :cash_account_id
       validates :amount, presence: true, numericality: { greater_than: 0.01 }
       validates :or_number, presence: true
 
@@ -30,7 +30,7 @@ module Memberships
           office: find_employee.office,
           cooperative: find_employee.cooperative,
           preparer: find_employee,
-          description: "Savings deposit transaction of #{find_saving.depositor.name}",
+          description: description,
           reference_number: or_number,
           account_number: account_number,
           date: date)

@@ -560,6 +560,7 @@ ActiveRecord::Schema.define(version: 2019_01_18_232002) do
     t.integer "loan_amount_cents", default: 0, null: false
     t.string "loan_amount_currency", default: "PHP", null: false
     t.boolean "approved", default: false
+    t.boolean "cancelled", default: false
     t.index ["borrower_type", "borrower_id"], name: "index_loan_applications_on_borrower_type_and_borrower_id"
     t.index ["cooperative_id"], name: "index_loan_applications_on_cooperative_id"
     t.index ["loan_product_id"], name: "index_loan_applications_on_loan_product_id"

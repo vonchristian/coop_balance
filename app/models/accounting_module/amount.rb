@@ -51,9 +51,9 @@ module AccountingModule
       joins(:entry).where('entries.recorder_id' => args[:recorder_id])
     end
 
-    def self.for_commercial_document(args={})
-      where(commercial_document: args[:commercial_document])
-    end
+    # def self.for_commercial_document(args={})
+    #   where(commercial_document: args[:commercial_document])
+    # end
 
     def self.entered_on(args={})
       current_date = Date.current

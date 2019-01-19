@@ -1,14 +1,14 @@
 <% breadcrumb :new_share_capital_capital_build_up, share_capital: @share_capital %>
 <% content_for(:html_title) { "#{@share_capital.subscriber_name} | New Deposit" } %>
 <div class="row">
-  <div class="col-md-8 offset-md-2">
+  <div class="col-md-7">
     <div class="card">
-      <div class="card-header no-border">
+      <div class="card-header">
         <div class="row">
-          <div class="col-md-3 offset-md-1">
+          <div class="col-md-2 col-sm-2">
             <%= image_tag(@share_capital.subscriber.avatar, width: 45, height: 45, class: "img-circle") if @share_capital.subscriber.avatar.attached? %>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-10 col-sm-10">
             <h3 class="card-title"><%= @share_capital.subscriber_name %></h3>
             <small class="text-muted">
               <i class="fa fa-map-marker"></i> <%= @share_capital.subscriber.try(:current_address_complete_address) %>
@@ -17,31 +17,45 @@
             </small>
           </div>
         </div>
-        <br>
-        <div class="row">
-          <div class="col-md-10 offset-md-1">
-            <small>SHARE CAPITAL BALANCE</small>
-            <h3 class="card-title"><%= number_to_currency @share_capital.paid_up_balance %></h3>
+      </div>
+      <div class="card-body">
+        <div class="row justify-content-end">
+          <div class="col-md-7 col-sm-6 col-auto">
+            <small>CURRENT BALANCE</small>
+            <h2 class="number"><%= number_to_currency @share_capital.paid_up_balance %></h2>
+            <small>Account Hash</small><br>
+            <%= @share_capital.account_number %>
+          </div>
+          <div class="col-md-4 col-sm-6 col-auto">
+            <small>INACTIVITY</small>
+            <h4 class=" card-title number text-danger"><%= @share_capital.number_of_days_inactive %> Days</h4>
+            <br>
+            <small>Last Transaction</small><br>
+            <i class="fa fa-calendar"></i> &nbsp; <%= @share_capital.last_transaction_date.strftime("%B %e, %Y") %>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+  <div class="col-md-5">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">New Capital Build-Up</h4>
+      </div>
       <div class="card-body">
-        <div class="row">
-          <div class="col-md-10 offset-md-1">
-            <%= simple_form_for @capital_build_up, url: :share_capital_capital_build_ups, html: {autocomplete: "off"} do |f| %>
-              <%= f.error_notification %>
-              <%= f.input :cash_account_id, default: current_user.cash_accounts.first, collection: current_user.cash_accounts.map{|a| [a.name, a.id] } %>
-              <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
-              <%= f.input :date, as: :string, input_html: { value: Date.today.strftime("%B %e, %Y"), class: "datepicker" } %>
-              <%= f.input :share_capital_id, input_html: {value: @share_capital.id }, as: :hidden %>
-              <%= f.input :amount, as: :currency %>
-              <%= f.input :or_number, label: "Reference Number" %>
-              <%= f.input :employee_id, input_html: { value: current_user.id },as: :hidden %>
-              <hr>
-              <%= f.submit "Save Capital Build Up", class: "btn btn-primary float-right", data: { disable_with: "Processing..."} %>
-            <% end %>
-          </div>
-        </div>
+        <%= simple_form_for @capital_build_up, url: :share_capital_capital_build_ups, html: {autocomplete: "off"} do |f| %>
+          <%= f.error_notification %>
+          <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
+          <%= f.input :date, as: :string, input_html: { value: Date.today.strftime("%B %e, %Y"), class: "datepicker" } %>
+          <%= f.input :share_capital_id, input_html: {value: @share_capital.id }, as: :hidden %>
+          <%= f.input :amount, as: :currency %>
+          <%= f.input :description, as: :text, input_html: {value: "Capital Build-Up transaction of #{@share_capital.subscriber.name}"} %>
+          <%= f.input :or_number, label: "Reference Number" %>
+          <%= f.input :cash_account_id, default: current_user.cash_accounts.first, collection: current_user.cash_accounts.map{|a| [a.name, a.id] } %>
+          <%= f.input :employee_id, input_html: { value: current_user.id },as: :hidden %>
+          <hr>
+          <%= f.submit "Proceed", class: "btn btn-primary float-right", data: { disable_with: "Processing..."} %>
+        <% end %>
       </div>
     </div>
   </div>

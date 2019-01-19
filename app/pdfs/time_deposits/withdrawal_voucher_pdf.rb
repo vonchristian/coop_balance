@@ -14,6 +14,7 @@ module TimeDeposits
       heading
       payee_details
       voucher_details
+      interest_description
       signatory_details
       font Rails.root.join("app/assets/fonts/open_sans_regular.ttf")
       
@@ -140,6 +141,13 @@ module TimeDeposits
         end
       end
     end
+
+    def interest_description
+      move_down 5
+      text "*#{time_deposit.time_deposit_product.interest_expense_account.amounts.where(commercial_document: time_deposit).last.entry.description.gsub("ADJUSTING ENTRY:", "")}", size: 9
+      move_down 10
+    end
+
     def signatory_details
       move_down 50
       table([["PREPARED BY", "APPROVED BY", "DISBURSED BY", "RECEIVED BY"]], 

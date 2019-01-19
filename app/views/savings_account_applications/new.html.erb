@@ -17,15 +17,16 @@
         <%= simple_form_for @savings_account_application, url: :savings_account_applications, html: { autocomplete: 'off' } do |f| %>
           <%= f.input :date, label: "Date Opened", as: :string, input_html: { class: "datepicker" } %>
           <%= f.input :saving_product_id, label: "Savings Account Product", collection: current_cooperative.saving_products.map{ |a| [a.name, a.id] }, as: :radio_buttons, checked: current_cooperative.saving_products.first.id %>
-          <%= f.input :reference_number %>
           <%= f.input :amount, as: :currency %>
+          <%= f.input :description, as: :text, input_html: { value: "Savings account opening of #{@depositor.name}"} %>
           <%= f.input :beneficiaries, label: "Beneficiary/ies", placeholder: "Fullname", as: :text %>
+          <%= f.input :reference_number %>
           <%= f.input :cash_account_id, label: "Cash Account(Debit)", collection: current_user.cash_accounts.map{|a| [a.name, a.id] }, default: current_user.cash_accounts.first %>
           <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
           <%= f.input :voucher_account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
           <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
           <%= f.input :depositor_id, input_html: { value: @depositor.id }, as: :hidden %>
-          <%= f.input :depositor_type, input_html: { value: @depositor.class.to_s }, as: :hidden %>          <%= f.input :description, input_html: { value: "Savings account opening of #{@depositor.name}"}, as: :hidden %>
+          <%= f.input :depositor_type, input_html: { value: @depositor.class.to_s }, as: :hidden %>
 
           <%= f.submit "Proceed", class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
         <% end %>

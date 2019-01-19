@@ -174,6 +174,7 @@ class Member < ApplicationRecord
       self.avatar.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'default.png')), filename: 'default-image.png', content_type: 'image/png')
     end
   end
+
   def set_fullname
     self.fullname = self.full_name #used for slugs
   end

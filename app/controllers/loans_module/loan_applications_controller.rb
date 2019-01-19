@@ -2,7 +2,7 @@ module LoansModule
   class LoanApplicationsController < ApplicationController
     def index
       if params[:search].present?
-        @ordered_loan_applications = current_cooperative.loan_applications.text_search(params[:search])
+        @ordered_loan_applications = current_cooperative.loan_applications.where(approved: false, cancelled: false).text_search(params[:search])
         @loan_applications = @ordered_loan_applications.paginate(page: params[:page], per_page: 20)
       else
         @loan_applications = current_cooperative.loan_applications.not_approved.includes(:loan_product, :voucher =>[:accounting_entry]).order("vouchers.reference_number DESC", "vouchers.date DESC").paginate(page: params[:page], per_page: 20)
