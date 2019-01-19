@@ -108,11 +108,11 @@ ActiveRecord::Schema.define(version: 2019_01_18_232002) do
     t.uuid "commercial_document_id"
     t.integer "payment_status"
     t.uuid "loan_application_id"
+    t.decimal "principal", default: "0.0"
+    t.decimal "interest", default: "0.0"
     t.uuid "cooperative_id"
     t.string "scheduleable_type"
     t.uuid "scheduleable_id"
-    t.decimal "interest"
-    t.decimal "principal"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_amortization_schedules"
     t.index ["cooperative_id"], name: "index_amortization_schedules_on_cooperative_id"
     t.index ["credit_account_id"], name: "index_amortization_schedules_on_credit_account_id"
@@ -131,20 +131,6 @@ ActiveRecord::Schema.define(version: 2019_01_18_232002) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["calculation_type"], name: "index_amortization_types_on_calculation_type"
-  end
-
-  create_table "amount_adjustments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "voucher_amount_id"
-    t.uuid "loan_application_id"
-    t.decimal "amount"
-    t.integer "number_of_payments"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "adjustment_type"
-    t.decimal "rate"
-    t.index ["adjustment_type"], name: "index_amount_adjustments_on_adjustment_type"
-    t.index ["loan_application_id"], name: "index_amount_adjustments_on_loan_application_id"
-    t.index ["voucher_amount_id"], name: "index_amount_adjustments_on_voucher_amount_id"
   end
 
   create_table "amounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -203,17 +189,6 @@ ActiveRecord::Schema.define(version: 2019_01_18_232002) do
     t.index ["cooperative_id"], name: "index_bank_accounts_on_cooperative_id"
     t.index ["interest_revenue_account_id"], name: "index_bank_accounts_on_interest_revenue_account_id"
     t.index ["office_id"], name: "index_bank_accounts_on_office_id"
-  end
-
-  create_table "barangay_members", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "barangay_id"
-    t.string "member_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "barangay_membership_type"
-    t.uuid "barangay_membership_id"
-    t.index ["barangay_id"], name: "index_barangay_members_on_barangay_id"
-    t.index ["barangay_membership_type", "barangay_membership_id"], name: "index_on_barangay_members_membership"
   end
 
   create_table "barangays", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -711,6 +686,7 @@ ActiveRecord::Schema.define(version: 2019_01_18_232002) do
     t.uuid "loan_application_id"
     t.integer "status"
     t.string "type"
+    t.boolean "cancelled", default: false
     t.index ["account_number"], name: "index_loans_on_account_number", unique: true
     t.index ["archived_by_id"], name: "index_loans_on_archived_by_id"
     t.index ["barangay_id"], name: "index_loans_on_barangay_id"
@@ -1215,8 +1191,8 @@ ActiveRecord::Schema.define(version: 2019_01_18_232002) do
     t.string "account_number"
     t.datetime "date_opened"
     t.string "account_owner_name"
-    t.datetime "created_at", default: "2018-12-11 04:47:15", null: false
-    t.datetime "updated_at", default: "2018-12-11 04:47:15", null: false
+    t.datetime "created_at", default: "2019-01-19 01:11:33", null: false
+    t.datetime "updated_at", default: "2019-01-19 01:11:33", null: false
     t.integer "status"
     t.uuid "office_id"
     t.string "subscriber_type"
@@ -1574,15 +1550,12 @@ ActiveRecord::Schema.define(version: 2019_01_18_232002) do
   add_foreign_key "amortization_schedules", "cooperatives"
   add_foreign_key "amortization_schedules", "loan_applications"
   add_foreign_key "amortization_schedules", "loans"
-  add_foreign_key "amount_adjustments", "loan_applications"
-  add_foreign_key "amount_adjustments", "voucher_amounts"
   add_foreign_key "amounts", "accounts"
   add_foreign_key "amounts", "entries"
   add_foreign_key "bank_accounts", "accounts", column: "cash_account_id"
   add_foreign_key "bank_accounts", "accounts", column: "interest_revenue_account_id"
   add_foreign_key "bank_accounts", "cooperatives"
   add_foreign_key "bank_accounts", "offices"
-  add_foreign_key "barangay_members", "barangays"
   add_foreign_key "barangays", "cooperatives"
   add_foreign_key "barangays", "municipalities"
   add_foreign_key "barcodes", "line_items"
