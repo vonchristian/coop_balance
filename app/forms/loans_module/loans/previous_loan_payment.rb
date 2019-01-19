@@ -30,7 +30,7 @@ module LoansModule
       end
 
       def create_loan_charges
-        principal = Charge.amount_type.create(amount: principal_amount, account_id: find_previous_loan.loan_product.loans_receivable_current_account_id, name: "Previous Loan Principal")
+        principal = Charge.amount_type.create(amount: principal_amount, account_id: find_previous_loan.loan_product.current_account_id, name: "Previous Loan Principal")
         interest = Charge.amount_type.create(amount: interest_amount, account: find_previous_loan.loan_product.unearned_interest_income_account, name: "Previous Loan Interest")
         penalty = Charge.amount_type.create!(amount: penalty_amount, account: find_previous_loan.loan_product.penalty_revenue_account, name: "Previous Loan Penalty")
 

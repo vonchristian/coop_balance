@@ -51,7 +51,7 @@ module LoansModule
         amount_type: 'debit',
         amount: find_loan_application.loan_amount.amount,
         description: 'Loan Amount',
-        account: find_loan_application.loan_product_loans_receivable_current_account,
+        account: find_loan_application.loan_product_current_account,
         commercial_document: find_loan_application)
       end
 

@@ -5,8 +5,9 @@ module LoansModule
     describe 'associations' do
       it { is_expected.to belong_to :loan_protection_plan_provider }
       it { is_expected.to belong_to :cooperative }
-      it { is_expected.to belong_to :loans_receivable_current_account }
-      it { is_expected.to belong_to :loans_receivable_past_due_account }
+      it { is_expected.to belong_to :current_account }
+      it { is_expected.to belong_to :past_due_account }
+      it { is_expected.to belong_to :restructured_account }
     	it { is_expected.to have_many :loans }
       it { is_expected.to have_many :member_borrowers }
       it { is_expected.to have_many :employee_borrowers }
@@ -33,7 +34,7 @@ module LoansModule
     describe 'validations' do
       it { is_expected.to validate_presence_of :name }
       it { is_expected.to validate_uniqueness_of :name }
-      it { is_expected.to validate_presence_of :loans_receivable_current_account_id }
+      it { is_expected.to validate_presence_of :current_account_id }
     end
 
   end

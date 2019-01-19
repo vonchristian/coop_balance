@@ -4,8 +4,8 @@ module LoansModule
     attr_accessor :name, :id,
     :description,
     :maximum_loanable_amount,
-    :loans_receivable_current_account_id,
-    :loans_receivable_past_due_account_id,
+    :current_account_id,
+    :past_due_account_id,
     :interest_rate,
     :interest_revenue_account_id,
     :unearned_interest_income_account_id,
@@ -16,8 +16,8 @@ module LoansModule
     :grace_period
 
     validates :name, :maximum_loanable_amount,
-    :loans_receivable_current_account_id,
-    :loans_receivable_past_due_account_id,
+    :current_account_id,
+    :past_due_account_id,
     :interest_rate,
     :interest_revenue_account_id,
     :unearned_interest_income_account_id,
@@ -50,8 +50,8 @@ module LoansModule
         name: name,
         description: description,
         maximum_loanable_amount: maximum_loanable_amount,
-        loans_receivable_current_account_id: loans_receivable_current_account_id,
-        loans_receivable_past_due_account_id: loans_receivable_past_due_account_id,
+        current_account_id: current_account_id,
+        past_due_account_id: past_due_account_id,
         cooperative_id: cooperative_id,
         loan_protection_plan_provider_id: loan_protection_plan_provider_id,
         grace_period: grace_period)
@@ -71,8 +71,8 @@ module LoansModule
         name: name,
         description: description,
         maximum_loanable_amount: maximum_loanable_amount,
-        loans_receivable_current_account_id: loans_receivable_current_account_id,
-        loans_receivable_past_due_account_id: loans_receivable_past_due_account_id,
+        current_account_id: current_account_id,
+        past_due_account_id: past_due_account_id,
         cooperative_id: cooperative_id,
         loan_protection_plan_provider_id: loan_protection_plan_provider_id,
         grace_period: grace_period)

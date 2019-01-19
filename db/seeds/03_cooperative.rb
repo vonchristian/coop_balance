@@ -46,26 +46,26 @@ coop.share_capital_products.find_or_create_by!(
 )
 
 # Loan Products
-loans_receivable_current_regular_account = AccountingModule::Account.find_by(name: "Loans Receivable - Current (Regular Loan)")
-loans_receivable_past_due_regular_account = AccountingModule::Account.find_by(name: "Loans Receivable - Past Due (Regular Loan)")
+current_regular_account = AccountingModule::Account.find_by(name: "Loans Receivable - Current (Regular Loan)")
+past_due_regular_account = AccountingModule::Account.find_by(name: "Loans Receivable - Past Due (Regular Loan)")
 interest_revenue_regular_account = AccountingModule::Account.find_by(name: "Interest Income from Loans - Regular Loan")
 unearned_interest_income_regular_account = AccountingModule::Account.find_by(name: "Unearned Interests - Regular Loan")
 penalty_revenue_regular_account = AccountingModule::Account.find_by(name: "Loan Penalties Income - Regular Loan")
 
-loans_receivable_current_emergency_account = AccountingModule::Account.find_by(name: "Loans Receivable - Current (Emergency Loan)")
-loans_receivable_past_due_emergency_account = AccountingModule::Account.find_by(name: "Loans Receivable - Past Due (Emergency Loan)")
+current_emergency_account = AccountingModule::Account.find_by(name: "Loans Receivable - Current (Emergency Loan)")
+past_due_emergency_account = AccountingModule::Account.find_by(name: "Loans Receivable - Past Due (Emergency Loan)")
 interest_revenue_emergency_account = AccountingModule::Account.find_by(name: "Interest Income from Loans - Emergency Loan")
 unearned_interest_income_emergency_account = AccountingModule::Account.find_by(name: "Unearned Interests - Emergency Loan")
 penalty_revenue_emergency_account = AccountingModule::Account.find_by(name: "Loan Penalties Income - Emergency Loan")
 
-loans_receivable_current_short_term_account = AccountingModule::Account.find_by(name: "Loans Receivable - Current (Short-Term Loan)")
-loans_receivable_past_due_short_term_account = AccountingModule::Account.find_by(name: "Loans Receivable - Past Due (Short-Term Loan)")
+current_short_term_account = AccountingModule::Account.find_by(name: "Loans Receivable - Current (Short-Term Loan)")
+past_due_short_term_account = AccountingModule::Account.find_by(name: "Loans Receivable - Past Due (Short-Term Loan)")
 interest_revenue_short_term_account = AccountingModule::Account.find_by(name: "Interest Income from Loans - Short-Term Loan")
 unearned_interest_income_short_term_account = AccountingModule::Account.find_by(name: "Unearned Interests - Short-Term Loan")
 penalty_revenue_short_term_account = AccountingModule::Account.find_by(name: "Loan Penalties Income - Short-Term Loan")
 
-loans_receivable_current_productive_account = AccountingModule::Account.find_by(name: "Loans Receivable - Current (Productive Loan)")
-loans_receivable_past_due_productive_account = AccountingModule::Account.find_by(name: "Loans Receivable - Past Due (Productive Loan)")
+current_productive_account = AccountingModule::Account.find_by(name: "Loans Receivable - Current (Productive Loan)")
+past_due_productive_account = AccountingModule::Account.find_by(name: "Loans Receivable - Past Due (Productive Loan)")
 interest_revenue_productive_account = AccountingModule::Account.find_by(name: "Interest Income from Loans - Productive Loan")
 unearned_interest_income_productive_account = AccountingModule::Account.find_by(name: "Unearned Interests - Productive Loan")
 penalty_revenue_productive_account = AccountingModule::Account.find_by(name: "Loan Penalties Income - Productive Loan")
@@ -75,8 +75,8 @@ regular_loan_product = coop.loan_products.find_or_create_by!(
   name: "Regular Loan",
   description: "",
   maximum_loanable_amount: 300000.00,
-  loans_receivable_current_account: loans_receivable_current_regular_account,
-  loans_receivable_past_due_account: loans_receivable_past_due_regular_account
+  current_account: current_regular_account,
+  past_due_account: past_due_regular_account
 )
 
 regular_loan_product.interest_configs.find_or_create_by(
@@ -95,8 +95,8 @@ emergency_loan_product = coop.loan_products.find_or_create_by!(
   name: "Emergency Loan",
   description: "",
   maximum_loanable_amount: 300000.00,
-  loans_receivable_current_account: loans_receivable_current_emergency_account,
-  loans_receivable_past_due_account: loans_receivable_past_due_emergency_account
+  current_account: current_emergency_account,
+  past_due_account: past_due_emergency_account
 )
 
 emergency_loan_product.interest_configs.find_or_create_by(
@@ -115,8 +115,8 @@ member_short_term_loan = coop.loan_products.find_or_create_by!(
   name: "Short-Term Loan(Member)",
   description: "",
   maximum_loanable_amount: 100_000.00,
-  loans_receivable_current_account: loans_receivable_current_short_term_account,
-  loans_receivable_past_due_account: loans_receivable_past_due_short_term_account
+  current_account: current_short_term_account,
+  past_due_account: past_due_short_term_account
 )
 
 member_short_term_loan.interest_configs.find_or_create_by(
@@ -135,8 +135,8 @@ non_member_short_term_loan = coop.loan_products.find_or_create_by!(
   name: "Short-Term Loan(Non-Member)",
   description: "",
   maximum_loanable_amount: 100000.00,
-  loans_receivable_current_account: loans_receivable_current_short_term_account,
-  loans_receivable_past_due_account: loans_receivable_past_due_short_term_account
+  current_account: current_short_term_account,
+  past_due_account: past_due_short_term_account
 )
 
 non_member_short_term_loan.interest_configs.find_or_create_by(
@@ -156,8 +156,8 @@ productive_loan = coop.loan_products.find_or_create_by!(
   name: "Productive Loan",
   description: "",
   maximum_loanable_amount: 100000.00,
-  loans_receivable_current_account: loans_receivable_current_productive_account,
-  loans_receivable_past_due_account: loans_receivable_past_due_productive_account
+  current_account: current_productive_account,
+  past_due_account: past_due_productive_account
 )
 
 productive_loan.interest_configs.find_or_create_by(
