@@ -8,7 +8,10 @@ module StoreFrontModule
 
       delegate :number, :date, :disburser_full_name,  to: :voucher, prefix: true, allow_nil: true
       delegate :name, to: :supplier, prefix: true
-
+      def supplier
+        commercial_document
+      end
+      
       def self.processed
         select{ |a| a.processed? }
       end

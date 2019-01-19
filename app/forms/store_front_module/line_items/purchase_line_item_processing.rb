@@ -29,15 +29,15 @@ module StoreFrontModule
 
       private
       def process_line_item
-        find_cart.purchase_line_items.create(
+        purchase = find_cart.purchase_line_items.create(
         quantity:               quantity,
         unit_cost:              unit_cost,
         total_cost:             total_cost,
         unit_of_measurement_id: unit_of_measurement_id,
         product_id:             product_id,
-        barcode:                barcode,
         expiry_date:            expiry_date
         )
+        purchase.barcodes.create(code: barcode)
       end
 
       def find_cart

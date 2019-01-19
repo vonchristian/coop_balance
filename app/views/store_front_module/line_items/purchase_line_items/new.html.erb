@@ -1,52 +1,53 @@
 <div class="row">
   <div class="col-md-8">
-    <div class="box box-default">
-      <div class="box-header">
-        <h3 class="box-title"> Purchases Section </h3>
+    <div class="card card-outline card-primary">
+      <div class="card-header">
+        <h3 class="card-title"> Purchases Section </h3>
       </div>
-      <div class="box-body">
-       <% if params[:search].present? %>
-        <%=form_tag new_store_front_module_purchase_line_item_path, method: :get do %>
-          <div class="input-group">
-            <%= text_field_tag :search, params[:search], class: "form-control input-lg", placeholder: "Search Products..." %>
-            <span class="input-group-btn">
-              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-default btn-lg") do %>
-                <i class="fa fa-search"></i> Search
-              <% end %>
-            </span>
-          </div>
-        <% end %>
+      <div class="card-body">
+        <% if params[:search].present? %>
+          <%=form_tag new_store_front_module_purchase_line_item_path, method: :get do %>
+            <div class="input-group">
+              <%= text_field_tag :search, params[:search], class: "form-control input-lg", placeholder: "Search Products..." %>
+              <span class="input-group-btn">
+                <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-defaul") do %>
+                  <i class="fa fa-search"></i> Browse Products
+                <% end %>
+              </span>
+            </div>
+          <% end %>
         <% else %>
-         <%=form_tag new_store_front_module_purchase_line_item_path, method: :get do %>
-          <div class="input-group">
-            <%= text_field_tag :search, params[:search], autofocus: true,  class: "form-control input-lg", placeholder: "Search Products..."  %>
-            <span class="input-group-btn">
-              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-default btn-lg") do %>
-                <i class="fa fa-search"></i> Search
-              <% end %>
-            </span>
-          </div>
+          <%=form_tag new_store_front_module_purchase_line_item_path, method: :get do %>
+            <div class="input-group">
+              <%= text_field_tag :search, params[:search], autofocus: true,  class: "form-control input-lg", placeholder: "Search Products..."  %>
+              <span class="input-group-btn">
+                <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-default") do %>
+                  <i class="fa fa-search"></i> Browse Products
+                <% end %>
+              </span>
+            </div>
+          <% end %>
         <% end %>
-      <% end %>
         <br>
-        <table class="table table-responsive">
-          <tbody>
-            <% if @products.present? %>
-              <%= render 'store_front_module/line_items/purchase_line_items/searched_product_results' %>
-            <% elsif @line_items.present? %>
-              <%= render 'store_front_module/line_items/purchase_line_items/searched_line_item_results' %>
-            <% end %>
-          </tbody>
-        </table>
+      </div>
+    </div>
+      <% if @products.present? %>
+        <%= render 'store_front_module/line_items/purchase_line_items/searched_product_results' %>
+      <% elsif @line_items.present? %>
+        <%= render 'store_front_module/line_items/purchase_line_items/searched_line_item_results' %>
+      <% end %>
+
         <% if @purchase_line_items.present? %>
+        <div class="card">
+          <div class="card-body">
           <div class="table table-responsive">
-            <table class="table table-hover table-striped">
+            <table class="table table-hover">
               <thead>
                 <tr>
-                  <th><b>QTY</b></th>
-                  <th><b>DESCRIPTION</b></th>
-                  <th><span class="pull-right"><b>UNIT COST</b></span></th>
-                  <th><span class="pull-right"><b>TOTAL COST</b></span></th>
+                  <th>QTY</th>
+                  <th>DESCRIPTION</th>
+                  <th><span class="float-right">UNIT COST</span></th>
+                  <th><span class="float-right">TOTAL COST</span></th>
                 </tr>
               </thead>
               <tbody>
@@ -56,15 +57,15 @@
                       <%= line_item.quantity %> <%= line_item.unit_of_measurement_code %>
                     </td>
                     <td width="300px"><%= line_item.name.try(:titleize) %><br>
-                      <span class="text-muted"><%= line_item.barcode %></span><br>
+                      <span class="text-muted"><%= line_item.barcodes.pluck(:code).join(",") %></span><br>
                     </td>
                     <td>
-                      <span class="pull-right">
+                      <span class="float-right number">
                         <%= number_to_currency line_item.unit_cost %>
                       </span>
                     </td>
                     <td>
-                      <span class="pull-right"><%=number_to_currency line_item.total_cost %></span>
+                      <span class="float-right number"><%=number_to_currency line_item.total_cost %></span>
                     </td>
                     <td>
                     <%= link_to store_front_module_purchase_line_item_path(line_item), method: :delete do %>
@@ -76,10 +77,10 @@
                   <tr>
                   <th></th>
                   <th></th>
-                  <th><span class="pull-right"><b>TOTAL</b></span></th>
-                  <th><span class="pull-right"><b><%= number_to_currency @cart.purchase_line_items.sum(&:total_cost) %></b></span></th>
+                  <th></th>
+                  <th><span class="number total">TOTAL</span></th>
+                  <th><span class="number total"><%= number_to_currency @cart.purchase_line_items.sum(&:total_cost) %></span></th>
                 </tr>
-                <hr>
               </tbody>
             </table>
           </div>
@@ -88,15 +89,15 @@
     </div>
   </div>
     <div class="col-md-4">
-      <div class="box box-default">
-        <div class="box-header">
+      <div class="card card-default">
+        <div class="card-header">
         </div>
-        <div class="box-body">
+        <div class="card-body">
         <% if @purchase_line_items.present? %>
-          <%= simple_form_for @purchase_order, url: :store_front_module_purchases do |f| %>
-            <%= f.input :supplier_id, collection: Supplier.all.map{|a| [ a.name, a.id] } %>
+          <%= simple_form_for @purchase_order, url: :store_front_module_purchase_orders do |f| %>
+            <%= f.input :supplier_id, collection: @suppliers.map{|a| [ a.name, a.id] } %>
             <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
-            
+
             <%= f.input :description, as: :text %>
 
             <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>

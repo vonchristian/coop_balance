@@ -14,6 +14,8 @@ class StoreFront < ApplicationRecord
   has_many :entries,                         class_name: "AccountingModule::Entry",
                                              as: :origin
   has_many :products,                        class_name: "StoreFrontModule::Product"
+  has_many :purchase_orders,                 class_name: "StoreFrontModule::Orders::PurchaseOrder"
+  has_many :purchase_line_items, through: :purchase_orders
   has_many :received_stock_transfers, class_name: "StoreFrontModule::Orders::PurchaseOrder", foreign_key: 'destination_store_front_id'
   has_many :delivered_stock_transfers, class_name: "StoreFrontModule::Orders::PurchaseOrder", as: :supplier
   has_many :received_stock_transfer_line_items, class_name: "StoreFrontModule::LineItems::PurchaseLineItem", through: :received_stock_transfers, source: :purchase_line_items

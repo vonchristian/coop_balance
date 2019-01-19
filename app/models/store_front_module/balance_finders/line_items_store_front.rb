@@ -1,6 +1,6 @@
 module StoreFrontModule
   module BalanceFinders
-    class StoreFront
+    class LineItemsStoreFront
       attr_reader :store_front, :line_items
 
       def initialize(args)
@@ -10,8 +10,9 @@ module StoreFrontModule
 
       def compute
         line_items.
-        includes(:order).
-        where('orders.store_front_id' => store_front.id).
+        includes(:unit_of_measurement).
+        with_orders.
+        for_store_front(store_front).
         total_converted_quantity
       end
     end

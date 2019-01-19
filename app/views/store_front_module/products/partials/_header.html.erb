@@ -6,7 +6,7 @@
           <%= product.name %>
         </div>
         <div class="col-md-4">
-          <h3 class="card-title"><%= product.balance %></h3>
+          <h3 class="card-title"><%= product.balance(store_front: current_store_front) %></h3>
           <small>IN STOCK </small>
         </div>
       </div>

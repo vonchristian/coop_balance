@@ -1,3 +1,7 @@
+.order-header {
+font-family:  'open_sans_regular';
+font-size: 18px;
+}
 .text-indigo {
   color: #5661b3;
 }
@@ -556,4 +560,8 @@ input[type="file"].choose-btn {
 
 .breadcrumb li {
   padding: 0 5px;
+}
+.table th {
+  font-weight: 300 !important;
+  text-transform: uppercase;
 }

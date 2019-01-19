@@ -1,30 +1,26 @@
 <div class="row">
   <div class="col-md-12">
-    <div class="box box-default">
-      <div class="box-header">
+    <div class="card card-default">
+      <div class="card-header">
         <div class="row">
-          <div class="col-md-3">
-            <h4 class="title">Purchases</h4>
-            <p class="category">List of purchases</p>
-          </div>
-          <div class="col-md-7">
-            <%=form_tag store_front_module_purchases_path, method: :get, id: "sidebar-form" do %>
+          <div class="col-md-9">
+            <%=form_tag store_front_module_purchase_orders_path, method: :get, id: "sidebar-form" do %>
               <div class="input-group">
                 <%= text_field_tag :search, params[:search], class: "search-query form-control border-input", placeholder: "Search supplier...", type: "search" %>
                 <span class="input-group-btn">
-                  <%= button_tag(type: 'submit', class: "btn") do %>
-                    <i class="icon-magnifier"></i>
+                  <%= button_tag(type: 'submit', class: "btn btn-default") do %>
+                    <i class="fa fa-search"></i> Browse Purchases
                   <% end %>
                 </span>
               </div>
             <% end %>
           </div>
-          <div class="col-md-2">
-            <%=link_to 'New Purchase', new_store_front_module_purchase_line_item_path, class: "btn btn-primary pull-right" %>
+          <div class="col-md-3">
+            <%=link_to 'New Purchase', new_store_front_module_purchase_line_item_path, class: "btn btn-primary float-right" %>
           </div>
         </div>
       </div>
-      <div class="box-body">
+      <div class="card-body">
         <div class="table table-responsive">
           <table class="table table-hover table-striped">
             <thead>
@@ -38,7 +34,7 @@
             </thead>
             <tbody>
               <% @purchase_orders.each do |purchase_order| %>
-                 <tr data-link="<%=store_front_module_purchase_path(purchase_order)%>" class="purchaseOrderIndex">
+                 <tr data-link="<%=store_front_module_purchase_order_path(purchase_order)%>" class="purchaseOrderIndex">
                   <td><%= purchase_order.date.strftime("%B %e, %Y") %></td>
                   <td><%= purchase_order.commercial_document_name %></td>
                   <td><%= purchase_order.voucher_number %></td>

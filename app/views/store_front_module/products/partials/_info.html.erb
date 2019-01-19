@@ -4,17 +4,17 @@
 <p class="text-muted"><%=@product.purchases_balance %></p>
 <div class="row">
             <div class="col-md-3 border-right">
-              <h3 class="no-padding"><center><%= @product.purchases_balance %></center></h3>
+              <h3 class="no-padding"><center><%= @product.purchases_balance(store_front: current_store_front) %></center></h3>
               <small><center>PURCHASES</center></small>
               <br>
-              <p class="text-danger"><center><%= @product.purchase_returns_balance %></center></p>
+              <p class="text-danger"><center><%= @product.purchase_returns_balance(store_front: current_store_front) %></center></p>
               <small class="text-danger"> <center>PURCHASE RETURNS</center></small>
             </div>
             <div class="col-md-3 border-right">
-              <h3 class="no-padding"><center><%= @product.sales_balance %></center></h3>
+              <h3 class="no-padding"><center><%= @product.sales_balance(store_front: current_store_front) %></center></h3>
               <small><center>SALES</center></small>
                <br>
-              <p class="text-danger"><center><%= @product.sales_returns_balance %></center></p>
+              <p class="text-danger"><center><%= @product.sales_returns_balance(store_front: current_store_front) %></center></p>
               <small class="text-danger"> <center>SALES RETURNS</center></small>
             </div>
             <div class="col-md-3 border-right">

@@ -1,5 +1,5 @@
 <% content_for(:html_title) { "Store Section" } %>
-<%= @cart.sales_line_items.count %>
+
 <div class="row">
   <div class="col-md-7">
     <div class="card">
@@ -32,14 +32,13 @@
       <% end %>
     </div>
     </div>
+    </div>
+      <% if @products.present? %>
+        <%= render 'store_front_module/line_items/sales_line_items/searched_product_results' %>
+      <% elsif @line_items.present? %>
 
-            <% if @products.present? %>
-              <%= render 'store_front_module/line_items/sales_line_items/searched_product_results' %>
-            <% elsif @line_items.present? %>
-
-              <%= render 'store_front_module/line_items/sales_line_items/searched_line_item_results' %>
-            <% end %>
-
+        <%= render 'store_front_module/line_items/sales_line_items/searched_line_item_results' %>
+      <% end %>
         <hr>
         <% if @sales_line_items.present? %>
           <p class="text-muted"> ORDER DETAILS </p>
@@ -87,8 +86,7 @@
         <% end %>
       </div>
 
-    </div>
-  </div>
+
   <div class="col-md-5">
     <div class="card card-solid">
       <% if @sales_line_items.present? %>
@@ -107,8 +105,14 @@
           <%= simple_form_for @sales_order, url: :store_front_module_sales, html: { autocomplete: 'off' } do |f| %>
             <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
                   <%= f.input :customer_id, collection: Customer.all.map{ |a| [a.full_name, a.id] } %>
-                  <%= f.input :cash_tendered, input_html: { id: 'cash_tendered', oninput: 'calculateOrderTotalCost()',  class: "input-lg" } %>
-                  <%= f.input :discount_amount, label: "Discount", input_html: { id: 'discount_amount', oninput: 'calculateOrderTotalCost()', value: 0} %>
+                  <div class="row">
+                    <div class="col-md-8">
+                      <%= f.input :cash_tendered, input_html: { id: 'cash_tendered', class: "form-control input-lg", oninput: 'calculateOrderTotalCost()',  class: "input-lg" } %>
+                    </div>
+                    <div class="col-md-4">
+                      <%= f.input :discount_amount, label: "Discount", input_html: { id: 'discount_amount', oninput: 'calculateOrderTotalCost()', value: 0} %>
+                    </div>
+                  </div>
                   <%= f.input :order_change, readonly: true, input_html: { id: 'change', class: "input-lg bg-gray"} %>
                   <%= f.input :reference_number %>
                   <%= f.input :total_cost, input_html: { id: 'total_cost', value: @cart.total_cost }, as: :hidden %>

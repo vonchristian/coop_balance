@@ -52,7 +52,7 @@ class Cooperative < ApplicationRecord
   has_many :share_capital_applications
   has_many :time_deposit_applications
 
-  has_many :suppliers
+  has_many :suppliers,                      class_name: "StoreFrontModule::Supplier"
   has_many :products,                       class_name: "StoreFrontModule::Product"
   has_many :purchase_line_items,            class_name: "StoreFrontModule::LineItems::PurchaseLineItem"
   has_many :sales_orders,                   class_name: "StoreFrontModule::Orders::SalesOrder"

@@ -74,17 +74,7 @@ class User < ApplicationRecord
   def full_name
     name
   end
-  
-  def can_disburse?(args={})
-    voucher = args[:voucher]
-    if voucher.contains_cash_accounts?
-      cash_accounts_array = []
-      cash_accounts.each do |cash_account|
-        cash_accounts_array << voucher.voucher_amounts.for_account(account: cash_account)
-      end
-      cash_accounts_array.present?
-    end
-  end
+
 
   def default_cash_account
     if employee_cash_accounts.present?

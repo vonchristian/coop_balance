@@ -21,7 +21,7 @@
             <% if !product.out_of_stock? %>
               <%= f.submit "Add", class: "btn btn-primary btn-sm" %>
             <% else %>
-              <span class="text-danger"><b>OUT OF STOCK</b></span>
+              <span class="btn btn-outline-danger btn-sm">OUT OF STOCK</span>
             <% end %>
           <% end %>
         </div>

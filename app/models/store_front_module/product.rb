@@ -10,7 +10,7 @@ module StoreFrontModule
     belongs_to :category,                       class_name: "StoreFrontModule::Category", optional: true
     has_many :unit_of_measurements,             class_name: "StoreFrontModule::UnitOfMeasurement", dependent: :destroy
     has_many :mark_up_prices,                   through: :unit_of_measurements
-    has_many :line_items,                       class_name: "StoreFrontModule::LineItem", dependent: :destroy
+    has_many :line_items,                       class_name: "StoreFrontModule::LineItem"
     has_many :purchases,                        class_name: 'StoreFrontModule::LineItems::PurchaseLineItem'
     has_many :purchase_returns,                 class_name: "StoreFrontModule::LineItems::PurchaseReturnLineItem"
     has_many :sales,                            class_name: 'StoreFrontModule::LineItems::SalesLineItem'
@@ -46,6 +46,11 @@ module StoreFrontModule
     def base_selling_price
       base_measurement.price
     end
+
+    def current_price
+      base_measurement.price
+    end
+
 
     def base_measurement
       unit_of_measurements.base_measurement.recent
@@ -92,7 +97,7 @@ module StoreFrontModule
 
     def received_stock_transfers_balance(args={})
       store_front = args[:store_front]
-      if store_front
+      if store_front.present?
         store_front.received_stock_transfer_line_items.balance(args)
       else
         0
@@ -101,7 +106,7 @@ module StoreFrontModule
 
     def delivered_stock_transfers_balance(args={})
       store_front = args[:store_front]
-      if store_front
+      if store_front.present?
         store_front.delivered_stock_transfer_line_items.balance(args)
       else
         0

@@ -29,6 +29,14 @@ module StoreFrontModule
       where.not(order_id: nil)
     end
 
+    def self.for_store_front(store_front)
+      includes(:order).
+      where('orders.store_front_id' => store_front.id)
+    end
+  def self.with_orders
+    where.not(order_id: nil)
+  end
+
     def self.unprocessed
       where(order_id: nil)
     end
@@ -40,7 +48,9 @@ module StoreFrontModule
     def self.total_cost
       sum(:total_cost)
     end
-
+    def normalized_barcodes
+      barcodes.pluck(:code).join(",")
+    end
     def processed?
       order.present? && order.processed?
     end
@@ -51,12 +61,12 @@ module StoreFrontModule
 
 
   def self.balance_finder(args={})
-     if args.present?
+    if args.present?
       klass = args.select{|key, value| !value.nil?}.keys.sort.map{ |key| key.to_s.titleize }.join.gsub(" ", "")
     else
-    klass = "DefaultQuantityCalculator"
+      klass = "DefaultQuantityCalculator"
     end
-      ("StoreFrontModule::QuantityCalculators::" + klass).constantize
+    ("StoreFrontModule::QuantityCalculators::" + klass).constantize
   end
 
     def converted_quantity

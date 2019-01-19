@@ -3,12 +3,13 @@ module StoreFrontModule
     class PurchaseLineItemsController < ApplicationController
       def new
         @products = current_cooperative.products.text_search(params[:search]).all.paginate(page: params[:page], per_page: 30)
-        @line_items = current_cooperative.purchase_line_items.text_search(params[:search]).paginate(page: params[:page], per_page: 30)
+        @line_items = current_store_front.purchase_line_items.text_search(params[:search]).paginate(page: params[:page], per_page: 30)
         @cart = current_cart
         @purchase_line_item = StoreFrontModule::LineItems::PurchaseLineItemProcessing.new
         @purchase_order = StoreFrontModule::Orders::PurchaseOrderProcessing.new
         @purchase_line_items = @cart.purchase_line_items.includes(:unit_of_measurement, :product).order(created_at: :desc)
         @vouchers = Voucher.includes(:entry =>[:debit_amounts]).unused
+        @suppliers = current_cooperative.suppliers
       end
 
       def create

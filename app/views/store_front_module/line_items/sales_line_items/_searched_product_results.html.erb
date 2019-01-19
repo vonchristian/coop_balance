@@ -6,25 +6,27 @@
           <%= product.name %>
         </div>
         <div class="col-md-2">
-          <%= product.balance %>
+          <span class="number total">
+            <%= product.balance(store_front: current_store_front) %>
+          </span>
         </div>
         <div class="col-md-5">
           <%= simple_form_for @sales_line_item, url: :store_front_module_sales_line_items do |f| %>
             <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
             <%= f.input :store_front_id, input_html: { value: current_user.store_front_id }, as: :hidden %>
 
-            <% if !product.out_of_stock? %>
+            <% if product.balance(store_front: current_store_front) > 0 %>
               <%= f.input :quantity, as: :string, input_html: { oninput: 'calculateLineItemTotalCost()', id: 'line_item_quantity', value: 1}, label: false, autofocus: true %>
             <% end %>
-            <% if !product.out_of_stock? %>
+            <% if product.balance(store_front: current_store_front) %>
               <%= f.input :unit_of_measurement_id, input_html: { value: product.base_measurement }, label: false, collection: product.unit_of_measurements.all.map{|a| [a.code, a.id] }, selected: product.unit_of_measurements.base_measurement %>
             <% end %>
             <%= f.input :cart_id, input_html: { value: @cart.id }, as: :hidden %>
             <%= f.input :product_id, input_html: { value: product.id }, as: :hidden %>
-            <% if !product.out_of_stock? %>
+            <% if product.balance(store_front: current_store_front) > 0 %>
               <%= f.submit "Add", class: "btn btn-primary btn-sm" %>
             <% else %>
-              <span class="text-danger"><b>OUT OF STOCK</b></span>
+              <span class="badge bg-danger">OUT OF STOCK</span>
             <% end %>
           <% end %>
         </div>

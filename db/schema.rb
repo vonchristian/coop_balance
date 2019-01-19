@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_17_032930) do
+ActiveRecord::Schema.define(version: 2019_01_18_232002) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -926,8 +926,10 @@ ActiveRecord::Schema.define(version: 2019_01_17_032930) do
     t.uuid "cooperative_id"
     t.uuid "voucher_id"
     t.string "description"
+    t.uuid "destination_store_front_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_orders"
     t.index ["cooperative_id"], name: "index_orders_on_cooperative_id"
+    t.index ["destination_store_front_id"], name: "index_orders_on_destination_store_front_id"
     t.index ["employee_id"], name: "index_orders_on_employee_id"
     t.index ["pay_type"], name: "index_orders_on_pay_type"
     t.index ["store_front_id"], name: "index_orders_on_store_front_id"
@@ -1337,7 +1339,9 @@ ActiveRecord::Schema.define(version: 2019_01_17_032930) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "cooperative_id"
+    t.uuid "payable_account_id"
     t.index ["cooperative_id"], name: "index_suppliers_on_cooperative_id"
+    t.index ["payable_account_id"], name: "index_suppliers_on_payable_account_id"
   end
 
   create_table "terms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1660,6 +1664,7 @@ ActiveRecord::Schema.define(version: 2019_01_17_032930) do
   add_foreign_key "offices", "cooperatives"
   add_foreign_key "orders", "cooperatives"
   add_foreign_key "orders", "store_fronts"
+  add_foreign_key "orders", "store_fronts", column: "destination_store_front_id"
   add_foreign_key "orders", "users", column: "employee_id"
   add_foreign_key "orders", "vouchers"
   add_foreign_key "organization_members", "organizations"
@@ -1724,6 +1729,7 @@ ActiveRecord::Schema.define(version: 2019_01_17_032930) do
   add_foreign_key "store_fronts", "accounts", column: "spoilage_account_id"
   add_foreign_key "streets", "barangays"
   add_foreign_key "streets", "municipalities"
+  add_foreign_key "suppliers", "accounts", column: "payable_account_id"
   add_foreign_key "suppliers", "cooperatives"
   add_foreign_key "time_deposit_applications", "cooperatives"
   add_foreign_key "time_deposit_applications", "time_deposit_products"

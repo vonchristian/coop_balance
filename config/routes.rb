@@ -273,7 +273,7 @@ Rails.application.routes.draw do
       resources :stock_transfers,  only: [:index], module: :inventories
     end
 
-    resources :purchases,          only: [:index, :show, :create], module: :orders
+    resources :purchase_orders,          only: [:index, :show, :create], module: :orders
     resources :sales,              only: [:index, :show, :create], module: :orders
     resources :credit_sales,       only: [:create],                module: :orders
     resources :sales_returns,      only: [:index, :show, :create], module: :orders

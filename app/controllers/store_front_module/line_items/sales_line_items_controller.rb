@@ -4,12 +4,12 @@ module StoreFrontModule
       def new
         if params[:search].present?
           @products = current_cooperative.products.text_search(params[:search]).all
-          @line_items = current_cooperative.purchase_line_items.processed.text_search(params[:search])
+          @line_items = current_store_front.purchase_line_items.includes(:unit_of_measurement).processed.text_search(params[:search])
         end
         @cart = current_cart
         @sales_line_item = StoreFrontModule::LineItems::SalesLineItemProcessing.new
         @sales_order = StoreFrontModule::Orders::SalesOrderProcessing.new
-        @sales_line_items = @cart.sales_line_items.order(created_at: :desc)
+        @sales_line_items = @cart.sales_line_items.includes(:unit_of_measurement, :product).order(created_at: :desc)
       end
       def create
         @cart = current_cart

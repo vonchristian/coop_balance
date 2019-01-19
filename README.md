@@ -1,3 +1,16 @@
+Creating a product people needed
+Treating our customers with kindness and respect
+Making small improvements and changes
+Keeping costs in line and maintaining profitability
+scan to pay
+
+mobile wallet
+account number
+account_owner :polymorphic
+liability_account
+
+SCOPE ALL ENTRIES TO OFFICE
+
 67709F
 custom validator
 
