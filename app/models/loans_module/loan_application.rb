@@ -21,6 +21,7 @@ module LoansModule
     has_many :amount_adjustments, class_name: "Vouchers::AmountAdjustment", dependent: :destroy
 
     delegate :name, :current_membership, :avatar, to: :borrower, prefix: true
+    delegate :reference_number, to: :voucher, prefix: true
     delegate :name, :interest_revenue_account, :loans_receivable_current_account, to: :loan_product, prefix: true
     delegate :monthly_interest_rate, to: :loan_product, prefix: true
     delegate :current_interest_config,  to: :loan_product

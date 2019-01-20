@@ -94,9 +94,16 @@
             <p><i class="fa fa-calendar"></i>
               <%= @time_deposit.maturity_date.strftime("%B %e, %Y")  %>
             </p>
-            <small>DAYS TO MATURE</small>
+            <% if !@time_deposit.withdrawn == true %>
+              <small>DAYS TO MATURE</small>
+              <h3 class="card-title">
+                <%= @time_deposit.remaining_term %>
+              </h3>
+              <br>
+            <% end %>
+            <small>TERM</small>
             <h3 class="card-title">
-              <%= @time_deposit.remaining_term %>
+              <%= @time_deposit.current_term.term/30 %> Months
             </h3>
           </div>
         </div>

@@ -1,6 +1,6 @@
-<div class="card">
-  <div class="card-body">
-    <%= link_to time_deposit_path(time_deposit) do %>
+<%= link_to time_deposit_path(time_deposit) do %>
+  <div class="card">
+    <div class="card-body">
       <div class="row">
         <div class="col-md-1 col-sm-1">
           <%= image_tag(time_deposit.depositor.avatar, width: 45, height: 45, class: "img-circle") if time_deposit.depositor.avatar.attached? %>
@@ -27,6 +27,6 @@
           <% end %>
         </div>
       </div>
-    <% end %>
+    </div>
   </div>
-</div>
+<% end %>

@@ -4,9 +4,11 @@ class TimeDepositPdf < Prawn::Document
     super(margin: [30], page_size: "A4", page_layout: :portrait)
     # width = 632 width less margin
     # 595 × 842 pts = 535 x 782
-    @view_context = view_context
-    @time_deposit = time_deposit
-    @cooperative = @time_deposit.cooperative
+    @view_context     = view_context
+    @time_deposit     = time_deposit
+    @cooperative      = time_deposit.cooperative
+    @date_of_deposit   = time_deposit.terms.last.effectivity_date.strftime('%B %e, %Y')
+    @maturity_date     = time_deposit.maturity_date.strftime('%B %e, %Y')
     heading
     details
     body
@@ -43,14 +45,11 @@ class TimeDepositPdf < Prawn::Document
   end
 
   def details
-    date_of_deposit = time_deposit.terms.last.effectivity_date.strftime('%B %e, %Y')
-    maturity_date = time_deposit.maturity_date.strftime('%B %e, %Y')
-    amount_of_deposit = price(time_deposit.balance)
 
-    details_left ||=  [["Due Date", ":", maturity_date]] + 
+    details_left ||=  [["Due Date", ":", @maturity_date]] + 
                       [["Rate", ":", "#{interest_rate}% per annum"]]
-    details_right ||= [["Amount", ":", amount_of_deposit]] + 
-                      [["Date", ":", date_of_deposit]]
+    details_right ||= [["Amount", ":", price(time_deposit.deposited_amount)]] + 
+                      [["Date", ":", @date_of_deposit]]
     bounding_box([0,692], :width => 285, :height => 60) do
       # stroke_bounds
       table(details_left, cell_style: { 
@@ -147,14 +146,11 @@ class TimeDepositPdf < Prawn::Document
   end
 
   def details_copy
-    date_of_deposit = time_deposit.terms.last.effectivity_date.strftime('%B %e, %Y')
-    maturity_date = time_deposit.maturity_date.strftime('%B %e, %Y')
-    amount_of_deposit = price(time_deposit.balance)
 
-    details_left ||=  [["Due Date", ":", maturity_date]] + 
+    details_left ||=  [["Due Date", ":", @maturity_date]] + 
                       [["Rate", ":", "#{interest_rate}% per annum"]]
-    details_right ||= [["Amount", ":", amount_of_deposit]] + 
-                      [["Date", ":", date_of_deposit]]
+    details_right ||= [["Amount", ":", price(time_deposit.deposited_amount)]] + 
+                      [["Date", ":", @date_of_deposit]]
     bounding_box([0,272], :width => 285, :height => 60) do
       # stroke_bounds
       table(details_left, cell_style: { 
@@ -263,14 +259,7 @@ class TimeDepositPdf < Prawn::Document
   end
 
   def amount_in_words
-    if time_deposit.balance.to_f.to_s.split(".").to_a.last.to_i.zero?
-      time_deposit.balance.to_f.to_words.titleize + " Pesos" + " (#{price(time_deposit.balance)})"
-    else
-      time_deposit.balance.to_i.to_words.titleize +
-      " Pesos and" +
-      time_deposit.balance.to_f.to_words.split("and").map {|w| w}.last.titleize +
-      " (#{price(time_deposit.balance)})"
-    end
+    AmountInWords.new(time_deposit.deposited_amount).parse! + " (#{price(time_deposit.deposited_amount)})"
   end
 
   def terms_in_days

@@ -30,7 +30,7 @@
           <%= f.input :borrower_id, input_html: { value: @borrower.id }, as: :hidden %>
           <%= f.input :borrower_type, input_html: { value: @borrower.class.to_s }, as: :hidden %>
           <%= f.input :loan_amount, as: :currency %>
-          <%= f.input :term, label: "Loan Term (in months)" %>
+          <%= f.input :term, label: "Loan Term (in months)", input_html: {maxlength: 3} %>
           <%= f.input :mode_of_payment, collection: LoansModule::Loan.mode_of_payments.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons, input_html: { id: 'modePaymentSelect' } %>
           <%= f.input :purpose, as: :text, label: "Purpose of Loan" %>
 
@@ -51,8 +51,8 @@
 
 <script type="text/javascript">
   $('#loanProductSelect').on('change', function (e) {
-    var filter = $("#loanProductSelect option:selected").text();
-    if (filter == 'Short Term Loan(Non Member)' || filter == 'Short Term Loan(Member)') {
+    var string = $("#loanProductSelect option:selected").text();
+    if (string.indexOf("Short Term") != -1) {
       $('input[type="radio"][value="lumpsum"]').click();  
     }
     else {

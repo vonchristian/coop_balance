@@ -196,6 +196,11 @@ select.form-control + .chosen-container-multi .chosen-results li.result-selected
   padding-top: 0 !important;
 }
 
+.min-padding {
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+}
+
 .input-group-prepend {
   width: 100%;
 }
@@ -535,4 +540,14 @@ input[type="file"].choose-btn {
 
 .breadcrumb li {
   padding: 0 5px;
+}
+
+a .card:hover {
+  zoom: 1.02;
+  box-shadow: 0 0 1px rgba(0, 123, 255, 0.125), 0 1px 3px rgba(0, 123, 255, 0.8) !important;
+}
+
+.nav-pills a:hover {
+  zoom: 1.01;
+  border-bottom: 1px solid #007bff;
 }
