@@ -35,6 +35,7 @@ AccountingModule::Asset.create(code: 117116, name: "Loans Receivable - Current (
 AccountingModule::Asset.create(code: 117117, name: "Loans Receivable - Current (OFW Loan)")
 AccountingModule::Asset.create(code: 117118, name: "Loans Receivable - Current (Short-Term Loan)")
 AccountingModule::Asset.create(code: 117119, name: "Loans Receivable - Current (Productive Loan)")
+AccountingModule::Asset.create(code: 117120, name: "Loans Receivable - Current (Appliance Loan)")
 AccountingModule::Asset.create(code: 11712, name: "Loans Receivable - Past Due")
 AccountingModule::Asset.create(code: 1171211, name: "Loans Receivable - Past Due (Regular Loan)")
 AccountingModule::Asset.create(code: 1171212, name: "Loans Receivable - Past Due (Emergency Loan)")
@@ -44,6 +45,7 @@ AccountingModule::Asset.create(code: 1171215, name: "Loans Receivable - Past Due
 AccountingModule::Asset.create(code: 1171216, name: "Loans Receivable - Past Due (Agri Input Loan)")
 AccountingModule::Asset.create(code: 1171217, name: "Loans Receivable - Past Due (Short-Term Loan)")
 AccountingModule::Asset.create(code: 1171218, name: "Loans Receivable - Past Due (Productive Loan)")
+AccountingModule::Asset.create(code: 1171219, name: "Loans Receivable - Past Due (Appliance Loan)")
 AccountingModule::Asset.create(code: 11713, name: "Loans Receivable - Restructured")
 AccountingModule::Asset.create(code: 11714, name: "Loans Receivable - Loans in Litigation")
 AccountingModule::Asset.create(code: 11715, contra: true, name: "Unearned Interests and Discounts")
@@ -55,6 +57,7 @@ AccountingModule::Asset.create(code: 117155, contra: true, name: "Unearned Inter
 AccountingModule::Asset.create(code: 117156, contra: true, name: "Unearned Interests - Agri Input Loan")
 AccountingModule::Asset.create(code: 117157, contra: true, name: "Unearned Interests - Short-Term Loan")
 AccountingModule::Asset.create(code: 117158, contra: true, name: "Unearned Interests - Productive Loan")
+AccountingModule::Asset.create(code: 117159, contra: true, name: "Unearned Interests - Appliance Loan")
 AccountingModule::Asset.create(code: 11716, name: "Allowance for Probable Losses on Loans")
 AccountingModule::Asset.create(code: 11721, name: "Accounts Receivables Trade - Current")
 AccountingModule::Asset.create(code: 117215, name: "Accounts Receivables (Appliance Financing)")
@@ -318,6 +321,7 @@ AccountingModule::Revenue.create(code: 401105, name: 'Interest Income from Loans
 AccountingModule::Revenue.create(code: 401106, name: 'Interest Income from Loans - Special Loan')
 AccountingModule::Revenue.create(code: 401107, name: 'Interest Income from Loans - Short-Term Loan')
 AccountingModule::Revenue.create(code: 401108, name: 'Interest Income from Loans - Productive Loan')
+AccountingModule::Revenue.create(code: 401109, name: 'Interest Income from Loans - Appliance Loan')
 
 
 
@@ -341,6 +345,7 @@ AccountingModule::Revenue.create(code: 4014015, name: 'Loan Penalties Income - A
 AccountingModule::Revenue.create(code: 4014016, name: 'Loan Penalties Income - Salary Loan')
 AccountingModule::Revenue.create(code: 4014017, name: 'Loan Penalties Income - Short-Term Loan')
 AccountingModule::Revenue.create(code: 4014018, name: 'Loan Penalties Income - Productive Loan')
+AccountingModule::Revenue.create(code: 4014019, name: 'Loan Penalties Income - Appliance Loan')
 
 
 AccountingModule::Revenue.create(code: 40200, name: 'Income from Service Operations')

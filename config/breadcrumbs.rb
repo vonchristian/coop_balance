@@ -70,11 +70,6 @@ crumb :loan_details do |loan|
   parent :member_loans, loan.borrower
 end
 
-crumb :loan_voucher do |loan|
-  link "Loan Voucher", loans_module_loan_application_path(loan.loan_application)
-  parent :loan_details, loan
-end
-
 crumb :loans_module_loan_amortization_schedules do |loan|
   link "Amortizations", loans_module_loan_amortization_schedules_path(loan)
   parent :member_loans, loan.borrower

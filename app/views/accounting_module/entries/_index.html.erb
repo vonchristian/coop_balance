@@ -16,7 +16,7 @@
           </div>
           <div class="col-md-4">
             <center>
-              <h4 class="card-title"><%=number_to_currency @entries.sum {|e| Money.new(e.credit_amounts.sum(:amount_cents)).amount} %></h4>
+              <h4 class="card-title"><%=number_to_currency @entries.sum {|e| Money.new(e.debit_amounts.sum(:amount_cents)).amount} %></h4>
               <small class="text-muted">TOTAL AMOUNT</small>
             </center>
           </div>

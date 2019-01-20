@@ -78,11 +78,31 @@ module LoansModule
     delegate :number_of_months, to: :current_term, prefix: true
     delegate :term, to: :current_term
 
-    def self.filter_by(args={})
+    def self.filter_by(args = {})
       date = Date.parse(args[:date].to_s)
-      from_date = date.beginning_of_month.yesterday.end_of_day
+      from_date = (date - 1.month).end_of_month
       to_date = date.end_of_month
-      all.where(cancelled: false).select {|l| l.balance > 0 && l.maturity_date >= from_date && l.maturity_date <= to_date && l.borrower.current_membership.membership_type == args[:membership_type]}
+      if args.present?
+        all.where(cancelled: false, loan_product: args[:loan_product]).select { |l| 
+          l.balance > 0 && 
+          l.amortization_schedules.where(date: from_date..to_date).present? && 
+          l.borrower.current_membership.membership_type == args[:membership_type].to_s
+        }
+      else
+        all.where(cancelled: false).select { |l| 
+          l.balance > 0
+        }
+      end
+    end
+
+    def arrears(args={})
+      amortization_schedules.where(date: args[:from_date]..args[:to_date]).sum(:principal)
+    end
+
+    def total_deductions(args={})
+      amortized_principal_for(from_date: args[:from_date], to_date: args[:to_date]) - 
+      amortized_interest_for(from_date: args[:from_date], to_date: args[:to_date]) +
+      arrears(from_date: application_date, to_date: args[:from_date].yesterday.end_of_day)
     end
 
     def net_proceed_and_loans_receivable_account
