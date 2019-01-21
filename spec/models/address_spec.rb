@@ -3,10 +3,10 @@ require 'rails_helper'
 describe Address do
   describe 'associations' do
   	it { is_expected.to belong_to :addressable }
-    it { is_expected.to belong_to :street }
-    it { is_expected.to belong_to :barangay }
-    it { is_expected.to belong_to :municipality }
-    it { is_expected.to belong_to :province }
+    it { is_expected.to belong_to(:street).optional }
+    it { is_expected.to belong_to(:barangay).optional }
+    it { is_expected.to belong_to(:municipality).optional }
+    it { is_expected.to belong_to(:province).optional }
   end
 
   it '.current' do

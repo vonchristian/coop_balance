@@ -13,12 +13,12 @@ class AccountBudget < ApplicationRecord
     return 0 if self.blank?
     current.try(:proposed_amount) || 0
   end
-  def self.for(args={})
+  def self.for_year(args={})
     where(year: args[:year]).last
   end
-  def self.variance(args={})
-    first_year = args[:first_year]
-    second_year = args[:second_year]
+  def self.variance_amount(args={})
+    first_year  = for_year(args[:first_year])
+    second_year = for_year(args[:second_year])
     first_year.proposed_amount - second_year.proposed_amount
   end
 end

@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe Member, type: :model do
   describe "associations" do
+    it { is_expected.to have_one :member_account }
     it { is_expected.to have_many :tins }
     it { is_expected.to belong_to :office }
     it { is_expected.to have_many :memberships }
@@ -19,6 +20,9 @@ describe Member, type: :model do
     it { is_expected.to have_many :addresses }
     it { is_expected.to have_many :beneficiaries }
     it { is_expected.to have_many :loan_applications }
+    it { is_expected.to have_many :share_capital_applications }
+    it { is_expected.to have_many :savings_account_applications }
+    it { is_expected.to have_many :time_deposit_applications }
 
 
   end
@@ -77,22 +81,20 @@ describe Member, type: :model do
     expect(described_class.updated_at(from_date: Date.today.last_month, to_date: Date.today.last_month)).to_not include(recent_member)
   end
 
-  it '.with_tin' do
-    member_with_tin    = create(:member)
-    member_with_no_tin = create(:member)
-    tin = create(:tin, tinable: member_with_tin)
+  
 
-    expect(described_class.with_tin).to include(member_with_tin)
-    expect(described_class.with_tin).to_not include(member_with_no_tin)
-  end
+  describe "#age" do
+    it 'with age' do
+      member = create(:member, date_of_birth: '02/12/1990')
 
-  it '.with_no_tin' do
-    member_with_tin    = create(:member)
-    member_with_no_tin = create(:member)
-    tin = create(:tin, tinable: member_with_tin)
+      expect(member.age).to eql 28
+    end
 
-    expect(described_class.with_no_tin).to include(member_with_no_tin)
-    expect(described_class.with_no_tin).to_not include(member_with_tin)
+    it "with no age" do
+      member = create(:member, date_of_birth: nil)
+
+      expect(member.age).to eq "No Date of Birth Entered"
+    end
   end
 
 

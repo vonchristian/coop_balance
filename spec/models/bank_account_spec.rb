@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe BankAccount, type: :model do
+describe BankAccount do
   describe 'associations' do
     it { is_expected.to belong_to :cooperative }
     it { is_expected.to belong_to :office }
@@ -16,5 +16,10 @@ RSpec.describe BankAccount, type: :model do
 
   describe 'delegations' do
     it { is_expected.to delegate_method(:entries).to(:cash_account) }
+  end
+
+  it "#name" do
+    bank = build(:bank_account, bank_name: "LBP")
+    expect(bank.name).to eql "LBP"
   end
 end

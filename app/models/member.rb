@@ -4,6 +4,7 @@ class Member < ApplicationRecord
   include CurrentTin
   extend TinMonitoring
   extend PercentActive
+  extend BirthdayMonitoring
 
   pg_search_scope :text_search, :against => [ :first_name, :middle_name, :last_name]
   multisearchable against: [:first_name, :last_name, :middle_name]
@@ -15,41 +16,31 @@ class Member < ApplicationRecord
 
   has_one :member_account #for devise login
   belongs_to :office,                 class_name: "CoopConfigurationsModule::Office"
-  has_many :entries,                  class_name: "AccountingModule::Entry",
-                                      as: :commercial_document
-  has_many :voucher_amounts,          class_name: "Vouchers::VoucherAmount",
-                                      as: :commercial_document
+  has_many :entries,                  class_name: "AccountingModule::Entry", as: :commercial_document
+  has_many :voucher_amounts,          class_name: "Vouchers::VoucherAmount", as: :commercial_document
   has_many :memberships,              as: :cooperator, dependent: :destroy
-  has_many :savings,                  class_name: "MembershipsModule::Saving",
-                                      as: :depositor
-  has_many :share_capitals,           class_name: "MembershipsModule::ShareCapital",
-                                      as: :subscriber
-  has_many :time_deposits,            class_name: "MembershipsModule::TimeDeposit",
-                                      as: :depositor
-  has_many :program_subscriptions,    class_name: "MembershipsModule::ProgramSubscription",
-                                      as: :subscriber
-  has_many :member_occupations,       class_name: "MembershipsModule::MemberOccupation",
-                                      dependent: :destroy
+  has_many :savings,                  class_name: "MembershipsModule::Saving", as: :depositor
+  has_many :share_capitals,           class_name: "MembershipsModule::ShareCapital", as: :subscriber
+  has_many :time_deposits,            class_name: "MembershipsModule::TimeDeposit", as: :depositor
+  has_many :program_subscriptions,    class_name: "MembershipsModule::ProgramSubscription", as: :subscriber
+  has_many :member_occupations,       class_name: "MembershipsModule::MemberOccupation", dependent: :destroy
   has_many :occupations,              through: :member_occupations
-  has_many :loans,                    class_name: "LoansModule::Loan",
-                                      as: :borrower
-  has_many :subscribed_programs,      class_name: "CoopServicesModule::Program",
-                                      through: :program_subscriptions,
-                                      source: :program
-  has_many :sales,                    class_name: "StoreFrontModule::Orders::SalesOrder",
-                                      as: :commercial_document
-  has_many :sales_returns,            class_name: "StoreFrontModule::Orders::SalesReturnOrder",
-                                      as: :commercial_document
-
-  has_many :organization_memberships, class_name: "Organizations::OrganizationMember",
-                                      as: :organization_membership
+  has_many :loans,                    class_name: "LoansModule::Loan", as: :borrower
+  has_many :subscribed_programs,      class_name: "CoopServicesModule::Program", through: :program_subscriptions, source: :program
+  has_many :sales,                    class_name: "StoreFrontModule::Orders::SalesOrder", as: :commercial_document
+  has_many :sales_returns,            class_name: "StoreFrontModule::Orders::SalesReturnOrder", as: :commercial_document
+  has_many :organization_memberships, class_name: "Organizations::OrganizationMember",   as: :organization_membership
   has_many :organizations,            through: :organization_memberships
   has_many :relationships,            as: :relationee
   has_many :relations,                as: :relationer
   has_many :contacts, as: :contactable
   has_many :addresses, as: :addressable
   has_many :beneficiaries, dependent: :destroy
-  has_many :loan_applications, class_name: "LoansModule::LoanApplication", as: :borrower
+  has_many :loan_applications,            class_name: "LoansModule::LoanApplication", as: :borrower
+  has_many :share_capital_applications,   as: :subscriber
+  has_many :savings_account_applications, as: :depositor
+  has_many :time_deposit_applications,    as: :depositor
+
 
   validates :last_name, :first_name, presence: true, on: :update
 
@@ -66,7 +57,7 @@ class Member < ApplicationRecord
       from_date = args[:from_date] || latest.last_transaction_date
       to_date   = args[:to_date]   || oldest.last_transaction_date
       date_range = DateRange.new(from_date: from_date, to_date: to_date)
-      where('last_transaction_date' => (date_range.start_date)..(date_range.end_date))
+      where('last_transaction_date' => date_range.range)
     end
   end
 
@@ -118,9 +109,9 @@ class Member < ApplicationRecord
     end
   end
 
-  def self.with_loans
-    all.select{|a| a.loans.present? }
-  end
+  # def self.with_loans
+  #   all.select{|a| a.loans.present? }
+  # end
 
 
   def subscribed?(program)
@@ -139,7 +130,7 @@ class Member < ApplicationRecord
   end
 
   def age
-    return "No Date of Birth" if date_of_birth.nil?
+    return NullAge.new.age if date_of_birth.blank?
     ((Time.zone.now - date_of_birth.to_time) / 1.year.seconds).floor
   end
 
