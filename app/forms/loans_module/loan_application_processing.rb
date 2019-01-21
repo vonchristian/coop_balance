@@ -16,6 +16,7 @@ module LoansModule
     validates :term,  presence: true, numericality: true
     validates :loan_amount, presence: true, numericality: true
     validates :loan_product_id, :mode_of_payment, :term, :application_date, :purpose, presence: true
+    validate :maximum_term
     def find_loan_application
       LoansModule::LoanApplication.find_by(account_number: account_number)
     end
@@ -56,6 +57,9 @@ module LoansModule
     end
     def find_loan_product
       LoansModule::LoanProduct.find(loan_product_id)
+    end
+    def maximum_term
+      errors[:term] << "must not exceed 48 months." if term.to_f > 48
     end
   end
 end

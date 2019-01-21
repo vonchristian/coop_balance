@@ -6,7 +6,7 @@
       </div>
       <div class="col-md-3">
         <% if !@loan.forwarded_loan? %>
-          <%=link_to 'View Schedule(PDF)', loans_module_loan_amortization_schedules_path(@loan, format: 'pdf'), class: 'btn btn-outline-default' %>
+          <%= link_to 'View Schedule (PDF)', loans_module_loan_application_amortization_schedules_path(loan_application_id: @loan.loan_application.id, id: @loan.loan_application.voucher_id, format: "pdf"), class: "btn btn-default float-right" %>
         <% end %>
       </div>
     </div>

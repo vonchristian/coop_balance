@@ -6,9 +6,6 @@
       <div class="col-md-3">
         <h4 class="card-title number"><%= number_to_currency (@loan.forwarded_loan? ? @loan.principal_debits_balance : @loan.loan_amount) %> </h4>
         <small>PRINCIPAL</small>
-        <br>
-        <br>
-        <%= link_to 'Statement of Account', loan_path(@loan, format: 'pdf'), class: 'float-right' %>
       </div>
       <div class="col-md-3">
         <h4 class="card-title number"><%= number_to_currency @loan.loan_interests_balance %></h4>

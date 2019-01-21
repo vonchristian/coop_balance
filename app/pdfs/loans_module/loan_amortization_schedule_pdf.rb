@@ -67,7 +67,7 @@ module LoansModule
       end
     end
   def loan_details
-    bounding_box [0, 865], width: 450 do
+    bounding_box [0, 865], width: 450, height: 110 do
       text "LOAN DETAILS", size: 9, style: :bold
       table([["Loan Product", "#{loan.loan_product_name}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 200]) do
         cells.borders = []
@@ -84,7 +84,7 @@ module LoansModule
       end
       move_down 3
 
-      table([["Term ", "#{term} Months"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 300]) do
+      table([["Term ", "#{term} Month/s"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 300]) do
         cells.borders = []
       end
       move_down 3
@@ -99,7 +99,7 @@ module LoansModule
     end
   end
   def loan_charges_details
-    bounding_box [300, 865], width: 220 do
+    bounding_box [300, 865], width: 220, height: 110 do
       text "LOAN DEDUCTIONS", style: :bold, size: 9
       table(loan_amount_data, cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 100]) do
         cells.borders = []
@@ -193,8 +193,14 @@ module LoansModule
     [["PREPARED BY", "", "APPROVED BY", "", "DISBURSED BY", "", "RECEIVED BY"]] +
     [["", ""]] +
     [["", ""]] +
-    [["#{preparer.first_middle_and_last_name.try(:upcase)}", "", approver.first_middle_and_last_name.try(:upcase), "", disburser.first_middle_and_last_name.upcase, "", "#{@loan.borrower.first_middle_and_last_name.try(:upcase)}"]] +
-    [["#{preparer.designation.try(:titleize)}", "", "#{approver.designation.try(:titleize) }", "", "#{disburser.designation.try(:titleize)}", "", "Borrower"]]
+    [["#{preparer.first_middle_and_last_name.try(:upcase)}", "", 
+      approver.first_middle_and_last_name.try(:upcase), "", 
+      disburser.first_middle_and_last_name.upcase, "", 
+      "#{@loan.borrower.first_middle_and_last_name.try(:upcase)}"]] +
+    [["#{preparer.designation.try(:titleize)}", "", 
+      "#{approver.designation.try(:titleize) }", "", 
+      "#{disburser.designation.try(:titleize)}", "", 
+      "Borrower"]]
   end
   end
 end

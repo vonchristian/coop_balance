@@ -32,6 +32,10 @@ font-size: 18px;
   border-left: 3px solid #007bff;
 }
 
+.card-primary.card-outline-left {
+  border-left: 3px solid #007bff;
+}
+
 .card-columns {
   @include media-breakpoint-only(lg) {
     column-count: 4;
@@ -224,6 +228,11 @@ select.form-control + .chosen-container-multi .chosen-results li.result-selected
 
 .no-padding-top {
   padding-top: 0 !important;
+}
+
+.min-padding {
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
 }
 
 .input-group-prepend {

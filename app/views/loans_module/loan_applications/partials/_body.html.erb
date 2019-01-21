@@ -15,6 +15,10 @@
   <div class="col-md-5 col-sm-6"> <%= @loan_application.application_date.strftime("%B %e, %Y") %></div>
 </div>
 <div class="row min-margin">
+  <div class="col-md-5 col-sm-6 offset-md-1"> Reference Number </div>
+  <div class="col-md-5 col-sm-6"> #<%= @loan_application.voucher_reference_number %></div>
+</div>
+<div class="row min-margin">
   <div class="col-md-5 col-sm-6 offset-md-1"> Purpose of Loan </div>
   <div class="col-md-5 col-sm-6"> <%= @loan_application.purpose %></div>
 </div>

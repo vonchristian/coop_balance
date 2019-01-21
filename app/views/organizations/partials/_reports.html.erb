@@ -22,6 +22,11 @@
           <%= select_tag :membership_type, options_for_select(Membership.whitelisted_membership_types.map {|m| [m.titleize.pluralize, m]}, params[:membership_type]), class: ' form-control border-input', prompt: false %>
         </div>
       </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <%= select_tag :loan_product, options_for_select(current_cooperative.loan_products.map {|m| [m.name, m.id]}, params[:loan_product]), class: ' form-control border-input', prompt: false %>
+        </div>
+      </div>
       <div class="col-md-1">
         <button type="submit" class="btn btn-default"> Generate Billing Statement</button>
       </div>
