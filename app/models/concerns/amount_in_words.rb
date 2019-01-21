@@ -9,7 +9,7 @@ class AmountInWords
     else
       amount.to_i.to_words.titleize +
       " Pesos and" +
-      amount.to_f.to_words.split("and").map {|w| w}.last.titleize
+      amount.to_f.to_words.split("and").map {|w| w }.last.titleize
     end
   end
 end

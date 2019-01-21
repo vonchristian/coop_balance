@@ -11,7 +11,6 @@ class Membership < ApplicationRecord
   has_many :beneficiaries, through: :membership_beneficiaries
 
   validates :cooperator_id, :cooperator_type, presence: true
-  # validates :account_number, presence: true, uniqueness: true
   validates :cooperative_id, presence: true, uniqueness: { scope: :cooperator_id }
 
   delegate :avatar, to: :cooperator
@@ -27,11 +26,14 @@ class Membership < ApplicationRecord
     membership_types.keys - BLACKLISTED_MEMBERSHIP_TYPE
   end
 
-  def self.memberships_for(args={})
+  def self.memberships_for_date(args={})
     from_date = args[:from_date]
     to_date   = args[:to_date]
     date_range     = DateRange.new(start_date: from_date, end_date: to_date)
     where('approval_date' => date_range.range)
+  end
+  def self.for_cooperative(args={})
+    where(cooperative: args[:cooperative])
   end
 
   def self.approved_memberships(args={})

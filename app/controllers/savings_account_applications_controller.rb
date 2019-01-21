@@ -4,6 +4,7 @@ class SavingsAccountApplicationsController < ApplicationController
     @savings_account_application = SavingsAccountApplicationProcessing.new
   end
   def create
+    @depositor = params[:savings_account_application_processing][:depositor_type].constantize.find(params[:savings_account_application_processing][:depositor_id])
     @savings_account_application = SavingsAccountApplicationProcessing.new(savings_account_application_params)
     if @savings_account_application.valid?
       @savings_account_application.process!

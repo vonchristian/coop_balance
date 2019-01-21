@@ -34,8 +34,6 @@ class MembershipApplication
     office_id:      office_id,
     last_transaction_date: Date.current,
     avatar:         avatar_asset)
-    create_membership(member)
-    create_tin(member)
   end
   def avatar_asset
     if avatar.present?

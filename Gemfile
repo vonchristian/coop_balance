@@ -5,7 +5,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 gem 'prawn-icon'
-gem 'bootsnap', require: false
+gem 'bootsnap', '>= 1.1.0', require: false
 gem 'webpacker', '~> 3.5'
 gem 'rubyzip', '~> 1.1.0'
 gem 'axlsx', '2.1.0.pre'
@@ -27,7 +27,7 @@ gem 'simple_form'
 gem 'select2-rails'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
-gem 'bootstrap', '~> 4.1.1'
+gem 'bootstrap', '~> 4.2.1'
 gem 'friendly_id'
 gem 'font-awesome-sass', '~> 5.0.13'
 gem 'bootstrap-datepicker-rails'
@@ -67,7 +67,6 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.8.0'
   gem 'rubocop', require: false
   gem 'rubocop-rspec'
-  gem 'capybara'
   gem 'factory_bot_rails'
   gem 'faker'
 end
@@ -81,10 +80,15 @@ group :development do
   gem 'pry-rails'
 end
 group :test do
+  gem 'capybara', '>= 2.15'
+  gem 'launchy'
   gem 'shoulda-matchers', '4.0.0.rc1'
   gem 'rails-controller-testing'
   gem 'database_rewinder'
   gem 'pdf-inspector', require: "pdf/inspector"
+  gem 'selenium-webdriver'
+  # Easy installation and use of chromedriver to run system tests with Chrome
+  gem 'chromedriver-helper'
 end
 
 gem 'rack-mini-profiler', require: false

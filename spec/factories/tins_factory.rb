@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :tin do
-    number { "MyString" }
+    number { Faker::Number.number(14) }
     tinable { nil }
   end
 end

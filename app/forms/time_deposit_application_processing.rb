@@ -24,14 +24,14 @@ class TimeDepositApplicationProcessing
   def create_time_deposit_application
     time_deposit_application = TimeDepositApplication.create!(
       time_deposit_product_id: time_deposit_product_id,
-      depositor_id: depositor_id,
-      depositor_type: depositor_type,
-      term: term,
-      date_deposited: date,
-      account_number: account_number,
-      amount: amount,
-      cooperative: find_employee.cooperative,
-      beneficiaries: beneficiaries
+      depositor_id:            depositor_id,
+      depositor_type:          depositor_type,
+      term:                    term,
+      date_deposited:          date,
+      account_number:          account_number,
+      amount:                  amount,
+      cooperative:             find_employee.cooperative,
+      beneficiaries:           beneficiaries
     )
     create_voucher(time_deposit_application)
   end

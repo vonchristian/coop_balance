@@ -5,6 +5,11 @@ describe Tin do
     it { is_expected.to belong_to :tinable }
   end
 
+  describe 'validations' do
+    it { is_expected.to validate_presence_of :number }
+    it { is_expected.to validate_uniqueness_of(:number).scoped_to(:tinable_id) }
+  end
+
   describe ".current" do
     it "no TIN" do
       expect(described_class.current.class).to eql(NullTin)

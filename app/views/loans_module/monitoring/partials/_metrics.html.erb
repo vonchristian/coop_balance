@@ -13,19 +13,19 @@
   <div class="col-md-6">
     <h4> Loan Portfolio At Risk (Loan Count) </h4>
     <% par_data = [] %>
-    <% par_data << { "1-60 Days Past Due" => @loans.distinct.past_due(from_date: Date.today - 60.days, to_date: Date.today - 1.days).count } %>
-    <% par_data << { "61-180 Days Past Due" => @loans.distinct.past_due(from_date: Date.today - 180.days, to_date: Date.today - 61.days).count } %>
-    <% par_data << { "181-363 Days Past Due" => @loans.distinct.past_due(from_date: Date.today - 363.days, to_date: Date.today - 181.days).count } %>
-    <% par_data << { "Over 1 Year Past Due" => @loans.distinct.past_due(from_date: Date.today - 999.years, to_date: Date.today - 364.days).count } %>
+    <% par_data << { "1-60 Days Past Due" => @loans.distinct.past_due_loans(from_date: Date.today - 60.days, to_date: Date.today - 1.days).count } %>
+    <% par_data << { "61-180 Days Past Due" => @loans.distinct.past_due_loans(from_date: Date.today - 180.days, to_date: Date.today - 61.days).count } %>
+    <% par_data << { "181-363 Days Past Due" => @loans.distinct.past_due_loans(from_date: Date.today - 363.days, to_date: Date.today - 181.days).count } %>
+    <% par_data << { "Over 1 Year Past Due" => @loans.distinct.past_due_loans(from_date: Date.today - 999.years, to_date: Date.today - 364.days).count } %>
     <%= pie_chart (Hash[*par_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"}, download: true %>
   </div>
   <div class="col-md-6">
     <h4> Loan Portfolio At Risk (Balances) </h4>
     <% par_balances_data = [] %>
-    <% par_balances_data << { "31-60 Days Past Due" => @loans.distinct.past_due(from_date: Date.today - 60.days, to_date: Date.today - 1.days).total_balance } %>
-    <% par_balances_data << { "61-180 Days Past Due" => @loans.distinct.past_due(from_date: Date.today - 180.days, to_date: Date.today - 61.days).total_balance } %>
-    <% par_balances_data << { "181-363 Days Past Due" => @loans.distinct.past_due(from_date: Date.today - 363.days, to_date: Date.today - 181.days).total_balance } %>
-    <% par_balances_data << { "Over 1 Year Past Due" => @loans.distinct.past_due(from_date: Date.today - 999.years, to_date: Date.today - 363.days).total_balance } %>
+    <% par_balances_data << { "31-60 Days Past Due" => @loans.distinct.past_due_loans(from_date: Date.today - 60.days, to_date: Date.today - 1.days).total_balance } %>
+    <% par_balances_data << { "61-180 Days Past Due" => @loans.distinct.past_due_loans(from_date: Date.today - 180.days, to_date: Date.today - 61.days).total_balance } %>
+    <% par_balances_data << { "181-363 Days Past Due" => @loans.distinct.past_due_loans(from_date: Date.today - 363.days, to_date: Date.today - 181.days).total_balance } %>
+    <% par_balances_data << { "Over 1 Year Past Due" => @loans.distinct.past_due_loans(from_date: Date.today - 999.years, to_date: Date.today - 363.days).total_balance } %>
     <%= pie_chart (Hash[*par_balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"}, download: true, thousands: "," %>
   </div>
 </div>
@@ -35,14 +35,14 @@
     <h4>Current vs Past Due (Loan Count) </h4>
     <% count_current_vs_past_due_data = [] %>
     <% count_current_vs_past_due_data << { "Current Loans" => @loans.distinct.current_loans.count } %>
-    <% count_current_vs_past_due_data << { "Past Due Loans" => @loans.distinct.past_due.count } %>
+    <% count_current_vs_past_due_data << { "Past Due Loans" => @loans.distinct.past_due_loans.count } %>
     <%= pie_chart (Hash[*count_current_vs_past_due_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"}, download: true, thousands: "," %>
   </div>
   <div class="col-md-6">
     <h4>Current vs Past Due (Balances) </h4>
     <% current_vs_past_due_data = [] %>
     <% current_vs_past_due_data << { "Current Loans" => @loans.distinct.current_loans.total_balance } %>
-    <% current_vs_past_due_data << { "Past Due Loans" => @loans.distinct.past_due.total_balance } %>
+    <% current_vs_past_due_data << { "Past Due Loans" => @loans.distinct.past_due_loans.total_balance } %>
     <%= pie_chart (Hash[*current_vs_past_due_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"}, download: true, thousands: "," %>
   </div>
 </div>
@@ -64,35 +64,33 @@
     <tbody>
       <tr>
         <td> 1-60 Days Past Due</td>
-        <td><%= number_to_currency @loans.distinct.past_due(from_date: Date.today - 60.days, to_date: Date.today - 1.days).total_balance  %></td>
-        <td><%= @loans.distinct.past_due(from_date: Date.today - 60.days, to_date: Date.today - 1.days).count %></td>
-        <td><%= number_to_currency @loans.distinct.past_due(from_date: Date.today - 60.days, to_date: Date.today - 1.days).total_balance / @loans.distinct.total_balance * 100.0, unit: "" %> % </td>
+        <td><%= number_to_currency @loans.distinct.past_due_loans(from_date: Date.today - 60.days, to_date: Date.today - 1.days).total_balance  %></td>
+        <td><%= @loans.distinct.past_due_loans(from_date: Date.today - 60.days, to_date: Date.today - 1.days).count %></td>
+        <td><%= number_to_currency @loans.distinct.past_due_loans(from_date: Date.today - 60.days, to_date: Date.today - 1.days).total_balance / @loans.distinct.total_balance * 100.0, unit: "" %> % </td>
       </tr>
       <tr>
         <td> 61-180 Days Past Due</td>
-        <td><%= number_to_currency @loans.distinct.past_due(from_date: Date.today - 180.days, to_date: Date.today - 61.days).total_balance  %></td>
-        <td><%= @loans.distinct.past_due(from_date: Date.today - 180.days, to_date: Date.today - 61.days).count %></td>
-        <td><%= number_to_currency @loans.distinct.past_due(from_date: Date.today - 180.days, to_date: Date.today - 61.days).total_balance / @loans.distinct.total_balance * 100.0, unit: "" %> % </td>
+        <td><%= number_to_currency @loans.distinct.past_due_loans(from_date: Date.today - 180.days, to_date: Date.today - 61.days).total_balance  %></td>
+        <td><%= @loans.distinct.past_due_loans(from_date: Date.today - 180.days, to_date: Date.today - 61.days).count %></td>
+        <td><%= number_to_currency @loans.distinct.past_due_loans(from_date: Date.today - 180.days, to_date: Date.today - 61.days).total_balance / @loans.distinct.total_balance * 100.0, unit: "" %> % </td>
       </tr>
       <tr>
         <td> 181 to 363 Days Past Due</td>
-        <td><%= number_to_currency @loans.distinct.past_due(from_date: Date.today - 363.days, to_date: Date.today - 181.days).total_balance  %></td>
-        <td><%= @loans.distinct.past_due(from_date: Date.today - 363.days, to_date: Date.today - 181.days).count %></td>
-        <td><%= number_to_currency @loans.distinct.past_due(from_date: Date.today - 363.days, to_date: Date.today - 181.days).total_balance / @loans.distinct.total_balance * 100.0, unit: "" %> % </td>
+        <td><%= number_to_currency @loans.distinct.past_due_loans(from_date: Date.today - 363.days, to_date: Date.today - 181.days).total_balance  %></td>
+        <td><%= @loans.distinct.past_due_loans(from_date: Date.today - 363.days, to_date: Date.today - 181.days).count %></td>
+        <td><%= number_to_currency @loans.distinct.past_due_loans(from_date: Date.today - 363.days, to_date: Date.today - 181.days).total_balance / @loans.distinct.total_balance * 100.0, unit: "" %> % </td>
       </tr>
       <tr>
         <td> Above 1 Year Past Due</td>
-        <td><%= number_to_currency @loans.distinct.past_due(from_date: Date.today - 999.years, to_date: Date.today - 364.days).total_balance  %></td>
-        <td><%= @loans.distinct.past_due(from_date: Date.today - 999.years, to_date: Date.today - 364.days).count %></td>
-        <td><%= number_to_currency(@loans.distinct.past_due(from_date: Date.today - 999.years, to_date: Date.today - 364.days).total_balance / @loans.distinct.total_balance * 100.0, unit: "") %> % </td>
+        <td><%= number_to_currency @loans.distinct.past_due_loans(from_date: Date.today - 999.years, to_date: Date.today - 364.days).total_balance  %></td>
+        <td><%= @loans.distinct.past_due_loans(from_date: Date.today - 999.years, to_date: Date.today - 364.days).count %></td>
+        <td><%= number_to_currency(@loans.distinct.past_due_loans(from_date: Date.today - 999.years, to_date: Date.today - 364.days).total_balance / @loans.distinct.total_balance * 100.0, unit: "") %> % </td>
       </tr>
       <tr>
         <td> Total Past Due</td>
-        <td><%= number_to_currency @loans.distinct.past_due.total_balance  %></td>
-        <td><%= @loans.distinct.past_due(from_date: Date.today - 999.years, to_date: Date.today.yesterday).count %></td>
+        <td><%= number_to_currency @loans.distinct.past_due_loans.total_balance  %></td>
+        <td><%= @loans.distinct.past_due_loans(from_date: Date.today - 999.years, to_date: Date.today.yesterday).count %></td>
       </tr>
     </tbody>
   </table>
 </div>
-
-
