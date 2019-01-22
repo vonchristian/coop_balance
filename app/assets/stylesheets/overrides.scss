@@ -36,6 +36,10 @@ font-size: 18px;
   border-left: 3px solid #007bff;
 }
 
+.card-primary.card-outline-left {
+  border-left: 3px solid #007bff;
+}
+
 .card-columns {
   @include media-breakpoint-only(lg) {
     column-count: 4;

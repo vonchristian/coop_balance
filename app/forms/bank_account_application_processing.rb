@@ -19,7 +19,7 @@ class BankAccountApplicationProcessing
       bank_name: bank_name,
       bank_address: bank_address,
       account_number: account_number,
-      cash_account_id: account_id,
+      cash_account_id: cash_account_id,
       interest_revenue_account_id: interest_revenue_account_id
     )
   end

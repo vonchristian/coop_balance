@@ -97,7 +97,14 @@ class VoucherPdf < Prawn::Document
       row(0).font_style = :bold
     end
     if voucher.disbursed?
-      voucher.accounting_entry.amounts.order(type: :desc).each do |amount|
+      voucher.accounting_entry.debit_amounts.order(type: :desc).each do |amount|
+        table([["#{price(debit_amount_for(amount))}", "#{amount.account.try(:name)}",  "#{price(credit_amount_for(amount))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [100, 300, 100]) do
+          # cells.borders = []
+          column(0).align = :right
+          column(2).align = :right
+        end
+      end
+      voucher.accounting_entry.credit_amounts.order(type: :desc).each do |amount|
         table([["#{price(debit_amount_for(amount))}", "#{amount.account.try(:name)}",  "#{price(credit_amount_for(amount))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [100, 300, 100]) do
           # cells.borders = []
           column(0).align = :right
@@ -105,7 +112,14 @@ class VoucherPdf < Prawn::Document
         end
       end
     else
-      voucher.voucher_amounts.order(amount_type: :asc).each do |amount|
+      voucher.voucher_amounts.debit.order(amount_type: :desc).each do |amount|
+        table([["#{price(debit_amount_for(amount))}", "#{amount.account.try(:name)}", "#{price(credit_amount_for(amount))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [100, 300, 100]) do
+          # cells.borders = []
+          column(0).align = :right
+          column(2).align = :right
+        end
+      end
+      voucher.voucher_amounts.credit.order(amount_type: :desc).each do |amount|
         table([["#{price(debit_amount_for(amount))}", "#{amount.account.try(:name)}", "#{price(credit_amount_for(amount))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [100, 300, 100]) do
           # cells.borders = []
           column(0).align = :right

@@ -22,7 +22,7 @@ class BankAccountsController < ApplicationController
   end
   def show
     @bank_account = current_cooperative.bank_accounts.find(params[:id])
-    @entries = @bank_account.entries.uniq.paginate(page: params[:page], per_page: 35)
+    @entries = @bank_account.entries.order(entry_date: :desc).paginate(page: params[:page], per_page: 35)
   end
 
   private
