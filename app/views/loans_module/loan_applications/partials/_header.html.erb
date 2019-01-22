@@ -50,6 +50,7 @@
             <%= link_to loans_module_loan_application_path(loan_application), method: :delete do %>
               <span title="Cancel Loan Application" data-toggle="tooltip" class="fa fa-times text-danger"> Cancel</span>
             <% end %>
+          <% end %>
           </div>
           <div class="col-md-3 col-sm-2">
             <% if loan_application.voucher.present? %>

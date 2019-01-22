@@ -32,14 +32,10 @@ module LoansModule
     end
 
     def interest_amount_for(a)
-      if loan.interest_on_loan_charge.charge_adjustment.present? && loan.interest_on_loan_charge.charge_adjustment.number_of_payments.present?
-        number_of_payments = loan.interest_on_loan_charge.charge_adjustment.number_of_payments
-        if loan.amortization_schedules.order(date: :asc).first(number_of_payments).include?(a)
-          "#{price(a.interest)} - PREDEDUCTED"
-        else
-          price(a.interest)
-        end
-      end
+
+      price(a.interest)
+
+
     end
     def price(number)
       view_context.number_to_currency(number, :unit => "P ")
@@ -67,39 +63,39 @@ module LoansModule
       end
     end
   def loan_details
-    bounding_box [0, 865], width: 450, height: 110 do
+    bounding_box [0, 865], width: 400, height: 110 do
       text "LOAN DETAILS", size: 9, style: :bold
-      table([["Loan Product", "#{loan.loan_product_name}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 200]) do
+      table([["Loan Product", "#{loan.loan_product_name}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [100, 200]) do
         cells.borders = []
       end
       move_down 3
 
-      table([["Loan Amount ", "#{price(loan.loan_amount)}"]], cell_style: { padding: [0,0,0,0],inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 300]) do
+      table([["Loan Amount ", "#{price(loan.loan_amount)}"]], cell_style: { padding: [0,0,0,0],inline_format: true, size: 10, font: "Helvetica"}, column_widths: [100, 300]) do
         cells.borders = []
       end
       move_down 3
 
-      table([["Loan Amount (in words)", "#{loan.loan_amount.to_f.to_words.titleize} Pesos"]], cell_style: { padding: [0,0,0,0],inline_format: true, size: 10 }, column_widths: [120, 300]) do
+      table([["Loan Amount (in words)", "#{loan.loan_amount.to_f.to_words.titleize} Pesos"]], cell_style: { padding: [0,0,0,0],inline_format: true, size: 10 }, column_widths: [100, 300]) do
         cells.borders = []
       end
       move_down 3
 
-      table([["Term ", "#{term} Month/s"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 300]) do
+      table([["Term ", "#{term} Month/s"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [100, 300]) do
         cells.borders = []
       end
       move_down 3
 
-      table([["Disbursement Date ", "#{loan.disbursement_date.strftime("%B %e, %Y")}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10 }, column_widths: [120, 300]) do
+      table([["Disbursement Date ", "#{loan.disbursement_date.strftime("%B %e, %Y")}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10 }, column_widths: [100, 300]) do
         cells.borders = []
       end
       move_down 3
-      table([["Maturity Date ", "#{loan.maturity_date.strftime("%B %e, %Y")}"]], cell_style: { padding: [0,0,0,0], inline_format: true, size: 10 }, column_widths: [120, 300]) do
+      table([["Maturity Date ", "#{loan.maturity_date.strftime("%B %e, %Y")}"]], cell_style: { padding: [0,0,0,0], inline_format: true, size: 10 }, column_widths: [100, 300]) do
         cells.borders = []
       end
     end
   end
   def loan_charges_details
-    bounding_box [300, 865], width: 220, height: 110 do
+    bounding_box [320, 865], width: 220, height: 110 do
       text "LOAN DEDUCTIONS", style: :bold, size: 9
       table(loan_amount_data, cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 100]) do
         cells.borders = []
@@ -126,13 +122,13 @@ module LoansModule
     end
   end
   def loan_amount_data
-    voucher.voucher_amounts.for_account(account: loan.loan_product_current_account).map{ |a| [a.description, price(a.adjusted_amount)] }
+    voucher.voucher_amounts.for_account(account: loan.loan_product_current_account).map{ |a| [a.description, price(a.amount)] }
   end
   def loan_net_proceed_data
-    voucher.voucher_amounts.for_account(account: cooperative.cash_accounts).map{ |a| [a.description, price(a.adjusted_amount)] }
+    voucher.voucher_amounts.for_account(account: cooperative.cash_accounts).map{ |a| [a.description, price(a.amount)] }
   end
   def loan_charges_data
-    @loan_charges_data ||= voucher.voucher_amounts.excluding_account(account: loan.loan_product_current_account).excluding_account(account: cooperative.cash_accounts).map{|a| [a.description, price(a.adjusted_amount)]}
+    @loan_charges_data ||= voucher.voucher_amounts.excluding_account(account: loan.loan_product_current_account).excluding_account(account: cooperative.cash_accounts).map{|a| [a.description, price(a.amount)]}
   end
 
     def amortization_schedule
@@ -193,13 +189,13 @@ module LoansModule
     [["PREPARED BY", "", "APPROVED BY", "", "DISBURSED BY", "", "RECEIVED BY"]] +
     [["", ""]] +
     [["", ""]] +
-    [["#{preparer.first_middle_and_last_name.try(:upcase)}", "", 
-      approver.first_middle_and_last_name.try(:upcase), "", 
-      disburser.first_middle_and_last_name.upcase, "", 
+    [["#{preparer.first_middle_and_last_name.try(:upcase)}", "",
+      approver.first_middle_and_last_name.try(:upcase), "",
+      disburser.first_middle_and_last_name.upcase, "",
       "#{@loan.borrower.first_middle_and_last_name.try(:upcase)}"]] +
-    [["#{preparer.designation.try(:titleize)}", "", 
-      "#{approver.designation.try(:titleize) }", "", 
-      "#{disburser.designation.try(:titleize)}", "", 
+    [["#{preparer.designation.try(:titleize)}", "",
+      "#{approver.designation.try(:titleize) }", "",
+      "#{disburser.designation.try(:titleize)}", "",
       "Borrower"]]
   end
   end

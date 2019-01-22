@@ -15,10 +15,9 @@ module LoansModule
     belongs_to :voucher, dependent: :destroy
     has_one    :loan, class_name: "LoansModule::Loan", dependent: :destroy
     has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", dependent: :destroy
-    has_many :amount_adjustments, through: :voucher_amounts, dependent: :destroy, class_name: "Vouchers::AmountAdjustment"
+
     has_many :amortization_schedules, dependent: :destroy
     has_many :terms, as: :termable, dependent: :destroy
-    has_many :amount_adjustments, class_name: "Vouchers::AmountAdjustment", dependent: :destroy
 
     delegate :name, :current_membership, :avatar, to: :borrower, prefix: true
     delegate :name, :interest_revenue_account, :current_account, to: :loan_product, prefix: true
@@ -48,7 +47,12 @@ module LoansModule
     end
 
     def principal_balance_for(schedule) #used to compute interest
-      loan_amount.amount - amortization_schedules.principal_for(schedule: schedule)
+      balance = (loan_amount.amount - amortization_schedules.principal_for(schedule: schedule))
+      if balance < 0
+        0
+      else
+        balance
+      end
     end
 
     def term_is_within_one_year?
@@ -82,7 +86,7 @@ module LoansModule
     def total_interest
       if term_is_within_one_year?
         first_year_interest
-      elsif term_is_within_three_years?
+      elsif term_is_within_two_years?
         first_year_interest +
         second_year_interest
       elsif term_is_within_three_years?
@@ -144,7 +148,11 @@ module LoansModule
 
 
     def prededucted_interest
-      prededucted_interest_calculator.new(loan_application: self).prededucted_interest
+      if loan_product.current_interest_config.prededucted?
+        prededucted_interest_calculator.new(loan_application: self).prededucted_interest
+      else
+        0
+      end
     end
 
     def total_amortizeable_interest
@@ -157,7 +165,11 @@ module LoansModule
 
 
     def net_proceed
-      loan_amount.amount - voucher_amounts.sum(&:adjusted_amount)
+      if current_interest_config.add_on?
+        loan_amount_with_add_on_interest - voucher_amounts.total
+      else
+        loan_amount.amount - voucher_amounts.total
+      end
     end
 
     def total_charges
@@ -194,11 +206,26 @@ module LoansModule
     end
 
     def amortizeable_principal
-      loan_amount.amount / schedule_count
+      loan_amount / schedule_count
     end
 
     def number_of_thousands # for Loan Protection fund computation
       loan_amount.amount / 1_000.0
+    end
+    def loan_amount_with_add_on_interest
+      loan_amount.amount + add_on_interest
+    end
+
+    def add_on_interest
+      current_interest_config.compute_interest(loan_amount.amount)
+    end
+
+    def loans_receivable
+      if current_interest_config.add_on?
+        loan_amount_with_add_on_interest
+      else
+        loan_amount
+      end
     end
   end
 

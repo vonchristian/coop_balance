@@ -29,16 +29,17 @@ module LoansModule
           office:         find_employee.office,
           cooperative:    find_employee.cooperative,
           description:    description,
-          number:         number,
           reference_number: reference_number,
-          date:           date
-        )
-        create_charges(voucher)
+          date:           date)
+
+        create_voucher_amounts(voucher)
+
         voucher.save!
+
         find_loan_application.update_attributes!(voucher: voucher)
       end
 
-      def create_charges(voucher)
+      def create_voucher_amounts(voucher)
         create_loan_charges(voucher)
         create_loans_receivable(voucher)
         create_net_proceed(voucher)
@@ -49,7 +50,7 @@ module LoansModule
         cooperative: find_cooperative,
         voucher: voucher,
         amount_type: 'debit',
-        amount: find_loan_application.loan_amount.amount,
+        amount: find_loan_application.loans_receivable,
         description: 'Loan Amount',
         account: find_loan_application.loan_product_current_account,
         commercial_document: find_loan_application)
@@ -60,7 +61,7 @@ module LoansModule
         cooperative: find_cooperative,
         voucher: voucher,
         amount_type: 'credit',
-        amount: net_proceed,
+        amount: find_loan_application.net_proceed,
         description: 'Net Proceed',
         account_id: cash_account_id,
         commercial_document: find_loan_application)
@@ -69,14 +70,13 @@ module LoansModule
       def create_loan_charges(voucher)
         find_loan_application.voucher_amounts.each do |voucher_amount|
           Vouchers::VoucherAmount.create!(
-            voucher:             voucher,
-            amount:              voucher_amount.adjusted_amount,
-            cooperative:         find_cooperative,
-            amount_type:         voucher_amount.amount_type,
-            account:             voucher_amount.account,
-            description:         voucher_amount.description,
-            commercial_document: voucher_amount.commercial_document
-          )
+          voucher:             voucher,
+          amount:              voucher_amount.amount,
+          cooperative:         find_cooperative,
+          amount_type:         voucher_amount.amount_type,
+          account:             voucher_amount.account,
+          description:         voucher_amount.description,
+          commercial_document: voucher_amount.commercial_document)
         end
       end
 

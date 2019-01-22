@@ -38,13 +38,13 @@
   <hr>
   <div class="row">
     <div class="col-md-6">
-      <h3 class="card-sub-title">Interest Prededuction </h3>
+      <h3 class="card-title">Interest Prededuction </h3>
     </div>
     <div class="col-md-5">
       <%= f.input :prededuction_calculation_type, collection: LoansModule::LoanProducts::InterestPrededuction.calculation_types.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
       <%= f.input :prededuction_scope, collection: LoansModule::LoanProducts::InterestPrededuction.prededuction_scopes.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
 
-      <%= f.input :prededucted_rate %>
+      <%= f.input :prededucted_rate, input_html: { value: 0 } %>
       <%= f.input :prededucted_amount %>
       <%= f.input :prededucted_number_of_payments %>
     </div>
@@ -52,12 +52,20 @@
   <hr>
   <div class="row">
     <div class="col-md-6">
-      <h4>Penalty Configuration</h4>
+      <h4 class="card-title">Penalty Configuration</h4>
     </div>
     <div class="col-md-5">
       <%= f.input :penalty_rate %>
       <%= f.input :penalty_revenue_account_id,  collection: current_cooperative.accounts.revenues.active.all.map{|a| [a.name, a.id] } %>
       <%= f.input :loan_protection_plan_provider_id,  collection: current_cooperative.loan_protection_plan_providers.all.map{|a| [a.business_name, a.id] } %>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="card-title"> Amortization Type </h3>
+    </div>
+    <div class="col-md-5">
       <%= f.input :amortization_type_id,  collection: LoansModule::AmortizationType.all.map{|a| [a.calculation_type.titleize, a.id] }, as: :radio_buttons %>
     </div>
   </div>
