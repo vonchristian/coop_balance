@@ -38,6 +38,7 @@ module LoansModule
       def create_voucher_amount
         interest_revenue_account = find_loan.loan_product_interest_revenue_account
         penalty_revenue_account  = find_loan.loan_product_penalty_revenue_account
+        unearned_interest_income_account = find_loan.loan_product.current_interest_config.unearned_interest_income_account
         debit_account            = find_cash_account
         voucher = Voucher.new(
         account_number:   account_number,
@@ -55,6 +56,12 @@ module LoansModule
           account:             interest_revenue_account,
           commercial_document: find_loan)
         end
+        if find_loan.loan_product.current_interest_config.add_on?
+          voucher.voucher_amounts.debit.build(
+          amount:              interest_amount.to_f,
+          account:             unearned_interest_income_account,
+          commercial_document: find_loan)
+        end
 
         if penalty_amount.to_f > 0
           voucher.voucher_amounts.credit.build(
@@ -63,7 +70,12 @@ module LoansModule
           commercial_document: find_loan)
         end
 
-        if principal_amount.to_f > 0
+        if find_loan.loan_product.current_interest_config.add_on?
+          voucher.voucher_amounts.credit.build(
+          amount:              total_principal_and_interest,
+          account:             find_loan.principal_account,
+          commercial_document: find_loan)
+        else
           voucher.voucher_amounts.credit.build(
           amount:              principal_amount.to_f,
           account:             find_loan.principal_account,
@@ -85,6 +97,11 @@ module LoansModule
         principal_amount.to_f +
         interest_amount.to_f +
         penalty_amount.to_f
+      end
+
+      def total_principal_and_interest
+        principal_amount.to_f +
+        interest_amount.to_f
       end
 
       def principal_amount_not_more_than_balance

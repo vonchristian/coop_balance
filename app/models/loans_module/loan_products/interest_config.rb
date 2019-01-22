@@ -72,12 +72,21 @@ module LoansModule
 
 
       def create_charges_for(loan_application)
-        loan_application.voucher_amounts.create(
-        cooperative: loan_application.cooperative,
-        description: "Interest on Loan",
-        amount: prededucted_interest(loan_application.loan_amount.amount, loan_application.term),
-        account: interest_revenue_account,
-        amount_type: 'credit' )
+        if prededucted?
+          loan_application.voucher_amounts.create(
+          cooperative: loan_application.cooperative,
+          description: "Interest on Loan",
+          amount: prededucted_interest(loan_application.loan_amount.amount, loan_application.term),
+          account: interest_revenue_account,
+          amount_type: 'credit' )
+        elsif add_on?
+          loan_application.voucher_amounts.create(
+          cooperative: loan_application.cooperative,
+          description: "Unearned Interest Income",
+          amount: loan_application.loan_amount.amount * rate.to_f,
+          account: unearned_interest_income_account,
+          amount_type: 'credit' )
+        end
       end
 
 

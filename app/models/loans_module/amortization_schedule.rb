@@ -79,6 +79,8 @@ module LoansModule
         straight_balance_interest_computation(schedule, loan_application)
       elsif loan_application.current_interest_config_annually?
         annual_interest_computation(loan_application)
+      elsif loan_application.current_interest_config.add_on?
+        add_on_interest_computation(loan_application)
       else
         0
       end
@@ -126,9 +128,6 @@ module LoansModule
        interest_computation
     end
 
-
-
-
 		private
     def self.straight_balance_interest_computation(schedule, loan)
       if loan.lumpsum?
@@ -145,13 +144,20 @@ module LoansModule
         loan_application.interest_balance / loan_application.term
       end
     end
+    def self.add_on_interest_computation(loan_application)
+      loan_application.interest_balance / number_of_payments(loan_application)
+    end
 
 		def self.starting_date(loan)
       loan.application_date
     end
 
 		def self.principal_amount_for(loan)
-			(loan.loan_amount.amount / number_of_payments(loan))
+      if loan.loan_product.current_interest_config.add_on?
+        loan.net_proceed / number_of_payments(loan)
+      else
+			  (loan.loan_amount.amount / number_of_payments(loan))
+      end
 		end
 
 
