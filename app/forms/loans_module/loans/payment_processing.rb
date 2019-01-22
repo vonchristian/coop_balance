@@ -18,7 +18,7 @@ module LoansModule
 
       def process!
         ActiveRecord::Base.transaction do
-          create_voucher_amount
+          create_voucher
         end
       end
 
@@ -36,7 +36,7 @@ module LoansModule
 
       private
 
-      def create_voucher_amount
+      def create_voucher
         voucher = Voucher.new(
         account_number:   account_number,
         office:           find_employee.office,

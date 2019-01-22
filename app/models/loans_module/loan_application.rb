@@ -184,6 +184,10 @@ module LoansModule
     def amortization_date_setter
       ("LoansModule::AmortizationDateSetters::" + mode_of_payment.titleize.gsub(" ", "")).constantize
     end
+    
+    def second_year_principal_balance_schedule_finder
+      ("LoansModule::ScheduleFinders::SecondYear::" + mode_of_payment.titleize.gsub(" ", "")).constantize
+    end
 
     def first_amortization_date
       amortization_date_setter.new(date: application_date, term: term).start_date
