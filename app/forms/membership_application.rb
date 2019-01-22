@@ -53,7 +53,9 @@ class MembershipApplication
   end
 
   def create_tin
-    find_member.tins.create!(number: tin_number)
+    if tin_number.present?
+      find_member.tins.create!(number: tin_number)
+    end
   end
 
   def unique_full_name
