@@ -1,3 +1,14 @@
+1500 principal
+  500 interest
+  penalty 100
+loans receivable 2000
+penalty                  100
+interest_revenue         500
+
+cash                    2100
+unearned_interest_income 500
+
+
 Creating a product people needed
 Treating our customers with kindness and respect
 Making small improvements and changes

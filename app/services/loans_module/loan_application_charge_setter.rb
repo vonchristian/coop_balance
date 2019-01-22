@@ -5,8 +5,8 @@ module LoansModule
     def initialize(args)
       @loan         = args.fetch(:loan)
       @loan_product = @loan.loan_product
-
     end
+
     def create_charges!
       create_interest_on_loan_charge
       create_charges
@@ -18,7 +18,7 @@ module LoansModule
       loan.voucher_amounts.credit.create!(
         cooperative: loan.cooperative,
         description: "Interest on Loan",
-        amount: loan.prededucted_interest,
+        amount: interest_amount(loan),
         account: loan_product.current_interest_config_interest_revenue_account
       )
     end
@@ -42,6 +42,14 @@ module LoansModule
         account: loan_product.loan_protection_plan_provider.accounts_payable,
         description: 'Loan Protection Fund'
         )
+      end
+    end
+
+    def interest_amount(loan)
+      if loan_product.current_interest_config.add_on?
+        loan.add_on_interest
+      elsif loan_product.current_interest_config.prededucted?
+        loan.prededucted_interest
       end
     end
   end

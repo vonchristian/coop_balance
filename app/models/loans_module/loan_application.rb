@@ -130,10 +130,6 @@ module LoansModule
       principal_balance_for(schedule)
     end
 
-    def second_year_principal_balance_schedule_finder
-      ("LoansModule::ScheduleFinders::SecondYear::" + mode_of_payment.titleize.gsub(" ", "")).constantize
-    end
-
     def third_year_principal_balance
       return 0 if !term_is_within_three_years?
       schedule = amortization_schedules.by_oldest_date[23]
@@ -141,22 +137,19 @@ module LoansModule
     end
 
     def fourth_year_principal_balance
-      return 0 if !term_is_within_three_years?
-      schedule = amortization_schedules.by_oldest_date[23]
+      return 0 if !term_is_within_four_years?
+      schedule = amortization_schedules.by_oldest_date[35]
       principal_balance_for(schedule)
     end
 
 
     def prededucted_interest
-      if loan_product.current_interest_config.prededucted?
-        prededucted_interest_calculator.new(loan_application: self).prededucted_interest
-      else
-        0
-      end
+      prededucted_interest_calculator.new(loan_application: self).prededucted_interest
     end
 
     def total_amortizeable_interest
-      total_interest - prededucted_interest
+      total_interest -
+      prededucted_interest
     end
 
     def amortizeable_interest_for(schedule)
@@ -191,7 +184,6 @@ module LoansModule
     def amortization_date_setter
       ("LoansModule::AmortizationDateSetters::" + mode_of_payment.titleize.gsub(" ", "")).constantize
     end
-
 
     def first_amortization_date
       amortization_date_setter.new(date: application_date, term: term).start_date

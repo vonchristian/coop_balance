@@ -20,8 +20,6 @@ module LoansModule
         interest_revenue_accounts
       end
 
-
-
       def self.interest_revenue_accounts
         accounts = pluck(:interest_revenue_account_id).uniq
         AccountingModule::Account.where(id: accounts)
