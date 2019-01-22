@@ -12,10 +12,8 @@
           <%= f.input :bank_name %>
           <%= f.input :bank_address %>
           <%= f.input :account_number %>
-          <%= f.input :account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
           <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] } %>
-
-          <%= f.input :earned_interest_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
+          <%= f.input :interest_revenue_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
       </div>
       <hr class="no-margin">
       <div class="card-body">

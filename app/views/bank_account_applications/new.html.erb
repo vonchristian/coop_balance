@@ -2,8 +2,8 @@
   <%= f.input :bank_name %>
   <%= f.input :bank_address %>
   <%= f.input :account_number %>
-  <%= f.input :account_id, collection: current_cooperative.accounts.active.map{|a| [a.name, a.id] } %>
-  <%= f.input :earned_interest_account_id, collection: current_cooperative.accounts.active.map{|a| [a.name, a.id] } %>
+  <%= f.input :cash_account_id, collection: current_cooperative.accounts.active.map{|a| [a.name, a.id] } %>
+  <%= f.input :interest_revenue_account_id, collection: current_cooperative.accounts.active.map{|a| [a.name, a.id] } %>
 
   <%= f.input :cooperative_id, input_html: { value: current_cooperative.id }, as: :hidden %>
   <%= f.submit "Proceed", data: { disable_with: "Processing..." } %>
