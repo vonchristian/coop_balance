@@ -67,7 +67,7 @@ module LoansModule
       end
     end
   def loan_details
-    bounding_box [0, 865], width: 450, height: 110 do
+    bounding_box [0, 865], width: 450 do
       text "LOAN DETAILS", size: 9, style: :bold
       table([["Loan Product", "#{loan.loan_product_name}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 200]) do
         cells.borders = []
@@ -99,7 +99,7 @@ module LoansModule
     end
   end
   def loan_charges_details
-    bounding_box [300, 865], width: 220, height: 110 do
+    bounding_box [300, 865], width: 220 do
       text "LOAN DEDUCTIONS", style: :bold, size: 9
       table(loan_amount_data, cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 100]) do
         cells.borders = []

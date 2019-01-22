@@ -84,7 +84,7 @@ module LoansModule
       to_date = date.end_of_month
       if args.present?
         all.where(cancelled: false, loan_product: args[:loan_product]).select { |l| 
-          l.balance > 0 && 
+          l.principal_balance > 0 && 
           l.amortization_schedules.where(date: from_date..to_date).present? && 
           l.borrower.current_membership.membership_type == args[:membership_type].to_s
         }
@@ -93,6 +93,10 @@ module LoansModule
           l.balance > 0
         }
       end
+    end
+
+    def self.unpaid
+      all.where(cancelled: false, archived: false).select { |l| l.principal_balance > 0 }
     end
 
     def arrears(args={})

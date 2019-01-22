@@ -1,7 +1,7 @@
 class BankAccountApplicationProcessing
   include ActiveModel::Model
-  attr_accessor :bank_name, :bank_address, :account_number, :voucher_account_number, :account_id,
-  :amount, :reference_number, :description, :date, :cooperative_id, :earned_interest_account_id
+  attr_accessor :bank_name, :bank_address, :account_number, :voucher_account_number, :cash_account_id,
+  :amount, :reference_number, :description, :date, :cooperative_id, :interest_revenue_account_id
 
   def process!
     ActiveRecord::Base.transaction do
@@ -19,8 +19,8 @@ class BankAccountApplicationProcessing
       bank_name: bank_name,
       bank_address: bank_address,
       account_number: account_number,
-      account_id: account_id,
-      earned_interest_account_id: earned_interest_account_id
+      cash_account_id: cash_account_id,
+      interest_revenue_account_id: interest_revenue_account_id
     )
   end
   def find_cooperative
