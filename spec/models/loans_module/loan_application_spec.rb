@@ -162,73 +162,7 @@ module LoansModule
 
 
 
-    describe "#interest computations" do
-       let (:interest_revenue_account)         { create(:revenue) }
-       let (:unearned_interest_income_account) { create(:asset) }
-       let (:short_term_loan)                     { create(:loan_product) }
-       let (:regular_loan)                     { create(:loan_product) }
 
-      it 'first_year_interest' do
-        create(:interest_config,
-               loan_product: short_term_loan,
-               rate: 0.03,
-               rate_type: 'monthly_rate',
-               amortization_type: 'annually',
-               interest_revenue_account: interest_revenue_account,
-               unearned_interest_income_account: unearned_interest_income_account)
-
-        short_term_loan_application = create(:loan_application,
-          mode_of_payment: 'monthly',
-          term: 1.5,
-          loan_amount: 5_000,
-          loan_product: short_term_loan)
-        LoansModule::AmortizationSchedule.create_amort_schedule_for(short_term_loan_application)
-
-        expect(short_term_loan_application.first_year_interest).to eql 225.0
-        expect(short_term_loan_application.second_year_interest).to eql 0
-
-      end
-      it 'second_year_interest' do
-        create(:interest_config,
-               loan_product: regular_loan,
-               rate: 0.12,
-               rate_type: 'annual_rate',
-               amortization_type: 'annually',
-               interest_revenue_account: interest_revenue_account,
-               unearned_interest_income_account: unearned_interest_income_account)
-
-        regular_loan_application = create(:loan_application,
-          mode_of_payment: 'monthly',
-          term: 18,
-          loan_amount: 100_000,
-          loan_product: regular_loan)
-        LoansModule::AmortizationSchedule.create_amort_schedule_for(regular_loan_application)
-
-        expect(regular_loan_application.first_year_interest).to eq 12_000
-        expect(regular_loan_application.second_year_interest).to eq 4_000
-
-      end
-
-      it 'third_year_interest' do
-        create(:interest_config,
-               loan_product: regular_loan,
-               rate: 0.12,
-               rate_type: 'annual_rate',
-               amortization_type: 'annually',
-               interest_revenue_account: interest_revenue_account,
-               unearned_interest_income_account: unearned_interest_income_account)
-
-        regular_loan_application = create(:loan_application,
-          mode_of_payment: 'monthly',
-          term: 36,
-          loan_amount: 200_000,
-          loan_product: regular_loan)
-        LoansModule::AmortizationSchedule.create_amort_schedule_for(regular_loan_application)
-
-        expect(regular_loan_application.first_year_interest).to eq 24_000
-        expect(regular_loan_application.second_year_interest).to eq 16_000
-        expect(regular_loan_application.third_year_interest).to eq 8_000
-      end
 
       it "#schedule_counter" do
         loan_application_daily = create(:loan_application, mode_of_payment: 'daily')
@@ -305,4 +239,3 @@ module LoansModule
 
     end
   end
-end

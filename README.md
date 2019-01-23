@@ -1,3 +1,8 @@
+
+
+
+
+
 1500 principal
   500 interest
   penalty 100
@@ -11,6 +16,9 @@ unearned_interest_income 500
 def second_year_principal_balance_schedule_finder
   ("LoansModule::ScheduleFinders::SecondYear::" + mode_of_payment.titleize.gsub(" ", "")).constantize
 end
+
+
+
 
 Creating a product people needed
 Treating our customers with kindness and respect

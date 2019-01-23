@@ -32,7 +32,7 @@ module BankAccounts
         cooperative: find_employee.cooperative,
         preparer: find_employee,
         description: description,
-        number: reference_number,
+        reference_number: reference_number,
         account_number: account_number,
         date: date)
       voucher.voucher_amounts.debit.build(

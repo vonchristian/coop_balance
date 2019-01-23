@@ -44,6 +44,10 @@
       subscribers.count
     end
 
+    def balance_averager
+      ("SavingsModule::BalanceAveragers::" + interest_recurrence.titleize.gsub(" ", "")).constantize
+    end
+
     def self.accounts
       accounts = self.pluck(:account_id)
       AccountingModule::Account.where('accounts.id' => accounts)

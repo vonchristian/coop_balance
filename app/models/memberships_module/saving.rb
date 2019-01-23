@@ -39,7 +39,6 @@ module MembershipsModule
 
     validates :depositor, presence: true
 
-    scope :has_minimum_balance, -> { SavingsQuery.new.has_minimum_balance  }
 
     before_save :set_account_owner_name, :set_date_opened #move to saving opening
 
@@ -48,6 +47,9 @@ module MembershipsModule
 
     def self.below_minimum_balance
       where(has_minimum_balance: false)
+    end
+    def self.has_minimum_balance
+      where(has_minimum_balance: true)
     end
 
     def self.inactive(args={})
@@ -119,7 +121,9 @@ module MembershipsModule
       !closed? && balance > 0.0
     end
 
+
     def averaged_balance(args={})
+      saving_product.balance_averager.new(saving: saving, to_date: args[:to_date]).averaged_balance
       balances =[]
       to_date = args[:to_date]
       starting_date = to_date.beginning_of_year
@@ -144,6 +148,7 @@ module MembershipsModule
     def set_account_owner_name
       self.account_owner_name = self.depositor_name # depositor is polymorphic
     end
+
     def set_date_opened
       todays_date = ActiveRecord::Base.default_timezone == :utc ? Time.now.utc : Time.now
       self.date_opened ||= todays_date

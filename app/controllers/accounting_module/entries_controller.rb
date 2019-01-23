@@ -93,7 +93,7 @@ module AccountingModule
       if params[:from_date].present? && params[:to_date].present?
         @from_date = params[:from_date] ? DateTime.parse(params[:from_date]) : current_cooperative.entries.order(entry_date: :asc).first.entry_date
         @to_date = params[:to_date] ? DateTime.parse(params[:to_date]) : Date.today.end_of_year
-        @entries = current_cooperative.entries.where(cancelled: false).order(reference_number: :asc).entered_on(from_date: @from_date, to_date: @to_date)
+        @entries = current_cooperative.entries.not_cancelled.order(reference_number: :asc).entered_on(from_date: @from_date, to_date: @to_date)
       elsif params[:search].present?
         @entries = current_cooperative.entries.where(cancelled: false).order(reference_number: :asc).text_search(params[:search])
       elsif params[:recorder_id].present?

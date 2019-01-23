@@ -36,6 +36,12 @@ module CoopServicesModule
       it { is_expected.to delegate_method(:credits_balance).to(:account) }
     end
 
+    it "#balance_averager" do
+      annually = create(:saving_product, interest_recurrence: 'annually')
+
+      expect(annually.balance_averager).to eql SavingsModule::BalanceAveragers::Annually
+    end
+
     it ".accounts" do
       saving_product = create(:saving_product)
 
