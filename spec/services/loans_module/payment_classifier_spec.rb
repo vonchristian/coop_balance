@@ -27,9 +27,6 @@ module LoansModule
       expect(described_class.new(entry: payment, loan: loan).interest).to eql 500
       expect(described_class.new(entry: payment, loan: loan).penalty).to eql 100
       expect(described_class.new(entry: payment, loan: loan).total_cash_payment).to eql 1_600
-
-
-
     end
   end
 end

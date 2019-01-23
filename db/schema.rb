@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_18_232002) do
+ActiveRecord::Schema.define(version: 2019_01_22_233811) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -54,12 +54,12 @@ ActiveRecord::Schema.define(version: 2019_01_18_232002) do
 
   create_table "active_storage_attachments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
-    t.string "record_type", null: false
-    t.uuid "record_id", null: false
-    t.uuid "blob_id", null: false
     t.datetime "created_at", null: false
+    t.string "record_type"
+    t.uuid "record_id"
+    t.uuid "blob_id"
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
-    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+    t.index ["record_type", "record_id"], name: "index_active_storage_attachments_on_record_type_and_record_id"
   end
 
   create_table "active_storage_blobs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -131,6 +131,20 @@ ActiveRecord::Schema.define(version: 2019_01_18_232002) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["calculation_type"], name: "index_amortization_types_on_calculation_type"
+  end
+
+  create_table "amount_adjustments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "voucher_amount_id"
+    t.uuid "loan_application_id"
+    t.decimal "amount"
+    t.integer "number_of_payments"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "adjustment_type"
+    t.decimal "rate"
+    t.index ["adjustment_type"], name: "index_amount_adjustments_on_adjustment_type"
+    t.index ["loan_application_id"], name: "index_amount_adjustments_on_loan_application_id"
+    t.index ["voucher_amount_id"], name: "index_amount_adjustments_on_voucher_amount_id"
   end
 
   create_table "amounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -425,6 +439,14 @@ ActiveRecord::Schema.define(version: 2019_01_18_232002) do
     t.decimal "number_of_days"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "interest_calculations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "calculation_type"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["calculation_type"], name: "index_interest_calculations_on_calculation_type"
   end
 
   create_table "interest_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1550,6 +1572,8 @@ ActiveRecord::Schema.define(version: 2019_01_18_232002) do
   add_foreign_key "amortization_schedules", "cooperatives"
   add_foreign_key "amortization_schedules", "loan_applications"
   add_foreign_key "amortization_schedules", "loans"
+  add_foreign_key "amount_adjustments", "loan_applications"
+  add_foreign_key "amount_adjustments", "voucher_amounts"
   add_foreign_key "amounts", "accounts"
   add_foreign_key "amounts", "entries"
   add_foreign_key "bank_accounts", "accounts", column: "cash_account_id"

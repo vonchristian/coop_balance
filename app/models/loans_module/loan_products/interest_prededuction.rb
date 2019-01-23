@@ -11,6 +11,9 @@ module LoansModule
       def self.current
         order(created_at: :desc).first
       end
+      def rate_in_percent
+        rate * 1_00
+      end
     end
   end
 end

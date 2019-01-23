@@ -49,7 +49,7 @@ module LoansModule
     validates :name, uniqueness: true
     validates :maximum_loanable_amount, numericality: true
 
-    delegate :calculation_type, :rate, :number_of_payments, to: :current_interest_prededuction, prefix: true, allow_nil: true
+    delegate :calculation_type, :rate, :rate_in_percent, :number_of_payments, to: :current_interest_prededuction, prefix: true, allow_nil: true
 
     def interest_calculator
       if current_interest_config.prededucted?

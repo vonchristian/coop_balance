@@ -119,7 +119,7 @@
         </div>
         <div class="row justify-content-end">
           <div class="col-md-8 col-sm-6">
-            <span class="text-success">Prededucted </span>
+            <span class="text-success">Prededucted  (<%= @loan_application.loan_product.current_interest_prededuction_rate_in_percent %> % )</span>
           </div>
           <div class="col-md-3 col-sm-6">
             <span class="text-success">
@@ -226,7 +226,8 @@
                 <%= number_to_currency loan.balance %>
               </h3>
                 <span class="text-muted">
-                  <%= loan.borrower_name %>
+                  <i class="fa fa-user-circle"></i> <%= loan.borrower_name %><br>
+                  <i class="fa fa-tag"></i> <%= loan.loan_product_name %>
                 </span>
               <br>
               <% if @loan_application.voucher_amounts.for_account(account: loan.principal_account).present? %>
@@ -238,7 +239,7 @@
             </div>
             <div class="col-md-2">
               <%=link_to new_loans_module_loan_application_previous_loan_payment_processing_path(loan_id: loan.id, loan_application_id: @loan_application.id), data: { modal: true } do %>
-                 <span class="btn btn-outline-warning float-right"><i class="fa fa-plus-circle"></i> Add </span>
+                 <span class="btn btn-outline-warning float-right"><i class="fa fa-plus-circle"></i> Add Payment </span>
                <% end %>
             </div>
           </div>
@@ -258,11 +259,19 @@
               <th> Date </th>
               <th> Principal </th>
               <th> Interest </th>
-              <th> Total </th>
+              <th> Total Amortization</th>
               <th> Loan Balance </th>
             </tr>
           </thead>
           <tbody>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+
+              <td><%= number_to_currency @loan_application.loans_receivable %></td>
+            </tr>
             <% @loan_application.amortization_schedules.order(date: :asc).each do |amortization_schedule| %>
               <tr>
                 <td><%= amortization_schedule.date.strftime("%B %e, %Y") %></td>
@@ -297,13 +306,23 @@
           </div>
           <div class="col-md-5">
             <span class="float-right">
-              <%= number_to_currency @loan_application.loan_amount %>
+              <%= number_to_currency @loan_application.loans_receivable %>
             </span>
           </div>
         </div>
-        <small>CHARGES</small>
-
-        <% @loan_application.voucher_amounts.each do |voucher_amount| %>
+        <div class="row">
+          <div class="col-md-8 offset-1">
+            <%= link_to new_loans_module_loan_application_voucher_amount_path(@loan_application), data: { modal: true } do %>
+              <span class="float-left btn btn-outline-primary btn-sm" data-toggle="tooltip" title="Add Charges">
+                <i class="fa fa-plus-circle"></i> Add Charge
+              </span>
+            <% end %>
+          </div>
+        </div>
+      <br>
+      <% if @loan_application.voucher_amounts.debit.present? %>
+        <small class="text-danger">ADD-ONS</small>
+        <% @loan_application.voucher_amounts.debit.each do |voucher_amount| %>
           <div class="row min-margin">
             <div class="col-md-5 offset-1">
               <%= voucher_amount.description %>
@@ -331,25 +350,55 @@
           </div>
         <% end %>
         <div class="row">
-          <div class="col-md-8 offset-1">
-            <%= link_to new_loans_module_loan_application_voucher_amount_path(@loan_application), data: { modal: true } do %>
-              <span class="float-left" data-toggle="tooltip" title="Add Charges">
-                <i class="fa fa-plus-circle"></i> Add Charge...
-              </span>
-            <% end %>
-          </div>
-        </div>
-      <br>
-        <div class="row">
           <div class="col-md-7 offset-1">
-            <small class="text-open-sans-regular">TOTAL CHARGES</small>
+            <small class="text-open-sans-regular">TOTAL ADD-ONS</small>
           </div>
           <div class="col-md-3">
             <span class="float-right text-danger">
-              <%= number_to_currency @loan_application.voucher_amounts.total %>
+              <%= number_to_currency @loan_application.voucher_amounts.debit.total %>
             </span>
           </div>
         </div>
+      <% end %>
+
+
+      <% if @loan_application.voucher_amounts.credit.present? %>
+        <small class="text-danger">DEDUCTIONS</small>
+        <% @loan_application.voucher_amounts.credit.each do |voucher_amount| %>
+          <div class="row min-margin">
+            <div class="col-md-5 offset-1">
+              <%= voucher_amount.description %>
+            </div>
+            <div class="col-md-2">
+              <%= link_to edit_loans_module_loan_application_voucher_amount_path(id: voucher_amount.id, loan_application_id: @loan_application.id) do %>
+                <span data-toggle="tooltip" title="Edit Amount"><i class="fa fa-edit text-warning mr-2"></i>
+                </span>
+              <% end %>
+              <%= link_to loans_module_loan_application_voucher_amount_path(id: voucher_amount.id, voucher_amount_id: voucher_amount.id, loan_application_id: @loan_application.id), method: :delete do %>
+                <span data-toggle="tooltip" title="Remove"><i class="fa fa-times text-danger"></i>
+                </span>
+              <% end %>
+            </div>
+
+            <div class="col-md-3">
+              <span class="float-right">
+                <%= number_to_currency voucher_amount.amount %>
+              </span>
+            </div>
+
+          </div>
+        <% end %>
+        <div class="row">
+          <div class="col-md-7 offset-1">
+            <small class="text-open-sans-regular">TOTAL DEDUCTIONS</small>
+          </div>
+          <div class="col-md-3">
+            <span class="float-right text-danger">
+              <%= number_to_currency @loan_application.voucher_amounts.credit.total %>
+            </span>
+          </div>
+        </div>
+      <% end %>
         <hr>
         <div class="row">
           <div class="col-md-7 col-sm-6 offset-1">

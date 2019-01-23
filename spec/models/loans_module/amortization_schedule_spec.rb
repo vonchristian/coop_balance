@@ -8,7 +8,6 @@ module LoansModule
       it { is_expected.to belong_to :loan_application }
       it { is_expected.to belong_to :cooperative }
       it { is_expected.to have_many :notes }
-      it { is_expected.to belong_to :scheduleable }
     end
 
     describe 'validations' do
@@ -42,20 +41,48 @@ module LoansModule
       expect(described_class.oldest).to_not eql latest
     end
 
-    it '.total_principal' do
-      amortization_1 = create(:amortization_schedule, principal: 500)
-      amortization_2 = create(:amortization_schedule, principal: 500)
+    describe '.total_principal' do
+      it 'with no dates' do
+        amortization_1 = create(:amortization_schedule, principal: 500)
+        amortization_2 = create(:amortization_schedule, principal: 500)
 
-      expect(described_class.total_principal).to eql 1_000
+        expect(described_class.total_principal).to eql 1_000
+      end
+
+      it 'with dates' do
+        amortization_1 = create(:amortization_schedule, principal: 500, date: Date.current)
+        amortization_2 = create(:amortization_schedule, principal: 500, date: Date.current.last_month)
+
+        expect(described_class.total_principal(from_date: Date.current, to_date: Date.current)).to eql 500
+        expect(described_class.total_principal(from_date: Date.current.last_month, to_date: Date.current.last_month)).to eql 500
+
+      end
     end
 
-    it '.total_interest' do
-      amortization_1 = create(:amortization_schedule, interest: 500)
-      amortization_2 = create(:amortization_schedule, interest: 500)
+    describe '.total_interest(args={})' do
+      it "with no dates" do
+        amortization_1 = create(:amortization_schedule, interest: 500)
+        amortization_2 = create(:amortization_schedule, interest: 500)
 
-      expect(described_class.total_interest).to eql 1_000
+        expect(described_class.total_interest).to eql 1_000
+      end
+      it '#with dates' do
+        amortization_1 = create(:amortization_schedule, interest: 500, date: Date.current)
+        amortization_2 = create(:amortization_schedule, interest: 500, date: Date.current.last_month)
+
+        expect(described_class.total_interest(from_date: Date.current, to_date: Date.current)).to eql 500
+        expect(described_class.total_interest(from_date: Date.current.last_month, to_date: Date.current.last_month)).to eql 500
+      end
     end
 
+    it ".scheduled_for(args={})" do
+      amortization_1 = create(:amortization_schedule, date: Date.current)
+      amortization_2 = create(:amortization_schedule, date: Date.current.last_month)
+
+      expect(described_class.scheduled_for(from_date: Date.current, to_date: Date.current)).to include(amortization_1)
+      expect(described_class.scheduled_for(from_date: Date.current, to_date: Date.current)).to_not include(amortization_2)
+
+    end
 
     it "#total_amortization" do
       amortization = build(:amortization_schedule, interest: 100, principal: 1_000)
@@ -70,7 +97,7 @@ module LoansModule
 
       expect(amortization.previous_schedule).to eql prev_amortization
       expect(amortization.previous_schedule).to_not eql latest_amortization
-
     end
+
   end
 end

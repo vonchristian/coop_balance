@@ -9,8 +9,8 @@ module LoansModule
       end
 
       def process!
-        create_amortization_schedule
         create_charges
+        create_amortization_schedule
       end
 
       private

@@ -159,7 +159,7 @@ module LoansModule
     end
     def amortization_schedule_data
       [["DATE", "PRINCIPAL", "INTEREST", "TOTAL", "BALANCE", "NOTES"]] +
-      [["", "","", "", "#{price(@loan.loan_amount)}", ""]] +
+      [["", "","", "", "#{price(@loan.loans_receivable)}", ""]] +
       @table_date ||= @amortization_schedules.order(date: :asc).map{|a|
         [ a.date.strftime("%B %e, %Y"),
           price(a.principal),

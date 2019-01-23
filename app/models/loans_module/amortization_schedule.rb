@@ -11,10 +11,18 @@ module LoansModule
     delegate :avatar, :name, :current_contact_number, :current_address_complete_address, to: :borrower, prefix: true
     ###########################
 
-    validates :date, :principal, presence: true
+    validates :date, :principal, :interest, presence: true
+    validates :principal, :interest, numericality: true
 
-    def self.total_principal
-      sum(:principal)
+    def self.total_principal(args={})
+      from_date = args[:from_date]
+      to_date   = args[:to_date]
+
+      if from_date && to_date
+        scheduled_for(from_date: from_date, to_date: to_date).sum(&:principal)
+      else
+        sum(:principal)
+      end
     end
 
     def self.total_interest
@@ -37,16 +45,20 @@ module LoansModule
       where.not(loan_id: nil)
     end
 
-    def self.total_principal_balance(args)
+    def self.total_principal_balance(args={})
       to_date   = args.fetch(:to_date)
       from_date = args.fetch(:from_date)
       scheduled_for(from_date: from_date, to_date: to_date).sum(&:principal)
     end
 
     def self.total_interest(args={})
-      to_date   = args.fetch(:to_date)
-      from_date = args.fetch(:from_date)
-      scheduled_for(from_date: from_date, to_date: to_date).sum(&:interest)
+      to_date   = args[:to_date]
+      from_date = args[:from_date]
+      if from_date && to_date
+        scheduled_for(from_date: from_date, to_date: to_date).sum(&:interest)
+      else
+        sum(&:interest)
+      end
     end
 
     def self.principal_for(args={})
@@ -56,11 +68,18 @@ module LoansModule
       select { |a| (from_date.beginning_of_day..to_date.end_of_day).cover?(a.date) }.sum(&:principal)
     end
 
+    def self.total_amortization_for(args={})
+      schedule  = args.fetch(:schedule)
+      from_date = oldest.date
+      to_date   = schedule.date
+      select { |a| (from_date.beginning_of_day..to_date.end_of_day).cover?(a.date) }.sum(&:total_amortization)
+    end
+
     def self.scheduled_for(args={})
-			if args[:from_date] && args[:to_date]
-				date_range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])
-        where('date' => date_range.start_date..date_range.end_date)
-      end
+      from_date  = args.fetch(:from_date)
+      to_date    = args.fetch(:to_date)
+			date_range = DateRange.new(from_date: from_date, to_date: to_date)
+      where('date' => date_range.range)
     end
 
 

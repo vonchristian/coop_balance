@@ -47,11 +47,21 @@ module LoansModule
     end
 
     def principal_balance_for(schedule) #used to compute interest
-      balance = (loan_amount.amount - amortization_schedules.principal_for(schedule: schedule))
-      if balance < 0
-        0
-      else
-        balance
+      if current_interest_config.prededucted?
+        balance = (loan_amount.amount - amortization_schedules.principal_for(schedule: schedule))
+        if balance < 0
+          0
+        else
+          balance
+        end
+        
+      elsif current_interest_config.add_on?
+        balance = (loans_receivable - amortization_schedules.total_amortization_for(schedule: schedule))
+        if balance < 0
+          0
+        else
+          balance
+        end
       end
     end
 
@@ -184,7 +194,7 @@ module LoansModule
     def amortization_date_setter
       ("LoansModule::AmortizationDateSetters::" + mode_of_payment.titleize.gsub(" ", "")).constantize
     end
-    
+
     def second_year_principal_balance_schedule_finder
       ("LoansModule::ScheduleFinders::SecondYear::" + mode_of_payment.titleize.gsub(" ", "")).constantize
     end
@@ -202,7 +212,7 @@ module LoansModule
     end
 
     def amortizeable_principal
-      loan_amount / schedule_count
+      (loan_amount.amount / schedule_count).ceil(2)
     end
 
     def number_of_thousands # for Loan Protection fund computation
