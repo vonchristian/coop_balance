@@ -22,7 +22,6 @@ module CoopServicesModule
       it { is_expected.to validate_presence_of :account_id }
       it { is_expected.to validate_presence_of :interest_expense_account_id }
       it { is_expected.to validate_presence_of :closing_account_id }
-
     end
 
     describe 'enums' do
@@ -70,6 +69,14 @@ module CoopServicesModule
         saving_product = create(:saving_product, interest_recurrence: 'daily')
 
         expect(saving_product.applicable_divisor).to eql SavingsModule::InterestRateDivisors::Daily
+      end
+    end
+
+    describe 'date_setter' do
+      it "annually" do
+        saving_product = create(:saving_product, interest_recurrence: "annually")
+
+        expect(saving_product.date_setter).to eql SavingsModule::DateSetters::Annually
       end
     end
 

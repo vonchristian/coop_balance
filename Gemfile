@@ -78,6 +78,8 @@ group :development do
   gem 'spring-commands-rspec'
   gem 'bullet'
   gem 'pry-rails'
+  gem "guard"
+  gem "guard-rspec"
 end
 group :test do
   gem 'capybara', '>= 2.15'
@@ -87,8 +89,8 @@ group :test do
   gem 'database_rewinder'
   gem 'pdf-inspector', require: "pdf/inspector"
   gem 'selenium-webdriver'
-  # Easy installation and use of chromedriver to run system tests with Chrome
   gem 'chromedriver-helper'
+
 end
 
 gem 'rack-mini-profiler', require: false

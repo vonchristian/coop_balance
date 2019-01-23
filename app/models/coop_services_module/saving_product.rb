@@ -68,18 +68,9 @@
       ("SavingsModule::InterestRateDivisors::" + interest_recurrence.titleize.gsub(" ", "")).constantize
     end
 
-    #   if daily?
-    #     364
-    #   elsif monthly?
-    #     12.0
-    #   elsif quarterly?
-    #     4.0
-    #   elsif semi_annually?
-    #     2.0
-    #   elsif annually?
-    #     1.0
-    #   end
-    # end
+    def date_setter
+      ("SavingsModule::DateSetters::" + interest_recurrence.titleize.gsub(" ", "")).constantize
+    end
 
     # def starting_date(date)
     #   if daily?
