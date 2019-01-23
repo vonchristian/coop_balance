@@ -47,28 +47,39 @@
     def balance_averager
       ("SavingsModule::BalanceAveragers::" + interest_recurrence.titleize.gsub(" ", "")).constantize
     end
+    def compute_interest(amount)
+      applicable_rate.to_f * amount
+    end
 
     def self.accounts
       accounts = self.pluck(:account_id)
       AccountingModule::Account.where('accounts.id' => accounts)
     end
+
     def applicable_rate
       interest_rate  / rate_divisor
     end
 
     def rate_divisor
-      if daily?
-        364
-      elsif monthly?
-        12.0
-      elsif quarterly?
-        4.0
-      elsif semi_annually?
-        2.0
-      elsif annually?
-        1.0
-      end
+      applicable_divisor.new(saving_product: self).rate_divisor
     end
+
+    def applicable_divisor
+      ("SavingsModule::InterestRateDivisors::" + interest_recurrence.titleize.gsub(" ", "")).constantize
+    end
+
+    #   if daily?
+    #     364
+    #   elsif monthly?
+    #     12.0
+    #   elsif quarterly?
+    #     4.0
+    #   elsif semi_annually?
+    #     2.0
+    #   elsif annually?
+    #     1.0
+    #   end
+    # end
 
     # def starting_date(date)
     #   if daily?

@@ -2,21 +2,45 @@ module SavingsModule
   module BalanceAveragers
     class Annually
       attr_reader :saving, :to_date
+
       def initialize(args)
         @saving = args.fetch(:saving)
         @to_date = args.fetch(:to_date)
-        @from_date = @to_date.beginning_of_year
       end
+
       def averaged_balance
+        monthly_balances.sum / 12.0
+      end
+
+      private
+      def end_date
+        if to_date.is_a?(Date)|| to_date.is_a?(Time)
+          to_date.end_of_year.to_date
+        else
+          DateTime.parse(to_date).end_of_year.to_date
+        end
+      end
+
+      def start_date
+        if to_date.is_a?(Date) || to_date.is_a?(Time)
+          to_date.beginning_of_year.to_date
+        else
+          DateTime.parse(to_date).beginning_of_year.to_date
+        end
+      end
+
+      def monthly_balances
+        balances = []
+        months   = []
+        (start_date..end_date).each do |date|
+          months << date.end_of_month
+        end
+
+        months.uniq.each do |month|
+          balances <<  saving.balance(to_date: month.end_of_month).to_f
+        end
+        balances
       end
     end
   end
-end
-def set_balance_status
-  if paid_up_balance >= share_capital_product.minimum_balance
-    self.has_minimum_balance = true
-  else
-    self.has_minimum_balance = false
-  end
-  self.save
 end

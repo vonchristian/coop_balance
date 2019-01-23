@@ -37,10 +37,42 @@ module CoopServicesModule
     end
 
     it "#balance_averager" do
-      annually = create(:saving_product, interest_recurrence: 'annually')
+      saving_product = create(:saving_product, interest_recurrence: 'annually')
 
-      expect(annually.balance_averager).to eql SavingsModule::BalanceAveragers::Annually
+      expect(saving_product.balance_averager).to eql SavingsModule::BalanceAveragers::Annually
     end
+
+    describe "#applicable_divisor" do
+      it "annually" do
+        saving_product = create(:saving_product, interest_recurrence: 'annually')
+
+        expect(saving_product.applicable_divisor).to eql SavingsModule::InterestRateDivisors::Annually
+      end
+
+      it "semi_annually" do
+        saving_product = create(:saving_product, interest_recurrence: 'semi_annually')
+
+        expect(saving_product.applicable_divisor).to eql SavingsModule::InterestRateDivisors::SemiAnnually
+      end
+
+      it "quarterly" do
+        saving_product = create(:saving_product, interest_recurrence: 'quarterly')
+
+        expect(saving_product.applicable_divisor).to eql SavingsModule::InterestRateDivisors::Quarterly
+      end
+      it "monthly" do
+        saving_product = create(:saving_product, interest_recurrence: 'monthly')
+
+        expect(saving_product.applicable_divisor).to eql SavingsModule::InterestRateDivisors::Monthly
+      end
+
+      it "daily" do
+        saving_product = create(:saving_product, interest_recurrence: 'daily')
+
+        expect(saving_product.applicable_divisor).to eql SavingsModule::InterestRateDivisors::Daily
+      end
+    end
+
 
     it ".accounts" do
       saving_product = create(:saving_product)
@@ -63,25 +95,13 @@ module CoopServicesModule
       expect(saving_product.total_subscribers).to eql 1
     end
 
-    it "#rate_divisor" do
-      daily_saving_product = build(:saving_product, interest_recurrence: 'daily')
-      monthly_saving_product = build(:saving_product, interest_recurrence: 'monthly')
-      quarterly_saving_product = build(:saving_product, interest_recurrence: 'quarterly')
-      semi_annual_saving_product = build(:saving_product, interest_recurrence: 'semi_annually')
-      annual_saving_product = build(:saving_product, interest_recurrence: 'annually')
 
-
-      expect(daily_saving_product.rate_divisor).to eql 360.0
-      expect(monthly_saving_product.rate_divisor).to eql 12.0
-      expect(quarterly_saving_product.rate_divisor).to eql 4.0
-      expect(semi_annual_saving_product.rate_divisor).to eql 2.0
-      expect(annual_saving_product.rate_divisor).to eql 1.0
-    end
     it '#applicable_rate' do
       quarterly_saving_product = build(:saving_product, interest_recurrence: 'quarterly', interest_rate: 0.02)
 
       expect(quarterly_saving_product.applicable_rate).to eql(0.005)
     end
+
     it '#starting_date(date)' do
       daily_saving_product = build(:saving_product, interest_recurrence: 'daily')
       monthly_saving_product = build(:saving_product, interest_recurrence: 'monthly')

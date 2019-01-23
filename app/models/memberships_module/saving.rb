@@ -35,7 +35,7 @@ module MembershipsModule
     delegate :name, to: :barangay, prefix: true, allow_nil: true
 
     delegate :avatar, to: :depositor, allow_nil: true
-    delegate :dormancy_number_of_days, to: :saving_product
+    delegate :dormancy_number_of_days, :balance_averager, to: :saving_product
 
     validates :depositor, presence: true
 
@@ -48,12 +48,31 @@ module MembershipsModule
     def self.below_minimum_balance
       where(has_minimum_balance: false)
     end
-    def self.has_minimum_balance
+    def self.has_minimum_balances
       where(has_minimum_balance: true)
+    end
+
+    def self.averaged_balance(args={})
+      ids = pluck(:id)
+      balances = []
+      months   = []
+      (args[:from_date]..args[:to_date]).each do |date|
+        months << date.end_of_month
+      end
+
+      months.uniq.each do |month|
+        balances << CoopServicesModule::SavingProduct.total_balance(commercial_document: ids, to_date: month.end_of_month).to_f
+      end
+      balances.sum
     end
 
     def self.inactive(args={})
       updated_at(args)
+    end
+
+    def self.balance(args={})
+      ids = pluck(:id)
+      CoopServicesModule::SavingProduct.total_balance(args.merge(commercial_document: ids))
     end
 
     # def entries
@@ -101,9 +120,7 @@ module MembershipsModule
     end
 
     def balance(args={})
-      from_date = args[:from_date] || Date.today - 999.years
-      to_date   = args[:to_date] || Date.today + 999.years
-      saving_product_account.balance(commercial_document: self, from_date: from_date, to_date: to_date)
+      saving_product_account.balance(args.merge(commercial_document: self))
     end
 
     def deposits
@@ -123,21 +140,7 @@ module MembershipsModule
 
 
     def averaged_balance(args={})
-      saving_product.balance_averager.new(saving: saving, to_date: args[:to_date]).averaged_balance
-      balances =[]
-      to_date = args[:to_date]
-      starting_date = to_date.beginning_of_year
-      ending_date = to_date.end_of_year
-
-      months = []
-       (starting_date..ending_date).each do |date|
-        months << date.end_of_month
-      end
-
-      months.uniq.each do |month|
-        balances <<  balance(to_date: month.end_of_month)
-      end
-      balances.sum / 12.0
+      balance_averager.new(saving: self, to_date: args[:to_date]).averaged_balance
     end
 
     def computed_interest(args={})

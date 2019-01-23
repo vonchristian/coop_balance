@@ -1,0 +1,8 @@
+<% @savings_accounts.each do |saving| %>
+<%= saving.averaged_balance(to_date: @voucher.date) %>
+<%= @voucher.voucher_amounts.debit.where(commercial_document: saving).sum(&:amount) %>
+<% end %>
+
+<%= link_to "Disburse", voucher_disbursements_path(voucher_id: @voucher.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
+<%= link_to "Cancel", voucher_path(@voucher), method: :delete, class: "btn text-danger float-left" %>
+<%= @voucher.inspect %>

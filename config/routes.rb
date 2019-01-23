@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     resources :per_employee_entries, only: [:index], module: :entries
     resources :per_office_entries, only: [:index], module: :entries
     resources :scheduled_entries, only: [:index]
+    resources :interest_expense_vouchers, only: [:show]
 
     namespace :scheduled_entries do
       resources :savings_accounts_interest_postings, only: [:new, :create]

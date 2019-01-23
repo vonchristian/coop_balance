@@ -1,47 +1,49 @@
-<%= @from_date %>
-<%= @to_date %>
+<div class="row">
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-3 border-right">
+            <small> TOTAL ACCOUNTS </small>
+            <h2 class="number"><%= current_cooperative.savings.has_minimum_balances.count  %></h2>
+          </div>
+          <div class="col-md-6">
+            <small>AVERAGED BALANCES</small>
+            <h2 class="number"> <%= number_to_currency current_cooperative.savings.has_minimum_balances.averaged_balance(from_date: @to_date.beginning_of_year, to_date: @to_date) %></h2>
+          </div>
+        </div>
+        <hr>
+        <% @savings_accounts.each do |saving| %>
+          <div class="row">
+            <div class="col-md-2">
+              <%= image_tag(saving.avatar, height: 45, width: 45, class: "img-circle") %>
+            </div>
+            <div class="col-md-6">
+              <b><%= saving.depositor_name %></b><br>
+              <%= saving.saving_product_name %>
+            </div>
+            <div class="col-md-4">
+              <%= number_to_currency saving.averaged_balance(to_date: @to_date.end_of_year) %><br>
+              <small>AVERAGED BALANCE </small>
+            </div>
+          </div>
+          <br>
+        <% end %>
+        <center>
+          <%= will_paginate @savings_accounts %>
+        </center>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-body">
 
-<% month_dates = [] %>
-<% (@from_date..@to_date).each do |date| %>
-  <% month_dates << date.end_of_month %>
+<%= simple_form_for @interest_expense_posting, url: :accounting_module_scheduled_entries_savings_accounts_interest_postings do |f| %>
+  <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
+  <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+  <%= f.input :description %>
+  <%= f.input :reference_number %>
+  <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+  <%= f.submit "Create Voucher" %>
 <% end %>
-<p> Posting Date </p>
-<%= form_tag({:action => 'new'}, {:method => :get, class: "form-inline"}) do %>
-    <%= label_tag :to_date, nil, class: 'sr-only'%>
-    <%= text_field_tag :to_date, @to_date.strftime("%B %e, %Y"), :class => 'datepicker form-control', :placeholder => "To" %>
-    <br>
-    <br>
-    <br>
-  <button type="submit" class="btn btn-primary btn-block">Generate</button>
-<% end %>
-<table class="table table-responsive">
-  <thead>
-    <tr>
-      <th>Balance </th>
-      <% month_dates.uniq.each do |date| %>
-        <th> <%= date.strftime("%B") %></th>
-      <% end %>
-      <th>Averaged Balance </th>
-      <th> Applicable Rate </th>
-      <th> Computed Interest </th>
-    </thead>
-    <tbody>
-<% @savings_accounts.each do |savings_account| %>
- <tr>
-
-  <td><%= number_to_currency savings_account.balance(to_date: savings_account.saving_product.ending_date(@to_date)) %></td>
-  <td><%= number_to_currency savings_account.average_daily_balance(to_date: @to_date) %></td>
-  <td><%=  savings_account.saving_product_applicable_rate %></td>
-  <td><%= number_to_currency savings_account.computed_interest(to_date: @to_date) %></td>
-  </tr>
-<% end %>
-<%= simple_form_for @journal_entry_voucher, url: :accounting_module_scheduled_entries_savings_accounts_interest_postings do |f| %>
-  <%= f.input :to_date, input_html: { value: @to_date } %>
-  <%= f.input :cooperative_id, input_html: { value: @cooperative.id } %>
-  <%= f.input :employee_id, input_html: { value: current_user.id } %>
-  <%= f.input :account_number, input_html: { value: SecureRandom.uuid } %>
-
-  <%= f.submit "Create Journal Entry Voucher" %>
-<% end %>
-</tbody>
-</table>

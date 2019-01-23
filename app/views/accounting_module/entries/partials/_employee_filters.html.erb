@@ -8,7 +8,9 @@
         <li class="nav-item">
           <%= link_to accounting_module_per_employee_entries_path(recorder_id: user.id), class: "nav-link" do %>
             <center>
-              <span title="<%= user.role.titleize %>" data-toggle="tooltip"> <%= image_tag(user.avatar, height: 45, width: 45, class: "img-circle") %></span><br>
+              <% if user.avatar.attached? %>
+                <span title="<%= user.role.titleize %>" data-toggle="tooltip"> <%= image_tag(user.avatar, height: 45, width: 45, class: "img-circle") %></span><br>
+              <% end %>
               <small><%= user.first_name %></small>
             </center>
           <% end %>
