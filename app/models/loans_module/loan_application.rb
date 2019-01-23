@@ -15,10 +15,9 @@ module LoansModule
     belongs_to :voucher, dependent: :destroy
     has_one    :loan, class_name: "LoansModule::Loan", dependent: :destroy
     has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", dependent: :destroy
-    has_many :amount_adjustments, through: :voucher_amounts, dependent: :destroy, class_name: "Vouchers::AmountAdjustment"
+
     has_many :amortization_schedules, dependent: :destroy
     has_many :terms, as: :termable, dependent: :destroy
-    has_many :amount_adjustments, class_name: "Vouchers::AmountAdjustment", dependent: :destroy
 
     delegate :name, :current_membership, :avatar, to: :borrower, prefix: true
     delegate :name, :interest_revenue_account, :current_account, to: :loan_product, prefix: true
@@ -48,7 +47,22 @@ module LoansModule
     end
 
     def principal_balance_for(schedule) #used to compute interest
-      loan_amount.amount - amortization_schedules.principal_for(schedule: schedule)
+      if current_interest_config.prededucted?
+        balance = (loan_amount.amount - amortization_schedules.principal_for(schedule: schedule))
+        if balance < 0
+          0
+        else
+          balance
+        end
+        
+      elsif current_interest_config.add_on?
+        balance = (loans_receivable - amortization_schedules.total_amortization_for(schedule: schedule))
+        if balance < 0
+          0
+        else
+          balance
+        end
+      end
     end
 
     def term_is_within_one_year?
@@ -82,7 +96,7 @@ module LoansModule
     def total_interest
       if term_is_within_one_year?
         first_year_interest
-      elsif term_is_within_three_years?
+      elsif term_is_within_two_years?
         first_year_interest +
         second_year_interest
       elsif term_is_within_three_years?
@@ -126,10 +140,6 @@ module LoansModule
       principal_balance_for(schedule)
     end
 
-    def second_year_principal_balance_schedule_finder
-      ("LoansModule::ScheduleFinders::SecondYear::" + mode_of_payment.titleize.gsub(" ", "")).constantize
-    end
-
     def third_year_principal_balance
       return 0 if !term_is_within_three_years?
       schedule = amortization_schedules.by_oldest_date[23]
@@ -137,8 +147,8 @@ module LoansModule
     end
 
     def fourth_year_principal_balance
-      return 0 if !term_is_within_three_years?
-      schedule = amortization_schedules.by_oldest_date[23]
+      return 0 if !term_is_within_four_years?
+      schedule = amortization_schedules.by_oldest_date[35]
       principal_balance_for(schedule)
     end
 
@@ -148,7 +158,8 @@ module LoansModule
     end
 
     def total_amortizeable_interest
-      total_interest - prededucted_interest
+      total_interest -
+      prededucted_interest
     end
 
     def amortizeable_interest_for(schedule)
@@ -157,7 +168,11 @@ module LoansModule
 
 
     def net_proceed
-      loan_amount.amount - voucher_amounts.sum(&:adjusted_amount)
+      if current_interest_config.add_on?
+        loan_amount_with_add_on_interest - voucher_amounts.total
+      else
+        loan_amount.amount - voucher_amounts.total
+      end
     end
 
     def total_charges
@@ -180,6 +195,9 @@ module LoansModule
       ("LoansModule::AmortizationDateSetters::" + mode_of_payment.titleize.gsub(" ", "")).constantize
     end
 
+    def second_year_principal_balance_schedule_finder
+      ("LoansModule::ScheduleFinders::SecondYear::" + mode_of_payment.titleize.gsub(" ", "")).constantize
+    end
 
     def first_amortization_date
       amortization_date_setter.new(date: application_date, term: term).start_date
@@ -194,11 +212,26 @@ module LoansModule
     end
 
     def amortizeable_principal
-      loan_amount.amount / schedule_count
+      (loan_amount.amount / schedule_count).ceil(2)
     end
 
     def number_of_thousands # for Loan Protection fund computation
       loan_amount.amount / 1_000.0
+    end
+    def loan_amount_with_add_on_interest
+      loan_amount.amount + add_on_interest
+    end
+
+    def add_on_interest
+      current_interest_config.compute_interest(loan_amount.amount)
+    end
+
+    def loans_receivable
+      if current_interest_config.add_on?
+        loan_amount_with_add_on_interest
+      else
+        loan_amount
+      end
     end
   end
 

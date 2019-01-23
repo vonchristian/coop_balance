@@ -43,7 +43,7 @@ module Vouchers
     end
 
     def self.total_cash_amount
-      cash_accounts.total
+      with_cash_accounts.total
     end
 
     def self.with_no_vouchers

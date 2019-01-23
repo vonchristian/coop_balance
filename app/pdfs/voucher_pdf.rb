@@ -14,7 +14,7 @@ class VoucherPdf < Prawn::Document
     voucher_details
     signatory_details
     font Rails.root.join("app/assets/fonts/open_sans_regular.ttf")
-    
+
   end
 
   private
@@ -135,7 +135,7 @@ class VoucherPdf < Prawn::Document
         column(2).align = :right
       end
     else
-      table([["#{price(voucher.voucher_amounts.debit.sum(&:amount))}", "", "#{price(voucher.voucher_amounts.debit.sum(&:amount))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"},  column_widths: [100, 300, 100]) do
+      table([["#{price(voucher.voucher_amounts.debit.sum(&:amount))}", "", "#{price(voucher.voucher_amounts.credit.sum(&:amount))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica"},  column_widths: [100, 300, 100]) do
         # cells.borders = []
         row(0).font_style = :bold
         column(0).align = :right
@@ -145,8 +145,8 @@ class VoucherPdf < Prawn::Document
   end
   def signatory_details
     move_down 50
-    table([["PREPARED BY", "APPROVED BY", "DISBURSED BY", "RECEIVED BY"]], 
-      cell_style: { inline_format: true, size: 10, font: "Helvetica", :padding => [2, 4, 2, 4]}, 
+    table([["PREPARED BY", "APPROVED BY", "DISBURSED BY", "RECEIVED BY"]],
+      cell_style: { inline_format: true, size: 10, font: "Helvetica", :padding => [2, 4, 2, 4]},
       column_widths: [120, 120, 120, 140]) do
         cells.borders = []
     end

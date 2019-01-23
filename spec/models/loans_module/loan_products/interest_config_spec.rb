@@ -34,9 +34,17 @@ module LoansModule
         expect(described_class.interest_revenue_accounts).to include(interest_config.interest_revenue_account)
       end
 
+      it "#compute_interest" do
+        interest_config = create(:interest_config, rate: 0.12)
 
+        expect(interest_config.compute_interest(100_000)).to eql 12_000
+      end
 
+      it "#monthly_interest_rate" do
+        interest_config = build_stubbed(:interest_config, rate: 0.12)
 
+        expect(interest_config.monthly_interest_rate).to eql 0.01
+      end
     end
   end
 end

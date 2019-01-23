@@ -27,6 +27,7 @@ module LoansModule
              :amortization_type,
              :rate_type,
              :interest_revenue_account,
+             :unearned_interest_income_account,
              to: :current_interest_config, prefix: true
 
     delegate :rate, :rate_in_percent, to: :current_penalty_config, prefix: true, allow_nil: true
@@ -48,22 +49,38 @@ module LoansModule
     validates :name, uniqueness: true
     validates :maximum_loanable_amount, numericality: true
 
-    delegate :calculation_type, :rate, :number_of_payments, to: :current_interest_prededuction, prefix: true
+    delegate :calculation_type, :rate, :rate_in_percent, :number_of_payments, to: :current_interest_prededuction, prefix: true, allow_nil: true
 
     def interest_calculator
-      ("LoansModule::InterestCalculators::" + current_interest_prededuction_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
+      if current_interest_config.prededucted?
+        ("LoansModule::InterestCalculators::" + current_interest_prededuction_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
+      elsif current_interest_config.add_on?
+        ("LoansModule::InterestCalculators::" + current_interest_config_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
+      end
     end
 
     def prededucted_interest_calculator
-      ("LoansModule::PredeductedInterestCalculators::" + current_interest_prededuction_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
+      if current_interest_config.prededucted?
+        ("LoansModule::PredeductedInterestCalculators::" + current_interest_prededuction_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
+      elsif current_interest_config.add_on?
+        ("LoansModule::PredeductedInterestCalculators::" + current_interest_config_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
+      end
     end
 
     def loan_processor
-      ("LoansModule::LoanProcessors::" + current_interest_prededuction_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
+      if current_interest_config.prededucted?
+        ("LoansModule::LoanProcessors::" + current_interest_prededuction_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
+      elsif current_interest_config.add_on?
+        ("LoansModule::LoanProcessors::" + current_interest_config_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
+      end
     end
 
     def amortization_scheduler
-      ("LoansModule::AmortizationSchedulers::" + current_interest_prededuction_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
+      if current_interest_config.prededucted?
+        ("LoansModule::AmortizationSchedulers::" + current_interest_prededuction_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
+      elsif current_interest_config.add_on?
+        ("LoansModule::AmortizationSchedulers::" + current_interest_config_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
+      end
     end
 
     def self.accounts

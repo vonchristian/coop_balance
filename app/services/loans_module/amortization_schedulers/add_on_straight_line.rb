@@ -1,7 +1,8 @@
 module LoansModule
- module AmortizationSchedulers
-    class PercentBasedStraightLine
+  module AmortizationSchedulers
+    class AddOnStraightLine
       attr_reader :scheduleable, :loan_product
+
       def initialize(args)
         @scheduleable = args.fetch(:scheduleable)
         @loan_product = @scheduleable.loan_product
@@ -10,14 +11,9 @@ module LoansModule
       def create_schedule!
         create_first_schedule
         create_succeeding_schedule
+        update_interests!
       end
 
-      def update_interests!
-        scheduleable.amortization_schedules.each do |schedule|
-          schedule.interest = amortizeable_interest_for(schedule)
-          schedule.save!
-        end
-      end
 
       private
       def create_first_schedule
@@ -37,6 +33,13 @@ module LoansModule
               principal: scheduleable.amortizeable_principal
             )
           end
+        end
+      end
+
+      def update_interests!
+        scheduleable.amortization_schedules.each do |schedule|
+          schedule.interest = amortizeable_interest_for(schedule)
+          schedule.save!
         end
       end
 

@@ -58,6 +58,7 @@ module LoansModule
     def find_loan_product
       LoansModule::LoanProduct.find(loan_product_id)
     end
+
     def maximum_term
       errors[:term] << "must not exceed 48 months." if term.to_f > 48
     end

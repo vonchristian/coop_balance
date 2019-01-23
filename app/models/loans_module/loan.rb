@@ -1,6 +1,6 @@
 module LoansModule
   class Loan < ApplicationRecord
-    enum status: [:current_loan, :past_due]
+    enum status: [:current_loan, :past_due, :restructured]
     audited
     include PgSearch
     include LoansModule::Loans::Interest
@@ -21,35 +21,22 @@ module LoansModule
     belongs_to :archived_by,            class_name: "User", foreign_key: 'archived_by_id'
     belongs_to :borrower,               polymorphic: true # move to loan application
     belongs_to :loan_product,           class_name: "LoansModule::LoanProduct"
-    belongs_to :street,                 class_name: "Addresses::Street",
-                                        optional: true
-    belongs_to :barangay,               class_name: "Addresses::Barangay",
-                                        optional: true
-    belongs_to :municipality,           class_name: "Addresses::Municipality",
-                                        optional: true
+    belongs_to :street,                 class_name: "Addresses::Street",  optional: true
+    belongs_to :barangay,               class_name: "Addresses::Barangay",  optional: true
+    belongs_to :municipality,           class_name: "Addresses::Municipality",optional: true
     belongs_to :organization,           optional: true
-    belongs_to :preparer,               class_name: "User",
-                                        foreign_key: 'preparer_id' #move to loan application
-
-    has_many :voucher_amounts,          class_name: "Vouchers::VoucherAmount", as: :commercial_document,
-                                        dependent: :destroy # for adding amounts on voucher move to loan application
-
+    belongs_to :preparer,               class_name: "User", foreign_key: 'preparer_id' #move to loan application
+    has_many :voucher_amounts,          class_name: "Vouchers::VoucherAmount", as: :commercial_document, dependent: :destroy # for adding amounts on voucher move to loan application
     has_many :amortization_schedules,   dependent: :destroy
     has_many :amounts, as: :commercial_document, class_name: "AccountingModule::Amount"
-
-    has_many :notices,                  class_name: "LoansModule::Notice",
-                                        as: :notified
+    has_many :notices,                  class_name: "LoansModule::Notice",  as: :notified
     has_many :loan_interests,           class_name: "LoansModule::Loans::LoanInterest", dependent: :destroy
     has_many :loan_penalties,           class_name: "LoansModule::Loans::LoanPenalty",  dependent: :destroy
     has_many :loan_discounts,           class_name: "LoansModule::Loans::LoanDiscount", dependent: :destroy
     has_many :notes,                    as: :noteable
-
     has_many :terms, as: :termable
-
-     has_many :loan_co_makers,           class_name: "LoansModule::LoanCoMaker"
-
+    has_many :loan_co_makers,           class_name: "LoansModule::LoanCoMaker"
     has_many :member_co_makers,         through: :loan_co_makers, source: :co_maker, source_type: "Member"
-
     delegate :name, :address, :contact_number, to: :cooperative, prefix: true
     delegate :disbursed?, to: :disbursement_voucher, allow_nil: true #remove
     delegate :effectivity_date, :is_past_due?, :number_of_days_past_due, :remaining_term, :terms_elapsed, :maturity_date, to: :current_term, allow_nil: true
@@ -81,22 +68,6 @@ module LoansModule
     delegate :number_of_months, to: :current_term, prefix: true
     delegate :term, to: :current_term
 
-    def self.filter_by(args = {})
-      date = Date.parse(args[:date].to_s)
-      from_date = (date - 1.month).end_of_month
-      to_date = date.end_of_month
-      if args.present?
-        all.where(cancelled: false, loan_product: args[:loan_product]).select { |l| 
-          l.principal_balance > 0 && 
-          l.amortization_schedules.where(date: from_date..to_date).present? && 
-          l.borrower.current_membership.membership_type == args[:membership_type].to_s
-        }
-      else
-        all.where(cancelled: false).select { |l| 
-          l.balance > 0
-        }
-      end
-    end
 
     def self.unpaid
       all.where(cancelled: false, archived: false).select { |l| l.principal_balance > 0 }
@@ -107,7 +78,7 @@ module LoansModule
     end
 
     def total_deductions(args={})
-      amortized_principal_for(from_date: args[:from_date], to_date: args[:to_date]) - 
+      amortized_principal_for(from_date: args[:from_date], to_date: args[:to_date]) -
       amortized_interest_for(from_date: args[:from_date], to_date: args[:to_date]) +
       arrears(from_date: application_date, to_date: args[:from_date].yesterday.end_of_day)
     end
@@ -124,6 +95,8 @@ module LoansModule
         loan_product_current_account
       elsif past_due?
         loan_product_past_due_account
+      elsif restructured?
+        loan_product_restructured_account
       end
     end
 

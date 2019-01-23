@@ -11,7 +11,7 @@ module LoansModule
       def process!
         create_amortization_schedule
         create_charges
-        update_amortization_interests
+        update_interests
       end
 
       private
@@ -23,7 +23,7 @@ module LoansModule
         LoansModule::LoanApplicationChargeSetter.new(loan: loan).create_charges!
       end
 
-      def update_amortization_interests
+      def update_interests
         loan_product.amortization_scheduler.new(scheduleable: loan).update_interests!
       end
     end

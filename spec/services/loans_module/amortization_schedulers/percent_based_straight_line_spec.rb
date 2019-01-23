@@ -14,8 +14,6 @@ module LoansModule
 
         puts loan_application.amortization_schedules.by_oldest_date.map { |schedule| [schedule.date.strftime("%B %e, %Y"), schedule.principal, schedule.interest, schedule.total_amortization, loan_application.principal_balance_for(schedule)] }
       end
-
-      
     end
   end
 end
