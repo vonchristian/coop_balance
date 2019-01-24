@@ -6,7 +6,7 @@ class Voucher < ApplicationRecord
   multisearchable against: [:number, :description]
 
   belongs_to :cooperative
-  belongs_to :store_front
+  belongs_to :store_front, optional: true
   belongs_to :cooperative_service, class_name: "CoopServicesModule::CooperativeService"
   belongs_to :office, class_name: "CoopConfigurationsModule::Office"
   belongs_to :accounting_entry, class_name: "AccountingModule::Entry", foreign_key: 'entry_id'
@@ -59,7 +59,7 @@ class Voucher < ApplicationRecord
     User.all +
     Member.all +
     Organization.all +
-    Supplier.all
+    StoreFrontModule::Supplier.all
   end
 
   def self.unused

@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
   resources :accounting_module, only: [:index]
   namespace :accounting_module do
-    resources :adjusting_entries, only: [:new, :create]
+    resources :commercial_document_adjusting_entry_line_items, only: [:new, :create], module: :entries
     resources :per_employee_entries, only: [:index], module: :entries
     resources :per_office_entries, only: [:index], module: :entries
     resources :scheduled_entries, only: [:index]

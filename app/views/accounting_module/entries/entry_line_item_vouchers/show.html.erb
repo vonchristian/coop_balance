@@ -12,6 +12,7 @@
         </div>
       </div>
         <div class="card-body">
+          <%= @voucher.voucher_amounts.count %>
 
         <%= render 'vouchers/partials/alert_message', voucher: @voucher %>
       <%= render 'vouchers/partials/body', voucher: @voucher %>

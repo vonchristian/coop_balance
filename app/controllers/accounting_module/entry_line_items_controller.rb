@@ -3,7 +3,11 @@ module AccountingModule
     def new
       @line_item = AccountingModule::Entries::VoucherAmountProcessing.new
       @voucher = Vouchers::VoucherProcessing.new
+      if params[:commercial_document_type] && params[:commercial_document_id]
+        @commercial_document = params[:commercial_document_type].constantize.find(params[:commercial_document_id])
+      end
     end
+
     def create
       @line_item = AccountingModule::Entries::VoucherAmountProcessing.new(amount_params)
       if @line_item.valid?
