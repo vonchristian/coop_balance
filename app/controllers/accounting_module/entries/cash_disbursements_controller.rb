@@ -5,7 +5,7 @@ module AccountingModule
         if params[:from_date].present? && params[:to_date].present?
           @from_date = params[:from_date] ? DateTime.parse(params[:from_date]) : current_cooperative.entries.order(entry_date: :asc).first.entry_date
           @to_date = params[:to_date] ? DateTime.parse(params[:to_date]) : Date.today.end_of_year
-          @ordered_entries = current_cooperative.cash_accounts.credit_entries.order(reference_number: :desc).entered_on(from_date: @from_date, to_date: @to_date).
+          @ordered_entries = current_cooperative.cash_accounts.credit_entries.order(reference_number: :desc).entered_on(from_date: @from_date, to_date: @to_date)
           @entries = @ordered_entries.paginate(:page => params[:page], :per_page => 50)
         elsif params[:search].present?
           @ordered_entries = current_cooperative.cash_accounts.credit_entries.order(reference_number: :desc).text_search(params[:search])

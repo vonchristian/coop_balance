@@ -1,6 +1,6 @@
 module SavingsModule
   module DateSetters
-    class Annually
+    class Monthly
       attr_reader :saving_product, :date
 
       def initialize(args)
@@ -9,11 +9,11 @@ module SavingsModule
       end
 
       def start_date
-        date.beginning_of_year
+        date.beginning_of_month
       end
 
       def end_date
-        date.end_of_year
+        date.end_of_month
       end
     end
   end

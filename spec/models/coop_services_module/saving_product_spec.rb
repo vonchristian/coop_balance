@@ -78,8 +78,25 @@ module CoopServicesModule
 
         expect(saving_product.date_setter).to eql SavingsModule::DateSetters::Annually
       end
-    end
 
+      it "semi_annually" do
+        saving_product = create(:saving_product, interest_recurrence: "semi_annually")
+
+        expect(saving_product.date_setter).to eql SavingsModule::DateSetters::SemiAnnually
+      end
+
+      it "quarterly" do
+        saving_product = create(:saving_product, interest_recurrence: "quarterly")
+
+        expect(saving_product.date_setter).to eql SavingsModule::DateSetters::Quarterly
+      end
+
+      it "monthly" do
+        saving_product = create(:saving_product, interest_recurrence: "monthly")
+
+        expect(saving_product.date_setter).to eql SavingsModule::DateSetters::Monthly
+      end
+    end
 
     it ".accounts" do
       saving_product = create(:saving_product)
