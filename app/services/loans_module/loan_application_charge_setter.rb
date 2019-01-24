@@ -58,7 +58,7 @@ module LoansModule
       if loan_product.current_interest_config.add_on?
         loan_product.current_interest_config_unearned_interest_income_account
       elsif loan_product.current_interest_config.prededucted?
-        loan_product.current_interest_config_revenue_account
+        loan_product.current_interest_config_interest_revenue_account
       end
     end
   end

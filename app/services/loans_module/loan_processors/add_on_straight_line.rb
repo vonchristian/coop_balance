@@ -21,7 +21,7 @@ module LoansModule
       end
 
       def create_charges
-        LoansModule::LoanApplicationChargeSetter.new(loan_application: loan_application).create_charges!
+        LoansModule::LoanApplicationChargeSetter.new(loan_application: loan).create_charges!
       end
     end
   end

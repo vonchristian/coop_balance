@@ -16,7 +16,9 @@ module Vouchers
 
     validates :account_id, :amount_type, presence: true
     before_destroy :check_if_disbursed?
-
+    def self.valid?
+      debit.total == credit.total
+    end 
     def self.total
       Money.new(sum(&:amount)).amount
     end
