@@ -3,11 +3,11 @@ class LoansController < ApplicationController
     if params[:from_date].present? && params[:to_date].present?
       @from_date = DateTime.parse(params[:from_date])
       @to_date = DateTime.parse(params[:to_date])
-      @loans = current_cooperative.loans.where(cancelled: false).not_archived.past_due_loans(from_date: @from_date, to_date: @to_date).paginate(:page => params[:page], :per_page => 20)
+      @loans = current_cooperative.loans.not_cancelled.not_archived.past_due_loans(from_date: @from_date, to_date: @to_date).paginate(:page => params[:page], :per_page => 20)
     elsif params[:search].present?
-      @loans = current_cooperative.loans.where(cancelled: false).text_search(params[:search]).paginate(page: params[:page], per_page: 20)
+      @loans = current_cooperative.loans.not_cancelled.not_archived.text_search(params[:search]).paginate(page: params[:page], per_page: 20)
     else
-      @loans = current_cooperative.loans.where(cancelled: false).
+      @loans = current_cooperative.loans.not_cancelled.
       not_archived.
       order(updated_at: :desc).
       includes(:borrower, :loan_product => [:loans_receivable_current_account => [:subsidiary_accounts]]).

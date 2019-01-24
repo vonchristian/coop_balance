@@ -1,0 +1,69 @@
+<div class="card">
+	<div class="card-header">
+		<div class="card-title">
+			Archive Loans
+		</div>
+		<p class="min-margin text-muted">
+			Move paid loans to archive.
+		</p>
+	</div>
+	<div class="card-body">
+		<%= form_tag({:action => "new", controller: "/loans_module/settings/archives"}, {:method => :get})  do %>
+			<div class="row">
+				<div class="col-md-3">
+		      <div class="form-group">
+		        <%= text_field_tag :from_date, @from_date, :class => 'datepicker form-control border-input', :placeholder => "From " %>
+		      </div>
+		    </div>
+		    <div class="col-md-3">
+		      <div class="form-group">
+		        <%= text_field_tag :to_date, @to_date, :class => 'form-control border-input datepicker', :placeholder => "To " %>
+		      </div>
+		    </div>
+		    <div class="col-md-1">
+		      <button type="submit" class="btn btn-default float-right"> Go</button>
+		    </div>
+		  </div>
+    <% end %>
+	</div>
+</div>
+<%= form_for @loan_archive, url: :loans_module_settings_archives do |f| %>
+	<div class="row">
+		<div class="col-md-10 offset-md-1">
+			<div class="row">
+				<div class="col-md-6 col-sm-6">
+					<input type='checkbox' id='CheckAll'>Check all
+				</div>
+				<div class="col-md-6 col-sm-6">
+					<%= f.submit "Move Seleted to Archive", class: 'btn btn-default float-right submit-btn' %>
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr>
+	<%= f.hidden_field :cooperative_id, value: @cooperative.id, class: 'form-control border-input' %>
+	<%= f.hidden_field :employee_id, value: current_user.id, class: 'form-control border-input' %>
+	<% @loans.each do |loan| %>
+		<div class="row">
+			<div class="col-md-1 col-sm-1">
+				<%= f.check_box :loan_ids, {multiple: true, class: 'checkboxes float-right valign-center'}, loan.id, "" %>
+			</div>
+			<div class="col-md-11 col-sm-11">
+	  		<%= render 'loans/partials/header', loan: loan %>
+	  	</div>
+	  </div>
+	<% end %>
+<% end %>
+
+<script type="text/javascript">
+	$(document).ready( function(){
+		$('#CheckAll').change(function() {
+		  if ($(this).is(":checked")) {
+		    $('.checkboxes').prop("checked", true);
+		  } else {
+		    $('.checkboxes').prop("checked", false);
+		  }
+		});
+	});
+
+</script>

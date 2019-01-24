@@ -34,6 +34,10 @@ module LoansModule
       false
     end
 
+    def self.not_cancelled
+      where(cancelled: false)
+    end
+
     def disbursement_date
       application_date
     end

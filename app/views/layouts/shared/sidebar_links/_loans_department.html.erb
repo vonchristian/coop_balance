@@ -1,35 +1,63 @@
 <li class= "nav-item">
-	<a href="/members" class="nav-link <%= 'active' if current_page?(members_path) %> "><i class="nav-icon fa fa-users"></i><span> Members</span></a>
+	<a href="/members" class="nav-link <%= 'active' if current_page?(members_path) %> ">
+		<i class="nav-icon fa fa-users"></i><span> Members</span>
+	</a>
 </li>
 
 <li class= "nav-item">
- 	<a href="/loans_module" class="nav-link <%= 'active' if current_page?(loans_module_index_path) %>"><i class="nav-icon fa fa-home"></i><span>Dashboard </span></a>
+ 	<a href="/loans_module" class="nav-link <%= 'active' if current_page?(loans_module_index_path) %>">
+ 		<i class="nav-icon fa fa-home"></i><span>Dashboard </span>
+ 	</a>
 </li>
 <li class='nav-item' >
-	<a href="/loans_module/loan_applications" class="nav-link <%= 'active' if current_page?(loans_module_loan_applications_path) %>"><i class="nav-icon fa fa-credit-card"></i><span> Loan Applications</span></a>
+	<a href="/loans_module/loan_applications" class="nav-link <%= 'active' if current_page?(loans_module_loan_applications_path) %>">
+		<i class="nav-icon fa fa-credit-card"></i><span> Loan Applications</span>
+	</a>
 </li>
 <li class='nav-item' >
-	<a href="/loans" class="nav-link <%= 'active' if current_page?(loans_path) %>"><i class="nav-icon fa fa-credit-card"></i><span> Loans</span></a>
+	<a href="/loans" class="nav-link <%= 'active' if current_page?(loans_path) %>">
+		<i class="nav-icon fa fa-credit-card"></i><span> Loans</span>
+	</a>
 </li>
 <li class="nav-item">
-	<a href="/matured_loans" class="nav-link <%= 'active' if current_page?(matured_loans_path) %> "><i class="nav-icon fa fa-eye"></i><span>Loans Maturity </span></a>
+	<a href="/matured_loans" class="nav-link <%= 'active' if current_page?(matured_loans_path) %> ">
+		<i class="nav-icon fa fa-eye"></i><span>Loans Maturity </span>
+	</a>
 </li>
 <li class="nav-item">
-	<a href="/loans_module/amortization_schedules" class="nav-link <%= 'active' if current_page?(loans_module_amortization_schedules_path) %>"><i class="nav-icon fa fa-calendar"></i><span> Amortization Schedules</span></a>
+	<a href="/loans_module/amortization_schedules" class="nav-link <%= 'active' if current_page?(loans_module_amortization_schedules_path) %>">
+		<i class="nav-icon fa fa-calendar"></i><span> Amortization Schedules</span>
+	</a>
 </li>
 <li class="nav-item" >
-  <a href="/vouchers" class="nav-link <%= 'active' if current_page?(vouchers_path) %>"><i class="nav-icon fa fa-credit-card"></i> <span>Vouchers</span></a>
+  <a href="/vouchers" class="nav-link <%= 'active' if current_page?(vouchers_path) %>">
+  	<i class="nav-icon fa fa-credit-card"></i> <span>Vouchers</span>
+  </a>
 </li>
 <li class="nav-item">
-	<a href="/loans_module/loan_products" class="nav-link <%= 'active' if current_page?(loans_module_loan_products_path) %>"><i class="nav-icon fa fa-tag"></i><span> Loan Products </span></a>
+	<a href="/loans_module/loan_products" class="nav-link <%= 'active' if current_page?(loans_module_loan_products_path) %>">
+		<i class="nav-icon fa fa-tag"></i><span> Loan Products </span>
+	</a>
 </li>
 <li class="nav-item">
-	<a href="/loans_module/organizations" class="nav-link <%= 'active' if current_page?(loans_module_organizations_path) %>"><i class="nav-icon fa fa-sitemap"></i><span> Organizations </span></a>
+	<a href="/loans_module/organizations" class="nav-link <%= 'active' if current_page?(loans_module_organizations_path) %>">
+		<i class="nav-icon fa fa-sitemap"></i><span> Organizations </span>
+	</a>
 </li>
 <li class="nav-item">
-	<a href="/loans_module/reports" class="nav-link <%= 'active' if current_page?(loans_module_reports_path) %>"><i class="nav-icon fa fa-folder"></i><span> Reports </span></a>
+	<a href="/loans_module/reports" class="nav-link <%= 'active' if current_page?(loans_module_reports_path) %>">
+		<i class="nav-icon fa fa-folder"></i><span> Reports </span>
+	</a>
 </li>
 <%= render 'layouts/shared/sidebar_links/monitoring' %>
-<li class="nav-item <%= 'active' if current_page?(loans_module_archived_loans_path) %>">
-	<a href="/loans_module/archived_loans" class="nav-link"><i class="nav-icon fa fa-folder"></i><span> Archived Loans</span></a>
+
+<li class="nav-item">
+	<a href="/loans_module/archived_loans" class="nav-link <%= 'active' if current_page?(loans_module_archived_loans_path) %>">
+		<i class="nav-icon fa fa-folder"></i><span> Archived Loans</span>
+	</a>
+</li>
+<li class="nav-item">
+	<a href='/loans_module/settings' class="nav-link <%= 'active' if current_page?(loans_module_settings_path) %>">
+		<i class="nav-icon fa fa-circle"></i><span> Settings</span>
+	</a>
 </li>
