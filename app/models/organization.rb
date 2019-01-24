@@ -17,9 +17,19 @@ class Organization < ApplicationRecord
   has_many :member_savings, class_name: "MembershipsModule::Saving"
   has_many :member_share_capitals, class_name: "MembershipsModule::ShareCapital"
   has_many :member_loans, class_name: "LoansModule::Loan"
+  has_many :member_time_deposits, class_name: "MembershipsModule::TimeDeposit"
   has_many :addresses, as: :addressable
 
   before_save :set_default_image, on: :create
+
+  def member_entries
+    ids = []
+    ids << member_loans.ids
+    ids << member_savings
+    ids << member_share_capitals
+    entries = AccountingModule::Amount.where(commercial_document_id: ids.compact.flatten).pluck(:entry_id)
+    AccountingModule::Entry.where(id: entries)
+  end
 
   def self.current
     last
