@@ -50,7 +50,7 @@ module LoansModule
         cooperative: find_cooperative,
         voucher: voucher,
         amount_type: 'debit',
-        amount: find_loan_application.loans_receivable,
+        amount: find_loan_application.loan_amount,
         description: 'Loan Amount',
         account: find_loan_application.loan_product_current_account,
         commercial_document: find_loan_application)

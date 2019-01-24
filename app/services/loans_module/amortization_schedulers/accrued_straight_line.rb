@@ -1,6 +1,6 @@
 module LoansModule
   module AmortizationSchedulers
-    class AddOnStraightLine
+    class AccruedStraightLine
       attr_reader :scheduleable, :loan_product
 
       def initialize(args)

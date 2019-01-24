@@ -1,7 +1,8 @@
 class User < ApplicationRecord
-  include CurrentAddress
+  include AddressableModule
   include CurrentTin
   include PgSearch
+  include ContactableModule
   has_one_attached :avatar
   pg_search_scope :text_search, :against => [:first_name, :last_name]
   multisearchable against: [:first_name, :last_name]
@@ -62,7 +63,6 @@ class User < ApplicationRecord
   delegate :name, :abbreviated_name, to: :cooperative, prefix: true
   delegate :name, to: :store_front, prefix: true, allow_nil: true
   before_save :set_default_image, on: :create
-
   def self.has_birthdays_on(month)
     where(birth_month: month).order(:birth_day)
   end

@@ -1,7 +1,9 @@
 class Member < ApplicationRecord
   include PgSearch
-  include CurrentAddress
+
   include CurrentTin
+  include ContactableModule
+  include AddressableModule
   extend TinMonitoring
   extend PercentActive
   extend BirthdayMonitoring
@@ -33,8 +35,8 @@ class Member < ApplicationRecord
   has_many :organizations,            through: :organization_memberships
   has_many :relationships,            as: :relationee
   has_many :relations,                as: :relationer
-  has_many :contacts, as: :contactable
-  has_many :addresses, as: :addressable
+
+
   has_many :beneficiaries, dependent: :destroy
   has_many :loan_applications,            class_name: "LoansModule::LoanApplication", as: :borrower
   has_many :share_capital_applications,   as: :subscriber
@@ -45,8 +47,7 @@ class Member < ApplicationRecord
   validates :last_name, :first_name, presence: true, on: :update
 
   delegate :name, to: :office, prefix: true, allow_nil: true
-  delegate :number, to: :current_contact, prefix: true, allow_nil: true
-  delegate :details, :complete_address, :barangay_name, :street_name, to: :current_address, prefix: true, allow_nil: true
+
   delegate :name, to: :current_organization, prefix: true, allow_nil: true
   before_save :update_birth_date_fields
   before_save :set_default_image, on: :create
@@ -81,13 +82,7 @@ class Member < ApplicationRecord
     where(birth_day: args[:birth_day])
   end
 
-  def current_contact
-    contacts.current
-  end
 
-  def current_address
-    addresses.current_address
-  end
 
   def current_organization
     organizations.current

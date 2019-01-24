@@ -3,7 +3,7 @@ module LoansModule
     class LoanCollectionsPdf < Prawn::Document
       attr_reader :collections, :from_date, :to_date, :cooperative, :loan_product, :organization, :view_context
       def initialize(args={})
-        super(margin: 30, page_size: "A4", page_layout: :portrait)
+        super(margin: 20, page_size: "A4", page_layout: :portrait)
         @collections  = args[:collections]
         @from_date    = args[:from_date]
         @to_date      = args[:to_date]
@@ -71,7 +71,8 @@ module LoansModule
         end
         move_down 5
 
-        table([["Total Principal", "#{price(total_principal_payments)}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 12}, column_widths: [120, 100]) do
+        table([["Total Principal",
+          "#{price(LoansModule::Payments::Aggregator.new(collections: collections, from_date: from_date, to_date: to_date, cooperative: cooperative).total_principals)}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 12}, column_widths: [120, 100]) do
           cells.borders = []
           column(1).align = :right
 
@@ -79,14 +80,14 @@ module LoansModule
         move_down 5
 
 
-        table([["Total Interest", "#{price(total_interest_payments)}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 12}, column_widths: [120, 100]) do
+        table([["Total Interest", "#{price(0)}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 12}, column_widths: [120, 100]) do
           cells.borders = []
           column(1).align = :right
         end
         move_down 5
 
 
-        table([["Total Penalty", "#{price(total_penalty_payments)}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 12}, column_widths: [120, 100]) do
+        table([["Total Penalty", "#{price(0)}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 12}, column_widths: [120, 100]) do
           cells.borders = []
           column(1).align = :right
 
@@ -98,7 +99,7 @@ module LoansModule
           stroke_horizontal_rule
         end
         move_down 5
-        table([["Total Collection", "#{price(total_collections)}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 12}, column_widths: [120, 100]) do
+        table([["Total Collection", "#{price(0)}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 12}, column_widths: [120, 100]) do
           cells.borders = []
           column(1).align = :right
 
@@ -133,10 +134,10 @@ module LoansModule
             "#{loan.borrower_name}",
             "#{entry.entry_date.strftime("%b. %e, %Y")}",
             "#{entry.reference_number}",
-            price(total_principal(entry, loan)),
-            price(total_interest(entry, loan)),
-            price(total_penalty(entry, loan)),
-            price(total_loan_payment(entry, loan))] }, column_widths: [80, 80, 60, 70, 70, 70, 80], cell_style: { inline_format: true, size: 9 }) do
+            price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).principal),
+            price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).interest),
+            price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).penalty),
+            price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).total_cash_payment)] }, column_widths: [80, 80, 60, 70, 70, 70, 80], cell_style: { inline_format: true, size: 9 }) do
 
            column(3).align = :right
            column(4).align = :right
@@ -145,10 +146,10 @@ module LoansModule
           end
         end
         table([["", "", "TOTAL",
-          "#{price(total_principal_payments)}",
-          "#{price(total_interest_payments)}",
-          "#{price(total_penalty_payments)}",
-          "#{price(total_collections)}"
+          "#{price(0)}",
+          "#{price(0)}",
+          "#{price(0)}",
+          "#{price(0)}"
 
 
           ]], column_widths: [80, 80, 60, 70, 70, 70, 80], cell_style: { inline_format: true, size: 9 }) do
@@ -157,49 +158,6 @@ module LoansModule
           column(4).align = :right
           column(5).align = :right
           column(6).align = :right
-        end
-      end
-      def total_loan_payment(entry, loan)
-        total_principal(entry, loan) +
-        total_interest(entry, loan) +
-        total_penalty(entry, loan)
-      end
-      def total_principal(entry, loan)
-        entry.credit_amounts.where(commercial_document: loan, account: loan.principal_account).total
-      end
-      def total_interest(entry, loan)
-        entry.credit_amounts.where(commercial_document: loan, account: loan.loan_product_interest_revenue_account).total
-      end
-      def total_penalty(entry, loan)
-        entry.credit_amounts.where(commercial_document: loan, account: loan.loan_product_penalty_revenue_account).total
-      end
-      def total_principal_payments
-        if loan_product.present?
-          loan_product.principal_accounts.credits_balance(from_date: from_date, to_date: to_date)
-        else
-          cooperative.loan_products.principal_accounts.credits_balance(from_date: from_date, to_date: to_date)
-        end
-      end
-      def total_interest_payments
-        if loan_product.present?
-          loan_product.interest_revenue_account.credits_balance(from_date: from_date, to_date: to_date)
-        else
-          cooperative.loan_products.interest_revenue_accounts.credits_balance(from_date: from_date, to_date: to_date)
-        end
-      end
-
-      def total_penalty_payments
-        if loan_product.present?
-          loan_product.penalty_revenue_account.credits_balance(from_date: from_date, to_date: to_date)
-        else
-          cooperative.loan_products.penalty_revenue_accounts.credits_balance(from_date: from_date, to_date: to_date)
-        end
-      end
-      def total_collections
-        if loan_product.present?
-          loan_product.accounts_with_revenue_accounts.credits_balance(from_date: from_date, to_date: to_date)
-        else
-          cooperative.loan_products.accounts_with_revenue_accounts.credits_balance(from_date: from_date, to_date: to_date)
         end
       end
     end

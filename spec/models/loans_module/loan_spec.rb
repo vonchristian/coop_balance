@@ -52,6 +52,10 @@ module LoansModule
 
     end
 
+    describe 'delegations' do
+      it { is_expected.to delegate_method(:payment_processor).to(:loan_product) }
+    end
+
     describe 'enums' do
       it { is_expected.to define_enum_for(:status).with([:current_loan, :past_due]) }
     end

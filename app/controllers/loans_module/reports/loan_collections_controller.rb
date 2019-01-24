@@ -8,9 +8,8 @@ module LoansModule
         if @loan_product.present?
           @collections = @loan_product.entries.loan_payments.entered_on(from_date: @from_date, to_date: @to_date).order(entry_date: :desc)
         else
-          @collections = current_cooperative.entries.loan_payments.entered_on(from_date: @from_date, to_date: @to_date).order(entry_date: :desc)
+          @collections = current_cooperative.entries.loan_payments.entered_on(from_date: @from_date, to_date: @to_date).order(entry_date: :desc).distinct
         end
-        @cooperative = current_cooperative
         respond_to do |format|
           format.html
           format.pdf do
@@ -18,7 +17,7 @@ module LoansModule
               collections:  @collections,
               from_date:    @from_date,
               to_date:      @to_date,
-              cooperative:  @cooperative,
+              cooperative:  current_cooperative,
               loan_product: @loan_product,
               view_context: view_context)
             send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Loan Collections Report.pdf"

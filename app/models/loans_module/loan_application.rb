@@ -51,22 +51,12 @@ module LoansModule
     end
 
     def principal_balance_for(schedule) #used to compute interest
-      if current_interest_config.prededucted?
         balance = (loan_amount.amount - amortization_schedules.principal_for(schedule: schedule))
         if balance < 0
           0
         else
           balance
         end
-        
-      elsif current_interest_config.add_on?
-        balance = (loans_receivable - amortization_schedules.total_amortization_for(schedule: schedule))
-        if balance < 0
-          0
-        else
-          balance
-        end
-      end
     end
 
     def term_is_within_one_year?
@@ -112,8 +102,13 @@ module LoansModule
 
 
     def interest_balance
-      total_interest -
-      voucher_interest_amount
+      if loan_product.current_interest_config.prededucted?
+        total_interest -
+        voucher_interest_amount
+      elsif loan_product.current_interest_config.add_on?
+        add_on_interest
+      end
+
     end
 
     def voucher_interest_amount
@@ -172,11 +167,7 @@ module LoansModule
 
 
     def net_proceed
-      if current_interest_config.add_on?
-        loan_amount_with_add_on_interest - voucher_amounts.total
-      else
-        loan_amount.amount - voucher_amounts.total
-      end
+      loan_amount.amount - voucher_amounts.total
     end
 
     def total_charges
@@ -222,21 +213,11 @@ module LoansModule
     def number_of_thousands # for Loan Protection fund computation
       loan_amount.amount / 1_000.0
     end
-    def loan_amount_with_add_on_interest
-      loan_amount.amount + add_on_interest
-    end
 
     def add_on_interest
       current_interest_config.compute_interest(loan_amount.amount)
     end
 
-    def loans_receivable
-      if current_interest_config.add_on?
-        loan_amount_with_add_on_interest
-      else
-        loan_amount
-      end
-    end
   end
 
 end

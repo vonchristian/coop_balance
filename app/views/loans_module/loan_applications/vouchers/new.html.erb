@@ -270,7 +270,7 @@
               <td></td>
               <td></td>
 
-              <td><%= number_to_currency @loan_application.loans_receivable %></td>
+              <td><%= number_to_currency @loan_application.loan_amount %></td>
             </tr>
             <% @loan_application.amortization_schedules.order(date: :asc).each do |amortization_schedule| %>
               <tr>
@@ -306,7 +306,7 @@
           </div>
           <div class="col-md-5">
             <span class="float-right">
-              <%= number_to_currency @loan_application.loans_receivable %>
+              <%= number_to_currency @loan_application.loan_amount %>
             </span>
           </div>
         </div>

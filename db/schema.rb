@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_22_233811) do
+ActiveRecord::Schema.define(version: 2019_01_24_150829) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -467,6 +467,8 @@ ActiveRecord::Schema.define(version: 2019_01_22_233811) do
     t.decimal "prededucted_amount"
     t.integer "rate_type"
     t.string "type"
+    t.uuid "accrued_income_account_id"
+    t.index ["accrued_income_account_id"], name: "index_interest_configs_on_accrued_income_account_id"
     t.index ["amortization_type"], name: "index_interest_configs_on_amortization_type"
     t.index ["calculation_type"], name: "index_interest_configs_on_calculation_type"
     t.index ["cooperative_id"], name: "index_interest_configs_on_cooperative_id"
@@ -1600,6 +1602,7 @@ ActiveRecord::Schema.define(version: 2019_01_22_233811) do
   add_foreign_key "entries", "official_receipts"
   add_foreign_key "entries", "users", column: "cancelled_by_id"
   add_foreign_key "entries", "users", column: "recorder_id"
+  add_foreign_key "interest_configs", "accounts", column: "accrued_income_account_id"
   add_foreign_key "interest_configs", "accounts", column: "interest_revenue_account_id"
   add_foreign_key "interest_configs", "accounts", column: "unearned_interest_income_account_id"
   add_foreign_key "interest_configs", "cooperatives"

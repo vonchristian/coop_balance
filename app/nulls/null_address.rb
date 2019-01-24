@@ -20,4 +20,10 @@ class NullAddress
   def province
     'No province entered'
   end
+  def barangay_name
+    "No barangay entered"
+  end
+  def street_name
+    "No street entered"
+  end
 end

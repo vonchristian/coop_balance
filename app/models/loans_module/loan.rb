@@ -43,6 +43,7 @@ module LoansModule
     delegate :first_and_last_name, to: :preparer, prefix: true #remove
     delegate :name, :age, :contact_number, :current_address, :current_address_complete_address, :current_contact_number,  :first_name, to: :borrower,  prefix: true, allow_nil: true
     delegate :name,  to: :loan_product, prefix: true
+    delegate :payment_processor, to: :loan_product
     delegate :unearned_interest_income_account,
              :current_account,
              :past_due_account,

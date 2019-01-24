@@ -49,8 +49,8 @@ module AccountingModule
     end
 
     def self.loan_payments(args={})
-      ids = amounts.where(commercial_document_type: 'LoansModule::Loan').pluck(:entry_id)
-      where(id: ids.uniq.flatten)
+      ids = amounts.for_loans.pluck(:entry_id).uniq.flatten
+      where(id: ids)
     end
 
     def self.not_cancelled

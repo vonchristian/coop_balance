@@ -7,11 +7,11 @@ module Loans
     end
     def new
       @loan = current_cooperative.loans.find(params[:loan_id])
-      @payment = LoansModule::Loans::PaymentProcessing.new
+      @payment = @loan.payment_processor.new
     end
     def create
       @loan = current_cooperative.loans.find(params[:loan_id])
-      @payment = LoansModule::Loans::PaymentProcessing.new(payment_params)
+      @payment = @loan.payment_processor.new(payment_params)
       if @payment.valid?
         @payment.process!
         redirect_to loan_payment_voucher_url(loan_id: @loan.id, id: @payment.find_voucher.id), notice: "Payment voucher created successfully."
@@ -22,8 +22,11 @@ module Loans
 
     private
     def payment_params
-      params.require(:loans_module_loans_payment_processing).
+      params.require(payment_processor_params).
       permit(:principal_amount, :interest_amount, :penalty_amount, :description, :employee_id, :loan_id, :reference_number, :date, :cash_account_id, :account_number)
+    end
+    def payment_processor_params
+      @loan.payment_processor.to_s.underscore.gsub("/", "_").to_sym
     end
   end
 end

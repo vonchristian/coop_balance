@@ -1,6 +1,6 @@
 module LoansModule
   module LoanProcessors
-    class AddOnStraightLine
+    class AccruedStraightLine
       attr_reader :loan, :loan_product
 
       def initialize(args)
@@ -22,7 +22,7 @@ module LoansModule
       def computed_interest
         loan.loan_amount.amount * loan_product.current_interest_config.rate
       end
-      
+
       def create_amortization_schedule
         loan_product.
         amortization_scheduler.

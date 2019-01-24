@@ -58,11 +58,13 @@ module LoansModule
     end
 
     def create_loan_interests(loan)
-      loan.loan_interests.create!(
-        date: loan_application.application_date,
-        amount: loan_application.interest_balance,
-        description: "Computed loan interests on #{loan_application.application_date.strftime("%B %e, %Y")}",
-        employee: employee)
+      if loan.loan_product.current_interest_config.prededucted?
+        loan.loan_interests.create!(
+          date: loan_application.application_date,
+          amount: loan_application.interest_balance,
+          description: "Computed loan interests on #{loan_application.application_date.strftime("%B %e, %Y")}",
+          employee: employee)
+      end
     end
 
     def approve_loan_application

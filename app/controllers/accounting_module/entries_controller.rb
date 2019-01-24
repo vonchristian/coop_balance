@@ -16,6 +16,10 @@ module AccountingModule
         @recorder = current_cooperative.users.find(params[:recorder_id])
         @ordered_entries = @recorder.entries.order(reference_number: :desc)
         @entries = @ordered_entries.paginate(:page => params[:page], :per_page => 50)
+      elsif params[:organization_id]
+        @organization = Organization.find(params[:organization_id])
+        @entries = @organization.member_entries
+
       # elsif params[:office_id].present?
       #   @office  = current_cooperative.offices.find(params[:office_id])
       #   @entries = current_cooperative.offices.find(params[:office_id]).entries.paginate(:page => params[:page], :per_page => 50)

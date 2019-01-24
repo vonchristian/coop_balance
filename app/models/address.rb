@@ -14,7 +14,7 @@ class Address < ApplicationRecord
   end
 
   def self.current_address
-    current.recent || NullAddress.new
+    current.recent
   end
 
   def details
