@@ -8,8 +8,8 @@
         <%= simple_form_for @line_item, url: :accounting_module_commercial_document_adjusting_entry_line_items, html: { autcomplete: 'off' } do |f| %>
         <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
         <% if @commercial_document.present? %>
-          <%= f.input :commercial_document_id, input_html: { value: @commercial_document.id } %>
-          <%= f.input :commercial_document_type, input_html: { value: @commercial_document.class.to_s } %>
+          <%= f.input :commercial_document_id, input_html: { value: @commercial_document.id }, as: :hidden %>
+          <%= f.input :commercial_document_type, input_html: { value: @commercial_document.class.to_s }, as: :hidden %>
         <% end %>
 
           <div class="row">
