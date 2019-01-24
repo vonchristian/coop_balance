@@ -54,7 +54,7 @@ GEM
       activerecord (>= 4.0, < 5.3)
     autonumeric-rails (2.0.0.1)
       jquery-rails (>= 2.0.2)
-    autoprefixer-rails (9.4.6)
+    autoprefixer-rails (9.4.3)
       execjs
     axlsx (2.1.0.pre)
       htmlentities (~> 4.3.1)
@@ -141,7 +141,6 @@ GEM
     flamegraph (0.9.5)
     font-awesome-sass (5.0.13)
       sassc (>= 1.11)
-    formatador (0.2.5)
     friendly_id (5.2.5)
       activerecord (>= 4.0.0)
     globalid (0.4.2)

@@ -427,6 +427,13 @@ Rails.application.routes.draw do
     resources :payments,              only: [:index, :new, :create], module: :loans
   end
 
+  namespace :loans_module do
+    resources :settings,     only: [:index]
+    namespace :settings do
+      resources :archives,           only: [:new, :create]
+    end
+  end
+
   resources :vouchers, only: [:index, :show, :destroy] do
     resources :disbursements, only: [:create],            module: :vouchers
     resources :loan_disbursements, only: [:new, :create], module: :vouchers

@@ -1,56 +1,61 @@
 <div class="row">
   <div class="col-md-8 offset-md-2">
     <div class="card">
-      <div class="card-header no-border">
+      <div class="card-header">
         <h3 class="card-title"> Loan Payment Details
         <%=link_to 'View (PDF)', voucher_path(@voucher, format: "pdf"), class: "btn btn-default float-right" %>
        </h3>
-       <hr>
+      </div>
+      <div class="card-body">
         <%= render 'vouchers/partials/alert_message', voucher: @voucher %>
         <br>
-        <h3 class="card-title">Payment Breakdown </h3>
-        <div class="row min-margin">
-          <div class="col-md-3 offset-md-1">
-            Principal
+        <div class="card-body no-padding-top no-padding-bottom">
+          <h3 class="card-title">Payment Breakdown </h3>
+          <hr class="no-margin-top">
+          <div class="row min-margin">
+            <div class="col-md-3 offset-md-1">
+              <h5 class="card-title">Principal</h5>
+            </div>
+            <div class="col-md-3">
+              <h5 class="card-title float-right">
+                <%= number_to_currency @voucher.voucher_amounts.for_account(account: @loan.principal_account).total %>
+              </h5>
+            </div>
           </div>
-          <div class="col-md-3">
-            <span class="float-right">
-              <%= number_to_currency @voucher.voucher_amounts.for_account(account: @loan.principal_account).total %>
-            </span>
+          <div class="row min-margin">
+            <div class="col-md-3 offset-md-1">
+              <h5 class="card-title">Interest</h5>
+            </div>
+            <div class="col-md-3">
+              <h5 class="card-title float-right">
+                <%= number_to_currency @voucher.voucher_amounts.for_account(account: @loan.loan_product_interest_revenue_account).sum(&:amount) %>
+              </h5>
+            </div>
           </div>
-        </div>
-        <div class="row min-margin">
-          <div class="col-md-3 offset-md-1">
-            Interest
+          <div class="row min-margin">
+            <div class="col-md-3 offset-md-1">
+              <h5 class="card-title">Penalty</h5>
+            </div>
+            <div class="col-md-3">
+              <h5 class="card-title float-right">
+                <%= number_to_currency @voucher.voucher_amounts.for_account(account: @loan.loan_product_penalty_revenue_account).total %>
+              </h5>
+            </div>
           </div>
-          <div class="col-md-3">
-            <span class="float-right">
-              <%= number_to_currency @voucher.voucher_amounts.for_account(account: @loan.loan_product_interest_revenue_account).sum(&:amount) %>
-            </span>
-          </div>
-        </div>
-        <div class="row min-margin">
-          <div class="col-md-3 offset-md-1">
-            Penalty
-          </div>
-          <div class="col-md-3">
-            <span class="float-right">
-              <%= number_to_currency @voucher.voucher_amounts.for_account(account: @loan.loan_product_penalty_revenue_account).total %>
-            </span>
-          </div>
-        </div>
-        <hr class="min-margin">
-        <div class="row min-margin">
-          <div class="col-md-3 offset-md-1">
-            Total
-          </div>
-          <div class="col-md-3">
-            <span class="float-right">
-              <%= number_to_currency @voucher.voucher_amounts.debit.total %>
-            </span>
+          <hr class="min-margin">
+          <div class="row min-margin">
+            <div class="col-md-3 offset-md-1">
+              <h5 class="card-title">Total</h5>
+            </div>
+            <div class="col-md-3">
+              <h5 class="card-title float-right">
+                <%= number_to_currency @voucher.voucher_amounts.debit.total %>
+              </h5>
+            </div>
           </div>
         </div>
       </div>
+      <hr class="no-margin">
       <div class="card-body">
       <%= render 'vouchers/partials/body', voucher: @voucher %>
 

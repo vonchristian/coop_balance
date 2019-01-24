@@ -34,7 +34,7 @@ module LoansModule
     has_many :loan_penalties,           class_name: "LoansModule::Loans::LoanPenalty",  dependent: :destroy
     has_many :loan_discounts,           class_name: "LoansModule::Loans::LoanDiscount", dependent: :destroy
     has_many :notes,                    as: :noteable
-    has_many :terms, as: :termable
+    has_many :terms,                    as: :termable
     has_many :loan_co_makers,           class_name: "LoansModule::LoanCoMaker"
     has_many :member_co_makers,         through: :loan_co_makers, source: :co_maker, source_type: "Member"
     delegate :name, :address, :contact_number, to: :cooperative, prefix: true
@@ -143,6 +143,10 @@ module LoansModule
       where(archived: false)
     end
 
+    def self.not_cancelled
+      where(cancelled: false)
+    end
+
     def self.archived
       where(archived: true)
     end
@@ -176,10 +180,10 @@ module LoansModule
         from_date = options[:from_date]
         to_date   = options[:to_date]
         range     = DateRange.new(from_date: from_date, to_date: to_date)
-        not_archived.disbursed.
+        not_cancelled.not_archived.disbursed.
         joins(:terms).where('terms.maturity_date' => range.start_date..range.end_date )
       else
-        not_archived.disbursed.
+        not_cancelled.not_archived.disbursed.
         joins(:terms).where('terms.maturity_date < ?', Date.today)
       end
     end
@@ -215,8 +219,12 @@ module LoansModule
       LoansModule::LoansQuery.new.aging(options)
     end
 
-    def self.paid
-      all.map{ |a| a.paid? }
+    def self.for_archival_on(args = {})
+      from_date = args[:from_date]
+      to_date   = args[:to_date]
+      range     = DateRange.new(from_date: from_date, to_date: to_date)
+      selected_loans = all.not_archived.not_cancelled.where(application_date: range.start_date..range.end_date).select { |a| a.balance.zero? }
+
     end
 
     def self.payments_total
