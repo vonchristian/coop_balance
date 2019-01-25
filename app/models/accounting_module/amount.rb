@@ -81,7 +81,7 @@ module AccountingModule
     end
 
     def self.total
-      not_cancelled.all.map{ |amount| amount.amount.amount }.sum
+      not_cancelled.all.map{ |amount| amount.amount.amount }.to_a.sum
     end
     private
     def self.balance_finder(opts={})

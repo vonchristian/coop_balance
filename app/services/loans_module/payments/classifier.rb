@@ -27,9 +27,9 @@ module LoansModule
       end
 
       def total_cash_payment
-        principal +
-        interest +
-        penalty
+        principal.to_f +
+        interest.to_f +
+        penalty.to_f
       end
     end
   end
