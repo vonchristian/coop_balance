@@ -108,6 +108,7 @@ module LoansModule
       end
 
       def loan_collections
+        if collections.present?
          table([["Borrower", "Date", "OR #", "Principal", "Interest", "Penalty", "Total"]], header: true, cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [80, 80, 60, 70, 70, 70, 80]) do
            column(3).align = :right
            column(4).align = :right
@@ -116,37 +117,33 @@ module LoansModule
            row(0).background_color = 'DDDDDD'
            row(0).font_style = :bold
          end
-       # else
-       #   move_down 5
-       #   text "    No Loan Collections for #{date.strftime("%B %e, %Y")}", size: 10
-       # end
-       stroke do
-         stroke_color 'CCCCCC'
-         line_width 0.2
-         stroke_horizontal_rule
-         move_down 5
-       end
-
-       collections.each do |entry|
-          table(
-           cooperative.loans.for_entry(entry: entry).map{ |loan| [
-            "#{loan.borrower_name}",
-            "#{entry.entry_date.strftime("%b. %e, %Y")}",
-            "#{entry.reference_number}",
-            price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).principal),
-            price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).interest),
-            price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).penalty),
-            price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).total_cash_payment)] }, column_widths: [80, 80, 60, 70, 70, 70, 80], cell_style: { inline_format: true, size: 9 }) do
-
-           column(3).align = :right
-           column(4).align = :right
-           column(5).align = :right
-           column(6).align = :right
+         stroke do
+           stroke_color 'CCCCCC'
+           line_width 0.2
+           stroke_horizontal_rule
+           move_down 5
+         end
+         collections.each do |entry|
+            table(
+             cooperative.loans.for_entry(entry: entry).map{ |loan| [
+              "#{loan.borrower_name}",
+              "#{entry.entry_date.strftime("%b. %e, %Y")}",
+              "#{entry.reference_number}",
+              price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).principal),
+              price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).interest),
+              price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).penalty),
+              price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).total_cash_payment)] }, column_widths: [80, 80, 60, 70, 70, 70, 80], cell_style: { inline_format: true, size: 9 }) do
+             column(3).align = :right
+             column(4).align = :right
+             column(5).align = :right
+             column(6).align = :right
+            end
           end
+        else
+          move_down 5
+          text "    No Loan Collections for #{from_date.strftime("%B %e, %Y")}-#{to_date.strftime("%B %e, %Y")}", size: 10
         end
-        
       end
-
     end
   end
 end
