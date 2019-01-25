@@ -8,7 +8,7 @@ module LoansModule
         if @loan_product.present?
           @collections = @loan_product.entries.loan_payments.entered_on(from_date: @from_date, to_date: @to_date).order(entry_date: :desc)
         else
-          @collections = current_cooperative.loan_products.loan_payment_entries.entered_on(from_date: @from_date, to_date: @to_date).order(entry_date: :desc).distinct
+          @collections = current_cooperative.loan_products.loan_payment_entries.entered_on(from_date: @from_date, to_date: @to_date).order(entry_date: :desc)
         end
         respond_to do |format|
           format.html

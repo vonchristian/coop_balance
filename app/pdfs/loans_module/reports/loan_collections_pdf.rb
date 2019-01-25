@@ -140,7 +140,7 @@ module LoansModule
             end
           end
         else
-          move_down 5
+          move_down 5 
           text "    No Loan Collections for #{from_date.strftime("%B %e, %Y")}-#{to_date.strftime("%B %e, %Y")}", size: 10
         end
       end
