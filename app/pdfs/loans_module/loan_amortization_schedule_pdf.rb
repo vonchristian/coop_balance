@@ -159,7 +159,7 @@ module LoansModule
     end
     def amortization_schedule_data
       [["DATE", "PRINCIPAL", "INTEREST", "TOTAL", "BALANCE", "NOTES"]] +
-      [["", "","", "", "#{price(@loan.loans_receivable)}", ""]] +
+      [["", "","", "", "#{price(@loan.loan_amount)}", ""]] +
       @table_date ||= @amortization_schedules.order(date: :asc).map{|a|
         [ a.date.strftime("%B %e, %Y"),
           price(a.principal),
@@ -186,7 +186,7 @@ module LoansModule
      @loan.preparer
    end
    def signatory
-    [["PREPARED BY", "", "APPROVED BY", "", "DISBURSED BY", "", "RECEIVED BY"]] +
+    [["PREPARED BY", "", "APPROVED BY", "", "DISBURSED BY", "", " VED BY"]] +
     [["", ""]] +
     [["", ""]] +
     [["#{preparer.first_middle_and_last_name.try(:upcase)}", "",

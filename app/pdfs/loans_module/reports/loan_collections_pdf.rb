@@ -3,7 +3,7 @@ module LoansModule
     class LoanCollectionsPdf < Prawn::Document
       attr_reader :collections, :from_date, :to_date, :cooperative, :loan_product, :organization, :view_context
       def initialize(args={})
-        super(margin: 20, page_size: "A4", page_layout: :portrait)
+        super(margin: 30, page_size: "A4", page_layout: :portrait)
         @collections  = args[:collections]
         @from_date    = args[:from_date]
         @to_date      = args[:to_date]
@@ -80,14 +80,14 @@ module LoansModule
         move_down 5
 
 
-        table([["Total Interest", "#{price(0)}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 12}, column_widths: [120, 100]) do
+        table([["Total Interest", "#{price(LoansModule::Payments::Aggregator.new(collections: collections, from_date: from_date, to_date: to_date, cooperative: cooperative).total_interests)}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 12}, column_widths: [120, 100]) do
           cells.borders = []
           column(1).align = :right
         end
         move_down 5
 
 
-        table([["Total Penalty", "#{price(0)}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 12}, column_widths: [120, 100]) do
+        table([["Total Penalty", "#{price(LoansModule::Payments::Aggregator.new(collections: collections, from_date: from_date, to_date: to_date, cooperative: cooperative).total_penalties)}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 12}, column_widths: [120, 100]) do
           cells.borders = []
           column(1).align = :right
 
@@ -99,10 +99,9 @@ module LoansModule
           stroke_horizontal_rule
         end
         move_down 5
-        table([["Total Collection", "#{price(0)}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 12}, column_widths: [120, 100]) do
+        table([["Total Collection", "#{price(LoansModule::Payments::Aggregator.new(collections: collections, from_date: from_date, to_date: to_date, cooperative: cooperative).total_cash_payments)}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 12}, column_widths: [120, 100]) do
           cells.borders = []
           column(1).align = :right
-
         end
         move_down 10
 
@@ -145,21 +144,9 @@ module LoansModule
            column(6).align = :right
           end
         end
-        table([["", "", "TOTAL",
-          "#{price(0)}",
-          "#{price(0)}",
-          "#{price(0)}",
-          "#{price(0)}"
-
-
-          ]], column_widths: [80, 80, 60, 70, 70, 70, 80], cell_style: { inline_format: true, size: 9 }) do
-          cells.borders = []
-          column(3).align = :right
-          column(4).align = :right
-          column(5).align = :right
-          column(6).align = :right
-        end
+        
       end
+
     end
   end
 end

@@ -93,28 +93,28 @@ module AccountingModule
       where.not(id: accounts)
     end
 
-    # def self.entries(args={})
-    #   ids = AccountingModule::Amount.for_account(account_id: self.pluck(:id)).pluck(:entry_id)
-    #   AccountingModule::Entry.where(id: ids)
-    # end
-    #
-    # def self.credit_entries(args={})
-    #   ids = AccountingModule::CreditAmount.for_account(account_id: self.pluck(:id)).pluck(:entry_id)
-    #   AccountingModule::Entry.where(id: ids)
-    # end
-    #
-    # def self.debit_entries(args={})
-    #   ids = AccountingModule::DebitAmount.for_account(account_id: self.pluck(:id)).pluck(:entry_id)
-    #   AccountingModule::Entry.where(id: ids)
-    # end
-    #
-    # def self.credit_amounts(args={})
-    #   AccountingModule::CreditAmount.where(account_id: pluck(:id))
-    # end
-    #
-    # def self.debit_amounts(args={})
-    #   AccountingModule::DebitAmount.where(account_id: pluck(:id))
-    # end
+    def self.entries(args={})
+      ids = AccountingModule::Amount.for_account(account_id: self.pluck(:id)).pluck(:entry_id)
+      AccountingModule::Entry.where(id: ids)
+    end
+
+    def self.credit_entries(args={})
+      ids = AccountingModule::CreditAmount.for_account(account_id: self.pluck(:id)).pluck(:entry_id)
+      AccountingModule::Entry.where(id: ids)
+    end
+
+    def self.debit_entries(args={})
+      ids = AccountingModule::DebitAmount.for_account(account_id: self.pluck(:id)).pluck(:entry_id)
+      AccountingModule::Entry.where(id: ids)
+    end
+
+    def self.credit_amounts(args={})
+      AccountingModule::CreditAmount.where(account_id: pluck(:id))
+    end
+
+    def self.debit_amounts(args={})
+      AccountingModule::DebitAmount.where(account_id: pluck(:id))
+    end
 
     def self.debits_balance(options={})
       accounts_balance = BigDecimal('0')

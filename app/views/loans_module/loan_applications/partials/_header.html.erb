@@ -1,10 +1,8 @@
 <div class="card">
   <div class="card-body">
     <div class="row">
-      <div class="col-md-1 col-sm-1">
-        <% if loan_application.borrower.avatar.attachment.present? %>
-          <%=image_tag(loan_application.borrower.avatar, height: 45, width: 45, class: "img-circle") %>
-        <% end %>
+      <div class="col-md-1">
+        <%= image_tag(loan_application.borrower.avatar, height: 45, width: 45, class: 'img-circle') %>
       </div>
       <div class="col-md-3 col-sm-3">
         <% if loan_application.voucher.present? %>
@@ -16,23 +14,9 @@
          <i class="fa fa-calendar"></i> <%= loan_application.voucher.try(:date).try(:strftime, "%B %e, %Y") %>
         </small>
       </div>
-      <div class="col-md-8">
-        <div class="row">
-          <div class="col-md-6 col-sm-7">
-            <% if loan_application.voucher.present? %>
-              <%= link_to loans_module_loan_application_path(loan_application) do %>
-              <b><%=  loan_application.borrower_name.try(:upcase) %></b><br>
-              <% end %>
-            <% end %>
-            <small class="text-muted"><i class="fa fa-tag"></i> <%= loan_application.loan_product_name %><br>
-             <i class="fa fa-calendar"></i> <%= loan_application.voucher.try(:date).try(:strftime, "%B %e, %Y") %>
-            </small>
-          </div>
-          <div class="col-md-6 col-sm-5">
-            <p class="number total"><%= number_to_currency loan_application.loan_amount %></p>
-            <small class="text-muted">LOAN AMOUNT</small><br>
-          </div>
-        </div>
+      <div class="col-md-3 col-sm-5">
+        <p class="number total"><%= number_to_currency loan_application.loan_amount %></p>
+        <small class="text-muted">LOAN AMOUNT</small><br>
       </div>
       <div class="col-md-1 col-sm-2">
         <% if loan_application.voucher.present? %>
@@ -44,36 +28,20 @@
           <%= link_to 'View Voucher', loans_module_loan_application_voucher_path(loan_application_id: loan_application.id, id: loan_application.voucher_id), class: "btn btn-primary btn-sm float-right" %>
         <% end %>
       </div>
-      <div class="col-md-2 col-sm-3">
+      <div class="col-md-2 col-sm-2">
         <center>
           <% if !loan_application.disbursed? %>
             <%= link_to loans_module_loan_application_path(loan_application), method: :delete do %>
               <span title="Cancel Loan Application" data-toggle="tooltip" class="fa fa-times text-danger"> Cancel</span>
             <% end %>
-          <% end %>
-          </div>
-          <div class="col-md-3 col-sm-2">
-            <% if loan_application.voucher.present? %>
-              <%= link_to 'View Voucher', loans_module_loan_application_voucher_path(loan_application_id: loan_application.id, id: loan_application.voucher_id), class: "btn btn-primary btn-sm float-right" %>
+          <% else %>
+            <% if loan_application.cancelled == true %>
+              <span class="text-danger"> Cancelled</span>
+            <% else %>
+              <span class="fa fa-check text-success"> Approved</span>
             <% end %>
-          </div>
-          <div class="col-md-3 col-sm-2">
-            <center>
-              <% if !loan_application.disbursed? %>
-                <%= link_to loans_module_loan_application_path(loan_application), method: :delete do %>
-                  <span title="Cancel Loan Application" data-toggle="tooltip" class="fa fa-times text-danger"> Cancel</span>
-                <% end %>
-              <% else %>
-                <% if loan_application.cancelled == true %>
-                  <span class="text-danger"> Cancelled</span>
-                <% else %>
-                  <span class="fa fa-check text-success"> Approved</span>
-                <% end %>
-              <% end %>
-            </center>
-          </div>
-        </div>
-        <small class="text-muted"><%= loan_application.try(:purpose) %></small>
+          <% end %>
+        </center>
       </div>
     </div>
   </div>

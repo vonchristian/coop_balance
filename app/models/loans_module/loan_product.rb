@@ -52,6 +52,11 @@ module LoansModule
     validates :maximum_loanable_amount, numericality: true
 
     delegate :calculation_type, :rate, :rate_in_percent, :number_of_payments, to: :current_interest_prededuction, prefix: true, allow_nil: true
+
+    def self.loan_payment_entries(args={})
+      accounts_with_revenue_accounts.credit_entries.entered_on(args)
+    end
+
     def charge_setter
       if current_interest_config.prededucted?
         ("LoansModule::ChargeSetters::" + current_interest_prededuction_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
@@ -116,12 +121,14 @@ module LoansModule
       AccountingModule::Account.where(id: ids)
     end
 
-    def self.interest_revenue_accounts #move
-      LoansModule::LoanProducts::InterestConfig.interest_revenue_accounts
+    def self.interest_revenue_accounts
+      ids = all.map{|a| a.current_interest_config.interest_revenue_account_id }
+      AccountingModule::Account.where(id: ids)
     end
 
     def self.penalty_revenue_accounts #move
-      LoansModule::LoanProducts::PenaltyConfig.penalty_revenue_accounts
+      ids = all.map{|a| a.current_penalty_config.penalty_revenue_account_id }
+      AccountingModule::Account.where(id: ids)
     end
 
     def self.accounts_with_revenue_accounts
@@ -156,7 +163,7 @@ module LoansModule
     end
 
 
-    def self.loan_payments(args={})
+    def self.loan_payments_total(args={})
       accounts.credits_balance(args) +
       interest_revenue_accounts.credits_balance(args) +
       penalty_revenue_accounts.credits_balance(args)

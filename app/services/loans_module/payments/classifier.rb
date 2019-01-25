@@ -15,6 +15,7 @@ module LoansModule
       end
 
       def interest
+        return 0 if loan_product.current_interest_config.accrued?
         credit_amounts.where(commercial_document: loan).where(account: loan_product.current_interest_config_interest_revenue_account).total
       end
 

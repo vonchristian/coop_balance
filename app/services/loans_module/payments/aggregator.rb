@@ -15,7 +15,7 @@ module LoansModule
       end
 
       def total_interests
-        loan_products.current_interest_revenue_accounts.credits_balance(from_date: from_date, to_date: to_date)
+        loan_products.interest_revenue_accounts.credits_balance(from_date: from_date, to_date: to_date)
       end
 
       def total_penalties
@@ -23,7 +23,9 @@ module LoansModule
       end
 
       def total_cash_payments
-        collections.total_cash_amount
+        total_principals +
+        total_interests +
+        total_penalties
       end
     end
   end
