@@ -43,6 +43,29 @@ module LoansModule
       it { is_expected.to validate_presence_of :current_account_id }
     end
 
+    describe "interest_charge_setter" do
+      it "add_on" do
+        loan_product = create(:loan_product)
+        interest_config = create(:add_on_interest_config, loan_product: loan_product)
+
+        expect(loan_product.interest_charge_setter).to eql LoansModule::InterestChargeSetters::AddOn
+      end
+
+      it "prededucted" do
+        loan_product = create(:loan_product)
+        interest_config = create(:prededucted_interest_config, loan_product: loan_product)
+
+        expect(loan_product.interest_charge_setter).to eql LoansModule::InterestChargeSetters::Prededucted
+      end
+
+      it "accrued" do
+        loan_product = create(:loan_product)
+        interest_config = create(:accrued_interest_config, loan_product: loan_product)
+
+        expect(loan_product.interest_charge_setter).to eql LoansModule::InterestChargeSetters::Accrued
+      end
+    end
+
     describe '#amortization_scheduler' do
       it 'returns number of payments declining_balance' do
         amortization_type     = create(:amortization_type, calculation_type: 'declining_balance')

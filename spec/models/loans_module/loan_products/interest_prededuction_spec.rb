@@ -20,22 +20,21 @@ module LoansModule
         it 'returns percent_based_calculator for percent_based' do
           percent_based = create(:interest_prededuction, calculation_type: 'percent_based')
 
-          expect(percent_based.calculator).to eq LoansModule::InterestAmortizationCalculators::PercentBased
+          expect(percent_based.calculator).to eq LoansModule::InterestPredeductionCalculators::PercentBased
         end
 
         it 'returns number_of_payments_calculator for number_of_payments' do
-          percent_based = create(:interest_prededuction, calculation_type: 'number_of_payments')
+          percent_based = create(:interest_prededuction, calculation_type: 'number_of_payments_based')
 
-          expect(percent_based.calculator).to eq LoansModule::InterestAmortizationCalculators::NumberOfPayments
+          expect(percent_based.calculator).to eq LoansModule::InterestPredeductionCalculators::NumberOfPaymentsBased
         end
 
         it 'returns number_of_payments_calculator for number_of_payments' do
           percent_based = create(:interest_prededuction, calculation_type: 'amount_based')
 
-          expect(percent_based.calculator).to eq LoansModule::InterestAmortizationCalculators::AmountBased
+          expect(percent_based.calculator).to eq LoansModule::InterestPredeductionCalculators::AmountBased
         end
       end
-
     end
   end
 end

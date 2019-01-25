@@ -1,9 +1,12 @@
 FactoryBot.define do
   factory :interest_prededuction, class: LoansModule::LoanProducts::InterestPrededuction do
-    loan_product 
+    loan_product
     calculation_type { 1 }
     rate { "9.99" }
     amount { "9.99" }
     number_of_payments { 1 }
+    factory :percent_based_interest_prededuction, class: "LoansModule::LoanProducts::InterestPrededuction" do
+      calculation_type 'percent_based'
+    end
   end
 end

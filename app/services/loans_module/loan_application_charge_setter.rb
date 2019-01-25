@@ -14,7 +14,7 @@ module LoansModule
     end
 
     private
-    def create_interest_on_loan_charge
+    def create_prededucted_interest
       loan_application.voucher_amounts.create!(
         amount_type: 'credit',
         cooperative: loan_application.cooperative,

@@ -1,8 +1,7 @@
 module LoansModule
-  module AmortizationSchedulers
-    class NumberOfPaymentsDecliningBalance
-
-      attr_reader :loan_application, :number_of_payments
+  module Amortizers
+    class DecliningBalance
+      attr_reader :loan_application, :number_of_payments, :interest_prededuction
       def initialize(args)
         @loan_application      = args.fetch(:loan_application)
         @loan_product          = @loan_application.loan_product
@@ -46,9 +45,11 @@ module LoansModule
       end
 
       def update_interests_status
+        if interest_prededuction.number_of_payments_based?
           loan_application.amortization_schedules.by_oldest_date.first(number_of_payments).each do |schedule|
-          schedule.prededucted_interest = true
-          schedule.save!
+            schedule.prededucted_interest = true
+            schedule.save!
+          end
         end
       end
 

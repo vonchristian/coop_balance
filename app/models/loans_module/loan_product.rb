@@ -57,12 +57,9 @@ module LoansModule
       accounts_with_revenue_accounts.credit_entries.not_cancelled.for_loans.entered_on(args)
     end
 
-    def charge_setter
-      if current_interest_config.prededucted?
-        ("LoansModule::ChargeSetters::" + current_interest_prededuction_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
-      elsif current_interest_config.add_on? || current_interest_config.accrued?
-        ("LoansModule::ChargeSetters::" + current_interest_config_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
-      end
+    def interest_charge_setter
+      ("LoansModule::InterestChargeSetters::" +
+      current_interest_config_calculation_type.titleize.gsub(" ", "")).constantize
     end
     def payment_processor
       ("LoansModule::PaymentProcessors::" + current_interest_config_calculation_type.titleize.gsub(" ", "")+"Interest").constantize

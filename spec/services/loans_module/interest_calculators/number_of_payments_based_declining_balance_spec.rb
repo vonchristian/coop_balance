@@ -2,7 +2,7 @@ require 'rails_helper'
 
 module LoansModule
   module InterestCalculators
-    describe NumberOfPaymentsDecliningBalance do
+    describe NumberOfPaymentsBasedDecliningBalance do
       it "#compute" do
         amortization_type     = create(:amortization_type, calculation_type: 'declining_balance')
         loan_product          = create(:loan_product, amortization_type: amortization_type)

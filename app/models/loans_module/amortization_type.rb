@@ -4,6 +4,8 @@ module LoansModule
 
     validates :calculation_type, presence: true
 
-
+    def amortizer
+      ("LoansModule::Amortizers::" + calculation_type.titleize.gsub(" ", "")).constantize
+    end
   end
 end

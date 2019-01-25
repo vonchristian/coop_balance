@@ -1,6 +1,6 @@
 module LoansModule
   module InterestCalculators
-    class NumberOfPayments
+    class NumberOfPaymentsBasedDecliningBalance
       attr_reader :loan_application, :number_of_payments, :schedule, :loan_product
 
       def initialize(args)
