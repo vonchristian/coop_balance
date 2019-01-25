@@ -32,6 +32,8 @@
       <%= f.input :interest_rate, label: "Annual Interest Rate (APR):" %>
       <%= f.input :unearned_interest_income_account_id,  collection: current_cooperative.accounts.assets.active.all.map{|a| [a.name, a.id] } %>
       <%= f.input :interest_revenue_account_id,  collection: current_cooperative.accounts.revenues.active.all.map{|a| [a.name, a.id] } %>
+      <%= f.input :accrued_income_account_id,  collection: current_cooperative.accounts.assets.active.all.map{|a| [a.name, a.id] } %>
+
       <%= f.input :interest_calculation_type, collection: LoansModule::LoanProducts::InterestConfig.calculation_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
     </div>
   </div>

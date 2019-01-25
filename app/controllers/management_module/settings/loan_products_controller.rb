@@ -44,6 +44,7 @@ module ManagementModule
         :past_due_account_id,
         :interest_rate,
         :interest_revenue_account_id,
+        :accrued_income_account_id,
         :unearned_interest_income_account_id,
         :penalty_rate,
         :penalty_revenue_account_id,
