@@ -4,7 +4,7 @@ module LoansModule
       attr_reader :loan, :loan_product
 
       def initialize(args)
-        @loan = args.fetch(:loan)
+        @loan         = args.fetch(:loan)
         @loan_product = @loan.loan_product
       end
 

@@ -3,13 +3,14 @@ require 'rails_helper'
 module LoansModule
   module LoanProducts
     describe InterestConfig do
-      it { is_expected.to define_enum_for(:calculation_type).with_values([:add_on, :prededucted])}
+      it { is_expected.to define_enum_for(:calculation_type).with_values([:add_on, :prededucted, :accrued])}
 
       describe 'associations' do
         it { is_expected.to belong_to :cooperative }
         it { is_expected.to belong_to :loan_product }
         it { is_expected.to belong_to :interest_revenue_account }
         it { is_expected.to belong_to :unearned_interest_income_account }
+        it { is_expected.to belong_to :accrued_income_account }
 
       end
 
@@ -21,7 +22,7 @@ module LoansModule
       end
 
       it ".current" do
-        interest_config = create(:interest_config, created_at: Date.today.yesterday)
+        interest_config         = create(:interest_config, created_at: Date.today.yesterday)
         current_interest_config = create(:interest_config, created_at: Date.today)
 
         expect(described_class.current).to eql current_interest_config
@@ -36,8 +37,10 @@ module LoansModule
 
       it "#compute_interest" do
         interest_config = create(:interest_config, rate: 0.12)
+        interest_config_2 = create(:interest_config, rate: 0.17)
 
         expect(interest_config.compute_interest(100_000)).to eql 12_000
+        expect(interest_config_2.compute_interest(100_000)).to eql 17_000
       end
 
       it "#monthly_interest_rate" do

@@ -13,10 +13,10 @@ module LoansModule
       end
 
       private
-      def create_accrued_interest
+      def create_add_on_interest
         loan_application.voucher_amounts.credit.create!(
           cooperative: loan_application.cooperative,
-          description: "Accrued Interest Income",
+          description: "Add-on Interest Income",
           amount:     loan_application.add_on_interest,
           account:    loan_product.current_interest_config_unearned_interest_income_account
         )
