@@ -41,7 +41,7 @@ module LoansModule
             text "#{cooperative.address}", size: 8
         end
         bounding_box [0, 770], width: 400 do
-          text "LOAN COLLECTIONS", style: :bold, size: 12
+          text "LOAN COLLECTIONS", style: :bold, size: 10, color: '0069D9'
           move_down 2
           text "Date Covered: #{from_date.strftime("%b. %e, %Y")} - #{to_date.strftime("%b. %e, %Y")}", size: 10
         end
@@ -54,7 +54,7 @@ module LoansModule
         end
       end
       def summary
-        text 'SUMMARY', size: 10, style: :bold
+        text 'SUMMARY', size: 10, style: :bold, color: '0069D9'
         if loan_product.present?
           table([["Loan Product", "#{loan_product.name.upcase}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10}, column_widths: [120, 100]) do
             cells.borders = []
@@ -109,11 +109,13 @@ module LoansModule
 
       def loan_collections
         if collections.present?
-         table([["Borrower", "Date", " #", "Principal", "Interest", "Penalty", "Total"]], header: true, cell_style: { inline_format: true, size: 9 }, column_widths: [80, 80, 60, 70, 70, 70, 80]) do
+         table([["Borrower", "Date", " #", "Principal", "Interest Revenue","Accrued Income", "Penalty", "Total"]], header: true, cell_style: { inline_format: true, size: 9 }, column_widths: [110, 50, 50, 60, 60, 60, 60, 80]) do
            column(3).align = :right
            column(4).align = :right
            column(5).align = :right
            column(6).align = :right
+           column(7).align = :right
+
            row(0).background_color = 'DDDDDD'
            row(0).font_style = :bold
          end
@@ -127,13 +129,14 @@ module LoansModule
            cooperative.loans.for_entry(entry: entry).each do |loan|
              table(
               [["#{loan.borrower_name}",
-              "#{entry.entry_date.strftime("%b. %e, %Y")}",
+              "#{entry.entry_date.strftime("%D")}",
               "#{entry.reference_number}",
               price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).principal),
               price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).interest),
+              price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).accrued_interest),
               price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).penalty),
               price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).total_cash_payment)
-            ]], column_widths: [80, 80, 60, 70, 70, 70, 80], cell_style: { inline_format: true, size: 9}) do
+            ]], column_widths: [110, 50, 50, 60, 60, 60, 60, 80], cell_style: { inline_format: true, size: 9}) do
               column(2).align = :right
               column(3).align = :right
               column(4).align = :right

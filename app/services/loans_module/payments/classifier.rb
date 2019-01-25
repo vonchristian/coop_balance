@@ -15,12 +15,10 @@ module LoansModule
       end
 
       def interest
-        if loan_product.current_interest_config.accrued?
-          credit_amounts.where(account: loan_product.current_interest_config_interest_revenue_account).total -
-          debit_amounts.where(account: loan_product.current_interest_config_accrued_income_account).total
-        else
-          credit_amounts.where(account: loan_product.current_interest_config_interest_revenue_account).total
-        end
+        credit_amounts.where(account: loan_product.current_interest_config_interest_revenue_account).total
+      end
+      def accrued_interest
+        debit_amounts.where(account: loan_product.current_interest_config_accrued_income_account).total
       end
       def penalty
         credit_amounts.where(commercial_document: loan).where(account: loan_product.penalty_revenue_account).total
@@ -29,7 +27,8 @@ module LoansModule
       def total_cash_payment
         principal.to_f +
         interest.to_f +
-        penalty.to_f
+        penalty.to_f -
+        accrued_interest.to_f
       end
     end
   end

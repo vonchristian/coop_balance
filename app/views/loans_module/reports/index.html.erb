@@ -43,7 +43,7 @@
             </div>
           </div>
         <% end %>
-        <%= link_to 'Excel', loans_module_reports_loan_collections_path(format: 'xlsx') %>
+        <%= link_to 'Excel', loans_module_reports_loan_collections_path(format: 'xlsx', from_date: @from_date, to_date: @to_date) %>
       </div>
     </div>
   </div>
