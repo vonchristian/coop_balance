@@ -16,7 +16,7 @@ module LoansModule
 
       private
       def create_amortization_schedule
-        loan_product.amortization_scheduler.new(scheduleable: loan).create_schedule!
+        loan_product.amortizer.new(loan_application: loan_application).create_schedule!
       end
 
       def create_charges
@@ -24,7 +24,7 @@ module LoansModule
       end
 
       def update_interests
-        loan_product.amortization_scheduler.new(scheduleable: loan).update_interests!
+        loan_product.amortizer.new(loan_application: loan_application).update_interest_amounts!
       end
     end
   end

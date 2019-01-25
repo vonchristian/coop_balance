@@ -89,13 +89,13 @@ module LoansModule
       end
     end
 
-    def amortization_scheduler
-      if current_interest_config.prededucted?
-        ("LoansModule::AmortizationSchedulers::" + current_interest_prededuction_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
-      elsif current_interest_config.add_on? || current_interest_config.accrued?
-        ("LoansModule::AmortizationSchedulers::" + current_interest_config_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
-      end
-    end
+    # def amortization_scheduler
+    #   if current_interest_config.prededucted?
+    #     ("LoansModule::AmortizationSchedulers::" + current_interest_prededuction_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
+    #   elsif current_interest_config.add_on? || current_interest_config.accrued?
+    #     ("LoansModule::AmortizationSchedulers::" + current_interest_config_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
+    #   end
+    # end
 
     def self.accounts
       accounts = []

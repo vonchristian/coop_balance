@@ -12,6 +12,8 @@ module LoansModule
         create_charges
         update_loan_amount
         create_amortization_schedule
+        update_interests
+
       end
 
       private
@@ -22,15 +24,19 @@ module LoansModule
       def computed_interest
         loan.loan_amount.amount * loan_product.current_interest_config.rate
       end
-      
+
       def create_amortization_schedule
         loan_product.
-        amortization_scheduler.
-        new(scheduleable: loan).create_schedule!
+        amortizer.
+        new(loan_application: loan_application).create_schedule!
       end
 
       def create_charges
       loan_product.charge_setter.new(loan_application: loan).create_charges!
+      end
+      
+      def update_interests
+        loan_product.amortizer.new(loan_application: loan_application).update_interest_amounts!
       end
     end
   end
