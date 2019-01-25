@@ -124,18 +124,14 @@ module LoansModule
            move_down 5
          end
          collections.each do |entry|
-            table(
-             cooperative.loans.for_entry(entry: entry).map{ |loan| [
-              "#{loan.borrower_name}",
-              "#{entry.entry_date.strftime("%b. %e, %Y")}",
-              "#{entry.reference_number}",
-              price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).principal),
-              price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).interest),
-              price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).penalty)] }, column_widths: [80, 80, 60, 70, 70, 70, 80], cell_style: { inline_format: true, size: 9 }) do
-             column(3).align = :right
-             column(4).align = :right
-             column(5).align = :right
-             column(6).align = :right
+           cooperative.loans.for_entry(entry: entry).each do |loan|
+
+              text "#{loan.borrower_name}"
+              text "#{entry.entry_date.strftime("%b. %e, %Y")}"
+              text "#{entry.reference_number}"
+              text price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).principal)
+              text price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).interest)
+              text price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).penalty)
             end
           end
         else

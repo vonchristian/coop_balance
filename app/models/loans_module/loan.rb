@@ -121,8 +121,8 @@ module LoansModule
 
     def self.for_entry(args={})
       entry = args[:entry]
-      ids   = entry.amounts.pluck(:commercial_document_id)
-      where(id: ids.uniq.flatten)
+      ids   = entry.amounts.pluck(:commercial_document_id).uniq.flatten
+      where(id: ids)
     end
 
     def self.total_balance
