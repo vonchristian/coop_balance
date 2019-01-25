@@ -126,6 +126,11 @@ module LoansModule
       AccountingModule::Account.where(id: ids)
     end
 
+    def self.accrued_income_accounts
+      ids = all.map{|a| a.current_interest_config.accrued_income_account_id }
+      AccountingModule::Account.where(id: ids)
+    end
+
     def self.penalty_revenue_accounts #move
       ids = all.map{|a| a.current_penalty_config.penalty_revenue_account_id }
       AccountingModule::Account.where(id: ids)

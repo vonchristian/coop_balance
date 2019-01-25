@@ -15,7 +15,8 @@ module LoansModule
       end
 
       def total_interests
-        loan_products.interest_revenue_accounts.credits_balance(from_date: from_date, to_date: to_date)
+        loan_products.interest_revenue_accounts.credits_balance(from_date: from_date, to_date: to_date) -
+        loan_products.accrued_income_accounts.debits_balance(from_date: from_date, to_date: to_date)
       end
 
       def total_penalties

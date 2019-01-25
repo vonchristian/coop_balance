@@ -58,7 +58,7 @@ module LoansModule
       def create_accrued_interest_amount(voucher)
         voucher.voucher_amounts.debit.build(
         amount:             computed_interest,
-        account:             find_loan.loan_product.current_interest_config.unearned_interest_income_account,
+        account:             find_loan.loan_product.current_interest_config.accrued_income_account,
         commercial_document: find_loan)
       end
 

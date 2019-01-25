@@ -64,7 +64,7 @@ module LoansModule
           move_down 5
 
         end
-        table([["Payments Count", "#{collections.count}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 12}, column_widths: [120, 100]) do
+        table([["Collections Count", "#{collections.count}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 12}, column_widths: [120, 100]) do
           cells.borders = []
           column(1).align = :right
 
@@ -99,7 +99,7 @@ module LoansModule
           stroke_horizontal_rule
         end
         move_down 5
-        table([["Total Collection", "#{price(LoansModule::Payments::Aggregator.new(collections: collections, from_date: from_date, to_date: to_date, cooperative: cooperative).total_cash_payments)}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 12}, column_widths: [120, 100]) do
+        table([["Total Collections", "#{price(LoansModule::Payments::Aggregator.new(collections: collections, from_date: from_date, to_date: to_date, cooperative: cooperative).total_cash_payments)}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 12}, column_widths: [120, 100]) do
           cells.borders = []
           column(1).align = :right
         end
@@ -109,7 +109,7 @@ module LoansModule
 
       def loan_collections
         if collections.present?
-         table([["Borrower", "Date", "OR #", "Principal", "Interest", "Penalty", "Total"]], header: true, cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [80, 80, 60, 70, 70, 70, 80]) do
+         table([["Borrower", "Date", " #", "Principal", "Interest", "Penalty", "Total"]], header: true, cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [80, 80, 60, 70, 70, 70, 80]) do
            column(3).align = :right
            column(4).align = :right
            column(5).align = :right
