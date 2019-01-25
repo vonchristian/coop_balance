@@ -125,13 +125,14 @@ module LoansModule
          end
          collections.each do |entry|
            cooperative.loans.for_entry(entry: entry).each do |loan|
-
-              text "#{loan.borrower_name}"
-              text "#{entry.entry_date.strftime("%b. %e, %Y")}"
-              text "#{entry.reference_number}"
-              text price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).principal)
-              text price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).interest)
-              text price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).penalty)
+             table(
+              [["#{loan.borrower_name}",
+              "#{entry.entry_date.strftime("%b. %e, %Y")}",
+              "#{entry.reference_number}",
+              price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).principal),
+              price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).interest),
+              price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).penalty)
+            ]], column_widths: [100,50,50,50,50,50])
             end
           end
         else
