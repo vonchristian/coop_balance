@@ -109,7 +109,7 @@ module LoansModule
 
       def loan_collections
         if collections.present?
-         table([["Borrower", "Date", " #", "Principal", "Interest Revenue","Accrued Income", "Penalty", "Total"]], header: true, cell_style: { inline_format: true, size: 9 }, column_widths: [110, 50, 50, 60, 60, 60, 60, 80]) do
+         table([["Borrower", "Date", " #", "Principal", "Interest Revenue","Accrued Income", "Penalty", "Total"]], cell_style: { inline_format: true, size: 9 }, column_widths: [110, 50, 50, 60, 60, 60, 60, 80]) do
            column(3).align = :right
            column(4).align = :right
            column(5).align = :right
@@ -142,9 +142,7 @@ module LoansModule
               column(4).align = :right
               column(5).align = :right
               column(6).align = :right
-
-
-
+              column(7).align = :right
 
             end
             end
