@@ -131,8 +131,7 @@ module LoansModule
               "#{entry.reference_number}",
               price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).principal),
               price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).interest),
-              price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).penalty),
-              price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).total_cash_payment)] }, column_widths: [80, 80, 60, 70, 70, 70, 80], cell_style: { inline_format: true, size: 9 }) do
+              price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).penalty)] }, column_widths: [80, 80, 60, 70, 70, 70, 80], cell_style: { inline_format: true, size: 9 }) do
              column(3).align = :right
              column(4).align = :right
              column(5).align = :right
@@ -140,7 +139,7 @@ module LoansModule
             end
           end
         else
-          move_down 5 
+          move_down 5
           text "    No Loan Collections for #{from_date.strftime("%B %e, %Y")}-#{to_date.strftime("%B %e, %Y")}", size: 10
         end
       end
