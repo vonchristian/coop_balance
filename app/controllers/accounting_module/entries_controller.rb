@@ -9,9 +9,16 @@ module AccountingModule
         @to_date = params[:to_date] ? Date.parse(params[:to_date]) : Date.today.end_of_year
         @ordered_entries = current_cooperative.entries.order(reference_number: :desc).entered_on(from_date: @from_date, to_date: @to_date)
         @entries = @ordered_entries.paginate(:page => params[:page], :per_page => 50)
-      elsif params[:search].present?
+
+      elsif params[:organization_id].present? && params[:search].present?
+        @organization = current_cooperative.organizations.find(params[:organization_id])
+        @ordered_entries = @organization.member_entries.order(reference_number: :desc).text_search(params[:search])
+        @entries = @ordered_entries.paginate(:page => params[:page], :per_page => 50)
+        
+      elsif params[:organization_id].blank? && params[:search].present?
         @ordered_entries = current_cooperative.entries.order(reference_number: :desc).text_search(params[:search])
         @entries = @ordered_entries.paginate(:page => params[:page], :per_page => 50)
+
       elsif params[:recorder_id].present?
         @recorder = current_cooperative.users.find(params[:recorder_id])
         @ordered_entries = @recorder.entries.order(reference_number: :desc)

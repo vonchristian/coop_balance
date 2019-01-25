@@ -42,6 +42,7 @@ module Organizations
 	  	find_organization.member_savings << find_member.savings
 	  	find_organization.member_share_capitals << find_member.share_capitals
 	  	find_organization.member_loans << find_member.loans
+	  	find_organization.member_time_deposits << find_member.time_deposits
 	  end
 	end
 end
