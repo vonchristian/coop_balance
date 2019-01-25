@@ -16,10 +16,10 @@ module LoansModule
 
       def interest
         if loan_product.current_interest_config.accrued?
-          credit_amounts.where(commercial_document: loan).where(account: loan_product.current_interest_config_interest_revenue_account).total -
-          debit_amounts.where(commercial_document: loan).where(account: loan_product.current_interest_config_accrued_income_account).total
+          credit_amounts.where(account: loan_product.current_interest_config_interest_revenue_account).total -
+          debit_amounts.where(account: loan_product.current_interest_config_accrued_income_account).total
         else
-          credit_amounts.where(commercial_document: loan).where(account: loan_product.current_interest_config_interest_revenue_account).total
+          credit_amounts.where(account: loan_product.current_interest_config_interest_revenue_account).total
         end
       end
       def penalty

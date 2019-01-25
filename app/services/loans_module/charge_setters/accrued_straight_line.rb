@@ -17,6 +17,7 @@ module LoansModule
         loan_application.voucher_amounts.credit.create!(
           cooperative: loan_application.cooperative,
           description: "Accrued Interest Income",
+          commercial_document: loan_application,
           amount:     loan_application.add_on_interest,
           account:    loan_product.current_interest_config_accrued_income_account
         )

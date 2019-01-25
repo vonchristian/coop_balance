@@ -94,26 +94,26 @@ module AccountingModule
     end
 
     def self.entries(args={})
-      ids = AccountingModule::Amount.for_account(account_id: self.pluck(:id)).pluck(:entry_id)
-      AccountingModule::Entry.where(id: ids)
+      ids = AccountingModule::Amount.where(account: self).pluck(:entry_id)
+      AccountingModule::Entry.where(id: ids.uniq.flatten)
     end
 
     def self.credit_entries(args={})
-      ids = AccountingModule::CreditAmount.for_account(account_id: self.pluck(:id)).pluck(:entry_id)
-      AccountingModule::Entry.where(id: ids)
+      ids = AccountingModule::CreditAmount.where(account: self)).pluck(:entry_id)
+      AccountingModule::Entry.where(id: ids.uniq.flatten)
     end
 
     def self.debit_entries(args={})
-      ids = AccountingModule::DebitAmount.for_account(account_id: self.pluck(:id)).pluck(:entry_id)
-      AccountingModule::Entry.where(id: ids)
+      ids = AccountingModule::DebitAmount.where(account: self).pluck(:entry_id)
+      AccountingModule::Entry.where(id: ids.uniq.flatten)
     end
 
     def self.credit_amounts(args={})
-      AccountingModule::CreditAmount.where(account_id: pluck(:id))
+      AccountingModule::CreditAmount.where(account: self)
     end
 
     def self.debit_amounts(args={})
-      AccountingModule::DebitAmount.where(account_id: pluck(:id))
+      AccountingModule::DebitAmount.where(account: self)
     end
 
     def self.debits_balance(options={})
