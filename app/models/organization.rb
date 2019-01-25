@@ -25,10 +25,10 @@ class Organization < ApplicationRecord
   def member_entries
     ids = []
     ids << member_loans.ids
-    ids << member_savings
-    ids << member_share_capitals
-    entries = AccountingModule::Amount.where(commercial_document_id: ids.compact.flatten).pluck(:entry_id)
-    AccountingModule::Entry.where(id: entries)
+    ids << member_savings.ids
+    ids << member_share_capitals.ids
+    entry_ids = AccountingModule::Amount.where(commercial_document_id: ids.compact.flatten).pluck(:entry_id).uniq
+    AccountingModule::Entry.where(id: entry_ids).not_cancelled
   end
 
   def self.current

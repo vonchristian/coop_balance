@@ -1,12 +1,9 @@
 <div class="card">
   <div class="card-header">
-    <h4 class="card-title">Employee Filter</h4>
-  </div>
-  <div class="card-body">
-    <nav class="nav flex-column nav-pills">
+    <nav class="nav nav-tabs nav-pills">
       <% current_cooperative.users.each do |user| %>
         <li class="nav-item">
-          <%= link_to accounting_module_per_employee_entries_path(recorder_id: user.id), class: "nav-link" do %>
+          <%= link_to accounting_module_per_employee_entries_path(recorder_id: user.id), class: "nav-link #{'active' if current_page?(accounting_module_per_employee_entries_path(recorder_id: user.id))}" do %>
             <center>
               <span title="<%= user.role.titleize %>" data-toggle="tooltip"> <%= image_tag(user.avatar, height: 45, width: 45, class: "img-circle") %></span><br>
               <small><%= user.first_name %></small>
