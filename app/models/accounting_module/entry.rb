@@ -158,6 +158,10 @@ module AccountingModule
         ""
       end
     end
+    
+    def self.for_loans
+      joins(:amounts).where('amounts.commercial_document_type' => "LoansModule::Loan")
+    end
 
     private
     def set_encrypted_hash!

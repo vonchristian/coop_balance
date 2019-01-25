@@ -54,7 +54,7 @@ module LoansModule
     delegate :calculation_type, :rate, :rate_in_percent, :number_of_payments, to: :current_interest_prededuction, prefix: true, allow_nil: true
 
     def self.loan_payment_entries(args={})
-      accounts_with_revenue_accounts.credit_entries.not_cancelled.entered_on(args)
+      accounts_with_revenue_accounts.credit_entries.not_cancelled.for_loans.entered_on(args)
     end
 
     def charge_setter
@@ -167,13 +167,11 @@ module LoansModule
       AccountingModule::Account.where(id: ids)
     end
 
-
     def self.loan_payments_total(args={})
       accounts.credits_balance(args) +
       interest_revenue_accounts.credits_balance(args) +
       penalty_revenue_accounts.credits_balance(args)
     end
-
 
     def current_interest_config
       interest_configs.current
