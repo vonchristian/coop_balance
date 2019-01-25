@@ -36,7 +36,6 @@
             <div class="col-md-3">
               <div class="form-group">
                 <%= text_field_tag :to_date, @to_date, :class => 'form-control border-input datepicker', :placeholder => "To " %>
-
               </div>
             </div>
             <div class="col-md-2">
@@ -44,6 +43,7 @@
             </div>
           </div>
         <% end %>
+        <%= link_to 'Excel', loans_module_reports_loan_collections_path(format: 'xlsx') %>
       </div>
     </div>
   </div>

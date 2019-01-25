@@ -12,6 +12,7 @@ module LoansModule
         end
         respond_to do |format|
           format.html
+          format.xlsx
           format.pdf do
             pdf = LoansModule::Reports::LoanCollectionsPdf.new(
               collections:  @collections,
