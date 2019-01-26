@@ -61,6 +61,7 @@ module LoansModule
       ("LoansModule::InterestChargeSetters::" +
       current_interest_config_calculation_type.titleize.gsub(" ", "")).constantize
     end
+    
     def payment_processor
       ("LoansModule::PaymentProcessors::" + current_interest_config_calculation_type.titleize.gsub(" ", "")+"Interest").constantize
     end

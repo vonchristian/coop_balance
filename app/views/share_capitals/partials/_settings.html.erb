@@ -50,7 +50,7 @@
     </div>
     <div class="col-md-3">
     	<% if current_user.bookkeeper? || current_user.accountant? %>
-    	  <%=link_to "New Adjusting Entry", new_accounting_module_commercial_document_adjusting_entry_line_item_path(commercial_document_type: @share_capital.class.to_s, commercial_document_id: @share_capital.id), class: "btn btn-sm btn-danger" %>
+    	  <%=link_to "New Adjusting Entry", new_accounting_module_commercial_document_adjusting_entry_line_item_path(commercial_document_type: @share_capital.class.to_s, commercial_document_id: @share_capital.id), class: "btn btn-sm btn-danger", 'data-turbolinks' => false %>
       <% else %>
         <span class="text-danger"> Only Accountant / Bookkeeper account can do this action. </span>
     	<% end %>
