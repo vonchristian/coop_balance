@@ -12,21 +12,25 @@
   <div class="col-md-4">
     <%=render 'layouts/shared/flash_messages' %>
     <div class="card">
+      <div class="card-header bg-dark">
+        <br>
+        <center>
+        <%=image_tag("coop_catalyst.png", height: 60, width: 220) %>
+      </center>
+      <br>
+      <br>
+      </div>
       <div class="card-body">
       <br>
       <%= simple_form_for(resource, as: resource_name, :url => session_path(resource_name),
         wrapper_mappings: {boolean: :vertical_boolean }) do |f| %>
         <%= f.error_notification %>
-        <center>
-        <%=image_tag("itworx.png", height: 140, width: 140, class: 'img-circle img-responsive') %>
-      </center>
-        <br>
-        <br>
+
         <%= f.input :email, placeholder: "Email", input_html:{class: "form-control input-lg"}, label: false %>
         <%= f.input :password, placeholder: "Password",  input_html:{class: "form-control input-lg"}, label: false  %>
         <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
         <hr>
-        <%= f.submit "Sign in", class: "btn btn-success btn-flat btn-block btn-lg", data: {disable_with: "Signing in..."} %>
+        <%= f.submit "Sign in", class: "btn btn-primary btn-flat btn-block btn-lg", data: {disable_with: "Signing in..."} %>
       <% end %>
       <br>
     </div>

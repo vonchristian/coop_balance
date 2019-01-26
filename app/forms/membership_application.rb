@@ -22,6 +22,8 @@ class MembershipApplication
   private
   def create_member
     member = Member.create!(
+    cooperative: find_cooperative,
+    office:      find_office,
     account_number: account_number,
     first_name:     first_name,
     middle_name:    middle_name,

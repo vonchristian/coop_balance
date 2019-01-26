@@ -26,11 +26,11 @@ class Membership < ApplicationRecord
     membership_types.keys - BLACKLISTED_MEMBERSHIP_TYPE
   end
 
-  def self.memberships_for_date(args={})
+  def self.approved_at(args={})
     from_date = args[:from_date]
     to_date   = args[:to_date]
-    date_range     = DateRange.new(start_date: from_date, end_date: to_date)
-    where('approval_date' => date_range.range)
+    date_range     = DateRange.new(from_date: from_date, to_date: to_date)
+    approved.where('approval_date' => date_range.range)
   end
   def self.for_cooperative(args={})
     where(cooperative: args[:cooperative])

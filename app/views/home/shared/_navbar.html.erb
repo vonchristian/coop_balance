@@ -1,6 +1,8 @@
 <nav class="navbar navbar-light bg-dark static-top border-bottom">
   <div class="container">
-    <a class="navbar-brand" href="/">Coop Catalyst</a>
+  
+    <%=image_tag("coop_catalyst.png", height: 40, width: 120, class: 'float-left') %>
+
     <%= link_to 'Sign in', new_user_session_path, class: "btn btn-primary" %>
   </div>
 </nav>
