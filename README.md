@@ -1,3 +1,10 @@
+test loan payment processors
+
+test loan product creation
+  add iterest prededuction
+  add interest calculation type
+
+
 
 <div class="card">
   <div class="card-body">

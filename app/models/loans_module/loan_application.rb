@@ -116,7 +116,11 @@ module LoansModule
     end
 
     def first_year_interest
-      current_interest_config.compute_interest(first_year_principal_balance)
+      if !current_interest_config.accrued?
+        current_interest_config.compute_interest(first_year_principal_balance)
+      else
+        0
+      end
     end
 
     def second_year_interest
