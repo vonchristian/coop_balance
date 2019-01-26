@@ -70,6 +70,8 @@ AccountingModule::Asset.create(code: 11722, name: "Accounts Receivables Trade - 
 AccountingModule::Asset.create(code: 11723, name: "Accounts Receivables Trade - Restructured")
 AccountingModule::Asset.create(code: 11724, name: "Accounts Receivables Trade - in Litigation")
 AccountingModule::Asset.create(code: 11725, name: "Allowance for Probable Losses on Accounts Receivable Trade")
+AccountingModule::Asset.create(code: 11726, name: "Interest Income Receivable (Appliance Financing)")
+
 AccountingModule::Asset.create(code: 11730, name: "Installment Receivables - Current")
 AccountingModule::Asset.create(code: 11731, name: "Installment Receivables - Past Due")
 AccountingModule::Asset.create(code: 11733, name: "Installment Receivables - Restructured")

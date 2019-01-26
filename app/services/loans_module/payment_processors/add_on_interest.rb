@@ -47,19 +47,11 @@ module LoansModule
         preparer:         find_employee,
         date:             date)
 
-        create_accrued_interest_amount(voucher)
         create_penalty_amount(voucher)
         create_principal_amount(voucher)
         create_interest_amount(voucher)
         create_cash_amount(voucher)
         voucher.save!
-      end
-
-      def create_accrued_interest_amount(voucher)
-        voucher.voucher_amounts.debit.build(
-        amount:             computed_interest,
-        account:             find_loan.loan_product.current_interest_config.unearned_interest_income_account,
-        commercial_document: find_loan)
       end
 
       def create_cash_amount(voucher)
@@ -72,7 +64,7 @@ module LoansModule
 
       def create_interest_amount(voucher)
         voucher.voucher_amounts.credit.build(
-        amount:              computed_interest,
+        amount:              interest_amount.to_f,
         account:             find_loan.loan_product_interest_revenue_account,
         commercial_document: find_loan)
       end
@@ -89,7 +81,7 @@ module LoansModule
       def create_principal_amount(voucher)
         if principal_amount.to_f > 0
           voucher.voucher_amounts.credit.build(
-          amount:              principal_and_interest_amount,
+          amount:              principal_amount.to_f,
           account:             find_loan.principal_account,
           commercial_document: find_loan)
         end
@@ -103,15 +95,6 @@ module LoansModule
         principal_amount.to_f +
         interest_amount.to_f +
         penalty_amount.to_f
-      end
-
-      def principal_and_interest_amount
-        principal_amount.to_f +
-        interest_amount.to_f
-      end
-
-      def computed_interest
-        principal_amount.to_f * find_loan.loan_product.current_interest_config.rate
       end
 
       def principal_amount_not_more_than_balance

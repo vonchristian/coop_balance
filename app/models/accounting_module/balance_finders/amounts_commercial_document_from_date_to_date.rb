@@ -16,7 +16,7 @@ module AccountingModule
         where('entries.entry_date' => date_range.range).
         where(commercial_document: commercial_document).
         total
-      end
+      end 
     end
   end
 end

@@ -4,7 +4,7 @@ module LoansModule
       attr_reader :loan_application, :loan_product
 
       def initialize(args)
-        @loan_application = args.fetch(:loan)
+        @loan_application = args.fetch(:loan_application)
         @loan_product = @loan_application.loan_product
       end
 
@@ -18,7 +18,7 @@ module LoansModule
 
       private
       def update_loan_amount
-        LoansModule::LoanApplicationAmountUpdater.new(loan_application: loan_application).update_amount
+        LoansModule::LoanApplicationAmountUpdater.new(loan_application: loan_application).update_amount!
       end
 
       def create_amortization_schedule
@@ -28,7 +28,7 @@ module LoansModule
       end
 
       def create_charges
-      loan_product.charge_setter.new(loan_application: loan_application).create_charges!
+      LoansModule::LoanApplicationChargeSetter.new(loan_application: loan_application).create_charges!
       end
 
       def update_interests
