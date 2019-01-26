@@ -1,4 +1,4 @@
-module CoopConfigurationsModule
+module Cooperatives
   module Offices
     class BranchOffice < Office
     end

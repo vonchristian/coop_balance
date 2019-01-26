@@ -7,7 +7,7 @@ module MembershipsModule
 
     belongs_to :cooperative
     belongs_to :depositor,            polymorphic: true, touch: true
-    belongs_to :office,               class_name: "CoopConfigurationsModule::Office"
+    belongs_to :office,               class_name: "Cooperatives::Office"
     belongs_to :time_deposit_product, class_name: "CoopServicesModule::TimeDepositProduct"
     belongs_to :organization,         optional: true
     belongs_to :barangay,             optional: true, class_name: "Addresses::Barangay"

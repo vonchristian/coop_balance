@@ -18,7 +18,7 @@ module Registries
             Address.create(addressable: m, current: true, municipality: Addresses::Municipality.find_by(name: row["Municipality"]), complete_address: row["Complete Address"])
             Tin.create(tinable: m, number: row["TIN Number"])
             Beneficiary.create(member_id: m.id, full_name: row["Beneficiary"], relationship: row["Relationship"])
-            m.office = CoopConfigurationsModule::Offices::MainOffice.find_by(name: row["Office"])
+            m.office = Cooperatives::Offices::MainOffice.find_by(name: row["Office"])
             Membership.create!(account_number: row["Account Number"], cooperator: m, membership_date: membership_date(row), cooperative: Cooperative.last)
             m.save        
           end

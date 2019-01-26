@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_24_150829) do
+ActiveRecord::Schema.define(version: 2019_01_26_125933) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -203,17 +203,6 @@ ActiveRecord::Schema.define(version: 2019_01_24_150829) do
     t.index ["cooperative_id"], name: "index_bank_accounts_on_cooperative_id"
     t.index ["interest_revenue_account_id"], name: "index_bank_accounts_on_interest_revenue_account_id"
     t.index ["office_id"], name: "index_bank_accounts_on_office_id"
-  end
-
-  create_table "barangay_members", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "barangay_id"
-    t.string "member_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "barangay_membership_type"
-    t.uuid "barangay_membership_id"
-    t.index ["barangay_id"], name: "index_barangay_members_on_barangay_id"
-    t.index ["barangay_membership_type", "barangay_membership_id"], name: "index_on_barangay_members_membership"
   end
 
   create_table "barangays", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -452,6 +441,14 @@ ActiveRecord::Schema.define(version: 2019_01_24_150829) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "interest_calculations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "calculation_type"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["calculation_type"], name: "index_interest_calculations_on_calculation_type"
+  end
+
   create_table "interest_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "loan_product_id"
     t.decimal "rate"
@@ -672,17 +669,6 @@ ActiveRecord::Schema.define(version: 2019_01_24_150829) do
     t.index ["slug"], name: "index_loan_products_on_slug", unique: true
   end
 
-  create_table "loan_protection_funds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "rate"
-    t.string "name"
-    t.integer "computation_type"
-    t.uuid "cooperative_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["computation_type"], name: "index_loan_protection_funds_on_computation_type"
-    t.index ["cooperative_id"], name: "index_loan_protection_funds_on_cooperative_id"
-  end
-
   create_table "loan_protection_plan_providers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "business_name"
     t.decimal "rate"
@@ -723,8 +709,8 @@ ActiveRecord::Schema.define(version: 2019_01_24_150829) do
     t.boolean "forwarded_loan", default: false
     t.uuid "loan_application_id"
     t.integer "status"
-    t.boolean "cancelled", default: false
     t.string "type"
+    t.boolean "cancelled", default: false
     t.index ["account_number"], name: "index_loans_on_account_number", unique: true
     t.index ["archived_by_id"], name: "index_loans_on_archived_by_id"
     t.index ["barangay_id"], name: "index_loans_on_barangay_id"
@@ -803,14 +789,12 @@ ActiveRecord::Schema.define(version: 2019_01_24_150829) do
     t.integer "birth_month"
     t.integer "birth_day"
     t.string "email", default: "", null: false
-    t.uuid "office_id"
     t.integer "birth_year"
     t.datetime "last_transaction_date"
     t.uuid "cart_id"
     t.string "account_number"
     t.index ["account_number"], name: "index_members_on_account_number", unique: true
     t.index ["cart_id"], name: "index_members_on_cart_id"
-    t.index ["office_id"], name: "index_members_on_office_id"
     t.index ["sex"], name: "index_members_on_sex"
     t.index ["slug"], name: "index_members_on_slug", unique: true
   end
@@ -840,11 +824,13 @@ ActiveRecord::Schema.define(version: 2019_01_24_150829) do
     t.string "search_term"
     t.string "cooperator_type"
     t.uuid "cooperator_id"
+    t.uuid "office_id"
     t.index ["account_number"], name: "index_memberships_on_account_number", unique: true
     t.index ["beneficiary_type", "beneficiary_id"], name: "index_memberships_on_beneficiary_type_and_beneficiary_id"
     t.index ["cooperative_id"], name: "index_memberships_on_cooperative_id"
     t.index ["cooperator_type", "cooperator_id"], name: "index_memberships_on_cooperator_type_and_cooperator_id"
     t.index ["membership_type"], name: "index_memberships_on_membership_type"
+    t.index ["office_id"], name: "index_memberships_on_office_id"
     t.index ["status"], name: "index_memberships_on_status"
   end
 
@@ -1229,8 +1215,8 @@ ActiveRecord::Schema.define(version: 2019_01_24_150829) do
     t.string "account_number"
     t.datetime "date_opened"
     t.string "account_owner_name"
-    t.datetime "created_at", default: "2018-12-03 13:59:53", null: false
-    t.datetime "updated_at", default: "2018-12-03 13:59:53", null: false
+    t.datetime "created_at", default: "2019-01-19 01:13:39", null: false
+    t.datetime "updated_at", default: "2019-01-19 01:13:39", null: false
     t.integer "status"
     t.uuid "office_id"
     t.string "subscriber_type"
@@ -1596,7 +1582,6 @@ ActiveRecord::Schema.define(version: 2019_01_24_150829) do
   add_foreign_key "bank_accounts", "accounts", column: "interest_revenue_account_id"
   add_foreign_key "bank_accounts", "cooperatives"
   add_foreign_key "bank_accounts", "offices"
-  add_foreign_key "barangay_members", "barangays"
   add_foreign_key "barangays", "cooperatives"
   add_foreign_key "barangays", "municipalities"
   add_foreign_key "barcodes", "line_items"
@@ -1651,7 +1636,6 @@ ActiveRecord::Schema.define(version: 2019_01_24_150829) do
   add_foreign_key "loan_products", "amortization_types"
   add_foreign_key "loan_products", "cooperatives"
   add_foreign_key "loan_products", "loan_protection_plan_providers"
-  add_foreign_key "loan_protection_funds", "cooperatives"
   add_foreign_key "loan_protection_plan_providers", "accounts", column: "accounts_payable_id"
   add_foreign_key "loan_protection_plan_providers", "cooperatives"
   add_foreign_key "loans", "barangays"
@@ -1670,9 +1654,9 @@ ActiveRecord::Schema.define(version: 2019_01_24_150829) do
   add_foreign_key "member_occupations", "members"
   add_foreign_key "member_occupations", "occupations"
   add_foreign_key "members", "carts"
-  add_foreign_key "members", "offices"
   add_foreign_key "membership_beneficiaries", "memberships"
   add_foreign_key "memberships", "cooperatives"
+  add_foreign_key "memberships", "offices"
   add_foreign_key "municipalities", "cooperatives"
   add_foreign_key "municipalities", "provinces"
   add_foreign_key "net_income_distributions", "accounts"

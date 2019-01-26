@@ -9,7 +9,7 @@ module LoansModule
     belongs_to :borrower, polymorphic: true
     belongs_to :preparer, class_name: "User", foreign_key: 'preparer_id'
     belongs_to :cooperative
-    belongs_to :office, class_name: "CoopConfigurationsModule::Office"
+    belongs_to :office, class_name: "Cooperatives::Office"
     belongs_to :loan_product
     belongs_to :organization
     belongs_to :voucher, dependent: :destroy

@@ -8,7 +8,7 @@ class Voucher < ApplicationRecord
   belongs_to :cooperative
   belongs_to :store_front, optional: true
   belongs_to :cooperative_service, class_name: "CoopServicesModule::CooperativeService"
-  belongs_to :office, class_name: "CoopConfigurationsModule::Office"
+  belongs_to :office, class_name: "Cooperatives::Office"
   belongs_to :accounting_entry, class_name: "AccountingModule::Entry", foreign_key: 'entry_id'
   belongs_to :payee,         polymorphic: true
   belongs_to :commercial_document, polymorphic: true #attaching voucher to orders

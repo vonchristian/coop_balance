@@ -1,4 +1,4 @@
-module CoopConfigurationsModule
+module Cooperatives
   class Office < ApplicationRecord
     belongs_to :cooperative
     has_many :loans,                   class_name: "LoansModule::Loan"

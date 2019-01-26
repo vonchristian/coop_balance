@@ -30,6 +30,10 @@ class MembershipApplicationsController < ApplicationController
       :tin_number,
       :office_id,
       :cooperative_id,
-      :membership_date )
+      :membership_date,
+      :complete_address,
+      :barangay_id,
+      :municipality_id,
+      :province_id )
   end
 end

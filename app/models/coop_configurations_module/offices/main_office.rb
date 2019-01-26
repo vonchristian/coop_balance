@@ -1,6 +1,6 @@
 module CoopConfigurationsModule
   module Offices
-    class MainOffice < Office
+    class MainOffice < Cooperatives::Office
     end
   end
 end
