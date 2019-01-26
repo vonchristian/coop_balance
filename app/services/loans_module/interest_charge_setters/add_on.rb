@@ -9,13 +9,14 @@ module LoansModule
         @interest_config  = @loan_product.current_interest_config
       end
 
-      def create_charges!
+      def create_charge!
         create_add_on_interest
       end
 
       private
       def create_add_on_interest
         loan_application.voucher_amounts.credit.create!(
+          commercial_document: loan_application,
           cooperative: loan_application.cooperative,
           description: "Interest on Loan",
           amount:     loan_application.add_on_interest,

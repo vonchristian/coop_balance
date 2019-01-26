@@ -22,7 +22,7 @@ module LoansModule
       end
 
       def monthly_amortization_interest
-          principal_balance * loan_product.monthly_interest_rate
+          (principal_balance * loan_product.monthly_interest_rate).round(2)
       end
 
       def principal_balance

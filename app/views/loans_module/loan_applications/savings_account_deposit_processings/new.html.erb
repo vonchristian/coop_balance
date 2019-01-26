@@ -33,7 +33,7 @@
     </div>
   </div>
 </div>
-<%= simple_form_for [@savings_account, @deposit], url: :loans_module_loan_application_savings_account_deposit_processings], html: { autocomplete: "off", data: { modal: true } }, remote: request.xhr? do |f| %>
+<%= simple_form_for [@savings_account, @deposit], url: :loans_module_loan_application_savings_account_deposit_processings, html: { autocomplete: "off", data: { modal: true } }, remote: request.xhr? do |f| %>
   <div class="modal-body">
     <%= f.error_notification %>
     <%= f.input :amount, as: :currency %>
@@ -44,4 +44,3 @@
     <%= f.submit "Add Deposit", class: "btn btn-primary float-right" %>
   </div>
 <% end %>
-

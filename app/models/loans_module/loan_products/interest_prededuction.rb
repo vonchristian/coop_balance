@@ -15,7 +15,6 @@ module LoansModule
         rate * 1_00
       end
 
-
       def calculator
         ("LoansModule::InterestPredeductionCalculators::" + calculation_type.titleize.gsub(" ", "")).constantize
       end

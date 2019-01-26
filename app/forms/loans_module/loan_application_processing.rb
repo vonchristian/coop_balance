@@ -47,7 +47,7 @@ module LoansModule
         account_number: account_number,
         term: term)
 
-        find_loan_product.loan_processor.new(loan: loan_application).process!
+        find_loan_product.loan_processor.new(loan_application: loan_application).process!
     end
     def find_borrower
       Borrower.find(borrower_id)

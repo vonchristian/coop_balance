@@ -1,11 +1,11 @@
 module LoansModule
   module LoanProcessors
     class PercentBasedStraightLine
-      attr_reader :loan, :loan_product
+      attr_reader :loan_application, :loan_product
 
       def initialize(args)
-        @loan         = args.fetch(:loan)
-        @loan_product = @loan.loan_product
+        @loan_application = args.fetch(:loan_application)
+        @loan_product     = @loan_application.loan_product
       end
 
       def process!
@@ -20,7 +20,7 @@ module LoansModule
       end
 
       def create_charges
-        LoansModule::LoanApplicationChargeSetter.new(loan_application: loan).create_charges!
+        LoansModule::LoanApplicationChargeSetter.new(loan_application: loan_application).create_charges!
       end
 
       def update_interests

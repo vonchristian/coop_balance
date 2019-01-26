@@ -13,6 +13,13 @@ FactoryBot.define do
         t.penalty_configs << create(:penalty_config)
       end
     end
+
+    factory :loan_product_with_interest_config do
+      product.after(:build) do |t|
+        t.interest_configs << create(:interest_config)
+      end
+    end
+    
     factory :add_on_straight_line_loan_product, class: "LoansModule::LoanProduct" do |product|
       product.association :amortization_type, factory: :straight_line_amortization_type
       product.after(:build) do |p|

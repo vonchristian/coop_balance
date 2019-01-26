@@ -10,7 +10,7 @@ module LoansModule
         interest_config       = create(:interest_config, rate: 0.12, loan_product: loan_product, calculation_type: 'prededucted')
         loan_application      = create(:loan_application, loan_product: loan_product, loan_amount: 100_000, term: 12, mode_of_payment: 'monthly')
 
-        amortization_type.scheduler.new(scheduleable: loan_application).create_schedule!
+        amortization_type.amortizer.new(loan_application: loan_application).create_schedule!
 
         expect(described_class.new(loan_application: loan_application).monthly_amortization_interest).to eql 250
       end

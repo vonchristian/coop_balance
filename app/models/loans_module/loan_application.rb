@@ -207,7 +207,7 @@ module LoansModule
     end
 
     def amortizeable_principal
-      (loan_amount.amount / schedule_count).ceil(2)
+      (loan_amount.amount / schedule_count).round(2)
     end
 
     def number_of_thousands # for Loan Protection fund computation
@@ -217,7 +217,5 @@ module LoansModule
     def add_on_interest
       current_interest_config.compute_interest(loan_amount.amount)
     end
-
   end
-
 end
