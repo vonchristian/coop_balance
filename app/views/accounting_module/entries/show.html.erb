@@ -207,3 +207,6 @@
       </div>
     </div>
   </div>
+<% @entry.tags.each do |tag| %>
+  <span style="background-color: #344444"><%=tag.name %></span>
+<% end %>

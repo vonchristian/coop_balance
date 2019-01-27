@@ -31,7 +31,7 @@ module LoansModule
              :accrued_income_account,
              :add_on?,
              to: :current_interest_config, prefix: true
-    delegate :amortizer, to: :amortization_type
+    delegate :amortizer, :amortizeable_principal_calculator, to: :amortization_type
     delegate :rate, :rate_in_percent, to: :current_penalty_config, prefix: true, allow_nil: true
 
     delegate :interest_revenue_account,
@@ -61,7 +61,7 @@ module LoansModule
       ("LoansModule::InterestChargeSetters::" +
       current_interest_config_calculation_type.titleize.gsub(" ", "")).constantize
     end
-    
+
     def payment_processor
       ("LoansModule::PaymentProcessors::" + current_interest_config_calculation_type.titleize.gsub(" ", "")+"Interest").constantize
     end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_26_125933) do
+ActiveRecord::Schema.define(version: 2019_01_27_124755) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -130,7 +130,9 @@ ActiveRecord::Schema.define(version: 2019_01_26_125933) do
     t.integer "calculation_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "repayment_calculation_type"
     t.index ["calculation_type"], name: "index_amortization_types_on_calculation_type"
+    t.index ["repayment_calculation_type"], name: "index_amortization_types_on_repayment_calculation_type"
   end
 
   create_table "amount_adjustments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1345,6 +1347,23 @@ ActiveRecord::Schema.define(version: 2019_01_26_125933) do
     t.index ["payable_account_id"], name: "index_suppliers_on_payable_account_id"
   end
 
+  create_table "taggings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "tag_id"
+    t.string "taggable_type"
+    t.uuid "taggable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tag_id"], name: "index_taggings_on_tag_id"
+    t.index ["taggable_type", "taggable_id"], name: "index_taggings_on_taggable_type_and_taggable_id"
+  end
+
+  create_table "tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "color"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "terms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "termable_type"
     t.uuid "termable_id"
@@ -1732,6 +1751,7 @@ ActiveRecord::Schema.define(version: 2019_01_26_125933) do
   add_foreign_key "streets", "municipalities"
   add_foreign_key "suppliers", "accounts", column: "payable_account_id"
   add_foreign_key "suppliers", "cooperatives"
+  add_foreign_key "taggings", "tags"
   add_foreign_key "time_deposit_applications", "cooperatives"
   add_foreign_key "time_deposit_applications", "time_deposit_products"
   add_foreign_key "time_deposit_applications", "vouchers"
