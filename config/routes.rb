@@ -327,6 +327,10 @@ Rails.application.routes.draw do
   resources :treasury_module, only: [:index]
 
   namespace :treasury_module do
+    namespace :summaries do
+      resources :cash_books, only: [:index]
+      resources :loans, only: [:index]  
+    end
     resources :cash_accounts, only: [:index, :show] do
       resources :reports, only: [:index],                                       module: :cash_accounts
       resources :cash_receipt_line_items, only: [:new, :create, :destroy],      module: :cash_accounts

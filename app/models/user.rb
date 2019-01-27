@@ -63,10 +63,15 @@ class User < ApplicationRecord
   delegate :name, :abbreviated_name, to: :cooperative, prefix: true
   delegate :name, to: :store_front, prefix: true, allow_nil: true
   before_save :set_default_image, on: :create
+
   def self.has_birthdays_on(month)
     where(birth_month: month).order(:birth_day)
   end
-
+  def self.cash_accounts
+    ids = Employees::EmployeeCashAccount.where(employee_id: self.ids).pluck(:cash_account_id)
+    AccountingModule::Account.where(id: ids)
+  end
+  
   def current_occupation
     role
   end

@@ -12,6 +12,7 @@ module Employees
       accounts = pluck(:cash_account_id)
       AccountingModule::Asset.where(id: accounts)
     end
+  
 
     def self.recent
      order(created_at: :desc).first

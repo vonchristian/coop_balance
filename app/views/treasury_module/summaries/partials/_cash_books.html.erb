@@ -1,0 +1,41 @@
+
+<% current_office.cash_accounts.each do |cash_account| %>
+  <div class="row">
+    <div class="col-md-3">
+      <%= cash_account.name %>
+      <h3 class="number"><%= number_to_currency cash_account.balance %></h3>
+    </div>
+    <div class="col-md-3">
+      TRANSACTIONS
+      <small>RECEIPTS </small>
+
+      <h3 class="number total">
+        <%= number_to_currency cash_account.debits_balance(from_date: @from_date, to_date: @to_date) %>
+      </h3>
+      <%= number_to_currency cash_account.credits_balance(from_date: @from_date, to_date: @to_date) %>
+      <small>DISBURSEMENTS </small>
+    </div>
+    <div class="col-md-6"
+      <% daily_dates = [] %>
+      <% ((Date.current.beginning_of_month)..(Date.current)).each do |date| %>
+      <% daily_dates << date.end_of_day %>
+      <% end %>
+      <% daily_debits_balances_data = [] %>
+      <% daily_credits_balances_data = [] %>
+
+      <% daily_dates.uniq.each do |day| %>
+      <% daily_debits_balances_data << { day.strftime("%D") => cash_account.debits_balance(to_date: day.end_of_day) } %>
+      <% end %>
+      <% daily_dates.uniq.each do |day| %>
+      <% daily_credits_balances_data << { day.strftime("%D") => cash_account.credits_balance(to_date: day.end_of_day) } %>
+      <% end %>
+      <%= area_chart [
+      { name: "Receipts", data: (Hash[*daily_debits_balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"} },
+      { name: "Disbursements", data: (Hash[*daily_credits_balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"} }
+      ], legend: 'bottom', thousands: ",", height: '180px', colors: ["#28A745", "#b00", "#0069D9"]%>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<h3 class="card-title">Recent Transactions </h3>

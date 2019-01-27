@@ -1,0 +1,27 @@
+
+<div class="row">
+
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header no-border">
+        <h3 class="card-title"> <%= current_office.name %> - <%= current_office.normalized_type %></h3>
+        <br>
+        <ul class="nav nav-tabs">
+          <li class="nav-item"><%= link_to 'Summary', treasury_module_index_path, class: "nav-link #{ 'active' if current_page?(treasury_module_index_path)}" %></li>
+          <li class="nav-item"><%= link_to 'Cashbooks', treasury_module_summaries_cash_books_path, class: "nav-link #{ 'active' if current_page?(treasury_module_summaries_cash_books_path)}" %></li>
+          <li class="nav-item"><%= link_to 'Loans', treasury_module_summaries_loans_path, class: "nav-link #{ 'active' if current_page?(treasury_module_summaries_loans_path)}" %></li>
+
+        </ul>
+      </div>
+      <div class="card-body">
+
+        <% if current_page?(treasury_module_index_path) %>
+          <%= render 'treasury_module/summaries/partials/summary' %>
+        <% end %>
+
+        <% if current_page?(treasury_module_summaries_cash_books_path) %>
+        <%= render 'treasury_module/summaries/partials/cash_books' %>
+        <% end %>
+      </div>
+    </div>
+  </div>

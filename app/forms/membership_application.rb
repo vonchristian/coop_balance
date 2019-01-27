@@ -35,7 +35,6 @@ class MembershipApplication
     date_of_birth:  date_of_birth,
     contact_number: contact_number,
     email:          email,
-    office_id:      office_id,
     last_transaction_date: Date.current,
     avatar:         avatar_asset)
 
@@ -49,12 +48,13 @@ class MembershipApplication
   end
 
   def create_membership
-    find_cooperative.memberships.create!(
+    find_cooperative.memberships.approved.create!(
       office_id:       office_id,
       cooperator:      find_member,
       account_number:  SecureRandom.uuid,
       membership_type: membership_type,
-      membership_date: membership_date
+      membership_date: membership_date,
+      approval_date:   membership_date
     )
   end
 

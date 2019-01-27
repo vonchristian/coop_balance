@@ -1,4 +1,5 @@
 <% breadcrumb :members, @members %>
+
 <% months = [] %>
 <% (Date.current - 6.months..Date.current).each do |month| %>
 <% months << month.end_of_month %>
@@ -10,7 +11,7 @@
 <% end %>
 
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-md-12">
     <div class="card card-outline-left card-primary">
       <div class="card-body">
         <div class="row">
@@ -18,7 +19,7 @@
             <small> TOTAL MEMBERS </small>
             <h2 class="number"><%= current_cooperative.member_memberships.count %></h2>
             <small>NEW MEMBERS (<%= Date.current.year %>) </small>
-            <%=current_cooperative.memberships.approved_at(from_date: Date.current.beginning_of_month, to_date: Date.current.end_of_month).count %>
+            <%=current_cooperative.memberships.approved_at(from_date: Date.current.beginning_of_month, to_date: Date.current.end_of_year).count %>
 
           </div>
           <div class="col-md-2">
@@ -26,14 +27,15 @@
             <h2 class="number"> <%= number_to_currency current_cooperative.member_memberships.percent_active, unit: '' %> % </h2>
           </div>
           <div class="col-md-7">
-            <%= line_chart (Hash[*members_count.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"}, download: true, thousands: ",",height: 10 %>
+            <small> New Members per month </small>
+            <%= area_chart (Hash[*members_count.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"}, download: true, thousands: ",",height: 10, curve: false %>
           </div>
         </div>
 
       </div>
     </div>
   </div>
-  <div class="col-md-8">
+  <div class="col-md-12">
     <div class="card">
       <div class="card-header">
         <div class="row">

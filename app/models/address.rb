@@ -5,6 +5,7 @@ class Address < ApplicationRecord
   belongs_to :municipality, class_name: "Addresses::Municipality", optional: true
   belongs_to :province,     class_name: "Addresses::Province", optional: true
 
+  delegate :name, to: :barangay, prefix: true, allow_nil: true
   def self.current
     where(current: true)
   end
