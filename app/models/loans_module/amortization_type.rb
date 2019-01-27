@@ -6,7 +6,7 @@ module LoansModule
     validates :calculation_type, :repayment_calculation_type, presence: true
 
     def amortizer
-      ("LoansModule::Amortizers::" + calculation_type.titleize.gsub(" ", "")).constantize
+      ("LoansModule::Amortizers::" + calculation_type.titleize.pluralize.gsub(" ", "") + "::" + repayment_calculation_type.titleize.gsub(" ", "")).constantize
     end
     def repayment_calculator
       ("LoansModule::Amortizers::TotalAmountCalculators::" + repayment_calculation_type.titleize.gsub(" ", "")).constantize

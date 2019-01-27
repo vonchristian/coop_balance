@@ -12,17 +12,29 @@ module LoansModule
       it { is_expected.to define_enum_for(:repayment_calculation_type).with_values([:equal_principal, :equal_payment]) }
     end
     describe 'amortizer' do
+      it 'returns straight_lines && equal_principal' do
+        straight_line = create(:amortization_type, calculation_type: 'straight_line', repayment_calculation_type: 'equal_principal')
 
-      it 'returns straight_line' do
-        straight_line = create(:straight_line_amortization_type)
-
-        expect(straight_line.amortizer).to eql LoansModule::Amortizers::StraightLine
+        expect(straight_line.amortizer).to eql LoansModule::Amortizers::StraightLines::EqualPrincipal
       end
 
-      it 'returns declining_balance' do
-        declining_balance = create(:declining_balance_amortization_type)
+      it 'returns straight_lines && equal_payment' do
+        straight_line = create(:amortization_type, calculation_type: 'straight_line', repayment_calculation_type: 'equal_payment')
 
-        expect(declining_balance.amortizer).to eql LoansModule::Amortizers::DecliningBalance
+        expect(straight_line.amortizer).to eql LoansModule::Amortizers::StraightLines::EqualPayment
+      end
+
+      it 'returns declining_balance && equal_principal' do
+        declining_balance = create(:declining_balance_amortization_type, repayment_calculation_type: 'equal_principal')
+
+        expect(declining_balance.amortizer).to eql LoansModule::Amortizers::DecliningBalances::EqualPrincipal
+
+      end
+
+      it 'returns declining_balance && equal_payment' do
+        declining_balance = create(:declining_balance_amortization_type, repayment_calculation_type: 'equal_payment')
+
+        expect(declining_balance.amortizer).to eql LoansModule::Amortizers::DecliningBalances::EqualPayment
 
       end
     end
