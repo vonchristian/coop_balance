@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_28_125950) do
+ActiveRecord::Schema.define(version: 2019_01_28_232306) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1298,9 +1298,9 @@ ActiveRecord::Schema.define(version: 2019_01_28_125950) do
     t.string "contact_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "accounts_receivable_account_id"
+    t.uuid "receivable_account_id"
     t.uuid "cost_of_goods_sold_account_id"
-    t.uuid "accounts_payable_account_id"
+    t.uuid "payable_account_id"
     t.uuid "merchandise_inventory_account_id"
     t.uuid "sales_account_id"
     t.uuid "sales_return_account_id"
@@ -1308,15 +1308,16 @@ ActiveRecord::Schema.define(version: 2019_01_28_125950) do
     t.uuid "sales_discount_account_id"
     t.uuid "purchase_return_account_id"
     t.uuid "internal_use_account_id"
-    t.string "business_type"
-    t.uuid "business_id"
-    t.index ["accounts_payable_account_id"], name: "index_store_fronts_on_accounts_payable_account_id"
-    t.index ["accounts_receivable_account_id"], name: "index_store_fronts_on_accounts_receivable_account_id"
-    t.index ["business_type", "business_id"], name: "index_store_fronts_on_business_type_and_business_id"
+    t.uuid "cooperative_service_id"
+    t.uuid "cooperative_id"
+    t.index ["cooperative_id"], name: "index_store_fronts_on_cooperative_id"
+    t.index ["cooperative_service_id"], name: "index_store_fronts_on_cooperative_service_id"
     t.index ["cost_of_goods_sold_account_id"], name: "index_store_fronts_on_cost_of_goods_sold_account_id"
     t.index ["internal_use_account_id"], name: "index_store_fronts_on_internal_use_account_id"
     t.index ["merchandise_inventory_account_id"], name: "index_store_fronts_on_merchandise_inventory_account_id"
+    t.index ["payable_account_id"], name: "index_store_fronts_on_payable_account_id"
     t.index ["purchase_return_account_id"], name: "index_store_fronts_on_purchase_return_account_id"
+    t.index ["receivable_account_id"], name: "index_store_fronts_on_receivable_account_id"
     t.index ["sales_account_id"], name: "index_store_fronts_on_sales_account_id"
     t.index ["sales_discount_account_id"], name: "index_store_fronts_on_sales_discount_account_id"
     t.index ["sales_return_account_id"], name: "index_store_fronts_on_sales_return_account_id"
@@ -1737,16 +1738,18 @@ ActiveRecord::Schema.define(version: 2019_01_28_125950) do
   add_foreign_key "stock_registry_temporary_products", "registries", column: "stock_registry_id"
   add_foreign_key "stock_registry_temporary_products", "store_fronts"
   add_foreign_key "stock_registry_temporary_products", "users", column: "employee_id"
-  add_foreign_key "store_fronts", "accounts", column: "accounts_payable_account_id"
-  add_foreign_key "store_fronts", "accounts", column: "accounts_receivable_account_id"
   add_foreign_key "store_fronts", "accounts", column: "cost_of_goods_sold_account_id"
   add_foreign_key "store_fronts", "accounts", column: "internal_use_account_id"
   add_foreign_key "store_fronts", "accounts", column: "merchandise_inventory_account_id"
+  add_foreign_key "store_fronts", "accounts", column: "payable_account_id"
   add_foreign_key "store_fronts", "accounts", column: "purchase_return_account_id"
+  add_foreign_key "store_fronts", "accounts", column: "receivable_account_id"
   add_foreign_key "store_fronts", "accounts", column: "sales_account_id"
   add_foreign_key "store_fronts", "accounts", column: "sales_discount_account_id"
   add_foreign_key "store_fronts", "accounts", column: "sales_return_account_id"
   add_foreign_key "store_fronts", "accounts", column: "spoilage_account_id"
+  add_foreign_key "store_fronts", "cooperative_services"
+  add_foreign_key "store_fronts", "cooperatives"
   add_foreign_key "streets", "barangays"
   add_foreign_key "streets", "municipalities"
   add_foreign_key "suppliers", "accounts", column: "payable_account_id"

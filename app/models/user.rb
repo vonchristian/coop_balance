@@ -24,8 +24,7 @@ class User < ApplicationRecord
               :treasurer,
               :accountant,
               :accounting_clerk,
-              :collector,
-              :sales_manager]
+              :collector]
 
   belongs_to :store_front, optional: true
 
@@ -71,7 +70,7 @@ class User < ApplicationRecord
     ids = Employees::EmployeeCashAccount.where(employee_id: self.ids).pluck(:cash_account_id)
     AccountingModule::Account.where(id: ids)
   end
-  
+
   def current_occupation
     role
   end

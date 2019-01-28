@@ -1,10 +1,11 @@
 require 'rails_helper'
 
-RSpec.describe StoreFront, type: :model do
+describe StoreFront do
   describe 'associations' do
-    it { is_expected.to belong_to :business }
-    it { is_expected.to belong_to :accounts_receivable_account }
-    it { is_expected.to belong_to :accounts_payable_account }
+    it { is_expected.to belong_to :cooperative_service }
+    it { is_expected.to belong_to :cooperative }
+    it { is_expected.to belong_to :receivable_account }
+    it { is_expected.to belong_to :payable_account }
     it { is_expected.to belong_to :cost_of_goods_sold_account }
     it { is_expected.to belong_to :merchandise_inventory_account }
     it { is_expected.to belong_to :sales_account }
@@ -22,15 +23,15 @@ RSpec.describe StoreFront, type: :model do
     it { is_expected.to validate_presence_of :name }
     it { is_expected.to validate_presence_of :address }
     it { is_expected.to validate_uniqueness_of :name }
-    it { is_expected.to validate_presence_of :accounts_receivable_account_id }
+    it { is_expected.to validate_presence_of :receivable_account_id }
     it { is_expected.to validate_presence_of :cost_of_goods_sold_account_id }
     it { is_expected.to validate_presence_of :merchandise_inventory_account_id }
     it { is_expected.to validate_presence_of :sales_account_id }
     it { is_expected.to validate_presence_of :sales_return_account_id }
-    it { is_expected.to validate_presence_of :accounts_payable_account_id }
+    it { is_expected.to validate_presence_of :payable_account_id }
     it { is_expected.to validate_presence_of :spoilage_account_id }
-    it { is_expected.to validate_uniqueness_of :accounts_receivable_account_id }
-    it { is_expected.to validate_uniqueness_of :cost_of_goods_sold_account_id }
+    it { is_expected.to validate_uniqueness_of(:receivable_account_id).scoped_to(:cooperative_id) }
+    it { is_expected.to validate_uniqueness_of(:cost_of_goods_sold_account_id).scoped_to(:cooperative_id) }
     it { is_expected.to validate_uniqueness_of :merchandise_inventory_account_id }
     it { is_expected.to validate_uniqueness_of :sales_account_id }
     it { is_expected.to validate_uniqueness_of :sales_return_account_id }

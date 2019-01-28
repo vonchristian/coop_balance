@@ -1,6 +1,6 @@
 module AccountingModule
   module BalanceFinders
-    class OfficeToDate
+    class CooperativeServiceOffice
     end
   end
-end
+end 

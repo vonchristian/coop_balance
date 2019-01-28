@@ -282,6 +282,10 @@ module AccountingModule
       it "to_date" do
         expect(AccountingModule::Amount.balance_finder(to_date: Date.current)).to eql AccountingModule::BalanceFinders::ToDate
       end
+
+      it "office and cooperative_service" do
+        expect(AccountingModule::Amount.balance_finder(office: 0, cooperative_service: 0)).to eql AccountingModule::BalanceFinders::CooperativeServiceOffice
+      end
     end
   end
 end
