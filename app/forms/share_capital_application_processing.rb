@@ -59,7 +59,7 @@ class ShareCapitalApplicationProcessing
 end
 
 def credit_account
-  find_share_capital_product.paid_up_account
+  find_share_capital_product.equity_account
 end
 def cash_account
   find_employee.cash_accounts.find(cash_account_id)

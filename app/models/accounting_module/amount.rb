@@ -51,9 +51,6 @@ module AccountingModule
       joins(:entry).where('entries.recorder_id' => args[:recorder_id])
     end
 
-    # def self.for_commercial_document(args={})
-    #   where(commercial_document: args[:commercial_document])
-    # end
 
     def self.entered_on(args={})
       current_date = Date.current
@@ -67,10 +64,6 @@ module AccountingModule
       where(commercial_document_type: "LoansModule::Loan")
     end
 
-    def self.balance(args={})
-      balance_finder.new(args.merge(amounts: self)).compute
-    end
-
     def debit?
       type == "AccountingModule::DebitAmount"
     end
@@ -82,6 +75,11 @@ module AccountingModule
     def self.total
       not_cancelled.all.map{ |amount| amount.amount.amount }.sum
     end
+    
+    def self.balance(args={})
+      balance_finder(args).new(args.merge(amounts: self)).compute
+    end
+
     private
     def self.balance_finder(args={})
       if args.present?

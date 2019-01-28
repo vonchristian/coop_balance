@@ -12,7 +12,7 @@
               <h4 class="card-title">Amount</h4>
             </div>
             <div class="col-md-8 col-sm-8">
-              <h4 class="card-title"><%= number_to_currency @voucher.voucher_amounts.for_account(account: @share_capital.share_capital_product_paid_up_account).total %></h4>
+              <h4 class="card-title"><%= number_to_currency @voucher.voucher_amounts.for_account(account: @share_capital.share_capital_product_equity_account).total %></h4>
             </div>
           </div>
         </div>

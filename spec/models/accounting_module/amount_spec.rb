@@ -244,5 +244,44 @@ module AccountingModule
       expect(entry.credit_amounts.total).to eql 1_000
     end
 
+    describe ".balance_finder" do
+      it "commercial_document" do
+        expect(AccountingModule::Amount.balance_finder(commercial_document: 0)).to eql AccountingModule::BalanceFinders::CommercialDocument
+      end
+
+      it "commercial_document with to date" do
+        expect(AccountingModule::Amount.balance_finder(commercial_document: 0, to_date: Date.current)).to eql AccountingModule::BalanceFinders::CommercialDocumentToDate
+      end
+
+      it "commercial_document with from and to date" do
+        expect(AccountingModule::Amount.balance_finder(commercial_document: 0, from_date: Date.current, to_date: Date.current)).to eql AccountingModule::BalanceFinders::CommercialDocumentFromDateToDate
+      end
+
+      it "cooperative_service with to_date" do
+        expect(AccountingModule::Amount.balance_finder(cooperative_service: 0, to_date: Date.current)).to eql AccountingModule::BalanceFinders::CooperativeServiceToDate
+      end
+
+      it "cooperative_service" do
+        expect(AccountingModule::Amount.balance_finder(cooperative_service: 0)).to eql AccountingModule::BalanceFinders::CooperativeService
+      end
+
+      it "default_balance_finder" do
+        expect(AccountingModule::Amount.balance_finder()).to eql AccountingModule::BalanceFinders::DefaultBalanceFinder
+      end
+
+      it "office with from_date and to_date" do
+        expect(AccountingModule::Amount.balance_finder(office: 0, from_date: Date.current, to_date: Date.current)).to eql AccountingModule::BalanceFinders::FromDateOfficeToDate
+      end
+
+      it "from_date and to_date" do
+        expect(AccountingModule::Amount.balance_finder(from_date: Date.current, to_date: Date.current)).to eql AccountingModule::BalanceFinders::FromDateToDate
+      end
+      it "office and to_date" do
+        expect(AccountingModule::Amount.balance_finder(office: 0, to_date: Date.current)).to eql AccountingModule::BalanceFinders::OfficeToDate
+      end
+      it "to_date" do
+        expect(AccountingModule::Amount.balance_finder(to_date: Date.current)).to eql AccountingModule::BalanceFinders::ToDate
+      end
+    end
   end
 end

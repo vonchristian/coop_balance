@@ -9,16 +9,14 @@ module MembershipsModule
 
     belongs_to :cooperative
     belongs_to :subscriber, polymorphic: true, touch: true
-    belongs_to :share_capital_product, class_name: "CoopServicesModule::ShareCapitalProduct"
+    belongs_to :share_capital_product, class_name: "Cooperatives::ShareCapitalProduct"
     belongs_to :office, class_name: "Cooperatives::Office"
     belongs_to :barangay, class_name: "Addresses::Barangay", optional: true
     belongs_to :organization, optional: true
     has_many :amounts, as: :commercial_document, class_name: "AccountingModule::Amount"
     delegate :name, to: :barangay, prefix: true, allow_nil: true
     delegate :name,
-            :paid_up_account,
-            :subscription_account,
-            :closing_account_fee,
+            :equity_account,
             :default_product?,
             :interest_payable_account,
             :cost_per_share,
@@ -28,9 +26,6 @@ module MembershipsModule
     delegate :avatar, :name, to: :subscriber
     before_save :set_account_owner_name, on: [:create, :update]
 
-    def balance
-      paid_up_balance
-    end
 
     def self.inactive(options={})
       updated_at(options)
@@ -46,23 +41,23 @@ module MembershipsModule
     end
 
     def self.has_minimum_balance
-      self.where(has_minimum_balance: true)
+      where(has_minimum_balance: true)
     end
 
     def self.below_minimum_balance
-      self.where(has_minimum_balance: false)
+      where(has_minimum_balance: false)
     end
 
 
     def capital_build_ups(args={})
-      share_capital_product_paid_up_account.amounts.where(commercial_document: self)
+      share_capital_product_equity_account.amounts.where(commercial_document: self)
     end
 
 
     def average_monthly_balance(args = {})
       first_entry_date = Date.today - 999.years
       date = args[:date]
-      paid_up_balance(from_date: first_entry_date, to_date: date.beginning_of_month.last_month.end_of_month, commercial_document: self) +
+      balance(from_date: first_entry_date, to_date: date.beginning_of_month.last_month.end_of_month, commercial_document: self) +
       capital_build_ups(commercial_document: self, from_date: date.beginning_of_month, to_date: (date.beginning_of_month + 14.days)).sum(&:amount)
     end
 
@@ -80,32 +75,28 @@ module MembershipsModule
 
     def entries
       entry_ids = []
-      entry_ids << share_capital_product_paid_up_account.amounts.where(commercial_document: self).pluck(:entry_id)
+      entry_ids << share_capital_product_equity_account.amounts.where(commercial_document: self).pluck(:entry_id)
       AccountingModule::Entry.where(id: entry_ids.uniq.flatten)
     end
 
     def self.subscribed_shares
-      all.sum(&:subscribed_shares)
+      all.sum(&:shares)
     end
 
-    def paid_up_shares
-      paid_up_balance / share_capital_product_cost_per_share
+    def shares
+      balance / share_capital_product_cost_per_share
     end
 
-    def paid_up_balance(args={})
-      share_capital_product_paid_up_account.balance(from_date: args[:from_date], to_date: args[:to_date], commercial_document: self)
+    def balance(args={})
+      share_capital_product_equity_account.balance(args.merge(commercial_document: self))
     end
 
-    def subscription_balance
-      share_capital_product_subscription_account.balance(commercial_document: self)
-    end
+
 
     def dividends_earned
       share_capital_product_interest_payable_account.balance(commercial_document: self)
     end
-    def dividends_total
-      # entries.share_capital_dividend.map{|a| a.debit_amounts.distinct.sum(:amount) }.sum
-    end
+
     def name
       account_owner_name || subscriber_name
     end
@@ -116,14 +107,6 @@ module MembershipsModule
       averaged_monthly_balances / net_income_distributable
     end
 
-    def set_balance_status
-      if paid_up_balance >= share_capital_product.minimum_balance
-        self.has_minimum_balance = true
-      else
-        self.has_minimum_balance = false
-      end
-      self.save
-    end
 
     private
     def set_account_owner_name

@@ -22,7 +22,7 @@
         <div class="row justify-content-end">
           <div class="col-md-7 col-sm-6 col-auto">
             <small>CURRENT BALANCE</small>
-            <h2 class="number"><%= number_to_currency @share_capital.paid_up_balance %></h2>
+            <h2 class="number"><%= number_to_currency @share_capital.balance %></h2>
             <small>Account Hash</small><br>
             <%= @share_capital.account_number %>
           </div>

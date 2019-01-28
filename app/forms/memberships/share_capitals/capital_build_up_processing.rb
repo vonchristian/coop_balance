@@ -50,7 +50,7 @@ module Memberships
       end
 
       def credit_account
-        find_share_capital.share_capital_product_paid_up_account
+        find_share_capital.share_capital_product_equity_account
       end
 
       def find_subscriber

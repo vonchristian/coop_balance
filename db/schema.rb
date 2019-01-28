@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_28_122038) do
+ActiveRecord::Schema.define(version: 2019_01_28_125950) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1200,8 +1200,7 @@ ActiveRecord::Schema.define(version: 2019_01_28_122038) do
     t.decimal "minimum_number_of_subscribed_share"
     t.decimal "minimum_number_of_paid_share"
     t.boolean "default_product", default: false
-    t.uuid "paid_up_account_id"
-    t.uuid "subscription_account_id"
+    t.uuid "equity_account_id"
     t.decimal "cost_per_share"
     t.boolean "has_closing_account_fee", default: false
     t.decimal "closing_account_fee", default: "0.0"
@@ -1209,10 +1208,9 @@ ActiveRecord::Schema.define(version: 2019_01_28_122038) do
     t.uuid "cooperative_id"
     t.uuid "interest_payable_account_id"
     t.index ["cooperative_id"], name: "index_share_capital_products_on_cooperative_id"
+    t.index ["equity_account_id"], name: "index_share_capital_products_on_equity_account_id"
     t.index ["interest_payable_account_id"], name: "index_share_capital_products_on_interest_payable_account_id"
     t.index ["name"], name: "index_share_capital_products_on_name"
-    t.index ["paid_up_account_id"], name: "index_share_capital_products_on_paid_up_account_id"
-    t.index ["subscription_account_id"], name: "index_share_capital_products_on_subscription_account_id"
   end
 
   create_table "share_capitals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1722,9 +1720,8 @@ ActiveRecord::Schema.define(version: 2019_01_28_122038) do
   add_foreign_key "share_capital_applications", "cooperatives"
   add_foreign_key "share_capital_applications", "offices"
   add_foreign_key "share_capital_applications", "share_capital_products"
+  add_foreign_key "share_capital_products", "accounts", column: "equity_account_id"
   add_foreign_key "share_capital_products", "accounts", column: "interest_payable_account_id"
-  add_foreign_key "share_capital_products", "accounts", column: "paid_up_account_id"
-  add_foreign_key "share_capital_products", "accounts", column: "subscription_account_id"
   add_foreign_key "share_capital_products", "cooperatives"
   add_foreign_key "share_capitals", "barangays"
   add_foreign_key "share_capitals", "carts"

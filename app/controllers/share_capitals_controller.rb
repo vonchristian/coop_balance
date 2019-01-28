@@ -8,7 +8,7 @@ class ShareCapitalsController < ApplicationController
     elsif params[:search].present?
       @share_capitals = current_cooperative.share_capitals.text_search(params[:search]).paginate(:page => params[:page], :per_page => 20)
     else
-      @share_capitals = current_cooperative.share_capitals.includes([:subscriber, :share_capital_product =>[:paid_up_account]]).order(:account_owner_name).all.paginate(:page => params[:page], :per_page => 20)
+      @share_capitals = current_cooperative.share_capitals.includes([:subscriber, :share_capital_product =>[:equity_account]]).order(:account_owner_name).all.paginate(:page => params[:page], :per_page => 20)
     end
   end
 
