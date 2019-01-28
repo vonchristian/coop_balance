@@ -1,6 +1,6 @@
  module MembershipsModule
 	class ProgramSubscription < ApplicationRecord
-	  belongs_to :program,             class_name: "CoopServicesModule::Program"
+	  belongs_to :program,             class_name: "Cooperatives::Program"
 	  belongs_to :subscriber,          polymorphic: true
 	  has_many :subscription_payments, class_name: "AccountingModule::Entry", as: :commercial_document
 	  delegate :name,
@@ -33,10 +33,7 @@
 
 	  def paid?(options={})
       if one_time_payment?
-        account.amounts.where(commercial_document: self.subscriber).present? ||
-        account.amounts.where(commercial_document: self).present? ||
-        account.entries.where(commercial_document: self).present? ||
-        account.entries.where(commercial_document: self.subscriber).present?
+        account.amounts.where(commercial_document: self).present?
       else
         account.amounts.entered_on(options).where(commercial_document: self.subscriber).present? ||
         account.amounts.entered_on(options).where(commercial_document: self).present? ||

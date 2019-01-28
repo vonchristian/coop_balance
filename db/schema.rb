@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_27_234642) do
+ActiveRecord::Schema.define(version: 2019_01_28_122038) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1032,6 +1032,7 @@ ActiveRecord::Schema.define(version: 2019_01_27_234642) do
     t.datetime "updated_at", null: false
     t.string "subscriber_type"
     t.uuid "subscriber_id"
+    t.datetime "date_subscribed"
     t.index ["program_id"], name: "index_program_subscriptions_on_program_id"
     t.index ["subscriber_type", "subscriber_id"], name: "index_subscriber_in_program_subscriptions"
   end

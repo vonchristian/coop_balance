@@ -27,28 +27,13 @@
         <div class="col-md-1 col-sm-1">
         </div>
         <div class="col-md-3 col-sm-3">
-          <% if voucher.voucher_amounts.last.commercial_document_type == "MembershipsModule::TimeDeposit" && voucher.voucher_amounts.debit.where(account: voucher.voucher_amounts.last.commercial_document.time_deposit_product.account).present? %>
-            <%= link_to time_deposit_withdrawal_voucher_path(time_deposit_id: voucher.voucher_amounts.last.commercial_document.id, id: voucher.id) do %>
-              <%= voucher.payee.try(:name) %><br>
-              <small class="text-muted">
-                <i class="fa fa-clock"></i> <%= voucher.date.strftime("%B %e, %Y") %><br>
-              </small>
-            <% end %>
-          <% elsif voucher.voucher_amounts.last.commercial_document_type == "LoansModule::Loan" && !voucher.disbursed? %>
-            <%= link_to loan_payment_voucher_path(loan_id: voucher.voucher_amounts.last.commercial_document.id, id: voucher.id) do %>
-              <%= voucher.payee.try(:name) %><br>
-              <small class="text-muted">
-                <i class="fa fa-clock"></i> <%= voucher.date.strftime("%B %e, %Y") %><br>
-              </small>
-            <% end %>
-          <% else %>
             <%= link_to voucher_path(voucher) do %>
               <%= voucher.payee.try(:name) %><br>
               <small class="text-muted">
                 <i class="fa fa-clock"></i> <%= voucher.date.strftime("%B %e, %Y") %><br>
               </small>
             <% end %>
-          <% end %>
+      
         </div>
         <div class="col-md-1 col-sm-1">
           <b><%= voucher.reference_number %></b><br>

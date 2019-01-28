@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :program, class: "CoopServicesModule::Program" do
+  factory :program, class: "Cooperatives::Program" do
     name  { Faker::Company.name}
     amount  { 100 }
     association :account, factory: :asset

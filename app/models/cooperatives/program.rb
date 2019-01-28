@@ -1,4 +1,4 @@
-module CoopServicesModule
+module Cooperatives
 	class Program < ApplicationRecord
 
     enum payment_schedule_type: [:one_time_payment, :annually, :monthly, :quarterly]
@@ -20,8 +20,16 @@ module CoopServicesModule
       organization_subscribers
     end
 
+    def payment_status_finder
+      ("Programs::PaymentStatusFinders::" + payment_schedule_type.titleize.gsub(" ", "")).constantize
+    end
+
     def self.default_programs
     	where(default_program: true)
+    end
+
+    def paid?(args={})
+      payment_status_finder.new(args.merge(program: self)).paid?
     end
 
     def self.subscribe(subscriber)
@@ -29,13 +37,5 @@ module CoopServicesModule
         subscriber.program_subscriptions.find_or_create_by!(program: program)
       end
     end
-
-    # self.subscribe_subscribers(program) :before
-		def self.subscribe_members(program)
-			return false if !program.default_program?
-			subscribers.each do |subscriber|
-				subscriber.program_subscriptions.find_or_create_by!(program: program)
-			end
-		end
 	end
 end

@@ -3,10 +3,9 @@
   <div class="col-md-4 offset-md-4">
     <div class="card">
       <div class="card-header">
-        <h3 class="card-title"> New Payment Details </h3>
         <center>
           <%= image_tag(@program_subscription.subscriber.avatar, style: 'width:60px;height:60px;', class: 'media-object img-circle') %>
-          <h3><%= @program_subscription.subscriber_name %></h3>
+          <h3 class="card-title"><%= @program_subscription.subscriber_name %></h3>
         </center>
       </div>
       <div class="card-body">
@@ -25,10 +24,13 @@
           <%= f.error_notification %>
           <%= f.input :amount %>
           <%= f.input :reference_number %>
+          <%= f.input :description %>
           <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
           <%= f.input :program_subscription_id, input_html: { value: @program_subscription.id }, as: :hidden %>
           <%= f.input :member_id, input_html: { value: @member.id }, as: :hidden %>
           <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+          <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] } %>
+          <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
           <div class="box-footer">
             <%= f.submit "Save Payment", class: "btn btn-primary float-right" %>
           </div>

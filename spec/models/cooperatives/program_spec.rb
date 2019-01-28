@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-module CoopServicesModule
+module Cooperatives
   describe Program do
   	context 'associations' do
       it { is_expected.to belong_to :cooperative }
@@ -33,5 +33,33 @@ module CoopServicesModule
       should define_enum_for(:payment_schedule_type).
       with_values([:one_time_payment, :annually, :monthly, :quarterly])
     end
+
+    describe "#payment_status_finder" do
+      it 'one_time_payment' do
+        program = create(:program, payment_schedule_type: 'one_time_payment')
+
+        expect(program.payment_status_finder).to eq Programs::PaymentStatusFinders::OneTimePayment
+      end
+
+      it 'annually' do
+        program = create(:program, payment_schedule_type: 'annually')
+
+        expect(program.payment_status_finder).to eq Programs::PaymentStatusFinders::Annually
+      end
+
+      it 'quarterly' do
+        program = create(:program, payment_schedule_type: 'quarterly')
+
+        expect(program.payment_status_finder).to eq Programs::PaymentStatusFinders::Quarterly
+      end
+
+      it 'monthly' do
+        program = create(:program, payment_schedule_type: 'monthly')
+
+        expect(program.payment_status_finder).to eq Programs::PaymentStatusFinders::Monthly
+      end
+    end
+
+
   end
 end

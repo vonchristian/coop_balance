@@ -25,7 +25,7 @@ class Cooperative < ApplicationRecord
   has_many :interest_configs,               through: :loan_products
   has_many :time_deposit_products,          class_name: "CoopServicesModule::TimeDepositProduct"
   has_many :share_capital_products,         class_name: "CoopServicesModule::ShareCapitalProduct"
-  has_many :programs,                       class_name: "CoopServicesModule::Program"
+  has_many :programs,                       class_name: "Cooperatives::Program"
   has_many :program_subscriptions,          through: :programs, class_name: "MembershipsModule::ProgramSubscription"
   has_many :savings,                        class_name: "MembershipsModule::Saving"
   has_many :share_capitals,                 class_name: "MembershipsModule::ShareCapital"
