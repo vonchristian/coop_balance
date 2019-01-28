@@ -1,13 +1,14 @@
 module AccountingModule
   module BalanceFinders
-    class BaseBalanceFinder
+    class DefaultBalanceFinder
       attr_reader :amounts
 
-      def initialize(args)
+      def initialize(args={})
         @amounts = args.fetch(:amounts)
-        post_initialize(args)
       end
-      def post_initialize(args)
+
+      def compute
+        amounts.total
       end
     end
   end

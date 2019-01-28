@@ -4,5 +4,8 @@ FactoryBot.define do
     address { "Poblacion" }
     contact_number { "112312" }
     association :cooperative
+    factory :main_office, class: Cooperatives::Offices::MainOffice do
+      type "Cooperatives::Offices::MainOffice"
+    end
   end
 end

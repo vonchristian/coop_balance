@@ -2,7 +2,7 @@ require 'rails_helper'
 
 module AccountingModule
   module BalanceFinders
-    describe Amounts do
+    describe DefaultBalanceFinder do
       it '.compute' do
         cooperative = create(:cooperative)
         asset = create(:asset)

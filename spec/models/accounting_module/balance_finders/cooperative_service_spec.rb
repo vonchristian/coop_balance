@@ -2,7 +2,7 @@ require 'rails_helper'
 
 module AccountingModule
   module BalanceFinders
-    describe AmountsCooperativeService do
+    describe CooperativeService do
       it '.compute' do
         cooperative = create(:cooperative)
         cooperative_service = create(:cooperative_service, cooperative: cooperative)

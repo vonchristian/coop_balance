@@ -4,7 +4,7 @@ module LoansModule
     attr_reader :loan, :amortization_schedules, :employee, :view_context, :voucher, :cooperative, :voucher, :term
     def initialize(args)
 
-      super(margin: 40, page_size: "LEGAL", page_layout: :portrait)
+      super(margin: 40, page_size: "A4", page_layout: :portrait)
 
       @loan = args[:loan]
       @voucher = args[:voucher] || @loan.disbursement_voucher
@@ -132,31 +132,31 @@ module LoansModule
   end
 
     def amortization_schedule
-      move_down 20
-      stroke do
-        stroke_color 'CCCCCC'
-        line_width 0.2
-        stroke_horizontal_rule
-        move_down 15
-      end
-      text "LOAN AMORTIZATION SCHEDULE", size: 9, style: :bold
-      move_down 10
-      if loan.forwarded_loan? || loan.amortization_schedules.blank?
-        text "No data Available"
-      else
-        table(amortization_schedule_data, header: true, cell_style: { size: 10 }, column_widths: [100, 80, 80, 70, 90, 110]) do
+        move_down 20
+        stroke do
+          stroke_color 'CCCCCC'
+          line_width 0.2
+          stroke_horizontal_rule
+          move_down 15
+        end
+        text "LOAN AMORTIZATION SCHEDULE", size: 9, style: :bold
+        move_down 10
+        if loan.forwarded_loan? || loan.amortization_schedules.blank?
+          text "No data Available"
+        else
+          table(amortization_schedule_data, header: true, cell_style: { size: 10 }, column_widths: [100, 80, 80, 70, 90, 110]) do
 
-          row(0).font_style = :bold
-          column(0).align = :right
-          column(1).align = :right
-          column(2).align = :right
-          column(3).align = :right
-          column(4).align = :right
+            row(0).font_style = :bold
+            column(0).align = :right
+            column(1).align = :right
+            column(2).align = :right
+            column(3).align = :right
+            column(4).align = :right
 
 
+          end
         end
       end
-    end
     def amortization_schedule_data
       [["DATE", "PRINCIPAL", "INTEREST", "TOTAL", "BALANCE", "NOTES"]] +
       [["", "","", "", "#{price(@loan.loan_amount)}", ""]] +
@@ -164,14 +164,14 @@ module LoansModule
         [ a.date.strftime("%B %e, %Y"),
           price(a.principal),
           (formatted_interest(a)),
-          price(a.total_amortization),
-          price(@loan.principal_balance_for(a)),
+          price(a.total_repayment),
+          price(a.ending_balance),
           ""
         ] }
     end
     def signatory_details
     move_down 20
-      table(signatory, cell_style: { inline_format: true, size: 9, font: "Helvetica"}, column_widths: [120, 10, 120, 10, 120, 10, 140]) do
+      table(signatory, cell_style: { inline_format: true, size: 9, font: "Helvetica"}, column_widths: [100, 10, 120, 10, 120, 10, 100]) do
         cells.borders = []
         row(3).font_style = :bold
      end
@@ -186,7 +186,7 @@ module LoansModule
      @loan.preparer
    end
    def signatory
-    [["PREPARED BY", "", "APPROVED BY", "", "DISBURSED BY", "", " VED BY"]] +
+    [["PREPARED BY", "", "APPROVED BY", "", "DISBURSED BY", "", "RECEIVED BY"]] +
     [["", ""]] +
     [["", ""]] +
     [["#{preparer.first_middle_and_last_name.try(:upcase)}", "",

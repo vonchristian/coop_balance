@@ -68,8 +68,7 @@ module AccountingModule
     end
 
     def self.balance(args={})
-      args_with_amounts = args.merge({ amounts: self })
-      balance_finder(args_with_amounts).new(args_with_amounts).compute
+      balance_finder.new(args.merge(amounts: self)).compute
     end
 
     def debit?
@@ -84,9 +83,13 @@ module AccountingModule
       not_cancelled.all.map{ |amount| amount.amount.amount }.sum
     end
     private
-    def self.balance_finder(opts={})
-    klass = opts.compact.keys.sort.map{ |key| key.to_s.titleize }.join.gsub(" ", "")
-        ("AccountingModule::BalanceFinders::" + klass).constantize
+    def self.balance_finder(args={})
+      if args.present?
+        klass = args.compact.keys.sort.map{ |key| key.to_s.titleize }.join.gsub(" ", "")
+      else
+        klass = "DefaultBalanceFinder"
+      end
+      ("AccountingModule::BalanceFinders::" + klass).constantize
     end
   end
 end

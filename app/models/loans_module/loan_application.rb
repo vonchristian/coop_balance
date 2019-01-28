@@ -210,8 +210,8 @@ module LoansModule
       schedule_counter.new(loan_application: self).schedule_count
     end
 
-    def amortizeable_principal
-      amortizeable_principal_calculator.new(loan_application: self).amortizeable_principal
+    def amortizeable_principal(args={})
+      amortizeable_principal_calculator.new(loan_application: self, schedule: args[:schedule]).amortizeable_principal
     end
 
     def number_of_thousands # for Loan Protection fund computation

@@ -14,7 +14,7 @@ module LoansModule
         end
 
         def total_repayment
-          pmt(monthly_interest_rate, schedule_count, -loan_amount).round(2)
+          pmt(monthly_interest_rate, schedule_count, -loan_amount)
         end
 
         private

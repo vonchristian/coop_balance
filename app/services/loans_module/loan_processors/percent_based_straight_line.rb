@@ -12,6 +12,7 @@ module LoansModule
         create_amortization_schedule
         create_charges
         update_interests
+        update_total_repayments
       end
 
       private
@@ -25,6 +26,9 @@ module LoansModule
 
       def update_interests
         loan_product.amortizer.new(loan_application: loan_application).update_interest_amounts!
+      end
+      def update_total_repayments
+        loan_product.amortizer.new(loan_application: loan_application).update_total_repayments!
       end
     end
   end

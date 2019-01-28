@@ -19,13 +19,22 @@ module LoansModule
             schedule.save!
           end
         end
+
+        def update_total_repayments!
+          loan_application.amortization_schedules.each do |schedule|
+            schedule.total_repayment = schedule.principal + schedule.interest
+            schedule.save!
+          end
+        end
+
         private
 
         def create_first_schedule
           loan_application.amortization_schedules.create!(
             date:      loan_application.first_amortization_date,
             interest:  0,
-            principal: loan_application.amortizeable_principal
+            principal: loan_application.amortizeable_principal,
+            ending_balance: loan_application.loan_amount.amount - loan_application.amortizeable_principal
           )
         end
 
@@ -35,13 +44,20 @@ module LoansModule
               loan_application.amortization_schedules.create!(
                 date:      loan_application.succeeding_amortization_date,
                 interest:  0,
-                principal: loan_application.amortizeable_principal
+                principal: loan_application.amortizeable_principal,
+                ending_balance: computed_ending_balance_for(loan_application.amortization_schedules.latest)
               )
             end
           end
         end
 
+        def computed_ending_balance_for(schedule)
+          ending_balance_for(schedule) - schedule.principal
+        end
 
+        def ending_balance_for(schedule)
+          loan_application.amortization_schedules.find(schedule.id).ending_balance
+        end
 
         def amortizeable_interest_for(schedule)
           loan_product.interest_calculator.new(loan_application: loan_application, schedule: schedule).monthly_amortization_interest

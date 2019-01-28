@@ -72,7 +72,7 @@ module LoansModule
       schedule  = args.fetch(:schedule)
       from_date = oldest.date
       to_date   = schedule.date
-      select { |a| (from_date.beginning_of_day..to_date.end_of_day).cover?(a.date) }.sum(&:total_amortization)
+      select { |a| (from_date.beginning_of_day..to_date.end_of_day).cover?(a.date) }.sum(&:total_repayment)
     end
 
     def self.scheduled_for(args={})

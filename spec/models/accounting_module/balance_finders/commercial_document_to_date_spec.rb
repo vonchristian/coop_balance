@@ -2,7 +2,7 @@ require 'rails_helper'
 
 module AccountingModule
   module BalanceFinders
-    describe AmountsCommercialDocumentToDate do
+    describe CommercialDocumentToDate do
       it '.compute' do
         cooperative = create(:cooperative)
         liability   = create(:liability)

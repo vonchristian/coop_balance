@@ -8,7 +8,7 @@ FactoryBot.define do
     password_confirmation { 'secretpassword' }
     role { 0 }
     association :cooperative
-    association :office
+    association :office, factory: :main_office
     after(:build) do |u|
       u.avatar.attach(io: File.open(Rails.root.join('spec', 'support', 'images', 'default.png')), filename: 'avatar.png', content_type: 'image/png')
     end

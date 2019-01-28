@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :origin_entry, class: AccountingModule::Entry do |entry|
     entry.association         :cooperative
-    entry.association         :office
+    entry.association         :office, factory: :main_office
     entry.description         { "Genesis entry" }
     entry.association         :recorder, factory: :user
     entry.reference_number    { "Genesis" }
@@ -18,7 +18,7 @@ FactoryBot.define do
   factory :entry, :class => AccountingModule::Entry do |entry|
     entry.description { 'entry description' }
     association       :recorder, factory: :user
-    association       :office
+    association       :office, factory: :main_office
     association       :cooperative, factory: :origin_cooperative
     association       :previous_entry, factory: :origin_entry
     factory :entry_with_credit_and_debit, :class => AccountingModule::Entry do |entry_cd|

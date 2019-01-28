@@ -2,7 +2,7 @@ require 'rails_helper'
 
 module AccountingModule
   module BalanceFinders
-    describe AmountsToDate do
+    describe FromDateToDate do
       it '.compute' do
         cooperative = create(:cooperative)
         asset       = create(:asset)
@@ -15,14 +15,14 @@ module AccountingModule
         entry.credit_amounts.build(amount: 100, account: revenue)
         entry.save!
 
-        entry_2 = build(:entry, previous_entry: entry, cooperative: cooperative, entry_date: Date.current.last_year)
+        entry_2 = build(:entry, previous_entry: entry, cooperative: cooperative, entry_date: Date.yesterday)
         entry_2.debit_amounts.build(amount: 300, account: asset)
         entry_2.credit_amounts.build(amount: 300, account: revenue)
         entry_2.save!
 
-        expect(described_class.new(amounts: AccountingModule::Amount.all, to_date: Date.current).compute).to eql 800
+        expect(described_class.new(amounts: AccountingModule::Amount.all, from_date: Date.current, to_date: Date.current).compute).to eql 200
 
-        expect(described_class.new(amounts: AccountingModule::Amount.all, to_date: Date.current.last_year).compute).to eql 600
+        expect(described_class.new(amounts: AccountingModule::Amount.all, from_date: Date.yesterday, to_date: Date.yesterday).compute).to eql 600
 
       end
     end

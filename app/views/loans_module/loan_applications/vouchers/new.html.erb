@@ -74,7 +74,7 @@
               Second Year
             </div>
             <div class="col-md-3 col-sm-6">
-              <%= number_to_currency @loan_application.second_year_interest %>
+              <%#= number_to_currency @loan_application.second_year_interest %>
             </div>
           </div>
         <% end %>
@@ -114,7 +114,7 @@
             Total Interest
           </div>
           <div class="col-md-3 col-sm-6">
-            <%= number_to_currency @loan_application.total_interest %>
+            <%#= number_to_currency @loan_application.total_interest %>
           </div>
         </div>
         <div class="row justify-content-end">
@@ -259,7 +259,7 @@
               <th> Date </th>
               <th> Principal </th>
               <th> Interest </th>
-              <th> Total Amortization</th>
+              <th> Total Repayment</th>
               <th> Loan Balance </th>
             </tr>
           </thead>
@@ -281,8 +281,8 @@
                     <span class="badge bg-danger"> Prededucted </span>
                   <% end %>
                 </td>
-              <td><%= number_to_currency amortization_schedule.total_amortization %></td>
-                <td><%= number_to_currency @loan_application.principal_balance_for(amortization_schedule) %></td>
+              <td><%= number_to_currency amortization_schedule.total_repayment %></td>
+                <td><%= number_to_currency amortization_schedule.ending_balance %></td>
               </tr>
             <% end %>
           </tbody>
