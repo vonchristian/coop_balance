@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_24_150829) do
+ActiveRecord::Schema.define(version: 2019_01_27_131935) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -113,6 +113,7 @@ ActiveRecord::Schema.define(version: 2019_01_24_150829) do
     t.uuid "cooperative_id"
     t.string "scheduleable_type"
     t.uuid "scheduleable_id"
+    t.string "entry_ids", default: [], array: true
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_amortization_schedules"
     t.index ["cooperative_id"], name: "index_amortization_schedules_on_cooperative_id"
     t.index ["credit_account_id"], name: "index_amortization_schedules_on_credit_account_id"

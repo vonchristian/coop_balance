@@ -15,6 +15,7 @@ module Vouchers
         update_accounts_last_transaction_date
       end
     end
+
     private
     def create_entry
       entry = AccountingModule::Entry.new(

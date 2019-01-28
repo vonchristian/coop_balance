@@ -7,9 +7,9 @@
             <%=image_tag(schedule.borrower_avatar, height: 45, width: 45, class: "img-circle") %>
           </div>
           <div class="col-md-10 col-sm-10">
-            <small class="text-muted">
+            <p class="text-muted no-margin-bottom">
               <i class="fa fa-user"></i> <%= schedule.borrower_name %>
-            </small><br>
+            </p>
             <small class="text-muted">
               <i class="fa fa-phone"></i> <%= schedule.borrower_current_contact_number %>
             </small><br>
@@ -21,6 +21,9 @@
         <div class="row justify-content-end">
           <div class="col-md-10 col-sm-10">
             <%= link_to 'View Details', loans_module_amortization_schedule_path(schedule), class: "btn btn-primary btn-sm" %>
+            <% if schedule.full_payment? %>
+              <span class="badge bg-warning float-right"> Paid </span>
+            <% end%>
           </div>
         </div>
       </div>

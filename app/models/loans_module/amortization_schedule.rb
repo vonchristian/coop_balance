@@ -25,6 +25,26 @@ module LoansModule
       end
     end
 
+    def payment_entries
+      AccountingModule::Entry.where(id: entry_ids)
+    end
+
+    def total_payments
+      payment_entries.sum {|e| e.debit_amounts.total}
+    end
+
+    def date_schedule # for loan payment collection_select
+      date.strftime("%B, %Y")
+    end
+
+    def self.partial_and_no_payment
+      where.not(payment_status: "full_payment").or(no_payment)
+    end
+
+    def self.no_payment
+      where(payment_status: nil)
+    end
+
     def self.total_interest
       sum(:interest)
     end
@@ -51,7 +71,7 @@ module LoansModule
       scheduled_for(from_date: from_date, to_date: to_date).sum(&:principal)
     end
 
-    def self.total_interest(args={})
+    def self.total_interest_for(args={})
       to_date   = args[:to_date]
       from_date = args[:from_date]
       if from_date && to_date
@@ -73,6 +93,10 @@ module LoansModule
       from_date = oldest.date
       to_date   = schedule.date
       select { |a| (from_date.beginning_of_day..to_date.end_of_day).cover?(a.date) }.sum(&:total_amortization)
+    end
+
+    def self.total_amortization(args={})
+      scheduled_for(args).sum(&:total_amortization)
     end
 
     def self.scheduled_for(args={})

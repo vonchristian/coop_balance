@@ -6,6 +6,7 @@ module LoansModule
                     :principal_amount,
                     :interest_amount,
                     :penalty_amount,
+                    :amortization_schedule_id,
                     :reference_number,
                     :date,
                     :description,
@@ -29,6 +30,12 @@ module LoansModule
 
       def find_loan
         LoansModule::Loan.find(loan_id)
+      end
+
+      def schedule_id
+        if amortization_schedule_id.present?
+          amortization_schedule_id
+        end
       end
 
       def find_employee

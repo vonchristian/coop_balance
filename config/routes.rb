@@ -131,7 +131,7 @@ Rails.application.routes.draw do
       resources :interest_rebate_postings,      only: [:new, :create], module: :loans
       resources :amortization_schedules,        only: [:index],        module: :loans
 
-      resources :payments,                      only: [:new, :create]
+      resources :payments,                      only: [:new, :create], module: :loans
       resources :losses,                        only: [:new, :create], module: :loans
       resources :tracking_numbers,              only: [:edit, :update], module: :loans
     end
@@ -419,12 +419,14 @@ Rails.application.routes.draw do
   end
 
   resources :loans, only: [:index, :show] do
-    resources :payment_voucher_confirmations, only: [:create]
-    resources :payment_vouchers, only: [:show],                      module: :loans
+    resources :payment_vouchers, only: [:show],                      module: :loans do
+      resources :confirmations,      only: [:create],                module: :payment_vouchers
+    end
     resources :notes,                 only: [:index, :new, :create], module: :loans
     resources :barangays,             only: [:edit, :update],        module: :loans
     resources :settings,              only: [:index],                module: :loans
     resources :payments,              only: [:index, :new, :create], module: :loans
+    
   end
 
   namespace :loans_module do
@@ -444,8 +446,6 @@ Rails.application.routes.draw do
     resources :voucher_confirmations, only: [:create],       module: :bank_accounts
     resources :deposits, only: [:new, :create],              module: :bank_accounts
     resources :withdrawals, only: [:new, :create],           module: :bank_accounts
-    resources :bank_charges, only: [:new, :create],          module: :bank_accounts
-    resources :bank_earned_interests, only: [:new, :create], module: :bank_accounts
     resources :settings, only: [:index],                     module: :bank_accounts
   end
 
