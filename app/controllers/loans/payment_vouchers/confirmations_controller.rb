@@ -6,7 +6,7 @@ module Loans
         @voucher = current_cooperative.vouchers.find(params[:payment_voucher_id])
         @schedule = @loan.amortization_schedules.find(params[:schedule_id])
         ActiveRecord::Base.transaction do
-          @entry_processing = Vouchers::EntryProcessing.new(
+          @payment_voucher = Vouchers::EntryProcessing.new(
             voucher:    @voucher,
             employee:   current_user,
             updateable: @loan
@@ -15,7 +15,7 @@ module Loans
             loan:     @loan, 
             schedule: @schedule, 
             voucher:  @voucher, 
-            entry:    @voucher.entry
+            entry:    @payment_voucher.entry
           ).update_status!
         end
 
