@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_28_232306) do
+ActiveRecord::Schema.define(version: 2019_01_29_001947) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1079,8 +1079,10 @@ ActiveRecord::Schema.define(version: 2019_01_28_232306) do
     t.uuid "employee_id"
     t.uuid "cooperative_id"
     t.uuid "store_front_id"
+    t.uuid "office_id"
     t.index ["cooperative_id"], name: "index_registries_on_cooperative_id"
     t.index ["employee_id"], name: "index_registries_on_employee_id"
+    t.index ["office_id"], name: "index_registries_on_office_id"
     t.index ["store_front_id"], name: "index_registries_on_store_front_id"
     t.index ["supplier_id"], name: "index_registries_on_supplier_id"
     t.index ["type"], name: "index_registries_on_type"
@@ -1142,7 +1144,6 @@ ActiveRecord::Schema.define(version: 2019_01_28_232306) do
     t.uuid "barangay_id"
     t.boolean "has_minimum_balance", default: false
     t.datetime "last_transaction_date"
-    t.uuid "cart_id"
     t.uuid "cooperative_id"
     t.boolean "archived"
     t.datetime "archived_at"
@@ -1151,7 +1152,6 @@ ActiveRecord::Schema.define(version: 2019_01_28_232306) do
     t.index ["account_number"], name: "index_savings_on_account_number", unique: true
     t.index ["account_owner_name"], name: "index_savings_on_account_owner_name"
     t.index ["barangay_id"], name: "index_savings_on_barangay_id"
-    t.index ["cart_id"], name: "index_savings_on_cart_id"
     t.index ["cooperative_id"], name: "index_savings_on_cooperative_id"
     t.index ["depositor_type", "depositor_id"], name: "index_savings_on_depositor_type_and_depositor_id"
     t.index ["office_id"], name: "index_savings_on_office_id"
@@ -1701,6 +1701,7 @@ ActiveRecord::Schema.define(version: 2019_01_28_232306) do
   add_foreign_key "programs", "accounts"
   add_foreign_key "programs", "cooperatives"
   add_foreign_key "registries", "cooperatives"
+  add_foreign_key "registries", "offices"
   add_foreign_key "registries", "store_fronts"
   add_foreign_key "registries", "suppliers"
   add_foreign_key "registries", "users", column: "employee_id"
@@ -1711,7 +1712,6 @@ ActiveRecord::Schema.define(version: 2019_01_28_232306) do
   add_foreign_key "saving_products", "accounts", column: "interest_expense_account_id"
   add_foreign_key "saving_products", "cooperatives"
   add_foreign_key "savings", "barangays"
-  add_foreign_key "savings", "carts"
   add_foreign_key "savings", "cooperatives"
   add_foreign_key "savings", "offices"
   add_foreign_key "savings", "organizations"

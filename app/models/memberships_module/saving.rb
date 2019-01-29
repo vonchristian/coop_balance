@@ -8,17 +8,16 @@ module MembershipsModule
     multisearchable against: [:account_number, :account_owner_name]
 
     belongs_to :cooperative
-    belongs_to :cart, optional: true, class_name: "StoreFrontModule::Cart"
-    belongs_to :barangay, optional: true, class_name: "Addresses::Barangay"
-    belongs_to :depositor,        polymorphic: true,  touch: true
-    has_many :ownerships, as: :ownable
+    belongs_to :barangay,           optional: true, class_name: "Addresses::Barangay"
+    belongs_to :depositor,          polymorphic: true,  touch: true
+    has_many :ownerships,           as: :ownable
     has_many :member_co_depositors, through: :ownerships, source: :owner, source_type: "Member"
     belongs_to :organization
 
-    belongs_to :saving_product,   class_name: "CoopServicesModule::SavingProduct"
-    belongs_to :office,           class_name: "Cooperatives::Office"
-    has_many :debit_amounts,      class_name: "AccountingModule::DebitAmount", as: :commercial_document
-    has_many :credit_amounts,      class_name: "AccountingModule::CreditAmount", as: :commercial_document
+    belongs_to :saving_product,     class_name: "CoopServicesModule::SavingProduct"
+    belongs_to :office,             class_name: "Cooperatives::Office"
+    has_many :debit_amounts,        class_name: "AccountingModule::DebitAmount", as: :commercial_document
+    has_many :credit_amounts,       class_name: "AccountingModule::CreditAmount", as: :commercial_document
 
     delegate :name, :current_address_complete_address, :current_contact_number, :current_occupation, to: :depositor, prefix: true
     delegate :name,
@@ -61,7 +60,7 @@ module MembershipsModule
       end
 
       months.uniq.each do |month|
-        balances << CoopServicesModule::SavingProduct.total_balance(commercial_document: ids, to_date: month.end_of_month).to_f
+        balances << CoopServicesModule::SavingProduct.total_balance(commercial_document: ids, to_date: month.end_of_month)
       end
       balances.sum
     end

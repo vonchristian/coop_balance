@@ -1,3 +1,13 @@
+add cooperative service to loan products
+add cooperative service to share capital products
+add cooperative service to saving products
+add cooperative service to time deposit products
+
+balance averaging for share capital product
+balance averaging for saving product
+
+interest_earned_posting_status_finder for saving product
+
 test loan payment processors
 
 test loan product creation

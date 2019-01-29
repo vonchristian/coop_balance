@@ -12,7 +12,7 @@ module Registries
 
     private
     def registry_params
-      params.require(:registries_loan_registry).permit(:spreadsheet, :employee_id)
+      params.require(:registries_loan_registry).permit(:spreadsheet, :office_id, :employee_id)
     end
   end
 end

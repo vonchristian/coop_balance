@@ -19,6 +19,7 @@ module Cooperatives
     delegate :avatar, to: :cooperator
     delegate :name, to: :cooperator, prefix: true
     delegate :name, to: :cooperative, prefix: true
+    before_save :set_default_account_number, on: :create
     delegate :savings, :share_capitals, :account_receivable_store_balance, to: :cooperator
 
     def self.for_cooperative(cooperative)

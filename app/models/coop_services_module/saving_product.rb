@@ -44,6 +44,10 @@
       subscribers.count
     end
 
+    def interest_earned_posting_status_finder
+      ("SavingsModule::InterestEarnedPostingStatusFinders::" interest_recurrence.titleize.gsub(" ", "")).constantize
+    end
+
     def balance_averager
       ("SavingsModule::BalanceAveragers::" + interest_recurrence.titleize.gsub(" ", "")).constantize
     end

@@ -11,42 +11,43 @@ module Registries
 
     private
     def upload_loan(row)
-      loan = find_cooperative.loans.create!(
+      loan = LoansModule::Loan.create!(
         forwarded_loan: true,
-        cooperative: self.employee.cooperative,
-        office: self.employee.office,
-        borrower: find_borrower(row),
+        cooperative:  self.employee.cooperative,
+        office:      self.office,
+        borrower:     find_borrower(row),
         loan_product: find_loan_product(row),
-        barangay: find_barangay(row),
+        barangay:     find_barangay(row),
         organization: find_organization(row),
         municipality: find_municipality(row),
-        loan_amount: loan_amount(row),
-        status: loan_status(row)
+        loan_amount:  loan_amount(row),
+        status:       loan_status(row)
 
       )
       if disbursement_date(row).present? && term(row).present?
         Term.create(
-          term: term(row),
-          termable: loan,
+          term:             term(row),
+          termable:         loan,
           effectivity_date: disbursement_date(row),
-          maturity_date: maturity_date(row)
+          maturity_date:    maturity_date(row)
         )
       end
-        find_cooperative.entries.create!(
-        office: self.employee.office,
-        cooperative: self.employee.cooperative,
-        recorder: self.employee,
+        cooperative.entries.create!(
+        office:              self.employee.office,
+        cooperative:         self.employee.cooperative,
+        recorder:            self.employee,
         commercial_document: loan.borrower,
-        previous_entry: find_cooperative.entries.recent,
-        description: "Forwarded loan balance as of #{cut_off_date.strftime('%B %e, %Y')}",
-        entry_date: cut_off_date,
+        previous_entry:      cooperative.entries.recent,
+        previous_entry_hash: cooperative.entries.recent.encrypted_hash,
+        description:         "Forwarded loan balance as of #{cut_off_date(row).strftime('%B %e, %Y')}",
+        entry_date:          cut_off_date(row),
         debit_amounts_attributes: [
-          amount: loan_balance(row),
-          account: loan.principal_account,
+          amount:              loan_balance(row),
+          account:             loan.principal_account,
           commercial_document: loan ],
         credit_amounts_attributes: [
-          amount: loan_balance(row),
-          account: credit_account,
+          amount:              loan_balance(row),
+          account:             credit_account,
           commercial_document: loan
           ]
         )
@@ -54,26 +55,37 @@ module Registries
 
     def find_borrower(row)
       if row["Borrower Type"] == "Member"
-        find_cooperative.member_memberships.find_or_create_by(last_name: row["Last Name"], first_name: row["First Name"], middle_name: row["Middle Name"])
+        find_or_create_member_borrower(row)
       elsif row["Borrower Type"] == "Organization"
-        find_cooperative.organizations.find_or_create_by(name: row["Last Name"])
+        cooperative.organizations.find_or_create_by(name: row["Last Name"])
       end
     end
 
-    def find_cooperative
-      self.employee.cooperative
+    def find_or_create_member_borrower(row)
+      member = Member.find_by(last_name: row["Last Name"], first_name: row["First Name"], middle_name: row["Middle Name"])
+      if member.present?
+        member
+      else
+        m = Member.create(
+          last_name: row["Last Name"],
+          middle_name: row["Middle Name"],
+          first_name: row["First Name"]
+        )
+
+        m.memberships.create(cooperative: self.cooperative)
+      end
     end
 
     def find_loan_product(row)
-      find_cooperative.loan_products.find_by(name: row["Loan Product"])
+      self.cooperative.loan_products.find_by(name: row["Loan Product"])
     end
 
-    def cut_off_date
-      Date.parse('2018-09-30')
+    def cut_off_date(row)
+      Date.parse(row["Cut Off Date"])
     end
 
     def find_organization(row)
-      find_cooperative.organizations.find_or_create_by(name: row["Organization"])
+      cooperative.organizations.find_or_create_by(name: row["Organization"])
     end
 
     def find_barangay(row)
