@@ -10,7 +10,7 @@
 <hr class="no-margin">
 <%= simple_form_for @member, url: :member_office, html: { data: { modal: true } } do |f| %>
 	<div class="modal-body">
-  	<%= f.input :office_id, collection: CoopConfigurationsModule::Office.all.map{|a| [a.name, a.id] }, as: :radio_buttons %>
+  	<%= f.input :office_id, collection: Cooperatives::Office.all.map{|a| [a.name, a.id] }, as: :radio_buttons %>
   </div>
   <div class="modal-footer">
   	<%= f.submit "Update Branch Office" %>

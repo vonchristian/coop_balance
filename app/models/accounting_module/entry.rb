@@ -11,7 +11,7 @@ module AccountingModule
     belongs_to :official_receipt, optional: true
     belongs_to :previous_entry, class_name: "AccountingModule::Entry", foreign_key: 'previous_entry_id'
     belongs_to :commercial_document, :polymorphic => true
-    belongs_to :office, class_name: "CoopConfigurationsModule::Office"
+    belongs_to :office, class_name: "Cooperatives::Office"
     belongs_to :cooperative
     belongs_to :cooperative_service, optional: true, class_name: "CoopServicesModule::CooperativeService"
     belongs_to :cancelled_by, class_name: "User", foreign_key: 'cancelled_by_id'
@@ -158,7 +158,7 @@ module AccountingModule
         ""
       end
     end
-    
+
     def self.for_loans
       joins(:amounts).where('amounts.commercial_document_type' => "LoansModule::Loan")
     end

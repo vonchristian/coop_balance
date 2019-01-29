@@ -5,7 +5,8 @@
 <% end %>
 <% members_count = [] %>
 <% months.uniq.each do |date| %>
-<% members_count << { date.strftime("%b") => current_cooperative.member_memberships.updated_at(from_date: date.beginning_of_month, to_date: date.end_of_month).uniq.count } %>
+<% members_count << { date.strftime("%b") => current_cooperative.memberships.approved_at(from_date: date.beginning_of_month, to_date: date.end_of_month).count } %>
+
 <% end %>
 
 <div class="row">
@@ -32,7 +33,7 @@
       </div>
     </div>
   </div>
-  <div class="col-md-12">
+  <div class="col-md-8">
     <div class="card">
       <div class="card-header">
         <div class="row">
@@ -58,7 +59,9 @@
       </div>
     </div>
     <% @members.each do |member| %>
-        <%= render 'members/partials/header', member: member, cached: true %>
+      <% cache(member) do %>
+        <%= render 'members/partials/header', member: member %>
+      <% end %>
       <% end %>
     <center><%= will_paginate @members %> </center>
   </div>

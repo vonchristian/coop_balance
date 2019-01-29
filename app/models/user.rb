@@ -30,7 +30,7 @@ class User < ApplicationRecord
   belongs_to :store_front, optional: true
 
   belongs_to :cooperative
-  belongs_to :office,                 class_name: "CoopConfigurationsModule::Office"
+  belongs_to :office,                 class_name: "Cooperatives::Office"
   has_many :purchases,                class_name: "StoreFrontModule::Orders::SalesOrder", as: :commercial_document
   has_many :sold_orders,              class_name: "StoreFrontModule::Orders::SalesOrder",
                                       foreign_key: 'employee_id'

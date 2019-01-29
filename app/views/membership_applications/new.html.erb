@@ -1,49 +1,58 @@
-<div class="row">
-  <div class="col-md-3">
-  </div>
-  <div class="col-md-6">
+<div class="container">
+  <div class="container-fluid">
     <div class="card">
       <div class="card-header">
-        <h3 class="card-title">New Membership Application Details </h3>
+        <h3 class="card-title">New Membership Application </h3>
       </div>
       <div class="card-body">
-        <%= simple_form_for @membership, multipart: true, html: { autocomplete: 'off' }, url: :membership_applications do |f| %>
-          <%= f.error_notification %>
-          <%=image_tag("default.png", class: "img-circle", height: 60, width: 60) %>
-          <%= f.input :avatar, as: :file, label: "Profile Photo" %>
-          <hr>
-          <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
-          <%= f.input :membership_type, collection: Membership.membership_types.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
-          <%= f.input :first_name %>
-          <%= f.input :middle_name %>
-          <%= f.input :last_name %>
-          <%= f.input :sex, collection: Member.sexes.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
-          <%= f.input :civil_status, collection: Member.civil_statuses.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
-          <%= f.input :date_of_birth, as: :string, input_html: { class: "datepicker" } %>
-          <%= f.input :contact_number %>
-          <%= f.input :email %>
-          <%= f.input :tin_number, label: "TIN Number" %>
+        <div class="row">
+          <div class="col-md-6">
+          </div>
+          <div class="col-md-5">
+            <%= simple_form_for @membership, multipart: true, html: { autocomplete: 'off' }, url: :membership_applications do |f| %>
+              <%= f.error_notification %>
+              <%=image_tag("default.png", class: "img-circle", height: 60, width: 60) %>
+              <%= f.input :avatar, as: :file, label: "Profile Photo" %>
+              <hr>
+              <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
+              <%= f.input :membership_type, collection: Cooperatives::Membership.membership_types.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
+              <%= f.input :first_name %>
+              <%= f.input :middle_name %>
+              <%= f.input :last_name %>
+              <%= f.input :sex, collection: Member.sexes.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
+              <%= f.input :civil_status, collection: Member.civil_statuses.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
+              <%= f.input :date_of_birth, as: :string, input_html: { class: "datepicker" } %>
+              <%= f.input :contact_number %>
+              <%= f.input :email %>
+              <%= f.input :tin_number, label: "TIN Number" %>
 
-          <%= f.input :office_id, input_html: { value: current_user.office_id }, as: :hidden %>
-          <%= f.input :cooperative_id, input_html: { value: current_user.cooperative_id }, as: :hidden %>
-          <%= f.input :membership_date, as: :string, input_html: { class: "datepicker" } %>
-            <%= f.submit "Save Member",  class: "btn btn-primary float-right" %>
-        <% end %>
+              <%= f.input :office_id, input_html: { value: current_user.office_id }, as: :hidden %>
+              <%= f.input :cooperative_id, input_html: { value: current_user.cooperative_id }, as: :hidden %>
+              <%= f.input :complete_address %>
+              <%= f.input :barangay_id, collection: Addresses::Barangay.all.map{|a| [a.name, a.id] } %>
+              <%= f.input :municipality_id, collection: Addresses::Municipality.all.map{|a| [a.name, a.id] } %>
+              <%= f.input :province_id, collection: Addresses::Province.all.map{|a| [a.name, a.id] } %>
 
+              <%= f.input :membership_date, as: :string, input_html: { class: "datepicker" } %>
+              <%= f.submit "Save Member",  class: "btn btn-primary float-right" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
-</div>
-</div>
+
 <script type="text/javascript">
-  $(document).ready(function() {
-    $("#membership_application_membership_type").select2({
-      theme: "bootstrap"
-    });
-     $("#membership_application_civil_status").select2({
-      theme: "bootstrap"
-    });
-     $("#membership_application_sex").select2({
-      theme: "bootstrap"
-    });
-  });
+$(document).ready(function() {
+$("#membership_application_membership_type").select2({
+  theme: "bootstrap"
+});
+ $("#membership_application_civil_status").select2({
+  theme: "bootstrap"
+});
+ $("#membership_application_sex").select2({
+  theme: "bootstrap"
+});
+});
 </script>

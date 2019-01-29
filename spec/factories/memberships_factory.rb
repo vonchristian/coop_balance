@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :membership do
+  factory :membership, class: "Cooperatives::Membership" do
     membership_date { "2017-08-22 20:55:11" }
     association :cooperative
     association :cooperator, factory: :member

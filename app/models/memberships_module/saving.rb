@@ -16,7 +16,7 @@ module MembershipsModule
     belongs_to :organization
 
     belongs_to :saving_product,   class_name: "CoopServicesModule::SavingProduct"
-    belongs_to :office,           class_name: "CoopConfigurationsModule::Office"
+    belongs_to :office,           class_name: "Cooperatives::Office"
     has_many :debit_amounts,      class_name: "AccountingModule::DebitAmount", as: :commercial_document
     has_many :credit_amounts,      class_name: "AccountingModule::CreditAmount", as: :commercial_document
 

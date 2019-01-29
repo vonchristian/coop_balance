@@ -17,7 +17,7 @@ module LoansModule
     belongs_to :loan_application, class_name: "LoansModule::LoanApplication"
     belongs_to :disbursement_voucher,   class_name: "Voucher", foreign_key: 'disbursement_voucher_id' # move to loan application
     belongs_to :cooperative
-    belongs_to :office,                 class_name: "CoopConfigurationsModule::Office"
+    belongs_to :office,                 class_name: "Cooperatives::Office"
     belongs_to :archived_by,            class_name: "User", foreign_key: 'archived_by_id'
     belongs_to :borrower,               polymorphic: true # move to loan application
     belongs_to :loan_product,           class_name: "LoansModule::LoanProduct"

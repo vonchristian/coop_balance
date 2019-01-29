@@ -3,7 +3,7 @@ class BankAccount < ApplicationRecord
   pg_search_scope :text_search, against: [:bank_name, :bank_address, :account_number]
   has_one_attached :avatar
   belongs_to :cooperative
-  belongs_to :office,                   class_name: "CoopConfigurationsModule::Office"
+  belongs_to :office,                   class_name: "Cooperatives::Office"
   belongs_to :cash_account,             class_name: "AccountingModule::Account"
   belongs_to :interest_revenue_account, class_name: "AccountingModule::Account"
   validates :bank_name, :bank_address, :account_number, presence: true

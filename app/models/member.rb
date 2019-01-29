@@ -17,10 +17,10 @@ class Member < ApplicationRecord
   has_one_attached :avatar
 
   has_one :member_account #for devise login
-  belongs_to :office,                 class_name: "CoopConfigurationsModule::Office"
+  belongs_to :office,                 class_name: "Cooperatives::Office"
   has_many :entries,                  class_name: "AccountingModule::Entry", as: :commercial_document
   has_many :voucher_amounts,          class_name: "Vouchers::VoucherAmount", as: :commercial_document
-  has_many :memberships,              as: :cooperator, dependent: :destroy
+  has_many :memberships,              class_name: "Cooperatives::Membership", as: :cooperator, dependent: :destroy
   has_many :savings,                  class_name: "MembershipsModule::Saving", as: :depositor
   has_many :share_capitals,           class_name: "MembershipsModule::ShareCapital", as: :subscriber
   has_many :time_deposits,            class_name: "MembershipsModule::TimeDeposit", as: :depositor
@@ -46,7 +46,7 @@ class Member < ApplicationRecord
 
   validates :last_name, :first_name, presence: true, on: :update
 
-  delegate :name, to: :office, prefix: true, allow_nil: true
+  # delegate :name, to: :office, prefix: true, allow_nil: true
 
   delegate :name, to: :current_organization, prefix: true, allow_nil: true
   before_save :update_birth_date_fields
@@ -59,6 +59,15 @@ class Member < ApplicationRecord
       to_date   = args[:to_date]   || oldest.last_transaction_date
       date_range = DateRange.new(from_date: from_date, to_date: to_date)
       where('last_transaction_date' => date_range.range)
+    end
+  end
+
+  def self.created_at(args={})
+    if args[:from_date] && args[:to_date]
+      from_date = args[:from_date] || latest.last_transaction_date
+      to_date   = args[:to_date]   || oldest.last_transaction_date
+      date_range = DateRange.new(from_date: from_date, to_date: to_date)
+      where('created_at' => date_range.range)
     end
   end
 

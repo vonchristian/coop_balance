@@ -5,7 +5,7 @@ User.general_manager.create(
   first_name: "General",
   last_name: "Manager",
   cooperative: Cooperative.last,
-  office: CoopConfigurationsModule::Office.last)
+  office: Cooperatives::Office.last)
 
 User.sales_clerk.create(
   email: 'sales_clerk@coopcatalyst.ph',
@@ -14,7 +14,7 @@ User.sales_clerk.create(
   first_name: "Sales",
   last_name: "Clerk",
   cooperative: Cooperative.last,
-  office: CoopConfigurationsModule::Office.last)
+  office: Cooperatives::Office.last)
 
 User.teller.create(
   email: 'teller@coopcatalyst.ph',
@@ -23,7 +23,7 @@ User.teller.create(
   first_name: "Tell",
   last_name: "er",
   cooperative: Cooperative.last,
-  office: CoopConfigurationsModule::Office.last)
+  office: Cooperatives::Office.last)
 
 User.bookkeeper.create(
   email: 'bookkeeper@coopcatalyst.ph',
@@ -32,7 +32,7 @@ User.bookkeeper.create(
   first_name: "Book",
   last_name: "keeper",
   cooperative: Cooperative.last,
-  office: CoopConfigurationsModule::Office.last)
+  office: Cooperatives::Office.last)
 
 User.loan_officer.create(
   email: 'loan_officer@coopcatalyst.ph',
@@ -41,4 +41,4 @@ User.loan_officer.create(
   first_name: "Loan",
   last_name: "Officer",
   cooperative: Cooperative.last,
-  office: CoopConfigurationsModule::Office.last)
+  office: Cooperatives::Office.last)
