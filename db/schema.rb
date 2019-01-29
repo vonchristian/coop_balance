@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_27_131935) do
+ActiveRecord::Schema.define(version: 2019_01_29_001947) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -113,6 +113,8 @@ ActiveRecord::Schema.define(version: 2019_01_27_131935) do
     t.uuid "cooperative_id"
     t.string "scheduleable_type"
     t.uuid "scheduleable_id"
+    t.decimal "total_repayment"
+    t.decimal "ending_balance", default: "0.0", null: false
     t.string "entry_ids", default: [], array: true
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_amortization_schedules"
     t.index ["cooperative_id"], name: "index_amortization_schedules_on_cooperative_id"
@@ -131,7 +133,9 @@ ActiveRecord::Schema.define(version: 2019_01_27_131935) do
     t.integer "calculation_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "repayment_calculation_type"
     t.index ["calculation_type"], name: "index_amortization_types_on_calculation_type"
+    t.index ["repayment_calculation_type"], name: "index_amortization_types_on_repayment_calculation_type"
   end
 
   create_table "amount_adjustments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1029,6 +1033,7 @@ ActiveRecord::Schema.define(version: 2019_01_27_131935) do
     t.datetime "updated_at", null: false
     t.string "subscriber_type"
     t.uuid "subscriber_id"
+    t.datetime "date_subscribed"
     t.index ["program_id"], name: "index_program_subscriptions_on_program_id"
     t.index ["subscriber_type", "subscriber_id"], name: "index_subscriber_in_program_subscriptions"
   end
@@ -1075,8 +1080,10 @@ ActiveRecord::Schema.define(version: 2019_01_27_131935) do
     t.uuid "employee_id"
     t.uuid "cooperative_id"
     t.uuid "store_front_id"
+    t.uuid "office_id"
     t.index ["cooperative_id"], name: "index_registries_on_cooperative_id"
     t.index ["employee_id"], name: "index_registries_on_employee_id"
+    t.index ["office_id"], name: "index_registries_on_office_id"
     t.index ["store_front_id"], name: "index_registries_on_store_front_id"
     t.index ["supplier_id"], name: "index_registries_on_supplier_id"
     t.index ["type"], name: "index_registries_on_type"
@@ -1138,7 +1145,6 @@ ActiveRecord::Schema.define(version: 2019_01_27_131935) do
     t.uuid "barangay_id"
     t.boolean "has_minimum_balance", default: false
     t.datetime "last_transaction_date"
-    t.uuid "cart_id"
     t.uuid "cooperative_id"
     t.boolean "archived"
     t.datetime "archived_at"
@@ -1147,7 +1153,6 @@ ActiveRecord::Schema.define(version: 2019_01_27_131935) do
     t.index ["account_number"], name: "index_savings_on_account_number", unique: true
     t.index ["account_owner_name"], name: "index_savings_on_account_owner_name"
     t.index ["barangay_id"], name: "index_savings_on_barangay_id"
-    t.index ["cart_id"], name: "index_savings_on_cart_id"
     t.index ["cooperative_id"], name: "index_savings_on_cooperative_id"
     t.index ["depositor_type", "depositor_id"], name: "index_savings_on_depositor_type_and_depositor_id"
     t.index ["office_id"], name: "index_savings_on_office_id"
@@ -1196,8 +1201,7 @@ ActiveRecord::Schema.define(version: 2019_01_27_131935) do
     t.decimal "minimum_number_of_subscribed_share"
     t.decimal "minimum_number_of_paid_share"
     t.boolean "default_product", default: false
-    t.uuid "paid_up_account_id"
-    t.uuid "subscription_account_id"
+    t.uuid "equity_account_id"
     t.decimal "cost_per_share"
     t.boolean "has_closing_account_fee", default: false
     t.decimal "closing_account_fee", default: "0.0"
@@ -1205,10 +1209,9 @@ ActiveRecord::Schema.define(version: 2019_01_27_131935) do
     t.uuid "cooperative_id"
     t.uuid "interest_payable_account_id"
     t.index ["cooperative_id"], name: "index_share_capital_products_on_cooperative_id"
+    t.index ["equity_account_id"], name: "index_share_capital_products_on_equity_account_id"
     t.index ["interest_payable_account_id"], name: "index_share_capital_products_on_interest_payable_account_id"
     t.index ["name"], name: "index_share_capital_products_on_name"
-    t.index ["paid_up_account_id"], name: "index_share_capital_products_on_paid_up_account_id"
-    t.index ["subscription_account_id"], name: "index_share_capital_products_on_subscription_account_id"
   end
 
   create_table "share_capitals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1296,9 +1299,9 @@ ActiveRecord::Schema.define(version: 2019_01_27_131935) do
     t.string "contact_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "accounts_receivable_account_id"
+    t.uuid "receivable_account_id"
     t.uuid "cost_of_goods_sold_account_id"
-    t.uuid "accounts_payable_account_id"
+    t.uuid "payable_account_id"
     t.uuid "merchandise_inventory_account_id"
     t.uuid "sales_account_id"
     t.uuid "sales_return_account_id"
@@ -1306,15 +1309,16 @@ ActiveRecord::Schema.define(version: 2019_01_27_131935) do
     t.uuid "sales_discount_account_id"
     t.uuid "purchase_return_account_id"
     t.uuid "internal_use_account_id"
-    t.string "business_type"
-    t.uuid "business_id"
-    t.index ["accounts_payable_account_id"], name: "index_store_fronts_on_accounts_payable_account_id"
-    t.index ["accounts_receivable_account_id"], name: "index_store_fronts_on_accounts_receivable_account_id"
-    t.index ["business_type", "business_id"], name: "index_store_fronts_on_business_type_and_business_id"
+    t.uuid "cooperative_service_id"
+    t.uuid "cooperative_id"
+    t.index ["cooperative_id"], name: "index_store_fronts_on_cooperative_id"
+    t.index ["cooperative_service_id"], name: "index_store_fronts_on_cooperative_service_id"
     t.index ["cost_of_goods_sold_account_id"], name: "index_store_fronts_on_cost_of_goods_sold_account_id"
     t.index ["internal_use_account_id"], name: "index_store_fronts_on_internal_use_account_id"
     t.index ["merchandise_inventory_account_id"], name: "index_store_fronts_on_merchandise_inventory_account_id"
+    t.index ["payable_account_id"], name: "index_store_fronts_on_payable_account_id"
     t.index ["purchase_return_account_id"], name: "index_store_fronts_on_purchase_return_account_id"
+    t.index ["receivable_account_id"], name: "index_store_fronts_on_receivable_account_id"
     t.index ["sales_account_id"], name: "index_store_fronts_on_sales_account_id"
     t.index ["sales_discount_account_id"], name: "index_store_fronts_on_sales_discount_account_id"
     t.index ["sales_return_account_id"], name: "index_store_fronts_on_sales_return_account_id"
@@ -1344,6 +1348,23 @@ ActiveRecord::Schema.define(version: 2019_01_27_131935) do
     t.uuid "payable_account_id"
     t.index ["cooperative_id"], name: "index_suppliers_on_cooperative_id"
     t.index ["payable_account_id"], name: "index_suppliers_on_payable_account_id"
+  end
+
+  create_table "taggings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "tag_id"
+    t.string "taggable_type"
+    t.uuid "taggable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tag_id"], name: "index_taggings_on_tag_id"
+    t.index ["taggable_type", "taggable_id"], name: "index_taggings_on_taggable_type_and_taggable_id"
+  end
+
+  create_table "tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "color"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "terms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1681,6 +1702,7 @@ ActiveRecord::Schema.define(version: 2019_01_27_131935) do
   add_foreign_key "programs", "accounts"
   add_foreign_key "programs", "cooperatives"
   add_foreign_key "registries", "cooperatives"
+  add_foreign_key "registries", "offices"
   add_foreign_key "registries", "store_fronts"
   add_foreign_key "registries", "suppliers"
   add_foreign_key "registries", "users", column: "employee_id"
@@ -1691,7 +1713,6 @@ ActiveRecord::Schema.define(version: 2019_01_27_131935) do
   add_foreign_key "saving_products", "accounts", column: "interest_expense_account_id"
   add_foreign_key "saving_products", "cooperatives"
   add_foreign_key "savings", "barangays"
-  add_foreign_key "savings", "carts"
   add_foreign_key "savings", "cooperatives"
   add_foreign_key "savings", "offices"
   add_foreign_key "savings", "organizations"
@@ -1701,9 +1722,8 @@ ActiveRecord::Schema.define(version: 2019_01_27_131935) do
   add_foreign_key "share_capital_applications", "cooperatives"
   add_foreign_key "share_capital_applications", "offices"
   add_foreign_key "share_capital_applications", "share_capital_products"
+  add_foreign_key "share_capital_products", "accounts", column: "equity_account_id"
   add_foreign_key "share_capital_products", "accounts", column: "interest_payable_account_id"
-  add_foreign_key "share_capital_products", "accounts", column: "paid_up_account_id"
-  add_foreign_key "share_capital_products", "accounts", column: "subscription_account_id"
   add_foreign_key "share_capital_products", "cooperatives"
   add_foreign_key "share_capitals", "barangays"
   add_foreign_key "share_capitals", "carts"
@@ -1719,20 +1739,23 @@ ActiveRecord::Schema.define(version: 2019_01_27_131935) do
   add_foreign_key "stock_registry_temporary_products", "registries", column: "stock_registry_id"
   add_foreign_key "stock_registry_temporary_products", "store_fronts"
   add_foreign_key "stock_registry_temporary_products", "users", column: "employee_id"
-  add_foreign_key "store_fronts", "accounts", column: "accounts_payable_account_id"
-  add_foreign_key "store_fronts", "accounts", column: "accounts_receivable_account_id"
   add_foreign_key "store_fronts", "accounts", column: "cost_of_goods_sold_account_id"
   add_foreign_key "store_fronts", "accounts", column: "internal_use_account_id"
   add_foreign_key "store_fronts", "accounts", column: "merchandise_inventory_account_id"
+  add_foreign_key "store_fronts", "accounts", column: "payable_account_id"
   add_foreign_key "store_fronts", "accounts", column: "purchase_return_account_id"
+  add_foreign_key "store_fronts", "accounts", column: "receivable_account_id"
   add_foreign_key "store_fronts", "accounts", column: "sales_account_id"
   add_foreign_key "store_fronts", "accounts", column: "sales_discount_account_id"
   add_foreign_key "store_fronts", "accounts", column: "sales_return_account_id"
   add_foreign_key "store_fronts", "accounts", column: "spoilage_account_id"
+  add_foreign_key "store_fronts", "cooperative_services"
+  add_foreign_key "store_fronts", "cooperatives"
   add_foreign_key "streets", "barangays"
   add_foreign_key "streets", "municipalities"
   add_foreign_key "suppliers", "accounts", column: "payable_account_id"
   add_foreign_key "suppliers", "cooperatives"
+  add_foreign_key "taggings", "tags"
   add_foreign_key "time_deposit_applications", "cooperatives"
   add_foreign_key "time_deposit_applications", "time_deposit_products"
   add_foreign_key "time_deposit_applications", "vouchers"
