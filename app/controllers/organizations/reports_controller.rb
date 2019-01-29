@@ -7,13 +7,21 @@ module Organizations
       @loan_product = params[:loan_product].present? ? current_cooperative.loan_products.find(params[:loan_product]) : current_cooperative.loan_products.first
       @loans_pdf = @organization.member_loans.disbursed.filter_by(membership_type: @membership_type, date: @date, loan_product: @loan_product)
       @loans = @loans_pdf.paginate(page: params[:page], per_page: 50)
-      @cooperative = current_user.cooperative
+      @employee = current_user
       
       respond_to do |format|
         format.html
         format.xlsx
         format.pdf do
-          pdf = Organizations::BillingStatementPdf.new(@organization, @loan_product, @loans_pdf, @cooperative, @membership_type, @date, view_context)
+          pdf = Organizations::BillingStatementPdf.new(
+            organization:    @organization, 
+            employee:        @employee, 
+            loan_product:    @loan_product, 
+            loans_pdf:       @loans_pdf,  
+            membership_type: @membership_type, 
+            date:            @date, 
+            view_context:     view_context
+          )
           send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Billing Statement.pdf"
         end
       end

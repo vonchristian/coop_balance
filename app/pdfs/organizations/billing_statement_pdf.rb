@@ -1,18 +1,20 @@
 module Organizations
   class BillingStatementPdf < Prawn::Document
-    attr_reader :organization, :loans, :cooperative, :membership_type, :date, :loan_product
+    attr_reader :organization, :loans, :cooperative, :membership_type, :date, :loan_product, :employee, :view_context
     TABLE_WIDTHS = [150, 75, 75, 80, 80, 80, 80, 100]
-    def initialize(organization, loan_product, loans_pdf, cooperative, membership_type, date, view_context)
+    def initialize(args)
       super(margin: [40, 40, 40, 80], page_size: "A4", page_layout: :landscape)
-      @organization = organization
-      @loans = loans_pdf
-      @cooperative = cooperative
-      @membership_type = membership_type
-      @date = date
-      @loan_product = loan_product
-      @view_context = view_context
+      @organization =    args[:organization]
+      @employee =        args[:employee]
+      @loans =           args[:loans_pdf]
+      @cooperative =     @employee.cooperative
+      @membership_type = args[:membership_type]
+      @date =            args[:date]
+      @loan_product =    args[:loan_product]
+      @view_context =    args[:view_context]
       heading
       loan_details
+      signatory_details
     end
     private
     def price(number)
@@ -105,6 +107,23 @@ module Organizations
         price(amortized_interest(loan)),
         price(total_amortization(loan))] 
       }
+    end
+
+    def signatory_details
+      move_down 20
+      table(signatory, cell_style: { inline_format: true, size: 9, font: "Helvetica"}, 
+        column_widths: [120, 410]) do
+        cells.borders = []
+        row(3).font_style = :bold
+      end
+    end
+
+    def signatory
+      [["PREPARED BY", ""]] +
+      [["", ""]] +
+      [["", ""]] +
+      [["#{employee.first_middle_and_last_name.try(:upcase)}", ""]] +
+      [["#{employee.designation.try(:titleize)}", ""]]
     end
 
     def amortized_principal(loan)
