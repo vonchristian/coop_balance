@@ -48,13 +48,12 @@ class MembershipApplication
   end
 
   def create_membership
-    find_cooperative.memberships.approved.create!(
+    find_cooperative.memberships.create!(
       office_id:       office_id,
       cooperator:      find_member,
       account_number:  SecureRandom.uuid,
       membership_type: membership_type,
-      membership_date: membership_date,
-      approval_date:   membership_date
+      membership_date: membership_date
     )
   end
 

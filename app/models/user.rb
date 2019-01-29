@@ -122,7 +122,7 @@ class User < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
-  def first_middle_and_last_name #for time deposit certificate signatory(general manager)
+  def first_middle_and_last_name #report signatory
     if middle_name.present?
       "#{first_name.titleize} #{middle_name.first.upcase}. #{last_name.titleize}"
     else

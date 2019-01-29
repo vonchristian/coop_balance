@@ -1,7 +1,97 @@
 <% breadcrumb :new_loan_payment, @loan %>
 <%= render 'loans/partials/header', loan: @loan %>
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-7">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Loan Details </h3>
+      </div>
+      <div class="card-body">
+        <div class="row justify-content-end">
+          <div class="col-md-6">
+            <h5 class="card-title text-info">Principal</h5>
+          </div>
+          <div class="col-md-5">
+            <span class="float-right">
+              <h4 class="card-title text-info"><%= number_to_currency @loan.principal_balance %></h4>
+            </span>
+          </div>
+        </div>
+        <div class="row justify-content-end">
+          <div class="col-md-6">
+            <h5 class="card-title text-danger">Interests</h5>
+          </div>
+          <div class="col-md-5">
+            <span class="float-right">
+              <h4 class="card-title text-danger"><%= number_to_currency @loan.loan_interests_balance %></h4>
+            </span>
+          </div>
+        </div>
+        <div class="row justify-content-end">
+          <div class="col-md-6">
+            <h5 class="card-title text-danger">Penalties</h5>
+          </div>
+          <div class="col-md-5">
+            <span class="float-right">
+              <h4 class="card-title text-danger"><%= number_to_currency @loan.loan_penalties_balance %></h4>
+            </span>
+          </div>
+        </div>
+        <hr>
+        <div class="row justify-content-end">
+          <div class="col-md-6">
+            <h4 class="card-title text-success">Total Receivable</h4>
+          </div>
+          <div class="col-md-5">
+            <span class="float-right">
+              <h4 class="card-title text-success"><%= number_to_currency @loan.balance %></h4>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <h4 class="card-title">Amortization Details</h4>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row justify-content-end">
+          <div class="col-md-6">
+            <h4 class="card-title text-info">Amortized Principal</h4>
+          </div>
+          <div class="col-md-5">
+            <span class="float-right">
+              <h4 class="card-title text-info"><%= number_to_currency @loan.amortized_principal %></h4>
+            </span>
+          </div>
+        </div>
+        <div class="row justify-content-end">
+          <div class="col-md-6">
+            <h4 class="card-title text-info">Amortized Interest</h4>
+          </div>
+          <div class="col-md-5">
+            <span class="float-right">
+              <h4 class="card-title text-info"><%= number_to_currency @loan.amortized_interest %></h4>
+            </span>
+          </div>
+        </div>
+        <hr>
+        <div class="row justify-content-end">
+          <div class="col-md-6">
+            <h4 class="card-title text-success">Total Amortization</h4>
+          </div>
+          <div class="col-md-5">
+            <span class="float-right">
+              <h4 class="card-title text-success"><%= number_to_currency (@loan.amortized_interest + @loan.amortized_principal) %></h4>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-5">
     <div class="card">
       <div class="card-header">
         <h3 class="card-title">Loan Payment Details </h3>
@@ -10,9 +100,12 @@
         <%= simple_form_for [@loan, @payment], html: { autocomplete: 'off' }, url: :loan_payments do |f| %>
           <%= f.error_notification %>
           <%= f.input :date, as: :string, input_html: { value: Time.zone.now.strftime("%B %e, %Y"), class: "datepicker" } %>
-          <%= f.input :description, as: :text %>
-          <%= f.input :principal_amount,  input_html: { value: 0 }, as: :currency  %>
-          <%= f.input :interest_amount, input_html: { value: 0 }, as: :currency  %>
+          <% if @loan.forwarded_loan == false %>
+            <%= f.input :amortization_schedule_id, label: "Select Amortization Schedule to be payed.", collection: @loan.amortization_schedules.partial_and_no_payment.order(date: :asc).map {|a| [a.date_schedule, a.id]}, default: @loan.amortization_schedules.partial_and_no_payment.order(date: :asc).first, input_html: { id: 'scheduleSelect' } %>
+          <% end %>
+          <%= f.input :description, as: :text, input_html: { id: 'description' } %>
+          <%= f.input :principal_amount,  input_html: { value: @loan.amortized_principal }, as: :currency  %>
+          <%= f.input :interest_amount, input_html: { value: @loan.amortized_interest }, as: :currency  %>
           <%= f.input :penalty_amount,  input_html: { value: 0 }, as: :currency  %>
           <%= f.input :reference_number %>
           <%= f.input :loan_id, input_html: { value: @loan.id },as: :hidden %>
@@ -26,51 +119,39 @@
       </div>
     </div>
   </div>
-  <div class="col-md-6">
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title">Loan Details </h3>
-      </div>
-      <div class="card-body">
-        <div class="row justify-content-end">
-          <div class="col-md-6">
-            <h5 class="card-title">Principal</h5>
-          </div>
-          <div class="col-md-5">
-            <span class="float-right"><h4 class="card-title"><%= number_to_currency @loan.principal_balance %></h4></span>
-          </div>
-        </div>
-        <div class="row justify-content-end">
-          <div class="col-md-6">
-            <h5 class="card-title">Interests</h5>
-          </div>
-          <div class="col-md-5">
-            <span class="float-right"><h4 class="card-title"><%= number_to_currency @loan.loan_interests_balance %></h4></span>
-          </div>
-        </div>
-        <div class="row justify-content-end">
-          <div class="col-md-6">
-            <h5 class="card-title">Penalties</h5>
-          </div>
-          <div class="col-md-5">
-            <span class="float-right"><h4 class="card-title"><%= number_to_currency @loan.loan_penalties_balance %></h4></span>
-          </div>
-        </div>
-        <hr>
-        <div class="row justify-content-end">
-          <div class="col-md-6">
-            <h4 class="card-title">Total Receivable</h4>
-          </div>
-          <div class="col-md-5">
-            <span class="float-right"><h4 class="card-title"><%= number_to_currency @loan.balance %></h4></span>
-          </div>
-        </div>
-      </div>
-    </div>
+</div>
+<% if @loan.forwarded_loan == false %>
+  <script type="text/javascript">
+    $(window).on('load', function() {
+      var filter = $("#scheduleSelect option:selected").text();
+      var string = $("#loanProductName").text();
+      if (string.indexOf("Short-Term") != -1) {
+        var desc = "STL Payment - " + filter + " Remittance";
+      } else {
+        var desc = "RL Payment - " + filter + " Remittance";
+      }
+      $('#description').val(desc);
+    });
+  </script>
+<% end %>
 <script type="text/javascript">
   $(document).ready(function() {
     $("#loans_module_loans_payment_processing_cash_account_id").select2({
       theme: "bootstrap"
     });
+
+    $("#scheduleSelect").select2({
+      theme: "bootstrap"
+    });
+  });
+  $("#scheduleSelect").on('change', function (e) {
+    var filter = $("#scheduleSelect option:selected").text();
+    var string = $("#loanProductName").text();
+    if (string.indexOf("Short-Term") != -1) {
+      var desc = "STL Payment - " + filter + " Remittance";
+    } else {
+      var desc = "RL Payment - " + filter + " Remittance";
+    }
+    $('#description').val(desc);
   });
 </script>

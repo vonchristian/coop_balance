@@ -70,6 +70,23 @@ module LoansModule
     delegate :term, to: :current_term
 
 
+    def self.filter_by(args = {})
+      date = Date.parse(args[:date].to_s)
+      from_date = (date - 1.month).end_of_month
+      to_date = date.end_of_month
+      if args.present?
+        all.not_cancelled.where(loan_product: args[:loan_product]).select { |l| 
+          l.principal_balance > 0 && 
+          l.amortization_schedules.where(date: from_date..to_date).present? && 
+          l.borrower.current_membership.membership_type == args[:membership_type].to_s
+        }
+      else
+        all.not_cancelled.select { |l| 
+          l.balance > 0
+        }
+      end
+    end
+
     def self.unpaid
       all.where(cancelled: false, archived: false).select { |l| l.principal_balance > 0 }
     end
@@ -135,7 +152,7 @@ module LoansModule
       LoansModule::LoanProduct.total_debits_balance(commercial_document: ids)
     end
 
-     def self.total_credits_balance
+    def self.total_credits_balance
       loans = pluck(:id)
       LoansModule::LoanProduct.total_credits_balance(commercial_document: loans)
     end
@@ -146,6 +163,10 @@ module LoansModule
 
     def self.not_cancelled
       where(cancelled: false)
+    end
+
+    def self.not_forwarded
+      where(forwarded_loan: false)
     end
 
     def self.archived
@@ -384,7 +405,26 @@ module LoansModule
       (principal_balance * daily_rate) * number_of_days_past_due
     end
 
+    def more_than_twelve_terms_and_more_than_one_year_old?
+      #for loan payment principal and interest checking for default values
+      term > 12 && (Date.today).to_date.beginning_of_month > application_date + 1.year
+    end
 
+    def current_amortized_principal
+      amortization_schedules.scheduled_for(from_date: Date.today.beginning_of_month, to_date: Date.today.end_of_month).sum(&:principal)
+    end
+
+    def current_amortized_interest
+      amortization_schedules.scheduled_for(from_date: Date.today.beginning_of_month, to_date: Date.today.end_of_month).sum(&:interest)
+    end
+
+    def amortized_principal
+      amortized_principal_for(from_date: loan_application.first_amortization_date.beginning_of_month, to_date: loan_application.first_amortization_date.end_of_month)
+    end
+
+    def amortized_interest
+      amortized_interest_for(from_date: loan_application.first_amortization_date.beginning_of_month, to_date: loan_application.first_amortization_date.end_of_month)
+    end
 
     private
 

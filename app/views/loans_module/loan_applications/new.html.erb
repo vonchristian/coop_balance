@@ -51,12 +51,12 @@
 
 <script type="text/javascript">
   $('#loanProductSelect').on('change', function (e) {
-    var filter = $("#loanProductSelect option:selected").text();
-    if (filter == 'Short Term Loan(Non Member)' || filter == 'Short Term Loan(Member)') {
-      $('input[type="radio"][value="lumpsum"]').click();
+    var string = $("#loanProductSelect option:selected").text();
+    if (string.indexOf("Short Term") != -1) {
+      $('input[type="radio"][value="lumpsum"]').click();  
     }
     else {
-      $('input[type="radio"][value="monthly"]').click();
+      $('input[type="radio"][value="monthly"]').click(); 
     }
   });
 </script>

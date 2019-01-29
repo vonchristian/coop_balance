@@ -1,19 +1,17 @@
 <div class="card-body">
-
-
-  <div class="col-md-6">
-    <div class="dropdown">
-      <button class="btn btn-primary dropdown-toggle float-right" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        New Entry
-        <span class="caret"></span>
-      </button>
-      <div class="dropdown-menu">
-        <%= link_to 'New Bank Charge', new_bank_account_bank_charge_path(@bank_account), class: 'dropdown-item' %>
-        <%= link_to 'New Earned Interest', new_bank_account_bank_earned_interest_path(@bank_account), class: 'dropdown-item' %>
-        <div role="separator" class="dropdown-divider"></div>
-      </div>
+  <div class="row">
+    <div class="col-md-9">
+      <h3 class="card-title">Adjustment Entries</h3>
+      <p class="text-muted">
+        Make adjusting entries for this share capital.
+      </p>
+    </div>
+    <div class="col-md-3">
+      <% if current_user.bookkeeper? || current_user.accountant? %>
+        <%=link_to "New Adjusting Entry", new_accounting_module_commercial_document_adjusting_entry_line_item_path(commercial_document_type: @bank_account.class.to_s, commercial_document_id: @bank_account.id), class: "btn btn-sm btn-danger", 'data-turbolinks' => false %>
+      <% else %>
+        <span class="text-danger"> Only Accountant / Bookkeeper account can do this action. </span>
+      <% end %>
     </div>
   </div>
-
-
 </div>

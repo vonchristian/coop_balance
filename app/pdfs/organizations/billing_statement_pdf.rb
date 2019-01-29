@@ -1,17 +1,20 @@
 module Organizations
   class BillingStatementPdf < Prawn::Document
-    TABLE_WIDTHS = [110, 75, 75, 80, 80, 80, 80, 80, 80]
-    def initialize(organization, loan_product, loans_pdf, cooperative, membership_type, date, view_context)
-      super(margin: [20, 40, 20, 60], page_size: "A4", page_layout: :landscape)
-      @organization = organization
-      @loans = loans_pdf
-      @cooperative = cooperative
-      @membership_type = membership_type
-      @date = date
-      @loan_product = loan_product
-      @view_context = view_context
+    attr_reader :organization, :loans, :cooperative, :membership_type, :date, :loan_product, :employee, :view_context
+    TABLE_WIDTHS = [150, 75, 75, 80, 80, 80, 80, 100]
+    def initialize(args)
+      super(margin: [40, 40, 40, 80], page_size: "A4", page_layout: :landscape)
+      @organization =    args[:organization]
+      @employee =        args[:employee]
+      @loans =           args[:loans_pdf]
+      @cooperative =     @employee.cooperative
+      @membership_type = args[:membership_type]
+      @date =            args[:date]
+      @loan_product =    args[:loan_product]
+      @view_context =    args[:view_context]
       heading
       loan_details
+      signatory_details
     end
     private
     def price(number)
@@ -19,26 +22,27 @@ module Organizations
     end
 
     def loan_product_title
-      if @loan_product.name.downcase.gsub!(/[^0-9A-Za-z]/," ").include?("short term")
+      if loan_product.name.downcase.gsub!(/[^0-9A-Za-z]/," ").include?("short term")
         "Short-Term Loan"
       else
-        @loan_product.name
+        loan_product.name
       end
     end
 
     def heading
-      bounding_box([500, 550], width: 70, :height => 70) do
-        image "#{Rails.root}/app/assets/images/#{@cooperative.abbreviated_name.downcase}_logo.jpg", width: 70, height: 70
+      bounding_box([450, 510], width: 65, :height => 70) do
+        image "#{Rails.root}/app/assets/images/#{cooperative.abbreviated_name.downcase}_logo.jpg", width: 65, height: 65
       end
-      bounding_box([580, 550], width: 180, :height => 70) do
-        text "#{@cooperative.abbreviated_name}", style: :bold, size: 24
-        text "#{@cooperative.name }", size: 10
+      bounding_box([530, 510], width: 200, :height => 70) do
+        move_down 5
+        text "#{cooperative.name.try(:upcase)}", style: :bold, size: 12
+        text "#{cooperative.address} . #{cooperative.contact_number}", size: 8
       end
-      bounding_box([0, 550], width: 400, :height => 70) do
+      bounding_box([0, 510], width: 400, :height => 70) do
         text "BILLING STATEMENT", style: :bold, size: 14
         move_down 2
-        text "For the month of #{@date.to_date.strftime("%B %Y")}", size: 11
-        if @membership_type == "associate_member"
+        text "For the month of #{date.to_date.strftime("%B %Y")}", size: 11
+        if membership_type == "associate_member"
           move_down 2
           text "#{loan_product_title} - Job-Orders", size: 14
         else
@@ -46,7 +50,7 @@ module Organizations
           text "#{loan_product_title}", size: 14
         end
         move_down 2
-        text "#{@organization.name}"
+        text "#{organization.name}"
       end
       move_down 20
       stroke do
@@ -58,18 +62,17 @@ module Organizations
     end
 
     def loan_details
-      if @loans.any?
+      if loans.any?
         table(loans_table, 
-          cell_style: { inline_format: true, size: 8, padding: [1,1,3,1]}, 
+          cell_style: { inline_format: true, size: 9, padding: [1,1,3,1]}, 
           column_widths: TABLE_WIDTHS) do
-          cells.borders = []
+          cells.borders = [:bottom]
           column(3).align = :right
           column(4).align = :right
           column(5).align = :right
           column(6).align = :right
           column(7).align = :right
           column(8).align = :right
-          column(9).align = :right
         end
       else
         text "No loans data", size: 11
@@ -77,8 +80,8 @@ module Organizations
     end
 
     def loans_table_header
-      table([["BORROWER", "RELEASE DATE", "MATURITY", "LOAN AMOUNT", "LOAN BALANCE", "PRINCIPAL", "INTEREST", "ARREARS", "TOTAL DEDUCTION"]], 
-        cell_style: { inline_format: true, size: 7, font: "Helvetica", padding: [4,1,4,1]}, 
+      table([["BORROWER", "RELEASE DATE", "MATURITY DATE", "LOAN AMOUNT", "LOAN BALANCE", "PRINCIPAL", "INTEREST", "TOTAL AMORTIZATION"]], 
+        cell_style: { inline_format: true, size: 8, font: "Helvetica", padding: [4,1,4,1]}, 
         column_widths: TABLE_WIDTHS) do
           row(0).font_style= :bold
           row(0).background_color = 'DDDDDD'
@@ -89,23 +92,50 @@ module Organizations
           column(6).align = :right
           column(7).align = :right
           column(8).align = :right
-          column(9).align = :right
       end
     end
 
     def loans_table
       loans_table_header
-      @loans_data ||= @loans.map{ |a| [
-        a.borrower_name, 
-        a.application_date.strftime("%b %e, %Y"), 
-        a.maturity_date.strftime("%b %e, %Y"), 
-        price(a.loan_amount), 
-        price(a.principal_balance), 
-        price(a.amortized_principal_for(from_date: @date.to_date.beginning_of_month, to_date: @date.to_date.end_of_month)), 
-        price(a.amortized_interest_for(from_date: @date.to_date.beginning_of_month, to_date: @date.to_date.end_of_month)), 
-        price(a.amortization_schedules.where(date: a.application_date..(@date.to_date - 1.month).end_of_month).sum(:principal)), 
-        price(a.total_deductions(from_date: @date.to_date.beginning_of_month, to_date: @date.to_date.end_of_month))] 
+      loans_data ||= loans.map{ |loan| [
+        loan.borrower_name, 
+        loan.application_date.strftime("%D"), 
+        loan.maturity_date.strftime("%D"), 
+        price(loan.loan_amount), 
+        price(loan.principal_balance), 
+        price(amortized_principal(loan)), 
+        price(amortized_interest(loan)),
+        price(total_amortization(loan))] 
       }
+    end
+
+    def signatory_details
+      move_down 20
+      table(signatory, cell_style: { inline_format: true, size: 9, font: "Helvetica"}, 
+        column_widths: [120, 410]) do
+        cells.borders = []
+        row(3).font_style = :bold
+      end
+    end
+
+    def signatory
+      [["PREPARED BY", ""]] +
+      [["", ""]] +
+      [["", ""]] +
+      [["#{employee.first_middle_and_last_name.try(:upcase)}", ""]] +
+      [["#{employee.designation.try(:titleize)}", ""]]
+    end
+
+    def amortized_principal(loan)
+      loan.amortization_schedules.scheduled_for(from_date: date.to_date.beginning_of_month, to_date: date.to_date.end_of_month).total_principal
+    end
+
+    def amortized_interest(loan)
+      loan.amortization_schedules.scheduled_for(from_date: date.to_date.beginning_of_month, to_date: date.to_date.end_of_month).sum(&:interest)
+    end
+
+    def total_amortization(loan)
+      loan.amortization_schedules.total_amortization(from_date: date.to_date.beginning_of_month, to_date: date.to_date.end_of_month)
     end
   end
 end

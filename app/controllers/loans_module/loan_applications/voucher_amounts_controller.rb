@@ -36,10 +36,6 @@ module LoansModule
         @loan_application = current_cooperative.loan_applications.find(params[:loan_application_id])
         @voucher_amount = @loan_application.voucher_amounts.find(params[:id])
         @voucher_amount.destroy
-        if @loan_application.amortization_schedules.present?
-          @loan_application.amortization_schedules.destroy_all
-        end
-        LoansModule::AmortizationSchedule.create_amort_schedule_for(@loan_application)
         redirect_to new_loans_module_loan_application_voucher_url(@loan_application), alert: 'Removed successfully.'
       end
 

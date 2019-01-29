@@ -51,12 +51,12 @@ module LoansModule
     end
 
     def principal_balance_for(schedule) #used to compute interest
-        balance = (loan_amount.amount - amortization_schedules.principal_for(schedule: schedule))
-        if balance < 0
-          0
-        else
-          balance
-        end
+      balance = (loan_amount.amount - amortization_schedules.principal_for(schedule: schedule))
+      if balance < 0
+        0
+      else
+        balance
+      end
     end
 
     def term_is_within_one_year?
