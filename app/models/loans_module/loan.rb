@@ -60,6 +60,7 @@ module LoansModule
     delegate :avatar, to: :borrower
     delegate :accounting_entry, to: :disbursement_voucher, allow_nil: true
     delegate :name, to: :barangay, prefix: true, allow_nil: true
+    delegate :name, to: :office, prefix: true
 
     validates :loan_product_id, :borrower_id, presence: true
     before_save :set_borrower_full_name
@@ -75,13 +76,13 @@ module LoansModule
       from_date = (date - 1.month).end_of_month
       to_date = date.end_of_month
       if args.present?
-        all.not_cancelled.where(loan_product: args[:loan_product]).select { |l| 
-          l.principal_balance > 0 && 
-          l.amortization_schedules.where(date: from_date..to_date).present? && 
+        all.not_cancelled.where(loan_product: args[:loan_product]).select { |l|
+          l.principal_balance > 0 &&
+          l.amortization_schedules.where(date: from_date..to_date).present? &&
           l.borrower.current_membership.membership_type == args[:membership_type].to_s
         }
       else
-        all.not_cancelled.select { |l| 
+        all.not_cancelled.select { |l|
           l.balance > 0
         }
       end
@@ -147,14 +148,14 @@ module LoansModule
       LoansModule::LoanProduct.total_balance(commercial_document: ids)
     end
 
-    def self.total_debits_balance
+    def self.total_debits_balance(args={})
       ids = pluck(:id)
       LoansModule::LoanProduct.total_debits_balance(commercial_document: ids)
     end
 
-    def self.total_credits_balance
+    def self.total_credits_balance(args={})
       loans = pluck(:id)
-      LoansModule::LoanProduct.total_credits_balance(commercial_document: loans)
+      LoansModule::LoanProduct.total_credits_balance(args.merge(commercial_document: loans))
     end
 
     def self.not_archived

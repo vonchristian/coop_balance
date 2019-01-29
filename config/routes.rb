@@ -329,7 +329,7 @@ Rails.application.routes.draw do
   namespace :treasury_module do
     namespace :summaries do
       resources :cash_books, only: [:index]
-      resources :loans, only: [:index]  
+      resources :loans, only: [:index]
     end
     resources :cash_accounts, only: [:index, :show] do
       resources :reports, only: [:index],                                       module: :cash_accounts
@@ -430,7 +430,7 @@ Rails.application.routes.draw do
     resources :barangays,             only: [:edit, :update],        module: :loans
     resources :settings,              only: [:index],                module: :loans
     resources :payments,              only: [:index, :new, :create], module: :loans
-    
+
   end
 
   namespace :loans_module do
@@ -557,4 +557,7 @@ Rails.application.routes.draw do
   resources :bank_account_applications, only: [:new, :create]
   mount ActionCable.server => '/cable'
   resources :leads, only: [:new, :create]
+  namespace :portfolios do
+    resources :loans, only: [:index]
+  end
 end

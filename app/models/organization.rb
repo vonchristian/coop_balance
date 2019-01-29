@@ -2,7 +2,7 @@ class Organization < ApplicationRecord
   extend TinMonitoring
   include PgSearch
   include CurrentTin
-  include AddressableModule
+  include Addressable
 
   pg_search_scope :text_search, against: [:name, :abbreviated_name]
   has_one_attached :avatar

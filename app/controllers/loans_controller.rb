@@ -7,6 +7,7 @@ class LoansController < ApplicationController
     elsif params[:search].present?
       @loans = current_cooperative.loans.not_cancelled.not_archived.text_search(params[:search]).paginate(page: params[:page], per_page: 20)
     else
+      @amortization_schedules = current_office.amortization_schedules.joins(:loan).scheduled_for(from_date: Date.current.beginning_of_month, to_date: Date.current.next_month.end_of_month).paginate(page: params[:page], per_page: 25)
       @loans = current_cooperative.loans.
       # includes(:disbursement_voucher, borrower: [:avatar_attachment], loan_product: [:current_account, :past_due_account]).
       not_archived.

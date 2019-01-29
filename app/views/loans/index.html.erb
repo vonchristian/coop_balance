@@ -1,1 +1,107 @@
-<%= render 'index', loans: @loans %>
+<% months = [] %>
+<% (Date.current - 6.months..Date.current).each do |month| %>
+<% months << month.end_of_month %>
+<% end %>
+<% loan_payments_data = [] %>
+<% loan_disbursements_data = [] %>
+<% months.uniq.each do |month| %>
+  <% loan_payments_data << { month.end_of_month.strftime("%B %Y") => LoansModule::LoanProduct.total_credits_balance(office: current_office, from_date: month.beginning_of_month, to_date: month.end_of_month) } %>
+  <% loan_disbursements_data << { month.end_of_month.strftime("%B %Y") => LoansModule::LoanProduct.total_debits_balance(office: current_office, from_date: month.beginning_of_month, to_date: month.end_of_month) } %>
+<% end %>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <p> Collections vs. Disbursements </p>
+          <%= column_chart [
+          { name: "Collections", data: (Hash[*loan_payments_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"} },
+          { name: "Disbursements", data: (Hash[*loan_disbursements_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"} }
+          ], legend: 'bottom', thousands: ",", height: '180px', colors: ["#28A745", "#b00", "#0069D9"]%>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-7">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12">
+              <%=form_tag loans_path, method: :get do %>
+                <div class="input-group">
+                  <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Borrower name", id: 'sidebar-form' %>
+                  <span class="input-group-btn">
+                    <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-default btn-flat") do %>
+                      <i class="fa fa-search"></i> Search Loan
+                    <% end %>
+                  </span>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="table table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th> Borrower </th>
+                  <th> Loan Product </th>
+                  <th> Loan Amount </th>
+                  <th> Loan Balance </th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @loans.each do |loan| %>
+                  <tr style="cursor: pointer;" data-link="<%= loan_path(loan) %>">
+                    <td><%= image_tag(loan.borrower.avatar, class: "img-circle", height: 35, width: 35) %> &nbsp; <b><%= loan.borrower_name %></b></td>
+                    <td><%= loan.loan_product_name %></td>
+                    <td><%= number_to_currency loan.loan_amount %>
+                    <td><%= number_to_currency loan.balance %>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <center><%= will_paginate @loans %></center>
+    </div>
+    <div class="col-md-5">
+      <div class="card card-outline-left card-primary">
+        <div class="card-body">
+          <h3 class="number"><%= number_to_currency LoansModule::LoanProduct.total_balance(office: current_office) %></h3>
+          <small> LOANS RECEIVABLES (As of <%= Date.current.strftime("%B %e, %Y") %>)</small>
+        </div>
+      </div>
+      <div class="card card-outline-left card-danger">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-7 border-right">
+              <h3 class="number"><%= number_to_currency current_office.amortization_schedules.scheduled_for(from_date: Date.current.beginning_of_month, to_date: Date.current.end_of_month).total_repayment %></h3>
+              <small> TOTAL REPAYMENTS (This <%= Date.current.strftime("%B %Y") %>)</small>
+            </div>
+            <div class="col-md-5">
+              <h3 class="number"> <%= number_to_currency current_office.amortization_schedules.scheduled_for(from_date: Date.current.beginning_of_month, to_date: Date.current.end_of_month).count %></h3>
+              <small> Borrower Count </small>
+            </div>
+          </div>
+        </div>
+      </div>
+          <p> Repayments Due This Month </p>
+
+          <% @amortization_schedules.each do |schedule| %>
+            <%= render 'loans_module/amortization_schedules/partials/header', schedule: schedule, cached: true %>
+          <% end %>
+      </div>
+  </div>
+</div>
+<script>
+$("tr").click(function() {
+  window.location = $(this).data("link")
+})
+</script>

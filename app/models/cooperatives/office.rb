@@ -3,6 +3,7 @@ module Cooperatives
     belongs_to :cooperative
     has_many :employees, class_name: "User"
     has_many :loans,                   class_name: "LoansModule::Loan"
+    has_many :amortization_schedules,  through: :loans, class_name: "LoansModule::AmortizationSchedule"
     has_many :savings,                 class_name: "MembershipsModule::Saving"
     has_many :time_deposits,           class_name: "MembershipsModule::TimeDeposit"
     has_many :share_capitals,          class_name: "MembershipsModule::ShareCapital"

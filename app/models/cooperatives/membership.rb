@@ -15,7 +15,7 @@ module Cooperatives
     validates :cooperator_id, :cooperator_type, :cooperative_id, presence: true
     validates :cooperator_id,  uniqueness: { scope: :cooperative_id }
     validates :account_number, presence: true, uniqueness: true
-
+    delegate :name, to: :depositor
     def self.for_cooperative(cooperative)
       where(cooperative: cooperative)
     end
@@ -35,10 +35,6 @@ module Cooperatives
     end
 
     def self.approved_memberships(args={})
-    end
-
-    def name
-      cooperator_name
     end
 
     def self.current

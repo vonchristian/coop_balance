@@ -2,8 +2,8 @@ class Member < ApplicationRecord
   include PgSearch
 
   include CurrentTin
-  include ContactableModule
-  include AddressableModule
+  include Contactable
+  include Addressable
   extend TinMonitoring
   extend PercentActive
   extend BirthdayMonitoring

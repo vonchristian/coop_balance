@@ -13,30 +13,4 @@
             <%=link_to 'Dashboard', loans_module_monitoring_metrics_path, class: "flex-sm-fill text-sm-center nav-link #{'active' if current_page?(loans_module_monitoring_metrics_path)}" %>
           </nav>
         </div>
-        <div class="card-body">
-          <div class="row">
-            <div class="col-md-12">
-              <%=form_tag loans_path, method: :get do %>
-                <div class="input-group">
-                  <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Borrower name", id: 'sidebar-form' %>
-                  <span class="input-group-btn">
-                    <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
-                      <i class="fa fa-search"></i>
-                    <% end %>
-                  </span>
-                </div>
-              <% end %>
-            </div>
-          </div>
-        </div>
-      </div>
-        <% loans.each do |loan| %>
-          <% cache(loan) do %>
-            <%= render 'loans/partials/header', loan: loan %>
-          <% end %>
-        <% end %>
-        <center><%= will_paginate loans %></center>
-      </div>
-    </div>
-  </div>
-</div>
+        

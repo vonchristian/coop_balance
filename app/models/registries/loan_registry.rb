@@ -62,17 +62,18 @@ module Registries
     end
 
     def find_or_create_member_borrower(row)
-      member = Member.find_by(last_name: row["Last Name"], first_name: row["First Name"], middle_name: row["Middle Name"])
-      if member.present?
-        member
+      old_member = Member.find_by(last_name: row["Last Name"], first_name: row["First Name"], middle_name: row["Middle Name"])
+      if old_member.present?
+        old_member
       else
-        m = Member.create(
+        new_member = Member.create(
           last_name: row["Last Name"],
           middle_name: row["Middle Name"],
           first_name: row["First Name"]
         )
 
-        m.memberships.create(cooperative: self.cooperative)
+        new_member.memberships.create(cooperative: self.cooperative)
+        new_member
       end
     end
 
