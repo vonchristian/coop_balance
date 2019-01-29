@@ -16,15 +16,6 @@ module Cooperatives
     validates :cooperator_id,  uniqueness: { scope: :cooperative_id }
     validates :account_number, presence: true, uniqueness: true
 
-    delegate :avatar, to: :cooperator
-    delegate :name, to: :cooperator, prefix: true
-    delegate :name, to: :cooperative, prefix: true
-<<<<<<< HEAD
-    before_save :set_default_account_number, on: :create
-=======
->>>>>>> merge-con
-    delegate :savings, :share_capitals, :account_receivable_store_balance, to: :cooperator
-
     def self.for_cooperative(cooperative)
       where(cooperative: cooperative)
     end
