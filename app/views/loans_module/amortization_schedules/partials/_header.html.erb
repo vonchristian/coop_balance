@@ -3,10 +3,11 @@
     <div class="row">
       <div class="col-md-5 col-sm-7">
         <div class="row">
-          <div class="col-md-2 col-sm-2">
+          <div class="col-md-4 col-sm-3">
             <%=image_tag(schedule.borrower_avatar, height: 45, width: 45, class: "img-circle") %>
           </div>
-          <div class="col-md-10 col-sm-10">
+          
+          <div class="col-md-8 col-sm-8">
             <p class="text-muted no-margin-bottom">
               <i class="fa fa-user"></i> <%= schedule.borrower_name %>
             </p>
@@ -28,12 +29,7 @@
         </div>
       </div>
       <div class="col-md-2 col-sm-5">
-        <time datetime="2014-09-24" class="date-as-calendar inline-flex size1_25x">
-          <span class="weekday"><%= schedule.date.strftime("%A") %></span>
-          <span class="day"><%= schedule.date.strftime("%e") %></span>
-          <span class="month"><%= schedule.date.strftime("%B") %> </span>
-          <span class="year"><%= schedule.date.strftime("%Y") %></span>
-        </time>
+
       </div>
       <div class="col-md-5 col-sm-12">
         <div class="row min-margin">
@@ -59,7 +55,7 @@
         <hr class="min-margin">
         <div class="row">
           <div class="col-md-6 col-sm-6">
-            <small>TOTAL AMORTIZATION</small><br>
+            <small>TOTAL</small><br>
           </div>
           <div class="col-md-6 col-sm-6">
             <span class="number float-right">

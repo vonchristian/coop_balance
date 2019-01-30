@@ -20,7 +20,7 @@ module Registries
       office = self.employee.office
       subscriber = find_subscriber(row)
       share_capital_product = find_share_capital_product(row)
-      credit_account = find_share_capital_product(row).paid_up_account
+      credit_account = find_share_capital_product(row).equity_account
       debit_account = AccountingModule::Account.find_by(name: "Temporary Share Capital Account")
 
       share_capital = cooperative.share_capitals.create!(
@@ -50,7 +50,7 @@ module Registries
     end
 
     def cut_off_date(row)
-      Date.parse(row["Cut-off Date"].to_s)
+      Date.parse(row["Cut Off Date"].to_s)
     end
 
     def find_share_capital_product(row)
@@ -59,9 +59,25 @@ module Registries
 
     def find_subscriber(row)
       if row["Subscriber Type"] == "Member"
-        find_cooperative.member_memberships.find_or_create_by(last_name: row["Last Name"], first_name: row["First Name"])
+        find_or_create_member_subscriber(row)
       elsif row["Subscriber Type"] == "Organization"
       find_cooperative.organizations.find_or_create_by(name: row["Last Name"])
+      end
+    end
+
+    def find_or_create_member_subscriber(row)
+      old_member = Member.find_by(last_name: row["Last Name"], first_name: row["First Name"], middle_name: row["Middle Name"])
+      if old_member.present?
+        old_member
+      else
+        new_member = Member.create(
+          last_name: row["Last Name"],
+          middle_name: row["Middle Name"],
+          first_name: row["First Name"]
+        )
+
+        new_member.memberships.create!(cooperative: find_cooperative, account_number: SecureRandom.uuid)
+        new_member
       end
     end
   end

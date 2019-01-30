@@ -49,7 +49,7 @@ module LoansModule
       it { is_expected.to delegate_method(:name).to(:organization).with_prefix }
       it { is_expected.to delegate_method(:avatar).to(:borrower) }
       it { is_expected.to delegate_method(:name).to(:barangay).with_prefix }
-
+      it { is_expected.to delegate_method(:name).to(:office).with_prefix }
     end
 
     describe 'delegations' do

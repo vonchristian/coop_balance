@@ -1,3 +1,5 @@
+share capital show page
+ if less than minimum show amount balance
 add cooperative service to loan products
 add cooperative service to share capital products
 add cooperative service to saving products

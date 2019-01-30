@@ -1,8 +1,8 @@
 class User < ApplicationRecord
-  include AddressableModule
+  include Addressable
   include CurrentTin
   include PgSearch
-  include ContactableModule
+  include Contactable
   has_one_attached :avatar
   pg_search_scope :text_search, :against => [:first_name, :last_name]
   multisearchable against: [:first_name, :last_name]

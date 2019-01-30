@@ -1,14 +1,10 @@
 require 'will_paginate/array'
 class ShareCapitalsController < ApplicationController
   def index
-    if params[:from_date].present? && params[:to_date].present?
-      @from_date = DateTime.parse(params[:from_date])
-      @to_date = DateTime.parse(params[:to_date])
-      @share_capitals = current_cooperative.share_capitals.inactive(from_date: @from_date, to_date: @to_date).paginate(:page => params[:page], :per_page => 20)
-    elsif params[:search].present?
-      @share_capitals = current_cooperative.share_capitals.text_search(params[:search]).paginate(:page => params[:page], :per_page => 20)
+    if params[:search].present?
+      @share_capitals = current_cooperative.share_capitals.includes(:office, [:share_capital_product =>[:equity_account], :subscriber => [:avatar_attachment => [:blob]]]).text_search(params[:search]).paginate(:page => params[:page], :per_page => 20)
     else
-      @share_capitals = current_cooperative.share_capitals.includes([:subscriber, :share_capital_product =>[:equity_account]]).order(:account_owner_name).all.paginate(:page => params[:page], :per_page => 20)
+      @share_capitals = current_cooperative.share_capitals.includes(:office, [:share_capital_product =>[:equity_account], :subscriber => [:avatar_attachment => [:blob]]]).paginate(:page => params[:page], :per_page => 20)
     end
   end
 

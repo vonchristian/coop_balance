@@ -1,1 +1,22 @@
-<%=render 'savings_accounts/index', savings_accounts: @savings_accounts %>
+<div class="row">
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-body">
+        <%= form_tag savings_accounts_path, method: :get, class: "search-form" do %>
+          <div class="input-group">
+            <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Depositor ", id: 'account-search-form' %>
+            <span class="input-group-btn">
+              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-default btn-flat") do %>
+                <i class="fa fa-search"></i>Search Savings
+              <% end %>
+            </span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <% @savings_accounts.each do |savings_account| %>
+      <%= render 'savings_accounts/partials/header', savings_account: savings_account, cached: true %>
+    <% end %>
+    <center><%= will_paginate @savings_accounts %> </center>
+  </div>
+</div>

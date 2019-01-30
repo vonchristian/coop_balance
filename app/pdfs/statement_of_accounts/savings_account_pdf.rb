@@ -77,6 +77,7 @@ module StatementOfAccounts
         cells.borders = []
       end
       bounding_box [280, 690], width: 400 do
+        move_down 15
         text "CURRENT BALANCE", size: 8
         move_down 5
         text "#{price savings_account.balance}", size: 18
@@ -105,7 +106,7 @@ module StatementOfAccounts
     end
     def transactions_data
       [["DATE", "DESCRIPTION", " REFERENCE #", "WITHDRAWALS", "DEPOSITS", "BALANCE"]] +
-      @transactions_data ||= savings_account.entries.sort_by(&:entry_date).map{ |a|
+      @transactions_data ||= savings_account.entries.uniq.sort_by(&:entry_date).map{ |a|
        [ a.entry_date.strftime("%b %e, %Y"),
          a.description,
          a.reference_number,

@@ -7,7 +7,8 @@ class LoansController < ApplicationController
     elsif params[:search].present?
       @loans = current_cooperative.loans.not_cancelled.not_archived.text_search(params[:search]).paginate(page: params[:page], per_page: 20)
     else
-      @loans = current_cooperative.loans.
+      @amortization_schedules = current_office.amortization_schedules.includes(:loan).scheduled_for(from_date: Date.current.beginning_of_month, to_date: Date.current.next_month.end_of_month).paginate(page: params[:page], per_page: 25)
+      @loans = current_cooperative.loans.includes(:borrower).
       # includes(:disbursement_voucher, borrower: [:avatar_attachment], loan_product: [:current_account, :past_due_account]).
       not_archived.
       order(updated_at: :desc).
@@ -24,7 +25,8 @@ class LoansController < ApplicationController
   end
 
   def show
-    @loan = current_cooperative.loans.includes(:loan_co_makers =>[:co_maker]).find(params[:id])
+    @loan = current_cooperative.loans.merge(Member.with_attached_avatar).find(params[:id])
+    @loan_co_makers = @loan.loan_co_makers
     respond_to do |format|
       format.html
       format.pdf do

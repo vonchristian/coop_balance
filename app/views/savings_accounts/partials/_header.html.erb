@@ -10,7 +10,8 @@
         <%=link_to savings_account_path(savings_account) do %>
           <b><%= savings_account.depositor.name.try(:upcase) %></b><br>
           <small class="text-muted">
-            <i class="fa fa-server"></i> <%= savings_account.saving_product_name %>
+            <i class="fa fa-server"></i> <%= savings_account.saving_product_name %> &nbsp;
+            <i class="fa fa-building"></i> <%= savings_account.office_name %>
           </small><br>
           <small class="text-muted">
             <i class="fa fa-clock" data-toggle="tooltip" title="Last Transaction Date"></i> <%= savings_account.last_transaction_date.strftime("%b %e, %Y") %>
@@ -20,6 +21,7 @@
       <div class="col-md-3 col-sm-3">
         <h4 class="card-title"><%=number_to_currency savings_account.balance %></h4>
         <small class="text-muted"> CURRENT BALANCE </small>
+
       </div>
       <div class="col-md-4 col-sm-4">
         <% if savings_account.closed? %>

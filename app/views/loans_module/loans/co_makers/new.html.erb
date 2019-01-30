@@ -16,7 +16,7 @@
                 <%= f.input :co_maker_id, input_html: { value: co_maker.id }, as: :hidden %>
                 <%= f.input :co_maker_type, input_html: { value: co_maker.class.to_s }, as: :hidden %>
                 <% if @loan.loan_co_makers.pluck(:co_maker_id).include?(co_maker.id) %>
-                  <span class="badge bg-success"> Selected </span>
+                  <span class="text-success"><i class="fa fa-check-circle fa-2x"></i> </span>
                 <% else %>
                   <%= f.submit "Select", class: "btn btn-primary", data: { disable_with: "Processing..." } %>
                 <% end %>

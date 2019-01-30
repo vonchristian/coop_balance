@@ -2,8 +2,8 @@ class Member < ApplicationRecord
   include PgSearch
 
   include CurrentTin
-  include ContactableModule
-  include AddressableModule
+  include Contactable
+  include Addressable
   extend TinMonitoring
   extend PercentActive
   extend BirthdayMonitoring
@@ -52,7 +52,9 @@ class Member < ApplicationRecord
   before_save :update_birth_date_fields
   before_save :set_default_image, :set_default_account_number, on: :create
 
-
+  def self.for_cooperative(args={})
+    joins(:memberships).where('memberships.cooperative_id' => args[:cooperative].id)
+  end
   def self.updated_at(args={})
     if args[:from_date] && args[:to_date]
       from_date = args[:from_date] || latest.last_transaction_date

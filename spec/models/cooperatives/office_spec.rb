@@ -5,6 +5,7 @@ module Cooperatives
     describe 'associations' do
       it { is_expected.to belong_to :cooperative }
       it { is_expected.to have_many :loans }
+      it { is_expected.to have_many :amortization_schedules }
       it { is_expected.to have_many :savings }
       it { is_expected.to have_many :time_deposits }
       it { is_expected.to have_many :share_capitals }

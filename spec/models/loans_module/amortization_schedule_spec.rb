@@ -7,6 +7,7 @@ module LoansModule
     	it { is_expected.to belong_to :loan }
       it { is_expected.to belong_to :loan_application }
       it { is_expected.to belong_to :cooperative }
+      it { is_expected.to belong_to :office }
       it { is_expected.to have_many :notes }
     end
 

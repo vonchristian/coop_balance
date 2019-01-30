@@ -5,9 +5,9 @@ class MembersController < ApplicationController
 
   def index
     if params[:search].present?
-      @members = current_cooperative.member_memberships.with_attached_avatar.includes(:memberships).text_search(params[:search]).order(:last_name).paginate(page: params[:page], per_page: 35)
+      @members = Member.for_cooperative(cooperative: current_cooperative).with_attached_avatar.includes(:memberships).text_search(params[:search]).order(:last_name).paginate(page: params[:page], per_page: 35)
     else
-      @members = current_cooperative.member_memberships.with_attached_avatar.order(:last_name).paginate(page: params[:page], per_page: 35)
+      @members = Member.for_cooperative(cooperative: current_cooperative).with_attached_avatar.includes(:memberships).with_attached_avatar.order(:last_name).paginate(page: params[:page], per_page: 35)
     end
   end
 

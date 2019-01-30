@@ -21,6 +21,7 @@ module LoansModule
         private
         def create_first_schedule
           loan_application.amortization_schedules.create!(
+            cooperative: loan_application.cooperative,
             date:      loan_application.first_amortization_date,
             interest:  first_interest,
             principal: first_principal,

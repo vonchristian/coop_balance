@@ -1,14 +1,10 @@
 require 'will_paginate/array'
 class SavingsAccountsController < ApplicationController
   def index
-    if params[:from_date].present? && params[:to_date].present?
-      @from_date = DateTime.parse(params[:from_date])
-      @to_date = DateTime.parse(params[:to_date])
-      @savings_accounts = current_cooperative.savings.inactive(from_date: @from_date, to_date: @to_date).paginate(:page => params[:page], :per_page => 20)
-    elsif params[:search].present?
-      @savings_accounts = current_cooperative.savings.text_search(params[:search]).paginate(:page => params[:page], :per_page => 20)
+    if params[:search].present?
+      @savings_accounts = current_cooperative.savings.includes(:office,[:saving_product =>[:account], :depositor => [:avatar_attachment => [:blob]]]).text_search(params[:search]).paginate(:page => params[:page], :per_page => 20)
     else
-      @savings_accounts = current_cooperative.savings.includes([:saving_product =>[:account], :depositor => [:avatar_attachment => [:blob]]]).order(:account_owner_name).paginate(:page => params[:page], :per_page => 20)
+      @savings_accounts = current_cooperative.savings.includes(:office,[:saving_product =>[:account], :depositor => [:avatar_attachment => [:blob]]]).order(:account_owner_name).paginate(:page => params[:page], :per_page => 20)
     end
   end
 

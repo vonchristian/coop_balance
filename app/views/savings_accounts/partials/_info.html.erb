@@ -6,12 +6,12 @@
         <div class="col-md-7 col-sm-6 col-auto">
           <small>CURRENT BALANCE</small>
           <h2 class="number"><%= number_to_currency @savings_account.balance %></h2>
+          <small class="badge bg-danger"><%= @savings_account.number_of_days_inactive %> DAYS INACTIVE</small>
+
 
         </div>
         <div class="col-md-4 col-sm-6 col-auto">
-          <small>DAYS INACTIVE</small>
-          <h4 class=" card-title number text-danger"><%= @savings_account.number_of_days_inactive %></h4>
-          <small>Last Transaction</small><br>
+          <small>LAST TRANSACTION</small><br>
           <i class="fa fa-calendar"></i> &nbsp; <%= @savings_account.last_transaction_date.strftime("%B %e, %Y") %>
         </div>
       </div>
@@ -27,14 +27,14 @@
     <div class="corner-ribbon top-left red">Closed</div>
   <% end %>
     <% month_dates = [] %>
-    <% (Date.today.beginning_of_year..Date.today.end_of_year).each do |date| %>
+    <% ((Date.current - 6.months)..Date.current).each do |date| %>
       <% month_dates << date.end_of_month %>
     <% end %>
     <% monthly_balances_data = [] %>
     <% month_dates.uniq.each do |month| %>
       <% monthly_balances_data << { month.strftime("%B") => @savings_account.balance(to_date: month.end_of_month) } %>
     <% end %>
-    <%= line_chart (Hash[*monthly_balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"}, thousands: ",", curve: false %>
+    <%= area_chart (Hash[*monthly_balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"}, thousands: ",", curve: false %>
 </div>
 </div>
 <p class="text-muted">TRANSACTIONS HISTORY </p>

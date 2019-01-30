@@ -3,9 +3,7 @@
     <div class="card-body">
       <div class="row">
         <div class="col-md-1 col-sm-1">
-          <% if loan.borrower.avatar.attachment.present? %>
-            <%=image_tag(loan.borrower.avatar, height: 45, width: 45, class: "img-circle") %>
-          <% end %>
+  
         </div>
         <div class="col-md-5 col-sm-5">
           <b><%=  loan.borrower_name.try(:upcase) %></b>
@@ -14,7 +12,8 @@
               <small class="text-muted" id="loanProductName"><i class="fa fa-tag"></i><%= loan.loan_product_name %></small>
               <br>
               <small class="text-muted" data-toggle="tooltip" title="Disbursement Date">
-                <i class="fa fa-calendar"></i> <%= loan.try(:disbursement_date).try(:strftime, "%B %e, %Y") %>
+                <i class="fa fa-calendar"></i> <%= loan.try(:disbursement_date).try(:strftime, "%B %e, %Y") %> &nbsp;
+                <i class="fa fa-building"></i> <%= loan.office_name %></i>
               </small>
             </div>
             <div class="col-md-4 col-sm-4">

@@ -32,7 +32,7 @@
       <%= area_chart [
       { name: "Receipts", data: (Hash[*daily_debits_balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"} },
       { name: "Disbursements", data: (Hash[*daily_credits_balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"} }
-      ], legend: 'bottom', thousands: ",", height: '180px', colors: ["#28A745", "#b00", "#0069D9"]%>
+      ], legend: 'bottom', thousands: ",", height: '200px', colors: ["#28A745", "#b00", "#0069D9"]%>
       </div>
     </div>
   </div>

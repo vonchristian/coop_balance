@@ -4,6 +4,7 @@ module LoansModule
     belongs_to :loan
     belongs_to :loan_application
     belongs_to :cooperative
+    belongs_to :office
     has_many :payment_notices, as: :notified
     has_many :notes, as: :noteable
 
@@ -31,6 +32,9 @@ module LoansModule
 
     def total_payments
       payment_entries.sum {|e| e.debit_amounts.total}
+    end
+    def self.total_repayment
+      sum(&:total_amount)
     end
 
     def date_schedule # for loan payment collection_select

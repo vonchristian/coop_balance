@@ -1,15 +1,16 @@
 <%= render "home/shared/navbar" %>
+<%= render 'layouts/shared/flash_messages' %>
+
 <div class="container">
 	<br>
 	<br>
 	<br>
   <div class="landing-header">
   	<div class="row">
-  		<div class="col-md-6">
-  			<h1 class="text-open-sans-regular">A single place to manage all your cooperative services</h1>
+  		<div class="col-md-7">
+  			<h1 class="text-open-sans-regular">A single workplace to manage all your Cooperative operations</h1>
   			<br>
-  			<p class="lead"> Coop Catalyst connects all your branches and operations in one platform so that managing your cooperative is simpler, organized and less stress.</p>
-
+  			<p class="lead"> Coop Catalyst connects all your offices and operations in one platform <br> so that managing your cooperative is simpler, organized and less stress.</p>
             <div class="row min-margin">
               <div class="col-md-1 offset-1">
                 <i class="fa fa-check-circle text-success fa-2x mr-2"></i>
@@ -23,7 +24,7 @@
                 <i class="fa fa-check-circle text-success fa-2x mr-2"></i>
               </div>
               <div class="col-md-9">
-                <p class="lead">Everyone will be on the same page</p>
+                <p class="lead">Every employee will be on the same page</p>
               </div>
             </div>
             <div class="row min-margin">
@@ -47,14 +48,31 @@
                 <i class="fa fa-check-circle text-success fa-2x mr-2"></i>
               </div>
               <div class="col-md-9">
-                <p class="lead">You'll spend less time on meetings and extra work</p>
+                <p class="lead">You'll spend less time on meetings and manual work</p>
               </div>
             </div>
+  		    </div>
+          <div class="col-md-4 offset-1">
+            <div class="card card-outline card-primary">
+              <div class="card-header no-border">
+                <p class=""> See for yourself how Coop Catalyst can simplify your work for your employees. </p>
+              </div>
+                  <div class="card-body">
+                <%= simple_form_for Lead.new do |f| %>
+                  <%= f.input :email, placeholder: 'Email', label: false %>
 
-  		</div>
-  		<div class="col-md-5 offset-1">
-  		</div>
-  	</div>
+                  <%= f.input :contact_number, label: false, placeholder: "Contact Number" %>
+                  <%= f.input :message, label: false, placeholder: 'What do you want to automate in your coop?' %>
+                  <hr>
+                  <%= f.submit 'Request for Demo', class: 'btn btn-primary btn-lg btn-block' %>
+                  <br>
+                  
+                <% end %>
+              </div>
+            </div>
+          </div>
+
+        </div>
   </div>
   <br>
   <center>
@@ -86,7 +104,7 @@
         </p>
       <br>
       <p class="lead">
-        DIfferent Single purpose systems (Accounting System, Sales Management System, Loans Management) that are not connected together can't fix this problem — they can only make it worse. CoopCatalyst is different.
+        DIfferent systems (Accounting System, Sales Management System, Loans Management) that are not connected together can't fix this problem — they can only make it worse. CoopCatalyst is different.
         It combines all the tools growing cooperatives need in a single, organized package that makes work feel like less work.
       </p>
     </div>
@@ -122,8 +140,8 @@
             <h3 class="card-title">Trustworthy Accounting System</h3>
             <br>
             <p>
-              Dependable accounting system that keeps your ledgers stay balanced. Journal entries are validated, recorded and automatically posted without error.
-               Duplications, reconciliations are checked and fixed.
+              Dependable accounting system that keeps your ledgers accurate and balanced. Journal entries are validated, recorded and automatically posted without error.
+               Duplications, reconciliations are checked and fixed. Separate financial statements, income statements and cash flows for each office can be generated.
             </p>
           </div>
         </div>
@@ -154,7 +172,7 @@
             <h3 class="card-title">Loans Portfolio Management</h3>
             <br>
             <p>
-              Current loans, past due and overdue loans are monitored. You can notify members on their due payments through email, text or messenger.
+              Current, past due and overdue loans are monitored. Aging of loans, comparison of target and actual collections,  monitoring of scheduled amortizations are automatically generated. You can notify members on their due payments through email, text or messenger.
             </p>
           </div>
         </div>
@@ -186,8 +204,9 @@
             <h3 class="card-title">Collaboration tools</h3>
             <br>
             <p>
-              Connect your satellite / branch offices, giving you a central source of information on your cooperative's financial status.
-              You know exactly where your cooperative is at and where it’s going.
+              Employees are connected in a single workplace and collaborate to maintain accurate and balanced ledgers.
+              Branch offices can have a secure access and enter their daily transactions. No more waiting for delayed reports and
+              fixing unbalanced ledgers.
             </p>
           </div>
         </div>
@@ -201,7 +220,8 @@
             <h3 class="card-title">Ease of Use and Security </h3>
             <br>
             <p>
-              We made CoopCatalyst easy to use as possible to let you do your work quickly without compromising security.
+              We made Coop Catalyst easy to use as possible to let you do your work quickly without on compromising security.
+
             </p>
           </div>
         </div>
@@ -218,7 +238,7 @@
           <h3 class="card-title">Sales and Inventory</h3>
           <br>
           <p>
-            Integrate your storefront's sales and inventories for stock monitoring and fast computation of patronage refunds. Provides you an up to date stocks and status of inventories.
+            Integrate your storefront's sales and inventories for stock monitoring and fast computation of patronage refunds. Provides you an up to date stocks and status of inventories, accounts receivables and payables.
           </p>
         </div>
       </div>
@@ -252,7 +272,7 @@
         <div class="row">
           <div class="col-md-9 offset-md-2">
             <h3 class="text-open-sans-regular"> Move your Cooperative Operations to the Cloud. </h3>
-            <p class="lead"> Your banks are connected to the Cloud. ATMs and other financial services depend on it to deliver services.
+            <p class="lead"> Your banks are connected to the Cloud. ATMs and other financial services depend on it to deliver services. If you can access Facebook in your area of operation, you can use Coop Catalyst.
              It's time you move to cloud-based operations and be ahead of other cooperatives.</p>
           </div>
         </div>

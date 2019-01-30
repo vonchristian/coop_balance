@@ -70,10 +70,10 @@
       </div>
     </div>
     <% @members.each do |member| %>
-      <% cache(member) do %>
-        <%= render 'members/partials/header', member: member %>
-      <% end %>
-      <% end %>
+
+        <%= render 'members/partials/header', member: member, cached: true %>
+
+    <% end %>
     <center><%= will_paginate @members %> </center>
   </div>
 </div>

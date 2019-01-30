@@ -1,10 +1,11 @@
+require 'will_paginate/array'
 module LoansModule
   module Loans
     class CoMakersController < ApplicationController
       def new
         @loan = current_cooperative.loans.find(params[:loan_id])
         @co_maker = @loan.loan_co_makers.build
-        @co_makers = Borrower.all.paginate(page: params[:page], per_page: 25)
+        @co_makers = current_cooperative.member_memberships.with_attached_avatar.paginate(page: params[:page], per_page: 25)
       end
       def create
         @loan = current_cooperative.loans.find(params[:loan_id])

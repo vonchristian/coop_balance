@@ -14,9 +14,9 @@ module Registries
       unless row["Balance"].to_f.zero? || row["Balance"].nil?
         savings = find_cooperative.savings.create!(
         depositor: depositor,
-        office: self.employee.office,
+        office: self.office,
         saving_product: find_saving_product(row),
-        last_transaction_date: cut_off_date,
+        last_transaction_date: cut_off_date(row),
         account_number: SecureRandom.uuid)
         create_entry(depositor, savings, row)
       end
@@ -24,12 +24,12 @@ module Registries
     def create_entry(depositor, savings, row)
       AccountingModule::Entry.create!(
         commercial_document: depositor,
-        office: self.employee.office,
+        office: self.office,
         cooperative: find_cooperative,
         recorder: self.employee,
         previous_entry: find_cooperative.entries.recent,
-        description: "Forwarded balance of savings deposit as of #{cut_off_date.strftime('%B %e, %Y')}",
-        entry_date: cut_off_date,
+        description: "Forwarded balance of savings deposit as of #{cut_off_date(row).strftime('%B %e, %Y')}",
+        entry_date: cut_off_date(row),
         debit_amounts_attributes: [
           account: debit_account,
           amount: row["Balance"].to_f,
@@ -50,9 +50,25 @@ module Registries
 
     def find_depositor(row)
       if row["Depositor Type"] == "Member"
-        find_cooperative.member_memberships.find_or_create_by(last_name: row["Last Name"], first_name: row["First Name"])
+        find_or_create_member_depositor(row)
       elsif row["Depositor Type"] == "Organization"
         find_cooperative.organizations.find_or_create_by(name: row["Last Name"])
+      end
+    end
+
+    def find_or_create_member_depositor(row)
+      old_member = Member.find_by(last_name: row["Last Name"], first_name: row["First Name"], middle_name: row["Middle Name"])
+      if old_member.present?
+        old_member
+      else
+        new_member = Member.create(
+          last_name: row["Last Name"],
+          middle_name: row["Middle Name"],
+          first_name: row["First Name"]
+        )
+
+        new_member.memberships.create!(cooperative: find_cooperative, account_number: SecureRandom.uuid)
+        new_member
       end
     end
 
@@ -64,8 +80,8 @@ module Registries
       find_saving_product(row).account
     end
 
-    def cut_off_date
-      Chronic.parse('09/30/2018')
+    def cut_off_date(row)
+      Date.parse(row["Cut Off Date"].to_s)
     end
   end
 end

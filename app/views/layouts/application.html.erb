@@ -16,11 +16,11 @@
     <div class="wrapper">
       <div id="modal-holder"></div>
       <!-- Navbar -->
-      <%= render 'layouts/shared/navbar' %>
+      <%= render 'layouts/shared/navbar', cached: true %> %>
       <!-- Main Sidebar Container -->
       <aside class="main-sidebar sidebar-collapse sidebar-dark-primary elevation-6">
-        <%= render 'layouts/shared/brand' %>
-        <%= render 'layouts/shared/sidebar' %>
+        <%= render 'layouts/shared/brand', cached: true %>
+        <%= render 'layouts/shared/sidebar', cached: true %>
       </aside>
       <div class="content-wrapper">
         <div class="content">
