@@ -40,13 +40,13 @@ module LoansModule
     end
 
     describe 'amortizeable_principal_calculator' do
-      it 'returns straight_line' do
+      it 'equal_payment' do
         equal_payment = create(:equal_payment_amortization_type)
 
         expect(equal_payment.amortizeable_principal_calculator).to eql LoansModule::Amortizers::PrincipalCalculators::EqualPayment
       end
 
-      it 'returns declining_balance' do
+      it 'equal_principal' do
         declining_balance = create(:equal_principal_amortization_type)
 
         expect(declining_balance.amortizeable_principal_calculator).to eql LoansModule::Amortizers::PrincipalCalculators::EqualPrincipal

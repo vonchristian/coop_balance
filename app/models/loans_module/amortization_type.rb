@@ -8,9 +8,11 @@ module LoansModule
     def amortizer
       ("LoansModule::Amortizers::" + calculation_type.titleize.pluralize.gsub(" ", "") + "::" + repayment_calculation_type.titleize.gsub(" ", "")).constantize
     end
+
     def repayment_calculator
       ("LoansModule::Amortizers::RepaymentCalculators::" + repayment_calculation_type.titleize.gsub(" ", "")).constantize
     end
+
     def amortizeable_principal_calculator
       ("LoansModule::Amortizers::PrincipalCalculators::" + repayment_calculation_type.titleize.gsub(" ", "")).constantize
     end

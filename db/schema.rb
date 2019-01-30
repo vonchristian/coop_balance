@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_29_001947) do
+ActiveRecord::Schema.define(version: 2019_01_30_110516) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -73,6 +73,25 @@ ActiveRecord::Schema.define(version: 2019_01_29_001947) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
+  create_table "activities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "trackable_type"
+    t.uuid "trackable_id"
+    t.string "owner_type"
+    t.uuid "owner_id"
+    t.string "key"
+    t.text "parameters"
+    t.string "recipient_type"
+    t.uuid "recipient_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type"
+    t.index ["owner_type", "owner_id"], name: "index_activities_on_owner_type_and_owner_id"
+    t.index ["recipient_id", "recipient_type"], name: "index_activities_on_recipient_id_and_recipient_type"
+    t.index ["recipient_type", "recipient_id"], name: "index_activities_on_recipient_type_and_recipient_id"
+    t.index ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type"
+    t.index ["trackable_type", "trackable_id"], name: "index_activities_on_trackable_type_and_trackable_id"
+  end
+
   create_table "addresses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "street"
     t.string "barangay"
@@ -115,12 +134,15 @@ ActiveRecord::Schema.define(version: 2019_01_29_001947) do
     t.uuid "scheduleable_id"
     t.decimal "total_repayment"
     t.decimal "ending_balance", default: "0.0", null: false
+    t.string "entry_ids", default: [], array: true
+    t.uuid "office_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_amortization_schedules"
     t.index ["cooperative_id"], name: "index_amortization_schedules_on_cooperative_id"
     t.index ["credit_account_id"], name: "index_amortization_schedules_on_credit_account_id"
     t.index ["debit_account_id"], name: "index_amortization_schedules_on_debit_account_id"
     t.index ["loan_application_id"], name: "index_amortization_schedules_on_loan_application_id"
     t.index ["loan_id"], name: "index_amortization_schedules_on_loan_id"
+    t.index ["office_id"], name: "index_amortization_schedules_on_office_id"
     t.index ["payment_status"], name: "index_amortization_schedules_on_payment_status"
     t.index ["schedule_type"], name: "index_amortization_schedules_on_schedule_type"
     t.index ["scheduleable_type", "scheduleable_id"], name: "index_schedulable_on_amortization_schedules"
@@ -1207,6 +1229,7 @@ ActiveRecord::Schema.define(version: 2019_01_29_001947) do
     t.decimal "minimum_balance", default: "0.0"
     t.uuid "cooperative_id"
     t.uuid "interest_payable_account_id"
+    t.integer "balance_averaging_type"
     t.index ["cooperative_id"], name: "index_share_capital_products_on_cooperative_id"
     t.index ["equity_account_id"], name: "index_share_capital_products_on_equity_account_id"
     t.index ["interest_payable_account_id"], name: "index_share_capital_products_on_interest_payable_account_id"
@@ -1595,6 +1618,7 @@ ActiveRecord::Schema.define(version: 2019_01_29_001947) do
   add_foreign_key "amortization_schedules", "cooperatives"
   add_foreign_key "amortization_schedules", "loan_applications"
   add_foreign_key "amortization_schedules", "loans"
+  add_foreign_key "amortization_schedules", "offices"
   add_foreign_key "amount_adjustments", "loan_applications"
   add_foreign_key "amount_adjustments", "voucher_amounts"
   add_foreign_key "amounts", "accounts"
