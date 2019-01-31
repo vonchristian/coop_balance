@@ -312,7 +312,7 @@ module LoansModule
         amounts = BigDecimal("0")
         cooperative.cash_accounts.each do |account|
           accounting_entry.credit_amounts.where(account: account).each do |amount|
-            amounts += amount
+            amounts += Money.new(amount).amount
           end
         end
         amounts

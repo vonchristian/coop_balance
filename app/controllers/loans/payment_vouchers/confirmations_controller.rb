@@ -3,21 +3,18 @@ module Loans
     class ConfirmationsController < ApplicationController
       def create
         @loan = current_cooperative.loans.find(params[:loan_id])
-        @voucher = current_cooperative.vouchers.find(params[:payment_voucher_id])
-        @schedule = @loan.amortization_schedules.find(params[:schedule_id])
-        ActiveRecord::Base.transaction do
-          @payment_voucher = Vouchers::EntryProcessing.new(
-            voucher:    @voucher,
-            employee:   current_user,
-            updateable: @loan
-          ).process!
-          LoansModule::AmortizationPaymentUpdater.new(
-            loan:     @loan, 
-            schedule: @schedule, 
-            voucher:  @voucher, 
-            entry:    @payment_voucher.entry
-          ).update_status!
-        end
+        @voucher = Voucher.find(params[:payment_voucher_id])
+        @schedule = LoansModule::AmortizationSchedule.find(params[:schedule_id])
+        Vouchers::EntryProcessing.new(
+          voucher:    @voucher,
+          employee:   current_user,
+          updateable: @loan
+        ).process!
+        LoansModule::AmortizationPaymentUpdater.new(
+          loan:     @loan,
+          schedule: @schedule,
+          voucher:  @voucher
+        ).update_status!
 
         redirect_to loan_payments_url(@loan), notice: "Payment saved successfully."
       end

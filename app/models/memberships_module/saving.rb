@@ -114,6 +114,7 @@ module MembershipsModule
     def name
       depositor_name
     end
+
     def name_and_balance
       "#{name} - #{balance.to_f}"
     end
@@ -125,6 +126,7 @@ module MembershipsModule
     def deposits
       saving_product_account.credits_balance(commercial_document: self)
     end
+    
     def withdrawals
       saving_product_account.debits_balance(commercial_document: self)
     end
@@ -136,7 +138,6 @@ module MembershipsModule
     def can_withdraw?
       !closed? && balance > 0.0
     end
-
 
     def averaged_balance(args={})
       balance_averager.new(saving: self, to_date: args[:to_date]).averaged_balance

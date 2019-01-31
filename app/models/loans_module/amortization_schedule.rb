@@ -34,7 +34,7 @@ module LoansModule
       payment_entries.sum {|e| e.debit_amounts.total}
     end
     def self.total_repayment
-      sum(&:total_amount)
+      sum(&:total_payments)
     end
 
     def date_schedule # for loan payment collection_select

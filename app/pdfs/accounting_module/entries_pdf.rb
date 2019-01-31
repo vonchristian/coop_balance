@@ -100,7 +100,7 @@ module AccountingModule
     end
 
     def entries_table_footer
-      table([["", "", "", "", "", price(entries.sum {|e| Money.new(e.debit_amounts.sum(:amount_cents)).amount}), price(entries.sum {|e| Money.new(e.credit_amounts.sum(:amount_cents)).amount})]], 
+      table([["", "", "", "", "TOTAL", price(entries.sum {|e| Money.new(e.debit_amounts.sum(:amount_cents)).amount}), price(entries.sum {|e| Money.new(e.credit_amounts.sum(:amount_cents)).amount})]], 
         cell_style: { inline_format: true, size: 8, font: "Helvetica", padding: [4,1,4,1]}, 
         column_widths: [40, 135, 50, 70, 100, 70, 70]) do
           row(0).font_style= :bold
@@ -130,9 +130,9 @@ module AccountingModule
             "#{price(entry.credit_amounts.sum{|a| a.amount})}"
           ]]
           entries_data = [[
-            {content: entry.entry_date.strftime("%b %e, %Y"), rowspan: row_count }, 
+            {content: entry.entry_date.strftime("%D"), rowspan: row_count, valign: :center }, 
             {content: entry.description, rowspan: row_count, valign: :center}, 
-            {content: "##{entry.reference_number}", rowspan: row_count},
+            {content: "##{entry.reference_number}", rowspan: row_count, valign: :center},
             {content: display_commercial_document_for(entry).try(:upcase), rowspan: row_count, valign: :center},
             "", "", ""
           ]]

@@ -63,7 +63,7 @@
           </div>
           <div class="col-md-5">
             <span class="float-right">
-              <h4 class="card-title text-info"><%#= number_to_currency @loan.amortized_principal %></h4>
+              <h4 class="card-title text-info"><%= number_to_currency @loan.amortized_principal %></h4>
             </span>
           </div>
         </div>
@@ -73,7 +73,7 @@
           </div>
           <div class="col-md-5">
             <span class="float-right">
-              <h4 class="card-title text-info"><%#= number_to_currency @loan.amortized_interest %></h4>
+              <h4 class="card-title text-info"><%= number_to_currency @loan.amortized_interest %></h4>
             </span>
           </div>
         </div>
@@ -84,7 +84,7 @@
           </div>
           <div class="col-md-5">
             <span class="float-right">
-              <h4 class="card-title text-success"><%#= number_to_currency (@loan.amortized_interest + @loan.amortized_principal) %></h4>
+              <h4 class="card-title text-success"><%= number_to_currency (@loan.amortized_interest + @loan.amortized_principal) %></h4>
             </span>
           </div>
         </div>
@@ -100,13 +100,13 @@
         <%= simple_form_for [@loan, @payment], html: { autocomplete: 'off' }, url: :loan_payments do |f| %>
           <%= f.error_notification %>
           <%= f.input :date, as: :string, input_html: { value: Time.zone.now.strftime("%B %e, %Y"), class: "datepicker" } %>
-          <% if !@loan.forwarded_loan? %>
+          <% if @loan.forwarded_loan == false %>
             <%= f.input :amortization_schedule_id, label: "Select Amortization Schedule to be payed.", collection: @loan.amortization_schedules.partial_and_no_payment.order(date: :asc).map {|a| [a.date_schedule, a.id]}, default: @loan.amortization_schedules.partial_and_no_payment.order(date: :asc).first, input_html: { id: 'scheduleSelect' } %>
           <% end %>
           <%= f.input :description, as: :text, input_html: { id: 'description' } %>
-          <%= f.input :principal_amount  , as: :currency  %>
-          <%= f.input :interest_amount, as: :currency  %>
-          <%= f.input :penalty_amount,  input_html: { value: 0 }, as: :currency  %>
+          <%= f.input :principal_amount, input_html: { value: @loan.amortized_principal }, as: :currency  %>
+          <%= f.input :interest_amount, input_html: { value: @loan.amortized_interest }, as: :currency  %>
+          <%= f.input :penalty_amount, input_html: { value: 0 }, as: :currency  %>
           <%= f.input :reference_number %>
           <%= f.input :loan_id, input_html: { value: @loan.id },as: :hidden %>
           <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>

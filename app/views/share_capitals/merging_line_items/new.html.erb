@@ -27,7 +27,7 @@
               <div class="col-md-5 col-sm-5 text-right">
                 <small>PAID UP BALANCE</small>
                 <h3 class="number text-success">
-                  <%= number_to_currency share_capital.paid_up_balance %>
+                  <%= number_to_currency share_capital.balance %>
                 </h3>
               </div>
               <div class="col-md-1 col-sm-1">
@@ -74,7 +74,7 @@
             <div class="col-md-8 col-md-offset-1">
               <b><%= share_capital.subscriber_name %></b><br>
               <h4>
-                <%= number_to_currency share_capital.paid_up_balance %>
+                <%= number_to_currency share_capital.balance %>
               </h4>
             </div>
             <div class="col-md-3">

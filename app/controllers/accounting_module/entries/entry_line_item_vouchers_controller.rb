@@ -17,7 +17,7 @@ module AccountingModule
       def destroy
         @voucher = current_cooperative.vouchers.find(params[:id])
         @voucher.destroy
-        redirect_to accounting_module_entry_line_item_url, notice: 'Deleted successfully.'
+        redirect_to accounting_module_entries_url, notice: 'Voucher cancelled successfully.'
       end
 
       private

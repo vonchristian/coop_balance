@@ -164,6 +164,16 @@ module AccountingModule
       joins(:amounts).where('amounts.commercial_document_type' => "LoansModule::Loan")
     end
 
+    def display_commercial_document
+      if commercial_document.try(:member).present?
+        commercial_document.try(:member).try(:full_name)
+      elsif commercial_document.try(:borrower).present?
+        commercial_document.try(:borrower).try(:full_name)
+      else
+        commercial_document.try(:name)
+      end
+    end
+
     private
     def set_encrypted_hash!
       if encrypted_hash.blank?

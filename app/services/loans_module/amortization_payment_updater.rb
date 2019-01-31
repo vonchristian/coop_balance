@@ -6,7 +6,7 @@ module LoansModule
 			@loan =     args[:loan]
 			@schedule = args[:schedule]
 			@voucher =  args[:voucher]
-			@entry =    args[:entry]
+			@entry =    @voucher.entry
 		end
 
 		def update_status!

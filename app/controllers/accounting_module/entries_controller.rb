@@ -38,11 +38,12 @@ module AccountingModule
       end
       respond_to do |format|
         format.html
+        format.xlsx
         format.pdf do
           pdf = AccountingModule::EntriesPdf.new(
             from_date:    @from_date,
             to_date:      @to_date,
-            entries:     entries_for_pdf,
+            entries:      entries_for_pdf,
             employee:     current_user,
             cooperative:  current_cooperative,
             view_context: view_context)

@@ -28,20 +28,23 @@ module Vouchers
         reference_number:    voucher.reference_number,
         previous_entry:      cooperative.entries.recent,
         previous_entry_hash: cooperative.entries.recent.encrypted_hash,
-        entry_date:          voucher.date)
+        entry_date:          voucher.date
+      )
 
       voucher.voucher_amounts.debit.each do |amount|
         entry.debit_amounts.build(
-        account:             amount.account,
-        amount:              amount.amount,
-        commercial_document: amount.commercial_document)
+          account:             amount.account,
+          amount:              amount.amount,
+          commercial_document: amount.commercial_document
+        )
       end
 
       voucher.voucher_amounts.credit.each do |amount|
         entry.credit_amounts.build(
-        account:             amount.account,
-        amount:              amount.amount,
-        commercial_document: amount.commercial_document)
+          account:             amount.account,
+          amount:              amount.amount,
+          commercial_document: amount.commercial_document
+        )
       end
 
       entry.save!
