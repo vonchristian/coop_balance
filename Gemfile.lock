@@ -137,8 +137,6 @@ GEM
       railties (>= 3.0.0)
     faker (1.9.1)
       i18n (>= 0.7)
-    fast_jsonapi (1.5)
-      activesupport (>= 4.2)
     ffi (1.9.25)
     flamegraph (0.9.5)
     font-awesome-sass (5.0.13)
@@ -490,7 +488,6 @@ DEPENDENCIES
   dotiw
   factory_bot_rails
   faker
-  fast_jsonapi
   flamegraph
   font-awesome-sass (~> 5.0.13)
   friendly_id
