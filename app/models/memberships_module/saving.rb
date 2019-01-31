@@ -124,11 +124,11 @@ module MembershipsModule
     end
 
     def deposits
-      saving_product_account.credits_balance(commercial_document: self)
+      saving_product_account.credits_balance(args.merge(commercial_document: self))
     end
-    
+
     def withdrawals
-      saving_product_account.debits_balance(commercial_document: self)
+      saving_product_account.debits_balance(args.merge(commercial_document: self))
     end
 
     def interests_earned(args={})
