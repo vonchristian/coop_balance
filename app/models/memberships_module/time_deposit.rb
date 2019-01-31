@@ -38,6 +38,10 @@ module MembershipsModule
       end
     end
 
+    def self.not_withdrawn
+      where(withdrawn: false)
+    end
+
     def member?
       depositor.regular_member?
     end
@@ -68,7 +72,7 @@ module MembershipsModule
       true
     end
 
-    def balance
+    def balance(args={})
       time_deposit_product_account.balance(commercial_document: self)
     end
 

@@ -1,0 +1,59 @@
+wb = xlsx_package.workbook
+wb.styles do |style|
+  defaults =  { :style => :thin, :color => "000000" }
+  borders = Hash.new do |hash, key|
+    hash[key] = wb.styles.add_style :border => defaults.merge( { :edges => key.to_s.split('_').map(&:to_sym) } )
+  end
+  top_row =  [ borders[:top], borders[:top], borders[:top], borders[:top], borders[:top], borders[:top], borders[:top], borders[:top] ]
+
+  header_style = style.add_style(
+    bg_color: "ded4d3", 
+    b: true, 
+    :sz => 12, 
+    alignment: {horizontal: :center}
+  )
+
+  title_style = style.add_style(:sz => 16)
+
+  subtitle_style = style.add_style(:sz => 12)
+
+  wb.add_worksheet(name: "Share Capitals") do |sheet|
+
+    title_row = sheet.add_row [
+      "Share Capitals", "", "", current_cooperative.abbreviated_name, ""
+    ], style: title_style
+    sheet.merge_cells title_row.cells[(0..2)]
+    sheet.merge_cells title_row.cells[(3..4)]
+
+    subtitle_row = sheet.add_row [
+      "As of #{@to_date.strftime('%B %e, %Y')}",
+      "", 
+      "",
+      current_cooperative.name, 
+      ""
+    ], style: subtitle_style
+    sheet.merge_cells subtitle_row.cells[(0..2)]
+    sheet.merge_cells subtitle_row.cells[(3..4)]
+
+    spacer = sheet.add_row [
+      "", "", "", "", ""
+    ]
+    sheet.merge_cells spacer.cells[(0..4)]
+
+    heading = sheet.add_row ["Member", "", "", "", "Balance"], style: header_style
+    sheet.merge_cells heading.cells[(0..2)]
+    @share_capitals.each do |share_capital|
+      accounts = sheet.add_row [
+        share_capital.account_owner_name,
+        "",
+        "",
+        "",
+        share_capital.balance(to_date: @to_date)
+      ], style: top_row
+      sheet.merge_cells accounts.cells[(0..3)]
+    end
+    sheet.add_row ["", "", "", "", ""], style: top_row
+    sheet.column_widths 10, 10, 10, 25, 20
+    
+  end
+end

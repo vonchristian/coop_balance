@@ -38,6 +38,11 @@
                 <%= text_field_tag :to_date, @to_date, :class => 'form-control border-input datepicker', :placeholder => "To " %>
               </div>
             </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <%= select_tag :loan_type, options_for_select(current_cooperative.loan_products.map {|m| [m.name, m.id]}, params[:loan_type]), class: ' form-control border-input', prompt: false %>
+              </div>
+            </div>
             <div class="col-md-2">
               <button type="submit" class="btn btn-warning btn-sm"> Generate Report</button>
             </div>

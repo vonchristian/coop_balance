@@ -1,0 +1,69 @@
+wb = xlsx_package.workbook
+wb.styles do |style|
+  defaults =  { :style => :thin, :color => "000000" }
+  borders = Hash.new do |hash, key|
+    hash[key] = wb.styles.add_style :border => defaults.merge( { :edges => key.to_s.split('_').map(&:to_sym) } )
+  end
+  top_row =  [ borders[:top], borders[:top], borders[:top], borders[:top], borders[:top], borders[:top], borders[:top], borders[:top] ]
+
+  header_style = style.add_style(
+    bg_color: "ded4d3", 
+    b: true, 
+    :sz => 12, 
+    alignment: {horizontal: :center}
+  )
+
+  if @loan_type.name.gsub!(/[^0-9A-Za-z]/," ").downcase.include?("short term")
+    loan_type_name = "Short-Term Loans"
+  else
+    loan_type_name = @loan_type.name.pluralize
+  end
+
+  title_style = style.add_style(:sz => 16)
+
+  subtitle_style = style.add_style(:sz => 12)
+
+  wb.add_worksheet(name: loan_type_name) do |sheet|
+
+    title_row = sheet.add_row [
+      loan_type_name, "", "", "", "IPSMPC", ""
+    ], style: title_style
+    sheet.merge_cells title_row.cells[(0..3)]
+    sheet.merge_cells title_row.cells[(4..6)]
+
+    subtitle_row = sheet.add_row [
+      "As of #{@to_date.strftime('%B %e, %Y')}",
+      "", 
+      "",
+      "",
+      "Ifugao Public Servants Multipurpose Cooperative", 
+      ""
+    ], style: subtitle_style
+    sheet.merge_cells subtitle_row.cells[(0..3)]
+    sheet.merge_cells subtitle_row.cells[(4..5)]
+
+    spacer = sheet.add_row [
+      "", "", "", "", "", ""
+    ]
+    sheet.merge_cells spacer.cells[(0..5)]
+
+    heading = sheet.add_row ["Member", "", "", "Application Date", "Maturity Date", "Balance"], style: header_style
+    sheet.merge_cells heading.cells[(0..2)]
+    @loans.each do |loan|
+      if !loan.principal_balance(to_date: @to_date).round(2).zero?
+        accounts = sheet.add_row [
+          loan.borrower_full_name,
+          "",
+          "",
+          loan.try(:application_date).try(:strftime, "%b %e, %Y"),
+          loan.current_term.try(:maturity_date).try(:strftime, "%b %e, %Y"),
+          loan.principal_balance(to_date: @to_date)
+        ], style: top_row
+        sheet.merge_cells accounts.cells[(0..2)]
+      end
+    end
+    sheet.add_row ["", "", "", "", "", ""], style: top_row
+    sheet.column_widths 5, 15, 10, 20, 20, 20
+    
+  end
+end

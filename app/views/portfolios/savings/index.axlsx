@@ -1,0 +1,59 @@
+wb = xlsx_package.workbook
+wb.styles do |style|
+  defaults =  { :style => :thin, :color => "000000" }
+  borders = Hash.new do |hash, key|
+    hash[key] = wb.styles.add_style :border => defaults.merge( { :edges => key.to_s.split('_').map(&:to_sym) } )
+  end
+  top_row =  [ borders[:top], borders[:top], borders[:top], borders[:top], borders[:top], borders[:top], borders[:top], borders[:top] ]
+
+  header_style = style.add_style(
+    bg_color: "ded4d3", 
+    b: true, 
+    :sz => 12, 
+    alignment: {horizontal: :center}
+  )
+
+  title_style = style.add_style(:sz => 16)
+
+  subtitle_style = style.add_style(:sz => 12)
+
+  wb.add_worksheet(name: "Savings") do |sheet|
+
+    title_row = sheet.add_row [
+      "Savings Accounts", "", "", "IPSMPC", ""
+    ], style: title_style
+    sheet.merge_cells title_row.cells[(0..2)]
+    sheet.merge_cells title_row.cells[(3..4)]
+
+    subtitle_row = sheet.add_row [
+      "As of #{@to_date.strftime('%B %e, %Y')}",
+      "", 
+      "",
+      "Ifugao Public Servants Multipurpose Cooperative", 
+      ""
+    ], style: subtitle_style
+    sheet.merge_cells subtitle_row.cells[(0..2)]
+    sheet.merge_cells subtitle_row.cells[(3..4)]
+
+    spacer = sheet.add_row [
+      "", "", "", "", ""
+    ]
+    sheet.merge_cells spacer.cells[(0..4)]
+
+    heading = sheet.add_row ["Member", "", "", "", "Balance"], style: header_style
+    sheet.merge_cells heading.cells[(0..2)]
+    @savings_accounts.each do |savings_account|
+      accounts = sheet.add_row [
+        savings_account.account_owner_name,
+        "",
+        "",
+        "",
+        savings_account.balance(to_date: @to_date)
+      ], style: top_row
+      sheet.merge_cells accounts.cells[(0..3)]
+    end
+    sheet.add_row ["", "", "", "", ""], style: top_row
+    sheet.column_widths 10, 10, 10, 25, 20
+    
+  end
+end
