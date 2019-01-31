@@ -53,22 +53,20 @@ module LoansModule
           move_down 20
         end
       end
-      
+
       def summary
         text 'SUMMARY', size: 10, style: :bold, color: '0069D9'
         if loan_product.present?
           table([["Loan Product", "#{loan_product.name.upcase}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10}, column_widths: [100, 200]) do
             cells.borders = []
-            column(1).align = :right
-
+            column(1).align = :center
           end
           move_down 5
-
         end
+
         table([["Collections Count", "#{collections.count}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10}, column_widths: [120, 100]) do
           cells.borders = []
           column(1).align = :right
-
         end
         move_down 5
 
@@ -76,7 +74,6 @@ module LoansModule
           "#{price(LoansModule::Payments::Aggregator.new(collections: collections, from_date: from_date, to_date: to_date, cooperative: cooperative).total_principals)}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10}, column_widths: [120, 100]) do
           cells.borders = []
           column(1).align = :right
-
         end
         move_down 5
 

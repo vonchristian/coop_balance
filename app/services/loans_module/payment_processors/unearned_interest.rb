@@ -6,6 +6,7 @@ module LoansModule
                     :principal_amount,
                     :interest_amount,
                     :penalty_amount,
+                    :amortization_schedule_id,
                     :reference_number,
                     :date,
                     :description,

@@ -20,7 +20,7 @@ wb.styles do |style|
   wb.add_worksheet(name: "Savings") do |sheet|
 
     title_row = sheet.add_row [
-      "Savings Accounts", "", "", "IPSMPC", ""
+      "Savings Accounts", "", "", current_cooperative.abbreviated_name, ""
     ], style: title_style
     sheet.merge_cells title_row.cells[(0..2)]
     sheet.merge_cells title_row.cells[(3..4)]
@@ -29,7 +29,7 @@ wb.styles do |style|
       "As of #{@to_date.strftime('%B %e, %Y')}",
       "", 
       "",
-      "Ifugao Public Servants Multipurpose Cooperative", 
+      current_cooperative.name, 
       ""
     ], style: subtitle_style
     sheet.merge_cells subtitle_row.cells[(0..2)]

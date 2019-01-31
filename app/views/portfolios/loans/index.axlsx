@@ -26,7 +26,7 @@ wb.styles do |style|
   wb.add_worksheet(name: loan_type_name) do |sheet|
 
     title_row = sheet.add_row [
-      loan_type_name, "", "", "", "IPSMPC", ""
+      loan_type_name, "", "", "", current_cooperative.abbreviated_name, ""
     ], style: title_style
     sheet.merge_cells title_row.cells[(0..3)]
     sheet.merge_cells title_row.cells[(4..6)]
@@ -36,7 +36,7 @@ wb.styles do |style|
       "", 
       "",
       "",
-      "Ifugao Public Servants Multipurpose Cooperative", 
+      current_cooperative.name, 
       ""
     ], style: subtitle_style
     sheet.merge_cells subtitle_row.cells[(0..3)]
