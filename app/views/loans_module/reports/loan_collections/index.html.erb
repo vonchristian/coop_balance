@@ -1,13 +1,8 @@
-<% AccountingModule::Entry.loan_payments.each do |entry| %>
-  <tr>
-    <td><%= entry.description %></td>
-    <td>
-      <% entry.credit_amounts.each do |amount| %>
-        <p><%= amount.account_name %>
-        <%= amount.amount %></p>
-        <hr>
-      <% end %>
-    </td>
-    <td><%= number_to_currency entry.debit_amounts.sum(&:amount) %></td>
-  </tr>
-<% end %>
+<%= current_office.loans.total_balance %>
+<%= link_to 'This Day' %>
+per collector
+per organization
+per barangay 
+<p> Export </p>
+Excel
+PDF

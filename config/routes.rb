@@ -87,6 +87,7 @@ Rails.application.routes.draw do
     namespace :reports do
       resources :loan_releases, only: [:index]
       resources :loan_collections, only: [:index]
+      resources :aging_loans, only: [:index]
     end
 
     resources :member_borrowers, only: [:index, :show]
