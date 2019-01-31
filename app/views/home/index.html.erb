@@ -8,7 +8,7 @@
   <div class="landing-header">
   	<div class="row">
   		<div class="col-md-7">
-  			<h1 class="text-open-sans-regular">A single workplace to manage all your Cooperative operations</h1>
+  			<h1 class="text-open-sans-regular">A single workplace to manage all your cooperative operations</h1>
   			<br>
   			<p class="lead"> Coop Catalyst connects all your offices and operations in one platform <br> so that managing your cooperative is simpler, organized and less stress.</p>
             <div class="row min-margin">
@@ -52,26 +52,6 @@
               </div>
             </div>
   		    </div>
-          <div class="col-md-4 offset-1">
-            <div class="card card-outline card-primary">
-              <div class="card-header no-border">
-                <p class=""> See for yourself how Coop Catalyst can simplify your work for your employees. </p>
-              </div>
-                  <div class="card-body">
-                <%= simple_form_for Lead.new do |f| %>
-                  <%= f.input :email, placeholder: 'Email', label: false %>
-
-                  <%= f.input :contact_number, label: false, placeholder: "Contact Number" %>
-                  <%= f.input :message, label: false, placeholder: 'What do you want to automate in your coop?' %>
-                  <hr>
-                  <%= f.submit 'Request for Demo', class: 'btn btn-primary btn-lg btn-block' %>
-                  <br>
-                  
-                <% end %>
-              </div>
-            </div>
-          </div>
-
         </div>
   </div>
   <br>
@@ -414,17 +394,16 @@
           <div class="col-md-5 offset-1">
             <div class="card card-outline card-primary">
               <div class="card-body">
-            <%= simple_form_for Lead.new do |f| %>
-              <%= f.input :email, placeholder: 'Email' %>
-              <small>
-                              We’ll occasionally send updates about your account to this inbox. We’ll never share your email address with anyone.
-                            </small>
-<br>
-              <%= f.input :contact_number %>
+                <%= simple_form_for Lead.new do |f| %>
+                  <%= f.input :email, placeholder: 'Email', label: false %>
 
-              <hr>
-              <%= f.submit 'Request for Demo', class: 'btn btn-primary btn-lg btn-block' %>
-            <% end %>
+                  <%= f.input :contact_number, label: false, placeholder: "Contact Number" %>
+                  <%= f.input :message, label: false, placeholder: 'What do you want to automate in your coop?' %>
+                  <hr>
+                  <%= f.submit 'Request for Demo', class: 'btn btn-primary btn-lg btn-block' %>
+                  <br>
+
+                <% end %>
 
           </div>
         </div>
