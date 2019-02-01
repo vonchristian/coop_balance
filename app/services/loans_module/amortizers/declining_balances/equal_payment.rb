@@ -18,10 +18,10 @@ module LoansModule
         private
         def create_first_schedule
           loan_application.amortization_schedules.create!(
-            date:      loan_application.first_amortization_date,
-            interest:  first_interest,
-            principal: first_principal,
-            total_amount: total_repayment,
+            date:           loan_application.first_amortization_date,
+            interest:       first_interest,
+            principal:      first_principal,
+            total_amount:   total_repayment,
             ending_balance: loan_application.loan_amount.amount - first_principal
           )
         end
@@ -30,10 +30,10 @@ module LoansModule
           if loan_application.schedule_count > 1
             (loan_application.schedule_count - 1).to_i.times do
               loan_application.amortization_schedules.create!(
-                date:      loan_application.succeeding_amortization_date,
-                interest:  computed_interest_for(loan_application.amortization_schedules.latest),
-                principal: computed_principal_for(loan_application.amortization_schedules.latest),
-                total_amount: total_repayment,
+                date:           loan_application.succeeding_amortization_date,
+                interest:       computed_interest_for(loan_application.amortization_schedules.latest),
+                principal:      computed_principal_for(loan_application.amortization_schedules.latest),
+                total_amount:   total_repayment,
                 ending_balance: computed_ending_balance_for(loan_application.amortization_schedules.latest)
               )
             end
@@ -56,7 +56,7 @@ module LoansModule
         end
 
         def computed_interest_for(schedule)
-          loan_application.amortization_schedules.find(schedule.id).ending_balance * loan_product.current_interest_config.monthly_interest_rate
+          schedule.ending_balance * loan_product.current_interest_config.monthly_interest_rate
         end
 
         def computed_principal_for(schedule)
@@ -64,7 +64,7 @@ module LoansModule
         end
 
         def computed_ending_balance_for(schedule)
-          ending_balance_for(schedule) - computed_principal_for(schedule)
+          schedule.ending_balance - computed_principal_for(schedule)
         end
 
         def ending_balance_for(schedule)

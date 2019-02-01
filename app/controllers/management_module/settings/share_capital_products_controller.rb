@@ -16,14 +16,13 @@ module ManagementModule
 
       private
       def share_capital_product_params
-        params.require(:coop_services_module_share_capital_product).permit(
+        params.require(:cooperatives_share_capital_product).permit(
                         :name,
                         :cost_per_share,
                         :minimum_number_of_subscribed_share,
                         :minimum_number_of_paid_share,
                         :default_product,
-                        :paid_up_account_id,
-                        :subscription_account_id,
+                        :equity_account_id,
                         :minimum_balance)
       end
     end

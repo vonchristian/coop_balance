@@ -36,6 +36,11 @@ AccountingModule::Asset.create(code: 117117, name: "Loans Receivable - Current (
 AccountingModule::Asset.create(code: 117118, name: "Loans Receivable - Current (Short-Term Loan)")
 AccountingModule::Asset.create(code: 117119, name: "Loans Receivable - Current (Productive Loan)")
 AccountingModule::Asset.create(code: 117120, name: "Loans Receivable - Current (Appliance Loan)")
+AccountingModule::Asset.create(code: 117121, name: "Loans Receivable - Current (Microfinance Loan)")
+AccountingModule::Asset.create(code: 117122, name: "Loans Receivable - Current (Commercial Loan)")
+AccountingModule::Asset.create(code: 117123, name: "Loans Receivable - Current (Pensioner Loan)")
+AccountingModule::Asset.create(code: 117123, name: "Loans Receivable - Current (OFW Loan)")
+
 AccountingModule::Asset.create(code: 11712, name: "Loans Receivable - Past Due")
 AccountingModule::Asset.create(code: 1171211, name: "Loans Receivable - Past Due (Regular Loan)")
 AccountingModule::Asset.create(code: 1171212, name: "Loans Receivable - Past Due (Emergency Loan)")
@@ -46,8 +51,52 @@ AccountingModule::Asset.create(code: 1171216, name: "Loans Receivable - Past Due
 AccountingModule::Asset.create(code: 1171217, name: "Loans Receivable - Past Due (Short-Term Loan)")
 AccountingModule::Asset.create(code: 1171218, name: "Loans Receivable - Past Due (Productive Loan)")
 AccountingModule::Asset.create(code: 1171219, name: "Loans Receivable - Past Due (Appliance Loan)")
+AccountingModule::Asset.create(code: 1171220, name: "Loans Receivable - Past Due (Microfinance Loan)")
+AccountingModule::Asset.create(code: 1171221, name: "Loans Receivable - Past Due (Commercial Loan)")
+AccountingModule::Asset.create(code: 1171222, name: "Loans Receivable - Past Due (Pensioner Loan)")
+AccountingModule::Asset.create(code: 1171223, name: "Loans Receivable - Past Due (OFW Loan)")
+
+
 AccountingModule::Asset.create(code: 11713, name: "Loans Receivable - Restructured")
+AccountingModule::Asset.create(code: 117131, name: "Loans Receivable - Restructured (Regular Loan)")
+AccountingModule::Asset.create(code: 117132, name: "Loans Receivable - Restructured (Emergency Loan)")
+AccountingModule::Asset.create(code: 117133, name: "Loans Receivable - Restructured (Salary Loan)")
+AccountingModule::Asset.create(code: 117134, name: "Loans Receivable - Restructured (Special Loan)")
+AccountingModule::Asset.create(code: 117135, name: "Loans Receivable - Restructured (Contractors Loan)")
+AccountingModule::Asset.create(code: 117136, name: "Loans Receivable - Restructured (Agri Input Loan)")
+AccountingModule::Asset.create(code: 117137, name: "Loans Receivable - Restructured (Short-Term Loan)")
+AccountingModule::Asset.create(code: 117138, name: "Loans Receivable - Restructured (Productive Loan)")
+AccountingModule::Asset.create(code: 117139, name: "Loans Receivable - Restructured (Appliance Loan)")
+AccountingModule::Asset.create(code: 1171310, name: "Loans Receivable - Restructured (Microfinance Loan)")
+AccountingModule::Asset.create(code: 1171311, name: "Loans Receivable - Restructured (Commercial Loan)")
+AccountingModule::Asset.create(code: 1171312, name: "Loans Receivable - Restructured (Pensioner Loan)")
+AccountingModule::Asset.create(code: 1171313, name: "Loans Receivable - Restructured (OFW Loan)")
+
+
+
+
+
+
+
+
 AccountingModule::Asset.create(code: 11714, name: "Loans Receivable - Loans in Litigation")
+AccountingModule::Asset.create(code: 1171411, name: "Loans Receivable - Loans in Litigation (Regular Loan)")
+AccountingModule::Asset.create(code: 1171412, name: "Loans Receivable - Loans in Litigation (Emergency Loan)")
+AccountingModule::Asset.create(code: 1171413, name: "Loans Receivable - Loans in Litigation (Salary Loan)")
+AccountingModule::Asset.create(code: 1171414, name: "Loans Receivable - Loans in Litigation (Special Loan)")
+AccountingModule::Asset.create(code: 1171415, name: "Loans Receivable - Loans in Litigation (Contractors Loan)")
+AccountingModule::Asset.create(code: 1171416, name: "Loans Receivable - Loans in Litigation (Agri Input Loan)")
+AccountingModule::Asset.create(code: 1171417, name: "Loans Receivable - Loans in Litigation (Short-Term Loan)")
+AccountingModule::Asset.create(code: 1171418, name: "Loans Receivable - Loans in Litigation (Productive Loan)")
+AccountingModule::Asset.create(code: 1171419, name: "Loans Receivable - Loans in Litigation (Appliance Loan)")
+AccountingModule::Asset.create(code: 1171420, name: "Loans Receivable - Loans in Litigation (Microfinance Loan)")
+AccountingModule::Asset.create(code: 1171421, name: "Loans Receivable - Loans in Litigation (Commercial Loan)")
+AccountingModule::Asset.create(code: 1171422, name: "Loans Receivable - Loans in Litigation (Pensioner Loan)")
+AccountingModule::Asset.create(code: 1171423, name: "Loans Receivable - Loans in Litigation (OFW Loan)")
+
+
+
+
 AccountingModule::Asset.create(code: 11715, contra: true, name: "Unearned Interests and Discounts")
 AccountingModule::Asset.create(code: 117151, contra: true, name: "Unearned Interests - Regular Loan")
 AccountingModule::Asset.create(code: 117152, contra: true, name: "Unearned Interests - Emergency Loan")
@@ -131,7 +180,7 @@ AccountingModule::Asset.create(code: 14111,  name: "Accumulated Impairment Losse
 AccountingModule::Asset.create(code: 14120,  name: "Land Improvements")
 AccountingModule::Asset.create(code: 14121,  name: "Accumulated Depreciation - Land Improvements")
 AccountingModule::Asset.create(code: 14130,  name: "Building and Improvements")
-AccountingModule::Asset.create(code: 14131,  name: "Accumulated Depreciation - Land Improvements")
+AccountingModule::Asset.create(code: 14131,  name: "Accumulated Depreciation - Buiding and Improvements")
 AccountingModule::Asset.create(code: 14140,  name: "Building on Leased/Usufruct Land")
 AccountingModule::Asset.create(code: 14141,  name: "Accumulated Depreciation - Building on Leased/Usufruct Land", contra: true )
 AccountingModule::Asset.create(code: 14150,  name: "Utility Plant")

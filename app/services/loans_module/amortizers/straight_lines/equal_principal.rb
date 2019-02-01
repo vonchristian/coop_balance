@@ -11,6 +11,7 @@ module LoansModule
         def create_schedule!
           create_first_schedule
           create_succeeding_schedule
+          #set_proper_dates
         end
 
         def update_interest_amounts!
@@ -39,7 +40,7 @@ module LoansModule
         end
 
         def create_succeeding_schedule
-          if !loan_application.lumpsum?
+          if loan_application.schedule_count > 1
             (loan_application.schedule_count - 1).to_i.times do
               loan_application.amortization_schedules.create!(
                 date:      loan_application.succeeding_amortization_date,

@@ -114,6 +114,7 @@ Rails.application.routes.draw do
     end
 
     resources :loans, only: [:index, :show] do
+      resources :restructure_vouchers, only: [:new, :create], module: :loans
       resources :loss_vouchers, only: [:show], module: :loans
       resources :interests, only: [:index], module: :loans
       resources :penalties, only: [:index], module: :loans

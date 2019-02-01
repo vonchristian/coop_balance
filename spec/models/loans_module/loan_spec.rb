@@ -57,7 +57,7 @@ module LoansModule
     end
 
     describe 'enums' do
-      it { is_expected.to define_enum_for(:status).with([:current_loan, :past_due]) }
+      it { is_expected.to define_enum_for(:status).with_values([:current_loan, :past_due, :restructured, :under_litigation]) }
     end
 
     describe "#principal_account" do

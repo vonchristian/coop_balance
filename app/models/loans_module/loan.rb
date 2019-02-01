@@ -1,7 +1,9 @@
 module LoansModule
   class Loan < ApplicationRecord
-    enum status: [:current_loan, :past_due, :restructured]
+    enum status: [:current_loan, :past_due, :restructured, :under_litigation]
+
     audited
+
     include PgSearch
     include LoansModule::Loans::Interest
     include LoansModule::Loans::Principal
@@ -33,6 +35,7 @@ module LoansModule
     has_many :loan_interests,           class_name: "LoansModule::Loans::LoanInterest", dependent: :destroy
     has_many :loan_penalties,           class_name: "LoansModule::Loans::LoanPenalty",  dependent: :destroy
     has_many :loan_discounts,           class_name: "LoansModule::Loans::LoanDiscount", dependent: :destroy
+
     has_many :notes,                    as: :noteable
     has_many :terms,                    as: :termable
     has_many :loan_co_makers,           class_name: "LoansModule::LoanCoMaker"

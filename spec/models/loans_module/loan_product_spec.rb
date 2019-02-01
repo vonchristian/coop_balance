@@ -8,6 +8,7 @@ module LoansModule
       it { is_expected.to belong_to :current_account }
       it { is_expected.to belong_to :past_due_account }
       it { is_expected.to belong_to :restructured_account }
+      it { is_expected.to belong_to :litigation_account }
     	it { is_expected.to have_many :loans }
       it { is_expected.to have_many :member_borrowers }
       it { is_expected.to have_many :employee_borrowers }
@@ -66,33 +67,6 @@ module LoansModule
       end
     end
 
-    describe '#amortization_scheduler' do
-      it 'returns number of payments declining_balance' do
-        amortization_type     = create(:amortization_type, calculation_type: 'declining_balance')
-        loan_product          = create(:loan_product, amortization_type: amortization_type)
-        interest_config       = create(:interest_config, calculation_type: 'prededucted', loan_product: loan_product)
-        interest_prededuction = create(:interest_prededuction, calculation_type: 'number_of_payments', loan_product: loan_product)
-
-        expect(loan_product.amortization_scheduler).to eql LoansModule::AmortizationSchedulers::NumberOfPaymentsDecliningBalance
-      end
-
-      it 'percent_based straight_line' do
-        amortization_type = create(:amortization_type, calculation_type: 'straight_line')
-        loan_product = create(:loan_product, amortization_type: amortization_type)
-        interest_config = create(:interest_config, calculation_type: 'prededucted', loan_product: loan_product)
-        interest_prededuction = create(:interest_prededuction, calculation_type: 'percent_based', loan_product: loan_product)
-        expect(loan_product.amortization_scheduler).to eql LoansModule::AmortizationSchedulers::PercentBasedStraightLine
-      end
-
-      it 'add_on straight_line' do
-        amortization_type = create(:amortization_type, calculation_type: 'straight_line')
-        loan_product = create(:loan_product, amortization_type: amortization_type)
-
-        interest_config = create(:interest_config, calculation_type: 'add_on', loan_product: loan_product)
-
-        expect(loan_product.amortization_scheduler).to eql LoansModule::AmortizationSchedulers::AddOnStraightLine
-      end
-    end
 
     describe "#interest_calculator" do
       it 'returns percent based straight line' do
@@ -117,9 +91,9 @@ module LoansModule
         declining_balance_amortization_type = create(:amortization_type, calculation_type: 'declining_balance')
         loan_product = create(:loan_product, amortization_type: declining_balance_amortization_type)
         interest_config = create(:interest_config, calculation_type: 'prededucted', loan_product: loan_product)
-        interest_prededuction = create(:interest_prededuction, loan_product: loan_product, calculation_type: 'number_of_payments')
+        interest_prededuction = create(:interest_prededuction, loan_product: loan_product, calculation_type: 'number_of_payments_based')
 
-        expect(loan_product.interest_calculator).to eq LoansModule::InterestCalculators::NumberOfPaymentsDecliningBalance
+        expect(loan_product.interest_calculator).to eq LoansModule::InterestCalculators::NumberOfPaymentsBasedDecliningBalance
       end
     end
   end
