@@ -3,15 +3,16 @@ module LoansModule
     class AccruedInterest
       include ActiveModel::Model
       attr_accessor :loan_id,
-                :principal_amount,
-                :interest_amount,
-                :penalty_amount,
-                :reference_number,
-                :date,
-                :description,
-                :employee_id,
-                :cash_account_id,
-                :account_number
+                    :principal_amount,
+                    :interest_amount,
+                    :penalty_amount,
+                    :amortization_schedule_id,
+                    :reference_number,
+                    :date,
+                    :description,
+                    :employee_id,
+                    :cash_account_id,
+                    :account_number
       validates :principal_amount, :interest_amount, :penalty_amount, presence: true, numericality: { greater_than_or_equal_to: 0 }
       validate :principal_amount_not_more_than_balance
       validates :reference_number, :date, :description, presence: true

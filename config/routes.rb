@@ -546,6 +546,15 @@ Rails.application.routes.draw do
     resources :voucher_disbursements, only: [:create], module: :share_capital_applications
   end
 
+  resources :portfolios, only: [:index]
+
+  namespace :portfolios do
+    resources :savings,        only: [:index]
+    resources :share_capitals, only: [:index]
+    resources :time_deposits,  only: [:index]
+    resources :loans,          only: [:index]
+  end
+
   authenticated :member_account do
     root to: 'member_accounts#show'
   end

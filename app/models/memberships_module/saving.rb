@@ -123,6 +123,10 @@ module MembershipsModule
       saving_product_account.balance(args.merge(commercial_document: self))
     end
 
+    def balance_for(args={})
+      
+    end
+
     def deposits
       saving_product_account.credits_balance(args.merge(commercial_document: self))
     end

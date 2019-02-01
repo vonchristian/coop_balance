@@ -143,7 +143,7 @@ module LoansModule
     def self.for_entry(args={})
       entry = args[:entry]
       ids   = entry.amounts.pluck(:commercial_document_id).uniq.flatten
-      where(id: ids)
+      not_cancelled.where(id: ids)
     end
 
     def self.total_balance
@@ -315,7 +315,7 @@ module LoansModule
         amounts = BigDecimal("0")
         cooperative.cash_accounts.each do |account|
           accounting_entry.credit_amounts.where(account: account).each do |amount|
-            amounts += Money.new(amount).amount
+            amounts += amount
           end
         end
         amounts

@@ -1,0 +1,106 @@
+wb = xlsx_package.workbook
+wb.styles do |style|
+  defaults =  { :style => :thin, :color => "000000" }
+  borders = Hash.new do |hash, key|
+    hash[key] = wb.styles.add_style :border => defaults.merge( { :edges => key.to_s.split('_').map(&:to_sym) } )
+  end
+  top_and_side_row =  [ borders[:top_left], borders[:top], borders[:top], borders[:top], borders[:top], borders[:top], borders[:top], borders[:top_right] ]
+  top_row =  [ borders[:top], borders[:top], borders[:top], borders[:top], borders[:top], borders[:top], borders[:top], borders[:top] ]
+  middle_side_row = [borders[:left], borders[:left], nil, borders[:left], borders[:left], borders[:left], borders[:left], borders[:right]]
+
+  header_style = style.add_style(
+    bg_color: "ded4d3", 
+    b: true, 
+    :sz => 12, 
+    alignment: {horizontal: :center}
+  )
+
+  comma = wb.styles.add_style :num_fmt => 3
+
+  title_style = style.add_style(:sz => 16)
+
+  subtitle_style = style.add_style(:sz => 12)
+
+  wb.add_worksheet(name: "Cash Receipts") do |sheet|
+
+    title_row = sheet.add_row [
+      "Cash Receipts", "", "", "", "", "IPSMPC", "", ""
+    ], style: title_style
+    sheet.merge_cells title_row.cells[(0..3)]
+    sheet.merge_cells title_row.cells[(5..7)]
+
+    subtitle_row = sheet.add_row [
+      "#{@from_date.strftime('%B %e, %Y')} - #{@to_date.strftime('%B %e, %Y')}",
+      "", "", "", "", "Ifugao Public Servants Multipurpose Cooperative", "", ""
+    ], style: subtitle_style
+    sheet.merge_cells subtitle_row.cells[(0..3)]
+    sheet.merge_cells subtitle_row.cells[(5..7)]
+
+    summary = sheet.add_row [
+      "SUMMARY", "", "", "", "", "", "", ""
+    ], style: subtitle_style
+    sheet.merge_cells summary.cells[(0..6)]
+
+    entry_count = sheet.add_row [
+      "", "Entries", @entries.count, "", "", "", "", ""
+    ], style: subtitle_style
+
+    total_debit = sheet.add_row [
+      "", "Total Debit", @entries.sum {|e| Money.new(e.debit_amounts.sum(:amount_cents)).amount}, "", "", "", "", ""
+    ], style: comma
+
+    total_credit = sheet.add_row [
+      "", "Total Credit", @entries.sum {|e| Money.new(e.credit_amounts.sum(:amount_cents)).amount}, "", "", "", "", ""
+    ], style: comma
+
+    spacer = sheet.add_row [
+      "", "", "", "", "", "", ""
+    ]
+    sheet.merge_cells spacer.cells[(0..6)]
+
+    heading = sheet.add_row ["Date", "Description", "", "REF #", "Member/Payee", "Account", "Debit", "Credit"], style: header_style
+    @ordered_entries.each do |entry|
+      entry_row = sheet.add_row [
+        entry.entry_date.strftime("%D"),
+        entry.description,
+        "",
+        entry.reference_number,
+        entry.display_commercial_document,
+        "",
+        "",
+        ""
+      ], style: top_and_side_row
+      sheet.merge_cells entry_row.cells[(1..2)]
+
+      entry.debit_amounts.each do |amount|
+        sheet.add_row [
+          "",
+          entry.cancelled? ? "CANCELLED - #{entry.cancellation_description} (#{entry.cancelled_at.strftime('%D')})" : "",
+          "",
+          "",
+          "",
+          amount.account_name,
+          amount.amount.amount,
+          ""
+        ], style: middle_side_row
+      end
+      entry.credit_amounts.each do |amount|
+        credit_amounts = sheet.add_row [
+          "",
+          "",
+          "",
+          "",
+          "",
+          amount.account_name,
+          "",
+          amount.amount.amount
+        ], style: middle_side_row, :num_fmt => 3
+        sheet.merge_cells entry_row.cells[(1..2)]
+        sheet.row_style(0 + 1,comma)
+      end
+    end
+    sheet.add_row ["", "", "", "", "", "", ""], style: top_row
+    sheet.column_widths 10, 15, 25, 10, 20, 30, 15, 15
+    
+  end
+end
