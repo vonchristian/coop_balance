@@ -28,6 +28,7 @@ module AccountingModule
         end
         respond_to do |format|
           format.html
+          format.xlsx
           format.pdf do
             pdf = AccountingModule::EntriesPdf.new(
               from_date:    @from_date,

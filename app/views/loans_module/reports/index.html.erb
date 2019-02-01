@@ -41,7 +41,7 @@
             </div>
             <div class="col-md-3">
               <div class="form-group">
-                <%= select_tag :loan_type, options_for_select(current_cooperative.loan_products.map {|m| [m.name, m.id]}, params[:loan_type]), class: ' form-control border-input', prompt: false %>
+                <%= select_tag :loan_type, options_for_select(current_cooperative.loan_products.map {|m| [m.name, m.id]}, params[:loan_type]), class: ' form-control border-input', prompt: 'Select Loan Type' %>
               </div>
             </div>
             <div class="col-md-2">
