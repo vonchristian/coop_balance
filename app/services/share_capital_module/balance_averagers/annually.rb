@@ -1,11 +1,11 @@
-module SavingsModule
+module ShareCapitalModule
   module BalanceAveragers
     class Annually
-      attr_reader :saving, :to_date
+      attr_reader :share_capital, :to_date
 
-      def initialize(args)
-        @saving  = args.fetch(:saving)
-        @to_date = args.fetch(:to_date)
+      def initialize(args={})
+        @share_capital = args.fetch(:share_capital)
+        @to_date       = args.fetch(:to_date)
       end
 
       def averaged_balance
@@ -37,7 +37,7 @@ module SavingsModule
         end
 
         months.uniq.each do |month|
-          balances <<  saving.balance(to_date: month.end_of_month).to_f
+          balances <<  share_capital.balance(to_date: month.end_of_month).to_f
         end
         balances
       end

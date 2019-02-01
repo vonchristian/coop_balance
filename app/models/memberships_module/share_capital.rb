@@ -95,7 +95,7 @@ module MembershipsModule
 
 
     def dividends_earned
-      share_capital_product_interest_payable_account.balance(commercial_document: self)
+      share_capital_product_interest_payable_account.balance(args.merge(commercial_document: self))
     end
 
     def name
