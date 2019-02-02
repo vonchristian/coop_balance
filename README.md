@@ -1,3 +1,32 @@
+remove accrued -> move to add_on
+loan application belongs_to amortization_type
+loan_application belongs_to interest_config
+member index
+  just for searching
+  separate to membership portfolio (metrics)
+
+color code loans
+red past due
+restructured yellow
+blue current
+litigation gray
+add Restructured account to loan product creation
+
+
+pdf format loan application form
+create municipalities
+create barangays
+create provinces
+
+
+Backlog
+
+Appraisal Sheet for collateralled Real Properties
+
+
+
+
+
 share capital show page
  if less than minimum show amount balance
 add cooperative service to loan products

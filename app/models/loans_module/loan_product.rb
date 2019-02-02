@@ -9,6 +9,7 @@ module LoansModule
     belongs_to :current_account,      class_name: "AccountingModule::Account"
     belongs_to :past_due_account,     class_name: "AccountingModule::Account"
     belongs_to :restructured_account, class_name: "AccountingModule::Account"
+    belongs_to :litigation_account,   class_name: "AccountingModule::Account"
 
     has_many :interest_configs,                    class_name: "LoansModule::LoanProducts::InterestConfig", dependent: :destroy
     has_many :penalty_configs,                     class_name: "LoansModule::LoanProducts::PenaltyConfig",dependent: :destroy

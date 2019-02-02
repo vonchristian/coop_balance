@@ -11,13 +11,12 @@
     <%= f.input :minimum_number_of_subscribed_share %>
     <%= f.input :minimum_number_of_paid_share %>
     <%= f.input :cost_per_share %>
-    <%= f.input :paid_up_account_id, collection: AccountingModule::Account.all.map{|a| [a.name.titleize, a.id] } %>
-    <%= f.input :subscription_account_id, collection: AccountingModule::Account.all.map{|a| [a.name.titleize, a.id] } %>
-    <%= f.input :minimum_balance, label: "Minimum Paid-Up Balance", as: :currency %>
+    <%= f.input :equity_account_id, collection: AccountingModule::Account.all.map{|a| [a.name.titleize, a.id] } %>
+
+    <%= f.input :minimum_balance, label: "Minimum Paid-Up Balance"%>
     <%= f.input :default_product %>
   </div>
   <div class="modal-footer">
     <%= f.submit "Create Share Capital Product", class: "btn btn-danger float-right", data: { disable_with: "Processing..." } %>
   </div>
 <% end %>
-

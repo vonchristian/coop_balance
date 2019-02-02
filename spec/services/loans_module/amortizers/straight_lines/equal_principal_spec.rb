@@ -13,7 +13,7 @@ module LoansModule
 
           described_class.new(loan_application: loan_application).create_schedule!
           described_class.new(loan_application: loan_application).update_interest_amounts!
-          described_class.new(loan_application: loan_application).update_total_amounts!
+          described_class.new(loan_application: loan_application).update_total_repayments!
 
           expect(loan_application.amortization_schedules.count).to eq loan_application.schedule_count
           puts loan_application.amortization_schedules.sum(&:interest).to_f

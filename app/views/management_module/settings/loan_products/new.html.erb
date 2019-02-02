@@ -21,6 +21,10 @@
 
       <%= f.input :current_account_id, label: "Select Loans Receivable (Current) Account", collection: current_cooperative.accounts.assets.active.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanAccountSelect'} %>
       <%= f.input :past_due_account_id, label: "Select Loans Receivable (Past Due) Account", collection: current_cooperative.accounts.assets.active.all.map{|a| [a.name.titleize, a.id] } %>
+      <%= f.input :restructured_account_id, label: "Restructured Account", collection: current_cooperative.accounts.assets.active.all.map{|a| [a.name.titleize, a.id] } %>
+      <%= f.input :litigation_account_id, label: "Litigation Account", collection: current_cooperative.accounts.assets.active.all.map{|a| [a.name.titleize, a.id] } %>
+
+
     </div>
   </div>
   <hr>

@@ -42,6 +42,8 @@ module ManagementModule
         :maximum_loanable_amount,
         :current_account_id,
         :past_due_account_id,
+        :restructured_account_id,
+        :litigation_account_id,
         :interest_rate,
         :interest_revenue_account_id,
         :accrued_income_account_id,

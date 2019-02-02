@@ -25,7 +25,7 @@ module LoansModule
             date:      loan_application.first_amortization_date,
             interest:  first_interest,
             principal: first_principal,
-            total_amount: total_repayment,
+            total_repayment: total_repayment,
             ending_balance: loan_application.loan_amount.amount - first_principal
           )
         end

@@ -3,23 +3,23 @@ module LoansModule
     class AddOnInterest
       include ActiveModel::Model
       attr_accessor :loan_id,
-                    :principal_amount,
-                    :interest_amount,
-                    :penalty_amount,
-                    :amortization_schedule_id,
-                    :reference_number,
-                    :date,
-                    :description,
-                    :employee_id,
-                    :cash_account_id,
-                    :account_number
+                :principal_amount,
+                :interest_amount,
+                :penalty_amount,
+                :reference_number,
+                :date,
+                :description,
+                :employee_id,
+                :cash_account_id,
+                :account_number,
+                :amortization_schedule_id
       validates :principal_amount, :interest_amount, :penalty_amount, presence: true, numericality: { greater_than_or_equal_to: 0 }
       validate :principal_amount_not_more_than_balance
       validates :reference_number, :date, :description, presence: true
 
       def process!
         ActiveRecord::Base.transaction do
-          create_voucher
+          create_voucher!
         end
       end
 
@@ -35,9 +35,8 @@ module LoansModule
         User.find(employee_id)
       end
 
-      private
 
-      def create_voucher
+      def create_voucher!
         voucher = Voucher.new(
         account_number:   account_number,
         office:           find_employee.office,
@@ -48,40 +47,43 @@ module LoansModule
         preparer:         find_employee,
         date:             date)
 
-        create_penalty_amount(voucher)
-        create_principal_amount(voucher)
-        create_interest_amount(voucher)
-        create_cash_amount(voucher)
+        voucher.voucher_amounts << create_penalty_amount
+        voucher.voucher_amounts << create_principal_amount
+        voucher.voucher_amounts << create_interest_amount
+        voucher.voucher_amounts << create_cash_amount
         voucher.save!
       end
 
-      def create_cash_amount(voucher)
-        voucher.voucher_amounts.debit.build(
+      def create_cash_amount
+        Vouchers::VoucherAmount.debit.create!(
         amount:             total_amount,
         account:             find_cash_account,
         commercial_document: find_loan)
       end
 
 
-      def create_interest_amount(voucher)
-        voucher.voucher_amounts.credit.build(
-        amount:              interest_amount.to_f,
-        account:             find_loan.loan_product_interest_revenue_account,
-        commercial_document: find_loan)
+      def create_interest_amount
+        if interest_amount.to_f > 0
+          Vouchers::VoucherAmount.credit.create!(
+          amount:              interest_amount.to_f,
+          account:             find_loan.loan_product_interest_revenue_account,
+          commercial_document: find_loan)
+        end
       end
 
-      def create_penalty_amount(voucher)
+      def create_penalty_amount
         if penalty_amount.to_f > 0
-          voucher.voucher_amounts.credit.build(
+          Vouchers::VoucherAmount.credit.create!(
           amount:              penalty_amount.to_f,
           account:             find_loan.loan_product_penalty_revenue_account,
           commercial_document: find_loan)
         end
       end
 
-      def create_principal_amount(voucher)
+      def create_principal_amount
         if principal_amount.to_f > 0
-          voucher.voucher_amounts.credit.build(
+          Vouchers::VoucherAmount.credit.create!(
+          cooperative:         find_loan.cooperative,
           amount:              principal_amount.to_f,
           account:             find_loan.principal_account,
           commercial_document: find_loan)

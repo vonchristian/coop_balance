@@ -30,8 +30,6 @@ module Cooperatives
       where(default_product: true).last
     end
 
-    def minimum_balance
-      cost_per_share * minimum_number_of_paid_share
-    end
+    
   end
 end

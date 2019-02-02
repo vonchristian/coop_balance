@@ -19,6 +19,8 @@ module LoansModule
     has_many :amortization_schedules, dependent: :destroy
     has_many :terms, as: :termable, dependent: :destroy
 
+    has_many_attached :supporting_documents
+
     delegate :name, :current_membership, :avatar, to: :borrower, prefix: true
     delegate :name, :interest_revenue_account, :current_account, to: :loan_product, prefix: true
     delegate :monthly_interest_rate,  to: :loan_product, prefix: true
