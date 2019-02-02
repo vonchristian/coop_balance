@@ -11,7 +11,7 @@
   <tbody>
     <% first_running_total = 0 %>
     <% second_running_total = 0 %>
-    <% accounts.each do |account| %>
+    <% accounts.uniq.each do |account| %>
       <% first_date_balance = account.balance(:to_date => @comparison.first_comparison_date) %>
       <% second_date_balance = account.balance(:to_date => @comparison.second_comparison_date) %>
 

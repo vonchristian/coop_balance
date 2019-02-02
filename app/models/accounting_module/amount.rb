@@ -60,6 +60,10 @@ module AccountingModule
       not_cancelled.where('entries.entry_date' => date_range.start_date..date_range.end_date)
     end
 
+    def self.loans #move to amount_classifier class 
+      ids = where(commercial_document_type: "LoansModule::Loan").pluck(:commercial_document_id)
+      LoansModule::Loan.where(id: ids)
+    end
     def self.for_loans
       where(commercial_document_type: "LoansModule::Loan")
     end

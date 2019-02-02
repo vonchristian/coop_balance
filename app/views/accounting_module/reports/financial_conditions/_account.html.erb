@@ -1,28 +1,30 @@
 <table class="table table-hover">
   <h3 class="card-title text-left"><b><%=name%></b></h3>
   <thead>
-  <tr>
-    <th></th>
-    <th></th>
-  </tr>
-  </thead>
-<% if accounts.count > 0 %>
-  <tbody>
-    <% running_total = 0 %>
-    <% accounts.each do |account| %>
-      <% balance = account.balance(:from_date => @from_date, :to_date => @to_date) %>
-      <tr>
-        <td><%= account.name %></td>
-        <td><span class="pull-right"><%=number_to_currency balance.round(2) %></span></td>
-        <% running_total += balance %>
-      </tr>
-    <% end %>
     <tr>
-      <strong>
-        <td><b>TOTAL <%= name.upcase %></b></td>
-        <td><span class="pull-right"> <b><%=number_to_currency running_total.round(2) %></b></span></td>
-      </strong>
+      <th></th>
+      <th></th>
     </tr>
-  </tbody>
-<% end %>
+  </thead>
+  <% if accounts.count > 0 %>
+    <tbody>
+      <% running_total = 0 %>
+      <% accounts.uniq.each do |account| %>
+        <% balance = account.balance(:to_date => @to_date) %>
+        <% if !balance.round(2).zero? %>
+          <tr>
+            <td><%= account.name %></td>
+            <td><span class="pull-right"><%=number_to_currency balance.round(2) %></span></td>
+          </tr>
+        <% end %>
+        <% running_total += balance %>
+      <% end %>
+      <tr>
+        <strong>
+          <td><b>TOTAL <%= name.upcase %></b></td>
+          <td><span class="pull-right"> <b><%=number_to_currency running_total.round(2) %></b></span></td>
+        </strong>
+      </tr>
+    </tbody>
+  <% end %>
 </table>

@@ -71,21 +71,21 @@ module LoansModule
         move_down 5
 
         table([["Total Principal",
-          "#{price(LoansModule::Payments::Aggregator.new(collections: collections, from_date: from_date, to_date: to_date, cooperative: cooperative).total_principals)}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10}, column_widths: [120, 100]) do
+          "#{price(LoansModule::Payments::Aggregator.new(loan_product: loan_product, collections: collections, from_date: from_date, to_date: to_date, cooperative: cooperative).total_principals)}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10}, column_widths: [120, 100]) do
           cells.borders = []
           column(1).align = :right
         end
         move_down 5
 
 
-        table([["Total Interest", "#{price(LoansModule::Payments::Aggregator.new(collections: collections, from_date: from_date, to_date: to_date, cooperative: cooperative).total_interests)}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10}, column_widths: [120, 100]) do
+        table([["Total Interest", "#{price(LoansModule::Payments::Aggregator.new(loan_product: loan_product, collections: collections, from_date: from_date, to_date: to_date, cooperative: cooperative).total_interests)}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10}, column_widths: [120, 100]) do
           cells.borders = []
           column(1).align = :right
         end
         move_down 5
 
 
-        table([["Total Penalty", "#{price(LoansModule::Payments::Aggregator.new(collections: collections, from_date: from_date, to_date: to_date, cooperative: cooperative).total_penalties)}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10}, column_widths: [120, 100]) do
+        table([["Total Penalty", "#{price(LoansModule::Payments::Aggregator.new(loan_product: loan_product, collections: collections, from_date: from_date, to_date: to_date, cooperative: cooperative).total_penalties)}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10}, column_widths: [120, 100]) do
           cells.borders = []
           column(1).align = :right
 
@@ -97,7 +97,7 @@ module LoansModule
           stroke_horizontal_rule
         end
         move_down 5
-        table([["Total Collections", "#{price(LoansModule::Payments::Aggregator.new(collections: collections, from_date: from_date, to_date: to_date, cooperative: cooperative).total_cash_payments)}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10}, column_widths: [120, 100]) do
+        table([["Total Collections", "#{price(LoansModule::Payments::Aggregator.new(loan_product: loan_product, collections: collections, from_date: from_date, to_date: to_date, cooperative: cooperative).total_cash_payments)}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10}, column_widths: [120, 100]) do
           cells.borders = []
           column(1).align = :right
         end
@@ -124,7 +124,7 @@ module LoansModule
             move_down 5
           end
           collections.each do |entry|
-            cooperative.loans.for_entry(entry: entry).each do |loan|
+            entry.amounts.loans.each do |loan|
               table(
                 [["#{loan.borrower_name}",
                 "#{entry.entry_date.strftime("%D")}",

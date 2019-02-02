@@ -15,7 +15,9 @@ module LoansModule
       end
 
       def interest
-        credit_amounts.where(account: loan_product.current_interest_config_interest_revenue_account).total
+        entry.amounts.where(account: loan_product.current_interest_config_interest_revenue_account).
+        where(commercial_document: loan).
+        total
       end
       def accrued_interest
         debit_amounts.where(account: loan_product.current_interest_config_accrued_income_account).total
