@@ -60,10 +60,6 @@ module AccountingModule
       not_cancelled.where('entries.entry_date' => date_range.start_date..date_range.end_date)
     end
 
-    def self.loans #move to amount_classifier class 
-      ids = where(commercial_document_type: "LoansModule::Loan").pluck(:commercial_document_id)
-      LoansModule::Loan.where(id: ids)
-    end
     def self.for_loans
       where(commercial_document_type: "LoansModule::Loan")
     end
@@ -82,6 +78,16 @@ module AccountingModule
 
     def self.balance(args={})
       balance_finder(args).new(args.merge(amounts: self)).compute
+    end
+    
+    def self.balance_for_new_record
+      balance = BigDecimal('0')
+      self.all.each do |amount_record|
+        if amount_record.amount && !amount_record.marked_for_destruction?
+          balance += amount_record.amount # unless amount_record.marked_for_destruction?
+        end
+      end
+      return balance
     end
 
     private

@@ -56,6 +56,8 @@ module AccountingModule
           text "Entries Report", style: :bold, size: 12
           text "Account: #{account.name.upcase}", size: 10
           text "Date: #{from_date.strftime("%B %e, %Y")} - #{to_date.strftime("%B %e, %Y")}", size: 10
+          text "Total Debits: #{price(entries.debit_amounts.total)}", size: 10
+          text "Total Credits: #{price(entries.credit_amounts.total)}", size: 10
         end
         move_down 20
         stroke do

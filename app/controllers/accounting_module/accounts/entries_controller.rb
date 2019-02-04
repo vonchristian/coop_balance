@@ -14,7 +14,7 @@ module AccountingModule
           format.html
           format.pdf do
             pdf = AccountingModule::Accounts::EntriesReportPdf.new(
-              entries: @entries,
+              entries: @account.entries.entered_on(from_date: @from_date, to_date: @to_date),
               account: @account,
               employee: current_user,
               from_date: @from_date,
