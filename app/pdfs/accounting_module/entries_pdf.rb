@@ -9,6 +9,7 @@ module AccountingModule
       @view_context = args[:view_context]
       @from_date    = args[:from_date]
       @to_date      = args[:to_date]
+
       heading
       summary
       entries_table
@@ -30,45 +31,45 @@ module AccountingModule
       view_context.number_to_currency(number, :unit => "P ")
     end
 
-    def heading
-      bounding_box [300, 770], width: 50 do
-        image "#{Rails.root}/app/assets/images/#{cooperative.abbreviated_name.downcase}_logo.jpg", width: 50, height: 50
-      end
-      bounding_box [370, 770], width: 210 do
-        text "#{cooperative.abbreviated_name}", style: :bold, size: 22
-        text "#{cooperative.name}", size: 10
-        move_down 10
-      end
+    def logo
+      {image: "#{Rails.root}/app/assets/images/#{cooperative.abbreviated_name.downcase}_logo.jpg", image_width: 50, image_height: 50}
+    end
 
-      bounding_box [0, 770], width: 400 do
-        text "ENTRIES REPORT", style: :bold, size: 14
-        move_down 5
-        table([["Employee:", "#{employee.first_middle_and_last_name}"]], 
-          cell_style: {padding: [0,0,1,0], inline_format: true, size: 10}, 
-          column_widths: [50, 150]) do
-          cells.borders = []
-          column(1).font_style = :bold
-        end
-        table([["From:", "#{from_date.strftime("%B %e, %Y")}"]], 
-          cell_style: {padding: [0,0,1,0], inline_format: true, size: 10}, 
-          column_widths: [50, 150]) do
-          cells.borders = []
-          column(1).font_style = :bold
-        end
-        table([["To:", "#{to_date.strftime("%B %e, %Y")}"]], 
-          cell_style: {padding: [0,0,1,0], inline_format: true, size: 10}, 
-          column_widths: [50, 150]) do
-          cells.borders = []
-          column(1).font_style = :bold
+    def subtable_right
+      sub_data ||= [[{content: "#{cooperative.abbreviated_name}", size: 22}]] + [[{content: "#{cooperative.name}", size: 10}]]
+      make_table(sub_data, cell_style: {padding: [0,5,1,2]}) do
+        columns(0).width = 180
+        cells.borders = []
+      end
+    end
+
+    def subtable_left
+      sub_data ||= [[{content: "ENTRIES REPORT", size: 14, colspan: 2}]] + 
+                    [[{content: "From:", size: 10}, {content: "#{from_date.strftime("%B %e, %Y")}", size: 10}]] +
+                    [[{content: "To:", size: 10}, {content: "#{to_date.strftime("%B %e, %Y")}", size: 10}]]
+      make_table(sub_data, cell_style: {padding: [0,5,1,2]}) do
+        columns(0).width = 50
+        columns(1).width = 150
+        cells.borders = []
+      end
+    end
+
+    def heading # 275, 50, 210
+      bounding_box [bounds.left, bounds.top], :width  => 535 do
+        table([[subtable_left, logo, subtable_right]], 
+          cell_style: { inline_format: true, font: "Helvetica", padding: [0,5,0,0]}, 
+          column_widths: [310, 50, 180]) do
+            cells.borders = []
         end
       end
-      move_down 5
       stroke do
-        stroke_color 'CCCCCC'
-        line_width 0.5
+        move_down 3
+        stroke_color '24292E'
+        line_width 1
         stroke_horizontal_rule
-        move_down 5
+        move_down 1
       end
+      move_down 10
     end
 
     def summary
@@ -76,12 +77,7 @@ module AccountingModule
       move_down 5
       text "ENTRIES COUNT", size: 8
       text "#{entries.count}", size: 14
-      stroke do
-        stroke_color 'CCCCCC'
-        line_width 0.5
-        stroke_horizontal_rule
-        move_down 20
-      end
+      move_down 5
     end
 
     def entries_table_header

@@ -73,7 +73,7 @@ wb.styles do |style|
       sheet.merge_cells entry_row.cells[(1..2)]
 
       entry.debit_amounts.each do |amount|
-        sheet.add_row [
+        debit_amount_row = sheet.add_row [
           "",
           entry.cancelled? ? "CANCELLED - #{entry.cancellation_description} (#{entry.cancelled_at.strftime('%D')})" : "",
           "",
@@ -84,6 +84,7 @@ wb.styles do |style|
           ""
         ], style: middle_side_row
       end
+      sheet.merge_cells debit_amount_row.cells[(1..2)]
       entry.credit_amounts.each do |amount|
         credit_amounts = sheet.add_row [
           "",
@@ -95,7 +96,6 @@ wb.styles do |style|
           "",
           amount.amount.amount
         ], style: middle_side_row, :num_fmt => 3
-        sheet.merge_cells entry_row.cells[(1..2)]
         sheet.row_style(0 + 1,comma)
       end
     end

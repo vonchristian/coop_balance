@@ -20,11 +20,11 @@
               <center>
                 <div class="row">
                   <div class="col-md-8">
-                    <h4 class="card-title"><%=number_to_currency @ordered_entries.where(cancelled: false).sum {|e| Money.new(e.debit_amounts.sum(:amount_cents)).amount} %></h4>
+                    <h4 class="card-title"><%=number_to_currency @ordered_entries.not_cancelled.sum {|e| Money.new(e.debit_amounts.sum(:amount_cents)).amount} %></h4>
                     <small class="text-muted">TOTAL AMOUNT</small>
                   </div>
                   <div class="col-md-4">
-                    <h4 class="card-title"><%= @ordered_entries.count %></h4>
+                    <h4 class="card-title"><%= @ordered_entries.not_cancelled.count %></h4>
                     <small class="text-muted">ENTRIES</small>
                   </div>
                 </div>

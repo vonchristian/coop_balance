@@ -1,35 +1,43 @@
-<div class="row">
-  <div class="col-md-12">
-    <div class="card">
-    <div class="card-header">
-      <h3 class="card-title"> Financial Condition </h3>
-    </div>
-    <div class="card-body">
-    <%= form_tag({:action => 'index'}, {:method => :get, :class => 'form-inline'}) do%>
-      <div class="form-group">
-      <%= label_tag :to_date, nil, class: 'sr-only'%>
-      <%= text_field_tag :to_date, @to_date, :class => 'datepicker form-control' %>
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title"> Financial Condition </h3>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-9">
+        <%= form_tag({:action => 'index'}, {:method => :get, :class => 'form-inline'}) do%>
+          <div class="form-group">
+          <%= label_tag :to_date, nil, class: 'sr-only'%>
+          <%= text_field_tag :to_date, @to_date, :class => 'datepicker form-control' %>
+          </div>
+          <button type="submit" class="btn btn-primary">Get Report</button>
+        <% end %>
       </div>
-      <button type="submit" class="btn btn-default">Get Report</button>
-    <% end %>
-    <%= link_to "View (PDF)", accounting_module_reports_financial_conditions_path(format: 'pdf'), class: "btn btn-default" %>
-  <br>
-  <div class="row">
-    <div  class="col-md-3">
-      <%= simple_form_for @comparison, url: :accounting_module_financial_condition_comparisons, html: { autocomplete: 'off' } do |f| %>
-        <%= f.input :first_date, as: :string, input_html: { class: "datepicker" } %>
-        <%= f.input :second_date, as: :string, input_html: { class: "datepicker" } %>
-        <%= f.input :comparison_type, collection: AccountingModule::FinancialConditionComparison.comparison_types.keys.to_a.map{|a| [a.titleize, a] } %>
-        <%= f.submit "Compare", class: "btn btn-default" %>
-      <% end %>
-    </div>
-    <div class="col-md-9">
-      <div class="table table-responsive">
-        <%= render 'account', :name => "Assets", :accounts => @assets %>
-        <%= render 'account', :name => "Liabilities", :accounts => @liabilities %>
-        <%= render 'account', :name => "Equity", :accounts => @equities %>
+      <div class="col-md-3">
+        <% if params[:to_date].present? %>
+          <%= link_to "View (PDF)", accounting_module_reports_financial_conditions_path(format: 'pdf'), class: "btn btn-default" %>
+        <% end %>
       </div>
     </div>
-
-
+  </div>
+  <hr class="no-margin">
+  <div class="card-body">
+    <div class="row">
+      <div  class="col-md-3">
+        <%= simple_form_for @comparison, url: :accounting_module_financial_condition_comparisons, html: { autocomplete: 'off' } do |f| %>
+          <%= f.input :first_date, as: :string, input_html: { class: "datepicker" } %>
+          <%= f.input :second_date, as: :string, input_html: { class: "datepicker" } %>
+          <%= f.input :comparison_type, collection: AccountingModule::FinancialConditionComparison.comparison_types.keys.to_a.map{|a| [a.titleize, a] } %>
+          <%= f.submit "Compare", class: "btn btn-default" %>
+        <% end %>
+      </div>
+      <div class="col-md-9">
+        <div class="table table-responsive">
+          <%= render 'account', :name => "Assets", :accounts => @assets %>
+          <%= render 'account', :name => "Liabilities", :accounts => @liabilities %>
+          <%= render 'account', :name => "Equity", :accounts => @equities %>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

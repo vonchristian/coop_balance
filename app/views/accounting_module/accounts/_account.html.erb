@@ -1,28 +1,30 @@
 <table class="table table-hover">
   <h3 class="card-title"><%=name%></h3>
   <thead>
-  <tr>
-    <th></th>
-    <th></th>
-  </tr>
-  </thead>
-<% if accounts.count > 0 %>
-  <tbody>
-    <% running_total = 0 %>
-    <% accounts.each do |account| %>
-      <% balance = account.balance(:from_date => @from_date, :to_date => @to_date) %>
-      <tr class="<%= cycle("even", "odd") -%>">
-        <td><%= link_to account.name, accounting_module_account_path(account) %></td>
-        <td><%=number_to_currency balance %></td>
-        <% running_total += balance %>
-      </tr>
-    <% end %>
-    <tr class="<%= cycle("even", "odd") -%>">
-      <strong>
-        <td>Total <%= name %></td>
-        <td><%= number_to_currency running_total%></td>
-      </strong>
+    <tr>
+      <th></th>
+      <th></th>
     </tr>
-  </tbody>
-<% end %>
+  </thead>
+  <% if accounts.count > 0 %>
+    <tbody>
+      <% running_total = 0 %>
+      <% accounts.uniq.each do |account| %>
+        <% balance = account.balance(:from_date => @from_date, :to_date => @to_date) %>
+        <% if !balance.round(2).zero? %>
+          <tr>
+            <td><%= link_to account.name, accounting_module_account_path(account) %></td>
+            <td><%=number_to_currency balance %></td>
+            <% running_total += balance %>
+          </tr>
+        <% end %>
+      <% end %>
+      <tr>
+        <strong>
+          <td><b>TOTAL <%= name.upcase %></b></td>
+          <td><b><%= number_to_currency running_total%></b></td>
+        </strong>
+      </tr>
+    </tbody>
+  <% end %>
 </table>

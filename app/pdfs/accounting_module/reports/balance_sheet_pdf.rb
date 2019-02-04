@@ -45,8 +45,8 @@ module AccountingModule
       end
       def assets_table
         text "Assets", style: :bold
-        table(assets_data, cell_style: { inline_format: true, size: 11, font: "Helvetica", :padding => [2,5,2,5]}, column_widths: [300, 100]) do
-          cells.borders =[]
+        table(assets_data, cell_style: { inline_format: true, size: 11, font: "Helvetica", :padding => [2,5,2,5]}, column_widths: [395, 120]) do
+          cells.borders =[:bottom]
           column(1).align = :right
           row(-1).font_style = :bold
         end
@@ -59,13 +59,13 @@ module AccountingModule
         end
       end
       def assets_data
-        @assets_data ||= assets.map{|a| [a.name, price(a.balance(to_date: to_date))] } +
+        @assets_data ||= assets.select{|r| !r.balance(to_date: to_date).round(2).zero?}.uniq.map{|a| [a.name, price(a.balance(to_date: to_date))] } +
         [["TOTAL ASSETS", "#{price(assets.balance(to_date: to_date))}"]]
       end
-       def liabilities_table
+      def liabilities_table
         text "Liabilities", style: :bold
-        table(liabilities_data, cell_style: { inline_format: true, size: 11, font: "Helvetica", :padding => [2,5,2,5]}, column_widths: [300, 100]) do
-          cells.borders =[]
+        table(liabilities_data, cell_style: { inline_format: true, size: 11, font: "Helvetica", :padding => [2,5,2,5]}, column_widths: [395, 120]) do
+          cells.borders =[:bottom]
           column(1).align = :right
           row(-1).font_style = :bold
         end
@@ -78,14 +78,14 @@ module AccountingModule
         end
       end
       def liabilities_data
-        @liabilities_data ||= liabilities.map{|a| [a.name, price(a.balance(to_date: to_date))] } +
+        @liabilities_data ||= liabilities.select{|r| !r.balance(to_date: to_date).round(2).zero?}.uniq.map{|a| [a.name, price(a.balance(to_date: to_date))] } +
         [["TOTAL LIABILITIES", "#{price(liabilities.balance(to_date: to_date))}"]]
 
       end
      def equities_table
         text "Equity", style: :bold
-        table(equities_data, cell_style: { inline_format: true, size: 11, font: "Helvetica", :padding => [2,5,2,5]}, column_widths: [300, 100]) do
-          cells.borders =[]
+        table(equities_data, cell_style: { inline_format: true, size: 11, font: "Helvetica", :padding => [2,5,2,5]}, column_widths: [395, 120]) do
+          cells.borders =[:bottom]
           column(1).align = :right
           row(-1).font_style = :bold
         end
@@ -96,14 +96,14 @@ module AccountingModule
           stroke_horizontal_rule
           move_down 15
         end
-        table(total_equity_and_liabilities_data, cell_style: { inline_format: true, size: 11, font: "Helvetica", :padding => [2,5,2,5]}, column_widths: [300, 100]) do
+        table(total_equity_and_liabilities_data, cell_style: { inline_format: true, size: 11, font: "Helvetica", :padding => [2,5,2,5]}, column_widths: [395, 120]) do
           cells.borders =[]
           column(1).align = :right
           row(-1).font_style = :bold
         end
       end
       def equities_data
-        @equities_data ||= equity.map{|a| [a.name, price(a.balance(to_date: to_date))] } +
+        @equities_data ||= equity.select{|r| !r.balance(to_date: to_date).round(2).zero?}.uniq.map{|a| [a.name, price(a.balance(to_date: to_date))] } +
         [["TOTAL EQUITY", "#{price(equity.balance(to_date: to_date))}"]]
       end
 

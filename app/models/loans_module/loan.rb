@@ -173,6 +173,14 @@ module LoansModule
       where(forwarded_loan: false)
     end
 
+    def not_forwarded?
+      forwarded_loan == false
+    end
+
+    def forwarded?
+      forwarded_loan == true
+    end
+
     def self.archived
       where(archived: true)
     end
@@ -423,11 +431,19 @@ module LoansModule
     end
 
     def amortized_principal
-      amortized_principal_for(from_date: loan_application.first_amortization_date.beginning_of_month, to_date: loan_application.first_amortization_date.end_of_month)
+      if forwarded_loan == false
+        amortized_principal_for(from_date: loan_application.first_amortization_date.beginning_of_month, to_date: loan_application.first_amortization_date.end_of_month)
+      else
+        0
+      end
     end
 
     def amortized_interest
-      amortized_interest_for(from_date: loan_application.first_amortization_date.beginning_of_month, to_date: loan_application.first_amortization_date.end_of_month)
+      if forwarded_loan == false
+        amortized_interest_for(from_date: loan_application.first_amortization_date.beginning_of_month, to_date: loan_application.first_amortization_date.end_of_month)
+      else
+        0
+      end
     end
 
     private

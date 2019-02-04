@@ -69,10 +69,12 @@ module LoansModule
       end
 
       def create_interest_revenue_amount(voucher)
-        voucher.voucher_amounts.credit.build(
-        amount:              interest_amount.to_f,
-        account:             find_loan.loan_product_interest_revenue_account,
-        commercial_document: find_loan)
+        if !interest_amount.zero?
+          voucher.voucher_amounts.credit.build(
+          amount:              interest_amount.to_f,
+          account:             find_loan.loan_product_interest_revenue_account,
+          commercial_document: find_loan)
+        end
       end
 
       def create_penalty_amount(voucher)
