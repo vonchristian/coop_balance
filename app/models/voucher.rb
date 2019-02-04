@@ -40,6 +40,10 @@ class Voucher < ApplicationRecord
     where(id: vouchers)
   end
 
+  def cancelled?
+    cancelled_at.present?
+  end
+
   def entry
     accounting_entry
   end

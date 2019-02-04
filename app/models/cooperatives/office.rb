@@ -9,6 +9,8 @@ module Cooperatives
     has_many :share_capitals,          class_name: "MembershipsModule::ShareCapital"
     has_many :entries,                 class_name: "AccountingModule::Entry"
     has_many :bank_accounts,           class_name: "BankAccount"
+    has_many :loan_applications,       class_name: "LoansModule::LoanApplication"
+    has_many :vouchers
     validates :name, presence: true, uniqueness: true
     validates :type, presence: true
     validates :contact_number, presence: true

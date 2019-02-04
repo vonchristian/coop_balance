@@ -5,11 +5,11 @@
         <%= image_tag(loan_application.borrower.avatar, height: 45, width: 45, class: 'img-circle') %>
       </div>
       <div class="col-md-3 col-sm-3">
-        <% if loan_application.voucher.present? %>
-          <%= link_to loans_module_loan_application_path(loan_application) do %>
+
+
           <b><%=  loan_application.borrower_name.try(:upcase) %></b><br>
-          <% end %>
-        <% end %>
+
+
         <small class="text-muted"><i class="fa fa-tag"></i> <%= loan_application.loan_product_name %><br>
          <i class="fa fa-calendar"></i> <%= loan_application.voucher.try(:date).try(:strftime, "%B %e, %Y") %>
         </small>
@@ -24,6 +24,7 @@
         <% end %>
       </div>
       <div class="col-md-2 col-sm-9">
+        <%= link_to 'Disburse Voucher', new_loans_module_loan_application_disbursement_path(loan_application_id: loan_application.id, voucher_id: loan_application.voucher_id) %>
         <% if loan_application.voucher.present? %>
           <%= link_to 'View Voucher', loans_module_loan_application_voucher_path(loan_application_id: loan_application.id, id: loan_application.voucher_id), class: "btn btn-primary btn-sm float-right" %>
         <% end %>

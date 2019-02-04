@@ -95,14 +95,15 @@ Rails.application.routes.draw do
     resources :aging_loans, only: [:index, :show]
 
     resources :loan_applications, only: [:index, :new, :create, :show, :destroy] do
-      resources :capital_build_up_processings,       only: [:new, :create], module: :loan_applications
-      resources :savings_account_deposit_processings, only: [:new, :create], module: :loan_applications
-      resources :previous_loan_payment_processings,   only: [:new, :create], module: :loan_applications
-      resources :vouchers, only: [:new, :create, :show, :destroy], module: :loan_applications
-      resources :amortization_schedules, only: [:index], module: :loan_applications
-      resources :voucher_confirmations, only: [:create], module: :loan_applications
-      resources :loan_amounts, only: [:new, :create], module: :loan_applications
-      resources :voucher_amounts,       only: [:new, :create, :edit, :update, :destroy], module: :loan_applications
+      resources :disbursements,                       only: [:new, :create],                           module: :loan_applications
+      resources :capital_build_up_processings,        only: [:new, :create],                           module: :loan_applications
+      resources :savings_account_deposit_processings, only: [:new, :create],                           module: :loan_applications
+      resources :previous_loan_payment_processings,   only: [:new, :create],                           module: :loan_applications
+      resources :vouchers,                            only: [:new, :create, :show, :destroy],          module: :loan_applications
+      resources :amortization_schedules,              only: [:index],                                  module: :loan_applications
+      resources :voucher_confirmations,               only: [:create],                                 module: :loan_applications
+      resources :loan_amounts,                        only: [:new, :create],                           module: :loan_applications
+      resources :voucher_amounts,                     only: [:new, :create, :edit, :update, :destroy], module: :loan_applications
 
     end
 
@@ -443,6 +444,7 @@ Rails.application.routes.draw do
   end
 
   resources :vouchers, only: [:index, :show, :destroy] do
+    resources :cancellations, only: [:create], module: :vouchers
     resources :disbursements, only: [:create],            module: :vouchers
     resources :loan_disbursements, only: [:new, :create], module: :vouchers
   end

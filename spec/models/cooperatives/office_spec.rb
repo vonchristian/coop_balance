@@ -11,6 +11,8 @@ module Cooperatives
       it { is_expected.to have_many :share_capitals }
       it { is_expected.to have_many :entries }
       it { is_expected.to have_many :bank_accounts }
+      it { is_expected.to have_many :loan_applications }
+      it { is_expected.to have_many :vouchers }
     end
 
     describe 'validations' do

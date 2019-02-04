@@ -11,6 +11,11 @@ module LoansModule
         @loan_application = args[:loan_application]
         @cooperative      = @employee.cooperative
       end
+
+      def find_entry
+        AccountingModule::Entry.find_by(reference_number: voucher.reference_number)
+      end
+      
       def process!
         ActiveRecord::Base.transaction do
           create_entry
