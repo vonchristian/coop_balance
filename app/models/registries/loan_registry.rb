@@ -24,14 +24,12 @@ module Registries
         status:       loan_status(row)
 
       )
-      if disbursement_date(row).present? && term(row).present?
         Term.create(
           term:             term(row),
           termable:         loan,
           effectivity_date: disbursement_date(row),
           maturity_date:    maturity_date(row)
         )
-      end
         cooperative.entries.create!(
         office:              self.employee.office,
         cooperative:         self.employee.cooperative,
@@ -82,7 +80,7 @@ module Registries
     end
 
     def cut_off_date(row)
-      Date.parse(row["Cut Off Date"])
+      Date.parse(row["Cut Off Date"].to_s)
     end
 
     def find_organization(row)
@@ -98,19 +96,19 @@ module Registries
     end
 
     def loan_balance(row)
-      row["Loan Balance"].to_f
+      row["Loan Balance"].to_d
     end
 
     def loan_amount(row)
-      row["Loan Amount"].to_f
+      row["Loan Amount"].to_d
     end
 
     def term(row)
-      row["Term"].to_f
+      (maturity_date(row).year * 12 + maturity_date(row).month) - (disbursement_date(row).year * 12 + disbursement_date(row).month)
     end
 
     def loan_status(row)
-      row["Status"].gsub(" ", "_")
+      row["Status"].parameterize.gsub("-", "_")
     end
 
     def maturity_date(row)
@@ -118,7 +116,7 @@ module Registries
     end
 
     def disbursement_date(row)
-      Date.parse(row["Disbursement Date"].to_s)
+        Date.parse(row["Disbursement Date"].to_s)
     end
 
     def credit_account
