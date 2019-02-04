@@ -2,7 +2,7 @@ wb = xlsx_package.workbook
 wb.styles do |style|
   defaults =  { :style => :thin, :color => "000000" }
   borders = Hash.new do |hash, key|
-    hash[key] = wb.styles.add_style :border => defaults.merge( { :edges => key.to_s.split('_').map(&:to_sym) } )
+    hash[key] = wb.styles.add_style alignment: {horizontal: :left, vertical: :center, :wrap_text => true}, :border => defaults.merge( { :edges => key.to_s.split('_').map(&:to_sym) } )
   end
   top_and_side_row =  [ borders[:top_left], borders[:top], borders[:top], borders[:top], borders[:top], borders[:top], borders[:top], borders[:top_right] ]
   top_row =  [ borders[:top], borders[:top], borders[:top], borders[:top], borders[:top], borders[:top], borders[:top], borders[:top] ]
@@ -21,10 +21,10 @@ wb.styles do |style|
 
   subtitle_style = style.add_style(:sz => 12)
 
-  wb.add_worksheet(name: "Cash Receipts") do |sheet|
+  wb.add_worksheet(name: "Cash Receipt") do |sheet|
 
     title_row = sheet.add_row [
-      "Cash Receipts", "", "", "", "", "IPSMPC", "", ""
+      "Cash Receipt Entries", "", "", "", "", "IPSMPC", "", ""
     ], style: title_style
     sheet.merge_cells title_row.cells[(0..3)]
     sheet.merge_cells title_row.cells[(5..7)]
@@ -59,23 +59,30 @@ wb.styles do |style|
     sheet.merge_cells spacer.cells[(0..6)]
 
     heading = sheet.add_row ["Date", "Description", "", "REF #", "Member/Payee", "Account", "Debit", "Credit"], style: header_style
+    sheet.merge_cells heading.cells[(1..2)]
     @ordered_entries.each do |entry|
+      desc_first_cell = ""
+      desc_last_cell = ""
+      date_first_cell = ""
+      date_last_cell = ""
+      num_first_cell = ""
+      num_last_cell  = ""
+      mem_first_cell = ""
+      mem_last_cell = ""
       entry_row = sheet.add_row [
         entry.entry_date.strftime("%D"),
-        entry.description,
+        entry.cancelled? ? "#{entry.description} \r\nCANCELLED - #{entry.cancellation_description} (#{entry.cancelled_at.strftime('%D')})" : entry.description,
         "",
         entry.reference_number,
         entry.display_commercial_document,
         "",
         "",
         ""
-      ], style: top_and_side_row
-      sheet.merge_cells entry_row.cells[(1..2)]
-
+      ], style: top_and_side_row, :height => 0.5
       entry.debit_amounts.each do |amount|
-        sheet.add_row [
+        debit_amount_row = sheet.add_row [
           "",
-          entry.cancelled? ? "CANCELLED - #{entry.cancellation_description} (#{entry.cancelled_at.strftime('%D')})" : "",
+          "",
           "",
           "",
           "",
@@ -85,7 +92,7 @@ wb.styles do |style|
         ], style: middle_side_row
       end
       entry.credit_amounts.each do |amount|
-        credit_amounts = sheet.add_row [
+        credit_amount_row = sheet.add_row [
           "",
           "",
           "",
@@ -95,12 +102,25 @@ wb.styles do |style|
           "",
           amount.amount.amount
         ], style: middle_side_row, :num_fmt => 3
-        sheet.merge_cells entry_row.cells[(1..2)]
         sheet.row_style(0 + 1,comma)
+        desc_last_cell = credit_amount_row.cells[2].r
+        desc_first_cell = entry_row.cells[1].r
+        date_last_cell = credit_amount_row.cells[0].r
+        date_first_cell = entry_row.cells[0].r
+        num_last_cell = credit_amount_row.cells[3].r
+        num_first_cell = entry_row.cells[3].r
+        mem_last_cell = credit_amount_row.cells[4].r
+        mem_first_cell = entry_row.cells[4].r
       end
+      sub_total = sheet.add_row ["", "", "", "", "", "SUB-TOTAL", Money.new(entry.debit_amounts.sum(:amount_cents)).amount,  Money.new(entry.credit_amounts.sum(:amount_cents)).amount], style: top_row
+      sheet.merge_cells "#{desc_first_cell}:#{desc_last_cell}"
+      sheet.merge_cells "#{date_first_cell}:#{date_last_cell}"
+      sheet.merge_cells "#{num_first_cell}:#{num_last_cell}"
+      sheet.merge_cells "#{mem_first_cell}:#{mem_last_cell}"
+      sheet.merge_cells sub_total.cells[(1..2)]
     end
     sheet.add_row ["", "", "", "", "", "", ""], style: top_row
-    sheet.column_widths 10, 15, 25, 10, 20, 30, 15, 15
+    sheet.column_widths 10, 15, 15, 10, 15, 25, 10, 10
     
   end
 end

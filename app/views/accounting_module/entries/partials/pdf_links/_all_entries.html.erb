@@ -1,3 +1,4 @@
+<% if @from_date.present? && @to_date.present? %>
 <div class="card">
   <div class="card-body">
     <h3 class="card-title"> Reports </h3>
@@ -7,8 +8,13 @@
     		<%= link_to 'Excel', accounting_module_entries_path(format: 'xlsx', from_date: @from_date, to_date: @to_date), class: 'btn btn-default' %>
     	</div>
     	<div class="col-md-6">
-    		<%= link_to 'View (PDF)', accounting_module_entries_path(format: 'pdf', from_date: @from_date, to_date: @to_date), class: 'btn btn-default float-right' %>
+        <% if params[:search].present? %>
+          <%= link_to 'View (PDF)', accounting_module_entries_path(format: 'pdf', search: params[:search]), class: 'btn btn-success float-right' %>
+        <% else %>
+    		  <%= link_to 'View (PDF)', accounting_module_entries_path(format: 'pdf', from_date: @from_date, to_date: @to_date), class: 'btn btn-default float-right' %>
+        <% end %>
     	</div>
     </div>
   </div>
 </div>
+<% end %>

@@ -24,26 +24,44 @@ module AccountingModule
         view_context.number_to_currency(number, :unit => "P ")
       end
 
-      def heading
-        bounding_box [320, 770], width: 50 do
-          image "#{Rails.root}/app/assets/images/#{cooperative.abbreviated_name.downcase}_logo.jpg", width: 50, height: 50
+      def logo
+        {image: "#{Rails.root}/app/assets/images/#{cooperative.abbreviated_name.downcase}_logo.jpg", image_width: 50, image_height: 50}
+      end
+
+      def subtable_right
+        sub_data ||= [[{content: "#{cooperative.abbreviated_name}", size: 22}]] + [[{content: "#{cooperative.name}", size: 10}]]
+        make_table(sub_data, cell_style: {padding: [0,5,1,2]}) do
+          columns(0).width = 180
+          cells.borders = []
         end
-        bounding_box [380, 770], width: 160 do
-            text "#{cooperative.abbreviated_name }", style: :bold, size: 20
-            text "#{cooperative.name.try(:upcase)}", size: 8
-            text "#{cooperative.address}", size: 8
+      end
+
+      def subtable_left
+        sub_data ||= [[{content: "FINANCIAL CONDITION", size: 14, colspan: 2}]] + 
+                      [[{content: "As of #{to_date.strftime("%b. %e, %Y")}", size: 10, colspan: 2}]]
+        make_table(sub_data, cell_style: {padding: [0,5,1,2]}) do
+          columns(0).width = 50
+          columns(1).width = 150
+          cells.borders = []
         end
-        bounding_box [0, 770], width: 400 do
-          text "FINANCIAL CONDITION", style: :bold, size: 12
-          text "As of #{to_date.strftime("%b. %e, %Y")}", size: 10
+      end
+
+      def heading # 275, 50, 210
+        bounding_box [bounds.left, bounds.top], :width  => 535 do
+          table([[subtable_left, logo, subtable_right]], 
+            cell_style: { inline_format: true, font: "Helvetica", padding: [0,5,0,0]}, 
+            column_widths: [310, 50, 180]) do
+              cells.borders = []
+          end
         end
-        move_down 20
         stroke do
+          move_down 3
           stroke_color '24292E'
           line_width 1
           stroke_horizontal_rule
-          move_down 15
+          move_down 1
         end
+        move_down 10
       end
 
       def asset_accounts
@@ -62,11 +80,11 @@ module AccountingModule
       end
 
       def assets_data
-        @assets_data ||= assets.select{|r| !r.balance(to_date: to_date).round(2).zero?}.uniq.uniq.map{ |a| ["", a.name, price(a.balance(to_date: to_date))] }
+        @assets_data ||= assets.select{|r| !r.balance(to_date: to_date).round(2).zero?}.uniq.map{ |a| ["", a.name, price(a.balance(to_date: to_date))] }
       end
 
       def total_assets_data
-        [["", "<b>TOTAL ASSETS</b>", "<b>#{price(AccountingModule::Asset.balance(to_date: to_date))}</b>"]]
+        [["", "<b>TOTAL ASSETS</b>", "<b>#{price(AccountingModule::Asset.active.balance(to_date: to_date))}</b>"]]
       end
 
       def liabilities_accounts
@@ -88,7 +106,7 @@ module AccountingModule
       end
 
       def liabilities_data
-        @liabilities_data ||= liabilities.select{|r| !r.balance(to_date: to_date).round(2).zero?}.uniq.uniq.map{ |a| ["", a.name, price(a.balance(to_date: to_date))] }
+        @liabilities_data ||= liabilities.select{|r| !r.balance(to_date: to_date).round(2).zero?}.uniq.map{ |a| ["", a.name, price(a.balance(to_date: to_date))] }
       end
 
       def total_liabilities_data
@@ -110,7 +128,7 @@ module AccountingModule
         end
       end
       def equities_data
-        @equities_data ||= equities.select{|r| !r.balance(to_date: to_date).round(2).zero?}.uniq.uniq.map{ |a| ["", a.name, price(a.balance(to_date: to_date))] }
+        @equities_data ||= equities.select{|r| !r.balance(to_date: to_date).round(2).zero?}.uniq.map{ |a| ["", a.name, price(a.balance(to_date: to_date))] }
       end
       def total_equities_data
         [["", "<b>TOTAL EQUITY</b>", "<b>#{price(AccountingModule::Equity.balance(to_date: to_date))}</b>"]]

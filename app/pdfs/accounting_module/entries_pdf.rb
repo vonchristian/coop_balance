@@ -1,6 +1,6 @@
 module AccountingModule
   class EntriesPdf < Prawn::Document
-    attr_reader :entries, :employee, :view_context, :cooperative, :from_date, :to_date
+    attr_reader :entries, :employee, :view_context, :cooperative, :from_date, :to_date, :organization
     def initialize(args)
       super(margin: 30, page_size: "A4", page_layout: :portrait)
       @entries      = args[:entries]
@@ -9,6 +9,7 @@ module AccountingModule
       @view_context = args[:view_context]
       @from_date    = args[:from_date]
       @to_date      = args[:to_date]
+      @organization = args[:organization]
 
       heading
       summary
@@ -45,8 +46,8 @@ module AccountingModule
 
     def subtable_left
       sub_data ||= [[{content: "ENTRIES REPORT", size: 14, colspan: 2}]] + 
-                    [[{content: "From:", size: 10}, {content: "#{from_date.strftime("%B %e, %Y")}", size: 10}]] +
-                    [[{content: "To:", size: 10}, {content: "#{to_date.strftime("%B %e, %Y")}", size: 10}]]
+                    [[{content: "From:", size: 10}, {content: "#{from_date.strftime("%b. %e, %Y")}", size: 10}]] +
+                    [[{content: "To:", size: 10}, {content: "#{to_date.strftime("%b. %e, %Y")}", size: 10}]]
       make_table(sub_data, cell_style: {padding: [0,5,1,2]}) do
         columns(0).width = 50
         columns(1).width = 150

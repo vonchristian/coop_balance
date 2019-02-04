@@ -1,8 +1,8 @@
 <%= render "accounting_module/entries/partials/entry_filters" %>
+<%= render "accounting_module/entries/partials/employee_filters" %>
 <div class="row">
   <div class="col-md-3">
     <%= render "accounting_module/entries/partials/date_filters/cash_receipts" %>
-    <%= render "accounting_module/entries/partials/employee_filters" %>
     <%= render "accounting_module/entries/partials/pdf_links/cash_receipts" %>
   </div>
   <%= render 'accounting_module/entries/index', entries: @entries %>
