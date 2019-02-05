@@ -335,6 +335,8 @@ Rails.application.routes.draw do
       resources :loans, only: [:index]
     end
     resources :cash_accounts, only: [:index, :show] do
+      resources :receipts, only: [:index], module: :cash_accounts
+      resources :disbursements, only: [:index], module: :cash_accounts
       resources :reports, only: [:index],                                       module: :cash_accounts
       resources :cash_receipt_line_items, only: [:new, :create, :destroy],      module: :cash_accounts
       resources :cash_disbursement_line_items, only: [:new, :create, :destroy], module: :cash_accounts

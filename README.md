@@ -1,3 +1,10 @@
+If you hear a voice within you say, “You cannot paint,” then by all means paint, and that voice will be silenced. – Vincent Van Gogh
+
+growth mindset.
+
+
+
+
 remove accrued -> move to add_on
 loan application belongs_to amortization_type
 loan_application belongs_to interest_config

@@ -36,6 +36,17 @@ module LoansModule
       where(approved: false)
     end
 
+    def self.approved
+      where(approved: true)
+    end
+
+    def self.approved_at(args={})
+      from_date = args[:from_date]
+      to_date   = args[:to_date]
+      date_range = DateRange.new(from_date: from_date, to_date: to_date)
+      where('approved_at' => date_range.start_date..date_range.end_date)
+    end
+
     def self.not_cancelled
       where(cancelled: false)
     end
