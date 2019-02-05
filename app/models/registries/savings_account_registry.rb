@@ -13,7 +13,7 @@ module Registries
     def upload_savings(depositor, row)
       unless row["Balance"].to_f.zero? || row["Balance"].nil?
         savings = find_cooperative.savings.create!(
-        depositor: depositor,
+        depositor: find_or_create_member_depositor(row),
         office: self.office,
         saving_product: find_saving_product(row),
         last_transaction_date: cut_off_date(row),
@@ -61,7 +61,7 @@ module Registries
       if old_member.present?
         old_member
       else
-        new_member = Member.create(
+        new_member = Member.create!(
           last_name: row["Last Name"],
           middle_name: row["Middle Name"],
           first_name: row["First Name"]

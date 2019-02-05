@@ -1,6 +1,10 @@
-If you hear a voice within you say, “You cannot paint,” then by all means paint, and that voice will be silenced. – Vincent Van Gogh
+update amortization schedules
+  total_repayment
 
-growth mindset.
+update voucher
+ date_prepared
+ disbursement_date
+ cancelled_at
 
 
 
