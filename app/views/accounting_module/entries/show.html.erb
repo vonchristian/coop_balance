@@ -132,11 +132,11 @@
                   <% end %>
                 </td>
                 <td>
-                  <%# if current_user.bookkeeper? || current_user.accountant? || current_user == @entry.recorder %>
-                    <%# if !@entry.cancelled? %>
-                      <%#=link_to "Update", amount.is_a?(AccountingModule::DebitAmount) ?edit_accounting_module_debit_amount_path(amount) : edit_accounting_module_credit_amount_path(amount), class: "btn btn-outline-warning btn-sm" %>
-                    <%# end %>
-                  <%# end %>
+                  <% if current_user.bookkeeper? || current_user.accountant? || current_user == @entry.recorder %>
+                    <% if !@entry.cancelled? %>
+                      <%=link_to "Update", amount.is_a?(AccountingModule::DebitAmount) ?edit_accounting_module_debit_amount_path(amount) : edit_accounting_module_credit_amount_path(amount), class: "btn btn-outline-warning btn-sm" %>
+                    <% end %>
+                  <% end %>
                 </td>
               </tr>
             <% end %>

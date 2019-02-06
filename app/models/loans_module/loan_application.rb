@@ -129,21 +129,17 @@ module LoansModule
     end
 
     def first_year_interest
-      if !current_interest_config.accrued?
-        current_interest_config.compute_interest(first_year_principal_balance)
-      else
-        0
-      end
+      current_interest_config.compute_interest(amount: first_year_principal_balance, term: term)
     end
 
     def second_year_interest
-      return 0 if !term_is_within_two_years?
-      current_interest_config.compute_interest(second_year_principal_balance)
+      return 0 if term <= 12
+      current_interest_config.compute_interest(amount: second_year_principal_balance, term: term - 12)
     end
 
     def third_year_interest
-      return 0 if !term_is_within_three_years?
-      current_interest_config.compute_interest(third_year_principal_balance)
+      return 0 if term <=24
+      current_interest_config.compute_interest(amount: third_year_principal_balance term: term - 24)
     end
 
     def first_year_principal_balance
@@ -151,13 +147,13 @@ module LoansModule
     end
 
     def second_year_principal_balance
-      return 0 if !term_is_within_two_years?
+      return 0 if term <= 12
       schedule = second_year_principal_balance_schedule_finder.new(loan_application: self).find_schedule
       principal_balance_for(schedule)
     end
 
     def third_year_principal_balance
-      return 0 if !term_is_within_three_years?
+      return 0 if term <= 24
       schedule = amortization_schedules.by_oldest_date[23]
       principal_balance_for(schedule)
     end
