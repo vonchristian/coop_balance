@@ -6,11 +6,11 @@ module LoansModule
 
     enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
 
+    belongs_to :loan_product
     belongs_to :borrower, polymorphic: true
     belongs_to :preparer, class_name: "User", foreign_key: 'preparer_id'
     belongs_to :cooperative
     belongs_to :office, class_name: "Cooperatives::Office"
-    belongs_to :loan_product
     belongs_to :organization
     belongs_to :voucher, dependent: :destroy
     has_one    :loan, class_name: "LoansModule::Loan", dependent: :destroy
@@ -24,7 +24,7 @@ module LoansModule
     delegate :name, :current_membership, :avatar, to: :borrower, prefix: true
     delegate :name, :interest_revenue_account, :current_account, to: :loan_product, prefix: true
     delegate :monthly_interest_rate,  to: :loan_product, prefix: true
-    delegate :current_interest_config, :interest_calculator, :prededucted_interest_calculator, :amortizeable_principal_calculator,  to: :loan_product
+    delegate :annual_interest_calculator, :current_interest_config, :interest_calculator, :prededucted_interest_calculator, :amortizeable_principal_calculator,  to: :loan_product
     delegate :entry, to: :voucher, allow_nil: true
     delegate :rate, :straight_balance?, :annually?, :prededucted_number_of_payments, to: :current_interest_config, prefix: true
     validates :cooperative_id, presence: true
@@ -33,11 +33,11 @@ module LoansModule
       false
     end
     def self.not_approved
-      where(approved: false)
+      where(approved_at: nil)
     end
 
     def self.approved
-      where(approved: true)
+      where.not(approved_at: nil)
     end
 
     def self.approved_at(args={})
@@ -128,18 +128,33 @@ module LoansModule
       voucher_amounts.for_account(account: current_interest_config.interest_revenue_account).total
     end
 
+    def max_applicable_term(max_num)
+      applicable_term = term - max_num
+      if applicable_term > 12
+        12
+      elsif applicable_term.negative?
+        0
+      else
+        applicable_term
+      end
+    end
+
+
     def first_year_interest
-      current_interest_config.compute_interest(amount: first_year_principal_balance, term: term)
+      annual_interest_calculator.new(amount: first_year_principal_balance, term: max_applicable_term(0), rate: loan_product.monthly_interest_rate).
+      calculate
     end
 
     def second_year_interest
       return 0 if term <= 12
-      current_interest_config.compute_interest(amount: second_year_principal_balance, term: term - 12)
+      annual_interest_calculator.new(amount: second_year_principal_balance, term: max_applicable_term(12), rate: loan_product.monthly_interest_rate).
+      calculate
     end
 
     def third_year_interest
       return 0 if term <=24
-      current_interest_config.compute_interest(amount: third_year_principal_balance term: term - 24)
+      annual_interest_calculator.new(amount: third_year_principal_balance, term: max_applicable_term(24), rate: loan_product.monthly_interest_rate).
+      calculate
     end
 
     def first_year_principal_balance

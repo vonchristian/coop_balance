@@ -37,6 +37,7 @@ module LoansModule
         else
           applicable_term = term
         end
+      end
 
       def monthly_interest_rate
         rate / 12.0
