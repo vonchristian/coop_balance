@@ -9,7 +9,11 @@ module LoansModule
       end
 
       def calculate
-        deductible_interest_scope * interest_prededuction.rate
+        if loan_application.term <= 12
+          deductible_interest_scope
+        else
+          deductible_interest_scope * interest_prededuction.rate
+        end
       end
 
       private

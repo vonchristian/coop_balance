@@ -1,3 +1,8 @@
+
+create addresses barangays municipalitis provices
+update amortization schedules on loan disbursement
+
+
 remove accrued move to addon'
 
 

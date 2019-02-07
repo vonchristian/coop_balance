@@ -69,7 +69,7 @@ module LoansModule
       end
 
       def create_interest_revenue_amount(voucher)
-        if !interest_amount.to_f > 0
+        if interest_amount.to_f > 0
           voucher.voucher_amounts.credit.build(
           amount:              interest_amount.to_f,
           account:             find_loan.loan_product_interest_revenue_account,
