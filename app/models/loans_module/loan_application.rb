@@ -118,10 +118,7 @@ module LoansModule
       if loan_product.current_interest_config.prededucted?
         total_interest -
         voucher_interest_amount
-      elsif loan_product.current_interest_config.add_on?
-        add_on_interest
       end
-
     end
 
     def voucher_interest_amount

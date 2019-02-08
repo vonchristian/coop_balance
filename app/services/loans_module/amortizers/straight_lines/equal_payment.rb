@@ -21,12 +21,14 @@ module LoansModule
         private
         def create_first_schedule
           loan_application.amortization_schedules.create!(
-            cooperative: loan_application.cooperative,
-            date:      loan_application.first_amortization_date,
-            interest:  first_interest,
-            principal: first_principal,
+            cooperative:     loan_application.cooperative,
+            office:          loan_application.office,
+            cooperative:     loan_application.cooperative,
+            date:            loan_application.first_amortization_date,
+            interest:        first_interest,
+            principal:       first_principal,
             total_repayment: total_repayment,
-            ending_balance: loan_application.loan_amount.amount - first_principal
+            ending_balance:  loan_application.loan_amount.amount - first_principal
           )
         end
 
@@ -34,10 +36,12 @@ module LoansModule
           if loan_application.schedule_count > 1
             (loan_application.schedule_count - 1).to_i.times do
               loan_application.amortization_schedules.create!(
-                date:      loan_application.succeeding_amortization_date,
-                interest:  0,
-                principal: 0,
-                total_amount: total_repayment
+                cooperative:     loan_application.cooperative,
+                office:          loan_application.office,
+                date:            loan_application.succeeding_amortization_date,
+                interest:        0,
+                principal:       0,
+                total_repayment: total_repayment
               )
             end
           end
@@ -45,7 +49,7 @@ module LoansModule
 
         def update_interests_and_ending_balances
           loan_application.amortization_schedules.by_oldest_date.each do |schedule|
-            schedule.interest = computed_interest_for(schedule)
+            schedule.interest  = computed_interest_for(schedule)
             schedule.principal = computed_principal_for(schedule)
 
             schedule.save!

@@ -22,7 +22,7 @@ module LoansModule
       private
       def payment_params
         params.require(:loans_module_loan_applications_previous_loan_payment_processing).
-        permit(:amount, :employee_id, :loan_application_id, :loan_id)
+        permit(:principal_amount, :interest_amount, :penalty_amount, :employee_id, :loan_application_id, :loan_id)
       end
     end
   end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_05_114739) do
+ActiveRecord::Schema.define(version: 2019_02_08_150544) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -600,6 +600,7 @@ ActiveRecord::Schema.define(version: 2019_02_05_114739) do
     t.boolean "approved", default: false
     t.boolean "cancelled", default: false
     t.datetime "approved_at"
+    t.decimal "annual_interest_rate"
     t.index ["borrower_type", "borrower_id"], name: "index_loan_applications_on_borrower_type_and_borrower_id"
     t.index ["cooperative_id"], name: "index_loan_applications_on_cooperative_id"
     t.index ["loan_product_id"], name: "index_loan_applications_on_loan_product_id"
@@ -700,6 +701,7 @@ ActiveRecord::Schema.define(version: 2019_02_05_114739) do
     t.uuid "restructured_account_id"
     t.uuid "amortization_type_id"
     t.uuid "litigation_account_id"
+    t.boolean "adjustable_interest_rate", default: false
     t.index ["amortization_type_id"], name: "index_loan_products_on_amortization_type_id"
     t.index ["cooperative_id"], name: "index_loan_products_on_cooperative_id"
     t.index ["current_account_id"], name: "index_loan_products_on_current_account_id"

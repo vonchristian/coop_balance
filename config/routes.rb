@@ -104,7 +104,7 @@ Rails.application.routes.draw do
       resources :voucher_confirmations,               only: [:create],                                 module: :loan_applications
       resources :loan_amounts,                        only: [:new, :create],                           module: :loan_applications
       resources :voucher_amounts,                     only: [:new, :create, :edit, :update, :destroy], module: :loan_applications
-
+      resources :program_payments,                    only: [:new, :create], module: :loan_applications
     end
 
     resources :dashboard, only: [:index]

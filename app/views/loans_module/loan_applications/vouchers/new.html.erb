@@ -208,7 +208,20 @@
         <% end %>
       </div>
     </div>
-
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"> Cooperative Programs </h3>
+      </div>
+      <div class="card-body">
+        <% current_cooperative.programs.each do |program| %>
+          <%= program.name %>
+          <%= program.amount %>
+          <%=link_to new_loans_module_loan_application_program_payment_path(loan_application_id: @loan_application.id, program_id: program.id), data: { modal: true } do %>
+            <span class="btn btn-outline-warning float-right"><i class="fa fa-plus-circle"></i> Add </span>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
     <div class="card">
       <div class="card-header">
         <h3 class="card-title"> Previous Loans </h3>
