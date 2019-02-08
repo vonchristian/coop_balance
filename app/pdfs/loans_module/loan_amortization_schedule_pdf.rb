@@ -186,7 +186,7 @@ module LoansModule
      @loan.preparer
    end
    def signatory
-    [["PREPARED BY", "", "APPROVED BY", "", "DISBURSED BY", "", " VED BY"]] +
+    [["PREPARED BY", "", "APPROVED BY", "", "DISBURSED BY", "", " RECEIVED BY"]] +
     [["", ""]] +
     [["", ""]] +
     [["#{preparer.first_middle_and_last_name.try(:upcase)}", "",

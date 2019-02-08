@@ -186,7 +186,7 @@ module LoansModule
 
     def total_amortizeable_interest
       total_interest -
-      prededucted_interest
+      voucher_interest_amount
     end
 
     def amortizeable_interest_for(schedule)
