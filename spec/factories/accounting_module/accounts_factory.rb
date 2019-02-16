@@ -1,9 +1,7 @@
-FactoryBot.define do
-  factory :account, :class => AccountingModule::Account do |account|
-    sequence(:name) { |n| "Account " +  ('a'..'z').to_a.shuffle.join }
-    code  { Faker::Number.number(12) }
-    contra { false }
-
+Factory.define do
+  factory :account, class: AccountingModule::Account do
+    sequence(:name) { |n| "#{n}"}
+    code            { Faker::Number.number(12) }
 
     factory :asset, class: AccountingModule::Asset do
     end
@@ -12,13 +10,6 @@ FactoryBot.define do
     end
 
     factory :equity, class: AccountingModule::Equity do
-    end
-
-    factory :expense, class: AccountingModule::Expense do
-    end
-
-    factory :revenue, class: AccountingModule::Revenue do
-      sequence(:name) { |n| "Revenue Account " +  ('a'..'z').to_a.shuffle.join }
     end
   end
 end

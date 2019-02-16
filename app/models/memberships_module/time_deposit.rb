@@ -19,6 +19,10 @@ module MembershipsModule
     delegate :avatar, to: :depositor
 
     before_save :set_depositor_name, on: [:create]
+    def self.deposited_on(args={})
+      from_date = args[:from_date]
+      to_date   = args[:to_date]
+    end
     def entries
       accounting_entries = []
       time_deposit_product_account.amounts.where(commercial_document: self).each do |amount|
@@ -67,7 +71,7 @@ module MembershipsModule
     def amount_deposited
       balance
     end
-    
+
     def disbursed?
       true
     end

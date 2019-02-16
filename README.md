@@ -1,3 +1,6 @@
+schedule of program / MAS
+uploading of MAS excel
+
 
 create addresses barangays municipalitis provices
 update amortization schedules on loan disbursement

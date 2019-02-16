@@ -25,6 +25,7 @@ module LoansModule
         sum(:principal)
       end
     end
+  
 
     def payment_entries
       AccountingModule::Entry.where(id: entry_ids)

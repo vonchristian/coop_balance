@@ -7,15 +7,15 @@ wb.add_worksheet(name: "Matured Loans") do |sheet|
 
   ]
   sheet.add_row ["Borrower Name", "Address", "Contact #", "Loan Product", "Loan Amount", "Balance", "Disbursement Date", "Maturity Date"]
-  LoansModule::Loan.matured(from_date: @from_date, to_date: @to_date).each do |loan|
+  @loans.each do |loan|
     sheet.add_row [
     loan.borrower_name,
-    loan.borrower_current_address,
+    loan.borrower_current_address_complete_address,
     loan.borrower_contact_number,
     loan.loan_product_name,
     loan.loan_amount,
     loan.principal_balance,
-    loan.disbursement_date.strftime("%B %e, %Y"),
+
     loan.maturity_date.strftime("%B %e, %Y")
    ]
   end

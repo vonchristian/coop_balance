@@ -59,11 +59,11 @@ class IncomeStatementPdf < Prawn::Document
   end
 
   def revenues_data
-    @revenues_data ||= revenues.select{|r| !r.balance(to_date: to_date).round(2).zero?}.uniq.map{|a| ["", a.name, price(a.balance(to_date: to_date))] }
+    @revenues_data ||= revenues.uniq.map{|a| ["", a.name, price(a.balance(to_date: to_date))] }
   end
 
   def total_revenue
-    [["", "<b>TOTAL REVENUES</b>", "<b>#{price(AccountingModule::Revenue.balance(to_date: to_date))}</b>"]]
+    [["", "<b>TOTAL REVENUES</b>", "<b>#{price(AccountingModule::Revenue.   balance(to_date: to_date))}</b>"]]
   end
 
   def expense_accounts
@@ -82,7 +82,7 @@ class IncomeStatementPdf < Prawn::Document
   end
 
   def expenses_data
-    @expenses_data ||= expenses.select{|r| !r.balance(to_date: to_date).round(2).zero?}.uniq.map{|a| ["", a.name, price(a.balance(to_date: to_date))] }
+    @expenses_data ||= expenses.uniq.map{|a| ["", a.name, price(a.balance(to_date: to_date))] }
   end
 
   def total_expenses
