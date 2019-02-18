@@ -14,6 +14,8 @@ module LoansModule
       @term        = args[:term],
       @view_context = args[:view_context]
       heading
+      disclosure
+      
       loan_details
       loan_charges_details
       amortization_schedule
@@ -93,6 +95,9 @@ module LoansModule
         cells.borders = []
       end
     end
+  end
+  def disclosure
+    text "DISCLOSURE"
   end
   def loan_charges_details
     bounding_box [300, 865], width: 220 do

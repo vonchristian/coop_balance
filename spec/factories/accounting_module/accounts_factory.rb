@@ -1,4 +1,4 @@
-Factory.define do
+FactoryBot.define do
   factory :account, class: AccountingModule::Account do
     sequence(:name) { |n| "#{n}"}
     code            { Faker::Number.number(12) }
