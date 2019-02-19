@@ -3,7 +3,7 @@
     <div class="card-body">
       <div class="row">
         <div class="col-md-1 col-sm-1">
-  
+
         </div>
         <div class="col-md-5 col-sm-5">
           <b><%=  loan.borrower_name.try(:upcase) %></b>
@@ -13,7 +13,8 @@
               <br>
               <small class="text-muted" data-toggle="tooltip" title="Disbursement Date">
                 <i class="fa fa-calendar"></i> <%= loan.try(:disbursement_date).try(:strftime, "%B %e, %Y") %> &nbsp;
-                <i class="fa fa-building"></i> <%= loan.office_name %></i>
+                <i class="fa fa-building"></i> <%= loan.office_name %>
+                <span class="badge bg-<%=loan.badge_color %>"> <%= loan.status %></span>
               </small>
             </div>
             <div class="col-md-4 col-sm-4">

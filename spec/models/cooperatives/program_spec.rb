@@ -60,6 +60,14 @@ module Cooperatives
       end
     end
 
+    it "#subscribed?(subscriber)" do
+      member             = create(:member)
+      program1           = create(:program)
+      program2           = create(:program)
+      subscribed_program = create(:program_subscription, subscriber: member, program: program1)
 
+      expect(program1.subscribed?(member)).to eql true
+      expect(program2.subscribed?(member)).to eql false
+    end
   end
 end

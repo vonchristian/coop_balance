@@ -1,29 +1,26 @@
 <% content_for(:html_title) { "Sign In" } %>
 <%= render 'home/shared/navbar' %>
 <div class="container">
-  <br>
-  <center>
-    <h4>Cooperative Management Platform</h4>
-    <p class="text-muted"> A single place to manage all your cooperative services</p>
-  </center>
-  <hr>
+<br>
+<br>
   <div class="row">
     <div class="col-md-4">
     </div>
   <div class="col-md-4">
     <%=render 'layouts/shared/flash_messages' %>
     <div class="card">
-      <div class="card-header">
+      <div class="card-header no-border">
+
         <br>
         <center>
-        <%=image_tag("itworx.png", height:
+        <%=image_tag("coopbooks.png", height:
            130, width: 130, class: 'img-circle') %>
       </center>
       <br>
       <br>
       </div>
       <div class="card-body">
-      <br>
+
       <%= simple_form_for(resource, as: resource_name, :url => session_path(resource_name),
         wrapper_mappings: {boolean: :vertical_boolean }, html: { autocomplete: 'off' }) do |f| %>
         <%= f.error_notification %>

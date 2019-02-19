@@ -52,16 +52,7 @@ describe Member, type: :model do
 
   it "#current_address" do
   end
-  it "#subscribed?(program)" do
-    member = create(:member)
-    program1 = create(:program)
-    program2 = create(:program)
-    subscribed_program = create(:program_subscription, subscriber: member, program: program1)
-
-    expect(member.subscribed?(program1)).to eql true
-    expect(member.subscribed?(program2)).to eql false
-  end
-
+  
   it ".has_birthday_on(args)" do
     january_member = create(:member, date_of_birth: '01/01/1990')
     march_member   = create(:member, date_of_birth: '03/01/1990')
@@ -81,7 +72,7 @@ describe Member, type: :model do
     expect(described_class.updated_at(from_date: Date.today.last_month, to_date: Date.today.last_month)).to_not include(recent_member)
   end
 
-  
+
 
   describe "#age" do
     it 'with age' do
