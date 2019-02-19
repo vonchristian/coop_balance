@@ -162,6 +162,7 @@ Rails.application.routes.draw do
   end
 
   resources :members, only: [:index, :show, :edit, :update, :destroy] do
+    resources :bills_payments, only: [:index], module: :members
     resources :organizations,         only: [:new, :create],                 module: :members
     resources :beneficiaries,         only: [:new, :create, :destroy],       module: :members
     resources :merging_line_items,    only: [:new, :create],                 module: :members
@@ -575,5 +576,8 @@ Rails.application.routes.draw do
   resources :leads, only: [:new, :create]
   namespace :portfolios do
     resources :loans, only: [:index]
+  end
+  resources :merchants, only: [:index, :show, :new, :create] do
+    resources :payment_line_items, only: [:new, :create], module: :merchants
   end
 end

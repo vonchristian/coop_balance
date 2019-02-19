@@ -1,11 +1,12 @@
 class Cooperative < ApplicationRecord
   has_one_attached :logo
+  has_many :merchants
   has_many :offices,                        class_name: "Cooperatives::Office"
   has_many :main_offices,                   class_name: "Cooperatives::Offices::MainOffice"
   has_many :branch_offices,                 class_name: "Cooperatives::Offices::BranchOffice"
   has_many :satellite_offices,              class_name: "Cooperatives::Offices::SatelliteOffice"
   has_many :cooperative_services,           class_name: "CoopServicesModule::CooperativeService"
-  has_many :store_fronts                   
+  has_many :store_fronts
   has_many :accountable_accounts,           as: :accountable, class_name: "AccountingModule::AccountableAccount"
   has_many :accounts,                       through: :accountable_accounts, class_name: "AccountingModule::Account"
   has_many :memberships,                    class_name: "Cooperatives::Membership"
