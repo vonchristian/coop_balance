@@ -1,0 +1,4 @@
+<% current_cooperative.merchants.each do |merchant| %>
+  <%= merchant.name %>
+  <%= link_to 'New Payment', new_merchant_payment_line_item_path(merchant_id: merchant.id, commercial_document_type: @member.class.to_s, commercial_document_id: @member.id) %>
+<% end %>
