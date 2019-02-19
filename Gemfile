@@ -62,6 +62,7 @@ gem "gretel"
 gem 'scss_lint', require: false
 gem 'webdack-uuid_migration'
 gem 'fast_jsonapi'
+gem "paperclip", "~> 6.0.0"
 group :development, :test do
   gem 'rspec-rails', '~> 3.8.0'
   gem 'rubocop', require: false
