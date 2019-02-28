@@ -24,5 +24,8 @@ module Cooperatives
     def normalized_type
       type.to_s.gsub("Cooperatives::Offices::", "")
     end
+    def self.types
+      ["Cooperatives::Offices::MainOffice", "Cooperatives::Offices::SatelliteOffice", "Cooperatives::Offices::BranchOffice"]
+    end
   end
 end

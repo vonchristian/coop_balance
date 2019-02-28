@@ -18,7 +18,7 @@ module ManagementModule
 
       private
       def office_params
-        params.require(:coop_configurations_module_office).permit(:contact_number, :address, :name)
+        params.require(:cooperatives_office).permit(:type, :contact_number, :address, :name)
       end
     end
   end

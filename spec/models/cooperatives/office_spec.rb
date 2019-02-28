@@ -21,5 +21,9 @@ module Cooperatives
       it { is_expected.to validate_presence_of :address }
       it { is_expected.to validate_uniqueness_of :name }
     end
+
+    it ".types" do
+      expect(described_class.types).to eql ["Cooperatives::Offices::MainOffice", "Cooperatives::Offices::SatelliteOffice", "Cooperatives::Offices::BranchOffice"]
+    end
   end
 end
