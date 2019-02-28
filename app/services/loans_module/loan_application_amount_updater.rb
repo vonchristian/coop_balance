@@ -13,14 +13,14 @@ module LoansModule
         loan_application.update_attributes(loan_amount: updated_loan_amount)
       end
     end
-    
+
     private
     def updated_loan_amount
       loan_application.loan_amount.amount + computed_add_on_interest
     end
 
     def computed_add_on_interest
-      loan_application.loan_amount.amount * interest_config.rate
+      loan_application.add_on_interest
     end
   end
 end

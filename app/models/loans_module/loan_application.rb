@@ -240,7 +240,7 @@ module LoansModule
     end
 
     def add_on_interest
-      current_interest_config.compute_interest(loan_amount.amount)
+      current_interest_config.compute_interest(amount: loan_amount.amount, term: term)
     end
   end
 end
