@@ -94,11 +94,7 @@
           </div>
         </div>
       </div>
-          <p> Repayments Due This Month </p>
-
-          <% @amortization_schedules.each do |schedule| %>
-            <%= render 'loans_module/amortization_schedules/partials/header', schedule: schedule, cached: true %>
-          <% end %>
+          
       </div>
   </div>
 </div>

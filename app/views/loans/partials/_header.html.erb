@@ -36,8 +36,8 @@
                 <h4 class="card-title"><%=number_to_currency loan.loan_amount %></h4>
                 <small class="text-muted">LOAN AMOUNT</small>
               <% elsif loan.forwarded_loan? %>
-                <h4 class="card-title"><%= number_to_currency loan.principal_debits_balance %></h4>
-                <small class="text-muted"> FORWARDED BALANCE </small><br>
+                <h4 class="card-title"><%= number_to_currency loan.loan_amount %></h4>
+                <small class="text-muted"> LOAN AMOUNT</small><br>
               <% end %>
             </div>
             <div class="col-md-6 col-sm-6">

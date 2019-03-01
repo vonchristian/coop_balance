@@ -95,7 +95,7 @@ module Registries
     end
 
     def cut_off_date
-      Date.parse('2018-09-30')
+      Date.parse(row["Cut Off Date"])
     end
 
     def effectivity_date(row)

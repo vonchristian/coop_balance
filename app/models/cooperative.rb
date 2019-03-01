@@ -40,6 +40,7 @@ class Cooperative < ApplicationRecord
   has_many :registries
   has_many :loan_registries,                class_name: "Registries::LoanRegistry"
   has_many :stock_registries,               class_name: "Registries::StockRegistry"
+  has_many :program_subscription_registries,class_name: "Registries::ProgramSubscriptionRegistry"
 
   has_many :member_registries,              class_name: "Registries::MemberRegistry"
   has_many :savings_account_registries,     class_name: "Registries::SavingsAccountRegistry"

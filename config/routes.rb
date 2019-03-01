@@ -197,6 +197,8 @@ Rails.application.routes.draw do
   resources :time_deposit_registries, only: [:create],       module: [:registries]
   resources :member_registries, only: [:create],             module: [:registries]
   resources :bank_account_registries, only: [:create],       module: [:registries]
+  resources :program_subscription_registries, only: [:create],       module: [:registries]
+
 
   namespace :management_module do
     resources :account_budgets, only: [:index, :new, :create]

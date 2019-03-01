@@ -76,7 +76,7 @@ module Registries
     end
 
     def find_loan_product(row)
-      self.cooperative.loan_products.find_by(name: row["Loan Product"])
+      LoansModule::LoanProduct.find_by(name: row["Loan Product"])
     end
 
     def cut_off_date(row)
