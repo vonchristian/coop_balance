@@ -14,7 +14,7 @@ module Registries
     def create_time_deposit(row)
       time_deposit = self.employee.cooperative.time_deposits.create!(
         depositor:            find_depositor(row),
-        office: self.office,
+        office:               self.office,
         account_number:       SecureRandom.uuid,
         time_deposit_product: find_time_deposit_product(row)
       )
@@ -53,11 +53,31 @@ module Registries
 
     def find_depositor(row)
       if row["Depositor Type"] == "Member"
-        Member.find_or_create_by(last_name: row["Last Name"], first_name: row["First Name"])
+        find_or_create_member_depositor(row)
       elsif row["Depositor Type"] == "Organization"
         Organization.find_or_create_by(name: row["Last Name"])
       end
     end
+
+    def find_or_create_member_depositor(row)
+      old_member = Member.find_by(
+        last_name:   TextNormalizer.new(text: row["Last Name"]).propercase,
+        first_name:  TextNormalizer.new(text: row["First Name"] || "").propercase,
+        middle_name: TextNormalizer.new(text: row["Middle Name"] || "").propercase
+      )
+      if old_member.present?
+        old_member
+      else
+        new_member = Member.create!(
+          last_name:   TextNormalizer.new(text: row["Last Name"]).propercase,
+          middle_name: TextNormalizer.new(text: row["Middle Name"] || "").propercase,
+          first_name:  TextNormalizer.new(text: row["First Name"] || "").propercase
+        )
+        new_member.memberships.create!(cooperative: self.employee.cooperative, account_number: SecureRandom.uuid)
+        new_member
+      end
+    end
+
     def term(row)
       row["Term"]
     end
