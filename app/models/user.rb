@@ -23,7 +23,6 @@ class User < ApplicationRecord
               :sales_clerk,
               :treasurer,
               :accountant,
-              :accounting_clerk,
               :collector]
 
   belongs_to :store_front, optional: true

@@ -12,6 +12,10 @@ module Cooperatives
     has_many :loan_applications,       class_name: "LoansModule::LoanApplication"
     has_many :amortization_schedules,  class_name: "LoansModule::AmortizationSchedule"
     has_many :vouchers
+
+    has_many :accountable_accounts,    class_name: "AccountingModule::AccountableAccount", as: :accountable
+    has_many :accounts,                class_name: "AccountingModule::Account", through: :accountable_accounts
+
     validates :name, presence: true, uniqueness: true
     validates :type, presence: true
     validates :contact_number, presence: true
