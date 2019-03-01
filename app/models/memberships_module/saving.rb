@@ -19,6 +19,10 @@ module MembershipsModule
     has_many :debit_amounts,        class_name: "AccountingModule::DebitAmount", as: :commercial_document
     has_many :credit_amounts,       class_name: "AccountingModule::CreditAmount", as: :commercial_document
 
+    has_many :ownerships, as: :ownable
+    has_many :member_depositors, through: :ownerships, source: :owner, source_type: 'Member'
+    has_many :organization_depositors, through: :ownerships, source: :owner, source_type: 'Organization'
+
     delegate :name, :current_address_complete_address, :current_contact_number, :current_occupation, to: :depositor, prefix: true
     delegate :name,
              :applicable_rate,
@@ -43,6 +47,10 @@ module MembershipsModule
 
     has_many :amounts,  class_name: "AccountingModule::Amount", as: :commercial_document
     has_many :entries,  through: :amounts, class_name: "AccountingModule::Entry"
+
+    def depositors
+      member_depositors + organization_depositors
+    end
 
     def self.below_minimum_balance
       where(has_minimum_balance: false)
@@ -124,7 +132,7 @@ module MembershipsModule
     end
 
     def balance_for(args={})
-      
+
     end
 
     def deposits
