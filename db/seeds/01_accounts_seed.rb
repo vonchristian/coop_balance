@@ -303,6 +303,8 @@ AccountingModule::Liability.create(code: 23100, name: 'Other Current Liabilities
 AccountingModule::Liability.create(code: 24000, name: 'Non-Current Liabilities')
 AccountingModule::Liability.create(code: 240001, name: 'Mortuary Aid Fund')
 AccountingModule::Liability.create(code: 240002, name: 'Cooperative Guarantee Fund')
+AccountingModule::Liability.create(code: 240003, name: 'Mutual Assistance System')
+
 
 
 AccountingModule::Liability.create(code: 24100, name: 'Loans Payable')
