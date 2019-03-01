@@ -14,6 +14,7 @@ module Registries
     def create_time_deposit(row)
       time_deposit = self.employee.cooperative.time_deposits.create!(
         depositor:            find_depositor(row),
+        office: self.office,
         account_number:       SecureRandom.uuid,
         time_deposit_product: find_time_deposit_product(row)
       )

@@ -24,7 +24,7 @@
       <% if current_user.teller? %>
         <%=render 'layouts/shared/sidebar_links/treasury_department' %>
       <% end %>
-      <% if current_user.general_manager? %>
+      <% if current_user.general_manager? || current_user.branch_manager? %>
         <%=render 'layouts/shared/sidebar_links/management_department' %>
       <% end %>
       <% if current_user.bookkeeper? %>
