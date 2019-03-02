@@ -35,8 +35,8 @@ module Registries
       commercial_document: find_depositor(row),
       recorder: self.employee,
       previous_entry: self.employee.cooperative.entries.recent,
-      description: "Forwarded time deposit as of #{cut_off_date.strftime("%B %e, %Y")}",
-      entry_date: cut_off_date,
+      description: "Forwarded time deposit as of #{cut_off_date(row).strftime("%B %e, %Y")}",
+      entry_date: cut_off_date(row),
       debit_amounts_attributes: [
         account: debit_account,
         amount: amount(row),
@@ -94,8 +94,8 @@ module Registries
       find_time_deposit_product(row).account
     end
 
-    def cut_off_date
-      Date.parse(row["Cut Off Date"])
+    def cut_off_date(row)
+      Date.parse(row["Cut Off Date"].to_s)
     end
 
     def effectivity_date(row)
