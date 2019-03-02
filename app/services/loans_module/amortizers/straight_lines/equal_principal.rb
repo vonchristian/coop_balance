@@ -65,8 +65,7 @@ module LoansModule
         end
 
         def amortizeable_interest_for(schedule)
-          0
-          # loan_product.interest_calculator.new(loan_application: loan_application, schedule: schedule).monthly_amortization_interest
+          loan_product.interest_calculator.new(loan_application: loan_application, schedule: schedule).monthly_amortization_interest
         end
       end
     end
