@@ -50,7 +50,7 @@ wb.styles do |style|
         "",
         time_deposit.date_deposited.strftime("%b %e, %Y"),
         time_deposit.current_term.maturity_date.strftime("%b %e, %Y"),
-        time_deposit.balance
+        time_deposit.credits_balance(to_date: @to_date)
       ], style: top_row
       sheet.merge_cells accounts.cells[(0..2)]
     end

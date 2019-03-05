@@ -8,16 +8,7 @@
         <% end %>
       </div>
       <div class="col-md-6">
-        <%=form_tag accounting_module_entries_path, method: :get, class: "sidebar-form" do %>
-          <div class="input-group">
-            <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Entry...", id: 'taxpayer-search-form' %>
-            <span class="input-group-btn">
-              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
-                <i class="fa fa-search"></i>
-              <% end %>
-            </span>
-          </div>
-        <% end %>
+        <%= render 'accounting_module/entries/search_filter' %>
       </div>
       <div class="col-md-3">
         <%= link_to "New Entry", new_accounting_module_entry_line_item_path, class: "btn btn-primary float-right" %>

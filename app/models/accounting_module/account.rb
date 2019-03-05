@@ -95,17 +95,17 @@ module AccountingModule
 
     def self.entries(args={})
       ids = AccountingModule::Amount.where(account_id: self.ids).pluck(:entry_id)
-      AccountingModule::Entry.where(id: ids.uniq.flatten)
+      AccountingModule::Entry.where(id: ids.uniq.flatten).where(cancelled: false)
     end
 
     def self.credit_entries(args={})
       ids = AccountingModule::CreditAmount.where(account_id: self.ids).pluck(:entry_id)
-      AccountingModule::Entry.where(id: ids.uniq.flatten)
+      AccountingModule::Entry.where(id: ids.uniq.flatten).where(cancelled: false)
     end
 
     def self.debit_entries(args={})
       ids = AccountingModule::DebitAmount.where(account_id: self.ids).pluck(:entry_id)
-      AccountingModule::Entry.where(id: ids.uniq.flatten)
+      AccountingModule::Entry.where(id: ids.uniq.flatten).where(cancelled: false)
     end
 
     def self.credit_amounts(args={})

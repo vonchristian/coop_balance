@@ -74,7 +74,7 @@
               Second Year
             </div>
             <div class="col-md-3 col-sm-6">
-              <%#= number_to_currency @loan_application.second_year_interest %>
+              <%= number_to_currency @loan_application.second_year_interest %>
             </div>
           </div>
         <% end %>
@@ -114,7 +114,7 @@
             Total Interest
           </div>
           <div class="col-md-3 col-sm-6">
-            <%#= number_to_currency @loan_application.total_interest %>
+            <%= number_to_currency @loan_application.total_interest %>
           </div>
         </div>
         <div class="row justify-content-end">
@@ -247,48 +247,49 @@
         <% end %>
       </div>
     </div>
-
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title"> Amortization Schedules </h3>
-      </div>
-      <div class="card-body">
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th> Date </th>
-              <th> Principal </th>
-              <th> Interest </th>
-              <th> Total Repayment</th>
-              <th> Loan Balance </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-
-              <td><%= number_to_currency @loan_application.loan_amount %></td>
-            </tr>
-            <% @loan_application.amortization_schedules.order(date: :asc).each do |amortization_schedule| %>
+    <% if !@loan_application.lumpsum? %>
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title"> Amortization Schedules </h3>
+        </div>
+        <div class="card-body">
+          <table class="table table-hover">
+            <thead>
               <tr>
-                <td><%= amortization_schedule.date.strftime("%B %e, %Y") %></td>
-                <td><%= number_to_currency amortization_schedule.principal %></td>
-                <td><%= number_to_currency amortization_schedule.interest %>
-                  <% if amortization_schedule.prededucted_interest? %>
-                    <span class="badge bg-danger"> Prededucted </span>
-                  <% end %>
-                </td>
-              <td><%= number_to_currency amortization_schedule.total_repayment %></td>
-                <td><%= number_to_currency amortization_schedule.ending_balance %></td>
+                <th> Date </th>
+                <th> Principal </th>
+                <th> Interest </th>
+                <th> Total Repayment</th>
+                <th> Loan Balance </th>
               </tr>
-            <% end %>
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+
+                <td><%= number_to_currency @loan_application.loan_amount %></td>
+              </tr>
+              <% @loan_application.amortization_schedules.order(date: :asc).each do |amortization_schedule| %>
+                <tr>
+                  <td><%= amortization_schedule.date.strftime("%B %e, %Y") %></td>
+                  <td><%= number_to_currency amortization_schedule.principal %></td>
+                  <td><%= number_to_currency amortization_schedule.interest %>
+                    <% if amortization_schedule.prededucted_interest? %>
+                      <span class="badge bg-danger"> Prededucted </span>
+                    <% end %>
+                  </td>
+                <td><%= number_to_currency amortization_schedule.total_repayment %></td>
+                  <td><%= number_to_currency amortization_schedule.ending_balance %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+    <% end %>
   </div>
 
 
@@ -314,7 +315,7 @@
           <div class="col-md-8 offset-1">
             <%= link_to new_loans_module_loan_application_voucher_amount_path(@loan_application), data: { modal: true } do %>
               <span class="float-left btn btn-outline-primary btn-sm" data-toggle="tooltip" title="Add Charges">
-                <i class="fa fa-plus-circle"></i> Add Charge
+                <i class="fa fa-plus-circle"></i> Other Deductions
               </span>
             <% end %>
           </div>
@@ -415,9 +416,9 @@
 
         <%= simple_form_for [@loan_application, @voucher], url: :loans_module_loan_application_vouchers, html: { autocomplete: 'off' } do |f| %>
           <%= f.input :date, as: :string, input_html: { class: "datepicker", value: @loan_application.application_date.strftime("%B %e, %Y") } %>
-          <%= f.input :cash_account_id, collection: Employees::EmployeeCashAccount.cash_accounts.map{ |a| [a.name, a.id] }, default: current_user.cash_accounts.first, hint: "Please select cash account for disbursing this loan." %>
+          <%= f.input :cash_account_id, collection: Employees::EmployeeCashAccount.cash_accounts.map{ |a| [a.name, a.id] }, default: current_user.cash_accounts.first, hint: "Please select cash account for disbursement." %>
           <%= f.input :reference_number, required: true %>
-          <%= f.input :description, input_html: { value: "#{@loan_application.loan_product_name} - #{@loan_application.purpose}" }, as: :text %>
+          <%= f.input :description, input_html: { value: "#{@loan_application.loan_product_name}" }, as: :text %>
           <%= f.input :preparer_id, input_html: { value: current_user.id }, as: :hidden %>
 
           <%= f.input :borrower_id, input_html: { value: @loan_application.borrower_id }, as: :hidden %>

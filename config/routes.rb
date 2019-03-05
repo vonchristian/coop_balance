@@ -19,6 +19,11 @@ Rails.application.routes.draw do
       resources :share_capital_dividend_postings, only: [:new, :create]
     end
 
+    namespace :cash_books do
+      resources :cash_receipts,                       only: [:index]
+      resources :cash_disbursements,                  only: [:index]
+    end
+
     resources :cash_receipts, module: :entries,     only: [:index]
     resources :cash_disbursements, module: :entries, only: [:index]
     resources :journal_entry_vouchers,  module: :entries, only: [:index]
@@ -34,6 +39,10 @@ Rails.application.routes.draw do
     resources :reports, only: [:index]
 
     namespace :reports do
+      namespace :cashbooks do
+        resources :cash_receipts,      only: [:index]
+        resources :cash_disbursements, only: [:index]
+      end
       resources :entries, only: [:index]
       resources :net_income_distributions, only: [:index]
       resources :trial_balances,       only: [:index]
@@ -407,6 +416,7 @@ Rails.application.routes.draw do
     resources :blotters,             only: [:index],                        module: :employees
     resources :cash_disbursements,   only: [:index],                        module: [:employees, :reports]
     resources :cash_receipts,        only: [:index],                        module: [:employees, :reports]
+    resources :cash_book_transactions, only: [:index],                      module: [:employees, :reports]
     resources :memberships,          only: [:new, :create, :edit, :update], module: :employees
     resources :time_deposits,        only: [:index],                        module: :employees
     resources :savings_accounts,     only: [:index],                        module: :employees

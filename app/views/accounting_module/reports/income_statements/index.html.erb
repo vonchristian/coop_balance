@@ -15,12 +15,10 @@
     <div class="row">
       <div class="col-md-9">
         <%= form_tag({:action => 'index'}, {:method => :get, class: "form-inline"}) do %>
-          <%= label_tag :from_date,  "From Date", class: 'sr-only'%>
-          <%= text_field_tag :from_date, @from_date.strftime("%B %e, %Y"), :class => 'datepicker form-control', :placeholder => "From" %>
-
-            <%= label_tag :to_date, nil, class: 'sr-only'%>
-            <%= text_field_tag :to_date, @to_date.strftime("%B %e, %Y"), :class => 'datepicker form-control', :placeholder => "To" %>
-
+          <%= label_tag :from_date, nil, class: 'sr-only'%>
+          <%= text_field_tag :from_date, @from_date.strftime("%B %e, %Y"), :class => 'datepicker form-control', :placeholder => "To" %>
+          <%= label_tag :to_date, nil, class: 'sr-only'%>
+          <%= text_field_tag :to_date, @to_date.strftime("%B %e, %Y"), :class => 'datepicker form-control', :placeholder => "To" %>
           <button type="submit" class="btn btn-primary">Generate</button>
         <% end %>
       </div>

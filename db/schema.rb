@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_01_020945) do
+ActiveRecord::Schema.define(version: 2019_02_01_083055) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -190,6 +190,18 @@ ActiveRecord::Schema.define(version: 2019_02_01_020945) do
     t.index ["entry_id", "account_id"], name: "index_amounts_on_entry_id_and_account_id"
     t.index ["entry_id"], name: "index_amounts_on_entry_id"
     t.index ["type"], name: "index_amounts_on_type"
+  end
+
+  create_table "archives", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "record_type"
+    t.uuid "record_id"
+    t.uuid "archiver_id"
+    t.datetime "archived_at"
+    t.string "remarks"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["archiver_id"], name: "index_archives_on_archiver_id"
+    t.index ["record_type", "record_id"], name: "index_archives_on_record_type_and_record_id"
   end
 
   create_table "audits", force: :cascade do |t|
@@ -1640,6 +1652,7 @@ ActiveRecord::Schema.define(version: 2019_02_01_020945) do
   add_foreign_key "amount_adjustments", "voucher_amounts"
   add_foreign_key "amounts", "accounts"
   add_foreign_key "amounts", "entries"
+  add_foreign_key "archives", "users", column: "archiver_id"
   add_foreign_key "bank_accounts", "accounts", column: "cash_account_id"
   add_foreign_key "bank_accounts", "accounts", column: "interest_revenue_account_id"
   add_foreign_key "bank_accounts", "cooperatives"

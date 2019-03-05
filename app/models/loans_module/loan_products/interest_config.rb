@@ -26,12 +26,20 @@ module LoansModule
         AccountingModule::Account.where(id: accounts)
       end
 
-      def compute_interest(amount)
-        amount * rate
+      def compute_interest(args={})
+        (args[:amount] * monthly_interest_rate) * applicable_term(args[:term])
       end
 
       def monthly_interest_rate
         rate / 12.0
+      end
+
+      def applicable_term(term)
+        if term > 12
+          applicable_term = 12
+        else
+          applicable_term = term
+        end
       end
 
     end

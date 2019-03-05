@@ -15,7 +15,7 @@
       </div>
       <div class="col-md-3">
         <% if params[:to_date].present? %>
-          <%= link_to "View (PDF)", accounting_module_reports_financial_conditions_path(format: 'pdf'), class: "btn btn-default" %>
+          <%= link_to "View (PDF)", accounting_module_reports_financial_conditions_path(format: 'pdf', to_date: params[:to_date]), class: "btn btn-default" %>
         <% end %>
       </div>
     </div>

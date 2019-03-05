@@ -28,7 +28,10 @@ module LoansModule
       end
       def computed_interest
         deductible_amount = loan_application.loan_amount * interest_config.rate
-        interest_prededuction.calculator.new(amount: deductible_amount, interest_prededuction: interest_prededuction).calculate
+        interest_prededuction.calculator.new(
+          interest_prededuction: interest_prededuction, 
+          loan_application: loan_application
+        ).calculate
       end
     end
   end

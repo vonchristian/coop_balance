@@ -8,12 +8,12 @@ module Employees
         @entries = @employee.cash_accounts.debit_entries.entered_on(from_date: @from_date, to_date: @to_date)
         respond_to do |format|
           format.pdf do
-            pdf = Employees::Reports::CashAccountsPdf.new(
+            pdf = CashBooks::CashReceiptsPdf.new(
               entries: @entries,
               employee: @employee,
               from_date: @from_date,
               to_date: @to_date,
-              title: "Cash Receipts Report",
+              title: "Cash Receipts Journal",
               view_context: view_context)
             send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Cash Receipts Report.pdf"
           end
@@ -22,4 +22,3 @@ module Employees
     end
   end
 end
-

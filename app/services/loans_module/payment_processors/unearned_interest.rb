@@ -32,6 +32,12 @@ module LoansModule
         LoansModule::Loan.find(loan_id)
       end
 
+      def schedule_id
+        if amortization_schedule_id.present?
+          amortization_schedule_id
+        end
+      end
+
       def find_employee
         User.find(employee_id)
       end

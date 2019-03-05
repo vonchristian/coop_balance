@@ -21,27 +21,44 @@ class IncomeStatementPdf < Prawn::Document
     view_context.number_to_currency(number, :unit => "P ")
   end
 
-  def heading
-    bounding_box [320, 770], width: 50 do
-      image "#{Rails.root}/app/assets/images/#{cooperative.abbreviated_name.downcase}_logo.jpg", width: 50, height: 50
+  def logo
+    {image: "#{Rails.root}/app/assets/images/#{cooperative.abbreviated_name.downcase}_logo.jpg", image_width: 50, image_height: 50}
+  end
+
+  def subtable_right
+    sub_data ||= [[{content: "#{cooperative.abbreviated_name}", size: 22}]] + [[{content: "#{cooperative.name}", size: 10}]]
+    make_table(sub_data, cell_style: {padding: [0,5,1,2]}) do
+      columns(0).width = 180
+      cells.borders = []
     end
-    bounding_box [380, 770], width: 160 do
-        text "#{cooperative.abbreviated_name }", style: :bold, size: 20
-        text "#{cooperative.name.try(:upcase)}", size: 8
-        text "#{cooperative.address}", size: 8
+  end
+
+  def subtable_left
+    sub_data ||= [[{content: "INCOME STATEMENT", size: 14, colspan: 2}]] + 
+                  [[{content: "As of #{to_date.strftime("%b. %e, %Y")}", size: 10, colspan: 2}]]
+    make_table(sub_data, cell_style: {padding: [0,5,1,2]}) do
+      columns(0).width = 50
+      columns(1).width = 150
+      cells.borders = []
     end
-    bounding_box [0, 770], width: 400 do
-      text "INCOME STATEMENT", style: :bold, size: 12
-      text "Date Covered:", size: 10
-      text "#{from_date.strftime("%b. %e, %Y")} - #{to_date.strftime("%b. %e, %Y")}", size: 10, indent_paragraphs: 30
+  end
+
+  def heading # 275, 50, 210
+    bounding_box [bounds.left, bounds.top], :width  => 535 do
+      table([[subtable_left, logo, subtable_right]], 
+        cell_style: { inline_format: true, font: "Helvetica", padding: [0,5,0,0]}, 
+        column_widths: [310, 50, 180]) do
+          cells.borders = []
+      end
     end
-    move_down 20
     stroke do
+      move_down 3
       stroke_color '24292E'
       line_width 1
       stroke_horizontal_rule
-      move_down 15
+      move_down 1
     end
+    move_down 10
   end
 
   def revenue_accounts
@@ -92,6 +109,18 @@ class IncomeStatementPdf < Prawn::Document
   def net_surplus
     move_down 10
     table([["NET SURPLUS", "#{price(AccountingModule::Account.net_surplus(to_date: to_date))}"]], cell_style: { inline_format: true, size: 11, font: "Helvetica"}, column_widths: [395, 120]) do
+      row(0).font_style = :bold
+      cells.borders = []
+      column(1).align =:right
+    end
+  end
+
+  def signatories
+    move_down 30
+
+    signatories_data ||= [["Prepared By:", "", "Certified Correct:", ""]] + [["", "", "", ""]] + [["", "", "", ""]] +
+                          [["Prepared By:", "", "Certified Correct:", ""]]
+    table(signatories_data, cell_style: { inline_format: true, size: 11, font: "Helvetica"}, column_widths: [120, 130, 120, 130]) do
       row(0).font_style = :bold
       cells.borders = []
       column(1).align =:right

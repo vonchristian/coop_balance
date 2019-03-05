@@ -73,15 +73,15 @@ module MembershipsModule
     end
 
     def balance(args={})
-      time_deposit_product_account.balance(commercial_document: self)
+      time_deposit_product_account.balance(args.merge(commercial_document: self))
     end
 
-    def credits_balance  # deposit amount
-      time_deposit_product_account.credits_balance(commercial_document: self)
+    def credits_balance(args={})  # deposit amount
+      time_deposit_product_account.credits_balance(args.merge(commercial_document: self))
     end
 
-    def interest_balance
-      time_deposit_product.interest_expense_account.debits_balance(commercial_document: self)
+    def interest_balance(args={})
+      time_deposit_product.interest_expense_account.debits_balance(args.merge(commercial_document: self))
     end
 
     def deposited_amount

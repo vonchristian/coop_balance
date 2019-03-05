@@ -99,6 +99,17 @@ module LoansModule
         first_year_interest +
         second_year_interest +
         third_year_interest
+      elsif term_is_within_four_years?
+        first_year_interest +
+        second_year_interest +
+        third_year_interest +
+        fourth_year_interest
+      elsif term_is_within_five_years?
+        first_year_interest +
+        second_year_interest +
+        third_year_interest +
+        fourth_year_interest +
+        fifth_year_interest
       end
     end
 
@@ -110,7 +121,6 @@ module LoansModule
       elsif loan_product.current_interest_config.add_on?
         add_on_interest
       end
-
     end
 
     def voucher_interest_amount
@@ -118,21 +128,27 @@ module LoansModule
     end
 
     def first_year_interest
-      if !current_interest_config.accrued?
-        current_interest_config.compute_interest(first_year_principal_balance)
-      else
-        0
-      end
+      current_interest_config.compute_interest(amount: first_year_principal_balance, term: term)
     end
 
     def second_year_interest
-      return 0 if !term_is_within_two_years?
-      current_interest_config.compute_interest(second_year_principal_balance)
+      return 0 if term <= 12
+      current_interest_config.compute_interest(amount: second_year_principal_balance, term: term - 12)
     end
 
     def third_year_interest
-      return 0 if !term_is_within_three_years?
-      current_interest_config.compute_interest(third_year_principal_balance)
+      return 0 if term <= 24
+      current_interest_config.compute_interest(amount: third_year_principal_balance, term: term - 24)
+    end
+
+    def fourth_year_interest
+      return 0 if term <= 36
+      current_interest_config.compute_interest(amount: fourth_year_principal_balance, term: term - 36)
+    end
+
+    def fifth_year_interest
+      return 0 if term <= 48
+      current_interest_config.compute_interest(amount: fifth_year_principal_balance, term: term - 48)
     end
 
     def first_year_principal_balance
@@ -140,37 +156,40 @@ module LoansModule
     end
 
     def second_year_principal_balance
-      return 0 if !term_is_within_two_years?
+      return 0 if term <= 12
       schedule = second_year_principal_balance_schedule_finder.new(loan_application: self).find_schedule
       principal_balance_for(schedule)
     end
 
     def third_year_principal_balance
-      return 0 if !term_is_within_three_years?
+      return 0 if term <= 24
       schedule = amortization_schedules.by_oldest_date[23]
       principal_balance_for(schedule)
     end
 
     def fourth_year_principal_balance
-      return 0 if !term_is_within_four_years?
+      return 0 if term <= 36
       schedule = amortization_schedules.by_oldest_date[35]
       principal_balance_for(schedule)
     end
 
+    def fifth_year_principal_balance
+      return 0 if term <= 48
+      schedule = amortization_schedules.by_oldest_date[47]
+      principal_balance_for(schedule)
+    end
 
     def prededucted_interest
       prededucted_interest_calculator.new(loan_application: self).prededucted_interest
     end
 
     def total_amortizeable_interest
-      total_interest -
-      prededucted_interest
+      total_interest - prededucted_interest
     end
 
     def amortizeable_interest_for(schedule)
       principal_balance_for(schedule) * loan_product_monthly_interest_rate
     end
-
 
     def net_proceed
       loan_amount.amount - voucher_amounts.total

@@ -5,7 +5,7 @@ module Portfolios
 			if params[:to_date].present? && params[:loan_type]
 				@loan_type = current_cooperative.loan_products.find(params[:loan_type])
 				@to_date = params[:to_date].present? ? Date.parse(params[:to_date]) : Time.now
-      	@loans = current_cooperative.loans.not_cancelled.where(loan_product: @loan_type).order(:borrower_full_name)
+      	@loans = current_cooperative.loans.not_cancelled.where(loan_product: @loan_type).order(:tracking_number)
       else
       	@loans = current_cooperative.loans
       end

@@ -32,7 +32,7 @@ module AccountingModule
         recorder:            find_employee,
         office:              find_employee.office,
         cooperative:         find_employee.cooperative,
-        description:         "ADJUSTING ENTRY: #{description}",
+        description:         "ADJ ENTRY: #{description}",
         commercial_document: find_commercial_document,
         reference_number:    reference_number,
         previous_entry:      cooperative.entries.recent,
