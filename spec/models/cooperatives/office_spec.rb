@@ -11,6 +11,8 @@ module Cooperatives
       it { is_expected.to have_many :share_capitals }
       it { is_expected.to have_many :entries }
       it { is_expected.to have_many :bank_accounts }
+      it { is_expected.to have_many :loan_applications }
+      it { is_expected.to have_many :vouchers }
     end
 
     describe 'validations' do
@@ -18,6 +20,10 @@ module Cooperatives
       it { is_expected.to validate_presence_of :contact_number }
       it { is_expected.to validate_presence_of :address }
       it { is_expected.to validate_uniqueness_of :name }
+    end
+
+    it ".types" do
+      expect(described_class.types).to eql ["Cooperatives::Offices::MainOffice", "Cooperatives::Offices::SatelliteOffice", "Cooperatives::Offices::BranchOffice"]
     end
   end
 end

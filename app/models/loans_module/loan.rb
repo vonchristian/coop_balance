@@ -98,6 +98,10 @@ module LoansModule
     def arrears(args={})
       amortization_schedules.where(date: args[:from_date]..args[:to_date]).sum(:principal)
     end
+    def badge_color
+      return 'danger' if past_due?
+      return 'success' if current_loan?
+    end
 
     def total_deductions(args={})
       amortized_principal_for(from_date: args[:from_date], to_date: args[:to_date]) -
@@ -214,10 +218,12 @@ module LoansModule
         from_date = options[:from_date]
         to_date   = options[:to_date]
         range     = DateRange.new(from_date: from_date, to_date: to_date)
-        not_cancelled.not_archived.disbursed.
+        not_cancelled.
+        not_archived.
         joins(:terms).where('terms.maturity_date' => range.start_date..range.end_date )
       else
-        not_cancelled.not_archived.disbursed.
+        not_cancelled.
+        not_archived.
         joins(:terms).where('terms.maturity_date < ?', Date.today)
       end
     end

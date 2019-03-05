@@ -35,7 +35,10 @@
 <%= simple_form_for [@loan, @payment], url: :loans_module_loan_application_previous_loan_payment_processings, remote: request.xhr?, html: { autocomplete: 'off', data: { modal: true } } do |f| %>
   <div class="modal-body">
     <%= f.error_notification %>
-    <%= f.input :amount, autofocus: true, as: :currency %>
+    <%= f.input :principal_amount, autofocus: true, as: :currency %>
+    <%= f.input :interest_amount, autofocus: true, as: :currency %>
+    <%= f.input :penalty_amount, autofocus: true, as: :currency %>
+
     <%= f.input :loan_id, input_html: { value: @loan.id }, as: :hidden %>
     <%= f.input :loan_application_id, input_html: { value: @loan_application.id }, as: :hidden %>
   </div>

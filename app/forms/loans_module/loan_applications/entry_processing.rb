@@ -3,7 +3,6 @@ module LoansModule
     class EntryProcessing
       include ActiveModel::Model
       attr_reader :voucher, :employee, :loan, :loan_application, :cooperative
-
       def initialize(args)
         @voucher          = args[:voucher]
         @employee         = args[:employee]
@@ -11,11 +10,14 @@ module LoansModule
         @loan_application = args[:loan_application]
         @cooperative      = @employee.cooperative
       end
+
+      def find_entry
+        AccountingModule::Entry.find_by(reference_number: voucher.reference_number)
+      end
+
       def process!
         ActiveRecord::Base.transaction do
           create_entry
-          update_last_transaction_date
-          update_terms
         end
       end
 
@@ -31,7 +33,7 @@ module LoansModule
           reference_number:    voucher.reference_number,
           previous_entry:      cooperative.entries.recent,
           previous_entry_hash: cooperative.entries.recent.encrypted_hash,
-          entry_date:          voucher.date)
+          entry_date:          voucher.disbursement_date)
 
           voucher.voucher_amounts.debit.excluding_account(account: loan.loan_product_current_account).each do |amount|
             entry.debit_amounts.build(
@@ -60,26 +62,6 @@ module LoansModule
         voucher.update_attributes!(accounting_entry: entry, disburser: employee)
       end
 
-      def update_last_transaction_date
-          loan.update_attributes!(last_transaction_date: voucher.date)
-          loan.borrower.update_attributes!(last_transaction_date: voucher.date)
-      end
-
-      def update_terms
-        loan.current_term.update_attributes!(
-          effectivity_date: voucher.date,
-          maturity_date: maturity_date)
-      end
-
-      def maturity_date
-        voucher.date +
-        TermParser.new(term: loan.term).add_months +
-        TermParser.new(term: loan.term).add_days
-      end
-
-      def find_recent_entry
-        cooperative.entries.recent
-      end
       def set_commercial_document(amount)
         if amount.commercial_document == loan_application
           loan
@@ -87,6 +69,7 @@ module LoansModule
           amount.commercial_document
         end
       end
+
     end
   end
 end

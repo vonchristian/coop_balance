@@ -9,6 +9,13 @@ module Cooperatives
     has_many :share_capitals,          class_name: "MembershipsModule::ShareCapital"
     has_many :entries,                 class_name: "AccountingModule::Entry"
     has_many :bank_accounts,           class_name: "BankAccount"
+    has_many :loan_applications,       class_name: "LoansModule::LoanApplication"
+    has_many :amortization_schedules,  class_name: "LoansModule::AmortizationSchedule"
+    has_many :vouchers
+
+    has_many :accountable_accounts,    class_name: "AccountingModule::AccountableAccount", as: :accountable
+    has_many :accounts,                class_name: "AccountingModule::Account", through: :accountable_accounts
+
     validates :name, presence: true, uniqueness: true
     validates :type, presence: true
     validates :contact_number, presence: true
@@ -20,6 +27,9 @@ module Cooperatives
 
     def normalized_type
       type.to_s.gsub("Cooperatives::Offices::", "")
+    end
+    def self.types
+      ["Cooperatives::Offices::MainOffice", "Cooperatives::Offices::SatelliteOffice", "Cooperatives::Offices::BranchOffice"]
     end
   end
 end

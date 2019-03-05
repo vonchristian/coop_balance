@@ -30,31 +30,13 @@
         <%= month_calendar do |date| %>
         <%=link_to loans_module_amortization_schedule_date_filters_path(from_date: date, to_date: date)  do %>
           <p><%=date.day %></p>
-            <% current_cooperative.amortization_schedules.for_loans.scheduled_for(from_date: date, to_date: date).each do |schedule| %>
+            <% @amortization_schedules.for_loans.scheduled_for(from_date: date, to_date: date).each do |schedule| %>
               <span class="" data-toggle="tooltip" title="<%= schedule.borrower_name %>">
                 <%= image_tag(schedule.borrower_avatar, class: "img-circle", height: 25, width: 25) %>
               </span>
             <% end %>
         <% end %>
         <% end %>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-4">
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title"> Schedules for this day </h3>
-      </div>
-      <div class="card-body">
-        <h3><%= @amortization_schedules.count %></h3>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title"> Schedules for this month </h3>
-      </div>
-      <div class="card-body">
-        <h3><%= LoansModule::AmortizationSchedule.scheduled_for(from_date: @from_date.beginning_of_month, to_date: @to_date.end_of_month).count %></h3>
       </div>
     </div>
   </div>

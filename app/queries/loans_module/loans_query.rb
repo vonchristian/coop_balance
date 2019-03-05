@@ -14,7 +14,7 @@ module LoansModule
     end
 
 
-    def past_due(args={})
+    def past_due_on(args={})
      if args[:from_date] && args[:to_date]
         from_date = args[:from_date]
         to_date   = args[:to_date]

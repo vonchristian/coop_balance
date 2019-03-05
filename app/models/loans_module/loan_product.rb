@@ -19,6 +19,7 @@ module LoansModule
     has_many :employee_borrowers,                  through: :loans, source: :borrower, source_type: 'User'
     has_many :organization_borrowers,              through: :loans, source: :borrower, source_type: 'Organization'
     has_many :interest_predeductions,              class_name: "LoansModule::LoanProducts::InterestPrededuction"
+    has_many :loan_applications,                class_name: "LoansModule::LoanApplication"
     delegate :calculation_type, to: :amortization_type, prefix: true
     delegate :rate,
              :annual_rate,
@@ -89,6 +90,10 @@ module LoansModule
       elsif current_interest_config.add_on? || current_interest_config.accrued?
         ("LoansModule::LoanProcessors::" + current_interest_config_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
       end
+    end
+
+    def annual_interest_calculator
+      ("LoansModule::AnnualInterestCalculators::" + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
     end
 
     # def amortization_scheduler

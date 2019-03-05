@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   resources :accounting_module, only: [:index]
   namespace :accounting_module do
+    resources :amounts, only: [:destroy]
     resources :commercial_document_adjusting_entry_line_items, only: [:new, :create, :destroy], module: :entries
     resources :per_employee_entries, only: [:index], module: :entries
     resources :per_office_entries, only: [:index], module: :entries
@@ -104,15 +105,16 @@ Rails.application.routes.draw do
     resources :aging_loans, only: [:index, :show]
 
     resources :loan_applications, only: [:index, :new, :create, :show, :destroy] do
-      resources :capital_build_up_processings,       only: [:new, :create], module: :loan_applications
-      resources :savings_account_deposit_processings, only: [:new, :create], module: :loan_applications
-      resources :previous_loan_payment_processings,   only: [:new, :create], module: :loan_applications
-      resources :vouchers, only: [:new, :create, :show, :destroy], module: :loan_applications
-      resources :amortization_schedules, only: [:index], module: :loan_applications
-      resources :voucher_confirmations, only: [:create], module: :loan_applications
-      resources :loan_amounts, only: [:new, :create], module: :loan_applications
-      resources :voucher_amounts,       only: [:new, :create, :edit, :update, :destroy], module: :loan_applications
-
+      resources :disbursements,                       only: [:new, :create],                           module: :loan_applications
+      resources :capital_build_up_processings,        only: [:new, :create],                           module: :loan_applications
+      resources :savings_account_deposit_processings, only: [:new, :create],                           module: :loan_applications
+      resources :previous_loan_payment_processings,   only: [:new, :create],                           module: :loan_applications
+      resources :vouchers,                            only: [:new, :create, :show, :destroy],          module: :loan_applications
+      resources :amortization_schedules,              only: [:index],                                  module: :loan_applications
+      resources :voucher_confirmations,               only: [:create],                                 module: :loan_applications
+      resources :loan_amounts,                        only: [:new, :create],                           module: :loan_applications
+      resources :voucher_amounts,                     only: [:new, :create, :edit, :update, :destroy], module: :loan_applications
+      resources :program_payments,                    only: [:new, :create], module: :loan_applications
     end
 
     resources :dashboard, only: [:index]
@@ -169,6 +171,7 @@ Rails.application.routes.draw do
   end
 
   resources :members, only: [:index, :show, :edit, :update, :destroy] do
+    resources :bills_payments, only: [:index], module: :members
     resources :organizations,         only: [:new, :create],                 module: :members
     resources :beneficiaries,         only: [:new, :create, :destroy],       module: :members
     resources :merging_line_items,    only: [:new, :create],                 module: :members
@@ -203,6 +206,8 @@ Rails.application.routes.draw do
   resources :time_deposit_registries, only: [:create],       module: [:registries]
   resources :member_registries, only: [:create],             module: [:registries]
   resources :bank_account_registries, only: [:create],       module: [:registries]
+  resources :program_subscription_registries, only: [:create],       module: [:registries]
+
 
   namespace :management_module do
     resources :account_budgets, only: [:index, :new, :create]
@@ -343,6 +348,8 @@ Rails.application.routes.draw do
       resources :loans, only: [:index]
     end
     resources :cash_accounts, only: [:index, :show] do
+      resources :receipts, only: [:index], module: :cash_accounts
+      resources :disbursements, only: [:index], module: :cash_accounts
       resources :reports, only: [:index],                                       module: :cash_accounts
       resources :cash_receipt_line_items, only: [:new, :create, :destroy],      module: :cash_accounts
       resources :cash_disbursement_line_items, only: [:new, :create, :destroy], module: :cash_accounts
@@ -453,6 +460,7 @@ Rails.application.routes.draw do
   end
 
   resources :vouchers, only: [:index, :show, :destroy] do
+    resources :cancellations, only: [:create], module: :vouchers
     resources :disbursements, only: [:create],            module: :vouchers
     resources :loan_disbursements, only: [:new, :create], module: :vouchers
   end
@@ -580,5 +588,8 @@ Rails.application.routes.draw do
   resources :leads, only: [:new, :create]
   namespace :portfolios do
     resources :loans, only: [:index]
+  end
+  resources :merchants, only: [:index, :show, :new, :create] do
+    resources :payment_line_items, only: [:new, :create], module: :merchants
   end
 end

@@ -13,7 +13,7 @@ module Registries
     def upload_savings(depositor, row)
       unless row["Balance"].to_f.zero? || row["Balance"].nil?
         savings = find_cooperative.savings.create!(
-        depositor: depositor,
+        depositor: find_or_create_member_depositor(row),
         office: self.office,
         saving_product: find_saving_product(row),
         last_transaction_date: cut_off_date(row),
@@ -52,21 +52,24 @@ module Registries
       if row["Depositor Type"] == "Member"
         find_or_create_member_depositor(row)
       elsif row["Depositor Type"] == "Organization"
-        find_cooperative.organizations.find_or_create_by(name: row["Last Name"])
+        find_cooperative.organizations.find_or_create_by(name: TextNormalizer.new(text: row["Last Name"]).propercase)
       end
     end
 
     def find_or_create_member_depositor(row)
-      old_member = Member.find_by(last_name: row["Last Name"], first_name: row["First Name"], middle_name: row["Middle Name"])
+      old_member = Member.find_by(
+        last_name:   TextNormalizer.new(text: row["Last Name"]).propercase,
+        first_name:  TextNormalizer.new(text: row["First Name"] || "").propercase,
+        middle_name: TextNormalizer.new(text: row["Middle Name"] || "").propercase
+      )
       if old_member.present?
         old_member
       else
-        new_member = Member.create(
-          last_name: row["Last Name"],
-          middle_name: row["Middle Name"],
-          first_name: row["First Name"]
+        new_member = Member.create!(
+          last_name:   TextNormalizer.new(text: row["Last Name"]).propercase,
+          middle_name: TextNormalizer.new(text: row["Middle Name"] || "").propercase,
+          first_name:  TextNormalizer.new(text: row["First Name"] || "").propercase
         )
-
         new_member.memberships.create!(cooperative: find_cooperative, account_number: SecureRandom.uuid)
         new_member
       end

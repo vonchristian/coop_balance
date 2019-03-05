@@ -3,7 +3,7 @@
     <div class="card-body">
       <div class="row">
         <div class="col-md-1 col-sm-1">
-  
+
         </div>
         <div class="col-md-5 col-sm-5">
           <b><%=  loan.borrower_name.try(:upcase) %></b>
@@ -13,7 +13,8 @@
               <br>
               <small class="text-muted" data-toggle="tooltip" title="Disbursement Date">
                 <i class="fa fa-calendar"></i> <%= loan.try(:disbursement_date).try(:strftime, "%B %e, %Y") %> &nbsp;
-                <i class="fa fa-building"></i> <%= loan.office_name %></i>
+                <i class="fa fa-building"></i> <%= loan.office_name %>
+                <span class="badge bg-<%=loan.badge_color %>"> <%= loan.status %></span>
               </small>
             </div>
             <div class="col-md-4 col-sm-4">
@@ -35,8 +36,8 @@
                 <h4 class="card-title"><%=number_to_currency loan.loan_amount %></h4>
                 <small class="text-muted">LOAN AMOUNT</small>
               <% elsif loan.forwarded_loan? %>
-                <h4 class="card-title"><%= number_to_currency loan.principal_debits_balance %></h4>
-                <small class="text-muted"> FORWARDED BALANCE </small><br>
+                <h4 class="card-title"><%= number_to_currency loan.loan_amount %></h4>
+                <small class="text-muted"> LOAN AMOUNT</small><br>
               <% end %>
             </div>
             <div class="col-md-6 col-sm-6">

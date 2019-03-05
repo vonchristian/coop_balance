@@ -50,7 +50,8 @@ module LoansModule
 
     def create_term(loan) #move to entry processing
       loan.terms.create(
-        term: loan_application.term)
+        term: loan_application.term,
+        effectivity_date: loan_application.application_date)
     end
 
     def create_voucher_amounts(loan)
@@ -61,7 +62,7 @@ module LoansModule
       if loan.loan_product.current_interest_config.prededucted?
         loan.loan_interests.create!(
           date: loan_application.application_date,
-          amount: loan_application.interest_balance,
+          amount: loan_application.total_interest,
           description: "Computed loan interests on #{loan_application.application_date.strftime("%B %e, %Y")}",
           employee: employee)
       end

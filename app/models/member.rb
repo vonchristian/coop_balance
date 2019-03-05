@@ -28,7 +28,7 @@ class Member < ApplicationRecord
   has_many :member_occupations,       class_name: "MembershipsModule::MemberOccupation", dependent: :destroy
   has_many :occupations,              through: :member_occupations
   has_many :loans,                    class_name: "LoansModule::Loan", as: :borrower
-  has_many :subscribed_programs,      class_name: "CoopServicesModule::Program", through: :program_subscriptions, source: :program
+  has_many :subscribed_programs,      class_name: "Cooperatives::Program", through: :program_subscriptions, source: :program
   has_many :sales,                    class_name: "StoreFrontModule::Orders::SalesOrder", as: :commercial_document
   has_many :sales_returns,            class_name: "StoreFrontModule::Orders::SalesReturnOrder", as: :commercial_document
   has_many :organization_memberships, class_name: "Organizations::OrganizationMember",   as: :organization_membership
@@ -120,10 +120,7 @@ class Member < ApplicationRecord
   # end
 
 
-  def subscribed?(program)
-    subscribed_programs.include?(program)
-  end
-
+  
   def current_occupation
     occupations.current
   end

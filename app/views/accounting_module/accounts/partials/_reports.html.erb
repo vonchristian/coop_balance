@@ -20,3 +20,26 @@
     <% end %>
   </div>
 </div>
+
+<div class="card">
+  <div class="card-body">
+    <p>Debit Entries Report</p>
+    <%= form_tag({:action => "index", format: 'pdf', controller: "accounting_module/accounts/debit_entries", date: params[:date]}, {:method => :get})  do %>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <%= text_field_tag :from_date, @from_date, :class => 'datepicker form-control border-input', :placeholder => "From " %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <%= text_field_tag :to_date, @to_date, :class => 'form-control border-input datepicker', :placeholder => "To " %>
+          </div>
+        </div>
+        <div class="col-md-1">
+          <button type="submit" class="btn btn-default"> Go</button>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

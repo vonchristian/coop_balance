@@ -269,6 +269,7 @@ AccountingModule::Asset.create(code: 17900,  name: "Miscellaneous Assets")
 
 
 
+
 #Liability
 AccountingModule::Liability.create(code: 21000, name: 'Current Liabilities')
 AccountingModule::Liability.create(code: 21100, name: 'Savings Deposits')
@@ -303,6 +304,8 @@ AccountingModule::Liability.create(code: 23100, name: 'Other Current Liabilities
 AccountingModule::Liability.create(code: 24000, name: 'Non-Current Liabilities')
 AccountingModule::Liability.create(code: 240001, name: 'Mortuary Aid Fund')
 AccountingModule::Liability.create(code: 240002, name: 'Cooperative Guarantee Fund')
+AccountingModule::Liability.create(code: 240003, name: 'Mutual Assistance System')
+
 
 
 AccountingModule::Liability.create(code: 24100, name: 'Loans Payable')
@@ -321,6 +324,7 @@ AccountingModule::Liability.create(code: 24830, name: 'Due to Head Office/Branch
 AccountingModule::Liability.create(code: 24840, name: 'Other Non Current Liabilities')
 AccountingModule::Liability.create(code: 248401, name: 'Temporary Savings Deposit Account')
 AccountingModule::Liability.create(code: 248402, name: 'Temporary Time Deposit Account')
+AccountingModule::Liability.create(code: 248403, name: 'Temporary Program Subscription Account')
 
 #Equity
 AccountingModule::Equity.create(code: 30000, name: 'Equity')

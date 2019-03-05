@@ -14,6 +14,7 @@ module Registries
     def create_time_deposit(row)
       time_deposit = self.employee.cooperative.time_deposits.create!(
         depositor:            find_depositor(row),
+        office:               self.office,
         account_number:       SecureRandom.uuid,
         time_deposit_product: find_time_deposit_product(row)
       )
@@ -34,8 +35,8 @@ module Registries
       commercial_document: find_depositor(row),
       recorder: self.employee,
       previous_entry: self.employee.cooperative.entries.recent,
-      description: "Forwarded time deposit as of #{cut_off_date.strftime("%B %e, %Y")}",
-      entry_date: cut_off_date,
+      description: "Forwarded time deposit as of #{cut_off_date(row).strftime("%B %e, %Y")}",
+      entry_date: cut_off_date(row),
       debit_amounts_attributes: [
         account: debit_account,
         amount: amount(row),
@@ -52,11 +53,31 @@ module Registries
 
     def find_depositor(row)
       if row["Depositor Type"] == "Member"
-        Member.find_or_create_by(last_name: row["Last Name"], first_name: row["First Name"])
+        find_or_create_member_depositor(row)
       elsif row["Depositor Type"] == "Organization"
         Organization.find_or_create_by(name: row["Last Name"])
       end
     end
+
+    def find_or_create_member_depositor(row)
+      old_member = Member.find_by(
+        last_name:   TextNormalizer.new(text: row["Last Name"]).propercase,
+        first_name:  TextNormalizer.new(text: row["First Name"] || "").propercase,
+        middle_name: TextNormalizer.new(text: row["Middle Name"] || "").propercase
+      )
+      if old_member.present?
+        old_member
+      else
+        new_member = Member.create!(
+          last_name:   TextNormalizer.new(text: row["Last Name"]).propercase,
+          middle_name: TextNormalizer.new(text: row["Middle Name"] || "").propercase,
+          first_name:  TextNormalizer.new(text: row["First Name"] || "").propercase
+        )
+        new_member.memberships.create!(cooperative: self.employee.cooperative, account_number: SecureRandom.uuid)
+        new_member
+      end
+    end
+
     def term(row)
       row["Term"]
     end
@@ -73,8 +94,8 @@ module Registries
       find_time_deposit_product(row).account
     end
 
-    def cut_off_date
-      Date.parse('2018-09-30')
+    def cut_off_date(row)
+      Date.parse(row["Cut Off Date"].to_s)
     end
 
     def effectivity_date(row)

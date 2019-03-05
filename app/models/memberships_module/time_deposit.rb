@@ -12,6 +12,9 @@ module MembershipsModule
     belongs_to :organization,         optional: true
     belongs_to :barangay,             optional: true, class_name: "Addresses::Barangay"
 
+    has_many :ownerships, as: :ownable
+    has_many :depositors, through: :ownerships, source: :owner
+    
     delegate :name, :interest_rate, :account, :interest_expense_account, :break_contract_fee, to: :time_deposit_product, prefix: true
     delegate :full_name, :first_and_last_name, to: :depositor, prefix: true
     delegate :name, to: :office, prefix: true
@@ -19,6 +22,10 @@ module MembershipsModule
     delegate :avatar, to: :depositor
 
     before_save :set_depositor_name, on: [:create]
+    def self.deposited_on(args={})
+      from_date = args[:from_date]
+      to_date   = args[:to_date]
+    end
     def entries
       accounting_entries = []
       time_deposit_product_account.amounts.where(commercial_document: self).each do |amount|
@@ -67,7 +74,7 @@ module MembershipsModule
     def amount_deposited
       balance
     end
-    
+
     def disbursed?
       true
     end

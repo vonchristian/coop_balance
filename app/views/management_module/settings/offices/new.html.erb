@@ -2,5 +2,6 @@
   <%= f.input :name %>
   <%= f.input :address %>
   <%= f.input :contact_number %>
+  <%= f.input :type, collection: Cooperatives::Office.types %>
   <%= f.submit "Create Office" %>
 <% end %>

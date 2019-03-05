@@ -5,7 +5,7 @@ module LoansModule
         attr_reader :schedule
 
         def initialize(args)
-          @schedule         = args.fetch(:schedule)
+          @schedule = args.fetch(:schedule)
         end
 
         def amortizeable_principal

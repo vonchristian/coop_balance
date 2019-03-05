@@ -9,7 +9,6 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'webpacker', '~> 3.5'
 gem 'rubyzip', '~> 1.1.0'
 gem 'axlsx', '2.1.0.pre'
-gem 'paperclip'
 gem 'axlsx_rails'
 gem 'trix'
 gem 'autonumeric-rails'
@@ -52,7 +51,7 @@ gem 'mini_magick'
 gem 'chartkick'
 gem 'groupdate'
 gem "highcharts-rails"
-gem 'roo', "~> 2.7.0"
+gem 'roo', "2.7.0"
 gem 'chronic'
 gem 'numbers_and_words'
 gem "audited", "~> 4.7"
@@ -63,6 +62,7 @@ gem "gretel"
 gem 'scss_lint', require: false
 gem 'webdack-uuid_migration'
 gem 'fast_jsonapi'
+gem "paperclip", "~> 6.0.0"
 group :development, :test do
   gem 'rspec-rails', '~> 3.8.0'
   gem 'rubocop', require: false

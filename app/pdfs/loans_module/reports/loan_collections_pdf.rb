@@ -124,7 +124,7 @@ module LoansModule
             move_down 5
           end
           collections.each do |entry|
-            entry.amounts.loans.each do |loan|
+            cooperative.loans.for_entry(entry: entry).each do |loan|
               table(
                 [["#{entry.entry_date.strftime("%D")}",
                 "#{loan.borrower_name}",

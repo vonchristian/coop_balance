@@ -4,7 +4,7 @@ module LoansModule
     belongs_to :loan
     belongs_to :loan_application
     belongs_to :cooperative
-    belongs_to :office
+    belongs_to :office, class_name: "Cooperatives::Office"
     has_many :payment_notices, as: :notified
     has_many :notes, as: :noteable
 
@@ -25,6 +25,7 @@ module LoansModule
         sum(:principal)
       end
     end
+  
 
     def payment_entries
       AccountingModule::Entry.where(id: entry_ids)

@@ -37,7 +37,7 @@ module AccountingModule
       end
 
       def subtable_left
-        sub_data ||= [[{content: "FINANCIAL CONDITION", size: 14, colspan: 2}]] + 
+        sub_data ||= [[{content: "FINANCIAL CONDITION", size: 14, colspan: 2}]] +
                       [[{content: "As of #{to_date.strftime("%b. %e, %Y")}", size: 10, colspan: 2}]]
         make_table(sub_data, cell_style: {padding: [0,5,1,2]}) do
           columns(0).width = 50
@@ -48,8 +48,8 @@ module AccountingModule
 
       def heading # 275, 50, 210
         bounding_box [bounds.left, bounds.top], :width  => 535 do
-          table([[subtable_left, logo, subtable_right]], 
-            cell_style: { inline_format: true, font: "Helvetica", padding: [0,5,0,0]}, 
+          table([[subtable_left, logo, subtable_right]],
+            cell_style: { inline_format: true, font: "Helvetica", padding: [0,5,0,0]},
             column_widths: [310, 50, 180]) do
               cells.borders = []
           end
@@ -80,11 +80,11 @@ module AccountingModule
       end
 
       def assets_data
-        @assets_data ||= assets.select{|r| !r.balance(to_date: to_date).round(2).zero?}.uniq.map{ |a| ["", a.name, price(a.balance(to_date: to_date))] }
+        @assets_data ||= assets.map{ |a| ["", a.name, price(a.balance(to_date: to_date))] }
       end
 
       def total_assets_data
-        [["", "<b>TOTAL ASSETS</b>", "<b>#{price(AccountingModule::Asset.active.balance(to_date: to_date))}</b>"]]
+        [["", "<b>TOTAL ASSETS</b>", "<b>#{price(AccountingModule::Asset.balance(to_date: to_date))}</b>"]]
       end
 
       def liabilities_accounts
@@ -106,7 +106,7 @@ module AccountingModule
       end
 
       def liabilities_data
-        @liabilities_data ||= liabilities.select{|r| !r.balance(to_date: to_date).round(2).zero?}.uniq.map{ |a| ["", a.name, price(a.balance(to_date: to_date))] }
+        @liabilities_data ||= liabilities.map{ |a| ["", a.name, price(a.balance(to_date: to_date))] }
       end
 
       def total_liabilities_data
@@ -128,7 +128,7 @@ module AccountingModule
         end
       end
       def equities_data
-        @equities_data ||= equities.select{|r| !r.balance(to_date: to_date).round(2).zero?}.uniq.map{ |a| ["", a.name, price(a.balance(to_date: to_date))] }
+        @equities_data ||= equities.map{ |a| ["", a.name, price(a.balance(to_date: to_date))] }
       end
       def total_equities_data
         [["", "<b>TOTAL EQUITY</b>", "<b>#{price(AccountingModule::Equity.active.balance(to_date: to_date))}</b>"]]

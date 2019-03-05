@@ -10,11 +10,15 @@ module LoansModule
       end
 
       def prededucted_interest
-        deductible_interest_scope * interest_prededuction.rate
+        if loan_application.term <= 12
+          deductible_interest_scope
+        else
+          deductible_interest_scope * interest_prededuction.rate
+        end
       end
 
       private
-      
+
       def deductible_interest_scope
         if interest_prededuction.on_first_year?
           loan_application.first_year_interest

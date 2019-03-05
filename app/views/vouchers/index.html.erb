@@ -33,7 +33,7 @@
                 <i class="fa fa-clock"></i> <%= voucher.date.strftime("%B %e, %Y") %><br>
               </small>
             <% end %>
-      
+
         </div>
         <div class="col-md-1 col-sm-1">
           <b><%= voucher.reference_number %></b><br>
@@ -43,9 +43,9 @@
           <p class="no-margin"><%= voucher.description %></p>
         </div>
         <div class="col-md-3 col-sm-3">
-          <% if voucher.disbursed? && voucher.cancelled == false %>
+          <% if voucher.disbursed? && !voucher.cancelled? %>
             <span class="badge bg-success"><i class="fa fa-check-circle"></i> Disbursed </span>
-          <% elsif voucher.disbursed? && voucher.cancelled == true %>
+          <% elsif voucher.cancelled? %>
             <span class="badge bg-warning"><i class="fa fa-info-circle"></i> Cancelled </span>
           <% end %>
         </div>

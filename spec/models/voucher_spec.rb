@@ -106,6 +106,14 @@ RSpec.describe Voucher  do
 
   end
 
+  it 'cancelled?' do
+    voucher = create(:voucher)
+    cancelled_voucher = create(:voucher, cancelled_at: Date.current)
+
+    expect(voucher.cancelled?).to be false
+    expect(cancelled_voucher.cancelled?).to be true
+  end
+
 
   describe 'callbacks' do
     it '.set_date' do

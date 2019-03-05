@@ -1,3 +1,25 @@
+schedule of program / MAS
+uploading of MAS excel
+
+
+create addresses barangays municipalitis provices
+update amortization schedules on loan disbursement
+
+
+remove accrued move to addon'
+
+
+update amortization schedules
+  total_repayment
+
+update voucher
+ date_prepared
+ disbursement_date
+ cancelled_at
+
+
+
+
 remove accrued -> move to add_on
 loan application belongs_to amortization_type
 loan_application belongs_to interest_config

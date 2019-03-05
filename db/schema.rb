@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_01_083055) do
+ActiveRecord::Schema.define(version: 2019_02_19_133858) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -602,6 +602,8 @@ ActiveRecord::Schema.define(version: 2019_02_01_083055) do
     t.string "loan_amount_currency", default: "PHP", null: false
     t.boolean "approved", default: false
     t.boolean "cancelled", default: false
+    t.datetime "approved_at"
+    t.decimal "annual_interest_rate"
     t.index ["borrower_type", "borrower_id"], name: "index_loan_applications_on_borrower_type_and_borrower_id"
     t.index ["cooperative_id"], name: "index_loan_applications_on_cooperative_id"
     t.index ["loan_product_id"], name: "index_loan_applications_on_loan_product_id"
@@ -702,6 +704,7 @@ ActiveRecord::Schema.define(version: 2019_02_01_083055) do
     t.uuid "restructured_account_id"
     t.uuid "amortization_type_id"
     t.uuid "litigation_account_id"
+    t.boolean "adjustable_interest_rate", default: false
     t.index ["amortization_type_id"], name: "index_loan_products_on_amortization_type_id"
     t.index ["cooperative_id"], name: "index_loan_products_on_cooperative_id"
     t.index ["current_account_id"], name: "index_loan_products_on_current_account_id"
@@ -887,6 +890,16 @@ ActiveRecord::Schema.define(version: 2019_02_01_083055) do
     t.index ["membership_type"], name: "index_memberships_on_membership_type"
     t.index ["office_id"], name: "index_memberships_on_office_id"
     t.index ["status"], name: "index_memberships_on_status"
+  end
+
+  create_table "merchants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.uuid "cooperative_id"
+    t.uuid "liability_account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cooperative_id"], name: "index_merchants_on_cooperative_id"
+    t.index ["liability_account_id"], name: "index_merchants_on_liability_account_id"
   end
 
   create_table "municipalities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1589,6 +1602,7 @@ ActiveRecord::Schema.define(version: 2019_02_01_083055) do
     t.uuid "recorder_id"
     t.uuid "cooperative_id"
     t.uuid "loan_application_id"
+    t.string "reference_number"
     t.index ["account_id"], name: "index_voucher_amounts_on_account_id"
     t.index ["amount_type"], name: "index_voucher_amounts_on_amount_type"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_voucher_amount"
@@ -1619,8 +1633,10 @@ ActiveRecord::Schema.define(version: 2019_02_01_083055) do
     t.string "reference_number"
     t.string "commercial_document_type"
     t.uuid "commercial_document_id"
-    t.boolean "cancelled", default: false
     t.uuid "store_front_id"
+    t.datetime "cancelled_at"
+    t.datetime "date_prepared"
+    t.datetime "disbursement_date"
     t.index ["account_number"], name: "index_vouchers_on_account_number", unique: true
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_vouchers"
     t.index ["cooperative_id"], name: "index_vouchers_on_cooperative_id"
@@ -1735,6 +1751,8 @@ ActiveRecord::Schema.define(version: 2019_02_01_083055) do
   add_foreign_key "membership_beneficiaries", "memberships"
   add_foreign_key "memberships", "cooperatives"
   add_foreign_key "memberships", "offices"
+  add_foreign_key "merchants", "accounts", column: "liability_account_id"
+  add_foreign_key "merchants", "cooperatives"
   add_foreign_key "municipalities", "cooperatives"
   add_foreign_key "municipalities", "provinces"
   add_foreign_key "net_income_distributions", "accounts"

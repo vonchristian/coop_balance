@@ -32,6 +32,11 @@ module Cooperatives
       payment_status_finder.new(args.merge(program: self)).paid?
     end
 
+    def subscribed?(subscriber)
+      subscribers.include?(subscriber)
+    end
+
+
     def self.subscribe(subscriber)
       default_programs.each do |program|
         subscriber.program_subscriptions.find_or_create_by!(program: program)

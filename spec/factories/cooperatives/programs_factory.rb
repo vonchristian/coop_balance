@@ -1,8 +1,8 @@
 FactoryBot.define do
-  factory :program, class: "Cooperatives::Program" do
-    name  { Faker::Company.name}
-    amount  { 100 }
-    association :account, factory: :asset
+  factory :program, class: Cooperatives::Program do
+    name   { Faker::Name.name }
+    amount { 500 }
+    association :account, factory: :liability
     association :cooperative
   end
 end

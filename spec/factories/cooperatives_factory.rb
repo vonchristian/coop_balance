@@ -1,13 +1,8 @@
 FactoryBot.define do
-  factory :origin_cooperative, class: Cooperative do
-    name { "Test Cooperative" }
-    abbreviated_name { "TC" }
-    registration_number { "000-1110222" }
-  end
   factory :cooperative do
-    sequence(:name) { |n| "Cooperative " +  ('a'..'z').to_a.shuffle.join }
-    sequence(:abbreviated_name) { |n| "abbreviated_name " +  ('a'..'z').to_a.shuffle.join }
-
-    sequence(:registration_number) { |n| "Reg num" +  ('a'..'z').to_a.shuffle.join }
+    name                { Faker::Name.name }
+    address             { Faker::Address.full_address }
+    abbreviated_name    { Faker::Name.name }
+    registration_number { Faker::Number.number(12) }
   end
 end

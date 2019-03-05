@@ -7,7 +7,14 @@
         </div>
         <div class="col-md-9">
           <p class="text-purple min-margin-bottom"><b><%= employee.first_and_last_name %></b></p>
-          <small class="text-black"><%= employee.role.try(:titleize).try(:upcase) %></small>
+          <div class="row">
+            <div class="col-md-3">
+              <small class="text-black"><%= employee.role.try(:titleize).try(:upcase) %></small>
+            </div>
+            <div class="col-md-3">
+              <%= employee.office_name %>
+            </div>
+          </div>
         </div>
       </div>
     </div>
