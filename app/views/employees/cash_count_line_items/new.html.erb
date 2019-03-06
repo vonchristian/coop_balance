@@ -1,0 +1,15 @@
+<% @bills.each do |bill| %>
+  <%= bill.name %>
+  <%= bill.bill_amount %>
+  <%= simple_form_for @cash_count, url: :employee_cash_count_line_items do |f| %>
+    <%= f.input :quantity %>
+    <%= f.input :bill_id, input_html: { value: bill.id } %>
+    <%= f.input :cart_id, input_html: { value: current_cart.id } %>
+    <%= f.submit %>
+  <% end %>
+<% end %>
+
+<% current_cart.cash_counts.each do |cash_count| %>
+  <%= cash_count.bill_bill_amount %>
+  <%= number_to_currency cash_count.subtotal %>
+<% end %>
