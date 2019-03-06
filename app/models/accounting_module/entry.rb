@@ -49,7 +49,7 @@ module AccountingModule
       order(created_at: :desc).first
     end
 
-    def ascending_order #for sorting entries ascending order
+    def ascending_order #for sorting entries in reports
       reference_number.to_i
     end
 

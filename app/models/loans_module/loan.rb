@@ -91,6 +91,10 @@ module LoansModule
       end
     end
 
+    def ascending_order # sorting loans in reports
+      tracking_number.to_i
+    end
+
     def self.unpaid
       all.where(cancelled: false, archived: false).select { |l| l.principal_balance > 0 }
     end

@@ -3,7 +3,7 @@ module LoansModule
     class LoanReleasesPdf < Prawn::Document
       attr_reader :loans, :from_date, :to_date, :cooperative, :organization, :view_context
       def initialize(args={})
-        super(margin: 40, page_size: "A4", page_layout: :portrait)
+        super(margin: 30, page_size: "A4", page_layout: :portrait)
         @loans        = args[:loans]
         @from_date    = args[:from_date]
         @to_date      = args[:to_date]
@@ -32,7 +32,7 @@ module LoansModule
         bounding_box [0, 770], width: 400 do
           text "LOAN RELEASES", style: :bold, size: 12
           move_down 2
-          text "Date Covered: #{from_date.strftime("%b. %e, %Y")} - #{to_date.strftime("%b. %e, %Y")}", size: 10
+          text "Period Covered: #{from_date.strftime("%b. %e, %Y")} - #{to_date.strftime("%b. %e, %Y")}", size: 10
         end
         move_down 35
         stroke do
@@ -82,12 +82,18 @@ module LoansModule
           row(0).font_style = :bold
           column(1).align = :right
         end
-        move_down 1000
       end
 
       def loans_table
+        move_down 5
+        stroke do
+          stroke_color 'CCCCCC'
+          line_width 0.5
+          stroke_horizontal_rule
+          move_down 5
+        end
         if loans.any?
-          table(table_data, header: true, cell_style: {padding: [1,3,1,3], size: 9}, column_widths: [70, 110, 70, 120, 95, 95]) do
+          table(table_data, header: true, cell_style: {padding: [2,3,2,3], size: 9}, column_widths: [60, 110, 60, 124, 90, 90]) do
             column(4).align = :right
             column(5).align = :right
             row(0).font_style = :bold
@@ -101,7 +107,7 @@ module LoansModule
       def table_data
         move_down 5
         [["Date", "Borrower", "CDV#", "Type of Loan", "Loan Amount", "Net Proceed"]] +
-        @table_data ||= loans.map { |e| [e.disbursement_date.try(:strftime, ("%D")), e.borrower_name, e.loan_product_name, e.tracking_number, price(e.loan_amount), price(e.net_proceed)] }
+        @table_data ||= loans.sort_by(&:ascending_order).map { |e| [e.disbursement_date.try(:strftime, ("%D")), e.borrower_name, e.tracking_number, e.loan_product_name, price(e.loan_amount), price(e.net_proceed)] }
       end
     end
   end

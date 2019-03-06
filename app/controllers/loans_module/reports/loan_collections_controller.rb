@@ -6,9 +6,9 @@ module LoansModule
         @to_date = params[:to_date] ? DateTime.parse(params[:to_date]).end_of_day : DateTime.now.end_of_day
         @loan_product = current_cooperative.loan_products.find(params[:loan_type]) if params[:loan_type].present?
         if @loan_product.present?
-          @collections = @loan_product.entries.loan_payments.entered_on(from_date: @from_date, to_date: @to_date).order(reference_number: :asc).uniq
+          @collections = @loan_product.entries.loan_payments.entered_on(from_date: @from_date, to_date: @to_date).uniq
         else
-          @collections = current_cooperative.loan_products.loan_payment_entries.entered_on(from_date: @from_date, to_date: @to_date).order(reference_number: :asc).uniq
+          @collections = current_cooperative.loan_products.loan_payment_entries.entered_on(from_date: @from_date, to_date: @to_date).uniq
         end
         respond_to do |format|
           format.html
