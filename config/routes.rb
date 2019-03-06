@@ -407,6 +407,7 @@ Rails.application.routes.draw do
   end
 
   resources :employees, only: [:index, :show, :edit, :update] do
+    resources :cash_count_line_items,only: [:new, :create],                module: :employees
     resources :settings,             only: [:index],                        module: :employees
     resources :cash_accounts,        only: [:new, :create, :destroy],       module: :employees
     resources :store_fronts,         only: [:edit, :update],                module: [:employees, :settings]

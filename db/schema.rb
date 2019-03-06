@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_19_133858) do
+ActiveRecord::Schema.define(version: 2019_03_05_121750) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -273,11 +273,42 @@ ActiveRecord::Schema.define(version: 2019_02_19_133858) do
     t.index ["member_id"], name: "index_beneficiaries_on_member_id"
   end
 
+  create_table "bills", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.decimal "bill_amount"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "carts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_carts_on_user_id"
+  end
+
+  create_table "cash_count_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "employee_id"
+    t.datetime "date"
+    t.decimal "beginning_balance", default: "0.0", null: false
+    t.decimal "ending_balance", default: "0.0", null: false
+    t.decimal "difference", default: "0.0", null: false
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["employee_id"], name: "index_cash_count_reports_on_employee_id"
+  end
+
+  create_table "cash_counts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "bill_id"
+    t.decimal "quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "cash_count_report_id"
+    t.uuid "cart_id"
+    t.index ["bill_id"], name: "index_cash_counts_on_bill_id"
+    t.index ["cart_id"], name: "index_cash_counts_on_cart_id"
+    t.index ["cash_count_report_id"], name: "index_cash_counts_on_cash_count_report_id"
   end
 
   create_table "categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1667,6 +1698,10 @@ ActiveRecord::Schema.define(version: 2019_02_19_133858) do
   add_foreign_key "beneficiaries", "cooperatives"
   add_foreign_key "beneficiaries", "members"
   add_foreign_key "carts", "users"
+  add_foreign_key "cash_count_reports", "users", column: "employee_id"
+  add_foreign_key "cash_counts", "bills"
+  add_foreign_key "cash_counts", "carts"
+  add_foreign_key "cash_counts", "cash_count_reports"
   add_foreign_key "categories", "cooperatives"
   add_foreign_key "cooperative_services", "cooperatives"
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "credit_account_id"

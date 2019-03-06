@@ -55,7 +55,7 @@ module BankAccounts
     end
 
     def credit_account
-      find_bank_account.account
+      find_bank_account.cash_account
     end
   end
 end
