@@ -22,17 +22,17 @@ class VoucherPdf < Prawn::Document
     view_context.number_to_currency(number, :unit => "P ")
   end
   def heading
-    bounding_box [300, 770], width: 50 do
+    bounding_box [0, 770], width: 50 do
       image "#{Rails.root}/app/assets/images/#{cooperative.abbreviated_name.downcase}_logo.jpg", width: 50, height: 50
     end
-    bounding_box [360, 770], width: 200 do
+    bounding_box [55, 770], width: 150 do
         text "#{cooperative.abbreviated_name }", style: :bold, size: 20
         text "#{cooperative.name.try(:upcase)}", size: 8
         text "#{cooperative.address}", size: 8
     end
-    bounding_box [0, 770], width: 400 do
-      text "#{title.upcase}", style: :bold, size: 12
-      text "CDV No: #{voucher.reference_number}", style: :bold, size: 10
+    bounding_box [150, 770], width: 350 do
+      text "#{title.upcase}", style: :bold, size: 12, align: :right
+      text "CDV No: #{voucher.reference_number}", style: :bold, size: 10, align: :right
     end
     move_down 30
     stroke do
@@ -45,11 +45,11 @@ class VoucherPdf < Prawn::Document
   def payee_details
     text "VOUCHER DETAILS", style: :bold, size: 10
     move_down 5
-    table([["", "Payee:", "<b>#{voucher.payee.try(:name).try(:upcase)}</b>", "Date:", "#{voucher.date.strftime("%B %e, %Y")}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica", :padding => [2, 4, 2, 4]}, column_widths: [20, 100, 180, 115, 100]) do
+    table([["", "Payee:", "<b>#{voucher.payee.try(:name).try(:upcase)}</b>", "Date:", "#{voucher.date.strftime("%B %e, %Y")}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica", :padding => [2, 4, 2, 4]}, column_widths: [20, 100, 230, 65, 100]) do
       cells.borders = []
     end
 
-    table([["", "Office:", "#{voucher.payee.try(:current_organization).try(:name)}", "", ""]], cell_style: { inline_format: true, size: 10, font: "Helvetica", :padding => [2, 4, 2, 4]}, column_widths: [20, 100, 180, 115, 100]) do
+    table([["", "Office:", "#{voucher.payee.try(:current_organization).try(:name)}", "", ""]], cell_style: { inline_format: true, size: 10, font: "Helvetica", :padding => [2, 4, 2, 4]}, column_widths: [20, 100, 200, 95, 100]) do
       cells.borders = []
     end
 

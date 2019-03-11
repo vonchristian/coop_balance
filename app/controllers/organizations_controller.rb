@@ -38,7 +38,9 @@ class OrganizationsController < ApplicationController
 
   def show
     @organization = current_cooperative.organizations.find(params[:id])
-    if params[:search].present?
+    if params[:membership_type].present?
+      @members = @organization.member_memberships.select{|m| m.current_membership.membership_type == params[:membership_type]}.paginate(page: params[:page], per_page: 25)
+    elsif params[:search].present?
       @members = @organization.member_memberships.text_search(params[:search]).paginate(page: params[:page], per_page: 25)
     else
       @members = @organization.member_memberships.uniq.paginate(page: params[:page], per_page: 25)

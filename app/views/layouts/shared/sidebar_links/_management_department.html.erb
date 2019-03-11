@@ -23,7 +23,17 @@
   <a href="/organizations" class="nav-link <%= 'active' if current_page?(organizations_path) %>"><i class="nav-icon fa fa-sitemap"></i> <span> Organizations </span></a>
 </li>
 <li class="nav-item">
+  <a href="/bank_accounts" class="nav-link <%= 'active' if current_page?(bank_accounts_path) %> "><i class="nav-icon fa fa-building"></i><span> Bank Accounts</span></a>
+</li>
+<li class="nav-item">
   <a href="/calendars" class="nav-link <%= 'active' if current_page?(calendars_path) %>"><i class="nav-icon fa fa-calendar"></i> <span> Birthday Calendar</span></a>
+</li>
+<li class="header"><hr class="no-margin-top"></li>
+<li class="nav-item" >
+  <a href="/accounting_module/reports/financial_conditions" class="nav-link <%= 'active' if current_page?(accounting_module_reports_financial_conditions_path) %>"><i class="nav-icon fa fa-circle"></i> <span> Financial Statement </span></a>
+</li>
+<li class="nav-item" >
+  <a href="/accounting_module/reports/income_statements" class="nav-link <%= 'active' if current_page?(accounting_module_reports_income_statements_path) %>"><i class="nav-icon fa fa-circle"></i> <span> Income Statement </span></a>
 </li>
 <%= render 'layouts/shared/sidebar_links/monitoring' %>
 <li class="header"><hr class="no-margin-top"></li>

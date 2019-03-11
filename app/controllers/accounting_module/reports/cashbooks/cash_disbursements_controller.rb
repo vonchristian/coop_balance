@@ -16,7 +16,7 @@ module AccountingModule
             @entries_for_pdf = @organization.member_entries.text_search(params[:search])
             if @entries_for_pdf.present?
               @from_date = @organization.member_entries.order(entry_date: :asc).first.entry_date
-              @to_date = @organization.member_entries.not_cancelled.order(entry_date: :desc).first.entry_date
+              @to_date = @organization.member_entries.order(entry_date: :desc).first.entry_date
             end
             @ordered_entries = @organization.member_entries.order(reference_number: :desc).text_search(params[:search])
             @entries = @ordered_entries.paginate(:page => params[:page], :per_page => 50)

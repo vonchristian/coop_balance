@@ -4,13 +4,13 @@
       <h4 class="card-title">Reports</h4>
     </div>
     <div class="col-md-6">
-      <%= link_to 'Excel', organization_loans_path(@organization, format: 'xlsx'), class: 'btn btn-default' %>
+      
     </div>
   </div>
 </div>
 <hr class="no-margin">
 <div class="card-body">
-  <%= form_tag({:action => "index", controller: "organizations/reports", organization_id: @organization.id, format: 'pdf'}, {:method => :get, autocomplete: 'off' }) do %>
+  <%= form_tag({:action => "index", controller: "organizations/reports", organization_id: @organization.id}, {:method => :get, autocomplete: 'off' }) do %>
     <div class="row">
       <div class="col-md-3">
         <div class="form-group">
@@ -19,7 +19,7 @@
       </div>
       <div class="col-md-3">
         <div class="form-group">
-          <%= select_tag :membership_type, options_for_select(Membership.whitelisted_membership_types.map {|m| [m.titleize.pluralize, m]}, params[:membership_type]), class: ' form-control border-input', prompt: false %>
+          <%= select_tag :membership_type, options_for_select(Cooperatives::Membership.whitelisted_membership_types.map {|m| [m.titleize.pluralize, m]}, params[:membership_type]), class: ' form-control border-input', prompt: false %>
         </div>
       </div>
       <div class="col-md-3">
@@ -28,9 +28,14 @@
         </div>
       </div>
       <div class="col-md-1">
-        <button type="submit" class="btn btn-default"> Generate Billing Statement</button>
+        <button type="submit" class="btn btn-default"> Generate </button>
       </div>
     </div>
   <% end %>
-  <%=link_to 'Billing Statement (PDF)', organization_loans_path(@organization, membership_type: @membership_type, date: @date, format: 'pdf'), class: 'btn btn-info float-right' %>
+  <hr>
+  <% if params[:date].present? && params[:membership_type].present? %>
+    <%=link_to 'Billing Statement (PDF)', organization_reports_path(format: 'pdf', organization_id: @organization.id, membership_type: params[:membership_type], date: params[:date], loan_product: params[:loan_product]), class: 'btn btn-info float-right' %>
+    &nbsp &nbsp
+    <%= link_to 'Billing Statement (Excel)', organization_reports_path(format: 'xlsx', organization_id: @organization.id, membership_type: params[:membership_type], date: params[:date], loan_product: params[:loan_product]), class: 'btn btn-success float-right' %>
+  <% end %>
 </div>

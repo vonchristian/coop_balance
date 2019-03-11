@@ -35,7 +35,7 @@ module AccountingModule
 
     accepts_nested_attributes_for :credit_amounts, :debit_amounts, allow_destroy: true
 
-    before_validation :set_default_date, on: :create
+    before_save :set_default_date, on: :create
     after_commit :set_encrypted_hash!, if: :entries_present?
 
     delegate :name,  :first_and_last_name, to: :recorder, prefix: true, allow_nil: true
@@ -156,6 +156,10 @@ module AccountingModule
       #{previous_entry_hash}"
     end
 
+    def cancelled?
+      cancelled == true
+    end
+
     def cancellation_text #show on pdf reports
       if cancelled?
         "CANCELLED"
@@ -189,8 +193,10 @@ module AccountingModule
     end
 
     def set_default_date
-      todays_date = ActiveRecord::Base.default_timezone == :utc ? Time.now.utc : Time.now
-      self.entry_date ||= todays_date
+      if entry_date.blank?
+        todays_date = ActiveRecord::Base.default_timezone == :utc ? Time.now.utc : Time.now
+        self.entry_date = todays_date
+      end
     end
 
     def has_credit_amounts?

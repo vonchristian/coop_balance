@@ -10,6 +10,7 @@ module LoansModule
     def create_charges!
       create_interest_on_loan_charge
       create_charges_based_on_loan_product
+      create_capital_build_up
       create_loan_protection_fund
     end
 
@@ -42,6 +43,23 @@ module LoansModule
         )
       end
     end
+
+    def create_capital_build_up
+      if loan_application.loan_product_name == "Regular Loan"
+        loan_application.voucher_amounts.credit.create!(
+          cooperative:         loan_application.cooperative,
+          commercial_document: loan_application.borrower.share_capitals.last,
+          description:         "Capital Build Up",
+          amount:              capital_build_up_computation,
+          account:             loan_application.borrower.share_capitals.last.share_capital_product.equity_account
+        )
+      end
+    end
+
+    def capital_build_up_computation
+      loan_application.loan_amount.amount * 0.01
+    end
+
     def computed_charge(charge, amount)
       charge.charge_amount(chargeable_amount: loan_application.loan_amount.amount)
     end

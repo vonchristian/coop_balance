@@ -1,28 +1,28 @@
-
-<div class="card-body">
-  <div class="row">
-    <div class="col-md-8">
-      <%= form_tag organization_path, method: :get, class: "sidebar-form" do %>
-        <div class="input-group">
-         <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search for First name, Last name", id: 'taxpayer-search-form' %>
-         <span class="input-group-btn">
-           <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
-             <i class="fa fa-search"></i>
-           <% end %>
-         </span>
-       </div>
-      <% end %>
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-2">
+        <h6 class="text-muted">Organization Name:</h6>
+      </div>
+      <div class="col-md-8">
+        <h6><%= @organization.name %></h6>
+      </div>
     </div>
-    <div class="col-md-4">
-      <%= link_to new_organization_member_path(@organization) do %>
-        <span class="btn btn-primary" data-toggle="tooltip" title="Add Member" %>
-          <i class="fa fa-user-plus"></i> Add Member
-        </span>
-      <% end %>
+    <div class="row">
+      <div class="col-md-2">
+        <h6 class="text-muted">Abbreviated Name:</h6>
+      </div>
+      <div class="col-md-8">
+        <h6><%= @organization.abbreviated_name %></h6>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">
+        <h6 class="text-muted">Address:</h6>
+      </div>
+      <div class="col-md-8">
+        <h6><%= @organization.current_address.complete_address %></h6>
+      </div>
     </div>
   </div>
 </div>
-<% @members.each do |member| %>
-  <%= render 'members/partials/header', member: member %>
-<% end %>
-<%=will_paginate @members %>

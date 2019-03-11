@@ -225,6 +225,18 @@ crumb :organization_savings_accounts do |organization|
   link "Savings Accounts", organization_savings_accounts_path(organization)
   parent :organization, organization
 end
+crumb :organization_settings do |organization|
+  link "Settings", organization_settings_path(organization)
+  parent :organization, organization
+end
+crumb :organization_members do |organization|
+  link "Members", organization_members_path(organization)
+  parent :organization, organization
+end
+crumb :organization_loans do |organization|
+  link "Member Loans", organization_loans_path(organization)
+  parent :organization, organization
+end
 crumb :accounting_dashboard do
   link "Accounting", accounting_module_index_path
 end

@@ -1,1 +1,25 @@
-<%= link_to 'Edit Organization', edit_organization_path(@organization), class: "btn btn-primary float-right" %>
+<div class="card">
+	<div class="card-body">
+		<%= link_to 'Edit Organization', edit_organization_path(@organization), class: "btn btn-primary float-right" %>
+	</div>
+</div>
+<div class="card">
+	<div class="card-body">
+		<div class="row">
+			<div class="col-md-6">
+				<h6 class="text-muted">
+					Open savings account for this organization.
+				</h6>
+			</div>
+			<div class="col-md-6">
+				<% if policy([:organizations, :savings_account]).new? %>
+          <%=link_to new_savings_account_application_path(depositor_id: @organization.id, depositor_type: @organization.class.to_s) do %>
+            <span class="btn btn-primary float-right">
+              <i class="fa fa-plus-circle"></i> New Savings Account 
+            </span>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
