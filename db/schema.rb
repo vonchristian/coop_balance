@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_05_121750) do
+ActiveRecord::Schema.define(version: 2019_03_11_042429) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -405,6 +405,17 @@ ActiveRecord::Schema.define(version: 2019_03_05_121750) do
     t.index ["email"], name: "index_cooperators_on_email", unique: true
     t.index ["reset_password_token"], name: "index_cooperators_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_cooperators_on_unlock_token", unique: true
+  end
+
+  create_table "deactivations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "deactivatable_type"
+    t.uuid "deactivatable_id"
+    t.text "remarks"
+    t.datetime "deactivated_at"
+    t.boolean "active"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["deactivatable_type", "deactivatable_id"], name: "index_deactivations_on_deactivatable_type_and_deactivatable_id"
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
@@ -1669,6 +1680,18 @@ ActiveRecord::Schema.define(version: 2019_03_05_121750) do
     t.index ["token"], name: "index_vouchers_on_token"
   end
 
+  create_table "wallets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "account_owner_type"
+    t.uuid "account_owner_id"
+    t.uuid "account_id"
+    t.string "account_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_wallets_on_account_id"
+    t.index ["account_number"], name: "index_wallets_on_account_number", unique: true
+    t.index ["account_owner_type", "account_owner_id"], name: "index_wallets_on_account_owner_type_and_account_owner_id"
+  end
+
   add_foreign_key "account_budgets", "accounts"
   add_foreign_key "account_budgets", "cooperatives"
   add_foreign_key "accountable_accounts", "accounts"
@@ -1883,4 +1906,5 @@ ActiveRecord::Schema.define(version: 2019_03_05_121750) do
   add_foreign_key "vouchers", "store_fronts"
   add_foreign_key "vouchers", "users", column: "disburser_id"
   add_foreign_key "vouchers", "users", column: "preparer_id"
+  add_foreign_key "wallets", "accounts"
 end

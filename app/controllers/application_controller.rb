@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_office
-    current_user.office
+    params[:office_id] ? current_cooperative.offices.find_by(id: params[:office_id]) : current_user.office
   end
   def current_store_front
     current_user.store_front

@@ -2,34 +2,35 @@
   <div class="col-md-12">
     <div class="card">
       <div class="card-body">
-        <div class="row">
-          <div class="col-md-9">
-            <h4 class="card-title">Transactions Report</h4>
-            <p class="text-muted"> Generate transactions report </p>
-            <%=link_to 'This Day', employee_entries_path(@employee, format: 'pdf', from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day), class: "btn btn-sm btn-default"  %> &nbsp;
-            <%=link_to 'This Week', employee_entries_path(@employee, format: 'pdf', from_date: Time.zone.now.beginning_of_week.beginning_of_day, to_date: Time.zone.now.end_of_week.end_of_day), class: "btn btn-sm btn-default"  %> &nbsp;
-            <%=link_to 'This Month', employee_entries_path(@employee, format: 'pdf', from_date: Time.zone.now.beginning_of_month.beginning_of_day, to_date: Time.zone.now.end_of_month.end_of_day), class: "btn btn-sm btn-default"  %> &nbsp;
-            <br>
-            <small class="text-muted">OR select date </small>
-            <%= form_tag({:action => "index", format: 'pdf', controller: "employees/entries", employee_id: @employee.id, from_date: params[:from_date], to_date: params[:to_date]}, {:method => :get})  do %>
-              <div class="row">
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <%= text_field_tag :from_date, @from_date, :class => 'datepicker form-control border-input', :placeholder => "From " %>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="form-group">
-                    <%= text_field_tag :to_date, @to_date, :class => 'form-control border-input datepicker', :placeholder => "To " %>
-                  </div>
-                </div>
-                <div class="col-md-1">
-                  <button type="submit" class="btn btn-default"> Go</button>
-                </div>
+        <h4 class="card-title">Transactions Report</h4>
+        <p class="text-muted"> Generate transactions report </p>
+        <%=link_to 'This Day', employee_entries_path(@employee, format: 'pdf', from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day), class: "btn btn-sm btn-default"  %> &nbsp;
+        <%=link_to 'This Week', employee_entries_path(@employee, format: 'pdf', from_date: Time.zone.now.beginning_of_week.beginning_of_day, to_date: Time.zone.now.end_of_week.end_of_day), class: "btn btn-sm btn-default"  %> &nbsp;
+        <%=link_to 'This Month', employee_entries_path(@employee, format: 'pdf', from_date: Time.zone.now.beginning_of_month.beginning_of_day, to_date: Time.zone.now.end_of_month.end_of_day), class: "btn btn-sm btn-default"  %> &nbsp;
+        <br>
+        <small class="text-muted">OR select date </small>
+        <%= form_tag({:action => "index", format: 'pdf', controller: "employees/reports/cash_book_transactions", employee_id: @employee.id, from_date: params[:from_date], to_date: params[:to_date]}, {:method => :get})  do %>
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group">
+                <%= text_field_tag :from_date, @from_date, :class => 'datepicker form-control border-input', :placeholder => "From " %>
               </div>
-            <% end %>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <%= text_field_tag :to_date, @to_date, :class => 'form-control border-input datepicker', :placeholder => "To " %>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <div class="form-group">
+                <%= select_tag :coop_service_id, options_for_select(current_cooperative.cooperative_services.map {|m| [m.title, m.id]}, params[:loan_type]), class: ' form-control border-input', prompt: "--Select Cooperative Service--" %>
+              </div>
+            </div>
+            <div class="col-md-1">
+              <button type="submit" class="btn btn-default"> Go</button>
+            </div>
           </div>
-        </div>
+        <% end %>
       </div>
       <hr class="no-margin">
       <div class="card-body">
@@ -64,6 +65,11 @@
                 <%= text_field_tag :to_date, @date, :class => 'datepicker form-control border-input', :placeholder => "Date" %>
               </div>
             </div>
+            <div class="col-md-5">
+              <div class="form-group">
+                <%= select_tag :coop_service_id, options_for_select(current_cooperative.cooperative_services.map {|m| [m.title, m.id]}, params[:loan_type]), class: ' form-control border-input', prompt: "--Select Cooperative Service--" %>
+              </div>
+            </div>
             <div class="col-md-1">
               <button type="submit" class="btn btn-default"> Go</button>
             </div>
@@ -84,6 +90,11 @@
             <div class="col-md-3">
               <div class="form-group">
                 <%= text_field_tag :to_date, @date, :class => 'datepicker form-control border-input', :placeholder => "To Date" %>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <div class="form-group">
+                <%= select_tag :coop_service_id, options_for_select(current_cooperative.cooperative_services.map {|m| [m.title, m.id]}, params[:loan_type]), class: ' form-control border-input', prompt: "--Select Cooperative Service--" %>
               </div>
             </div>
             <div class="col-md-1">

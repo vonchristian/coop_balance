@@ -27,8 +27,11 @@ module LoansModule
       end
 
       def compute_interest(args={})
-
         (args[:amount] * monthly_interest_rate) * applicable_term(args[:term])
+      end
+
+      def monthly_interest_rate
+        rate / 12.0
       end
 
       def applicable_term(term)
@@ -37,10 +40,6 @@ module LoansModule
         else
           applicable_term = term
         end
-      end
-
-      def monthly_interest_rate
-        rate / 12.0
       end
 
     end

@@ -14,10 +14,7 @@ module LoansModule
       @term        = args[:term],
       @view_context = args[:view_context]
       heading
-      disclosure
-      
-      loan_details
-      loan_charges_details
+      summary
       amortization_schedule
       signatory_details
       font Rails.root.join("app/assets/fonts/open_sans_regular.ttf")
@@ -34,10 +31,7 @@ module LoansModule
     end
 
     def interest_amount_for(a)
-
       price(a.interest)
-
-
     end
     def price(number)
       view_context.number_to_currency(number, :unit => "P ")
@@ -58,98 +52,66 @@ module LoansModule
       end
       move_down 10
       stroke do
-        stroke_color 'CCCCCC'
+        stroke_color '000000'
         line_width 0.2
         stroke_horizontal_rule
-        move_down 1
+        move_down 2
       end
     end
-  def loan_details
-    bounding_box [0, 865], width: 450 do
-      text "LOAN DETAILS", size: 9, style: :bold
-      table([["Loan Product", "#{loan.loan_product_name}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [100, 200]) do
-        cells.borders = []
-      end
-      move_down 3
 
-      table([["Loan Amount ", "#{price(loan.loan_amount)}"]], cell_style: { padding: [0,0,0,0],inline_format: true, size: 10, font: "Helvetica"}, column_widths: [100, 300]) do
-        cells.borders = []
-      end
-      move_down 3
-
-      table([["Loan Amount (in words)", "#{loan.loan_amount.to_f.to_words.titleize} Pesos"]], cell_style: { padding: [0,0,0,0],inline_format: true, size: 10 }, column_widths: [100, 300]) do
-        cells.borders = []
-      end
-      move_down 3
-
-      table([["Term ", "#{term} Month/s"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [100, 300]) do
-        cells.borders = []
-      end
-      move_down 3
-
-      table([["Disbursement Date ", "#{loan.disbursement_date.strftime("%B %e, %Y")}"]], cell_style: {padding: [0,0,0,0], inline_format: true, size: 10 }, column_widths: [100, 300]) do
-        cells.borders = []
-      end
-      move_down 3
-      table([["Maturity Date ", "#{loan.maturity_date.strftime("%B %e, %Y")}"]], cell_style: { padding: [0,0,0,0], inline_format: true, size: 10 }, column_widths: [100, 300]) do
+    def summary
+      table([[loan_details, loan_charges_details]], cell_style: {padding: [0,0,0,0], size: 10, font: "Helvetica"}, column_widths: [310, 220]) do
         cells.borders = []
       end
     end
-  end
-  def disclosure
-    text "DISCLOSURE"
-  end
-  def loan_charges_details
-    bounding_box [300, 865], width: 220 do
-      text "LOAN DEDUCTIONS", style: :bold, size: 9
-      table(loan_amount_data, cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 100]) do
+
+    def loan_details
+      loan_details_data ||= [[{content: "LOAN DETAILS", size: 9}, ""]] +
+                            [["Loan Product", "#{loan.loan_product_name}"]] +
+                            [["Loan Amount ", "#{price(loan.loan_amount)}"]] +
+                            [["Loan Amount (in words)", "#{loan.loan_amount.to_f.to_words.titleize} Pesos"]] +
+                            [["Term ", "#{term} Month/s"]] +
+                            [["Disbursement Date ", "#{loan.disbursement_date.strftime("%B %e, %Y")}"]] +
+                            [["Maturity Date ", "#{loan.maturity_date.strftime("%B %e, %Y")}"]]
+
+      make_table(loan_details_data, cell_style: { padding: [0,0,1,0], inline_format: true, size: 10 }, column_widths: [100, 205]) do
+        row(0).font_style = :bold
         cells.borders = []
-        column(1).align = :right
-      end
-      move_down 4
-      table(loan_charges_data, cell_style: {padding: [0,0,2,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 100]) do
-        cells.borders = []
-        column(1).align = :right
-      end
-      move_down 4
-      stroke do
-        stroke_color 'CCCCCC'
-        line_width 0.2
-        stroke_horizontal_rule
-        move_down 4
-      end
-      table(loan_net_proceed_data, cell_style: {padding: [0,0,0,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [120, 100]) do
-        cells.borders = []
-        column(1).align = :right
-        column(1).font_style = :bold
-        column(0).font_style = :bold
       end
     end
-  end
-  def loan_amount_data
-    voucher.voucher_amounts.for_account(account: loan.loan_product_current_account).map{ |a| [a.description, price(a.amount)] }
-  end
-  def loan_net_proceed_data
-    voucher.voucher_amounts.for_account(account: cooperative.cash_accounts).map{ |a| [a.description, price(a.amount)] }
-  end
-  def loan_charges_data
-    @loan_charges_data ||= voucher.voucher_amounts.excluding_account(account: loan.loan_product_current_account).excluding_account(account: cooperative.cash_accounts).map{|a| [a.description, price(a.amount)]}
-  end
+
+    def loan_charges_details
+      header = [[{content: "LOAN DEDUCTIONS", size: 9}, ""]]
+      loan_amount_data = voucher.voucher_amounts.for_account(account: loan.loan_product_current_account).map{ |a| [a.description, price(a.amount)] }
+      loan_charges_data = voucher.voucher_amounts.excluding_account(account: loan.loan_product_current_account).excluding_account(account: cooperative.cash_accounts).map{|a| [a.description, price(a.amount)]}
+      loan_net_proceed_data = voucher.voucher_amounts.for_account(account: cooperative.cash_accounts).map{ |a| [a.description, price(a.amount)] }
+      table_data = [*header, *loan_amount_data, *loan_charges_data, *loan_net_proceed_data]
+
+      make_table(table_data, cell_style: {padding: [0,0,1,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [115, 100]) do
+        cells.borders = []
+        row(1).padding = [0,0,2,0]
+        row(-1).borders = [:top]
+        row(-1).padding = [2,0,0,0]
+        row(-2).padding = [0,0,3,0]
+        row(0).font_style = :bold
+        column(1).align = :right
+      end
+    end
 
     def amortization_schedule
-      move_down 20
+      move_down 5
       stroke do
-        stroke_color 'CCCCCC'
+        stroke_color '000000'
         line_width 0.2
         stroke_horizontal_rule
-        move_down 15
+        move_down 5
       end
       text "LOAN AMORTIZATION SCHEDULE", size: 9, style: :bold
       move_down 10
       if loan.forwarded_loan? || loan.amortization_schedules.blank?
         text "No data Available"
       else
-        table(amortization_schedule_data, header: true, cell_style: { size: 10 }, column_widths: [100, 80, 80, 70, 90, 110]) do
+        table(amortization_schedule_data, header: true, cell_style: {padding: [1,3,1,3], size: 8.5 }, column_widths: [100, 80, 80, 70, 90, 110]) do
 
           row(0).font_style = :bold
           column(0).align = :right
@@ -176,9 +138,9 @@ module LoansModule
     end
     def signatory_details
     move_down 20
-      table(signatory, cell_style: { inline_format: true, size: 9, font: "Helvetica"}, column_widths: [120, 10, 120, 10, 120, 10, 140]) do
+      table(signatory, cell_style: {padding: [1,0,1,0], inline_format: true, size: 9, font: "Helvetica"}, column_widths: [120, 10, 120, 10, 120, 10, 140]) do
         cells.borders = []
-        row(3).font_style = :bold
+        row(11).font_style = :bold
      end
    end
    def approver
@@ -191,9 +153,17 @@ module LoansModule
      @loan.preparer
    end
    def signatory
-    [["PREPARED BY", "", "APPROVED BY", "", "DISBURSED BY", "", " RECEIVED BY"]] +
-    [["", ""]] +
-    [["", ""]] +
+    [["PREPARED BY", "", "APPROVED BY", "", "DISBURSED BY", "", "RECIEVED BY"]] +
+    [["", "", "", "", "", "", ""]] +
+    [["", "", "", "", "", "", ""]] +
+    [["", "", "", "", "", "", ""]] +
+    [["", "", "", "", "", "", ""]] +
+    [["", "", "", "", "", "", ""]] +
+    [["", "", "", "", "", "", ""]] +
+    [["", "", "", "", "", "", ""]] +
+    [["", "", "", "", "", "", ""]] +
+    [["", "", "", "", "", "", ""]] +
+    [["", "", "", "", "", "", ""]] +
     [["#{preparer.first_middle_and_last_name.try(:upcase)}", "",
       approver.first_middle_and_last_name.try(:upcase), "",
       disburser.first_middle_and_last_name.upcase, "",

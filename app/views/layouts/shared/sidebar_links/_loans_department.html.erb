@@ -49,6 +49,10 @@
 		<i class="nav-icon fa fa-folder"></i><span> Reports </span>
 	</a>
 </li>
+<li class="nav-item">
+  <a href="/portfolios" class="nav-link <%= 'active' if current_page?(portfolios_path) %>">
+  <i class="nav-icon far fa-folder"></i><span> Portfolios</span></a>
+</li>
 <%= render 'layouts/shared/sidebar_links/monitoring' %>
 
 <li class="nav-item">

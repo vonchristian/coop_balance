@@ -21,7 +21,7 @@
           <%= f.error_notification %>
           <%= f.input :date, as: :string, input_html: { class: "datepicker", value: Date.today.strftime("%B %e, %Y") } %>
           <%= f.input :amount, as: :currency %>
-          <%= f.input :description, as: :text, input_html: {value: "Savings deposit transaction."} %>
+          <%= f.input :description, as: :text, input_html: {value: "Savings deposit"} %>
           <%= f.input :payment_type, label: 'Type', collection: AccountingModule::Entry.payment_types.keys.to_a.map{|a| [a.titleize, a] }, selected: AccountingModule::Entry.payment_types.keys.first %>
           <%= f.input :or_number, label: 'Reference Number' %>
           <%= f.input :cash_account_id, default: current_user.cash_accounts.first, collection: current_user.cash_accounts.map{|a| [a.name, a.id] } %>

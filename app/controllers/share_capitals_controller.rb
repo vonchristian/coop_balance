@@ -1,11 +1,14 @@
 require 'will_paginate/array'
 class ShareCapitalsController < ApplicationController
   def index
+    @office = params[:office_id] ? current_cooperative.offices.find_by(id: params[:office_id]) : current_office
     if params[:search].present?
-      @share_capitals = current_cooperative.share_capitals.includes(:office, [:share_capital_product =>[:equity_account], :subscriber => [:avatar_attachment => [:blob]]]).text_search(params[:search]).paginate(:page => params[:page], :per_page => 20)
+      @share_capitals = @office.share_capitals.includes(:office, [:share_capital_product =>[:equity_account], :subscriber => [:avatar_attachment => [:blob]]]).text_search(params[:search]).paginate(:page => params[:page], :per_page => 20)
     else
-      @share_capitals = current_cooperative.share_capitals.includes(:office, [:share_capital_product =>[:equity_account], :subscriber => [:avatar_attachment => [:blob]]]).paginate(:page => params[:page], :per_page => 20)
+      @share_capitals = @office.share_capitals.includes(:office, [:share_capital_product =>[:equity_account], :subscriber => [:avatar_attachment => [:blob]]]).paginate(:page => params[:page], :per_page => 20)
     end
+    @offices = current_cooperative.offices
+    
   end
 
   def show

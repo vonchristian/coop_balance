@@ -29,7 +29,7 @@ module Memberships
           office: find_employee.office,
           cooperative: find_employee.cooperative,
           preparer: find_employee,
-          description: "Savings withdrawal transaction of #{find_saving.depositor.name}",
+          description: "Savings withdrawal.",
           reference_number: or_number,
           account_number: account_number,
           date: date)

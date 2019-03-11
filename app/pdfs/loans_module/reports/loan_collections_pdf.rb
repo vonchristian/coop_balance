@@ -107,7 +107,7 @@ module LoansModule
 
       def loan_collections
         if collections.present?
-          table([["Borrower", "Date", " #", "Principal", "Interest Revenue","Accrued Income", "Penalty", "Total"]], cell_style: { inline_format: true, size: 9 }, column_widths: [110, 50, 50, 60, 60, 60, 60, 80]) do
+          table([["Date", "Borrower", "CDV#", "Principal", "Interest Revenue", "Accrued Income", "Penalty", "Total"]], cell_style: { inline_format: true, size: 9 }, column_widths: [110, 50, 50, 60, 60, 60, 60, 80]) do
             column(3).align = :right
             column(4).align = :right
             column(5).align = :right
@@ -123,18 +123,18 @@ module LoansModule
             stroke_horizontal_rule
             move_down 5
           end
-          collections.each do |entry|
+          collections.sort_by(&:ascending_order).each do |entry|
             cooperative.loans.for_entry(entry: entry).each do |loan|
               table(
-                [["#{loan.borrower_name}",
-                "#{entry.entry_date.strftime("%D")}",
+                [["#{entry.entry_date.strftime("%D")}",
+                "#{loan.borrower_name}",
                 "#{entry.reference_number}",
                 price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).principal),
                 price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).interest),
                 price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).accrued_interest),
                 price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).penalty),
                 price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).total_cash_payment)
-                ]], column_widths: [110, 50, 50, 60, 60, 60, 60, 80], cell_style: { inline_format: true, size: 9}) do
+                ]], column_widths: [50, 110, 50, 60, 60, 60, 60, 80], cell_style: {padding: [2,3,2,3], inline_format: true, size: 9}) do
                 column(2).align = :right
                 column(3).align = :right
                 column(4).align = :right

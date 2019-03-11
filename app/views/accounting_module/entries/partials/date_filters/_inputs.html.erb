@@ -1,0 +1,13 @@
+<p class="no-margin-bottom">From</p>
+<div class="form-group">
+  <%= text_field_tag :from_date, @from_date, :class => 'datepicker form-control border-input', :placeholder => "From " %>
+</div>
+<p class="no-margin-bottom">To</p>
+<div class="form-group">
+  <%= text_field_tag :to_date, @to_date, :class => 'form-control border-input datepicker', :placeholder => "To " %>
+</div>
+<p class="no-margin-bottom">Cooperative Service</p>
+<div class="form-group">
+  <%= select_tag :cooperative_service_id, options_for_select(current_cooperative.cooperative_services.map {|m| [m.title, m.id]}, params[:cooperative_service_id]), class: ' form-control border-input', prompt: "--Select--" %>
+</div>
+<button type="submit" class="btn btn-default float-right"> Go</button>

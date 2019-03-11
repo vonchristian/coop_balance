@@ -1,14 +1,44 @@
 <div class="card">
   <div class="card-body">
-    <h3 class="card-title"> Reports </h3>
+    <h3 class="card-title"> Journal Entries Reports </h3>
     <hr class="min-margin">
     <div class="row">
     	<div class="col-md-6">
-    		<%= link_to 'Excel', accounting_module_cash_disbursements_path(format: 'xlsx', from_date: @from_date, to_date: @to_date), class: 'btn btn-default' %>
+        <% if params[:search].present? %>
+          <%= link_to 'Excel', accounting_module_cash_disbursements_path(format: 'xlsx', search: params[:search]), class: 'btn btn-success' %>
+        <% else %>
+    		  <%= link_to 'Excel', accounting_module_cash_disbursements_path(format: 'xlsx', from_date: @from_date, to_date: @to_date, cooperative_service_id: params[:cooperative_service_id]), class: 'btn btn-success' %>
+        <% end %>
     	</div>
     	<div class="col-md-6">
-    		<%= link_to 'View (PDF)', accounting_module_cash_disbursements_path(format: 'pdf', from_date: @from_date, to_date: @to_date), class: 'btn btn-default float-right' %>
+    		<% if params[:search].present? %>
+          <%= link_to 'View (PDF)', accounting_module_cash_disbursements_path(format: 'pdf', search: params[:search]), class: 'btn btn-success float-right' %>
+        <% else %>
+          <%= link_to 'View (PDF)', accounting_module_cash_disbursements_path(format: 'pdf', from_date: @from_date, to_date: @to_date, cooperative_service_id: params[:cooperative_service_id]), class: 'btn btn-success float-right' %>
+        <% end %>
     	</div>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body">
+    <h3 class="card-title"> CashBook Reports </h3>
+    <hr class="min-margin">
+    <div class="row">
+      <div class="col-md-6">
+        <% if params[:search].present? %>
+          <%= link_to 'Excel', accounting_module_reports_cashbooks_cash_disbursements_path(format: 'xlsx', search: params[:search]), class: 'btn btn-success' %>
+        <% else %>
+          <%= link_to 'Excel', accounting_module_reports_cashbooks_cash_disbursements_path(format: 'xlsx', from_date: @from_date, to_date: @to_date, cooperative_service_id: params[:cooperative_service_id]), class: 'btn btn-success' %>
+        <% end %>
+      </div>
+      <div class="col-md-6">
+        <% if params[:search].present? %>
+          <%= link_to 'View (PDF)', accounting_module_reports_cashbooks_cash_disbursements_path(format: 'pdf', search: params[:search]), class: 'btn btn-success float-right' %>
+        <% else %>
+          <%= link_to 'View (PDF)', accounting_module_reports_cashbooks_cash_disbursements_path(format: 'pdf', from_date: @from_date, to_date: @to_date, cooperative_service_id: params[:cooperative_service_id]), class: 'btn btn-success float-right' %>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>

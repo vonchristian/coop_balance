@@ -18,6 +18,9 @@
   <a href="/members" class="nav-link <%= 'active' if current_page?(members_path) %> "><i class="nav-icon fa fa-users"></i> <span>Members</span></a>
 </li>
 <li class="nav-item">
+  <a href="/offices" class="nav-link <%= 'active' if current_page?(members_path) %> "><i class="nav-icon fa fa-sitemap"></i> <span>Offices</span></a>
+</li>
+<li class="nav-item">
   <a href="/organizations" class="nav-link <%= 'active' if current_page?(organizations_path) %> "><i class="nav-icon fa fa-sitemap"></i> <span>Organizations</span></a>
 </li>
 <li class="nav-item">
@@ -48,5 +51,9 @@
 </li>
 <li class="nav-item" >
   <a href="/accounting_module/reports" class="nav-link <%= 'active' if current_page?(accounting_module_reports_path) %>"><i class="nav-icon fa fa-folder"></i> <span> Reports</span></a>
+</li>
+<li class="nav-item">
+  <a href="/portfolios" class="nav-link <%= 'active' if current_page?(portfolios_path) %>">
+  <i class="nav-icon far fa-folder"></i><span> Portfolios</span></a>
 </li>
 <%= render 'layouts/shared/sidebar_links/monitoring' %>

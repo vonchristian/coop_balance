@@ -12,7 +12,7 @@ module TimeDeposits
       @time_deposit = current_cooperative.time_deposits.find(params[:time_deposit_id])
       @entry = AccountingModule::AdjustingEntry.new(adjusting_entry_params).save
       respond_modal_with @entry, location: time_deposit_settings_url(@time_deposit),
-          notice: "Adjusting Entry saved successfully."
+        notice: "Adjusting Entry saved successfully."
     end
 
     private

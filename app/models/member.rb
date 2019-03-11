@@ -42,8 +42,7 @@ class Member < ApplicationRecord
   has_many :share_capital_applications,   as: :subscriber
   has_many :savings_account_applications, as: :depositor
   has_many :time_deposit_applications,    as: :depositor
-
-
+  has_many :wallets, as: :account_owner
   validates :last_name, :first_name, presence: true, on: :update
 
   # delegate :name, to: :office, prefix: true, allow_nil: true
@@ -120,7 +119,7 @@ class Member < ApplicationRecord
   # end
 
 
-  
+
   def current_occupation
     occupations.current
   end

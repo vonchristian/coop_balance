@@ -30,7 +30,8 @@ module ShareCapitals
         date_opened:           share_capital_application.date_opened,
         share_capital_product: share_capital_application.share_capital_product,
         last_transaction_date: share_capital_application.date_opened,
-        beneficiaries:         share_capital_application.beneficiaries
+        beneficiaries:         share_capital_application.beneficiaries,
+        office:                employee.office
       )
       update_voucher(share_capital)
     end

@@ -49,7 +49,7 @@
           <%= f.input :date, as: :string, input_html: { value: Date.today.strftime("%B %e, %Y"), class: "datepicker" } %>
           <%= f.input :share_capital_id, input_html: {value: @share_capital.id }, as: :hidden %>
           <%= f.input :amount, as: :currency %>
-          <%= f.input :description, as: :text, input_html: {value: "Capital Build-Up transaction of #{@share_capital.subscriber.name}"} %>
+          <%= f.input :description, as: :text, input_html: {value: "Capital Build-Up"} %>
           <%= f.input :or_number, label: "Reference Number" %>
           <%= f.input :cash_account_id, default: current_user.cash_accounts.first, collection: current_user.cash_accounts.map{|a| [a.name, a.id] } %>
           <%= f.input :employee_id, input_html: { value: current_user.id },as: :hidden %>

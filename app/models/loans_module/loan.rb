@@ -91,6 +91,10 @@ module LoansModule
       end
     end
 
+    def ascending_order # sorting loans in reports
+      tracking_number.to_i
+    end
+
     def self.unpaid
       all.where(cancelled: false, archived: false).select { |l| l.principal_balance > 0 }
     end
@@ -329,7 +333,7 @@ module LoansModule
         amounts = BigDecimal("0")
         cooperative.cash_accounts.each do |account|
           accounting_entry.credit_amounts.where(account: account).each do |amount|
-            amounts += amount
+            amounts += amount.amount
           end
         end
         amounts

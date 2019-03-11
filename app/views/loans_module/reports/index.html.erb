@@ -7,7 +7,7 @@
       </div>
       <div class="card-body">
         <h4 class="card-title"><b>Loan Releases</b></h4>
-        <%= form_tag({:action => "index", controller: "loans_module/reports/loan_releases", format: 'xlsx'}, {:method => :get})  do %>
+        <%= form_tag({:action => "index", controller: "loans_module/reports/loan_releases", format: 'pdf'}, {:method => :get})  do %>
           <div class="row">
             <div class="col-md-3">
               <div class="form-group">

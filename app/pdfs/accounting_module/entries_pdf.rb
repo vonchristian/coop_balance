@@ -1,15 +1,17 @@
 module AccountingModule
   class EntriesPdf < Prawn::Document
-    attr_reader :entries, :employee, :view_context, :cooperative, :from_date, :to_date, :organization
+    attr_reader :entries, :employee, :title, :view_context, :cooperative, :cooperative_service, :from_date, :to_date, :organization
     def initialize(args)
       super(margin: 30, page_size: "A4", page_layout: :portrait)
       @entries      = args[:entries]
       @employee     = args[:employee]
       @cooperative  = args[:cooperative]
+      @cooperative_service = args[:cooperative_service] if args[:cooperative_service].present?
       @view_context = args[:view_context]
       @from_date    = args[:from_date]
       @to_date      = args[:to_date]
       @organization = args[:organization]
+      @title        = args[:title]
 
       heading
       summary
@@ -39,18 +41,19 @@ module AccountingModule
     def subtable_right
       sub_data ||= [[{content: "#{cooperative.abbreviated_name}", size: 22}]] + [[{content: "#{cooperative.name}", size: 10}]]
       make_table(sub_data, cell_style: {padding: [0,5,1,2]}) do
-        columns(0).width = 180
+        columns(0).width = 140
         cells.borders = []
       end
     end
 
     def subtable_left
-      sub_data ||= [[{content: "ENTRIES REPORT", size: 14, colspan: 2}]] + 
+      sub_data ||= [[{content: "#{title}", size: 14, colspan: 2}]] + 
+                    [[{content: "#{cooperative_service.try(:title)}", size: 12, colspan: 2}]] +
                     [[{content: "From:", size: 10}, {content: "#{from_date.strftime("%b. %e, %Y")}", size: 10}]] +
                     [[{content: "To:", size: 10}, {content: "#{to_date.strftime("%b. %e, %Y")}", size: 10}]]
       make_table(sub_data, cell_style: {padding: [0,5,1,2]}) do
-        columns(0).width = 50
-        columns(1).width = 150
+        columns(0).width = 80
+        columns(1).width = 230
         cells.borders = []
       end
     end
@@ -59,7 +62,7 @@ module AccountingModule
       bounding_box [bounds.left, bounds.top], :width  => 535 do
         table([[subtable_left, logo, subtable_right]], 
           cell_style: { inline_format: true, font: "Helvetica", padding: [0,5,0,0]}, 
-          column_widths: [310, 50, 180]) do
+          column_widths: [340, 50, 140]) do
             cells.borders = []
         end
       end
@@ -117,7 +120,7 @@ module AccountingModule
       else
         entries_table_header
 
-        entries.each do |entry|
+        entries.sort_by(&:ascending_order).each do |entry|
           row_count = entry.amounts.count + 1
           debit_amounts_data = entry.debit_amounts.map{|a| [a.account.name, price(a.amount), ""] }
           credit_amounts_data = entry.credit_amounts.map{|a| [a.account.name, "", price(a.amount)] }
@@ -127,10 +130,10 @@ module AccountingModule
             "#{price(entry.credit_amounts.sum{|a| a.amount})}"
           ]]
           entries_data = [[
-            {content: entry.entry_date.strftime("%D"), rowspan: row_count, valign: :center }, 
-            {content: entry.description, rowspan: row_count, valign: :center}, 
-            {content: "##{entry.reference_number}", rowspan: row_count, valign: :center},
-            {content: display_commercial_document_for(entry).try(:upcase), rowspan: row_count, valign: :center},
+            {content: entry.entry_date.strftime("%D"), rowspan: row_count }, 
+            {content: entry.description, rowspan: row_count}, 
+            {content: "##{entry.reference_number}", rowspan: row_count},
+            {content: display_commercial_document_for(entry).try(:upcase), rowspan: row_count},
             "", "", ""
           ]]
 

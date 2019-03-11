@@ -20,6 +20,11 @@ Rails.application.routes.draw do
       resources :share_capital_dividend_postings, only: [:new, :create]
     end
 
+    namespace :cash_books do
+      resources :cash_receipts,                       only: [:index]
+      resources :cash_disbursements,                  only: [:index]
+    end
+
     resources :cash_receipts, module: :entries,     only: [:index]
     resources :cash_disbursements, module: :entries, only: [:index]
     resources :journal_entry_vouchers,  module: :entries, only: [:index]
@@ -35,6 +40,10 @@ Rails.application.routes.draw do
     resources :reports, only: [:index]
 
     namespace :reports do
+      namespace :cashbooks do
+        resources :cash_receipts,      only: [:index]
+        resources :cash_disbursements, only: [:index]
+      end
       resources :entries, only: [:index]
       resources :net_income_distributions, only: [:index]
       resources :trial_balances,       only: [:index]
@@ -162,7 +171,8 @@ Rails.application.routes.draw do
   end
 
   resources :members, only: [:index, :show, :edit, :update, :destroy] do
-    resources :bills_payments, only: [:index], module: :members
+    resources :credit_scores,         only: [:index], module: :members
+    resources :bills_payments,        only: [:index], module: :members
     resources :organizations,         only: [:new, :create],                 module: :members
     resources :beneficiaries,         only: [:new, :create, :destroy],       module: :members
     resources :merging_line_items,    only: [:new, :create],                 module: :members
@@ -415,6 +425,7 @@ Rails.application.routes.draw do
     resources :blotters,             only: [:index],                        module: :employees
     resources :cash_disbursements,   only: [:index],                        module: [:employees, :reports]
     resources :cash_receipts,        only: [:index],                        module: [:employees, :reports]
+    resources :cash_book_transactions, only: [:index],                      module: [:employees, :reports]
     resources :memberships,          only: [:new, :create, :edit, :update], module: :employees
     resources :time_deposits,        only: [:index],                        module: :employees
     resources :savings_accounts,     only: [:index],                        module: :employees
@@ -583,4 +594,14 @@ Rails.application.routes.draw do
   resources :merchants, only: [:index, :show, :new, :create] do
     resources :payment_line_items, only: [:new, :create], module: :merchants
   end
+  resources :offices, only: [:index, :show] do
+    resources :loans,            only: [:index], module: :offices
+    resources :savings_accounts, only: [:index], module: :offices
+    resources :share_capitals,   only: [:index], module: :offices
+    resources :time_deposits,    only: [:index], module: :offices
+    resources :entries,          only: [:index], module: :offices
+    resources :reports,          only: [:index], module: :offices
+    resources :settings,         only: [:index], module: :offices
+  end
+  resources :credit_scores, only: [:index]
 end

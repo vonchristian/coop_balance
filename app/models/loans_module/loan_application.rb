@@ -6,11 +6,11 @@ module LoansModule
 
     enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
 
-    belongs_to :loan_product
     belongs_to :borrower, polymorphic: true
     belongs_to :preparer, class_name: "User", foreign_key: 'preparer_id'
     belongs_to :cooperative
     belongs_to :office, class_name: "Cooperatives::Office"
+    belongs_to :loan_product
     belongs_to :organization
     belongs_to :voucher, dependent: :destroy
     has_one    :loan, class_name: "LoansModule::Loan", dependent: :destroy
@@ -24,7 +24,7 @@ module LoansModule
     delegate :name, :current_membership, :avatar, to: :borrower, prefix: true
     delegate :name, :interest_revenue_account, :current_account, to: :loan_product, prefix: true
     delegate :monthly_interest_rate,  to: :loan_product, prefix: true
-    delegate :annual_interest_calculator, :current_interest_config, :interest_calculator, :prededucted_interest_calculator, :amortizeable_principal_calculator,  to: :loan_product
+    delegate :current_interest_config, :interest_calculator, :prededucted_interest_calculator, :amortizeable_principal_calculator,  to: :loan_product
     delegate :entry, to: :voucher, allow_nil: true
     delegate :rate, :straight_balance?, :annually?, :prededucted_number_of_payments, to: :current_interest_config, prefix: true
     validates :cooperative_id, presence: true
@@ -33,18 +33,7 @@ module LoansModule
       false
     end
     def self.not_approved
-      where(approved_at: nil)
-    end
-
-    def self.approved
-      where.not(approved_at: nil)
-    end
-
-    def self.approved_at(args={})
-      from_date = args[:from_date]
-      to_date   = args[:to_date]
-      date_range = DateRange.new(from_date: from_date, to_date: to_date)
-      where('approved_at' => date_range.start_date..date_range.end_date)
+      where(approved: false)
     end
 
     def self.not_cancelled
@@ -110,6 +99,17 @@ module LoansModule
         first_year_interest +
         second_year_interest +
         third_year_interest
+      elsif term_is_within_four_years?
+        first_year_interest +
+        second_year_interest +
+        third_year_interest +
+        fourth_year_interest
+      elsif term_is_within_five_years?
+        first_year_interest +
+        second_year_interest +
+        third_year_interest +
+        fourth_year_interest +
+        fifth_year_interest
       end
     end
 
@@ -118,6 +118,8 @@ module LoansModule
       if loan_product.current_interest_config.prededucted?
         total_interest -
         voucher_interest_amount
+      elsif loan_product.current_interest_config.add_on?
+        add_on_interest
       end
     end
 
@@ -125,33 +127,28 @@ module LoansModule
       voucher_amounts.for_account(account: current_interest_config.interest_revenue_account).total
     end
 
-    def max_applicable_term(max_num)
-      applicable_term = term - max_num
-      if applicable_term > 12
-        12
-      elsif applicable_term.negative?
-        0
-      else
-        applicable_term
-      end
-    end
-
-
     def first_year_interest
-      annual_interest_calculator.new(amount: first_year_principal_balance, term: max_applicable_term(0), rate: loan_product.monthly_interest_rate).
-      calculate
+      current_interest_config.compute_interest(amount: first_year_principal_balance, term: term)
     end
 
     def second_year_interest
       return 0 if term <= 12
-      annual_interest_calculator.new(amount: second_year_principal_balance, term: max_applicable_term(12), rate: loan_product.monthly_interest_rate).
-      calculate
+      current_interest_config.compute_interest(amount: second_year_principal_balance, term: term - 12)
     end
 
     def third_year_interest
-      return 0 if term <=24
-      annual_interest_calculator.new(amount: third_year_principal_balance, term: max_applicable_term(24), rate: loan_product.monthly_interest_rate).
-      calculate
+      return 0 if term <= 24
+      current_interest_config.compute_interest(amount: third_year_principal_balance, term: term - 24)
+    end
+
+    def fourth_year_interest
+      return 0 if term <= 36
+      current_interest_config.compute_interest(amount: fourth_year_principal_balance, term: term - 36)
+    end
+
+    def fifth_year_interest
+      return 0 if term <= 48
+      current_interest_config.compute_interest(amount: fifth_year_principal_balance, term: term - 48)
     end
 
     def first_year_principal_balance
@@ -171,25 +168,28 @@ module LoansModule
     end
 
     def fourth_year_principal_balance
-      return 0 if !term_is_within_four_years?
+      return 0 if term <= 36
       schedule = amortization_schedules.by_oldest_date[35]
       principal_balance_for(schedule)
     end
 
+    def fifth_year_principal_balance
+      return 0 if term <= 48
+      schedule = amortization_schedules.by_oldest_date[47]
+      principal_balance_for(schedule)
+    end
 
     def prededucted_interest
       prededucted_interest_calculator.new(loan_application: self).prededucted_interest
     end
 
     def total_amortizeable_interest
-      total_interest -
-      voucher_interest_amount
+      total_interest - prededucted_interest
     end
 
     def amortizeable_interest_for(schedule)
       principal_balance_for(schedule) * loan_product_monthly_interest_rate
     end
-
 
     def net_proceed
       loan_amount.amount - voucher_amounts.total
@@ -240,7 +240,7 @@ module LoansModule
     end
 
     def add_on_interest
-      current_interest_config.compute_interest(amount: loan_amount.amount, term: term)
+      current_interest_config.compute_interest(loan_amount.amount)
     end
   end
 end

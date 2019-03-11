@@ -49,6 +49,10 @@ module AccountingModule
       order(created_at: :desc).first
     end
 
+    def ascending_order #for sorting entries in reports
+      reference_number.to_i
+    end
+
     def self.loan_payments(args={})
       ids = amounts.for_loans.pluck(:entry_id).uniq.flatten
       not_cancelled.where(id: ids)
@@ -73,7 +77,7 @@ module AccountingModule
     end
 
     def self.without_cash_accounts
-      ids = amounts.without_cash_accounts.pluck(:entry_id)
+      ids = (self.all - where(id: amounts.with_cash_accounts.pluck(:entry_id).uniq)).pluck(:id)
       where(id: ids)
     end
 

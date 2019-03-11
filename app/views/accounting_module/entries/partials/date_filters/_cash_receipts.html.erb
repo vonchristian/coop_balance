@@ -1,38 +1,10 @@
 <div class="card">
   <div class="card-header">
-    <h4 class="card-title">Date Filters</h4>
+    <h4 class="card-title">Filter Options</h4>
   </div>
   <div class="card-body">
-    <div class="dropdown">
-      <button class="btn btn-outline-default btn-block dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Fixed Date Filters
-      </button>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-        <%=link_to 'This Day', accounting_module_cash_receipts_path(from_date: Time.zone.now.yesterday.end_of_day, to_date: Time.zone.now.end_of_day ), class: "dropdown-item"  %>
-
-        <%=link_to 'Yesterday', accounting_module_cash_receipts_path(from_date: Time.zone.now.yesterday.yesterday.end_of_day, to_date: Time.zone.now.yesterday.yesterday.end_of_day ), class: "dropdown-item"  %>
-
-        <%=link_to 'This Week', accounting_module_cash_receipts_path(from_date: Time.zone.now.beginning_of_week.beginning_of_day, to_date: Time.zone.now.end_of_week.end_of_day ), class: "dropdown-item"  %>
-
-        <%=link_to 'Last Week', accounting_module_cash_receipts_path(from_date: Time.zone.now.last_week.beginning_of_week.beginning_of_day, to_date: Time.zone.now.last_week.end_of_week.end_of_day ), class: "dropdown-item"  %>
-
-        <%=link_to 'This Month', accounting_module_cash_receipts_path(from_date: Time.zone.now.beginning_of_month.yesterday.end_of_day, to_date: Time.zone.now.end_of_month.end_of_day ), class: "dropdown-item"  %>
-      </div>
-    </div>
-    <br>
-    <p class="text-center">-OR-</p>
-    <h6 class="text-center"> Choose Between Dates </h6>
     <%= form_tag({:action => "index", controller: "/accounting_module/entries/cash_receipts"}, {:method => :get})  do %>
-      <p class="no-margin-bottom">From</p>
-      <div class="form-group">
-        <%= text_field_tag :from_date, @from_date, :class => 'datepicker form-control border-input', :placeholder => "From " %>
-      </div>
-      <p class="no-margin-bottom">To</p>
-      <div class="form-group">
-        <%= text_field_tag :to_date, @to_date, :class => 'form-control border-input datepicker', :placeholder => "To " %>
-      </div>
-
-      <button type="submit" class="btn btn-default float-right"> Go</button>
+      <%= render 'accounting_module/entries/partials/date_filters/inputs' %>
     <% end %>
   </div>
 </div>

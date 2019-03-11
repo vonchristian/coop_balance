@@ -1,0 +1,50 @@
+<% if current_page?(accounting_module_entries_path || accounting_module_entries_path(search: params[:search], organization_id: params[:organization_id]))%>
+  <%=form_tag accounting_module_entries_path, method: :get do %>
+    <div class="input-group">
+      <%= text_field_tag :search, params[:search],  autofocus: true, class: "form-control", placeholder: "Search for Reference Number, Description", id: 'account-search-form' %>
+      <%= select_tag :organization_id, options_for_select(current_cooperative.organizations.map {|o| [o.abbreviated_name, o.id]}, params[:organization_id]), class: ' form-control border-input', prompt: "--- Organization ---" %>
+      <span class="input-group-btn">
+        <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+          <i class="fa fa-search"></i>
+        <% end %>
+      </span>
+    </div>
+  <% end %>
+<% elsif current_page?(accounting_module_cash_receipts_path || accounting_module_cash_receipts_path(search: params[:search], organization_id: params[:organization_id])) %>
+  <%=form_tag accounting_module_cash_receipts_path, method: :get do %>
+    <div class="input-group">
+      <%= text_field_tag :search, params[:search],  autofocus: true, class: "form-control", placeholder: "Search for Reference Number, Description", id: 'account-search-form' %>
+      <%= select_tag :organization_id, options_for_select(current_cooperative.organizations.map {|o| [o.abbreviated_name, o.id]}, params[:organization_id]), class: ' form-control border-input', prompt: "--- Organization ---" %>
+      <span class="input-group-btn">
+        <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+          <i class="fa fa-search"></i>
+        <% end %>
+      </span>
+    </div>
+  <% end %>
+<% elsif current_page?(accounting_module_cash_disbursements_path || accounting_module_cash_disbursements_path(search: params[:search], organization_id: params[:organization_id])) %>
+  <%=form_tag accounting_module_cash_disbursements_path, method: :get do %>
+    <div class="input-group">
+      <%= text_field_tag :search, params[:search],  autofocus: true, class: "form-control", placeholder: "Search for Reference Number, Description", id: 'account-search-form' %>
+      <%= select_tag :organization_id, options_for_select(current_cooperative.organizations.map {|o| [o.abbreviated_name, o.id]}, params[:organization_id]), class: ' form-control border-input', prompt: "--- Organization ---" %>
+      <span class="input-group-btn">
+        <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+          <i class="fa fa-search"></i>
+        <% end %>
+      </span>
+    </div>
+  <% end %>
+<% elsif current_page?(accounting_module_journal_entry_vouchers_path || accounting_module_journal_entry_vouchers_path(search: params[:search], organization_id: params[:organization_id])) %>
+  <%=form_tag accounting_module_journal_entry_vouchers_path, method: :get do %>
+    <div class="input-group">
+      <%= text_field_tag :search, params[:search],  autofocus: true, class: "form-control", placeholder: "Search for Reference Number, Description", id: 'account-search-form' %>
+      <%= select_tag :organization_id, options_for_select(current_cooperative.organizations.map {|o| [o.abbreviated_name, o.id]}, params[:organization_id]), class: ' form-control border-input', prompt: "--- Organization ---" %>
+      <span class="input-group-btn">
+        <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+          <i class="fa fa-search"></i>
+        <% end %>
+      </span>
+    </div>
+  <% end %>
+<% end %>
+  
