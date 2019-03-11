@@ -3,14 +3,13 @@ module Cooperatives
     belongs_to :cooperative
     has_many :employees, class_name: "User"
     has_many :loans,                   class_name: "LoansModule::Loan"
-    has_many :amortization_schedules,  through: :loans, class_name: "LoansModule::AmortizationSchedule"
+    has_many :amortization_schedules,  class_name: "LoansModule::AmortizationSchedule"
     has_many :savings,                 class_name: "MembershipsModule::Saving"
     has_many :time_deposits,           class_name: "MembershipsModule::TimeDeposit"
     has_many :share_capitals,          class_name: "MembershipsModule::ShareCapital"
     has_many :entries,                 class_name: "AccountingModule::Entry"
     has_many :bank_accounts,           class_name: "BankAccount"
     has_many :loan_applications,       class_name: "LoansModule::LoanApplication"
-    has_many :amortization_schedules,  class_name: "LoansModule::AmortizationSchedule"
     has_many :vouchers
 
     has_many :accountable_accounts,    class_name: "AccountingModule::AccountableAccount", as: :accountable
@@ -28,6 +27,7 @@ module Cooperatives
     def normalized_type
       type.to_s.gsub("Cooperatives::Offices::", "")
     end
+    
     def self.types
       ["Cooperatives::Offices::MainOffice", "Cooperatives::Offices::SatelliteOffice", "Cooperatives::Offices::BranchOffice"]
     end

@@ -14,6 +14,7 @@ class BankAccount < ApplicationRecord
   def name
     bank_name
   end
+
   def balance(args={})
     cash_account.balance(commercial_document: self)
   end
