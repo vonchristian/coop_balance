@@ -416,6 +416,7 @@ Rails.application.routes.draw do
   end
 
   resources :employees, only: [:index, :show, :edit, :update] do
+    resources :cash_count_line_items,only: [:new, :create],                module: :employees
     resources :settings,             only: [:index],                        module: :employees
     resources :cash_accounts,        only: [:new, :create, :destroy],       module: :employees
     resources :store_fronts,         only: [:edit, :update],                module: [:employees, :settings]
@@ -591,5 +592,14 @@ Rails.application.routes.draw do
   end
   resources :merchants, only: [:index, :show, :new, :create] do
     resources :payment_line_items, only: [:new, :create], module: :merchants
+  end
+  resources :offices, only: [:index, :show] do
+    resources :loans,            only: [:index], module: :offices
+    resources :savings_accounts, only: [:index], module: :offices
+    resources :share_capitals,   only: [:index], module: :offices
+    resources :time_deposits,    only: [:index], module: :offices
+    resources :entries,          only: [:index], module: :offices
+    resources :reports,          only: [:index], module: :offices
+    resources :settings,         only: [:index], module: :offices
   end
 end

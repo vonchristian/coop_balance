@@ -13,6 +13,8 @@ module Cooperatives
       it { is_expected.to have_many :bank_accounts }
       it { is_expected.to have_many :loan_applications }
       it { is_expected.to have_many :vouchers }
+      it { is_expected.to have_many :accountable_accounts }
+      it { is_expected.to have_many :accounts }
     end
 
     describe 'validations' do
@@ -24,6 +26,12 @@ module Cooperatives
 
     it ".types" do
       expect(described_class.types).to eql ["Cooperatives::Offices::MainOffice", "Cooperatives::Offices::SatelliteOffice", "Cooperatives::Offices::BranchOffice"]
+    end
+
+    it "#normalized_type" do
+      office = build(:office, type: "Cooperatives::Offices::MainOffice")
+
+      expect(office.normalized_type).to eql "MainOffice"
     end
   end
 end

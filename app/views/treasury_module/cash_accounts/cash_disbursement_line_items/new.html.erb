@@ -85,7 +85,7 @@
             <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
             <%= f.input :description, as: :text %>
             <%= f.input :reference_number %>
-            <%= f.input :number, input_html: { value: Voucher.generate_number }, as: :hidden %>
+            <%#= f.input :number, input_html: { value: Voucher.generate_number }, as: :hidden %>
             <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
             <%= f.input :payee_id, label: "Payee", collection: Voucher.payees.map{|a| [a.name, a.id] } %>
             <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
