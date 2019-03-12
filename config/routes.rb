@@ -196,6 +196,7 @@ Rails.application.routes.draw do
     resources :account_mergings,      only: [:new, :create],                 module: :members
     resources :signature_specimens,   only: [:create],                       module: :members
     resources :avatars,               only: [:update],                       module: :members
+    resources :retirements,           only: [:edit, :update],                module: :members
   end
 
   resources :member_registrations, only: [:new, :create]
@@ -222,15 +223,11 @@ Rails.application.routes.draw do
       resources :programs, only: [:index]
       resources :store_fronts, only: [:index]
       resources :cooperative_services, only: [:index]
-
-
-
-
-
       resources :account_budgets, only: [:index]
       resources :cooperative_products, only: [:index]
       resources :configurations, only: [:index]
       resources :data_migrations, only: [:index]
+      resources :barangays,         only: [:index]
 
       resources :loan_products, only: [:index, :new, :create, :edit, :update] do
         resources :charges, only: [:new, :create, :edit, :update], module: :loan_products
@@ -489,7 +486,7 @@ Rails.application.routes.draw do
   resources :membership_applications, only: [:new, :create]
 
   resources :cooperatives, only: [:show] do
-    resources :barangays, only: [:new, :create], module: :cooperatives
+    resources :barangays, only: [:new, :create, :edit, :update], module: :cooperatives
     resources :logos, only: [:create],           module: :cooperatives
   end
 
@@ -508,6 +505,11 @@ Rails.application.routes.draw do
     resources :loans, only: [:index],                  module: :barangays
     resources :savings, only: [:index],                module: :barangays
     resources :members, only: [:index, :new, :create], module: :barangays
+    resources :settings, only: [:index],               module: :barangays
+  end
+
+  namespace :barangays do 
+    resources :imports, only: [:create]
   end
 
   resources :memberships, only: [:index, :show] do

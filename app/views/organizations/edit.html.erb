@@ -7,7 +7,7 @@
       <div class="card-body">
         <%= simple_form_for @organization, multipart: true do |f| %>
           <%= f.error_notification %>
-         <%if @organization.avatar.attachment.blank? %>
+          <%if @organization.avatar.attachment.blank? %>
             <center><%=image_tag("default_business_logo.jpg", height: 80, width: 80, :class=>"img-circle") %></center>
           <% else %>
             <center><%= image_tag @organization.avatar, class: 'center-block img-responsive img-circle'%></center>

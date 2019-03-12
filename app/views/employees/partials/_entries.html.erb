@@ -15,16 +15,19 @@
     <%#= link_to "New Entry", new_accounting_module_entry_path, class: "btn btn-primary pull-right" %>
   </div>
 </div>
-<hr>
+<hr class="min-margin">
 <div class="row">
-  <div class="col-md-7">
+  <div class="col-md-12">
     <span class="text-muted condensed-text"> SHOW ACTIVITY: </span> &nbsp;
     <%=link_to 'Yesterday', employee_entries_path(@employee, from_date: Time.zone.now.yesterday.beginning_of_day, to_date: Time.zone.now.yesterday.end_of_day ), class: "btn btn-default"  %>
      <%=link_to 'This Day', employee_entries_path(@employee, from_date: Time.zone.now.beginning_of_day, to_date: Time.zone.now.end_of_day ), class: "btn btn-default"  %>
     <%=link_to 'This Week', employee_entries_path(@employee,from_date: Time.zone.now.beginning_of_week.beginning_of_day, to_date: Time.zone.now.end_of_week.end_of_day ), class: "btn btn-default"  %>
     <%=link_to 'This Month', employee_entries_path(@employee, from_date: Time.zone.now.beginning_of_week.beginning_of_day, to_date: Time.zone.now.end_of_week.end_of_day ), class: "btn btn-default"  %>
   </div>
-  <div class="col-md-5">
+</div>
+<hr class="min-margin">
+<div class="row">
+  <div class="col-md-12">
     <%= form_tag({:action => "index", controller: "employees/entries", employee_id: @employee.id}, {:method => :get})  do %>
       <div class="row">
         <div class="col-md-4">
@@ -44,18 +47,13 @@
     <% end %>
   </div>
 </div>
-<hr>
-
-<div class="card">
-  <div class="card-body">
-    <h4 class="card-title">Transactions</h4>
-    <% @paginated_entries.each do |entry| %>
-      <% cache entry do %>
-        <%= render 'accounting_module/entries/partials/header', entry: entry %>
-      <% end %>
-    <% end %>
-    <% if @paginated_entries.exists? %>
-      <center><%= will_paginate @paginated_entries %></center>
-    <% end %>
-  </div>
-</div>
+<hr class="min-margin">
+<h4 class="card-title">Transactions</h4>
+<% @paginated_entries.each do |entry| %>
+  <% cache entry do %>
+    <%= render 'accounting_module/entries/partials/header', entry: entry %>
+  <% end %>
+<% end %>
+<% if @paginated_entries.exists? %>
+  <center><%= will_paginate @paginated_entries %></center>
+<% end %>

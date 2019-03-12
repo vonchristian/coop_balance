@@ -18,7 +18,7 @@
           <%= f.input :date, label: "Date Opened", as: :string, input_html: { class: "datepicker" } %>
           <%= f.input :saving_product_id, label: "Savings Account Product", collection: current_cooperative.saving_products.map{ |a| [a.name, a.id] }, as: :radio_buttons, checked: current_cooperative.saving_products.first.id %>
           <%= f.input :amount, as: :currency %>
-          <%= f.input :description, as: :text, input_html: { value: "Savings account opening of #{@depositor.name}"} %>
+          <%= f.input :description, as: :text, input_html: { value: "Savings account opening."} %>
           <%= f.input :beneficiaries, label: "Beneficiaries", placeholder: "Fullname", as: :text %>
           <%= f.input :reference_number %>
           <%= f.input :cash_account_id, label: "Cash Account(Debit)", collection: current_user.cash_accounts.map{|a| [a.name, a.id] }, default: current_user.cash_accounts.first %>

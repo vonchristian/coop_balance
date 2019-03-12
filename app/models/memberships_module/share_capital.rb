@@ -92,8 +92,6 @@ module MembershipsModule
       share_capital_product_equity_account.balance(args.merge(commercial_document: self))
     end
 
-
-
     def dividends_earned
       share_capital_product_interest_payable_account.balance(args.merge(commercial_document: self))
     end
@@ -102,12 +100,10 @@ module MembershipsModule
       account_owner_name || subscriber_name
     end
 
-
     def computed_interest(args={})
       net_income_distributable = args[:net_income_distributable]
       averaged_monthly_balances / net_income_distributable
     end
-
 
     private
     def set_account_owner_name

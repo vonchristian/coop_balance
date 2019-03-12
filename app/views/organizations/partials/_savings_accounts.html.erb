@@ -1,4 +1,8 @@
-
+<div class="card">
+  <div class="card-header bg-info">
+    <h4 class="card-title">Organization Savings</h4>
+  </div>
+</div>
 <% @organization.savings.each do |savings_account| %>
   <%= render 'savings_accounts/partials/header', savings_account: savings_account %>
 <% end %>

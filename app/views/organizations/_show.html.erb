@@ -1,40 +1,53 @@
 <%= render 'organizations/partials/header', organization: @organization %>
-<div class="card">
-  <div class="card-header">
+<div class="container">
+  <div class="container-fluid">
     <div class="row">
-      <div class="col-md-10">
-        <nav class="nav flex-column nav-pills flex-md-row">
-          <%= link_to 'Info', organization_path(@organization), class: "nav-link #{'active' if current_page?(organization_path(@organization))}" %>
-          <%= link_to 'Members', organization_members_path(@organization), class: "nav-link #{'active' if current_page?(organization_members_path(@organization))}" %>
-          <%= link_to 'Savings', organization_savings_accounts_path(@organization), class: "nav-link #{'active' if current_page?(organization_savings_accounts_path(@organization))}" %>
-          <%= link_to 'Member Loans', organization_loans_path(@organization), class: "nav-link #{'active' if current_page?(organization_loans_path(@organization))}" %>
-          <% if current_user.loan_officer? %>
-            <%= link_to 'Reports', organization_reports_path(@organization), class: "nav-link #{'active' if current_page?(organization_reports_path(@organization))}" %>
-          <% end %>
-          <%= link_to 'Settings', organization_settings_path(@organization), class: "nav-link #{'active' if current_page?(organization_settings_path(@organization))}" %>
-        </nav>
+      <div class="col-lg-3">
+        <div class="card">
+          <div class="card-header">
+            <div class="profile-wrapper">
+              <% if @organization.avatar.present? %>
+                <%= image_tag(@organization.avatar, width: '150', height: '150', class: "img-rounded mx-auto d-block") %>
+              <% else %>
+                <%= image_tag("default.png", width: '150', height: '150', class: 'img-rounded mx-auto d-block') %>
+              <% end %>
+            </div>
+            <h6 class="text-center mb-0 mt-0"><%= @organization.try(:abbreviated_name) %></h6>
+          </div>
+          <div class="card-body">
+            <nav class="nav flex-column nav-pills">
+              <li class="nav-item"><%= link_to 'Info', organization_path(@organization), class: "nav-link #{'active' if current_page?(organization_path(@organization))}" %></li>
+              <li class="nav-item"><%= link_to 'Members', organization_members_path(@organization), class: "nav-link #{'active' if current_page?(organization_members_path(@organization))}" %></li>
+              <li class="nav-item"><%= link_to 'Savings', organization_savings_accounts_path(@organization), class: "nav-link #{'active' if current_page?(organization_savings_accounts_path(@organization))}" %></li>
+              <li class="nav-item"><%= link_to 'Member Loans', organization_loans_path(@organization), class: "nav-link #{'active' if current_page?(organization_loans_path(@organization))}" %></li>
+              <% if current_user.loan_officer? %>
+                <li class="nav-item"><%= link_to 'Billing', organization_reports_path(@organization), class: "nav-link #{'active' if current_page?(organization_reports_path(@organization))}" %></li>
+              <% end %>
+              <li class="nav-item"><%= link_to 'Settings', organization_settings_path(@organization), class: "nav-link #{'active' if current_page?(organization_settings_path(@organization))}" %></li>
+            </nav>
+          </div>
+        </div>
       </div>
-      <div class="col-md-2">
-        
+      <div class="col-lg-9">
+        <% if current_page?(organization_path(@organization)) %>
+          <%= render 'organizations/partials/info' %>
+        <% end %>
+        <% if current_page?(organization_members_path(@organization)) %>
+          <%= render 'organizations/partials/members' %>
+        <% end %>
+        <% if current_page?(organization_savings_accounts_path(@organization)) %>
+          <%= render 'organizations/partials/savings_accounts' %>
+        <% end %>
+        <% if current_page?(organization_loans_path(@organization)) %>
+          <%= render 'organizations/partials/loans' %>
+        <% end %>
+        <% if current_page?(organization_reports_path(@organization)) && current_user.loan_officer? %>
+          <%= render 'organizations/partials/reports' %>
+        <% end %>
+        <% if current_page?(organization_settings_path(@organization)) %>
+          <%= render 'organizations/partials/settings' %>
+        <% end %>
       </div>
     </div>
   </div>
 </div>
-<% if current_page?(organization_path(@organization)) %>
-  <%= render 'organizations/partials/info' %>
-<% end %>
-<% if current_page?(organization_members_path(@organization)) %>
-  <%= render 'organizations/partials/members' %>
-<% end %>
-<% if current_page?(organization_savings_accounts_path(@organization)) %>
-  <%= render 'organizations/partials/savings_accounts' %>
-<% end %>
-<% if current_page?(organization_loans_path(@organization)) %>
-  <%= render 'organizations/partials/loans' %>
-<% end %>
-<% if current_page?(organization_reports_path(@organization)) && current_user.loan_officer? %>
-  <%= render 'organizations/partials/reports' %>
-<% end %>
-<% if current_page?(organization_settings_path(@organization)) %>
-  <%= render 'organizations/partials/settings' %>
-<% end %>

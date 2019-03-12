@@ -1,23 +1,33 @@
 <div class="card">
-	<div class="card-body">
-		<%= link_to 'Edit Organization', edit_organization_path(@organization), class: "btn btn-primary float-right" %>
-	</div>
-</div>
-<div class="card">
+  <div class="card-header bg-danger">
+    <h4 class="card-title">Settings</h4>
+  </div>
 	<div class="card-body">
 		<div class="row">
-			<div class="col-md-6">
-				<h6 class="text-muted">
-					Open savings account for this organization.
-				</h6>
+			<div class="col-md-8">
+				<h4 class="card-title mb-0">Update Organization Details</h4>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-4">
+				<%= link_to 'Update Details', edit_organization_path(@organization), class: "btn btn-outline-danger" %>
+			</div>
+		</div>
+	</div>
+	<hr class="no-margin">
+	<div class="card-body">
+		<div class="row">
+			<div class="col-md-8">
+				<h4 class="card-title mb-0">Organization Savings</h4>
+				<p class="text-muted">Open savings account for this organization.</p>
+			</div>
+			<div class="col-md-4">
 				<% if policy([:organizations, :savings_account]).new? %>
           <%=link_to new_savings_account_application_path(depositor_id: @organization.id, depositor_type: @organization.class.to_s) do %>
-            <span class="btn btn-primary float-right">
+            <span class="btn btn-outline-danger">
               <i class="fa fa-plus-circle"></i> New Savings Account 
             </span>
           <% end %>
+        <% else %>
+        	<p class="text-muted float-right"> Only Accountant or Teller can do this action.</p>
         <% end %>
       </div>
     </div>

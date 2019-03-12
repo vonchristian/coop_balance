@@ -78,6 +78,9 @@ class User < ApplicationRecord
     name
   end
 
+  def name_and_details #for select2 referencing
+    "#{full_name} (#{role.titleize})"
+  end
 
   def default_cash_account
     if employee_cash_accounts.present?
@@ -98,8 +101,6 @@ class User < ApplicationRecord
   def account_receivable_store_balance
     AccountsReceivableStore.new.balance(self)
   end
-
-
 
   def self.loan_approvers
     all.select{|a| User::LOAN_APPROVERS.include?(a.role.titleize)}

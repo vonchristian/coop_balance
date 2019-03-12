@@ -81,13 +81,13 @@
         </div>
         <div class="card-body">
           <%=simple_form_for @disbursement, url: :treasury_module_cash_disbursement_voucher_processings, html: { autocomplete: 'off' } do |f| %>
-            <%= f.input :cooperative_service_id, collection: current_cooperative.cooperative_services.map{|a| [a.title, a.id] }, hint: "Select Cooperative Services when entering" %>
+            <%= f.input :cooperative_service_id, collection: current_cooperative.cooperative_services.map{|a| [a.title, a.id] }, hint: "Select Cooperative Services." %>
             <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
             <%= f.input :description, as: :text %>
             <%= f.input :reference_number %>
             <%#= f.input :number, input_html: { value: Voucher.generate_number }, as: :hidden %>
             <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
-            <%= f.input :payee_id, label: "Payee", collection: Voucher.payees.map{|a| [a.name, a.id] } %>
+            <%= f.input :payee_id, label: "Payee", collection: Voucher.payees.map{|a| [a.name_and_details, a.id] } %>
             <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
             <%= f.input :cash_account_id, input_html: { value: @cash_account.id }, as: :hidden %>
 

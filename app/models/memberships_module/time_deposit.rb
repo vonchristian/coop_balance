@@ -39,10 +39,14 @@ module MembershipsModule
     end
 
     def withdrawal_date
-      if withdrawn == true
+      if withdrawn?
         # time_deposit_product_account.debit_entries.select {|e| e.amounts.where(commercial_document: self)}.first.entry_date
         entries.sort_by(&:created_at).reverse.first.entry_date
       end
+    end
+
+    def withdrawn?
+      withdrawn == true
     end
 
     def self.not_withdrawn

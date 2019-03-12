@@ -3,7 +3,11 @@
     <div class="card-body">
       <div class="row">
         <div class="col-md-1">
-          <%= image_tag(barangay.avatar, class: "img-circle", height: 40, width: 40) %>
+          <% if barangay.avatar.attached? %>
+            <%= image_tag(barangay.avatar, class: "img-circle", height: 40, width: 40) %>
+          <% else %>
+            <h1 class="fa fa-globe"></h1>
+          <% end %>
         </div>
         <div class="col-md-9">
           <b><%= barangay.name %></b><br>

@@ -6,7 +6,7 @@
           <div class="card-header">
             <div class="profile-wrapper">
               <h3 class="card-title"> <%= @office.name %></h3>
-              <% if current_cooperative.logo.present? %>
+              <% if current_cooperative.logo.attached? %>
                 <%= image_tag(current_cooperative.logo, width: '150', height: '150', class: "img-rounded mx-auto d-block") %>
               <% else %>
                 <%= image_tag("default.png", width: '150', height: '150', class: 'img-circle mx-auto d-block') %>

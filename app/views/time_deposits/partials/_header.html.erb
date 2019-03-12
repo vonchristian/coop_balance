@@ -5,9 +5,13 @@
         <div class="col-md-1 col-sm-1">
           <%= image_tag(time_deposit.depositor.avatar, width: 45, height: 45, class: "img-circle") if time_deposit.depositor.avatar.attached? %>
         </div>
-        <div class="col-md-3 col-sm-3">
+        <div class="col-md-4 col-sm-4">
           <b><%= time_deposit.depositor_name.try(:upcase) %></b><br>
-          <small class="text-muted"><%= time_deposit.effectivity_date.strftime("%B %e, %Y") %></small><br>
+          <small class="text-muted"><%= time_deposit.effectivity_date.strftime("%B %e, %Y") %></small>
+          <% if time_deposit.withdrawn == true %>
+            <br>
+            <small class="badge bg-warning"> Withdrawn last <%= time_deposit.withdrawal_date.strftime("%b. %e, %Y") %></small>
+          <% end %>
         </div>
         <div class="col-md-3 col-sm-3">
           <h4 class="card-title"><%= number_to_currency time_deposit.balance %></h4>
@@ -19,12 +23,8 @@
           <% end %><br>
           <small class="text-muted">MATURITY DATE</small>
         </div>
-        <div class="col-md-2 col-sm-2">
+        <div class="col-md-1 col-sm-1">
           #<%= time_deposit.entries.last.try(:reference_number) %>
-          <% if time_deposit.withdrawn == true %>
-            <br>
-            <small class="text-danger"> Withdrawn last <%= time_deposit.withdrawal_date.strftime("%b %e, %Y") %></small>
-          <% end %>
         </div>
       </div>
     </div>

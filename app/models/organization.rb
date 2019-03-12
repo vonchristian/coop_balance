@@ -48,6 +48,14 @@ class Organization < ApplicationRecord
     member_memberships + employee_memberships
   end
 
+  def name_and_details #for select2 referencing
+    if name.present?
+      "#{name} (Organization/Office)"
+    else
+      "#{abbreviated_name} (Organization/Office)"
+    end
+  end
+
   private
   def set_default_image
     if avatar.attachment.blank?

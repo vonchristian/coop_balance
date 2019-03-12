@@ -12,8 +12,6 @@
           <small class="text-muted">
             <i class="fa fa-server"></i> <%= savings_account.saving_product_name %> &nbsp;
             <i class="fa fa-building"></i> <%= savings_account.office_name %>
-          </small><br>
-          <small class="text-muted">
             <i class="fa fa-clock" data-toggle="tooltip" title="Last Transaction Date"></i> <%= savings_account.last_transaction_date.strftime("%b %e, %Y") %>
           </small>
         <% end %>
@@ -29,13 +27,13 @@
         <% else %>
           <% if policy([:savings_accounts, :deposit]).new? %>
             <%= link_to new_savings_account_deposit_path(savings_account), data: { turbolinks: false } do %>
-              <span class="btn btn-success"><i class="fa fa-arrow-circle-down"></i> Deposit </span>
+              <span class="btn btn-success btn-sm"><i class="fa fa-arrow-circle-down"></i> Deposit </span>
             <% end %>
           <% end %>
           &nbsp;
           <% if policy([:savings_accounts, :withdrawal]).new? %>
             <%= link_to new_savings_account_withdrawal_path(savings_account), data: { turbolinks: false } do %>
-              <span class="btn btn-danger"><i class="fa fa-arrow-circle-up"></i> Withdraw </span>
+              <span class="btn btn-danger btn-sm"><i class="fa fa-arrow-circle-up"></i> Withdraw </span>
             <% end %>
           <% end %>
         <% end %>

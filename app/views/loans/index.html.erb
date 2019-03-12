@@ -49,6 +49,7 @@
             <table class="table table-hover">
               <thead>
                 <tr>
+                  <th></th>
                   <th> Borrower </th>
                   <th> Loan Product </th>
                   <th> Loan Amount </th>
@@ -59,7 +60,8 @@
                 <% @loans.each do |loan| %>
                   <% cache(loan) do %>
                     <tr style="cursor: pointer;" data-link="<%= loan_path(loan) %>">
-                      <td><%= image_tag(loan.borrower.avatar, class: "img-circle", height: 35, width: 35) %> &nbsp; <b><%= loan.borrower_name %></b></td>
+                      <td style="width: 40px"><%= image_tag(loan.borrower.avatar, class: "img-circle", height: 35, width: 35) %></td>
+                      <td><b><%= loan.borrower_name %></b></td>
                       <td><%= loan.loan_product_name %></td>
                       <td><%= number_to_currency loan.loan_amount %>
                       <td><%= number_to_currency loan.balance %>

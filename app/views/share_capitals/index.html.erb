@@ -5,7 +5,7 @@
       <div class="card-body">
         <%=form_tag share_capitals_path, method: :get, class: "search-form" do %>
           <div class="input-group">
-            <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Share Capital... ", id: 'account-search-form' %>
+            <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Member... ", id: 'account-search-form' %>
             <span class="input-group-btn">
               <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
                 <i class="fa fa-search"></i>

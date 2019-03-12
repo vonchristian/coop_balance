@@ -1,5 +1,10 @@
 module Addresses
   class Barangay < ApplicationRecord
+    include PgSearch
+
+    pg_search_scope( :search, :against => [:name], :associated_against => { :municipality => [:name] },
+                    using: { tsearch: { prefix: true } } )
+
     has_one_attached :avatar
     belongs_to :cooperative
     belongs_to :municipality
@@ -13,7 +18,7 @@ module Addresses
     has_many :members, through: :addresses, source: :addressable, source_type: "Member"
     has_many :organizations, through: :addresses, source: :addressable, source_type: "Organization"
 
-    validates :name, presence: true, uniqueness: true
+    validates :name, presence: true
 
     before_save :set_default_avatar, on: :create
 

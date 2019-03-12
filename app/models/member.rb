@@ -52,6 +52,10 @@ class Member < ApplicationRecord
   before_save :update_birth_date_fields
   before_save :set_default_image, :set_default_account_number, on: :create
 
+  def self.retired
+    where.not(retired_at: nil)
+  end
+
   def self.for_cooperative(args={})
     joins(:memberships).where('memberships.cooperative_id' => args[:cooperative].id)
   end
@@ -93,7 +97,9 @@ class Member < ApplicationRecord
     where(birth_day: args[:birth_day])
   end
 
-
+  def retired?
+    retired_at.present?
+  end
 
   def current_organization
     organizations.current
@@ -101,6 +107,10 @@ class Member < ApplicationRecord
 
   def current_membership
     memberships.current
+  end
+
+  def name_and_details #for select2 referencing
+    "#{full_name} (#{current_membership.membership_type.try(:titleize)})"
   end
 
   def name

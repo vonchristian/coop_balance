@@ -5,29 +5,25 @@
         <%= image_tag(loan_application.borrower.avatar, height: 45, width: 45, class: 'img-circle') %>
       </div>
       <div class="col-md-3 col-sm-3">
-
-
-          <b><%=  loan_application.borrower_name.try(:upcase) %></b><br>
-
-
-        <small class="text-muted"><i class="fa fa-tag"></i> <%= loan_application.loan_product_name %><br>
-         <i class="fa fa-calendar"></i> <%= loan_application.voucher.try(:date).try(:strftime, "%B %e, %Y") %>
+        <b><%=  loan_application.borrower_name.try(:upcase) %></b><br>
+        <small class="text-muted">
+          <i class="fa fa-tag"></i> <%= loan_application.loan_product_name %><br>
+          <i class="fa fa-calendar"></i> <%= loan_application.voucher.try(:date).try(:strftime, "%B %e, %Y") %>
         </small>
       </div>
-      <div class="col-md-3 col-sm-5">
-        <p class="number total"><%= number_to_currency loan_application.loan_amount %></p>
+      <div class="col-md-2 col-sm-5">
+        <p class="number total mb-0"><%= number_to_currency loan_application.loan_amount %></p>
         <small class="text-muted">LOAN AMOUNT</small><br>
       </div>
-      <div class="col-md-1 col-sm-2">
+      <div class="col-md-2 col-sm-2">
         <% if loan_application.voucher.present? %>
-          <p class="text-muted"><%= "##{loan_application.voucher.reference_number}" %></p>
+          <p class="text-muted mb-0"><%= "##{loan_application.voucher.reference_number}" %></p>
         <% end %>
       </div>
       <div class="col-md-2 col-sm-9">
-        <% if loan_application.voucher.present? %>
+        <% if loan_application.voucher.present? && !loan_application.voucher.disbursed? %>
         <%= link_to 'Disburse Voucher', new_loans_module_loan_application_disbursement_path(loan_application_id: loan_application.id, voucher_id: loan_application.voucher_id), class: "btn btn-primary float-right" %>
         <% end %>
-
       </div>
       <div class="col-md-2 col-sm-2">
         <center>
@@ -37,9 +33,9 @@
             <% end %>
           <% else %>
             <% if loan_application.cancelled == true %>
-              <span class="text-danger"> Cancelled</span>
+              <span class="text-danger float-right"> Cancelled</span>
             <% else %>
-              <span class="fa fa-check text-success"> Approved</span>
+              <span class="fa fa-check text-success float-right"> Approved</span>
             <% end %>
           <% end %>
         </center>

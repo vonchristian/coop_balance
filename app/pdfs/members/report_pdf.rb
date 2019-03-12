@@ -45,16 +45,20 @@ module Members
       table([["", "Member", "<b>#{@member.name.try(:upcase)}</b>"]], cell_style: { inline_format: true, size: 10, font: "Helvetica" }, column_widths: [20, 150, 200]) do
           cells.borders = []
       end
-      table([["", "Contact Number", @member.contact_number]], cell_style: { inline_format: true, size: 10, font: "Helvetica" }, column_widths: [20, 150, 100]) do
+      table([["", "Contact Number", @member.contact_number]], cell_style: { inline_format: true, size: 10, font: "Helvetica" }, column_widths: [20, 150, 200]) do
           cells.borders = []
       end
-      table([["", "Address", @member.current_address_complete_address]], cell_style: { inline_format: true, size: 10, font: "Helvetica" }, column_widths: [20, 150, 100]) do
+      table([["", "Address", @member.current_address_complete_address]], cell_style: { inline_format: true, size: 10, font: "Helvetica" }, column_widths: [20, 150, 200]) do
           cells.borders = []
       end
-      table([["", "Date of Birth", @member.date_of_birth.try(:strftime, ("%B %e, %Y"))]], cell_style: { inline_format: true, size: 10, font: "Helvetica" }, column_widths: [20, 150, 100]) do
+      table([["", "Date of Birth", @member.date_of_birth.try(:strftime, ("%B %e, %Y"))]], cell_style: { inline_format: true, size: 10, font: "Helvetica" }, column_widths: [20, 150, 200]) do
+          cells.borders = []
+      end
+      table([["", "Organization/Office", @member.current_organization.try(:name)]], cell_style: { inline_format: true, size: 10, font: "Helvetica" }, column_widths: [20, 150, 200]) do
           cells.borders = []
       end
       stroke do
+        move_down 5
         stroke_color 'CCCCCC'
         line_width 0.2
         stroke_horizontal_rule
@@ -118,7 +122,7 @@ module Members
     end
     def share_capitals_data
       [["", "TYPE", "BALANCE", "NO. OF SHARES"]] +
-      @share_capitals_data ||= @member.share_capitals.map{|share_capital| ["", share_capital.share_capital_product_name.try(:upcase), price(share_capital.paid_up_balance), share_capital.paid_up_shares]}
+      @share_capitals_data ||= @member.share_capitals.map{|share_capital| ["", share_capital.share_capital_product_name.try(:upcase), price(share_capital.balance), share_capital.shares]}
     end
   end
 end

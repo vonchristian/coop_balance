@@ -7,10 +7,10 @@
 				
 			</div>
 			<div class="card-body">
-				<h4 class="card-title">New Barangay</h4>
+				<h4 class="card-title">Edit Barangay</h4>
 				<hr>
-				<%= simple_form_for @barangay, url: :cooperative_barangays, multipart: true, html: { autcomplete: 'off' } do |f| %>
-				  <%= f.input :avatar, as: :file %>
+				<%= simple_form_for @barangay, url: :cooperative_barangay, multipart: true, html: { autcomplete: 'off' } do |f| %>
+				  <%= f.input :avatar, label: "Logo", as: :file %>
 				  <%= f.input :name %>
 				  <%= f.input :municipality_id, collection: current_cooperative.municipalities.map{|a| [a.name, a.id] } %>
 				 	<hr>

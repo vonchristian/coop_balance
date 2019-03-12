@@ -27,6 +27,10 @@ module StoreFrontModule
       business_name
     end
 
+    def name_and_details #for select2 referencing
+      "#{name} (Supplier)"
+    end
+
     def owner_name
       "#{first_name} #{last_name}"
     end

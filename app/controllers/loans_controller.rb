@@ -9,6 +9,7 @@ class LoansController < ApplicationController
     else
       @loans = current_cooperative.loans.includes(:borrower).
       # includes(:disbursement_voucher, borrower: [:avatar_attachment], loan_product: [:current_account, :past_due_account]).
+      not_cancelled.
       not_archived.
       order(updated_at: :desc).
       paginate(page: params[:page], per_page: 30)

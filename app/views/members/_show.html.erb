@@ -19,6 +19,10 @@
                 </div>
               <% end %>
             </div>
+            <h6 class="text-center mb-0 mt-0"><%= @member.current_membership.try(:membership_type).try(:titleize) %></h6>
+            <% if @member.retired? %>
+              <h6 class="text-center text-warning mb-0">(RETIRED)</h6>
+            <% end %>
           </div>
           <div class="card-body">
             <nav class="nav flex-column nav-pills">
@@ -29,7 +33,6 @@
               <li class="nav-item"><%= link_to 'Time Deposits', member_time_deposits_path(@member), class: "nav-link #{ 'active' if current_page?(member_time_deposits_path(@member)) }" %></li>
               <li class="nav-item"><%= link_to 'Program Subscriptions', member_subscriptions_path(@member), class: "nav-link #{ 'active' if current_page?(member_subscriptions_path(@member)) }" %></li>
               <li class="nav-item"><%= link_to 'Sales', member_sales_path(@member), class: "nav-link #{ 'active' if current_page?(member_sales_path(@member)) }" %></li>
-
               <li class="nav-item"><%= link_to 'Settings', member_settings_path(@member), class: "nav-link #{ 'active' if current_page?(member_settings_path(@member))}" %></li>
             </nav>
           </div>

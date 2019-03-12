@@ -7,13 +7,16 @@
         </div>
         <div class="col-md-11 col-sm-11">
           <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-4">
               <b><%= member.full_name %></b><br>
               <small class="text-muted">
-                <i class="fa fa-user"></i>&nbsp;  <%= member.memberships.first.membership_type.try(:titleize) if member.memberships.present? %>
+                <i class="fa fa-user"></i>&nbsp;  <%= member.current_membership.try(:membership_type).try(:titleize) if member.memberships.present? %>
               </small>
+              <% if member.retired? %>
+                <small class="text-warning">RETIRED</small>
+              <% end %>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
               <small class="text-muted">
                 <i class="fa fa-phone"></i>&nbsp;  <%= member.current_contact_number %>
               </small><br>
@@ -21,7 +24,7 @@
                 <i class="fa fa-map-marker"></i>&nbsp;  <%= member.current_address_complete_address %>
               </small>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
               <small class="text-muted">
                 <i class="fa fa-sitemap"></i> <%= member.current_organization_name || "No organization"%>
               </small>

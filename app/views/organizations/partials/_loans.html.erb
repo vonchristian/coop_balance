@@ -1,5 +1,8 @@
-<div class="card-body">
-  <% @loans.each do |loan| %>
-    <%= render 'loans/partials/header', loan: loan %>
-	<% end %>
+<div class="card">
+  <div class="card-header bg-info">
+    <h4 class="card-title">Member Loans</h4>
+  </div>
 </div>
+<% @loans.each do |loan| %>
+  <%= render 'loans/partials/header', loan: loan %>
+<% end %>
