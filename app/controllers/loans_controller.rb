@@ -1,7 +1,7 @@
 class LoansController < ApplicationController
   def index
     if params[:search].present?
-      @loans = current_office.loans.not_cancelled.not_archived.text_search(params[:search]).paginate(page: params[:page], per_page: 20)
+      @loans = current_cooperative.loans.not_cancelled.not_archived.text_search(params[:search]).paginate(page: params[:page], per_page: 20)
     else
       @loans = current_office.loans.includes(:borrower).
       # includes(:disbursement_voucher, borrower: [:avatar_attachment], loan_product: [:current_account, :past_due_account]).
