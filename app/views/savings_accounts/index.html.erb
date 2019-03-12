@@ -3,7 +3,7 @@
   <div class="col-md-8">
     <div class="card">
       <div class="card-header no-border">
-        <h3 class="card-title"> <%= @office.name %> Savings </h3>
+        <h3 class="card-title"> <%= current_office.name %> Savings </h3>
       </div>
       <div class="card-body">
         <%= form_tag savings_accounts_path, method: :get, class: "search-form" do %>
@@ -35,7 +35,11 @@
               <%= link_to office.name, savings_accounts_path(office_id: office.id) %>
             </div>
             <div class="col-md-3">
-              <%= link_to "Switch", savings_accounts_path(office_id: office.id), class: 'btn btn-primary' %>
+              <% if current_page?(savings_accounts_path(office_id: office.id)) %>
+                <span class="badge bg-success"> Current </span>
+              <% else %>
+                <%= link_to "Switch", savings_accounts_path(office_id: office.id), class: 'btn btn-primary' %>
+              <% end %>
             </div>
           </div>
           <hr>

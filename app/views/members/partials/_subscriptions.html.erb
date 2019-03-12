@@ -26,7 +26,7 @@
     <% @member.program_subscriptions.each do |program_subscription| %>
       <div class="row">
         <div class="col-md-6">
-          <%= program_subscription.name %><br>
+          <%= link_to program_subscription.name, program_subscription_path(program_subscription) %><br>
           <span class="text-muted"><%= program_subscription.description %></span>
         </div>
         <div class="col-md-6">

@@ -1,18 +1,15 @@
 class LoansController < ApplicationController
   def index
-    if params[:from_date].present? && params[:to_date].present?
-      @from_date = DateTime.parse(params[:from_date])
-      @to_date = DateTime.parse(params[:to_date])
-      @loans = current_cooperative.loans.not_cancelled.not_archived.past_due_loans(from_date: @from_date, to_date: @to_date).paginate(:page => params[:page], :per_page => 20)
-    elsif params[:search].present?
-      @loans = current_cooperative.loans.not_cancelled.not_archived.text_search(params[:search]).paginate(page: params[:page], per_page: 20)
+    if params[:search].present?
+      @loans = current_office.loans.not_cancelled.not_archived.text_search(params[:search]).paginate(page: params[:page], per_page: 20)
     else
-      @loans = current_cooperative.loans.includes(:borrower).
+      @loans = current_office.loans.includes(:borrower).
       # includes(:disbursement_voucher, borrower: [:avatar_attachment], loan_product: [:current_account, :past_due_account]).
       not_archived.
       order(updated_at: :desc).
       paginate(page: params[:page], per_page: 30)
     end
+    @offices = current_cooperative.offices
     @amortization_schedules = current_office.amortization_schedules.includes(:loan).scheduled_for(from_date: Date.current.beginning_of_month, to_date: Date.current.next_month.end_of_month).paginate(page: params[:page], per_page: 25)
     respond_to do |format|
       format.xlsx

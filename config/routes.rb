@@ -525,6 +525,9 @@ Rails.application.routes.draw do
 
   resources :program_subscriptions, only: [:show] do
     resources :payments, only: [:new, :create], module: :program_subscriptions
+    resources :vouchers, only: [:show], module: :program_subscriptions
+    resources :voucher_confirmations, only: [:create], module: :program_subscriptions
+
   end
 
   resources :metrics, only: [:index]
@@ -604,4 +607,5 @@ Rails.application.routes.draw do
     resources :settings,         only: [:index], module: :offices
   end
   resources :credit_scores, only: [:index]
+  resources :program_subscriptions, only: [:show]
 end

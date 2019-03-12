@@ -1,0 +1,6 @@
+<%= @program_subscription.name %>
+<% if @program_subscription.paid?(from_date: Date.today.beginning_of_year, to_date: Date.today.end_of_year) %>
+  <span class="badge bg-success"> Paid </span>
+<% else %>
+  <%= link_to 'Pay Contribution', new_program_subscription_payment_path(@program_subscription, member_id: @member.id), class: "btn btn-sm btn-flat btn-primary" %>
+<% end %>

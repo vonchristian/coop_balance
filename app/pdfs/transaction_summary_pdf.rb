@@ -275,7 +275,7 @@ class TransactionSummaryPdf < Prawn::Document
        "#{price(cooperative.loan_products.total_credits_balance(from_date: date, to_date: date))}",
        "#{price(cooperative.loan_products.interest_revenue_accounts.credits_balance(from_date: date, to_date: date))}",
        "#{price(cooperative.loan_products.penalty_revenue_accounts.credits_balance(from_date: date, to_date: date))}",
-       "#{price(cooperative.loan_products.loan_payments(from_date: date, to_date: date))}"
+       "#{price(cooperative.entries.loan_payments(from_date: date, to_date: date))}"
 
 
        ]], column_widths: [80, 80, 60, 70, 70, 70, 80], cell_style: { inline_format: true, size: 9, padding: [0,0,0,0]}) do

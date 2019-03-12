@@ -10,7 +10,7 @@ class SavingsAccountsController < ApplicationController
   end
 
   def show
-    @savings_account = current_office.savings.includes(:saving_product => [:account]).find(params[:id])
+    @savings_account = current_cooperative.savings.includes(:saving_product => [:account]).find(params[:id])
     @entries = @savings_account.entries.includes(:commercial_document, :recorder, :cooperative_service).distinct
     respond_to do |format|
       format.html
