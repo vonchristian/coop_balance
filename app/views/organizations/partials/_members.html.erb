@@ -1,0 +1,38 @@
+<div class="card-body">
+  <div class="row">
+    <div class="col-md-3">
+      <%= form_tag organization_members_path, id: 'membership-filter-form', method: :get do%>
+        <%= select_tag :membership_type, options_for_select(Cooperatives::Membership.whitelisted_membership_types.map {|m| [m.titleize.pluralize, m]}, params[:membership_type]), class: ' form-control border-input', prompt: false %>
+      <% end %>
+    </div>
+    <div class="col-md-4">
+      <%= form_tag organization_members_path, method: :get, class: "sidebar-form" do %>
+        <div class="input-group">
+         <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search for First name, Last name", id: 'taxpayer-search-form' %>
+         <span class="input-group-btn">
+           <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+             <i class="fa fa-search"></i>
+           <% end %>
+         </span>
+       </div>
+      <% end %>
+    </div>
+    <div class="col-md-5">
+      <%= link_to new_organization_member_path(@organization) do %>
+        <span class="btn btn-primary float-right" data-toggle="tooltip" title="Add Member" %>
+          <i class="fa fa-user-plus"></i> Add Member
+        </span>
+      <% end %>
+    </div>
+  </div>
+</div>
+<% @members.each do |member| %>
+  <%= render 'members/partials/header', member: member %>
+<% end %>
+<%=will_paginate @members %>
+
+<script type="text/javascript">
+  $('#membership_type').change(function(e) {
+    $('#membership-filter-form').submit();
+  });
+</script>

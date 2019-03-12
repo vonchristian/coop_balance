@@ -478,7 +478,7 @@ Rails.application.routes.draw do
   resources :calendars, only: [:index, :show]
 
   resources :organizations, only: [:index, :show, :new, :create, :edit, :update] do
-    resources :members, only: [:new, :create],   module: :organizations
+    resources :members, only: [:index, :new, :create],   module: :organizations
     resources :loans, only: [:index],            module: :organizations
     resources :reports, only: [:index],          module: :organizations
     resources :share_capitals, only: [:index],   module: :organizations

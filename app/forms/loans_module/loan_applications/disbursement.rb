@@ -11,6 +11,7 @@ module LoansModule
           update_voucher_disbursement_date
           create_loan
           create_entry
+          update_entry_date
           update_term
           update_approved_at
           update_last_transaction_date
@@ -43,6 +44,10 @@ module LoansModule
       def update_last_transaction_date
           find_loan_application.loan.update_attributes!(last_transaction_date: disbursement_date)
           find_loan_application.loan.borrower.update_attributes!(last_transaction_date: disbursement_date)
+      end
+
+      def update_entry_date
+        find_loan_application.voucher.entry.update(entry_date: disbursement_date)
       end
 
       def update_term

@@ -3,7 +3,7 @@ module Organizations
     def index
       @organization = current_cooperative.organizations.find(params[:organization_id])
       @date = params[:date].present? ? Date.parse(params[:date]) : Date.today.strftime("%B %e, %Y")
-      @membership_type = params[:membership_type].present? ? params[:membership_type] : Membership.whitelisted_membership_types.first
+      @membership_type = params[:membership_type].present? ? params[:membership_type] : Cooperatives::Membership.whitelisted_membership_types.first
       @loan_product = params[:loan_product].present? ? current_cooperative.loan_products.find(params[:loan_product]) : current_cooperative.loan_products.first
       @loans_pdf = @organization.member_loans.disbursed.filter_by(membership_type: @membership_type, date: @date, loan_product: @loan_product)
       @loans = @loans_pdf.paginate(page: params[:page], per_page: 50)

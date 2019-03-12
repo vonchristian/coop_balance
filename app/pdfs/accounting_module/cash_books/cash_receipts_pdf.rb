@@ -90,14 +90,18 @@ module AccountingModule
           entries_table_header
 
           entries_data ||= entries.sort_by{|e| e.reference_number.to_i}.map do |entry|
-            [
-              entry.entry_date.strftime("%D"), 
-              display_commercial_document_for(entry).try(:upcase),
-              entry.description, 
-              "##{entry.reference_number}",
-              entry.debit_amounts.where(account: cooperative.cash_accounts).sum{|a| a.amount}.zero? ? "-" : price(entry.debit_amounts.where(account: cooperative.cash_accounts).sum{|a| a.amount}), 
-              entry.credit_amounts.where(account: cooperative.cash_accounts).sum{|a| a.amount}.zero? ? "-" : price(entry.credit_amounts.where(account: cooperative.cash_accounts).sum{|a| a.amount})
-            ] 
+            if entry.cancelled?
+              ["Cancelled", "-", "-", "##{entry.reference_number}", "-", "-"]
+            else
+              [
+                entry.entry_date.strftime("%D"), 
+                display_commercial_document_for(entry).try(:upcase),
+                entry.description, 
+                "##{entry.reference_number}",
+                entry.debit_amounts.where(account: cooperative.cash_accounts).sum{|a| a.amount}.zero? ? "-" : price(entry.debit_amounts.where(account: cooperative.cash_accounts).sum{|a| a.amount}), 
+                entry.credit_amounts.where(account: cooperative.cash_accounts).sum{|a| a.amount}.zero? ? "-" : price(entry.credit_amounts.where(account: cooperative.cash_accounts).sum{|a| a.amount})
+              ] 
+            end
           end
           table(entries_data, 
             cell_style: { inline_format: true, size: 8, padding: [1,5,3,2]}, 

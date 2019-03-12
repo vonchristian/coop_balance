@@ -2,6 +2,17 @@ require 'will_paginate/array'
 module Organizations
   class MembersController < ApplicationController
 
+    def index
+      @organization = current_cooperative.organizations.find(params[:organization_id])
+      if params[:membership_type].present?
+        @members = @organization.member_memberships.select{|m| m.current_membership.membership_type == params[:membership_type]}.paginate(page: params[:page], per_page: 25)
+      elsif params[:search].present?
+        @members = @organization.member_memberships.text_search(params[:search]).paginate(page: params[:page], per_page: 25)
+      else
+        @members = @organization.member_memberships.uniq.paginate(page: params[:page], per_page: 25)
+      end
+    end
+
     def new
       @organization = current_cooperative.organizations.find(params[:organization_id])
       @member = Organizations::MembershipProcessing.new(organization_id: @organization.id)

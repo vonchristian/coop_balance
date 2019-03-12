@@ -36,7 +36,7 @@
             <label class="no-margin-bottom">Member/Payee</label>
           </div>
           <div class="col-md-8 col-sm-8">
-            <%#= image_tag(@entry.commercial_document.avatar, class: "img-circle", height: 35, width: 35) if @entry.commercial_document.avatar.attached? %> <%= @entry.commercial_document.try(:name) %>
+            <%= image_tag(@entry.commercial_document.avatar, class: "img-circle", height: 35, width: 35) if @entry.commercial_document.avatar.attached? %> <%= @entry.commercial_document.try(:name) %>
           </div>
         </div>
         <div class="min-margin">
@@ -134,8 +134,8 @@
                 <td>
                   <% if current_user.bookkeeper? || current_user.accountant? || current_user == @entry.recorder %>
                     <% if !@entry.cancelled? %>
-                      <%#=link_to "Update", amount.is_a?(AccountingModule::DebitAmount) ?edit_accounting_module_debit_amount_path(amount) : edit_accounting_module_credit_amount_path(amount), class: "btn btn-outline-warning btn-sm" %>
-                      <%#=link_to "Delete", accounting_module_amount_path(amount), class: "btn btn-outline-danger btn-sm", method: :delete %>
+                      <%=link_to "Update", amount.is_a?(AccountingModule::DebitAmount) ?edit_accounting_module_debit_amount_path(amount) : edit_accounting_module_credit_amount_path(amount), class: "btn btn-outline-warning btn-sm" %>
+                      <%=link_to "Delete", accounting_module_amount_path(amount), class: "btn btn-outline-danger btn-sm", method: :delete %>
 
                     <% end %>
                   <% end %>
