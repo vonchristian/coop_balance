@@ -1,8 +1,0 @@
-<%= @program.name %>
-<% @program.program_subscriptions.unpaid.each do |unpaid_subscription| %>
-  <%= unpaid_subscription.subscriber_name %>
-<% end %>
-<% @program.program_subscriptions.paid.each do |paid_subscription| %>
-<%= paid_subscription.subscriber_name %>
-<% end %>
-

@@ -108,7 +108,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
-    concurrent-ruby (1.1.4)
+    concurrent-ruby (1.1.5)
     crass (1.0.4)
     database_rewinder (0.9.1)
     delayed-web (0.4.5)
@@ -224,7 +224,7 @@ GEM
       monetize (~> 1.9.0)
       money (~> 6.13.0)
       railties (>= 3.0)
-    msgpack (1.2.7)
+    msgpack (1.2.8)
     multi_json (1.13.1)
     nenv (0.3.0)
     nio4r (2.3.1)

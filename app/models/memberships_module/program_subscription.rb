@@ -30,7 +30,7 @@
     def unpaid?(options={})
       !paid?(options)
     end
-
+    #move to program
 	  def paid?(options={})
       if one_time_payment?
         account.amounts.where(commercial_document: self).present?

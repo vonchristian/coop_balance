@@ -4,8 +4,10 @@ class ShareCapitalsController < ApplicationController
     if params[:search].present?
       @share_capitals = current_cooperative.share_capitals.includes(:office, [:share_capital_product =>[:equity_account], :subscriber => [:avatar_attachment => [:blob]]]).text_search(params[:search]).paginate(:page => params[:page], :per_page => 20)
     else
-      @share_capitals = current_cooperative.share_capitals.includes(:office, [:share_capital_product =>[:equity_account], :subscriber => [:avatar_attachment => [:blob]]]).paginate(:page => params[:page], :per_page => 20)
+      @share_capitals = current_office.share_capitals.includes(:office, [:share_capital_product =>[:equity_account], :subscriber => [:avatar_attachment => [:blob]]]).paginate(:page => params[:page], :per_page => 20)
     end
+    @offices = current_cooperative.offices
+
   end
 
   def show

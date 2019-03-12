@@ -171,7 +171,8 @@ Rails.application.routes.draw do
   end
 
   resources :members, only: [:index, :show, :edit, :update, :destroy] do
-    resources :bills_payments, only: [:index], module: :members
+    resources :credit_scores,         only: [:index], module: :members
+    resources :bills_payments,        only: [:index], module: :members
     resources :organizations,         only: [:new, :create],                 module: :members
     resources :beneficiaries,         only: [:new, :create, :destroy],       module: :members
     resources :merging_line_items,    only: [:new, :create],                 module: :members
@@ -526,6 +527,9 @@ Rails.application.routes.draw do
 
   resources :program_subscriptions, only: [:show] do
     resources :payments, only: [:new, :create], module: :program_subscriptions
+    resources :vouchers, only: [:show], module: :program_subscriptions
+    resources :voucher_confirmations, only: [:create], module: :program_subscriptions
+
   end
 
   resources :metrics, only: [:index]
@@ -604,4 +608,6 @@ Rails.application.routes.draw do
     resources :reports,          only: [:index], module: :offices
     resources :settings,         only: [:index], module: :offices
   end
+  resources :credit_scores, only: [:index]
+  resources :program_subscriptions, only: [:show]
 end

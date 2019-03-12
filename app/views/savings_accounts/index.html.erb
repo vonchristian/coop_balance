@@ -2,6 +2,9 @@
 <div class="row">
   <div class="col-md-8">
     <div class="card">
+      <div class="card-header no-border">
+        <h3 class="card-title"> <%= current_office.name %> Savings </h3>
+      </div>
       <div class="card-body">
         <%= form_tag savings_accounts_path, method: :get, class: "search-form" do %>
           <div class="input-group">
@@ -20,4 +23,28 @@
     <% end %>
     <center><%= will_paginate @savings_accounts %> </center>
   </div>
-</div>
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"> Offices </h3>
+      </div>
+      <div class="card-body">
+        <% @offices.each do |office| %>
+          <div class="row">
+            <div class="col-md-9">
+              <%= link_to office.name, savings_accounts_path(office_id: office.id) %>
+            </div>
+            <div class="col-md-3">
+              <% if current_page?(savings_accounts_path(office_id: office.id)) %>
+                <span class="badge bg-success"> Current </span>
+              <% else %>
+                <%= link_to "Switch", savings_accounts_path(office_id: office.id), class: 'btn btn-primary' %>
+              <% end %>
+            </div>
+          </div>
+          <hr>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<div>

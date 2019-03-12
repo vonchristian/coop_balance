@@ -7,9 +7,9 @@ wb.styles do |style|
   top_row =  [ borders[:top], borders[:top], borders[:top], borders[:top], borders[:top], borders[:top], borders[:top], borders[:top] ]
 
   header_style = style.add_style(
-    bg_color: "ded4d3", 
-    b: true, 
-    :sz => 12, 
+    bg_color: "ded4d3",
+    b: true,
+    :sz => 12,
     alignment: {horizontal: :center}
   )
 
@@ -20,16 +20,16 @@ wb.styles do |style|
   wb.add_worksheet(name: "Savings") do |sheet|
 
     title_row = sheet.add_row [
-      "Savings Accounts", "", "", current_cooperative.abbreviated_name, ""
+      "Savings Accounts", "", "", current_office.name, ""
     ], style: title_style
     sheet.merge_cells title_row.cells[(0..2)]
     sheet.merge_cells title_row.cells[(3..4)]
 
     subtitle_row = sheet.add_row [
       "As of #{@to_date.strftime('%B %e, %Y')}",
-      "", 
       "",
-      current_cooperative.name, 
+      "",
+      current_cooperative.name,
       ""
     ], style: subtitle_style
     sheet.merge_cells subtitle_row.cells[(0..2)]
@@ -54,6 +54,6 @@ wb.styles do |style|
     end
     sheet.add_row ["", "", "", "", ""], style: top_row
     sheet.column_widths 10, 10, 10, 25, 20
-    
+
   end
 end
