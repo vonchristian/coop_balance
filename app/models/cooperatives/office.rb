@@ -15,7 +15,8 @@ module Cooperatives
     has_many :accountable_accounts,    class_name: "AccountingModule::AccountableAccount", as: :accountable
     has_many :accounts,                class_name: "AccountingModule::Account", through: :accountable_accounts
     has_many :saving_products,         class_name: "CoopServicesModule::SavingProduct"
-
+    has_many :share_capital_products,  class_name: "Cooperatives::ShareCapitalProduct"
+    has_many :loan_products,           class_name: "LoansModule::LoanProduct"
     validates :name, presence: true, uniqueness: true
     validates :type, presence: true
     validates :contact_number, presence: true
