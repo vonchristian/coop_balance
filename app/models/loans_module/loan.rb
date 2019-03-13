@@ -1,9 +1,7 @@
 module LoansModule
   class Loan < ApplicationRecord
     enum status: [:current_loan, :past_due, :restructured, :under_litigation]
-
     audited
-
     include PgSearch
     include LoansModule::Loans::Interest
     include LoansModule::Loans::Principal
@@ -16,7 +14,7 @@ module LoansModule
     multisearchable against: [:borrower_full_name]
     enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
 
-    belongs_to :loan_application, class_name: "LoansModule::LoanApplication"
+    belongs_to :loan_application,       class_name: "LoansModule::LoanApplication"
     belongs_to :disbursement_voucher,   class_name: "Voucher", foreign_key: 'disbursement_voucher_id' # move to loan application
     belongs_to :cooperative
     belongs_to :office,                 class_name: "Cooperatives::Office"
@@ -30,7 +28,7 @@ module LoansModule
     belongs_to :preparer,               class_name: "User", foreign_key: 'preparer_id' #move to loan application
     has_many :voucher_amounts,          class_name: "Vouchers::VoucherAmount", as: :commercial_document, dependent: :destroy # for adding amounts on voucher move to loan application
     has_many :amortization_schedules,   dependent: :destroy
-    has_many :amounts, as: :commercial_document, class_name: "AccountingModule::Amount"
+    has_many :amounts,                  class_name: "AccountingModule::Amount", as: :commercial_document
     has_many :notices,                  class_name: "LoansModule::Notice",  as: :notified
     has_many :loan_interests,           class_name: "LoansModule::Loans::LoanInterest", dependent: :destroy
     has_many :loan_penalties,           class_name: "LoansModule::Loans::LoanPenalty",  dependent: :destroy

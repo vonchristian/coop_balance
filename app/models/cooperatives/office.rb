@@ -14,6 +14,7 @@ module Cooperatives
 
     has_many :accountable_accounts,    class_name: "AccountingModule::AccountableAccount", as: :accountable
     has_many :accounts,                class_name: "AccountingModule::Account", through: :accountable_accounts
+    has_many :saving_products,         class_name: "CoopServicesModule::SavingProduct"
 
     validates :name, presence: true, uniqueness: true
     validates :type, presence: true
@@ -27,7 +28,7 @@ module Cooperatives
     def normalized_type
       type.to_s.gsub("Cooperatives::Offices::", "")
     end
-    
+
     def self.types
       ["Cooperatives::Offices::MainOffice", "Cooperatives::Offices::SatelliteOffice", "Cooperatives::Offices::BranchOffice"]
     end

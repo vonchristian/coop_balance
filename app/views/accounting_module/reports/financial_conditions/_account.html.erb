@@ -10,7 +10,7 @@
     <tbody>
       <% running_total = 0 %>
       <% accounts.uniq.each do |account| %>
-        <% balance = account.balance(office: current_office, :to_date => @to_date) %>
+        <% balance = account.balance(:to_date => @to_date) %>
 
           <tr>
             <td><%= account.name %></td>
@@ -18,7 +18,7 @@
           </tr>
           <% running_total += balance %>
 
-  
+
       <% end %>
       <tr>
         <strong>
