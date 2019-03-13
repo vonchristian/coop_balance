@@ -1,6 +1,6 @@
 <% breadcrumb :share_capitals %>
 <div class="row">
-  <div class="col-md-9">
+  <div class="col-md-8">
     <div class="card">
       <div class="card-body">
         <%=form_tag share_capitals_path, method: :get, class: "search-form" do %>
@@ -20,7 +20,6 @@
   <% end %>
   <center><%= will_paginate @share_capitals %> </center>
 </div>
-</div>
   <div class="col-md-4">
     <div class="card">
       <div class="card-header">
@@ -33,7 +32,11 @@
               <%= link_to office.name, share_capitals_path(office_id: office.id) %>
             </div>
             <div class="col-md-3">
-              <%= link_to "Switch", share_capitals_path(office_id: office.id), class: 'btn btn-primary' %>
+              <% if current_page?(share_capitals_path(office_id: office.id)) %>
+                <span class="badge bg-success"> Current </span>
+              <% else %>
+                <%= link_to "Switch", share_capitals_path(office_id: office.id), class: 'btn btn-primary' %>
+              <% end %>
             </div>
           </div>
           <hr>
