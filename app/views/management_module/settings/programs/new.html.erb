@@ -8,6 +8,7 @@
   <div class="modal-body">
     <%= f.error_notification %>
     <%= f.input :cooperative_id, input_html: { value: current_cooperative.id }, as: :hidden %>
+    <%= f.input :office_id, input_html: { value: current_office.id }, as: :hidden %>
     <%= f.input :name %>
     <%= f.input :description %>
     <%= f.input :amount, label: "Amount" %>
