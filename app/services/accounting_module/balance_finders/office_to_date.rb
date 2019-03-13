@@ -12,10 +12,10 @@ module AccountingModule
 
       def compute
         date_range = DateRange.new(from_date: from_date, to_date: to_date)
-        
+
         amounts.joins(:entry).
         where('entries.office_id' => office.id).
-        where('entries.entry_date' => date_range.start_date..date_range.end_date).
+        where('entries.entry_date' => date_range.range).
         total
       end
     end

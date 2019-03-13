@@ -1,6 +1,6 @@
 wb = xlsx_package.workbook
 wb.add_worksheet(name: "Savings") do |sheet|
-sheet.add_row ["Financial Condition", "As of #{@from_date.strftime("%B %e, %Y")}"]
+sheet.add_row ["Financial Condition", "As of #{@to_date.strftime("%B %e, %Y")}"]
 sheet.add_row ["Assets"]
 sheet.add_row ["Code", "Name", "Balance"]
 
