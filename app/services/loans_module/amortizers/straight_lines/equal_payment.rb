@@ -23,7 +23,6 @@ module LoansModule
           loan_application.amortization_schedules.create!(
             cooperative:     loan_application.cooperative,
             office:          loan_application.office,
-            cooperative:     loan_application.cooperative,
             date:            loan_application.first_amortization_date,
             interest:        first_interest,
             principal:       first_principal,
