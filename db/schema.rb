@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_13_135716) do
+ActiveRecord::Schema.define(version: 2019_03_13_140600) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -744,12 +744,14 @@ ActiveRecord::Schema.define(version: 2019_03_13_135716) do
     t.uuid "amortization_type_id"
     t.uuid "litigation_account_id"
     t.boolean "adjustable_interest_rate", default: false
+    t.uuid "office_id"
     t.index ["amortization_type_id"], name: "index_loan_products_on_amortization_type_id"
     t.index ["cooperative_id"], name: "index_loan_products_on_cooperative_id"
     t.index ["current_account_id"], name: "index_loan_products_on_current_account_id"
     t.index ["litigation_account_id"], name: "index_loan_products_on_litigation_account_id"
     t.index ["loan_protection_plan_provider_id"], name: "index_loan_products_on_loan_protection_plan_provider_id"
     t.index ["name"], name: "index_loan_products_on_name", unique: true
+    t.index ["office_id"], name: "index_loan_products_on_office_id"
     t.index ["past_due_account_id"], name: "index_loan_products_on_past_due_account_id"
     t.index ["restructured_account_id"], name: "index_loan_products_on_restructured_account_id"
     t.index ["slug"], name: "index_loan_products_on_slug", unique: true
@@ -1779,6 +1781,7 @@ ActiveRecord::Schema.define(version: 2019_03_13_135716) do
   add_foreign_key "loan_products", "amortization_types"
   add_foreign_key "loan_products", "cooperatives"
   add_foreign_key "loan_products", "loan_protection_plan_providers"
+  add_foreign_key "loan_products", "offices"
   add_foreign_key "loan_protection_plan_providers", "accounts", column: "accounts_payable_id"
   add_foreign_key "loan_protection_plan_providers", "cooperatives"
   add_foreign_key "loans", "barangays"

@@ -2,6 +2,7 @@ module LoansModule
   class LoanProductRegistration
     include ActiveModel::Model
     attr_accessor :name, :id,
+    :office_id,
     :description,
     :maximum_loanable_amount,
     :current_account_id,
@@ -56,6 +57,7 @@ module LoansModule
 
     def create_loan_product
       loan_product = find_cooperative.loan_products.create!(
+      office_id:                        office_id,
       name:                             name,
       description:                      description,
       maximum_loanable_amount:          maximum_loanable_amount,

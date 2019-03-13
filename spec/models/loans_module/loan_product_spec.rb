@@ -5,6 +5,7 @@ module LoansModule
     describe 'associations' do
       it { is_expected.to belong_to :loan_protection_plan_provider }
       it { is_expected.to belong_to :cooperative }
+      it { is_expected.to belong_to :office }
       it { is_expected.to belong_to :current_account }
       it { is_expected.to belong_to :past_due_account }
       it { is_expected.to belong_to :restructured_account }
