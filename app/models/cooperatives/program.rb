@@ -10,7 +10,7 @@ module Cooperatives
     has_many :member_subscribers,       through: :program_subscriptions, source: :subscriber, source_type: "Member"
     has_many :employee_subscribers,     through: :program_subscriptions, source: :subscriber, source_type: "User"
     has_many :organization_subscribers, through: :program_subscriptions, source: :subscriber, source_type: "Organization"
-
+    has_many :programs,                 class_name: "Cooperatives::Program"
     validates :name, presence: true, uniqueness: { scope: :cooperative_id }
     validates :amount, presence: true, numericality: true
     validates :account_id, :cooperative_id, presence: true
