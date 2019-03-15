@@ -4,10 +4,11 @@ module CoopServicesModule
   describe SavingProduct do
     describe "associations" do
       it { is_expected.to belong_to :cooperative }
-    	it { is_expected.to have_many :subscribers }
+      it { is_expected.to belong_to :office }
       it { is_expected.to belong_to :account }
       it { is_expected.to belong_to :closing_account }
       it { is_expected.to belong_to :interest_expense_account }
+      it { is_expected.to have_many :subscribers }
     end
 
     describe "validations" do

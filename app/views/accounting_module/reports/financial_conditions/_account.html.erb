@@ -11,13 +11,14 @@
       <% running_total = 0 %>
       <% accounts.uniq.each do |account| %>
         <% balance = account.balance(:to_date => @to_date) %>
-        <% if !balance.round(2).zero? %>
+
           <tr>
             <td><%= account.name %></td>
-            <td><span class="pull-right"><%=number_to_currency balance.round(2) %></span></td>
+            <td><span class="pull-right"><%= number_to_currency balance.round(2) %></span></td>
           </tr>
-        <% end %>
-        <% running_total += balance %>
+          <% running_total += balance %>
+
+
       <% end %>
       <tr>
         <strong>

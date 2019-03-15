@@ -19,6 +19,7 @@ module ManagementModule
         params.require(:cooperatives_share_capital_product).permit(
                         :name,
                         :cost_per_share,
+                        :office_id,
                         :minimum_number_of_subscribed_share,
                         :minimum_number_of_paid_share,
                         :default_product,

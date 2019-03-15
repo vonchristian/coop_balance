@@ -7,6 +7,7 @@ module Cooperatives
     enum balance_averaging_type: [:monthly]
 
     belongs_to :cooperative
+    belongs_to :office,                   class_name: "Cooperatives::Office"
     belongs_to :equity_account,           class_name: "AccountingModule::Account"
     belongs_to :interest_payable_account, class_name: "AccountingModule::Account"
     has_many :subscribers,                class_name: "MembershipsModule::ShareCapital"
@@ -30,6 +31,6 @@ module Cooperatives
       where(default_product: true).last
     end
 
-    
+
   end
 end

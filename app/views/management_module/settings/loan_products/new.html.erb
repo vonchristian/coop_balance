@@ -14,7 +14,10 @@
     <div class="col-md-5">
       <%= f.error_notification %>
       <%= f.input :cooperative_id, input_html: { value: current_user.cooperative.id }, as: :hidden %>
+      <%= f.input :office_id, input_html: { value: current_office.id }, as: :hidden %>
+
       <%= f.input :name %>
+      <%= f.input :office_id, input_html: { value: current_office.id }, as: :hidden %>
       <%= f.input :description, as: :text %>
       <%= f.input :maximum_loanable_amount,  as: :currency, input_html: { style: "width:100%" } %>
       <%= f.input :grace_period %>

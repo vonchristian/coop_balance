@@ -4,6 +4,7 @@ module Cooperatives
 	describe ShareCapitalProduct do
 	  context 'associations' do
       it { is_expected.to belong_to :cooperative }
+      it { is_expected.to belong_to :office }
       it { is_expected.to belong_to :equity_account }
       it { is_expected.to belong_to :interest_payable_account }
 	  	it { is_expected.to have_many :subscribers }

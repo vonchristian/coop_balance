@@ -17,7 +17,6 @@ class Member < ApplicationRecord
   has_one_attached :avatar
 
   has_one :member_account #for devise login
-  belongs_to :office,                 class_name: "Cooperatives::Office"
   has_many :entries,                  class_name: "AccountingModule::Entry", as: :commercial_document
   has_many :voucher_amounts,          class_name: "Vouchers::VoucherAmount", as: :commercial_document
   has_many :memberships,              class_name: "Cooperatives::Membership", as: :cooperator, dependent: :destroy
@@ -44,8 +43,6 @@ class Member < ApplicationRecord
   has_many :time_deposit_applications,    as: :depositor
   has_many :wallets, as: :account_owner
   validates :last_name, :first_name, presence: true, on: :update
-
-  # delegate :name, to: :office, prefix: true, allow_nil: true
 
   delegate :name, to: :current_organization, prefix: true, allow_nil: true
   before_save :update_birth_date_fields
@@ -124,12 +121,6 @@ class Member < ApplicationRecord
     end
   end
 
-  # def self.with_loans
-  #   all.select{|a| a.loans.present? }
-  # end
-
-
-
   def current_occupation
     occupations.current
   end
@@ -137,6 +128,7 @@ class Member < ApplicationRecord
   def recommended_co_makers
     Member.where(last_name: self.last_name)
   end
+
   def recommended_relationships
     Member.where(last_name: self.last_name)
   end

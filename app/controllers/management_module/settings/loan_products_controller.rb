@@ -59,6 +59,7 @@ module ManagementModule
         :prededuction_scope,
         :prededucted_rate,
         :prededucted_amount,
+        :office_id,
         :prededucted_number_of_payments)
       end
     end

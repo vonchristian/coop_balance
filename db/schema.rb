@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_11_143637) do
+ActiveRecord::Schema.define(version: 2019_03_13_141456) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -747,12 +747,14 @@ ActiveRecord::Schema.define(version: 2019_03_11_143637) do
     t.uuid "amortization_type_id"
     t.uuid "litigation_account_id"
     t.boolean "adjustable_interest_rate", default: false
+    t.uuid "office_id"
     t.index ["amortization_type_id"], name: "index_loan_products_on_amortization_type_id"
     t.index ["cooperative_id"], name: "index_loan_products_on_cooperative_id"
     t.index ["current_account_id"], name: "index_loan_products_on_current_account_id"
     t.index ["litigation_account_id"], name: "index_loan_products_on_litigation_account_id"
     t.index ["loan_protection_plan_provider_id"], name: "index_loan_products_on_loan_protection_plan_provider_id"
     t.index ["name"], name: "index_loan_products_on_name", unique: true
+    t.index ["office_id"], name: "index_loan_products_on_office_id"
     t.index ["past_due_account_id"], name: "index_loan_products_on_past_due_account_id"
     t.index ["restructured_account_id"], name: "index_loan_products_on_restructured_account_id"
     t.index ["slug"], name: "index_loan_products_on_slug", unique: true
@@ -1154,8 +1156,10 @@ ActiveRecord::Schema.define(version: 2019_03_11_143637) do
     t.integer "payment_schedule_type"
     t.uuid "cooperative_id"
     t.decimal "amount"
+    t.uuid "office_id"
     t.index ["account_id"], name: "index_programs_on_account_id"
     t.index ["cooperative_id"], name: "index_programs_on_cooperative_id"
+    t.index ["office_id"], name: "index_programs_on_office_id"
     t.index ["payment_schedule_type"], name: "index_programs_on_payment_schedule_type"
   end
 
@@ -1232,10 +1236,12 @@ ActiveRecord::Schema.define(version: 2019_03_11_143637) do
     t.integer "dormancy_number_of_days", default: 0
     t.uuid "cooperative_id"
     t.decimal "closing_account_fee", default: "0.0"
+    t.uuid "office_id"
     t.index ["account_id"], name: "index_saving_products_on_account_id"
     t.index ["closing_account_id"], name: "index_saving_products_on_closing_account_id"
     t.index ["cooperative_id"], name: "index_saving_products_on_cooperative_id"
     t.index ["interest_expense_account_id"], name: "index_saving_products_on_interest_expense_account_id"
+    t.index ["office_id"], name: "index_saving_products_on_office_id"
   end
 
   create_table "savings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1315,10 +1321,12 @@ ActiveRecord::Schema.define(version: 2019_03_11_143637) do
     t.uuid "cooperative_id"
     t.uuid "interest_payable_account_id"
     t.integer "balance_averaging_type"
+    t.uuid "office_id"
     t.index ["cooperative_id"], name: "index_share_capital_products_on_cooperative_id"
     t.index ["equity_account_id"], name: "index_share_capital_products_on_equity_account_id"
     t.index ["interest_payable_account_id"], name: "index_share_capital_products_on_interest_payable_account_id"
     t.index ["name"], name: "index_share_capital_products_on_name"
+    t.index ["office_id"], name: "index_share_capital_products_on_office_id"
   end
 
   create_table "share_capitals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1789,6 +1797,7 @@ ActiveRecord::Schema.define(version: 2019_03_11_143637) do
   add_foreign_key "loan_products", "cooperatives"
   add_foreign_key "loan_products", "loan_protection_plan_providers"
   add_foreign_key "loan_protection_funds", "cooperatives"
+  add_foreign_key "loan_products", "offices"
   add_foreign_key "loan_protection_plan_providers", "accounts", column: "accounts_payable_id"
   add_foreign_key "loan_protection_plan_providers", "cooperatives"
   add_foreign_key "loans", "barangays"
@@ -1834,6 +1843,7 @@ ActiveRecord::Schema.define(version: 2019_03_11_143637) do
   add_foreign_key "program_subscriptions", "programs"
   add_foreign_key "programs", "accounts"
   add_foreign_key "programs", "cooperatives"
+  add_foreign_key "programs", "offices"
   add_foreign_key "registries", "cooperatives"
   add_foreign_key "registries", "offices"
   add_foreign_key "registries", "store_fronts"
@@ -1845,6 +1855,7 @@ ActiveRecord::Schema.define(version: 2019_03_11_143637) do
   add_foreign_key "saving_products", "accounts", column: "closing_account_id"
   add_foreign_key "saving_products", "accounts", column: "interest_expense_account_id"
   add_foreign_key "saving_products", "cooperatives"
+  add_foreign_key "saving_products", "offices"
   add_foreign_key "savings", "barangays"
   add_foreign_key "savings", "cooperatives"
   add_foreign_key "savings", "offices"
@@ -1858,6 +1869,7 @@ ActiveRecord::Schema.define(version: 2019_03_11_143637) do
   add_foreign_key "share_capital_products", "accounts", column: "equity_account_id"
   add_foreign_key "share_capital_products", "accounts", column: "interest_payable_account_id"
   add_foreign_key "share_capital_products", "cooperatives"
+  add_foreign_key "share_capital_products", "offices"
   add_foreign_key "share_capitals", "barangays"
   add_foreign_key "share_capitals", "carts"
   add_foreign_key "share_capitals", "cooperatives"

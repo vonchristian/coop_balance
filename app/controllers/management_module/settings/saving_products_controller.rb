@@ -32,6 +32,7 @@ module ManagementModule
         params.require(:coop_services_module_saving_product).permit(
           :name,
           :interest_rate,
+          :office_id,
           :interest_recurrence,
           :account_id,
           :interest_expense_account_id,

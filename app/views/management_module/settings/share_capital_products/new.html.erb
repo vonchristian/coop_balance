@@ -15,8 +15,9 @@
 
     <%= f.input :minimum_balance, label: "Minimum Paid-Up Balance"%>
     <%= f.input :default_product %>
+    <%= f.input :office_id, input_html: { value: current_office.id }, as: :hidden %>
   </div>
-  <div class="modal-footer">
+  <div class="modal-footer"> 
     <%= f.submit "Create Share Capital Product", class: "btn btn-danger float-right", data: { disable_with: "Processing..." } %>
   </div>
 <% end %>

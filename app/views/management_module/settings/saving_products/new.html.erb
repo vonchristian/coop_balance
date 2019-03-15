@@ -16,6 +16,7 @@
     <%= f.input :closing_account_id, label: "Closing Account", collection: current_cooperative.accounts.revenues.all.map{|a| [a.name, a.id] } %>
     <%= f.input :closing_account_fee %>
     <%= f.input :dormancy_number_of_days %>
+    <%= f.input :office_id, input_html: { value: current_office.id }, as: :hidden %>
   </div>
   <div class="modal-footer">
     <%= f.submit "Create Saving Product", class: "btn btn-danger float-right", data: { disable_with: "Processing..." } %>

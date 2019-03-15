@@ -6,10 +6,12 @@
 	  enum interest_recurrence: [:daily, :weekly, :monthly, :quarterly, :semi_annually, :annually]
 
     belongs_to :cooperative
-	  has_many :subscribers,                class_name: "MembershipsModule::Saving"
+    belongs_to :office,                   class_name: "Cooperatives::Office"
 	  belongs_to :account,                  class_name: "AccountingModule::Account"
     belongs_to :closing_account,          class_name: "AccountingModule::Account"
     belongs_to :interest_expense_account, class_name: "AccountingModule::Account"
+
+    has_many :subscribers,                class_name: "MembershipsModule::Saving"
 
 	  validates :interest_rate,
               :minimum_balance,
@@ -19,7 +21,7 @@
               presence: true
 	  validates :name,
               presence: true,
-              uniqueness: { scope: :cooperative_id }
+              uniqueness: { scope: :office_id }
 	  validates :account_id,
               :interest_expense_account_id,
               :closing_account_id,

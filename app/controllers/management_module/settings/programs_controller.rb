@@ -18,7 +18,7 @@ module ManagementModule
 			private
 
 			def program_params
-			  params.require(:cooperatives_program).permit(:name, :amount, :default_program, :description, :payment_schedule_type, :account_id, :cooperative_id)
+			  params.require(:cooperatives_program).permit(:name, :amount, :default_program, :description, :payment_schedule_type, :account_id, :cooperative_id, :office_id)
 			end
 		end
 	end

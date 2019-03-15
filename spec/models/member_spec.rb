@@ -4,7 +4,6 @@ describe Member, type: :model do
   describe "associations" do
     it { is_expected.to have_one :member_account }
     it { is_expected.to have_many :tins }
-    it { is_expected.to belong_to :office }
     it { is_expected.to have_many :memberships }
   	it { is_expected.to have_many :loans }
   	it { is_expected.to have_many :savings }
@@ -17,7 +16,6 @@ describe Member, type: :model do
     it { is_expected.to have_many :organization_memberships }
     it { is_expected.to have_many :organizations }
     it { is_expected.to have_many :contacts }
-    it { is_expected.to have_many :addresses }
     it { is_expected.to have_many :beneficiaries }
     it { is_expected.to have_many :loan_applications }
     it { is_expected.to have_many :share_capital_applications }
@@ -25,9 +23,6 @@ describe Member, type: :model do
     it { is_expected.to have_many :time_deposit_applications }
 
 
-  end
-  describe 'delegations' do
-    it { is_expected.to delegate_method(:name).to(:office).with_prefix }
   end
 
   describe 'validations' do
@@ -50,9 +45,6 @@ describe Member, type: :model do
   	expect(member.first_and_last_name).to eql("Von Halip")
   end
 
-  it "#current_address" do
-  end
-  
   it ".has_birthday_on(args)" do
     january_member = create(:member, date_of_birth: '01/01/1990')
     march_member   = create(:member, date_of_birth: '03/01/1990')

@@ -15,6 +15,11 @@ module Cooperatives
       it { is_expected.to have_many :vouchers }
       it { is_expected.to have_many :accountable_accounts }
       it { is_expected.to have_many :accounts }
+      it { is_expected.to have_many :saving_products }
+      it { is_expected.to have_many :share_capital_products }
+      it { is_expected.to have_many :loan_products }
+      it { is_expected.to have_many :programs }
+
     end
 
     describe 'validations' do
