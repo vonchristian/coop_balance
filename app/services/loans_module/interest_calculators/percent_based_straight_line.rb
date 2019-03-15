@@ -10,7 +10,7 @@ module LoansModule
       end
 
       def monthly_amortization_interest
-        if amortization_type.include_on_first_year? && loan_application.schedule_count > 12
+        if amortization_type.exclude_on_first_year? && loan_application.schedule_count > 12
           loan_application.total_amortizeable_interest / (loan_application.schedule_count - 12)
         else
           loan_application.total_amortizeable_interest / (loan_application.schedule_count)

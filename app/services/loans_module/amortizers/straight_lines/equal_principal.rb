@@ -16,7 +16,7 @@ module LoansModule
         end
 
         def update_interest_amounts!
-          if amortization_type.include_on_first_year? && loan_application.schedule_count > 12
+          if amortization_type.exclude_on_first_year? && loan_application.schedule_count > 12
             loan_application.amortization_schedules.order(:date).last(loan_application.schedule_count - 12).each do |schedule|
               schedule.interest = amortizeable_interest_for(schedule)
               schedule.save!
