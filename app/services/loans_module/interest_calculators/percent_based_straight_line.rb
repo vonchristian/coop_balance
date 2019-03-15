@@ -9,7 +9,11 @@ module LoansModule
       end
 
       def monthly_amortization_interest
-        loan_application.total_amortizeable_interest / loan_application.schedule_count
+        if loan_application.schedule_count > 12
+          loan_application.total_amortizeable_interest / (loan_application.schedule_count - 12)
+        else
+          loan_application.total_amortizeable_interest / loan_application.schedule_count
+        end
       end
     end
   end

@@ -37,10 +37,10 @@
               </div>
             </div>
             <div class="col-md-3 col-sm-3">
-              <%= simple_form_for [@barangay, @member], url: :barangay_members do |f| %>
+              <%= simple_form_for @member, url: :barangay_members do |f| %>
                 <%= f.input :barangay_membership_id, input_html: { value: member.id }, as: :hidden %>
                 <%= f.input :barangay_membership_type, input_html: { value: member.class }, as: :hidden %>
-                <% if @barangay.barangay_members.pluck(:barangay_membership_id).exclude?(member.id) %>
+                <% if @barangay.members.pluck(:id).exclude?(member.id) %>
                   <%= button_tag(class: "btn btn-primary btn-sm") do %>
                     <i class="fa fa-user-plus"></i> Add Member
                   <% end %>

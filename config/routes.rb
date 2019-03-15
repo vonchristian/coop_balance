@@ -168,6 +168,7 @@ Rails.application.routes.draw do
     resources :account_closings, only: [:new, :create],   module: :share_capitals
     resources :offices, only: [:edit, :update],           module: :share_capitals
     resources :balance_transfers, only: [:new, :create],  module: :share_capitals
+    resources :transactions, only: [:index],              module: :savings_accounts
   end
 
   resources :members, only: [:index, :show, :edit, :update, :destroy] do
@@ -391,6 +392,7 @@ Rails.application.routes.draw do
     resources :account_closings,  only: [:new, :create],            module: :savings_accounts
     resources :barangay_settings,  only: [:edit, :update],          module: :savings_accounts
     resources :voucher_confirmations, only: [:create],              module: :savings_accounts
+    resources :transactions,           only: [:index],              module: :savings_accounts
   end
 
   resources :search_results, only: [:index, :show]
@@ -411,6 +413,7 @@ Rails.application.routes.draw do
     resources :break_contracts, only: [:new, :create],   module: :time_deposits
     resources :settings, only: [:index],                 module: :time_deposits
     resources :beneficiaries, only: [:edit, :update],    module: :time_deposits
+    resources :transactions, only: [:index],             module: :time_deposits
   end
 
   resources :employees, only: [:index, :show, :edit, :update] do

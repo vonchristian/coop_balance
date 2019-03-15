@@ -76,7 +76,7 @@
             <b>Loan Term</b>
           </div>
           <div class="col-md-6 col-sm-6">
-            <%= @loan.current_term.term %>
+            <%= @loan.current_term.term if @loan.not_forwarded? %>
           </div>
         </div>
         <div class="row min-margin">

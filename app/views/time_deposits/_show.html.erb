@@ -4,6 +4,7 @@
       <div class="card-header no-border">
         <nav class="nav nav-pills flex-column flex-md-row">
           <%= link_to 'Time Deposit Details',time_deposit_path(@time_deposit), class: "text-sm-center nav-link #{'active' if current_page?(time_deposit_path(@time_deposit))}" %></li>
+          <%= link_to 'Transactions',time_deposit_transactions_path(@time_deposit), class: "text-sm-center nav-link #{ 'active' if current_page?(time_deposit_transactions_path(@time_deposit))}" %></li>
           <%= link_to 'Settings',time_deposit_settings_path(@time_deposit), class: "text-sm-center nav-link #{ 'active' if current_page?(time_deposit_settings_path(@time_deposit))}" %></li>
         </nav>
       </div>
@@ -12,6 +13,9 @@
 </div>
 <% if current_page? time_deposit_path(@time_deposit) %>
   <%= render 'time_deposits/partials/info' %>
+<% end %>
+<% if current_page? time_deposit_transactions_path(@time_deposit) %>
+  <%= render 'time_deposits/partials/transactions' %>
 <% end %>
 <% if current_page? time_deposit_settings_path(@time_deposit) %>
   <%= render 'time_deposits/partials/settings' %>

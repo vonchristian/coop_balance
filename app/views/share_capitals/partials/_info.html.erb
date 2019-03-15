@@ -22,9 +22,3 @@
     </div>
   </div>
 </div>
-</div>
-<p class="text-muted">TRANSACTIONS HISTORY</p>
-<% @entries.each do |entry| %>
-  <%= render 'accounting_module/entries/partials/header', entry: entry %>
-<% end %>
-<center><%= will_paginate @entries %></center>

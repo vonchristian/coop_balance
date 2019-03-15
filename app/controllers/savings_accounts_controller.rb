@@ -11,7 +11,7 @@ class SavingsAccountsController < ApplicationController
 
   def show
     @savings_account = current_cooperative.savings.includes(:saving_product => [:account]).find(params[:id])
-    @entries = @savings_account.entries.includes(:commercial_document, :recorder, :cooperative_service).distinct
+    @entries = @savings_account.entries.includes(:commercial_document, :recorder, :cooperative_service).distinct.paginate(:page => params[:page], :per_page => 20)
     respond_to do |format|
       format.html
       format.pdf do

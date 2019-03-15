@@ -121,6 +121,11 @@ crumb :savings_account_settings do |savings_account|
   parent :member_savings_accounts, savings_account.depositor
 end
 
+crumb :savings_account_transactions do |savings_account|
+  link "Transactions", savings_account_transactions_path(savings_account)
+  parent :member_savings_accounts, savings_account.depositor
+end
+
 crumb :savings_account_merging do |savings_account|
   link "Accounts Merging", new_savings_account_merging_line_item_path(savings_account_id: savings_account.id)
   parent :savings_account_settings, savings_account
@@ -168,6 +173,11 @@ crumb :share_capital_settings do |share_capital|
   parent :member_share_capitals, share_capital.subscriber
 end
 
+crumb :share_capital_transactions do |share_capital|
+  link "Transactions", share_capital_transactions_path(share_capital)
+  parent :member_share_capitals, share_capital.subscriber
+end
+
 crumb :share_capital_merging do |share_capital|
   link "Accounts Merging", new_share_capital_merging_line_item_path(share_capital_id: share_capital.id)
   parent :share_capital_settings, share_capital
@@ -197,6 +207,11 @@ end
 
 crumb :time_deposit_settings do |time_deposit|
   link "Settings", time_deposit_settings_path(time_deposit)
+  parent :member_time_deposits, time_deposit.depositor
+end
+
+crumb :time_deposit_transactions do |time_deposit|
+  link "Transactions", time_deposit_transactions_path(time_deposit)
   parent :member_time_deposits, time_deposit.depositor
 end
 

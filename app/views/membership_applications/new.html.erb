@@ -15,7 +15,7 @@
               <%= f.input :avatar, as: :file, label: "Profile Photo" %>
               <hr>
               <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
-              <%= f.input :membership_type, collection: Cooperatives::Membership.membership_types.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons %>
+              <%= f.input :membership_type, collection: Cooperatives::Membership.membership_types.keys.to_a.map{ |a| [a.titleize, a] }, as: :radio_buttons, checked: Cooperatives::Membership.membership_types.keys.second %>
               <%= f.input :first_name %>
               <%= f.input :middle_name %>
               <%= f.input :last_name %>

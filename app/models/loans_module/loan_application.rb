@@ -52,6 +52,14 @@ module LoansModule
       self.voucher.try(:reference_number)
     end
 
+    def ascending_order #sorting ascending_order
+      if voucher.blank?
+        0
+      else
+        voucher.reference_number.to_i
+      end
+    end
+
     def principal_balance_for(schedule) #used to compute interest
       balance = (loan_amount.amount - amortization_schedules.principal_for(schedule: schedule))
       if balance < 0

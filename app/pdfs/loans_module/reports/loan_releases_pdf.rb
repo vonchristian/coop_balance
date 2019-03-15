@@ -107,7 +107,7 @@ module LoansModule
       def table_data
         move_down 5
         [["Date", "Borrower", "CDV#", "Type of Loan", "Loan Amount", "Net Proceed"]] +
-        @table_data ||= loans.sort_by(&:ascending_order).map { |e| [e.disbursement_date.try(:strftime, ("%D")), e.borrower_name, e.tracking_number, e.loan_product_name, price(e.loan_amount), price(e.net_proceed)] }
+        @table_data ||= loans.sort_by(&:ascending_order).map { |e| [e.accounting_entry.entry_date.try(:strftime, ("%D")), e.borrower_name, e.tracking_number, e.loan_product_name, price(e.loan_amount), price(e.net_proceed)] }
       end
     end
   end

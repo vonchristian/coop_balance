@@ -15,9 +15,16 @@ module LoansModule
         end
 
         def update_interest_amounts!
-          loan_application.amortization_schedules.each do |schedule|
-            schedule.interest = amortizeable_interest_for(schedule)
-            schedule.save!
+          if loan_application.schedule_count > 12
+            loan_application.amortization_schedules.order(:date).last(loan_application.schedule_count - 12).each do |schedule|
+              schedule.interest = amortizeable_interest_for(schedule)
+              schedule.save!
+            end
+          else
+            loan_application.amortization_schedules.each do |schedule|
+              schedule.interest = amortizeable_interest_for(schedule)
+              schedule.save!
+            end
           end
         end
 

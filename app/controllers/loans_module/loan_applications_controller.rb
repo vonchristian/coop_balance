@@ -14,7 +14,7 @@ module LoansModule
         not_cancelled.
         not_approved.
         includes(:loan_product, :voucher =>[:accounting_entry]).
-        order("vouchers.reference_number DESC", "vouchers.date DESC").
+        order("vouchers.reference_number::integer").
         paginate(page: params[:page], per_page: 20)
       end
     end
