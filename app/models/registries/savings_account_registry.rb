@@ -58,17 +58,17 @@ module Registries
 
     def find_or_create_member_depositor(row)
       old_member = Member.find_by(
-        last_name:   TextNormalizer.new(text: row["Last Name"]).propercase,
-        first_name:  TextNormalizer.new(text: row["First Name"] || "").propercase,
-        middle_name: TextNormalizer.new(text: row["Middle Name"] || "").propercase
+        last_name:   row["Last Name"],
+        first_name:  row["First Name"],
+        middle_name: row["Middle Name"]
       )
       if old_member.present?
         old_member
       else
         new_member = Member.create!(
-          last_name:   TextNormalizer.new(text: row["Last Name"]).propercase,
-          middle_name: TextNormalizer.new(text: row["Middle Name"] || "").propercase,
-          first_name:  TextNormalizer.new(text: row["First Name"] || "").propercase
+          last_name:   row["Last Name"],
+          middle_name: row["Middle Name"],
+          first_name:  row["First Name"]
         )
         new_member.memberships.create!(cooperative: find_cooperative, account_number: SecureRandom.uuid)
         new_member
