@@ -11,16 +11,15 @@ module Cooperatives
     has_many :bank_accounts,           class_name: "BankAccount"
     has_many :loan_applications,       class_name: "LoansModule::LoanApplication"
     has_many :vouchers
-
     has_many :accountable_accounts,    class_name: "AccountingModule::AccountableAccount", as: :accountable
     has_many :accounts,                class_name: "AccountingModule::Account", through: :accountable_accounts
     has_many :saving_products,         class_name: "CoopServicesModule::SavingProduct"
     has_many :share_capital_products,  class_name: "Cooperatives::ShareCapitalProduct"
     has_many :loan_products,           class_name: "LoansModule::LoanProduct"
-    validates :name, presence: true, uniqueness: true
-    validates :type, presence: true
-    validates :contact_number, presence: true
-    validates :address, presence: true
+    has_many :programs,                class_name: "Cooperatives::Program"
+
+    validates :name, uniqueness: true
+    validates :name, :type, :contact_number, :address, presence: true
 
     def cash_accounts
       employees.cash_accounts
@@ -31,7 +30,9 @@ module Cooperatives
     end
 
     def self.types
-      ["Cooperatives::Offices::MainOffice", "Cooperatives::Offices::SatelliteOffice", "Cooperatives::Offices::BranchOffice"]
+      ["Cooperatives::Offices::MainOffice",
+       "Cooperatives::Offices::SatelliteOffice",
+       "Cooperatives::Offices::BranchOffice"]
     end
   end
 end
