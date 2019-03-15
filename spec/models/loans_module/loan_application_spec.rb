@@ -26,6 +26,8 @@ module LoansModule
       it { is_expected.to delegate_method(:interest_revenue_account).to(:loan_product).with_prefix }
       it { is_expected.to delegate_method(:current_account).to(:loan_product).with_prefix }
       it { is_expected.to delegate_method(:current_interest_config).to(:loan_product) }
+      it { is_expected.to delegate_method(:amortization_type).to(:loan_product) }
+
       it { is_expected.to delegate_method(:avatar).to(:borrower) }
       it { is_expected.to delegate_method(:straight_balance?).to(:current_interest_config).with_prefix }
       it { is_expected.to delegate_method(:annually?).to(:current_interest_config).with_prefix }
