@@ -42,7 +42,7 @@
           <%= button_tag( :class => "btn btn-primary float-right") do %>
             Proceed  &nbsp;<i class="fa fa-arrow-right"></i>
           <% end %>
-          <%= link_to 'Cancel Application', member_path(@borrower), class: "btn-link float-left" %>
+          <%= link_to 'Cancel', member_path(@borrower), class: "btn-link text-danger float-left" %>
         <% end %>
       </div>
     </div>
@@ -63,7 +63,7 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
-    $("#borrowerSelect").select2({
+    $("#loanProductSelect").select2({
       theme: "bootstrap"
     });
   });
