@@ -1,10 +1,11 @@
 module LoansModule
   class LoanApplicationChargeSetter
-    attr_reader :loan_application, :loan_product
+    attr_reader :loan_application, :loan_product, :borrower
 
     def initialize(args)
       @loan_application = args.fetch(:loan_application)
       @loan_product     = @loan_application.loan_product
+      @borrower         = @loan_application.borrower
     end
 
     def create_charges!
@@ -21,7 +22,7 @@ module LoansModule
     end
 
     def create_charges_based_on_loan_product
-      loan_product.loan_product_charges.each do |charge|
+      loan_product.loan_product_charges.except_capital_build_up.each do |charge|
         loan_application.voucher_amounts.credit.create!(
           cooperative:         loan_application.cooperative,
           commercial_document: loan_application,
@@ -45,19 +46,9 @@ module LoansModule
     end
 
     def create_capital_build_up
-      if loan_application.loan_product_name == "Regular Loan"
-        loan_application.voucher_amounts.credit.create!(
-          cooperative:         loan_application.cooperative,
-          commercial_document: loan_application.borrower.share_capitals.last,
-          description:         "Capital Build Up",
-          amount:              capital_build_up_computation,
-          account:             loan_application.borrower.share_capitals.last.share_capital_product.equity_account
-        )
+      if borrower.share_capitals.present?
+        LoansModule::Charges::CapitalBuildUp.new(loan_application: loan_application).create_capital_build_up
       end
-    end
-
-    def capital_build_up_computation
-      loan_application.loan_amount.amount * 0.01
     end
 
     def computed_charge(charge, amount)
