@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_15_123653) do
+ActiveRecord::Schema.define(version: 2019_03_16_123021) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -520,6 +520,34 @@ ActiveRecord::Schema.define(version: 2019_03_15_123653) do
     t.decimal "number_of_days"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "identifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "identifiable_type"
+    t.uuid "identifiable_id"
+    t.uuid "identity_provider_id"
+    t.string "number"
+    t.datetime "issuance_date"
+    t.datetime "expiry_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "previous_identification_id"
+    t.string "previous_id_hash"
+    t.string "encrypted_hash"
+    t.index ["encrypted_hash"], name: "index_identifications_on_encrypted_hash", unique: true
+    t.index ["identifiable_type", "identifiable_id"], name: "index_identifications_on_identifiable_type_and_identifiable_id"
+    t.index ["identity_provider_id"], name: "index_identifications_on_identity_provider_id"
+    t.index ["previous_id_hash"], name: "index_identifications_on_previous_id_hash", unique: true
+    t.index ["previous_identification_id"], name: "index_identifications_on_previous_identification_id"
+  end
+
+  create_table "identity_providers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "account_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "abbreviated_name"
+    t.index ["abbreviated_name"], name: "index_identity_providers_on_abbreviated_name", unique: true
   end
 
   create_table "interest_calculations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1749,6 +1777,8 @@ ActiveRecord::Schema.define(version: 2019_03_15_123653) do
   add_foreign_key "entries", "official_receipts"
   add_foreign_key "entries", "users", column: "cancelled_by_id"
   add_foreign_key "entries", "users", column: "recorder_id"
+  add_foreign_key "identifications", "identifications", column: "previous_identification_id"
+  add_foreign_key "identifications", "identity_providers"
   add_foreign_key "interest_configs", "accounts", column: "accrued_income_account_id"
   add_foreign_key "interest_configs", "accounts", column: "interest_revenue_account_id"
   add_foreign_key "interest_configs", "accounts", column: "unearned_interest_income_account_id"

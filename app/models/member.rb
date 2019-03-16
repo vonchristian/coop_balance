@@ -42,6 +42,7 @@ class Member < ApplicationRecord
   has_many :savings_account_applications, as: :depositor
   has_many :time_deposit_applications,    as: :depositor
   has_many :wallets, as: :account_owner
+  has_many :identifications, class_name: "IdentificationModule::Identification", as: :identifiable
   validates :last_name, :first_name, presence: true, on: :update
 
   delegate :name, to: :current_organization, prefix: true, allow_nil: true
@@ -185,7 +186,7 @@ class Member < ApplicationRecord
       self.birth_year = date_of_birth ? date_of_birth.year : nil
     end
   end
-  
+
   def normalize_name
     self.first_name = TextNormalizer.new(text: self.first_name).propercase
     self.middle_name = TextNormalizer.new(text: self.middle_name).propercase
