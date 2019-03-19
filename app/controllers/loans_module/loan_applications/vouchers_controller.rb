@@ -10,7 +10,7 @@ module LoansModule
         @borrower = @loan_application.borrower
         @share_capitals = @borrower.share_capitals
         @savings_accounts = @borrower.savings
-        @previous_loans = @loan_application.borrower.loans.includes(:loan_product)
+        @previous_loans = @borrower.loans.includes(:loan_product)
         @voucher = LoansModule::LoanApplications::VoucherProcessing.new
       end
 

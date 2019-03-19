@@ -144,7 +144,19 @@ class Member < ApplicationRecord
   end
 
   def full_name
-    "#{last_name}, #{first_name} #{middle_name}"
+    if middle_name.present?
+      "#{last_name}, #{first_name} #{middle_name}"
+    else
+      "#{last_name}, #{first_name}"
+    end
+  end
+
+  def name_and_initial
+    if middle_name.present?
+      "#{last_name}, #{first_name} #{middle_name.first.titleize}."
+    else
+      "#{last_name}, #{first_name}"
+    end
   end
 
   def first_and_last_name

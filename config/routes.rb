@@ -168,7 +168,7 @@ Rails.application.routes.draw do
     resources :account_closings, only: [:new, :create],   module: :share_capitals
     resources :offices, only: [:edit, :update],           module: :share_capitals
     resources :balance_transfers, only: [:new, :create],  module: :share_capitals
-    resources :transactions, only: [:index],              module: :savings_accounts
+    resources :transactions, only: [:index],              module: :share_capitals
   end
 
   resources :members, only: [:index, :show, :edit, :update, :destroy] do

@@ -236,7 +236,7 @@
             </div>
             <div class="col-md-7">
               <h3 class="card-title">
-                <%= number_to_currency loan.balance %>
+                <%= number_to_currency loan.principal_balance %>
               </h3>
                 <span class="text-muted">
                   <i class="fa fa-user-circle"></i> <%= loan.borrower_name %><br>
@@ -294,7 +294,7 @@
                       <span class="badge bg-danger"> Prededucted </span>
                     <% end %>
                   </td>
-                <td><%= number_to_currency amortization_schedule.total_repayment %></td>
+                  <td><%= number_to_currency amortization_schedule.total_repayment %></td>
                   <td><%= number_to_currency amortization_schedule.ending_balance %></td>
                 </tr>
               <% end %>

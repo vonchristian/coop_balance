@@ -1,6 +1,6 @@
 module LoansModule
   class AmortizationType < ApplicationRecord
-    enum calculation_type: [:straight_line, :declining_balance]
+    enum calculation_type: [:straight_line, :declining_balance, :ipsmpc_amortizer]
     enum repayment_calculation_type: [:equal_principal, :equal_payment]
 
     validates :calculation_type, :repayment_calculation_type, presence: true
