@@ -512,7 +512,7 @@ Rails.application.routes.draw do
     resources :settings, only: [:index],               module: :barangays
   end
 
-  namespace :barangays do 
+  namespace :barangays do
     resources :imports, only: [:create]
   end
 
@@ -613,4 +613,5 @@ Rails.application.routes.draw do
   end
   resources :credit_scores, only: [:index]
   resources :program_subscriptions, only: [:show]
+  resources :identifications, only: [:index, :show, :new, :create], module: :identification_module
 end

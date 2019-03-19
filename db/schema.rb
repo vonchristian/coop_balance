@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_13_141456) do
+ActiveRecord::Schema.define(version: 2019_03_16_123021) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -132,9 +132,9 @@ ActiveRecord::Schema.define(version: 2019_03_13_141456) do
     t.uuid "cooperative_id"
     t.string "scheduleable_type"
     t.uuid "scheduleable_id"
-    t.string "entry_ids", default: [], array: true
     t.decimal "total_repayment"
     t.decimal "ending_balance", default: "0.0", null: false
+    t.string "entry_ids", default: [], array: true
     t.uuid "office_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_amortization_schedules"
     t.index ["cooperative_id"], name: "index_amortization_schedules_on_cooperative_id"
@@ -155,6 +155,7 @@ ActiveRecord::Schema.define(version: 2019_03_13_141456) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "repayment_calculation_type"
+    t.integer "interest_amortization_scope"
     t.index ["calculation_type"], name: "index_amortization_types_on_calculation_type"
     t.index ["repayment_calculation_type"], name: "index_amortization_types_on_repayment_calculation_type"
   end
@@ -241,17 +242,6 @@ ActiveRecord::Schema.define(version: 2019_03_13_141456) do
     t.index ["cooperative_id"], name: "index_bank_accounts_on_cooperative_id"
     t.index ["interest_revenue_account_id"], name: "index_bank_accounts_on_interest_revenue_account_id"
     t.index ["office_id"], name: "index_bank_accounts_on_office_id"
-  end
-
-  create_table "barangay_members", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "barangay_id"
-    t.string "member_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "barangay_membership_type"
-    t.uuid "barangay_membership_id"
-    t.index ["barangay_id"], name: "index_barangay_members_on_barangay_id"
-    t.index ["barangay_membership_type", "barangay_membership_id"], name: "index_on_barangay_members_membership"
   end
 
   create_table "barangays", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -532,6 +522,42 @@ ActiveRecord::Schema.define(version: 2019_03_13_141456) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "identifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "identifiable_type"
+    t.uuid "identifiable_id"
+    t.uuid "identity_provider_id"
+    t.string "number"
+    t.datetime "issuance_date"
+    t.datetime "expiry_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "previous_identification_id"
+    t.string "previous_id_hash"
+    t.string "encrypted_hash"
+    t.index ["encrypted_hash"], name: "index_identifications_on_encrypted_hash", unique: true
+    t.index ["identifiable_type", "identifiable_id"], name: "index_identifications_on_identifiable_type_and_identifiable_id"
+    t.index ["identity_provider_id"], name: "index_identifications_on_identity_provider_id"
+    t.index ["previous_id_hash"], name: "index_identifications_on_previous_id_hash", unique: true
+    t.index ["previous_identification_id"], name: "index_identifications_on_previous_identification_id"
+  end
+
+  create_table "identity_providers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "account_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "abbreviated_name"
+    t.index ["abbreviated_name"], name: "index_identity_providers_on_abbreviated_name", unique: true
+  end
+
+  create_table "interest_calculations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "calculation_type"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["calculation_type"], name: "index_interest_calculations_on_calculation_type"
+  end
+
   create_table "interest_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "loan_product_id"
     t.decimal "rate"
@@ -760,17 +786,6 @@ ActiveRecord::Schema.define(version: 2019_03_13_141456) do
     t.index ["slug"], name: "index_loan_products_on_slug", unique: true
   end
 
-  create_table "loan_protection_funds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "rate"
-    t.string "name"
-    t.integer "computation_type"
-    t.uuid "cooperative_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["computation_type"], name: "index_loan_protection_funds_on_computation_type"
-    t.index ["cooperative_id"], name: "index_loan_protection_funds_on_cooperative_id"
-  end
-
   create_table "loan_protection_plan_providers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "business_name"
     t.decimal "rate"
@@ -811,8 +826,8 @@ ActiveRecord::Schema.define(version: 2019_03_13_141456) do
     t.boolean "forwarded_loan", default: false
     t.uuid "loan_application_id"
     t.integer "status"
-    t.boolean "cancelled", default: false
     t.string "type"
+    t.boolean "cancelled", default: false
     t.index ["account_number"], name: "index_loans_on_account_number", unique: true
     t.index ["archived_by_id"], name: "index_loans_on_archived_by_id"
     t.index ["barangay_id"], name: "index_loans_on_barangay_id"
@@ -1262,11 +1277,13 @@ ActiveRecord::Schema.define(version: 2019_03_13_141456) do
     t.datetime "archived_at"
     t.uuid "organization_id"
     t.string "beneficiaries"
+    t.integer "depository_type"
     t.index ["account_number"], name: "index_savings_on_account_number", unique: true
     t.index ["account_owner_name"], name: "index_savings_on_account_owner_name"
     t.index ["barangay_id"], name: "index_savings_on_barangay_id"
     t.index ["cooperative_id"], name: "index_savings_on_cooperative_id"
     t.index ["depositor_type", "depositor_id"], name: "index_savings_on_depositor_type_and_depositor_id"
+    t.index ["depository_type"], name: "index_savings_on_depository_type"
     t.index ["office_id"], name: "index_savings_on_office_id"
     t.index ["organization_id"], name: "index_savings_on_organization_id"
     t.index ["saving_product_id"], name: "index_savings_on_saving_product_id"
@@ -1334,8 +1351,8 @@ ActiveRecord::Schema.define(version: 2019_03_13_141456) do
     t.string "account_number"
     t.datetime "date_opened"
     t.string "account_owner_name"
-    t.datetime "created_at", default: "2018-12-03 13:59:53", null: false
-    t.datetime "updated_at", default: "2018-12-03 13:59:53", null: false
+    t.datetime "created_at", default: "2019-01-19 01:13:39", null: false
+    t.datetime "updated_at", default: "2019-01-19 01:13:39", null: false
     t.integer "status"
     t.uuid "office_id"
     t.string "subscriber_type"
@@ -1736,7 +1753,6 @@ ActiveRecord::Schema.define(version: 2019_03_13_141456) do
   add_foreign_key "bank_accounts", "accounts", column: "interest_revenue_account_id"
   add_foreign_key "bank_accounts", "cooperatives"
   add_foreign_key "bank_accounts", "offices"
-  add_foreign_key "barangay_members", "barangays"
   add_foreign_key "barangays", "cooperatives"
   add_foreign_key "barangays", "municipalities"
   add_foreign_key "barcodes", "line_items"
@@ -1761,6 +1777,8 @@ ActiveRecord::Schema.define(version: 2019_03_13_141456) do
   add_foreign_key "entries", "official_receipts"
   add_foreign_key "entries", "users", column: "cancelled_by_id"
   add_foreign_key "entries", "users", column: "recorder_id"
+  add_foreign_key "identifications", "identifications", column: "previous_identification_id"
+  add_foreign_key "identifications", "identity_providers"
   add_foreign_key "interest_configs", "accounts", column: "accrued_income_account_id"
   add_foreign_key "interest_configs", "accounts", column: "interest_revenue_account_id"
   add_foreign_key "interest_configs", "accounts", column: "unearned_interest_income_account_id"

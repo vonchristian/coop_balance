@@ -1,0 +1,10 @@
+<%= simple_form_for [@identifiable, @identification], multipart: true, url: :identifications do |f| %>
+  <%= f.input :identity_provider_id, collection: IdentificationModule::IdentityProvider.all.map{|a| [a.abbreviated_name, a.id] } %>
+  <%= f.input :issuance_date, as: :string, input_html: { class: "datepicker" } %>
+  <%= f.input :expiry_date, as: :string, input_html: { class: "datepicker" } %>
+  <%= f.input :number %>
+  <%= f.input :identifiable_id, input_html: { value: @identifiable.id }, as: :hidden %>
+  <%= f.input :identifiable_type, input_html: { value: @identifiable.class.to_s }, as: :hidden %>
+  <%= f.input :photos %>
+  <%= f.submit %>
+<% end %>

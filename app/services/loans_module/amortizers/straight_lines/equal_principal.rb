@@ -2,10 +2,11 @@ module LoansModule
   module Amortizers
     module StraightLines
       class EqualPrincipal
-        attr_reader :loan_application, :loan_product
+        attr_reader :loan_application, :loan_product, :amortization_type
         def initialize(args)
           @loan_application = args.fetch(:loan_application)
           @loan_product     = @loan_application.loan_product
+          @amortization_type = @loan_product.amortization_type
         end
 
         def create_schedule!
@@ -15,7 +16,7 @@ module LoansModule
         end
 
         def update_interest_amounts!
-          if loan_application.schedule_count > 12
+          if amortization_type.exclude_on_first_year? && loan_application.schedule_count > 12
             loan_application.amortization_schedules.order(:date).last(loan_application.schedule_count - 12).each do |schedule|
               schedule.interest = amortizeable_interest_for(schedule)
               schedule.save!
@@ -73,7 +74,7 @@ module LoansModule
 
         def amortizeable_interest_for(schedule)
           loan_product.interest_calculator.new(
-            loan_application: loan_application, 
+            loan_application: loan_application,
             schedule: schedule
           ).monthly_amortization_interest
         end

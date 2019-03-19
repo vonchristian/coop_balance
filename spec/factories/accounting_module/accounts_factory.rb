@@ -11,5 +11,11 @@ FactoryBot.define do
 
     factory :equity, class: AccountingModule::Equity do
     end
+
+    factory :expense, class: AccountingModule::Expense do
+    end
+
+    factory :revenue, class: AccountingModule::Revenue do
+    end
   end
 end

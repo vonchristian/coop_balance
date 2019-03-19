@@ -10,7 +10,9 @@ module LoansModule
     describe 'enums' do
       it { is_expected.to define_enum_for(:calculation_type).with_values([:straight_line, :declining_balance]) }
       it { is_expected.to define_enum_for(:repayment_calculation_type).with_values([:equal_principal, :equal_payment]) }
+      it { is_expected.to define_enum_for(:interest_amortization_scope).with_values([:exclude_on_first_year]) }
     end
+
     describe 'amortizer' do
       it 'returns straight_lines && equal_principal' do
         straight_line = create(:amortization_type, calculation_type: 'straight_line', repayment_calculation_type: 'equal_principal')

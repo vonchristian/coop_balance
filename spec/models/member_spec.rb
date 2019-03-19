@@ -21,7 +21,7 @@ describe Member, type: :model do
     it { is_expected.to have_many :share_capital_applications }
     it { is_expected.to have_many :savings_account_applications }
     it { is_expected.to have_many :time_deposit_applications }
-
+    it { is_expected.to have_many :identifications }
 
   end
 

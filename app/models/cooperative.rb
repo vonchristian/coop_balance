@@ -41,7 +41,6 @@ class Cooperative < ApplicationRecord
   has_many :loan_registries,                class_name: "Registries::LoanRegistry"
   has_many :stock_registries,               class_name: "Registries::StockRegistry"
   has_many :program_subscription_registries,class_name: "Registries::ProgramSubscriptionRegistry"
-
   has_many :member_registries,              class_name: "Registries::MemberRegistry"
   has_many :savings_account_registries,     class_name: "Registries::SavingsAccountRegistry"
   has_many :share_capital_registries,       class_name: "Registries::ShareCapitalRegistry"
@@ -53,7 +52,6 @@ class Cooperative < ApplicationRecord
   has_many :savings_account_applications
   has_many :share_capital_applications
   has_many :time_deposit_applications
-
   has_many :suppliers,                      class_name: "StoreFrontModule::Supplier"
   has_many :products,                       class_name: "StoreFrontModule::Product"
   has_many :purchase_line_items,            class_name: "StoreFrontModule::LineItems::PurchaseLineItem"
