@@ -3,7 +3,7 @@ module ShareCapitals
     
     def index
       @share_capital = current_cooperative.share_capitals.find(params[:share_capital_id])
-      @entries = @share_capital.entries.order(entry_date: :desc).includes(:commercial_document, :recorder, :cooperative_service).distinct.paginate(:page => params[:page], :per_page => 20)
+      @entries = @share_capital.entries.order(entry_date: :desc, created_at: :desc).includes(:commercial_document, :recorder, :cooperative_service).distinct.paginate(:page => params[:page], :per_page => 20)
       respond_to do |format|
         format.html
         format.pdf do

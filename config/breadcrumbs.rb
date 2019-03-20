@@ -5,7 +5,7 @@ end
 
 crumb :member do |member|
   if member.class.name == "Member"
-    link member.first_and_last_name, member_path(member)
+    link member.first_middle_and_last_name, member_path(member)
     parent :members
   elsif member.class.name == "Organization"
     link member.try(:abbreviated_name) || member.name, organization_path(member)

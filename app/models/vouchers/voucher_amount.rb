@@ -52,6 +52,10 @@ module Vouchers
       where(voucher_id: nil)
     end
 
+    def account_code
+      account.code      
+    end
+
     def disbursed?
       if voucher && voucher.disbursed?
         true

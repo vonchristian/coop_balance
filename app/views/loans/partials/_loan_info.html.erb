@@ -29,6 +29,11 @@
   </div>
   <hr class="no-margin">
   <div class="card-body">
+    <div class="row">
+      <div class="col-md-12">
+        <%= link_to "Update Loan Purpose", edit_loan_purpose_path(loan_id: @loan.id), data:{modal: true}, class: 'btn btn-xs btn-default float-right' %>
+      </div>
+    </div>
     <div class="row min-margin justify-content-end">
       <div class="col-md-11 col-sm-11">
         <div class="row">

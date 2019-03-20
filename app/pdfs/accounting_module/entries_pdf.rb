@@ -2,7 +2,7 @@ module AccountingModule
   class EntriesPdf < Prawn::Document
     attr_reader :entries, :employee, :title, :view_context, :cooperative, :cooperative_service, :from_date, :to_date, :organization
     def initialize(args)
-      super(margin: 30, page_size: "A4", page_layout: :portrait)
+      super(margin: 30, page_size: [612, 936], page_layout: :landscape)
       @entries      = args[:entries]
       @employee     = args[:employee]
       @cooperative  = args[:cooperative]
@@ -22,9 +22,9 @@ module AccountingModule
     private
     def display_commercial_document_for(entry)
       if entry.commercial_document.try(:member).present?
-        entry.commercial_document.try(:member).try(:full_name)
+        entry.commercial_document.try(:member).try(:name_and_initial)
       elsif entry.commercial_document.try(:borrower).present?
-        entry.commercial_document.try(:borrower).try(:full_name)
+        entry.commercial_document.try(:borrower).try(:name_and_initial)
       else
         entry.commercial_document.try(:name)
       end
@@ -59,10 +59,10 @@ module AccountingModule
     end
 
     def heading # 275, 50, 210
-      bounding_box [bounds.left, bounds.top], :width  => 535 do
+      bounding_box [bounds.left, bounds.top], :width  => 936 do
         table([[subtable_left, logo, subtable_right]], 
           cell_style: { inline_format: true, font: "Helvetica", padding: [0,5,0,0]}, 
-          column_widths: [340, 50, 140]) do
+          column_widths: [686, 50, 140]) do
             cells.borders = []
         end
       end
@@ -87,7 +87,8 @@ module AccountingModule
     def entries_table_header
       table([["DATE", "DESCRIPTION", "REF. NO.", "MEMBER/PAYEE", "ACCOUNT", "DEBIT", "CREDIT"]], 
         cell_style: { inline_format: true, size: 7, font: "Helvetica", padding: [4,1,4,1]}, 
-        column_widths: [40, 135, 50, 70, 100, 70, 70]) do
+        column_widths: [40, 250, 86, 130, 230, 70, 70]) do
+          cells.borders = []
           row(0).font_style= :bold
           row(0).background_color = 'DDDDDD'
           cells.borders = [:top, :bottom]
@@ -102,7 +103,7 @@ module AccountingModule
     def entries_table_footer
       table([["", "", "", "", "TOTAL", price(entries.sum {|e| Money.new(e.debit_amounts.sum(:amount_cents)).amount}), price(entries.sum {|e| Money.new(e.credit_amounts.sum(:amount_cents)).amount})]], 
         cell_style: { inline_format: true, size: 8, font: "Helvetica", padding: [4,1,4,1]}, 
-        column_widths: [40, 135, 50, 70, 100, 70, 70]) do
+        column_widths: [40, 250, 86, 130, 230, 70, 70]) do
           row(0).font_style= :bold
           cells.borders = [:top, :bottom]
           column(5).align = :right
@@ -139,9 +140,9 @@ module AccountingModule
 
           table(entries_data + debit_amounts_data + credit_amounts_data, 
             cell_style: { inline_format: true, size: 8, padding: [1,1,3,1]}, 
-            column_widths: [40, 135, 50, 70, 100, 70, 70]) do
-            cells.borders = []
+            column_widths: [40, 250, 86, 130, 230, 70, 70]) do
             row(0).height = 1
+            cells.borders = [:bottom]
             column(2).align = :center
             column(6).align = :right
             column(5).align = :right
@@ -155,7 +156,7 @@ module AccountingModule
           if entry.amounts.count > 2
             table(sub_total, position: :right,
               cell_style: { inline_format: true, size: 8, padding: [1,1,3,1]}, 
-              column_widths: [100, 70, 70]) do
+              column_widths: [230, 70, 70]) do
               cells.borders = []
               row(0).font_style= :bold
               column(1).align = :right

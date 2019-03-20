@@ -1,0 +1,14 @@
+<div class="modal-header">
+  <h4 class="modal-title card-title" id="mainModalLabel">
+    Edit Loan Purpose
+  </h4>
+  <button type="button" class="close float-right" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+</div>
+<%= simple_form_for @loan, html: { autocomplete: "off", data: { modal: true } }, remote: request.xhr?, url: loan_purpose_path(loan_id: @loan.id) do |f| %>
+	<div class="modal-body">
+    <%= f.input :purpose %>
+  </div>
+  <div class="card-footer">
+  	<%= f.submit "Save Note", class: "btn btn-primary float-right" %>
+  </div>
+<% end %>

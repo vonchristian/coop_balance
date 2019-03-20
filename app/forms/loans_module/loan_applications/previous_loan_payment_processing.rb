@@ -27,7 +27,7 @@ module LoansModule
           find_loan_application.voucher_amounts.create!(
           description: "Previous Loan Payment (Interest)",
           amount: interest_amount.to_f,
-          account: find_loan.loan_product.current_interest_config.interest_revenue_account,
+          account: interest_income_account,
           commercial_document: find_loan,
           cooperative: find_loan_application.cooperative,
           amount_type: 'credit')
@@ -50,6 +50,14 @@ module LoansModule
 
       def find_loan
         LoansModule::Loan.find(loan_id)
+      end
+
+      def interest_income_account
+        if find_loan.loan_product.current_interest_config.past_due_interest_income_account.present?
+          find_loan.loan_product.current_interest_config.past_due_interest_income_account
+        else
+          find_loan.loan_product.current_interest_config.interest_revenue_account
+        end
       end
     end
   end

@@ -97,14 +97,14 @@ class VoucherPdf < Prawn::Document
       row(0).font_style = :bold
     end
     if voucher.disbursed?
-      voucher.accounting_entry.debit_amounts.order(type: :desc).each do |amount|
+      voucher.accounting_entry.debit_amounts.sort_by(&:account_code).each do |amount|
         table([["#{price(debit_amount_for(amount))}", "#{amount.account.try(:name)}",  "#{price(credit_amount_for(amount))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica", :padding => [2, 3, 2, 3]}, column_widths: [100, 300, 100]) do
           # cells.borders = []
           column(0).align = :right
           column(2).align = :right
         end
       end
-      voucher.accounting_entry.credit_amounts.order(type: :desc).each do |amount|
+      voucher.accounting_entry.credit_amounts.sort_by(&:account_code).reverse.each do |amount|
         table([["#{price(debit_amount_for(amount))}", "#{amount.account.try(:name)}",  "#{price(credit_amount_for(amount))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica", :padding => [2, 3, 2, 3]}, column_widths: [100, 300, 100]) do
           # cells.borders = []
           column(0).align = :right
@@ -112,14 +112,14 @@ class VoucherPdf < Prawn::Document
         end
       end
     else
-      voucher.voucher_amounts.debit.order(amount_type: :desc).each do |amount|
+      voucher.voucher_amounts.debit.sort_by(&:account_code).each do |amount|
         table([["#{price(debit_amount_for(amount))}", "#{amount.account.try(:name)}", "#{price(credit_amount_for(amount))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica", :padding => [2, 3, 2, 3]}, column_widths: [100, 300, 100]) do
           # cells.borders = []
           column(0).align = :right
           column(2).align = :right
         end
       end
-      voucher.voucher_amounts.credit.order(amount_type: :desc).each do |amount|
+      voucher.voucher_amounts.credit.sort_by(&:account_code).reverse.each do |amount|
         table([["#{price(debit_amount_for(amount))}", "#{amount.account.try(:name)}", "#{price(credit_amount_for(amount))}"]], cell_style: { inline_format: true, size: 10, font: "Helvetica", :padding => [2, 3, 2, 3]}, column_widths: [100, 300, 100]) do
           # cells.borders = []
           column(0).align = :right

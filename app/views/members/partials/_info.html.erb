@@ -37,6 +37,23 @@
         <div class="card-body">
           <div class="row">
             <div class="col-md-10 col-sm-10">
+              <span class="text-muted"><i class="fa fa-sitemap"></i> &nbsp; Organizations/Office</span>
+              <div class="row justify-content-end">
+                <div class="col-md-10 col-sm-10">
+                  <% @member.organizations.each do |organization| %>
+                    <p class="no-margin-bottom"><%= organization.name  %></p>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2 col-sm-2">
+            </div>
+          </div>
+        </div>
+        <hr class="no-margin">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-10 col-sm-10">
               <span class="text-muted"><i class="fa fa-map-marker-alt"></i> &nbsp; Complete Address</span>
               <div class="row justify-content-end">
                 <div class="col-md-10 col-sm-10">
@@ -161,23 +178,6 @@
               <div class="row justify-content-end">
                 <div class="col-md-10 col-sm-10">
                   <%= @member.current_tin_number %>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-2 col-sm-2">
-            </div>
-          </div>
-        </div>
-        <hr class="no-margin">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-md-10 col-sm-10">
-              <span class="text-muted"><i class="fa fa-sitemap"></i> &nbsp; Organizations/Office</span>
-              <div class="row justify-content-end">
-                <div class="col-md-10 col-sm-10">
-                  <% @member.organizations.each do |organization| %>
-                    <p class="no-margin-bottom"><%= organization.name  %></p>
-                  <% end %>
                 </div>
               </div>
             </div>

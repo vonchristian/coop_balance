@@ -61,6 +61,8 @@ Rails.application.routes.draw do
       resources :reports, only: [:index], module: :accounts
       resources :settings, only: [:index], module: :accounts
       resources :entries, only: [:index], module: :accounts
+      resources :debit_entries, only: [:index], module: :accounts
+      resources :credit_entries, only: [:index], module: :accounts
     end
 
     resources :assets, controller: 'accounts', type: 'AccountingModule::Asset'
@@ -448,6 +450,7 @@ Rails.application.routes.draw do
       resources :confirmations,      only: [:create],                module: :payment_vouchers
     end
     resources :notes,                 only: [:index, :new, :create], module: :loans
+    resources :purposes,              only: [:edit, :update],        module: :loans
     resources :barangays,             only: [:edit, :update],        module: :loans
     resources :settings,              only: [:index],                module: :loans
     resources :payments,              only: [:index, :new, :create], module: :loans

@@ -1,45 +1,37 @@
 <% breadcrumb :savings_account_transactions, @savings_account %>
 <p class="text-muted">TRANSACTIONS HISTORY </p>
-<% @entries.each do |entry| %>
-  <%= link_to accounting_module_entry_path(entry) do %>
-	  <div class="card">
-	    <div class="card-body">
-	      <div class="row">
-	        <div class="col-md-1">
-	          <% if entry.commercial_document.present? && entry.commercial_document.avatar.attached? %>
-	            <%= image_tag(entry.commercial_document.avatar, height: 45, width: 45, class: "img-circle")%>
-	          <% end %>
-	        </div>
-	        <div class="col-md-2">
-	          <% if entry.commercial_document.present? %>
-	            <%= entry.commercial_document_name %>
-	          <% end %>
-	        </div>
-	        <div class="col-md-5">
-	          <span class="text-muted"><b><%= entry.description %></b></span><br>
-	          <small class="text-muted"><i class="fa fa-clock"></i> <%= entry.entry_date.strftime("%B %e, %Y") %> &nbsp; &nbsp;
-	            # <%= entry.reference_number %> &nbsp;
-	          <i class="fa fa-user-circle"></i> <%= entry.recorder_first_and_last_name %></small>
-	          <br>
-	          <% if entry.cancelled? %>
-	            <span class="badge bg-danger">Cancelled </span> -
-	            <small class="text-danger"> <%= entry.cancellation_description %></small>
-	          <% end %>
-	          <% if entry.cooperative_service.present? %>
-	            <small class="text-muted"> <%= entry.cooperative_service_title %></small>
-	          <% end %>
-	        </div>
-	        <div class="col-md-2">
-	          <h6 class="number"><%= number_to_currency entry.debit_amounts.total %></h6>
-	          <span class="text-muted">AMOUNT</span>
-	        </div>
-	        <div class="col-md-2">
-	        	<h6 class="number"><%= number_to_currency @savings_account.balance(to_date: entry.entry_date.end_of_day) %></h6>
-	        	<span class="text-muted">BALANCE</span>
-	        </div>
-	      </div>
-	    </div>
-	  </div>
-	<% end %>
-<% end %>
+<table class="table table-hover">
+	<thead>
+		<tr>
+			<td>DATE</td>
+			<td>OR/CDV NO.</td>
+			<td class="text-right">DEPOSIT</td>
+			<td class="text-right">WITHDRAWAL</td>
+			<td class="text-right">BALANCE</td>
+			<td></td>
+		</tr>
+	</thead>
+	<tbody>
+		<tbody>
+			<% @entries.each do |entry| %>
+				<tr>
+					<td><%= entry.entry_date.strftime("%B %e, %Y") %></td>
+					<td><%= link_to entry.reference_number.present? ? entry.reference_number : "FRWD", accounting_module_entry_path(entry), data:{toggle: 'tooltip'}, title: entry.description %></td>
+					<td class="text-right">
+						<% if entry.credit_amounts.for_account(account_id: @savings_account.saving_product.account_id).present? && entry.credit_amounts.for_account(account_id: @savings_account.saving_product.account_id).last.try(:commercial_document) == @savings_account %>
+							<%= number_to_currency entry.credit_amounts.for_account(account_id: @savings_account.saving_product.account_id).total %>
+						<% end %>
+					</td>
+					<td class="text-right">
+						<% if entry.debit_amounts.for_account(account_id: @savings_account.saving_product.account_id).present? && entry.debit_amounts.for_account(account_id: @savings_account.saving_product.account_id).last.try(:commercial_document) == @savings_account %>
+							<%= number_to_currency entry.debit_amounts.for_account(account_id: @savings_account.saving_product.account_id).total %>
+						<% end %>
+					</td>
+					<td class="text-right"><%= number_to_currency @savings_account.balance(to_date: EntryDateTime.new(entry: entry).set) %></td>
+					<td></td>
+				</tr>
+			<% end %>
+		</tbody>
+	</tbody>
+</table>
 <center><%= will_paginate @entries %></center>

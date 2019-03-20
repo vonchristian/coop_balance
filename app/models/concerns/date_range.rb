@@ -12,10 +12,14 @@ DateRange = Struct.new(:from_date, :to_date, keyword_init: true) do
   end
 
   def end_date
-    if to_date.is_a?(Date) || to_date.is_a?(Time) || to_date.is_a?(DateTime)
-      to_date.strftime('%Y-%m-%d 23:59:59 +0800')
+    if to_date.strftime("%H%M%S").to_i.zero?
+      if to_date.is_a?(Date) || to_date.is_a?(Time) || to_date.is_a?(DateTime)
+        to_date.strftime('%Y-%m-%d 23:59:59 +0800')
+      else
+        DateTime.zone.parse(to_date).strftime('%Y-%m-%d 23:59:59 +0800')
+      end
     else
-      DateTime.zone.parse(to_date).strftime('%Y-%m-%d 23:59:59 +0800')
+      to_date
     end
   end
 end

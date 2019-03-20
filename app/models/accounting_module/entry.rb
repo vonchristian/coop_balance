@@ -114,6 +114,14 @@ module AccountingModule
       all.map{|a| a.total }.sum
     end
 
+    def self.debit_amounts(args={})
+      AccountingModule::DebitAmount.where(entry_id: all.pluck(:id))
+    end
+
+    def self.credit_amounts(args={})
+      AccountingModule::CreditAmount.where(entry_id: all.pluck(:id))
+    end
+
     def entries_present?
       AccountingModule::Entry.exists?
     end
@@ -180,6 +188,10 @@ module AccountingModule
       else
         commercial_document.try(:name)
       end
+    end
+
+    def entry_date_and_created_at #for entry sorting on transactions
+      entry_date && created_at
     end
 
     private

@@ -24,27 +24,27 @@ module ShareCapitals
     private
     def create_voucher
       voucher = Voucher.new(
-      account_number: account_number,
-      office: find_employee.office,
-      cooperative: find_employee.cooperative,
-      preparer: find_employee,
-      description: "Balance transfer from #{find_origin.name} to #{find_destination.name}",
-      reference_number: reference_number,
-      payee: find_destination.subscriber,
-      date: date
-    )
-    voucher.voucher_amounts.debit.build(
-        account: find_origin.share_capital_product_paid_up_account,
-        amount: amount,
-        commercial_document: find_origin
-    )
+        account_number: account_number,
+        office: find_employee.office,
+        cooperative: find_employee.cooperative,
+        preparer: find_employee,
+        description: "Balance transfer from #{find_origin.name} to #{find_destination.name}",
+        reference_number: reference_number,
+        payee: find_destination.subscriber,
+        date: date
+      )
+      voucher.voucher_amounts.debit.build(
+          account: find_origin.share_capital_product_equity_account,
+          amount: amount,
+          commercial_document: find_origin
+      )
 
-    voucher.voucher_amounts.credit.build(
-        account: find_destination.share_capital_product_paid_up_account,
-        amount: amount,
-        commercial_document: find_destination
-    )
-    voucher.save!
+      voucher.voucher_amounts.credit.build(
+          account: find_destination.share_capital_product_equity_account,
+          amount: amount,
+          commercial_document: find_destination
+      )
+      voucher.save!
     end
 
     def find_employee

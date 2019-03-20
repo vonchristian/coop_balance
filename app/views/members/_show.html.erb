@@ -19,7 +19,8 @@
                 </div>
               <% end %>
             </div>
-            <h6 class="text-center mb-0 mt-0"><%= @member.current_membership.try(:membership_type).try(:titleize) %></h6>
+            <h6 class="text-center mb-0 mt-0"><%= @member.first_middle_and_last_name %></h6>
+            <p class="text-center text-muted mb-0 mt-0"><%= @member.current_membership.try(:membership_type).try(:titleize) %></p>
             <% if @member.retired? %>
               <h6 class="text-center text-warning mb-0">(RETIRED)</h6>
             <% end %>

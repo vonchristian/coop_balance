@@ -49,6 +49,7 @@ class Member < ApplicationRecord
   before_save :update_birth_date_fields
   before_save :set_default_image, :set_default_account_number, on: :create
   before_save :normalize_name
+  
   def self.retired
     where.not(retired_at: nil)
   end
@@ -203,7 +204,5 @@ class Member < ApplicationRecord
     self.first_name = TextNormalizer.new(text: self.first_name).propercase
     self.middle_name = TextNormalizer.new(text: self.middle_name).propercase
     self.last_name = TextNormalizer.new(text: self.last_name).propercase
-
-
   end
 end

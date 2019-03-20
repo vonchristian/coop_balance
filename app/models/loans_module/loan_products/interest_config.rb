@@ -7,6 +7,7 @@ module LoansModule
       belongs_to :loan_product,                     class_name: "LoansModule::LoanProduct"
       belongs_to :interest_revenue_account,         class_name: "AccountingModule::Account"
       belongs_to :unearned_interest_income_account, class_name: "AccountingModule::Account"
+      belongs_to :past_due_interest_income_account, class_name: "AccountingModule::Account"
       belongs_to :accrued_income_account,           class_name: "AccountingModule::Account"
       belongs_to :cooperative
 
