@@ -3,7 +3,7 @@ module AccountingModule
     class SavingsAccountsInterestPostingsController < ApplicationController
       def new
         @interest_expense_posting = AccountingModule::Entries::SavingsInterestExpenseEntry.new
-        @savings_accounts = current_cooperative.savings.has_minimum_balances.paginate(page: params[:page], per_page: 2)
+        @savings_accounts = current_cooperative.savings.has_minimum_balances.paginate(page: params[:page], per_page: 5)
         @to_date          = params[:to_date] ? DateTime.parse(params[:to_date]) : Date.today
       end
       def create

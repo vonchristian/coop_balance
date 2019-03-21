@@ -19,8 +19,8 @@ module LoansModule
         loan_application.voucher_amounts.credit.create!(
           amount_type: 'credit',
           cooperative: loan_application.cooperative,
-          description: "Interest on Loan",
-          amount:     computed_interest,
+          description: "Interest on Loan (Prededucted)",
+          amount:      computed_interest,
           account:     interest_config.interest_revenue_account
         )
       end

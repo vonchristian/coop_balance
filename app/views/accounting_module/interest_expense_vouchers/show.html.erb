@@ -1,6 +1,12 @@
 <% @savings_accounts.each do |saving| %>
-<%= saving.averaged_balance(to_date: @voucher.date) %>
-<%= @voucher.voucher_amounts.debit.where(commercial_document: saving).sum(&:amount) %>
+	<div class="row">
+		<div class="col-md-4">
+			Balance: <%= saving.averaged_balance(to_date: @voucher.date) %>
+		</div>
+		<div class="col-md-4">
+			<%= @voucher.voucher_amounts.debit.where(commercial_document: saving).sum(&:amount) %>
+		</div>
+	</div>
 <% end %>
 
 <%= link_to "Disburse", voucher_disbursements_path(voucher_id: @voucher.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>

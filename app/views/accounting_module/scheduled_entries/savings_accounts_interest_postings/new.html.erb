@@ -27,7 +27,7 @@
               <small>AVERAGED BALANCE </small>
             </div>
           </div>
-          <br>
+          <hr>
         <% end %>
         <center>
           <%= will_paginate @savings_accounts %>
@@ -38,12 +38,16 @@
   <div class="col-md-4">
     <div class="card">
       <div class="card-body">
-
-<%= simple_form_for @interest_expense_posting, url: :accounting_module_scheduled_entries_savings_accounts_interest_postings do |f| %>
-  <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
-  <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
-  <%= f.input :description %>
-  <%= f.input :reference_number %>
-  <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
-  <%= f.submit "Create Voucher" %>
-<% end %>
+        <%= simple_form_for @interest_expense_posting, url: :accounting_module_scheduled_entries_savings_accounts_interest_postings do |f| %>
+          <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
+          <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+          <%= f.input :description, as: :text %>
+          <%= f.input :reference_number %>
+          <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+          <hr>
+          <%= f.submit "Create Voucher", class: 'btn btn-warning btn-sm float-right' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

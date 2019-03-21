@@ -141,17 +141,11 @@ module AccountingModule
           table(entries_data + debit_amounts_data + credit_amounts_data, 
             cell_style: { inline_format: true, size: 8, padding: [1,1,3,1]}, 
             column_widths: [40, 250, 86, 130, 230, 70, 70]) do
-            row(0).height = 1
-            cells.borders = [:bottom]
+            row(0).height = 0
+            cells.borders = []
             column(2).align = :center
             column(6).align = :right
             column(5).align = :right
-          end
-          stroke do
-            stroke_color '24292E'
-            line_width 0.5
-            stroke_horizontal_rule
-            move_down 1
           end
           if entry.amounts.count > 2
             table(sub_total, position: :right,

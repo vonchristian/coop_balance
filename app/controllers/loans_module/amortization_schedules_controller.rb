@@ -7,7 +7,7 @@ module LoansModule
       @amortization_schedules = current_office.
       amortization_schedules.
       for_loans.
-      not_cancelled.
+      not_cancelled.uniq.
       scheduled_for(from_date: @start_date.beginning_of_month, to_date: @start_date.end_of_month)
     end
     def show

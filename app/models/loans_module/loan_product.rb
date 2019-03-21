@@ -56,6 +56,10 @@ module LoansModule
 
     delegate :calculation_type, :rate, :rate_in_percent, :number_of_payments, to: :current_interest_prededuction, prefix: true, allow_nil: true
 
+    def self.active
+      where(active: true)
+    end
+
     def self.loan_payment_entries(args={})
       accounts_with_revenue_accounts.credit_entries.not_cancelled.for_loans.entered_on(args)
     end

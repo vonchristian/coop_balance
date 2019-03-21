@@ -4,7 +4,7 @@ module LoansModule
     attr_reader :loan, :amortization_schedules, :employee, :view_context, :voucher, :cooperative, :voucher, :term
     def initialize(args)
 
-      super(margin: 40, page_size: "LEGAL", page_layout: :portrait)
+      super(margin: 40, page_size: [612, 936], page_layout: :portrait)
 
       @loan = args[:loan]
       @voucher = args[:voucher] || @loan.disbursement_voucher
@@ -38,14 +38,14 @@ module LoansModule
     end
 
     def heading
-      bounding_box [260, 930], width: 50 do
+      bounding_box [260, 870], width: 50 do
         image "#{Rails.root}/app/assets/images/#{cooperative.abbreviated_name.downcase}_logo.jpg", width: 45, height: 45
       end
-      bounding_box [320, 930], width: 200 do
+      bounding_box [320, 870], width: 200 do
           text "#{cooperative.name.try(:upcase)}", style: :bold, size: 12
           text "#{cooperative.address} . #{cooperative.contact_number}", size: 8
       end
-      bounding_box [0, 930], width: 200 do
+      bounding_box [0, 870], width: 200 do
         text "LOAN DISCLOSURE STATEMENT AND AMORTIZATION SCHEDULE", style: :bold, size: 10
         move_down 6
         text "Borrower: #{@loan.borrower_name.try(:upcase)}", size: 10
@@ -60,7 +60,7 @@ module LoansModule
     end
 
     def summary
-      table([[loan_details, loan_charges_details]], cell_style: {padding: [0,0,0,0], size: 10, font: "Helvetica"}, column_widths: [310, 220]) do
+      table([[loan_details, loan_charges_details]], cell_style: {padding: [0,0,0,0], size: 9, font: "Helvetica"}, column_widths: [310, 220]) do
         cells.borders = []
       end
     end
@@ -69,12 +69,12 @@ module LoansModule
       loan_details_data ||= [[{content: "LOAN DETAILS", size: 9}, ""]] +
                             [["Loan Product", "#{loan.loan_product_name}"]] +
                             [["Loan Amount ", "#{price(loan.loan_amount)}"]] +
-                            [["Loan Amount (in words)", "#{loan.loan_amount.to_f.to_words.titleize} Pesos"]] +
+                            [["Amount (in words)", "#{loan.loan_amount.to_f.to_words.titleize} Pesos"]] +
                             [["Term ", "#{term} Month/s"]] +
                             [["Disbursement Date ", "#{loan.disbursement_date.strftime("%B %e, %Y")}"]] +
                             [["Maturity Date ", "#{loan.maturity_date.strftime("%B %e, %Y")}"]]
 
-      make_table(loan_details_data, cell_style: { padding: [0,0,1,0], inline_format: true, size: 10 }, column_widths: [100, 205]) do
+      make_table(loan_details_data, cell_style: { padding: [0,0,1,0], inline_format: true, size: 9 }, column_widths: [100, 210]) do
         row(0).font_style = :bold
         cells.borders = []
       end
@@ -82,12 +82,12 @@ module LoansModule
 
     def loan_charges_details
       header = [[{content: "LOAN DEDUCTIONS", size: 9}, ""]]
-      loan_amount_data = voucher.voucher_amounts.for_account(account: loan.loan_product_current_account).map{ |a| [a.description, price(a.amount)] }
+      loan_amount_data = voucher.voucher_amounts.for_account(account: loan.loan_product_current_account).reverse.map{ |a| [a.description, price(a.amount)] }
       loan_charges_data = voucher.voucher_amounts.excluding_account(account: loan.loan_product_current_account).excluding_account(account: cooperative.cash_accounts).map{|a| [a.description, price(a.amount)]}
       loan_net_proceed_data = voucher.voucher_amounts.for_account(account: cooperative.cash_accounts).map{ |a| [a.description, price(a.amount)] }
       table_data = [*header, *loan_amount_data, *loan_charges_data, *loan_net_proceed_data]
 
-      make_table(table_data, cell_style: {padding: [0,0,1,0], inline_format: true, size: 10, font: "Helvetica"}, column_widths: [115, 100]) do
+      make_table(table_data, cell_style: {padding: [0,0,1,0], inline_format: true, size: 9, font: "Helvetica"}, column_widths: [140, 80]) do
         cells.borders = []
         row(1).padding = [0,0,2,0]
         row(-1).borders = [:top]
@@ -107,7 +107,7 @@ module LoansModule
         move_down 5
       end
       text "LOAN AMORTIZATION SCHEDULE", size: 9, style: :bold
-      move_down 10
+      move_down 5
       if loan.forwarded_loan? || loan.amortization_schedules.blank?
         text "No data Available"
       else

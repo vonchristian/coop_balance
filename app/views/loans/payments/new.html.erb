@@ -128,9 +128,9 @@
       var filter = $("#scheduleSelect option:selected").text();
       var string = $("#loanProductName").text();
       if (string.indexOf("Short-Term") != -1) {
-        var desc = "STL Payment - " + filter + " Remittance";
+        var desc = "STL Payment - " + filter;
       } else {
-        var desc = "RL Payment - " + filter + " Remittance";
+        var desc = "RL Payment - " + filter;
       }
       $('#description').val(desc);
     });

@@ -128,6 +128,50 @@ module LoansModule
       end
     end
 
+    def charges
+      if not_forwarded?
+        if charges_for_loan_product_accounts.count > 1
+          charges_including_cash_accounts_and_loan_product_accounts +
+          [charges_for_loan_product_accounts.last]
+        else
+          charges_including_cash_accounts_and_loan_product_accounts
+        end
+      end
+    end
+
+    def charges_including_cash_accounts_and_loan_product_accounts
+      disbursement_voucher.voucher_amounts.excluding_account(account: loan_product_current_account)
+      .excluding_account(account: Employees::EmployeeCashAccount.cash_accounts)
+    end
+
+    def charges_for_loan_product_accounts
+      disbursement_voucher.voucher_amounts.for_account(account: loan_product_current_account)
+    end
+
+    def charges_for_cash_accounts
+      disbursement_voucher.voucher_amounts.for_account(account: Employees::EmployeeCashAccount.cash_accounts)
+    end
+
+    def first_year_interest
+      loan_application.first_year_interest
+    end
+
+    def second_year_interest
+      loan_application.second_year_interest
+    end
+
+    def third_year_interest
+      loan_application.third_year_interest
+    end
+
+    def fourth_year_interest
+      loan_application.fourth_year_interest
+    end
+
+    def fifth_year_interest
+      loan_application.fifth_year_interest
+    end
+
     def current_term
       terms.current
     end
@@ -185,6 +229,10 @@ module LoansModule
 
     def forwarded?
       forwarded_loan == true
+    end
+
+    def not_cancelled?
+      cancelled == false
     end
 
     def self.archived

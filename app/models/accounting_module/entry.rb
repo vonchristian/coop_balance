@@ -35,7 +35,7 @@ module AccountingModule
 
     accepts_nested_attributes_for :credit_amounts, :debit_amounts, allow_destroy: true
 
-    before_save :set_default_date, on: :create
+    before_save :set_default_date, :set_entry_date_to_datetime, on: :create
     after_commit :set_encrypted_hash!, if: :entries_present?
 
     delegate :name,  :first_and_last_name, to: :recorder, prefix: true, allow_nil: true
@@ -209,6 +209,15 @@ module AccountingModule
         todays_date = ActiveRecord::Base.default_timezone == :utc ? Time.now.utc : Time.now
         self.entry_date = todays_date
       end
+    end
+
+    def set_entry_date_to_datetime
+      if self.persisted?
+        date_and_time = Time.zone.local(self.entry_date.year, self.entry_date.month, self.entry_date.day, created_at.hour, created_at.min, created_at.sec)
+      else
+        date_and_time = Time.zone.local(self.entry_date.year, self.entry_date.month, self.entry_date.day, Time.zone.now.hour, Time.zone.now.min, Time.zone.now.sec)
+      end
+      self.entry_date = date_and_time
     end
 
     def has_credit_amounts?

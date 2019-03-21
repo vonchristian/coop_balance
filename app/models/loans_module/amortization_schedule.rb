@@ -70,6 +70,10 @@ module LoansModule
       where.not(loan_id: nil)
     end
 
+    def self.not_cancelled
+      select{|a| a.loan.not_cancelled? }
+    end
+
     def self.total_principal_balance(args={})
       to_date   = args.fetch(:to_date)
       from_date = args.fetch(:from_date)
