@@ -8,7 +8,12 @@
         <%=simple_form_for @entry, url: :accounting_module_entry do |f| %>
           <%= f.error_notification %>
           <%= f.input :entry_id, input_html: {value: @entry.id}, as: :hidden %>
-          <%= f.input :entry_date, as: :string, input_html: { class: "datepicker" } %>
+          <% if @entry.debit_amounts.where(account_id: current_cooperative.loan_product_current_accounts.pluck(:id)).blank? %>
+            <%= f.input :entry_date, as: :string, input_html: { class: "datepicker" } %>
+          <% else %>
+            <p class="text-muted">Unable to edit date for this loan entry, it will affect amortization schedules.
+            </p>
+          <% end %>
           <%= f.input :reference_number %>
           <%= f.input :description %>
           <hr>

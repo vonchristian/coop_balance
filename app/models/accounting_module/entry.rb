@@ -122,6 +122,10 @@ module AccountingModule
       AccountingModule::CreditAmount.where(entry_id: all.pluck(:id))
     end
 
+    def not_cancelled?
+      cancelled_at.nil?
+    end
+
     def entries_present?
       AccountingModule::Entry.exists?
     end

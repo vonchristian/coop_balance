@@ -3,6 +3,26 @@
 <div class="card-body">
   <div class="row">
     <div class="col-md-9">
+      <h3 class="card-title mb-3"> Update Beneficiary/ies </h3>
+      <div class="row justify-content-end">
+        <div class="col-md-11">
+          <% if @savings_account.beneficiaries.present? %>
+            <% @savings_account.beneficiaries.try(:split, (",")).each do |beneficary| %>
+              <span class="fa fa-user"> </span> <%= beneficary %><br>
+            <% end %>
+          <% else %>
+            <small class="text-muted">None</small>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <%=link_to "Update", edit_savings_account_beneficiary_path(id: @savings_account.id), class: "btn btn-outline-danger", data: {modal:true} %>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-md-9">
       <h3 class="card-title"> Adjusting Entry </h3>
       <p class="text-muted">Create adjusting entry for this savings account. </h3>
     </div>

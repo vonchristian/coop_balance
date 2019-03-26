@@ -18,6 +18,11 @@ crumb :member_loans do |member|
   parent :member, member
 end
 
+crumb :member_loan_transactions do |member|
+  link "Loan Transactions", member_loan_transactions_path(member)
+  parent :member_loans, member
+end
+
 crumb :member_savings_accounts do |member|
   if member.class.name == "Member"
     link "Savings Deposits", member_savings_accounts_path(member)

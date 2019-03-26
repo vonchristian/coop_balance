@@ -64,4 +64,8 @@ class Cooperative < ApplicationRecord
   def avatar
     logo
   end
+
+  def loan_product_current_accounts
+    AccountingModule::Account.where(id: loan_products.pluck(:current_account_id))
+  end
 end

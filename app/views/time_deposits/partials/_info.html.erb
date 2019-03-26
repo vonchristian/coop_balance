@@ -52,7 +52,7 @@
               <div class="col-md-7">
                 <% if @time_deposit.beneficiaries.present? %>
                   <% @time_deposit.beneficiaries.try(:split, (",")).each do |beneficary| %>
-                    <%= beneficary %><br>
+                    <span class="fa fa-user"> </span> <%= beneficary %><br>
                   <% end %>
                 <% else %>
                   <small class="text-muted">None</small>

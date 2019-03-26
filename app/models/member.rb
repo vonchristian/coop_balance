@@ -177,6 +177,14 @@ class Member < ApplicationRecord
     last_transaction_date || updated_at
   end
 
+  def applied_loan_products
+    LoansModule::LoanProduct.where(id: loans.not_cancelled.pluck(:loan_product_id).uniq)
+  end
+
+  def loans_for(args={})
+    loans.all.where(loan_product: args[:loan_product])
+  end
+
   private
   def set_default_image
     if !self.avatar.attached?

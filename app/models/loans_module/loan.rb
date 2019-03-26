@@ -141,11 +141,11 @@ module LoansModule
 
     def charges_including_cash_accounts_and_loan_product_accounts
       disbursement_voucher.voucher_amounts.excluding_account(account: loan_product_current_account)
-      .excluding_account(account: Employees::EmployeeCashAccount.cash_accounts)
+      .excluding_account(account: Employees::EmployeeCashAccount.cash_accounts).select{|v| v.amount.amount < loan_amount}
     end
 
     def charges_for_loan_product_accounts
-      disbursement_voucher.voucher_amounts.for_account(account: loan_product_current_account)
+      disbursement_voucher.voucher_amounts.for_account(account: loan_product_current_account).select{|v| v.amount.amount < loan_amount}
     end
 
     def charges_for_cash_accounts
@@ -184,6 +184,20 @@ module LoansModule
 
     def maturity_date
       current_term.maturity_date
+    end
+
+    def self.loan_transactions
+      entry_ids = []
+      not_cancelled.disbursed.each do |loan|
+        entry_ids << loan.accounting_entry.id
+      end
+      not_cancelled.disbursed.each do |loan|
+        loan.loan_payments.each do |payment|
+          entry_ids << payment.id
+        end
+      end
+      entry_ids
+      AccountingModule::Entry.where(id: entry_ids)
     end
 
     def self.active

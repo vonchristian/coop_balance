@@ -171,11 +171,12 @@ Rails.application.routes.draw do
     resources :offices, only: [:edit, :update],           module: :share_capitals
     resources :balance_transfers, only: [:new, :create],  module: :share_capitals
     resources :transactions, only: [:index],              module: :share_capitals
+    resources :beneficiaries,  only: [:edit, :update],    module: :share_capitals
   end
 
   resources :members, only: [:index, :show, :edit, :update, :destroy] do
-    resources :credit_scores,         only: [:index], module: :members
-    resources :bills_payments,        only: [:index], module: :members
+    resources :credit_scores,         only: [:index],                        module: :members
+    resources :bills_payments,        only: [:index],                        module: :members
     resources :organizations,         only: [:new, :create],                 module: :members
     resources :beneficiaries,         only: [:new, :create, :destroy],       module: :members
     resources :merging_line_items,    only: [:new, :create],                 module: :members
@@ -201,6 +202,7 @@ Rails.application.routes.draw do
     resources :signature_specimens,   only: [:create],                       module: :members
     resources :avatars,               only: [:update],                       module: :members
     resources :retirements,           only: [:edit, :update],                module: :members
+    resources :loan_transactions, only: [:index],                            module: :members
   end
 
   resources :member_registrations, only: [:new, :create]
@@ -395,6 +397,7 @@ Rails.application.routes.draw do
     resources :barangay_settings,  only: [:edit, :update],          module: :savings_accounts
     resources :voucher_confirmations, only: [:create],              module: :savings_accounts
     resources :transactions,           only: [:index],              module: :savings_accounts
+    resources :beneficiaries,            only: [:edit, :update],    module: :savings_accounts
   end
 
   resources :search_results, only: [:index, :show]

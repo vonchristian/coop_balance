@@ -90,6 +90,10 @@ module AccountingModule
       return balance
     end
 
+    def account_code
+      account.code
+    end
+
     private
     def self.balance_finder(args={})
       if args.present?

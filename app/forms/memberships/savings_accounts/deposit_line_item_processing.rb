@@ -19,6 +19,7 @@ module Memberships
       def find_saving
         MembershipsModule::Saving.find(saving_id)
       end
+
       def find_employee
         User.find_by_id(employee_id)
       end
@@ -47,6 +48,9 @@ module Memberships
         voucher.save!
       end
 
+      def teller_cash_account
+        find_employee.office.employees.teller.last.cash_accounts.find(cash_account_id)
+      end
 
       def debit_account
         find_employee.cash_accounts.find(cash_account_id)

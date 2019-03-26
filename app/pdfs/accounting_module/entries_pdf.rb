@@ -96,7 +96,6 @@ module AccountingModule
           column(6).align = :right
           column(2).align = :center
           column(1).align = :center
-          column(4).align = :center
       end
     end
 
@@ -120,52 +119,48 @@ module AccountingModule
         text "No entries data.", align: :center
       else
         entries_table_header
-
         entries.sort_by(&:ascending_order).each do |entry|
-          row_count = entry.amounts.count + 1
-          debit_amounts_data = entry.debit_amounts.map{|a| [a.account.name, price(a.amount), ""] }
-          credit_amounts_data = entry.credit_amounts.map{|a| [a.account.name, "", price(a.amount)] }
-          sub_total = [[
-            "SUB-TOTAL", 
-            "#{price(entry.debit_amounts.sum{|a| a.amount})}", 
-            "#{price(entry.credit_amounts.sum{|a| a.amount})}"
-          ]]
-          entries_data = [[
-            {content: entry.entry_date.strftime("%D"), rowspan: row_count }, 
-            {content: entry.description, rowspan: row_count}, 
-            {content: "##{entry.reference_number}", rowspan: row_count},
-            {content: display_commercial_document_for(entry).try(:upcase), rowspan: row_count},
-            "", "", ""
-          ]]
-
-          table(entries_data + debit_amounts_data + credit_amounts_data, 
+          table([[entries_table_data(entry), amounts_table_data(entry)]], 
             cell_style: { inline_format: true, size: 8, padding: [1,1,3,1]}, 
-            column_widths: [40, 250, 86, 130, 230, 70, 70]) do
-            row(0).height = 0
-            cells.borders = []
-            column(2).align = :center
-            column(6).align = :right
-            column(5).align = :right
-          end
-          if entry.amounts.count > 2
-            table(sub_total, position: :right,
-              cell_style: { inline_format: true, size: 8, padding: [1,1,3,1]}, 
-              column_widths: [230, 70, 70]) do
-              cells.borders = []
-              row(0).font_style= :bold
-              column(1).align = :right
-              column(2).align = :right
-            end
-            stroke do
-              stroke_color '24292E'
-              line_width 1
-              stroke_horizontal_rule
-              move_down 1
-            end
+            column_widths: [506, 370]) do
+              cells.borders = [:top]
           end
         end
-
         entries_table_footer
+      end
+    end
+
+    def entries_table_data(entry)
+      entries_data = [[
+        {content: entry.entry_date.strftime("%D") }, 
+        {content: entry.description}, 
+        {content: "##{entry.reference_number}"},
+        {content: display_commercial_document_for(entry).try(:upcase)}
+      ]]
+      make_table(entries_data, 
+        cell_style: { inline_format: true, size: 8, font: "Helvetica", padding: [1,1,3,1]}, 
+        column_widths: [40, 250, 86, 130]) do
+          cells.borders = []
+          column(2).align = :center
+      end
+    end
+
+    def amounts_table_data(entry)
+      row_count = entry.amounts.count
+      debit_amounts_data = entry.debit_amounts.map{|a| [a.account.name, price(a.amount), ""] }
+      credit_amounts_data = entry.credit_amounts.map{|a| [a.account.name, "", price(a.amount)] }
+      sub_total_data = [["SUB-TOTAL", 
+            price(entry.debit_amounts.sum{|a| a.amount}), 
+            price(entry.credit_amounts.sum{|a| a.amount})]]
+
+      make_table(debit_amounts_data + credit_amounts_data + sub_total_data, 
+        cell_style: { inline_format: true, size: 8, font: "Helvetica", padding: [1,1,3,1]},
+        column_widths: [230, 70, 70]) do
+        cells.borders = []
+        column(1).align = :right
+        column(2).align = :right
+        row(row_count).borders = [:top]
+        row(row_count).font_style = :bold
       end
     end
   end

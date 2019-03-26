@@ -25,7 +25,14 @@
 </div>
 <div class="card">
   <div class="card-body">
-    <h4 class="card-title">Loan Details </h4>
+    <div class="row">
+      <div class="col-md-6">
+        <h4 class="card-title">Loan Details </h4>
+      </div>
+      <div class="col-md-6">
+        <%= link_to 'View Voucher (PDF)', loans_module_loan_application_voucher_path(loan_application_id: @loan.loan_application.id, id: @loan.loan_application.voucher_id, format: "pdf"), class: "btn btn-default float-right" if @loan.not_forwarded? %>
+      </div>
+    </div>
   </div>
   <hr class="no-margin">
   <div class="card-body">
@@ -169,7 +176,7 @@
         <div class="col-md-11 col-sm-11">
           <div class="row">
             <div class="col-md-4">
-              <h6 class="">Loan Amount</h6>
+              <h6 class="text-muted">Loan Amount</h6>
             </div>
             <div class="col-md-2">
               <h6 class="float-right text-info">
@@ -179,7 +186,7 @@
           </div>
           <div class="row">
             <div class="col-md-4">
-              <h6 class="">Loan Charges</h6>
+              <h6 class="text-muted">Loan Deductions</h6>
             </div>
             <div class="col-md-2">
               <h6 class="float-right text-danger">
@@ -190,7 +197,7 @@
           <hr class="min-margin">
           <div class="row">
             <div class="col-md-4">
-              <h6 class="">Net Proceed</h6>
+              <h6 class="">NET PROCEED</h6>
             </div>
             <div class="col-md-2">
               <h6 class="float-right text-success">
@@ -203,14 +210,14 @@
     </div>
     <hr class="no-margin">
     <div class="card-body">
-      <h4 class="card-title">Loan Charges</h4>
+      <h4 class="card-title">Loan Deductions</h4>
       <hr class="min-margin">
       <div class="row min-margin justify-content-end">
         <div class="col-md-11 col-sm-11">
           <% @loan.charges_including_cash_accounts_and_loan_product_accounts.reverse.each do |voucher_amount| %>
             <div class="row">
               <div class="col-md-4 col-sm-6">
-                <%= voucher_amount.description %>
+                <span class="text-muted"><%= voucher_amount.description %></span>
               </div>
               <div class="col-md-2 col-sm-6">
                 <span class="float-right"><%= number_to_currency voucher_amount.amount %></span>
@@ -220,15 +227,26 @@
           <% if @loan.charges_for_loan_product_accounts.count > 1 %>
             <div class="row">
               <div class="col-md-4">
-                Previous Loan Payment (Principal)
+                <span class="text-muted">Previous Loan Payment (Principal)</span>
               </div>
               <div class="col-md-2">
                 <span class="float-right">
-                  <%= number_to_currency @loan.charges_for_loan_product_accounts.last.amount %>
+                  <%= number_to_currency @loan.charges_for_loan_product_accounts.last.amount.amount %>
                 </span>
               </div>
             </div>
           <% end %>
+          <hr class="min-margin">
+          <div class="row">
+            <div class="col-md-4">
+              <h6 class="">TOTAL DEDUCTIONS</h6>
+            </div>
+            <div class="col-md-2">
+              <h6 class="float-right text-danger">
+                <%= number_to_currency @loan.charges.sum{|c| c.amount.amount} %>
+              </h6>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -254,7 +272,7 @@
           <% if @loan.term > 12  %>
             <div class="row">
               <div class="col-md-4 col-sm-6">
-                First Year
+                <span class="text-muted">First Year</span>
               </div>
               <div class="col-md-2 col-sm-6">
                 <span class="float-right"><%= number_to_currency @loan.first_year_interest %></span>
@@ -263,7 +281,7 @@
             <% if @loan.term > 12  %>
               <div class="row">
                 <div class="col-md-4 col-sm-6">
-                  Second Year
+                  <span class="text-muted">Second Year</span>
                 </div>
                 <div class="col-md-2 col-sm-6">
                   <span class="float-right"><%= number_to_currency @loan.second_year_interest %></span>
@@ -273,7 +291,7 @@
             <% if @loan.term >= 36 %>
               <div class="row">
                 <div class="col-md-4 col-sm-6">
-                  Third Year
+                  <span class="text-muted">Third Year</span>
                 </div>
                 <div class="col-md-2 col-sm-6">
                   <span class="float-right"><%= number_to_currency @loan.third_year_interest %></span>
@@ -283,7 +301,7 @@
             <% if @loan.term >= 48 %>
               <div class="row">
                 <div class="col-md-4 col-sm-6">
-                  Fourth Year
+                  <span class="text-muted">Fourth Year</span>
                 </div>
                 <div class="col-md-2 col-sm-6">
                   <span class="float-right"><%= number_to_currency @loan.fourth_year_interest %></span>
@@ -293,7 +311,7 @@
             <% if @loan.term >=60 %>
               <div class="row">
                 <div class="col-md-4 col-sm-6">
-                  Fifth Year
+                  <span class="text-muted">Fifth Year</span>
                 </div>
                 <div class="col-md-2 col-sm-6">
                   <span class="float-right"><%= number_to_currency @loan.fifth_year_interest %></span>
@@ -304,7 +322,7 @@
           <% end %>
           <div class="row">
             <div class="col-md-4 col-sm-6">
-            Total Interests
+              <span class="text-muted">Total Interests</span>
             </div>
             <div class="col-md-2 col-sm-6">
               <span class="float-right text-info"><%= number_to_currency @loan.total_loan_interests %></span>
@@ -312,7 +330,7 @@
           </div>
           <div class="row min-margin">
             <div class="col-md-4 col-sm-6">
-            Interest Discounts
+              <span class="text-muted">Interest Discounts</span>
             </div>
             <div class="col-md-2 col-sm-3">
               <span class="float-right text-danger"><%= number_to_currency @loan.total_interest_discounts %></span>
@@ -320,7 +338,7 @@
           </div>
           <div class="row min-margin">
             <div class="col-md-4 col-sm-6">
-            Interest Payments
+              <span class="text-muted">Interest Payments</span>
             </div>
             <div class="col-md-2 col-sm-6">
               <span class="float-right text-danger"><%= number_to_currency @loan.total_interest_payments %></span>
@@ -329,7 +347,7 @@
           <hr class="min-margin">
           <div class="row min-margin">
             <div class="col-md-4 col-sm-6">
-              <h6>Interest Balance</h6>
+              <h6>INTEREST BALANCE</h6>
             </div>
             <div class="col-md-2 col-sm-6">
               <h6 class="float-right text-success"><%= number_to_currency @loan.loan_interests_balance %></h6>
@@ -353,7 +371,7 @@
         <div class="col-md-11 col-sm-11">
           <div class="row">
             <div class="col-md-4 col-sm-6">
-              Total Penalties
+              <span class="text-muted">Total Penalties</span>
             </div>
             <div class="col-md-2 col-sm-6">
               <span class="float-right text-info"><%= number_to_currency @loan.total_loan_penalties %></span>
@@ -361,7 +379,7 @@
           </div>
           <div class="row min-margin">
             <div class="col-md-4 col-sm-6">
-              Penalty Discounts
+              <span class="text-muted">Penalty Discounts</span>
             </div>
             <div class="col-md-2 col-sm-3">
               <span class="float-right text-danger"><%= number_to_currency @loan.total_penalty_discounts %></span>
@@ -370,7 +388,7 @@
           </div>
           <div class="row min-margin">
             <div class="col-md-4 col-sm-6">
-              Penalty Payments
+              <span class="text-muted">Penalty Payments</span>
             </div>
             <div class="col-md-2 col-sm-6">
               <span class="float-right text-danger"><%= number_to_currency @loan.total_penalty_payments %></span>
@@ -379,7 +397,7 @@
           <hr class="min-margin">
           <div class="row min-margin">
             <div class="col-md-4 col-sm-6">
-              <h6>Penalty Balance</h6>
+              <h6>PENALTY BALANCE</h6>
             </div>
             <div class="col-md-2 col-sm-6">
               <h6 class="float-right text-success"><%= number_to_currency @loan.loan_penalties_balance %></h6>

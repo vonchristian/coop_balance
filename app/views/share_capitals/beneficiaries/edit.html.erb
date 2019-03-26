@@ -1,24 +1,24 @@
 <div class="modal-header">
   <h4 class="modal-title card-title" id="mainModalLabel">
-    Time Deposit Beneficiaries
+    Share Capital Beneficiaries
   </h4>
   <button type="button" class="close float-right" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 </div>
 <div class="modal-body">
   <div class="row">
     <div class="col-md-2 col-sm-2">
-      <%= image_tag(@time_deposit.avatar, height: 45, width: 45, class: "img-circle") %>
+      <%= image_tag(@share_capital.avatar, height: 45, width: 45, class: "img-circle") %>
     </div>
     <div class="col-md-10 col-sm-10">
-      <h4 class="card-title no-margin-bottom"><%= @time_deposit.name %></h4>
-      <small class="text-muted">Depositor</small>
+      <h4 class="card-title no-margin-bottom"><%= @share_capital.name %></h4>
+      <small class="text-muted">Member</small>
     </div>
   </div>
 </div>
 <hr class="no-margin">
-<%= simple_form_for @time_deposit, url: :time_deposit_beneficiary, html: { autocomplete: "off" } do |f| %>
+<%= simple_form_for @share_capital, url: :share_capital_beneficiary, html: { autocomplete: "off" } do |f| %>
   <div class="modal-body">
-    <%= f.input :beneficiaries, label: "Beneficiary/ies", placeholder: "Fullname", as: :text, hint: "Use comma separator if two of more beneficiaries." %>
+    <%= f.input :beneficiaries, label: "Beneficiary/ies", placeholder: "Fullname", as: :text, hint: "Use comma as separator if two or more beneficiaries." %>
   </div>
   <div class="modal-footer">
     <%= f.submit "Update", class: "btn btn-primary float-right", disable_with: "Saving..." %>

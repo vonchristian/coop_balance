@@ -62,7 +62,10 @@
                     <tr style="cursor: pointer;" data-link="<%= loan_path(loan) %>">
                       <td style="width: 40px"><%= image_tag(loan.borrower.avatar, class: "img-circle", height: 35, width: 35) %></td>
                       <td><b><%= loan.borrower_name %></b></td>
-                      <td><%= loan.loan_product_name %></td>
+                      <td>
+                        <%= loan.loan_product_name %><br>
+                        <small><%= loan.application_date.strftime("%b. %e, %Y") %></small>
+                      </td>
                       <td><%= number_to_currency loan.loan_amount %>
                       <td><%= number_to_currency loan.balance %>
                     </tr>

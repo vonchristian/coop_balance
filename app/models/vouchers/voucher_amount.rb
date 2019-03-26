@@ -53,7 +53,7 @@ module Vouchers
     end
 
     def account_code
-      account.code      
+      account.code
     end
 
     def disbursed?
