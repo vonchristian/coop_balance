@@ -48,12 +48,8 @@ module Memberships
         voucher.save!
       end
 
-      def teller_cash_account
-        find_employee.office.employees.teller.last.cash_accounts.find(cash_account_id)
-      end
-
       def debit_account
-        find_employee.cash_accounts.find(cash_account_id)
+        AccountingModule::Account.find(cash_account_id)
       end
 
       def credit_account

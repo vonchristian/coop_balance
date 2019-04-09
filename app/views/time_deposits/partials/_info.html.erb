@@ -1,111 +1,109 @@
 <% breadcrumb :time_deposit_details, @time_deposit %>
-<div class="card">
-  <div class="card-body">
-    <div class="row">
-      <div class="col-md-7">
-        <div class="row justify-content-end">
-          <div class="col-md-11">
-            <div class="row">
-              <div class="col-md-4">
-                <label>Time Deposit Product</label>
-              </div>
-              <div class="col-md-7">
-                <%= @time_deposit.time_deposit_product_name.try(:upcase) %>
-              </div>
+<div class="card-body">
+  <div class="row">
+    <div class="col-md-7">
+      <div class="row justify-content-end">
+        <div class="col-md-11">
+          <div class="row">
+            <div class="col-md-4">
+              <label>Time Deposit Product</label>
             </div>
-            <div class="row min-margin">
-              <div class="col-md-4">
-                <label>Depositor</label>
-              </div>
-              <div class="col-md-7">
-                <%= @time_deposit.depositor_name %>
-              </div>
+            <div class="col-md-7">
+              <%= @time_deposit.time_deposit_product_name.try(:upcase) %>
             </div>
-            <div class="row min-margin">
-              <div class="col-md-4">
-                <label>Account Number</label>
-              </div>
-              <div class="col-md-7">
-                <%= @time_deposit.account_number %>
-              </div>
+          </div>
+          <div class="row min-margin">
+            <div class="col-md-4">
+              <label>Depositor</label>
             </div>
-            <div class="row min-margin">
-              <div class="col-md-4">
-                <label>Certificate Number</label>
-              </div>
-              <div class="col-md-7">
-                <%= @time_deposit.certificate_number %>
-              </div>
+            <div class="col-md-7">
+              <%= @time_deposit.depositor_name %>
             </div>
-            <div class="row min-margin">
-              <div class="col-md-4">
-                <label>Date Deposited</label>
-              </div>
-              <div class="col-md-7">
-                <%= @time_deposit.effectivity_date.strftime("%B %e, %Y") %>
-              </div>
+          </div>
+          <div class="row min-margin">
+            <div class="col-md-4">
+              <label>Account Number</label>
             </div>
-            <div class="row min-margin">
-              <div class="col-md-4">
-                <label>Beneficiary/ies</label>
-              </div>
-              <div class="col-md-7">
-                <% if @time_deposit.beneficiaries.present? %>
-                  <% @time_deposit.beneficiaries.try(:split, (",")).each do |beneficary| %>
-                    <span class="fa fa-user"> </span> <%= beneficary %><br>
-                  <% end %>
-                <% else %>
-                  <small class="text-muted">None</small>
+            <div class="col-md-7">
+              <%= @time_deposit.account_number %>
+            </div>
+          </div>
+          <div class="row min-margin">
+            <div class="col-md-4">
+              <label>Certificate Number</label>
+            </div>
+            <div class="col-md-7">
+              <%= @time_deposit.certificate_number %>
+            </div>
+          </div>
+          <div class="row min-margin">
+            <div class="col-md-4">
+              <label>Date Deposited</label>
+            </div>
+            <div class="col-md-7">
+              <%= @time_deposit.effectivity_date.strftime("%B %e, %Y") %>
+            </div>
+          </div>
+          <div class="row min-margin">
+            <div class="col-md-4">
+              <label>Beneficiary/ies</label>
+            </div>
+            <div class="col-md-7">
+              <% if @time_deposit.beneficiaries.present? %>
+                <% @time_deposit.beneficiaries.try(:split, (",")).each do |beneficary| %>
+                  <span class="fa fa-user"> </span> <%= beneficary %><br>
                 <% end %>
-              </div>
+              <% else %>
+                <small class="text-muted">None</small>
+              <% end %>
             </div>
-            <div class="row min-margin">
-              <div class="col-md-11">
-                <%= link_to time_deposit_path(@time_deposit, format: "pdf") do %>
-                  <span class="btn btn-default"><i class="fa fa-certificate"></i> Time Deposit Certificate </span>
-                <% end %>
-              </div>
+          </div>
+          <div class="row min-margin">
+            <div class="col-md-11">
+              <%= link_to time_deposit_path(@time_deposit, format: "pdf") do %>
+                <span class="btn btn-default"><i class="fa fa-certificate"></i> Time Deposit Certificate </span>
+              <% end %>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-md-5">
-        <hr class="min-margin set-visibility">
-        <div class="row justify-content-end">
-          <div class="col-md-7 col-sm-6 col-auto">
-            <small>AMOUNT DEPOSITED</small>
-            <h3 class="card-title"><%= number_to_currency @time_deposit.deposited_amount %></h3>
+    </div>
+    <div class="col-md-5">
+      <hr class="min-margin set-visibility">
+      <div class="row justify-content-end">
+        <div class="col-md-7 col-sm-6 col-auto">
+          <small>AMOUNT DEPOSITED</small>
+          <h3 class="card-title"><%= number_to_currency @time_deposit.deposited_amount %></h3>
+          <br>
+          <% if @time_deposit.interest_balance.present? %>
+            <small>INTEREST</small>
+            <h3 class="card-title"><%= number_to_currency @time_deposit.interest_balance %></h3>
             <br>
-            <% if @time_deposit.interest_balance.present? %>
-              <small>INTEREST</small>
-              <h3 class="card-title"><%= number_to_currency @time_deposit.interest_balance %></h3>
+            <% if @time_deposit.withdrawn == true && @time_deposit.balance == 0.0 %>
+              <h4 class="card-title"><span class="badge bg-success"> Withdrawn </span></h4>
               <br>
-              <% if @time_deposit.withdrawn == true && @time_deposit.balance == 0.0 %>
-                <h4 class="card-title"><span class="badge bg-success"> Withdrawn </span></h4>
-                <br>
-                <%= link_to 'Disbursement Voucher', time_deposit_withdrawal_voucher_path(time_deposit_id: @time_deposit.id, id: Vouchers::VoucherAmount.debit.where(commercial_document: @time_deposit).last.voucher.id), class: "btn btn-default" %>
-              <% else %>
-                <%= link_to 'Withdraw', new_time_deposit_withdrawal_path(@time_deposit), data: {turbolinks: false}, class: "btn btn-danger" if policy([:time_deposits, :withdrawal]).new? %>
-              <% end %>
+              <%= link_to 'Disbursement Voucher', time_deposit_withdrawal_voucher_path(time_deposit_id: @time_deposit.id, id: Vouchers::VoucherAmount.debit.where(commercial_document: @time_deposit).first.voucher.id), class: "btn btn-default" %>
+            <% else %>
+              <%= link_to 'Withdraw', new_time_deposit_withdrawal_path(@time_deposit), data: {turbolinks: false}, class: "btn btn-danger" if policy([:time_deposits, :withdrawal]).new? %>
             <% end %>
-          </div>
-          <div class="col-md-4 col-sm-6 col-auto">
-            <small>MATURITY DATE</small>
-            <p><i class="fa fa-calendar"></i>
-              <%= @time_deposit.maturity_date.strftime("%B %e, %Y")  %>
-            </p>
-            <% if !@time_deposit.withdrawn == true %>
-              <small>DAYS TO MATURE</small>
-              <h3 class="card-title">
-                <%= @time_deposit.remaining_term %>
-              </h3>
-              <br>
-            <% end %>
-            <small>TERM</small>
+          <% end %>
+        </div>
+        <div class="col-md-4 col-sm-6 col-auto">
+          <small>MATURITY DATE</small>
+          <p><i class="fa fa-calendar"></i>
+            <%= @time_deposit.maturity_date.strftime("%B %e, %Y")  %>
+          </p>
+          <% if !@time_deposit.withdrawn == true %>
+            <small>DAYS TO MATURE</small>
             <h3 class="card-title">
-              <%= @time_deposit.current_term.term/30 %> Months
+              <%= @time_deposit.remaining_term %>
             </h3>
-          </div>
+            <br>
+          <% end %>
+          <small>TERM</small>
+          <h3 class="card-title">
+            <%= @time_deposit.current_term.term/30 %> Months
+          </h3>
         </div>
       </div>
     </div>

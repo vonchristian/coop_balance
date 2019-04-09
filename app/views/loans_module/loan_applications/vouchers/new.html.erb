@@ -432,7 +432,7 @@
           <%= f.input :date, as: :string, input_html: { class: "datepicker", value: @loan_application.application_date.strftime("%B %e, %Y") } %>
           <%= f.input :cash_account_id, collection: Employees::EmployeeCashAccount.cash_accounts.map{ |a| [a.name, a.id] }, default: current_user.cash_accounts.first, hint: "Please select cash account for disbursement." %>
           <%= f.input :reference_number, required: true %>
-          <%= f.input :description, input_html: { value: "#{@loan_application.loan_product_name}" }, as: :text %>
+          <%= f.input :description, input_html: { value: "#{@loan_application.loan_product_name} - #{@loan_application.purpose}" }, as: :text %>
           <%= f.input :preparer_id, input_html: { value: current_user.id }, as: :hidden %>
 
           <%= f.input :borrower_id, input_html: { value: @loan_application.borrower_id }, as: :hidden %>

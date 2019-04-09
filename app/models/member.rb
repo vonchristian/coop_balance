@@ -57,6 +57,18 @@ class Member < ApplicationRecord
   def self.for_cooperative(args={})
     joins(:memberships).where('memberships.cooperative_id' => args[:cooperative].id)
   end
+
+  def self.for_cooperative_and_membership_type(args={})
+    members = joins(:memberships).where('memberships.cooperative_id' => args[:cooperative].id)
+    .where("memberships.membership_type" => args[:membership_type])
+    if args[:organization_id].present?
+      ids = Cooperative.find(args[:cooperative].id).organizations.find(args[:organization_id]).organization_members.where(organization_membership: members).pluck(:organization_membership_id)
+      where(id: ids)
+    else
+      members
+    end
+  end
+
   def self.updated_at(args={})
     if args[:from_date] && args[:to_date]
       from_date = args[:from_date] || latest.last_transaction_date

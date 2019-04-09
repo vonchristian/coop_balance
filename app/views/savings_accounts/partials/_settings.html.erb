@@ -20,11 +20,13 @@
       <%=link_to "Update", edit_savings_account_beneficiary_path(id: @savings_account.id), class: "btn btn-outline-danger", data: {modal:true} %>
     </div>
   </div>
-  <hr>
+</div>
+<hr class="no-margin">
+<div class="card-body">
   <div class="row">
     <div class="col-md-9">
       <h3 class="card-title"> Adjusting Entry </h3>
-      <p class="text-muted">Create adjusting entry for this savings account. </h3>
+      <p class="text-muted">Create adjusting entry for this savings account. </p>
     </div>
     <div class="col-md-3">
       <% if policy([:accounting_module, :entry]).new? %>
@@ -34,7 +36,9 @@
       <% end %>
     </div>
   </div>
-  <hr>
+</div>
+<hr class="no-margin">
+<div class="card-body">
   <div class="row">
     <div class="col-md-9">
       <h4 class="card-title">Merge Account</h4>
@@ -44,7 +48,9 @@
       <%= link_to 'Merge Account', new_savings_account_merging_line_item_path(@savings_account), class: "btn btn-outline-danger" %>
     </div>
   </div>
-  <hr>
+</div>
+<hr class="no-margin">
+<div class="card-body">
   <div class="row">
     <div class="col-md-9">
       <h3 class="card-title">Balance Transfer </h3>
@@ -58,7 +64,9 @@
       <% end %>
     </div>
   </div>
-  <hr>
+</div>
+<hr class="no-margin">
+<div class="card-body">
   <div class="row">
     <div class="col-md-9">
       <h4 class="card-title">Barangay Details</h4>
@@ -69,7 +77,9 @@
       <%= link_to 'Set Barangay', edit_savings_account_barangay_setting_path(id: @savings_account), class: "btn btn-outline-danger", data: {modal: true} %>
     </div>
   </div>
-  <hr>
+</div>
+<hr class="no-margin">
+<div class="card-body">
   <div class="row">
     <div class="col-md-9">
       <h3 class="card-title"> Close Account </h3>

@@ -19,7 +19,31 @@
       <%=link_to "Update", edit_share_capital_beneficiary_path(id: @share_capital.id), class: "btn btn-outline-danger", data: {modal:true} %>
     </div>
   </div>
-  <hr>
+</div>
+<hr class="no-margin">
+<div class="card-body">
+  <div class="row">
+    <div class="col-md-9">
+      <h3 class="card-title mb-3"> Update MAF Beneficiary/ies </h3>
+      <div class="row justify-content-end">
+        <div class="col-md-11">
+          <% if @share_capital.maf_beneficiaries.present? %>
+            <% @share_capital.maf_beneficiaries.try(:split, (",")).each do |beneficary| %>
+              <span class="fa fa-user"> </span> <%= beneficary %><br>
+            <% end %>
+          <% else %>
+            <small class="text-muted">None</small>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <%=link_to "Update", edit_share_capital_maf_beneficiary_path(id: @share_capital.id), class: "btn btn-outline-danger", data: {modal:true} %>
+    </div>
+  </div>
+</div>
+<hr class="no-margin">
+<div class="card-body">
   <div class="row">
     <div class="col-md-9">
 	    <h4 class="card-title"> Merge Account </h4>
@@ -33,7 +57,9 @@
       <% end %>
     </div>
   </div>
-  <hr>
+</div>
+<hr class="no-margin">
+<div class="card-body">
   <div class="row">
     <div class="col-md-9">
       <h3 class="card-title"> Balance Transfer </h3>
@@ -47,7 +73,9 @@
       <% end %>
     </div>
   </div>
-	<hr>
+</div>
+<hr class="no-margin">
+<div class="card-body">
   <div class="row">
     <div class="col-md-9">
 	    <h4 class="card-title">Barangay Details</h4>
@@ -60,7 +88,9 @@
       <%= link_to 'Set Barangay', edit_share_capital_barangay_path(id: @share_capital.id), class: "btn btn-outline-danger", data: {modal:true} %>
     </div>
   </div>
-	<hr>
+</div>
+<hr class="no-margin">
+<div class="card-body">
   <div class="row">
     <div class="col-md-9">
 	    <h3 class="card-title">Adjustment Entries</h3>

@@ -26,7 +26,7 @@
       <hr class="min-margin">
       <div class="card-body">
         <%= simple_form_for [@time_deposit, @withdrawal], url: :time_deposit_withdrawals, html: { autocomplete: "off" } do |f| %>
-        <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] }, default: current_user.cash_accounts.first %>
+        <%= f.input :cash_account_id, collection: current_cooperative.users.teller.last.cash_accounts.map{|a| [a.name, a.id] }, default: current_cooperative.users.teller.last.cash_accounts.first %>
         <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
         <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
         <%= f.input :amount, as: :currency, input_html: {value: @time_deposit.balance} %>

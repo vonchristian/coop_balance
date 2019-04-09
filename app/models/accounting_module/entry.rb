@@ -195,7 +195,7 @@ module AccountingModule
     end
 
     def entry_date_and_created_at #for entry sorting on transactions
-      entry_date && created_at
+      EntryDateTime.new(entry: self).set
     end
 
     private

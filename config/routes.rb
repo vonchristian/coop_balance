@@ -172,6 +172,7 @@ Rails.application.routes.draw do
     resources :balance_transfers, only: [:new, :create],  module: :share_capitals
     resources :transactions, only: [:index],              module: :share_capitals
     resources :beneficiaries,  only: [:edit, :update],    module: :share_capitals
+    resources :maf_beneficiaries,  only: [:edit, :update],    module: :share_capitals
   end
 
   resources :members, only: [:index, :show, :edit, :update, :destroy] do

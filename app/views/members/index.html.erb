@@ -26,10 +26,15 @@
         <div class="row">
           <div class="col-md-3 border-right">
             <small> TOTAL MEMBERS </small>
-            <h2 class="number"><%= current_cooperative.member_memberships.count %></h2>
+            <h2 class="number mb-0"><%= current_cooperative.member_memberships.count %></h2>
             <small>NEW MEMBERS (<%= Date.current.year %>) </small>
             <%=current_cooperative.memberships.approved_at(from_date: Date.current.beginning_of_month, to_date: Date.current.end_of_year).count %>
-
+            <br>
+            <h5 class="number mb-0"><%= current_cooperative.memberships.where(membership_type: "regular_member").count %></h5>
+            <small>REGULAR MEMBERS</small>
+            <br>
+            <h5 class="number mb-0"><%= current_cooperative.memberships.where(membership_type: "associate_member").count %></h5>
+            <small>ASSOCIATE MEMBERS</small>
           </div>
           <div class="col-md-2">
             <small>ACTIVE</small>
@@ -66,14 +71,46 @@
             <% end %>
           </div>
         </div>
-
+        <br>
+        <div class="row">
+          <div class="col-md-8">
+            <%=form_tag members_path, method: :get, id: 'members-filter-form' do %>
+              <div class="row">
+                <div class="col-md-6">
+                  <%= select_tag :membership_type, options_for_select(Cooperatives::Membership.membership_types.keys.to_a.map {|m| [m.titleize, m]}, params[:membership_type]), class: 'form-control border-input', id: 'membership-type-filter', prompt: '--Select Membership Type--' %>
+                </div>
+                <div class="col-md-6">
+                  <%= select_tag :organization_id, options_for_select(current_cooperative.organizations.map {|m| [m.name, m.id]}, params[:organization_id]), class: 'form-control border-input', id: 'office-filter', prompt: '--Select Organization--' %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+          <div class="col-md-4">
+            <%=link_to "Print(PDF)", members_path(format: 'pdf', membership_type: params[:membership_type], organization_id: params[:organization_id]), class: "btn btn-default" if @members.present? and (params[:membership_type].present? or params[:organization_id].present?)%>
+            <%=link_to "Print(Excel)", members_path(format: 'xlsx', membership_type: params[:membership_type], organization_id: params[:organization_id]), class: "btn btn-success" if @members.present? and (params[:membership_type].present? or params[:organization_id].present?)%>
+          </div>
+        </div>
       </div>
     </div>
     <% @members.each do |member| %>
-
-        <%= render 'members/partials/header', member: member, cached: true %>
-
+      <%= render 'members/partials/header', member: member, cached: true %>
     <% end %>
     <center><%= will_paginate @members %> </center>
   </div>
 </div>
+
+<script type="text/javascript">
+  $('#membership-type-filter').change(function(e) {
+    $('#members-filter-form').submit();
+  });
+  $('#office-filter').change(function(e) {
+    $('#members-filter-form').submit();
+  });
+</script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#office-filter").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>

@@ -20,7 +20,7 @@
         <%= render 'loans_module/loan_applications/partials/body', loan_application: @loan_application %>
           <hr>
         <%= render 'vouchers/partials/body', voucher: @voucher %>
-        <% if !@voucher.disbursed?%>
+        <% if !@voucher.disbursed? && current_user.teller? %>
         <%= simple_form_for [@voucher, @disbursement], url: :loans_module_loan_application_disbursements do |f| %>
           <%= f.input :disbursement_date, as: :string, input_html: { class: "datepicker" } %>
           <%= f.input :loan_application_id, input_html: { value: @loan_application.id }, as: :hidden  %>

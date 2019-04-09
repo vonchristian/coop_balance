@@ -14,12 +14,14 @@
     </div>
   </div>
 </div>
-<% if current_page? savings_account_path(@savings_account) %>
-  <%= render 'savings_accounts/partials/info' %>
-<% end %>
-<% if current_page? savings_account_transactions_path(@savings_account) %>
-  <%= render 'savings_accounts/partials/transactions' %>
-<% end %>
-<% if current_page? savings_account_settings_path(@savings_account) %>
-  <%= render 'savings_accounts/partials/settings' %>
-<% end %>
+<div class="card">
+  <% if current_page? savings_account_path(@savings_account) %>
+    <%= render 'savings_accounts/partials/info' %>
+  <% end %>
+  <% if current_page? savings_account_transactions_path(@savings_account) %>
+    <%= render 'savings_accounts/partials/transactions' %>
+  <% end %>
+  <% if current_page? savings_account_settings_path(@savings_account) %>
+    <%= render 'savings_accounts/partials/settings' %>
+  <% end %>
+</div>

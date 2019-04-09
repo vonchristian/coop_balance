@@ -52,7 +52,7 @@ module Organizations
         move_down 2
         text "#{organization.name}"
       end
-      move_down 20
+      move_down 15
       stroke do
         stroke_color '24292E'
         line_width 1
@@ -64,7 +64,7 @@ module Organizations
     def loan_details
       if loans.any?
         table(loans_table, 
-          cell_style: { inline_format: true, size: 9, padding: [1,1,3,1]}, 
+          cell_style: { inline_format: true, size: 9, padding: [1,2,3,2]}, 
           column_widths: TABLE_WIDTHS) do
           cells.borders = [:bottom]
           column(3).align = :right
@@ -81,7 +81,7 @@ module Organizations
 
     def loans_table_header
       table([["BORROWER", "RELEASE DATE", "MATURITY DATE", "LOAN AMOUNT", "LOAN BALANCE", "PRINCIPAL", "INTEREST", "TOTAL AMORTIZATION"]], 
-        cell_style: { inline_format: true, size: 8, font: "Helvetica", padding: [4,1,4,1]}, 
+        cell_style: { inline_format: true, size: 8, font: "Helvetica", padding: [4,2,4,2]}, 
         column_widths: TABLE_WIDTHS) do
           row(0).font_style= :bold
           row(0).background_color = 'DDDDDD'

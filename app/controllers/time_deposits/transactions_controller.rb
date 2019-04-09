@@ -1,3 +1,4 @@
+require 'will_paginate/array'
 module TimeDeposits
   class TransactionsController < ApplicationController
     

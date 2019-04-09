@@ -113,7 +113,7 @@
           <%= f.input :loan_id, input_html: { value: @loan.id },as: :hidden %>
           <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
           <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
-          <%= f.input :cash_account_id, default: current_user.cash_accounts.first, collection: current_user.cash_accounts.map{|a| [a.name, a.id] } %>
+          <%= f.input :cash_account_id, default: current_cooperative.users.teller.last.cash_accounts.first, collection: current_cooperative.users.teller.last.cash_accounts.map{|a| [a.name, a.id] } %>
           <hr>
           <%= f.submit "Proceed", class: "btn btn-primary float-right", data: {disable_with: "Processing..." } %>
           <%= link_to 'Cancel', loan_path(@loan), class: "text-danger float-left" %>

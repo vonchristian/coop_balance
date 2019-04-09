@@ -11,12 +11,14 @@
     </div>
   </div>
 </div>
-<% if current_page? time_deposit_path(@time_deposit) %>
-  <%= render 'time_deposits/partials/info' %>
-<% end %>
-<% if current_page? time_deposit_transactions_path(@time_deposit) %>
-  <%= render 'time_deposits/partials/transactions' %>
-<% end %>
-<% if current_page? time_deposit_settings_path(@time_deposit) %>
-  <%= render 'time_deposits/partials/settings' %>
-<% end %>
+<div class="card">
+  <% if current_page? time_deposit_path(@time_deposit) %>
+    <%= render 'time_deposits/partials/info' %>
+  <% end %>
+  <% if current_page? time_deposit_transactions_path(@time_deposit) %>
+    <%= render 'time_deposits/partials/transactions' %>
+  <% end %>
+  <% if current_page? time_deposit_settings_path(@time_deposit) %>
+    <%= render 'time_deposits/partials/settings' %>
+  <% end %>
+</div>

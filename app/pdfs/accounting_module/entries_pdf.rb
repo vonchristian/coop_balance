@@ -2,7 +2,7 @@ module AccountingModule
   class EntriesPdf < Prawn::Document
     attr_reader :entries, :employee, :title, :view_context, :cooperative, :cooperative_service, :from_date, :to_date, :organization
     def initialize(args)
-      super(margin: 30, page_size: [612, 936], page_layout: :landscape)
+      super(margin: [60, 30, 30, 30], page_size: [612, 936], page_layout: :landscape)
       @entries      = args[:entries]
       @employee     = args[:employee]
       @cooperative  = args[:cooperative]
@@ -85,16 +85,16 @@ module AccountingModule
     end
 
     def entries_table_header
-      table([["DATE", "DESCRIPTION", "REF. NO.", "MEMBER/PAYEE", "ACCOUNT", "DEBIT", "CREDIT"]], 
+      table([["DATE", {content: "PARTICULARS", colspan: 2 }, "REF. NO.", "ACCOUNT", "DEBIT", "CREDIT"]], 
         cell_style: { inline_format: true, size: 7, font: "Helvetica", padding: [4,1,4,1]}, 
-        column_widths: [40, 250, 86, 130, 230, 70, 70]) do
+        column_widths: [40, 130, 250, 86, 230, 70, 70]) do
           cells.borders = []
           row(0).font_style= :bold
           row(0).background_color = 'DDDDDD'
           cells.borders = [:top, :bottom]
           column(5).align = :right
           column(6).align = :right
-          column(2).align = :center
+          column(3).align = :center
           column(1).align = :center
       end
     end
@@ -102,7 +102,7 @@ module AccountingModule
     def entries_table_footer
       table([["", "", "", "", "TOTAL", price(entries.sum {|e| Money.new(e.debit_amounts.sum(:amount_cents)).amount}), price(entries.sum {|e| Money.new(e.credit_amounts.sum(:amount_cents)).amount})]], 
         cell_style: { inline_format: true, size: 8, font: "Helvetica", padding: [4,1,4,1]}, 
-        column_widths: [40, 250, 86, 130, 230, 70, 70]) do
+        column_widths: [40, 130, 250, 86, 230, 70, 70]) do
           row(0).font_style= :bold
           cells.borders = [:top, :bottom]
           column(5).align = :right
@@ -120,10 +120,24 @@ module AccountingModule
       else
         entries_table_header
         entries.sort_by(&:ascending_order).each do |entry|
+          same_reference_entries = entries.where(reference_number: entry.reference_number).sort_by(&:ascending_order)
           table([[entries_table_data(entry), amounts_table_data(entry)]], 
             cell_style: { inline_format: true, size: 8, padding: [1,1,3,1]}, 
             column_widths: [506, 370]) do
               cells.borders = [:top]
+          end
+          if same_reference_entries.count > 1
+            if same_reference_entries.last == entry
+              table([["", "SUB-TOTAL (##{entry.reference_number})", price(same_reference_entries.sum{|e| e.debit_amounts.sum{|a| a.amount} }), 
+                price(same_reference_entries.sum{|e| e.credit_amounts.sum{|a| a.amount} }) ]],
+                cell_style: { inline_format: true, size: 8, padding: [1,1,3,1]}, 
+                column_widths: [506, 230, 70, 70]) do
+                  cells.borders = [:top]
+                  row(0).font_style= :bold
+                  column(3).align = :right
+                  column(2).align = :right
+              end
+            end
           end
         end
         entries_table_footer
@@ -132,16 +146,16 @@ module AccountingModule
 
     def entries_table_data(entry)
       entries_data = [[
-        {content: entry.entry_date.strftime("%D") }, 
+        {content: entry.entry_date.strftime("%D") },
+        {content: display_commercial_document_for(entry).try(:upcase)},
         {content: entry.description}, 
-        {content: "##{entry.reference_number}"},
-        {content: display_commercial_document_for(entry).try(:upcase)}
+        {content: "##{entry.reference_number}"}
       ]]
       make_table(entries_data, 
         cell_style: { inline_format: true, size: 8, font: "Helvetica", padding: [1,1,3,1]}, 
-        column_widths: [40, 250, 86, 130]) do
+        column_widths: [40, 130, 250, 86]) do
           cells.borders = []
-          column(2).align = :center
+          column(3).align = :center
       end
     end
 
@@ -149,11 +163,8 @@ module AccountingModule
       row_count = entry.amounts.count
       debit_amounts_data = entry.debit_amounts.map{|a| [a.account.name, price(a.amount), ""] }
       credit_amounts_data = entry.credit_amounts.map{|a| [a.account.name, "", price(a.amount)] }
-      sub_total_data = [["SUB-TOTAL", 
-            price(entry.debit_amounts.sum{|a| a.amount}), 
-            price(entry.credit_amounts.sum{|a| a.amount})]]
 
-      make_table(debit_amounts_data + credit_amounts_data + sub_total_data, 
+      make_table(debit_amounts_data + credit_amounts_data, 
         cell_style: { inline_format: true, size: 8, font: "Helvetica", padding: [1,1,3,1]},
         column_widths: [230, 70, 70]) do
         cells.borders = []
