@@ -4,42 +4,35 @@
     <li class="nav-item">
       <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
     </li>
-
   </ul>
 
 
   <%=form_tag coop_module_search_results_path, method: :get do %>
-              <div class="input-group input-group-sm">
-                <%= text_field_tag :navbar_search, params[:navbar_search], class: "form-control form-control-navbar", placeholder: "Search...", id: 'account-search-form' %>
-                <span class="input-group-append">
-                  <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-navbar") do %>
-                    <i class="fa fa-search"></i>
-                  <% end %>
-                </span>
-              </div>
-            <% end %>
+    <div class="input-group input-group-sm">
+      <%= text_field_tag :navbar_search, params[:navbar_search], class: "form-control form-control-navbar", placeholder: "Search...", id: 'account-search-form' %>
+      <span class="input-group-append">
+        <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-navbar") do %>
+          <i class="fa fa-search"></i>
+        <% end %>
+      </span>
+    </div>
+  <% end %>
 
   <!-- Right navbar links -->
   <ul class="navbar-nav ml-auto">
     <li class="nav-item dropdown">
-
       <a class="nav-link" data-toggle="dropdown" href="#">
-         <%= image_tag(current_user.avatar, height: 30, width: 30, class: "img-circle") %> <%= current_user.first_name %><br>
-         <small><%= current_user.designation %></small>
+        <%= image_tag(current_user.avatar, height: 30, width: 30, class: "img-circle") %>
+        <%= current_user.first_name %>
       </a>
-
       <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-        <%=link_to 'Account Settings', destroy_user_session_path, method: :delete, class: "dropdown-item" %>
-
+        <%=link_to 'Account Settings', employee_settings_path(current_user), class: "dropdown-item" %>
         <%=link_to 'Activities', destroy_user_session_path, method: :delete, class: "dropdown-item" %>
-
-                <%=link_to destroy_user_session_path, method: :delete, class: "dropdown-item" do %>
-                  <span class="dropdown-item"><i class="fa fa-sign-out"></i> Sign Out
-                <% end %>
+        <%=link_to destroy_user_session_path, method: :delete, class: "dropdown-item" do %>
+          <span class="dropdown-item"><i class="fa fa-sign-out"></i> Sign Out</span>
+        <% end %>
       </div>
-
     </li>
-
   </ul>
 </nav>
 <!-- /.navbar -->

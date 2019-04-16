@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_05_035711) do
+ActiveRecord::Schema.define(version: 2019_04_12_154422) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -844,10 +844,12 @@ ActiveRecord::Schema.define(version: 2019_04_05_035711) do
     t.integer "status"
     t.boolean "cancelled", default: false
     t.string "type"
+    t.string "code"
     t.index ["account_number"], name: "index_loans_on_account_number", unique: true
     t.index ["archived_by_id"], name: "index_loans_on_archived_by_id"
     t.index ["barangay_id"], name: "index_loans_on_barangay_id"
     t.index ["borrower_type", "borrower_id"], name: "index_loans_on_borrower_type_and_borrower_id"
+    t.index ["code"], name: "index_loans_on_code", unique: true
     t.index ["cooperative_id"], name: "index_loans_on_cooperative_id"
     t.index ["disbursement_voucher_id"], name: "index_loans_on_disbursement_voucher_id"
     t.index ["loan_application_id"], name: "index_loans_on_loan_application_id"
@@ -927,8 +929,10 @@ ActiveRecord::Schema.define(version: 2019_04_05_035711) do
     t.uuid "cart_id"
     t.string "account_number"
     t.datetime "retired_at"
+    t.string "code"
     t.index ["account_number"], name: "index_members_on_account_number", unique: true
     t.index ["cart_id"], name: "index_members_on_cart_id"
+    t.index ["code"], name: "index_members_on_code", unique: true
     t.index ["sex"], name: "index_members_on_sex"
     t.index ["slug"], name: "index_members_on_slug", unique: true
   end
@@ -1293,9 +1297,11 @@ ActiveRecord::Schema.define(version: 2019_04_05_035711) do
     t.datetime "archived_at"
     t.uuid "organization_id"
     t.string "beneficiaries"
+    t.string "code"
     t.index ["account_number"], name: "index_savings_on_account_number", unique: true
     t.index ["account_owner_name"], name: "index_savings_on_account_owner_name"
     t.index ["barangay_id"], name: "index_savings_on_barangay_id"
+    t.index ["code"], name: "index_savings_on_code", unique: true
     t.index ["cooperative_id"], name: "index_savings_on_cooperative_id"
     t.index ["depositor_type", "depositor_id"], name: "index_savings_on_depositor_type_and_depositor_id"
     t.index ["office_id"], name: "index_savings_on_office_id"
@@ -1379,9 +1385,11 @@ ActiveRecord::Schema.define(version: 2019_04_05_035711) do
     t.uuid "cooperative_id"
     t.string "beneficiaries"
     t.string "maf_beneficiaries"
+    t.string "code"
     t.index ["account_number"], name: "index_share_capitals_on_account_number", unique: true
     t.index ["barangay_id"], name: "index_share_capitals_on_barangay_id"
     t.index ["cart_id"], name: "index_share_capitals_on_cart_id"
+    t.index ["code"], name: "index_share_capitals_on_code", unique: true
     t.index ["cooperative_id"], name: "index_share_capitals_on_cooperative_id"
     t.index ["office_id"], name: "index_share_capitals_on_office_id"
     t.index ["organization_id"], name: "index_share_capitals_on_organization_id"
@@ -1599,8 +1607,10 @@ ActiveRecord::Schema.define(version: 2019_04_05_035711) do
     t.uuid "barangay_id"
     t.string "certificate_number"
     t.string "beneficiaries"
+    t.string "code"
     t.index ["account_number"], name: "index_time_deposits_on_account_number", unique: true
     t.index ["barangay_id"], name: "index_time_deposits_on_barangay_id"
+    t.index ["code"], name: "index_time_deposits_on_code", unique: true
     t.index ["cooperative_id"], name: "index_time_deposits_on_cooperative_id"
     t.index ["depositor_type", "depositor_id"], name: "index_time_deposits_on_depositor_type_and_depositor_id"
     t.index ["membership_id"], name: "index_time_deposits_on_membership_id"

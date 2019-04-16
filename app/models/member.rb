@@ -44,10 +44,11 @@ class Member < ApplicationRecord
   has_many :wallets, as: :account_owner
   has_many :identifications, class_name: "IdentificationModule::Identification", as: :identifiable
   validates :last_name, :first_name, presence: true, on: :update
+  validates :code, uniqueness: true
 
   delegate :name, to: :current_organization, prefix: true, allow_nil: true
   before_save :update_birth_date_fields
-  before_save :set_default_image, :set_default_account_number, on: :create
+  before_save :set_default_image, :set_default_account_number, :set_member_code, on: :create
   # before_save :normalize_name
   
   def self.retired
@@ -206,6 +207,10 @@ class Member < ApplicationRecord
 
   def set_default_account_number
     self.account_number ||= SecureRandom.uuid
+  end
+
+  def set_member_code
+    self.code ||= SecureRandom.hex(10).first(6).upcase
   end
 
   def set_fullname

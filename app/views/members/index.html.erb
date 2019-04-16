@@ -86,8 +86,8 @@
             <% end %>
           </div>
           <div class="col-md-4">
-            <%=link_to "Print(PDF)", members_path(format: 'pdf', membership_type: params[:membership_type], organization_id: params[:organization_id]), class: "btn btn-default" if @members.present? and (params[:membership_type].present? or params[:organization_id].present?)%>
-            <%=link_to "Print(Excel)", members_path(format: 'xlsx', membership_type: params[:membership_type], organization_id: params[:organization_id]), class: "btn btn-success" if @members.present? and (params[:membership_type].present? or params[:organization_id].present?)%>
+            <%=link_to "Print(PDF)", members_path(format: 'pdf', membership_type: params[:membership_type], organization_id: params[:organization_id]), class: "btn btn-default" if @members.present? and (params[:membership_type].present? && params[:organization_id].present?)%>
+            <%=link_to "Print(Excel)", members_path(format: 'xlsx', membership_type: params[:membership_type], organization_id: params[:organization_id]), class: "btn btn-success" if @members.present? and (params[:membership_type].present? && params[:organization_id].present?)%>
           </div>
         </div>
       </div>

@@ -160,14 +160,55 @@ class MembersMasterListPdf < Prawn::Document
       m.addresses.present? ? m.current_address_complete_address : "-", 
       m.addresses.present? ? m.current_contact_number : "-", 
       beneficiaries(m),
-      price(m.loans_for(loan_product: short_term_loan(m)).sum{|l| l.principal_balance(to_date: Time.zone.now)}),
-      price(m.loans_for(loan_product: regular_loan).sum{|l| l.principal_balance(to_date: Time.zone.now)}),
-      price(m.loans_for(loan_product: emergency_loan).sum{|l| l.principal_balance(to_date: Time.zone.now)}),
-      price(m.loans_for(loan_product: appliance_loan).sum{|l| l.principal_balance(to_date: Time.zone.now)}),
-      price(m.loans_for(loan_product: productive_loan).sum{|l| l.principal_balance(to_date: Time.zone.now)}),
-      price(m.savings.sum{|s| s.balance(to_date: Time.zone.now)}),
-      price(m.time_deposits.sum{|t| t.balance(to_date: Time.zone.now)}),
-      price(m.share_capitals.sum{|s| s.balance(to_date: Time.zone.now)})
+      loan_balance(member: m, loan_product: short_term_loan(m)),
+      loan_balance(member: m, loan_product: regular_loan),
+      loan_balance(member: m, loan_product: emergency_loan),
+      loan_balance(member: m, loan_product: appliance_loan),
+      loan_balance(member: m, loan_product: productive_loan),
+      savings_account_balance(member: m),
+      time_deposits_balance(member: m),
+      share_capital_balance(member: m)
     ]}
+  end
+
+  def loan_balance(args={})
+    member = args.fetch(:member)
+    loan_product = args.fetch(:loan_product)
+    balance = member.loans_for(loan_product: loan_product).sum{|l| l.principal_balance(to_date: Time.zone.now)}
+    if balance.to_i.zero?
+      "-"
+    else
+      price(balance)
+    end
+  end
+
+  def savings_account_balance(args={})
+    member = args.fetch(:member)
+    balance = member.savings.sum{|s| s.balance(to_date: Time.zone.now)}
+    if balance.to_i.zero?
+      "-"
+    else
+      price(balance)
+    end
+  end
+
+  def time_deposits_balance(args={})
+    member = args.fetch(:member)
+    balance = member.time_deposits.sum{|s| s.balance(to_date: Time.zone.now)}
+    if balance.to_i.zero?
+      "-"
+    else
+      price(balance)
+    end
+  end
+
+  def share_capital_balance(args={})
+    member = args.fetch(:member)
+    balance = member.share_capitals.sum{|s| s.balance(to_date: Time.zone.now)}
+    if balance.to_i.zero?
+      "-"
+    else
+      price(balance)
+    end
   end
 end
