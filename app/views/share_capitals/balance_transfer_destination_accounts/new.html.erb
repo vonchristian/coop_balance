@@ -28,7 +28,7 @@
             <div class="col-md-7">
               <%= share_capital.subscriber_name %><br>
 
-              <%= number_to_currency share_capital.paid_up_balance %>
+              <%= number_to_currency share_capital.balance %>
             </div>
             <div class="col-md-3">
               <%= simple_form_for @destination_share_capital, url: :share_capital_balance_transfer_destination_accounts do |f| %>

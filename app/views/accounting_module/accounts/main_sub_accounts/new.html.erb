@@ -1,0 +1,77 @@
+<%= render 'accounting_module/accounts/partials/header', account: @account %>
+<div class="card">
+	<div class="card-header">
+		<div class="row">
+			<div class="col-md-1">
+				<%= link_to accounting_module_account_main_sub_accounts_path(@account), title: 'Back to Sub-Accounts' do %>
+          <span class="fa fa-chevron-left fa-3x"></span>
+        <% end %>
+			</div>
+			<div class="col-md-4">
+				<div class="card-title">
+					Account Grouping
+				</div>
+				<p class="min-margin text-muted">
+					
+				</p>
+			</div>
+			<div class="col-md-6">
+				
+	    </div>
+	  </div>
+	</div>
+	<div class="card-body">
+		<div class="row">
+			<div class="col-md-6">
+				<table class="table">
+					<tbody>
+						<% @main_sub_accounts.each do |account| %>
+							<tr>
+								<td></td>
+								<td><%= account.code %></td>
+								<td><%= account.name %></td>
+								<td>
+									<%= link_to accounting_module_account_main_sub_account_path(account_id: @account.id, id: account.id), method: :delete do %>
+										<span class="fa fa-times text-danger"></span>
+									<% end %>
+								</td>
+							</tr>
+						<% end %>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-md-6">
+				<%= form_tag({:action => "new", controller: "accounting_module/accounts/main_sub_accounts"}, {:method => :get})  do %>
+					<div class="input-group">
+	          <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Account..", id: 'account-search-form' %>
+	          <span class="input-group-btn">
+	            <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+	              <i class="fa fa-search"></i>
+	            <% end %>
+	          </span>
+	        </div>
+	    	<% end %>
+				<%= form_for @grouping, url: :accounting_module_account_main_sub_accounts do |f| %>
+					<br>
+					<%= f.submit "Group Selected", class: 'btn btn-default float-right submit-btn' %>
+					<%= f.hidden_field :main_account_id, value: @account.id, class: 'form-control border-input' %>
+					<%= f.hidden_field :cooperative_id, value: current_cooperative.id, class: 'form-control border-input' %>
+					<table class="table table-hover">
+						<tbody>
+							<% @sub_accounts.each do |account| %>
+								<% if !(AccountingModule::Account.where(main_account_id: @account.id).pluck(:id) + [@account.id]).include?(account.id) %>
+									<tr>
+										<td><%= f.check_box :sub_account_ids, {multiple: true, class: 'checkboxes float-right valign-center'}, account.id, "" %></td>
+										<td><%= account.code %></td>
+										<td><%= account.name %></td>
+									</tr>
+								<% end %>
+							<% end %>
+						</tbody>
+					</table>
+					<center><%= will_paginate @sub_accounts %></center>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</div>

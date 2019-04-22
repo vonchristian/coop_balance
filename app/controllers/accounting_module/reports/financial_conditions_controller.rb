@@ -8,7 +8,7 @@ module AccountingModule
         @to_date = params[:to_date] ? DateTime.parse(params[:to_date]) : Time.zone.now.end_of_day
         @assets = current_office.accounts.assets.order(:code).all.uniq
         @liabilities = current_office.accounts.liabilities.order(:code).all.uniq
-        @equities =current_office.accounts.equities.order(:code).all.uniq
+        @equities = current_office.accounts.equities.order(:code).all.uniq
         @employee = current_user
         respond_to do |format|
           format.html

@@ -28,10 +28,19 @@
 
               <%= f.input :office_id, input_html: { value: current_user.office_id }, as: :hidden %>
               <%= f.input :cooperative_id, input_html: { value: current_user.cooperative_id }, as: :hidden %>
+              <div class="form-group">
+                <%= f.label 'Province' %><br />
+                <%= f.collection_select :province_id, Addresses::Province.order(:name), :id, :name, include_blank: true, html: {class: 'form-control'} %>
+              </div>
+              <div class="form-group">
+                <%= f.label "Municipality" %><br />
+                <%= f.grouped_collection_select :municipality_id, Addresses::Province.order(:name), :municipalities, :name, :id, :name, include_blank: true %>
+              </div>
+              <div class="form-group ">
+                <%= f.label "Barangay" %><br />
+                <%= f.grouped_collection_select :barangay_id, Addresses::Municipality.order(:name), :barangays, :name, :id, :name, include_blank: true %>
+              </div>
               <%= f.input :complete_address %>
-              <%= f.input :barangay_id, collection: Addresses::Barangay.all.map{|a| [a.name, a.id] } %>
-              <%= f.input :municipality_id, collection: Addresses::Municipality.all.map{|a| [a.name, a.id] } %>
-              <%= f.input :province_id, collection: Addresses::Province.all.map{|a| [a.name, a.id] } %>
 
               <%= f.input :membership_date, as: :string, input_html: { class: "datepicker" } %>
               <%= f.submit "Save Member",  class: "btn btn-primary float-right" %>
@@ -44,15 +53,92 @@
 </div>
 
 <script type="text/javascript">
+  jQuery(function() {
+  var municipalities;
+  $('#membership_application_municipality_id').parent().hide();
+  $('#membership_application_barangay_id').parent().hide();
+  municipalities = $('#membership_application_municipality_id').html();
+  console.log(municipalities);
+  return $('#membership_application_province_id').change(function() {
+    var province, escaped_province, options;
+    province = $('#membership_application_province_id :selected').text();
+    options = $(municipalities).filter("optgroup[label=" + province + "]").sort().prepend('<option value="">Select Municipality</option>').html();
+    console.log(options);
+    if (options) {
+      $('#membership_application_municipality_id').html(options);
+      return $('#membership_application_municipality_id').parent().show();
+    } else {
+      $('#membership_application_municipality_id').empty();
+      $('#membership_application_barangay_id').empty();
+      return $('#membership_application_municipality_id').parent().hide();
+      return $('#membership_application_barangay_id').parent().hide();
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+  jQuery(function() {
+  var barangays;
+  $('#membership_application_barangay_id').parent().hide();
+  barangays = $('#membership_application_barangay_id').html();
+  console.log(barangays);
+  return $('#membership_application_municipality_id').change(function() {
+    var municipality, escaped_municipality, options;
+    municipality = $('#membership_application_municipality_id :selected').text();
+    options = $(barangays).sort().filter("optgroup[label=" + municipality + "]").sort().prepend('<option value="">Select Barangay</option>').html();
+    console.log(options);
+    if (options) {
+      $('#membership_application_barangay_id').html(options);
+      return $('#membership_application_barangay_id').parent().show();
+    } else {
+      $('#membership_application_barangay_id').empty();
+      return $('#membership_application_barangay_id').parent().hide();
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+  $('#membership_application_barangay_id').change(function() {
+    var province, municipality, barangay, complete_address
+    province = $('#membership_application_province_id :selected').text();
+    municipality = $('#membership_application_municipality_id :selected').text();
+    barangay = $('#membership_application_barangay_id :selected').text();
+    complete_address = [barangay, municipality, province].join(", ");
+    $("#membership_application_complete_address").val(complete_address);
+  });
+  $('#membership_application_municipality_id').change(function() {
+    var province, municipality, complete_address
+    province = $('#membership_application_province_id :selected').text();
+    municipality = $('#membership_application_municipality_id :selected').text();
+    complete_address = [municipality, province].join(", ");
+    $("#membership_application_complete_address").val(complete_address);
+  });
+</script>
+
+<script type="text/javascript">
 $(document).ready(function() {
-$("#membership_application_membership_type").select2({
-  theme: "bootstrap"
-});
- $("#membership_application_civil_status").select2({
-  theme: "bootstrap"
-});
- $("#membership_application_sex").select2({
-  theme: "bootstrap"
-});
+  $("#membership_application_membership_type").select2({
+    theme: "bootstrap"
+  });
+  $("#membership_application_civil_status").select2({
+    theme: "bootstrap"
+  });
+  $("#membership_application_sex").select2({
+    theme: "bootstrap"
+  });
+  $("#membership_application_province_id").select2({
+    theme: "bootstrap",
+    width: "100%"
+  });
+  $("#membership_application_municipality_id").select2({
+    theme: "bootstrap",
+    width: "100%"
+  });
+  $("#membership_application_barangay_id").select2({
+    theme: "bootstrap",
+    width: "100%"
+  });
 });
 </script>

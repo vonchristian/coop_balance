@@ -10,14 +10,85 @@
 <hr class="no-margin">
 <%= simple_form_for [@member, @address], url: :member_addresses, html: { autocomplete: "off" } do |f| %>
   <div class="modal-body">
+    
+    <div class="form-group">
+      <%= f.label 'Province' %><br />
+      <%= f.collection_select :province_id,  Addresses::Province.order(:name), :id, :name, include_blank: true %>
+    </div>
+    <div class="form-group">
+      <%= f.label "Municipality" %><br />
+      <%= f.grouped_collection_select :municipality_id, Addresses::Province.order(:name), :municipalities, :name, :id, :name, include_blank: true %>
+    </div>
+    <div class="form-group ">
+      <%= f.label "Barangay" %><br />
+      <%= f.grouped_collection_select :barangay_id, Addresses::Municipality.order(:name), :barangays, :name, :id, :name, include_blank: true %>
+    </div>
+    <div class="">  
+      <%= f.input :street_id, label: "Street/Sitio", collection: Addresses::Street.all.map{ |a| [a.name, a.id] } %>
+    </div>
     <%= f.input :complete_address %>
-    <%= f.input :street_id, collection: Addresses::Street.all.map{ |a| [a.name, a.id] } %>
-    <%= f.input :barangay_id, collection: Addresses::Barangay.all.map{ |a| [a.name, a.id] }  %>
-    <%= f.input :municipality_id, collection: Addresses::Municipality.all.map{ |a| [a.name, a.id] }  %>
-    <%= f.input :province_id, collection: Addresses::Province.all.map{ |a| [a.name, a.id] }  %>
     <%= f.input :current, label: 'Set as Current Address', input_html: { checked: true } %>
   </div>
   <div class="modal-footer">
     <%= f.submit "Update Address", class: "btn btn-primary float-right", disable_with: "Saving..." %>
   </div>
 <% end %>
+
+<script type="text/javascript">
+  jQuery(function() {
+  var municipalities;
+  $('#address_municipality_id').parent().hide();
+  $('#address_barangay_id').parent().hide();
+  municipalities = $('#address_municipality_id').html();
+  console.log(municipalities);
+  return $('#address_province_id').change(function() {
+    var province, escaped_province, options;
+    province = $('#address_province_id :selected').text();
+    options = $(municipalities).filter("optgroup[label=" + province + "]").sort().prepend('<option value="">Select Municipality</option>').html();
+    console.log(options);
+    if (options) {
+      $('#address_municipality_id').html(options);
+      return $('#address_municipality_id').parent().show();
+    } else {
+      $('#address_municipality_id').empty();
+      $('#address_barangay_id').empty();
+      return $('#address_municipality_id').parent().hide();
+      return $('#address_barangay_id').parent().hide();
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+  jQuery(function() {
+  var barangays;
+  $('#address_barangay_id').parent().hide();
+  $('#address_street_id').parent().hide();
+  barangays = $('#address_barangay_id').html();
+  console.log(barangays);
+  return $('#address_municipality_id').change(function() {
+    var municipality, escaped_municipality, options;
+    municipality = $('#address_municipality_id :selected').text();
+    options = $(barangays).sort().filter("optgroup[label=" + municipality + "]").sort().prepend('<option value="">Select Barangay</option>').html();
+    console.log(options);
+    if (options) {
+      $('#address_barangay_id').html(options);
+      return $('#address_barangay_id').parent().show();
+    } else {
+      $('#address_barangay_id').empty();
+      return $('#address_barangay_id').parent().hide();
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+  $('#address_barangay_id').change(function() {
+    var province, municipality, barangay, complete_address
+    province = $('#address_province_id :selected').text();
+    municipality = $('#address_municipality_id :selected').text();
+    barangay = $('#address_barangay_id :selected').text();
+    complete_address = [barangay, municipality, province].join(", ");
+    $("#address_complete_address").val(complete_address);
+  });
+</script>

@@ -24,7 +24,7 @@
           <div class="col-md-4 col-sm-4">
             <center>
               <small>PAID UP BALANCE</small>
-              <h3 class="number"><%= number_to_currency @share_capital.paid_up_balance %></h3>
+              <h3 class="number"><%= number_to_currency @share_capital.balance %></h3>
             </center>
           </div>
         </div>
@@ -47,7 +47,7 @@
           <div class="col-md-4 col-sm-4">
             <center>
               <small>PAID UP BALANCE</small>
-              <h3 class="number"><%= number_to_currency @destination_share_capital.paid_up_balance %></h3>
+              <h3 class="number"><%= number_to_currency @destination_share_capital.balance %></h3>
             </center>
           </div>
         </div>
@@ -68,6 +68,10 @@
 
           <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
           <%= f.input :amount, as: :currency %>
+          <%= f.input :transfer_fee, as: :currency, input_html: {value: @share_capital.share_capital_product_transfer_fee}, readonly: true %>
+
+          <%= f.input :transfer_fee_deduction_method, as: :radio_buttons, collection: ["deduct_from_share_capital", "over_the_counter_payment"].map {|m| [m.titleize, m]}, checked: ["deduct_from_share_capital", "over_the_counter_payment"].first %>
+          
           <%= f.input :reference_number %>
           <%= f.input :description, input_html: {value: "Share Capital balance transfer from #{@share_capital.subscriber_name} to #{@destination_share_capital.subscriber_name}"}, as: :hidden %>
           <%= f.submit "Proceed", class: "btn btn-danger float-right", data: { disable_with: "Processing..." } %>

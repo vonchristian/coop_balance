@@ -22,7 +22,7 @@ module ShareCapitals
     private
     def balance_transfer_params
       params.require(:share_capitals_balance_transfer_processing).
-      permit(:origin_id, :destination_id, :reference_number, :amount, :date, :employee_id, :account_number, :description)
+      permit(:origin_id, :destination_id, :transfer_fee, :transfer_fee_deduction_method, :reference_number, :amount, :date, :employee_id, :account_number, :description)
     end
   end
 end

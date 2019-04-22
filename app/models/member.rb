@@ -47,9 +47,18 @@ class Member < ApplicationRecord
   validates :code, uniqueness: true
 
   delegate :name, to: :current_organization, prefix: true, allow_nil: true
+  before_validation :set_member_code, on: :create
   before_save :update_birth_date_fields
-  before_save :set_default_image, :set_default_account_number, :set_member_code, on: :create
+  before_save :set_default_image, :set_default_account_number, on: :create
   # before_save :normalize_name
+
+  def beneficiaries
+    sc_beneficiaries = share_capitals.pluck(:beneficiaries).map{|b| [b + " (SC)"]}
+    maf_beneficiaries = share_capitals.pluck(:maf_beneficiaries).map{|b| [b + " (MAF)"]}
+    td_beneficiaries = time_deposits.not_withdrawn.pluck(:beneficiaries).map{|b| [b + " (TD)"]}
+    sd_beneficiaries = savings.pluck(:beneficiaries).map{|b| [b + " (SD)"]}
+    (sc_beneficiaries + maf_beneficiaries + td_beneficiaries + sd_beneficiaries).uniq.compact.join(", ")
+  end
   
   def self.retired
     where.not(retired_at: nil)
@@ -210,7 +219,14 @@ class Member < ApplicationRecord
   end
 
   def set_member_code
-    self.code ||= SecureRandom.hex(10).first(6).upcase
+    100.times do
+      random_code = SecureRandom.hex(10).first(6).upcase
+      if Member.where(code: random_code).blank? #random_code is uniq
+        self.code ||= random_code
+      else
+        random_code = nil
+      end
+    end
   end
 
   def set_fullname

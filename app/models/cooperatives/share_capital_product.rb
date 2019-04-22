@@ -9,6 +9,7 @@ module Cooperatives
     belongs_to :cooperative
     belongs_to :office,                   class_name: "Cooperatives::Office"
     belongs_to :equity_account,           class_name: "AccountingModule::Account"
+    belongs_to :transfer_fee_account,     class_name: "AccountingModule::Account"
     belongs_to :interest_payable_account, class_name: "AccountingModule::Account"
     has_many :subscribers,                class_name: "MembershipsModule::ShareCapital"
 
@@ -17,6 +18,7 @@ module Cooperatives
     validates :name, uniqueness: { scope: :cooperative_id }
     validates :cost_per_share, numericality: true
     delegate :name, to: :equity_account, prefix: true
+    delegate :name, to: :transfer_fee_account, prefix: true
 
     def self.accounts
       equity_accounts

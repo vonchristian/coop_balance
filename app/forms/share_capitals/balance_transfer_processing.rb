@@ -3,7 +3,7 @@ module ShareCapitals
   class BalanceTransferProcessing
     include ActiveModel::Model
 
-    attr_accessor :origin_id, :destination_id, :amount, :date, :employee_id, :reference_number, :account_number, :description
+    attr_accessor :origin_id, :destination_id, :amount, :date, :employee_id, :transfer_fee, :transfer_fee_deduction_method, :reference_number, :account_number, :description
     validates :amount, presence: true, numericality: true
     validates :reference_number, :description, :date, presence: true
     validate :amount_is_less_than_or_equal_to_balance?
@@ -35,16 +35,48 @@ module ShareCapitals
       )
       voucher.voucher_amounts.debit.build(
           account: find_origin.share_capital_product_equity_account,
-          amount: amount,
+          amount: deducted_debit_amount,
           commercial_document: find_origin
       )
 
       voucher.voucher_amounts.credit.build(
           account: find_destination.share_capital_product_equity_account,
-          amount: amount,
+          amount: deducted_credit_amount,
           commercial_document: find_destination
       )
+
+      #transfer fee
+      if transfer_fee_deduction_method == "over_the_counter_payment"
+        voucher.voucher_amounts.debit.build(
+            account: find_employee.cooperative.users.teller.last.cash_accounts.first,
+            amount: transfer_fee,
+            commercial_document: find_origin
+        )
+      end
+
+      voucher.voucher_amounts.credit.build(
+          account: find_origin.share_capital_product_transfer_fee_account,
+          amount: transfer_fee,
+          commercial_document: find_origin
+      )
+
       voucher.save!
+    end
+
+    def deducted_credit_amount
+      if transfer_fee_deduction_method == "deduct_from_share_capital"
+        amount.to_f - transfer_fee.to_f
+      else
+        amount.to_f
+      end
+    end
+
+    def deducted_debit_amount
+      if transfer_fee_deduction_method == "deduct_from_share_capital"
+        amount.to_f
+      else
+        amount.to_f - transfer_fee.to_f
+      end
     end
 
     def find_employee
@@ -59,7 +91,7 @@ module ShareCapitals
     end
 
     def amount_is_less_than_or_equal_to_balance?
-      errors[:amount] << "exceeded available balance" if amount.to_f > find_origin.paid_up_balance
+      errors[:amount] << "exceeded available balance" if amount.to_f > find_origin.balance
     end
   end
 end

@@ -128,7 +128,7 @@ module AccountingModule
           end
           if same_reference_entries.count > 1
             if same_reference_entries.last == entry
-              table([["", "SUB-TOTAL (##{entry.reference_number})", price(same_reference_entries.sum{|e| e.debit_amounts.sum{|a| a.amount} }), 
+              table([["", "(#{same_reference_entries.count})SUB-TOTAL (##{entry.reference_number})", price(same_reference_entries.sum{|e| e.debit_amounts.sum{|a| a.amount} }), 
                 price(same_reference_entries.sum{|e| e.credit_amounts.sum{|a| a.amount} }) ]],
                 cell_style: { inline_format: true, size: 8, padding: [1,1,3,1]}, 
                 column_widths: [506, 230, 70, 70]) do

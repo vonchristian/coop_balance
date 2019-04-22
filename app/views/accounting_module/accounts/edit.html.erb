@@ -17,3 +17,11 @@
     <%= f.submit "Update Account", class: "btn btn-primary btn-flat", data: { disable_with: "Creating Account..." } %>
   </div>
 <% end %>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#accounting_module_asset_main_account_id").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>

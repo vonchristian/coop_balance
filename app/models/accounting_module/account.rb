@@ -27,6 +27,40 @@ module AccountingModule
     scope :revenues,    -> { where(type: 'AccountingModule::Revenue') }
     scope :expenses,    -> { where(type: 'AccountingModule::Expense') }
 
+    def self.main_accounts
+      where(id: self.where.not(main_account_id: nil).pluck(:main_account_id).uniq).order(:code)
+    end
+
+    def self.account_groups
+      where(main_account_id: nil).where.not("code like ?", "%-%").order(:code)
+    end
+
+    def self.main_sub_accounts_for(args={})
+      account = args[:account]
+      where(main_account_id: account.id).where.not("code like ?", '%-%').order(:code)
+    end
+
+    def self.sub_accounts_for(args={})
+      account = args[:account]
+      where("code like ?", "%#{account.code}-%").order(:code)
+    end
+
+    def self.current_assets
+      where(code: "10000".."12999").order(:code)
+    end
+
+    def self.non_current_assets
+      where(code: "13000".."19999").order(:code)
+    end
+
+    def self.current_liabilities
+      where(code: "20000".."23999").order(:code)
+    end
+
+    def self.non_current_liabilities
+      where(code: "24000".."29999").order(:code)
+    end
+
     def self.cash_accounts # remove
       Employees::EmployeeCashAccount.cash_accounts
     end

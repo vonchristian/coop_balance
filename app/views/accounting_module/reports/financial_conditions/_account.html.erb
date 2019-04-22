@@ -11,14 +11,15 @@
       <% running_total = 0 %>
       <% accounts.uniq.each do |account| %>
         <% balance = account.balance(:to_date => @to_date) %>
-
           <tr>
-            <td><%= account.name %></td>
+            <td><%= account.name %>
+              <% if account.contra? %>
+                <span class="badge bg-warning"> Contra </span>
+              <% end %>
+            </td>
             <td><span class="pull-right"><%= number_to_currency balance.round(2) %></span></td>
           </tr>
           <% running_total += balance %>
-
-
       <% end %>
       <tr>
         <strong>

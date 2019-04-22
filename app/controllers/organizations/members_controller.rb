@@ -24,6 +24,7 @@ module Organizations
         @members = (Member.all + User.all).paginate(page: params[:page], per_page: 50)
       end
     end
+    
     def create
       @organization = current_cooperative.organizations.find(params[:organization_id])
       @member = Organizations::MembershipProcessing.new(

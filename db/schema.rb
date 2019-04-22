@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_12_154422) do
+ActiveRecord::Schema.define(version: 2019_04_17_025932) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1359,11 +1359,14 @@ ActiveRecord::Schema.define(version: 2019_04_12_154422) do
     t.uuid "interest_payable_account_id"
     t.integer "balance_averaging_type"
     t.uuid "office_id"
+    t.uuid "transfer_fee_account_id"
+    t.decimal "transfer_fee"
     t.index ["cooperative_id"], name: "index_share_capital_products_on_cooperative_id"
     t.index ["equity_account_id"], name: "index_share_capital_products_on_equity_account_id"
     t.index ["interest_payable_account_id"], name: "index_share_capital_products_on_interest_payable_account_id"
     t.index ["name"], name: "index_share_capital_products_on_name"
     t.index ["office_id"], name: "index_share_capital_products_on_office_id"
+    t.index ["transfer_fee_account_id"], name: "index_share_capital_products_on_transfer_fee_account_id"
   end
 
   create_table "share_capitals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1913,6 +1916,7 @@ ActiveRecord::Schema.define(version: 2019_04_12_154422) do
   add_foreign_key "share_capital_applications", "share_capital_products"
   add_foreign_key "share_capital_products", "accounts", column: "equity_account_id"
   add_foreign_key "share_capital_products", "accounts", column: "interest_payable_account_id"
+  add_foreign_key "share_capital_products", "accounts", column: "transfer_fee_account_id"
   add_foreign_key "share_capital_products", "cooperatives"
   add_foreign_key "share_capital_products", "offices"
   add_foreign_key "share_capitals", "barangays"

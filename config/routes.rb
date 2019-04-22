@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     root :to => 'members#index'
   end
   resources :home, only: [:index]
-
+  
   resources :accounting_module, only: [:index]
   namespace :accounting_module do
     resources :amounts, only: [:destroy]
@@ -63,6 +63,7 @@ Rails.application.routes.draw do
       resources :entries, only: [:index], module: :accounts
       resources :debit_entries, only: [:index], module: :accounts
       resources :credit_entries, only: [:index], module: :accounts
+      resources :main_sub_accounts, only: [:index, :new, :create, :destroy], module: :accounts
     end
 
     resources :assets, controller: 'accounts', type: 'AccountingModule::Asset'

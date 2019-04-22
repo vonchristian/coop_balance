@@ -32,10 +32,10 @@ class MembersMasterListPdf < Prawn::Document
   end
 
   def beneficiaries(member)
-    sc_beneficiaries = member.share_capitals.pluck(:beneficiaries)
-    maf_beneficiaries = member.share_capitals.pluck(:maf_beneficiaries)
-    td_beneficiaries = member.time_deposits.not_withdrawn.pluck(:beneficiaries)
-    sd_beneficiaries = member.savings.pluck(:beneficiaries)
+    sc_beneficiaries = member.share_capitals.pluck(:beneficiaries).map{|b| [b + " (SC)"]}
+    maf_beneficiaries = member.share_capitals.pluck(:maf_beneficiaries).map{|b| [b + " (MAF)"]}
+    td_beneficiaries = member.time_deposits.not_withdrawn.pluck(:beneficiaries).map{|b| [b + " (TD)"]}
+    sd_beneficiaries = member.savings.pluck(:beneficiaries).map{|b| [b + " (SD)"]}
     (sc_beneficiaries + maf_beneficiaries + td_beneficiaries + sd_beneficiaries).uniq.compact.join(", ")
   end
 

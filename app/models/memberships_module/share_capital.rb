@@ -17,6 +17,8 @@ module MembershipsModule
     delegate :name, to: :barangay, prefix: true, allow_nil: true
     delegate :name,
             :equity_account,
+            :transfer_fee_account,
+            :transfer_fee,
             :default_product?,
             :interest_payable_account,
             :cost_per_share,

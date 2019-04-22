@@ -25,7 +25,8 @@
         <h3 class="card-title">Loans </h3>
       </div>
       <div class="col-md-6">
-        <%= link_to 'Transactions', member_loan_transactions_path(member_id: @member.id, loan_product_id: @member.applied_loan_products.last.id), class: 'btn btn-sm btn-default float-right' %>
+
+        <%= link_to 'Transactions', member_loan_transactions_path(member_id: @member.id, loan_product_id: @member.applied_loan_products.last.id), class: 'btn btn-sm btn-default float-right' if @member.applied_loan_products.present? %>
       </div>
     </div>
   </div>

@@ -1,71 +1,68 @@
-<div class="container">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-lg-3">
-        <div class="card">
-          <div class="card-header">
-            <div class="profile-wrapper">
-              <% if @member.avatar.present? %>
-                <%= image_tag(@member.avatar, width: '150', height: '150', class: "img-rounded mx-auto d-block") %>
-              <% else %>
-                <%= image_tag("default.png", width: '150', height: '150', class: 'img-rounded mx-auto d-block') %>
-              <% end %>
-              <%= simple_form_for @member, url: member_avatar_path(id: @member.id, member_id: @member.id), html: {id: "update-member-avatar"} do |f| %>
-                <%= f.input :avatar, as: :file, label: false, input_html: {id: "member-avatar", class: 'choose-btn center-block' } %>
-                <div class="option-overlay">
-                  <div class="col-md-12 text-center">
-                    <a href="" title="Update Photo"><span id="browse-image" class="text-white">Update Photo</span></a>
-                  </div>
-                </div>
-              <% end %>
+
+<div class="row">
+  <div class="col-lg-3">
+    <div class="card">
+      <div class="card-header">
+        <div class="profile-wrapper">
+          <% if @member.avatar.present? %>
+            <%= image_tag(@member.avatar, width: '150', height: '150', class: "img-rounded mx-auto d-block") %>
+          <% else %>
+            <%= image_tag("default.png", width: '150', height: '150', class: 'img-rounded mx-auto d-block') %>
+          <% end %>
+          <%= simple_form_for @member, url: member_avatar_path(id: @member.id, member_id: @member.id), html: {id: "update-member-avatar"} do |f| %>
+            <%= f.input :avatar, as: :file, label: false, input_html: {id: "member-avatar", class: 'choose-btn center-block' } %>
+            <div class="option-overlay">
+              <div class="col-md-12 text-center">
+                <a href="" title="Update Photo"><span id="browse-image" class="text-white">Update Photo</span></a>
+              </div>
             </div>
-            <h6 class="text-center mb-0 mt-0"><%= @member.first_middle_and_last_name %></h6>
-            <p class="text-center text-muted mb-0 mt-0"><%= @member.current_membership.try(:membership_type).try(:titleize) %></p>
-            <% if @member.retired? %>
-              <h6 class="text-center text-warning mb-0">(RETIRED)</h6>
-            <% end %>
-          </div>
-          <div class="card-body">
-            <nav class="nav flex-column nav-pills">
-              <li class="nav-item"><%= link_to 'Info', member_path(@member), class: "nav-link #{'active' if current_page?(member_info_index_path(@member)) || current_page?(member_path(@member))}" %></li>
-              <li class="nav-item"><%= link_to 'Loans', member_loans_path(@member), class: "nav-link #{'active' if current_page?(member_loans_path(@member))}"%></li>
-              <li class="nav-item"><%= link_to 'Savings', member_savings_accounts_path(@member), class: "nav-link #{ 'active' if current_page?(member_savings_accounts_path(@member))}" %></li>
-              <li class="nav-item"><%= link_to 'Share Capitals', member_share_capitals_path(@member), class: "nav-link #{ 'active' if current_page?(member_share_capitals_path(@member))}" %></li>
-              <li class="nav-item"><%= link_to 'Time Deposits', member_time_deposits_path(@member), class: "nav-link #{ 'active' if current_page?(member_time_deposits_path(@member)) }" %></li>
-              <li class="nav-item"><%= link_to 'Program Subscriptions', member_subscriptions_path(@member), class: "nav-link #{ 'active' if current_page?(member_subscriptions_path(@member)) }" %></li>
-              <li class="nav-item"><%= link_to 'Sales', member_sales_path(@member), class: "nav-link #{ 'active' if current_page?(member_sales_path(@member)) }" %></li>
-              <li class="nav-item"><%= link_to 'Settings', member_settings_path(@member), class: "nav-link #{ 'active' if current_page?(member_settings_path(@member))}" %></li>
-            </nav>
-          </div>
+          <% end %>
         </div>
+        <h6 class="text-center mb-0 mt-0"><%= @member.first_middle_and_last_name %></h6>
+        <p class="text-center text-muted mb-0 mt-0"><%= @member.current_membership.try(:membership_type).try(:titleize) %></p>
+        <% if @member.retired? %>
+          <h6 class="text-center text-warning mb-0">(RETIRED)</h6>
+        <% end %>
       </div>
-      <div class="col-lg-9">
-        <% if current_page?(member_info_index_path(@member)) ||  current_page?(member_path(@member))%>
-          <%= render 'members/partials/info', member: @member %>
-        <% end %>
-        <% if current_page?(member_loans_path(@member)) %>
-          <%=render 'members/partials/loans', member: @member %>
-        <% end %>
-        <% if current_page?(member_savings_accounts_path(@member)) %>
-          <%=render 'members/partials/savings_accounts', member: @member %>
-        <% end %>
-        <% if current_page?(member_share_capitals_path(@member)) %>
-          <%=render 'members/partials/share_capitals', member: @member %>
-        <% end %>
-        <% if current_page?(member_time_deposits_path(@member)) %>
-          <%=render 'members/partials/time_deposits', member: @member %>
-        <% end %>
-        <% if current_page?(member_subscriptions_path(@member)) %>
-          <%=render 'members/partials/subscriptions', member: @member %>
-        <% end %>
-        <% if current_page?(member_sales_path(@member)) %>
-          <%= render 'members/partials/sales', member: @member %>
-        <% end %>
-        <% if current_page? member_settings_path(@member) %>
-          <%= render 'members/partials/settings' %>
-        <% end %>
+      <div class="card-body">
+        <nav class="nav flex-column nav-pills">
+          <li class="nav-item"><%= link_to 'Info', member_path(@member), class: "nav-link #{'active' if current_page?(member_info_index_path(@member)) || current_page?(member_path(@member))}" %></li>
+          <li class="nav-item"><%= link_to 'Loans', member_loans_path(@member), class: "nav-link #{'active' if current_page?(member_loans_path(@member))}"%></li>
+          <li class="nav-item"><%= link_to 'Savings', member_savings_accounts_path(@member), class: "nav-link #{ 'active' if current_page?(member_savings_accounts_path(@member))}" %></li>
+          <li class="nav-item"><%= link_to 'Share Capitals', member_share_capitals_path(@member), class: "nav-link #{ 'active' if current_page?(member_share_capitals_path(@member))}" %></li>
+          <li class="nav-item"><%= link_to 'Time Deposits', member_time_deposits_path(@member), class: "nav-link #{ 'active' if current_page?(member_time_deposits_path(@member)) }" %></li>
+          <li class="nav-item"><%= link_to 'Program Subscriptions', member_subscriptions_path(@member), class: "nav-link #{ 'active' if current_page?(member_subscriptions_path(@member)) }" %></li>
+          <li class="nav-item"><%= link_to 'Sales', member_sales_path(@member), class: "nav-link #{ 'active' if current_page?(member_sales_path(@member)) }" %></li>
+          <li class="nav-item"><%= link_to 'Settings', member_settings_path(@member), class: "nav-link #{ 'active' if current_page?(member_settings_path(@member))}" %></li>
+        </nav>
       </div>
     </div>
+  </div>
+  <div class="col-lg-9">
+    <% if current_page?(member_info_index_path(@member)) ||  current_page?(member_path(@member))%>
+      <%= render 'members/partials/info', member: @member %>
+    <% end %>
+    <% if current_page?(member_loans_path(@member)) %>
+      <%=render 'members/partials/loans', member: @member %>
+    <% end %>
+    <% if current_page?(member_savings_accounts_path(@member)) %>
+      <%=render 'members/partials/savings_accounts', member: @member %>
+    <% end %>
+    <% if current_page?(member_share_capitals_path(@member)) %>
+      <%=render 'members/partials/share_capitals', member: @member %>
+    <% end %>
+    <% if current_page?(member_time_deposits_path(@member)) %>
+      <%=render 'members/partials/time_deposits', member: @member %>
+    <% end %>
+    <% if current_page?(member_subscriptions_path(@member)) %>
+      <%=render 'members/partials/subscriptions', member: @member %>
+    <% end %>
+    <% if current_page?(member_sales_path(@member)) %>
+      <%= render 'members/partials/sales', member: @member %>
+    <% end %>
+    <% if current_page? member_settings_path(@member) %>
+      <%= render 'members/partials/settings' %>
+    <% end %>
   </div>
 </div>
 
