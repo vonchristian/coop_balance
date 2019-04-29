@@ -1,5 +1,6 @@
 module LoansModule
   class LoanApplicationsController < ApplicationController
+    require 'will_paginate/array'
     def index
       if params[:search].present?
         @loan_applications = current_office.
@@ -14,7 +15,7 @@ module LoansModule
         not_cancelled.
         not_approved.
         includes(:loan_product, :voucher =>[:accounting_entry]).
-        order("vouchers.reference_number::integer").
+        sort_by(&:ascending_order).
         paginate(page: params[:page], per_page: 20)
       end
     end

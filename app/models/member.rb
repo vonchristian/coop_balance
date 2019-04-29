@@ -53,10 +53,10 @@ class Member < ApplicationRecord
   # before_save :normalize_name
 
   def beneficiaries
-    sc_beneficiaries = share_capitals.pluck(:beneficiaries).map{|b| [b + " (SC)"]}
-    maf_beneficiaries = share_capitals.pluck(:maf_beneficiaries).map{|b| [b + " (MAF)"]}
-    td_beneficiaries = time_deposits.not_withdrawn.pluck(:beneficiaries).map{|b| [b + " (TD)"]}
-    sd_beneficiaries = savings.pluck(:beneficiaries).map{|b| [b + " (SD)"]}
+    sc_beneficiaries = share_capitals.present? ? share_capitals.pluck(:beneficiaries).map{|b| b.present? ? [b + " (SC)"]: []} : []
+    maf_beneficiaries = share_capitals.present? ? share_capitals.pluck(:maf_beneficiaries).map{|b| b.present? ? [b + " (MAF)"] : []} : []
+    td_beneficiaries = time_deposits.present? ? time_deposits.not_withdrawn.pluck(:beneficiaries).map{|b| b.present? ? [b + " (TD)"] : []} : []
+    sd_beneficiaries = savings.present? ? savings.pluck(:beneficiaries).map{|b| b.present? ? [b + " (SD)"] : [] } : []
     (sc_beneficiaries + maf_beneficiaries + td_beneficiaries + sd_beneficiaries).uniq.compact.join(", ")
   end
   

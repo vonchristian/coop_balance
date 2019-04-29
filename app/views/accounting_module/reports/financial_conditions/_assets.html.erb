@@ -41,7 +41,7 @@
             </td>
             <td class="td-min-padding"><span class="pull-right"><%= number_to_currency balance.round(2) %></span></td>
           </tr>
-        <% elsif balance.zero? && AccountingModule::Asset.main_sub_accounts_for(account: account).present? %>
+        <% elsif balance.zero? && current_office.accounts.assets.main_sub_accounts_for(account: account).present? %>
           <tr>
             <% if main_account.blank? %>
               <td style="width:30px; padding-right: 0px" class="td-min-padding"></td>
@@ -65,7 +65,13 @@
                 <span class="badge bg-warning"> Contra </span>
               <% end %>
             </td>
-            <td class="td-min-padding"><span class="pull-right"><%= number_to_currency balance.round(2) %></span></td>
+            <td class="td-min-padding">
+              <span class="pull-right">
+                <% if account.main_account_id.present? %>
+                  <%= number_to_currency balance.round(2) %>
+                <% end %>
+              </span>
+            </td>
           </tr>
         <% end %>
         <% total_current_assets += balance %>
@@ -119,7 +125,7 @@
             </td>
             <td class="td-min-padding"><span class="pull-right"><%= number_to_currency non_current_balance.round(2) %></span></td>
           </tr>
-        <% elsif non_current_balance.zero? && AccountingModule::Asset.main_sub_accounts_for(account: account).present? %>
+        <% elsif non_current_balance.zero? && current_office.accounts.assets.main_sub_accounts_for(account: account).present? %>
           <tr>
             <% if non_current_main_account.blank? %>
               <td style="width:30px; padding-right: 0px" class="td-min-padding"></td>
@@ -143,7 +149,13 @@
                 <span class="badge bg-warning"> Contra </span>
               <% end %>
             </td>
-            <td class="td-min-padding"><span class="pull-right"><%= number_to_currency non_current_balance.round(2) %></span></td>
+            <td class="td-min-padding">
+              <span class="pull-right">
+                <% if account.main_account_id.present? %>
+                  <%= number_to_currency non_current_balance.round(2) %>
+                <% end %>
+              </span>
+            </td>
           </tr>
         <% end %>
         <% total_non_current_assets += non_current_balance %>

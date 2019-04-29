@@ -19,7 +19,10 @@ module AccountingModule
     end
 
     def create
-      @account = current_cooperative.accounts.create(account_params)
+      ActiveRecord::Base.transaction do
+        @account = current_cooperative.accounts.create(account_params)
+        current_office.accounts.create(account_params)
+      end
       authorize [:accounting_module, :account]
       respond_modal_with @account,
         location: accounting_module_accounts_url
@@ -36,7 +39,7 @@ module AccountingModule
 
     def update
       @account = current_cooperative.accounts.find(params[:id])
-      @account.update(account_params)
+      @account.update(update_params)
       respond_modal_with @account,
         location: accounting_module_account_url(@account)
     end
@@ -51,7 +54,7 @@ module AccountingModule
     end
 
     def type
-        current_cooperative.accounts.types.include?(params[:type]) ? params[:type] : "AccountingModule::Account"
+      current_cooperative.accounts.types.include?(params[:type]) ? params[:type] : "AccountingModule::Account"
     end
 
     def type_class
@@ -59,6 +62,9 @@ module AccountingModule
     end
 
     def account_params
+      params.require(:accounting_module_account).permit(:name, :code, :type, :contra, :main_account_id)
+    end
+    def update_params
       if @account && @account.type == "AccountingModule::Asset"
         params.require(:accounting_module_asset).permit(:name, :code, :type, :contra, :main_account_id)
       elsif @account && @account.type == "AccountingModule::Equity"
@@ -71,7 +77,6 @@ module AccountingModule
         params.require(:accounting_module_expense).permit(:name, :code, :type, :contra, :main_account_id)
       else
         params.require(:accounting_module_account).permit(:name, :code, :type, :contra, :main_account_id)
-
       end
     end
   end

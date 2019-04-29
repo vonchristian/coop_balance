@@ -42,7 +42,18 @@ module AccountingModule
 
     def self.sub_accounts_for(args={})
       account = args[:account]
-      where("code like ?", "%#{account.code}-%").order(:code)
+      where(main_account_id: account.id).order(:code)
+    end
+
+    def self.main_sub_and_sub_accounts_for(args={})
+      account = args[:account]
+      account_ids = []
+      where(main_account_id: account.id).each do |a|
+        account_ids << a.id
+        account_ids << where(main_account_id: a.id).pluck(:id)
+      end
+      account_ids
+      where(id: account_ids.flatten).order(:code)
     end
 
     def self.current_assets

@@ -1,0 +1,80 @@
+<table class="table table-hover">
+  <h3 class="card-title text-left"><b><%=name%></b></h3>
+  <% if current_office.accounts.equities.count > 0 %>
+    <tbody>
+      <% total_equity = 0 %>
+      <% current_office.accounts.equities.order(:code).uniq.each do |account| %>
+        <% if account.main_account_id.present? %> 
+          <% main_account = account.main_account %>
+        <% elsif account.main_account_id.blank? && account.code.include?("-") %>
+          <% main_account = current_office.accounts.equities.find_by(code: account.code.split("-").first) %>
+        <% end %>
+        <% balance = account.balance(:to_date => @to_date) %>
+        <% if !balance.zero? %>
+          <tr>
+            <% if main_account.blank? %>
+              <td style="width:30px; padding-right: 0px" class="td-min-padding"></td>
+              <td colspan="3" class="td-min-padding">
+            <% elsif main_account.present? && main_account.main_account_id.blank? %>
+              <td style="width:30px; padding-right: 0px" class="td-min-padding"></td>
+              <td style="width:30px; padding-right: 0px" class="td-min-padding"></td>
+              <td colspan="2" class="td-min-padding">
+            <% elsif main_account.main_account_id.present? %>
+              <td style="width:30px; padding-right: 0px" class="td-min-padding"></td>
+              <td style="width:30px; padding-right: 0px" class="td-min-padding"></td>
+              <td style="width:30px; padding-right: 0px" class="td-min-padding"></td>
+              <td class="td-min-padding">
+            <% end %>
+              <% if account.main_account_id.blank? %>
+                <b class="text-muted"><%= account.name %></b>
+              <% else %>
+                <%= account.name %>
+              <% end %>
+              <% if account.contra? %>
+                <span class="badge bg-warning"> Contra </span>
+              <% end %>
+            </td>
+            <td class="td-min-padding"><span class="pull-right"><%= number_to_currency balance.round(2) %></span></td>
+          </tr>
+        <% elsif balance.zero? && current_office.accounts.equities.main_sub_accounts_for(account: account).present? %>
+          <tr>
+            <% if main_account.blank? %>
+              <td style="width:30px; padding-right: 0px" class="td-min-padding"></td>
+              <td colspan="3" class="td-min-padding">
+            <% elsif main_account.present? && main_account.main_account_id.blank? %>
+              <td style="width:30px; padding-right: 0px" class="td-min-padding"></td>
+              <td style="width:30px; padding-right: 0px" class="td-min-padding"></td>
+              <td colspan="2" class="td-min-padding">
+            <% elsif main_account.main_account_id.present? %>
+              <td style="width:30px; padding-right: 0px" class="td-min-padding"></td>
+              <td style="width:30px; padding-right: 0px" class="td-min-padding"></td>
+              <td style="width:30px; padding-right: 0px" class="td-min-padding"></td>
+              <td class="td-min-padding">
+            <% end %>
+              <% if account.main_account_id.blank? %>
+                <b class="text-muted"><%= account.name %></b>
+              <% else %>
+                <%= account.name %>
+              <% end %>
+              <% if account.contra? %>
+                <span class="badge bg-warning"> Contra </span>
+              <% end %>
+            </td>
+            <td class="td-min-padding">
+              <span class="pull-right">
+                <% if account.main_account_id.present? %>
+                  <%= number_to_currency balance.round(2) %>
+                <% end %>
+              </span>
+            </td>
+          </tr>
+        <% end %>
+        <% total_equity += balance %>
+      <% end %>
+      <tr>
+        <td colspan="4" class="td-min-padding"><b>Total Equity<b></td>
+        <td class="td-min-padding"><span class="pull-right"><b><%=number_to_currency total_equity.round(2) %></b></span></td>
+      </tr>
+    </tbody>
+  <% end %>
+</table>

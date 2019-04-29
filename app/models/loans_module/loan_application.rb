@@ -28,6 +28,7 @@ module LoansModule
     delegate :entry, to: :voucher, allow_nil: true
     delegate :rate, :straight_balance?, :annually?, :prededucted_number_of_payments, to: :current_interest_config, prefix: true
     validates :cooperative_id, presence: true
+
     def forwarded_loan? #check on amortization_schedule pdf
       false
     end

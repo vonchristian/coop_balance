@@ -1,11 +1,12 @@
 class IncomeStatementPdf < Prawn::Document
-  attr_reader :revenues, :expenses, :employee, :from_date, :to_date, :view_context, :cooperative
+  attr_reader :revenues, :expenses, :employee, :from_date, :to_date, :view_context, :cooperative, :office
   def initialize(args={})
     super(margin: 40, page_size: "A4", page_layout: :portrait)
     @revenues     = args[:revenues]
     @expenses     = args[:expenses]
     @employee     = args[:employee]
     @cooperative  = @employee.cooperative
+    @office       = @employee.office
     @from_date    = args[:from_date]
     @to_date      = args[:to_date]
     @view_context = args[:view_context]
@@ -63,52 +64,96 @@ class IncomeStatementPdf < Prawn::Document
 
   def revenue_accounts
     text "REVENUES", size: 12, style: :bold
-    move_down 5
-    table(revenues_data, cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [10, 385, 120]) do
-      cells.borders =[:bottom]
-      column(2).align = :right
+    table(revenues_data, header: false, 
+      cell_style: { size: 9, font: "Helvetica", padding: [1,3,2,1]}, 
+      column_widths: [10, 10, 10, 371, 100]) do
+      cells.borders = [:bottom]
+      column(4).align = :right
     end
     move_down 2
-    table(total_revenue, header: true, cell_style: { inline_format: true, size: 11, font: "Helvetica"}, column_widths: [10, 385, 120]) do
+    table(total_revenues_data, header: true, 
+      cell_style: { inline_format: true, size: 11, font: "Helvetica", padding: [1,3,2,1]}, 
+      column_widths: [10, 10, 10, 371, 100]) do
       cells.borders = [:top, :bottom]
-      column(2).align = :right
+      column(4).align = :right
     end
   end
 
   def revenues_data
-    @revenues_data ||= revenues.uniq.map{|a| ["", a.name, price(a.balance(to_date: to_date))] }
+    revenue_data = []
+    office.accounts.active.revenues.order(:code).each do |account|
+      
+      if account.main_account.blank? #base account
+        revenue_data << ["", {content: account.name, colspan: 3, font_style: :bold}, account_balance(account)]
+      elsif account.main_account.present? && account.main_account.main_account.blank? #sub_base account
+        if !account.balance(to_date: to_date).zero?
+          revenue_data << ["", "", {content: account.name, colspan: 2}, account_balance(account)]
+        else 
+          if !office.accounts.active.revenues.sub_accounts_for(account: account).balance(to_date: to_date).zero?
+            revenue_data << ["", "", {content: account.name, colspan: 2}, ""]
+          end
+        end
+      elsif account.main_account.main_account.present? #sub_base_sub_account
+        if !account.balance(to_date: to_date).zero?
+          revenue_data << ["", "", "", account.name, price(account.balance(to_date: to_date))]
+        end
+      end
+    end
+    revenue_data
   end
-
-  def total_revenue
-    [["", "<b>TOTAL REVENUES</b>", "<b>#{price(AccountingModule::Revenue.   balance(to_date: to_date))}</b>"]]
+  def total_revenues_data
+    [["", {content: "TOTAL REVENUES ", colspan: 3, font_style: :bold}, "<b>#{price(AccountingModule::Revenue.active.balance(to_date: to_date))}</b>"]]
   end
 
   def expense_accounts
     move_down 20
     text "EXPENSES", size: 12, style: :bold
-    move_down 5
-    table(expenses_data, cell_style: { inline_format: true, size: 11, font: "Helvetica"}, column_widths: [10, 385, 120]) do
-      cells.borders =[:bottom]
-      column(2).align = :right
+    table(expenses_data, header: false, 
+      cell_style: { size: 9, font: "Helvetica", padding: [1,3,2,1]}, 
+      column_widths: [10, 10, 10, 371, 100]) do
+      cells.borders = [:bottom]
+      column(4).align = :right
     end
     move_down 2
-    table(total_expenses, header: true, cell_style: { inline_format: true, size: 11, font: "Helvetica"}, column_widths: [10, 385, 120]) do
+    table(total_expenses_data, header: true, 
+      cell_style: { inline_format: true, size: 11, font: "Helvetica", padding: [1,3,2,1]}, 
+      column_widths: [10, 10, 10, 371, 100]) do
       cells.borders = [:top, :bottom]
-      column(2).align = :right
+      column(4).align = :right
     end
   end
 
   def expenses_data
-    @expenses_data ||= expenses.uniq.map{|a| ["", a.name, price(a.balance(to_date: to_date))] }
+    expense_data = []
+    office.accounts.active.expenses.order(:code).each do |account|
+      
+      if account.main_account.blank? #base account
+        expense_data << ["", {content: account.name, colspan: 3, font_style: :bold}, account_balance(account)]
+      elsif account.main_account.present? && account.main_account.main_account.blank? #sub_base account
+        if !account.balance(to_date: to_date).zero?
+          expense_data << ["", "","", {content: account.name}, account_balance(account)]
+        else 
+          if !office.accounts.active.expenses.sub_accounts_for(account: account).balance(to_date: to_date).zero?
+            expense_data << ["", "", {content: account.name, colspan: 2}, ""]
+          end
+        end
+      elsif account.main_account.main_account.present? #sub_base_sub_account
+        if !account.balance(to_date: to_date).zero?
+          expense_data << ["", "", "", account.name, price(account.balance(to_date: to_date))]
+        end
+      end
+    end
+    expense_data
   end
-
-  def total_expenses
-    [["", "<b>TOTAL EXPENSES</b>", "<b>#{price(AccountingModule::Expense.balance(to_date: to_date))}</b>"]]
+  def total_expenses_data
+    [["", {content: "TOTAL EXPENSES ", colspan: 3, font_style: :bold}, "<b>#{price(AccountingModule::Expense.active.balance(to_date: to_date))}</b>"]]
   end
 
   def net_surplus
     move_down 10
-    table([["NET SURPLUS", "#{price(AccountingModule::Account.net_surplus(to_date: to_date))}"]], cell_style: { inline_format: true, size: 11, font: "Helvetica"}, column_widths: [395, 120]) do
+    table([[{ content: "NET SURPLUS", colspan: 4, font_style: :bold}, "#{price(AccountingModule::Account.net_surplus(to_date: to_date))}"]], 
+      header: true, cell_style: { inline_format: true, size: 11, font: "Helvetica", padding: [1,3,2,1]}, 
+      column_widths: [10, 10, 10, 371, 100]) do
       row(0).font_style = :bold
       cells.borders = []
       column(1).align =:right
@@ -124,6 +169,14 @@ class IncomeStatementPdf < Prawn::Document
       row(0).font_style = :bold
       cells.borders = []
       column(1).align =:right
+    end
+  end
+
+  def account_balance(account)
+    if !account.balance(to_date: to_date).zero?
+      price(account.balance(to_date: to_date))
+    else
+      ""
     end
   end
 end
