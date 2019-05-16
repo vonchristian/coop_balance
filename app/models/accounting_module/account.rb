@@ -45,12 +45,15 @@ module AccountingModule
       where(main_account_id: account.id).order(:code)
     end
 
-    def self.main_sub_and_sub_accounts_for(args={})
+    def self.accounts_under(args={}) #includes sub accounts of sub accounts...
       account = args[:account]
       account_ids = []
       where(main_account_id: account.id).each do |a|
         account_ids << a.id
-        account_ids << where(main_account_id: a.id).pluck(:id)
+        where(main_account_id: a.id).each do |sub|
+          account_ids << sub.id
+          account_ids << where(main_account_id: sub.id).pluck(:id)
+        end
       end
       account_ids
       where(id: account_ids.flatten).order(:code)

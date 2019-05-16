@@ -72,86 +72,56 @@ module AccountingModule
         text "CURRENT ASSETS", size: 11, :indent_paragraphs => 10
 
         table(current_assets_data, header: false, 
-          cell_style: { size: 9, font: "Helvetica", padding: [1,3,2,1]}, 
-          column_widths: [10, 10, 10, 10, 361, 100]) do
+          cell_style: { size: 9, font: "Helvetica"}, 
+          column_widths: [411, 100]) do
           cells.borders = [:bottom]
-          column(5).align = :right
+          column(1).align = :right
         end
         move_down 2
         table(total_current_assets_data, header: true, 
           cell_style: { inline_format: true, size: 11, font: "Helvetica", padding: [1,3,2,1]}, 
-          column_widths: [10, 10, 10, 10, 361, 100]) do
+          column_widths: [10, 10, 10, 10, 371, 100]) do
           cells.borders = [:bottom]
           column(5).align = :right
         end
         move_down 4
         text "NON-CURRENT ASSETS", size: 11, :indent_paragraphs => 10
         table(non_current_assets_data, header: false, 
-          cell_style: { size: 9, font: "Helvetica", padding: [1,3,2,1]}, 
-          column_widths: [10, 10, 10, 10, 361, 100]) do
+          cell_style: { size: 9, font: "Helvetica"}, 
+          column_widths: [411, 100]) do
           cells.borders = [:bottom]
-          column(5).align = :right
+          column(1).align = :right
         end
         move_down 2
         table(total_non_current_assets_data, header: true, 
           cell_style: { inline_format: true, size: 11, font: "Helvetica", padding: [1,3,2,1]}, 
-          column_widths: [10, 10, 10, 10, 361, 100]) do
+          column_widths: [10, 10, 10, 10, 371, 100]) do
           cells.borders = [:bottom]
           column(5).align = :right
         end
         move_down 2
         table(total_assets_data, header: true, 
           cell_style: { inline_format: true, size: 11, font: "Helvetica", padding: [1,3,2,1]}, 
-          column_widths: [10, 10, 10, 10, 361, 100]) do
+          column_widths: [10, 10, 10, 10, 371, 100]) do
           cells.borders = [:top, :bottom]
           column(5).align = :right
         end
       end
 
       def current_assets_data
-        current_assets = []
+        current_asset_accounts = []
         office.accounts.active.current_assets.each do |account|
-          
-          if account.main_account.blank? #base account
-            current_assets << ["", "", {content: account.name, colspan: 3, font_style: :bold}, account_balance(account)]
-          elsif account.main_account.present? && account.main_account.main_account.blank? #sub_base
-            if !account.balance(to_date: to_date).zero?
-              current_assets << ["", "", "", {content: account.name, colspan: 2}, account_balance(account)]
-            else 
-              if !office.accounts.active.assets.sub_accounts_for(account: account).balance(to_date: to_date).zero?
-                current_assets << ["", "", "", {content: account.name, colspan: 2}, ""]
-              end
-            end
-          elsif account.main_account.main_account.present? #sub_account
-            if !account.balance(to_date: to_date).zero?
-              current_assets << ["", "", "", "", account.name, price(account.balance(to_date: to_date))]
-            end
-          end
+          accounts_row(account: account, accounts_array: current_asset_accounts)
         end
-        current_assets
+        current_asset_accounts
       end
 
       def non_current_assets_data
-        non_current_assets = []
+        non_current_asset_accounts = []
         office.accounts.active.non_current_assets.each do |account|
-          
-          if account.main_account.blank? #base account
-            non_current_assets << ["", "", {content: account.name, colspan: 3, font_style: :bold}, account_balance(account)]
-          elsif account.main_account.present? && account.main_account.main_account.blank? #sub_base
-            if !account.balance(to_date: to_date).zero?
-              non_current_assets << ["", "", "", {content: account.name, colspan: 2}, account_balance(account)]
-            else 
-              if !office.accounts.active.assets.sub_accounts_for(account: account).balance(to_date: to_date).zero?
-                non_current_assets << ["", "", "", {content: account.name, colspan: 2}, ""]
-              end
-            end
-          elsif account.main_account.main_account.present? #sub_account
-            if !account.balance(to_date: to_date).zero?
-              non_current_assets << ["", "", "", "", account.name, price(account.balance(to_date: to_date))]
-            end
-          end
+          accounts_row(account: account, accounts_array: non_current_asset_accounts)
         end
-        non_current_assets
+        non_current_asset_accounts
       end
 
       def total_current_assets_data
@@ -176,86 +146,56 @@ module AccountingModule
         text "CURRENT LIABILITIES", size: 11, :indent_paragraphs => 10
 
         table(current_liabilities_data, header: false, 
-          cell_style: { size: 9, font: "Helvetica", padding: [1,3,2,1]}, 
-          column_widths: [10, 10, 10, 10, 361, 100]) do
+          cell_style: { size: 9, font: "Helvetica"}, 
+          column_widths: [411, 100]) do
           cells.borders = [:bottom]
-          column(5).align = :right
+          column(1).align = :right
         end
         move_down 2
         table(total_current_liabilities_data, header: true, 
           cell_style: { inline_format: true, size: 11, font: "Helvetica", padding: [1,3,2,1]}, 
-          column_widths: [10, 10, 10, 10, 361, 100]) do
+          column_widths: [10, 10, 10, 10, 371, 100]) do
           cells.borders = [:bottom]
           column(5).align = :right
         end
         move_down 4
         text "NON-CURRENT LIABILITIES", size: 11, :indent_paragraphs => 10
         table(non_current_liabilities_data, header: false, 
-          cell_style: { size: 9, font: "Helvetica", padding: [1,3,2,1]}, 
-          column_widths: [10, 10, 10, 10, 361, 100]) do
+          cell_style: { size: 9, font: "Helvetica"}, 
+          column_widths: [411, 100]) do
           cells.borders = [:bottom]
-          column(5).align = :right
+          column(1).align = :right
         end
         move_down 2
         table(total_non_current_liabilities_data, header: true, 
           cell_style: { inline_format: true, size: 11, font: "Helvetica", padding: [1,3,2,1]}, 
-          column_widths: [10, 10, 10, 10, 361, 100]) do
+          column_widths: [10, 10, 10, 10, 371, 100]) do
           cells.borders = [:bottom]
           column(5).align = :right
         end
         move_down 2
         table(total_liabilities_data, header: true, 
           cell_style: { inline_format: true, size: 11, font: "Helvetica", padding: [1,3,2,1]}, 
-          column_widths: [10, 10, 10, 10, 361, 100]) do
+          column_widths: [10, 10, 10, 10, 371, 100]) do
           cells.borders = [:top, :bottom]
           column(5).align = :right
         end
       end
 
       def current_liabilities_data
-        current_liabilities = []
+        current_liability_accounts = []
         office.accounts.active.current_liabilities.each do |account|
-          
-          if account.main_account.blank? #base account
-            current_liabilities << ["", "", {content: account.name, colspan: 3, font_style: :bold}, account_balance(account)]
-          elsif account.main_account.present? && account.main_account.main_account.blank? #sub_base
-            if !account.balance(to_date: to_date).zero?
-              current_liabilities << ["", "", "", {content: account.name, colspan: 2}, account_balance(account)]
-            else 
-              if !office.accounts.active.liabilities.sub_accounts_for(account: account).balance(to_date: to_date).zero?
-                current_liabilities << ["", "", "", {content: account.name, colspan: 2}, ""]
-              end
-            end
-          elsif account.main_account.main_account.present? #sub_account
-            if !account.balance(to_date: to_date).zero?
-              current_liabilities << ["", "", "", "", account.name, price(account.balance(to_date: to_date))]
-            end
-          end
+          accounts_row(account: account, accounts_array: current_liability_accounts)
         end
-        current_liabilities
+        current_liability_accounts
       end
 
       def non_current_liabilities_data
-        non_current_liabilities = []
+        non_current_liability_accounts = []
         office.accounts.active.non_current_liabilities.each do |account|
-          
-          if account.main_account.blank? #base account
-            non_current_liabilities << ["", "", {content: account.name, colspan: 3, font_style: :bold}, account_balance(account)]
-          elsif account.main_account.present? && account.main_account.main_account.blank? #sub_base
-            if !account.balance(to_date: to_date).zero?
-              non_current_liabilities << ["", "", "", {content: account.name, colspan: 2}, account_balance(account)]
-            else 
-              if !office.accounts.active.liabilities.sub_accounts_for(account: account).balance(to_date: to_date).zero?
-                non_current_liabilities << ["", "", "", {content: account.name, colspan: 2}, ""]
-              end
-            end
-          elsif account.main_account.main_account.present? #sub_account
-            if !account.balance(to_date: to_date).zero?
-              non_current_liabilities << ["", "", "", "", account.name, price(account.balance(to_date: to_date))]
-            end
-          end
+          accounts_row(account: account, accounts_array: non_current_liability_accounts)
         end
-        non_current_liabilities
+        non_current_liability_accounts
       end
 
       def total_current_liabilities_data
@@ -275,53 +215,38 @@ module AccountingModule
         text "EQUITY", size: 12, style: :bold
 
         table(equities_data, header: false, 
-          cell_style: { size: 9, font: "Helvetica", padding: [1,3,2,1]}, 
-          column_widths: [10, 10, 10, 371, 100]) do
+          cell_style: { size: 9, font: "Helvetica"}, 
+          column_widths: [411, 100]) do
           cells.borders = [:bottom]
-          column(4).align = :right
+          column(1).align = :right
         end
         move_down 2
         table(total_equities_data, header: true, 
           cell_style: { inline_format: true, size: 11, font: "Helvetica", padding: [1,3,2,1]}, 
-          column_widths: [10, 10, 10, 371, 100]) do
+          column_widths: [10, 10, 10, 10, 371, 100]) do
           cells.borders = [:top, :bottom]
-          column(4).align = :right
+          column(5).align = :right
         end
       end
 
       def equities_data
-        members_equities = []
+        equity_accounts = []
         office.accounts.active.equities.order(:code).each do |account|
-          
-          if account.main_account.blank? #base account
-            members_equities << ["", {content: account.name, colspan: 3, font_style: :bold}, account_balance(account)]
-          elsif account.main_account.present? && account.main_account.main_account.blank? #sub_base account
-            if !account.balance(to_date: to_date).zero?
-              members_equities << ["", "","", {content: account.name}, account_balance(account)]
-            else 
-              if !office.accounts.active.equities.sub_accounts_for(account: account).balance(to_date: to_date).zero?
-                members_equities << ["", "", {content: account.name, colspan: 2}, ""]
-              end
-            end
-          elsif account.main_account.main_account.present? #sub_base_sub_account
-            if !account.balance(to_date: to_date).zero?
-              members_equities << ["", "", "", account.name, price(account.balance(to_date: to_date))]
-            end
-          end
+          accounts_row(account: account, accounts_array: equity_accounts)
         end
-        members_equities
+        equity_accounts
       end
       def total_equities_data
-        [["", {content: "TOTAL EQUITIES ", colspan: 3, font_style: :bold}, "<b>#{price(AccountingModule::Equity.active.balance(to_date: to_date))}</b>"]]
+        [["", "", {content: "TOTAL EQUITIES ", colspan: 3, font_style: :bold}, "<b>#{price(AccountingModule::Equity.active.balance(to_date: to_date))}</b>"]]
       end
 
       def total_liabilities_and_equities(options={})
         move_down 10
         table(liabilities_and_equities_data(options), header: true, 
           cell_style: { inline_format: true, size: 11, font: "Helvetica", padding: [1,3,2,1]}, 
-          column_widths: [10, 10, 10, 10, 361, 100]) do
+          column_widths: [10, 10, 10, 10, 371, 100]) do
           cells.borders = []
-          column(1).align = :right
+          column(5).align = :right
         end
       end
 
@@ -339,6 +264,22 @@ module AccountingModule
           price(account.balance(to_date: to_date))
         else
           ""
+        end
+      end
+
+      def accounts_row(args={})
+        account = args[:account]
+        accounts_array = args[:accounts_array]
+        if account.main_account.blank? #base account
+          accounts_array << [{content: account.name, padding: [1,3,2,20], font_style: :bold}, {content: account_balance(account), padding: [1,3,2,1]}]
+        elsif account.main_account.present? && account.main_account.main_account.blank? #sub_base
+          if !office.accounts.active.accounts_under(account: account).balance(to_date: to_date).zero?
+            accounts_array << [{content: account.name, padding: [1,3,2,30]}, {content: account_balance(account), padding: [1,3,2,1]}]
+          else #sub_accounts balance not zero and account balance not zero either.
+            accounts_array << [{content: account.name, padding: [1,3,2,30]}, {content: account_balance(account), padding: [1,3,2,1]}] if !account.balance(to_date: to_date).zero?
+          end
+        elsif account.main_account.main_account.present? #sub_account
+          accounts_array << [{content: account.name, padding: [1,3,2,40]}, {content: account_balance(account), padding: [1,3,2,1]}] if !account.balance(to_date: to_date).zero?
         end
       end
     end

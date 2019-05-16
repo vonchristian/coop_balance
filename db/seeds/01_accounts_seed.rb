@@ -413,7 +413,7 @@ AccountingModule::Expense.create(code: "50000", name: 'Cost of Goods Sold')
 	AccountingModule::Expense.create(code: "51200", name: 'Inventory Loss')
 
 AccountingModule::Expense.create(code: "60000", name: 'Cost of Services')
-	AccountingModule::Expense.create(code: "60100", name: 'Project Management Cost (Cost of Services)')
+	AccountingModule::Expense.create(code: "61000", name: 'Project Management Cost (Cost of Services)')
 	AccountingModule::Expense.create(code: "61110", name: 'Labor and Technical Supervision (Cost of Services)')
 	AccountingModule::Expense.create(code: "61210", name: 'Salaries and Wages (Cost of Services)')
 	AccountingModule::Expense.create(code: "61230", name: "Employees' Benefits (Cost of Services)")
@@ -446,7 +446,6 @@ AccountingModule::Expense.create(code: "70000", name: "Financing Cost")
 # #Selling/Marketing Cost Costs
 AccountingModule::Expense.create(code: "72000", name: "Selling/Marketing Cost Cost")
 
-AccountingModule::Expense.create(code: "72180", name: "Product/Service Marketing and Promotional Expenses", main_account_id: AccountingModule::Account.find_by_name('Selling/Marketing Cost Cost').id)
 	AccountingModule::Expense.create(code: "72180", name: "Product/Service Marketing and Promotional Expenses", main_account_id: AccountingModule::Account.find_by_name('Selling/Marketing Cost Cost').id)
 	AccountingModule::Expense.create(code: "72190", name: "Product/Service Development", main_account_id: AccountingModule::Account.find_by_name('Selling/Marketing Cost Cost').id)
 	AccountingModule::Expense.create(code: "72200", name: "Product Research", main_account_id: AccountingModule::Account.find_by_name('Selling/Marketing Cost Cost').id)
