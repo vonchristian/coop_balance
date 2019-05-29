@@ -23,7 +23,7 @@ module AccountingModule
           find_entry.voucher.update(cancelled_at: cancelled_at) #cancel voucher
           if loan_voucher?
             loan_application_voucher.commercial_document.update(cancelled: true)       #cancel loan_application
-            loan_application_voucher.commercial_document.loan.update(cancelled: true)  #cancel loan
+            loan_application_voucher.commercial_document.loan.update(cancelled: true) if loan_application_voucher.commercial_document.loan.present? #cancel loan
           end
         end
       end

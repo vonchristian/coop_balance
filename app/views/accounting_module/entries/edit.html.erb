@@ -13,6 +13,7 @@
           <% else %>
             <p class="text-muted">Unable to edit date for this loan entry, it will affect amortization schedules.
             </p>
+            <%= f.input :entry_date, as: :string, input_html: { class: "datepicker", value: @entry.entry_date }, as: :hidden %>
           <% end %>
           <%= f.input :reference_number %>
           <%= f.input :description %>

@@ -4,8 +4,8 @@ module AccountingModule
       def index
         @comparison = AccountingModule::FinancialConditionComparison.new
         first_entry = current_cooperative.entries.order('entry_date ASC').first
-        @from_date = first_entry ? DateTime.parse(first_entry.entry_date.strftime("%B %e, %Y")) : Time.zone.now
-        @to_date = params[:to_date] ? DateTime.parse(params[:to_date]) : Time.zone.now.end_of_day
+        @from_date = params[:from_date].present? ? DateTime.parse(params[:from_date]) : first_entry.entry_date
+        @to_date = params[:to_date].present? ? DateTime.parse(params[:to_date]) : Time.zone.now.end_of_day
         @assets = current_office.accounts.assets.order(:code).all.uniq
         @liabilities = current_office.accounts.liabilities.order(:code).all.uniq
         @equities = current_office.accounts.equities.order(:code).all.uniq
@@ -18,6 +18,7 @@ module AccountingModule
               from_date:    @from_date,
               to_date:      @to_date,
               assets:       @assets,
+              first_entry:  first_entry,
               liabilities:  @liabilities,
               equities:     @equities,
               employee:     @employee,

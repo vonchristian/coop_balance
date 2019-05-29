@@ -46,8 +46,8 @@ module CooperativeServices
 
     def show_revenues
       text "REVENUES", style: :bold
-      table(revenues_data, cell_style: { inline_format: true, size: 11, font: "Helvetica", :padding => [2,5,2,5]}, column_widths: [300, 100]) do
-        cells.borders =[]
+      table(revenues_data, cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [2,5,2,5]}, column_widths: [300, 100]) do
+        cells.borders =[:top]
         column(1).align = :right
         row(-1).font_style = :bold
       end
@@ -61,14 +61,14 @@ module CooperativeServices
 
     def revenues_data
       [["", ""]] +
-      @revenues_data ||= accounts.revenues.map{|a| [a.name, price(a.balance(cooperative_service_id: cooperative_service.id, from_date: from_date, to_date: to_date))] } +
+      @revenues_data ||= accounts.revenues.order(:code).map{|a| [a.name, price(a.balance(cooperative_service_id: cooperative_service.id, from_date: from_date, to_date: to_date))] } +
       [["TOTAL REVENUES", "#{price(cooperative_service.accounts.revenues.balance(cooperative_service_id: cooperative_service.id, from_date: from_date, to_date: to_date))}"]]
     end
 
     def show_expenses
       text "Expenses", style: :bold
-      table(expenses_data, cell_style: { inline_format: true, size: 11, font: "Helvetica", :padding => [2,5,2,5]}, column_widths: [300, 100]) do
-        cells.borders =[]
+      table(expenses_data, cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [2,5,2,5]}, column_widths: [300, 100]) do
+        cells.borders =[:top]
         column(1).align = :right
         row(-1).font_style = :bold
       end
@@ -76,7 +76,7 @@ module CooperativeServices
 
     def expenses_data
       [["", ""]] +
-      @expenses_data ||= accounts.expenses.map{|a| [a.name, price(a.balance(to_date: to_date))] } +
+      @expenses_data ||= accounts.expenses.order(:code).map{|a| [a.name, price(a.balance(to_date: to_date))] } +
       [["TOTAL EXPENSES", "#{price(cooperative_service.accounts.expenses.balance(cooperative_service_id: cooperative_service.id, from_date: from_date, to_date: to_date))}"]]
 
     end

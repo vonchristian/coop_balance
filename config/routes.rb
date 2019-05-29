@@ -51,6 +51,7 @@ Rails.application.routes.draw do
       resources :income_statements,    only: [:index]
       resources :balance_sheets,       only: [:index]
       resources :financial_conditions, only: [:index]
+      resources :credit_operations, only: [:index]
     end
 
     resources :settings, only: [:index]
@@ -459,6 +460,7 @@ Rails.application.routes.draw do
     resources :barangays,             only: [:edit, :update],        module: :loans
     resources :settings,              only: [:index],                module: :loans
     resources :payments,              only: [:index, :new, :create], module: :loans
+    resources :payment_with_iocs,            only: [:new, :create], module: :loans
 
   end
 

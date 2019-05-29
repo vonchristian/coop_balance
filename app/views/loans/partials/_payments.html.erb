@@ -14,7 +14,49 @@
     </div>
   </div>
 </div>
-<% @payments.each do |payment| %>
-  <%= render 'accounting_module/entries/partials/header', entry: payment %>
-<% end %>
+<table class="table">
+  <tr>
+    <th>Date</th>
+    <th>OR/CDV #</th>
+    <th class="text-right">Interest</th>
+    <th class="text-right">Penalty</th>
+    <th class="text-right">Principal</th>
+    <th class="text-right">Total</th>
+    <th class="text-right">Balance</th>
+    <td></td>
+  </tr>
+  <% @payments.sort_by(&:entry_date).reverse.each do |entry| %>
+    <% if entry.cancelled? %>
+      <tr>
+        <td><%= entry.entry_date.strftime("%B %e, %Y") %></td>
+        <td><%= entry.reference_number %>- CANCELLED</td>
+        <td class="text-right">-</td>
+        <td class="text-right">-</td>
+        <td class="text-right">-</td>
+        <td class="text-right">-</td>
+        <td></td>
+      </tr>
+    <% else %>
+      <tr>
+        <td><%= entry.entry_date.strftime("%B %e, %Y") %></td>
+        <td><%= link_to entry.try(:reference_number), accounting_module_entry_path(entry), data:{toggle: 'tooltip'}, title: entry.description %></td>
+        <td class="text-right">
+          <%= number_to_currency entry.credit_amounts.for_account(account_id: @loan.loan_product_interest_revenue_account).total if entry.debit_amounts.total != @loan.principal_balance(to_date: entry.entry_date) %>
+        </td>
+        <td class="text-right">
+          <%= number_to_currency entry.credit_amounts.for_account(account_id: @loan.loan_product_penalty_revenue_account).total if entry.debit_amounts.total != @loan.principal_balance(to_date: entry.entry_date) %>
+        </td>
+        <td class="text-right">
+          <%= number_to_currency entry.credit_amounts.for_account(account_id: @loan.principal_account).total if entry.debit_amounts.total != @loan.principal_balance(to_date: entry.entry_date) %>
+        </td>
+        <td class="text-right">
+          <%= number_to_currency entry.debit_amounts.total %>
+        </td>
+        <td class="text-right"><%= number_to_currency @loan.principal_balance(to_date: entry.entry_date) %></td>
+        <td></td>
+      </tr>
+    <% end %>
+  <% end %>
+</table>
 <center><%= will_paginate @payments %></center>
+

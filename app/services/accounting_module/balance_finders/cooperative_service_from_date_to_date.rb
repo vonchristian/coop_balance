@@ -1,12 +1,12 @@
 module AccountingModule
   module BalanceFinders
-    class CooperativeServiceToDate
+    class CooperativeServiceFromDateToDate
       attr_reader  :cooperative_service_id, :to_date, :from_date, :amounts
 
       def initialize(args={})
         @amounts             = args.fetch(:amounts)
         @cooperative_service_id = args.fetch(:cooperative_service_id)
-        @from_date           = 999.years.ago
+        @from_date           = args.fetch(:from_date)
         @to_date             = args.fetch(:to_date)
       end
 

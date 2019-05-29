@@ -1,8 +1,7 @@
 module CooperativeServices
   class IncomeStatementsController < ApplicationController
     def index
-      @cooperative_service = current_cooperative.cooperative_services.
-      find(params[:cooperative_service_id])
+      @cooperative_service = current_cooperative.cooperative_services.find(params[:cooperative_service_id])
       @accounts = @cooperative_service.accounts
       @from_date = params[:from_date] ? Date.parse(params[:from_date]) : Date.today
       @to_date = params[:to_date] ? Date.parse(params[:to_date]) : Date.today

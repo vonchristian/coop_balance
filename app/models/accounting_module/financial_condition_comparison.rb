@@ -3,18 +3,18 @@ module AccountingModule
     enum comparison_type: [:daily, :weekly, :monthly, :quarterly, :semi_annually, :yearly]
 
     def first_date_display_title
-      if monthly?
-        first_date.strftime("%B %Y")
-      elsif yearly?
+      if yearly?
         first_date.strftime("%Y")
+      else
+        first_date.strftime("%B %Y")
       end
     end
 
     def second_date_display_title
-      if monthly?
-        second_date.strftime("%B %Y")
-      elsif yearly?
+      if yearly?
         second_date.strftime("%Y")
+      else
+        second_date.strftime("%B %Y")
       end
     end
 

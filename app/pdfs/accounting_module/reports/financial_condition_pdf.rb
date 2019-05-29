@@ -1,7 +1,7 @@
 module AccountingModule
   module Reports
     class FinancialConditionPdf < Prawn::Document
-      attr_reader :from_date, :to_date, :assets, :liabilities, :equities, :employee, :view_context, :cooperative, :office
+      attr_reader :from_date, :to_date, :first_entry, :assets, :liabilities, :equities, :employee, :view_context, :cooperative, :office
       def initialize(args)
         super(margin: 40, page_size: "A4", page_layout: :portrait)
         @from_date    = args[:from_date]
@@ -10,6 +10,7 @@ module AccountingModule
         @liabilities  = args[:liabilities]
         @equities     = args[:equities]
         @employee     = args[:employee]
+        @first_entry  = args[:first_entry]
         @cooperative  = @employee.cooperative
         @office       = @employee.office
         @view_context = args[:view_context]
@@ -39,7 +40,7 @@ module AccountingModule
 
       def subtable_left
         sub_data ||= [[{content: "FINANCIAL CONDITION", size: 14, colspan: 2}]] +
-                      [[{content: "As of #{to_date.strftime("%b. %e, %Y")}", size: 10, colspan: 2}]]
+                      [[{content: "#{from_date.strftime("%b. %e, %Y")} - #{to_date.strftime("%b. %e, %Y")}", size: 10, colspan: 2}]]
         make_table(sub_data, cell_style: {padding: [0,5,1,2]}) do
           columns(0).width = 50
           columns(1).width = 150
@@ -125,15 +126,18 @@ module AccountingModule
       end
 
       def total_current_assets_data
-        [["", "", {content: "Total Current Assets", colspan: 3, font_style: :bold}, "<b>#{price(AccountingModule::Asset.active.current_assets.balance(to_date: to_date))}</b>"]]
+        [["", "", {content: "Total Current Assets", colspan: 3, font_style: :bold}, 
+          "<b>#{price(total_balance(accounts: AccountingModule::Asset.active.current_assets))}</b>"]]
       end
 
       def total_non_current_assets_data
-        [["", "", {content: "Total Non-Current Assets ", colspan: 3, font_style: :bold}, "<b>#{price(AccountingModule::Asset.active.non_current_assets.balance(to_date: to_date))}</b>"]]
+        [["", "", {content: "Total Non-Current Assets ", colspan: 3, font_style: :bold}, 
+          "<b>#{price(total_balance(accounts: AccountingModule::Asset.active.non_current_assets))}</b>"]]
       end
 
       def total_assets_data
-        [["", {content: "TOTAL ASSETS ", colspan: 4, font_style: :bold}, "<b>#{price(AccountingModule::Asset.active.balance(to_date: to_date))}</b>"]]
+        [["", {content: "TOTAL ASSETS ", colspan: 4, font_style: :bold}, 
+          "<b>#{price(total_balance(accounts: AccountingModule::Asset.active))}</b>"]]
       end
 
       def liabilities_accounts
@@ -199,15 +203,15 @@ module AccountingModule
       end
 
       def total_current_liabilities_data
-        [["", "", {content: "Total Current Liabilities", colspan: 3, font_style: :bold}, "<b>#{price(AccountingModule::Liability.active.current_liabilities.balance(to_date: to_date))}</b>"]]
+        [["", "", {content: "Total Current Liabilities", colspan: 3, font_style: :bold}, "<b>#{price(total_balance(accounts: AccountingModule::Liability.active.current_liabilities))}</b>"]]
       end
 
       def total_non_current_liabilities_data
-        [["", "", {content: "Total Non-Current Liabilities ", colspan: 3, font_style: :bold}, "<b>#{price(AccountingModule::Liability.active.non_current_liabilities.balance(to_date: to_date))}</b>"]]
+        [["", "", {content: "Total Non-Current Liabilities ", colspan: 3, font_style: :bold}, "<b>#{price(total_balance(accounts: AccountingModule::Liability.active.non_current_liabilities))}</b>"]]
       end
 
       def total_liabilities_data
-        [["", {content: "TOTAL LIABILITIES ", colspan: 4, font_style: :bold}, "<b>#{price(AccountingModule::Liability.active.balance(to_date: to_date))}</b>"]]
+        [["", {content: "TOTAL LIABILITIES ", colspan: 4, font_style: :bold}, "<b>#{price(total_balance(accounts: AccountingModule::Liability.active))}</b>"]]
       end
 
       def equities_accounts
@@ -237,7 +241,7 @@ module AccountingModule
         equity_accounts
       end
       def total_equities_data
-        [["", "", {content: "TOTAL EQUITIES ", colspan: 3, font_style: :bold}, "<b>#{price(AccountingModule::Equity.active.balance(to_date: to_date))}</b>"]]
+        [["", "", {content: "TOTAL EQUITIES ", colspan: 3, font_style: :bold}, "<b>#{price(total_balance(accounts: AccountingModule::Equity.active))}</b>"]]
       end
 
       def total_liabilities_and_equities(options={})
@@ -255,15 +259,28 @@ module AccountingModule
       end
 
       def liabilities_and_equities_total(options={})
-        AccountingModule::Liability.active.balance(to_date: to_date) +
-        AccountingModule::Equity.active.balance(to_date: to_date)
+        total_balance(accounts: AccountingModule::Liability.active) + 
+        total_balance(accounts: AccountingModule::Equity.active)
       end      
 
       def account_balance(account)
         if !account.balance(to_date: to_date).zero?
-          price(account.balance(to_date: to_date))
+          if from_date > first_entry.entry_date
+            price(account.balance(to_date: to_date) - account.balance(to_date: from_date))
+          else
+            price(account.balance(to_date: to_date))
+          end
         else
           ""
+        end
+      end
+
+      def total_balance(args={})
+        accounts = args[:accounts]
+        if from_date > first_entry.entry_date
+          accounts.balance(to_date: to_date) - accounts.balance(to_date: from_date)
+        else
+          accounts.balance(to_date: to_date)
         end
       end
 
@@ -276,10 +293,10 @@ module AccountingModule
           if !office.accounts.active.accounts_under(account: account).balance(to_date: to_date).zero?
             accounts_array << [{content: account.name, padding: [1,3,2,30]}, {content: account_balance(account), padding: [1,3,2,1]}]
           else #sub_accounts balance not zero and account balance not zero either.
-            accounts_array << [{content: account.name, padding: [1,3,2,30]}, {content: account_balance(account), padding: [1,3,2,1]}] if !account.balance(to_date: to_date).zero?
+            accounts_array << [{content: account.name, padding: [1,3,2,30]}, {content: account_balance(account), padding: [1,3,2,1]}] if !account.balance(from_date: from_date, to_date: to_date).zero?
           end
         elsif account.main_account.main_account.present? #sub_account
-          accounts_array << [{content: account.name, padding: [1,3,2,40]}, {content: account_balance(account), padding: [1,3,2,1]}] if !account.balance(to_date: to_date).zero?
+          accounts_array << [{content: account.name, padding: [1,3,2,40]}, {content: account_balance(account), padding: [1,3,2,1]}] if !account.balance(from_date: from_date, to_date: to_date).zero?
         end
       end
     end

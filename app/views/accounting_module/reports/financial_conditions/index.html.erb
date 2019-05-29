@@ -7,18 +7,19 @@
       <div class="col-md-9">
         <%= form_tag({:action => 'index'}, {:method => :get, :class => 'form-inline'}) do%>
           <div class="form-group">
+          <%= label_tag :from_date, nil, class: 'sr-only'%>
+          <%= text_field_tag :from_date, @from_date, :class => 'datepicker form-control' %>
           <%= label_tag :to_date, nil, class: 'sr-only'%>
           <%= text_field_tag :to_date, @to_date, :class => 'datepicker form-control' %>
           <%= select_tag :office_id, options_for_select(current_cooperative.offices.map {|m| [m.name, m.id]}, params[:office_id]), class: ' form-control border-input', prompt: false %>
-
           </div>
           <button type="submit" class="btn btn-primary">Get Report</button>
         <% end %>
       </div>
       <div class="col-md-3">
         <% if params[:to_date].present? %>
-          <%= link_to "View (PDF)", accounting_module_reports_financial_conditions_path(format: 'pdf', to_date: params[:to_date]), class: "btn btn-default" %>
-          <%= link_to "View (Excel)", accounting_module_reports_financial_conditions_path(format: 'xlsx', to_date: params[:to_date]), class: "btn btn-default" %>
+          <%= link_to "View (PDF)", accounting_module_reports_financial_conditions_path(format: 'pdf', from_date: params[:from_date], to_date: params[:to_date]), class: "btn btn-default" %>
+          <%= link_to "View (Excel)", accounting_module_reports_financial_conditions_path(format: 'xlsx', from_date: params[:from_date], to_date: params[:to_date]), class: "btn btn-default" %>
         <% end %>
       </div>
     </div>

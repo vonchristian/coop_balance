@@ -87,7 +87,7 @@ class IncomeStatementPdf < Prawn::Document
     accounts_array
   end
   def total_revenues_data
-    [["", {content: "TOTAL REVENUES ", colspan: 3, font_style: :bold}, "<b>#{price(office.accounts.active.revenues.balance(to_date: to_date))}</b>"]]
+    [["", {content: "TOTAL REVENUES ", colspan: 3, font_style: :bold}, "<b>#{price(office.accounts.active.revenues.balance(from_date: from_date, to_date: to_date))}</b>"]]
   end
 
   def expense_accounts
@@ -116,17 +116,17 @@ class IncomeStatementPdf < Prawn::Document
     accounts_array
   end
   def total_expenses_data
-    [["", {content: "TOTAL EXPENSES ", colspan: 3, font_style: :bold}, "<b>#{price(office.accounts.active.expenses.balance(to_date: to_date))}</b>"]]
+    [["", {content: "TOTAL EXPENSES ", colspan: 3, font_style: :bold}, "<b>#{price(office.accounts.active.expenses.balance(from_date: from_date, to_date: to_date))}</b>"]]
   end
 
   def net_surplus
     move_down 10
-    table([[{ content: "NET SURPLUS", colspan: 4, font_style: :bold}, "#{price(office.accounts.active.net_surplus(to_date: to_date))}"]], 
+    table([[{ content: "NET SURPLUS", colspan: 4, font_style: :bold}, "#{price(office.accounts.active.net_surplus(from_date: from_date, to_date: to_date))}"]], 
       header: true, cell_style: { inline_format: true, size: 11, font: "Helvetica", padding: [1,3,2,1]}, 
       column_widths: [10, 10, 10, 371, 100]) do
       row(0).font_style = :bold
       cells.borders = []
-      column(1).align =:right
+      column(4).align =:right
     end
   end
 
@@ -143,8 +143,8 @@ class IncomeStatementPdf < Prawn::Document
   end
 
   def account_balance(account)
-    if !account.balance(to_date: to_date).zero?
-      price(account.balance(to_date: to_date))
+    if !account.balance(from_date: from_date, to_date: to_date).zero?
+      price(account.balance(from_date: from_date, to_date: to_date))
     else
       ""
     end
@@ -156,13 +156,13 @@ class IncomeStatementPdf < Prawn::Document
     if account.main_account.blank? #base account
       accounts_array << [{content: account.name, padding: [1,3,2,10], font_style: :bold}, {content:account_balance(account), padding: [1,3,2,1]}]
     elsif account.main_account.present? && account.main_account.main_account.blank? #sub_base
-      if !office.accounts.active.accounts_under(account: account).balance(to_date: to_date).zero?
+      if !office.accounts.active.accounts_under(account: account).balance(from_date: from_date, to_date: to_date).zero?
         accounts_array << [{content: account.name, padding: [1,3,2,20]}, {content:account_balance(account), padding: [1,3,2,1]}]
       else #sub_accounts balance not zero and account balance not zero either.
-        accounts_array << [{content: account.name, padding: [1,3,2,20]}, {content:account_balance(account), padding: [1,3,2,1]}] if !account.balance(to_date: to_date).zero?
+        accounts_array << [{content: account.name, padding: [1,3,2,20]}, {content:account_balance(account), padding: [1,3,2,1]}] if !account.balance(from_date: from_date, to_date: to_date).zero?
       end
     elsif account.main_account.main_account.present? #sub_account
-      accounts_array << [{content: account.name, padding: [1,3,2,30]}, {content:account_balance(account), padding: [1,3,2,1]}] if !account.balance(to_date: to_date).zero?
+      accounts_array << [{content: account.name, padding: [1,3,2,30]}, {content:account_balance(account), padding: [1,3,2,1]}] if !account.balance(from_date: from_date, to_date: to_date).zero?
     end
   end
 end

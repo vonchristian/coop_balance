@@ -1,1 +1,10 @@
-<%= link_to 'Add Accounts', new_cooperative_service_account_path(@cooperative_service) %>
+<div class="row">
+	<div class="col-md-12">
+		<%= link_to 'Add Accounts', new_cooperative_service_account_path(@cooperative_service), class: 'btn btn-info float-right' %>
+	</div>
+</div>
+<hr>
+<% @cooperative_service.accounts.each do |account| %>
+	<%= render 'accounting_module/accounts/partials/header', account: account %>
+<% end %>
+<center><%#= will_paginate @accounts %></center>
