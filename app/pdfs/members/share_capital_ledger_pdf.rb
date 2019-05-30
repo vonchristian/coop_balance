@@ -1,17 +1,15 @@
 module Members
-  class LoansLedgerPdf < Prawn::Document
-    TABLE_WIDTH = [40, 50, 50, 50, 50, 50, 50]
-    attr_reader :member, :view_context, :cooperative, :title, :entries, :loan_product, :forwarded_loans, :forwarded_loan
+  class ShareCapitalLedgerPdf < Prawn::Document
+    TABLE_WIDTH = [50, 50, 80, 80, 80]
+    attr_reader :member, :view_context, :cooperative, :entries, :share_capital, :equity_account
 
     def initialize(args={})
       super(margin: 10, page_size: [360, 468], page_layout: :portrait) # [340, 448]
-      @member = args[:member]
-      @title = args[:title]
+      @share_capital = args[:share_capital]
+      @equity_account = @share_capital.share_capital_product_equity_account
       @entries = args[:entries]
-      @loan_product = args[:loan_product]
-      @forwarded_loans = args[:forwarded_loans]
-      @forwarded_loan = @forwarded_loans.last
-      @cooperative = args[:cooperative]
+      @member = @share_capital.subscriber
+      @cooperative = @share_capital.cooperative
       @view_context = args[:view_context]
       heading
       transactions
@@ -25,7 +23,7 @@ module Members
     def heading
       bounding_box [0, 448], width: 175 do
         # stroke_bounds
-        text title, style: :bold, size: 8
+        text "Share Capital", style: :bold, size: 8
         move_down 3
         text "#{member.name}", size: 8
         text "#{member.code}", size: 8
@@ -56,8 +54,6 @@ module Members
         column(2).align = :right
         column(3).align = :right
         column(4).align = :right
-        column(5).align = :right
-        column(6).align = :right
       end
     end
 
@@ -65,17 +61,15 @@ module Members
       @table_data ||= @entries.order(:entry_date).map do |entry|
         [ entry.entry_date.strftime("%D"),
           entry.reference_number.present? ? entry.reference_number : "FWD",
-          price(entry.debit_amounts.for_account(account_id: loan_product.current_account_id).total),
-          price(total_payment(entry)),
-          price(member.loans_for(loan_product: loan_product).sum{|l| l.principal_balance(to_date: EntryDateTime.new(entry: entry).set)}),
-          price(entry.credit_amounts.for_account(account_id: loan_product.interest_revenue_account.id).total),
-          price(entry.credit_amounts.for_account(account_id: loan_product.penalty_revenue_account.id).total)
+          price(deposit_amount(entry)),
+          price(widthrawal_amount(entry)),
+          price(share_capital.balance(to_date: EntryDateTime.new(entry: entry).set))
         ]
       end
     end
 
     def table_header
-      table([["DATE", "OR/CDV #", "LOAN", "PAYMENT", "BALANCE", "INTEREST", "FINES"]], 
+      table([["DATE", "OR/CDV #", "DEPOSIT", "WIDTHRAWAL", "BALANCE"]], 
         header: true, cell_style: {padding: [1,1,2,1], size: 7 }, 
         column_widths: TABLE_WIDTH) do
         cells.borders = [:top, :bottom]
@@ -83,20 +77,31 @@ module Members
         column(2).align = :right
         column(3).align = :right
         column(4).align = :right
-        column(5).align = :right
-        column(6).align = :right
       end
     end
 
-    def total_payment(entry)
-      credit_amounts_for_current_account = entry.credit_amounts.for_account(account_id: loan_product.current_account_id)
-      debit_amounts_for_current_account = entry.debit_amounts.for_account(account_id: loan_product.current_account_id)
-      if credit_amounts_for_current_account.present? && debit_amounts_for_current_account.present?
-        credit_amounts_for_current_account.total
+    def deposit_amount(entry)
+      if credit_amounts_for_equity_account(entry).present? #&& credit_amounts_for_equity_account(entry).pluck(:commercial_document).include?(share_capital)
+        credit_amounts_for_equity_account(entry).total
       else
-        credit_amounts_for_current_account.total +
-        entry.credit_amounts.for_account(account_id: loan_product.interest_revenue_account.id).total
+        0
       end
+    end
+
+    def widthrawal_amount(entry)
+      if debit_amounts_for_equity_account(entry).present? #&& debit_amounts_for_equity_account(entry).pluck(:commercial_document).include?(share_capital)
+        debit_amounts_for_equity_account(entry).total
+      else
+        0
+      end
+    end
+
+    def credit_amounts_for_equity_account(entry)
+      entry.credit_amounts.for_account(account_id: equity_account.id)
+    end
+
+    def debit_amounts_for_equity_account(entry)
+      entry.debit_amounts.for_account(account_id: equity_account.id)
     end
   end
 end

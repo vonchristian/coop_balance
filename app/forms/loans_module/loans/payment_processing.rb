@@ -85,7 +85,7 @@ module LoansModule
         if principal_amount.to_f > 0
           voucher.voucher_amounts.credit.build(
           amount:              principal_amount_for(find_loan.loan_product.current_interest_config),
-          account:             find_loan.principal_account,
+          account:             find_loan.current_account,
           commercial_document: find_loan)
         end
       end

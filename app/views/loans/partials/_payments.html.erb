@@ -2,7 +2,7 @@
   <div class="card-header">
     <div class="row">
       <div class="col-md-6">
-        <h3 class="card-title"> Transactions History</h3>
+        <h3 class="card-title"> Payments History</h3>
       </div>
       <div class="col-md-6">
         <% if policy([:loans_module, :payment]).new? %>
@@ -19,13 +19,13 @@
     <th>Date</th>
     <th>OR/CDV #</th>
     <th class="text-right">Interest</th>
-    <th class="text-right">Penalty</th>
+    <th class="text-right">Fines</th>
     <th class="text-right">Principal</th>
     <th class="text-right">Total</th>
     <th class="text-right">Balance</th>
     <td></td>
   </tr>
-  <% @payments.sort_by(&:entry_date).reverse.each do |entry| %>
+  <% @payments.sort_by(&:entry_date).each do |entry| %>
     <% if entry.cancelled? %>
       <tr>
         <td><%= entry.entry_date.strftime("%B %e, %Y") %></td>
@@ -37,22 +37,19 @@
         <td></td>
       </tr>
     <% else %>
+      <% interest = entry.credit_accounts.include?(@loan.principal_account) && entry.debit_accounts.include?(@loan.principal_account) ? 0 : entry.credit_amounts.for_account(account_id: @loan.loan_product_interest_revenue_account.id).total %>
+      <% penalty = entry.credit_accounts.include?(@loan.principal_account) && entry.debit_accounts.include?(@loan.principal_account) ? 0 : entry.credit_amounts.for_account(account_id: @loan.loan_product_penalty_revenue_account.id).total %>
+      <% principal = !entry.credit_accounts.include?(@loan.principal_account) ? 0 : entry.credit_amounts.for_account(account_id: @loan.principal_account.id).total %>
       <tr>
         <td><%= entry.entry_date.strftime("%B %e, %Y") %></td>
         <td><%= link_to entry.try(:reference_number), accounting_module_entry_path(entry), data:{toggle: 'tooltip'}, title: entry.description %></td>
+        <td class="text-right"><%= number_to_currency interest  %></td>
+        <td class="text-right"><%= number_to_currency penalty %></td>
+        <td class="text-right"><%= number_to_currency principal %></td>
         <td class="text-right">
-          <%= number_to_currency entry.credit_amounts.for_account(account_id: @loan.loan_product_interest_revenue_account).total if entry.debit_amounts.total != @loan.principal_balance(to_date: entry.entry_date) %>
+          <%= number_to_currency (interest + penalty + principal) %>
         </td>
-        <td class="text-right">
-          <%= number_to_currency entry.credit_amounts.for_account(account_id: @loan.loan_product_penalty_revenue_account).total if entry.debit_amounts.total != @loan.principal_balance(to_date: entry.entry_date) %>
-        </td>
-        <td class="text-right">
-          <%= number_to_currency entry.credit_amounts.for_account(account_id: @loan.principal_account).total if entry.debit_amounts.total != @loan.principal_balance(to_date: entry.entry_date) %>
-        </td>
-        <td class="text-right">
-          <%= number_to_currency entry.debit_amounts.total %>
-        </td>
-        <td class="text-right"><%= number_to_currency @loan.principal_balance(to_date: entry.entry_date) %></td>
+        <td class="text-right"><%= number_to_currency @loan.principal_balance(to_date: EntryDateTime.new(entry: entry).set) %></td>
         <td></td>
       </tr>
     <% end %>

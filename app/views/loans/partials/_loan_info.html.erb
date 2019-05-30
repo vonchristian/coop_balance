@@ -31,6 +31,7 @@
       </div>
       <div class="col-md-6">
         <%= link_to 'View Voucher (PDF)', loans_module_loan_application_voucher_path(loan_application_id: @loan.loan_application.id, id: @loan.loan_application.voucher_id, format: "pdf"), class: "btn btn-default float-right" if @loan.not_forwarded? %>
+        <%= link_to "View Entry", accounting_module_entry_path(@loan.loan_entry), data:{toggle: 'tooltip'}, title: @loan.loan_entry.description, class: "btn btn-default float-right" %>
       </div>
     </div>
   </div>

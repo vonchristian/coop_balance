@@ -26,46 +26,50 @@
 		<tr>
 			<th>Date</th>
 			<th>OR/CDV #</th>
-			<th class="text-right">Debit</th>
-			<th class="text-right">Credit</th>
+			<th class="text-right">Loan</th>
+			<th class="text-right">Payment</th>
 			<th class="text-right">Balance</th>
-			<td></td>
+			<th class="text-right">Interest</th>
+			<th class="text-right">Fines</th>
 		</tr>
-		<% @transactions.sort_by(&:entry_date).reverse.each do |entry| %>
+		<% @transactions.sort_by(&:entry_date).each do |entry| %>
 			<% if entry.cancelled? %>
 				<tr>
 					<td><%= entry.entry_date.strftime("%B %e, %Y") %></td>
-					<td><%= entry.reference_number %>- CANCELLED</td>
+					<td><%= entry.reference_number.present? ? entry.reference_number : "FWD" %> - CANCELLED</td>
 					<td class="text-right">-</td>
 					<td class="text-right">-</td>
 					<td class="text-right">-</td>
-					<td></td>
+					<td class="text-right">-</td>
+					<td class="text-right">-</td>
 				</tr>
 			<% else %>
 				<tr>
 					<td><%= entry.entry_date.strftime("%B %e, %Y") %></td>
-					<td><%= link_to entry.try(:reference_number), accounting_module_entry_path(entry), data:{toggle: 'tooltip'}, title: entry.description %></td>
+					<td>
+						<%= link_to accounting_module_entry_path(entry), data:{toggle: 'tooltip'}, title: entry.description do %>
+							<%= entry.reference_number.present? ? entry.reference_number : "FWD" %>
+						<% end %>
+					</td>
 					<td class="text-right">
 						<%= number_to_currency entry.debit_amounts.for_account(account_id: @loan_product.current_account_id).total %>
 					</td>
 					<td class="text-right">
 						<%= number_to_currency entry.credit_amounts.for_account(account_id: @loan_product.current_account_id).total %>
 					</td>
-					<td class="text-right"><%= number_to_currency @member.loans_for(loan_product: @loan_product).sum{|l| l.principal_balance(to_date: EntryDateTime.new(entry: entry).set)}%></td>
-					<td></td>
+					<td class="text-right">
+						<%= number_to_currency @member.loans_for(loan_product: @loan_product).sum{|l| l.principal_balance(to_date: EntryDateTime.new(entry: entry).set)}%>
+					</td>
+					<td class="text-right">
+						<%= number_to_currency entry.credit_amounts.for_account(account_id: @loan_product.interest_revenue_account.id).total %>
+					</td>
+					<td class="text-right">
+						<%= number_to_currency entry.credit_amounts.for_account(account_id: @loan_product.penalty_revenue_account.id).total %>
+					</td>
 				</tr>
 			<% end %>
 		<% end %>
-		<% if @forwarded_loans.present? %>
-			<tr>
-				<td><%= @forwarded_loans.last.application_date.strftime("%B %e, %Y") %></td>
-				<td>FWD</td>
-				<td class="text-right"><%= number_to_currency @forwarded_loans.last.principal_balance(to_date: @forwarded_loans.last.application_date) %></td>
-				<td class="text-right"></td>
-				<td class="text-right"><%= number_to_currency @forwarded_loans.sum{|l| l.principal_balance(to_date: @forwarded_loans.last.application_date)} %></td>
-				<td></td>
-			</tr>
-		<% end %>
+		
 	</table>
 	<center><%= will_paginate @transactions %></center>
 </div>

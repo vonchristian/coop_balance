@@ -87,15 +87,15 @@ module LoansModule
       def create_principal_amount(voucher)
         if principal_amount.to_f > 0
           voucher.voucher_amounts.credit.build(
-          amount:              principal_amount,
-          account:             find_loan.principal_account,
+          amount:              principal_amount.to_f,
+          account:             find_loan.loan_product_current_account,
           commercial_document: find_loan)
         end
       end
 
       def create_total_cash_amount(voucher)
         voucher.voucher_amounts.debit.build(
-        amount:              total_amount,
+        amount:              total_amount.to_f,
         account:             find_share_capital.share_capital_product_interest_payable_account,
         commercial_document: find_loan)
       end

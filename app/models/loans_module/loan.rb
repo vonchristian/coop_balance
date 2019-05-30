@@ -191,6 +191,14 @@ module LoansModule
       not_cancelled.disbursed.each do |loan|
         entry_ids << loan.accounting_entry.id
       end
+      not_cancelled.where(forwarded_loan: true).each do |loan|
+        entry_ids << loan.loan_product_current_account.debit_amounts.where(commercial_document: loan).last.entry_id
+      end
+      not_cancelled.where(forwarded_loan: true).each do |loan|
+        loan.loan_payments.each do |payment|
+          entry_ids << payment.id
+        end
+      end
       not_cancelled.disbursed.each do |loan|
         loan.loan_payments.each do |payment|
           entry_ids << payment.id
@@ -309,7 +317,6 @@ module LoansModule
       joins(:disbursement_voucher).where('vouchers.disburser_id' => args[:employee_id])
     end
 
-
     def self.matured(options={})
       if options[:from_date] && options[:to_date]
         range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
@@ -340,9 +347,9 @@ module LoansModule
       loan_product_current_account.credit_amounts.where(commercial_document: self).each do |amount|
         entries << amount.entry
       end
-      loan_product_current_account.credit_amounts.where(commercial_document: self).each do |amount|
-        entries << amount.entry
-      end
+      # loan_product_current_account.debit_amounts.where(commercial_document: self).each do |amount|
+      #   entries << amount.entry
+      # end if forwarded?
 
       loan_product_past_due_account.credit_amounts.where(commercial_document: self).each do |amount|
         entries << amount.entry
@@ -355,6 +362,10 @@ module LoansModule
         entries << amount.entry
       end
       entries.uniq
+    end
+
+    def loan_entry
+      loan_product_current_account.debit_amounts.where(commercial_document: self).last.entry
     end
 
     def self.disbursement_entries(args={})
