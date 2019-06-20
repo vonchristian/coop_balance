@@ -2,11 +2,12 @@ wb = xlsx_package.workbook
   wb.add_worksheet(name: "Income Statement", :fixed_column_width => false) do |sheet|
 
 
+  
   # specifying the :hyperlink option will add a hyper link to your image.
   #
   # @note - Numbers does not support this part of the specification.
 
-  
+
   comma = wb.styles.add_style :num_fmt => 3
   sheet.add_row ["Income Statement - #{@office.name}"], sz: 16, b: true
   sheet.add_row ["Date Covered: #{@from_date.strftime('%B %e, %Y')} - #{@to_date.strftime('%B %e, %Y')}"]
