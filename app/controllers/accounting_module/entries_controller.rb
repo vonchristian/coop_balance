@@ -11,6 +11,8 @@ module AccountingModule
         @entries_for_pdf = current_cooperative.entries.where(cooperative_service_id: params[:cooperative_service_id]).entered_on(from_date: @from_date, to_date: @to_date)
         @ordered_entries = current_cooperative.entries.order(reference_number: :desc).where(cooperative_service_id: params[:cooperative_service_id]).entered_on(from_date: @from_date, to_date: @to_date)
         @entries = @ordered_entries.paginate(:page => params[:page], :per_page => 50)
+        @office = current_user.office
+        
 
       elsif params[:organization_id].present? && params[:search].present?
         @organization = current_cooperative.organizations.find(params[:organization_id])
@@ -20,8 +22,10 @@ module AccountingModule
           @to_date = @organization.member_entries.not_cancelled.order(entry_date: :desc).first.entry_date
         end
         @ordered_entries = @organization.member_entries.order(reference_number: :desc).text_search(params[:search])
+        @office = current_user.office
+
         @entries = @ordered_entries.paginate(:page => params[:page], :per_page => 50)
-        
+
       elsif params[:organization_id].blank? && params[:search].present?
         @entries_for_pdf = current_cooperative.entries.text_search(params[:search])
         if @entries_for_pdf.present?
@@ -29,12 +33,16 @@ module AccountingModule
           @to_date = @entries_for_pdf.order(entry_date: :desc).first.entry_date
         end
         @ordered_entries = current_cooperative.entries.order(reference_number: :desc).text_search(params[:search])
+        @office = current_user.office
+
         @entries = @ordered_entries.paginate(:page => params[:page], :per_page => 50)
 
       elsif params[:recorder_id].present?
         @recorder = current_cooperative.users.find(params[:recorder_id])
         @ordered_entries = @recorder.entries
         @entries = @ordered_entries.paginate(:page => params[:page], :per_page => 50)
+        @office = current_user.office
+
 
       elsif params[:organization_id].present? && params[:search].blank?
         @organization = current_cooperative.organizations.find(params[:organization_id])
@@ -45,6 +53,8 @@ module AccountingModule
         end
         @ordered_entries = @organization.member_entries.order(reference_number: :desc)
         @entries = @ordered_entries.paginate(:page => params[:page], :per_page => 50)
+        @office = current_user.office
+
 
       else
         @from_date = params[:from_date] ? Date.parse(params[:from_date]) : current_cooperative.entries.order(entry_date: :asc).first.entry_date
@@ -53,6 +63,7 @@ module AccountingModule
         @entries_for_pdf = current_cooperative.entries.where(cooperative_service_id: params[:cooperative_service_id])
         @ordered_entries = current_cooperative.entries.order(reference_number: :desc).where(cooperative_service_id: params[:cooperative_service_id])
         @entries = @ordered_entries.paginate(page: params[:page], per_page:  50)
+        @office = current_user.office
       end
       respond_to do |format|
         format.html
