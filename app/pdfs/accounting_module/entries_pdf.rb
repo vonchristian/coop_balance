@@ -184,13 +184,14 @@ module AccountingModule
       end
     end
     def accounts_summary
-      move_down 10
+      start_new_page
       text 'ACCOUNTS SUMMARY', size: 12
-      table(AccountingModule::Account.updated_at(from_date: @from_date, to_date: @to_date).distinct.map{ |account| [account.name, price(account.debits_balance(from_date: @from_date, to_date: @to_date)), price(account.credits_balance(from_date: @from_date, to_date: @to_date))] }, column_widths: [500, 150, 150]) do
+      table([["ACCOUNT", "DEBITS", "CREDITS"]] +
+      AccountingModule::Account.updated_at(from_date: @from_date, to_date: @to_date).distinct.map{ |account| [account.name, price(account.debits_balance(from_date: @from_date, to_date: @to_date)), price(account.credits_balance(from_date: @from_date, to_date: @to_date))] }, column_widths: [500, 150, 150]) do
         column(1).align = :right
         column(2).align = :right
       end
-      table([["", price(AccountingModule::Account.updated_at(from_date: @from_date, to_date: @to_date).distinct.debits_balance(from_date: @from_date, to_date: @to_date)), price(AccountingModule::Account.updated_at(from_date: @from_date, to_date: @to_date).distinct.credits_balance(from_date: @from_date, to_date: @to_date))]], column_widths: [500, 150, 150]) do
+      table([["TOTAL", price(AccountingModule::Account.updated_at(from_date: @from_date, to_date: @to_date).distinct.debits_balance(from_date: @from_date, to_date: @to_date)), price(AccountingModule::Account.updated_at(from_date: @from_date, to_date: @to_date).distinct.credits_balance(from_date: @from_date, to_date: @to_date))]], column_widths: [500, 150, 150]) do
         column(1).align = :right
         column(2).align = :right
       end
