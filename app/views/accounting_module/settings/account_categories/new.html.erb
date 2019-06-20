@@ -1,0 +1,5 @@
+<%= simple_form_for @account_category, url: :accounting_module_account_categories do |f| %>
+  <%= f.input :title %>
+  <%= f.input :category_type, collection: AccountingModule::AccountCategory.category_types.keys.to_a.map{ |a| [a.titleize, a] } %>
+  <%= f.submit "Save Account Category" %>
+<% end %>

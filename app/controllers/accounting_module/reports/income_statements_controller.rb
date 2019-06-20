@@ -8,7 +8,7 @@ module AccountingModule
         @revenues = current_cooperative.accounts.revenues
         @expenses = current_cooperative.accounts.expenses
         @employee = current_user
-
+        @office = @employee.office
         respond_to do |format|
           format.html # index.html.erb
           format.pdf do

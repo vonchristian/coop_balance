@@ -8,6 +8,7 @@ module AccountingModule
     class_attribute :normal_credit_balance
 
     belongs_to :main_account,       class_name: "AccountingModule::Account", foreign_key: 'main_account_id'
+    belongs_to :account_category,   class_name: 'AccountingModule::AccountCategory'
     has_many :amounts,              class_name: "AccountingModule::Amount"
     has_many :credit_amounts,       :class_name => 'AccountingModule::CreditAmount'
     has_many :debit_amounts,       :class_name => 'AccountingModule::DebitAmount'

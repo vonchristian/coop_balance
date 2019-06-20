@@ -5,9 +5,13 @@ Rails.application.routes.draw do
     root :to => 'members#index'
   end
   resources :home, only: [:index]
-  
+
   resources :accounting_module, only: [:index]
   namespace :accounting_module do
+    resources :settings, only: [:index]
+    resources :account_categories, only: [:new, :create, :show], module: :settings do
+      resources :sub_categories, only: [:new, :create]
+    end
     resources :amounts, only: [:destroy]
     resources :commercial_document_adjusting_entry_line_items, only: [:new, :create, :destroy], module: :entries
     resources :per_employee_entries, only: [:index], module: :entries

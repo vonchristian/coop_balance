@@ -1,0 +1,4 @@
+<%= link_to 'New Sub Category', new_accounting_module_account_category_sub_category_path(@account_category) %>
+<% @account_category.sub_categories.each do |sub_category| %>
+  <%= sub_category.title %>
+<% end %>

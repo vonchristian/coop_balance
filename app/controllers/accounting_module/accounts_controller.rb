@@ -66,17 +66,17 @@ module AccountingModule
     end
     def update_params
       if @account && @account.type == "AccountingModule::Asset"
-        params.require(:accounting_module_asset).permit(:name, :code, :type, :contra, :main_account_id)
+        params.require(:accounting_module_asset).permit(:name, :code, :type, :contra, :main_account_id, :account_category_id)
       elsif @account && @account.type == "AccountingModule::Equity"
-        params.require(:accounting_module_equity).permit(:name, :code, :type, :contra, :main_account_id)
+        params.require(:accounting_module_equity).permit(:name, :code, :type, :contra, :main_account_id,  :account_category_id)
       elsif @account &&  @account.type == "AccountingModule::Liability"
-        params.require(:accounting_module_liability).permit(:name, :code, :type, :contra, :main_account_id)
+        params.require(:accounting_module_liability).permit(:name, :code, :type, :contra, :main_account_id,  :account_category_id)
       elsif  @account &&  @account.type == "AccountingModule::Revenue"
-        params.require(:accounting_module_revenue).permit(:name, :code, :type, :contra, :main_account_id)
+        params.require(:accounting_module_revenue).permit(:name, :code, :type, :contra, :main_account_id,  :account_category_id)
       elsif  @account &&  @account.type == "AccountingModule::Expense"
-        params.require(:accounting_module_expense).permit(:name, :code, :type, :contra, :main_account_id)
+        params.require(:accounting_module_expense).permit(:name, :code, :type, :contra, :main_account_id,  :account_category_id)
       else
-        params.require(:accounting_module_account).permit(:name, :code, :type, :contra, :main_account_id)
+        params.require(:accounting_module_account).permit(:name, :code, :type, :contra, :main_account_id,  :account_category_id)
       end
     end
   end

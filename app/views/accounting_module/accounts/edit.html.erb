@@ -11,6 +11,7 @@
 	  <%= f.input :code %>
 	  <%= f.input :type, collection: AccountingModule::Account.types %>
 	  <%= f.input :main_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] }, include_blank: true %>
+    <%= f.input :account_category_id, collection: current_cooperative.account_categories.map{ |a| [a.title, a.id] } %>
 	  <%= f.input :contra %>
   </div>
   <div class="modal-footer">

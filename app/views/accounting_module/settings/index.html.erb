@@ -1,0 +1,4 @@
+<%= link_to 'New Account Category', new_accounting_module_account_category_path %>
+<% current_cooperative.account_categories.each do |category| %>
+  <%= link_to category.title, accounting_module_account_category_path(category) %>
+<% end %>

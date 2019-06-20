@@ -9,6 +9,7 @@ module AccountingModule
         @liabilities = current_cooperative.accounts.liabilities.active.order(:code).all
         @equity = current_cooperative.accounts.equities.active.order(:code).all
         @cooperative = current_cooperative
+        @office = current_user.office
         respond_to do |format|
           format.html # index.html.erb
           format.pdf do
