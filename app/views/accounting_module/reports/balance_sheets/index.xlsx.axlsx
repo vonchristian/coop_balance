@@ -1,0 +1,144 @@
+wb = xlsx_package.workbook
+  wb.add_worksheet(name: "Balance Sheet", :fixed_column_width => false) do |sheet|
+  sheet.add_row ["#{@office.cooperative.name.upcase}"], size: 12, b: true
+  sheet.add_row ["Balance Sheet"], sz: 12, b: true
+  sheet.add_row ["As of: #{@to_date.strftime('%B %e, %Y')}"]
+  sheet.add_row ["Office: #{@office.name}"], size: 12
+  sheet.add_row ["ASSETS"], sz: 12, b: true
+  assets_total = 0
+  current_cooperative.account_categories.asset.each do |category|
+  category_total = 0
+  sheet.add_row ["#{category.title}"]
+  category.accounts.each do |account|
+    assets_total += account.balance(to_date: @to_date)
+    category_total += account.balance(to_date: @to_date)
+
+      sheet.add_row ["  #{account.name}", "#{account.balance(to_date: @to_date)}"]
+    end
+  category.sub_categories.each do |sub_category|
+    sheet.add_row ["  #{sub_category.title}"]
+    sub_total = 0
+    sub_category.accounts.each do |account|
+    assets_total += account.balance(to_date: @to_date)
+    sub_total += account.balance(to_date: @to_date)
+    category_total += account.balance(to_date: @to_date)
+
+
+      sheet.add_row ["    #{account.name}", "#{account.balance(to_date: @to_date)}"]
+    end
+    sub_category.sub_categories.each do |sub1_category|
+    sub1_total = 0
+      sheet.add_row ["    #{sub1_category.title}"]
+      sub1_category.accounts.each do |account|
+        assets_total += account.balance(to_date: @to_date)
+        sub1_total += account.balance(to_date: @to_date)
+        sub_total += account.balance(to_date: @to_date)
+        category_total += account.balance(to_date: @to_date)
+
+
+
+        sheet.add_row ["      #{account.name}", "#{account.balance(to_date: @to_date)}"]
+      end
+      sheet.add_row ["    Total #{sub1_category.title }", sub1_total ]
+    end
+    sheet.add_row ["  Total #{sub_category.title}", sub_total ]
+
+  end
+  sheet.add_row ["Total #{category.title}", category_total]
+
+  end
+  sheet.add_row ["TOTAL ASSETS", "#{assets_total}" ], b: true, sz: 12
+
+
+
+  sheet.add_row [""]
+  sheet.add_row ["LIABILITIES, EQUITY AND RESERVE"], sz: 12, b: true
+
+  liabilities_total = 0
+  current_cooperative.account_categories.liability.each do |category|
+    sheet.add_row ["#{category.title}"]
+    category_total = 0
+
+    category.accounts.each do |account|
+      category_total += account.balance(to_date: @to_date)
+      liabilities_total += account.balance(to_date: @to_date)
+      sheet.add_row ["  #{account.name}", account.balance(to_date: @to_date)]
+    end
+
+    category.sub_categories.each do |sub_category|
+      sheet.add_row ["  #{sub_category.title}"]
+      sub_category_total = 0
+      sub_category.accounts.each do |account|
+        sub_category_total += account.balance(to_date: @to_date)
+        category_total += account.balance(to_date: @to_date)
+        liabilities_total += account.balance(to_date: @to_date)
+        sheet.add_row ["    #{account.name}", account.balance(to_date: @to_date)]
+      end
+
+      sub_category.sub_categories.each do |sub1_category|
+        sub1_total = 0
+        sheet.add_row ["    #{sub1_category.title}"]
+
+        sub1_category.accounts.each do |account|
+          sub_category_total += account.balance(to_date: @to_date)
+          sub1_total += account.balance(to_date: @to_date)
+          category_total += account.balance(to_date: @to_date)
+          liabilities_total += account.balance(to_date: @to_date)
+          sheet.add_row ["      #{account.name}", account.balance(to_date: @to_date)]
+
+        end
+      end
+
+      sheet.add_row ["    Total #{sub_category.title}", sub_category_total]
+
+    end
+
+      sheet.add_row ["Total #{category.title}", category_total]
+
+      equity_total = 0
+      current_cooperative.account_categories.equity.each do |category|
+        sheet.add_row ["#{category.title}"]
+        category_total = 0
+
+        category.accounts.each do |account|
+          category_total += account.balance(to_date: @to_date)
+          equity_total += account.balance(to_date: @to_date)
+          sheet.add_row ["  #{account.name}", account.balance(to_date: @to_date)]
+        end
+
+        category.sub_categories.each do |sub_category|
+          sheet.add_row ["  #{sub_category.title}"]
+
+          sub_category_total = 0
+          sub_category.accounts.each do |account|
+            sub_category_total += account.balance(to_date: @to_date)
+            category_total += account.balance(to_date: @to_date)
+            equity_total += account.balance(to_date: @to_date)
+            sheet.add_row ["    #{account.name}", account.balance(to_date: @to_date)]
+          end
+
+          sub_category.sub_categories.each do |sub1_category|
+            sub1_total = 0
+            sheet.add_row ["    #{sub1_category.title}"]
+
+            sub1_category.accounts.each do |account|
+              sub_category_total += account.balance(to_date: @to_date)
+              sub1_total += account.balance(to_date: @to_date)
+              category_total += account.balance(to_date: @to_date)
+              equity_total += account.balance(to_date: @to_date)
+              sheet.add_row ["      #{account.name}", account.balance(to_date: @to_date)]
+            end
+          end
+          sheet.add_row ["    Total #{sub_category.title}", sub_category_total]
+
+        end
+
+          sheet.add_row ["Total #{category.title}", category_total]
+
+        end
+
+        sheet.add_row ["TOTAL LIABILITIES AND EQUITY", (liabilities_total + equity_total)], sz: 12, b: true
+
+
+end
+end

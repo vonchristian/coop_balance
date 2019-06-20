@@ -12,6 +12,7 @@ module AccountingModule
         @office = current_user.office
         respond_to do |format|
           format.html # index.html.erb
+          format.xlsx
           format.pdf do
             pdf = AccountingModule::Reports::BalanceSheetPdf.new(
               from_date:    @from_date,
