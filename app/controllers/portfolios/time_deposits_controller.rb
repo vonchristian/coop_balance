@@ -4,8 +4,8 @@ module Portfolios
 		def index
 			if params[:to_date].present?
 				@from_date = MembershipsModule::TimeDeposit.order(:date_deposited).first.date_deposited
-				@to_date = params[:to_date].present? ? Date.parse(params[:to_date]) : Time.now
-      	@time_deposits = current_office.time_deposits
+				@to_date   = params[:to_date].present? ? Date.parse(params[:to_date]) : Time.now
+      	@time_deposits = current_office.time_deposits.deposited_on(from_date: @from_date, to_date: @to_date)
       else
       	@time_deposits = current_office.time_deposits
       end

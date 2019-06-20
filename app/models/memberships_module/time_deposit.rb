@@ -14,7 +14,7 @@ module MembershipsModule
 
     has_many :ownerships, as: :ownable
     has_many :depositors, through: :ownerships, source: :owner
-    
+
     delegate :name, :interest_rate, :account, :interest_expense_account, :break_contract_fee, to: :time_deposit_product, prefix: true
     delegate :full_name, :first_and_last_name, to: :depositor, prefix: true
     delegate :name, to: :office, prefix: true
@@ -23,9 +23,12 @@ module MembershipsModule
 
     before_save :set_depositor_name, on: [:create]
     def self.deposited_on(args={})
-      from_date = args[:from_date]
+      from_date = args[:from_date] || 999.years.ago
       to_date   = args[:to_date]
+      date_range = DateRange.new(from_date: from_date, to_date: to_date)
+      joins(:terms).where('terms.maturity_date' => date_range.start_date..date_range.end_date)
     end
+
     def entries
       accounting_entries = []
       time_deposit_product_account.amounts.where(commercial_document: self).each do |amount|

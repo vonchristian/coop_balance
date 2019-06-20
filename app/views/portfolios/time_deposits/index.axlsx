@@ -48,7 +48,7 @@ wb.styles do |style|
         time_deposit.depositor_name,
         "",
         "",
-        time_deposit.date_deposited.strftime("%b %e, %Y"),
+        time_deposit.date_deposited.try(:strftime, ("%b %e, %Y")),
         time_deposit.current_term.maturity_date.strftime("%b %e, %Y"),
         time_deposit.credits_balance(to_date: @to_date)
       ], style: top_row
