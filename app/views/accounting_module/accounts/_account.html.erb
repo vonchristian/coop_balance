@@ -10,7 +10,7 @@
     <tbody>
       <% running_total = 0 %>
       <% accounts.uniq.each do |account| %>
-        <% balance = account.balance(:from_date => @from_date, :to_date => @to_date) %>
+        <% balance = account.balance(:to_date => @to_date) %>
         <% if !balance.round(2).zero? %>
           <tr>
             <td><%= link_to account.name, accounting_module_account_path(account) %></td>
