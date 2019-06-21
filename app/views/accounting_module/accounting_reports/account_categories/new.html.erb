@@ -1,0 +1,4 @@
+<%= simple_form_for [@accounting_report, @category], url: :accounting_module_accounting_report_account_categories do |f| %>
+  <%= f.input :account_category_id, collection: current_cooperative.account_categories.map{ |a| [a.title, a.id] } %>
+  <%= f.submit %>
+<% end %>

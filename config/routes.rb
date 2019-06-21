@@ -9,6 +9,11 @@ Rails.application.routes.draw do
   resources :accounting_module, only: [:index]
   namespace :accounting_module do
     resources :settings, only: [:index]
+    resources :accounting_reports, only: [:new, :create], module: :settings
+    resources :accounting_reports, only: [:show] do
+      resources :account_categories, only: [:new, :create], module: :accounting_reports
+      resources :settings, only: [:index], module: :accounting_reports
+    end
     resources :account_categories, only: [:new, :create, :show], module: :settings do
       resources :sub_categories, only: [:new, :create]
     end

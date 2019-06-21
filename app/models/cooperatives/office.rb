@@ -17,7 +17,7 @@ module Cooperatives
     has_many :share_capital_products,  class_name: "Cooperatives::ShareCapitalProduct"
     has_many :loan_products,           class_name: "LoansModule::LoanProduct"
     has_many :programs,                class_name: "Cooperatives::Program"
-
+    has_many :accounting_reports,      class_name: "AccountingModule::AccountingReport"
     validates :name, uniqueness: true
     validates :name, :type, :contact_number, :address, presence: true
 

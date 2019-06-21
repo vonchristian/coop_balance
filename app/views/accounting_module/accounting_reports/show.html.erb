@@ -1,0 +1,2 @@
+ <%= link_to 'Settings', accounting_module_accounting_report_settings_path(@report) %>
+  <%= render "accounting_module/accounting_reports/partials/#{@report.report_type}", report: @report %>

@@ -3,8 +3,8 @@ module AccountingModule
   module Reports
     class IncomeStatementsController < ApplicationController
       def index
-        @from_date = params[:from_date].present? ? DateTime.parse(params[:from_date]) : current_cooperative.entries.order(entry_date: :desc).last.try(:entry_date)
-        @to_date = params[:to_date] ? DateTime.parse(params[:to_date]) : Date.today
+        @to_date   = params[:to_date] ? DateTime.parse(params[:to_date]) : Date.current
+        @from_date = @to_date.beginning_of_year
         @revenues = current_cooperative.accounts.revenues
         @expenses = current_cooperative.accounts.expenses
         @employee = current_user

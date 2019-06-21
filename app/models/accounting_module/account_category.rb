@@ -14,5 +14,6 @@ module AccountingModule
     def title_and_cooperative_name
       "#{title} (#{cooperative_name})"
     end
+
   end
 end

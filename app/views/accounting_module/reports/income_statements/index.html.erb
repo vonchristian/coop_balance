@@ -17,7 +17,7 @@
       <div class="col-md-6">
         <%= form_tag({:action => 'index'}, {:method => :get, class: "form-inline"}) do %>
 
-          <%= text_field_tag :from_date, @from_date.strftime("%B %e, %Y"), :class => 'datepicker form-control', :placeholder => "To" %>
+        
           <%= text_field_tag :to_date, @to_date.strftime("%B %e, %Y"), :class => 'datepicker form-control', :placeholder => "To" %>
 
           <%= hidden_field_tag :office_id, @office.id %>
