@@ -6,11 +6,11 @@ module AccountingModule
         if params[:from_date] && params[:to_date]
           @from_date = Date.parse(params[:from_date])
           @to_date   = Date.parse(params[:to_date])
-          @pagy, @entries = pagy(@cooperative_service.entries.entered_on(from_date: @from_date, to_date: @to_date))
-          @entries_for_pdf = @cooperative_service.entries.entered_on(from_date: @from_date, to_date: @to_date)
+          @pagy, @entries = pagy(@cooperative_service.entries.entered_on(from_date: @from_date, to_date: @to_date).distinct)
+          @entries_for_pdf = @cooperative_service.entries.entered_on(from_date: @from_date, to_date: @to_date).distinct
         else
-          @pagy, @entries      = pagy(@cooperative_service.entries)
-          @entries_for_pdf     = @cooperative_service.entries
+          @pagy, @entries      = pagy(@cooperative_service.entries.distinct)
+          @entries_for_pdf     = @cooperative_service.entries.distinct
         end
         respond_to do |format|
           format.html
