@@ -4,7 +4,7 @@ module AccountingModule
     class IncomeStatementsController < ApplicationController
       def index
         @to_date   = params[:to_date] ? DateTime.parse(params[:to_date]) : Date.current
-        @from_date = @to_date.beginning_of_year
+        @from_date = params[:from_date] ? DateTime.parse(params[:from_date]) : Date.current.beginning_of_month
         @revenues = current_cooperative.accounts.revenues
         @expenses = current_cooperative.accounts.expenses
         @employee = current_user

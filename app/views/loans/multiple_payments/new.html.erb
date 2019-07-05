@@ -1,0 +1,95 @@
+<% breadcrumb :new_loan_payment, @loan %>
+<div class="row">
+   <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <h3 class="subtitle-up"> Amortization Schedules </h3>
+        <% @loan.amortization_schedules.each do |amortization_schedule| %>
+          <div class="row">
+            <div class="col-md-3">
+              <%= amortization_schedule.date.strftime('%b. %e, %Y') %><br>
+              <%= amortization_schedule.payment_status %>
+            </div>
+            <div class="col-md-3">
+              <%= number_to_currency amortization_schedule.principal %>
+            </div>
+            <div class="col-md-3">
+              <%= number_to_currency amortization_schedule.interest %>
+            </div>
+            <div class="col-md-3">
+              <%= number_to_currency amortization_schedule.total_repayment %>
+            </div>
+          </div>
+          <hr>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="subtitle-up"> New Loan Payment </h3>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-5">
+            <small>PRINCIPAL BALANCE</small>
+            <h2 class="title-up"><%= number_to_currency @loan.balance %></h2>
+          </div>
+          <div class="col-md-5">
+            <h3 class="subtitle-up"><%= @loan.borrower_full_name %></h3>
+            <small><%= @loan.loan_product_name %></small>
+          </div>
+          <div class="col-md-2">
+            <%= image_tag(@loan.avatar, height: 45, width: 45, class: 'img-circle') %>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-5">
+            <small>INTERESTS</small>
+            <h3 class="subtitle-up"><%= number_to_currency @loan.loan_interests_balance %></h3>
+          </div>
+          <div class="col-md-6">
+            <small>PENALTIES</small>
+            <h3 class="subtitle-up"><%= number_to_currency @loan.loan_penalties_balance %></h3>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-10 offset-1">
+        <%= simple_form_for [@loan, @payment], html: { autocomplete: 'off' }, url: :loan_multiple_payments do |f| %>
+          <%= f.error_notification %>
+          <% if @loan.forwarded_loan == false %>
+            <%= f.input :amortization_schedule_id, label: "Select Amortization Schedule to be payed.", collection: @loan.amortization_schedules.order(date: :asc).map{|a| [a.date_schedule, a.id]},  input_html: { id: 'scheduleSelect' } %>
+          <% end %>
+
+          <%= f.input :principal_amount, as: :currency  %>
+          <%= f.input :interest_amount, input_html: { value: 0 }, as: :currency  %>
+          <%= f.input :penalty_amount, input_html: { value: 0 }, as: :currency  %>
+
+          <%= f.input :loan_id, input_html: { value: @loan.id },as: :hidden %>
+          <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+          <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
+          <%= f.input :cash_account_id, default: current_user.cash_accounts.first, collection: current_user.cash_accounts.map{|a| [a.name, a.id] } %>
+          <hr>
+          <%= f.submit "Proceed", class: "btn btn-primary float-right", data: {disable_with: "Processing..." } %>
+          <%= link_to 'Cancel', loan_path(@loan), class: "text-danger float-left" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#loans_module_loans_payment_voucher_cash_account_id").select2({
+      theme: "bootstrap"
+    });
+
+    $("#scheduleSelect").select2({
+      theme: "bootstrap"
+    });
+  });
+</script>

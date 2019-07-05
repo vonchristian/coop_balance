@@ -365,7 +365,7 @@ module LoansModule
     end
 
     def loan_entry
-      loan_product_current_account.debit_amounts.where(commercial_document: self).last.entry
+      loan_product_current_account.debit_amounts.where(commercial_document: self).last.try(:entry)
     end
 
     def self.disbursement_entries(args={})

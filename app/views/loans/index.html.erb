@@ -8,6 +8,7 @@
   <% loan_payments_data << { month.end_of_month.strftime("%B %Y") => LoansModule::LoanProduct.total_credits_balance(office: current_office, from_date: month.beginning_of_month, to_date: month.end_of_month) } %>
   <% loan_disbursements_data << { month.end_of_month.strftime("%B %Y") => LoansModule::LoanProduct.total_debits_balance(office: current_office, from_date: month.beginning_of_month, to_date: month.end_of_month) } %>
 <% end %>
+
 <div class="container">
   <div class="row">
     <div class="col-md-12">
@@ -28,7 +29,7 @@
       <div class="card">
         <div class="card-body">
           <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-8">
               <%=form_tag loans_path, method: :get do %>
                 <div class="input-group">
                   <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Borrower name", id: 'sidebar-form' %>
@@ -39,6 +40,9 @@
                   </span>
                 </div>
               <% end %>
+            </div>
+            <div class="col-md-4">
+              <%= link_to 'New Transaction', new_loan_multiple_payment_line_item_path, class: 'btn btn-primary' %>
             </div>
           </div>
         </div>
@@ -64,7 +68,9 @@
                       <td><b><%= loan.borrower_name %></b></td>
                       <td>
                         <%= loan.loan_product_name %><br>
-                        <small><%= loan.application_date.strftime("%b. %e, %Y") %></small>
+                        <% if loan.application_date.present? %>
+                          <small><%= loan.application_date.strftime("%b. %e, %Y") %></small>
+                        <% end %>
                       </td>
                       <td><%= number_to_currency loan.loan_amount %>
                       <td><%= number_to_currency loan.balance %>

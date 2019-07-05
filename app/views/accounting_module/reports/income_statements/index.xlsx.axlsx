@@ -2,7 +2,6 @@ wb = xlsx_package.workbook
   wb.add_worksheet(name: "Income Statement", :fixed_column_width => false) do |sheet|
 
 
-  
   # specifying the :hyperlink option will add a hyper link to your image.
   #
   # @note - Numbers does not support this part of the specification.
@@ -11,7 +10,6 @@ wb = xlsx_package.workbook
   comma = wb.styles.add_style :num_fmt => 3
   sheet.add_row ["Income Statement - #{@office.name}"], sz: 16, b: true
   sheet.add_row ["Date Covered: #{@from_date.strftime('%B %e, %Y')} - #{@to_date.strftime('%B %e, %Y')}"]
-  sheet.add_row ["", "#{@to_date.last_month.last_month.strftime('%b %Y')}", "#{@to_date.last_month.strftime('%b %Y')}", "#{@to_date.strftime('%b %Y')}"], :alignment => { :horizontal=> :right, :vertical => :right, :wrap_text => true }
   sheet.add_row []
 
   sheet.add_row ["Revenues"], sz: 14
@@ -19,8 +17,8 @@ wb = xlsx_package.workbook
   current_cooperative.account_categories.revenue.each do |category|
   sheet.add_row ["#{category.title}"]
   category.accounts.each do |account|
-    revenues_total += account.balance(to_date: @to_date)
-      sheet.add_row ["  #{account.name}", "#{number_to_currency account.balance(to_date: @to_date)}"]
+    revenues_total += account.balance(from_date: @from_date, to_date: @to_date)
+      sheet.add_row ["#{account.name}", "#{number_to_currency account.balance(from_date: @from_date,to_date: @to_date)}"]
     end
   category.sub_categories.each do |sub_category|
     sub_category.accounts.each do |account|
@@ -37,24 +35,28 @@ wb = xlsx_package.workbook
   end
   sheet.add_row ["TOTAL REVENUES", "#{number_to_currency revenues_total}" ]
   sheet.add_row [""]
+
   sheet.add_row ["EXPENSES"]
   expenses_total = 0
   current_cooperative.account_categories.expense.each do |category|
   sheet.add_row ["#{category.title}"]
+  category.accounts.each do |account|
+    expenses_total += account.balance(to_date: @to_date)
+      sheet.add_row ["#{account.name}", "#{number_to_currency account.balance(to_date: @to_date)}"]
+    end
   category.sub_categories.each do |sub_category|
-  sheet.add_row ["  #{sub_category.title}"]
     sub_category.accounts.each do |account|
     expenses_total += account.balance(to_date: @to_date)
-      sheet.add_row ["    #{account.name}", "#{number_to_currency account.balance(to_date: @to_date)}"]
+      sheet.add_row ["#{account.name}", "#{number_to_currency account.balance(to_date: @to_date)}"]
     end
     sub_category.sub_categories.each do |sub1_category|
-      sheet.add_row ["    #{sub1_category.title}"]
-      sub1_category.accounts.each do |account|
-    expenses_total += account.balance(to_date: @to_date)
-      sheet.add_row ["      #{account.name}", "#{number_to_currency account.balance(to_date: @to_date)}"]
+     sub1_category.accounts.each do |account|
+    revenues_total += account.balance(to_date: @to_date)
+      sheet.add_row ["#{account.name}", "#{number_to_currency account.balance(to_date: @to_date)}"]
     end
     end
   end
   end
   sheet.add_row ["TOTAL EXPENSES", "#{number_to_currency expenses_total}" ]
+  sheet.add_row [""]
   end

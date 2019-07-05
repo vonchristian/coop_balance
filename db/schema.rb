@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_20_105106) do
+ActiveRecord::Schema.define(version: 2019_06_26_063739) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1735,8 +1735,10 @@ ActiveRecord::Schema.define(version: 2019_06_20_105106) do
     t.uuid "cooperative_id"
     t.uuid "loan_application_id"
     t.string "reference_number"
+    t.uuid "cart_id"
     t.index ["account_id"], name: "index_voucher_amounts_on_account_id"
     t.index ["amount_type"], name: "index_voucher_amounts_on_amount_type"
+    t.index ["cart_id"], name: "index_voucher_amounts_on_cart_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_voucher_amount"
     t.index ["cooperative_id"], name: "index_voucher_amounts_on_cooperative_id"
     t.index ["loan_application_id"], name: "index_voucher_amounts_on_loan_application_id"
@@ -2018,6 +2020,7 @@ ActiveRecord::Schema.define(version: 2019_06_20_105106) do
   add_foreign_key "users", "offices"
   add_foreign_key "users", "store_fronts"
   add_foreign_key "voucher_amounts", "accounts"
+  add_foreign_key "voucher_amounts", "carts"
   add_foreign_key "voucher_amounts", "cooperatives"
   add_foreign_key "voucher_amounts", "loan_applications"
   add_foreign_key "voucher_amounts", "users", column: "recorder_id"
