@@ -27,3 +27,4 @@
       <% @entries.each do |entry| %>
         <%= render 'accounting_module/entries/partials/header', entry: entry %>
       <% end %>
+      <%==pagy_nav(@pagy) %>

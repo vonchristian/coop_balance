@@ -87,7 +87,7 @@ module AccountingModule
 
     def entries_table_header
       table([["DATE", {content: "PARTICULARS", colspan: 2 }, "REF. NO.", "ACCOUNT", "DEBIT", "CREDIT"]],
-        cell_style: { inline_format: true, size: 7, font: "Helvetica", padding: [4,1,4,1]},
+        cell_style: { inline_format: true, size: 10, font: "Helvetica", padding: [4,1,4,1]},
         column_widths: [40, 130, 250, 86, 230, 70, 70]) do
           cells.borders = []
           row(0).font_style= :bold
@@ -102,7 +102,7 @@ module AccountingModule
 
     def entries_table_footer
       table([["", "", "", "", "TOTAL", price(AccountingModule::Account.updated_at(from_date: @from_date, to_date: @to_date).distinct.debits_balance(from_date: @from_date, to_date: @to_date)), price(AccountingModule::Account.updated_at(from_date: @from_date, to_date: @to_date).distinct.credits_balance(from_date: @from_date, to_date: @to_date))]],
-        cell_style: { inline_format: true, size: 8, font: "Helvetica", padding: [4,1,4,1]},
+        cell_style: { inline_format: true, size: 10, font: "Helvetica", padding: [4,1,4,1]},
         column_widths: [40, 130, 250, 86, 230, 70, 70]) do
           row(0).font_style= :bold
           cells.borders = [:top, :bottom]
@@ -123,7 +123,7 @@ module AccountingModule
         entries.sort_by(&:ascending_order).each do |entry|
           same_reference_entries = entries.where(reference_number: entry.reference_number).sort_by(&:ascending_order)
           table([[entries_table_data(entry), amounts_table_data(entry)]],
-            cell_style: { inline_format: true, size: 8, padding: [1,1,3,1]},
+            cell_style: { inline_format: true, size: 10, padding: [1,1,3,1]},
             column_widths: [506, 370]) do
               cells.borders = [:top]
           end
@@ -131,7 +131,7 @@ module AccountingModule
             if same_reference_entries.last == entry
               table([["", "(#{same_reference_entries.count})SUB-TOTAL (##{entry.reference_number})", price(same_reference_entries.sum{|e| e.debit_amounts.sum{|a| a.amount} }),
                 price(same_reference_entries.sum{|e| e.credit_amounts.sum{|a| a.amount} }) ]],
-                cell_style: { inline_format: true, size: 8, padding: [1,1,3,1]},
+                cell_style: { inline_format: true, size: 10, padding: [1,1,3,1]},
                 column_widths: [506, 230, 70, 70]) do
                   cells.borders = [:top]
                   row(0).font_style= :bold
@@ -153,7 +153,7 @@ module AccountingModule
         {content: "##{entry.reference_number}"}
       ]]
       make_table(entries_data,
-        cell_style: { inline_format: true, size: 8, font: "Helvetica", padding: [1,1,3,1]},
+        cell_style: { inline_format: true, size: 10, font: "Helvetica", padding: [1,1,3,1]},
         column_widths: [40, 130, 250, 86]) do
           cells.borders = []
           column(3).align = :center
@@ -174,7 +174,7 @@ module AccountingModule
       end
 
       make_table(debit_amounts_data + credit_amounts_data,
-        cell_style: { inline_format: true, size: 8, font: "Helvetica", padding: [1,1,3,1]},
+        cell_style: { inline_format: true, size: 10, font: "Helvetica", padding: [1,1,3,1]},
         column_widths: [230, 70, 70]) do
         cells.borders = []
         column(1).align = :right
@@ -198,7 +198,7 @@ module AccountingModule
         column(1).align = :right
         column(2).align = :right
       end
-      
+
       string = "page <page> of <total>"
       options = { :at => [bounds.right - 150, 0],
        :width => 150,

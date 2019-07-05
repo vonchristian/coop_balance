@@ -2,3 +2,4 @@
 <% @accounts.each do |account| %>
   <%= render 'accounting_module/accounts/partials/header', account: account %>
 <% end %>
+<%==pagy_nav(@pagy) %>
