@@ -1,0 +1,18 @@
+<%=form_tag new_accounting_module_cooperative_service_account_path(@cooperative_service), method: :get, class: "sidebar-form" do %>
+<div class="input-group">
+  <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Account..", id: 'account-search-form' %>
+  <span class="input-group-btn">
+    <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+      <i class="fa fa-search"></i>
+    <% end %>
+  </span>
+</div>
+<% end %>
+<% @accounts.each do |account| %>
+  <%= account.name %>
+  <%= simple_form_for @account, url: :accounting_module_cooperative_service_accounts do |f| %>
+    <%= f.input :account_id, input_html: { value: account.id } %>
+    <%= f.submit 'Add' %>
+  <% end %>
+<% end %>
+<%==pagy_nav(@pagy) %>

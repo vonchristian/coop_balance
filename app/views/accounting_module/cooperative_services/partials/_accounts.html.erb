@@ -1,0 +1,4 @@
+<%= link_to 'Add Account', new_accounting_module_cooperative_service_account_path(@cooperative_service), class: 'btn btn-primary' %>
+<% @accounts.each do |account| %>
+  <%= render 'accounting_module/accounts/partials/header', account: account %>
+<% end %>

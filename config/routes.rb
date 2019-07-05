@@ -8,6 +8,10 @@ Rails.application.routes.draw do
 
   resources :accounting_module, only: [:index]
   namespace :accounting_module do
+    resources :cooperative_services, only: [:show] do
+      resources :entries, only: [:index], module: :cooperative_services
+      resources :accounts, only: [:index, :new, :create], module: :cooperative_services 
+    end
     resources :settings, only: [:index]
     resources :accounting_reports, only: [:new, :create], module: :settings
     resources :accounting_reports, only: [:show] do
