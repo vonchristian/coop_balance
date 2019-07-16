@@ -13,7 +13,7 @@ module AccountingModule
           render :new
         end
       end
-      
+
       def show
         @account_category = current_cooperative.account_categories.find(params[:id])
       end
@@ -21,7 +21,7 @@ module AccountingModule
       private
       def category_params
         params.require(:accounting_module_account_category).
-        permit(:title, :category_type)
+        permit(:title, :category_type, :code, :cooperative_id)
       end
     end
   end

@@ -19,7 +19,7 @@ module AccountingModule
       private
       def sub_category_params
         params.require(:accounting_module_account_category).
-        permit(:title, :category_type, :cooperative_id)
+        permit(:title, :category_type, :cooperative_id, :code)
       end
     end
   end
