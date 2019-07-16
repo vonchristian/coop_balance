@@ -1,0 +1,106 @@
+<br>
+<b>ASSETS </b><br>
+<% current_cooperative.account_categories.main_categories.asset.order(code: :asc).each do |category| %>
+  <div class="row">
+    <div class="col-md-5">
+      <%= category.title %>
+    </div>
+    <div class="col-md-3">
+      <span class="float-right">
+        <% if !category.sub_categories.exists? %>
+          <%= number_to_currency category.balance(to_date: @to_date) %>
+        <% end %>
+      </span>
+    </div>
+  </div>
+  <% category.sub_categories.each do |sub_category| %>
+    <div class="row">
+      <div class="col-md-5">
+        &nbsp; &nbsp;<%= sub_category.title %>
+      </div>
+      <div class="col-md-3">
+        <span class="float-right">
+          <% if !sub_category.sub_categories.exists? %>
+            <%= number_to_currency sub_category.balance(to_date: @to_date) %>
+
+          <% end %>
+        </span>
+      </div>
+    </div>
+    <% sub_category.sub_categories.each do |sub1_category| %>
+      <div class="row">
+        <div class="col-md-5">
+          &nbsp; &nbsp; &nbsp; &nbsp;<%= sub1_category.title %>
+        </div>
+        <div class="col-md-3">
+          <span class="float-right">
+            <% if !sub1_category.sub_categories.exists? %>
+              <%= number_to_currency sub1_category.balance(to_date: @to_date) %>
+            <% end %>
+          </span>
+        </div>
+      </div>
+
+      <% sub1_category.sub_categories.each do |sub2_category| %>
+        <div class="row">
+          <div class="col-md-5">
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<%= sub2_category.title %>
+          </div>
+          <div class="col-md-3">
+            <span class="float-right">
+              <% if !sub2_category.sub_categories.exists? %>
+                <%= number_to_currency sub2_category.balance(to_date: @to_date) %>
+              <% end %>
+            </span>
+          </div>
+        </div>
+      <% end %>
+      <% if sub1_category.sub_categories.exists? %>
+        <div class="row">
+          <div class="col-md-5">
+           &nbsp; &nbsp;  Total <%= sub1_category.title %>
+          </div>
+          <div class="col-md-3">
+            <span class="float-right">
+              <%= number_to_currency sub1_category.balance(to_date: @to_date) %>
+            </span>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+    <% if sub_category.sub_categories.exists? %>
+      <div class="row">
+        <div class="col-md-5">
+         &nbsp; &nbsp;  Total <%= sub_category.title %>
+        </div>
+        <div class="col-md-3">
+          <span class="float-right">
+            <%= number_to_currency sub_category.balance(to_date: @to_date) %>
+          </span>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+
+  <div class="row">
+    <div class="col-md-5">
+      Total <%= category.title %>
+    </div>
+    <div class="col-md-3">
+      <span class="float-right">
+        <%= number_to_currency category.balance(to_date: @to_date) %>
+      </span>
+    </div>
+  </div>
+<% end %>
+<hr>
+<div class="row">
+  <div class="col-md-5">
+    <b>TOTAL ASSETS</b>
+  </div>
+  <div class="col-md-3">
+    <span class="float-right">
+      <%= number_to_currency current_cooperative.account_categories.asset.without_sub_categories.balance(to_date: @to_date) %>
+    </span>
+  </div>
+</div>

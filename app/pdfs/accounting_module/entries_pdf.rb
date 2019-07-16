@@ -21,6 +21,11 @@ module AccountingModule
     end
 
     private
+    def accounts
+      ids = entries.amounts.pluck(:account_id)
+      AccountingModule::Account.where(id: ids.uniq.compact.flatten)
+    end
+
     def display_commercial_document_for(entry)
       if entry.commercial_document.try(:member).present?
         entry.commercial_document.try(:member).try(:name_and_initial)
@@ -101,7 +106,7 @@ module AccountingModule
     end
 
     def entries_table_footer
-      table([["", "", "", "", "TOTAL", price(AccountingModule::Account.updated_at(from_date: @from_date, to_date: @to_date).distinct.debits_balance(from_date: @from_date, to_date: @to_date)), price(AccountingModule::Account.updated_at(from_date: @from_date, to_date: @to_date).distinct.credits_balance(from_date: @from_date, to_date: @to_date))]],
+      table([["", "", "", "", "TOTAL", price(@entries.debit_amounts.total), price(@entries.credit_amounts.total)]],
         cell_style: { inline_format: true, size: 10, font: "Helvetica", padding: [4,1,4,1]},
         column_widths: [40, 130, 250, 86, 230, 70, 70]) do
           row(0).font_style= :bold
@@ -187,14 +192,14 @@ module AccountingModule
       start_new_page
       text 'ACCOUNTS SUMMARY', size: 10, style: :bold
       table([["ACCOUNT", "DEBITS", "CREDITS"]] +
-      AccountingModule::Account.updated_at(from_date: @from_date, to_date: @to_date).distinct.map{ |account| [account.name, price(account.debits_balance(from_date: @from_date, to_date: @to_date)), price(account.credits_balance(from_date: @from_date, to_date: @to_date))] }, column_widths: [500, 150, 150]) do
+      accounts.updated_at(from_date: @from_date, to_date: @to_date).distinct.map{ |account| [account.name, price(account.debit_amounts.where(entry_id: @entries.ids).entered_on(from_date: @from_date, to_date: @to_date).total), price(account.credit_amounts.where(entry_id: @entries.ids).entered_on(from_date: @from_date, to_date: @to_date).total)] }, column_widths: [500, 150, 150]) do
         column(1).align = :right
         column(2).align = :right
         row(0).font_size = 10
         row(0).font_style = :bold
 
       end
-      table([["TOTAL", price(AccountingModule::Account.updated_at(from_date: @from_date, to_date: @to_date).distinct.debits_balance(from_date: @from_date, to_date: @to_date)), price(AccountingModule::Account.updated_at(from_date: @from_date, to_date: @to_date).distinct.credits_balance(from_date: @from_date, to_date: @to_date))]], column_widths: [500, 150, 150]) do
+      table([["TOTAL", price(@entries.debit_amounts.total), price(@entries.credit_amounts.total)]], column_widths: [500, 150, 150]) do
         column(1).align = :right
         column(2).align = :right
       end
