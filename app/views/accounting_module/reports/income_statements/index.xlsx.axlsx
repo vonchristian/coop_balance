@@ -13,50 +13,17 @@ wb = xlsx_package.workbook
   sheet.add_row []
 
   sheet.add_row ["Revenues"], sz: 14
-  revenues_total = 0
-  current_cooperative.account_categories.revenue.each do |category|
-  sheet.add_row ["#{category.title}"]
-  category.accounts.each do |account|
-    revenues_total += account.balance(from_date: @from_date, to_date: @to_date)
-      sheet.add_row ["#{account.name}", "#{number_to_currency account.balance(from_date: @from_date,to_date: @to_date)}"]
-    end
-  category.sub_categories.each do |sub_category|
-    sub_category.accounts.each do |account|
-    revenues_total += account.balance(to_date: @to_date)
-      sheet.add_row ["#{account.name}", "#{number_to_currency account.balance(to_date: @to_date)}"]
-    end
-    sub_category.sub_categories.each do |sub1_category|
-     sub1_category.accounts.each do |account|
-    revenues_total += account.balance(to_date: @to_date)
-      sheet.add_row ["#{account.name}", "#{number_to_currency account.balance(to_date: @to_date)}"]
-    end
-    end
+  current_cooperative.accounts.revenues.each do |account|
+    sheet.add_row ["", account.name, account.balance(from_date: @from_date, to_date: @to_date)]
   end
-  end
-  sheet.add_row ["TOTAL REVENUES", "#{number_to_currency revenues_total}" ]
+  sheet.add_row ["TOTAL REVENUES", "", current_cooperative.accounts.revenues.balance(from_date: @from_date, to_date: @to_date)]
   sheet.add_row [""]
+  sheet.add_row ["Expenses"], sz: 14
 
-  sheet.add_row ["EXPENSES"]
-  expenses_total = 0
-  current_cooperative.account_categories.expense.each do |category|
-  sheet.add_row ["#{category.title}"]
-  category.accounts.each do |account|
-    expenses_total += account.balance(to_date: @to_date)
-      sheet.add_row ["#{account.name}", "#{number_to_currency account.balance(to_date: @to_date)}"]
-    end
-  category.sub_categories.each do |sub_category|
-    sub_category.accounts.each do |account|
-    expenses_total += account.balance(to_date: @to_date)
-      sheet.add_row ["#{account.name}", "#{number_to_currency account.balance(to_date: @to_date)}"]
-    end
-    sub_category.sub_categories.each do |sub1_category|
-     sub1_category.accounts.each do |account|
-    revenues_total += account.balance(to_date: @to_date)
-      sheet.add_row ["#{account.name}", "#{number_to_currency account.balance(to_date: @to_date)}"]
-    end
-    end
+  current_cooperative.accounts.expenses.each do |account|
+    sheet.add_row ["", account.name, account.balance(from_date: @from_date, to_date: @to_date)]
   end
-  end
-  sheet.add_row ["TOTAL EXPENSES", "#{number_to_currency expenses_total}" ]
-  sheet.add_row [""]
-  end
+  sheet.add_row ["TOTAL EXPENSES", "", current_cooperative.accounts.expenses.balance(from_date: @from_date, to_date: @to_date)]
+  sheet.add_row ["NET SURPLUS/LOSS", "", (current_cooperative.accounts.revenues.balance(from_date: @from_date, to_date: @to_date)- current_cooperative.accounts.expenses.balance(from_date: @from_date, to_date: @to_date))]
+
+end

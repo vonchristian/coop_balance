@@ -18,7 +18,7 @@
         <%= form_tag({:action => 'index'}, {:method => :get, class: "form-inline"}) do %>
 
           <%= text_field_tag :from_date, @from_date.strftime("%B %e, %Y"), :class => 'datepicker form-control', :placeholder => "To" %>
-          <%= text_field_tag :to_date, @to_date.strftime("%B %e, %Y"), :class => 'datepicker form-control', :placeholder => "To" %>
+          <%= text_field_tag :to_date,   @to_date.strftime("%B %e, %Y"), :class => 'datepicker form-control', :placeholder => "To" %>
 
           <%= hidden_field_tag :office_id, @office.id %>
           <button type="submit" class="btn btn-primary">Generate</button>
@@ -39,285 +39,59 @@
 
         </div>
         <div class="col-md-5">
-          <%= @from_date.strftime('%B %Y') %>-
-          <%= @to_date.strftime('%B %Y') %>
+          <%= @from_date.strftime('%B %e, %Y') %>-
+          <%= @to_date.strftime('%B %e, %Y') %>
         </div>
       </div>
 
       <b>REVENUE </b><br>
-
-<% revenue_total = 0 %>
-
-  <% current_cooperative.account_categories.revenue.each do |category| %>
-    <% category_total  = 0 %>
-        <div class="row min-margin">
-            <div class="col-md-7">
-              <%= category.title %>
-            </div>
-            <div class="col-md-5">
-            </div>
-          </div>
-      <% category.accounts.each do |account| %>
-
-                  <% revenue_total += account.balance(from_date: @from_date, to_date: @to_date) %>
-                  <% category_total += account.balance(from_date: @from_date, to_date: @to_date) %>
-
-
+      <% current_cooperative.accounts.revenues.each do |account| %>
       <div class="row">
         <div class="col-md-7">
-          &nbsp; &nbsp; <%= account.name %>
-      </div>
-
-      <div class="col-md-5">
-        <%= number_to_currency account.balance(from_date: @from_date, to_date: @to_date) %>
-      </div>
-    </div>
-      <% end %>
-
-          <% category.sub_categories.each do |sub_category| %>
-            &nbsp; &nbsp;<%= sub_category.title %><br>
-
-              <% sub_category_sub = 0 %>
-
-              <% sub_category.accounts.each do |account| %>
-
-                <% sub_category_sub += account.balance(from_date: @from_date, to_date: @to_date) %>
-
-
-                <% category_total += account.balance(from_date: @from_date, to_date: @to_date) %>
-
-
-                <% revenue_total += account.balance(from_date: @from_date, to_date: @to_date) %>
-
-
-
-                <div class="row min-margin">
-                  <div class="col-md-7">
-                    &nbsp; &nbsp;  &nbsp; &nbsp; <%= account.name %>
-                  </div>
-
-                  <div class="col-md-5">
-                    <%= number_to_currency account.balance(from_date: @from_date, to_date: @to_date) %>
-                  </div>
-                </div>
-               <% end %>
-
-            <% sub_category.sub_categories.each do |sub1_category| %>
-
-              <% sub3_total = 0 %>
-
-               &nbsp; &nbsp;  &nbsp; &nbsp; <%= sub1_category.title %>
-                <% sub1_category.accounts.each do |sub_account| %>
-
-                <% sub_category_sub += sub_account.balance(from_date: @from_date, to_date: @to_date) %>
-
-
-                <% category_total += sub_account.balance(from_date: @from_date, to_date: @to_date) %>
-
-
-                <% sub3_total += sub_account.balance(from_date: @from_date, to_date: @to_date) %>
-
-
-                <% revenue_total += sub_account.balance(from_date: @from_date, to_date: @to_date) %>
-
-
-
-              <div class="row min-margin">
-                <div class="col-md-7">
-                  &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; <%= sub_account.name %>
-                </div>
-
-                <div class="col-md-5">
-                  <%= number_to_currency sub_account.balance(from_date: @from_date, to_date: @to_date) %>
-                </div>
-              </div>
-            <% end %>
-            <hr>
-            <div class="row min-margin">
-                <div class="col-md-7">
-                  &nbsp; &nbsp;  &nbsp; &nbsp; Total <%= sub1_category.title %>
-                </div>
-
-                <div class="col-md-5">
-                  <%= number_to_currency sub3_total %>
-                </div>
-              </div>
-            <% end %>
-            <hr>
-            <div class="row min-margin">
-              <div class="col-md-7">
-                &nbsp; &nbsp;  Total <%= sub_category.title %>
-              </div>
-
-             <div class="col-md-5">
-                <%= number_to_currency sub_category_sub %>
-            </div>
-            </div>
-          <% end %>
-          <hr>
-          <div class="row min-margin">
-            <div class="col-md-7">
-             Total <%= category.title %>
-            </div>
-
-          <div class="col-md-5">
-                <%= number_to_currency category_total %>
-              </div>
-          </div>
-      <% end %>
-      <hr>
-
-
-
-      <hr>
-      <div class="row">
-        <div class="col-md-7">
-          <b>TOTAL REVENUES </b>
+          <%= account.name %>
         </div>
-
         <div class="col-md-5">
-
-            <%= number_to_currency revenue_total %>
-
+          <%= number_to_currency account.balance(from_date: @from_date, to_date: @to_date) %>
         </div>
-        </div>
-        <br>
-        <b>EXPENSES</b>
-        <% expenses_total = 0 %>
-
-
-      <% current_cooperative.account_categories.expense.each do |category| %>
-      <% category_total  = 0 %>
-
-
-
-        <div class="row min-margin">
-                  <div class="col-md-5">
-                    <%= category.title %>
-                  </div>
-                  <div class="col-md-7">
-
-                  </div>
-                </div>
-                  <% category.accounts.each do |account| %>
-
-                  <% expenses_total += account.balance(from_date: @from_date,to_date: @to_date) %>
-                  <% category_total += account.balance(from_date: @from_date, to_date: @to_date) %>
-
-
-      <div class="row">
-        <div class="col-md-7">
-          &nbsp; &nbsp; <%= account.name %>
       </div>
-          <div class="col-md-5">
-              <%= number_to_currency account.balance(from_date: @from_date, to_date: @to_date) %>
-            </div>
-    </div>
-      <% end %>
-
-          <% category.sub_categories.each do |sub_category| %>
-            &nbsp; &nbsp;<%= sub_category.title %><br>
-              <% sub_category_sub = 0 %>
-
-              <% sub_category.accounts.each do |account| %>
-                <% sub_category_sub += account.balance(from_date: @from_date, to_date: @to_date) %>
-                <% category_total += account.balance(from_date: @from_date, to_date: @to_date) %>
-                <% expenses_total += account.balance(from_date: @from_date, to_date: @to_date) %>
-
-
-                <div class="row min-margin">
-                  <div class="col-md-7">
-                    &nbsp; &nbsp;  &nbsp; &nbsp; <%= account.name %>
-                  </div>
-
-
-                  <div class="col-md-5">
-                    <%= number_to_currency account.balance(from_date: @from_date, to_date: @to_date) %>
-                  </div>
-                </div>
-               <% end %>
-
-            <% sub_category.sub_categories.each do |sub1_category| %>
-              <% sub1_total = 0 %>
-
-               &nbsp; &nbsp;  &nbsp; &nbsp; <%= sub1_category.title %>
-                <% sub1_category.accounts.each do |sub_account| %>
-                <% sub_category_sub += sub_account.balance(from_date: @from_date, to_date: @to_date) %>
-
-                <% category_total += sub_account.balance(from_date: @from_date, to_date: @to_date) %>
-
-                <% sub1_total += sub_account.balance(from_date: @from_date, to_date: @to_date) %>
-
-                <% expenses_total += sub_account.balance(from_date: @from_date, to_date: @to_date) %>
-
-
-
-              <div class="row min-margin">
-                <div class="col-md-7">
-                  &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; <%= sub_account.name %>
-                </div>
-
-                <div class="col-md-5">
-                  <%= number_to_currency sub_account.balance(from_date: @from_date, to_date: @to_date) %>
-                </div>
-              </div>
-            <% end %>
-            <hr>
-            <div class="row min-margin">
-                <div class="col-md-7">
-                  &nbsp; &nbsp;  &nbsp; &nbsp; Total <%= sub1_category.title %>
-                </div>
-                <div class="col-md-5">
-                  <%= number_to_currency sub1_total %>
-                </div>
-
-              </div>
-            <% end %>
-            <hr>
-            <div class="row min-margin">
-              <div class="col-md-7">
-                &nbsp; &nbsp;  Total <%= sub_category.title %>
-              </div>
-
-              <div class="col-md-5">
-
-                 <%= number_to_currency sub_category_sub %>
-            </div>
-          <% end %>
-          <hr>
-          <div class="row min-margin">
-            <div class="col-md-7">
-             Total <%= category.title %>
-            </div>
-            <div class="col-md-5">
-              <%= number_to_currency category_total %>
-            </div>
-          </div>
       <% end %>
       <hr>
       <div class="row">
         <div class="col-md-7">
-          <b>TOTAL EXPENSES </b>
+          <b>Total Revenues</b>
         </div>
-
         <div class="col-md-5">
-
-            <%= number_to_currency expenses_total %>
-
+          <b><%= number_to_currency current_cooperative.accounts.revenues.balance(from_date: @from_date, to_date: @to_date) %></b>
         </div>
+      </div>
+      <hr>
+      <b>EXPENSES </b><br>
+      <% current_cooperative.accounts.expenses.each do |account| %>
+      <div class="row">
+        <div class="col-md-7">
+          <%= account.name %>
         </div>
+        <div class="col-md-5">
+          <%= number_to_currency account.balance(from_date: @from_date, to_date: @to_date) %>
+        </div>
+      </div>
+      <% end %>
       <hr>
       <div class="row">
         <div class="col-md-7">
-          <b>NET SURPLUS/LOSS </b>
+          <b>Total Expenses</b>
         </div>
-
-    <div class="col-md-5">
-
-              <%= number_to_currency revenue_total - expenses_total %>
-
-          </div>
-          </div>
+        <div class="col-md-5">
+          <b><%= number_to_currency current_cooperative.accounts.expenses.balance(from_date: @from_date, to_date: @to_date) %></b>
+        </div>
       </div>
-    </div>
-  </div>
+      <hr>
+      <div class="row">
+        <div class="col-md-7">
+          <b>Net Surplus/ Loss </b>
+        </div>
+        <div class="col-md-5">
+          <% net = (current_cooperative.accounts.revenues.balance(from_date: @from_date, to_date: @to_date) - current_cooperative.accounts.expenses.balance(from_date: @from_date, to_date: @to_date)) %>
+          <b><%= number_to_currency net %></b>
+        </div>
+      </div>
