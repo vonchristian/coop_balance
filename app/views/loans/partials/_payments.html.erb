@@ -37,9 +37,10 @@
         <td></td>
       </tr>
     <% else %>
-      <% interest = entry.credit_accounts.include?(@loan.principal_account) && entry.debit_accounts.include?(@loan.principal_account) ? 0 : entry.credit_amounts.for_account(account_id: @loan.loan_product_interest_revenue_account.id).total %>
-      <% penalty = entry.credit_accounts.include?(@loan.principal_account) && entry.debit_accounts.include?(@loan.principal_account) ? 0 : entry.credit_amounts.for_account(account_id: @loan.loan_product_penalty_revenue_account.id).total %>
-      <% principal = !entry.credit_accounts.include?(@loan.principal_account) ? 0 : entry.credit_amounts.for_account(account_id: @loan.principal_account.id).total %>
+      <% interest  = LoansModule::Payments::Classifier.new(loan: @loan, entry: entry).interest %>
+      <% penalty   = LoansModule::Payments::Classifier.new(loan: @loan, entry: entry).penalty %>
+      <% principal = LoansModule::Payments::Classifier.new(loan: @loan, entry: entry).principal %>
+      
       <tr>
         <td><%= entry.entry_date.strftime("%B %e, %Y") %></td>
         <td><%= link_to entry.try(:reference_number), accounting_module_entry_path(entry), data:{toggle: 'tooltip'}, title: entry.description %></td>
@@ -56,4 +57,3 @@
   <% end %>
 </table>
 <center><%= will_paginate @payments %></center>
-
