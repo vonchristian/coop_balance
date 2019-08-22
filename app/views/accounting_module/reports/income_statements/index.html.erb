@@ -46,14 +46,17 @@
 
       <b>REVENUE </b><br>
       <% current_cooperative.accounts.revenues.each do |account| %>
-      <div class="row">
-        <div class="col-md-7">
-          <%= account.name %>
-        </div>
-        <div class="col-md-5">
-          <%= number_to_currency account.balance(from_date: @from_date, to_date: @to_date) %>
-        </div>
-      </div>
+        <% balance = account.balance(from_date: @from_date, to_date: @to_date) %>
+        <% if !balance.zero? %>
+          <div class="row">
+            <div class="col-md-7">
+              <%= account.name %>
+            </div>
+            <div class="col-md-5">
+              <%= number_to_currency balance %>
+            </div>
+          </div>
+        <% end %>
       <% end %>
       <hr>
       <div class="row">
@@ -67,14 +70,17 @@
       <hr>
       <b>EXPENSES </b><br>
       <% current_cooperative.accounts.expenses.each do |account| %>
-      <div class="row">
-        <div class="col-md-7">
-          <%= account.name %>
-        </div>
-        <div class="col-md-5">
-          <%= number_to_currency account.balance(from_date: @from_date, to_date: @to_date) %>
-        </div>
-      </div>
+        <% balance = account.balance(from_date: @from_date, to_date: @to_date) %>
+        <% if !balance.zero? %>
+          <div class="row">
+            <div class="col-md-7">
+              <%= account.name %>
+            </div>
+            <div class="col-md-5">
+              <%= number_to_currency balance %>
+            </div>
+          </div>
+        <% end %>
       <% end %>
       <hr>
       <div class="row">
