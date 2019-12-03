@@ -5,8 +5,10 @@ class ShareCapitalApplicationProcessing
   :cash_account_id, :voucher_account_number, :beneficiaries
 
   def process!
-    ActiveRecord::Base.transaction do
-      create_share_capital_application
+    if valid?
+      ActiveRecord::Base.transaction do
+        create_share_capital_application
+      end
     end
   end
 
@@ -19,7 +21,7 @@ class ShareCapitalApplicationProcessing
 
   private
   def create_share_capital_application
-    share_capital_application = ShareCapitalApplication.create!(
+    share_capital_application = ShareCapitalApplication.new(
       share_capital_product_id: share_capital_product_id,
       subscriber_id: subscriber_id,
       subscriber_type: subscriber_type,
@@ -30,7 +32,13 @@ class ShareCapitalApplicationProcessing
       office: find_employee.office,
       beneficiaries: beneficiaries
     )
+    create_accounts(share_capital_application)
+    share_capital_application.save!
     create_voucher(share_capital_application)
+  end
+
+  def create_accounts(share_capital_application)
+    ::AccountCreators::ShareCapitalApplication.new(share_capital_application: share_capital_application).create_accounts!
   end
   def create_voucher(share_capital_application)
     voucher = Voucher.new(
@@ -52,7 +60,7 @@ class ShareCapitalApplicationProcessing
   )
   voucher.voucher_amounts.credit.build(
     cooperative: find_employee.cooperative,
-    account: credit_account,
+    account: share_capital_application.equity_account,
     amount: amount,
     commercial_document: share_capital_application)
   voucher.save!

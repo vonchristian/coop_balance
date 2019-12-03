@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_03_070508) do
+ActiveRecord::Schema.define(version: 2019_12_03_091829) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1378,7 +1378,9 @@ ActiveRecord::Schema.define(version: 2019_12_03_070508) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "beneficiaries"
+    t.uuid "equity_account_id"
     t.index ["cooperative_id"], name: "index_share_capital_applications_on_cooperative_id"
+    t.index ["equity_account_id"], name: "index_share_capital_applications_on_equity_account_id"
     t.index ["office_id"], name: "index_share_capital_applications_on_office_id"
     t.index ["share_capital_product_id"], name: "index_share_capital_applications_on_share_capital_product_id"
     t.index ["subscriber_type", "subscriber_id"], name: "index_subscriber_on_share_capital_applications"
@@ -1983,6 +1985,7 @@ ActiveRecord::Schema.define(version: 2019_12_03_070508) do
   add_foreign_key "savings", "saving_products"
   add_foreign_key "savings_account_applications", "cooperatives"
   add_foreign_key "savings_account_applications", "saving_products"
+  add_foreign_key "share_capital_applications", "accounts", column: "equity_account_id"
   add_foreign_key "share_capital_applications", "cooperatives"
   add_foreign_key "share_capital_applications", "offices"
   add_foreign_key "share_capital_applications", "share_capital_products"

@@ -23,15 +23,16 @@ module ShareCapitals
     private
     def create_share_capital
       share_capital = cooperative.share_capitals.create!(
-        account_owner_name:    subscriber.name,
-        cooperative:           employee.cooperative,
-        subscriber:            subscriber,
-        account_number:        share_capital_application.account_number,
-        date_opened:           share_capital_application.date_opened,
-        share_capital_product: share_capital_application.share_capital_product,
-        last_transaction_date: share_capital_application.date_opened,
-        beneficiaries:         share_capital_application.beneficiaries,
-        office:                employee.office
+        account_owner_name:           subscriber.name,
+        cooperative:                  employee.cooperative,
+        subscriber:                   subscriber,
+        account_number:               share_capital_application.account_number,
+        date_opened:                  share_capital_application.date_opened,
+        share_capital_product:        share_capital_application.share_capital_product,
+        last_transaction_date:        share_capital_application.date_opened,
+        beneficiaries:                share_capital_application.beneficiaries,
+        office:                       employee.office,
+        share_capital_equity_account: share_capital_application.equity_account
       )
       update_voucher(share_capital)
     end

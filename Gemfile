@@ -70,6 +70,7 @@ group :development, :test do
   gem 'rubocop-rspec'
   gem 'factory_bot_rails'
   gem 'faker'
+  gem 'pry-rails'
 end
 
 group :development do
@@ -78,7 +79,6 @@ group :development do
   gem 'spring-watcher-listen'
   gem 'spring-commands-rspec'
   gem 'bullet'
-  gem 'pry-rails'
   gem "guard"
   gem "guard-rspec"
 end
