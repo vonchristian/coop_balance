@@ -7,6 +7,8 @@ module MembershipsModule
     	it { is_expected.to belong_to :subscriber }
     	it { is_expected.to belong_to :share_capital_product }
       it { is_expected.to belong_to :office }
+      it { is_expected.to belong_to :share_capital_equity_account }
+      it { is_expected.to belong_to :interest_on_capital_account }
     	# it { is_expected.to have_many :entries }
     end
 
@@ -28,31 +30,13 @@ module MembershipsModule
       employee.cash_accounts << cash_account
       share_capital_product = create(:share_capital_product, cost_per_share: 100)
       share_capital = create(:share_capital, share_capital_product: share_capital_product)
-      capital_build_up = build(:entry, commercial_document: share_capital.subscriber)
+      capital_build_up = build(:entry, office: employee.office, cooperative: employee.cooperative, commercial_document: share_capital.subscriber)
       capital_build_up.credit_amounts.build(amount: 5000, commercial_document: share_capital, account: share_capital.share_capital_product_equity_account)
       capital_build_up.debit_amounts.build(amount: 5_000, commercial_document: share_capital, account: cash_account)
       capital_build_up.save!
 
       expect(share_capital.balance).to eq 5_000
       expect(share_capital.shares).to eql(50)
-    end
-
-    it "#entries" do
-      cash_account = create(:asset)
-      employee = create(:user, role: 'teller')
-      employee.cash_accounts << cash_account
-      share_capital = create(:share_capital, subscriber: employee)
-      share_capital_2 = create(:share_capital)
-      deposit = build(:entry, commercial_document: share_capital)
-      deposit.credit_amounts <<  build(:credit_amount, amount: 5_000, commercial_document: share_capital, account: share_capital.share_capital_product_equity_account)
-      deposit.debit_amounts <<  build(:debit_amount,  amount: 5_000, commercial_document: share_capital, account: cash_account)
-      deposit.save!
-
-
-      expect(share_capital.entries).to include(deposit)
-      expect(share_capital_2.entries).to_not include(deposit)
-
-
     end
   end
 end

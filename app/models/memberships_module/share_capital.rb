@@ -9,10 +9,13 @@ module MembershipsModule
 
     belongs_to :cooperative
     belongs_to :subscriber, polymorphic: true, touch: true
-    belongs_to :share_capital_product, class_name: "Cooperatives::ShareCapitalProduct"
+    belongs_to :share_capital_product, class_name: "CoopServicesModule::ShareCapitalProduct"
     belongs_to :office, class_name: "Cooperatives::Office"
     belongs_to :barangay, class_name: "Addresses::Barangay", optional: true
     belongs_to :organization, optional: true
+    belongs_to :share_capital_equity_account, class_name: 'AccountingModule::Account', foreign_key: 'equity_account_id'
+    belongs_to :interest_on_capital_account,  class_name: 'AccountingModule::Account'
+
     has_many :amounts, as: :commercial_document, class_name: "AccountingModule::Amount"
     delegate :name, to: :barangay, prefix: true, allow_nil: true
     delegate :name,
