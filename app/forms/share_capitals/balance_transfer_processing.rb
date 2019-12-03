@@ -35,31 +35,15 @@ module ShareCapitals
       )
       voucher.voucher_amounts.debit.build(
           account: find_origin.share_capital_product_equity_account,
-          amount: deducted_debit_amount,
+          amount: amount,
           commercial_document: find_origin
       )
 
       voucher.voucher_amounts.credit.build(
           account: find_destination.share_capital_product_equity_account,
-          amount: deducted_credit_amount,
+          amount: amount,
           commercial_document: find_destination
       )
-
-      #transfer fee
-      if transfer_fee_deduction_method == "over_the_counter_payment"
-        voucher.voucher_amounts.debit.build(
-            account: find_employee.cooperative.users.teller.last.cash_accounts.first,
-            amount: transfer_fee,
-            commercial_document: find_origin
-        )
-      end
-
-      voucher.voucher_amounts.credit.build(
-          account: find_origin.share_capital_product_transfer_fee_account,
-          amount: transfer_fee,
-          commercial_document: find_origin
-      )
-
       voucher.save!
     end
 

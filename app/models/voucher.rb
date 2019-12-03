@@ -15,6 +15,7 @@ class Voucher < ApplicationRecord
   belongs_to :commercial_document, polymorphic: true #attaching voucher to orders
   belongs_to :preparer,      class_name: "User", foreign_key: 'preparer_id'
   belongs_to :disburser,     class_name: "User", foreign_key: 'disburser_id'
+
   has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", dependent: :destroy
 
   delegate :title, to: :cooperative_service, prefix: true, allow_nil: true
