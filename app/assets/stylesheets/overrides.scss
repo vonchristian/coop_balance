@@ -621,3 +621,40 @@ input[type="file"].choose-btn {
   font-size: 18px;
   font-weight: 200 !important;
 }
+
+
+.badge-outline {
+     font-size: 12px;
+     line-height: 1;
+     padding: .375rem .5625rem;
+     font-weight: normal
+ }
+
+ .badge-outline-primary {
+     color: #405189;
+     border: 1px solid #405189
+ }
+
+ .badge.badge-pill {
+     border-radius: 10rem
+ }
+
+ .badge-outline-info {
+     color: #3da5f4;
+     border: 1px solid #3da5f4;
+ }
+
+ .badge-outline-danger {
+     color: #f1536e;
+     border: 1px solid #f1536e;
+ }
+
+ .badge-outline-success {
+     color: #00D477;
+     border: 1px solid #00D477;
+ }
+
+ .badge-outline-warning {
+     color: #fda006;
+     border: 1px solid #fda006;
+ }

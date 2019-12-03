@@ -8,6 +8,10 @@ describe ShareCapitalApplication do
     it { is_expected.to respond_to(:cooperative_id) }
     it { is_expected.to respond_to(:share_capital_product_id) }
     it { is_expected.to respond_to(:equity_account_id) }
+    it { is_expected.to respond_to(:account_number) }
+    it { is_expected.to respond_to(:date_opened) }
+
+
   end
 
   describe 'associations' do
@@ -23,7 +27,10 @@ describe ShareCapitalApplication do
     it { is_expected.to validate_presence_of :subscriber_type }
     it { is_expected.to validate_presence_of :share_capital_product_id }
     it { is_expected.to validate_presence_of :office_id }
+    it { is_expected.to validate_presence_of :date_opened }
     it { is_expected.to validate_presence_of :account_number }
+    it { is_expected.to validate_uniqueness_of :account_number }
+
 
   end
 

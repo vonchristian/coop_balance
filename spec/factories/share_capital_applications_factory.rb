@@ -6,5 +6,6 @@ FactoryBot.define do
     association :subscriber, factory: :member
     association :share_capital_product
     account_number { SecureRandom.uuid }
+    date_opened    { Date.current }
   end
 end

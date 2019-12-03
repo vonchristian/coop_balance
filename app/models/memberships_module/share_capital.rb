@@ -8,15 +8,14 @@ module MembershipsModule
     multisearchable against: [:account_number, :account_owner_name]
 
     belongs_to :cooperative
-    belongs_to :subscriber, polymorphic: true, touch: true
-    belongs_to :share_capital_product, class_name: "CoopServicesModule::ShareCapitalProduct"
-    belongs_to :office, class_name: "Cooperatives::Office"
-    belongs_to :barangay, class_name: "Addresses::Barangay", optional: true
-    belongs_to :organization, optional: true
+    belongs_to :subscriber,                   polymorphic: true, touch: true
+    belongs_to :share_capital_product,        class_name: "CoopServicesModule::ShareCapitalProduct"
+    belongs_to :office,                       class_name: "Cooperatives::Office"
+    belongs_to :barangay,                     class_name: "Addresses::Barangay", optional: true
+    belongs_to :organization,                 optional: true
     belongs_to :share_capital_equity_account, class_name: 'AccountingModule::Account', foreign_key: 'equity_account_id'
-    belongs_to :interest_on_capital_account,  class_name: 'AccountingModule::Account'
-
-    has_many :amounts, as: :commercial_document, class_name: "AccountingModule::Amount"
+    belongs_to :interest_on_capital_account,  class_name: 'AccountingModule::Account', foreign_key: 'interest_on_capital_account_id'
+    has_many   :entries,                      class_name: 'AccountingModule::Entry', through: :share_capital_equity_account
     delegate :name, to: :barangay, prefix: true, allow_nil: true
     delegate :name,
             :equity_account,
@@ -26,10 +25,11 @@ module MembershipsModule
             :interest_payable_account,
             :cost_per_share,
              to: :share_capital_product, prefix: true
-    delegate :name, to: :office, prefix: true
     delegate :name, :current_address_complete_address, :current_contact_number, to: :subscriber, prefix: true
     delegate :avatar, :name, to: :subscriber
     delegate :name, to: :office, prefix: true
+    delegate :balance, to: :share_capital_equity_account
+
     before_save :set_account_owner_name, on: [:create, :update]
 
 
@@ -40,7 +40,7 @@ module MembershipsModule
     def self.updated_at(options={})
       if options[:from_date] && options[:to_date]
         date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
-        where('last_transaction_date' => (date_range.start_date..date_range.end_date))
+        joins(:entries).where('entries.entry_date' => (date_range.start_date..date_range.end_date))
       else
         all
       end
@@ -56,15 +56,15 @@ module MembershipsModule
 
 
     def capital_build_ups(args={})
-      share_capital_product_equity_account.amounts.where(commercial_document: self)
+      entries
     end
 
 
     def average_monthly_balance(args = {})
       first_entry_date = Date.today - 999.years
       date = args[:date]
-      balance(from_date: first_entry_date, to_date: date.beginning_of_month.last_month.end_of_month, commercial_document: self) +
-      capital_build_ups(commercial_document: self, from_date: date.beginning_of_month, to_date: (date.beginning_of_month + 14.days)).sum(&:amount)
+      balance(from_date: first_entry_date, to_date: date.beginning_of_month.last_month.end_of_month) +
+      capital_build_ups(from_date: date.beginning_of_month, to_date: (date.beginning_of_month + 14.days)).sum(&:amount)
     end
 
     def averaged_monthly_balances
@@ -79,13 +79,6 @@ module MembershipsModule
       balances.sum / balances.size
     end
 
-    def entries
-      entry_ids = []
-      entry_ids << share_capital_product_equity_account.amounts.where(commercial_document: self).pluck(:entry_id)
-      entry_ids << share_capital_equity_account.entries.ids
-      AccountingModule::Entry.where(id: entry_ids.uniq.flatten)
-    end
-
     def self.subscribed_shares
       all.sum(&:shares)
     end
@@ -94,16 +87,16 @@ module MembershipsModule
       balance / share_capital_product_cost_per_share
     end
 
-    def balance(args={})
-      share_capital_equity_account.balance(args.merge(commercial_document: self))
-    end
-
-    def dividends_earned
-      share_capital_product_interest_payable_account.balance(args.merge(commercial_document: self))
+    def dividends_earned(args = {})
+      interest_on_capital_account.balance(args)
     end
 
     def name
       account_owner_name || subscriber_name
+    end
+
+    def account_name
+      name
     end
 
     def computed_interest(args={})

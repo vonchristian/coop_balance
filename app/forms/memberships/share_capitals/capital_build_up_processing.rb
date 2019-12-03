@@ -50,7 +50,7 @@ module Memberships
       end
 
       def credit_account
-        find_share_capital.share_capital_product_equity_account
+        find_share_capital.share_capital_equity_account
       end
 
       def find_subscriber
@@ -58,7 +58,7 @@ module Memberships
       end
 
       def find_employee
-        User.find_by_id(employee_id)
+        User.find(employee_id)
       end
 
     end

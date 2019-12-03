@@ -1,29 +1,34 @@
-<%=link_to share_capital_path(share_capital) do %>
-  <div class="card">
-    <div class="card-body">
-      <div class="row">
-        <div class="col-md-1 col-sm-1">
-          <%= image_tag(share_capital.subscriber.avatar, style: 'width:40px;height:40px;', class: 'media-object img-circle') %>
-        </div>
-        <div class="col-md-4 col-sm-4">
-          <b><%= share_capital.subscriber_name.try(:upcase) %></b><br>
-          <small class="text-muted"> <%= share_capital.share_capital_product_name.try(:upcase) %></small>
-        </div>
-        <div class="col-md-2 col-sm-2">
-          <span class="badge bg-danger">
-            <%= share_capital.number_of_days_inactive %> day/s inactive
-          </span>
-        </div>
-        <div class="col-md-3 col-sm-3">
-          <h4 class="card-title"><%=number_to_currency share_capital.paid_up_balance %></h4>
-          <small>PAID UP BALANCE</small>
-        </div>
-        <div class="col-md-2 col-sm-2">
-          <% if policy([:share_capitals, :capital_build_up]).new? %>
-            <%= link_to 'New Capital Build Up', new_share_capital_capital_build_up_path(share_capital), class: "btn btn-success" %>
-          <% end %>
+<%= link_to share_capital_path(share_capital) do %>
+      <div class="card animated fadeInUp min-margin">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-2">
+              <div class="min-margin"></div>
+              <%= image_tag(share_capital.avatar, height: 60, width: 60, class: 'img-circle') %>
+            </div>
+            <div class="col-md-5">
+              <b><%= share_capital.account_name %></b><br>
+              <small class="text-muted">
+                <i class="fa fa-map-marker"></i> <%= share_capital.subscriber.current_address_complete_address %><br>
+                <i class="fa fa-phone"></i> <%= share_capital.subscriber.current_contact_number %>
+
+              </small>
+            </div>
+            <div class="col-md-4">
+              <small class="text-muted"><%= share_capital.share_capital_product_name.upcase %></small>
+              <h4 class="subtitle-up"><%= number_to_currency share_capital.balance %></h4>
+              <small class="text-muted">
+                <i class="fa fa-clock"></i> <%= share_capital.last_transaction_date.strftime('%b. %e, %Y') %>
+              </small>
+              <% if !share_capital.has_minimum_balance? %>
+                <span class="badge badge-outline badge-outline-danger"> Below Minimum Balance </span>
+              <% end %></td>
+            </div>
+            <div class="col-md-1">
+              <br>
+              <i class="fa fa-chevron-right fa-slim fa-2x float-right"></i>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-<% end %>
+      <% end %>

@@ -6,7 +6,7 @@ module Members
     def initialize(args={})
       super(margin: 10, page_size: [360, 468], page_layout: :portrait) # [340, 448]
       @share_capital = args[:share_capital]
-      @equity_account = @share_capital.share_capital_product_equity_account
+      @equity_account = @share_capital.share_capital_equity_account
       @entries = args[:entries]
       @member = @share_capital.subscriber
       @cooperative = @share_capital.cooperative
@@ -48,7 +48,7 @@ module Members
 
     def transactions
       table_header
-      table(transactions_data, cell_style: {padding: [1,1,2,1], size: 7 }, 
+      table(transactions_data, cell_style: {padding: [1,1,2,1], size: 7 },
         column_widths: TABLE_WIDTH) do
         cells.borders = []
         column(2).align = :right
@@ -69,8 +69,8 @@ module Members
     end
 
     def table_header
-      table([["DATE", "OR/CDV #", "DEPOSIT", "WIDTHRAWAL", "BALANCE"]], 
-        header: true, cell_style: {padding: [1,1,2,1], size: 7 }, 
+      table([["DATE", "OR/CDV #", "DEPOSIT", "WIDTHRAWAL", "BALANCE"]],
+        header: true, cell_style: {padding: [1,1,2,1], size: 7 },
         column_widths: TABLE_WIDTH) do
         cells.borders = [:top, :bottom]
         row(0).font_style = :bold

@@ -29,13 +29,13 @@
 							<td><%= entry.entry_date.strftime("%B %e, %Y") %></td>
 							<td><%= link_to entry.reference_number.present? ? entry.reference_number : "FWD", accounting_module_entry_path(entry), data:{toggle: 'tooltip'}, title: entry.description %></td>
 							<td class="text-right">
-								<% if entry.credit_amounts.for_account(account_id: @share_capital.share_capital_product.equity_account_id).present? && entry.credit_amounts.for_account(account_id: @share_capital.share_capital_product.equity_account_id).last.try(:commercial_document) == @share_capital %>
-									<%= number_to_currency entry.credit_amounts.for_account(account_id: @share_capital.share_capital_product.equity_account_id).total %>
+								<% if entry.credit_amounts.for_account(account_id: @share_capital.equity_account_id).present? && entry.credit_amounts.for_account(account_id: @share_capital.equity_account_id).last.try(:commercial_document) == @share_capital %>
+									<%= number_to_currency entry.credit_amounts.for_account(account_id: @share_capital.equity_account_id).total %>
 								<% end %>
 							</td>
 							<td class="text-right">
-								<% if entry.debit_amounts.for_account(account_id: @share_capital.share_capital_product.equity_account_id).present? && entry.debit_amounts.for_account(account_id: @share_capital.share_capital_product.equity_account_id).last.try(:commercial_document) == @share_capital %>
-									<%= number_to_currency entry.debit_amounts.for_account(account_id: @share_capital.share_capital_product.equity_account_id).total %>
+								<% if entry.debit_amounts.for_account(account_id: @share_capital.equity_account_id).present? && entry.debit_amounts.for_account(account_id: @share_capital.equity_account_id).last.try(:commercial_document) == @share_capital %>
+									<%= number_to_currency entry.debit_amounts.for_account(account_id: @share_capital.equity_account_id).total %>
 								<% end %>
 							</td>
 							<td class="text-right"><%= number_to_currency @share_capital.balance(to_date: entry.entry_date.end_of_day) %></td>

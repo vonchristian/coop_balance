@@ -34,13 +34,13 @@ module ShareCapitals
         date: date
       )
       voucher.voucher_amounts.debit.build(
-          account: find_origin.share_capital_product_equity_account,
+          account: find_origin.share_capital_equity_account,
           amount: amount,
           commercial_document: find_origin
       )
 
       voucher.voucher_amounts.credit.build(
-          account: find_destination.share_capital_product_equity_account,
+          account: find_destination.share_capital_equity_account,
           amount: amount,
           commercial_document: find_destination
       )
