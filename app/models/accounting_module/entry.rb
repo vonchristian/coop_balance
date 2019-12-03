@@ -1,7 +1,7 @@
 module AccountingModule
   class Entry < ApplicationRecord
     audited
-    include PgSearch
+    include PgSearch::Model
     include Taggable
     pg_search_scope :text_search, :against => [:reference_number, :description]
     multisearchable against: [:reference_number, :description]
@@ -26,7 +26,7 @@ module AccountingModule
     has_many   :accounts,              class_name: "AccountingModule::Account", through: :amounts
 
     validates :description, presence: true
-    
+
     validates :office_id, :cooperative_id, :recorder_id, presence: true
 
     validate :has_credit_amounts?
@@ -35,7 +35,7 @@ module AccountingModule
 
     accepts_nested_attributes_for :credit_amounts, :debit_amounts, allow_destroy: true
 
-    before_save :set_default_date, :set_entry_date_to_datetime, on: :create
+    before_save :set_default_date, :set_entry_date_to_datetime
     after_commit :set_encrypted_hash!, if: :entries_present?
 
     delegate :name,  :first_and_last_name, to: :recorder, prefix: true, allow_nil: true
@@ -201,7 +201,7 @@ module AccountingModule
     private
     def set_encrypted_hash!
       if encrypted_hash.blank?
-        self.update_attributes!(
+        self.update!(
           encrypted_hash: digested_hash,
           updated_at: created_at.strftime("%B %e, %Y")
         )

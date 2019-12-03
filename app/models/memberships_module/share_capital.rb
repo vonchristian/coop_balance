@@ -1,6 +1,6 @@
 module MembershipsModule
   class ShareCapital < ApplicationRecord
-    include PgSearch
+    include PgSearch::Model
     include InactivityMonitoring
     extend  PercentActive
 
@@ -30,7 +30,7 @@ module MembershipsModule
     delegate :name, to: :office, prefix: true
     delegate :balance, to: :share_capital_equity_account
 
-    before_save :set_account_owner_name, on: [:create, :update]
+    before_save :set_account_owner_name
 
 
     def self.inactive(options={})

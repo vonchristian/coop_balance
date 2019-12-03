@@ -3,7 +3,7 @@ module StoreFrontModule
   # balances of line items
 
   class LineItem < ApplicationRecord
-    include PgSearch
+    include PgSearch::Model
     pg_search_scope :text_search, associated_against: { barcodes: [:code] }
 
     belongs_to :unit_of_measurement, class_name: "StoreFrontModule::UnitOfMeasurement"

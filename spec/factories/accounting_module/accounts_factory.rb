@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :account, class: AccountingModule::Account do
     sequence(:name) { |n| "#{n}"}
-    code            { Faker::Number.number(12) }
+    code            { Faker::Number.number(digits: 12) }
 
     factory :asset, class: AccountingModule::Asset do
     end

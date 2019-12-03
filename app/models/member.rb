@@ -1,5 +1,5 @@
 class Member < ApplicationRecord
-  include PgSearch
+  include PgSearch::Model
 
   include CurrentTin
   include Contactable
@@ -49,7 +49,7 @@ class Member < ApplicationRecord
   delegate :name, to: :current_organization, prefix: true, allow_nil: true
   before_validation :set_member_code, on: :create
   before_save :update_birth_date_fields
-  before_save :set_default_image, :set_default_account_number, on: :create
+  before_save :set_default_image, :set_default_account_number
   # before_save :normalize_name
 
   def beneficiaries
@@ -59,7 +59,7 @@ class Member < ApplicationRecord
     sd_beneficiaries = savings.present? ? savings.pluck(:beneficiaries).map{|b| b.present? ? [b + " (SD)"] : [] } : []
     (sc_beneficiaries + maf_beneficiaries + td_beneficiaries + sd_beneficiaries).uniq.compact.join(", ")
   end
-  
+
   def self.retired
     where.not(retired_at: nil)
   end

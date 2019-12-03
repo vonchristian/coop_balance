@@ -1,6 +1,6 @@
 module AccountingModule
   class Account < ApplicationRecord
-    include PgSearch
+    include PgSearch::Model
     extend ProfitPercentage
     pg_search_scope :text_search, :against => [:name, :code]
     multisearchable against: [:name, :code]
@@ -20,7 +20,7 @@ module AccountingModule
 
     validates :type, :name, :code, presence: true
     validates :name, uniqueness: true
-    
+
     scope :assets,      -> { where(type: 'AccountingModule::Asset') }
     scope :liabilities, -> { where(type: 'AccountingModule::Liability') }
     scope :equities,    -> { where(type: 'AccountingModule::Equity') }

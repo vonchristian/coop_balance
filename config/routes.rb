@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { sessions: 'users/sessions', registrations: "management_module/settings/employees"}
 
   authenticated :user do
-    root :to => 'members#index'
+    root :to => 'members#index', as: :authenticated_root
   end
   resources :home, only: [:index]
 

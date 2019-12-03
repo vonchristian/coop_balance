@@ -1,5 +1,5 @@
 class Occupation < ApplicationRecord
-  include PgSearch
+  include PgSearch::Model
   multisearchable against: [:title]
   validates :title, presence: true
 

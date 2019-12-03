@@ -1,6 +1,6 @@
 module StoreFrontModule
   class Order < ApplicationRecord
-    include PgSearch
+    include PgSearch::Model
     pg_search_scope :text_search, against: [:commercial_document_name]
 
     enum pay_type: [:cash, :check]

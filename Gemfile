@@ -1,37 +1,35 @@
 source 'https://rubygems.org'
-ruby '2.6.2'
+ruby '2.6.5'
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
   "https://github.com/#{repo_name}.git"
 end
+gem 'mime-types', [ '~> 2.6', '>= 2.6.1' ], require: 'mime/types/columnar'
 gem 'prawn-icon'
-gem 'bootsnap', '>= 1.1.0', require: false
-gem 'webpacker', '~> 3.5'
-gem 'rubyzip', '~> 1.1.0'
-gem 'axlsx', '2.1.0.pre'
+gem 'bootsnap', require: false
+gem 'webpacker', '~> 4.x'
+gem 'rubyzip', '>= 1.2.2'
+gem 'axlsx', git: 'https://github.com/randym/axlsx.git', ref: 'c8ac844'
 gem 'axlsx_rails'
 gem 'trix'
 gem 'autonumeric-rails'
-gem 'rails', '5.2.2.1'
+gem 'rails', '6.0.1'
 gem 'pg', '0.21'
-gem 'puma', '~> 3.7', group: [:development, :production]
-gem 'sass-rails'
+gem 'pghero'
+gem 'pg_query'
+gem 'puma', group: [:development, :production]
+gem 'sass-rails', '~> 5'
 gem 'uglifier'
 gem 'coffee-rails'
 gem 'turbolinks', '~> 5'
 gem 'jbuilder'
 gem 'redis'
 gem 'devise'
+gem 'devise_invitable'
 gem 'simple_form'
-gem 'select2-rails'
-gem 'jquery-rails'
-gem 'jquery-ui-rails'
-gem 'bootstrap', '~> 4.2.1'
 gem 'friendly_id'
-gem 'font-awesome-sass', '~> 5.0.13'
-gem 'bootstrap-datepicker-rails'
-gem 'momentjs-rails'
-gem 'bootstrap3-datetimepicker-rails'
+gem 'font-awesome-sass'
+
 gem 'pg_search'
 gem 'will_paginate'
 gem 'pundit'
@@ -40,6 +38,7 @@ gem 'prawn-table'
 gem 'prawn-qrcode'
 gem 'public_activity'
 gem 'mina-puma', require: false
+gem 'mina-whenever', require: false
 gem 'barby'
 gem 'rqrcode'
 gem 'prawn-print'
@@ -54,51 +53,40 @@ gem "highcharts-rails"
 gem 'roo', "2.7.0"
 gem 'chronic'
 gem 'numbers_and_words'
-gem "audited", "~> 4.7"
+gem "audited", "~> 4.9"
 gem "responders"
-gem 'money-rails', '~>1.12'
-gem "chosen-rails"
+gem 'money-rails'
+
 gem "gretel"
-gem 'scss_lint', require: false
 gem 'webdack-uuid_migration'
 gem 'fast_jsonapi'
-gem "paperclip", "~> 6.0.0"
 gem 'pagy'
+gem 'letter_opener'
+gem 'email_spec'
+gem 'whenever', require: false
+gem "select2-rails"
+
 group :development, :test do
-  gem 'rspec-rails', '~> 3.8.0'
-  gem 'rubocop', require: false
-  gem 'rubocop-rspec'
+  gem 'rspec-rails'
   gem 'factory_bot_rails'
   gem 'faker'
-  gem 'pry-rails'
+  gem 'bullet'
 end
 
 group :development do
   gem 'listen'
   gem 'spring'
   gem 'spring-watcher-listen'
-  gem 'spring-commands-rspec'
-  gem 'bullet'
-  gem "guard"
-  gem "guard-rspec"
 end
-group :test do
-  gem 'capybara', '>= 2.15'
-  gem 'launchy'
-  gem 'shoulda-matchers', '4.0.0.rc1'
-  gem 'rails-controller-testing'
-  gem 'database_rewinder'
-  gem 'pdf-inspector', require: "pdf/inspector"
-  gem 'selenium-webdriver'
-  gem 'chromedriver-helper'
 
+group :test do
+  gem 'capybara'
+  gem 'shoulda-matchers'
+  gem 'database_rewinder'
+  gem 'pundit-matchers'
+  gem 'webdrivers'
 end
 
 gem 'rack-mini-profiler', require: false
-gem 'flamegraph'
-gem 'stackprof'
-gem 'memory_profiler'
-gem 'whenever', :require => false
-
 gem "simple_calendar"
 gem 'traceroute'

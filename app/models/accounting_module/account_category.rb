@@ -3,7 +3,7 @@ module AccountingModule
   class AccountCategory < ApplicationRecord
     class_attribute :normal_credit_balance
     extend AccountingModule::UpdatedAtFinder
-    include PgSearch
+    include PgSearch::Model
     pg_search_scope :text_search, against: [:title, :code]
 
     belongs_to :cooperative

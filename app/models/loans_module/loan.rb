@@ -2,7 +2,7 @@ module LoansModule
   class Loan < ApplicationRecord
     enum status: [:current_loan, :past_due, :restructured, :under_litigation]
     audited
-    include PgSearch
+    include PgSearch::Model
     include LoansModule::Loans::Interest
     include LoansModule::Loans::Principal
     include LoansModule::Loans::Penalty

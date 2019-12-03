@@ -1,6 +1,6 @@
 module StoreFrontModule
   class Product < ApplicationRecord
-    include PgSearch
+    include PgSearch::Model
     multisearchable against: [:name]
     pg_search_scope :text_search,               against: [:name]
     pg_search_scope :text_search_with_barcode,  against: [:name],

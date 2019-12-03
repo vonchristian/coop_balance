@@ -1,6 +1,6 @@
 #ensure debits and credits are equal
 class Voucher < ApplicationRecord
-  include PgSearch
+  include PgSearch::Model
   include Taggable
   has_secure_token
   pg_search_scope :text_search, :against => [:reference_number, :description]

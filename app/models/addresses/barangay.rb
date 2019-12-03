@@ -1,6 +1,6 @@
 module Addresses
   class Barangay < ApplicationRecord
-    include PgSearch
+    include PgSearch::Model
 
     pg_search_scope( :search, :against => [:name], :associated_against => { :municipality => [:name] },
                     using: { tsearch: { prefix: true } } )
@@ -20,7 +20,7 @@ module Addresses
 
     validates :name, presence: true
 
-    before_save :set_default_avatar, on: :create
+    before_save :set_default_avatar
 
     delegate :name, to: :municipality, prefix: true, allow_nil: true
 

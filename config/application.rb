@@ -10,10 +10,9 @@ module CoopBooks
     config.generators do |g|
       g.orm :active_record, primary_key_type: :uuid
     end
-    
+
     config.time_zone = 'Asia/Manila'
     config.active_record.default_timezone = :utc
-    config.active_job.queue_adapter = :delayed_job
     config.beginning_of_week = :sunday
   end
 end

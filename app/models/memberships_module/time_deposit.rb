@@ -2,7 +2,7 @@ module MembershipsModule
   class TimeDeposit < ApplicationRecord
     enum status: [:withdrawn]
     include TermMonitoring
-    include PgSearch
+    include PgSearch::Model
     pg_search_scope :text_search, against: [:account_number, :depositor_name]
 
     belongs_to :cooperative

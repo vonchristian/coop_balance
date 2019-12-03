@@ -1,6 +1,6 @@
 module StoreFrontModule
   class Supplier < ApplicationRecord
-    include PgSearch
+    include PgSearch::Model
     pg_search_scope :text_search, against: [:business_name]
     has_one_attached :avatar
     belongs_to :cooperative

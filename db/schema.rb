@@ -2,15 +2,15 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
+# This file is the source Rails uses to define your schema when running `rails
+# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_03_091829) do
+ActiveRecord::Schema.define(version: 2019_12_03_233725) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1338,12 +1338,14 @@ ActiveRecord::Schema.define(version: 2019_12_03_091829) do
     t.string "beneficiaries"
     t.uuid "liability_account_id"
     t.string "code"
+    t.uuid "interest_expense_account_id"
     t.index ["account_number"], name: "index_savings_on_account_number", unique: true
     t.index ["account_owner_name"], name: "index_savings_on_account_owner_name"
     t.index ["barangay_id"], name: "index_savings_on_barangay_id"
     t.index ["code"], name: "index_savings_on_code", unique: true
     t.index ["cooperative_id"], name: "index_savings_on_cooperative_id"
     t.index ["depositor_type", "depositor_id"], name: "index_savings_on_depositor_type_and_depositor_id"
+    t.index ["interest_expense_account_id"], name: "index_savings_on_interest_expense_account_id"
     t.index ["liability_account_id"], name: "index_savings_on_liability_account_id"
     t.index ["office_id"], name: "index_savings_on_office_id"
     t.index ["organization_id"], name: "index_savings_on_organization_id"
@@ -1977,6 +1979,7 @@ ActiveRecord::Schema.define(version: 2019_12_03_091829) do
   add_foreign_key "saving_products", "accounts", column: "interest_expense_account_id"
   add_foreign_key "saving_products", "cooperatives"
   add_foreign_key "saving_products", "offices"
+  add_foreign_key "savings", "accounts", column: "interest_expense_account_id"
   add_foreign_key "savings", "accounts", column: "liability_account_id"
   add_foreign_key "savings", "barangays"
   add_foreign_key "savings", "cooperatives"
