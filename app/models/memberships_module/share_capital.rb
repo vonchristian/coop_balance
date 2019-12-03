@@ -82,6 +82,7 @@ module MembershipsModule
     def entries
       entry_ids = []
       entry_ids << share_capital_product_equity_account.amounts.where(commercial_document: self).pluck(:entry_id)
+      entry_ids << share_capital_equity_account.entries.ids
       AccountingModule::Entry.where(id: entry_ids.uniq.flatten)
     end
 
@@ -94,7 +95,7 @@ module MembershipsModule
     end
 
     def balance(args={})
-      share_capital_product_equity_account.balance(args.merge(commercial_document: self))
+      share_capital_equity_account.balance(args.merge(commercial_document: self))
     end
 
     def dividends_earned

@@ -60,7 +60,7 @@ module LoansModule
     end
 
     def maximum_term?
-      errors[:term] << "must not exceed 48 months." if term.to_f > 48
+      errors[:term] << "must not exceed 120 months." if term.to_f > 120
     end
   end
 end

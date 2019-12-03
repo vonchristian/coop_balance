@@ -29,7 +29,7 @@ module AccountCreators
         account = AccountingModule::Equity.create!(
 
           name: "Interest on Share Capital #{share_capital.share_capital_product_name} - #{share_capital.account_number}",
-          code: share_capital.account_number
+          code: "IOC-#{share_capital.account_number}"
         )
         share_capital.update(interest_on_capital_account: account)
 

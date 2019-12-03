@@ -10,7 +10,7 @@ module AccountingModule
 
     has_one    :voucher,               foreign_key: 'entry_id', dependent: :nullify
     belongs_to :official_receipt,      optional: true
-    belongs_to :previous_entry,        class_name: "AccountingModule::Entry", foreign_key: 'previous_entry_id'
+    belongs_to :previous_entry,        class_name: "AccountingModule::Entry", foreign_key: 'previous_entry_id', optional: true
     belongs_to :commercial_document,   polymorphic: true
     belongs_to :office,                class_name: "Cooperatives::Office"
     belongs_to :cooperative
@@ -26,7 +26,7 @@ module AccountingModule
     has_many   :accounts,              class_name: "AccountingModule::Account", through: :amounts
 
     validates :description, presence: true
-    validates :previous_entry_id, presence: true, if: :entries_present?
+    
     validates :office_id, :cooperative_id, :recorder_id, presence: true
 
     validate :has_credit_amounts?
