@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   namespace :accounting_module do
     resources :cooperative_services, only: [:show] do
       resources :entries, only: [:index], module: :cooperative_services
-      resources :accounts, only: [:index, :new, :create], module: :cooperative_services 
+      resources :accounts, only: [:index, :new, :create], module: :cooperative_services
     end
     resources :settings, only: [:index]
     resources :accounting_reports, only: [:new, :create], module: :settings
@@ -481,6 +481,7 @@ Rails.application.routes.draw do
     resources :settings,     only: [:index]
     namespace :settings do
       resources :archives,           only: [:new, :create]
+      resources :loan_aging_groups,  only: [:new, :create]
     end
   end
 

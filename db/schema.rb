@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_03_011319) do
+ActiveRecord::Schema.define(version: 2019_12_03_011547) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -686,8 +686,20 @@ ActiveRecord::Schema.define(version: 2019_12_03_011319) do
     t.string "title"
     t.integer "start_num"
     t.integer "end_num"
+    t.uuid "office_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["office_id"], name: "index_loan_aging_groups_on_office_id"
+  end
+
+  create_table "loan_agings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "loan_id"
+    t.uuid "loan_aging_group_id"
+    t.datetime "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["loan_aging_group_id"], name: "index_loan_agings_on_loan_aging_group_id"
+    t.index ["loan_id"], name: "index_loan_agings_on_loan_id"
   end
 
   create_table "loan_applications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1874,6 +1886,9 @@ ActiveRecord::Schema.define(version: 2019_12_03_011319) do
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items", "products"
   add_foreign_key "line_items", "unit_of_measurements"
+  add_foreign_key "loan_aging_groups", "offices"
+  add_foreign_key "loan_agings", "loan_aging_groups"
+  add_foreign_key "loan_agings", "loans"
   add_foreign_key "loan_applications", "cooperatives"
   add_foreign_key "loan_applications", "loan_products"
   add_foreign_key "loan_applications", "offices"

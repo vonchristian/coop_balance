@@ -1,0 +1,6 @@
+<%= simple_form_for @loan_aging_group, url: :loans_module_settings_loan_aging_groups do |f| %>
+  <%= f.input :title %>
+  <%= f.input :start_num %>
+  <%= f.input :end_num %>
+  <%= f.submit 'Create Loan Aging Group' %>
+<% end %>

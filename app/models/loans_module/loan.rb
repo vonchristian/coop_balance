@@ -38,6 +38,10 @@ module LoansModule
     has_many :terms,                    as: :termable
     has_many :loan_co_makers,           class_name: "LoansModule::LoanCoMaker"
     has_many :member_co_makers,         through: :loan_co_makers, source: :co_maker, source_type: "Member"
+    has_many :loan_agings,              class_name: 'LoansModule::Loans::LoanAging'
+    has_many :loan_aging_groups,        through: :loan_agings, class_name: 'LoansModule::LoanAgingGroup'
+
+
     delegate :name, :address, :contact_number, to: :cooperative, prefix: true
     delegate :disbursed?, to: :disbursement_voucher, allow_nil: true #remove
     delegate :effectivity_date, :is_past_due?, :number_of_days_past_due, :remaining_term, :terms_elapsed, :maturity_date, to: :current_term, allow_nil: true
@@ -71,7 +75,10 @@ module LoansModule
     delegate :number_of_months, to: :current_term, prefix: true
     delegate :term, to: :current_term
 
-
+    def self.current_loan_aging_group
+      loan_aging_groups.current
+    end
+    
     def self.filter_by(args = {})
       date = Date.parse(args[:date].to_s)
       from_date = (date - 1.month).end_of_month

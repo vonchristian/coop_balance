@@ -26,6 +26,8 @@ module LoansModule
       it { is_expected.to have_many :notes }
       it { is_expected.to have_many :loan_co_makers }
       it { is_expected.to have_many :member_co_makers }
+      it { is_expected.to have_many :loan_agings }
+      it { is_expected.to have_many :loan_aging_groups }
 
 
     end

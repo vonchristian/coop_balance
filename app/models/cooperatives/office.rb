@@ -18,6 +18,7 @@ module Cooperatives
     has_many :loan_products,           class_name: "LoansModule::LoanProduct"
     has_many :programs,                class_name: "Cooperatives::Program"
     has_many :accounting_reports,      class_name: "AccountingModule::AccountingReport"
+    has_many :loan_aging_groups,       class_name: 'LoansModule::LoanAgingGroup'
     validates :name, uniqueness: true
     validates :name, :type, :contact_number, :address, presence: true
 

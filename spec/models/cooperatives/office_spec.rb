@@ -19,6 +19,7 @@ module Cooperatives
       it { is_expected.to have_many :share_capital_products }
       it { is_expected.to have_many :loan_products }
       it { is_expected.to have_many :programs }
+      it { is_expected.to have_many :loan_aging_groups }
 
     end
 
