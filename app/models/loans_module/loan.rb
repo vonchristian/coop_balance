@@ -74,11 +74,10 @@ module LoansModule
     delegate :is_past_due?, :number_of_days_past_due, :remaining_term, :terms_elapsed, :maturity_date, to: :current_term, allow_nil: true
     delegate :number_of_months, to: :current_term, prefix: true
     delegate :term, to: :current_term
+    delegate :loan_aging_group, to: :current_loan_aging
 
-    def current_loan_aging_group
-      if loan_agings.present?
-        loan_agings.current.loan_aging_group
-      end
+    def current_loan_aging
+      loan_agings.current
     end
 
     def self.filter_by(args = {})
@@ -111,11 +110,7 @@ module LoansModule
     end
 
     def balance_for_loan_group(loan_aging_group)
-      if self.current_loan_aging_group == loan_aging_group
-        self.balance
-      else
-        0
-      end
+      ::Loans::LoanGroupBalanceCalculator.new(loan: self, loan_aging_group: loan_aging_group).balance
     end
 
     def badge_color

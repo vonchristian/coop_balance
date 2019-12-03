@@ -8,7 +8,7 @@ module LoansModule
       validates :loan_aging_group_id, uniqueness: { scope: :loan_id }
 
       def self.current
-        order(date: :desc).first 
+        order(date: :desc).first
       end
     end
   end

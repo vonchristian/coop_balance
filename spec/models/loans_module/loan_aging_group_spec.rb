@@ -10,6 +10,8 @@ module LoansModule
 
     describe 'associations' do
       it { is_expected.to belong_to :office }
+      it { is_expected.to have_many :loan_agings }
+      it { is_expected.to have_many :loans }
     end
 
     describe 'validations' do
@@ -24,6 +26,6 @@ module LoansModule
       group = create(:loan_aging_group, start_num: 0, end_num: 30)
 
       expect(group.num_range).to eql 0..30
-    end 
+    end
   end
 end
