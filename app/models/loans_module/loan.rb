@@ -75,10 +75,12 @@ module LoansModule
     delegate :number_of_months, to: :current_term, prefix: true
     delegate :term, to: :current_term
 
-    def self.current_loan_aging_group
-      loan_aging_groups.current
+    def current_loan_aging_group
+      if loan_agings.present?
+        loan_agings.current.loan_aging_group
+      end
     end
-    
+
     def self.filter_by(args = {})
       date = Date.parse(args[:date].to_s)
       from_date = (date - 1.month).end_of_month
@@ -107,6 +109,15 @@ module LoansModule
     def arrears(args={})
       amortization_schedules.where(date: args[:from_date]..args[:to_date]).sum(:principal)
     end
+
+    def balance_for_loan_group(loan_aging_group)
+      if self.current_loan_aging_group == loan_aging_group
+        self.balance
+      else
+        0
+      end
+    end
+
     def badge_color
       return 'danger' if past_due?
       return 'success' if current_loan?
