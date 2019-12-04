@@ -6,11 +6,13 @@ module MembershipsModule
     pg_search_scope :text_search, against: [:account_number, :depositor_name]
 
     belongs_to :cooperative
-    belongs_to :depositor,            polymorphic: true, touch: true
-    belongs_to :office,               class_name: "Cooperatives::Office"
-    belongs_to :time_deposit_product, class_name: "CoopServicesModule::TimeDepositProduct"
-    belongs_to :organization,         optional: true
-    belongs_to :barangay,             optional: true, class_name: "Addresses::Barangay"
+    belongs_to :depositor,                polymorphic: true, touch: true
+    belongs_to :office,                   class_name: "Cooperatives::Office"
+    belongs_to :time_deposit_product,     class_name: "CoopServicesModule::TimeDepositProduct"
+    belongs_to :organization,             optional: true
+    belongs_to :barangay,                 optional: true, class_name: "Addresses::Barangay"
+    belongs_to :liability_account,        class_name: 'AccountingModule::Account'
+    belongs_to :interest_expense_account, class_name: 'AccountingModule::Account'
 
     has_many :ownerships, as: :ownable
     has_many :depositors, through: :ownerships, source: :owner

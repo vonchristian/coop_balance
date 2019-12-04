@@ -8,6 +8,8 @@ module MembershipsModule
     	it { is_expected.to belong_to :time_deposit_product }
       it { is_expected.to have_many :terms }
       it { is_expected.to belong_to :office }
+      it { is_expected.to belong_to :liability_account }
+      it { is_expected.to belong_to :interest_expense_account }
     end
 
     describe 'delegations' do
