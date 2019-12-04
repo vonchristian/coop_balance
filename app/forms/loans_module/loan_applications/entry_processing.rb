@@ -4,10 +4,11 @@ module LoansModule
       include ActiveModel::Model
       attr_reader :voucher, :employee, :loan, :loan_application, :cooperative
       def initialize(args)
-        @voucher          = args[:voucher]
         @employee         = args[:employee]
-        @loan             = args[:loan]
         @loan_application = args[:loan_application]
+        @loan             = @loan_application.loan 
+        @voucher          = @loan_application.voucher
+
         @cooperative      = @employee.cooperative
       end
 
@@ -33,7 +34,7 @@ module LoansModule
           reference_number:    voucher.reference_number,
           entry_date:          voucher.disbursement_date)
 
-          voucher.voucher_amounts.debit.excluding_account(account: loan.loan_product_current_account).each do |amount|
+          voucher.voucher_amounts.debit.excluding_account(account: loan.receivable_account).each do |amount|
             entry.debit_amounts.build(
               account_id: amount.account_id,
               amount: amount.amount,
@@ -43,21 +44,21 @@ module LoansModule
 
           voucher.voucher_amounts.credit.each do |amount|
             entry.credit_amounts.build(
-              account: amount.account,
-              amount: amount.amount,
+              account:             amount.account,
+              amount:              amount.amount,
               commercial_document: set_commercial_document(amount)
             )
           end
 
-          voucher.voucher_amounts.debit.for_account(account: loan.loan_product_current_account).each do |amount|
+          voucher.voucher_amounts.debit.for_account(account: loan.receivable_account).each do |amount|
             entry.debit_amounts.build(
-              account_id: amount.account_id,
-              amount: amount.amount,
+              account_id:          amount.account_id,
+              amount:              amount.amount,
               commercial_document: loan)
           end
 
         entry.save!
-        voucher.update_attributes!(accounting_entry: entry, disburser: employee)
+        voucher.update!(entry_id: entry.id, disburser: employee)
       end
 
       def set_commercial_document(amount)

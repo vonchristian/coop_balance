@@ -72,6 +72,7 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'faker'
   gem 'bullet'
+  gem 'pry-rails'
 end
 
 group :development do
@@ -85,7 +86,7 @@ group :test do
   gem 'shoulda-matchers'
   gem 'database_rewinder'
   gem 'pundit-matchers'
-  gem 'webdrivers'
+  gem 'webdrivers', '~> 4.0'
 end
 
 gem 'rack-mini-profiler', require: false

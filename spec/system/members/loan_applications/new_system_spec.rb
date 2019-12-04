@@ -7,9 +7,7 @@ feature "New loan application" do
     user         = create(:loan_officer)
     member       = create(:member)
     member.memberships.create!(cooperative: user.cooperative, membership_type: 'regular_member', account_number: SecureRandom.uuid)
-
     login_as(user, scope: :user)
-
     visit member_loans_url(member)
     click_link 'New Loan Application'
   end
@@ -21,7 +19,9 @@ feature "New loan application" do
     fill_in "Loan Term (in months)", with: 2
     choose "Lumpsum"
     fill_in "Purpose of loan", with: 'YEB'
+
     click_button 'Proceed'
+
     expect(page).to have_content("saved successfully")
   end
 

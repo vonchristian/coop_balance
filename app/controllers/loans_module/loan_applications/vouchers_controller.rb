@@ -7,11 +7,11 @@ module LoansModule
         if @loan_application.voucher.present?
           redirect_to loans_module_loan_applications_url(@loan_application)
         end
-        @borrower = @loan_application.borrower
-        @share_capitals = @borrower.share_capitals
+        @borrower         = @loan_application.borrower
+        @share_capitals   = @borrower.share_capitals
         @savings_accounts = @borrower.savings
-        @previous_loans = @borrower.loans.includes(:loan_product)
-        @voucher = LoansModule::LoanApplications::VoucherProcessing.new
+        @previous_loans   = @borrower.loans.includes(:loan_product)
+        @voucher          = LoansModule::LoanApplications::VoucherProcessing.new
       end
 
       def create

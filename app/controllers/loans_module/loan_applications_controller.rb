@@ -41,7 +41,7 @@ module LoansModule
 
     def destroy
       @loan_application = current_cooperative.loan_applications.find(params[:id])
-      @loan_application.destroy
+      ::LoansModule::LoanApplications::Cancellation.new(loan_application: @loan_application).cancel!
       redirect_to loans_url, notice: "Loan application cancelled successfully"
     end
 

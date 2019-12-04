@@ -21,9 +21,11 @@ module LoansModule
       LoansModule::LoanApplication.find_by(account_number: account_number)
     end
     def process!
-      ActiveRecord::Base.transaction do
-        create_loan_application
-      end
+      if valid?
+        ActiveRecord::Base.transaction do
+          create_loan_application
+        end
+      end 
     end
 
     def find_loan

@@ -27,7 +27,7 @@ module LoansModule
           find_loan_application.voucher_amounts.create!(
           description: "Previous Loan Payment (Interest)",
           amount: interest_amount.to_f,
-          account: interest_income_account,
+          account: find_loan.interest_revenue_account,
           commercial_document: find_loan,
           cooperative: find_loan_application.cooperative,
           amount_type: 'credit')
@@ -37,7 +37,7 @@ module LoansModule
           find_loan_application.voucher_amounts.create!(
           description: "Previous Loan Payment (Penalty)",
           amount: penalty_amount.to_f,
-          account: find_loan.loan_product.current_penalty_config.penalty_revenue_account,
+          account: find_loan.penalty_revenue_account,
           commercial_document: find_loan,
           cooperative: find_loan_application.cooperative,
           amount_type: 'credit')

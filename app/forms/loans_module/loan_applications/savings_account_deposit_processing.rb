@@ -14,13 +14,12 @@ module LoansModule
 
       private
       def create_voucher_amount
-        find_loan_application.voucher_amounts.create!(
-        description: "Savings Deposit",
-        amount: amount,
-        account: find_savings_account.saving_product_account,
+        find_loan_application.voucher_amounts.credit.create!(
+        description:         "Savings Deposit",
+        amount:              amount,
+        account:             find_savings_account.liability_account,
         commercial_document: find_savings_account,
-        cooperative: find_loan_application.cooperative,
-        amount_type: 'credit')
+        cooperative:         find_loan_application.cooperative)
       end
 
       def find_loan_application
