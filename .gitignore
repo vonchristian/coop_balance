@@ -26,6 +26,7 @@
 .byebug_history
 
 # Ignore master key for decrypting credentials and more.
+/config/master.key
 /public/storage
 
 .yarn-integrity
@@ -39,5 +40,3 @@ yarn-debug.log*
 /public/packs
 /public/packs-test
 /node_modules
-
-/config/master.key
