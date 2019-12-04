@@ -21,7 +21,7 @@ module StoreFrontModule
 
     validates :business_name, presence: true, uniqueness: true
 
-    before_save :set_default_image, on: :create
+    before_save :set_default_image
 
     def name
       business_name
