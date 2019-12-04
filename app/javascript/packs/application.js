@@ -37,7 +37,6 @@ document.addEventListener("turbolinks:load", () => {
         viewMode: "months",
         minViewMode: "months"
       });
-
 })
 
 document.addEventListener('turbolinks:load', ready);
