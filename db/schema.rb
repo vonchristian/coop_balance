@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_03_233725) do
+ActiveRecord::Schema.define(version: 2019_12_03_235446) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1363,8 +1363,10 @@ ActiveRecord::Schema.define(version: 2019_12_03_233725) do
     t.datetime "updated_at", null: false
     t.uuid "cooperative_id"
     t.string "beneficiaries"
+    t.uuid "liability_account_id"
     t.index ["cooperative_id"], name: "index_savings_account_applications_on_cooperative_id"
     t.index ["depositor_type", "depositor_id"], name: "index_depositor_on_savings_account_applications"
+    t.index ["liability_account_id"], name: "index_savings_account_applications_on_liability_account_id"
     t.index ["saving_product_id"], name: "index_savings_account_applications_on_saving_product_id"
   end
 
@@ -1986,6 +1988,7 @@ ActiveRecord::Schema.define(version: 2019_12_03_233725) do
   add_foreign_key "savings", "offices"
   add_foreign_key "savings", "organizations"
   add_foreign_key "savings", "saving_products"
+  add_foreign_key "savings_account_applications", "accounts", column: "liability_account_id"
   add_foreign_key "savings_account_applications", "cooperatives"
   add_foreign_key "savings_account_applications", "saving_products"
   add_foreign_key "share_capital_applications", "accounts", column: "equity_account_id"

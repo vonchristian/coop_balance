@@ -1,12 +1,13 @@
 class Member < ApplicationRecord
+  extend TinMonitoring
+  extend PercentActive
+  extend BirthdayMonitoring
   include PgSearch::Model
 
   include CurrentTin
   include Contactable
-  include Addressable
-  extend TinMonitoring
-  extend PercentActive
-  extend BirthdayMonitoring
+  include Addressing
+
 
   pg_search_scope :text_search, :against => [ :first_name, :middle_name, :last_name]
   multisearchable against: [:first_name, :last_name, :middle_name]

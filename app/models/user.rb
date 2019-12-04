@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  include Addressable
+  include Addressing
   include CurrentTin
   include PgSearch::Model
   include Contactable

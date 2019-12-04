@@ -5,7 +5,7 @@ include ChosenSelect
 describe 'New share capital application' do
   before(:each) do
     teller = create(:teller)
-    member = create(:member) { include Addressable }
+    member = create(:member) { include Addressing }
 
     membership = create(:membership, cooperator: member, cooperative: teller.cooperative)
     login_as(teller, scope: :user)

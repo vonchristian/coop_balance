@@ -2,7 +2,7 @@ class Organization < ApplicationRecord
   extend TinMonitoring
   include PgSearch::Model
   include CurrentTin
-  include Addressable
+  include Addressing
 
   pg_search_scope :text_search, against: [:name, :abbreviated_name]
   has_one_attached :avatar
@@ -21,7 +21,7 @@ class Organization < ApplicationRecord
 
   has_many :addresses, as: :addressable
 
-  before_save :set_default_image, on: :create
+  before_save :set_default_image
 
   def member_entries
     ids = []

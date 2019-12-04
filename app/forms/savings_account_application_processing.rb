@@ -21,7 +21,7 @@ class SavingsAccountApplicationProcessing
 
   private
   def create_savings_account_application
-    savings_account_application = SavingsAccountApplication.create!(
+    savings_account_application = SavingsAccountApplication.new(
       saving_product_id: saving_product_id,
       depositor_id: depositor_id,
       depositor_type: depositor_type,
@@ -31,8 +31,15 @@ class SavingsAccountApplicationProcessing
       cooperative: find_employee.cooperative,
       beneficiaries: beneficiaries
     )
+    create_accounts(savings_account_application)
+    savings_account_application.save!
     create_voucher(savings_account_application)
   end
+
+  def create_accounts(savings_account_application)
+    ::AccountCreators::SavingsAccountApplication.new(savings_account_application: savings_account_application).create_accounts!
+  end
+
   def create_voucher(savings_account_application)
     voucher = Voucher.new(
       account_number: voucher_account_number,
@@ -53,7 +60,7 @@ class SavingsAccountApplicationProcessing
     )
     voucher.voucher_amounts.credit.build(
       cooperative: find_employee.cooperative,
-      account: credit_account,
+      account: savings_account_application.liability_account,
       amount: amount,
       commercial_document: savings_account_application)
     voucher.save!

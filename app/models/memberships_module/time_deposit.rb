@@ -21,7 +21,7 @@ module MembershipsModule
     delegate :name, to: :depositor
     delegate :avatar, to: :depositor
 
-    before_save :set_depositor_name, on: [:create]
+    before_save :set_depositor_name
     def self.deposited_on(args={})
       from_date = args[:from_date] || 999.years.ago
       to_date   = args[:to_date]
