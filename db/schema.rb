@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_03_235446) do
+ActiveRecord::Schema.define(version: 2019_12_04_061306) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1316,6 +1316,7 @@ ActiveRecord::Schema.define(version: 2019_12_03_235446) do
     t.string "beneficiaries"
     t.string "code"
     t.uuid "interest_expense_account_id"
+    t.uuid "liability_account_id"
     t.index ["account_number"], name: "index_savings_on_account_number", unique: true
     t.index ["account_owner_name"], name: "index_savings_on_account_owner_name"
     t.index ["barangay_id"], name: "index_savings_on_barangay_id"
@@ -1323,6 +1324,7 @@ ActiveRecord::Schema.define(version: 2019_12_03_235446) do
     t.index ["cooperative_id"], name: "index_savings_on_cooperative_id"
     t.index ["depositor_type", "depositor_id"], name: "index_savings_on_depositor_type_and_depositor_id"
     t.index ["interest_expense_account_id"], name: "index_savings_on_interest_expense_account_id"
+    t.index ["liability_account_id"], name: "index_savings_on_liability_account_id"
     t.index ["office_id"], name: "index_savings_on_office_id"
     t.index ["organization_id"], name: "index_savings_on_organization_id"
     t.index ["saving_product_id"], name: "index_savings_on_saving_product_id"
@@ -1413,11 +1415,13 @@ ActiveRecord::Schema.define(version: 2019_12_03_235446) do
     t.string "maf_beneficiaries"
     t.string "code"
     t.uuid "interest_on_capital_account_id"
+    t.uuid "equity_account_id"
     t.index ["account_number"], name: "index_share_capitals_on_account_number", unique: true
     t.index ["barangay_id"], name: "index_share_capitals_on_barangay_id"
     t.index ["cart_id"], name: "index_share_capitals_on_cart_id"
     t.index ["code"], name: "index_share_capitals_on_code", unique: true
     t.index ["cooperative_id"], name: "index_share_capitals_on_cooperative_id"
+    t.index ["equity_account_id"], name: "index_share_capitals_on_equity_account_id"
     t.index ["interest_on_capital_account_id"], name: "index_share_capitals_on_interest_on_capital_account_id"
     t.index ["office_id"], name: "index_share_capitals_on_office_id"
     t.index ["organization_id"], name: "index_share_capitals_on_organization_id"
@@ -1938,6 +1942,7 @@ ActiveRecord::Schema.define(version: 2019_12_03_235446) do
   add_foreign_key "saving_products", "cooperatives"
   add_foreign_key "saving_products", "offices"
   add_foreign_key "savings", "accounts", column: "interest_expense_account_id"
+  add_foreign_key "savings", "accounts", column: "liability_account_id"
   add_foreign_key "savings", "barangays"
   add_foreign_key "savings", "cooperatives"
   add_foreign_key "savings", "offices"
@@ -1955,6 +1960,7 @@ ActiveRecord::Schema.define(version: 2019_12_03_235446) do
   add_foreign_key "share_capital_products", "accounts", column: "transfer_fee_account_id"
   add_foreign_key "share_capital_products", "cooperatives"
   add_foreign_key "share_capital_products", "offices"
+  add_foreign_key "share_capitals", "accounts", column: "equity_account_id"
   add_foreign_key "share_capitals", "accounts", column: "interest_on_capital_account_id"
   add_foreign_key "share_capitals", "barangays"
   add_foreign_key "share_capitals", "carts"
