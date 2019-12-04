@@ -13,6 +13,8 @@ module AccountCreators
       end
     end
 
+    private 
+
     def create_liability_account
       if saving.liability_account.blank?
         account = AccountingModule::Liability.create!(

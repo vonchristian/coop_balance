@@ -13,11 +13,12 @@ module MembershipsModule
     belongs_to :barangay,                 optional: true, class_name: "Addresses::Barangay"
     belongs_to :liability_account,        class_name: 'AccountingModule::Account'
     belongs_to :interest_expense_account, class_name: 'AccountingModule::Account'
+    belongs_to :break_contract_account, class_name: 'AccountingModule::Account'
 
     has_many :ownerships, as: :ownable
     has_many :depositors, through: :ownerships, source: :owner
 
-    delegate :name, :interest_rate, :account, :interest_expense_account, :break_contract_fee, to: :time_deposit_product, prefix: true
+    delegate :name, :interest_rate, :account, :interest_expense_account, :break_contract_account, :break_contract_fee, to: :time_deposit_product, prefix: true
     delegate :full_name, :first_and_last_name, to: :depositor, prefix: true
     delegate :name, to: :office, prefix: true
     delegate :name, to: :depositor

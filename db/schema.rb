@@ -1650,8 +1650,10 @@ ActiveRecord::Schema.define(version: 2019_12_04_074754) do
     t.string "code"
     t.uuid "liability_account_id"
     t.uuid "interest_expense_account_id"
+    t.uuid "break_contract_account_id"
     t.index ["account_number"], name: "index_time_deposits_on_account_number", unique: true
     t.index ["barangay_id"], name: "index_time_deposits_on_barangay_id"
+    t.index ["break_contract_account_id"], name: "index_time_deposits_on_break_contract_account_id"
     t.index ["code"], name: "index_time_deposits_on_code", unique: true
     t.index ["cooperative_id"], name: "index_time_deposits_on_cooperative_id"
     t.index ["depositor_type", "depositor_id"], name: "index_time_deposits_on_depositor_type_and_depositor_id"
@@ -2019,6 +2021,7 @@ ActiveRecord::Schema.define(version: 2019_12_04_074754) do
   add_foreign_key "time_deposit_products", "accounts", column: "break_contract_account_id"
   add_foreign_key "time_deposit_products", "accounts", column: "interest_expense_account_id"
   add_foreign_key "time_deposit_products", "cooperatives"
+  add_foreign_key "time_deposits", "accounts", column: "break_contract_account_id"
   add_foreign_key "time_deposits", "accounts", column: "interest_expense_account_id"
   add_foreign_key "time_deposits", "accounts", column: "liability_account_id"
   add_foreign_key "time_deposits", "barangays"
