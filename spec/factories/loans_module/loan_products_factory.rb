@@ -7,6 +7,7 @@ FactoryBot.define do
     after(:build) do |t|
       create(:interest_config, loan_product: t)
       create(:penalty_config, loan_product: t)
+      create(:interest_prededuction, loan_product: t)
     end
   end
 end

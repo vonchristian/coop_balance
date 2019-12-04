@@ -3,12 +3,16 @@ include ChosenSelect
 
 feature "New loan application" do
   before(:each) do
-    loan_product = create(:loan_product, name: "Regular Loan")
-    user         = create(:loan_officer)
-    member       = create(:member)
+    cash              = create(:asset, name: 'Cash on Hand')
+    teller            = create(:teller)
+    teller.cash_accounts << cash
+    amortization_type = create(:amortization_type, calculation_type: 'straight_line', repayment_calculation_type: 'equal_principal')
+    loan_product      = create(:loan_product, name: "Regular Loan", amortization_type: amortization_type)
+    user              = create(:loan_officer)
+    member            = create(:member)
     member.memberships.create!(cooperative: user.cooperative, membership_type: 'regular_member', account_number: SecureRandom.uuid)
     login_as(user, scope: :user)
-    visit member_loans_url(member)
+    visit member_loans_path(member)
     click_link 'New Loan Application'
   end
 
@@ -17,12 +21,26 @@ feature "New loan application" do
     select_from_chosen "Regular Loan", from: 'Select Type of Loan'
     fill_in "Loan amount", with: 10_000
     fill_in "Loan Term (in months)", with: 2
+    page.execute_script "window.scrollBy(0,10000)"
+
     choose "Lumpsum"
-    fill_in "Purpose of loan", with: 'YEB'
+    page.execute_script "window.scrollBy(0,10000)"
+
+    fill_in "Purpose of Loan", with: 'YEB'
 
     click_button 'Proceed'
 
     expect(page).to have_content("saved successfully")
+
+    fill_in 'Date', with: Date.current
+    page.execute_script "window.scrollBy(0,10000)"
+
+    select 'Cash on Hand', from: 'Cash account'
+    fill_in 'Reference number', with: '232'
+    click_button 'Create Voucher'
+
+    expect(page).to have_content("saved successfully")
+
   end
 
   scenario 'with invalid attributes' do
