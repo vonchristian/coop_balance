@@ -138,13 +138,7 @@ module LoansModule
     end
 
     def principal_account
-      if current_loan?
-        receivable_account
-      elsif past_due?
-        loan_product_past_due_account
-      elsif restructured?
-        loan_product_restructured_account
-      end
+      receivable_account
     end
 
     def charges

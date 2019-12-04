@@ -1,4 +1,4 @@
-#ensure debits and credits are equal
+
 class Voucher < ApplicationRecord
   include PgSearch::Model
   include Taggable
@@ -99,12 +99,6 @@ class Voucher < ApplicationRecord
 
   def disbursed?
     accounting_entry.present?
-  end
-
-  def disbursement_date
-    if disbursed?
-      accounting_entry.entry_date
-    end
   end
 
   def self.latest

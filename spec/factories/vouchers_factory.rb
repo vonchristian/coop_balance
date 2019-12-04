@@ -8,5 +8,6 @@ FactoryBot.define do
     association :disburser, factory: :teller
     account_number { SecureRandom.uuid }
     description { Faker::Company.bs }
+    reference_number { SecureRandom.uuid }
   end
 end

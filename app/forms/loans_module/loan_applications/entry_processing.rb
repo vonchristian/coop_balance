@@ -3,12 +3,11 @@ module LoansModule
     class EntryProcessing
       include ActiveModel::Model
       attr_reader :voucher, :employee, :loan, :loan_application, :cooperative
-      def initialize(args)
-        @employee         = args[:employee]
-        @loan_application = args[:loan_application]
-        @loan             = @loan_application.loan 
+      def initialize(employee:, loan_application:)
+        @employee         = employee
+        @loan_application = loan_application
+        @loan             = @loan_application.loan
         @voucher          = @loan_application.voucher
-
         @cooperative      = @employee.cooperative
       end
 
@@ -19,6 +18,7 @@ module LoansModule
       def process!
         ActiveRecord::Base.transaction do
           create_entry
+          update_voucher
         end
       end
 
@@ -36,8 +36,8 @@ module LoansModule
 
           voucher.voucher_amounts.debit.excluding_account(account: loan.receivable_account).each do |amount|
             entry.debit_amounts.build(
-              account_id: amount.account_id,
-              amount: amount.amount,
+              account:             amount.account,
+              amount:              amount.amount,
               commercial_document: set_commercial_document(amount)
             )
           end
@@ -52,13 +52,11 @@ module LoansModule
 
           voucher.voucher_amounts.debit.for_account(account: loan.receivable_account).each do |amount|
             entry.debit_amounts.build(
-              account_id:          amount.account_id,
+              account:             amount.account,
               amount:              amount.amount,
               commercial_document: loan)
           end
-
         entry.save!
-        voucher.update!(entry_id: entry.id, disburser: employee)
       end
 
       def set_commercial_document(amount)
@@ -69,6 +67,9 @@ module LoansModule
         end
       end
 
+      def update_voucher
+        voucher.update!(entry_id: find_entry.id, disburser: employee)
+      end
     end
   end
 end

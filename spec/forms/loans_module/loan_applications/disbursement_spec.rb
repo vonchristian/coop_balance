@@ -2,25 +2,37 @@ require 'rails_helper'
 
 module LoansModule
   module LoanApplications
-    describe Disbursement do
-      it "disburse!" do
-        cash             = create(:asset)
-        teller           = create(:teller)
-        voucher          = create(:voucher, entry_id: nil, disbursement_date: Date.current)
-        loan_application = create(:loan_application, voucher: voucher, office: teller.office)
-        voucher_amount_1 = create(:voucher_amount, amount_type: 'debit', amount: 100,  account: loan_application.receivable_account, voucher: voucher)
-        voucher_amount_2 = create(:voucher_amount, amount_type: 'credit', amount: 100,  account: cash, voucher: voucher)
-        loan_aging_group = create(:loan_aging_group, office: teller.office)
+    describe Disbursement, type: :model do
+      describe 'validations' do
+        it { is_expected.to validate_presence_of :loan_application_id }
+        it { is_expected.to validate_presence_of :employee_id }
+        it { is_expected.to validate_presence_of :disbursement_date }
+      end
 
-        disbursement = described_class.new(
-          loan_application_id: loan_application.id,
-          employee_id:         teller.id,
-          disbursement_date:   Date.current.end_of_month)
-          disbursement.disburse!
+      it '#disburse!' do
+        teller             = create(:teller)
 
-          expect(loan_application.voucher.disbursement_date).to eq Date.current.end_of_month
+        receivable_account = create(:asset)
+        cash_account       = create(:asset)
+        voucher            = create(:voucher, entry_id: nil, disbursement_date: Date.current)
+        create(:voucher_amount, amount: 100, amount_type: 'credit', account: cash_account, voucher: voucher)
+        create(:voucher_amount, amount: 100, amount_type: 'debit', account: receivable_account, voucher: voucher)
+        loan_application   = create(:loan_application, voucher: voucher, receivable_account: receivable_account, office: teller.office)
+        loan_aging_group   = create(:loan_aging_group, office: teller.office)
+        puts voucher.inspect
+        puts ""
+        puts loan_application.voucher.inspect
 
 
+          described_class.new(
+            disbursement_date: Date.current.end_of_month,
+            loan_application_id: loan_application.id,
+            employee_id: teller.id).disburse!
+
+        # expect(voucher.disbursement_date).to eq Date.current.end_of_month
+        expect(loan_application.loan).to_not eql nil
+        entry = AccountingModule::Entry.find_by!(reference_number: voucher.reference_number)
+        puts voucher.inspect
       end
     end
   end

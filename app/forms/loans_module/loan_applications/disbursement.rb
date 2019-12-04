@@ -10,17 +10,17 @@ module LoansModule
         if valid?
           ActiveRecord::Base.transaction do
             update_voucher_disbursement_date
-            # create_loan
-            # create_entry
-            # update_entry_date
-            # update_term
-            # update_approved_at
-            # update_last_transaction_date
+            create_loan
+            create_entry
+            update_entry_date
+            update_term
+            update_approved_at
+            update_last_transaction_date
           end
         end
       end
 
-      private
+
 
       def update_voucher_disbursement_date
         find_loan_application.voucher.update!(disbursement_date: parsed_disbursement_date)
@@ -67,6 +67,7 @@ module LoansModule
         TermParser.new(term: find_loan_application.loan.term).add_months +
         TermParser.new(term: find_loan_application.loan.term).add_days
       end
+
       def parsed_disbursement_date
         if disbursement_date.kind_of?(Date) || disbursement_date.kind_of?(DateTime)
           disbursement_date
@@ -74,6 +75,7 @@ module LoansModule
           DateTime.parse(disbursement_date)
         end
       end
+
       def update_approved_at
         find_loan_application.update!(approved_at: parsed_disbursement_date)
       end
