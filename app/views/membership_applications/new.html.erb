@@ -26,8 +26,8 @@
               <%= f.input :email %>
               <%= f.input :tin_number, label: "TIN Number" %>
 
-              <%= f.input :office_id, input_html: { value: current_user.office_id }, as: :hidden %>
-              <%= f.input :cooperative_id, input_html: { value: current_user.cooperative_id }, as: :hidden %>
+              <%= f.input :office_id, input_html: { value: current_user.office_id }  %>
+              <%= f.input :cooperative_id, input_html: { value: current_user.cooperative_id } %>
               <div class="form-group">
                 <%= f.label 'Province' %><br />
                 <%= f.collection_select :province_id, Addresses::Province.order(:name), :id, :name, include_blank: true, html: {class: 'form-control'} %>

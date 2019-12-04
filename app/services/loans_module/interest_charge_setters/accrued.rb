@@ -20,7 +20,7 @@ module LoansModule
           cooperative: loan_application.cooperative,
           description: "Accrued Interest Income",
           amount:     loan_application.add_on_interest,
-          account:    interest_config.accrued_income_account
+          account:    loan_application.accrued_income_account
         )
       end
     end

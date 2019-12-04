@@ -33,7 +33,7 @@ module LoansModule
     private
 
     def create_loan_application
-      loan_application = LoansModule::LoanApplication.create!(
+      loan_application = LoansModule::LoanApplication.new(
         cooperative:      find_preparer.cooperative,
         office:           find_preparer.office,
         organization:     find_borrower.current_organization,
@@ -46,8 +46,14 @@ module LoansModule
         preparer_id:      preparer_id,
         account_number:   account_number,
         term:             term)
+        create_accounts(loan_application)
+        loan_application.save!
 
         find_loan_product.loan_processor.new(loan_application: loan_application).process!
+    end
+    
+    def create_accounts(loan_application)
+      ::AccountCreators::LoanApplication.new(loan_application: loan_application).create_accounts!
     end
     def find_borrower
       Borrower.find(borrower_id)

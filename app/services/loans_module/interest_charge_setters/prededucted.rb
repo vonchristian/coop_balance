@@ -23,7 +23,7 @@ module LoansModule
           description: "Interest on Loan",
           amount:     computed_interest,
 
-          account:    interest_config.interest_revenue_account
+          account:    loan_application.interest_revenue_account
         )
       end
       def computed_interest

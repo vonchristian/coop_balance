@@ -11,6 +11,7 @@ module AccountCreators
       create_receivable_account
       create_interest_revenue_amount
       create_penalty_revenue_account
+      create_accrued_income_account
     end
 
     private
@@ -39,6 +40,16 @@ module AccountCreators
           code: "PEN-#{loan.account_number}"
         )
         loan.update(penalty_revenue_account: account)
+      end
+    end
+
+    def create_accrued_income_account
+      if loan.accrued_income_account.blank?
+        account = AccountingModule::Asset.create!(
+          name: "Accrued Income - #{loan_product.name} - #{loan.account_number}",
+          code: "ACR-#{loan.account_number}"
+        )
+        loan.update(accrued_income_account: account)
       end
     end
 

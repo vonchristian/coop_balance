@@ -10,6 +10,8 @@ module LoansModule
       it { is_expected.to belong_to :office }
       it { is_expected.to belong_to :organization }
       it { is_expected.to belong_to :voucher }
+      it { is_expected.to belong_to :receivable_account }
+      it { is_expected.to belong_to :interest_revenue_account }
       it { is_expected.to have_one :loan }
       it { is_expected.to have_many :voucher_amounts }
       it { is_expected.to have_many :amortization_schedules }
@@ -18,7 +20,6 @@ module LoansModule
     describe 'validations' do
      it {is_expected.to monetize(:loan_amount) }
      it { is_expected.to validate_presence_of(:cooperative_id) }
-
     end
 
     describe 'delegations' do

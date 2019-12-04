@@ -18,7 +18,7 @@ module LoansModule
             commercial_document: share_capital,
             description:         "Capital Build Up",
             amount:              computed_amount,
-            account:             share_capital_product.equity_account
+            account:             share_capital.share_capital_equity_account
           )
         end
       end

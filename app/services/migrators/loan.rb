@@ -39,9 +39,11 @@ module Migrators
     end
 
     def migrate_accrued_income_entries
-      accrued_income_account.amounts.where(commercial_document_id: loan.id).each do |amount|
-        amount.update!(account: loan.accrued_income_account)
-      end
+      if accrued_income_account.present?
+        accrued_income_account.amounts.where(commercial_document_id: loan.id).each do |amount|
+          amount.update!(account: loan.accrued_income_account)
+        end
+      end 
     end
   end
 end

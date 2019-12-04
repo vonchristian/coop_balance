@@ -31,7 +31,9 @@ module LoansModule
       end
 
       def create_loan
-        LoansModule::LoanCreationProcessing.new(loan_application: find_loan_application, employee: find_employee).process!
+        LoansModule::LoanCreationProcessing.new(
+          loan_application: find_loan_application, 
+          employee:         find_employee).process!
       end
       #
       def create_entry
@@ -51,10 +53,11 @@ module LoansModule
       end
 
       def update_term
-        find_loan_application.loan.current_term.update_attributes!(
+        find_loan_application.loan.current_term.update!(
           effectivity_date: disbursement_date,
           maturity_date: maturity_date)
       end
+
       def maturity_date
         Date.parse(disbursement_date) +
         TermParser.new(term: find_loan_application.loan.term).add_months +

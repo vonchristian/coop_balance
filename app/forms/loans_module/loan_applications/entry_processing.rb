@@ -31,8 +31,6 @@ module LoansModule
           description:         voucher.description,
           recorder:            voucher.preparer,
           reference_number:    voucher.reference_number,
-          previous_entry:      cooperative.entries.recent,
-          previous_entry_hash: cooperative.entries.recent.encrypted_hash,
           entry_date:          voucher.disbursement_date)
 
           voucher.voucher_amounts.debit.excluding_account(account: loan.loan_product_current_account).each do |amount|

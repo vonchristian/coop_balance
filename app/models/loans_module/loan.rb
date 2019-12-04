@@ -139,7 +139,7 @@ module LoansModule
 
     def principal_account
       if current_loan?
-        loan_product_current_account
+        receivable_account
       elsif past_due?
         loan_product_past_due_account
       elsif restructured?

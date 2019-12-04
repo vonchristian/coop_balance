@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_04_081638) do
+ActiveRecord::Schema.define(version: 2019_12_04_084235) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -713,12 +713,16 @@ ActiveRecord::Schema.define(version: 2019_12_04_081638) do
     t.boolean "cancelled", default: false
     t.datetime "approved_at"
     t.decimal "annual_interest_rate"
+    t.uuid "receivable_account_id"
+    t.uuid "interest_revenue_account_id"
     t.index ["borrower_type", "borrower_id"], name: "index_loan_applications_on_borrower_type_and_borrower_id"
     t.index ["cooperative_id"], name: "index_loan_applications_on_cooperative_id"
+    t.index ["interest_revenue_account_id"], name: "index_loan_applications_on_interest_revenue_account_id"
     t.index ["loan_product_id"], name: "index_loan_applications_on_loan_product_id"
     t.index ["office_id"], name: "index_loan_applications_on_office_id"
     t.index ["organization_id"], name: "index_loan_applications_on_organization_id"
     t.index ["preparer_id"], name: "index_loan_applications_on_preparer_id"
+    t.index ["receivable_account_id"], name: "index_loan_applications_on_receivable_account_id"
     t.index ["voucher_id"], name: "index_loan_applications_on_voucher_id"
   end
 
@@ -1874,6 +1878,8 @@ ActiveRecord::Schema.define(version: 2019_12_04_081638) do
   add_foreign_key "loan_aging_groups", "offices"
   add_foreign_key "loan_agings", "loan_aging_groups"
   add_foreign_key "loan_agings", "loans"
+  add_foreign_key "loan_applications", "accounts", column: "interest_revenue_account_id"
+  add_foreign_key "loan_applications", "accounts", column: "receivable_account_id"
   add_foreign_key "loan_applications", "cooperatives"
   add_foreign_key "loan_applications", "loan_products"
   add_foreign_key "loan_applications", "offices"

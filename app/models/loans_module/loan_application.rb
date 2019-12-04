@@ -12,6 +12,8 @@ module LoansModule
     belongs_to :office, class_name: "Cooperatives::Office"
     belongs_to :loan_product
     belongs_to :organization
+    belongs_to :receivable_account,       class_name: 'AccountingModule::Account'
+    belongs_to :interest_revenue_account, class_name: 'AccountingModule::Account'
     belongs_to :voucher, dependent: :destroy
     has_one    :loan, class_name: "LoansModule::Loan", dependent: :destroy
     has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", dependent: :destroy
