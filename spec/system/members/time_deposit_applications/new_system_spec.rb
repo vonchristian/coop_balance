@@ -2,15 +2,14 @@ require 'rails_helper'
 
 describe 'New time deposit application' do
   before(:each) do
-    cooperative = create(:cooperative)
-    origin_entry = create(:origin_entry, cooperative: cooperative)
+    cooperative  = create(:cooperative)
     cash_account = create(:asset)
-    user = create(:user, role: 'teller', cooperative: cooperative)
+    user         = create(:user, role: 'teller', cooperative: cooperative)
     user.cash_accounts << cash_account
     time_deposit_product = create(:time_deposit_product, name: "Time Deposit (100,000)", cooperative: cooperative)
     member = create(:member)
-    member.memberships.create(cooperative: cooperative, membership_type: 'regular_member')
-    login_as(user, scope: :user )
+    member.memberships.create!(cooperative: cooperative, membership_type: 'regular_member', account_number: SecureRandom.uuid)
+    login_as(user, scope: :user)
     visit member_time_deposits_url(member)
     click_link "New Time Deposit"
   end
@@ -27,7 +26,7 @@ describe 'New time deposit application' do
     click_button "Proceed"
     expect(page).to have_content "created successfully"
 
-    click_link "Confirm"
+    click_link "Confirm Transaction"
 
     expect(page).to have_content "saved successfully"
 

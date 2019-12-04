@@ -22,7 +22,7 @@ class TimeDepositApplicationProcessing
 
   private
   def create_time_deposit_application
-    time_deposit_application = TimeDepositApplication.create!(
+    time_deposit_application = TimeDepositApplication.new(
       time_deposit_product_id: time_deposit_product_id,
       depositor_id:            depositor_id,
       depositor_type:          depositor_type,
@@ -33,8 +33,15 @@ class TimeDepositApplicationProcessing
       cooperative:             find_employee.cooperative,
       beneficiaries:           beneficiaries
     )
+    create_accounts(time_deposit_application)
+    time_deposit_application.save!
     create_voucher(time_deposit_application)
   end
+
+  def create_accounts(time_deposit_application)
+    ::AccountCreators::TimeDepositApplication.new(time_deposit_application: time_deposit_application).create_accounts!
+  end
+
   def create_voucher(time_deposit_application)
     voucher = Voucher.new(
       account_number: voucher_account_number,
@@ -48,15 +55,15 @@ class TimeDepositApplicationProcessing
       date: date
     )
     voucher.voucher_amounts.debit.build(
-      cooperative: find_employee.cooperative,
-      account: cash_account,
-      amount: amount,
+      cooperative:         find_employee.cooperative,
+      account:             cash_account,
+      amount:              amount,
       commercial_document: time_deposit_application
     )
     voucher.voucher_amounts.credit.build(
-      cooperative: find_employee.cooperative,
-      account: credit_account,
-      amount: amount,
+      cooperative:         find_employee.cooperative,
+      account:             time_deposit_application.liability_account,
+      amount:              amount,
       commercial_document: time_deposit_application)
     voucher.save!
   end

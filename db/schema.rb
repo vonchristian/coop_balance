@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_04_074754) do
+ActiveRecord::Schema.define(version: 2019_12_04_081638) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1587,9 +1587,11 @@ ActiveRecord::Schema.define(version: 2019_12_04_074754) do
     t.uuid "cooperative_id"
     t.string "certificate_number"
     t.string "beneficiaries"
+    t.uuid "liability_account_id"
     t.index ["account_number"], name: "index_time_deposit_applications_on_account_number", unique: true
     t.index ["cooperative_id"], name: "index_time_deposit_applications_on_cooperative_id"
     t.index ["depositor_type", "depositor_id"], name: "index_depositor_on_time_deposit_applications"
+    t.index ["liability_account_id"], name: "index_time_deposit_applications_on_liability_account_id"
     t.index ["time_deposit_product_id"], name: "index_time_deposit_applications_on_time_deposit_product_id"
     t.index ["voucher_id"], name: "index_time_deposit_applications_on_voucher_id"
   end
@@ -2011,6 +2013,7 @@ ActiveRecord::Schema.define(version: 2019_12_04_074754) do
   add_foreign_key "suppliers", "accounts", column: "payable_account_id"
   add_foreign_key "suppliers", "cooperatives"
   add_foreign_key "taggings", "tags"
+  add_foreign_key "time_deposit_applications", "accounts", column: "liability_account_id"
   add_foreign_key "time_deposit_applications", "cooperatives"
   add_foreign_key "time_deposit_applications", "time_deposit_products"
   add_foreign_key "time_deposit_applications", "vouchers"
