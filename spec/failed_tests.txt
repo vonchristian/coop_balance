@@ -4,3 +4,5 @@ example_id                                                                 | sta
 ./spec/system/members/savings_account_applications/new_system_spec.rb[1:2] | passed | 0.55445 seconds |
 ./spec/system/savings_accounts/deposits/new_system_spec.rb[1:1]            | passed | 4.18 seconds    |
 ./spec/system/savings_accounts/deposits/new_system_spec.rb[1:2]            | passed | 0.65688 seconds |
+./spec/system/savings_accounts/withdrawals/new_system_spec.rb[1:1]         | passed | 4.16 seconds    |
+./spec/system/savings_accounts/withdrawals/new_system_spec.rb[1:2]         | passed | 0.79147 seconds |
