@@ -2,6 +2,10 @@ require 'rails_helper'
 module LoansModule
   describe Loan do
     context 'associations' do
+      it { is_expected.to belong_to :receivable_account }
+      it { is_expected.to belong_to :interest_revenue_account }
+      it { is_expected.to belong_to :penalty_revenue_account }
+      it { is_expected.to belong_to :accrued_income_account }
       it { is_expected.to belong_to :loan_application }
       it { is_expected.to belong_to :disbursement_voucher }
       it { is_expected.to belong_to :archived_by }

@@ -26,6 +26,11 @@ module LoansModule
     belongs_to :municipality,           class_name: "Addresses::Municipality",optional: true
     belongs_to :organization,           optional: true
     belongs_to :preparer,               class_name: "User", foreign_key: 'preparer_id' #move to loan application
+    belongs_to :receivable_account,       class_name: 'AccountingModule::Account'
+    belongs_to :interest_revenue_account, class_name: 'AccountingModule::Account'
+    belongs_to :penalty_revenue_account,  class_name: 'AccountingModule::Account'
+    belongs_to :accrued_income_account,  class_name: 'AccountingModule::Account'
+
     has_many :voucher_amounts,          class_name: "Vouchers::VoucherAmount", as: :commercial_document, dependent: :destroy # for adding amounts on voucher move to loan application
     has_many :amortization_schedules,   dependent: :destroy
     has_many :amounts,                  class_name: "AccountingModule::Amount", as: :commercial_document
@@ -55,6 +60,7 @@ module LoansModule
              :penalty_revenue_account,
              :interest_revenue_account,
              :interest_rebate_account,
+             :accrued_income_account,
              :interest_rate,
              :penalty_rate,
              :monthly_interest_rate,

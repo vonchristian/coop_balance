@@ -3,6 +3,7 @@ module StoreFrontModule
     include PgSearch::Model
     pg_search_scope :text_search, against: [:business_name]
     has_one_attached :avatar
+   
     belongs_to :cooperative
     belongs_to :payable_account, class_name: "AccountingModule::Account"
     has_many :addresses, as: :addressable

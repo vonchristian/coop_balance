@@ -41,6 +41,7 @@ module LoansModule
              :interest_receivable_account,
              :unearned_interest_income_account,
              :monthly_interest_rate,
+             :accrued_income_account,
              to: :current_interest_config
 
     delegate :penalty_receivable_account,

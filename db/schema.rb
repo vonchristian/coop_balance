@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_04_061306) do
+ActiveRecord::Schema.define(version: 2019_12_04_073723) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -870,19 +870,27 @@ ActiveRecord::Schema.define(version: 2019_12_04_061306) do
     t.string "type"
     t.boolean "cancelled", default: false
     t.string "code"
+    t.uuid "receivable_account_id"
+    t.uuid "interest_revenue_account_id"
+    t.uuid "penalty_revenue_account_id"
+    t.uuid "accrued_income_account_id"
     t.index ["account_number"], name: "index_loans_on_account_number", unique: true
+    t.index ["accrued_income_account_id"], name: "index_loans_on_accrued_income_account_id"
     t.index ["archived_by_id"], name: "index_loans_on_archived_by_id"
     t.index ["barangay_id"], name: "index_loans_on_barangay_id"
     t.index ["borrower_type", "borrower_id"], name: "index_loans_on_borrower_type_and_borrower_id"
     t.index ["code"], name: "index_loans_on_code", unique: true
     t.index ["cooperative_id"], name: "index_loans_on_cooperative_id"
     t.index ["disbursement_voucher_id"], name: "index_loans_on_disbursement_voucher_id"
+    t.index ["interest_revenue_account_id"], name: "index_loans_on_interest_revenue_account_id"
     t.index ["loan_application_id"], name: "index_loans_on_loan_application_id"
     t.index ["loan_product_id"], name: "index_loans_on_loan_product_id"
     t.index ["municipality_id"], name: "index_loans_on_municipality_id"
     t.index ["office_id"], name: "index_loans_on_office_id"
     t.index ["organization_id"], name: "index_loans_on_organization_id"
+    t.index ["penalty_revenue_account_id"], name: "index_loans_on_penalty_revenue_account_id"
     t.index ["preparer_id"], name: "index_loans_on_preparer_id"
+    t.index ["receivable_account_id"], name: "index_loans_on_receivable_account_id"
     t.index ["status"], name: "index_loans_on_status"
     t.index ["street_id"], name: "index_loans_on_street_id"
     t.index ["type"], name: "index_loans_on_type"
@@ -1885,6 +1893,10 @@ ActiveRecord::Schema.define(version: 2019_12_04_061306) do
   add_foreign_key "loan_products", "offices"
   add_foreign_key "loan_protection_plan_providers", "accounts", column: "accounts_payable_id"
   add_foreign_key "loan_protection_plan_providers", "cooperatives"
+  add_foreign_key "loans", "accounts", column: "accrued_income_account_id"
+  add_foreign_key "loans", "accounts", column: "interest_revenue_account_id"
+  add_foreign_key "loans", "accounts", column: "penalty_revenue_account_id"
+  add_foreign_key "loans", "accounts", column: "receivable_account_id"
   add_foreign_key "loans", "barangays"
   add_foreign_key "loans", "cooperatives"
   add_foreign_key "loans", "loan_applications"
