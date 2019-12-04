@@ -16,7 +16,7 @@
       <div class="card-body">
         <%= simple_form_for @savings_account_application, url: :savings_account_applications, html: { autocomplete: 'off' } do |f| %>
           <%= f.input :date, label: "Date Opened", as: :string, input_html: { class: "datepicker" } %>
-          <%= f.input :saving_product_id, collection: current_office.saving_products.map{|a| [ a.name, a.id ] }, input_html: { class: 'chosen-select' } %>
+          <%= f.input :saving_product_id, collection: current_cooperative.saving_products.map{|a| [ a.name, a.id ] }, input_html: { class: 'chosen-select' } %>
           <%= f.input :amount, as: :currency %>
           <%= f.input :description, as: :text, input_html: { value: "Savings account opening."} %>
           <%= f.input :beneficiaries, label: "Beneficiaries", placeholder: "Fullname", as: :text %>

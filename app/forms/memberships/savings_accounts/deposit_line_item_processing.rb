@@ -53,7 +53,7 @@ module Memberships
       end
 
       def credit_account
-        find_saving.saving_product_account
+        find_saving.liability_account
       end
     end
   end

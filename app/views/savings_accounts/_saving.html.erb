@@ -1,0 +1,40 @@
+<%= link_to savings_account_path(saving) do %>
+      <div class="card animated fadeInUp min-margin">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-2">
+              <div class="min-margin"></div>
+              <center>
+              <%= image_tag(saving.avatar, height: 60, width: 60, class: 'img-circle') %>
+            </center>
+            </div>
+            <div class="col-md-5">
+              <b><%= saving.account_owner_name %></b><br>
+              <small class="text-muted">
+                <i class="fa fa-map-marker"></i> <%= saving.depositor.current_address_complete_address %><br>
+                <i class="fa fa-phone"></i> <%= saving.depositor.current_contact_number %>
+
+              </small>
+            </div>
+            <div class="col-md-3">
+              <small class="text-muted"><%= saving.saving_product_name.upcase %></small>
+              <h4 class="subtitle-up"><%= number_to_currency saving.balance %></h4>
+              <small class="text-muted">
+                <i class="fa fa-clock"></i> <%= saving.last_transaction_date.strftime('%b. %e, %Y') %>
+              </small>
+
+              <% if !saving.has_minimum_balance? %>
+                  <span class="badge badge-outline badge-outline-danger"> Below Minimum Balance </span>
+                  <% end %></td>
+            </div>
+
+            <div class="col-md-1">
+
+<br>
+              <i class="fa fa-chevron-right fa-2x fa-slim float-right"></i>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <% end %>

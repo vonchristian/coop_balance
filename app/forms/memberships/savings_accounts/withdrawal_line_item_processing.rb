@@ -52,7 +52,7 @@ module Memberships
       end
 
       def debit_account
-        find_saving.saving_product_account
+        find_saving.liability_account
       end
 
       def amount_does_not_exceed_balance?

@@ -1,4 +1,5 @@
 require 'rails_helper'
+include ChosenSelect
 
 describe 'New savings account application' do
   before(:each) do
@@ -16,8 +17,8 @@ describe 'New savings account application' do
   end
 
   it "with valid attributes" do
-    fill_in "Date", with: Date.current
-    select "Regular Savings"
+    fill_in "Date", with: Date.current.strftime('%B %e, %Y')
+    select "Regular Savings", from: 'Saving product'
     fill_in "Amount", with: 5_000
     fill_in "Description", with: "Opening of savings account"
     fill_in "Beneficiaries", with: "Beneficiary"

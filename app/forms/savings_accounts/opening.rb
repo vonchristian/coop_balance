@@ -21,7 +21,8 @@ module SavingsAccounts
 
     private
     def create_savings_account
-      savings_account = MembershipsModule::Saving.create!(
+      savings_account = MembershipsModule::Saving.new(
+        liability_account: savings_account_application.liability_account,
         account_owner_name:    find_depositor.name,
         cooperative:           employee.cooperative,
         depositor:             find_depositor,
@@ -31,8 +32,14 @@ module SavingsAccounts
         last_transaction_date: savings_account_application.date_opened,
         beneficiaries:         savings_account_application.beneficiaries
       )
+      create_accounts(savings_account)
+      savings_account.save!
       update_voucher(savings_account)
     end
+
+    def create_accounts(savings_account)
+      ::AccountCreators::Saving.new(saving: savings_account).create_accounts!
+    end 
 
     def find_depositor
       savings_account_application.depositor

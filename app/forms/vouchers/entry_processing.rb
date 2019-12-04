@@ -26,8 +26,6 @@ module Vouchers
         description:         voucher.description,
         recorder:            voucher.preparer,
         reference_number:    voucher.reference_number,
-        previous_entry:      cooperative.entries.recent,
-        previous_entry_hash: cooperative.entries.recent.encrypted_hash,
         entry_date:          voucher.date
       )
 
@@ -48,7 +46,7 @@ module Vouchers
       end
 
       entry.save!
-      voucher.update_attributes!(accounting_entry: entry, disburser: employee)
+      voucher.update!(accounting_entry: entry, disburser: employee)
     end
 
     def update_last_transaction_date
@@ -65,7 +63,7 @@ module Vouchers
 
     def update_accounts_last_transaction_date
       voucher.voucher_amounts.accounts.each do |account|
-        account.update_attributes!(last_transaction_date: voucher.date)
+        account.update!(last_transaction_date: voucher.date)
       end
     end
 

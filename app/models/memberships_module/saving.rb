@@ -129,7 +129,7 @@ module MembershipsModule
     end
 
     def balance(args={})
-      saving_product_account.balance(args.merge(commercial_document: self))
+      liability_account.balance(args)
     end
 
     def balance_for(args={})

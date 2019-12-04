@@ -1,50 +1,27 @@
 
-<div class="row">
-  <div class="col-md-8">
-    <div class="card">
-      <div class="card-header no-border">
-        <h3 class="card-title"> <%= current_office.name %> Savings </h3>
+
+        <div class="row">
+        <div class="col-md-8">
+          <h3 class="title-up">Savings Accounts</h3>
+        </div>
+
+        <div class="col-md-4 m-0">
+          <%= form_tag savings_accounts_path, method: :get, class: "search-form" do %>
+            <div class="input-group">
+              <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search by Depositor ", id: 'account-search-form' %>
+              <span class="input-group-btn">
+                <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-outline-secondary") do %>
+                  <i class="fa fa-search"></i>
+                <% end %>
+              </span>
+            </div>
+          <% end %>
+        </div>
       </div>
-      <div class="card-body">
-        <%= form_tag savings_accounts_path, method: :get, class: "search-form" do %>
-          <div class="input-group">
-            <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Depositor ", id: 'account-search-form' %>
-            <span class="input-group-btn">
-              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-default btn-flat") do %>
-                <i class="fa fa-search"></i>Search Savings
-              <% end %>
-            </span>
-          </div>
-        <% end %>
-      </div>
-    </div>
-    <% @savings_accounts.each do |savings_account| %>
-      <%= render 'savings_accounts/partials/header', savings_account: savings_account, cached: true %>
+      <br>
+    <% @savings_accounts.each do |saving| %>
+      <%= render 'savings_accounts/saving', saving: saving %>
     <% end %>
-    <center><%= will_paginate @savings_accounts %> </center>
+
+    <center><%==pagy_bootstrap_nav(@pagy) %> </center>
   </div>
-  <div class="col-md-4">
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title"> Offices </h3>
-      </div>
-      <div class="card-body">
-        <% @offices.each do |office| %>
-          <div class="row">
-            <div class="col-md-9">
-              <%= link_to office.name, savings_accounts_path(office_id: office.id) %>
-            </div>
-            <div class="col-md-3">
-              <% if current_page?(savings_accounts_path(office_id: office.id)) %>
-                <span class="badge bg-success"> Current </span>
-              <% else %>
-                <%= link_to "Switch", savings_accounts_path(office_id: office.id), class: 'btn btn-primary' %>
-              <% end %>
-            </div>
-          </div>
-          <hr>
-        <% end %>
-      </div>
-    </div>
-  </div>
-<div>

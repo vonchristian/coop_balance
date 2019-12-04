@@ -26,7 +26,7 @@
           <%= f.input :or_number, label: 'Reference Number' %>
           <%= f.input :cash_account_id, default: current_cooperative.users.teller.last.cash_accounts.first, collection: current_cooperative.users.teller.last.cash_accounts.map{|a| [a.name, a.id] } %>
           <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
-          <%= f.input :offline_receipt, as: :boolean, input_html: { checked: true }, as: :hidden %>
+          <%= f.input :offline_receipt, input_html: { checked: true }, as: :hidden %>
           <%= f.input :saving_id, input_html: { value: @savings_account.id },as: :hidden %>
           <%= f.input :employee_id, input_html: { value: current_user.id },as: :hidden %>
           <%= f.submit "Proceed", class: "btn btn-primary float-right", data: { disable_with: "Processing..."} %>

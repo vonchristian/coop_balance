@@ -8,9 +8,9 @@ class BalanceStatusChecker
 
   def set_balance_status
     if account.balance >= product.minimum_balance
-      account.update_attributes!(has_minimum_balance:  true)
+      account.update!(has_minimum_balance:  true)
     elsif account.balance < product.minimum_balance
-      account.update_attributes!(has_minimum_balance:  false)
+      account.update!(has_minimum_balance:  false)
     end
   end
 end
