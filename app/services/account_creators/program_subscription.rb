@@ -11,11 +11,12 @@ module AccountCreators
 
     def create_accounts!
       if program_subscription.account.blank?
-        account = account_category.accounts.create!(
-        type:             "AccountingModule::Accounts::#{level_one_account_category.normalized_type}",
+        account = level_one_account_category.accounts.create!(
+        type:             "AccountingModule::#{level_one_account_category.normalized_type}",
         name:             "#{program.name} (#{program_subscription.subscriber_name} - #{program_subscription.account_number}",
         code:             program_subscription.account_number)
-        program_subscription.update!(account: account)
+
+        program_subscription.update!(program_account: account)
       end
     end
   end

@@ -3,5 +3,7 @@ FactoryBot.define do
     association :program
     association :subscriber, factory: :member
     association :program_account, factory: :asset
+    association :office
+    account_number { SecureRandom.uuid }
   end
 end

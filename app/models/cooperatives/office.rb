@@ -22,7 +22,7 @@ module Cooperatives
     has_many :loan_aging_groups,            class_name: 'LoansModule::LoanAgingGroup'
     has_many :level_one_account_categories, class_name: 'AccountingModule::LevelOneAccountCategory'
     has_many :level_two_account_categories, class_name: 'AccountingModule::LevelTwoAccountCategory'
-
+    
     validates :name, uniqueness: true
     validates :name, :type, :contact_number, :address, presence: true
 
