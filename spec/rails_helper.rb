@@ -29,11 +29,11 @@ RSpec.configure do |config|
     DatabaseRewinder.clean
   end
   config.before(:each, type: :system) do
-    driven_by :rack_test, using: :firefox
+    driven_by :rack_test
   end
 
   config.before(:each, type: :system, js: true) do
-    driven_by :selenium, using: :firefox
+    driven_by :selenium, using: :chrome
   end
   config.before(:suite) do
       DatabaseRewinder.clean_all

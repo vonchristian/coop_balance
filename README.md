@@ -1,3 +1,9 @@
+migration for program subscription
+remove commercial document
+add account categories
+namespace accounts
+namespace amounts
+
 schedule of program / MAS
 uploading of MAS excel
 
@@ -16,8 +22,6 @@ update voucher
  date_prepared
  disbursement_date
  cancelled_at
-
-
 
 
 remove accrued -> move to add_on

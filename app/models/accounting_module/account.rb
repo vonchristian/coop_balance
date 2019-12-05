@@ -192,7 +192,7 @@ module AccountingModule
 
     def self.trial_balance(args={})
       if self.new.class == AccountingModule::Account
-        assets.balance(args) - (liabilities.balance(args) + equities.balance(args) + revenues.balance(args) - expenses.balance(args))
+        AccountingModule::Asset.balance(args) - (AccountingModule::Liability.balance(args) + AccountingModule::Equity.balance(args) + AccountingModule::Revenue.balance(args) - AccountingModule::Expense.balance(args))
       else
         raise(NoMethodError, "undefined method 'trial_balance'")
       end

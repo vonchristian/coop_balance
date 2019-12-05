@@ -5,6 +5,7 @@ FactoryBot.define do
     association :unearned_interest_income_account, factory: :revenue
     association :accrued_income_account, factory: :asset
     association :cooperative
+    calculation_type { 'prededucted' }
     rate { 0.18 }
   end
 end

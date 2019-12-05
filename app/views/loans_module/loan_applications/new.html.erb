@@ -31,38 +31,8 @@
           <%= f.input :borrower_type, input_html: { value: @borrower.class.to_s }, as: :hidden %>
           <%= f.input :loan_amount, as: :currency %>
           <%= f.input :term, label: "Loan Term (in months)", input_html: {maxlength: 4} %>
-          
-          <label class="required" for="loans_module_loan_application_processing_mode_of_payment">
-            Mode of Payment
-            <abbr title="required">*</abbr>
-          </label>
-          <div class="row">
-            <div class="col-md-4">
-              <% LoansModule::Loan.mode_of_payments.keys.to_a.first(3).each do |mode_of_payment| %>
-                <div class="form-check">
-                  <input type="radio" name="loans_module_loan_application_processing[mode_of_payment]" value="<%= mode_of_payment %>" id='modePaymentSelect'>
-                  <label class="ml-0"><%= mode_of_payment.titleize %></label>
-                </div>
-              <% end %>
-            </div>
-            <div class="col-md-4">
-              <% (LoansModule::Loan.mode_of_payments.keys.to_a.first(6) - LoansModule::Loan.mode_of_payments.keys.to_a.first(3)).each do |mode_of_payment| %>
-                <div class="form-check">
-                  <input type="radio" name="loans_module_loan_application_processing[mode_of_payment]" value="<%= mode_of_payment %>" id='modePaymentSelect'>
-                  <label class="ml-0"><%= mode_of_payment.titleize %></label>
-                </div>
-              <% end %>
-            </div>
-            <div class="col-md-4">
-              <% LoansModule::Loan.mode_of_payments.keys.to_a.last(1).each do |mode_of_payment| %>
-                <div class="form-check">
-                  <input type="radio" name="loans_module_loan_application_processing[mode_of_payment]" value="<%= mode_of_payment %>" id='modePaymentSelect'>
-                  <label class="ml-0"><%= mode_of_payment.titleize %></label>
-                </div>
-              <% end %>
-            </div>
-          </div>
-          <br>
+
+          <%= f.input :mode_of_payment, collection: LoansModule::LoanApplication.mode_of_payments.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
           <%= f.input :purpose, as: :text, label: "Purpose of Loan" %>
 
           <%= f.input :preparer_id, input_html: { value: current_user.id }, as: :hidden %>

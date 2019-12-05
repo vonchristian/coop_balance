@@ -79,21 +79,20 @@ module Loans
     def create_interest_revenue_amount
       if interest_amount.to_f > 0
         find_cart.voucher_amounts.credit.create!(
-        amount:      BigDecimal(interest_amount),
-        account:     find_loan.loan_product_interest_revenue_account,
+        amount:              BigDecimal(interest_amount),
+        account:             find_loan.interest_revenue_account,
         commercial_document: find_loan,
-        recorder:    find_employee,
-        cooperative: find_employee.cooperative)
+        recorder:            find_employee,
+        cooperative:         find_employee.cooperative)
       end
     end
 
     def create_penalty_amount
       if penalty_amount.to_f > 0
         find_cart.voucher_amounts.credit.create!(
-        amount:      BigDecimal(penalty_amount),
-        account:     find_loan.loan_product_penalty_revenue_account,
+        amount:              BigDecimal(penalty_amount),
+        account:             find_loan.penalty_revenue_account,
         commercial_document: find_loan,
-
         recorder:    find_employee,
         cooperative: find_employee.cooperative)
       end
@@ -103,7 +102,7 @@ module Loans
       if principal_amount.to_f > 0
         find_cart.voucher_amounts.credit.create!(
         amount:      BigDecimal(principal_amount),
-        account:     find_loan.loan_product.current_account,
+        account:     find_loan.receivable_account,
         commercial_document: find_loan,
         recorder:    find_employee,
         cooperative: find_employee.cooperative)
