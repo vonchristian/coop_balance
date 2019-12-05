@@ -20,6 +20,7 @@ module Cooperatives
       it { is_expected.to have_many :loan_products }
       it { is_expected.to have_many :programs }
       it { is_expected.to have_many :loan_aging_groups }
+      it { is_expected.to have_many :level_one_account_categories }
 
     end
 
