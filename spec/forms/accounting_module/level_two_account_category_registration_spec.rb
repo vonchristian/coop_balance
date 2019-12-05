@@ -1,14 +1,13 @@
 require 'rails_helper'
 
 module AccountingModule
-  describe LevelOneAccountCategoryRegistration, type: :model do
+  describe LevelTwoAccountCategoryRegistration, type: :model do
     describe 'attributes' do
       it { is_expected.to respond_to(:type) }
       it { is_expected.to respond_to(:title) }
       it { is_expected.to respond_to(:code) }
       it { is_expected.to respond_to(:office_id) }
-      it { is_expected.to respond_to(:level_two_account_category_id) }
-    end 
+    end
 
     describe 'validations' do
       it { is_expected.to validate_presence_of :type }
@@ -27,7 +26,7 @@ module AccountingModule
         type: 'Asset',
         code: 'test code',
         office_id: office.id
-      ).normalized_type).to eql "AccountingModule::AccountCategories::LevelOneAccountCategories::Asset"
+      ).normalized_type).to eql "AccountingModule::AccountCategories::LevelTwoAccountCategories::Asset"
     end
 
     it "#register!" do
@@ -38,12 +37,12 @@ module AccountingModule
         code: 'test code',
         contra: true,
         office_id: office.id).register!
-      category = office.level_one_account_categories.where(title: 'test title').last
+      category = office.level_two_account_categories.where(title: 'test title').last
 
       expect(category.title).to eql 'test title'
       expect(category.code).to eql 'test code'
       expect(category.office_id).to eql office.id
-      expect(category.class).to eql AccountingModule::AccountCategories::LevelOneAccountCategories::Asset
+      expect(category.class).to eql AccountingModule::AccountCategories::LevelTwoAccountCategories::Asset
       expect(category.contra?).to be true
     end
   end
