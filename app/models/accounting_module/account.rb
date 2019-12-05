@@ -6,7 +6,7 @@ module AccountingModule
     multisearchable against: [:name, :code]
 
     class_attribute :normal_credit_balance
-
+    belongs_to :level_one_account_category,  class_name: 'AccountingModule::LevelOneAccountCategory', optional: true
     belongs_to :main_account,       class_name: "AccountingModule::Account", foreign_key: 'main_account_id'
     belongs_to :account_category,   class_name: 'AccountingModule::AccountCategory'
     has_many :amounts,              class_name: "AccountingModule::Amount"

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_05_010416) do
+ActiveRecord::Schema.define(version: 2019_12_05_013323) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -85,8 +85,10 @@ ActiveRecord::Schema.define(version: 2019_12_05_010416) do
     t.boolean "active", default: true
     t.datetime "last_transaction_date"
     t.uuid "account_category_id"
+    t.uuid "level_one_account_category_id"
     t.index ["account_category_id"], name: "index_accounts_on_account_category_id"
     t.index ["code"], name: "index_accounts_on_code", unique: true
+    t.index ["level_one_account_category_id"], name: "index_accounts_on_level_one_account_category_id"
     t.index ["main_account_id"], name: "index_accounts_on_main_account_id"
     t.index ["name"], name: "index_accounts_on_name", unique: true
     t.index ["type"], name: "index_accounts_on_type"
@@ -643,6 +645,18 @@ ActiveRecord::Schema.define(version: 2019_12_05_010416) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "message"
+  end
+
+  create_table "level_one_account_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "office_id"
+    t.string "title"
+    t.string "code"
+    t.boolean "contra"
+    t.string "type"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["office_id"], name: "index_level_one_account_categories_on_office_id"
+    t.index ["type"], name: "index_level_one_account_categories_on_type"
   end
 
   create_table "line_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1822,6 +1836,7 @@ ActiveRecord::Schema.define(version: 2019_12_05_010416) do
   add_foreign_key "accounting_reports", "offices"
   add_foreign_key "accounts", "account_categories"
   add_foreign_key "accounts", "accounts", column: "main_account_id"
+  add_foreign_key "accounts", "level_one_account_categories"
   add_foreign_key "addresses", "barangays"
   add_foreign_key "addresses", "municipalities"
   add_foreign_key "addresses", "provinces"
@@ -1872,6 +1887,7 @@ ActiveRecord::Schema.define(version: 2019_12_05_010416) do
   add_foreign_key "interest_configs", "cooperatives"
   add_foreign_key "interest_configs", "loan_products"
   add_foreign_key "interest_predeductions", "loan_products"
+  add_foreign_key "level_one_account_categories", "offices"
   add_foreign_key "line_items", "carts"
   add_foreign_key "line_items", "line_items", column: "referenced_line_item_id"
   add_foreign_key "line_items", "orders"
