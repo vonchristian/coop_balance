@@ -3,6 +3,7 @@ class Organization < ApplicationRecord
   include PgSearch::Model
   include CurrentTin
   include Addressing
+  include Contactable
 
   pg_search_scope :text_search, against: [:name, :abbreviated_name]
   has_one_attached :avatar
