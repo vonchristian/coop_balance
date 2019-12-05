@@ -10,7 +10,7 @@ module Cooperatives
     has_many :entries,                      class_name: "AccountingModule::Entry"
     has_many :bank_accounts,                class_name: "BankAccount"
     has_many :loan_applications,            class_name: "LoansModule::LoanApplication"
-    has_many :vouchers     
+    has_many :vouchers 
     has_many :accountable_accounts,         class_name: "AccountingModule::AccountableAccount", as: :accountable
     has_many :accounts,                     class_name: "AccountingModule::Account", through: :accountable_accounts
     has_many :saving_products,              class_name: "CoopServicesModule::SavingProduct"

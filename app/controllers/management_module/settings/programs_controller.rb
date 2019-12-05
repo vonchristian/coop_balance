@@ -17,13 +17,13 @@ module ManagementModule
           redirect_to management_module_settings_programs_url, notice: "Program created successfully."
         else
           render :new
-        end 
+        end
 			end
 
 			private
 
 			def program_params
-			  params.require(:cooperatives_program).permit(:name, :amount, :default_program, :description, :payment_schedule_type, :account_id, :cooperative_id, :office_id)
+			  params.require(:cooperatives_program).permit(:name, :amount, :default_program, :description, :payment_schedule_type, :account_id, :cooperative_id, :office_id, :level_one_account_category_id)
 			end
 		end
 	end

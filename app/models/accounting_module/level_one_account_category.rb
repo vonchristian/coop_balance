@@ -49,62 +49,62 @@ module AccountingModule
         expenses.balance(args))
     end
 
-    def self.balance(options={})
+    def self.balance(args = {})
       accounts_balance = BigDecimal('0')
       self.all.each do |category|
         category.accounts.each do |account|
           if account.contra?
-            accounts_balance -= account.balance(options)
+            accounts_balance -= account.balance(args)
           else
-            accounts_balance += account.balance(options)
+            accounts_balance += account.balance(args)
           end
         end
       end
       accounts_balance
     end
 
-    def self.debits_balance(options={})
+    def self.debits_balance(args = {})
       accounts_balance = BigDecimal('0')
       self.all.each do |category|
         category.accounts.each do |account|
           if account.contra?
-            accounts_balance -= account.debits_balance(options)
+            accounts_balance -= account.debits_balance(args)
           else
-            accounts_balance += account.debits_balance(options)
+            accounts_balance += account.debits_balance(args)
           end
         end
       end
       accounts_balance
     end
 
-    def self.credits_balance(options={})
+    def self.credits_balance(args = {})
       accounts_balance = BigDecimal('0')
       self.all.each do |category|
         category.accounts.each do |account|
           if account.contra?
-            accounts_balance -= account.credits_balance(options)
+            accounts_balance -= account.credits_balance(args)
           else
-            accounts_balance += account.credits_balance(options)
+            accounts_balance += account.credits_balance(args)
           end
         end
       end
       accounts_balance
     end
 
-    def balance(options={})
+    def balance(args = {})
       return raise(NoMethodError, "undefined method 'balance'") if self.class == AccountingModule::LevelOneAccountCategory
-      if self.normal_credit_balance ^ contra
-        credits_balance(options) - debits_balance(options)
+      if self.normal_credit_balance ^ self.contra?
+        credits_balance(args) - debits_balance(args)
       else
-        debits_balance(options) - credits_balance(options)
+        debits_balance(args) - credits_balance(args)
       end
     end
 
-    def credits_balance(args={})
+    def credits_balance(args = {})
       credit_amounts.balance(args)
     end
 
-    def debits_balance(args={})
+    def debits_balance(args = {})
       debit_amounts.balance(args)
     end
   end

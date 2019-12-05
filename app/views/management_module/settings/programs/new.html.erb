@@ -10,9 +10,9 @@
         <%= f.input :office_id, input_html: { value: current_office.id }, as: :hidden %>
         <%= f.input :name %>
         <%= f.input :description, as: :string %>
+        <%= f.input :level_one_account_category_id, collection: current_office.level_one_account_categories.map { |category| [category.title, category.id] }, input_html: { class: 'chosen-select' } %>
         <%= f.input :amount, label: "Amount" %>
         <%= f.input :payment_schedule_type, collection: Cooperatives::Program.payment_schedule_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
-        <%= f.input :level_one_account_category_id, collection: current_office.level_one_account_categories.map { |category| [category.title, category.id] }, input_html: { class: 'chosen-select' } %>
         <%= f.input :default_program %>
 
         <%= f.submit "Create Program", class: "btn btn-danger float-right", data: { disable_with: "Processing..." } %>
