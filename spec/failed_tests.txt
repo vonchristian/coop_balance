@@ -111,3 +111,5 @@ example_id                                                                      
 ./spec/models/cooperatives/program_spec.rb[1:6]                                       | passed  | 0.80016 seconds |
 ./spec/system/accounting_module/level_one_account_categories/new_system_spec.rb[1:1]  | passed  | 6.61 seconds    |
 ./spec/system/accounting_module/level_one_account_categories/new_system_spec.rb[1:2]  | passed  | 0.26541 seconds |
+./spec/system/accounting_module/level_two_account_categories/new_system_spec.rb[1:1]  | passed  | 6.44 seconds    |
+./spec/system/accounting_module/level_two_account_categories/new_system_spec.rb[1:2]  | passed  | 0.15921 seconds |
