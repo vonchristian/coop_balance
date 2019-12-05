@@ -14,6 +14,10 @@ module AccountingModule
       end
     end
 
+    def normalized_type
+      ("AccountingModule::AccountCategories::LevelOneAccountCategories::#{type}")
+    end
+
     private
     def create_level_one_account_category
       find_office.level_one_account_categories.create!(
@@ -26,10 +30,6 @@ module AccountingModule
 
     def find_office
       Cooperatives::Office.find(office_id)
-    end
-
-    def normalized_type
-      ("AccountingModule::AccountCategories::LevelOneAccountCategories::#{type}")
     end
   end
 end
