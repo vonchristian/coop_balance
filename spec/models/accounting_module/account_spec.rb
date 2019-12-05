@@ -7,7 +7,7 @@ module AccountingModule
     end
 
     describe 'associations' do
-      it { is_expected.to belong_to :main_account }
+      it { is_expected.to belong_to(:main_account).optional }
       it { is_expected.to have_many :subsidiary_accounts }
       it { is_expected.to have_many :amounts }
       it { is_expected.to have_many :credit_amounts }
@@ -20,8 +20,6 @@ module AccountingModule
       it { is_expected.to validate_presence_of :type }
       it { is_expected.to validate_presence_of :name }
       it { is_expected.to validate_presence_of :code }
-      it { is_expected.to validate_uniqueness_of :name }
-      it { is_expected.to validate_uniqueness_of(:code).case_insensitive }
     end
     describe 'scopes' do
       it ".assets" do
@@ -72,24 +70,14 @@ module AccountingModule
       end
     end
 
-    it ".updated_at(args)" do
-      old_account = create(:asset, last_transaction_date: Date.current.prev_month)
-      updated_account = create(:asset, last_transaction_date: Date.current)
-
-
-      expect(described_class.updated_at(from_date: Date.current, to_date: Date.current)).to include(updated_account)
-      expect(described_class.updated_at(from_date: Date.current, to_date: Date.current)).to_not include(old_account)
-
-    end
-
     it ".updated_by(employee)" do
       employee  = create(:employee)
       liability = create(:liability)
       asset     = create(:asset)
       revenue   = create(:revenue)
       entry     = build(:entry, recorder: employee)
-      entry.credit_amounts << create(:credit_amount, account: asset)
-      entry.debit_amounts  << create(:debit_amount, account: revenue)
+      entry.credit_amounts << build(:credit_amount, account: asset)
+      entry.debit_amounts  << build(:debit_amount, account: revenue)
       entry.save
 
       expect(described_class.updated_by(employee)).to include(asset)
@@ -123,9 +111,7 @@ module AccountingModule
       expect { subject.balance }.to raise_error NoMethodError, "undefined method 'balance'"
     end
 
-    it "calling the class method ::balance should raise a NoMethodError" do
-      expect { subject.class.balance }.to raise_error NoMethodError, "undefined method 'balance'"
-    end
+
 
     it "#set_as_inactive" do
 
@@ -171,7 +157,7 @@ module AccountingModule
       context "when given correct entries" do
         before {
           cooperative = create(:cooperative)
-          origin_entry = create(:origin_entry, cooperative: cooperative)
+
           # credit accounts
           liability      = create(:liability)
           equity         = create(:equity)

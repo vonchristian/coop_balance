@@ -8,7 +8,7 @@ module AccountingModule
     describe 'associations' do
       it { is_expected.to belong_to :entry }
       it { is_expected.to belong_to :account }
-      it { is_expected.to belong_to :commercial_document }
+      it { is_expected.to belong_to(:commercial_document).optional }
     end
 
     describe 'validations' do
@@ -32,12 +32,12 @@ module AccountingModule
     context 'scopes' do
       it ".cancelled and not_cancelled scopes" do
         cooperative = create(:cooperative)
-        origin_entry = create(:origin_entry, cooperative: cooperative)
+
         employee = create(:user, role: 'teller', cooperative: cooperative)
         cash_on_hand = create(:asset)
         revenue = create(:revenue)
         employee.cash_accounts << cash_on_hand
-        not_cancelled_entry = build(:entry, cooperative: cooperative, recorder: employee, previous_entry: origin_entry )
+        not_cancelled_entry = build(:entry, cooperative: cooperative, recorder: employee )
         not_cancelled_debit_amount = not_cancelled_entry.debit_amounts.build(account: cash_on_hand, amount: 1_000)
         not_cancelled_credit_amount = not_cancelled_entry.credit_amounts.build(amount: 1_000, account: revenue )
         not_cancelled_entry.save!
@@ -72,7 +72,7 @@ module AccountingModule
         cash_on_hand = create(:asset)
         revenue = create(:revenue)
         employee.cash_accounts << cash_on_hand
-        entry = build(:entry, cooperative: cooperative, recorder: employee )
+        entry = build(:entry, cooperative: cooperative, recorder: employee, office: employee.office)
         debit_amount = entry.debit_amounts.build(account: cash_on_hand, amount: 1_000)
         credit_amount = entry.credit_amounts.build(amount: 1_000, account: revenue )
         entry.save!
@@ -81,20 +81,7 @@ module AccountingModule
         expect(described_class.for_recorder(recorder_id: employee.id)).to include(credit_amount)
       end
 
-      it ".for_commercial_document(args={})" do
-        cooperative = create(:cooperative)
-        employee = create(:user, role: 'teller', cooperative: cooperative)
-        cash_on_hand = create(:asset)
-        revenue = create(:revenue)
-        employee.cash_accounts << cash_on_hand
-        entry = build(:entry, cooperative: cooperative, recorder: employee, commercial_document: employee )
-        debit_amount = entry.debit_amounts.build(account: cash_on_hand, amount: 1_000, commercial_document: employee)
-        credit_amount = entry.credit_amounts.build(amount: 1_000, account: revenue, commercial_document: employee )
-        entry.save!
 
-        expect(described_class.for_commercial_document(commercial_document: employee)).to include(debit_amount)
-        expect(described_class.for_commercial_document(commercial_document: employee)).to include(credit_amount)
-      end
 
 
       it ".total_cash_amount" do
@@ -103,7 +90,7 @@ module AccountingModule
         cash_on_hand = create(:asset)
         revenue = create(:revenue)
         employee.cash_accounts << cash_on_hand
-        entry = build(:entry, cooperative: cooperative )
+        entry = build(:entry, cooperative: cooperative, office: employee.office, recorder: employee)
         entry.debit_amounts.build(account: cash_on_hand, amount: 1_000)
         entry.credit_amounts.build(amount: 1_000, account: revenue )
         entry.save!
@@ -117,13 +104,13 @@ module AccountingModule
       cooperative = create(:cooperative)
       cash_on_hand = create(:asset)
       revenue = create(:revenue)
-      origin_entry = create(:origin_entry, cooperative: cooperative)
-      entry = build(:entry, cooperative: cooperative, previous_entry: origin_entry, entry_date: Date.today )
+
+      entry = build(:entry, cooperative: cooperative, entry_date: Date.today)
       recent_debit_amount = entry.debit_amounts.build(account: cash_on_hand, amount: 1_000)
       recent_credit_amount = entry.credit_amounts.build(amount: 1_000, account: revenue )
       entry.save!
 
-      old_entry = build(:entry, cooperative: cooperative, previous_entry: origin_entry, entry_date: Date.today.yesterday)
+      old_entry = build(:entry, cooperative: cooperative, entry_date: Date.today.yesterday)
       old_debit_amount = old_entry.debit_amounts.build(account: cash_on_hand, amount: 1_000)
       old_credit_amount = old_entry.credit_amounts.build(amount: 1_000, account: revenue )
       old_entry.save!
@@ -143,8 +130,8 @@ module AccountingModule
       cooperative = create(:cooperative)
       cash_on_hand = create(:asset)
       revenue = create(:revenue)
-      origin_entry = create(:origin_entry, cooperative: cooperative)
-      entry = build(:entry, cooperative: cooperative, previous_entry: origin_entry, entry_date: Date.today )
+
+      entry = build(:entry, cooperative: cooperative, entry_date: Date.today )
       recent_debit_amount = entry.debit_amounts.build(account: cash_on_hand, amount: 1_000)
       recent_credit_amount = entry.credit_amounts.build(amount: 1_000, account: revenue )
       entry.save!
@@ -161,8 +148,7 @@ module AccountingModule
       cooperative = create(:cooperative)
       cash_on_hand = create(:asset)
       revenue = create(:revenue)
-      origin_entry = create(:origin_entry, cooperative: cooperative)
-      entry = build(:entry, cooperative: cooperative, previous_entry: origin_entry, entry_date: Date.today )
+      entry = build(:entry, cooperative: cooperative, entry_date: Date.today )
       recent_debit_amount = entry.debit_amounts.build(account: cash_on_hand, amount: 1_000)
       recent_credit_amount = entry.credit_amounts.build(amount: 1_000, account: revenue )
       entry.save!
@@ -180,8 +166,7 @@ module AccountingModule
       employee = create(:teller)
       employee.cash_accounts << cash_on_hand
       revenue = create(:revenue)
-      origin_entry = create(:origin_entry, cooperative: cooperative)
-      entry = build(:entry, cooperative: cooperative, previous_entry: origin_entry, entry_date: Date.today )
+      entry = build(:entry, cooperative: cooperative, entry_date: Date.today )
       cash_on_hand_amount = entry.debit_amounts.build(account: cash_on_hand, amount: 1_000)
       revenue_amount = entry.credit_amounts.build(amount: 1_000, account: revenue )
       entry.save!
@@ -199,8 +184,7 @@ module AccountingModule
       employee = create(:teller)
       employee.cash_accounts << cash_on_hand
       revenue = create(:revenue)
-      origin_entry = create(:origin_entry, cooperative: cooperative)
-      entry = build(:entry, cooperative: cooperative, previous_entry: origin_entry, entry_date: Date.today )
+      entry = build(:entry, cooperative: cooperative, entry_date: Date.today )
       cash_on_hand_amount = entry.debit_amounts.build(account: cash_on_hand, amount: 1_000)
       revenue_amount = entry.credit_amounts.build(amount: 1_000, account: revenue )
       entry.save!
@@ -233,8 +217,8 @@ module AccountingModule
       employee = create(:teller)
       employee.cash_accounts << cash_on_hand
       revenue = create(:revenue)
-      origin_entry = create(:origin_entry, cooperative: cooperative)
-      entry = build(:entry, cooperative: cooperative, previous_entry: origin_entry, entry_date: Date.today )
+
+      entry = build(:entry, cooperative: cooperative, entry_date: Date.today )
       cash_on_hand_amount = entry.debit_amounts.build(account: cash_on_hand, amount: 1_000)
       revenue_amount = entry.credit_amounts.build(amount: 1_000, account: revenue )
       entry.save!

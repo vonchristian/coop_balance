@@ -104,11 +104,17 @@ module AccountingModule
       context "when given correct entries" do
         before {
           office = create(:office)
-          liability_level_one_account_category      = create(:liability_level_one_account_category, office: office)
-          equity_level_one_account_category         = create(:equity_level_one_account_category, office: office)
-          revenue_level_one_account_category        = create(:revenue_level_one_account_category, office: office)
-          contra_asset_level_one_account_category   = create(:asset_level_one_account_category, contra: true, office: office)
-          contra_expense_level_one_account_category = create(:expense_level_one_account_category, contra: true, office: office)
+          liability_level_two_account_category      = create(:liability_level_two_account_category, office: office)
+          equity_level_two_account_category         = create(:equity_level_two_account_category, office: office)
+          revenue_level_two_account_category        = create(:revenue_level_two_account_category, office: office)
+          contra_asset_level_two_account_category   = create(:asset_level_two_account_category, contra: true, office: office)
+          contra_expense_level_two_account_category = create(:expense_level_two_account_category, contra: true, office: office)
+
+          liability_level_one_account_category      = create(:liability_level_one_account_category, office: office, level_two_account_category: liability_level_two_account_category)
+          equity_level_one_account_category         = create(:equity_level_one_account_category, office: office, level_two_account_category: equity_level_two_account_category)
+          revenue_level_one_account_category        = create(:revenue_level_one_account_category, office: office, level_two_account_category: revenue_level_two_account_category)
+          contra_asset_level_one_account_category   = create(:asset_level_one_account_category, contra: true, office: office, level_two_account_category:   contra_asset_level_two_account_category)
+          contra_expense_level_one_account_category = create(:expense_level_one_account_category, contra: true, office: office, level_two_account_category: contra_expense_level_two_account_category)
           # credit accounts
 
           liability      = create(:liability,level_one_account_category: liability_level_one_account_category)
@@ -124,11 +130,17 @@ module AccountingModule
           ca5 = build(:credit_amount, :account => contra_expense, :amount => 333)
 
           # debit accounts
-          asset_level_one_account_category            = create(:asset_level_one_account_category, office: office)
-          expense_level_one_account_category          = create(:expense_level_one_account_category, office: office)
-          contra_liability_level_one_account_category = create(:liability_level_one_account_category, contra: true, office: office)
-          contra_equity_level_one_account_category    = create(:equity_level_one_account_category, contra: true, office: office)
-           contra_revenue_level_one_account_category  = create(:revenue_level_one_account_category, contra: true, office: office)
+          asset_level_two_account_category            = create(:asset_level_two_account_category, office: office)
+          expense_level_two_account_category          = create(:expense_level_two_account_category, office: office)
+          contra_liability_level_two_account_category = create(:liability_level_two_account_category, contra: true, office: office)
+          contra_equity_level_two_account_category    = create(:equity_level_two_account_category, contra: true, office: office)
+          contra_revenue_level_two_account_category   = create(:revenue_level_two_account_category, contra: true, office: office)
+
+          asset_level_one_account_category            = create(:asset_level_one_account_category, office: office, level_two_account_category: asset_level_two_account_category)
+          expense_level_one_account_category          = create(:expense_level_one_account_category, office: office, level_two_account_category: expense_level_two_account_category)
+          contra_liability_level_one_account_category = create(:liability_level_one_account_category, contra: true, office: office, level_two_account_category: contra_liability_level_two_account_category)
+          contra_equity_level_one_account_category    = create(:equity_level_one_account_category, contra: true, office: office, level_two_account_category: contra_equity_level_two_account_category)
+          contra_revenue_level_one_account_category   = create(:revenue_level_one_account_category, contra: true, office: office, level_two_account_category: contra_revenue_level_two_account_category)
 
           asset            = create(:asset, level_one_account_category: asset_level_one_account_category)
           expense          = create(:expense, level_one_account_category: expense_level_one_account_category)

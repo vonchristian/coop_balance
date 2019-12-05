@@ -5,7 +5,7 @@ shared_examples_for 'a AccountingModule::Amount subtype' do |elements|
   it { is_expected.to be_valid }
 
   it "should require an amount" do
-    amount.amount = nil
+    amount.amount_cents = nil
     expect(amount).to_not be_valid
   end
 
@@ -18,8 +18,5 @@ shared_examples_for 'a AccountingModule::Amount subtype' do |elements|
     amount.account = nil
     expect(amount).to_not be_valid
   end
-  it "should require a commercial_document" do
-    amount.commercial_document = nil
-    expect(amount).to_not be_valid
-  end
+
 end

@@ -15,7 +15,7 @@ module AccountingModule
     belongs_to :office,                class_name: "Cooperatives::Office"
     belongs_to :cooperative
     belongs_to :cooperative_service,   class_name: "CoopServicesModule::CooperativeService", optional: true
-    belongs_to :cancelled_by,          class_name: "User", foreign_key: 'cancelled_by_id'
+    belongs_to :cancelled_by,          class_name: "User", foreign_key: 'cancelled_by_id', optional: true
     belongs_to :recorder,              class_name: "User", foreign_key: 'recorder_id'
     has_many   :referenced_entries,    class_name: "AccountingModule::Entry", foreign_key: 'previous_entry_id', dependent: :nullify
     has_many   :credit_amounts,        class_name: 'AccountingModule::CreditAmount', dependent: :destroy
@@ -36,7 +36,7 @@ module AccountingModule
     accepts_nested_attributes_for :credit_amounts, :debit_amounts, allow_destroy: true
 
     before_save :set_default_date, :set_entry_date_to_datetime
-    after_commit :set_encrypted_hash!, if: :entries_present?
+
 
     delegate :name,  :first_and_last_name, to: :recorder, prefix: true, allow_nil: true
     delegate :name,  to: :cooperative, prefix: true
@@ -150,23 +150,6 @@ module AccountingModule
       amounts.accounts
     end
 
-    def digested_hash
-      Digest::SHA256.hexdigest(self.digestable)
-    end
-
-    def digestable
-      "#{amounts.count.to_s}
-      #{amounts.sum(:amount_cents).to_s}
-      #{amounts.pluck(:account_id).join("," "")}
-      #{entry_date.to_s}
-      #{cooperative_id.to_s}
-      #{office_id.to_s}
-      #{commercial_document_id.to_s}
-      #{commercial_document_type.to_s}
-      #{previous_entry_id}
-      #{recorder_id.to_s}
-      #{previous_entry_hash}"
-    end
 
     def cancelled?
       cancelled == true
@@ -199,14 +182,7 @@ module AccountingModule
     end
 
     private
-    def set_encrypted_hash!
-      if encrypted_hash.blank?
-        self.update!(
-          encrypted_hash: digested_hash,
-          updated_at: created_at.strftime("%B %e, %Y")
-        )
-      end
-    end
+
 
     def set_default_date
       if entry_date.blank?
