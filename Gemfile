@@ -6,7 +6,7 @@ git_source(:github) do |repo_name|
 end
 gem 'mime-types', [ '~> 2.6', '>= 2.6.1' ], require: 'mime/types/columnar'
 gem 'prawn-icon'
-gem 'bootsnap', require: false
+gem 'bootsnap', '>= 1.1.0', require: false
 gem 'webpacker', '~> 4.x'
 gem 'rubyzip', '>= 1.2.2'
 gem 'axlsx', git: 'https://github.com/randym/axlsx.git', ref: 'c8ac844'
@@ -78,7 +78,7 @@ end
 group :development do
   gem 'listen'
   gem 'spring'
-  gem 'spring-watcher-listen'
+  gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
 group :test do

@@ -11,7 +11,7 @@ module Programs
         cooperative.accounts << asset
         cooperative.accounts << revenue
         origin_entry = create(:origin_entry, cooperative: cooperative)
-        entry        = build(:entry, previous_entry: origin_entry, cooperative: cooperative,  entry_date: Date.current)
+        entry        = build(:entry, cooperative: cooperative,  entry_date: Date.current)
         entry.debit_amounts.build(amount: 100, account: asset, commercial_document: program)
         entry.credit_amounts.build(amount: 100, account: program.account, commercial_document: program)
         entry.save!

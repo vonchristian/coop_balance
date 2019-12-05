@@ -27,7 +27,6 @@ module Registries
         office: self.office,
         cooperative: find_cooperative,
         recorder: self.employee,
-        previous_entry: find_cooperative.entries.recent,
         description: "Forwarded balance of savings deposit as of #{cut_off_date(row).strftime('%B %e, %Y')}",
         entry_date: cut_off_date(row),
         debit_amounts_attributes: [

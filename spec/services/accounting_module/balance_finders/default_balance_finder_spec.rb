@@ -9,8 +9,7 @@ module AccountingModule
         revenue = create(:revenue)
         cooperative.accounts << asset
         cooperative.accounts << revenue
-        origin_entry = create(:origin_entry, cooperative: cooperative)
-        entry = build(:entry, previous_entry: origin_entry, cooperative: cooperative)
+        entry = build(:entry, cooperative: cooperative)
         entry.debit_amounts.build(amount: 100, account: asset)
         entry.credit_amounts.build(amount: 100, account: revenue)
         entry.save!

@@ -43,7 +43,7 @@ module ProgramSubscriptions
     end
 
     def credit_account
-      find_program_subscription.account
+      find_program_subscription.program_account
     end
 
     def find_program_subscription

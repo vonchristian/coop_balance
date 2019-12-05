@@ -181,7 +181,7 @@ module StoreFrontModule
         purchase_order     = build(:purchase_order, cooperative: cooperative)
         purchase_voucher   = create(:voucher, cooperative: cooperative)
         origin_entry       = create(:origin_entry, cooperative: cooperative)
-        purchase_entry = create(:entry_with_credit_and_debit, cooperative: cooperative, previous_entry: origin_entry)
+        purchase_entry = create(:entry_with_credit_and_debit, cooperative: cooperative)
         purchase_voucher.update_attributes(accounting_entry: purchase_entry)
         purchase_order.purchase_line_items << purchase_line_item
         purchase_order.update_attributes(voucher: purchase_voucher)
@@ -189,7 +189,7 @@ module StoreFrontModule
 
         sales_line_item = create(:sales_line_item, product: product, quantity: 100, unit_cost: 1, total_cost: 100, unit_of_measurement: unit_of_measurement, cooperative: cooperative)
         sales_order     = build(:sales_order, cooperative: cooperative)
-        sales_entry     = create(:entry_with_credit_and_debit, cooperative: cooperative, previous_entry: origin_entry)
+        sales_entry     = create(:entry_with_credit_and_debit, cooperative: cooperative)
         sales_voucher   = build(:voucher, cooperative: cooperative)
         sales_voucher.update_attributes(accounting_entry: sales_entry)
         sales_voucher.save!

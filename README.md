@@ -4,6 +4,8 @@ add account categories
 namespace accounts
 namespace amounts
 
+remove cooperative service
+
 schedule of program / MAS
 uploading of MAS excel
 

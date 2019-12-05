@@ -1,10 +1,8 @@
 FactoryBot.define do
-  factory :amount do
+  factory :amount, class: AccountingModule::Amount do
     amount { 100 }
     association :account
-
-
-
+    association :entry
     factory :debit_amount, class: AccountingModule::DebitAmount do
       type { 'AccountingModule::DebitAmount' }
     end

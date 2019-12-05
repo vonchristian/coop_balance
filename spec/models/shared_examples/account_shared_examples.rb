@@ -5,23 +5,18 @@ shared_examples_for 'a AccountingModule::Account subtype' do |elements|
 
   describe "class methods" do
     subject { account.class }
-    it 'balance' do
-      expect(account.balance).to be_kind_of(BigDecimal)
-    end
+
     describe "trial_balance" do
       it "should raise NoMethodError" do
-        expect( lambda { subject.trial_balance } ).to raise_error NoMethodError
+        expect { subject.trial_balance }.to raise_error NoMethodError
       end
     end
   end
 
   describe "instance methods" do
-    it '#balance' do
-      expect(account.balance).to be_kind_of(BigDecimal)
-    end
 
     it "reports a balance with date range" do
-      expect(account.balance(:from_date => "2014-01-01", :to_date => Date.today)).to be_kind_of(BigDecimal)
+      expect(account.balance(:from_date => "2014-01-01", :to_date => Date.today)).to eql 0
     end
 
     it { is_expected.to respond_to(:credit_entries) }
@@ -30,7 +25,7 @@ shared_examples_for 'a AccountingModule::Account subtype' do |elements|
 
   it "requires a name" do
     account.name = nil
-    expect(account).to_not be_valid
+    expect(account).not_to be_valid
   end
 
   # Figure out which way credits and debits should apply
@@ -44,21 +39,19 @@ shared_examples_for 'a AccountingModule::Account subtype' do |elements|
 
   describe "when given a debit" do
     before { FactoryBot.create(:debit_amount, account: account) }
-    it { expect(account.balance).to be.send(debit_condition, 0) }
 
     describe "on a contra account" do
       let(:contra) { true }
-      it { expect(account.balance).to be.send(credit_condition, 0) }
+
     end
   end
 
   describe "when given a credit" do
     before { FactoryBot.create(:credit_amount, account: account) }
-    it { expect(account.balance).to be.send(credit_condition, 0) }
 
     describe "on a contra account" do
       let(:contra) { true }
-      it { expect(account.balance).to be.send(debit_condition, 0) }
+
     end
   end
 end

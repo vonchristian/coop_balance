@@ -89,7 +89,7 @@ RSpec.describe Voucher  do
     undisbursed_voucher = create(:voucher)
 
     entry = create(:entry_with_credit_and_debit, entry_date: Date.today, cooperative: cooperative)
-    another_entry = create(:entry_with_credit_and_debit, previous_entry: entry, entry_date: Date.today + 1.day, cooperative: cooperative)
+    another_entry = create(:entry_with_credit_and_debit, entry_date: Date.today + 1.day, cooperative: cooperative)
 
     disbursed_voucher.accounting_entry = entry
     another_disbursed_voucher.accounting_entry = another_entry

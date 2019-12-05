@@ -3,6 +3,7 @@ require 'rails_helper'
 module Cooperatives
   describe Program do
   	context 'associations' do
+      it { is_expected.to belong_to :level_one_account_category }
       it { is_expected.to belong_to :cooperative }
       it { is_expected.to belong_to :level_one_account_category }
       it { is_expected.to belong_to :office }

@@ -7,6 +7,7 @@ Bundler.require(*Rails.groups)
 
 module CoopBooks
   class Application < Rails::Application
+    config.load_defaults 6.0
     config.generators do |g|
       g.orm :active_record, primary_key_type: :uuid
     end
@@ -16,3 +17,4 @@ module CoopBooks
     config.beginning_of_week = :sunday
   end
 end
+Rails.autoloaders.main.ignore(Rails.root.join('app/node_modules'))

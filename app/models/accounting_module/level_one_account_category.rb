@@ -5,18 +5,18 @@ module AccountingModule
     include PgSearch::Model
     pg_search_scope :text_search, against: [:title, :code]
 
-    belongs_to :office,       class_name: 'Cooperatives::Office'
-    has_many :accounts,       class_name: 'AccountingModule::Account', dependent: :nullify
-    has_many :amounts,        through: :accounts, class_name: 'AccountingModule::Amount'
-    has_many :debit_amounts,  through: :accounts, class_name: 'AccountingModule::DebitAmount'
-    has_many :credit_amounts, through: :accounts, class_name: 'AccountingModule::CreditAmount'
-    has_many :entries,        through: :accounts, class_name: 'AccountingModule::Entry'
-    has_many :debit_entries,  through: :accounts, class_name: 'AccountingModule::Entry'
-    has_many :credit_entries, through: :accounts, class_name: 'AccountingModule::Entry'
+    belongs_to :level_two_account_category, class_name: 'AccountingModule::LevelTwoAccountCategory', optional: true
+    belongs_to :office,                     class_name: 'Cooperatives::Office'
+    has_many :accounts,                     class_name: 'AccountingModule::Account', dependent: :nullify
+    has_many :amounts,                      through: :accounts, class_name: 'AccountingModule::Amount'
+    has_many :debit_amounts,                through: :accounts, class_name: 'AccountingModule::DebitAmount'
+    has_many :credit_amounts,               through: :accounts, class_name: 'AccountingModule::CreditAmount'
+    has_many :entries,                      through: :accounts, class_name: 'AccountingModule::Entry'
+    has_many :debit_entries,                through: :accounts, class_name: 'AccountingModule::Entry'
+    has_many :credit_entries,               through: :accounts, class_name: 'AccountingModule::Entry'
 
     validates :title, :code, presence: true, uniqueness: { scope: :office_id }
     validates :type, presence: true
-
 
     scope :assets,      -> { where(type: 'AccountingModule::AccountCategories::LevelOneAccountCategories::Asset') }
     scope :liabilities, -> { where(type: 'AccountingModule::AccountCategories::LevelOneAccountCategories::Liability') }

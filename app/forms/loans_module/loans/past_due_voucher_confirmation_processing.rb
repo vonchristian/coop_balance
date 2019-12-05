@@ -29,8 +29,6 @@ module LoansModule
         description:         voucher.description,
         recorder:            voucher.preparer,
         reference_number:    voucher.number,
-        previous_entry:      find_recent_entry,
-        previous_entry_hash: find_recent_entry.encrypted_hash,
         entry_date:          voucher.date)
 
         voucher.voucher_amounts.debit.each do |amount|

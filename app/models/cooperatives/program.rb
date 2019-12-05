@@ -14,7 +14,7 @@ module Cooperatives
     has_many :programs,                 class_name: "Cooperatives::Program"
     validates :name, presence: true, uniqueness: { scope: :cooperative_id }
     validates :amount, presence: true, numericality: true
-    
+
     def subscribers
       employee_subscribers +
       member_subscribers +

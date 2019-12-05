@@ -35,8 +35,6 @@ module AccountingModule
         description:         "ADJ ENTRY: #{description}",
         commercial_document: find_commercial_document,
         reference_number:    reference_number,
-        previous_entry:      cooperative.entries.recent,
-        previous_entry_hash: cooperative.entries.recent.encrypted_hash,
         debit_amounts_attributes: [
           amount:              amount,
           account_id:          debit_account_id,
@@ -57,7 +55,7 @@ module AccountingModule
     def cooperative
       find_employee.cooperative
     end
-    
+
     def find_commercial_document
       commercial_document_type.constantize.find(commercial_document_id)
     end

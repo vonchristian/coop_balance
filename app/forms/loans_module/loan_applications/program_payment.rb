@@ -18,7 +18,7 @@ module LoansModule
         find_loan_application.voucher_amounts.credit.create!(
         description:         find_program.name,
         amount:              amount,
-        account:             find_program.account,
+        account:             find_program.program_account,
         commercial_document: find_subscription_for(find_program),
         cooperative:         find_loan_application.cooperative)
       end

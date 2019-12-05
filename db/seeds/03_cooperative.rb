@@ -9,30 +9,8 @@ general_manager = User.general_manager.create!(
   last_name: "Manager",
   cooperative: coop,
   office: office)
-genesis_account = coop.accounts.assets.find_or_create_by(name: "Genesis Account", active: false, code: "Genesis Code")
-  origin_entry = coop.entries.new(
-    office:              office,
-    cooperative:         coop,
-    commercial_document: coop,
-    description:         "Genesis entry",
-    recorder:            general_manager,
-    reference_number:    "Genesis",
-    previous_entry_id:   "",
-    previous_entry_hash:   "Genesis previous entry hash",
-    encrypted_hash:      "Genesis encrypted hash",
-    entry_date:          Date.today)
-    origin_entry.debit_amounts.build(
-        account: genesis_account,
-        amount: 0,
-        commercial_document: coop)
-    origin_entry.credit_amounts.build(
-        account: genesis_account,
-        amount: 0,
-        commercial_document: coop)
-  origin_entry.save!
-
 # Share Capital Products
-share_capital_paid_up_common_account = AccountingModule::Account.find_by(name: "Paid-up Share Capital - Common")
+share_capital_paid_up_common_account    = AccountingModule::Account.find_by(name: "Paid-up Share Capital - Common")
 subscribed_share_capital_commom_account = AccountingModule::Account.find_by(name: "Subscribed Share Capital - Common")
 
 coop.share_capital_products.find_or_create_by!(

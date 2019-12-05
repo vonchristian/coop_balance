@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 example_id                                                                | status | run_time        |
 ------------------------------------------------------------------------- | ------ | --------------- |
 ./spec/system/management_module/settings/programs/new_system_spec.rb[1:1] | failed | 7.94 seconds    |
 ./spec/system/management_module/settings/programs/new_system_spec.rb[1:2] | failed | 0.18684 seconds |
+=======
+>>>>>>> master

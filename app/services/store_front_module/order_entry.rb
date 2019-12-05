@@ -14,7 +14,6 @@ module StoreFrontModule
         cooperative:         voucher.cooperative,
         office:              voucher.office,
         recorder:            voucher.preparer,
-        previous_entry:      voucher.cooperative.entries.recent,
         commercial_document: voucher.payee,
         entry_date:          voucher.date,
         description:         voucher.description,

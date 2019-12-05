@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_05_014503) do
+ActiveRecord::Schema.define(version: 2019_12_05_075514) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -507,20 +507,14 @@ ActiveRecord::Schema.define(version: 2019_12_05_014503) do
     t.uuid "cancelled_by_id"
     t.uuid "cooperative_service_id"
     t.string "cancellation_description"
-    t.uuid "previous_entry_id"
-    t.string "previous_entry_hash"
-    t.string "encrypted_hash"
     t.boolean "archived", default: false
     t.index ["cancelled_by_id"], name: "index_entries_on_cancelled_by_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_entry"
     t.index ["cooperative_id"], name: "index_entries_on_cooperative_id"
     t.index ["cooperative_service_id"], name: "index_entries_on_cooperative_service_id"
-    t.index ["encrypted_hash"], name: "index_entries_on_encrypted_hash", unique: true
     t.index ["entry_date"], name: "index_entries_on_entry_date"
     t.index ["office_id"], name: "index_entries_on_office_id"
     t.index ["official_receipt_id"], name: "index_entries_on_official_receipt_id"
-    t.index ["previous_entry_hash"], name: "index_entries_on_previous_entry_hash", unique: true
-    t.index ["previous_entry_id"], name: "index_entries_on_previous_entry_id"
     t.index ["recorder_id"], name: "index_entries_on_recorder_id"
   end
 
@@ -655,8 +649,22 @@ ActiveRecord::Schema.define(version: 2019_12_05_014503) do
     t.string "type"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "level_two_account_category_id"
+    t.index ["level_two_account_category_id"], name: "index_level_2_act_category_on_level_1_act_categories"
     t.index ["office_id"], name: "index_level_one_account_categories_on_office_id"
     t.index ["type"], name: "index_level_one_account_categories_on_type"
+  end
+
+  create_table "level_two_account_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title"
+    t.uuid "office_id"
+    t.string "code"
+    t.string "type"
+    t.boolean "contra"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["office_id"], name: "index_level_two_account_categories_on_office_id"
+    t.index ["type"], name: "index_level_two_account_categories_on_type"
   end
 
   create_table "line_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1875,7 +1883,6 @@ ActiveRecord::Schema.define(version: 2019_12_05_014503) do
   add_foreign_key "employee_cash_accounts", "users", column: "employee_id"
   add_foreign_key "entries", "cooperative_services"
   add_foreign_key "entries", "cooperatives"
-  add_foreign_key "entries", "entries", column: "previous_entry_id"
   add_foreign_key "entries", "offices"
   add_foreign_key "entries", "official_receipts"
   add_foreign_key "entries", "users", column: "cancelled_by_id"
@@ -1889,7 +1896,9 @@ ActiveRecord::Schema.define(version: 2019_12_05_014503) do
   add_foreign_key "interest_configs", "cooperatives"
   add_foreign_key "interest_configs", "loan_products"
   add_foreign_key "interest_predeductions", "loan_products"
+  add_foreign_key "level_one_account_categories", "level_two_account_categories"
   add_foreign_key "level_one_account_categories", "offices"
+  add_foreign_key "level_two_account_categories", "offices"
   add_foreign_key "line_items", "carts"
   add_foreign_key "line_items", "line_items", column: "referenced_line_item_id"
   add_foreign_key "line_items", "orders"

@@ -46,7 +46,6 @@ module Registries
       office: self.office,
       cooperative: self.employee.cooperative,
       recorder: self.employee,
-      previous_entry: self.employee.cooperative.entries.recent,
       description: "Forwarded balance of as of #{cut_off_date(row).strftime('%B %e, %Y')}",
       entry_date: cut_off_date(row),
       debit_amounts_attributes: [

@@ -415,7 +415,7 @@ DEPENDENCIES
   axlsx!
   axlsx_rails
   barby
-  bootsnap
+  bootsnap (>= 1.1.0)
   bullet
   capybara
   chartkick
@@ -476,7 +476,7 @@ DEPENDENCIES
   simple_form
   spreadsheet
   spring
-  spring-watcher-listen
+  spring-watcher-listen (~> 2.0.0)
   traceroute
   trix
   turbolinks (~> 5)
