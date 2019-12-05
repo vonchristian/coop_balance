@@ -5,7 +5,8 @@ module AccountCreators
     def initialize(program_subscription:)
       @program_subscription       = program_subscription
       @program                    = @program_subscription.program
-      @level_one_account_category = @program.level_one_account_category
+      @office_program             = Offices::OfficeProgram.where(office: @program_subscription.office, program: @program).last
+      @level_one_account_category = @office_program.level_one_account_category
     end
 
     def create_accounts!

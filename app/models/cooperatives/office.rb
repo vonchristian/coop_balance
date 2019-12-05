@@ -10,13 +10,14 @@ module Cooperatives
     has_many :entries,                      class_name: "AccountingModule::Entry"
     has_many :bank_accounts,                class_name: "BankAccount"
     has_many :loan_applications,            class_name: "LoansModule::LoanApplication"
-    has_many :vouchers 
+    has_many :vouchers
     has_many :accountable_accounts,         class_name: "AccountingModule::AccountableAccount", as: :accountable
     has_many :accounts,                     class_name: "AccountingModule::Account", through: :accountable_accounts
     has_many :saving_products,              class_name: "CoopServicesModule::SavingProduct"
     has_many :share_capital_products,       class_name: "Cooperatives::ShareCapitalProduct"
     has_many :loan_products,                class_name: "LoansModule::LoanProduct"
-    has_many :programs,                     class_name: "Cooperatives::Program"
+    has_many :office_programs,              class_name: 'Offices::OfficeProgram'
+    has_many :programs,                     through: :office_programs, class_name: "Cooperatives::Program"
     has_many :accounting_reports,           class_name: "AccountingModule::AccountingReport"
     has_many :loan_aging_groups,            class_name: 'LoansModule::LoanAgingGroup'
     has_many :level_one_account_categories, class_name: 'AccountingModule::LevelOneAccountCategory'

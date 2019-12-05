@@ -7,7 +7,6 @@
       <%= simple_form_for @program, url: :management_module_programs do |f| %>
         <%= f.error_notification %>
         <%= f.input :cooperative_id, input_html: { value: current_cooperative.id }, as: :hidden %>
-        <%= f.input :office_id, input_html: { value: current_office.id }, as: :hidden %>
         <%= f.input :name %>
         <%= f.input :description, as: :string %>
         <%= f.input :level_one_account_category_id, collection: current_office.level_one_account_categories.map { |category| [category.title, category.id] }, input_html: { class: 'chosen-select' } %>

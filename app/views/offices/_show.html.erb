@@ -22,7 +22,7 @@
               <li class="nav-item"><%= link_to 'Time Deposits', office_time_deposits_path(@office), class: "nav-link #{ 'active' if current_page?(office_time_deposits_path(@office)) }" %></li>
               <li class="nav-item"><%= link_to 'Entries', office_entries_path(@office), class: "nav-link #{ 'active' if current_page?(office_entries_path(@office)) }" %></li>
               <li class="nav-item"><%= link_to 'Reports', office_reports_path(@office), class: "nav-link #{ 'active' if current_page?(office_reports_path(@office)) }" %></li>
-              <li class="nav-item"><%= link_to 'Settings', office_settings_path(@office), class: "nav-link #{ 'active' if current_page?(office_settings_path(@office))}" %></li>
+              <li class="nav-item"><%= link_to 'Settings', office_settings_path(@office), id: "#{@office.id}-settings", class: "nav-link #{ 'active' if current_page?(office_settings_path(@office))}" %></li>
             </nav>
           </div>
         </div>

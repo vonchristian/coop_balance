@@ -638,6 +638,7 @@ Rails.application.routes.draw do
     resources :entries,          only: [:index], module: :offices
     resources :reports,          only: [:index], module: :offices
     resources :settings,         only: [:index], module: :offices
+    resources :programs,         only: [:index, :new, :create], module: :offices 
   end
   resources :credit_scores, only: [:index]
   resources :program_subscriptions, only: [:show]

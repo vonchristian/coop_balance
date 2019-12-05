@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_05_075514) do
+ActiveRecord::Schema.define(version: 2019_12_05_121108) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1095,6 +1095,17 @@ ActiveRecord::Schema.define(version: 2019_12_05_075514) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "office_programs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "program_id", null: false
+    t.uuid "office_id", null: false
+    t.uuid "level_one_account_category_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["level_one_account_category_id"], name: "index_office_programs_on_level_one_account_category_id"
+    t.index ["office_id"], name: "index_office_programs_on_office_id"
+    t.index ["program_id"], name: "index_office_programs_on_program_id"
+  end
+
   create_table "offices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "type"
     t.string "name"
@@ -1248,12 +1259,10 @@ ActiveRecord::Schema.define(version: 2019_12_05_075514) do
     t.integer "payment_schedule_type"
     t.uuid "cooperative_id"
     t.decimal "amount"
-    t.uuid "office_id"
     t.uuid "level_one_account_category_id"
     t.index ["account_id"], name: "index_programs_on_account_id"
     t.index ["cooperative_id"], name: "index_programs_on_cooperative_id"
     t.index ["level_one_account_category_id"], name: "index_programs_on_level_one_account_category_id"
-    t.index ["office_id"], name: "index_programs_on_office_id"
     t.index ["payment_schedule_type"], name: "index_programs_on_payment_schedule_type"
   end
 
@@ -1966,6 +1975,9 @@ ActiveRecord::Schema.define(version: 2019_12_05_075514) do
   add_foreign_key "net_income_distributions", "accounts"
   add_foreign_key "net_income_distributions", "cooperatives"
   add_foreign_key "notes", "users", column: "noter_id"
+  add_foreign_key "office_programs", "level_one_account_categories"
+  add_foreign_key "office_programs", "offices"
+  add_foreign_key "office_programs", "programs"
   add_foreign_key "offices", "cooperatives"
   add_foreign_key "orders", "cooperatives"
   add_foreign_key "orders", "store_fronts"
@@ -1985,7 +1997,6 @@ ActiveRecord::Schema.define(version: 2019_12_05_075514) do
   add_foreign_key "programs", "accounts"
   add_foreign_key "programs", "cooperatives"
   add_foreign_key "programs", "level_one_account_categories"
-  add_foreign_key "programs", "offices"
   add_foreign_key "registries", "cooperatives"
   add_foreign_key "registries", "offices"
   add_foreign_key "registries", "store_fronts"

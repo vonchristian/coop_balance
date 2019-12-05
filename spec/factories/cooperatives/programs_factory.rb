@@ -4,7 +4,6 @@ FactoryBot.define do
     amount { 500 }
     association :level_one_account_category, factory: :liability_level_one_account_category
     association :cooperative
-    association :office
     payment_schedule_type { 'annually' }
   end
 end
