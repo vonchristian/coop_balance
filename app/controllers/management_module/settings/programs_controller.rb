@@ -3,16 +3,21 @@ module ManagementModule
 		class ProgramsController < ApplicationController
 			respond_to :html, :json
 
+      def index
+        @programs = current_cooperative.programs
+      end
 			def new
 				@program = Cooperatives::Program.new
-				respond_modal_with @program
 			end
 
 			def create
 				@program = Cooperatives::Program.create(program_params)
-				respond_modal_with @program,
-					location: management_module_settings_configurations_url,
-					notice: "Program created successfully."
+        if @program.valid?
+          @program.save!
+          redirect_to management_module_settings_programs_url, notice: "Program created successfully."
+        else
+          render :new
+        end 
 			end
 
 			private

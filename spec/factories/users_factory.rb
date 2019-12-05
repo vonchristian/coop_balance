@@ -13,5 +13,9 @@ FactoryBot.define do
     factory :teller, class: User do
       role { 'teller' }
     end
+
+    factory :general_manager, class: User do
+      role { 'general_manager' }
+    end
   end
 end

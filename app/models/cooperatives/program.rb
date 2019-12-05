@@ -6,7 +6,7 @@ module Cooperatives
     belongs_to :cooperative
     belongs_to :level_one_account_category, class_name: 'AccountingModule::LevelOneAccountCategory'
     belongs_to :office,                 class_name: "Cooperatives::Office"
-    belongs_to :account,                class_name: "AccountingModule::Account"
+    belongs_to :account,                class_name: "AccountingModule::Account", optional: true
 	  has_many :program_subscriptions,    class_name: "MembershipsModule::ProgramSubscription", inverse_of: :program
     has_many :member_subscribers,       through: :program_subscriptions, source: :subscriber, source_type: "Member"
     has_many :employee_subscribers,     through: :program_subscriptions, source: :subscriber, source_type: "User"
@@ -14,8 +14,7 @@ module Cooperatives
     has_many :programs,                 class_name: "Cooperatives::Program"
     validates :name, presence: true, uniqueness: { scope: :cooperative_id }
     validates :amount, presence: true, numericality: true
-    validates :account_id, :cooperative_id, presence: true
-
+    
     def subscribers
       employee_subscribers +
       member_subscribers +
