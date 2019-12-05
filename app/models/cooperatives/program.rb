@@ -4,6 +4,7 @@ module Cooperatives
     enum payment_schedule_type: [:one_time_payment, :annually, :monthly, :quarterly]
 
     belongs_to :cooperative
+    belongs_to :level_one_account_category, class_name: 'AccountingModule::LevelOneAccountCategory'
     belongs_to :office,                 class_name: "Cooperatives::Office"
     belongs_to :account,                class_name: "AccountingModule::Account"
 	  has_many :program_subscriptions,    class_name: "MembershipsModule::ProgramSubscription", inverse_of: :program

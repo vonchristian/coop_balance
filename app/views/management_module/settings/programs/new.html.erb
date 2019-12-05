@@ -5,6 +5,7 @@
   <button type="button" class="close float-right" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 </div>
 <%= simple_form_for @program, html: { autocomplete: "off", data: { modal: true } }, remote: request.xhr?, url: :management_module_programs do |f| %>
+
   <div class="modal-body">
     <%= f.error_notification %>
     <%= f.input :cooperative_id, input_html: { value: current_cooperative.id }, as: :hidden %>
@@ -15,7 +16,9 @@
     <%= f.input :default_program %>
     <%= f.input :payment_schedule_type, collection: Cooperatives::Program.payment_schedule_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
     <%= f.input :account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] }, input_html: { id: 'programAccountSelect' } %>
+    <%= f.input :level_one_account_category_id, collection: AccountingModule::LevelOneAccountCategories.all.map { |category| [category.title, category.id] }, input_html: { class: 'chosen-select' } %>
   </div>
+
   <div class="modal-footer">
     <%= f.submit "Create Program", class: "btn btn-danger float-right", data: { disable_with: "Processing..." } %>
   </div>

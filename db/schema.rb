@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_05_013323) do
+ActiveRecord::Schema.define(version: 2019_12_05_014503) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1241,8 +1241,10 @@ ActiveRecord::Schema.define(version: 2019_12_05_013323) do
     t.uuid "cooperative_id"
     t.decimal "amount"
     t.uuid "office_id"
+    t.uuid "level_one_account_category_id"
     t.index ["account_id"], name: "index_programs_on_account_id"
     t.index ["cooperative_id"], name: "index_programs_on_cooperative_id"
+    t.index ["level_one_account_category_id"], name: "index_programs_on_level_one_account_category_id"
     t.index ["office_id"], name: "index_programs_on_office_id"
     t.index ["payment_schedule_type"], name: "index_programs_on_payment_schedule_type"
   end
@@ -1973,6 +1975,7 @@ ActiveRecord::Schema.define(version: 2019_12_05_013323) do
   add_foreign_key "program_subscriptions", "programs"
   add_foreign_key "programs", "accounts"
   add_foreign_key "programs", "cooperatives"
+  add_foreign_key "programs", "level_one_account_categories"
   add_foreign_key "programs", "offices"
   add_foreign_key "registries", "cooperatives"
   add_foreign_key "registries", "offices"
