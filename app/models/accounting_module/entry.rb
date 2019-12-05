@@ -10,7 +10,6 @@ module AccountingModule
 
     has_one    :voucher,               foreign_key: 'entry_id', dependent: :nullify
     belongs_to :official_receipt,      optional: true
-    belongs_to :previous_entry,        class_name: "AccountingModule::Entry", foreign_key: 'previous_entry_id', optional: true
     belongs_to :commercial_document,   polymorphic: true
     belongs_to :office,                class_name: "Cooperatives::Office"
     belongs_to :cooperative
@@ -138,9 +137,6 @@ module AccountingModule
       amounts.total_cash_amount
     end
 
-    def hashes_valid?
-      encrypted_hash == digested_hash
-    end
 
     def contains_cash_account?
       amounts.with_cash_accounts.present?

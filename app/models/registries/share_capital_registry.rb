@@ -33,7 +33,6 @@ module Registries
       cooperative.entries.create!(
         office: office,
         recorder: employee,
-        previous_entry: cooperative.entries.recent,
         commercial_document: subscriber,
         description: "Forwarded balance of share capital as of #{cut_off_date(row).strftime("%B %e, %Y")}",
         entry_date: cut_off_date(row),

@@ -47,7 +47,7 @@ module AccountingModule
         cash_on_hand = create(:asset)
         revenue = create(:revenue)
         employee.cash_accounts << cash_on_hand
-        cancelled_entry = build(:entry, cooperative: cooperative, recorder: employee, previous_entry: not_cancelled_entry )
+        cancelled_entry = build(:entry, cooperative: cooperative, recorder: employee)
         cancelled_debit_amount = cancelled_entry.debit_amounts.build(account: cash_on_hand, amount: 1_000)
         cancelled_credit_amount = cancelled_entry.credit_amounts.build(amount: 1_000, account: revenue )
         cancelled_entry.cancelled = true

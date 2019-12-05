@@ -11,7 +11,7 @@ module LoansModule
         loan_product     = create(:loan_product)
         loan             = create(:loan, loan_product: loan_product, status: 'current_loan')
         origin_entry     = create(:origin_entry)
-        payment          = build(:entry, description: "Loan payment", previous_entry: origin_entry)
+        payment          = build(:entry, description: "Loan payment")
         principal        = build(:credit_amount, amount: 1000, commercial_document: loan,  account: loan_product.current_account)
         interest         = build(:credit_amount, amount: 100, commercial_document: loan, account: loan_product.current_interest_config_interest_revenue_account)
         penalty          = build(:credit_amount, amount: 100, commercial_document: loan,  account: loan_product.penalty_revenue_account)

@@ -35,8 +35,6 @@ module Registries
         cooperative:         self.employee.cooperative,
         recorder:            self.employee,
         commercial_document: loan.borrower,
-        previous_entry:      cooperative.entries.recent,
-        previous_entry_hash: cooperative.entries.recent.encrypted_hash,
         description:         "Forwarded loan balance as of #{cut_off_date(row).strftime('%B %e, %Y')}",
         entry_date:          cut_off_date(row),
         debit_amounts_attributes: [

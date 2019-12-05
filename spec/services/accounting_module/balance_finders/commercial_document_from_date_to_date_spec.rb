@@ -14,13 +14,13 @@ module AccountingModule
 
         saving = create(:saving, cooperative: cooperative, saving_product: saving_product)
 
-        origin_entry = create(:origin_entry, cooperative: cooperative)
-        entry = build(:entry, previous_entry: origin_entry, cooperative: cooperative, entry_date: Date.current.last_month)
+        
+        entry = build(:entry,  cooperative: cooperative, entry_date: Date.current.last_month)
         entry.debit_amounts.build(amount: 100, account: asset,    commercial_document: saving)
         entry.credit_amounts.build(amount: 100, account: liability, commercial_document: saving)
         entry.save!
 
-        entry_2 = build(:entry, previous_entry: origin_entry, cooperative: cooperative, entry_date: Date.current)
+        entry_2 = build(:entry, cooperative: cooperative, entry_date: Date.current)
         entry_2.debit_amounts.build(amount: 300, account: asset,    commercial_document: saving)
         entry_2.credit_amounts.build(amount: 300, account: liability, commercial_document: saving)
         entry_2.save!

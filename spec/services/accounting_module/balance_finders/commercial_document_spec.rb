@@ -15,7 +15,7 @@ module AccountingModule
         saving = create(:saving, cooperative: cooperative, saving_product: saving_product)
 
         origin_entry = create(:origin_entry, cooperative: cooperative)
-        entry = build(:entry, previous_entry: origin_entry, cooperative: cooperative)
+        entry = build(:entry, cooperative: cooperative)
         entry.debit_amounts.build(amount: 100, account: asset,    commercial_document: saving)
         entry.credit_amounts.build(amount: 100, account: liability, commercial_document: saving)
         entry.save!
