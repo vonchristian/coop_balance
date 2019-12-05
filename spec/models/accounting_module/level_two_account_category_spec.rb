@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 module AccountingModule
-  describe LevelOneAccountCategory do
+  describe LevelTwoAccountCategory do
     describe 'associations' do
-      it { is_expected.to belong_to(:level_two_account_category).optional }
       it { is_expected.to belong_to :office }
+      it { is_expected.to have_many :level_one_account_categories }
       it { is_expected.to have_many :accounts }
       it { is_expected.to have_many :amounts }
       it { is_expected.to have_many :debit_amounts }
@@ -23,11 +23,11 @@ module AccountingModule
     end
 
     describe 'scopes' do
-      let(:asset)     { create(:asset_level_one_account_category) }
-      let(:liability) { create(:liability_level_one_account_category) }
-      let(:equity)    { create(:equity_level_one_account_category) }
-      let(:revenue)   { create(:revenue_level_one_account_category) }
-      let(:expense)   { create(:expense_level_one_account_category) }
+      let(:asset)     { create(:asset_level_two_account_category) }
+      let(:liability) { create(:liability_level_two_account_category) }
+      let(:equity)    { create(:equity_level_two_account_category) }
+      let(:revenue)   { create(:revenue_level_two_account_category) }
+      let(:expense)   { create(:expense_level_two_account_category) }
 
       it 'assets' do
         expect(described_class.assets).to include(asset)
@@ -71,11 +71,11 @@ module AccountingModule
 
     it 'types' do
       expect(described_class.types).to eql(
-        ["AccountingModule::AccountCategories::LevelOneAccountCategories::Asset",
-       "AccountingModule::AccountCategories::LevelOneAccountCategories::Equity",
-       "AccountingModule::AccountCategories::LevelOneAccountCategories::Liability",
-       "AccountingModule::AccountCategories::LevelOneAccountCategories::Expense",
-       "AccountingModule::AccountCategories::LevelOneAccountCategories::Revenue"])
+        ["AccountingModule::AccountCategories::LevelTwoAccountCategories::Asset",
+       "AccountingModule::AccountCategories::LevelTwoAccountCategories::Equity",
+       "AccountingModule::AccountCategories::LevelTwoAccountCategories::Liability",
+       "AccountingModule::AccountCategories::LevelTwoAccountCategories::Expense",
+       "AccountingModule::AccountCategories::LevelTwoAccountCategories::Revenue"])
     end
 
     it '#balance' do
