@@ -1,12 +1,11 @@
 module AccountingModule
   class LevelOneAccountCategoryRegistration
     include ActiveModel::Model
-    TYPES = ['Asset', 'Liability', 'Equity', 'Revenue', 'Expense']
-
+    
     attr_accessor :title, :code, :contra, :type, :office_id
 
     validates :title, :code, :type, :office_id, presence: true
-    validates :type, inclusion: { in: TYPES }
+    validates :type, inclusion: { in: AccountingModule::Account::TYPES }
     def register!
       if valid?
         ActiveRecord::Base.transaction do

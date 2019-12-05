@@ -7,13 +7,11 @@ module AccountingModule
       it { is_expected.to validate_presence_of :title }
       it { is_expected.to validate_presence_of :code }
       it { is_expected.to validate_presence_of :office_id }
-      it { is_expected.to validate_inclusion_of(:type).in_array(described_class::TYPES) }
+      it { is_expected.to validate_inclusion_of(:type).in_array(AccountingModule::Account::TYPES) }
     end
 
-    it '.TYPES' do
-      expect(described_class::TYPES).to eq ['Asset', 'Liability', 'Equity', 'Revenue', 'Expense']
-    end
-    
+
+
     it "#normalized_type" do
       office = create(:office)
       expect(described_class.new(

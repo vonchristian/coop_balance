@@ -2,6 +2,10 @@ require 'rails_helper'
 
 module AccountingModule
   describe Account, type: :model do
+    it '.TYPES' do
+      expect(described_class::TYPES).to eql(['Asset', 'Liability', 'Equity', 'Revenue', 'Expense'])
+    end
+
     describe 'associations' do
       it { is_expected.to belong_to :main_account }
       it { is_expected.to have_many :subsidiary_accounts }

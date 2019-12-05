@@ -1,5 +1,7 @@
 module AccountingModule
   class Account < ApplicationRecord
+    TYPES = ['Asset', 'Liability', 'Equity', 'Revenue', 'Expense']
+
     include PgSearch::Model
     extend ProfitPercentage
     pg_search_scope :text_search, :against => [:name, :code]
