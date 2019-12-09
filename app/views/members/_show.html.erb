@@ -31,7 +31,7 @@
           <li class="nav-item"><%= link_to 'Savings', member_savings_accounts_path(@member), class: "nav-link #{ 'active' if current_page?(member_savings_accounts_path(@member))}" %></li>
           <li class="nav-item"><%= link_to 'Share Capitals', member_share_capitals_path(@member), class: "nav-link #{ 'active' if current_page?(member_share_capitals_path(@member))}" %></li>
           <li class="nav-item"><%= link_to 'Time Deposits', member_time_deposits_path(@member), class: "nav-link #{ 'active' if current_page?(member_time_deposits_path(@member)) }" %></li>
-          <li class="nav-item"><%= link_to 'Program Subscriptions', member_subscriptions_path(@member), class: "nav-link #{ 'active' if current_page?(member_subscriptions_path(@member)) }" %></li>
+          <li class="nav-item"><%= link_to 'Program Subscriptions', member_subscriptions_path(@member), id: "#{@member.id}-subscriptions", class: "nav-link #{ 'active' if current_page?(member_subscriptions_path(@member)) }" %></li>
           <li class="nav-item"><%= link_to 'Sales', member_sales_path(@member), class: "nav-link #{ 'active' if current_page?(member_sales_path(@member)) }" %></li>
           <li class="nav-item"><%= link_to 'Settings', member_settings_path(@member), class: "nav-link #{ 'active' if current_page?(member_settings_path(@member))}" %></li>
         </nav>
