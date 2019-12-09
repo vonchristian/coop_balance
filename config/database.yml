@@ -80,6 +80,6 @@ test:
 #
 production:
   <<: *default
-  database: coopbooks_production
+  database: coopcatalyst_production
   username: deploy
   password: deploy@coopbooks
