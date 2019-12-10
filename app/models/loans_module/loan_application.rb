@@ -11,10 +11,10 @@ module LoansModule
     belongs_to :cooperative
     belongs_to :office, class_name: "Cooperatives::Office"
     belongs_to :loan_product
-    belongs_to :organization
+    belongs_to :organization, optional: true
     belongs_to :receivable_account,       class_name: 'AccountingModule::Account'
     belongs_to :interest_revenue_account, class_name: 'AccountingModule::Account'
-    belongs_to :voucher, dependent: :destroy
+    belongs_to :voucher, dependent: :destroy, optional: true
     has_one    :loan, class_name: "LoansModule::Loan", dependent: :destroy
     has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", dependent: :destroy
 
@@ -29,7 +29,8 @@ module LoansModule
     delegate :current_interest_config, :interest_calculator, :prededucted_interest_calculator, :amortizeable_principal_calculator, :amortization_type,  to: :loan_product
     delegate :entry, to: :voucher, allow_nil: true
     delegate :rate, :straight_balance?, :annually?, :prededucted_number_of_payments, to: :current_interest_config, prefix: true
-    validates :cooperative_id, presence: true
+    validates :cooperative_id,  presence: true
+    validates :account_number, presence: true, uniqueness: true
 
     def forwarded_loan? #check on amortization_schedule pdf
       false

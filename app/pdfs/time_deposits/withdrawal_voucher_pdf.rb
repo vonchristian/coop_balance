@@ -17,7 +17,7 @@ module TimeDeposits
       interest_description
       signatory_details
       font Rails.root.join("app/assets/fonts/open_sans_regular.ttf")
-      
+
     end
 
     private
@@ -144,14 +144,14 @@ module TimeDeposits
 
     def interest_description
       move_down 5
-      text "*#{time_deposit.time_deposit_product.interest_expense_account.amounts.where(commercial_document: time_deposit).last.entry.description.gsub("ADJUSTING ENTRY:", "")}", size: 9
+      text "*#{time_deposit.interest_expense_account.amounts.where(commercial_document: time_deposit).last.entry.description.gsub("ADJUSTING ENTRY:", "")}", size: 9
       move_down 10
     end
 
     def signatory_details
       move_down 50
-      table([["PREPARED BY", "APPROVED BY", "DISBURSED BY", "RECEIVED BY"]], 
-        cell_style: { inline_format: true, size: 10, font: "Helvetica", :padding => [2, 4, 2, 4]}, 
+      table([["PREPARED BY", "APPROVED BY", "DISBURSED BY", "RECEIVED BY"]],
+        cell_style: { inline_format: true, size: 10, font: "Helvetica", :padding => [2, 4, 2, 4]},
         column_widths: [120, 120, 120, 140]) do
           cells.borders = []
       end

@@ -20,6 +20,13 @@ module LoansModule
     describe 'validations' do
      it {is_expected.to monetize(:loan_amount) }
      it { is_expected.to validate_presence_of(:cooperative_id) }
+     it { is_expected.to validate_presence_of :account_number }
+     it 'unique account_number' do
+       loan_application = create(:loan_application, account_number: '1')
+       loan_application_2 = build(:loan_application, account_number: '1')
+       loan_application_2.save
+       expect(loan_application_2.errors[:account_number]).to eq ['has already been taken']
+     end
     end
 
     describe 'delegations' do

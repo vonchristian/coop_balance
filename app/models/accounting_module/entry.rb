@@ -16,7 +16,6 @@ module AccountingModule
     belongs_to :cooperative_service,   class_name: "CoopServicesModule::CooperativeService", optional: true
     belongs_to :cancelled_by,          class_name: "User", foreign_key: 'cancelled_by_id', optional: true
     belongs_to :recorder,              class_name: "User", foreign_key: 'recorder_id'
-    has_many   :referenced_entries,    class_name: "AccountingModule::Entry", foreign_key: 'previous_entry_id', dependent: :nullify
     has_many   :credit_amounts,        class_name: 'AccountingModule::CreditAmount', dependent: :destroy
     has_many   :debit_amounts,         class_name: 'AccountingModule::DebitAmount', dependent: :destroy
     has_many   :credit_accounts,       class_name: 'AccountingModule::Account', through: :credit_amounts, source: :account

@@ -27,9 +27,9 @@ module LoansModule
     belongs_to :organization,           optional: true
     belongs_to :preparer,               class_name: "User", foreign_key: 'preparer_id' #move to loan application
     belongs_to :receivable_account,       class_name: 'AccountingModule::Account'
-    belongs_to :interest_revenue_account, class_name: 'AccountingModule::Account'
-    belongs_to :penalty_revenue_account,  class_name: 'AccountingModule::Account'
-    belongs_to :accrued_income_account,  class_name: 'AccountingModule::Account'
+    belongs_to :interest_revenue_account, class_name: 'AccountingModule::Account', optional: true
+    belongs_to :penalty_revenue_account,  class_name: 'AccountingModule::Account', optional: true
+    belongs_to :accrued_income_account,  class_name: 'AccountingModule::Account', optional: true
 
     has_many :voucher_amounts,          class_name: "Vouchers::VoucherAmount", as: :commercial_document, dependent: :destroy # for adding amounts on voucher move to loan application
     has_many :amortization_schedules,   dependent: :destroy

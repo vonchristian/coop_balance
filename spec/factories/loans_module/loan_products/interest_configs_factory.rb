@@ -4,6 +4,7 @@ FactoryBot.define do
     association :interest_revenue_account, factory: :revenue
     association :unearned_interest_income_account, factory: :revenue
     association :accrued_income_account, factory: :asset
+    association :past_due_interest_income_account, factory: :revenue
     association :cooperative
     calculation_type { 'prededucted' }
     rate { 0.18 }
