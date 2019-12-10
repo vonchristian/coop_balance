@@ -33,6 +33,7 @@ document.addEventListener("turbolinks:load", () => {
         minViewMode: "months"
       });
 })
+
 document.addEventListener('turbolinks:load', ready);
 var ready = function () {
     return $(window).trigger('resize');
