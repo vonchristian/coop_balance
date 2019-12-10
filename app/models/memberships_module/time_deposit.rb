@@ -96,7 +96,7 @@ module MembershipsModule
     end
 
     def balance(args={})
-      liability_account.balance(args.merge(commercial_document: self))
+      liability_account.balance(args)
     end
 
     def credits_balance(args={})  # deposit amount

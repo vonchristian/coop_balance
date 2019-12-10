@@ -72,6 +72,9 @@
       <hr class="min-margin set-visibility">
       <div class="row justify-content-end">
         <div class="col-md-7 col-sm-6 col-auto">
+          <small>BALANCE</small>
+          <h3 class="card-title"><%= number_to_currency @time_deposit.balance %></h3>
+          <br>
           <small>AMOUNT DEPOSITED</small>
           <h3 class="card-title"><%= number_to_currency @time_deposit.deposited_amount %></h3>
           <br>
