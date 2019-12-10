@@ -34,13 +34,13 @@ module MembershipsModule
 
     def entries
       accounting_entries = []
-      liability_account.amounts.where(commercial_document: self).each do |amount|
+      liability_account.amounts.each do |amount|
         accounting_entries << amount.entry
       end
-      interest_expense_account.amounts.where(commercial_document: self).each do |amount|
+      interest_expense_account.amounts.each do |amount|
         accounting_entries << amount.entry
       end
-      break_contract_account.amounts.where(commercial_document: self).each do |amount|
+      break_contract_account.amounts.each do |amount|
         accounting_entries << amount.entry
       end
       accounting_entries.uniq
