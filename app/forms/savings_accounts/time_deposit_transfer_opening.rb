@@ -1,5 +1,5 @@
 module SavingsAccounts
-  class TImeDepositTransferOpening
+  class TimeDepositTransferOpening
     include ActiveModel::Model
     attr_reader :voucher, :time_deposit, :employee
 
@@ -11,21 +11,24 @@ module SavingsAccounts
 
     def process!
       ActiveRecord::Base.transaction do
-        create_savings_account
+        create_savings_account_application
       end
     end
 
     private
-    def create_savings_account
-      savings_account = MembershipsModule::Saving.create!(
+    def create_savings_account_application
+      savings_account_application = SavingsAccountApplication.new(
         account_owner_name: find_depositor.full_name,
         cooperative: employee.cooperative,
         depositor: find_depositor,
         account_number: time_deposit.account_number,
         date_opened: voucher.date,
-        saving_product: savings_account_application.saving_product,
+        saving_product_id: saving_product_id,
         last_transaction_date: savings_account_application.date_opened
       )
+      create_accounts(savings_account)
+      savings_account.save!
+
       update_voucher(savings_account)
     end
 

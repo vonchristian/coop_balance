@@ -1,4 +1,4 @@
-module Loans
+module LoansModule
   class CollateralsController < ApplicationController
     def new
       @loan = current_cooperative.loans.find(params[:loan_id])

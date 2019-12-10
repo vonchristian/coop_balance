@@ -1,6 +1,6 @@
 module StoreFrontModule
   module Vouchers
-    class SalesOrderVoucher
+    class SalesOrder
       attr_reader :order, :employee, :store_front
 
       def initialize(args)

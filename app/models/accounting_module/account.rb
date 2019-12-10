@@ -5,7 +5,6 @@ module AccountingModule
     include PgSearch::Model
     extend ProfitPercentage
     pg_search_scope :text_search, :against => [:name, :code]
-    multisearchable against: [:name, :code]
 
     class_attribute :normal_credit_balance
     belongs_to :level_one_account_category,  class_name: 'AccountingModule::LevelOneAccountCategory', optional: true

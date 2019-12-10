@@ -1,6 +1,6 @@
 module LoansModule
-  module LoanProducts
+  module InterestConfigs
     class AddOnInterestConfig < LoansModule::LoanProducts::InterestConfig
     end
   end
-end 
+end

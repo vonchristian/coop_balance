@@ -1,5 +1,5 @@
 module LoansModule
-  module PrincipalBalanceFinders
+  module ScheduleFinders
     module SecondYear
       class Weekly
         attr_reader :loan_application
