@@ -37,7 +37,13 @@ module MembershipsModule
       liability_account.amounts.where(commercial_document: self).each do |amount|
         accounting_entries << amount.entry
       end
-      accounting_entries
+      interest_expense_account.amounts.where(commercial_document: self).each do |amount|
+        accounting_entries << amount.entry
+      end
+      break_contract_account.amounts.where(commercial_document: self).each do |amount|
+        accounting_entries << amount.entry
+      end
+      accounting_entries.uniq
     end
 
     def can_be_extended?
@@ -94,7 +100,7 @@ module MembershipsModule
     end
 
     def credits_balance(args={})  # deposit amount
-      liabilty_account.credits_balance(args.merge(commercial_document: self))
+      liability_account.credits_balance(args.merge(commercial_document: self))
     end
 
     def interest_balance(args={})
@@ -108,7 +114,7 @@ module MembershipsModule
     def earned_interests
       CoopConfigurationsModule::TimeDepositConfig.earned_interests_for(self)
     end
-    
+
     def computed_break_contract_amount
       time_deposit_product.break_contract_rate * amount_deposited
     end
