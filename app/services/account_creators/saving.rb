@@ -17,7 +17,7 @@ module AccountCreators
 
     def create_liability_account
       if saving.liability_account.blank?
-        account = AccountingModule::Liability.find_or_create_by(
+        account = AccountingModule::Liability.first_or_create!(
 
           name: "#{saving.saving_product_name} - #{saving.account_number}",
           code: saving.account_number
@@ -28,7 +28,7 @@ module AccountCreators
 
     def create_interest_expense_account
       if saving.interest_expense_account.blank?
-        account = AccountingModule::Expense.find_or_create_by(
+        account = AccountingModule::Expense.first_or_create!(
           name: "Interest Expense on Savings - #{saving.saving_product_name} - #{saving.account_number}",
           code: "INT-#{saving.account_number}"
         )
