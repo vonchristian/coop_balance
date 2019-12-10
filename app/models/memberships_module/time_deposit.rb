@@ -13,7 +13,7 @@ module MembershipsModule
     belongs_to :barangay,                 optional: true, class_name: "Addresses::Barangay"
     belongs_to :liability_account,        class_name: 'AccountingModule::Account'
     belongs_to :interest_expense_account, class_name: 'AccountingModule::Account'
-    belongs_to :break_contract_account, class_name: 'AccountingModule::Account'
+    belongs_to :break_contract_account,   class_name: 'AccountingModule::Account'
 
     has_many :ownerships, as: :ownable
     has_many :depositors, through: :ownerships, source: :owner
@@ -34,7 +34,7 @@ module MembershipsModule
 
     def entries
       accounting_entries = []
-      time_deposit_product_account.amounts.where(commercial_document: self).each do |amount|
+      liability_account.amounts.where(commercial_document: self).each do |amount|
         accounting_entries << amount.entry
       end
       accounting_entries
@@ -90,15 +90,15 @@ module MembershipsModule
     end
 
     def balance(args={})
-      time_deposit_product_account.balance(args.merge(commercial_document: self))
+      liability_account.balance(args.merge(commercial_document: self))
     end
 
     def credits_balance(args={})  # deposit amount
-      time_deposit_product_account.credits_balance(args.merge(commercial_document: self))
+      liabilty_account.credits_balance(args.merge(commercial_document: self))
     end
 
     def interest_balance(args={})
-      time_deposit_product.interest_expense_account.debits_balance(args.merge(commercial_document: self))
+      interest_expense_account.debits_balance(args.merge(commercial_document: self))
     end
 
     def deposited_amount
@@ -108,6 +108,7 @@ module MembershipsModule
     def earned_interests
       CoopConfigurationsModule::TimeDepositConfig.earned_interests_for(self)
     end
+    
     def computed_break_contract_amount
       time_deposit_product.break_contract_rate * amount_deposited
     end

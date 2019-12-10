@@ -5,7 +5,7 @@ module Migrators
     def initialize(time_deposit:)
       @time_deposit             = time_deposit
       @time_deposit_product     = @time_deposit.time_deposit_product
-      @liability_account        = @time_deposit_product.liability_account
+      @liability_account        = @time_deposit_product.account
       @interest_expense_account = @time_deposit_product.interest_expense_account
       @break_contract_account   = @time_deposit_product.break_contract_account
 
