@@ -6,26 +6,20 @@
 require("@rails/ujs").start()
 require("turbolinks").start()
 require("@rails/activestorage").start()
-
 require('adminlte')
 require("chartkick")
 require("chart.js")
 require("trix")
 require("@rails/actiontext")
 import AutoNumeric from 'autonumeric';
-
 import "bootstrap"
 import 'chosen-js'
 import 'bootstrap-datepicker'
-
 
 document.addEventListener("turbolinks:load", () => {
   $('[data-toggle="tooltip"]').tooltip();
   $('[data-toggle="popover"]').popover();
   $('.chosen-select').chosen();
-
-
-
   $('.datepicker').datepicker(
     {
       format: 'dd/mm/yyyy',
@@ -38,7 +32,6 @@ document.addEventListener("turbolinks:load", () => {
         minViewMode: "months"
       });
 })
-
 document.addEventListener('turbolinks:load', ready);
 var ready = function () {
     return $(window).trigger('resize');
