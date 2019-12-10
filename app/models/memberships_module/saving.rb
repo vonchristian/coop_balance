@@ -7,7 +7,7 @@ module MembershipsModule
     pg_search_scope :text_search, against: [:account_number, :account_owner_name]
     multisearchable against: [:account_number, :account_owner_name]
 
-    belongs_to :organization
+    belongs_to :organization, optional: true
     belongs_to :cooperative
     belongs_to :barangay,           optional: true, class_name: "Addresses::Barangay"
     belongs_to :depositor,          polymorphic: true,  touch: true
