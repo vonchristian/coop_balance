@@ -1,24 +1,46 @@
-<b>ASSETS </b><br>
-<% current_cooperative.accounts.assets.each do |account| %>
-  <% balance = account.balance(to_date: @to_date) %>
-  <% if !balance.zero? %>
+<b> ASSETS </b>
+<% current_office.level_three_account_categories.assets.order(code: :asc).each do |l3_account_category| %>
+  <%= l3_account_category.title %>
+  <br>
+  <% l3_account_category.level_two_account_categories.where(office: current_office).order(code: :asc).each do |l2_account_category| %>
+    &nbsp; &nbsp; <%= l2_account_category.title %><br>
+    <% l2_account_category.level_one_account_categories.where(office: current_office).order(code: :asc).each do |l1_account_category| %>
+      <div class="row">
+        <div class="col-md-7">
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <%= l1_account_category.title %>
+        </div>
+        <div class="col-md-5">
+          <span class="float-left"><%= number_to_currency l1_account_category.balance(to_date: @to_date) %></span>
+        </div>
+      </div>
+    <% end %>
+    <hr>
     <div class="row">
       <div class="col-md-7">
-        <%= account.name %>
+        &nbsp; &nbsp;  Total <%= l2_account_category.title %>
       </div>
       <div class="col-md-5">
-        <%= number_to_currency balance %>
+        <%= number_to_currency l2_account_category.balance(to_date: @to_date) %>
       </div>
     </div>
   <% end %>
+  <hr>
+  <div class="row">
+    <div class="col-md-7">
+      Total <%= l3_account_category.title %>
+    </div>
+    <div class="col-md-5">
+      <%= number_to_currency l3_account_category.balance(to_date: @to_date) %>
+    </div>
+  </div>
 <% end %>
 <hr>
 <div class="row">
   <div class="col-md-7">
-    <b>Total Assets</b>
+    <b>TOTAL ASSETS</b>
   </div>
   <div class="col-md-5">
-    <b><%= number_to_currency current_cooperative.accounts.assets.balance(to_date: @to_date) %></b>
+    <b><%= number_to_currency current_office.level_three_account_categories.assets.balance(to_date: @to_date) %></b>
   </div>
 </div>
 <hr>
