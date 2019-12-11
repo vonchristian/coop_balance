@@ -1,7 +1,6 @@
 module MembershipsModule
   class TimeDeposit < ApplicationRecord
     enum status: [:withdrawn]
-    include TermMonitoring
     include PgSearch::Model
     pg_search_scope :text_search, against: [:account_number, :depositor_name]
 
@@ -14,7 +13,7 @@ module MembershipsModule
     belongs_to :liability_account,        class_name: 'AccountingModule::Account'
     belongs_to :interest_expense_account, class_name: 'AccountingModule::Account'
     belongs_to :break_contract_account,   class_name: 'AccountingModule::Account'
-
+    belongs_to :term
     has_many :ownerships, as: :ownable
     has_many :depositors, through: :ownerships, source: :owner
 
@@ -23,7 +22,8 @@ module MembershipsModule
     delegate :name, to: :office, prefix: true
     delegate :name, to: :depositor
     delegate :avatar, to: :depositor
-
+    delegate :maturity_date, :effectivity_date, :matured?, to: :term, prefix: true
+    delegate :remaining_term, to: :term
     before_save :set_depositor_name
     def self.deposited_on(args={})
       from_date = args[:from_date] || 999.years.ago
@@ -47,7 +47,7 @@ module MembershipsModule
     end
 
     def can_be_extended?
-      !withdrawn? && current_term_matured?
+      !withdrawn? && term_matured?
     end
 
     def withdrawal_date
@@ -74,11 +74,11 @@ module MembershipsModule
     end
 
     def self.matured
-      all.select{|a| a.current_term_matured? }
+      all.select{|a| a.term_matured? }
     end
 
     def self.post_interests_earned
-      !current_term_matured.each do |time_deposit|
+      !term_matured.each do |time_deposit|
         post_interests_earned
       end
     end
@@ -119,7 +119,7 @@ module MembershipsModule
       time_deposit_product.break_contract_rate * amount_deposited
     end
     def computed_earned_interests
-      if current_term.matured?
+      if term.matured?
         amount_deposited * rate
       else
         amount_deposited *
@@ -134,7 +134,7 @@ module MembershipsModule
 
 
     def rate
-      time_deposit_product.monthly_interest_rate * current_term.number_of_months
+      time_deposit_product.monthly_interest_rate * term.number_of_months
     end
 
     def applicable_rate

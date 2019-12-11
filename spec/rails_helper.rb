@@ -1,5 +1,6 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
+require "money-rails/test_helpers"
 ENV['RAILS_ENV'] = 'test'
 require File.expand_path('../../config/environment', __FILE__)
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f }
@@ -10,8 +11,8 @@ Dir[Rails.root.join("spec/models/shared_examples/**/*.rb")].each {|f| require f 
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
 require 'capybara/rspec'
+require "pundit/rspec"
 require 'webdrivers'
-require "money-rails/test_helpers"
 
 begin
   ActiveRecord::Migration.maintain_test_schema!
@@ -19,6 +20,8 @@ rescue ActiveRecord::PendingMigrationError => e
   puts e.to_s.strip
   exit 1
 end
+
+
 
 RSpec.configure do |config|
   config.include ActiveSupport::Testing::TimeHelpers
@@ -30,11 +33,11 @@ RSpec.configure do |config|
     DatabaseRewinder.clean
   end
   config.before(:each, type: :system) do
-    driven_by :rack_test
+    driven_by :rack_test, using: :firefox
   end
 
   config.before(:each, type: :system, js: true) do
-    driven_by :selenium, using: :chrome
+    driven_by :selenium, using: :firefox
   end
   config.before(:suite) do
       DatabaseRewinder.clean_all
@@ -50,4 +53,5 @@ Shoulda::Matchers.configure do |config|
     with.library :rails
   end
 end
+class ActiveModel::SecurePassword::InstanceMethodsOnActivation; end;
 Capybara.raise_server_errors = false

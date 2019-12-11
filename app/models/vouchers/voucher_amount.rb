@@ -5,10 +5,10 @@ module Vouchers
     enum amount_type: [:debit, :credit]
 
     belongs_to :account,          class_name: "AccountingModule::Account"
-    belongs_to :voucher
+    belongs_to :voucher, optional: true
     belongs_to :cooperative
     belongs_to :loan_application, class_name: "LoansModule::LoanApplication", optional: true
-    belongs_to :recorder,         class_name: "User", foreign_key: 'recorder_id'
+    belongs_to :recorder,         class_name: "User", foreign_key: 'recorder_id', optional: true
     belongs_to :commercial_document, polymorphic: true
 
     delegate :name, to: :account, prefix: true
@@ -18,7 +18,7 @@ module Vouchers
     before_destroy :check_if_disbursed?
     def self.valid?
       debit.total == credit.total
-    end 
+    end
     def self.total
       Money.new(sum(&:amount)).amount
     end

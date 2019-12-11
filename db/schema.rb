@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_11_015059) do
+ActiveRecord::Schema.define(version: 2019_12_11_022745) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1674,6 +1674,7 @@ ActiveRecord::Schema.define(version: 2019_12_11_015059) do
     t.uuid "liability_account_id"
     t.uuid "interest_expense_account_id"
     t.uuid "break_contract_account_id"
+    t.uuid "term_id", null: false
     t.index ["account_number"], name: "index_time_deposits_on_account_number", unique: true
     t.index ["barangay_id"], name: "index_time_deposits_on_barangay_id"
     t.index ["break_contract_account_id"], name: "index_time_deposits_on_break_contract_account_id"
@@ -1686,6 +1687,7 @@ ActiveRecord::Schema.define(version: 2019_12_11_015059) do
     t.index ["office_id"], name: "index_time_deposits_on_office_id"
     t.index ["organization_id"], name: "index_time_deposits_on_organization_id"
     t.index ["status"], name: "index_time_deposits_on_status"
+    t.index ["term_id"], name: "index_time_deposits_on_term_id"
     t.index ["time_deposit_product_id"], name: "index_time_deposits_on_time_deposit_product_id"
   end
 
@@ -2059,6 +2061,7 @@ ActiveRecord::Schema.define(version: 2019_12_11_015059) do
   add_foreign_key "time_deposits", "memberships"
   add_foreign_key "time_deposits", "offices"
   add_foreign_key "time_deposits", "organizations"
+  add_foreign_key "time_deposits", "terms"
   add_foreign_key "time_deposits", "time_deposit_products"
   add_foreign_key "unit_of_measurements", "products"
   add_foreign_key "users", "cooperatives"

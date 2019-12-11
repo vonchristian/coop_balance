@@ -41,7 +41,7 @@
               <label>Date Deposited</label>
             </div>
             <div class="col-md-7">
-              <%= @time_deposit.effectivity_date.strftime("%B %e, %Y") %>
+              <%= @time_deposit.term_effectivity_date.strftime("%B %e, %Y") %>
             </div>
           </div>
           <div class="row min-margin">
@@ -94,7 +94,7 @@
         <div class="col-md-4 col-sm-6 col-auto">
           <small>MATURITY DATE</small>
           <p><i class="fa fa-calendar"></i>
-            <%= @time_deposit.maturity_date.strftime("%B %e, %Y")  %>
+            <%= @time_deposit.term_maturity_date.strftime("%B %e, %Y")  %>
           </p>
           <% if !@time_deposit.withdrawn == true %>
             <small>DAYS TO MATURE</small>
@@ -105,7 +105,7 @@
           <% end %>
           <small>TERM</small>
           <h3 class="card-title">
-            <%= @time_deposit.current_term.term/30 %> Months
+            <%= @time_deposit.term.term/30 %> Months
           </h3>
         </div>
       </div>

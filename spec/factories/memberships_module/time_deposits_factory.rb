@@ -6,6 +6,9 @@ FactoryBot.define do
     association :time_deposit_product
     association :liability_account, factory: :liability
     association :interest_expense_account, factory: :expense
+    association :break_contract_account, factory: :revenue
+
     account_number { SecureRandom.uuid }
+    association :term
   end
-end 
+end
