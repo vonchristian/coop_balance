@@ -7,7 +7,7 @@
         </div>
         <div class="col-md-4 col-sm-4">
           <b><%= time_deposit.depositor_name.try(:upcase) %></b><br>
-          <small class="text-muted"><%= time_deposit.effectivity_date.strftime("%B %e, %Y") %></small>
+          <small class="text-muted"><%= time_deposit.term_effectivity_date.strftime("%B %e, %Y") %></small>
           <% if time_deposit.withdrawn == true %>
             <br>
             <small class="badge bg-warning"> Withdrawn last <%= time_deposit.withdrawal_date.strftime("%b. %e, %Y") %></small>
@@ -18,9 +18,9 @@
           <small class="text-muted">AMOUNT DEPOSITED</small>
         </div>
         <div class="col-md-3 col-sm-3">
-          <% if time_deposit.current_term.present? %>
-            <%= time_deposit.maturity_date.strftime("%B %e, %Y") %>
-          <% end %><br>
+
+            <%= time_deposit.term_maturity_date.strftime("%B %e, %Y") %>
+
           <small class="text-muted">MATURITY DATE</small>
         </div>
         <div class="col-md-1 col-sm-1">

@@ -22,8 +22,8 @@ module MembershipsModule
     delegate :name, to: :office, prefix: true
     delegate :name, to: :depositor
     delegate :avatar, to: :depositor
-    delegate :maturity_date, :effectivity_date, :matured?, to: :term, prefix: true
-    delegate :remaining_term, to: :term
+    delegate :maturity_date, :effectivity_date, :matured?, to: :term
+    delegate :remaining_term,  to: :term
     before_save :set_depositor_name
     def self.deposited_on(args={})
       from_date = args[:from_date] || 999.years.ago
