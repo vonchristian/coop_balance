@@ -1,5 +1,5 @@
 class Term < ApplicationRecord
-  belongs_to :termable, polymorphic: true
+  belongs_to :termable, polymorphic: true, optional: true
   validates :term, presence: true, numericality: true
   delegate :disbursed?, to: :termable, allow_nil: true
 
@@ -36,7 +36,7 @@ class Term < ApplicationRecord
       num
     else
       0
-    end 
+    end
   end
 
   def remaining_term

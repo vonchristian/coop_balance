@@ -30,7 +30,9 @@
         <h4 class="card-title">Loan Details </h4>
       </div>
       <div class="col-md-6">
-        <%= link_to 'View Voucher (PDF)', loans_module_loan_application_voucher_path(loan_application_id: @loan.loan_application.id, id: @loan.loan_application.voucher_id, format: "pdf"), class: "btn btn-default float-right" if @loan.not_forwarded? %>
+        <% if @loan.disbursement_voucher.present? %>
+          <%= link_to 'View Voucher (PDF)', loans_module_loan_application_voucher_path(loan_application_id: @loan.loan_application.id, id: @loan.loan_application.voucher_id, format: "pdf"), class: "btn btn-default float-right" if @loan.not_forwarded? %>
+        <% end %>
         <% if @loan.loan_entry.present? %>
           <%= link_to "View Entry", accounting_module_entry_path(@loan.loan_entry), data:{toggle: 'tooltip'}, title: @loan.loan_entry.description, class: "btn btn-default float-right" %>
         <% end %>
@@ -91,7 +93,9 @@
             <b>Loan Term</b>
           </div>
           <div class="col-md-6 col-sm-6">
-            <%= @loan.current_term.term if @loan.not_forwarded? %>
+            <% if @loan.terms.present? %>
+              <%= @loan.current_term.term if @loan.not_forwarded? %>
+            <% end %>
           </div>
         </div>
         <div class="row min-margin">

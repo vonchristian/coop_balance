@@ -1,109 +1,185 @@
-example_id                                                                | status | run_time        |
-------------------------------------------------------------------------- | ------ | --------------- |
-./spec/models/cooperatives/office_spec.rb[1:1:1]                          | passed | 0.00549 seconds |
-./spec/models/cooperatives/office_spec.rb[1:1:2]                          | passed | 0.00474 seconds |
-./spec/models/cooperatives/office_spec.rb[1:1:3]                          | passed | 0.01176 seconds |
-./spec/models/cooperatives/office_spec.rb[1:1:4]                          | passed | 0.00782 seconds |
-./spec/models/cooperatives/office_spec.rb[1:1:5]                          | passed | 0.04222 seconds |
-./spec/models/cooperatives/office_spec.rb[1:1:6]                          | passed | 0.00582 seconds |
-./spec/models/cooperatives/office_spec.rb[1:1:7]                          | passed | 0.00422 seconds |
-./spec/models/cooperatives/office_spec.rb[1:1:8]                          | passed | 0.01172 seconds |
-./spec/models/cooperatives/office_spec.rb[1:1:9]                          | passed | 0.0056 seconds  |
-./spec/models/cooperatives/office_spec.rb[1:1:10]                         | passed | 0.01487 seconds |
-./spec/models/cooperatives/office_spec.rb[1:1:11]                         | passed | 0.00496 seconds |
-./spec/models/cooperatives/office_spec.rb[1:1:12]                         | passed | 0.0068 seconds  |
-./spec/models/cooperatives/office_spec.rb[1:1:13]                         | passed | 0.00897 seconds |
-./spec/models/cooperatives/office_spec.rb[1:1:14]                         | passed | 0.01196 seconds |
-./spec/models/cooperatives/office_spec.rb[1:1:15]                         | passed | 0.02102 seconds |
-./spec/models/cooperatives/office_spec.rb[1:1:16]                         | passed | 0.00507 seconds |
-./spec/models/cooperatives/office_spec.rb[1:1:17]                         | passed | 0.00168 seconds |
-./spec/models/cooperatives/office_spec.rb[1:1:18]                         | passed | 0.00353 seconds |
-./spec/models/cooperatives/office_spec.rb[1:1:19]                         | passed | 0.00516 seconds |
-./spec/models/cooperatives/office_spec.rb[1:1:20]                         | passed | 0.00393 seconds |
-./spec/models/cooperatives/office_spec.rb[1:2:1]                          | passed | 0.01277 seconds |
-./spec/models/cooperatives/office_spec.rb[1:2:2]                          | passed | 0.0141 seconds  |
-./spec/models/cooperatives/office_spec.rb[1:2:3]                          | passed | 0.01379 seconds |
-./spec/models/cooperatives/office_spec.rb[1:2:4]                          | passed | 0.10098 seconds |
-./spec/models/cooperatives/office_spec.rb[1:3]                            | passed | 0.01101 seconds |
-./spec/models/cooperatives/office_spec.rb[1:4]                            | passed | 0.2574 seconds  |
-./spec/models/cooperatives/program_spec.rb[1:1:1]                         | passed | 0.00914 seconds |
-./spec/models/cooperatives/program_spec.rb[1:1:2]                         | passed | 0.00721 seconds |
-./spec/models/cooperatives/program_spec.rb[1:1:3]                         | passed | 0.00707 seconds |
-./spec/models/cooperatives/program_spec.rb[1:1:4]                         | passed | 0.00687 seconds |
-./spec/models/cooperatives/program_spec.rb[1:1:5]                         | passed | 0.00202 seconds |
-./spec/models/cooperatives/program_spec.rb[1:1:6]                         | passed | 0.00216 seconds |
-./spec/models/cooperatives/program_spec.rb[1:1:7]                         | passed | 0.00199 seconds |
-./spec/models/cooperatives/program_spec.rb[1:1:8]                         | passed | 0.00308 seconds |
-./spec/models/cooperatives/program_spec.rb[1:2:1]                         | passed | 0.0169 seconds  |
-./spec/models/cooperatives/program_spec.rb[1:2:2]                         | passed | 0.00957 seconds |
-./spec/models/cooperatives/program_spec.rb[1:2:3]                         | passed | 0.0405 seconds  |
-./spec/models/cooperatives/program_spec.rb[1:2:4]                         | passed | 0.08999 seconds |
-./spec/models/cooperatives/program_spec.rb[1:2:5]                         | passed | 0.01716 seconds |
-./spec/models/cooperatives/program_spec.rb[1:3]                           | passed | 0.90034 seconds |
-./spec/models/cooperatives/program_spec.rb[1:4]                           | passed | 0.00894 seconds |
-./spec/models/cooperatives/program_spec.rb[1:5:1]                         | passed | 0.21988 seconds |
-./spec/models/cooperatives/program_spec.rb[1:5:2]                         | passed | 0.15663 seconds |
-./spec/models/cooperatives/program_spec.rb[1:5:3]                         | passed | 0.14224 seconds |
-./spec/models/cooperatives/program_spec.rb[1:5:4]                         | passed | 0.18641 seconds |
-./spec/models/cooperatives/program_spec.rb[1:6]                           | passed | 0.78312 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:1:1]                | passed | 0.12831 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:1:2]                | passed | 0.02386 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:1:3]                | passed | 0.01534 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:1:4]                | passed | 0.01418 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:1:5]                | passed | 0.01257 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:1:6]                | passed | 0.01824 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:1:7]                | passed | 0.02374 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:1:8]                | passed | 0.00872 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:1:9]                | passed | 0.01258 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:1:10]               | passed | 0.00526 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:1:11]               | passed | 0.04989 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:1:12]               | passed | 0.052 seconds   |
-./spec/models/loans_module/loan_application_spec.rb[1:1:13]               | passed | 0.01233 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:2:1]                | passed | 0.00606 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:2:2]                | passed | 0.03076 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:2:3]                | passed | 0.03613 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:2:4]                | passed | 1.53 seconds    |
-./spec/models/loans_module/loan_application_spec.rb[1:3:1]                | passed | 0.00255 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:3:2]                | passed | 0.00282 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:3:3]                | passed | 0.0021 seconds  |
-./spec/models/loans_module/loan_application_spec.rb[1:3:4]                | passed | 0.00315 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:3:5]                | passed | 0.00216 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:3:6]                | failed | 0.01887 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:3:7]                | passed | 0.00337 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:3:8]                | passed | 0.00256 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:4]                  | passed | 0.03751 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:5]                  | failed | 1 second        |
-./spec/models/loans_module/loan_application_spec.rb[1:6]                  | failed | 0.22826 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:7]                  | failed | 0.24783 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:8]                  | failed | 0.35013 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:9:1]                | failed | 0.12073 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:9:2]                | failed | 0.13513 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:10]                 | failed | 0.15253 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:11]                 | failed | 0.07632 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:12]                 | failed | 0.14609 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:13]                 | failed | 0.07635 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:14]                 | failed | 0.14088 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:15]                 | failed | 0.13032 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:16]                 | failed | 0.11121 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:17]                 | failed | 0.15704 seconds |
-./spec/models/loans_module/loan_application_spec.rb[1:18]                 | failed | 0.0917 seconds  |
-./spec/models/memberships_module/program_subscription_spec.rb[1:1:1]      | passed | 0.36164 seconds |
-./spec/models/memberships_module/program_subscription_spec.rb[1:1:2]      | passed | 0.00894 seconds |
-./spec/models/memberships_module/program_subscription_spec.rb[1:1:3]      | passed | 0.00877 seconds |
-./spec/models/memberships_module/program_subscription_spec.rb[1:1:4]      | passed | 0.00671 seconds |
-./spec/models/memberships_module/program_subscription_spec.rb[1:1:5]      | passed | 0.00935 seconds |
-./spec/models/memberships_module/program_subscription_spec.rb[1:2:1]      | passed | 0.00338 seconds |
-./spec/models/memberships_module/program_subscription_spec.rb[1:2:2]      | passed | 0.00341 seconds |
-./spec/models/offices/office_program_spec.rb[1:1:1]                       | passed | 0.2153 seconds  |
-./spec/models/offices/office_program_spec.rb[1:1:2]                       | passed | 0.0036 seconds  |
-./spec/models/offices/office_program_spec.rb[1:1:3]                       | passed | 0.00337 seconds |
-./spec/models/offices/office_program_spec.rb[1:2:1]                       | passed | 0.68275 seconds |
-./spec/services/account_creators/program_subscription_spec.rb[1:1]        | passed | 1.96 seconds    |
-./spec/services/account_creators/saving_spec.rb[1:1]                      | passed | 0.93105 seconds |
-./spec/services/migrators/account_category_spec.rb[1:1]                   | failed | 0.52043 seconds |
-./spec/system/management_module/settings/programs/new_system_spec.rb[1:1] | passed | 7.45 seconds    |
-./spec/system/management_module/settings/programs/new_system_spec.rb[1:2] | passed | 0.3257 seconds  |
-./spec/system/members/program_subscriptions/new_system_spec.rb[1:1]       | failed | 2.49 seconds    |
-./spec/system/offices/settings/programs/new_system_spec.rb[1:1]           | passed | 12.96 seconds   |
-./spec/system/offices/settings/programs/new_system_spec.rb[1:2]           | passed | 0.87296 seconds |
-./spec/system/offices/settings/programs/new_system_spec.rb[1:3]           | passed | 3.07 seconds    |
+example_id                                                                | status  | run_time        |
+------------------------------------------------------------------------- | ------- | --------------- |
+./spec/forms/loans_module/loans/term_processing_spec.rb[1:1:1]            | passed  | 0.00254 seconds |
+./spec/forms/loans_module/loans/term_processing_spec.rb[1:1:2]            | passed  | 0.00174 seconds |
+./spec/forms/loans_module/loans/term_processing_spec.rb[1:1:3]            | passed  | 0.00216 seconds |
+./spec/forms/loans_module/loans/term_processing_spec.rb[1:1:4]            | passed  | 0.00271 seconds |
+./spec/forms/loans_module/loans/term_processing_spec.rb[1:2:1]            | passed  | 0.00863 seconds |
+./spec/forms/loans_module/loans/term_processing_spec.rb[1:2:2]            | passed  | 0.00464 seconds |
+./spec/forms/loans_module/loans/term_processing_spec.rb[1:2:3]            | passed  | 0.00538 seconds |
+./spec/forms/loans_module/loans/term_processing_spec.rb[1:2:4]            | passed  | 0.00554 seconds |
+./spec/forms/loans_module/loans/term_processing_spec.rb[1:2:5]            | passed  | 0.00542 seconds |
+./spec/forms/loans_module/loans/term_processing_spec.rb[1:3]              | passed  | 1.33 seconds    |
+./spec/models/cooperatives/office_spec.rb[1:1:1]                          | passed  | 0.00549 seconds |
+./spec/models/cooperatives/office_spec.rb[1:1:2]                          | passed  | 0.00474 seconds |
+./spec/models/cooperatives/office_spec.rb[1:1:3]                          | passed  | 0.01176 seconds |
+./spec/models/cooperatives/office_spec.rb[1:1:4]                          | passed  | 0.00782 seconds |
+./spec/models/cooperatives/office_spec.rb[1:1:5]                          | passed  | 0.04222 seconds |
+./spec/models/cooperatives/office_spec.rb[1:1:6]                          | passed  | 0.00582 seconds |
+./spec/models/cooperatives/office_spec.rb[1:1:7]                          | passed  | 0.00422 seconds |
+./spec/models/cooperatives/office_spec.rb[1:1:8]                          | passed  | 0.01172 seconds |
+./spec/models/cooperatives/office_spec.rb[1:1:9]                          | passed  | 0.0056 seconds  |
+./spec/models/cooperatives/office_spec.rb[1:1:10]                         | passed  | 0.01487 seconds |
+./spec/models/cooperatives/office_spec.rb[1:1:11]                         | passed  | 0.00496 seconds |
+./spec/models/cooperatives/office_spec.rb[1:1:12]                         | passed  | 0.0068 seconds  |
+./spec/models/cooperatives/office_spec.rb[1:1:13]                         | passed  | 0.00897 seconds |
+./spec/models/cooperatives/office_spec.rb[1:1:14]                         | passed  | 0.01196 seconds |
+./spec/models/cooperatives/office_spec.rb[1:1:15]                         | passed  | 0.02102 seconds |
+./spec/models/cooperatives/office_spec.rb[1:1:16]                         | passed  | 0.00507 seconds |
+./spec/models/cooperatives/office_spec.rb[1:1:17]                         | passed  | 0.00168 seconds |
+./spec/models/cooperatives/office_spec.rb[1:1:18]                         | passed  | 0.00353 seconds |
+./spec/models/cooperatives/office_spec.rb[1:1:19]                         | passed  | 0.00516 seconds |
+./spec/models/cooperatives/office_spec.rb[1:1:20]                         | passed  | 0.00393 seconds |
+./spec/models/cooperatives/office_spec.rb[1:2:1]                          | passed  | 0.01277 seconds |
+./spec/models/cooperatives/office_spec.rb[1:2:2]                          | passed  | 0.0141 seconds  |
+./spec/models/cooperatives/office_spec.rb[1:2:3]                          | passed  | 0.01379 seconds |
+./spec/models/cooperatives/office_spec.rb[1:2:4]                          | passed  | 0.10098 seconds |
+./spec/models/cooperatives/office_spec.rb[1:3]                            | passed  | 0.01101 seconds |
+./spec/models/cooperatives/office_spec.rb[1:4]                            | passed  | 0.2574 seconds  |
+./spec/models/cooperatives/program_spec.rb[1:1:1]                         | passed  | 0.00914 seconds |
+./spec/models/cooperatives/program_spec.rb[1:1:2]                         | passed  | 0.00721 seconds |
+./spec/models/cooperatives/program_spec.rb[1:1:3]                         | passed  | 0.00707 seconds |
+./spec/models/cooperatives/program_spec.rb[1:1:4]                         | passed  | 0.00687 seconds |
+./spec/models/cooperatives/program_spec.rb[1:1:5]                         | passed  | 0.00202 seconds |
+./spec/models/cooperatives/program_spec.rb[1:1:6]                         | passed  | 0.00216 seconds |
+./spec/models/cooperatives/program_spec.rb[1:1:7]                         | passed  | 0.00199 seconds |
+./spec/models/cooperatives/program_spec.rb[1:1:8]                         | passed  | 0.00308 seconds |
+./spec/models/cooperatives/program_spec.rb[1:2:1]                         | passed  | 0.0169 seconds  |
+./spec/models/cooperatives/program_spec.rb[1:2:2]                         | passed  | 0.00957 seconds |
+./spec/models/cooperatives/program_spec.rb[1:2:3]                         | passed  | 0.0405 seconds  |
+./spec/models/cooperatives/program_spec.rb[1:2:4]                         | passed  | 0.08999 seconds |
+./spec/models/cooperatives/program_spec.rb[1:2:5]                         | passed  | 0.01716 seconds |
+./spec/models/cooperatives/program_spec.rb[1:3]                           | passed  | 0.90034 seconds |
+./spec/models/cooperatives/program_spec.rb[1:4]                           | passed  | 0.00894 seconds |
+./spec/models/cooperatives/program_spec.rb[1:5:1]                         | passed  | 0.21988 seconds |
+./spec/models/cooperatives/program_spec.rb[1:5:2]                         | passed  | 0.15663 seconds |
+./spec/models/cooperatives/program_spec.rb[1:5:3]                         | passed  | 0.14224 seconds |
+./spec/models/cooperatives/program_spec.rb[1:5:4]                         | passed  | 0.18641 seconds |
+./spec/models/cooperatives/program_spec.rb[1:6]                           | passed  | 0.78312 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:1:1]                | passed  | 0.12831 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:1:2]                | passed  | 0.02386 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:1:3]                | passed  | 0.01534 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:1:4]                | passed  | 0.01418 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:1:5]                | passed  | 0.01257 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:1:6]                | passed  | 0.01824 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:1:7]                | passed  | 0.02374 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:1:8]                | passed  | 0.00872 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:1:9]                | passed  | 0.01258 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:1:10]               | passed  | 0.00526 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:1:11]               | passed  | 0.04989 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:1:12]               | passed  | 0.052 seconds   |
+./spec/models/loans_module/loan_application_spec.rb[1:1:13]               | passed  | 0.01233 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:2:1]                | passed  | 0.00606 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:2:2]                | passed  | 0.03076 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:2:3]                | passed  | 0.03613 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:2:4]                | passed  | 1.53 seconds    |
+./spec/models/loans_module/loan_application_spec.rb[1:3:1]                | passed  | 0.00255 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:3:2]                | passed  | 0.00282 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:3:3]                | passed  | 0.0021 seconds  |
+./spec/models/loans_module/loan_application_spec.rb[1:3:4]                | passed  | 0.00315 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:3:5]                | passed  | 0.00216 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:3:6]                | failed  | 0.01887 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:3:7]                | passed  | 0.00337 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:3:8]                | passed  | 0.00256 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:4]                  | passed  | 0.03751 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:5]                  | failed  | 1 second        |
+./spec/models/loans_module/loan_application_spec.rb[1:6]                  | failed  | 0.22826 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:7]                  | failed  | 0.24783 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:8]                  | failed  | 0.35013 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:9:1]                | failed  | 0.12073 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:9:2]                | failed  | 0.13513 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:10]                 | failed  | 0.15253 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:11]                 | failed  | 0.07632 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:12]                 | failed  | 0.14609 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:13]                 | failed  | 0.07635 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:14]                 | failed  | 0.14088 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:15]                 | failed  | 0.13032 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:16]                 | failed  | 0.11121 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:17]                 | failed  | 0.15704 seconds |
+./spec/models/loans_module/loan_application_spec.rb[1:18]                 | failed  | 0.0917 seconds  |
+./spec/models/loans_module/loan_spec.rb[1:1:1]                            | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:1:2]                            | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:1:3]                            | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:1:4]                            | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:1:5]                            | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:1:6]                            | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:1:7]                            | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:1:8]                            | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:1:9]                            | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:1:10]                           | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:1:11]                           | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:1:12]                           | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:1:13]                           | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:1:14]                           | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:1:15]                           | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:1:16]                           | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:1:17]                           | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:1:18]                           | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:1:19]                           | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:1:20]                           | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:1:21]                           | passed  | 0.04479 seconds |
+./spec/models/loans_module/loan_spec.rb[1:1:22]                           | passed  | 0.04262 seconds |
+./spec/models/loans_module/loan_spec.rb[1:1:23]                           | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:1:24]                           | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:1:25]                           | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:1:26]                           | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:1:27]                           | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:1:28]                           | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:1:29]                           | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:1:30]                           | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:1:31]                           | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:2:1]                            | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:2:2]                            | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:3:1]                            | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:3:2]                            | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:3:3]                            | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:3:4]                            | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:3:5]                            | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:3:6]                            | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:3:7]                            | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:3:8]                            | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:3:9]                            | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:3:10]                           | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:3:11]                           | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:3:12]                           | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:3:13]                           | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:3:14]                           | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:3:15]                           | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:4:1]                            | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:5:1]                            | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:6:1]                            | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:6:2]                            | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:7]                              | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:8]                              | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:9]                              | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:10:1]                           | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:10:2]                           | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:10:3]                           | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:10:4]                           | unknown |                 |
+./spec/models/loans_module/loan_spec.rb[1:11]                             | unknown |                 |
+./spec/models/loans_module/loans/loan_term_spec.rb[1:1:1]                 | passed  | 0.02544 seconds |
+./spec/models/loans_module/loans/loan_term_spec.rb[1:1:2]                 | passed  | 0.00134 seconds |
+./spec/models/loans_module/loans/loan_term_spec.rb[1:2:1]                 | passed  | 0.15262 seconds |
+./spec/models/loans_module/loans/loan_term_spec.rb[1:2:2]                 | passed  | 0.00325 seconds |
+./spec/models/loans_module/loans/loan_term_spec.rb[1:3:1]                 | passed  | 1.32 seconds    |
+./spec/models/memberships_module/program_subscription_spec.rb[1:1:1]      | passed  | 0.36164 seconds |
+./spec/models/memberships_module/program_subscription_spec.rb[1:1:2]      | passed  | 0.00894 seconds |
+./spec/models/memberships_module/program_subscription_spec.rb[1:1:3]      | passed  | 0.00877 seconds |
+./spec/models/memberships_module/program_subscription_spec.rb[1:1:4]      | passed  | 0.00671 seconds |
+./spec/models/memberships_module/program_subscription_spec.rb[1:1:5]      | passed  | 0.00935 seconds |
+./spec/models/memberships_module/program_subscription_spec.rb[1:2:1]      | passed  | 0.00338 seconds |
+./spec/models/memberships_module/program_subscription_spec.rb[1:2:2]      | passed  | 0.00341 seconds |
+./spec/models/offices/office_program_spec.rb[1:1:1]                       | passed  | 0.2153 seconds  |
+./spec/models/offices/office_program_spec.rb[1:1:2]                       | passed  | 0.0036 seconds  |
+./spec/models/offices/office_program_spec.rb[1:1:3]                       | passed  | 0.00337 seconds |
+./spec/models/offices/office_program_spec.rb[1:2:1]                       | passed  | 0.68275 seconds |
+./spec/services/account_creators/program_subscription_spec.rb[1:1]        | passed  | 1.96 seconds    |
+./spec/services/account_creators/saving_spec.rb[1:1]                      | passed  | 0.93105 seconds |
+./spec/system/loans_module/loans/terms/new_system_spec.rb[1:1]            | passed  | 3.27 seconds    |
+./spec/system/loans_module/loans/terms/new_system_spec.rb[1:2]            | passed  | 0.76289 seconds |
+./spec/system/management_module/settings/programs/new_system_spec.rb[1:1] | passed  | 7.45 seconds    |
+./spec/system/management_module/settings/programs/new_system_spec.rb[1:2] | passed  | 0.3257 seconds  |
+./spec/system/members/program_subscriptions/new_system_spec.rb[1:1]       | failed  | 2.49 seconds    |
+./spec/system/offices/settings/programs/new_system_spec.rb[1:1]           | passed  | 12.96 seconds   |
+./spec/system/offices/settings/programs/new_system_spec.rb[1:2]           | passed  | 0.87296 seconds |
+./spec/system/offices/settings/programs/new_system_spec.rb[1:3]           | passed  | 3.07 seconds    |

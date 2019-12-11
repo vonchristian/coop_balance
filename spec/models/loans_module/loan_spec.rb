@@ -22,6 +22,7 @@ module LoansModule
       it { is_expected.to have_many :loan_charges }
       it { is_expected.to have_many :loan_charge_payment_schedules }
       it { is_expected.to have_many :charges }
+      it { is_expected.to have_many :loan_terms }
       it { is_expected.to have_many :terms }
       it { is_expected.to have_many :notices }
       it { is_expected.to have_many :loan_interests }

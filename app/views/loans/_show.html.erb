@@ -17,7 +17,7 @@
             <%= link_to 'Notes', loan_notes_path(@loan), class: "nav-link #{'active' if current_page?(loan_notes_path(@loan))}"%>
           </li>
           <li class="nav-item">
-            <%= link_to 'Settings', loan_settings_path(@loan), class: "nav-link #{'active' if current_page?(loan_settings_path(@loan))}" %>
+            <%= link_to 'Settings', loan_settings_path(@loan), id: "#{@loan.id}-settings", class: "nav-link #{'active' if current_page?(loan_settings_path(@loan))}" %>
           </li>
         </ul>
       </div>

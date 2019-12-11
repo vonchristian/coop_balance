@@ -1,5 +1,7 @@
 FactoryBot.define do
   factory :loan, class: LoansModule::Loan do
+    association :cooperative
+    association :office
     association :loan_product
     association :borrower,                 factory: :member
     association :receivable_account,       factory: :asset

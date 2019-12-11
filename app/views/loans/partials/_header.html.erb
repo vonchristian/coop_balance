@@ -23,7 +23,7 @@
                 <br>
               <% else %>
                 <span class="text-muted" data-toggle="tooltip" title="Reference Number">
-                  <%= "##{Voucher.find(loan.disbursement_voucher_id).try(:reference_number)}" %>
+                  <%= "##{Voucher.find_by(id: loan.disbursement_voucher_id).try(:reference_number)}" %>
                 </span>
               <% end %>
             </div>

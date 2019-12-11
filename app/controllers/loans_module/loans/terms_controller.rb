@@ -5,20 +5,23 @@ module LoansModule
 
       def new
         @loan = current_cooperative.loans.find(params[:loan_id])
-        @term_extension = LoansModule::Loans::Term.new
-        respond_modal_with @term_extension
+        @term = LoansModule::Loans::TermProcessing.new
       end
 
       def create
         @loan = current_cooperative.loans.find(params[:loan_id])
-        @term_extension = LoansModule::Loans::Term.new(term_params)
-        @term_extension.extend!
-        respond_modal_with @term_extension, location: loan_settings_url(@loan), notice: "Loan term extension saved successfully."
+        @term = LoansModule::Loans::TermProcessing.new(term_params)
+        if @term.valid?
+          @term.process!
+          redirect_to loan_settings_url(@loan), notice: "Loan term extension saved successfully."
+        else
+          render :new
+        end
       end
 
       private
       def term_params
-        params.require(:loans_module_loans_term).
+        params.require(:loans_module_loans_term_processing).
         permit(:term, :loan_id, :employee_id, :effectivity_date)
       end
     end
