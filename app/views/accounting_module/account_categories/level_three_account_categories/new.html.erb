@@ -1,0 +1,10 @@
+<%= simple_form_for @level_three_account_category, url: :accounting_module_level_three_account_categories do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :office_id, input_html: { value: current_office.id }, as: :hidden %>
+  <%= f.input :title %>
+  <%= f.input :code %>
+  <%= f.input :contra, as: :boolean %>
+  <%= f.input :type, collection: AccountingModule::Account::TYPES, input_html: { class: 'chosen-select' } %>
+
+  <%= f.submit 'Create Category' %>
+<% end %>

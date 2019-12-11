@@ -8,15 +8,16 @@ Rails.application.routes.draw do
 
   resources :accounting_module, only: [:index]
   namespace :accounting_module do
-    resources :level_one_account_categories, only: [:index, :new, :create], module: :account_categories
-    resources :level_two_account_categories, only: [:index, :new, :create], module: :account_categories
+    resources :level_one_account_categories,   only: [:index, :new, :create], module: :account_categories
+    resources :level_two_account_categories,   only: [:index, :new, :create], module: :account_categories
+    resources :level_three_account_categories, only: [:index, :new, :create], module: :account_categories
     resources :cooperative_services, only: [:show] do
       resources :entries, only: [:index], module: :cooperative_services
       resources :accounts, only: [:index, :new, :create], module: :cooperative_services
     end
     resources :settings, only: [:index]
 
-    
+
     resources :amounts, only: [:destroy]
     resources :commercial_document_adjusting_entry_line_items, only: [:new, :create, :destroy], module: :entries
     resources :per_employee_entries, only: [:index], module: :entries
