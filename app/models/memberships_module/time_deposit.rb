@@ -24,12 +24,14 @@ module MembershipsModule
     delegate :avatar, to: :depositor
     delegate :maturity_date, :effectivity_date, :matured?, to: :term, prefix: true
     delegate :remaining_term,  to: :term
+    delegate :balance, :debits_balance, :credits_balance, to: :liability_account
     before_save :set_depositor_name
+
     def self.deposited_on(args={})
       from_date = args[:from_date] || 999.years.ago
       to_date   = args[:to_date]
       date_range = DateRange.new(from_date: from_date, to_date: to_date)
-      joins(:terms).where('terms.maturity_date' => date_range.start_date..date_range.end_date)
+      joins(:term).where('terms.effectivity_date' => date_range.start_date..date_range.end_date)
     end
 
     def entries
@@ -57,9 +59,7 @@ module MembershipsModule
       end
     end
 
-    def withdrawn?
-      withdrawn == true
-    end
+
 
     def self.not_withdrawn
       where(withdrawn: false)
@@ -74,7 +74,7 @@ module MembershipsModule
     end
 
     def self.matured
-      all.select{|a| a.term_matured? }
+      all.select{ |a| a.term_matured? }
     end
 
     def self.post_interests_earned
@@ -88,7 +88,7 @@ module MembershipsModule
     end
 
     def amount_deposited
-      balance
+      debits_balance
     end
 
     def disbursed?

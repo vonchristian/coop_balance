@@ -20,5 +20,4 @@
 <% @time_deposits.each do |time_deposit| %>
   <%= render 'time_deposits/partials/header', time_deposit: time_deposit %>
 <% end %>
-<center><%= will_paginate @time_deposits %> </center>
-
+<center><%==pagy_bootstrap_nav(@pagy) %> </center>

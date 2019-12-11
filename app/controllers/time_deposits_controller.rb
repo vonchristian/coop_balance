@@ -1,9 +1,9 @@
 class TimeDepositsController < ApplicationController
   def index
     if params[:search].present?
-      @time_deposits = current_cooperative.time_deposits.text_search(params[:search]).paginate(page: params[:page], per_page: 20)
+      @pagy, @time_deposits = pagy(current_cooperative.time_deposits.text_search(params[:search]))
     else
-      @time_deposits = current_cooperative.time_deposits.order(date_deposited: :desc).paginate(page: params[:page], per_page: 20)
+      @pagy, @time_deposits = pagy(current_cooperative.time_deposits.order(date_deposited: :desc))
     end
   end
 

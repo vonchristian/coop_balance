@@ -25,6 +25,10 @@ module MembershipsModule
       it { is_expected.to delegate_method(:effectivity_date).to(:term).with_prefix }
       it { is_expected.to delegate_method(:matured?).to(:term).with_prefix }
       it { is_expected.to delegate_method(:name).to(:office).with_prefix }
+      it { is_expected.to delegate_method(:balance).to(:liability_account) }
+      it { is_expected.to delegate_method(:credits_balance).to(:liability_account) }
+      it { is_expected.to delegate_method(:debits_balance).to(:liability_account) }
+
 
     end
 
