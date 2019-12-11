@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_05_125219) do
+ActiveRecord::Schema.define(version: 2019_12_11_004825) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -27,41 +27,12 @@ ActiveRecord::Schema.define(version: 2019_12_05_125219) do
     t.index ["cooperative_id"], name: "index_account_budgets_on_cooperative_id"
   end
 
-  create_table "account_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "title"
-    t.uuid "cooperative_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "category_type"
-    t.string "code"
-    t.index ["category_type"], name: "index_account_categories_on_category_type"
-    t.index ["cooperative_id"], name: "index_account_categories_on_cooperative_id"
-  end
-
-  create_table "account_sub_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "main_category_id"
-    t.uuid "sub_category_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["main_category_id"], name: "index_account_sub_categories_on_main_category_id"
-    t.index ["sub_category_id"], name: "index_account_sub_categories_on_sub_category_id"
-  end
-
   create_table "accountable_accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "accountable_type"
     t.uuid "accountable_id"
     t.uuid "account_id"
     t.index ["account_id"], name: "index_accountable_accounts_on_account_id"
     t.index ["accountable_type", "accountable_id"], name: "index_accountable_on_accountable_accounts"
-  end
-
-  create_table "accounting_report_account_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "accounting_report_id"
-    t.uuid "account_category_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["account_category_id"], name: "index_account_category_on_accounting_join_categories"
-    t.index ["accounting_report_id"], name: "index_account_report_on_accounting_join_categories"
   end
 
   create_table "accounting_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -84,9 +55,7 @@ ActiveRecord::Schema.define(version: 2019_12_05_125219) do
     t.uuid "main_account_id"
     t.boolean "active", default: true
     t.datetime "last_transaction_date"
-    t.uuid "account_category_id"
     t.uuid "level_one_account_category_id"
-    t.index ["account_category_id"], name: "index_accounts_on_account_category_id"
     t.index ["code"], name: "index_accounts_on_code", unique: true
     t.index ["level_one_account_category_id"], name: "index_accounts_on_level_one_account_category_id"
     t.index ["main_account_id"], name: "index_accounts_on_main_account_id"
@@ -1850,14 +1819,8 @@ ActiveRecord::Schema.define(version: 2019_12_05_125219) do
 
   add_foreign_key "account_budgets", "accounts"
   add_foreign_key "account_budgets", "cooperatives"
-  add_foreign_key "account_categories", "cooperatives"
-  add_foreign_key "account_sub_categories", "account_categories", column: "main_category_id"
-  add_foreign_key "account_sub_categories", "account_categories", column: "sub_category_id"
   add_foreign_key "accountable_accounts", "accounts"
-  add_foreign_key "accounting_report_account_categories", "account_categories"
-  add_foreign_key "accounting_report_account_categories", "accounting_reports"
   add_foreign_key "accounting_reports", "offices"
-  add_foreign_key "accounts", "account_categories"
   add_foreign_key "accounts", "accounts", column: "main_account_id"
   add_foreign_key "accounts", "level_one_account_categories"
   add_foreign_key "addresses", "barangays"

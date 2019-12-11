@@ -14,19 +14,19 @@ module LoansModule
     multisearchable against: [:borrower_full_name]
     enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
 
-    belongs_to :loan_application,       class_name: "LoansModule::LoanApplication"
-    belongs_to :disbursement_voucher,   class_name: "Voucher", foreign_key: 'disbursement_voucher_id' # move to loan application
+    belongs_to :loan_application,       class_name: "LoansModule::LoanApplication", optional: true
+    belongs_to :disbursement_voucher,   class_name: "Voucher", foreign_key: 'disbursement_voucher_id', optional: true
     belongs_to :cooperative
     belongs_to :office,                 class_name: "Cooperatives::Office"
-    belongs_to :archived_by,            class_name: "User", foreign_key: 'archived_by_id'
+    belongs_to :archived_by,            class_name: "User", foreign_key: 'archived_by_id', optional: true
     belongs_to :borrower,               polymorphic: true # move to loan application
     belongs_to :loan_product,           class_name: "LoansModule::LoanProduct"
     belongs_to :street,                 class_name: "Addresses::Street",  optional: true
     belongs_to :barangay,               class_name: "Addresses::Barangay",  optional: true
     belongs_to :municipality,           class_name: "Addresses::Municipality",optional: true
     belongs_to :organization,           optional: true
-    belongs_to :preparer,               class_name: "User", foreign_key: 'preparer_id' #move to loan application
-    belongs_to :receivable_account,       class_name: 'AccountingModule::Account'
+    belongs_to :preparer,               class_name: "User", foreign_key: 'preparer_id', optional: true
+    belongs_to :receivable_account,       class_name: 'AccountingModule::Account', optional: true
     belongs_to :interest_revenue_account, class_name: 'AccountingModule::Account', optional: true
     belongs_to :penalty_revenue_account,  class_name: 'AccountingModule::Account', optional: true
     belongs_to :accrued_income_account,  class_name: 'AccountingModule::Account', optional: true

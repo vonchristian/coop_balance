@@ -1,5 +1,0 @@
-<%= simple_form_for @accounting_report, url: :accounting_module_accounting_reports do |f| %>
-  <%= f.input :title %>
-  <%= f.input :report_type, collection: AccountingModule::AccountingReport.report_types.keys.to_a.map{ |a| [a.titleize, a] } %>
-  <%= f.submit %>
-<% end %>

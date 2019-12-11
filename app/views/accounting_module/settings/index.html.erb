@@ -1,9 +1,0 @@
-<%= link_to 'New Account Category', new_accounting_module_account_category_path %>
-<% current_cooperative.account_categories.each do |category| %>
-  <%= link_to category.title, accounting_module_account_category_path(category) %>
-<% end %>
-
-<%= link_to 'New Report', new_accounting_module_accounting_report_path %>
-<% current_office.accounting_reports.each do |report| %>
-  <%= link_to report.title, accounting_module_accounting_report_path(report) %>
-<% end %>

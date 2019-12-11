@@ -15,14 +15,8 @@ Rails.application.routes.draw do
       resources :accounts, only: [:index, :new, :create], module: :cooperative_services
     end
     resources :settings, only: [:index]
-    resources :accounting_reports, only: [:new, :create], module: :settings
-    resources :accounting_reports, only: [:show] do
-      resources :account_categories, only: [:new, :create], module: :accounting_reports
-      resources :settings, only: [:index], module: :accounting_reports
-    end
-    resources :account_categories, only: [:new, :create, :show], module: :settings do
-      resources :sub_categories, only: [:new, :create]
-    end
+
+    
     resources :amounts, only: [:destroy]
     resources :commercial_document_adjusting_entry_line_items, only: [:new, :create, :destroy], module: :entries
     resources :per_employee_entries, only: [:index], module: :entries
@@ -638,7 +632,7 @@ Rails.application.routes.draw do
     resources :entries,          only: [:index], module: :offices
     resources :reports,          only: [:index], module: :offices
     resources :settings,         only: [:index], module: :offices
-    resources :programs,         only: [:index, :new, :create], module: :offices 
+    resources :programs,         only: [:index, :new, :create], module: :offices
   end
   resources :credit_scores, only: [:index]
   resources :program_subscriptions, only: [:show]

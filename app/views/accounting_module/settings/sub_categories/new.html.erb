@@ -1,7 +1,0 @@
-<%= simple_form_for [@account_category, @sub_category], url: :accounting_module_account_category_sub_categories do |f| %>
-  <%= f.input :code %>
-  <%= f.input :title %>
-  <%= f.input :category_type, collection: AccountingModule::AccountCategory.category_types.keys.to_a.map{ |a| [a.titleize, a] } %>
-  <%= f.input :cooperative_id, input_html: { value: current_cooperative.id }, as: :hidden %>
-  <%= f.submit "Save Account Category" %>
-<% end %>

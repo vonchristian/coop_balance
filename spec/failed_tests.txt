@@ -100,6 +100,7 @@ example_id                                                                | stat
 ./spec/models/offices/office_program_spec.rb[1:2:1]                       | passed | 0.68275 seconds |
 ./spec/services/account_creators/program_subscription_spec.rb[1:1]        | passed | 1.96 seconds    |
 ./spec/services/account_creators/saving_spec.rb[1:1]                      | passed | 0.93105 seconds |
+./spec/services/migrators/account_category_spec.rb[1:1]                   | failed | 0.52043 seconds |
 ./spec/system/management_module/settings/programs/new_system_spec.rb[1:1] | passed | 7.45 seconds    |
 ./spec/system/management_module/settings/programs/new_system_spec.rb[1:2] | passed | 0.3257 seconds  |
 ./spec/system/members/program_subscriptions/new_system_spec.rb[1:1]       | failed | 2.49 seconds    |

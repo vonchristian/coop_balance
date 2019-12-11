@@ -4,7 +4,7 @@ module AccountingModule
     extend AccountingModule::UpdatedAtFinder
     include PgSearch::Model
     pg_search_scope :text_search, against: [:title, :code]
-
+    
     belongs_to :level_two_account_category, class_name: 'AccountingModule::LevelTwoAccountCategory', optional: true
     belongs_to :office,                     class_name: 'Cooperatives::Office'
     has_many :accounts,                     class_name: 'AccountingModule::Account', dependent: :nullify

@@ -1,6 +1,7 @@
 FactoryBot.define do
-  factory :account_category do
+  factory :account_category, class: AccountingModule::AccountCategory do
     title { "MyString" }
-    cooperative { nil }
+    association :cooperative
+    code { SecureRandom.uuid }
   end
 end

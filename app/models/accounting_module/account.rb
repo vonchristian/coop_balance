@@ -9,7 +9,6 @@ module AccountingModule
     class_attribute :normal_credit_balance
     belongs_to :level_one_account_category,  class_name: 'AccountingModule::LevelOneAccountCategory', optional: true
     belongs_to :main_account,       class_name: "AccountingModule::Account", foreign_key: 'main_account_id', optional: true
-    belongs_to :account_category,   class_name: 'AccountingModule::AccountCategory', optional: true
     has_many :amounts,              class_name: "AccountingModule::Amount"
     has_many :credit_amounts,       :class_name => 'AccountingModule::CreditAmount'
     has_many :debit_amounts,       :class_name => 'AccountingModule::DebitAmount'
