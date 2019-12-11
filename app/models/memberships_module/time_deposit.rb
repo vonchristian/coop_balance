@@ -55,7 +55,7 @@ module MembershipsModule
     def withdrawal_date
       if withdrawn?
         # time_deposit_product_account.debit_entries.select {|e| e.amounts.where(commercial_document: self)}.first.entry_date
-        entries.sort_by(&:created_at).reverse.first.entry_date
+        liability_account.entries.order(entry_date: :asc).last.entry_date
       end
     end
 
@@ -95,20 +95,14 @@ module MembershipsModule
       true
     end
 
-    def balance(args={})
-      liability_account.balance(args)
-    end
 
-    def credits_balance(args={})  # deposit amount
-      liability_account.credits_balance(args.merge(commercial_document: self))
-    end
 
     def interest_balance(args={})
       interest_expense_account.debits_balance(args.merge(commercial_document: self))
     end
 
     def deposited_amount
-      credits_balance - interest_balance
+      amount_deposited
     end
 
     def earned_interests
@@ -118,6 +112,7 @@ module MembershipsModule
     def computed_break_contract_amount
       time_deposit_product.break_contract_rate * amount_deposited
     end
+
     def computed_earned_interests
       if term.matured?
         amount_deposited * rate
