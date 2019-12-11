@@ -3,6 +3,8 @@ include ChosenSelect
 describe 'New level two account category' do
   before(:each) do
     accountant = create(:accountant)
+    l3_account_category = create(:asset_level_three_account_category, title: 'Cash on Hand', office: accountant.office)
+
     login_as(accountant, scope: :user)
     visit accounting_module_level_two_account_categories_path
     click_link 'New Category'
@@ -13,6 +15,7 @@ describe 'New level two account category' do
     fill_in 'Code', with: '23123'
     check 'Contra'
     select_from_chosen 'Asset', from: 'Type'
+    select_from_chosen 'Cash on Hand', from: 'L3 Account Category'
 
     click_button 'Create Category'
 

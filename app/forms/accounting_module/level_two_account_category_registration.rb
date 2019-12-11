@@ -2,7 +2,7 @@ module AccountingModule
   class LevelTwoAccountCategoryRegistration
     include ActiveModel::Model
 
-    attr_accessor :title, :code, :contra, :type, :office_id
+    attr_accessor :title, :code, :contra, :type, :office_id, :level_three_account_category_id
 
     validates :title, :code, :type, :office_id, presence: true
     validates :type, inclusion: { in: AccountingModule::Account::TYPES }
@@ -25,7 +25,8 @@ module AccountingModule
         title:  title,
         code:   code,
         type:   normalized_type,
-        contra: contra
+        contra: contra,
+        level_three_account_category_id: level_three_account_category_id
       )
     end
 

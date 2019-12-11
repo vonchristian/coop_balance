@@ -33,15 +33,18 @@ module AccountingModule
     end
 
     def edit
-      @account = type_class.find(params[:id])
-      respond_modal_with @account
+      @account = current_cooperative.accounts.find(params[:id])
     end
 
     def update
       @account = current_cooperative.accounts.find(params[:id])
       @account.update(update_params)
-      respond_modal_with @account,
-        location: accounting_module_account_url(@account)
+      if @account.valid?
+        @account.save!
+        redirect_to accounting_module_account_settings_url(@account), notice: 'Account updated successfully.'
+      else
+        render :edit
+      end
     end
 
     private
@@ -65,19 +68,7 @@ module AccountingModule
       params.require(:accounting_module_account).permit(:name, :code, :type, :contra, :main_account_id)
     end
     def update_params
-      if @account && @account.type == "AccountingModule::Asset"
-        params.require(:accounting_module_asset).permit(:name, :code, :type, :contra, :main_account_id)
-      elsif @account && @account.type == "AccountingModule::Equity"
-        params.require(:accounting_module_equity).permit(:name, :code, :type, :contra, :main_account_id)
-      elsif @account &&  @account.type == "AccountingModule::Liability"
-        params.require(:accounting_module_liability).permit(:name, :code, :type, :contra, :main_account_id)
-      elsif  @account &&  @account.type == "AccountingModule::Revenue"
-        params.require(:accounting_module_revenue).permit(:name, :code, :type, :contra, :main_account_id)
-      elsif  @account &&  @account.type == "AccountingModule::Expense"
-        params.require(:accounting_module_expense).permit(:name, :code, :type, :contra, :main_account_id)
-      else
-        params.require(:accounting_module_account).permit(:name, :code, :type, :contra, :main_account_id)
-      end
+      params.require(@account.type.underscore.parameterize.underscore.to_sym).permit(:name, :code, :type, :contra, :level_one_account_category_id)
     end
   end
 end

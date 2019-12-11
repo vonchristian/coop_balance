@@ -17,5 +17,13 @@ FactoryBot.define do
     factory :general_manager, class: User do
       role { 'general_manager' }
     end
+
+    factory :bookkeeper, class: User do
+      role { 'bookkeeper' }
+    end
+
+    factory :accountant, class: User do
+      role { 'accountant' }
+    end
   end
 end

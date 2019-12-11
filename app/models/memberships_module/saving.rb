@@ -19,7 +19,7 @@ module MembershipsModule
     belongs_to :office,                   class_name: "Cooperatives::Office"
     has_many :debit_amounts,              class_name: "AccountingModule::DebitAmount", as: :commercial_document
     has_many :credit_amounts,             class_name: "AccountingModule::CreditAmount", as: :commercial_document
-
+    has_many :entries,                    through: :liability_account, class_name: 'AccountingModule::Entry'
     has_many :ownerships, as: :ownable
     has_many :member_depositors, through: :ownerships, source: :owner, source_type: 'Member'
     has_many :organization_depositors, through: :ownerships, source: :owner, source_type: 'Organization'
@@ -40,14 +40,13 @@ module MembershipsModule
 
     delegate :avatar, to: :depositor, allow_nil: true
     delegate :dormancy_number_of_days, :balance_averager, to: :saving_product
-
+    delegate :balance, :debits_balance, :credits_balance, to: :liability_account
     validates :depositor, presence: true
 
 
     before_save :set_account_owner_name, :set_date_opened #move to saving opening
 
     has_many :amounts,  class_name: "AccountingModule::Amount", as: :commercial_document
-    has_many :entries,  through: :amounts, class_name: "AccountingModule::Entry"
 
     def depositors
       member_depositors + organization_depositors
@@ -99,17 +98,15 @@ module MembershipsModule
     end
 
     def interest_posted?(args={})
-      saving_product.
       interest_expense_account.
-      credit_amounts.
-      entries_for(commercial_document: self).
+      entries.
       entered_on(from_date: args[:from_date].beginning_of_quarter, to_date: args[:to_date].end_of_quarter).present?
     end
 
     def self.updated_at(args={})
       if args[:from_date] && args[:to_date]
         date_range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])
-        where('last_transaction_date' => (date_range.start_date..date_range.end_date))
+        joins(:entries).where('entries.entry_date' => (date_range.start_date..date_range.end_date))
       else
         all
       end
@@ -128,24 +125,22 @@ module MembershipsModule
       "#{name} - #{balance.to_f}"
     end
 
-    def balance(args={})
-      liability_account.balance(args)
-    end
+
 
     def balance_for(args={})
 
     end
 
-    def deposits
-      saving_product_account.credits_balance(args.merge(commercial_document: self))
+    def deposits(args = {})
+      credits_balance(args)
     end
 
-    def withdrawals
-      saving_product_account.debits_balance(args.merge(commercial_document: self))
+    def withdrawals(args = {})
+      debits_balance(args)
     end
 
     def interests_earned(args={})
-      saving_product_interest_expense_account.debits_balance(commercial_document: self, from_date: args[:from_date], to_date: args[:to_date])
+      interest_expense_account.debits_balance(commercial_document: self, from_date: args[:from_date], to_date: args[:to_date])
     end
 
     def can_withdraw?

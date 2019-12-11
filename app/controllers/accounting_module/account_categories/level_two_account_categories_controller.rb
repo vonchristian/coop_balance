@@ -21,7 +21,7 @@ module AccountingModule
       private
       def category_params
         params.require(:accounting_module_level_two_account_category_registration).
-        permit(:title, :code, :contra, :type, :office_id)
+        permit(:title, :code, :contra, :type, :office_id, :level_three_account_category_id)
       end
     end
   end

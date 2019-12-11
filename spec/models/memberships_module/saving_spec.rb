@@ -2,12 +2,12 @@ require 'rails_helper'
 
 module MembershipsModule
   describe Saving do
-    context "associations" do
+    context "associations", type: :model do
       it { is_expected.to belong_to :cooperative }
     	it { is_expected.to belong_to :depositor }
       it { is_expected.to belong_to :office }
     	it { is_expected.to belong_to :saving_product }
-      it { is_expected.to belong_to :barangay }
+      it { is_expected.to belong_to(:barangay).optional }
       it { is_expected.to belong_to :liability_account }
       it { is_expected.to belong_to :interest_expense_account }
       it { is_expected.to have_many :ownerships }
@@ -27,6 +27,10 @@ module MembershipsModule
       it { is_expected.to delegate_method(:current_contact_number).to(:depositor).with_prefix }
       it { is_expected.to delegate_method(:current_occupation).to(:depositor).with_prefix }
     	it { is_expected.to delegate_method(:interest_rate).to(:saving_product).with_prefix }
+      it { is_expected.to delegate_method(:balance).to(:liability_account) }
+      it { is_expected.to delegate_method(:debits_balance).to(:liability_account) }
+      it { is_expected.to delegate_method(:credits_balance).to(:liability_account) }
+
     end
 
 
@@ -34,9 +38,10 @@ module MembershipsModule
       updated_saving = create(:saving)
       not_updated_saving = create(:saving)
       employee = create(:user, role: 'teller')
+      cash     = create(:asset)
       deposit = build(:entry, commercial_document: updated_saving, entry_date: Date.today)
-      deposit.credit_amounts << create(:credit_amount, amount: 5_000, commercial_document: updated_saving, account: updated_saving.saving_product_account)
-      deposit.debit_amounts << create(:debit_amount, amount: 5_000, commercial_document: updated_saving, account: employee.cash_on_hand_account)
+      deposit.credit_amounts.build(amount: 5_000, commercial_document: updated_saving, account: updated_saving.liability_account)
+      deposit.debit_amounts.build(amount: 5_000, commercial_document: updated_saving, account: cash)
       deposit.save
 
       expect(described_class.updated_at(from_date: Date.today, to_date: Date.today)).to include(updated_saving)

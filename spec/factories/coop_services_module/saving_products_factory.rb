@@ -5,6 +5,7 @@ FactoryBot.define do
     minimum_balance { 1_000 }
     sequence(:name) { |n| "#{n}"}
     association :cooperative
+    association :office
     association :account, factory: :liability
     association :interest_expense_account, factory: :expense
     association :closing_account, factory: :revenue

@@ -1,14 +1,13 @@
 module AccountingModule
-  class LevelTwoAccountCategory < ApplicationRecord
+  class LevelThreeAccountCategory < ApplicationRecord
     class_attribute :normal_credit_balance
     extend AccountingModule::UpdatedAtFinder
     include PgSearch::Model
     pg_search_scope :text_search, against: [:title, :code]
 
-    belongs_to :office,                       class_name: 'Cooperatives::Office'
-    belongs_to :level_three_account_category, class_name: 'AccountingModule::LevelThreeAccountCategory', optional: true
-    has_many :level_one_account_categories, class_name: 'AccountingModule::LevelOneAccountCategory'
-    has_many :accounts,                     through: :level_one_account_categories, class_name: 'AccountingModule::Account'
+    belongs_to :office,                     class_name: 'Cooperatives::Office'
+    has_many :level_two_account_categories, class_name: 'AccountingModule::LevelTwoAccountCategory'
+    has_many :accounts,                     through: :level_two_account_categories, class_name: 'AccountingModule::Account'
     has_many :amounts,                      through: :accounts, class_name: 'AccountingModule::Amount'
     has_many :debit_amounts,                through: :accounts, class_name: 'AccountingModule::DebitAmount'
     has_many :credit_amounts,               through: :accounts, class_name: 'AccountingModule::CreditAmount'
@@ -20,30 +19,30 @@ module AccountingModule
     validates :type, presence: true
 
 
-    scope :assets,      -> { where(type: 'AccountingModule::AccountCategories::LevelTwoAccountCategories::Asset') }
-    scope :liabilities, -> { where(type: 'AccountingModule::AccountCategories::LevelTwoAccountCategories::Liability') }
-    scope :equities,    -> { where(type: 'AccountingModule::AccountCategories::LevelTwoAccountCategories::Equity') }
-    scope :revenues,    -> { where(type: 'AccountingModule::AccountCategories::LevelTwoAccountCategories::Revenue') }
-    scope :expenses,    -> { where(type: 'AccountingModule::AccountCategories::LevelTwoAccountCategories::Expense') }
+    scope :assets,      -> { where(type: 'AccountingModule::AccountCategories::LevelThreeAccountCategories::Asset') }
+    scope :liabilities, -> { where(type: 'AccountingModule::AccountCategories::LevelThreeAccountCategories::Liability') }
+    scope :equities,    -> { where(type: 'AccountingModule::AccountCategories::LevelThreeAccountCategories::Equity') }
+    scope :revenues,    -> { where(type: 'AccountingModule::AccountCategories::LevelThreeAccountCategories::Revenue') }
+    scope :expenses,    -> { where(type: 'AccountingModule::AccountCategories::LevelThreeAccountCategories::Expense') }
 
     def self.except_cash_account_categories
       where.not(id: Employees::EmployeeCashAccount.cash_account_categories.ids)
     end
 
     def self.types
-      ["AccountingModule::AccountCategories::LevelTwoAccountCategories::Asset",
-       "AccountingModule::AccountCategories::LevelTwoAccountCategories::Equity",
-       "AccountingModule::AccountCategories::LevelTwoAccountCategories::Liability",
-       "AccountingModule::AccountCategories::LevelTwoAccountCategories::Expense",
-       "AccountingModule::AccountCategories::LevelTwoAccountCategories::Revenue"]
+      ["AccountingModule::AccountCategories::LevelThreeAccountCategories::Asset",
+       "AccountingModule::AccountCategories::LevelThreeAccountCategories::Equity",
+       "AccountingModule::AccountCategories::LevelThreeAccountCategories::Liability",
+       "AccountingModule::AccountCategories::LevelThreeAccountCategories::Expense",
+       "AccountingModule::AccountCategories::LevelThreeAccountCategories::Revenue"]
     end
 
     def normalized_type
-      type.gsub("AccountingModule::AccountCategories::LevelTwoAccountCategories::", "")
+      type.gsub("AccountingModule::AccountCategories::LevelThreeAccountCategories::", "")
     end
 
     def self.trial_balance(args={})
-      return raise(NoMethodError, "undefined method 'trial_balance'") unless self.new.class == AccountingModule::LevelTwoAccountCategory
+      return raise(NoMethodError, "undefined method 'trial_balance'") unless self.new.class == AccountingModule::LevelThreeAccountCategory
         assets.balance(args) -
         (liabilities.balance(args) +
         equities.balance(args) +
@@ -94,7 +93,7 @@ module AccountingModule
     end
 
     def balance(options={})
-      return raise(NoMethodError, "undefined method 'balance'") if self.class == AccountingModule::LevelTwoAccountCategory
+      return raise(NoMethodError, "undefined method 'balance'") if self.class == AccountingModule::LevelThreeAccountCategory
       if self.normal_credit_balance ^ contra
         credits_balance(options) - debits_balance(options)
       else

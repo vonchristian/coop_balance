@@ -7,6 +7,8 @@ module AccountingModule
       it { is_expected.to respond_to(:title) }
       it { is_expected.to respond_to(:code) }
       it { is_expected.to respond_to(:office_id) }
+      it { is_expected.to respond_to(:level_three_account_category_id) }
+
     end
 
     describe 'validations' do

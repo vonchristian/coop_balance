@@ -14,7 +14,7 @@ describe 'New level one account category' do
     fill_in 'Code', with: '23123'
     check 'Contra'
     select_from_chosen 'Asset', from: 'Type'
-    select_from_chosen 'Cash on Hand', from: 'Level two account category'
+    select_from_chosen 'Cash on Hand', from: 'L2 Account Category'
 
 
     click_button 'Create Category'
