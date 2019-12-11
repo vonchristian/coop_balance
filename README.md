@@ -1,4 +1,6 @@
-add accounting tab to accounts 
+namespace amounts
+
+add accounting tab to accounts
 
 
 add account number to program subscriptions

@@ -357,28 +357,29 @@ module LoansModule
 
     def loan_payments(args={})
       entries = []
-      loan_product_current_account.credit_amounts.where(commercial_document: self).each do |amount|
+      receivable_account.amounts.each do |amount|
         entries << amount.entry
       end
       # loan_product_current_account.debit_amounts.where(commercial_document: self).each do |amount|
       #   entries << amount.entry
       # end if forwarded?
 
-      loan_product_past_due_account.credit_amounts.where(commercial_document: self).each do |amount|
+      interest_revenue_account.amounts.each do |amount|
         entries << amount.entry
       end
 
-      loan_product_interest_revenue_account.credit_amounts.where(commercial_document: self).each do |amount|
+
+      penalty_revenue_account.amounts.each do |amount|
         entries << amount.entry
       end
-      loan_product_penalty_revenue_account.credit_amounts.where(commercial_document: self).each do |amount|
+      accrued_income_account.amounts.each do |amount|
         entries << amount.entry
       end
       entries.uniq
     end
 
     def loan_entry
-      loan_product_current_account.debit_amounts.where(commercial_document: self).last.try(:entry)
+      receivable_account.debit_amounts.where(commercial_document: self).last.try(:entry)
     end
 
     def self.disbursement_entries(args={})
