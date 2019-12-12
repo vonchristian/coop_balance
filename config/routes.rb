@@ -112,6 +112,7 @@ Rails.application.routes.draw do
       resources :loan_releases, only: [:index]
       resources :loan_collections, only: [:index]
       resources :loan_agings, only: [:index]
+      resources :loan_aging_summaries, only: [:index]
 
       resources :aging_loans, only: [:index]
     end

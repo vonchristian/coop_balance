@@ -47,7 +47,19 @@ module MembershipsModule
     before_save :set_account_owner_name, :set_date_opened #move to saving opening
 
     has_many :amounts,  class_name: "AccountingModule::Amount", as: :commercial_document
+    def self.liability_accounts
+      ids = pluck(:liability_account_id)
+      AccountingModule::Liability.where(id: ids)
+    end
 
+    def self.interest_expense_accounts
+      ids = pluck(:interest_expense_account_id)
+      AccountingModule::Expense.where(id: ids)
+    end
+
+    def self.total_balances(args={})
+      liability_accounts.balance(args)
+    end
     def depositors
       member_depositors + organization_depositors
     end

@@ -27,6 +27,15 @@ module MembershipsModule
     delegate :balance, :debits_balance, :credits_balance, to: :liability_account
     before_save :set_depositor_name
 
+    def self.liability_accounts
+      ids = pluck(:liability_account_id)
+      AccountingModule::Accounts::Liability.where(id: ids)
+    end
+    
+    def self.total_balances(args= {})
+      liability_accounts.balance(args)
+    end
+
     def self.deposited_on(args={})
       from_date = args[:from_date] || 999.years.ago
       to_date   = args[:to_date]

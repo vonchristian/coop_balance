@@ -66,11 +66,10 @@ module AccountingModule
     def self.debits_balance(options={})
       accounts_balance = BigDecimal('0')
       self.all.each do |category|
-          if category.contra?
-            accounts_balance -= category.debits_balance(options)
-          else
-            accounts_balance += category.debits_balance(options)
-          end
+        if category.contra?
+          accounts_balance -= category.debits_balance(options)
+        else
+          accounts_balance += category.debits_balance(options)
         end
       end
       accounts_balance
@@ -79,11 +78,10 @@ module AccountingModule
     def self.credits_balance(options={})
       accounts_balance = BigDecimal('0')
       self.all.each do |category|
-          if category.contra?
-            accounts_balance -= category.credits_balance(options)
-          else
-            accounts_balance += category.credits_balance(options)
-          end
+        if category.contra?
+          accounts_balance -= category.credits_balance(options)
+        else
+          accounts_balance += category.credits_balance(options)
         end
       end
       accounts_balance
