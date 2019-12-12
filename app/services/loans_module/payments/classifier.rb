@@ -17,12 +17,12 @@ module LoansModule
       def interest
         entry.amounts.where(account: loan.interest_revenue_account).total
       end
-      
+
       def accrued_interest
-        debit_amounts.where(account: loan_product.current_interest_config_accrued_income_account).total
+        debit_amounts.where(account: loan.accrued_income_account).total
       end
       def penalty
-        credit_amounts.where(commercial_document: loan).where(account: loan_product.penalty_revenue_account).total
+        credit_amounts.where(account: loan.penalty_revenue_account).total
       end
 
       def total_cash_payment

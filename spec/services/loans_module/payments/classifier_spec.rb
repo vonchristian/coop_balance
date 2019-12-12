@@ -10,13 +10,12 @@ module LoansModule
         employee.cash_accounts << cash_on_hand
         loan_product     = create(:loan_product)
         loan             = create(:loan, loan_product: loan_product, status: 'current_loan')
-        origin_entry     = create(:origin_entry)
         payment          = build(:entry, description: "Loan payment")
-        principal        = build(:credit_amount, amount: 1000, commercial_document: loan,  account: loan_product.current_account)
-        interest         = build(:credit_amount, amount: 100, commercial_document: loan, account: loan_product.current_interest_config_interest_revenue_account)
-        penalty          = build(:credit_amount, amount: 100, commercial_document: loan,  account: loan_product.penalty_revenue_account)
-        accrued_interest = build(:debit_amount, amount: 100, commercial_document: loan,  account: loan_product.current_interest_config_accrued_income_account)
-        cash             = build(:debit_amount, amount: 1100, commercial_document: loan,  account: cash_on_hand)
+        principal        = build(:credit_amount, amount: 1000, account: loan.receivable_account)
+        interest         = build(:credit_amount, amount: 100,  account: loan.interest_revenue_account)
+        penalty          = build(:credit_amount, amount: 100, account: loan.penalty_revenue_account)
+        accrued_interest = build(:debit_amount, amount: 100, account: loan.accrued_income_account)
+        cash             = build(:debit_amount, amount: 1100, account: cash_on_hand)
         payment.credit_amounts << principal
         payment.credit_amounts << interest
         payment.credit_amounts << penalty
@@ -29,7 +28,6 @@ module LoansModule
         expect(described_class.new(entry: payment, loan: loan).interest).to eql 100
         expect(described_class.new(entry: payment, loan: loan).penalty).to eql 100
         expect(described_class.new(entry: payment, loan: loan).accrued_interest).to eql 100
-
         expect(described_class.new(entry: payment, loan: loan).total_cash_payment).to eq 1_100
       end
     end
