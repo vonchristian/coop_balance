@@ -1,0 +1,7 @@
+<%= simple_form_for @share_capital_product, url: :office_share_capital_products do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :share_capital_product_id, collection: current_cooperative.share_capital_products.map{ |a| [a.name, a.id] }, input_html: { class: 'chosen-select' } %>
+  <%= f.input :equity_account_category_id, collection: current_office.level_one_account_categories.equities.map{ |a| [a.title, a.id] }, input_html: { class: 'chosen-select' } %>
+  <%= f.input :forwarding_account_id, collection: current_office.accounts.equities.map{ |a| [a.name, a.id] }, input_html: { class: 'chosen-select' } %>
+  <%= f.submit 'Save Share Capital Product' %>
+<% end %>

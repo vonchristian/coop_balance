@@ -4,5 +4,8 @@ module Offices
     belongs_to :office,                  class_name: 'Cooperatives::Office'
     belongs_to :equity_account_category, class_name: 'AccountingModule::LevelOneAccountCategory'
     belongs_to :forwarding_account,      class_name: 'AccountingModule::Account'
+
+    validates :share_capital_product_id, presence: true, uniqueness: { scope: :office_id }
+    
   end
 end

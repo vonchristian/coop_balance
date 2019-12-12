@@ -628,16 +628,17 @@ Rails.application.routes.draw do
     resources :payment_line_items, only: [:new, :create], module: :merchants
   end
   resources :offices, only: [:index, :show] do
-    resources :loans,            only: [:index], module: :offices
-    resources :savings_accounts, only: [:index], module: :offices
-    resources :share_capitals,   only: [:index], module: :offices
-    resources :time_deposits,    only: [:index], module: :offices
-    resources :entries,          only: [:index], module: :offices
-    resources :reports,          only: [:index], module: :offices
-    resources :settings,         only: [:index], module: :offices
-    resources :programs,         only: [:index, :new, :create], module: :offices
-    resources :saving_products,  only: [:index, :new, :create], module: :offices
-    resources :loan_products,    only: [:index, :new, :create], module: :offices
+    resources :loans,                  only: [:index],                module: :offices
+    resources :savings_accounts,       only: [:index],                module: :offices
+    resources :share_capitals,         only: [:index],                module: :offices
+    resources :time_deposits,          only: [:index],                module: :offices
+    resources :entries,                only: [:index],                module: :offices
+    resources :reports,                only: [:index],                module: :offices
+    resources :settings,               only: [:index],                module: :offices
+    resources :programs,               only: [:index, :new, :create], module: :offices
+    resources :saving_products,        only: [:index, :new, :create], module: :offices
+    resources :loan_products,          only: [:index, :new, :create], module: :offices
+    resources :share_capital_products, only: [:index, :new, :create], module: :offices
 
 
   end

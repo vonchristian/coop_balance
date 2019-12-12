@@ -349,4 +349,6 @@ example_id                                                                      
 ./spec/system/offices/settings/programs/new_system_spec.rb[1:3]                        | passed  | 3.07 seconds    |
 ./spec/system/offices/settings/saving_products/new_system_spec.rb[1:1]                 | passed  | 12.84 seconds   |
 ./spec/system/offices/settings/saving_products/new_system_spec.rb[1:2]                 | passed  | 0.47613 seconds |
+./spec/system/offices/settings/share_capital_products/new_system_spec.rb[1:1]          | passed  | 13.57 seconds   |
+./spec/system/offices/settings/share_capital_products/new_system_spec.rb[1:2]          | passed  | 0.42505 seconds |
 ./spec/system/time_deposits/index_system_spec.rb[1:1]                                  | passed  | 3.59 seconds    |
