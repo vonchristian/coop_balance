@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_11_064031) do
+ActiveRecord::Schema.define(version: 2019_12_12_095651) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1098,6 +1098,23 @@ ActiveRecord::Schema.define(version: 2019_12_11_064031) do
     t.index ["program_id"], name: "index_office_programs_on_program_id"
   end
 
+  create_table "office_saving_products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "liability_account_category_id", null: false
+    t.uuid "interest_expense_account_category_id", null: false
+    t.uuid "office_id", null: false
+    t.uuid "closing_account_category_id", null: false
+    t.uuid "forwarding_account_id", null: false
+    t.uuid "saving_product_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["closing_account_category_id"], name: "index_office_saving_products_on_closing_account_category_id"
+    t.index ["forwarding_account_id"], name: "index_office_saving_products_on_forwarding_account_id"
+    t.index ["interest_expense_account_category_id"], name: "index_int_expense_category_on_office_saving_products"
+    t.index ["liability_account_category_id"], name: "index_office_saving_products_on_liability_account_category_id"
+    t.index ["office_id"], name: "index_office_saving_products_on_office_id"
+    t.index ["saving_product_id"], name: "index_office_saving_products_on_saving_product_id"
+  end
+
   create_table "offices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "type"
     t.string "name"
@@ -1974,6 +1991,12 @@ ActiveRecord::Schema.define(version: 2019_12_11_064031) do
   add_foreign_key "office_programs", "level_one_account_categories"
   add_foreign_key "office_programs", "offices"
   add_foreign_key "office_programs", "programs"
+  add_foreign_key "office_saving_products", "accounts", column: "forwarding_account_id"
+  add_foreign_key "office_saving_products", "level_one_account_categories", column: "closing_account_category_id"
+  add_foreign_key "office_saving_products", "level_one_account_categories", column: "interest_expense_account_category_id"
+  add_foreign_key "office_saving_products", "level_one_account_categories", column: "liability_account_category_id"
+  add_foreign_key "office_saving_products", "offices"
+  add_foreign_key "office_saving_products", "saving_products"
   add_foreign_key "offices", "cooperatives"
   add_foreign_key "orders", "cooperatives"
   add_foreign_key "orders", "store_fronts"

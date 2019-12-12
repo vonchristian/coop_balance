@@ -1,10 +1,14 @@
 FactoryBot.define do
   factory :user, aliases: [:employee] do
-    association :office
-    association :cooperative
     email                 { Faker::Internet.email }
     password              { '12345678' }
     password_confirmation { '12345678' }
+    after(:build) do |u|
+      cooperative = create(:cooperative)
+      office      = create(:office, cooperative: cooperative)
+      u.office = office
+      u.cooperative = cooperative
+    end
 
     factory :loan_officer, class: User do
       role { 'loan_officer' }

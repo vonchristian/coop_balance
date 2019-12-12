@@ -462,7 +462,7 @@ DEPENDENCIES
   pundit
   pundit-matchers
   rack-mini-profiler
-  rails (= 6.0.1)
+  rails (~> 6.0.0)
   redis
   responders
   roo (= 2.7.0)

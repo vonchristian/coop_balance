@@ -13,7 +13,8 @@ module Cooperatives
     has_many :vouchers
     has_many :accountable_accounts,         class_name: "AccountingModule::AccountableAccount", as: :accountable
     has_many :accounts,                     class_name: "AccountingModule::Account", through: :accountable_accounts
-    has_many :saving_products,              class_name: "CoopServicesModule::SavingProduct"
+    has_many :office_saving_products,       class_name: 'Offices::OfficeSavingProduct'
+    has_many :saving_products,              through: :office_saving_products, class_name: "CoopServicesModule::SavingProduct"
     has_many :share_capital_products,       class_name: "Cooperatives::ShareCapitalProduct"
     has_many :loan_products,                class_name: "LoansModule::LoanProduct"
     has_many :office_programs,              class_name: 'Offices::OfficeProgram'
