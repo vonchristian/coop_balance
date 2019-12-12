@@ -637,6 +637,8 @@ Rails.application.routes.draw do
     resources :settings,         only: [:index], module: :offices
     resources :programs,         only: [:index, :new, :create], module: :offices
     resources :saving_products,  only: [:index, :new, :create], module: :offices
+    resources :loan_products,    only: [:index, :new, :create], module: :offices
+
 
   end
   resources :credit_scores, only: [:index]

@@ -338,6 +338,8 @@ example_id                                                                      
 ./spec/system/members/program_subscriptions/new_system_spec.rb[1:1]                    | failed  | 2.49 seconds    |
 ./spec/system/members/time_deposit_applications/new_system_spec.rb[1:1]                | passed  | 9.38 seconds    |
 ./spec/system/members/time_deposit_applications/new_system_spec.rb[1:2]                | passed  | 0.37637 seconds |
+./spec/system/offices/settings/loan_products/new_system_spec.rb[1:1]                   | passed  | 12.12 seconds   |
+./spec/system/offices/settings/loan_products/new_system_spec.rb[1:2]                   | passed  | 0.6072 seconds  |
 ./spec/system/offices/settings/programs/new_system_spec.rb[1:1]                        | passed  | 12.96 seconds   |
 ./spec/system/offices/settings/programs/new_system_spec.rb[1:2]                        | passed  | 0.87296 seconds |
 ./spec/system/offices/settings/programs/new_system_spec.rb[1:3]                        | passed  | 3.07 seconds    |
