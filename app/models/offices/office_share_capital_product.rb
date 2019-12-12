@@ -6,6 +6,6 @@ module Offices
     belongs_to :forwarding_account,      class_name: 'AccountingModule::Account'
 
     validates :share_capital_product_id, presence: true, uniqueness: { scope: :office_id }
-    
+
   end
 end

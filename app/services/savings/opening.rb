@@ -1,4 +1,4 @@
-module SavingsAccounts
+module Savings
   class Opening
     include ActiveModel::Model
     attr_reader :voucher, :savings_account_application, :employee, :office
@@ -10,7 +10,7 @@ module SavingsAccounts
       @office                      = @employee.office
     end
 
-    def process!
+    def open_account!
       ActiveRecord::Base.transaction do
         create_savings_account
       end
@@ -23,7 +23,7 @@ module SavingsAccounts
     private
     def create_savings_account
       savings_account = office.savings.build(
-        liability_account: savings_account_application.liability_account,
+        liability_account:     savings_account_application.liability_account,
         account_owner_name:    find_depositor.name,
         cooperative:           employee.cooperative,
         depositor:             find_depositor,

@@ -321,6 +321,7 @@ example_id                                                                      
 ./spec/services/account_creators/saving_spec.rb[1:1]                                   | passed  | 0.93105 seconds |
 ./spec/services/loans_module/loans/loan_aging_group_update_spec.rb[1:2]                | passed  | 1.16 seconds    |
 ./spec/services/loans_module/payments/classifier_spec.rb[1:1]                          | passed  | 3.09 seconds    |
+./spec/services/savings/opening_spec.rb[1:1]                                           | passed  | 1.41 seconds    |
 ./spec/services/time_deposits/certificate_number_generator_spec.rb[1:1]                | passed  | 2.31 seconds    |
 ./spec/services/time_deposits/opening_spec.rb[1:1]                                     | passed  | 1.98 seconds    |
 ./spec/system/accounting_module/accounts/edit_system_spec.rb[1:1]                      | passed  | 23.53 seconds   |
