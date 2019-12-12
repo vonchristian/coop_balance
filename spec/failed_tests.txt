@@ -310,10 +310,14 @@ example_id                                                                      
 ./spec/system/accounting_module/level_three_account_categories/new_system_spec.rb[1:2] | passed  | 0.20048 seconds |
 ./spec/system/accounting_module/level_two_account_categories/new_system_spec.rb[1:1]   | passed  | 8.12 seconds    |
 ./spec/system/accounting_module/level_two_account_categories/new_system_spec.rb[1:2]   | passed  | 0.21044 seconds |
+./spec/system/loans_module/loans/payments/new_system_spec.rb[1:1]                      | passed  | 13.06 seconds   |
+./spec/system/loans_module/loans/payments/new_system_spec.rb[1:2]                      | passed  | 1.81 seconds    |
 ./spec/system/loans_module/loans/terms/new_system_spec.rb[1:1]                         | passed  | 3.27 seconds    |
 ./spec/system/loans_module/loans/terms/new_system_spec.rb[1:2]                         | passed  | 0.76289 seconds |
 ./spec/system/management_module/settings/programs/new_system_spec.rb[1:1]              | passed  | 7.45 seconds    |
 ./spec/system/management_module/settings/programs/new_system_spec.rb[1:2]              | passed  | 0.3257 seconds  |
+./spec/system/members/loan_applications/new_system_spec.rb[1:1]                        | failed  | 9.57 seconds    |
+./spec/system/members/loan_applications/new_system_spec.rb[1:2]                        | failed  | 0.44524 seconds |
 ./spec/system/members/program_subscriptions/new_system_spec.rb[1:1]                    | failed  | 2.49 seconds    |
 ./spec/system/members/time_deposit_applications/new_system_spec.rb[1:1]                | passed  | 9.38 seconds    |
 ./spec/system/members/time_deposit_applications/new_system_spec.rb[1:2]                | passed  | 0.37637 seconds |

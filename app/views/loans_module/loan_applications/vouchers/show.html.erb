@@ -7,7 +7,7 @@
             <h3 class="card-title"> Voucher Details </h3>
           </div>
           <div class="col-md-6 col-sm-6">
-          
+
           </div>
         </div>
       </div>
@@ -36,7 +36,7 @@
             <%= simple_form_for [@voucher, @disbursement], url: :loans_module_loan_application_voucher_confirmations do |f| %>
               <%= f.input :disbursement_date, as: :string, input_html: { class: 'datepicker' } %>
             <% end %>
-            <%= link_to "Disburse", loans_module_loan_application_voucher_confirmations_path(loan_application_id: @loan_application.id, voucher_id: @voucher.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
+            <%= link_to "Disburse Voucher", loans_module_loan_application_voucher_confirmations_path(loan_application_id: @loan_application.id, voucher_id: @voucher.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
           </div>
         <% else %>
           <%= render 'vouchers/partials/status', voucher: @voucher %>

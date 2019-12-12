@@ -1,17 +1,21 @@
 <%= render "home/shared/navbar" %>
 <%= render 'layouts/shared/flash_messages' %>
 
-<div class="container">
-	<br>
-	<br>
-	<br>
-  <div class="landing-header">
+  <div class="bg-dark">
+    <div class="container">
+      <br>
+      <br>
+      <br>
   	<div class="row">
   		<div class="col-md-6">
-  			<h1 class="text-open-sans-regular">Transform the way you manage your cooperative</h1>
-  			<br>
-  			<p class="lead"> A single workplace to manage all your cooperative operations.
-          Connect your operations and employees in one workplace so that managing your cooperative is simpler, organized and less stress.</p>
+
+
+  			<h1 class="font-montserrat-regular-webfont">Digital Banking Platform <br>built for Cooperatives </h1>
+        <div class="min-margin"></div>
+  			<h4 class="lead subtitle-up">
+          Simplify work for your employees and step-up your cooperative's growth.
+        </h4>
+          <br>
             <div class="row min-margin">
               <div class="col-1 hidden-xs">
               </div>
@@ -19,7 +23,7 @@
                 <i class="fa fa-check-circle text-success fa-2x mr-2"></i>
               </div>
               <div class="col-9">
-                <p class="lead">Work will be in one organized place</p>
+                <p class="lead text-success">One system access for all branches</p>
               </div>
             </div>
             <div class="row min-margin">
@@ -29,7 +33,7 @@
                 <i class="fa fa-check-circle text-success fa-2x mr-2"></i>
               </div>
               <div class="col-9 col-xs-8">
-                <p class="lead">Every employee will be on the same page</p>
+                <p class="lead text-success">Every employee will be on the same page</p>
               </div>
             </div>
             <div class="row min-margin">
@@ -37,7 +41,7 @@
                 <i class="fa fa-check-circle text-success fa-2x mr-1"></i>
               </div>
               <div class="col-md-9">
-                <p class="lead">Make smart and timely decisions</p>
+                <p class="lead text-success">Make smart and timely decisions</p>
               </div>
             </div>
             <div class="row min-margin">
@@ -45,7 +49,7 @@
                 <i class="fa fa-check-circle text-success fa-2x mr-2"></i>
               </div>
               <div class="col-md-9">
-                <p class="lead">You'll know exactly what's going on your finances</p>
+                <p class="lead text-success">Know exactly what's going on your portfolios</p>
               </div>
             </div>
             <div class="row min-margin">
@@ -53,104 +57,58 @@
                 <i class="fa fa-check-circle text-success fa-2x mr-2"></i>
               </div>
               <div class="col-md-9">
-                <p class="lead">You'll spend less time on meetings and manual work</p>
+                <p class="lead text-success">Spend less time on manual work</p>
               </div>
             </div>
+            <div class="row">
+              <div class="col-md-6">
+                <%= link_to 'Request Demo', home_index_path, class: 'btn btn-primary btn-lg btn-block' %>
+              </div>
+              <div class="col-md-6">
+                <%= link_to 'Download Brochure', home_index_path, class: 'btn btn-outline-secondary text-white btn-lg btn-block' %>
+              </div>
+            </div>
+
   		    </div>
 
-        <div class="col-md-6">
-          <%#= image_tag("landing_side.jpeg") %>
+        <div class="col-md-4 animated fadeInUp">
+          <%= image_tag("kiphodan_platform.png", height: 450, width: 600) %>
         </div>
       </div>
   </div>
   <br>
-  <center>
-</div>
-<div class="bg-danger">
-  <div class="row">
-    <div class="col-md-10 offset-1">
-      <h1 class="text-open-sans-regular">Your <u>manual processes</u> is the barrier to your cooperative's growth.</h1>
-      <p class="lead">
-
-        Keeping track of financial statements, staff performance, client information with manual processes ( pen and paper / spreadsheets / different ledgers),
-        does not scale with your growth.
-        <br><br>
-
-      </p>
-    </div>
-  </div>
+  <br>
 </div>
 <br>
 <br>
 <div class="container">
-  <div class="row">
-    <div class="col-md-7">
-      <div class="row min-margin">
-        <div class="col-md-1 offset-1">
-          <i class="fa fa-times-circle text-danger fa-2x mr-2"></i>
-        </div>
-        <div class="col-md-9">
-          <p class="lead">The problems you deal with mostly boil down to transactions scattered in too many places. You put it on papers, spreadsheets, different ledgers, Word docs,  and systems that are not connected to each other.</p>
-        </div>
-      </div>
-      <div class="row min-margin">
-        <div class="col-md-1 offset-1">
-          <i class="fa fa-times-circle text-danger fa-2x mr-2"></i>
-        </div>
-        <div class="col-md-9">
-          <p class="lead">That makes important information used to make smart and timely decisions easy to miss and hard to find.</p>
-        </div>
-      </div>
-      <div class="row min-margin">
-        <div class="col-md-1 offset-1">
-          <i class="fa fa-times-circle text-danger fa-2x mr-2"></i>
-        </div>
-        <div class="col-md-9">
-          <p class="lead"> Your employees have to spend too many extra hours doing extra work consolidating this transactions for their month end reports and to maintain accurate and balanced ledgers.</p>
-        </div>
-      </div>
-      <div class="row min-margin">
-        <div class="col-md-1 offset-1">
-          <i class="fa fa-times-circle text-danger fa-2x mr-2"></i>
-        </div>
-        <div class="col-md-9">
-          <p class="lead"> DIfferent systems (Accounting System, Sales Management System, Loans Management) that are not connected together can't fix this problem — they can only make it worse. CoopBooks is different.
-          It combines all the tools your growing cooperative need in a single, organized package that makes work less stressful.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
- <br>
- <br>
- <hr>
-
 <div class="row">
-  <br>
-  <div class="col-md-9 offset-md-1">
-    <br>
-    <h3 class="text-open-sans-regular">Everything your Growing Cooperative needs</h3>
-    <p class="lead">CoopBooks connects your operations and branch offices in one toolset.
-       This eliminate much of the manual, time consuming effort currently required to keep balanced ledgers.
-       Accounting entries are validated, recorded and automatically posted without error.
-       Duplications, reconciliations are checked and fixed.
-       It enable a secure access from branch offices and employees to enter their daily transactions.</p>
+
+  <div class="col-md-10">
+
+    <h1 class="title-up"><b>Everything your Growing Cooperative needs</b></h1>
+
+    <p class="lead">CoopBooks connects all your branches in one system.
+       This eliminate much of the manual, time consuming effort currently required to keep balanced accounts.
+       It enable a secure access from branch offices to let them enter their daily transactions.</p>
 
   </div>
 </div>
-  <br>
+<br>
 
     <div class="row">
-      <div class="col-6">
+      <div class="col-5 offset-1">
         <div class="row">
           <div class="col-3">
-            <i class="far fa-lightbulb fa-3x"></i>
+            <span class="fa-stack fa-3x text-primary">
+              <i class="fas fa-square fa-stack-2x"></i>
+              <i class="fa fa-balance-scale fa-stack-1x fa-inverse"></i>
+            </span>
           </div>
-          <div class="col-9 col-sm-12 col-md-12">
-            <h3 class="card-title">Trustworthy Accounting System</h3>
-            <br>
-            <p>
-              Dependable accounting system that maintains accurate and balanced ledgers. Journal entries are validated, recorded and automatically posted without error.
+          <div class="col-8">
+            <h3 class="subtitle-up">Accurate Accounting System</h3>
+            <p class="text-muted">
+              Dependable accounting system that maintains accurate and balanced accounts. Journal entries are validated, recorded and automatically posted without error.
                Duplications, reconciliations are checked and fixed. Separate financial statements, income statements and cash flows for each office can be generated.
             </p>
           </div>
@@ -158,12 +116,15 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <div class="col-md-2">
-            <i class="fa fa-leaf fa-3x"></i>
+          <div class="col-3">
+            <span class="fa-stack fa-3x text-primary">
+              <i class="fas fa-square fa-stack-2x"></i>
+              <i class="fa fa-leaf fa-stack-1x fa-inverse"></i>
+            </span>
           </div>
-          <div class="col-md-9">
-            <h3 class="card-title">CDA Compliance</h3>
-            <br>
+          <div class="col-md-8">
+            <h3 class="subtitle-up ">CDA Compliance</h3>
+
             <p>
               Accounts are based on CDA Chart of Accounts. Reports generated conforms to CDA requirements.
             </p>
@@ -175,12 +136,14 @@
     <div class="row">
       <div class="col-md-5 offset-1">
         <div class="row">
-          <div class="col-md-2">
-            <i class="fa fa-file-alt fa-3x"></i>
+          <div class="col-3">
+            <span class="fa-stack fa-3x text-primary">
+              <i class="fas fa-square fa-stack-2x"></i>
+              <i class="fa fa-file-alt fa-stack-1x fa-inverse"></i>
+            </span>
           </div>
-          <div class="col-md-9">
-            <h3 class="card-title">Loans Portfolio Management</h3>
-            <br>
+          <div class="col-md-8">
+            <h3 class="subtitle-up">Loans Portfolio Management</h3>
             <p>
               Current, past due and overdue loans are monitored. Aging of loans, comparison of target and actual collections,  monitoring of scheduled amortizations are automatically generated. You can notify members on their due payments through email, text or messenger.
             </p>
@@ -189,12 +152,14 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <div class="col-md-2">
-            <i class="far fa-chart-bar fa-3x"></i>
+          <div class="col-3">
+            <span class="fa-stack fa-3x text-primary">
+              <i class="fas fa-square fa-stack-2x"></i>
+              <i class="fa fa-users fa-stack-1x fa-inverse"></i>
+            </span>
           </div>
-          <div class="col-md-9">
-            <h3 class="card-title">Memberships Portfolio</h3>
-            <br>
+          <div class="col-md-8">
+            <h3 class="subtitle-up">Memberships Portfolio</h3>
             <p class="text-open-sans-regular">
               Members information, savings, share capitals, and time deposits are monitored and updated instantly.
               View active accounts, dormant and accounts that are below minimum balances.
@@ -207,12 +172,14 @@
     <div class="row">
       <div class="col-md-5 offset-1">
         <div class="row">
-          <div class="col-md-2">
-            <i class="fa fa-sync fa-3x"></i>
+          <div class="col-3">
+            <span class="fa-stack fa-3x text-primary">
+              <i class="fas fa-square fa-stack-2x"></i>
+              <i class="fa fa-sync fa-stack-1x fa-inverse"></i>
+            </span>
           </div>
-          <div class="col-md-9">
-            <h3 class="card-title">Collaboration tools</h3>
-            <br>
+          <div class="col-md-8">
+            <h3 class="subtitle-up">Collaboration tools</h3>
             <p>
               Employees are connected in a single workplace and collaborate to maintain accurate and balanced ledgers.
               Branch offices can have a secure access and enter their daily transactions. No more waiting for delayed reports and
@@ -223,14 +190,16 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <div class="col-md-2">
-            <i class="fa fa-lock fa-3x"></i>
+          <div class="col-3">
+            <span class="fa-stack fa-3x text-primary">
+              <i class="fas fa-square fa-stack-2x"></i>
+              <i class="fa fa-lock fa-stack-1x fa-inverse"></i>
+            </span>
           </div>
-          <div class="col-md-9">
-            <h3 class="card-title">Ease of Use and Security </h3>
-            <br>
+          <div class="col-md-8">
+            <h3 class="subtitle-up">Ease of Use and Security </h3>
             <p>
-              We made Coop Books easy to use as possible to let you do your work quickly without on compromising security.
+              We made CoopBooks easy to use as possible to let you do your work quickly without on compromising security.
 
             </p>
           </div>
@@ -241,12 +210,14 @@
   <div class="row">
     <div class="col-md-5 offset-1">
       <div class="row">
-        <div class="col-md-2">
-          <i class="fa fa-cubes fa-3x"></i>
+        <div class="col-3">
+          <span class="fa-stack fa-3x text-primary">
+            <i class="fas fa-square fa-stack-2x"></i>
+            <i class="fa fa-file-alt fa-stack-1x fa-inverse"></i>
+          </span>
         </div>
-        <div class="col-md-9">
-          <h3 class="card-title">Sales and Inventory</h3>
-          <br>
+        <div class="col-md-8">
+          <h3 class="subtitle-up">Sales and Inventory</h3>
           <p>
             Integrate your storefront's sales and inventories for stock monitoring and fast computation of patronage refunds. Provides you an up to date stocks and status of inventories, accounts receivables and payables.
           </p>
@@ -255,14 +226,16 @@
     </div>
     <div class="col-md-6">
       <div class="row">
-        <div class="col-md-2">
-          <i class="fa fa-sitemap fa-3x"></i>
+        <div class="col-3">
+          <span class="fa-stack fa-3x text-primary">
+            <i class="fas fa-square fa-stack-2x"></i>
+            <i class="fa fa-sitemap fa-stack-1x fa-inverse"></i>
+          </span>
         </div>
-        <div class="col-md-9">
-          <h3 class="card-title">Multi Branch ready</h3>
-          <br>
+        <div class="col-md-8">
+          <h3 class="subtitle-up">Multi Branch ready</h3>
           <p>
-            No more waiting for branch transactions to come into your main office. Branch offices can have secure access and enter their daily transactions.
+            No more waiting for branch transactions to come into your main office. Branch offices can have secure access and enter their daily transactions. Monitor operations of branches without physically going.
           </p>
         </div>
       </div>
@@ -272,36 +245,32 @@
 <br>
 <br>
 
-      <div class="landing-mid-section bg-dark">
+      <div class="bg-primary">
+        <br>
+        <br>
         <div class="container">
-        <br>
-        <br>
-        <br>
-        <br>
 
         <div class="row">
-          <div class="col-md-9 offset-md-2">
-            <h3 class="text-open-sans-regular"> Move your Cooperative Operations to the Cloud. </h3>
-            <p class="lead"> Your banks are connected to the Cloud. ATMs and other financial services depend on it to deliver services. If you can access Facebook in your area of operation, you can use Coop Books.
-             It's time you move to cloud-based operations and be ahead of other cooperatives.</p>
+          <div class="col-md-9 offset-md-1">
+            <h1 class=" title-up"> Move your Operations to the Cloud </h1>
+            <p class="lead"> Your banks are connected to the Cloud. ATMs and other financial services depend on it to deliver services. CoopBooks does not require high-speed Internet. If you can access Facebook in your area of operation, you can use CoopBooks.
+             It's time you move to cloud-based operations and transform the way you manage your cooperative.</p>
           </div>
         </div>
-      </div>
-      </div>
-      <br>
+        <br>
 
-      <div class="container">
-        <h2 class="text-open-sans-regular"> Gain this benefits when you move to the cloud. </h2>
         <br>
         <div class="row">
         <div class="col-md-5 offset-1">
           <div class="row">
-            <div class="col-md-2">
-              <i class="fa fa-lock fa-3x"></i>
+            <div class="col-3">
+              <span class="fa-stack fa-3x text-dark">
+                <i class="fas fa-square fa-stack-2x"></i>
+                <i class="fa fa-lock fa-stack-1x fa-inverse"></i>
+              </span>
             </div>
             <div class="col-md-9">
-              <h3 class="card-title">Reduce Risk of Losing Important Data</h3>
-              <br>
+              <h3 class="subtitle-up">Reduce Risk of Losing Important Data</h3>
               <p>
                 We take it seriously to protect the security of your data. Backups, and
                 security measures are put in place to deter hacking. In case disaster hits your offices,
@@ -313,12 +282,15 @@
         </div>
         <div class="col-md-6">
           <div class="row">
-            <div class="col-md-2">
-              <i class="fa fa-coins fa-3x"></i>
+            <div class="col-3">
+              <span class="fa-stack fa-3x text-dark">
+                <i class="fas fa-square fa-stack-2x"></i>
+                <i class="fa fa-coins fa-stack-1x fa-inverse"></i>
+              </span>
             </div>
-            <div class="col-md-9">
-              <h3 class="card-title">Cut back on your IT Costs.</h3>
-              <br>
+            <div class="col-md-8">
+              <h3 class="subtitle-up">Cut back on your IT Costs.</h3>
+
               <p>
                 Focus on serving your members, not your infrastructure.Buying and managing your own IT systems can quickly drain your budget.
                 You must pay the direct costs of the hardware and software.
@@ -328,15 +300,18 @@
             </div>
           </div>
         </div>
+        <br>
         <div class="row">
           <div class="col-md-5 offset-md-1">
             <div class="row">
-              <div class="col-md-2 col-xs-4">
-                <i class="fa fa-sync fa-3x"></i>
+              <div class="col-3">
+                <span class="fa-stack fa-3x text-dark">
+                  <i class="fas fa-square fa-stack-2x"></i>
+                  <i class="fa fa-sync fa-stack-1x fa-inverse"></i>
+                </span>
               </div>
               <div class="col-md-9 col-xs-8">
-                <h3 class="card-title">Collaborate with your branch offices</h3>
-                <br>
+                <h3 class="subtitle-up">Collaborate with your branches</h3>
                 <p>
                   CoopBooks connects your satellite / branch offices, giving you a central source of information on your cooperative.
                  No more delayed reports from your branch offices. Transactions from branch offices are saved real-time and can be monitored from your main office.
@@ -346,95 +321,63 @@
           </div>
           <div class="col-md-6">
             <div class="row">
-              <div class="col-md-2">
-                <i class="fa fa-download fa-3x"></i>
+              <div class="col-3">
+                <span class="fa-stack fa-3x text-dark">
+                  <i class="fas fa-square fa-stack-2x"></i>
+                  <i class="fa fa-download fa-stack-1x fa-inverse"></i>
+                </span>
               </div>
-              <div class="col-md-9">
-                <h3 class="card-title">Updates you dont have to pay for.</h3>
-                <br>
+              <div class="col-md-8">
+                <h3 class="subtitle-up">Updates you dont have to pay for.</h3>
                 <p>
                 You get automatic updates at all of your branches for no extra cost. When CDA issues new rules and memorandum,  CoopBooks is updated and rolled out to your offices without any extra hassle for you.
 
                 </p>
               </div>
             </div>
+            <br>
+            <br>
           </div>
         </div>
 
+
       </div>
     </div>
-    <hr>
+    <div class="bg-dark">
       <br>
       <br>
-      <div class="container">
         <div class="row">
-          <div class="col-md-6">
-            <h2 class="text-open-sans-regular">Want to see everything CoopBooks does? </h2>
-            <p class="lead">Transform the way you manage your cooperative. Request a demo and see for yourself how it can simplify work for your employees.</p>
-            <div class="row min-margin">
-              <div class="col-md-1 offset-1">
-                <i class="fa fa-check-circle text-success"></i>
+          <div class="col-md-10 offset-md-1">
+            <h2 class="subtitle-up">Want to see everything CoopBooks does? </h2>
+            <p class="lead">Request a demo on your next meeting and see for yourself how it can simplify work for your employees and step-up the growth of your cooperative.</p>
 
-              </div>
-              <div class="col-md-9">
-                Work will be in one organized place
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-1 offset-1">
-                <i class="fa fa-check-circle text-success"></i>
-              </div>
-              <div class="col-md-9">
-                Everyone will be on the same page
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-1 offset-1">
-                <i class="fa fa-check-circle text-success"></i>
-
-              </div>
-              <div class="col-md-9">
-                Make smart and timely decisions
-              </div>
-            </div>
-            <div class="row min-margin">
-              <div class="col-md-1 offset-1">
-                <i class="fa fa-check-circle text-success"></i>
-
-              </div>
-              <div class="col-md-9">
-                You'll know exactly what’s going on
-              </div>
-            </div>
-            <div class="row min-margin">
-              <div class="col-md-1 offset-1">
-                <i class="fa fa-check-circle text-success"></i>
-
-              </div>
-              <div class="col-md-9">
-                You'll spend less time in meetings
-              </div>
-            </div>
             <br>
             <br>
         </div>
 
 
           <div class="col-md-5 offset-1">
-            <div class="card card-outline card-primary">
+            <div class="card card-primary">
               <div class="card-body">
+                <h3 class="subtitle-up"> Contact Info </h3>
+                <div class="row">
+                  <div class="col-md-10 offset-md-1">
                 <%= simple_form_for Lead.new do |f| %>
-                  <%= f.input :email, placeholder: 'Email', label: false %>
+                  <%= f.input :email, placeholder: 'Email', input_html: { class: 'input-lg' }, label: false %>
 
                   <%= f.input :contact_number, label: false, placeholder: "Contact Number" %>
-                  <%= f.input :message, label: false, placeholder: 'What do you want to automate in your coop?' %>
+                  <%= f.input :message, label: false, placeholder: 'What can we do to help you?' %>
                   <hr>
                   <%= f.submit 'Request for Demo', class: 'btn btn-primary btn-lg btn-block' %>
                   <br>
 
                 <% end %>
+              </div>
+            </div>
 
-          </div>
+
         </div>
       </div>
+    </div>
+  </div>
 <%= render "home/shared/footer" %>

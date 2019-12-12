@@ -6,8 +6,8 @@ require 'mina/puma'
 
 set :whenever_name, 'production'
 set :domain,        '128.199.223.121'
-set :deploy_to,     '/var/www/coopcatalyst'
-set :repository,    'git@gitlab.com:vonchristian/coop_catalyst_private.git'
+set :deploy_to,     '/var/www/kiphodan'
+set :repository,    'git@gitlab.com:vonchristian/kiphodan.git'
 set :branch,        'master'
 set :user,          'deploy'
 set :forward_agent, true

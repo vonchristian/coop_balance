@@ -6,9 +6,8 @@
       </div>
       <div class="col-md-6">
         <% if policy([:loans_module, :payment]).new? %>
-          <%=link_to new_loan_payment_path(@loan), data: { turbolinks: false} do %>
-            <span class="btn btn-primary float-right"><i class="fa fa-plus-circle"></i> New Payment </span>
-          <% end %>
+          <%=link_to 'New Payment', new_loan_payment_path(@loan), class: 'btn btn-primary float-right' %>
+          
         <% end %>
       </div>
     </div>
@@ -40,7 +39,7 @@
       <% interest  = LoansModule::Payments::Classifier.new(loan: @loan, entry: entry).interest %>
       <% penalty   = LoansModule::Payments::Classifier.new(loan: @loan, entry: entry).penalty %>
       <% principal = LoansModule::Payments::Classifier.new(loan: @loan, entry: entry).principal %>
-      
+
       <tr>
         <td><%= entry.entry_date.strftime("%B %e, %Y") %></td>
         <td><%= link_to entry.try(:reference_number), accounting_module_entry_path(entry), data:{toggle: 'tooltip'}, title: entry.description %></td>

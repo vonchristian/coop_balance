@@ -21,10 +21,12 @@ module Loans
     end
 
     private
+    
     def payment_params
       params.require(payment_processor_params).
       permit(:principal_amount, :interest_amount, :penalty_amount, :amortization_schedule_id, :description, :employee_id, :loan_id, :reference_number, :date, :cash_account_id, :account_number)
     end
+
     def payment_processor_params
       @loan.payment_processor.to_s.underscore.gsub("/", "_").to_sym
     end

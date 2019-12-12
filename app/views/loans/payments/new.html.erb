@@ -102,8 +102,8 @@
         <%= simple_form_for [@loan, @payment], html: { autocomplete: 'off' }, url: :loan_payments do |f| %>
           <%= f.error_notification %>
           <%= f.input :date, as: :string, input_html: { value: Time.zone.now.strftime("%B %e, %Y"), class: "datepicker" } %>
-          <% if @loan.forwarded_loan == false %>
-            <%= f.input :amortization_schedule_id, label: "Select Amortization Schedule to be payed.", collection: @loan.amortization_schedules.partial_and_no_payment.order(date: :asc).map {|a| [a.date_schedule, a.id]}, default: @loan.amortization_schedules.partial_and_no_payment.order(date: :asc).first, input_html: { id: 'scheduleSelect' } %>
+          <% if !@loan.forwarded_loan? %>
+            <%= f.input :amortization_schedule_id, label: "Select Amortization Schedule to be paid.", collection: @loan.amortization_schedules.partial_and_no_payment.order(date: :asc).map {|a| [a.date_schedule, a.id]}, default: @loan.amortization_schedules.partial_and_no_payment.order(date: :asc).first, input_html: { class: 'chosen-select' } %>
           <% end %>
           <%= f.input :description, as: :text, input_html: { id: 'description' } %>
           <%= f.input :principal_amount, input_html: { value: @loan.amortized_principal }, as: :currency  %>
@@ -113,7 +113,7 @@
           <%= f.input :loan_id, input_html: { value: @loan.id },as: :hidden %>
           <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
           <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
-          <%= f.input :cash_account_id, default: current_cooperative.users.teller.last.cash_accounts.first, collection: current_cooperative.users.teller.last.cash_accounts.map{|a| [a.name, a.id] } %>
+          <%= f.input :cash_account_id, default: current_user.cash_accounts.first, collection: current_user.cash_accounts.map{|a| [a.name, a.id] }, input_html: { class: 'chosen-select' } %>
           <hr>
           <%= f.submit "Proceed", class: "btn btn-primary float-right", data: {disable_with: "Processing..." } %>
           <%= link_to 'Cancel', loan_path(@loan), class: "text-danger float-left" %>
