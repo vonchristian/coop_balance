@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_12_120026) do
+ActiveRecord::Schema.define(version: 2019_12_12_124301) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1134,6 +1134,19 @@ ActiveRecord::Schema.define(version: 2019_12_12_120026) do
     t.index ["saving_product_id"], name: "index_office_saving_products_on_saving_product_id"
   end
 
+  create_table "office_share_capital_products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "share_capital_product_id", null: false
+    t.uuid "office_id", null: false
+    t.uuid "equity_account_category_id", null: false
+    t.uuid "forwarding_account_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["equity_account_category_id"], name: "index_equity_account_category_on_office_share_capital_products"
+    t.index ["forwarding_account_id"], name: "index_office_share_capital_products_on_forwarding_account_id"
+    t.index ["office_id"], name: "index_office_share_capital_products_on_office_id"
+    t.index ["share_capital_product_id"], name: "index_office_share_capital_products_on_share_capital_product_id"
+  end
+
   create_table "offices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "type"
     t.string "name"
@@ -2023,6 +2036,10 @@ ActiveRecord::Schema.define(version: 2019_12_12_120026) do
   add_foreign_key "office_saving_products", "level_one_account_categories", column: "liability_account_category_id"
   add_foreign_key "office_saving_products", "offices"
   add_foreign_key "office_saving_products", "saving_products"
+  add_foreign_key "office_share_capital_products", "accounts", column: "forwarding_account_id"
+  add_foreign_key "office_share_capital_products", "level_one_account_categories", column: "equity_account_category_id"
+  add_foreign_key "office_share_capital_products", "offices"
+  add_foreign_key "office_share_capital_products", "share_capital_products"
   add_foreign_key "offices", "cooperatives"
   add_foreign_key "orders", "cooperatives"
   add_foreign_key "orders", "store_fronts"
