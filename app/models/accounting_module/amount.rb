@@ -73,13 +73,14 @@ module AccountingModule
     end
 
     def self.total
-      not_cancelled.all.map{ |amount| amount.amount.amount }.sum
+      total = not_cancelled.pluck(:amount_cents).sum
+      Money.new(total).amount
     end
 
     def self.balance(args={})
       balance_finder(args).new(args.merge(amounts: self)).compute
     end
-    
+
     def self.balance_for_new_record
       balance = BigDecimal('0')
       self.all.each do |amount_record|
