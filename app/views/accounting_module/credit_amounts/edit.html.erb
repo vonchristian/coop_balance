@@ -11,7 +11,7 @@
       <div class="card-body">
         <%= simple_form_for [@amount], url: :accounting_module_credit_amount do |f| %>
           <%= f.input :amount %>
-          <%= f.input :account_id, collection: AccountingModule::Account.all.map{ |a| [a.name, a.id] } %>
+          <%= f.input :account_id, collection: @accounts.map{ |a| [a.name, a.id] }, input_html: { class: 'chosen-select' } %>
           <hr>
           <%= link_to "Cancel", accounting_module_entry_path(@amount.entry), class: "btn btn-default" %>
           <%= f.submit "Update Amount", class: "btn btn-warning float-right" %>
@@ -27,4 +27,3 @@
     });
   });
 </script>
-

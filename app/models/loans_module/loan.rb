@@ -82,6 +82,25 @@ module LoansModule
     delegate :number_of_months, to: :current_term, prefix: true
     delegate :term, to: :current_term
     delegate :loan_aging_group, to: :current_loan_aging
+    def self.receivable_accounts
+      ids = pluck(:receivable_account_id)
+      AccountingModule::Account.where(id: ids.compact.flatten.uniq)
+    end
+
+    def self.interest_revenue_accounts
+      ids = pluck(:interest_revenue_account_id)
+      AccountingModule::Account.where(id: ids.compact.flatten.uniq)
+    end
+
+    def self.penalty_revenue_accounts
+      ids = pluck(:penalty_revenue_account_id)
+      AccountingModule::Account.where(id: ids.compact.flatten.uniq)
+    end
+
+    def self.accrued_income_accounts
+      ids = pluck(:accrued_income_account_id)
+      AccountingModule::Account.where(id: ids.compact.flatten.uniq)
+    end
 
     def current_loan_aging
       loan_agings.current

@@ -29,9 +29,9 @@ module MembershipsModule
 
     def self.liability_accounts
       ids = pluck(:liability_account_id)
-      AccountingModule::Accounts::Liability.where(id: ids)
+      AccountingModule::Liability.where(id: ids)
     end
-    
+
     def self.total_balances(args= {})
       liability_accounts.balance(args)
     end

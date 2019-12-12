@@ -136,8 +136,7 @@ module AccountingModule
     end
 
     def self.except_account(args={})
-      accounts = args[:account]
-      where.not(id: accounts)
+      where.not(id: args[:account_ids])
     end
 
     def self.entries(args={})
