@@ -1,38 +1,25 @@
 module AccountCreators
   class ShareCapital
-    attr_reader :share_capital
+    attr_reader :share_capital, :share_capital_product, :office, :equity_account_category, :interest_payable_account_category
 
-    def initialize(share_capital:)
-      @share_capital = share_capital
+    def initialize(args)
+      @share_capital                     = args.fetch(:share_capital)
+      @office                            = @share_capital.office
+      @share_capital_product             = @share_capital.share_capital_product
+      @equity_account_category           = @office.office_share_capital_products.find_by!(share_capital_product: @share_capital_product).equity_account_category
     end
 
     def create_accounts!
-      ActiveRecord::Base.transaction do
-        create_share_capital_equity_account
-        create_interest_on_capital_account
-      end
+      create_equity_account
     end
-
-    def create_share_capital_equity_account
+    def create_equity_account
       if share_capital.share_capital_equity_account.blank?
-        account = AccountingModule::Equity.create!(
-
-          name: "#{share_capital.share_capital_product_name} - #{share_capital.account_number}",
-          code: share_capital.account_number
+         account = office.accounts.equities.create!(
+          name:             "#{share_capital_product.name} - (#{share_capital.subscriber_name} - #{share_capital.account_number}",
+          code:             SecureRandom.uuid,
+          level_one_account_category: equity_account_category
         )
         share_capital.update(share_capital_equity_account: account)
-      end
-    end
-
-    def create_interest_on_capital_account
-      if share_capital.interest_on_capital_account.blank?
-        account = AccountingModule::Equity.create!(
-
-          name: "Interest on Share Capital #{share_capital.share_capital_product_name} - #{share_capital.account_number}",
-          code: "IOC-#{share_capital.account_number}"
-        )
-        share_capital.update(interest_on_capital_account: account)
-
       end
     end
   end

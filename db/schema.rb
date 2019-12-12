@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_12_124301) do
+ActiveRecord::Schema.define(version: 2019_12_12_233332) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1506,7 +1506,6 @@ ActiveRecord::Schema.define(version: 2019_12_12_124301) do
     t.string "beneficiaries"
     t.string "maf_beneficiaries"
     t.string "code"
-    t.uuid "interest_on_capital_account_id"
     t.uuid "equity_account_id"
     t.index ["account_number"], name: "index_share_capitals_on_account_number", unique: true
     t.index ["barangay_id"], name: "index_share_capitals_on_barangay_id"
@@ -1514,7 +1513,6 @@ ActiveRecord::Schema.define(version: 2019_12_12_124301) do
     t.index ["code"], name: "index_share_capitals_on_code", unique: true
     t.index ["cooperative_id"], name: "index_share_capitals_on_cooperative_id"
     t.index ["equity_account_id"], name: "index_share_capitals_on_equity_account_id"
-    t.index ["interest_on_capital_account_id"], name: "index_share_capitals_on_interest_on_capital_account_id"
     t.index ["office_id"], name: "index_share_capitals_on_office_id"
     t.index ["organization_id"], name: "index_share_capitals_on_organization_id"
     t.index ["share_capital_product_id"], name: "index_share_capitals_on_share_capital_product_id"
@@ -2092,7 +2090,6 @@ ActiveRecord::Schema.define(version: 2019_12_12_124301) do
   add_foreign_key "share_capital_products", "cooperatives"
   add_foreign_key "share_capital_products", "offices"
   add_foreign_key "share_capitals", "accounts", column: "equity_account_id"
-  add_foreign_key "share_capitals", "accounts", column: "interest_on_capital_account_id"
   add_foreign_key "share_capitals", "barangays"
   add_foreign_key "share_capitals", "carts"
   add_foreign_key "share_capitals", "cooperatives"

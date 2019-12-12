@@ -12,7 +12,6 @@ module MembershipsModule
     	it { is_expected.to belong_to :share_capital_product }
       it { is_expected.to belong_to :office }
       it { is_expected.to belong_to :share_capital_equity_account }
-      it { is_expected.to belong_to :interest_on_capital_account }
       it { is_expected.to have_many :entries }
     end
 
