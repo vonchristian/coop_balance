@@ -18,6 +18,7 @@ module Cooperatives
       it { is_expected.to have_many :office_saving_products }
       it { is_expected.to have_many :saving_products }
       it { is_expected.to have_many :share_capital_products }
+      it { is_expected.to have_many :office_loan_products }
       it { is_expected.to have_many :loan_products }
       it { is_expected.to have_many :office_programs }
       it { is_expected.to have_many :programs }
@@ -25,9 +26,6 @@ module Cooperatives
       it { is_expected.to have_many :level_one_account_categories }
       it { is_expected.to have_many :level_two_account_categories }
       it { is_expected.to have_many :level_three_account_categories }
-
-
-
     end
 
     describe 'validations' do
