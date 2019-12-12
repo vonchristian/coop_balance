@@ -27,6 +27,12 @@ describe Member, type: :model do
 
   describe 'validations' do
   end
+
+  it "#signatory_name" do
+    member = build(:member, first_name: "Von", middle_name: "Pinosan", last_name: "Halip")
+    expect(member.signatory_name).to eql 'Von Pinosan Halip'
+  end
+  
   it "#full_name" do
   	member = build(:member, first_name: "Von", middle_name: "Pinosan", last_name: "Halip")
 

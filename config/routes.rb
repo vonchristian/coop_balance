@@ -191,6 +191,7 @@ Rails.application.routes.draw do
   end
 
   resources :members, only: [:index, :show, :edit, :update, :destroy] do
+    resources :activities,            only: [:index]
     resources :credit_scores,         only: [:index],                        module: :members
     resources :bills_payments,        only: [:index],                        module: :members
     resources :organizations,         only: [:new, :create],                 module: :members

@@ -208,6 +208,33 @@ class Member < ApplicationRecord
     loans.all.where(loan_product: args[:loan_product])
   end
 
+  def activity_status(args={})
+    office    = args.fetch(:office)
+    from_date = args.fetch(:from_date)
+    to_date   = args.fetch(:to_date)
+    activity  = entries.where(office: office).entered_on(from_date: from_date, to_date: to_date)
+    if activity.present?
+      'Active'
+    else
+      'Inactive'
+    end
+  end
+
+  def activity_status_text_color(args={})
+    if activity_status(args) == 'Active'
+      'success'
+    else
+      'danger'
+    end
+  end
+
+  def date_of_membership_for(cooperative:)
+    membership = memberships.where(cooperative: cooperative).last
+    if membership.present?
+      membership.membership_date
+    end
+  end
+
   private
   def set_default_image
     if !self.avatar.attached?

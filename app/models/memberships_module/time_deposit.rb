@@ -32,6 +32,11 @@ module MembershipsModule
       AccountingModule::Liability.where(id: ids)
     end
 
+    def self.interest_expense_accounts
+      ids = pluck(:interest_expense_account_id)
+      AccountingModule::Liability.where(id: ids)
+    end
+
     def self.total_balances(args= {})
       liability_accounts.balance(args)
     end

@@ -9,8 +9,11 @@ module AccountingModule
       except_account(account_ids: LoansModule::Loan.penalty_revenue_accounts.ids).
       except_account(account_ids: LoansModule::Loan.accrued_income_accounts.ids).
       except_account(account_ids: MembershipsModule::Saving.liability_accounts.ids).
+      except_account(account_ids: MembershipsModule::Saving.interest_expense_accounts.ids).
       except_account(account_ids: MembershipsModule::TimeDeposit.liability_accounts.ids).
-      except_account(account_ids: MembershipsModule::ShareCapital.equity_accounts.ids)
+      except_account(account_ids: MembershipsModule::TimeDeposit.interest_expense_accounts.ids).
+      except_account(account_ids: MembershipsModule::ShareCapital.equity_accounts.ids).
+      except_account(account_ids: MembershipsModule::ShareCapital.interest_on_capital_accounts.ids)
     end
     def update
       @amount = AccountingModule::CreditAmount.find(params[:id])

@@ -34,7 +34,12 @@ module MembershipsModule
     def self.equity_accounts
       ids = pluck(:equity_account_id)
       AccountingModule::Account.where(id: ids)
-    end 
+    end
+
+    def self.interest_on_capital_accounts
+      ids = pluck(:interest_on_capital_account_id)
+      AccountingModule::Account.where(id: ids)
+    end
 
     def self.total_balances(args={})
       equity_accounts.balance(args)
