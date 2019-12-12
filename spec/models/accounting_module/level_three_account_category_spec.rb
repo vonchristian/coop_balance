@@ -38,6 +38,17 @@ module AccountingModule
 
     end
 
+    it '.level_two_account_categories' do
+      l3_account_category   = create(:asset_level_three_account_category)
+      l2_account_category_1 = create(:asset_level_two_account_category, level_three_account_category: l3_account_category)
+      l2_account_category_2 = create(:asset_level_two_account_category, level_three_account_category: l3_account_category)
+      l2_account_category_3 = create(:asset_level_two_account_category)
+
+      expect(described_class.level_two_account_categories).to include(l2_account_category_1)
+      expect(described_class.level_two_account_categories).to include(l2_account_category_2)
+      expect(described_class.level_two_account_categories).to_not include(l2_account_category_3)
+    end
+
     describe 'scopes' do
       let(:asset)     { create(:asset_level_three_account_category) }
       let(:liability) { create(:liability_level_three_account_category) }

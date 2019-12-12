@@ -22,6 +22,17 @@ module AccountingModule
       it { is_expected.to validate_uniqueness_of(:title).scoped_to(:office_id) }
     end
 
+    it '.level_one_account_categories' do
+      l2_account_category   = create(:asset_level_two_account_category)
+      l1_account_category_1 = create(:asset_level_one_account_category, level_two_account_category: l2_account_category)
+      l1_account_category_2 = create(:asset_level_one_account_category, level_two_account_category: l2_account_category)
+      l1_account_category_3 = create(:asset_level_one_account_category)
+
+      expect(described_class.level_one_account_categories).to include(l1_account_category_1)
+      expect(described_class.level_one_account_categories).to include(l1_account_category_2)
+      expect(described_class.level_one_account_categories).to_not include(l1_account_category_3)
+    end
+
     describe 'scopes' do
       let(:asset)     { create(:asset_level_two_account_category) }
       let(:liability) { create(:liability_level_two_account_category) }

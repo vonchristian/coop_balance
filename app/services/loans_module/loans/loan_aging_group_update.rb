@@ -13,15 +13,10 @@ module LoansModule
       def update_loan_aging_group!
         loan_aging_groups.each do |loan_aging_group|
           if loan_aging_group.num_range.include?(loan.number_of_days_past_due.to_i)
-            create_aging_group
+            loan.loan_agings.find_or_create_by(loan_aging_group: loan_aging_group, date: date)
           end
         end
       end
-
-      private
-      def create_aging_group
-        loan.loan_agings.find_or_create_by(loan_aging_group: loan_aging_group, date: date)
-      end 
     end
   end
 end

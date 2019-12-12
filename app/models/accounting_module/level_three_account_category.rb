@@ -25,6 +25,14 @@ module AccountingModule
     scope :revenues,    -> { where(type: 'AccountingModule::AccountCategories::LevelThreeAccountCategories::Revenue') }
     scope :expenses,    -> { where(type: 'AccountingModule::AccountCategories::LevelThreeAccountCategories::Expense') }
 
+    def self.level_two_account_categories
+      ids = []
+      self.all.each do |category|
+        ids << category.level_two_account_categories.ids
+      end
+      AccountingModule::LevelTwoAccountCategory.where(id: ids.compact.flatten.uniq)
+    end
+
     def self.except_cash_account_categories
       where.not(id: Employees::EmployeeCashAccount.cash_account_categories.ids)
     end

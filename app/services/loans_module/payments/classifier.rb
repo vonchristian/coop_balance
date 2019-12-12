@@ -11,14 +11,13 @@ module LoansModule
       end
 
       def principal
-        credit_amounts.where(commercial_document: loan).where(account: loan.principal_account).total
+        credit_amounts.where(account: loan.receivable_account).total
       end
 
       def interest
-        entry.amounts.where(account: loan_product.current_interest_config_interest_revenue_account).
-        where(commercial_document: loan).
-        total
+        entry.amounts.where(account: loan.interest_revenue_account).total
       end
+      
       def accrued_interest
         debit_amounts.where(account: loan_product.current_interest_config_accrued_income_account).total
       end
