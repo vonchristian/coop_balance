@@ -10,6 +10,36 @@ example_id                                                                      
 ./spec/forms/loans_module/loans/term_processing_spec.rb[1:2:4]                         | passed  | 0.00554 seconds |
 ./spec/forms/loans_module/loans/term_processing_spec.rb[1:2:5]                         | passed  | 0.00542 seconds |
 ./spec/forms/loans_module/loans/term_processing_spec.rb[1:3]                           | passed  | 1.33 seconds    |
+./spec/models/accounting_module/account_spec.rb[1:1]                                   | unknown |                 |
+./spec/models/accounting_module/account_spec.rb[1:2:1]                                 | unknown |                 |
+./spec/models/accounting_module/account_spec.rb[1:2:2]                                 | unknown |                 |
+./spec/models/accounting_module/account_spec.rb[1:2:3]                                 | unknown |                 |
+./spec/models/accounting_module/account_spec.rb[1:2:4]                                 | unknown |                 |
+./spec/models/accounting_module/account_spec.rb[1:2:5]                                 | unknown |                 |
+./spec/models/accounting_module/account_spec.rb[1:2:6]                                 | unknown |                 |
+./spec/models/accounting_module/account_spec.rb[1:2:7]                                 | unknown |                 |
+./spec/models/accounting_module/account_spec.rb[1:2:8]                                 | unknown |                 |
+./spec/models/accounting_module/account_spec.rb[1:3:1]                                 | unknown |                 |
+./spec/models/accounting_module/account_spec.rb[1:3:2]                                 | unknown |                 |
+./spec/models/accounting_module/account_spec.rb[1:3:3]                                 | unknown |                 |
+./spec/models/accounting_module/account_spec.rb[1:4:1]                                 | unknown |                 |
+./spec/models/accounting_module/account_spec.rb[1:4:2]                                 | unknown |                 |
+./spec/models/accounting_module/account_spec.rb[1:4:3]                                 | unknown |                 |
+./spec/models/accounting_module/account_spec.rb[1:4:4]                                 | unknown |                 |
+./spec/models/accounting_module/account_spec.rb[1:4:5]                                 | unknown |                 |
+./spec/models/accounting_module/account_spec.rb[1:4:6]                                 | unknown |                 |
+./spec/models/accounting_module/account_spec.rb[1:4:7]                                 | unknown |                 |
+./spec/models/accounting_module/account_spec.rb[1:5]                                   | unknown |                 |
+./spec/models/accounting_module/account_spec.rb[1:6]                                   | unknown |                 |
+./spec/models/accounting_module/account_spec.rb[1:7]                                   | unknown |                 |
+./spec/models/accounting_module/account_spec.rb[1:8]                                   | passed  | 0.66926 seconds |
+./spec/models/accounting_module/account_spec.rb[1:9]                                   | unknown |                 |
+./spec/models/accounting_module/account_spec.rb[1:10:1]                                | unknown |                 |
+./spec/models/accounting_module/account_spec.rb[1:11]                                  | unknown |                 |
+./spec/models/accounting_module/account_spec.rb[1:12]                                  | unknown |                 |
+./spec/models/accounting_module/account_spec.rb[1:13:1]                                | unknown |                 |
+./spec/models/accounting_module/account_spec.rb[1:13:2:1]                              | unknown |                 |
+./spec/models/accounting_module/account_spec.rb[1:13:3:1]                              | unknown |                 |
 ./spec/models/accounting_module/level_one_account_category_spec.rb[1:1:1]              | passed  | 0.00759 seconds |
 ./spec/models/accounting_module/level_one_account_category_spec.rb[1:1:2]              | passed  | 0.00438 seconds |
 ./spec/models/accounting_module/level_one_account_category_spec.rb[1:1:3]              | passed  | 0.00129 seconds |
@@ -318,7 +348,7 @@ example_id                                                                      
 ./spec/models/offices/office_share_capital_product_spec.rb[1:1:3]                      | passed  | 0.00286 seconds |
 ./spec/models/offices/office_share_capital_product_spec.rb[1:1:4]                      | passed  | 0.0034 seconds  |
 ./spec/services/account_creators/program_subscription_spec.rb[1:1]                     | passed  | 1.96 seconds    |
-./spec/services/account_creators/saving_spec.rb[1:1]                                   | passed  | 0.93105 seconds |
+./spec/services/account_creators/saving_spec.rb[1:1]                                   | passed  | 1.07 seconds    |
 ./spec/services/loans_module/loans/loan_aging_group_update_spec.rb[1:2]                | passed  | 1.16 seconds    |
 ./spec/services/loans_module/payments/classifier_spec.rb[1:1]                          | passed  | 3.09 seconds    |
 ./spec/services/savings/opening_spec.rb[1:1]                                           | passed  | 1.41 seconds    |

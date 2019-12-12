@@ -217,6 +217,10 @@ module AccountingModule
       end
     end
 
+    def display_name
+      level_one_account_category.title
+    end
+
     def credits_balance(args={})
       credit_amounts.balance(args)
     end

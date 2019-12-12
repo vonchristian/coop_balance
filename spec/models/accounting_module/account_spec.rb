@@ -97,6 +97,13 @@ module AccountingModule
       expect(asset.account_name).to eql "Cash on Hand"
     end
 
+    it '#display_name' do
+      category = create(:asset_level_one_account_category, title: 'Cash on Hand')
+      asset    = create(:asset, level_one_account_category: category)
+
+      expect(asset.display_name).to eql 'Cash on Hand'
+    end 
+
     let(:account) { build(:account) }
     subject { account }
 

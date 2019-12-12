@@ -9,7 +9,7 @@ module AccountingModule
 
     validates :type, :amount, :entry, :account, presence: true
 
-    delegate :name, to: :account, prefix: true
+    delegate :name, :display_name, to: :account, prefix: true
     delegate :recorder, :reference_number, :description, :entry_date,  to: :entry
     delegate :name, to: :recorder, prefix: true
 
