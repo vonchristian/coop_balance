@@ -12,6 +12,8 @@ module MembershipsModule
     	it { is_expected.to belong_to :share_capital_product }
       it { is_expected.to belong_to :office }
       it { is_expected.to belong_to :share_capital_equity_account }
+      it { is_expected.to have_many :accountable_accounts }
+      it { is_expected.to have_many :accounts }
       it { is_expected.to have_many :entries }
     end
 
@@ -33,7 +35,7 @@ module MembershipsModule
       employee = create(:user, role: 'teller')
       employee.cash_accounts << cash_account
       share_capital_product = create(:share_capital_product, cost_per_share: 100)
-      share_capital = create(:share_capital, share_capital_product: share_capital_product)
+      share_capital    = create(:share_capital, share_capital_product: share_capital_product)
       capital_build_up = build(:entry, recorder: employee, office: employee.office, cooperative: employee.cooperative, commercial_document: share_capital.subscriber)
       capital_build_up.credit_amounts.build(amount: 5000, commercial_document: share_capital, account: share_capital.share_capital_equity_account)
       capital_build_up.debit_amounts.build(amount: 5_000, commercial_document: share_capital, account: cash_account)

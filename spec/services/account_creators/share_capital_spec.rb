@@ -13,8 +13,8 @@ module AccountCreators
 
       equity_account = AccountingModule::Equity.find_by!(name: "#{share_capital_product.name} - (#{share_capital.subscriber_name} - #{share_capital.account_number}")
 
-      expect(share_capital.share_capital_equity_account).to              eql equity_account
-
+      expect(share_capital.share_capital_equity_account).to eql equity_account
+      expect(share_capital.accounts).to include(share_capital.share_capital_equity_account)
       expect(office_share_capital_product.equity_account_category.accounts).to include(share_capital.share_capital_equity_account)
 
     end
