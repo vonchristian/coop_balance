@@ -14,6 +14,10 @@ module MembershipsModule
       it { is_expected.to have_many :member_co_depositors }
       it { is_expected.to have_many :debit_amounts }
       it { is_expected.to have_many :credit_amounts }
+      it { is_expected.to have_many :accountable_accounts }
+      it { is_expected.to have_many :accounts }
+      it { is_expected.to have_many :entries }
+
     end
     context 'delegations' do
     	it { is_expected.to delegate_method(:name).to(:saving_product).with_prefix }
@@ -35,11 +39,11 @@ module MembershipsModule
 
 
     it '.updated_at' do
-      updated_saving = create(:saving)
+      updated_saving     = create(:saving)
       not_updated_saving = create(:saving)
-      employee = create(:user, role: 'teller')
-      cash     = create(:asset)
-      deposit = build(:entry, commercial_document: updated_saving, entry_date: Date.today)
+      employee           = create(:user, role: 'teller')
+      cash               = create(:asset)
+      deposit            = build(:entry, commercial_document: updated_saving, entry_date: Date.today)
       deposit.credit_amounts.build(amount: 5_000, commercial_document: updated_saving, account: updated_saving.liability_account)
       deposit.debit_amounts.build(amount: 5_000, commercial_document: updated_saving, account: cash)
       deposit.save

@@ -19,10 +19,12 @@ module MembershipsModule
     belongs_to :office,                   class_name: "Cooperatives::Office"
     has_many :debit_amounts,              class_name: "AccountingModule::DebitAmount", as: :commercial_document
     has_many :credit_amounts,             class_name: "AccountingModule::CreditAmount", as: :commercial_document
-    has_many :entries,                    through: :liability_account, class_name: 'AccountingModule::Entry'
-    has_many :ownerships, as: :ownable
-    has_many :member_depositors, through: :ownerships, source: :owner, source_type: 'Member'
-    has_many :organization_depositors, through: :ownerships, source: :owner, source_type: 'Organization'
+    has_many :ownerships,                 as: :ownable
+    has_many :member_depositors,          through: :ownerships, source: :owner, source_type: 'Member'
+    has_many :organization_depositors,    through: :ownerships, source: :owner, source_type: 'Organization'
+    has_many :accountable_accounts,       class_name: 'AccountingModule::AccountableAccount', as: :accountable
+    has_many :accounts,                   through: :accountable_accounts, class_name: 'AccountingModule::Account'
+    has_many :entries,                    through: :accounts, class_name: 'AccountingModule::Entry'
 
     delegate :name, :current_address_complete_address, :current_contact_number, :current_occupation, to: :depositor, prefix: true
     delegate :name,
@@ -47,6 +49,7 @@ module MembershipsModule
     before_save :set_account_owner_name, :set_date_opened #move to saving opening
 
     has_many :amounts,  class_name: "AccountingModule::Amount", as: :commercial_document
+
     def self.liability_accounts
       ids = pluck(:liability_account_id)
       AccountingModule::Liability.where(id: ids)
@@ -60,6 +63,7 @@ module MembershipsModule
     def self.total_balances(args={})
       liability_accounts.balance(args)
     end
+
     def depositors
       member_depositors + organization_depositors
     end

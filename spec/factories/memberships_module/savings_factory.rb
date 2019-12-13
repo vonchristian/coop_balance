@@ -8,5 +8,9 @@ FactoryBot.define do
     association :interest_expense_account, factory: :expense
     account_number { SecureRandom.uuid }
     last_transaction_date { Date.current }
+    after(:build) do |s|
+      s.accounts << s.liability_account
+      s.accounts << s.interest_expense_account
+    end 
   end
 end
