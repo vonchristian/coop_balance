@@ -8,7 +8,7 @@ module LoansModule
       @employee         = args[:employee]
       @cooperative      = @loan_application.cooperative
     end
-    
+
     def find_loan
       LoansModule::Loan.find_by(account_number: loan_application.account_number)
     end
@@ -22,6 +22,7 @@ module LoansModule
     private
     def create_loan
       loan = LoansModule::Loan.current_loan.new(
+        borrower_name:            loan_application.borrower.name,
         loan_application:         loan_application,
         mode_of_payment:          loan_application.mode_of_payment,
         cooperative:              loan_application.cooperative,
@@ -41,10 +42,10 @@ module LoansModule
         interest_revenue_account: loan_application.interest_revenue_account
         )
       create_accounts(loan)
+      create_term(loan)
       loan.save!
 
       create_amortization_schedules(loan)
-      create_term(loan)
       create_loan_interests(loan)
       create_loan_group(loan)
       approve_loan_application
@@ -53,7 +54,7 @@ module LoansModule
     def create_accounts(loan)
       ::AccountCreators::Loan.new(loan: loan).create_accounts!
     end
-    
+
     def create_loan_group(loan)
       ::LoansModule::Loans::LoanAgingGroupUpdate.new(loan: loan, date: loan.application_date).update_loan_aging_group!
     end
@@ -63,10 +64,11 @@ module LoansModule
     end
 
     def create_term(loan) #move to entry processing
-      loan.terms.create!(
-        term: loan_application.term,
-        effectivity_date: loan_application.application_date,
-        maturity_date: loan_application.application_date + loan_application.term.to_i.months)
+      term = Term.create!(
+      term:             loan_application.term,
+      effectivity_date: loan_application.application_date,
+      maturity_date:    loan_application.application_date + loan_application.term.to_i.months)
+      loan.update(term: term)
     end
 
     def create_loan_interests(loan)

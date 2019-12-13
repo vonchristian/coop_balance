@@ -2,24 +2,25 @@ module LoansModule
   class Loan < ApplicationRecord
     enum status: [:current_loan, :past_due, :restructured, :under_litigation]
     audited
+    extend PercentActive
+
     include PgSearch::Model
     include LoansModule::Loans::Interest
     include LoansModule::Loans::Principal
     include LoansModule::Loans::Penalty
     include LoansModule::Loans::Amortization
     include InactivityMonitoring
-    extend PercentActive
 
     pg_search_scope :text_search, :against => [:borrower_full_name, :tracking_number]
     multisearchable against: [:borrower_full_name]
     enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
-
+    belongs_to :term,                     optional: true
     belongs_to :loan_application,         class_name: "LoansModule::LoanApplication", optional: true
     belongs_to :disbursement_voucher,     class_name: "Voucher", foreign_key: 'disbursement_voucher_id', optional: true
     belongs_to :cooperative
     belongs_to :office,                   class_name: "Cooperatives::Office"
     belongs_to :archived_by,              class_name: "User", foreign_key: 'archived_by_id', optional: true
-    belongs_to :borrower,                 polymorphic: true # move to loan application
+    belongs_to :borrower,                 polymorphic: true
     belongs_to :loan_product,             class_name: "LoansModule::LoanProduct"
     belongs_to :street,                   class_name: "Addresses::Street",  optional: true
     belongs_to :barangay,                 class_name: "Addresses::Barangay",  optional: true
@@ -46,7 +47,7 @@ module LoansModule
     has_many :loan_aging_groups,          through: :loan_agings, class_name: 'LoansModule::LoanAgingGroup'
     has_many :accountable_accounts,       class_name: 'AccountingModule::AccountableAccount', as: :accountable
     has_many :accounts,                   through: :accountable_accounts, class_name: 'AccountingModule::Account'
-
+    has_many :entries,                    through: :accounts, class_name: 'AccountingModule::Entry'
     delegate :name, :address, :contact_number, to: :cooperative, prefix: true
     delegate :disbursed?, to: :disbursement_voucher, allow_nil: true #remove
     delegate :effectivity_date, :is_past_due?, :number_of_days_past_due, :remaining_term, :terms_elapsed, :maturity_date, to: :current_term, allow_nil: true
@@ -74,13 +75,13 @@ module LoansModule
     delegate :name, to: :office, prefix: true
 
     validates :loan_product_id, :borrower_id, presence: true
-    before_save :set_borrower_full_name
-
+    validates :term_id, :disbursement_voucher_id, uniqueness: true
 
     delegate :is_past_due?, :number_of_days_past_due, :remaining_term, :terms_elapsed, :maturity_date, to: :current_term, allow_nil: true
     delegate :number_of_months, to: :current_term, prefix: true
     delegate :term, to: :current_term
     delegate :loan_aging_group, to: :current_loan_aging
+
     def self.receivable_accounts
       ids = pluck(:receivable_account_id)
       AccountingModule::Account.where(id: ids.compact.flatten.uniq)
@@ -205,12 +206,12 @@ module LoansModule
     end
 
     def current_term
-      terms.current
+      term
     end
 
     def disbursement_date
       if disbursed?
-        disbursement_voucher.date
+        current_term.effectivity_date
       end
     end
 
@@ -241,7 +242,7 @@ module LoansModule
     end
 
     def self.active
-      where(archived: false)
+      where(date_archived: nil)
     end
 
     def self.for_entry(args={})
@@ -314,22 +315,20 @@ module LoansModule
     end
 
     def self.not_matured
-        active.joins(:terms).where('terms.maturity_date > ?', Date.today)
+        active.joins(:term).where('terms.maturity_date > ?', Date.today)
     end
 
-    def self.past_due_loans(options={})
-      if options[:from_date] && options[:to_date]
-        from_date = options[:from_date]
-        to_date   = options[:to_date]
-        range     = DateRange.new(from_date: from_date, to_date: to_date)
-        not_cancelled.
-        not_archived.
-        joins(:terms).where('terms.maturity_date' => range.start_date..range.end_date )
-      else
-        not_cancelled.
-        not_archived.
-        joins(:terms).where('terms.maturity_date < ?', Date.today)
-      end
+    def self.past_due_loans
+      not_cancelled.
+      not_archived.
+      joins(:term).where('terms.maturity_date < ?', Date.today)
+    end
+
+    def self.past_due_loans_on(from_date:, to_date:)
+      range  = DateRange.new(from_date: from_date, to_date: to_date)
+      not_cancelled.
+      not_archived.
+      joins(:term).where('terms.maturity_date' => range.start_date..range.end_date )
     end
 
     def self.forwarded_loans
@@ -352,10 +351,16 @@ module LoansModule
     def self.matured(options={})
       if options[:from_date] && options[:to_date]
         range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
-        self.joins(:terms).where('terms.maturity_date' => range.start_date..range.end_date )
+        self.joins(:term).where('terms.maturity_date' => range.start_date..range.end_date )
       else
-        self.joins(:terms).where('terms.maturity_date < ?', Date.today)
+        self.joins(:term).where('terms.maturity_date < ?', Date.today)
       end
+    end
+
+    def self.matured_on(from_date:, to_date:)
+        range = DateRange.new(from_date: from_date, to_date: to_date)
+        self.joins(:term).where('terms.maturity_date' => range.start_date..range.end_date )
+
     end
 
     def self.aging(options={})
@@ -558,12 +563,6 @@ module LoansModule
       else
         0
       end
-    end
-
-    private
-
-    def set_borrower_full_name
-      self.borrower_full_name = self.borrower.full_name
     end
   end
 end

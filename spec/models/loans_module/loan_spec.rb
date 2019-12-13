@@ -2,6 +2,7 @@ require 'rails_helper'
 module LoansModule
   describe Loan do
     context 'associations' do
+      it { is_expected.to belong_to(:term).optional }
       it { is_expected.to belong_to :receivable_account }
       it { is_expected.to belong_to :interest_revenue_account }
       it { is_expected.to belong_to :penalty_revenue_account }
@@ -18,7 +19,6 @@ module LoansModule
       it { is_expected.to belong_to :municipality }
       it { is_expected.to belong_to :organization }
       it { is_expected.to belong_to :preparer }
-    	it { is_expected.to have_many :entries }
       it { is_expected.to have_many :loan_charges }
       it { is_expected.to have_many :loan_charge_payment_schedules }
       it { is_expected.to have_many :charges }
@@ -35,12 +35,30 @@ module LoansModule
       it { is_expected.to have_many :loan_aging_groups }
       it { is_expected.to have_many :accountable_accounts }
       it { is_expected.to have_many :accounts }
-
-
+      it { is_expected.to have_many :entries }
     end
     describe 'validations' do
-      it { is_expected.to validate_presence_of :loan_product_id }
-      it { is_expected.to validate_presence_of :borrower_id }
+      it { is_expected.to validate_presence_of   :loan_product_id }
+      it { is_expected.to validate_presence_of   :borrower_id }
+      it 'unique term' do
+        term   = create(:term)
+        loan   = create(:loan, term: term)
+        loan_2 = build(:loan, term: term)
+        loan_2.save
+
+        expect(loan_2.errors[:term_id]).to eq ['has already been taken']
+      end
+
+      it 'unique voucher' do
+        voucher = create(:voucher)
+        loan    = create(:loan, disbursement_voucher: voucher)
+        loan_2  = build(:loan,  disbursement_voucher: voucher)
+        loan_2.save
+
+        expect(loan_2.errors[:disbursement_voucher_id]).to eq ['has already been taken']
+      end
+
+
     end
 
     context 'delegations' do
@@ -97,21 +115,23 @@ module LoansModule
     end
 
 
-    it ".past_due(args={})" do
-      employee = create(:user, role: 'teller')
-      past_due_loan = create(:loan, disbursement_date: Date.today - 2.months)
-      past_due_term = create(:term, termable: past_due_loan, maturity_date: Date.today.last_month)
-      voucher = create(:voucher, payee: past_due_loan)
-      disbursement = build(:entry, commercial_document: voucher, entry_date: Date.today)
-      disbursement.debit_amounts << create(:debit_amount, amount: 5_000, commercial_document: past_due_loan, account: past_due_loan.loan_product.loans_receivable_current_account)
-      disbursement.credit_amounts << create(:credit_amount, amount: 5_000, commercial_document: past_due_loan, account: employee.cash_on_hand_account)
-      disbursement.save
-
+    it ".past_due_loans" do
+      past_due_term = create(:term, maturity_date: Date.today.last_month)
+      past_due_loan = create(:loan, term: past_due_term)
       loan = create(:loan)
 
-      expect(past_due_loan.disbursed?).to be true
-      expect(described_class.past_due.pluck(:id)).to include(past_due_loan.id)
-      expect(described_class.past_due.pluck(:id)).to_not include(loan.id)
+      expect(described_class.past_due_loans.pluck(:id)).to include(past_due_loan.id)
+      expect(described_class.past_due_loans.pluck(:id)).to_not include(loan.id)
+    end
+
+    it ".past_due_loans_on(from_date:, to_date:)" do
+      past_due_term   = create(:term, maturity_date: Date.today.last_month)
+      past_due_loan   = create(:loan, term: past_due_term)
+      past_due_term_2 = create(:term, maturity_date: Date.today.last_year)
+      past_due_loan_2 = create(:loan, term: past_due_term_2)
+
+      expect(described_class.past_due_loans_on(from_date: Date.current.last_month, to_date: Date.current.last_month.end_of_month)).to include(past_due_loan)
+      expect(described_class.past_due_loans_on(from_date: Date.current.last_month, to_date: Date.current.last_month.end_of_month)).to_not include(past_due_loan_2)
     end
 
 
@@ -125,16 +145,16 @@ module LoansModule
 
     describe 'scopes' do
       it ".not_archived" do
-        loan = create(:loan, archived: false)
-        archived_loan = create(:loan, archived: true)
+        loan = create(:loan, date_archived: nil)
+        archived_loan = create(:loan, date_archived: Date.current)
 
         expect(described_class.not_archived).to include(loan)
         expect(described_class.not_archived).to_not include(archived_loan)
       end
 
       it ".archived" do
-        loan = create(:loan, archived: false)
-        archived_loan = create(:loan, archived: true)
+        loan          = create(:loan, date_archived: nil)
+        archived_loan = create(:loan, date_archived: Date.current)
 
         expect(described_class.archived).to_not include(loan)
         expect(described_class.archived).to include(archived_loan)
@@ -151,15 +171,13 @@ module LoansModule
 
       it ".disbursed_by(args={})" do
         employee = create(:user)
-        loan = create(:loan)
-        voucher = create(:voucher, disburser: employee)
-        entry = create(:entry_with_credit_and_debit)
-        voucher.accounting_entry = entry
-        loan.voucher = voucher
+        employee_2 = create(:user)
+        voucher  = create(:voucher, disburser: employee)
+        loan     = create(:loan, disbursement_voucher: voucher)
 
-        expect(loan.disbursed?).to eql true
-        expect(described_class.disbursed).to include(loan)
-        # expect(described_class.disbursed_by(employee_id: employee.id)).to include(loan)
+        expect(described_class.disbursed_by(employee_id: employee.id)).to include(loan)
+        expect(described_class.disbursed_by(employee_id: employee_2.id)).to_not include(loan)
+
       end
     end
 

@@ -11,5 +11,11 @@ FactoryBot.define do
 
 
     account_number { SecureRandom.uuid }
+    after(:build) do |l|
+      voucher                = create(:voucher)
+      term                   = create(:term)
+      l.disbursement_voucher = voucher
+      l.term                 = term
+    end 
   end
 end
