@@ -14,8 +14,9 @@ module MembershipsModule
     belongs_to :barangay,                     class_name: "Addresses::Barangay", optional: true
     belongs_to :organization,                 optional: true
     belongs_to :share_capital_equity_account, class_name: 'AccountingModule::Account', foreign_key: 'equity_account_id'
-    belongs_to :interest_on_capital_account,  class_name: 'AccountingModule::Account', foreign_key: 'interest_on_capital_account_id'
-    has_many   :entries,                      class_name: 'AccountingModule::Entry', through: :share_capital_equity_account
+    has_many   :accountable_accounts,         class_name: 'AccountingModule::AccountableAccount', as: :accountable
+    has_many   :accounts,                     through: :accountable_accounts, class_name: 'AccountingModule::Account'
+    has_many   :entries,                      through: :accounts, class_name: 'AccountingModule::Entry'
     delegate :name, to: :barangay, prefix: true, allow_nil: true
     delegate :name,
             :equity_account,

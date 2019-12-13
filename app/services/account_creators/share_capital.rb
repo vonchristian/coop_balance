@@ -12,6 +12,7 @@ module AccountCreators
     def create_accounts!
       create_equity_account
     end
+    
     def create_equity_account
       if share_capital.share_capital_equity_account.blank?
          account = office.accounts.equities.create!(
@@ -19,6 +20,7 @@ module AccountCreators
           code:             SecureRandom.uuid,
           level_one_account_category: equity_account_category
         )
+        share_capital.accounts << account
         share_capital.update(share_capital_equity_account: account)
       end
     end
