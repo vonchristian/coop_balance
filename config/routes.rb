@@ -10,7 +10,9 @@ Rails.application.routes.draw do
   namespace :accounting_module do
     resources :level_one_account_categories,   only: [:index, :new, :create], module: :account_categories
     resources :level_two_account_categories,   only: [:index, :new, :create], module: :account_categories
-    resources :level_three_account_categories, only: [:index, :new, :create], module: :account_categories
+    resources :level_three_account_categories, only: [:index, :show, :new, :create, :edit, :update], module: :account_categories do
+      resources :settings, only: [:index], module: :level_three_account_categories
+    end
     resources :cooperative_services, only: [:show] do
       resources :entries, only: [:index], module: :cooperative_services
       resources :accounts, only: [:index, :new, :create], module: :cooperative_services

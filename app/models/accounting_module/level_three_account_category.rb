@@ -1,5 +1,6 @@
 module AccountingModule
   class LevelThreeAccountCategory < ApplicationRecord
+    # self.inheritance_column = nil
     class_attribute :normal_credit_balance
     extend AccountingModule::UpdatedAtFinder
     include PgSearch::Model
