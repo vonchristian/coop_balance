@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_12_233332) do
+ActiveRecord::Schema.define(version: 2019_12_13_140254) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -892,6 +892,8 @@ ActiveRecord::Schema.define(version: 2019_12_12_233332) do
     t.uuid "interest_revenue_account_id"
     t.uuid "penalty_revenue_account_id"
     t.uuid "accrued_income_account_id"
+    t.uuid "term_id"
+    t.datetime "date_archived"
     t.index ["account_number"], name: "index_loans_on_account_number", unique: true
     t.index ["accrued_income_account_id"], name: "index_loans_on_accrued_income_account_id"
     t.index ["archived_by_id"], name: "index_loans_on_archived_by_id"
@@ -911,6 +913,7 @@ ActiveRecord::Schema.define(version: 2019_12_12_233332) do
     t.index ["receivable_account_id"], name: "index_loans_on_receivable_account_id"
     t.index ["status"], name: "index_loans_on_status"
     t.index ["street_id"], name: "index_loans_on_street_id"
+    t.index ["term_id"], name: "index_loans_on_term_id"
     t.index ["type"], name: "index_loans_on_type"
     t.index ["voucher_id"], name: "index_loans_on_voucher_id"
   end
@@ -1145,6 +1148,21 @@ ActiveRecord::Schema.define(version: 2019_12_12_233332) do
     t.index ["forwarding_account_id"], name: "index_office_share_capital_products_on_forwarding_account_id"
     t.index ["office_id"], name: "index_office_share_capital_products_on_office_id"
     t.index ["share_capital_product_id"], name: "index_office_share_capital_products_on_share_capital_product_id"
+  end
+
+  create_table "office_time_deposit_products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "office_id", null: false
+    t.uuid "liability_account_category_id", null: false
+    t.uuid "interest_expense_account_category_id", null: false
+    t.uuid "break_contract_account_category_id", null: false
+    t.uuid "time_deposit_product_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["break_contract_account_category_id"], name: "index_break_contract_category_on_office_time_deposit_products"
+    t.index ["interest_expense_account_category_id"], name: "index_interest_expense_category_on_office_time_deposit_products"
+    t.index ["liability_account_category_id"], name: "index_liability_category_on_office_time_deposit_products"
+    t.index ["office_id"], name: "index_office_time_deposit_products_on_office_id"
+    t.index ["time_deposit_product_id"], name: "index_office_time_deposit_products_on_time_deposit_product_id"
   end
 
   create_table "offices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -2000,6 +2018,7 @@ ActiveRecord::Schema.define(version: 2019_12_12_233332) do
   add_foreign_key "loans", "offices"
   add_foreign_key "loans", "organizations"
   add_foreign_key "loans", "streets"
+  add_foreign_key "loans", "terms"
   add_foreign_key "loans", "users", column: "archived_by_id"
   add_foreign_key "loans", "users", column: "preparer_id"
   add_foreign_key "loans", "vouchers"
@@ -2038,6 +2057,11 @@ ActiveRecord::Schema.define(version: 2019_12_12_233332) do
   add_foreign_key "office_share_capital_products", "level_one_account_categories", column: "equity_account_category_id"
   add_foreign_key "office_share_capital_products", "offices"
   add_foreign_key "office_share_capital_products", "share_capital_products"
+  add_foreign_key "office_time_deposit_products", "level_one_account_categories", column: "break_contract_account_category_id"
+  add_foreign_key "office_time_deposit_products", "level_one_account_categories", column: "interest_expense_account_category_id"
+  add_foreign_key "office_time_deposit_products", "level_one_account_categories", column: "liability_account_category_id"
+  add_foreign_key "office_time_deposit_products", "offices"
+  add_foreign_key "office_time_deposit_products", "time_deposit_products"
   add_foreign_key "offices", "cooperatives"
   add_foreign_key "orders", "cooperatives"
   add_foreign_key "orders", "store_fronts"
