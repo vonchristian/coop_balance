@@ -14,39 +14,38 @@ module LoansModule
     multisearchable against: [:borrower_full_name]
     enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
 
-    belongs_to :loan_application,       class_name: "LoansModule::LoanApplication", optional: true
-    belongs_to :disbursement_voucher,   class_name: "Voucher", foreign_key: 'disbursement_voucher_id', optional: true
+    belongs_to :loan_application,         class_name: "LoansModule::LoanApplication", optional: true
+    belongs_to :disbursement_voucher,     class_name: "Voucher", foreign_key: 'disbursement_voucher_id', optional: true
     belongs_to :cooperative
-    belongs_to :office,                 class_name: "Cooperatives::Office"
-    belongs_to :archived_by,            class_name: "User", foreign_key: 'archived_by_id', optional: true
-    belongs_to :borrower,               polymorphic: true # move to loan application
-    belongs_to :loan_product,           class_name: "LoansModule::LoanProduct"
-    belongs_to :street,                 class_name: "Addresses::Street",  optional: true
-    belongs_to :barangay,               class_name: "Addresses::Barangay",  optional: true
-    belongs_to :municipality,           class_name: "Addresses::Municipality",optional: true
-    belongs_to :organization,           optional: true
-    belongs_to :preparer,               class_name: "User", foreign_key: 'preparer_id', optional: true
-    belongs_to :receivable_account,       class_name: 'AccountingModule::Account', optional: true
-    belongs_to :interest_revenue_account, class_name: 'AccountingModule::Account', optional: true
-    belongs_to :penalty_revenue_account,  class_name: 'AccountingModule::Account', optional: true
-    belongs_to :accrued_income_account,  class_name: 'AccountingModule::Account', optional: true
-
-    has_many :voucher_amounts,          class_name: "Vouchers::VoucherAmount", as: :commercial_document, dependent: :destroy # for adding amounts on voucher move to loan application
-    has_many :amortization_schedules,   dependent: :destroy
-    has_many :amounts,                  class_name: "AccountingModule::Amount", as: :commercial_document
-    has_many :notices,                  class_name: "LoansModule::Notice",  as: :notified
-    has_many :loan_interests,           class_name: "LoansModule::Loans::LoanInterest", dependent: :destroy
-    has_many :loan_penalties,           class_name: "LoansModule::Loans::LoanPenalty",  dependent: :destroy
-    has_many :loan_discounts,           class_name: "LoansModule::Loans::LoanDiscount", dependent: :destroy
-
-    has_many :notes,                    as: :noteable
-    has_many :loan_terms,               class_name: 'LoansModule::Loans::LoanTerm'
-    has_many :terms,                    through: :loan_terms
-    has_many :loan_co_makers,           class_name: "LoansModule::LoanCoMaker"
-    has_many :member_co_makers,         through: :loan_co_makers, source: :co_maker, source_type: "Member"
-    has_many :loan_agings,              class_name: 'LoansModule::Loans::LoanAging'
-    has_many :loan_aging_groups,        through: :loan_agings, class_name: 'LoansModule::LoanAgingGroup'
-
+    belongs_to :office,                   class_name: "Cooperatives::Office"
+    belongs_to :archived_by,              class_name: "User", foreign_key: 'archived_by_id', optional: true
+    belongs_to :borrower,                 polymorphic: true # move to loan application
+    belongs_to :loan_product,             class_name: "LoansModule::LoanProduct"
+    belongs_to :street,                   class_name: "Addresses::Street",  optional: true
+    belongs_to :barangay,                 class_name: "Addresses::Barangay",  optional: true
+    belongs_to :municipality,             class_name: "Addresses::Municipality",optional: true
+    belongs_to :organization,             optional: true
+    belongs_to :preparer,                 class_name: "User", foreign_key: 'preparer_id', optional: true
+    belongs_to :receivable_account,       class_name: 'AccountingModule::Account'
+    belongs_to :interest_revenue_account, class_name: 'AccountingModule::Account'
+    belongs_to :penalty_revenue_account,  class_name: 'AccountingModule::Account'
+    belongs_to :accrued_income_account,   class_name: 'AccountingModule::Account', optional: true
+    has_many :voucher_amounts,            class_name: "Vouchers::VoucherAmount", as: :commercial_document, dependent: :destroy # for adding amounts on voucher move to loan application
+    has_many :amortization_schedules,     dependent: :destroy
+    has_many :amounts,                    class_name: "AccountingModule::Amount", as: :commercial_document
+    has_many :notices,                    class_name: "LoansModule::Notice",  as: :notified
+    has_many :loan_interests,             class_name: "LoansModule::Loans::LoanInterest", dependent: :destroy
+    has_many :loan_penalties,             class_name: "LoansModule::Loans::LoanPenalty",  dependent: :destroy
+    has_many :loan_discounts,             class_name: "LoansModule::Loans::LoanDiscount", dependent: :destroy
+    has_many :notes,                      as: :noteable
+    has_many :loan_terms,                 class_name: 'LoansModule::Loans::LoanTerm'
+    has_many :terms,                      through: :loan_terms
+    has_many :loan_co_makers,             class_name: "LoansModule::LoanCoMaker"
+    has_many :member_co_makers,           through: :loan_co_makers, source: :co_maker, source_type: "Member"
+    has_many :loan_agings,                class_name: 'LoansModule::Loans::LoanAging'
+    has_many :loan_aging_groups,          through: :loan_agings, class_name: 'LoansModule::LoanAgingGroup'
+    has_many :accountable_accounts,       class_name: 'AccountingModule::AccountableAccount', as: :accountable
+    has_many :accounts,                   through: :accountable_accounts, class_name: 'AccountingModule::Account'
 
     delegate :name, :address, :contact_number, to: :cooperative, prefix: true
     delegate :disbursed?, to: :disbursement_voucher, allow_nil: true #remove

@@ -33,6 +33,8 @@ module LoansModule
       it { is_expected.to have_many :member_co_makers }
       it { is_expected.to have_many :loan_agings }
       it { is_expected.to have_many :loan_aging_groups }
+      it { is_expected.to have_many :accountable_accounts }
+      it { is_expected.to have_many :accounts }
 
 
     end
