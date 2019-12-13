@@ -16,6 +16,9 @@ module MembershipsModule
     belongs_to :term
     has_many :ownerships, as: :ownable
     has_many :depositors, through: :ownerships, source: :owner
+    has_many :accountable_accounts,       class_name: 'AccountingModule::AccountableAccount', as: :accountable
+    has_many :accounts, through: :accountable_accounts, class_name: 'AccountingModule::Account'
+    has_many :entries, through: :accounts , class_name: 'AccountingModule::Entry'
 
     delegate :name, :interest_rate, :account, :interest_expense_account, :break_contract_account, :break_contract_fee, to: :time_deposit_product, prefix: true
     delegate :full_name, :first_and_last_name, to: :depositor, prefix: true
@@ -48,19 +51,7 @@ module MembershipsModule
       joins(:term).where('terms.effectivity_date' => date_range.start_date..date_range.end_date)
     end
 
-    def entries
-      accounting_entries = []
-      liability_account.amounts.each do |amount|
-        accounting_entries << amount.entry
-      end
-      interest_expense_account.amounts.each do |amount|
-        accounting_entries << amount.entry
-      end
-      break_contract_account.amounts.each do |amount|
-        accounting_entries << amount.entry
-      end
-      accounting_entries.uniq
-    end
+    
 
     def can_be_extended?
       !withdrawn? && term_matured?

@@ -6,4 +6,4 @@ module Offices
     belongs_to :break_contract_account_category, class_name: 'AccountingModule::LevelOneAccountCategory'
     belongs_to :time_deposit_product, class_name: 'CoopServicesModule::TimeDepositProduct'
   end
-end 
+end
