@@ -23,6 +23,8 @@ module Cooperatives
       it { is_expected.to have_many :loan_products }
       it { is_expected.to have_many :office_programs }
       it { is_expected.to have_many :programs }
+      it { is_expected.to have_many :office_time_deposit_products }
+      it { is_expected.to have_many :time_deposit_products }
       it { is_expected.to have_many :loan_aging_groups }
       it { is_expected.to have_many :level_one_account_categories }
       it { is_expected.to have_many :level_two_account_categories }
