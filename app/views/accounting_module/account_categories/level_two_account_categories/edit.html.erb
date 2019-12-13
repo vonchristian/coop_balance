@@ -1,0 +1,22 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="title-up"> Edit <%= @category.title %></h3>
+        </div>
+        <div class="card-body">
+          <%= simple_form_for @category, url: :accounting_module_level_two_account_category do |f| %>
+            <%= f.error_notification %>
+            <%= f.input :title %>
+            <%= f.input :code %>
+            <%= f.input :type, collection: current_office.level_two_account_categories.types.map{ |a| [a, a] }, as: :radio_buttons %>
+            <%= f.input :contra, as: :boolean %>
+            <%= f.input :level_three_account_category_id, collection: current_office.level_three_account_categories.map{ |a| [a.title, a.id] }, input_html: { class: 'chosen-select' } %>
+            <%= f.submit 'Update Category', class: 'btn btn-danger float-right' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
