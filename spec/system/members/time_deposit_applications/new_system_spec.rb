@@ -25,7 +25,7 @@ describe 'New time deposit application' do
     select "Time Deposit (100,000)"
     page.execute_script "window.scrollBy(0,10000)"
 
-    fill_in "Term", with: 6
+    fill_in "Term (Number of days)", with: 180
     fill_in "Beneficiaries", with: "Beneficiary"
     page.execute_script "window.scrollBy(0,10000)"
     click_button "Proceed"

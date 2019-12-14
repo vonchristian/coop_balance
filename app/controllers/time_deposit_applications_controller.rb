@@ -1,11 +1,11 @@
 class TimeDepositApplicationsController < ApplicationController
   def new
-    @depositor = params[:depositor_type].constantize.find(params[:depositor_id])
+    @depositor                = params[:depositor_type].constantize.find(params[:depositor_id])
     @time_deposit_application = TimeDepositApplicationProcessing.new
   end
 
   def create
-    @depositor = params[:time_deposit_application_processing][:depositor_type].constantize.find(params[:time_deposit_application_processing][:depositor_id])
+    @depositor                = params[:time_deposit_application_processing][:depositor_type].constantize.find(params[:time_deposit_application_processing][:depositor_id])
     @time_deposit_application = TimeDepositApplicationProcessing.new(time_deposit_application_params)
     if @time_deposit_application.valid?
       @time_deposit_application.process!
@@ -19,7 +19,7 @@ class TimeDepositApplicationsController < ApplicationController
   def time_deposit_application_params
     params.require(:time_deposit_application_processing).
     permit(:time_deposit_product_id, :depositor_id, :depositor_type,
-    :cash_account_id, :reference_number, :date, :amount, :description, :term,
+    :cash_account_id, :reference_number, :date, :amount, :description, :number_of_days,
     :employee_id, :voucher_account_number, :account_number, :beneficiaries)
   end
 end

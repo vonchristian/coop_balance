@@ -35,9 +35,9 @@ module TimeDeposits
 
     def create_term(time_deposit)
       time_deposit.create_term(
-        number_of_days:   time_deposit_application.term * 30,
+        number_of_days:   time_deposit_application.number_of_days,
         effectivity_date: voucher.date,
-        maturity_date:    (voucher.date.to_date + (time_deposit_application.term.to_i.months))
+        maturity_date:    (voucher.date.to_date + (time_deposit_application.number_of_days.days))
       )
     end
 

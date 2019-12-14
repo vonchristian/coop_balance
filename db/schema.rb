@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_14_012741) do
+ActiveRecord::Schema.define(version: 2019_12_14_015354) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1691,6 +1691,7 @@ ActiveRecord::Schema.define(version: 2019_12_14_012741) do
     t.string "certificate_number"
     t.string "beneficiaries"
     t.uuid "liability_account_id"
+    t.integer "number_of_days"
     t.index ["account_number"], name: "index_time_deposit_applications_on_account_number", unique: true
     t.index ["cooperative_id"], name: "index_time_deposit_applications_on_cooperative_id"
     t.index ["depositor_type", "depositor_id"], name: "index_depositor_on_time_deposit_applications"

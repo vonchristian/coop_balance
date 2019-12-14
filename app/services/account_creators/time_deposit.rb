@@ -3,10 +3,10 @@ module AccountCreators
     attr_reader :time_deposit, :office, :liability_account_category, :interest_expense_account_category, :break_contract_account_category
 
     def initialize(time_deposit:)
-      @time_deposit = time_deposit
-      @office       = @time_deposit.office
-      @time_deposit_product = @time_deposit.time_deposit_product
-      @liability_account_category = @office.office_time_deposit_products.find_by(time_deposit_product_id: @time_deposit_product.id).liability_account_category
+      @time_deposit                      = time_deposit
+      @office                            = @time_deposit.office
+      @time_deposit_product              = @time_deposit.time_deposit_product
+      @liability_account_category        = @office.office_time_deposit_products.find_by(time_deposit_product_id: @time_deposit_product.id).liability_account_category
       @interest_expense_account_category = @office.office_time_deposit_products.find_by(time_deposit_product_id: @time_deposit_product.id).interest_expense_account_category
       @break_contract_account_category   = @office.office_time_deposit_products.find_by(time_deposit_product_id: @time_deposit_product.id).break_contract_account_category
 

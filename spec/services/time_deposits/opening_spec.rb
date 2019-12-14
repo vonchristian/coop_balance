@@ -3,9 +3,11 @@ require 'rails_helper'
 module TimeDeposits
   describe Opening do
     it "#process!" do
-      time_deposit_application = create(:time_deposit_application)
-      voucher                  = create(:voucher)
       teller                   = create(:teller)
+      time_deposit_product     = create(:time_deposit_product)
+      create(:office_time_deposit_product, office: teller.office, time_deposit_product: time_deposit_product)
+      time_deposit_application = create(:time_deposit_application, time_deposit_product: time_deposit_product)
+      voucher                  = create(:voucher)
       described_class.new(
         time_deposit_application: time_deposit_application,
         voucher: voucher,

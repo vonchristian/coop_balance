@@ -1,11 +1,11 @@
 class TimeDepositApplicationProcessing
   include ActiveModel::Model
   attr_accessor :time_deposit_product_id, :depositor_id, :depositor_type,
-  :cash_account_id, :reference_number, :date, :amount, :description, :term,
+  :cash_account_id, :reference_number, :date, :amount, :description, :number_of_days,
   :employee_id, :voucher_account_number, :account_number, :beneficiaries
 
-  validates :reference_number, :beneficiaries, :time_deposit_product_id, :amount, :date, :description, :term, :cash_account_id, presence: true
-  validates :amount, :term, numericality: true
+  validates :reference_number, :beneficiaries, :time_deposit_product_id, :amount, :date, :description, :number_of_days, :cash_account_id, presence: true
+  validates :amount, :number_of_days, numericality: true
 
   def process!
     ActiveRecord::Base.transaction do
@@ -26,7 +26,7 @@ class TimeDepositApplicationProcessing
       time_deposit_product_id: time_deposit_product_id,
       depositor_id:            depositor_id,
       depositor_type:          depositor_type,
-      term:                    term,
+      number_of_days:          number_of_days,
       date_deposited:          date,
       account_number:          account_number,
       amount:                  amount,

@@ -6,6 +6,6 @@ FactoryBot.define do
     association :depositor, factory: :member
     account_number { SecureRandom.uuid }
     date_deposited { Date.current }
-    term { 90 }
+    number_of_days { 90 }
   end
 end
