@@ -10,7 +10,7 @@
           </li>
           <li class="nav-item"><%= link_to 'Transactions', share_capital_transactions_path(@share_capital), class: "nav-link #{ 'active' if current_page?(share_capital_transactions_path(@share_capital))}" %>
           </li>
-          <li class="nav-item"><%= link_to 'Settings', share_capital_settings_path(@share_capital), class: "nav-link #{ 'active' if current_page?(share_capital_settings_path(@share_capital))}" %>
+          <li class="nav-item"><%= link_to 'Settings', share_capital_settings_path(@share_capital), id: "#{@share_capital.id}-settings", class: "nav-link #{ 'active' if current_page?(share_capital_settings_path(@share_capital))}" %>
           </li>
         </ul>
       </div>

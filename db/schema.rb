@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_14_073615) do
+ActiveRecord::Schema.define(version: 2019_12_14_125915) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -885,7 +885,6 @@ ActiveRecord::Schema.define(version: 2019_12_14_073615) do
     t.uuid "interest_revenue_account_id"
     t.uuid "penalty_revenue_account_id"
     t.uuid "accrued_income_account_id"
-    t.uuid "term_id"
     t.datetime "date_archived"
     t.index ["account_number"], name: "index_loans_on_account_number", unique: true
     t.index ["accrued_income_account_id"], name: "index_loans_on_accrued_income_account_id"
@@ -906,7 +905,6 @@ ActiveRecord::Schema.define(version: 2019_12_14_073615) do
     t.index ["receivable_account_id"], name: "index_loans_on_receivable_account_id"
     t.index ["status"], name: "index_loans_on_status"
     t.index ["street_id"], name: "index_loans_on_street_id"
-    t.index ["term_id"], name: "index_loans_on_term_id"
     t.index ["type"], name: "index_loans_on_type"
     t.index ["voucher_id"], name: "index_loans_on_voucher_id"
   end
@@ -1520,6 +1518,7 @@ ActiveRecord::Schema.define(version: 2019_12_14_073615) do
     t.string "maf_beneficiaries"
     t.string "code"
     t.uuid "equity_account_id"
+    t.datetime "withdrawn_at"
     t.index ["account_number"], name: "index_share_capitals_on_account_number", unique: true
     t.index ["barangay_id"], name: "index_share_capitals_on_barangay_id"
     t.index ["cart_id"], name: "index_share_capitals_on_cart_id"
@@ -1750,7 +1749,6 @@ ActiveRecord::Schema.define(version: 2019_12_14_073615) do
     t.uuid "liability_account_id"
     t.uuid "interest_expense_account_id"
     t.uuid "break_contract_account_id"
-    t.uuid "term_id", null: false
     t.index ["account_number"], name: "index_time_deposits_on_account_number", unique: true
     t.index ["barangay_id"], name: "index_time_deposits_on_barangay_id"
     t.index ["break_contract_account_id"], name: "index_time_deposits_on_break_contract_account_id"
@@ -1763,7 +1761,6 @@ ActiveRecord::Schema.define(version: 2019_12_14_073615) do
     t.index ["office_id"], name: "index_time_deposits_on_office_id"
     t.index ["organization_id"], name: "index_time_deposits_on_organization_id"
     t.index ["status"], name: "index_time_deposits_on_status"
-    t.index ["term_id"], name: "index_time_deposits_on_term_id"
     t.index ["time_deposit_product_id"], name: "index_time_deposits_on_time_deposit_product_id"
   end
 
@@ -2013,7 +2010,6 @@ ActiveRecord::Schema.define(version: 2019_12_14_073615) do
   add_foreign_key "loans", "offices"
   add_foreign_key "loans", "organizations"
   add_foreign_key "loans", "streets"
-  add_foreign_key "loans", "terms"
   add_foreign_key "loans", "users", column: "archived_by_id"
   add_foreign_key "loans", "users", column: "preparer_id"
   add_foreign_key "loans", "vouchers"
@@ -2160,7 +2156,6 @@ ActiveRecord::Schema.define(version: 2019_12_14_073615) do
   add_foreign_key "time_deposits", "memberships"
   add_foreign_key "time_deposits", "offices"
   add_foreign_key "time_deposits", "organizations"
-  add_foreign_key "time_deposits", "terms"
   add_foreign_key "time_deposits", "time_deposit_products"
   add_foreign_key "unit_of_measurements", "products"
   add_foreign_key "users", "cooperatives"

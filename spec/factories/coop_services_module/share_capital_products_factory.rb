@@ -7,5 +7,6 @@ FactoryBot.define do
     transfer_fee   { 100 }
     name           { Faker::Company.bs }
     cost_per_share { 50 }
+    minimum_number_of_paid_share { 10 }
   end
 end
