@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_14_073615) do
+ActiveRecord::Schema.define(version: 2019_12_14_094225) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -885,7 +885,6 @@ ActiveRecord::Schema.define(version: 2019_12_14_073615) do
     t.uuid "interest_revenue_account_id"
     t.uuid "penalty_revenue_account_id"
     t.uuid "accrued_income_account_id"
-    t.uuid "term_id"
     t.datetime "date_archived"
     t.index ["account_number"], name: "index_loans_on_account_number", unique: true
     t.index ["accrued_income_account_id"], name: "index_loans_on_accrued_income_account_id"
@@ -906,7 +905,6 @@ ActiveRecord::Schema.define(version: 2019_12_14_073615) do
     t.index ["receivable_account_id"], name: "index_loans_on_receivable_account_id"
     t.index ["status"], name: "index_loans_on_status"
     t.index ["street_id"], name: "index_loans_on_street_id"
-    t.index ["term_id"], name: "index_loans_on_term_id"
     t.index ["type"], name: "index_loans_on_type"
     t.index ["voucher_id"], name: "index_loans_on_voucher_id"
   end
@@ -2013,7 +2011,6 @@ ActiveRecord::Schema.define(version: 2019_12_14_073615) do
   add_foreign_key "loans", "offices"
   add_foreign_key "loans", "organizations"
   add_foreign_key "loans", "streets"
-  add_foreign_key "loans", "terms"
   add_foreign_key "loans", "users", column: "archived_by_id"
   add_foreign_key "loans", "users", column: "preparer_id"
   add_foreign_key "loans", "vouchers"

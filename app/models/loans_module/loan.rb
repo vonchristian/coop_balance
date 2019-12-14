@@ -81,6 +81,11 @@ module LoansModule
     delegate :number_of_months, to: :term, prefix: true
     delegate :loan_aging_group, to: :current_loan_aging
 
+    def self.with_no_terms
+      with_terms = Term.where(termable_type: self.to_s).pluck(:termable_id)
+      where(id: with_terms)
+    end
+    
     def self.receivable_accounts
       ids = pluck(:receivable_account_id)
       AccountingModule::Account.where(id: ids.compact.flatten.uniq)
