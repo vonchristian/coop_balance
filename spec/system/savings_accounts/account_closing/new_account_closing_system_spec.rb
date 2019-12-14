@@ -2,31 +2,37 @@ require 'rails_helper'
 
 describe 'New savings account closing' do
   before(:each) do
-    cash_on_hand_account = create(:asset, name: "Cash on Hand (Teller)")
-    user = create(:user, role: 'teller', cash_on_hand_account: cash_on_hand_account)
-    login_as(user, scope: :user )
-    savings_account_config = create(:savings_account_config)
-    @savings_account = create(:saving)
+    cash = create(:asset, name: "Cash on Hand (Teller)")
+    user = create(:user, role: 'teller')
+    user.cash_accounts << cash
+    login_as(user, scope: :user)
+
+    @savings_account = create(:saving, office: user.office)
 
     visit savings_account_url(@savings_account)
-    click_link "New Deposit"
+    click_link "Deposit"
     fill_in "Amount", with: 100_000
-    fill_in 'OR number', with: '909045'
+    fill_in 'Reference Number', with: '909045'
     fill_in 'Date', with: Date.today
 
-    click_button "Save Deposit"
+    click_button "Proceed"
+    click_link 'Confirm Transaction'
 
     expect(@savings_account.balance).to eql 100_000
     visit savings_account_settings_url(@savings_account)
     click_link "Close Account"
   end
   it 'with valid attributes' do
-    fill_in 'OR number', with: '909045'
+    fill_in 'Reference number', with: '909045'
     fill_in 'Date', with: Date.today
 
     click_button "Close Account"
 
-    expect(page).to have_content('closed successfully')
+    expect(page).to have_content('created successfully')
+    click_link 'Confirm Transaction'
+
+    expect(page).to have_content('confirmed successfully')
+
     expect(@savings_account.balance).to eql 0
   end
 

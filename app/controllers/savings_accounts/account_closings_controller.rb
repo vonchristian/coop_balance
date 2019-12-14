@@ -1,13 +1,13 @@
 module SavingsAccounts
   class AccountClosingsController <ApplicationController
     def new
-      @savings_account = current_cooperative.savings.find(params[:savings_account_id])
+      @savings_account = current_office.savings.find(params[:savings_account_id])
       @account_closing = SavingsAccounts::Closing.new
       authorize [:savings_accounts, :account_closing]
     end
 
     def create
-      @savings_account = current_cooperative.savings.find(params[:savings_account_id])
+      @savings_account = current_office.savings.find(params[:savings_account_id])
       @account_closing = SavingsAccounts::Closing.new(account_closing_params)
       authorize [:savings_accounts, :account_closing]
       if @account_closing.valid?

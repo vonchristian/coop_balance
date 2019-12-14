@@ -59,7 +59,7 @@ module SavingsAccounts
     end
 
     def closing_fee_account
-      find_savings_account.saving_product_closing_account
+      find_savings_account.closing_account
     end
 
     def cash_account
@@ -67,7 +67,7 @@ module SavingsAccounts
     end
 
     def debit_account
-      find_savings_account.saving_product_account
+      find_savings_account.liability_account
     end
 
     def find_employee

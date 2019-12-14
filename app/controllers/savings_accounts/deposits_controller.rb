@@ -1,12 +1,12 @@
 module SavingsAccounts
   class DepositsController < ApplicationController
     def new
-      @savings_account = current_cooperative.savings.find(params[:savings_account_id])
+      @savings_account = current_office.savings.find(params[:savings_account_id])
       @deposit = Memberships::SavingsAccounts::DepositLineItemProcessing.new
       authorize [:savings_accounts, :deposit]
     end
     def create
-      @savings_account = current_cooperative.savings.find(params[:savings_account_id])
+      @savings_account = current_office.savings.find(params[:savings_account_id])
       @deposit = Memberships::SavingsAccounts::DepositLineItemProcessing.new(deposit_params)
       authorize [:savings_accounts, :deposit]
       if @deposit.valid?
