@@ -77,7 +77,7 @@ module LoansModule
     validates :loan_product_id, :borrower_id, presence: true
     validates :term_id, :disbursement_voucher_id, uniqueness: true
 
-    delegate :is_past_due?, :number_of_days_past_due, :remaining_term, :terms_elapsed, :maturity_date, to: :current_term, allow_nil: true
+    delegate :is_past_due?, :number_of_days_past_due, :remaining_term, :terms_elapsed, :maturity_date, to: :term, allow_nil: true
     delegate :number_of_months, to: :current_term, prefix: true
     delegate :loan_aging_group, to: :current_loan_aging
 

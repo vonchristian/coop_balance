@@ -10,7 +10,7 @@ describe "New loan application", type: :system do
     loan_product      = create(:loan_product, name: "Regular Loan", amortization_type: amortization_type)
     user              = create(:loan_officer)
     member            = create(:member)
-    member.memberships.create!(cooperative: user.cooperative, membership_type: 'regular_member', account_number: SecureRandom.uuid)
+    member.memberships.create!(cooperative: user.cooperative, membership_type: 'regular_member', account_number: SecureRandom.uuid, office: teller.office, membership_date: Date.current)
     login_as(user, scope: :user)
     visit member_loans_path(member)
     click_link 'New Loan Application'
@@ -20,7 +20,7 @@ describe "New loan application", type: :system do
     fill_in 'Application date', with: Date.current.strftime('%B %e, %Y')
     select_from_chosen "Regular Loan", from: 'Select Type of Loan'
     fill_in "Loan amount", with: 10_000
-    fill_in "Loan Term (in months)", with: 2
+    fill_in "Term (Number of days)", with: 60
     page.execute_script "window.scrollBy(0,10000)"
 
     choose "Lumpsum"

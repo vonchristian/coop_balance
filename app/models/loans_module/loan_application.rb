@@ -31,7 +31,7 @@ module LoansModule
     delegate :rate, :straight_balance?, :annually?, :prededucted_number_of_payments, to: :current_interest_config, prefix: true
     validates :cooperative_id,  presence: true
     validates :account_number, presence: true, uniqueness: true
-
+    validates :number_of_days, presence: true, numericality: { only_integer: true }
     def forwarded_loan? #check on amortization_schedule pdf
       false
     end

@@ -1,19 +1,21 @@
 require 'rails_helper'
 
 module LoansModule
-  describe LoanCreationProcessing do 
-    it "#create_loan" do 
+  describe LoanCreationProcessing do
+    it "#create_loan" do
       voucher          = create(:voucher)
       user             = create(:teller)
-      office           = user.office 
-      loan_application = create(:loan_application, voucher: voucher, office: office)
+      office           = user.office
+      loan_product     = create(:loan_product)
+      create(:office_loan_product, office: office, loan_product: loan_product)
+      loan_application = create(:loan_application, voucher: voucher, office: office, number_of_days: 60, loan_product: loan_product)
       loan_aging_group = create(:loan_aging_group, office: office)
 
       described_class.new(loan_application: loan_application, employee: user).process!
 
       loan = LoansModule::Loan.find_by(account_number: loan_application.account_number)
 
-      expect(loan).to_not eql nil 
+      expect(loan).to_not eql nil
     end
   end
 end

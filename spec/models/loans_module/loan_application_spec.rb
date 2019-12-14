@@ -21,6 +21,8 @@ module LoansModule
      it {is_expected.to monetize(:loan_amount) }
      it { is_expected.to validate_presence_of(:cooperative_id) }
      it { is_expected.to validate_presence_of :account_number }
+     it { is_expected.to validate_presence_of :number_of_days }
+     it { is_expected.to validate_numericality_of(:number_of_days).only_integer }
      it 'unique account_number' do
        loan_application = create(:loan_application, account_number: '1')
        loan_application_2 = build(:loan_application, account_number: '1')

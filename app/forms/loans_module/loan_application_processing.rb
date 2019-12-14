@@ -3,7 +3,7 @@ module LoansModule
     include ActiveModel::Model
     attr_accessor :borrower_id,
                   :borrower_type,
-                  :term,
+                  :number_of_days,
                   :purpose,
                   :loan_product_id,
                   :loan_amount,
@@ -13,9 +13,9 @@ module LoansModule
                   :preparer_id,
                   :cooperative_id,
                   :office_id
-    validates :term,  presence: true, numericality: true
+    validates :number_of_days,  presence: true, numericality: true
     validates :loan_amount, presence: true, numericality: true
-    validates :loan_product_id, :mode_of_payment, :term, :application_date, :purpose, presence: true
+    validates :loan_product_id, :mode_of_payment, :number_of_days, :application_date, :purpose, presence: true
     validate :maximum_term?
     def find_loan_application
       LoansModule::LoanApplication.find_by(account_number: account_number)
@@ -25,7 +25,7 @@ module LoansModule
         ActiveRecord::Base.transaction do
           create_loan_application
         end
-      end 
+      end
     end
 
     def find_loan
@@ -47,13 +47,14 @@ module LoansModule
         mode_of_payment:  mode_of_payment,
         preparer_id:      preparer_id,
         account_number:   account_number,
-        term:             term)
+        term:             number_of_days.to_i/30,
+        number_of_days:   number_of_days)
         create_accounts(loan_application)
         loan_application.save!
 
         find_loan_product.loan_processor.new(loan_application: loan_application).process!
     end
-    
+
     def create_accounts(loan_application)
       ::AccountCreators::LoanApplication.new(loan_application: loan_application).create_accounts!
     end
@@ -68,7 +69,7 @@ module LoansModule
     end
 
     def maximum_term?
-      errors[:term] << "must not exceed 120 months." if term.to_f > 120
+      errors[:number_of_days] << "must not exceed 3600 delayed_jobs_priority." if number_of_days.to_f > 3600
     end
   end
 end

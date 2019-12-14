@@ -2,9 +2,9 @@ module AccountCreators
   class Loan
     attr_reader :loan, :loan_product, :office, :receivable_account_category, :interest_revenue_account_category, :penalty_revenue_account_category
 
-    def initialize(loan:, loan_product:)
+    def initialize(loan:)
       @loan                              = loan
-      @loan_product                      = loan_product
+      @loan_product                      = @loan.loan_product
       @office                            = @loan.office
       @receivable_account_category       = @office.office_loan_products.where(loan_product: @loan_product).last.receivable_account_category
       @interest_revenue_account_category = @office.office_loan_products.where(loan_product: @loan_product).last.interest_revenue_account_category

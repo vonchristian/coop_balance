@@ -30,7 +30,7 @@
           <%= f.input :borrower_id, input_html: { value: @borrower.id }, as: :hidden %>
           <%= f.input :borrower_type, input_html: { value: @borrower.class.to_s }, as: :hidden %>
           <%= f.input :loan_amount, as: :currency %>
-          <%= f.input :term, label: "Loan Term (in months)", input_html: {maxlength: 4} %>
+          <%= f.input :number_of_days, label: "Term (Number of days)", input_html: {maxlength: 3600} %>
 
           <%= f.input :mode_of_payment, collection: LoansModule::LoanApplication.mode_of_payments.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
           <%= f.input :purpose, as: :text, label: "Purpose of Loan" %>

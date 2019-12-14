@@ -22,7 +22,7 @@ module LoansModule
     private
     def create_loan
       loan = LoansModule::Loan.current_loan.new(
-        borrower_name:            loan_application.borrower.name,
+        borrower_full_name:            loan_application.borrower.name,
         loan_application:         loan_application,
         mode_of_payment:          loan_application.mode_of_payment,
         cooperative:              loan_application.cooperative,
@@ -65,9 +65,9 @@ module LoansModule
 
     def create_term(loan) #move to entry processing
       term = Term.create!(
-      term:             loan_application.term,
+      number_of_days:             loan_application.number_of_days,
       effectivity_date: loan_application.application_date,
-      maturity_date:    loan_application.application_date + loan_application.term.to_i.months)
+      maturity_date:    loan_application.application_date + loan_application.number_of_days.to_i.days)
       loan.update(term: term)
     end
 

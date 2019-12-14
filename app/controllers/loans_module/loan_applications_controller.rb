@@ -19,7 +19,7 @@ module LoansModule
         paginate(page: params[:page], per_page: 20)
       end
     end
-    
+
     def new
       @borrower = Borrower.find(params[:borrower_id])
       @loan_application = LoansModule::LoanApplicationProcessing.new
@@ -51,7 +51,7 @@ module LoansModule
                   :cooperative_id,
                   :borrower_id,
                   :borrower_type,
-                  :term,
+                  :number_of_days,
                   :purpose,
                   :loan_product_id,
                   :loan_amount,
