@@ -7,6 +7,8 @@
       <div class="card-body">
         <%= simple_form_for @line_item, url: :accounting_module_entry_line_items, html: { autcomplete: 'off' } do |f| %>
         <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+        <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
+
         <% if @commercial_document.present? %>
           <%= f.input :commercial_document_id, input_html: { value: @commercial_document.id } %>
           <%= f.input :commercial_document_type, input_html: { value: @commercial_document.class.to_s } %>
@@ -14,13 +16,13 @@
 
           <div class="row">
             <div class="col-md-5">
-              <%= f.input :account_id, label: false, placeholder: "Account", collection: current_cooperative.accounts.active.map{|a| [a.name, a.id] }, prompt: "Select Account" %>
+              <%= f.input :account_id, label: false, placeholder: "Account", collection: @accounts.map{|a| [a.name, a.id] }, prompt: "Select Account", input_html: { class: 'chosen-select' } %>
             </div>
             <div class="col-md-3">
               <%= f.input :amount, label: false, placeholder: 'Amount', as: :currency  %>
             </div>
             <div class="col-md-2">
-              <%= f.input :amount_type, label: false, collection: Vouchers::VoucherAmount.amount_types.keys.to_a.map{|a| [a.titleize, a] } %>
+              <%= f.input :amount_type, label: false, placeholder: 'Type', collection: Vouchers::VoucherAmount.amount_types.keys.to_a.map{|a| [a.titleize, a] }, input_html: { class: 'chosen-select' } %>
             </div>
             <div class="col-md-2">
               <%= f.submit "Add", class: "btn btn-primary", data: { disable_with: "Adding..." } %>
@@ -84,19 +86,16 @@
         <h3 class="card-title"> Entry Details </h3>
       </div>
       <div class="card-body">
+        <% if current_cart.voucher_amounts.present? %>
         <%=simple_form_for @voucher, url: :accounting_module_entry_line_item_vouchers, html: { autocomplete: 'off' } do |f| %>
-          <%= f.input :cooperative_service_id, collection: current_cooperative.cooperative_services.map{|a| [a.title, a.id] }, hint: "Select Cooperative Service" %>
           <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
-          <%= f.input :description, as: :text %>
+          <%= f.input :description, as: :string %>
           <%= f.input :reference_number %>
           <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
-          <%= f.input :payee_id, label: "Payee/Member", collection: Voucher.payees.map{|a| [a.name_and_details, a.id] } %>
+          <%= f.input :payee_id, label: "Payee/Member", collection: Voucher.payees.map{|a| [a.name_and_details, a.id] }, input_html: { class: 'chosen-select' } %>
           <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
-          <% if current_user.voucher_amounts.debit.present? && current_user.voucher_amounts.credit.present? %>
-            <% if current_user.voucher_amounts.debit.sum(&:amount) == current_user.voucher_amounts.credit.sum(&:amount) %>
-              <%= f.submit "Save Entry", class: "btn btn-primary btn-block" %>
-            <% end %>
-          <% end %>
+          <%= f.submit "Save Entry", class: "btn btn-primary btn-block" %>
+         <% end %>
         <% end %>
       </div>
     </div>

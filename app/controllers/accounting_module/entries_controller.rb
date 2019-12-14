@@ -12,7 +12,7 @@ module AccountingModule
         @ordered_entries = current_cooperative.entries.order(reference_number: :desc).where(cooperative_service_id: params[:cooperative_service_id]).entered_on(from_date: @from_date, to_date: @to_date)
         @entries = @ordered_entries.paginate(:page => params[:page], :per_page => 50)
         @office = current_user.office
-        
+
 
       elsif params[:organization_id].present? && params[:search].present?
         @organization = current_cooperative.organizations.find(params[:organization_id])
@@ -57,7 +57,7 @@ module AccountingModule
 
 
       else
-        @from_date = params[:from_date] ? Date.parse(params[:from_date]) : current_cooperative.entries.order(entry_date: :asc).first.entry_date
+        @from_date = params[:from_date] ? Date.parse(params[:from_date]) : Date.current
         @to_date = params[:to_date] ? Date.parse(params[:to_date]) : Date.today.end_of_year
         @cooperative_service = current_cooperative.cooperative_services.find(params[:cooperative_service_id]) if params[:cooperative_service_id].present?
         @entries_for_pdf = current_cooperative.entries.where(cooperative_service_id: params[:cooperative_service_id])

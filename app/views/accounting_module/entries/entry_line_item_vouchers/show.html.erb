@@ -15,7 +15,7 @@
         <%= render 'vouchers/partials/alert_message', voucher: @voucher %>
         <%= render 'vouchers/partials/body', voucher: @voucher %>
         <% if !@voucher.disbursed?%>
-          <%= link_to "Confirm", accounting_module_entry_line_item_voucher_confirmations_path(entry_line_item_voucher_id: @voucher.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
+          <%= link_to "Confirm Transaction", accounting_module_entry_line_item_voucher_confirmations_path(entry_line_item_voucher_id: @voucher.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
           <%= link_to "Cancel", accounting_module_entry_line_item_voucher_path(id: @voucher.id), method: :delete, class: "btn text-danger float-left" %>
         <% else %>
           <%= render 'vouchers/partials/status', voucher: @voucher %>

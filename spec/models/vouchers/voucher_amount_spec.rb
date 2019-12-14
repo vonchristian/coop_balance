@@ -7,9 +7,9 @@ module Vouchers
 
     describe 'associations' do
       it { is_expected.to belong_to :account }
-      it { is_expected.to belong_to :voucher }
-      it { is_expected.to belong_to :commercial_document }
-      it { is_expected.to belong_to :cooperative }
+      it { is_expected.to belong_to(:voucher).optional }
+      it { is_expected.to belong_to(:commercial_document).optional }
+      it { is_expected.to belong_to(:cooperative).optional }
       it { is_expected.to belong_to(:loan_application).optional }
 
     end

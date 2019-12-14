@@ -9,7 +9,7 @@ module Vouchers
     belongs_to :cooperative, optional: true
     belongs_to :loan_application, class_name: "LoansModule::LoanApplication", optional: true
     belongs_to :recorder,         class_name: "User", foreign_key: 'recorder_id', optional: true
-    belongs_to :commercial_document, polymorphic: true
+    belongs_to :commercial_document, polymorphic: true, optional: true
 
     delegate :name, to: :account, prefix: true
     delegate :entry, to: :voucher, allow_nil: true
