@@ -1,12 +1,11 @@
 require 'rails_helper'
 
 describe Term do
-  describe 'associations' do
-    it { is_expected.to belong_to :termable }
-  end
+
   describe 'validations' do
-    it { is_expected.to validate_presence_of :term }
-    it { is_expected.to validate_numericality_of :term }
+    it { is_expected.to validate_presence_of :effectivity_date }
+    it { is_expected.to validate_presence_of :number_of_days }
+    it { is_expected.to validate_numericality_of :number_of_days }
   end
 
   describe 'delegations' do

@@ -1,6 +1,7 @@
 class Term < ApplicationRecord
   belongs_to :termable, polymorphic: true, optional: true
-  validates :term, presence: true, numericality: true
+  validates :effectivity_date, presence: true
+  validates :number_of_days, presence: true, numericality: true
   delegate :disbursed?, to: :termable, allow_nil: true
 
   def self.past_due
@@ -8,7 +9,7 @@ class Term < ApplicationRecord
   end
 
   def number_of_months
-    term
+    number_of_days / 30
   end
 
   def self.current
