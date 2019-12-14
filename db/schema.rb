@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_14_004359) do
+ActiveRecord::Schema.define(version: 2019_12_14_012741) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1158,7 +1158,9 @@ ActiveRecord::Schema.define(version: 2019_12_14_004359) do
     t.uuid "time_deposit_product_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "forwarding_account_id", null: false
     t.index ["break_contract_account_category_id"], name: "index_break_contract_category_on_office_time_deposit_products"
+    t.index ["forwarding_account_id"], name: "index_office_time_deposit_products_on_forwarding_account_id"
     t.index ["interest_expense_account_category_id"], name: "index_interest_expense_category_on_office_time_deposit_products"
     t.index ["liability_account_category_id"], name: "index_liability_category_on_office_time_deposit_products"
     t.index ["office_id"], name: "index_office_time_deposit_products_on_office_id"
@@ -2058,6 +2060,7 @@ ActiveRecord::Schema.define(version: 2019_12_14_004359) do
   add_foreign_key "office_share_capital_products", "level_one_account_categories", column: "equity_account_category_id"
   add_foreign_key "office_share_capital_products", "offices"
   add_foreign_key "office_share_capital_products", "share_capital_products"
+  add_foreign_key "office_time_deposit_products", "accounts", column: "forwarding_account_id"
   add_foreign_key "office_time_deposit_products", "level_one_account_categories", column: "break_contract_account_category_id"
   add_foreign_key "office_time_deposit_products", "level_one_account_categories", column: "interest_expense_account_category_id"
   add_foreign_key "office_time_deposit_products", "level_one_account_categories", column: "liability_account_category_id"
