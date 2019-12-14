@@ -5,11 +5,11 @@ module Loans
       @payment = ::Loans::MultiplePayment.new
     end
     def create
-      @loan    = current_cooperative.loans.find(params[:loan_id])
+      @loan    = current_office.loans.find(params[:loan_id])
       @payment = ::Loans::MultiplePayment.new(payment_params)
       if @payment.valid?
         @payment.create_payment_voucher!
-        redirect_to new_loan_multiple_payment_line_item_url, notice: "Payment created successfully."
+        redirect_to new_loan_multiple_payment_line_item_url, notice: "Payment added successfully."
       else
         render :new
       end

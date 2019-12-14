@@ -130,6 +130,7 @@ example_id                                                                   | s
 ./spec/services/loans_module/loan_creation_processing_spec.rb[1:1]           | passed | 3.09 seconds    |
 ./spec/services/time_deposits/opening_spec.rb[1:1]                           | passed | 1.8 seconds     |
 ./spec/system/accounting_module/entry_line_items/destroy_system_spec.rb[1:1] | passed | 8.58 seconds    |
+./spec/system/loans/multiple_payments/new_system_spec.rb[1:1]                | passed | 16.18 seconds   |
 ./spec/system/members/loan_applications/new_system_spec.rb[1:1]              | passed | 10.08 seconds   |
 ./spec/system/members/loan_applications/new_system_spec.rb[1:2]              | passed | 1.57 seconds    |
 ./spec/system/members/time_deposit_applications/new_system_spec.rb[1:1]      | passed | 13.75 seconds   |

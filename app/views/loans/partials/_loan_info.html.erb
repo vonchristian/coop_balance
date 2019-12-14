@@ -93,8 +93,8 @@
             <b>Loan Term</b>
           </div>
           <div class="col-md-6 col-sm-6">
-            <% if @loan.terms.present? %>
-              <%= @loan.current_term.term if @loan.not_forwarded? %>
+            <% if @loan.term.present? %>
+              <%= @loan.term.number_of_days if @loan.not_forwarded? %>
             <% end %>
           </div>
         </div>

@@ -42,7 +42,7 @@
               <% end %>
             </div>
             <div class="col-md-4">
-              <%= link_to 'New Transaction', new_loan_multiple_payment_line_item_path, class: 'btn btn-primary' %>
+              <%= link_to 'New Multiple Payments', new_loan_multiple_payment_line_item_path, class: 'btn btn-primary' %>
             </div>
           </div>
         </div>
@@ -62,7 +62,7 @@
               </thead>
               <tbody>
                 <% @loans.each do |loan| %>
-                  <% cache(loan) do %>
+
                     <tr style="cursor: pointer;" data-link="<%= loan_path(loan) %>">
                       <td style="width: 40px"><%= image_tag(loan.borrower.avatar, class: "img-circle", height: 35, width: 35) %></td>
                       <td><b><%= loan.borrower_name %></b></td>
@@ -75,7 +75,7 @@
                       <td><%= number_to_currency loan.loan_amount %>
                       <td><%= number_to_currency loan.balance %>
                     </tr>
-                  <% end %>
+                
                 <% end %>
               </tbody>
             </table>
