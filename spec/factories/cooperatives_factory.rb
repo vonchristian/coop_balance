@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :cooperative do
-    name                { Faker::Name.name }
+    name                { Faker::Company.bs }
     address             { Faker::Address.full_address }
     abbreviated_name    { Faker::Name.name }
     registration_number { Faker::Number.number(digits: 12) }

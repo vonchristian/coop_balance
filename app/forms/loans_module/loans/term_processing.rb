@@ -16,7 +16,7 @@ module LoansModule
 
       private
       def save_term_extension
-        find_loan.terms.create!(
+        find_loan.create_term(
           effectivity_date: effectivity_date,
           maturity_date: maturity_date,
           term: term)

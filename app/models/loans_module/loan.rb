@@ -79,7 +79,6 @@ module LoansModule
 
     delegate :is_past_due?, :number_of_days_past_due, :remaining_term, :terms_elapsed, :maturity_date, to: :current_term, allow_nil: true
     delegate :number_of_months, to: :current_term, prefix: true
-    delegate :term, to: :current_term
     delegate :loan_aging_group, to: :current_loan_aging
 
     def self.receivable_accounts
@@ -203,10 +202,6 @@ module LoansModule
 
     def fifth_year_interest
       loan_application.fifth_year_interest
-    end
-
-    def current_term
-      term
     end
 
     def disbursement_date

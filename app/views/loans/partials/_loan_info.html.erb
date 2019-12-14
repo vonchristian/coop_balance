@@ -276,56 +276,58 @@
       <hr class="no-margin">
       <div class="row min-margin justify-content-end">
         <div class="col-md-11 col-sm-11">
-          <% if @loan.term > 12  %>
-            <div class="row">
-              <div class="col-md-4 col-sm-6">
-                <span class="text-muted">First Year</span>
-              </div>
-              <div class="col-md-2 col-sm-6">
-                <span class="float-right"><%= number_to_currency @loan.first_year_interest %></span>
-              </div>
-            </div>
-            <% if @loan.term > 12  %>
+          <% if @loan.term.present? %>
+            <% if @loan.term.term > 12  %>
               <div class="row">
                 <div class="col-md-4 col-sm-6">
-                  <span class="text-muted">Second Year</span>
+                  <span class="text-muted">First Year</span>
                 </div>
                 <div class="col-md-2 col-sm-6">
-                  <span class="float-right"><%= number_to_currency @loan.second_year_interest %></span>
+                  <span class="float-right"><%= number_to_currency @loan.first_year_interest %></span>
                 </div>
               </div>
+              <% if @loan.term.term > 12  %>
+                <div class="row">
+                  <div class="col-md-4 col-sm-6">
+                    <span class="text-muted">Second Year</span>
+                  </div>
+                  <div class="col-md-2 col-sm-6">
+                    <span class="float-right"><%= number_to_currency @loan.second_year_interest %></span>
+                  </div>
+                </div>
+              <% end %>
+              <% if @loan.term.term >= 36 %>
+                <div class="row">
+                  <div class="col-md-4 col-sm-6">
+                    <span class="text-muted">Third Year</span>
+                  </div>
+                  <div class="col-md-2 col-sm-6">
+                    <span class="float-right"><%= number_to_currency @loan.third_year_interest %></span>
+                  </div>
+                </div>
+              <% end %>
+              <% if @loan.term.term >= 48 %>
+                <div class="row">
+                  <div class="col-md-4 col-sm-6">
+                    <span class="text-muted">Fourth Year</span>
+                  </div>
+                  <div class="col-md-2 col-sm-6">
+                    <span class="float-right"><%= number_to_currency @loan.fourth_year_interest %></span>
+                  </div>
+                </div>
+              <% end %>
+              <% if @loan.term.term >=60 %>
+                <div class="row">
+                  <div class="col-md-4 col-sm-6">
+                    <span class="text-muted">Fifth Year</span>
+                  </div>
+                  <div class="col-md-2 col-sm-6">
+                    <span class="float-right"><%= number_to_currency @loan.fifth_year_interest %></span>
+                  </div>
+                </div>
+              <% end %>
+              <hr class="min-margin">
             <% end %>
-            <% if @loan.term >= 36 %>
-              <div class="row">
-                <div class="col-md-4 col-sm-6">
-                  <span class="text-muted">Third Year</span>
-                </div>
-                <div class="col-md-2 col-sm-6">
-                  <span class="float-right"><%= number_to_currency @loan.third_year_interest %></span>
-                </div>
-              </div>
-            <% end %>
-            <% if @loan.term >= 48 %>
-              <div class="row">
-                <div class="col-md-4 col-sm-6">
-                  <span class="text-muted">Fourth Year</span>
-                </div>
-                <div class="col-md-2 col-sm-6">
-                  <span class="float-right"><%= number_to_currency @loan.fourth_year_interest %></span>
-                </div>
-              </div>
-            <% end %>
-            <% if @loan.term >=60 %>
-              <div class="row">
-                <div class="col-md-4 col-sm-6">
-                  <span class="text-muted">Fifth Year</span>
-                </div>
-                <div class="col-md-2 col-sm-6">
-                  <span class="float-right"><%= number_to_currency @loan.fifth_year_interest %></span>
-                </div>
-              </div>
-            <% end %>
-            <hr class="min-margin">
           <% end %>
           <div class="row">
             <div class="col-md-4 col-sm-6">

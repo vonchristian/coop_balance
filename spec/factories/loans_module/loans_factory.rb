@@ -1,5 +1,6 @@
 FactoryBot.define do
   factory :loan, class: LoansModule::Loan do
+    association :loan_application
     association :cooperative
     association :office
     association :loan_product
@@ -16,6 +17,6 @@ FactoryBot.define do
       term                   = create(:term)
       l.disbursement_voucher = voucher
       l.term                 = term
-    end 
+    end
   end
 end

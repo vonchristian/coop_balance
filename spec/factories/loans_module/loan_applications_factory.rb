@@ -7,6 +7,7 @@ FactoryBot.define do
     association :receivable_account, factory: :asset
     association :interest_revenue_account, factory: :revenue
     association :preparer, factory: :loan_officer
+    association :voucher
     account_number   { SecureRandom.uuid }
     term             { 12 }
     application_date { Date.current }
