@@ -13,7 +13,7 @@ module MembershipsModule
     belongs_to :liability_account,        class_name: 'AccountingModule::Account'
     belongs_to :interest_expense_account, class_name: 'AccountingModule::Account'
     belongs_to :break_contract_account,   class_name: 'AccountingModule::Account'
-    belongs_to :term
+    has_one  :term,                       as: :termable
     has_many :ownerships, as: :ownable
     has_many :depositors, through: :ownerships, source: :owner
     has_many :accountable_accounts,       class_name: 'AccountingModule::AccountableAccount', as: :accountable
@@ -51,7 +51,7 @@ module MembershipsModule
       joins(:term).where('terms.effectivity_date' => date_range.start_date..date_range.end_date)
     end
 
-    
+
 
     def can_be_extended?
       !withdrawn? && term_matured?

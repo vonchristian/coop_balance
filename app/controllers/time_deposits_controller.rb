@@ -8,7 +8,7 @@ class TimeDepositsController < ApplicationController
   end
 
   def show
-    @time_deposit = current_cooperative.time_deposits.find(params[:id])
+    @time_deposit = current_office.time_deposits.find(params[:id])
     respond_to do |format|
       format.html
       format.pdf do

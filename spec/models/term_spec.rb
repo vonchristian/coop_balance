@@ -1,7 +1,9 @@
 require 'rails_helper'
 
 describe Term do
-
+  describe 'associations' do
+    it { is_expected.to belong_to :termable }
+  end 
   describe 'validations' do
     it { is_expected.to validate_presence_of :effectivity_date }
     it { is_expected.to validate_presence_of :number_of_days }

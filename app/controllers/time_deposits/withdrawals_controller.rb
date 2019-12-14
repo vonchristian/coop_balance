@@ -1,11 +1,11 @@
 module TimeDeposits
   class WithdrawalsController < ApplicationController
     def new
-      @time_deposit = current_cooperative.time_deposits.find(params[:time_deposit_id])
+      @time_deposit = current_office.time_deposits.find(params[:time_deposit_id])
       @withdrawal   = TimeDeposits::WithdrawalLineItemProcessing.new
     end
     def create
-      @time_deposit = current_cooperative.time_deposits.find(params[:time_deposit_id])
+      @time_deposit = current_office.time_deposits.find(params[:time_deposit_id])
       @withdrawal   = TimeDeposits::WithdrawalLineItemProcessing.new(withdrawal_params)
       if @withdrawal.valid?
         @withdrawal.process!

@@ -28,13 +28,15 @@ module TimeDeposits
         beneficiaries:        time_deposit_application.beneficiaries,
         liability_account:    time_deposit_application.liability_account
       )
-      create_term(time_deposit)
       create_accounts(time_deposit)
       time_deposit.save!
+      create_term(time_deposit)
+
     end
 
     def create_term(time_deposit)
-      time_deposit.create_term(
+      Term.create!(
+        termable:         time_deposit,
         number_of_days:   time_deposit_application.number_of_days,
         effectivity_date: voucher.date,
         maturity_date:    (voucher.date.to_date + (time_deposit_application.number_of_days.days))

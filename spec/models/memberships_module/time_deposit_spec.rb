@@ -6,8 +6,8 @@ module MembershipsModule
       it { is_expected.to belong_to :cooperative }
     	it { is_expected.to belong_to :depositor }
     	it { is_expected.to belong_to :time_deposit_product }
-      it { is_expected.to belong_to :term }
       it { is_expected.to belong_to :office }
+      it { is_expected.to have_one :term }
       it { is_expected.to belong_to :liability_account }
       it { is_expected.to belong_to :interest_expense_account }
       it { is_expected.to belong_to :break_contract_account }

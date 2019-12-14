@@ -105,7 +105,7 @@ crumb :loans_module_amortization_schedule_details do |amortization_schedule|
   parent :loans_module_loan_amortization_schedules, amortization_schedule.loan
 end
 
-# Member Savings 
+# Member Savings
 
 crumb :new_savings_account_application do |depositor|
   link "New Savings Account", new_savings_account_application_path(depositor_id: depositor.id, depositor_type: depositor.class.name)
@@ -226,7 +226,7 @@ crumb :time_deposit_withdrawal do |time_deposit|
 end
 
 crumb :time_deposit_withdrawal_voucher do |time_deposit|
-  link "Withdrawal Voucher", time_deposit_withdrawal_voucher_path(time_deposit_id: time_deposit.id, id: Vouchers::VoucherAmount.debit.where(commercial_document: time_deposit).last.voucher.id)
+  link "Withdrawal Voucher", time_deposit_withdrawal_voucher_path(time_deposit_id: time_deposit.id, id: Vouchers::VoucherAmount.debit.where(account: time_deposit.liability_account).last.voucher.id)
   parent :time_deposit_details, time_deposit
 end
 

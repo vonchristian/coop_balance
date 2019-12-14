@@ -26,13 +26,12 @@
       <hr class="min-margin">
       <div class="card-body">
         <%= simple_form_for [@time_deposit, @withdrawal], url: :time_deposit_withdrawals, html: { autocomplete: "off" } do |f| %>
-        <%= f.input :cash_account_id, collection: current_cooperative.users.teller.last.cash_accounts.map{|a| [a.name, a.id] }, default: current_cooperative.users.teller.last.cash_accounts.first %>
+        <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] }, default: current_cooperative.users.teller.last.cash_accounts.first, input_html: { class: 'chosen-select' } %>
         <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
         <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
         <%= f.input :amount, as: :currency, input_html: {value: @time_deposit.balance} %>
-        <%= f.input :payment_type, label: 'Type', collection: AccountingModule::Entry.payment_types.keys.to_a.map{|a| [a.titleize, a] }, selected: AccountingModule::Entry.payment_types.keys.first %>
         <%= f.input :offline_receipt, as: :boolean, input_html: { checked: true }, as: :hidden %>
-        <%= f.input :or_number, label: 'Reference Number / OR Number' %>
+        <%= f.input :or_number, label: 'Reference Number' %>
         <%= f.input :time_deposit_id, input_html: { value: @time_deposit.id },as: :hidden %>
         <%= f.input :employee_id, input_html: { value: current_user.id },as: :hidden %>
         <hr>
