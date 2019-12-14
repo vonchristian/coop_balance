@@ -41,7 +41,7 @@
             </tr>
           </thead>
           <tbody>
-            <% current_user.voucher_amounts.each do |amount| %>
+            <% current_cart.voucher_amounts.each do |amount| %>
               <tr>
                 <td>
                   <% if amount.debit? %>
@@ -54,8 +54,8 @@
                     <%= number_to_currency amount.amount %>
                   <% end %>
                 </td>
-                <td><%= link_to accounting_module_entry_line_item_path(amount), method: :delete do %>
-                  <span title="Remove" data-toggle="tooltip" class="fa fa-trash text-danger"></span>
+                <td><%= link_to accounting_module_entry_line_item_path(amount), method: :delete, title: 'Remove Amount' do %>
+                  <span title="Remove Amount" data-toggle="tooltip" class="fa fa-times text-danger"></span>
                 <% end %></td>
               </tr>
             <% end %>
