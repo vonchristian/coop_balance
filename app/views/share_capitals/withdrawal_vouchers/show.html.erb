@@ -1,0 +1,30 @@
+<% content_for(:html_title) { "Withdrawal Transaction | #{@share_capital.subscriber_name}" } %>
+
+<div class="row">
+  <div class="col-md-8 offset-md-2">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="title-up">Share Capital Withdraw Transaction </h3>
+      </div>
+      <div class="card-body">
+        <%= render 'vouchers/partials/alert_message', voucher: @voucher %>
+        <div class="card-body no-padding-top no-padding-bottom">
+          <div class="row">
+            <div class="col-md-4 col-sm-4">
+              <label>Amount</label>
+            </div>
+            <div class="col-md-8 col-sm-8">
+              <b><%= number_to_currency @voucher.voucher_amounts.for_account(account: @share_capital.share_capital_equity_account).total %></b>
+            </div>
+          </div>
+        </div>
+        <%= render 'vouchers/partials/body', voucher: @voucher %>
+        <hr>
+        <% if @voucher.accounting_entry.blank? %>
+          <%= link_to "Confirm Transaction", share_capital_withdrawal_voucher_confirmations_path(share_capital_id: @share_capital.id, voucher_id: @voucher.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
+          <%= link_to "Cancel", share_capital_withdrawal_voucher_path(share_capital_id: @share_capital.id, voucher_id: @voucher.id), method: :delete, class: "btn text-danger float-left" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

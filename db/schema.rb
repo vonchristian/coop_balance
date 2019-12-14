@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_14_103607) do
+ActiveRecord::Schema.define(version: 2019_12_14_125915) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1518,6 +1518,7 @@ ActiveRecord::Schema.define(version: 2019_12_14_103607) do
     t.string "maf_beneficiaries"
     t.string "code"
     t.uuid "equity_account_id"
+    t.datetime "withdrawn_at"
     t.index ["account_number"], name: "index_share_capitals_on_account_number", unique: true
     t.index ["barangay_id"], name: "index_share_capitals_on_barangay_id"
     t.index ["cart_id"], name: "index_share_capitals_on_cart_id"

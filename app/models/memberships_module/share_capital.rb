@@ -32,6 +32,9 @@ module MembershipsModule
     delegate :balance, to: :share_capital_equity_account
 
     before_save :set_account_owner_name
+    def self.withdrawn
+      where.not(withdrawn_at: nil)
+    end
     def self.equity_accounts
       ids = pluck(:equity_account_id)
       AccountingModule::Account.where(id: ids)

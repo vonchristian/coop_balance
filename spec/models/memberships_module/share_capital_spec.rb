@@ -28,6 +28,13 @@ module MembershipsModule
       it { is_expected.to delegate_method(:balance).to(:share_capital_equity_account) }
     end
 
+    it '.withdrawn' do
+      share_capital           = create(:share_capital, withdrawn_at: nil)
+      withdrawn_share_capital = create(:share_capital, withdrawn_at: Date.current)
+
+      expect(described_class.withdrawn).to include(withdrawn_share_capital)
+      expect(described_class.withdrawn).to_not include(share_capital)
+    end
 
     it "#subscribed_shares" do
       cooperative = create(:cooperative)
