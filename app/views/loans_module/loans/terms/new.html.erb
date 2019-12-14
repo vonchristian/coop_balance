@@ -1,4 +1,4 @@
-<% content_for(:html_title) { "#{@loan.borrower_name} | New Term Extension" } %>
+<% content_for(:html_title) { "#{@loan.borrower_name} | New Term" } %>
 <div class="modal-header">
   <h4 class="modal-title card-title" id="mainModalLabel">
     New Term Extension Details
@@ -14,6 +14,6 @@
     <%= f.input :effectivity_date, as: :string, input_html: { class: "datepicker" } %>
   </div>
   <div class="modal-footer">
-    <%= f.submit "Save Term Extension", class: "btn btn-danger pull-right" %>
+    <%= f.submit "Save Term", class: "btn btn-danger pull-right" %>
   </div>
 <% end %>

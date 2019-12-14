@@ -13,8 +13,10 @@ module LoansModule
 
     pg_search_scope :text_search, :against => [:borrower_full_name, :tracking_number]
     multisearchable against: [:borrower_full_name]
+
     enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
-    belongs_to :term,                     optional: true
+
+    has_one    :term,                     as: :termable
     belongs_to :loan_application,         class_name: "LoansModule::LoanApplication", optional: true
     belongs_to :disbursement_voucher,     class_name: "Voucher", foreign_key: 'disbursement_voucher_id', optional: true
     belongs_to :cooperative
@@ -73,7 +75,7 @@ module LoansModule
     delegate :name, to: :office, prefix: true
 
     validates :loan_product_id, :borrower_id, presence: true
-    validates :term_id, :disbursement_voucher_id, uniqueness: true
+    validates :disbursement_voucher_id, uniqueness: true
 
     delegate :is_past_due?, :number_of_days_past_due, :remaining_term, :terms_elapsed, :maturity_date, to: :term, allow_nil: true
     delegate :number_of_months, to: :term, prefix: true
@@ -535,7 +537,7 @@ module LoansModule
 
     def more_than_twelve_terms_and_more_than_one_year_old?
       #for loan payment principal and interest checking for default values
-      term > 12 && (Date.today).to_date.beginning_of_month > application_date + 1.year
+      term.number_of_months > 12 && (Date.today).to_date.beginning_of_month > application_date + 1.year
     end
 
     def current_amortized_principal

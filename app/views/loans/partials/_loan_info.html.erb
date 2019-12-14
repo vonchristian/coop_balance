@@ -13,7 +13,7 @@
       <div class="col-md-6">
         <small class="text-muted">PRINCIPAL BALANCE</small>
         <h4 class="title-up"> <%= number_to_currency @loan.balance %></h4>
-        <small class="text-muted"><i class="fa fa-calendar"></i> Last Payment: <%= @loan.last_transaction_date.strftime('%B %e, %Y') %></small>
+        <small class="text-muted"><i class="fa fa-calendar"></i> Last Payment: <%= @loan.last_transaction_date.try(:strftime, ('%B %e, %Y')) %></small>
       </div>
     </div>
     <hr>

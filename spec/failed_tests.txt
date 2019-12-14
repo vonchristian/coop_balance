@@ -1,5 +1,16 @@
 example_id                                                                             | status  | run_time        |
 -------------------------------------------------------------------------------------- | ------- | --------------- |
+./spec/forms/loans_module/loans/term_processing_spec.rb[1:1:1]                         | passed  | 0.00293 seconds |
+./spec/forms/loans_module/loans/term_processing_spec.rb[1:1:2]                         | passed  | 0.00152 seconds |
+./spec/forms/loans_module/loans/term_processing_spec.rb[1:1:3]                         | passed  | 0.00158 seconds |
+./spec/forms/loans_module/loans/term_processing_spec.rb[1:1:4]                         | passed  | 0.00165 seconds |
+./spec/forms/loans_module/loans/term_processing_spec.rb[1:2:1]                         | passed  | 0.00746 seconds |
+./spec/forms/loans_module/loans/term_processing_spec.rb[1:2:2]                         | passed  | 0.00831 seconds |
+./spec/forms/loans_module/loans/term_processing_spec.rb[1:2:3]                         | passed  | 0.0109 seconds  |
+./spec/forms/loans_module/loans/term_processing_spec.rb[1:2:4]                         | passed  | 0.0037 seconds  |
+./spec/forms/loans_module/loans/term_processing_spec.rb[1:2:5]                         | passed  | 0.00491 seconds |
+./spec/forms/loans_module/loans/term_processing_spec.rb[1:2:6]                         | passed  | 0.00515 seconds |
+./spec/forms/loans_module/loans/term_processing_spec.rb[1:3]                           | passed  | 2.92 seconds    |
 ./spec/models/loans_module/loan_application_spec.rb[1:1:1]                             | passed  | 0.05678 seconds |
 ./spec/models/loans_module/loan_application_spec.rb[1:1:2]                             | passed  | 0.01005 seconds |
 ./spec/models/loans_module/loan_application_spec.rb[1:1:3]                             | passed  | 0.01639 seconds |
@@ -170,6 +181,9 @@ example_id                                                                      
 ./spec/services/time_deposits/opening_spec.rb[1:1]                                     | passed  | 1.8 seconds     |
 ./spec/system/accounting_module/entry_line_items/destroy_system_spec.rb[1:1]           | passed  | 8.58 seconds    |
 ./spec/system/loans/multiple_payments/new_system_spec.rb[1:1]                          | passed  | 16.18 seconds   |
+./spec/system/loans_module/loans/terms/new_system_spec.rb[1:1]                         | passed  | 12.53 seconds   |
+./spec/system/loans_module/loans/terms/new_system_spec.rb[1:2]                         | passed  | 2.7 seconds     |
+./spec/system/loans_module/loans/terms/new_system_spec.rb[1:3]                         | passed  | 2.93 seconds    |
 ./spec/system/members/loan_applications/new_system_spec.rb[1:1]                        | passed  | 10.08 seconds   |
 ./spec/system/members/loan_applications/new_system_spec.rb[1:2]                        | passed  | 1.57 seconds    |
 ./spec/system/members/time_deposit_applications/new_system_spec.rb[1:1]                | passed  | 13.75 seconds   |

@@ -19,6 +19,7 @@ module LoansModule
       it { is_expected.to belong_to :municipality }
       it { is_expected.to belong_to :organization }
       it { is_expected.to belong_to :preparer }
+      it { is_expected.to have_one  :term }
       it { is_expected.to have_many :loan_charges }
       it { is_expected.to have_many :loan_charge_payment_schedules }
       it { is_expected.to have_many :charges }
@@ -38,14 +39,6 @@ module LoansModule
     describe 'validations' do
       it { is_expected.to validate_presence_of   :loan_product_id }
       it { is_expected.to validate_presence_of   :borrower_id }
-      it 'unique term' do
-        term   = create(:term)
-        loan   = create(:loan, term: term)
-        loan_2 = build(:loan, term: term)
-        loan_2.save
-
-        expect(loan_2.errors[:term_id]).to eq ['has already been taken']
-      end
 
       it 'unique voucher' do
         voucher = create(:voucher)

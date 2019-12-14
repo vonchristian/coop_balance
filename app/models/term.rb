@@ -1,7 +1,7 @@
 class Term < ApplicationRecord
-  belongs_to :termable, polymorphic: true, optional: true
+  belongs_to :termable, polymorphic: true
   validates :effectivity_date, presence: true
-  validates :number_of_days, presence: true, numericality: true
+  validates :number_of_days, presence: true, numericality: { only_integer: true, greater_than: 0 }
   delegate :disbursed?, to: :termable, allow_nil: true
 
   def self.past_due

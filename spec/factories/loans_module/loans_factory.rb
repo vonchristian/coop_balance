@@ -9,14 +9,10 @@ FactoryBot.define do
     association :interest_revenue_account, factory: :revenue
     association :penalty_revenue_account,  factory: :revenue
     association :accrued_income_account,   factory: :asset
-
-
     account_number { SecureRandom.uuid }
     after(:build) do |l|
       voucher                = create(:voucher)
-      term                   = create(:term)
-      l.disbursement_voucher = voucher
-      l.term                 = term
+      l.disbursement_voucher ||= voucher
     end
   end
 end
