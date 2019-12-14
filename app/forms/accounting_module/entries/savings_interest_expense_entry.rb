@@ -29,7 +29,7 @@ module AccountingModule
         find_cooperative.savings.has_minimum_balances.each do |saving|
           voucher.voucher_amounts.debit.build(
             cooperative: find_employee.cooperative,
-            account: saving.saving_product.interest_expense_account,
+            account: saving.interest_expense_account,
             amount: saving.computed_interest(to_date: date),
             commercial_document: saving)
           voucher.voucher_amounts.credit.build(

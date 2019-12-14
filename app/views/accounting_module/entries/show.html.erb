@@ -22,6 +22,8 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                   <%= link_to 'Cancel Entry', new_accounting_module_entry_cancellation_path(@entry), class: "dropdown-item", data: { confirm: "Are you sure you want to cancel this entry?"} %>
                   <%= link_to "Edit Entry", edit_accounting_module_entry_path(@entry), class: "dropdown-item" %>
+                  <%= link_to "Reverse Entry", new_accounting_module_entry_reversal_voucher_path(@entry), class: "dropdown-item" %>
+
                 </div>
               </div>
             <% end %>

@@ -88,6 +88,10 @@ Rails.application.routes.draw do
 
     resources :entries do
       resources :cancellations, only: [:new, :create], module: :entries
+      resources :reversal_vouchers, only: [:new, :create, :show], module: :entries
+      resources :reversal_voucher_confirmations, only: [:create], module: :entries
+
+
     end
 
     resources :debit_amounts, only: [:edit, :update]

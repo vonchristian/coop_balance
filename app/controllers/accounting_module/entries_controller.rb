@@ -114,13 +114,7 @@ module AccountingModule
     end
 
     def show
-      @entry = current_cooperative.entries.includes(amounts: [:account]).find(params[:id])
-    end
-
-    def destroy
-      @entry = current_cooperative.entries.find(params[:id])
-      @entry.destroy
-      redirect_to accounting_module_entries_url, notice: "Entry destroyed successfully."
+      @entry = current_office.entries.includes(amounts: [:account]).find(params[:id])
     end
 
     private
