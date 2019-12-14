@@ -22,8 +22,6 @@ module LoansModule
       it { is_expected.to have_many :loan_charges }
       it { is_expected.to have_many :loan_charge_payment_schedules }
       it { is_expected.to have_many :charges }
-      it { is_expected.to have_many :loan_terms }
-      it { is_expected.to have_many :terms }
       it { is_expected.to have_many :notices }
       it { is_expected.to have_many :loan_interests }
       it { is_expected.to have_many :loan_penalties }
@@ -107,8 +105,8 @@ module LoansModule
 
 
     it ".active" do
-      loan = create(:loan)
-      archived_loan = create(:loan, archived: true)
+      loan          = create(:loan, date_archived: nil)
+      archived_loan = create(:loan, date_archived: Date.current)
 
       expect(described_class.active).to include(loan)
       expect(described_class.active).to_not include(archived_loan)
@@ -135,13 +133,7 @@ module LoansModule
     end
 
 
-    it "#current_term" do
-      loan = create(:loan)
-      old_term = create(:term, termable: loan, effectivity_date: Date.today.last_month)
-      current_term = create(:term, termable: loan, effectivity_date: Date.today)
 
-      expect(loan.current_term).to eql(current_term)
-    end
 
     describe 'scopes' do
       it ".not_archived" do
@@ -179,11 +171,6 @@ module LoansModule
         expect(described_class.disbursed_by(employee_id: employee_2.id)).to_not include(loan)
 
       end
-    end
-
-
-
-    it '#terms_elapsed' do
     end
   end
 end

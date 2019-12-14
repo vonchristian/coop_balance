@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_14_021131) do
+ActiveRecord::Schema.define(version: 2019_12_14_053023) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -846,15 +846,6 @@ ActiveRecord::Schema.define(version: 2019_12_14_021131) do
     t.datetime "updated_at", null: false
     t.index ["accounts_payable_id"], name: "index_loan_protection_plan_providers_on_accounts_payable_id"
     t.index ["cooperative_id"], name: "index_loan_protection_plan_providers_on_cooperative_id"
-  end
-
-  create_table "loan_terms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "loan_id", null: false
-    t.uuid "term_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["loan_id"], name: "index_loan_terms_on_loan_id"
-    t.index ["term_id"], name: "index_loan_terms_on_term_id"
   end
 
   create_table "loans", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -2009,8 +2000,6 @@ ActiveRecord::Schema.define(version: 2019_12_14_021131) do
   add_foreign_key "loan_products", "offices"
   add_foreign_key "loan_protection_plan_providers", "accounts", column: "accounts_payable_id"
   add_foreign_key "loan_protection_plan_providers", "cooperatives"
-  add_foreign_key "loan_terms", "loans"
-  add_foreign_key "loan_terms", "terms"
   add_foreign_key "loans", "accounts", column: "accrued_income_account_id"
   add_foreign_key "loans", "accounts", column: "interest_revenue_account_id"
   add_foreign_key "loans", "accounts", column: "penalty_revenue_account_id"

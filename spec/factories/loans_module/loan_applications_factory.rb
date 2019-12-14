@@ -11,5 +11,6 @@ FactoryBot.define do
     account_number   { SecureRandom.uuid }
     term             { 12 }
     application_date { Date.current }
+    number_of_days   { 60 }
   end
 end
