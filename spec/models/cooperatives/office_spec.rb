@@ -20,6 +20,8 @@ module Cooperatives
       it { is_expected.to have_many :office_share_capital_products }
       it { is_expected.to have_many :share_capital_products }
       it { is_expected.to have_many :office_loan_products }
+      it { is_expected.to have_many :office_time_deposit_products }
+      it { is_expected.to have_many :time_deposit_products }
       it { is_expected.to have_many :loan_products }
       it { is_expected.to have_many :office_programs }
       it { is_expected.to have_many :programs }

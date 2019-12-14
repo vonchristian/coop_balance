@@ -1,7 +1,12 @@
-example_id                                                       | status | run_time        |
----------------------------------------------------------------- | ------ | --------------- |
-./spec/models/offices/office_time_deposit_product_spec.rb[1:1:1] | passed | 0.13457 seconds |
-./spec/models/offices/office_time_deposit_product_spec.rb[1:1:2] | passed | 0.00331 seconds |
-./spec/models/offices/office_time_deposit_product_spec.rb[1:1:3] | passed | 0.00389 seconds |
-./spec/models/offices/office_time_deposit_product_spec.rb[1:1:4] | passed | 0.00377 seconds |
-./spec/models/offices/office_time_deposit_product_spec.rb[1:1:5] | passed | 0.00331 seconds |
+example_id                                                                   | status | run_time        |
+---------------------------------------------------------------------------- | ------ | --------------- |
+./spec/models/offices/office_time_deposit_product_spec.rb[1:1:1]             | passed | 0.25366 seconds |
+./spec/models/offices/office_time_deposit_product_spec.rb[1:1:2]             | passed | 0.00609 seconds |
+./spec/models/offices/office_time_deposit_product_spec.rb[1:1:3]             | passed | 0.00516 seconds |
+./spec/models/offices/office_time_deposit_product_spec.rb[1:1:4]             | passed | 0.00502 seconds |
+./spec/models/offices/office_time_deposit_product_spec.rb[1:1:5]             | passed | 0.00575 seconds |
+./spec/models/offices/office_time_deposit_product_spec.rb[1:1:6]             | passed | 0.00577 seconds |
+./spec/models/offices/office_time_deposit_product_spec.rb[1:2:1]             | passed | 0.00606 seconds |
+./spec/models/offices/office_time_deposit_product_spec.rb[1:2:2]             | passed | 0.80073 seconds |
+./spec/system/offices/settings/time_deposit_products/new_system_spec.rb[1:1] | passed | 13.67 seconds   |
+./spec/system/offices/settings/time_deposit_products/new_system_spec.rb[1:2] | passed | 0.46232 seconds |

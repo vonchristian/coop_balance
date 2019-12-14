@@ -19,6 +19,8 @@ module Cooperatives
     has_many :share_capital_products,       through: :office_share_capital_products, class_name: "Cooperatives::ShareCapitalProduct"
     has_many :office_loan_products,         class_name: 'Offices::OfficeLoanProduct'
     has_many :loan_products,                through: :office_loan_products, class_name: "LoansModule::LoanProduct"
+    has_many :office_time_deposit_products, class_name: 'Offices::OfficeTimeDepositProduct'
+    has_many :time_deposit_products,        through: :office_time_deposit_products, class_name: 'CoopServicesModule::TimeDepositProduct'
     has_many :office_programs,              class_name: 'Offices::OfficeProgram'
     has_many :programs,                     through: :office_programs, class_name: "Cooperatives::Program"
     has_many :accounting_reports,           class_name: "AccountingModule::AccountingReport"
