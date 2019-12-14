@@ -105,7 +105,7 @@
           <% end %>
           <small>TERM</small>
           <h3 class="card-title">
-            <%= @time_deposit.term.term/30 %> Months
+            <%= @time_deposit.term.number_of_days / 30 %> Months
           </h3>
         </div>
       </div>
