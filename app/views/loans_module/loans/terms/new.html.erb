@@ -8,7 +8,7 @@
 <%= render 'loans_module/loans/shared/settings_form_header' %>
 <%= simple_form_for [@loan, @term], url: :loans_module_loan_terms do |f| %>
   <div class="modal-body">
-    <%= f.input :term, label: "Term (Number of days)" %>
+    <%= f.input :number_of_days, label: "Term (Number of days)" %>
     <%= f.input :loan_id, input_html: { value: @loan.id }, as: :hidden %>
     <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
     <%= f.input :effectivity_date, as: :string, input_html: { class: "datepicker" } %>

@@ -22,7 +22,7 @@ module LoansModule
       private
       def term_params
         params.require(:loans_module_loans_term_processing).
-        permit(:term, :loan_id, :employee_id, :effectivity_date)
+        permit(:number_of_days, :loan_id, :employee_id, :effectivity_date)
       end
     end
   end

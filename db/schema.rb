@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_13_140254) do
+ActiveRecord::Schema.define(version: 2019_12_14_004359) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1670,6 +1670,7 @@ ActiveRecord::Schema.define(version: 2019_12_13_140254) do
     t.integer "term"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "number_of_days", default: 0
     t.index ["termable_type", "termable_id"], name: "index_terms_on_termable_type_and_termable_id"
   end
 
