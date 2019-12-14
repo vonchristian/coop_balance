@@ -1,14 +1,13 @@
 class LoansController < ApplicationController
   def index
     if params[:search].present?
-      @loans = current_cooperative.loans.not_cancelled.not_archived.text_search(params[:search]).paginate(page: params[:page], per_page: 20)
+      @pagy, @loans = pagy(current_cooperative.loans.not_cancelled.not_archived.text_search(params[:search]))
     else
-      @loans = current_office.loans.includes(:borrower).
+      @pagy, @loans = pagy(current_office.loans.includes(:borrower).
       # includes(:disbursement_voucher, borrower: [:avatar_attachment], loan_product: [:current_account, :past_due_account]).
       not_cancelled.
       not_archived.
-      order(updated_at: :desc).
-      paginate(page: params[:page], per_page: 30)
+      order(updated_at: :desc))
     end
     @offices = current_cooperative.offices
     @amortization_schedules = current_office.amortization_schedules.includes(:loan).scheduled_for(from_date: Date.current.beginning_of_month, to_date: Date.current.next_month.end_of_month).paginate(page: params[:page], per_page: 25)
@@ -24,6 +23,7 @@ class LoansController < ApplicationController
 
   def show
     @loan = current_cooperative.loans.merge(Member.with_attached_avatar).find(params[:id])
+@pagy, @amortization_schedules = pagy(@loan.amortization_schedules.order(date: :asc))
     @loan_co_makers = @loan.loan_co_makers
     respond_to do |format|
       format.html

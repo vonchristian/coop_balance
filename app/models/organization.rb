@@ -45,6 +45,10 @@ class Organization < ApplicationRecord
     AccountingModule::Entry.where(id: entries)
   end
 
+  def signatory_name
+    name
+  end 
+
   def members
     member_memberships + employee_memberships
   end

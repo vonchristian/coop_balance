@@ -23,4 +23,9 @@ RSpec.describe Organization, type: :model do
     expect(organization.members).to include(employee)
   end
 
+  it '#signatory_name' do
+    organization = build(:organization)
+    expect(organization.signatory_name).to eq organization.name
+  end 
+
 end

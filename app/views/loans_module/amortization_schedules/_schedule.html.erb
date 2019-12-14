@@ -1,0 +1,29 @@
+<%= link_to loans_module_amortization_schedule_path(schedule) do %>
+
+<div class="card min-margin animated fadeInUp">
+<div class="card-body">
+   <div class="row">
+     <div class="col-md-3">
+       <small class="text-muted">DUE DATE </small>
+       <h4 class="title-up"><%= schedule.date.strftime('%b. %e, %Y') %></h4>
+       <span class="badge badge-outline-primary"><%= schedule.payment_status %></span>
+     </div>
+     <div class="col-md-2">
+       <small class="text-muted"> PRINCIPAL </small>
+       <h4 class="title-up"><%= number_to_currency schedule.principal %></h4>
+     </div>
+     <div class="col-md-2">
+       <small class="text-muted"> INTEREST </small>
+       <h4 class="title-up"><%= number_to_currency schedule.interest %></h4>
+     </div>
+     <div class="col-md-3">
+       <small class="text-muted"> TOTAL REPAYMENT </small>
+       <h4 class="title-up"><%= number_to_currency schedule.total_repayment %></h4>
+     </div>
+     <div class="col-md-1">
+       <i class="fa fa-chevron-right fa-2x fa-slim"></i>
+   </div>
+ </div>
+</div>
+</div>
+<% end %>

@@ -136,6 +136,14 @@ module LoansModule
       ::Loans::LoanGroupBalanceCalculator.new(loan: self, loan_aging_group: loan_aging_group).balance
     end
 
+    def interest_rate
+      if loan_application.present?
+        loan_application.interest_rate
+      else
+        loan_product.current_interest_config_rate
+      end
+    end
+
     def badge_color
       return 'danger' if past_due?
       return 'success' if current_loan?
@@ -484,11 +492,11 @@ module LoansModule
 
 
     def debits_balance(args)
-      loan_product_current_account.debits_balance(args.merge(commercial_document: self))
+      receivable_account.debits_balance(args.merge(commercial_document: self))
     end
 
     def credits_balance(args)
-      loan_product_current_account.credits_balance(args.merge(commercial_document: self))
+      receivable_account.credits_balance(args.merge(commercial_document: self))
     end
 
     def status_color

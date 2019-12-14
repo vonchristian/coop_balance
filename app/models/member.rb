@@ -187,7 +187,9 @@ class Member < ApplicationRecord
   def first_and_last_name
     "#{first_name} #{last_name}"
   end
-
+  def signatory_name
+    first_middle_and_last_name
+  end 
   def first_middle_and_last_name #for pdf signatories
     if middle_name.present?
       "#{first_name.titleize} #{middle_name.first.upcase}. #{last_name.titleize}"

@@ -1,419 +1,69 @@
-<% breadcrumb :loan_details, @loan %>
-<% content_for(:html_title) { "#{@loan.borrower_name} | #{@loan.loan_product_name }" } %>
-<div class="card">
-  <div class="card-header">
-    <div class="row">
-      <div class="col-md-3">
-        <h4 class="card-title number"><%= number_to_currency (@loan.forwarded_loan? ? @loan.principal_debits_balance : @loan.loan_amount) %> </h4>
-        <small>PRINCIPAL</small>
-      </div>
-      <div class="col-md-3">
-        <h4 class="card-title number"><%= number_to_currency @loan.loan_interests_balance %></h4>
-        <small>INTERESTS</small>
-      </div>
-      <div class="col-md-3">
-        <h4 class="card-title number"><%= number_to_currency @loan.loan_penalties_balance %></h4>
-        <small>PENALTIES</small>
-      </div>
-      <div class="col-md-3">
-        <h4 class="card-title text-danger number"><%= number_to_currency @loan.balance %></h4>
 
-        <small class="text-danger">RECEIVABLES</small>
+<% content_for(:html_title) { "Loan - #{@loan.borrower_name} | #{@loan.loan_product_name }" } %>
+
+
+        <h4 class="subtitle-up"> Loan Details </h4>
+
+
+    <div class="row">
+      <div class="col-md-6">
+        <small class="text-muted">PRINCIPAL AMOUNT</small>
+        <h4 class="title-up"> <%= number_to_currency @loan.loan_amount %></h4>
       </div>
+      <div class="col-md-6">
+        <small class="text-muted">PRINCIPAL BALANCE</small>
+        <h4 class="title-up"> <%= number_to_currency @loan.balance %></h4>
+        <small class="text-muted"><i class="fa fa-calendar"></i> Last Payment: <%= @loan.last_transaction_date.strftime('%B %e, %Y') %></small>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-md-6">
+        <small class="text-muted">INTERESTS</small>
+        <h4 class="subtitle-up"> <%= number_to_currency @loan.total_loan_interests %></h4>
+
+      </div>
+      <div class="col-md-6">
+        <small class="text-muted">INTEREST BALANCE</small>
+         <h4 class="subtitle-up"> <%= number_to_currency @loan.loan_interests_balance %></h4>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-md-6">
+        <small class="text-muted">PENALTIES</small>
+        <h4 class="subtitle-up"> <%= number_to_currency @loan.total_loan_penalties %></h4>
+      </div>
+      <div class="col-md-6">
+        <small class="text-muted">PENALTY BALANCE</small>
+         <h4 class="subtitle-up"> <%= number_to_currency @loan.loan_penalties_balance %></h4>
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="col-md-4">
+        <small class="text-muted">LOAN PRODUCT</small>
+        <h4 class="subtitle-up"><%= @loan.loan_product_name %></h4>
+      </div>
+      <div class="col-md-4">
+        <small class="text-muted">INTEREST RATE</small>
+        <h4 class="subtitle-up"><%= @loan.interest_rate * 100 %> % / year</h4>
+      </div>
+      <% if @loan.term.present? %>
+         <div class="col-md-4">
+          <small class="text-muted">DURATION</small>
+          <h4 class="subtitle-up"><%= @loan.term.number_of_months %> months</h4>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>
-<div class="card">
-  <div class="card-body">
-    <div class="row">
-      <div class="col-md-6">
-        <h4 class="card-title">Loan Details </h4>
-      </div>
-      <div class="col-md-6">
-        <% if @loan.disbursement_voucher.present? %>
-          <%= link_to 'View Voucher (PDF)', loans_module_loan_application_voucher_path(loan_application_id: @loan.loan_application.id, id: @loan.loan_application.voucher_id, format: "pdf"), class: "btn btn-default float-right" if @loan.not_forwarded? %>
-        <% end %>
-        <% if @loan.loan_entry.present? %>
-          <%= link_to "View Entry", accounting_module_entry_path(@loan.loan_entry), data:{toggle: 'tooltip'}, title: @loan.loan_entry.description, class: "btn btn-default float-right" %>
-        <% end %>
-      </div>
-    </div>
-  </div>
-  <hr class="no-margin">
-  <div class="card-body">
-    <div class="row">
-      <div class="col-md-12">
 
-      </div>
-    </div>
-    <div class="row min-margin justify-content-end">
-      <div class="col-md-11 col-sm-11">
-        <div class="row">
-          <div class="col-md-4 col-sm-6">
-            <b>Borrower</b>
-          </div>
-          <div class="col-md-6 col-sm-6">
-            <% if @loan.borrower.kind_of?(Member) %>
-              <b> <%=link_to @loan.borrower_name, member_path(@loan.borrower)%></b>
-            <% elsif @loan.borrower.kind_of?(User) %>
-              <b> <%=link_to @loan.borrower_name, employee_path(@loan.borrower)%></b>
-            <% end %>
-          </div>
-        </div>
-        <div class="row min-margin">
-          <div class="col-md-4 col-sm-6">
-            <b> Loan Type</b>
-          </div>
-          <div class="col-md-6 col-sm-6">
-            <span class="text-muted"> <%=@loan.loan_product_name.try(:upcase) %></span>
-          </div>
-        </div>
-        <div class="row min-margin">
-          <div class="col-md-4 col-sm-6">
-            <b>Loan Amount</b>
-          </div>
-          <div class="col-md-6 col-sm-6">
-            <% if @loan.forwarded_loan? %>
-              <span class="badge bg-warning"> Forwarded Loan </span>
-            <% else %>
-              <%= number_to_currency @loan.loan_amount %>
-            <% end %>
-          </div>
-        </div>
-        <div class="row min-margin">
-          <div class="col-md-4 col-sm-6">
-            <b>Annual Interest Rate</b>
-          </div>
-          <div class="col-md-6 col-sm-6">
-            <%= (@loan.loan_product.current_interest_config_rate*100).to_f %>%
-          </div>
-        </div>
-        <div class="row min-margin">
-          <div class="col-md-4 col-sm-6">
-            <b>Loan Term</b>
-          </div>
-          <div class="col-md-6 col-sm-6">
-            <% if @loan.term.present? %>
-              <%= @loan.term.number_of_days if @loan.not_forwarded? %>
-            <% end %>
-          </div>
-        </div>
-        <div class="row min-margin">
-          <div class="col-md-4 col-sm-6">
-            <b>Mode of Payment</b>
-          </div>
-          <div class="col-md-6 col-sm-6">
-            <%= @loan.mode_of_payment %>
-          </div>
-        </div>
-        <div class="row min-margin">
-          <div class="col-md-4 col-sm-6">
-            <b>Purpose of Loan</b>
-          </div>
-          <div class="col-md-6 col-sm-6">
-            <%= sanitize @loan.purpose %>
-            <%= link_to "Update Loan Purpose", edit_loan_purpose_path(loan_id: @loan.id), data:{modal: true}, class: 'btn btn-xs btn-default float-right' if @loan.not_forwarded? %>
-          </div>
-        </div>
-        <% if @loan.disbursed? %>
-          <div class="row min-margin">
-            <div class="col-md-4 col-sm-6">
-              <b>Disbursement Date</b>
-            </div>
-            <div class="col-md-6 col-sm-6">
-              <%= @loan.effectivity_date.strftime("%B %e, %Y") %>
-            </div>
-          </div>
-          <div class="row min-margin">
-            <div class="col-md-4 col-sm-6">
-              <b> Maturity Date</b>
-            </div>
-            <div class="col-md-6 col-sm-6">
-              <% if @loan.disbursed? %>
-                <%=  @loan.maturity_date.try(:strftime, ("%B %e, %Y")) %>
-              <% end %>
-            </div>
-          </div>
-        <% end %>
-        <div class="row min-margin">
-          <div class="col-md-4 col-sm-6">
-            <b>Organization</b>
-          </div>
-          <div class="col-md-6 col-sm-6">
-            <%=  @loan.organization_name %>
-          </div>
-        </div>
-        <div class="row min-margin">
-          <div class="col-md-4">
-            <b> Co Makers </b>
-          </div>
-          <div class="col-md-6">
-            <%= link_to new_loans_module_loan_co_maker_path(@loan) do %>
-              <span class="btn btn-outline-warning btn-sm" data-toggle="tooltip" title="Add Co Maker"><i class="fa fa-user-plus"></i> Add </span>
-            <% end if @loan.not_forwarded? %>
-          </div>
-        </div>
-        <br>
-        <% @loan_co_makers.each do |co_maker| %>
-          <div class="row min-margin">
-            <div class="col-md-3 offset-md-1">
-              <%= image_tag(co_maker.avatar, height: 45, width: 45, class: "img-circle") %>
-            </div>
-            <div class="col-md-6">
-              <% if co_maker.co_maker_type == "Member" %>
-                <%= link_to co_maker.name,  member_path(id: co_maker.co_maker_id) %>
-              <% elsif co_maker.co_maker_type == "User" %>
-                <%= link_to co_maker.name,  employee_path(id: co_maker.co_maker_id) %>
-              <% else %>
-                <%= co_maker.name %>
-              <% end %>
-            </div>
-            <div class="col-md-3">
-            </div>
-          </div>
-          <br>
-        <% end %>
-      </div>
-    </div>
-  </div>
-  <hr class="no-margin">
-  <% if @loan.disbursement_voucher.present? %>
-    <div class="card-body">
-      <div class="row min-margin justify-content-end">
-        <div class="col-md-11 col-sm-11">
-          <div class="row">
-            <div class="col-md-4">
-              <h6 class="text-muted">Loan Amount</h6>
-            </div>
-            <div class="col-md-2">
-              <h6 class="float-right text-info">
-                <%= number_to_currency @loan.loan_amount %>
-              </h6>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-4">
-              <h6 class="text-muted">Loan Deductions</h6>
-            </div>
-            <div class="col-md-2">
-              <h6 class="float-right text-danger">
-                <%= number_to_currency @loan.charges.sum{|c| c.amount.amount} %>
-              </h6>
-            </div>
-          </div>
-          <hr class="min-margin">
-          <div class="row">
-            <div class="col-md-4">
-              <h6 class="">NET PROCEED</h6>
-            </div>
-            <div class="col-md-2">
-              <h6 class="float-right text-success">
-                <%= number_to_currency @loan.charges_for_cash_accounts.total %>
-              </h6>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <hr class="no-margin">
-    <div class="card-body">
-      <h4 class="card-title">Loan Deductions</h4>
-      <hr class="min-margin">
-      <div class="row min-margin justify-content-end">
-        <div class="col-md-11 col-sm-11">
-          <% @loan.charges_including_cash_accounts_and_loan_product_accounts.reverse.each do |voucher_amount| %>
-            <div class="row">
-              <div class="col-md-4 col-sm-6">
-                <span class="text-muted"><%= voucher_amount.description %></span>
-              </div>
-              <div class="col-md-2 col-sm-6">
-                <span class="float-right"><%= number_to_currency voucher_amount.amount %></span>
-              </div>
-            </div>
-          <% end %>
-          <% if @loan.charges_for_loan_product_accounts.count > 1 %>
-            <div class="row">
-              <div class="col-md-4">
-                <span class="text-muted">Previous Loan Payment (Principal)</span>
-              </div>
-              <div class="col-md-2">
-                <span class="float-right">
-                  <%= number_to_currency @loan.charges_for_loan_product_accounts.last.amount.amount %>
-                </span>
-              </div>
-            </div>
-          <% end %>
-          <hr class="min-margin">
-          <div class="row">
-            <div class="col-md-4">
-              <h6 class="">TOTAL DEDUCTIONS</h6>
-            </div>
-            <div class="col-md-2">
-              <h6 class="float-right text-danger">
-                <%= number_to_currency @loan.charges.sum{|c| c.amount.amount} %>
-              </h6>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <hr class="no-margin">
-    <div class="card-body">
-      <div class="row min-margin">
-        <div class="col-md-6 col-sm-6">
-          <div class="row">
-            <div class="col-md-6">
-              <h4 class="card-title"> Loan Interest</h4>
-            </div>
-            <div class="col-md-6">
-            </div>
-          </div>
-        </div>
-        <div class="col-md-5 col-sm-6">
-          <%= link_to 'View Details', loans_module_loan_interests_path(@loan) %>
-        </div>
-      </div>
-      <hr class="no-margin">
-      <div class="row min-margin justify-content-end">
-        <div class="col-md-11 col-sm-11">
-          <% if @loan.term.present? %>
-            <% if @loan.term.term > 12  %>
-              <div class="row">
-                <div class="col-md-4 col-sm-6">
-                  <span class="text-muted">First Year</span>
-                </div>
-                <div class="col-md-2 col-sm-6">
-                  <span class="float-right"><%= number_to_currency @loan.first_year_interest %></span>
-                </div>
-              </div>
-              <% if @loan.term.term > 12  %>
-                <div class="row">
-                  <div class="col-md-4 col-sm-6">
-                    <span class="text-muted">Second Year</span>
-                  </div>
-                  <div class="col-md-2 col-sm-6">
-                    <span class="float-right"><%= number_to_currency @loan.second_year_interest %></span>
-                  </div>
-                </div>
-              <% end %>
-              <% if @loan.term.term >= 36 %>
-                <div class="row">
-                  <div class="col-md-4 col-sm-6">
-                    <span class="text-muted">Third Year</span>
-                  </div>
-                  <div class="col-md-2 col-sm-6">
-                    <span class="float-right"><%= number_to_currency @loan.third_year_interest %></span>
-                  </div>
-                </div>
-              <% end %>
-              <% if @loan.term.term >= 48 %>
-                <div class="row">
-                  <div class="col-md-4 col-sm-6">
-                    <span class="text-muted">Fourth Year</span>
-                  </div>
-                  <div class="col-md-2 col-sm-6">
-                    <span class="float-right"><%= number_to_currency @loan.fourth_year_interest %></span>
-                  </div>
-                </div>
-              <% end %>
-              <% if @loan.term.term >=60 %>
-                <div class="row">
-                  <div class="col-md-4 col-sm-6">
-                    <span class="text-muted">Fifth Year</span>
-                  </div>
-                  <div class="col-md-2 col-sm-6">
-                    <span class="float-right"><%= number_to_currency @loan.fifth_year_interest %></span>
-                  </div>
-                </div>
-              <% end %>
-              <hr class="min-margin">
-            <% end %>
-          <% end %>
-          <div class="row">
-            <div class="col-md-4 col-sm-6">
-              <span class="text-muted">Total Interests</span>
-            </div>
-            <div class="col-md-2 col-sm-6">
-              <span class="float-right text-info"><%= number_to_currency @loan.total_loan_interests %></span>
-            </div>
-          </div>
-          <div class="row min-margin">
-            <div class="col-md-4 col-sm-6">
-              <span class="text-muted">Interest Discounts</span>
-            </div>
-            <div class="col-md-2 col-sm-3">
-              <span class="float-right text-danger"><%= number_to_currency @loan.total_interest_discounts %></span>
-            </div>
-          </div>
-          <div class="row min-margin">
-            <div class="col-md-4 col-sm-6">
-              <span class="text-muted">Interest Payments</span>
-            </div>
-            <div class="col-md-2 col-sm-6">
-              <span class="float-right text-danger"><%= number_to_currency @loan.total_interest_payments %></span>
-            </div>
-          </div>
-          <hr class="min-margin">
-          <div class="row min-margin">
-            <div class="col-md-4 col-sm-6">
-              <h6>INTEREST BALANCE</h6>
-            </div>
-            <div class="col-md-2 col-sm-6">
-              <h6 class="float-right text-success"><%= number_to_currency @loan.loan_interests_balance %></h6>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <hr class="no-margin">
-    <div class="card-body">
-      <div class="row min-margin">
-        <div class="col-md-6 col-sm-6">
-          <h4 class="card-title">Loan Penalty </h4>
-        </div>
-        <div class="col-md-5 col-sm-6">
-          <%= link_to 'View Details', loans_module_loan_penalties_path(@loan) %>
-        </div>
-      </div>
-      <hr class="min-margin">
-      <div class="row min-margin justify-content-end">
-        <div class="col-md-11 col-sm-11">
-          <div class="row">
-            <div class="col-md-4 col-sm-6">
-              <span class="text-muted">Total Penalties</span>
-            </div>
-            <div class="col-md-2 col-sm-6">
-              <span class="float-right text-info"><%= number_to_currency @loan.total_loan_penalties %></span>
-            </div>
-          </div>
-          <div class="row min-margin">
-            <div class="col-md-4 col-sm-6">
-              <span class="text-muted">Penalty Discounts</span>
-            </div>
-            <div class="col-md-2 col-sm-3">
-              <span class="float-right text-danger"><%= number_to_currency @loan.total_penalty_discounts %></span>
-            </div>
 
-          </div>
-          <div class="row min-margin">
-            <div class="col-md-4 col-sm-6">
-              <span class="text-muted">Penalty Payments</span>
-            </div>
-            <div class="col-md-2 col-sm-6">
-              <span class="float-right text-danger"><%= number_to_currency @loan.total_penalty_payments %></span>
-            </div>
-          </div>
-          <hr class="min-margin">
-          <div class="row min-margin">
-            <div class="col-md-4 col-sm-6">
-              <h6>PENALTY BALANCE</h6>
-            </div>
-            <div class="col-md-2 col-sm-6">
-              <h6 class="float-right text-success"><%= number_to_currency @loan.loan_penalties_balance %></h6>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  <% end %>
+    <h4 class="title-up"> Payment Schedules </h4>
+    <br>
+    <% @amortization_schedules.each do |schedule| %>
+      <%= render 'loans_module/amortization_schedules/schedule', schedule: schedule %>
+    <% end %>
+  </div>
 </div>

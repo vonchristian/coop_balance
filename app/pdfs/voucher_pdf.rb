@@ -61,32 +61,32 @@ class VoucherPdf < Prawn::Document
   def payee_details
     text "VOUCHER DETAILS", style: :bold, size: 10
     move_down 5
-    table([["", "Payee:", "<b>#{voucher.payee.try(:name).try(:upcase)}</b>", "Date:", "#{voucher.date.strftime("%B %e, %Y")}"]], 
-      cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [1, 3, 1, 3]}, 
+    table([["", "Payee:", "<b>#{voucher.payee.try(:name).try(:upcase)}</b>", "Date:", "#{voucher.date.strftime("%B %e, %Y")}"]],
+      cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [1, 3, 1, 3]},
       column_widths: [20, 100, 250, 60, 100]) do
       cells.borders = []
     end
 
-    table([["", "Office:", "#{voucher.payee.try(:current_organization).try(:name)}", "", ""]], 
-      cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [1, 3, 1, 3]}, 
+    table([["", "Office:", "#{voucher.payee.try(:current_organization).try(:name)}", "", ""]],
+      cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [1, 3, 1, 3]},
       column_widths: [20, 100, 250, 60, 100]) do
       cells.borders = []
     end
 
-    table([["", "Address:", "#{voucher.payee.current_address.try(:complete_address)}", "", ""]], 
-      cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [1, 3, 1, 3]}, 
+    table([["", "Address:", "#{voucher.payee.current_address.try(:complete_address)}", "", ""]],
+      cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [1, 3, 1, 3]},
       column_widths: [20, 100, 250, 60, 100]) do
       cells.borders = []
     end
 
-    table([["", "Contact #:", "#{voucher.payee.current_contact.try(:number)}", "", ""]], 
-      cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [1, 3, 1, 3]}, 
+    table([["", "Contact #:", "#{voucher.payee.current_contact.try(:number)}", "", ""]],
+      cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [1, 3, 1, 3]},
       column_widths: [20, 100, 250, 60, 100]) do
       cells.borders = []
     end
 
-    table([["", "Description:", "#{voucher.description}", "", ""]], 
-      cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [1, 3, 1, 3]}, 
+    table([["", "Description:", "#{voucher.description}", "", ""]],
+      cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [1, 3, 1, 3]},
       column_widths: [20, 100, 250, 60, 100]) do
       cells.borders = []
     end
@@ -117,16 +117,16 @@ class VoucherPdf < Prawn::Document
 
   def voucher_details
     move_down 5
-    table([["DEBIT", "ACCOUNT", "CREDIT"]], 
-      cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [1, 3, 2, 3] },  
+    table([["DEBIT", "ACCOUNT", "CREDIT"]],
+      cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [1, 3, 2, 3] },
       column_widths: [115, 300, 115]) do
       row(0).background_color = "DDDDDD"
       row(0).font_style = :bold
     end
     if voucher.disbursed?
       voucher.accounting_entry.debit_amounts.sort_by(&:account_code).each do |amount|
-        table([["#{price(debit_amount_for(amount))}", "#{amount.account.try(:name)}",  "#{price(credit_amount_for(amount))}"]], 
-          cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [1, 3, 2, 3]}, 
+        table([["#{price(debit_amount_for(amount))}", "#{amount.account.try(:name)}",  "#{price(credit_amount_for(amount))}"]],
+          cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [1, 3, 2, 3]},
           column_widths: [115, 300, 115]) do
           # cells.borders = []
           column(0).align = :right
@@ -134,8 +134,8 @@ class VoucherPdf < Prawn::Document
         end
       end
       voucher.accounting_entry.credit_amounts.sort_by(&:account_code).reverse.each do |amount|
-        table([["#{price(debit_amount_for(amount))}", "#{amount.account.try(:name)}",  "#{price(credit_amount_for(amount))}"]], 
-          cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [1, 3, 2, 3]}, 
+        table([["#{price(debit_amount_for(amount))}", "#{amount.account.try(:name)}",  "#{price(credit_amount_for(amount))}"]],
+          cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [1, 3, 2, 3]},
           column_widths: [115, 300, 115]) do
           # cells.borders = []
           column(0).align = :right
@@ -144,8 +144,8 @@ class VoucherPdf < Prawn::Document
       end
     else
       voucher.voucher_amounts.debit.sort_by(&:account_code).each do |amount|
-        table([["#{price(debit_amount_for(amount))}", "#{amount.account.try(:name)}", "#{price(credit_amount_for(amount))}"]], 
-          cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [1, 3, 2, 3]}, 
+        table([["#{price(debit_amount_for(amount))}", "#{amount.account.try(:name)}", "#{price(credit_amount_for(amount))}"]],
+          cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [1, 3, 2, 3]},
           column_widths: [115, 300, 115]) do
           # cells.borders = []
           column(0).align = :right
@@ -153,8 +153,8 @@ class VoucherPdf < Prawn::Document
         end
       end
       voucher.voucher_amounts.credit.sort_by(&:account_code).reverse.each do |amount|
-        table([["#{price(debit_amount_for(amount))}", "#{amount.account.try(:name)}", "#{price(credit_amount_for(amount))}"]], 
-          cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [1, 3, 2, 3]}, 
+        table([["#{price(debit_amount_for(amount))}", "#{amount.account.try(:name)}", "#{price(credit_amount_for(amount))}"]],
+          cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [1, 3, 2, 3]},
           column_widths: [115, 300, 115]) do
           # cells.borders = []
           column(0).align = :right
@@ -163,8 +163,8 @@ class VoucherPdf < Prawn::Document
       end
     end
     if voucher.disbursed?
-      table([["#{price(voucher.accounting_entry.debit_amounts.sum(&:amount))}", "", "#{price(voucher.accounting_entry.credit_amounts.sum(&:amount))}"]], 
-        cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [1, 3, 2, 3]}, 
+      table([["#{price(voucher.accounting_entry.debit_amounts.sum(&:amount))}", "", "#{price(voucher.accounting_entry.credit_amounts.sum(&:amount))}"]],
+        cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [1, 3, 2, 3]},
         column_widths: [115, 300, 115]) do
         # cells.borders = []
         row(0).font_style = :bold
@@ -172,8 +172,8 @@ class VoucherPdf < Prawn::Document
         column(2).align = :right
       end
     else
-      table([["#{price(voucher.voucher_amounts.debit.sum(&:amount))}", "", "#{price(voucher.voucher_amounts.credit.sum(&:amount))}"]], 
-        cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [1, 3, 2, 3]},  
+      table([["#{price(voucher.voucher_amounts.debit.sum(&:amount))}", "", "#{price(voucher.voucher_amounts.credit.sum(&:amount))}"]],
+        cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [1, 3, 2, 3]},
         column_widths: [115, 300, 115]) do
         # cells.borders = []
         row(0).font_style = :bold
@@ -190,7 +190,7 @@ class VoucherPdf < Prawn::Document
         cells.borders = []
     end
     move_down 25
-    table(signatory, cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [2, 4, 2, 4]}, 
+    table(signatory, cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [2, 4, 2, 4]},
       column_widths: [120, 130, 130, 150]) do
       cells.borders = []
       row(0).font_style = :bold
@@ -201,7 +201,7 @@ class VoucherPdf < Prawn::Document
     [["#{voucher.preparer.first_middle_and_last_name.to_s.try(:upcase)}",
       "#{approver.first_middle_and_last_name.to_s.upcase}",
       "#{voucher.disbursing_officer.try(:first_middle_and_last_name).try(:upcase)}",
-      "#{voucher.payee.first_middle_and_last_name.try(:upcase)}"]] +
+      "#{voucher.payee.signatory_name.try(:upcase)}"]] +
     [["#{voucher.preparer_current_occupation.try(:titleize)}",
       "#{approver.current_occupation.to_s.titleize}",
       "#{voucher.disbursing_officer.try(:designation)}",

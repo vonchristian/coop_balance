@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_14_053023) do
+ActiveRecord::Schema.define(version: 2019_12_14_073615) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -721,6 +721,7 @@ ActiveRecord::Schema.define(version: 2019_12_14_053023) do
     t.uuid "receivable_account_id"
     t.uuid "interest_revenue_account_id"
     t.integer "number_of_days"
+    t.decimal "interest_rate", default: "0.0"
     t.index ["borrower_type", "borrower_id"], name: "index_loan_applications_on_borrower_type_and_borrower_id"
     t.index ["cooperative_id"], name: "index_loan_applications_on_cooperative_id"
     t.index ["interest_revenue_account_id"], name: "index_loan_applications_on_interest_revenue_account_id"

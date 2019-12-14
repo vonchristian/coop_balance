@@ -13,15 +13,15 @@ module Loans
     end
 
     def principal(loan)
-      cart.voucher_amounts.where(commercial_document: loan).where(account: loan.loan_product.current_account).sum(&:amount)
+      cart.voucher_amounts.where(account: loan.receivable_account).sum(&:amount)
     end
 
     def interest(loan)
-      cart.voucher_amounts.where(commercial_document: loan).where(account: loan.loan_product.interest_revenue_account).sum(&:amount)
+      cart.voucher_amounts.where(account: loan.interest_revenue_account).sum(&:amount)
     end
 
     def penalty(loan)
-      cart.voucher_amounts.where(commercial_document: loan).where(account: loan.loan_product.penalty_revenue_account).sum(&:amount)
+      cart.voucher_amounts.where(account: loan.penalty_revenue_account).sum(&:amount)
     end
     def total_cash(loan)
       principal(loan) +

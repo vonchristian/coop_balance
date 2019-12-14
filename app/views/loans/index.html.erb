@@ -62,7 +62,7 @@
               </thead>
               <tbody>
                 <% @loans.each do |loan| %>
-
+                  <% cache(loan) do %>
                     <tr style="cursor: pointer;" data-link="<%= loan_path(loan) %>">
                       <td style="width: 40px"><%= image_tag(loan.borrower.avatar, class: "img-circle", height: 35, width: 35) %></td>
                       <td><b><%= loan.borrower_name %></b></td>
@@ -73,16 +73,16 @@
                         <% end %>
                       </td>
                       <td><%= number_to_currency loan.loan_amount %>
-                      <td><%= number_to_currency loan.balance %>
+                      <td><%= number_to_currency loan.principal_balance %>
                     </tr>
-                
+                  <% end %>
                 <% end %>
               </tbody>
             </table>
           </div>
         </div>
       </div>
-      <center><%= will_paginate @loans %></center>
+      <center><%==pagy_bootstrap_nav(@pagy)%></center>
     </div>
     <div class="col-md-4">
       <div class="card">

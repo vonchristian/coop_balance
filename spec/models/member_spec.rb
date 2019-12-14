@@ -30,9 +30,9 @@ describe Member, type: :model do
 
   it "#signatory_name" do
     member = build(:member, first_name: "Von", middle_name: "Pinosan", last_name: "Halip")
-    expect(member.signatory_name).to eql 'Von Pinosan Halip'
+    expect(member.signatory_name).to eql 'Von P. Halip'
   end
-  
+
   it "#full_name" do
   	member = build(:member, first_name: "Von", middle_name: "Pinosan", last_name: "Halip")
 
