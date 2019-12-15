@@ -81,14 +81,13 @@ module AccountingModule
                 row(-1).font_style = :bold
               end
             end
+          end
 
-            stroke_horizontal_rule
-            table([["Total #{l3_account_category.title}",price(l2_account_category.balance(to_date: @to_date)) ]], cell_style: { padding: [2, 2], inline_format: true, size: 10}, column_widths: [330, 100]) do
-              cells.borders = []
-              column(1).align = :right
-              row(-1).font_style = :bold
-            end
-
+          stroke_horizontal_rule
+          table([["Total #{l3_account_category.title}",price(l2_account_category.balance(to_date: @to_date)) ]], cell_style: { padding: [2, 2], inline_format: true, size: 10}, column_widths: [330, 100]) do
+            cells.borders = []
+            column(1).align = :right
+            row(-1).font_style = :bold
           end
         end
 
@@ -165,14 +164,13 @@ module AccountingModule
                 row(-1).font_style = :bold
               end
             end
+          end
 
-            stroke_horizontal_rule
-            table([["Total #{l3_account_category.title}",price(l2_account_category.balance(to_date: @to_date)) ]], cell_style: { padding: [2, 2], inline_format: true, size: 10}, column_widths: [330, 100]) do
-              cells.borders = []
-              column(1).align = :right
-              row(-1).font_style = :bold
-            end
-
+          stroke_horizontal_rule
+          table([["Total #{l3_account_category.title}",price(l2_account_category.balance(to_date: @to_date)) ]], cell_style: { padding: [2, 2], inline_format: true, size: 10}, column_widths: [330, 100]) do
+            cells.borders = []
+            column(1).align = :right
+            row(-1).font_style = :bold
           end
         end
 
@@ -241,14 +239,13 @@ module AccountingModule
                 row(-1).font_style = :bold
               end
             end
+          end
 
-            stroke_horizontal_rule
-            table([["Total #{l3_account_category.title}",price(l2_account_category.balance(to_date: @to_date)) ]], cell_style: { padding: [2, 2], inline_format: true, size: 10}, column_widths: [330, 100]) do
-              cells.borders = []
-              column(1).align = :right
-              row(-1).font_style = :bold
-            end
-
+          stroke_horizontal_rule
+          table([["Total #{l3_account_category.title}",price(l2_account_category.balance(to_date: @to_date)) ]], cell_style: { padding: [2, 2], inline_format: true, size: 10}, column_widths: [330, 100]) do
+            cells.borders = []
+            column(1).align = :right
+            row(-1).font_style = :bold
           end
         end
 
@@ -347,14 +344,13 @@ module AccountingModule
                 row(-1).font_style = :bold
               end
             end
+          end
 
-            stroke_horizontal_rule
-            table([["Total #{l3_account_category.title}",price(l2_account_category.balance(from_date: @from_date, to_date: @to_date)) ]], cell_style: { padding: [2, 2], inline_format: true, size: 10}, column_widths: [330, 100]) do
-              cells.borders = []
-              column(1).align = :right
-              row(-1).font_style = :bold
-            end
-
+          stroke_horizontal_rule
+          table([["Total #{l3_account_category.title}",price(l2_account_category.balance(from_date: @from_date, to_date: @to_date)) ]], cell_style: { padding: [2, 2], inline_format: true, size: 10}, column_widths: [330, 100]) do
+            cells.borders = []
+            column(1).align = :right
+            row(-1).font_style = :bold
           end
         end
 
@@ -430,14 +426,13 @@ module AccountingModule
                 row(-1).font_style = :bold
               end
             end
+          end
 
-            stroke_horizontal_rule
-            table([["Total #{l3_account_category.title}",price(l2_account_category.balance(from_date: @from_date, to_date: @to_date)) ]], cell_style: { padding: [2, 2], inline_format: true, size: 10}, column_widths: [330, 100]) do
-              cells.borders = []
-              column(1).align = :right
-              row(-1).font_style = :bold
-            end
-
+          stroke_horizontal_rule
+          table([["Total #{l3_account_category.title}",price(l2_account_category.balance(from_date: @from_date, to_date: @to_date)) ]], cell_style: { padding: [2, 2], inline_format: true, size: 10}, column_widths: [330, 100]) do
+            cells.borders = []
+            column(1).align = :right
+            row(-1).font_style = :bold
           end
         end
 
