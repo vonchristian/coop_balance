@@ -13,23 +13,23 @@ module AccountingModule
     end
 
     def new
-      @account = current_cooperative.accounts.new
-      respond_modal_with @account
+      @account = current_office.accounts.build
       authorize [:accounting_module, :account]
     end
 
     def create
-      ActiveRecord::Base.transaction do
-        @account = current_cooperative.accounts.create(account_params)
-        current_office.accounts.create(account_params)
-      end
+      @account = current_office.accounts.create(account_params)
       authorize [:accounting_module, :account]
-      respond_modal_with @account,
-        location: accounting_module_accounts_url
+      if @account.valid?
+        @account.save!
+        redirect_to accounting_module_account_url(@account), notice: 'Account created successfully'
+      else
+        render :new
+      end
     end
 
     def show
-      @account = current_cooperative.accounts.find(params[:id])
+      @account = current_office.accounts.find(params[:id])
     end
 
     def edit
@@ -65,7 +65,7 @@ module AccountingModule
     end
 
     def account_params
-      params.require(:accounting_module_account).permit(:name, :code, :type, :contra, :main_account_id)
+      params.require(:accounting_module_account).permit(:name, :code, :type, :contra, :level_one_account_category_id)
     end
     def update_params
       params.require(@account.type.underscore.parameterize.underscore.to_sym).permit(:name, :code, :type, :contra, :level_one_account_category_id)
