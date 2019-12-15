@@ -14,39 +14,6 @@
     <%= f.input :contra %>
   </div>
   <div class="modal-footer">
-    <%= f.submit "Create Account", class: "btn btn-primary btn-flat", data: { disable_with: "Creating Account..." } %>
+    <%= f.submit "Create Account", class: "btn btn-primary float-right", data: { disable_with: "Creating Account..." } %>
   </div>
 <% end %>
-
-<script type="text/javascript">
-  $(document).ready(function() {
-    $("#accounting_module_account_main_account_id").select2({
-      theme: "bootstrap"
-    });
-  });
-  $(document).ready(function() {
-    $("#accounting_module_asset_main_account_id").select2({
-      theme: "bootstrap"
-    });
-  });
-  $(document).ready(function() {
-    $("#accounting_module_liability_main_account_id").select2({
-      theme: "bootstrap"
-    });
-  });
-  $(document).ready(function() {
-    $("#accounting_module_equity_main_account_id").select2({
-      theme: "bootstrap"
-    });
-  });
-  $(document).ready(function() {
-    $("#accounting_module_revenue_main_account_id").select2({
-      theme: "bootstrap"
-    });
-  });
-  $(document).ready(function() {
-    $("#accounting_module_expense_main_account_id").select2({
-      theme: "bootstrap"
-    });
-  });
-</script>
