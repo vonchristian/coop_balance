@@ -190,15 +190,10 @@ Rails.application.routes.draw do
     resources :withdrawals,                           only: [:new, :create], module: :share_capitals
     resources :withdrawal_vouchers,                   only: [:show, :destroy], module: :share_capitals
     resources :withdrawal_voucher_confirmations,      only: [:create], module: :share_capitals
-    resources :balance_transfer_destination_accounts, only: [:new, :create], module: :share_capitals
-
-    resources :vouchers, only: [:show, :destroy], module: :share_capitals do
-      resources :confirmations, only: [:create]
-    end
-
-    resources :balance_transfer_vouchers, only: [:show, :destroy], module: :share_capitals do
-      resources :confirmations, only: [:create]
-    end
+    resources :balance_transfer_processings,          only: [:new, :create, :destroy], module: :share_capitals
+    resources :balance_transfer_vouchers,             only: [:new, :create], module: :share_capitals
+    resources :voucher_confirmations,                 only: [:create], module: :share_capitals
+    resources :vouchers, only: [:show, :destroy],    module: :share_capitals
 
     resources :barangays, only: [:edit, :update], module: :share_capitals
     resources :settings, only: [:index],          module: :share_capitals
@@ -207,7 +202,7 @@ Rails.application.routes.draw do
     resources :capital_build_ups, only: [:new, :create],  module: :share_capitals
     resources :account_closings, only: [:new, :create],   module: :share_capitals
     resources :offices, only: [:edit, :update],           module: :share_capitals
-    resources :balance_transfers, only: [:new, :create],  module: :share_capitals
+    resources :balance_transfers, only: [:new],           module: :share_capitals
     resources :transactions, only: [:index],              module: :share_capitals
     resources :beneficiaries,  only: [:edit, :update],    module: :share_capitals
     resources :maf_beneficiaries,  only: [:edit, :update],    module: :share_capitals

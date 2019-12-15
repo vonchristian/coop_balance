@@ -1,28 +1,18 @@
 module ShareCapitals
   class BalanceTransfersController < ApplicationController
-    
+
     def new
-      @share_capital             = current_cooperative.share_capitals.find(params[:share_capital_id])
-      @destination_share_capital = current_cooperative.share_capitals.find(params[:destination_share_capital_id])
-      @balance_transfer          = ShareCapitals::BalanceTransferProcessing.new    
-    end
+      @origin_share_capital      = current_office.share_capitals.find(params[:share_capital_id])
+      @subscriber                = @origin_share_capital.subscriber
+      @subscriber_share_capitals = @subscriber.share_capitals
+      @balance_transfer          = ShareCapitals::BalanceTransferProcessing.new
+      @balance_transfer_voucher  = ShareCapitals::BalanceTransferVoucher.new
 
-    def create
-      @share_capital             = current_cooperative.share_capitals.find(params[:share_capital_id])
-      @destination_share_capital = current_cooperative.share_capitals.find(params[:share_capitals_balance_transfer_processing][:destination_id])
-      @balance_transfer          = ShareCapitals::BalanceTransferProcessing.new(balance_transfer_params)
-      if @balance_transfer.valid?
-        @balance_transfer.process!
-        redirect_to share_capital_balance_transfer_voucher_url(origin_share_capital_id: @share_capital.id, id: @balance_transfer.find_voucher.id, destination_share_capital_id: @balance_transfer.find_destination_share_capital.id), notice: " balance transfer created successfully."
+      if params[:search].present?
+        @pagy, @share_capitals = pagy(current_office.share_capitals.text_search(params[:search]))
       else
-        render :new
+        @pagy, @share_capitals = pagy(current_office.share_capitals.where.not(id: @subscriber_share_capitals.ids))
       end
-    end
-
-    private
-    def balance_transfer_params
-      params.require(:share_capitals_balance_transfer_processing).
-      permit(:origin_id, :destination_id, :transfer_fee, :transfer_fee_deduction_method, :reference_number, :amount, :date, :employee_id, :account_number, :description)
     end
   end
 end

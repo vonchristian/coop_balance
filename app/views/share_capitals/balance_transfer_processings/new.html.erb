@@ -1,0 +1,8 @@
+<%= simple_form_for @balance_transfer, url: :share_capital_balance_transfer_processings do |f| %>
+  <%= f.input :amount %>
+  <%= f.input :origin_share_capital_id, input_html: { value: @origin_share_capital.id }, as: :hidden %>
+  <%= f.input :destination_share_capital_id, input_html: { value: @destination_share_capital.id }, as: :hidden %>
+  <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+  <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
+  <%= f.submit 'Proceed' %>
+<% end %>
