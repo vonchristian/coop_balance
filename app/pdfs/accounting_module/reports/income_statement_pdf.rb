@@ -1,7 +1,7 @@
 module AccountingModule
   module Reports
     class IncomeStatementPdf < Prawn::Document
-      attr_reader :assets, :liabilities, :equity, :view_context, :to_date, :cooperative, :office, :from_date
+      attr_reader :view_context, :to_date, :cooperative, :office, :from_date
       def initialize(args={})
         super(margin: 40, page_size: [612, 988], page_layout: :portrait)
         @from_date    = args[:from_date]

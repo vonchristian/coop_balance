@@ -17,9 +17,7 @@ module AccountingModule
             pdf = AccountingModule::Reports::BalanceSheetPdf.new(
               from_date:    @from_date,
               to_date:      @to_date,
-              assets:       @assets,
-              liabilities:  @liabilities,
-              equity:       @equity,
+              office: current_office,
               view_context: view_context,
               cooperative:  @cooperative)
             send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Balance Sheet.pdf"
