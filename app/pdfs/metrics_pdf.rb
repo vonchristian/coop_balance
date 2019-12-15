@@ -1,11 +1,11 @@
 class MetricsPdf < Prawn::Document
   def initialize(members, revenues, expenses, from_date, to_date, view_context)
     super(margin: 40, page_size: "A4", page_layout: :portrait)
-    @members = members
-    @revenues = revenues
-    @expenses = expenses
-    @from_date = from_date
-    @to_date = to_date
+    @members      = members
+    @revenues     = revenues
+    @expenses     = expenses
+    @from_date    = from_date
+    @to_date      = to_date
     @view_context = view_context
     heading
     served_members
