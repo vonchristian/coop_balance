@@ -7,7 +7,7 @@
 <%= simple_form_for @account, url: :accounting_module_accounts, html: { data: { modal: true } }, remote: request.xhr? do |f| %>
   <div class="modal-body">
     <%= f.error_notification %>
-    <%= f.input :main_account_id, collection: AccountingModule::Account.all.map{|a| [a.name.titleize, a.id] } %>
+    <%= f.input :level_one_account_category_id, collection: current_office.level_one_account_categories.map{|a| [a.title, a.id] }, input_html: { class: 'chosen-select' } %>
     <%= f.input :name %>
     <%= f.input :code %>
     <%= f.input :type, collection: AccountingModule::Account.types %>

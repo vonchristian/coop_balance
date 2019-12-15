@@ -1,0 +1,4 @@
+example_id                                                       | status | run_time        |
+---------------------------------------------------------------- | ------ | --------------- |
+./spec/system/accounting_module/accounts/new_system_spec.rb[1:1] | passed | 7.05 seconds    |
+./spec/system/accounting_module/accounts/new_system_spec.rb[1:2] | passed | 0.20826 seconds |
