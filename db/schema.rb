@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_15_000509) do
+ActiveRecord::Schema.define(version: 2019_12_15_012758) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -52,13 +52,11 @@ ActiveRecord::Schema.define(version: 2019_12_15_000509) do
     t.string "type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "main_account_id"
     t.boolean "active", default: true
     t.datetime "last_transaction_date"
     t.uuid "level_one_account_category_id"
     t.index ["code"], name: "index_accounts_on_code", unique: true
     t.index ["level_one_account_category_id"], name: "index_accounts_on_level_one_account_category_id"
-    t.index ["main_account_id"], name: "index_accounts_on_main_account_id"
     t.index ["name"], name: "index_accounts_on_name", unique: true
     t.index ["type"], name: "index_accounts_on_type"
     t.index ["updated_at"], name: "index_accounts_on_updated_at"
@@ -1909,7 +1907,6 @@ ActiveRecord::Schema.define(version: 2019_12_15_000509) do
   add_foreign_key "account_budgets", "cooperatives"
   add_foreign_key "accountable_accounts", "accounts"
   add_foreign_key "accounting_reports", "offices"
-  add_foreign_key "accounts", "accounts", column: "main_account_id"
   add_foreign_key "accounts", "level_one_account_categories"
   add_foreign_key "addresses", "barangays"
   add_foreign_key "addresses", "municipalities"

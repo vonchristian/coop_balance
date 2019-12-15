@@ -7,10 +7,6 @@ module AccountingModule
     end
 
     describe 'associations' do
-      it { is_expected.to belong_to(:main_account).optional }
-      it { is_expected.to have_many :subsidiary_accounts }
-      it { is_expected.to have_many :amounts }
-      it { is_expected.to have_many :credit_amounts }
       it { is_expected.to have_many :debit_amounts }
       it { is_expected.to have_many :entries }
       it { is_expected.to have_many :debit_entries }
@@ -102,7 +98,7 @@ module AccountingModule
       asset    = create(:asset, level_one_account_category: category)
 
       expect(asset.display_name).to eql 'Cash on Hand'
-    end 
+    end
 
     let(:account) { build(:account) }
     subject { account }

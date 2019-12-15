@@ -8,14 +8,13 @@ module AccountingModule
 
     class_attribute :normal_credit_balance
     belongs_to :level_one_account_category,  class_name: 'AccountingModule::LevelOneAccountCategory', optional: true
-    belongs_to :main_account,       class_name: "AccountingModule::Account", foreign_key: 'main_account_id', optional: true
     has_many :amounts,              class_name: "AccountingModule::Amount"
     has_many :credit_amounts,       :class_name => 'AccountingModule::CreditAmount'
     has_many :debit_amounts,       :class_name => 'AccountingModule::DebitAmount'
     has_many :entries,              through: :amounts, source: :entry, class_name: "AccountingModule::Entry"
     has_many :credit_entries,       :through => :credit_amounts, :source => :entry, :class_name => 'AccountingModule::Entry'
     has_many :debit_entries,        :through => :debit_amounts, :source => :entry, :class_name => 'AccountingModule::Entry'
-    has_many :subsidiary_accounts,  class_name: "AccountingModule::Account", foreign_key: 'main_account_id'
+
     has_many :account_budgets
 
     validates :type, :name, :code, presence: true
@@ -26,54 +25,6 @@ module AccountingModule
     scope :equities,    -> { where(type: 'AccountingModule::Equity') }
     scope :revenues,    -> { where(type: 'AccountingModule::Revenue') }
     scope :expenses,    -> { where(type: 'AccountingModule::Expense') }
-
-    def self.main_accounts
-      where(id: self.where.not(main_account_id: nil).pluck(:main_account_id).uniq).order(:code)
-    end
-
-    def self.account_groups
-      where(main_account_id: nil).where.not("code like ?", "%-%").order(:code)
-    end
-
-    def self.main_sub_accounts_for(args={})
-      account = args[:account]
-      where(main_account_id: account.id).where.not("code like ?", '%-%').order(:code)
-    end
-
-    def self.sub_accounts_for(args={})
-      account = args[:account]
-      where(main_account_id: account.id).order(:code)
-    end
-
-    def self.accounts_under(args={}) #includes sub accounts of sub accounts...
-      account = args[:account]
-      account_ids = []
-      where(main_account_id: account.id).each do |a|
-        account_ids << a.id
-        where(main_account_id: a.id).each do |sub|
-          account_ids << sub.id
-          account_ids << where(main_account_id: sub.id).pluck(:id)
-        end
-      end
-      account_ids
-      where(id: account_ids.flatten).order(:code)
-    end
-
-    def self.current_assets
-      where(code: "10000".."12999").order(:code)
-    end
-
-    def self.non_current_assets
-      where(code: "13000".."19999").order(:code)
-    end
-
-    def self.current_liabilities
-      where(code: "20000".."23999").order(:code)
-    end
-
-    def self.non_current_liabilities
-      where(code: "24000".."29999").order(:code)
-    end
 
     def self.cash_accounts # remove
       Employees::EmployeeCashAccount.cash_accounts
@@ -88,7 +39,6 @@ module AccountingModule
     end
 
     def self.updated_at(args={})
-
         date_range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])
         joins(:entries).where('entries.entry_date' => date_range.start_date..date_range.end_date)
       # end

@@ -4,7 +4,6 @@
   <div class="card-body">
     <ul class="nav nav-pills nav-pills-underline">
       <li class="nav-item"><%= link_to 'Info', accounting_module_account_path(@account), class: "nav-link #{'active' if current_page?(accounting_module_account_path(@account))}" %></li>
-      <li class="nav-item"><%= link_to 'Sub-Accounts', accounting_module_account_main_sub_accounts_path(@account), class: "nav-link #{'active' if current_page?(accounting_module_account_main_sub_accounts_path(@account))}" %></li>
       <li class="nav-item"><%= link_to 'Entries', accounting_module_account_entries_path(@account), class: "nav-link #{'active' if current_page?(accounting_module_account_entries_path(@account))}" %></li>
       <li class="nav-item"><%= link_to 'Reports', accounting_module_account_reports_path(@account), class: "nav-link #{'active' if current_page?(accounting_module_account_reports_path(@account))}"%></li>
       <li class="nav-item"><%= link_to 'Settings', accounting_module_account_settings_path(@account), id: "#{@account.id}-settings", class: "nav-link #{'active' if current_page?(accounting_module_account_settings_path(@account))}" %></li>
@@ -17,9 +16,7 @@
 <% if current_page? accounting_module_account_entries_path(@account) %>
   <%= render 'accounting_module/accounts/partials/entries' %>
 <% end %>
-<% if current_page? accounting_module_account_main_sub_accounts_path(@account) %>
-  <%= render 'accounting_module/accounts/partials/main_sub_accounts' %>
-<% end %>
+
 <% if current_page? accounting_module_account_reports_path(@account) %>
   <%= render 'accounting_module/accounts/partials/reports' %>
 <% end %>
