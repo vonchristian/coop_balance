@@ -12,6 +12,8 @@
           </li>
           <li class="nav-item"><%= link_to 'Settings', share_capital_settings_path(@share_capital), id: "#{@share_capital.id}-settings", class: "nav-link #{ 'active' if current_page?(share_capital_settings_path(@share_capital))}" %>
           </li>
+          <li class="nav-item"><%= link_to 'Accounting', share_capital_accounting_index_path(@share_capital), id: "#{@share_capital.id}-accounting", class: "nav-link #{ 'active' if current_page?(share_capital_accounting_index_path(@share_capital))}" %>
+          </li>
         </ul>
       </div>
     </div>
@@ -26,5 +28,8 @@
   <% end %>
   <% if current_page? share_capital_settings_path(@share_capital) %>
     <%= render 'share_capitals/partials/settings' %>
+  <% end %>
+  <% if current_page? share_capital_accounting_index_path(@share_capital) %>
+    <%= render 'share_capitals/partials/accounting' %>
   <% end %>
 </div>

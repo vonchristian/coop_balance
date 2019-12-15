@@ -26,6 +26,8 @@ module MembershipsModule
       it { is_expected.to delegate_method(:default_product?).to(:share_capital_product).with_prefix }
       it { is_expected.to delegate_method(:cost_per_share).to(:share_capital_product).with_prefix }
       it { is_expected.to delegate_method(:balance).to(:share_capital_equity_account) }
+      it { is_expected.to delegate_method(:name).to(:share_capital_equity_account).with_prefix }
+
     end
 
     it '.withdrawn' do

@@ -186,6 +186,7 @@ Rails.application.routes.draw do
     end
   end
   resources :share_capitals, only: [:index, :show] do
+    resources :accounting,                            only: [:index], module: :share_capitals
     resources :withdrawals,                           only: [:new, :create], module: :share_capitals
     resources :withdrawal_vouchers,                   only: [:show, :destroy], module: :share_capitals
     resources :withdrawal_voucher_confirmations,      only: [:create], module: :share_capitals

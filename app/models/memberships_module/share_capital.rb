@@ -30,6 +30,7 @@ module MembershipsModule
     delegate :avatar, :name, to: :subscriber
     delegate :name, to: :office, prefix: true
     delegate :balance, to: :share_capital_equity_account
+    delegate :name, to: :share_capital_equity_account, prefix: true
 
     before_save :set_account_owner_name
     def self.withdrawn
