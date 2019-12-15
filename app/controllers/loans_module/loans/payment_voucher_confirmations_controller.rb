@@ -1,6 +1,6 @@
 module LoansModule
   module Loans
-    class PaymentFromSavingVoucherConfirmationsController < ApplicationController
+    class PaymentVoucherConfirmationsController < ApplicationController
       def create
         @loan = current_office.loans.find(params[:loan_id])
         @voucher = current_office.vouchers.find(params[:voucher_id])
@@ -12,4 +12,4 @@ module LoansModule
       end
     end
   end
-end 
+end

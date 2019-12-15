@@ -1,6 +1,6 @@
 module LoansModule
   module Loans
-    class PaymentFromSavingVoucher
+    class PaymentVoucher
       include ActiveModel::Model
 
       attr_accessor :date, :description, :reference_number, :loan_id, :cart_id, :employee_id, :account_number

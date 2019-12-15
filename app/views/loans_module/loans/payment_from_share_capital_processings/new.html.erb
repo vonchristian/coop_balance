@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-3">
+              <%=image_tag(@share_capital.avatar, class: 'img-circle', height: 60, width: 60) %>
+            </div>
+            <div class="col-md-9">
+              <h4 class="title-up"><%= @share_capital.subscriber_name %></h4>
+              <small class="text-muted">
+                <i class="fa fa-map-marker"></i> <%= @share_capital.subscriber.current_address_details %><br>
+                <i class="fa fa-phone"></i> <%= @share_capital.subscriber.current_contact_number %>
+              </small>
+            </div>
+          </div>
+          <hr>
+          <small class="text-muted"><%= @share_capital.share_capital_product_name %></small>
+          <h3 class="title-up"> <%= number_to_currency @share_capital.balance %></h3>
+          <hr>
+<%= simple_form_for @payment, url: :loans_module_loan_payment_from_share_capital_processings do |f| %>
+  <%= f.input :amount, autofocus: true %>
+  <%= f.input :loan_id, input_html: { value: @loan.id }, as: :hidden %>
+  <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
+  <%= f.input :share_capital_id, input_html: { value: @share_capital.id }, as: :hidden %>
+  <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+  <%= f.submit "Proceed", class: 'btn btn-danger float-right' %>
+  <%= link_to 'Cancel', new_loans_module_loan_payment_from_share_capital_path(@loan), class: 'float-left' %>
+
+<% end %>

@@ -19,13 +19,17 @@
           <small class="text-muted"><%= @saving.saving_product_name %></small>
           <h3 class="title-up"> <%= number_to_currency @saving.balance %></h3>
           <hr>
-<%= simple_form_for @payment, url: :loans_module_loan_payment_from_saving_processings do |f| %>
-  <%= f.input :amount, autofocus: true %>
-  <%= f.input :loan_id, input_html: { value: @loan.id }, as: :hidden %>
-  <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
-  <%= f.input :saving_id, input_html: { value: @saving.id }, as: :hidden %>
-  <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
-  <%= f.submit "Proceed", class: 'btn btn-danger float-right' %>
-  <%= link_to 'Cancel', new_loans_module_loan_payment_from_saving_path(@loan), class: 'float-left' %>
-
-<% end %>
+          <%= simple_form_for @payment, url: :loans_module_loan_payment_from_saving_processings do |f| %>
+            <%= f.input :amount, autofocus: true %>
+            <%= f.input :loan_id, input_html: { value: @loan.id }, as: :hidden %>
+            <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
+            <%= f.input :saving_id, input_html: { value: @saving.id }, as: :hidden %>
+            <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+            <%= f.submit "Proceed", class: 'btn btn-danger float-right' %>
+            <%= link_to 'Cancel', new_loans_module_loan_payment_from_saving_path(@loan), class: 'float-left' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

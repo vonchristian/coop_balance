@@ -16,16 +16,16 @@
             </div>
           </div>
           <hr>
-          <% @borrower_savings.each do |saving| %>
+          <% @borrower_share_capitals.each do |share_capital| %>
             <div class="row">
               <div class="col-md-7">
-                <b><%= saving.depositor_name %></b>
-                <h3 class="title-up"><%= number_to_currency saving.balance %></h3>
-                <small class="text-muted"><%= saving.saving_product_name %></small>
+                <b><%= share_capital.subscriber_name %></b>
+                <h3 class="title-up"><%= number_to_currency share_capital.balance %></h3>
+                <small class="text-muted"><%= share_capital.share_capital_product_name %></small>
               </div>
               <div class="col-md-5">
                 <br>
-                <%= link_to 'Select Account', new_loans_module_loan_payment_from_saving_processing_path(loan_id: @loan.id, saving_id: saving.id), id: "#{saving.id}-select-saving-for-loan-payment", class: 'btn btn-outline-danger float-right' %>
+                <%= link_to 'Select Account', new_loans_module_loan_payment_from_share_capital_processing_path(loan_id: @loan.id, share_capital_id: share_capital.id), id: "#{share_capital.id}-select-share-capital-for-loan-payment", class: 'btn btn-outline-danger float-right' %>
               </div>
             </div>
             <hr>
@@ -34,9 +34,9 @@
       </div>
       <div class="card">
         <div class="card-body">
-          <h3 class="title-up"> Savings Accounts </h3>
+          <h3 class="title-up"> Share Capitals </h3>
 
-          <%= form_tag new_loans_module_loan_payment_from_saving_path(@loan), method: :get, class: "search-form" do %>
+          <%= form_tag new_loans_module_loan_payment_from_share_capital_path(@loan), method: :get, class: "search-form" do %>
             <div class="input-group">
               <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search by Depositor ", id: 'account-search-form' %>
               <span class="input-group-btn">
@@ -48,16 +48,16 @@
           <% end %>
           <br>
 
-          <% @savings.each do |saving| %>
+          <% @share_capitals.each do |share_capital| %>
             <div class="row">
               <div class="col-md-7">
-                <b><%= saving.depositor_name %></b>
-                <h3 class="title-up"><%= number_to_currency saving.balance %></h3>
-                <small class="text-muted"><%= saving.saving_product_name %></small>
+                <b><%= share_capital.subscriber_name %></b>
+                <h3 class="title-up"><%= number_to_currency share_capital.balance %></h3>
+                <small class="text-muted"><%= share_capital.share_capital_product_name %></small>
               </div>
               <div class="col-md-5">
                 <br>
-                <%= link_to 'Select Account', new_loans_module_loan_payment_from_saving_processing_path(loan_id: @loan.id, saving_id: saving.id), id: "#{saving.id}-select-saving-for-loan-payment", class: 'btn btn-outline-danger float-right' %>
+                <%= link_to 'Select Account', new_loans_module_loan_payment_from_share_capital_path_processing_path(loan_id: @loan.id, share_capital_id: share_capital.id), id: "#{share_capital.id}-select-share-capital-for-loan-payment", class: 'btn btn-outline-danger float-right' %>
               </div>
             </div>
             <hr>
@@ -74,7 +74,7 @@
             <% current_cart.voucher_amounts.debit.each do |amount| %>
               <div class="row">
                 <div class="col-md-7">
-                  <%= current_office.savings.find_by(liability_account_id: amount.account_id).depositor_name %>
+                  <%= current_office.share_capitals.find_by(equity_account_id: amount.account_id).subscriber_name %>
                 </div>
                 <div class="col-md-4">
                   <span class="float-right">
@@ -82,7 +82,7 @@
                   </span>
                 </div>
                 <div class="col-md-1">
-                  <%=link_to loans_module_loan_payment_from_saving_processing_path(loan_id: @loan.id, id: amount.id), method: :delete do %>
+                  <%=link_to new_loans_module_loan_payment_from_share_capital_processing_path(loan_id: @loan.id, id: amount.id), method: :delete do %>
                     <i class="fa fa-times text-danger"></i>
                   <% end %>
                 </div>
