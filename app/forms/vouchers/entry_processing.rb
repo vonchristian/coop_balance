@@ -13,6 +13,7 @@ module Vouchers
         create_entry
         update_last_transaction_date
         update_accounts_last_transaction_date
+        remove_cart_reference
       end
     end
 
@@ -66,9 +67,10 @@ module Vouchers
         account.update!(last_transaction_date: voucher.date)
       end
     end
-
-    def find_recent_entry
-      cooperative.entries.recent
-    end
+    def remove_cart_reference
+      voucher.voucher_amounts.each do |amount|
+        amount.update(cart_id: nil)
+      end
+    end 
   end
 end

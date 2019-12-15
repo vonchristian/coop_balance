@@ -60,9 +60,9 @@
               </tr>
             <% end %>
             <tr>
-              <td><b><%= number_to_currency current_user.voucher_amounts.debit.sum(&:amount) %></b></td>
+              <td><b><%= number_to_currency current_cart.voucher_amounts.debit.sum(&:amount) %></b></td>
               <td></td>
-              <td><b><%= number_to_currency current_user.voucher_amounts.credit.sum(&:amount) %></b></td>
+              <td><b><%= number_to_currency current_cart.voucher_amounts.credit.sum(&:amount) %></b></td>
               <td>
                 <% if current_user.voucher_amounts.debit.present? && current_user.voucher_amounts.credit.present? %>
                   <% if current_user.voucher_amounts.debit.sum(&:amount) != current_user.voucher_amounts.credit.sum(&:amount) %>

@@ -15,7 +15,7 @@ Rails.application.routes.draw do
     resources :level_two_account_categories,   only: [:index, :show, :new, :create, :edit, :update], module: :account_categories do
       resources :settings, only: [:index], module: :level_two_account_categories
     end
-    resources :level_three_account_categories, only: [:index, :new, :create], module: :account_categories do
+    resources :level_three_account_categories, only: [:index, :show, :new, :create], module: :account_categories do
       resources :settings, only: [:index], module: :level_three_account_categories
     end
     resources :cooperative_services, only: [:show] do
