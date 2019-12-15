@@ -1,47 +1,39 @@
-<div class="card">
-  <div class="card-header">
-    <h3 class="card-title"> Financial Condition </h3>
-  </div>
-  <div class="card-body">
-    <div class="row">
-      <div class="col-md-9">
-        <%= form_tag({:action => 'index'}, {:method => :get, :class => 'form-inline'}) do%>
-          <div class="form-group">
-          <%= label_tag :from_date, nil, class: 'sr-only'%>
-          <%= text_field_tag :from_date, @from_date, :class => 'datepicker form-control' %>
-          <%= label_tag :to_date, nil, class: 'sr-only'%>
-          <%= text_field_tag :to_date, @to_date, :class => 'datepicker form-control' %>
-          <%= select_tag :office_id, options_for_select(current_cooperative.offices.map {|m| [m.name, m.id]}, params[:office_id]), class: ' form-control border-input', prompt: false %>
-          </div>
-          <button type="submit" class="btn btn-primary">Get Report</button>
-        <% end %>
-      </div>
-      <div class="col-md-3">
-        <% if params[:to_date].present? %>
-          <%= link_to "View (PDF)", accounting_module_reports_financial_conditions_path(format: 'pdf', from_date: params[:from_date], to_date: params[:to_date]), class: "btn btn-default" %>
-          <%= link_to "View (Excel)", accounting_module_reports_financial_conditions_path(format: 'xlsx', from_date: params[:from_date], to_date: params[:to_date]), class: "btn btn-default" %>
-        <% end %>
-      </div>
-    </div>
-  </div>
-  <hr class="no-margin">
-  <div class="card-body">
-    <div class="row">
-      <div  class="col-md-3">
-        <%= simple_form_for @comparison, url: :accounting_module_financial_condition_comparisons, html: { autocomplete: 'off' } do |f| %>
-          <%= f.input :first_date, as: :string, input_html: { class: "datepicker" } %>
-          <%= f.input :second_date, as: :string, input_html: { class: "datepicker" } %>
-          <%= f.input :comparison_type, collection: AccountingModule::FinancialConditionComparison.comparison_types.keys.to_a.map{|a| [a.titleize, a] } %>
-          <%= f.submit "Compare", class: "btn btn-default" %>
-        <% end %>
-      </div>
-      <div class="col-md-9">
-        <div class="table table-responsive">
-          <%= render 'assets', :name => "Assets", :accounts => @assets %>
-          <%= render 'liabilities', :name => "Liabilities", :accounts => @liabilities %>
-          <%= render 'equities', :name => "Equity", :accounts => @equities %>
+
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <div class="row">
+        <div class="col-md-3">
+          <h3 class="title-up"> Balance Sheet - <%= @office.name %> </h3>
+          <p class="text-muted"> As of <%= @to_date.strftime("%B %e, %Y") %></p>
+          <% current_cooperative.offices.each do |office| %>
+            <%= link_to office.name, accounting_module_reports_balance_sheets_path(office_id: office.id), class: 'btn btn-outline-primary' %>
+          <% end %>
+        </div>
+        <div class="col-md-6">
+          <%= form_tag({:action => 'index'}, {:method => :get, :class => 'form-inline'}) do%>
+            <div class="form-group">
+            <%= label_tag :to_date, nil, class: 'sr-only'%>
+            <%= text_field_tag :to_date, @to_date.strftime("%B %e, %Y"), :class => 'datepicker form-control' %>
+            </div>
+            <button type="submit" class="btn btn-primary">Generate</button>
+          <% end %>
+        </div>
+        <div class="col-md-3">
+          Export To:
+          <%= link_to accounting_module_reports_financial_conditions_path(office_id: @office.id, to_date: @to_date, format: 'xlsx') do %>
+            <span class="btn btn-outline-secondary btn-sm"><i class="fa fa-spreadsheet"></i> Excel </span>
+          <% end %>
+          <%= link_to accounting_module_reports_financial_conditions_path(format: 'pdf', to_date: @to_date) do %>
+            <span class="btn btn-outline-secondary btn-sm"><i class="fa fa-pdf"></i> PDF </span>
+          <% end %>
+
         </div>
       </div>
     </div>
-  </div>
-</div>
+    <div class="card-body">
+      <%= render 'accounting_module/reports/balance_sheets/partials/assets' %>
+      <%= render 'accounting_module/reports/balance_sheets/partials/liabilities_and_equity' %>
+      <%= render 'accounting_module/reports/income_statements/partials/revenues' %>
+      <%= render 'accounting_module/reports/income_statements/partials/expenses' %>
+      <%= render 'accounting_module/reports/income_statements/partials/net_surplus' %>

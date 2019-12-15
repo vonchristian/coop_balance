@@ -61,6 +61,7 @@ Rails.application.routes.draw do
         resources :cash_receipts,      only: [:index]
         resources :cash_disbursements, only: [:index]
       end
+
       resources :entries, only: [:index]
       resources :net_income_distributions, only: [:index]
       resources :trial_balances,       only: [:index]

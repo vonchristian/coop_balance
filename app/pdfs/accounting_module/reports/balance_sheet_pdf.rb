@@ -126,6 +126,7 @@ module AccountingModule
 
           end
         move_down 10
+
       end
 
       def liabilities_and_equities_table

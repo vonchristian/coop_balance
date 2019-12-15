@@ -1,35 +1,36 @@
 <div class="card">
   <div class="card-header">
-    <h4 class="card-title"> Accounting Section Reports </h4>
+    <h4 class="title-up"> Accounting Section Reports </h4>
   </div>
   <div class="card-body">
-    <% AccountingModule::AccountingReport.all.each do |report| %>
-      <%= link_to report.title, accounting_module_accounting_report_path(report) %>
-      <hr>
+    <%= link_to accounting_module_reports_financial_conditions_path do %>
+      <h3 class="title-up">Financial Condition</h3>
+      <p class="text-muted"> Generate report for financial condition. </p>
     <% end %>
-    <hr>
+
+
     <%= link_to accounting_module_reports_income_statements_path do %>
-      <h3 class="card-title">Income Statement</h3>
+      <h3 class="title-up">Income Statement</h3>
       <p class="text-muted"> Generate report for income statement. </p>
     <% end %>
   </div>
   <hr class="no-margin">
   <div class="card-body">
     <%= link_to accounting_module_reports_balance_sheets_path do %>
-      <h4 class="card-title">Balance Sheet</h4>
+      <h4 class="title-up">Balance Sheet</h4>
       <p class="text-muted">Generate report for balance sheet statement. </p>
     <% end %>
   </div>
   <hr class="no-margin">
   <div class="card-body">
     <%= link_to accounting_module_reports_trial_balances_path do %>
-      <h4 class="card-title">Trial Balance</h4>
+      <h4 class="title-up">Trial Balance</h4>
       <p class="text-muted">Generate report for trialb balance of accounts. </p>
     <% end %>
   </div>
   <hr class="no-margin">
   <div class="card-body">
-    <h4 class="card-title">Proofsheet Report</h4>
+    <h4 class="title-up">Proofsheet Report</h4>
     <p class="text-muted">Generate report for consolidated proofsheet report. </p>
      <%= form_tag({ controller: 'accounting_module/reports/proofsheets', action: 'index', format: 'pdf'}, {:method => :get, :class => 'form-inline'}) do%>
       <div class="form-group">
@@ -42,21 +43,21 @@
   <hr class="no-margin">
   <div class="card-body">
     <%= link_to accounting_module_reports_net_income_distributions_path do %>
-      <h3 class="card-title">Net Income Distribution</h3>
+      <h3 class="title-up">Net Income Distribution</h3>
       <p class="text-muted"> Generate report for net income distribution. </p>
     <% end %>
   </div>
   <hr class="no-margin">
   <div class="card-body">
     <%= link_to accounting_module_reports_entries_path do %>
-      <h3 class="card-title">Entries</h3>
+      <h3 class="title-up">Entries</h3>
       <p class="text-muted"> Generate report for entries. </p>
     <% end %>
   </div>
   <hr class="no-margin">
   <div class="card-body">
     <%= link_to accounting_module_reports_credit_operations_path(format: 'xlsx') do %>
-      <h3 class="card-title">Credit Operations</h3>
+      <h3 class="title-up">Credit Operations</h3>
       <p class="text-muted"> Generate report for credit operations. </p>
     <% end %>
   </div>
