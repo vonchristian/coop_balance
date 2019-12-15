@@ -34,6 +34,10 @@ module MembershipsModule
       it { is_expected.to delegate_method(:balance).to(:liability_account) }
       it { is_expected.to delegate_method(:debits_balance).to(:liability_account) }
       it { is_expected.to delegate_method(:credits_balance).to(:liability_account) }
+      it { is_expected.to delegate_method(:name).to(:liability_account).with_prefix }
+      it { is_expected.to delegate_method(:name).to(:interest_expense_account).with_prefix }
+
+
 
     end
 

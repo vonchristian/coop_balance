@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'Share capital accounting index page' do
   before(:each) do
-    bookkeeper = create(:bookkeeper)
+    bookkeeper     = create(:bookkeeper)
     @share_capital = create(:share_capital, office: bookkeeper.office)
     login_as(bookkeeper, scope: :user)
 

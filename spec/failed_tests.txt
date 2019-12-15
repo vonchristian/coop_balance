@@ -31,5 +31,6 @@ example_id                                                                      
 ./spec/system/loans_module/loans/accounting/payment_from_savings/new_system_spec.rb[1:1]        | passed | 6.9 seconds     |
 ./spec/system/loans_module/loans/accounting/payment_from_share_capitals/new_system_spec.rb[1:1] | passed | 5.13 seconds    |
 ./spec/system/loans_module/loans/accounting/payment_vouchers/delete_system_spec.rb[1:1]         | passed | 11.46 seconds   |
+./spec/system/savings_accounts/accounting/index_system_spec.rb[1:1]                             | passed | 3.61 seconds    |
 ./spec/system/share_capitals/accounting/balance_transfers/new_system_spec.rb[1:1]               | passed | 9.67 seconds    |
 ./spec/system/share_capitals/accounting/index_system_spec.rb[1:1]                               | passed | 6.23 seconds    |

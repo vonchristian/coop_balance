@@ -12,6 +12,11 @@
             <i class="fa fa-cog"></i> Settings
           <% end %>
         </li>
+        <li class="nav-item">
+          <%= link_to savings_account_accounting_index_path(@savings_account), id: "#{@savings_account.id}-accounting", class: "nav-link #{'active' if current_page?(savings_account_accounting_index_path(@savings_account))}" do %>
+            <i class="fa fa-cog"></i> Accounting
+          <% end %>
+        </li>
       </ul>
       <br>
       <% if current_page? savings_account_path(@savings_account) %>
@@ -19,6 +24,10 @@
       <% end %>
       <% if current_page? savings_account_settings_path(@savings_account) %>
         <%= render 'savings_accounts/partials/settings' %>
+      <% end %>
+
+      <% if current_page? savings_account_accounting_index_path(@savings_account) %>
+        <%= render 'savings_accounts/partials/accounting' %>
       <% end %>
     </div>
   </div>

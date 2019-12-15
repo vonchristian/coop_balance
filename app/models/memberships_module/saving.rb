@@ -39,6 +39,10 @@ module MembershipsModule
     delegate :name, to: :office, prefix: true, allow_nil: true
     delegate :name, to: :depositor, prefix: true
     delegate :name, to: :barangay, prefix: true, allow_nil: true
+    delegate :name, to: :liability_account, prefix: true
+    delegate :name, to: :interest_expense_account, prefix: true
+
+
 
     delegate :avatar, to: :depositor, allow_nil: true
     delegate :dormancy_number_of_days, :balance_averager, to: :saving_product
