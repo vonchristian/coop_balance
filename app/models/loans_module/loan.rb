@@ -80,12 +80,16 @@ module LoansModule
     delegate :is_past_due?, :number_of_days_past_due, :remaining_term, :terms_elapsed, :maturity_date, to: :term, allow_nil: true
     delegate :number_of_months, to: :term, prefix: true
     delegate :loan_aging_group, to: :current_loan_aging
+    delegate :name, to: :receivable_account, prefix: true
+    delegate :name, to: :interest_revenue_account, prefix: true
+    delegate :name, to: :penalty_revenue_account, prefix: true
+
 
     def self.with_no_terms
       with_terms = Term.where(termable_type: self.to_s).pluck(:termable_id)
       where(id: with_terms)
     end
-    
+
     def self.receivable_accounts
       ids = pluck(:receivable_account_id)
       AccountingModule::Account.where(id: ids.compact.flatten.uniq)

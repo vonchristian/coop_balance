@@ -50,6 +50,9 @@
         <li class="nav-item">
           <%= link_to 'Settings', loan_settings_path(@loan), id: "#{@loan.id}-settings", class: "nav-link #{'active' if current_page?(loan_settings_path(@loan))}" %>
         </li>
+        <li class="nav-item">
+          <%= link_to 'Accounting', loans_module_loan_accounting_index_path(@loan), id: "#{@loan.id}-accounting", class: "nav-link #{'active' if current_page?(loans_module_loan_accounting_index_path(@loan))}" %>
+        </li>
       </ul>
       <br>
 
@@ -73,6 +76,9 @@
       <% end %>
       <% if current_page? loan_notes_path(@loan) %>
         <%= render 'loans/partials/notes' %>
+      <% end %>
+      <% if current_page? loans_module_loan_accounting_index_path(@loan) %>
+        <%= render 'loans/partials/accounting', loan: @loan %>
       <% end %>
     </div>
   </div>

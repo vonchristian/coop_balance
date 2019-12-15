@@ -5,6 +5,7 @@ RSpec.describe User, type: :model do
     it { is_expected.to belong_to :cooperative }
     it { is_expected.to belong_to :office }
     it { is_expected.to belong_to :store_front }
+    it { is_expected.to have_many :carts }
     it { is_expected.to have_many :entries }
     it { is_expected.to have_many :purchases }
     it { is_expected.to have_many :sales_orders  }

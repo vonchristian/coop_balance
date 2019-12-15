@@ -54,7 +54,7 @@ class User < ApplicationRecord
 
   has_many :employee_cash_accounts,   class_name: "Employees::EmployeeCashAccount", foreign_key: 'employee_id'
   has_many :cash_accounts,            class_name: "AccountingModule::Account", through: :employee_cash_accounts, source: :cash_account
-
+  has_many :carts,                    class_name: 'StoreFrontModule::Cart'
   delegate :name, :address, :contact_number, :abbreviated_name, :logo, to: :cooperative, prefix: true
   delegate :name, to: :office, prefix: true, allow_nil: true
 

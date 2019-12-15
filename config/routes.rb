@@ -155,8 +155,17 @@ Rails.application.routes.draw do
     resources :loans, only: [:index, :show] do
       resources :restructure_vouchers, only: [:new, :create], module: :loans
       resources :loss_vouchers, only: [:show], module: :loans
-      resources :interests, only: [:index], module: :loans
-      resources :penalties, only: [:index], module: :loans
+      resources :interests,  only: [:index], module: :loans
+      resources :penalties,  only: [:index], module: :loans
+      resources :accounting, only: [:index], module: :loans
+      resources :payment_from_savings,            only: [:new], module: :loans
+      resources :payment_from_saving_processings, only: [:new, :create, :destroy], module: :loans
+      resources :payment_from_saving_vouchers,    only: [:create, :show, :destroy], module: :loans
+      resources :payment_from_saving_voucher_confirmations,    only: [:create], module: :loans
+
+
+
+
 
       resources :co_makers,                 only: [:new, :create], module: :loans
       resources :past_due_vouchers,              only: [:new, :create, :show, :destroy], module: :loans

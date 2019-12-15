@@ -2,15 +2,15 @@ module LoansModule
   module Loans
     module Principal
       def principal_balance(args={})
-        principal_account.balance(args.merge(commercial_document: self))
+        receivable_account.balance(args)
       end
 
       def principal_debits_balance(args={})
-        principal_account.debits_balance(args.merge(commercial_document: self))
+        receivable_account.debits_balance(args)
       end
 
       def principal_credits_balance(args={})
-        principal_account.credits_balance(args.merge(commercial_document: self))
+        receivable_account.credits_balance(args)
       end
     end
   end

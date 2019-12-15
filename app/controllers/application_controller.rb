@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   def current_cart
       StoreFrontModule::Cart.find(session[:cart_id])
       rescue ActiveRecord::RecordNotFound
-      cart = StoreFrontModule::Cart.create(user_id: current_user.id)
+      cart = current_user.carts.create!()
       session[:cart_id] = cart.id
       cart
   end

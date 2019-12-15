@@ -1,0 +1,57 @@
+<h3 class="title-up"> Accounting Section </h3>
+<hr>
+<h4 class="subtitle-up"> Loan Accounts </h4>
+<span class="text-muted"> Accounting accounts associated with this loan. </span>
+<div class="row min-margin">
+  <div class="col-md-3">
+    <b>Receivable Account</b>
+  </div>
+  <div class="col-md-9">
+    <%= @loan.receivable_account_name %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-3">
+    <b>Interest Revenue Account</b>
+  </div>
+  <div class="col-md-9">
+    <%= @loan.interest_revenue_account_name %>
+  </div>
+</div>
+
+<div class="row min-margin">
+  <div class="col-md-3">
+    <b>Penalty Revenue Account</b>
+  </div>
+  <div class="col-md-9">
+    <%= @loan.penalty_revenue_account_name %>
+  </div>
+</div>
+<hr />
+<h4 class="subtitle-up"> Other Payment Options </h4>
+<span class="text-muted"> Other payment options and adjusting entries. </span>
+<br>
+<br>
+<div class="row">
+  <div class="col-md-9">
+    <b> Payment from Savings </b><br />
+    <span class="text-muted"> Add loan payment from savings accounts of <%= @loan.borrower.full_name %></span>
+  </div>
+  <div class="col-md-2">
+    <br>
+    <%= link_to 'Select', new_loans_module_loan_payment_from_saving_path(@loan), id: 'add-payment-from-savings', class: 'btn btn-outline-danger' %>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <div class="col-md-9">
+    <b> Payment from Share Capital </b><br>
+    <span class="text-muted"> Add loan payment from share capital of <%= @loan.borrower.full_name %></span>
+  </div>
+  <div class="col-md-2">
+    <br>
+    <%= link_to 'Select', loan_path(@loan), class: 'btn btn-outline-danger' %>
+  </div>
+</div>
+<hr>
