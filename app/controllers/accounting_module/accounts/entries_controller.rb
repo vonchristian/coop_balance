@@ -6,7 +6,7 @@ module AccountingModule
         @from_date = params[:from_date] ? DateTime.parse(params[:from_date]) : Date.today
         @to_date = params[:to_date] ? DateTime.parse(params[:to_date]) : Date.today
         if params[:from_date] && params[:to_date]
-          @pagy, @entries = pagy(@account.entries.includes(:recorder).entered_on(from_date: @from_date, to_date: @to_date))
+          @pagy, @entries = pagy(@account.entries.includes(:recorder).entered_on(from_date: @from_date, to_date: @to_date).order(entry_date: :desc))
         else
           @pagy, @entries = pagy(@account.entries.includes(:recorder).order(entry_date: :desc))
         end
