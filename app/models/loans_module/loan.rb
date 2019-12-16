@@ -388,26 +388,7 @@ module LoansModule
     end
 
     def loan_payments(args={})
-      entries = []
-      receivable_account.amounts.each do |amount|
-        entries << amount.entry
-      end
-      # loan_product_current_account.debit_amounts.where(commercial_document: self).each do |amount|
-      #   entries << amount.entry
-      # end if forwarded?
-
-      interest_revenue_account.amounts.each do |amount|
-        entries << amount.entry
-      end
-
-
-      penalty_revenue_account.amounts.each do |amount|
-        entries << amount.entry
-      end
-      accrued_income_account.amounts.each do |amount|
-        entries << amount.entry
-      end
-      entries.uniq
+      entries
     end
 
     def loan_entry
