@@ -41,9 +41,6 @@ module MembershipsModule
     delegate :name, to: :barangay, prefix: true, allow_nil: true
     delegate :name, to: :liability_account, prefix: true
     delegate :name, to: :interest_expense_account, prefix: true
-
-
-
     delegate :avatar, to: :depositor, allow_nil: true
     delegate :dormancy_number_of_days, :balance_averager, to: :saving_product
     delegate :balance, :debits_balance, :credits_balance, to: :liability_account

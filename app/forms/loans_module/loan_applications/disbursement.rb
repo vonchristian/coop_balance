@@ -57,15 +57,13 @@ module LoansModule
       end
 
       def update_term
-        find_loan_application.loan.current_term.update!(
+        find_loan_application.loan.term.update!(
           effectivity_date: disbursement_date,
           maturity_date: maturity_date)
       end
 
       def maturity_date
-        parsed_disbursement_date +
-        TermParser.new(term: find_loan_application.loan.term).add_months +
-        TermParser.new(term: find_loan_application.loan.term).add_days
+        parsed_disbursement_date + find_loan_application.number_of_days.to_i.days
       end
 
       def parsed_disbursement_date

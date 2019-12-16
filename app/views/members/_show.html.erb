@@ -12,7 +12,7 @@
           <small class="text-muted">
             <i class="fa fa-map-marker"></i> <%= @member.current_address_complete_address %> &nbsp; &nbsp;
             <span class="text-muted"><i class="fa fa-phone"></i> <%= @member.current_contact_number %></i></span> &nbsp; &nbsp;
-            <i class="fa fa-calendar"></i> Member since: <%= @member.date_of_membership_for(cooperative: current_cooperative).strftime('%B %e, %Y') %>
+            <i class="fa fa-calendar"></i> Member since: <%= @member.date_of_membership_for(cooperative: current_cooperative).try(:strftime, ('%B %e, %Y')) %>
           </small>
         </div>
       </div>

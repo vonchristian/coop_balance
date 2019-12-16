@@ -65,7 +65,8 @@ module LoansModule
 
     def create_term(loan) #move to entry processing
       term = Term.create!(
-      number_of_days:             loan_application.number_of_days,
+      termable:         loan,
+      number_of_days:   loan_application.number_of_days,
       effectivity_date: loan_application.application_date,
       maturity_date:    loan_application.application_date + loan_application.number_of_days.to_i.days)
       loan.update(term: term)
