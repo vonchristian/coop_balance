@@ -53,13 +53,13 @@ wb.styles do |style|
     @loans.sort_by{|l| l.tracking_number.to_i}.each do |loan|
       if !loan.principal_balance(to_date: @to_date).round(2).zero?
         accounts = sheet.add_row [
-          loan.try(:application_date).try(:strftime, "%D"),
+          loan.term.try(:effectivity_date).try(:strftime, "%D"),
           loan.borrower_full_name,
           "",
           "",
           "##{loan.tracking_number}",
           loan.disbursement_date.try(:strftime, "%D"),
-          loan.current_term.try(:maturity_date).try(:strftime, "%D"),
+          loan.term.try(:maturity_date).try(:strftime, "%D"),
           loan.principal_balance(to_date: @to_date)
         ], style: top_row
         sheet.merge_cells accounts.cells[(1..3)]

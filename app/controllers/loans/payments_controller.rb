@@ -3,7 +3,7 @@ module Loans
   class PaymentsController < ApplicationController
     def index
       @loan = current_cooperative.loans.find(params[:loan_id])
-      @payments = @loan.loan_payments.sort_by(&:entry_date).reverse.paginate(page: params[:page], per_page: 25)
+      @payments = @loan.loan_payments.sort_by(&:entry_date).reverse.uniq.paginate(page: params[:page], per_page: 25)
     end
     def new
       @loan = current_cooperative.loans.find(params[:loan_id])
@@ -21,7 +21,7 @@ module Loans
     end
 
     private
-    
+
     def payment_params
       params.require(payment_processor_params).
       permit(:principal_amount, :interest_amount, :penalty_amount, :amortization_schedule_id, :description, :employee_id, :loan_id, :reference_number, :date, :cash_account_id, :account_number)
