@@ -7,16 +7,15 @@ class Voucher < ApplicationRecord
   multisearchable against: [:number, :description]
 
   belongs_to :cooperative
-  belongs_to :store_front, optional: true
+  belongs_to :store_front,         optional: true
   belongs_to :cooperative_service, class_name: "CoopServicesModule::CooperativeService", optional: true
-  belongs_to :office, class_name: "Cooperatives::Office"
-  belongs_to :accounting_entry, class_name: "AccountingModule::Entry", foreign_key: 'entry_id', optional: true
-  belongs_to :payee,         polymorphic: true
+  belongs_to :office,              class_name: "Cooperatives::Office"
+  belongs_to :accounting_entry,    class_name: "AccountingModule::Entry", foreign_key: 'entry_id', optional: true
+  belongs_to :payee,               polymorphic: true
   belongs_to :commercial_document, polymorphic: true, optional: true #attaching voucher to orders
-  belongs_to :preparer,      class_name: "User", foreign_key: 'preparer_id'
-  belongs_to :disburser,     class_name: "User", foreign_key: 'disburser_id', optional: true
-
-  has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", dependent: :destroy
+  belongs_to :preparer,            class_name: "User", foreign_key: 'preparer_id'
+  belongs_to :disburser,           class_name: "User", foreign_key: 'disburser_id', optional: true
+  has_many :voucher_amounts,       class_name: "Vouchers::VoucherAmount", dependent: :destroy
 
   delegate :title, to: :cooperative_service, prefix: true, allow_nil: true
   delegate :name, :abbreviated_name, :address, :contact_number, to: :cooperative, prefix: true

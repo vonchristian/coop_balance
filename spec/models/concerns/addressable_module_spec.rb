@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-describe AddressingModule do
-  let(:member) { create(:member) { include AddressingModule } }
+describe Addressing do
+  let(:member) { create(:member) { include Addressing } }
 
   describe 'associations' do
     it { expect(member).to have_many :addresses }

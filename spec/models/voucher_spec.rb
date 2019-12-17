@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe Voucher  do
   describe 'associations' do
-    it { is_expected.to belong_to :commercial_document }
+    it { is_expected.to belong_to(:commercial_document).optional }
     it { is_expected.to belong_to :cooperative }
-    it { is_expected.to belong_to :cooperative_service }
+    it { is_expected.to belong_to(:cooperative_service).optional }
     it { is_expected.to belong_to :office }
     it { is_expected.to belong_to :accounting_entry }
     it { is_expected.to belong_to :payee }
