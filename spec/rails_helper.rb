@@ -37,7 +37,7 @@ RSpec.configure do |config|
   end
 
   config.before(:each, type: :system, js: true) do
-    driven_by :selenium, using: :firefox
+    driven_by :selenium_chrome
   end
   config.before(:suite) do
       DatabaseRewinder.clean_all

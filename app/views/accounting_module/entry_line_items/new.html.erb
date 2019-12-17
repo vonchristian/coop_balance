@@ -1,48 +1,87 @@
+<div class="container">
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-md-6">
+    <% if !@account.present? %>
+
+      <div class="card">
+        <div class="card-header">
+          <h3 class="title-up"> Select Account </h3>
+        </div>
+        <div class="card-body">
+          <%=form_tag new_accounting_module_entry_line_item_path, method: :get, class: "sidebar-form" do %>
+            <div class="input-group">
+              <%= text_field_tag :text_search, params[:text_search], class: "form-control", placeholder: "Search Account..", id: 'account-search-form' %>
+              <span class="input-group-btn">
+                <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-outline-primary") do %>
+                  <i class="fa fa-search"></i> Search Account
+                <% end %>
+              </span>
+            </div>
+          <% end %>
+          <br>
+          <% @accounts.each do |account| %>
+            <div class="row">
+              <div class="col-md-9">
+                <p class="title-up"><%= account.name %></p>
+                <span class="text-muted"><%= account.normalized_type %></span>
+              </div>
+              <div class="col-md-3">
+                <%= link_to 'Select', new_accounting_module_entry_line_item_path(account_id: account.id), id: "#{account.id}-select-account", class: 'btn btn-outline-primary' %>
+              </div>
+            </div>
+            <hr>
+          <% end %>
+        </div>
+      </div>
+    <% else %>
+      <div class="card">
+        <div class="card-body">
+          <h3 class="title-up"> New Entry  Amount Details </h3>
+          <%= simple_form_for @line_item, url: :accounting_module_entry_line_items, html: { autcomplete: 'off' } do |f| %>
+            <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+            <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
+            <div class="row">
+              <div class="col-md-12">
+                  <div class="row">
+                    <div class="col-md-8">
+                      <b class="title-up"><%= @account.name %></b><br>
+                      <span class="badge bg-gray"><%= @account.normalized_type %></span>
+                    </div>
+                    <div class="col-md-4">
+                      <small class="text-muted">Balance </small>
+                      <br>
+                      <span class="text-muted"><%= number_to_currency @account.balance %></span>
+                    </div>
+                  </div>
+                  <br>
+                <%= f.input :account_id, label: false, placeholder: "Account", input_html: { value: @account.id }, as: :hidden %>
+              </div>
+              <div class="col-md-5">
+                <%= f.input :amount, label: false, placeholder: 'Amount', as: :currency  %>
+              </div>
+              <div class="col-md-4">
+                <%= f.input :amount_type, label: false, placeholder: 'Type', collection: Vouchers::VoucherAmount.amount_types.keys.to_a.map{|a| [a.titleize, a] }, input_html: { class: 'chosen-select' } %>
+              </div>
+              <div class="col-md-2">
+                <%= f.submit "Add Amount", class: "btn btn-primary", data: { disable_with: "Adding..." } %>
+              </div>
+            </div>
+            <br>
+          <% end %>
+          <hr>
+          <%= link_to 'Back', new_accounting_module_entry_line_item_path %>
+
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="col-md-6">
     <div class="card">
       <div class="card-header">
-        <h3 class="card-title"> New Entry Amount Details </h3>
+        <h3 class="title-up"> Entry Details </h3>
       </div>
       <div class="card-body">
-        <%=form_tag new_accounting_module_entry_line_item_path, method: :get, class: "sidebar-form" do %>
-        <div class="input-group">
-          <%= text_field_tag :text_search, params[:text_search], class: "form-control", placeholder: "Search Account..", id: 'account-search-form' %>
-          <span class="input-group-btn">
-            <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
-              <i class="fa fa-search"></i>
-            <% end %>
-          </span>
-        </div>
-      <% end %>
-      <% @accounts.each do |account| %>
-        <%= account.name %>
-        <%= link_to 'Select', new_accounting_module_entry_line_item_path(account_id: account.id) %>
-      <% end %>
-
-      <% if @account.present? %>
-
-        <%= simple_form_for @line_item, url: :accounting_module_entry_line_items, html: { autcomplete: 'off' } do |f| %>
-        <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
-        <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
-          <div class="row">
-            <div class="col-md-5">
-              <%= f.input :account_id, label: false, placeholder: "Account",  %>
-            </div>
-            <div class="col-md-3">
-              <%= f.input :amount, label: false, placeholder: 'Amount', as: :currency  %>
-            </div>
-            <div class="col-md-2">
-              <%= f.input :amount_type, label: false, placeholder: 'Type', collection: Vouchers::VoucherAmount.amount_types.keys.to_a.map{|a| [a.titleize, a] }, input_html: { class: 'chosen-select' } %>
-            </div>
-            <div class="col-md-2">
-              <%= f.submit "Add", class: "btn btn-primary", data: { disable_with: "Adding..." } %>
-            </div>
-          </div>
-          <br>
-        <% end %>
-      <% end %>
-        <hr>
         <table class="table">
           <thead>
             <tr>
@@ -86,18 +125,7 @@
               </td>
           </tbody>
         </table>
-      </div>
-    </div>
-
-
-
-  </div>
-  <div class="col-md-4">
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title"> Entry Details </h3>
-      </div>
-      <div class="card-body">
+        <hr>
         <% if current_cart.voucher_amounts.present? %>
         <%=simple_form_for @voucher, url: :accounting_module_entry_line_item_vouchers, html: { autocomplete: 'off' } do |f| %>
           <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
