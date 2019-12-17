@@ -18,20 +18,20 @@
     <hr>
     <div class="row">
       <div class="col-md-7">
-        &nbsp; &nbsp;  Total <%= l2_account_category.title %>
+        <b>&nbsp; &nbsp;  Total <%= l2_account_category.title %></b>
       </div>
       <div class="col-md-5">
-        <%= number_to_currency l2_account_category.balance(to_date: @to_date) %>
+        <b><%= number_to_currency l2_account_category.balance(to_date: @to_date) %></b>
       </div>
     </div>
   <% end %>
   <hr>
   <div class="row">
     <div class="col-md-7">
-      Total <%= l3_account_category.title %>
+      <b>Total <%= l3_account_category.title %></b>
     </div>
     <div class="col-md-5">
-      <%= number_to_currency l3_account_category.balance(to_date: @to_date) %>
+      <b><%= number_to_currency l3_account_category.balance(to_date: @to_date) %></b>
     </div>
   </div>
 <% end %>
@@ -52,14 +52,14 @@
   <hr>
   <div class="row">
     <div class="col-md-7">
-      &nbsp; &nbsp;  Total <%= l2_account_category.title %>
+      <b>&nbsp; &nbsp;  Total <%= l2_account_category.title %></b>
     </div>
     <div class="col-md-5">
-      <%= number_to_currency l2_account_category.balance(to_date: @to_date) %>
+      <b><%= number_to_currency l2_account_category.balance(to_date: @to_date) %></b>
     </div>
   </div>
+  <hr>
 <% end %>
-<hr>
 
 <% current_office.level_one_account_categories.expenses.where.not(id: current_office.level_two_account_categories.level_one_account_categories.expenses.ids).order(code: :asc).each do |l1_account_category| %>
     <div class="row">
