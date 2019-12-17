@@ -2,30 +2,11 @@ module AccountingModule
   class EntryLineItemsController < ApplicationController
     def new
       @line_item = AccountingModule::Entries::VoucherAmountProcessing.new
-      @voucher = Vouchers::VoucherProcessing.new
-      @accounts = AccountingModule::Account.
-      except_account(account_ids: LoansModule::Loan.receivable_accounts.ids).
-      except_account(account_ids: LoansModule::Loan.interest_revenue_accounts.ids).
-      except_account(account_ids: LoansModule::Loan.penalty_revenue_accounts.ids).
-      except_account(account_ids: LoansModule::Loan.accrued_income_accounts.ids).
-      except_account(account_ids: MembershipsModule::Saving.liability_accounts.ids).
-      except_account(account_ids: MembershipsModule::Saving.interest_expense_accounts.ids).
-      except_account(account_ids: MembershipsModule::TimeDeposit.liability_accounts.ids).
-      except_account(account_ids: MembershipsModule::TimeDeposit.interest_expense_accounts.ids).
-      except_account(account_ids: MembershipsModule::ShareCapital.equity_accounts.ids)
-      if params[:commercial_document_type] && params[:commercial_document_id]
-        @commercial_document = params[:commercial_document_type].constantize.find(params[:commercial_document_id])
+      @voucher   = Vouchers::VoucherProcessing.new
+      @account = current_office.accounts.find_by(id: params[:account_id])
+      if params[:text_search].present?
+        @accounts = current_office.accounts.text_search(params[:text_search])
       end
-      @accounts = AccountingModule::Account.
-      except_account(account_ids: LoansModule::Loan.receivable_accounts.ids).
-      except_account(account_ids: LoansModule::Loan.interest_revenue_accounts.ids).
-      except_account(account_ids: LoansModule::Loan.penalty_revenue_accounts.ids).
-      except_account(account_ids: LoansModule::Loan.accrued_income_accounts.ids).
-      except_account(account_ids: MembershipsModule::Saving.liability_accounts.ids).
-      except_account(account_ids: MembershipsModule::Saving.interest_expense_accounts.ids).
-      except_account(account_ids: MembershipsModule::TimeDeposit.liability_accounts.ids).
-      except_account(account_ids: MembershipsModule::TimeDeposit.interest_expense_accounts.ids).
-      except_account(account_ids: MembershipsModule::ShareCapital.equity_accounts.ids)
     end
 
     def create

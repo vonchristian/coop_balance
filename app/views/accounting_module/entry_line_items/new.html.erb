@@ -5,18 +5,29 @@
         <h3 class="card-title"> New Entry Amount Details </h3>
       </div>
       <div class="card-body">
+        <%=form_tag new_accounting_module_entry_line_item_path, method: :get, class: "sidebar-form" do %>
+        <div class="input-group">
+          <%= text_field_tag :text_search, params[:text_search], class: "form-control", placeholder: "Search Account..", id: 'account-search-form' %>
+          <span class="input-group-btn">
+            <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
+              <i class="fa fa-search"></i>
+            <% end %>
+          </span>
+        </div>
+      <% end %>
+      <% @accounts.each do |account| %>
+        <%= account.name %>
+        <%= link_to 'Select', new_accounting_module_entry_line_item_path(account_id: account.id) %>
+      <% end %>
+
+      <% if @account.present? %>
+
         <%= simple_form_for @line_item, url: :accounting_module_entry_line_items, html: { autcomplete: 'off' } do |f| %>
         <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
         <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
-
-        <% if @commercial_document.present? %>
-          <%= f.input :commercial_document_id, input_html: { value: @commercial_document.id } %>
-          <%= f.input :commercial_document_type, input_html: { value: @commercial_document.class.to_s } %>
-        <% end %>
-
           <div class="row">
             <div class="col-md-5">
-              <%= f.input :account_id, label: false, placeholder: "Account", collection: @accounts.map{|a| [a.name, a.id] }, prompt: "Select Account", input_html: { class: 'chosen-select' } %>
+              <%= f.input :account_id, label: false, placeholder: "Account",  %>
             </div>
             <div class="col-md-3">
               <%= f.input :amount, label: false, placeholder: 'Amount', as: :currency  %>
@@ -30,6 +41,7 @@
           </div>
           <br>
         <% end %>
+      <% end %>
         <hr>
         <table class="table">
           <thead>
