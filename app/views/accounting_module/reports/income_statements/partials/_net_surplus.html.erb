@@ -4,7 +4,7 @@
     <b>NET INCOME/LOSS</b>
   </div>
   <div class="col-md-5">
-    <b><%= number_to_currency(current_office.level_one_account_categories.revenues.balance(to_date: @to_date) - current_office.level_one_account_categories.expenses.balance(to_date: @to_date)) %></b>
+    <b><%= number_to_currency(current_office.level_one_account_categories.revenues.balance(from_date: @from_date, to_date: @to_date) - current_office.level_one_account_categories.expenses.balance(from_date: @from_date, to_date: @to_date)) %></b>
   </div>
 </div>
 <hr>
