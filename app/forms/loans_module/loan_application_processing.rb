@@ -64,6 +64,7 @@ module LoansModule
     def find_preparer
       User.find(preparer_id)
     end
+    
     def find_loan_product
       LoansModule::LoanProduct.find(loan_product_id)
     end

@@ -6,17 +6,17 @@ module LoansModule
 
     enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
 
-    belongs_to :borrower, polymorphic: true
-    belongs_to :preparer, class_name: "User", foreign_key: 'preparer_id'
+    belongs_to :borrower,                 polymorphic: true
+    belongs_to :preparer,                 class_name: "User", foreign_key: 'preparer_id'
     belongs_to :cooperative
-    belongs_to :office, class_name: "Cooperatives::Office"
+    belongs_to :office,                   class_name: "Cooperatives::Office"
     belongs_to :loan_product
-    belongs_to :organization, optional: true
+    belongs_to :organization,             optional: true
     belongs_to :receivable_account,       class_name: 'AccountingModule::Account'
     belongs_to :interest_revenue_account, class_name: 'AccountingModule::Account'
-    belongs_to :voucher, dependent: :destroy, optional: true
-    has_one    :loan, class_name: "LoansModule::Loan", dependent: :destroy
-    has_many :voucher_amounts, class_name: "Vouchers::VoucherAmount", dependent: :destroy
+    belongs_to :voucher,                  dependent: :destroy, optional: true
+    has_one    :loan,                     class_name: "LoansModule::Loan", dependent: :nullify
+    has_many :voucher_amounts,            class_name: "Vouchers::VoucherAmount", dependent: :destroy
 
     has_many :amortization_schedules, dependent: :destroy
     has_many :terms, as: :termable, dependent: :destroy
@@ -24,17 +24,20 @@ module LoansModule
     has_many_attached :supporting_documents
 
     delegate :name, :current_membership, :avatar, to: :borrower, prefix: true
-    delegate :name, :interest_revenue_account, :current_account, to: :loan_product, prefix: true
+    delegate :name,  to: :loan_product, prefix: true
     delegate :monthly_interest_rate,  to: :loan_product, prefix: true
     delegate :current_interest_config, :interest_calculator, :prededucted_interest_calculator, :amortizeable_principal_calculator, :amortization_type,  to: :loan_product
     delegate :entry, to: :voucher, allow_nil: true
     delegate :rate, :straight_balance?, :annually?, :prededucted_number_of_payments, to: :current_interest_config, prefix: true
-    validates :cooperative_id,  presence: true
+
     validates :account_number, presence: true, uniqueness: true
+
     validates :number_of_days, presence: true, numericality: { only_integer: true }
+
     def forwarded_loan? #check on amortization_schedule pdf
       false
     end
+
     def self.not_approved
       where(approved: false)
     end
@@ -73,23 +76,23 @@ module LoansModule
     end
 
     def term_is_within_one_year?
-      (1..12).include?(term)
+      (1..365).include?(number_of_days)
     end
 
     def term_is_within_two_years?
-      (13..24).include?(term)
+      (366..730).include?(number_of_days)
     end
 
     def term_is_within_three_years?
-      (25..36).include?(term)
+      (731..1095).include?(number_of_days)
     end
 
     def term_is_within_four_years?
-      (36..48).include?(term)
+      (1096..1460).include?(number_of_days)
     end
 
     def term_is_within_five_years?
-      (48..60).include?(term)
+      (1461..1825).include?(number_of_days)
     end
 
 
@@ -139,27 +142,27 @@ module LoansModule
     end
 
     def first_year_interest
-      current_interest_config.compute_interest(amount: first_year_principal_balance, term: term)
+      current_interest_config.compute_interest(amount: first_year_principal_balance, number_of_days: number_of_days)
     end
 
     def second_year_interest
-      return 0 if term <= 12
-      current_interest_config.compute_interest(amount: second_year_principal_balance, term: term - 12)
+      return 0 if number_of_days <= 365
+      current_interest_config.compute_interest(amount: second_year_principal_balance, number_of_days: number_of_days - 365)
     end
 
     def third_year_interest
-      return 0 if term <= 24
-      current_interest_config.compute_interest(amount: third_year_principal_balance, term: term - 24)
+      return 0 if number_of_days <= 730
+      current_interest_config.compute_interest(amount: third_year_principal_balance, number_of_days: number_of_days - 730)
     end
 
     def fourth_year_interest
-      return 0 if term <= 36
-      current_interest_config.compute_interest(amount: fourth_year_principal_balance, term: term - 36)
+      return 0 if number_of_days <= 1095
+      current_interest_config.compute_interest(amount: fourth_year_principal_balance, number_of_days: term - 1095)
     end
 
     def fifth_year_interest
-      return 0 if term <= 48
-      current_interest_config.compute_interest(amount: fifth_year_principal_balance, term: term - 48)
+      return 0 if number_of_days <= 1460
+      current_interest_config.compute_interest(amount: fifth_year_principal_balance, number_of_days: number_of_days - 1460)
     end
 
     def first_year_principal_balance
@@ -167,25 +170,25 @@ module LoansModule
     end
 
     def second_year_principal_balance
-      return 0 if term <= 12
+      return 0 if number_of_days <= 365
       schedule = second_year_principal_balance_schedule_finder.new(loan_application: self).find_schedule
       principal_balance_for(schedule)
     end
 
     def third_year_principal_balance
-      return 0 if term <= 24
+      return 0 if term <= 730
       schedule = amortization_schedules.by_oldest_date[23]
       principal_balance_for(schedule)
     end
 
     def fourth_year_principal_balance
-      return 0 if term <= 36
+      return 0 if term <= 1095
       schedule = amortization_schedules.by_oldest_date[35]
       principal_balance_for(schedule)
     end
 
     def fifth_year_principal_balance
-      return 0 if term <= 48
+      return 0 if term <= 1460
       schedule = amortization_schedules.by_oldest_date[47]
       principal_balance_for(schedule)
     end

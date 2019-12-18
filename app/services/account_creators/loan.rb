@@ -6,15 +6,16 @@ module AccountCreators
       @loan                              = loan
       @loan_product                      = @loan.loan_product
       @office                            = @loan.office
-      @receivable_account_category       = @office.office_loan_products.where(loan_product: @loan_product).last.receivable_account_category
-      @interest_revenue_account_category = @office.office_loan_products.where(loan_product: @loan_product).last.interest_revenue_account_category
-      @penalty_revenue_account_category  = @office.office_loan_products.where(loan_product: @loan_product).last.penalty_revenue_account_category
+      @receivable_account_category       = @office.office_loan_products.find_by(loan_product: @loan_product).receivable_account_category
+      @interest_revenue_account_category = @office.office_loan_products.find_by(loan_product: @loan_product).interest_revenue_account_category
+      @penalty_revenue_account_category  = @office.office_loan_products.find_by(loan_product: @loan_product).penalty_revenue_account_category
     end
 
     def create_accounts!
       create_receivable_account!
       create_interest_revenue_account!
       create_penalty_revenue_account!
+      create_accountable_accounts
     end
 
     private
@@ -26,7 +27,6 @@ module AccountCreators
           code:                       SecureRandom.uuid,
           level_one_account_category: receivable_account_category)
         loan.update(receivable_account: account)
-        loan.accounts << account
       end
     end
 
@@ -38,7 +38,6 @@ module AccountCreators
           level_one_account_category: interest_revenue_account_category
         )
         loan.update(interest_revenue_account: account)
-        loan.accounts << account
       end
     end
 
@@ -49,9 +48,15 @@ module AccountCreators
           code:                       SecureRandom.uuid,
           level_one_account_category: penalty_revenue_account_category)
         loan.update(penalty_revenue_account: account)
-        loan.accounts << account
       end
     end
+
+    def create_accountable_accounts
+      loan.accounts << loan.receivable_account
+      loan.accounts << loan.interest_revenue_account
+      loan.accounts << loan.penalty_revenue_account
+    end 
+
 
     def receivable_account_name
       "Loans Receivable - #{loan.loan_product_name} #{loan.account_number}"

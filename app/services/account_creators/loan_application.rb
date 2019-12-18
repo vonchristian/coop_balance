@@ -1,24 +1,29 @@
 module AccountCreators
-  class LoanApplication 
-    attr_reader :loan_application, :loan_product
+  class LoanApplication
+    attr_reader :loan_application, :loan_product, :office, :receivable_account_category, :interest_revenue_account_category
 
     def initialize(loan_application:)
-      @loan_application = loan_application
-      @loan_product     = @loan_application.loan_product
+      @loan_application                  = loan_application
+      @office                            = @loan_application.office
+      @loan_product                      = @loan_application.loan_product
+      @receivable_account_category       = @office.office_loan_products.find_by(loan_product: @loan_product).receivable_account_category
+      @interest_revenue_account_category = @office.office_loan_products.find_by(loan_product: @loan_product).interest_revenue_account_category
+
     end
 
     def create_accounts!
-      create_receivable_account 
-      create_interest_revenue_account 
+      create_receivable_account
+      create_interest_revenue_account
     end
 
-    private 
+    private
 
     def create_receivable_account
       if loan_application.receivable_account.blank?
-        account = AccountingModule::Asset.create!(
-          name: "#{loan_product.name} - #{loan_application.account_number}",
-          code: loan_application.account_number
+        account = office.accounts.assets.create!(
+          name:                       "#{loan_product.name} - #{loan_application.account_number}",
+          code:                       loan_application.account_number,
+          level_one_account_category: receivable_account_category
         )
         loan_application.update(receivable_account: account)
       end
@@ -26,9 +31,10 @@ module AccountCreators
 
     def create_interest_revenue_account
       if loan_application.interest_revenue_account.blank?
-        account = AccountingModule::Revenue.create!(
-          name: "Interest Income - #{loan_product.name} - #{loan_application.account_number}",
-          code: "INT-#{loan_application.account_number}"
+        account = office.accounts.revenues.create!(
+          name:                       "Interest Income - #{loan_product.name} - #{loan_application.account_number}",
+          code:                       "INT-#{loan_application.account_number}",
+          level_one_account_category: interest_revenue_account_category
         )
         loan_application.update(interest_revenue_account: account)
       end

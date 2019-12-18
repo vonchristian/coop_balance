@@ -3,6 +3,7 @@ module LoansModule
     class EntryProcessing
       include ActiveModel::Model
       attr_reader :voucher, :employee, :loan, :loan_application, :cooperative
+
       def initialize(employee:, loan_application:)
         @employee         = employee
         @loan_application = loan_application
@@ -18,14 +19,12 @@ module LoansModule
       def process!
         ActiveRecord::Base.transaction do
           create_entry
-          update_voucher
         end
       end
 
       private
       def create_entry
         entry = AccountingModule::Entry.new(
-          cooperative_service: voucher.cooperative_service,
           office:              voucher.office,
           cooperative:         cooperative,
           commercial_document: voucher.payee,
@@ -37,38 +36,24 @@ module LoansModule
           voucher.voucher_amounts.debit.excluding_account(account: loan.receivable_account).each do |amount|
             entry.debit_amounts.build(
               account:             amount.account,
-              amount:              amount.amount,
-              commercial_document: set_commercial_document(amount)
+              amount:              amount.amount
             )
           end
 
           voucher.voucher_amounts.credit.each do |amount|
             entry.credit_amounts.build(
               account:             amount.account,
-              amount:              amount.amount,
-              commercial_document: set_commercial_document(amount)
+              amount:              amount.amount
             )
           end
 
           voucher.voucher_amounts.debit.for_account(account: loan.receivable_account).each do |amount|
             entry.debit_amounts.build(
               account:             amount.account,
-              amount:              amount.amount,
-              commercial_document: loan)
+              amount:              amount.amount)
           end
         entry.save!
-      end
-
-      def set_commercial_document(amount)
-        if amount.commercial_document == loan_application
-          loan
-        else
-          amount.commercial_document
-        end
-      end
-
-      def update_voucher
-        voucher.update!(entry_id: find_entry.id, disburser: employee)
+        voucher.update!(entry_id: entry.id, disburser: employee)
       end
     end
   end

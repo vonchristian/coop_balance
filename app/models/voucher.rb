@@ -97,7 +97,7 @@ class Voucher < ApplicationRecord
   end
 
   def disbursed?
-    accounting_entry.present?
+    entry_id.present?
   end
 
   def self.latest

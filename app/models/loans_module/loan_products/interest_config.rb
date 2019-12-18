@@ -15,7 +15,7 @@ module LoansModule
       validates :rate, numericality: true
 
       def self.current
-        all.order(created_at: :desc).first
+        order(created_at: :desc).first
       end
 
       def self.accounts
@@ -28,18 +28,20 @@ module LoansModule
       end
 
       def compute_interest(args={})
-        (args[:amount] * monthly_interest_rate) * applicable_term(args[:term])
+        (args[:amount] * monthly_interest_rate) * applicable_term(args[:number_of_days]).to_f
       end
 
       def monthly_interest_rate
         rate / 12.0
       end
 
-      def applicable_term(term)
-        if term > 12
+      def applicable_term(number_of_days)
+        if number_of_days >= 365
           applicable_term = 12
+        elsif number_of_days < 30
+          applicable_term = 1
         else
-          applicable_term = term
+          applicable_term = number_of_days / 30.0
         end
       end
 
