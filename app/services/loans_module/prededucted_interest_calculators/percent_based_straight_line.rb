@@ -11,7 +11,6 @@ module LoansModule
 
       def prededucted_interest
         deductible_interest_scope * interest_prededuction.rate
-        binding.pry
       end
 
       private
