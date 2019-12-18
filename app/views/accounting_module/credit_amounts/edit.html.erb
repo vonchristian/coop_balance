@@ -9,9 +9,33 @@
       </div>
       <hr class="no-margin">
       <div class="card-body">
+      <%=form_tag @amount.is_a?(AccountingModule::DebitAmount) ? edit_accounting_module_debit_amount_path(@amount) : edit_accounting_module_credit_amount_path(@amount), method: :get, class: "sidebar-form" do %>
+            <div class="input-group">
+              <%= text_field_tag :text_search, params[:text_search], class: "form-control", placeholder: "Search Account..", id: 'account-search-form' %>
+              <span class="input-group-btn">
+                <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-outline-primary") do %>
+                  <i class="fa fa-search"></i> Search Account
+                <% end %>
+              </span>
+            </div>
+          <% end %>
+          <% if params[:text_search].present? %>
+          <% @accounts.each do |account| %>
+            <div class='row'>
+              <div class='col-md-9'>
+                <%= account.name %>
+              </div>
+              <div class='col-md-3'>
+                <%= link_to "Select", @amount.is_a?(AccountingModule::DebitAmount) ? edit_accounting_module_debit_amount_path(@amount, account_id: account.id) : edit_accounting_module_credit_amount_path(@amount, account_id: account.id) %>
+              </div>
+            </div>
+            <hr>
+          <% end %>
+        <% end %>
         <%= simple_form_for [@amount], url: :accounting_module_credit_amount do |f| %>
           <%= f.input :amount %>
-          <%= f.input :account_id, collection: @accounts.map{ |a| [a.name, a.id] }, input_html: { class: 'chosen-select' } %>
+          <b><%= @account.name %></b>
+          <%= f.input :account_id, label: false, input_html: { value: @account.id }, as: :hidden %>
           <hr>
           <%= link_to "Cancel", accounting_module_entry_path(@amount.entry), class: "btn btn-default" %>
           <%= f.submit "Update Amount", class: "btn btn-warning float-right" %>

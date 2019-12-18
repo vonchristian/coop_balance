@@ -308,6 +308,7 @@ module AccountingModule
 
           end
       end
+      
       def net_surplus
         office.level_one_account_categories.revenues.balance(from_date: @from_date, to_date: @to_date) - office.level_one_account_categories.expenses.balance(from_date: @from_date, to_date: @to_date)
       end

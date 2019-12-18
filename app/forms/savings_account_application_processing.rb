@@ -23,14 +23,14 @@ class SavingsAccountApplicationProcessing
   def create_savings_account_application
     savings_account_application = SavingsAccountApplication.new(
       saving_product_id: saving_product_id,
-      depositor_id: depositor_id,
-      depositor_type: depositor_type,
-      date_opened: date,
-      account_number: account_number,
-      initial_deposit: amount,
-      cooperative: find_employee.cooperative,
-      beneficiaries: beneficiaries,
-      office: find_employee.office
+      depositor_id:      depositor_id,
+      depositor_type:    depositor_type,
+      date_opened:       date,
+      account_number:    account_number,
+      initial_deposit:   amount,
+      cooperative:       find_employee.cooperative,
+      beneficiaries:     beneficiaries,
+      office:            find_employee.office
     )
     create_accounts(savings_account_application)
     savings_account_application.save!

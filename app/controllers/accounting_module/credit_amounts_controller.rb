@@ -3,16 +3,12 @@ module AccountingModule
     def edit
       @amount = AccountingModule::CreditAmount.find(params[:id])
       @entry = @amount.entry
-      @accounts = AccountingModule::Account.
-      except_account(account_ids: LoansModule::Loan.receivable_accounts.ids).
-      except_account(account_ids: LoansModule::Loan.interest_revenue_accounts.ids).
-      except_account(account_ids: LoansModule::Loan.penalty_revenue_accounts.ids).
-      except_account(account_ids: LoansModule::Loan.accrued_income_accounts.ids).
-      except_account(account_ids: MembershipsModule::Saving.liability_accounts.ids).
-      except_account(account_ids: MembershipsModule::Saving.interest_expense_accounts.ids).
-      except_account(account_ids: MembershipsModule::TimeDeposit.liability_accounts.ids).
-      except_account(account_ids: MembershipsModule::TimeDeposit.interest_expense_accounts.ids).
-      except_account(account_ids: MembershipsModule::ShareCapital.equity_accounts.ids)
+      if params[:text_search].present?
+        @accounts = current_office.accounts.text_search(params[:text_search])
+      else 
+        @accounts = @entry.accounts
+      end
+      @account = params[:account_id] ? current_office.accounts.find_by(id: params[:account_id]) : @amount.account
     end
     def update
       @amount = AccountingModule::CreditAmount.find(params[:id])

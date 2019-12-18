@@ -1202,7 +1202,7 @@ example_id                                                                      
 ./spec/services/loans_module/payment_processors/add_on_interest_spec.rb[1:1]                                    | failed  | 0.11957 seconds        |
 ./spec/services/loans_module/payments/classifier_spec.rb[1:1]                                                   | passed  | 2.44 seconds           |
 ./spec/services/loans_module/prededucted_interest_calculators/number_of_payments_declining_balance_spec.rb[1:1] | failed  | 0.72906 seconds        |
-./spec/services/loans_module/prededucted_interest_calculators/percent_based_straight_line_spec.rb[1:1]          | failed  | 1.48 seconds           |
+./spec/services/loans_module/prededucted_interest_calculators/percent_based_straight_line_spec.rb[1:1]          | failed  | 32 minutes 15 seconds  |
 ./spec/services/loans_module/schedule_counters/daily_counter_spec.rb[1:1]                                       | passed  | 1.45 seconds           |
 ./spec/services/loans_module/schedule_counters/lumpsum_counter_spec.rb[1:1]                                     | passed  | 1.51 seconds           |
 ./spec/services/loans_module/schedule_counters/monthly_counter_spec.rb[1:1]                                     | passed  | 1.48 seconds           |
