@@ -98,10 +98,7 @@ module LoansModule
       end
     end
 
-    def annual_interest_calculator
-      ("LoansModule::AnnualInterestCalculators::" + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
-    end
-
+    
     # def amortization_scheduler
     #   if current_interest_config.prededucted?
     #     ("LoansModule::AmortizationSchedulers::" + current_interest_prededuction_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize

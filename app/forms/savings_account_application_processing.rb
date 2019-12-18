@@ -29,7 +29,8 @@ class SavingsAccountApplicationProcessing
       account_number: account_number,
       initial_deposit: amount,
       cooperative: find_employee.cooperative,
-      beneficiaries: beneficiaries
+      beneficiaries: beneficiaries,
+      office: find_employee.office
     )
     create_accounts(savings_account_application)
     savings_account_application.save!

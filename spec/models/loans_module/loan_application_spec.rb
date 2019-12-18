@@ -34,8 +34,6 @@ module LoansModule
 
     describe 'delegations' do
       it { is_expected.to delegate_method(:name).to(:borrower).with_prefix }
-      it { is_expected.to delegate_method(:interest_revenue_account).to(:loan_product).with_prefix }
-      it { is_expected.to delegate_method(:current_account).to(:loan_product).with_prefix }
       it { is_expected.to delegate_method(:current_interest_config).to(:loan_product) }
       it { is_expected.to delegate_method(:amortization_type).to(:loan_product) }
 
@@ -158,7 +156,7 @@ module LoansModule
           loan_amount: 5_000,
           loan_product: short_term_loan)
 
-        short_term_loan.create_charges_for(short_term_loan_application)
+        LoansModule::LoanApplicationChargeSetter.new(loan_application: loan_application).create_charges!
         LoansModule::AmortizationSchedule.create_amort_schedule_for(short_term_loan_application)
 
         expect(short_term_loan_application.total_interest).to eql 225.0
@@ -179,17 +177,15 @@ module LoansModule
 
         regular_loan_application = create(:loan_application,
           mode_of_payment: 'monthly',
-          term: 36,
+          number_of_days: 1095,
           loan_amount: 200_000,
           loan_product: regular_loan)
 
-        regular_loan.create_charges_for(regular_loan_application)
-        LoansModule::AmortizationSchedule.create_amort_schedule_for(regular_loan_application)
-
-        expect(regular_loan_application.total_interest).to eq 48_000
+         regular_loan_application.loan_product.loan_processor.new(loan_application: regular_loan_application).process!
+         binding.pry
+        # expect(regular_loan_application.total_interest).to eq 48_000
         expect(regular_loan_application.voucher_interest_amount).to eq 24_000
         expect(regular_loan_application.interest_balance).to eq 24_000
-
       end
     end
     it "#term_is_within_one_year?" do

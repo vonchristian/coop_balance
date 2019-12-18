@@ -3,13 +3,13 @@ require 'rails_helper'
 module LoansModule
   describe LoanProduct do
     describe 'associations' do
-      it { is_expected.to belong_to :loan_protection_plan_provider }
+      it { is_expected.to belong_to(:loan_protection_plan_provider).optional }
       it { is_expected.to belong_to :cooperative }
       it { is_expected.to belong_to :office }
       it { is_expected.to belong_to :current_account }
       it { is_expected.to belong_to :past_due_account }
-      it { is_expected.to belong_to :restructured_account }
-      it { is_expected.to belong_to :litigation_account }
+      it { is_expected.to belong_to(:restructured_account).optional }
+      it { is_expected.to belong_to(:litigation_account).optional }
     	it { is_expected.to have_many :loans }
       it { is_expected.to have_many :member_borrowers }
       it { is_expected.to have_many :employee_borrowers }
@@ -44,22 +44,6 @@ module LoansModule
       it { is_expected.to validate_presence_of :name }
       it { is_expected.to validate_uniqueness_of :name }
       it { is_expected.to validate_presence_of :current_account_id }
-    end
-
-    describe 'annual_interest_calculator' do
-      it "straight_line" do
-        straight_line = create(:amortization_type, calculation_type: 'straight_line')
-        straight_line_loan_product = create(:loan_product, amortization_type: straight_line)
-
-        expect(straight_line_loan_product.annual_interest_calculator).to eql LoansModule::AnnualInterestCalculators::StraightLine
-      end
-
-      it "declining_balance" do
-        declining_balance = create(:amortization_type, calculation_type: 'declining_balance')
-        declining_balance_loan_product = create(:loan_product, amortization_type: declining_balance)
-
-        expect(declining_balance_loan_product.annual_interest_calculator).to eql LoansModule::AnnualInterestCalculators::DecliningBalance
-      end
     end
 
     describe "interest_charge_setter" do

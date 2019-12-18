@@ -67,8 +67,10 @@ module LoansModule
     end
 
     def principal_balance_for(schedule) #used to compute interest
-      balance = (loan_amount.amount - amortization_schedules.principal_for(schedule: schedule))
-      if balance < 0
+      principal_amount = amortization_schedules.principal_for(schedule: schedule)
+      balance          = (loan_amount.amount - principal_amount)
+      
+      if balance <= 0
         0
       else
         balance
@@ -171,8 +173,8 @@ module LoansModule
 
     def second_year_principal_balance
       return 0 if number_of_days <= 365
-      schedule = second_year_principal_balance_schedule_finder.new(loan_application: self).find_schedule
-      principal_balance_for(schedule)
+      find_schedule = second_year_principal_balance_schedule_finder.new(loan_application: self).find_schedule
+      principal_balance_for(find_schedule)
     end
 
     def third_year_principal_balance
