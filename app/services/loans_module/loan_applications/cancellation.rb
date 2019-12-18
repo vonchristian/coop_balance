@@ -7,9 +7,8 @@ module LoansModule
       end
 
       def cancel! 
-        delete_loan_application
         delete_accounts 
-
+        delete_loan_application
       end
 
       private 
