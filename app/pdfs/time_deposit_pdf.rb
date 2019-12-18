@@ -7,7 +7,7 @@ class TimeDepositPdf < Prawn::Document
     @view_context     = view_context
     @time_deposit     = time_deposit
     @cooperative      = time_deposit.cooperative
-    @date_of_deposit   = time_deposit.terms.last.effectivity_date.strftime('%B %e, %Y')
+    @date_of_deposit   = time_deposit.term.effectivity_date.strftime('%B %e, %Y')
     @maturity_date     = time_deposit.maturity_date.strftime('%B %e, %Y')
     heading
     details
@@ -263,7 +263,7 @@ class TimeDepositPdf < Prawn::Document
   end
 
   def terms_in_days
-    time_deposit.time_deposit_product.number_of_days.to_s + " days"
+    time_deposit.number_of_days.to_s + " days"
   end
 
   def content

@@ -1,7 +1,7 @@
 module Vouchers
   class VoucherProcessing
     include ActiveModel::Model
-    attr_accessor :date, :reference_number, :description, :payee_id, :employee_id, :cooperative_service_id, :account_number, :cash_account_id
+    attr_accessor :date, :reference_number, :description, :payee_id, :employee_id, :cooperative_service_id, :account_number, :cash_account_id, :cart_id
     validates :date, :description, :payee_id, :reference_number,  presence: true
 
     def process!
@@ -37,10 +37,20 @@ module Vouchers
     def find_payee
       Payee.find_by_id(payee_id)
     end
+    def find_cart
+      find_employee.carts.find_by(id: cart_id)
+    end
     def remove_employee_reference
       find_employee.voucher_amounts.each do |voucher_amount|
         voucher_amount.recorder_id = nil
         voucher_amount.save
+      end
+      if find_cart.present?
+        find_cart.voucher_amounts.each do |voucher_amount|
+          voucher_amount.cart_id = nil
+          voucher_amount.save
+        end
+        find_cart.update(customer: nil)
       end
     end
   end

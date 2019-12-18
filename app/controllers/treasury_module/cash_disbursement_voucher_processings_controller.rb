@@ -1,7 +1,7 @@
 module TreasuryModule
   class CashDisbursementVoucherProcessingsController < ApplicationController
     def create
-      @cash_account = current_cooperative.accounts.find(params[:vouchers_voucher_processing][:cash_account_id])
+      @cash_account = current_office.accounts.find(params[:vouchers_voucher_processing][:cash_account_id])
       @cash_disbursement = Vouchers::VoucherProcessing.new(cash_receipt_params)
       if @cash_disbursement.valid?
         @cash_disbursement.process!
@@ -12,7 +12,7 @@ module TreasuryModule
     end
     private
     def cash_receipt_params
-      params.require(:vouchers_voucher_processing).permit(:reference_number, :date, :description, :employee_id, :payee_id, :cooperative_service_id, :account_number)
+      params.require(:vouchers_voucher_processing).permit(:reference_number, :date, :description, :employee_id, :payee_id, :cooperative_service_id, :account_number, :cart_id)
     end
   end
 end

@@ -11,6 +11,7 @@ require('adminlte')
 require("chartkick")
 require("chart.js")
 require("trix")
+
 require("@rails/actiontext")
 import AutoNumeric from 'autonumeric';
 import "bootstrap"

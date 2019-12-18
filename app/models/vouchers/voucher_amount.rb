@@ -3,7 +3,7 @@ module Vouchers
     monetize :amount_cents, as: :amount, numericality: true
 
     enum amount_type: [:debit, :credit]
-
+    belongs_to :cart,                class_name: 'StoreFrontModule::Cart', optional: true
     belongs_to :account,          class_name: "AccountingModule::Account"
     belongs_to :voucher, optional: true
     belongs_to :cooperative, optional: true

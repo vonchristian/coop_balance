@@ -2,33 +2,55 @@ module TreasuryModule
   module CashAccounts
     class CashDisbursementLineItemsController < ApplicationController
       def new
-        @cash_account = current_cooperative.accounts.find(params[:cash_account_id])
-        @disbursement_line_item = Vouchers::VoucherAmountProcessing.new
-        @disbursement = Vouchers::VoucherProcessing.new
         authorize [:treasury_module, :cash_disbursement]
+        @cash_account           = current_office.accounts.find(params[:cash_account_id])
+        @disbursement_line_item = TreasuryModule::CashAccounts::DisbursementLineItem.new
+        @disbursement           = Vouchers::VoucherProcessing.new
+        @customer               = current_cart.try(:customer)
+        if params[:payee_type] && params[:payee_id]
+          @payee  = params[:payee_type].constantize.find_by(id: params[:payee_id])
+          if @payee.present?
+            current_cart.update(customer: @payee)
+          end
+        end 
+
+        if params[:payee_search]
+          @payees = current_office.member_memberships.text_search(params[:payee_search])
+
+        end
+
+        if params[:account_id].present?
+          @account = current_office.accounts.find_by(id: params[:account_id])
+        end
+
+        if params[:search].present?
+          @account = current_office.accounts.find_by(id: params[:account_id])
+          @pagy, @accounts = pagy(current_office.accounts.text_search(params[:search]))
+        end
       end
+
       def create
-        @cash_account = current_cooperative.accounts.find(params[:cash_account_id])
-        @disbursement_line_item = Vouchers::VoucherAmountProcessing.new(disbursement_params)
+        @cash_account = current_office.accounts.find(params[:cash_account_id])
+        @disbursement_line_item = TreasuryModule::CashAccounts::DisbursementLineItem.new(disbursement_params)
         authorize [:treasury_module, :cash_disbursement]
         if @disbursement_line_item.valid?
-          @disbursement_line_item.save
+          @disbursement_line_item.process!
           redirect_to new_treasury_module_cash_account_cash_disbursement_line_item_url(@cash_account), notice: "Added successfully"
         else
           render :new
         end
       end
       def destroy
-        @cash_account = current_cooperative.accounts.find(params[:cash_account_id])
-        @amount = current_cooperative.voucher_amounts.find(params[:amount_id])
+        @cash_account = current_office.accounts.find(params[:cash_account_id])
+        @amount = current_cart.voucher_amounts.find(params[:id])
         @amount.destroy
         redirect_to new_treasury_module_cash_account_cash_disbursement_line_item_url(@cash_account), notice: "removed successfully"
       end
 
       private
       def disbursement_params
-        params.require(:vouchers_voucher_amount_processing).
-        permit(:amount, :account_id, :description, :employee_id, :cash_account_id, :amount_type)
+        params.require(:treasury_module_cash_accounts_disbursement_line_item).
+        permit(:amount, :account_id, :employee_id, :cash_account_id, :cart_id)
       end
     end
   end

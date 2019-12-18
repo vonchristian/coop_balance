@@ -602,7 +602,7 @@ example_id                                                                      
 ./spec/models/loans_module/loan_application_spec.rb[1:1:2]                                                      | passed  | 0.01138 seconds        |
 ./spec/models/loans_module/loan_application_spec.rb[1:1:3]                                                      | passed  | 0.00998 seconds        |
 ./spec/models/loans_module/loan_application_spec.rb[1:1:4]                                                      | passed  | 0.01119 seconds        |
-./spec/models/loans_module/loan_application_spec.rb[1:1:5]                                                      | passed  | 0.00947 seconds        |
+./spec/models/loans_module/loan_application_spec.rb[1:1:5]                                                      | passed  | 0.36936 seconds        |
 ./spec/models/loans_module/loan_application_spec.rb[1:1:6]                                                      | failed  | 0.02724 seconds        |
 ./spec/models/loans_module/loan_application_spec.rb[1:1:7]                                                      | passed  | 0.00788 seconds        |
 ./spec/models/loans_module/loan_application_spec.rb[1:1:8]                                                      | passed  | 0.01022 seconds        |
@@ -611,6 +611,7 @@ example_id                                                                      
 ./spec/models/loans_module/loan_application_spec.rb[1:1:11]                                                     | passed  | 0.00179 seconds        |
 ./spec/models/loans_module/loan_application_spec.rb[1:1:12]                                                     | passed  | 0.00176 seconds        |
 ./spec/models/loans_module/loan_application_spec.rb[1:1:13]                                                     | passed  | 0.00727 seconds        |
+./spec/models/loans_module/loan_application_spec.rb[1:1:14]                                                     | unknown |                        |
 ./spec/models/loans_module/loan_application_spec.rb[1:2:1]                                                      | passed  | 0.00225 seconds        |
 ./spec/models/loans_module/loan_application_spec.rb[1:2:2]                                                      | failed  | 0.01715 seconds        |
 ./spec/models/loans_module/loan_application_spec.rb[1:2:3]                                                      | passed  | 0.02126 seconds        |
@@ -1212,6 +1213,7 @@ example_id                                                                      
 ./spec/services/loans_module/schedule_counters/semi_annually_counter_spec.rb[1:2]                               | passed  | 1.39 seconds           |
 ./spec/services/loans_module/schedule_counters/weekly_counter_spec.rb[1:1]                                      | passed  | 0.00199 seconds        |
 ./spec/services/loans_module/schedule_counters/weekly_counter_spec.rb[1:2]                                      | passed  | 1.37 seconds           |
+./spec/services/treasury_module/cash_accounts/total_cash_account_updater.rb[1:1]                                | passed  | 0.94555 seconds        |
 ./spec/system/loans_module/loans/accounting/index_system_spec.rb[1:1]                                           | passed  | 10.6 seconds           |
 ./spec/system/loans_module/loans/accounting/payment_from_savings/new_system_spec.rb[1:1]                        | passed  | 6.9 seconds            |
 ./spec/system/loans_module/loans/accounting/payment_from_share_capitals/new_system_spec.rb[1:1]                 | passed  | 5.13 seconds           |

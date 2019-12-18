@@ -5,7 +5,8 @@ module LoansModule
     pg_search_scope :text_search, :associated_against => { :voucher => [:reference_number, :description] }
 
     enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
-
+    
+    belongs_to :cart,                     class_name: 'StoreFrontModule::Cart', optional: true
     belongs_to :borrower,                 polymorphic: true
     belongs_to :preparer,                 class_name: "User", foreign_key: 'preparer_id'
     belongs_to :cooperative

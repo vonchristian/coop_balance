@@ -1,7 +1,7 @@
 module Vouchers
   class VoucherAmountProcessing
     include ActiveModel::Model
-    attr_accessor :amount, :account_id, :description, :amount_type, :employee_id, :cash_account_id, :amount_type
+    attr_accessor :amount, :account_id, :description, :amount_type, :employee_id, :cash_account_id, :amount_type, :cart_id
     validates :amount, :account_id, presence: true
     validates :amount, numericality: true
     def save
@@ -12,13 +12,14 @@ module Vouchers
     private
     def create_voucher_amount
       Vouchers::VoucherAmount.create(
+        cart_id: cart_id, 
         cooperative: find_employee.cooperative,
         amount: amount,
         account_id: account_id,
         amount_type: set_amount_type(amount_type),
-        description: description,
+        description:         description,
         commercial_document: find_employee,
-        recorder: find_employee
+        recorder:            find_employee
         )
         if cash_account_id.present?
           create_cash_account_line_item
@@ -29,6 +30,7 @@ module Vouchers
       if voucher_amounts.present?
         voucher_amounts.destroy_all
         Vouchers::VoucherAmount.create(
+          cart_id: cart_id, 
           amount: find_employee.voucher_amounts.sum(&:amount),
           account: cash_account,
           amount_type: amount_type_contra,
@@ -40,6 +42,7 @@ module Vouchers
           )
       else
         Vouchers::VoucherAmount.create(
+          cart_id: cart_id, 
           amount: amount,
           account: cash_account,
           amount_type: amount_type_contra,

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_15_012758) do
+ActiveRecord::Schema.define(version: 2019_12_18_133346) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -281,6 +281,9 @@ ActiveRecord::Schema.define(version: 2019_12_15_012758) do
     t.uuid "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "customer_type"
+    t.uuid "customer_id"
+    t.index ["customer_type", "customer_id"], name: "index_carts_on_customer_type_and_customer_id"
     t.index ["user_id"], name: "index_carts_on_user_id"
   end
 
@@ -720,7 +723,9 @@ ActiveRecord::Schema.define(version: 2019_12_15_012758) do
     t.uuid "interest_revenue_account_id"
     t.integer "number_of_days"
     t.decimal "interest_rate", default: "0.0"
+    t.uuid "cart_id"
     t.index ["borrower_type", "borrower_id"], name: "index_loan_applications_on_borrower_type_and_borrower_id"
+    t.index ["cart_id"], name: "index_loan_applications_on_cart_id"
     t.index ["cooperative_id"], name: "index_loan_applications_on_cooperative_id"
     t.index ["interest_revenue_account_id"], name: "index_loan_applications_on_interest_revenue_account_id"
     t.index ["loan_product_id"], name: "index_loan_applications_on_loan_product_id"
@@ -1972,6 +1977,7 @@ ActiveRecord::Schema.define(version: 2019_12_15_012758) do
   add_foreign_key "loan_agings", "loans"
   add_foreign_key "loan_applications", "accounts", column: "interest_revenue_account_id"
   add_foreign_key "loan_applications", "accounts", column: "receivable_account_id"
+  add_foreign_key "loan_applications", "carts"
   add_foreign_key "loan_applications", "cooperatives"
   add_foreign_key "loan_applications", "loan_products"
   add_foreign_key "loan_applications", "offices"
