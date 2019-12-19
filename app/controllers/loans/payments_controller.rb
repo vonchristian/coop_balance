@@ -4,6 +4,16 @@ module Loans
     def index
       @loan = current_cooperative.loans.find(params[:loan_id])
       @payments = @loan.loan_payments.sort_by(&:entry_date).reverse.uniq.paginate(page: params[:page], per_page: 25)
+      respond_to do |format|
+        format.pdf do 
+          pdf = LoansModule::Loans::StatementOfAccountPdf.new(
+            loan: @loan,
+            view_context: view_context
+          )
+          send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: "#{@loan.borrower_name} Loan Statement.pdf"
+        end
+        format.html
+      end
     end
     def new
       @loan = current_cooperative.loans.find(params[:loan_id])

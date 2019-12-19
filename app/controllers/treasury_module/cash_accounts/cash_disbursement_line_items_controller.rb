@@ -6,17 +6,15 @@ module TreasuryModule
         @cash_account           = current_office.accounts.find(params[:cash_account_id])
         @disbursement_line_item = TreasuryModule::CashAccounts::DisbursementLineItem.new
         @disbursement           = Vouchers::VoucherProcessing.new
-        @customer               = current_cart.try(:customer)
+        
         if params[:payee_type] && params[:payee_id]
           @payee  = params[:payee_type].constantize.find_by(id: params[:payee_id])
-          if @payee.present?
-            current_cart.update(customer: @payee)
-          end
+          
+          current_cart.update(customer: @payee)
         end 
 
         if params[:payee_search]
-          @payees = current_office.member_memberships.text_search(params[:payee_search])
-
+          @pagy, @payees = pagy(current_office.member_memberships.text_search(params[:payee_search]))
         end
 
         if params[:account_id].present?
@@ -30,21 +28,16 @@ module TreasuryModule
       end
 
       def create
-        @cash_account = current_office.accounts.find(params[:cash_account_id])
-        @disbursement_line_item = TreasuryModule::CashAccounts::DisbursementLineItem.new(disbursement_params)
         authorize [:treasury_module, :cash_disbursement]
+
+        @cash_account           = current_office.accounts.find(params[:cash_account_id])
+        @disbursement_line_item = TreasuryModule::CashAccounts::DisbursementLineItem.new(disbursement_params)
         if @disbursement_line_item.valid?
           @disbursement_line_item.process!
           redirect_to new_treasury_module_cash_account_cash_disbursement_line_item_url(@cash_account), notice: "Added successfully"
         else
           render :new
         end
-      end
-      def destroy
-        @cash_account = current_office.accounts.find(params[:cash_account_id])
-        @amount = current_cart.voucher_amounts.find(params[:id])
-        @amount.destroy
-        redirect_to new_treasury_module_cash_account_cash_disbursement_line_item_url(@cash_account), notice: "removed successfully"
       end
 
       private

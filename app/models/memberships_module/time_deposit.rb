@@ -93,7 +93,7 @@ module MembershipsModule
     end
 
     def amount_deposited
-      debits_balance
+      credits_balance
     end
 
     def disbursed?
@@ -103,7 +103,7 @@ module MembershipsModule
 
 
     def interest_balance(args={})
-      interest_expense_account.debits_balance(args.merge(commercial_document: self))
+      interest_expense_account.debits_balance(args)
     end
 
     def deposited_amount

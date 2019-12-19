@@ -7,6 +7,7 @@ module AccountingModule
     end
 
     describe 'associations' do
+      it { is_expected.to belong_to :level_one_account_category }
       it { is_expected.to have_many :debit_amounts }
       it { is_expected.to have_many :entries }
       it { is_expected.to have_many :debit_entries }
@@ -106,7 +107,7 @@ module AccountingModule
     it { is_expected.to_not be_valid }  # must construct a child type instead
 
     describe "when using a child type" do
-      let(:account) { create(:account, type: "AccountingModule::Asset") }
+      let(:account) { create(:asset, type: "AccountingModule::Asset") }
       it { is_expected.to be_valid }
     end
 
