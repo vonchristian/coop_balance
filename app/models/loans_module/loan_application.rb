@@ -19,8 +19,8 @@ module LoansModule
     has_one    :loan,                     class_name: "LoansModule::Loan", dependent: :nullify
     has_many :voucher_amounts,            class_name: "Vouchers::VoucherAmount", dependent: :destroy
     has_many :accountable_accounts,       class_name: 'AccountingModule::AccountableAccount', as: :accountable
-    has_many :amortization_schedules, dependent: :destroy
-    has_many :terms, as: :termable, dependent: :destroy
+    has_many :amortization_schedules,     dependent: :destroy
+    has_many :terms, as: :termable,       dependent: :destroy
 
     has_many_attached :supporting_documents
 

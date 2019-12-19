@@ -21,7 +21,7 @@ module AccountCreators
     def create_receivable_account
       if loan_application.receivable_account.blank?
         account = office.accounts.assets.create!(
-          name:                       "#{loan_product.name} - #{loan_application.account_number}",
+          name:                       "#{loan_product.name} - #{SecureRandom.uuid}",
           code:                       loan_application.account_number,
           level_one_account_category: receivable_account_category
         )
@@ -32,7 +32,7 @@ module AccountCreators
     def create_interest_revenue_account
       if loan_application.interest_revenue_account.blank?
         account = office.accounts.revenues.create!(
-          name:                       "Interest Income - #{loan_product.name} - #{loan_application.account_number}",
+          name:                       "Interest Income - #{loan_product.name} - #{SecureRandom.uuid}",
           code:                       "INT-#{loan_application.account_number}",
           level_one_account_category: interest_revenue_account_category
         )
