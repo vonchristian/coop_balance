@@ -14,13 +14,13 @@ module MembershipsModule
     belongs_to :interest_expense_account, class_name: 'AccountingModule::Account'
     belongs_to :break_contract_account,   class_name: 'AccountingModule::Account'
     has_one  :term,                       as: :termable
-    has_many :ownerships, as: :ownable
-    has_many :depositors, through: :ownerships, source: :owner
+    has_many :ownerships,                 as: :ownable
+    has_many :depositors,                 through: :ownerships, source: :owner
     has_many :accountable_accounts,       class_name: 'AccountingModule::AccountableAccount', as: :accountable
-    has_many :accounts, through: :accountable_accounts, class_name: 'AccountingModule::Account'
-    has_many :entries, through: :accounts , class_name: 'AccountingModule::Entry'
+    has_many :accounts,                   through: :accountable_accounts, class_name: 'AccountingModule::Account'
+    has_many :entries,                    through: :accounts , class_name: 'AccountingModule::Entry'
 
-    delegate :name, :interest_rate, :account, :interest_expense_account, :break_contract_account, :break_contract_fee, to: :time_deposit_product, prefix: true
+    delegate :name, :interest_rate, :account, :break_contract_fee, to: :time_deposit_product, prefix: true
     delegate :full_name, :first_and_last_name, to: :depositor, prefix: true
     delegate :name, to: :office, prefix: true
     delegate :name, to: :depositor
@@ -28,6 +28,7 @@ module MembershipsModule
     delegate :maturity_date, :effectivity_date, :matured?, to: :term, prefix: true
     delegate :remaining_term,  to: :term
     delegate :balance, :debits_balance, :credits_balance, to: :liability_account
+    
     before_save :set_depositor_name
 
     def self.liability_accounts
@@ -40,14 +41,20 @@ module MembershipsModule
       AccountingModule::Liability.where(id: ids)
     end
 
+    def self.break_contract_accounts
+      ids = pluck(:interest_expense_account_id)
+      AccountingModule::Revenue.where(id: ids)
+    end
+
     def self.total_balances(args= {})
       liability_accounts.balance(args)
     end
 
     def self.deposited_on(args={})
-      from_date = args[:from_date] || 999.years.ago
-      to_date   = args[:to_date]
+      from_date  = args[:from_date] || 999.years.ago
+      to_date    = args[:to_date]
       date_range = DateRange.new(from_date: from_date, to_date: to_date)
+      
       joins(:term).where('terms.effectivity_date' => date_range.start_date..date_range.end_date)
     end
 
@@ -63,7 +70,6 @@ module MembershipsModule
         liability_account.entries.order(entry_date: :asc).last.entry_date
       end
     end
-
 
 
     def self.not_withdrawn

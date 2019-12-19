@@ -14,7 +14,7 @@ module LoansModule
                   :cooperative_id,
                   :office_id
     validates :number_of_days,  presence: true, numericality: true
-    validates :loan_amount, presence: true, numericality: true
+    validates :loan_amount, presence: true
     validates :loan_product_id, :mode_of_payment, :number_of_days, :application_date, :purpose, presence: true
     validate :maximum_term?
     def find_loan_application
@@ -42,7 +42,7 @@ module LoansModule
         purpose:          purpose,
         borrower:         find_borrower,
         loan_product_id:  loan_product_id,
-        loan_amount:      loan_amount,
+        loan_amount:      loan_amount.to_f,
         application_date: application_date,
         mode_of_payment:  mode_of_payment,
         preparer_id:      preparer_id,

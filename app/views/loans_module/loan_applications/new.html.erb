@@ -29,11 +29,11 @@
 
           <%= f.input :borrower_id, input_html: { value: @borrower.id }, as: :hidden %>
           <%= f.input :borrower_type, input_html: { value: @borrower.class.to_s }, as: :hidden %>
-          <%= f.input :loan_amount, as: :currency %>
+          <%= f.input :loan_amount, input_html: { class: 'currency-input form-control-lg' }  %>
           <%= f.input :number_of_days, label: "Term (Number of days)", input_html: {maxlength: 3600} %>
 
           <%= f.input :mode_of_payment, collection: LoansModule::LoanApplication.mode_of_payments.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
-          <%= f.input :purpose, as: :text, label: "Purpose of Loan" %>
+          <%= f.input :purpose, as: :string, label: "Purpose of Loan" %>
 
           <%= f.input :preparer_id, input_html: { value: current_user.id }, as: :hidden %>
           <%= f.input :cooperative_id, input_html: { value: current_cooperative.id }, as: :hidden %>
@@ -49,23 +49,3 @@
     </div>
   </div>
 </div>
-
-<script type="text/javascript">
-  $('#loanProductSelect').on('change', function (e) {
-    var string = $("#loanProductSelect option:selected").text();
-    if (string.indexOf("Short Term") != -1) {
-      $('input[type="radio"][value="lumpsum"]').click();
-    }
-    else {
-      $('input[type="radio"][value="monthly"]').click();
-    }
-  });
-</script>
-
-<script type="text/javascript">
-  $(document).ready(function() {
-    $("#loanProductSelect").select2({
-      theme: "bootstrap"
-    });
-  });
-</script>

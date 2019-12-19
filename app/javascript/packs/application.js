@@ -8,17 +8,19 @@ require("@rails/ujs").start()
 require("turbolinks").start()
 require("@rails/activestorage").start()
 require('adminlte')
+
 require("chartkick")
 require("chart.js")
 require("trix")
-
 require("@rails/actiontext")
-import AutoNumeric from 'autonumeric';
 import "bootstrap"
 import 'chosen-js'
 import 'bootstrap-datepicker'
+import AutoNumeric from 'autonumeric';
 
 document.addEventListener("turbolinks:load", () => {
+  new AutoNumeric('.currency-input');
+
   $('[data-toggle="tooltip"]').tooltip();
   $('[data-toggle="popover"]').popover();
   $('.chosen-select').chosen();
@@ -35,9 +37,8 @@ document.addEventListener("turbolinks:load", () => {
       });
 })
 
+
 document.addEventListener('turbolinks:load', ready);
 var ready = function () {
     return $(window).trigger('resize');
 };
-
-document.addEventListener('turbolinks:load', ready);

@@ -2,12 +2,17 @@ require 'will_paginate/array'
 module Loans
   class PaymentsController < ApplicationController
     def index
-      @loan = current_cooperative.loans.find(params[:loan_id])
-      @payments = @loan.loan_payments.sort_by(&:entry_date).reverse.uniq.paginate(page: params[:page], per_page: 25)
+      @loan      = current_cooperative.loans.find(params[:loan_id])
+      @payments  = @loan.loan_payments.sort_by(&:entry_date).reverse.uniq.paginate(page: params[:page], per_page: 25)
+      @from_date = params[:from_date] ? Date.parse(params[:from_date]) : @loan.entries.order(entry_date: :desc).first.entry_date
+      @to_date   = params[:to_date] ? Date.parse(params[:to_date]) : @loan.last_transaction_date
+
       respond_to do |format|
         format.pdf do 
           pdf = LoansModule::Loans::StatementOfAccountPdf.new(
             loan: @loan,
+            from_date: @from_date, 
+            to_date: @to_date,
             view_context: view_context
           )
           send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: "#{@loan.borrower_name} Loan Statement.pdf"
