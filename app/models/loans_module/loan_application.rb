@@ -13,12 +13,12 @@ module LoansModule
     belongs_to :office,                   class_name: "Cooperatives::Office"
     belongs_to :loan_product
     belongs_to :organization,             optional: true
-    belongs_to :receivable_account,       class_name: 'AccountingModule::Account'
-    belongs_to :interest_revenue_account, class_name: 'AccountingModule::Account'
+    belongs_to :receivable_account,       class_name: 'AccountingModule::Account', dependent: :destroy
+    belongs_to :interest_revenue_account, class_name: 'AccountingModule::Account', dependent: :destroy
     belongs_to :voucher,                  dependent: :destroy, optional: true
     has_one    :loan,                     class_name: "LoansModule::Loan", dependent: :nullify
     has_many :voucher_amounts,            class_name: "Vouchers::VoucherAmount", dependent: :destroy
-
+    has_many :accountable_accounts,       class_name: 'AccountingModule::AccountableAccount', as: :accountable
     has_many :amortization_schedules, dependent: :destroy
     has_many :terms, as: :termable, dependent: :destroy
 

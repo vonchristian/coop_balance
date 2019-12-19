@@ -17,6 +17,7 @@ module LoansModule
     validates :loan_amount, presence: true
     validates :loan_product_id, :mode_of_payment, :number_of_days, :application_date, :purpose, presence: true
     validate :maximum_term?
+
     def find_loan_application
       LoansModule::LoanApplication.find_by(account_number: account_number)
     end
@@ -42,7 +43,7 @@ module LoansModule
         purpose:          purpose,
         borrower:         find_borrower,
         loan_product_id:  loan_product_id,
-        loan_amount:      loan_amount.to_f,
+        loan_amount:      loan_amount,
         application_date: application_date,
         mode_of_payment:  mode_of_payment,
         preparer_id:      preparer_id,
