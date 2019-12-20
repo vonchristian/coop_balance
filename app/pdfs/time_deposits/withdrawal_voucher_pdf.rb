@@ -99,7 +99,7 @@ module TimeDeposits
         row(0).font_style = :bold
       end
       if voucher.disbursed?
-        table([["#{price(time_deposit.deposited_amount)}", "#{time_deposit.time_deposit_product_account.try(:name)}",  ""]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [100, 300, 100]) do
+        table([["#{price(time_deposit.amount_deposited)}", "#{time_deposit.time_deposit_product_account.try(:name)}",  ""]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [100, 300, 100]) do
           # cells.borders = []
           column(0).align = :right
           column(2).align = :right
@@ -144,7 +144,7 @@ module TimeDeposits
 
     def interest_description
       move_down 5
-      text "*#{time_deposit.interest_expense_account.amounts.where(commercial_document: time_deposit).last.entry.description.gsub("ADJUSTING ENTRY:", "")}", size: 9
+      text "Interest expense of time deposits", size: 9
       move_down 10
     end
 

@@ -99,7 +99,7 @@ module MembershipsModule
     end
 
     def amount_deposited
-      credits_balance
+      credits_balance - interest_balance
     end
 
     def disbursed?
