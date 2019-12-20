@@ -7,7 +7,7 @@ module LoansModule
       super(margin: 40, page_size: [612, 936], page_layout: :portrait)
 
       @loan = args[:loan]
-      @voucher = args[:voucher] || @loan.disbursement_voucher
+      @voucher                = args[:voucher] || @loan.disbursement_voucher
       @amortization_schedules = args[:amortization_schedules]
       @employee = args[:employee],
       @cooperative = @loan.cooperative,
@@ -70,7 +70,7 @@ module LoansModule
                             [["Loan Product", "#{loan.loan_product_name}"]] +
                             [["Loan Amount ", "#{price(loan.loan_amount)}"]] +
                             [["Amount (in words)", "#{loan.loan_amount.to_f.to_words.titleize} Pesos"]] +
-                            [["Term ", "#{term} Month/s"]] +
+                            [["Term ", "#{term / 30.0} Month/s"]] +
                             [["Disbursement Date ", "#{loan.disbursement_date.strftime("%B %e, %Y")}"]] +
                             [["Maturity Date ", "#{loan.maturity_date.strftime("%B %e, %Y")}"]]
 
@@ -82,8 +82,8 @@ module LoansModule
 
     def loan_charges_details
       header = [[{content: "LOAN DEDUCTIONS", size: 9}, ""]]
-      loan_amount_data = voucher.voucher_amounts.for_account(account: loan.loan_product_current_account).reverse.map{ |a| [a.description, price(a.amount)] }
-      loan_charges_data = voucher.voucher_amounts.excluding_account(account: loan.loan_product_current_account).excluding_account(account: cooperative.cash_accounts).map{|a| [a.description, price(a.amount)]}
+      loan_amount_data = voucher.voucher_amounts.for_account(account: loan.receivable_account).reverse.map{ |a| [a.description, price(a.amount)] }
+      loan_charges_data = voucher.voucher_amounts.excluding_account(account: loan.receivable_account).excluding_account(account: cooperative.cash_accounts).map{|a| [a.description, price(a.amount)]}
       loan_net_proceed_data = voucher.voucher_amounts.for_account(account: cooperative.cash_accounts).map{ |a| [a.description, price(a.amount)] }
       table_data = [*header, *loan_amount_data, *loan_charges_data, *loan_net_proceed_data]
 

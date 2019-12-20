@@ -22,13 +22,13 @@ module Vouchers
         cooperative_service_id: cooperative_service_id,
         office: find_employee.office,
         cooperative: find_employee.cooperative,
-        preparer: find_employee,
-        description: description,
+        preparer:         find_employee,
+        description:      description,
         reference_number: reference_number,
-        account_number: account_number,
+        account_number:   account_number,
         date: date
       )
-      voucher.voucher_amounts << find_employee.voucher_amounts
+      voucher.voucher_amounts << find_cart.voucher_amounts
 
     end
     def find_employee
