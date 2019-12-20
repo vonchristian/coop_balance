@@ -18,7 +18,7 @@ module TreasuryModule
       private 
 
       def create_amount 
-        find_cart.voucher_amounts.credit.create!(
+        find_cart.voucher_amounts.debit.create!(
           amount:      amount, 
           account_id:  account_id,
           cooperative: find_employee.cooperative,
@@ -33,7 +33,7 @@ module TreasuryModule
       def create_cash_amount
         return false if find_cart.voucher_amounts.find_by(account_id: cash_account_id).present?
        
-        find_cart.voucher_amounts.debit.create!(
+        find_cart.voucher_amounts.credit.create!(
           amount:      amount,
           account_id:  cash_account_id,
           cooperative: find_employee.cooperative,

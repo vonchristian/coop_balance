@@ -20,16 +20,15 @@ module MembershipsModule
     delegate :name, to: :barangay, prefix: true, allow_nil: true
     delegate :name,
             :equity_account,
-            :transfer_fee_account,
-            :transfer_fee,
             :default_product?,
-            :interest_payable_account,
+         
             :cost_per_share,
              to: :share_capital_product, prefix: true
     delegate :name, :current_address_complete_address, :current_contact_number, to: :subscriber, prefix: true
     delegate :avatar, :name, to: :subscriber
     delegate :name, to: :office, prefix: true
-    delegate :balance, to: :share_capital_equity_account
+    delegate :balance, :debits_balance, :credits_balance, to: :share_capital_equity_account
+   
     delegate :name, to: :share_capital_equity_account, prefix: true
 
     before_save :set_account_owner_name

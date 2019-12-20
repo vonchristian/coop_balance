@@ -13,7 +13,7 @@ class ShareCapitalsController < ApplicationController
   def show
     @employee = current_user
     @share_capital = current_office.share_capitals.find(params[:id])
-    @entries = @share_capital.entries.order(entry_date: :desc).includes(:commercial_document, :recorder, :cooperative_service).paginate(page: params[:page], per_page: 25)
+    @pagy, @entries = pagy(@share_capital.entries.order(entry_date: :desc).includes(:commercial_document, :recorder, :cooperative_service))
     respond_to do |format|
       format.html
       format.pdf do

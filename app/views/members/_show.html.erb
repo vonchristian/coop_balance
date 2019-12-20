@@ -16,78 +16,89 @@
           </small>
         </div>
       </div>
-<br>
+      <br>
       <nav class="nav nav-pills nav-pills-underline">
-        <li class="nav-item"><%= link_to member_path(@member), class: "nav-link #{'active' if current_page?(member_info_index_path(@member)) || current_page?(member_path(@member))}" do %>
-          <i class="fa fa-user-circle"></i> Account
+        <li class="nav-item">
+          <%= link_to member_path(@member), class: "nav-link #{'active' if current_page?(member_info_index_path(@member)) || current_page?(member_path(@member))}" do %>
+            <i class="fa fa-user-circle"></i> Account
           <% end %>
+        </li>
 
-        </li>
-        <li class="nav-item"><%= link_to  member_loans_path(@member), class: "nav-link #{'active' if current_page?(member_loans_path(@member))}" do %>
-          <i class="fa fa-credit-card"></i> Loans
+        <li class="nav-item">
+          <%= link_to  member_loans_path(@member), class: "nav-link #{'active' if current_page?(member_loans_path(@member))}" do %>
+            <i class="fa fa-credit-card"></i> Loans
           <% end %>
         </li>
-        <li class="nav-item"><%= link_to member_savings_accounts_path(@member), class: "nav-link #{ 'active' if current_page?(member_savings_accounts_path(@member))}" do %>
-          <i class="fa fa-briefcase"></i> Savings
+
+        <li class="nav-item">
+          <%= link_to member_savings_accounts_path(@member), class: "nav-link #{ 'active' if current_page?(member_savings_accounts_path(@member))}" do %>
+            <i class="fa fa-briefcase"></i> Savings
           <%end %>
         </li>
-        <li class="nav-item"><%= link_to member_share_capitals_path(@member), class: "nav-link #{ 'active' if current_page?(member_share_capitals_path(@member))}"  do %>
-          <i class="fa fa-database"></i> Share Capitals
+
+        <li class="nav-item">
+          <%= link_to member_share_capitals_path(@member), class: "nav-link #{ 'active' if current_page?(member_share_capitals_path(@member))}"  do %>
+            <i class="fa fa-database"></i> Share Capitals
           <% end %>
         </li>
-        <li class="nav-item"><%= link_to  member_time_deposits_path(@member), class: "nav-link #{ 'active' if current_page?(member_time_deposits_path(@member)) }" do %>
-          <i class="fa fa-hourglass-end"></i> Time Deposits
+
+        <li class="nav-item">
+          <%= link_to  member_time_deposits_path(@member), class: "nav-link #{ 'active' if current_page?(member_time_deposits_path(@member)) }" do %>
+            <i class="fa fa-hourglass-end"></i> Time Deposits
           <% end %>
         </li>
-        <li class="nav-item"><%= link_to  member_subscriptions_path(@member), class: "nav-link #{ 'active' if current_page?(member_subscriptions_path(@member)) }" do %>
-          <i class="fa fa-certificate"> </i> Subscriptions
-            <% end %>
-        </li>
-        <li class="nav-item"><%= link_to member_sales_path(@member), class: "nav-link #{ 'active' if current_page?(member_sales_path(@member)) }"  do %>
-          <i class="fa fa-cart-arrow-down"></i> Sales
+
+        <li class="nav-item">
+          <%= link_to  member_subscriptions_path(@member), class: "nav-link #{ 'active' if current_page?(member_subscriptions_path(@member)) }" do %>
+            <i class="fa fa-certificate"> </i> Subscriptions
           <% end %>
         </li>
-        <li class="nav-item"><%= link_to  member_activities_path(@member), class: "nav-link #{ 'active' if current_page?(member_activities_path(@member)) }" do %>
+
+        <li class="nav-item">
+          <%= link_to member_sales_path(@member), class: "nav-link #{ 'active' if current_page?(member_sales_path(@member)) }"  do %>
+            <i class="fa fa-cart-arrow-down"></i> Sales
+          <% end %>
+        </li>
+
+        <li class="nav-item">
+          <%= link_to  member_activities_path(@member), class: "nav-link #{ 'active' if current_page?(member_activities_path(@member)) }" do %>
             <i class="fa fa-list"> </i> Activities
           <% end %>
-
         </li>
 
-        <li class="nav-item"><%= link_to member_settings_path(@member), class: "nav-link #{ 'active' if current_page?(member_settings_path(@member))}"  do %>
-          <i class="fa fa-cog"></i> Settings
+        <li class="nav-item">
+          <%= link_to member_settings_path(@member), class: "nav-link #{ 'active' if current_page?(member_settings_path(@member))}"  do %>
+            <i class="fa fa-cog"></i> Settings
           <% end %>
         </li>
       </nav>
     </div>
   </div>
-        <% if current_page?(member_path(@member))%>
-          <%= render 'members/partials/info', member: @member %>
-        <% end %>
-        <% if current_page?(member_loans_path(@member)) %>
-          <%=render 'members/partials/loans', member: @member %>
-        <% end %>
-        <% if current_page?(member_savings_accounts_path(@member)) %>
-          <%=render 'members/partials/savings_accounts', member: @member %>
-        <% end %>
-        <% if current_page?(member_share_capitals_path(@member)) %>
-          <%=render 'members/partials/share_capitals', member: @member %>
-        <% end %>
-        <% if current_page?(member_time_deposits_path(@member)) %>
-          <%=render 'members/partials/time_deposits', member: @member %>
-        <% end %>
-        <% if current_page?(member_subscriptions_path(@member)) %>
-          <%=render 'members/partials/subscriptions', member: @member %>
-        <% end %>
-        <% if current_page?(member_sales_path(@member)) %>
-          <%= render 'members/partials/sales', member: @member %>
-        <% end %>
-         <% if current_page?(member_activities_path(@member)) %>
-          <%= render 'members/partials/activities', member: @member %>
-        <% end %>
-        <% if current_page? member_settings_path(@member) %>
-          <%= render 'members/partials/settings' %>
-        <% end %>
-      </div>
-    </div>
-  </div>
+  <% if current_page?(member_path(@member))%>
+    <%= render 'members/partials/info', member: @member %>
+  <% end %>
+  <% if current_page?(member_loans_path(@member)) %>
+    <%=render 'members/partials/loans', member: @member %>
+  <% end %>
+  <% if current_page?(member_savings_accounts_path(@member)) %>
+    <%=render 'members/partials/savings_accounts', member: @member %>
+  <% end %>
+  <% if current_page?(member_share_capitals_path(@member)) %>
+    <%=render 'members/partials/share_capitals', member: @member %>
+  <% end %>
+  <% if current_page?(member_time_deposits_path(@member)) %>
+    <%=render 'members/partials/time_deposits', member: @member %>
+  <% end %>
+  <% if current_page?(member_subscriptions_path(@member)) %>
+    <%=render 'members/partials/subscriptions', member: @member %>
+  <% end %>
+  <% if current_page?(member_sales_path(@member)) %>
+    <%= render 'members/partials/sales', member: @member %>
+  <% end %>
+    <% if current_page?(member_activities_path(@member)) %>
+    <%= render 'members/partials/activities', member: @member %>
+  <% end %>
+  <% if current_page? member_settings_path(@member) %>
+    <%= render 'members/partials/settings' %>
+  <% end %>
 </div>

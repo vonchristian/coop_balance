@@ -67,7 +67,7 @@
     </div>
     <div class="col-md-3">
       <% if policy([:share_capitals, :balance_transfer]).new? %>
-	      <%= link_to "Balance Transfer", new_share_capital_balance_transfer_destination_account_path(@share_capital), class: "btn btn-outline-danger" %>
+	      <%= link_to "Balance Transfer", new_share_capital_balance_transfer_path(@share_capital), class: "btn btn-outline-danger" %>
       <% else %>
         <span class="text-danger"> Only Accountant / Bookkeeper account can do this action. </span>
       <% end %>

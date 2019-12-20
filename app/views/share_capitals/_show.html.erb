@@ -1,35 +1,33 @@
 <% content_for(:html_title) { "Share Capital | #{@share_capital.subscriber_name}" } %>
 
-<%= render 'share_capitals/partials/header', share_capital: @share_capital %>
 <div class="row">
   <div class="col-md-12">
     <div class="card">
       <div class="card-header no-border">
-        <ul class="nav nav-tabs">
-          <li class="nav-item"><%= link_to 'Details', share_capital_path(@share_capital), class: "nav-link #{ 'active' if current_page?(share_capital_path(@share_capital))}" %>
+        <ul class="nav nav-pills nav-pills-underline">
+          <li class="nav-item"><%= link_to share_capital_path(@share_capital), class: "nav-link #{ 'active' if current_page?(share_capital_path(@share_capital))}" do %>
+            <i class="fa fa-user-circle"></i> Account
+            <% end %>
           </li>
-          <li class="nav-item"><%= link_to 'Transactions', share_capital_transactions_path(@share_capital), class: "nav-link #{ 'active' if current_page?(share_capital_transactions_path(@share_capital))}" %>
+          <li class="nav-item"><%= link_to share_capital_settings_path(@share_capital), id: "#{@share_capital.id}-settings", class: "nav-link #{ 'active' if current_page?(share_capital_settings_path(@share_capital))}" do %>
+            <i class="fa fa-cog"></i> Settings
+            <% end %>
           </li>
-          <li class="nav-item"><%= link_to 'Settings', share_capital_settings_path(@share_capital), id: "#{@share_capital.id}-settings", class: "nav-link #{ 'active' if current_page?(share_capital_settings_path(@share_capital))}" %>
-          </li>
-          <li class="nav-item"><%= link_to 'Accounting', share_capital_accounting_index_path(@share_capital), id: "#{@share_capital.id}-accounting", class: "nav-link #{ 'active' if current_page?(share_capital_accounting_index_path(@share_capital))}" %>
+
+          <li class="nav-item"><%= link_to share_capital_accounting_index_path(@share_capital), id: "#{@share_capital.id}-accounting", class: "nav-link #{ 'active' if current_page?(share_capital_accounting_index_path(@share_capital))}" do %>
+            <i class="fa fa-coins"></i> Accounting
+            <% end %>
           </li>
         </ul>
       </div>
-    </div>
-  </div>
-</div>
-<div class="card">
-  <% if current_page? share_capital_path(@share_capital) %>
-    <%= render 'share_capitals/partials/info' %>
-  <% end %>
-  <% if current_page? share_capital_transactions_path(@share_capital) %>
-    <%= render 'share_capitals/partials/transactions' %>
-  <% end %>
-  <% if current_page? share_capital_settings_path(@share_capital) %>
-    <%= render 'share_capitals/partials/settings' %>
-  <% end %>
-  <% if current_page? share_capital_accounting_index_path(@share_capital) %>
-    <%= render 'share_capitals/partials/accounting' %>
-  <% end %>
-</div>
+      <div class="card-body">
+<% if current_page? share_capital_path(@share_capital) %>
+  <%= render 'share_capitals/partials/info' %>
+<% end %>
+<% if current_page? share_capital_settings_path(@share_capital) %>
+  <%= render 'share_capitals/partials/settings' %>
+<% end %>
+
+<% if current_page? share_capital_accounting_index_path(@share_capital) %>
+  <%= render 'share_capitals/partials/accounting' %>
+<% end %>

@@ -23,6 +23,7 @@ class TimeDepositApplicationProcessing
   private
   def create_time_deposit_application
     time_deposit_application = TimeDepositApplication.new(
+      office: find_employee.office, 
       time_deposit_product_id: time_deposit_product_id,
       depositor_id:            depositor_id,
       depositor_type:          depositor_type,

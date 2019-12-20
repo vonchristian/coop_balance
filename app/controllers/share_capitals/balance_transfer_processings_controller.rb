@@ -1,8 +1,8 @@
 module ShareCapitals
   class BalanceTransferProcessingsController < ApplicationController
     def new
-      @origin_share_capital      = current_office.share_capitals.find(params[:share_capital_id])
-      @destination_share_capital = current_office.share_capitals.find(params[:share_capital_id])
+      @origin_share_capital      = current_office.share_capitals.find(params[:origin_share_capital_id])
+      @destination_share_capital = current_office.share_capitals.find(params[:destination_share_capital_id])
 
       @balance_transfer          = ShareCapitals::BalanceTransferProcessing.new
     end
@@ -21,7 +21,7 @@ module ShareCapitals
       @origin_share_capital = current_office.share_capitals.find(params[:share_capital_id])
       @amount               = current_cart.voucher_amounts.find(params[:id])
       @amount.destroy
-      redirect_to new_share_capital_balance_transfer_url(@share_capital), alert: 'Removed successfully'
+      redirect_to new_share_capital_balance_transfer_url(share_capital_id: @share_capital.id), alert: 'Removed successfully'
     end
 
     private

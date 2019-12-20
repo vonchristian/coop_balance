@@ -77,6 +77,9 @@ class User < ApplicationRecord
   def full_name
     name
   end
+  def signatory_name 
+    full_name
+  end
 
   def name_and_details #for select2 referencing
     "#{full_name} (#{role.titleize})"

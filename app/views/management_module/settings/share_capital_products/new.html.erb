@@ -1,1 +1,23 @@
-<%= render "management_module/settings/share_capital_products/form" %>
+<div class="modal-header">
+  <h4 class="modal-title card-title" id="mainModalLabel">
+    Share Capital Product Details
+  </h4>
+  <button type="button" class="close float-right" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+</div>
+<%= simple_form_for @share_capital_product, html: { autocomplete: "off", data: { modal: true } }, remote: request.xhr?, url: @share_capital_product.persisted? ? management_module_share_capital_product_path : management_module_share_capital_products_path do |f| %>
+  <div class="modal-body">
+    <%= f.error_notification %>
+    <%= f.input :name %>
+    <%= f.input :minimum_number_of_subscribed_share %>
+    <%= f.input :minimum_number_of_paid_share %>
+    <%= f.input :cost_per_share %>
+    
+    <%= f.input :minimum_balance, label: "Minimum Paid-Up Balance"%>
+    <%= f.input :default_product %>
+    <%= f.input :office_id, input_html: { value: current_office.id }, as: :hidden %>
+  </div>
+  <div class="modal-footer">
+      <%= f.submit "Create Share Capital Product", class: "btn btn-danger float-right", data: { disable_with: "Processing..." } %>
+  </div>
+<% end %>
+

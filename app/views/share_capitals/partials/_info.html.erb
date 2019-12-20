@@ -22,3 +22,68 @@
     </div>
   </div>
 </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h4 class="subtitle-up"> Transactions History </h4>
+    </div>
+    <div class="col-md-6">
+      <%= form_tag share_capital_path(@share_capital),method: :get do %>
+          <div class="input-group">
+            <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Transactions", id: 'saving-entries-search-form' %>
+            <span class="input-group-btn">
+              <%= button_tag(type: 'submit', id: "search-btn", title: 'Search Transaction', class: "btn btn-default btn-flat") do %>
+                <i class="fa fa-search"></i>
+              <% end %>
+            </span>
+          </div>
+      <% end %>
+    </div>
+  </div>
+  <br>
+  <% @entries.each do |entry| %>
+    <%= link_to accounting_module_entry_path(entry) do %>
+    <div class="card min-margin">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-1">
+            <i class=" fa fa-arrow-<%= ::Presenters::ShareCapital.new(share_capital: @share_capital, entry: entry).chevron %> img-square text-<%= Presenters::ShareCapital.new(share_capital: @share_capital, entry: entry).text_color %>"></i>
+          </div>
+          <div class="col-md-2">
+            <span class="subtitle-up text-<%= Presenters::ShareCapital.new(share_capital: @share_capital, entry: entry).text_color %>">
+              <i class="fa fa-<%= ::Presenters::ShareCapital.new(share_capital: @share_capital, entry: entry).plus_or_minus_icon %> fa-slim"></i>
+              <% credits_total =  entry.credit_amounts.where(account: @share_capital.share_capital_equity_account).total %>
+              <% if credits_total > 0 %>
+                <%= number_to_currency credits_total %>
+              <% end %>
+              <% debits_total =   entry.debit_amounts.where(account: @share_capital.share_capital_equity_account).total %>
+              <% if debits_total > 0 %>
+                <%= number_to_currency debits_total %>
+              <% end %>
+            </span>
+
+          </div>
+          <div class="col-md-5">
+            <b class="text-dark"><%= entry.description %></b>
+            <div class="min-margin"></div>
+            <small class="text-muted">
+            <i class=" fa fa-user-circle"></i> <%= entry.recorder_name %>&nbsp;
+            <i class="fa fa-clock"></i> <%= entry.entry_date.strftime('%b. %e, %Y') %>&nbsp;
+            <i class="fa fa-hashtag"></i><%= entry.reference_number %>
+
+          </small>
+          </div>
+          <div class="col-md-3">
+
+            <p class="subtitle-up float-right text-<%= Presenters::ShareCapital.new(share_capital: @share_capital, entry: entry).text_color %>"><%= number_to_currency @share_capital.balance(to_date: entry.entry_date) %></p>
+
+          </div>
+          <div class="col-md-1">
+            <i class="text-muted fa fa-chevron-right fa-2x fa-slim float-right"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% end %>
+  <% end %>
+
+  <center><%==pagy_bootstrap_nav(@pagy) %></center>

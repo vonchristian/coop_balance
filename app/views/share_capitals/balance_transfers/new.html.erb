@@ -38,7 +38,7 @@
 
           <%= form_tag new_share_capital_balance_transfer_path(@origin_share_capital), method: :get, class: "search-form" do %>
             <div class="input-group">
-              <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search by Depositor ", id: 'account-search-form' %>
+              <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search by Depositor ", id: 'share-capital-search-form' %>
               <span class="input-group-btn">
                 <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-outline-primary") do %>
                   <i class="fa fa-search"></i>
@@ -93,7 +93,7 @@
               </div>
               <div class="col-md-4">
                 <span class="float-right">
-                  <%= number_to_currency current_cart.voucher_amounts.where(account: @origin_share_capital.share_capital_equity_account).total %>
+                  <%= number_to_currency current_cart.voucher_amounts.credit.where(account: @origin_share_capital.share_capital_equity_account).total %>
                 </span>
               </div>
             </div>

@@ -6,6 +6,7 @@ module ShareCapitals
       if valid?
         ApplicationRecord.transaction do
           create_voucher
+          remove_cart_reference
         end
       end
     end
@@ -25,17 +26,28 @@ module ShareCapitals
       voucher.save!
 
     end
+    
     def find_employee
       User.find(employee_id)
     end
+
     def find_office
       find_employee.office
     end
+
     def find_cart
       find_employee.carts.find(cart_id)
     end
+
     def find_share_capital
       find_office.share_capitals.find(share_capital_id)
+    end
+
+    def remove_cart_reference
+      find_cart.voucher_amounts.each do |amount|
+        amount.cart_id = nil 
+        amount.save
+      end
     end
   end
 end
