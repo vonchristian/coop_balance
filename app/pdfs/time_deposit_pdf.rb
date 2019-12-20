@@ -1,13 +1,13 @@
 class TimeDepositPdf < Prawn::Document
-  attr_reader :time_deposit, :cooperative
-  def initialize(time_deposit, view_context)
+  attr_reader :time_deposit, :cooperative, :maturity_date, :effectivity_date
+  def initialize(time_deposit:, view_context:)
     super(margin: [30], page_size: "A4", page_layout: :portrait)
     # width = 632 width less margin
     # 595 × 842 pts = 535 x 782
-    @view_context     = view_context
-    @time_deposit     = time_deposit
-    @cooperative      = time_deposit.cooperative
-    @date_of_deposit   = time_deposit.term.effectivity_date.strftime('%B %e, %Y')
+    @view_context      = view_context
+    @time_deposit      = time_deposit
+    @cooperative       = time_deposit.cooperative
+    @effectivity_date  = time_deposit.term_effectivity_date.strftime('%B %e, %Y')
     @maturity_date     = time_deposit.term_maturity_date.strftime('%B %e, %Y')
     heading
     details
@@ -46,10 +46,10 @@ class TimeDepositPdf < Prawn::Document
 
   def details
 
-    details_left ||=  [["Due Date", ":", @maturity_date]] + 
+    details_left ||=  [["Due Date", ":", maturity_date]] + 
                       [["Rate", ":", "#{interest_rate}% per annum"]]
     details_right ||= [["Amount", ":", price(time_deposit.deposited_amount)]] + 
-                      [["Date", ":", @date_of_deposit]]
+                      [["Date", ":", effectivity_date]]
     bounding_box([0,692], :width => 285, :height => 60) do
       # stroke_bounds
       table(details_left, cell_style: { 
@@ -150,7 +150,7 @@ class TimeDepositPdf < Prawn::Document
     details_left ||=  [["Due Date", ":", @maturity_date]] + 
                       [["Rate", ":", "#{interest_rate}% per annum"]]
     details_right ||= [["Amount", ":", price(time_deposit.deposited_amount)]] + 
-                      [["Date", ":", @date_of_deposit]]
+                      [["Date", ":", effectivity_date]]
     bounding_box([0,272], :width => 285, :height => 60) do
       # stroke_bounds
       table(details_left, cell_style: { 

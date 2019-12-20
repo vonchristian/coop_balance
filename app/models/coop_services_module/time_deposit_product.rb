@@ -5,16 +5,10 @@ module CoopServicesModule
     extend VarianceMonitoring
 
     belongs_to :cooperative
-    belongs_to :account, class_name: "AccountingModule::Account"
-    belongs_to :interest_expense_account, class_name: "AccountingModule::Account"
-    belongs_to :break_contract_account, class_name: "AccountingModule::Account"
-
+    
     delegate :name, to: :account, prefix: true
 
-    validates :account_id,
-              :interest_expense_account_id,
-              :break_contract_account_id,
-              :name,
+    validates :name,
               :minimum_deposit,
               :maximum_deposit,
               :interest_rate,
@@ -30,21 +24,9 @@ module CoopServicesModule
               numericality: true
     validates :name,
               uniqueness: true
-    def self.accounts
-      ids = all.pluck(:account_id)
-      AccountingModule::Account.where(id: ids)
-    end
-    def self.total_balance(args={})
-      accounts.balance(args)
-    end
-
-    def self.total_debits_balance(args={})
-      accounts.debits_balance(args)
-    end
-
-    def self.total_credits_balance(args={})
-      accounts.credits_balance(args)
-    end
+              
+    
+   
 
     def amount_range
       minimum_deposit..maximum_deposit

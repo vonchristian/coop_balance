@@ -1,6 +1,5 @@
 module ShareCapitals
   class BalanceTransfersController < ApplicationController
-
     def new
       @origin_share_capital      = current_office.share_capitals.find(params[:share_capital_id])
       @subscriber                = @origin_share_capital.subscriber
