@@ -1,23 +1,56 @@
-<div class="card">
-  <div class="card-header">
-    <h3 class="card-title"> Time Deposits </h3>
-  </div>
-  <div class="card-body">
-    <div class="col-md-12">
-      <%=form_tag time_deposits_path, class: "sidebar-form", method: :get do %>
-        <div class="input-group">
-          <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Depositor, Account Number", id: 'account-search-form' %>
-          <span class="input-group-btn">
-            <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
-              <i class="fa fa-search"></i>
+
+<div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <h2 class="title-up">Time Deposits </h2>
+      </div>
+      <div class="col-md-4">
+      </div>
+      <div class="col-md-4 m-0">
+        <%= form_tag time_deposits_path, method: :get, class: "search-form" do %>
+          <div class="input-group">
+            <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search by Depositor ", id: 'account-search-form' %>
+            <span class="input-group-btn">
+              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-default btn-flat") do %>
+                <i class="fa fa-search"></i>
+              <% end %>
+            </span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <br>
+    <div class="card">
+      <div class="card-body">
+        <div class="table table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th> Depositor </th>
+                <th> Time Deposit Product </th>
+                <th> Date Deposited </th>
+                <th> Maturity Date </th>
+                <th> Amount </th>
+
+
+              </tr>
+            </thead>
+            <tbody>
+            <% @time_deposits.each do |time_deposit| %>
+              <tr>
+                <td><%= link_to time_deposit.depositor_name, time_deposit_path(time_deposit) %></td>
+                <td><%= time_deposit.time_deposit_product_name %></td>
+                <td><%= time_deposit.date_deposited.strftime('%B %e, %Y') %></td>
+                <td><%= time_deposit.term_maturity_date.strftime('%B %e, %Y') %></td>
+                <td><%= number_to_currency time_deposit.balance %></td>
+
+
+              </tr>
             <% end %>
-          </span>
+          </table>
         </div>
-      <% end %>
+      </div>
     </div>
   </div>
 </div>
-<% @time_deposits.each do |time_deposit| %>
-  <%= render 'time_deposits/partials/header', time_deposit: time_deposit %>
-<% end %>
 <center><%==pagy_bootstrap_nav(@pagy) %> </center>

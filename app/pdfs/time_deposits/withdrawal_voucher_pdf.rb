@@ -6,15 +6,14 @@ module TimeDeposits
     attr_reader :time_deposit, :voucher, :cooperative, :view_context, :title
     def initialize(args={})
       super(margin: 40, page_size: "A4", page_layout: :portrait)
-      @title = args[:title] || "Cash Disbursement Voucher"
+      @title        = args[:title] || "Cash Disbursement Voucher"
       @time_deposit = args[:time_deposit]
-      @voucher = args[:voucher]
-      @cooperative = @voucher.cooperative
+      @voucher      = args[:voucher]
+      @cooperative  = @voucher.cooperative
       @view_context = args[:view_context]
       heading
       payee_details
       voucher_details
-      interest_description
       signatory_details
       font Rails.root.join("app/assets/fonts/open_sans_regular.ttf")
 
@@ -104,7 +103,7 @@ module TimeDeposits
           column(0).align = :right
           column(2).align = :right
         end
-        table([["#{price(time_deposit.interest_balance)}", "#{time_deposit.time_deposit_product.interest_expense_account.try(:name)}",  ""]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [100, 300, 100]) do
+        table([["#{price(time_deposit.interest_balance)}", "Interest Expense on Time Deposits",  ""]], cell_style: { inline_format: true, size: 10, font: "Helvetica"}, column_widths: [100, 300, 100]) do
           # cells.borders = []
           column(0).align = :right
           column(2).align = :right
@@ -140,12 +139,6 @@ module TimeDeposits
           column(2).align = :right
         end
       end
-    end
-
-    def interest_description
-      move_down 5
-      text "Interest expense of time deposits", size: 9
-      move_down 10
     end
 
     def signatory_details

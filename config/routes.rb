@@ -455,7 +455,7 @@ Rails.application.routes.draw do
     resources :break_contracts, only: [:new, :create],   module: :time_deposits
     resources :settings, only: [:index],                 module: :time_deposits
     resources :beneficiaries, only: [:edit, :update],    module: :time_deposits
-    resources :transactions, only: [:index],             module: :time_deposits
+    resources :accounting, only: [:index],               module: :time_deposits
   end
 
   resources :employees, only: [:index, :show, :edit, :update] do
