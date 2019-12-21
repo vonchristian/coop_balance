@@ -21,9 +21,10 @@ module AccountingModule
     end
 
     private
-    def accounts
+    def account_categories
       ids = entries.amounts.pluck(:account_id)
-      AccountingModule::Account.where(id: ids.uniq.compact.flatten)
+      category_ids = AccountingModule::Account.where(id: ids.uniq.compact.flatten).pluck(:level_one_account_category_id)
+      AccountingModule::LevelOneAccountCategory.where(id: category_ids.uniq.compact.flatten)
     end
 
     def display_commercial_document_for(entry)
@@ -168,12 +169,12 @@ module AccountingModule
     def amounts_table_data(entry)
       row_count           = entry.amounts.count
       if entry.debit_amounts.present?
-        debit_amounts_data  = entry.debit_amounts.map{|a| [a.account.name, price(a.amount), ""] }
+        debit_amounts_data  = entry.debit_amounts.map{|a| [a.account.display_name, price(a.amount), ""] }
       else
         debit_amounts_data  = [[""]]
       end
       if entry.credit_amounts.present?
-        credit_amounts_data = entry.credit_amounts.map{|a| [a.account.name, "", price(a.amount)] }
+        credit_amounts_data = entry.credit_amounts.map{|a| [a.account.display_name, "", price(a.amount)] }
       else
         credit_amounts_data = [[""]]
       end
@@ -192,7 +193,7 @@ module AccountingModule
       start_new_page
       text 'ACCOUNTS SUMMARY', size: 10, style: :bold
       table([["ACCOUNT", "DEBITS", "CREDITS"]] +
-      accounts.updated_at(from_date: @from_date, to_date: @to_date).distinct.map{ |account| [account.name, price(account.debit_amounts.where(entry_id: @entries.ids).entered_on(from_date: @from_date, to_date: @to_date).total), price(account.credit_amounts.where(entry_id: @entries.ids).entered_on(from_date: @from_date, to_date: @to_date).total)] }, column_widths: [500, 150, 150]) do
+      account_categories.updated_at(from_date: @from_date, to_date: @to_date).distinct.map{ |account_category| [account_category.title, price(account_category.debit_amounts.where(entry_id: @entries.ids).entered_on(from_date: @from_date, to_date: @to_date).total), price(account_category.credit_amounts.where(entry_id: @entries.ids).entered_on(from_date: @from_date, to_date: @to_date).total)] }, column_widths: [500, 150, 150]) do
         column(1).align = :right
         column(2).align = :right
         row(0).font_size = 10
