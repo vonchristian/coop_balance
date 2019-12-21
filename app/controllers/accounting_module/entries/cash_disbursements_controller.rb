@@ -4,10 +4,10 @@ module AccountingModule
       def index
         @cooperative_service = params[:cooperative_service_id].present? ? current_cooperative.cooperative_services.find(params[:cooperative_service_id]) : nil
         if params[:from_date].present? && params[:to_date].present?
-          @from_date = params[:from_date] ? DateTime.parse(params[:from_date]) : current_cooperative.entries.order(entry_date: :asc).first.entry_date
+          @from_date = params[:from_date] ? DateTime.parse(params[:from_date]) : Date.current.beginning_of_year
           @to_date = params[:to_date] ? DateTime.parse(params[:to_date]) : Date.today.end_of_year
-          @entries_for_pdf = current_cooperative.cash_accounts.credit_entries.where(cooperative_service_id: params[:cooperative_service_id]).entered_on(from_date: @from_date, to_date: @to_date)
-          @ordered_entries = current_cooperative.cash_accounts.credit_entries.order(reference_number: :desc).where(cooperative_service_id: params[:cooperative_service_id]).entered_on(from_date: @from_date, to_date: @to_date)
+          @entries_for_pdf = current_office.cash_accounts.credit_entries.entered_on(from_date: @from_date, to_date: @to_date)
+          @ordered_entries = current_office.cash_accounts.credit_entries.order(reference_number: :desc).where(cooperative_service_id: params[:cooperative_service_id]).entered_on(from_date: @from_date, to_date: @to_date)
           @entries = @ordered_entries.paginate(:page => params[:page], :per_page => 50)
 
         elsif params[:organization_id].present? && params[:search].present?
