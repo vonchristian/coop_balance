@@ -7,10 +7,10 @@ module LoansModule
       validates :name, :account_id, :amount, :rate, presence: true
       validates :rate, :amount, numericality: true
       def self.except_capital_build_up
-        where.not(account: Cooperatives::ShareCapitalProduct.accounts)
+        where.not(account: MembershipsModule::ShareCapital.equity_accounts)
       end
       def self.for_capital_build_up
-        where(account: Cooperatives::ShareCapitalProduct.accounts)
+        where(account: MembershipsModule::ShareCapital.equity_accounts)
       end
       def charge_amount(args={})
         charge_calculator.new(args.merge(charge: self)).calculate

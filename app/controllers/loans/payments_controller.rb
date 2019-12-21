@@ -9,10 +9,10 @@ module Loans
 
       respond_to do |format|
         format.pdf do 
-          pdf = LoansModule::Loans::StatementOfAccountPdf.new(
-            loan: @loan,
-            from_date: @from_date, 
-            to_date: @to_date,
+          pdf = StatementOfAccounts::LoanPdf.new(
+            loan:         @loan,
+            from_date:    @from_date, 
+            to_date:      @to_date,
             view_context: view_context
           )
           send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: "#{@loan.borrower_name} Loan Statement.pdf"
