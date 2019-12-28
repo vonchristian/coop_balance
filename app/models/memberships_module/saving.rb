@@ -7,16 +7,16 @@ module MembershipsModule
     pg_search_scope :text_search, against: [:account_number, :account_owner_name]
     multisearchable against: [:account_number, :account_owner_name]
 
-    belongs_to :organization, optional: true
+    belongs_to :organization,             optional: true
     belongs_to :cooperative
-    belongs_to :barangay,           optional: true, class_name: "Addresses::Barangay"
-    belongs_to :depositor,          polymorphic: true,  touch: true
-    has_many :ownerships,                 as: :ownable
-    has_many :member_co_depositors,       through: :ownerships, source: :owner, source_type: "Member"
+    belongs_to :barangay,                 optional: true, class_name: "Addresses::Barangay"
+    belongs_to :depositor,                polymorphic: true,  touch: true
     belongs_to :liability_account,        class_name: 'AccountingModule::Account'
     belongs_to :interest_expense_account, class_name: 'AccountingModule::Account'
     belongs_to :saving_product,           class_name: "CoopServicesModule::SavingProduct"
     belongs_to :office,                   class_name: "Cooperatives::Office"
+    has_many :ownerships,                 as: :ownable
+    has_many :member_co_depositors,       through: :ownerships, source: :owner, source_type: "Member"
     has_many :debit_amounts,              class_name: "AccountingModule::DebitAmount", as: :commercial_document
     has_many :credit_amounts,             class_name: "AccountingModule::CreditAmount", as: :commercial_document
     has_many :ownerships,                 as: :ownable

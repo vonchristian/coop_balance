@@ -7,12 +7,13 @@ module AccountCreators
       office                = create(:office, cooperative: cooperative)
       saving_product        = create(:saving_product, cooperative: cooperative)
       office_saving_product = create(:office_saving_product, office: office, saving_product: saving_product)
-      saving                = build(:saving, office: office, liability_account: nil, saving_product: saving_product, interest_expense_account: nil)
+      saving                = build(:saving, office: office, liability_account_id: nil, saving_product: saving_product, interest_expense_account_id: nil)
+     
       described_class.new(saving: saving).create_accounts!
       saving.save!
 
-      liability_account        = AccountingModule::Liability.find_by!(name: "#{saving_product.name} - (#{saving.depositor_name} - #{saving.account_number}")
-      interest_expense_account = AccountingModule::Expense.find_by!(name: "Interest Expense on Savings Deposits - (#{saving.depositor_name} - #{saving.account_number}")
+      liability_account        = saving.liability_account
+      interest_expense_account = saving.interest_expense_account
 
       expect(saving.liability_account).to eql liability_account
       expect(saving.interest_expense_account).to eql interest_expense_account
@@ -22,6 +23,9 @@ module AccountCreators
 
       expect(office.accounts).to include(liability_account)
       expect(office.accounts).to include(interest_expense_account)
+
+      expect(saving.accounts).to include(liability_account)
+      expect(saving.accounts).to include(interest_expense_account)
 
     end
   end

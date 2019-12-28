@@ -9,8 +9,12 @@ FactoryBot.define do
     account_number { SecureRandom.uuid }
     last_transaction_date { Date.current }
     after(:build) do |s|
-      s.accounts << s.liability_account
-      s.accounts << s.interest_expense_account
+      if s.liability_account.present?
+        s.accounts << s.liability_account
+      end 
+      if s.interest_expense_account.present?
+        s.accounts << s.interest_expense_account
+      end 
     end 
   end
 end

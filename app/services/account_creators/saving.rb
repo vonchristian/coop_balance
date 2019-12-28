@@ -14,6 +14,7 @@ module AccountCreators
       ActiveRecord::Base.transaction do
         create_liability_account
         create_interest_expense_account
+        add_accounts
       end
     end
 
@@ -39,8 +40,12 @@ module AccountCreators
           level_one_account_category: interest_expense_account_category
         )
         saving.update(interest_expense_account: account)
-
       end
+    end
+
+    def add_accounts
+      saving.accounts << saving.liability_account
+      saving.accounts << saving.interest_expense_account
     end
   end
 end

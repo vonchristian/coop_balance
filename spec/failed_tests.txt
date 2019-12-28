@@ -1165,6 +1165,7 @@ example_id                                                                      
 ./spec/models/wallet_spec.rb[1:1]                                                                               | pending | 0.00002 seconds        |
 ./spec/services/account_creators/loan_application_spec.rb[1:1]                                                  | passed  | 1.94 seconds           |
 ./spec/services/account_creators/loan_spec.rb[1:1]                                                              | passed  | 3.06 seconds           |
+./spec/services/account_creators/saving_spec.rb[1:1]                                                            | passed  | 1.32 seconds           |
 ./spec/services/loans_module/amortization_date_setters/daily_spec.rb[1:1]                                       | passed  | 0.01367 seconds        |
 ./spec/services/loans_module/amortization_date_setters/lumpsum_spec.rb[1:1]                                     | passed  | 0.00178 seconds        |
 ./spec/services/loans_module/amortization_date_setters/monthly_spec.rb[1:1]                                     | passed  | 0.00148 seconds        |
