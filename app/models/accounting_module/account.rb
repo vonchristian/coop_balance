@@ -169,7 +169,11 @@ module AccountingModule
     end
 
     def display_name
-      level_one_account_category.title
+      if level_one_account_category
+        level_one_account_category.title
+      else 
+        name 
+      end 
     end
 
     def credits_balance(args={})

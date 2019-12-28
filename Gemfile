@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.6.5'
+ruby '2.7.0'
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
   "https://github.com/#{repo_name}.git"
@@ -13,7 +13,7 @@ gem 'axlsx', git: 'https://github.com/randym/axlsx.git', ref: 'c8ac844'
 gem 'axlsx_rails'
 gem 'trix'
 gem 'autonumeric-rails'
-gem 'rails', '~> 6.0.0'
+gem 'rails', '~> 6.0.2'
 gem 'pg', '0.21'
 gem 'pghero'
 gem 'pg_query'
