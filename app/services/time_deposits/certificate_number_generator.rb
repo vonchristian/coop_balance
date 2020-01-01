@@ -1,14 +1,16 @@
 module TimeDeposits
   class CertificateNumberGenerator
-    attr_reader :time_deposit_application, :cooperative
+    attr_reader :time_deposit_application, :office, :from_date, :to_date
     def initialize(time_deposit_application:)
       @time_deposit_application = time_deposit_application
-      @cooperative              = @time_deposit_application.cooperative
+      @office                   = @time_deposit_application.office
+      @from_date                = @time_deposit_application.date_deposited.beginning_of_year
+      @to_date                  = @time_deposit_application.date_deposited.end_of_year
     end
 
     def generate!
-      recent_annual_time_deposits = cooperative.time_deposits.where(date_deposited: Date.current.beginning_of_year..Date.today.end_of_year)
-      Date.current.strftime("%Y").to_s + "-" + (recent_annual_time_deposits.size + 1).to_s
+      time_deposits_count = office.time_deposit_applications.where(date_deposited: from_date..to_date).size
+      from_date.strftime("%Y").to_s + "-" + (time_deposits_count).to_s
     end
   end
 end

@@ -10,7 +10,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'webpacker', '~> 4.x'
 gem 'rubyzip', '>= 1.2.2'
 gem 'axlsx', git: 'https://github.com/randym/axlsx.git', ref: 'c8ac844'
-gem 'axlsx_rails'
+gem 'caxlsx_rails'
 gem 'trix'
 gem 'autonumeric-rails'
 gem 'rails', '~> 6.0.2'

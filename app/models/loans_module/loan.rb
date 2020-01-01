@@ -512,7 +512,7 @@ module LoansModule
     end
 
     def paid?
-      disbursed? && balance.zero?
+      paid_at.present?
     end
 
     def loan_penalty_computation

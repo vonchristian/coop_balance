@@ -70,6 +70,7 @@ module LoansModule
     end
 
 
+
     describe "#interest_calculator" do
       it 'returns percent based straight line' do
         straight_line_amortization_type = create(:amortization_type, calculation_type: 'straight_line')

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_18_133346) do
+ActiveRecord::Schema.define(version: 2020_01_01_045653) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -889,6 +889,7 @@ ActiveRecord::Schema.define(version: 2019_12_18_133346) do
     t.uuid "penalty_revenue_account_id"
     t.uuid "accrued_income_account_id"
     t.datetime "date_archived"
+    t.datetime "paid_at"
     t.index ["account_number"], name: "index_loans_on_account_number", unique: true
     t.index ["accrued_income_account_id"], name: "index_loans_on_accrued_income_account_id"
     t.index ["archived_by_id"], name: "index_loans_on_archived_by_id"

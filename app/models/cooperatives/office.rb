@@ -32,6 +32,7 @@ module Cooperatives
     has_many :level_three_account_categories, class_name: 'AccountingModule::LevelThreeAccountCategory'
     has_many :memberships, class_name: 'Cooperatives::Membership'
     has_many :member_memberships, through: :memberships, source: :cooperator, source_type: 'Member'
+    has_many :time_deposit_applications
 
     validates :name, uniqueness: true
     validates :name, :type, :contact_number, :address, presence: true

@@ -17,6 +17,7 @@ module Loans
             voucher:  @voucher
           ).update_status!
         end
+        LoansModule::Loans::PaidAtUpdater.new(loan: loan, date: @voucher.date).update_paid_at!
 
         redirect_to loan_payments_url(@loan), notice: "Payment saved successfully."
       end

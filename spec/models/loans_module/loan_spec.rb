@@ -74,6 +74,15 @@ module LoansModule
 
     end
 
+    it "#paid?" do 
+      unpaid_loan = create(:loan, paid_at: nil)
+      paid_loan   = create(:loan, paid_at: Date.current)
+
+      expect(unpaid_loan.paid?).to eql false 
+      expect(paid_loan.paid?).to eql true 
+    end 
+
+
     describe 'delegations' do
       it { is_expected.to delegate_method(:payment_processor).to(:loan_product) }
     end
