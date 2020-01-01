@@ -17,9 +17,7 @@ import "bootstrap"
 import 'chosen-js'
 import 'bootstrap-datepicker'
 import AutoNumeric from 'autonumeric';
-
 document.addEventListener("turbolinks:load", () => {
-  new AutoNumeric('.currency-input');
   $('[data-toggle="tooltip"]').tooltip();
   $('[data-toggle="popover"]').popover();
   $('.chosen-select').chosen();

@@ -1,8 +1,8 @@
 module Loans
   class PaymentVouchersController < ApplicationController
     def show
-      @loan = current_cooperative.loans.find(params[:loan_id])
-      @voucher = current_cooperative.vouchers.find(params[:id])
+      @loan = current_office.loans.find(params[:loan_id])
+      @voucher = current_office.vouchers.find(params[:id])
     end
   end
 end

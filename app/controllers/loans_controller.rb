@@ -22,8 +22,8 @@ class LoansController < ApplicationController
   end
 
   def show
-    @loan = current_office.loans.merge(Member.with_attached_avatar).find(params[:id])
-@pagy, @amortization_schedules = pagy(@loan.amortization_schedules.order(date: :asc))
+    @loan                          = current_office.loans.merge(Member.with_attached_avatar).find(params[:id])
+    @pagy, @amortization_schedules = pagy(@loan.amortization_schedules.order(date: :asc))
     @loan_co_makers = @loan.loan_co_makers
     respond_to do |format|
       format.html

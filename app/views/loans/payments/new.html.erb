@@ -50,48 +50,6 @@
         </div>
       </div>
     </div>
-    <% if @loan.forwarded_loan == false %>
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">
-            <h4 class="card-title">Amortization Details</h4>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="row justify-content-end">
-            <div class="col-md-6">
-              <h4 class="card-title text-info">Amortized Principal</h4>
-            </div>
-            <div class="col-md-5">
-              <span class="float-right">
-                <h4 class="card-title text-info"><%= number_to_currency @loan.amortized_principal %></h4>
-              </span>
-            </div>
-          </div>
-          <div class="row justify-content-end">
-            <div class="col-md-6">
-              <h4 class="card-title text-info">Amortized Interest</h4>
-            </div>
-            <div class="col-md-5">
-              <span class="float-right">
-                <h4 class="card-title text-info"><%= number_to_currency @loan.amortized_interest %></h4>
-              </span>
-            </div>
-          </div>
-          <hr>
-          <div class="row justify-content-end">
-            <div class="col-md-6">
-              <h4 class="card-title text-success">Total Amortization</h4>
-            </div>
-            <div class="col-md-5">
-              <span class="float-right">
-                <h4 class="card-title text-success"><%= number_to_currency (@loan.amortized_interest + @loan.amortized_principal) %></h4>
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    <% end %>
   </div>
   <div class="col-md-5">
     <div class="card">
@@ -102,18 +60,18 @@
         <%= simple_form_for [@loan, @payment], html: { autocomplete: 'off' }, url: :loan_payments do |f| %>
           <%= f.error_notification %>
           <%= f.input :date, as: :string, input_html: { value: Time.zone.now.strftime("%B %e, %Y"), class: "datepicker" } %>
-          <% if !@loan.forwarded_loan? %>
+          <% if @loan.amortization_schedules.present? %>
             <%= f.input :amortization_schedule_id, label: "Select Amortization Schedule to be paid.", collection: @loan.amortization_schedules.partial_and_no_payment.order(date: :asc).map {|a| [a.date_schedule, a.id]}, default: @loan.amortization_schedules.partial_and_no_payment.order(date: :asc).first, input_html: { class: 'chosen-select' } %>
           <% end %>
-          <%= f.input :description, as: :text, input_html: { id: 'description' } %>
-          <%= f.input :principal_amount, input_html: { value: @loan.amortized_principal }, as: :currency  %>
-          <%= f.input :interest_amount, input_html: { value: @loan.amortized_interest }, as: :currency  %>
+          <%= f.input :description, as: :string, input_html: { id: 'description' } %>
+          <%= f.input :principal_amount, input_html: { value: 0 }, as: :currency  %>
+          <%= f.input :interest_amount, input_html: { value: 0 }, as: :currency  %>
           <%= f.input :penalty_amount, input_html: { value: 0 }, as: :currency  %>
           <%= f.input :reference_number %>
           <%= f.input :loan_id, input_html: { value: @loan.id },as: :hidden %>
           <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
           <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
-          <%= f.input :cash_account_id, default: current_user.cash_accounts.first, collection: current_user.cash_accounts.map{|a| [a.name, a.id] }, input_html: { class: 'chosen-select' } %>
+          <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] }, input_html: { class: 'chosen-select' }, default: current_user.cash_accounts.first %>
           <hr>
           <%= f.submit "Proceed", class: "btn btn-primary float-right", data: {disable_with: "Processing..." } %>
           <%= link_to 'Cancel', loan_path(@loan), class: "text-danger float-left" %>

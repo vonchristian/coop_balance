@@ -1253,6 +1253,8 @@ example_id                                                                      
 ./spec/system/loans_module/loans/accounting/payment_from_savings/new_system_spec.rb[1:1]                        | passed  | 6.9 seconds            |
 ./spec/system/loans_module/loans/accounting/payment_from_share_capitals/new_system_spec.rb[1:1]                 | passed  | 5.13 seconds           |
 ./spec/system/loans_module/loans/accounting/payment_vouchers/delete_system_spec.rb[1:1]                         | passed  | 11.46 seconds          |
+./spec/system/loans_module/loans/payments/new_system_spec.rb[1:1]                                               | passed  | 11.62 seconds          |
+./spec/system/loans_module/loans/payments/new_system_spec.rb[1:2]                                               | passed  | 1.97 seconds           |
 ./spec/system/members/loan_applications/disbursements/new_system_spec.rb[1:1]                                   | failed  | 1 minute 12.76 seconds |
 ./spec/system/members/loan_applications/new_system_spec.rb[1:1]                                                 | failed  | 14.12 seconds          |
 ./spec/system/members/loan_applications/new_system_spec.rb[1:2]                                                 | passed  | 0.72456 seconds        |

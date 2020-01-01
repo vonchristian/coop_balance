@@ -2,7 +2,7 @@ require 'will_paginate/array'
 module Loans
   class PaymentsController < ApplicationController
     def index
-      @loan      = current_cooperative.loans.find(params[:loan_id])
+      @loan      = current_office.loans.find(params[:loan_id])
       @payments  = @loan.loan_payments.sort_by(&:entry_date).reverse.uniq.paginate(page: params[:page], per_page: 25)
       @from_date = params[:from_date] ? Date.parse(params[:from_date]) : @loan.entries.order(entry_date: :desc).first.entry_date
       @to_date   = params[:to_date] ? Date.parse(params[:to_date]) : @loan.last_transaction_date
@@ -21,11 +21,11 @@ module Loans
       end
     end
     def new
-      @loan = current_cooperative.loans.find(params[:loan_id])
+      @loan    = current_office.loans.find(params[:loan_id])
       @payment = @loan.payment_processor.new
     end
     def create
-      @loan = current_cooperative.loans.find(params[:loan_id])
+      @loan = current_office.loans.find(params[:loan_id])
       @payment = @loan.payment_processor.new(payment_params)
       if @payment.valid?
         @payment.process!
