@@ -6,10 +6,10 @@ RSpec.describe Voucher  do
     it { is_expected.to belong_to :cooperative }
     it { is_expected.to belong_to(:cooperative_service).optional }
     it { is_expected.to belong_to :office }
-    it { is_expected.to belong_to :accounting_entry }
+    it { is_expected.to belong_to(:accounting_entry).optional }
     it { is_expected.to belong_to :payee }
     it { is_expected.to belong_to :preparer }
-    it { is_expected.to belong_to :disburser }
+    it { is_expected.to belong_to(:disburser).optional  }
     it { is_expected.to have_many :voucher_amounts }
   end
 

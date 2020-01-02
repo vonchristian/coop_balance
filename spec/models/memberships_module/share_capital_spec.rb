@@ -21,7 +21,6 @@ module MembershipsModule
       it { is_expected.to delegate_method(:name).to(:subscriber).with_prefix }
       it { is_expected.to delegate_method(:name).to(:office).with_prefix }
     	it { is_expected.to delegate_method(:name).to(:share_capital_product).with_prefix }
-      it { is_expected.to delegate_method(:interest_payable_account).to(:share_capital_product).with_prefix }
       it { is_expected.to delegate_method(:equity_account).to(:share_capital_product).with_prefix }
       it { is_expected.to delegate_method(:default_product?).to(:share_capital_product).with_prefix }
       it { is_expected.to delegate_method(:cost_per_share).to(:share_capital_product).with_prefix }

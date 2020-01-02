@@ -7,10 +7,10 @@ module MembershipsModule
     pg_search_scope :text_search, :against => [:account_number, :account_owner_name]
     multisearchable against: [:account_number, :account_owner_name]
 
+    belongs_to :office,                       class_name: "Cooperatives::Office"
     belongs_to :cooperative
     belongs_to :subscriber,                   polymorphic: true, touch: true
     belongs_to :share_capital_product,        class_name: "CoopServicesModule::ShareCapitalProduct"
-    belongs_to :office,                       class_name: "Cooperatives::Office"
     belongs_to :barangay,                     class_name: "Addresses::Barangay", optional: true
     belongs_to :organization,                 optional: true
     belongs_to :share_capital_equity_account, class_name: 'AccountingModule::Account', foreign_key: 'equity_account_id'
@@ -21,14 +21,14 @@ module MembershipsModule
     delegate :name,
             :equity_account,
             :default_product?,
-         
+
             :cost_per_share,
              to: :share_capital_product, prefix: true
     delegate :name, :current_address_complete_address, :current_contact_number, to: :subscriber, prefix: true
     delegate :avatar, :name, to: :subscriber
     delegate :name, to: :office, prefix: true
     delegate :balance, :debits_balance, :credits_balance, to: :share_capital_equity_account
-   
+
     delegate :name, to: :share_capital_equity_account, prefix: true
 
     before_save :set_account_owner_name

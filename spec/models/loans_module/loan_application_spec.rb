@@ -183,7 +183,6 @@ module LoansModule
           loan_product: regular_loan)
 
          regular_loan_application.loan_product.loan_processor.new(loan_application: regular_loan_application).process!
-         binding.pry
         # expect(regular_loan_application.total_interest).to eq 48_000
         expect(regular_loan_application.voucher_interest_amount).to eq 24_000
         expect(regular_loan_application.interest_balance).to eq 24_000
