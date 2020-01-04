@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_02_132045) do
+ActiveRecord::Schema.define(version: 2020_01_04_022447) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1008,6 +1008,14 @@ ActiveRecord::Schema.define(version: 2020_01_02_132045) do
     t.datetime "updated_at", null: false
     t.index ["beneficiary_type", "beneficiary_id"], name: "inde_beneficiary_on_membership_beneficiaries"
     t.index ["membership_id"], name: "index_membership_beneficiaries_on_membership_id"
+  end
+
+  create_table "membership_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title"
+    t.uuid "cooperative_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["cooperative_id"], name: "index_membership_categories_on_cooperative_id"
   end
 
   create_table "memberships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -2041,6 +2049,7 @@ ActiveRecord::Schema.define(version: 2020_01_02_132045) do
   add_foreign_key "member_occupations", "occupations"
   add_foreign_key "members", "carts"
   add_foreign_key "membership_beneficiaries", "memberships"
+  add_foreign_key "membership_categories", "cooperatives"
   add_foreign_key "memberships", "cooperatives"
   add_foreign_key "memberships", "offices"
   add_foreign_key "merchants", "accounts", column: "liability_account_id"

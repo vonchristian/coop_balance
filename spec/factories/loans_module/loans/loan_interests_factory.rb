@@ -5,7 +5,5 @@ FactoryBot.define do
     date        { Date.current }
     description { 'loan interests' }
     amount      { 100 }
-
-
   end
 end

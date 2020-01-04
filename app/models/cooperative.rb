@@ -59,6 +59,8 @@ class Cooperative < ApplicationRecord
   has_many :loan_protection_plan_providers, class_name: "LoansModule::LoanProtectionPlanProvider"
   has_many :net_income_distributions
   has_many :account_categories,             class_name: 'AccountingModule::AccountCategory'
+  has_many :membership_categories
+
   validates :name, :abbreviated_name, presence: true
   validates :name, uniqueness: true
   validates :registration_number, presence: true, uniqueness: true
