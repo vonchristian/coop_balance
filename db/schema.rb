@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_01_045653) do
+ActiveRecord::Schema.define(version: 2020_01_02_132045) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -25,6 +25,17 @@ ActiveRecord::Schema.define(version: 2020_01_01_045653) do
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_account_budgets_on_account_id"
     t.index ["cooperative_id"], name: "index_account_budgets_on_cooperative_id"
+  end
+
+  create_table "account_scopes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "scopeable_type", null: false
+    t.uuid "scopeable_id", null: false
+    t.string "account_type", null: false
+    t.uuid "account_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["account_type", "account_id"], name: "index_account_scopes_on_account_type_and_account_id"
+    t.index ["scopeable_type", "scopeable_id"], name: "index_account_scopes_on_scopeable_type_and_scopeable_id"
   end
 
   create_table "accountable_accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -768,8 +779,11 @@ ActiveRecord::Schema.define(version: 2020_01_01_045653) do
     t.decimal "amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "discountable_type", null: false
+    t.uuid "discountable_id", null: false
     t.index ["computed_by_id"], name: "index_loan_discounts_on_computed_by_id"
     t.index ["discount_type"], name: "index_loan_discounts_on_discount_type"
+    t.index ["discountable_type", "discountable_id"], name: "index_loan_discounts_on_discountable_type_and_discountable_id"
     t.index ["loan_id"], name: "index_loan_discounts_on_loan_id"
   end
 

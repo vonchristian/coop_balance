@@ -5,7 +5,15 @@ module LoansModule
     describe LoanDiscount do
       describe 'associations' do
         it { is_expected.to belong_to :loan }
+        it { is_expected.to belong_to :discountable }
         it { is_expected.to belong_to :computed_by }
+      end
+
+      it '.total' do
+        discount_1 = create(:loan_discount, amount: 100)
+        discount_2 = create(:loan_discount, amount: 200)
+
+        expect(described_class.total).to eql 300
       end
     end
   end
