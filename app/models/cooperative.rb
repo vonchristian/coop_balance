@@ -64,6 +64,7 @@ class Cooperative < ApplicationRecord
   validates :name, :abbreviated_name, presence: true
   validates :name, uniqueness: true
   validates :registration_number, presence: true, uniqueness: true
+  
   def avatar
     logo
   end
