@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_06_031710) do
+ActiveRecord::Schema.define(version: 2020_01_06_044134) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1021,7 +1021,6 @@ ActiveRecord::Schema.define(version: 2020_01_06_031710) do
   create_table "memberships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "membership_date"
     t.uuid "cooperative_id"
-    t.integer "membership_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "account_number"
@@ -1040,7 +1039,6 @@ ActiveRecord::Schema.define(version: 2020_01_06_031710) do
     t.index ["cooperative_id"], name: "index_memberships_on_cooperative_id"
     t.index ["cooperator_type", "cooperator_id"], name: "index_memberships_on_cooperator_type_and_cooperator_id"
     t.index ["membership_category_id"], name: "index_memberships_on_membership_category_id"
-    t.index ["membership_type"], name: "index_memberships_on_membership_type"
     t.index ["office_id"], name: "index_memberships_on_office_id"
     t.index ["status"], name: "index_memberships_on_status"
   end
