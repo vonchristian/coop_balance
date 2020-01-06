@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_04_022447) do
+ActiveRecord::Schema.define(version: 2020_01_06_031710) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1034,10 +1034,12 @@ ActiveRecord::Schema.define(version: 2020_01_04_022447) do
     t.string "cooperator_type"
     t.uuid "cooperator_id"
     t.uuid "office_id"
+    t.uuid "membership_category_id"
     t.index ["account_number"], name: "index_memberships_on_account_number", unique: true
     t.index ["beneficiary_type", "beneficiary_id"], name: "index_memberships_on_beneficiary_type_and_beneficiary_id"
     t.index ["cooperative_id"], name: "index_memberships_on_cooperative_id"
     t.index ["cooperator_type", "cooperator_id"], name: "index_memberships_on_cooperator_type_and_cooperator_id"
+    t.index ["membership_category_id"], name: "index_memberships_on_membership_category_id"
     t.index ["membership_type"], name: "index_memberships_on_membership_type"
     t.index ["office_id"], name: "index_memberships_on_office_id"
     t.index ["status"], name: "index_memberships_on_status"
@@ -2051,6 +2053,7 @@ ActiveRecord::Schema.define(version: 2020_01_04_022447) do
   add_foreign_key "membership_beneficiaries", "memberships"
   add_foreign_key "membership_categories", "cooperatives"
   add_foreign_key "memberships", "cooperatives"
+  add_foreign_key "memberships", "membership_categories"
   add_foreign_key "memberships", "offices"
   add_foreign_key "merchants", "accounts", column: "liability_account_id"
   add_foreign_key "merchants", "cooperatives"
