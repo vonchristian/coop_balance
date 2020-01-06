@@ -38,7 +38,7 @@ gem 'prawn'
 gem 'prawn-table'
 gem 'prawn-qrcode'
 gem 'public_activity'
-gem 'mina-puma', require: false
+gem 'mina-puma',     require: false
 gem 'mina-whenever', require: false
 gem 'barby'
 gem 'rqrcode'
@@ -59,7 +59,6 @@ gem "responders"
 gem 'money-rails'
 
 gem "gretel"
-gem 'webdack-uuid_migration'
 gem 'fast_jsonapi'
 gem 'pagy'
 gem 'letter_opener'

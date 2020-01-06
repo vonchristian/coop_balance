@@ -17,7 +17,7 @@ describe "New membership application" do
   end
 
   it "with valid attributes", js: true do
-    select_from_chosen "Regular Member",   from: 'Membership category'
+    select_from_chosen "Regular Member",    from: 'Membership category'
     fill_in "First name",                   with: "Von"
     fill_in "Middle name",                  with: "P"
     fill_in "Last name",                    with: "Halip"
@@ -32,7 +32,7 @@ describe "New membership application" do
     select_from_chosen "Test province",     from: 'Province'
     select_from_chosen "Test municipality", from: 'Municipality'
     select_from_chosen "Test barangay",     from: 'Barangay'
-    fill_in "Membership date",               with: Date.current
+    fill_in "Membership date",              with: Date.current
 
     click_button "Save Member"
 
