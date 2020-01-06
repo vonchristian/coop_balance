@@ -6,7 +6,6 @@ module Addresses
                     using: { tsearch: { prefix: true } } )
 
     has_one_attached :avatar
-    belongs_to :cooperative
     belongs_to :municipality
     has_many :streets
     has_many :loans, class_name: "LoansModule::Loan"
@@ -22,8 +21,10 @@ module Addresses
 
     before_save :set_default_avatar
 
-    delegate :name, to: :municipality, prefix: true, allow_nil: true
-
+    delegate :name, to: :municipality, prefix: true
+    def name_and_municipality
+      "#{name}, #{municipality_name}"
+    end 
     private
     def set_default_avatar
       if avatar.attachment.blank?

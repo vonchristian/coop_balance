@@ -1,7 +1,7 @@
 class MembershipApplication
   include ActiveModel::Model
   attr_accessor :first_name, :middle_name, :last_name, :avatar, :tin_number,
-  :date_of_birth, :account_number, :membership_type, :civil_status, :sex,
+  :date_of_birth, :account_number, :membership_category_id, :civil_status, :sex,
   :contact_number, :email, :office_id, :cooperative_id, :membership_date,
   :complete_address, :barangay_id, :municipality_id, :province_id
 
@@ -35,15 +35,15 @@ class MembershipApplication
     date_of_birth:  date_of_birth,
     contact_number: contact_number,
     email:          email,
-    last_transaction_date: Date.current,
-    avatar:         avatar_asset)
+    last_transaction_date: Date.current)
+    member.avatar.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'default.png')), filename: 'default.png')
 
   end
   def avatar_asset
     if avatar.present?
       avatar
     else
-      File.open("app/assets/images/logo.png")
+      Rails.root.join('app', 'assets', 'images', 'default.png')
     end
   end
 
@@ -52,7 +52,7 @@ class MembershipApplication
       office_id:       office_id,
       cooperator:      find_member,
       account_number:  SecureRandom.uuid,
-      membership_type: membership_type,
+      membership_category_id: membership_category_id,
       membership_date: membership_date
     )
   end

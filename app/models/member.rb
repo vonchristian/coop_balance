@@ -50,7 +50,7 @@ class Member < ApplicationRecord
   delegate :name, to: :current_organization, prefix: true, allow_nil: true
   before_validation :set_member_code, on: :create
   before_save :update_birth_date_fields
-  before_save :set_default_image, :set_default_account_number
+  before_save  :set_default_account_number
   # before_save :normalize_name
 
   def beneficiaries
@@ -238,11 +238,6 @@ class Member < ApplicationRecord
   end
 
   private
-  def set_default_image
-    if !self.avatar.attached?
-      self.avatar.attach(io: File.open(Rails.root.join('app', 'assets', 'images', 'default.png')), filename: 'default-image.png', content_type: 'image/png')
-    end
-  end
 
   def set_default_account_number
     self.account_number ||= SecureRandom.uuid

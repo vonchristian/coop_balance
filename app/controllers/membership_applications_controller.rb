@@ -22,7 +22,7 @@ class MembershipApplicationsController < ApplicationController
       :avatar,
       :date_of_birth,
       :account_number,
-      :membership_type,
+      :membership_category_id,
       :civil_status,
       :sex,
       :contact_number,
