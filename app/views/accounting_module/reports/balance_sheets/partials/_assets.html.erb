@@ -1,4 +1,4 @@
-<% total_assets = [] >
+<% total_assets = [] %>
 <h3 class="title-up"> ASSETS </h3>
 <% current_office.level_three_account_categories.assets.order(code: :asc).each do |l3_account_category| %>
   <%= l3_account_category.title %>

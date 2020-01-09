@@ -1,23 +1,4 @@
 <% breadcrumb :members, @members %>
-<% months = [] %>
-<% (Date.current - 6.months..Date.current).each do |month| %>
-<% months << month.end_of_month %>
-<% end %>
-<% members_count = [] %>
-<% months.uniq.each do |date| %>
-<% members_count << { date.strftime("%b") => current_cooperative.memberships.approved_at(from_date: date.beginning_of_month, to_date: date.end_of_month).count } %>
-
-<% end %>
-
-<% months = [] %>
-<% (Date.current - 6.months..Date.current).each do |month| %>
-<% months << month.end_of_month %>
-<% end %>
-<% members_count = [] %>
-<% months.uniq.each do |date| %>
-<% members_count << { date.strftime("%b") => current_cooperative.memberships.approved_at(from_date: date.beginning_of_month, to_date: date.end_of_month).count } %>
-
-<% end %>
 
 <div class="row">
   <div class="col-md-8">
