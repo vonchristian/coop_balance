@@ -1,4 +1,4 @@
-<% total_assets = [] %>
+<% total_assets = BigDecimal('0') %>
 <h3 class="title-up"> ASSETS </h3>
 <% current_office.level_three_account_categories.assets.order(code: :asc).each do |l3_account_category| %>
   <%= l3_account_category.title %>
@@ -15,7 +15,7 @@
           <span class="float-left"><%= number_to_currency l1_balance %></span>
         </div>
       </div>
-      <% total_assets << l1_balance %>
+      <% total_assets += l1_balance %>
     <% end %>
     <hr>
     <div class="row">
@@ -52,6 +52,7 @@
         <span class="float-left"><%= number_to_currency l1_balance %></span>
       </div>
     </div>
+      <% total_assets += l1_balance %>
   <% end %>
   <hr>
   <div class="row">
@@ -75,9 +76,9 @@
         <span class="float-left"><%= number_to_currency l1_balance %></span>
       </div>
     </div>
+      <% total_assets += l1_balance %>
 <% end %>
 <hr>
-<%=total_assets.sum %>
 <div class="row">
   <div class="col-md-7">
     <b>TOTAL ASSETS</b>

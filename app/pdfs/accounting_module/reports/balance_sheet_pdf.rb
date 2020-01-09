@@ -4,8 +4,8 @@ module AccountingModule
       attr_reader :view_context, :to_date, :cooperative, :office, :from_date
       def initialize(args={})
         super(margin: 40, page_size: [612, 988], page_layout: :portrait)
-        @from_date    = Date.current.beginning_of_year
         @to_date      = args[:to_date]
+        @from_date    = args[:to_date].beginning_of_year
         @view_context = args[:view_context]
         @cooperative  = args[:cooperative]
         @office       = args[:office]
