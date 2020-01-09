@@ -153,14 +153,25 @@
       </div>
     </div>
 <% end %>
-<hr>
-<div cla>
+
+<div class='row'>
+  <div class='col-md-7'>
+    <b> Undivided Net Surplus </b>
+  </div>
+  <div class='col-md-5'>
+    <% net_surplus = (current_office.level_one_account_categories.revenues.balance(from_date: @to_date.beginning_of_year, to_date: @to_date)-current_office.level_one_account_categories.expenses.balance(from_date: @to_date.beginning_of_year, to_date: @to_date)) %>
+    <b><%= number_to_currency net_surplus %></b>
+  
+  </div>
+</div>
+<hr />
+
 <div class="row">
   <div class="col-md-7">
     <b>TOTAL EQUITY</b>
   </div>
   <div class="col-md-5">
-    <b><%= number_to_currency current_office.level_one_account_categories.equities.balance(to_date: @to_date) %></b>
+    <b><%= number_to_currency current_office.level_one_account_categories.equities.balance(to_date: @to_date) + net_surplus %></b>
   </div>
 </div>
 <hr>
