@@ -14,9 +14,7 @@
           </div>
           <div class="col-md-10 col-sm-10">
             <h3 class="card-title no-margin-bottom"> <%= @borrower.name %> </h3>
-            <small class="text-muted">
-              <%= @borrower.memberships.present? ? @borrower.current_membership.membership_type.try(:titleize) : "Borrower"%>
-            </small>
+            
           </div>
         </div>
       </div>

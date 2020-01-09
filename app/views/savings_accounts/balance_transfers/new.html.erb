@@ -15,9 +15,7 @@
               </div>
               <div class="col-md-9 col-sm-9">
                 <h3 class="card-title no-margin-bottom"> <%= @origin_saving.depositor_name %> </h3>
-                <small class="text-muted">
-                  <%= @origin_saving.depositor.memberships.present? ? @origin_saving.depositor.current_membership.membership_type.try(:titleize) : "Depositor"%>
-                </small>
+                
               </div>
             </div>
           </div>
@@ -38,9 +36,7 @@
               </div>
               <div class="col-md-9 col-sm-9">
                 <h3 class="card-title no-margin-bottom"> <%= @destination_saving.depositor_name %> </h3>
-                <small class="text-muted">
-                  <%= @destination_saving.depositor.memberships.present? ? @destination_saving.depositor.current_membership.membership_type.try(:titleize) : "Depositor"%>
-                </small>
+                
               </div>
             </div>
           </div>
