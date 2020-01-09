@@ -48,7 +48,7 @@ wb.styles do |style|
         "",
         "",
         "",
-        savings_account.balance(commercial_document: savings_account, to_date: @to_date)
+        savings_account.balance(to_date: @to_date)
       ], style: top_row
       sheet.merge_cells accounts.cells[(0..3)]
     end
