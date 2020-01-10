@@ -12,15 +12,14 @@ module Vouchers
     private
     def create_voucher_amount
       Vouchers::VoucherAmount.create(
-        cart_id: cart_id, 
-        cooperative: find_employee.cooperative,
-        amount: amount,
-        account_id: account_id,
-        amount_type: set_amount_type(amount_type),
+        cart_id:             cart_id, 
+        cooperative:         find_employee.cooperative,
+        amount:              amount,
+        account_id:          account_id,
+        amount_type:         set_amount_type(amount_type),
         description:         description,
         commercial_document: find_employee,
-        recorder:            find_employee
-        )
+        recorder:            find_employee)
         if cash_account_id.present?
           create_cash_account_line_item
         end

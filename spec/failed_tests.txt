@@ -1270,4 +1270,4 @@ example_id                                                                      
 ./spec/system/share_capitals/accounting/balance_transfers/new_system_spec.rb[1:1]                               | passed  | 9.67 seconds           |
 ./spec/system/share_capitals/accounting/index_system_spec.rb[1:1]                                               | passed  | 6.23 seconds           |
 ./spec/system/share_capitals/balance_transfers/new_system_spec.rb[1:1]                                          | passed  | 13.18 seconds          |
-./spec/system/share_capitals/multiple_line_items/new_system_spec.rb[1:1]                                        | passed  | 9.86 seconds           |
+./spec/system/share_capitals/multiple_line_items/new_system_spec.rb[1:1]                                        | passed  | 12.86 seconds          |

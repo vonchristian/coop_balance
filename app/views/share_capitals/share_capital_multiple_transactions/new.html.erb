@@ -1,17 +1,80 @@
-<% @share_capitals.each do |share_capital| %>
-  <%= link_to 'Select', new_share_capital_multiple_line_item_path(share_capital), id: "#{share_capital.id}-select-account" %>
-<% end %>
-<% current_cart.voucher_amounts.each do |voucher_amount| %>
-  <%= number_to_currency voucher_amount.amount %>
-<% end %>
+<div class='container'>
+  <div class='row'>
+    <div class='col-md-6'>
+      <div class='card'>
+        <div class='card-body'>
+          <h3 class='title-up'> Share Capitals </h3><br />
+        <%= form_tag new_share_capital_multiple_transaction_path, method: :get do %>
+            <div class="input-group">
+              <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search by Subscriber", id: 'loan-search-form' %>
+              <span class="input-group-btn">
+                <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-default btn-flat") do %>
+                  <i class="fa fa-search"></i>
+                <% end %>
+              </span>
+            </div>
+          <% end %>
+          <br>
+          <% @share_capitals.each do |share_capital| %>
+            <%= link_to new_share_capital_multiple_line_item_path(share_capital), id: "#{share_capital.id}-select-account" do %>
+              <div class='row'>
+                <div class='col-md-2'>
+                  <%=image_tag(share_capital.avatar, height: 45, width: 45, class: 'img-circle') %>
+                </div>
+                <div class='col-md-5'>
+                  <b><%= share_capital.account_name %></b><br>
+                  <span class=text-muted><%= share_capital.share_capital_product_name %></span>
+                </div>
+                <div class='col-md-4'>
+                  <h4 class='title-up float-right'><%= number_to_currency share_capital.balance %></h4>
+                </div>
+              </div>
+              <hr />
+            <% end %>
+          <% end %>
+          <%==pagy_bootstrap_nav(@pagy) %>
+        </div>
+      </div>
+    </div>
+    <div class='col-md-6'>
+      <div class='card'>
+        <div class='card-body'>
+          <h4 class='subtitle-up'> Voucher Details </h4>   
+
+          <% current_cart.voucher_amounts.each do |voucher_amount| %>
+            <div class='row'>
+              <div class='col-md-2'>
+                <%= image_tag(ShareCapitals::CartPaymentFinder.new(voucher_amount: voucher_amount, office: current_office).share_capital.avatar, height: 45, width: 45, class: 'img-circle') %>
+              </div>
+              <div class='col-md-5'>
+                <b><%= ShareCapitals::CartPaymentFinder.new(voucher_amount: voucher_amount, office: current_office).share_capital.account_name %></b><br>
+                <span class='text-muted'><%= ShareCapitals::CartPaymentFinder.new(voucher_amount: voucher_amount, office: current_office).share_capital.share_capital_product_name %></span>
+
+              </div>
+              <div class='col-md-4'>
+                <span class='float-right'><%= number_to_currency voucher_amount.amount %></span>
+              </div>
+            </div>
+
+            <hr>
+          <% end %>
+          <div class='row'>
+            <div class='col-md-5'>
+              <h3 class='title-up'> Total </h3>
+            </div>
+            <div class='col-md-6'>
+              <h3 class='title-up float-right'><%= number_to_currency current_cart.voucher_amounts.credit.total %></h3>
+            </div>
+          </div>
+          <br>    
 <%= simple_form_for @share_capital_multiple_transaction, url: :share_capital_multiple_transaction_processings do |f| %>
-  <%= f.input :employee_id, input_html: { value: current_user.id } %>
-  <%= f.input :cart_id, input_html: { value: current_cart.id } %>
+  <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+  <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
 
   <%= f.input :date %>
   <%= f.input :description %>
   <%= f.input :reference_number %>
-  <%= f.input :account_number, input_html: { value: SecureRandom.uuid} %>
+  <%= f.input :account_number, input_html: { value: SecureRandom.uuid}, as: :hidden %>
   <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id]}, input_html: { class: 'chosen-select' } %>
   <%= f.submit 'Proceed', class: 'btn btn-primary float-right' %>
 <% end %>
