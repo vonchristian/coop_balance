@@ -1,0 +1,86 @@
+<div class='container'>
+  <div class='row'>
+    <div class='col-md-6'>
+      <div class='card'>
+        <div class='card-body'>
+          <h3 class='title-up'> Savings Accounts  </h3><br />
+        <%= form_tag new_savings_account_multiple_transaction_path, method: :get do %>
+            <div class="input-group">
+              <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search by Depositor", id: 'loan-search-form' %>
+              <span class="input-group-btn">
+                <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-default btn-flat") do %>
+                  <i class="fa fa-search"></i> Search Account
+                <% end %>
+              </span>
+            </div>
+          <% end %>
+          <br>
+          <% @savings_accounts.each do |savings_account| %>
+            <%= link_to new_savings_account_multiple_line_item_path(savings_account), id: "#{savings_account.id}-select-account" do %>
+              <div class='row'>
+                <div class='col-md-2'>
+                  <%=image_tag(savings_account.avatar, height: 45, width: 45, class: 'img-circle') %>
+                </div>
+                <div class='col-md-5'>
+                  <b><%= savings_account.account_owner_name %></b><br>
+                  <span class=text-muted><%= savings_account.saving_product_name %></span>
+                </div>
+                <div class='col-md-4'>
+                  <h4 class='title-up float-right'><%= number_to_currency savings_account.balance %></h4>
+                </div>
+              </div>
+              <hr />
+            <% end %>
+          <% end %>
+          <%==pagy_bootstrap_nav(@pagy) %>
+        </div>
+      </div>
+    </div>
+    <div class='col-md-6'>
+      <div class='card'>
+        <div class='card-body'>
+          <h4 class='subtitle-up'> Voucher Details </h4>   
+
+          <% current_cart.voucher_amounts.each do |voucher_amount| %>
+            <% savings_account = SavingsAccounts::CartPaymentFinder.new(voucher_amount: voucher_amount, office: current_office).savings_account %>
+            <div class='row'>
+              <div class='col-md-2'>
+                <%= image_tag(savings_account.avatar, height: 45, width: 45, class: 'img-circle') %>
+              </div>
+              <div class='col-md-5'>
+                <b><%= savings_account.account_owner_name %></b><br>
+                <span class='text-muted'><%= savings_account.saving_product_name %></span>
+
+              </div>
+              <div class='col-md-4'>
+                <span class='float-right'><%= number_to_currency voucher_amount.amount %></span>
+              </div>
+              <div class='col-md-1'>
+                <%= link_to savings_account_multiple_line_items_path(id: voucher_amount.id, savings_account_id: savings_account.id), method: :delete do %>
+                  <span class='text-danger'><i class='fa fa-times'></i></span>
+                <% end %>
+              </div>
+            </div>
+
+            <hr>
+          <% end %>
+          <div class='row'>
+            <div class='col-md-5'>
+              <h3 class='title-up'> Total </h3>
+            </div>
+            <div class='col-md-6'>
+              <h3 class='title-up float-right'><%= number_to_currency current_cart.voucher_amounts.credit.total %></h3>
+            </div>
+          </div>
+          <br>    
+<%= simple_form_for @savings_account_multiple_transaction, url: :savings_account_multiple_transaction_processings do |f| %>
+  <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+  <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
+
+  <%= f.input :date, as: :string, input_html: { class: 'datepicker' } %>
+  <%= f.input :description %>
+  <%= f.input :reference_number %>
+  <%= f.input :account_number, input_html: { value: SecureRandom.uuid}, as: :hidden %>
+  <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id]}, input_html: { class: 'chosen-select' } %>
+  <%= f.submit 'Proceed', class: 'btn btn-primary float-right' %>
+<% end %>

@@ -1,0 +1,9 @@
+<%= simple_form_for @line_item, url: :savings_account_multiple_line_items do |f| %>
+  <%= f.input :amount %>
+  <%= f.input :savings_account_id, input_html: { value: @savings_account.id} %>
+  <%= f.input :employee_id, input_html: { value: current_user.id} %>
+  <%= f.input :cart_id, input_html: { value: current_cart.id} %>
+
+  
+  <%= f.submit 'Add Amount' %>
+<% end %>

@@ -436,6 +436,8 @@ Rails.application.routes.draw do
     resources :voucher_confirmations, only: [:create],              module: :savings_accounts
     resources :transactions,           only: [:index],              module: :savings_accounts
     resources :beneficiaries,            only: [:edit, :update],    module: :savings_accounts
+    resources :multiple_line_items,            only: [:new, :create],    module: :savings_accounts
+
   end
 
   resources :search_results, only: [:index, :show]
@@ -681,5 +683,11 @@ Rails.application.routes.draw do
   resources :share_capital_multiple_transaction_processings, only: [:create], module: :share_capitals
   resources :share_capital_multiple_transaction_vouchers, only: [:show, :destroy], module: :share_capitals do 
     resources :confirmations, only: [:create], module: :share_capital_multiple_transactions
+  end 
+
+  resources :savings_account_multiple_transactions, only: [:new], module: :savings_accounts 
+  resources :savings_account_multiple_transaction_processings, only: [:create], module: :savings_accounts
+  resources :savings_account_multiple_transaction_vouchers, only: [:show, :destroy], module: :savings_accounts do 
+    resources :confirmations, only: [:create], module: :savings_account_multiple_transactions
   end 
 end

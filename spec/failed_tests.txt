@@ -1267,6 +1267,7 @@ example_id                                                                      
 ./spec/system/membership_applications/new_membership_application_system_spec.rb[1:1]                            | passed  | 15.23 seconds          |
 ./spec/system/membership_applications/new_membership_application_system_spec.rb[1:2]                            | passed  | 2.2 seconds            |
 ./spec/system/savings_accounts/accounting/index_system_spec.rb[1:1]                                             | passed  | 3.61 seconds           |
+./spec/system/savings_accounts/multiple_deposits/new_system_spec.rb[1:1]                                        | passed  | 12.48 seconds          |
 ./spec/system/share_capitals/accounting/balance_transfers/new_system_spec.rb[1:1]                               | passed  | 9.67 seconds           |
 ./spec/system/share_capitals/accounting/index_system_spec.rb[1:1]                                               | passed  | 6.23 seconds           |
 ./spec/system/share_capitals/balance_transfers/new_system_spec.rb[1:1]                                          | passed  | 13.18 seconds          |
