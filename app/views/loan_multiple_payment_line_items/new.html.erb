@@ -3,12 +3,14 @@
     <div class="col-6">
       <div class="card">
         <div class="card-body">
+          <h3 class="title-up"> Search Loans </h3>
+
           <%= form_tag new_loan_multiple_payment_line_item_path, method: :get do %>
             <div class="input-group">
               <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search by Borrower", id: 'loan-search-form' %>
               <span class="input-group-btn">
                 <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-default btn-flat") do %>
-                  <i class="fa fa-search"></i>
+                  <i class="fa fa-search"></i> Search Loan
                 <% end %>
               </span>
             </div>
@@ -16,25 +18,36 @@
           <br>
           <br>
           <% @loans.each do |loan| %>
+            <%= link_to  new_loan_multiple_payment_path(loan) do %>
             <div class="row">
+              <div class='col-md-2'>
+                <%= image_tag(loan.avatar, height: 60, width: 60, class: 'img-circle') %>
+
+              </div>
               <div class='col-5'>
-                <%= loan.borrower_full_name%><br>
-                <%= loan.purpose %>
+                <b><%= loan.borrower_full_name.upcase %></b><br>
+                <span class='text-muted'><%= loan.purpose %> -  <%= loan.loan_product_name %></span><br>
+                <% total_cash_amount = Loans::MultiplePaymentFinder.new(cart: current_cart).total_cash(loan) %>
+                <% if total_cash_amount > 0 %>
+                  <span class='text-success'>-<%= number_to_currency  total_cash_amount %></span>
+                <% end %>
               </div>
-              <div class="col-4">
-                <%= number_to_currency loan.principal_balance %><br>
-                <%= loan.loan_product_name %>
-              </div>
-              <div class="col-md-2">
-                <%= link_to 'Select', new_loan_multiple_payment_path(loan), class: 'btn btn-outline-primary float-right' %>
+              <div class="col-5">
+                <span class='float-right'>
+                <small class='text-muted'>PRINCIPAL BALANCE </small><br>
+                <h4 class='subtitle-up'><%= number_to_currency loan.principal_balance %></h4>
+                
+                </span>
               </div>
             </div>
             <hr>
+            <% end %>
           <% end %>
-          <%==pagy_nav(@pagy) %>
+          <%==pagy_bootstrap_nav(@pagy) %>
         </div>
       </div>
     </div>
+    <% if current_cart.voucher_amounts.total > 0 %>
     <div class="col-6">
       <div class="card">
         <div class="card-body">
@@ -61,7 +74,8 @@
           <% @loans_with_payments.uniq.each do |loan| %>
             <div class="row">
               <div class="col-md-3">
-                <%= loan.borrower_full_name %>
+                <b><%= loan.borrower_full_name.upcase %></b><br>
+                <small class='text-muted'><%= loan.purpose %></small>
               </div>
 
               <div class="col-md-2">
@@ -89,12 +103,13 @@
           <% end %>
           <div class="row">
             <div class="col-md-5">
-              <h3 class="subtitle-up"> Total </h3>
+              <h3 class="subtitle-up"> TOTAL </h3>
             </div>
             <div class="col-md-6">
               <h3 class="subtitle-up float-right"><%= number_to_currency current_cart.voucher_amounts.credit.total %></h3>
             </div>
           </div>
+          <hr />
           <%= simple_form_for @multiple_loan_payment_processing, url: :multiple_loan_payment_processings do |f| %>
             <%= f.input :date, as: :string, input_html: { class: 'datepicker'} %>
             <%= f.input :description %>
@@ -107,7 +122,7 @@
 
             <div class="row">
               <div class="col-6">
-                <%= link_to 'Cancel', cart_path(current_cart), method: :delete %>
+                <%= link_to 'Cancel', cart_path(current_cart), method: :delete, class: 'text-danger' %>
               </div>
               <div class="col-6">
                 <%= f.submit 'Proceed', class: 'btn btn-primary float-right', data: { disable_with: 'Processing...' } %>
@@ -117,5 +132,6 @@
         </div>
       </div>
     </div>
+    <% end %>
   </div>
 </div>

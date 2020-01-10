@@ -94,7 +94,7 @@
           <div class="row justify-content-end">
             <div class="col-md-9">
               <%= membership.cooperative_name.upcase %><br>
-              <%= membership.membership_type.try(:titleize) %><br>
+              <%= membership.membership_category_title.try(:titleize) %><br>
               Since: <%= membership.membership_date.try(:strftime, ("%B %e, %Y")) %>
             </div>
             <div class="col-md-2">

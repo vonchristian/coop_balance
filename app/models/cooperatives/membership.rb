@@ -17,6 +17,7 @@ module Cooperatives
     validates :cooperator_id,  uniqueness: { scope: :cooperative_id }
     validates :account_number, presence: true, uniqueness: true
     delegate :name, to: :cooperative, prefix: true
+    delegate :title, to: :membership_category, prefix: true
     
     delegate :regular_member?, :associate_member?, to: :membership_category
 
