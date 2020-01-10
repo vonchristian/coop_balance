@@ -5,6 +5,7 @@ FactoryBot.define do
     association :subscriber, factory: :member
     association :share_capital_equity_account, factory: :equity
     association :share_capital_product
-    account_number { SecureRandom.uuid }
+    account_number        { SecureRandom.uuid }
+    last_transaction_date { Date.current }
   end
 end

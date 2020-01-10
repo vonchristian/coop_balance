@@ -1,0 +1,17 @@
+<% @share_capitals.each do |share_capital| %>
+  <%= link_to 'Select', new_share_capital_multiple_line_item_path(share_capital), id: "#{share_capital.id}-select-account" %>
+<% end %>
+<% current_cart.voucher_amounts.each do |voucher_amount| %>
+  <%= number_to_currency voucher_amount.amount %>
+<% end %>
+<%= simple_form_for @share_capital_multiple_transaction, url: :share_capital_multiple_transaction_processings do |f| %>
+  <%= f.input :employee_id, input_html: { value: current_user.id } %>
+  <%= f.input :cart_id, input_html: { value: current_cart.id } %>
+
+  <%= f.input :date %>
+  <%= f.input :description %>
+  <%= f.input :reference_number %>
+  <%= f.input :account_number, input_html: { value: SecureRandom.uuid} %>
+  <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id]}, input_html: { class: 'chosen-select' } %>
+  <%= f.submit 'Proceed', class: 'btn btn-primary float-right' %>
+<% end %>

@@ -206,6 +206,7 @@ Rails.application.routes.draw do
     resources :transactions, only: [:index],              module: :share_capitals
     resources :beneficiaries,  only: [:edit, :update],    module: :share_capitals
     resources :maf_beneficiaries,  only: [:edit, :update],    module: :share_capitals
+    resources :multiple_line_items, only: [:new, :create],   module: :share_capitals 
   end
 
   resources :members, only: [:index, :show, :edit, :update, :destroy] do
@@ -675,5 +676,10 @@ Rails.application.routes.draw do
     resources :multiple_payments, only: [:new, :create], module: :loans
   end
   resources :carts ,only: [:destroy]
-
+  
+  resources :share_capital_multiple_transactions, only: [:new], module: :share_capitals
+  resources :share_capital_multiple_transaction_processings, only: [:create], module: :share_capitals
+  resources :share_capital_multiple_transaction_vouchers, only: [:show, :destroy], module: :share_capitals do 
+    resources :confirmations, only: [:create], module: :share_capital_multiple_transactions
+  end 
 end

@@ -23,3 +23,5 @@ hide voucher details if no voucher amount multiple loan payment
 
 multiple share capital build up transactions 
 multiple savings deposit transactions 
+
+remove cooperative from vouchers 

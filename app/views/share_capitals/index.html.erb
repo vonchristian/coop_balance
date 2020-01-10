@@ -3,6 +3,7 @@
     <h3 class="title-up">Share Capitals </h3>
   </div>
   <div class="col-md-4">
+    <%= link_to 'New Multiple Transaction', new_share_capital_multiple_transaction_path, class: 'btn btn-primary' %>
   </div>
   <div class="col-md-4 m-0">
     <%= form_tag share_capitals_path, method: :get, class: "search-form" do %>

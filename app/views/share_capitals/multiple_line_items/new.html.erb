@@ -1,0 +1,9 @@
+<%= simple_form_for @line_item, url: :share_capital_multiple_line_items do |f| %>
+  <%= f.input :amount %>
+  <%= f.input :share_capital_id, input_html: { value: @share_capital.id} %>
+  <%= f.input :employee_id, input_html: { value: current_user.id} %>
+  <%= f.input :cart_id, input_html: { value: current_cart.id} %>
+
+  
+  <%= f.submit 'Add Amount' %>
+<% end %>

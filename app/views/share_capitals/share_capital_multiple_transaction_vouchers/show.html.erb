@@ -1,0 +1,5 @@
+<% @voucher.voucher_amounts.each do |voucher_amount| %>
+  <%= voucher_amount.account_name %>
+  <%= number_to_currency voucher_amount.amount %>
+<% end %>
+<%= link_to 'Confirm Transaction', share_capital_multiple_transaction_voucher_confirmations_path(share_capital_multiple_transaction_voucher_id: @voucher.id, voucher_id: @voucher.id), method: :create %>
