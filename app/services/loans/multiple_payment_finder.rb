@@ -23,6 +23,7 @@ module Loans
     def penalty(loan)
       cart.voucher_amounts.where(account: loan.penalty_revenue_account).sum(&:amount)
     end
+    
     def total_cash(loan)
       principal(loan) +
       interest(loan) +

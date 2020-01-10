@@ -11,9 +11,8 @@ module Loans
                   :cash_account_id,
                   :cart_id
     validates :principal_amount, :interest_amount, :penalty_amount, presence: true, numericality: { greater_than_or_equal_to: 0 }
-    validates  :cash_account_id, presence: true
 
-    def create_payment_voucher!
+    def process!
       if valid?
         ActiveRecord::Base.transaction do
           create_cart_line_item
@@ -47,33 +46,9 @@ module Loans
     private
 
     def create_cart_line_item
-
       create_penalty_amount
       create_principal_amount
       create_interest_revenue_amount
-      create_total_cash_amount
-    end
-
-    def create_total_cash_amount
-      voucher_amounts = find_cart.voucher_amounts.where(account: Employees::EmployeeCashAccount.cash_accounts)
-      if voucher_amounts.present?
-        voucher_amounts.destroy_all
-        find_cart.voucher_amounts.debit.create!(
-          recorder_id: employee_id,
-          amount:      find_cart.voucher_amounts.sum(&:amount),
-          account_id:     cash_account_id,
-          cooperative: find_employee.cooperative
-
-          )
-      else
-        find_cart.voucher_amounts.debit.create!(
-          amount:      find_cart.voucher_amounts.sum(&:amount),
-          account_id:     cash_account_id,
-          cooperative: find_employee.cooperative,
-          recorder_id: employee_id,
-
-          )
-      end
     end
 
     def create_interest_revenue_amount
@@ -109,15 +84,6 @@ module Loans
       end
     end
 
-    def find_cash_account
-      find_employee.cash_accounts.find(cash_account_id)
-    end
-
-    def total_amount
-      principal_amount.to_f +
-      interest_amount.to_f +
-      penalty_amount.to_f
-    end
 
     def principal_amount_not_more_than_balance
       errors[:principal_amount] << "Must be less than or equal to balance." if principal_amount.to_f > find_loan.balance
