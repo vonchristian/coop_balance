@@ -25,7 +25,7 @@ module Vouchers
         end
     end
     def create_cash_account_line_item
-      voucher_amounts = find_employee.voucher_amounts.where(account: cash_account)
+      voucher_amounts = find_cart.voucher_amounts.where(account: cash_account)
       if voucher_amounts.present?
         voucher_amounts.destroy_all
         Vouchers::VoucherAmount.create(
@@ -80,5 +80,9 @@ module Vouchers
         amount_type
       end
     end
+    
+    def find_cart
+      StoreFrontModule::Cart.find(cart_id)
+    end 
   end
 end

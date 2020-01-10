@@ -1,131 +1,186 @@
+<div class="container">
 <div class="row">
-  <div class="col-md-8">
-    <div class="card">
-      <div class="card-header">
-        <div class="row">
-          <div class="col-md-4 col-sm-4">
-            <h4 class="card-title">New Cash Receipt</h4>
-          </div>
-          <div class="col-md-8 col-sm-8 text-right">
-            <small><i class="fa fa-credit-card"></i> <%= @cash_account.name.upcase %></small>
-            <h2 class="number"> <%= number_to_currency @cash_account.balance %></h2>
-          </div>
+  <div class="col-md-8 offset-md-2">
+    <% if !@account.present? %>
+
+      <div class="card">
+        <div class="card-header">
+          <h3 class="title-up"> New Cash Receipt </h3>
         </div>
-      </div>
-      <div class="card-body">
-        <%= simple_form_for @cash_receipt_line_item, url: :treasury_module_cash_account_cash_receipt_line_items, html: { autocomplete: 'off' } do |f| %>
-          <%= f.input :amount_type, input_html: { value: 'credit' }, as: :hidden %>
-          <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
-
-          <div class="row">
-            <div class="col-md-6">
-              <%= f.input :account_id, label: false, placeholder: "Account", collection: AccountingModule::Account.all.map{|a| [a.name, a.id] }, prompt: "Select Account" %>
-              <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
-              <%= f.input :cash_account_id, input_html: { value: @cash_account.id }, as: :hidden %>
-
+        <div class="card-body">
+          <%=form_tag new_treasury_module_cash_account_cash_receipt_line_item_path(@cash_account), method: :get, class: "sidebar-form" do %>
+            <div class="input-group">
+              <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Account..", id: 'account-search-form' %>
+              <span class="input-group-btn">
+                <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-outline-primary") do %>
+                  <i class="fa fa-search"></i> Search Account
+                <% end %>
+              </span>
             </div>
-            <div class="col-md-4">
-              <%= f.input :amount, label: false, placeholder: 'Amount', as: :currency  %>
+          <% end %>
+          <br>
+          <% if @accounts.present? %>
+            <% @accounts.each do |account| %>
+              <div class="row">
+                <div class="col-md-9">
+                  <p class="title-up"><%= account.name %></p>
+                  <span class="text-muted"><%= account.normalized_type %></span>
+                </div>
+                <div class="col-md-3">
+                  <%= link_to 'Select', new_treasury_module_cash_account_cash_receipt_line_item_path(cash_account_id: @cash_account.id, account_id: account.id), id: "#{account.id}-select-account", class: 'btn btn-outline-primary' %>
+                </div>
+              </div>
+              <hr>
+            <% end %>
+          <% end %>
+        <% else %>
+          <div class='card'>
+            <div class='card-body'>
+          <h3 class="title-up"> New Receipt  Amount Details </h3>
+          <%= simple_form_for @receipt_line_item, url: :treasury_module_cash_account_cash_receipt_line_items, html: { autcomplete: 'off' } do |f| %>
+            <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+            <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
+            <%= f.input :account_id, label: false, placeholder: "Account", input_html: { value: @account.id }, as: :hidden %>
+            <%= f.input :cash_account_id, label: false, placeholder: "Account", input_html: { value: @cash_account.id }, as: :hidden %>
+            <div class="row">
+              <div class="col-md-5">
+                <p class='title-up'><%= @account.name %></p>
+                <span class="badge bg-gray"><%= @account.normalized_type %></span>
+              </div>
+              <div class="col-md-4">
+                <%= f.input :amount, label: false, placeholder: 'Amount', as: :currency  %>
+              </div>
+            
+              <div class="col-md-2">
+                <%= f.submit "Add Amount", class: "btn btn-primary", data: { disable_with: "Adding..." } %>
+              </div>
             </div>
-            <div class="col-md-2">
-              <%= button_tag( :class => "btn btn-primary", data: { disable_with: "Adding..."}) do %>
-                <i class="fa fa-plus-circle"></i> Add
-              <% end %>
-            </div>
-          </div>
+            <br>
+          <% end %>
         <% end %>
-
-        <% if !@voucher_amounts.valid? %>
-          <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>Amounts are not equal.</strong> You should check in on some of those fields below.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
-          </div>
-        <% end %>
-
-        <table class="table table-hover">
+        
+          <hr>
+          <table class="table">
           <thead>
             <tr>
-              <th>DEBIT</th>
-              <th>ACCOUNT</th>
-              <th class="text-right">CREDIT</th>
+              <th> Debit </th>
+              <th> Account </th>
+              <th> Credit </th>
               <th></th>
             </tr>
           </thead>
           <tbody>
-            <% @voucher_amounts.each do |amount| %>
+            <% current_cart.voucher_amounts.each do |amount| %>
               <tr>
                 <td>
                   <% if amount.debit? %>
-                    <%= number_to_currency amount.amount %>
+                  <%= number_to_currency amount.amount %>
                   <% end %>
                 </td>
-
                 <td><%= amount.account_name %></td>
-
-                <td class="text-right">
+                <td>
                   <% if amount.credit? %>
                     <%= number_to_currency amount.amount %>
                   <% end %>
                 </td>
-                <td class="text-right">
-                  <%= link_to treasury_module_cash_account_cash_receipt_line_item_path(id: @cash_account.id, amount_id: amount.id, employee_id: current_user.id), method: :delete do %>
-                    <span title="Remove" data-toggle="tooltip" class="fa fa-times text-danger"></span>
+
+                <td>
+                <% if !(amount.account == @cash_account) %>
+                  <%= link_to treasury_module_cash_account_cash_disbursement_line_item_cancellations_path(id: amount.id, cash_account_id: @cash_account.id), { method: :create, title: 'Remove Amount' } do %>
+                    <span title="Remove Amount" data-toggle="tooltip" class="fa fa-times text-danger"></span>
                   <% end %>
+                <% end %>
                 </td>
               </tr>
             <% end %>
             <tr>
-              <th class="number total"><%= number_to_currency @voucher_amounts.debit.sum(&:amount) %></th>
-              <th></th>
-              <th class="text-right number total"><%= number_to_currency @voucher_amounts.credit.sum(&:amount) %></th>
-              <th></th>
-            </tr>
+              <td><b><%= number_to_currency current_cart.voucher_amounts.debit.sum(&:amount) %></b></td>
+              <td></td>
+              <td><b><%= number_to_currency current_cart.voucher_amounts.credit.sum(&:amount) %></b></td>
+              <td>
+                <% if current_user.voucher_amounts.debit.present? && current_user.voucher_amounts.credit.present? %>
+                  <% if current_user.voucher_amounts.debit.sum(&:amount) != current_user.voucher_amounts.credit.sum(&:amount) %>
+                    <span title="Total amounts not equal" data-toggle="tooltip" class="fa fa-lg fa-question-circle text-danger"></span>
+                  <% else %>
+                    <span title="Total amounts are equal" data-toggle="tooltip" class="fa fa-lg fa-check-circle text-success"></span>
+                  <% end %>
+                <% end %>
+              </td>
           </tbody>
         </table>
-      </div>
-    </div>
-  </div>
-  <% if @voucher_amounts.present? %>
-    <div class="col-md-4">
-      <div class="card card-outline card-primary">
-        <div class="card-header">
-          <h3 class="card-title"> Payee Details </h3>
-        </div>
-        <div class="card-body">
-          <%=simple_form_for @cash_receipt, url: :treasury_module_cash_receipt_voucher_processings, html: { autocomplete: 'off' } do |f| %>
-            <%= f.input :cooperative_service_id, collection: current_cooperative.cooperative_services.map{|a| [a.title, a.id] }, hint: 'Select Cooperative Service' %>
-            <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
-            <%= f.input :description, as: :text %>
-            <%= f.input :reference_number %>
-            <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
-            <%= f.input :payee_id, label: "Payee", collection: Voucher.payees.map{|a| [a.name, a.id] } %>
-            <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
-            <%= f.input :cash_account_id, input_html: { value: @cash_account.id }, as: :hidden %>
-            <hr>
-            <% if current_user.voucher_amounts.present? %>
-              <%= f.submit "Proceed", class: "btn btn-primary btn-block", data: { disable_with: "Processing"} %>
+ 
+        
+        <hr>
+        <% if current_cart.voucher_amounts.present? %>
+          <div class='row'>
+            <div class='col-md-3'>
+              <h4 class='title-up'>Payee </h4>
+            </div>
+            <div class='col-md-9'>
+              <%=form_tag new_treasury_module_cash_account_cash_receipt_line_item_path(@cash_account), method: :get, class: "sidebar-form" do %>
+                  <div class="input-group">
+                    <%= text_field_tag :payee_search, params[:payee_search], class: "form-control", placeholder: "Search Member..", id: 'account-search-form' %>
+                    <span class="input-group-btn">
+                      <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-outline-secondary") do %>
+                        <i class="fa fa-search"></i> Search Member
+                      <% end %>
+                    </span>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% if @payees.present?  %>
+            <br>
+            <% @payees.each do |payee| %>
+              <%= link_to new_treasury_module_cash_account_cash_receipt_line_item_path(@cash_account, payee_id: payee.id, payee_type: payee.class.to_s) do %>
+                <div class='row'>
+                  <div class='col-md-3'>
+                    <%= image_tag(payee.avatar, class: 'img-circle', height: 60, width: 60) %>
+                  </div>
+                  <div class='col-md-6'>
+                    <h4 class='subtitle-up'> <%= payee.name %></h4>
+                    <small class='text-muted'><i class='fa fa-map-marker'></i> <%= payee.current_address_details %> &nbsp; &nbsp; <i class='fa fa-phone'></i> <%= payee.current_contact_number %></small>
+                  </div>
+                  <div class='col-md-3'>
+                  <span class='btn btn-outline-primary'> Select</span>
+                  </div>
+                </div>
+              <% end %>
+              <hr>
             <% end %>
-
           <% end %>
-        </div>
+            <% if current_cart.customer.present? %>
+              <br>
+              <div class='row'>
+                <div class='col-md-2'>
+                  <%= image_tag(current_cart.customer.avatar, class: 'img-circle', height: 60, width: 60) %>
+                </div>
+                <div class='col-md-10'>
+                  <h4 class='subtitle-up'> <%= current_cart.customer.name %></h4>
+                  <small class='text-muted'><i class='fa fa-map-marker'></i> <%= current_cart.customer.current_address_details %> &nbsp; &nbsp; <i class='fa fa-phone'></i> <%= current_cart.customer.current_contact_number %></small>
+             
+                  
+                </div>
+              </div>
+              <%=simple_form_for @receipt, url: :treasury_module_cash_receipt_voucher_processings, html: { autocomplete: 'off' } do |f| %>
+                <%= f.input :cart_id,  input_html: { value: current_cart.id }, as: :hidden %>
+                <%= f.input :payee_type,  input_html: { value: current_cart.customer.class.to_s }, as: :hidden %>
+                <%= f.input :payee_id,  input_html: { value: current_cart.customer_id }, as: :hidden %>
+                <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+                <%= f.input :description, as: :string %>
+                <%= f.input :reference_number %>
+                <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
+                <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+                <%= f.input :cash_account_id, input_html: { value: @cash_account.id }, as: :hidden %>
+
+                <%= f.submit "Proceed", class: "btn btn-primary float-right" %>
+                <%= link_to 'Cancel Transaction' %>
+
+              <% end %>
+            <% end %>
+         
+        <% end %>
       </div>
     </div>
   </div>
-<% end %>
 </div>
-<script type="text/javascript">
-  $(document).ready(function() {
-    $("#vouchers_voucher_amount_processing_account_id").select2({
-      theme: "bootstrap"
-    });
-
-    $("#vouchers_voucher_processing_cooperative_service_id").select2({
-      theme: "bootstrap"
-    });
-
-    $("#vouchers_voucher_processing_payee_id").select2({
-      theme: "bootstrap"
-    });
-
-  });
-</script>

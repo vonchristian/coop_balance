@@ -12,7 +12,7 @@ module TreasuryModule
     end
     private
     def cash_receipt_params
-      params.require(:vouchers_voucher_processing).permit(:cash_account_id, :reference_number, :date, :description, :employee_id, :payee_id, :cooperative_service_id, :account_number)
+      params.require(:vouchers_voucher_processing).permit(:cash_account_id, :reference_number, :date, :description, :employee_id, :payee_id, :cooperative_service_id, :account_number, :cart_id)
     end
   end
 end
