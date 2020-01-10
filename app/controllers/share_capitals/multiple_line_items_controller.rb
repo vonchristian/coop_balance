@@ -16,6 +16,14 @@ module ShareCapitals
       end 
     end 
 
+    def destroy 
+      @share_capital = current_office.share_capitals.find(params[:share_capital_id])
+      @amount        = current_cart.voucher_amounts.find(params[:id])
+      @amount.destroy 
+      redirect_to new_share_capital_multiple_transaction_url, notice: 'Removed successfully'
+    end 
+
+
     private 
     def payment_params
       params.require(:share_capitals_multiple_payment).

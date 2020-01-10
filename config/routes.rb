@@ -206,7 +206,7 @@ Rails.application.routes.draw do
     resources :transactions, only: [:index],              module: :share_capitals
     resources :beneficiaries,  only: [:edit, :update],    module: :share_capitals
     resources :maf_beneficiaries,  only: [:edit, :update],    module: :share_capitals
-    resources :multiple_line_items, only: [:new, :create],   module: :share_capitals 
+    resources :multiple_line_items, only: [:new, :create, :destroy],   module: :share_capitals 
   end
 
   resources :members, only: [:index, :show, :edit, :update, :destroy] do

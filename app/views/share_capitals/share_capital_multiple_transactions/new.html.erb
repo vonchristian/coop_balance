@@ -42,6 +42,7 @@
           <h4 class='subtitle-up'> Voucher Details </h4>   
 
           <% current_cart.voucher_amounts.each do |voucher_amount| %>
+            <% share_capital = ShareCapitals::CartPaymentFinder.new(voucher_amount: voucher_amount, office: current_office).share_capital %>
             <div class='row'>
               <div class='col-md-2'>
                 <%= image_tag(ShareCapitals::CartPaymentFinder.new(voucher_amount: voucher_amount, office: current_office).share_capital.avatar, height: 45, width: 45, class: 'img-circle') %>
@@ -53,6 +54,11 @@
               </div>
               <div class='col-md-4'>
                 <span class='float-right'><%= number_to_currency voucher_amount.amount %></span>
+              </div>
+              <div class='col-md-1'>
+                <%= link_to share_capital_multiple_line_item_path(id: voucher_amount.id, share_capital_id: share_capital.id), method: :delete do %>
+                  <span class='text-danger'><i class='fa fa-times'></i></span>
+                <% end %>
               </div>
             </div>
 
