@@ -436,7 +436,7 @@ Rails.application.routes.draw do
     resources :voucher_confirmations, only: [:create],              module: :savings_accounts
     resources :transactions,           only: [:index],              module: :savings_accounts
     resources :beneficiaries,            only: [:edit, :update],    module: :savings_accounts
-    resources :multiple_line_items,            only: [:new, :create],    module: :savings_accounts
+    resources :multiple_line_items,            only: [:new, :create, :destroy],    module: :savings_accounts
 
   end
 

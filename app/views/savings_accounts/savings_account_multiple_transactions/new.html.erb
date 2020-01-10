@@ -56,7 +56,7 @@
                 <span class='float-right'><%= number_to_currency voucher_amount.amount %></span>
               </div>
               <div class='col-md-1'>
-                <%= link_to savings_account_multiple_line_items_path(id: voucher_amount.id, savings_account_id: savings_account.id), method: :delete do %>
+                <%= link_to savings_account_multiple_line_item_path(id: voucher_amount.id, savings_account_id: savings_account.id), method: :delete do %>
                   <span class='text-danger'><i class='fa fa-times'></i></span>
                 <% end %>
               </div>

@@ -17,7 +17,7 @@ module SavingsAccounts
     end 
 
     def destroy 
-      @savings_account = current_office.savings_account.find(params[:savings_account_id])
+      @savings_account = current_office.savings.find(params[:savings_account_id])
       @amount        = current_cart.voucher_amounts.find(params[:id])
       @amount.destroy 
       redirect_to new_savings_account_multiple_transaction_url, notice: 'Removed successfully'
