@@ -668,7 +668,7 @@ Rails.application.routes.draw do
   resources :program_subscriptions, only: [:show]
   resources :identifications, only: [:index, :show, :new, :create], module: :identification_module
   resources :multiple_transactions, only: [:new, :create]
-  resources :loan_multiple_payment_line_items, only: [:new, :create]
+  resources :loan_multiple_payment_line_items, only: [:new, :create, :destroy]
   resources :multiple_loan_payment_processings, only: [:create]
   resources :multiple_loan_payment_vouchers, only: [:show]
   resources :loans, only: [:show] do

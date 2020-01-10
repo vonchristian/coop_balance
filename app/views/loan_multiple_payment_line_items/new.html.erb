@@ -76,8 +76,9 @@
                 <%= number_to_currency Loans::MultiplePaymentFinder.new(cart: current_cart).penalty(loan) %>
               </div>
 
-              <div class="col-md-2">
+              <div class="col-md-3">
                 <%= number_to_currency Loans::MultiplePaymentFinder.new(cart: current_cart).total_cash(loan) %>
+               
               </div>
             </div>
             <hr>
