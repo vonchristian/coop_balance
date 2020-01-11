@@ -51,7 +51,7 @@ module Portfolios
 						savings_account.account_owner_name,
 						savings_account.balance(to_date: @to_date),
 						savings_account.saving_product_name,
-						savings_account.last_transaction_date
+						savings_account.last_transaction_date.strftime('%B %e, %Y')
 						])
 				end
 			end 

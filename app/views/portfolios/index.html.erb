@@ -41,10 +41,10 @@
     </div>
     <hr>
     <label class="no-margin-bottom">As of</label>
-    <%= form_tag({format: 'xlsx', :action => 'index', controller: "portfolios/time_deposits"}, {:method => :get, :class => 'form-inline'}) do%>
+    <%= form_tag({format: 'csv', :action => 'index', controller: "portfolios/time_deposits"}, {:method => :get, :class => 'form-inline'}) do%>
       <div class="form-group">
         <%= text_field_tag :to_date, @to_date, :class => 'datepicker form-control' %>
-        <%= select_tag :time_deposit_product_id, options_for_select(current_cooperative.offices.map {|m| [m.name, m.id]}, params[:office_id]), class: ' form-control border-input' %>
+        <%= select_tag :time_deposit_product_id, options_for_select(current_office.time_deposit_products.map {|m| [m.name, m.id]}, params[:office_id]), class: ' form-control border-input' %>
 
       </div>
       <button type="submit" class="btn btn-outline-primary">Generate </button>
@@ -53,23 +53,20 @@
   <div class="card-body">
     <div class="row">
       <div class="col-md-12">
-        <h4 class="card-title">Loans Portfolio</h4>
+        <h4 class="title-up">Loans Portfolio</h4>
         <div class="card-sub-title">Generate report on loan balances of members.</div>
       </div>
     </div>
     <hr>
     <label class="no-margin-bottom">As of</label>
-    <%= form_tag({format: 'xlsx', :action => 'index', controller: "portfolios/loans"}, {:method => :get, :class => 'form-inline'}) do%>
+    <%= form_tag({format: 'csv', :action => 'index', controller: "portfolios/loans"}, {:method => :get, :class => 'form-inline'}) do%>
       <div class="form-group">
         <%= text_field_tag :to_date, @to_date, :class => 'datepicker form-control' %>
       </div>
       <div class="form-group">
-        <%= select_tag :loan_type, options_for_select(current_cooperative.loan_products.map {|m| [m.name, m.id]}, params[:loan_type]), class: ' form-control border-input', prompt: false %>
+        <%= select_tag :loan_product_id, options_for_select(current_office.loan_products.map {|m| [m.name, m.id]}, params[:loan_product_id]), class: ' form-control border-input', prompt: false %>
       </div>
-      <div class="form-group">
-        <%= select_tag :office_id, options_for_select(current_cooperative.offices.map {|m| [m.name, m.id]}, params[:office_id]), class: ' form-control border-input', prompt: false %>
-        
-      </div>
+     
       <button type="submit" class="btn btn-default">Get Report (Excel)</button>
     <% end %>
   </div>

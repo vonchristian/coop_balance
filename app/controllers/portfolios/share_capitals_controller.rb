@@ -49,7 +49,7 @@ module Portfolios
 						share_capital.account_owner_name,
 						share_capital.balance(to_date: @to_date),
 						share_capital.share_capital_product_name,
-						share_capital.last_transaction_date
+						share_capital.last_transaction_date.strftime('%B %e, %Y')
 						])
 				end
 			end 
