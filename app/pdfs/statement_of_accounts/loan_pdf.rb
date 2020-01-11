@@ -84,10 +84,10 @@ module StatementOfAccounts
       @transactions_data ||= loan.loan_payments.sort_by(&:entry_date).map{ |entry|
        [ entry.entry_date.strftime("%b %e, %Y"),
          entry.reference_number,
-         price(LoansModule::PaymentClassifier.new(loan: loan, entry: entry).principal),
-         price(LoansModule::PaymentClassifier.new(loan: loan, entry: entry).interest),
-         price(LoansModule::PaymentClassifier.new(loan: loan, entry: entry).penalty),
-         price(LoansModule::PaymentClassifier.new(loan: loan, entry: entry).total_cash_payment),
+         price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).principal),
+         price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).interest),
+         price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).penalty),
+         price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).total_cash_payment),
          price(loan.principal_balance(to_date: entry.entry_date))
         ] }
     end

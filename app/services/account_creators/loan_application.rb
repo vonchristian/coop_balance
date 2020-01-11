@@ -22,7 +22,7 @@ module AccountCreators
       if loan_application.receivable_account.blank?
         account = office.accounts.assets.create!(
           name:                       "#{loan_product.name} - #{SecureRandom.uuid}",
-          code:                       loan_application.account_number,
+          code:                       SecureRandom.uuid,
           level_one_account_category: receivable_account_category
         )
         loan_application.update(receivable_account: account)

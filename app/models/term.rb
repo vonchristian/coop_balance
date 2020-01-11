@@ -1,4 +1,5 @@
 class Term < ApplicationRecord
+  NUMBER_OF_DAYS_IN_MONTH = 30
   belongs_to :termable, polymorphic: true
   validates :effectivity_date, presence: true
   validates :number_of_days, presence: true, numericality: { only_integer: true, greater_than: 0 }
@@ -9,7 +10,7 @@ class Term < ApplicationRecord
   end
 
   def number_of_months
-    number_of_days / 30
+    number_of_days / NUMBER_OF_DAYS_IN_MONTH
   end
 
   def self.current
@@ -49,7 +50,7 @@ class Term < ApplicationRecord
   end
 
   def number_of_months_past_due
-    number_of_days_past_due / 30
+    number_of_days_past_due / NUMBER_OF_DAYS_IN_MONTH
   end
 
   def past_due_in_years

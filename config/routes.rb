@@ -673,7 +673,9 @@ Rails.application.routes.draw do
   resources :multiple_transactions, only: [:new, :create]
   resources :loan_multiple_payment_line_items, only: [:new, :create, :destroy]
   resources :multiple_loan_payment_processings, only: [:create]
-  resources :multiple_loan_payment_vouchers, only: [:show]
+  resources :multiple_loan_payment_vouchers, only: [:show] do 
+    resources :confirmations, only: [:create], module: [:loans_module, :loan_multiple_transactions] 
+  end 
   resources :loans, only: [:show] do
     resources :multiple_payments, only: [:new, :create, :destroy], module: :loans
   end

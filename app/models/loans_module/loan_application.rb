@@ -29,6 +29,7 @@ module LoansModule
     delegate :monthly_interest_rate,  to: :loan_product, prefix: true
     delegate :current_interest_config, :interest_calculator, :prededucted_interest_calculator, :amortizeable_principal_calculator, :amortization_type,  to: :loan_product
     delegate :entry, to: :voucher, allow_nil: true
+    delegate :reference_number, to: :voucher, prefix: true, allow_nil: true
     delegate :rate, :straight_balance?, :annually?, :prededucted_number_of_payments, to: :current_interest_config, prefix: true
 
     validates :account_number, presence: true, uniqueness: true

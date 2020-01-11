@@ -1,31 +1,33 @@
 <%= link_to loan_path(loan) do %>
-  <div class="card">
+  <div class="card animated fadeInUp min-margin">
     <div class="card-body">
-      <div class="row">
-        <div class="col-md-1 col-sm-1">
-
-        </div>
-        <div class="col-md-5 col-sm-5">
-          <b><%=  loan.borrower_name.try(:upcase) %></b>
-          <div class="row">
-            <div class="col-md-8 col-sm-8">
-              <small class="text-muted" id="loanProductName"><i class="fa fa-tag"></i><%= loan.loan_product_name %></small>
-              <br>
-              <small class="text-muted" data-toggle="tooltip" title="Disbursement Date">
-                <i class="fa fa-calendar"></i> <%= loan.try(:disbursement_date).try(:strftime, "%B %e, %Y") %> &nbsp;
-                <i class="fa fa-building"></i> <%= loan.office_name %>
-                <span class="badge bg-<%=loan.badge_color %>"> <%= loan.status %></span>
-              </small>
-            </div>
-            <div class="col-md-4 col-sm-4">
-              <% if loan.forwarded_loan? %>
-                <span class="badge bg-warning"> Forwarded Loan </span>
+    <span class='float-right'>
+     <% if loan.forwarded_loan? %>
+                <span class="badge bg-gray"> Forwarded Loan </span>
                 <br>
               <% else %>
                 <span class="text-muted" data-toggle="tooltip" title="Reference Number">
                   <%= "##{Voucher.find_by(id: loan.disbursement_voucher_id).try(:reference_number)}" %>
                 </span>
               <% end %>
+    </span>
+    <br>
+      <div class="row">
+        <div class="col-md-1 col-sm-1">
+
+        </div>
+        <div class="col-md-5 col-sm-5">
+          <%=  loan.borrower_name.try(:upcase) %>
+          <div class="row">
+            <div class="col-md-8 col-sm-8">
+              <small class="text-muted" id="loanProductName"><i class="fa fa-tag"></i><%= loan.loan_product_name %></small>
+              <br>
+              <small class="text-muted" data-toggle="tooltip" title="Disbursement Date">
+                <span class="badge bg-<%=loan.badge_color %>"> <%= loan.status %></span>
+              </small>
+            </div>
+            <div class="col-md-4 col-sm-4">
+              
             </div>
           </div>
         </div>
@@ -33,16 +35,18 @@
           <div class="row">
             <div class="col-md-6 col-sm-6">
               <% if loan.loan_amount.present? && !loan.forwarded_loan? %>
-                <h4 class="card-title"><%=number_to_currency loan.loan_amount %></h4>
                 <small class="text-muted">LOAN AMOUNT</small>
+
+                <h4 class="title-up"><%=number_to_currency loan.loan_amount %></h4>
               <% elsif loan.forwarded_loan? %>
-                <h4 class="card-title"><%= number_to_currency loan.loan_amount %></h4>
+                <h4 class="title-up"><%= number_to_currency loan.loan_amount %></h4>
                 <small class="text-muted"> LOAN AMOUNT</small><br>
               <% end %>
             </div>
             <div class="col-md-6 col-sm-6">
-              <h4 class="card-title"><%= number_to_currency loan.principal_balance %></h4>
               <small class="text-muted">PRINCIPAL BALANCE</small><br>
+
+              <h4 class="title-up"><%= number_to_currency loan.principal_balance %></h4>
             </div>
           </div>
           <div class="row">

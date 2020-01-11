@@ -46,7 +46,7 @@
         <td class="text-right">
           <%= number_to_currency (interest + penalty + principal) %>
         </td>
-        <td class="text-right"><%= number_to_currency @loan.principal_balance(to_date: EntryDateTime.new(entry: entry).set) %></td>
+        <td class="text-right"><%= number_to_currency @loan.principal_balance(to_date: entry.entry_date.to_date) %></td>
         <td></td>
       </tr>
     <% end %>

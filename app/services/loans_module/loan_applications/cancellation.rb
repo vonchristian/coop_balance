@@ -8,17 +8,34 @@ module LoansModule
       end
 
       def cancel! 
-        delete_accountable_accounts
-        delete_loan_application
+        ApplicationRecord.transaction do 
+          delete_voucher_amounts
+          delete_accountable_accounts
+          delete_loan_application
+        end 
       end
 
       private 
+      def delete_voucher_amounts
+        loan_application.voucher.voucher_amounts.destroy_all
+        loan_application.voucher_amounts.destroy_all
+      end 
+
       def delete_accountable_accounts
-        office.accountable_accounts.find_by(account: loan_application.receivable_account).destroy
-        office.accountable_accounts.find_by(account: loan_application.interest_revenue_account).destroy
+        receivable_account       = office.accountable_accounts.find_by(account_id: loan_application.receivable_account_id)
+        interest_revenue_account = office.accountable_accounts.find_by(account_id: loan_application.interest_revenue_account_id)
+        
+        if receivable_account.present?
+          receivable_account.destroy 
+        end 
+
+        if interest_revenue_account.present?
+          interest_revenue_account.destroy
+        end 
       end
       
       def delete_loan_application
+        loan_application.voucher_amounts.destroy_all
         loan_application.destroy 
       end
     end

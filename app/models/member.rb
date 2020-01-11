@@ -192,9 +192,9 @@ class Member < ApplicationRecord
   end 
   def first_middle_and_last_name #for pdf signatories
     if middle_name.present?
-      "#{first_name.titleize} #{middle_name.first.upcase}. #{last_name.titleize}"
+      "#{first_name.try(:titleize)} #{middle_name.first.upcase}. #{last_name.try(:titleize)}"
     else
-      "#{first_name.titleize} #{last_name.titleize}"
+      "#{first_name.try(:titleize)} #{last_name.try(:titleize)}"
     end
   end
 

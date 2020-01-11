@@ -59,14 +59,16 @@
       <div class="card-body">
         <%= simple_form_for [@loan, @payment], html: { autocomplete: 'off' }, url: :loan_payments do |f| %>
           <%= f.error_notification %>
-          <%= f.input :date, as: :string, input_html: { value: Time.zone.now.strftime("%B %e, %Y"), class: "datepicker" } %>
           <% if @loan.amortization_schedules.present? %>
             <%= f.input :amortization_schedule_id, label: "Select Amortization Schedule to be paid.", collection: @loan.amortization_schedules.partial_and_no_payment.order(date: :asc).map {|a| [a.date_schedule, a.id]}, default: @loan.amortization_schedules.partial_and_no_payment.order(date: :asc).first, input_html: { class: 'chosen-select' } %>
           <% end %>
-          <%= f.input :description, as: :string, input_html: { id: 'description' } %>
           <%= f.input :principal_amount, input_html: { value: 0 }, as: :currency  %>
           <%= f.input :interest_amount, input_html: { value: 0 }, as: :currency  %>
           <%= f.input :penalty_amount, input_html: { value: 0 }, as: :currency  %>
+          
+          <%= f.input :date, as: :string, input_html: { value: Time.zone.now.strftime("%B %e, %Y"), class: "datepicker" } %>
+          
+          <%= f.input :description, as: :string, input_html: { id: 'description' } %>
           <%= f.input :reference_number %>
           <%= f.input :loan_id, input_html: { value: @loan.id },as: :hidden %>
           <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>

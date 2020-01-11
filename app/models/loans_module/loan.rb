@@ -83,7 +83,7 @@ module LoansModule
     delegate :name, to: :receivable_account, prefix: true
     delegate :name, to: :interest_revenue_account, prefix: true
     delegate :name, to: :penalty_revenue_account, prefix: true
-
+    delegate :reference_number, to: :disbursement_voucher, prefix: true, allow_nil: true
 
     def self.with_no_terms
       with_terms = Term.where(termable_type: self.to_s).pluck(:termable_id)
@@ -274,6 +274,10 @@ module LoansModule
       LoansModule::LoanProduct.total_credits_balance(args.merge(commercial_document: loans))
     end
 
+    def self.unpaid 
+      where(paid_at: nil)
+    end 
+
     def self.not_archived
       where(archived: false)
     end
@@ -329,13 +333,13 @@ module LoansModule
     def self.past_due_loans
       not_cancelled.
       not_archived.
+      unpaid.
       joins(:term).where('terms.maturity_date < ?', Date.today)
     end
 
     def self.past_due_loans_on(from_date:, to_date:)
       range  = DateRange.new(from_date: from_date, to_date: to_date)
-      not_cancelled.
-      not_archived.
+      past_due_loans.
       joins(:term).where('terms.maturity_date' => range.start_date..range.end_date )
     end
 
@@ -343,7 +347,7 @@ module LoansModule
       where(forwarded_loan: true)
     end
     def self.disbursed
-      LoansModule::Loan.joins(:disbursement_voucher).merge(Voucher.disbursed)
+      joins(:disbursement_voucher).merge(Voucher.disbursed)
     end
     def self.disbursed_on(args={})
       from_date = args[:from_date]
@@ -387,17 +391,19 @@ module LoansModule
       all.map{|loan| loan.payments_total }.sum
     end
 
-    def loan_payments(args={})
+    def loan_payments(args = {})
       entries
     end
-
+     
+    #deprecate
     def loan_entry
       receivable_account.debit_amounts.where(commercial_document: self).last.try(:entry)
     end
-
+    #deprecate 
     def self.disbursement_entries(args={})
       LoansModule::LoanProduct.accounts.debit_entries.entered_on(args)
     end
+
     def voucher_amounts_excluding_loan_amount_and_net_proceed
       accounts = []
       Employees::EmployeeCashAccount.cash_accounts.each do |account|
@@ -410,11 +416,6 @@ module LoansModule
     def current?
       !is_past_due?
     end
-
-
-    # def payment_schedules
-    #   amortization_schedules
-    # end
 
     def name
       borrower_name
