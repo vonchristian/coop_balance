@@ -25,6 +25,8 @@ module MembershipsModule
     has_many :accountable_accounts,       class_name: 'AccountingModule::AccountableAccount', as: :accountable
     has_many :accounts,                   through: :accountable_accounts, class_name: 'AccountingModule::Account'
     has_many :entries,                    through: :accounts, class_name: 'AccountingModule::Entry'
+    has_many :savings_account_agings,     class_name: 'SavingsModule::SavingsAccountAging', foreign_key: 'savings_account_id'
+    has_many :savings_aging_groups,       through: :savings_account_agings 
 
     delegate :name, :current_address_complete_address, :current_contact_number, :current_occupation, to: :depositor, prefix: true
     delegate :name,
@@ -44,12 +46,17 @@ module MembershipsModule
     delegate :avatar, to: :depositor, allow_nil: true
     delegate :dormancy_number_of_days, :balance_averager, to: :saving_product
     delegate :balance, :debits_balance, :credits_balance, to: :liability_account
+    delegate :title, to: :current_aging_group, prefix: true, allow_nil: true
     validates :depositor, presence: true
 
 
     before_save :set_account_owner_name, :set_date_opened #move to saving opening
 
     has_many :amounts,  class_name: "AccountingModule::Amount", as: :commercial_document
+    
+    def current_aging_group
+      savings_aging_groups.current 
+    end 
 
     def self.liability_accounts
       ids = pluck(:liability_account_id)

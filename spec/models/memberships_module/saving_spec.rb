@@ -17,8 +17,10 @@ module MembershipsModule
       it { is_expected.to have_many :accountable_accounts }
       it { is_expected.to have_many :accounts }
       it { is_expected.to have_many :entries }
-
+      it { is_expected.to have_many :savings_account_agings }
+      it { is_expected.to have_many :savings_aging_groups }
     end
+
     context 'delegations' do
     	it { is_expected.to delegate_method(:name).to(:saving_product).with_prefix }
       it { is_expected.to delegate_method(:applicable_rate).to(:saving_product).with_prefix }
@@ -36,9 +38,7 @@ module MembershipsModule
       it { is_expected.to delegate_method(:credits_balance).to(:liability_account) }
       it { is_expected.to delegate_method(:name).to(:liability_account).with_prefix }
       it { is_expected.to delegate_method(:name).to(:interest_expense_account).with_prefix }
-
-
-
+      it { is_expected.to delegate_method(:title).to(:current_aging_group).with_prefix }
     end
 
 

@@ -4,6 +4,8 @@ module SavingsModule
   describe SavingsAgingGroup do
     describe 'associations' do 
       it { is_expected.to belong_to :office }
+      it { is_expected.to have_many :savings_account_agings }
+      it { is_expected.to have_many :savings_accounts }
     end 
     
     describe 'associations' do 
@@ -18,6 +20,12 @@ module SavingsModule
 
         expect(aging_group.errors[:title]).to eql ['has already been taken']
       end 
+    end 
+
+    it '#num_range' do 
+      aging_group = build(:savings_aging_group, start_num: 1, end_num: 30)
+
+      expect(aging_group.num_range).to eql 1..30
     end 
   end 
 end
