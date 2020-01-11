@@ -5,6 +5,16 @@
         <div class="card-body">
           <%= render 'savings_accounts/partials/navbar_links' %>
           <br />
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Date Range
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+    <button class="dropdown-item" type="button">Action</button>
+    <button class="dropdown-item" type="button">Another action</button>
+    <button class="dropdown-item" type="button">Something else here</button>
+  </div>
+</div>
           <div class="row">
             <div class="col-md-6">
               <h3 class="card-title"><%= number_to_currency CoopServicesModule::SavingProduct.total_balance %></h3>
@@ -108,7 +118,7 @@
       <% balances_data = [] %>
       <% months.uniq.each do |month| %>
 
-        <% balances_data << { month.strftime("%B %Y") => CoopServicesModule::SavingProduct.total_balance(to_date: month.end_of_month) } %>
+        <% balances_data << { month.strftime("%B %Y") => MembershipsModule::Saving.total_balances(to_date: month.end_of_month) } %>
       <% end %>
 
 <%= line_chart (Hash[*balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"}, download: true, curve: false, thousands: "," %>

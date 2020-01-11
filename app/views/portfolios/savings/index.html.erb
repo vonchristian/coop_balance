@@ -1,0 +1,19 @@
+<div class='container'>
+  <div class='card'>
+    <div class='card-body'>
+      <small class='text-muted'> TOTAL ACCOUNTS </small>
+      <h2 class='title-up'><%= @savings_accounts.size %></h2>
+      <small class='text-muted'> TOTAL BALANCE </small>
+      <h2 class='title-up'><%= number_to_currency @savings_accounts.total_balances(to_date: @to_date) %></h2>
+      As of: <%= @to_date.strftime("%B %e, %Y") %>
+
+<label class="no-margin-bottom">As of</label>
+    <%= form_tag({format: 'csv', :action => 'index', controller: "portfolios/savings"}, {:method => :get, :class => 'form-inline'}) do %>
+      <div class="form-group">
+        <%= text_field_tag :to_date, @to_date, :class => 'datepicker form-control' %>
+
+        <%= select_tag :saving_product_id, options_for_select(current_office.saving_products.map {|m| [m.name, m.id]}, params[:saving_product_id]), class: ' form-control', prompt: false %>
+
+      </div>
+      <button type="submit" class="btn btn-outline-primary">Generate</button>
+    <% end %>

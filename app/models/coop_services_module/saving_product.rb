@@ -58,8 +58,11 @@
     end
 
     def self.accounts
-      accounts = self.pluck(:account_id)
-      AccountingModule::Account.where('accounts.id' => accounts)
+      accounts = [] 
+      self.all.each do |saving_product|
+        accounts << saving_product.subscribers.pluck(:liability_account_id)
+      end 
+        AccountingModule::Account.where('accounts.id' => accounts.uniq.compact.flatten)
     end
 
     def applicable_rate

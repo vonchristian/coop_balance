@@ -3,46 +3,39 @@
   <div class="card-body">
     <div class="row">
       <div class="col-md-12">
-        <h4 class="card-title">Savings Portfolio</h4>
-        <div class="card-sub-title">Generate report on savings deposit balances of members.</div>
+        <%= link_to portfolios_savings_path do %>
+          <h4 class="title-up">Savings Accounts</h4>
+          <div class="card-sub-title">Generate report on savings deposit balances of members.</div>
+        <% end %>
       </div>
     </div>
     <hr>
-    <label class="no-margin-bottom">As of</label>
-    <%= form_tag({format: 'xlsx', :action => 'index', controller: "portfolios/savings"}, {:method => :get, :class => 'form-inline'}) do %>
-      <div class="form-group">
-        <%= text_field_tag :to_date, @to_date, :class => 'datepicker form-control' %>
-
-        <%= select_tag :office_id, options_for_select(current_cooperative.offices.map {|m| [m.name, m.id]}, params[:office_id]), class: ' form-control border-input', prompt: false %>
-
-      </div>
-      <button type="submit" class="btn btn-default">Get Report (Excel)</button>
-    <% end %>
+    
   </div>
   <hr class="no-margin">
   <div class="card-body">
     <div class="row">
       <div class="col-md-12">
-        <h4 class="card-title">Share Capitals Portfolio</h4>
+        <h4 class="title-up">Share Capitals</h4>
         <div class="card-sub-title">Generate report on share capital balances of members.</div>
       </div>
     </div>
     <hr>
     <label class="no-margin-bottom">As of</label>
-    <%= form_tag({format: 'xlsx', :action => 'index', controller: "portfolios/share_capitals"}, {:method => :get, :class => 'form-inline'}) do%>
+    <%= form_tag({format: 'csv', :action => 'index', controller: "portfolios/share_capitals"}, {:method => :get, :class => 'form-inline'}) do%>
       <div class="form-group">
         <%= text_field_tag :to_date, @to_date, :class => 'datepicker form-control' %>
-        <%= select_tag :office_id, options_for_select(current_cooperative.offices.map {|m| [m.name, m.id]}, params[:office_id]), class: ' form-control border-input', prompt: false %>
+        <%= select_tag :share_capital_product_id, options_for_select(current_cooperative.share_capital_products.map {|m| [m.name, m.id]}, params[:share_capital_product_id]), class: ' form-control border-input', prompt: false %>
 
       </div>
-      <button type="submit" class="btn btn-default">Get Report (Excel)</button>
+      <button type="submit" class="btn btn-outline-primary">Generate</button>
     <% end %>
   </div>
   <hr class="no-margin">
   <div class="card-body">
     <div class="row">
       <div class="col-md-12">
-        <h4 class="card-title">Time Deposit Portfolio</h4>
+        <h4 class="title-up">Time Deposits </h4>
         <div class="card-sub-title">Generate report on time deposit balances of members.</div>
       </div>
     </div>
@@ -51,10 +44,10 @@
     <%= form_tag({format: 'xlsx', :action => 'index', controller: "portfolios/time_deposits"}, {:method => :get, :class => 'form-inline'}) do%>
       <div class="form-group">
         <%= text_field_tag :to_date, @to_date, :class => 'datepicker form-control' %>
-        <%= select_tag :office_id, options_for_select(current_cooperative.offices.map {|m| [m.name, m.id]}, params[:office_id]), class: ' form-control border-input', prompt: false %>
+        <%= select_tag :time_deposit_product_id, options_for_select(current_cooperative.offices.map {|m| [m.name, m.id]}, params[:office_id]), class: ' form-control border-input' %>
 
       </div>
-      <button type="submit" class="btn btn-default">Get Report (Excel)</button>
+      <button type="submit" class="btn btn-outline-primary">Generate </button>
     <% end %>
   </div>
   <div class="card-body">
