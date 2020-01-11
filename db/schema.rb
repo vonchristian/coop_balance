@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_06_044134) do
+ActiveRecord::Schema.define(version: 2020_01_11_032505) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1459,6 +1459,16 @@ ActiveRecord::Schema.define(version: 2020_01_06_044134) do
     t.index ["saving_product_id"], name: "index_savings_on_saving_product_id"
   end
 
+  create_table "savings_account_agings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "savings_account_id", null: false
+    t.uuid "savings_aging_group_id", null: false
+    t.datetime "date"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["savings_account_id"], name: "index_savings_account_agings_on_savings_account_id"
+    t.index ["savings_aging_group_id"], name: "index_savings_account_agings_on_savings_aging_group_id"
+  end
+
   create_table "savings_account_applications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "depositor_type"
     t.uuid "depositor_id"
@@ -1477,6 +1487,16 @@ ActiveRecord::Schema.define(version: 2020_01_06_044134) do
     t.index ["liability_account_id"], name: "index_savings_account_applications_on_liability_account_id"
     t.index ["office_id"], name: "index_savings_account_applications_on_office_id"
     t.index ["saving_product_id"], name: "index_savings_account_applications_on_saving_product_id"
+  end
+
+  create_table "savings_aging_groups", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "office_id", null: false
+    t.integer "start_num", null: false
+    t.integer "end_num", null: false
+    t.string "title", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["office_id"], name: "index_savings_aging_groups_on_office_id"
   end
 
   create_table "share_capital_applications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -2125,10 +2145,13 @@ ActiveRecord::Schema.define(version: 2020_01_06_044134) do
   add_foreign_key "savings", "offices"
   add_foreign_key "savings", "organizations"
   add_foreign_key "savings", "saving_products"
+  add_foreign_key "savings_account_agings", "savings", column: "savings_account_id"
+  add_foreign_key "savings_account_agings", "savings_aging_groups"
   add_foreign_key "savings_account_applications", "accounts", column: "liability_account_id"
   add_foreign_key "savings_account_applications", "cooperatives"
   add_foreign_key "savings_account_applications", "offices"
   add_foreign_key "savings_account_applications", "saving_products"
+  add_foreign_key "savings_aging_groups", "offices"
   add_foreign_key "share_capital_applications", "accounts", column: "equity_account_id"
   add_foreign_key "share_capital_applications", "cooperatives"
   add_foreign_key "share_capital_applications", "offices"
