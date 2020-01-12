@@ -1284,6 +1284,7 @@ example_id                                                                      
 ./spec/system/loans_module/loans/accounting/payment_vouchers/delete_system_spec.rb[1:1]                         | passed  | 11.46 seconds          |
 ./spec/system/loans_module/loans/payments/new_system_spec.rb[1:1]                                               | passed  | 11.62 seconds          |
 ./spec/system/loans_module/loans/payments/new_system_spec.rb[1:2]                                               | passed  | 1.97 seconds           |
+./spec/system/loans_module/settings/loan_aging_groups/edit_system_spec.rb[1:1]                                  | passed  | 6.19 seconds           |
 ./spec/system/loans_module/settings/loan_aging_groups/new_system_spec.rb[1:1]                                   | passed  | 7.47 seconds           |
 ./spec/system/loans_module/settings/loan_aging_groups/new_system_spec.rb[1:2]                                   | passed  | 0.20574 seconds        |
 ./spec/system/loans_module/settings/office_loan_product_loan_aging_groups/create_new_system_spec.rb[1:1]        | passed  | 8.21 seconds           |

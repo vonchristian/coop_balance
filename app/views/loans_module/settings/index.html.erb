@@ -21,7 +21,7 @@
 <h4 class="title-up"> Loan Aging Groups </h4>
 <%= link_to 'New Aging Group', new_loans_module_settings_loan_aging_group_path, class: 'btn btn-danger' %>
 <% current_office.loan_aging_groups.each do |loan_aging_group| %>
-<%= loan_aging_group.title %>
+<%= link_to loan_aging_group.title, loans_module_settings_loan_aging_group_path(loan_aging_group) %>
 <%= loan_aging_group.start_num %>
 <%= loan_aging_group.end_num %>
 

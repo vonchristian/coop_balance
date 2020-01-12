@@ -506,7 +506,7 @@ Rails.application.routes.draw do
     resources :settings,     only: [:index]
     namespace :settings do
       resources :archives,           only: [:new, :create]
-      resources :loan_aging_groups,  only: [:new, :create] do 
+      resources :loan_aging_groups,  only: [:new, :create, :show, :edit, :update] do 
         resources :office_loan_products, only: [:new, :create], module: :loan_aging_groups
       end 
     end
