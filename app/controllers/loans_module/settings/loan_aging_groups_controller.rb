@@ -18,7 +18,7 @@ module LoansModule
       private
       def loan_aging_group_params
         params.require(:loans_module_loan_aging_group).
-        permit(:title, :start_num, :end_num)
+        permit(:title, :start_num, :end_num, :level_two_account_category_id)
       end
     end
   end
