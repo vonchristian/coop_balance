@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_11_032505) do
+ActiveRecord::Schema.define(version: 2020_01_12_025931) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1107,6 +1107,17 @@ ActiveRecord::Schema.define(version: 2020_01_11_032505) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "office_loan_product_aging_groups", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "office_loan_product_id", null: false
+    t.uuid "loan_aging_group_id", null: false
+    t.uuid "level_one_account_category_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["level_one_account_category_id"], name: "index_account_categories_on_office_loan_product_aging_groups"
+    t.index ["loan_aging_group_id"], name: "index_loan_aging_groups_on_office_loan_product_aging_groups"
+    t.index ["office_loan_product_id"], name: "index_office_loan_products_on_office_loan_product_aging_groups"
+  end
+
   create_table "office_loan_products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "office_id", null: false
     t.uuid "loan_product_id", null: false
@@ -2080,6 +2091,9 @@ ActiveRecord::Schema.define(version: 2020_01_11_032505) do
   add_foreign_key "net_income_distributions", "accounts"
   add_foreign_key "net_income_distributions", "cooperatives"
   add_foreign_key "notes", "users", column: "noter_id"
+  add_foreign_key "office_loan_product_aging_groups", "level_one_account_categories"
+  add_foreign_key "office_loan_product_aging_groups", "loan_aging_groups"
+  add_foreign_key "office_loan_product_aging_groups", "office_loan_products"
   add_foreign_key "office_loan_products", "accounts", column: "forwarding_account_id"
   add_foreign_key "office_loan_products", "level_one_account_categories", column: "interest_revenue_account_category_id"
   add_foreign_key "office_loan_products", "level_one_account_categories", column: "penalty_revenue_account_category_id"

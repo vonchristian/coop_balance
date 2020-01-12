@@ -22,5 +22,8 @@
 <%= link_to 'New Aging Group', new_loans_module_settings_loan_aging_group_path, class: 'btn btn-danger' %>
 <% current_office.loan_aging_groups.each do |loan_aging_group| %>
 <%= loan_aging_group.title %>
-<%= loan_aging_group.num_range %>
+<%= loan_aging_group.start_num %>
+<%= loan_aging_group.end_num %>
+
+<%= link_to 'Set Office Loan Product', new_loans_module_settings_loan_aging_group_office_loan_product_path(loan_aging_group) %>
 <% end %>
