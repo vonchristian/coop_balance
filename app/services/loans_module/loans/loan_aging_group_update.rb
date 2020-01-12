@@ -27,7 +27,9 @@ module LoansModule
       end 
 
       def update_loan_receivable_account_level_one_account_category(loan_aging_group)
-        loan.receivable_account.update(level_one_account_category: level_one_account_category(loan_aging_group))
+        if level_one_account_category(loan_aging_group).present? 
+          loan.receivable_account.update(level_one_account_category: level_one_account_category(loan_aging_group))
+        end 
       end
 
       def level_one_account_category(loan_aging_group)

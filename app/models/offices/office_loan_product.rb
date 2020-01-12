@@ -10,5 +10,7 @@ module Offices
     has_many   :office_loan_product_aging_groups,  class_name: 'LoansModule::OfficeLoanProductAgingGroup'
     has_many   :loan_aging_groups,                 through: :office_loan_product_aging_groups, class_name: 'LoansModule::LoanAgingGroup'
     validates :loan_product_id, presence: true, uniqueness: { scope: :office_id }
+    
+    delegate :name, to: :loan_product
   end
 end

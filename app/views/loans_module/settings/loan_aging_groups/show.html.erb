@@ -1,2 +1,21 @@
 <%= link_to 'Edit', edit_loans_module_settings_loan_aging_group_path(@loan_aging_group) %>
 <%= link_to 'Set Office Loan Product', new_loans_module_settings_loan_aging_group_office_loan_product_path(@loan_aging_group) %>
+<h3 class='title-up'> Loan Products </h3>
+<div class='table table-responsive'>
+  <table class='table table-hover'>
+    <thead>
+      <tr>
+        <th> Loan Product </th>
+        <th> Account </th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @loan_aging_group.office_loan_products.each do |office_loan_product| %>
+        <tr>
+          <td><%= office_loan_product.name %></td>
+          <td><%= office_loan_product.office_loan_product_aging_groups.find_by(loan_aging_group: @loan_aging_group).level_one_account_category_title %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
