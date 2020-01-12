@@ -12,5 +12,9 @@ module Offices
       it { is_expected.to have_many :office_loan_product_aging_groups }
       it { is_expected.to have_many :loan_aging_groups }
     end
+
+    describe 'delegations' do 
+      it { is_expected.to delegate_method(:name).to(:loan_product) }
+    end 
   end 
 end

@@ -8,6 +8,10 @@ module LoansModule
       it { is_expected.to belong_to :level_one_account_category }
     end 
 
+    describe 'delegations' do 
+      it { is_expected.to delegate_method(:title).to(:level_one_account_category).with_prefix }
+    end 
+
     it '.current' do 
       old_group = create(:office_loan_product_aging_group, created_at: Date.current.last_year)
       new_group = create(:office_loan_product_aging_group, created_at: Date.current)
