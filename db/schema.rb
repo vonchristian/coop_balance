@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_12_025931) do
+ActiveRecord::Schema.define(version: 2020_01_12_044240) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -694,6 +694,8 @@ ActiveRecord::Schema.define(version: 2020_01_12_025931) do
     t.uuid "office_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "level_two_account_category_id"
+    t.index ["level_two_account_category_id"], name: "index_loan_aging_groups_on_level_two_account_category_id"
     t.index ["office_id"], name: "index_loan_aging_groups_on_office_id"
   end
 
@@ -2026,6 +2028,7 @@ ActiveRecord::Schema.define(version: 2020_01_12_025931) do
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items", "products"
   add_foreign_key "line_items", "unit_of_measurements"
+  add_foreign_key "loan_aging_groups", "level_two_account_categories"
   add_foreign_key "loan_aging_groups", "offices"
   add_foreign_key "loan_agings", "loan_aging_groups"
   add_foreign_key "loan_agings", "loans"
