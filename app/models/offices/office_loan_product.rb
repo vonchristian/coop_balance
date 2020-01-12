@@ -7,7 +7,8 @@ module Offices
     belongs_to :penalty_revenue_account_category,  class_name: 'AccountingModule::LevelOneAccountCategory'
     belongs_to :loan_protection_plan_provider,     class_name: 'LoansModule::LoanProtectionPlanProvider', optional: true
     belongs_to :forwarding_account,                class_name: 'AccountingModule::Account'
-
+    has_many   :office_loan_product_aging_groups,  class_name: 'LoansModule::OfficeLoanProductAgingGroup'
+    has_many   :loan_aging_groups,                 through: :office_loan_product_aging_groups, class_name: 'LoansModule::LoanAgingGroup'
     validates :loan_product_id, presence: true, uniqueness: { scope: :office_id }
   end
 end
