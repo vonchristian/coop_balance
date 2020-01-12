@@ -10,5 +10,9 @@ module LoansModule
     def num_range
       start_num..end_num
     end
+   
+    def total_balance(args={})
+      loans.total_balance(args)
+    end 
   end
 end

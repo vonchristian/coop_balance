@@ -115,6 +115,7 @@ Rails.application.routes.draw do
 
     namespace :monitoring do
       resources :metrics, only: [:index]
+      resources :loan_agings, only: [:index]
     end
 
     resources :search_results, only: [:index]

@@ -259,9 +259,8 @@ module LoansModule
       not_cancelled.where(id: ids)
     end
 
-    def self.total_balance
-      ids = pluck(:id)
-      LoansModule::LoanProduct.total_balance(commercial_document: ids)
+    def self.total_balance(args={})
+      receivable_accounts.balance(args)
     end
 
     def self.total_debits_balance(args={})
