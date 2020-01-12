@@ -25,6 +25,10 @@ module LoansModule
       it { is_expected.to validate_numericality_of :end_num }
     end
 
+    described 'delegations' do 
+      it { is_expected.to delegate_method(:title).to(:level_two_account_category).with_prefix }
+    end 
+
     it "#num_range" do
       group = create(:loan_aging_group, start_num: 0, end_num: 30)
 

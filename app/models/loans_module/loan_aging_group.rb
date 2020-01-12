@@ -10,6 +10,7 @@ module LoansModule
     validates :title, :start_num, :end_num, presence: true
     validates :start_num, :end_num, numericality: true
     
+    delegate :title, to: :level_two_account_category, prefix: true, allow_nil: true
     def num_range
       start_num..end_num
     end

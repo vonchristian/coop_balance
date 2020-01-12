@@ -18,12 +18,33 @@
     </div>
 	</div>
 </div>
-<h4 class="title-up"> Loan Aging Groups </h4>
-<%= link_to 'New Aging Group', new_loans_module_settings_loan_aging_group_path, class: 'btn btn-danger' %>
-<% current_office.loan_aging_groups.each do |loan_aging_group| %>
-<%= link_to loan_aging_group.title, loans_module_settings_loan_aging_group_path(loan_aging_group) %>
-<%= loan_aging_group.start_num %>
-<%= loan_aging_group.end_num %>
+<div class='card'>
+  <div class='card-body'>
+    <h4 class="title-up"> Loan Aging Groups </h4>
+    <%= link_to 'New Aging Group', new_loans_module_settings_loan_aging_group_path, class: 'btn btn-danger' %>
 
-<%= link_to 'Set Office Loan Product', new_loans_module_settings_loan_aging_group_office_loan_product_path(loan_aging_group) %>
-<% end %>
+    <div class='table table-responsive'>
+      <table class='table table-hover'>
+        <thead>
+          <tr>
+            <th> Title </th>
+            <th> Start Num </th>
+            <th> End Num </th>
+            <th> Account </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% current_office.loan_aging_groups.each do |loan_aging_group| %>
+            <tr>
+              <td><%= link_to loan_aging_group.title, loans_module_settings_loan_aging_group_path(loan_aging_group) %></td>
+              <td><%= loan_aging_group.start_num %></td>
+              <td><%= loan_aging_group.end_num %></td>
+              <td><%= loan_aging_group.level_two_account_category_title %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
