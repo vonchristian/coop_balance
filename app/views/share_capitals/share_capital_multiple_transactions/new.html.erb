@@ -9,7 +9,7 @@
               <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search by Subscriber", id: 'loan-search-form' %>
               <span class="input-group-btn">
                 <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-default btn-flat") do %>
-                  <i class="fa fa-search"></i>
+                  <i class="fa fa-search"></i> Search
                 <% end %>
               </span>
             </div>
@@ -81,6 +81,6 @@
   <%= f.input :description %>
   <%= f.input :reference_number %>
   <%= f.input :account_number, input_html: { value: SecureRandom.uuid}, as: :hidden %>
-  <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id]}, input_html: { class: 'chosen-select' } %>
+  <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id]}, input_html: { class: 'chosen-select' }, default: current_user.cash_accounts.first %>
   <%= f.submit 'Proceed', class: 'btn btn-primary float-right' %>
 <% end %>

@@ -1,9 +1,36 @@
-<%= simple_form_for @line_item, url: :share_capital_multiple_line_items do |f| %>
-  <%= f.input :amount %>
-  <%= f.input :share_capital_id, input_html: { value: @share_capital.id} %>
-  <%= f.input :employee_id, input_html: { value: current_user.id} %>
-  <%= f.input :cart_id, input_html: { value: current_cart.id} %>
+<div class='container'>
+  <div class='row'>
+    <div class='col-md-6 offset-md-3'>
+      <div class='card'>
+        <div class='card-body'>
+        <div class='row'>
+                <div class='col-md-2'>
+                  
+                  <%=image_tag(@share_capital.avatar, height: 60, width: 60, class: 'img-circle') %>
+                </div>
+                <div class='col-md-5'>
+                  <h3 class='title-up'><%= @share_capital.account_name %></h3>
+                  <span class=text-muted><%= @share_capital.share_capital_product_name %></span>
+                </div>
+                <div class='col-md-4'>
+                  <small class='text-muted'>BALANCE </small>
+                  <h3 class='title-up'><%= number_to_currency @share_capital.balance %></h3>
+                </div>
+              </div>
+              <hr>
+              <p>Add Capital Build Up </p>
+          <%= simple_form_for @line_item, url: :share_capital_multiple_line_items do |f| %>
+            <%= f.input :amount %>
+            <%= f.input :share_capital_id, input_html: { value: @share_capital.id}, as: :hidden %>
+            <%= f.input :employee_id, input_html: { value: current_user.id}, as: :hidden %>
+            <%= f.input :cart_id, input_html: { value: current_cart.id}, as: :hidden %>
 
-  
-  <%= f.submit 'Add Amount' %>
-<% end %>
+            
+            <%= f.submit 'Add Amount', class: 'btn btn-primary float-right', data: { disable_with: 'Processing...' } %>
+          <% end %>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>

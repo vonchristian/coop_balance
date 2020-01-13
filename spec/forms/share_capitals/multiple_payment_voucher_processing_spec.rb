@@ -2,7 +2,6 @@ require 'rails_helper'
 
 module ShareCapitals
   describe MultiplePaymentVoucherProcessing, type: :model do
-    
     describe 'validations' do 
       it { is_expected.to validate_presence_of :date }
       it { is_expected.to validate_presence_of :reference_number }

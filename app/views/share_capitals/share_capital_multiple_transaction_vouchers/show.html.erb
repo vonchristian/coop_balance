@@ -1,5 +1,89 @@
-<% @voucher.voucher_amounts.each do |voucher_amount| %>
-  <%= voucher_amount.account_name %>
-  <%= number_to_currency voucher_amount.amount %>
-<% end %>
-<%= link_to 'Confirm Transaction', share_capital_multiple_transaction_voucher_confirmations_path(share_capital_multiple_transaction_voucher_id: @voucher.id, voucher_id: @voucher.id), method: :create %>
+<div class='container'>
+  <div class='row'>
+    <div class='col-md-6 offset-md-3'>
+      <div class='card'>
+        <div class='card-header'>
+          <h3 class='title-up'>Voucher Details </h3>
+        </div>
+        <div class='card-body'>
+          <div class='row min-margin'>
+            <div class='col-md-4'>
+              <b>Date </b>
+            </div>
+            <div class='col-md-5'>
+              <%= @voucher.date.strftime('%B %e, %Y') %>
+            </div>
+          </div>
+          <div class='row min-margin'>
+            <div class='col-md-4'>
+              <b>Description </b>
+            </div>
+            <div class='col-md-5'>
+              <%= @voucher.description %>
+            </div>
+          </div>
+          <div class='row min-margin'>
+            <div class='col-md-4'>
+              <b>Reference # </b>
+            </div>
+            <div class='col-md-5'>
+              <%= @voucher.reference_number %>
+            </div>
+          </div>
+          <div class='row min-margin'>
+            <div class='col-md-4'>
+              <b>Employee </b>
+            </div>
+            <div class='col-md-5'>
+              <%= @voucher.preparer_full_name %>
+            </div>
+          </div>
+          <br>
+          <div class='row'>
+            <div class='col-md-3'>
+              <b> DEBIT </b>
+            </div>
+            <div class='col-md-5'>
+              <b>ACCOUNT </b>
+            </div>  
+            <div class='col-md-3'>
+              <b>CREDIT </b>
+            </div>
+          </div>
+          <hr>
+          <% @voucher.voucher_amounts.each do |voucher_amount| %>
+            <div class='row'>
+              <div class='col-md-3'>
+                <% if voucher_amount.debit? %>
+                  <%= number_to_currency voucher_amount.amount %>
+                <% end %>
+              </div>
+              <div class='col-md-6'>
+                <%= voucher_amount.account_name %>
+              </div>  
+              <div class='col-md-3'>
+                  <% if voucher_amount.credit? %>
+                  <%= number_to_currency voucher_amount.amount %>
+                <% end %>
+              </div>
+            </div>
+            <hr>
+          <% end %>
+          <div class='row'>
+            <div class='col-md-3'>
+              <h4 class='subtitle-up'><%= number_to_currency @voucher.voucher_amounts.debit.total %></h4>
+            </div>
+            <div class='col-md-6'> 
+            </div>  
+            <div class='col-md-3'>
+              <h4 class='subtitle-up'><%= number_to_currency @voucher.voucher_amounts.credit.total %></h4>
+            </div>
+          </div>
+          <hr>
+          <%= link_to 'Cancel', voucher_path(@voucher), method: :delete, method: :create, class: 'text-danger float-left', data: { disable_with: "Cancelling..."} %>
+          <%= link_to 'Confirm Transaction', share_capital_multiple_transaction_voucher_confirmations_path(share_capital_multiple_transaction_voucher_id: @voucher.id, voucher_id: @voucher.id), method: :create, class: 'btn btn-primary float-right', data: { disable_with: "Processing..."} %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
