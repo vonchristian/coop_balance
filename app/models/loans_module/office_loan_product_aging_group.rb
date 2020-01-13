@@ -5,6 +5,7 @@ module LoansModule
     belongs_to :level_one_account_category, class_name: 'AccountingModule::LevelOneAccountCategory'
     
     delegate :title, to: :level_one_account_category, prefix: true
+    
     def self.current 
       order(created_at: :desc).first 
     end 
