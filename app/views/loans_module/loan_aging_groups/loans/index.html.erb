@@ -11,6 +11,16 @@
 </div>
 <div class='card'>
   <div class='card-body'>
+  <%= form_tag({format: 'csv', :action => 'index', controller: "loans_module/loan_aging_groups/loans"}, {:method => :get, :class => 'form-inline'}) do%>
+      <div class="form-group">
+        <%= text_field_tag :to_date, @to_date, :class => 'datepicker form-control' %>
+      </div>
+      <div class="form-group">
+        <%= select_tag :loan_product_id, options_for_select(current_office.loan_products.map {|m| [m.name, m.id]}, params[:loan_product_id]), class: ' form-control border-input', prompt: false %>
+      </div>
+     
+      <button type="submit" class="btn btn-default">Generate CSV</button>
+    <% end %>
 <div class='table table-responsive'>
   <table class='table table-hover'>
     <thead>

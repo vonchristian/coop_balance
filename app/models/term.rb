@@ -32,8 +32,8 @@ class Term < ApplicationRecord
     maturity_date < Time.zone.now + grace_period.days
   end
 
-  def number_of_days_past_due
-    num = ((Time.zone.now - maturity_date)/86400.0).to_i
+  def number_of_days_past_due(date: Time.zone.now)
+    num = ((date - maturity_date)/86400.0).to_i
     if num.positive?
       num
     else

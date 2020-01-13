@@ -2,11 +2,15 @@ module LoansModule
   module LoanAgingGroups 
     class LoansController < ApplicationController
       def index 
-        @to_date = params[:to_date].present? ? Date.parse(params[:to_date]) : Time.zone.now
-
+        @to_date = params[:to_date].present? ? Time.parse(params[:to_date]) : Time.zone.now
         @loan_aging_group = current_office.loan_aging_groups.find(params[:loan_aging_group_id])
-        
-        @pagy, @loans = pagy(@loan_aging_group.current_loans)
+       
+        if params[:loan_product_id].present?
+          @loan_product = current_office.loan_products.find(params[:loan_product_id])
+          @pagy, @loans = pagy(@loan_aging_group.current_loans.where(loan_product: @loan_product))
+        else 
+          @pagy, @loans = pagy(@loan_aging_group.current_loans)
+        end 
         respond_to do |format|
           format.html 
           format.csv { render_csv }
@@ -40,6 +44,8 @@ module LoansModule
       def csv_body
         Enumerator.new do |yielder|
           yielder << CSV.generate_line(["#{current_office.name} - #{@loan_aging_group.title } Loans Portfolio"])
+          yielder << CSV.generate_line(["As of: - #{@to_date.strftime('%B %e, %Y') }"])
+
           yielder << CSV.generate_line(["Borrower", "Loan Product", "Loan Purpose", "Principal Balance", 'Interests', 'Penalties',  "Disbursement Date","Maturity Date",  "Number of Days Past Due"])
           @loan_aging_group.current_loans.each do |loan|
             yielder << CSV.generate_line([
@@ -51,10 +57,10 @@ module LoansModule
               loan.loan_penalties_balance,
               loan.disbursement_date.try(:strftime, ("%B %e, %Y")),
               loan.maturity_date.try(:strftime,('%B %e, %Y')),
-              loan.number_of_days_past_due
+              loan.number_of_days_past_due(date: @to_date)
               ])
           end
-        end 
+        end
       end 
     end
   end
