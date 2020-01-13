@@ -33,3 +33,5 @@ remove cooperative from vouchers
 show loan type on loan multiple payment
 
 add level 4 account category
+
+show loans tab loan aging group page 

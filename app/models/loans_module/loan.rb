@@ -113,6 +113,9 @@ module LoansModule
     def current_loan_aging
       loan_agings.current
     end
+    def self.current_loan_agings 
+      map{|a| a.current_loan_aging }
+    end 
 
     def self.filter_by(args = {})
       date = Date.parse(args[:date].to_s)

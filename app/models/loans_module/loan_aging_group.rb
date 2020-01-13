@@ -9,11 +9,23 @@ module LoansModule
     
     validates :title, :start_num, :end_num, presence: true
     validates :start_num, :end_num, numericality: true
-    
+
     delegate :title, to: :level_two_account_category, prefix: true, allow_nil: true
+    
     def num_range
       start_num..end_num
     end
+
+    def current_loans
+      loan_ids =[]
+      loans.each do |loan|
+        if loan.loan_aging_group == self
+          loan_ids << loan.id
+        end 
+      end
+     loans.where(id: loan_ids)
+    end 
+     
    
     def total_balance(args={})
       level_two_account_category.balance(args)

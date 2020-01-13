@@ -27,6 +27,7 @@ module Cooperatives
     has_many :time_deposit_products,        through: :office_time_deposit_products, class_name: 'CoopServicesModule::TimeDepositProduct'
     has_many :accounting_reports,           class_name: "AccountingModule::AccountingReport"
     has_many :loan_aging_groups,            class_name: 'LoansModule::LoanAgingGroup'
+    has_many :loan_agings,                  through: :loan_aging_groups, class_name: 'LoansModule::Loans::LoanAging'
     has_many :office_loan_product_aging_groups, through: :office_loan_products, class_name: 'LoansModule::OfficeLoanProductAgingGroup'
 
     has_many :level_one_account_categories, class_name: 'AccountingModule::LevelOneAccountCategory'

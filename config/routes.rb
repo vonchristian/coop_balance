@@ -102,6 +102,9 @@ Rails.application.routes.draw do
   resources :loans_module, only: [:index]
 
   namespace :loans_module do
+    resources :loan_aging_groups, only: [:show] do 
+      resources :loans, only: [:index], module: :loan_aging_groups
+    end 
     resources :amortization_schedules, only: [:index, :show]
     resources :amortization_schedule_date_filters, only: [:index]
 
