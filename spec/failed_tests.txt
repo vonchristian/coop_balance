@@ -1269,6 +1269,14 @@ example_id                                                                      
 ./spec/services/savings_module/interest_rate_divisors/monthly_spec.rb[1:1]                                      | passed  | 0.19651 seconds        |
 ./spec/services/savings_module/interest_rate_divisors/quarterly_spec.rb[1:1]                                    | passed  | 0.23245 seconds        |
 ./spec/services/savings_module/interest_rate_divisors/semi_annually_spec.rb[1:1]                                | passed  | 0.21227 seconds        |
+./spec/services/share_capitals/multiple_payment_voucher_processing_spec.rb[1:1:1]                               | passed  | 0.0277 seconds         |
+./spec/services/share_capitals/multiple_payment_voucher_processing_spec.rb[1:1:2]                               | passed  | 0.00732 seconds        |
+./spec/services/share_capitals/multiple_payment_voucher_processing_spec.rb[1:1:3]                               | passed  | 0.0046 seconds         |
+./spec/services/share_capitals/multiple_payment_voucher_processing_spec.rb[1:1:4]                               | passed  | 0.00475 seconds        |
+./spec/services/share_capitals/multiple_payment_voucher_processing_spec.rb[1:1:5]                               | passed  | 0.005 seconds          |
+./spec/services/share_capitals/multiple_payment_voucher_processing_spec.rb[1:1:6]                               | passed  | 0.00511 seconds        |
+./spec/services/share_capitals/multiple_payment_voucher_processing_spec.rb[1:1:7]                               | passed  | 0.00566 seconds        |
+./spec/services/share_capitals/multiple_payment_voucher_processing_spec.rb[1:2]                                 | passed  | 0.80475 seconds        |
 ./spec/services/share_capitals/opening_spec.rb[1:1]                                                             | failed  | 0.73141 seconds        |
 ./spec/services/store_front_module/quantity_calculators/store_front_spec.rb[1:1]                                | failed  | 0.00433 seconds        |
 ./spec/services/store_front_module/vouchers/credit_sales_order_spec.rb[1:1]                                     | failed  | 0.04483 seconds        |
@@ -1303,4 +1311,4 @@ example_id                                                                      
 ./spec/system/share_capitals/accounting/balance_transfers/new_system_spec.rb[1:1]                               | passed  | 9.67 seconds           |
 ./spec/system/share_capitals/accounting/index_system_spec.rb[1:1]                                               | passed  | 6.23 seconds           |
 ./spec/system/share_capitals/balance_transfers/new_system_spec.rb[1:1]                                          | passed  | 13.18 seconds          |
-./spec/system/share_capitals/multiple_line_items/new_system_spec.rb[1:1]                                        | passed  | 12.86 seconds          |
+./spec/system/share_capitals/multiple_line_items/new_system_spec.rb[1:1]                                        | passed  | 11.45 seconds          |

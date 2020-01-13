@@ -35,6 +35,7 @@ module LoansModule
     belongs_to :accrued_income_account,   class_name: 'AccountingModule::Account', optional: true
     has_many :voucher_amounts,            class_name: "Vouchers::VoucherAmount", as: :commercial_document, dependent: :destroy # for adding amounts on voucher move to loan application
     has_many :amortization_schedules,     dependent: :destroy
+    #deprecate
     has_many :amounts,                    class_name: "AccountingModule::Amount", as: :commercial_document
     has_many :notices,                    class_name: "LoansModule::Notice",  as: :notified
     has_many :loan_interests,             class_name: "LoansModule::Loans::LoanInterest", dependent: :destroy
@@ -48,6 +49,7 @@ module LoansModule
     has_many :accountable_accounts,       class_name: 'AccountingModule::AccountableAccount', as: :accountable
     has_many :accounts,                   through: :accountable_accounts, class_name: 'AccountingModule::Account'
     has_many :entries,                    through: :accounts, class_name: 'AccountingModule::Entry'
+  
     delegate :name, :address, :contact_number, to: :cooperative, prefix: true
     delegate :disbursed?, to: :disbursement_voucher, allow_nil: true #remove
     delegate :effectivity_date, :is_past_due?, :number_of_days_past_due, :remaining_term, :terms_elapsed, :maturity_date, to: :term, allow_nil: true

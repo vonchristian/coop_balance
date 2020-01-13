@@ -35,3 +35,7 @@ show loan type on loan multiple payment
 add level 4 account category
 
 show loans tab loan aging group page 
+
+fix share capital multiple transactions page and validations
+share capital multiple transaction confirmation page
+order by borrower name loan multiple transactions 
