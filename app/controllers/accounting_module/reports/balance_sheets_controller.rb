@@ -54,33 +54,40 @@ module AccountingModule
         total_equities    = BigDecimal('0')
 
         Enumerator.new do |yielder|
+          assets_body
           yielder << CSV.generate_line(["#{current_office.name} - Balance Sheet"])
           yielder << CSV.generate_line(["AS OF: #{@to_date.strftime('%B %e, %Y')}"])
-
           yielder << CSV.generate_line(["ASSETS"])
+
           current_office.level_three_account_categories.assets.order(code: :asc).each do |l3_account_category|
             yielder << CSV.generate_line([l3_account_category.title])
+            
             l3_account_category.level_two_account_categories.assets.order(code: :asc).each do |l2_account_category|
               yielder << CSV.generate_line(["    #{l2_account_category.title}"])
               
               l2_account_category.level_one_account_categories.assets.order(code: :asc).each do |l1_account_category|
                 total_assets += l1_account_category.balance(to_date: @to_date)
+                
                 yielder << CSV.generate_line(["        #{l1_account_category.title}", l1_account_category.balance(to_date: @to_date)])
               end
 
               yielder << CSV.generate_line(["    Total #{l2_account_category.title}", l2_account_category.balance(to_date: @to_date)])
+              yielder << CSV.generate_line([""])
             end
+
             yielder << CSV.generate_line(["Total #{l3_account_category.title}", l3_account_category.balance(to_date: @to_date)])
           end
 
           current_office.level_two_account_categories.assets.where.not(id: current_office.level_three_account_categories.level_two_account_categories.assets.ids).order(code: :asc).each do |l2_account_category|
             yielder << CSV.generate_line(["    #{l2_account_category.title}"])
+            
             l2_account_category.level_one_account_categories.assets.order(code: :asc).each do |l1_account_category|
               total_assets += l1_account_category.balance(to_date: @to_date)
               yielder << CSV.generate_line(["        #{l1_account_category.title}", l1_account_category.balance(to_date: @to_date)])
             end
 
             yielder << CSV.generate_line(["    Total #{l2_account_category.title}", l2_account_category.balance(to_date: @to_date)])
+            yielder << CSV.generate_line([""])
           end
 
           current_office.level_one_account_categories.assets.where.not(id: current_office.level_two_account_categories.level_one_account_categories.assets.ids).order(code: :asc).each do |l1_account_category|
@@ -88,6 +95,7 @@ module AccountingModule
               yielder << CSV.generate_line(["        #{l1_account_category.title}", l1_account_category.balance(to_date: @to_date)])
           end
             yielder << CSV.generate_line(["TOTAL ASSETS", total_assets])
+            yielder << CSV.generate_line([""])
 
             #Liabilities 
             yielder << CSV.generate_line([""])
