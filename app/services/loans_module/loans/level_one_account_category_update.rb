@@ -17,16 +17,8 @@ module LoansModule
       end 
 
       def level_one_account_category
-        @office_loan_product.office_loan_product_aging_groups.where(loan_aging_group: @loan_aging_group).current.level_one_account_category
+        @office_loan_product.office_loan_product_aging_groups.find_by(loan_aging_group: @loan_aging_group).level_one_account_category
       end
-
-      # def level_one_account_category
-      #   office 
-      #   loan_product
-      #   loan_aging_group
-      #   office.office_loan_product_aging_groups.where(office_loan_product: office_loan_product, loan_aging_group: loan_aging_group).current.level_one_account_category
-
-     
     end 
   end 
 end 

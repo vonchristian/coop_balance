@@ -24,7 +24,7 @@ module LoansModule
 
       def update_loan_aging_group(loan_aging_group)
         LoansModule::Loans::LoanAging.create_or_find_by(loan: loan, loan_aging_group: loan_aging_group, date: date.to_date)
-        loan.update!(loan_aging_group: loan_aging_group)
+        loan.update(loan_aging_group: loan_aging_group)
       end 
     end
   end
