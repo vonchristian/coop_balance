@@ -6,7 +6,7 @@ module LoansModule
 
       validates :date, presence: true
       validates :loan_aging_group_id, uniqueness: { scope: :loan_id }
-
+      
       def self.current
         order(date: :desc).first
       end

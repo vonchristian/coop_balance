@@ -17,7 +17,6 @@ module LoansModule
           
           if loan_aging_group.num_range.include?(number_of_days_past_due)
             update_loan_aging_group(loan_aging_group)
-            update_category
           end
         end
       end
@@ -28,10 +27,6 @@ module LoansModule
         loan.loan_agings.find_or_create_by(loan_aging_group: loan_aging_group, date: date)
         loan.update(loan_aging_group: loan_aging_group)
       end 
-
-      def update_category
-        LoansModule::Loans::LevelOneAccountCategoryUpdate.new(loan: loan).update_category!
-      end
     end
   end
 end

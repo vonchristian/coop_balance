@@ -53,7 +53,7 @@ module LoansModule
   
     delegate :name, :address, :contact_number, to: :cooperative, prefix: true
     delegate :disbursed?, to: :disbursement_voucher, allow_nil: true #remove
-    delegate :effectivity_date, :is_past_due?, :number_of_days_past_due, :remaining_term, :terms_elapsed, :maturity_date, to: :term, allow_nil: true
+    delegate :effectivity_date, :is_past_due?, :remaining_term, :terms_elapsed, :maturity_date, to: :term, allow_nil: true
     delegate :first_and_last_name, to: :preparer, prefix: true #remove
     delegate :name, :age, :contact_number, :current_address, :current_address_complete_address, :current_contact_number,  :first_name, to: :borrower,  prefix: true, allow_nil: true
     delegate :name,  to: :loan_product, prefix: true
@@ -555,6 +555,10 @@ module LoansModule
       else
         0
       end
+    end
+
+    def number_of_days_past_due(args={})
+      term.number_of_days_past_due(args)
     end
   end
 end
