@@ -3,12 +3,15 @@ require 'rails_helper'
 describe 'New loan application disbursement' do
   before(:each) do
     teller = create(:teller)
-    cash  = create(:asset)
+    office = teller.office 
+    cash         = create(:asset)
     teller.cash_accounts << cash
-    loan_product = create(:loan_product)
-    create(:office_loan_product, office: teller.office, loan_product: loan_product)
-    loan_application = create(:loan_application, loan_product: loan_product, mode_of_payment: 'monthly', office: teller.office, voucher_id: nil)
-
+    loan_product                    = create(:loan_product)
+    loan_aging_group                = create(:loan_aging_group, office: teller.office, start_num: 0, end_num: 0)
+    office_loan_product             = create(:office_loan_product, office: office, loan_product: loan_product)
+    office_loan_product_aging_group = create(:office_loan_product_aging_group, office_loan_product: office_loan_product, loan_aging_group: loan_aging_group)
+    loan_application                = create(:loan_application, loan_product: loan_product, mode_of_payment: 'monthly', office: teller.office, voucher_id: nil)
+    
     @voucher = build(:voucher, office: teller.office)
     @voucher.voucher_amounts.debit.build(amount: 100_000, account: loan_application.receivable_account)
     @voucher.voucher_amounts.credit.build(amount: 90_000, account: cash)

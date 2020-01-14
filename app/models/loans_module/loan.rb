@@ -17,6 +17,7 @@ module LoansModule
     enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
 
     has_one    :term,                     as: :termable
+    belongs_to :loan_aging_group,         class_name: 'LoansModule::LoanAgingGroup'
     belongs_to :loan_application,         class_name: "LoansModule::LoanApplication", optional: true
     belongs_to :disbursement_voucher,     class_name: "Voucher", foreign_key: 'disbursement_voucher_id', optional: true
     belongs_to :cooperative
@@ -81,7 +82,7 @@ module LoansModule
 
     delegate :is_past_due?, :number_of_days_past_due, :remaining_term, :terms_elapsed, :maturity_date, to: :term, allow_nil: true
     delegate :number_of_months, to: :term, prefix: true
-    delegate :loan_aging_group, to: :current_loan_aging
+
     delegate :name, to: :receivable_account, prefix: true
     delegate :name, to: :interest_revenue_account, prefix: true
     delegate :name, to: :penalty_revenue_account, prefix: true
@@ -112,9 +113,6 @@ module LoansModule
       AccountingModule::Account.where(id: ids.compact.flatten.uniq)
     end
 
-    def current_loan_aging
-      loan_agings.current
-    end
     def self.current_loan_agings 
       map{|a| a.current_loan_aging }
     end 

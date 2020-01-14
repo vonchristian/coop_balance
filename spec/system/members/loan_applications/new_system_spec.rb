@@ -14,7 +14,8 @@ describe "New loan application", type: :system do
     create(:office_loan_product, loan_product: loan_product, office: loan_officer.office)
 
     member            = create(:member)
-    member.memberships.create!(cooperative: loan_officer.cooperative, cooperator: member, membership_type: 'regular_member', account_number: SecureRandom.uuid, office: loan_officer.office, membership_date: Date.current)
+    membership_category = create(:membership_category, cooperative: cooperative)
+    member.memberships.create!(cooperative: loan_officer.cooperative, cooperator: member, membership_category: membership_category,  account_number: SecureRandom.uuid, office: loan_officer.office, membership_date: Date.current)
 
     login_as(loan_officer, scope: :user)
     visit member_loans_path(member)

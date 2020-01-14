@@ -3,6 +3,7 @@ module LoansModule
   describe Loan do
     context 'associations' do
       it { is_expected.to belong_to(:term).optional }
+      it { is_expected.to belong_to :loan_aging_group }
       it { is_expected.to belong_to :receivable_account }
       it { is_expected.to belong_to :interest_revenue_account }
       it { is_expected.to belong_to :penalty_revenue_account }

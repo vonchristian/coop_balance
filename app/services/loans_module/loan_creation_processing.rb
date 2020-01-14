@@ -1,12 +1,13 @@
 module LoansModule
   class LoanCreationProcessing
     include ActiveModel::Model
-    attr_reader :loan_application, :cooperative, :employee
+    attr_reader :loan_application, :cooperative, :employee, :office
 
     def initialize(args)
       @loan_application = args[:loan_application]
       @employee         = args[:employee]
       @cooperative      = @loan_application.cooperative
+      @office           = @loan_application.office
     end
 
     def find_loan
@@ -22,7 +23,8 @@ module LoansModule
     private
     def create_loan
       loan = LoansModule::Loan.current_loan.new(
-        borrower_full_name:            loan_application.borrower.name,
+        loan_aging_group:         office.loan_aging_groups.find_by(start_num: 0, end_num: 0),
+        borrower_full_name:       loan_application.borrower.name,
         loan_application:         loan_application,
         mode_of_payment:          loan_application.mode_of_payment,
         cooperative:              loan_application.cooperative,

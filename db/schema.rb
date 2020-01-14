@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_12_044240) do
+ActiveRecord::Schema.define(version: 2020_01_14_010955) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -906,6 +906,7 @@ ActiveRecord::Schema.define(version: 2020_01_12_044240) do
     t.uuid "accrued_income_account_id"
     t.datetime "date_archived"
     t.datetime "paid_at"
+    t.uuid "loan_aging_group_id"
     t.index ["account_number"], name: "index_loans_on_account_number", unique: true
     t.index ["accrued_income_account_id"], name: "index_loans_on_accrued_income_account_id"
     t.index ["archived_by_id"], name: "index_loans_on_archived_by_id"
@@ -915,6 +916,7 @@ ActiveRecord::Schema.define(version: 2020_01_12_044240) do
     t.index ["cooperative_id"], name: "index_loans_on_cooperative_id"
     t.index ["disbursement_voucher_id"], name: "index_loans_on_disbursement_voucher_id"
     t.index ["interest_revenue_account_id"], name: "index_loans_on_interest_revenue_account_id"
+    t.index ["loan_aging_group_id"], name: "index_loans_on_loan_aging_group_id"
     t.index ["loan_application_id"], name: "index_loans_on_loan_application_id"
     t.index ["loan_product_id"], name: "index_loans_on_loan_product_id"
     t.index ["municipality_id"], name: "index_loans_on_municipality_id"
@@ -2068,6 +2070,7 @@ ActiveRecord::Schema.define(version: 2020_01_12_044240) do
   add_foreign_key "loans", "accounts", column: "receivable_account_id"
   add_foreign_key "loans", "barangays"
   add_foreign_key "loans", "cooperatives"
+  add_foreign_key "loans", "loan_aging_groups"
   add_foreign_key "loans", "loan_applications"
   add_foreign_key "loans", "loan_products"
   add_foreign_key "loans", "municipalities"
