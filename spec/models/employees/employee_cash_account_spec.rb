@@ -5,7 +5,6 @@ module Employees
     describe 'associations' do
       it { is_expected.to belong_to :employee }
       it { is_expected.to belong_to :cash_account }
-      it { is_expected.to belong_to :cooperative }
     end
 
     describe 'validations' do
@@ -36,9 +35,9 @@ module Employees
     end
 
     it ".default_accounts" do
-      cash_on_hand = create(:asset)
-      cash_in_bank = create(:asset)
-      default_cash_account = create(:employee_cash_account, cash_account: cash_on_hand, default_account: true)
+      cash_on_hand             = create(:asset)
+      cash_in_bank             = create(:asset)
+      default_cash_account     = create(:employee_cash_account, cash_account: cash_on_hand, default_account: true)
       not_default_cash_account = create(:employee_cash_account, cash_account: cash_in_bank, default_account: false)
 
       employee = create(:employee)
@@ -51,14 +50,14 @@ module Employees
 
     it ".recent" do
       recent_cash_account = create(:employee_cash_account, created_at: Date.today)
-      old_cash_account = create(:employee_cash_account, created_at: Date.today.yesterday)
+      old_cash_account    = create(:employee_cash_account, created_at: Date.today.yesterday)
 
       expect(described_class.recent).to eql(recent_cash_account)
       expect(described_class.default_accounts).to_not eql(old_cash_account)
     end
 
     it ".default_cash_account" do
-      default_cash_account = create(:employee_cash_account, default_account: true, created_at: Date.today)
+      default_cash_account     = create(:employee_cash_account, default_account: true, created_at: Date.today)
       not_default_cash_account = create(:employee_cash_account, default_account: true,  created_at: Date.today.yesterday)
 
       expect(described_class.default_cash_account).to eql(default_cash_account.cash_account)
