@@ -13,7 +13,6 @@ module LoansModule
               amortization_schedules: @amortization_schedules,
               voucher: @loan.disbursement_voucher,
               employee: @employee,
-              term: @loan.term,
               view_context: view_context)
             send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Amortization Schedule.pdf"
           end

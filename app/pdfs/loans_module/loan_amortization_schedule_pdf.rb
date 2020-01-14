@@ -6,13 +6,13 @@ module LoansModule
 
       super(margin: 40, page_size: [612, 936], page_layout: :portrait)
 
-      @loan = args[:loan]
+      @loan                   = args[:loan]
       @voucher                = args[:voucher] || @loan.disbursement_voucher
       @amortization_schedules = args[:amortization_schedules]
-      @employee = args[:employee],
-      @cooperative = @loan.cooperative,
-      @term        = args[:term],
-      @view_context = args[:view_context]
+      @employee               = args[:employee],
+      @cooperative            = @loan.cooperative,
+      @term                   = @loan.term,
+      @view_context           = args[:view_context]
       heading
       summary
       amortization_schedule
