@@ -2,6 +2,7 @@ module LoansModule
   module Loans 
     class LevelOneAccountCategoryUpdate 
       attr_reader :loan, :receivable_account
+      
       def initialize(loan:)
         @loan                       = loan 
         @loan_aging_group           = @loan.loan_aging_group

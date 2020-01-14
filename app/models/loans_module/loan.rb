@@ -78,7 +78,7 @@ module LoansModule
     delegate :name, to: :office, prefix: true
 
     validates :loan_product_id, :borrower_id, presence: true
-    validates :disbursement_voucher_id, uniqueness: true
+    # validates :disbursement_voucher_id, uniqueness: true
 
     delegate :is_past_due?, :number_of_days_past_due, :remaining_term, :terms_elapsed, :maturity_date, to: :term, allow_nil: true
     delegate :number_of_months, to: :term, prefix: true

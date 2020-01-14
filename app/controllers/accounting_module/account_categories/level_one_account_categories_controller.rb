@@ -1,8 +1,13 @@
 module AccountingModule
   module AccountCategories
     class LevelOneAccountCategoriesController < ApplicationController
+     
       def index
-        @pagy, @categories = pagy(current_office.level_one_account_categories)
+        if params[:search].present?
+          @pagy, @categories = pagy(current_office.level_one_account_categories.text_search(params[:search]))
+        else   
+          @pagy, @categories = pagy(current_office.level_one_account_categories)
+        end 
       end
 
       def new
