@@ -4,7 +4,7 @@
     <div class="card-header">
       <div class="row">
         <div class="col-md-3">
-          <h3 class="title-up"> Balance Sheet - <%= @office.name %> </h3>
+          <h3 class="title-up"> Balance Sheet - <%= current_office.name %> </h3>
           <p class="text-muted"> As of <%= @to_date.strftime("%B %e, %Y") %></p>
           <% current_cooperative.offices.each do |office| %>
             <%= link_to office.name, accounting_module_reports_balance_sheets_path(office_id: office.id), class: 'btn btn-outline-primary' %>
@@ -21,8 +21,8 @@
         </div>
         <div class="col-md-3">
           Export To:
-          <%= link_to accounting_module_reports_balance_sheets_path(office_id: @office.id, to_date: @to_date, format: 'xlsx') do %>
-            <span class="btn btn-outline-secondary btn-sm"><i class="fa fa-spreadsheet"></i> Excel </span>
+          <%= link_to accounting_module_reports_balance_sheets_path(office_id: current_office.id, to_date: @to_date, format: 'csv') do %>
+            <span class="btn btn-outline-secondary btn-sm"><i class="fa fa-spreadsheet"></i> CSV </span>
           <% end %>
           <%= link_to accounting_module_reports_balance_sheets_path(format: 'pdf', to_date: @to_date) do %>
             <span class="btn btn-outline-secondary btn-sm"><i class="fa fa-pdf"></i> PDF </span>
