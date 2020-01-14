@@ -47,7 +47,7 @@ module LoansModule
           yielder << CSV.generate_line(["As of: - #{@to_date.strftime('%B %e, %Y') }"])
 
           yielder << CSV.generate_line(["Borrower", "Loan Product", "Loan Purpose", "Principal Balance", 'Interests', 'Penalties',  "Disbursement Date","Maturity Date",  "Number of Days Past Due"])
-          @loan_aging_group.current_loans.each do |loan|
+          @loan_aging_group.loans.each do |loan|
             yielder << CSV.generate_line([
               loan.borrower_full_name,
               loan.loan_product_name,

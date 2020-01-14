@@ -3,7 +3,7 @@ module LoansModule
     belongs_to :office,                           class_name: 'Cooperatives::Office'
     belongs_to :level_two_account_category,       class_name: 'AccountingModule::LevelTwoAccountCategory'
     has_many   :loan_agings,                      class_name: 'LoansModule::Loans::LoanAging'
-    has_many   :loans,                            class_name: 'LoansModule::Loan', through: :loan_agings 
+    has_many   :loans,                            class_name: 'LoansModule::Loan'
     has_many   :office_loan_product_aging_groups, class_name: 'LoansModule::OfficeLoanProductAgingGroup'
     has_many   :office_loan_products,             through: :office_loan_product_aging_groups, class_name: 'Offices::OfficeLoanProduct'
     
@@ -16,16 +16,6 @@ module LoansModule
       start_num..end_num
     end
 
-    def current_loans
-      loan_ids =[]
-      loans.each do |loan|
-        if loan.loan_aging_group == self
-          loan_ids << loan.id
-        end 
-      end
-     loans.where(id: loan_ids)
-    end 
-     
    
     def total_balance(args={})
       level_two_account_category.balance(args)

@@ -13,7 +13,7 @@ module LoansModule
 
       def update_loan_aging_group!
         loan_aging_groups.each do |loan_aging_group|
-          number_of_days_past_due = loan.number_of_days_past_due(date: date)
+          number_of_days_past_due = loan.number_of_days_past_due(date: date).to_i
           
           if loan_aging_group.num_range.include?(number_of_days_past_due)
             update_loan_aging_group(loan_aging_group)
