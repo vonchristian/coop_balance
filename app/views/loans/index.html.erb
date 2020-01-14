@@ -41,7 +41,13 @@
                 <% @loans.each do |loan| %>
                   <tr style="cursor: pointer;" data-link="<%= loan_path(loan) %>">
                     <td style="width: 40px"><%= image_tag(loan.borrower.avatar, class: "img-circle", height: 35, width: 35) %></td>
-                    <td><b><%= link_to loan.borrower_name, loan_path(loan) %></b></td>
+                    <td><b><%= link_to loan.borrower_name, loan_path(loan) %></b>
+                      <% if loan.paid? %>
+                        <br>
+                        <span class='badge bg-success'> PAID </span>
+                      <% end %>
+                      
+                    </td>
                     <td>
                       <%= loan.loan_product_name %><br>
                       <% if loan.application_date.present? %>

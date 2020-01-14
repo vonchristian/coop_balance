@@ -7,9 +7,9 @@ module LoansModule
        
         if params[:loan_product_id].present?
           @loan_product = current_office.loan_products.find(params[:loan_product_id])
-          @pagy, @loans = pagy(@loan_aging_group.loans.where(loan_product: @loan_product))
+          @pagy, @loans = pagy(@loan_aging_group.loans.where(loan_product: @loan_product).unpaid)
         else 
-          @pagy, @loans = pagy(@loan_aging_group.loans)
+          @pagy, @loans = pagy(@loan_aging_group.loans.unpaid)
         end 
         respond_to do |format|
           format.html 

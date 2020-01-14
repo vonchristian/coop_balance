@@ -139,7 +139,7 @@ module LoansModule
     end
 
     def self.unpaid
-      all.where(cancelled: false, archived: false).select { |l| l.principal_balance > 0 }
+      where(paid_at: nil)
     end
 
     def arrears(args={})
@@ -276,9 +276,7 @@ module LoansModule
       LoansModule::LoanProduct.total_credits_balance(args.merge(commercial_document: loans))
     end
 
-    def self.unpaid 
-      where(paid_at: nil)
-    end 
+  
 
     def self.not_archived
       where(archived: false)
