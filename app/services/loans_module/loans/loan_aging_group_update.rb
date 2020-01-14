@@ -23,7 +23,7 @@ module LoansModule
       private 
 
       def update_loan_aging_group(loan_aging_group)
-        # loan.loan_agings.find_or_create_by(loan_aging_group: loan_aging_group, date: date)
+        loan.loan_agings.find_or_create_by(loan_aging_group: loan_aging_group, date: date)
         loan.update!(loan_aging_group: loan_aging_group)
       end 
     end

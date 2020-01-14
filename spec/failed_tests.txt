@@ -1248,7 +1248,7 @@ example_id                                                                      
 ./spec/services/loans_module/loan_creation_processing_spec.rb[1:1]                                              | passed  | 1.46 seconds    |
 ./spec/services/loans_module/loan_product_charge_calculators/amount_based_spec.rb[1:1]                          | failed  | 0.00383 seconds |
 ./spec/services/loans_module/loan_product_charge_calculators/percent_based_spec.rb[1:1]                         | failed  | 0.00365 seconds |
-./spec/services/loans_module/loans/loan_aging_group_update_spec.rb[1:2]                                         | passed  | 3.78 seconds    |
+./spec/services/loans_module/loans/loan_aging_group_update_spec.rb[1:2]                                         | passed  | 3.71 seconds    |
 ./spec/services/loans_module/loans/paid_at_updater_spec.rb[1:1]                                                 | passed  | 5.37 seconds    |
 ./spec/services/loans_module/payment_processors/add_on_interest_spec.rb[1:1]                                    | failed  | 0.12122 seconds |
 ./spec/services/loans_module/payments/classifier_spec.rb[1:1]                                                   | passed  | 3.16 seconds    |
