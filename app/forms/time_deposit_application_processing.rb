@@ -17,13 +17,12 @@ class TimeDepositApplicationProcessing
     Voucher.find_by(account_number: voucher_account_number)
   end
   def find_time_deposit_application
-    TimeDepositApplication.find_by(account_number: account_number)
+    find_office.time_deposit_applications.find_by(account_number: account_number)
   end
 
   private
   def create_time_deposit_application
-    time_deposit_application = TimeDepositApplication.new(
-      office: find_employee.office, 
+    time_deposit_application = find_office.time_deposit_applications.build(
       time_deposit_product_id: time_deposit_product_id,
       depositor_id:            depositor_id,
       depositor_type:          depositor_type,
@@ -79,6 +78,11 @@ class TimeDepositApplicationProcessing
   def find_employee
     User.find(employee_id)
   end
+
+  def find_office 
+    find_employee.office 
+  end 
+
   def find_time_deposit_product
     CoopServicesModule::TimeDepositProduct.find(time_deposit_product_id)
   end

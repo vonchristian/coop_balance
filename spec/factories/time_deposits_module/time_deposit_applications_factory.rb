@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :time_deposit_application do
+  factory :time_deposit_application, class: TimeDepositsModule::TimeDepositApplication do
     association :time_deposit_product
     association :liability_account, factory: :liability
     association :cooperative
