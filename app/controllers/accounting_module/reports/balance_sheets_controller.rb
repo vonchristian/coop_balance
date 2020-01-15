@@ -14,7 +14,7 @@ module AccountingModule
             pdf = AccountingModule::Reports::BalanceSheetPdf.new(
               from_date:    @from_date,
               to_date:      @to_date,
-              office: current_office,
+              office:       current_office,
               view_context: view_context,
               cooperative:  current_cooperative)
             send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Balance Sheet.pdf"
@@ -73,7 +73,7 @@ module AccountingModule
 
               yielder << CSV.generate_line(["    Total #{l2_account_category.title}", l2_account_category.balance(to_date: @to_date)])
               yielder << CSV.generate_line([""])
-            end
+            end\
 
             yielder << CSV.generate_line(["Total #{l3_account_category.title}", l3_account_category.balance(to_date: @to_date)])
           end

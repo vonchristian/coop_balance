@@ -33,6 +33,7 @@ module Cooperatives
       it { is_expected.to have_many :level_two_account_categories }
       it { is_expected.to have_many :level_three_account_categories }
       it { is_expected.to have_many :time_deposit_applications }
+      it { is_expected.to have_many :net_income_configs }
     end
 
     describe 'validations' do
@@ -41,6 +42,10 @@ module Cooperatives
       it { is_expected.to validate_presence_of :address }
       it { is_expected.to validate_uniqueness_of :name }
     end
+
+    describe 'delegations' do 
+      it { is_expected.to delegate_method(:net_income_account).to(:current_net_income_config) }
+    end 
 
     it ".types" do
       expect(described_class.types).to eql ["Cooperatives::Offices::MainOffice", "Cooperatives::Offices::SatelliteOffice", "Cooperatives::Offices::BranchOffice"]

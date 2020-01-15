@@ -33,11 +33,11 @@ module AccountingModule
     end
 
     def edit
-      @account = current_cooperative.accounts.find(params[:id])
+      @account = current_office.accounts.find(params[:id])
     end
 
     def update
-      @account = current_cooperative.accounts.find(params[:id])
+      @account = current_office.accounts.find(params[:id])
       @account.update(update_params)
       if @account.valid?
         @account.save!

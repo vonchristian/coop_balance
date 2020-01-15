@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_14_010955) do
+ActiveRecord::Schema.define(version: 2020_01_14_214944) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1068,6 +1068,17 @@ ActiveRecord::Schema.define(version: 2020_01_14_010955) do
     t.index ["province_id"], name: "index_municipalities_on_province_id"
   end
 
+  create_table "net_income_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "office_id", null: false
+    t.uuid "net_income_account_id", null: false
+    t.integer "book_closing"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["book_closing"], name: "index_net_income_configs_on_book_closing"
+    t.index ["net_income_account_id"], name: "index_net_income_configs_on_net_income_account_id"
+    t.index ["office_id"], name: "index_net_income_configs_on_office_id"
+  end
+
   create_table "net_income_distributions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "account_id"
     t.decimal "rate"
@@ -2094,6 +2105,8 @@ ActiveRecord::Schema.define(version: 2020_01_14_010955) do
   add_foreign_key "merchants", "cooperatives"
   add_foreign_key "municipalities", "cooperatives"
   add_foreign_key "municipalities", "provinces"
+  add_foreign_key "net_income_configs", "accounts", column: "net_income_account_id"
+  add_foreign_key "net_income_configs", "offices"
   add_foreign_key "net_income_distributions", "accounts"
   add_foreign_key "net_income_distributions", "cooperatives"
   add_foreign_key "notes", "users", column: "noter_id"

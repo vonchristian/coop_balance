@@ -2,7 +2,7 @@ module AccountingModule
   module Accounts
     class EntriesController < ApplicationController
       def index
-        @account   = current_cooperative.accounts.find(params[:account_id])
+        @account   = current_office.accounts.find(params[:account_id])
         @from_date = params[:from_date] ? DateTime.parse(params[:from_date]) : Date.today
         @to_date   = params[:to_date] ? DateTime.parse(params[:to_date]) : Date.today
 

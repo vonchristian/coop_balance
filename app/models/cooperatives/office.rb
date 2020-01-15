@@ -1,6 +1,7 @@
 module Cooperatives
   class Office < ApplicationRecord
     belongs_to :cooperative
+   
     has_many :employees, class_name: "User"
     has_many :loans,                        class_name: "LoansModule::Loan"
     has_many :amortization_schedules,       class_name: "LoansModule::AmortizationSchedule"
@@ -36,13 +37,20 @@ module Cooperatives
     has_many :memberships, class_name: 'Cooperatives::Membership'
     has_many :member_memberships, through: :memberships, source: :cooperator, source_type: 'Member'
     has_many :time_deposit_applications
+    has_many :net_income_configs,             class_name: 'Offices::NetIncomeConfig'
 
     validates :name, uniqueness: true
     validates :name, :type, :contact_number, :address, presence: true
-
+    
+    delegate :net_income_account, to: :current_net_income_config, allow_nil: true
+    
     def cash_accounts
       employees.cash_accounts
     end
+
+    def current_net_income_config 
+      net_income_configs.current 
+    end 
 
     def normalized_type
       type.to_s.gsub("Cooperatives::Offices::", "")
