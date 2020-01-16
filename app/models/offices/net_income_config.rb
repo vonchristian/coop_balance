@@ -8,5 +8,9 @@ module Offices
     def self.current 
       order(created_at: :desc).first 
     end 
+
+    def date_setter
+      "NetIncomeConfigs::DateSetters::#{book_closing.titleize.gsub(' ', "")}".constantize
+    end 
   end
 end 

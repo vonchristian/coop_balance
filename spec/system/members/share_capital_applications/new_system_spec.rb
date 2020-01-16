@@ -4,16 +4,15 @@ include ChosenSelect
 
 describe 'New share capital application' do
   before(:each) do
-    teller = create(:teller)
-    cash   = create(:asset, name: 'Cash')
-    teller.cash_accounts << cash 
-    office = teller.office 
-    cooperative = teller.cooperative
-    member = create(:member) { include Addressing }
-
-    membership            = create(:membership, cooperator: member, cooperative: teller.cooperative)
+    teller                = create(:teller)
+    cash                  = create(:asset, name: 'Cash')
+    office                = teller.office 
+    cooperative           = teller.cooperative
+    member                = create(:member) { include Addressing }
+    membership            = create(:membership, cooperator: member, cooperative: cooperative)
     share_capital_product = create(:share_capital_product, cooperative: cooperative, name: 'Share Capital - Common')
     create(:office_share_capital_product, office: office, share_capital_product: share_capital_product)
+    teller.cash_accounts << cash 
     
     login_as(teller, scope: :user)
     visit members_path

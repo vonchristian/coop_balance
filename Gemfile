@@ -91,3 +91,7 @@ end
 gem 'rack-mini-profiler', require: false
 gem "simple_calendar"
 gem 'traceroute'
+
+gem 'derailed_benchmarks', group: :development
+gem 'stackprof', group: :development
+gem 'memory_profiler'

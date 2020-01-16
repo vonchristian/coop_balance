@@ -17,5 +17,16 @@ module Offices
       expect(described_class.current).to_not eq old_config
     end
 
-  end
+    it '#date_setter' do 
+      annually      = create(:net_income_config, book_closing: 'annually')
+      semi_annually = create(:net_income_config, book_closing: 'semi_annually')
+      quarterly     = create(:net_income_config, book_closing: 'quarterly')
+      monthly       = create(:net_income_config, book_closing: 'monthly')
+      
+      expect(annually.beginning_date_setter).to eq      NetIncomeConfigs::DateSetters::Annually
+      expect(semi_annually.beginning_date_setter).to eq NetIncomeConfigs::DateSetters::SemiAnnually
+      expect(quarterly.beginning_date_setter).to eq     NetIncomeConfigs::DateSetters::Quarterly
+      expect(monthly.beginning_date_setter).to eq       NetIncomeConfigs::DateSetters::Monthly
+    end 
+  end 
 end
