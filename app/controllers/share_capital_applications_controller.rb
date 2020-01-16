@@ -1,10 +1,11 @@
 class ShareCapitalApplicationsController < ApplicationController
   def new
-    @subscriber = params[:subscriber_type].constantize.find(params[:subscriber_id])
+    @subscriber                = params[:subscriber_type].constantize.find(params[:subscriber_id])
     @share_capital_application = ShareCapitalApplicationProcessing.new
   end
 
   def create
+    @subscriber                = params[:share_capital_application_processing][:subscriber_type].constantize.find(params[:share_capital_application_processing][:subscriber_id])
     @share_capital_application = ShareCapitalApplicationProcessing.new(application_params)
     if @share_capital_application.valid?
       @share_capital_application.process!

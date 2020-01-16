@@ -50,7 +50,7 @@ class Cooperative < ApplicationRecord
   has_many :categories,                     class_name: "StoreFrontModule::Category"
   has_many :beneficiaries
   has_many :savings_account_applications
-  has_many :share_capital_applications
+  has_many :share_capital_applications,     class_name: 'ShareCapitalsModule::ShareCapitalApplication'
   has_many :time_deposit_applications,      class_name: 'TimeDepositsModule::TimeDepositApplication'
   has_many :suppliers,                      class_name: "StoreFrontModule::Supplier"
   has_many :products,                       class_name: "StoreFrontModule::Product"

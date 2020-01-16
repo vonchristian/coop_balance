@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :share_capital_application do
+  factory :share_capital_application, class: ShareCapitalsModule::ShareCapitalApplication do
     association :equity_account, factory: :equity
     association :office
     association :cooperative

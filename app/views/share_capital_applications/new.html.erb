@@ -22,12 +22,12 @@
           <%= f.input :voucher_account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
           <%= f.input :description, input_html: { value: "Share Capital account opening"}, as: :hidden %>
 
-          <%= f.input :share_capital_product_id, collection: current_cooperative.share_capital_products.map{|a| [a.name, a.id] }, as: :radio_buttons, checked: current_cooperative.share_capital_products.first.id %>
+          <%= f.input :share_capital_product_id, collection: current_office.share_capital_products.map{|a| [a.name, a.id] }, input_html: { class: 'chosen-select' } %>
           <%= f.input :date_opened, as: :string, input_html: { value: Time.zone.now.strftime("%B %e, %Y"), class: "datepicker" } %>
           <%= f.input :amount, as: :currency %>
           <%= f.input :reference_number %>
-          <%= f.input :beneficiaries, label: "Beneficiary/ies", placeholder: "Fullname", as: :text %>
-          <%= f.input :cash_account_id, collection: current_cooperative.users.teller.last.cash_accounts.map{|a| [a.name, a.id] }, default: current_cooperative.users.teller.last.cash_accounts.first %>
+          <%= f.input :beneficiaries, label: "Beneficiary/ies", placeholder: "Fullname" %>
+          <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] }, default: current_user.cash_accounts.first, input_html: { class: 'chosen-select' } %>
           <%= f.submit "Proceed", class: "btn btn-primary float-right" %>
           <%= link_to "Cancel", root_path, class: "btn text-danger float-left" %>
         <% end %>

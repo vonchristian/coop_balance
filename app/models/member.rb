@@ -39,7 +39,7 @@ class Member < ApplicationRecord
 
   has_many :beneficiaries, dependent: :destroy
   has_many :loan_applications,            class_name: "LoansModule::LoanApplication", as: :borrower
-  has_many :share_capital_applications,   as: :subscriber
+  has_many :share_capital_applications,   class_name: 'ShareCapitalsModule::ShareCapitalApplication', as: :subscriber
   has_many :savings_account_applications, as: :depositor
   has_many :time_deposit_applications,    class_name: 'TimeDepositsModule::TimeDepositApplication', as: :depositor
   has_many :wallets, as: :account_owner

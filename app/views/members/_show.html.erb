@@ -37,7 +37,7 @@
         </li>
 
         <li class="nav-item">
-          <%= link_to member_share_capitals_path(@member), class: "nav-link #{ 'active' if current_page?(member_share_capitals_path(@member))}"  do %>
+          <%= link_to member_share_capitals_path(@member), id: "#{@member.id}-share-capitals", class: "nav-link #{ 'active' if current_page?(member_share_capitals_path(@member))}"  do %>
             <i class="fa fa-database"></i> Share Capitals
           <% end %>
         </li>

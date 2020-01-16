@@ -37,6 +37,8 @@ module Cooperatives
     has_many :memberships, class_name: 'Cooperatives::Membership'
     has_many :member_memberships, through: :memberships, source: :cooperator, source_type: 'Member'
     has_many :time_deposit_applications,      class_name: 'TimeDepositsModule::TimeDepositApplication'
+    has_many :share_capital_applications,     class_name: 'ShareCapitalsModule::ShareCapitalApplication'
+
     has_many :net_income_configs,             class_name: 'Offices::NetIncomeConfig'
 
     validates :name, uniqueness: true

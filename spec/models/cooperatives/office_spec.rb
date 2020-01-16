@@ -33,6 +33,8 @@ module Cooperatives
       it { is_expected.to have_many :level_two_account_categories }
       it { is_expected.to have_many :level_three_account_categories }
       it { is_expected.to have_many :time_deposit_applications }
+      it { is_expected.to have_many :share_capital_applications }
+
       it { is_expected.to have_many :net_income_configs }
     end
 
