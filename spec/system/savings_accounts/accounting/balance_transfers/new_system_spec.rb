@@ -26,7 +26,8 @@ describe 'New balance transfer' do
     click_link 'Balance Transfer'
     click_link "#{@saving_2.id}-select-destination-account"
   end
-  it 'with valid attributes' do
+
+  it 'with valid attributes', js: true do
     fill_in 'Amount', with: 100
   end
 

@@ -1344,8 +1344,8 @@ example_id                                                                      
 ./spec/system/membership_applications/new_membership_application_system_spec.rb[1:2]                            | passed  | 2.2 seconds     |
 ./spec/system/savings_accounts/account_closing/new_account_closing_system_spec.rb[1:1]                          | passed  | 4.78 seconds    |
 ./spec/system/savings_accounts/account_closing/new_account_closing_system_spec.rb[1:2]                          | passed  | 0.90662 seconds |
-./spec/system/savings_accounts/accounting/balance_transfers/new_system_spec.rb[1:1]                             | failed  | 1.4 seconds     |
-./spec/system/savings_accounts/accounting/balance_transfers/new_system_spec.rb[1:2]                             | failed  | 1.2 seconds     |
+./spec/system/savings_accounts/accounting/balance_transfers/new_system_spec.rb[1:1]                             | failed  | 9.84 seconds    |
+./spec/system/savings_accounts/accounting/balance_transfers/new_system_spec.rb[1:2]                             | failed  | 1.21 seconds    |
 ./spec/system/savings_accounts/accounting/index_system_spec.rb[1:1]                                             | passed  | 0.7246 seconds  |
 ./spec/system/savings_accounts/deposits/new_system_spec.rb[1:1]                                                 | passed  | 6.69 seconds    |
 ./spec/system/savings_accounts/deposits/new_system_spec.rb[1:2]                                                 | passed  | 1.18 seconds    |
