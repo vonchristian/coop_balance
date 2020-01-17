@@ -9,7 +9,7 @@ module AccountingModule
 
     validates :type, :amount, :entry, :account, presence: true
 
-    delegate :name, :display_name, to: :account, prefix: true
+    delegate :name, :code, :display_name, to: :account, prefix: true
     delegate :recorder, :reference_number, :description, :entry_date,  to: :entry
     delegate :name, to: :recorder, prefix: true
 
@@ -28,7 +28,7 @@ module AccountingModule
     end
 
     def self.without_cash_accounts
-      excluding_account(account_id: Employees::EmployeeCashAccount.cash_accounts.ids)
+      where.not(account_id: Employees::EmployeeCashAccount.cash_accounts.ids)
     end
 
     def self.accounts
@@ -37,7 +37,7 @@ module AccountingModule
     end
 
     def self.with_cash_accounts
-      for_account(account_id: Employees::EmployeeCashAccount.cash_accounts.ids)
+      where(account_id: Employees::EmployeeCashAccount.cash_accounts.ids)
     end
     def self.cash_amounts
       with_cash_accounts
@@ -60,9 +60,7 @@ module AccountingModule
       not_cancelled.where('entries.entry_date' => date_range.start_date..date_range.end_date)
     end
 
-    def self.for_loans
-      where(commercial_document_type: "LoansModule::Loan")
-    end
+    
 
     def debit?
       type == "AccountingModule::DebitAmount"
@@ -91,11 +89,8 @@ module AccountingModule
       return balance
     end
 
-    def account_code
-      account.code
-    end
-
     private
+    
     def self.balance_finder(args={})
       if args.present?
         klass = args.compact.keys.sort.map{ |key| key.to_s.titleize }.join.gsub(" ", "")

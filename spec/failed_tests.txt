@@ -90,6 +90,7 @@ example_id                                                                      
 ./spec/models/accounting_module/amount_spec.rb[1:4:4]                                                           | passed  | 0.12946 seconds |
 ./spec/models/accounting_module/amount_spec.rb[1:4:5]                                                           | passed  | 0.16008 seconds |
 ./spec/models/accounting_module/amount_spec.rb[1:4:6]                                                           | passed  | 0.108 seconds   |
+./spec/models/accounting_module/amount_spec.rb[1:4:7]                                                           | passed  | 0.97617 seconds |
 ./spec/models/accounting_module/amount_spec.rb[1:5:1]                                                           | passed  | 0.77742 seconds |
 ./spec/models/accounting_module/amount_spec.rb[1:5:2]                                                           | passed  | 0.40407 seconds |
 ./spec/models/accounting_module/amount_spec.rb[1:5:3]                                                           | passed  | 0.42353 seconds |
