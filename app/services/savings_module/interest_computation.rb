@@ -11,7 +11,7 @@ module SavingsModule
     end 
 
     def compute_interest!
-      saving.daily_averaged_balance(date: date) * applicable_rate
+      saving.averaged_balance * applicable_rate
     end 
 
     def applicable_rate

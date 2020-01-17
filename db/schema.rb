@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_17_063723) do
+ActiveRecord::Schema.define(version: 2020_01_17_092943) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1487,6 +1487,7 @@ ActiveRecord::Schema.define(version: 2020_01_17_063723) do
     t.uuid "interest_expense_account_id"
     t.uuid "liability_account_id"
     t.boolean "can_earn_interest", default: false
+    t.decimal "averaged_balance", default: "0.0"
     t.index ["account_number"], name: "index_savings_on_account_number", unique: true
     t.index ["account_owner_name"], name: "index_savings_on_account_owner_name"
     t.index ["barangay_id"], name: "index_savings_on_barangay_id"
