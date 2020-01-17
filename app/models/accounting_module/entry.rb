@@ -6,8 +6,6 @@ module AccountingModule
     pg_search_scope :text_search, :against => [:reference_number, :description]
     multisearchable against: [:reference_number, :description]
 
-    enum payment_type: [:cash, :check]
-
     has_one    :voucher,               foreign_key: 'entry_id', dependent: :nullify
     belongs_to :official_receipt,      optional: true
     belongs_to :commercial_document,   polymorphic: true

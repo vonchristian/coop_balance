@@ -22,7 +22,6 @@
           <%= f.input :date, as: :string, input_html: { class: "datepicker", value: Date.today.strftime("%B %e, %Y") } %>
           <%= f.input :amount, as: :currency %>
           <%= f.input :description, as: :text, input_html: {value: "Savings deposit"} %>
-          <%= f.input :payment_type, label: 'Type', collection: AccountingModule::Entry.payment_types.keys.to_a.map{|a| [a.titleize, a] }, selected: AccountingModule::Entry.payment_types.keys.first %>
           <%= f.input :or_number, label: 'Reference Number' %>
           <%= f.input :cash_account_id, default: current_cooperative.users.teller.last.cash_accounts.first, collection: current_cooperative.users.teller.last.cash_accounts.map{|a| [a.name, a.id] } %>
           <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
@@ -35,15 +34,3 @@
     </div>
   </div>
 </div>
-
-
-<script type="text/javascript">
-  $(document).ready(function() {
-    $("#memberships_savings_accounts_deposit_line_item_processing_cash_account_id").select2({
-      theme: "bootstrap"
-    });
-    $("#memberships_savings_accounts_deposit_line_item_processing_payment_type").select2({
-      theme: "bootstrap"
-    });
-  });
-</script>

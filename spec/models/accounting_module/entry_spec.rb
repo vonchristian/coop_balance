@@ -11,8 +11,6 @@ module AccountingModule
       it { is_expected.to belong_to(:cooperative_service).optional }
       it { is_expected.to belong_to(:cancelled_by).optional }
       it { is_expected.to belong_to :recorder }
-
-      it { is_expected.to have_many :referenced_entries }
       it { is_expected.to have_many :credit_amounts }
       it { is_expected.to have_many :debit_amounts }
       it { is_expected.to have_many :debit_accounts }

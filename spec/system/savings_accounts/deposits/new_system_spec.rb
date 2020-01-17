@@ -6,15 +6,16 @@ feature 'New savings account deposit' do
     user = create(:user, role: 'teller')
     user.cash_accounts << cash_on_hand_account
     login_as(user, scope: :user )
-    savings_account = create(:saving, cooperative: user.cooperative)
-    visit savings_account_url(savings_account)
+    savings_account = create(:saving, office: user.office)
+    visit savings_account_path(savings_account)
     click_link "Deposit"
   end
-  scenario 'with valid attributes' do
+  scenario 'with valid attributes', js: true do
     fill_in "Amount",    with: 100_000
     fill_in 'Date',      with: Date.today
     fill_in 'Reference Number', with: '909045'
     fill_in 'Date',      with: Date.today
+    
     click_button "Proceed"
 
     expect(page).to have_content('created successfully')

@@ -17,7 +17,7 @@ module TimeDeposits
 
     private
     def withdrawal_params
-      params.require(:time_deposits_withdrawal_line_item_processing).permit(:or_number, :date, :time_deposit_id, :employee_id, :payment_type, :account_number, :amount, :cash_account_id)
+      params.require(:time_deposits_withdrawal_line_item_processing).permit(:or_number, :date, :time_deposit_id, :employee_id, :account_number, :amount, :cash_account_id)
     end
   end
 end

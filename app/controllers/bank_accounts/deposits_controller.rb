@@ -19,7 +19,7 @@ module BankAccounts
     def entry_params
       params.require(:bank_accounts_deposit_line_item_processing).
       permit(:bank_account_id, :employee_id, :amount, :description,
-      :reference_number, :account_number, :date, :payment_type,
+      :reference_number, :account_number, :date, 
        :offline_receipt, :cash_account_id, :account_number, :payee_id)
     end
   end

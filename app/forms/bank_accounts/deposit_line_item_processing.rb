@@ -3,7 +3,7 @@ module BankAccounts
   class DepositLineItemProcessing
     include ActiveModel::Model
     attr_accessor :bank_account_id, :employee_id, :amount, :description,
-    :reference_number, :account_number, :date, :payment_type,
+    :reference_number, :account_number, :date,
      :offline_receipt, :cash_account_id, :account_number, :payee_id
     validates :amount, presence: true, numericality: { greater_than: 0.01 }
     validates :reference_number, presence: true

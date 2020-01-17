@@ -2,7 +2,7 @@ module Memberships
   module SavingsAccounts
     class DepositLineItemProcessing
       include ActiveModel::Model
-      attr_accessor :saving_id, :employee_id, :amount, :or_number, :account_number, :description, :date, :payment_type, :offline_receipt, :cash_account_id
+      attr_accessor :saving_id, :employee_id, :amount, :or_number, :account_number, :description, :date, :offline_receipt, :cash_account_id
       validates :amount, presence: true, numericality: { greater_than: 0.01 }
       validates :or_number, presence: true
 

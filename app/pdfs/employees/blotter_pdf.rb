@@ -88,8 +88,8 @@ module Employees
       end
     end
     def amounts_received_data
-      [["Date", "Payee", "Description", "Type", "Amount"]] +
-      @amounts_received_data ||= employee.cash_accounts.debit_entries.recorded_by(employee).map{|a| [a.entry_date.strftime("%B %e, %Y"), display_commercial_document_for(a), a.description, a.payment_type, price(a.amounts.where(account: @employee.cash_on_hand_account).sum(&:amount)) ] } +
+      [["Date", "Payee", "Description", "Amount"]] +
+      @amounts_received_data ||= employee.cash_accounts.debit_entries.recorded_by(employee).map{|a| [a.entry_date.strftime("%B %e, %Y"), display_commercial_document_for(a), a.description, price(a.amounts.where(account: @employee.cash_on_hand_account).sum(&:amount)) ] } +
       [["", "", "", "TOTAL", ""]]
     end
 
@@ -105,8 +105,8 @@ module Employees
       end
     end
     def amounts_paid_data
-      [["Date", "Payee", "Description", "Type", "Amount"]] +
-      @amounts_paid_data ||= employee.cash_accounts.credit_entries.recorded_by(employee).map{|a| [a.entry_date.strftime("%B %e, %Y"), a.commercial_document.try(:name), a.description, a.payment_type, price(a.amounts.where(account: @employee.cash_on_hand_account).sum(&:amount)) ] } +
+      [["Date", "Payee", "Description", "Amount"]] +
+      @amounts_paid_data ||= employee.cash_accounts.credit_entries.recorded_by(employee).map{|a| [a.entry_date.strftime("%B %e, %Y"), a.commercial_document.try(:name), a.description, price(a.amounts.where(account: @employee.cash_on_hand_account).sum(&:amount)) ] } +
       [["", "", "", "TOTAL", ""]]
     end
   end

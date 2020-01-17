@@ -1,7 +1,7 @@
 module TimeDeposits
   class WithdrawalLineItemProcessing
     include ActiveModel::Model
-    attr_accessor :time_deposit_id, :employee_id, :amount, :or_number, :account_number, :date, :payment_type, :offline_receipt, :cash_account_id, :account_number
+    attr_accessor :time_deposit_id, :employee_id, :amount, :or_number, :account_number, :date, :offline_receipt, :cash_account_id, :account_number
 
     validates :amount, presence: true, numericality: { greater_than: 0.01 }
     validates :or_number, :employee_id, presence: true

@@ -4,8 +4,9 @@ describe 'New savings account withdrawal' do
   before(:each) do
     cash_on_hand_account = create(:asset, name: "Cash on Hand (Teller)")
     user                 = create(:user, role: 'teller')
+    savings_account      = create(:saving, office: user.office)
     user.cash_accounts << cash_on_hand_account
-    savings_account = create(:saving, cooperative: user.cooperative)
+
     login_as(user, scope: :user )
 
     visit savings_account_url(savings_account)
