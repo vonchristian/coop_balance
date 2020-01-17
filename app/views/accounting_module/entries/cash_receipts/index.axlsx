@@ -16,18 +16,15 @@ wb.styles do |style|
       sheet.merge_cells title_row.cells[(0..3)]
       sheet.merge_cells title_row.cells[(6..7)]
 
-    service_row = sheet.add_row [
-      @cooperative_service.try(:title),
-      "", "", "", "", "", "Ifugao Public Servants", ""
-    ], style: subtitle_style
+   
     dates_row = sheet.add_row [
       "#{@from_date.strftime('%B %e, %Y')} - #{@to_date.strftime('%B %e, %Y')}",
       "", "", "", "", "", "Multipurpose Cooperative", ""
     ], style: subtitle_style
       sheet.merge_cells dates_row.cells[(0..3)]
-      sheet.merge_cells service_row.cells[(0..3)]
+     
       sheet.merge_cells dates_row.cells[(6..7)]
-      sheet.merge_cells service_row.cells[(6..7)]
+     
 
     sheet.add_row ["", "", "", "", "", "", "", ""], height: 5
 
@@ -42,7 +39,7 @@ wb.styles do |style|
 
     heading = sheet.add_row ["Date", "Description", "", "REF #", "Member/ Payee", "Account", "Debit", "Credit"], style: header_style
     sheet.merge_cells heading.cells[(1..2)]
-    @ordered_entries.sort_by{|e| e.reference_number.to_i}.each do |entry|
+    @entries.each do |entry|
       desc_first_cell = ""
       desc_last_cell = ""
       date_first_cell = ""
@@ -68,7 +65,7 @@ wb.styles do |style|
           "",
           "",
           "",
-          amount.account_name,
+          amount.account.display_name,
           entry.cancelled? ? 0 : amount.amount.amount,
           ""
         ], style: amounts_style
@@ -80,7 +77,7 @@ wb.styles do |style|
           "",
           "",
           "",
-          amount.account_name,
+          amount.account.display_name,
           "",
           entry.cancelled? ? 0 : amount.amount.amount
         ], style: amounts_style

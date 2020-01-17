@@ -1,12 +1,7 @@
 
   <tr>
-    <td>
-      <% if entry.recorder.present? %>
-
-        <b><%= entry.recorder_first_and_last_name %></b>
-      <% end %>
-    </td>
-    <td><%=entry.entry_date.strftime("%B %e, %Y") %></td>
+    
+    <td><%=entry.entry_date.strftime("%b. %e, %Y") %></td>
     <td><%=link_to entry.description, accounting_module_entry_path(entry) %><br>
       <% if entry.cancelled? %>
         <span class="badge bg-danger"> Cancelled </span>

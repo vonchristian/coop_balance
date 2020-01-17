@@ -30,7 +30,10 @@ document.addEventListener("turbolinks:load", () => {
       {
         format: 'dd/mm/yyyy',
         viewMode: "months",
-        minViewMode: "months"
+        minViewMode: "months",
+        orientation: 'bottom auto',
+        todayBtn: 'linked',
+        todayHighlight: true
       });
 })
 

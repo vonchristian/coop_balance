@@ -108,6 +108,8 @@ module AccountingModule
       where(recorder: args[:recorder] )
     end
 
+   
+
     def self.total
       all.map{|a| a.total }.sum
     end

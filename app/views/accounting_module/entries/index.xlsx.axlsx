@@ -2,7 +2,7 @@ wb = xlsx_package.workbook
   wb.add_worksheet(name: "Ticket Entries", :fixed_column_width => false) do |sheet|
   sheet.add_row ["List of Ticket Entries"], sz: 12, b: true
   sheet.add_row ["#{@from_date.strftime("%B %e, %Y")} - #{@to_date.strftime("%B %e, %Y")}"]
-  sheet.add_row ["Office: #{@office.cooperative.name}"]
+  sheet.add_row ["Office: #{current_office.cooperative.name}"]
 
   sheet.add_row ["DATE", "REF #", "DESCRIPTION", "MEMBER/PAYEE", "EMPLOYEE", "ACCOUNTS", "DEBIT", "CREDIT"], b: true
   debits_total = 0
@@ -20,7 +20,7 @@ wb = xlsx_package.workbook
     end
     entry.credit_amounts.each do |amount|
       credits_total += amount.amount
-      sheet.add_row ["", "", "", "", "", "    #{amount.account.name}", "", amount.amount]
+      sheet.add_row ["", "", "", "", "", "    #{amount.account.display_name}", "", amount.amount]
     end
     sheet.add_row [""]
   end
