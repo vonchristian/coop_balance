@@ -634,6 +634,8 @@ Rails.application.routes.draw do
 
   namespace :portfolios do
     resources :savings,        only: [:index]
+    resources :averaged_daily_balance_savings,        only: [:index]
+
     resources :share_capitals, only: [:index]
     resources :time_deposits,  only: [:index]
     resources :loans,          only: [:index]

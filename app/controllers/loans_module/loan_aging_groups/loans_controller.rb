@@ -2,7 +2,7 @@ module LoansModule
   module LoanAgingGroups 
     class LoansController < ApplicationController
       def index 
-        @to_date = params[:to_date].present? ? Time.parse(params[:to_date]) : Time.zone.now
+        @to_date = params[:to_date].present? ? DateTime.parse(params[:to_date]) : Time.zone.now
         @loan_aging_group = current_office.loan_aging_groups.find(params[:loan_aging_group_id])
        
         if params[:loan_product_id].present?
