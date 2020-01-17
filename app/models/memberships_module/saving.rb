@@ -58,10 +58,16 @@ module MembershipsModule
       savings_aging_groups.current 
     end 
 
+    def self.can_earn_interest 
+      where(can_earn_interest: true)
+    end 
+    
+
     def self.liability_accounts
       ids = pluck(:liability_account_id)
       AccountingModule::Liability.where(id: ids)
     end
+
 
     def self.interest_expense_accounts
       ids = pluck(:interest_expense_account_id)
@@ -83,19 +89,7 @@ module MembershipsModule
       where(has_minimum_balance: true)
     end
 
-    def self.averaged_balance(args={})
-      ids = pluck(:id)
-      balances = []
-      months   = []
-      (args[:from_date]..args[:to_date]).each do |date|
-        months << date.end_of_month
-      end
-
-      months.uniq.each do |month|
-        balances << CoopServicesModule::SavingProduct.total_balance(commercial_document: ids, to_date: month.end_of_month)
-      end
-      balances.sum
-    end
+    
 
     def self.inactive(args={})
       updated_at(args)
@@ -171,13 +165,15 @@ module MembershipsModule
       !closed? && balance > 0.0
     end
 
-    def averaged_balance(args={})
-      balance_averager.new(saving: self, to_date: args[:to_date]).averaged_balance
-    end
+   
 
     def computed_interest(args={})
       averaged_balance(to_date: args[:to_date]) * saving_product_applicable_rate
     end
+
+    def daily_averaged_balance(date:)
+      saving_product.saving_product_interest_config.balance_averager.new(date: date, saving: self).daily_averaged_balance
+    end 
 
     private
     def set_account_owner_name

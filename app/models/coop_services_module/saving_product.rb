@@ -4,7 +4,9 @@
     extend Metricable
     extend VarianceMonitoring
 	  enum interest_recurrence: [:daily, :weekly, :monthly, :quarterly, :semi_annually, :annually]
-
+    
+    has_one :saving_product_interest_config, class_name: 'SavingsModule::SavingProducts::SavingProductInterestConfig'
+    
     belongs_to :cooperative
     belongs_to :office,                   class_name: "Cooperatives::Office"
 	  belongs_to :account,                  class_name: "AccountingModule::Account"

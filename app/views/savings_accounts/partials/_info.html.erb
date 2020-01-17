@@ -111,7 +111,7 @@
     </div>
   </div>
   <br>
-  <% @entries.each do |entry| %>
+  <% @entries.uniq.each do |entry| %>
     <%= link_to accounting_module_entry_path(entry) do %>
     <div class="card min-margin">
       <div class="card-body">

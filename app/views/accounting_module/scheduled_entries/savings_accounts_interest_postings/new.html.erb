@@ -5,12 +5,9 @@
         <div class="row">
           <div class="col-md-3 border-right">
             <small> TOTAL ACCOUNTS </small>
-            <h2 class="number"><%= current_cooperative.savings.has_minimum_balances.count  %></h2>
+            <h2 class="number"><%= current_office.savings.can_earn_interest.count  %></h2>
           </div>
-          <div class="col-md-6">
-            <small>AVERAGED BALANCES</small>
-            <h2 class="number"> <%= number_to_currency current_cooperative.savings.has_minimum_balances.averaged_balance(from_date: @to_date.beginning_of_year, to_date: @to_date) %></h2>
-          </div>
+          
         </div>
         <hr>
         <% @savings_accounts.each do |saving| %>
@@ -23,14 +20,14 @@
               <%= saving.saving_product_name %>
             </div>
             <div class="col-md-4">
-              <%= number_to_currency saving.averaged_balance(to_date: @to_date.end_of_year) %><br>
+              <%= number_to_currency saving.daily_averaged_balance(date: @to_date) %><br>
               <small>AVERAGED BALANCE </small>
             </div>
           </div>
           <hr>
         <% end %>
         <center>
-          <%= will_paginate @savings_accounts %>
+          <%==pagy_bootstrap_nav(@pagy) %>
         </center>
       </div>
     </div>

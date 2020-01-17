@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_14_214944) do
+ActiveRecord::Schema.define(version: 2020_01_17_063723) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1429,6 +1429,19 @@ ActiveRecord::Schema.define(version: 2020_01_14_214944) do
     t.index ["sales_line_item_id"], name: "index_sales_purchase_line_items_on_sales_line_item_id"
   end
 
+  create_table "saving_product_interest_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "interest_expense_category_id", null: false
+    t.uuid "saving_product_id", null: false
+    t.integer "interest_posting", default: 0
+    t.decimal "annual_rate"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.decimal "minimum_balance"
+    t.index ["interest_expense_category_id"], name: "index_interest_category_on_saving_product_interest_configs"
+    t.index ["interest_posting"], name: "index_saving_product_interest_configs_on_interest_posting"
+    t.index ["saving_product_id"], name: "index_saving_product_interest_configs_on_saving_product_id"
+  end
+
   create_table "saving_products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.decimal "interest_rate"
@@ -1444,6 +1457,7 @@ ActiveRecord::Schema.define(version: 2020_01_14_214944) do
     t.uuid "cooperative_id"
     t.decimal "closing_account_fee", default: "0.0"
     t.uuid "office_id"
+    t.boolean "can_earn_interest", default: false
     t.index ["account_id"], name: "index_saving_products_on_account_id"
     t.index ["closing_account_id"], name: "index_saving_products_on_closing_account_id"
     t.index ["cooperative_id"], name: "index_saving_products_on_cooperative_id"
@@ -1472,6 +1486,7 @@ ActiveRecord::Schema.define(version: 2020_01_14_214944) do
     t.string "code"
     t.uuid "interest_expense_account_id"
     t.uuid "liability_account_id"
+    t.boolean "can_earn_interest", default: false
     t.index ["account_number"], name: "index_savings_on_account_number", unique: true
     t.index ["account_owner_name"], name: "index_savings_on_account_owner_name"
     t.index ["barangay_id"], name: "index_savings_on_barangay_id"
@@ -2166,6 +2181,8 @@ ActiveRecord::Schema.define(version: 2020_01_14_214944) do
   add_foreign_key "registries", "users", column: "employee_id"
   add_foreign_key "sales_purchase_line_items", "line_items", column: "purchase_line_item_id"
   add_foreign_key "sales_purchase_line_items", "line_items", column: "sales_line_item_id"
+  add_foreign_key "saving_product_interest_configs", "level_one_account_categories", column: "interest_expense_category_id"
+  add_foreign_key "saving_product_interest_configs", "saving_products"
   add_foreign_key "saving_products", "accounts"
   add_foreign_key "saving_products", "accounts", column: "closing_account_id"
   add_foreign_key "saving_products", "accounts", column: "interest_expense_account_id"

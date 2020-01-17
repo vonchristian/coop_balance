@@ -12,41 +12,46 @@ module AccountingModule
       end
 
       def find_voucher
-        Voucher.find_by(account_number: account_number)
+        find_office.vouchers.find_by!(account_number: account_number)
       end
 
       def create_voucher
-        voucher = Voucher.new(
+        voucher = find_office.vouchers.build(
           account_number:   account_number,
           payee:            find_employee,
           preparer:         find_employee,
-          office:           find_employee.office,
           cooperative:      find_employee.cooperative,
           description:      description,
           reference_number: reference_number,
-          date:             date
-        )
-        find_cooperative.savings.has_minimum_balances.each do |saving|
+          date:             date)
+
+        find_office.savings.can_earn_interest.each do |saving|
           voucher.voucher_amounts.debit.build(
-            cooperative: find_employee.cooperative,
             account: saving.interest_expense_account,
-            amount: saving.computed_interest(to_date: date),
-            commercial_document: saving)
+            amount: computed_interest(saving))
           voucher.voucher_amounts.credit.build(
-            cooperative:         find_employee.cooperative,
-            account:             saving.saving_product_account,
-            amount:              saving.computed_interest(to_date: date),
-            commercial_document: saving
-          )
+            account:             saving.liability_account,
+            amount:              computed_interest(saving))
         end
+
         voucher.save!
       end
+
       def find_employee
         User.find(employee_id)
       end
+
+      def find_office
+        find_employee.office 
+      end 
+
       def find_cooperative
         find_employee.cooperative
       end
+
+      def computed_interest(saving)
+        SavingsModule::InterestComputation.new(saving: saving, date: date.to_date).compute_interest! 
+      end 
     end
   end
 end

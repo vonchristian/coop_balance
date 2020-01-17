@@ -3,13 +3,14 @@ module AccountingModule
     class SavingsAccountsInterestPostingsController < ApplicationController
       def new
         @interest_expense_posting = AccountingModule::Entries::SavingsInterestExpenseEntry.new
-        @savings_accounts = current_cooperative.savings.has_minimum_balances.paginate(page: params[:page], per_page: 5)
-        @to_date          = params[:to_date] ? DateTime.parse(params[:to_date]) : Date.today
+        @pagy, @savings_accounts  = pagy(current_office.savings.can_earn_interest, items: 5)
+        @to_date                  = params[:to_date] ? DateTime.parse(params[:to_date]) : Date.current
       end
       def create
         @interest_expense_posting = AccountingModule::Entries::SavingsInterestExpenseEntry.new(voucher_params)
         @interest_expense_posting.process!
-        redirect_to accounting_module_interest_expense_voucher_url(@interest_expense_posting.find_voucher), url: "Voucher created succesfully."
+
+        redirect_to accounting_module_interest_expense_voucher_url(id: @interest_expense_posting.find_voucher.id), url: "Voucher created succesfully."
       end
 
       private

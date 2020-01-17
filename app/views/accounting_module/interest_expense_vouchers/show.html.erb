@@ -1,14 +1,21 @@
-<% @savings_accounts.each do |saving| %>
-	<div class="row">
-		<div class="col-md-4">
-			Balance: <%= saving.averaged_balance(to_date: @voucher.date) %>
-		</div>
-		<div class="col-md-4">
-			<%= @voucher.voucher_amounts.debit.where(commercial_document: saving).sum(&:amount) %>
-		</div>
-	</div>
-<% end %>
-
-<%= link_to "Disburse", voucher_disbursements_path(voucher_id: @voucher.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
+<div class="row">
+  <div class="col-md-8 offset-md-2">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Savings Deposit Details </h3>
+        <div class="row min-margin">
+          <div class="col-md-4 offset-md-1">
+            Amount
+          </div>
+          <div class="col-md-4">
+            
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <%= render 'vouchers/partials/alert_message', voucher: @voucher %>
+        <%= render 'vouchers/partials/body', voucher: @voucher %>
+        <hr>
+<%= link_to "Confirm Transaction", voucher_disbursements_path(voucher_id: @voucher.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
 <%= link_to "Cancel", voucher_path(@voucher), method: :delete, class: "btn text-danger float-left" %>
-<%= @voucher.inspect %>
+
