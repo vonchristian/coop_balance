@@ -24,6 +24,8 @@ module AccountingModule
               cooperative:  current_cooperative,
               view_context: view_context)
             send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Entries report.pdf"
+            pdf=nil
+
           end
         end
       end

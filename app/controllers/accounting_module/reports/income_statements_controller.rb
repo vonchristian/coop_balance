@@ -21,6 +21,8 @@ module AccountingModule
               to_date: @to_date,
               view_context: view_context)
             send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Income Statement.pdf"
+            pdf=nil
+
           end
         end
       end

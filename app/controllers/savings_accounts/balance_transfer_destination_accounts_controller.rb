@@ -1,7 +1,7 @@
 module SavingsAccounts
   class BalanceTransferDestinationAccountsController < ApplicationController
     def new
-      @origin_saving = current_office.savings.find(params[:origin_saving_id])
+      @origin_saving      = current_office.savings.find(params[:origin_saving_id])
       @destination_saving = SavingsAccounts::BalanceTransferDestinationAccountProcessing.new
       if params[:search].present?
         @savings_accounts = current_office.savings.text_search(params[:search]).paginate(page: params[:page], per_page: 25)

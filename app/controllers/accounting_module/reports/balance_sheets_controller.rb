@@ -18,6 +18,7 @@ module AccountingModule
               view_context: view_context,
               cooperative:  current_cooperative)
             send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Balance Sheet.pdf"
+            pdf=nil
           end
         end
       end 
