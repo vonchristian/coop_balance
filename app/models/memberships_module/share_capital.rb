@@ -9,7 +9,7 @@ module MembershipsModule
 
     belongs_to :office,                       class_name: "Cooperatives::Office"
     belongs_to :cooperative
-    belongs_to :subscriber,                   polymorphic: true, touch: true
+    belongs_to :subscriber,                   polymorphic: true
     belongs_to :share_capital_product,        class_name: "CoopServicesModule::ShareCapitalProduct"
     belongs_to :barangay,                     class_name: "Addresses::Barangay", optional: true
     belongs_to :organization,                 optional: true

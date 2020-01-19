@@ -5,7 +5,7 @@ module MembershipsModule
     pg_search_scope :text_search, against: [:account_number, :depositor_name]
 
     belongs_to :cooperative
-    belongs_to :depositor,                polymorphic: true, touch: true
+    belongs_to :depositor,                polymorphic: true
     belongs_to :office,                   class_name: "Cooperatives::Office"
     belongs_to :time_deposit_product,     class_name: "CoopServicesModule::TimeDepositProduct"
     belongs_to :organization,             optional: true

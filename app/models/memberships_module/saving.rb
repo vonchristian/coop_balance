@@ -10,7 +10,7 @@ module MembershipsModule
     belongs_to :organization,             optional: true
     belongs_to :cooperative
     belongs_to :barangay,                 optional: true, class_name: "Addresses::Barangay"
-    belongs_to :depositor,                polymorphic: true,  touch: true
+    belongs_to :depositor,                polymorphic: true
     belongs_to :liability_account,        class_name: 'AccountingModule::Account'
     belongs_to :interest_expense_account, class_name: 'AccountingModule::Account'
     belongs_to :saving_product,           class_name: "CoopServicesModule::SavingProduct"

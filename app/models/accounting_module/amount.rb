@@ -4,8 +4,8 @@ module AccountingModule
     monetize :amount_cents, as: :amount, numericality: true
 
     belongs_to :entry, :class_name => 'AccountingModule::Entry'
-    belongs_to :account, :class_name => 'AccountingModule::Account', touch: true
-    belongs_to :commercial_document, polymorphic: true, optional: true, touch: true
+    belongs_to :account, :class_name => 'AccountingModule::Account'
+    belongs_to :commercial_document, polymorphic: true, optional: true
 
     validates :type, :amount, :entry, :account, presence: true
 
