@@ -3,10 +3,12 @@ require 'rails_helper'
 module AccountCreators
   describe LoanApplication do
     it '#create_accounts!' do
-      office              = create(:office)
-      loan_product        = create(:loan_product)
-      office_loan_product = create(:office_loan_product, office: office, loan_product: loan_product)
-      loan_application    = build(:loan_application, office: office, loan_product: loan_product, receivable_account_id: nil, interest_revenue_account_id: nil)
+      office                          = create(:office)
+      loan_product                    = create(:loan_product)
+      loan_aging_group                = create(:loan_aging_group, start_num: 0, end_num: 0, office: office)
+      office_loan_product             = create(:office_loan_product, office: office, loan_product: loan_product)
+      office_loan_product_aging_group = create(:office_loan_product_aging_group, office_loan_product: office_loan_product, loan_aging_group: loan_aging_group)
+      loan_application                = build(:loan_application, office: office, loan_product: loan_product, receivable_account_id: nil, interest_revenue_account_id: nil)
 
       described_class.new(loan_application: loan_application).create_accounts!
 
@@ -19,7 +21,7 @@ module AccountCreators
       expect(office.accounts.assets).to include(receivable_account)
       expect(office.accounts.revenues).to include(interest_revenue_account)
 
-      expect(office_loan_product.receivable_account_category.accounts).to include(receivable_account)
+      expect(office_loan_product_aging_group.level_one_account_category.accounts).to include(receivable_account)
       expect(office_loan_product.interest_revenue_account_category.accounts).to include(interest_revenue_account)
 
 

@@ -1223,7 +1223,7 @@ example_id                                                                      
 ./spec/models/vouchers/voucher_amount_spec.rb[1:7:3]                                                            | passed  | 0.18568 seconds |
 ./spec/models/vouchers/voucher_amount_spec.rb[1:8]                                                              | passed  | 1.11 seconds    |
 ./spec/models/wallet_spec.rb[1:1]                                                                               | pending | 0.00001 seconds |
-./spec/services/account_creators/loan_application_spec.rb[1:1]                                                  | passed  | 1.88 seconds    |
+./spec/services/account_creators/loan_application_spec.rb[1:1]                                                  | passed  | 1.86 seconds    |
 ./spec/services/account_creators/loan_spec.rb[1:1]                                                              | passed  | 1.84 seconds    |
 ./spec/services/account_creators/program_subscription_spec.rb[1:1]                                              | passed  | 0.28115 seconds |
 ./spec/services/account_creators/saving_spec.rb[1:1]                                                            | passed  | 0.58967 seconds |
@@ -1330,9 +1330,9 @@ example_id                                                                      
 ./spec/system/loans_module/settings/loan_aging_groups/new_system_spec.rb[1:1]                                   | passed  | 7.47 seconds    |
 ./spec/system/loans_module/settings/loan_aging_groups/new_system_spec.rb[1:2]                                   | passed  | 0.20574 seconds |
 ./spec/system/loans_module/settings/office_loan_product_loan_aging_groups/create_new_system_spec.rb[1:1]        | passed  | 8.21 seconds    |
-./spec/system/members/loan_applications/disbursements/new_system_spec.rb[1:1]                                   | passed  | 8.13 seconds    |
-./spec/system/members/loan_applications/new_system_spec.rb[1:1]                                                 | passed  | 12.4 seconds    |
-./spec/system/members/loan_applications/new_system_spec.rb[1:2]                                                 | passed  | 0.77756 seconds |
+./spec/system/members/loan_applications/disbursements/new_system_spec.rb[1:1]                                   | passed  | 8.93 seconds    |
+./spec/system/members/loan_applications/new_system_spec.rb[1:1]                                                 | passed  | 47.08 seconds   |
+./spec/system/members/loan_applications/new_system_spec.rb[1:2]                                                 | passed  | 0.84217 seconds |
 ./spec/system/members/savings_account_applications/new_system_spec.rb[1:1]                                      | passed  | 11.97 seconds   |
 ./spec/system/members/savings_account_applications/new_system_spec.rb[1:2]                                      | passed  | 0.67787 seconds |
 ./spec/system/members/share_capital_applications/new_system_spec.rb[1:1]                                        | passed  | 11.1 seconds    |

@@ -58,7 +58,7 @@ module LoansModule
     end
 
     def create_loan_group(loan)
-      ::LoansModule::Loans::LoanAgingGroupUpdate.new(loan: loan, date: loan.application_date).update_loan_aging_group!
+      ::LoansModule::Loans::LoanAgingGroupUpdate.new(loan: loan, date: loan.application_date).process!
     end
 
     def create_amortization_schedules(loan)
