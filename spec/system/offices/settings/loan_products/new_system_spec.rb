@@ -6,7 +6,6 @@ describe 'New office loan product' do
     cooperative                       = manager.cooperative
     office                            = manager.office
     loan_product                      = create(:loan_product, name: 'Test Loan Product', cooperative: cooperative)
-    receivable_account_category       = create(:asset_level_one_account_category, title: 'Test Receivable', office: office)
     interest_revenue_account_category = create(:revenue_level_one_account_category, title: 'Test Revenue', office: office)
     penalty_revenue_account_category  = create(:revenue_level_one_account_category, title: 'Test Penalty',  office: office)
     loan_protection_plan_provider     = create(:loan_protection_plan_provider, business_name: 'CLIMBS', cooperative: cooperative)
@@ -22,7 +21,6 @@ describe 'New office loan product' do
 
   it 'with valid attributes', js: true do
     select_from_chosen 'Test Loan Product',       from: 'Loan product'
-    select_from_chosen 'Test Receivable',         from: 'Receivable account category'
     select_from_chosen 'Test Revenue',            from: 'Interest revenue account category'
     select_from_chosen 'Test Penalty',            from: 'Penalty revenue account category'
     select_from_chosen 'CLIMBS',                  from: 'Loan protection plan provider'

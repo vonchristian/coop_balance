@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_19_043235) do
+ActiveRecord::Schema.define(version: 2020_01_19_052856) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1138,7 +1138,6 @@ ActiveRecord::Schema.define(version: 2020_01_19_043235) do
   create_table "office_loan_products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "office_id", null: false
     t.uuid "loan_product_id", null: false
-    t.uuid "receivable_account_category_id", null: false
     t.uuid "interest_revenue_account_category_id", null: false
     t.uuid "penalty_revenue_account_category_id", null: false
     t.uuid "loan_protection_plan_provider_id", null: false
@@ -1151,7 +1150,6 @@ ActiveRecord::Schema.define(version: 2020_01_19_043235) do
     t.index ["loan_protection_plan_provider_id"], name: "index_office_loan_products_on_loan_protection_plan_provider_id"
     t.index ["office_id"], name: "index_office_loan_products_on_office_id"
     t.index ["penalty_revenue_account_category_id"], name: "index_penalty_revenue_category_on_office_loan_products"
-    t.index ["receivable_account_category_id"], name: "index_office_loan_products_on_receivable_account_category_id"
   end
 
   create_table "office_programs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -2135,7 +2133,6 @@ ActiveRecord::Schema.define(version: 2020_01_19_043235) do
   add_foreign_key "office_loan_products", "accounts", column: "forwarding_account_id"
   add_foreign_key "office_loan_products", "level_one_account_categories", column: "interest_revenue_account_category_id"
   add_foreign_key "office_loan_products", "level_one_account_categories", column: "penalty_revenue_account_category_id"
-  add_foreign_key "office_loan_products", "level_one_account_categories", column: "receivable_account_category_id"
   add_foreign_key "office_loan_products", "loan_products"
   add_foreign_key "office_loan_products", "loan_protection_plan_providers"
   add_foreign_key "office_loan_products", "offices"
