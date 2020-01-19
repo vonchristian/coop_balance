@@ -84,7 +84,7 @@
     <b>TOTAL ASSETS</b>
   </div>
   <div class="col-md-5">
-    <b><%= number_to_currency total_assets %></b>
+    <b><%= number_to_currency current_office.level_one_account_categories.assets.balance(to_date: @to_date) %></b>
   </div>
 </div>
 <hr>

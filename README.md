@@ -1,3 +1,6 @@
+current loan 
+   
+
 namespace amounts
 
 add accounting tab to accounts

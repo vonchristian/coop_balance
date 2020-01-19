@@ -4,7 +4,7 @@ module LoansModule
       def index 
         @to_date = params[:to_date].present? ? DateTime.parse(params[:to_date]) : Time.zone.now
         @loan_aging_group = current_office.loan_aging_groups.find(params[:loan_aging_group_id])
-       
+        @loan_products = current_office.loan_products 
         if params[:loan_product_id].present?
           @loan_product = current_office.loan_products.find(params[:loan_product_id])
           @pagy, @loans = pagy(@loan_aging_group.loans.where(loan_product: @loan_product).unpaid)
@@ -47,7 +47,7 @@ module LoansModule
           yielder << CSV.generate_line(["As of: - #{@to_date.strftime('%B %e, %Y') }"])
 
           yielder << CSV.generate_line(["Borrower", "Loan Product", "Loan Purpose", "Principal Balance", 'Interests', 'Penalties',  "Disbursement Date","Maturity Date",  "Number of Days Past Due"])
-          @loan_aging_group.loans.each do |loan|
+           @loan_aging_group.loans.each do |loan|
             yielder << CSV.generate_line([
               loan.borrower_full_name,
               loan.loan_product_name,

@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   resources :accounting_module, only: [:index]
   namespace :accounting_module do
+    resources :loan_products, only: [:show]
     resources :level_one_account_categories, only: [:index, :show, :new, :create, :edit, :update], module: :account_categories do
       resources :settings, only: [:index], module: :level_one_account_categories
       resources :accounts, only: [:index], module: :level_one_account_categories
@@ -37,6 +38,7 @@ Rails.application.routes.draw do
     namespace :scheduled_entries do
       resources :savings_accounts_interest_postings, only: [:new, :create]
       resources :share_capital_dividend_postings, only: [:new, :create]
+      resources :loan_agings, only: [:index]
     end
 
     namespace :cash_books do
@@ -154,8 +156,9 @@ Rails.application.routes.draw do
     resources :dashboard, only: [:index]
 
     resources :loan_products, only:[:index, :show] do
-      resources :loans, only: [:index], module: :loan_products
-      resources :reports, only: [:index], module: :loan_products
+      resources :loans,             only: [:index], module: :loan_products
+      resources :reports,           only: [:index], module: :loan_products
+      resources :loan_aging_groups, only: [:index, :show], module: :loan_products 
     end
 
     resources :loans, only: [:index, :show] do

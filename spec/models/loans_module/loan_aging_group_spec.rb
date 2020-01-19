@@ -34,5 +34,14 @@ module LoansModule
 
       expect(group.num_range).to eql 0..30
     end
+
+    it '.current_loan_aging_group' do 
+      current  = create(:loan_aging_group, start_num: 0, end_num: 0)
+      past_due = create(:loan_aging_group, start_num: 1, end_num: 30)
+    
+      expect(described_class.current_loan_aging_group).to eq current 
+      expect(described_class.current_loan_aging_group).to_not eq past_due 
+    end 
+
   end
 end

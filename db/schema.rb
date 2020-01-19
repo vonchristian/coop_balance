@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_17_092943) do
+ActiveRecord::Schema.define(version: 2020_01_19_043235) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -705,8 +705,10 @@ ActiveRecord::Schema.define(version: 2020_01_17_092943) do
     t.datetime "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "receivable_account_id"
     t.index ["loan_aging_group_id"], name: "index_loan_agings_on_loan_aging_group_id"
     t.index ["loan_id"], name: "index_loan_agings_on_loan_id"
+    t.index ["receivable_account_id"], name: "index_loan_agings_on_receivable_account_id"
   end
 
   create_table "loan_applications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -2059,6 +2061,7 @@ ActiveRecord::Schema.define(version: 2020_01_17_092943) do
   add_foreign_key "line_items", "unit_of_measurements"
   add_foreign_key "loan_aging_groups", "level_two_account_categories"
   add_foreign_key "loan_aging_groups", "offices"
+  add_foreign_key "loan_agings", "accounts", column: "receivable_account_id"
   add_foreign_key "loan_agings", "loan_aging_groups"
   add_foreign_key "loan_agings", "loans"
   add_foreign_key "loan_applications", "accounts", column: "interest_revenue_account_id"

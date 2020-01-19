@@ -72,6 +72,8 @@ module LoansModule
       it { is_expected.to delegate_method(:name).to(:receivable_account).with_prefix }
       it { is_expected.to delegate_method(:name).to(:interest_revenue_account).with_prefix }
       it { is_expected.to delegate_method(:name).to(:penalty_revenue_account).with_prefix }
+      it { is_expected.to delegate_method(:title).to(:loan_aging_group).with_prefix }
+
 
     end
 

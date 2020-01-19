@@ -31,6 +31,7 @@ module LoansModule
     belongs_to :organization,             optional: true
     belongs_to :preparer,                 class_name: "User", foreign_key: 'preparer_id', optional: true
     belongs_to :receivable_account,       class_name: 'AccountingModule::Account'
+    
     belongs_to :interest_revenue_account, class_name: 'AccountingModule::Account'
     belongs_to :penalty_revenue_account,  class_name: 'AccountingModule::Account'
     belongs_to :accrued_income_account,   class_name: 'AccountingModule::Account', optional: true
@@ -87,7 +88,7 @@ module LoansModule
     delegate :name, to: :interest_revenue_account, prefix: true
     delegate :name, to: :penalty_revenue_account, prefix: true
     delegate :reference_number, to: :disbursement_voucher, prefix: true, allow_nil: true
-
+    delegate :title, to: :loan_aging_group, prefix: true 
     def self.with_no_terms
       with_terms = Term.where(termable_type: self.to_s).pluck(:termable_id)
       where(id: with_terms)
