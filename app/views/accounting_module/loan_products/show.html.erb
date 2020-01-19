@@ -1,5 +1,9 @@
 <h3 class='title-up'><%= @loan_product.name %></h3>
+<% @loan_product.loan_aging_groups.each do |loan_aging_group| %>
+  <%= loan_aging_group.title %>
+<% end %>
 <% @loans.each do |loan| %>
-  <%= loan.number_of_days_past_due %>
-  <%= loan.loan_aging_group_title %>
+<%= link_to loan.borrower_full_name, loan_path(loan) %>
+  <%= loan.number_of_days_past_due(date: Time.zone.now) %>
+  <%= link_to loan.loan_aging_group_title, loan_path(loan)  %>
 <% end %>

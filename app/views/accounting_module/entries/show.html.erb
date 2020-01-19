@@ -115,7 +115,7 @@
             </tr>
           </thead>
           <tbody>
-            <% @entry.amounts.each do |amount| %>
+            <% @amounts.each do |amount| %>
 
               <tr>
                 <td>
@@ -144,6 +144,7 @@
                 </td>
               </tr>
             <% end %>
+           
             <tr>
               <td>
                 <span class="float-right number">
@@ -160,6 +161,8 @@
           </tbody>
         </table>
         <hr>
+            <%==pagy_bootstrap_nav(@pagy) %>
+
             <% if @entry.cancelled? %>
           <h4 class="card-title">Cancellation Details </h4>
             <br>

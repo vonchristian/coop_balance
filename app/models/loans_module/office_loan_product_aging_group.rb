@@ -6,6 +6,8 @@ module LoansModule
     
     delegate :title, to: :level_one_account_category, prefix: true
     
+    validates :loan_aging_group_id, uniqueness: { scope: :office_loan_product_id }
+    
     def self.current 
       order(created_at: :desc).first 
     end 

@@ -4,7 +4,7 @@ module Portfolios
 		def index
 			@to_date          = params[:to_date].present? ? Date.parse(params[:to_date]) : Time.zone.now
       @saving_product   = current_office.saving_products.find(params[:saving_product_id])
-      @savings_accounts = current_office.savings.where(saving_product: @saving_product).order(:account_owner_name)
+      @savings_accounts = current_office.savings.can_earn_interest.where(saving_product: @saving_product).order(:account_owner_name)
       @beginning_date   = @saving_product.saving_product_interest_config.beginning_date(date: @to_date)
       @ending_date      = @saving_product.saving_product_interest_config.ending_date(date: @to_date)
       respond_to do |format|

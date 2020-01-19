@@ -20,7 +20,8 @@ module LoansModule
     has_many :organization_borrowers,          through: :loans, source: :borrower, source_type: 'Organization'
     has_many :interest_predeductions,          class_name: "LoansModule::LoanProducts::InterestPrededuction"
     has_many :loan_applications,               class_name: "LoansModule::LoanApplication"
-
+    has_many :office_loan_products,            class_name: 'Offices::OfficeLoanProduct'
+    has_many :loan_aging_groups, through: :office_loan_products
     delegate :calculation_type, to: :amortization_type, prefix: true
     delegate :rate,
              :annual_rate,

@@ -61,6 +61,7 @@ module AccountingModule
 
     def show
       @entry = current_office.entries.includes(amounts: [:account]).find(params[:id])
+      @pagy, @amounts = pagy(@entry.amounts)
     end
 
     private
