@@ -43,5 +43,4 @@ class ApplicationController < ActionController::Base
   def permission_denied
     redirect_to "/", alert: 'Sorry but you are not allowed to access this page.'
   end
-  private :current_cooperative, :current_office
 end

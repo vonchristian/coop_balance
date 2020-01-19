@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_19_052856) do
+ActiveRecord::Schema.define(version: 2020_01_19_111210) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1271,6 +1271,16 @@ ActiveRecord::Schema.define(version: 2020_01_19_052856) do
     t.index ["organization_membership_type", "organization_membership_id"], name: "index_on_organization_members_membership"
   end
 
+  create_table "organization_scopes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "organization_id", null: false
+    t.string "account_type", null: false
+    t.uuid "account_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["account_type", "account_id"], name: "index_organization_scopes_on_account_type_and_account_id"
+    t.index ["organization_id"], name: "index_organization_scopes_on_organization_id"
+  end
+
   create_table "organizations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -1487,7 +1497,8 @@ ActiveRecord::Schema.define(version: 2020_01_19_052856) do
     t.uuid "interest_expense_account_id"
     t.uuid "liability_account_id"
     t.boolean "can_earn_interest", default: false
-    t.decimal "averaged_balance", default: "0.0"
+    t.integer "averaged_balance_cents", default: 0, null: false
+    t.string "averaged_balance_currency", default: "PHP", null: false
     t.index ["account_number"], name: "index_savings_on_account_number", unique: true
     t.index ["account_owner_name"], name: "index_savings_on_account_owner_name"
     t.index ["barangay_id"], name: "index_savings_on_barangay_id"
@@ -2162,6 +2173,7 @@ ActiveRecord::Schema.define(version: 2020_01_19_052856) do
   add_foreign_key "orders", "users", column: "employee_id"
   add_foreign_key "orders", "vouchers"
   add_foreign_key "organization_members", "organizations"
+  add_foreign_key "organization_scopes", "organizations"
   add_foreign_key "organizations", "cooperatives"
   add_foreign_key "penalty_configs", "accounts", column: "penalty_revenue_account_id"
   add_foreign_key "penalty_configs", "cooperatives"

@@ -1,8 +1,8 @@
 module SavingsModule
   class InterestComputation 
-    attr_reader :saving, :date, :applicable_rate
+    attr_reader :saving, :applicable_rate
 
-    def initialize(saving:, date:)
+    def initialize(saving:)
       @saving                         = saving 
       @date                           = date 
       @saving_product                 = @saving.saving_product
@@ -11,7 +11,7 @@ module SavingsModule
     end 
 
     def compute_interest!
-      saving.averaged_balance * applicable_rate
+      (saving.averaged_balance * applicable_rate).round(2)
     end 
 
     def applicable_rate

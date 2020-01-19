@@ -3,7 +3,7 @@ module MembershipsModule
     include PgSearch::Model
     include InactivityMonitoring
     extend  PercentActive
-
+    monetize :averaged_balance_cents, as: :averaged_balance, numericality: true
     pg_search_scope :text_search, against: [:account_number, :account_owner_name]
     multisearchable against: [:account_number, :account_owner_name]
 
@@ -171,9 +171,7 @@ module MembershipsModule
       averaged_balance(to_date: args[:to_date]) * saving_product_applicable_rate
     end
 
-    def daily_averaged_balance(date:)
-      saving_product.saving_product_interest_config.balance_averager.new(date: date, saving: self).daily_averaged_balance
-    end 
+
 
     private
     def set_account_owner_name

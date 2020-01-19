@@ -50,7 +50,7 @@ module AccountingModule
       end
 
       def computed_interest(saving)
-        SavingsModule::InterestComputation.new(saving: saving, date: date.to_date).compute_interest! 
+        SavingsModule::InterestComputation.new(saving: saving).compute_interest! 
       end 
     end
   end
