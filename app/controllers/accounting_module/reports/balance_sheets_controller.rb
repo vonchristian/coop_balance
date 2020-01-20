@@ -36,7 +36,7 @@ module AccountingModule
         headers["Content-Type"] = "text/csv"
   
         # Make the file download with a specific filename
-        headers["Content-Disposition"] = "attachment; filename=\"Loans Portfolio.csv\""
+        headers["Content-Disposition"] = "attachment; filename=\"Balance Sheet.csv\""
   
         # Don't buffer when going through proxy servers
         headers["X-Accel-Buffering"] = "no"
