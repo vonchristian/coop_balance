@@ -15,7 +15,7 @@ module AccountingModule
           format.html
           format.xlsx
           format.pdf do
-            pdf = AccountingModule::EntriesPdf.new(
+            pdf = AccountingModule::CashBooks::CashReceiptsPdf.new(
               from_date:    @from_date,
               to_date:      @to_date,
               entries:      @entries_for_pdf,

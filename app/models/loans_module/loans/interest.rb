@@ -8,11 +8,11 @@ module LoansModule
         loan_product_interest_receivable_account.debits_balance(args)
       end
 
-      def total_interest_payments
+      def total_interest_payments(args={})
         interest_revenue_account.credits_balance(args)
       end
 
-      def balance
+      def balance(args={})
         loan.loan_product.interest_account.balance(args)
       end
 

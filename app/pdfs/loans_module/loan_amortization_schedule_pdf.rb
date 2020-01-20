@@ -70,7 +70,7 @@ module LoansModule
                             [["Loan Product", "#{loan.loan_product_name}"]] +
                             [["Loan Amount ", "#{price(loan.loan_amount)}"]] +
                             [["Amount (in words)", "#{loan.loan_amount.to_f.to_words.titleize} Pesos"]] +
-                            [["Term ", "#{term / 30.0} Month/s"]] +
+                            [["Term ", "#{term} Month/s"]] +
                             [["Disbursement Date ", "#{loan.disbursement_date.strftime("%B %e, %Y")}"]] +
                             [["Maturity Date ", "#{loan.maturity_date.strftime("%B %e, %Y")}"]]
 

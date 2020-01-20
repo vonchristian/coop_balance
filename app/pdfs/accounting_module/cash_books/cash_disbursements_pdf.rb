@@ -1,11 +1,12 @@
 module AccountingModule
   module CashBooks
     class CashDisbursementsPdf < Prawn::Document
-      attr_reader :entries, :employee, :from_date, :to_date, :view_context, :cooperative, :accounts, :title, :cooperative_service
+      attr_reader :entries, :employee, :from_date, :to_date, :view_context, :cooperative, :accounts, :title, :cooperative_service, :office 
       def initialize(args)
         super(margin: 30, page_size: "A4", page_layout: :portrait)
         @entries      = args[:entries]
         @employee     = args[:employee]
+        @office       = @employee.office 
         @cooperative_service = args[:cooperative_service]
         @cooperative  = @employee.cooperative
         @accounts     = @employee.cash_accounts
@@ -99,7 +100,7 @@ module AccountingModule
                 entry.description, 
                 "##{entry.reference_number}",
                 "-", 
-                entry.credit_amounts.where(account: cooperative.cash_accounts).sum{|a| a.amount}.zero? ? "-" : price(entry.credit_amounts.where(account: cooperative.cash_accounts).sum{|a| a.amount})
+                entry.credit_amounts.where(account: office.cash_accounts).sum{|a| a.amount}.zero? ? "-" : price(entry.credit_amounts.where(account: office.cash_accounts).sum{|a| a.amount})
               ] 
             end
           end
@@ -142,7 +143,7 @@ module AccountingModule
       end
 
       def grand_total
-        AccountingModule::CreditAmount.where(entry_id: entries.pluck(:id)).where(account: cooperative.cash_accounts).sum{|a| a.amount}
+        AccountingModule::CreditAmount.where(entry_id: entries.pluck(:id)).where(account: office.cash_accounts).sum{|a| a.amount}
       end
 
       def grouped_similar_reference_numbers
@@ -151,12 +152,12 @@ module AccountingModule
 
       def debits_sub_total(reference_number)
         ids = entries.where(reference_number: reference_number).pluck(:id)
-        AccountingModule::DebitAmount.where(entry_id: ids).where(account: cooperative.cash_accounts).sum{|a| a.amount}
+        AccountingModule::DebitAmount.where(entry_id: ids).where(account: office.cash_accounts).sum{|a| a.amount}
       end
 
       def credits_sub_total(reference_number)
         ids = entries.where(reference_number: reference_number).pluck(:id)
-        AccountingModule::CreditAmount.where(entry_id: ids).where(account: cooperative.cash_accounts).sum{|a| a.amount}
+        AccountingModule::CreditAmount.where(entry_id: ids).where(account: office.cash_accounts).sum{|a| a.amount}
       end
     end
   end
