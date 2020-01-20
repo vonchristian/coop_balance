@@ -1,4 +1,6 @@
-<%= loan_product.name %>
+<div class='container'>
+  <div class='card'>
+    <div class='card-body'>
 <h4 class="card-title">Loan Payments</h4>
     <%= form_tag({:action => "index", controller: "loans_module/reports/loan_collections", format: 'pdf'}, {:method => :get})  do %>
     <div class="row">
@@ -15,6 +17,19 @@
     </div>
     <div class="col-md-2">
       <button type="submit" class="btn btn-warning btn-sm"> Generate Report</button>
+    </div>
+  </div>
+<% end %>
+<hr>
+<h4 class='subtitle-up'> Portfolio at Risk Reports </h4>
+<span class='text-muted'> Generate reports for your <%= @loan_product.name %> portfolios. </span><br><br>
+<% @loan_aging_groups.each do |loan_aging_group| %>
+  <div class='row min-margin'>
+    <div class='col-md-7'>
+      <%= loan_aging_group.title %>
+    </div>
+    <div class='col-md-5'>
+      <%= link_to 'Export', loans_module_loan_product_loan_aging_group_path(loan_aging_group_id: loan_aging_group.id, id: @loan_product.id) %>
     </div>
   </div>
 <% end %>

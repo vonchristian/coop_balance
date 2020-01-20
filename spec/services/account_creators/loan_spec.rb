@@ -12,7 +12,9 @@ module AccountCreators
       loan_product                      = create(:loan_product, name: 'Regular Loan', cooperative: cooperative)
       account_number                    = 'fad93d34-4c84-4f0d-b065-4ae2ad22094c'
       loan                              = build(:loan, receivable_account: nil, interest_revenue_account: nil, penalty_revenue_account: nil,  borrower: member, loan_product: loan_product, account_number: account_number, office: office)
-      create(:office_loan_product, office: office, loan_product: loan_product, receivable_account_category: receivable_account_category, interest_revenue_account_category: interest_revenue_account_category, penalty_revenue_account_category: penalty_revenue_account_category)
+      office_loan_product               = create(:office_loan_product, office: office, loan_product: loan_product, interest_revenue_account_category: interest_revenue_account_category, penalty_revenue_account_category: penalty_revenue_account_category)
+      loan_aging_group                  = create(:loan_aging_group, start_num: 0, end_num: 0, office: office)
+      office_loan_product_aging_goup    = create(:office_loan_product_aging_group, office_loan_product: office_loan_product, loan_aging_group: loan_aging_group, level_one_account_category: receivable_account_category)
 
       AccountCreators::Loan.new(loan: loan).create_accounts!
 

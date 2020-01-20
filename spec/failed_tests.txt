@@ -1016,9 +1016,6 @@ example_id                                                                      
 ./spec/models/organization_spec.rb[1:1:10]                                                                      | passed  | 0.00208 seconds |
 ./spec/models/organization_spec.rb[1:2]                                                                         | passed  | 0.29127 seconds |
 ./spec/models/organization_spec.rb[1:3]                                                                         | passed  | 0.0051 seconds  |
-./spec/models/organizations/organization_scope_spec.rb[1:1:1]                                                   | passed  | 0.2373 seconds  |
-./spec/models/organizations/organization_scope_spec.rb[1:1:2]                                                   | passed  | 0.00361 seconds |
-./spec/models/organizations/organization_scope_spec.rb[1:2:1]                                                   | passed  | 1.22 seconds    |
 ./spec/models/ownership_spec.rb[1:1:1]                                                                          | passed  | 0.01594 seconds |
 ./spec/models/ownership_spec.rb[1:1:2]                                                                          | passed  | 0.00298 seconds |
 ./spec/models/quote_spec.rb[1:1]                                                                                | pending | 0.00001 seconds |
@@ -1225,7 +1222,7 @@ example_id                                                                      
 ./spec/models/vouchers/voucher_amount_spec.rb[1:8]                                                              | passed  | 1.11 seconds    |
 ./spec/models/wallet_spec.rb[1:1]                                                                               | pending | 0.00001 seconds |
 ./spec/services/account_creators/loan_application_spec.rb[1:1]                                                  | passed  | 1.86 seconds    |
-./spec/services/account_creators/loan_spec.rb[1:1]                                                              | passed  | 1.84 seconds    |
+./spec/services/account_creators/loan_spec.rb[1:1]                                                              | passed  | 2.81 seconds    |
 ./spec/services/account_creators/program_subscription_spec.rb[1:1]                                              | passed  | 0.28115 seconds |
 ./spec/services/account_creators/saving_spec.rb[1:1]                                                            | passed  | 0.58967 seconds |
 ./spec/services/account_creators/savings_account_application_spec.rb[1:1]                                       | passed  | 0.57823 seconds |

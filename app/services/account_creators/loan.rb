@@ -6,9 +6,11 @@ module AccountCreators
       @loan                              = loan
       @loan_product                      = @loan.loan_product
       @office                            = @loan.office
-      @receivable_account_category       = @office.office_loan_products.find_by(loan_product: @loan_product).receivable_account_category
+      @office_loan_product               = @office.office_loan_products.find_by(loan_product: @loan_product)
+      @office_loan_product_aging_group   = @office_loan_product.office_loan_product_aging_groups.current
       @interest_revenue_account_category = @office.office_loan_products.find_by(loan_product: @loan_product).interest_revenue_account_category
       @penalty_revenue_account_category  = @office.office_loan_products.find_by(loan_product: @loan_product).penalty_revenue_account_category
+      @receivable_account_category       = @office_loan_product_aging_group.level_one_account_category
     end
 
     def create_accounts!
