@@ -12,7 +12,7 @@ module SavingsModule
     def update_can_earn_interest
       return false if !saving_product.can_earn_interest?
 
-      if saving.averaged_balance >= minimum_balance 
+      if saving.averaged_balance.to_f >= minimum_balance 
         saving.update!(can_earn_interest: true)
       end 
     end 
