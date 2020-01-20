@@ -485,14 +485,6 @@ module LoansModule
     end
 
 
-    def debits_balance(args)
-      receivable_account.debits_balance(args.merge(commercial_document: self))
-    end
-
-    def credits_balance(args)
-      receivable_account.credits_balance(args.merge(commercial_document: self))
-    end
-
     def status_color
       if is_past_due?
         'danger'
