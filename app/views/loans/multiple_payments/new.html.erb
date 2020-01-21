@@ -19,7 +19,7 @@
             </div>
           </div>
           <hr>
-          <% @loan.amortization_schedules.each do |amortization_schedule| %>
+          <% @loan.amortization_schedules.order(date: :asc).each do |amortization_schedule| %>
             <div class="row">
               <div class="col-md-3">
                 <%= amortization_schedule.date.strftime('%b. %e, %Y') %><br>
