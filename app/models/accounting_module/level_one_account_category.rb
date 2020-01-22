@@ -85,12 +85,15 @@ module AccountingModule
       accounts_balance
     end
 
-    def balance(args = {})
-      return raise(NoMethodError, "undefined method 'balance'") if self.class == AccountingModule::LevelOneAccountCategory
-      if self.normal_credit_balance ^ self.contra?
-        credits_balance(args) - debits_balance(args)
+    def balance(options={})
+      if self.class == AccountingModule::Account
+        raise(NoMethodError, "undefined method 'balance'")
       else
-        debits_balance(args) - credits_balance(args)
+        if self.normal_credit_balance ^ contra
+          credits_balance(options) - debits_balance(options)
+        else
+          debits_balance(options) - credits_balance(options)
+        end
       end
     end
 

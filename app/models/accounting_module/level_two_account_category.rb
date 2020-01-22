@@ -61,11 +61,11 @@ module AccountingModule
 
     def self.balance(options={})
       accounts_balance = BigDecimal('0')
-      self.all.each do |category|
-        if category.contra?
-          accounts_balance -= category.balance(options)
+      self.all.each do |account|
+        if account.contra?
+          accounts_balance -= account.balance(options)
         else
-          accounts_balance += category.balance(options)
+          accounts_balance += account.balance(options)
         end
       end
       accounts_balance
@@ -96,11 +96,14 @@ module AccountingModule
     end
 
     def balance(options={})
-      return raise(NoMethodError, "undefined method 'balance'") if self.class == AccountingModule::LevelTwoAccountCategory
-      if self.normal_credit_balance ^ contra
-        credits_balance(options) - debits_balance(options)
+      if self.class == AccountingModule::Account
+        raise(NoMethodError, "undefined method 'balance'")
       else
-        debits_balance(options) - credits_balance(options)
+        if self.normal_credit_balance ^ contra
+          credits_balance(options) - debits_balance(options)
+        else
+          debits_balance(options) - credits_balance(options)
+        end
       end
     end
 
