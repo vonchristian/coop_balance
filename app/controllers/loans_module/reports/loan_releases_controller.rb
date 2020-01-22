@@ -51,12 +51,13 @@ module LoansModule
 		def csv_body
 			Enumerator.new do |yielder|
 				yielder << CSV.generate_line(["#{current_office.name} Loan Disbursements"])
-				yielder << CSV.generate_line(["Borrower", "Loan Product", "Loan Purpose", "Loan Amount", "Principal Balance", 'Interests', 'Penalties',  "Disbursement Date", "Maturity Date"])
+				yielder << CSV.generate_line(["Borrower", "Loan Product", "Loan Purpose", "Voucher #", "Loan Amount", "Principal Balance", 'Interests', 'Penalties',  "Disbursement Date", "Maturity Date"])
 				@loans.each do |loan|
 					yielder << CSV.generate_line([
 						loan.borrower_full_name,
 						loan.loan_product_name,
             loan.purpose,
+            loan.disbursement_voucher.try(:reference_number),
             loan.loan_amount,
 						loan.principal_balance(to_date: @to_date),
 						loan.loan_interests_balance,
