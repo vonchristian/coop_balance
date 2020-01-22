@@ -354,7 +354,7 @@ module LoansModule
       from_date = args[:from_date]
       to_date   = args[:to_date]
       range     = DateRange.new(from_date: from_date, to_date: to_date)
-      disbursed.joins(:disbursement_voucher).where('vouchers.date' => range.start_date..range.end_date)
+      disbursed.merge(Voucher.disbursed).where('vouchers.date' => range.start_date..range.end_date)
     end
 
     def self.disbursed_by(args={})
