@@ -65,6 +65,7 @@ gem 'letter_opener'
 gem 'email_spec'
 gem 'whenever', require: false
 gem "select2-rails"
+gem 'jemalloc'
 
 group :development, :test do
   gem 'rspec-rails'

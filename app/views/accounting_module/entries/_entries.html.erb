@@ -11,9 +11,9 @@
     </thead>
     <tbody>
       <% entries.each do |entry| %>
-        <% cache entry do %>
+       
           <%=render 'accounting_module/entries/entry', entry: entry %>
-        <% end %>
+       
       <% end %>
     </tbody>
   </table>
