@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_19_111210) do
+ActiveRecord::Schema.define(version: 2020_01_28_025019) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -44,6 +44,16 @@ ActiveRecord::Schema.define(version: 2020_01_19_111210) do
     t.uuid "account_id"
     t.index ["account_id"], name: "index_accountable_accounts_on_account_id"
     t.index ["accountable_type", "accountable_id"], name: "index_accountable_on_accountable_accounts"
+  end
+
+  create_table "accounting_report_account_categorizations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "accounting_report_id", null: false
+    t.string "account_category_type", null: false
+    t.uuid "account_category_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["account_category_type", "account_category_id"], name: "index_accounting_category_on_acc_report_categorizations"
+    t.index ["accounting_report_id"], name: "index_accounting_report_on_acc_report_categorizations"
   end
 
   create_table "accounting_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -2007,6 +2017,7 @@ ActiveRecord::Schema.define(version: 2020_01_19_111210) do
   add_foreign_key "account_budgets", "accounts"
   add_foreign_key "account_budgets", "cooperatives"
   add_foreign_key "accountable_accounts", "accounts"
+  add_foreign_key "accounting_report_account_categorizations", "accounting_reports"
   add_foreign_key "accounting_reports", "offices"
   add_foreign_key "accounts", "level_one_account_categories"
   add_foreign_key "addresses", "barangays"

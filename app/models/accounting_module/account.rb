@@ -20,7 +20,7 @@ module AccountingModule
 
     validates :type, :name, :code, presence: true
     validates :name, uniqueness: true
-
+    
     scope :assets,      -> { where(type: 'AccountingModule::Asset') }
     scope :liabilities, -> { where(type: 'AccountingModule::Liability') }
     scope :equities,    -> { where(type: 'AccountingModule::Equity') }

@@ -4,7 +4,7 @@ module LoansModule
       def index
         @from_date = params[:from_date] ? DateTime.parse(params[:from_date]).beginning_of_day : DateTime.now.at_beginning_of_month
         @to_date = params[:to_date] ? DateTime.parse(params[:to_date]).end_of_day : DateTime.now.end_of_month
-        @loans = current_cooperative.loans.not_cancelled.order(tracking_number: :asc).disbursed.disbursed_on(from_date: @from_date, to_date: @to_date)
+        @loans = current_office.loans.not_cancelled.order(tracking_number: :asc).disbursed_on(from_date: @from_date, to_date: @to_date)
         @cooperative = current_cooperative
         respond_to do |format|
           format.html
@@ -60,7 +60,7 @@ module LoansModule
             loan.disbursement_voucher.try(:reference_number),
             loan.loan_amount,
 						loan.principal_balance(to_date: @to_date),
-						loan.interest_revenue_account.balance(to_date: @to_date),
+						loan.interest_revenue_account.credits_balance(from_date: @to_date.beginning_of_year, to_date: @to_date),
 						loan.disbursement_date.try(:strftime, ("%B %e, %Y")),
 						loan.maturity_date.try(:strftime,('%B %e, %Y'))
             ])

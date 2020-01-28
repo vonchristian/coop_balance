@@ -1,7 +1,19 @@
 module AccountingModule
   module Reports
     class BalanceSheetPdf < Prawn::Document
-      attr_reader :view_context, :to_date, :cooperative, :office, :from_date
+      attr_reader :view_context, :to_date, :cooperative, :office, :from_date, :title,
+      :level_three_asset_account_categories, 
+      :level_two_asset_account_categories, 
+      :level_one_asset_account_categories,
+
+      :level_three_liability_account_categories, 
+      :level_two_liability_account_categories, 
+      :level_one_liability_account_categories,
+
+      :level_three_equity_account_categories, 
+      :level_two_equity_account_categories, 
+      :level_one_equity_account_categories
+
       def initialize(args={})
         super(margin: 40, page_size: [612, 988], page_layout: :portrait)
         @to_date      = args[:to_date]
@@ -9,6 +21,19 @@ module AccountingModule
         @view_context = args[:view_context]
         @cooperative  = args[:cooperative]
         @office       = args[:office]
+        @title        = args[:title] || "Balance Sheet"
+        @level_three_asset_account_categories = args[:level_three_asset_account_categories] || @office.level_three_account_categories.assets
+        @level_two_asset_account_categories = args[:level_two_asset_account_categories] || @office.level_two_account_categories.assets
+        @level_one_asset_account_categories = args[:level_one_asset_account_categories] || @office.level_one_account_categories.assets
+
+        @level_three_liability_account_categories = args[:level_three_liability_account_categories] || @office.level_three_account_categories.liabilities
+        @level_two_liability_account_categories = args[:level_two_liability_account_categories] || @office.level_two_account_categories.liabilities
+        @level_one_liability_account_categories = args[:level_one_liability_account_categories] || @office.level_one_account_categories.liabilities
+
+        @level_three_equity_account_categories = args[:level_three_equity_account_categories] || @office.level_three_account_categories.equities
+        @level_two_equity_account_categories   = args[:level_two_equity_account_categories] || @office.level_two_account_categories.equities
+        @level_one_equity_account_categories   = args[:level_one_equity_account_categories] || @office.level_one_account_categories.equities
+
         heading
         assets_table
         liabilities_and_equities_table
@@ -31,7 +56,7 @@ module AccountingModule
         end
 
         bounding_box [0, 920], width: 400 do
-          text "Balance Sheet",  size: 14, style: :bold
+          text "#{title}",  size: 14, style: :bold
           text "As of: #{to_date.strftime("%b. %e, %Y")} ",  size: 10
           text "Office: #{office.name}", size: 10
         end
@@ -45,13 +70,52 @@ module AccountingModule
         end
       end
 
+      def all_level_one_asset_account_categories
+        ids = []
+        level_three_asset_account_categories.level_two_account_categories.assets.each do |l2_account_category|
+          ids << l2_account_category.level_one_account_categories.assets.pluck(:id)
+        end 
+        level_two_asset_account_categories.each do |l2_account_category|
+          ids << l2_account_category.level_one_account_categories.assets.pluck(:id)
+        end 
+        ids << level_one_asset_account_categories.ids 
+        
+        AccountingModule::LevelOneAccountCategory.where(id: ids.uniq.compact.flatten)
+      end 
+
+      def all_level_one_liability_account_categories
+        ids = []
+        level_three_liability_account_categories.level_two_account_categories.liabilities.each do |l2_account_category|
+          ids << l2_account_category.level_one_account_categories.liabilities.pluck(:id)
+        end 
+        level_two_liability_account_categories.each do |l2_account_category|
+          ids << l2_account_category.level_one_account_categories.liabilities.pluck(:id)
+        end 
+        ids << level_one_liability_account_categories.ids 
+        
+        AccountingModule::LevelOneAccountCategory.where(id: ids.uniq.compact.flatten)
+      end
+      
+      def all_level_one_equity_account_categories
+        ids = []
+        level_three_equity_account_categories.level_two_account_categories.equities.each do |l2_account_category|
+          ids << l2_account_category.level_one_account_categories.equities.pluck(:id)
+        end 
+        level_two_equity_account_categories.each do |l2_account_category|
+          ids << l2_account_category.level_one_account_categories.equities.pluck(:id)
+        end 
+        ids << level_one_equity_account_categories.ids 
+        
+        AccountingModule::LevelOneAccountCategory.where(id: ids.uniq.compact.flatten)
+      end
+
       def assets_table
         table([["ASSETS"]], cell_style: {padding: [2,2], inline_format: true, size: 10}, column_widths: [230, 100]) do
           cells.borders = []
           column(0).font_style = :bold
         end
 
-        office.level_three_account_categories.assets.order(code: :asc).each do |l3_account_category|
+        level_three_asset_account_categories.order(code: :asc).each do |l3_account_category|
           table([["#{l3_account_category.title}"]], cell_style: {padding: [2,2], inline_format: true, size: 10}, column_widths: [230, 100]) do
             cells.borders = []
           end
@@ -86,7 +150,7 @@ module AccountingModule
         end
 
         stroke_horizontal_rule
-        office.level_two_account_categories.assets.where.not(id: office.level_three_account_categories.assets.level_two_account_categories.assets.ids).each do |l2_account_category|
+        level_two_asset_account_categories.where.not(id: level_three_asset_account_categories.level_two_account_categories.assets.ids).each do |l2_account_category|
           table([["","#{l2_account_category.title}"]], cell_style: { padding: [2,2], inline_format: true, size: 10}, column_widths: [10, 320, 100]) do
             cells.borders = []
             column(2).align = :right
@@ -105,7 +169,7 @@ module AccountingModule
             row(-1).font_style = :bold
           end
         end
-        office.level_one_account_categories.assets.where.not(id: office.level_two_account_categories.assets.level_one_account_categories.assets.ids).each do |l1_account_category|
+        level_one_asset_account_categories.where.not(id: level_two_asset_account_categories.level_one_account_categories.assets.ids).each do |l1_account_category|
           table([["", "", "#{l1_account_category.title}", price(l1_account_category.balance(to_date: @to_date))]], cell_style: { padding: [2,2], inline_format: true, size: 10}, column_widths: [10, 10, 310, 100]) do
             cells.borders = []
             column(3).align = :right
@@ -115,7 +179,7 @@ module AccountingModule
         stroke_horizontal_rule
         move_down 5
 
-        table([["TOTAL ASSETS", price(office.level_one_account_categories.assets.balance(to_date: @to_date))]], cell_style: {padding: [2,2], inline_format: true, size: 10},
+        table([["TOTAL ASSETS", price(all_level_one_asset_account_categories.balance(to_date: @to_date))]], cell_style: {padding: [2,2], inline_format: true, size: 10},
           column_widths: [330, 100]) do
             cells.borders = []
             column(0).font_style = :bold
@@ -135,7 +199,7 @@ module AccountingModule
           column(0).font_style = :bold
         end
 
-        office.level_three_account_categories.liabilities.order(code: :asc).each do |l3_account_category|
+        level_three_liability_account_categories.order(code: :asc).each do |l3_account_category|
           table([["#{l3_account_category.title}"]], cell_style: {padding: [2,2], inline_format: true, size: 10}, column_widths: [230, 100]) do
             cells.borders = []
           end
@@ -171,7 +235,7 @@ module AccountingModule
         end
 
         stroke_horizontal_rule
-        office.level_two_account_categories.liabilities.where.not(id: office.level_three_account_categories.liabilities.level_two_account_categories.liabilities.ids).each do |l2_account_category|
+        level_two_liability_account_categories.where.not(id: level_three_liability_account_categories.level_two_account_categories.liabilities.ids).each do |l2_account_category|
           table([["","#{l2_account_category.title}"]], cell_style: { padding: [2,2], inline_format: true, size: 10}, column_widths: [10, 320, 100]) do
             cells.borders = []
             column(2).align = :right
@@ -190,7 +254,7 @@ module AccountingModule
             row(-1).font_style = :bold
           end
         end
-        office.level_one_account_categories.liabilities.where.not(id: office.level_two_account_categories.liabilities.level_one_account_categories.liabilities.ids).each do |l1_account_category|
+        level_one_liability_account_categories.where.not(id: level_two_liability_account_categories.level_one_account_categories.liabilities.ids).each do |l1_account_category|
           table([["", "", "#{l1_account_category.title}", price(l1_account_category.balance(to_date: @to_date))]], cell_style: { padding: [2,2], inline_format: true, size: 10}, column_widths: [10, 10, 310, 100]) do
             cells.borders = []
             column(3).align = :right
@@ -200,7 +264,7 @@ module AccountingModule
         stroke_horizontal_rule
         move_down 5
 
-        table([["TOTAL LIABILITIES", price(office.level_one_account_categories.liabilities.balance(to_date: @to_date))]], cell_style: {padding: [2,2], inline_format: true, size: 10},
+        table([["TOTAL LIABILITIES", price(all_level_one_liability_account_categories.balance(to_date: @to_date))]], cell_style: {padding: [2,2], inline_format: true, size: 10},
           column_widths: [330, 100]) do
             cells.borders = []
             column(0).font_style = :bold
@@ -211,7 +275,7 @@ module AccountingModule
           end
         move_down 10
 
-        office.level_three_account_categories.equities.order(code: :asc).each do |l3_account_category|
+        level_three_equity_account_categories.order(code: :asc).each do |l3_account_category|
           table([["#{l3_account_category.title}"]], cell_style: {padding: [2,2], inline_format: true, size: 10}, column_widths: [230, 100]) do
             cells.borders = []
           end
@@ -246,7 +310,7 @@ module AccountingModule
         end
 
         stroke_horizontal_rule
-        office.level_two_account_categories.equities.where.not(id: office.level_three_account_categories.equities.level_two_account_categories.equities.ids).each do |l2_account_category|
+        level_two_equity_account_categories.where.not(id: level_three_equity_account_categories.level_two_account_categories.equities.ids).each do |l2_account_category|
           table([["","#{l2_account_category.title}"]], cell_style: { padding: [2,2], inline_format: true, size: 10}, column_widths: [10, 320, 100]) do
             cells.borders = []
             column(2).align = :right
@@ -265,7 +329,7 @@ module AccountingModule
             row(-1).font_style = :bold
           end
         end
-        office.level_one_account_categories.equities.where.not(id: office.level_two_account_categories.equities.level_one_account_categories.equities.ids).each do |l1_account_category|
+        level_one_equity_account_categories.where.not(id: level_two_equity_account_categories.level_one_account_categories.equities.ids).each do |l1_account_category|
           table([["", "", "#{l1_account_category.title}", price(l1_account_category.balance(to_date: @to_date))]], cell_style: { padding: [2,2], inline_format: true, size: 10}, column_widths: [10, 10, 310, 100]) do
             cells.borders = []
             column(3).align = :right
@@ -286,7 +350,7 @@ module AccountingModule
           stroke_horizontal_rule
           move_down 5
 
-        table([["TOTAL EQUITY", price(office.level_one_account_categories.equities.balance(to_date: @to_date) + net_surplus)]], cell_style: {padding: [2,2], inline_format: true, size: 10},
+        table([["TOTAL EQUITY", price(all_level_one_equity_account_categories.balance(to_date: @to_date) + net_surplus)]], cell_style: {padding: [2,2], inline_format: true, size: 10},
           column_widths: [330, 100]) do
             cells.borders = []
             column(0).font_style = :bold
@@ -298,7 +362,7 @@ module AccountingModule
         move_down 10
         stroke_horizontal_rule
         move_down 5
-        table([["TOTAL LIABILITIES AND EQUITY", price(net_surplus + office.level_one_account_categories.liabilities.balance(to_date: @to_date) + office.level_one_account_categories.equities.balance(to_date: @to_date))]], cell_style: {padding: [2,2], inline_format: true, size: 10},
+        table([["TOTAL LIABILITIES AND EQUITY", price(net_surplus + all_level_one_liability_account_categories.balance(to_date: @to_date) + all_level_one_equity_account_categories.balance(to_date: @to_date))]], cell_style: {padding: [2,2], inline_format: true, size: 10},
           column_widths: [330, 100]) do
             cells.borders = []
             column(0).font_style = :bold
