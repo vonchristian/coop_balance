@@ -4,9 +4,8 @@ module LoansModule
   describe AmortizationSchedule do
     describe 'associations' do
       it { is_expected.to have_many :payment_notices }
-    	it { is_expected.to belong_to :loan }
-      it { is_expected.to belong_to :loan_application }
-      it { is_expected.to belong_to :cooperative }
+    	it { is_expected.to belong_to(:loan).optional }
+      it { is_expected.to belong_to(:loan_application).optional }
       it { is_expected.to belong_to :office }
       it { is_expected.to have_many :notes }
     end
@@ -60,21 +59,14 @@ module LoansModule
       end
     end
 
-    describe '.total_interest(args={})' do
-      it "with no dates" do
-        amortization_1 = create(:amortization_schedule, interest: 500)
-        amortization_2 = create(:amortization_schedule, interest: 500)
-
-        expect(described_class.total_interest).to eql 1_000
-      end
-      it '#with dates' do
+   
+      it '#total_interests' do
         amortization_1 = create(:amortization_schedule, interest: 500, date: Date.current)
         amortization_2 = create(:amortization_schedule, interest: 500, date: Date.current.last_month)
 
-        expect(described_class.total_interest(from_date: Date.current, to_date: Date.current)).to eql 500
-        expect(described_class.total_interest(from_date: Date.current.last_month, to_date: Date.current.last_month)).to eql 500
+        expect(described_class.total_interest).to eql 1000
       end
-    end
+
 
     it ".scheduled_for(args={})" do
       amortization_1 = create(:amortization_schedule, date: Date.current)

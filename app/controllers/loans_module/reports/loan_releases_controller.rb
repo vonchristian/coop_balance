@@ -12,10 +12,10 @@ module LoansModule
           format.csv { render_csv }
           format.pdf do
             pdf = LoansModule::Reports::LoanReleasesPdf.new(
-              loans: @loans,
-              from_date: @from_date,
-              to_date: @to_date,
-              cooperative: @cooperative,
+              loans:        @loans,
+              from_date:    @from_date,
+              to_date:      @to_date,
+              cooperative:  @cooperative,
               view_context: view_context)
             send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Loan Releases Report.pdf"
           end

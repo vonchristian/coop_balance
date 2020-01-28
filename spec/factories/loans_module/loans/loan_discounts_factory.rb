@@ -3,6 +3,6 @@ FactoryBot.define do
     amount { 1000 }
     association :loan
     association :discountable, factory: :loan_interest
-    association :computed_by, factory: :loan_officer
+    association :employee,     factory: :loan_officer
   end
 end 

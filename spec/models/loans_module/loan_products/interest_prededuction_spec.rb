@@ -14,7 +14,7 @@ module LoansModule
         it { is_expected.to validate_numericality_of :number_of_payments }
       end
 
-      it { is_expected.to define_enum_for(:calculation_type).with_values([:percent_based, :amount_based, :number_of_payments]) }
+      it { is_expected.to define_enum_for(:calculation_type).with_values([:percent_based, :amount_based, :number_of_payments_based]) }
 
       describe 'calculator' do
         it 'returns percent_based_calculator for percent_based' do

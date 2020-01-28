@@ -13,7 +13,7 @@ module LoansModule
       end
 
       def balance(args={})
-        loan.loan_product.interest_account.balance(args)
+        loan.interest_revenue_account.balance(args)
       end
 
     end

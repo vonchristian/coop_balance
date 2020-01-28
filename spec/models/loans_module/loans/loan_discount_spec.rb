@@ -6,7 +6,7 @@ module LoansModule
       describe 'associations' do
         it { is_expected.to belong_to :loan }
         it { is_expected.to belong_to :discountable }
-        it { is_expected.to belong_to :computed_by }
+        it { is_expected.to belong_to :employee }
       end
 
       it '.total' do

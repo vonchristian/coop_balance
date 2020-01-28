@@ -17,9 +17,6 @@ module LoansModule
       end
 
       describe 'delegations' do
-        it { is_expected.to delegate_method(:total_interest_discounts).to(:loan) }
-        it { is_expected.to delegate_method(:total_interest_payments).to(:loan) }
-        it { is_expected.to delegate_method(:loan_product_interest_revenue_account).to(:loan) }
         it { is_expected.to delegate_method(:name).to(:employee).with_prefix }
       end
 
