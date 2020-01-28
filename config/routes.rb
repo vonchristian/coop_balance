@@ -68,12 +68,13 @@ Rails.application.routes.draw do
 
       resources :entries, only: [:index]
       resources :net_income_distributions, only: [:index]
-      resources :trial_balances,       only: [:index]
-      resources :proofsheets,          only: [:index]
-      resources :income_statements,    only: [:index]
-      resources :balance_sheets,       only: [:index]
-      resources :financial_conditions, only: [:index]
-      resources :credit_operations, only: [:index]
+      resources :trial_balances,           only: [:index]
+      resources :proofsheets,              only: [:index]
+      resources :income_statements,        only: [:index]
+      resources :balance_sheets,           only: [:index]
+      resources :financial_conditions,     only: [:index]
+      resources :statement_of_operations,  only: [:index]
+      resources :credit_operations,        only: [:index]
     end
 
     resources :settings, only: [:index]
