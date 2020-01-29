@@ -22,7 +22,6 @@ module LoansModule
 
       def create_first_schedule
         loan_application.amortization_schedules.create!(
-          cooperative: loan_application.cooperative,
           date:      loan_application.first_amortization_date,
           interest:  0,
           principal: loan_application.amortizeable_principal
@@ -33,7 +32,6 @@ module LoansModule
         if !loan_application.lumpsum?
           (loan_application.schedule_count - 1).to_i.times do
             loan_application.amortization_schedules.create!(
-              cooperative: loan_application.cooperative,
               date:      loan_application.succeeding_amortization_date,
               interest:  0,
               principal: loan_application.amortizeable_principal

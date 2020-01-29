@@ -50,8 +50,7 @@ module LoansModule
         private
 
         def create_first_schedule
-          loan_application.amortization_schedules.create!(
-            cooperative:    loan_application.cooperative,
+          loan_application.amortization_schedules.create!
             office:         loan_application.office,
             date:           loan_application.first_amortization_date,
             interest:       0,
@@ -64,7 +63,6 @@ module LoansModule
           if loan_application.schedule_count > 1
             (loan_application.schedule_count - 1).to_i.times do
               loan_application.amortization_schedules.create!(
-                cooperative:    loan_application.cooperative,
                 office:         loan_application.office,
                 date:           loan_application.succeeding_amortization_date,
                 interest:       0,
