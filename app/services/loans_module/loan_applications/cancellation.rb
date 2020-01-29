@@ -17,7 +17,9 @@ module LoansModule
 
       private 
       def delete_voucher_amounts
-        loan_application.voucher.voucher_amounts.destroy_all
+        if loan_application.voucher.present?
+          loan_application.voucher.voucher_amounts.destroy_all
+        end
         loan_application.voucher_amounts.destroy_all
       end 
 

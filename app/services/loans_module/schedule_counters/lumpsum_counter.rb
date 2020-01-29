@@ -3,8 +3,8 @@ module LoansModule
     class LumpsumCounter
       attr_reader :loan_application
 
-      def initialize(args)
-        @loan_application = args.fetch(:loan_application)
+      def initialize(loan_application:)
+        @loan_application = loan_application
       end
       
       def schedule_count

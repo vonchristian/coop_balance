@@ -9,8 +9,8 @@ module LoansModule
       end
 
       it '#schedule_count' do
-        loan_application_quarterly_12 = create(:loan_application, mode_of_payment: 'quarterly', term: 12)
-        loan_application_quarterly_24 = create(:loan_application, mode_of_payment: 'quarterly', term: 24)
+        loan_application_quarterly_12 = create(:loan_application, mode_of_payment: 'quarterly', number_of_days: 365)
+        loan_application_quarterly_24 = create(:loan_application, mode_of_payment: 'quarterly', number_of_days: 730)
 
         expect(described_class.new(loan_application: loan_application_quarterly_12).schedule_count).to eql 4
         expect(described_class.new(loan_application: loan_application_quarterly_24).schedule_count).to eql 8

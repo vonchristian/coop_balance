@@ -125,7 +125,7 @@ class VoucherPdf < Prawn::Document
     end
     if voucher.disbursed?
       voucher.accounting_entry.debit_amounts.sort_by(&:account_code).each do |amount|
-        table([["#{price(debit_amount_for(amount))}", "#{amount.account.try(:name)}",  "#{price(credit_amount_for(amount))}"]],
+        table([["#{price(debit_amount_for(amount))}", "#{amount.account.try(:display_name)}",  "#{price(credit_amount_for(amount))}"]],
           cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [1, 3, 2, 3]},
           column_widths: [115, 300, 115]) do
           # cells.borders = []
@@ -134,7 +134,7 @@ class VoucherPdf < Prawn::Document
         end
       end
       voucher.accounting_entry.credit_amounts.sort_by(&:account_code).reverse.each do |amount|
-        table([["#{price(debit_amount_for(amount))}", "#{amount.account.try(:name)}",  "#{price(credit_amount_for(amount))}"]],
+        table([["#{price(debit_amount_for(amount))}", "#{amount.account.try(:display_name)}",  "#{price(credit_amount_for(amount))}"]],
           cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [1, 3, 2, 3]},
           column_widths: [115, 300, 115]) do
           # cells.borders = []
@@ -144,7 +144,7 @@ class VoucherPdf < Prawn::Document
       end
     else
       voucher.voucher_amounts.debit.sort_by(&:account_code).each do |amount|
-        table([["#{price(debit_amount_for(amount))}", "#{amount.account.try(:name)}", "#{price(credit_amount_for(amount))}"]],
+        table([["#{price(debit_amount_for(amount))}", "#{amount.account.try(:display_name)}", "#{price(credit_amount_for(amount))}"]],
           cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [1, 3, 2, 3]},
           column_widths: [115, 300, 115]) do
           # cells.borders = []
@@ -153,7 +153,7 @@ class VoucherPdf < Prawn::Document
         end
       end
       voucher.voucher_amounts.credit.sort_by(&:account_code).reverse.each do |amount|
-        table([["#{price(debit_amount_for(amount))}", "#{amount.account.try(:name)}", "#{price(credit_amount_for(amount))}"]],
+        table([["#{price(debit_amount_for(amount))}", "#{amount.account.try(:display_name)}", "#{price(credit_amount_for(amount))}"]],
           cell_style: { inline_format: true, size: 9, font: "Helvetica", :padding => [1, 3, 2, 3]},
           column_widths: [115, 300, 115]) do
           # cells.borders = []
