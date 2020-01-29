@@ -180,19 +180,19 @@ module LoansModule
     end
 
     def third_year_principal_balance
-      return 0 if term <= 730
+      return 0 if number_of_days <= 730
       schedule = amortization_schedules.by_oldest_date[23]
       principal_balance_for(schedule)
     end
 
     def fourth_year_principal_balance
-      return 0 if term <= 1095
+      return 0 if number_of_days <= 1095
       schedule = amortization_schedules.by_oldest_date[35]
       principal_balance_for(schedule)
     end
 
     def fifth_year_principal_balance
-      return 0 if term <= 1460
+      return 0 if number_of_days <= 1460
       schedule = amortization_schedules.by_oldest_date[47]
       principal_balance_for(schedule)
     end
@@ -238,7 +238,7 @@ module LoansModule
     end
 
     def first_amortization_date
-      amortization_date_setter.new(date: application_date, term: term).start_date
+      amortization_date_setter.new(date: application_date, number_of_days: number_of_days).start_date
     end
 
     def succeeding_amortization_date

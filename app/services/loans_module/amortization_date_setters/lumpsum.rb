@@ -1,14 +1,14 @@
 module LoansModule
   module AmortizationDateSetters
     class Lumpsum < BaseSetter
-      attr_reader :term
+      attr_reader :number_of_days
 
       def post_initialize(args)
-        @term = args.fetch(:term)
+        @number_of_days = args.fetch(:number_of_days)
       end
 
       def start_date
-        date + term.floor.months
+        date + number_of_days.days
       end
     end
   end

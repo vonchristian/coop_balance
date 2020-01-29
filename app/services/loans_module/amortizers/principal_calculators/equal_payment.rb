@@ -4,8 +4,8 @@ module LoansModule
       class EqualPayment
         attr_reader :schedule
 
-        def initialize(args)
-          @schedule = args.fetch(:schedule)
+        def initialize(schedule:)
+          @schedule = schedule
         end
 
         def amortizeable_principal

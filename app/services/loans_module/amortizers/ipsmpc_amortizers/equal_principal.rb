@@ -4,8 +4,8 @@ module LoansModule
       class EqualPrincipal
       	attr_reader :loan_application, :loan_product, :interest_amortization_schedules
         def initialize(args)
-          @loan_application = args.fetch(:loan_application)
-          @loan_product     = @loan_application.loan_product
+          @loan_application                = args.fetch(:loan_application)
+          @loan_product                    = @loan_application.loan_product
           @interest_amortization_schedules = @loan_application.amortization_schedules.order(:date).last(loan_application.schedule_count - 12)
         end
 
