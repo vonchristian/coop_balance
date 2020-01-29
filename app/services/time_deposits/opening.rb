@@ -31,6 +31,7 @@ module TimeDeposits
       create_accounts(time_deposit)
       time_deposit.save!
       create_term(time_deposit)
+      create_accountable_accounts(time_deposit)
 
     end
 
@@ -50,5 +51,11 @@ module TimeDeposits
     def set_certificate_number
       TimeDeposits::CertificateNumberGenerator.new(time_deposit_application: time_deposit_application).generate!
     end
+    
+    def create_accountable_accounts(time_deposit)
+      time_deposit.accounts << time_deposit.liability_account
+      time_deposit.accounts << time_deposit.interest_expense_account
+    end 
+
   end
 end

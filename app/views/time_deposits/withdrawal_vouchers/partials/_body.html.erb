@@ -68,7 +68,7 @@
             <%= number_to_currency time_deposit.deposited_amount %> 
           </td>
           <td>
-            <%= time_deposit.time_deposit_product_account.name %> 
+            <%= time_deposit.liability_account.display_name %> 
           </td>
           <td></td>
         </tr>
@@ -82,7 +82,7 @@
         <% voucher.voucher_amounts.credit.order(:amount_type).each do |voucher_amount| %>
           <tr>
             <td></td>
-            <td><%= voucher_amount.account_name %></td>
+            <td><%= voucher_amount.account_display_name %></td>
             <td>
               <span class="float-right"><%= number_to_currency voucher_amount.amount %></span>
             </td>

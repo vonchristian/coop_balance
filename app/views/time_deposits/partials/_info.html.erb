@@ -1,4 +1,45 @@
 <% breadcrumb :time_deposit_details, @time_deposit %>
+<div class="row">
+  <div class="col-md-2 col-sm-6">
+    <div class="min-margin"></div>
+    <div class="min-margin"></div>
+    <%=image_tag @time_deposit.depositor.avatar, height: 120, width: 120, class: 'img-square' %>
+  </div>
+  <div class="col-md-5 col-sm-6">
+    <%=link_to member_path(@time_deposit.depositor) do %>
+
+    <h4 class="subtitle-up"><%= @time_deposit.depositor_name.upcase %></h4>
+
+    <small class="text-muted">
+      <i class="fa fa-map-marker"></i> <%= @time_deposit.depositor.current_address_complete_address %> &nbsp; &nbsp;
+      <div class="min-margin"></div>
+
+      <i class="fa fa-phone"></i> <%= @time_deposit.depositor.current_contact_number %></i> &nbsp; &nbsp;
+      <div class="min-margin"></div>
+
+    <small>MATURITY DATE</small>
+          <p><i class="fa fa-calendar"></i>
+            <%= @time_deposit.term_maturity_date.strftime("%B %e, %Y")  %>
+          </p>
+    </small>
+ <%= link_to time_deposit_path(@time_deposit, format: "pdf") do %>
+                <span class="btn btn-outline-secondary"><i class="fa fa-certificate"></i> Time Deposit Certificate </span>
+              <% end %>
+  </div>
+  <% end %>
+  <div class="col-md-5">
+    <small class="text-muted"><%= @time_deposit.time_deposit_product_name.upcase %> </small>
+    <h3 class="title-up"><%= number_to_currency @time_deposit.balance %></h3>
+
+    <div class="btn-group" role="group" aria-label="Basic example">
+       <% if !@time_deposit.withdrawn?%>
+            <%= link_to 'Withdraw', new_time_deposit_withdrawal_path(@time_deposit), data: {turbolinks: false}, class: "btn btn-danger" if policy([:time_deposits, :withdrawal]).new? %>
+            <% end %>
+          
+    </div>
+  </div>
+</div>
+<hr>
 <div class="card-body">
   <div class="row">
     <div class="col-md-7">
@@ -60,55 +101,35 @@
           </div>
           <div class="row min-margin">
             <div class="col-md-11">
-              <%= link_to time_deposit_path(@time_deposit, format: "pdf") do %>
-                <span class="btn btn-default"><i class="fa fa-certificate"></i> Time Deposit Certificate </span>
-              <% end %>
+             
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-md-5">
-      <hr class="min-margin set-visibility">
-      <div class="row justify-content-end">
-        <div class="col-md-7 col-sm-6 col-auto">
-          <small>BALANCE</small>
-          <h3 class="card-title"><%= number_to_currency @time_deposit.balance %></h3>
-          <br>
-          <small>AMOUNT DEPOSITED</small>
-          <h3 class="card-title"><%= number_to_currency @time_deposit.deposited_amount %></h3>
-          <br>
-          <% if @time_deposit.interest_balance.present? %>
-            <small>INTEREST</small>
-            <h3 class="card-title"><%= number_to_currency @time_deposit.interest_balance %></h3>
-            <br>
-            <% if @time_deposit.withdrawn == true && @time_deposit.balance == 0.0 %>
-              <h4 class="card-title"><span class="badge bg-success"> Withdrawn </span></h4>
-              <br>
-              <%= link_to 'Disbursement Voucher', time_deposit_withdrawal_voucher_path(time_deposit_id: @time_deposit.id, id: Vouchers::VoucherAmount.debit.where(commercial_document: @time_deposit).first.voucher.id), class: "btn btn-default" %>
-            <% else %>
-              <%= link_to 'Withdraw', new_time_deposit_withdrawal_path(@time_deposit), data: {turbolinks: false}, class: "btn btn-danger" if policy([:time_deposits, :withdrawal]).new? %>
-            <% end %>
-          <% end %>
-        </div>
-        <div class="col-md-4 col-sm-6 col-auto">
-          <small>MATURITY DATE</small>
-          <p><i class="fa fa-calendar"></i>
-            <%= @time_deposit.term_maturity_date.strftime("%B %e, %Y")  %>
-          </p>
-          <% if !@time_deposit.withdrawn == true %>
-            <small>DAYS TO MATURE</small>
-            <h3 class="card-title">
-              <%= @time_deposit.remaining_term %>
-            </h3>
-            <br>
-          <% end %>
-          <small>TERM</small>
-          <h3 class="card-title">
-            <%= @time_deposit.term.number_of_days / 30 %> Months
-          </h3>
-        </div>
-      </div>
-    </div>
   </div>
+</div>
+<h4 class='title-up'> Transactions History </h4>
+<div class="table table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th> Date </th>
+        <th> Description </th>
+        <th> Reference # </th>
+        <th> Amount </th>
+        <th> Member </th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @entries.each do |entry| %>
+       
+          <%=render 'accounting_module/entries/entry', entry: entry %>
+       
+      <% end %>
+    </tbody>
+
+  </table>
+      <%==pagy_bootstrap_nav(@pagy) %>
+
 </div>
