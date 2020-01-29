@@ -824,7 +824,7 @@ example_id                                                                      
 ./spec/models/loans_module/loan_spec.rb[1:11]                                                                   | failed  | 4.6 seconds     |
 ./spec/models/loans_module/loan_spec.rb[1:12:1]                                                                 | failed  | 6.08 seconds    |
 ./spec/models/loans_module/loan_spec.rb[1:12:2]                                                                 | failed  | 6.05 seconds    |
-./spec/models/loans_module/loan_spec.rb[1:12:3]                                                                 | failed  | 3.02 seconds    |
+./spec/models/loans_module/loan_spec.rb[1:12:3]                                                                 | passed  | 5.66 seconds    |
 ./spec/models/loans_module/loan_spec.rb[1:12:4]                                                                 | passed  | 3.1 seconds     |
 ./spec/models/loans_module/loans/loan_aging_spec.rb[1:1:1]                                                      | passed  | 0.00362 seconds |
 ./spec/models/loans_module/loans/loan_aging_spec.rb[1:1:2]                                                      | passed  | 0.00166 seconds |

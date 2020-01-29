@@ -24,3 +24,41 @@
     <% end %>
   </div>
 </div>
+<hr>
+<h4 class='title-up'> Cash Receipts </h4>
+ <%= form_tag({action: 'index', :controller => "treasury_module/cash_accounts/receipts", format: 'pdf', from_date: params[:from_date], to_date: params[:to_date]}, {:method => :get})  do %>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <%= text_field_tag :from_date, @from_date, :class => 'datepicker form-control border-input', :placeholder => "From " %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <%= text_field_tag :to_date, @to_date, :class => 'form-control border-input datepicker', :placeholder => "To " %>
+          </div>
+        </div>
+        <div class="col-md-1">
+          <button type="submit" class="btn btn-default"> Go</button>
+        </div>
+      </div>
+    <% end %>
+
+    <h4 class='title-up'> Cash Disbursements </h4>
+ <%= form_tag({action: 'index', :controller => "treasury_module/cash_accounts/disbursements", format: 'pdf', from_date: params[:from_date], to_date: params[:to_date]}, {:method => :get})  do %>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <%= text_field_tag :from_date, @from_date, :class => 'datepicker form-control border-input', :placeholder => "From " %>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <%= text_field_tag :to_date, @to_date, :class => 'form-control border-input datepicker', :placeholder => "To " %>
+          </div>
+        </div>
+        <div class="col-md-1">
+          <button type="submit" class="btn btn-default"> Generate</button>
+        </div>
+      </div>
+    <% end %>

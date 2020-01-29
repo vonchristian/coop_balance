@@ -154,7 +154,7 @@ module LoansModule
 
     describe 'scopes' do
       it ".not_archived" do
-        loan = create(:loan, date_archived: nil)
+        loan          = create(:loan, date_archived: nil)
         archived_loan = create(:loan, date_archived: Date.current)
 
         expect(described_class.not_archived).to include(loan)
@@ -169,20 +169,22 @@ module LoansModule
         expect(described_class.archived).to include(archived_loan)
       end
 
-      it ".disbursed(options)" do
-        date = Date.today
-        disbursed_loan = create(:loan, disbursement_date: date)
+      it ".disbursed(from_date:, to_date)" do
+        date             = Date.current 
+        entry            = create(:entry_with_credit_and_debit, entry_date: date)
+        voucher          = create(:voucher, accounting_entry: entry, date: date)
+        disbursed_loan   = create(:loan, disbursement_voucher: voucher)
         undisbursed_loan = create(:loan)
-        entry = create(:entry_with_credit_and_debit, commercial_document: disbursed_loan, entry_date: date)
-        expect(LoansModule::Loan.disbursed(from_date: date, to_date: date)).to include(disbursed_loan)
-        expect(LoansModule::Loan.disbursed(from_date: date, to_date: date)).to_not include(undisbursed_loan)
+
+        expect(LoansModule::Loan.disbursed_on(from_date: date, to_date: date)).to include(disbursed_loan)
+        expect(LoansModule::Loan.disbursed_on(from_date: date, to_date: date)).to_not include(undisbursed_loan)
       end
 
       it ".disbursed_by(args={})" do
-        employee = create(:user)
+        employee   = create(:user)
         employee_2 = create(:user)
-        voucher  = create(:voucher, disburser: employee)
-        loan     = create(:loan, disbursement_voucher: voucher)
+        voucher    = create(:voucher, disburser: employee)
+        loan       = create(:loan, disbursement_voucher: voucher)
 
         expect(described_class.disbursed_by(employee_id: employee.id)).to include(loan)
         expect(described_class.disbursed_by(employee_id: employee_2.id)).to_not include(loan)
