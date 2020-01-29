@@ -50,7 +50,7 @@ module LoansModule
         private
 
         def create_first_schedule
-          loan_application.amortization_schedules.create!
+          loan_application.amortization_schedules.create!(
             office:         loan_application.office,
             date:           loan_application.first_amortization_date,
             interest:       0,
