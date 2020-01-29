@@ -1,6 +1,7 @@
 module Offices
   class TimeDepositProductsController < ApplicationController
     def index
+      @time_deposit_products = current_office.time_deposit_products 
     end
     def new
       @time_deposit_product = current_office.office_time_deposit_products.build

@@ -26,8 +26,8 @@
               <%= f.input :email %>
               <%= f.input :tin_number, label: "TIN Number" %>
 
-              <%= f.input :office_id, input_html: { value: current_user.office_id }  %>
-              <%= f.input :cooperative_id, input_html: { value: current_user.cooperative_id } %>
+              <%= f.input :office_id, input_html: { value: current_user.office_id }, as: :hidden  %>
+              <%= f.input :cooperative_id, input_html: { value: current_user.cooperative_id }, as: :hidden %>
               <%= f.input :province_id, collection: Addresses::Province.all.map{|a| [a.name, a.id] }, input_html: { class: 'chosen-select' } %>
               <%= f.input :municipality_id, collection: Addresses::Municipality.all.map{|a| [a.name_and_province, a.id] }, input_html: { class: 'chosen-select' } %>
               <%= f.input :barangay_id, collection: Addresses::Barangay.all.map{|a| [a.name_and_municipality, a.id] }, input_html: { class: 'chosen-select' } %>

@@ -1,1 +1,5 @@
 <%= link_to 'New Time Deposit Product', new_office_time_deposit_product_path(current_office) %>
+<% @time_deposit_products.each do |time_deposit_product| %>
+  <%= time_deposit_product.name %>
+  <hr>
+<% end %>

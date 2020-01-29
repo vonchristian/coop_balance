@@ -161,7 +161,7 @@ module LoansModule
 
     def fourth_year_interest
       return 0 if number_of_days <= 1095
-      current_interest_config.compute_interest(amount: fourth_year_principal_balance, number_of_days: term - 1095)
+      current_interest_config.compute_interest(amount: fourth_year_principal_balance, number_of_days: number_of_days - 1095)
     end
 
     def fifth_year_interest
