@@ -1,0 +1,73 @@
+
+
+    <h3 class="title-up">Interest Summary </h3>
+    <div class="min-margin"></div>
+    <div class="row">
+      <div class="col-md-3">
+        <small class='text-muted'>INTERESTS</small>
+        <h3 class="title-up number"><%= number_to_currency @loan.total_loan_interests %></h3><br>
+
+      </div>
+      <div class="col-md-3">
+        <small class='text-muted'>DISCOUNTS</small>
+        <h3 class="title-up number"><%= number_to_currency @loan.total_interest_discounts %></h3>
+        <p></p>
+
+      </div>
+      <div class="col-md-3">
+        <small class='text-muted'>PAYMENTS</small>
+        <h3 class="title-up number"><%= number_to_currency @loan.total_interest_payments %></h3>
+      </div>
+      <div class="col-md-3">
+        <small class='text-muted'>BALANCE</small>
+        <h3 class="title-up number"><%= number_to_currency @loan.loan_interests_balance %></h3>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-md-6">
+        <p class="condensed-text">Computations History </p>
+      </div>
+      <div class="col-md-6">
+        <%=link_to 'New Discount', new_loans_module_loan_loan_interest_discount_path(@loan), class: "btn btn-outline-warning  float-right", data: { modal: true } %>
+        &nbsp;  &nbsp;<%=link_to 'New Interest', new_loans_module_loan_interest_posting_path(@loan), class: "btn  btn-outline-danger float-right", data: { modal: true } %>
+      </div>
+    </div>
+      <div class="table table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Description </th>
+             
+              <th> Amount </th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @loan.loan_interests.each do |interest| %>
+              <tr>
+                <td><%= interest.date.strftime("%B %e, %Y") %></td>
+                <td><%= interest.description %></td>
+               
+                <td><%= number_to_currency interest.amount %></td>
+              </tr>
+            <% end %>
+          </tbody>
+          <tbody>
+            <% @loan.loan_discounts.interest.each do |interest| %>
+              <tr>
+                <td><%= interest.date.strftime("%B %e, %Y") %><br>
+                <span class='badge bg-success'> Discount </span>
+                  
+                </td>
+                <td><%= interest.description %></td>
+               
+                <td><%= number_to_currency interest.amount %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

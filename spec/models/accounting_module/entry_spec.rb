@@ -5,6 +5,8 @@ module AccountingModule
   	describe 'associations' do
       it { is_expected.to have_one :voucher }
       it { is_expected.to belong_to(:official_receipt).optional }
+      it { is_expected.to belong_to(:cancellation_entry).optional }
+
   		it { is_expected.to belong_to :commercial_document }
       it { is_expected.to belong_to :office }
       it { is_expected.to belong_to :cooperative }

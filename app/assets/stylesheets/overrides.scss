@@ -21,8 +21,12 @@
 .font-montserrat-light-webfont {
   font-family: "montserrat-light-webfont"
 }
+
 .condensed-text {
-    font-family: 'roboto-condensed-webfont';
+    font-family: 'montserrat-light-webfont';
+    font-weight: 300;
+    letter-spacing: 0px;
+    font-size: 24px;
 }
 
 $nav-pills-underline-link-active-color: #cccccc !default;

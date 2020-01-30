@@ -18,7 +18,7 @@ module LoansModule
       end 
 
       def update_paid_at
-        LoansModule::LoansModule::Loans::PaidAtUpdater.new(loan: @loan, date: @voucher.date).update_paid_at!
+        LoansModule::Loans::PaidAtUpdater.new(loan: @loan, date: @voucher.date).update_paid_at!
       end 
     end
   end

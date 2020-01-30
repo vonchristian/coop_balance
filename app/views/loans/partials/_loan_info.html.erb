@@ -57,17 +57,46 @@
       <% end %>
     </div>
     <hr>
-     <% if !@loan.forwarded_loan? %>
-          <%= link_to 'View Schedule (PDF)', loans_module_loan_application_amortization_schedules_path(loan_application_id: @loan.loan_application.id, id: @loan.loan_application.voucher_id, format: "pdf"), class: "btn btn-outline-primary float-right" %>
-        <% end %>
+    
   </div>
 </div>
-
-
-    <h4 class="title-up"> Payment Schedules </h4>
+<div class='card'>
+  <div class='card-body'>
+    <div class='row'>
+      <div class='col-md-6'>
+        <h4 class="title-up"> Payment Schedules </h4>
+      </div>
+      <div class='col-md-6'>
+        <% if !@loan.forwarded_loan? %>
+          <%= link_to 'View Schedule (PDF)', loans_module_loan_application_amortization_schedules_path(loan_application_id: @loan.loan_application.id, id: @loan.loan_application.voucher_id, format: "pdf"), class: "btn btn-outline-primary float-right" %>
+        <% end %>
+      </div>
+    </div>
     <br>
-    <% @amortization_schedules.each do |schedule| %>
-      <%= render 'loans_module/amortization_schedules/schedule', schedule: schedule %>
-    <% end %>
+
+    <div class='table table-responsive'>
+      <table class='table table-hover table-striped'>
+      <thead>
+        <tr>
+          <th> Due Date </th>
+          <th> Principal </th>
+          <th> Interest </th>
+          <th> Total Repayment </th>
+          <th> Ending Balance </th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @amortization_schedules.each do |schedule| %>
+          <tr>
+            <td><%= link_to schedule.date.strftime("%B, %e, %Y"), loans_module_amortization_schedule_path(schedule) %></td>
+            <td><%= number_to_currency schedule.principal %></td>
+            <td><%= number_to_currency schedule.interest %></td>
+            <td><%= number_to_currency schedule.total_repayment %></td>
+            <td><%= number_to_currency schedule.ending_balance %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
   </div>
 </div>

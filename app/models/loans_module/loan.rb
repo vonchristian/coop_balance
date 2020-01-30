@@ -467,10 +467,7 @@ module LoansModule
       loan_interests.total_interests
     end
 
-    def total_interest_discounts
-      loan_discounts.interest.total
-    end
-
+    
     def loan_penalties_balance(args={})
       total_loan_penalties -
       total_penalty_discounts -

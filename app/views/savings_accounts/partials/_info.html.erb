@@ -23,7 +23,7 @@
   <% end %>
   <div class="col-md-5">
     <small class="text-muted"><%= @savings_account.saving_product_name.upcase %> </small>
-    <h3 class="title-up"><%= number_to_currency @savings_account.balance %></h3>
+    <h3 class="condensed-text"><%= number_to_currency @savings_account.balance %></h3>
 
     <div class="btn-group" role="group" aria-label="Basic example">
       <% if policy([:savings_accounts, :deposit]).new? %>

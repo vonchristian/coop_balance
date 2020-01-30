@@ -5,10 +5,14 @@
         <div class="col-md-1">
           <%= image_tag(@loan.borrower.avatar, class: 'img-circle', width: 55, height: 55) %>
         </div>
-        <div class="col-md-8">
-          <h4 class="subtitle-up"><%= @loan.borrower_name %></h4>
+        <div class="col-md-5">
+          <h4 class="subtitle-up"><%= @loan.borrower_name.upcase %></h4>
           <small class="text-muted"><i class="fa fa-map-marker"></i> <%= @loan.borrower.current_address_complete_address %></small>
           <small class="text-muted"><i class="fa fa-phone"></i> <%= @loan.borrower.current_contact_number %></small>
+        </div>
+        <div class='col-md-3'>
+          <small class='text-muted'> PRINCIPAL BALANCE </small>
+          <h4 class='title-up'><%= number_to_currency @loan.principal_balance %></h4>
         </div>
         <div class="col-md-3">
           <% if policy([:loans_module, :payment]).new? %>
@@ -57,7 +61,7 @@
       <br>
 
       <% if current_page?(loan_path(@loan)) %>
-        <%=render 'loans/partials/loan_info' %>
+        <%=render 'loans/partials/loan_info', loan: @loan %>
       <% end %>
       <% if current_page?(loans_module_loan_amortization_schedules_path(@loan)) %>
         <%=render 'loans/partials/amortization_schedule' %>

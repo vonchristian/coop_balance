@@ -1,33 +1,24 @@
-<div class="card">
-  <div class="card-header">
-    <div class="row">
-      <div class="col-md-8">
-        <h4 class="card-title"> Notes </h4>
+
+        <h4 class="title-up"> Notes </h4>
         <span class="text-muted"> Actions taken for this loan for monitoring purposes. </span>
-      </div>
-      <div class="col-md-4">
-        <%= link_to "Add Note", new_loan_note_path(@loan), class: 'btn btn-primary float-right', data: {modal: true} %>
-      </div>
-    </div>
-  </div>
-</div>
+
+
+        <%= link_to "Add Note", new_loan_note_path(@loan), class: 'btn btn-outline-primary float-right', data: {modal: true} %>
+
 <% @notes.each do |note| %>
-  <div class="card">
-    <div class="card-body">
       <div class="row">
         <div class="col-md-1">
           <%=image_tag(note.noter.avatar, width: 45, height: 45, class: "img-circle") if note.noter.avatar.attached? %>
         </div>
         <div class="col-md-8">
-          <h3 class="card-title"><%= note.title %></h3>
+          <p class="condensed-text"><%= note.title %></p>
           <span class="text-muted">
             <%= note.content %>
           </span>
           <br>
-          <%= note.noter.try(:name) %> &nbsp; &nbsp;
-          <%= note.date.strftime("%a, %b %e, %Y %H:%M") %>
+          <%= note.noter_name %> &nbsp; &nbsp;
+          <%= note.date.strftime("%a, %b %e, %Y %-l:%M %p") %>
         </div>
       </div>
-    </div>
-  </div>
+
 <% end %>

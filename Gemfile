@@ -43,7 +43,6 @@ gem 'mina-whenever', require: false
 gem 'barby'
 gem 'rqrcode'
 gem 'prawn-print'
-gem 'delayed_job_active_record'
 gem 'dotiw'
 gem "spreadsheet"
 gem 'delayed-web'
@@ -66,13 +65,13 @@ gem 'letter_opener'
 gem 'email_spec'
 gem 'whenever', require: false
 gem "select2-rails"
+gem "simple_calendar"
 
 
 group :development, :test do
   gem 'rspec-rails'
   gem 'factory_bot_rails'
   gem 'faker'
-  gem 'bullet'
   gem 'pry-rails'
 end
 
@@ -80,6 +79,7 @@ group :development do
   gem 'listen'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  gem "bullet"
 end
 
 group :test do
@@ -91,9 +91,3 @@ group :test do
 end
 
 gem 'rack-mini-profiler', require: false
-gem "simple_calendar"
-gem 'traceroute'
-
-gem 'derailed_benchmarks', group: :development
-gem 'stackprof', group: :development
-gem 'memory_profiler'

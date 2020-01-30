@@ -3,7 +3,7 @@ class LoansController < ApplicationController
     if params[:search].present?
       @pagy, @loans = pagy(current_office.loans.not_cancelled.not_archived.unpaid.text_search(params[:search]))
     else
-      @pagy, @loans = pagy(current_office.loans.not_cancelled.not_archived.unpaid.includes(:borrower).
+      @pagy, @loans = pagy(current_office.loans.not_cancelled.not_archived.unpaid.includes(:term, :loan_product, :borrower, :receivable_account).
       # includes(:disbursement_voucher, borrower: [:avatar_attachment], loan_product: [:current_account, :past_due_account]).
       not_cancelled.
       not_archived.

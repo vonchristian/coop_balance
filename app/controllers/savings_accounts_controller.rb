@@ -10,7 +10,7 @@ class SavingsAccountsController < ApplicationController
   end
 
   def show
-    @savings_account = current_office.savings.includes(:saving_product => [:account]).find(params[:id])
+    @savings_account = current_office.savings.includes(:liability_account).find(params[:id])
     @pagy, @entries  = pagy(@savings_account.entries.includes(:recorder).order(entry_date: :desc))
     respond_to do |format|
       format.html

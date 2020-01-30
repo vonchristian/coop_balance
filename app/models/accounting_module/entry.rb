@@ -9,6 +9,7 @@ module AccountingModule
     has_one    :voucher,               foreign_key: 'entry_id', dependent: :nullify
     belongs_to :official_receipt,      optional: true
     belongs_to :commercial_document,   polymorphic: true
+    belongs_to :cancellation_entry,    class_name: 'AccountingModule::Entry', optional: true
     belongs_to :office,                class_name: "Cooperatives::Office"
     belongs_to :cooperative
     belongs_to :cooperative_service,   class_name: "CoopServicesModule::CooperativeService", optional: true

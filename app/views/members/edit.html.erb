@@ -6,6 +6,7 @@
 </div>
 <%= simple_form_for @member, html: { autocomplete: "off", data: { modal: true } }, remote: request.xhr? do |f| %>
   <div class="modal-body">
+    <%= f.input :avatar %>
     <%= f.input :first_name %>
     <%= f.input :middle_name %>
     <%= f.input :last_name %>

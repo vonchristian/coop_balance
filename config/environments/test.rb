@@ -47,4 +47,9 @@ Rails.application.configure do
 
   # Prevent expensive template finalization at end of test suite runs.
   config.action_view.finalize_compiled_template_methods = false
+  config.after_initialize do
+    Bullet.enable = true
+    Bullet.bullet_logger = true
+    Bullet.raise = true # raise an error if an n+1 query occurs
+  end
 end

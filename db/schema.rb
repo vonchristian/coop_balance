@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_30_062925) do
+ActiveRecord::Schema.define(version: 2020_01_30_124225) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -499,6 +499,8 @@ ActiveRecord::Schema.define(version: 2020_01_30_062925) do
     t.uuid "cooperative_service_id"
     t.string "cancellation_description"
     t.boolean "archived", default: false
+    t.uuid "cancellation_entry_id"
+    t.index ["cancellation_entry_id"], name: "index_entries_on_cancellation_entry_id"
     t.index ["cancelled_by_id"], name: "index_entries_on_cancelled_by_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_entry"
     t.index ["cooperative_id"], name: "index_entries_on_cooperative_id"
@@ -793,11 +795,8 @@ ActiveRecord::Schema.define(version: 2020_01_30_062925) do
     t.decimal "amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "discountable_type", null: false
-    t.uuid "discountable_id", null: false
     t.index ["computed_by_id"], name: "index_loan_discounts_on_computed_by_id"
     t.index ["discount_type"], name: "index_loan_discounts_on_discount_type"
-    t.index ["discountable_type", "discountable_id"], name: "index_loan_discounts_on_discountable_type_and_discountable_id"
     t.index ["loan_id"], name: "index_loan_discounts_on_loan_id"
   end
 
@@ -2058,6 +2057,7 @@ ActiveRecord::Schema.define(version: 2020_01_30_062925) do
   add_foreign_key "employee_cash_accounts", "users", column: "employee_id"
   add_foreign_key "entries", "cooperative_services"
   add_foreign_key "entries", "cooperatives"
+  add_foreign_key "entries", "entries", column: "cancellation_entry_id"
   add_foreign_key "entries", "offices"
   add_foreign_key "entries", "official_receipts"
   add_foreign_key "entries", "users", column: "cancelled_by_id"

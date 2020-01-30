@@ -1,18 +1,20 @@
 module LoansModule
   module Loans
     class LoanInterestDiscountsController < ApplicationController
-      respond_to :html, :json
-
       def new
-        @loan = current_cooperative.loans.find(params[:loan_id])
+        @loan          = current_office.loans.find(params[:loan_id])
         @loan_discount = @loan.loan_discounts.interest.build
-        respond_modal_with @loan_discount
       end
 
       def create
-        @loan = current_cooperative.loans.find(params[:loan_id])
+        @loan          = current_office.loans.find(params[:loan_id])
         @loan_discount = @loan.loan_discounts.interest.create(loan_discount_params)
-        respond_modal_with @loan_discount, location: loan_url(@loan), notice: "Loan interest discount saved successfully."
+        if @loan_discount.valid?
+          @loan_discount.save! 
+          redirect_to loans_module_loan_interests_url(@loan), notice: "Loan interest discount saved successfully."
+        else 
+          render :new 
+        end 
       end
 
       private
