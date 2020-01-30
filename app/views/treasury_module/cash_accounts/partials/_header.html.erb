@@ -3,9 +3,9 @@
   <div class="card-body">
     <div class="row">
       <div class="col-md-3 border-right">
-        <small><%= cash_account.name.upcase %></small>
+        <small class='text-muted'><%= cash_account.name.upcase %></small>
 
-        <h3 class="card-title"><%= number_to_currency cash_account.balance %></h3>
+        <h3 class="title-up"><%= number_to_currency cash_account.balance %></h3>
         <br>
         <% if policy([:treasury_module, :cash_receipt]).new? %>
           <%= link_to new_treasury_module_cash_account_cash_receipt_line_item_path(cash_account), data: { turbolinks: false } do %>
@@ -36,15 +36,15 @@
       <% monthly_credits_balances_data << { month.strftime("%B %Y") => cash_account.credits_balance(to_date: month.end_of_month) } %>
     <% end %>
 
-    <%= area_chart [
-      { name: "Debits", data: (Hash[*monthly_debits_balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"} },
-      { name: "Credit", data: (Hash[*monthly_credits_balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"} },
+    <%= line_chart [
+      { name: "Receipts", data: (Hash[*monthly_debits_balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"} },
+      { name: "Disbursements", data: (Hash[*monthly_credits_balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"} },
       { name: "Balance", data: (Hash[*monthly_balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"} }
-      ], legend: 'right', thousands: ",", height: '200px', colors: ["#28A745", "#b00", "#0069D9"]%>
+      ], legend: 'right', thousands: ",", curve: false, height: '200px', colors: ["#1d9d74", "#e04e50", "#1830E0"]%>
       </div>
     </div>
     <hr>
-    <small class="text-muted">LAST TRANSACTION:  <i class="fa fa-clock"></i> <%= cash_account.last_transaction_date.try(:strftime, "%B %e, %Y") %></small>
+    <small class="text-muted">LAST TRANSACTION:  <i class="fa fa-clock"></i> <%= cash_account.last_transaction_date.try(:strftime, "%B %e, %Y %-l:%M %p") %></small>
 
   </div>
 </div>

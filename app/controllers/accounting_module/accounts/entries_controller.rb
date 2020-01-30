@@ -56,7 +56,7 @@ module AccountingModule
         Enumerator.new do |yielder|
           yielder << CSV.generate_line(["#{current_office.name} - #{@account.name} Entries Report"])
           yielder << CSV.generate_line(["Date", "Description", "Member", "REF #", 'Debit', 'Credit',  "Balance"])
-          @account.entries.entered_on(from_date: @from_date, to_date: @to_date).order(entry_date: :desc).each do |entry|
+          @account.entries.entered_on(from_date: @from_date, to_date: @to_date).order(entry_date: :desc).order(created_at: :desc).each do |entry|
             yielder << CSV.generate_line([
               entry.entry_date.strftime('%B, %e, %Y'),
               entry.description,
