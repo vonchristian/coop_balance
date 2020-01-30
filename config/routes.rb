@@ -688,7 +688,7 @@ Rails.application.routes.draw do
     resources :loan_products,          only: [:index, :new, :create], module: :offices
     resources :share_capital_products, only: [:index, :new, :create], module: :offices
     resources :time_deposit_products,  only: [:index, :new, :create], module: :offices
-
+    resources :net_income_configs,     only: [:index, :new, :create], module: :offices 
 
 
   end

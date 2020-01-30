@@ -22,7 +22,6 @@ module AccountingModule
         expect(described_class.new(amounts: AccountingModule::Amount.all, to_date: Date.current, to_time: Time.zone.now - 3.hour).compute).to eql 0
         expect(described_class.new(amounts: AccountingModule::Amount.all, to_date: Date.current, to_time: Time.zone.now).compute).to eql 200
         expect(described_class.new(amounts: AccountingModule::Amount.all, to_date: Date.current, to_time: Time.zone.now + 1.hour).compute).to eql 800
-
       end
     end
   end

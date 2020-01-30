@@ -2,10 +2,11 @@ module Offices
   class NetIncomeConfig < ApplicationRecord
     enum book_closing: [:annually, :semi_annually, :quarterly, :monthly]
    
-    belongs_to :office,             class_name: 'Cooperatives::Office'
-    belongs_to :net_income_account, class_name: 'AccountingModule::Account'
-    
-    validates :net_income_account_id, uniqueness: { scope: :office_id }
+    belongs_to :office,              class_name: 'Cooperatives::Office'
+    belongs_to :net_surplus_account, class_name: 'AccountingModule::Account'
+    belongs_to :net_loss_account,    class_name: 'AccountingModule::Account'
+    validates :net_surplus_account_id, :net_loss_account_id, uniqueness: { scope: :office_id }
+   
     def self.current 
       order(created_at: :desc).first 
     end 

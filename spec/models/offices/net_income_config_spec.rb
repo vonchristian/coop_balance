@@ -4,19 +4,31 @@ module Offices
   describe NetIncomeConfig, type: :model do
     describe 'associations' do 
       it { is_expected.to belong_to :office }
-      it { is_expected.to belong_to :net_income_account }
+      it { is_expected.to belong_to :net_surplus_account }
+      it { is_expected.to belong_to :net_loss_account }
+
     end 
 
     describe 'validations' do 
-      it 'validate_uniqueness_of(:net_income_account_id).scoped_to(:office_id)' do 
-        office = create(:office)
-        net_income_account = create(:liability)
-        create(:net_income_config, office: office, net_income_account: net_income_account)
-        net_income_config = build(:net_income_config, office: office, net_income_account: net_income_account)
+      it 'validate_uniqueness_of(:net_surplus_account_id).scoped_to(:office_id)' do 
+        office              = create(:office)
+        net_surplus_account = create(:liability)
+        create(:net_income_config, office: office, net_surplus_account: net_surplus_account)
+        net_income_config  = build(:net_income_config, office: office, net_surplus_account: net_surplus_account)
         net_income_config.save 
 
-        expect(net_income_config.errors[:net_income_account_id]).to eq ['has already been taken']
-      end 
+        expect(net_income_config.errors[:net_surplus_account_id]).to eq ['has already been taken']
+      end
+      
+      it 'validate_uniqueness_of(:net_loss_account_id).scoped_to(:office_id)' do 
+        office            = create(:office)
+        net_loss_account  = create(:liability)
+        create(:net_income_config, office: office, net_loss_account: net_loss_account)
+        net_income_config = build(:net_income_config, office: office, net_loss_account: net_loss_account)
+        net_income_config.save 
+
+        expect(net_income_config.errors[:net_loss_account_id]).to eq ['has already been taken']
+      end
     end
 
     it { is_expected.to define_enum_for(:book_closing).with_values([:annually, :semi_annually, :quarterly, :monthly]) }
