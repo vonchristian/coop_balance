@@ -14,6 +14,7 @@ module AccountingModule
 
         respond_to do |format|
           format.html
+          format.csv { render_csv }
           format.pdf do
             pdf = AccountingModule::Accounts::EntriesReportPdf.new(
               entries:      @account.entries.entered_on(from_date: @from_date, to_date: @to_date),
@@ -26,6 +27,48 @@ module AccountingModule
           end
         end
       end
+
+      def render_csv
+        # Tell Rack to stream the content
+        headers.delete("Content-Length")
+  
+        # Don't cache anything from this generated endpoint
+        headers["Cache-Control"] = "no-cache"
+  
+        # Tell the browser this is a CSV file
+        headers["Content-Type"] = "text/csv"
+  
+        # Make the file download with a specific filename
+        headers["Content-Disposition"] = "attachment; filename=\"Entries.csv\""
+  
+        # Don't buffer when going through proxy servers
+        headers["X-Accel-Buffering"] = "no"
+  
+        # Set an Enumerator as the body
+        self.response_body = csv_body
+  
+        response.status = 200
+      end
+  
+      private
+  
+      def csv_body
+        Enumerator.new do |yielder|
+          yielder << CSV.generate_line(["#{current_office.name} - #{@account.name} Entries Report"])
+          yielder << CSV.generate_line(["Date", "Description", "Member", "REF #", 'Debit', 'Credit',  "Balance"])
+          @account.entries.entered_on(from_date: @from_date, to_date: @to_date).order(entry_date: :desc).each do |entry|
+            yielder << CSV.generate_line([
+              entry.entry_date.strftime('%B, %e, %Y'),
+              entry.description,
+              entry.commercial_document.try(:name),
+              entry.reference_number,
+              entry.debit_amounts.where(account: @account).total,
+              entry.credit_amounts.where(account: @account).total,
+              @account.balance(to_date: entry.entry_date, to_time: entry.created_at)
+              ])
+          end
+        end 
+      end 
     end
   end
 end

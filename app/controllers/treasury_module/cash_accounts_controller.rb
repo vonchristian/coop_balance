@@ -12,13 +12,9 @@ module TreasuryModule
       @to_date = params[:to_date] ? Date.parse(params[:to_date]) : Date.today
       @cash_account = current_office.cash_accounts.find(params[:id])
       if params[:from_date] && params[:to_date]
-        @entries      = @cash_account.entries.entered_on(from_date: @from_date, to_date: @to_date).
-        order(entry_date: :asc).
-        paginate(page: params[:page], per_page: 25)
+        @pagy, @entries      = pagy(@cash_account.entries.entered_on(from_date: @from_date, to_date: @to_date).order(entry_date: :desc))
       else
-        @entries      = @cash_account.entries.
-        order(entry_date: :asc).
-        paginate(page: params[:page], per_page: 25)
+        @pagy, @entries      = pagy(@cash_account.entries.order(entry_date: :desc))
       end
     end
   end

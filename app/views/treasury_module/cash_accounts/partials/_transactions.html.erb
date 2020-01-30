@@ -1,45 +1,51 @@
-<div class="card">
-  <div class="card-body">
-    <div class="row">
-      <div class="col-md-6">
-        <p> Transactions Summary (Date: Covered
-          <%= @from_date.strftime("%b. %e, %Y") %> - <%= @to_date.strftime("%b. %e, %Y") %>
-        )</p>
-        <time datetime="2014-09-24" class="date-as-calendar inline-flex size0_75x">
-        <span class="weekday"><%= @from_date.strftime("%A") %></span>
-        <span class="day"><%= @from_date.strftime("%e") %></span>
-        <span class="month"><%= @from_date.strftime("%B") %> </span>
-        <span class="year"><%= @from_date.strftime("%Y") %></span>
-        </time>
-      </div>
-      <div class="col-md-6">
-        <%= link_to 'This Day', treasury_module_cash_account_path(cash_account, from_date: Date.today, to_date: Date.today), class: "btn btn-outline-primary btn-sm" %>
-        <%= link_to 'Yesterday', treasury_module_cash_account_path(cash_account, from_date: Date.today.yesterday, to_date: Date.today.yesterday), class: "btn btn-outline-primary btn-sm" %>
+<h3 class='title-up'> All Transactions </h3>
 
-        <%= link_to 'This Month', treasury_module_cash_account_path(cash_account, from_date: Date.today.beginning_of_month, to_date: Date.today.end_of_month), class: "btn btn-outline-primary btn-sm" %>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-3">
-        <small>RECEIPTS</small>
-        <h4 class="card-title number text-success">
-          <%= number_to_currency cash_account.debits_balance(from_date: @from_date, to_date: @to_date) %>
-        </h4>
-      </div>
-      <div class="col-md-3">
-        <small>DISBURSEMENTS</small>
-        <h4 class="card-title number text-danger">
-          <%= number_to_currency cash_account.credits_balance(from_date: @from_date, to_date: @to_date) %>
-        </h4>
-      </div>
-      <div class="col-md-3">
-        <small>TRANSACTION COUNT</small>
-          <h3 class="card-title number"> <%= @entries.count %></h3>
-      </div>
-    </div>
-  </div>
+<div class="table table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th> Date </th>
+        <th> Description </th>
+        <th> Member </th>
+
+        <th> Reference # </th>
+        <th> Debit </th>
+        <th> Credit </th>
+        <th> Balance </th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @entries.each do |entry| %>
+      <% credits_total =  entry.credit_amounts.where(account: @cash_account).total %>
+      <% debits_total =   entry.debit_amounts.where(account: @cash_account).total %>
+             
+         <tr>
+    
+    <td><%=entry.entry_date.strftime("%b. %e, %Y") %></td>
+    <td><%=link_to entry.description, accounting_module_entry_path(entry) %><br>
+      <% if entry.cancelled? %>
+        <span class="badge bg-danger"> Cancelled </span>
+      <% end %>
+    </td>
+    <td><%= entry.commercial_document.try(:name)%>
+
+    <td><%= entry.reference_number %></td>
+
+    </td>
+    <td>
+      <% if debits_total > 0 %>
+        <%= number_to_currency debits_total %>
+      <% end %>
+    </td>
+     <td><% if credits_total > 0 %>
+                <%= number_to_currency credits_total %>
+              <% end %>
+              </td>
+    <td><%= number_to_currency @cash_account.balance(to_date: entry.entry_date, to_time: entry.created_at) %></td>
+</tr>
+      <% end %>
+    </tbody>
+  </table>
+      <%==pagy_bootstrap_nav(@pagy) %>
+
 </div>
-<br>
-<% @entries.each do |entry| %>
-  <%= render 'accounting_module/entries/partials/header', entry: entry %>
-<% end %>

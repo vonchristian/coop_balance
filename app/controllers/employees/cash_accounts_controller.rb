@@ -3,7 +3,7 @@ module Employees
     respond_to :html, :json
 
     def new
-      @employee = current_cooperative.users.find(params[:employee_id])
+      @employee     = current_cooperative.users.find(params[:employee_id])
       @cash_account = @employee.employee_cash_accounts.build
       respond_modal_with @cash_account
     end
