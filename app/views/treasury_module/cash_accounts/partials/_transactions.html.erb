@@ -5,6 +5,7 @@
     <thead>
       <tr>
         <th> Date </th>
+        <th> Time </th>
         <th> Description </th>
         <th> Member </th>
 
@@ -22,6 +23,8 @@
          <tr>
     
     <td><%=entry.entry_date.strftime("%b. %e, %Y") %></td>
+    <td><%=entry.created_at.strftime("%-l:%M %p") %></td>
+
     <td><%=link_to entry.description, accounting_module_entry_path(entry) %><br>
       <% if entry.cancelled? %>
         <span class="badge bg-danger"> Cancelled </span>
