@@ -70,7 +70,7 @@
                 <%= number_to_currency voucher_amount.amount %>
               <% end %>
             </td>
-            <td><%= voucher_amount.account_name %></td>
+            <td><%= voucher_amount.account_display_name %></td>
              <td>
               <% if voucher_amount.credit? %>
                 <span class="float-right"><%= number_to_currency voucher_amount.amount %></span>

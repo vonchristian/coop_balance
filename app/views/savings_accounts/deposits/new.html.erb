@@ -1,35 +1,48 @@
 <% breadcrumb :savings_account_deposit, @savings_account %>
-<% content_for(:html_title) { "#{@savings_account.depositor_name} | New Deposit" } %>
-<div class="row">
-  <div class="col-md-7">
-    <div class="card">
-      <div class="card-header">
-        <%= render "savings_accounts/shared/savings_info_header", savings_account: @savings_account %>
-      </div>
+
+  <div class="col-md-8 offset-md-2">
+    <div class='card'>
       <div class="card-body">
-        <%= render "savings_accounts/shared/savings_info_body", savings_account: @savings_account %>
+      <div class="row">
+        <div class="col-md-2 col-sm-2">
+          <%= image_tag(@savings_account.avatar, width: 60, height: 60, class: "img-circle") if @savings_account.avatar.attached? %>
+        </div>
+        <div class="col-md-6 col-sm-10">
+          <h4 class="subtitle-up"> <%= @savings_account.depositor_name.upcase %> </h4>
+          <small class="text-muted">
+      <i class="fa fa-map-marker"></i> <%= @savings_account.depositor.current_address_complete_address %> &nbsp; &nbsp;
+      <div class="min-margin"></div>
+
+      <i class="fa fa-phone"></i> <%= @savings_account.depositor.current_contact_number %></i> &nbsp; &nbsp;
+      <div class="min-margin"></div>
+
+      <i class="fa fa-clock"></i> Last Transaction: <%= @savings_account.last_transaction_date.strftime('%B %e, %Y') %></small>
+    </small>
+        </div>
+        <div class='col-md-4'>
+          <small class='text-muted'><%= @savings_account.saving_product_name.upcase %></small>
+          <h3 class="title-up no-margin-bottom"> <%= number_to_currency @savings_account.balance %> </h3>
+        </div>
       </div>
-    </div>
-  </div>
-  <div class="col-md-5">
-    <div class="card">
-      <div class="card-header">
-        <h4 class="card-title">New Deposit to Savings Account</h4>
-      </div>
-      <div class="card-body">
-        <%= simple_form_for [@savings_account, @deposit], url: :savings_account_deposits, html: { autocomplete: "off" } do |f| %>
-          <%= f.error_notification %>
-          <%= f.input :date, as: :string, input_html: { class: "datepicker", value: Date.today.strftime("%B %e, %Y") } %>
-          <%= f.input :amount, as: :currency %>
-          <%= f.input :description, as: :text, input_html: {value: "Savings deposit"} %>
-          <%= f.input :or_number, label: 'Reference Number' %>
-          <%= f.input :cash_account_id, default: current_cooperative.users.teller.last.cash_accounts.first, collection: current_cooperative.users.teller.last.cash_accounts.map{|a| [a.name, a.id] } %>
-          <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
-          <%= f.input :offline_receipt, input_html: { checked: true }, as: :hidden %>
-          <%= f.input :saving_id, input_html: { value: @savings_account.id },as: :hidden %>
-          <%= f.input :employee_id, input_html: { value: current_user.id },as: :hidden %>
-          <%= f.submit "Proceed", class: "btn btn-primary float-right", data: { disable_with: "Processing..."} %>
-        <% end %>
+      <hr>
+      <h4 class='subtitle-up'> Deposit Details </h4>
+        <div class='row'>
+          <div class='col-md-8 offset-md-2'>
+            <%= simple_form_for [@savings_account, @deposit], url: :savings_account_deposits, html: { autocomplete: "off" } do |f| %>
+              <%= f.error_notification %>
+              <%= f.input :date, as: :string, input_html: { class: "datepicker", value: Date.today.strftime("%B %e, %Y") } %>
+              <%= f.input :amount, as: :currency %>
+              <%= f.input :description, input_html: {value: "Savings deposit"} %>
+              <%= f.input :or_number, label: 'Reference Number' %>
+              <%= f.input :cash_account_id, default: current_user.cash_accounts.first, collection: current_user.cash_accounts.map{|a| [a.name, a.id] }, input_html: { class: 'chosen-select' } %>
+              <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
+              <%= f.input :offline_receipt, input_html: { checked: true }, as: :hidden %>
+              <%= f.input :saving_id, input_html: { value: @savings_account.id },as: :hidden %>
+              <%= f.input :employee_id, input_html: { value: current_user.id },as: :hidden %>
+              <%= f.submit "Proceed", class: "btn btn-primary float-right", data: { disable_with: "Processing..."} %>
+            <% end %>
+          </div>
+        </div>
       </div>
     </div>
   </div>

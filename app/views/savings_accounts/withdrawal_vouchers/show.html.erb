@@ -1,23 +1,34 @@
 <% content_for(:html_title) { "Withdrawal Transaction | #{@savings_account.depositor_name}" } %>
 
-<div class="row">
-  <div class="col-md-8 offset-md-2">
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title">Savings Account Withdraw Transaction </h3>
+<div class="col-md-8 offset-md-2">
+    <div class='card'>
+      <div class="card-body">
+      <div class="row">
+        <div class="col-md-2 col-sm-2">
+          <%= image_tag(@savings_account.avatar, width: 60, height: 60, class: "img-circle") if @savings_account.avatar.attached? %>
+        </div>
+        <div class="col-md-6 col-sm-10">
+          <h4 class="subtitle-up"> <%= @savings_account.depositor_name.upcase %> </h4>
+          <small class="text-muted">
+      <i class="fa fa-map-marker"></i> <%= @savings_account.depositor.current_address_complete_address %> &nbsp; &nbsp;
+      <div class="min-margin"></div>
+
+      <i class="fa fa-phone"></i> <%= @savings_account.depositor.current_contact_number %></i> &nbsp; &nbsp;
+      <div class="min-margin"></div>
+
+      <i class="fa fa-clock"></i> Last Transaction: <%= @savings_account.last_transaction_date.strftime('%B %e, %Y') %></small>
+    </small>
+        </div>
+        <div class='col-md-4'>
+          <small class='text-muted'><%= @savings_account.saving_product_name.upcase %></small>
+          <h3 class="title-up no-margin-bottom"> <%= number_to_currency @savings_account.balance %> </h3>
+        </div>
       </div>
+
       <div class="card-body">
         <%= render 'vouchers/partials/alert_message', voucher: @voucher %>
-        <div class="card-body no-padding-top no-padding-bottom">
-          <div class="row">
-            <div class="col-md-4 col-sm-4">
-              <label>Amount</label>
-            </div>
-            <div class="col-md-8 col-sm-8">
-              <b><%= number_to_currency @voucher.voucher_amounts.for_account(account: @savings_account.liability_account).total %></b>
-            </div>
-          </div>
-        </div>
+
+          
         <%= render 'vouchers/partials/body', voucher: @voucher %>
         <hr>
         <% if @voucher.accounting_entry.blank? %>
