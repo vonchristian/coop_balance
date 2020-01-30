@@ -49,6 +49,9 @@ Rails.application.routes.draw do
       resources :savings_accounts_interest_postings, only: [:new, :create]
       resources :share_capital_dividend_postings, only: [:new, :create]
       resources :loan_agings, only: [:index]
+      resources :book_closings, only: [:index, :new, :create]
+      resources :book_closing_confirmations, only: [:show]
+
     end
 
     namespace :cash_books do

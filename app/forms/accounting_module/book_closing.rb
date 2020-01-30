@@ -1,20 +1,13 @@
 module AccountingModule
   class BookClosing
     include ActiveModel::Model 
-    attr_reader :employee, :date, :office, :net_income_account
+    attr_accessor :employee_id, :date, :account_number
 
-    validates :employee, :date, :account_number, presence: true 
+    validates :date, :account_number, :employee_id, presence: true 
     
-    def initialize(employee:, date:, account_number:)
-      @employee           = employee
-      date                = date 
-      @office             = @employee.office 
-      @account_number     = account_number
-      @net_income_account = @office.net_income_account
-    end 
 
     def find_voucher 
-      office.vouchers.find_by(account_number: account_number)
+      find_office.vouchers.find_by(account_number: account_number)
     end 
 
     def close_book!
@@ -25,11 +18,14 @@ module AccountingModule
 
     private 
     def create_voucher 
-      voucher = office.vouchers.build(
+      voucher = find_office.vouchers.build(
+        cooperative: find_office.cooperative,
+        account_number: account_number,
+        payee:             find_employee,
         date:             date,
-        reference_number: "BOOK CLOSING - #{date.year}",
-        description:      "books closing #{date.year}",
-        preparer:         employee
+        reference_number: "BOOK CLOSING - #{parsed_date.year}",
+        description:      "books closing #{parsed_date.year}",
+        preparer:         find_employee
       )
 
       create_revenue_amounts(voucher)
@@ -40,7 +36,7 @@ module AccountingModule
     end 
 
     def create_revenue_amounts(voucher)
-      office.accounts.revenues.each do |revenue|
+      find_office.accounts.revenues.each do |revenue|
         balance = revenue.balance(from_date: from_date, to_date: to_date)
        
         if !balance.zero? 
@@ -50,7 +46,7 @@ module AccountingModule
     end 
 
     def create_expense_amounts(voucher)
-      office.accounts.expenses.each do |expense|
+      find_office.accounts.expenses.each do |expense|
         balance = expense.balance(from_date: from_date, to_date: to_date)
         
         if !balance.zero? 
@@ -67,6 +63,24 @@ module AccountingModule
         voucher.voucher_amounts.credit.build(amount: net_income, account: net_income_account)
       end
     end 
+    def find_office
+      find_employee.office 
+    end 
 
+    def find_employee
+      User.find(employee_id)
+    end
+
+    def from_date
+      DateTime.parse(date).beginning_of_year 
+    end 
+
+    def to_date
+      parsed_date.end_of_year
+    end 
+
+    def parsed_date
+      DateTime.parse(date)
+    end 
   end 
 end 

@@ -1,0 +1,6 @@
+<%= render 'vouchers/partials/body', voucher: @voucher %>
+
+ <% if @voucher.accounting_entry.blank? %>
+          <%= link_to "Confirm Transaction", voucher_disbursements_path(voucher_id: @voucher.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing Transaction..." } %>
+          <%= link_to 'Cancel', voucher_path(voucher_id: @voucher.id), method: :delete, class: "btn text-danger float-left" %>
+        <% end %>
