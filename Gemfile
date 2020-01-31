@@ -79,7 +79,6 @@ group :development do
   gem 'listen'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  gem "bullet"
 end
 
 group :test do
@@ -91,3 +90,4 @@ group :test do
 end
 
 gem 'rack-mini-profiler', require: false
+gem "bullet", group: [:development, :test]

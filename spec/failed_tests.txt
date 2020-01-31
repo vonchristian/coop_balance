@@ -843,10 +843,9 @@ example_id                                                                      
 ./spec/models/loans_module/loans/loan_aging_spec.rb[1:3:2]                                                      | passed  | 3.28 seconds    |
 ./spec/models/loans_module/loans/loan_aging_spec.rb[1:3:3]                                                      | passed  | 2.95 seconds    |
 ./spec/models/loans_module/loans/loan_aging_spec.rb[1:4]                                                        | passed  | 6.15 seconds    |
-./spec/models/loans_module/loans/loan_discount_spec.rb[1:1:1]                                                   | passed  | 0.006 seconds   |
-./spec/models/loans_module/loans/loan_discount_spec.rb[1:1:2]                                                   | passed  | 0.00466 seconds |
-./spec/models/loans_module/loans/loan_discount_spec.rb[1:1:3]                                                   | passed  | 0.00407 seconds |
-./spec/models/loans_module/loans/loan_discount_spec.rb[1:2]                                                     | passed  | 12.81 seconds   |
+./spec/models/loans_module/loans/loan_discount_spec.rb[1:1:1]                                                   | passed  | 0.00569 seconds |
+./spec/models/loans_module/loans/loan_discount_spec.rb[1:2]                                                     | passed  | 0.08267 seconds |
+./spec/models/loans_module/loans/loan_discount_spec.rb[1:3]                                                     | failed  | 6.2 seconds     |
 ./spec/models/loans_module/loans/loan_interest_spec.rb[1:1:1]                                                   | passed  | 0.00832 seconds |
 ./spec/models/loans_module/loans/loan_interest_spec.rb[1:1:2]                                                   | passed  | 0.00651 seconds |
 ./spec/models/loans_module/loans/loan_interest_spec.rb[1:2:1]                                                   | passed  | 0.00964 seconds |

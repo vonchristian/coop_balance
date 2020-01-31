@@ -476,13 +476,16 @@ Rails.application.routes.draw do
       resources :confirmations, only: [:create],             module: :withdrawal_vouchers
     end
 
-    resources :adjusting_entries, only: [:new, :create], module: :time_deposits
-    resources :withdrawals, only: [:new, :create],       module: :time_deposits
-    resources :term_extensions, only: [:new, :create],   module: :time_deposits
-    resources :break_contracts, only: [:new, :create],   module: :time_deposits
-    resources :settings, only: [:index],                 module: :time_deposits
-    resources :beneficiaries, only: [:edit, :update],    module: :time_deposits
-    resources :accounting, only: [:index],               module: :time_deposits
+    resources :adjusting_entries, only: [:new, :create],                  module: :time_deposits
+    resources :withdrawals,       only: [:new, :create],                  module: :time_deposits
+    resources :term_extensions,   only: [:new, :create],                  module: :time_deposits
+    resources :break_contracts,   only: [:new, :create],                  module: :time_deposits
+    resources :settings,          only: [:index],                         module: :time_deposits
+    resources :beneficiaries,     only: [:edit, :update],                 module: :time_deposits
+    resources :accounting,        only: [:index],                         module: :time_deposits
+    resources :interest_postings, only: [:new, :create, :show, :destroy], module: :time_deposits  do 
+      resources :confirmations,   only: [:create], module: :interest_postings
+    end 
   end
 
   resources :employees, only: [:index, :show, :edit, :update] do

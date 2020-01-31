@@ -4,8 +4,6 @@ module LoansModule
       enum discount_type: [:interest, :penalty]
       belongs_to :loan
 
-
-
       def self.total
         sum(:amount)
       end

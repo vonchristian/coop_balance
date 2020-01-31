@@ -7,10 +7,3 @@ RSpec.configure do |config|
   end
   config.shared_context_metadata_behavior = :apply_to_host_groups
 end
-
-RSpec.configure do |config|
-  if Bullet.enable?
-    config.before(:each) { Bullet.start_request }
-    config.after(:each)  { Bullet.end_request }
-  end
-end

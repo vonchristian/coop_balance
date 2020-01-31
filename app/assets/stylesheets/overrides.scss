@@ -162,3 +162,7 @@ $nav-pills-underline-border-width:    2px !default;
     color: #a0a0a0;
     transform: rotate(0);
 }
+
+.card-danger.card-outline-left {
+  border-left: 5px solid #e04e50;
+}
