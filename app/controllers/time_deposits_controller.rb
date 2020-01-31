@@ -8,8 +8,8 @@ class TimeDepositsController < ApplicationController
   end
 
   def show
-    @time_deposit = current_office.time_deposits.find(params[:id])
-    @pagy, @entries      = pagy(@time_deposit.entries)
+    @time_deposit      = current_office.time_deposits.find(params[:id])
+    @pagy, @entries    = pagy(@time_deposit.entries)
     respond_to do |format|
       format.html
       format.pdf do

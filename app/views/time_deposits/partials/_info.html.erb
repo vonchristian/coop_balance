@@ -122,7 +122,7 @@
       </tr>
     </thead>
     <tbody>
-      <% @entries.each do |entry| %>
+      <% @entries.uniq.each do |entry| %>
        
           <%=render 'accounting_module/entries/entry', entry: entry %>
        
