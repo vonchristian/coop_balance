@@ -1,7 +1,10 @@
 FactoryBot.define do
   factory :entry, class: AccountingModule::Entry do
-    description { Faker::Company.bs }
-    association :commercial_document, factory: :member
+    description      { Faker::Company.bs }
+    association      :commercial_document, factory: :member
+    entry_date       { Date.current }
+    entry_time       { Time.zone.now }
+    reference_number { 'test ref #' }
     after(:build) do |t|
       cooperative   = create(:cooperative)
       office        = create(:office, cooperative: cooperative)

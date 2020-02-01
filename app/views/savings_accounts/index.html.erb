@@ -1,8 +1,7 @@
-
-        <div class="row">
-        <div class="col-md-8">
+<div class='container'>
+    <div class="row">
+        <div class="col-md-4">
           <h3 class="title-up">Savings Accounts</h3>
-          <%= link_to 'New Multiple Transaction', new_savings_account_multiple_transaction_path, class: 'btn btn-primary' %>
         </div>
 
         <div class="col-md-4 m-0">
@@ -17,11 +16,45 @@
             </div>
           <% end %>
         </div>
+        <div class='col-md-4'>
+          <%= link_to 'New Deposits', new_savings_account_multiple_transaction_path, class: 'btn btn-primary' %>
+          
+        </div>
       </div>
       <br>
-    <% @savings_accounts.each do |saving| %>
-      <%= render 'savings_accounts/saving', saving: saving %>
-    <% end %>
-
+    <div class='card'>
+      <div class='card-body'>
+      <div class='table table-responsive'>
+        <table class='table table-hover table-striped'>
+          <thead>
+            <tr>
+              <th> </th>
+              <th> Depositor </th>
+              <th> Saving Product </th>
+              <th> Last Transaction </th>
+              <th> Balance </th>
+              
+          </thead>
+          <tbody>
+            <% @savings_accounts.each do |savings_account| %>
+              <tr style="cursor: pointer;" data-link="<%= savings_account_path(savings_account) %>">
+                <td style="width: 40px"><%= image_tag(savings_account.depositor.avatar, class: "img-circle", height: 50, width: 50) %></td>
+                <td><%= link_to savings_account.depositor_name, savings_account_path(savings_account) %><br>
+                    <small class='text-muted'><i class='fa fa-map-marker'></i> <%= savings_account.depositor.current_address_complete_address %></small>
+                </td>
+                <td><%= savings_account.saving_product_name %></td>
+                <td><%= savings_account.last_transaction_date.strftime('%B %e, %Y') %> </td>
+                <td><%= number_to_currency savings_account.balance %> </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
     <center><%==pagy_bootstrap_nav(@pagy) %> </center>
-  </div>
+
+      </div>
+
+<script>
+$("tr").click(function() {
+  window.location = $(this).data("link")
+})
+</script>

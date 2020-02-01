@@ -12,7 +12,6 @@ module AccountingModule
     belongs_to :cancellation_entry,    class_name: 'AccountingModule::Entry', optional: true
     belongs_to :office,                class_name: "Cooperatives::Office"
     belongs_to :cooperative
-    belongs_to :cooperative_service,   class_name: "CoopServicesModule::CooperativeService", optional: true
     belongs_to :cancelled_by,          class_name: "User", foreign_key: 'cancelled_by_id', optional: true
     belongs_to :recorder,              class_name: "User", foreign_key: 'recorder_id'
     has_many   :credit_amounts,        class_name: 'AccountingModule::CreditAmount', dependent: :destroy
@@ -22,7 +21,7 @@ module AccountingModule
     has_many   :amounts,               class_name: "AccountingModule::Amount", dependent: :destroy
     has_many   :accounts,              class_name: "AccountingModule::Account", through: :amounts
 
-    validates :description, presence: true
+    validates :description, :reference_number, :entry_date, :entry_time, presence: true
 
     validates :office_id, :cooperative_id, :recorder_id, presence: true
 
@@ -35,12 +34,10 @@ module AccountingModule
     before_save :set_default_date
 
 
-    delegate :name,  :first_and_last_name, to: :recorder, prefix: true, allow_nil: true
+    delegate :name,  :first_and_last_name, to: :recorder, prefix: true
     delegate :name,  to: :cooperative, prefix: true
     delegate :name,  to: :office, prefix: true
     delegate :name,  to: :commercial_document, prefix: true, allow_nil: true
-    delegate :title, to: :cooperative_service, prefix: true, allow_nil: true
-
 
     def self.recent
       order(created_at: :desc).first

@@ -14,7 +14,7 @@ module TreasuryModule
       if params[:search].present?
         @pagy, @entries      = pagy(@cash_account.entries.text_search(params[:search]))
       else
-        @pagy, @entries      = pagy(@cash_account.entries.order(entry_date: :desc).order(created_at: :desc))
+        @pagy, @entries      = pagy(@cash_account.entries.includes(:commercial_document).order(entry_date: :desc).order(created_at: :desc))
       end
     end
   end

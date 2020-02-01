@@ -54,7 +54,7 @@
                 <%= number_to_currency credits_total %>
               <% end %>
               </td>
-    <td><%= number_to_currency @cash_account.balance(to_date: entry.entry_date, to_time: entry.created_at) %></td>
+    <td><%= number_to_currency @cash_account.balance(to_date: entry.entry_date, to_time: entry.entry_date) %></td>
 </tr>
       <% end %>
     </tbody>

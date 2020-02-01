@@ -12,7 +12,7 @@ describe 'Multiple share capital build up transaction' do
     login_as(teller, scope: :user)
 
     visit savings_accounts_path 
-    click_link 'New Multiple Transaction'
+    click_link 'New Deposits'
     
     click_link "#{saving.id}-select-account"
     fill_in 'Amount', with: 500 
