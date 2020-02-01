@@ -3,7 +3,7 @@ module Loans
   class PaymentsController < ApplicationController
     def index
       @loan      = current_office.loans.find(params[:loan_id])
-      @pagy, @payments  = pagy(@loan.entries.order(entry_date: :desc))
+      @pagy, @payments  = pagy(@loan.entries.includes(:office).order(entry_date: :desc).order(created_at: :desc))
       @from_date = params[:from_date] ? Date.parse(params[:from_date]) : @loan.entries.order(entry_date: :desc).first.entry_date
       @to_date   = params[:to_date] ? Date.parse(params[:to_date]) : @loan.last_transaction_date
 

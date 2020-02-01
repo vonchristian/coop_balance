@@ -1,9 +1,31 @@
-<% content_for(:html_title) { "Share Capital | #{@share_capital.subscriber_name}" } %>
-
+<div class='container'>
 <div class="row">
   <div class="col-md-12">
     <div class="card">
-      <div class="card-header no-border">
+      <div class='card-body'>
+        <div class="row">
+          <div class="col-md-1">
+            <%= image_tag(@share_capital.avatar, class: 'img-circle', width: 55, height: 55) %>
+          </div>
+          <div class="col-md-5">
+            <h4 class="subtitle-up"><%= @share_capital.subscriber_name.upcase %></h4>
+            <small class="text-muted"><i class="fa fa-map-marker"></i> <%= @share_capital.subscriber.current_address_complete_address %></small>
+            <small class="text-muted"><i class="fa fa-phone"></i> <%= @share_capital.subscriber.current_contact_number %></small>
+          </div>
+          <div class='col-md-3'>
+            <small class='text-muted'> BALANCE </small>
+            <h4 class='title-up'><%= number_to_currency @share_capital.balance %></h4>
+          </div>
+          <div class="col-md-3">
+            <% if policy([:share_capitals, :capital_build_up]).new? %>
+              <%= link_to new_share_capital_capital_build_up_path(@share_capital), data: { turbolinks: false } do %>
+                <span class="btn btn-primary float-right"><i class="fa fa-plus-circle"></i> Add Capital </span>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+        <br>
+
         <ul class="nav nav-pills nav-pills-underline">
           <li class="nav-item"><%= link_to share_capital_path(@share_capital), class: "nav-link #{ 'active' if current_page?(share_capital_path(@share_capital))}" do %>
             <i class="fa fa-user-circle"></i> Account
@@ -19,8 +41,8 @@
             <% end %>
           </li>
         </ul>
-      </div>
-      <div class="card-body">
+        <br>
+
 <% if current_page? share_capital_path(@share_capital) %>
   <%= render 'share_capitals/partials/info' %>
 <% end %>

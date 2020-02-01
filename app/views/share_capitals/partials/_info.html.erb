@@ -1,37 +1,26 @@
-<% breadcrumb :share_capital_details, @share_capital %>
-<div class="card-body">
-  <div class="row">
+<div class="row">
+  <div class="col-md-4">
+    <small class='text-muted'>PAID UP BALANCE</small>
+    <h2 class="title-up"><%= number_to_currency @share_capital.balance %></h2>
+  </div>
+  <div class="col-md-4 col-sm-6 col-auto">
+    <small class='text-muted'>INACTIVITY</small>
+    <h4 class="title-up"><%= @share_capital.number_of_days_inactive %> Days</h4>
+    <br>
+  </div>
+  <div class='col-md-4'>
+    <small class='text-muted'>LAST TRANSACTION DATE </small><br>
+    <i class="fa fa-calendar"></i> &nbsp; <%= @share_capital.last_transaction_date.strftime("%b %e, %Y") %>
+  </div>
     <div class="col-md-6">
-      <hr class="min-margin set-visibility">
-      <div class="row justify-content-end">
-        <div class="col-md-7 col-sm-6 col-auto">
-          <small>PAID UP BALANCE</small>
-          <h2 class="title-up"><%= number_to_currency @share_capital.balance %></h2>
-           <% if policy([:share_capitals, :capital_build_up]).new? %>
-          <%= link_to new_share_capital_capital_build_up_path(@share_capital), data: { turbolinks: false } do %>
-            <span class="btn btn-success float-right"><i class="fa fa-arrow-circle-down"></i> Add Capital </span>
-          <% end %>
-        <% end %>
-        </div>
-        <div class="col-md-4 col-sm-6 col-auto">
-          <small>INACTIVITY</small>
-          <h4 class="card-title"><%= @share_capital.number_of_days_inactive %> Days</h4>
-          <br>
-          <small>Last Transaction Date</small><br>
-          <i class="fa fa-calendar"></i> &nbsp; <%= @share_capital.default_last_transaction_date.strftime("%b %e, %Y") %>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <%= link_to 'Statement of Account', share_capital_path(@share_capital, format: 'pdf') %>
     </div>
   </div>
-</div>
+  <hr>
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
       <h4 class="subtitle-up"> Transactions History </h4>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-4">
       <%= form_tag share_capital_path(@share_capital),method: :get do %>
           <div class="input-group">
             <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Transactions", id: 'saving-entries-search-form' %>
@@ -43,52 +32,41 @@
           </div>
       <% end %>
     </div>
+    <div class='col-md-4'>
+      <%= link_to 'Statement of Account', share_capital_path(@share_capital, format: 'pdf'), class: 'btn btn-outline-primary float-right' %>
+    </div>
   </div>
   <br>
-  <% @entries.each do |entry| %>
-    <%= link_to accounting_module_entry_path(entry) do %>
-    <div class="card min-margin">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-md-1">
-            <i class=" fa fa-arrow-<%= ::Presenters::ShareCapital.new(share_capital: @share_capital, entry: entry).chevron %> img-square text-<%= Presenters::ShareCapital.new(share_capital: @share_capital, entry: entry).text_color %>"></i>
-          </div>
-          <div class="col-md-2">
-            <span class="subtitle-up text-<%= Presenters::ShareCapital.new(share_capital: @share_capital, entry: entry).text_color %>">
-              <i class="fa fa-<%= ::Presenters::ShareCapital.new(share_capital: @share_capital, entry: entry).plus_or_minus_icon %> fa-slim"></i>
-              <% credits_total =  entry.credit_amounts.where(account: @share_capital.share_capital_equity_account).total %>
-              <% if credits_total > 0 %>
-                <%= number_to_currency credits_total %>
-              <% end %>
-              <% debits_total =   entry.debit_amounts.where(account: @share_capital.share_capital_equity_account).total %>
-              <% if debits_total > 0 %>
-                <%= number_to_currency debits_total %>
-              <% end %>
-            </span>
+  <div class='table table-responsive'>
+    <table class='table table-hover table-striped'>
+      <thead>
+        <tr>
+          <th></th>
+          <th> Posting Date </th>
+          <th> Office </th>
+          <th> Employee </th>
+          <th> REF # </th>
+          <th> Description </th>
+          <th> Amount </th>
+          <th> Balance </th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @entries.uniq.each do |entry| %>
+          <tr>
+            <td><i class=" fa fa-arrow-<%= ::Presenters::ShareCapital.new(share_capital: @share_capital, entry: entry).chevron %> img-square text-<%= Presenters::ShareCapital.new(share_capital: @share_capital, entry: entry).text_color %>"></i></td>
+            <td><%= entry.entry_date.strftime('%B %e, %Y') %> - <%= entry.created_at.strftime("%-l:%M %p")%></td>
+            <td><%= entry.office_name %></td>
+            <td><%= entry.recorder_name %></td>
+            <td><%= entry.reference_number %></td>
+            <td><%= entry.description %></td>
+            <td><%= number_to_currency entry.amounts.where(account: @share_capital.share_capital_equity_account).total %></td>
+            <td><span class='float-right'><%= number_to_currency @share_capital.balance(to_date: entry.entry_date, to_time: entry.created_at) %></span></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <center><%==pagy_bootstrap_nav(@pagy) %></center>
+  </div>
+</div>
 
-          </div>
-          <div class="col-md-5">
-            <b class="text-dark"><%= entry.description %></b>
-            <div class="min-margin"></div>
-            <small class="text-muted">
-            <i class=" fa fa-user-circle"></i> <%= entry.recorder_name %>&nbsp;
-            <i class="fa fa-clock"></i> <%= entry.entry_date.strftime('%b. %e, %Y') %>&nbsp;
-            <i class="fa fa-hashtag"></i><%= entry.reference_number %>
-
-          </small>
-          </div>
-          <div class="col-md-3">
-
-            <p class="subtitle-up float-right text-<%= Presenters::ShareCapital.new(share_capital: @share_capital, entry: entry).text_color %>"><%= number_to_currency @share_capital.balance(to_date: entry.entry_date) %></p>
-
-          </div>
-          <div class="col-md-1">
-            <i class="text-muted fa fa-chevron-right fa-2x fa-slim float-right"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-    <% end %>
-  <% end %>
-
-  <center><%==pagy_bootstrap_nav(@pagy) %></center>

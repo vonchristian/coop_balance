@@ -8,11 +8,10 @@
         </div>
         <div class="col-md-10 col-sm-6">
           <h4 class="subtitle-up"><%= @member.first_and_last_name.upcase %></h4>
-         <span class="badge badge-outline-<%= @member.activity_status_text_color(office: current_office, from_date: Date.current.beginning_of_month, to_date: Date.current.end_of_month) %>"><%= @member.activity_status(office: current_office, from_date: Date.current.beginning_of_month, to_date: Date.current.end_of_month) %></span>
           <small class="text-muted">
             <i class="fa fa-map-marker"></i> <%= @member.current_address_complete_address %> &nbsp; &nbsp;
             <span class="text-muted"><i class="fa fa-phone"></i> <%= @member.current_contact_number %></i></span> &nbsp; &nbsp;
-            <i class="fa fa-calendar"></i> Member since: <%= @member.date_of_membership_for(cooperative: current_cooperative).try(:strftime, ('%B %e, %Y')) %>
+           
           </small>
         </div>
       </div>

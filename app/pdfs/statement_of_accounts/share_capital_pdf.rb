@@ -17,7 +17,7 @@ module StatementOfAccounts
       view_context.number_to_currency(number, :unit => "P ")
     end
     def debit_cash_amount(entry)
-      amount = entry.debit_amounts.for_account(account_id: share_capital.share_capital_product_equity_account.id).sum(&:amount)
+      amount = entry.debit_amounts.for_account(account_id: share_capital.share_capital_equity_account.id).sum(&:amount)
       if amount.zero?
         ""
       else
@@ -25,7 +25,7 @@ module StatementOfAccounts
       end
     end
     def credit_cash_amount(entry)
-      amount = entry.credit_amounts.for_account(account_id: share_capital.share_capital_product_equity_account.id).sum(&:amount)
+      amount = entry.credit_amounts.for_account(account_id: share_capital.share_capital_equity_account.id).sum(&:amount)
       if amount.zero?
         ""
       else
@@ -84,7 +84,7 @@ module StatementOfAccounts
          a.reference_number,
          debit_cash_amount(a),
          credit_cash_amount(a),
-         price(share_capital.balance(commercial_document: share_capital, to_date: a.entry_date))] }
+         price(share_capital.balance(to_date: a.entry_date, to_time: a.created_at))] }
     end
   end
 end

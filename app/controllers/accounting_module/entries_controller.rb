@@ -9,7 +9,7 @@ module AccountingModule
         @entries_for_pdf = current_office.entries.text_search(params[:search])
     
       else 
-        @pagy, @entries  = pagy(current_office.entries.entered_on(from_date: @from_date, to_date: @to_date).order(reference_number: :desc))
+        @pagy, @entries  = pagy(current_office.entries.includes(:debit_amounts, :commercial_document).entered_on(from_date: @from_date, to_date: @to_date).order(entry_date: :desc).order(created_at: :desc))
         @entries_for_pdf = current_office.entries.entered_on(from_date: @from_date, to_date: @to_date).order(reference_number: :desc)
       end 
       respond_to do |format|
@@ -60,8 +60,8 @@ module AccountingModule
     end
 
     def show
-      @entry = current_office.entries.includes(amounts: [:account]).find(params[:id])
-      @pagy, @amounts = pagy(@entry.amounts)
+      @entry = current_office.entries.find(params[:id])
+      @pagy, @amounts = pagy(@entry.amounts.includes(:account))
     end
 
     private

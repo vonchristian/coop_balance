@@ -37,11 +37,11 @@ module AccountingModule
 
 
     def create_revenue_amounts(voucher)
-      voucher.voucher_amounts.debit.build(amount: balance, account: find_office.total_revenue_account)
+      voucher.voucher_amounts.debit.build(amount: total_revneues, account: find_office.total_revenue_account)
     end 
 
     def create_expense_amounts(voucher)
-      voucher.voucher_amounts.debit.build(amount: balance, account: find_office.total_expense_account)
+      voucher.voucher_amounts.debit.build(amount: total_expenses, account: find_office.total_expense_account)
     end 
 
     def create_net_income_amount(voucher)
@@ -56,6 +56,15 @@ module AccountingModule
           account: find_office.net_loss_account)
       end
     end 
+
+    def total_revenues
+      find_office.accounts.revenues.balance(from_date: date.beginning_of_year, to_date: date.end_of_year)
+    end 
+
+    def total_expenses
+      find_office.accounts.expenses.balance(from_date: date.beginning_of_year, to_date: date.end_of_year)
+    end 
+
     def find_office
       find_employee.office 
     end 

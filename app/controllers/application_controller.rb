@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_cooperative
-    current_user.cooperative
+    @current_cooperative ||= current_user.cooperative
   end
 
   def current_office

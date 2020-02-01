@@ -2,18 +2,21 @@ require 'will_paginate/array'
 class ShareCapitalsController < ApplicationController
   def index
     if params[:search].present?
-      @pagy, @share_capitals = pagy(current_office.share_capitals.includes(:office, [:share_capital_product =>[:equity_account], :subscriber => [:avatar_attachment => [:blob]]]).text_search(params[:search]))
+      @pagy, @share_capitals = pagy(current_office.share_capitals.includes(:share_capital_product, :share_capital_equity_account, :subscriber => [:avatar_attachment => [:blob]]).text_search(params[:search]))
     else
-      @pagy, @share_capitals = pagy(current_office.share_capitals.includes(:office, [:share_capital_product =>[:equity_account], :subscriber => [:avatar_attachment => [:blob]]]))
+      @pagy, @share_capitals = pagy(current_office.share_capitals.includes(:share_capital_product, :share_capital_equity_account, :subscriber => [:avatar_attachment => [:blob]]))
     end
     @offices = current_cooperative.offices
 
   end
 
   def show
-    @employee = current_user
-    @share_capital = current_office.share_capitals.find(params[:id])
-    @pagy, @entries = pagy(@share_capital.entries.order(entry_date: :desc).includes(:commercial_document, :recorder, :cooperative_service))
+    @share_capital  = current_office.share_capitals.find(params[:id])
+    if params[:search].present?
+      @pagy, @entries = pagy(@share_capital.entries.includes(:recorder, :office).order(entry_date: :desc).order(created_at: :desc).text_search(params[:search]))
+    else 
+      @pagy, @entries = pagy(@share_capital.entries.includes(:recorder, :office).order(entry_date: :desc).order(created_at: :desc))
+    end
     respond_to do |format|
       format.html
       format.pdf do

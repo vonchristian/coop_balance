@@ -14,7 +14,7 @@
     <thead>
       <tr>
         <th>Date</th>
-        <th>Time</th>
+        <th> Office </th>
         <th>OR #</th>
         <th class="text-right">Principal</th>
         <th class="text-right">Interest</th>
@@ -28,8 +28,8 @@
     <% @payments.uniq.each do |entry| %>
       <% if entry.cancelled? %>
         <tr>
-          <td><%= entry.entry_date.strftime("%B %e, %Y") %></td>
-          <td><%= entry.reference_number %>- CANCELLED</td>
+          <td><%= entry.entry_date.strftime("%B %e, %Y") %> - <%= entry.reference_number %>- CANCELLED</td>
+          
           <td class="text-right">-</td>
           <td class="text-right">-</td>
           <td class="text-right">-</td>
@@ -43,9 +43,8 @@
         <% principal = LoansModule::Payments::Classifier.new(loan: @loan, entry: entry).principal %>
 
         <tr>
-          <td><%= link_to entry.entry_date.strftime("%B %e, %Y"), accounting_module_entry_path(entry) %></td>
-          <td><%= entry.created_at.strftime("%-l:%M %p") %></td>
-
+          <td><%= link_to entry.entry_date.strftime("%B %e, %Y"), accounting_module_entry_path(entry) %> <%= entry.created_at.strftime("%-l:%M %p") %> </td>
+          <td><%= entry.office_name %></td>
           <td><%= entry.reference_number %></td>
           <td class="text-right">
             <% if !principal.zero? %>

@@ -6,6 +6,5 @@ FactoryBot.define do
     association :share_capital_equity_account, factory: :equity
     association :share_capital_product
     account_number        { SecureRandom.uuid }
-    last_transaction_date { Date.current }
   end
 end

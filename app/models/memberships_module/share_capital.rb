@@ -120,6 +120,10 @@ module MembershipsModule
       averaged_monthly_balances / net_income_distributable
     end
 
+    def last_transaction_date
+      entries.with_cash_accounts.recent.entry_date
+    end 
+
     private
     def set_account_owner_name
       self.account_owner_name = self.subscriber_name

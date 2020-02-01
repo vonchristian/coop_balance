@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_01_004946) do
+ActiveRecord::Schema.define(version: 2020_02_01_061921) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1625,7 +1625,6 @@ ActiveRecord::Schema.define(version: 2020_02_01_004946) do
     t.string "subscriber_type"
     t.uuid "subscriber_id"
     t.boolean "has_minimum_balance", default: false
-    t.datetime "last_transaction_date"
     t.uuid "cart_id"
     t.uuid "barangay_id"
     t.uuid "organization_id"

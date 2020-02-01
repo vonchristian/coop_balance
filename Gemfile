@@ -90,4 +90,7 @@ group :test do
 end
 
 gem 'rack-mini-profiler', require: false
+gem 'flamegraph'
+gem 'stackprof'
+gem 'memory_profiler'
 gem "bullet", group: [:development, :test]

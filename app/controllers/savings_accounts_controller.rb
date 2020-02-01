@@ -2,9 +2,9 @@ require 'will_paginate/array'
 class SavingsAccountsController < ApplicationController
   def index
     if params[:search].present?
-      @pagy, @savings_accounts = pagy(current_office.savings.includes(:office,[:saving_product =>[:account], :depositor => [:avatar_attachment => [:blob]]]).text_search(params[:search]))
+      @pagy, @savings_accounts = pagy(current_office.savings.includes(:saving_product, :liability_account, :depositor => [:avatar_attachment => [:blob]]).text_search(params[:search]))
     else
-      @pagy, @savings_accounts = pagy(current_office.savings.includes(:office,[:saving_product =>[:account], :depositor => [:avatar_attachment => [:blob]]]).order(:account_owner_name))
+      @pagy, @savings_accounts = pagy(current_office.savings.includes(:saving_product, :liability_account, :depositor => [:avatar_attachment => [:blob]]).order(:account_owner_name))
     end
     @offices = current_cooperative.offices
   end
