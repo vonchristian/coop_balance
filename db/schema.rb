@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_01_075636) do
+ActiveRecord::Schema.define(version: 2020_02_01_125003) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -635,6 +635,18 @@ ActiveRecord::Schema.define(version: 2020_02_01_075636) do
     t.text "message"
   end
 
+  create_table "level_four_account_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title"
+    t.uuid "office_id", null: false
+    t.string "code"
+    t.string "type"
+    t.boolean "contra", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["office_id"], name: "index_level_four_account_categories_on_office_id"
+    t.index ["type"], name: "index_level_four_account_categories_on_type"
+  end
+
   create_table "level_one_account_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "office_id"
     t.string "title"
@@ -657,6 +669,8 @@ ActiveRecord::Schema.define(version: 2020_02_01_075636) do
     t.string "type", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "level_four_account_category_id"
+    t.index ["level_four_account_category_id"], name: "index_l4_account_category_on_l3_account_categories"
     t.index ["office_id"], name: "index_level_three_account_categories_on_office_id"
     t.index ["type"], name: "index_level_three_account_categories_on_type"
   end
@@ -2075,8 +2089,10 @@ ActiveRecord::Schema.define(version: 2020_02_01_075636) do
   add_foreign_key "interest_configs", "cooperatives"
   add_foreign_key "interest_configs", "loan_products"
   add_foreign_key "interest_predeductions", "loan_products"
+  add_foreign_key "level_four_account_categories", "offices"
   add_foreign_key "level_one_account_categories", "level_two_account_categories"
   add_foreign_key "level_one_account_categories", "offices"
+  add_foreign_key "level_three_account_categories", "level_four_account_categories"
   add_foreign_key "level_three_account_categories", "offices"
   add_foreign_key "level_two_account_categories", "level_three_account_categories"
   add_foreign_key "level_two_account_categories", "offices"

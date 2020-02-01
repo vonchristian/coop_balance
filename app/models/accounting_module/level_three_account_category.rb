@@ -6,15 +6,16 @@ module AccountingModule
     include PgSearch::Model
     pg_search_scope :text_search, against: [:title, :code]
 
-    belongs_to :office,                     class_name: 'Cooperatives::Office'
-    has_many :level_two_account_categories, class_name: 'AccountingModule::LevelTwoAccountCategory'
-    has_many :accounts,                     through: :level_two_account_categories, class_name: 'AccountingModule::Account'
-    has_many :amounts,                      through: :accounts, class_name: 'AccountingModule::Amount'
-    has_many :debit_amounts,                through: :accounts, class_name: 'AccountingModule::DebitAmount'
-    has_many :credit_amounts,               through: :accounts, class_name: 'AccountingModule::CreditAmount'
-    has_many :entries,                      through: :accounts, class_name: 'AccountingModule::Entry'
-    has_many :debit_entries,                through: :accounts, class_name: 'AccountingModule::Entry'
-    has_many :credit_entries,               through: :accounts, class_name: 'AccountingModule::Entry'
+    belongs_to :office,                      class_name: 'Cooperatives::Office'
+    belongs_to :level_four_account_category, class_name: 'AccountingModule::LevelFourAccountCategory', optional: true 
+    has_many :level_two_account_categories,  class_name: 'AccountingModule::LevelTwoAccountCategory'
+    has_many :accounts,                      through: :level_two_account_categories, class_name: 'AccountingModule::Account'
+    has_many :amounts,                       through: :accounts, class_name: 'AccountingModule::Amount'
+    has_many :debit_amounts,                 through: :accounts, class_name: 'AccountingModule::DebitAmount'
+    has_many :credit_amounts,                through: :accounts, class_name: 'AccountingModule::CreditAmount'
+    has_many :entries,                       through: :accounts, class_name: 'AccountingModule::Entry'
+    has_many :debit_entries,                 through: :accounts, class_name: 'AccountingModule::Entry'
+    has_many :credit_entries,                through: :accounts, class_name: 'AccountingModule::Entry'
 
     validates :title, :code, presence: true, uniqueness: { scope: :office_id }
     validates :type, presence: true
