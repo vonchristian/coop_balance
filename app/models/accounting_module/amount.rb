@@ -97,7 +97,7 @@ module AccountingModule
       else
         klass = "DefaultBalanceFinder"
       end
-      ("AccountingModule::BalanceFinders::" + klass).constantize
+      ("AccountingModule::BalanceFinders::#{klass}").constantize
     end
   end
 end

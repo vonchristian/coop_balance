@@ -157,14 +157,12 @@ module AccountingModule
 
 
     def balance(options={})
-      if self.class == AccountingModule::Account
-        raise(NoMethodError, "undefined method 'balance'")
+      return raise(NoMethodError, "undefined method 'balance'") if self.class == AccountingModule::Account
+      
+      if normal_credit_balance ^ contra?
+        credits_balance(options) - debits_balance(options)
       else
-        if self.normal_credit_balance ^ contra
-          credits_balance(options) - debits_balance(options)
-        else
-          debits_balance(options) - credits_balance(options)
-        end
+        debits_balance(options) - credits_balance(options)
       end
     end
 

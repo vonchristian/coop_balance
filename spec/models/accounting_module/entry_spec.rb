@@ -23,6 +23,9 @@ module AccountingModule
 
     describe 'validations' do
       it { is_expected.to validate_presence_of :description }
+      it { is_expected.to validate_presence_of :reference_number }
+      it { is_expected.to validate_presence_of :entry_date }
+      it { is_expected.to validate_presence_of :entry_time }
       it { is_expected.to validate_presence_of :recorder_id }
       it { is_expected.to validate_presence_of :office_id }
       it { is_expected.to validate_presence_of :cooperative_id }

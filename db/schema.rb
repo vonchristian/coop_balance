@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_01_061921) do
+ActiveRecord::Schema.define(version: 2020_02_01_075636) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -500,6 +500,7 @@ ActiveRecord::Schema.define(version: 2020_02_01_061921) do
     t.string "cancellation_description"
     t.boolean "archived", default: false
     t.uuid "cancellation_entry_id"
+    t.datetime "entry_time"
     t.index ["cancellation_entry_id"], name: "index_entries_on_cancellation_entry_id"
     t.index ["cancelled_by_id"], name: "index_entries_on_cancelled_by_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_entry"

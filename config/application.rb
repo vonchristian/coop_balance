@@ -13,7 +13,6 @@ module Kiphodan
     end
 
     config.time_zone = 'Asia/Manila'
-    config.active_record.default_timezone = :utc
     config.beginning_of_week = :sunday
     config.autoload_paths << Rails.root.join('workers')
   end

@@ -22,7 +22,8 @@
       <table class="table table-hover table-striped">
         <thead>
           <tr>
-            <th>Entry Date </th>
+            <th>Posting Date </th>
+            <th> Time </th>
             <th> REF # </th>
             <th> Employee </th>
             <th> Description </th>
@@ -35,14 +36,15 @@
           <% @entries.each do |entry| %>
             <tr>
               <td><%= link_to entry.entry_date.strftime('%B %e, %Y'), accounting_module_entry_path(entry) %></td>
+              <td><%= entry.entry_time.strftime("%-l:%M %p") %></td>
               <td><%= entry.reference_number %></td>
               <td><%= entry.recorder_name %></td>
               <td><%= entry.description %></td>
               <td><%= number_to_currency entry.debit_amounts.where(account: @account).total %></td>
               <td><%= number_to_currency entry.credit_amounts.where(account: @account).total %></td>
-              <td><%= number_to_currency @account.balance(to_date: entry.entry_date) %></td>
+              <td><%= number_to_currency @account.balance(to_date: entry.entry_date, to_time: entry.entry_time) %></td>
             </tr>
           <% end %>
         </tbody>
       </table>
-      <%==pagy_nav(@pagy) %>
+      <%==pagy_bootstrap_nav(@pagy) %>

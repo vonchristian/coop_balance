@@ -7,7 +7,7 @@ TimeRange = Struct.new(:from_time, :to_time, keyword_init: true) do
     if from_time.is_a?(Time)
       from_time
     else
-      Time.zone.parse(from_time)
+      DateTime.parse(from_time)
     end
   end
 
@@ -15,7 +15,7 @@ TimeRange = Struct.new(:from_time, :to_time, keyword_init: true) do
     if to_time.is_a?(Time)
       to_time
     else
-    Time.zone.parse(to_time)
+    DateTime.parse(to_time)
     end
   end
 end
