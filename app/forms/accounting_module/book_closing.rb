@@ -41,7 +41,7 @@ module AccountingModule
     end 
 
     def create_expense_amounts(voucher)
-      voucher.voucher_amounts.debit.build(amount: balance, account: expense)
+      voucher.voucher_amounts.debit.build(amount: balance, account: find_office.total_expense_account)
     end 
 
     def create_net_income_amount(voucher)

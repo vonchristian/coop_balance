@@ -46,7 +46,11 @@ module Cooperatives
     end
 
     describe 'delegations' do 
-      it { is_expected.to delegate_method(:net_income_account).to(:current_net_income_config) }
+      it { is_expected.to delegate_method(:net_surplus_account).to(:current_net_income_config) }
+      it { is_expected.to delegate_method(:net_loss_account).to(:current_net_income_config) }
+      it { is_expected.to delegate_method(:total_revenue_account).to(:current_net_income_config) }
+      it { is_expected.to delegate_method(:total_expense_account).to(:current_net_income_config) }
+
     end 
 
     it ".types" do

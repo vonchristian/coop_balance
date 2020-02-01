@@ -44,7 +44,7 @@ module Cooperatives
     validates :name, uniqueness: true
     validates :name, :type, :contact_number, :address, presence: true
     
-    delegate :net_surplus_account, to: :current_net_income_config, allow_nil: true
+    delegate :net_surplus_account, :net_loss_account, :total_revenue_account, :total_expense_account, to: :current_net_income_config
     
     def cash_accounts
       employees.cash_accounts
