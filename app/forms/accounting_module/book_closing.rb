@@ -37,23 +37,11 @@ module AccountingModule
 
 
     def create_revenue_amounts(voucher)
-      find_office.accounts.revenues.each do |revenue|
-        balance = revenue.balance(from_date: from_date, to_date: to_date)
-       
-        if !balance.zero? 
-          voucher.voucher_amounts.debit.build(amount: balance, account: revenue)
-        end 
-      end 
+      voucher.voucher_amounts.debit.build(amount: balance, account: find_office.total_revenue_account)
     end 
 
     def create_expense_amounts(voucher)
-      find_office.accounts.expenses.each do |expense|
-        balance = expense.balance(from_date: from_date, to_date: to_date)
-        
-        if !balance.zero? 
-          voucher.voucher_amounts.debit.build(amount: balance, account: expense)
-        end 
-      end 
+      voucher.voucher_amounts.debit.build(amount: balance, account: expense)
     end 
 
     def create_net_income_amount(voucher)
@@ -61,11 +49,11 @@ module AccountingModule
       if net_income.positive?
         voucher.voucher_amounts.debit.build(
           amount: net_income, 
-          account: net_surplus_account)
+          account: find_office.net_surplus_account)
       elsif net_income.negative?
-        voucher.voucher_amounts.credit.build(
-          amount: net_income, 
-          account: net_surplus_account)
+        voucher.voucher_amounts.debit.build(
+          amount: net_income.abs, 
+          account: find_office.net_loss_account)
       end
     end 
     def find_office

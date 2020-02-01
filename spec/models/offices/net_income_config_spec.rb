@@ -6,7 +6,8 @@ module Offices
       it { is_expected.to belong_to :office }
       it { is_expected.to belong_to :net_surplus_account }
       it { is_expected.to belong_to :net_loss_account }
-
+      it { is_expected.to belong_to :total_revenue_account }
+      it { is_expected.to belong_to :total_expense_account }
     end 
 
     describe 'validations' do 
@@ -14,7 +15,7 @@ module Offices
         office              = create(:office)
         net_surplus_account = create(:liability)
         create(:net_income_config, office: office, net_surplus_account: net_surplus_account)
-        net_income_config  = build(:net_income_config, office: office, net_surplus_account: net_surplus_account)
+        net_income_config   = build(:net_income_config, office: office, net_surplus_account: net_surplus_account)
         net_income_config.save 
 
         expect(net_income_config.errors[:net_surplus_account_id]).to eq ['has already been taken']

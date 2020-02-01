@@ -24,7 +24,7 @@ module Offices
     private 
     def net_income_config_params
       params.require(:offices_net_income_config).
-      permit(:book_closing, :net_surplus_account_id, :net_loss_account_id)
+      permit(:book_closing, :net_surplus_account_id, :net_loss_account_id, :total_revenue_account_id, :total_expense_account_id)
     end 
   end 
 end 

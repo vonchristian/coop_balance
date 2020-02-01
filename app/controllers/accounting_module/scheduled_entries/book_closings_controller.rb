@@ -14,14 +14,9 @@ module AccountingModule
           @book_closing.close_book!
 
           redirect_to accounting_module_scheduled_entries_book_closing_confirmation_url(id: @book_closing.find_voucher.id), notice: 'Voucher created successfully'
-          disburse_voucher
         else 
           render :new 
         end 
-      end 
-
-      def disburse_voucher
-        Vouchers::EntryProcessing.new(voucher: @book_closing.find_voucher, employee: current_user).process!
       end 
 
 
