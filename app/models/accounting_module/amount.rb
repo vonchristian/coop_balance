@@ -5,8 +5,7 @@ module AccountingModule
 
     belongs_to :entry, :class_name => 'AccountingModule::Entry'
     belongs_to :account, :class_name => 'AccountingModule::Account'
-    belongs_to :commercial_document, polymorphic: true, optional: true
-
+   
     validates :type, :amount, :entry, :account, presence: true
 
     delegate :name, :code, :display_name, to: :account, prefix: true
@@ -16,9 +15,11 @@ module AccountingModule
     def self.not_cancelled
       joins(:entry).where('entries.cancelled' => false)
     end
+
     def self.cancelled
       joins(:entry).where('entries.cancelled' => true)
     end
+
     def self.for_account(args={})
       where(account_id: args[:account_id])
     end
@@ -39,24 +40,24 @@ module AccountingModule
     def self.with_cash_accounts
       where(account_id: Employees::EmployeeCashAccount.cash_accounts.ids)
     end
+
     def self.cash_amounts
       with_cash_accounts
     end
 
     def self.total_cash_amount
-      where(account: Employees::EmployeeCashAccount.cash_accounts).total
+      cash_amounts.total
     end
 
     def self.for_recorder(args={})
       joins(:entry).where('entries.recorder_id' => args[:recorder_id])
     end
 
-
     def self.entered_on(args={})
       current_date = Date.current
-      from_date  = args[:from_date] || current_date - 999.years
-      to_date    = args[:to_date]   || current_date
-      date_range = DateRange.new(from_date: from_date, to_date: to_date)
+      from_date    = args[:from_date] || current_date - 999.years
+      to_date      = args[:to_date]   || current_date
+      date_range   = DateRange.new(from_date: from_date, to_date: to_date)
       not_cancelled.where('entries.entry_date' => date_range.start_date..date_range.end_date)
     end
 
