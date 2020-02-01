@@ -171,6 +171,10 @@ module MembershipsModule
       averaged_balance(to_date: args[:to_date]) * saving_product_applicable_rate
     end
 
+    def last_transaction_date
+      entries.with_cash_accounts.recent.entry_date
+    end 
+
 
 
     private

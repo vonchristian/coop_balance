@@ -20,7 +20,6 @@ module Vouchers
     private
     def create_entry
       entry = AccountingModule::Entry.new(
-        cooperative_service: voucher.cooperative_service,
         office:              voucher.office,
         cooperative:         cooperative,
         commercial_document: voucher.payee,
@@ -28,8 +27,7 @@ module Vouchers
         recorder:            voucher.preparer,
         reference_number:    voucher.reference_number,
         entry_date:          voucher.date,
-        entry_time:          (voucher.date.strftime('%B %e, %Y').to_s + " " + voucher.created_at.to_s).to_datetime
-      )
+        entry_time:          (voucher.date.strftime('%B %e, %Y').to_s + " " + voucher.created_at.to_s).to_datetime)
 
       voucher.voucher_amounts.debit.each do |amount|
         entry.debit_amounts.build(
