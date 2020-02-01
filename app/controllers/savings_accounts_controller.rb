@@ -3,7 +3,7 @@ class SavingsAccountsController < ApplicationController
     if params[:search].present?
       @pagy, @savings_accounts = pagy(current_office.savings.includes(:saving_product, :liability_account, :depositor => [:avatar_attachment => [:blob]]).text_search(params[:search]))
     else
-      @pagy, @savings_accounts = pagy(current_office.savings.includes(:liability_account, :depositor => [:avatar_attachment => [:blob]], :saving_product).order(:account_owner_name))
+      @pagy, @savings_accounts = pagy(current_office.savings.includes(:saving_product, :liability_account, :depositor => [:avatar_attachment => [:blob]]).order(:account_owner_name))
     end
     @offices = current_cooperative.offices
   end
