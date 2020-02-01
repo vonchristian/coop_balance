@@ -17,11 +17,11 @@
 </div>
           <div class="row">
             <div class="col-md-6">
-              <h3 class="card-title"><%= number_to_currency CoopServicesModule::SavingProduct.total_balance %></h3>
+              <h3 class="title-up"><%= number_to_currency CoopServicesModule::SavingProduct.total_balance %></h3>
               <small>TOTAL SAVINGS</small>
             </div>
             <div class="col-md-3">
-              <h3 class="card-title text-<%= CoopServicesModule::SavingProduct.metric_color%>"><i class="fa fa-arrow-<%=CoopServicesModule::SavingProduct.arrow_sign %>"></i> <%= number_to_currency CoopServicesModule::SavingProduct.metric(first_date: Date.today, second_date: Date.today.last_month), unit: "" %> % </h3>
+              <h3 class="title-up text-<%= CoopServicesModule::SavingProduct.metric_color%>"><i class="fa fa-arrow-<%=CoopServicesModule::SavingProduct.arrow_sign %>"></i> <%= number_to_currency CoopServicesModule::SavingProduct.metric(first_date: Date.today, second_date: Date.today.last_month), unit: "" %> % </h3>
               <small>SINCE LAST MONTH (<%= Date.today.last_month.strftime("%B %e, %Y") %>)</small>
             </div>
           </div>
@@ -112,13 +112,13 @@
             <hr>
             <h4>Balances vs Month </h4>
 <% months = [] %>
-      <% (DateTime.now.beginning_of_year..DateTime.now.end_of_year).each do |month| %>
+      <% ((DateTime.now - 6.months)..DateTime.now).each do |month| %>
        <% months << month.beginning_of_month %>
       <% end %>
       <% balances_data = [] %>
       <% months.uniq.each do |month| %>
 
-        <% balances_data << { month.strftime("%B %Y") => MembershipsModule::Saving.total_balances(to_date: month.end_of_month) } %>
+        <% balances_data << { month.strftime("%B %Y") => current_office.savings.total_balances(to_date: month.end_of_month) } %>
       <% end %>
 
 <%= line_chart (Hash[*balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"}, download: true, curve: false, thousands: "," %>

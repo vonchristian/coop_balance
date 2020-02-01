@@ -1,45 +1,4 @@
-<div class="row">
-  <div class="col-md-2 col-sm-6">
-    <div class="min-margin"></div>
-    <div class="min-margin"></div>
-    <%=image_tag @savings_account.depositor.avatar, height: 120, width: 120, class: 'img-square' %>
-  </div>
-  <div class="col-md-5 col-sm-6">
-    <%=link_to member_path(@savings_account.depositor) do %>
 
-    <h4 class="subtitle-up"><%= @savings_account.account_owner_name.upcase %></h4>
-
-    <small class="text-muted">
-      <i class="fa fa-map-marker"></i> <%= @savings_account.depositor.current_address_complete_address %> &nbsp; &nbsp;
-      <div class="min-margin"></div>
-
-      <i class="fa fa-phone"></i> <%= @savings_account.depositor.current_contact_number %></i> &nbsp; &nbsp;
-      <div class="min-margin"></div>
-
-      <i class="fa fa-clock"></i> Last Transaction: <%= @savings_account.last_transaction_date.strftime('%B %e, %Y') %></small>
-    </small>
-
-  </div>
-  <% end %>
-  <div class="col-md-5">
-    <small class="text-muted"><%= @savings_account.saving_product_name.upcase %> </small>
-    <h3 class="condensed-text"><%= number_to_currency @savings_account.balance %></h3>
-
-    <div class="btn-group" role="group" aria-label="Basic example">
-      <% if policy([:savings_accounts, :deposit]).new? %>
-        <%= link_to new_savings_account_deposit_path(@savings_account), data: { turbolinks: false } do %>
-          <span class="btn btn-primary"><i class="fa fa-arrow-circle-down"></i> Deposit </span>
-        <% end %>
-      <% end %>&nbsp;
-      <% if policy([:savings_accounts, :withdrawal]).new? %>
-        <%= link_to new_savings_account_withdrawal_path(@savings_account), data: { turbolinks: false } do %>
-          <span class="btn btn-danger"><i class="fa fa-arrow-circle-up"></i> Withdraw </span>
-        <% end %>
-      <% end %>
-    </div>
-  </div>
-</div>
-  <hr>
 
  <div class="row min-margin">
         <div class="col-md-3 offset-md-1">
@@ -78,7 +37,7 @@
 
 <br>
 <% months = [] %>
-<% (DateTime.now.beginning_of_year..DateTime.now.end_of_month).each do |month| %>
+<% ((Date.current - 6.months)..DateTime.now.end_of_day).each do |month| %>
 <% months << month.beginning_of_month %>
 <% end %>
 <% balances_data = [] %>
@@ -89,10 +48,8 @@
 
   <%= line_chart (Hash[*balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"}, height: 300, download: true, curve: false, thousands: ",", prefix: "P " %>
   <br>
-  <br>
-  <br>
-</div>
-</div>
+
+
   <div class="row">
     <div class="col-md-6">
       <h4 class="subtitle-up"> Transactions History </h4>
@@ -111,50 +68,50 @@
     </div>
   </div>
   <br>
-  <% @entries.uniq.each do |entry| %>
-    <%= link_to accounting_module_entry_path(entry) do %>
-    <div class="card min-margin">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-md-1">
-            <i class=" fa fa-arrow-<%= ::Presenters::Saving.new(saving: @savings_account, entry: entry).chevron %> img-square text-<%= Presenters::Saving.new(saving: @savings_account, entry: entry).text_color %>"></i>
-          </div>
-          <div class="col-md-2">
-            <span class="subtitle-up text-<%= Presenters::Saving.new(saving: @savings_account, entry: entry).text_color %>">
-              <i class="fa fa-<%= ::Presenters::Saving.new(saving: @savings_account, entry: entry).plus_or_minus_icon %> fa-slim"></i>
-              <% credits_total =  entry.credit_amounts.where(account: @savings_account.liability_account).total %>
-              <% if credits_total > 0 %>
-                <%= number_to_currency credits_total %>
-              <% end %>
-              <% debits_total =   entry.debit_amounts.where(account: @savings_account.liability_account).total %>
-              <% if debits_total > 0 %>
+  <div class='table table-responsive'>
+    <table class='table table-hover table-striped'>
+      <thead>
+        <tr>
+          <th></th>
+          <th> Posting Date </th>
+          <th> Office </th>
+          <th> Employee </th>
+          <th> REF # </th>
+          <th> Description </th>
+          <th> Debit </th>
+          <th> Credit </th>
+          <th> Balance </th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @entries.uniq.each do |entry| %>
+            <% debits_total = entry.debit_amounts.where(account: @savings_account.liability_account).total %>
+            <% credits_total = entry.credit_amounts.where(account: @savings_account.liability_account).total %>
+          <tr>
+            <td><i class=" fa fa-arrow-<%= ::Presenters::Saving.new(saving: @savings_account, entry: entry).chevron %> img-square text-<%= Presenters::Saving.new(saving: @savings_account, entry: entry).text_color %>"></i></td>
+            <td><%= entry.entry_date.strftime('%B %e, %Y') %> - <%= entry.created_at.strftime("%-l:%M %p")%></td>
+            <td><%= entry.office_name %></td>
+            <td><%= entry.recorder_name %></td>
+            <td><%= entry.reference_number %></td>
+            <td><%= entry.description %></td>
+            <td>
+              <% if !debits_total.zero? %>
                 <%= number_to_currency debits_total %>
+              <% else %>
+                -
               <% end %>
-            </span>
-
-          </div>
-          <div class="col-md-5">
-            <b class="text-dark"><%= entry.description %></b>
-            <div class="min-margin"></div>
-            <small class="text-muted">
-            <i class=" fa fa-user-circle"></i> <%= entry.recorder_name %>&nbsp;
-            <i class="fa fa-clock"></i> <%= entry.entry_date.strftime('%b. %e, %Y') %>&nbsp;
-            <i class="fa fa-hashtag"></i><%= entry.reference_number %>
-
-          </small>
-          </div>
-          <div class="col-md-3">
-
-            <p class="subtitle-up float-right text-<%= Presenters::Saving.new(saving: @savings_account, entry: entry).text_color %>"><%= number_to_currency @savings_account.balance(to_date: entry.entry_date) %></p>
-
-          </div>
-          <div class="col-md-1">
-            <i class="text-muted fa fa-chevron-right fa-2x fa-slim float-right"></i>
-          </div>
-        </div>
-      </div>
-    </div>
-    <% end %>
-  <% end %>
-
-  <center><%==pagy_bootstrap_nav(@pagy) %></center>
+            </td>
+             <td>
+              <% if !credits_total.zero? %>
+                <%= number_to_currency credits_total %>
+              <% else %>
+                -
+              <% end %>
+            </td>
+            <td><span class='float-right'><%= number_to_currency @savings_account.balance(to_date: entry.entry_date, to_time: entry.created_at) %></span></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <center><%==pagy_bootstrap_nav(@pagy) %></center>
+  </div>
