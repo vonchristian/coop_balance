@@ -18,7 +18,6 @@ module LoansModule
         description:         "Savings Deposit",
         amount:              amount,
         account:             find_savings_account.liability_account,
-        commercial_document: find_savings_account,
         cooperative:         find_loan_application.cooperative)
       end
 

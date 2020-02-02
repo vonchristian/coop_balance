@@ -24,14 +24,7 @@ class Organization < ApplicationRecord
   has_many :account_scopes, as: :scopeable
   before_save :set_default_image
 
-  def member_entries
-    ids = []
-    ids << member_loans.ids
-    ids << member_savings.ids
-    ids << member_share_capitals.ids
-    entry_ids = AccountingModule::Amount.where(commercial_document_id: ids.compact.flatten).pluck(:entry_id).uniq
-    AccountingModule::Entry.where(id: entry_ids).not_cancelled
-  end
+  
 
   def self.current
     last

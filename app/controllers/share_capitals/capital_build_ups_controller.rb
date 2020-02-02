@@ -1,13 +1,13 @@
 module ShareCapitals
   class CapitalBuildUpsController < ApplicationController
     def new
-      @share_capital = current_cooperative.share_capitals.find(params[:share_capital_id])
+      @share_capital = current_office.share_capitals.find(params[:share_capital_id])
       @capital_build_up = Memberships::ShareCapitals::CapitalBuildUpProcessing.new
       authorize [:share_capitals, :capital_build_up]
     end
 
     def create
-      @share_capital = current_cooperative.share_capitals.find(params[:share_capital_id])
+      @share_capital = current_office.share_capitals.find(params[:share_capital_id])
       @capital_build_up = Memberships::ShareCapitals::CapitalBuildUpProcessing.new(share_capital_params)
       authorize [:share_capitals, :capital_build_up]
       if @capital_build_up.valid?

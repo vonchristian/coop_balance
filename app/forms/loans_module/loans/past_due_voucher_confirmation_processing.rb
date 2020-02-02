@@ -34,15 +34,13 @@ module LoansModule
         voucher.voucher_amounts.debit.each do |amount|
           entry.debit_amounts.build(
             account: amount.account,
-            amount: amount.amount,
-            commercial_document: amount.commercial_document)
+            amount: amount.amount)
         end
 
         voucher.voucher_amounts.credit.each do |amount|
           entry.credit_amounts.build(
             account: amount.account,
-            amount: amount.amount,
-            commercial_document: amount.commercial_document)
+            amount: amount.amount)
         end
         entry.save!
         voucher.update_attributes!(accounting_entry: entry)

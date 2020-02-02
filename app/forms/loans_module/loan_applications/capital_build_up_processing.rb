@@ -18,7 +18,6 @@ module LoansModule
         description:         "Capital Build Up",
         amount:              amount,
         account:             find_share_capital.share_capital_equity_account,
-        commercial_document: find_share_capital,
         cooperative:         find_loan_application.cooperative,
         amount_type:         'credit')
       end

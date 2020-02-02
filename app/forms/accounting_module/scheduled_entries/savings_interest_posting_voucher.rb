@@ -29,14 +29,12 @@ module AccountingModule
         voucher.voucher_amounts.debit.build(
           cooperative: find_cooperative,
           account: savings_account.saving_product_interest_expense_account,
-          amount: savings_account.computed_interest(to_date: DateTime.parse(to_date)),
-          commercial_document: savings_account
+          amount: savings_account.computed_interest(to_date: DateTime.parse(to_date))
         )
         voucher.voucher_amounts.credit.build(
           cooperative: find_cooperative,
           account: savings_account.saving_product_account,
-          amount: savings_account.computed_interest(to_date: DateTime.parse(to_date)),
-          commercial_document: savings_account)
+          amount: savings_account.computed_interest(to_date: DateTime.parse(to_date)))
         voucher.save!
       end
     end

@@ -25,7 +25,6 @@ module LoansModule
       loan_product.loan_product_charges.except_capital_build_up.each do |charge|
         loan_application.voucher_amounts.credit.create!(
           cooperative:         loan_application.cooperative,
-          commercial_document: loan_application,
           description:         charge.name,
           amount:              computed_charge(charge, loan_application.loan_amount),
           account:             charge.account
@@ -36,7 +35,6 @@ module LoansModule
     def create_loan_protection_fund
       if loan_product.loan_protection_plan_provider.present?
         loan_application.voucher_amounts.credit.create!(
-        commercial_document: loan_application,
         cooperative: loan_application.cooperative,
         amount: loan_product.loan_protection_plan_provider.amount_for(loan_application),
         account: loan_product.loan_protection_plan_provider.accounts_payable,

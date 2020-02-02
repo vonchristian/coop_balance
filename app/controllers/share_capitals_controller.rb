@@ -13,9 +13,9 @@ class ShareCapitalsController < ApplicationController
   def show
     @share_capital  = current_office.share_capitals.find(params[:id])
     if params[:search].present?
-      @pagy, @entries = pagy(@share_capital.entries.includes(:recorder, :office).order(entry_date: :desc).order(created_at: :desc).text_search(params[:search]))
+      @pagy, @entries = pagy(@share_capital.entries.includes(:recorder, :office).order(entry_date: :desc).order(entry_time: :desc).text_search(params[:search]))
     else 
-      @pagy, @entries = pagy(@share_capital.entries.includes(:recorder, :office).order(entry_date: :desc).order(created_at: :desc))
+      @pagy, @entries = pagy(@share_capital.entries.includes(:recorder, :office).order(entry_date: :desc).order(entry_time: :desc))
     end
     respond_to do |format|
       format.html

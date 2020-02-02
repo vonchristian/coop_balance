@@ -7,14 +7,9 @@ FactoryBot.define do
     association :liability_account, factory: :liability
     association :interest_expense_account, factory: :expense
     account_number { SecureRandom.uuid }
-    last_transaction_date { Date.current }
     after(:build) do |s|
-      if s.liability_account.present?
-        s.accounts << s.liability_account
-      end 
-      if s.interest_expense_account.present?
-        s.accounts << s.interest_expense_account
-      end 
+      s.accounts << s.liability_account
+      s.accounts << s.interest_expense_account
     end 
   end
 end

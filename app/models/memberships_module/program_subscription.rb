@@ -18,7 +18,7 @@
       where(program: options[:program])
     end
 
-
+    #fix
 	  def self.unpaid(options={})
       member_ids = Member.pluck(:id)
       account = args[:account]
@@ -34,14 +34,7 @@
     end
     #move to program
 	  def paid?(options={})
-      if one_time_payment?
-        account.amounts.where(commercial_document: self).present?
-      else
-        account.amounts.entered_on(options).where(commercial_document: self.subscriber).present? ||
-        account.amounts.entered_on(options).where(commercial_document: self).present? ||
-        account.entries.entered_on(options).where(commercial_document: self).present? ||
-        account.entries.entered_on(options).where(commercial_document: self.subscriber).present?
-      end
+      
 	  end
 	end
 end

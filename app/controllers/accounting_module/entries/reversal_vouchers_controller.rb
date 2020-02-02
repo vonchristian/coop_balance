@@ -26,7 +26,7 @@ module AccountingModule
 
       def reversal_params
         params.require(:accounting_module_entries_reversal_voucher_processing).
-        permit(:entry_id, :description, :account_number, :employee_id)
+        permit(:entry_id, :description, :reference_number, :account_number, :employee_id)
       end
     end
   end

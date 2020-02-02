@@ -21,30 +21,28 @@ module Memberships
       end
 
       def find_employee
-        User.find_by_id(employee_id)
+        User.find(employee_id)
       end
 
       private
       def create_deposit_voucher
         voucher = Voucher.new(
-          payee: find_saving.depositor,
-          office: find_employee.office,
-          cooperative: find_employee.cooperative,
-          preparer: find_employee,
-          description: description,
+          payee:            find_saving.depositor,
+          office:           find_employee.office,
+          cooperative:      find_employee.cooperative,
+          preparer:         find_employee,
+          description:      description,
           reference_number: or_number,
-          account_number: account_number,
-          date: date)
+          account_number:   account_number,
+          date:             date)
         voucher.voucher_amounts.debit.build(
           cooperative: find_employee.cooperative,
-          account: debit_account,
-          amount: amount,
-          commercial_document: find_saving)
+          account:     debit_account,
+          amount:      amount)
         voucher.voucher_amounts.credit.build(
           cooperative: find_employee.cooperative,
-          account: credit_account,
-          amount: amount,
-          commercial_document: find_saving)
+          account:     credit_account,
+          amount:      amount)
         voucher.save!
       end
 

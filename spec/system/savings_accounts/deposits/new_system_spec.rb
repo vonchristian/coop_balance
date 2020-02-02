@@ -7,6 +7,10 @@ feature 'New savings account deposit' do
     user.cash_accounts << cash_on_hand_account
     login_as(user, scope: :user )
     savings_account = create(:saving, office: user.office)
+    deposit = build(:entry)
+    deposit.debit_amounts.build(amount: 100, account: cash_on_hand_account)
+    deposit.credit_amounts.build(amount: 100, account: savings_account.liability_account)
+    deposit.save!
     visit savings_account_path(savings_account)
     click_link "Deposit"
   end

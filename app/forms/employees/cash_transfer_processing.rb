@@ -22,13 +22,11 @@ module Employees
         recorder: find_employee,
         credit_amounts_attributes: [
           amount: amount,
-          account: find_employee.cash_on_hand_account,
-          commercial_document: find_transferred_to
+          account: find_employee.cash_on_hand_account
         ],
         debit_amounts_attributes: [
           amount: amount,
-          account: find_transferred_to.cash_on_hand_account,
-          commercial_document: find_transferred_to
+          account: find_transferred_to.cash_on_hand_account
         ]
       )
 

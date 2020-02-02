@@ -9,6 +9,7 @@ FactoryBot.define do
     association :break_contract_account, factory: :revenue
 
     account_number { SecureRandom.uuid }
+    date_deposited { Date.current }
     association :term
   end
 end

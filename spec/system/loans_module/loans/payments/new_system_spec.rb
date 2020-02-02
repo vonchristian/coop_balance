@@ -25,7 +25,7 @@ describe 'New loan payment' do
   it 'with valid attributes', js: true do
 
     fill_in 'Date', with: Date.current
-    #select_from_chosen Date.current.strftime("%B, %Y"), from: 'Select Amortization Schedule to be paid.'
+   
     fill_in 'Description', with: 'Loan payment'
     fill_in 'Principal amount', with: 500
     fill_in 'Interest amount', with: 50

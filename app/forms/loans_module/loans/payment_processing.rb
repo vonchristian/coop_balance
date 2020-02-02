@@ -58,16 +58,14 @@ module LoansModule
       def create_interest_amount(voucher)
         voucher.voucher_amounts.credit.build(
         amount:              interest_amount.to_f,
-        account:             find_loan.interest_revenue_account,
-        commercial_document: find_loan)
+        account:             find_loan.interest_revenue_account)
       end
 
       def create_unearned_interest_amount(voucher)
         if find_loan.loan_product.current_interest_config.add_on?
           voucher.voucher_amounts.credit.build(
           amount:              interest_amount.to_f,
-          account:             find_loan.unearned_interest_income_account,
-          commercial_document: find_loan)
+          account:             find_loan.unearned_interest_income_account)
         end
       end
 
@@ -76,8 +74,7 @@ module LoansModule
         if penalty_amount.to_f > 0
           voucher.voucher_amounts.credit.build(
           amount:              penalty_amount.to_f,
-          account:             find_loan.penalty_revenue_account,
-          commercial_document: find_loan)
+          account:             find_loan.penalty_revenue_account)
         end
       end
 
@@ -85,16 +82,14 @@ module LoansModule
         if principal_amount.to_f > 0
           voucher.voucher_amounts.credit.build(
           amount:              principal_amount_for(find_loan.loan_product.current_interest_config),
-          account:             find_loan.receivable_account,
-          commercial_document: find_loan)
+          account:             find_loan.receivable_account)
         end
       end
 
       def create_total_cash_amount(voucher)
         voucher.voucher_amounts.debit.build(
         amount:              total_amount,
-        account:             find_cash_account,
-        commercial_document: find_loan)
+        account:             find_cash_account)
       end
 
       def find_cash_account

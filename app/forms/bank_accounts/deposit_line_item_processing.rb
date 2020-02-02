@@ -38,12 +38,10 @@ module BankAccounts
         date: date)
       voucher.voucher_amounts.debit.build(
         account: debit_account,
-        amount: amount,
-        commercial_document: find_bank_account)
+        amount: amount)
       voucher.voucher_amounts.credit.build(
         account: credit_account,
-        amount: amount,
-        commercial_document: find_bank_account)
+        amount: amount)
       voucher.save!
     end
 

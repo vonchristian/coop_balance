@@ -35,10 +35,8 @@ module LoansModule
     belongs_to :interest_revenue_account, class_name: 'AccountingModule::Account'
     belongs_to :penalty_revenue_account,  class_name: 'AccountingModule::Account'
     belongs_to :accrued_income_account,   class_name: 'AccountingModule::Account', optional: true
-    has_many :voucher_amounts,            class_name: "Vouchers::VoucherAmount", as: :commercial_document, dependent: :destroy # for adding amounts on voucher move to loan application
     has_many :amortization_schedules,     dependent: :destroy
     #deprecate
-    has_many :amounts,                    class_name: "AccountingModule::Amount", as: :commercial_document
     has_many :notices,                    class_name: "LoansModule::Notice",  as: :notified
     has_many :loan_interests,             class_name: "LoansModule::Loans::LoanInterest", dependent: :destroy
     has_many :loan_penalties,             class_name: "LoansModule::Loans::LoanPenalty",  dependent: :destroy
@@ -231,52 +229,17 @@ module LoansModule
       end
     end
 
-    def self.loan_transactions
-      entry_ids = []
-      not_cancelled.disbursed.each do |loan|
-        entry_ids << loan.accounting_entry.id
-      end
-      not_cancelled.where(forwarded_loan: true).each do |loan|
-        entry_ids << loan.loan_product_current_account.debit_amounts.where(commercial_document: loan).last.entry_id
-      end
-      not_cancelled.where(forwarded_loan: true).each do |loan|
-        loan.loan_payments.each do |payment|
-          entry_ids << payment.id
-        end
-      end
-      not_cancelled.disbursed.each do |loan|
-        loan.loan_payments.each do |payment|
-          entry_ids << payment.id
-        end
-      end
-      entry_ids
-      AccountingModule::Entry.where(id: entry_ids)
-    end
+    
 
     def self.active
       where(date_archived: nil)
     end
 
-    def self.for_entry(args={})
-      entry = args[:entry]
-      ids   = entry.amounts.pluck(:commercial_document_id).uniq.flatten
-      not_cancelled.where(id: ids)
-    end
+    
 
     def self.total_balance(args={})
       receivable_accounts.balance(args)
     end
-
-    def self.total_debits_balance(args={})
-      ids = pluck(:id)
-      LoansModule::LoanProduct.total_debits_balance(commercial_document: ids)
-    end
-
-    def self.total_credits_balance(args={})
-      loans = pluck(:id)
-      LoansModule::LoanProduct.total_credits_balance(args.merge(commercial_document: loans))
-    end
-
   
 
     def self.not_archived
@@ -396,15 +359,6 @@ module LoansModule
       entries
     end
      
-    #deprecate
-    def loan_entry
-      receivable_account.debit_amounts.where(commercial_document: self).last.try(:entry)
-    end
-    #deprecate 
-    def self.disbursement_entries(args={})
-      LoansModule::LoanProduct.accounts.debit_entries.entered_on(args)
-    end
-
     def voucher_amounts_excluding_loan_amount_and_net_proceed
       accounts = []
       Employees::EmployeeCashAccount.cash_accounts.each do |account|

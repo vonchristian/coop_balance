@@ -56,7 +56,6 @@ module Loans
         find_cart.voucher_amounts.credit.create!(
         amount:              BigDecimal(interest_amount),
         account:             find_loan.interest_revenue_account,
-        commercial_document: find_loan,
         recorder:            find_employee,
         cooperative:         find_employee.cooperative)
       end
@@ -67,7 +66,6 @@ module Loans
         find_cart.voucher_amounts.credit.create!(
         amount:              BigDecimal(penalty_amount),
         account:             find_loan.penalty_revenue_account,
-        commercial_document: find_loan,
         recorder:    find_employee,
         cooperative: find_employee.cooperative)
       end
@@ -78,7 +76,6 @@ module Loans
         find_cart.voucher_amounts.credit.create!(
         amount:      BigDecimal(principal_amount),
         account:     find_loan.receivable_account,
-        commercial_document: find_loan,
         recorder:    find_employee,
         cooperative: find_employee.cooperative)
       end

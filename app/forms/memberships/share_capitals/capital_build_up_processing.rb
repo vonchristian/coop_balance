@@ -36,12 +36,10 @@ module Memberships
           date: date)
         voucher.voucher_amounts.debit.build(
           account: cash_account,
-          amount: amount,
-          commercial_document: find_share_capital)
+          amount:  amount)
         voucher.voucher_amounts.credit.build(
           account: credit_account,
-          amount: amount,
-          commercial_document: find_share_capital)
+          amount:  amount)
         voucher.save!
       end
 

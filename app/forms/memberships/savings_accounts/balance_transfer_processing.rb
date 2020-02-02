@@ -24,13 +24,11 @@ module Memberships
         reference_number: reference_number,
         entry_date: date,
         debit_amounts_attributes: [
-          account: find_origin.saving_product_account,
-          amount: amount,
-          commercial_document: find_origin],
+          account: find_origin.liability_account,
+          amount: amount],
         credit_amounts_attributes: [
-          account: find_destination.saving_product_account,
-          amount: amount,
-          commercial_document: find_destination])
+          account: find_destination.liability_account,
+          amount: amount])
 
       end
 

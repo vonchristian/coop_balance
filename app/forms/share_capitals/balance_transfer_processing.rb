@@ -17,8 +17,8 @@ module ShareCapitals
     private
 
     def create_voucher_amount
-      find_cart.voucher_amounts.credit.create!(amount: amount, account: find_origin_share_capital.share_capital_equity_account)
-      find_cart.voucher_amounts.debit.create!(amount: amount, account: find_destination_share_capital.share_capital_equity_account)
+      find_cart.voucher_amounts.credit.create!(amount: amount, account: find_destination_share_capital.share_capital_equity_account)
+      find_cart.voucher_amounts.debit.create!(amount: amount, account: find_origin_share_capital.share_capital_equity_account)
     end
 
     def find_cart

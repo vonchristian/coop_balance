@@ -9,7 +9,8 @@ module Loans
       cart.voucher_amounts.where(account: Employees::EmployeeCashAccount.cash_accounts).total
     end
     def loan_ids
-      ids = cart.voucher_amounts.pluck(:commercial_document_id).uniq.compact.flatten
+      ids = cart.voucher_amounts.pluck(:account_id).uniq.compact.flatten
+      LoansModule::Loan.where(receivable_account_id: ids).ids
     end
 
     def principal(loan)

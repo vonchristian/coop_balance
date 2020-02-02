@@ -8,7 +8,7 @@ module LoansModule
           create_entry 
           update_paid_at
         end
-        redirect_to loans_module_loan_payments_url(@loan), notice: 'Transaction confirmed successfully.'
+        redirect_to loan_payments_url(@loan), notice: 'Transaction confirmed successfully.'
       end
 
       private 

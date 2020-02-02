@@ -16,19 +16,19 @@ class BankAccount < ApplicationRecord
   end
 
   def balance(args = {})
-    cash_account.balance(commercial_document: self)
+    cash_account.balance(args)
   end
 
   def debits_balance(args = {})
-   cash_account.debits_balance(commercial_document: self)
+   cash_account.debits_balance(args)
   end
 
   def credits_balance(args = {})
-    cash_account.credits_balance(commercial_document: self)
+    cash_account.credits_balance(args)
   end
 
-  def earned_interests
-    interest_revenue_account.balance(commercial_document: self)
+  def earned_interests(args={})
+    interest_revenue_account.balance(args)
   end
 
   private

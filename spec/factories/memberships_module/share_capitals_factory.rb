@@ -6,5 +6,8 @@ FactoryBot.define do
     association :share_capital_equity_account, factory: :equity
     association :share_capital_product
     account_number        { SecureRandom.uuid }
+    after(:build) do |share| 
+      share.accounts << share.share_capital_equity_account
+    end 
   end
 end

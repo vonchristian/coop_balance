@@ -18,7 +18,7 @@
               <small class="text-muted"><%= share_capital.share_capital_product_name.upcase %></small>
               <h4 class="subtitle-up"><%= number_to_currency share_capital.balance %></h4>
               <small class="text-muted">
-                <i class="fa fa-clock"></i> <%= share_capital.last_transaction_date.strftime('%b. %e, %Y') %>
+                <i class="fa fa-clock"></i> <%= share_capital.last_transaction_date.try(:strftime, ('%b. %e, %Y')) %>
               </small>
               <% if !share_capital.has_minimum_balance? %>
                 <span class="badge badge-outline badge-outline-danger"> Below Minimum Balance </span>

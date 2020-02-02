@@ -17,24 +17,22 @@ module ProgramSubscriptions
     private
     def create_voucher
       voucher = Voucher.new(
-        payee: find_member,
-        office: find_employee.office,
-        cooperative: find_employee.cooperative,
-        preparer: find_employee,
-        description: description,
+        payee:            find_member,
+        office:           find_employee.office,
+        cooperative:      find_employee.cooperative,
+        preparer:         find_employee,
+        description:      description,
         reference_number: reference_number,
-        account_number: account_number,
-        date: date)
+        account_number:   account_number,
+        date:             date)
       voucher.voucher_amounts.debit.build(
         cooperative: find_employee.cooperative,
-        account: debit_account,
-        amount: amount,
-        commercial_document: find_program_subscription)
+        account:     debit_account,
+        amount:      amount)
       voucher.voucher_amounts.credit.build(
         cooperative: find_employee.cooperative,
-        account: credit_account,
-        amount: amount,
-        commercial_document: find_program_subscription)
+        account:     credit_account,
+        amount:      amount)
       voucher.save!
     end
 

@@ -82,14 +82,5 @@
     def date_setter
       ("SavingsModule::DateSetters::" + interest_recurrence.titleize.gsub(" ", "")).constantize
     end
-
-    def interest_posted?(args={})
-      interest_expense_account.
-      credit_amounts.
-      entries_for(commercial_document: self).
-      entered_on(
-        from_date: beginning_date_for(args[:date]),
-        to_date: ending_date_for(args[:date])).present?
-    end
 	end
 end

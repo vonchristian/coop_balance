@@ -29,5 +29,9 @@ FactoryBot.define do
     factory :accountant, class: User do
       role { 'accountant' }
     end
+
+    factory :treasurer, class: User do
+      role { 'treasurer' }
+    end
   end
 end

@@ -19,7 +19,6 @@ class Member < ApplicationRecord
 
   has_one :member_account #for devise login
   has_many :entries,                  class_name: "AccountingModule::Entry", as: :commercial_document
-  has_many :voucher_amounts,          class_name: "Vouchers::VoucherAmount", as: :commercial_document
   has_many :memberships,              class_name: "Cooperatives::Membership", as: :cooperator, dependent: :destroy
   has_many :savings,                  class_name: "MembershipsModule::Saving", as: :depositor
   has_many :share_capitals,           class_name: "MembershipsModule::ShareCapital", as: :subscriber
@@ -29,8 +28,6 @@ class Member < ApplicationRecord
   has_many :occupations,              through: :member_occupations
   has_many :loans,                    class_name: "LoansModule::Loan", as: :borrower
   has_many :subscribed_programs,      class_name: "Cooperatives::Program", through: :program_subscriptions, source: :program
-  has_many :sales,                    class_name: "StoreFrontModule::Orders::SalesOrder", as: :commercial_document
-  has_many :sales_returns,            class_name: "StoreFrontModule::Orders::SalesReturnOrder", as: :commercial_document
   has_many :organization_memberships, class_name: "Organizations::OrganizationMember",   as: :organization_membership
   has_many :organizations,            through: :organization_memberships
   has_many :relationships,            as: :relationee

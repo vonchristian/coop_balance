@@ -17,8 +17,6 @@ module LoansModule
       private
       def create_prededucted_interest
         loan_application.voucher_amounts.credit.create!(
-          commercial_document: loan_application,
-          
           cooperative: loan_application.cooperative,
           description: "Interest on Loan",
           amount:     computed_interest,

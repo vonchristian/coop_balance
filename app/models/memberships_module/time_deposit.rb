@@ -66,7 +66,6 @@ module MembershipsModule
 
     def withdrawal_date
       if withdrawn?
-        # time_deposit_product_account.debit_entries.select {|e| e.amounts.where(commercial_document: self)}.first.entry_date
         liability_account.entries.order(entry_date: :asc).last.entry_date
       end
     end

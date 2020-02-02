@@ -63,8 +63,7 @@ module LoansModule
       def create_cash_amount
         Vouchers::VoucherAmount.debit.create!(
         amount:             total_amount,
-        account:             find_cash_account,
-        commercial_document: find_loan)
+        account:             find_cash_account)
       end
 
 
@@ -72,8 +71,7 @@ module LoansModule
         if interest_amount.to_f > 0
           Vouchers::VoucherAmount.credit.create!(
           amount:              interest_amount.to_f,
-          account:             find_loan.interest_revenue_account,
-          commercial_document: find_loan)
+          account:             find_loan.interest_revenue_account)
         end
       end
 
@@ -81,8 +79,7 @@ module LoansModule
         if penalty_amount.to_f > 0
           Vouchers::VoucherAmount.credit.create!(
           amount:              penalty_amount.to_f,
-          account:             find_loan.penalty_revenue_account,
-          commercial_document: find_loan)
+          account:             find_loan.penalty_revenue_account)
         end
       end
 
@@ -91,8 +88,7 @@ module LoansModule
           Vouchers::VoucherAmount.credit.create!(
           cooperative:         find_loan.cooperative,
           amount:              principal_amount.to_f,
-          account:             find_loan.receivable_account,
-          commercial_document: find_loan)
+          account:             find_loan.receivable_account)
         end
       end
 

@@ -93,7 +93,7 @@
               </div>
               <div class="col-md-4">
                 <span class="float-right">
-                  <%= number_to_currency current_cart.voucher_amounts.credit.where(account: @origin_share_capital.share_capital_equity_account).total %>
+                  <%= number_to_currency current_cart.voucher_amounts.debit.where(account: @origin_share_capital.share_capital_equity_account).total %>
                 </span>
               </div>
             </div>

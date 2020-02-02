@@ -29,30 +29,25 @@ module SavingsAccounts
 
     def create_voucher
       voucher = Voucher.new(
-        office: find_employee.office,
-        cooperative: find_employee.cooperative,
-        preparer: find_employee,
-        description: 'Closing of savings account',
+        office:           find_employee.office,
+        cooperative:      find_employee.cooperative,
+        preparer:         find_employee,
+        description:      'Closing of savings account',
         reference_number: reference_number,
-        account_number: account_number,
-        date: date,
-        payee: find_savings_account.depositor
-      )
+        account_number:   account_number,
+        date:             date,
+        payee:            find_savings_account.depositor)
       voucher.voucher_amounts.debit.build(
         account: debit_account,
-        amount: find_savings_account.balance,
-        commercial_document: find_savings_account
+        amount:  find_savings_account.balance
       )
       voucher.voucher_amounts.credit.build(
         account: cash_account,
-        amount: amount,
-        commercial_document: find_savings_account
-      )
+        amount:  amount)
       if !closing_account_fee.nil? && !closing_account_fee.to_d.zero?
         voucher.voucher_amounts.credit.build(
           account: closing_fee_account,
-          amount: closing_account_fee,
-          commercial_document: find_savings_account
+          amount: closing_account_fee
         )
       end
       voucher.save!

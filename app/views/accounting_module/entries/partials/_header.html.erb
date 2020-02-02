@@ -22,9 +22,7 @@
             <span class="badge bg-danger">Cancelled </span> -
             <small class="text-danger"> <%= entry.cancellation_description %></small>
           <% end %>
-          <% if entry.cooperative_service.present? %>
-            <small class="text-muted"> <%= entry.cooperative_service_title %></small>
-          <% end %>
+        
         </div>
         <div class="col-md-3">
           <span class="number"><%= number_to_currency entry.debit_amounts.total %></span>

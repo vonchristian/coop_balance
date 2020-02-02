@@ -18,7 +18,6 @@ module Vouchers
         account_id:          account_id,
         amount_type:         set_amount_type(amount_type),
         description:         description,
-        commercial_document: find_employee,
         recorder:            find_employee)
         if cash_account_id.present?
           create_cash_account_line_item
@@ -34,7 +33,6 @@ module Vouchers
           account: cash_account,
           amount_type: amount_type_contra,
           description: description,
-          commercial_document: find_employee,
           recorder: find_employee,
           cooperative: find_employee.cooperative
 
@@ -46,7 +44,6 @@ module Vouchers
           account: cash_account,
           amount_type: amount_type_contra,
           description: description,
-          commercial_document: find_employee,
           recorder: find_employee,
           cooperative: find_employee.cooperative
           )

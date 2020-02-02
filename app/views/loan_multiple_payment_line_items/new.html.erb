@@ -18,7 +18,7 @@
           <br>
           <br>
           <% @loans.each do |loan| %>
-            <%= link_to  new_loan_multiple_payment_path(loan) do %>
+            <%= link_to  new_loan_multiple_payment_path(loan), id: "#{loan.id}-select" do %>
             <div class="row">
               <div class='col-md-2'>
                 <%= image_tag(loan.avatar, height: 60, width: 60, class: 'img-circle') %>

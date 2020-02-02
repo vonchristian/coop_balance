@@ -10,12 +10,10 @@ class InterestPosting
       if !savings_account.interest_posted?(posting_date)
         debit_amount = AccountingModule::DebitAmount.new(
         account: debit_account(savings_account),
-        amount: amount_for(savings_account, posting_date),
-        commercial_document: savings_account)
+        amount: amount_for(savings_account, posting_date))
         credit_amount = AccountingModule::CreditAmount.new(
         account: debit_account(savings_account),
-        amount: amount_for(savings_account, posting_date),
-        commercial_document: savings_account)
+        amount: amount_for(savings_account, posting_date))
         entry.debit_amounts << debit_amount
         entry.credit_amounts << credit_amount
       end

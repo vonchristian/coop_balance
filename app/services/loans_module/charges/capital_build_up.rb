@@ -15,7 +15,6 @@ module LoansModule
         if borrower.share_capitals.present? && loan_product.loan_product_charges.for_capital_build_up.present?
           loan_application.voucher_amounts.credit.create!(
             cooperative:         loan_application.cooperative,
-            commercial_document: share_capital,
             description:         "Capital Build Up",
             amount:              computed_amount,
             account:             share_capital.share_capital_equity_account

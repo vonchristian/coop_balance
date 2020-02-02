@@ -21,15 +21,13 @@ module StoreFrontModule
       voucher.voucher_amounts.debit.each do |debit_amount|
         entry.debit_amounts.build(
         amount:              debit_amount.amount,
-        account:             debit_amount.account,
-        commercial_document: debit_amount.commercial_document)
+        account:             debit_amount.account)
       end
 
       voucher.voucher_amounts.credit.each do |credit_amount|
         entry.credit_amounts.build(
         amount:              credit_amount.amount,
-        account:             credit_amount.account,
-        commercial_document: credit_amount.commercial_document)
+        account:             credit_amount.account)
       end
       entry.save!
       voucher.update_attributes!(accounting_entry: entry)

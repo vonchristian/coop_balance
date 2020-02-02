@@ -24,21 +24,19 @@ module Memberships
           entry_date: find_time_deposit.date_deposited,
         debit_amounts_attributes: [
           account: debit_account,
-          amount: amount,
-          commercial_document: savings_account],
+          amount: amount],
         credit_amounts_attributes: [
           account: credit_account,
-          amount: amount,
-          commercial_document: savings_account])
+          amount: amount])
       end
       def find_depositor
         find_time_deposit.depositor
       end
       def find_time_deposit
-        MembershipsModule::TimeDeposit.find_by_id(time_deposit_id)
+        MembershipsModule::TimeDeposit.find(time_deposit_id)
       end
       def debit_account
-        find_time_deposit.time_deposit_product.account
+        find_time_deposit.liability_account
       end
       def credit_account
         find_savings_product.account

@@ -37,13 +37,11 @@ module AccountingModule
         reference_number:    reference_number,
         debit_amounts_attributes: [
           amount:              amount,
-          account_id:          debit_account_id,
-          commercial_document: find_commercial_document
+          account_id:          debit_account_id
         ],
         credit_amounts_attributes: [
           amount:              amount,
-          account_id:          credit_account_id,
-          commercial_document: find_commercial_document
+          account_id:          credit_account_id
         ]
       )
     end

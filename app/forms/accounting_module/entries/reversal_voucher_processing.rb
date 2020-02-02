@@ -2,7 +2,7 @@ module AccountingModule
   module Entries
     class ReversalVoucherProcessing
       include ActiveModel::Model
-      attr_accessor :entry_id, :employee_id, :description, :account_number
+      attr_accessor :entry_id, :employee_id, :description, :reference_number, :account_number
 
       validates :entry_id, :employee_id, :description, :account_number, presence: true
 
@@ -22,6 +22,7 @@ module AccountingModule
           cooperative:    find_employee.cooperative,
           preparer:       find_employee,
           description:    description,
+          reference_number: reference_number,
           date:           find_entry.entry_date,
           payee:          find_entry.commercial_document
         )

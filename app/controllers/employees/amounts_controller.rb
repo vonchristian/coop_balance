@@ -3,7 +3,6 @@ module Employees
     def create
       @employee = current_cooperative.users.find(params[:employee_id])
       @amount = current_cooperative.voucher_amounts.create(amount_params)
-      @amount.commercial_document = @employee
       @amount.save
       redirect_to new_employee_voucher_url(@employee), notice: "Added successfully."
     end

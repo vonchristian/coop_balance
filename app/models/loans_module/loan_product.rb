@@ -163,8 +163,7 @@ module LoansModule
     end
 
     def entries
-      loan_ids = loans.pluck(:id)
-      entries = AccountingModule::Amount.where(commercial_document_id: loan_ids).pluck(:entry_id)
+      entries = AccountingModule::Amount.where(account_id: loans.pluck(:receivable_account_id)).pluck(:entry_id)
       AccountingModule::Entry.where(id: entries)
     end
 

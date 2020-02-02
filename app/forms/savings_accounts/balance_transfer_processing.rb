@@ -1,9 +1,9 @@
 module SavingsAccounts
-  class BalanceTransferProcessing
+  class BalanceTransfer
     include ActiveModel::Model
     attr_accessor :origin_id, :destination_id, :employee_id, :amount,
     :reference_number, :account_number, :date
-    validates :amount, :reference_number, :date, presence: true
+    validates :amount, presence: true
     
     def process!
       ActiveRecord::Base.transaction do
@@ -33,12 +33,10 @@ module SavingsAccounts
         date: date)
       voucher.voucher_amounts.debit.build(
         account: find_destination_saving.saving_product_account,
-        amount: amount,
-        commercial_document: find_origin_saving)
+        amount: amount)
       voucher.voucher_amounts.credit.build(
         account: find_destination_saving.saving_product_account,
-        amount: amount,
-        commercial_document: find_destination_saving)
+        amount: amount)
       voucher.save!
     end
 

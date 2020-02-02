@@ -26,9 +26,6 @@ module AccountingModule
             description: description,
             reference_number: reference_number
           )
-          if find_entry.voucher.voucher_amounts.last.commercial_document_type == "LoansModule::LoanApplication"
-            find_entry.voucher.voucher_amounts.last.commercial_document.update_attributes(application_date: entry_date)
-          end
         end
       end
 

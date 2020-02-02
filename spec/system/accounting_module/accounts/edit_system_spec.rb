@@ -5,6 +5,7 @@ describe 'Edit account' do
     bookkeeper  = create(:bookkeeper)
     cooperative = bookkeeper.cooperative
     account     = create(:asset)
+    bookkeeper.office.accounts << account
     l1_category = create(:asset_level_one_account_category, title: 'Test Category', office: bookkeeper.office)
     cooperative.accounts << account
     login_as(bookkeeper, scope: :user)

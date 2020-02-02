@@ -52,8 +52,7 @@ module LoansModule
         amount_type: 'debit',
         amount: find_loan_application.loan_amount,
         description: 'Loan Amount',
-        account: find_loan_application.receivable_account,
-        commercial_document: find_loan_application)
+        account: find_loan_application.receivable_account)
       end
 
       def create_net_proceed(voucher)
@@ -63,8 +62,7 @@ module LoansModule
         amount_type: 'credit',
         amount: find_loan_application.net_proceed,
         description: 'Net Proceed',
-        account_id: cash_account_id,
-        commercial_document: find_loan_application)
+        account_id: cash_account_id)
       end
 
       def create_loan_charges(voucher)
@@ -75,8 +73,7 @@ module LoansModule
           cooperative:         find_cooperative,
           amount_type:         voucher_amount.amount_type,
           account:             voucher_amount.account,
-          description:         voucher_amount.description,
-          commercial_document: voucher_amount.commercial_document)
+          description:         voucher_amount.description)
         end
       end
 

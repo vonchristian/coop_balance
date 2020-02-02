@@ -5,7 +5,7 @@ module AccountingModule
 
     belongs_to :entry, :class_name => 'AccountingModule::Entry'
     belongs_to :account, :class_name => 'AccountingModule::Account'
-   
+    belongs_to :commercial_document, polymorphic: true, optional: true
     validates :type, :amount, :entry, :account, presence: true
 
     delegate :name, :code, :display_name, to: :account, prefix: true

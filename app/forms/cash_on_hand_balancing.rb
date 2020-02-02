@@ -17,8 +17,7 @@ class CashOnHandBalancing
         amount: find_employee.voucher_amounts.sum(&:amount),
         account: cash_on_hand_account,
         amount_type: 'debit',
-        description: description,
-        commercial_document: find_employee
+        description: description
         )
     end
   end

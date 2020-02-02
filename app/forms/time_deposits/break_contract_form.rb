@@ -34,15 +34,12 @@ module TimeDeposits
         commercial_document: find_time_deposit.depositor,
       debit_amounts_attributes: [{
         account: debit_account,
-        amount: find_time_deposit.amount_deposited,
-        commercial_document: find_time_deposit } ],
+        amount: find_time_deposit.amount_deposited } ],
       credit_amounts_attributes: [{
         account: credit_account,
-        amount: amount,
-        commercial_document: find_time_deposit},
+        amount: amount},
         { account: break_contract_account,
-        amount: break_contract_amount,
-        commercial_document: find_time_deposit }])
+        amount: break_contract_amount}])
 
     end
     def close_account

@@ -16,7 +16,6 @@ module LoansModule
       private
       def create_add_on_interest
         loan_application.voucher_amounts.credit.create!(
-          commercial_document: loan_application,
           cooperative: loan_application.cooperative,
           description: "Accrued Interest Income",
           amount:     loan_application.add_on_interest,

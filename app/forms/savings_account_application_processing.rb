@@ -43,27 +43,23 @@ class SavingsAccountApplicationProcessing
 
   def create_voucher(savings_account_application)
     voucher = Voucher.new(
-      account_number: voucher_account_number,
-      payee_id: depositor_id,
-      payee_type: depositor_type,
-      preparer: find_employee,
-      office: find_employee.office,
-      cooperative: find_employee.cooperative,
-      description: description,
+      account_number:   voucher_account_number,
+      payee_id:         depositor_id,
+      payee_type:       depositor_type,
+      preparer:         find_employee,
+      office:           find_employee.office,
+      cooperative:      find_employee.cooperative,
+      description:      description,
       reference_number: reference_number,
-      date: date
-    )
+      date:             date)
     voucher.voucher_amounts.debit.build(
       cooperative: find_employee.cooperative,
-      account: cash_account,
-      amount: amount,
-      commercial_document: savings_account_application
-    )
+      account:     cash_account,
+      amount:      amount)
     voucher.voucher_amounts.credit.build(
       cooperative: find_employee.cooperative,
-      account: savings_account_application.liability_account,
-      amount: amount,
-      commercial_document: savings_account_application)
+      account:     savings_account_application.liability_account,
+      amount:      amount)
     voucher.save!
   end
 

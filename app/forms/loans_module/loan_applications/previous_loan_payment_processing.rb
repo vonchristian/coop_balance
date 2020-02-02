@@ -23,7 +23,6 @@ module LoansModule
         description:         "Previous Loan Payment (Principal)",
         amount:              principal_amount.to_f,
         account:             find_loan.principal_account,
-        commercial_document: find_loan,
         cooperative:         find_loan_application.cooperative)
       end
 
@@ -33,7 +32,6 @@ module LoansModule
           description:         "Previous Loan Payment (Interest)",
           amount:              interest_amount.to_f,
           account:             find_loan.interest_revenue_account,
-          commercial_document: find_loan,
           cooperative:         find_loan_application.cooperative)
         end
       end
@@ -44,7 +42,6 @@ module LoansModule
           description:         "Previous Loan Payment (Penalty)",
           amount:              penalty_amount.to_f,
           account:             find_loan.penalty_revenue_account,
-          commercial_document: find_loan,
           cooperative:         find_loan_application.cooperative)
         end
       end

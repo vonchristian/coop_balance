@@ -53,12 +53,10 @@ module Memberships
         commercial_document: find_subscriber,
         debit_amounts_attributes: [
           account: debit_account,
-          amount: amount,
-          commercial_document: share_capital],
+          amount: amount],
         credit_amounts_attributes: [
           account: credit_account,
-          amount: amount,
-          commercial_document: share_capital]
+          amount: amount]
         )
     end
     def find_employee

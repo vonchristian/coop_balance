@@ -41,14 +41,12 @@ module TimeDeposits
       voucher.voucher_amounts.credit.build(
         cooperative: find_employee.cooperative,
         account: find_time_deposit.time_deposit_product.account,
-        amount: find_time_deposit.balance,
-        commercial_document: find_time_deposit
+        amount: find_time_deposit.balance
       )
       voucher.voucher_amounts.debit.build(
         cooperative: find_employee.cooperative,
         account: find_saving_product.account,
-        amount: find_time_deposit.balance,
-        commercial_document: find_savings_account_application)
+        amount: find_time_deposit.balance)
       voucher.save!
     end
 

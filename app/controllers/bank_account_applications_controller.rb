@@ -18,6 +18,6 @@ class BankAccountApplicationsController < ApplicationController
     permit(:bank_name, :bank_address, :account_number, :voucher_account_number,
       :cash_account_id,
       :interest_revenue_account_id,
-    :amount, :reference_number, :description, :date, :cooperative_id)
+    :amount, :reference_number, :description, :date, :cooperative_id, :office_id)
   end
 end

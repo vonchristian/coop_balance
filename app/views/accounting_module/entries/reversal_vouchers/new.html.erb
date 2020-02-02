@@ -1,5 +1,6 @@
 <%= simple_form_for @reversal, url: :accounting_module_entry_reversal_vouchers do |f| %>
   <%= f.input :description, as: :text %>
+  <%= f.input :reference_number %>
   <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
   <%= f.input :employee_id,    input_html: { value: current_user.id }, as: :hidden %>
   <%= f.input :entry_id,       input_html: { value: @entry.id }, as: :hidden %>

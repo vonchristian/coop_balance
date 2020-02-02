@@ -17,6 +17,7 @@ describe 'New entry reversal' do
 
   it 'with valid attributes' do
     fill_in 'Description', with: 'wrong entry'
+    fill_in 'Reference number', with: 'rerre'
 
     click_button 'Reverse Entry'
 

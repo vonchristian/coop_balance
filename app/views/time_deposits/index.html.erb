@@ -28,7 +28,7 @@
               <tr>
                 <th> Depositor </th>
                 <th> Time Deposit Product </th>
-                <th> Date Deposited </th>
+                <th> Effectivity Date </th>
                 <th> Maturity Date </th>
                 <th> Amount </th>
 
@@ -38,9 +38,9 @@
             <tbody>
             <% @time_deposits.each do |time_deposit| %>
               <tr>
-                <td><%= link_to time_deposit.depositor_name, time_deposit_path(time_deposit) %></td>
+                <td><%= link_to time_deposit.depositor_name.upcase, time_deposit_path(time_deposit) %></td>
                 <td><%= time_deposit.time_deposit_product_name %></td>
-                <td><%= time_deposit.date_deposited.strftime('%B %e, %Y') %></td>
+                <td><%= time_deposit.term_effectivity_date.strftime('%B %e, %Y') %></td>
                 <td><%= time_deposit.term_maturity_date.strftime('%B %e, %Y') %></td>
                 <td><%= number_to_currency time_deposit.balance %></td>
 

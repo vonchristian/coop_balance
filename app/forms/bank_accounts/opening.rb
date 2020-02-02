@@ -31,12 +31,10 @@ module BankAccounts
         description:         description,
         credit_amounts_attributes: [
           account:             cash_account,
-          amount:              amount,
-          commercial_document: bank_account],
+          amount:              amount],
         debit_amounts_attributes: [
           account_id:          account_id,
-          amount:              amount,
-          commercial_document: bank_account])
+          amount:              amount])
 
     end
 

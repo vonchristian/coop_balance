@@ -1,5 +1,5 @@
 module SavingsAccounts
-  class BalanceTransferDestinationAccountPolicy < ApplicationPolicy
+  class BalanceTransferPolicy < ApplicationPolicy
     def new?
       user.bookkeeper? || user.accountant?
     end

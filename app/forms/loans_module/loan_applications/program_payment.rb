@@ -19,7 +19,6 @@ module LoansModule
         description:         find_program.name,
         amount:              amount,
         account:             find_program.program_account,
-        commercial_document: find_subscription_for(find_program),
         cooperative:         find_loan_application.cooperative)
       end
       def find_loan_application

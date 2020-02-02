@@ -22,15 +22,13 @@ module SavingsAccounts
       find_voucher.voucher_amounts.debit.each do |amount|
         debit_amount = AccountingModule::DebitAmount.new(
           account: amount.account,
-          amount: amount.amount,
-          commercial_document: amount.commercial_document)
+          amount: amount.amount)
         entry.debit_amounts << debit_amount
       end
       find_voucher.voucher_amounts.credit.each do |amount|
         credit_amount = AccountingModule::CreditAmount.new(
           account: amount.account,
-          amount: amount.amount,
-          commercial_document: amount.commercial_document)
+          amount: amount.amount)
         entry.credit_amounts << credit_amount
       end
       set_voucher_entry(entry)

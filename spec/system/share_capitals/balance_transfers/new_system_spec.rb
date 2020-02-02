@@ -4,6 +4,7 @@ describe 'New share capital balance transfer' do
   before(:each) do 
     bookkeeper     = create(:bookkeeper)
     cash           = create(:asset)
+    bookkeeper.cash_accounts << cash
     @share_capital = create(:share_capital, office: bookkeeper.office)
 
     capital_build_up_1 = build(:entry)
@@ -40,6 +41,9 @@ describe 'New share capital balance transfer' do
     click_link 'Confirm Transaction'
 
     expect(page).to have_content('confirmed successfully')
+    expect(@share_capital.balance).to eql 9_000
+    expect(@share_capital_2.balance).to eql 11_000 
+
   end
   
 end

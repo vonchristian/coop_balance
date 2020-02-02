@@ -33,12 +33,10 @@ module TreasuryModule
         entry_date: entry_date,
       debit_amounts_attributes: [
         account: debit_account,
-        amount: amount,
-        commercial_document: find_office],
+        amount: amount],
       credit_amounts_attributes: [
         account: credit_account,
-        amount: amount,
-        commercial_document: find_office])
+        amount: amount])
 
     end
 

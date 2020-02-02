@@ -1,6 +1,6 @@
 require 'rails_helper'
 include ChosenSelect
-describe 'New level two account category' do
+describe 'New level three account category' do
   before(:each) do
     accountant = create(:accountant)
 

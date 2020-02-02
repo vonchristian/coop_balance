@@ -17,8 +17,6 @@ module MembershipsModule
     belongs_to :office,                   class_name: "Cooperatives::Office"
     has_many :ownerships,                 as: :ownable
     has_many :member_co_depositors,       through: :ownerships, source: :owner, source_type: "Member"
-    has_many :debit_amounts,              class_name: "AccountingModule::DebitAmount", as: :commercial_document
-    has_many :credit_amounts,             class_name: "AccountingModule::CreditAmount", as: :commercial_document
     has_many :ownerships,                 as: :ownable
     has_many :member_depositors,          through: :ownerships, source: :owner, source_type: 'Member'
     has_many :organization_depositors,    through: :ownerships, source: :owner, source_type: 'Organization'
@@ -52,7 +50,6 @@ module MembershipsModule
 
     before_save :set_account_owner_name, :set_date_opened #move to saving opening
 
-    has_many :amounts,  class_name: "AccountingModule::Amount", as: :commercial_document
     
     def current_aging_group
       savings_aging_groups.current 
@@ -96,19 +93,14 @@ module MembershipsModule
     end
 
     def self.balance(args={})
-      ids = pluck(:id)
-      CoopServicesModule::SavingProduct.total_balance(args.merge(commercial_document: ids))
+      ids = pluck(:liability_account_id)
+      AccountingModule::Liability.where(id: ids.uniq.compact.flatten).balance(args)
     end
 
-    # def entries
-    #   entry_ids = []
-    #   entry_ids << saving_product_account.amounts.where(commercial_document: self).pluck(:entry_id)
-    #   entry_ids << saving_product_interest_expense_account.amounts.where(commercial_document: self).pluck(:entry_id)
-    #   AccountingModule::Entry.where(id: entry_ids.uniq.flatten)
-    # end
+    
 
     def closed?
-      saving_product_closing_account.amounts.where(commercial_document: self).present?
+      closed_at.present?
     end
 
     def dormant?
@@ -158,7 +150,7 @@ module MembershipsModule
     end
 
     def interests_earned(args={})
-      interest_expense_account.debits_balance(commercial_document: self, from_date: args[:from_date], to_date: args[:to_date])
+      interest_expense_account.debits_balance(args)
     end
 
     def can_withdraw?

@@ -27,13 +27,11 @@ module LoansModule
         date:           date)
         voucher.voucher_amounts.debit.build(
           amount: loan.balance,
-      account: loan.loan_product_past_due_account,
-          commercial_document: loan
+          account: loan.loan_product_past_due_account
         )
         voucher.voucher_amounts.credit.build(
           amount: loan.balance,
-          account: loan.loan_product_current_account,
-          commercial_document: loan
+          account: loan.loan_product_current_account
         )
         voucher.save!
       end

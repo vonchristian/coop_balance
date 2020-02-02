@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :account, class: AccountingModule::Account do
-    sequence(:name) { |n| "#{n}"}
+    sequence(:name) { |n| "#{SecureRandom.uuid}"}
     code            { Faker::Number.number(digits: 12) }
 
     factory :asset, class: 'AccountingModule::Asset' do

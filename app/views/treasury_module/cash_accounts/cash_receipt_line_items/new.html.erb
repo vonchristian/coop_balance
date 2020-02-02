@@ -10,7 +10,7 @@
         <div class="card-body">
           <%=form_tag new_treasury_module_cash_account_cash_receipt_line_item_path(@cash_account), method: :get, class: "sidebar-form" do %>
             <div class="input-group">
-              <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Account..", id: 'account-search-form' %>
+              <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Account..", id: 'cash-receipt-account-search-form' %>
               <span class="input-group-btn">
                 <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-outline-primary") do %>
                   <i class="fa fa-search"></i> Search Account
@@ -48,7 +48,7 @@
                 <span class="badge bg-gray"><%= @account.normalized_type %></span>
               </div>
               <div class="col-md-4">
-                <%= f.input :amount, label: false, placeholder: 'Amount', as: :currency  %>
+                <%= f.input :amount, label: false, placeholder: 'Amount', as: :currency, input_html: { id: 'cash-receipt-amount'}  %>
               </div>
             
               <div class="col-md-2">
@@ -119,9 +119,9 @@
             <div class='col-md-9'>
               <%=form_tag new_treasury_module_cash_account_cash_receipt_line_item_path(@cash_account), method: :get, class: "sidebar-form" do %>
                   <div class="input-group">
-                    <%= text_field_tag :payee_search, params[:payee_search], class: "form-control", placeholder: "Search Member..", id: 'account-search-form' %>
+                    <%= text_field_tag :payee_search, params[:payee_search], class: "form-control", placeholder: "Search Member..", id: 'payee-search-form' %>
                     <span class="input-group-btn">
-                      <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-outline-secondary") do %>
+                      <%= button_tag(type: 'submit', id: "payee-search-btn", class: "btn btn-outline-secondary") do %>
                         <i class="fa fa-search"></i> Search Member
                       <% end %>
                     </span>
@@ -132,7 +132,7 @@
           <% if @payees.present?  %>
             <br>
             <% @payees.each do |payee| %>
-              <%= link_to new_treasury_module_cash_account_cash_receipt_line_item_path(@cash_account, payee_id: payee.id, payee_type: payee.class.to_s) do %>
+              <%= link_to new_treasury_module_cash_account_cash_receipt_line_item_path(@cash_account, payee_id: payee.id, payee_type: payee.class.to_s), id: "#{payee.id}-select-payee" do %>
                 <div class='row'>
                   <div class='col-md-3'>
                     <%= image_tag(payee.avatar, class: 'img-circle', height: 60, width: 60) %>

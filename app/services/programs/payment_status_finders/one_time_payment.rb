@@ -8,7 +8,7 @@ module Programs
       end
 
       def paid?
-        program.account.credit_amounts.where(commercial_document: program).present?
+        program.account.credit_amounts.present?
       end
     end
   end

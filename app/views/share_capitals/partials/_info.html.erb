@@ -43,25 +43,45 @@
         <tr>
           <th></th>
           <th> Posting Date </th>
+          <th> Time</th>
           <th> Office </th>
           <th> Employee </th>
           <th> REF # </th>
           <th> Description </th>
-          <th> Amount </th>
+          <th> Debit </th>
+          <th> Credit </th>
+
           <th> Balance </th>
         </tr>
       </thead>
       <tbody>
         <% @entries.uniq.each do |entry| %>
+        <% debits_total = entry.debit_amounts.where(account: @share_capital.share_capital_equity_account).total %>
+        <% credits_total = entry.credit_amounts.where(account: @share_capital.share_capital_equity_account).total %>
+
           <tr>
             <td><i class=" fa fa-arrow-<%= ::Presenters::ShareCapital.new(share_capital: @share_capital, entry: entry).chevron %> img-square text-<%= Presenters::ShareCapital.new(share_capital: @share_capital, entry: entry).text_color %>"></i></td>
-            <td><%= entry.entry_date.strftime('%B %e, %Y') %> - <%= entry.created_at.strftime("%-l:%M %p")%></td>
+            <td><%= link_to entry.entry_date.strftime('%b. %e, %Y'), accounting_module_entry_path(entry) %></td>
+            <td> <%= entry.entry_time.strftime("%-l:%M %p")%></td>
             <td><%= entry.office_name %></td>
             <td><%= entry.recorder_name %></td>
             <td><%= entry.reference_number %></td>
             <td><%= entry.description %></td>
-            <td><%= number_to_currency entry.amounts.where(account: @share_capital.share_capital_equity_account).total %></td>
-            <td><span class='float-right'><%= number_to_currency @share_capital.balance(to_date: entry.entry_date, to_time: entry.created_at) %></span></td>
+            <td>
+              <% if !debits_total.zero? %>
+                <%= number_to_currency debits_total %></td>
+              <% else %>
+              -
+              <% end %>
+            </td>
+            <td>
+              <% if !credits_total.zero? %>
+                <%= number_to_currency credits_total %></td>
+              <% else %>
+              -
+              <% end %>
+            </td>
+            <td><span class='float-right'><%= number_to_currency @share_capital.balance(to_date: entry.entry_date, to_time: entry.entry_time) %></span></td>
           </tr>
         <% end %>
       </tbody>

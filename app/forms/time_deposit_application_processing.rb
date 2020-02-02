@@ -57,14 +57,12 @@ class TimeDepositApplicationProcessing
     voucher.voucher_amounts.debit.build(
       cooperative:         find_employee.cooperative,
       account:             cash_account,
-      amount:              amount,
-      commercial_document: time_deposit_application
+      amount:              amount
     )
     voucher.voucher_amounts.credit.build(
       cooperative:         find_employee.cooperative,
       account:             time_deposit_application.liability_account,
-      amount:              amount,
-      commercial_document: time_deposit_application)
+      amount:              amount)
     voucher.save!
   end
 
