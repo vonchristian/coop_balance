@@ -121,6 +121,8 @@ module MembershipsModule
     end
 
     def last_transaction_date
+      return created_at if entries.with_cash_accounts.blank?
+
       entries.with_cash_accounts.recent.entry_date
     end 
 

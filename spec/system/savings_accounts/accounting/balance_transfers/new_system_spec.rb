@@ -34,8 +34,8 @@ describe 'New balance transfer' do
 
     click_button 'Add Amount'
 
-    fill_in 'Date', with: Date.current 
-    fill_in 'Description', with: 'test'
+    fill_in 'Date',             with: Date.current 
+    fill_in 'Description',      with: 'test'
     fill_in 'Reference number', with: 'test'
 
     click_button 'Proceed'
