@@ -445,7 +445,7 @@ Rails.application.routes.draw do
   resources :savings_accounts, only: [:index, :show] do
     resources :accounting, only: [:index], module: :savings_accounts 
     resources :balance_transfers, only: [:new], module: :savings_accounts
-    resources :balance_transfer_processings, only: [:new, :create], module: :savings_accounts
+    resources :balance_transfer_processings, only: [:new, :create, :destroy], module: :savings_accounts
     resources :balance_transfer_vouchers, only: [:show],            module: :savings_accounts
     resources :deposit_vouchers, only: [:show, :destroy],           module: :savings_accounts
     resources :withdrawal_vouchers, only: [:show, :destroy],        module: :savings_accounts

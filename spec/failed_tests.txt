@@ -1483,8 +1483,8 @@ example_id                                                                      
 ./spec/system/organizations/show_organization_system_spec.rb[1:1]                                               | failed  | 0.11345 seconds |
 ./spec/system/savings_accounts/account_closing/new_account_closing_system_spec.rb[1:1]                          | failed  | 0.53621 seconds |
 ./spec/system/savings_accounts/account_closing/new_account_closing_system_spec.rb[1:2]                          | failed  | 0.40627 seconds |
-./spec/system/savings_accounts/accounting/balance_transfers/new_system_spec.rb[1:1]                             | failed  | 8.23 seconds    |
-./spec/system/savings_accounts/accounting/balance_transfers/new_system_spec.rb[1:2]                             | failed  | 0.92515 seconds |
+./spec/system/savings_accounts/accounting/balance_transfers/new_system_spec.rb[1:1]                             | passed  | 9.34 seconds    |
+./spec/system/savings_accounts/accounting/balance_transfers/new_system_spec.rb[1:2]                             | passed  | 0.91965 seconds |
 ./spec/system/savings_accounts/accounting/index_system_spec.rb[1:1]                                             | passed  | 0.40783 seconds |
 ./spec/system/savings_accounts/deposits/new_system_spec.rb[1:1]                                                 | passed  | 8.06 seconds    |
 ./spec/system/savings_accounts/deposits/new_system_spec.rb[1:2]                                                 | passed  | 0.812 seconds   |

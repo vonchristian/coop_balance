@@ -1,9 +1,9 @@
 <%= simple_form_for @balance_transfer, url: :savings_account_balance_transfer_processings do |f| %>
   <%= f.input :amount %>
-  <%= f.input :savings_account_id, input_html: { value: @savings_account.id} %>
+  <%= f.input :destination_savings_account_id, input_html: { value: @destination_savings_account.id} %>
   <%= f.input :cart_id, input_html: { value: current_cart.id} %>
   <%= f.input :employee_id, input_html: { value: current_user.id} %>
 
 
-  <%= f.submit %>
+  <%= f.submit 'Add Amount' %>
 <% end %>

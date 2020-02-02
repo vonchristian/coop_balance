@@ -1,7 +1,7 @@
 module SavingsAccounts
   class BalanceTransfer
     include ActiveModel::Model
-    attr_accessor :cart_id, :savings_account_id, :amount, :employee_id
+    attr_accessor :cart_id, :destination_savings_account_id, :amount, :employee_id
     
     def process!
       if valid?
@@ -14,7 +14,7 @@ module SavingsAccounts
     private 
     def create_voucher_amount
       find_cart.voucher_amounts.credit.create!(
-        amount: amount,
+        amount:  amount,
         account: find_destination_saving.liability_account
       )
     end 
@@ -23,7 +23,7 @@ module SavingsAccounts
       StoreFrontModule::Cart.find(cart_id)
     end 
     def find_destination_saving
-      find_office.savings.find(savings_account_id)
+      find_office.savings.find(destination_savings_account_id)
     end 
     def find_office
       find_employee.office 
