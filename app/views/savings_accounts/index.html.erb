@@ -1,4 +1,30 @@
 <div class='container'>
+<div class='card'>
+              <div class='card-body'>
+                <div class='row'>
+                  <div class='col-md-4'>
+                    <% current_office.office_saving_products.each do |office_saving_product| %>
+                      <small class='text-muted'><%= office_saving_product.saving_product_name.upcase %></small>
+                      <h3 class='title-up'><%= number_to_currency office_saving_product.liability_account_category.balance %></h3>
+                    <% end %>
+                  </div>
+                  <div class='col-md-2'>
+                    <small class='text-muted'> ACCOUNTS </small>
+                    <h3 class='title-up'><%= number_to_currency current_office.savings.size, unit: "", precision: 0 %></h3>
+                  </div>
+                  <div class='col-md-3'>
+                    <small class='text-muted'> BELOW MIN BALANCE </small>
+                    <h3 class='title-up'><%= number_to_currency current_office.savings.below_minimum_balance.size, unit: "", precision: 0 %></h3>
+                  </div>
+                  <div class='col-md-3'>
+                    <small class='text-muted'> NEW ACCOUNTS (this month) </small>
+                    <h3 class='title-up'><%= number_to_currency current_office.savings.below_minimum_balance.size, unit: "", precision: 0 %></h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+    <div class='card'>
+      <div class='card-body'>
     <div class="row">
         <div class="col-md-3">
           <h3 class="title-up">Savings Accounts</h3>
@@ -21,10 +47,7 @@
         </div>
       </div>
       <br>
-      <div class='row'>
-        <div class='col-md-8'>
-          <div class='card'>
-            <div class='card-body'>
+  
             <div class='table table-responsive'>
               <table class='table table-hover table-striped'>
                 <thead>
@@ -55,26 +78,8 @@
             </div>
           </div>
         </div>
-      </div>
-          <div class='col-md-4'>
-            <div class='card'>
-              <div class='card-body'>
-                 <% current_office.office_saving_products.each do |office_saving_product| %>
-                   <small class='text-muted'><%= office_saving_product.saving_product_name.upcase %></small>
-                   <h3 class='title-up'><%= number_to_currency office_saving_product.liability_account_category.balance %></h3>
-                <% end %>
-                <hr>
-                <small class='text-muted'> ACCOUNTS </small>
-                <h3 class='title-up'><%= number_to_currency current_office.savings.size, unit: "", precision: 0 %></h3>
-                <hr>
-                <small class='text-muted'> BELOW MIN BALANCE </small>
-                <h3 class='title-up'><%= number_to_currency current_office.savings.below_minimum_balance.size, unit: "", precision: 0 %></h3>
-                <hr>
-                 <small class='text-muted'> NEW ACCOUNTS (this month) </small>
-                <h3 class='title-up'><%= number_to_currency current_office.savings.below_minimum_balance.size, unit: "", precision: 0 %></h3>
-              </div>
-            </div>
-          </div>
+     
+         
         
 
 <script>
