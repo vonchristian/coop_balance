@@ -76,7 +76,7 @@ module AccountingModule
 
     def entries_for_pdf
       if params[:from_date].present? && params[:to_date].present?
-        @from_date = params[:from_date] ? DateTime.parse(params[:from_date]) : current_cooperative.entries.order(entry_date: :asc).first.entry_date
+        @from_date = params[:from_date] ? DateTime.parse(params[:from_date]) : current_office.entries.order(entry_date: :asc).first.entry_date
         @to_date = params[:to_date] ? DateTime.parse(params[:to_date]) : Date.today.end_of_year
         @entries = current_cooperative.entries.not_cancelled.order(reference_number: :asc).entered_on(from_date: @from_date, to_date: @to_date)
       elsif params[:search].present?
@@ -85,14 +85,14 @@ module AccountingModule
         @to_date = @entries.order(entry_date: :desc).first.entry_date
       elsif params[:recorder_id].present?
         @recorder = current_cooperative.users.find(params[:recorder_id])
-        @entries = @recorder.entries.where(cancelled: false).order(reference_number: :asc)
+        @entries = @recorder.entries.not_cancelled.order(reference_number: :asc)
       # elsif params[:office_id].present?
       #   @office  = current_cooperative.offices.find(params[:office_id])
       #   @entries = current_cooperative.offices.find(params[:office_id]).entries.paginate(:page => params[:page], :per_page => 50)
       else
-        @from_date = params[:from_date] ? DateTime.parse(params[:from_date]) : current_cooperative.entries.order(entry_date: :asc).first.entry_date
+        @from_date = params[:from_date] ? DateTime.parse(params[:from_date]) : current_office.entries.order(entry_date: :asc).first.entry_date
         @to_date = params[:to_date] ? DateTime.parse(params[:to_date]) : Date.today.end_of_year
-        @entries = current_cooperative.entries.where(cancelled: false).order(reference_number: :asc)
+        @entries = current_cooperative.entries.not_cancelled.order(reference_number: :asc)
       end
     end
 
