@@ -20,9 +20,9 @@
           <hr>
           <small class='text-muted'> EXPORT TO: </small><br>
           <% if params[:search].present? %>
-            <%= link_to 'Excel', accounting_module_journal_entry_vouchers_path(format: 'xlsx', search: params[:search]), class: 'btn btn-outline-success float-left' %>
+            <%= link_to 'Excel', accounting_module_journal_entry_vouchers_path(format: 'csv', search: params[:search]), class: 'btn btn-outline-success float-left' %>
           <% else %>
-            <%= link_to 'Excel', accounting_module_journal_entry_vouchers_path(format: 'xlsx', from_date: @from_date, to_date: @to_date), class: 'btn btn-outline-success float-left' %>
+            <%= link_to 'Excel', accounting_module_journal_entry_vouchers_path(format: 'csv', from_date: @from_date, to_date: @to_date), class: 'btn btn-outline-success float-left' %>
           <% end %>
 
                 <% if params[:search].present? %>

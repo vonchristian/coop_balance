@@ -24,7 +24,10 @@ document.addEventListener("turbolinks:load", () => {
   $('.datepicker').datepicker(
     {
       format: 'dd/mm/yyyy',
-      autoclose: true
+      autoclose: true,
+      format: 'dd/mm/yyyy',
+        orientation: 'bottom auto',
+        todayBtn: 'linked'
     });
     $('.datepicker-month').datepicker(
       {

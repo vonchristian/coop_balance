@@ -18,7 +18,7 @@
           <br>
           <hr>
           <small class='text-muted'> EXPORT TO: </small><br>
-                <%= link_to 'Excel', accounting_module_entries_path(format: 'xlsx', from_date: @from_date, to_date: @to_date), class: 'btn btn-outline-success float-left' %>
+                <%= link_to 'EXCEL', accounting_module_entries_path(format: 'csv', from_date: @from_date, to_date: @to_date), class: 'btn btn-outline-success float-left' %>
                 <%= link_to 'PDF', accounting_module_entries_path(format: 'pdf', search: params[:search]), class: 'btn btn-outline-success float-right' %>
 
         <% end %>

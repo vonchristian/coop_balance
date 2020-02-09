@@ -13,8 +13,8 @@ module AccountingModule
         @entries_for_pdf = current_office.entries.entered_on(from_date: @from_date, to_date: @to_date).order(reference_number: :desc)
       end 
       respond_to do |format|
+				format.csv { render_csv }
         format.html
-        format.xlsx
         format.pdf do
           pdf = AccountingModule::EntriesPdf.new(
             from_date:    @from_date,
@@ -95,6 +95,52 @@ module AccountingModule
         @entries = current_cooperative.entries.where(cancelled: false).order(reference_number: :asc)
       end
     end
+
+    def render_csv
+			# Tell Rack to stream the content
+			headers.delete("Content-Length")
+
+			# Don't cache anything from this generated endpoint
+			headers["Cache-Control"] = "no-cache"
+
+			# Tell the browser this is a CSV file
+			headers["Content-Type"] = "text/csv"
+
+			# Make the file download with a specific filename
+			headers["Content-Disposition"] = "attachment; filename=\"Entries.csv\""
+
+			# Don't buffer when going through proxy servers
+			headers["X-Accel-Buffering"] = "no"
+
+			# Set an Enumerator as the body
+			self.response_body = csv_body
+
+			response.status = 200
+		end
+
+		private
+
+		def csv_body
+			Enumerator.new do |yielder|
+				yielder << CSV.generate_line(["#{current_office.name} - Entries "])
+				yielder << CSV.generate_line(["DATE", "MEMBER/PAYEE", "PARTICULARS", "REF NO.", "ACCOUNT", 'DEBIT', 'CREDIT'])
+				@entries_for_pdf.order(entry_date: :desc).order(entry_time: :desc).order(reference_number: :asc).each do |entry|
+					yielder << CSV.generate_line([
+          entry.entry_date.strftime("%B %e, %Y"),
+          entry.display_commercial_document,
+          entry.description,
+          entry.reference_number
+          ])
+          entry.debit_amounts.each do |debit_amount|
+            yielder << CSV.generate_line(["", "", "", "",debit_amount.account_display_name,
+            debit_amount.amount])
+          end 
+          entry.credit_amounts.each do |credit_amount|
+            yielder << CSV.generate_line(["", "", "", "","    #{credit_amount.account_display_name}", "",credit_amount.amount])
+          end 
+				end
+			end 
+    end 
 
   end
 end
