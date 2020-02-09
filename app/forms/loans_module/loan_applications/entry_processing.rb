@@ -31,7 +31,8 @@ module LoansModule
           description:         voucher.description,
           recorder:            voucher.preparer,
           reference_number:    voucher.reference_number,
-          entry_date:          voucher.disbursement_date)
+          entry_date:          voucher.disbursement_date,
+          entry_time:          (voucher.date.strftime('%B %e, %Y').to_s + " " + voucher.created_at.to_s).to_datetime)
 
           voucher.voucher_amounts.debit.excluding_account(account: loan.receivable_account).each do |amount|
             entry.debit_amounts.build(
