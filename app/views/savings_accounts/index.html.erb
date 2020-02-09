@@ -59,8 +59,10 @@
           <div class='col-md-4'>
             <div class='card'>
               <div class='card-body'>
-                <small class='text-muted'> TOTAL SAVINGS </small>
-                <h2 class='title-up'><%= number_to_currency current_office.savings.balance %></h2>
+                 <% current_office.office_saving_products.each do |office_saving_product| %>
+                   <small class='text-muted'><%= office_saving_product.saving_product_name.upcase %></small>
+                   <h3 class='title-up'><%= number_to_currency office_saving_product.liability_account_category.balance %></h3>
+                <% end %>
                 <hr>
                 <small class='text-muted'> ACCOUNTS </small>
                 <h3 class='title-up'><%= number_to_currency current_office.savings.size, unit: "", precision: 0 %></h3>
