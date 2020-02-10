@@ -69,7 +69,7 @@ module AccountingModule
     def self.debits_balance(args = {})
       accounts_balance = BigDecimal('0')
       self.all.each do |category|
-        if account_category.contra?
+        if category.contra?
           accounts_balance -= category.debits_balance(args)
         else
           accounts_balance += category.debits_balance(args)
@@ -81,7 +81,7 @@ module AccountingModule
     def self.credits_balance(args = {})
       accounts_balance = BigDecimal('0')
       self.all.each do |category|
-        if account.contra?
+        if category.contra?
           accounts_balance -= category.credits_balance(args)
         else
           accounts_balance += category.credits_balance(args)

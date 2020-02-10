@@ -8,7 +8,7 @@
       </div>
       <div class="col-md-3">
        <%= link_to 'View (PDF)', accounting_module_reports_trial_balances_path(format: 'pdf'), to_date: @to_date, class: "btn btn-default float-right" %>
-       <%= link_to 'Excel', accounting_module_reports_trial_balances_path(format: 'xlsx') %>
+       <%= link_to 'Excel', accounting_module_reports_trial_balances_path(format: 'csv', to_date: @to_date) %>
 
       </div>
     </div>
@@ -18,7 +18,7 @@
        <div class="row">
          <div class="col-md-3">
            <div class="form-group">
-             <%= text_field_tag :to_date, @to_date.strftime("%B %e, %Y"), :class => 'form-control border-input datepicker', :placeholder => "To " %>
+             <%= text_field_tag :to_date, @to_date, :class => 'form-control border-input datepicker', :placeholder => "To " %>
            </div>
          </div>
          <div class="col-md-1">
@@ -28,11 +28,36 @@
      <% end %>
   </div>
 </div>
-     <% @accounts.each do |account| %>
-       <%= render 'accounting_module/accounts/partials/header', account: account %>
-     <% end %>
-     <center><%= will_paginate @accounts %></center>
+    <div class='table table-responsive'>
+        <table class='table table-hover'>
+          <thead>
+            <tr>
+              <th> Code </th>
+              <th> Title </th>
+              <th> Beginning Balance </th>
+              <th> Debits </th>
+              <th> Credits </th>
+              <th> Ending Balance </th>
 
+            </tr>
+          </thead>
+          <tbody>
+            <% @categories.uniq.each do |category| %>
+              <tr>
+                <td><%= category.code%></td>
+                <td><%= category.title %></td>
+                <td><%= number_to_currency category.balance(to_date: @to_date.yesterday) %></td>
+                <td><%= number_to_currency category.debits_balance(from_date: @to_date, to_date: @to_date) %></td>
+                <td><%= number_to_currency category.credits_balance(from_date: @to_date, to_date: @to_date) %></td>
+                <td><%= number_to_currency category.balance(to_date: @to_date) %></td>
+
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <%==pagy_bootstrap_nav(@pagy) %>
+
+      </div>
     </div>
   </div>
 </div>
