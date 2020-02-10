@@ -7,6 +7,7 @@
       </div>
       <div class="card-body">
         <%= form_tag({:action => "index", controller: "/accounting_module/entries/cash_disbursements"}, {:method => :get})  do %>
+          <%= hidden_field_tag :cash_account_id, params[:cash_account_id] %>
           <p class="no-margin-bottom">From</p>
           <div class="form-group">
             <%= text_field_tag :from_date, @from_date.present? ? @from_date.strftime("%B %e, %Y") : @from_date, :class => 'datepicker form-control border-input', :placeholder => "From " %>
@@ -20,15 +21,15 @@
           <hr>
           <small class='text-muted'> EXPORT TO: </small><br>
           <% if params[:search].present? %>
-            <%= link_to 'Excel', accounting_module_cash_disbursements_path(format: 'csv', search: params[:search]), class: 'btn btn-outline-success float-left' %>
+            <%= link_to 'Excel', accounting_module_cash_disbursements_path(format: 'csv', search: params[:search], cash_account_id: @cash_account.id), class: 'btn btn-outline-success float-left' %>
           <% else %>
-            <%= link_to 'Excel', accounting_module_cash_disbursements_path(format: 'csv', from_date: @from_date, to_date: @to_date), class: 'btn btn-outline-success float-left' %>
+            <%= link_to 'Excel', accounting_module_cash_disbursements_path(format: 'csv', from_date: @from_date, to_date: @to_date, cash_account_id: @cash_account.id), class: 'btn btn-outline-success float-left' %>
           <% end %>
 
                 <% if params[:search].present? %>
-                <%= link_to 'PDF', accounting_module_cash_disbursements_path(format: 'pdf', search: params[:search]), class: 'btn btn-outline-success float-right' %>
+                <%= link_to 'PDF', accounting_module_cash_disbursements_path(format: 'pdf', search: params[:search], cash_account_id: @cash_account.id), class: 'btn btn-outline-success float-right' %>
                 <% else %>
-                  <%= link_to 'PDF', accounting_module_cash_disbursements_path(format: 'pdf', from_date: @from_date, to_date: @to_date), class: 'btn btn-outline-success float-right' %>
+                  <%= link_to 'PDF', accounting_module_cash_disbursements_path(format: 'pdf', from_date: @from_date, to_date: @to_date, cash_account_id: @cash_account.id), class: 'btn btn-outline-success float-right' %>
                 <% end %>
 
         <% end %>
@@ -46,6 +47,11 @@
   <div class='col-md-9'>
     <div class='card'>
       <div class='card-body'>
+          <small class='text-muted'> Cash Accounts </small><br>
+          <% current_office.cash_accounts.each do |cash_account| %>
+            <%= link_to cash_account.name,  accounting_module_cash_receipts_path(cash_account_id: cash_account.id), class: "btn btn-outline-primary #{'active' if cash_account.id == @cash_account.id }" %>
+          <% end %>
+         <hr>
         <div class='row'>
           <div class='col-md-4'>
             <h4 class='subtitle-up'> Cash Disbursements </h4>

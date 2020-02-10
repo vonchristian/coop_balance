@@ -2,14 +2,15 @@ module AccountingModule
   module Entries
     class CashReceiptsController < ApplicationController
       def index
-        @from_date = params[:from_date] ? DateTime.parse(params[:from_date]) : Date.current.beginning_of_year
-        @to_date   = params[:to_date] ? DateTime.parse(params[:to_date]) : Date.current.end_of_year
+        @cash_account = params[:cash_account_id] ? current_office.cash_accounts.find(params[:cash_account_id]) : current_office.cash_accounts.first 
+        @from_date    = params[:from_date] ? DateTime.parse(params[:from_date]) : Date.current.beginning_of_year
+        @to_date      = params[:to_date] ? DateTime.parse(params[:to_date]) : Date.current.end_of_year
         if params[:search].present?
-          @entries_for_pdf = current_office.cash_accounts.debit_entries.order(reference_number: :desc).text_search(params[:search])
-          @pagy, @entries  = pagy(current_office.cash_accounts.debit_entries.includes(:commercial_document, :debit_amounts).order(reference_number: :desc).text_search(params[:search]))
+          @entries_for_pdf = @cash_account.debit_entries.text_search(params[:search])
+          @pagy, @entries  = pagy(@cash_account.debit_entries.includes(:commercial_document, :debit_amounts).order(reference_number: :desc).text_search(params[:search]))
         else 
-          @entries_for_pdf = current_office.cash_accounts.debit_entries.not_cancelled.order(reference_number: :desc).entered_on(from_date: @from_date, to_date: @to_date)
-          @pagy, @entries  = pagy(current_office.cash_accounts.debit_entries.includes(:commercial_document, :debit_amounts).order(reference_number: :desc).entered_on(from_date: @from_date, to_date: @to_date))
+          @entries_for_pdf = @cash_account.debit_entries.not_cancelled.entered_on(from_date: @from_date, to_date: @to_date)
+          @pagy, @entries  = pagy(@cash_account.debit_entries.includes(:commercial_document, :debit_amounts).order(reference_number: :desc).entered_on(from_date: @from_date, to_date: @to_date))
         end
         respond_to do |format|
           format.html
@@ -56,7 +57,7 @@ module AccountingModule
   
       def csv_body
         Enumerator.new do |yielder|
-          yielder << CSV.generate_line(["#{current_office.name} - Cash Receipts Journal"])
+          yielder << CSV.generate_line(["#{@cash_account.name} - Cash Receipts Journal"])
           yielder << CSV.generate_line(["DATE", "MEMBER/PAYEE", "PARTICULARS", "REF NO.", "ACCOUNT", 'DEBIT', 'CREDIT'])
           @entries_for_pdf.order(reference_number: :asc).each do |entry|
             yielder << CSV.generate_line([
@@ -76,8 +77,8 @@ module AccountingModule
           yielder << CSV.generate_line([""])
           yielder << CSV.generate_line(["Accounts Summary"])
           yielder << CSV.generate_line(["DEBIT", "ACCOUNT", "CREDIT"])
-
-          current_office.level_one_account_categories.updated_at(from_date: @from_date, to_date: @to_date).uniq.each do |l1_category|
+          l1_category_ids = @entries_for_pdf.accounts.pluck(:level_one_account_category_id)
+          current_office.level_one_account_categories.where(id: l1_category_ids.uniq.compact.flatten).updated_at(from_date: @from_date, to_date: @to_date).uniq.each do |l1_category|
             yielder << CSV.generate_line([
               l1_category.debits_balance(from_date: @from_date, to_date: @to_date),
               l1_category.title, 
