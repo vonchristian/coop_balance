@@ -58,7 +58,7 @@ module AccountingModule
         Enumerator.new do |yielder|
           yielder << CSV.generate_line(["#{current_office.name} - Cash Receipts Journal"])
           yielder << CSV.generate_line(["DATE", "MEMBER/PAYEE", "PARTICULARS", "REF NO.", "ACCOUNT", 'DEBIT', 'CREDIT'])
-          @entries_for_pdf.order(entry_date: :desc).order(entry_time: :desc).order(reference_number: :desc).each do |entry|
+          @entries_for_pdf.order(reference_number: :asc).each do |entry|
             yielder << CSV.generate_line([
             entry.entry_date.strftime("%B %e, %Y"),
             entry.display_commercial_document,
@@ -73,6 +73,17 @@ module AccountingModule
               yielder << CSV.generate_line(["", "", "", "","    #{credit_amount.account_display_name}", "",credit_amount.amount])
             end 
           end
+          yielder << CSV.generate_line([""])
+          yielder << CSV.generate_line(["Accounts Summary"])
+          yielder << CSV.generate_line(["DEBIT", "ACCOUNT", "CREDIT"])
+
+          current_office.level_one_account_categories.updated_at(from_date: @from_date, to_date: @to_date).uniq.each do |l1_category|
+            yielder << CSV.generate_line([
+              l1_category.debits_balance(from_date: @from_date, to_date: @to_date),
+              l1_category.title, 
+              l1_category.credits_balance(from_date: @from_date, to_date: @to_date)
+              ])
+          end 
         end 
       end 
     end

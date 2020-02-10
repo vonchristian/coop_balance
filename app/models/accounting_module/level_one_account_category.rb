@@ -23,6 +23,11 @@ module AccountingModule
     scope :equities,    -> { where(type: 'AccountingModule::AccountCategories::LevelOneAccountCategories::Equity') }
     scope :revenues,    -> { where(type: 'AccountingModule::AccountCategories::LevelOneAccountCategories::Revenue') }
     scope :expenses,    -> { where(type: 'AccountingModule::AccountCategories::LevelOneAccountCategories::Expense') }
+    
+    def self.updated_at(args={})
+      date_range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])
+      joins(:entries).where('entries.entry_date' => date_range.start_date..date_range.end_date)
+    end
 
     def self.except_cash_account_categories
       where.not(id: Employees::EmployeeCashAccount.cash_account_categories.ids)

@@ -42,7 +42,6 @@ module AccountingModule
     def self.updated_at(args={})
         date_range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])
         joins(:entries).where('entries.entry_date' => date_range.start_date..date_range.end_date)
-      # end
     end
 
     def self.updated_by(employee)

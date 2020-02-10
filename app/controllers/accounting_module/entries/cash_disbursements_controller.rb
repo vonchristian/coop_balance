@@ -59,7 +59,7 @@ module AccountingModule
         Enumerator.new do |yielder|
           yielder << CSV.generate_line(["#{current_office.name} - Cash Disbursements Journal"])
           yielder << CSV.generate_line(["DATE", "MEMBER/PAYEE", "PARTICULARS", "REF NO.", "ACCOUNT", 'DEBIT', 'CREDIT'])
-          @entries_for_pdf.order(entry_date: :desc).order(entry_time: :desc).order(reference_number: :desc).each do |entry|
+          @entries_for_pdf.order(reference_number: :asc).each do |entry|
             yielder << CSV.generate_line([
             entry.entry_date.strftime("%B %e, %Y"),
             entry.display_commercial_document,

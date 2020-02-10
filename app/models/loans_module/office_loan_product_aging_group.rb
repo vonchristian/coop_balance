@@ -9,7 +9,7 @@ module LoansModule
     validates :loan_aging_group_id, uniqueness: { scope: :office_loan_product_id }
     
     def self.current 
-      joins(:loan_aging_group).where('loan_aging_groups.start_num' == 0).where('loan_aging_groups.end_num' == 0).order(created_at: :desc).first 
+      joins(:loan_aging_group).where('loan_aging_groups.start_num' => 0).where('loan_aging_groups.end_num' => 0).order(created_at: :asc).first 
     end 
   end
 end 
