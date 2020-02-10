@@ -13,8 +13,10 @@ module LoansModule
     end 
 
     it '.current' do 
-      old_group = create(:office_loan_product_aging_group, created_at: Date.current.last_year)
-      new_group = create(:office_loan_product_aging_group, created_at: Date.current)
+      past_due         = create(:loan_aging_group, start_num: 1, end_num: 30)
+      loan_aging_group = create(:loan_aging_group, start_num: 0, end_num: 0)
+      old_group = create(:office_loan_product_aging_group, created_at: Date.current.last_year, loan_aging_group: past_due)
+      new_group = create(:office_loan_product_aging_group, created_at: Date.current, loan_aging_group: loan_aging_group)
 
       expect(described_class.current).to eq new_group
       expect(described_class.current).to_not eq old_group

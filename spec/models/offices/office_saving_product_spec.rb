@@ -24,5 +24,9 @@ module Offices
         expect(office_saving_product.errors[:saving_product_id]).to eq ['has already been taken']
       end
     end
+
+    describe 'delegations' do 
+      it { is_expected.to delegate_method(:name).to(:saving_product).with_prefix }
+    end 
   end
 end

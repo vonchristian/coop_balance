@@ -78,21 +78,21 @@ module AccountingModule
       if params[:from_date].present? && params[:to_date].present?
         @from_date = params[:from_date] ? DateTime.parse(params[:from_date]) : current_office.entries.order(entry_date: :asc).first.entry_date
         @to_date = params[:to_date] ? DateTime.parse(params[:to_date]) : Date.today.end_of_year
-        @entries = current_cooperative.entries.not_cancelled.order(reference_number: :asc).entered_on(from_date: @from_date, to_date: @to_date)
+        @entries = current_cooperative.entries.not_cancelled.order(reference_number: :desc).entered_on(from_date: @from_date, to_date: @to_date)
       elsif params[:search].present?
-        @entries = current_cooperative.entries.where(cancelled: false).order(reference_number: :asc).text_search(params[:search])
+        @entries = current_cooperative.entries.where(cancelled: false).order(reference_number: :desc).text_search(params[:search])
         @from_date = @entries.order(entry_date: :asc).first.entry_date
         @to_date = @entries.order(entry_date: :desc).first.entry_date
       elsif params[:recorder_id].present?
         @recorder = current_cooperative.users.find(params[:recorder_id])
-        @entries = @recorder.entries.not_cancelled.order(reference_number: :asc)
+        @entries = @recorder.entries.not_cancelled.order(reference_number: :desc)
       # elsif params[:office_id].present?
       #   @office  = current_cooperative.offices.find(params[:office_id])
       #   @entries = current_cooperative.offices.find(params[:office_id]).entries.paginate(:page => params[:page], :per_page => 50)
       else
         @from_date = params[:from_date] ? DateTime.parse(params[:from_date]) : current_office.entries.order(entry_date: :asc).first.entry_date
         @to_date = params[:to_date] ? DateTime.parse(params[:to_date]) : Date.today.end_of_year
-        @entries = current_cooperative.entries.not_cancelled.order(reference_number: :asc)
+        @entries = current_cooperative.entries.not_cancelled.order(reference_number: :desc)
       end
     end
 
@@ -124,7 +124,7 @@ module AccountingModule
 			Enumerator.new do |yielder|
 				yielder << CSV.generate_line(["#{current_office.name} - Entries "])
 				yielder << CSV.generate_line(["DATE", "MEMBER/PAYEE", "PARTICULARS", "REF NO.", "ACCOUNT", 'DEBIT', 'CREDIT'])
-				@entries_for_pdf.order(entry_date: :desc).order(entry_time: :desc).order(reference_number: :asc).each do |entry|
+				@entries_for_pdf.order(entry_date: :desc).order(entry_time: :desc).order(reference_number: :desc).each do |entry|
 					yielder << CSV.generate_line([
           entry.entry_date.strftime("%B %e, %Y"),
           entry.display_commercial_document,
