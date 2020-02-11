@@ -52,44 +52,35 @@
 <div class="card-body">
   <h3 class="card-title">Entry Details </h3>
   <div class="table table-responsive">
+    <div class="table table-responsive">
     <table class="table table-hover no-margin-bottom">
       <thead>
         <tr>
-          <th>Debit</th>
-          <th class="text-center">Account</th>
+          <th>DEBIT</th>
+          <th class="text-center">ACCOUNT</th>
           <th>
-            <span class="float-right">Credit</span>
+            <span class="float-right">CREDIT</span>
           </th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>
-            <%= number_to_currency time_deposit.deposited_amount %> 
-          </td>
-          <td>
-            <%= time_deposit.liability_account.display_name %> 
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>
-            <%= number_to_currency time_deposit.interest_balance %> 
-          </td>
-          <td>Interest on Time Deposits</td>
-          <td></td>
-        </tr>
-        <% voucher.voucher_amounts.credit.order(:amount_type).each do |voucher_amount| %>
+        <% voucher.voucher_amounts.order(:amount_type).each do |voucher_amount| %>
           <tr>
-            <td></td>
-            <td><%= voucher_amount.account_display_name %></td>
             <td>
-              <span class="float-right"><%= number_to_currency voucher_amount.amount %></span>
+              <% if voucher_amount.debit? %>
+                <%= number_to_currency voucher_amount.amount %>
+              <% end %>
+            </td>
+            <td><%= voucher_amount.account_display_name %></td>
+             <td>
+              <% if voucher_amount.credit? %>
+                <span class="float-right"><%= number_to_currency voucher_amount.amount %></span>
+              <% end %>
             </td>
           </tr>
         <% end %>
         <% if voucher.voucher_amounts.present? %>
-          <tr>
+           <tr>
             <th><b><%= number_to_currency voucher.voucher_amounts.debit.total %></b></th>
             <td></td>
             <th><b class="float-right"><%= number_to_currency voucher.voucher_amounts.credit.total %></b></th>

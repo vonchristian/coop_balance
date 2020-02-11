@@ -41,8 +41,8 @@ module TimeDeposits
         account: interest_account,
         amount: interest.to_f)
       voucher.voucher_amounts.credit.build(
-        account: credit_account,
-        amount: amount)
+        account: cash_account,
+        amount:  amount.to_f + interest.to_f)
       voucher.save!
     end
 
@@ -50,8 +50,8 @@ module TimeDeposits
       find_time_deposit.update(withdrawn: true)
     end
 
-    def credit_account
-      AccountingModule::Account.find(cash_account_id)
+    def cash_account
+      find_employee.cash_accounts.find(cash_account_id)
     end
 
     def debit_account

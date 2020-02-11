@@ -152,7 +152,7 @@ module CashBooks
         end
         table([["DEBIT", "ACCOUNT", "CREDIT"]] + account_categories_data + [[price(total_debits), "", price(total_credits)]],
           cell_style: { inline_format: true, size: 10, padding: [1,5,3,2]}, 
-            column_widths: [100, 100, 100]) do
+            column_widths: [150, 200, 150]) do
             column(0).align = :right
             column(2).align = :right
             row(-1).font_style = :bold

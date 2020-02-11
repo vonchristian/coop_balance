@@ -1,5 +1,20 @@
-<h2 class='title-up'><%= number_to_currency @cash_account.balance %></h2>
-
-<%= number_to_currency @cash_account.debits_balance(from_date: @from_date, to_date: @to_date) %>
-<%= number_to_currency @cash_account.credits_balance(from_date: @from_date, to_date: @to_date) %>
-<%= link_to 'PDF', treasury_module_cash_account_daily_transactions_path(@cash_account, format: 'pdf') %>
+<div class='container'>
+  <div class='card'>
+    <div class='card-body'>
+      <div class='row'>
+        <div class='col-md-4'>
+          <small class='text-muted'><%= @cash_account.name.upcase %> BALANCE</small>
+          <h2 class='title-up'><%= number_to_currency @cash_account.balance %></h2>
+        </div>
+        <div class='col-md-4'>
+          <small class='text-muted'> RECEIPTS (THIS DAY) </small>
+          <h4 class='title-up'><%= number_to_currency @cash_account.debits_balance(from_date: @from_date, to_date: @to_date) %></h4>   
+        </div>
+        <div class='col-md-4'>
+          <small class='text-muted'> DISBURSEMENTS (THIS DAY) </small>
+          <h4 class='title-up'><%= number_to_currency @cash_account.credits_balance(from_date: @from_date, to_date: @to_date) %></h4>   
+        </div>
+      </div>
+      <%= link_to 'View Report (PDF)', treasury_module_cash_account_daily_transactions_path(@cash_account, format: 'pdf'), class: 'btn btn-outline-primary' %>
+      <hr />
+    
