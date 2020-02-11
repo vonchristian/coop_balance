@@ -1,9 +1,9 @@
 module TimeDeposits
   class WithdrawalLineItemProcessing
     include ActiveModel::Model
-    attr_accessor :time_deposit_id, :employee_id, :amount, :or_number, :account_number, :date, :offline_receipt, :cash_account_id, :account_number
+    attr_accessor :time_deposit_id, :employee_id, :amount, :interest,  :or_number, :account_number, :date, :offline_receipt, :cash_account_id, :account_number
 
-    validates :amount, presence: true, numericality: { greater_than: 0.01 }
+    validates :amount, :interest,  presence: true, numericality: { greater_than: 0.01 }
     validates :or_number, :employee_id, presence: true
 
     def process!
@@ -35,7 +35,11 @@ module TimeDeposits
         date:             date)
       voucher.voucher_amounts.debit.build(
         account: debit_account,
-        amount: amount)
+        amount: amount.to_f)
+      
+      voucher.voucher_amounts.debit.build(
+        account: interest_account,
+        amount: interest.to_f)
       voucher.voucher_amounts.credit.build(
         account: credit_account,
         amount: amount)
@@ -52,6 +56,10 @@ module TimeDeposits
 
     def debit_account
       find_time_deposit.liability_account
+    end
+
+    def interest_account
+      find_time_deposit.interest_expense_account
     end
 
     def principal_amount_not_more_than_balance

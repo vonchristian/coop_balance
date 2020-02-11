@@ -5,11 +5,11 @@ module AccountingModule
       @from_date       = params[:from_date] ? Date.parse(params[:from_date]) : Date.current.beginning_of_year
       @to_date         = params[:to_date] ? Date.parse(params[:to_date]) : Date.today.end_of_year
       if params[:search].present?
-        @pagy, @entries = pagy(current_office.entries.text_search(params[:search]))
+        @pagy, @entries = pagy(current_office.entries.order(ref_number_integer: :asc).text_search(params[:search]))
         @entries_for_pdf = current_office.entries.text_search(params[:search])
     
       else 
-        @pagy, @entries  = pagy(current_office.entries.includes(:debit_amounts, :commercial_document).entered_on(from_date: @from_date, to_date: @to_date).order(entry_date: :desc).order(created_at: :desc))
+        @pagy, @entries  = pagy(current_office.entries.includes(:debit_amounts, :commercial_document).entered_on(from_date: @from_date, to_date: @to_date).order(ref_number_integer: :asc))
         @entries_for_pdf = current_office.entries.entered_on(from_date: @from_date, to_date: @to_date)
       end 
       respond_to do |format|

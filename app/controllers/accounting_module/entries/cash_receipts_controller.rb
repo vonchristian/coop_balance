@@ -2,15 +2,15 @@ module AccountingModule
   module Entries
     class CashReceiptsController < ApplicationController
       def index
-        @cash_account = params[:cash_account_id] ? current_office.cash_accounts.find(params[:cash_account_id]) : current_office.cash_accounts.first 
+        @cash_account = params[:cash_account_id] ? current_office.cash_accounts.find(params[:cash_account_id]) : current_office.cash_accounts.last
         @from_date    = params[:from_date] ? DateTime.parse(params[:from_date]) : Date.current.beginning_of_year
         @to_date      = params[:to_date] ? DateTime.parse(params[:to_date]) : Date.current.end_of_year
         if params[:search].present?
           @entries_for_pdf = @cash_account.debit_entries.text_search(params[:search])
-          @pagy, @entries  = pagy(@cash_account.debit_entries.includes(:commercial_document, :debit_amounts).order(reference_number: :desc).text_search(params[:search]))
+          @pagy, @entries  = pagy(@cash_account.debit_entries.includes(:commercial_document, :debit_amounts).order(ref_number_integer: :asc).text_search(params[:search]))
         else 
           @entries_for_pdf = @cash_account.debit_entries.not_cancelled.entered_on(from_date: @from_date, to_date: @to_date)
-          @pagy, @entries  = pagy(@cash_account.debit_entries.includes(:commercial_document, :debit_amounts).order(reference_number: :desc).entered_on(from_date: @from_date, to_date: @to_date))
+          @pagy, @entries  = pagy(@cash_account.debit_entries.includes(:commercial_document, :debit_amounts).order(ref_number_integer: :asc).entered_on(from_date: @from_date, to_date: @to_date))
         end
         respond_to do |format|
           format.html

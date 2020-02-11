@@ -30,6 +30,8 @@
         <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
         <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
         <%= f.input :amount, as: :currency, input_html: {value: @time_deposit.balance} %>
+        <%= f.input :interest, as: :currency, input_html: {value: @time_deposit.balance} %>
+
         <%= f.input :offline_receipt, as: :boolean, input_html: { checked: true }, as: :hidden %>
         <%= f.input :or_number, label: 'Reference Number' %>
         <%= f.input :time_deposit_id, input_html: { value: @time_deposit.id },as: :hidden %>
