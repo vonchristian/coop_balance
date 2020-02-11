@@ -410,6 +410,7 @@ Rails.application.routes.draw do
       resources :loans, only: [:index]
     end
     resources :cash_accounts, only: [:index, :show] do
+      resources :daily_transactions,                        only: [:index],                  module: :cash_accounts
       resources :receipts,                                  only: [:index],                  module: :cash_accounts
       resources :disbursements,                             only: [:index],                  module: :cash_accounts
       resources :reports,                                   only: [:index],                  module: :cash_accounts

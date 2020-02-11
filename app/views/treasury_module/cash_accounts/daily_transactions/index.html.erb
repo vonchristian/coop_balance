@@ -1,0 +1,5 @@
+<h2 class='title-up'><%= number_to_currency @cash_account.balance %></h2>
+
+<%= number_to_currency @cash_account.debits_balance(from_date: @from_date, to_date: @to_date) %>
+<%= number_to_currency @cash_account.credits_balance(from_date: @from_date, to_date: @to_date) %>
+<%= link_to 'PDF', treasury_module_cash_account_daily_transactions_path(@cash_account, format: 'pdf') %>

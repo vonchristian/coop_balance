@@ -25,7 +25,8 @@
 
         <br>
         <ul class="nav nav-tabs">
-          <li class="nav-item"><%= link_to 'Transactions', treasury_module_cash_account_path(cash_account), class: "text-sm-center nav-link #{'active' if current_page?(treasury_module_cash_account_path(cash_account))}" %></li>
+          <li class="nav-item"><%= link_to 'This Day', treasury_module_cash_account_daily_transactions_path(cash_account), class: "text-sm-center nav-link #{'active' if current_page?(treasury_module_cash_account_path(cash_account))}" %></li>
+          <li class="nav-item"><%= link_to 'All Transactions', treasury_module_cash_account_path(cash_account), class: "text-sm-center nav-link #{'active' if current_page?(treasury_module_cash_account_path(cash_account))}" %></li>
           <li class="nav-item"><%= link_to 'Cash Receipts', treasury_module_cash_account_receipts_path(cash_account), class: "text-sm-center nav-link #{'active' if current_page?(treasury_module_cash_account_receipts_path(cash_account))}" %></li>
           <li class="nav-item"><%= link_to 'Disbursements', treasury_module_cash_account_disbursements_path(cash_account), class: "text-sm-center nav-link #{'active' if current_page?(treasury_module_cash_account_disbursements_path(cash_account))}" %></li>
 

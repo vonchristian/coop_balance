@@ -46,8 +46,7 @@ class VoucherPdf < Prawn::Document
       text "#{cooperative.address}", size: 8
     end
     bounding_box [150, 405], width: 380 do
-      text "#{title.upcase}", style: :bold, size: 12, align: :right
-      text "CDV No: #{voucher.reference_number}", style: :bold, size: 10, align: :right
+      text "CDV No: #{voucher.reference_number}", style: :bold, size: 20, align: :right
     end
     move_down 25
     stroke do
@@ -59,6 +58,8 @@ class VoucherPdf < Prawn::Document
   end
 
   def payee_details
+    text "#{title.upcase}", style: :bold, size: 12, align: :right
+    
     text "VOUCHER DETAILS", style: :bold, size: 10
     move_down 5
     table([["", "Payee:", "<b>#{voucher.payee.try(:name).try(:upcase)}</b>", "Date:", "#{voucher.date.strftime("%B %e, %Y")}"]],
