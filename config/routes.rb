@@ -531,6 +531,7 @@ Rails.application.routes.draw do
   end
 
   namespace :loans_module do
+    resources :loan_payments, only: [:show]
     resources :settings,     only: [:index]
     namespace :settings do
       resources :archives,           only: [:new, :create]

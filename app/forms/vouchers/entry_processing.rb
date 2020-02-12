@@ -23,6 +23,7 @@ module Vouchers
         description:         voucher.description,
         recorder:            voucher.preparer,
         reference_number:    voucher.reference_number,
+        ref_number_integer:  voucher.reference_number.to_i,
         entry_date:          voucher.date,
         entry_time:          (voucher.date.strftime('%B %e, %Y').to_s + " " + voucher.created_at.to_s).to_datetime)
 

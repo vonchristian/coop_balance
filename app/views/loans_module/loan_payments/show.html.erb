@@ -1,36 +1,32 @@
-<div class='row'>
-  <div class='col-md-4'>
-    <h3 class="title-up"> Payments History</h3>
-  </div>
-  <div class='col-md-4'>
-  </div>
-  <div class='col-md-4'>
-    <%= link_to 'View (PDF)', loan_payments_path(format: 'pdf',loan_id: @loan.id), class: 'btn btn-outline-primary float-right' %>
-  </div>
-</div>
-<br>
-<div class='table table-responsive'>     
+<div class='container'>
+  <div class='card'>
+    <div class='card-body'>
+      <h3 class='title-up'><%= @entry.reference_number %></h3>
+      <%= @entry.description %>
+      <%= @entry.entry_date %>
+      <%= @entry.entry_time %>
+
+
+
+     <div class='table table-responsive'>     
   <table class="table table-hover table-striped">
     <thead>
       <tr>
-        <th>Date</th>
-        <th> Office </th>
-        <th>OR #</th>
+        <th>Borrower</th>
+        <th> Loan Product </th>
         <th class="text-right">Principal</th>
         <th class="text-right">Interest</th>
         <th class="text-right">Fines</th>
         <th class="text-right">Total Payment</th>
-        <th class="text-right">Principal Balance</th>
         <td></td>
       </tr>
     </thead>
     <tbody>
-    <% @payments.uniq.each do |entry| %>
-      <% if entry.cancelled? %>
+    <% @loans.each do |loan| %>
+      <% if @entry.cancelled? %>
         <tr>
-          <td><%= entry.entry_date.strftime("%B %e, %Y") %> - <%= entry.reference_number %>- CANCELLED</td>
+          <td><%= @entry.entry_date.strftime("%B %e, %Y") %> - <%= @entry.reference_number %>- CANCELLED</td>
           
-          <td class="text-right">-</td>
           <td class="text-right">-</td>
           <td class="text-right">-</td>
           <td class="text-right">-</td>
@@ -38,14 +34,13 @@
           <td></td>
         </tr>
       <% else %>
-        <% interest  = LoansModule::Payments::Classifier.new(loan: @loan, entry: entry).interest %>
-        <% penalty   = LoansModule::Payments::Classifier.new(loan: @loan, entry: entry).penalty %>
-        <% principal = LoansModule::Payments::Classifier.new(loan: @loan, entry: entry).principal %>
+        <% interest  = LoansModule::Payments::Classifier.new(loan: loan, entry: @entry).interest %>
+        <% penalty   = LoansModule::Payments::Classifier.new(loan: loan, entry: @entry).penalty %>
+        <% principal = LoansModule::Payments::Classifier.new(loan: loan, entry: @entry).principal %>
 
         <tr>
-          <td><%= link_to entry.entry_date.strftime("%B %e, %Y"), loans_module_loan_payment_path(entry) %> <%= entry.created_at.strftime("%-l:%M %p") %> </td>
-          <td><%= entry.office_name %></td>
-          <td><%= entry.reference_number %></td>
+          <td><%= loan.borrower_name %> </td>
+          <td><%= loan.loan_product_name %></td>
           <td class="text-right">
             <% if !principal.zero? %>
               <%= number_to_currency principal %>
@@ -70,7 +65,6 @@
           <td class="text-right">
             <%= number_to_currency (interest + penalty + principal) %>
           </td>
-          <td class="text-right"><%= number_to_currency @loan.principal_balance(to_date: entry.entry_date.to_date, to_time: entry.created_at) %></td>
           <td></td>
         </tr>
       <% end %>
