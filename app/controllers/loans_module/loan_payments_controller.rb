@@ -7,7 +7,7 @@ module LoansModule
       loan_ids << current_office.loans.where(receivable_account_id: account_ids.compact.flatten.uniq)
       loan_ids << current_office.loans.where(interest_revenue_account_id: account_ids.compact.flatten.uniq)
       loan_ids << current_office.loans.where(penalty_revenue_account_id: account_ids.compact.flatten.uniq)
-      @pagy, @loans = pagy(current_office.loans.where(id: loan_ids.compact.uniq.flatten))
+      @pagy, @loans = pagy(current_office.loans.where(id: loan_ids.compact.uniq.flatten).includes(:receivable_account, :interest_revenue_account, :penalty_revenue_account, :loan_product, :borrower))
     end 
   end 
 end 
