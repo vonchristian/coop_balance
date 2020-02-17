@@ -24,7 +24,6 @@ describe "New loan application", type: :system do
   end
 
   it 'with valid attributes', js: true do
-    fill_in 'Application date', with: Date.current.strftime('%B %e, %Y')
     select_from_chosen "Regular Loan", from: 'Select Type of Loan'
     fill_in "Loan amount",             with: 100_000
     fill_in "Term (Number of days)", with: 730
@@ -34,6 +33,7 @@ describe "New loan application", type: :system do
     page.execute_script "window.scrollBy(0,10000)"
 
     fill_in "Purpose of Loan", with: 'Regular Loan'
+    fill_in 'Application date', with: Date.current.strftime('%B %e, %Y')
 
     click_button 'Proceed'
 

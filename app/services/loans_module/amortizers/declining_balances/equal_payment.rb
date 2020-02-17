@@ -4,8 +4,8 @@ module LoansModule
       class EqualPayment
         attr_reader :loan_product, :loan_application, :amortizer
 
-        def initialize(args={})
-          @loan_application = args.fetch(:loan_application)
+        def initialize(loan_application:)
+          @loan_application = loan_application
           @loan_product     = @loan_application.loan_product
           @amortizer        = @loan_product.amortizer
         end

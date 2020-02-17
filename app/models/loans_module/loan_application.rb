@@ -169,6 +169,11 @@ module LoansModule
       current_interest_config.compute_interest(amount: fifth_year_principal_balance, number_of_days: number_of_days - 1460)
     end
 
+    def sixth_year_interest
+      return 0 if number_of_days <= 2190
+      current_interest_config.compute_interest(amount: fifth_year_principal_balance, number_of_days: number_of_days - 1460)
+    end
+
     def first_year_principal_balance
       loan_amount.amount
     end

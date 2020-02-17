@@ -22,14 +22,12 @@ module AccountingModule
     has_many :level_three_equity_account_categories,    through: :accounting_report_account_categorizations, source: :account_category, source_type: 'AccountingModule::AccountCategories::LevelThreeAccountCategories::Equity'
     has_many :level_three_revenue_account_categories,   through: :accounting_report_account_categorizations, source: :account_category, source_type: 'AccountingModule::AccountCategories::LevelThreeAccountCategories::Revenue'
     has_many :level_three_expense_account_categories,   through: :accounting_report_account_categorizations, source: :account_category, source_type: 'AccountingModule::AccountCategories::LevelThreeAccountCategories::Expense'
-
-   
-   
-   
-    has_many :level_two_account_categories, through: :accounting_report_account_categorizations, source: :account_category, source_type: 'AccountingModule::LevelTwoAccountCategory'
-    has_many :level_three_account_categories, through: :accounting_report_account_categorizations, source: :account_category, source_type: 'AccountingModule::LevelThreeAccountCategory'
-
-
+    
+    has_many :level_four_asset_account_categories,     through: :accounting_report_account_categorizations, source: :account_category, source_type: 'AccountingModule::AccountCategories::LevelFourAccountCategories::Asset'
+    has_many :level_four_liability_account_categories, through: :accounting_report_account_categorizations, source: :account_category, source_type: 'AccountingModule::AccountCategories::LevelFourAccountCategories::Liability'
+    has_many :level_four_equity_account_categories,    through: :accounting_report_account_categorizations, source: :account_category, source_type: 'AccountingModule::AccountCategories::LevelFourAccountCategories::Equity'
+    has_many :level_four_revenue_account_categories,   through: :accounting_report_account_categorizations, source: :account_category, source_type: 'AccountingModule::AccountCategories::LevelFourAccountCategories::Revenue'
+    has_many :level_four_expense_account_categories,   through: :accounting_report_account_categorizations, source: :account_category, source_type: 'AccountingModule::AccountCategories::LevelFourAccountCategories::Expense'
     
     def pdf_renderer
       ("AccountingModule::Reports::" + report_type.titleize.gsub(" ", "") +  "Pdf").constantize

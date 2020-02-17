@@ -5,9 +5,8 @@ module AccountingModule
       @from_date       = params[:from_date] ? Date.parse(params[:from_date]) : Date.current.beginning_of_year
       @to_date         = params[:to_date] ? Date.parse(params[:to_date]) : Date.today.end_of_year
       if params[:search].present?
-        @pagy, @entries = pagy(current_office.entries.order(ref_number_integer: :asc).text_search(params[:search]))
+        @pagy, @entries  = pagy(current_office.entries.order(ref_number_integer: :asc).text_search(params[:search]))
         @entries_for_pdf = current_office.entries.not_cancelled.text_search(params[:search])
-    
       else 
         @pagy, @entries  = pagy(current_office.entries.includes(:debit_amounts, :commercial_document).entered_on(from_date: @from_date, to_date: @to_date).order(ref_number_integer: :asc))
         @entries_for_pdf = current_office.entries.not_cancelled.entered_on(from_date: @from_date, to_date: @to_date)
@@ -126,7 +125,7 @@ module AccountingModule
           yielder << CSV.generate_line(["Accounts Summary"])
           yielder << CSV.generate_line(["DEBIT", "ACCOUNT", "CREDIT"])
           l1_category_ids = @entries_for_pdf.accounts.pluck(:level_one_account_category_id)
-          current_office.level_one_account_categories.where(id: l1_category_ids.uniq.compact.flatten).updated_at(from_date: @from_date, to_date: @to_date).uniq.each do |l1_category|
+          current_office.level_one_account_categories.where(id: l1_category_ids.compact.flatten.uniq).each do |l1_category|
             yielder << CSV.generate_line([
               l1_category.debit_amounts.where(entry_id: @entries_for_pdf.ids).total,
               l1_category.title, 

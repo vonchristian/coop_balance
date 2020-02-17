@@ -23,6 +23,12 @@ module AccountingModule
       it { is_expected.to have_many :level_three_equity_account_categories }
       it { is_expected.to have_many :level_three_revenue_account_categories }
       it { is_expected.to have_many :level_three_expense_account_categories }
+
+      it { is_expected.to have_many :level_four_asset_account_categories }
+      it { is_expected.to have_many :level_four_liability_account_categories }
+      it { is_expected.to have_many :level_four_equity_account_categories }
+      it { is_expected.to have_many :level_four_revenue_account_categories }
+      it { is_expected.to have_many :level_four_expense_account_categories }
     end 
 
     it '#pdf_renderer' do 

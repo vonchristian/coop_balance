@@ -13,7 +13,7 @@ module LoansModule
         deductible_interest_scope * interest_prededuction.rate
       end
 
-      private
+  
 
       def deductible_interest_scope
         if interest_prededuction.on_first_year?

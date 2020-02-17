@@ -10,7 +10,7 @@ add account number to program subscriptions
 
 migration for program subscription
 remove commercial document
-add account categories
+add account categories DONE
 namespace accounts
 namespace amounts
 

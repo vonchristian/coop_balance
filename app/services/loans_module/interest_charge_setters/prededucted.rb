@@ -20,7 +20,6 @@ module LoansModule
           cooperative: loan_application.cooperative,
           description: "Interest on Loan",
           amount:     computed_interest,
-
           account:    loan_application.interest_revenue_account
         )
       end
