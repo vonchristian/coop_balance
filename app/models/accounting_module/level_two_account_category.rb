@@ -7,14 +7,14 @@ module AccountingModule
 
     belongs_to :office,                       class_name: 'Cooperatives::Office'
     belongs_to :level_three_account_category, class_name: 'AccountingModule::LevelThreeAccountCategory', optional: true
-    has_many :level_one_account_categories, class_name: 'AccountingModule::LevelOneAccountCategory'
-    has_many :accounts,                     through: :level_one_account_categories, class_name: 'AccountingModule::Account'
-    has_many :amounts,                      through: :accounts, class_name: 'AccountingModule::Amount'
-    has_many :debit_amounts,                through: :accounts, class_name: 'AccountingModule::DebitAmount'
-    has_many :credit_amounts,               through: :accounts, class_name: 'AccountingModule::CreditAmount'
-    has_many :entries,                      through: :accounts, class_name: 'AccountingModule::Entry'
-    has_many :debit_entries,                through: :accounts, class_name: 'AccountingModule::Entry'
-    has_many :credit_entries,               through: :accounts, class_name: 'AccountingModule::Entry'
+    has_many :level_one_account_categories,   class_name: 'AccountingModule::LevelOneAccountCategory'
+    has_many :accounts,                       through: :level_one_account_categories, class_name: 'AccountingModule::Account'
+    has_many :amounts,                        through: :accounts, class_name: 'AccountingModule::Amount'
+    has_many :debit_amounts,                  through: :accounts, class_name: 'AccountingModule::DebitAmount'
+    has_many :credit_amounts,                 through: :accounts, class_name: 'AccountingModule::CreditAmount'
+    has_many :entries,                        through: :accounts, class_name: 'AccountingModule::Entry'
+    has_many :debit_entries,                  through: :accounts, class_name: 'AccountingModule::Entry'
+    has_many :credit_entries,                 through: :accounts, class_name: 'AccountingModule::Entry'
 
     validates :title, :code, presence: true, uniqueness: { scope: :office_id }
     validates :type, presence: true
@@ -61,11 +61,11 @@ module AccountingModule
 
     def self.balance(options={})
       accounts_balance = BigDecimal('0')
-      self.all.each do |account|
-        if account.contra?
-          accounts_balance -= account.balance(options)
+      self.all.each do |account_category|
+        if account_category.contra?
+          accounts_balance -= account_category.balance(options)
         else
-          accounts_balance += account.balance(options)
+          accounts_balance += account_category.balance(options)
         end
       end
       accounts_balance
@@ -96,10 +96,10 @@ module AccountingModule
     end
 
     def balance(options={})
-      if self.class == AccountingModule::Account
+      if self.class == AccountingModule::LevelTwoAccountCategory
         raise(NoMethodError, "undefined method 'balance'")
       else
-        if self.normal_credit_balance ^ contra
+        if self.normal_credit_balance ^ contra?
           credits_balance(options) - debits_balance(options)
         else
           debits_balance(options) - credits_balance(options)

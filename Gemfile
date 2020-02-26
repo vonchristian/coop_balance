@@ -49,9 +49,7 @@ gem 'delayed-web'
 gem 'mini_magick'
 gem 'chartkick'
 gem 'groupdate'
-gem "highcharts-rails"
 gem 'roo', "2.7.0"
-gem 'chronic'
 gem 'numbers_and_words'
 gem "audited", "~> 4.9"
 gem "responders"
@@ -66,7 +64,6 @@ gem 'email_spec'
 gem 'whenever', require: false
 gem "select2-rails"
 gem "simple_calendar"
-
 
 group :development, :test do
   gem 'rspec-rails'

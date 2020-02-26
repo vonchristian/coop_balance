@@ -96,7 +96,7 @@ module AccountingModule
     end
 
     def balance(options={})
-      if self.class == AccountingModule::Account
+      if self.class == AccountingModule::LevelFourAccountCategory
         raise(NoMethodError, "undefined method 'balance'")
       else
         if self.normal_credit_balance ^ contra

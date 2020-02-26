@@ -90,7 +90,7 @@ module AccountingModule
 
       expect(liability_level_one_account_category.balance).to eql 100_000
       expect(asset_level_one_account_category.balance).to eql 100_000
-      end
+    end
 
 
     describe ".trial_balance" do

@@ -26,15 +26,16 @@ describe 'New loan payment' do
 
     fill_in 'Date', with: Date.current
    
-    fill_in 'Description', with: 'Loan payment'
+    fill_in 'Description',      with: 'Loan payment'
     fill_in 'Principal amount', with: 500
-    fill_in 'Interest amount', with: 50
-    fill_in 'Penalty amount', with: 100
+    fill_in 'Interest amount',  with: 50
+    fill_in 'Penalty amount',   with: 100
     fill_in 'Reference number', with: '42342'
     page.execute_script "window.scrollBy(0,10000)"
-
     select_from_chosen 'Cash on Hand', from: 'Cash account'
+    
     click_button 'Proceed'
+    
     expect(page).to have_content('created successfully')
 
     click_link 'Confirm'
