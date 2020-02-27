@@ -1,12 +1,47 @@
 
-<% @savings.each do |saving| %>
-  <%= link_to 'Select Account', new_time_deposit_transfer_to_saving_path(@time_deposit, saving_id: saving.id), id: "#{saving.id}-select-account" %>
-<% end %>
+<div class='row'>
+  <div class='col-md-7'>
+    <div class='card'>
+      <div class='card-body'>
+        <h3 class='title-up'> Savings Accounts </h3>
+        <% @savings.each do |saving| %>
+          <%= saving.depositor_name %>
+          <%= number_to_currency saving.balance %>
+          <%= link_to 'Select Account', new_time_deposit_transfer_to_saving_path(@time_deposit, saving_id: saving.id), id: "#{saving.id}-select-account", class: 'btn btn-outline-primary float-right' %>
+          <hr />
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class='col-md-5'>
+    <div class='card'>
+      <div class='card-body'>
+        <h3 class='title-up'> Transfer Voucher </h3>
+
 
 <% if @saving.present? %>
+  <p> FROM TIME DEPOSIT:</p>
+  <div class='row'>
+    <div class='col-md-2'>
+      <%= image_tag(@time_deposit.avatar, height: 35, width: 35, class: 'img-circle') %>
+    </div>
+    <div class='col-md-10'>
+      <small class='text-muted'><%= @time_deposit.depositor_name.upcase %></small>
+      <h4 class='title-up'><%= number_to_currency @time_deposit.balance %></h4>
+    </div>
+  </div>
+   <br>
+   <i class='fa fa-arrow-down fa-2x'></i>
+   <p> TO SAVING: </p>
+  <%= image_tag(@saving.avatar, height: 45, width: 45, class: 'img-circle') %>
+
+    <h4 class='title-up'><%= number_to_currency @saving.balance %></h4>
+   <small class='text-muted'><%= @saving.depositor_name.upcase %></small><br>
+
+    <hr>
   <%= simple_form_for [@time_deposit, @transfer], url: :time_deposit_transfer_to_savings do |f| %>
-    <%= f.input :saving_id, input_html: { value: @saving.id } %>
-    <%= f.input :account_number, input_html: { value: SecureRandom.uuid } %>
+    <%= f.input :saving_id, input_html: { value: @saving.id }, as: :hidden %>
+    <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
     
     <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
     <%= f.input :time_deposit_id, input_html: { value: @time_deposit.id }, as: :hidden %>
