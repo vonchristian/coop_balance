@@ -16,7 +16,7 @@
           </li>
 
            <li class="nav-item">
-            <%= link_to time_deposit_accounting_index_path(@time_deposit), class: "nav-link #{'active' if current_page?(time_deposit_accounting_index_path(@time_deposit))}" do %>
+            <%= link_to time_deposit_accounting_index_path(@time_deposit), id: "#{@time_deposit.id}-accounting", class: "nav-link #{'active' if current_page?(time_deposit_accounting_index_path(@time_deposit))}" do %>
               <i class="fa fa-coins"></i> Accounting
             <% end %>
           </li>

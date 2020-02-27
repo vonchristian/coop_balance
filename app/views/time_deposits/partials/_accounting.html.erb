@@ -4,6 +4,5 @@
 <b>Interest Expense Account </b>
 <%= @time_deposit.interest_expense_account.name %>
 <hr>
-<h4 class='title-up'> Interest Posting </h4>
-<span class='text-muted'> Post interests for this time deposit </span><br>
-<%= link_to 'Post Interest', new_time_deposit_interest_posting_path(@time_deposit), class: 'btn btn-primary' %>
+<h4 class='title-up'> Transfer to Savings </h4>
+      <%= link_to 'Transfer to Savings', new_time_deposit_transfer_to_saving_path(@time_deposit), class: "btn btn-outline-danger" if !@time_deposit.withdrawn? %>

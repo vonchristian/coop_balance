@@ -1504,5 +1504,6 @@ example_id                                                                      
 ./spec/system/share_capitals/multiple_line_items/new_system_spec.rb[1:1]                                        | passed  | 6.78 seconds    |
 ./spec/system/share_capitals/withdrawals/new_system_spec.rb[1:1]                                                | passed  | 4.41 seconds    |
 ./spec/system/time_deposits/index_system_spec.rb[1:1]                                                           | passed  | 1.59 seconds    |
-./spec/system/time_deposits/withdrawals/new_system_spec.rb[1:1]                                                 | passed  | 4.43 seconds    |
+./spec/system/time_deposits/transfer_to_savings/new_system_spec.rb[1:1]                                         | passed  | 10.03 seconds   |
+./spec/system/time_deposits/withdrawals/new_system_spec.rb[1:1]                                                 | passed  | 10.07 seconds   |
 ./spec/system/treasury_module/cash_accounts/cash_receipt_line_items/new_system_spec.rb[1:1]                     | passed  | 15.57 seconds   |

@@ -469,7 +469,7 @@ Rails.application.routes.draw do
   resources :search_results, only: [:index, :show]
 
   resources :time_deposits, only: [:index, :show] do
-    resources :transfers, only: [:new, :create],           module: :time_deposits
+    resources :transfer_to_savings, only: [:new, :create],           module: :time_deposits
     resources :transfer_vouchers, only: [:show, :destroy], module: :time_deposits do
       resources :confirmations, only: [:create],           module: :transfer_vouchers
     end

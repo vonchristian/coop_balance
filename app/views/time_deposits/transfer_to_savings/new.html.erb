@@ -1,0 +1,19 @@
+
+<% @savings.each do |saving| %>
+  <%= link_to 'Select Account', new_time_deposit_transfer_to_saving_path(@time_deposit, saving_id: saving.id), id: "#{saving.id}-select-account" %>
+<% end %>
+
+<% if @saving.present? %>
+  <%= simple_form_for [@time_deposit, @transfer], url: :time_deposit_transfer_to_savings do |f| %>
+    <%= f.input :saving_id, input_html: { value: @saving.id } %>
+    <%= f.input :account_number, input_html: { value: SecureRandom.uuid } %>
+    
+    <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+    <%= f.input :time_deposit_id, input_html: { value: @time_deposit.id }, as: :hidden %>
+    <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+    <%= f.input :description %>
+    <%= f.input :reference_number %>
+
+    <%= f.submit "Proceed", class: 'btn btn-primary float-right' %>
+  <% end %>
+<% end %>
