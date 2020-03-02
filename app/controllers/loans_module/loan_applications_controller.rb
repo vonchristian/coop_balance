@@ -6,14 +6,12 @@ module LoansModule
         @loan_applications = current_office.
         loan_applications.
         not_cancelled.
-        not_approved.
         text_search(params[:search]).
         paginate(page: params[:page], per_page: 20)
       else
         @loan_applications = current_office.
         loan_applications.
         not_cancelled.
-        not_approved.
         includes(:loan_product, :voucher =>[:accounting_entry]).
         sort_by(&:ascending_order).
         paginate(page: params[:page], per_page: 20)

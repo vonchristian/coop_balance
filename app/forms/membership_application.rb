@@ -1,19 +1,18 @@
 class MembershipApplication
   include ActiveModel::Model
-  attr_accessor :first_name, :middle_name, :last_name, :avatar, :tin_number,
+  attr_accessor :first_name, :middle_name, :last_name, :avatar,
   :date_of_birth, :account_number, :membership_category_id, :civil_status, :sex,
   :contact_number, :email, :office_id, :cooperative_id, :membership_date,
   :complete_address, :barangay_id, :municipality_id, :province_id
 
   validates :first_name, :last_name, :sex, :civil_status, :date_of_birth, :cooperative_id, presence: true
-  validates :tin_number,:contact_number, :complete_address, :barangay_id, :municipality_id, :province_id, presence: true
+  validates :contact_number, :complete_address, :barangay_id, :municipality_id, :province_id, presence: true
   validate :unique_full_name
 
   def register!
     ActiveRecord::Base.transaction do
       create_member
       create_membership
-      create_tin
       create_contact
       create_address
     end

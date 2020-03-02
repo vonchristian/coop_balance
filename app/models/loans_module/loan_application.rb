@@ -225,6 +225,21 @@ module LoansModule
       voucher_amounts.excluding_account(account: accounts).total
     end
 
+    def status 
+      if loan.present?
+        'Approved'
+      else 
+        'Pending Approval'
+      end 
+    end 
+    def status_color 
+      if status == "Approved"
+        'success'
+      elsif status == 'Pending Approval'
+        'warning'
+      end 
+    end 
+
     def disbursed?
       voucher && voucher.disbursed?
     end

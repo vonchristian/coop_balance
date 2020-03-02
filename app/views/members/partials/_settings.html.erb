@@ -179,3 +179,7 @@
     </div>
   </div>
 </div>
+<%= link_to 'New Income Source', new_member_income_source_path(@member) %>
+<% @member.income_sources.each do |income_source| %>
+  <%= income_source.designation %>
+<% end %>

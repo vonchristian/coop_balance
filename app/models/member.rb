@@ -41,6 +41,7 @@ class Member < ApplicationRecord
   has_many :time_deposit_applications,    class_name: 'TimeDepositsModule::TimeDepositApplication', as: :depositor
   has_many :wallets, as: :account_owner
   has_many :identifications, class_name: "IdentificationModule::Identification", as: :identifiable
+  has_many :income_sources, class_name: 'MembershipsModule::IncomeSource'
   validates :last_name, :first_name, presence: true, on: :update
   validates :code, uniqueness: true
 

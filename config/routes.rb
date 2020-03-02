@@ -261,7 +261,9 @@ Rails.application.routes.draw do
     resources :signature_specimens,   only: [:create],                       module: :members
     resources :avatars,               only: [:update],                       module: :members
     resources :retirements,           only: [:edit, :update],                module: :members
-    resources :loan_transactions, only: [:index],                            module: :members
+    resources :loan_transactions,     only: [:index],                        module: :members
+    resources :income_sources,        only: [:new, :create],                 module: :members
+
   end
 
   resources :member_registrations, only: [:new, :create]

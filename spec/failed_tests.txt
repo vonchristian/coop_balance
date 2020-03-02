@@ -924,6 +924,10 @@ example_id                                                                      
 ./spec/models/membership_category_spec.rb[1:1:1]                                                                | passed  | 0.00644 seconds |
 ./spec/models/membership_category_spec.rb[1:2:1]                                                                | passed  | 0.00784 seconds |
 ./spec/models/membership_category_spec.rb[1:2:2]                                                                | passed  | 0.12716 seconds |
+./spec/models/memberships_module/income_source_spec.rb[1:1:1]                                                   | passed  | 0.34212 seconds |
+./spec/models/memberships_module/income_source_spec.rb[1:1:2]                                                   | passed  | 0.00524 seconds |
+./spec/models/memberships_module/income_source_spec.rb[1:2:1]                                                   | passed  | 0.0071 seconds  |
+./spec/models/memberships_module/income_source_spec.rb[1:2:2]                                                   | passed  | 0.00988 seconds |
 ./spec/models/memberships_module/membership_beneficiary_spec.rb[1:1:1]                                          | passed  | 0.09104 seconds |
 ./spec/models/memberships_module/membership_beneficiary_spec.rb[1:1:2]                                          | passed  | 0.00409 seconds |
 ./spec/models/memberships_module/membership_occupation_spec.rb[1:1:1]                                           | passed  | 0.01215 seconds |
@@ -1447,6 +1451,8 @@ example_id                                                                      
 ./spec/system/member_registrations/new_member_registration_system_spec.rb[1:2]                                  | failed  | 0.13236 seconds |
 ./spec/system/members/edit_member_system_spec.rb[1:1]                                                           | failed  | 0.27126 seconds |
 ./spec/system/members/edit_member_system_spec.rb[1:2]                                                           | failed  | 0.31428 seconds |
+./spec/system/members/income_sources/new_system_spec.rb[1:1]                                                    | failed  | 10.57 seconds   |
+./spec/system/members/income_sources/new_system_spec.rb[1:2]                                                    | passed  | 0.50344 seconds |
 ./spec/system/members/loan_applications/disbursements/new_system_spec.rb[1:1]                                   | passed  | 8.68 seconds    |
 ./spec/system/members/loan_applications/new_system_spec.rb[1:1]                                                 | passed  | 14.28 seconds   |
 ./spec/system/members/loan_applications/new_system_spec.rb[1:2]                                                 | passed  | 0.72552 seconds |

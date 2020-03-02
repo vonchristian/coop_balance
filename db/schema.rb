@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_11_072703) do
+ActiveRecord::Schema.define(version: 2020_02_27_054217) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -566,6 +566,25 @@ ActiveRecord::Schema.define(version: 2020_02_11_072703) do
     t.datetime "updated_at", null: false
     t.string "abbreviated_name"
     t.index ["abbreviated_name"], name: "index_identity_providers_on_abbreviated_name", unique: true
+  end
+
+  create_table "income_source_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["title"], name: "index_income_source_categories_on_title", unique: true
+  end
+
+  create_table "income_sources", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "designation"
+    t.string "description"
+    t.decimal "monthly_income"
+    t.uuid "income_source_category_id", null: false
+    t.uuid "member_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["income_source_category_id"], name: "index_income_sources_on_income_source_category_id"
+    t.index ["member_id"], name: "index_income_sources_on_member_id"
   end
 
   create_table "interest_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -2083,6 +2102,8 @@ ActiveRecord::Schema.define(version: 2020_02_11_072703) do
   add_foreign_key "entries", "users", column: "recorder_id"
   add_foreign_key "identifications", "identifications", column: "previous_identification_id"
   add_foreign_key "identifications", "identity_providers"
+  add_foreign_key "income_sources", "income_source_categories"
+  add_foreign_key "income_sources", "members"
   add_foreign_key "interest_configs", "accounts", column: "accrued_income_account_id"
   add_foreign_key "interest_configs", "accounts", column: "interest_revenue_account_id"
   add_foreign_key "interest_configs", "accounts", column: "past_due_interest_income_account_id"
