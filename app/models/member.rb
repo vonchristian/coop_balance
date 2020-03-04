@@ -1,10 +1,7 @@
 class Member < ApplicationRecord
-  extend TinMonitoring
   extend PercentActive
   extend BirthdayMonitoring
   include PgSearch::Model
-
-  include CurrentTin
   include Contactable
   include Addressing
 

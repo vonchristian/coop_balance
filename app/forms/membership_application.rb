@@ -56,11 +56,7 @@ class MembershipApplication
     )
   end
 
-  def create_tin
-    if tin_number.present?
-      find_member.tins.create!(number: tin_number)
-    end
-  end
+  
   def create_contact
     find_member.contacts.create(number: contact_number)
   end

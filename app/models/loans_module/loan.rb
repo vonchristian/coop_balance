@@ -243,7 +243,7 @@ module LoansModule
   
 
     def self.not_archived
-      where(archived: false)
+      where(date_archived: nil)
     end
 
     def self.not_cancelled
@@ -267,7 +267,7 @@ module LoansModule
     end
 
     def self.archived
-      where(archived: true)
+      where.not(date_archived: nil)
     end
 
     def self.for_street(args={})

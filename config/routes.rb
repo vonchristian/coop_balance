@@ -8,6 +8,8 @@ Rails.application.routes.draw do
     root :to => 'members#index', as: :authenticated_root
   end
   resources :home, only: [:index]
+  resources :about, only: [:index]
+
 
   resources :accounting_module, only: [:index]
   namespace :accounting_module do

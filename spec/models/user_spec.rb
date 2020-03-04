@@ -4,7 +4,6 @@ RSpec.describe User, type: :model do
   describe 'associations' do
     it { is_expected.to belong_to :cooperative }
     it { is_expected.to belong_to :office }
-    it { is_expected.to belong_to :store_front }
     it { is_expected.to have_many :carts }
     it { is_expected.to have_many :entries }
     it { is_expected.to have_many :purchases }
@@ -47,18 +46,16 @@ RSpec.describe User, type: :model do
     it do
       should define_enum_for(:role).
         with_values([:system_administrator,
-              :general_manager,
-              :branch_manager,
-              :loan_officer,
-              :bookkeeper,
-              :teller,
-              :stock_custodian,
-              :sales_clerk,
-              :treasurer,
-              :accountant,
-              :accounting_clerk,
-              :collector,
-              :sales_manager])
+          :general_manager,
+          :branch_manager,
+          :loan_officer,
+          :bookkeeper,
+          :teller,
+          :stock_custodian,
+          :sales_clerk,
+          :treasurer,
+          :accountant,
+          :collector])
     end
   end
 end

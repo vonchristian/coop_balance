@@ -1,7 +1,5 @@
 class Organization < ApplicationRecord
-  extend TinMonitoring
   include PgSearch::Model
-  include CurrentTin
   include Addressing
   include Contactable
 
