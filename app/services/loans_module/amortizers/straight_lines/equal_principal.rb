@@ -24,7 +24,7 @@ module LoansModule
             office:          loan_application.office,
             date:            loan_application.first_amortization_date,
             interest:        first_interest,
-            principal:       first_principal,
+            principal:       loan_application.loan_amount.amount / loan_application.schedule_count,
             total_repayment: total_repayment,
             ending_balance:  loan_application.loan_amount.amount - first_principal
           )
@@ -37,7 +37,7 @@ module LoansModule
                 office:          loan_application.office,
                 date:            loan_application.succeeding_amortization_date,
                 interest:        0,
-                principal:       0,
+                principal:       loan_application.loan_amount.amount / loan_application.schedule_count,,
                 total_repayment: total_repayment
               )
             end
