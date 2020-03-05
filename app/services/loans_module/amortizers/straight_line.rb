@@ -24,7 +24,7 @@ module LoansModule
         loan_application.amortization_schedules.create!(
           date:      loan_application.first_amortization_date,
           interest:  0,
-          principal: loan_application.amortizeable_principal
+          principal: loan_application.loan_amount.amount / loan_application.schedule_count
         )
       end
 
@@ -34,7 +34,7 @@ module LoansModule
             loan_application.amortization_schedules.create!(
               date:      loan_application.succeeding_amortization_date,
               interest:  0,
-              principal: loan_application.amortizeable_principal
+              principal: loan_application.loan_amount.amount / loan_application.schedule_count
             )
           end
         end
