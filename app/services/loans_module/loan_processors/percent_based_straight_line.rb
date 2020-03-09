@@ -11,8 +11,8 @@ module LoansModule
       def process!
         create_amortization_schedule
         create_charges
-        update_interests
-        update_total_repayments
+        # update_interests
+        # update_total_repayments
       end
 
       private

@@ -1,7 +1,7 @@
 module Registries
   class LoanRegistry < Registry
     def parse_for_records
-      loan_spreadsheet = Roo::Spreadsheet.open(spreadsheet.path)
+      loan_spreadsheet = Roo::Spreadsheet.open(spreadsheet.attachment.path)
       header = loan_spreadsheet.row(2)
       (3..loan_spreadsheet.last_row).each do |i|
         row = Hash[[header, loan_spreadsheet.row(i)].transpose]
@@ -14,7 +14,7 @@ module Registries
       loan = LoansModule::Loan.create!(
         forwarded_loan: true,
         cooperative:  self.employee.cooperative,
-        office:      self.office,
+        office:       self.office,
         borrower:     find_borrower(row),
         loan_product: find_loan_product(row),
         barangay:     find_barangay(row),

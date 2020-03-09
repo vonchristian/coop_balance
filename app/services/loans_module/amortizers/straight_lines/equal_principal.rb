@@ -5,17 +5,17 @@ module LoansModule
         attr_reader :loan_product, :loan_application, :amortizer, :repayment_calculator
 
         def initialize(args={})
-          @loan_application = args.fetch(:loan_application)
-          @loan_product     = @loan_application.loan_product
-          @amortizer        = @loan_product.amortizer
+          @loan_application     = args.fetch(:loan_application)
+          @loan_product         = @loan_application.loan_product
+          @amortizer            = @loan_product.amortizer
           @repayment_calculator = @loan_product.amortization_type.repayment_calculator
         end
 
         def create_schedule!
           create_first_schedule
           create_succeeding_schedule
-          update_interests_and_ending_balances
-          update_principals
+          # update_interests_and_ending_balances
+          # update_principals
         end
 
         private
@@ -24,9 +24,7 @@ module LoansModule
             office:          loan_application.office,
             date:            loan_application.first_amortization_date,
             interest:        first_interest,
-            principal:       loan_application.loan_amount.amount / loan_application.schedule_count,
-            total_repayment: total_repayment,
-            ending_balance:  loan_application.loan_amount.amount - first_principal
+            principal:       loan_application.loan_amount.amount / loan_application.schedule_count
           )
         end
 
@@ -37,7 +35,7 @@ module LoansModule
                 office:          loan_application.office,
                 date:            loan_application.succeeding_amortization_date,
                 interest:        0,
-                principal:       loan_application.loan_amount.amount / loan_application.schedule_count,,
+                principal:       loan_application.loan_amount.amount / loan_application.schedule_count,
                 total_repayment: total_repayment
               )
             end

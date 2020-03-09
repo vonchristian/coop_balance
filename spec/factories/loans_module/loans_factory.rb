@@ -14,9 +14,7 @@ FactoryBot.define do
     after(:build) do |l|
       voucher                = create(:voucher)
       l.disbursement_voucher ||= voucher
-      l.accounts << l.receivable_account
-      l.accounts << l.interest_revenue_account
-      l.accounts << l.penalty_revenue_account
+      
     end
   end
 end

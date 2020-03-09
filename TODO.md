@@ -1,3 +1,4 @@
+refactor registry uplaoding
 refactor amortization schedule creation 
 fix loan aging report DONE
 

@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :loan_product, class: 'LoansModule::LoanProduct' do
-    name { Faker::Company.bs }
+    name { "#{Faker::Company.bs}-#{SecureRandom.uuid}" }
     association :cooperative
     association :office
     association :amortization_type

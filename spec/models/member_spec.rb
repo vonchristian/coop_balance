@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Member, type: :model do
   describe "associations" do
     it { is_expected.to have_one :member_account }
-    it { is_expected.to have_many :tins }
+
     it { is_expected.to have_many :memberships }
   	it { is_expected.to have_many :loans }
   	it { is_expected.to have_many :savings }
@@ -11,8 +11,7 @@ describe Member, type: :model do
   	it { is_expected.to have_many :time_deposits }
   	it { is_expected.to have_many :program_subscriptions }
   	it { is_expected.to have_many :subscribed_programs }
-    it { is_expected.to have_many :sales }
-    it { is_expected.to have_many :sales_returns }
+
     it { is_expected.to have_many :organization_memberships }
     it { is_expected.to have_many :organizations }
     it { is_expected.to have_many :contacts }
@@ -75,9 +74,9 @@ describe Member, type: :model do
 
   describe "#age" do
     it 'with age' do
-      member = create(:member, date_of_birth: '02/12/1990')
+      member = create(:member, date_of_birth: Date.current - 30.years)
 
-      expect(member.age).to eql 28
+      expect(member.age).to eql 30
     end
 
     it "with no age" do
