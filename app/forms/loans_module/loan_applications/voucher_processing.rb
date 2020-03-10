@@ -36,7 +36,7 @@ module LoansModule
 
         voucher.save!
 
-        find_loan_application.update_attributes!(voucher: voucher)
+        find_loan_application.update!(voucher: voucher)
       end
 
       def create_voucher_amounts(voucher)

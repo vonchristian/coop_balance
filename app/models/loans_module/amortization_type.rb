@@ -16,5 +16,6 @@ module LoansModule
     def amortizeable_principal_calculator
       ("LoansModule::Amortizers::PrincipalCalculators::" + repayment_calculation_type.titleize.gsub(" ", "")).constantize
     end
+    
   end
 end

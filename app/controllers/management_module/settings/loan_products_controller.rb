@@ -7,7 +7,7 @@ module ManagementModule
       end
 
       def new
-        @loan_product = LoansModule::LoanProductRegistration.new
+        @loan_product = LoansModule::LoanProductRegistration.new 
       end
 
       def create
@@ -40,10 +40,7 @@ module ManagementModule
         :name,
         :description,
         :maximum_loanable_amount,
-        :current_account_id,
-        :past_due_account_id,
-        :restructured_account_id,
-        :litigation_account_id,
+        
         :interest_rate,
         :interest_revenue_account_id,
         :accrued_income_account_id,
@@ -54,6 +51,10 @@ module ManagementModule
         :cooperative_id,
         :grace_period,
         :amortization_type_id,
+        :interest_amortization_id,
+        :total_repayment_amortization_id,
+
+
         :interest_calculation_type,
         :prededuction_calculation_type,
         :prededuction_scope,

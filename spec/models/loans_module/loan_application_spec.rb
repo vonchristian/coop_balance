@@ -9,7 +9,7 @@ module LoansModule
       it { is_expected.to belong_to :cooperative }
       it { is_expected.to belong_to(:cart).optional }
       it { is_expected.to belong_to :office }
-      it { is_expected.to belong_to :organization }
+      it { is_expected.to belong_to(:organization).optional }
       it { is_expected.to belong_to(:voucher).optional }
       it { is_expected.to belong_to :receivable_account }
       it { is_expected.to belong_to :interest_revenue_account }
@@ -21,7 +21,6 @@ module LoansModule
 
     describe 'validations' do
      it {is_expected.to monetize(:loan_amount) }
-     it { is_expected.to validate_presence_of(:cooperative_id) }
      it { is_expected.to validate_presence_of :account_number }
      it { is_expected.to validate_presence_of :number_of_days }
      it { is_expected.to validate_numericality_of(:number_of_days).only_integer }
@@ -38,156 +37,17 @@ module LoansModule
       it { is_expected.to delegate_method(:current_interest_config).to(:loan_product) }
       it { is_expected.to delegate_method(:amortization_type).to(:loan_product) }
 
-      it { is_expected.to delegate_method(:avatar).to(:borrower) }
+      it { is_expected.to delegate_method(:avatar).to(:borrower).with_prefix }
       it { is_expected.to delegate_method(:straight_balance?).to(:current_interest_config).with_prefix }
       it { is_expected.to delegate_method(:annually?).to(:current_interest_config).with_prefix }
     end
 
-    it { define_enum_for(:mode_of_payment).with_values([:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :annually])}
-    it "#max_first_year_term" do
-      loan_application_1 = create(:loan_application, term: 6)
-      loan_application_2 = create(:loan_application, term: 12)
-      loan_application_3 = create(:loan_application, term: 13)
-      loan_application_4 = create(:loan_application, term: 24)
-      loan_application_5 = create(:loan_application, term: 2)
-      loan_application_6 = create(:loan_application, term: 1)
+    describe "enums" do 
+      it { define_enum_for(:mode_of_payment).with_values([:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :annually])}
+    end 
 
-      expect(loan_application_1.max_applicable_term(0)).to eql 6
-      expect(loan_application_2.max_applicable_term(0)).to eql 12
-      expect(loan_application_3.max_applicable_term(0)).to eql 12
-      expect(loan_application_4.max_applicable_term(0)).to eql 12
-      expect(loan_application_5.max_applicable_term(0)).to eql 2
-      expect(loan_application_6.max_applicable_term(0)).to eql 1
-    end
-
-    it "#max_second_year_term" do
-      loan_application_1 = create(:loan_application, term: 6)
-      loan_application_2 = create(:loan_application, term: 12)
-      loan_application_3 = create(:loan_application, term: 13)
-      loan_application_4 = create(:loan_application, term: 18)
-      loan_application_5 = create(:loan_application, term: 26)
-      loan_application_6 = create(:loan_application, term: 36)
-      loan_application_7 = create(:loan_application, term: 48)
-
-
-
-      expect(loan_application_1.max_applicable_term(12)).to eql 0
-      expect(loan_application_2.max_applicable_term(12)).to eql 0
-      expect(loan_application_3.max_applicable_term(12)).to eql 1
-      expect(loan_application_4.max_applicable_term(12)).to eql 6
-      expect(loan_application_5.max_applicable_term(12)).to eql 12
-      expect(loan_application_6.max_applicable_term(12)).to eql 12
-      expect(loan_application_7.max_applicable_term(12)).to eql 12
-
-    end
-
-    it "#max_third_year_term" do
-      loan_application_1 = create(:loan_application, term: 12)
-      loan_application_2 = create(:loan_application, term: 24)
-      loan_application_3 = create(:loan_application, term: 28)
-      loan_application_4 = create(:loan_application, term: 30)
-      loan_application_5 = create(:loan_application, term: 36)
-      loan_application_6 = create(:loan_application, term: 42)
-      loan_application_7 = create(:loan_application, term: 48)
-
-
-
-      expect(loan_application_1.max_applicable_term(24)).to eql 0
-      expect(loan_application_2.max_applicable_term(24)).to eql 0
-      expect(loan_application_3.max_applicable_term(24)).to eql 4
-      expect(loan_application_4.max_applicable_term(24)).to eql 6
-      expect(loan_application_5.max_applicable_term(24)).to eql 12
-      expect(loan_application_6.max_applicable_term(24)).to eql 12
-      expect(loan_application_7.max_applicable_term(24)).to eql 12
-
-    end
-
-    it "#net_proceed" do
-      interest_revenue_account         = create(:revenue)
-      unearned_interest_income_account = create(:asset)
-      loan_protection_account          = create(:liability)
-      straight_line                    = create(:amortization_type, calculation_type: 'straight_line', repayment_calculation_type: "equal_principal")
-      regular_loan                     = create(:loan_product, amortization_type: straight_line)
-      interest_config                  = create(:interest_config,
-                                         loan_product: regular_loan,
-                                         rate: 0.12,
-                                         rate_type: 'annual_rate',
-                                         amortization_type: 'annually',
-                                         prededucted_rate: 1,
-                                         calculation_type: 'prededucted',
-                                         interest_revenue_account: interest_revenue_account,
-                                         unearned_interest_income_account: unearned_interest_income_account)
-      interest_prededuction            = create(:interest_prededuction, rate: 1, calculation_type: 'percent_based', loan_product: regular_loan)
-
-      regular_loan_application = create(:loan_application,
-        mode_of_payment: 'monthly',
-        term: 36,
-        loan_amount: 200_000,
-        loan_product: regular_loan)
-
-      regular_loan.loan_processor.new(loan_application: regular_loan_application).process!
-      lpp = create(:voucher_amount, amount: 1_000, account: loan_protection_account, loan_application: regular_loan_application)
-      puts(regular_loan_application.total_interest)
-      expect(regular_loan_application.voucher_interest_amount).to eq 24_000
-      expect(regular_loan_application.interest_balance).to eq 24_000
-      expect(regular_loan_application.net_proceed).to eql 175_000
-    end
-
-    describe '#interest balance computation' do
-      let (:interest_revenue_account)         { create(:revenue) }
-      let (:unearned_interest_income_account) { create(:asset) }
-      let (:short_term_loan)                     { create(:loan_product) }
-      let (:regular_loan)                     { create(:loan_product) }
-
-      it 'with zero balance' do
-        create(:interest_config,
-          loan_product: short_term_loan,
-          rate: 0.03,
-          rate_type: 'monthly_rate',
-          amortization_type: 'annually',
-          prededuction_type: 'percentage',
-          prededucted_rate: 1,
-          calculation_type: 'prededucted',
-          interest_revenue_account: interest_revenue_account,
-          unearned_interest_income_account: unearned_interest_income_account)
-
-        short_term_loan_application = create(:loan_application,
-          mode_of_payment: 'monthly',
-          term: 1.5,
-          loan_amount: 5_000,
-          loan_product: short_term_loan)
-
-        LoansModule::LoanApplicationChargeSetter.new(loan_application: loan_application).create_charges!
-        LoansModule::AmortizationSchedule.create_amort_schedule_for(short_term_loan_application)
-
-        expect(short_term_loan_application.total_interest).to eql 225.0
-        expect(short_term_loan_application.voucher_interest_amount).to eql 225.0
-        expect(short_term_loan_application.interest_balance).to eql 0
-      end
-      it "#with balance" do
-        create(:interest_config,
-               loan_product: regular_loan,
-               rate: 0.12,
-               rate_type: 'annual_rate',
-               amortization_type: 'annually',
-               prededuction_type: 'percentage',
-               prededucted_rate: 1,
-               calculation_type: 'prededucted',
-               interest_revenue_account: interest_revenue_account,
-               unearned_interest_income_account: unearned_interest_income_account)
-
-        regular_loan_application = create(:loan_application,
-          mode_of_payment: 'monthly',
-          number_of_days: 1095,
-          loan_amount: 200_000,
-          loan_product: regular_loan)
-
-         regular_loan_application.loan_product.loan_processor.new(loan_application: regular_loan_application).process!
-        # expect(regular_loan_application.total_interest).to eq 48_000
-        expect(regular_loan_application.voucher_interest_amount).to eq 24_000
-        expect(regular_loan_application.interest_balance).to eq 24_000
-      end
-    end
+    
+    
     it "#term_is_within_one_year?" do
       one_month_loan_application      = create(:loan_application, number_of_days: 30)
       twelve_month_loan_application   = create(:loan_application, number_of_days: 365)
@@ -199,7 +59,7 @@ module LoansModule
     end
 
     it "#term_is_within_two_years?" do
-      thirteen_month_loan_application = create(:loan_application, number_of_days: 395)
+      thirteen_month_loan_application    = create(:loan_application, number_of_days: 395)
       twenty_four_month_loan_application = create(:loan_application, number_of_days: 730)
       twenty_five_month_loan_application = create(:loan_application, number_of_days: 760)
 
@@ -209,8 +69,8 @@ module LoansModule
     end
 
     it "#term_is_within_three_years?" do
-      twenty_five_month_loan_application = create(:loan_application, number_of_days: 731)
-      thirty_six_month_loan_application = create(:loan_application, number_of_days: 761)
+      twenty_five_month_loan_application  = create(:loan_application, number_of_days: 731)
+      thirty_six_month_loan_application   = create(:loan_application, number_of_days: 761)
       thirty_seven_month_loan_application = create(:loan_application, number_of_days: 1096)
 
       expect(twenty_five_month_loan_application.term_is_within_three_years?).to be true
@@ -219,87 +79,57 @@ module LoansModule
     end
 
     it "#term_is_within_four_years?" do
-      thirty_seven_month_loan_application = create(:loan_application, number_of_days: 1096)
-      forty_eight_month_loan_application = create(:loan_application, number_of_days: 1110)
-      forty_nine_month_loan_application = create(:loan_application, number_of_days: 1461)
+      days_1096 = create(:loan_application, number_of_days: 1096)
+      days_1110 = create(:loan_application, number_of_days: 1110)
+      days_1461 = create(:loan_application, number_of_days: 1461)
 
-      expect(thirty_seven_month_loan_application.term_is_within_four_years?).to be true
-      expect(forty_eight_month_loan_application.term_is_within_four_years?).to be true
-      expect(forty_nine_month_loan_application.term_is_within_four_years?).to be false
+      expect(days_1096.term_is_within_four_years?).to be true
+      expect(days_1110.term_is_within_four_years?).to be true
+      expect(days_1461.term_is_within_four_years?).to be false
+    end
+
+    it "#term_is_within_five_years?" do
+      days_1461 = create(:loan_application, number_of_days: 1461)
+      days_1825 = create(:loan_application, number_of_days: 1825)
+      days_1826 = create(:loan_application, number_of_days: 1826)
+
+      expect(days_1461.term_is_within_five_years?).to be true
+      expect(days_1825.term_is_within_five_years?).to be true
+      expect(days_1826.term_is_within_five_years?).to be false
     end
 
       it "#schedule_counter" do
-        loan_application_daily         = create(:loan_application, mode_of_payment: 'daily')
-        loan_application_weekly        = create(:loan_application, mode_of_payment: 'weekly')
-        loan_application_monthly       = create(:loan_application, mode_of_payment: 'monthly')
-        loan_application_quarterly     = create(:loan_application, mode_of_payment: 'quarterly')
-        loan_application_semi_annually = create(:loan_application, mode_of_payment: 'semi_annually')
-        loan_application_lumpsum       = create(:loan_application, mode_of_payment: 'lumpsum')
+        daily         = create(:loan_application, mode_of_payment: 'daily')
+        weekly        = create(:loan_application, mode_of_payment: 'weekly')
+        monthly       = create(:loan_application, mode_of_payment: 'monthly')
+        quarterly     = create(:loan_application, mode_of_payment: 'quarterly')
+        semi_annually = create(:loan_application, mode_of_payment: 'semi_annually')
+        lumpsum       = create(:loan_application, mode_of_payment: 'lumpsum')
 
-        expect(loan_application_daily.schedule_counter).to eql         LoansModule::ScheduleCounters::DailyCounter
-        expect(loan_application_weekly.schedule_counter).to eql        LoansModule::ScheduleCounters::WeeklyCounter
-        expect(loan_application_monthly.schedule_counter).to eql       LoansModule::ScheduleCounters::MonthlyCounter
-        expect(loan_application_quarterly.schedule_counter).to eql     LoansModule::ScheduleCounters::QuarterlyCounter
-        expect(loan_application_semi_annually.schedule_counter).to eql LoansModule::ScheduleCounters::SemiAnnuallyCounter
-        expect(loan_application_lumpsum.schedule_counter).to eql       LoansModule::ScheduleCounters::LumpsumCounter
+        expect(daily.schedule_counter).to eql         LoansModule::ScheduleCounters::DailyCounter
+        expect(weekly.schedule_counter).to eql        LoansModule::ScheduleCounters::WeeklyCounter
+        expect(monthly.schedule_counter).to eql       LoansModule::ScheduleCounters::MonthlyCounter
+        expect(quarterly.schedule_counter).to eql     LoansModule::ScheduleCounters::QuarterlyCounter
+        expect(semi_annually.schedule_counter).to eql LoansModule::ScheduleCounters::SemiAnnuallyCounter
+        expect(lumpsum.schedule_counter).to eql       LoansModule::ScheduleCounters::LumpsumCounter
       end
 
-      it "#amortizeable_principal" do
-        loan_application_daily         = create(:loan_application, term: 12, mode_of_payment: 'daily', loan_amount: 100_000)
-        loan_application_weekly        = create(:loan_application, term: 12, mode_of_payment: 'weekly',loan_amount: 100_000)
-        loan_application_monthly       = create(:loan_application, term: 12, mode_of_payment: 'monthly',loan_amount: 100_000)
-        loan_application_quarterly     = create(:loan_application, term: 12, mode_of_payment: 'quarterly',loan_amount: 100_000)
-        loan_application_semi_annually = create(:loan_application, term: 12, mode_of_payment: 'semi_annually',loan_amount: 100_000)
-        loan_application_lumpsum       = create(:loan_application, term: 12, mode_of_payment: 'lumpsum',loan_amount: 100_000)
-
-        expect(loan_application_daily.amortizeable_principal).to eql 277.78
-        expect(loan_application_weekly.amortizeable_principal).to eql 2_083.33
-        expect(loan_application_monthly.amortizeable_principal).to eql 8_333.33
-        expect(loan_application_quarterly.amortizeable_principal).to eql 25_000.00
-        expect(loan_application_semi_annually.amortizeable_principal).to eql 50_000.00
-        expect(loan_application_lumpsum.amortizeable_principal).to eql 100_000.00
-      end
+     
 
       it "#amortization_date_setter" do
-        loan_application_daily = create(:loan_application, mode_of_payment: 'daily')
-        loan_application_weekly = create(:loan_application, mode_of_payment: 'weekly')
-        loan_application_monthly = create(:loan_application, mode_of_payment: 'monthly')
-        loan_application_quarterly = create(:loan_application, mode_of_payment: 'quarterly')
-        loan_application_semi_annually = create(:loan_application, mode_of_payment: 'semi_annually')
-        loan_application_lumpsum = create(:loan_application, mode_of_payment: 'lumpsum')
+        daily         = create(:loan_application, mode_of_payment: 'daily')
+        weekly        = create(:loan_application, mode_of_payment: 'weekly')
+        monthly       = create(:loan_application, mode_of_payment: 'monthly')
+        quarterly     = create(:loan_application, mode_of_payment: 'quarterly')
+        semi_annually = create(:loan_application, mode_of_payment: 'semi_annually')
+        lumpsum       = create(:loan_application, mode_of_payment: 'lumpsum')
 
-        expect(loan_application_daily.amortization_date_setter).to eql LoansModule::AmortizationDateSetters::Daily
-        expect(loan_application_weekly.amortization_date_setter).to eql LoansModule::AmortizationDateSetters::Weekly
-        expect(loan_application_monthly.amortization_date_setter).to eql LoansModule::AmortizationDateSetters::Monthly
-        expect(loan_application_quarterly.amortization_date_setter).to eql LoansModule::AmortizationDateSetters::Quarterly
-        expect(loan_application_semi_annually.amortization_date_setter).to eql LoansModule::AmortizationDateSetters::SemiAnnually
-        expect(loan_application_lumpsum.amortization_date_setter).to eql LoansModule::AmortizationDateSetters::Lumpsum
+        expect(daily.amortization_date_setter).to         eql LoansModule::AmortizationDateSetters::Daily
+        expect(weekly.amortization_date_setter).to        eql LoansModule::AmortizationDateSetters::Weekly
+        expect(monthly.amortization_date_setter).to       eql LoansModule::AmortizationDateSetters::Monthly
+        expect(quarterly.amortization_date_setter).to     eql LoansModule::AmortizationDateSetters::Quarterly
+        expect(semi_annually.amortization_date_setter).to eql LoansModule::AmortizationDateSetters::SemiAnnually
+        expect(lumpsum.amortization_date_setter).to       eql LoansModule::AmortizationDateSetters::Lumpsum
       end
-
-      it "#interest_amortization_calculator" do
-        number_of_payments_loan_product = create(:loan_product)
-        percent_base_loan_product       = create(:loan_product)
-        number_of_payments              = create(:interest_prededuction, number_of_payments: 3, loan_product: number_of_payments_loan_product)
-        percent_based                   = create(:interest_prededuction, rate: 0.75, loan_product: percent_base_loan_product)
-        loan_application_1              = create(:loan_application, loan_product: number_of_payments_loan_product)
-        loan_application_2              = create(:loan_application, loan_product: percent_base_loan_product)
-
-        expect()
-      end
-
-      it "#principal_balance(schedule)" do
-        amortization_type     = create(:amortization_type, calculation_type: 'straight_line')
-        loan_product          = create(:loan_product, amortization_type: amortization_type)
-        interest_prededuction = create(:interest_prededuction, loan_product: loan_product, rate: 0.75, calculation_type: 'percent_based')
-        interest_config       = create(:interest_config, rate: 0.12, loan_product: loan_product, calculation_type: 'prededucted')
-        loan_application      = create(:loan_application, loan_product: loan_product, loan_amount: 100_000, term: 24, mode_of_payment: 'monthly', application_date: Date.current)
-
-        LoansModule::AmortizationScheduler.new(scheduleable: loan_application).create_schedule!
-        puts loan_application.schedule_count
-        puts loan_application.loan_amount.amount
-        schedule = loan_application.amortization_schedules.by_oldest_date[11]
-        expect(loan_application.principal_balance_for(schedule)).to eql 50_000.00
-      end
-
     end
   end

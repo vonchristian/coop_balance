@@ -21,8 +21,8 @@
           <div class="col-md-5 col-sm-6"> <%= @loan_application.loan_product_name %></div>
         </div>
         <div class="row min-margin">
-          <div class="col-md-5 col-sm-6 offset-md-1"> Loan Term </div>
-          <div class="col-md-5 col-sm-6"> <%= @loan_application.term %></div>
+          <div class="col-md-5 col-sm-6 offset-md-1"> Number of Days </div>
+          <div class="col-md-5 col-sm-6"> <%= @loan_application.number_of_days %></div>
         </div>
         <div class="row min-margin">
           <div class="col-md-5 col-sm-6 offset-md-1"> Mode of Payment </div>
@@ -59,34 +59,43 @@
           </div>
         </div>
         <div class="row justify-content-end">
-          <div class="col-md-8 col-sm-6">
+          <div class="col-md-4 col-sm-4">
             First Year
           </div>
-          <div class="col-md-3 col-sm-6">
+          <div class="col-md-4 col-sm-4">
+            <%= number_to_currency @loan_application.first_year_principal_balance %>
+          </div>
+          <div class="col-md-3 col-sm-4">
             <%= number_to_currency @loan_application.first_year_interest %>
           </div>
         </div>
-        <% if @loan_application.term > 12  %>
+        <% if @loan_application.schedule_count >=24  %>
           <div class="row justify-content-end">
-            <div class="col-md-8 col-sm-6">
+            <div class="col-md-4 col-sm-4">
               Second Year
             </div>
+            <div class="col-md-4 col-sm-4">
+            <%= number_to_currency @loan_application.second_year_principal_balance %>
+          </div>
             <div class="col-md-3 col-sm-6">
               <%= number_to_currency @loan_application.second_year_interest %>
             </div>
           </div>
         <% end %>
-        <% if @loan_application.term >= 36 %>
+        <% if @loan_application.schedule_count >= 36 %>
           <div class="row justify-content-end">
-            <div class="col-md-8 col-sm-6">
+            <div class="col-md-4 col-sm-4">
               Third Year
             </div>
+            <div class="col-md-4 col-sm-4">
+            <%= number_to_currency @loan_application.third_year_principal_balance %>
+          </div>
             <div class="col-md-3 col-sm-6">
               <%= number_to_currency @loan_application.third_year_interest %>
             </div>
           </div>
         <% end %>
-        <% if @loan_application.term >= 48 %>
+        <% if @loan_application.schedule_count >= 48 %>
           <div class="row justify-content-end">
             <div class="col-md-8 col-sm-6">
               Fourth Year
@@ -96,7 +105,7 @@
             </div>
           </div>
         <% end %>
-        <% if @loan_application.term >=60 %>
+        <% if @loan_application.schedule_count >= 60 %>
           <div class="row justify-content-end">
             <div class="col-md-8 col-sm-6">
               Fifth Year
@@ -258,7 +267,7 @@
         <% end %>
       </div>
     </div>
-    <% if !@loan_application.lumpsum? %>
+   
       <div class="card">
         <div class="card-header">
           <h3 class="card-title"> Amortization Schedules </h3>
@@ -300,7 +309,7 @@
           </table>
         </div>
       </div>
-    <% end %>
+
   </div>
 
 

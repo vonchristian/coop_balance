@@ -134,5 +134,33 @@ module LoansModule
       count     = self.class.select { |a| (from_date.beginning_of_day..to_date.end_of_day).cover?(a.date) }.count
       self.class.by_oldest_date.take(count-1).last
     end
+
+    def with_in_first_year?
+      loan_application.amortization_schedules.order(date: :asc).first(12).include?(self)
+    end
+
+    def with_in_second_year?
+      return false if loan_application.amortization_schedules.size <= 12 
+
+      loan_application.amortization_schedules.order(date: :asc).first(24).last(12).include?(self)
+    end
+
+    def with_in_third_year?
+      return false if loan_application.amortization_schedules.size <= 24
+
+      loan_application.amortization_schedules.order(date: :asc).first(36).last(12).include?(self)
+    end
+
+    def with_in_fourth_year?
+      return false if loan_application.amortization_schedules.size <= 36
+
+      loan_application.amortization_schedules.order(date: :asc).first(48).last(12).include?(self)
+    end
+
+    def with_in_fifth_year?
+      return false if loan_application.amortization_schedules.size <= 48
+
+      loan_application.amortization_schedules.order(date: :asc).first(60).last(12).include?(self)
+    end
 	end
 end

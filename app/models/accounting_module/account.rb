@@ -17,7 +17,7 @@ module AccountingModule
     has_many :debit_entries,                 :through => :debit_amounts, :source => :entry, :class_name => 'AccountingModule::Entry'
 
     has_many :account_budgets
-
+    has_many :accountable_accounts, dependent: :nullify
     validates :type, :name, :code, presence: true
     validates :name, uniqueness: true
     

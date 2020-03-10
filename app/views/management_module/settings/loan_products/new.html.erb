@@ -22,11 +22,7 @@
       <%= f.input :maximum_loanable_amount,  as: :currency, input_html: { style: "width:100%" } %>
       <%= f.input :grace_period %>
 
-      <%= f.input :current_account_id, label: "Select Loans Receivable (Current) Account", collection: current_cooperative.accounts.assets.active.all.map{|a| [a.name.titleize, a.id] }, input_html: { id: 'loanAccountSelect'} %>
-      <%= f.input :past_due_account_id, label: "Select Loans Receivable (Past Due) Account", collection: current_cooperative.accounts.assets.active.all.map{|a| [a.name.titleize, a.id] } %>
-      <%= f.input :restructured_account_id, label: "Restructured Account", collection: current_cooperative.accounts.assets.active.all.map{|a| [a.name.titleize, a.id] } %>
-      <%= f.input :litigation_account_id, label: "Litigation Account", collection: current_cooperative.accounts.assets.active.all.map{|a| [a.name.titleize, a.id] } %>
-
+    
 
     </div>
   </div>
@@ -37,10 +33,7 @@
     </div>
     <div class="col-md-5">
       <%= f.input :interest_rate, label: "Annual Interest Rate (APR):" %>
-      <%= f.input :unearned_interest_income_account_id,  collection: current_cooperative.accounts.assets.active.all.map{|a| [a.name, a.id] } %>
-      <%= f.input :interest_revenue_account_id,  collection: current_cooperative.accounts.revenues.active.all.map{|a| [a.name, a.id] } %>
-      <%= f.input :accrued_income_account_id,  collection: current_cooperative.accounts.assets.active.all.map{|a| [a.name, a.id] } %>
-
+     
       <%= f.input :interest_calculation_type, collection: LoansModule::LoanProducts::InterestConfig.calculation_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
     </div>
   </div>
@@ -65,7 +58,7 @@
     </div>
     <div class="col-md-5">
       <%= f.input :penalty_rate %>
-      <%= f.input :penalty_revenue_account_id,  collection: current_cooperative.accounts.revenues.active.all.map{|a| [a.name, a.id] } %>
+   
       <%= f.input :loan_protection_plan_provider_id,  collection: current_cooperative.loan_protection_plan_providers.all.map{|a| [a.business_name, a.id] } %>
     </div>
   </div>
@@ -76,6 +69,9 @@
     </div>
     <div class="col-md-5">
       <%= f.input :amortization_type_id,  collection: LoansModule::AmortizationType.all.map{|a| [a.calculation_type.titleize, a.id] }, as: :radio_buttons %>
+      <%= f.input :interest_amortization_id,  collection: LoansModule::AmortizationConfigs::InterestAmortization.all.map{|a| [a.calculation_type.titleize, a.id] }, as: :radio_buttons %>
+      <%= f.input :total_repayment_amortization_id,  collection: LoansModule::AmortizationConfigs::TotalRepaymentAmortization.all.map{|a| [a.calculation_type.titleize, a.id] }, as: :radio_buttons %>
+ 
     </div>
   </div>
   <div class="row">

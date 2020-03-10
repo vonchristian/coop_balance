@@ -6,7 +6,7 @@ module LoansModule
 
     enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]
     
-    belongs_to :cart,                     class_name: 'StoreFrontModule::Cart', optional: true
+    belongs_to :cart,                     class_name: 'StoreFrontModule::Cart'
     belongs_to :borrower,                 polymorphic: true
     belongs_to :preparer,                 class_name: "User", foreign_key: 'preparer_id'
     belongs_to :cooperative
@@ -17,8 +17,8 @@ module LoansModule
     belongs_to :interest_revenue_account, class_name: 'AccountingModule::Account', dependent: :destroy
     belongs_to :voucher,                  dependent: :destroy, optional: true
     has_one    :loan,                     class_name: "LoansModule::Loan", dependent: :nullify
-    has_many :voucher_amounts,            class_name: "Vouchers::VoucherAmount", dependent: :destroy
-    has_many :accountable_accounts,       class_name: 'AccountingModule::AccountableAccount', as: :accountable
+   
+    has_many :accountable_accounts,       class_name: 'AccountingModule::AccountableAccount', as: :accountable, dependent: :destroy
     has_many :amortization_schedules,     dependent: :destroy
     has_many :terms, as: :termable,       dependent: :destroy
 
@@ -31,7 +31,7 @@ module LoansModule
     delegate :entry, to: :voucher, allow_nil: true
     delegate :reference_number, to: :voucher, prefix: true, allow_nil: true
     delegate :rate, :straight_balance?, :annually?, :prededucted_number_of_payments, to: :current_interest_config, prefix: true
-
+    delegate :voucher_amounts, to: :cart
     validates :account_number, presence: true, uniqueness: true
 
     validates :number_of_days, presence: true, numericality: { only_integer: true }
@@ -99,14 +99,6 @@ module LoansModule
       (1461..1825).include?(number_of_days)
     end
 
-
-    def voucher_amounts_excluding_loan_amount_and_net_proceed
-      accounts = []
-      accounts << cooperative.cash_accounts
-      accounts << loan_product_current_account
-      voucher_amounts.excluding_account(account: accounts)
-    end
-
     def total_interest
       if term_is_within_one_year?
         first_year_interest
@@ -142,7 +134,7 @@ module LoansModule
     end
 
     def voucher_interest_amount
-      voucher_amounts.for_account(account: current_interest_config.interest_revenue_account).total
+      voucher_amounts.for_account(account: interest_revenue_account).total
     end
 
     def first_year_interest
@@ -215,15 +207,9 @@ module LoansModule
     end
 
     def net_proceed
-      loan_amount.amount - voucher_amounts.total
+      LoansModule::LoanApplications::NetProceedCalculator.new(loan_application: self).net_proceed
     end
 
-    def total_charges
-      accounts = []
-      accounts << cooperative.cash_accounts
-      accounts << loan_product_current_account
-      voucher_amounts.excluding_account(account: accounts).total
-    end
 
     def status 
       if loan.present?

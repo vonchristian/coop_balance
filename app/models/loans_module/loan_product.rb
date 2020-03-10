@@ -7,10 +7,8 @@ module LoansModule
     belongs_to :loan_protection_plan_provider, class_name: "LoansModule::LoanProtectionPlanProvider", optional: true
     belongs_to :cooperative
     belongs_to :office,                        class_name: "Cooperatives::Office"
-    belongs_to :current_account,               class_name: "AccountingModule::Account"
-    belongs_to :past_due_account,              class_name: "AccountingModule::Account"
-    belongs_to :restructured_account,          class_name: "AccountingModule::Account", optional: true
-    belongs_to :litigation_account,            class_name: "AccountingModule::Account", optional: true
+    belongs_to :interest_amortization,         class_name: "LoansModule::AmortizationConfigs::InterestAmortization"
+    belongs_to :total_repayment_amortization,  class_name: "LoansModule::AmortizationConfigs::TotalRepaymentAmortization"
     has_many :interest_configs,                class_name: "LoansModule::LoanProducts::InterestConfig", dependent: :destroy
     has_many :penalty_configs,                 class_name: "LoansModule::LoanProducts::PenaltyConfig",dependent: :destroy
     has_many :loan_product_charges,            class_name: "LoansModule::LoanProducts::LoanProductCharge",dependent: :destroy
@@ -51,13 +49,13 @@ module LoansModule
 
     delegate :scheduler, to: :amortization_type, prefix: true
     delegate :calculation_type, to: :current_interest_prededuction, prefix: true
-    validates :name,:current_account_id, :past_due_account_id, presence: true
-
-    validates :name, uniqueness: true
+    validates :name, presence: true, uniqueness: true
     validates :maximum_loanable_amount, numericality: true
 
     delegate :calculation_type, :rate, :rate_in_percent, :number_of_payments, to: :current_interest_prededuction, prefix: true, allow_nil: true
-
+    delegate :interest_amortizer, to: :interest_amortization
+    delegate :total_repayment_amortizer, to: :total_repayment_amortization
+    
     def self.active
       where(active: true)
     end

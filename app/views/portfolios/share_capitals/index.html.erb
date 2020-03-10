@@ -1,0 +1,20 @@
+ <label class="no-margin-bottom">As of</label>
+    <%= form_tag({format: 'csv', :action => 'index', controller: "portfolios/share_capitals"}, {:method => :get, :class => 'form-inline'}) do%>
+      <div class="form-group">
+        <%= text_field_tag :to_date, @to_date, :class => 'datepicker form-control' %>
+        <%= select_tag :share_capital_product_id, options_for_select(current_cooperative.share_capital_products.map {|m| [m.name, m.id]}, params[:share_capital_product_id]), class: ' form-control border-input', prompt: false %>
+
+      </div>
+      <button type="submit" class="btn btn-outline-primary">Generate</button>
+    <% end %>
+<hr>
+     <h4 class='subtitle-up'> Averaged Daily Balances </h4>
+     <%= form_tag({format: 'csv', :action => 'index', controller: "portfolios/averaged_daily_balance_share_capitals"}, {:method => :get, :class => 'form-inline'}) do %>
+      <div class="form-group">
+        <%= text_field_tag :to_date, @to_date, :class => 'datepicker form-control' %>
+
+        <%= select_tag :saving_product_id, options_for_select(current_office.share_capital_products.map {|m| [m.name, m.id]}, params[:share_capital_product_id]), class: ' form-control', prompt: false %>
+
+      </div>
+      <button type="submit" class="btn btn-outline-primary">Generate</button>
+    <% end %>

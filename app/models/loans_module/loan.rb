@@ -357,15 +357,7 @@ module LoansModule
     def loan_payments(args = {})
       entries
     end
-     
-    def voucher_amounts_excluding_loan_amount_and_net_proceed
-      accounts = []
-      Employees::EmployeeCashAccount.cash_accounts.each do |account|
-        accounts << account
-      end
-      accounts << loan_product_current_account
-      voucher_amounts.excluding_account(account: accounts )
-    end
+   
 
     def current?
       !is_past_due?

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_27_054217) do
+ActiveRecord::Schema.define(version: 2020_03_10_071548) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -587,6 +587,11 @@ ActiveRecord::Schema.define(version: 2020_02_27_054217) do
     t.index ["member_id"], name: "index_income_sources_on_member_id"
   end
 
+  create_table "interest_amortizations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "calculation_type", null: false
+    t.index ["calculation_type"], name: "index_interest_amortizations_on_calculation_type"
+  end
+
   create_table "interest_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "loan_product_id"
     t.decimal "rate"
@@ -891,9 +896,12 @@ ActiveRecord::Schema.define(version: 2020_02_27_054217) do
     t.uuid "litigation_account_id"
     t.boolean "adjustable_interest_rate", default: false
     t.uuid "office_id"
+    t.uuid "interest_amortization_id"
+    t.uuid "total_repayment_amortization_id"
     t.index ["amortization_type_id"], name: "index_loan_products_on_amortization_type_id"
     t.index ["cooperative_id"], name: "index_loan_products_on_cooperative_id"
     t.index ["current_account_id"], name: "index_loan_products_on_current_account_id"
+    t.index ["interest_amortization_id"], name: "index_loan_products_on_interest_amortization_id"
     t.index ["litigation_account_id"], name: "index_loan_products_on_litigation_account_id"
     t.index ["loan_protection_plan_provider_id"], name: "index_loan_products_on_loan_protection_plan_provider_id"
     t.index ["name"], name: "index_loan_products_on_name", unique: true
@@ -901,6 +909,7 @@ ActiveRecord::Schema.define(version: 2020_02_27_054217) do
     t.index ["past_due_account_id"], name: "index_loan_products_on_past_due_account_id"
     t.index ["restructured_account_id"], name: "index_loan_products_on_restructured_account_id"
     t.index ["slug"], name: "index_loan_products_on_slug", unique: true
+    t.index ["total_repayment_amortization_id"], name: "index_loan_products_on_total_repayment_amortization_id"
   end
 
   create_table "loan_protection_plan_providers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1925,6 +1934,11 @@ ActiveRecord::Schema.define(version: 2020_02_27_054217) do
     t.index ["tinable_type", "tinable_id"], name: "index_tins_on_tinable_type_and_tinable_id"
   end
 
+  create_table "total_repayment_amortizations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "calculation_type", null: false
+    t.index ["calculation_type"], name: "index_total_repayment_amortizations_on_calculation_type"
+  end
+
   create_table "unit_of_measurements", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "product_id"
     t.string "code"
@@ -2154,8 +2168,10 @@ ActiveRecord::Schema.define(version: 2020_02_27_054217) do
   add_foreign_key "loan_products", "accounts", column: "restructured_account_id"
   add_foreign_key "loan_products", "amortization_types"
   add_foreign_key "loan_products", "cooperatives"
+  add_foreign_key "loan_products", "interest_amortizations"
   add_foreign_key "loan_products", "loan_protection_plan_providers"
   add_foreign_key "loan_products", "offices"
+  add_foreign_key "loan_products", "total_repayment_amortizations"
   add_foreign_key "loan_protection_plan_providers", "accounts", column: "accounts_payable_id"
   add_foreign_key "loan_protection_plan_providers", "cooperatives"
   add_foreign_key "loans", "accounts", column: "accrued_income_account_id"

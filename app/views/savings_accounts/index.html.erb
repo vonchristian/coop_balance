@@ -64,7 +64,7 @@
                     <tr style="cursor: pointer;" data-link="<%= savings_account_path(savings_account) %>">
                       <td style="width: 40px"><%= image_tag(savings_account.depositor.avatar, class: "img-circle", height: 50, width: 50) %></td>
                       <td><%= link_to savings_account.depositor_name, savings_account_path(savings_account) %><br>
-                          <small class='text-muted'> <%= savings_account.depositor.income_sources.designations %></small>
+                          
                       </td>
                       <td><%= savings_account.saving_product_name %></td>
                       <td><%= savings_account.last_transaction_date.strftime('%B %e, %Y') %> </td>

@@ -6,10 +6,8 @@ module LoansModule
       it { is_expected.to belong_to(:loan_protection_plan_provider).optional }
       it { is_expected.to belong_to :cooperative }
       it { is_expected.to belong_to :office }
-      it { is_expected.to belong_to :current_account }
-      it { is_expected.to belong_to :past_due_account }
-      it { is_expected.to belong_to(:restructured_account).optional }
-      it { is_expected.to belong_to(:litigation_account).optional }
+      it { is_expected.to belong_to :interest_amortization }
+      it { is_expected.to belong_to :total_repayment_amortization }
     	it { is_expected.to have_many :loans }
       it { is_expected.to have_many :member_borrowers }
       it { is_expected.to have_many :employee_borrowers }
@@ -43,7 +41,6 @@ module LoansModule
     describe 'validations' do
       it { is_expected.to validate_presence_of :name }
       it { is_expected.to validate_uniqueness_of :name }
-      it { is_expected.to validate_presence_of :current_account_id }
     end
 
     describe "interest_charge_setter" do
@@ -59,13 +56,6 @@ module LoansModule
         interest_config = create(:prededucted_interest_config, loan_product: loan_product)
 
         expect(loan_product.interest_charge_setter).to eql LoansModule::InterestChargeSetters::Prededucted
-      end
-
-      it "accrued" do
-        loan_product = create(:loan_product)
-        interest_config = create(:accrued_interest_config, loan_product: loan_product)
-
-        expect(loan_product.interest_charge_setter).to eql LoansModule::InterestChargeSetters::Accrued
       end
     end
 

@@ -14,8 +14,10 @@ module LoansModule
                   :cooperative_id,
                   :office_id
     validates :number_of_days,  presence: true, numericality: true
-    validates :loan_amount, presence: true
-    validates :loan_product_id, :mode_of_payment, :number_of_days, :application_date, :purpose, presence: true
+    validates :loan_amount, presence: true, numericality: true
+    
+    validates :loan_product_id, :mode_of_payment, :application_date, :purpose, presence: true
+    
     validate :maximum_term?
 
     def find_loan_application
@@ -25,11 +27,12 @@ module LoansModule
       if valid?
         ActiveRecord::Base.transaction do
           create_loan_application
+          process_loan_application
         end
       end
     end
 
-    def find_loan
+    def find_loan_application
       LoansModule::LoanApplication.find_by(account_number: account_number)
     end
 
@@ -37,6 +40,7 @@ module LoansModule
 
     def create_loan_application
       loan_application = LoansModule::LoanApplication.new(
+        cart:             StoreFrontModule::Cart.create!(employee: find_preparer), 
         cooperative:      find_preparer.cooperative,
         office:           find_preparer.office,
         organization:     find_borrower.current_organization,
@@ -52,16 +56,20 @@ module LoansModule
         number_of_days:   number_of_days)
         create_accounts(loan_application)
         loan_application.save!
-
-        find_loan_product.loan_processor.new(loan_application: loan_application).process!
     end
+
+    def process_loan_application
+      find_loan_product.loan_processor.new(loan_application: find_loan_application).process!
+    end 
 
     def create_accounts(loan_application)
       ::AccountCreators::LoanApplication.new(loan_application: loan_application).create_accounts!
     end
+
     def find_borrower
-      Borrower.find(borrower_id)
+      borrower_type.constantize.find(borrower_id)
     end
+
     def find_preparer
       User.find(preparer_id)
     end
@@ -71,7 +79,7 @@ module LoansModule
     end
 
     def maximum_term?
-      errors[:number_of_days] << "must not exceed 3600 delayed_jobs_priority." if number_of_days.to_f > 3600
+      errors[:number_of_days] << "must not exceed 10 years." if number_of_days.to_f > 3650
     end
   end
 end
