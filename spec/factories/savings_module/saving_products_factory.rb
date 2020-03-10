@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :saving_product, class: "CoopServicesModule::SavingProduct" do
+  factory :saving_product, class: "SavingsModule::SavingProduct" do
     interest_rate   { 0.02 }
     interest_recurrence { 'quarterly' }
     minimum_balance { 1_000 }

@@ -5,7 +5,7 @@ module SavingsModule
       
       enum interest_posting: [:annually]
       belongs_to :interest_expense_category,  class_name: 'AccountingModule::LevelOneAccountCategory'
-      belongs_to :saving_product,             class_name: 'CoopServicesModule::SavingProduct'
+      belongs_to :saving_product,             class_name: 'SavingsModule::SavingProduct'
 
       validates :annual_rate, presence: true, numericality: true
       validates :minimum_balance, presence: true, numericality: true

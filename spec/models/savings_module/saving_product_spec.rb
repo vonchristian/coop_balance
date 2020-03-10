@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-module CoopServicesModule
+module SavingsModule
   describe SavingProduct do
     describe "associations" do
       it { is_expected.to belong_to :cooperative }
@@ -96,7 +96,7 @@ module CoopServicesModule
       saving_product = create(:saving_product)
       subscriber = create(:saving, saving_product: saving_product)
       another_subscriber = create(:saving, saving_product: saving_product)
-      expect(CoopServicesModule::SavingProduct.total_subscribers).to eq 2
+      expect(described_class.total_subscribers).to eq 2
     end
 
     it "#total_subscribers" do

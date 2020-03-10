@@ -1,4 +1,4 @@
- module CoopServicesModule
+ module SavingsModule
 	class SavingProduct < ApplicationRecord
     extend Totalable
     extend Metricable

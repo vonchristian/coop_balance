@@ -13,7 +13,7 @@ module MembershipsModule
     belongs_to :depositor,                polymorphic: true
     belongs_to :liability_account,        class_name: 'AccountingModule::Account'
     belongs_to :interest_expense_account, class_name: 'AccountingModule::Account'
-    belongs_to :saving_product,           class_name: "CoopServicesModule::SavingProduct"
+    belongs_to :saving_product,           class_name: "SavingsModule::SavingProduct"
     belongs_to :office,                   class_name: "Cooperatives::Office"
     has_many :ownerships,                 as: :ownable
     has_many :member_co_depositors,       through: :ownerships, source: :owner, source_type: "Member"
