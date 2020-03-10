@@ -44,7 +44,7 @@ module Portfolios
 			Enumerator.new do |yielder|
 				yielder << CSV.generate_line(["#{current_office.name} - Share Capital Portfolio"])
 				yielder << CSV.generate_line(["Subscriber", "Balance", "Share Capital Product", "Last Transaction Date"])
-				@share_capitals.each do |share_capital|
+				@share_capitals.includes(:debit_amounts, :credit_amounts).each do |share_capital|
 					yielder << CSV.generate_line([
 						share_capital.account_owner_name,
 						share_capital.balance(to_date: @to_date),

@@ -17,6 +17,11 @@ module MembershipsModule
     has_many   :accountable_accounts,         class_name: 'AccountingModule::AccountableAccount', as: :accountable
     has_many   :accounts,                     through: :accountable_accounts, class_name: 'AccountingModule::Account'
     has_many   :entries,                      through: :accounts, class_name: 'AccountingModule::Entry'
+    has_many   :amounts,                      through: :accounts, class_name: "AccountingModule::Amount"
+    has_many   :debit_amounts,                through: :accounts, class_name: "AccountingModule::DebitAmount"
+    has_many   :credit_amounts,                through: :accounts, class_name: "AccountingModule::CreditAmount"
+
+
     delegate :name, to: :barangay, prefix: true, allow_nil: true
     delegate :name,
             :equity_account,

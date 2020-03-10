@@ -4,7 +4,7 @@ module AccountingModule
       attr_reader  :from_date, :to_date, :amounts
 
       def initialize(from_date:, to_date:, amounts:)
-        @amounts   ||= amounts
+        @amounts   = amounts
         @from_date = from_date
         @to_date   = to_date
       end

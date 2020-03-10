@@ -13,11 +13,11 @@ module AccountingModule
     delegate :name, to: :recorder, prefix: true
 
     def self.not_cancelled
-      joins(:entry).where('entries.cancelled' => false)
+      includes(:entry).where('entries.cancelled' => false)
     end
 
     def self.cancelled
-      joins(:entry).where('entries.cancelled' => true)
+      includes(:entry).where('entries.cancelled' => true)
     end
 
     def self.for_account(args={})
