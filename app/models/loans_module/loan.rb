@@ -106,10 +106,7 @@ module LoansModule
       AccountingModule::Account.where(id: ids.compact.flatten.uniq)
     end
 
-    def self.accrued_income_accounts
-      ids = pluck(:accrued_income_account_id)
-      AccountingModule::Account.where(id: ids.compact.flatten.uniq)
-    end
+    
 
     def self.current_loan_agings 
       map{|a| a.current_loan_aging }

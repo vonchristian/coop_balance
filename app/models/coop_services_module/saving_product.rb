@@ -9,10 +9,9 @@
     
     belongs_to :cooperative
     belongs_to :office,                   class_name: "Cooperatives::Office"
-	  belongs_to :account,                  class_name: "AccountingModule::Account"
-    belongs_to :closing_account,          class_name: "AccountingModule::Account"
-    belongs_to :interest_expense_account, class_name: "AccountingModule::Account"
 
+    belongs_to :closing_account,          class_name: "AccountingModule::Account"
+  
     has_many :subscribers,                class_name: "MembershipsModule::Saving"
 
 	  validates :interest_rate,
@@ -24,17 +23,12 @@
 	  validates :name,
               presence: true,
               uniqueness: { scope: :office_id }
-	  validates :account_id,
-              :interest_expense_account_id,
-              :closing_account_id,
-              presence: true
+
     validates :cooperative_id, presence: true
     validates :minimum_balance, presence: true, numericality: true
 
-    delegate :name, to: :account, prefix: true
-    delegate :balance,
-             :debits_balance,
-             :credits_balance, to: :account
+
+
 
     def self.accounts_opened(args={})
       SavingProductQuery.new.accounts_opened(args)
@@ -75,8 +69,8 @@
       applicable_divisor.new(saving_product: self).rate_divisor
     end
 
-    def applicable_divisor
-      ("SavingsModule::InterestRateDivisors::" + interest_recurrence.titleize.gsub(" ", "")).constantize
+    def applicable_rate
+      ("SavingsModule::InterestRateSetters::" + interest_recurrence.titleize.gsub(" ", "")).constantize
     end
 
     def date_setter

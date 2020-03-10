@@ -7,14 +7,13 @@ module LoansModule
       it { is_expected.to belong_to :borrower }
       it { is_expected.to belong_to :preparer }
       it { is_expected.to belong_to :cooperative }
-      it { is_expected.to belong_to(:cart).optional }
+      it { is_expected.to belong_to :cart }
       it { is_expected.to belong_to :office }
       it { is_expected.to belong_to(:organization).optional }
       it { is_expected.to belong_to(:voucher).optional }
       it { is_expected.to belong_to :receivable_account }
       it { is_expected.to belong_to :interest_revenue_account }
-      it { is_expected.to have_one :loan }
-      it { is_expected.to have_many :voucher_amounts }
+      it { is_expected.to have_one  :loan }
       it { is_expected.to have_many :amortization_schedules }
       it { is_expected.to have_many :terms }
     end

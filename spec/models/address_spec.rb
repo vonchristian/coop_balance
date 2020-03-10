@@ -23,20 +23,4 @@ describe Address do
     expect(described_class.recent).to eql(recent_address)
     expect(described_class.recent).to_not eql(old_address)
   end
-
-  describe '.current_address' do
-    it '#with no address' do
-      expect(described_class.current_address.class).to eql(NullAddress)
-    end
-
-    it '#with address' do
-      not_current_address    = create(:address, current: false)
-      recent_current_address = create(:address, current: true, created_at: Date.today)
-      old_current_address    = create(:address, current: true, created_at: Date.today.yesterday)
-
-      expect(described_class.current_address).to eql(recent_current_address)
-      expect(described_class.current_address).to_not eql(old_current_address)
-      expect(described_class.current_address).to_not eql(not_current_address)
-    end
-  end
 end

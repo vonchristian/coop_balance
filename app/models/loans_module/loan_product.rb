@@ -30,7 +30,7 @@ module LoansModule
              :rate_type,
              :interest_revenue_account,
              :unearned_interest_income_account,
-             :accrued_income_account,
+        
              :add_on?,
              to: :current_interest_config, prefix: true
     delegate :amortizer, :amortizeable_principal_calculator, to: :amortization_type
@@ -40,7 +40,7 @@ module LoansModule
              :interest_receivable_account,
              :unearned_interest_income_account,
              :monthly_interest_rate,
-             :accrued_income_account,
+       
              to: :current_interest_config
 
     delegate :penalty_receivable_account,
@@ -92,19 +92,10 @@ module LoansModule
     def loan_processor
       if current_interest_config.prededucted?
         ("LoansModule::LoanProcessors::" + current_interest_prededuction_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
-      elsif current_interest_config.add_on? || current_interest_config.accrued?
+      elsif current_interest_config.add_on?
         ("LoansModule::LoanProcessors::" + current_interest_config_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
       end
     end
-
-    
-    # def amortization_scheduler
-    #   if current_interest_config.prededucted?
-    #     ("LoansModule::AmortizationSchedulers::" + current_interest_prededuction_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
-    #   elsif current_interest_config.add_on? || current_interest_config.accrued?
-    #     ("LoansModule::AmortizationSchedulers::" + current_interest_config_calculation_type.titleize.gsub(" ", "") + amortization_type.calculation_type.titleize.gsub(" ", "")).constantize
-    #   end
-    # end
 
     def self.accounts
       accounts = []
@@ -132,10 +123,7 @@ module LoansModule
       AccountingModule::Account.where(id: ids)
     end
 
-    def self.accrued_income_accounts
-      ids = all.map{|a| a.current_interest_config.accrued_income_account_id }
-      AccountingModule::Account.where(id: ids)
-    end
+  
 
     def self.penalty_revenue_accounts #move
       ids = all.map{|a| a.current_penalty_config.penalty_revenue_account_id }

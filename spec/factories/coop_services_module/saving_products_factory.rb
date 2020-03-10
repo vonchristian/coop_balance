@@ -6,8 +6,6 @@ FactoryBot.define do
     sequence(:name) { |n| "#{n}"}
     association :cooperative
     association :office
-    association :account, factory: :liability
-    association :interest_expense_account, factory: :expense
     association :closing_account, factory: :revenue
 
 

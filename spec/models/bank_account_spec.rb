@@ -2,7 +2,6 @@ require 'rails_helper'
 
 describe BankAccount do
   describe 'associations' do
-    it { is_expected.to belong_to :cooperative }
     it { is_expected.to belong_to :office }
     it { is_expected.to belong_to :cash_account }
     it { is_expected.to belong_to :interest_revenue_account }
@@ -16,6 +15,9 @@ describe BankAccount do
 
   describe 'delegations' do
     it { is_expected.to delegate_method(:entries).to(:cash_account) }
+    it { is_expected.to delegate_method(:balance).to(:cash_account) }
+    it { is_expected.to delegate_method(:credits_balance).to(:cash_account) }
+    it { is_expected.to delegate_method(:debits_balance).to(:cash_account) }
   end
 
   it "#name" do

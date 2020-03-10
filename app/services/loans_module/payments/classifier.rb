@@ -18,9 +18,6 @@ module LoansModule
         entry.amounts.where(account: loan.interest_revenue_account).total
       end
 
-      def accrued_interest
-        debit_amounts.where(account: loan.accrued_income_account).total
-      end
       def penalty
         credit_amounts.where(account: loan.penalty_revenue_account).total
       end

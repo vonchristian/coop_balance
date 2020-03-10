@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 module SavingsModule
-  module InterestRateDivisors
+  module InterestRateSetters
     describe Annually do
       it "rate_divisor" do
         saving_product = create(:saving_product, interest_recurrence: 'annually')

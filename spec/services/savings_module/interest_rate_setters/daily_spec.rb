@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 module SavingsModule
-  module InterestRateDivisors
+  module InterestRateSetters
     describe Daily do
       it "rate_divisor" do
         saving_product = create(:saving_product, interest_recurrence: 'daily')
