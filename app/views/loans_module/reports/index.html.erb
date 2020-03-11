@@ -20,6 +20,12 @@
 
               </div>
             </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <%= select_tag :loan_product_id, options_for_select(current_cooperative.loan_products.map {|m| [m.name, m.id]}, params[:loan_product_id]), class: ' form-control border-input', prompt: 'Select Loan Type' %>
+              </div>
+            </div>
+
             <div class="col-md-2">
               <button type="submit" class="btn btn-warning btn-sm"> Generate Report</button>
             </div>

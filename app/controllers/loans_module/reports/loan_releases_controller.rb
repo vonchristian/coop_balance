@@ -2,9 +2,10 @@ module LoansModule
   module Reports
     class LoanReleasesController < ApplicationController
       def index
-        @from_date = params[:from_date] ? DateTime.parse(params[:from_date]).beginning_of_day : DateTime.now.at_beginning_of_month
-        @to_date = params[:to_date] ? DateTime.parse(params[:to_date]).end_of_day : DateTime.now.end_of_month
-        @loans = current_office.loans.not_cancelled.order(tracking_number: :asc).disbursed_on(from_date: @from_date, to_date: @to_date)
+        @from_date    = params[:from_date] ? DateTime.parse(params[:from_date]).beginning_of_day : DateTime.now.at_beginning_of_month
+        @to_date      = params[:to_date] ? DateTime.parse(params[:to_date]).end_of_day : DateTime.now.end_of_month
+			  @loan_product = params[:loan_product_id] ? current_office.loan_products.find(params[:loan_product_id]) : current_office.loan_products.first 
+				@loans        = @loan_product.loans.not_cancelled.disbursed_on(from_date: @from_date, to_date: @to_date).order(tracking_number: :asc)
         @cooperative = current_cooperative
         respond_to do |format|
           format.html
