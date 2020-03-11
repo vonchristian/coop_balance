@@ -31,11 +31,19 @@ module LoansModule
     delegate :entry, to: :voucher, allow_nil: true
     delegate :reference_number, to: :voucher, prefix: true, allow_nil: true
     delegate :rate, :straight_balance?, :annually?, :prededucted_number_of_payments, to: :current_interest_config, prefix: true
-    delegate :voucher_amounts, to: :cart
+   
     validates :account_number, presence: true, uniqueness: true
 
     validates :number_of_days, presence: true, numericality: { only_integer: true }
-
+    
+    def voucher_amounts
+      if cart.present?
+        cart.voucher_amounts
+      else 
+        voucher.voucher_amounts
+      end 
+    end 
+    
     def forwarded_loan? #check on amortization_schedule pdf
       false
     end
