@@ -198,9 +198,9 @@
                   <%= savings_account.depositor_name %>
                 </span>
               <br>
-              <% if @loan_application.voucher_amounts.for_account(account: savings_account.saving_product_account).present? %>
+              <% if @loan_application.cart.voucher_amounts.for_account(account: savings_account.liability_account).present? %>
                 <span class="text-success"> <i class="fa fa-plus"></i>
-                <%= number_to_currency @loan_application.voucher_amounts.for_account(account: savings_account.saving_product_account).where(commercial_document: savings_account).total %>
+                <%= number_to_currency @loan_application.cart.voucher_amounts.for_account(account: savings_account.liability_account).total %>
                 </span>
               <% end %>
 
