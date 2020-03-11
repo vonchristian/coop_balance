@@ -14,7 +14,7 @@ module LoansModule
         deposit = Charge.amount_type.create(
         name: "Savings Account Deposit",
         amount: amount,
-        account: find_savings_account.saving_product_account)
+        account: find_savings_account.liability_account)
         find_loan.loan_charges.find_or_create_by(
         charge: deposit,
         commercial_document: find_savings_account,

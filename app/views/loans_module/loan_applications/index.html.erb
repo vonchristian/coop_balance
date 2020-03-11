@@ -28,30 +28,35 @@
 				<thead>
 					<tr>
 						<th> Borrower </th>
+						<th> Application Date </th>
 						<th> Voucher # </th>
 						<th> Loan Product </th>
 						<th> Loan Amount </th>
 						<th> Net Proceed </th>
 						<th> Approval Status </th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
 					<% @loan_applications.each do |loan_application| %>
 					  <tr>
 						  <td><%= link_to loan_application.borrower_name, loans_module_loan_application_path(id: loan_application.id) %></td>
+							<td><%= loan_application.application_date.strftime("%B %e, %Y") %></td>
 							<td><%= loan_application.voucher_reference_number %></td>
 							<td><%= loan_application.loan_product_name %></td>
 							<td><%= number_to_currency loan_application.loan_amount %></td>
 							<td><%= number_to_currency loan_application.net_proceed %></td>
 							<td><span class="badge badge-outline-<%= "#{loan_application.status_color}" %>"> <%= loan_application.status %></span></td>
+							<td>
+							  <% if loan_application.voucher.present? && !loan_application.voucher.disbursed? %>
+                  <%= link_to 'Disburse', new_loans_module_loan_application_disbursement_path(loan_application_id: loan_application.id, voucher_id: loan_application.voucher_id), class: "btn btn-primary float-right" %>
+                <% end %>
+							</td>
 						</tr>
 				  <% end %>
 				</tbody>
 			</table>
 		</div>
+		<%== pagy_bootstrap_nav(@pagy) %>
 	</div>
 </div>
-<% @loan_applications.each do |loan_application| %>
-  <%= render 'loans_module/loan_applications/partials/header', loan_application: loan_application %>
-<% end %>
-<center><%= will_paginate @loan_applications %></center>

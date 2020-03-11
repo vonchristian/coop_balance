@@ -18,7 +18,7 @@ module StatementOfAccounts
       view_context.number_to_currency(number, :unit => "P ")
     end
     def debit_cash_amount(entry)
-      amount = entry.debit_amounts.for_account(account_id: savings_account.saving_product_account.id).sum(&:amount)
+      amount = entry.debit_amounts.for_account(account_id: savings_account.liability_account.id).sum(&:amount)
       if amount.zero?
         ""
       else
@@ -26,7 +26,7 @@ module StatementOfAccounts
       end
     end
     def credit_cash_amount(entry)
-      amount = entry.credit_amounts.for_account(account_id: savings_account.saving_product_account.id).sum(&:amount)
+      amount = entry.credit_amounts.for_account(account_id: savings_account.liability_account.id).sum(&:amount)
       if amount.zero?
         ""
       else

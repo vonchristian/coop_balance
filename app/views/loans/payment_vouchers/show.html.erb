@@ -28,7 +28,7 @@
             </div>
             <div class="col-md-3">
               <h5 class="card-title float-right">
-                <%= number_to_currency @voucher.voucher_amounts.for_account(account: @loan.loan_product_interest_revenue_account).sum(&:amount) %>
+                <%= number_to_currency @voucher.voucher_amounts.for_account(account: @loan.interest_revenue_account).sum(&:amount) %>
               </h5>
             </div>
           </div>
@@ -38,7 +38,7 @@
             </div>
             <div class="col-md-3">
               <h5 class="card-title float-right">
-                <%= number_to_currency @voucher.voucher_amounts.for_account(account: @loan.loan_product_penalty_revenue_account).total %>
+                <%= number_to_currency @voucher.voucher_amounts.for_account(account: @loan.penalty_revenue_account).total %>
               </h5>
             </div>
           </div>

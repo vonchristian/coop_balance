@@ -5,8 +5,8 @@ module LoansModule
         @from_date    = params[:from_date] ? DateTime.parse(params[:from_date]).beginning_of_day : DateTime.now.at_beginning_of_month
         @to_date      = params[:to_date] ? DateTime.parse(params[:to_date]).end_of_day : DateTime.now.end_of_month
 			  @loan_product = params[:loan_product_id] ? current_office.loan_products.find(params[:loan_product_id]) : current_office.loan_products.first 
-				@loans        = @loan_product.loans.not_cancelled.disbursed_on(from_date: @from_date, to_date: @to_date).order(tracking_number: :asc)
-        @cooperative = current_cooperative
+				@loans        = @loan_product.loans.not_cancelled.disbursed_on(from_date: @from_date, to_date: @to_date)
+        @cooperative  = current_cooperative
         respond_to do |format|
           format.html
           format.xlsx
@@ -53,7 +53,7 @@ module LoansModule
 			Enumerator.new do |yielder|
 				yielder << CSV.generate_line(["#{current_office.name} Loan Disbursements"])
 				yielder << CSV.generate_line(["Borrower", "Loan Product", "Loan Purpose", "Voucher #", "Loan Amount", "Principal Balance", 'Interests',  "Disbursement Date", "Maturity Date"])
-				@loans.each do |loan|
+				@loans.order(:borrower_name).each do |loan|
 					yielder << CSV.generate_line([
 						loan.borrower_full_name,
 						loan.loan_product_name,

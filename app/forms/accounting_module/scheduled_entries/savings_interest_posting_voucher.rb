@@ -33,7 +33,7 @@ module AccountingModule
         )
         voucher.voucher_amounts.credit.build(
           cooperative: find_cooperative,
-          account: savings_account.saving_product_account,
+          account: savings_account.liability_account,
           amount: savings_account.computed_interest(to_date: DateTime.parse(to_date)))
         voucher.save!
       end

@@ -14,7 +14,7 @@ describe BalanceStatusChecker do
 
 
     deposit = build(:entry, commercial_document: saving)
-    deposit.credit_amounts << build(:credit_amount, amount: 5000, commercial_document: saving, account: saving.saving_product_account)
+    deposit.credit_amounts << build(:credit_amount, amount: 5000, commercial_document: saving, account: saving.liability_account)
     deposit.debit_amounts << build(:debit_amount, amount: 5_000, commercial_document: saving, account: cash_on_hand_account)
     deposit.save!
 

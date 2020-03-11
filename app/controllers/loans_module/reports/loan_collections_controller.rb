@@ -58,7 +58,7 @@ module LoansModule
         Enumerator.new do |yielder|
           yielder << CSV.generate_line(["#{current_office.name} Loan Collections"])
           yielder << CSV.generate_line(["Borrower", "Loan Product", "Principal Balance #{@from_date.strftime('%b. %e, %Y')}", 'Interest Collections',  "Penalty Collections", "Principal Balance #{@to_date.strftime('%b. %e, %Y')}"])
-          @loans.each do |loan|
+          @loans.order(:borrower_name).each do |loan|
             yielder << CSV.generate_line([
               loan.borrower_full_name,
               loan.loan_product_name,

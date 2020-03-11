@@ -31,6 +31,6 @@ class InterestPosting
   end
 
   def credit_account(savings_account)
-    savings_account.saving_product_account
+    savings_account.liability_account
   end
 end

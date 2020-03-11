@@ -1,20 +1,20 @@
+
 module LoansModule
   class LoanApplicationsController < ApplicationController
     require 'will_paginate/array'
     def index
       if params[:search].present?
-        @loan_applications = current_office.
+        @pagy, @loan_applications = pagy(current_office.
         loan_applications.
         not_cancelled.
-        text_search(params[:search]).
-        paginate(page: params[:page], per_page: 20)
+        text_search(params[:search]))
+        
       else
-        @loan_applications = current_office.
+        @pagy, @loan_applications = pagy(current_office.
         loan_applications.
         not_cancelled.
         includes(:loan_product, :voucher =>[:accounting_entry]).
-        sort_by(&:ascending_order).
-        paginate(page: params[:page], per_page: 20)
+        order(application_date: :desc))
       end
     end
 
