@@ -134,7 +134,14 @@ module LoansModule
     end
 
     def voucher_interest_amount
-      voucher_amounts.for_account(account: interest_revenue_account).total
+      if cart.present?
+        cart.voucher_amounts.for_account(account: interest_revenue_account).total
+      elsif
+        voucher.present?
+        voucher.voucher_amounts.for_account(account: interest_revenue_account).total
+      else 
+        0
+      end
     end
 
     def first_year_interest
