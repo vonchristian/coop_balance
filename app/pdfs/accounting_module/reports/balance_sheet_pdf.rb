@@ -428,7 +428,7 @@ module AccountingModule
       end
       
       def net_surplus
-        office.level_one_account_categories.revenues.balance(from_date: @from_date, to_date: @to_date) - office.level_one_account_categories.expenses.balance(from_date: @from_date, to_date: @to_date)
+        office.current_net_income_config.total_net_surplus(from_date: @from_date, to_date: @to_date)
       end
     end
   end

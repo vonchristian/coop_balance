@@ -5,9 +5,6 @@ module AccountingModule
       :level_three_revenue_account_categories, 
       :level_two_revenue_account_categories, 
       :level_one_revenue_account_categories,
-
-     
-
       :level_three_expense_account_categories, 
       :level_two_expense_account_categories, 
       :level_one_expense_account_categories
@@ -22,10 +19,10 @@ module AccountingModule
 
         @level_three_revenue_account_categories = args[:level_three_revenue_account_categories] || @office.level_three_account_categories.revenues
         @level_two_revenue_account_categories   = args[:level_two_revenue_account_categories]   || @office.level_two_account_categories.revenues
-        @level_one_revenue_account_categories   = args[:level_one_revenue_account_categories]   || @office.level_one_account_categories.revenues
+        @level_one_revenue_account_categories   = args[:level_one_revenue_account_categories]   || @office.level_one_account_categories.revenues.where.not(id: @office.current_net_income_config.total_revenue_account.level_one_account_category)
         @level_three_expense_account_categories = args[:level_three_expense_account_categories] || @office.level_three_account_categories.expenses
         @level_two_expense_account_categories   = args[:level_two_expense_account_categories]   || @office.level_two_account_categories.expenses
-        @level_one_expense_account_categories   = args[:level_one_expense_account_categories]   || @office.level_one_account_categories.expenses
+        @level_one_expense_account_categories   = args[:level_one_expense_account_categories]   || @office.level_one_account_categories.expenses.where.not(id: @office.current_net_income_config.total_expense_account.level_one_account_category)
         
         heading
         revenues_table
@@ -173,7 +170,10 @@ module AccountingModule
             end
           end
         end 
-        level_one_revenue_account_categories.where.not(id: level_two_revenue_account_categories.level_one_account_categories.revenues.ids).each do |l1_account_category|
+        level_one_revenue_account_categories.
+        where.not(id: level_two_revenue_account_categories.level_one_account_categories.revenues.ids).
+        where.not(id: office.current_net_income_config.total_revenue_account.level_one_account_category_id).
+        each do |l1_account_category|
           table([["", "", "#{l1_account_category.title}", price(l1_account_category.balance(from_date: @from_date, to_date: @to_date))]], cell_style: { padding: [2,2], inline_format: true, size: 10}, column_widths: [10, 10, 310, 100]) do
             cells.borders = []
             column(3).align = :right
@@ -183,7 +183,7 @@ module AccountingModule
         stroke_horizontal_rule
         move_down 5
 
-        table([["TOTAL REVENUES", price(office.current_net_income_config.total_revenues(from_date: from_date, to_date: to_date))]], cell_style: {padding: [2,2], inline_format: true, size: 10},
+        table([["TOTAL REVENUES", price(office.current_net_income_config.total_revenues(from_date: from_date, to_date: to_date).abs)]], cell_style: {padding: [2,2], inline_format: true, size: 10},
           column_widths: [330, 100]) do
             cells.borders = []
             column(0).font_style = :bold
@@ -278,7 +278,10 @@ module AccountingModule
           end
         end 
 
-        level_one_expense_account_categories.where.not(id: level_two_expense_account_categories.level_one_account_categories.expenses.ids).each do |l1_account_category|
+        level_one_expense_account_categories.
+        where.not(id: level_two_expense_account_categories.level_one_account_categories.expenses.ids).
+        where.not(id: office.current_net_income_config.total_expense_account.level_one_account_category_id).
+        each do |l1_account_category|
           table([["", "", "#{l1_account_category.title}", price(l1_account_category.balance(from_date: @from_date, to_date: @to_date))]], cell_style: { padding: [2,2], inline_format: true, size: 10}, column_widths: [10, 10, 310, 100]) do
             cells.borders = []
             column(3).align = :right
@@ -288,7 +291,7 @@ module AccountingModule
         stroke_horizontal_rule
         move_down 5
 
-        table([["TOTAL EXPENSES", price(office.current_net_income_config.total_expenses(from_date: @from_date, to_date: @to_date))]], cell_style: {padding: [2,2], inline_format: true, size: 10},
+        table([["TOTAL EXPENSES", price(office.current_net_income_config.total_expenses(from_date: @from_date, to_date: @to_date).abs)]], cell_style: {padding: [2,2], inline_format: true, size: 10},
           column_widths: [330, 100]) do
             cells.borders = []
             column(0).font_style = :bold
@@ -299,7 +302,7 @@ module AccountingModule
         move_down 10
       end
       def net_surplus_table
-        table([["NET SURPLUS", price(office.current_net_income_config.total_net_surplus)]], cell_style: {padding: [2,2], inline_format: true, size: 10},
+        table([["NET SURPLUS", price(office.current_net_income_config.total_net_surplus(from_date: @from_date, to_date: @to_date))]], cell_style: {padding: [2,2], inline_format: true, size: 10},
           column_widths: [330, 100]) do
             cells.borders = []
             column(0).font_style = :bold
