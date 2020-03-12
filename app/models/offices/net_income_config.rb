@@ -25,5 +25,47 @@ module Offices
     def ending_date(date)
       date_setter.new(net_income_config: self, date: date).ending_date
     end 
+
+    def total_revenues(args={})
+      from_date = args[:from_date] ? args[:from_date] : Date.current.beginning_of_year
+      to_date   = args[:to_date] ? args[:to_date] : Date.current.end_of_year
+      if total_revenue_account.entries.entered_on(from_date: from_date, to_date: to_date).present?
+        total_revenue_account.balance(from_date: from_date, to_date: to_date)
+      else 
+        office.level_one_account_categories.revenues.balance(from_date: from_date, to_date: to_date)
+      end 
+    end
+    
+    def total_expenses(args={})
+      from_date = args[:from_date] ? args[:from_date] : Date.current.beginning_of_year
+      to_date   = args[:to_date] ? args[:to_date] : Date.current.end_of_year
+      if total_expense_account.entries.entered_on(from_date: from_date, to_date: to_date).present?
+        total_expense_account.balance(from_date: from_date, to_date: to_date)
+      else 
+        office.level_one_account_categories.expenses.balance(from_date: from_date, to_date: to_date)
+      end 
+    end
+
+    def total_net_surplus(args={})
+      from_date = args[:from_date] ? args[:from_date] : Date.current.beginning_of_year
+      to_date   = args[:to_date] ? args[:to_date] : Date.current.end_of_year
+
+      if net_surplus_account.entries.entered_on(from_date: from_date, to_date: to_date).present?
+        net_surplus_account.balance(from_date: from_date, to_date: to_date)
+      else 
+        office.level_one_account_categories.revenues.balance(from_date: from_date, to_date: to_date) - office.level_one_account_categories.expenses.balance(from_date: from_date, to_date: to_date)
+      end 
+    end
+
+    def total_net_loss(args={})
+      from_date = args[:from_date] ? args[:from_date] : Date.current.beginning_of_year
+      to_date   = args[:to_date] ? args[:to_date] : Date.current.end_of_year
+
+      if net_loss_account.entries.entered_on(from_date: from_date, to_date: to_date).present?
+        net_loss_account.balance(from_date: from_date, to_date: to_date)
+      else 
+        office.level_one_account_categories.expenses.balance(from_date: from_date, to_date: to_date) - office.level_one_account_categories.revenues.balance(from_date: from_date, to_date: to_date)
+      end 
+    end
   end
 end 

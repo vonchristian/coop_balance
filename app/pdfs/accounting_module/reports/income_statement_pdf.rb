@@ -1,7 +1,7 @@
 module AccountingModule
   module Reports
     class IncomeStatementPdf < Prawn::Document
-      attr_reader :view_context, :to_date, :cooperative, :office, :from_date,
+      attr_reader :view_context, :from_date, :to_date, :cooperative, :office,
       :level_three_revenue_account_categories, 
       :level_two_revenue_account_categories, 
       :level_one_revenue_account_categories,
@@ -183,7 +183,7 @@ module AccountingModule
         stroke_horizontal_rule
         move_down 5
 
-        table([["TOTAL REVENUES", price(all_level_one_revenue_account_categories.balance(from_date: @from_date, to_date: @to_date))]], cell_style: {padding: [2,2], inline_format: true, size: 10},
+        table([["TOTAL REVENUES", price(office.current_net_income_config.total_revenues(from_date: from_date, to_date: to_date))]], cell_style: {padding: [2,2], inline_format: true, size: 10},
           column_widths: [330, 100]) do
             cells.borders = []
             column(0).font_style = :bold
@@ -277,7 +277,8 @@ module AccountingModule
             end
           end
         end 
-        level_one_expense_account_categories.where.not(id: level_two_revenue_account_categories.level_one_account_categories.revenues.ids).each do |l1_account_category|
+
+        level_one_expense_account_categories.where.not(id: level_two_revenue_account_categories.level_one_account_categories.expenses.ids).each do |l1_account_category|
           table([["", "", "#{l1_account_category.title}", price(l1_account_category.balance(from_date: @from_date, to_date: @to_date))]], cell_style: { padding: [2,2], inline_format: true, size: 10}, column_widths: [10, 10, 310, 100]) do
             cells.borders = []
             column(3).align = :right
@@ -287,7 +288,7 @@ module AccountingModule
         stroke_horizontal_rule
         move_down 5
 
-        table([["TOTAL EXPENSES", price(all_level_one_expense_account_categories.balance(from_date: @from_date, from_date: @from_date, to_date: @to_date))]], cell_style: {padding: [2,2], inline_format: true, size: 10},
+        table([["TOTAL EXPENSES", price(office.current_net_income_config.total_expenses(from_date: @from_date, to_date: @to_date))]], cell_style: {padding: [2,2], inline_format: true, size: 10},
           column_widths: [330, 100]) do
             cells.borders = []
             column(0).font_style = :bold
@@ -298,7 +299,7 @@ module AccountingModule
         move_down 10
       end
       def net_surplus_table
-        table([["NET SURPLUS", price(net_surplus)]], cell_style: {padding: [2,2], inline_format: true, size: 10},
+        table([["NET SURPLUS", price(office.current_net_income_config.total_net_surplus)]], cell_style: {padding: [2,2], inline_format: true, size: 10},
           column_widths: [330, 100]) do
             cells.borders = []
             column(0).font_style = :bold
@@ -306,12 +307,7 @@ module AccountingModule
             column(1).font_style = :bold
             row(-1).font_size = 14
           end
-        end 
-
-      
-      def net_surplus
-        all_level_one_revenue_account_categories.balance(from_date: @from_date, to_date: @to_date) - all_level_one_expense_account_categories.expenses.balance(from_date: @from_date, to_date: @to_date)
-      end
+        end
     end
   end
 end
