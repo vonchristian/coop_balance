@@ -249,7 +249,7 @@ module AccountingModule
           end 
         end
         stroke_horizontal_rule
-        level_two_expense_account_categories.where.not(id: level_three_revenue_account_categories.level_two_account_categories.revenues.ids).each do |l2_account_category|
+        level_two_expense_account_categories.where.not(id: level_three_expense_account_categories.level_two_account_categories.expenses.ids).each do |l2_account_category|
           if l2_account_category.show_sub_categories?
             table([["", "#{l2_account_category.title}",price(l2_account_category.balance(from_date: @from_date, to_date: @to_date)) ]], cell_style: { padding: [2, 2], inline_format: true, size: 10}, column_widths: [10, 320, 100]) do
               cells.borders = []
@@ -278,7 +278,7 @@ module AccountingModule
           end
         end 
 
-        level_one_expense_account_categories.where.not(id: level_two_revenue_account_categories.level_one_account_categories.expenses.ids).each do |l1_account_category|
+        level_one_expense_account_categories.where.not(id: level_two_expense_account_categories.level_one_account_categories.expenses.ids).each do |l1_account_category|
           table([["", "", "#{l1_account_category.title}", price(l1_account_category.balance(from_date: @from_date, to_date: @to_date))]], cell_style: { padding: [2,2], inline_format: true, size: 10}, column_widths: [10, 10, 310, 100]) do
             cells.borders = []
             column(3).align = :right

@@ -32,7 +32,7 @@ module Offices
       if total_revenue_account.entries.entered_on(from_date: from_date, to_date: to_date).present?
         total_revenue_account.balance(from_date: from_date, to_date: to_date)
       else 
-        office.level_one_account_categories.revenues.balance(from_date: from_date, to_date: to_date)
+        office.level_one_account_categories.revenues.debits_balance(from_date: from_date, to_date: to_date)
       end 
     end
     
@@ -42,7 +42,7 @@ module Offices
       if total_expense_account.entries.entered_on(from_date: from_date, to_date: to_date).present?
         total_expense_account.balance(from_date: from_date, to_date: to_date)
       else 
-        office.level_one_account_categories.expenses.balance(from_date: from_date, to_date: to_date)
+        office.level_one_account_categories.expenses.debits_balance(from_date: from_date, to_date: to_date)
       end 
     end
 
