@@ -1,8 +1,67 @@
-<%= simple_form_for @balance_transfer, url: :share_capital_balance_transfer_processings do |f| %>
-  <%= f.input :amount %>
-  <%= f.input :origin_share_capital_id, input_html: { value: @origin_share_capital.id }, as: :hidden %>
-  <%= f.input :destination_share_capital_id, input_html: { value: @destination_share_capital.id }, as: :hidden %>
-  <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
-  <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
-  <%= f.submit 'Proceed' %>
-<% end %>
+<div class='container'>
+  <div class='row'>
+    <div class='col-md-9 offset-md-2'>
+      <div class='card'>
+        <div class='card-body'>
+          <h3 class='title-up'> Balance Transfer Details </h3>
+          <hr>
+          <div class='row'>
+            <div class='col-md-5'>
+              <small class='text-muted'> SOURCE ACCOUNT </small>
+              <h2 class="title-up"><%= number_to_currency @origin_share_capital.balance %></h2>
+              <%= @origin_share_capital.account_owner_name.upcase %>
+              <hr>
+              <small class='text-muted'> PENDING TRANSFERS </small>
+              <% current_cart.voucher_amounts.debit.each do |voucher_amount| %>
+                <div class='row min-margin'>
+                  <div class='col-md-8'>
+                    <b><%= Carts::ShareCapitalBalanceTransfer.new(cart: current_cart, voucher_amount: voucher_amount).destination_share_capital.account_owner_name %></b>
+                  </div>
+                  <div class='col-md-4 float-right'>
+                    <span class='float-right'><%= number_to_currency voucher_amount.amount %></span>
+                  </div>
+                </div>  
+                 
+            <% end %>
+            <hr>
+            <div class='row'>
+              <div class='col-md-8'>
+                <h5  class='subtitle-up text-success'>Available Balance </h5>
+              </div>
+              <div class='col-md-4'> 
+                <h5 class='title-up text-success float-right'><%= number_to_currency(@origin_share_capital.balance - current_cart.voucher_amounts.debit.where(account: @origin_share_capital.share_capital_equity_account).total) %></h5>
+              </div>
+            </div>
+            <br>
+                <%= link_to "Back", new_share_capital_balance_transfer_path(share_capital_id: @origin_share_capital.id), class: "btn btn-link float-left" %>
+
+            </div>
+            <div class='col-md-1'>
+              <i class='fa fa-arrow-right fa-2x text-primary'></i>
+            </div>
+            <div class='col-md-5'>
+              <small class='text-muted'> DESTINATION ACCOUNT</small>
+              <h2 class="title-up"><%= number_to_currency @destination_share_capital.balance %></h2>
+              <%= @destination_share_capital.account_owner_name.upcase %>
+              <hr>
+              <%= simple_form_for @balance_transfer, url: :share_capital_balance_transfer_processings do |f| %>
+                <%= f.input :amount, label: "Amount to Transfer:" %>
+                <%= f.input :origin_share_capital_id, input_html: { value: @origin_share_capital.id }, as: :hidden %>
+                <%= f.input :destination_share_capital_id, input_html: { value: @destination_share_capital.id }, as: :hidden %>
+                <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+                <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
+
+                <%= f.submit "Proceed", class: "btn btn-primary float-right" %>
+              <% end %>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+    
+      

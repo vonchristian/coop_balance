@@ -20,9 +20,11 @@ module ShareCapitals
     end
     
     def destroy
-      @origin_share_capital = current_office.share_capitals.find(params[:share_capital_id])
-      @amount               = current_cart.voucher_amounts.find(params[:id])
-      @amount.destroy
+      @share_capital = current_office.share_capitals.find(params[:share_capital_id])
+      ApplicationRecord.transaction do 
+        @amount               = current_cart.voucher_amounts.find(params[:id])
+        @amount.destroy
+      end 
       redirect_to new_share_capital_balance_transfer_url(share_capital_id: @share_capital.id), alert: 'Removed successfully'
     end
 

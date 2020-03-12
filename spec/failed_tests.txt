@@ -1188,6 +1188,5 @@ example_id                                                                      
 ./spec/system/loans_module/loan_applications/capital_build_ups/new_system_spec.rb[1:1]      | failed  | 3.71 seconds    |
 ./spec/system/members/loan_applications/new_system_spec.rb[1:1]                             | passed  | 10.8 seconds    |
 ./spec/system/members/loan_applications/new_system_spec.rb[1:2]                             | passed  | 0.5111 seconds  |
-./spec/system/share_capitals/accounting/balance_transfers/new_system_spec.rb[1:1]           | passed  | 8.12 seconds    |
-./spec/system/share_capitals/accounting/balance_transfers/new_system_spec.rb[1:2]           | passed  | 1.07 seconds    |
-./spec/system/share_capitals/balance_transfers/new_system_spec.rb[1:1]                      | failed  | 40.52 seconds   |
+./spec/system/share_capitals/accounting/balance_transfers/new_system_spec.rb[1:1]           | passed  | 11.39 seconds   |
+./spec/system/share_capitals/accounting/balance_transfers/new_system_spec.rb[1:2]           | passed  | 0.92454 seconds |
