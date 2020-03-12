@@ -1,4 +1,3 @@
-
 module ShareCapitals
   class BalanceTransferProcessing
     include ActiveModel::Model
@@ -9,9 +8,11 @@ module ShareCapitals
     validates :origin_share_capital_id, :destination_share_capital_id, :cart_id, :employee_id, presence: true
 
     def process!
-      ActiveRecord::Base.transaction do
-        create_voucher_amount
-      end
+      if valid?
+        ActiveRecord::Base.transaction do
+          create_voucher_amount
+        end
+      end 
     end
 
     private

@@ -23,19 +23,20 @@ document.addEventListener("turbolinks:load", () => {
   $('.chosen-select').chosen();
   $('.datepicker').datepicker(
     {
-      format: 'dd/mm/yyyy',
-      autoclose: true,
-      format: 'dd/mm/yyyy',
-        orientation: 'bottom auto',
-        todayBtn: 'linked'
+      format:      'dd/mm/yyyy',
+      autoClose:   true,
+      format:      'dd/mm/yyyy',
+      orientation: 'bottom auto',
+      todayBtn:    'linked'
     });
     $('.datepicker-month').datepicker(
       {
-        format: 'dd/mm/yyyy',
-        viewMode: "months",
-        minViewMode: "months",
-        orientation: 'bottom auto',
-        todayBtn: 'linked',
+        format:        'dd/mm/yyyy',
+        viewMode:      "months",
+        minViewMode:   "months",
+        autoClose:     true,
+        orientation:   'bottom auto',
+        todayBtn:      'linked',
         todayHighlight: true
       });
 })

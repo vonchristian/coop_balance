@@ -2,6 +2,9 @@ module ShareCapitals
   class BalanceTransferVoucher
     include ActiveModel::Model
     attr_accessor :cart_id, :date, :reference_number, :description, :employee_id, :account_number, :share_capital_id
+    
+    validates :cart_id, :date, :reference_number, :description, :employee_id, :account_number, :share_capital_id, presence: true
+   
     def process!
       if valid?
         ApplicationRecord.transaction do

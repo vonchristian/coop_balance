@@ -33,12 +33,11 @@ describe 'New share capital balance transfer' do
 
     expect(page).to have_content('created successfully')
 
+
     fill_in 'Reference number', with: '01'
     fill_in 'Description', with: 'test'
-    fill_in 'Date', with: Date.current
 
     click_button 'Proceed'
-    save_and_open_page
 
     expect(page).to have_content('created successfully')
 
@@ -46,4 +45,11 @@ describe 'New share capital balance transfer' do
 
     expect(page).to have_content('confirmed successfully')
   end
+
+  it "with blank attributes" do 
+
+    click_button "Proceed"
+
+    expect(page).to have_content("can't be blank")
+  end 
 end
