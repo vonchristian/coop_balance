@@ -49,128 +49,133 @@ module AccountingModule
   
   
       def csv_body
-        net_surplus       = (current_office.level_one_account_categories.revenues.balance(from_date: @to_date.beginning_of_year, to_date: @to_date)-current_office.level_one_account_categories.expenses.balance(from_date: @to_date.beginning_of_year, to_date: @to_date))
-      
         Enumerator.new do |yielder|
-          assets_body
-          yielder << CSV.generate_line(["#{current_office.name} - Balance Sheet"])
+          yielder << CSV.generate_line(["#{current_office.name.upcase} - BALANCE SHEET STATEMENT"])
           yielder << CSV.generate_line(["AS OF: #{@to_date.strftime('%B %e, %Y')}"])
           yielder << CSV.generate_line(["ASSETS"])
+          yielder << CSV.generate_line([""])
+          yielder << CSV.generate_line([""])
 
           current_office.level_three_account_categories.assets.order(code: :asc).each do |l3_account_category|
-            yielder << CSV.generate_line([l3_account_category.title])
-            
-            l3_account_category.level_two_account_categories.assets.order(code: :asc).each do |l2_account_category|
-              yielder << CSV.generate_line(["    #{l2_account_category.title}"])
-              
-              l2_account_category.level_one_account_categories.assets.order(code: :asc).each do |l1_account_category|
-                
-                yielder << CSV.generate_line(["        #{l1_account_category.title}", l1_account_category.balance(to_date: @to_date)])
-              end
-
-              yielder << CSV.generate_line(["    Total #{l2_account_category.title}", l2_account_category.balance(to_date: @to_date)])
-              yielder << CSV.generate_line([""])
+            if l3_account_category.show_sub_categories?
+              yielder << CSV.generate_line([l3_account_category.title])
+              l3_account_category.level_two_account_categories.assets.order(code: :asc).each do |l2_account_category|
+                yielder << CSV.generate_line(["    #{l2_account_category.title}"])
+                l2_account_category.level_one_account_categories.assets.order(code: :asc).each do |l1_account_category|
+                  yielder << CSV.generate_line(["        #{l1_account_category.title}", l1_account_category.balance(to_date: @to_date)])
+                end
+                yielder << CSV.generate_line(["    Total #{l2_account_category.title}", l2_account_category.balance(to_date: @to_date)])
+                yielder << CSV.generate_line([""])
+              end 
+              yielder << CSV.generate_line(["Total #{l3_account_category.title}", l3_account_category.balance(to_date: @to_date)])
+            else 
+              yielder << CSV.generate_line(["#{l3_account_category.title}", l3_account_category.balance(to_date: @to_date)])
             end
-
-            yielder << CSV.generate_line(["Total #{l3_account_category.title}", l3_account_category.balance(to_date: @to_date)])
           end
 
           current_office.level_two_account_categories.assets.where.not(id: current_office.level_three_account_categories.level_two_account_categories.assets.ids).order(code: :asc).each do |l2_account_category|
-            yielder << CSV.generate_line(["    #{l2_account_category.title}"])
-            
-            l2_account_category.level_one_account_categories.assets.order(code: :asc).each do |l1_account_category|
-             
-              yielder << CSV.generate_line(["        #{l1_account_category.title}", l1_account_category.balance(to_date: @to_date)])
-            end
-
-            yielder << CSV.generate_line(["    Total #{l2_account_category.title}", l2_account_category.balance(to_date: @to_date)])
-            yielder << CSV.generate_line([""])
-          end
+            if l2_account_category.show_sub_categories?
+              yielder << CSV.generate_line(["    #{l2_account_category.title}"])
+              l2_account_category.level_one_account_categories.assets.order(code: :asc).each do |l1_account_category|
+                yielder << CSV.generate_line(["        #{l1_account_category.title}", l1_account_category.balance(to_date: @to_date)])
+              end
+              yielder << CSV.generate_line(["    Total #{l2_account_category.title}", l2_account_category.balance(to_date: @to_date)])
+              yielder << CSV.generate_line([""])
+            else 
+              yielder << CSV.generate_line(["     #{l2_account_category.title}", l2_account_category.balance(to_date: @to_date)])
+            end 
+          end 
 
           current_office.level_one_account_categories.assets.where.not(id: current_office.level_two_account_categories.level_one_account_categories.assets.ids).order(code: :asc).each do |l1_account_category|
-           
-              yielder << CSV.generate_line(["        #{l1_account_category.title}", l1_account_category.balance(to_date: @to_date)])
+            yielder << CSV.generate_line(["        #{l1_account_category.title}", l1_account_category.balance(to_date: @to_date)])
           end
-            yielder << CSV.generate_line(["TOTAL ASSETS", total_assets])
-            yielder << CSV.generate_line([""])
-
-            #Liabilities 
-            yielder << CSV.generate_line([""])
-
-            yielder << CSV.generate_line(["LIABILITIES"])
-            current_office.level_three_account_categories.liabilities.order(code: :asc).each do |l3_account_category|
+          yielder << CSV.generate_line(["TOTAL ASSETS", current_office.level_one_account_categories.assets.balance(to_date: @to_date)])
+          yielder << CSV.generate_line([""])
+          yielder << CSV.generate_line([""])
+          
+          yielder << CSV.generate_line(["LIABILITIES"])
+         
+          current_office.level_three_account_categories.liabilities.order(code: :asc).each do |l3_account_category|
+            if l3_account_category.show_sub_categories?
               yielder << CSV.generate_line([l3_account_category.title])
               l3_account_category.level_two_account_categories.liabilities.order(code: :asc).each do |l2_account_category|
                 yielder << CSV.generate_line(["    #{l2_account_category.title}"])
-                
                 l2_account_category.level_one_account_categories.liabilities.order(code: :asc).each do |l1_account_category|
-                 
                   yielder << CSV.generate_line(["        #{l1_account_category.title}", l1_account_category.balance(to_date: @to_date)])
                 end
-  
                 yielder << CSV.generate_line(["    Total #{l2_account_category.title}", l2_account_category.balance(to_date: @to_date)])
               end
               yielder << CSV.generate_line(["Total #{l3_account_category.title}", l3_account_category.balance(to_date: @to_date)])
-            end
-  
-            current_office.level_two_account_categories.liabilities.where.not(id: current_office.level_three_account_categories.level_two_account_categories.liabilities.ids).order(code: :asc).each do |l2_account_category|
+            else 
+              yielder << CSV.generate_line(["#{l3_account_category.title}", l3_account_category.balance(to_date: @to_date)])
+            end 
+          end 
+
+          current_office.level_two_account_categories.liabilities.where.not(id: current_office.level_three_account_categories.level_two_account_categories.liabilities.ids).order(code: :asc).each do |l2_account_category|
+            if l2_account_category.show_sub_categories?
               yielder << CSV.generate_line(["    #{l2_account_category.title}"])
               l2_account_category.level_one_account_categories.liabilities.order(code: :asc).each do |l1_account_category|
-               
                 yielder << CSV.generate_line(["        #{l1_account_category.title}", l1_account_category.balance(to_date: @to_date)])
               end
-  
               yielder << CSV.generate_line(["    Total #{l2_account_category.title}", l2_account_category.balance(to_date: @to_date)])
+            else 
+              yielder << CSV.generate_line(["    #{l2_account_category.title}", l2_account_category.balance(to_date: @to_date)])
             end
-  
-            current_office.level_one_account_categories.liabilities.where.not(id: current_office.level_two_account_categories.level_one_account_categories.liabilities.ids).order(code: :asc).each do |l1_account_category|
-              
-                yielder << CSV.generate_line(["        #{l1_account_category.title}", l1_account_category.balance(to_date: @to_date)])
-            end
-            yielder << CSV.generate_line(["TOTAL LIABILITIES", current_office.level_one_account_categories.liabilities.balance(to_date: @to_date)])
+          end 
 
-            #Equities 
+          current_office.level_one_account_categories.liabilities.where.not(id: current_office.level_two_account_categories.level_one_account_categories.liabilities.ids).order(code: :asc).each do |l1_account_category|
+            yielder << CSV.generate_line(["        #{l1_account_category.title}", l1_account_category.balance(to_date: @to_date)])
+          end
+          yielder << CSV.generate_line(["TOTAL LIABILITIES", current_office.level_one_account_categories.liabilities.balance(to_date: @to_date)])
 
-            yielder << CSV.generate_line([""])
+          #Equities 
 
-            yielder << CSV.generate_line(["EQUITY"])
-            current_office.level_three_account_categories.equities.order(code: :asc).each do |l3_account_category|
+          yielder << CSV.generate_line([""])
+          yielder << CSV.generate_line(["EQUITY AND RESERVE"])
+          current_office.level_three_account_categories.equities.order(code: :asc).each do |l3_account_category|
+            if l3_account_category.show_sub_categories?
               yielder << CSV.generate_line([l3_account_category.title])
               l3_account_category.level_two_account_categories.equities.order(code: :asc).each do |l2_account_category|
                 yielder << CSV.generate_line(["    #{l2_account_category.title}"])
                 
                 l2_account_category.level_one_account_categories.equities.order(code: :asc).each do |l1_account_category|
-                  total_equities += l1_account_category.balance(to_date: @to_date)
+
                   yielder << CSV.generate_line(["        #{l1_account_category.title}", l1_account_category.balance(to_date: @to_date)])
                 end
   
                 yielder << CSV.generate_line(["    Total #{l2_account_category.title}", l2_account_category.balance(to_date: @to_date)])
               end
               yielder << CSV.generate_line(["Total #{l3_account_category.title}", l3_account_category.balance(to_date: @to_date)])
-            end
-  
-            current_office.level_two_account_categories.equities.where.not(id: current_office.level_three_account_categories.level_two_account_categories.equities.ids).order(code: :asc).each do |l2_account_category|
+            else 
+              yielder << CSV.generate_line(["#{l3_account_category.title}", l3_account_category.balance(to_date: @to_date)])
+            end 
+          end 
+
+          current_office.level_two_account_categories.equities.where.not(id: current_office.level_three_account_categories.level_two_account_categories.equities.ids).order(code: :asc).each do |l2_account_category|
+            if l2_account_category.show_sub_categories?
               yielder << CSV.generate_line(["    #{l2_account_category.title}"])
               l2_account_category.level_one_account_categories.equities.order(code: :asc).each do |l1_account_category|
-                total_equities += l1_account_category.balance(to_date: @to_date)
                 yielder << CSV.generate_line(["        #{l1_account_category.title}", l1_account_category.balance(to_date: @to_date)])
               end
-  
               yielder << CSV.generate_line(["    Total #{l2_account_category.title}", l2_account_category.balance(to_date: @to_date)])
+            else 
+              yielder << CSV.generate_line(["    #{l2_account_category.title}", l2_account_category.balance(to_date: @to_date)])
             end
-  
-            current_office.level_one_account_categories.equities.where.not(id: current_office.level_two_account_categories.level_one_account_categories.equities.ids).order(code: :asc).each do |l1_account_category|
-              total_equities += l1_account_category.balance(to_date: @to_date)
-                yielder << CSV.generate_line(["        #{l1_account_category.title}", l1_account_category.balance(to_date: @to_date)])
-            end
-            yielder << CSV.generate_line(["Undivided Net Surplus", net_surplus])
+          end 
 
-            yielder << CSV.generate_line(["TOTAL EQUITY", total_equities])
+            current_office.level_one_account_categories.equities.where.not(id: current_office.level_two_account_categories.level_one_account_categories.equities.ids).order(code: :asc).each do |l1_account_category|
+              yielder << CSV.generate_line(["        #{l1_account_category.title}", l1_account_category.balance(to_date: @to_date)])
+            end
+            yielder << CSV.generate_line(["Undivided Net Surplus", current_office.level_one_account_categories.revenues.balance(from_date: @to_date.beginning_of_year, to_date: @to_date.end_of_year) - current_office.level_one_account_categories.expenses.balance(from_date: @to_date.beginning_of_year, to_date: @to_date.end_of_year)])
+
+            yielder << CSV.generate_line(["TOTAL EQUITY", current_office.level_one_account_categories.equities.balance(to_date: @to_date)])
            
             yielder << CSV.generate_line([""])
 
-
-            yielder << CSV.generate_line(["TOTAL LIABILITIES AND EQUITY", total_liabilities + total_equities, net_surplus])
+            yielder << CSV.generate_line(["TOTAL LIABILITIES AND EQUITY", 
+              current_office.level_one_account_categories.liabilities.balance(to_date: @to_date) + 
+              current_office.level_one_account_categories.equities.balance(to_date: @to_date) +
+              current_office.level_one_account_categories.revenues.balance(from_date: @to_date.beginning_of_year, to_date: @to_date.end_of_year) - current_office.level_one_account_categories.expenses.balance(from_date: @to_date.beginning_of_year, to_date: @to_date.end_of_year)])
 
         end 
       end 

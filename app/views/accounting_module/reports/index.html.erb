@@ -3,41 +3,26 @@
     <h4 class="title-up"> Accounting Section Reports </h4>
   </div>
   <div class="card-body">
-    <%= link_to accounting_module_reports_financial_conditions_path do %>
-      <h3 class="title-up">Financial Condition</h3>
-      <p class="text-muted"> Generate report for financial condition. </p>
-    <% end %>
-
-
-    <%= link_to accounting_module_reports_income_statements_path do %>
-      <h3 class="title-up">Income Statement</h3>
-      <p class="text-muted"> Generate report for income statement. </p>
-    <% end %>
-  </div>
-  <hr class="no-margin">
-  <div class="card-body">
-    <%= link_to accounting_module_reports_balance_sheets_path do %>
-      <h4 class="title-up">Balance Sheet</h4>
-      <p class="text-muted">Generate report for balance sheet statement. </p>
-    <% end %>
-  </div>
-
-  <hr class="no-margin">
-  <div class="card-body">
-    <%= link_to accounting_module_reports_statement_of_operations_path do %>
-      <h4 class="title-up">Statement of Operation</h4>
+  <%= link_to accounting_module_reports_statement_of_operations_path do %>
+      <b>Statement of Operation</b>
       <p class="text-muted">Generate report for statement of operations. </p>
     <% end %>
-  </div>
-  <hr class="no-margin">
-  <div class="card-body">
+    <hr>
+    <%= link_to accounting_module_reports_income_statements_path do %>
+      <b>Income Statement</b>
+      <p class="text-muted"> Generate report for income statement. </p>
+    <% end %>
+    <hr>
+    <%= link_to accounting_module_reports_balance_sheets_path do %>
+      <b>Balance Sheet</b>
+      <p class="text-muted">Generate report for balance sheet statement. </p>
+    <% end %>
+
     <%= link_to accounting_module_reports_trial_balances_path do %>
       <h4 class="title-up">Trial Balance</h4>
       <p class="text-muted">Generate report for trialb balance of accounts. </p>
     <% end %>
-  </div>
-  <hr class="no-margin">
-  <div class="card-body">
+
     <h4 class="title-up">Proofsheet Report</h4>
     <p class="text-muted">Generate report for consolidated proofsheet report. </p>
      <%= form_tag({ controller: 'accounting_module/reports/proofsheets', action: 'index', format: 'pdf'}, {:method => :get, :class => 'form-inline'}) do%>
@@ -47,27 +32,3 @@
       </div>
       <button type="submit" class="btn btn-default">Get Report</button>
     <% end %>
-  </div>
-  <hr class="no-margin">
-  <div class="card-body">
-    <%= link_to accounting_module_reports_net_income_distributions_path do %>
-      <h3 class="title-up">Net Income Distribution</h3>
-      <p class="text-muted"> Generate report for net income distribution. </p>
-    <% end %>
-  </div>
-  <hr class="no-margin">
-  <div class="card-body">
-    <%= link_to accounting_module_reports_entries_path do %>
-      <h3 class="title-up">Entries</h3>
-      <p class="text-muted"> Generate report for entries. </p>
-    <% end %>
-  </div>
-  <hr class="no-margin">
-  <div class="card-body">
-    <%= link_to accounting_module_reports_credit_operations_path(format: 'xlsx') do %>
-      <h3 class="title-up">Credit Operations</h3>
-      <p class="text-muted"> Generate report for credit operations. </p>
-    <% end %>
-  </div>
-</div>
-<%=link_to 'New Accounting Report', new_accounting_module_accounting_report_path %>

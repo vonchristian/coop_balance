@@ -1,0 +1,22 @@
+<%= simple_form_for @time_deposit_application, url: :time_deposit_application_calculators do |f| %>
+  <%= f.input :amount, input_html: { value: @amount } %>
+  <%= f.submit "Calculate" %>
+<% end %>
+<div class="card">
+  <div class="card-body">
+<h1 class="title-up"><%= number_to_currency @amount %></h1>
+<% @time_deposit_products.each do |time_deposit_product| %>
+<div class='row'>
+  <div class='col-md-4'>
+    <%= time_deposit_product.name %>
+  </div>
+  <div class='col-md-3'>
+    <h4 class="subtitle-up"><%= number_to_currency(@amount.to_f * time_deposit_product.interest_rate) %></h4>
+    <small class='text-muted'> RATE </small>
+    <%= time_deposit_product.interest_rate %>
+  </div>
+  <div class='col-md-3'>
+    <%= link_to "Select", new_time_deposit_application_calculator_path, class: "btn btn-outline-primary" %>
+  </div>
+</div>
+<% end %>

@@ -80,16 +80,12 @@ Rails.application.routes.draw do
         resources :cash_receipts,      only: [:index]
         resources :cash_disbursements, only: [:index]
       end
-
-      resources :entries, only: [:index]
-      resources :net_income_distributions, only: [:index]
       resources :trial_balances,           only: [:index]
       resources :proofsheets,              only: [:index]
       resources :income_statements,        only: [:index]
       resources :balance_sheets,           only: [:index]
-      resources :financial_conditions,     only: [:index]
       resources :statement_of_operations,  only: [:index]
-      resources :credit_operations,        only: [:index]
+
     end
 
     resources :settings, only: [:index]
@@ -644,6 +640,11 @@ Rails.application.routes.draw do
   end
 
   resources :time_deposit_applications, only: [:new, :create] do
+    resources :vouchers, only: [:show, :destroy],      module: :time_deposit_applications
+    resources :voucher_confirmations, only: [:create], module: :time_deposit_applications
+  end
+
+  resources :time_deposit_application_calculators, only: [:new, :create], module: :time_deposits  do
     resources :vouchers, only: [:show, :destroy],      module: :time_deposit_applications
     resources :voucher_confirmations, only: [:create], module: :time_deposit_applications
   end

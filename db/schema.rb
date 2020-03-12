@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_10_071548) do
+ActiveRecord::Schema.define(version: 2020_03_12_093006) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -695,6 +695,7 @@ ActiveRecord::Schema.define(version: 2020_03_10_071548) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "level_four_account_category_id"
+    t.boolean "show_sub_categories", default: true
     t.index ["level_four_account_category_id"], name: "index_l4_account_category_on_l3_account_categories"
     t.index ["office_id"], name: "index_level_three_account_categories_on_office_id"
     t.index ["type"], name: "index_level_three_account_categories_on_type"
@@ -709,6 +710,7 @@ ActiveRecord::Schema.define(version: 2020_03_10_071548) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "level_three_account_category_id"
+    t.boolean "show_sub_categories", default: true
     t.index ["level_three_account_category_id"], name: "index_l3_account_category_on_l2_account_categories"
     t.index ["office_id"], name: "index_level_two_account_categories_on_office_id"
     t.index ["type"], name: "index_level_two_account_categories_on_type"
