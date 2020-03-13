@@ -40,8 +40,11 @@
 <li class="nav-item" >
   <a href="/accounting_module/accounts" class="nav-link <%= 'active' if current_page?(accounting_module_accounts_path) %>"><i class="nav-icon fa fa-circle"></i> <span> Accounts </span></a>
 </li>
-<%= render 'layouts/shared/sidebar_links/monitoring' %>
-<li class="header"><hr class="no-margin-top"></li>
+
+<li class="nav-item" >
+  <a href="/accounting_module/reports" class="nav-link <%= 'active' if current_page?(accounting_module_reports_path) %>"><i class="nav-icon fa fa-book"></i> <span> Financial Reports </span></a>
+</li>
+
 <li class="nav-item">
   <a href="/management_module/settings" class="nav-link <%= 'active' if current_page?(management_module_settings_path) %>"><i class="nav-icon fa fa-cog"></i> <span> Settings</span></a>
 </li>

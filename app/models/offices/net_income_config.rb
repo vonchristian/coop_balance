@@ -15,7 +15,7 @@ module Offices
     end 
 
     def closed?(date)
-      (beginning_date(date)..ending_date(date)).include?(date)
+      
     end 
 
     def date_setter
