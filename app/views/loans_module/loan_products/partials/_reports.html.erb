@@ -29,7 +29,7 @@
       <%= loan_aging_group.title %>
     </div>
     <div class='col-md-5'>
-      <%= link_to 'Export', loans_module_loan_product_loan_aging_group_path(loan_aging_group_id: loan_aging_group.id, id: @loan_product.id) %>
+      <%= link_to 'Export', loans_module_loan_product_loan_aging_group_path(loan_aging_group_id: loan_aging_group.id, id: @loan_product.id, format: "csv", to_date: Date.current.last_year.end_of_year) %>
     </div>
   </div>
 <% end %>

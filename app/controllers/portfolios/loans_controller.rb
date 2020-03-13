@@ -51,7 +51,7 @@ module Portfolios
 						loan.borrower_full_name,
 						loan.loan_product_name,
 						loan.purpose,
-						loan.principal_balance(to_date: @to_date),
+					
 						loan.loan_interests_balance,
 						loan.loan_penalties_balance,
 						loan.disbursement_date.try(:strftime, ("%B %e, %Y")),
