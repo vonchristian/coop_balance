@@ -107,10 +107,12 @@ module AccountingModule
                 end
 
                 l2_account_category.level_one_account_categories.each do |l1_account_category|
-                  table([["", "", "#{l1_account_category.title}", price(l1_account_category.balance(from_date: @from_date, to_date: @to_date))]], cell_style: { padding: [2,2], inline_format: true, size: 10}, column_widths: [10, 10, 310, 100]) do
-                    cells.borders = []
-                    column(3).align = :right
-                  end
+                  if l1_account_category.balance(from_date: @from_date, to_date: @to_date) > 0 
+                    table([["", "", "#{l1_account_category.title}", price(l1_account_category.balance(from_date: @from_date, to_date: @to_date))]], cell_style: { padding: [2,2], inline_format: true, size: 10}, column_widths: [10, 10, 310, 100]) do
+                      cells.borders = []
+                      column(3).align = :right
+                    end
+                  end 
                 end
                 stroke_horizontal_rule
 
@@ -144,16 +146,18 @@ module AccountingModule
         stroke_horizontal_rule
         level_two_revenue_account_categories.where.not(id: level_three_revenue_account_categories.level_two_account_categories.revenues.ids).each do |l2_account_category|
           if l2_account_category.show_sub_categories?
-            table([["", "#{l2_account_category.title}",price(l2_account_category.balance(from_date: @from_date, to_date: @to_date)) ]], cell_style: { padding: [2, 2], inline_format: true, size: 10}, column_widths: [10, 320, 100]) do
+            table([["", "#{l2_account_category.title}" ]], cell_style: { padding: [2, 2], inline_format: true, size: 10}, column_widths: [10, 320, 100]) do
               cells.borders = []
               column(2).align = :right
               
             end
             l2_account_category.level_one_account_categories.each do |l1_account_category|
-              table([["", "", "#{l1_account_category.title}", price(l1_account_category.balance(from_date: @from_date, to_date: @to_date))]], cell_style: { padding: [2,2], inline_format: true, size: 10}, column_widths: [10, 10, 310, 100]) do
-                cells.borders = []
-                column(3).align = :right
-              end
+              if l1_account_category.balance(from_date: @from_date, to_date: @to_date) > 0 
+                table([["", "", "#{l1_account_category.title}", price(l1_account_category.balance(from_date: @from_date, to_date: @to_date))]], cell_style: { padding: [2,2], inline_format: true, size: 10}, column_widths: [10, 10, 310, 100]) do
+                  cells.borders = []
+                  column(3).align = :right
+                end
+              end 
             end
             stroke_horizontal_rule
 
@@ -251,16 +255,18 @@ module AccountingModule
         stroke_horizontal_rule
         level_two_expense_account_categories.where.not(id: level_three_expense_account_categories.level_two_account_categories.expenses.ids).each do |l2_account_category|
           if l2_account_category.show_sub_categories?
-            table([["", "#{l2_account_category.title}",price(l2_account_category.balance(from_date: @from_date, to_date: @to_date)) ]], cell_style: { padding: [2, 2], inline_format: true, size: 10}, column_widths: [10, 320, 100]) do
+            table([["", "#{l2_account_category.title}" ]], cell_style: { padding: [2, 2], inline_format: true, size: 10}, column_widths: [10, 320, 100]) do
               cells.borders = []
               column(2).align = :right
               
             end
             l2_account_category.level_one_account_categories.each do |l1_account_category|
-              table([["", "", "#{l1_account_category.title}", price(l1_account_category.balance(from_date: @from_date, to_date: @to_date))]], cell_style: { padding: [2,2], inline_format: true, size: 10}, column_widths: [10, 10, 310, 100]) do
-                cells.borders = []
-                column(3).align = :right
-              end
+              if l1_account_category.balance(from_date: @from_date, to_date: @to_date) > 0
+                table([["", "", "#{l1_account_category.title}", price(l1_account_category.balance(from_date: @from_date, to_date: @to_date))]], cell_style: { padding: [2,2], inline_format: true, size: 10}, column_widths: [10, 10, 310, 100]) do
+                  cells.borders = []
+                  column(3).align = :right
+                end
+              end 
             end
             stroke_horizontal_rule
 
@@ -282,10 +288,12 @@ module AccountingModule
         where.not(id: level_two_expense_account_categories.level_one_account_categories.expenses.ids).
         where.not(id: office.current_net_income_config.total_expense_account.level_one_account_category_id).
         each do |l1_account_category|
-          table([["", "", "#{l1_account_category.title}", price(l1_account_category.balance(from_date: @from_date, to_date: @to_date))]], cell_style: { padding: [2,2], inline_format: true, size: 10}, column_widths: [10, 10, 310, 100]) do
-            cells.borders = []
-            column(3).align = :right
-          end
+          if l1_account_category.balance(from_date: @from_date, to_date: @to_date) > 0 
+            table([["", "", "#{l1_account_category.title}", price(l1_account_category.balance(from_date: @from_date, to_date: @to_date))]], cell_style: { padding: [2,2], inline_format: true, size: 10}, column_widths: [10, 10, 310, 100]) do
+              cells.borders = []
+              column(3).align = :right
+            end
+          end 
         end
 
         stroke_horizontal_rule

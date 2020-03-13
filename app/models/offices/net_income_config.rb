@@ -14,6 +14,10 @@ module Offices
       order(created_at: :desc).first 
     end 
 
+    def closed?(date)
+      (beginning_date(date)..ending_date(date)).include?(date)
+    end 
+
     def date_setter
       "NetIncomeConfigs::DateSetters::#{book_closing.titleize.gsub(' ', "")}".constantize
     end 
@@ -51,7 +55,7 @@ module Offices
       to_date   = args[:to_date] ? args[:to_date] : Date.current.end_of_year
 
       if net_surplus_account.entries.entered_on(from_date: from_date, to_date: to_date).present?
-        net_surplus_account.balance(from_date: from_date, to_date: to_date)
+        net_surplus_account.credits_balance(from_date: from_date, to_date: to_date)
       else 
         office.level_one_account_categories.revenues.balance(from_date: from_date, to_date: to_date) - office.level_one_account_categories.expenses.balance(from_date: from_date, to_date: to_date)
       end 
@@ -62,7 +66,7 @@ module Offices
       to_date   = args[:to_date] ? args[:to_date] : Date.current.end_of_year
 
       if net_loss_account.entries.entered_on(from_date: from_date, to_date: to_date).present?
-        net_loss_account.balance(from_date: from_date, to_date: to_date)
+        net_loss_account.credits_balance(from_date: from_date, to_date: to_date)
       else 
         office.level_one_account_categories.expenses.balance(from_date: from_date, to_date: to_date) - office.level_one_account_categories.revenues.balance(from_date: from_date, to_date: to_date)
       end 
