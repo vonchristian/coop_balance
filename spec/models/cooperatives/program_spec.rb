@@ -6,7 +6,6 @@ module Cooperatives
       it { is_expected.to belong_to :level_one_account_category }
       it { is_expected.to belong_to :cooperative }
       it { is_expected.to belong_to :level_one_account_category }
-      it { is_expected.to belong_to(:account).optional } #deprecate
       it { is_expected.to have_many :program_subscriptions }
   		it { is_expected.to have_many :member_subscribers }
       it { is_expected.to have_many :employee_subscribers }

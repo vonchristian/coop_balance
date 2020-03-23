@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_12_093006) do
+ActiveRecord::Schema.define(version: 2020_03_21_005808) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1134,7 +1134,9 @@ ActiveRecord::Schema.define(version: 2020_03_12_093006) do
     t.uuid "net_loss_account_id"
     t.uuid "total_revenue_account_id"
     t.uuid "total_expense_account_id"
+    t.uuid "interest_on_capital_account_id"
     t.index ["book_closing"], name: "index_net_income_configs_on_book_closing"
+    t.index ["interest_on_capital_account_id"], name: "index_net_income_configs_on_interest_on_capital_account_id"
     t.index ["net_loss_account_id"], name: "index_net_income_configs_on_net_loss_account_id"
     t.index ["net_surplus_account_id"], name: "index_net_income_configs_on_net_surplus_account_id"
     t.index ["office_id"], name: "index_net_income_configs_on_office_id"
@@ -2206,6 +2208,7 @@ ActiveRecord::Schema.define(version: 2020_03_12_093006) do
   add_foreign_key "merchants", "cooperatives"
   add_foreign_key "municipalities", "cooperatives"
   add_foreign_key "municipalities", "provinces"
+  add_foreign_key "net_income_configs", "accounts", column: "interest_on_capital_account_id"
   add_foreign_key "net_income_configs", "accounts", column: "net_loss_account_id"
   add_foreign_key "net_income_configs", "accounts", column: "net_surplus_account_id"
   add_foreign_key "net_income_configs", "accounts", column: "total_expense_account_id"

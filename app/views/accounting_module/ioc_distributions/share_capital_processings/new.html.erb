@@ -1,0 +1,8 @@
+<%= simple_form_for @ioc_payment, url: :accounting_module_ioc_distributions_share_capital_processings do |f| %>
+  <%= f.input :share_capital_id, input_html: { value: @share_capital.id }, as: :hidden %>
+  <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
+  <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+
+  <%= f.input :amount %>
+  <%= f.submit "Add Amount" %>
+<% end %>

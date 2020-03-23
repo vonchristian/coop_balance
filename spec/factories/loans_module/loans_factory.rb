@@ -11,6 +11,8 @@ FactoryBot.define do
     association :accrued_income_account,   factory: :asset
     association :loan_aging_group
     account_number { SecureRandom.uuid }
+    borrower_full_name { Faker::Name.name }
+
     after(:build) do |l|
       voucher                = create(:voucher)
       l.disbursement_voucher ||= voucher

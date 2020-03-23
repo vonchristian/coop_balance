@@ -1,0 +1,60 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <% @share_capitals.each do |share_capital| %>
+        <%= link_to new_accounting_module_ioc_distributions_share_capital_processing_path(share_capital_id: share_capital.id) do %>
+        <%= share_capital.account_owner_name %>
+        <%= share_capital.balance %>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="col-md-6">
+      <div class="card elevation-2">
+        <div class="card-body">
+          <h4 class="title-up"> IOC to Share Capitals </h4>
+            <div class='table table-responsive'>
+              <table class="table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th> Subscriber </th>
+                    <th> Share Capital Product </th>
+                    <th> Amount </th>
+                    <th> </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @share_capitals_with_payments.each do |share_capital| %>
+                    <tr>
+                      <td><%= share_capital.account_owner_name %></td>
+                      <td><%= share_capital.share_capital_product_name %></td>
+
+                      <td><%= number_to_currency AccountingModule::IocDistributions::IocToShareCapitalFinder.new(cart: current_cart).amount(share_capital) %></td>
+                      <td>
+                        <%= link_to accounting_module_ioc_distributions_share_capital_path(share_capital), method: :delete do %>
+                          <i class="fa fa-times text-danger"></i>
+                        <% end %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+            <%==pagy_bootstrap_nav(@pagy)%>
+            <hr>
+            <%= simple_form_for @voucher, url: :accounting_module_ioc_distributions_share_capital_vouchers do |f| %>
+              <%= f.error_notification %>
+              <%= f.input :date, as: :string, input_html: { class: "datepicker" } %>
+              <%= f.input :reference_number %>
+              <%= f.input :description %>
+              <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
+              <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+              <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
+
+              <%= f.submit "Proceed", class: "btn btn-primary float-right" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,13 +1,13 @@
 refactor registry uplaoding
-refactor amortization schedule creation 
+refactor amortization schedule creation DONE 
 fix loan aging report DONE
 
 
 
-loan application 
+loan application  DDONE
 
-open savings account 
-open share capital account 
+open savings account DONE 
+open share capital account DONE 
 
 
 
@@ -30,3 +30,16 @@ Landing Page
       accounting module 
   
   OrganizationScope
+
+  IOC and PR Distribution
+
+  IO Computation 
+  PR Computation 
+  
+  Entry 
+
+  Total IOC 70%
+  PR        30 %
+
+PatronageRefundConfig 
+InterestOnCapitalConfig

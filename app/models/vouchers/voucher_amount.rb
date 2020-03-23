@@ -4,11 +4,11 @@ module Vouchers
 
     enum amount_type: [:debit, :credit]
     belongs_to :cart,                class_name: 'StoreFrontModule::Cart', optional: true
-    belongs_to :account,          class_name: "AccountingModule::Account"
-    belongs_to :voucher, optional: true
-    belongs_to :cooperative, optional: true
-    belongs_to :loan_application, class_name: "LoansModule::LoanApplication", optional: true
-    belongs_to :recorder,         class_name: "User", foreign_key: 'recorder_id', optional: true
+    belongs_to :account,             class_name: "AccountingModule::Account"
+    belongs_to :voucher,             optional: true
+    belongs_to :cooperative,         optional: true
+    belongs_to :loan_application,    class_name: "LoansModule::LoanApplication", optional: true
+    belongs_to :recorder,            class_name: "User", foreign_key: 'recorder_id', optional: true
     belongs_to :commercial_document, polymorphic: true, optional: true
 
     delegate :name, :display_name, to: :account, prefix: true
@@ -16,9 +16,11 @@ module Vouchers
 
     validates :account_id, :amount_type, presence: true
     before_destroy :check_if_disbursed?
+   
     def self.valid?
       debit.total == credit.total
     end
+
     def self.total
       Money.new(sum(&:amount)).amount
     end

@@ -5,13 +5,15 @@
     belongs_to :office,              class_name: 'Cooperatives::Office'
 	  belongs_to :subscriber,          polymorphic: true
 	  has_many :subscription_payments, class_name: "AccountingModule::Entry", as: :commercial_document
-	  delegate :name,
+    
+    delegate :name,
              :amount,
              :account,
              :description,
              :one_time_payment?,
              :annually?,
              to: :program
+             
     delegate :name, to: :subscriber, prefix: true
 
     def self.for_program(options={})

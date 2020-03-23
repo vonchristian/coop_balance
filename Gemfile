@@ -4,12 +4,11 @@ git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
   "https://github.com/#{repo_name}.git"
 end
-gem 'mime-types', [ '~> 2.6', '>= 2.6.1' ], require: 'mime/types/columnar'
+
 gem 'prawn-icon'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'webpacker', '~> 4.x'
-gem 'rubyzip', '>= 1.2.2'
-gem 'axlsx', git: 'https://github.com/randym/axlsx.git', ref: 'c8ac844'
+gem 'caxlsx'
 gem 'caxlsx_rails'
 gem 'trix'
 gem 'autonumeric-rails'

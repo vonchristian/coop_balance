@@ -46,14 +46,25 @@ Rails.application.routes.draw do
     resources :per_office_entries, only: [:index], module: :entries
     resources :scheduled_entries, only: [:index]
     resources :interest_expense_vouchers, only: [:show]
-
+    resources :ioc_distributions, only: [:index]
+    
+    namespace :ioc_distributions do 
+      resources :loans,                      only: [:new, :destroy]
+      resources :loan_vouchers,              only: [:create, :show, :destroy]
+      resources :loan_voucher_confirmations, only: [:create, :show]
+      resources :loan_processings,           only: [:new, :create]
+      resources :share_capitals,             only: [:new, :create, :destroy]
+      resources :share_capital_vouchers,     only: [:create, :show, :destroy]
+      resources :share_capital_processings,  only: [:new, :create]
+      resources :savings,                    only: [:new, :create]
+      resources :program_subscriptions,      only: [:new, :create]
+    end 
     namespace :scheduled_entries do
       resources :savings_accounts_interest_postings, only: [:new, :create]
       resources :share_capital_dividend_postings, only: [:new, :create]
-      resources :loan_agings, only: [:index]
-      resources :book_closings, only: [:index, :new, :create]
+      resources :loan_agings,       only: [:index]
+      resources :book_closings,     only: [:index, :new, :create]
       resources :book_closing_confirmations, only: [:show]
-
     end
 
     namespace :cash_books do

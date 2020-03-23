@@ -1,6 +1,12 @@
+<div class="container">
+  <div class="card">
+    <div class="card-body">
 <%= link_to 'Savings Accounts Interest Posting', new_accounting_module_scheduled_entries_savings_accounts_interest_posting_path, class: "btn btn-primary" %>
 <%= link_to "Mutual Aid System" %>
 
 <%= link_to 'Loan Agings', accounting_module_scheduled_entries_loan_agings_path %>
 
 <%= link_to 'Book Closing', accounting_module_scheduled_entries_book_closings_path %>
+<hr>
+<%= link_to 'IOC Distribution', accounting_module_ioc_distributions_path %><br>
+<span class="text-muted"> Create entry for interest on capital distributions </span>

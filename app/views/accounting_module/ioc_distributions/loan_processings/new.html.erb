@@ -1,0 +1,17 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-4 offset-md-4">
+      <div class="card">
+        <div class="card-body">
+<%= @loan.borrower_name %>
+<%= number_to_currency @loan.principal_balance %>
+
+<%= simple_form_for @ioc_payment, url: :accounting_module_ioc_distributions_loan_processings do |f| %>
+  <%= f.input :loan_id,     input_html: { value: @loan.id }, as: :hidden %>
+  <%= f.input :cart_id,     input_html: { value: current_cart.id }, as: :hidden %>
+  <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
+  <%= f.input :principal_amount, label: "Principal" %>
+  <%= f.input :interest_amount,  label: "Interest" %>
+  <%= f.input :penalty_amount,   label: "Penalty" %>
+  <%= f.submit "Add Amount", class: "btn btn-primary float-right" %>
+<% end %>
