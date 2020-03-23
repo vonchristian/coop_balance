@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-md-6">
       <% @share_capitals.each do |share_capital| %>
-        <%= link_to new_accounting_module_ioc_distributions_share_capital_processing_path(share_capital_id: share_capital.id) do %>
+        <%= link_to new_accounting_module_ioc_distributions_share_capital_processing_path(share_capital_id: share_capital.id), id: "#{share_capital.id}-select-share-capital" do %>
         <%= share_capital.account_owner_name %>
         <%= share_capital.balance %>
         <% end %>

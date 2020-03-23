@@ -1213,6 +1213,8 @@ example_id                                                                      
 ./spec/system/accounting_module/ioc_distributions/index_system_spec.rb[1:1]                 | passed  | 13.66 seconds   |
 ./spec/system/accounting_module/ioc_distributions/loans/new_system_spec.rb[1:1]             | passed  | 9.24 seconds    |
 ./spec/system/accounting_module/ioc_distributions/loans/new_system_spec.rb[1:2]             | passed  | 1.39 seconds    |
+./spec/system/accounting_module/ioc_distributions/share_capitals/new_system_spec.rb[1:1]    | passed  | 8.22 seconds    |
+./spec/system/accounting_module/ioc_distributions/share_capitals/new_system_spec.rb[1:2]    | passed  | 0.49535 seconds |
 ./spec/system/loans_module/loan_applications/capital_build_ups/new_system_spec.rb[1:1]      | failed  | 3.71 seconds    |
 ./spec/system/members/loan_applications/new_system_spec.rb[1:1]                             | passed  | 10.8 seconds    |
 ./spec/system/members/loan_applications/new_system_spec.rb[1:2]                             | passed  | 0.5111 seconds  |
