@@ -5,7 +5,7 @@ module AccountingModule
         @pagy, @share_capitals  = pagy(current_office.share_capitals)
         @pagy, @voucher_amounts = pagy(current_cart.voucher_amounts)
         @pagy, @share_capitals_with_payments = pagy(current_office.share_capitals.where(id: AccountingModule::IocDistributions::IocToShareCapitalFinder.new(cart: current_cart).share_capital_ids))
-        @voucher = AccountingModule::IocDistributions::ShareCapitalVoucher.new 
+        @voucher = AccountingModule::IocDistributions::IocVoucher.new 
       end 
 
       def destroy 

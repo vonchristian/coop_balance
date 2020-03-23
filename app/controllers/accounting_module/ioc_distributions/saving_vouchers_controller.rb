@@ -1,14 +1,14 @@
 module AccountingModule
   module IocDistributions
-    class LoanVouchersController < ApplicationController
+    class SavingVouchersController < ApplicationController
       def create 
         @voucher = AccountingModule::IocDistributions::IocVoucher.new(voucher_params)
         if @voucher.valid?
           @voucher.process!
           @find_voucher = current_office.vouchers.find_by(account_number: params[:accounting_module_ioc_distributions_ioc_voucher][:account_number])
-          redirect_to accounting_module_ioc_distributions_loan_voucher_url(@find_voucher), notice: 'Voucher created successfully.'
+          redirect_to accounting_module_ioc_distributions_saving_voucher_url(@find_voucher), notice: 'Voucher created successfully.'
         else 
-          redirect_to new_accounting_module_ioc_distributions_loan_url, alert: "Error"
+          redirect_to new_accounting_module_ioc_distributions_saving_url, alert: "Error"
         end 
       end 
 
@@ -21,7 +21,7 @@ module AccountingModule
         @voucher = current_office.vouchers.find(params[:id])
         if !@voucher.disbursed?
           @voucher.destroy
-          redirect_to new_accounting_module_ioc_distributions_loan_url, notice: "Transaction cancelled successfully."
+          redirect_to new_accounting_module_ioc_distributions_saving_url, notice: "Transaction cancelled successfully."
         end 
       end 
 

@@ -1,6 +1,6 @@
 module AccountingModule
   module IocDistributions
-    class LoanVoucher 
+    class IocVoucher 
       include ActiveModel::Model 
       attr_accessor :date, :reference_number, :description, :cart_id, :employee_id, :account_number
 

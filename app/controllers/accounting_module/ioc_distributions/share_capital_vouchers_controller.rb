@@ -2,10 +2,10 @@ module AccountingModule
   module IocDistributions
     class ShareCapitalVouchersController < ApplicationController
       def create 
-        @voucher = AccountingModule::IocDistributions::ShareCapitalVoucher.new(voucher_params)
+        @voucher = AccountingModule::IocDistributions::IocVoucher.new(voucher_params)
         if @voucher.valid?
           @voucher.process!
-          @find_voucher = current_office.vouchers.find_by(account_number: params[:accounting_module_ioc_distributions_share_capital_voucher][:account_number])
+          @find_voucher = current_office.vouchers.find_by(account_number: params[:accounting_module_ioc_distributions_ioc_voucher][:account_number])
           redirect_to accounting_module_ioc_distributions_share_capital_voucher_url(@find_voucher), notice: 'Voucher created successfully.'
         else 
           redirect_to new_accounting_module_ioc_distributions_share_capital_url, alert: "Error"
@@ -27,7 +27,7 @@ module AccountingModule
 
       private 
       def voucher_params
-        params.require(:accounting_module_ioc_distributions_share_capital_voucher).
+        params.require(:accounting_module_ioc_distributions_ioc_voucher).
         permit(:date, :reference_number, :description, :cart_id, :employee_id, :account_number)
       end 
     end 

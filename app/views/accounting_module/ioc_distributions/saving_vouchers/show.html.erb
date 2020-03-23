@@ -1,0 +1,108 @@
+<div class="row">
+  <div class="col-md-8 offset-md-2">
+    <div class="card">
+      <div class="card-header bg-light">
+        <div class="row">
+          <div class="col-md-6">
+            <h3 class="card-title"> Voucher Details </h3>
+          </div>
+          <div class="col-md-6">
+            <%=link_to 'View (PDF)', voucher_path(@voucher, format: "pdf"), class: "btn btn-default float-right" %>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <% if !@voucher.disbursed? %>
+          <%= render 'vouchers/partials/alert_message', voucher: @voucher %>
+        <% end %>
+       <div class="card-body">
+  <div class="row min-margin-bottom">
+    <div class="col-md-4 col-sm-4">
+      <label class="no-margin-bottom">Payee</label>
+    </div>
+    <div class="col-md-8 col-sm-8">
+      <%= @voucher.payee_name %>
+    </div>
+  </div>
+  <div class="row min-margin-bottom">
+    <div class="col-md-4 col-sm-4">
+      <label class="no-margin-bottom">Description</label>
+    </div>
+    <div class="col-md-8 col-sm-8">
+      <%= @voucher.description %>
+    </div>
+  </div>
+  <div class="row min-margin-bottom">
+    <div class="col-md-4 col-sm-4">
+      <label class="no-margin-bottom">Date</label>
+    </div>
+    <div class="col-md-8 col-sm-8">
+      <%= @voucher.date.strftime("%B %e, %Y") %>
+    </div>
+  </div>
+  <div class="row min-margin-bottom">
+    <div class="col-md-4 col-sm-4">
+      <label class="no-margin-bottom">Employee</label>
+    </div>
+    <div class="col-md-8 col-sm-8">
+      <%= @voucher.preparer_full_name %>
+    </div>
+  </div>
+  <div class="row min-margin-bottom">
+    <div class="col-md-4 col-sm-4">
+      <label class="no-margin-bottom">Reference No.</label>
+    </div>
+    <div class="col-md-8 col-sm-8">
+      <%= @voucher.reference_number %>
+    </div>
+  </div>
+</div>
+<div class="card-body">
+  <h3 class="title-up">
+    Entry Details <span class="badge bg-gray"><%= @voucher.voucher_amounts.count %></span>
+  </h3>
+  <div class="table table-responsive">
+    <table class="table table-hover no-margin-bottom">
+      <thead>
+        <tr>
+          <th>DEBIT</th>
+          <th class="text-center">ACCOUNT</th>
+          <th>
+            <span class="float-right">CREDIT</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @voucher_amounts.each do |voucher_amount| %>
+          <tr>
+            <td>
+              <% if voucher_amount.debit? %>
+                <%= number_to_currency voucher_amount.amount %>
+              <% end %>
+            </td>
+            <td><%= voucher_amount.account_display_name %></td>
+             <td>
+              <% if voucher_amount.credit? %>
+                <span class="float-right"><%= number_to_currency voucher_amount.amount %></span>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+        <% if @voucher.voucher_amounts.present? %>
+           <tr>
+            <th><b><%= number_to_currency @voucher.voucher_amounts.debit.total %></b></th>
+            <td></td>
+            <th><b class="float-right"><%= number_to_currency @voucher.voucher_amounts.credit.total %></b></th>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%==pagy_bootstrap_nav(@pagy) %>
+  </div>
+</div>
+
+
+ <% if @voucher.accounting_entry.blank? %>
+          <%= link_to "Confirm Transaction", accounting_module_ioc_distributions_loan_voucher_confirmations_path(voucher_id: @voucher.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
+          <%= link_to "Cancel", accounting_module_ioc_distributions_loan_voucher_path(voucher_id: @voucher.id), method: :delete, class: "btn text-danger float-left" %>
+        <% end %>

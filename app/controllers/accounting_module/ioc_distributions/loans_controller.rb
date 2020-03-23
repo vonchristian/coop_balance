@@ -9,7 +9,7 @@ module AccountingModule
         end
         @pagy, @voucher_amounts = pagy(current_cart.voucher_amounts)
         @pagy, @loans_with_payments    = pagy(current_office.loans.where(id: AccountingModule::IocDistributions::IocToLoanFinder.new(cart: current_cart).loan_ids).includes(:borrower, :receivable_account, :penalty_revenue_account, :interest_revenue_account))
-        @voucher = AccountingModule::IocDistributions::LoanVoucher.new 
+        @voucher = AccountingModule::IocDistributions::IocVoucher.new 
       end 
       def destroy 
         @loan = current_office.loans.find(params[:id])

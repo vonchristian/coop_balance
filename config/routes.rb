@@ -56,7 +56,9 @@ Rails.application.routes.draw do
       resources :share_capitals,             only: [:new, :create, :destroy]
       resources :share_capital_vouchers,     only: [:create, :show, :destroy]
       resources :share_capital_processings,  only: [:new, :create]
-      resources :savings,                    only: [:new, :create]
+      resources :savings,                    only: [:new, :create, :destroy]
+      resources :saving_processings,         only: [:new, :create]
+      resources :saving_vouchers,            only: [:create, :show, :destroy]
       resources :program_subscriptions,      only: [:new, :create]
     end 
     namespace :scheduled_entries do
