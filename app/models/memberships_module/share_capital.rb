@@ -133,7 +133,7 @@ module MembershipsModule
 
     private
     def set_account_owner_name
-      self.account_owner_name = self.subscriber_name
+      self.account_owner_name ||= self.subscriber_name
     end
   end
 end

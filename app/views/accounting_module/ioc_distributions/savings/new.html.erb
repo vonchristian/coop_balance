@@ -1,12 +1,39 @@
 <div class="container">
   <div class="row">
     <div class="col-md-6">
-      <% @savings.each do |saving| %>
-        <%= link_to new_accounting_module_ioc_distributions_saving_processing_path(saving_id: saving.id), id: "#{saving.id}-select-saving" do %>
-        <%= saving.account_owner_name %>
-        <%= saving.balance %>
-        <% end %>
-      <% end %>
+      <div class="card">
+        <div class="card-body">
+          <h4 class='title-up'> Search Savings </h4>
+          <%= form_tag new_accounting_module_ioc_distributions_saving_path, method: :get do %>
+            <div class="input-group">
+              <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Share Capital", id: 'saving-search-form' %>
+              <span class="input-group-btn">
+                <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-default btn-flat") do %>
+                  <i class="fa fa-search"></i> Search 
+                <% end %>
+              </span>
+            </div>
+          <% end %>
+          <br />
+          <% @savings.each do |saving| %>
+            <%= link_to new_accounting_module_ioc_distributions_saving_processing_path(saving_id: saving.id), id: "#{saving.id}-select-saving" do %>
+              <div class="row">
+                <div class="col-md-2">
+                  <%= image_tag(saving.avatar, height: 45, width: 45, class: "img-circle") %>
+                </div>
+                <div class="col-md-6">
+                  <%= saving.account_owner_name.upcase %><br>
+                  <small class="text-muted"><%= saving.saving_product_name%></small>
+                </div>
+                <div class="col-md-4">
+                  <%= number_to_currency saving.balance %>
+                </div>
+              </div>
+            <% end %>
+            <hr />
+          <% end %>
+        </div>
+      </div>
     </div>
     <div class="col-md-6">
       <div class="card elevation-2">
@@ -30,13 +57,20 @@
 
                       <td><%= number_to_currency AccountingModule::IocDistributions::IocToSavingFinder.new(cart: current_cart).amount(saving) %></td>
                       <td>
-                        <%= link_to accounting_module_ioc_distributions_saving_path(saving), method: :delete do %>
+                        <%= link_to accounting_module_ioc_distributions_saving_path(saving), method: :delete, id: "#{saving.id}-delete-amount" do %>
                           <i class="fa fa-times text-danger"></i>
                         <% end %>
                       </td>
                     </tr>
                   <% end %>
+                  <tr>
+                    <td> TOTAL </td>
+                    <td></td>
+                    <td><%= number_to_currency current_cart.voucher_amounts.credit.total %></td>
+                    <td></td>
+                  </tr>
                 </tbody>
+
               </table>
             </div>
             <%==pagy_bootstrap_nav(@pagy)%>

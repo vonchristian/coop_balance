@@ -3,9 +3,9 @@ module AccountingModule
     class LoansController < ApplicationController 
       def new
         if params[:search].present?
-          @pagy, @loans           = pagy(current_office.loans.text_search(params[:search]))
+          @pagy, @loans           = pagy(current_office.loans.includes(:loan_product, :receivable_account, borrower: [:avatar_attachment =>[:blob]]).text_search(params[:search]))
         else 
-          @pagy, @loans           = pagy(current_office.loans.includes(:borrower, :loan_product, :receivable_account))
+          @pagy, @loans           = pagy(current_office.loans.includes(:loan_product, :receivable_account, borrower: [:avatar_attachment =>[:blob]]))
         end
         @pagy, @voucher_amounts = pagy(current_cart.voucher_amounts)
         @pagy, @loans_with_payments    = pagy(current_office.loans.where(id: AccountingModule::IocDistributions::IocToLoanFinder.new(cart: current_cart).loan_ids).includes(:borrower, :receivable_account, :penalty_revenue_account, :interest_revenue_account))

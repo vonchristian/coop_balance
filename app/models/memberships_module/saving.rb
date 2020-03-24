@@ -172,7 +172,7 @@ module MembershipsModule
 
     private
     def set_account_owner_name
-      self.account_owner_name = self.depositor_name # depositor is polymorphic
+      self.account_owner_name ||= self.depositor_name # depositor is polymorphic
     end
 
     def set_date_opened

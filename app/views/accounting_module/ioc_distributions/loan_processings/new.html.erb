@@ -10,8 +10,8 @@
   <%= f.input :loan_id,     input_html: { value: @loan.id }, as: :hidden %>
   <%= f.input :cart_id,     input_html: { value: current_cart.id }, as: :hidden %>
   <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
-  <%= f.input :principal_amount, label: "Principal" %>
-  <%= f.input :interest_amount,  label: "Interest" %>
-  <%= f.input :penalty_amount,   label: "Penalty" %>
+  <%= f.input :principal_amount, label: "Principal", input_html: { value: 0 } %>
+  <%= f.input :interest_amount,  label: "Interest", input_html: { value: 0 } %>
+  <%= f.input :penalty_amount,   label: "Penalty", input_html: { value: 0 } %>
   <%= f.submit "Add Amount", class: "btn btn-primary float-right" %>
 <% end %>

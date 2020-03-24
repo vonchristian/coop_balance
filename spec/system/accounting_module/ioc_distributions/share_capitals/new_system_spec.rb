@@ -2,17 +2,27 @@ require 'rails_helper'
 
 describe "New IOC to share capital" do 
   before(:each) do 
-    bookkeeper = create(:bookkeeper)
+    bookkeeper       = create(:bookkeeper)
+    @share_capital   = create(:share_capital,office: bookkeeper.office, account_owner_name: "Juan")
+    @share_capital_2 = create(:share_capital,office: bookkeeper.office, account_owner_name: "Manny")
     create(:net_income_config, office: bookkeeper.office)
-    share_capital       = create(:share_capital,office: bookkeeper.office)
-
+   
     login_as(bookkeeper, scope: :user)
     visit accounting_module_ioc_distributions_path
     click_link "ioc-to-share-capitals"
-    click_link "#{share_capital.id}-select-share-capital"
+   
   end 
+  it "with search params", js: true do 
+    fill_in "share-capital-search-form", with: "Juan"
 
+    click_button "Search"
+
+    expect(page).to have_content("JUAN")
+    expect(page).to_not have_content("MANNY")
+  end
   it "with valid attributes", js: true do 
+    click_link "#{@share_capital.id}-select-share-capital"
+
     fill_in "Amount", with: 100
      
     click_button "Add Amount"
@@ -28,6 +38,8 @@ describe "New IOC to share capital" do
   end 
 
   it "with blank attributes" do 
+    click_link "#{@share_capital.id}-select-share-capital"
+
     click_button "Add Amount"
 
     expect(page).to have_content("can't be blank")

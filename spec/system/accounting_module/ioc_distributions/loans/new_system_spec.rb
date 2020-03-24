@@ -30,6 +30,7 @@ describe "New IOC to loan" do
   end 
 
   it "with blank attributes" do 
+    fill_in "Principal", with: ""
     click_button "Add Amount"
 
     expect(page).to have_content("can't be blank")

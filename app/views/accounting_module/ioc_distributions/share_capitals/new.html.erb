@@ -1,12 +1,39 @@
 <div class="container">
   <div class="row">
     <div class="col-md-6">
-      <% @share_capitals.each do |share_capital| %>
-        <%= link_to new_accounting_module_ioc_distributions_share_capital_processing_path(share_capital_id: share_capital.id), id: "#{share_capital.id}-select-share-capital" do %>
-        <%= share_capital.account_owner_name %>
-        <%= share_capital.balance %>
-        <% end %>
-      <% end %>
+      <div class="card">
+        <div class="card-body">
+          <h4 class='title-up'> Search Share Capitals </h4>
+          <%= form_tag new_accounting_module_ioc_distributions_share_capital_path, method: :get do %>
+            <div class="input-group">
+              <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Share Capital", id: 'share-capital-search-form' %>
+              <span class="input-group-btn">
+                <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-default btn-flat") do %>
+                  <i class="fa fa-search"></i> Search 
+                <% end %>
+              </span>
+            </div>
+          <% end %>
+          <br />
+          <% @share_capitals.each do |share_capital| %>
+            <%= link_to new_accounting_module_ioc_distributions_share_capital_processing_path(share_capital_id: share_capital.id), id: "#{share_capital.id}-select-share-capital" do %>
+              <div class="row">
+                <div class="col-md-2">
+                  <%=image_tag(share_capital.avatar, height: 45, width: 45, class: "img-circle")%>
+                </div>
+                <div class="col-md-6">
+                  <b><%= share_capital.account_owner_name.upcase %></b><br>
+                  <small class="text-muted"><%= share_capital.share_capital_product_name %></small>
+                </div>
+                <div class="col-md-4">
+                  <%= number_to_currency share_capital.balance %>
+                </div>
+              </div>
+            <% end %>
+            <hr />
+          <% end %>
+        </div>
+      </div>
     </div>
     <div class="col-md-6">
       <div class="card elevation-2">
@@ -30,12 +57,18 @@
 
                       <td><%= number_to_currency AccountingModule::IocDistributions::IocToShareCapitalFinder.new(cart: current_cart).amount(share_capital) %></td>
                       <td>
-                        <%= link_to accounting_module_ioc_distributions_share_capital_path(share_capital), method: :delete do %>
+                        <%= link_to accounting_module_ioc_distributions_share_capital_path(share_capital), method: :delete, id: "#{share_capital.id}-delete-amount" do %>
                           <i class="fa fa-times text-danger"></i>
                         <% end %>
                       </td>
                     </tr>
                   <% end %>
+                  <tr>
+                    <td> TOTAL </td>
+                    <td></td>
+                    <td><%= number_to_currency current_cart.voucher_amounts.credit.total %></td>
+                    <td></td>
+                  </tr>
                 </tbody>
               </table>
             </div>
