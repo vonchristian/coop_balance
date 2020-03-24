@@ -2,6 +2,9 @@
       <div class='card'>
         <div class='card-body'>
           <h3 class='title-up'> Interest on Capital Distributions </h3>
+            <small class="text-muted"> Interest On Capital Payable </small>
+            <h3 class="title-up"><%= number_to_currency current_office.interest_on_capital_account.balance %></h3>
+          <hr>
           <%= link_to 'Share Capitals', new_accounting_module_ioc_distributions_share_capital_path, id: "ioc-to-share-capitals" %><br>
           <span class="text-muted"> Create entry for Interest on Capital (IOC) as share capital build ups </span>
 
