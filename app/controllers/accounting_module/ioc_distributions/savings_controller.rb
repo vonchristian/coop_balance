@@ -3,9 +3,9 @@ module AccountingModule
     class SavingsController < ApplicationController
       def new 
         if params[:search].present?
-          @pagy, @savings             = pagy(current_office.savings.includes(:saving_product, :liability_account, depositor: [:avatar_attachment =>[:blob]]).text_search(params[:search]))
+          @pagy_savings, @savings     = pagy(current_office.savings.includes(:saving_product, :liability_account, depositor: [:avatar_attachment =>[:blob]]).text_search(params[:search]))
         else 
-          @pagy, @savings             = pagy(current_office.savings.includes(:saving_product, :liability_account, depositor: [:avatar_attachment =>[:blob]]))
+          @pagy_savings, @savings     = pagy(current_office.savings.includes(:saving_product, :liability_account, depositor: [:avatar_attachment =>[:blob]]))
         end 
         @pagy, @voucher_amounts       = pagy(current_cart.voucher_amounts)
         @pagy, @savings_with_payments = pagy(current_office.savings.where(id: AccountingModule::IocDistributions::IocToSavingFinder.new(cart: current_cart).saving_ids))
