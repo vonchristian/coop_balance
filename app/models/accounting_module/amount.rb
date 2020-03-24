@@ -3,9 +3,10 @@ module AccountingModule
     audited
     monetize :amount_cents, as: :amount, numericality: true
 
-    belongs_to :entry, :class_name => 'AccountingModule::Entry'
-    belongs_to :account, :class_name => 'AccountingModule::Account'
+    belongs_to :entry,               class_name: 'AccountingModule::Entry'
+    belongs_to :account,             class_name: 'AccountingModule::Account'
     belongs_to :commercial_document, polymorphic: true, optional: true
+   
     validates :type, :amount, :entry, :account, presence: true
 
     delegate :name, :code, :display_name, to: :account, prefix: true
@@ -72,7 +73,7 @@ module AccountingModule
     end
 
     def self.total
-      total = not_cancelled.pluck(:amount_cents).sum
+      total = pluck(:amount_cents).sum
       Money.new(total).amount
     end
 

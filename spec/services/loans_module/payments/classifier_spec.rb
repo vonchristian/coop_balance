@@ -14,12 +14,10 @@ module LoansModule
         principal        = build(:credit_amount, amount: 1000, account: loan.receivable_account)
         interest         = build(:credit_amount, amount: 100,  account: loan.interest_revenue_account)
         penalty          = build(:credit_amount, amount: 100, account: loan.penalty_revenue_account)
-        accrued_interest = build(:debit_amount, amount: 100, account: loan.accrued_income_account)
         cash             = build(:debit_amount, amount: 1100, account: cash_on_hand)
         payment.credit_amounts << principal
         payment.credit_amounts << interest
         payment.credit_amounts << penalty
-        payment.debit_amounts  << accrued_interest
         payment.debit_amounts  << cash
 
         payment.save!
@@ -27,8 +25,7 @@ module LoansModule
         expect(described_class.new(entry: payment, loan: loan).principal).to eql 1_000
         expect(described_class.new(entry: payment, loan: loan).interest).to eql 100
         expect(described_class.new(entry: payment, loan: loan).penalty).to eql 100
-        expect(described_class.new(entry: payment, loan: loan).accrued_interest).to eql 100
-        expect(described_class.new(entry: payment, loan: loan).total_cash_payment).to eq 1_100
+        expect(described_class.new(entry: payment, loan: loan).total_cash_payment).to eq 1_200
       end
     end
   end

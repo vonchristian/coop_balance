@@ -10,8 +10,8 @@ module AccountingModule
     
     belongs_to :level_one_account_category,  class_name: 'AccountingModule::LevelOneAccountCategory'
     has_many :amounts,                       class_name: "AccountingModule::Amount"
-    has_many :credit_amounts,                :class_name => 'AccountingModule::CreditAmount'
-    has_many :debit_amounts,                 :class_name => 'AccountingModule::DebitAmount'
+    has_many :credit_amounts,        -> { not_cancelled },        :class_name => 'AccountingModule::CreditAmount'
+    has_many :debit_amounts,         -> { not_cancelled },        :class_name => 'AccountingModule::DebitAmount'
     has_many :entries,                       through: :amounts, source: :entry, class_name: "AccountingModule::Entry"
     has_many :credit_entries,                :through => :credit_amounts, :source => :entry, :class_name => 'AccountingModule::Entry'
     has_many :debit_entries,                 :through => :debit_amounts, :source => :entry, :class_name => 'AccountingModule::Entry'

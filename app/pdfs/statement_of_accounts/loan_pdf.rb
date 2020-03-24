@@ -88,7 +88,7 @@ module StatementOfAccounts
          price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).interest),
          price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).penalty),
          price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).total_cash_payment),
-         price(loan.principal_balance(to_date: entry.entry_date))
+         price(loan.principal_balance(to_date: entry.entry_date, to_time: entry.entry_time))
         ] }
     end
   end
