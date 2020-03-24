@@ -4,6 +4,8 @@ module AccountingModule
       include ActiveModel::Model 
       attr_accessor :date, :reference_number, :description, :cart_id, :employee_id, :account_number
 
+      validates :date, :reference_number, :description, :cart_id, :employee_id, :account_number, presence: true 
+       
       def process!
         if valid?
           ApplicationRecord.transaction do 
