@@ -81,7 +81,7 @@ module StatementOfAccounts
       [["DATE", " REF #", "PRINCIPAL", "INTEREST", "PENALTY", "TOTAL", "PRINCIPAL
          BALANCE"]] +
       [["", "","", "","", "", "#{price(loan.loan_amount)}"]] +
-      @transactions_data ||= loan.loan_payments.sort_by(&:entry_date).map{ |entry|
+      @transactions_data ||= loan.entries.order(entry_date: :asc).uniq.map{ |entry|
        [ entry.entry_date.strftime("%b %e, %Y"),
          entry.reference_number,
          price(LoansModule::Payments::Classifier.new(loan: loan, entry: entry).principal),
