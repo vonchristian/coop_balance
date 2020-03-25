@@ -54,6 +54,6 @@
     <%= render 'accounting_module/entries/partials/header', entry: entry %>
   <% end %>
 <% end %>
-<% if @paginated_entries.exists? %>
+<% if @paginated_entries.present? %>
   <center><%= will_paginate @paginated_entries %></center>
 <% end %>

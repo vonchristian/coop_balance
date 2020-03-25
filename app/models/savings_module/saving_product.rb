@@ -4,14 +4,12 @@
     extend Metricable
     extend VarianceMonitoring
 	  enum interest_recurrence: [:daily, :weekly, :monthly, :quarterly, :semi_annually, :annually]
-    
+    enum interest_type: [:earning, :non_earning]
+   
     has_one :saving_product_interest_config, class_name: 'SavingsModule::SavingProducts::SavingProductInterestConfig'
-    
     belongs_to :cooperative
     belongs_to :office,                   class_name: "Cooperatives::Office"
-
     belongs_to :closing_account,          class_name: "AccountingModule::Account"
-  
     has_many :subscribers,                class_name: "MembershipsModule::Saving"
 
 	  validates :interest_rate,
@@ -27,9 +25,6 @@
     validates :cooperative_id, presence: true
     validates :minimum_balance, presence: true, numericality: true
 
-
-
-
     def self.accounts_opened(args={})
       SavingProductQuery.new.accounts_opened(args)
     end
@@ -39,7 +34,7 @@
     end
 
     def total_subscribers
-      subscribers.count
+      subscribers.size
     end
 
     def interest_earned_posting_status_finder

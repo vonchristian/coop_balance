@@ -122,9 +122,6 @@ module AccountingModule
       cancelled_at.nil?
     end
 
-    def entries_present?
-      AccountingModule::Entry.exists?
-    end
 
     def total
       credit_amounts.total

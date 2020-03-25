@@ -5,7 +5,7 @@ module MembershipsModule
 
     validates :designation, :description, presence: true 
     def self.designations 
-      return NullIncomeSource.new.designation if !self.exists?
+      return NullIncomeSource.new.designation if self.blank?
 
       pluck(:designation).join(",")
     end 

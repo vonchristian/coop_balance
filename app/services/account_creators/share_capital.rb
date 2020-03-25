@@ -19,13 +19,14 @@ module AccountCreators
     private 
 
     def create_equity_account
-      if share_capital.share_capital_equity_account.blank?
-         account = office.accounts.equities.create!(
-          name:                       "#{share_capital_product.name} - (#{share_capital.subscriber_name} - #{share_capital.account_number}",
-          code:                       SecureRandom.uuid,
-          level_one_account_category: equity_account_category
-        )
+      if share_capital.equity_account_id.blank?
+        account = office.accounts.equities.create!(
+        name:                       "#{share_capital_product.name} - (#{share_capital.subscriber_name} - #{share_capital.account_number}",
+        code:                       SecureRandom.uuid,
+        level_one_account_category: equity_account_category)
+       
         share_capital.update(share_capital_equity_account: account)
+        share_capital.save!
       end
     end
     def add_accounts

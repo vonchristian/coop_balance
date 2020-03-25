@@ -21,7 +21,7 @@ module AccountCreators
     private
 
     def create_liability_account
-      if saving.liability_account.blank?
+      if saving.liability_account_id.blank?
         account = office.accounts.liabilities.create!(
 
           name: "#{saving_product.name} - (#{saving.depositor_name} - #{saving.account_number}",
@@ -33,7 +33,7 @@ module AccountCreators
     end
 
     def create_interest_expense_account
-      if saving.interest_expense_account.blank?
+      if saving.interest_expense_account_id.blank?
         account = office.accounts.expenses.create!(
           name: "Interest Expense on Savings Deposits - (#{saving.depositor_name} - #{saving.account_number}",
           code: "INT-#{saving.account_number}",

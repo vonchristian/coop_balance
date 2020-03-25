@@ -105,7 +105,7 @@ class Voucher < ApplicationRecord
   end
 
   def self.generate_number
-    return "000000000001" if !self.exists?
+    return "000000000001" if self.blank?
       all.pluck(:number).reject!(&:nil?).max.next
   end
 

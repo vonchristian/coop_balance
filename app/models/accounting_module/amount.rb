@@ -73,7 +73,7 @@ module AccountingModule
     end
 
     def self.total
-      total = pluck(:amount_cents).sum
+      total = not_cancelled.pluck(:amount_cents).sum
       Money.new(total).amount
     end
 

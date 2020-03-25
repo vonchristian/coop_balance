@@ -8,7 +8,7 @@ FactoryBot.define do
     account_number     { SecureRandom.uuid }
     account_owner_name { Faker::Name.name }
     
-    after(:build) do |share| 
+    after(:commit) do |share| 
       share.accounts << share.share_capital_equity_account
     end 
   end

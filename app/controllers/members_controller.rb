@@ -1,31 +1,13 @@
 class MembersController < ApplicationController
   layout 'application'
 
-  respond_to :html, :json
+
 
   def index
     if params[:search].present?
-      @members = Member.for_cooperative(cooperative: current_cooperative).with_attached_avatar.includes(:memberships).text_search(params[:search]).order(:last_name).paginate(page: params[:page], per_page: 35)
-    elsif params[:membership_type].present?
-      @members = Member.for_cooperative_and_membership_type(cooperative: current_cooperative, membership_type: params[:membership_type], organization_id: params[:organization_id]).order(:last_name).paginate(page: params[:page], per_page: 35)
-      @members_pdf = Member.for_cooperative_and_membership_type(cooperative: current_cooperative, membership_type: params[:membership_type], organization_id: params[:organization_id]).order(:last_name)
+      @pagy, @members = pagy(Member.for_cooperative(cooperative: current_cooperative).with_attached_avatar.includes(:memberships).text_search(params[:search]).order(:last_name))
     else
-      @members = Member.for_cooperative(cooperative: current_cooperative).with_attached_avatar.includes(:memberships).with_attached_avatar.order(:last_name).paginate(page: params[:page], per_page: 35)
-    end
-
-    respond_to do |format|
-      format.html
-      format.xlsx
-      format.pdf do
-        pdf = MembersMasterListPdf.new(
-          members: @members_pdf,
-          membership_type: params[:membership_type],
-          organization_id: params[:organization_id],
-          cooperative: current_cooperative,
-          view_context: view_context
-          )
-        send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Master List of Members.pdf"
-      end
+      @pagy, @members = pagy(Member.for_cooperative(cooperative: current_cooperative).with_attached_avatar.includes(:memberships).with_attached_avatar.order(:last_name))
     end
   end
 

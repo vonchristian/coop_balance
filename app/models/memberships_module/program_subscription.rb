@@ -8,7 +8,6 @@
     
     delegate :name,
              :amount,
-             :account,
              :description,
              :one_time_payment?,
              :annually?,

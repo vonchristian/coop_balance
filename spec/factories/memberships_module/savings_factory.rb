@@ -7,7 +7,7 @@ FactoryBot.define do
     association :liability_account, factory: :liability
     association :interest_expense_account, factory: :expense
     account_number { SecureRandom.uuid }
-    after(:build) do |s|
+    after(:commit) do |s|
       s.accounts << s.liability_account
       s.accounts << s.interest_expense_account
     end 

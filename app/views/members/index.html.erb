@@ -1,19 +1,5 @@
 <% breadcrumb :members, @members %>
-<div class='card'>
-  <div class='card-header'>
-    <div class='row'>
-      <div class='col-md-9'>
-      </div>
-      <div class='col-md-3'>
-        <div class='bg-gray'>
-        test 
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-8">
+<div class="container">
     <div class="card">
       <div class="card-header">
         <div class="row">
@@ -36,45 +22,35 @@
           </div>
         </div>
         <br>
-        <div class="row">
-          <div class="col-md-8">
-            <%=form_tag members_path, method: :get, id: 'members-filter-form' do %>
-              <div class="row">
-                <div class="col-md-6">
-                  <%= select_tag :membership_type, options_for_select(Cooperatives::Membership.membership_types.keys.to_a.map {|m| [m.titleize, m]}, params[:membership_type]), class: 'form-control border-input', id: 'membership-type-filter', prompt: '--Select Membership Type--' %>
-                </div>
-                <div class="col-md-6">
-                  <%= select_tag :organization_id, options_for_select(current_cooperative.organizations.map {|m| [m.name, m.id]}, params[:organization_id]), class: 'form-control border-input', id: 'office-filter', prompt: '--Select Organization--' %>
-                </div>
-              </div>
-            <% end %>
-          </div>
-          <div class="col-md-4">
-            <%=link_to "Print(PDF)", members_path(format: 'pdf', membership_type: params[:membership_type], organization_id: params[:organization_id]), class: "btn btn-default" if @members.present? and (params[:membership_type].present? && params[:organization_id].present?)%>
-            <%=link_to "Print(Excel)", members_path(format: 'xlsx', membership_type: params[:membership_type], organization_id: params[:organization_id]), class: "btn btn-success" if @members.present? and (params[:membership_type].present? && params[:organization_id].present?)%>
-          </div>
-        </div>
-      </div>
-    </div>
-    <% @members.each do |member| %>
-      <%= render 'members/partials/header', member: member, cached: true %>
-    <% end %>
-    <center><%= will_paginate @members %> </center>
-  </div>
-</div>
+      
+   
+    <div class="table table-responsive">
+      <table class="table table-hover table-striped">
+        <thead>
+          <tr>
+            <th></th>
+            <th> Member </th>
+            <th> Address </th>
+            <th> Contact # </th>
+            <th> Organization </th>
+            <th> Status </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @members.each do |member| %>
+            <tr>
+              <td><%= image_tag(member.avatar, height: 45, width: 45, class: "img-circle") %></td>
+              <td><%= link_to member.full_name, member_path(member) %></td>
+              <td><%= member.current_address_details %></td>
+              <td><%= member.current_contact_number %></td>
+              <td><%= member.current_organization_name || "No Organization" %></td>
+  <td class="badge badge-<%=member.activity_status_text_color(office: current_office, from_date: Date.current.beginning_of_month, to_date: Date.current.end_of_month) %> "> Status </td>
 
-<script type="text/javascript">
-  $('#membership-type-filter').change(function(e) {
-    $('#members-filter-form').submit();
-  });
-  $('#office-filter').change(function(e) {
-    $('#members-filter-form').submit();
-  });
-</script>
-<script type="text/javascript">
-  $(document).ready(function() {
-    $("#office-filter").select2({
-      theme: "bootstrap"
-    });
-  });
-</script>
+
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <%== pagy_bootstrap_nav(@pagy) %>
+    </div>
+    

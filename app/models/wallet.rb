@@ -1,4 +1,5 @@
 class Wallet < ApplicationRecord
+  belongs_to :depository_account, class_name: "AccountingModule::Account"
   belongs_to :account_owner, polymorphic: true
   has_many :deactivations, as: :deactivatable
   belongs_to :account

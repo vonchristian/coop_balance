@@ -34,8 +34,7 @@ module Cooperatives
       it { is_expected.to have_many :level_three_account_categories }
       it { is_expected.to have_many :time_deposit_applications }
       it { is_expected.to have_many :share_capital_applications }
-
-      it { is_expected.to have_many :net_income_configs }
+      it { is_expected.to have_one :net_income_config }
     end
 
     describe 'validations' do
@@ -46,10 +45,10 @@ module Cooperatives
     end
 
     describe 'delegations' do 
-      it { is_expected.to delegate_method(:net_surplus_account).to(:current_net_income_config) }
-      it { is_expected.to delegate_method(:net_loss_account).to(:current_net_income_config) }
-      it { is_expected.to delegate_method(:total_revenue_account).to(:current_net_income_config) }
-      it { is_expected.to delegate_method(:total_expense_account).to(:current_net_income_config) }
+      it { is_expected.to delegate_method(:net_surplus_account).to(:net_income_config) }
+      it { is_expected.to delegate_method(:net_loss_account).to(:net_income_config) }
+      it { is_expected.to delegate_method(:total_revenue_account).to(:net_income_config) }
+      it { is_expected.to delegate_method(:total_expense_account).to(:net_income_config) }
 
     end 
 

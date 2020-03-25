@@ -1,3 +1,4 @@
+
 <%= link_to member_path(member) do %>
   <div class="card min-margin card-<%=member.activity_status_text_color(office: current_office, from_date: Date.current.beginning_of_month, to_date: Date.current.end_of_month) %> card-outline-left">
     <div class="card-body">
