@@ -26,7 +26,6 @@ module Members
         text "Share Capital", style: :bold, size: 8
         move_down 3
         text "#{member.name}", size: 8
-        text "#{member.code}", size: 8
       end
       bounding_box [175, 448], width: 40 do
         # stroke_bounds

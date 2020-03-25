@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_21_005808) do
+ActiveRecord::Schema.define(version: 2020_03_25_124408) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1053,10 +1053,8 @@ ActiveRecord::Schema.define(version: 2020_03_21_005808) do
     t.uuid "cart_id"
     t.string "account_number"
     t.datetime "retired_at"
-    t.string "code"
     t.index ["account_number"], name: "index_members_on_account_number", unique: true
     t.index ["cart_id"], name: "index_members_on_cart_id"
-    t.index ["code"], name: "index_members_on_code", unique: true
     t.index ["sex"], name: "index_members_on_sex"
     t.index ["slug"], name: "index_members_on_slug", unique: true
   end

@@ -8,7 +8,7 @@ class Member < ApplicationRecord
 
   pg_search_scope :text_search, :against => [ :first_name, :middle_name, :last_name]
   multisearchable against: [:first_name, :last_name, :middle_name]
-  enum sex: [:male, :female, :other]
+  enum sex:          [:male, :female, :other]
   enum civil_status: [:single, :married, :widow, :divorced]
 
   has_one_attached :signature_specimen
@@ -29,21 +29,19 @@ class Member < ApplicationRecord
   has_many :organizations,            through: :organization_memberships
   has_many :relationships,            as: :relationee
   has_many :relations,                as: :relationer
-
-
-  has_many :beneficiaries, dependent: :destroy
+  has_many :beneficiaries,                dependent: :destroy
   has_many :loan_applications,            class_name: "LoansModule::LoanApplication", as: :borrower
   has_many :share_capital_applications,   class_name: 'ShareCapitalsModule::ShareCapitalApplication', as: :subscriber
   has_many :savings_account_applications, as: :depositor
   has_many :time_deposit_applications,    class_name: 'TimeDepositsModule::TimeDepositApplication', as: :depositor
-  has_many :wallets, as: :account_owner
-  has_many :identifications, class_name: "IdentificationModule::Identification", as: :identifiable
-  has_many :income_sources, class_name: 'MembershipsModule::IncomeSource'
+  has_many :wallets,                      as: :account_owner
+  has_many :identifications,              class_name: "IdentificationModule::Identification", as: :identifiable
+  has_many :income_sources,               class_name: 'MembershipsModule::IncomeSource'
+  
   validates :last_name, :first_name, presence: true, on: :update
-  validates :code, uniqueness: true
+
 
   delegate :name, to: :current_organization, prefix: true, allow_nil: true
-  before_validation :set_member_code, on: :create
   before_save :update_birth_date_fields
   before_save  :set_default_account_number
   # before_save :normalize_name
@@ -64,16 +62,6 @@ class Member < ApplicationRecord
     joins(:memberships).where('memberships.cooperative_id' => args[:cooperative].id)
   end
 
-  def self.for_cooperative_and_membership_type(args={})
-    members = joins(:memberships).where('memberships.cooperative_id' => args[:cooperative].id)
-    .where("memberships.membership_type" => args[:membership_type])
-    if args[:organization_id].present?
-      ids = Cooperative.find(args[:cooperative].id).organizations.find(args[:organization_id]).organization_members.where(organization_membership: members).pluck(:organization_membership_id)
-      where(id: ids)
-    else
-      members
-    end
-  end
 
   def self.updated_at(args={})
     if args[:from_date] && args[:to_date]
@@ -238,16 +226,7 @@ class Member < ApplicationRecord
     self.account_number ||= SecureRandom.uuid
   end
 
-  def set_member_code
-    100.times do
-      random_code = SecureRandom.hex(10).first(6).upcase
-      if Member.where(code: random_code).blank? #random_code is uniq
-        self.code ||= random_code
-      else
-        random_code = nil
-      end
-    end
-  end
+  
 
   def set_fullname
     self.fullname = self.full_name #used for slugs
