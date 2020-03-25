@@ -78,7 +78,6 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'derailed_benchmarks'
-  gem 'stackprof', require: false 
 end
 
 group :test do
@@ -92,3 +91,4 @@ end
 gem 'rack-mini-profiler', require: false
 gem 'flamegraph'
 gem 'memory_profiler'
+gem 'stackprof'
