@@ -11,6 +11,8 @@
              :description,
              :one_time_payment?,
              :annually?,
+             :payment_status_finder,
+             :date_setter,
              to: :program
              
     delegate :name, to: :subscriber, prefix: true
@@ -33,9 +35,9 @@
     def unpaid?(options={})
       !paid?(options)
     end
-    #move to program
-	  def paid?(options={})
-      
-	  end
+
+    def paid?(args={})
+      payment_status_finder.new(program_subscription: self, date: args[:date]).paid?
+    end 
 	end
 end

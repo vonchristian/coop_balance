@@ -19,7 +19,7 @@
       <nav class="nav nav-pills nav-pills-underline">
         <li class="nav-item">
           <%= link_to member_path(@member), class: "nav-link #{'active' if current_page?(member_info_index_path(@member)) || current_page?(member_path(@member))}" do %>
-            <i class="fa fa-user-circle"></i> Account
+            <i class="fa fa-user-circle"></i> Overview
           <% end %>
         </li>
 
@@ -37,7 +37,7 @@
 
         <li class="nav-item">
           <%= link_to member_share_capitals_path(@member), id: "#{@member.id}-share-capitals", class: "nav-link #{ 'active' if current_page?(member_share_capitals_path(@member))}"  do %>
-            <i class="fa fa-database"></i> Share Capitals
+            <i class="fa fa-database"></i> Shares
           <% end %>
         </li>
 
@@ -71,8 +71,8 @@
           <% end %>
         </li>
       </nav>
-    </div>
-  </div>
+      <br>
+ 
   <% if current_page?(member_path(@member))%>
     <%= render 'members/partials/info', member: @member %>
   <% end %>

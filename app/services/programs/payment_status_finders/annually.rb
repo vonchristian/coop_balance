@@ -1,19 +1,27 @@
 module Programs
   module PaymentStatusFinders
     class Annually
-      attr_reader :program, :from_date, :to_date
+      attr_reader :program, :program_subscription, :date, :date_setter
       def initialize(args={})
-        @program = args.fetch(:program)
-        @from_date = args.fetch(:from_date)
-        @to_date   = args.fetch(:to_date)
+        @program_subscription = args.fetch(:program_subscription)
+        @date                 = args.fetch(:date)
+        @date_setter          = @program_subscription.date_setter
       end
 
+      def beginning_date
+        program_subscription.date_setter.new(date: date).beginning_date
+      end 
+
+      def ending_date
+        program_subscription.date_setter.new(date: date).ending_date
+      end 
+
       def paid?
-        payment = program.
-        account.
-        credit_amounts.
-        entered_on(from_date: from_date, to_date: to_date)
-        payment.present? && payment.total == program.amount
+        payment = program_subscription.
+        program_account.
+        entries.
+        entered_on(from_date: beginning_date, to_date: ending_date)
+        payment.present? && payment.debit_amounts.total == program_subscription.amount
       end
     end
   end

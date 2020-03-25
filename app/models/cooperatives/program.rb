@@ -24,6 +24,11 @@ module Cooperatives
       ("Programs::PaymentStatusFinders::" + payment_schedule_type.titleize.gsub(" ", "")).constantize
     end
 
+    def date_setter
+      "Programs::DateSetters::#{payment_schedule_type.titleize.gsub(' ', "")}".constantize
+    end 
+    
+
     def self.default_programs
     	where(default_program: true)
     end

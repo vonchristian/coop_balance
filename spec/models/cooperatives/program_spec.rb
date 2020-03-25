@@ -3,7 +3,6 @@ require 'rails_helper'
 module Cooperatives
   describe Program, type: :model do
   	context 'associations' do
-      it { is_expected.to belong_to :level_one_account_category }
       it { is_expected.to belong_to :cooperative }
       it { is_expected.to belong_to :level_one_account_category }
       it { is_expected.to have_many :program_subscriptions }
@@ -33,31 +32,29 @@ module Cooperatives
       with_values([:one_time_payment, :annually, :monthly, :quarterly])
     end
 
-    describe "#payment_status_finder" do
-      it 'one_time_payment' do
-        program = create(:program, payment_schedule_type: 'one_time_payment')
+    it "#payment_status_finder" do
+        one_time_payment = create(:program, payment_schedule_type: 'one_time_payment')
+        annually         = create(:program, payment_schedule_type: 'annually')
+        quarterly        = create(:program, payment_schedule_type: 'quarterly')
+        monthly          = create(:program, payment_schedule_type: 'monthly')
 
-        expect(program.payment_status_finder).to eq Programs::PaymentStatusFinders::OneTimePayment
-      end
-
-      it 'annually' do
-        program = create(:program, payment_schedule_type: 'annually')
-
-        expect(program.payment_status_finder).to eq Programs::PaymentStatusFinders::Annually
-      end
-
-      it 'quarterly' do
-        program = create(:program, payment_schedule_type: 'quarterly')
-
-        expect(program.payment_status_finder).to eq Programs::PaymentStatusFinders::Quarterly
-      end
-
-      it 'monthly' do
-        program = create(:program, payment_schedule_type: 'monthly')
-
-        expect(program.payment_status_finder).to eq Programs::PaymentStatusFinders::Monthly
-      end
+        expect(one_time_payment.payment_status_finder).to eq Programs::PaymentStatusFinders::OneTimePayment
+        expect(annually.payment_status_finder).to         eq Programs::PaymentStatusFinders::Annually
+        expect(quarterly.payment_status_finder).to        eq Programs::PaymentStatusFinders::Quarterly
+        expect(monthly.payment_status_finder).to          eq Programs::PaymentStatusFinders::Monthly
     end
+
+    it "#date_setter" do
+      one_time_payment = create(:program, payment_schedule_type: 'one_time_payment')
+      annually         = create(:program, payment_schedule_type: 'annually')
+      quarterly        = create(:program, payment_schedule_type: 'quarterly')
+      monthly          = create(:program, payment_schedule_type: 'monthly')
+
+      expect(one_time_payment.date_setter).to eq Programs::DateSetters::OneTimePayment
+      expect(annually.date_setter).to         eq Programs::DateSetters::Annually
+      expect(quarterly.date_setter).to        eq Programs::DateSetters::Quarterly
+      expect(monthly.date_setter).to          eq Programs::DateSetters::Monthly
+  end
 
     it "#subscribed?(subscriber)" do
       member             = create(:member)

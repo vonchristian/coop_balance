@@ -29,7 +29,6 @@ gem 'devise_invitable'
 gem 'simple_form'
 gem 'friendly_id'
 gem 'font-awesome-sass'
-
 gem 'pg_search'
 gem 'will_paginate'
 gem 'pundit'
@@ -54,7 +53,6 @@ gem "audited", "~> 4.9"
 gem "responders"
 gem 'money-rails'
 gem 'sidekiq'
-
 gem "gretel"
 gem 'fast_jsonapi'
 gem 'pagy'

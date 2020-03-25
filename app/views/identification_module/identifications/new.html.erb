@@ -14,7 +14,7 @@
 				  <%= f.input :number %>
 				  <%= f.input :identifiable_id, input_html: { value: @identifiable.id }, as: :hidden %>
 				  <%= f.input :identifiable_type, input_html: { value: @identifiable.class.to_s }, as: :hidden %>
-				  <%= f.input :photos, label: "Upload ID" %>
+				  <%= f.input :photos, label: "Upload ID", as: :file %>
 				  <div class="modal-footer">
 				  	<%= f.submit "Save", class: 'btn btn-success float-right' %>
 				  </div>
