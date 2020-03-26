@@ -8,6 +8,16 @@ Rails.application.routes.draw do
   devise_for :banking_agents, controllers: { sessions: 'banking_agents/sessions', registrations: "banking_agents/registrations"}
   resources :banking_agents, only: [:show]
   namespace :banking_agent_module do
+
+    resources :utility_bills, only: [:show, :index] do 
+      resources :payments,              only: [:new, :create],            module: :utility_bills 
+      resources :payment_confirmations, only: [:show, :create, :destroy], module: :utility_bills 
+    end 
+
+    resources :loans, only: [:index, :show] do 
+      resources :payments,              only: [:new, :create], module: :loans 
+      resources :payment_confirmations, only: [:show, :create, :destroy], module: :loans 
+    end 
     resources :share_capitals, only: [:index, :show]  do 
       resources :capital_build_ups,              only: [:new, :create], module: :share_capitals 
       resources :capital_build_up_confirmations, only: [:show, :create, :destroy], module: :share_capitals 

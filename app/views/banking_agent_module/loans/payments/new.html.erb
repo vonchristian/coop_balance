@@ -1,0 +1,26 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="title-up"> New Loan Payment Details </h4>
+
+          <%= simple_form_for @payment, url: :banking_agent_module_loan_payments do |f| %>
+            <%= f.input :principal_amount %>
+            <%= f.input :interest_amount %>
+            <%= f.input :penalty_amount %>
+
+
+            <%= f.input :reference_number %>
+            <%= f.input :description %>
+            <%= f.input :loan_id,        input_html: { value: @loan.id } %>
+            <%= f.input :banking_agent_id, input_html: { value: current_banking_agent.id } %>
+            <%= f.input :cart_id,          input_html: { value: current_banking_agent_cart.id } %>
+            <%= f.input :account_number,   input_html: { value: SecureRandom.uuid } %>
+            <%= f.submit "Proceed", class: "btn btn-primary float-right" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

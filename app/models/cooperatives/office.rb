@@ -29,7 +29,7 @@ module Cooperatives
     has_many :loan_aging_groups,                class_name: 'LoansModule::LoanAgingGroup'
     has_many :loan_agings,                      through: :loan_aging_groups, class_name: 'LoansModule::Loans::LoanAging'
     has_many :office_loan_product_aging_groups, through: :office_loan_products, class_name: 'LoansModule::OfficeLoanProductAgingGroup'
-    has_many :level_one_account_categories,     class_name: 'AccountingModule::LevelOneAccountCategory'
+    has_many :level_one_account_categories,     class_name: 'AccountingModule::LevelOneAccountCategory', as: :categorizeable
     has_many :level_two_account_categories,     class_name: 'AccountingModule::LevelTwoAccountCategory'
     has_many :level_three_account_categories,   class_name: 'AccountingModule::LevelThreeAccountCategory'
     has_many :memberships,                      class_name: 'Cooperatives::Membership'

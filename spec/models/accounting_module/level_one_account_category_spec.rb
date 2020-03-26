@@ -4,7 +4,8 @@ module AccountingModule
   describe LevelOneAccountCategory do
     describe 'associations' do
       it { is_expected.to belong_to(:level_two_account_category).optional }
-      it { is_expected.to belong_to :office }
+      it { is_expected.to belong_to(:office).optional }
+      it { is_expected.to belong_to :categorizeable }
       it { is_expected.to have_many :accounts }
       it { is_expected.to have_many :amounts }
       it { is_expected.to have_many :debit_amounts }

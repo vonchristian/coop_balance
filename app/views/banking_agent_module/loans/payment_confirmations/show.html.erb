@@ -1,0 +1,35 @@
+
+Confirmation Code: <%= "*" * 20 %><%= @voucher.token %>
+Banking Agent 
+Date and Time 
+<% @voucher.voucher_amounts.each do |voucher_amount| %>
+
+  <% if voucher_amount.debit? %>
+    <div class="row min-margin">
+      <div class="col-md-6">
+        <%= voucher_amount.account_name %>
+      </div>
+      <div class="col-md-6">
+        <%= voucher_amount.amount %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if voucher_amount.credit? %>
+    <div class="row min-margin">
+      <div class="col-md-5 offset-md-1">
+        <%= voucher_amount.account_name %>
+      </div>
+      <div class="col-md-5">
+        <%= voucher_amount.amount %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+<%= link_to "Cancel", banking_agent_module_loan_payment_confirmation_path(id: @voucher.id), method: :delete %>
+
+<%= simple_form_for @voucher_confirmation, url: :banking_agent_module_loan_payment_confirmations do |f| %>
+  <%= f.input :voucher_id, input_html: { value: @voucher.id} %>
+  <%= f.input :token, label: "Confirmation Code" %>
+  <%= f.submit "Confirm" %>
+<% end %>

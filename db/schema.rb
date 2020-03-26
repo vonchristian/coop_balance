@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_26_045936) do
+ActiveRecord::Schema.define(version: 2020_03_26_092301) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -759,6 +759,9 @@ ActiveRecord::Schema.define(version: 2020_03_26_045936) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "level_two_account_category_id"
+    t.string "categorizeable_type"
+    t.uuid "categorizeable_id"
+    t.index ["categorizeable_type", "categorizeable_id"], name: "index_categorizeable_on_level_one_account_categories"
     t.index ["level_two_account_category_id"], name: "index_level_2_act_category_on_level_1_act_categories"
     t.index ["office_id"], name: "index_level_one_account_categories_on_office_id"
     t.index ["type"], name: "index_level_one_account_categories_on_type"

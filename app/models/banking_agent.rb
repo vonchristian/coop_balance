@@ -9,7 +9,7 @@ class BankingAgent < ApplicationRecord
   has_many :cooperatives,               through: :cooperative_banking_agents 
   has_many :savings,                    class_name: "MembershipsModule::Saving",       through: :cooperatives
   has_many :share_capitals,             class_name: "MembershipsModule::ShareCapital", through: :cooperatives
-
+  has_many :loans,                      class_name: "LoansModule::Loan",               through: :cooperatives
   has_many :entries,                    class_name: "AccountingModule::Entry", as: :origin 
   has_many :recorded_entries,           class_name: "AccountingModule::Entry", as: :recording_agent
   has_many :vouchers,                   as: :origin 

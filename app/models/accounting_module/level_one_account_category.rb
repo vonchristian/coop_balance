@@ -6,7 +6,8 @@ module AccountingModule
     pg_search_scope :text_search, against: [:title, :code]
 
     belongs_to :level_two_account_category, class_name: 'AccountingModule::LevelTwoAccountCategory', optional: true
-    belongs_to :office,                     class_name: 'Cooperatives::Office'
+    belongs_to :office,                     class_name: 'Cooperatives::Office', optional: true 
+    belongs_to :categorizeable,             polymorphic: true 
     has_many :accounts,                     class_name: 'AccountingModule::Account', dependent: :nullify
     has_many :amounts,                      through: :accounts, class_name: 'AccountingModule::Amount'
     has_many :debit_amounts,                through: :accounts, class_name: 'AccountingModule::DebitAmount'

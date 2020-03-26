@@ -1,0 +1,4 @@
+<small class="text-muted"> PRINCIPAL BALANCE </small>
+
+<h3 class="title-up"><%= number_to_currency @loan.principal_balance %></h3>
+<%= link_to 'New Payment', new_banking_agent_module_loan_payment_path(@loan) %>

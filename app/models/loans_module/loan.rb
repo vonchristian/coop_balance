@@ -11,7 +11,9 @@ module LoansModule
     include LoansModule::Loans::Amortization
     include InactivityMonitoring
 
-    pg_search_scope :text_search, :against => [:borrower_full_name, :tracking_number]
+    pg_search_scope :text_search,           :against => [:borrower_full_name, :tracking_number]
+    pg_search_scope :account_number_search, :against => [:account_number]
+   
     multisearchable against: [:borrower_full_name]
 
     enum mode_of_payment: [:daily, :weekly, :monthly, :semi_monthly, :quarterly, :semi_annually, :lumpsum]

@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :level_one_account_category, class: AccountingModule::LevelOneAccountCategory do
     title { Faker::Company.bs }
     code { SecureRandom.uuid }
-    association :office
+    association :categorizeable, factory: :office 
 
     factory :asset_level_one_account_category, class: AccountingModule::AccountCategories::LevelOneAccountCategories::Asset do
       type { 'AccountingModule::AccountCategories::LevelOneAccountCategories::Asset' }
