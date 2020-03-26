@@ -1,0 +1,2 @@
+class AutomatedClearingHouse < ApplicationRecord
+end

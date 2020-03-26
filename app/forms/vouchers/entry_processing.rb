@@ -5,7 +5,7 @@ module Vouchers
     def initialize(args)
       @voucher     = args[:voucher]
       @employee    = args[:employee]
-      @cooperative = @employee.cooperative
+      @cooperative = @employee.try(:cooperative)
     end
     def process!
       ActiveRecord::Base.transaction do
@@ -17,6 +17,8 @@ module Vouchers
     private
     def create_entry
       entry = AccountingModule::Entry.new(
+        origin:              voucher.origin,  
+        recording_agent:     voucher.recording_agent,
         office:              voucher.office,
         cooperative:         cooperative,
         commercial_document: voucher.payee,

@@ -5,6 +5,8 @@ module MembershipsModule
     extend  PercentActive
     monetize :averaged_balance_cents, as: :averaged_balance, numericality: true
     pg_search_scope :text_search, against: [:account_number, :account_owner_name]
+    pg_search_scope :account_number_search, against: [:account_number]
+
     multisearchable against: [:account_number, :account_owner_name]
 
     belongs_to :organization,             optional: true

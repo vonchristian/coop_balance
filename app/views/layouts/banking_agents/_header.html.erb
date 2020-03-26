@@ -1,0 +1,37 @@
+<header class="main-header">
+  <a href="/" class="logo">
+    <span class="logo-mini">
+      <%#=image_tag(current_user.cooperative_logo.url(:medium), height: 40, width: 40, class: 'img-circle') %>
+    </span>
+    <%#=image_tag(current_user.cooperative.logo.url(:small), height: 40, width: 40, class: 'img-circle') %> <b><%=current_banking_agent.name %></b></span>
+  </a>
+  <nav class="navbar navbar-static-top">
+    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+      <span class="sr-only">Toggle navigation</span>
+    </a>
+    <div class="navbar-custom-menu">
+      <ul class="nav navbar-nav">
+        <li class="dropdown user user-menu">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <%#=image_tag(current_banking_agent.avatar.url(:small), width: 20, height: 20, class: "img-circle") %>
+            <span class="hidden-xs"> <%=current_banking_agent.name %></span>&nbsp; <i class="fa fa-chevron-down"></i>
+          </a>
+          <ul class="dropdown-menu">
+            <li class="user-header">
+              <%#=image_tag(current_banking_agent.avatar.url(:large), class: "img-square")%>
+              <%=current_banking_agent.name %>
+            </li>
+            <li class="user-footer">
+              <div class="pull-left">
+                <%=link_to 'Profile', banking_agent_path(current_banking_agent),  class: "btn btn-default btn-flat" %>
+              </div>
+              <div class="pull-right">
+                <%=link_to 'Sign out', destroy_banking_agent_session_path, method: :delete, class: "btn btn-danger" %>
+              </div>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>

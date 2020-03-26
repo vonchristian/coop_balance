@@ -1,0 +1,6 @@
+<small class="text-muted"> PAID UP BALANCE </small>
+<h3 class="title-up"><%= number_to_currency @share_capital.balance %></h3>
+<small class="text-muted"> SHARES </small>
+<h3 class="title-up"><%= number_to_currency @share_capital.shares, unit: "" %></h3>
+
+<%= link_to "Add Capital", new_banking_agent_module_share_capital_capital_build_up_path(@share_capital) %>

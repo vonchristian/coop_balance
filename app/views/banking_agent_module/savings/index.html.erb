@@ -1,0 +1,18 @@
+<%= form_tag banking_agent_module_savings_path, method: :get, class: "search-form" do %>
+            <div class="input-group">
+              <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Account Number", id: 'account-search-form' %>
+              <span class="input-group-btn">
+                <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-outline-secondary") do %>
+                  <i class="fa fa-search"></i> Search Account
+                <% end %>
+              </span>
+            </div>
+          <% end %>
+
+<% if @savings.present? %>
+  <% @savings.each do |saving| %>
+    <%= link_to saving.account_owner_name, banking_agent_module_saving_path(saving) %>
+  <% end %>
+<% else %>
+  No savings found. Search
+<% end %>

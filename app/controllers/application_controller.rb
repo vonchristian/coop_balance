@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session, if: Proc.new { |c| c.request.format == 'application/json' }
   before_action :authenticate_user!
   rescue_from Pundit::NotAuthorizedError, with: :permission_denied
-  helper_method :current_cooperative, :current_cart, :current_office, :current_store_front
+  helper_method :current_cooperative, :current_cart, :current_banking_agent_cart, :current_office, :current_store_front
 
   private
   def current_cart
@@ -13,6 +13,14 @@ class ApplicationController < ActionController::Base
       cart = current_user.carts.create!()
       session[:cart_id] = cart.id
       cart
+  end
+
+  def current_banking_agent_cart
+    BankingAgentModule::BankingAgentCart.find(session[:cart_id])
+    rescue ActiveRecord::RecordNotFound
+    cart = current_banking_agent.carts.create!()
+    session[:cart_id] = cart.id
+    cart
   end
 
   def current_cooperative

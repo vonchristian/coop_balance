@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_25_124408) do
+ActiveRecord::Schema.define(version: 2020_03_26_045936) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -244,6 +244,18 @@ ActiveRecord::Schema.define(version: 2020_03_25_124408) do
     t.index ["user_id", "user_type"], name: "user_index"
   end
 
+  create_table "automated_clearing_houses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "automatic_clearing_houses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "bank_accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "cooperative_id"
     t.string "bank_name"
@@ -259,6 +271,45 @@ ActiveRecord::Schema.define(version: 2020_03_25_124408) do
     t.index ["cooperative_id"], name: "index_bank_accounts_on_cooperative_id"
     t.index ["interest_revenue_account_id"], name: "index_bank_accounts_on_interest_revenue_account_id"
     t.index ["office_id"], name: "index_bank_accounts_on_office_id"
+  end
+
+  create_table "banking_agent_carts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "banking_agent_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["banking_agent_id"], name: "index_banking_agent_carts_on_banking_agent_id"
+  end
+
+  create_table "banking_agents", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "account_number"
+    t.uuid "depository_account_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.inet "current_sign_in_ip"
+    t.inet "last_sign_in_ip"
+    t.string "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string "unconfirmed_email"
+    t.integer "failed_attempts", default: 0, null: false
+    t.string "unlock_token"
+    t.datetime "locked_at"
+    t.uuid "cash_account_id"
+    t.index ["cash_account_id"], name: "index_banking_agents_on_cash_account_id"
+    t.index ["confirmation_token"], name: "index_banking_agents_on_confirmation_token", unique: true
+    t.index ["depository_account_id"], name: "index_banking_agents_on_depository_account_id"
+    t.index ["email"], name: "index_banking_agents_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_banking_agents_on_reset_password_token", unique: true
+    t.index ["unlock_token"], name: "index_banking_agents_on_unlock_token", unique: true
   end
 
   create_table "barangays", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -341,6 +392,18 @@ ActiveRecord::Schema.define(version: 2020_03_25_124408) do
     t.index ["name"], name: "index_categories_on_name", unique: true
   end
 
+  create_table "clearing_house_depository_accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "depositor_type", null: false
+    t.uuid "depositor_id", null: false
+    t.uuid "clearing_house_id", null: false
+    t.uuid "depository_account_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["clearing_house_id"], name: "index_clearing_house_depository_accounts_on_clearing_house_id"
+    t.index ["depositor_type", "depositor_id"], name: "index_depositor_on_clearing_house_dep_accounts"
+    t.index ["depository_account_id"], name: "index_depository_account_on_clearing_house_dep_accounts"
+  end
+
   create_table "committee_members", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -377,6 +440,15 @@ ActiveRecord::Schema.define(version: 2020_03_25_124408) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["contactable_type", "contactable_id"], name: "index_contacts_on_contactable_type_and_contactable_id"
+  end
+
+  create_table "cooperative_banking_agents", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "cooperative_id", null: false
+    t.uuid "banking_agent_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["banking_agent_id"], name: "index_cooperative_banking_agents_on_banking_agent_id"
+    t.index ["cooperative_id"], name: "index_cooperative_banking_agents_on_cooperative_id"
   end
 
   create_table "cooperative_services", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -502,6 +574,10 @@ ActiveRecord::Schema.define(version: 2020_03_25_124408) do
     t.uuid "cancellation_entry_id"
     t.datetime "entry_time"
     t.integer "ref_number_integer"
+    t.string "origin_type"
+    t.uuid "origin_id"
+    t.string "recording_agent_type"
+    t.uuid "recording_agent_id"
     t.index ["cancellation_entry_id"], name: "index_entries_on_cancellation_entry_id"
     t.index ["cancelled_by_id"], name: "index_entries_on_cancelled_by_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_on_commercial_document_entry"
@@ -510,7 +586,9 @@ ActiveRecord::Schema.define(version: 2020_03_25_124408) do
     t.index ["entry_date"], name: "index_entries_on_entry_date"
     t.index ["office_id"], name: "index_entries_on_office_id"
     t.index ["official_receipt_id"], name: "index_entries_on_official_receipt_id"
+    t.index ["origin_type", "origin_id"], name: "index_entries_on_origin_type_and_origin_id"
     t.index ["recorder_id"], name: "index_entries_on_recorder_id"
+    t.index ["recording_agent_type", "recording_agent_id"], name: "index_entries_on_recording_agent_type_and_recording_agent_id"
   end
 
   create_table "financial_condition_comparisons", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -2009,6 +2087,8 @@ ActiveRecord::Schema.define(version: 2020_03_25_124408) do
     t.uuid "loan_application_id"
     t.string "reference_number"
     t.uuid "cart_id"
+    t.string "temp_cart_type"
+    t.uuid "temp_cart_id"
     t.index ["account_id"], name: "index_voucher_amounts_on_account_id"
     t.index ["amount_type"], name: "index_voucher_amounts_on_amount_type"
     t.index ["cart_id"], name: "index_voucher_amounts_on_cart_id"
@@ -2016,6 +2096,7 @@ ActiveRecord::Schema.define(version: 2020_03_25_124408) do
     t.index ["cooperative_id"], name: "index_voucher_amounts_on_cooperative_id"
     t.index ["loan_application_id"], name: "index_voucher_amounts_on_loan_application_id"
     t.index ["recorder_id"], name: "index_voucher_amounts_on_recorder_id"
+    t.index ["temp_cart_type", "temp_cart_id"], name: "index_voucher_amounts_on_temp_cart_type_and_temp_cart_id"
     t.index ["voucher_id"], name: "index_voucher_amounts_on_voucher_id"
   end
 
@@ -2044,15 +2125,24 @@ ActiveRecord::Schema.define(version: 2020_03_25_124408) do
     t.datetime "cancelled_at"
     t.datetime "date_prepared"
     t.datetime "disbursement_date"
+    t.string "recording_agent_type"
+    t.uuid "recording_agent_id"
+    t.string "origin_type"
+    t.uuid "origin_id"
+    t.string "disbursing_agent_type"
+    t.uuid "disbursing_agent_id"
     t.index ["account_number"], name: "index_vouchers_on_account_number", unique: true
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_vouchers"
     t.index ["cooperative_id"], name: "index_vouchers_on_cooperative_id"
     t.index ["cooperative_service_id"], name: "index_vouchers_on_cooperative_service_id"
     t.index ["disburser_id"], name: "index_vouchers_on_disburser_id"
+    t.index ["disbursing_agent_type", "disbursing_agent_id"], name: "index_vouchers_on_disbursing_agent_type_and_disbursing_agent_id"
     t.index ["entry_id"], name: "index_vouchers_on_entry_id"
     t.index ["office_id"], name: "index_vouchers_on_office_id"
+    t.index ["origin_type", "origin_id"], name: "index_vouchers_on_origin_type_and_origin_id"
     t.index ["payee_type", "payee_id"], name: "index_vouchers_on_payee_type_and_payee_id"
     t.index ["preparer_id"], name: "index_vouchers_on_preparer_id"
+    t.index ["recording_agent_type", "recording_agent_id"], name: "index_vouchers_on_recording_agent_type_and_recording_agent_id"
     t.index ["store_front_id"], name: "index_vouchers_on_store_front_id"
     t.index ["token"], name: "index_vouchers_on_token"
   end
@@ -2092,6 +2182,9 @@ ActiveRecord::Schema.define(version: 2020_03_25_124408) do
   add_foreign_key "bank_accounts", "accounts", column: "interest_revenue_account_id"
   add_foreign_key "bank_accounts", "cooperatives"
   add_foreign_key "bank_accounts", "offices"
+  add_foreign_key "banking_agent_carts", "banking_agents"
+  add_foreign_key "banking_agents", "accounts", column: "cash_account_id"
+  add_foreign_key "banking_agents", "accounts", column: "depository_account_id"
   add_foreign_key "barangays", "cooperatives"
   add_foreign_key "barangays", "municipalities"
   add_foreign_key "barcodes", "line_items"
@@ -2103,6 +2196,10 @@ ActiveRecord::Schema.define(version: 2020_03_25_124408) do
   add_foreign_key "cash_counts", "carts"
   add_foreign_key "cash_counts", "cash_count_reports"
   add_foreign_key "categories", "cooperatives"
+  add_foreign_key "clearing_house_depository_accounts", "accounts", column: "depository_account_id"
+  add_foreign_key "clearing_house_depository_accounts", "automated_clearing_houses", column: "clearing_house_id"
+  add_foreign_key "cooperative_banking_agents", "banking_agents"
+  add_foreign_key "cooperative_banking_agents", "cooperatives"
   add_foreign_key "cooperative_services", "cooperatives"
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "credit_account_id"
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "debit_account_id"

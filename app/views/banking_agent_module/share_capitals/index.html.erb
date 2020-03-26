@@ -1,0 +1,18 @@
+<%= form_tag banking_agent_module_share_capitals_path, method: :get, class: "search-form" do %>
+            <div class="input-group">
+              <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Account Number", id: 'account-search-form' %>
+              <span class="input-group-btn">
+                <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-outline-secondary") do %>
+                  <i class="fa fa-search"></i> Search Account
+                <% end %>
+              </span>
+            </div>
+          <% end %>
+
+<% if @share_capitals.present? %>
+  <% @share_capitals.each do |share_capital| %>
+    <%= link_to share_capital.account_owner_name, banking_agent_module_share_capital_path(share_capital) %>
+  <% end %>
+<% else %>
+  No share capital found. Search
+<% end %>

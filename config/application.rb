@@ -16,6 +16,7 @@ module Kiphodan
     config.active_record.default_timezone = :utc
     config.beginning_of_week = :sunday
     config.autoload_paths << Rails.root.join('workers')
+    config.autoload_paths << Rails.root.join('bot')
   end
 end
 Rails.autoloaders.main.ignore(Rails.root.join('app/node_modules'))

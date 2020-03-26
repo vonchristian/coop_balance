@@ -1,11 +1,31 @@
 Rails.application.routes.draw do
+
+
   require 'sidekiq/web'
   mount Sidekiq::Web => '/sidekiq'
-  
-  devise_for :users, controllers: { sessions: 'users/sessions', registrations: "management_module/settings/employees"}
+  mount Facebook::Messenger::Server, at: "/bot"
+  devise_for :users,          controllers: { sessions: 'users/sessions', registrations: "management_module/settings/employees"}
+  devise_for :banking_agents, controllers: { sessions: 'banking_agents/sessions', registrations: "banking_agents/registrations"}
+  resources :banking_agents, only: [:show]
+  namespace :banking_agent_module do
+    resources :share_capitals, only: [:index, :show]  do 
+      resources :capital_build_ups,              only: [:new, :create], module: :share_capitals 
+      resources :capital_build_up_confirmations, only: [:show, :create, :destroy], module: :share_capitals 
+    end 
+    resources :savings, only: [:index, :show] do 
+      resources :deposits,                 only: [:new, :create], module: :savings 
+      resources :withdrawals,              only: [:new, :create], module: :savings 
+      resources :deposit_confirmations,    only: [:show, :create, :destroy], module: :savings 
+      resources :withdrawal_confirmations, only: [:show, :create, :destroy], module: :savings 
 
+    end 
+  end 
   authenticated :user do
     root :to => 'members#index', as: :authenticated_root
+  end
+
+  authenticated :banking_agent do
+    root :to => 'banking_agents/dashboards#index', as: :authenticated_banking_agent_root
   end
   resources :home, only: [:index]
   resources :about, only: [:index]
@@ -17,8 +37,6 @@ Rails.application.routes.draw do
       resources :level_one_account_categories,   only: [:new, :create], module: :accounting_reports
       resources :level_two_account_categories,   only: [:new, :create], module: :accounting_reports
       resources :level_three_account_categories, only: [:new, :create], module: :accounting_reports
-
-
     end 
     resources :loan_products, only: [:show]
     resources :level_one_account_categories, only: [:index, :show, :new, :create, :edit, :update], module: :account_categories do

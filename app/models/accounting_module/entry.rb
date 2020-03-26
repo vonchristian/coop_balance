@@ -7,13 +7,15 @@ module AccountingModule
     multisearchable against: [:reference_number, :description]
 
     has_one    :voucher,               foreign_key: 'entry_id', dependent: :nullify
+    belongs_to :origin,                polymorphic: true, optional: true
+    belongs_to :recording_agent,       polymorphic: true, optional: true
     belongs_to :official_receipt,      optional: true
     belongs_to :commercial_document,   polymorphic: true
     belongs_to :cancellation_entry,    class_name: 'AccountingModule::Entry', optional: true
-    belongs_to :office,                class_name: "Cooperatives::Office"
-    belongs_to :cooperative
+    belongs_to :office,                class_name: "Cooperatives::Office", optional: true 
+    belongs_to :cooperative, optional: true 
     belongs_to :cancelled_by,          class_name: "User", foreign_key: 'cancelled_by_id', optional: true
-    belongs_to :recorder,              class_name: "User", foreign_key: 'recorder_id'
+    belongs_to :recorder,              class_name: "User", foreign_key: 'recorder_id', optional: true 
     has_many   :credit_amounts,        class_name: 'AccountingModule::CreditAmount', dependent: :destroy
     has_many   :debit_amounts,         class_name: 'AccountingModule::DebitAmount', dependent: :destroy
     has_many   :credit_accounts,       class_name: 'AccountingModule::Account', through: :credit_amounts, source: :account
@@ -23,7 +25,7 @@ module AccountingModule
 
     validates :description, :reference_number, :entry_date, :entry_time, presence: true
 
-    validates :office_id, :cooperative_id, :recorder_id, presence: true
+
 
     validate :has_credit_amounts?
     validate :has_debit_amounts?

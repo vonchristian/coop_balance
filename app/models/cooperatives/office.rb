@@ -1,7 +1,6 @@
 module Cooperatives
   class Office < ApplicationRecord
     belongs_to :cooperative
-   
     has_many :employees,                        class_name: "User"
     has_many :loans,                            class_name: "LoansModule::Loan"
     has_many :amortization_schedules,           class_name: "LoansModule::AmortizationSchedule"
@@ -38,7 +37,7 @@ module Cooperatives
     has_many :time_deposit_applications,        class_name: 'TimeDepositsModule::TimeDepositApplication'
     has_many :share_capital_applications,       class_name: 'ShareCapitalsModule::ShareCapitalApplication'
     has_one :net_income_config,                 class_name: 'Offices::NetIncomeConfig'
-
+    has_many :clearing_house_depository_accounts, class_name: "ClearingHouseModule::ClearingHouseDepositoryAccount", as: :depositor 
     validates :name, uniqueness: true
     validates :name, :type, :contact_number, :address, presence: true
     
@@ -47,6 +46,10 @@ module Cooperatives
     def cash_accounts
       employees.cash_accounts
     end
+
+    def depository_account_for(clearing_house:)
+      clearing_house_depository_accounts.find_by!(clearing_house: clearing_house).depository_account
+    end 
 
     def normalized_type
       type.to_s.gsub("Cooperatives::Offices::", "")

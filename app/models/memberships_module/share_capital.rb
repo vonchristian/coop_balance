@@ -5,6 +5,8 @@ module MembershipsModule
     extend  PercentActive
 
     pg_search_scope :text_search, :against => [:account_number, :account_owner_name]
+    pg_search_scope :account_number_search, against: [:account_number]
+  
     multisearchable against: [:account_number, :account_owner_name]
 
     belongs_to :office,                       class_name: "Cooperatives::Office"

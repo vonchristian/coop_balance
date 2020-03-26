@@ -61,6 +61,7 @@ gem 'email_spec'
 gem 'whenever', require: false
 gem "select2-rails"
 gem "simple_calendar"
+gem "facebook-messenger"
 
 group :development, :test do
   gem 'rspec-rails'

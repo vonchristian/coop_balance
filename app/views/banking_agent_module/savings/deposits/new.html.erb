@@ -1,0 +1,22 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="title-up"> New Deposit Details </h4>
+
+          <%= simple_form_for @deposit, url: :banking_agent_module_saving_deposits do |f| %>
+            <%= f.input :amount %>
+            <%= f.input :reference_number %>
+            <%= f.input :description %>
+            <%= f.input :saving_id,        input_html: { value: @saving.id } %>
+            <%= f.input :banking_agent_id, input_html: { value: current_banking_agent.id } %>
+            <%= f.input :cart_id,          input_html: { value: current_banking_agent_cart.id } %>
+            <%= f.input :account_number,   input_html: { value: SecureRandom.uuid } %>
+            <%= f.submit "Proceed", class: "btn btn-primary float-right" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

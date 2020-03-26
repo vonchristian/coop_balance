@@ -1,0 +1,35 @@
+<!-- Sidebar -->
+<div class="sidebar">
+  <!-- Sidebar user panel (optional) -->
+  <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+    <div class="image">
+      <%#=image_tag(current_user.avatar, height: 45, width: 45, class: "img-circle") if current_user.avatar.attached? %>
+    </div>
+    <div class="info">
+      <%= link_to banking_agent_path(current_banking_agent) do %>
+        <%= current_banking_agent.name %><br>
+        <small><i class="fa fa-circle text-success"></i> Online </small>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Sidebar Menu -->
+  <nav class="mt-1">
+    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+      <!-- Add icons to the links using the .nav-icon class
+           with font-awesome or any other icon font library -->
+      <li class= "nav-item">
+        <a href="/banking_agents/<%=current_banking_agent.id%>" class="nav-link <%= 'active' if current_page?(banking_agent_path(current_banking_agent)) %> "><i class="nav-icon fa fa-user-circle mr-2"></i><span>Accounts</span></a>
+      </li>
+      <li class= "nav-item">
+        <a href="/banking_agent_module/savings" class="nav-link <%= 'active' if current_page?(banking_agent_module_savings_path) %> "><i class="nav-icon fa fa-coins mr-2"></i><span>Savings</span></a>
+      </li>
+
+       <li class= "nav-item">
+        <a href="/banking_agent_module/share_capitals" class="nav-link <%= 'active' if current_page?(banking_agent_module_share_capitals_path) %> "><i class="nav-icon fa fa-pie-chart"></i><span>Share Capitals</span></a>
+      </li>
+    </ul>
+  </nav>
+  <!-- /.sidebar-menu -->
+</div>
+<!-- /.sidebar -->
