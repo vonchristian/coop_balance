@@ -51,7 +51,7 @@ module Offices
       from_date = args[:from_date] ? args[:from_date] : Date.current.beginning_of_year
       to_date   = args[:to_date]   ? args[:to_date]   : Date.current.end_of_year
       if books_closed?(from_date: from_date, to_date: to_date)
-        total_expense_account.balance(from_date: from_date, to_date: to_date)
+        total_expense_account.credits_balance(from_date: from_date, to_date: to_date)
       else 
         office.level_one_account_categories.expenses.credits_balance(from_date: from_date, to_date: to_date)
       end 
@@ -73,7 +73,7 @@ module Offices
       to_date   = args[:to_date] ? args[:to_date] : Date.current.end_of_year
 
       if books_closed?(from_date: from_date, to_date: to_date)
-        net_loss_account.credits_balance(from_date: from_date, to_date: to_date)
+        net_loss_account.debits_balance(from_date: from_date, to_date: to_date)
       else 
         office.level_one_account_categories.expenses.balance(from_date: from_date, to_date: to_date) - office.level_one_account_categories.revenues.balance(from_date: from_date, to_date: to_date)
       end 

@@ -100,6 +100,30 @@ module Offices
       office              = create(:office)
       net_income_config   = create(:net_income_config, office: office)
       cash_on_hand        = create(:asset)
+      l1_expense_category = create(:expense_level_one_account_category, office: office)
+      expense             = create(:expense, level_one_account_category: l1_expense_category)
+     
+      entry = build(:entry, entry_date: Date.current)
+      entry.debit_amounts.build(account: net_income_config.total_revenue_account, amount: 10_000)
+      entry.credit_amounts.build(account: net_income_config.total_expense_account, amount: 5_000)
+      entry.credit_amounts.build(account: net_income_config.net_surplus_account, amount: 5_000)
+      entry.save!
+
+      entry_2 = build(:entry, entry_date: Date.current.next_year)
+      entry_2.debit_amounts.build(account: cash_on_hand, amount: 20_000)
+      entry_2.credit_amounts.build(account: expense, amount: 20_000)
+      entry_2.save!
+
+      expect(net_income_config.total_expenses(from_date: Date.current.beginning_of_month, to_date: Date.current.end_of_month)).to eql 5_000
+      expect(net_income_config.total_expenses(from_date: Date.current.next_year.beginning_of_year, to_date: Date.current.next_year.end_of_year)).to eql 20_000
+    end 
+
+    it "#total_net_surplus" do 
+      office              = create(:office)
+      net_income_config   = create(:net_income_config, office: office)
+      cash_on_hand        = create(:asset)
+      l1_expense_category = create(:expense_level_one_account_category, office: office)
+      expense             = create(:expense, level_one_account_category: l1_expense_category)
       l1_revenue_category = create(:revenue_level_one_account_category, office: office)
       revenue             = create(:revenue, level_one_account_category: l1_revenue_category)
      
@@ -110,12 +134,38 @@ module Offices
       entry.save!
 
       entry_2 = build(:entry, entry_date: Date.current.next_year)
-      entry_2.debit_amounts.build(account: cash_on_hand, amount: 20_000)
       entry_2.credit_amounts.build(account: revenue, amount: 20_000)
+      entry_2.debit_amounts.build(account: cash_on_hand, amount: 10_000)
+      entry_2.debit_amounts.build(account: expense, amount: 10_000)
       entry_2.save!
 
-      expect(net_income_config.total_revenues(from_date: Date.current.beginning_of_month, to_date: Date.current.end_of_month)).to eql 5_000
-      expect(net_income_config.total_revenues(from_date: Date.current.next_year.beginning_of_year, to_date: Date.current.next_year.end_of_year)).to eql 20_000
+      expect(net_income_config.total_net_surplus(from_date: Date.current.beginning_of_month, to_date: Date.current.end_of_month)).to eql 5_000
+      puts (net_income_config.total_net_surplus(from_date: Date.current.next_year.beginning_of_year, to_date: Date.current.next_year.end_of_year))
+    end 
+
+    it "#total_net_surplus" do 
+      office              = create(:office)
+      net_income_config   = create(:net_income_config, office: office)
+      cash_on_hand        = create(:asset)
+      l1_expense_category = create(:expense_level_one_account_category, office: office)
+      expense             = create(:expense, level_one_account_category: l1_expense_category)
+      l1_revenue_category = create(:revenue_level_one_account_category, office: office)
+      revenue             = create(:revenue, level_one_account_category: l1_revenue_category)
+     
+      entry = build(:entry, entry_date: Date.current)
+      entry.debit_amounts.build(account: net_income_config.total_revenue_account, amount: 5_000)
+      entry.credit_amounts.build(account: net_income_config.total_expense_account, amount: 10_000)
+      entry.debit_amounts.build(account: net_income_config.net_loss_account, amount: 5_000)
+      entry.save!
+
+      entry_2 = build(:entry, entry_date: Date.current.next_year)
+      entry_2.credit_amounts.build(account: revenue, amount: 10_000)
+      entry_2.credit_amounts.build(account: cash_on_hand, amount: 10_000)
+      entry_2.debit_amounts.build(account: expense, amount: 20_000)
+      entry_2.save!
+
+      expect(net_income_config.total_net_loss(from_date: Date.current.beginning_of_month, to_date: Date.current.end_of_month)).to eql 5_000
+      puts (net_income_config.total_net_loss(from_date: Date.current.next_year.beginning_of_year, to_date: Date.current.next_year.end_of_year))
     end 
     
   end 
