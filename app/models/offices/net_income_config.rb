@@ -12,7 +12,7 @@ module Offices
     has_many :accounts,                      through: :accountable_accounts, class_name: "AccountingModule::Account"
     has_many :entries,                       through: :accounts, class_name: "AccountingModule::Entry"
    
-    validates :net_surplus_account_id, :net_loss_account_id, :total_revenue_account_id, :total_expense_account_id, uniqueness: { scope: :office_id }
+    validates :net_surplus_account_id, :net_loss_account_id, :total_revenue_account_id, :total_expense_account_id, :interest_on_capital_account_id, uniqueness: { scope: :office_id }
     
     def self.current 
       order(created_at: :desc).first 

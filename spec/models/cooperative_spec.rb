@@ -58,7 +58,6 @@ RSpec.describe Cooperative, type: :model do
     it { is_expected.to have_many :products }
     it { is_expected.to have_many :sales_orders }
     it { is_expected.to have_many :loan_protection_plan_providers }
-    it { is_expected.to have_many :net_income_distributions }
     it { is_expected.to have_many :program_subscription_registries }
     it { is_expected.to have_many :membership_categories }
 

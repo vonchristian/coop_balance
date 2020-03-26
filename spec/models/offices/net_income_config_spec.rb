@@ -34,6 +34,16 @@ module Offices
 
         expect(net_income_config.errors[:net_loss_account_id]).to eq ['has already been taken']
       end
+
+      it 'validate_uniqueness_of(:interest_on_capital_account_id).scoped_to(:office_id)' do 
+        office            = create(:office)
+        ioc_account       = create(:liability)
+        create(:net_income_config, office: office, interest_on_capital_account: ioc_account)
+        net_income_config = build(:net_income_config, office: office, interest_on_capital_account: ioc_account)
+        net_income_config.save 
+
+        expect(net_income_config.errors[:interest_on_capital_account_id]).to eq ['has already been taken']
+      end
     end
 
     it { is_expected.to define_enum_for(:book_closing).with_values([:annually, :semi_annually, :quarterly, :monthly]) }
@@ -59,6 +69,8 @@ module Offices
       entry.save!
 
       expect(net_income_config.books_closed?(from_date: Date.current.beginning_of_year, to_date: Date.current.end_of_year)).to eql true 
+      expect(net_income_config.books_closed?(from_date: Date.current.next_year.beginning_of_year, to_date: Date.current.next_year.end_of_year)).to eql false 
+
       
     end 
 
