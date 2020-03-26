@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_26_092301) do
+ActiveRecord::Schema.define(version: 2020_03_26_103203) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -2074,6 +2074,36 @@ ActiveRecord::Schema.define(version: 2020_03_26_092301) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  create_table "utility_bill_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["title"], name: "index_utility_bill_categories_on_title", unique: true
+  end
+
+  create_table "utility_bills", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.decimal "amount"
+    t.uuid "merchant_id", null: false
+    t.uuid "utility_bill_category_id", null: false
+    t.string "payee_type", null: false
+    t.uuid "payee_id", null: false
+    t.uuid "receivable_account_id", null: false
+    t.uuid "voucher_id"
+    t.string "description"
+    t.string "reference_number"
+    t.datetime "due_date"
+    t.string "account_number"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["account_number"], name: "index_utility_bills_on_account_number"
+    t.index ["due_date"], name: "index_utility_bills_on_due_date"
+    t.index ["merchant_id"], name: "index_utility_bills_on_merchant_id"
+    t.index ["payee_type", "payee_id"], name: "index_utility_bills_on_payee_type_and_payee_id"
+    t.index ["receivable_account_id"], name: "index_utility_bills_on_receivable_account_id"
+    t.index ["utility_bill_category_id"], name: "index_utility_bills_on_utility_bill_category_id"
+    t.index ["voucher_id"], name: "index_utility_bills_on_voucher_id"
+  end
+
   create_table "voucher_amounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.bigint "amount_cents", default: 0, null: false
     t.string "amount_currency", default: "PHP", null: false
@@ -2458,6 +2488,10 @@ ActiveRecord::Schema.define(version: 2020_03_26_092301) do
   add_foreign_key "users", "cooperatives"
   add_foreign_key "users", "offices"
   add_foreign_key "users", "store_fronts"
+  add_foreign_key "utility_bills", "accounts", column: "receivable_account_id"
+  add_foreign_key "utility_bills", "merchants"
+  add_foreign_key "utility_bills", "utility_bill_categories"
+  add_foreign_key "utility_bills", "vouchers"
   add_foreign_key "voucher_amounts", "accounts"
   add_foreign_key "voucher_amounts", "carts"
   add_foreign_key "voucher_amounts", "cooperatives"

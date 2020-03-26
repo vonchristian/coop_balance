@@ -1,0 +1,5 @@
+<%= number_to_currency @utility_bill.amount %>
+<%= number_to_currency @utility_bill.receivable_account.balance %>
+
+
+<%= link_to "New Payment", new_banking_agent_module_utility_bill_payment_path(@utility_bill)%>
