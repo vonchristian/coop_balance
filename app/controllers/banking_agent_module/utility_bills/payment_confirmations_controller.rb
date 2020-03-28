@@ -19,7 +19,7 @@ module BankingAgentModule
         if @voucher_confirmation.validate! == true 
         
            ::Vouchers::EntryProcessing.new(voucher: @voucher).process!
-        
+           @utility_bill.update!(voucher: @voucher)
           redirect_to banking_agent_module_utility_bill_url(@utility_bill), notice: "confirmed successfully."
         else 
           redirect_to banking_agent_module_utility_bill_payment_confirmation_url(utility_bill_id: @utility_bill.id, id: @voucher.id), alert: "Invalid"

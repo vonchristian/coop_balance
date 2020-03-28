@@ -19,6 +19,9 @@
       </aside>
       <div class="content-wrapper">
         <section class="content">
+        <div class="content-header">
+            <small><%= breadcrumbs pretext: "You are here:", separator: " &rsaquo;", style: :bootstrap %></small>
+          </div>
           <div class="container">
             <div class="container-fluid">
               <%=render "layouts/shared/flash_messages" %>
