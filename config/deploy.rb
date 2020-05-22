@@ -5,7 +5,7 @@ require 'mina/rbenv'
 require 'mina/puma'
 
 set :whenever_name, 'production'
-set :domain,        '128.199.223.121'
+set :domain,        'kiphodan.online'
 set :deploy_to,     '/var/www/kiphodan'
 set :repository,    'git@gitlab.com:vonchristian/kiphodan.git'
 set :branch,        'master'
