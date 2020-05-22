@@ -1,3 +1,4 @@
+
 module AccountingModule
   class LevelOneAccountCategory < ApplicationRecord
     class_attribute :normal_credit_balance
@@ -6,8 +7,8 @@ module AccountingModule
     pg_search_scope :text_search, against: [:title, :code]
 
     belongs_to :level_two_account_category, class_name: 'AccountingModule::LevelTwoAccountCategory', optional: true
-    belongs_to :office,                     class_name: 'Cooperatives::Office', optional: true 
-    belongs_to :categorizeable,             polymorphic: true 
+    belongs_to :office,                     class_name: 'Cooperatives::Office', optional: true
+    belongs_to :categorizeable,             polymorphic: true
     has_many :accounts,                     class_name: 'AccountingModule::Account', dependent: :nullify
     has_many :amounts,                      through: :accounts, class_name: 'AccountingModule::Amount'
     has_many :debit_amounts,                through: :accounts, class_name: 'AccountingModule::DebitAmount'
@@ -24,7 +25,7 @@ module AccountingModule
     scope :equities,    -> { where(type: 'AccountingModule::AccountCategories::LevelOneAccountCategories::Equity') }
     scope :revenues,    -> { where(type: 'AccountingModule::AccountCategories::LevelOneAccountCategories::Revenue') }
     scope :expenses,    -> { where(type: 'AccountingModule::AccountCategories::LevelOneAccountCategories::Expense') }
-    
+
     def self.updated_at(args={})
       date_range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])
       joins(:entries).where('entries.entry_date' => date_range.start_date..date_range.end_date)
