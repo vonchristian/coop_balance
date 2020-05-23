@@ -1,5 +1,6 @@
-current loan 
-   
+#KIPHODAN: Digital Banking Platform specially developed for cooperatives
+current loan
+
 
 namespace amounts
 
