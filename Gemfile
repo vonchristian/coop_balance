@@ -52,7 +52,7 @@ gem 'numbers_and_words'
 gem "audited", "~> 4.9"
 gem "responders"
 gem 'money-rails'
-gem 'sidekiq'
+gem 'sidekiq', '<7'
 gem "gretel"
 gem 'fast_jsonapi'
 gem 'pagy'
