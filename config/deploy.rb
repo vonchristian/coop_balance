@@ -7,7 +7,7 @@ require 'mina/puma'
 set :whenever_name, 'production'
 set :domain,        'kiphodan.online'
 set :deploy_to,     '/var/www/kiphodan'
-set :repository,    'git@gitlab.com:vonchristian/kiphodan.git'
+set :repository,    'git@github.com:vonchristian/kiphodan.git'
 set :branch,        'master'
 set :user,          'deploy'
 set :forward_agent, true

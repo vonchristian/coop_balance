@@ -1,13 +1,11 @@
 class MembersController < ApplicationController
   layout 'application'
 
-
-
   def index
     if params[:search].present?
-      @pagy, @members = pagy(Member.for_cooperative(cooperative: current_cooperative).with_attached_avatar.includes(:memberships).text_search(params[:search]).order(:last_name))
+      @pagy, @members = pagy(Member.text_search(params[:search]).order(:last_name))
     else
-      @pagy, @members = pagy(Member.for_cooperative(cooperative: current_cooperative).with_attached_avatar.includes(:memberships).with_attached_avatar.order(:last_name))
+      @pagy, @members = pagy(Member.order(:last_name))
     end
   end
 
