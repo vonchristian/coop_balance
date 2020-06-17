@@ -1,0 +1,44 @@
+<% breadcrumb :time_deposit_withdrawal, @time_deposit %>
+<div class="row">
+  <div class="col-md-6 offset-md-3">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">Time Deposit Withdrawal</h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-2">
+            <%= image_tag(@time_deposit.depositor.avatar, height: 45, width: 45, class: 'media-object img-circle') if @time_deposit.depositor.avatar.attached? %>
+          </div>
+          <div class="col-md-6">
+            <h4 class="title-up"><%= @time_deposit.depositor.first_and_last_name %></h4>
+            <small class="text-muted">Depositor</small>
+          </div>
+          <div class="col-md-4">
+            <center>
+              <h4 class="title-up"><%= number_to_currency @time_deposit.balance %>
+              </h4>
+              <small>BALANCE</small>
+            </center>
+          </div>
+        </div>
+      </div>
+      <hr class="min-margin">
+      <div class="card-body">
+        <%= simple_form_for [@time_deposit, @withdrawal], url: :time_deposit_partial_withdrawals, html: { autocomplete: "off" } do |f| %>
+        <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] }, default: current_cooperative.users.teller.last.cash_accounts.first, input_html: { class: 'chosen-select' } %>
+        <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
+        <%= f.input :date,            as: :string, input_html: { class: "datepicker" } %>
+        <%= f.input :amount,          as: :currency %>
+        <%= f.input :interest,        as: :currency %>
+        <%= f.input :offline_receipt, as: :boolean, input_html: { checked: true }, as: :hidden %>
+        <%= f.input :or_number,       label: 'Reference Number' %>
+        <%= f.input :time_deposit_id, input_html: { value: @time_deposit.id },as: :hidden %>
+        <%= f.input :employee_id, input_html: { value: current_user.id },as: :hidden %>
+        <hr>
+        <%= f.submit "Proceed", class: "btn btn-primary float-right", data: { disable_with: 'Processing...' } %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -9,27 +9,27 @@ Rails.application.routes.draw do
   resources :banking_agents, only: [:show]
   namespace :banking_agent_module do
 
-    resources :utility_bills, only: [:show, :index] do 
-      resources :payments,              only: [:new, :create],            module: :utility_bills 
-      resources :payment_confirmations, only: [:show, :create, :destroy], module: :utility_bills 
-    end 
+    resources :utility_bills, only: [:show, :index] do
+      resources :payments,              only: [:new, :create],            module: :utility_bills
+      resources :payment_confirmations, only: [:show, :create, :destroy], module: :utility_bills
+    end
 
-    resources :loans, only: [:index, :show] do 
-      resources :payments,              only: [:new, :create], module: :loans 
-      resources :payment_confirmations, only: [:show, :create, :destroy], module: :loans 
-    end 
-    resources :share_capitals, only: [:index, :show]  do 
-      resources :capital_build_ups,              only: [:new, :create], module: :share_capitals 
-      resources :capital_build_up_confirmations, only: [:show, :create, :destroy], module: :share_capitals 
-    end 
-    resources :savings, only: [:index, :show] do 
-      resources :deposits,                 only: [:new, :create], module: :savings 
-      resources :withdrawals,              only: [:new, :create], module: :savings 
-      resources :deposit_confirmations,    only: [:show, :create, :destroy], module: :savings 
-      resources :withdrawal_confirmations, only: [:show, :create, :destroy], module: :savings 
+    resources :loans, only: [:index, :show] do
+      resources :payments,              only: [:new, :create], module: :loans
+      resources :payment_confirmations, only: [:show, :create, :destroy], module: :loans
+    end
+    resources :share_capitals, only: [:index, :show]  do
+      resources :capital_build_ups,              only: [:new, :create], module: :share_capitals
+      resources :capital_build_up_confirmations, only: [:show, :create, :destroy], module: :share_capitals
+    end
+    resources :savings, only: [:index, :show] do
+      resources :deposits,                 only: [:new, :create], module: :savings
+      resources :withdrawals,              only: [:new, :create], module: :savings
+      resources :deposit_confirmations,    only: [:show, :create, :destroy], module: :savings
+      resources :withdrawal_confirmations, only: [:show, :create, :destroy], module: :savings
 
-    end 
-  end 
+    end
+  end
   authenticated :user do
     root :to => 'members#index', as: :authenticated_root
   end
@@ -43,11 +43,11 @@ Rails.application.routes.draw do
 
   resources :accounting_module, only: [:index]
   namespace :accounting_module do
-    resources :accounting_reports, only: [:new, :create, :show] do 
+    resources :accounting_reports, only: [:new, :create, :show] do
       resources :level_one_account_categories,   only: [:new, :create], module: :accounting_reports
       resources :level_two_account_categories,   only: [:new, :create], module: :accounting_reports
       resources :level_three_account_categories, only: [:new, :create], module: :accounting_reports
-    end 
+    end
     resources :loan_products, only: [:show]
     resources :level_one_account_categories, only: [:index, :show, :new, :create, :edit, :update], module: :account_categories do
       resources :settings, only: [:index], module: :level_one_account_categories
@@ -75,8 +75,8 @@ Rails.application.routes.draw do
     resources :scheduled_entries, only: [:index]
     resources :interest_expense_vouchers, only: [:show]
     resources :ioc_distributions, only: [:index]
-    
-    namespace :ioc_distributions do 
+
+    namespace :ioc_distributions do
       resources :loans,                      only: [:new, :destroy]
       resources :loan_vouchers,              only: [:create, :show, :destroy]
       resources :loan_voucher_confirmations, only: [:create, :show]
@@ -88,7 +88,7 @@ Rails.application.routes.draw do
       resources :saving_processings,         only: [:new, :create]
       resources :saving_vouchers,            only: [:create, :show, :destroy]
       resources :program_subscriptions,      only: [:new, :create]
-    end 
+    end
     namespace :scheduled_entries do
       resources :savings_accounts_interest_postings, only: [:new, :create]
       resources :share_capital_dividend_postings, only: [:new, :create]
@@ -159,9 +159,9 @@ Rails.application.routes.draw do
   resources :loans_module, only: [:index]
 
   namespace :loans_module do
-    resources :loan_aging_groups, only: [:show] do 
+    resources :loan_aging_groups, only: [:show] do
       resources :loans, only: [:index], module: :loan_aging_groups
-    end 
+    end
     resources :amortization_schedules, only: [:index, :show]
     resources :amortization_schedule_date_filters, only: [:index]
 
@@ -211,7 +211,7 @@ Rails.application.routes.draw do
     resources :loan_products, only:[:index, :show] do
       resources :loans,             only: [:index], module: :loan_products
       resources :reports,           only: [:index], module: :loan_products
-      resources :loan_aging_groups, only: [:index, :show], module: :loan_products 
+      resources :loan_aging_groups, only: [:index, :show], module: :loan_products
     end
 
     resources :loans, only: [:index, :show] do
@@ -268,7 +268,7 @@ Rails.application.routes.draw do
     resources :transactions, only: [:index],              module: :share_capitals
     resources :beneficiaries,  only: [:edit, :update],    module: :share_capitals
     resources :maf_beneficiaries,  only: [:edit, :update],    module: :share_capitals
-    resources :multiple_line_items, only: [:new, :create, :destroy],   module: :share_capitals 
+    resources :multiple_line_items, only: [:new, :create, :destroy],   module: :share_capitals
   end
 
   resources :members, only: [:index, :show, :edit, :update, :destroy] do
@@ -485,7 +485,7 @@ Rails.application.routes.draw do
   end
 
   resources :savings_accounts, only: [:index, :show] do
-    resources :accounting, only: [:index], module: :savings_accounts 
+    resources :accounting, only: [:index], module: :savings_accounts
     resources :balance_transfers, only: [:new], module: :savings_accounts
     resources :balance_transfer_processings, only: [:new, :create, :destroy], module: :savings_accounts
     resources :balance_transfer_vouchers, only: [:show],            module: :savings_accounts
@@ -521,14 +521,15 @@ Rails.application.routes.draw do
 
     resources :adjusting_entries, only: [:new, :create],                  module: :time_deposits
     resources :withdrawals,       only: [:new, :create],                  module: :time_deposits
+    resources :partial_withdrawals, only: [:new, :create],                  module: :time_deposits
     resources :term_extensions,   only: [:new, :create],                  module: :time_deposits
     resources :break_contracts,   only: [:new, :create],                  module: :time_deposits
     resources :settings,          only: [:index],                         module: :time_deposits
     resources :beneficiaries,     only: [:edit, :update],                 module: :time_deposits
     resources :accounting,        only: [:index],                         module: :time_deposits
-    resources :interest_postings, only: [:new, :create, :show, :destroy], module: :time_deposits  do 
+    resources :interest_postings, only: [:new, :create, :show, :destroy], module: :time_deposits  do
       resources :confirmations,   only: [:create], module: :interest_postings
-    end 
+    end
   end
 
   resources :employees, only: [:index, :show, :edit, :update] do
@@ -576,9 +577,9 @@ Rails.application.routes.draw do
     resources :settings,     only: [:index]
     namespace :settings do
       resources :archives,           only: [:new, :create]
-      resources :loan_aging_groups,  only: [:new, :create, :show, :edit, :update] do 
+      resources :loan_aging_groups,  only: [:new, :create, :show, :edit, :update] do
         resources :office_loan_products, only: [:new, :create], module: :loan_aging_groups
-      end 
+      end
     end
   end
 
@@ -745,7 +746,7 @@ Rails.application.routes.draw do
     resources :loan_products,          only: [:index, :new, :create], module: :offices
     resources :share_capital_products, only: [:index, :new, :create], module: :offices
     resources :time_deposit_products,  only: [:index, :new, :create], module: :offices
-    resources :net_income_configs,     only: [:index, :new, :create], module: :offices 
+    resources :net_income_configs,     only: [:index, :new, :create], module: :offices
 
 
   end
@@ -755,23 +756,23 @@ Rails.application.routes.draw do
   resources :multiple_transactions, only: [:new, :create]
   resources :loan_multiple_payment_line_items, only: [:new, :create, :destroy]
   resources :multiple_loan_payment_processings, only: [:create]
-  resources :multiple_loan_payment_vouchers, only: [:show] do 
-    resources :confirmations, only: [:create], module: [:loans_module, :loan_multiple_transactions] 
-  end 
+  resources :multiple_loan_payment_vouchers, only: [:show] do
+    resources :confirmations, only: [:create], module: [:loans_module, :loan_multiple_transactions]
+  end
   resources :loans, only: [:show] do
     resources :multiple_payments, only: [:new, :create, :destroy], module: :loans
   end
   resources :carts ,only: [:destroy]
-  
+
   resources :share_capital_multiple_transactions, only: [:new], module: :share_capitals
   resources :share_capital_multiple_transaction_processings, only: [:create], module: :share_capitals
-  resources :share_capital_multiple_transaction_vouchers, only: [:show, :destroy], module: :share_capitals do 
+  resources :share_capital_multiple_transaction_vouchers, only: [:show, :destroy], module: :share_capitals do
     resources :confirmations, only: [:create], module: :share_capital_multiple_transactions
-  end 
+  end
 
-  resources :savings_account_multiple_transactions, only: [:new], module: :savings_accounts 
+  resources :savings_account_multiple_transactions, only: [:new], module: :savings_accounts
   resources :savings_account_multiple_transaction_processings, only: [:create], module: :savings_accounts
-  resources :savings_account_multiple_transaction_vouchers, only: [:show, :destroy], module: :savings_accounts do 
+  resources :savings_account_multiple_transaction_vouchers, only: [:show, :destroy], module: :savings_accounts do
     resources :confirmations, only: [:create], module: :savings_account_multiple_transactions
-  end 
+  end
 end

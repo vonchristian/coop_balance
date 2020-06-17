@@ -34,8 +34,10 @@
     <div class="btn-group" role="group" aria-label="Basic example">
        <% if !@time_deposit.withdrawn?%>
             <%= link_to 'Withdraw', new_time_deposit_withdrawal_path(@time_deposit), data: {turbolinks: false}, class: "btn btn-danger" if policy([:time_deposits, :withdrawal]).new? %>
+            <%= link_to 'Partial Withdraw', new_time_deposit_partial_withdrawal_path(@time_deposit), data: {turbolinks: false}, class: "btn btn-danger" if policy([:time_deposits, :withdrawal]).new? %>
+
             <% end %>
-          
+
     </div>
   </div>
 </div>
@@ -101,7 +103,7 @@
           </div>
           <div class="row min-margin">
             <div class="col-md-11">
-             
+
             </div>
           </div>
         </div>
@@ -123,9 +125,9 @@
     </thead>
     <tbody>
       <% @entries.uniq.each do |entry| %>
-       
+
           <%=render 'accounting_module/entries/entry', entry: entry %>
-       
+
       <% end %>
     </tbody>
 
