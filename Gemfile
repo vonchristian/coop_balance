@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.7.1'
+ruby '2.7.2'
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
   "https://github.com/#{repo_name}.git"
@@ -12,7 +12,7 @@ gem 'caxlsx'
 gem 'caxlsx_rails'
 gem 'trix'
 gem 'autonumeric-rails'
-gem 'rails', '~> 6.0.2'
+gem 'rails'
 gem 'pg', '0.21'
 gem 'pghero'
 gem 'pg_query'
