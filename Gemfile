@@ -62,7 +62,7 @@ gem 'whenever', require: false
 gem "select2-rails"
 gem "simple_calendar"
 gem "facebook-messenger"
-
+gem 'sendgrid-ruby'
 group :development, :test do
   gem 'rspec-rails'
   gem 'factory_bot_rails'
