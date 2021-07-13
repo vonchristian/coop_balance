@@ -3,10 +3,10 @@ module AccountingModule
     class FromDateToDate
       attr_reader  :from_date, :to_date, :amounts
 
-      def initialize(from_date:, to_date:, amounts:)
-        @amounts   = amounts
-        @from_date = from_date
-        @to_date   = to_date
+      def initialize(args={})
+        @amounts   = args.fetch(:amounts)
+        @from_date = args.fetch(:from_date)
+        @to_date   = args.fetch(:to_date)
       end
 
       def compute
