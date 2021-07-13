@@ -12,7 +12,7 @@ gem 'caxlsx'
 gem 'caxlsx_rails'
 gem 'trix'
 gem 'autonumeric-rails'
-gem 'rails'
+gem 'rails', "6.0.3.1"
 gem 'pg', '0.21'
 gem 'pghero'
 gem 'pg_query'
