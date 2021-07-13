@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.7.2'
+ruby '3.0.2'
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
   "https://github.com/#{repo_name}.git"
@@ -8,7 +8,7 @@ gem 'mime-types', [ '~> 2.6', '>= 2.6.1' ], require: 'mime/types/columnar'
 gem 'prawn-icon'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'webpacker', '~> 4.x'
-gem 'caxlsx'
+gem 'caxlsx', '~> 3.0'
 gem 'caxlsx_rails'
 gem 'trix'
 gem 'autonumeric-rails'
