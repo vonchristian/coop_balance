@@ -4,7 +4,7 @@ module AccountingModule
       attr_reader :from_date, :to_date, :amounts
 
       def initialize(args={})
-        @amounts   args.fetch(:amounts)
+        @amounts   = args.fetch(:amounts)
         @from_date = 999.years.ago
         @to_date   = args.fetch(:to_date)
       end
