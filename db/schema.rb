@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_14_060649) do
+ActiveRecord::Schema.define(version: 2021_07_14_064247) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -517,6 +517,19 @@ ActiveRecord::Schema.define(version: 2021_07_14_060649) do
     t.index ["email"], name: "index_cooperators_on_email", unique: true
     t.index ["reset_password_token"], name: "index_cooperators_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_cooperators_on_unlock_token", unique: true
+  end
+
+  create_table "credit_amounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "old_credit_amount_id"
+    t.integer "amount_cents"
+    t.string "account_type", null: false
+    t.uuid "account_id", null: false
+    t.uuid "entry_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["account_type", "account_id"], name: "index_credit_amounts_on_account_type_and_account_id"
+    t.index ["entry_id"], name: "index_credit_amounts_on_entry_id"
+    t.index ["old_credit_amount_id"], name: "index_credit_amounts_on_old_credit_amount_id"
   end
 
   create_table "deactivations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -2288,6 +2301,8 @@ ActiveRecord::Schema.define(version: 2021_07_14_060649) do
   add_foreign_key "cooperative_banking_agents", "banking_agents"
   add_foreign_key "cooperative_banking_agents", "cooperatives"
   add_foreign_key "cooperative_services", "cooperatives"
+  add_foreign_key "credit_amounts", "amounts", column: "old_credit_amount_id"
+  add_foreign_key "credit_amounts", "entries"
   add_foreign_key "debit_amounts", "amounts", column: "old_debit_amount_id"
   add_foreign_key "debit_amounts", "entries"
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "credit_account_id"
