@@ -85,12 +85,12 @@ ActiveRecord::Schema.define(version: 2020_03_26_103203) do
 
   create_table "active_storage_attachments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
-    t.string "record_type", null: false
-    t.uuid "record_id", null: false
-    t.uuid "blob_id", null: false
     t.datetime "created_at", null: false
+    t.string "record_type"
+    t.uuid "record_id"
+    t.uuid "blob_id"
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
-    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+    t.index ["record_type", "record_id"], name: "index_active_storage_attachments_on_record_type_and_record_id"
   end
 
   create_table "active_storage_blobs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -132,7 +132,7 @@ ActiveRecord::Schema.define(version: 2020_03_26_103203) do
     t.uuid "addressable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "current", default: false
+    t.boolean "current", default: true
     t.uuid "street_id"
     t.uuid "barangay_id"
     t.uuid "municipality_id"
@@ -163,8 +163,8 @@ ActiveRecord::Schema.define(version: 2020_03_26_103203) do
     t.uuid "cooperative_id"
     t.string "scheduleable_type"
     t.uuid "scheduleable_id"
-    t.decimal "total_repayment"
     t.string "entry_ids", default: [], array: true
+    t.decimal "total_repayment"
     t.decimal "ending_balance", default: "0.0", null: false
     t.uuid "office_id"
     t.index ["commercial_document_type", "commercial_document_id"], name: "index_commercial_document_on_amortization_schedules"
@@ -189,6 +189,20 @@ ActiveRecord::Schema.define(version: 2020_03_26_103203) do
     t.integer "interest_amortization_scope"
     t.index ["calculation_type"], name: "index_amortization_types_on_calculation_type"
     t.index ["repayment_calculation_type"], name: "index_amortization_types_on_repayment_calculation_type"
+  end
+
+  create_table "amount_adjustments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "voucher_amount_id"
+    t.uuid "loan_application_id"
+    t.decimal "amount"
+    t.integer "number_of_payments"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "adjustment_type"
+    t.decimal "rate"
+    t.index ["adjustment_type"], name: "index_amount_adjustments_on_adjustment_type"
+    t.index ["loan_application_id"], name: "index_amount_adjustments_on_loan_application_id"
+    t.index ["voucher_amount_id"], name: "index_amount_adjustments_on_voucher_amount_id"
   end
 
   create_table "amounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -250,12 +264,6 @@ ActiveRecord::Schema.define(version: 2020_03_26_103203) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "automatic_clearing_houses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "bank_accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "cooperative_id"
     t.string "bank_name"
@@ -310,6 +318,17 @@ ActiveRecord::Schema.define(version: 2020_03_26_103203) do
     t.index ["email"], name: "index_banking_agents_on_email", unique: true
     t.index ["reset_password_token"], name: "index_banking_agents_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_banking_agents_on_unlock_token", unique: true
+  end
+
+  create_table "barangay_members", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "barangay_id"
+    t.string "member_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "barangay_membership_type"
+    t.uuid "barangay_membership_id"
+    t.index ["barangay_id"], name: "index_barangay_members_on_barangay_id"
+    t.index ["barangay_membership_type", "barangay_membership_id"], name: "index_on_barangay_members_membership"
   end
 
   create_table "barangays", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -995,6 +1014,17 @@ ActiveRecord::Schema.define(version: 2020_03_26_103203) do
     t.index ["total_repayment_amortization_id"], name: "index_loan_products_on_total_repayment_amortization_id"
   end
 
+  create_table "loan_protection_funds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "rate"
+    t.string "name"
+    t.integer "computation_type"
+    t.uuid "cooperative_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["computation_type"], name: "index_loan_protection_funds_on_computation_type"
+    t.index ["cooperative_id"], name: "index_loan_protection_funds_on_cooperative_id"
+  end
+
   create_table "loan_protection_plan_providers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "business_name"
     t.decimal "rate"
@@ -1035,8 +1065,8 @@ ActiveRecord::Schema.define(version: 2020_03_26_103203) do
     t.boolean "forwarded_loan", default: false
     t.uuid "loan_application_id"
     t.integer "status"
-    t.string "type"
     t.boolean "cancelled", default: false
+    t.string "type"
     t.string "code"
     t.uuid "receivable_account_id"
     t.uuid "interest_revenue_account_id"
@@ -1385,7 +1415,7 @@ ActiveRecord::Schema.define(version: 2020_03_26_103203) do
     t.string "commercial_document_type"
     t.uuid "commercial_document_id"
     t.string "type"
-    t.boolean "credit", default: false
+    t.boolean "credit", default: true
     t.string "commercial_document_name"
     t.uuid "store_front_id"
     t.uuid "cooperative_id"
@@ -1427,6 +1457,10 @@ ActiveRecord::Schema.define(version: 2020_03_26_103203) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "avatar_file_name"
+    t.string "avatar_content_type"
+    t.bigint "avatar_file_size"
+    t.datetime "avatar_updated_at"
     t.datetime "last_transaction_date"
     t.uuid "cooperative_id"
     t.string "abbreviated_name"
@@ -1541,6 +1575,10 @@ ActiveRecord::Schema.define(version: 2020_03_26_103203) do
 
   create_table "registries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "date"
+    t.string "spreadsheet_file_name"
+    t.string "spreadsheet_content_type"
+    t.bigint "spreadsheet_file_size"
+    t.datetime "spreadsheet_updated_at"
     t.string "type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -1604,7 +1642,7 @@ ActiveRecord::Schema.define(version: 2020_03_26_103203) do
     t.decimal "minimum_balance"
     t.uuid "closing_account_id"
     t.uuid "interest_expense_account_id"
-    t.boolean "has_closing_account_fee", default: false
+    t.boolean "has_closing_account_fee", default: true
     t.integer "dormancy_number_of_days", default: 0
     t.uuid "cooperative_id"
     t.decimal "closing_account_fee", default: "0.0"
@@ -1745,8 +1783,8 @@ ActiveRecord::Schema.define(version: 2020_03_26_103203) do
     t.string "account_number"
     t.datetime "date_opened"
     t.string "account_owner_name"
-    t.datetime "created_at", default: "2019-12-04 03:49:02", null: false
-    t.datetime "updated_at", default: "2019-12-04 03:49:02", null: false
+    t.datetime "created_at", default: "2018-12-04 09:39:41", null: false
+    t.datetime "updated_at", default: "2018-12-04 09:39:41", null: false
     t.integer "status"
     t.uuid "office_id"
     t.string "subscriber_type"
@@ -2208,6 +2246,8 @@ ActiveRecord::Schema.define(version: 2020_03_26_103203) do
   add_foreign_key "amortization_schedules", "loan_applications"
   add_foreign_key "amortization_schedules", "loans"
   add_foreign_key "amortization_schedules", "offices"
+  add_foreign_key "amount_adjustments", "loan_applications"
+  add_foreign_key "amount_adjustments", "voucher_amounts"
   add_foreign_key "amounts", "accounts"
   add_foreign_key "amounts", "entries"
   add_foreign_key "archives", "users", column: "archiver_id"
@@ -2218,6 +2258,7 @@ ActiveRecord::Schema.define(version: 2020_03_26_103203) do
   add_foreign_key "banking_agent_carts", "banking_agents"
   add_foreign_key "banking_agents", "accounts", column: "cash_account_id"
   add_foreign_key "banking_agents", "accounts", column: "depository_account_id"
+  add_foreign_key "barangay_members", "barangays"
   add_foreign_key "barangays", "cooperatives"
   add_foreign_key "barangays", "municipalities"
   add_foreign_key "barcodes", "line_items"
@@ -2304,6 +2345,7 @@ ActiveRecord::Schema.define(version: 2020_03_26_103203) do
   add_foreign_key "loan_products", "loan_protection_plan_providers"
   add_foreign_key "loan_products", "offices"
   add_foreign_key "loan_products", "total_repayment_amortizations"
+  add_foreign_key "loan_protection_funds", "cooperatives"
   add_foreign_key "loan_protection_plan_providers", "accounts", column: "accounts_payable_id"
   add_foreign_key "loan_protection_plan_providers", "cooperatives"
   add_foreign_key "loans", "accounts", column: "accrued_income_account_id"
@@ -2495,9 +2537,7 @@ ActiveRecord::Schema.define(version: 2020_03_26_103203) do
   add_foreign_key "voucher_amounts", "accounts"
   add_foreign_key "voucher_amounts", "carts"
   add_foreign_key "voucher_amounts", "cooperatives"
-  add_foreign_key "voucher_amounts", "loan_applications"
   add_foreign_key "voucher_amounts", "users", column: "recorder_id"
-  add_foreign_key "voucher_amounts", "vouchers"
   add_foreign_key "vouchers", "cooperative_services"
   add_foreign_key "vouchers", "cooperatives"
   add_foreign_key "vouchers", "entries"

@@ -19,7 +19,6 @@ gem 'pg_query'
 gem 'puma', group: [:development, :production]
 gem 'sass-rails', '~> 5'
 gem 'uglifier'
-gem "paperclip", "~> 6.1.0"
 gem 'coffee-rails'
 gem 'turbolinks', '~> 5'
 gem 'jbuilder'
