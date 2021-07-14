@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_26_103203) do
+ActiveRecord::Schema.define(version: 2021_07_14_060649) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -528,6 +528,19 @@ ActiveRecord::Schema.define(version: 2020_03_26_103203) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["deactivatable_type", "deactivatable_id"], name: "index_deactivations_on_deactivatable_type_and_deactivatable_id"
+  end
+
+  create_table "debit_amounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "old_debit_amount_id"
+    t.integer "amount_cents"
+    t.string "account_type", null: false
+    t.uuid "account_id", null: false
+    t.uuid "entry_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["account_type", "account_id"], name: "index_debit_amounts_on_account_type_and_account_id"
+    t.index ["entry_id"], name: "index_debit_amounts_on_entry_id"
+    t.index ["old_debit_amount_id"], name: "index_debit_amounts_on_old_debit_amount_id"
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
@@ -2275,6 +2288,8 @@ ActiveRecord::Schema.define(version: 2020_03_26_103203) do
   add_foreign_key "cooperative_banking_agents", "banking_agents"
   add_foreign_key "cooperative_banking_agents", "cooperatives"
   add_foreign_key "cooperative_services", "cooperatives"
+  add_foreign_key "debit_amounts", "amounts", column: "old_debit_amount_id"
+  add_foreign_key "debit_amounts", "entries"
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "credit_account_id"
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "debit_account_id"
   add_foreign_key "employee_cash_accounts", "accounts", column: "cash_account_id"
