@@ -61,6 +61,7 @@ gem 'whenever', require: false
 gem "select2-rails"
 gem "simple_calendar"
 gem "facebook-messenger"
+gem 'rexml', '~> 3.2', '>= 3.2.4'
 
 group :development, :test do
   gem 'rspec-rails'

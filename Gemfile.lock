@@ -315,6 +315,7 @@ GEM
     responders (3.0.1)
       actionpack (>= 5.0)
       railties (>= 5.0)
+    rexml (3.2.5)
     roo (2.7.0)
       nokogiri (~> 1)
       rubyzip (~> 1.1, < 2.0.0)
@@ -478,6 +479,7 @@ DEPENDENCIES
   rails (= 6.0.3.1)
   redis
   responders
+  rexml (~> 3.2, >= 3.2.4)
   roo (= 2.7.0)
   rqrcode
   rspec-rails
