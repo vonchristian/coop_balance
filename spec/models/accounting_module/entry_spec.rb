@@ -17,6 +17,10 @@ module AccountingModule
       it { is_expected.to have_many :credit_accounts }
       it { is_expected.to have_many :accounts }
       it { is_expected.to have_many :amounts }
+      it { is_expected.to have_many :new_debit_amounts }
+      it { is_expected.to have_many :new_credit_amounts }
+
+
   	end
 
     describe 'validations' do
@@ -67,7 +71,7 @@ module AccountingModule
       it { is_expected.to delegate_method(:name).to(:cooperative).with_prefix }
       it { is_expected.to delegate_method(:name).to(:office).with_prefix }
       it { is_expected.to delegate_method(:name).to(:commercial_document).with_prefix }
-     
+
     end
 
     describe 'nested_attributes' do

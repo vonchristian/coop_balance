@@ -12,16 +12,18 @@ module AccountingModule
     belongs_to :official_receipt,      optional: true
     belongs_to :commercial_document,   polymorphic: true
     belongs_to :cancellation_entry,    class_name: 'AccountingModule::Entry', optional: true
-    belongs_to :office,                class_name: "Cooperatives::Office", optional: true 
-    belongs_to :cooperative, optional: true 
+    belongs_to :office,                class_name: "Cooperatives::Office", optional: true
+    belongs_to :cooperative, optional: true
     belongs_to :cancelled_by,          class_name: "User", foreign_key: 'cancelled_by_id', optional: true
-    belongs_to :recorder,              class_name: "User", foreign_key: 'recorder_id', optional: true 
+    belongs_to :recorder,              class_name: "User", foreign_key: 'recorder_id', optional: true
     has_many   :credit_amounts,        class_name: 'AccountingModule::CreditAmount', dependent: :destroy
     has_many   :debit_amounts,         class_name: 'AccountingModule::DebitAmount', dependent: :destroy
     has_many   :credit_accounts,       class_name: 'AccountingModule::Account', through: :credit_amounts, source: :account
     has_many   :debit_accounts,        class_name: 'AccountingModule::Account', through: :debit_amounts,  source: :account
     has_many   :amounts,               class_name: "AccountingModule::Amount", dependent: :destroy
     has_many   :accounts,              class_name: "AccountingModule::Account", through: :amounts
+    has_many   :new_debit_amounts,     class_name: "Accounting::Amounts::DebitAmount"
+    has_many   :new_credit_amounts,     class_name: "Accounting::Amounts::DebitAmount"
 
     validates :description, :reference_number, :entry_date, :entry_time, presence: true
 
@@ -106,7 +108,7 @@ module AccountingModule
       where(recorder: args[:recorder] )
     end
 
-   
+
 
     def self.total
       all.map{|a| a.total }.sum
