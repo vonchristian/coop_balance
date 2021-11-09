@@ -207,7 +207,7 @@ GEM
     mina (1.2.4)
       open4 (~> 1.3.4)
       rake
-    mina-puma (1.1.0)
+    mina-ng-puma (1.4.0)
       mina (~> 1.2.0)
       puma (>= 2.13)
     mina-whenever (1.0.1)
@@ -458,7 +458,7 @@ DEPENDENCIES
   listen
   memory_profiler
   mime-types (~> 3.3, >= 3.3.1)
-  mina-puma
+  mina-ng-puma
   mina-whenever
   mini_magick
   money-rails
