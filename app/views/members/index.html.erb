@@ -22,8 +22,8 @@
           </div>
         </div>
         <br>
-      
-   
+
+
     <div class="table table-responsive">
       <table class="table table-hover table-striped">
         <thead>
@@ -33,7 +33,6 @@
             <th> Address </th>
             <th> Contact # </th>
             <th> Organization </th>
-            <th> Status </th>
           </tr>
         </thead>
         <tbody>
@@ -44,13 +43,10 @@
               <td><%= member.current_address_details %></td>
               <td><%= member.current_contact_number %></td>
               <td><%= member.current_organization_name || "No Organization" %></td>
-  <td class="badge badge-<%=member.activity_status_text_color(office: current_office, from_date: Date.current.beginning_of_month, to_date: Date.current.end_of_month) %> "> Status </td>
-
-
             </tr>
           <% end %>
         </tbody>
       </table>
       <%== pagy_bootstrap_nav(@pagy) %>
     </div>
-    
+
