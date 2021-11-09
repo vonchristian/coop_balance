@@ -13,7 +13,7 @@ gem 'caxlsx_rails'
 gem 'trix'
 gem 'autonumeric-rails'
 gem 'rails'
-gem 'pg', '0.21'
+gem "pg", "~> 1.1"
 gem 'pghero'
 gem 'pg_query'
 gem 'puma', group: [:development, :production]
