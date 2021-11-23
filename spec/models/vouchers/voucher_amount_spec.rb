@@ -84,7 +84,7 @@ module Vouchers
       disbursed_amount = create(:voucher_amount, voucher: voucher, cooperative: cooperative)
       undisbursed_amount = create(:voucher_amount, cooperative: cooperative)
       entry = create(:entry_with_credit_and_debit, cooperative: cooperative)
-      voucher.update_attributes(accounting_entry: entry)
+      voucher.update(accounting_entry: entry)
 
       expect(disbursed_amount.disbursed?).to be true
       expect(undisbursed_amount.disbursed?).to be false

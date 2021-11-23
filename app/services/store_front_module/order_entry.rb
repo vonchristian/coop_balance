@@ -30,7 +30,7 @@ module StoreFrontModule
         account:             credit_amount.account)
       end
       entry.save!
-      voucher.update_attributes!(accounting_entry: entry)
+      voucher.update(accounting_entry: entry)
     end
   end
 end

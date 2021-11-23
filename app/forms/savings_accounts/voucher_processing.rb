@@ -35,7 +35,7 @@ module SavingsAccounts
     end
 
     def set_voucher_entry(entry)
-      find_voucher.update_attributes!(entry_id: entry.id)
+      find_voucher.update(entry_id: entry.id)
     end
 
     def find_employee

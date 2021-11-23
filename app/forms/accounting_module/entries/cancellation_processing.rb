@@ -12,7 +12,7 @@ module AccountingModule
 
       private
       def cancel_entry!
-        find_entry.update_attributes!(
+        find_entry.update(
           cancelled: true,
           cancelled_at: cancelled_at,
           cancelled_by_id: cancelled_by_id,

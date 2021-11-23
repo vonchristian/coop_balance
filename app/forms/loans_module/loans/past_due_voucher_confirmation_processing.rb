@@ -43,11 +43,11 @@ module LoansModule
             amount: amount.amount)
         end
         entry.save!
-        voucher.update_attributes!(accounting_entry: entry)
+        voucher.update(accounting_entry: entry)
       end
 
       def update_last_transaction_date
-        loan.update_attributes!(last_transaction_date: voucher.date)
+        loan.update(last_transaction_date: voucher.date)
       end
 
       def update_loan_status
@@ -56,7 +56,7 @@ module LoansModule
 
       def update_accounts_last_transaction_date
         voucher.voucher_amounts.accounts.each do |account|
-          account.update_attributes!(last_transaction_date: voucher.date)
+          account.update(last_transaction_date: voucher.date)
         end
       end
 

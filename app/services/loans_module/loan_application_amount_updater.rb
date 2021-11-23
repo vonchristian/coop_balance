@@ -10,7 +10,7 @@ module LoansModule
 
     def update_amount!
       if !interest_config.prededucted?
-        loan_application.update_attributes(loan_amount: updated_loan_amount)
+        loan_application.update(loan_amount: updated_loan_amount)
       end
     end
 

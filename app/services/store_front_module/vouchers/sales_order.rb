@@ -57,7 +57,7 @@ module StoreFrontModule
         )
 
         voucher.save!
-        order.update_attributes!(voucher: voucher)
+        order.update(voucher: voucher)
       end
     end
   end

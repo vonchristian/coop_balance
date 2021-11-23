@@ -65,7 +65,7 @@ RSpec.describe Voucher  do
     voucher = create(:voucher)
     voucher_2 = create(:voucher)
     entry = create(:entry_with_credit_and_debit)
-    voucher.update_attributes(accounting_entry: entry)
+    voucher.update(accounting_entry: entry)
 
     expect(voucher.disbursed?).to eql true
     expect(voucher_2.disbursed?).to eql false

@@ -7,7 +7,7 @@ module LoansModule
     end
 
     def update_term
-      @loan.terms.recent.update_attributes!(
+      @loan.terms.recent.update(
         effectivity_date: effectivity_date,
         maturity_date:    effectivity_date + number_of_months
       )

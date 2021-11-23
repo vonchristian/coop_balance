@@ -7,7 +7,7 @@ module AccountingModule
     pg_search_scope :text_search, :against => [:name, :code]
 
     class_attribute :normal_credit_balance
-    
+
     belongs_to :level_one_account_category,  class_name: 'AccountingModule::LevelOneAccountCategory'
     has_many :amounts,                       class_name: "AccountingModule::Amount"
     has_many :credit_amounts,        -> { not_cancelled },        :class_name => 'AccountingModule::CreditAmount'
@@ -20,7 +20,7 @@ module AccountingModule
     has_many :accountable_accounts, dependent: :nullify
     validates :type, :name, :code, presence: true
     validates :name, uniqueness: true
-    
+
     scope :assets,      -> { where(type: 'AccountingModule::Asset') }
     scope :liabilities, -> { where(type: 'AccountingModule::Liability') }
     scope :equities,    -> { where(type: 'AccountingModule::Equity') }
@@ -54,7 +54,7 @@ module AccountingModule
 
     def set_as_inactive
       if balance.zero?
-        self.update_attributes!(active: false)
+        self.update(active: false)
       else
         false
       end
@@ -157,7 +157,7 @@ module AccountingModule
 
     def balance(options={})
       return raise(NoMethodError, "undefined method 'balance'") if self.class == AccountingModule::Account
-      
+
       if normal_credit_balance ^ contra?
         credits_balance(options) - debits_balance(options)
       else
@@ -168,9 +168,9 @@ module AccountingModule
     def display_name
       if level_one_account_category
         level_one_account_category.title
-      else 
-        name 
-      end 
+      else
+        name
+      end
     end
 
     def credits_balance(args={})

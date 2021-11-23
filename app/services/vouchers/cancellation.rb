@@ -5,10 +5,10 @@ module Vouchers
     def initialize(args={})
       @voucher = args.fetch(:voucher)
     end
-    
+
     def cancel!
       if !voucher.disbursed? || !voucher.cancelled?
-        voucher.update_attributes!(cancelled_at: Date.current)
+        voucher.update(cancelled_at: Date.current)
       end
     end
   end

@@ -13,7 +13,7 @@ module LoansModule
 
       private
       def create_tracking_number
-        find_loan.update_attributes!(tracking_number: tracking_number)
+        find_loan.update(tracking_number: tracking_number)
         update_voucher_reference_number
         update_entry_reference_number
       end

@@ -6,7 +6,7 @@ module LoansModule
     def archive!
       if find_loans.present?
       	find_loans.each do |loan|
-      		loan.update_attributes!(
+      		loan.update(
       			archived: true,
       			archiving_date: Date.today,
       			archived_by: find_employee

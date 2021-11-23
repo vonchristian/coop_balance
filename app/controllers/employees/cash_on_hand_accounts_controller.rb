@@ -6,7 +6,7 @@ module Employees
 
     def update
       @employee = current_cooperative.users.find(params[:employee_id])
-      @employee.update_attributes(employee_params)
+      @employee.update(employee_params)
       if @employee.save
         redirect_to employee_url(@employee), notice: "Cash on Hand Account saved successfully."
       else
