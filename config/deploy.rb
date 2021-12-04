@@ -7,7 +7,7 @@ require 'mina/puma'
 set :whenever_name, 'production'
 set :domain,        '128.199.223.121'
 set :deploy_to,     '/var/www/kiphodan'
-set :repository,    'git@github.com:vonchristian/kiphodan.git'
+set :repository,    'git@github.com:vonchristian/coop_balance.git'
 set :branch,        'main'
 set :user,          'deploy'
 set :forward_agent, true
