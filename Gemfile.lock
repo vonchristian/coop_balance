@@ -164,8 +164,7 @@ GEM
       ffi (~> 1.0)
     globalid (0.5.2)
       activesupport (>= 5.0)
-    google-protobuf (3.19.1-x86_64-darwin)
-    google-protobuf (3.19.1-x86_64-linux)
+    google-protobuf (3.19.1)
     gretel (4.3.0)
       actionview (>= 5.1, < 7.0)
       railties (>= 5.1, < 7.0)
@@ -215,6 +214,7 @@ GEM
     mini_histogram (0.3.1)
     mini_magick (4.11.0)
     mini_mime (1.1.2)
+    mini_portile2 (2.6.1)
     minitest (5.14.4)
     monetize (1.11.0)
       money (~> 6.12)
@@ -228,9 +228,8 @@ GEM
     msgpack (1.4.2)
     multi_xml (0.6.0)
     nio4r (2.5.8)
-    nokogiri (1.12.5-x86_64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.12.5-x86_64-linux)
+    nokogiri (1.12.5)
+      mini_portile2 (~> 2.6.1)
       racc (~> 1.4)
     numbers_and_words (0.11.11)
       i18n (<= 2)
@@ -505,7 +504,7 @@ DEPENDENCIES
   will_paginate
 
 RUBY VERSION
-   ruby 3.0.2p107
+   ruby 3.1.2p20
 
 BUNDLED WITH
    2.2.29
