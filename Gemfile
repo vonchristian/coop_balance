@@ -7,7 +7,7 @@ end
 gem 'mime-types', '~> 3.3', '>= 3.3.1'
 gem 'prawn-icon'
 gem 'bootsnap', '>= 1.1.0', require: false
-gem 'webpacker', '~> 4.x'
+gem 'webpacker'
 gem 'caxlsx', '~> 3.0'
 gem 'caxlsx_rails'
 gem 'trix'
@@ -27,7 +27,7 @@ gem 'devise'
 gem 'devise_invitable'
 gem 'simple_form'
 gem 'friendly_id'
-gem 'font-awesome-sass'
+gem 'font-awesome-sass', '~> 6.1.1'
 gem 'pg_search'
 gem 'will_paginate'
 gem 'pundit'
@@ -62,6 +62,7 @@ gem "select2-rails"
 gem "simple_calendar"
 gem "facebook-messenger"
 gem 'rexml', '~> 3.2', '>= 3.2.4'
+gem 'net-smtp', require: false
 
 group :development, :test do
   gem 'rspec-rails'
