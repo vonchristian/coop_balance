@@ -92,3 +92,5 @@ gem 'rack-mini-profiler', require: false
 gem 'flamegraph'
 gem 'memory_profiler'
 gem 'stackprof'
+
+gem "matrix", "~> 0.4.2"
