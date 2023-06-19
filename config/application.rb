@@ -20,3 +20,4 @@ module CoopBalance
   end
 end
 Rails.autoloaders.main.ignore(Rails.root.join('app/node_modules'))
+ActiveRecord.yaml_column_permitted_classes = [BigDecimal]
