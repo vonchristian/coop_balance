@@ -17,7 +17,14 @@ module CoopBalance
     config.beginning_of_week = :sunday
     config.autoload_paths << Rails.root.join('workers')
     config.autoload_paths << Rails.root.join('bot')
-    config.active_record.yaml_column_permitted_classes = [BigDecimal]
+    config.active_record.yaml_column_permitted_classes += [
+      Date,
+      BigDecimal,
+      ActiveSupport::TimeWithZone,
+      Time,
+      ActiveSupport::TimeZone,
+      ActiveSupport::HashWithIndifferentAccess
+    ]
   end
 end
 Rails.autoloaders.main.ignore(Rails.root.join('app/node_modules'))
