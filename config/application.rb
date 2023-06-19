@@ -17,7 +17,7 @@ module CoopBalance
     config.beginning_of_week = :sunday
     config.autoload_paths << Rails.root.join('workers')
     config.autoload_paths << Rails.root.join('bot')
-    config.active_record.yaml_column_permitted_classes += [
+    config.active_record.yaml_column_permitted_classes = [
       Date,
       BigDecimal,
       ActiveSupport::TimeWithZone,
