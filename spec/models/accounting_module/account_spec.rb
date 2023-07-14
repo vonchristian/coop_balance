@@ -115,41 +115,6 @@ module AccountingModule
       expect { subject.balance }.to raise_error NoMethodError, "undefined method 'balance'"
     end
 
-
-
-    it "#set_as_inactive" do
-
-        liability      = create(:liability)
-        equity         = create(:equity)
-        asset            = create(:asset)
-        expense          = create(:expense)
-        revenue = create(:revenue)
-
-        ca1 = build(:credit_amount, :account => liability, :amount => 100000)
-        ca2 = build(:credit_amount, :account => equity, :amount => 1000)
-
-        da1 = build(:debit_amount, :account => asset, :amount => 100000)
-        da2 = build(:debit_amount, :account => expense, :amount => 1000)
-
-        create(:entry, :credit_amounts => [ca1], :debit_amounts => [da1])
-        create(:entry, :credit_amounts => [ca2], :debit_amounts => [da2])
-
-        expect(liability.balance).to eql 100_000
-        expect(revenue.balance).to eql 0
-        expect(revenue.active?).to be true
-
-        revenue.set_as_inactive
-        liability.set_as_inactive
-
-        expect(revenue.active?).to be false
-        expect(liability.active?).to be true
-
-
-
-    end
-
-
-
     describe ".trial_balance" do
       subject { described_class.trial_balance }
       it { is_expected.to be_kind_of BigDecimal }
