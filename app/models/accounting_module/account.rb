@@ -52,13 +52,7 @@ module AccountingModule
       name
     end
 
-    def set_as_inactive
-      if balance.zero?
-        self.update(active: false)
-      else
-        false
-      end
-    end
+
 
 
     def normalized_type
