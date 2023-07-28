@@ -1,52 +1,50 @@
 <% breadcrumb :members, @members %>
-<div class="container">
-    <div class="card">
-      <div class="card-header">
-        <div class="row">
-          <div class="col-md-8">
-            <%=form_tag members_path, method: :get do %>
-              <div class="input-group">
-                <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Member", id: 'account-search-form' %>
-                <span class="input-group-btn">
-                  <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-flat") do %>
-                    <i class="fa fa-search"></i>
-                  <% end %>
-                </span>
-              </div>
-            <% end %>
-          </div>
-          <div class="col-md-4">
-            <%= link_to new_membership_application_path, title: 'New Member' do %>
-              <span class="btn btn-primary float-right"><i class="fa fa-user-plus"></i> New Member </span>
-            <% end %>
-          </div>
-        </div>
-        <br>
 
-
-    <div class="table table-responsive">
-      <table class="table table-hover table-striped">
-        <thead>
-          <tr>
-            <th></th>
-            <th> Member </th>
-            <th> Address </th>
-            <th> Contact # </th>
-            <th> Organization </th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @members.each do |member| %>
-            <tr>
-              <td><%= image_tag(member.avatar, height: 45, width: 45, class: "img-circle") %></td>
-              <td><%= link_to member.full_name, member_path(member) %></td>
-              <td><%= member.current_address_details %></td>
-              <td><%= member.current_contact_number %></td>
-              <td><%= member.current_organization_name || "No Organization" %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-      <%== pagy_bootstrap_nav(@pagy) %>
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-8">
+        <%=form_tag members_path, method: :get do %>
+          <div class="input-group">
+            <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Member", id: 'account-search-form' %>
+            <span class="input-group-btn">
+              <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-secondary") do %>
+                <i class="fa fa-search"></i> Search
+              <% end %>
+            </span>
+          </div>
+        <% end %>
+      </div>
+      <div class="col-md-4">
+        <%= link_to new_membership_application_path, title: 'New Member' do %>
+          <span class="btn btn-primary float-right"><i class="fa fa-user-plus"></i> New Member </span>
+        <% end %>
+      </div>
     </div>
+    <br>
+
+
+<div class="table table-responsive">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th> Member </th>
+        <th> Address </th>
+        <th> Contact # </th>
+        <th> Organization </th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @members.each do |member| %>
+        <tr>
+          <td class='text-muted'><b><%= link_to member.full_name.upcase, member_path(member) %></b></td>
+          <td><%= member.current_address_details %></td>
+          <td><%= member.current_contact_number %></td>
+          <td><%= member.current_organization_name || "No Organization" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%== pagy_bootstrap_nav(@pagy) %>
+</div>
 
