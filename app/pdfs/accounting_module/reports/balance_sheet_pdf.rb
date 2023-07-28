@@ -428,7 +428,7 @@ module AccountingModule
       end
       
       def net_surplus
-        office.current_net_income_config.total_net_surplus(from_date: @from_date, to_date: @to_date)
+        office.net_income_config.total_net_surplus(from_date: @from_date, to_date: @to_date)
       end
     end
   end

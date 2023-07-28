@@ -39,6 +39,13 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
+    active_interaction (5.3.0)
+      activemodel (>= 5.2, < 8)
+      activesupport (>= 5.2, < 8)
+    active_interaction-extras (1.1.0)
+      active_interaction (>= 5.0, < 6.0)
+      activemodel (>= 6.0)
+      activesupport (>= 6.0)
     activejob (6.1.7.4)
       activesupport (= 6.1.7.4)
       globalid (>= 0.3.6)
@@ -62,6 +69,8 @@ GEM
       zeitwerk (~> 2.3)
     addressable (2.8.4)
       public_suffix (>= 2.0.2, < 6.0)
+    ancestry (4.3.3)
+      activerecord (>= 5.2.6)
     audited (4.10.0)
       activerecord (>= 4.2, < 6.2)
     autonumeric-rails (2.0.0.1)
@@ -455,6 +464,9 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  active_interaction (~> 5.3)
+  active_interaction-extras
+  ancestry
   audited (~> 4.9)
   autonumeric-rails
   barby

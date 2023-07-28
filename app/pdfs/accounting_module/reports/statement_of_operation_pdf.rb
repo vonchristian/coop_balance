@@ -382,7 +382,7 @@ module AccountingModule
         stroke_horizontal_rule
         move_down 5
 
-        table([["TOTAL REVENUES", price(office.current_net_income_config.total_revenues(from_date))]], cell_style: {padding: [2,2], inline_format: true, size: 10},
+        table([["TOTAL REVENUES", price(office.net_income_config.total_revenues(from_date))]], cell_style: {padding: [2,2], inline_format: true, size: 10},
           column_widths: [330, 100]) do
             cells.borders = []
             column(0).font_style = :bold
@@ -463,7 +463,7 @@ module AccountingModule
         stroke_horizontal_rule
         move_down 5
 
-        table([["TOTAL EXPENSES", price(office.current_net_income_config.total_expenses(from_date: @to_date.beginning_of_year, to_date: @to_date))]], cell_style: {padding: [2,2], inline_format: true, size: 10},
+        table([["TOTAL EXPENSES", price(office.net_income_config.total_expenses(from_date: @to_date.beginning_of_year, to_date: @to_date))]], cell_style: {padding: [2,2], inline_format: true, size: 10},
           column_widths: [330, 100]) do
             cells.borders = []
             column(0).font_style = :bold
@@ -484,7 +484,7 @@ module AccountingModule
       end
       
       def net_surplus
-         office.current_net_income_config.total_net_surplus(from_date: @to_date.beginning_of_year, to_date: @to_date)
+         office.net_income_config.total_net_surplus(from_date: @to_date.beginning_of_year, to_date: @to_date)
       end
     end
   end

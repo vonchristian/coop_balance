@@ -1,0 +1,56 @@
+<h4> Assets </h4>
+<%= render_nested_groups(@assets) %>
+<h4> Liabilities </h4>
+<%= render_nested_groups(@liabilities) %>
+<hr>
+<h4> Equity </h4>
+<ul>
+<% @equities.each do |ledger| %>
+  <% if ledger.children.present? %>
+   <li><%= ledger.name %></li>
+    <ul>
+    <% ledger.children.each do |subsidiary_ledger| %>
+      <li><%= subsidiary_ledger.name %></li>
+    <% end %>
+    </ul>
+  <% else %>
+    <li><%= ledger.name %></li>
+  <% end %>
+
+<% end %>
+</ul>
+<hr>
+<h4> Revenue </h4>
+<ul>
+<% @revenues.each do |ledger| %>
+  <% if ledger.children.present? %>
+   <li><%= ledger.name %></li>
+    <ul>
+    <% ledger.children.each do |subsidiary_ledger| %>
+      <li><%= subsidiary_ledger.name %></li>
+    <% end %>
+    </ul>
+  <% else %>
+    <li><%= ledger.name %></li>
+  <% end %>
+
+<% end %>
+</ul>
+<hr>
+<h4> Expenses </h4>
+<ul>
+<% @expenses.each do |ledger| %>
+  <% if ledger.children.present? %>
+   <li><%= ledger.name %></li>
+    <ul>
+    <% ledger.children.each do |subsidiary_ledger| %>
+      <li><%= subsidiary_ledger.name %></li>
+    <% end %>
+    </ul>
+  <% else %>
+    <li><%= ledger.name %></li>
+  <% end %>
+
+<% end %>
+</ul>
+<hr>

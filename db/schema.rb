@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_28_040948) do
+ActiveRecord::Schema.define(version: 2023_07_28_145355) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -788,6 +788,20 @@ ActiveRecord::Schema.define(version: 2023_07_28_040948) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "message"
+  end
+
+  create_table "ledgers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "account_type", null: false
+    t.string "code", null: false
+    t.string "name", null: false
+    t.boolean "contra", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "ancestry", null: false, collation: "C"
+    t.index ["account_type"], name: "index_ledgers_on_account_type"
+    t.index ["ancestry"], name: "index_ledgers_on_ancestry"
+    t.index ["code"], name: "index_ledgers_on_code"
+    t.index ["contra"], name: "index_ledgers_on_contra"
   end
 
   create_table "level_four_account_categories", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|

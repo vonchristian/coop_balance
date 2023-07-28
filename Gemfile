@@ -4,6 +4,10 @@ git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
   "https://github.com/#{repo_name}.git"
 end
+
+gem 'ancestry'
+gem 'active_interaction', '~> 5.3'
+gem 'active_interaction-extras'
 gem 'mime-types', '~> 3.3', '>= 3.3.1'
 gem 'prawn-icon'
 gem 'bootsnap', '>= 1.1.0', require: false

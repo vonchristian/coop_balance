@@ -40,6 +40,7 @@ Rails.application.routes.draw do
   resources :home, only: [:index]
   resources :accounting_module, only: [:index]
   namespace :accounting_module do
+    resources :ledgers, only: [:index]
     resources :accounting_reports, only: [:new, :create, :show] do
       resources :level_one_account_categories,   only: [:new, :create], module: :accounting_reports
       resources :level_two_account_categories,   only: [:new, :create], module: :accounting_reports

@@ -1,0 +1,10 @@
+<% if ledger.children.present? %>
+<li><%= ledger.name %></li>
+  <ul>
+  <% ledger.children.each do |ledger| %>
+    <%= render 'ledger', ledger: ledger %>
+  <% end %>
+  </ul>
+<% else %>
+<li><%= ledger.name %></li>
+<% end %>

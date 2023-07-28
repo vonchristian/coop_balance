@@ -5,7 +5,7 @@ module AccountingModule
     def initialize(office:, date:)
       @office             = office 
       @date               = date 
-      @net_income_config  = office.current_net_income_config
+      @net_income_config  = office.net_income_config
       @net_income_account = @net_income_config.net_income_account
       @from_date          = @net_income_config.beginning_date(date)
       @to_date            = @net_income_config.ending_date(date)
