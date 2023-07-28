@@ -9,27 +9,17 @@
   <div class="col-md-4">
     <%=render 'layouts/shared/flash_messages' %>
     <div class="card">
-      <div class="card-header no-border">
-
-        <br>
-        <center>
-        <%=image_tag("coopbooks.png", height:
-           130, width: 130, class: 'img-circle') %>
-      </center>
-      <br>
-      <br>
-      </div>
       <div class="card-body">
-
+      <p> Sign in to your account</p>
       <%= simple_form_for(resource, as: resource_name, :url => session_path(resource_name),
         wrapper_mappings: {boolean: :vertical_boolean }, html: { autocomplete: 'off' }) do |f| %>
         <%= f.error_notification %>
 
-        <%= f.input :email, placeholder: "Email", input_html:{class: "form-control input-lg"}, label: false %>
-        <%= f.input :password, placeholder: "Password",  input_html:{class: "form-control input-lg"}, label: false  %>
+        <%= f.input :email, placeholder: "Email", input_html:{class: "form-control input-lg"}, label: 'Email' %>
+        <%= f.input :password, placeholder: "Password",  input_html:{class: "form-control input-lg"}, label: 'Password'  %>
 
         <hr>
-        <%= f.submit "Sign in", class: "btn btn-primary btn-flat btn-block btn-lg", data: {disable_with: "Signing in..."} %>
+        <%= f.submit "Sign in", class: "btn btn-primary btn-flat btn-block", data: {disable_with: "Signing in..."} %>
       <% end %>
       <br>
     </div>

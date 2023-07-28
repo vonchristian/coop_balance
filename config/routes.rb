@@ -38,9 +38,6 @@ Rails.application.routes.draw do
     root :to => 'banking_agents/dashboards#index', as: :authenticated_banking_agent_root
   end
   resources :home, only: [:index]
-  resources :about, only: [:index]
-
-
   resources :accounting_module, only: [:index]
   namespace :accounting_module do
     resources :accounting_reports, only: [:new, :create, :show] do

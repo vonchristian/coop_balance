@@ -17,10 +17,6 @@ module AccountingModule
       it { is_expected.to have_many :credit_accounts }
       it { is_expected.to have_many :accounts }
       it { is_expected.to have_many :amounts }
-      it { is_expected.to have_many :new_debit_amounts }
-      it { is_expected.to have_many :new_credit_amounts }
-
-
   	end
 
     describe 'validations' do

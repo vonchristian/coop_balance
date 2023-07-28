@@ -22,8 +22,6 @@ module AccountingModule
     has_many   :debit_accounts,        class_name: 'AccountingModule::Account', through: :debit_amounts,  source: :account
     has_many   :amounts,               class_name: "AccountingModule::Amount", dependent: :destroy
     has_many   :accounts,              class_name: "AccountingModule::Account", through: :amounts
-    has_many   :new_debit_amounts,     class_name: "Accounting::Amounts::DebitAmount"
-    has_many   :new_credit_amounts,     class_name: "Accounting::Amounts::DebitAmount"
 
     validates :description, :reference_number, :entry_date, :entry_time, presence: true
 
