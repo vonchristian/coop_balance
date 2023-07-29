@@ -52,7 +52,7 @@ gem 'chartkick'
 gem 'groupdate'
 gem 'roo', "2.7.0"
 gem 'numbers_and_words'
-gem "audited", "~> 4.9"
+gem "audited", "~> 5.3"
 gem "responders"
 gem 'money-rails'
 gem 'sidekiq', '<7'
