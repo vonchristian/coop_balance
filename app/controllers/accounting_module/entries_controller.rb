@@ -124,12 +124,12 @@ module AccountingModule
           yielder << CSV.generate_line([""])
           yielder << CSV.generate_line(["Accounts Summary"])
           yielder << CSV.generate_line(["DEBIT", "ACCOUNT", "CREDIT"])
-          l1_category_ids = @entries_for_pdf.accounts.pluck(:level_one_account_category_id)
-          current_office.level_one_account_categories.where(id: l1_category_ids.compact.flatten.uniq).each do |l1_category|
+          ids = @entries_for_pdf.accounts.pluck(:ledger_id)
+          current_office.ledgers.where(id: ids.compact.flatten.uniq).each do |ledger|
             yielder << CSV.generate_line([
-              l1_category.debit_amounts.where(entry_id: @entries_for_pdf.ids).total,
-              l1_category.title, 
-              l1_category.credit_amounts.where(entry_id: @entries_for_pdf.ids).total
+              ledger.debit_amounts.where(entry_id: @entries_for_pdf.ids).total,
+              ledger.title, 
+              ledger.credit_amounts.where(entry_id: @entries_for_pdf.ids).total
               ])
           end 
 			end 

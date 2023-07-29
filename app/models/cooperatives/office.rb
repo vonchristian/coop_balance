@@ -38,6 +38,8 @@ module Cooperatives
     has_many :share_capital_applications,       class_name: 'ShareCapitalsModule::ShareCapitalApplication'
     has_one :net_income_config,                 class_name: 'Offices::NetIncomeConfig'
     has_many :clearing_house_depository_accounts, class_name: "ClearingHouseModule::ClearingHouseDepositoryAccount", as: :depositor 
+    has_many :office_ledgers, class_name: 'Offices::Ledger'
+    has_many :ledgers, through: :office_ledgers
     validates :name, uniqueness: true
     validates :name, :type, :contact_number, :address, presence: true
     

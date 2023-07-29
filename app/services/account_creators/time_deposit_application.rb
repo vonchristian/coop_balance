@@ -1,12 +1,12 @@
 module AccountCreators
   class TimeDepositApplication
-    attr_reader :time_deposit_application, :time_deposit_product, :office, :liability_account_category
+    attr_reader :time_deposit_application, :time_deposit_product, :office, :liability_ledger
 
     def initialize(time_deposit_application:)
       @time_deposit_application   = time_deposit_application
       @office                     = @time_deposit_application.office
       @time_deposit_product       = @time_deposit_application.time_deposit_product
-      @liability_account_category = @office.office_time_deposit_products.find_by(time_deposit_product: @time_deposit_product).liability_account_category
+      @liability_ledger = @office.office_time_deposit_products.find_by(time_deposit_product: @time_deposit_product).liability_ledger
     end
 
 

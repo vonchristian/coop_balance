@@ -1,56 +1,53 @@
-<h4> Assets </h4>
-<%= render_nested_groups(@assets) %>
-<h4> Liabilities </h4>
-<%= render_nested_groups(@liabilities) %>
-<hr>
-<h4> Equity </h4>
-<ul>
-<% @equities.each do |ledger| %>
-  <% if ledger.children.present? %>
-   <li><%= ledger.name %></li>
-    <ul>
-    <% ledger.children.each do |subsidiary_ledger| %>
-      <li><%= subsidiary_ledger.name %></li>
-    <% end %>
-    </ul>
-  <% else %>
-    <li><%= ledger.name %></li>
-  <% end %>
+<div class="card">
+  <div class="card-body">
+<h4><center> Assets </center></h4>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th> </th>
+      <th><span class="float-right"> <%= @to_date.last_year.year %> </span> </th>
+      <th><span class="float-right"> <%= @to_date.year %> </span> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render 'ledgers', ledgers: @assets.arrange(order: :code) %>
+    <tr>
+      <td><b>TOTAL ASSETS </b> </td>
+      <td><span class="float-right"> <b> <%= number_to_currency @assets.balance(from_date: @from_date, to_date: @to_date.last_year.end_of_year) %><b></span></td>
+      <td><span class="float-right"> <b> <%= number_to_currency @assets.balance(from_date: @from_date, to_date: @to_date.end_of_year) %></b></span></td>
 
-<% end %>
-</ul>
+    </tr>
+  </tbody>
+</table>
 <hr>
-<h4> Revenue </h4>
-<ul>
-<% @revenues.each do |ledger| %>
-  <% if ledger.children.present? %>
-   <li><%= ledger.name %></li>
-    <ul>
-    <% ledger.children.each do |subsidiary_ledger| %>
-      <li><%= subsidiary_ledger.name %></li>
-    <% end %>
-    </ul>
-  <% else %>
-    <li><%= ledger.name %></li>
-  <% end %>
 
-<% end %>
-</ul>
-<hr>
-<h4> Expenses </h4>
-<ul>
-<% @expenses.each do |ledger| %>
-  <% if ledger.children.present? %>
-   <li><%= ledger.name %></li>
-    <ul>
-    <% ledger.children.each do |subsidiary_ledger| %>
-      <li><%= subsidiary_ledger.name %></li>
-    <% end %>
-    </ul>
-  <% else %>
-    <li><%= ledger.name %></li>
-  <% end %>
+<h4><center> Liabilities and Shareholders Equity </center></h4>
+<% last_year_revenue = @revenues.balance(from_date: @to_date.last_year.beginning_of_year, to_date: @to_date.last_year.end_of_year) %>
+<% current_year_revenue = @revenues.balance(from_date: @to_date.beginning_of_year, to_date: @to_date.end_of_year) %>
+<% last_year_expense = @expenses.balance(from_date: @to_date.last_year.beginning_of_year, to_date: @to_date.last_year.end_of_year) %>
+<% current_year_expenses = @expenses.balance(from_date: @to_date.beginning_of_year, to_date: @to_date.end_of_year) %>
+<% last_year_net_surplus = last_year_revenue - last_year_expense %>
+<% current_year_net_surplus = current_year_revenue - last_year_revenue %>
 
-<% end %>
-</ul>
+<table class="table table-hover">
+  <tr>
+      <th> </th>
+      <th><span class="float-right"> <%= @to_date.last_year.year %> </span> </th>
+      <th><span class="float-right"> <%= @to_date.year %> </span> </th>
+    </tr>
+  <tbody>
+    <%= render 'ledgers', ledgers: @liabilities.arrange(order: :code) %>
+    <%= render 'ledgers', ledgers: @equities.arrange(order: :code) %>
+    <tr>
+      <td><b>Net Surplus </b> </td>
+      <td><span class="float-right"> <%= number_to_currency(last_year_net_surplus) %></span></td>
+      <td><span class="float-right"> <%= number_to_currency(current_year_net_surplus) %></span></td>
+    </tr>
+     <tr>
+      <td><b>TOTAL LIABILITIES AND SHAREHOLDERS EQUITY </b> </td>
+      <td><span class="float-right"> <%= number_to_currency((@liabilities.balance(from_date: @from_date, to_date: @to_date.last_year.end_of_year)) + (@equities.balance(from_date: @from_date, to_date: @to_date.last_year.end_of_year)) + last_year_net_surplus) %></span></td>
+      <td><span class="float-right"> <%= number_to_currency((@liabilities.balance(from_date: @from_date, to_date: @to_date.end_of_year)) + (@equities.balance(from_date: @from_date, to_date: @to_date.end_of_year)) + current_year_net_surplus) %></span></td>
+    </tr>
+  </tbody>
+</table>
 <hr>

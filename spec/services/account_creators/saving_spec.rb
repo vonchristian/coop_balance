@@ -18,8 +18,8 @@ module AccountCreators
       expect(saving.liability_account).to eql liability_account
       expect(saving.interest_expense_account).to eql interest_expense_account
 
-      expect(office_saving_product.liability_account_category.accounts).to include(liability_account)
-      expect(office_saving_product.interest_expense_account_category.accounts).to include(interest_expense_account)
+      expect(office_saving_product.liability_ledger.accounts).to include(liability_account)
+      expect(office_saving_product.interest_expense_ledger.accounts).to include(interest_expense_account)
 
       expect(office.accounts).to include(liability_account)
       expect(office.accounts).to include(interest_expense_account)

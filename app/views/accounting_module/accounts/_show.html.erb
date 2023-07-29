@@ -1,5 +1,6 @@
 <div class="card">
   <div class="card-body">
+    <p><%= @account.name %></p>
     <ul class="nav nav-pills nav-pills-underline">
       <li class="nav-item"><%= link_to 'Info', accounting_module_account_path(@account), class: "nav-link #{'active' if current_page?(accounting_module_account_path(@account))}" %></li>
       <li class="nav-item"><%= link_to 'Entries', accounting_module_account_entries_path(@account), class: "nav-link #{'active' if current_page?(accounting_module_account_entries_path(@account))}" %></li>

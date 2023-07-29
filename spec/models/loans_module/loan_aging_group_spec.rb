@@ -4,7 +4,7 @@ module LoansModule
   describe LoanAgingGroup do
     describe 'associations' do
       it { is_expected.to belong_to :office }
-      it { is_expected.to belong_to :level_two_account_category }
+      it { is_expected.to belong_to :receivable_ledger }
       it { is_expected.to have_many :loan_agings }
       it { is_expected.to have_many :loans }
       it { is_expected.to have_many :office_loan_product_aging_groups }

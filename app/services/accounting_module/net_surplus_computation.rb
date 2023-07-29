@@ -23,8 +23,8 @@ module AccountingModule
     private 
 
     def temp_net_net_surplus 
-      office.level_one_account_categories.revenues.balance(from_date: beginning_date_for(date), to_date: end_date_for(date)) - 
-      office.level_one_account_categories.expenses.balance(from_date: beginning_date_for(date), to_date: end_date_for(date))
+      office.ledgers.revenue.balance(from_date: beginning_date_for(date), to_date: end_date_for(date)) - 
+      office.ledgers.expense.balance(from_date: beginning_date_for(date), to_date: end_date_for(date))
     end 
 
     def net_surplus 

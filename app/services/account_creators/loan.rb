@@ -1,16 +1,16 @@
 module AccountCreators
   class Loan
-    attr_reader :loan, :loan_product, :office, :receivable_account_category, :interest_revenue_account_category, :penalty_revenue_account_category
+    attr_reader :loan, :loan_product, :office, :receivable_ledger, :interest_revenue_ledger, :penalty_revenue_ledger
 
     def initialize(loan:)
-      @loan                              = loan
-      @loan_product                      = @loan.loan_product
-      @office                            = @loan.office
-      @office_loan_product               = @office.office_loan_products.find_by(loan_product: @loan_product)
-      @office_loan_product_aging_group   = @office_loan_product.office_loan_product_aging_groups.current
-      @interest_revenue_account_category = @office.office_loan_products.find_by(loan_product: @loan_product).interest_revenue_account_category
-      @penalty_revenue_account_category  = @office.office_loan_products.find_by(loan_product: @loan_product).penalty_revenue_account_category
-      @receivable_account_category       = @office_loan_product_aging_group.level_one_account_category
+      @loan                            = loan
+      @loan_product                    = @loan.loan_product
+      @office                          = @loan.office
+      @office_loan_product             = @office.office_loan_products.find_by(loan_product: @loan_product)
+      @office_loan_product_aging_group = @office_loan_product.office_loan_product_aging_groups.current
+      @interest_revenue_ledger         = @office.office_loan_products.find_by(loan_product: @loan_product).interest_revenue_ledger
+      @penalty_revenue_ledger          = @office.office_loan_products.find_by(loan_product: @loan_product).penalty_revenue_ledger
+      @receivable_ledger               = @office_loan_product_aging_group.receivable_ledger
     end
 
     def create_accounts!
@@ -25,9 +25,9 @@ module AccountCreators
     def create_receivable_account!
       if loan.receivable_account.blank?
         account = office.accounts.assets.create!(
-          name:                       receivable_account_name,
-          code:                       SecureRandom.uuid,
-          level_one_account_category: receivable_account_category)
+          name:   receivable_account_name,
+          code:   SecureRandom.uuid,
+          ledger: receivable_ledger)
         loan.update(receivable_account: account)
       end
     end
@@ -35,9 +35,9 @@ module AccountCreators
     def create_interest_revenue_account!
       if loan.interest_revenue_account.blank?
         account = office.accounts.revenues.create!(
-          name:                       interest_revenue_name,
-          code:                       SecureRandom.uuid,
-          level_one_account_category: interest_revenue_account_category
+          name:   interest_revenue_name,
+          code:   SecureRandom.uuid,
+          ledger: interest_revenue_ledger
         )
         loan.update(interest_revenue_account: account)
       end
@@ -46,9 +46,9 @@ module AccountCreators
     def create_penalty_revenue_account!
       if loan.penalty_revenue_account.blank?
         account = office.accounts.revenues.create!(
-          name:                       penalty_revenue_name,
-          code:                       SecureRandom.uuid,
-          level_one_account_category: penalty_revenue_account_category)
+          name:   penalty_revenue_name,
+          code:   SecureRandom.uuid,
+          ledger: penalty_revenue_ledger)
         loan.update(penalty_revenue_account: account)
       end
     end

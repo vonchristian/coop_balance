@@ -65,10 +65,10 @@ module AccountingModule
     end
 
     def account_params
-      params.require(:accounting_module_account).permit(:name, :code, :type, :contra, :level_one_account_category_id)
+      params.require(:accounting_module_account).permit(:name, :code, :type, :contra, :ledger_id)
     end
     def update_params
-      params.require(@account.type.underscore.parameterize.underscore.to_sym).permit(:name, :code, :type, :contra, :level_one_account_category_id)
+      params.require(@account.type.underscore.parameterize.underscore.to_sym).permit(:name, :code, :type, :contra, :ledger_id)
     end
   end
 end

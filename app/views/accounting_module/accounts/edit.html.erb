@@ -10,7 +10,7 @@
 	  <%= f.input :name %>
 	  <%= f.input :code %>
 	  <%= f.input :type, collection: AccountingModule::Account.types %>
-    <%= f.input :level_one_account_category_id, label: 'L1 Account Category', collection: current_office.level_one_account_categories.map{ |a| [a.title, a.id] }, input_html: { class: 'chosen-select' } %>
+    <%= f.input :ledger_id, label: 'Ledger', collection: current_office.ledgers.map{ |a| [a.name, a.id] }, input_html: { class: 'chosen-select' } %>
 	  <%= f.input :contra %>
   </div>
   <div class="modal-footer">

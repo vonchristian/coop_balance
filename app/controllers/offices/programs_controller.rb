@@ -19,7 +19,7 @@ module Offices
     private
     def program_params
       params.require(:offices_office_program).
-      permit(:program_id, :level_one_account_category_id)
+      permit(:program_id, :ledger_id)
     end 
   end
 end

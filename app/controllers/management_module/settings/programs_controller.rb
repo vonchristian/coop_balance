@@ -23,7 +23,7 @@ module ManagementModule
 			private
 
 			def program_params
-			  params.require(:cooperatives_program).permit(:name, :amount, :default_program, :description, :payment_schedule_type, :account_id, :cooperative_id, :level_one_account_category_id)
+			  params.require(:cooperatives_program).permit(:name, :amount, :default_program, :description, :payment_schedule_type, :account_id, :cooperative_id, :ledger_id)
 			end
 		end
 	end

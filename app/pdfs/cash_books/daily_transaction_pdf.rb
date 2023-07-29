@@ -133,24 +133,23 @@ module CashBooks
       def summary_table
         move_down 10
         text 'ACCOUNTS SUMMARY'
-        l1_categories = entries.accounts.pluck(:level_one_account_category_id)
+        ledger_ids = entries.accounts.pluck(:ledger_id)
         total_credits = BigDecimal('0')
         total_debits  = BigDecimal('0')
 
-        account_categories_data ||= employee.office.level_one_account_categories.where(id: l1_categories.uniq.compact.flatten).map do |l1_category|
-          debits_balance  = l1_category.debit_amounts.where(entry_id: entries.ids).total
-          credits_balance = l1_category.credit_amounts.where(entry_id: entries.ids).total
+        ledgers_data ||= employee.office.ledgers.where(id: ledger_ids.uniq.compact.flatten).map do |ledger|
+          debits_balance  = ledger.debit_amounts.where(entry_id: entries.ids).total
+          credits_balance = ledger.credit_amounts.where(entry_id: entries.ids).total
           total_credits += credits_balance
           total_debits  += debits_balance
           [
             price(debits_balance),
-            l1_category.title,
+            ledger.name,
             price(credits_balance)
-            # l1_category.credit_amounts.not_cancelled.where(entry_id: entries.ids).uniq.sum(&:amount)
           ]
       
         end
-        table([["DEBIT", "ACCOUNT", "CREDIT"]] + account_categories_data + [[price(total_debits), "", price(total_credits)]],
+        table([["DEBIT", "ACCOUNT", "CREDIT"]] + ledgers_data + [[price(total_debits), "", price(total_credits)]],
           cell_style: { inline_format: true, size: 10, padding: [1,5,3,2]}, 
             column_widths: [150, 200, 150]) do
             column(0).align = :right

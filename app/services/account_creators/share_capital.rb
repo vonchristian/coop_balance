@@ -1,12 +1,12 @@
 module AccountCreators
   class ShareCapital
-    attr_reader :share_capital, :share_capital_product, :office, :equity_account_category, :interest_payable_account_category
+    attr_reader :share_capital, :share_capital_product, :office, :equity_ledger
 
     def initialize(share_capital:)
-      @share_capital           = share_capital
-      @office                  = @share_capital.office
-      @share_capital_product   = @share_capital.share_capital_product
-      @equity_account_category = @office.office_share_capital_products.find_by!(share_capital_product: @share_capital_product).equity_account_category
+      @share_capital         = share_capital
+      @office                = @share_capital.office
+      @share_capital_product = @share_capital.share_capital_product
+      @equity_ledger         = @office.office_share_capital_products.find_by!(share_capital_product: @share_capital_product).equity_ledger
     end
 
     def create_accounts!
@@ -23,7 +23,7 @@ module AccountCreators
         account = office.accounts.equities.create!(
         name:                       "#{share_capital_product.name} - (#{share_capital.subscriber_name} - #{share_capital.account_number}",
         code:                       SecureRandom.uuid,
-        level_one_account_category: equity_account_category)
+        ledger: equity_ledger)
        
         share_capital.update(share_capital_equity_account: account)
         share_capital.save!

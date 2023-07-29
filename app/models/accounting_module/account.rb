@@ -8,7 +8,8 @@ module AccountingModule
 
     class_attribute :normal_credit_balance
 
-    belongs_to :level_one_account_category,  class_name: 'AccountingModule::LevelOneAccountCategory'
+    belongs_to :level_one_account_category,  class_name: 'AccountingModule::LevelOneAccountCategory', optional: true 
+    belongs_to :ledger, class_name: 'AccountingModule::Ledger'
     has_many :amounts,                       class_name: "AccountingModule::Amount"
     has_many :credit_amounts,        -> { not_cancelled },        :class_name => 'AccountingModule::CreditAmount'
     has_many :debit_amounts,         -> { not_cancelled },        :class_name => 'AccountingModule::DebitAmount'
@@ -160,11 +161,7 @@ module AccountingModule
     end
 
     def display_name
-      if level_one_account_category
-        level_one_account_category.title
-      else
-        name
-      end
+      ledger.name
     end
 
     def credits_balance(args={})

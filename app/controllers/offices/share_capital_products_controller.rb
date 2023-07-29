@@ -22,7 +22,7 @@ module Offices
 
     def share_capital_product_params
       params.require(:offices_office_share_capital_product).
-      permit(:share_capital_product_id, :equity_account_category_id, :forwarding_account_id)
+      permit(:share_capital_product_id, :equity_ledger_id, :forwarding_account_id)
     end
   end
 end

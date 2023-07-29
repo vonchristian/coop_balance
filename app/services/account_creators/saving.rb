@@ -1,13 +1,13 @@
 module AccountCreators
   class Saving
-    attr_reader :saving, :office, :liability_account_category, :interest_expense_account_category, :saving_product
+    attr_reader :saving, :office, :liability_ledger, :interest_expense_ledger, :saving_product
 
     def initialize(saving:)
       @saving                            = saving
       @saving_product                    = @saving.saving_product
       @office                            = @saving.office
-      @liability_account_category        = @office.office_saving_products.find_by!(saving_product: @saving_product).liability_account_category
-      @interest_expense_account_category = @office.office_saving_products.find_by!(saving_product: @saving_product).interest_expense_account_category
+      @liability_ledger        = @office.office_saving_products.find_by!(saving_product: @saving_product).liability_ledger
+      @interest_expense_ledger = @office.office_saving_products.find_by!(saving_product: @saving_product).interest_expense_ledger
     end
 
     def create_accounts!
@@ -26,7 +26,7 @@ module AccountCreators
 
           name: "#{saving_product.name} - (#{saving.depositor_name} - #{saving.account_number}",
           code: saving.account_number,
-          level_one_account_category: liability_account_category
+          ledger: liability_ledger
         )
         saving.update(liability_account: account)
       end
@@ -37,7 +37,7 @@ module AccountCreators
         account = office.accounts.expenses.create!(
           name: "Interest Expense on Savings Deposits - (#{saving.depositor_name} - #{saving.account_number}",
           code: "INT-#{saving.account_number}",
-          level_one_account_category: interest_expense_account_category
+          ledger: interest_expense_ledger
         )
         saving.update(interest_expense_account: account)
       end

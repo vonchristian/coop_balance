@@ -22,7 +22,7 @@ module LoansModule
         private 
         def office_loan_product_aging_group_params
           params.require(:loans_module_office_loan_product_aging_group).
-          permit(:office_loan_product_id, :level_one_account_category_id)
+          permit(:office_loan_product_id, :ledger_id)
         end 
       end 
     end 

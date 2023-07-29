@@ -43,7 +43,7 @@ module Offices
       if books_closed?(from_date: from_date, to_date: to_date)
         total_revenue_account.debits_balance(from_date: from_date, to_date: to_date)
       else 
-        office.level_one_account_categories.revenues.balance(from_date: from_date, to_date: to_date)
+        office.ledgers.revenue.balance(from_date: from_date, to_date: to_date)
       end 
     end
     
@@ -53,7 +53,7 @@ module Offices
       if books_closed?(from_date: from_date, to_date: to_date)
         total_expense_account.credits_balance(from_date: from_date, to_date: to_date)
       else 
-        office.level_one_account_categories.expenses.credits_balance(from_date: from_date, to_date: to_date)
+        office.ledgers.expense.credits_balance(from_date: from_date, to_date: to_date)
       end 
     end
 
@@ -64,7 +64,7 @@ module Offices
       if books_closed?(from_date: from_date, to_date: to_date)
         net_surplus_account.credits_balance(from_date: from_date, to_date: to_date)
       else 
-        office.level_one_account_categories.revenues.balance(from_date: from_date, to_date: to_date) - office.level_one_account_categories.expenses.balance(from_date: from_date, to_date: to_date)
+        office.ledgers.revenue.balance(from_date: from_date, to_date: to_date) - office.ledgers.expense.balance(from_date: from_date, to_date: to_date)
       end 
     end
 
@@ -75,7 +75,7 @@ module Offices
       if books_closed?(from_date: from_date, to_date: to_date)
         net_loss_account.debits_balance(from_date: from_date, to_date: to_date)
       else 
-        office.level_one_account_categories.expenses.balance(from_date: from_date, to_date: to_date) - office.level_one_account_categories.revenues.balance(from_date: from_date, to_date: to_date)
+        office.ledgers.expense.balance(from_date: from_date, to_date: to_date) - office.ledgers.revenue.balance(from_date: from_date, to_date: to_date)
       end 
     end
   end

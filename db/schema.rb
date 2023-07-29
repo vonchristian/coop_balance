@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_28_145355) do
+ActiveRecord::Schema.define(version: 2023_07_29_094818) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -46,26 +46,6 @@ ActiveRecord::Schema.define(version: 2023_07_28_145355) do
     t.index ["accountable_type", "accountable_id"], name: "index_accountable_on_accountable_accounts"
   end
 
-  create_table "accounting_report_account_categorizations", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "accounting_report_id", null: false
-    t.string "account_category_type", null: false
-    t.uuid "account_category_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["account_category_type", "account_category_id"], name: "index_accounting_category_on_acc_report_categorizations"
-    t.index ["accounting_report_id"], name: "index_accounting_report_on_acc_report_categorizations"
-  end
-
-  create_table "accounting_reports", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
-    t.string "title", null: false
-    t.uuid "office_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "report_type"
-    t.index ["office_id"], name: "index_accounting_reports_on_office_id"
-    t.index ["report_type"], name: "index_accounting_reports_on_report_type"
-  end
-
   create_table "accounts", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "code"
@@ -76,7 +56,9 @@ ActiveRecord::Schema.define(version: 2023_07_28_145355) do
     t.boolean "active", default: true
     t.datetime "last_transaction_date"
     t.uuid "level_one_account_category_id"
+    t.uuid "ledger_id"
     t.index ["code"], name: "index_accounts_on_code", unique: true
+    t.index ["ledger_id"], name: "index_accounts_on_ledger_id"
     t.index ["level_one_account_category_id"], name: "index_accounts_on_level_one_account_category_id"
     t.index ["name"], name: "index_accounts_on_name", unique: true
     t.index ["type"], name: "index_accounts_on_type"
@@ -896,8 +878,10 @@ ActiveRecord::Schema.define(version: 2023_07_28_145355) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "level_two_account_category_id"
+    t.uuid "receivable_ledger_id"
     t.index ["level_two_account_category_id"], name: "index_loan_aging_groups_on_level_two_account_category_id"
     t.index ["office_id"], name: "index_loan_aging_groups_on_office_id"
+    t.index ["receivable_ledger_id"], name: "index_loan_aging_groups_on_receivable_ledger_id"
   end
 
   create_table "loan_agings", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -1343,12 +1327,24 @@ ActiveRecord::Schema.define(version: 2023_07_28_145355) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "office_ledgers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "office_id", null: false
+    t.uuid "ledger_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["ledger_id"], name: "index_office_ledgers_on_ledger_id"
+    t.index ["office_id", "ledger_id"], name: "index_office_ledgers_on_office_id_and_ledger_id", unique: true
+    t.index ["office_id"], name: "index_office_ledgers_on_office_id"
+  end
+
   create_table "office_loan_product_aging_groups", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "office_loan_product_id", null: false
     t.uuid "loan_aging_group_id", null: false
-    t.uuid "level_one_account_category_id", null: false
+    t.uuid "level_one_account_category_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "ledger_id"
+    t.index ["ledger_id"], name: "index_office_loan_product_aging_groups_on_ledger_id"
     t.index ["level_one_account_category_id"], name: "index_account_categories_on_office_loan_product_aging_groups"
     t.index ["loan_aging_group_id"], name: "index_loan_aging_groups_on_office_loan_product_aging_groups"
     t.index ["office_loan_product_id"], name: "index_office_loan_products_on_office_loan_product_aging_groups"
@@ -1357,18 +1353,22 @@ ActiveRecord::Schema.define(version: 2023_07_28_145355) do
   create_table "office_loan_products", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "office_id", null: false
     t.uuid "loan_product_id", null: false
-    t.uuid "interest_revenue_account_category_id", null: false
-    t.uuid "penalty_revenue_account_category_id", null: false
+    t.uuid "interest_revenue_account_category_id"
+    t.uuid "penalty_revenue_account_category_id"
     t.uuid "loan_protection_plan_provider_id", null: false
     t.uuid "forwarding_account_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "interest_revenue_ledger_id"
+    t.uuid "penalty_revenue_ledger_id"
     t.index ["forwarding_account_id"], name: "index_office_loan_products_on_forwarding_account_id"
     t.index ["interest_revenue_account_category_id"], name: "index_interest_revenue_category_on_office_loan_products"
+    t.index ["interest_revenue_ledger_id"], name: "index_office_loan_products_on_interest_revenue_ledger_id"
     t.index ["loan_product_id"], name: "index_office_loan_products_on_loan_product_id"
     t.index ["loan_protection_plan_provider_id"], name: "index_office_loan_products_on_loan_protection_plan_provider_id"
     t.index ["office_id"], name: "index_office_loan_products_on_office_id"
     t.index ["penalty_revenue_account_category_id"], name: "index_penalty_revenue_category_on_office_loan_products"
+    t.index ["penalty_revenue_ledger_id"], name: "index_office_loan_products_on_penalty_revenue_ledger_id"
   end
 
   create_table "office_programs", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -1377,24 +1377,30 @@ ActiveRecord::Schema.define(version: 2023_07_28_145355) do
     t.uuid "level_one_account_category_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "ledger_id"
+    t.index ["ledger_id"], name: "index_office_programs_on_ledger_id"
     t.index ["level_one_account_category_id"], name: "index_office_programs_on_level_one_account_category_id"
     t.index ["office_id"], name: "index_office_programs_on_office_id"
     t.index ["program_id"], name: "index_office_programs_on_program_id"
   end
 
   create_table "office_saving_products", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "liability_account_category_id", null: false
-    t.uuid "interest_expense_account_category_id", null: false
+    t.uuid "liability_account_category_id"
+    t.uuid "interest_expense_account_category_id"
     t.uuid "office_id", null: false
-    t.uuid "closing_account_category_id", null: false
+    t.uuid "closing_account_category_id"
     t.uuid "forwarding_account_id", null: false
     t.uuid "saving_product_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "liability_ledger_id"
+    t.uuid "interest_expense_ledger_id"
     t.index ["closing_account_category_id"], name: "index_office_saving_products_on_closing_account_category_id"
     t.index ["forwarding_account_id"], name: "index_office_saving_products_on_forwarding_account_id"
     t.index ["interest_expense_account_category_id"], name: "index_int_expense_category_on_office_saving_products"
+    t.index ["interest_expense_ledger_id"], name: "index_office_saving_products_on_interest_expense_ledger_id"
     t.index ["liability_account_category_id"], name: "index_office_saving_products_on_liability_account_category_id"
+    t.index ["liability_ledger_id"], name: "index_office_saving_products_on_liability_ledger_id"
     t.index ["office_id"], name: "index_office_saving_products_on_office_id"
     t.index ["saving_product_id"], name: "index_office_saving_products_on_saving_product_id"
   end
@@ -1402,11 +1408,13 @@ ActiveRecord::Schema.define(version: 2023_07_28_145355) do
   create_table "office_share_capital_products", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "share_capital_product_id", null: false
     t.uuid "office_id", null: false
-    t.uuid "equity_account_category_id", null: false
+    t.uuid "equity_account_category_id"
     t.uuid "forwarding_account_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "equity_ledger_id"
     t.index ["equity_account_category_id"], name: "index_equity_account_category_on_office_share_capital_products"
+    t.index ["equity_ledger_id"], name: "index_office_share_capital_products_on_equity_ledger_id"
     t.index ["forwarding_account_id"], name: "index_office_share_capital_products_on_forwarding_account_id"
     t.index ["office_id"], name: "index_office_share_capital_products_on_office_id"
     t.index ["share_capital_product_id"], name: "index_office_share_capital_products_on_share_capital_product_id"
@@ -1414,17 +1422,23 @@ ActiveRecord::Schema.define(version: 2023_07_28_145355) do
 
   create_table "office_time_deposit_products", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "office_id", null: false
-    t.uuid "liability_account_category_id", null: false
-    t.uuid "interest_expense_account_category_id", null: false
-    t.uuid "break_contract_account_category_id", null: false
+    t.uuid "liability_account_category_id"
+    t.uuid "interest_expense_account_category_id"
+    t.uuid "break_contract_account_category_id"
     t.uuid "time_deposit_product_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "forwarding_account_id", null: false
+    t.uuid "liability_ledger_id"
+    t.uuid "interest_expense_ledger_id"
+    t.uuid "break_contract_revenue_ledger_id"
     t.index ["break_contract_account_category_id"], name: "index_break_contract_category_on_office_time_deposit_products"
+    t.index ["break_contract_revenue_ledger_id"], name: "indedasd"
     t.index ["forwarding_account_id"], name: "index_office_time_deposit_products_on_forwarding_account_id"
     t.index ["interest_expense_account_category_id"], name: "index_interest_expense_category_on_office_time_deposit_products"
+    t.index ["interest_expense_ledger_id"], name: "rsadsad"
     t.index ["liability_account_category_id"], name: "index_liability_category_on_office_time_deposit_products"
+    t.index ["liability_ledger_id"], name: "index_office_time_deposit_products_on_liability_ledger_id"
     t.index ["office_id"], name: "index_office_time_deposit_products_on_office_id"
     t.index ["time_deposit_product_id"], name: "index_office_time_deposit_products_on_time_deposit_product_id"
   end
@@ -1601,8 +1615,10 @@ ActiveRecord::Schema.define(version: 2023_07_28_145355) do
     t.uuid "cooperative_id"
     t.decimal "amount"
     t.uuid "level_one_account_category_id"
+    t.uuid "ledger_id"
     t.index ["account_id"], name: "index_programs_on_account_id"
     t.index ["cooperative_id"], name: "index_programs_on_cooperative_id"
+    t.index ["ledger_id"], name: "index_programs_on_ledger_id"
     t.index ["level_one_account_category_id"], name: "index_programs_on_level_one_account_category_id"
     t.index ["payment_schedule_type"], name: "index_programs_on_payment_schedule_type"
   end
@@ -2280,8 +2296,7 @@ ActiveRecord::Schema.define(version: 2023_07_28_145355) do
   add_foreign_key "account_budgets", "accounts"
   add_foreign_key "account_budgets", "cooperatives"
   add_foreign_key "accountable_accounts", "accounts"
-  add_foreign_key "accounting_report_account_categorizations", "accounting_reports"
-  add_foreign_key "accounting_reports", "offices"
+  add_foreign_key "accounts", "ledgers"
   add_foreign_key "accounts", "level_one_account_categories"
   add_foreign_key "addresses", "barangays"
   add_foreign_key "addresses", "municipalities"
@@ -2361,6 +2376,7 @@ ActiveRecord::Schema.define(version: 2023_07_28_145355) do
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items", "products"
   add_foreign_key "line_items", "unit_of_measurements"
+  add_foreign_key "loan_aging_groups", "ledgers", column: "receivable_ledger_id"
   add_foreign_key "loan_aging_groups", "level_two_account_categories"
   add_foreign_key "loan_aging_groups", "offices"
   add_foreign_key "loan_agings", "accounts", column: "receivable_account_id"
@@ -2438,29 +2454,41 @@ ActiveRecord::Schema.define(version: 2023_07_28_145355) do
   add_foreign_key "net_income_distributions", "accounts"
   add_foreign_key "net_income_distributions", "cooperatives"
   add_foreign_key "notes", "users", column: "noter_id"
+  add_foreign_key "office_ledgers", "ledgers"
+  add_foreign_key "office_ledgers", "offices"
+  add_foreign_key "office_loan_product_aging_groups", "ledgers"
   add_foreign_key "office_loan_product_aging_groups", "level_one_account_categories"
   add_foreign_key "office_loan_product_aging_groups", "loan_aging_groups"
   add_foreign_key "office_loan_product_aging_groups", "office_loan_products"
   add_foreign_key "office_loan_products", "accounts", column: "forwarding_account_id"
+  add_foreign_key "office_loan_products", "ledgers", column: "interest_revenue_ledger_id"
+  add_foreign_key "office_loan_products", "ledgers", column: "penalty_revenue_ledger_id"
   add_foreign_key "office_loan_products", "level_one_account_categories", column: "interest_revenue_account_category_id"
   add_foreign_key "office_loan_products", "level_one_account_categories", column: "penalty_revenue_account_category_id"
   add_foreign_key "office_loan_products", "loan_products"
   add_foreign_key "office_loan_products", "loan_protection_plan_providers"
   add_foreign_key "office_loan_products", "offices"
+  add_foreign_key "office_programs", "ledgers"
   add_foreign_key "office_programs", "level_one_account_categories"
   add_foreign_key "office_programs", "offices"
   add_foreign_key "office_programs", "programs"
   add_foreign_key "office_saving_products", "accounts", column: "forwarding_account_id"
+  add_foreign_key "office_saving_products", "ledgers", column: "interest_expense_ledger_id"
+  add_foreign_key "office_saving_products", "ledgers", column: "liability_ledger_id"
   add_foreign_key "office_saving_products", "level_one_account_categories", column: "closing_account_category_id"
   add_foreign_key "office_saving_products", "level_one_account_categories", column: "interest_expense_account_category_id"
   add_foreign_key "office_saving_products", "level_one_account_categories", column: "liability_account_category_id"
   add_foreign_key "office_saving_products", "offices"
   add_foreign_key "office_saving_products", "saving_products"
   add_foreign_key "office_share_capital_products", "accounts", column: "forwarding_account_id"
+  add_foreign_key "office_share_capital_products", "ledgers", column: "equity_ledger_id"
   add_foreign_key "office_share_capital_products", "level_one_account_categories", column: "equity_account_category_id"
   add_foreign_key "office_share_capital_products", "offices"
   add_foreign_key "office_share_capital_products", "share_capital_products"
   add_foreign_key "office_time_deposit_products", "accounts", column: "forwarding_account_id"
+  add_foreign_key "office_time_deposit_products", "ledgers", column: "break_contract_revenue_ledger_id"
+  add_foreign_key "office_time_deposit_products", "ledgers", column: "interest_expense_ledger_id"
+  add_foreign_key "office_time_deposit_products", "ledgers", column: "liability_ledger_id"
   add_foreign_key "office_time_deposit_products", "level_one_account_categories", column: "break_contract_account_category_id"
   add_foreign_key "office_time_deposit_products", "level_one_account_categories", column: "interest_expense_account_category_id"
   add_foreign_key "office_time_deposit_products", "level_one_account_categories", column: "liability_account_category_id"
@@ -2486,6 +2514,7 @@ ActiveRecord::Schema.define(version: 2023_07_28_145355) do
   add_foreign_key "program_subscriptions", "programs"
   add_foreign_key "programs", "accounts"
   add_foreign_key "programs", "cooperatives"
+  add_foreign_key "programs", "ledgers"
   add_foreign_key "programs", "level_one_account_categories"
   add_foreign_key "registries", "cooperatives"
   add_foreign_key "registries", "offices"

@@ -19,7 +19,7 @@ module Offices
     private
     def time_deposit_product_params
       params.require(:offices_office_time_deposit_product).
-      permit(:time_deposit_product_id, :liability_account_category_id, :interest_expense_account_category_id, :break_contract_account_category_id, :forwarding_account_id)
+      permit(:time_deposit_product_id, :liability_ledger_id, :interest_expense_ledger_id, :break_contract_revenue_ledger_id, :forwarding_account_id)
     end 
   end
 end
