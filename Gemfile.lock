@@ -187,6 +187,7 @@ GEM
     globalid (1.1.0)
       activesupport (>= 5.0)
     google-protobuf (3.23.4-arm64-darwin)
+    google-protobuf (3.23.4-x86_64-linux)
     gretel (4.5.0)
       actionview (>= 5.1, < 7.1)
       railties (>= 5.1, < 7.1)
@@ -265,6 +266,8 @@ GEM
       net-protocol
     nio4r (2.5.9)
     nokogiri (1.15.3-arm64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.15.3-x86_64-linux)
       racc (~> 1.4)
     numbers_and_words (0.11.12)
       i18n (<= 2)
@@ -471,6 +474,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-22
+  x86_64-linux
 
 DEPENDENCIES
   active_interaction (~> 5.3)
