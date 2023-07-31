@@ -14,6 +14,8 @@ module AccountingModule
     }
 
     has_many :accounts, class_name: 'AccountingModule::Account'
+    has_many :running_balances, class_name: 'AccountingModule::RunningBalances::Ledger'
+
     has_many :credit_amounts,        -> { not_cancelled }, :class_name => 'AccountingModule::CreditAmount', through: :accounts
     has_many :debit_amounts,         -> { not_cancelled }, :class_name => 'AccountingModule::DebitAmount', through: :accounts
     
@@ -53,6 +55,26 @@ module AccountingModule
 
     def normal_credit_balance
       NORMAL_CREDIT_BALANCE.include?(account_type)
+    end
+
+    def self.running_balance(entry_date: nil)
+      accounts_balance = BigDecimal('0')
+      self.all.each do |ledger|
+        if ledger.children
+          accounts_balance += ledger.children.running_balance(entry_date: entry_date)
+        else
+          accounts_balance += ledger.running_balance(entry_date: entry_date)
+        end
+      end
+      
+      accounts_balance
+    end
+
+    def running_balance(entry_date: nil)
+      return children.running_balance(entry_date: entry_date) if children.present? 
+      return 0 if running_balances.empty?
+
+      running_balances.balance(entry_date: entry_date)
     end
   end
 end

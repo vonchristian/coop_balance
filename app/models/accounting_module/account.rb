@@ -19,6 +19,8 @@ module AccountingModule
 
     has_many :account_budgets
     has_many :accountable_accounts, dependent: :nullify
+    has_many :running_balances, class_name: 'AccountingModule::RunningBalances::Account'
+
     validates :type, :name, :code, presence: true
     validates :name, uniqueness: true
 
@@ -52,9 +54,6 @@ module AccountingModule
     def account_name
       name
     end
-
-
-
 
     def normalized_type
       type.gsub("AccountingModule::", "")
@@ -178,6 +177,10 @@ module AccountingModule
 
     def default_last_transaction_date
       last_transaction_date || updated_at
+    end
+
+    def running_balance(entry_date: nil)
+      running_balances.balance(entry_date: entry_date)
     end
   end
 end
