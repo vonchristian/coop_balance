@@ -17,6 +17,7 @@ module AccountingModule
         update_office_share_capital_product_ledgers
         update_office_time_deposit_product_ledgers
         update_loan_aging_group_ledgers 
+        add_ledgers_to_office
       end 
 
       def update_account_ledgers
@@ -81,6 +82,10 @@ module AccountingModule
         LoansModule::LoanAgingGroup.all.each do |group|
           group.update(receivable_ledger_id: group.level_two_account_category_id)
         end
+      end
+
+      def add_ledgers_to_office
+        Cooperatives::Office.last.ledgers << AccountingModule::Ledger.all 
       end
     end 
   end 
