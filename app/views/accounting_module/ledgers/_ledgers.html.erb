@@ -1,6 +1,6 @@
 <% ledgers.each do |ledger, children| %>
-  <% current_year_balance = ledger.running_balance(entry_date: @to_date.end_of_year) %>
-  <% last_year_balance = ledger.running_balance(entry_date: @to_date.last_year.end_of_year) %>
+  <% current_year_balance = ledger.balance(from_date: @from_date, to_date: @to_date.end_of_year) %>
+  <% last_year_balance = ledger.balance(from_date: @from_date, to_date: @to_date.last_year.end_of_year) %>
 
 <tr>
   <td class="<%= "pl-#{ledger.ancestors.size + 3}" if ledger.ancestors.present? %>"> <%= link_to ledger.name, accounting_module_ledger_path(ledger) %></td>

@@ -1,6 +1,5 @@
 module AccountingModule
   class Entry < ApplicationRecord
-    audited
     include PgSearch::Model
     include Taggable
     pg_search_scope :text_search, :against => [:reference_number, :description]

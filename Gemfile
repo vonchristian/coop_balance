@@ -5,18 +5,18 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+gem 'jsbundling-rails'
 gem 'ancestry'
 gem 'active_interaction', '~> 5.3'
 gem 'active_interaction-extras'
 gem 'mime-types', '~> 3.3', '>= 3.3.1'
 gem 'prawn-icon'
 gem 'bootsnap', '>= 1.1.0', require: false
-gem 'webpacker'
 gem 'caxlsx', '~> 3.0'
 gem 'caxlsx_rails'
 gem 'trix'
 gem 'autonumeric-rails'
-gem 'rails'
+gem "rails", "~> 7.0.5"
 gem "pg", "~> 1.1"
 gem 'pghero'
 gem 'pg_query'
@@ -31,7 +31,6 @@ gem 'devise'
 gem 'devise_invitable'
 gem 'simple_form'
 gem 'friendly_id'
-gem 'font-awesome-sass', '~> 6.1.1'
 gem 'pg_search'
 gem 'will_paginate'
 gem 'pundit'
@@ -52,7 +51,7 @@ gem 'chartkick'
 gem 'groupdate'
 gem 'roo', "2.7.0"
 gem 'numbers_and_words'
-gem "audited", "~> 4.9"
+gem "audited"
 gem "responders"
 gem 'money-rails'
 gem 'sidekiq', '<7'
@@ -67,6 +66,8 @@ gem "simple_calendar"
 gem "facebook-messenger"
 gem 'rexml', '~> 3.2', '>= 3.2.4'
 gem 'net-smtp', require: false
+gem "sprockets-rails"
+gem 'bootstrap', '~> 5.3.0.alpha3'
 
 group :development, :test do
   gem 'rspec-rails'
@@ -98,3 +99,5 @@ gem 'memory_profiler'
 gem 'stackprof'
 
 gem "matrix", "~> 0.4.2"
+
+gem "cssbundling-rails", "~> 1.2"

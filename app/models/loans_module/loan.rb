@@ -1,7 +1,6 @@
 module LoansModule
   class Loan < ApplicationRecord
     enum status: [:current_loan, :past_due, :restructured, :under_litigation]
-    audited
     extend PercentActive
 
     include PgSearch::Model

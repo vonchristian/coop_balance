@@ -1,6 +1,6 @@
 module AccountingModule
   class Amount < ApplicationRecord
-    audited
+
     monetize :amount_cents, as: :amount, numericality: true
 
     belongs_to :entry,               class_name: 'AccountingModule::Entry'
