@@ -10,8 +10,7 @@ import "regenerator-runtime/runtime";
 require("turbolinks").start()
 require("@rails/activestorage").start()
 
-require("chartkick")
-require("chart.js")
+import "chartkick/chart.js"
 require("./adminlte")
 import 'chosen-js'
 import 'bootstrap-datepicker'
