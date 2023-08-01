@@ -8,8 +8,8 @@
         <%= render 'vouchers/partials/body', voucher: @voucher %>
         <hr>
         <% if @voucher.accounting_entry.blank? %>
-          <%= link_to "Confirm", treasury_module_cash_disbursement_voucher_confirmations_path(cash_disbursement_voucher_id: @voucher.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
-          <%= link_to "Cancel", treasury_module_cash_disbursement_voucher_path(cash_disbursement_voucher_id: @voucher.id), method: :delete, class: "btn text-danger float-left" %>
+          <%= button_to "Confirm", treasury_module_cash_disbursement_voucher_confirmations_path(cash_disbursement_voucher_id: @voucher.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
+          <%= button_to "Cancel", treasury_module_cash_disbursement_voucher_path(cash_disbursement_voucher_id: @voucher.id), method: :delete, class: "btn text-danger float-left" %>
         <% end %>
       </div>
     </div>

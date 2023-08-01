@@ -7,16 +7,17 @@
 import './add_jquery'
 import "core-js/stable";
 import "regenerator-runtime/runtime";
-require("turbolinks").start()
 require("@rails/activestorage").start()
 
 import "chartkick/chart.js"
 require("./adminlte")
 import 'chosen-js'
 import 'bootstrap-datepicker'
+import "@hotwired/turbo-rails"
+
 import * as bootstrap from "bootstrap"
 
-document.addEventListener("turbolinks:load", () => {
+document.addEventListener("turbo:load", () => {
   $('.chosen-select').chosen();
   $('.datepicker').datepicker(
     {

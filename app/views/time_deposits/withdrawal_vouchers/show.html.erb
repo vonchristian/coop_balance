@@ -19,8 +19,8 @@
         <%= render 'time_deposits/withdrawal_vouchers/partials/body', voucher: @voucher, time_deposit: @time_deposit %>
         <% if !@voucher.disbursed?%>
           <% if current_user.loan_officer? || current_user.teller? || current_user.bookkeeper? %>
-            <%= link_to "Confirm Transaction", time_deposit_withdrawal_voucher_confirmations_path(time_deposit_id: @time_deposit.id, withdrawal_voucher_id: @voucher.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
-            <%= link_to "Cancel", voucher_path(@voucher), method: :delete, class: "btn text-danger float-left" %>
+            <%= button_to "Confirm Transaction", time_deposit_withdrawal_voucher_confirmations_path(time_deposit_id: @time_deposit.id, withdrawal_voucher_id: @voucher.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
+            <%= button_to "Cancel", voucher_path(@voucher), method: :delete, class: "btn text-danger float-left" %>
           <% end %>
         <% else %>
           <%= render 'vouchers/partials/status', voucher: @voucher %>

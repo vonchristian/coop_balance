@@ -98,4 +98,4 @@
   <%= f.input :token, label: "Confirmation Code", autofocus: true %>
   <%= f.submit "Confirm Payment", class: "btn btn-primary float-right" %>
 <% end %>
-<%= link_to "Cancel", banking_agent_module_utility_bill_payment_confirmation_path(id: @voucher.id), method: :delete, class: "text-danger float-left" %>
+<%= button_to "Cancel", banking_agent_module_utility_bill_payment_confirmation_path(id: @voucher.id), method: :delete, class: "text-danger float-left" %>

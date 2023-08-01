@@ -11,7 +11,7 @@ gem 'active_interaction', '~> 5.3'
 gem 'active_interaction-extras'
 gem 'mime-types', '~> 3.3', '>= 3.3.1'
 gem 'prawn-icon'
-gem 'bootsnap', '>= 1.1.0', require: false
+gem 'bootsnap',  require: false
 gem 'caxlsx', '~> 3.0'
 gem 'caxlsx_rails'
 gem 'trix'
@@ -24,7 +24,8 @@ gem 'puma', group: [:development, :production]
 gem 'sass-rails', '~> 5'
 gem 'uglifier'
 gem 'coffee-rails'
-gem 'turbolinks', '~> 5'
+gem 'turbo-rails'
+gem "stimulus-rails"
 gem 'jbuilder'
 gem 'redis'
 gem 'devise'

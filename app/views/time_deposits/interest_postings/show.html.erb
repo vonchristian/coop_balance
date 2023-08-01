@@ -9,8 +9,8 @@
       <div class="card-body">
         <%= render 'vouchers/partials/body', voucher: @voucher %>
         <% if @voucher.accounting_entry.blank? %>
-          <%= link_to "Confirm Transaction", time_deposit_interest_posting_confirmations_path(time_deposit_id: @time_deposit.id, voucher_id: @voucher.id, interest_posting_id: @voucher.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
-          <%= link_to "Cancel", time_deposit_interest_posting_path(time_deposit_id: @time_deposit.id, voucher_id: @voucher.id), method: :delete, class: "btn text-danger float-left" %>
+          <%= button_to "Confirm Transaction", time_deposit_interest_posting_confirmations_path(time_deposit_id: @time_deposit.id, voucher_id: @voucher.id, interest_posting_id: @voucher.id), method: :post, class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
+          <%= button_to "Cancel", time_deposit_interest_posting_path(time_deposit_id: @time_deposit.id, voucher_id: @voucher.id), method: :delete, class: "btn text-danger float-left" %>
         <% end %>
       </div>
     </div>

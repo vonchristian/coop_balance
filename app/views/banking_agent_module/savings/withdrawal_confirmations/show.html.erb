@@ -22,5 +22,5 @@
     </div>
   <% end %>
 <% end %>
-<%= link_to "Cancel", banking_agent_module_saving_withdrawal_confirmation_path(id: @voucher.id), method: :delete %>
-<%= link_to "Confirm", banking_agent_module_saving_withdrawal_confirmations_path(id: @voucher.id), method: :create %>
+<%= button_to "Cancel", banking_agent_module_saving_withdrawal_confirmation_path(id: @voucher.id), method: :delete %>
+<%= button_to "Confirm", banking_agent_module_saving_withdrawal_confirmations_path(id: @voucher.id), method: :create %>

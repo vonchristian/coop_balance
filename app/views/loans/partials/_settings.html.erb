@@ -68,7 +68,7 @@
           <h4 class="card-title">Archive Loan</h4>
           <p class="text-muted"> Archive paid loans </p>
           <% if policy([:loans_module, :loans, :archiving]).new? && !@loan.archived? %>
-            <%= link_to "Archive Loan", loans_module_loan_archivings_path(@loan), method: :post, data: { confirm: "Are you sure you want to archive this loan?" }, class: "btn btn-sm btn-outline-danger" %>
+            <%= button_to "Archive Loan", loans_module_loan_archivings_path(@loan), method: :post, data: { confirm: "Are you sure you want to archive this loan?" }, class: "btn btn-sm btn-outline-danger" %>
           <% elsif @loan.archived? %>
             <div class="row">
               <div class="col-md-6">
