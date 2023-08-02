@@ -451,6 +451,7 @@ DEPENDENCIES
   jbuilder
   jsbundling-rails
   listen
+  matrix (~> 0.4.2)
   mina-ng-puma
   mina-whenever
   mini_magick

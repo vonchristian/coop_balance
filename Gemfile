@@ -45,14 +45,10 @@ gem 'chartkick'
 gem 'groupdate'
 gem 'roo', "2.7.0"
 gem 'numbers_and_words'
-
-
 gem 'money-rails'
 gem 'sidekiq', '<7'
 gem "gretel"
 gem 'pagy'
-
-
 gem 'whenever', require: false
 gem "select2-rails"
 gem "sprockets-rails"
@@ -84,3 +80,5 @@ end
 
 gem 'rack-mini-profiler', require: false
 
+
+gem "matrix", "~> 0.4.2"
