@@ -6,8 +6,6 @@ describe 'New office program', type: :system do
     office          = create(:office, cooperative: cooperative)
     general_manager = create(:general_manager, cooperative: cooperative, office: office)
     program         = create(:program, name: 'Mutual Aid System', cooperative: cooperative)
-    program_2       = create(:program, name: 'Membership Fee', cooperative: cooperative)
-    category        = create(:equity_level_one_account_category, title: 'Mutual Aid Fund', office: office)
     create(:office_program, office: office, program: program_2)
 
     login_as(general_manager, scope: :user)

@@ -4,13 +4,12 @@ module Cooperatives
     enum payment_schedule_type: [:one_time_payment, :annually, :monthly, :quarterly]
 
     belongs_to :cooperative
-    belongs_to :level_one_account_category, class_name: 'AccountingModule::LevelOneAccountCategory', optional: true 
     belongs_to :ledger, class_name: 'AccountingModule::Ledger'
 	  has_many :program_subscriptions,        class_name: "MembershipsModule::ProgramSubscription", inverse_of: :program
     has_many :member_subscribers,           through: :program_subscriptions, source: :subscriber, source_type: "Member"
     has_many :employee_subscribers,         through: :program_subscriptions, source: :subscriber, source_type: "User"
     has_many :organization_subscribers,     through: :program_subscriptions, source: :subscriber, source_type: "Organization"
-   
+
     validates :name, presence: true, uniqueness: { scope: :cooperative_id }
     validates :amount, presence: true, numericality: true
     validates :payment_schedule_type, presence: true
@@ -27,8 +26,8 @@ module Cooperatives
 
     def date_setter
       "Programs::DateSetters::#{payment_schedule_type.titleize.gsub(' ', "")}".constantize
-    end 
-    
+    end
+
 
     def self.default_programs
     	where(default_program: true)

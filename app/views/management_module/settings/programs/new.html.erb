@@ -9,7 +9,7 @@
         <%= f.input :cooperative_id, input_html: { value: current_cooperative.id }, as: :hidden %>
         <%= f.input :name %>
         <%= f.input :description, as: :string %>
-        <%= f.input :level_one_account_category_id, collection: current_office.level_one_account_categories.map { |category| [category.title, category.id] }, input_html: { class: 'chosen-select' } %>
+        <%= f.input :ledger_id, collection: current_office.ledgers.map { |ledger| [ledger.name, ledger.id] }, input_html: { class: 'chosen-select' } %>
         <%= f.input :amount, label: "Amount" %>
         <%= f.input :payment_schedule_type, collection: Cooperatives::Program.payment_schedule_types.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
         <%= f.input :default_program %>

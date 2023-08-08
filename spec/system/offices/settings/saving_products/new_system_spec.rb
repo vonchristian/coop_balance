@@ -6,9 +6,6 @@ describe 'New saving product' do
     office                            = manager.office
     cooperative                       = manager.cooperative
     saving_product                    = create(:saving_product, name: 'Test Product', cooperative: cooperative)
-    liability_account_category        = create(:liability_level_one_account_category, title: 'Test Liability', office: office)
-    interest_expense_account_category = create(:expense_level_one_account_category, title: 'Test Expense', office: office)
-    closing_account_category          = create(:revenue_level_one_account_category, title: 'Test Closing', office: office)
     forwarding_account                = create(:liability, name: 'Test Forwarding Account')
     office.accounts << forwarding_account
     login_as(manager, scope: :user)
@@ -34,5 +31,5 @@ describe 'New saving product' do
     click_button 'Save Saving Product'
 
     expect(page).to have_content "can't be blank"
-  end 
+  end
 end

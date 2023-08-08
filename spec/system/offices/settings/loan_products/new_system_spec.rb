@@ -6,8 +6,6 @@ describe 'New office loan product' do
     cooperative                       = manager.cooperative
     office                            = manager.office
     loan_product                      = create(:loan_product, name: 'Test Loan Product', cooperative: cooperative)
-    interest_revenue_account_category = create(:revenue_level_one_account_category, title: 'Test Revenue', office: office)
-    penalty_revenue_account_category  = create(:revenue_level_one_account_category, title: 'Test Penalty',  office: office)
     loan_protection_plan_provider     = create(:loan_protection_plan_provider, business_name: 'CLIMBS', cooperative: cooperative)
     forwarding_account                = create(:asset, name: 'Test Forwarding Account')
     office.accounts << forwarding_account

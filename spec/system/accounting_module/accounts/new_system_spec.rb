@@ -4,7 +4,6 @@ include ChosenSelect
 describe "Create Account" do
   before(:each) do
     user = create(:user, role: 'accountant')
-    create(:asset_level_one_account_category, title: 'Level 1 Category', office: user.office)
     login_as(user, :scope => :user)
     visit accounting_module_accounts_path
     click_link 'New Account'

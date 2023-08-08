@@ -6,9 +6,6 @@ describe 'New saving product' do
     office                            = manager.office
     cooperative                       = manager.cooperative
     time_deposit_product              = create(:time_deposit_product, name: 'Test Product', cooperative: cooperative)
-    liability_account_category        = create(:liability_level_one_account_category, title: 'Test Liability', office: office)
-    interest_expense_account_category = create(:expense_level_one_account_category, title: 'Test Expense', office: office)
-    break_contract_account_category   = create(:revenue_level_one_account_category, title: 'Test Break Contract', office: office)
     forwarding_account                = create(:liability, name: 'Test Forwarding Account')
     office.accounts << forwarding_account
     login_as(manager, scope: :user)

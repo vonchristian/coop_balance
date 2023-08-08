@@ -1,5 +1,0 @@
-<%= simple_form_for @loan_aging_group_loan_product, url: :loans_module_settings_loan_aging_group_office_loan_products do |f| %>
-  <%= f.input :office_loan_product_id, label: 'Loan product', collection: current_office.office_loan_products.map{|a| [a.loan_product.name, a.id]}, input_html: { class: 'chosen-select' } %>
-  <%= f.input :level_one_account_category_id, label: 'Account category', collection: current_office.level_one_account_categories.assets.map{|a| [a.title, a.id]}, input_html: { class: 'chosen-select' } %>
-  <%= f.submit 'Save' %>
-<% end %>

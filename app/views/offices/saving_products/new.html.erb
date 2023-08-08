@@ -1,9 +1,8 @@
 <%= simple_form_for @saving_product, url: :office_saving_products do |f| %>
   <%= f.error_notification %>
   <%= f.input :saving_product_id, collection: current_cooperative.saving_products.map{|a| [a.name, a.id] }, input_html: { class: 'chosen-select' } %>
-  <%= f.input :liability_account_category_id, collection: current_office.level_one_account_categories.liabilities.map{|a| [a.title, a.id] }, input_html: { class: 'chosen-select' } %>
-  <%= f.input :interest_expense_account_category_id, collection: current_office.level_one_account_categories.expenses.map{|a| [a.title, a.id] }, input_html: { class: 'chosen-select' } %>
-  <%= f.input :closing_account_category_id, collection: current_office.level_one_account_categories.revenues.map{|a| [a.title, a.id] }, input_html: { class: 'chosen-select' } %>
+  <%= f.input :liability_ledger_id, collection: current_office.ledgers.liabilities.map{|a| [a.title, a.id] }, input_html: { class: 'chosen-select' } %>
+  <%= f.input :interest_expense_ledger_id, collection: current_office.ledgers.expenses.map{|a| [a.title, a.id] }, input_html: { class: 'chosen-select' } %>
   <%= f.input :forwarding_account_id, collection: current_office.accounts.liabilities.map{|a| [a.name, a.id] }, input_html: { class: 'chosen-select' } %>
   <%= f.submit "Save Saving Product", class: 'btn btn-danger float-right' %>
 <% end %>

@@ -7,7 +7,6 @@ module AccountingModule
     end
 
     describe 'associations' do
-      it { is_expected.to belong_to :level_one_account_category }
       it { is_expected.to have_many :debit_amounts }
       it { is_expected.to have_many :entries }
       it { is_expected.to have_many :debit_entries }
@@ -95,8 +94,7 @@ module AccountingModule
     end
 
     it '#display_name' do
-      category = create(:asset_level_one_account_category, title: 'Cash on Hand')
-      asset    = create(:asset, level_one_account_category: category)
+      asset    = create(:asset)
 
       expect(asset.display_name).to eql 'Cash on Hand'
     end

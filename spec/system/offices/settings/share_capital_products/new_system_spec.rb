@@ -7,7 +7,6 @@ describe 'New share capital product' do
     office                  = manager.office
     cooperative             = manager.cooperative
     share_capital_product   = create(:share_capital_product, name: 'Test Share Capital Product', cooperative: cooperative)
-    equity_account_category = create(:equity_level_one_account_category, title: "Test Equity", office: office)
     forwarding_account      = create(:equity, name: 'Test Account')
     office.accounts << forwarding_account
     login_as(manager, scope: :user)

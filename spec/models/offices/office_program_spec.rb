@@ -5,7 +5,6 @@ module Offices
     describe 'associations' do
       it { is_expected.to belong_to :office }
       it { is_expected.to belong_to :program }
-      it { is_expected.to belong_to :level_one_account_category }
     end
 
     describe 'validations' do

@@ -14,7 +14,6 @@
       <% @loan_aging_group.office_loan_products.each do |office_loan_product| %>
         <tr>
           <td><%= office_loan_product.name %></td>
-          <td><%= office_loan_product.office_loan_product_aging_groups.find_by(loan_aging_group: @loan_aging_group).level_one_account_category_title %></td>
         </tr>
       <% end %>
     </tbody>

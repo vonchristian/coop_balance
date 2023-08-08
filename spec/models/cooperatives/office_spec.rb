@@ -29,7 +29,6 @@ module Cooperatives
       it { is_expected.to have_many :time_deposit_products }
       it { is_expected.to have_many :loan_aging_groups }
       it { is_expected.to have_many :office_loan_product_aging_groups }
-      it { is_expected.to have_many :level_one_account_categories }
       it { is_expected.to have_many :level_two_account_categories }
       it { is_expected.to have_many :level_three_account_categories }
       it { is_expected.to have_many :time_deposit_applications }
@@ -44,13 +43,13 @@ module Cooperatives
       it { is_expected.to validate_uniqueness_of :name }
     end
 
-    describe 'delegations' do 
+    describe 'delegations' do
       it { is_expected.to delegate_method(:net_surplus_account).to(:net_income_config) }
       it { is_expected.to delegate_method(:net_loss_account).to(:net_income_config) }
       it { is_expected.to delegate_method(:total_revenue_account).to(:net_income_config) }
       it { is_expected.to delegate_method(:total_expense_account).to(:net_income_config) }
 
-    end 
+    end
 
     it ".types" do
       expect(described_class.types).to eql ["Cooperatives::Offices::MainOffice", "Cooperatives::Offices::SatelliteOffice", "Cooperatives::Offices::BranchOffice"]

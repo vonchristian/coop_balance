@@ -1,6 +1,6 @@
 <%= simple_form_for @office_program, url: :office_programs do |f| %>
   <%= f.error_notification %>
   <%= f.input :program_id, collection: current_cooperative.programs.map{ |program| [program.name, program.id] }, input_html: { class: 'chosen-select' } %>
-  <%= f.input :level_one_account_category_id, collection: current_office.level_one_account_categories.map{ |category| [category.title, category.id] }, input_html: { class: 'chosen-select' } %>
+  <%= f.input :ledger_id, collection: current_office.ledgers.map{ |ledger| [ledger.title, ledger.id] }, input_html: { class: 'chosen-select' } %>
   <%= f.submit 'Create Program', class: 'btn btn-primary float-right' %>
 <% end %>

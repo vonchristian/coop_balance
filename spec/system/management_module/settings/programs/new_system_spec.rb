@@ -6,7 +6,6 @@ describe 'New Program', type: :system do
   before(:each) do
     office   = create(:office)
     user     = create(:general_manager, office: office)
-    category = create(:equity_level_one_account_category, title: 'Mutual Aid Fund', office: office)
     login_as(user, scope: :user)
     visit management_module_settings_path
     click_link 'Programs'
