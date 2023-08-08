@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-module MembershipsModule
+module DepositsModule
   describe TimeDeposit do
     context 'associations' do
       it { is_expected.to belong_to :cooperative }

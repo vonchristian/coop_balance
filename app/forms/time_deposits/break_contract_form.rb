@@ -17,7 +17,7 @@ module TimeDeposits
       end
     end
     def find_time_deposit
-      MembershipsModule::TimeDeposit.find_by(id: time_deposit_id)
+      DepositsModule::TimeDeposit.find_by(id: time_deposit_id)
     end
     def find_employee
       User.find_by(id: recorder_id)

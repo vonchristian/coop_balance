@@ -2,7 +2,7 @@ require 'rails_helper'
 
 module DepositsModule
   describe Saving do
-    context "associations", type: :model do
+    describe "associations", type: :model do
       it { is_expected.to belong_to :cooperative }
     	it { is_expected.to belong_to :depositor }
       it { is_expected.to belong_to :office }
@@ -18,7 +18,7 @@ module DepositsModule
       it { is_expected.to have_many :savings_aging_groups }
     end
 
-    context 'delegations' do
+    describe 'delegations' do
     	it { is_expected.to delegate_method(:name).to(:saving_product).with_prefix }
       it { is_expected.to delegate_method(:applicable_rate).to(:saving_product).with_prefix }
       it { is_expected.to delegate_method(:interest_expense_account).to(:saving_product).with_prefix }

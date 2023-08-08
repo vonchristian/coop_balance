@@ -1,4 +1,4 @@
-module MembershipsModule
+module DepositsModule
   class TimeDeposit < ApplicationRecord
     enum status: [:withdrawn]
     include PgSearch::Model
@@ -28,7 +28,7 @@ module MembershipsModule
     delegate :maturity_date, :effectivity_date, :matured?, to: :term, prefix: true
     delegate :remaining_term,  to: :term
     delegate :balance, :debits_balance, :credits_balance, to: :liability_account
-    
+
     before_save :set_depositor_name
 
     def self.liability_accounts
@@ -54,7 +54,7 @@ module MembershipsModule
       from_date  = args[:from_date] || 999.years.ago
       to_date    = args[:to_date]
       date_range = DateRange.new(from_date: from_date, to_date: to_date)
-      
+
       joins(:term).where('terms.effectivity_date' => date_range.start_date..date_range.end_date)
     end
 

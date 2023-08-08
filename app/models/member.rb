@@ -19,7 +19,7 @@ class Member < ApplicationRecord
   has_many :memberships,              class_name: "Cooperatives::Membership", as: :cooperator, dependent: :destroy
   has_many :savings,                  class_name: "DepositsModule::Saving", as: :depositor
   has_many :share_capitals,           class_name: "MembershipsModule::ShareCapital", as: :subscriber
-  has_many :time_deposits,            class_name: "MembershipsModule::TimeDeposit", as: :depositor
+  has_many :time_deposits,            class_name: "DepositsModule::TimeDeposit", as: :depositor
   has_many :program_subscriptions,    class_name: "MembershipsModule::ProgramSubscription", as: :subscriber
   has_many :member_occupations,       class_name: "MembershipsModule::MemberOccupation", dependent: :destroy
   has_many :occupations,              through: :member_occupations

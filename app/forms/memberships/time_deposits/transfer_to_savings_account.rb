@@ -33,7 +33,7 @@ module Memberships
         find_time_deposit.depositor
       end
       def find_time_deposit
-        MembershipsModule::TimeDeposit.find(time_deposit_id)
+        DepositsModule::TimeDeposit.find(time_deposit_id)
       end
       def debit_account
         find_time_deposit.liability_account

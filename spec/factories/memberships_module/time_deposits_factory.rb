@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :time_deposit, class: MembershipsModule::TimeDeposit do
+  factory :time_deposit, class: DepositsModule::TimeDeposit do
     association :depositor, factory: :member
     association :cooperative
     association :office

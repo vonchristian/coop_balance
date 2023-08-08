@@ -17,7 +17,7 @@ module TimeDeposits
       maturity_date: (renewal_date.to_date + (term.to_i.months)))
     end
     def find_time_deposit
-      MembershipsModule::TimeDeposit.find_by(id: time_deposit_id)
+      DepositsModule::TimeDeposit.find_by(id: time_deposit_id)
     end
   end
 end
