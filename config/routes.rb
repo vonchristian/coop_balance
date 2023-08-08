@@ -3,7 +3,6 @@ Rails.application.routes.draw do
 
   require 'sidekiq/web'
   mount Sidekiq::Web => '/sidekiq'
-  mount Facebook::Messenger::Server, at: "/bot"
   devise_for :users,          controllers: { sessions: 'users/sessions', registrations: "management_module/settings/employees"}
   devise_for :banking_agents, controllers: { sessions: 'banking_agents/sessions', registrations: "banking_agents/registrations"}
   resources :banking_agents, only: [:show]

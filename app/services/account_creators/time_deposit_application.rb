@@ -19,9 +19,9 @@ module AccountCreators
     def create_liability_account
       if time_deposit_application.liability_account.blank?
         account = office.accounts.liabilities.create!(
-          name:                       "#{time_deposit_product.name} - #{time_deposit_application.account_number}",
-          code:                       SecureRandom.uuid,
-          level_one_account_category: liability_account_category
+          name:   "#{time_deposit_product.name} - #{time_deposit_application.account_number}",
+          code:   SecureRandom.uuid,
+          ledger: liability_ledger
         )
         time_deposit_application.update(liability_account: account)
       end
