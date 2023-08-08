@@ -4,6 +4,15 @@ module AccountingModule
 
     include PgSearch::Model
     extend ProfitPercentage
+
+    enum account_type: {
+      asset: 'asset',
+      liability: 'liability',
+      equity: 'equity',
+      revenue: 'revenue',
+      expense: 'expense'
+    }
+
     pg_search_scope :text_search, :against => [:name, :code]
 
     class_attribute :normal_credit_balance
