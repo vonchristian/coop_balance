@@ -1,4 +1,4 @@
-module MembershipsModule
+module DepositsModule
   class ShareCapital < ApplicationRecord
     include PgSearch::Model
     include InactivityMonitoring
@@ -6,7 +6,7 @@ module MembershipsModule
 
     pg_search_scope :text_search, :against => [:account_number, :account_owner_name]
     pg_search_scope :account_number_search, against: [:account_number]
-  
+
     multisearchable against: [:account_number, :account_owner_name]
 
     belongs_to :office,                       class_name: "Cooperatives::Office"
@@ -131,7 +131,7 @@ module MembershipsModule
       return created_at if entries.with_cash_accounts.blank?
 
       entries.with_cash_accounts.recent.entry_date
-    end 
+    end
 
     private
     def set_account_owner_name

@@ -36,7 +36,7 @@ class User < ApplicationRecord
   has_many :loans,                    class_name: "LoansModule::Loan", as: :borrower
   has_many :memberships,              class_name: 'Cooperatives::Membership', as: :cooperator
   has_many :savings,                  class_name: "DepositsModule::Saving", as: :depositor
-  has_many :share_capitals,           class_name: "MembershipsModule::ShareCapital", as: :subscriber
+  has_many :share_capitals,           class_name: "DepositsModule::ShareCapital", as: :subscriber
   has_many :time_deposits,            class_name: "DepositsModule::TimeDeposit", as: :depositor
   has_many :sales_orders,             class_name: "StoreFrontModule::Orders::SalesOrder", as: :commercial_document
   has_many :sales_return_orders,      class_name: "StoreFrontModule::Orders::SalesReturnOrder", as: :commercial_document

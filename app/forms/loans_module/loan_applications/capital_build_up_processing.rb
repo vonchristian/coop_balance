@@ -27,7 +27,7 @@ module LoansModule
       end
 
       def find_share_capital
-        MembershipsModule::ShareCapital.find(share_capital_id)
+        DepositsModule::ShareCapital.find(share_capital_id)
       end
     end
   end

@@ -29,7 +29,7 @@ class Cooperative < ApplicationRecord
   has_many :programs,                       class_name: "Cooperatives::Program"
   has_many :program_subscriptions,          through: :programs, class_name: "MembershipsModule::ProgramSubscription"
   has_many :savings,                        class_name: "DepositsModule::Saving"
-  has_many :share_capitals,                 class_name: "MembershipsModule::ShareCapital"
+  has_many :share_capitals,                 class_name: "DepositsModule::ShareCapital"
   has_many :time_deposits,                  class_name: "DepositsModule::TimeDeposit"
   has_many :barangays,                      class_name: "Addresses::Barangay"
   has_many :municipalities,                 class_name: "Addresses::Municipality"

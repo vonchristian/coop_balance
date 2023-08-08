@@ -28,12 +28,12 @@ module Memberships
     end
 
     def find_share_capital
-      MembershipsModule::ShareCapital.find_by(account_number: account_number)
+      DepositsModule::ShareCapital.find_by(account_number: account_number)
     end
 
     private
     def save_subscription
-      share_capital = MembershipsModule::ShareCapital.create(
+      share_capital = DepositsModule::ShareCapital.create(
         subscriber: find_subscriber,
         account_number: account_number,
         share_capital_product: find_share_capital_product,

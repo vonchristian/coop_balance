@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-module MembershipsModule
+module DepositsModule
   describe ShareCapital do
     describe 'attributes' do
       it { is_expected.to respond_to :share_capital_product_id }

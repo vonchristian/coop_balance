@@ -4,7 +4,7 @@ module ShareCapitals
     attr_accessor :destination_share_capital_id
 
     def find_destination_share_capital
-      MembershipsModule::ShareCapital.find(destination_share_capital_id)
+      DepositsModule::ShareCapital.find(destination_share_capital_id)
     end
   end
 end

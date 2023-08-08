@@ -8,7 +8,7 @@ module Cooperatives
 
     belongs_to :cooperative
     belongs_to :office,    class_name: "Cooperatives::Office"
-    has_many :subscribers, class_name: "MembershipsModule::ShareCapital"
+    has_many :subscribers, class_name: "DepositsModule::ShareCapital"
 
     validates :name,
               :cost_per_share, presence: true

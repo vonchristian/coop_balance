@@ -21,7 +21,7 @@ module ShareCapitals
       StoreFrontModule::Cart.find(cart_id)
     end
     def find_current_share_capital
-      MembershipsModule::ShareCapital.find(current_share_capital_id)
+      DepositsModule::ShareCapital.find(current_share_capital_id)
     end
   end
 end

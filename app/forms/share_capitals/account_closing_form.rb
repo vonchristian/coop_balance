@@ -16,7 +16,7 @@ module ShareCapitals
 
     private
     def find_share_capital
-      MembershipsModule::ShareCapital.find_by_id(share_capital_id)
+      DepositsModule::ShareCapital.find_by_id(share_capital_id)
     end
 
     def find_employee

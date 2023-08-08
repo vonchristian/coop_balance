@@ -7,7 +7,7 @@ module CoopServicesModule
     belongs_to :equity_account,      class_name: "AccountingModule::Account"
     belongs_to :interest_payable_account, class_name: "AccountingModule::Account"
     belongs_to :transfer_fee_account, class_name: "AccountingModule::Account"
-    has_many :subscribers,            class_name: "MembershipsModule::ShareCapital"
+    has_many :subscribers,            class_name: "DepositsModule::ShareCapital"
 
     validates :name, :equity_account_id,
               :cost_per_share, presence: true
