@@ -17,7 +17,7 @@ class Member < ApplicationRecord
   has_one :member_account #for devise login
   has_many :entries,                  class_name: "AccountingModule::Entry", as: :commercial_document
   has_many :memberships,              class_name: "Cooperatives::Membership", as: :cooperator, dependent: :destroy
-  has_many :savings,                  class_name: "MembershipsModule::Saving", as: :depositor
+  has_many :savings,                  class_name: "DepositsModule::Saving", as: :depositor
   has_many :share_capitals,           class_name: "MembershipsModule::ShareCapital", as: :subscriber
   has_many :time_deposits,            class_name: "MembershipsModule::TimeDeposit", as: :depositor
   has_many :program_subscriptions,    class_name: "MembershipsModule::ProgramSubscription", as: :subscriber
@@ -37,7 +37,7 @@ class Member < ApplicationRecord
   has_many :wallets,                      as: :account_owner
   has_many :identifications,              class_name: "IdentificationModule::Identification", as: :identifiable
   has_many :income_sources,               class_name: 'MembershipsModule::IncomeSource'
-  
+
   validates :last_name, :first_name, presence: true, on: :update
 
 
@@ -172,7 +172,7 @@ class Member < ApplicationRecord
   end
   def signatory_name
     first_middle_and_last_name
-  end 
+  end
   def first_middle_and_last_name #for pdf signatories
     if middle_name.present?
       "#{first_name.try(:titleize)} #{middle_name.first.upcase}. #{last_name.try(:titleize)}"
@@ -226,7 +226,7 @@ class Member < ApplicationRecord
     self.account_number ||= SecureRandom.uuid
   end
 
-  
+
 
   def set_fullname
     self.fullname = self.full_name #used for slugs

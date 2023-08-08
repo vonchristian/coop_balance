@@ -36,11 +36,11 @@ module Memberships
         User.find(employee_id)
       end
       def find_origin
-        MembershipsModule::Saving.find(origin_id)
+        DepositsModule::Saving.find(origin_id)
       end
 
       def find_destination
-        MembershipsModule::Saving.find(destination_id)
+        DepositsModule::Saving.find(destination_id)
       end
 
       def amount_is_less_than_or_equal_to_balance?

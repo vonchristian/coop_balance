@@ -26,7 +26,7 @@ module LoansModule
       end
 
       def find_savings_account
-        MembershipsModule::Saving.find(savings_account_id)
+        DepositsModule::Saving.find(savings_account_id)
       end
     end
   end

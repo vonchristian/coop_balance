@@ -1,7 +1,7 @@
 Active Members
 <h4 class="card-title"> <%= Member.percent_active(from_date: Date.today.beginning_of_year, to_date: Date.today.end_of_year) %> %
 Active Savings
-  <h4 class="card-title"> <%= MembershipsModule::Saving.percent_active(from_date: Date.today.beginning_of_year, to_date: Date.today.end_of_year) %> %
+  <h4 class="card-title"> <%= DepositsModule::Saving.percent_active(from_date: Date.today.beginning_of_year, to_date: Date.today.end_of_year) %> %
 Active Share Capitals
 <h4 class="card-title"> <%= MembershipsModule::ShareCapital.percent_active(from_date: Date.today.beginning_of_year, to_date: Date.today.end_of_year) %> %
 
@@ -18,7 +18,7 @@ Active Share Capitals
       <hr />
       <h4>BALANCES / YEAR </h4>
       <% year_dates = [] %>
-      <% start_date = MembershipsModule::Saving.order(date_opened: :desc).last.date_opened %>
+      <% start_date = DepositsModule::Saving.order(date_opened: :desc).last.date_opened %>
       <% (start_date.to_date..Date.today).each do |date| %>
 
         <% year_dates << date.end_of_year%>

@@ -10,7 +10,7 @@ module Memberships
       end
       private
       def open_savings_account
-        savings_account = MembershipsModule::Saving.create(
+        savings_account = DepositsModule::Saving.create(
           depositor: find_depositor,
           saving_product_id: saving_product_id,
           account_number: account_number)

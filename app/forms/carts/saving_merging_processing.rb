@@ -17,7 +17,7 @@ module Carts
       StoreFrontModule::Cart.find(cart_id)
     end
     def find_saving
-      MembershipsModule::Saving.find(old_saving_id)
+      DepositsModule::Saving.find(old_saving_id)
     end
   end
 end

@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :saving, class: MembershipsModule::Saving do
+  factory :saving, class: DepositsModule::Saving do
     association :cooperative
     association :office
     association :depositor, factory: :member
@@ -10,6 +10,6 @@ FactoryBot.define do
     after(:save) do |saving|
       saving.accounts << saving.liability_account
       saving.accounts << saving.interest_expense_account
-    end 
+    end
   end
 end

@@ -1,4 +1,4 @@
-module MembershipsModule
+module DepositsModule
   class Saving < ApplicationRecord
     include PgSearch::Model
     include InactivityMonitoring
@@ -26,7 +26,7 @@ module MembershipsModule
     has_many :accounts,                   through: :accountable_accounts, class_name: 'AccountingModule::Account'
     has_many :entries,                    through: :accounts, class_name: 'AccountingModule::Entry'
     has_many :savings_account_agings,     class_name: 'SavingsModule::SavingsAccountAging', foreign_key: 'savings_account_id'
-    has_many :savings_aging_groups,       through: :savings_account_agings 
+    has_many :savings_aging_groups,       through: :savings_account_agings
 
     delegate :name, :current_address_complete_address, :current_contact_number, :current_occupation, to: :depositor, prefix: true
     delegate :name,
@@ -52,15 +52,15 @@ module MembershipsModule
 
     before_save :set_account_owner_name, :set_date_opened #move to saving opening
 
-    
-    def current_aging_group
-      savings_aging_groups.current 
-    end 
 
-    def self.can_earn_interest 
+    def current_aging_group
+      savings_aging_groups.current
+    end
+
+    def self.can_earn_interest
       where(can_earn_interest: true)
-    end 
-    
+    end
+
 
     def self.liability_accounts
       ids = pluck(:liability_account_id)
@@ -88,7 +88,7 @@ module MembershipsModule
       where(has_minimum_balance: true)
     end
 
-    
+
 
     def self.inactive(args={})
       updated_at(args)
@@ -99,7 +99,7 @@ module MembershipsModule
       AccountingModule::Liability.where(id: ids.uniq.compact.flatten).balance(args)
     end
 
-    
+
 
     def closed?
       closed_at.present?
@@ -159,7 +159,7 @@ module MembershipsModule
       !closed? && balance > 0.0
     end
 
-   
+
 
     def computed_interest(args={})
       averaged_balance(to_date: args[:to_date]) * saving_product_applicable_rate
@@ -168,7 +168,7 @@ module MembershipsModule
     def last_transaction_date
       return created_at if entries.with_cash_accounts.blank?
       entries.with_cash_accounts.recent.entry_date
-    end 
+    end
 
 
 

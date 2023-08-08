@@ -3,7 +3,7 @@ module StoreFrontModule
     belongs_to :customer, polymorphic: true, optional: true
     has_many :voucher_amounts, class_name: 'Vouchers::VoucherAmount'
     has_many :cash_counts
-    has_many :savings, class_name: "MembershipsModule::Saving", dependent: :destroy #for merging
+    has_many :savings, class_name: "DepositsModule::Saving", dependent: :destroy #for merging
     has_many :share_capitals, class_name: "MembershipsModule::ShareCapital", dependent: :destroy #for merging
 
     has_many :members, dependent: :destroy # for merging

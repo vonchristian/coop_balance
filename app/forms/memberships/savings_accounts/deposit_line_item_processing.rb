@@ -17,7 +17,7 @@ module Memberships
       end
 
       def find_saving
-        MembershipsModule::Saving.find(saving_id)
+        DepositsModule::Saving.find(saving_id)
       end
 
       def find_employee

@@ -8,7 +8,7 @@ module Addresses
     belongs_to :municipality
     has_many :streets
     has_many :loans,          class_name: "LoansModule::Loan"
-    has_many :savings,        class_name: "MembershipsModule::Saving"
+    has_many :savings,        class_name: "DepositsModule::Saving"
     has_many :share_capitals, class_name: "MembershipsModule::ShareCapital"
     has_many :time_deposits,  class_name: "MembershipsModule::TimeDeposit"
     has_many :addresses
@@ -20,10 +20,10 @@ module Addresses
     before_save :set_default_avatar
 
     delegate :name, to: :municipality, prefix: true
-    
+
     def name_and_municipality
       "#{name}, #{municipality_name}"
-    end 
+    end
 
     private
     def set_default_avatar

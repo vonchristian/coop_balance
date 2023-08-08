@@ -5,9 +5,9 @@ module Memberships
       attr_accessor :saving_id, :employee_id, :amount, :or_number, :account_number, :date, :offline_receipt, :cash_account_id, :account_number, :description
       validates :amount, presence: true, numericality: { greater_than: 0.01 }
       validates :or_number, :date, :description, :cash_account_id, presence: true
-     
+
       validate :amount_does_not_exceed_balance?
-      
+
       def save
         ActiveRecord::Base.transaction do
           create_deposit_voucher
@@ -19,7 +19,7 @@ module Memberships
       end
 
       def find_saving
-        MembershipsModule::Saving.find(saving_id)
+        DepositsModule::Saving.find(saving_id)
       end
       def find_employee
         User.find(employee_id)

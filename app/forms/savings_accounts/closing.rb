@@ -24,7 +24,7 @@ module SavingsAccounts
     private
 
     def find_savings_account
-      MembershipsModule::Saving.find_by_id(savings_account_id)
+      DepositsModule::Saving.find_by_id(savings_account_id)
     end
 
     def create_voucher

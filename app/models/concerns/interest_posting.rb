@@ -6,7 +6,7 @@ class InterestPosting
     recorder: employee,
     description: 'Interest expense on savings deposits',
     entry_date: posting_date)
-    MembershipsModule::Saving.has_minimum_balance.each do |savings_account|
+    DepositsModule::Saving.has_minimum_balance.each do |savings_account|
       if !savings_account.interest_posted?(posting_date)
         debit_amount = AccountingModule::DebitAmount.new(
         account: debit_account(savings_account),

@@ -28,7 +28,7 @@ class Cooperative < ApplicationRecord
   has_many :share_capital_products,         class_name: "Cooperatives::ShareCapitalProduct"
   has_many :programs,                       class_name: "Cooperatives::Program"
   has_many :program_subscriptions,          through: :programs, class_name: "MembershipsModule::ProgramSubscription"
-  has_many :savings,                        class_name: "MembershipsModule::Saving"
+  has_many :savings,                        class_name: "DepositsModule::Saving"
   has_many :share_capitals,                 class_name: "MembershipsModule::ShareCapital"
   has_many :time_deposits,                  class_name: "MembershipsModule::TimeDeposit"
   has_many :barangays,                      class_name: "Addresses::Barangay"
@@ -64,7 +64,7 @@ class Cooperative < ApplicationRecord
   validates :name, :abbreviated_name, presence: true
   validates :name, uniqueness: true
   validates :registration_number, presence: true, uniqueness: true
-  
+
   def avatar
     logo
   end

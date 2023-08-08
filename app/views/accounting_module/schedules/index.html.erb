@@ -6,14 +6,14 @@
       </div>
       <div class="card-body">
         <h4 class="card-title">Savings</h4>
-        <% if !MembershipsModule::Saving.has_minimum_balance.first.interest_posted?(Date.today.beginning_of_year.end_of_quarter) %>
+        <% if !DepositsModule::Saving.has_minimum_balance.first.interest_posted?(Date.today.beginning_of_year.end_of_quarter) %>
           <%= button_to "Post Interests (1st Qtr 2018)", accounting_module_interests_earned_postings_path(date: Date.today.beginning_of_year.end_of_quarter), data: { confirm: "Are you sure you want to post earned interests"}, class: "btn btn-danger btn-sm", method: :post %>
           <% else %>
            <span class="label bg-gray"> 1st Quarter Posted </span>
         <% end %>
         <br>
         <br>
-        <% if !MembershipsModule::Saving.has_minimum_balance.first.interest_posted?(Date.today.beginning_of_year.next_quarter.end_of_quarter) %>
+        <% if !DepositsModule::Saving.has_minimum_balance.first.interest_posted?(Date.today.beginning_of_year.next_quarter.end_of_quarter) %>
           <%= button_to "Post Interests (2st Qtr 2018)", accounting_module_interests_earned_postings_path(date: Date.today.beginning_of_year.next_quarter.end_of_quarter), data: { confirm: "Are you sure you want to post earned interests"}, class: "btn btn-danger btn-sm", method: :post %>
           <% else %>
            <span class="label bg-gray"> 2st Quarter Posted </span>
