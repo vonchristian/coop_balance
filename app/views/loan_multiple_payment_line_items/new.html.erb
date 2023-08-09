@@ -117,14 +117,14 @@
 
 
             <div class="row">
-              <div class="col-6">
-                <%= link_to 'Cancel', cart_path(current_cart), data: { turbo_method: :delete }, class: 'text-danger' %>
+              <div class="col-6">  
               </div>
               <div class="col-6">
                 <%= f.submit 'Proceed', class: 'btn btn-primary float-right', method: :post %>
               </div>
             </div>
           <% end %>
+           <%= link_to 'Cancel', cart_path(current_cart), data: { turbo_method: :delete }, class: 'text-danger' %>
         </div>
       </div>
     </div>
