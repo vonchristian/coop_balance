@@ -12,7 +12,7 @@ module StoreFrontModule
         @order.save
         redirect_to store_front_module_index_url, notice: "Order processed successfully."
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

@@ -12,7 +12,7 @@ module TimeDeposits
         @interest_posting.process!
         redirect_to time_deposit_interest_posting_url(id: @interest_posting.find_voucher.id), notice: 'Voucher created successfully.'
       else 
-        render :new 
+        render :new, status: :unprocessable_entity
       end  
     end
 

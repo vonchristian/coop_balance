@@ -15,7 +15,7 @@ module LoansModule
             
             redirect_to loans_module_settings_url, notice: 'saved successfully'
           else 
-            render :new 
+            render :new, status: :unprocessable_entity
           end 
         end 
 

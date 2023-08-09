@@ -18,7 +18,7 @@ module StoreFrontModule
           @purchase_order_line_item.process!
           redirect_to new_store_front_module_purchase_line_item_url, notice: "Added to cart."
         else
-          render :new
+          render :new, status: :unprocessable_entity
         end
       end
     end

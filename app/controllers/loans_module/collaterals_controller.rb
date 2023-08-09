@@ -11,7 +11,7 @@ module LoansModule
         @collateral.save
         redirect_to new_loan_collateral_url(@loan), notice: "Collateral added successfully."
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

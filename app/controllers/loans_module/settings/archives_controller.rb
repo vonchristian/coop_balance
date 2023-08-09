@@ -15,7 +15,7 @@ module LoansModule
 				if @loan_archive.archive!
 					redirect_to new_loans_module_settings_archive_path, notice: "Loans archived successfully."
 				else
-					render :new
+					render :new, status: :unprocessable_entity
 				end
 			end
 

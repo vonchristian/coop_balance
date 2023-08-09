@@ -8,7 +8,7 @@ class MembershipApplicationsController < ApplicationController
       @membership.register!
       redirect_to member_url(@membership.find_member), notice: "Member information saved successfully"
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 

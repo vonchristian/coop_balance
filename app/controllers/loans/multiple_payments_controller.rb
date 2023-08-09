@@ -11,7 +11,7 @@ module Loans
         @payment.process!
         redirect_to new_loan_multiple_payment_line_item_url, notice: "Payment added successfully."
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

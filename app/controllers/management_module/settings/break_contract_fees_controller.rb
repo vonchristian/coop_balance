@@ -9,7 +9,7 @@ module ManagementModule
         if @break_contract_fee.save
           redirect_to management_module_settings_url, notice: "Break Contract Fee saved successfully"
         else
-          render :new
+          render :new, status: :unprocessable_entity
         end
       end
 

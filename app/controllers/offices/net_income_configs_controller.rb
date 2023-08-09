@@ -17,7 +17,7 @@ module Offices
         @net_income_config.save!
         redirect_to office_net_income_configs_url(@office), notice: 'Net Income Configuration saved successfully'
       else 
-        render :new 
+        render :new, status: :unprocessable_entity
       end  
     end
 

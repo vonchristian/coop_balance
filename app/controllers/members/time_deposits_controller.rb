@@ -16,7 +16,7 @@ module Members
         @time_deposit.susbscribe!
         redirect_to voucher_url(id: @time_deposit.find_voucher.id), notice: " Time deposit voucher created successfully."
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

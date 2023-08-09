@@ -24,7 +24,7 @@ module StoreFrontModule
         @product.register!
         redirect_to store_front_module_products_url, notice: "created successfully"
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

@@ -13,7 +13,7 @@ module LoansModule
           @loan_discount.save! 
           redirect_to loans_module_loan_interests_url(@loan), notice: "Loan interest discount saved successfully."
         else 
-          render :new 
+          render :new, status: :unprocessable_entity
         end 
       end
 

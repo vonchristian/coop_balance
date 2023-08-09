@@ -12,7 +12,7 @@ module Members
         @income_source.save!
         redirect_to member_settings_path(@member), notice: 'Income Source saved successfully'
       else 
-        render :new 
+        render :new, status: :unprocessable_entity
       end  
     end 
 

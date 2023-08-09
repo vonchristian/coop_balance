@@ -14,7 +14,7 @@ class UsersController < ApplicationController
     if @user.save
       redirect_to @user, notice: "Password updated successfully."
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 

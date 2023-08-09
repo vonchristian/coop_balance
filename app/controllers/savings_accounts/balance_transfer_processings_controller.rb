@@ -15,7 +15,7 @@ module SavingsAccounts
         @balance_transfer.process!
         redirect_to new_savings_account_balance_transfer_url(origin_saving_id: @savings_account.id), notice: 'Added successfully'
       else 
-        render :new 
+        render :new, status: :unprocessable_entity
       end 
     end
 

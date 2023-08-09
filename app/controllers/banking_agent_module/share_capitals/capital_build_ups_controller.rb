@@ -17,7 +17,7 @@ module BankingAgentModule
           voucher = current_banking_agent.vouchers.find_by!(account_number: params[:banking_agent_module_share_capitals_capital_build_up][:account_number])
           redirect_to banking_agent_module_share_capital_capital_build_up_confirmation_url(id: voucher.id), notice: "Transaction created successfully."
         else 
-          render :new 
+          render :new, status: :unprocessable_entity
         end 
       end 
 

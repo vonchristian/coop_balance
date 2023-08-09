@@ -18,7 +18,7 @@ module ManagementModule
         @account_budget.process!
         redirect_to new_management_module_account_budget_url, notice: "Budget set successfully."
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

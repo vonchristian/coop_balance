@@ -19,7 +19,7 @@ class OrganizationsController < ApplicationController
       @organization.save
       redirect_to organization_url(@organization), notice: "Organization saved successfully."
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -32,7 +32,7 @@ class OrganizationsController < ApplicationController
     if @organization.update(organization_params)
       redirect_to organization_url(@organization), notice: "Organization updated successfully."
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 

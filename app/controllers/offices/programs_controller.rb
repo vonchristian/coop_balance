@@ -12,7 +12,7 @@ module Offices
         @office_program.save!
         redirect_to office_programs_url(current_office), notice: 'Program created successfully'
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

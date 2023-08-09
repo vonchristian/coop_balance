@@ -12,7 +12,7 @@ module ManagementModule
           @branch.save
           redirect_to management_module_settings_cooperative_url(@cooperative), notice: "Branch created successfully"
         else
-          render :new
+          render :new, status: :unprocessable_entity
         end
       end
 

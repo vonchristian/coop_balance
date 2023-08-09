@@ -12,7 +12,7 @@ module ShareCapitals
         @line_item.process!
         redirect_to new_share_capital_multiple_transaction_url, notice: 'added successfully.'
       else 
-        render :new 
+        render :new, status: :unprocessable_entity
       end 
     end 
 

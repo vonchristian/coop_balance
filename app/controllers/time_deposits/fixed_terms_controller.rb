@@ -11,7 +11,7 @@ module TimeDeposits
       if @fixed_term.save
         redirect_to time_deposit_url(@time_deposit), notice: "Term saved successfully"
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

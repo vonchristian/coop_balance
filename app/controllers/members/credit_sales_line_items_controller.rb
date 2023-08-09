@@ -19,7 +19,7 @@ module Members
         @sales_line_item.process!
         redirect_to new_member_credit_sales_line_item_url(@member), notice: "Added to cart."
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
     def destroy

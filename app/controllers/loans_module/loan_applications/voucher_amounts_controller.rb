@@ -28,7 +28,7 @@ module LoansModule
           @voucher_amount.save
           redirect_to new_loans_module_loan_application_voucher_url(@loan_application), notice: 'Amount updated succesfully.'
         else
-          render :edit
+          render :edit, status: :unprocessable_entity
         end
       end
 

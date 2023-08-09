@@ -13,7 +13,7 @@ module AccountingModule
           @ioc_payment.process! 
           redirect_to new_accounting_module_ioc_distributions_share_capital_url, notice: "added successfully."
         else 
-          render :new 
+          render :new, status: :unprocessable_entity
         end 
       end 
 

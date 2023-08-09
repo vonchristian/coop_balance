@@ -24,7 +24,7 @@ module AccountingModule
         @account.save!
         redirect_to accounting_module_account_url(@account), notice: 'Account created successfully'
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 
@@ -43,7 +43,7 @@ module AccountingModule
         @account.save!
         redirect_to accounting_module_account_settings_url(@account), notice: 'Account updated successfully.'
       else
-        render :edit
+        render :edit, status: :unprocessable_entity
       end
     end
 

@@ -11,7 +11,7 @@ class MerchantsController < ApplicationController
       @merchant.save!
       redirect_to merchants_url, notice: "Merchant saved successfully."
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 

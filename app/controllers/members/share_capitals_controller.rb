@@ -14,7 +14,7 @@ module Members
       if @share_capital.subscribe!
         redirect_to share_capital_url(@share_capital.find_share_capital), notice: "Success"
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

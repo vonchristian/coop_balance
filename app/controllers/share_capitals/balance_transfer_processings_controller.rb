@@ -15,7 +15,7 @@ module ShareCapitals
         @balance_transfer.process!
         redirect_to new_share_capital_balance_transfer_url(@origin_share_capital), notice: "Amount created successfully."
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
     

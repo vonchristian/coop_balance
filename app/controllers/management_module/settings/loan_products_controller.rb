@@ -16,7 +16,7 @@ module ManagementModule
           @loan_product.register!
           redirect_to management_module_settings_cooperative_products_url, notice: "Loan product created successfully."
         else
-          render :new
+          render :new, status: :unprocessable_entity
         end
       end
 

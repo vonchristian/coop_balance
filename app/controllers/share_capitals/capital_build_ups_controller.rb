@@ -14,7 +14,7 @@ module ShareCapitals
         @capital_build_up.save
         redirect_to share_capital_voucher_url(share_capital_id: @share_capital.id, id: @capital_build_up.find_voucher.id), notice: "Capital build up saved successfully."
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

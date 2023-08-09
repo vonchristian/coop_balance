@@ -11,7 +11,7 @@ module MemberAccounts
         @member_account.register!
         redirect_to new_member_account_session_url, notice: "Account successfully created."
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

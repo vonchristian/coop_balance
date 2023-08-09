@@ -11,7 +11,7 @@ module Employees
         @entry.save
         redirect_to employee_url(@employee), notice: "Fund transfer saved successfully."
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

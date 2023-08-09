@@ -13,7 +13,7 @@ module Merchants
         @payment_line_item.process!
         redirect_to new_merchant_payment_line_item_url(merchant_id: @merchant.id, commercial_document_type: @commercial_document.class.to_s, commercial_document_id: @commercial_document.id), notice: "created successfully"
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

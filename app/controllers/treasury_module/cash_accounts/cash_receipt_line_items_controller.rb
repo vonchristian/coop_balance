@@ -38,7 +38,7 @@ module TreasuryModule
           @cash_receipt_line_item.process!
           redirect_to new_treasury_module_cash_account_cash_receipt_line_item_url(cash_account_id: @cash_account.id), notice: "Added successfully"
         else
-          render :new
+          render :new, status: :unprocessable_entity
         end
       end
       def destroy

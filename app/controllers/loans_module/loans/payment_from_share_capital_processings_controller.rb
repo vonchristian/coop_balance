@@ -15,7 +15,7 @@ module LoansModule
           @payment.process!
           redirect_to new_loans_module_loan_payment_from_share_capital_url(@loan), notice: 'Amount created successfully'
         else
-          render :new
+          render :new, status: :unprocessable_entity
         end
       end
 

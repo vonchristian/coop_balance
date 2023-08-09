@@ -11,7 +11,7 @@ module Cooperatives
         @barangay.save
         redirect_to barangay_url(@barangay), notice: "Barangay created successfully"
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 
@@ -24,7 +24,7 @@ module Cooperatives
       if @barangay.update(barangay_params)
         redirect_to barangay_url(@barangay), notice: 'Barangay updated successfully.'
       else
-        render :edit
+        render :edit, status: :unprocessable_entity
       end
     end
 

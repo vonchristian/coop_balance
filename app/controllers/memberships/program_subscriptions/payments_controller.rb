@@ -14,7 +14,7 @@ module Memberships
           @payment.save
           redirect_to member_subscriptions_url(@membership.cooperator), notice: "Payment saved successfully"
         else
-          render :new
+          render :new, status: :unprocessable_entity
         end
       end
 

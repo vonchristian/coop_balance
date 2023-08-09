@@ -6,7 +6,7 @@ module Registries
         redirect_to management_module_settings_data_migrations_url, notice: "Savings Account registry saved successfully"
         @registry.parse_for_records
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

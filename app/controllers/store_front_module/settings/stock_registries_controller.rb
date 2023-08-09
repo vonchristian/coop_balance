@@ -9,7 +9,7 @@ module StoreFrontModule
           redirect_to store_front_module_stock_registry_url(@registry), notice: "Products uploaded successfully."
 
         else
-          render :new
+          render :new, status: :unprocessable_entity
         end
       end
 

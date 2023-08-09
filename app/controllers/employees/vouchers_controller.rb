@@ -15,7 +15,7 @@ module Employees
         @voucher.add_amounts(@employee)
         redirect_to employee_vouchers_url(@employee), notice: "Voucher created successfully."
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

@@ -12,7 +12,7 @@ module StoreFrontModule
         @unit_of_measurement.register!
         redirect_to store_front_module_product_url(@product), notice: "Unit of Measurement added successfully"
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

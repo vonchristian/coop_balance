@@ -19,7 +19,7 @@ module StoreFrontModule
           @stock.save
           redirect_to store_front_module_product_path(@product), notice: "Stock saved successfully"
         else
-          render :new
+          render :new, status: :unprocessable_entity
         end
       end
 

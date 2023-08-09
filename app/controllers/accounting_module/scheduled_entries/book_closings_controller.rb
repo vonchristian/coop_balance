@@ -15,7 +15,7 @@ module AccountingModule
 
           redirect_to accounting_module_scheduled_entries_book_closing_confirmation_url(id: @book_closing.find_voucher.id), notice: 'Voucher created successfully'
         else 
-          render :new 
+          render :new, status: :unprocessable_entity
         end 
       end 
 

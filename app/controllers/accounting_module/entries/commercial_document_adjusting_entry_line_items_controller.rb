@@ -14,7 +14,7 @@ module AccountingModule
           @line_item.process!
           redirect_to new_accounting_module_commercial_document_adjusting_entry_line_item_url(commercial_document_id: @commercial_document.id, commercial_document_type: @commercial_document.class.to_s), notice: "Added successfully"
         else
-          render :new
+          render :new, status: :unprocessable_entity
         end
       end
       def destroy

@@ -12,7 +12,7 @@ module Vouchers
         @disbursement.save
         redirect_to voucher_url(@voucher), notice: "Loan Disbursement Voucher disbursed successfully"
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

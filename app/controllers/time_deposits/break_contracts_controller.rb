@@ -13,7 +13,7 @@ module TimeDeposits
         @break_contract.save
         redirect_to time_deposit_url(@time_deposit), alert: "Break contract saved successfully."
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

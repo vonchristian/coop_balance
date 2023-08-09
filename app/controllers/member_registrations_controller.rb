@@ -8,7 +8,7 @@ class MemberRegistrationsController < ApplicationController
       @member.save
       redirect_to management_module_members_url, notice: 'Member registered successfully.'
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 

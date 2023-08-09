@@ -13,7 +13,7 @@ module SavingsAccounts
         @withdrawal.save
         redirect_to savings_account_withdrawal_voucher_url(savings_account_id: @savings_account.id, id: @withdrawal.find_voucher.id), notice: "Withdraw transaction created successfully."
       else
-         render :new
+         render :new, status: :unprocessable_entity
       end
     end
 

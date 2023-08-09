@@ -12,7 +12,7 @@ module Loans
         @payment.process!
         redirect_to loan_payment_voucher_url(schedule_id: @payment.schedule_id, loan_id: @loan.id, id: @payment.find_voucher.id), notice: "Payment voucher created successfully."
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

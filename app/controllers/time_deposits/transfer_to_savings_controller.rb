@@ -15,7 +15,7 @@ module TimeDeposits
         @transfer.process!
         redirect_to time_deposit_transfer_voucher_url(time_deposit_id: @time_deposit.id, id: @transfer.find_voucher.id)
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

@@ -11,7 +11,7 @@ module StoreFrontModule
         @mark_up_price.save
         redirect_to store_front_module_product_url(@unit_of_measurement.product), notice: "Mark up price updated successfully."
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

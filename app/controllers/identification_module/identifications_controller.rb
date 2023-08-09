@@ -14,7 +14,7 @@ module IdentificationModule
         @identification.save
         redirect_to member_path(@identifiable), notice: 'Identification saved successfully.'
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

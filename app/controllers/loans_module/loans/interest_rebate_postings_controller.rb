@@ -12,7 +12,7 @@ module LoansModule
           @rebate.save
           redirect_to loan_url(@loan), notice: "Rebate saved successfully"
         else
-          render :new
+          render :new, status: :unprocessable_entity
         end
       end
 

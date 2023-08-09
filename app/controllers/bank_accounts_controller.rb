@@ -17,7 +17,7 @@ class BankAccountsController < ApplicationController
       @bank_account.process!
       redirect_to bank_accounts_url, notice: "Bank account details saved successfully."
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
   def show

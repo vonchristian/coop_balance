@@ -11,7 +11,7 @@ module TimeDeposits
         @withdrawal.process!
         redirect_to time_deposit_withdrawal_voucher_url(time_deposit_id: @time_deposit.id, id: @withdrawal.find_voucher.id), notice: "Voucher created successfully"
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

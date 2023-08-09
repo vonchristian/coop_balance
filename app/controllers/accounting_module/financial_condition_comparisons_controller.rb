@@ -9,7 +9,7 @@ module AccountingModule
         @comparison.save
         redirect_to accounting_module_financial_condition_comparison_url(@comparison), notice: "Comparison created successfully"
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
     def show

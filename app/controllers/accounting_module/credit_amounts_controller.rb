@@ -16,7 +16,7 @@ module AccountingModule
       if @amount.save
         redirect_to accounting_module_entry_url(@amount.entry), notice: "Amount updated successfully"
       else
-        render :edit
+        render :edit, status: :unprocessable_entity
       end
     end
 

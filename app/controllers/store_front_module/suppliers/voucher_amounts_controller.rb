@@ -13,7 +13,7 @@ module StoreFrontModule
         @amount.process!
         redirect_to new_store_front_module_supplier_voucher_amount_url(@supplier), notice:"added successfully."
         else
-          render :new
+          render :new, status: :unprocessable_entity
         end
       end
       def destroy

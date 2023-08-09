@@ -14,7 +14,7 @@ module SavingsAccounts
         @account_closing.process!
         redirect_to savings_account_account_closing_voucher_url(savings_account_id: @savings_account.id, id: @account_closing.find_voucher.id), notice: "Account closing voucher created successfully."
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

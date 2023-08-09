@@ -12,7 +12,7 @@ module Employees
         @cash_count.save!
         redirect_to new_employee_cash_count_line_item_url(current_user), notice: 'added successfully.'
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

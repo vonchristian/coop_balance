@@ -11,7 +11,7 @@ module Members
         @merging.merge!
         redirect_to member_url(@merger), notice: "Account merged successfully."
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

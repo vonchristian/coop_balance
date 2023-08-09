@@ -9,7 +9,7 @@ module ShareCapitals
       if @share_capital.save
         redirect_to share_capital_url(@share_capital), notice: "Branch Office updated successfully"
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

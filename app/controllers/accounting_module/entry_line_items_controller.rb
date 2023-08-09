@@ -25,7 +25,7 @@ module AccountingModule
         @line_item.process!
         redirect_to new_accounting_module_entry_line_item_url, notice: "Amount added successfully"
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
     def destroy

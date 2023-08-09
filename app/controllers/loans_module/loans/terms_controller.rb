@@ -15,7 +15,7 @@ module LoansModule
           @term.process!
           redirect_to loan_settings_url(@loan), notice: "Loan term saved successfully."
         else
-          render :new
+          render :new, status: :unprocessable_entity
         end
       end
 

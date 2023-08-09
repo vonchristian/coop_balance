@@ -14,7 +14,7 @@ module ShareCapitals
         
         redirect_to share_capital_withdrawal_voucher_path(share_capital_id: @share_capital.id, id: @voucher.id), notice: 'Withdrawal voucher created successfully.'
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

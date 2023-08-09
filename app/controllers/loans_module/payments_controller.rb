@@ -11,7 +11,7 @@ module LoansModule
         @payment.save
         redirect_to loans_module_loan_path(@loan), notice: "Loan payment saved successfully."
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

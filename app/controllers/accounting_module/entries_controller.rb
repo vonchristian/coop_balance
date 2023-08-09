@@ -39,7 +39,7 @@ module AccountingModule
         @line_item.save
         redirect_to new_accounting_module_entry_line_item_url, notice: "Entry saved successfully"
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

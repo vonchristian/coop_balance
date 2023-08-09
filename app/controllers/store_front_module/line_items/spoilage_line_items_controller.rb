@@ -18,7 +18,7 @@ module StoreFrontModule
 
           redirect_to new_store_front_module_spoilage_line_item_url, notice: "Added successfully"
         else
-          render :new
+          render :new, status: :unprocessable_entity
         end
       end
       def destroy

@@ -14,7 +14,7 @@ module Offices
         @loan_product.save!
         redirect_to office_loan_products_url(current_office), notice: 'Loan Product saved successfully.'
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

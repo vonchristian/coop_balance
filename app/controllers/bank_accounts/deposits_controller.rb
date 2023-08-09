@@ -11,7 +11,7 @@ module BankAccounts
         @deposit.save
         redirect_to bank_account_voucher_url(id: @deposit.find_voucher.id, bank_account_id: @bank_account.id), notice: "Entry saved successfully."
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

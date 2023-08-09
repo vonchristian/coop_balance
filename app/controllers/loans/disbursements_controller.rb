@@ -15,7 +15,7 @@ module Loans
         @disbursement.save
         redirect_to loan_path(@loan), notice: "Disbursed successfully."
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

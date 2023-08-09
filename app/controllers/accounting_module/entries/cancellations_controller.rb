@@ -15,7 +15,7 @@ module AccountingModule
           @cancellation.process!
           redirect_to accounting_module_entry_url(@entry), notice: "Entry cancelled successfully."
         else
-          render :new
+          render :new, status: :unprocessable_entity
         end
       end
 

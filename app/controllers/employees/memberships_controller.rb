@@ -12,7 +12,7 @@ module Employees
         @membership.save
         redirect_to employee_url(@employee), notice: "Membership saved successfully."
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 
@@ -27,7 +27,7 @@ module Employees
         @membership.save
         redirect_to employee_url(@employee), notice: "Membership saved successfully."
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

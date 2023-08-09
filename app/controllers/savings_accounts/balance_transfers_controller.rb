@@ -13,7 +13,7 @@ module SavingsAccounts
         @balance_transfer_voucher.process!
         redirect_to savings_account_balance_transfer_voucher_url(savings_account_id: @origin_saving.id, id: @balance_transfer_voucher.find_voucher.id), notice: 'Voucher created successfully.'
       else 
-        render :new 
+        render :new, status: :unprocessable_entity
       end 
     end 
 

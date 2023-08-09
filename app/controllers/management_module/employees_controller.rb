@@ -12,7 +12,7 @@ module ManagementModule
         @employee.save
         redirect_to employee_url(@employee), notice: "Employee registered successfully."
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
     def show

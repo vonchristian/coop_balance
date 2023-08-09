@@ -42,7 +42,7 @@ module StoreFrontModule
           @sales_order.process!
           redirect_to new_store_front_module_sales_line_item_url, notice: "Order processed successfully."
         else
-          render :new
+          render :new, status: :unprocessable_entity
         end
       end
 

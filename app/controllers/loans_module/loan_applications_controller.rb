@@ -30,7 +30,7 @@ module LoansModule
         @loan_application.process!
         redirect_to new_loans_module_loan_application_voucher_url(@loan_application.find_loan_application), notice: "Loan application saved successfully."
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
     def show

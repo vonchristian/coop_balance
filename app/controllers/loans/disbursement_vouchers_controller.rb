@@ -13,7 +13,7 @@ module Loans
         @voucher.add_amounts_from(@loan)
 				redirect_to loan_disbursements_url(@loan), notice: "Voucher created successfully."
 			else
-				render :new
+				render :new, status: :unprocessable_entity
 			end
 		end
 		def show

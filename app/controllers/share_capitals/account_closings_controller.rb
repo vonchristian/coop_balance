@@ -13,7 +13,7 @@ module ShareCapitals
         @account_closing.save
         redirect_to share_capital_url(@share_capital), alert: "ShareCapital Account closed successfully"
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

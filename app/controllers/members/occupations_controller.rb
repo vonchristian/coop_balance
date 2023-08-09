@@ -11,7 +11,7 @@ module Members
         @occupation.save
         redirect_to member_url(@member), notice: "Occupation added successfully."
       else
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 
