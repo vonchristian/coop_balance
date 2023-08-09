@@ -16,10 +16,10 @@
       <div class="card-body">
         <div class="row">
           <div class="col-md-6 col-sm-6">
-            <%= link_to 'View Voucher (PDF)', loans_module_loan_application_voucher_path(loan_application_id: @loan_application.id, id: @loan_application.voucher_id, format: "pdf"), class: "btn btn-default float-left" %>
+            <%= button_to 'View Voucher (PDF)', loans_module_loan_application_voucher_path(loan_application_id: @loan_application.id, id: @loan_application.voucher_id, format: "pdf"), class: "btn btn-default float-left" %>
           </div>
           <div class="col-md-6 col-sm-6">
-            <%= link_to 'View Schedule (PDF)', loans_module_loan_application_amortization_schedules_path(loan_application_id: @loan_application.id, id: @loan_application.voucher_id, format: "pdf"), class: "btn btn-default float-right" %>
+            <%= button_to 'View Schedule (PDF)', loans_module_loan_application_amortization_schedules_path(loan_application_id: @loan_application.id, id: @loan_application.voucher_id, format: "pdf"), class: "btn btn-default float-right" %>
           </div>
         </div>
       </div>
@@ -30,7 +30,7 @@
         <% if @loan_application.voucher.present? && !@loan_application.voucher.disbursed? %>
            <% if current_user.cash_accounts.present? %>
 
-        <%= link_to 'Disburse Voucher', new_loans_module_loan_application_disbursement_path(loan_application_id: @loan_application.id, voucher_id: @loan_application.voucher_id), class: "btn btn-primary float-right" %>
+        <%= button_to 'Disburse Voucher', new_loans_module_loan_application_disbursement_path(loan_application_id: @loan_application.id, voucher_id: @loan_application.voucher_id), class: "btn btn-primary float-right" %>
          <% end %>
         <% end %>
         <% if !@loan_application.disbursed? %>
