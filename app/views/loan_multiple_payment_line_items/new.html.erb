@@ -20,11 +20,7 @@
           <% @loans.each do |loan| %>
             <%= link_to  new_loan_multiple_payment_path(loan), id: "#{loan.id}-select" do %>
             <div class="row">
-              <div class='col-md-2'>
-                <%= image_tag(loan.avatar, height: 60, width: 60, class: 'img-circle') %>
-
-              </div>
-              <div class='col-5'>
+              <div class='col-7'>
                 <b><%= loan.borrower_full_name.upcase %></b><br>
                 <span class='text-muted'><%= loan.purpose %> -  <%= loan.loan_product_name %></span><br>
                 <% total_cash_amount = Loans::MultiplePaymentFinder.new(cart: current_cart).total_cash(loan) %>
@@ -114,7 +110,7 @@
             <%= f.input :date, as: :string, input_html: { class: 'datepicker'} %>
             <%= f.input :description %>
             <%= f.input :reference_number %>
-            <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] }, input_html: { class: 'chosen-select' } %>
+            <%= f.input :cash_account_id, collection: current_user.cash_accounts.map { |a| [a.name, a.id] }, input_html: { class: 'chosen-select' } %>
             <%= f.input :account_number, input_html: { value: SecureRandom.uuid }, as: :hidden %>
             <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
             <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
@@ -122,10 +118,10 @@
 
             <div class="row">
               <div class="col-6">
-                <%= button_to 'Cancel', cart_path(current_cart), method: :delete, class: 'text-danger' %>
+                <%= link_to 'Cancel', cart_path(current_cart), data: { turbo_method: :delete }, class: 'text-danger' %>
               </div>
               <div class="col-6">
-                <%= f.submit 'Proceed', class: 'btn btn-primary float-right', data: { disable_with: 'Processing...' } %>
+                <%= f.submit 'Proceed', class: 'btn btn-primary float-right', method: :post %>
               </div>
             </div>
           <% end %>

@@ -18,7 +18,6 @@
           </a>
           <ul class="dropdown-menu">
             <li class="user-header">
-              <%=image_tag(current_user.avatar.url(:large), class: "img-square")%>
               <%=current_user.first_name %>
             </li>
             <li class="user-footer">
@@ -26,7 +25,7 @@
                 <%=link_to 'Profile', employee_path(current_user),  class: "btn btn-default btn-flat" %>
               </div>
               <div class="pull-right">
-                <%= button_to 'Sign out', destroy_user_session_path, method: :delete, class: "btn btn-danger", data: { turbo: false } %>
+                <%= link_to 'Sign out', destroy_user_session_path, method: :delete, class: "btn btn-danger", data: { turbo_method: :delete } %>
               </div>
             </li>
           </ul>

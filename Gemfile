@@ -24,7 +24,7 @@ gem "stimulus-rails"
 gem "cssbundling-rails", "~> 1.2"
 gem 'jbuilder'
 gem 'redis'
-gem 'devise'
+gem 'devise', github: 'heartcombo/devise', branch: 'main'
 gem 'simple_form'
 gem 'friendly_id'
 gem 'pg_search'
