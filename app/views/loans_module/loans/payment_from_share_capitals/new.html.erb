@@ -82,7 +82,7 @@
                   </span>
                 </div>
                 <div class="col-md-1">
-                  <%=link_to new_loans_module_loan_payment_from_share_capital_processing_path(loan_id: @loan.id, id: amount.id), method: :delete do %>
+                  <%= button_to new_loans_module_loan_payment_from_share_capital_processing_path(loan_id: @loan.id, id: amount.id), method: :delete do %>
                     <i class="fa fa-times text-danger"></i>
                   <% end %>
                 </div>

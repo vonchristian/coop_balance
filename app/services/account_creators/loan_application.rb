@@ -7,9 +7,9 @@ module AccountCreators
       @office                            = @loan_application.office
       @loan_product                      = @loan_application.loan_product
       @office_loan_product               = @office.office_loan_products.find_by(loan_product: @loan_product)
-      @interest_revenue_ledger = @office_loan_product.interest_revenue_ledger
+      @interest_revenue_ledger           = @office_loan_product.interest_revenue_ledger
       @office_loan_product_aging_group   = @office_loan_product.office_loan_product_aging_groups.current
-      @receivable_ledger      = @office_loan_product_aging_group.receivable_ledger
+      @receivable_ledger                 = @office_loan_product_aging_group.receivable_ledger
     end
 
     def create_accounts!

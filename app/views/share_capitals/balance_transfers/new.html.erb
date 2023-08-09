@@ -80,7 +80,7 @@
                   </span>
                 </div>
                 <div class="col-md-1">
-                  <%=link_to share_capital_balance_transfer_processing_path(share_capital_id: @origin_share_capital.id, id: amount.id), method: :delete do %>
+                  <%= button_to share_capital_balance_transfer_processing_path(share_capital_id: @origin_share_capital.id, id: amount.id), method: :delete do %>
                     <i class="fa fa-times text-danger"></i>
                   <% end %>
                 </div>
@@ -106,7 +106,7 @@
               <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>
               <%= f.input :share_capital_id, input_html: { value: @origin_share_capital.id }, as: :hidden %>
               <%= f.input :date, as: :string, input_html: { class: 'datepicker', value: Date.current.strftime("%B %e, %Y") } %>
-              
+
               <%= f.submit 'Proceed', class: 'btn btn-danger btn-block' %>
             <% end %>
           </div>

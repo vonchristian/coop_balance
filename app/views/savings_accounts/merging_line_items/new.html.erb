@@ -28,7 +28,7 @@
                 </h3>
               </div>
               <div class="col-md-1 col-sm-1">
-                <%= link_to savings_account_merging_line_item_path(id: saving.id, saving_id: saving.id, current_saving_id: @current_saving.id), method: :delete, class: "btn btn-danger btn-sm" do %>
+                <%= button_to savings_account_merging_line_item_path(id: saving.id, saving_id: saving.id, current_saving_id: @current_saving.id), method: :delete, class: "btn btn-danger btn-sm" do %>
                     <i title="Remove" data-toggle="tooltip" class="fa fa-times float-right"></i>
                 <% end %>
               </div>

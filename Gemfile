@@ -68,6 +68,10 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'derailed_benchmarks'
+  gem 'rubocop', require: false             # https://github.com/rubocop/rubocop
+  gem 'rubocop-performance', require: false # https://github.com/rubocop/rubocop-performance
+  gem 'rubocop-rails', require: false       # https://github.com/rubocop/rubocop-rails
+  gem 'rubocop-rspec', require: false       # https://github.com/rubocop/rubocop-rspec
 end
 
 group :test do

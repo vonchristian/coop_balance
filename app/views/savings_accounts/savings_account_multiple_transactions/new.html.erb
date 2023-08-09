@@ -39,7 +39,7 @@
     <div class='col-md-6'>
       <div class='card'>
         <div class='card-body'>
-          <h4 class='subtitle-up'> Voucher Details </h4>   
+          <h4 class='subtitle-up'> Voucher Details </h4>
 
           <% current_cart.voucher_amounts.each do |voucher_amount| %>
             <% savings_account = SavingsAccounts::CartPaymentFinder.new(voucher_amount: voucher_amount, office: current_office).savings_account %>
@@ -56,7 +56,7 @@
                 <span class='float-right'><%= number_to_currency voucher_amount.amount %></span>
               </div>
               <div class='col-md-1'>
-                <%= link_to savings_account_multiple_line_item_path(id: voucher_amount.id, savings_account_id: savings_account.id), method: :delete do %>
+                <%= button_to savings_account_multiple_line_item_path(id: voucher_amount.id, savings_account_id: savings_account.id), method: :delete do %>
                   <span class='text-danger'><i class='fa fa-times'></i></span>
                 <% end %>
               </div>
@@ -72,7 +72,7 @@
               <h3 class='title-up float-right'><%= number_to_currency current_cart.voucher_amounts.credit.total %></h3>
             </div>
           </div>
-          <br>    
+          <br>
 <%= simple_form_for @savings_account_multiple_transaction, url: :savings_account_multiple_transaction_processings do |f| %>
   <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
   <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>

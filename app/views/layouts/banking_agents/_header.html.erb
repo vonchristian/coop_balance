@@ -26,7 +26,7 @@
                 <%=link_to 'Profile', banking_agent_path(current_banking_agent),  class: "btn btn-default btn-flat" %>
               </div>
               <div class="pull-right">
-                <%=link_to 'Sign out', destroy_banking_agent_session_path, method: :delete, class: "btn btn-danger" %>
+                <%= button_to 'Sign out', destroy_banking_agent_session_path, method: :delete, class: "btn btn-danger" %>
               </div>
             </li>
           </ul>

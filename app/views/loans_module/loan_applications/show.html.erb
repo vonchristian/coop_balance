@@ -9,7 +9,7 @@
           </div>
           <div class="col-md-11 col-sm-11">
             <h3 class="card-title no-margin-bottom"> <%= @loan_application.borrower_name %> </h3>
-            
+
           </div>
         </div>
       </div>
@@ -29,21 +29,19 @@
         <hr>
         <% if @loan_application.voucher.present? && !@loan_application.voucher.disbursed? %>
            <% if current_user.cash_accounts.present? %>
-        
+
         <%= link_to 'Disburse Voucher', new_loans_module_loan_application_disbursement_path(loan_application_id: @loan_application.id, voucher_id: @loan_application.voucher_id), class: "btn btn-primary float-right" %>
          <% end %>
         <% end %>
         <% if !@loan_application.disbursed? %>
-              <%= link_to 'Cancel Application', loans_module_loan_application_path(@loan_application), method: :delete, class: 'btn btn-link text-danger' %>
-               
-             
+          <%= button_to 'Cancel Application', loans_module_loan_application_path(@loan_application), method: :delete, class: 'btn btn-link text-danger' %>
+        <% else %>
+          <% if @loan_application.cancelled == true %>
+            <span class="text-danger float-right"> Cancelled</span>
           <% else %>
-            <% if @loan_application.cancelled == true %>
-              <span class="text-danger float-right"> Cancelled</span>
-            <% else %>
-              <span class="fa fa-check text-success float-right"> Approved</span>
-            <% end %>
+            <span class="fa fa-check text-success float-right"> Approved</span>
           <% end %>
+        <% end %>
         <br>
       </div>
     </div>

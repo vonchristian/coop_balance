@@ -42,7 +42,7 @@
                  <%=link_to 'Profile', cooperator_path(current_cooperator),  class: "btn btn-default btn-flat" %>
                </div>
                <div class="pull-right">
-                <%=link_to 'Sign out', destroy_cooperator_session_path, method: :delete, class: "btn btn-danger" %>
+                <%= button_to 'Sign out', destroy_cooperator_session_path, method: :delete, class: "btn btn-danger" %>
                </div>
              </li>
            </ul>

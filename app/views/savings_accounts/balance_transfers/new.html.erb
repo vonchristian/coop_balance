@@ -42,7 +42,7 @@
     <div class='col-md-6'>
       <div class='card'>
         <div class='card-body'>
-          <h4 class='subtitle-up'> Voucher Details </h4>   
+          <h4 class='subtitle-up'> Voucher Details </h4>
           <span class='text-muted'> FROM: </span>
           <div class='row'>
               <div class='col-md-2'>
@@ -75,7 +75,7 @@
                 <span class='float-right'><%= number_to_currency voucher_amount.amount %></span>
               </div>
               <div class='col-md-1'>
-                <%= link_to savings_account_balance_transfer_processing_path(id: voucher_amount.id), method: :delete do %>
+                <%= button_to savings_account_balance_transfer_processing_path(id: voucher_amount.id), method: :delete do %>
                   <span class='text-danger'><i class='fa fa-times'></i></span>
                 <% end %>
               </div>
@@ -91,7 +91,7 @@
               <h3 class='title-up float-right'><%= number_to_currency current_cart.voucher_amounts.credit.total %></h3>
             </div>
           </div>
-          <br>    
+          <br>
 <%= simple_form_for @balance_transfer_voucher, url: :savings_account_balance_transfers do |f| %>
   <%= f.input :employee_id, input_html: { value: current_user.id }, as: :hidden %>
   <%= f.input :cart_id, input_html: { value: current_cart.id }, as: :hidden %>

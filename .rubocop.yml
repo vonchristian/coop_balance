@@ -1,1 +1,127 @@
-require: rubocop-rspec
+require:
+  - rubocop-performance
+  - rubocop-rails
+  - rubocop-rspec
+
+AllCops:
+  TargetRubyVersion: 3.1.2
+  TargetRailsVersion: 7.0.1
+  NewCops: enable
+  Exclude:
+    - '**/db/migrate/*'
+    - '**/db/*'
+    - '**/Gemfile.lock'
+    - '**/Rakefile'
+    - '**/rails'
+    - '**/vendor/**/*'
+    - '**/spec_helper.rb'
+    - '**/test/**/*'
+    - 'bin/*'
+    - 'config/environments/*'
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Lint/EmptyClass:
+  Enabled: false
+
+Lint/EmptyBlock:
+  Enabled: false
+
+RSpec/EmptyExampleGroup:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+
+Layout/LineLength:
+  Enabled: false
+
+RSpec/LetSetup:
+  Enabled: false
+
+RSpec/ImplicitExpect:
+  EnforcedStyle: should
+
+Metrics/BlockLength:
+  Exclude:
+    - '**/spec/**/*'
+    - '**/config/routes.rb'
+    - '**/app/admin/*'
+
+Metrics/PerceivedComplexity:
+  Exclude:
+    - '**/app/services/px/casting_roles/create_service.rb'
+    - '**/app/services/px/accounts/talent/patch_service.rb'
+    - '**/app/services/px/talent/casting/patch_service.rb'
+    - '**/app/services/px/talent/base/patch_service.rb'
+
+
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - '**/app/services/px/casting_roles/create_service.rb'
+    - '**/app/services/px/accounts/talent/patch_service.rb'
+    - '**/app/services/px/talent/casting/patch_service.rb'
+    - '**/app/services/px/talent/base/patch_service.rb'
+
+Naming/PredicateName:
+  Exclude:
+     - '**/app/models/user.rb'
+
+Style/HashSyntax:
+  EnforcedShorthandSyntax: never
+
+RSpec/MessageSpies:
+  EnforcedStyle: receive
+
+Style/GlobalVars:
+  AllowedVariables:
+    - $redis
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Layout/TrailingEmptyLines:
+  Enabled: false
+
+Style/BlockDelimiters:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/AnyInstance:
+  Enabled: false
+
+RSpec/Rails/InferredSpecType:
+  Enabled: false
+
+Rails/ActionOrder:
+  Enabled: false
+
+RSpec/SortMetadata:
+  Enabled: false
+
+Metrics/ParameterLists:
+  Enabled: false
+
+Style/OptionalBooleanParameter:
+  Enabled: false
+
+Style/FetchEnvVar:
+  Enabled: false

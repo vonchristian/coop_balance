@@ -70,7 +70,7 @@
                       <span class="pull-right"><%=number_to_currency line_item.total_cost %></span>
                     </td>
                     <td>
-                    <%= link_to store_front_module_customer_credit_sales_line_item_path(id: line_item.id), method: :delete do %>
+                    <%= button_to store_front_module_customer_credit_sales_line_item_path(id: line_item.id), method: :delete do %>
                       <span class="fa fa-trash"></span>
                     <% end %>
                     </td>

@@ -41,7 +41,7 @@
                     <% end %>
                   </td>
                   <td>
-                    <%=link_to employee_amount_path(id: voucher_amount.id), method: :delete do %>
+                    <%= button_to employee_amount_path(id: voucher_amount.id), method: :delete do %>
                       <span class="text-danger"><i class="fa fa-trash"></i> </span>
                     <% end %>
                   </td>

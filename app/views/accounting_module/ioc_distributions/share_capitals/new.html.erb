@@ -9,7 +9,7 @@
               <%= text_field_tag :search, params[:search], class: "form-control", placeholder: "Search Share Capital", id: 'share-capital-search-form' %>
               <span class="input-group-btn">
                 <%= button_tag(type: 'submit', id: "search-btn", class: "btn btn-default btn-flat") do %>
-                  <i class="fa fa-search"></i> Search 
+                  <i class="fa fa-search"></i> Search
                 <% end %>
               </span>
             </div>
@@ -58,7 +58,7 @@
 
                       <td><%= number_to_currency AccountingModule::IocDistributions::IocToShareCapitalFinder.new(cart: current_cart).amount(share_capital) %></td>
                       <td>
-                        <%= link_to accounting_module_ioc_distributions_share_capital_path(share_capital), method: :delete, id: "#{share_capital.id}-delete-amount" do %>
+                        <%= button_to accounting_module_ioc_distributions_share_capital_path(share_capital), method: :delete, id: "#{share_capital.id}-delete-amount" do %>
                           <i class="fa fa-times text-danger"></i>
                         <% end %>
                       </td>

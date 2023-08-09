@@ -36,7 +36,7 @@
                 <span class='float-right'>
                 <small class='text-muted'>PRINCIPAL BALANCE </small><br>
                 <h4 class='subtitle-up'><%= number_to_currency loan.principal_balance %></h4>
-                
+
                 </span>
               </div>
             </div>
@@ -94,7 +94,7 @@
                 <%= number_to_currency Loans::MultiplePaymentFinder.new(cart: current_cart).total_cash(loan) %>
               </div>
               <div class='col-md-1'>
-                <%= link_to loan_multiple_payment_path(loan_id: loan.id, id: loan.id), method: :delete  do %>
+                <%= button_to loan_multiple_payment_path(loan_id: loan.id, id: loan.id), method: :delete  do %>
                   <span class='text-danger'><i class='fa fa-times'></i>
                 <% end %>
               </div>
@@ -122,7 +122,7 @@
 
             <div class="row">
               <div class="col-6">
-                <%= link_to 'Cancel', cart_path(current_cart), method: :delete, class: 'text-danger' %>
+                <%= button_to 'Cancel', cart_path(current_cart), method: :delete, class: 'text-danger' %>
               </div>
               <div class="col-6">
                 <%= f.submit 'Proceed', class: 'btn btn-primary float-right', data: { disable_with: 'Processing...' } %>

@@ -67,7 +67,7 @@
                       <span class="pull-right"><%=number_to_currency line_item.total_cost %></span>
                     </td>
                     <td>
-                    <%= link_to store_front_module_purchase_line_item_path(line_item), method: :delete do %>
+                    <%= button_to store_front_module_purchase_line_item_path(line_item), method: :delete do %>
                       <span title="Remove Line Item" data-toggle="tooltip" class="fa fa-trash text-danger"></span>
                     <% end %>
                     </td>

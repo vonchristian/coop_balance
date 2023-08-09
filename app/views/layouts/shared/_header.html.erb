@@ -26,7 +26,7 @@
                 <%=link_to 'Profile', employee_path(current_user),  class: "btn btn-default btn-flat" %>
               </div>
               <div class="pull-right">
-                <%=link_to 'Sign out', destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
+                <%= button_to 'Sign out', destroy_user_session_path, method: :delete, class: "btn btn-danger" %>
               </div>
             </li>
           </ul>

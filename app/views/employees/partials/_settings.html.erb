@@ -60,7 +60,7 @@
             <% @employee.employee_cash_accounts.each do |account| %>
               <tr>
                 <td><%= account.name %></td>
-                <td><%= link_to 'Remove', employee_cash_account_path(id: account.id, employee_id: @employee.id), method: :delete, class: 'btn btn-outline-danger btn-xs' %></td>
+                <td><%= button_to 'Remove', employee_cash_account_path(id: account.id, employee_id: @employee.id), method: :delete, class: 'btn btn-outline-danger btn-xs' %></td>
               </tr>
             <% end %>
           </tbody>

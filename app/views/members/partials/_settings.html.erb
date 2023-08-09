@@ -134,7 +134,7 @@
       </div>
       <div class="col-md-3">
         <% if policy([:members, :account_deletion]).new? %>
-          <%= link_to 'Delete Account', member_path(@member), class: "btn btn-outline-danger btn-sm", method: :delete, data: { confirm: "Are you sure you want to delete this member's account?" } %>
+          <%= button_to 'Delete Account', member_path(@member), class: "btn btn-outline-danger btn-sm", method: :delete, data: { confirm: "Are you sure you want to delete this member's account?" } %>
         <% else %>
           <br>
           <span class="text-danger"> Only manager account can delete member accounts </span>

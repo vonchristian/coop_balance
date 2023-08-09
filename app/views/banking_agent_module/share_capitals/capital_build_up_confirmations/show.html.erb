@@ -1,7 +1,7 @@
 
 Confirmation Code: <%= "*" * 20 %><%= @voucher.token %>
-Banking Agent 
-Date and Time 
+Banking Agent
+Date and Time
 <% @voucher.voucher_amounts.each do |voucher_amount| %>
 
   <% if voucher_amount.debit? %>
@@ -26,7 +26,7 @@ Date and Time
     </div>
   <% end %>
 <% end %>
-<%= link_to "Cancel", banking_agent_module_share_capital_capital_build_up_confirmation_path(id: @voucher.id), method: :delete %>
+<%= button_to "Cancel", banking_agent_module_share_capital_capital_build_up_confirmation_path(id: @voucher.id), method: :delete %>
 
 <%= simple_form_for @voucher_confirmation, url: :banking_agent_module_share_capital_capital_build_up_confirmations do |f| %>
   <%= f.input :voucher_id, input_html: { value: @voucher.id} %>

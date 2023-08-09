@@ -27,7 +27,6 @@
       </a>
       <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
         <%=link_to 'Account Settings', employee_settings_path(current_user), class: "dropdown-item" %>
-        <%=link_to 'Activities', destroy_user_session_path, method: :delete, class: "dropdown-item" %>
         <%=link_to destroy_user_session_path, method: :delete, class: "dropdown-item" do %>
           <span class="dropdown-item"><i class="fa fa-sign-out"></i> Sign Out</span>
         <% end %>

@@ -52,7 +52,7 @@
                         <%= number_to_currency amount.amount %>
                       <% end %>
                     </td>
-                    <td><%= link_to accounting_module_entry_line_item_path(amount), method: :delete do %>
+                    <td><%= button_to accounting_module_entry_line_item_path(amount), method: :delete do %>
                       <span title="Remove" data-toggle="tooltip" class="fa fa-trash text-danger"></span>
                     <% end %></td>
                   </tr>

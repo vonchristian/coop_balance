@@ -31,7 +31,7 @@
                 </h3>
               </div>
               <div class="col-md-1 col-sm-1">
-                <%= link_to share_capital_merging_line_item_path(id: share_capital.id, share_capital_id: share_capital.id, current_share_capital_id: @current_share_capital.id), method: :delete, class: "btn btn-danger btn-sm" do %>
+                <%= button_to share_capital_merging_line_item_path(id: share_capital.id, share_capital_id: share_capital.id, current_share_capital_id: @current_share_capital.id), method: :delete, class: "btn btn-danger btn-sm" do %>
                     <i title="Remove" data-toggle="tooltip" class="fa fa-times float-right"></i>
                 <% end %>
               </div>
