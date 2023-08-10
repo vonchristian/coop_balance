@@ -6,6 +6,7 @@ module LoansModule
         @disbursement = LoansModule::LoanApplications::VoucherDisbursement.new
       end
       def create
+        # TODO: Create DisbursementService
         @loan_application = current_cooperative.loan_applications.find(params[:loan_application_id])
         @voucher = current_cooperative.vouchers.find(params[:voucher_id])
         @employee = current_user
@@ -22,7 +23,7 @@ module LoansModule
             voucher:          @voucher,
             loan_application: @loan_application,
             employee:         @employee).find_entry
-          LoansModule::TermUpdater.new(loan: @loan, effectivity_date: @entry.entry_date )
+          LoansModule::TermUpdater.new(loan: @loan, effectivity_date: @entry.entry_date)
           redirect_to loan_url(@loan), notice: 'Loan disbursed succesfully.'
         end
       end
