@@ -452,8 +452,8 @@
 
           <hr>
           <%= f.submit "Create Voucher", class: "btn btn-primary float-right", data: { disable_with: "Processing..." } %>
-          <%= button_to 'Cancel', loans_module_loan_application_path(@loan_application), method: :delete, class: "btn float-left text-danger" %>
         <% end %>
+        <%= link_to 'Cancel', loans_module_loan_application_path(@loan_application), method: :delete, class: "btn float-left text-danger", data: { turbo_method: :delete } %>
       </div>
     </div>
 </div>
