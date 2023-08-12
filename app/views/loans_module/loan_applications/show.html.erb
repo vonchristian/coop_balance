@@ -30,7 +30,7 @@
         <% if @loan_application.voucher.present? && !@loan_application.voucher.disbursed? %>
            <% if current_user.cash_accounts.present? %>
 
-        <%= button_to 'Disburse Voucher', new_loans_module_loan_application_disbursement_path(loan_application_id: @loan_application.id, voucher_id: @loan_application.voucher_id), class: "btn btn-primary float-right" %>
+        <%= link_to 'Disburse Voucher', new_loans_module_loan_application_disbursement_path(loan_application_id: @loan_application.id, voucher_id: @loan_application.voucher_id), class: "btn btn-primary float-right" %>
          <% end %>
         <% end %>
         <% if !@loan_application.disbursed? %>
