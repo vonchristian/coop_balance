@@ -556,8 +556,6 @@ Rails.application.routes.draw do
     resources :settings, only: [:index],                     module: :bank_accounts
   end
 
-  resources :calendars, only: [:index, :show]
-
   resources :organizations, only: [:index, :show, :new, :create, :edit, :update] do
     resources :members, only: [:index, :new, :create],   module: :organizations
     resources :loans, only: [:index],            module: :organizations
