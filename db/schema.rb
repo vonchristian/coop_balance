@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_08_110542) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_16_013437) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -268,45 +268,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_08_110542) do
     t.index ["office_id"], name: "index_bank_accounts_on_office_id"
   end
 
-  create_table "banking_agent_carts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "banking_agent_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["banking_agent_id"], name: "index_banking_agent_carts_on_banking_agent_id"
-  end
-
-  create_table "banking_agents", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
-    t.string "account_number"
-    t.uuid "depository_account_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "email", default: "", null: false
-    t.string "encrypted_password", default: "", null: false
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at", precision: nil
-    t.datetime "remember_created_at", precision: nil
-    t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at", precision: nil
-    t.datetime "last_sign_in_at", precision: nil
-    t.inet "current_sign_in_ip"
-    t.inet "last_sign_in_ip"
-    t.string "confirmation_token"
-    t.datetime "confirmed_at", precision: nil
-    t.datetime "confirmation_sent_at", precision: nil
-    t.string "unconfirmed_email"
-    t.integer "failed_attempts", default: 0, null: false
-    t.string "unlock_token"
-    t.datetime "locked_at", precision: nil
-    t.uuid "cash_account_id"
-    t.index ["cash_account_id"], name: "index_banking_agents_on_cash_account_id"
-    t.index ["confirmation_token"], name: "index_banking_agents_on_confirmation_token", unique: true
-    t.index ["depository_account_id"], name: "index_banking_agents_on_depository_account_id"
-    t.index ["email"], name: "index_banking_agents_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_banking_agents_on_reset_password_token", unique: true
-    t.index ["unlock_token"], name: "index_banking_agents_on_unlock_token", unique: true
-  end
-
   create_table "barangays", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.uuid "municipality_id"
@@ -435,15 +396,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_08_110542) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.index ["contactable_type", "contactable_id"], name: "index_contacts_on_contactable_type_and_contactable_id"
-  end
-
-  create_table "cooperative_banking_agents", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "cooperative_id", null: false
-    t.uuid "banking_agent_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["banking_agent_id"], name: "index_cooperative_banking_agents_on_banking_agent_id"
-    t.index ["cooperative_id"], name: "index_cooperative_banking_agents_on_cooperative_id"
   end
 
   create_table "cooperative_services", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -2142,9 +2094,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_08_110542) do
   add_foreign_key "bank_accounts", "accounts", column: "interest_revenue_account_id"
   add_foreign_key "bank_accounts", "cooperatives"
   add_foreign_key "bank_accounts", "offices"
-  add_foreign_key "banking_agent_carts", "banking_agents"
-  add_foreign_key "banking_agents", "accounts", column: "cash_account_id"
-  add_foreign_key "banking_agents", "accounts", column: "depository_account_id"
   add_foreign_key "barangays", "cooperatives"
   add_foreign_key "barangays", "municipalities"
   add_foreign_key "barcodes", "line_items"
@@ -2158,8 +2107,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_08_110542) do
   add_foreign_key "categories", "cooperatives"
   add_foreign_key "clearing_house_depository_accounts", "accounts", column: "depository_account_id"
   add_foreign_key "clearing_house_depository_accounts", "automated_clearing_houses", column: "clearing_house_id"
-  add_foreign_key "cooperative_banking_agents", "banking_agents"
-  add_foreign_key "cooperative_banking_agents", "cooperatives"
   add_foreign_key "cooperative_services", "cooperatives"
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "credit_account_id"
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "debit_account_id"

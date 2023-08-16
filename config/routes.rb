@@ -4,38 +4,11 @@ Rails.application.routes.draw do
   require 'sidekiq/web'
   mount Sidekiq::Web => '/sidekiq'
   devise_for :users,          controllers: { sessions: 'users/sessions', registrations: "management_module/settings/employees"}
-  devise_for :banking_agents, controllers: { sessions: 'banking_agents/sessions', registrations: "banking_agents/registrations"}
-  resources :banking_agents, only: [:show]
-  namespace :banking_agent_module do
 
-    resources :utility_bills, only: [:show, :index] do
-      resources :payments,              only: [:new, :create],            module: :utility_bills
-      resources :payment_confirmations, only: [:show, :create, :destroy], module: :utility_bills
-    end
-
-    resources :loans, only: [:index, :show] do
-      resources :payments,              only: [:new, :create], module: :loans
-      resources :payment_confirmations, only: [:show, :create, :destroy], module: :loans
-    end
-    resources :share_capitals, only: [:index, :show]  do
-      resources :capital_build_ups,              only: [:new, :create], module: :share_capitals
-      resources :capital_build_up_confirmations, only: [:show, :create, :destroy], module: :share_capitals
-    end
-    resources :savings, only: [:index, :show] do
-      resources :deposits,                 only: [:new, :create], module: :savings
-      resources :withdrawals,              only: [:new, :create], module: :savings
-      resources :deposit_confirmations,    only: [:show, :create, :destroy], module: :savings
-      resources :withdrawal_confirmations, only: [:show, :create, :destroy], module: :savings
-
-    end
-  end
   authenticated :user do
     root :to => 'members#index', as: :authenticated_root
   end
 
-  authenticated :banking_agent do
-    root :to => 'banking_agents/dashboards#index', as: :authenticated_banking_agent_root
-  end
   resources :home, only: [:index]
   resources :accounting_module, only: [:index]
   namespace :accounting_module do
