@@ -1,5 +1,0 @@
-<%= simple_form_for @merchant do |f| %>
-  <%= f.input :name %>
-  <%= f.input :liability_account_id, collection: current_cooperative.accounts.liabilities.map{|a| [a.name, a.id] } %>
-  <%= f.submit "Create Merchant" %>
-<% end %>

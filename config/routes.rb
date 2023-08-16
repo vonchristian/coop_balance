@@ -689,9 +689,7 @@ Rails.application.routes.draw do
   namespace :portfolios do
     resources :loans, only: [:index]
   end
-  resources :merchants, only: [:index, :show, :new, :create] do
-    resources :payment_line_items, only: [:new, :create], module: :merchants
-  end
+
   resources :offices, only: [:index, :show] do
     resources :loans,                  only: [:index],                module: :offices
     resources :savings_accounts,       only: [:index],                module: :offices

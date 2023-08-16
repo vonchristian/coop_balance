@@ -1,6 +1,5 @@
 class Cooperative < ApplicationRecord
   has_one_attached :logo
-  has_many :merchants
   has_many :offices,                        class_name: "Cooperatives::Office"
   has_many :main_offices,                   class_name: "Cooperatives::Offices::MainOffice"
   has_many :branch_offices,                 class_name: "Cooperatives::Offices::BranchOffice"

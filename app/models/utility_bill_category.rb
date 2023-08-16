@@ -1,2 +1,0 @@
-class UtilityBillCategory < ApplicationRecord
-end

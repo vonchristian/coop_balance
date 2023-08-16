@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_16_013437) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_16_015959) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -245,12 +245,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_16_013437) do
     t.index ["user_id", "user_type"], name: "user_index"
   end
 
-  create_table "automated_clearing_houses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "bank_accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "cooperative_id"
     t.string "bank_name"
@@ -346,18 +340,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_16_013437) do
     t.uuid "cooperative_id"
     t.index ["cooperative_id"], name: "index_categories_on_cooperative_id"
     t.index ["name"], name: "index_categories_on_name", unique: true
-  end
-
-  create_table "clearing_house_depository_accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "depositor_type", null: false
-    t.uuid "depositor_id", null: false
-    t.uuid "clearing_house_id", null: false
-    t.uuid "depository_account_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["clearing_house_id"], name: "index_clearing_house_depository_accounts_on_clearing_house_id"
-    t.index ["depositor_type", "depositor_id"], name: "index_depositor_on_clearing_house_dep_accounts"
-    t.index ["depository_account_id"], name: "index_depository_account_on_clearing_house_dep_accounts"
   end
 
   create_table "committee_members", force: :cascade do |t|
@@ -1082,16 +1064,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_16_013437) do
     t.index ["membership_category_id"], name: "index_memberships_on_membership_category_id"
     t.index ["office_id"], name: "index_memberships_on_office_id"
     t.index ["status"], name: "index_memberships_on_status"
-  end
-
-  create_table "merchants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
-    t.uuid "cooperative_id"
-    t.uuid "liability_account_id"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.index ["cooperative_id"], name: "index_merchants_on_cooperative_id"
-    t.index ["liability_account_id"], name: "index_merchants_on_liability_account_id"
   end
 
   create_table "municipalities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1953,36 +1925,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_16_013437) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
-  create_table "utility_bill_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "title"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["title"], name: "index_utility_bill_categories_on_title", unique: true
-  end
-
-  create_table "utility_bills", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.decimal "amount"
-    t.uuid "merchant_id", null: false
-    t.uuid "utility_bill_category_id", null: false
-    t.string "payee_type", null: false
-    t.uuid "payee_id", null: false
-    t.uuid "receivable_account_id", null: false
-    t.uuid "voucher_id"
-    t.string "description"
-    t.string "reference_number"
-    t.datetime "due_date", precision: nil
-    t.string "account_number"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["account_number"], name: "index_utility_bills_on_account_number"
-    t.index ["due_date"], name: "index_utility_bills_on_due_date"
-    t.index ["merchant_id"], name: "index_utility_bills_on_merchant_id"
-    t.index ["payee_type", "payee_id"], name: "index_utility_bills_on_payee_type_and_payee_id"
-    t.index ["receivable_account_id"], name: "index_utility_bills_on_receivable_account_id"
-    t.index ["utility_bill_category_id"], name: "index_utility_bills_on_utility_bill_category_id"
-    t.index ["voucher_id"], name: "index_utility_bills_on_voucher_id"
-  end
-
   create_table "voucher_amounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.bigint "amount_cents", default: 0, null: false
     t.string "amount_currency", default: "PHP", null: false
@@ -2105,8 +2047,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_16_013437) do
   add_foreign_key "cash_counts", "carts"
   add_foreign_key "cash_counts", "cash_count_reports"
   add_foreign_key "categories", "cooperatives"
-  add_foreign_key "clearing_house_depository_accounts", "accounts", column: "depository_account_id"
-  add_foreign_key "clearing_house_depository_accounts", "automated_clearing_houses", column: "clearing_house_id"
   add_foreign_key "cooperative_services", "cooperatives"
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "credit_account_id"
   add_foreign_key "documentary_stamp_taxes", "accounts", column: "debit_account_id"
@@ -2199,8 +2139,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_16_013437) do
   add_foreign_key "memberships", "cooperatives"
   add_foreign_key "memberships", "membership_categories"
   add_foreign_key "memberships", "offices"
-  add_foreign_key "merchants", "accounts", column: "liability_account_id"
-  add_foreign_key "merchants", "cooperatives"
   add_foreign_key "municipalities", "cooperatives"
   add_foreign_key "municipalities", "provinces"
   add_foreign_key "net_income_configs", "accounts", column: "interest_on_capital_account_id"
@@ -2352,10 +2290,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_16_013437) do
   add_foreign_key "users", "cooperatives"
   add_foreign_key "users", "offices"
   add_foreign_key "users", "store_fronts"
-  add_foreign_key "utility_bills", "accounts", column: "receivable_account_id"
-  add_foreign_key "utility_bills", "merchants"
-  add_foreign_key "utility_bills", "utility_bill_categories"
-  add_foreign_key "utility_bills", "vouchers"
   add_foreign_key "voucher_amounts", "accounts"
   add_foreign_key "voucher_amounts", "carts"
   add_foreign_key "voucher_amounts", "cooperatives"
