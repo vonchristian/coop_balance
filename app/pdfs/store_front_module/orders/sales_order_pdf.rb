@@ -108,10 +108,9 @@ module StoreFrontModule
         move_down 10
         if @sales_order.reference_number.present?
           text "THIS SERVES AS YOUR OFFICIAL RECEIPT", size: 7, align: :center, style: :bold
-          barcode = Barby::Code39.new(@order.official_receipt.try(:number))
           barcode.annotate_pdf(self, height: 25, x: 5, y: cursor - 30)
           move_down 32
-          text "OFFICIAL RECEIPT #: #{@order.official_receipt.number}", size: 7, align: :center
+
         end
       end
       def barcode

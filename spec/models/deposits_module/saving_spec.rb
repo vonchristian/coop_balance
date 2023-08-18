@@ -10,7 +10,6 @@ module DepositsModule
       it { is_expected.to belong_to(:barangay).optional }
       it { is_expected.to belong_to :liability_account }
       it { is_expected.to belong_to :interest_expense_account }
-      it { is_expected.to have_many :ownerships }
       it { is_expected.to have_many :accountable_accounts }
       it { is_expected.to have_many :accounts }
       it { is_expected.to have_many :entries }

@@ -1,7 +1,7 @@
 module StoreFrontModule
   class OrdersController < ApplicationController
     def index
-      @orders = StoreFrontModule::Order.all.includes(:customer, :official_receipt).order(date: :desc)
+      @orders = StoreFrontModule::Order.all.includes(:customer).order(date: :desc)
     end
 
     def new

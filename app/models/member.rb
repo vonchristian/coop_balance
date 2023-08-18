@@ -14,15 +14,12 @@ class Member < ApplicationRecord
   has_one_attached :signature_specimen
   has_one_attached :avatar
 
-  has_one :member_account #for devise login
   has_many :entries,                  class_name: "AccountingModule::Entry", as: :commercial_document
   has_many :memberships,              class_name: "Cooperatives::Membership", as: :cooperator, dependent: :destroy
   has_many :savings,                  class_name: "DepositsModule::Saving", as: :depositor
   has_many :share_capitals,           class_name: "DepositsModule::ShareCapital", as: :subscriber
   has_many :time_deposits,            class_name: "DepositsModule::TimeDeposit", as: :depositor
   has_many :program_subscriptions,    class_name: "MembershipsModule::ProgramSubscription", as: :subscriber
-  has_many :member_occupations,       class_name: "MembershipsModule::MemberOccupation", dependent: :destroy
-  has_many :occupations,              through: :member_occupations
   has_many :loans,                    class_name: "LoansModule::Loan", as: :borrower
   has_many :subscribed_programs,      class_name: "Cooperatives::Program", through: :program_subscriptions, source: :program
   has_many :organization_memberships, class_name: "Organizations::OrganizationMember",   as: :organization_membership
@@ -34,9 +31,7 @@ class Member < ApplicationRecord
   has_many :share_capital_applications,   class_name: 'ShareCapitalsModule::ShareCapitalApplication', as: :subscriber
   has_many :savings_account_applications, as: :depositor
   has_many :time_deposit_applications,    class_name: 'TimeDepositsModule::TimeDepositApplication', as: :depositor
-  has_many :wallets,                      as: :account_owner
   has_many :identifications,              class_name: "IdentificationModule::Identification", as: :identifiable
-  has_many :income_sources,               class_name: 'MembershipsModule::IncomeSource'
 
   validates :last_name, :first_name, presence: true, on: :update
 
@@ -127,10 +122,6 @@ class Member < ApplicationRecord
     else
       "No Purchases yet"
     end
-  end
-
-  def current_occupation
-    occupations.current
   end
 
   def recommended_co_makers

@@ -23,7 +23,7 @@ class User < ApplicationRecord
               :treasurer,
               :accountant,
               :collector]
-  has_one :wallet, as: :account_owner
+
   belongs_to :store_front, optional: true
 
   belongs_to :cooperative

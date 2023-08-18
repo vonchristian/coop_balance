@@ -20806,16 +20806,6 @@ html.maximized-card {
   }
 }
 
-.invoice {
-  background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.125);
-  position: relative;
-}
-
-.invoice-title {
-  margin-top: 0;
-}
-
 .profile-user-img {
   border: 3px solid #adb5bd;
   margin: 0 auto;
@@ -22624,16 +22614,6 @@ blockquote.quote-gray-dark h6 {
   }
   .layout-fixed .content-wrapper {
     padding-top: 0 !important;
-  }
-  .invoice {
-    border: 0;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-  }
-  .invoice-col {
-    float: left;
-    width: 33.3333333%;
   }
   .table-responsive {
     overflow: auto;

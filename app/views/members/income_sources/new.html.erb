@@ -1,6 +1,0 @@
-<%= simple_form_for @income_source, url: :member_income_sources do |f| %>
-  <%= f.input :designation %>
-  <%= f.input :description %>
-  <%= f.input :income_source_category_id, label: 'Income Source Category', collection: IncomeSourceCategory.all.map{|a| [a.title, a.id] }, input_html: { class: 'chosen-select'} %>
-  <%= f.submit 'Save Income Source' %>
-<% end %>

@@ -15,7 +15,7 @@
                 <tr data-link="<%=store_front_module_stock_transfer_path(stock_tranfer)%>" class="myClass">
                   <td><%= stock_tranfer.date.try(:strftime, ("%B %e, %Y")) %></td>
                   <td><%= stock_tranfer.store_front_name %></td>
-                  <td><%= stock_tranfer.official_receipt_number %></td>
+                  <td></td>
                   <td><span class="pull-right"><%=number_to_currency stock_tranfer.total_cost %></span></td>
                 </tr>
               <% end %>

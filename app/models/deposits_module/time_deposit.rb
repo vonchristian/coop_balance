@@ -14,8 +14,6 @@ module DepositsModule
     belongs_to :interest_expense_account, class_name: 'AccountingModule::Account'
     belongs_to :break_contract_account,   class_name: 'AccountingModule::Account'
     has_one  :term,                       as: :termable
-    has_many :ownerships,                 as: :ownable
-    has_many :depositors,                 through: :ownerships, source: :owner
     has_many :accountable_accounts,       class_name: 'AccountingModule::AccountableAccount', as: :accountable
     has_many :accounts,                   through: :accountable_accounts, class_name: 'AccountingModule::Account'
     has_many :entries,                    through: :accounts , class_name: 'AccountingModule::Entry'

@@ -231,8 +231,6 @@ Rails.application.routes.draw do
   end
 
   resources :members, only: [:index, :show, :edit, :update, :destroy] do
-    resources :activities,            only: [:index]
-    resources :credit_scores,         only: [:index],                        module: :members
     resources :bills_payments,        only: [:index],                        module: :members
     resources :organizations,         only: [:new, :create],                 module: :members
     resources :beneficiaries,         only: [:new, :create, :destroy],       module: :members
@@ -249,7 +247,6 @@ Rails.application.routes.draw do
     resources :settings,              only: [:index],                        module: :members
     resources :loans,                 only: [:index],                        module: :members
     resources :share_capitals,        only: [:index],                        module: :members
-    resources :occupations,           only: [:new, :create],                 module: :members
     resources :savings_accounts,      only: [:index],                        module: :members
     resources :subscriptions,         only: [:index],                        module: :members
     resources :program_subscriptions, only: [:create],                       module: :members
@@ -260,8 +257,6 @@ Rails.application.routes.draw do
     resources :avatars,               only: [:update],                       module: :members
     resources :retirements,           only: [:edit, :update],                module: :members
     resources :loan_transactions,     only: [:index],                        module: :members
-    resources :income_sources,        only: [:new, :create],                 module: :members
-
   end
 
   resources :member_registrations, only: [:new, :create]
@@ -671,19 +666,12 @@ Rails.application.routes.draw do
     resources :loans,          only: [:index]
   end
 
-  authenticated :member_account do
-    root to: 'member_accounts#show'
-  end
-
   unauthenticated :user do
     root :to => 'home#index', :constraints => lambda { |request| request.env['warden'].user.nil? }, as: :unauthenticated_root
   end
-  unauthenticated :member_account do
-    root :to => 'home#index', :constraints => lambda { |request| request.env['warden'].member_account.nil? }, as: :unauthenticated_member_root
-  end
+
   resources :bank_account_applications, only: [:new, :create]
   mount ActionCable.server => '/cable'
-  resources :leads, only: [:new, :create]
   namespace :portfolios do
     resources :loans, only: [:index]
   end
@@ -705,7 +693,6 @@ Rails.application.routes.draw do
 
 
   end
-  resources :credit_scores, only: [:index]
   resources :program_subscriptions, only: [:show]
   resources :identifications, only: [:index, :show, :new, :create], module: :identification_module
   resources :multiple_transactions, only: [:new, :create]

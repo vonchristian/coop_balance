@@ -17,18 +17,13 @@ module DepositsModule
     belongs_to :interest_expense_account, class_name: 'AccountingModule::Account'
     belongs_to :saving_product,           class_name: "SavingsModule::SavingProduct"
     belongs_to :office,                   class_name: "Cooperatives::Office"
-    has_many :ownerships,                 as: :ownable
-    has_many :member_co_depositors,       through: :ownerships, source: :owner, source_type: "Member"
-    has_many :ownerships,                 as: :ownable
-    has_many :member_depositors,          through: :ownerships, source: :owner, source_type: 'Member'
-    has_many :organization_depositors,    through: :ownerships, source: :owner, source_type: 'Organization'
     has_many :accountable_accounts,       class_name: 'AccountingModule::AccountableAccount', as: :accountable
     has_many :accounts,                   through: :accountable_accounts, class_name: 'AccountingModule::Account'
     has_many :entries,                    through: :accounts, class_name: 'AccountingModule::Entry'
     has_many :savings_account_agings,     class_name: 'SavingsModule::SavingsAccountAging', foreign_key: 'savings_account_id'
     has_many :savings_aging_groups,       through: :savings_account_agings
 
-    delegate :name, :current_address_complete_address, :current_contact_number, :current_occupation, to: :depositor, prefix: true
+    delegate :name, :current_address_complete_address, :current_contact_number, to: :depositor, prefix: true
     delegate :name,
              :applicable_rate,
              :closing_account,

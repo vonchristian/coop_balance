@@ -11,15 +11,11 @@ module StoreFrontModule
     belongs_to :cooperative
     belongs_to :voucher
 
-    has_one :official_receipt,            as: :receiptable
-    has_one :invoice,                     as: :invoiceable
     has_many :line_items,                 class_name: "StoreFrontModule::LineItem", dependent: :destroy
     has_many :products,                   class_name: "StoreFrontModule::Product", through: :line_items
 
     delegate :name,                       to: :commercial_document, prefix: true
     delegate :name,                       to: :employee, prefix: true, allow_nil: true
-    delegate :number,                     to: :official_receipt, prefix: true, allow_nil: true
-    delegate :number,                     to: :invoice, prefix: true, allow_nil: true
     delegate :first_and_last_name,        to: :commercial_document, prefix: true
     delegate :avatar,                     to: :commercial_document
 
@@ -44,11 +40,7 @@ module StoreFrontModule
     end
 
     def reference_number
-      if cash? || check?
-        official_receipt_number
-      else
-        invoice_number
-      end
+
     end
 
     def processed?

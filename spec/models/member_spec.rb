@@ -2,8 +2,6 @@ require 'rails_helper'
 
 describe Member, type: :model do
   describe "associations" do
-    it { is_expected.to have_one :member_account }
-
     it { is_expected.to have_many :memberships }
   	it { is_expected.to have_many :loans }
   	it { is_expected.to have_many :savings }
@@ -21,8 +19,6 @@ describe Member, type: :model do
     it { is_expected.to have_many :savings_account_applications }
     it { is_expected.to have_many :time_deposit_applications }
     it { is_expected.to have_many :identifications }
-    it { is_expected.to have_many :income_sources }
-
   end
 
   describe 'validations' do

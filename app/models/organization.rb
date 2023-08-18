@@ -19,7 +19,6 @@ class Organization < ApplicationRecord
   has_many :member_loans, class_name: "LoansModule::Loan"
 
   has_many :addresses, as: :addressable
-  has_many :account_scopes, as: :scopeable
   before_save :set_default_image
 
 

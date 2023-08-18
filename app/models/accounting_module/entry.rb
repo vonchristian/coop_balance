@@ -1,14 +1,13 @@
 module AccountingModule
   class Entry < ApplicationRecord
     include PgSearch::Model
-    include Taggable
+
     pg_search_scope :text_search, :against => [:reference_number, :description]
     multisearchable against: [:reference_number, :description]
 
     has_one    :voucher,               foreign_key: 'entry_id', dependent: :nullify
     belongs_to :origin,                polymorphic: true, optional: true
     belongs_to :recording_agent,       polymorphic: true, optional: true
-    belongs_to :official_receipt,      optional: true
     belongs_to :commercial_document,   polymorphic: true
     belongs_to :cancellation_entry,    class_name: 'AccountingModule::Entry', optional: true
     belongs_to :office,                class_name: "Cooperatives::Office", optional: true
