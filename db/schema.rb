@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_16_015959) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_18_125259) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -37,17 +37,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_16_015959) do
     t.index ["account_id", "entry_id"], name: "index_account_running_balances_on_account_id_and_entry_id", unique: true
     t.index ["account_id"], name: "index_account_running_balances_on_account_id"
     t.index ["entry_id"], name: "index_account_running_balances_on_entry_id"
-  end
-
-  create_table "account_scopes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "scopeable_type", null: false
-    t.uuid "scopeable_id", null: false
-    t.string "account_type", null: false
-    t.uuid "account_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["account_type", "account_id"], name: "index_account_scopes_on_account_type_and_account_id"
-    t.index ["scopeable_type", "scopeable_id"], name: "index_account_scopes_on_scopeable_type_and_scopeable_id"
   end
 
   create_table "accountable_accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -429,17 +418,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_16_015959) do
     t.index ["unlock_token"], name: "index_cooperators_on_unlock_token", unique: true
   end
 
-  create_table "deactivations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "deactivatable_type"
-    t.uuid "deactivatable_id"
-    t.text "remarks"
-    t.datetime "deactivated_at", precision: nil
-    t.boolean "active"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.index ["deactivatable_type", "deactivatable_id"], name: "index_deactivations_on_deactivatable_type_and_deactivatable_id"
-  end
-
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer "priority", default: 0, null: false
     t.integer "attempts", default: 0, null: false
@@ -575,25 +553,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_16_015959) do
     t.index ["abbreviated_name"], name: "index_identity_providers_on_abbreviated_name", unique: true
   end
 
-  create_table "income_source_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "title"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["title"], name: "index_income_source_categories_on_title", unique: true
-  end
-
-  create_table "income_sources", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "designation"
-    t.string "description"
-    t.decimal "monthly_income"
-    t.uuid "income_source_category_id", null: false
-    t.uuid "member_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["income_source_category_id"], name: "index_income_sources_on_income_source_category_id"
-    t.index ["member_id"], name: "index_income_sources_on_member_id"
-  end
-
   create_table "interest_amortizations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer "calculation_type", null: false
     t.index ["calculation_type"], name: "index_interest_amortizations_on_calculation_type"
@@ -645,26 +604,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_16_015959) do
     t.index ["calculation_type"], name: "index_interest_predeductions_on_calculation_type"
     t.index ["loan_product_id"], name: "index_interest_predeductions_on_loan_product_id"
     t.index ["prededuction_scope"], name: "index_interest_predeductions_on_prededuction_scope"
-  end
-
-  create_table "invoices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "type"
-    t.string "number"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.string "invoiceable_type"
-    t.uuid "invoiceable_id"
-    t.index ["invoiceable_type", "invoiceable_id"], name: "index_invoices_on_invoiceable_type_and_invoiceable_id"
-    t.index ["number"], name: "index_invoices_on_number", unique: true
-    t.index ["type"], name: "index_invoices_on_type"
-  end
-
-  create_table "leads", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "email"
-    t.string "contact_number"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.text "message"
   end
 
   create_table "ledger_running_balances", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -962,43 +901,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_16_015959) do
     t.index ["unit_of_measurement_id"], name: "index_mark_up_prices_on_unit_of_measurement_id"
   end
 
-  create_table "member_accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "email", default: "", null: false
-    t.string "encrypted_password", default: "", null: false
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at", precision: nil
-    t.datetime "remember_created_at", precision: nil
-    t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at", precision: nil
-    t.datetime "last_sign_in_at", precision: nil
-    t.inet "current_sign_in_ip"
-    t.inet "last_sign_in_ip"
-    t.string "confirmation_token"
-    t.datetime "confirmed_at", precision: nil
-    t.datetime "confirmation_sent_at", precision: nil
-    t.string "unconfirmed_email"
-    t.integer "failed_attempts", default: 0, null: false
-    t.string "unlock_token"
-    t.datetime "locked_at", precision: nil
-    t.uuid "member_id"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.index ["confirmation_token"], name: "index_member_accounts_on_confirmation_token", unique: true
-    t.index ["email"], name: "index_member_accounts_on_email", unique: true
-    t.index ["member_id"], name: "index_member_accounts_on_member_id"
-    t.index ["reset_password_token"], name: "index_member_accounts_on_reset_password_token", unique: true
-    t.index ["unlock_token"], name: "index_member_accounts_on_unlock_token", unique: true
-  end
-
-  create_table "member_occupations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "member_id"
-    t.uuid "occupation_id"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.index ["member_id"], name: "index_member_occupations_on_member_id"
-    t.index ["occupation_id"], name: "index_member_occupations_on_occupation_id"
-  end
-
   create_table "members", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "first_name"
     t.string "middle_name"
@@ -1122,12 +1024,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_16_015959) do
     t.index ["type"], name: "index_notices_on_type"
   end
 
-  create_table "occupations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "title"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-  end
-
   create_table "office_ledgers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "office_id", null: false
     t.uuid "ledger_id", null: false
@@ -1236,15 +1132,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_16_015959) do
     t.index ["type"], name: "index_offices_on_type"
   end
 
-  create_table "official_receipts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "number", null: false
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.string "receiptable_type"
-    t.uuid "receiptable_id"
-    t.index ["receiptable_type", "receiptable_id"], name: "index_official_receipts_on_receiptable_type_and_receiptable_id"
-  end
-
   create_table "orders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "date", precision: nil
     t.integer "pay_type", default: 0
@@ -1293,17 +1180,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_16_015959) do
     t.uuid "cooperative_id"
     t.string "abbreviated_name"
     t.index ["cooperative_id"], name: "index_organizations_on_cooperative_id"
-  end
-
-  create_table "ownerships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "owner_type"
-    t.uuid "owner_id"
-    t.string "ownable_type"
-    t.uuid "ownable_id"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.index ["ownable_type", "ownable_id"], name: "index_ownerships_on_ownable_type_and_ownable_id"
-    t.index ["owner_type", "owner_id"], name: "index_ownerships_on_owner_type_and_owner_id"
   end
 
   create_table "penalty_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1393,12 +1269,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_16_015959) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.index ["name"], name: "index_provinces_on_name", unique: true
-  end
-
-  create_table "quotes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.text "content"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "registries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1741,23 +1611,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_16_015959) do
     t.index ["payable_account_id"], name: "index_suppliers_on_payable_account_id"
   end
 
-  create_table "taggings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "tag_id"
-    t.string "taggable_type"
-    t.uuid "taggable_id"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.index ["tag_id"], name: "index_taggings_on_tag_id"
-    t.index ["taggable_type", "taggable_id"], name: "index_taggings_on_taggable_type_and_taggable_id"
-  end
-
-  create_table "tags", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name"
-    t.string "color"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-  end
-
   create_table "terms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "termable_type"
     t.uuid "termable_id"
@@ -2001,18 +1854,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_16_015959) do
     t.index ["token"], name: "index_vouchers_on_token"
   end
 
-  create_table "wallets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "account_owner_type"
-    t.uuid "account_owner_id"
-    t.uuid "account_id"
-    t.string "account_number"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.index ["account_id"], name: "index_wallets_on_account_id"
-    t.index ["account_number"], name: "index_wallets_on_account_number", unique: true
-    t.index ["account_owner_type", "account_owner_id"], name: "index_wallets_on_account_owner_type_and_account_owner_id"
-  end
-
   add_foreign_key "account_budgets", "accounts"
   add_foreign_key "account_budgets", "cooperatives"
   add_foreign_key "account_running_balances", "accounts"
@@ -2057,13 +1898,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_16_015959) do
   add_foreign_key "entries", "cooperatives"
   add_foreign_key "entries", "entries", column: "cancellation_entry_id"
   add_foreign_key "entries", "offices"
-  add_foreign_key "entries", "official_receipts"
   add_foreign_key "entries", "users", column: "cancelled_by_id"
   add_foreign_key "entries", "users", column: "recorder_id"
   add_foreign_key "identifications", "identifications", column: "previous_identification_id"
   add_foreign_key "identifications", "identity_providers"
-  add_foreign_key "income_sources", "income_source_categories"
-  add_foreign_key "income_sources", "members"
   add_foreign_key "interest_configs", "accounts", column: "accrued_income_account_id"
   add_foreign_key "interest_configs", "accounts", column: "interest_revenue_account_id"
   add_foreign_key "interest_configs", "accounts", column: "past_due_interest_income_account_id"
@@ -2131,8 +1969,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_16_015959) do
   add_foreign_key "loans", "vouchers"
   add_foreign_key "loans", "vouchers", column: "disbursement_voucher_id"
   add_foreign_key "mark_up_prices", "unit_of_measurements"
-  add_foreign_key "member_occupations", "members"
-  add_foreign_key "member_occupations", "occupations"
   add_foreign_key "members", "carts"
   add_foreign_key "membership_beneficiaries", "memberships"
   add_foreign_key "membership_categories", "cooperatives"
@@ -2264,7 +2100,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_16_015959) do
   add_foreign_key "streets", "municipalities"
   add_foreign_key "suppliers", "accounts", column: "payable_account_id"
   add_foreign_key "suppliers", "cooperatives"
-  add_foreign_key "taggings", "tags"
   add_foreign_key "time_deposit_applications", "accounts", column: "liability_account_id"
   add_foreign_key "time_deposit_applications", "cooperatives"
   add_foreign_key "time_deposit_applications", "offices"
@@ -2303,5 +2138,4 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_16_015959) do
   add_foreign_key "vouchers", "store_fronts"
   add_foreign_key "vouchers", "users", column: "disburser_id"
   add_foreign_key "vouchers", "users", column: "preparer_id"
-  add_foreign_key "wallets", "accounts"
 end
