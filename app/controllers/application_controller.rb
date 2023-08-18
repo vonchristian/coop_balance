@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  include Pundit
+  include Pundit::Authorization
   include Pagy::Backend
   protect_from_forgery with: :null_session, if: Proc.new { |c| c.request.format == 'application/json' }
   before_action :authenticate_user!

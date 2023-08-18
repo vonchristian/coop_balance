@@ -1,28 +1,4 @@
 <div class='container'>
-<div class='card'>
-              <div class='card-body'>
-                <div class='row'>
-                  <div class='col-md-4'>
-                    <% current_office.office_saving_products.each do |office_saving_product| %>
-                      <small class='text-muted'><%= office_saving_product.saving_product_name.upcase %></small>
-                      <h3 class='title-up'><%= number_to_currency office_saving_product.liability_account_category.balance %></h3>
-                    <% end %>
-                  </div>
-                  <div class='col-md-2'>
-                    <small class='text-muted'> ACCOUNTS </small>
-                    <h3 class='title-up'><%= number_to_currency current_office.savings.size, unit: "", precision: 0 %></h3>
-                  </div>
-                  <div class='col-md-3'>
-                    <small class='text-muted'> BELOW MIN BALANCE </small>
-                    <h3 class='title-up'><%= number_to_currency current_office.savings.below_minimum_balance.size, unit: "", precision: 0 %></h3>
-                  </div>
-                  <div class='col-md-3'>
-                    <small class='text-muted'> NEW ACCOUNTS (this month) </small>
-                    <h3 class='title-up'><%= number_to_currency current_office.savings.below_minimum_balance.size, unit: "", precision: 0 %></h3>
-                  </div>
-                </div>
-              </div>
-            </div>
     <div class='card'>
       <div class='card-body'>
     <div class="row">
@@ -47,7 +23,7 @@
         </div>
       </div>
       <br>
-  
+
             <div class='table table-responsive'>
               <table class='table table-hover table-striped'>
                 <thead>
@@ -57,14 +33,14 @@
                     <th> Saving Product </th>
                     <th> Last Transaction </th>
                     <th> Balance </th>
-                    
+
                 </thead>
                 <tbody>
                   <% @savings_accounts.each do |savings_account| %>
                     <tr style="cursor: pointer;" data-link="<%= savings_account_path(savings_account) %>">
                       <td style="width: 40px"><%= image_tag(savings_account.depositor.avatar, class: "img-circle", height: 50, width: 50) %></td>
                       <td><%= link_to savings_account.depositor_name, savings_account_path(savings_account) %><br>
-                          
+
                       </td>
                       <td><%= savings_account.saving_product_name %></td>
                       <td><%= savings_account.last_transaction_date.strftime('%B %e, %Y') %> </td>
@@ -78,9 +54,9 @@
             </div>
           </div>
         </div>
-     
-         
-        
+
+
+
 
 <script>
 $("tr").click(function() {
