@@ -19,7 +19,6 @@ module DepositsModule
     belongs_to :office,                   class_name: "Cooperatives::Office"
     has_many :accountable_accounts,       class_name: 'AccountingModule::AccountableAccount', as: :accountable
     has_many :accounts,                   through: :accountable_accounts, class_name: 'AccountingModule::Account'
-    has_many :entries,                    through: :accounts, class_name: 'AccountingModule::Entry'
     has_many :savings_account_agings,     class_name: 'SavingsModule::SavingsAccountAging', foreign_key: 'savings_account_id'
     has_many :savings_aging_groups,       through: :savings_account_agings
 
@@ -40,13 +39,12 @@ module DepositsModule
     delegate :name, to: :interest_expense_account, prefix: true
     delegate :avatar, to: :depositor, allow_nil: true
     delegate :dormancy_number_of_days, :balance_averager, to: :saving_product
-    delegate :balance, :debits_balance, :credits_balance, to: :liability_account
+    delegate :balance, :debits_balance, :credits_balance, :entries, to: :liability_account
     delegate :title, to: :current_aging_group, prefix: true, allow_nil: true
+
     validates :depositor, presence: true
 
-
     before_save :set_account_owner_name, :set_date_opened #move to saving opening
-
 
     def current_aging_group
       savings_aging_groups.current
