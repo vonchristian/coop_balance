@@ -2,8 +2,7 @@ module Cooperatives
   class Membership < ApplicationRecord
     include PgSearch::Model
     pg_search_scope :text_search, against: [:search_term]
-    enum membership_type: [:regular_member, :associate_member, :organization, :special_depositor]
-    enum status: [:pending, :approved, :cancelled]
+
     BLACKLISTED_MEMBERSHIP_TYPE = ['organization', 'special_depositor']
 
     belongs_to :cooperator, polymorphic: true
@@ -18,7 +17,6 @@ module Cooperatives
     validates :account_number, presence: true, uniqueness: true
     delegate :name, to: :cooperative, prefix: true
     delegate :title, to: :membership_category, prefix: true
-    
     delegate :regular_member?, :associate_member?, to: :membership_category
 
     def self.for_cooperative(cooperative)

@@ -15,7 +15,7 @@ gem 'caxlsx', '~> 3.0'
 gem 'caxlsx_rails'
 gem 'trix'
 gem 'autonumeric-rails'
-gem "rails"
+gem 'rails', '~> 7.1', '>= 7.1.2'
 gem "pg", "~> 1.1"
 gem 'puma', group: [:development, :production]
 gem 'sass-rails', '~> 5'
@@ -86,3 +86,4 @@ gem 'rack-mini-profiler', require: false
 
 
 gem "matrix", "~> 0.4.2"
+gem 'sassc-rails'
