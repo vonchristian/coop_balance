@@ -30,7 +30,8 @@ module Savings
         account_number:        savings_account_application.account_number,
         date_opened:           savings_account_application.date_opened,
         saving_product:        savings_account_application.saving_product,
-        beneficiaries:         savings_account_application.beneficiaries
+        beneficiaries:         savings_account_application.beneficiaries,
+        date_opened:           savings_account_application.created_at
       )
       create_accounts(savings_account)
       savings_account.save!

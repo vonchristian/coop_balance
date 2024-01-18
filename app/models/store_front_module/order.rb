@@ -64,8 +64,7 @@ module StoreFrontModule
 
     private
     def set_default_date
-      todays_date = ActiveRecord::Base.default_timezone == :utc ? Time.now.utc : Time.now
-      self.date ||= todays_date
+      self.date ||= Time.zone.now
     end
     def set_commercial_document_name #pg_search cannot traverse polymorphic association
       self.commercial_document_name = self.commercial_document.name

@@ -175,10 +175,9 @@ module AccountingModule
 
 
     def set_default_date
-      if entry_date.blank?
-        todays_date = ActiveRecord::Base.default_timezone == :utc ? Time.now.utc : Time.now
-        self.entry_date = todays_date
-      end
+      return if entry_date.present?
+
+      self.entry_date = Time.zone.now
     end
 
 

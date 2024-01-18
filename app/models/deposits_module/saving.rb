@@ -44,8 +44,6 @@ module DepositsModule
 
     validates :depositor, presence: true
 
-    before_save :set_account_owner_name, :set_date_opened #move to saving opening
-
     def current_aging_group
       savings_aging_groups.current
     end
@@ -161,18 +159,6 @@ module DepositsModule
     def last_transaction_date
       return created_at if entries.with_cash_accounts.blank?
       entries.with_cash_accounts.recent.entry_date
-    end
-
-
-
-    private
-    def set_account_owner_name
-      self.account_owner_name ||= self.depositor_name # depositor is polymorphic
-    end
-
-    def set_date_opened
-      todays_date = ActiveRecord::Base.default_timezone == :utc ? Time.now.utc : Time.now
-      self.date_opened ||= todays_date
     end
   end
 end
