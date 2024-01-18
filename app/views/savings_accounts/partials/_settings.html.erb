@@ -41,7 +41,7 @@
 <div class="card-body">
   <div class="row">
     <div class="col-md-9">
-      <h4 class="card-title">Merge Account</h4>
+      <h4 class="card-title">Merge Account</h4><br>
       <span class="text-muted"> Merge savings accounts that are duplicated. </span>
     </div>
     <div class="col-md-3">
@@ -53,14 +53,14 @@
 <div class="card-body">
   <div class="row">
     <div class="col-md-9">
-      <h3 class="card-title">Balance Transfer </h3>
+      <h3 class="card-title">Balance Transfer </h3><br>
       <p class="text-muted"> Transfer balance to other savings accounts. </p>
     </div>
     <div class="col-md-3">
-      <% if policy([:savings_accounts, :balance_transfer_destination_account]).new? %>
+      <% if policy([:savings_accounts, :balance_transfer]).new? %>
         <%= link_to 'Balance Transfer', new_savings_account_balance_transfer_destination_account_path(origin_saving_id: @savings_account.id), class: "btn btn-outline-danger" %>
       <% else %>
-        <span class="text-danger"> Only Accountant / Treasurer account can do this action. </span>
+        <span class="text-danger"> Only an Accountant / Bookkeeper can do this action. </span>
       <% end %>
     </div>
   </div>

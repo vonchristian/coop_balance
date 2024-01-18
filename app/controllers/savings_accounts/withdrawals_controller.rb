@@ -1,17 +1,17 @@
 module SavingsAccounts
   class WithdrawalsController < ApplicationController
     def new
+      authorize %i[savings_accounts withdrawal]
+
       @savings_account = current_office.savings.find(params[:savings_account_id])
       @withdrawal = Memberships::SavingsAccounts::WithdrawalLineItemProcessing.new
-      authorize %i[savings_accounts withdrawal]
     end
 
     def create
-      @savings_account = current_office.savings.find(params[:savings_account_id])
-      @withdrawal = Memberships::SavingsAccounts::WithdrawalLineItemProcessing.new(withdrawal_params)
       authorize %i[savings_accounts withdrawal]
+      @savings_account = current_office.savings.find(params[:savings_account_id])
+      @withdrawal = Memberships::SavingsAccounts::WithdrawalLineItemProcessing.run(withdrawal_params)
       if @withdrawal.valid?
-        @withdrawal.save
         redirect_to savings_account_withdrawal_voucher_url(savings_account_id: @savings_account.id, id: @withdrawal.find_voucher.id), notice: 'Withdraw transaction created successfully.'
       else
         render :new, status: :unprocessable_entity

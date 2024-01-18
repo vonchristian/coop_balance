@@ -1,6 +1,6 @@
 <div class="container">
   <div class="card">
-    <div class="card-body">
+    <div class="card-body pt-5">
       <div class="row">
           <div class="col-md-1">
             <%= image_tag(@savings_account.avatar, class: 'img-circle', width: 55, height: 55) %>
@@ -11,7 +11,7 @@
             <small class="text-muted"><i class="fa fa-phone"></i> <%= @savings_account.depositor.current_contact_number %></small>
           </div>
           <div class='col-md-3'>
-            <small class='text-muted'> BALANCE </small>
+            <strong> BALANCE </strong>
             <h4 class='title-up'><%= number_to_currency @savings_account.balance %></h4>
           </div>
           <div class="col-md-3">

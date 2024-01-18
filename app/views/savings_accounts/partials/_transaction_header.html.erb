@@ -1,0 +1,18 @@
+<div class="row">
+        <div class="col-md-2 col-sm-2">
+          <%= image_tag(savings_account.avatar, width: 60, height: 60, class: "img-circle") if savings_account.avatar.attached? %>
+        </div>
+        <div class="col-md-6 col-sm-10">
+          <h4 class="subtitle-up"> <%= savings_account.depositor_name.upcase %> </h4>
+          <small class="text-muted">
+            <i class="fa fa-map-marker"></i> <%= savings_account.depositor.current_address_complete_address %> &nbsp; &nbsp;
+            <div class="min-margin"></div>
+            <i class="fa fa-phone"></i> <%= savings_account.depositor.current_contact_number %></i> &nbsp; &nbsp;
+            <div class="min-margin"></div>
+          </small>
+        </div>
+        <div class='col-md-4'>
+          <small class='text-muted'>BALANCE</small>
+          <h3 class="no-margin-bottom"> <%= number_to_currency  savings_account.balance %> </h3>
+        </div>
+      </div>

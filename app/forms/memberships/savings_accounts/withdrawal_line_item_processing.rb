@@ -1,15 +1,17 @@
 module Memberships
   module SavingsAccounts
-    class WithdrawalLineItemProcessing
-      include ActiveModel::Model
-      attr_accessor :saving_id, :employee_id, :amount, :or_number, :account_number, :date, :offline_receipt, :cash_account_id, :account_number, :description
-
+    class WithdrawalLineItemProcessing < ActiveInteraction::Base
+      uuid :saving_id, :employee_id, :account_number, :cash_account_id
+      float :amount
+      string :or_number, :account_number, :description
+      date :date
+      boolean :offline_receipt, default: true
       validates :amount, presence: true, numericality: { greater_than: 0.01 }
       validates :or_number, :date, :description, :cash_account_id, presence: true
 
-      validate :amount_does_not_exceed_balance?
+      validate :amount_exceed_balance?
 
-      def save
+      def execute
         ActiveRecord::Base.transaction do
           create_deposit_voucher
         end
@@ -19,46 +21,42 @@ module Memberships
         Voucher.find_by(account_number: account_number)
       end
 
-      def find_saving
-        DepositsModule::Saving.find(saving_id)
+      def saving
+        @saving ||= DepositsModule::Saving.find(saving_id)
       end
 
-      def find_employee
-        User.find(employee_id)
+      def employee
+        @empoyee ||= User.find(employee_id)
       end
 
       private
 
       def create_deposit_voucher
         voucher = Voucher.new(
-          payee: find_saving.depositor,
-          office: find_employee.office,
-          cooperative: find_employee.cooperative,
-          preparer: find_employee,
+          payee: saving.depositor,
+          office: employee.office,
+          cooperative: employee.cooperative,
+          preparer: employee,
           description: description,
           reference_number: or_number,
           account_number: account_number,
           date: date
         )
         voucher.voucher_amounts.debit.build(
-          cooperative: find_employee.cooperative,
-          account: find_saving.liability_account,
+          cooperative: employee.cooperative,
+          account_id: saving.liability_account_id,
           amount: amount
         )
         voucher.voucher_amounts.credit.build(
-          cooperative: find_employee.cooperative,
-          account: cash_account,
+          cooperative: employee.cooperative,
+          account_id: cash_account_id,
           amount: amount
         )
         voucher.save!
       end
 
-      def cash_account
-        AccountingModule::Account.find(cash_account_id)
-      end
-
-      def amount_does_not_exceed_balance?
-        errors[:amount] << 'Exceeded available balance' if amount.to_f > find_saving.balance
+      def amount_exceed_balance?
+        errors.add(:base, 'Exceeded available balance') if amount.to_f > saving.balance
       end
     end
   end

@@ -5,7 +5,7 @@
           <b><label>Account Name</label> </b>
         </div>
         <div class="col-md-6">
-          <span class="text-muted"><%= @savings_account.account_owner_name %></span>
+          <strong><%= @savings_account.account_owner_name.upcase %></strong>
         </div>
       </div>
       <div class="row min-margin">
@@ -21,7 +21,7 @@
           <b><label> Interest Rate</label> </b>
         </div>
         <div class="col-md-6">
-          <span class="text-muted"><%= @savings_account.saving_product_interest_rate * 100 %> % </span>
+          <span class="text-muted"><%= @savings_account.saving_product_interest_rate * 100 %> %   (Annual) </span>
         </div>
       </div>
       <div class="row min-margin">
@@ -29,7 +29,7 @@
           <b><label> Account Number </label></b>
         </div>
         <div class="col-md-6">
-          <span class="text-muted"><%= @savings_account.account_number.upcase %></span>
+          <span class="text-muted"><%= @savings_account.account_number.upcase.last %></span>
         </div>
       </div>
 
@@ -46,7 +46,7 @@
 <% balances_data << { month.strftime("%b %Y").upcase => @savings_account.balance(to_date: month.end_of_month) } %>
 <% end %>
 
-  <%= line_chart (Hash[*balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank?}),messages: {empty: "No data"}, height: 300, download: true, curve: false, thousands: ",", prefix: "P " %>
+  <%= line_chart (Hash[*balances_data.collect{|h| h.to_a}.flatten].delete_if{|k,v| v.blank? }),messages: {empty: "No data"}, height: 500, download: true, curve: false, thousands: ",", prefix: "P " %>
   <br>
 
 
