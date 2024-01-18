@@ -3,8 +3,6 @@
     extend Totalable
     extend Metricable
     extend VarianceMonitoring
-	  enum interest_recurrence: [:daily, :weekly, :monthly, :quarterly, :semi_annually, :annually]
-    enum interest_type: [:earning, :non_earning]
 
     has_one :saving_product_interest_config, class_name: 'SavingsModule::SavingProducts::SavingProductInterestConfig'
     belongs_to :cooperative
