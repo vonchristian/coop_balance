@@ -8,7 +8,7 @@ module AccountCreators
       saving_product        = create(:saving_product, cooperative: cooperative)
       office_saving_product = create(:office_saving_product, office: office, saving_product: saving_product)
       saving                = build(:saving, office: office, liability_account_id: nil, saving_product: saving_product, interest_expense_account_id: nil)
-     
+
       described_class.new(saving: saving).create_accounts!
       saving.save!
 
@@ -26,7 +26,6 @@ module AccountCreators
 
       expect(saving.accounts).to include(liability_account)
       expect(saving.accounts).to include(interest_expense_account)
-
     end
   end
 end

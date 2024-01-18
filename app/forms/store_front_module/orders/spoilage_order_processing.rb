@@ -2,7 +2,7 @@ module StoreFrontModule
   module Orders
     class SpoilageOrderProcessing
       include ActiveModel::Model
-      attr_accessor  :description, :employee_id, :cart_id, :date
+      attr_accessor :description, :employee_id, :cart_id, :date
 
       validates :employee_id, :title, :content, :date, presence: true
 
@@ -13,11 +13,13 @@ module StoreFrontModule
       end
 
       private
+
       def create_spoilage_order
         spoilage_order = StoreFrontModule::Orders::SpoilageOrder.create!(
           date: date,
           commercial_document: find_employee,
-          employee: find_employee)
+          employee: find_employee
+        )
         find_cart.spoilage_line_items.each do |spoilage_line_item|
           spoilage_line_item.cart_id = nil
           spoilage_order.spoilage_line_items << spoilage_line_item
@@ -26,11 +28,11 @@ module StoreFrontModule
       end
 
       def find_cart
-        Cart.find_by_id(cart_id)
+        Cart.find_by(id: cart_id)
       end
 
       def find_employee
-        User.find_by_id(employee_id)
+        User.find_by(id: employee_id)
       end
 
       def create_entry(spoilage_order)
@@ -43,11 +45,12 @@ module StoreFrontModule
           entry_date: date,
           description: description,
           debit_amounts_attributes: [amount: spoilage_order.total_cost,
-                                    account: spoilage_account,
-                                    commercial_document: spoilage_order],
-          credit_amounts_attributes:[account: merchandise_inventory,
-                                     amount: spoilage_order.total_cost,
-                                     commercial_document: spoilage_order])
+                                     account: spoilage_account,
+                                     commercial_document: spoilage_order],
+          credit_amounts_attributes: [account: merchandise_inventory,
+                                      amount: spoilage_order.total_cost,
+                                      commercial_document: spoilage_order]
+        )
       end
     end
   end

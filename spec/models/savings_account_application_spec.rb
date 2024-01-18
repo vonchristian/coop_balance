@@ -2,10 +2,10 @@ require 'rails_helper'
 
 describe SavingsAccountApplication do
   describe 'associations' do
-    it { is_expected.to belong_to :cooperative }
-    it { is_expected.to belong_to :office }
-    it { is_expected.to belong_to :depositor }
-    it { is_expected.to belong_to :saving_product }
-    it { is_expected.to belong_to :liability_account }
+    it { should belong_to :cooperative }
+    it { should belong_to :office }
+    it { should belong_to :depositor }
+    it { should belong_to :saving_product }
+    it { should belong_to :liability_account }
   end
 end

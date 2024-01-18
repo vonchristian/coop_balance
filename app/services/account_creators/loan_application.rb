@@ -20,25 +20,25 @@ module AccountCreators
     private
 
     def create_receivable_account
-      if loan_application.receivable_account.blank?
-        account = office.accounts.assets.create!(
-          name:   "#{loan_product.name} - #{SecureRandom.uuid}",
-          code:   SecureRandom.uuid,
-          ledger: receivable_ledger
-        )
-        loan_application.update(receivable_account: account)
-      end
+      return if loan_application.receivable_account.present?
+
+      account = office.accounts.assets.create!(
+        name: "#{loan_product.name} - #{SecureRandom.uuid}",
+        code: SecureRandom.uuid,
+        ledger: receivable_ledger
+      )
+      loan_application.update(receivable_account: account)
     end
 
     def create_interest_revenue_account
-      if loan_application.interest_revenue_account.blank?
-        account = office.accounts.revenues.create!(
-          name:                       "Interest Income - #{loan_product.name} - #{SecureRandom.uuid}",
-          code:                       "INT-#{loan_application.account_number}",
-          ledger: interest_revenue_ledger
-        )
-        loan_application.update(interest_revenue_account: account)
-      end
+      return if loan_application.interest_revenue_account.present?
+
+      account = office.accounts.revenues.create!(
+        name: "Interest Income - #{loan_product.name} - #{SecureRandom.uuid}",
+        code: "INT-#{loan_application.account_number}",
+        ledger: interest_revenue_ledger
+      )
+      loan_application.update(interest_revenue_account: account)
     end
   end
 end

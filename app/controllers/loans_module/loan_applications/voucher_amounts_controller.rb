@@ -20,6 +20,7 @@ module LoansModule
         @loan_application = current_cooperative.loan_applications.find(params[:loan_application_id])
         @voucher_amount   = @loan_application.voucher_amounts.find(params[:id])
       end
+
       def update
         @loan_application = current_cooperative.loan_applications.find(params[:loan_application_id])
         @voucher_amount   = @loan_application.voucher_amounts.find(params[:id])
@@ -40,13 +41,15 @@ module LoansModule
       end
 
       private
+
       def charge_params
-        params.require(:loans_module_loan_applications_voucher_amount_processing).
-        permit(:amount, :account_id, :description, :loan_application_id)
+        params.require(:loans_module_loan_applications_voucher_amount_processing)
+              .permit(:amount, :account_id, :description, :loan_application_id)
       end
+
       def update_voucher_amount_params
-        params.require(:vouchers_voucher_amount).
-        permit(:amount)
+        params.require(:vouchers_voucher_amount)
+              .permit(:amount)
       end
     end
   end

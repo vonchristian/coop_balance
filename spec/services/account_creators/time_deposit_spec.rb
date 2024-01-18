@@ -5,7 +5,7 @@ module AccountCreators
     it '#create_accounts!' do
       office                            = create(:office)
       time_deposit_product              = create(:time_deposit_product)
-      liability_ledger       = create(:liability_ledger)
+      liability_ledger = create(:liability_ledger)
       interest_expense_ledger       = create(:expense_ledger)
       break_contract_revenue_ledger = create(:revenue_ledger)
       create(:office_time_deposit_product, office: office, time_deposit_product: time_deposit_product, liability_ledger: liability_ledger, interest_expense_ledger: interest_expense_ledger, break_contract_revenue_ledger: break_contract_revenue_ledger)
@@ -14,9 +14,9 @@ module AccountCreators
       described_class.new(time_deposit: time_deposit).create_accounts!
       time_deposit.save!
 
-      expect(time_deposit.liability_account).to_not eql nil
-      expect(time_deposit.interest_expense_account).to_not eql nil
-      expect(time_deposit.break_contract_account).to_not eql nil
+      expect(time_deposit.liability_account).not_to eql nil
+      expect(time_deposit.interest_expense_account).not_to eql nil
+      expect(time_deposit.break_contract_account).not_to eql nil
 
       expect(office.accounts).to include time_deposit.liability_account
       expect(office.accounts).to include time_deposit.interest_expense_account
@@ -25,7 +25,6 @@ module AccountCreators
       expect(liability_ledger.accounts).to include time_deposit.liability_account
       expect(interest_expense_ledger.accounts).to include time_deposit.interest_expense_account
       expect(break_contract_revenue_ledger.accounts).to include time_deposit.break_contract_account
-
     end
   end
 end

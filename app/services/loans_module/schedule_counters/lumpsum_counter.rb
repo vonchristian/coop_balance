@@ -6,7 +6,7 @@ module LoansModule
       def initialize(loan_application:)
         @loan_application = loan_application
       end
-      
+
       def schedule_count
         1
       end

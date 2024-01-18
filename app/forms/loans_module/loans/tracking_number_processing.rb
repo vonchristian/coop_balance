@@ -3,6 +3,7 @@ module LoansModule
     class TrackingNumberProcessing
       include ActiveModel::Model
       attr_accessor :tracking_number, :loan_id
+
       validates :tracking_number, presence: true
 
       def save
@@ -12,6 +13,7 @@ module LoansModule
       end
 
       private
+
       def create_tracking_number
         find_loan.update(tracking_number: tracking_number)
         update_voucher_reference_number
@@ -19,19 +21,19 @@ module LoansModule
       end
 
       def find_loan
-        LoansModule::Loan.find_by_id(loan_id)
+        LoansModule::Loan.find_by(id: loan_id)
       end
 
       def update_voucher_reference_number
-        if !find_loan.forwarded_loan?
-          find_loan.loan_application.voucher.update(reference_number: tracking_number) if find_loan.loan_application.voucher.present?
-        end
+        return if find_loan.forwarded_loan?
+
+        find_loan.loan_application.voucher.update(reference_number: tracking_number) if find_loan.loan_application.voucher.present?
       end
 
       def update_entry_reference_number
-        if !find_loan.forwarded_loan?
-          find_loan.loan_application.voucher.entry.update(reference_number: tracking_number) if find_loan.loan_application.voucher.present?
-        end
+        return if find_loan.forwarded_loan?
+
+        find_loan.loan_application.voucher.entry.update(reference_number: tracking_number) if find_loan.loan_application.voucher.present?
       end
     end
   end

@@ -1,5 +1,5 @@
 class NullAge
   def age
-    "No Date of Birth Entered"
+    'No Date of Birth Entered'
   end
-end 
+end

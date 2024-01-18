@@ -1,8 +1,9 @@
 module Organizations
-  class SavingsAccountPolicy < ApplicationPolicy 
+  class SavingsAccountPolicy < ApplicationPolicy
     def new?
       user.teller? || user.treasurer?
     end
+
     def create?
       new?
     end

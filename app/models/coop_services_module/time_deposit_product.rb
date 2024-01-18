@@ -1,11 +1,11 @@
 module CoopServicesModule
-	class TimeDepositProduct < ApplicationRecord
+  class TimeDepositProduct < ApplicationRecord
     extend Totalable
     extend Metricable
     extend VarianceMonitoring
 
     belongs_to :cooperative
-    
+
     delegate :name, to: :account, prefix: true
 
     validates :name,
@@ -14,7 +14,6 @@ module CoopServicesModule
               :interest_rate,
               :break_contract_fee,
               :break_contract_rate,
-              :cooperative_id,
               presence: true
     validates :break_contract_fee,
               :break_contract_rate,
@@ -24,9 +23,6 @@ module CoopServicesModule
               numericality: true
     validates :name,
               uniqueness: true
-              
-    
-   
 
     def amount_range
       minimum_deposit..maximum_deposit
@@ -40,5 +36,5 @@ module CoopServicesModule
       months = number_of_days / 30
       interest_rate / months
     end
-	end
+  end
 end

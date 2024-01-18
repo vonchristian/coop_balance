@@ -24,12 +24,13 @@ module LoansModule
         @amount = current_cart.voucher_amounts.find(params[:id])
         @amount.destroy
         redirect_to new_loans_module_loan_payment_from_saving_url(@loan), alert: 'Removed successfully'
-      end 
+      end
 
       private
+
       def payment_params
-        params.require(:loans_module_loans_payment_from_saving).
-        permit(:amount, :loan_id, :saving_id, :cart_id, :employee_id)
+        params.require(:loans_module_loans_payment_from_saving)
+              .permit(:amount, :loan_id, :saving_id, :cart_id, :employee_id)
       end
     end
   end

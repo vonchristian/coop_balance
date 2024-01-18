@@ -27,9 +27,10 @@ module LoansModule
       end
 
       private
+
       def payment_params
-        params.require(:loans_module_loans_payment_from_share_capital).
-        permit(:amount, :loan_id, :share_capital_id, :cart_id, :employee_id)
+        params.require(:loans_module_loans_payment_from_share_capital)
+              .permit(:amount, :loan_id, :share_capital_id, :cart_id, :employee_id)
       end
     end
   end

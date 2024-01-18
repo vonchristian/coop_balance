@@ -1,6 +1,6 @@
 module LoansModule
   class LoanPaymentsController < ApplicationController
-    def show 
+    def show
       @entry = current_office.entries.find(params[:id])
       account_ids = @entry.amounts.pluck(:account_id)
       loan_ids = []
@@ -8,6 +8,6 @@ module LoansModule
       loan_ids << current_office.loans.where(interest_revenue_account_id: account_ids.compact.flatten.uniq)
       loan_ids << current_office.loans.where(penalty_revenue_account_id: account_ids.compact.flatten.uniq)
       @pagy, @loans = pagy(current_office.loans.where(id: loan_ids.compact.uniq.flatten).includes(:receivable_account, :interest_revenue_account, :penalty_revenue_account, :loan_product, :borrower))
-    end 
-  end 
-end 
+    end
+  end
+end

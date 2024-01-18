@@ -3,16 +3,16 @@ require 'rails_helper'
 module Offices
   describe OfficeSavingProduct do
     describe 'associations' do
-      it { is_expected.to belong_to :saving_product }
-      it { is_expected.to belong_to :office }
-      it { is_expected.to belong_to :liability_account_category }
-      it { is_expected.to belong_to :interest_expense_account_category }
-      it { is_expected.to belong_to :closing_account_category }
-      it { is_expected.to belong_to :forwarding_account }
+      it { should belong_to :saving_product }
+      it { should belong_to :office }
+      it { should belong_to :liability_account_category }
+      it { should belong_to :interest_expense_account_category }
+      it { should belong_to :closing_account_category }
+      it { should belong_to :forwarding_account }
     end
 
     describe 'validations' do
-      it { is_expected.to validate_presence_of :saving_product_id }
+      it { should validate_presence_of :saving_product_id }
 
       it 'unique saving product scope to office' do
         office                = create(:office)
@@ -25,8 +25,8 @@ module Offices
       end
     end
 
-    describe 'delegations' do 
-      it { is_expected.to delegate_method(:name).to(:saving_product).with_prefix }
-    end 
+    describe 'delegations' do
+      it { should delegate_method(:name).to(:saving_product).with_prefix }
+    end
   end
 end

@@ -10,10 +10,11 @@ module Loans
     def update
       @loan = current_cooperative.loans.find(params[:id])
       @loan.update(loan_params)
-      respond_modal_with @loan, location: loan_settings_path(@loan), notice: "Barangay updated successfully."
+      respond_modal_with @loan, location: loan_settings_path(@loan), notice: 'Barangay updated successfully.'
     end
 
     private
+
     def loan_params
       params.require(:loans_module_loan).permit(:barangay_id)
     end

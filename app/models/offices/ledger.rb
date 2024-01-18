@@ -1,6 +1,6 @@
-# frozen_string_literal: true 
+# frozen_string_literal: true
 
-module Offices 
+module Offices
   class Ledger < ApplicationRecord
     self.table_name = 'office_ledgers'
     belongs_to :office, class_name: 'Cooperatives::Office'
@@ -8,4 +8,4 @@ module Offices
 
     validates :ledger_id, uniqueness: { scope: :office_id }
   end
-end 
+end

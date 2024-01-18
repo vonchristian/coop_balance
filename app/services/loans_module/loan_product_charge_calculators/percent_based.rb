@@ -7,6 +7,7 @@ module LoansModule
         @charge = args.fetch(:charge)
         @chargeable_amount = args.fetch(:chargeable_amount)
       end
+
       def calculate
         charge.rate * chargeable_amount
       end

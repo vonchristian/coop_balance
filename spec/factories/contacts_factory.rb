@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :contact do
-    association :contactable, factory: :member
+    contactable factory: %i[member]
   end
-end 
+end

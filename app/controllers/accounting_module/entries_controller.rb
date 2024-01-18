@@ -3,28 +3,29 @@ module AccountingModule
   class EntriesController < ApplicationController
     def index
       @from_date       = params[:from_date] ? Date.parse(params[:from_date]) : Date.current.beginning_of_year
-      @to_date         = params[:to_date] ? Date.parse(params[:to_date]) : Date.today.end_of_year
+      @to_date         = params[:to_date] ? Date.parse(params[:to_date]) : Time.zone.today.end_of_year
       if params[:search].present?
         @pagy, @entries  = pagy(current_office.entries.order(ref_number_integer: :asc).text_search(params[:search]))
         @entries_for_pdf = current_office.entries.not_cancelled.text_search(params[:search])
-      else 
+      else
         @pagy, @entries  = pagy(current_office.entries.includes(:debit_amounts, :commercial_document).entered_on(from_date: @from_date, to_date: @to_date).order(ref_number_integer: :asc))
         @entries_for_pdf = current_office.entries.not_cancelled.entered_on(from_date: @from_date, to_date: @to_date)
-      end 
+      end
       respond_to do |format|
-				format.csv { render_csv }
+        format.csv { render_csv }
         format.html
         format.pdf do
           pdf = AccountingModule::EntriesPdf.new(
-            from_date:    @from_date,
-            to_date:      @to_date,
-            entries:      @entries_for_pdf,
+            from_date: @from_date,
+            to_date: @to_date,
+            entries: @entries_for_pdf,
             organization: @organization,
-            employee:     current_user,
-            cooperative:  current_cooperative,
-            title:        "Journal Entries",
-            view_context: view_context)
-          send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Entries report.pdf"
+            employee: current_user,
+            cooperative: current_cooperative,
+            title: 'Journal Entries',
+            view_context: view_context
+          )
+          send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'Entries report.pdf'
         end
       end
     end
@@ -37,7 +38,7 @@ module AccountingModule
       @line_item = Vouchers::VoucherAmountProcessing.new(entry_params)
       if @line_item.valid?
         @line_item.save
-        redirect_to new_accounting_module_entry_line_item_url, notice: "Entry saved successfully"
+        redirect_to new_accounting_module_entry_line_item_url, notice: 'Entry saved successfully'
       else
         render :new, status: :unprocessable_entity
       end
@@ -52,7 +53,7 @@ module AccountingModule
       @entry_form = AccountingModule::Entries::UpdateProcessing.new(edit_entry_params)
       if @entry_form.valid?
         @entry_form.process!
-        redirect_to accounting_module_entry_url(@entry), notice: "Entry updated successfully"
+        redirect_to accounting_module_entry_url(@entry), notice: 'Entry updated successfully'
       else
         render :edit
       end
@@ -64,76 +65,74 @@ module AccountingModule
     end
 
     private
+
     def entry_params
       params.require(:accounting_module_entry_form).permit(:recorder_id, :amount, :debit_account_id, :credit_account_id, :entry_date, :description, :reference_number, :entry_type)
     end
 
     def edit_entry_params
-      params.require(:accounting_module_entry).
-      permit(:recorder_id, :reference_number, :description, :entry_date, :entry_id)
+      params.require(:accounting_module_entry)
+            .permit(:recorder_id, :reference_number, :description, :entry_date, :entry_id)
     end
 
     def render_csv
-			# Tell Rack to stream the content
-			headers.delete("Content-Length")
+      # Tell Rack to stream the content
+      headers.delete('Content-Length')
 
-			# Don't cache anything from this generated endpoint
-			headers["Cache-Control"] = "no-cache"
+      # Don't cache anything from this generated endpoint
+      headers['Cache-Control'] = 'no-cache'
 
-			# Tell the browser this is a CSV file
-			headers["Content-Type"] = "text/csv"
+      # Tell the browser this is a CSV file
+      headers['Content-Type'] = 'text/csv'
 
-			# Make the file download with a specific filename
-			headers["Content-Disposition"] = "attachment; filename=\"Entries.csv\""
+      # Make the file download with a specific filename
+      headers['Content-Disposition'] = 'attachment; filename="Entries.csv"'
 
-			# Don't buffer when going through proxy servers
-			headers["X-Accel-Buffering"] = "no"
+      # Don't buffer when going through proxy servers
+      headers['X-Accel-Buffering'] = 'no'
 
-			# Set an Enumerator as the body
-			self.response_body = csv_body
+      # Set an Enumerator as the body
+      self.response_body = csv_body
 
-			response.status = 200
-		end
+      response.status = 200
+    end
 
-		private
-
-		def csv_body
-			Enumerator.new do |yielder|
-				yielder << CSV.generate_line(["#{current_office.name} - Entries "])
-				yielder << CSV.generate_line(["DATE", "MEMBER/PAYEE", "PARTICULARS", "REF NO.", "ACCOUNT", 'DEBIT', 'CREDIT'])
-				@entries_for_pdf.order(reference_number: :asc).each do |entry|
-					yielder << CSV.generate_line([
-          entry.entry_date.strftime("%B %e, %Y"),
-          entry.display_commercial_document,
-          entry.description,
-          entry.reference_number
-          ])
+    def csv_body
+      Enumerator.new do |yielder|
+        yielder << CSV.generate_line(["#{current_office.name} - Entries "])
+        yielder << CSV.generate_line(['DATE', 'MEMBER/PAYEE', 'PARTICULARS', 'REF NO.', 'ACCOUNT', 'DEBIT', 'CREDIT'])
+        @entries_for_pdf.order(reference_number: :asc).each do |entry|
+          yielder << CSV.generate_line([
+                                         entry.entry_date.strftime('%B %e, %Y'),
+                                         entry.display_commercial_document,
+                                         entry.description,
+                                         entry.reference_number
+                                       ])
           entry.debit_amounts.each do |debit_amount|
-            yielder << CSV.generate_line(["", "", "", "",debit_amount.account_display_name,
-            debit_amount.amount])
-          end 
+            yielder << CSV.generate_line(['', '', '', '', debit_amount.account_display_name,
+                                          debit_amount.amount])
+          end
           entry.credit_amounts.each do |credit_amount|
-            yielder << CSV.generate_line(["", "", "", "","    #{credit_amount.account_display_name}", "",credit_amount.amount])
-          end 
+            yielder << CSV.generate_line(['', '', '', '', "    #{credit_amount.account_display_name}", '', credit_amount.amount])
+          end
         end
-        
-        yielder << CSV.generate_line([""])
-          yielder << CSV.generate_line(["Accounts Summary"])
-          yielder << CSV.generate_line(["DEBIT", "ACCOUNT", "CREDIT"])
 
-          yielder << CSV.generate_line([""])
-          yielder << CSV.generate_line(["Accounts Summary"])
-          yielder << CSV.generate_line(["DEBIT", "ACCOUNT", "CREDIT"])
-          ids = @entries_for_pdf.accounts.pluck(:ledger_id)
-          current_office.ledgers.where(id: ids.compact.flatten.uniq).each do |ledger|
-            yielder << CSV.generate_line([
-              ledger.debit_amounts.where(entry_id: @entries_for_pdf.ids).total,
-              ledger.title, 
-              ledger.credit_amounts.where(entry_id: @entries_for_pdf.ids).total
-              ])
-          end 
-			end 
-    end 
+        yielder << CSV.generate_line([''])
+        yielder << CSV.generate_line(['Accounts Summary'])
+        yielder << CSV.generate_line(%w[DEBIT ACCOUNT CREDIT])
 
+        yielder << CSV.generate_line([''])
+        yielder << CSV.generate_line(['Accounts Summary'])
+        yielder << CSV.generate_line(%w[DEBIT ACCOUNT CREDIT])
+        ids = @entries_for_pdf.accounts.pluck(:ledger_id)
+        current_office.ledgers.where(id: ids.compact.flatten.uniq).find_each do |ledger|
+          yielder << CSV.generate_line([
+                                         ledger.debit_amounts.where(entry_id: @entries_for_pdf.ids).total,
+                                         ledger.title,
+                                         ledger.credit_amounts.where(entry_id: @entries_for_pdf.ids).total
+                                       ])
+        end
+      end
+    end
   end
 end

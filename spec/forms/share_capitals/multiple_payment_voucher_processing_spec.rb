@@ -2,17 +2,17 @@ require 'rails_helper'
 
 module ShareCapitals
   describe MultiplePaymentVoucherProcessing, type: :model do
-    describe 'validations' do 
-      it { is_expected.to validate_presence_of :date }
-      it { is_expected.to validate_presence_of :reference_number }
-      it { is_expected.to validate_presence_of :description }
-      it { is_expected.to validate_presence_of :cart_id } 
-      it { is_expected.to validate_presence_of :employee_id } 
-      it { is_expected.to validate_presence_of :cash_account_id } 
-      it { is_expected.to validate_presence_of :account_number }
-    end  
+    describe 'validations' do
+      it { should validate_presence_of :date }
+      it { should validate_presence_of :reference_number }
+      it { should validate_presence_of :description }
+      it { should validate_presence_of :cart_id }
+      it { should validate_presence_of :employee_id }
+      it { should validate_presence_of :cash_account_id }
+      it { should validate_presence_of :account_number }
+    end
 
-    it '#process!' do 
+    it '#process!' do
       teller         = create(:teller)
       office         = teller.office
       cash_account   = create(:asset)
@@ -22,23 +22,23 @@ module ShareCapitals
       teller.cash_accounts << cash_account
 
       described_class.new(
-        cart_id:          cart.id, 
-        date:             Date.current, 
+        cart_id: cart.id,
+        date: Date.current,
         reference_number: 'r3123',
-        description:      'test',
-        employee_id:      teller.id,
-        cash_account_id:  cash_account.id,
-        account_number:   account_number).
-        process!
+        description: 'test',
+        employee_id: teller.id,
+        cash_account_id: cash_account.id,
+        account_number: account_number
+      )
+                     .process!
 
-        voucher = office.vouchers.find_by!(account_number: account_number)
+      voucher = office.vouchers.find_by!(account_number: account_number)
 
-        expect(voucher).to_not eq nil 
-        expect(voucher.voucher_amounts.credit).to include(credit)
-        expect(voucher.voucher_amounts.debit.pluck(:account_id)).to include(cash_account.id)
-        expect(voucher.voucher_amounts.credit.total).to eql voucher.voucher_amounts.debit.total
-        expect(cart.voucher_amounts).to_not include(credit)
-       
-    end 
-  end 
-end 
+      expect(voucher).not_to be_nil
+      expect(voucher.voucher_amounts.credit).to include(credit)
+      expect(voucher.voucher_amounts.debit.pluck(:account_id)).to include(cash_account.id)
+      expect(voucher.voucher_amounts.credit.total).to eql voucher.voucher_amounts.debit.total
+      expect(cart.voucher_amounts).not_to include(credit)
+    end
+  end
+end

@@ -9,12 +9,13 @@ module LoansModule
     end
 
     def update_amount!
-      if !interest_config.prededucted?
-        loan_application.update(loan_amount: updated_loan_amount)
-      end
+      return if interest_config.prededucted?
+
+      loan_application.update(loan_amount: updated_loan_amount)
     end
 
     private
+
     def updated_loan_amount
       loan_application.loan_amount.amount + computed_add_on_interest
     end

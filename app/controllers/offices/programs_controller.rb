@@ -1,7 +1,7 @@
 module Offices
   class ProgramsController < ApplicationController
-    def index
-    end
+    def index; end
+
     def new
       @office_program = current_office.office_programs.build
     end
@@ -17,9 +17,10 @@ module Offices
     end
 
     private
+
     def program_params
-      params.require(:offices_office_program).
-      permit(:program_id, :ledger_id)
-    end 
+      params.require(:offices_office_program)
+            .permit(:program_id, :ledger_id)
+    end
   end
 end

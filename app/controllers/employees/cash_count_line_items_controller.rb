@@ -5,6 +5,7 @@ module Employees
       @cash_count = CashCount.new
       @bills = Bill.all
     end
+
     def create
       @bills = Bill.all
       @cash_count = CashCount.create(cash_count_params)
@@ -17,6 +18,7 @@ module Employees
     end
 
     private
+
     def cash_count_params
       params.require(:cash_count).permit(:bill_id, :quantity, :cart_id)
     end

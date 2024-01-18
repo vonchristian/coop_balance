@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-include ChosenSelect 
-describe 'Multiple savings deposit transactions' do 
-  it 'with valid attributes', js: true do 
+include ChosenSelect
+describe 'Multiple savings deposit transactions' do
+  it 'with valid attributes', :js do
     teller    = create(:teller)
     cash      = create(:asset, name: 'Cash on Hand')
     teller.cash_accounts << cash
@@ -21,21 +21,20 @@ describe 'Multiple savings deposit transactions' do
 
     login_as(teller, scope: :user)
 
-    visit savings_accounts_path 
+    visit savings_accounts_path
     click_link 'New Deposits'
-    
+
     click_link "#{@saving.id}-select-account"
-    fill_in 'Amount', with: 500 
+    fill_in 'Amount', with: 500
 
     click_button 'Add Amount'
 
     click_link "#{@saving_2.id}-select-account"
-    fill_in 'Amount', with: 500 
+    fill_in 'Amount', with: 500
 
     click_button 'Add Amount'
 
-
-    fill_in 'Date',                    with: Date.current 
+    fill_in 'Date',                    with: Date.current
     fill_in 'Description',             with: 'share capital build ups'
     fill_in 'Reference number',        with: '10064'
     select_from_chosen 'Cash on Hand', from: 'Cash account'
@@ -44,5 +43,5 @@ describe 'Multiple savings deposit transactions' do
     click_link 'Confirm Transaction'
 
     expect(page).to have_content('confirmed successfully')
-  end 
-end 
+  end
+end

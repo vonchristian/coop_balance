@@ -3,6 +3,7 @@ module AccountingModule
     def new?
       user.accountant? || user.bookkeeper?
     end
+
     def create?
       new?
     end

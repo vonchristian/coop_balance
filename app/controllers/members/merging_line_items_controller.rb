@@ -5,12 +5,13 @@ module Members
       @merging_line_item = Members::AccountMerging.new
       authorize @merging_line_item
       @merging = Members::Merging.new
-      if params[:search].present?
-        @members = current_cooperative.member_memberships.where.not(id: @current_member.id).text_search(params[:search]).paginate(page: params[:page], per_page: 20)
-      else
-        @members = current_cooperative.member_memberships.where.not(id: @current_member.id).text_search(@current_member.last_name).paginate(page: params[:page], per_page: 20)
-      end
+      @members = if params[:search].present?
+                   current_cooperative.member_memberships.where.not(id: @current_member.id).text_search(params[:search]).paginate(page: params[:page], per_page: 20)
+                 else
+                   current_cooperative.member_memberships.where.not(id: @current_member.id).text_search(@current_member.last_name).paginate(page: params[:page], per_page: 20)
+                 end
     end
+
     def create
       @current_member = current_cooperative.member_memberships.find(params[:member_id])
       @merging_line_item = Members::AccountMerging.new(merging_line_item_params)
@@ -19,9 +20,10 @@ module Members
     end
 
     private
+
     def merging_line_item_params
-      params.require(:members_account_merging).
-      permit(:cart_id, :old_member_id)
+      params.require(:members_account_merging)
+            .permit(:cart_id, :old_member_id)
     end
   end
 end

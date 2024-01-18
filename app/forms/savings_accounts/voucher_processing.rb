@@ -10,25 +10,29 @@ module SavingsAccounts
     end
 
     private
+
     def create_entry
       entry = AccountingModule::Entry.new(
         office: find_employee.office,
         cooperative: find_employee.cooperative,
         commercial_document: find_voucher,
-        description:         find_voucher.description,
-        reference_number:    find_voucher.number,
-        recorder:            find_employee,
-        entry_date: find_voucher.date)
+        description: find_voucher.description,
+        reference_number: find_voucher.number,
+        recorder: find_employee,
+        entry_date: find_voucher.date
+      )
       find_voucher.voucher_amounts.debit.each do |amount|
         debit_amount = AccountingModule::DebitAmount.new(
           account: amount.account,
-          amount: amount.amount)
+          amount: amount.amount
+        )
         entry.debit_amounts << debit_amount
       end
       find_voucher.voucher_amounts.credit.each do |amount|
         credit_amount = AccountingModule::CreditAmount.new(
           account: amount.account,
-          amount: amount.amount)
+          amount: amount.amount
+        )
         entry.credit_amounts << credit_amount
       end
       set_voucher_entry(entry)
@@ -41,6 +45,7 @@ module SavingsAccounts
     def find_employee
       find_voucher.preparer
     end
+
     def find_voucher
       Voucher.find(voucher_id)
     end

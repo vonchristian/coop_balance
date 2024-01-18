@@ -16,11 +16,13 @@ module LoansModule
 
       def create_voucher_amount
         find_loan_application.voucher_amounts.credit.create!(
-        description:         find_program.name,
-        amount:              amount,
-        account:             find_program_subscription.program_account,
-        cooperative:         find_loan_application.cooperative)
+          description: find_program.name,
+          amount: amount,
+          account: find_program_subscription.program_account,
+          cooperative: find_loan_application.cooperative
+        )
       end
+
       def find_loan_application
         borrower.loan_applications.find(loan_application_id)
       end

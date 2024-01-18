@@ -4,6 +4,7 @@ module ManagementModule
       def edit?
         user.general_manager?
       end
+
       def update?
         edit?
       end

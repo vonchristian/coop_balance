@@ -4,22 +4,22 @@ module DepositsModule
     include InactivityMonitoring
     extend  PercentActive
     monetize :averaged_balance_cents, as: :averaged_balance, numericality: true
-    pg_search_scope :text_search, against: [:account_number, :account_owner_name]
+    pg_search_scope :text_search, against: %i[account_number account_owner_name]
     pg_search_scope :account_number_search, against: [:account_number]
 
-    multisearchable against: [:account_number, :account_owner_name]
+    multisearchable against: %i[account_number account_owner_name]
 
-    belongs_to :organization,             optional: true
+    belongs_to :organization, optional: true
     belongs_to :cooperative
-    belongs_to :barangay,                 optional: true, class_name: "Addresses::Barangay"
+    belongs_to :barangay,                 optional: true, class_name: 'Addresses::Barangay'
     belongs_to :depositor,                polymorphic: true
     belongs_to :liability_account,        class_name: 'AccountingModule::Account'
     belongs_to :interest_expense_account, class_name: 'AccountingModule::Account'
-    belongs_to :saving_product,           class_name: "SavingsModule::SavingProduct"
-    belongs_to :office,                   class_name: "Cooperatives::Office"
-    has_many :accountable_accounts,       class_name: 'AccountingModule::AccountableAccount', as: :accountable
+    belongs_to :saving_product,           class_name: 'SavingsModule::SavingProduct'
+    belongs_to :office,                   class_name: 'Cooperatives::Office'
+    has_many :accountable_accounts,       class_name: 'AccountingModule::AccountableAccount', as: :accountable, dependent: :destroy
     has_many :accounts,                   through: :accountable_accounts, class_name: 'AccountingModule::Account'
-    has_many :savings_account_agings,     class_name: 'SavingsModule::SavingsAccountAging', foreign_key: 'savings_account_id'
+    has_many :savings_account_agings,     class_name: 'SavingsModule::SavingsAccountAging', foreign_key: 'savings_account_id', dependent: :destroy
     has_many :savings_aging_groups,       through: :savings_account_agings
 
     delegate :name, :current_address_complete_address, :current_contact_number, to: :depositor, prefix: true
@@ -42,29 +42,21 @@ module DepositsModule
     delegate :balance, :debits_balance, :credits_balance, :entries, to: :liability_account
     delegate :title, to: :current_aging_group, prefix: true, allow_nil: true
 
-    validates :depositor, presence: true
-
     def current_aging_group
       savings_aging_groups.current
     end
-
-    def self.can_earn_interest
-      where(can_earn_interest: true)
-    end
-
 
     def self.liability_accounts
       ids = pluck(:liability_account_id)
       AccountingModule::Liability.where(id: ids)
     end
 
-
     def self.interest_expense_accounts
       ids = pluck(:interest_expense_account_id)
       AccountingModule::Expense.where(id: ids)
     end
 
-    def self.total_balances(args={})
+    def self.total_balances(args = {})
       liability_accounts.balance(args)
     end
 
@@ -75,22 +67,19 @@ module DepositsModule
     def self.below_minimum_balance
       where(has_minimum_balance: false)
     end
+
     def self.has_minimum_balances
       where(has_minimum_balance: true)
     end
 
-
-
-    def self.inactive(args={})
+    def self.inactive(args = {})
       updated_at(args)
     end
 
-    def self.balance(args={})
+    def self.balance(args = {})
       ids = pluck(:liability_account_id)
       AccountingModule::Liability.where(id: ids.uniq.compact.flatten).balance(args)
     end
-
-
 
     def closed?
       closed_at.present?
@@ -100,13 +89,13 @@ module DepositsModule
       dormancy_number_of_days < number_of_days_inactive
     end
 
-    def interest_posted?(args={})
-      interest_expense_account.
-      entries.
-      entered_on(from_date: args[:from_date].beginning_of_quarter, to_date: args[:to_date].end_of_quarter).present?
+    def interest_posted?(args = {})
+      interest_expense_account
+        .entries
+        .entered_on(from_date: args[:from_date].beginning_of_quarter, to_date: args[:to_date].end_of_quarter).present?
     end
 
-    def self.updated_at(args={})
+    def self.updated_at(args = {})
       if args[:from_date] && args[:to_date]
         date_range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])
         joins(:entries).where('entries.entry_date' => (date_range.start_date..date_range.end_date))
@@ -115,7 +104,7 @@ module DepositsModule
       end
     end
 
-    def self.top_savers(args={})
+    def self.top_savers(args = {})
       limiting_num = args[:limiting_num] || 10
       all.to_a.sort_by(&:balance).reverse.first(limiting_num)
     end
@@ -128,11 +117,7 @@ module DepositsModule
       "#{name} - #{balance.to_f}"
     end
 
-
-
-    def balance_for(args={})
-
-    end
+    def balance_for(args = {}); end
 
     def deposits(args = {})
       credits_balance(args)
@@ -142,7 +127,7 @@ module DepositsModule
       debits_balance(args)
     end
 
-    def interests_earned(args={})
+    def interests_earned(args = {})
       interest_expense_account.debits_balance(args)
     end
 
@@ -150,14 +135,13 @@ module DepositsModule
       !closed? && balance > 0.0
     end
 
-
-
-    def computed_interest(args={})
+    def computed_interest(args = {})
       averaged_balance(to_date: args[:to_date]) * saving_product_applicable_rate
     end
 
     def last_transaction_date
       return created_at if entries.with_cash_accounts.blank?
+
       entries.with_cash_accounts.recent.entry_date
     end
   end

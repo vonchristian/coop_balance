@@ -10,11 +10,11 @@ module LoansModule
       end
 
       def calculate
-        loan_application.
-        amortization_schedules.
-        by_oldest_date.
-        first(interest_prededuction.number_of_payments).
-        sum(&:interest)
+        loan_application
+          .amortization_schedules
+          .by_oldest_date
+          .first(interest_prededuction.number_of_payments)
+          .sum(&:interest)
       end
     end
   end

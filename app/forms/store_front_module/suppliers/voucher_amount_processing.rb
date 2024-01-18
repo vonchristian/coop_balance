@@ -2,7 +2,7 @@ module StoreFrontModule
   module Suppliers
     class VoucherAmountProcessing
       include ActiveModel::Model
-      attr_accessor :supplier_id, :amount,:account_id, :amount_type, :cooperative_id
+      attr_accessor :supplier_id, :amount, :account_id, :amount_type, :cooperative_id
 
       validates :amount, :account_id, :cooperative_id, :supplier_id, :amount_type, presence: true
 
@@ -13,6 +13,7 @@ module StoreFrontModule
       end
 
       private
+
       def create_voucher_amount
         find_supplier.voucher_amounts.create(
           amount: amount,

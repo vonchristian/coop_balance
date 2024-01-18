@@ -8,23 +8,24 @@ module LoansModule
       validates :loan_id, :date, :description, :reference_number, :loan_id, :cart_id, :employee_id, :account_number, presence: true
 
       def process!
-        if valid?
-          ApplicationRecord.transaction do
-            create_voucher
-          end
+        return unless valid?
+
+        ApplicationRecord.transaction do
+          create_voucher
         end
       end
 
       private
+
       def create_voucher
         voucher = find_office.vouchers.build(
-          cooperative:      find_office.cooperative,
-          date:             date,
-          payee:            find_loan.borrower,
-          description:      description,
-          account_number:   account_number,
+          cooperative: find_office.cooperative,
+          date: date,
+          payee: find_loan.borrower,
+          description: description,
+          account_number: account_number,
           reference_number: reference_number,
-          preparer:         find_employee
+          preparer: find_employee
         )
 
         voucher.voucher_amounts << find_cart.voucher_amounts

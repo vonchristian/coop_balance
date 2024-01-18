@@ -11,7 +11,7 @@ module StoreFrontModule
           format.html
           format.pdf do
             pdf = StoreFrontModule::Reports::PurchasesReportPdf.new(@purchase_orders, @from_date, @to_date, view_context)
-            send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Purchase Orders Report.pdf"
+            send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'Purchase Orders Report.pdf'
           end
         end
       end

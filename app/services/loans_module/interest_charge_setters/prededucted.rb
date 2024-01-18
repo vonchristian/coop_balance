@@ -15,19 +15,22 @@ module LoansModule
       end
 
       private
+
       def create_prededucted_interest
         Vouchers::VoucherAmount.credit.create!(
-          cart:        loan_application.cart,
+          cart: loan_application.cart,
           cooperative: loan_application.cooperative,
-          description: "Interest on Loan",
-          amount:     computed_interest,
-          account:    loan_application.interest_revenue_account
+          description: 'Interest on Loan',
+          amount: computed_interest,
+          account: loan_application.interest_revenue_account
         )
       end
+
       def computed_interest
-        deductible_amount = loan_application.loan_amount * interest_config.rate
+        loan_application.loan_amount
+        interest_config.rate
         interest_prededuction.calculator.new(
-          interest_prededuction: interest_prededuction, 
+          interest_prededuction: interest_prededuction,
           loan_application: loan_application
         ).calculate
       end

@@ -1,7 +1,6 @@
 module AccountingModule
   module Entries
     class CancellationPolicy < ApplicationPolicy
-
       def new?
         user.accountant? || user.bookkeeper?
       end

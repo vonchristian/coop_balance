@@ -1,4 +1,4 @@
 module SavingsModule
   class PaymentClassifier
   end
-end 
+end

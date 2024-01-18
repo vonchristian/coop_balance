@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'Share capital accounting index page' do
-  before(:each) do
+  before do
     bookkeeper     = create(:bookkeeper)
     teller         = create(:teller)
     cash_account   = create(:asset)
@@ -12,15 +12,13 @@ describe 'Share capital accounting index page' do
     entry.credit_amounts.build(amount: 100, account: @share_capital.share_capital_equity_account)
     entry.save!
 
-    
     login_as(bookkeeper, scope: :user)
-
 
     visit share_capital_path(@share_capital)
     click_link "#{@share_capital.id}-accounting"
   end
 
-  it 'with valid attributes', js: true do
+  it 'with valid attributes', :js do
     expect(page).to have_content('Accounting Section')
     expect(page).to have_content(@share_capital.share_capital_equity_account_name)
   end

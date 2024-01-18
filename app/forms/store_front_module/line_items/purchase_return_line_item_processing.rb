@@ -12,6 +12,7 @@ module StoreFrontModule
                     :barcode,
                     :quantity,
                     :purchase_line_item_id
+
       validates :quantity, presence: true, numericality: true
       validate :quantity_is_less_than_or_equal_to_available_quantity?
       def process!
@@ -21,6 +22,7 @@ module StoreFrontModule
       end
 
       private
+
       def create_purchase_return_line_item
         find_cart.purchase_return_line_items.create(
           quantity: quantity,
@@ -29,15 +31,16 @@ module StoreFrontModule
           unit_of_measurement_id: unit_of_measurement_id,
           barcode: barcode,
           product: find_product,
-          purchase_line_item: find_purchase_line_item)
+          purchase_line_item: find_purchase_line_item
+        )
       end
 
       def find_cart
-        StoreFrontModule::Cart.find_by_id(cart_id)
+        StoreFrontModule::Cart.find_by(id: cart_id)
       end
 
       def find_product
-        StoreFrontModule::Product.find_by_id(product_id)
+        StoreFrontModule::Product.find_by(id: product_id)
       end
 
       def purchase_cost
@@ -49,7 +52,7 @@ module StoreFrontModule
       end
 
       def find_purchase_line_item
-        StoreFrontModule::LineItems::PurchaseLineItem.find_by_id(purchase_line_item_id)
+        StoreFrontModule::LineItems::PurchaseLineItem.find_by(id: purchase_line_item_id)
       end
 
       def converted_quantity
@@ -57,7 +60,7 @@ module StoreFrontModule
       end
 
       def find_unit_of_measurement
-        find_product.unit_of_measurements.find_by_id(unit_of_measurement_id)
+        find_product.unit_of_measurements.find_by(id: unit_of_measurement_id)
       end
 
       def available_quantity
@@ -68,9 +71,8 @@ module StoreFrontModule
         end
       end
 
-      private
       def quantity_is_less_than_or_equal_to_available_quantity?
-        errors[:quantity] << "exceeded available quantity" if converted_quantity.to_f > available_quantity
+        errors[:quantity] << 'exceeded available quantity' if converted_quantity.to_f > available_quantity
       end
     end
   end

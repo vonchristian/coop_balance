@@ -11,7 +11,5 @@ describe 'Time deposits index page' do
     save_and_open_page
     expect(page).to have_content(depositor.full_name.upcase)
     expect(page).to have_content(time_deposit.balance)
-
-    
   end
 end

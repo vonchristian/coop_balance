@@ -7,10 +7,10 @@ module AccountingModule
       validates :entry_id, :employee_id, :description, :account_number, presence: true
 
       def process!
-        if valid?
-          ApplicationRecord.transaction do
-            create_reversal_entry
-          end
+        return unless valid?
+
+        ApplicationRecord.transaction do
+          create_reversal_entry
         end
       end
 
@@ -19,12 +19,12 @@ module AccountingModule
       def create_reversal_entry
         reversal_voucher = find_entry.office.vouchers.build(
           account_number: account_number,
-          cooperative:    find_employee.cooperative,
-          preparer:       find_employee,
-          description:    description,
+          cooperative: find_employee.cooperative,
+          preparer: find_employee,
+          description: description,
           reference_number: reference_number,
-          date:           find_entry.entry_date,
-          payee:          find_entry.commercial_document
+          date: find_entry.entry_date,
+          payee: find_entry.commercial_document
         )
 
         find_entry.debit_amounts.each do |debit_amount|
@@ -45,7 +45,6 @@ module AccountingModule
       def find_entry
         find_employee.office.entries.find(entry_id)
       end
-
     end
   end
 end

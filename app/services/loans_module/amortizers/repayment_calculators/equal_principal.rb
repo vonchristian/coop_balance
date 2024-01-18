@@ -4,7 +4,7 @@ module LoansModule
       class EqualPrincipal
         attr_reader :loan_application, :schedule
 
-        def initialize(args={})
+        def initialize(args = {})
           @loan_application = args.fetch(:loan_application)
         end
 

@@ -1,13 +1,14 @@
 wb = xlsx_package.workbook
-wb.add_worksheet(name: "Cash Receipts") do |sheet|
-  sheet.add_row ["Cash Receipts"]
-  sheet.add_row ["Date Covered #{@from_date.strftime('%B %e, %Y')} - #{@to_date.strftime("%B %e, %Y")}"]
- sheet.add_row ["Entry Date","Payee", "Particular",  "Amount"]
+wb.add_worksheet(name: 'Cash Receipts') do |sheet|
+  sheet.add_row ['Cash Receipts']
+  sheet.add_row ["Date Covered #{@from_date.strftime('%B %e, %Y')} - #{@to_date.strftime('%B %e, %Y')}"]
+  sheet.add_row ['Entry Date', 'Payee', 'Particular', 'Amount']
   @entries_for_report.each do |entry|
     sheet.add_row [
-    entry.entry_date.strftime("%B %e, %Y"),
-    entry.commercial_document_name,
-    entry.description,
-    entry.debit_amounts.for_account(account_id: @cash_account.id).total]
+      entry.entry_date.strftime('%B %e, %Y'),
+      entry.commercial_document_name,
+      entry.description,
+      entry.debit_amounts.for_account(account_id: @cash_account.id).total
+    ]
   end
 end

@@ -1,14 +1,14 @@
 require 'rails_helper'
 
-feature "Create voucher" do 
-  before(:each) do
+describe 'Create voucher' do
+  before do
     user = create(:loan_officer)
-    login_as(user, :scope => :user)
+    login_as(user, scope: :user)
     loan = build(:loan)
     visit loan_url(loan)
-    click_link 'Create Voucher' 
+    click_link 'Create Voucher'
   end
 
-  scenario 'with valid attributes' do 
+  it 'with valid attributes' do
   end
 end

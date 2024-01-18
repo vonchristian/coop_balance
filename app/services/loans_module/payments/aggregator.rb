@@ -2,6 +2,7 @@ module LoansModule
   module Payments
     class Aggregator
       attr_reader :from_date, :to_date, :loan_products, :loan_product
+
       def initialize(args)
         @collections = args.fetch(:collections)
         @from_date = args[:from_date]
@@ -22,10 +23,10 @@ module LoansModule
       def total_interests
         if loan_product.present?
           loan_product.interest_revenue_account.credits_balance(from_date: from_date, to_date: to_date) -
-          accrued_income_account_for_loan_product
+            accrued_income_account_for_loan_product
         else
           loan_products.interest_revenue_accounts.credits_balance(from_date: from_date, to_date: to_date) -
-          loan_products.accrued_income_accounts.debits_balance(from_date: from_date, to_date: to_date)
+            loan_products.accrued_income_accounts.debits_balance(from_date: from_date, to_date: to_date)
         end
       end
 

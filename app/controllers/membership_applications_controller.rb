@@ -2,18 +2,19 @@ class MembershipApplicationsController < ApplicationController
   def new
     @membership = MembershipApplication.new
   end
+
   def create
     @membership = MembershipApplication.new(membership_params)
     if @membership.valid?
       @membership.register!
-      redirect_to member_url(@membership.find_member), notice: "Member information saved successfully"
+      redirect_to member_url(@membership.find_member), notice: 'Member information saved successfully'
     else
       render :new, status: :unprocessable_entity
     end
   end
 
-
   private
+
   def membership_params
     params.require(:membership_application).permit(
       :first_name,
@@ -34,6 +35,7 @@ class MembershipApplicationsController < ApplicationController
       :complete_address,
       :barangay_id,
       :municipality_id,
-      :province_id )
+      :province_id
+    )
   end
 end

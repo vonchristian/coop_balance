@@ -1,6 +1,6 @@
-module Programs 
-  module DateSetters 
+module Programs
+  module DateSetters
     class Quarterly
-    end 
-  end 
-end 
+    end
+  end
+end

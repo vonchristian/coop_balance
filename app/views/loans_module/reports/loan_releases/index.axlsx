@@ -1,14 +1,15 @@
 wb = xlsx_package.workbook
-wb.add_worksheet(name: "LOAN RELEASES") do |sheet|
-  sheet.add_row ["LOAN RELEASES"]
-  sheet.add_row ["Date Covered #{@from_date.strftime('%B %e, %Y')} - #{@to_date.strftime("%B %e, %Y")}"]
- sheet.add_row ["Disbursement Date","Borrower", "Loan Product",  "Loan Amount", "Net Proceed"]
+wb.add_worksheet(name: 'LOAN RELEASES') do |sheet|
+  sheet.add_row ['LOAN RELEASES']
+  sheet.add_row ["Date Covered #{@from_date.strftime('%B %e, %Y')} - #{@to_date.strftime('%B %e, %Y')}"]
+  sheet.add_row ['Disbursement Date', 'Borrower', 'Loan Product', 'Loan Amount', 'Net Proceed']
   @loans.each do |loan|
     sheet.add_row [
-    loan.approved_at,
-    loan.borrower_name,
-    loan.loan_product_name,
-    loan.loan_amount,
-    loan.net_proceed]
+      loan.approved_at,
+      loan.borrower_name,
+      loan.loan_product_name,
+      loan.loan_amount,
+      loan.net_proceed
+    ]
   end
 end

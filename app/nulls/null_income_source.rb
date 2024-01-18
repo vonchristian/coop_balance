@@ -1,8 +1,9 @@
-class NullIncomeSource 
-  def designation 
+class NullIncomeSource
+  def designation
     'No Designation'
-  end 
-  def monthly_income 
+  end
+
+  def monthly_income
     0
-  end 
-end 
+  end
+end

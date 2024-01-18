@@ -1,7 +1,7 @@
 require 'rails_helper'
 include ChosenSelect
 describe 'New share capital withdraw' do
-  before(:each) do
+  before do
     teller = create(:teller)
     cash = create(:asset, name: 'Cash')
     teller.cash_accounts << cash
@@ -17,10 +17,9 @@ describe 'New share capital withdraw' do
     visit share_capital_path(@share_capital)
     click_link "#{@share_capital.id}-settings"
     click_link 'Withdraw Capital'
-
   end
 
-  it 'with valid attributes', js: true do
+  it 'with valid attributes', :js do
     fill_in 'Date', with: Date.current
     fill_in 'Reference number', with: 'test description'
     fill_in 'Description', with: 'test'
@@ -34,5 +33,4 @@ describe 'New share capital withdraw' do
 
     puts @share_capital.balance
   end
-
-  end
+end

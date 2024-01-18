@@ -1,33 +1,33 @@
 module SavingsAccounts
-  class MultipleLineItemsController < ApplicationController 
-    def new 
+  class MultipleLineItemsController < ApplicationController
+    def new
       @savings_account = current_office.savings.find(params[:savings_account_id])
-      @line_item       = SavingsAccounts::MultiplePayment.new 
-    end 
+      @line_item       = SavingsAccounts::MultiplePayment.new
+    end
 
-    def create 
+    def create
       @savings_account = current_office.savings.find(params[:savings_account_id])
       @line_item       = SavingsAccounts::MultiplePayment.new(payment_params)
       if @line_item.valid?
         @line_item.process!
         redirect_to new_savings_account_multiple_transaction_url, notice: 'added successfully.'
-      else 
+      else
         render :new, status: :unprocessable_entity
-      end 
-    end 
+      end
+    end
 
-    def destroy 
+    def destroy
       @savings_account = current_office.savings.find(params[:savings_account_id])
       @amount          = current_cart.voucher_amounts.find(params[:id])
-      @amount.destroy 
+      @amount.destroy
       redirect_to new_savings_account_multiple_transaction_url, notice: 'Removed successfully'
-    end 
+    end
 
+    private
 
-    private 
     def payment_params
-      params.require(:savings_accounts_multiple_payment).
-      permit(:savings_account_id, :amount, :employee_id, :cart_id)
-    end 
-  end 
-end 
+      params.require(:savings_accounts_multiple_payment)
+            .permit(:savings_account_id, :amount, :employee_id, :cart_id)
+    end
+  end
+end

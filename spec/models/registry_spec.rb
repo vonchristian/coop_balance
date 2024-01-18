@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe Registry, type: :model do
   describe 'associations' do
-    it { is_expected.to belong_to :cooperative }
-    it { is_expected.to belong_to(:store_front).optional }
-    it { is_expected.to belong_to :office }
-    it { is_expected.to belong_to :employee }
+    it { should belong_to :cooperative }
+    it { should belong_to(:store_front).optional }
+    it { should belong_to :office }
+    it { should belong_to :employee }
   end
 end

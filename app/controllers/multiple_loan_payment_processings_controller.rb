@@ -10,8 +10,9 @@ class MultipleLoanPaymentProcessingsController < ApplicationController
   end
 
   private
+
   def payment_params
-    params.require(:loans_multiple_payment_processing).
-    permit(:cart_id, :reference_number, :date, :description, :account_number, :employee_id, :cash_account_id)
+    params.require(:loans_multiple_payment_processing)
+          .permit(:cart_id, :reference_number, :date, :description, :account_number, :employee_id, :cash_account_id)
   end
 end

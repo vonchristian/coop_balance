@@ -1,6 +1,5 @@
 module AccountingModule
-  class ScheduledEntriesController  < ApplicationController
-    def index
-    end
+  class ScheduledEntriesController < ApplicationController
+    def index; end
   end
-end 
+end

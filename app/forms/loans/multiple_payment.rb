@@ -1,4 +1,3 @@
-
 module Loans
   class MultiplePayment
     include ActiveModel::Model
@@ -10,25 +9,25 @@ module Loans
                   :employee_id,
                   :cash_account_id,
                   :cart_id
+
     validates :principal_amount, :interest_amount, :penalty_amount, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
     def process!
-      if valid?
-        ActiveRecord::Base.transaction do
-          create_cart_line_item
-        end
+      return unless valid?
+
+      ActiveRecord::Base.transaction do
+        create_cart_line_item
       end
     end
-
 
     def find_loan
       find_office.loans.find(loan_id)
     end
 
     def schedule_id
-      if amortization_schedule_id.present?
-        amortization_schedule_id
-      end
+      return if amortization_schedule_id.blank?
+
+      amortization_schedule_id
     end
 
     def find_employee
@@ -52,40 +51,40 @@ module Loans
     end
 
     def create_interest_revenue_amount
-      if interest_amount.to_f > 0
-        find_cart.voucher_amounts.credit.create!(
-        amount:              BigDecimal(interest_amount),
-        account:             find_loan.interest_revenue_account,
-        recorder:            find_employee,
-        cooperative:         find_employee.cooperative)
-      end
+      return unless interest_amount.to_f.positive?
+
+      find_cart.voucher_amounts.credit.create!(
+        amount: BigDecimal(interest_amount),
+        account: find_loan.interest_revenue_account,
+        recorder: find_employee,
+        cooperative: find_employee.cooperative
+      )
     end
 
     def create_penalty_amount
-      if penalty_amount.to_f > 0
-        find_cart.voucher_amounts.credit.create!(
-        amount:              BigDecimal(penalty_amount),
-        account:             find_loan.penalty_revenue_account,
-        recorder:    find_employee,
-        cooperative: find_employee.cooperative)
-      end
+      return unless penalty_amount.to_f.positive?
+
+      find_cart.voucher_amounts.credit.create!(
+        amount: BigDecimal(penalty_amount),
+        account: find_loan.penalty_revenue_account,
+        recorder: find_employee,
+        cooperative: find_employee.cooperative
+      )
     end
 
     def create_principal_amount
-      if principal_amount.to_f > 0
-        find_cart.voucher_amounts.credit.create!(
-        amount:      BigDecimal(principal_amount),
-        account:     find_loan.receivable_account,
-        recorder:    find_employee,
-        cooperative: find_employee.cooperative)
-      end
-    end
+      return unless principal_amount.to_f.positive?
 
+      find_cart.voucher_amounts.credit.create!(
+        amount: BigDecimal(principal_amount),
+        account: find_loan.receivable_account,
+        recorder: find_employee,
+        cooperative: find_employee.cooperative
+      )
+    end
 
     def principal_amount_not_more_than_balance
-      errors[:principal_amount] << "Must be less than or equal to balance." if principal_amount.to_f > find_loan.balance
+      errors[:principal_amount] << 'Must be less than or equal to balance.' if principal_amount.to_f > find_loan.balance
     end
-
-
   end
 end

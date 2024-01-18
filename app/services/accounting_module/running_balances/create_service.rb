@@ -1,38 +1,38 @@
-# frozen_string_literal: true 
+# frozen_string_literal: true
 
 module AccountingModule
   module RunningBalances
-    class CreateService < ActiveInteraction::Base 
+    class CreateService < ActiveInteraction::Base
       object :entry, class: 'AccountingModule::Entry'
 
-      def execute 
-        entry.accounts.includes(:ledger, :amounts).each do |account|
+      def execute
+        entry.accounts.includes(:ledger, :amounts).find_each do |account|
           create_account_running_balance(account)
           create_ledger_running_balance(account.ledger)
         end
-      end 
+      end
 
-      private 
+      private
 
       def create_account_running_balance(account)
         account.running_balances.first_or_create(
-          entry: entry, 
+          entry: entry,
           entry_date: entry.entry_date,
-          entry_time: entry.entry_time, 
+          entry_time: entry.entry_time,
           amount: account.balance(to_date: entry.entry_date, to_time: entry.entry_time)
         )
-      end 
+      end
 
       def create_ledger_running_balance(ledger)
-        return if ledger.blank? 
-        
+        return if ledger.blank?
+
         ledger.running_balances.first_or_create(
-          entry: entry, 
+          entry: entry,
           entry_date: entry.entry_date,
-          entry_time: entry.entry_time, 
+          entry_time: entry.entry_time,
           amount: ledger.balance(to_date: entry.entry_date, to_time: entry.entry_time)
         )
-      end 
-    end 
-  end 
-end 
+      end
+    end
+  end
+end

@@ -8,7 +8,7 @@ module LoansModule
         if params[:search].present?
           @pagy, @savings = pagy(current_office.savings.text_search(params[:search]))
         else
-          @pagy, @savings          = pagy(current_office.savings.where.not(id: @borrower_savings.ids))
+          @pagy, @savings = pagy(current_office.savings.where.not(id: @borrower_savings.ids))
         end
       end
     end

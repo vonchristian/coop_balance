@@ -13,22 +13,22 @@ module LoansModule
         update_loan_amount
         create_amortization_schedule
         update_interests
-
       end
 
       private
+
       def update_loan_amount
         LoansModule::LoanApplicationAmountUpdater.new(loan_application: loan_application).update_amount!
       end
 
       def create_amortization_schedule
-        loan_product.
-        amortizer.
-        new(loan_application: loan_application).create_schedule!
+        loan_product
+          .amortizer
+          .new(loan_application: loan_application).create_schedule!
       end
 
       def create_charges
-      LoansModule::LoanApplicationChargeSetter.new(loan_application: loan_application).create_charges!
+        LoansModule::LoanApplicationChargeSetter.new(loan_application: loan_application).create_charges!
       end
 
       def update_interests

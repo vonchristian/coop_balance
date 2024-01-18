@@ -3,4 +3,4 @@ module StoreFrontModule
     class StockCardPdf < Prawn::Document
     end
   end
-end 
+end

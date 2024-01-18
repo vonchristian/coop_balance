@@ -20,27 +20,31 @@ module LoansModule
       end
 
       private
+
       def create_entry
         entry = AccountingModule::Entry.new(
-        cooperative_service: voucher.cooperative_service,
-        office:              voucher.office,
-        cooperative:         find_cooperative,
-        commercial_document: voucher.payee,
-        description:         voucher.description,
-        recorder:            voucher.preparer,
-        reference_number:    voucher.number,
-        entry_date:          voucher.date)
+          cooperative_service: voucher.cooperative_service,
+          office: voucher.office,
+          cooperative: find_cooperative,
+          commercial_document: voucher.payee,
+          description: voucher.description,
+          recorder: voucher.preparer,
+          reference_number: voucher.number,
+          entry_date: voucher.date
+        )
 
         voucher.voucher_amounts.debit.each do |amount|
           entry.debit_amounts.build(
             account: amount.account,
-            amount: amount.amount)
+            amount: amount.amount
+          )
         end
 
         voucher.voucher_amounts.credit.each do |amount|
           entry.credit_amounts.build(
             account: amount.account,
-            amount: amount.amount)
+            amount: amount.amount
+          )
         end
         entry.save!
         voucher.update(accounting_entry: entry)

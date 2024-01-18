@@ -1,12 +1,11 @@
 module AccountingModule
-  module ScheduledEntries 
+  module ScheduledEntries
     class BookClosingsController < ApplicationController
-      def index 
-      end 
-      
-      def new 
-        @book_closing = AccountingModule::BookClosing.new 
-      end 
+      def index; end
+
+      def new
+        @book_closing = AccountingModule::BookClosing.new
+      end
 
       def create
         @book_closing = AccountingModule::BookClosing.new(book_closing_params)
@@ -14,18 +13,17 @@ module AccountingModule
           @book_closing.close_book!
 
           redirect_to accounting_module_scheduled_entries_book_closing_confirmation_url(id: @book_closing.find_voucher.id), notice: 'Voucher created successfully'
-        else 
+        else
           render :new, status: :unprocessable_entity
-        end 
-      end 
+        end
+      end
 
+      private
 
-      private 
-      def book_closing_params 
-        params.require(:accounting_module_book_closing).
-        permit(:date, :account_number, :employee_id)
-
-      end 
-    end 
-  end 
-end 
+      def book_closing_params
+        params.require(:accounting_module_book_closing)
+              .permit(:date, :account_number, :employee_id)
+      end
+    end
+  end
+end

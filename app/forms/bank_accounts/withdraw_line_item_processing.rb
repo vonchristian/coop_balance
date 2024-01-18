@@ -1,9 +1,9 @@
-
 module BankAccounts
   class WithdrawLineItemProcessing
     include ActiveModel::Model
     attr_accessor :bank_account_id, :employee_id, :amount, :description,
-    :reference_number, :account_number, :date, :offline_receipt, :cash_account_id, :account_number, :payee_id
+                  :reference_number, :account_number, :date, :offline_receipt, :cash_account_id, :account_number, :payee_id
+
     validates :amount, presence: true, numericality: { greater_than: 0.01 }
     validates :reference_number, presence: true
 
@@ -20,11 +20,13 @@ module BankAccounts
     def find_bank_account
       BankAccount.find(bank_account_id)
     end
+
     def find_employee
       User.find(employee_id)
     end
 
     private
+
     def create_voucher
       voucher = Voucher.new(
         payee: find_payee,
@@ -34,13 +36,16 @@ module BankAccounts
         description: description,
         reference_number: reference_number,
         account_number: account_number,
-        date: date)
+        date: date
+      )
       voucher.voucher_amounts.debit.build(
         account: debit_account,
-        amount: amount)
+        amount: amount
+      )
       voucher.voucher_amounts.credit.build(
         account: credit_account,
-        amount: amount)
+        amount: amount
+      )
       voucher.save!
     end
 

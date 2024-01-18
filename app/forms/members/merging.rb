@@ -8,7 +8,9 @@ module Members
         merge_accounts
       end
     end
+
     private
+
     def merge_accounts
       find_cart.members.each do |member|
         find_current_member.savings        << member.savings
@@ -22,6 +24,7 @@ module Members
     def find_cart
       StoreFrontModule::Cart.find(cart_id)
     end
+
     def find_current_member
       Member.find(current_member_id)
     end

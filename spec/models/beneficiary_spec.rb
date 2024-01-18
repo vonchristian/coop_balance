@@ -2,12 +2,12 @@ require 'rails_helper'
 
 describe Beneficiary do
   describe 'associations' do
-    it { is_expected.to belong_to :member }
-    it { is_expected.to belong_to :cooperative }
-
+    it { should belong_to :member }
+    it { should belong_to :cooperative }
   end
+
   describe 'validations' do
-    it { is_expected.to validate_presence_of :full_name }
-    it { is_expected.to validate_presence_of :relationship }
+    it { should validate_presence_of :full_name }
+    it { should validate_presence_of :relationship }
   end
 end

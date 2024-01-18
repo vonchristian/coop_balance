@@ -1,8 +1,8 @@
 class TimeDepositApplicationProcessing
   include ActiveModel::Model
   attr_accessor :time_deposit_product_id, :depositor_id, :depositor_type,
-  :cash_account_id, :reference_number, :date, :amount, :description, :number_of_days,
-  :employee_id, :voucher_account_number, :account_number, :beneficiaries
+                :cash_account_id, :reference_number, :date, :amount, :description, :number_of_days,
+                :employee_id, :voucher_account_number, :account_number, :beneficiaries
 
   validates :reference_number, :beneficiaries, :time_deposit_product_id, :amount, :date, :description, :number_of_days, :cash_account_id, presence: true
   validates :amount, :number_of_days, numericality: true
@@ -16,22 +16,24 @@ class TimeDepositApplicationProcessing
   def find_voucher
     Voucher.find_by(account_number: voucher_account_number)
   end
+
   def find_time_deposit_application
     find_office.time_deposit_applications.find_by(account_number: account_number)
   end
 
   private
+
   def create_time_deposit_application
     time_deposit_application = find_office.time_deposit_applications.build(
       time_deposit_product_id: time_deposit_product_id,
-      depositor_id:            depositor_id,
-      depositor_type:          depositor_type,
-      number_of_days:          number_of_days,
-      date_deposited:          date,
-      account_number:          account_number,
-      amount:                  amount,
-      cooperative:             find_employee.cooperative,
-      beneficiaries:           beneficiaries
+      depositor_id: depositor_id,
+      depositor_type: depositor_type,
+      number_of_days: number_of_days,
+      date_deposited: date,
+      account_number: account_number,
+      amount: amount,
+      cooperative: find_employee.cooperative,
+      beneficiaries: beneficiaries
     )
     create_accounts(time_deposit_application)
     time_deposit_application.save!
@@ -55,20 +57,22 @@ class TimeDepositApplicationProcessing
       date: date
     )
     voucher.voucher_amounts.debit.build(
-      cooperative:         find_employee.cooperative,
-      account:             cash_account,
-      amount:              amount
+      cooperative: find_employee.cooperative,
+      account: cash_account,
+      amount: amount
     )
     voucher.voucher_amounts.credit.build(
-      cooperative:         find_employee.cooperative,
-      account:             time_deposit_application.liability_account,
-      amount:              amount)
+      cooperative: find_employee.cooperative,
+      account: time_deposit_application.liability_account,
+      amount: amount
+    )
     voucher.save!
   end
 
   def credit_account
     find_time_deposit_product.account
   end
+
   def cash_account
     AccountingModule::Account.find(cash_account_id)
   end
@@ -77,9 +81,9 @@ class TimeDepositApplicationProcessing
     User.find(employee_id)
   end
 
-  def find_office 
-    find_employee.office 
-  end 
+  def find_office
+    find_employee.office
+  end
 
   def find_time_deposit_product
     CoopServicesModule::TimeDepositProduct.find(time_deposit_product_id)

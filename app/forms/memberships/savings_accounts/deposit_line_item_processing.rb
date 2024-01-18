@@ -3,6 +3,7 @@ module Memberships
     class DepositLineItemProcessing
       include ActiveModel::Model
       attr_accessor :saving_id, :employee_id, :amount, :or_number, :account_number, :description, :date, :offline_receipt, :cash_account_id
+
       validates :amount, presence: true, numericality: { greater_than: 0.01 }
       validates :or_number, :date, :or_number, :description, :cash_account_id, presence: true
 
@@ -25,24 +26,28 @@ module Memberships
       end
 
       private
+
       def create_deposit_voucher
         voucher = Voucher.new(
-          payee:            find_saving.depositor,
-          office:           find_employee.office,
-          cooperative:      find_employee.cooperative,
-          preparer:         find_employee,
-          description:      description,
+          payee: find_saving.depositor,
+          office: find_employee.office,
+          cooperative: find_employee.cooperative,
+          preparer: find_employee,
+          description: description,
           reference_number: or_number,
-          account_number:   account_number,
-          date:             date)
+          account_number: account_number,
+          date: date
+        )
         voucher.voucher_amounts.debit.build(
           cooperative: find_employee.cooperative,
-          account:     debit_account,
-          amount:      amount)
+          account: debit_account,
+          amount: amount
+        )
         voucher.voucher_amounts.credit.build(
           cooperative: find_employee.cooperative,
-          account:     credit_account,
-          amount:      amount)
+          account: credit_account,
+          amount: amount
+        )
         voucher.save!
       end
 

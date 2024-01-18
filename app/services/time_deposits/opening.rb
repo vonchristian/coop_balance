@@ -16,31 +16,31 @@ module TimeDeposits
     end
 
     private
+
     def create_time_deposit
       time_deposit = depositor.time_deposits.build(
-        depositor_name:       depositor.name,
-        cooperative:          employee.cooperative,
-        office:               employee.office,
-        account_number:       time_deposit_application.account_number,
-        date_deposited:       time_deposit_application.date_deposited,
+        depositor_name: depositor.name,
+        cooperative: employee.cooperative,
+        office: employee.office,
+        account_number: time_deposit_application.account_number,
+        date_deposited: time_deposit_application.date_deposited,
         time_deposit_product: time_deposit_application.time_deposit_product,
-        certificate_number:   set_certificate_number,
-        beneficiaries:        time_deposit_application.beneficiaries,
-        liability_account:    time_deposit_application.liability_account
+        certificate_number: set_certificate_number,
+        beneficiaries: time_deposit_application.beneficiaries,
+        liability_account: time_deposit_application.liability_account
       )
       create_accounts(time_deposit)
       time_deposit.save!
       create_term(time_deposit)
       create_accountable_accounts(time_deposit)
-
     end
 
     def create_term(time_deposit)
       Term.create!(
-        termable:         time_deposit,
-        number_of_days:   time_deposit_application.number_of_days,
+        termable: time_deposit,
+        number_of_days: time_deposit_application.number_of_days,
         effectivity_date: voucher.date,
-        maturity_date:    (voucher.date.to_date + (time_deposit_application.number_of_days.days))
+        maturity_date: (voucher.date.to_date + time_deposit_application.number_of_days.days)
       )
     end
 
@@ -51,11 +51,10 @@ module TimeDeposits
     def set_certificate_number
       TimeDeposits::CertificateNumberGenerator.new(time_deposit_application: time_deposit_application).generate!
     end
-    
+
     def create_accountable_accounts(time_deposit)
       time_deposit.accounts << time_deposit.liability_account
       time_deposit.accounts << time_deposit.interest_expense_account
-    end 
-
+    end
   end
 end

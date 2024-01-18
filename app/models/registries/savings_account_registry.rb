@@ -5,69 +5,75 @@ module Registries
       savings_spreadsheet = Roo::Spreadsheet.open(spreadsheet.path)
       header = savings_spreadsheet.row(2)
       (3..savings_spreadsheet.last_row).each do |i|
-        row = Hash[[header, savings_spreadsheet.row(i)].transpose]
+        row = [header, savings_spreadsheet.row(i)].transpose.to_h
         depositor = find_depositor(row)
         upload_savings(depositor, row)
       end
     end
+
     def upload_savings(depositor, row)
-      unless row["Balance"].to_f.zero? || row["Balance"].nil?
-        savings = find_cooperative.savings.create!(
+      return if row['Balance'].to_f.zero? || row['Balance'].nil?
+
+      savings = find_cooperative.savings.create!(
         depositor: find_or_create_member_depositor(row),
-        office: self.office,
+        office: office,
         saving_product: find_saving_product(row),
         last_transaction_date: cut_off_date(row),
-        account_number: SecureRandom.uuid)
-        create_entry(depositor, savings, row)
-      end
+        account_number: SecureRandom.uuid
+      )
+      create_entry(depositor, savings, row)
     end
+
     def create_entry(depositor, savings, row)
       AccountingModule::Entry.create!(
         commercial_document: depositor,
-        office: self.office,
+        office: office,
         cooperative: find_cooperative,
-        recorder: self.employee,
+        recorder: employee,
         description: "Forwarded balance of savings deposit as of #{cut_off_date(row).strftime('%B %e, %Y')}",
         entry_date: cut_off_date(row),
         debit_amounts_attributes: [
           account: debit_account,
-          amount: row["Balance"].to_f,
-          commercial_document: savings],
+          amount: row['Balance'].to_f,
+          commercial_document: savings
+        ],
         credit_amounts_attributes: [
           account: credit_account(row),
-          amount: row["Balance"].to_f,
-          commercial_document: savings])
+          amount: row['Balance'].to_f,
+          commercial_document: savings
+        ]
+      )
     end
 
     def find_saving_product(row)
-      CoopServicesModule::SavingProduct.find_by(name: row["Saving Product"])
+      CoopServicesModule::SavingProduct.find_by(name: row['Saving Product'])
     end
 
     def find_cooperative
-      self.employee.cooperative
+      employee.cooperative
     end
 
     def find_depositor(row)
-      if row["Depositor Type"] == "Member"
+      if row['Depositor Type'] == 'Member'
         find_or_create_member_depositor(row)
-      elsif row["Depositor Type"] == "Organization"
-        find_cooperative.organizations.find_or_create_by(name: TextNormalizer.new(text: row["Last Name"]).propercase)
+      elsif row['Depositor Type'] == 'Organization'
+        find_cooperative.organizations.find_or_create_by(name: TextNormalizer.new(text: row['Last Name']).propercase)
       end
     end
 
     def find_or_create_member_depositor(row)
       old_member = Member.find_by(
-        last_name:   row["Last Name"],
-        first_name:  row["First Name"],
-        middle_name: row["Middle Name"]
+        last_name: row['Last Name'],
+        first_name: row['First Name'],
+        middle_name: row['Middle Name']
       )
       if old_member.present?
         old_member
       else
         new_member = Member.create!(
-          last_name:   row["Last Name"],
-          middle_name: row["Middle Name"],
-          first_name:  row["First Name"]
+          last_name: row['Last Name'],
+          middle_name: row['Middle Name'],
+          first_name: row['First Name']
         )
         new_member.memberships.create!(cooperative: find_cooperative, account_number: SecureRandom.uuid)
         new_member
@@ -75,7 +81,7 @@ module Registries
     end
 
     def debit_account
-      AccountingModule::Account.find_by(name: "Temporary Savings Deposit Account")
+      AccountingModule::Account.find_by(name: 'Temporary Savings Deposit Account')
     end
 
     def credit_account(row)
@@ -83,7 +89,7 @@ module Registries
     end
 
     def cut_off_date(row)
-      Date.parse(row["Cut Off Date"].to_s)
+      Date.parse(row['Cut Off Date'].to_s)
     end
   end
 end

@@ -17,11 +17,12 @@ module StoreFrontModule
         @sales_return_line_item = StoreFrontModule::LineItems::SalesReturnLineItemProcessing.new(line_item_params)
         if @sales_return_line_item.valid?
           @sales_return_line_item.process!
-          redirect_to new_store_front_module_sales_return_line_item_url, notice: "Added to cart."
+          redirect_to new_store_front_module_sales_return_line_item_url, notice: 'Added to cart.'
         else
-          redirect_to new_store_front_module_sales_return_line_item_url, alert: "Error. Exceeded sold quantity"
+          redirect_to new_store_front_module_sales_return_line_item_url, alert: 'Error. Exceeded sold quantity'
         end
       end
+
       def destroy
         @cart = current_cart
         @line_item = StoreFrontModule::LineItems::SalesReturnLineItem.find(params[:id])
@@ -30,9 +31,10 @@ module StoreFrontModule
       end
 
       private
+
       def line_item_params
-        params.require(:store_front_module_line_items_sales_return_line_item_processing).
-        permit(:customer_id, :unit_of_measurement_id, :quantity, :cart_id, :product_id, :purchase_line_item_id)
+        params.require(:store_front_module_line_items_sales_return_line_item_processing)
+              .permit(:customer_id, :unit_of_measurement_id, :quantity, :cart_id, :product_id, :purchase_line_item_id)
       end
     end
   end

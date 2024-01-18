@@ -12,16 +12,17 @@ module TreasuryModule
           format.xlsx
           format.pdf do
             pdf = AccountingModule::CashBooks::CashDisbursementsPdf.new(
-              from_date:    @from_date,
-              to_date:      @to_date,
-              entries:      @entries_for_report,
+              from_date: @from_date,
+              to_date: @to_date,
+              entries: @entries_for_report,
               organization: @organization,
-              employee:     current_user,
-              cooperative:  current_cooperative,
-              title:        "Cash Receipts",
-              view_context: view_context)
-            send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Entries report.pdf"
-            pdf=nil
+              employee: current_user,
+              cooperative: current_cooperative,
+              title: 'Cash Receipts',
+              view_context: view_context
+            )
+            send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'Entries report.pdf'
+            nil
           end
         end
       end

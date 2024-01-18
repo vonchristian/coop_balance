@@ -1,4 +1,3 @@
-
 module Employees
   class CashTransferProcessing
     include ActiveModel::Model
@@ -11,8 +10,9 @@ module Employees
     end
 
     private
+
     def save_cash_transfer
-      entry = AccountingModule::Entry.create(
+      AccountingModule::Entry.create(
         entry_date: date,
         office: find_employee.office,
         cooperative: find_employee.cooperative,
@@ -29,18 +29,20 @@ module Employees
           account: find_transferred_to.cash_on_hand_account
         ]
       )
-
     end
 
     def find_employee
-      User.find_by_id(employee_id)
+      User.find_by(id: employee_id)
     end
+
     def find_transferred_to
-      User.find_by_id(transferred_to_id)
+      User.find_by(id: transferred_to_id)
     end
+
     def interest_income_account
       find_loan.loan_product.interest_revenue_account
     end
+
     def interest_receivable_account
       find_loan.loan_product.interest_receivable_account
     end

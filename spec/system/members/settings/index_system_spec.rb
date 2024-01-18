@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-describe 'Member settings index page' do 
-  it 'with valid attributes' do 
+describe 'Member settings index page' do
+  it 'with valid attributes' do
     member  = create(:member)
     manager = create(:general_manager)
     create(:membership, cooperator: member, cooperative: manager.cooperative)
@@ -11,5 +11,4 @@ describe 'Member settings index page' do
 
     expect(page).to have_content 'Member Settings'
   end
-
-end 
+end

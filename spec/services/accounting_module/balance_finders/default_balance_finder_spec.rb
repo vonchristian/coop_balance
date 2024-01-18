@@ -9,7 +9,7 @@ module AccountingModule
         revenue     = create(:revenue)
         cooperative.accounts << asset
         cooperative.accounts << revenue
-        entry       = build(:entry, cooperative: cooperative)
+        entry = build(:entry, cooperative: cooperative)
         entry.debit_amounts.build(amount: 100, account: asset)
         entry.credit_amounts.build(amount: 100, account: revenue)
         entry.save!
@@ -24,7 +24,7 @@ module AccountingModule
         entry.credit_amounts.build(amount: 100, account: revenue)
         entry.save!
 
-        expect(described_class.new(amounts: AccountingModule::Amount.all).compute).to eql 200
+        expect(described_class.new(amounts: AccountingModule::Amount.all).compute).to be 200
       end
     end
   end

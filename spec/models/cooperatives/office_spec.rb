@@ -3,62 +3,61 @@ require 'rails_helper'
 module Cooperatives
   describe Office do
     describe 'associations' do
-      it { is_expected.to belong_to :cooperative }
-      it { is_expected.to have_many :loans }
-      it { is_expected.to have_many :amortization_schedules }
-      it { is_expected.to have_many :savings }
-      it { is_expected.to have_many :time_deposits }
-      it { is_expected.to have_many :share_capitals }
-      it { is_expected.to have_many :entries }
-      it { is_expected.to have_many :bank_accounts }
-      it { is_expected.to have_many :loan_applications }
-      it { is_expected.to have_many :vouchers }
-      it { is_expected.to have_many :accountable_accounts }
-      it { is_expected.to have_many :accounts }
-      it { is_expected.to have_many :office_saving_products }
-      it { is_expected.to have_many :saving_products }
-      it { is_expected.to have_many :office_share_capital_products }
-      it { is_expected.to have_many :share_capital_products }
-      it { is_expected.to have_many :office_loan_products }
-      it { is_expected.to have_many :office_time_deposit_products }
-      it { is_expected.to have_many :time_deposit_products }
-      it { is_expected.to have_many :loan_products }
-      it { is_expected.to have_many :office_programs }
-      it { is_expected.to have_many :programs }
-      it { is_expected.to have_many :office_time_deposit_products }
-      it { is_expected.to have_many :time_deposit_products }
-      it { is_expected.to have_many :loan_aging_groups }
-      it { is_expected.to have_many :office_loan_product_aging_groups }
-      it { is_expected.to have_many :level_two_account_categories }
-      it { is_expected.to have_many :level_three_account_categories }
-      it { is_expected.to have_many :time_deposit_applications }
-      it { is_expected.to have_many :share_capital_applications }
-      it { is_expected.to have_one :net_income_config }
+      it { should belong_to :cooperative }
+      it { should have_many :loans }
+      it { should have_many :amortization_schedules }
+      it { should have_many :savings }
+      it { should have_many :time_deposits }
+      it { should have_many :share_capitals }
+      it { should have_many :entries }
+      it { should have_many :bank_accounts }
+      it { should have_many :loan_applications }
+      it { should have_many :vouchers }
+      it { should have_many :accountable_accounts }
+      it { should have_many :accounts }
+      it { should have_many :office_saving_products }
+      it { should have_many :saving_products }
+      it { should have_many :office_share_capital_products }
+      it { should have_many :share_capital_products }
+      it { should have_many :office_loan_products }
+      it { should have_many :office_time_deposit_products }
+      it { should have_many :time_deposit_products }
+      it { should have_many :loan_products }
+      it { should have_many :office_programs }
+      it { should have_many :programs }
+      it { should have_many :office_time_deposit_products }
+      it { should have_many :time_deposit_products }
+      it { should have_many :loan_aging_groups }
+      it { should have_many :office_loan_product_aging_groups }
+      it { should have_many :level_two_account_categories }
+      it { should have_many :level_three_account_categories }
+      it { should have_many :time_deposit_applications }
+      it { should have_many :share_capital_applications }
+      it { should have_one :net_income_config }
     end
 
     describe 'validations' do
-      it { is_expected.to validate_presence_of :name }
-      it { is_expected.to validate_presence_of :contact_number }
-      it { is_expected.to validate_presence_of :address }
-      it { is_expected.to validate_uniqueness_of :name }
+      it { should validate_presence_of :name }
+      it { should validate_presence_of :contact_number }
+      it { should validate_presence_of :address }
+      it { should validate_uniqueness_of :name }
     end
 
     describe 'delegations' do
-      it { is_expected.to delegate_method(:net_surplus_account).to(:net_income_config) }
-      it { is_expected.to delegate_method(:net_loss_account).to(:net_income_config) }
-      it { is_expected.to delegate_method(:total_revenue_account).to(:net_income_config) }
-      it { is_expected.to delegate_method(:total_expense_account).to(:net_income_config) }
-
+      it { should delegate_method(:net_surplus_account).to(:net_income_config) }
+      it { should delegate_method(:net_loss_account).to(:net_income_config) }
+      it { should delegate_method(:total_revenue_account).to(:net_income_config) }
+      it { should delegate_method(:total_expense_account).to(:net_income_config) }
     end
 
-    it ".types" do
-      expect(described_class.types).to eql ["Cooperatives::Offices::MainOffice", "Cooperatives::Offices::SatelliteOffice", "Cooperatives::Offices::BranchOffice"]
+    it '.types' do
+      expect(described_class.types).to eql ['Cooperatives::Offices::MainOffice', 'Cooperatives::Offices::SatelliteOffice', 'Cooperatives::Offices::BranchOffice']
     end
 
-    it "#normalized_type" do
-      office = build(:office, type: "Cooperatives::Offices::MainOffice")
+    it '#normalized_type' do
+      office = build(:office, type: 'Cooperatives::Offices::MainOffice')
 
-      expect(office.normalized_type).to eql "MainOffice"
+      expect(office.normalized_type).to eql 'MainOffice'
     end
   end
 end

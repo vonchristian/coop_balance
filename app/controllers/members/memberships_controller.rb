@@ -12,8 +12,8 @@ module Members
       @member = current_cooperative.member_memberships.find(params[:member_id])
       @membership = @member.memberships.create(membership_params)
       respond_modal_with @membership,
-        location: member_settings_url(@member),
-        notice: "Membership saved successfully."
+                         location: member_settings_url(@member),
+                         notice: 'Membership saved successfully.'
     end
 
     def edit
@@ -27,11 +27,12 @@ module Members
       @membership = current_cooperative.memberships.find(params[:id])
       @membership.update(membership_params)
       respond_modal_with @membership,
-        location: member_settings_url(@member),
-        notice: "Membership updated successfully."
+                         location: member_settings_url(@member),
+                         notice: 'Membership updated successfully.'
     end
 
     private
+
     def membership_params
       params.require(:cooperatives_membership).permit(:membership_type, :account_number, :cooperative_id, :membership_date)
     end

@@ -4,7 +4,7 @@ module LoansModule
       class EqualPayment
         attr_reader :loan_product, :loan_application, :amortizer, :repayment_calculator
 
-        def initialize(args={})
+        def initialize(args = {})
           @loan_application = args.fetch(:loan_application)
           @loan_product     = @loan_application.loan_product
           @amortizer        = @loan_product.amortizer
@@ -19,28 +19,29 @@ module LoansModule
         end
 
         private
+
         def create_first_schedule
           loan_application.amortization_schedules.create!(
-            office:          loan_application.office,
-            date:            loan_application.first_amortization_date,
-            interest:        first_interest,
-            principal:       first_principal,
+            office: loan_application.office,
+            date: loan_application.first_amortization_date,
+            interest: first_interest,
+            principal: first_principal,
             total_repayment: total_repayment,
-            ending_balance:  loan_application.loan_amount.amount - first_principal
+            ending_balance: loan_application.loan_amount.amount - first_principal
           )
         end
 
         def create_succeeding_schedule
-          if loan_application.schedule_count > 1
-            (loan_application.schedule_count - 1).to_i.times do
-              loan_application.amortization_schedules.create!(
-                office:          loan_application.office,
-                date:            loan_application.succeeding_amortization_date,
-                interest:        0,
-                principal:       0,
-                total_repayment: total_repayment
-              )
-            end
+          return unless loan_application.schedule_count > 1
+
+          (loan_application.schedule_count - 1).to_i.times do
+            loan_application.amortization_schedules.create!(
+              office: loan_application.office,
+              date: loan_application.succeeding_amortization_date,
+              interest: 0,
+              principal: 0,
+              total_repayment: total_repayment
+            )
           end
         end
 

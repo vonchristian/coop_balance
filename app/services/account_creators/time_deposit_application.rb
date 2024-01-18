@@ -9,7 +9,6 @@ module AccountCreators
       @liability_ledger = @office.office_time_deposit_products.find_by(time_deposit_product: @time_deposit_product).liability_ledger
     end
 
-
     def create_accounts!
       create_liability_account
     end
@@ -17,14 +16,14 @@ module AccountCreators
     private
 
     def create_liability_account
-      if time_deposit_application.liability_account.blank?
-        account = office.accounts.liabilities.create!(
-          name:   "#{time_deposit_product.name} - #{time_deposit_application.account_number}",
-          code:   SecureRandom.uuid,
-          ledger: liability_ledger
-        )
-        time_deposit_application.update(liability_account: account)
-      end
+      return if time_deposit_application.liability_account.present?
+
+      account = office.accounts.liabilities.create!(
+        name: "#{time_deposit_product.name} - #{time_deposit_application.account_number}",
+        code: SecureRandom.uuid,
+        ledger: liability_ledger
+      )
+      time_deposit_application.update(liability_account: account)
     end
   end
 end

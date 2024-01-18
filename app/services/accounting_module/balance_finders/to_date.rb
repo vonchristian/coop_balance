@@ -3,7 +3,7 @@ module AccountingModule
     class ToDate
       attr_reader :from_date, :to_date, :amounts
 
-      def initialize(args={})
+      def initialize(args = {})
         @amounts   = args.fetch(:amounts)
         @from_date = 999.years.ago
         @to_date   = args.fetch(:to_date)
@@ -11,9 +11,9 @@ module AccountingModule
 
       def compute
         date_range = DateRange.new(from_date: from_date, to_date: to_date)
-        amounts.includes(:entry).
-        where('entries.entry_date' => date_range.range).
-        total
+        amounts.includes(:entry)
+               .where('entries.entry_date' => date_range.range)
+               .total
       end
     end
   end

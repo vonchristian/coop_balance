@@ -10,7 +10,7 @@ module SavingsAccountApplications
 
         BalanceStatusChecker.new(account: @savings_account, product: @savings_account.saving_product).set_balance_status
 
-        redirect_to savings_account_url(@savings_account), notice: "Savings account opened successfully."
+        redirect_to savings_account_url(@savings_account), notice: 'Savings account opened successfully.'
       end
     end
   end

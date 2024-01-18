@@ -2,9 +2,10 @@ module LoansModule
   module Payments
     class Classifier
       attr_reader :loan, :entry, :credit_amounts
+
       def initialize(loan:, entry:)
         @loan           = loan
-        @entry          = entry 
+        @entry          = entry
         @credit_amounts = @entry.credit_amounts.not_cancelled
       end
 
@@ -22,8 +23,8 @@ module LoansModule
 
       def total_cash_payment
         principal.to_f +
-        interest.to_f +
-        penalty.to_f 
+          interest.to_f +
+          penalty.to_f
       end
     end
   end

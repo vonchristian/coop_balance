@@ -1,13 +1,13 @@
-module ShareCapitals 
-  module ShareCapitalMultipleTransactions 
+module ShareCapitals
+  module ShareCapitalMultipleTransactions
     class ConfirmationsController < ApplicationController
-      def create 
+      def create
         @voucher = current_office.vouchers.find(params[:voucher_id])
-        ApplicationRecord.transaction do 
+        ApplicationRecord.transaction do
           Vouchers::EntryProcessing.new(voucher: @voucher, employee: current_user).process!
-        end 
+        end
         redirect_to share_capitals_url, notice: 'confirmed successfully'
-      end 
-    end 
-  end 
-end 
+      end
+    end
+  end
+end

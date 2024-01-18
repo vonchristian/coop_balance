@@ -23,37 +23,40 @@ module LoansModule
       end
 
       private
+
       def create_entry
         entry = AccountingModule::Entry.new(
-          office:              voucher.office,
-          cooperative:         cooperative,
+          office: voucher.office,
+          cooperative: cooperative,
           commercial_document: voucher.payee,
-          description:         voucher.description,
-          recorder:            voucher.preparer,
-          reference_number:    voucher.reference_number,
-          ref_number_integer:  voucher.reference_number.to_i,
-          entry_date:          voucher.disbursement_date,
-          entry_time:          (voucher.date.strftime('%B %e, %Y').to_s + " " + voucher.created_at.to_s).to_datetime)
+          description: voucher.description,
+          recorder: voucher.preparer,
+          reference_number: voucher.reference_number,
+          ref_number_integer: voucher.reference_number.to_i,
+          entry_date: voucher.disbursement_date,
+          entry_time: "#{voucher.date.strftime('%B %e, %Y')} #{voucher.created_at}".to_datetime
+        )
 
-          voucher.voucher_amounts.debit.excluding_account(account: loan.receivable_account).each do |amount|
-            entry.debit_amounts.build(
-              account:             amount.account,
-              amount:              amount.amount
-            )
-          end
+        voucher.voucher_amounts.debit.excluding_account(account: loan.receivable_account).each do |amount|
+          entry.debit_amounts.build(
+            account: amount.account,
+            amount: amount.amount
+          )
+        end
 
-          voucher.voucher_amounts.credit.each do |amount|
-            entry.credit_amounts.build(
-              account:             amount.account,
-              amount:              amount.amount
-            )
-          end
+        voucher.voucher_amounts.credit.each do |amount|
+          entry.credit_amounts.build(
+            account: amount.account,
+            amount: amount.amount
+          )
+        end
 
-          voucher.voucher_amounts.debit.for_account(account: loan.receivable_account).each do |amount|
-            entry.debit_amounts.build(
-              account:             amount.account,
-              amount:              amount.amount)
-          end
+        voucher.voucher_amounts.debit.for_account(account: loan.receivable_account).each do |amount|
+          entry.debit_amounts.build(
+            account: amount.account,
+            amount: amount.amount
+          )
+        end
         entry.save!
         voucher.update!(entry_id: entry.id, disburser: employee)
       end

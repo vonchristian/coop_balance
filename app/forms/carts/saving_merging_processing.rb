@@ -10,12 +10,15 @@ module Carts
     end
 
     private
+
     def create_saving_merging
       find_cart.savings << find_saving
     end
+
     def find_cart
       StoreFrontModule::Cart.find(cart_id)
     end
+
     def find_saving
       DepositsModule::Saving.find(old_saving_id)
     end

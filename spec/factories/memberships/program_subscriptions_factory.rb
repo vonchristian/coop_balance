@@ -1,9 +1,9 @@
 FactoryBot.define do
-  factory :program_subscription, class: MembershipsModule::ProgramSubscription do
-    association :program
-    association :subscriber, factory: :member
-    association :program_account, factory: :asset
-    association :office
+  factory :program_subscription, class: 'MembershipsModule::ProgramSubscription' do
+    program
+    subscriber factory: %i[member]
+    program_account factory: %i[asset]
+    office
     account_number { SecureRandom.uuid }
   end
 end

@@ -1,6 +1,6 @@
 module StoreFrontModule
   class MarkUpPrice < ApplicationRecord
-    belongs_to :unit_of_measurement, class_name: "StoreFrontModule::UnitOfMeasurement"
+    belongs_to :unit_of_measurement, class_name: 'StoreFrontModule::UnitOfMeasurement'
 
     before_save :set_default_date
 
@@ -11,6 +11,7 @@ module StoreFrontModule
     end
 
     private
+
     def set_default_date
       self.date ||= Time.zone.now
     end

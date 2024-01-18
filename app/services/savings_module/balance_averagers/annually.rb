@@ -13,24 +13,24 @@ module SavingsModule
       end
 
       def daily_averaged_balance
-        daily_balances / total_number_of_days 
+        daily_balances / total_number_of_days
       end
 
       def total_number_of_days
-        date_range.size 
-      end 
+        date_range.size
+      end
 
-      def date_range 
+      def date_range
         (beginning_date..ending_date).to_a
-      end 
-      
-      def daily_balances 
+      end
+
+      def daily_balances
         balances = BigDecimal('0')
         date_range.each do |date|
           balances += saving.balance(to_date: date.end_of_day)
-        end 
-        balances 
-      end 
-    end 
+        end
+        balances
+      end
+    end
   end
 end

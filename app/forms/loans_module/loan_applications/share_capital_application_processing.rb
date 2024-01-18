@@ -5,17 +5,17 @@ module LoansModule
       attr_accessor :loan_application_id
 
       def process!
-        if valid?
-          ActiveRecord::Base.transaction do
-            create_share_capital_application
-            create_voucher_amount
-          end
+        return unless valid?
+
+        ActiveRecord::Base.transaction do
+          create_share_capital_application
+          create_voucher_amount
         end
       end
 
       private
-      def create_share_capital_application
-      end
+
+      def create_share_capital_application; end
     end
   end
 end

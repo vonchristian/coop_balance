@@ -1,8 +1,8 @@
 wb = xlsx_package.workbook
-wb.add_worksheet(name: "Loans Aging Report") do |sheet|
- sheet.add_row ["Loan Aging Report"]
- sheet.add_row(["Borrower", "Loan Product", "Date Release", "Maturity Date", "Loan Amount", "Loan Balance"] + @loan_aging_groups.map{|a| a.title} + ['Term', 'Days Past Due', 'Mode of Payment', 'Share Capital', 'Savings Deposit', 'Time Deposit'], :b => true)
+wb.add_worksheet(name: 'Loans Aging Report') do |sheet|
+  sheet.add_row ['Loan Aging Report']
+  sheet.add_row(['Borrower', 'Loan Product', 'Date Release', 'Maturity Date', 'Loan Amount', 'Loan Balance'] + @loan_aging_groups.map(&:title) + ['Term', 'Days Past Due', 'Mode of Payment', 'Share Capital', 'Savings Deposit', 'Time Deposit'], b: true)
   @loans.each do |loan|
-    sheet.add_row([loan.borrower_name, loan.loan_product_name, loan.disbursement_date.try(:strftime, ('%B %e, %Y')), loan.maturity_date.try(:strftime, ('%B %e, %Y')), loan.loan_amount, loan.balance] + @loan_aging_groups.map{ |loan_group| loan.balance_for_loan_group(loan_group)} + [loan.term, loan.number_of_days_past_due, loan.mode_of_payment, loan.borrower.share_capitals.try(:total_balances), loan.borrower.savings.try(:total_balances), loan.borrower.time_deposits.try(:total_balances)])
+    sheet.add_row([loan.borrower_name, loan.loan_product_name, loan.disbursement_date.try(:strftime, '%B %e, %Y'), loan.maturity_date.try(:strftime, '%B %e, %Y'), loan.loan_amount, loan.balance] + @loan_aging_groups.map { |loan_group| loan.balance_for_loan_group(loan_group) } + [loan.term, loan.number_of_days_past_due, loan.mode_of_payment, loan.borrower.share_capitals.try(:total_balances), loan.borrower.savings.try(:total_balances), loan.borrower.time_deposits.try(:total_balances)])
   end
 end

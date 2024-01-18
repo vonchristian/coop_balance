@@ -8,8 +8,8 @@ module Reports
       respond_to do |format|
         format.html
         format.pdf do
-          pdf = Reports::AuditReportPdf.new(@entries, @employee, @from_date, @to_date, @title="AUDIT REPORT", view_context)
-          send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Audit Report.pdf"
+          pdf = Reports::AuditReportPdf.new(@entries, @employee, @from_date, @to_date, @title = 'AUDIT REPORT', view_context)
+          send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'Audit Report.pdf'
         end
       end
     end

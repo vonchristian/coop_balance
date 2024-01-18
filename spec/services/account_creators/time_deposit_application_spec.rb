@@ -3,7 +3,7 @@ require 'rails_helper'
 module AccountCreators
   describe TimeDepositApplication do
     it '#create_accounts!' do
-      office                     = create(:office)
+      office = create(:office)
       liability_ledger = create(:liability_ledger)
       time_deposit_product       = create(:time_deposit_product)
       time_deposit_application   = build(:time_deposit_application, office: office, time_deposit_product: time_deposit_product, liability_account_id: nil)
@@ -11,10 +11,9 @@ module AccountCreators
 
       described_class.new(time_deposit_application: time_deposit_application).create_accounts!
 
-      expect(time_deposit_application.liability_account).to_not eql nil
+      expect(time_deposit_application.liability_account).not_to eql nil
       expect(office.accounts).to include(time_deposit_application.liability_account)
       expect(liability_ledger.accounts).to include(time_deposit_application.liability_account)
-
     end
   end
 end

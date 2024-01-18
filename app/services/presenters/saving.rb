@@ -15,6 +15,7 @@ module Presenters
         'up'
       end
     end
+
     def text_color
       if entry.credit_amounts.accounts.include?(liability_account)
         'success'
@@ -22,6 +23,7 @@ module Presenters
         'danger'
       end
     end
+
     def plus_or_minus_icon
       if entry.credit_amounts.accounts.include?(liability_account)
         'plus'

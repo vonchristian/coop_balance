@@ -9,21 +9,22 @@ module LoansModule
       validates :loan_id, :share_capital_id, :cart_id, :employee_id, presence: true
 
       def process!
-        if valid?
-          ApplicationRecord.transaction do
-            create_voucher_amount
-          end
+        return unless valid?
+
+        ApplicationRecord.transaction do
+          create_voucher_amount
         end
       end
 
       private
+
       def create_voucher_amount
         find_cart.voucher_amounts.credit.create!(
-          amount:  amount,
+          amount: amount,
           account: find_loan.receivable_account
         )
         find_cart.voucher_amounts.debit.create!(
-          amount:  amount,
+          amount: amount,
           account: find_share_capital.share_capital_equity_account
         )
       end

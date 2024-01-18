@@ -4,4 +4,4 @@ module SavingsAccounts
       @savings_account = current_office.savings.find(params[:savings_account_id])
     end
   end
-end 
+end

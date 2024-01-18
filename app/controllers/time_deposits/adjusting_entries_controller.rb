@@ -12,21 +12,22 @@ module TimeDeposits
       @time_deposit = current_cooperative.time_deposits.find(params[:time_deposit_id])
       @entry = AccountingModule::AdjustingEntry.new(adjusting_entry_params).save
       respond_modal_with @entry, location: time_deposit_settings_url(@time_deposit),
-        notice: "Adjusting Entry saved successfully."
+                                 notice: 'Adjusting Entry saved successfully.'
     end
 
     private
+
     def adjusting_entry_params
-      params.require(:accounting_module_adjusting_entry).
-      permit(:entry_date,
-             :employee_id,
-             :reference_number,
-             :description,
-             :amount,
-             :debit_account_id,
-             :credit_account_id,
-             :commercial_document_id,
-             :commercial_document_type)
+      params.require(:accounting_module_adjusting_entry)
+            .permit(:entry_date,
+                    :employee_id,
+                    :reference_number,
+                    :description,
+                    :amount,
+                    :debit_account_id,
+                    :credit_account_id,
+                    :commercial_document_id,
+                    :commercial_document_type)
     end
   end
 end

@@ -14,8 +14,8 @@ module ManagementModule
         authorize [:management_module, :settings, @cooperative]
         @cooperative.update(cooperative_params)
         respond_modal_with @cooperative,
-          location: management_module_settings_url, 
-          notice: "Cooperative details saved successfully."
+                           location: management_module_settings_url,
+                           notice: 'Cooperative details saved successfully.'
       end
 
       def show
@@ -24,10 +24,11 @@ module ManagementModule
       end
 
       private
+
       def cooperative_params
-        params.require(:cooperative).permit(:name, :registration_number, :address, :contact_number, :operating_days => [])
+        params.require(:cooperative).permit(:name, :registration_number, :address, :contact_number, operating_days: [])
       end
-      
+
       def current_cooperative
         cooperative = current_user.cooperative
         session[:cooperative_id] = cooperative.id

@@ -1,11 +1,11 @@
 FactoryBot.define do
   factory :voucher do
-    association :office
-    association :cooperative
-    association :commercial_document, factory: :member
-    association :payee, factory: :member
-    association :preparer, factory: :teller
-    association :disburser, factory: :teller
+    office
+    cooperative
+    commercial_document factory: %i[member]
+    payee factory: %i[member]
+    preparer factory: %i[teller]
+    disburser factory: %i[teller]
     account_number { SecureRandom.uuid }
     description { Faker::Company.bs }
     reference_number { SecureRandom.uuid }

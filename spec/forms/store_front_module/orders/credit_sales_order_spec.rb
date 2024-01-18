@@ -5,4 +5,4 @@ module StoreFrontModule
     describe CreditSalesOrderForm do
     end
   end
-end 
+end

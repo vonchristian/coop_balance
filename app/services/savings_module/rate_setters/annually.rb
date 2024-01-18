@@ -1,6 +1,6 @@
-module SavingsModule 
-  module RateSetters 
-    class Annually 
-    end 
-  end 
-end 
+module SavingsModule
+  module RateSetters
+    class Annually
+    end
+  end
+end

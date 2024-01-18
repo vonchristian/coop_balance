@@ -23,42 +23,43 @@ module AccountCreators
     private
 
     def create_receivable_account!
-      if loan.receivable_account.blank?
-        account = office.accounts.assets.create!(
-          name:   receivable_account_name,
-          code:   SecureRandom.uuid,
-          ledger: receivable_ledger)
-        loan.update(receivable_account: account)
-      end
+      return if loan.receivable_account.present?
+
+      account = office.accounts.assets.create!(
+        name: receivable_account_name,
+        code: SecureRandom.uuid,
+        ledger: receivable_ledger
+      )
+      loan.update(receivable_account: account)
     end
 
     def create_interest_revenue_account!
-      if loan.interest_revenue_account.blank?
-        account = office.accounts.revenues.create!(
-          name:   interest_revenue_name,
-          code:   SecureRandom.uuid,
-          ledger: interest_revenue_ledger
-        )
-        loan.update(interest_revenue_account: account)
-      end
+      return if loan.interest_revenue_account.present?
+
+      account = office.accounts.revenues.create!(
+        name: interest_revenue_name,
+        code: SecureRandom.uuid,
+        ledger: interest_revenue_ledger
+      )
+      loan.update(interest_revenue_account: account)
     end
 
     def create_penalty_revenue_account!
-      if loan.penalty_revenue_account.blank?
-        account = office.accounts.revenues.create!(
-          name:   penalty_revenue_name,
-          code:   SecureRandom.uuid,
-          ledger: penalty_revenue_ledger)
-        loan.update(penalty_revenue_account: account)
-      end
+      return if loan.penalty_revenue_account.present?
+
+      account = office.accounts.revenues.create!(
+        name: penalty_revenue_name,
+        code: SecureRandom.uuid,
+        ledger: penalty_revenue_ledger
+      )
+      loan.update(penalty_revenue_account: account)
     end
 
     def create_accountable_accounts
       loan.accounts << loan.receivable_account
       loan.accounts << loan.interest_revenue_account
       loan.accounts << loan.penalty_revenue_account
-    end 
-
+    end
 
     def receivable_account_name
       "Loans Receivable - #{loan.loan_product_name} #{loan.account_number}"

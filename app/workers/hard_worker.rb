@@ -1,7 +1,7 @@
-class HardWorker 
-  include Sidekiq::Worker 
+class HardWorker
+  include Sidekiq::Worker
 
-  def perform(name, count)
-    puts 'doooo'
-  end 
-end 
+  def perform(_name, _count)
+    Rails.logger.debug 'doooo'
+  end
+end

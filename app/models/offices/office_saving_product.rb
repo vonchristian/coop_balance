@@ -7,7 +7,7 @@ module Offices
     belongs_to :office,                            class_name: 'Cooperatives::Office'
     belongs_to :forwarding_account,                class_name: 'AccountingModule::Account'
 
-    validates :saving_product_id, presence: true, uniqueness: { scope: :office_id }
+    validates :saving_product_id, uniqueness: { scope: :office_id }
     delegate :name, to: :saving_product, prefix: true
   end
 end

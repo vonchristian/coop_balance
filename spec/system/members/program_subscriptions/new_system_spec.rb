@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'New program subscription' do
-  before(:each) do
+  before do
     teller = create(:teller)
     member = create(:member)
     member.memberships.create!(office: teller.office, cooperative: teller.cooperative, account_number: SecureRandom.uuid)

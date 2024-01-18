@@ -1,10 +1,6 @@
 require 'rails_helper'
 
 describe 'Savings accounting index page' do
-  before(:each) do
-
-  end
-
   it 'with valid attributes' do
     bookkeeper     = create(:bookkeeper)
     @saving        = create(:saving, office: bookkeeper.office)

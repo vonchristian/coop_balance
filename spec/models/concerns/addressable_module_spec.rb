@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Addressing do
-  let(:member) { create(:member) { include Addressing } }
+  let(:member) { create(:member) { include described_class } }
 
   describe 'associations' do
     it { expect(member).to have_many :addresses }
@@ -20,6 +20,7 @@ describe Addressing do
 
       expect(member.current_address).to eql address
     end
+
     it 'with null address' do
       expect(member.current_address.class).to eq NullAddress
     end

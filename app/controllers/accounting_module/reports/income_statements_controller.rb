@@ -14,15 +14,14 @@ module AccountingModule
           format.xlsx
           format.pdf do
             pdf = AccountingModule::Reports::IncomeStatementPdf.new(
-
-              cooperative:  current_cooperative,
-              office:       current_office,  
-              from_date:    @from_date,
-              to_date:      @to_date,
-              view_context: view_context)
-            send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Income Statement.pdf"
-            pdf=nil
-
+              cooperative: current_cooperative,
+              office: current_office,
+              from_date: @from_date,
+              to_date: @to_date,
+              view_context: view_context
+            )
+            send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'Income Statement.pdf'
+            nil
           end
         end
       end

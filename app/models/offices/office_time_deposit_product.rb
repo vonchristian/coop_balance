@@ -7,6 +7,6 @@ module Offices
     belongs_to :interest_expense_ledger, class_name: 'AccountingModule::Ledger'
     belongs_to :break_contract_revenue_ledger, class_name: 'AccountingModule::Ledger'
 
-    validates :time_deposit_product_id, presence: true, uniqueness: { scope: :office_id }
+    validates :time_deposit_product_id, uniqueness: { scope: :office_id }
   end
 end

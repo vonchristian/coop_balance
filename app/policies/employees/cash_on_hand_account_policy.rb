@@ -3,6 +3,7 @@ module Employees
     def edit?
       user.general_manager? || user.accountant? || user.bookkeeper?
     end
+
     def update?
       edit?
     end

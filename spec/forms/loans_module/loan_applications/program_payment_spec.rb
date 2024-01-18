@@ -4,9 +4,9 @@ module LoansModule
   module LoanApplications
     describe ProgramPayment do
       describe 'validations', type: :model do
-        it { is_expected.to validate_presence_of :loan_application_id }
-        it { is_expected.to validate_presence_of :program_id }
-        it { is_expected.to validate_presence_of :amount }
+        it { should validate_presence_of :loan_application_id }
+        it { should validate_presence_of :program_id }
+        it { should validate_presence_of :amount }
       end
 
       it '#process!' do
@@ -25,7 +25,6 @@ module LoansModule
         expect(voucher_amount.account).to eq program.account
         expect(voucher_amount.amount.amount).to eq 500
         expect(voucher_amount.amount_type).to eql 'credit'
-
       end
     end
   end

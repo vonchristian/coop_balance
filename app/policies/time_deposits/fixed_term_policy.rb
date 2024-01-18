@@ -3,6 +3,7 @@ module TimeDeposits
     def new?
       user.teller?
     end
+
     def create?
       new?
     end

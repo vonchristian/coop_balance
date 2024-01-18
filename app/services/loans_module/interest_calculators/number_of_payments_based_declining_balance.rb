@@ -15,14 +15,14 @@ module LoansModule
         loan_application.amortization_schedules.by_oldest_date.first(number_of_payments).total_interest
       end
 
-      def total_interest(args={})
+      def total_interest(args = {})
         from_date = args.fetch(:from_date)
         to_date   = args.fetch(:to_date)
         loan_application.amortization_schedules.total_interest(from_date: from_date, to_date: to_date)
       end
 
       def monthly_amortization_interest
-          (principal_balance * loan_product.monthly_interest_rate).round(2)
+        (principal_balance * loan_product.monthly_interest_rate).round(2)
       end
 
       def principal_balance

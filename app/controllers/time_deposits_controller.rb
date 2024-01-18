@@ -14,13 +14,14 @@ class TimeDepositsController < ApplicationController
       format.html
       format.pdf do
         pdf = TimeDepositPdf.new(time_deposit: @time_deposit, view_context: view_context)
-        send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Time Deposit.pdf"
+        send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'Time Deposit.pdf'
       end
     end
   end
 
   private
+
   def time_deposit_params
-    params.require(:time_deposit_form).permit(:account_number, :or_number, :amount, :date, :member_id, :number_of_days,  :cash_account_id)
+    params.require(:time_deposit_form).permit(:account_number, :or_number, :amount, :date, :member_id, :number_of_days, :cash_account_id)
   end
 end

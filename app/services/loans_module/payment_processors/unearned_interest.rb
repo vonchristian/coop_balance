@@ -13,6 +13,7 @@ module LoansModule
                     :employee_id,
                     :cash_account_id,
                     :account_number
+
       validates :principal_amount, :interest_amount, :penalty_amount, presence: true, numericality: { greater_than_or_equal_to: 0 }
       validate :principal_amount_not_more_than_balance
 
@@ -33,9 +34,9 @@ module LoansModule
       end
 
       def schedule_id
-        if amortization_schedule_id.present?
-          amortization_schedule_id
-        end
+        return if amortization_schedule_id.blank?
+
+        amortization_schedule_id
       end
 
       def find_employee
@@ -43,16 +44,17 @@ module LoansModule
       end
 
       private
+
       def create_voucher
         voucher = Voucher.new(
-          account_number:   account_number,
-          office:           find_employee.office,
-          cooperative:      find_employee.cooperative,
-          payee:            find_loan.borrower,
+          account_number: account_number,
+          office: find_employee.office,
+          cooperative: find_employee.cooperative,
+          payee: find_loan.borrower,
           reference_number: reference_number,
-          description:      description,
-          preparer:         find_employee,
-          date:             date
+          description: description,
+          preparer: find_employee,
+          date: date
         )
         create_penalty_amount(voucher)
         create_principal_amount(voucher)
@@ -63,30 +65,34 @@ module LoansModule
 
       def create_total_cash_amount(voucher)
         voucher.voucher_amounts.debit.build(
-        amount:             total_amount,
-        account:             find_cash_account)
+          amount: total_amount,
+          account: find_cash_account
+        )
       end
 
       def create_interest_revenue_amount(voucher)
         voucher.voucher_amounts.credit.build(
-        amount:              interest_amount.to_f,
-        account:             find_loan.interest_revenue_account)
+          amount: interest_amount.to_f,
+          account: find_loan.interest_revenue_account
+        )
       end
 
       def create_penalty_amount(voucher)
-        if penalty_amount.to_f > 0
-          voucher.voucher_amounts.credit.build(
-          amount:              penalty_amount.to_f,
-          account:             find_loan.penalty_revenue_account)
-        end
+        return unless penalty_amount.to_f.positive?
+
+        voucher.voucher_amounts.credit.build(
+          amount: penalty_amount.to_f,
+          account: find_loan.penalty_revenue_account
+        )
       end
 
       def create_principal_amount(voucher)
-        if principal_amount.to_f > 0
-          voucher.voucher_amounts.credit.build(
-          amount:              principal_amount.to_f,
-          account:             find_loan.receivable_account)
-        end
+        return unless principal_amount.to_f.positive?
+
+        voucher.voucher_amounts.credit.build(
+          amount: principal_amount.to_f,
+          account: find_loan.receivable_account
+        )
       end
 
       def find_cash_account
@@ -95,15 +101,13 @@ module LoansModule
 
       def total_amount
         principal_amount.to_f +
-        interest_amount.to_f +
-        penalty_amount.to_f
+          interest_amount.to_f +
+          penalty_amount.to_f
       end
 
       def principal_amount_not_more_than_balance
-        errors[:principal_amount] << "Must be less than or equal to balance." if principal_amount.to_f > find_loan.principal_balance
+        errors[:principal_amount] << 'Must be less than or equal to balance.' if principal_amount.to_f > find_loan.principal_balance
       end
-
-
     end
   end
 end

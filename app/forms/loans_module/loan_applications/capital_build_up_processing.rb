@@ -3,23 +3,26 @@ module LoansModule
     class CapitalBuildUpProcessing
       include ActiveModel::Model
       attr_accessor :amount, :loan_application_id, :share_capital_id, :employee_id
+
       validates :amount, numericality: true, presence: true
       def process!
-        if valid?
-          ActiveRecord::Base.transaction do
-            save_loan_charge
-          end
+        return unless valid?
+
+        ActiveRecord::Base.transaction do
+          save_loan_charge
         end
       end
 
       private
+
       def save_loan_charge
         find_loan_application.voucher_amounts.create!(
-        description:         "Capital Build Up",
-        amount:              amount,
-        account:             find_share_capital.share_capital_equity_account,
-        cooperative:         find_loan_application.cooperative,
-        amount_type:         'credit')
+          description: 'Capital Build Up',
+          amount: amount,
+          account: find_share_capital.share_capital_equity_account,
+          cooperative: find_loan_application.cooperative,
+          amount_type: 'credit'
+        )
       end
 
       def find_loan_application

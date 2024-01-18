@@ -10,6 +10,7 @@ module ShareCapitals
     end
 
     private
+
     def merge_accounts
       find_cart.share_capitals.each do |share_capital|
         find_current_share_capital.amounts << share_capital.amounts
@@ -20,6 +21,7 @@ module ShareCapitals
     def find_cart
       StoreFrontModule::Cart.find(cart_id)
     end
+
     def find_current_share_capital
       DepositsModule::ShareCapital.find(current_share_capital_id)
     end

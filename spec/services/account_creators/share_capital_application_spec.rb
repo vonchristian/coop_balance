@@ -10,7 +10,7 @@ module AccountCreators
 
       described_class.new(share_capital_application: share_capital_application).create_accounts!
 
-      expect(share_capital_application.equity_account).to_not eq nil
+      expect(share_capital_application.equity_account).not_to be_nil
     end
   end
-end 
+end

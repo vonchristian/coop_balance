@@ -2,7 +2,7 @@ require 'rails_helper'
 include ChosenSelect
 
 describe 'New time deposit transfer to savings' do
-  before(:each) do
+  before do
     member        = create(:member)
     teller        = create(:teller)
     cash          = create(:asset, name: 'Cash')
@@ -21,17 +21,17 @@ describe 'New time deposit transfer to savings' do
     click_link 'Transfer to Savings'
   end
 
-  it 'with valid attributes', js: true do 
+  it 'with valid attributes', :js do
     click_link "#{@saving.id}-select-account"
     fill_in 'Reference number', with: 'test'
     fill_in 'Description',      with: 'Transfer to savings'
     fill_in 'Date',             with: Date.current.strftime('%B %e, %Y')
 
     click_button 'Proceed'
-    page.execute_script "window.scrollBy(0,10000)"
+    page.execute_script 'window.scrollBy(0,10000)'
 
     click_link 'Confirm Transaction'
 
     expect(page).to have_content('confirmed successfully')
-  end 
-end 
+  end
+end

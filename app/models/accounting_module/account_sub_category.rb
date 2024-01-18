@@ -1,7 +1,7 @@
 module AccountingModule
   class AccountSubCategory < ApplicationRecord
-    belongs_to :main_category,  class_name: 'AccountingModule::AccountCategory', foreign_key: 'main_category_id'
-    belongs_to :sub_category,   class_name: 'AccountingModule::AccountCategory', foreign_key: 'sub_category_id'
+    belongs_to :main_category,  class_name: 'AccountingModule::AccountCategory'
+    belongs_to :sub_category,   class_name: 'AccountingModule::AccountCategory'
 
     validates :sub_category_id, uniqueness: { scope: :main_category_id }
     validate :same_origin?
@@ -16,11 +16,13 @@ module AccountingModule
     end
 
     private
+
     def same_origin?
-      errors[:sub_category_id] << "Not the same origin" if self.main_category.cooperative != self.sub_category.cooperative
+      errors.add(:sub_category_id, 'Not the same origin') if main_category.cooperative != sub_category.cooperative
     end
+
     def same_type?
-      errors[:sub_category_id] << "Not the same type" if self.main_category.type != self.sub_category.type
+      errors.add(:sub_category_id, 'Not the same type') if main_category.type != sub_category.type
     end
   end
 end

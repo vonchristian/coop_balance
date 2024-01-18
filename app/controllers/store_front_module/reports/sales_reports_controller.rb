@@ -13,8 +13,9 @@ module StoreFrontModule
               sales_orders: current_cooperative.sales_orders.ordered_on(from_date: @from_date, to_date: @to_date),
               from_date: @from_date,
               to_date: @to_date,
-              view_context: view_context)
-            send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Sales Report.pdf"
+              view_context: view_context
+            )
+            send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'Sales Report.pdf'
           end
         end
       end

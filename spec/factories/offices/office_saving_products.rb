@@ -1,9 +1,9 @@
 FactoryBot.define do
-  factory :office_saving_product, class: Offices::OfficeSavingProduct do
-    association :liability_ledger, factory: :liability_ledger
-    association :interest_expense_ledger, factory: :expense_ledger
-    association :office
-    association :forwarding_account, factory: :liability
-    association :saving_product
+  factory :office_saving_product, class: 'Offices::OfficeSavingProduct' do
+    liability_ledger factory: %i[liability_ledger]
+    interest_expense_ledger factory: %i[expense_ledger]
+    office
+    forwarding_account factory: %i[liability]
+    saving_product
   end
 end

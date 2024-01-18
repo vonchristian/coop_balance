@@ -4,4 +4,4 @@ module LoansModule
       @amortization_schedules = args.fetch(:amortization_schedules)
     end
   end
-end 
+end

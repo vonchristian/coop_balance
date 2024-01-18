@@ -1,7 +1,7 @@
 require 'rails_helper'
 include ChosenSelect
 describe 'New time deposit withdraw' do
-  before(:each) do
+  before do
     teller        = create(:teller)
     cash          = create(:asset, name: 'Cash')
     teller.cash_accounts << cash
@@ -16,22 +16,20 @@ describe 'New time deposit withdraw' do
     click_link 'Partial Withdraw'
   end
 
-  it 'with valid attributes', js: true do
+  it 'with valid attributes', :js do
     select_from_chosen 'Cash', from: 'Cash account'
-    fill_in "Amount",           with: 10_000
+    fill_in 'Amount',           with: 10_000
     fill_in 'Date',             with: Date.current
     fill_in 'Interest',         with: 100
     fill_in 'Reference Number', with: 'test'
 
     click_button 'Proceed'
 
-
     expect(page).to have_content('created successfully')
-
 
     click_link 'Confirm Transaction'
 
     expect(page).to have_content('withdrawn successfully')
-    expect(@time_deposit.balance).to eql 90_000
+    expect(@time_deposit.balance).to be 90_000
   end
 end

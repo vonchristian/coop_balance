@@ -21,26 +21,25 @@ module AccountCreators
     private
 
     def create_liability_account
-      if saving.liability_account_id.blank?
-        account = office.accounts.liabilities.create!(
+      return if saving.liability_account_id.present?
 
-          name: "#{saving_product.name} - (#{saving.depositor_name} - #{saving.account_number}",
-          code: saving.account_number,
-          ledger: liability_ledger
-        )
-        saving.update(liability_account: account)
-      end
+      account = office.accounts.liabilities.create!(
+        name: "#{saving_product.name} - (#{saving.depositor_name} - #{saving.account_number}",
+        code: saving.account_number,
+        ledger: liability_ledger
+      )
+      saving.update(liability_account: account)
     end
 
     def create_interest_expense_account
-      if saving.interest_expense_account_id.blank?
-        account = office.accounts.expenses.create!(
-          name: "Interest Expense on Savings Deposits - (#{saving.depositor_name} - #{saving.account_number}",
-          code: "INT-#{saving.account_number}",
-          ledger: interest_expense_ledger
-        )
-        saving.update(interest_expense_account: account)
-      end
+      return if saving.interest_expense_account_id.present?
+
+      account = office.accounts.expenses.create!(
+        name: "Interest Expense on Savings Deposits - (#{saving.depositor_name} - #{saving.account_number}",
+        code: "INT-#{saving.account_number}",
+        ledger: interest_expense_ledger
+      )
+      saving.update(interest_expense_account: account)
     end
 
     def add_accounts

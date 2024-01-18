@@ -4,10 +4,11 @@ module TimeDeposits
       @time_deposit = current_office.time_deposits.find(params[:time_deposit_id])
       @transfer     = TimeDeposits::TransferProcessing.new
       @savings      = @time_deposit.depositor.savings
-      if params[:saving_id].present?
-        @saving = @time_deposit.depositor.savings.find(params[:saving_id])
-      end 
+      return if params[:saving_id].blank?
+
+      @saving = @time_deposit.depositor.savings.find(params[:saving_id])
     end
+
     def create
       @time_deposit    = current_office.time_deposits.find(params[:time_deposit_id])
       @transfer        = TimeDeposits::TransferProcessing.new(transfer_params)
@@ -20,9 +21,10 @@ module TimeDeposits
     end
 
     private
+
     def transfer_params
-      params.require(:time_deposits_transfer_processing).
-      permit(:time_deposit_id, :saving_id, :account_number, :date, :employee_id, :cooperative_id, :description, :reference_number)
+      params.require(:time_deposits_transfer_processing)
+            .permit(:time_deposit_id, :saving_id, :account_number, :date, :employee_id, :cooperative_id, :description, :reference_number)
     end
   end
 end

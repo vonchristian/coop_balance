@@ -3,6 +3,7 @@ module ShareCapitals
     def new?
       user.teller? || user.treasurer?
     end
+
     def create?
       new?
     end

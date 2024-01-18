@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'New balance transfer' do
-  before(:each) do
+  before do
     bookkeeper = create(:bookkeeper)
     teller     = create(:teller)
     cash       = create(:asset)
@@ -14,8 +14,7 @@ describe 'New balance transfer' do
     deposit_1.credit_amounts.build(amount: 1000, account: @saving_1.liability_account)
     deposit_1.save!
 
-
-    deposit_2  = build(:entry)
+    deposit_2 = build(:entry)
     deposit_2.debit_amounts.build(amount: 1000, account: cash)
     deposit_2.credit_amounts.build(amount: 1000, account: @saving_2.liability_account)
     deposit_2.save!
@@ -29,24 +28,23 @@ describe 'New balance transfer' do
     click_link "#{@saving_2.id}-select-account"
   end
 
-  it 'with valid attributes', js: true do
+  it 'with valid attributes', :js do
     fill_in 'Amount', with: 100
 
     click_button 'Add Amount'
 
-    fill_in 'Date',             with: Date.current 
+    fill_in 'Date',             with: Date.current
     fill_in 'Description',      with: 'test'
     fill_in 'Reference number', with: 'test'
 
     click_button 'Proceed'
-    page.execute_script "window.scrollBy(0,10000)"
+    page.execute_script 'window.scrollBy(0,10000)'
 
     click_link 'Confirm Transaction'
 
     expect(page).to have_content('confirmed successfully')
-    expect(@saving_1.balance).to eql 900
-    expect(@saving_2.balance).to eql 1100
-
+    expect(@saving_1.balance).to be 900
+    expect(@saving_2.balance).to be 1100
   end
 
   it 'with invalid' do

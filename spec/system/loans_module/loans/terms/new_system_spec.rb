@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'New loan term' do
-  before(:each) do
+  before do
     loan_officer  = create(:loan_officer)
     @loan         = create(:loan, office: loan_officer.office, cooperative: loan_officer.cooperative, term_id: nil)
     binding.pry
@@ -23,7 +23,6 @@ describe 'New loan term' do
   end
 
   it 'with invalid attributes' do
-
     click_button 'Save Term'
 
     expect(page).to have_content("can't be blank")
@@ -33,6 +32,6 @@ describe 'New loan term' do
     fill_in 'Term (Number of days)', with: 0
     click_button 'Save Term'
 
-    expect(page).to have_content("must be greater than 0")
+    expect(page).to have_content('must be greater than 0')
   end
 end

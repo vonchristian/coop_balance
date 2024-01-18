@@ -1,8 +1,6 @@
 module Offices
   class ShareCapitalProductsController < ApplicationController
-
-    def index
-    end
+    def index; end
 
     def new
       @share_capital_product = current_office.office_share_capital_products.build
@@ -21,8 +19,8 @@ module Offices
     private
 
     def share_capital_product_params
-      params.require(:offices_office_share_capital_product).
-      permit(:share_capital_product_id, :equity_ledger_id, :forwarding_account_id)
+      params.require(:offices_office_share_capital_product)
+            .permit(:share_capital_product_id, :equity_ledger_id, :forwarding_account_id)
     end
   end
 end

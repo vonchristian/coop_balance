@@ -19,10 +19,11 @@ module Members
       )
       @organization.process!
       respond_modal_with @organization,
-        location: member_settings_url(@member)
+                         location: member_settings_url(@member)
     end
 
     private
+
     def organization_params
       params.require(:organizations_organization_member).permit(:organization_id)
     end

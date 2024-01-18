@@ -3,6 +3,7 @@ module ShareCapitals
     def new?
       user.general_manager?
     end
+
     def create?
       new?
     end

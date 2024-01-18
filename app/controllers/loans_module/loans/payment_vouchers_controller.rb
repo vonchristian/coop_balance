@@ -23,13 +23,13 @@ module LoansModule
         @voucher = current_office.vouchers.find(params[:id])
         @voucher.destroy
         redirect_to loans_module_loan_accounting_index_url(@loan), alert: 'Transaction cancelled successfully'
-      end 
-
+      end
 
       private
+
       def voucher_params
-        params.require(:loans_module_loans_payment_voucher).
-        permit(:date, :description, :account_number, :reference_number, :loan_id, :cart_id, :employee_id, :account_number)
+        params.require(:loans_module_loans_payment_voucher)
+              .permit(:date, :description, :account_number, :reference_number, :loan_id, :cart_id, :employee_id, :account_number)
       end
     end
   end

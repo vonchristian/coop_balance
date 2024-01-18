@@ -14,12 +14,13 @@ module LoansModule
       end
 
       private
+
       def create_add_on_interest
         loan_application.voucher_amounts.credit.create!(
           cooperative: loan_application.cooperative,
-          description: "Interest on Loan",
-          amount:     loan_application.add_on_interest,
-          account:    loan_application.interest_revenue_account
+          description: 'Interest on Loan',
+          amount: loan_application.add_on_interest,
+          account: loan_application.interest_revenue_account
         )
       end
     end

@@ -14,10 +14,11 @@ module LoansModule
       end
 
       private
+
       def create_amortization_schedule
-        loan_product.
-        amortizer.
-        new(loan_application: loan_application).create_schedule!
+        loan_product
+          .amortizer
+          .new(loan_application: loan_application).create_schedule!
       end
 
       def create_charges

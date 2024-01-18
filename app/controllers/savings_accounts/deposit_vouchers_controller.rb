@@ -4,6 +4,7 @@ module SavingsAccounts
       @savings_account = current_office.savings.find(params[:savings_account_id])
       @voucher = current_cooperative.vouchers.find(params[:id])
     end
+
     def destroy
       @savings_account = current_office.savings.find(params[:savings_account_id])
       @voucher = current_cooperative.vouchers.find(params[:id])

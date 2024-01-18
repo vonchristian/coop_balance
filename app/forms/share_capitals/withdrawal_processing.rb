@@ -5,10 +5,10 @@ module ShareCapitals
 
     validates :share_capital_id, :amount, :date, :reference_number, :description, :employee_id, :account_number, :cash_account_id, presence: true
     def process!
-      if valid?
-        ActiveRecord::Base.transaction do
-          create_voucher
-        end
+      return unless valid?
+
+      ActiveRecord::Base.transaction do
+        create_voucher
       end
     end
 

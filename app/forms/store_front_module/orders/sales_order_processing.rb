@@ -1,4 +1,4 @@
- module StoreFrontModule
+module StoreFrontModule
   module Orders
     class SalesOrderProcessing
       include ActiveModel::Model
@@ -22,15 +22,17 @@
       end
 
       private
+
       def create_sales_order
         order = StoreFrontModule::Orders::SalesOrder.create!(
-        cooperative: find_cooperative,
-        commercial_document: find_customer,
-        cash_tendered: cash_tendered,
-        order_change: order_change,
-        date: date,
-        store_front: find_employee.store_front,
-        employee: find_employee)
+          cooperative: find_cooperative,
+          commercial_document: find_customer,
+          cash_tendered: cash_tendered,
+          order_change: order_change,
+          date: date,
+          store_front: find_employee.store_front,
+          employee: find_employee
+        )
 
         find_cart.sales_line_items.each do |line_item|
           line_item.cart_id = nil
@@ -58,9 +60,11 @@
       def total_cost_less_discount(order)
         order.total_cost - discount_amount.to_f
       end
+
       def find_cash_account
         find_employee.cash_accounts.find(cash_account_id)
       end
+
       def find_cooperative
         find_employee.cooperative
       end

@@ -1,7 +1,8 @@
 module BankAccounts
   class Opening
     include ActiveModel::Model
-    attr_accessor :bank_name, :bank_address, :account_number,  :amount, :recorder_id, :account_id, :earned_interest_account_id, :date, :reference_number, :description, :cash_account_id
+    attr_accessor :bank_name, :bank_address, :account_number, :amount, :recorder_id, :account_id, :earned_interest_account_id, :date, :reference_number, :description, :cash_account_id
+
     validates :amount, presence: true, numericality: { greater_than: 0.01 }
     validates :bank_name, :bank_address, :account_number, :account_id, :earned_interest_account_id, :date, :reference_number, :description, presence: true
 
@@ -12,30 +13,34 @@ module BankAccounts
     end
 
     private
+
     def open_bank_account
       bank_account = BankAccount.find_or_create_by!(
-        bank_name:                  bank_name,
-        bank_address:               bank_address,
-        account_number:             account_number,
-        account_id:                 account_id,
+        bank_name: bank_name,
+        bank_address: bank_address,
+        account_number: account_number,
+        account_id: account_id,
         earned_interest_account_id: earned_interest_account_id,
-        cooperative:             find_employee.cooperative)
+        cooperative: find_employee.cooperative
+      )
 
-      entry = AccountingModule::Entry.create!(
+      AccountingModule::Entry.create!(
         commercial_document: bank_account,
-        office:              find_employee.office,
-        cooperative:         find_employee.cooperative,
-        recorder:            find_employee,
-        entry_date:          date,
-        reference_number:    reference_number,
-        description:         description,
+        office: find_employee.office,
+        cooperative: find_employee.cooperative,
+        recorder: find_employee,
+        entry_date: date,
+        reference_number: reference_number,
+        description: description,
         credit_amounts_attributes: [
-          account:             cash_account,
-          amount:              amount],
+          account: cash_account,
+          amount: amount
+        ],
         debit_amounts_attributes: [
-          account_id:          account_id,
-          amount:              amount])
-
+          account_id: account_id,
+          amount: amount
+        ]
+      )
     end
 
     def find_employee

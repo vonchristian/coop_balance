@@ -2,34 +2,34 @@ module ShareCapitals
   class BalanceTransferVoucher
     include ActiveModel::Model
     attr_accessor :cart_id, :date, :reference_number, :description, :employee_id, :account_number, :share_capital_id
-    
+
     validates :cart_id, :date, :reference_number, :description, :employee_id, :account_number, :share_capital_id, presence: true
-   
+
     def process!
-      if valid?
-        ApplicationRecord.transaction do
-          create_voucher
-          remove_cart_reference
-        end
+      return unless valid?
+
+      ApplicationRecord.transaction do
+        create_voucher
+        remove_cart_reference
       end
     end
 
     private
+
     def create_voucher
       voucher = find_office.vouchers.build(
-        date:             date,
+        date: date,
         reference_number: reference_number,
-        description:      description,
-        account_number:   account_number,
-        preparer:         find_employee,
-        cooperative:      find_employee.cooperative,
-        payee:            find_share_capital.subscriber
+        description: description,
+        account_number: account_number,
+        preparer: find_employee,
+        cooperative: find_employee.cooperative,
+        payee: find_share_capital.subscriber
       )
       voucher.voucher_amounts << find_cart.voucher_amounts
       voucher.save!
-
     end
-    
+
     def find_employee
       User.find(employee_id)
     end
@@ -48,7 +48,7 @@ module ShareCapitals
 
     def remove_cart_reference
       find_cart.voucher_amounts.each do |amount|
-        amount.cart_id = nil 
+        amount.cart_id = nil
         amount.save
       end
     end

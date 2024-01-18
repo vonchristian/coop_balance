@@ -5,9 +5,11 @@ module Loans
     def initialize(args)
       @cart = args.fetch(:cart)
     end
+
     def total_cash_payment
       cart.voucher_amounts.where(account: Employees::EmployeeCashAccount.cash_accounts).total
     end
+
     def loan_ids
       ids = cart.voucher_amounts.pluck(:account_id).uniq.compact.flatten
       LoansModule::Loan.where(receivable_account_id: ids).ids
@@ -24,11 +26,11 @@ module Loans
     def penalty(loan)
       cart.voucher_amounts.where(account: loan.penalty_revenue_account).sum(&:amount)
     end
-    
+
     def total_cash(loan)
       principal(loan) +
-      interest(loan) +
-      penalty(loan)
+        interest(loan) +
+        penalty(loan)
     end
   end
 end

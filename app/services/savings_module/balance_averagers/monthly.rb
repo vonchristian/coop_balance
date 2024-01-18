@@ -13,8 +13,9 @@ module SavingsModule
       end
 
       private
+
       def end_date
-        if to_date.is_a?(Date)|| to_date.is_a?(Time)
+        if to_date.is_a?(Date) || to_date.is_a?(Time)
           to_date.end_of_month.to_date
         else
           DateTime.parse(to_date).end_of_month.to_date
@@ -37,7 +38,7 @@ module SavingsModule
         end
 
         months.uniq.each do |month|
-          balances <<  saving.balance(to_date: month.end_of_month).to_f
+          balances << saving.balance(to_date: month.end_of_month).to_f
         end
         balances
       end

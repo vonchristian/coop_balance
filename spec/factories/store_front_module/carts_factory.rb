@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :cart, class: StoreFrontModule::Cart do
-    association :employee, factory: :teller
+  factory :cart, class: 'StoreFrontModule::Cart' do
+    employee factory: %i[teller]
   end
 end

@@ -17,6 +17,7 @@ module LoansModule
       end
 
       private
+
       def tracking_number_params
         params.require(:loans_module_loan).permit(:tracking_number, :loan_id)
       end

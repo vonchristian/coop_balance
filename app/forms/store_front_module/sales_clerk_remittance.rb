@@ -11,11 +11,13 @@ module StoreFrontModule
         save_remittance
       end
     end
+
     private
+
     def save_remittance
-      AccountingModule::Entry.create!(recorder_id: remitted_by_id, commercial_document: find_remitted_to,  description: description, reference_number: reference_number, entry_date: entry_date,
-      debit_amounts_attributes: [account_id: debit_account_id, amount: amount, commercial_document: find_remitted_to],
-      credit_amounts_attributes: [account_id: credit_account_id, amount: amount, commercial_document: find_remitted_to])
+      AccountingModule::Entry.create!(recorder_id: remitted_by_id, commercial_document: find_remitted_to, description: description, reference_number: reference_number, entry_date: entry_date,
+                                      debit_amounts_attributes: [account_id: debit_account_id, amount: amount, commercial_document: find_remitted_to],
+                                      credit_amounts_attributes: [account_id: credit_account_id, amount: amount, commercial_document: find_remitted_to])
     end
 
     def debit_account_id
@@ -23,10 +25,11 @@ module StoreFrontModule
     end
 
     def credit_account
-      User.find_by_id(remitted_by_id).cash_on_hand_account_id
+      User.find_by(id: remitted_by_id).cash_on_hand_account_id
     end
+
     def find_remitted_to
-      User.find_by_id(remitted_to_id)
+      User.find_by(id: remitted_to_id)
     end
   end
 end

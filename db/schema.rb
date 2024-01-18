@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_18_125259) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_18_113712) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -203,12 +203,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_18_125259) do
     t.string "type"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.string "commercial_document_type"
-    t.uuid "commercial_document_id"
     t.index ["account_id", "entry_id"], name: "index_amounts_on_account_id_and_entry_id"
     t.index ["account_id"], name: "index_amounts_on_account_id"
-    t.index ["commercial_document_id", "commercial_document_type"], name: "index_commercial_documents_on_accounting_amounts"
-    t.index ["commercial_document_type", "commercial_document_id"], name: "index_amounts_on_commercial_document"
     t.index ["entry_id", "account_id"], name: "index_amounts_on_entry_id_and_account_id"
     t.index ["entry_id"], name: "index_amounts_on_entry_id"
     t.index ["type"], name: "index_amounts_on_type"
@@ -1444,7 +1440,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_18_125259) do
     t.string "code"
     t.uuid "interest_expense_account_id"
     t.uuid "liability_account_id"
-    t.boolean "can_earn_interest", default: false
     t.integer "averaged_balance_cents", default: 0, null: false
     t.string "averaged_balance_currency", default: "PHP", null: false
     t.datetime "closed_at", precision: nil

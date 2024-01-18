@@ -3,10 +3,12 @@ module IdentificationModule
     def index
       @identifications = IdentificationModule::Identification.all
     end
+
     def new
       @identifiable = params[:identifiable_type].constantize.find(params[:identifiable_id])
       @identification = @identifiable.identifications.build
     end
+
     def create
       @identifiable = params[:identification_module_identification][:identifiable_type].constantize.find(params[:identification_module_identification][:identifiable_id])
       @identification = @identifiable.identifications.create(identification_params)
@@ -19,9 +21,10 @@ module IdentificationModule
     end
 
     private
+
     def identification_params
-      params.require(:identification_module_identification).
-      permit(:identifiable_id, :identifiable_type, :identity_provider_id, :issuance_date, :expiry_date, :number, :photo)
+      params.require(:identification_module_identification)
+            .permit(:identifiable_id, :identifiable_type, :identity_provider_id, :issuance_date, :expiry_date, :number, :photo)
     end
   end
 end

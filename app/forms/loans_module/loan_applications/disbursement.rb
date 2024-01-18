@@ -7,20 +7,18 @@ module LoansModule
       validates :disbursement_date, :loan_application_id, :employee_id, presence: true
 
       def disburse!
-        if valid?
-          ActiveRecord::Base.transaction do
-            update_voucher_disbursement_date
-            create_loan
-            create_entry
-            update_entry_date
-            update_term
-            update_approved_at
-            update_last_transaction_date
-          end
+        return unless valid?
+
+        ActiveRecord::Base.transaction do
+          update_voucher_disbursement_date
+          create_loan
+          create_entry
+          update_entry_date
+          update_term
+          update_approved_at
+          update_last_transaction_date
         end
       end
-
-
 
       def update_voucher_disbursement_date
         find_loan_application.voucher.update!(disbursement_date: parsed_disbursement_date)
@@ -34,22 +32,23 @@ module LoansModule
         User.find(employee_id)
       end
 
-
-
       def create_loan
         LoansModule::LoanCreationProcessing.new(
           loan_application: find_loan_application,
-          employee:         find_employee).process!
+          employee: find_employee
+        ).process!
       end
-      #
+
       def create_entry
         LoansModule::LoanApplications::EntryProcessing.new(
-        loan_application: find_loan_application,
-        employee:         find_employee).process!
+          loan_application: find_loan_application,
+          employee: find_employee
+        ).process!
       end
+
       def update_last_transaction_date
-          find_loan_application.loan.update!(last_transaction_date: disbursement_date)
-          find_loan_application.loan.borrower.update!(last_transaction_date: disbursement_date)
+        find_loan_application.loan.update!(last_transaction_date: disbursement_date)
+        find_loan_application.loan.borrower.update!(last_transaction_date: disbursement_date)
       end
 
       def update_entry_date
@@ -59,7 +58,8 @@ module LoansModule
       def update_term
         find_loan_application.loan.term.update!(
           effectivity_date: disbursement_date,
-          maturity_date: maturity_date)
+          maturity_date: maturity_date
+        )
       end
 
       def maturity_date
@@ -67,7 +67,7 @@ module LoansModule
       end
 
       def parsed_disbursement_date
-        if disbursement_date.kind_of?(Date) || disbursement_date.kind_of?(DateTime)
+        if disbursement_date.is_a?(Date) || disbursement_date.is_a?(DateTime)
           disbursement_date
         else
           DateTime.parse(disbursement_date)

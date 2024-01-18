@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'New loan payment from share capital' do
-  before(:each) do
+  before do
     bookkeeper = create(:bookkeeper)
     cash       = create(:asset)
     member     = create(:member)
@@ -25,19 +25,19 @@ describe 'New loan payment from share capital' do
     click_link "#{@share_capital.id}-select-share-capital-for-loan-payment"
   end
 
-  it 'with valid attributes', js: true do
-    fill_in 'Amount',  with: 10_000
+  it 'with valid attributes', :js do
+    fill_in 'Amount', with: 10_000
     click_button 'Proceed'
 
     expect(page).to have_content('created successfully')
-    fill_in 'Description',      with: "saving as payment of loan"
+    fill_in 'Description',      with: 'saving as payment of loan'
     fill_in 'Reference number', with: 'JEV 1'
     fill_in 'Date',             with: Date.current.strftime('%B %e, %Y')
 
     click_button 'Proceed'
 
     expect(page).to have_content('created successfully')
-    page.execute_script "window.scrollBy(0,10000)"
+    page.execute_script 'window.scrollBy(0,10000)'
 
     click_link 'Cancel'
 

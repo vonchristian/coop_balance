@@ -11,23 +11,25 @@ module StoreFrontModule
 
     def create_entry
       entry = AccountingModule::Entry.new(
-        cooperative:         voucher.cooperative,
-        office:              voucher.office,
-        recorder:            voucher.preparer,
+        cooperative: voucher.cooperative,
+        office: voucher.office,
+        recorder: voucher.preparer,
         commercial_document: voucher.payee,
-        entry_date:          voucher.date,
-        description:         voucher.description,
+        entry_date: voucher.date,
+        description: voucher.description
       )
       voucher.voucher_amounts.debit.each do |debit_amount|
         entry.debit_amounts.build(
-        amount:              debit_amount.amount,
-        account:             debit_amount.account)
+          amount: debit_amount.amount,
+          account: debit_amount.account
+        )
       end
 
       voucher.voucher_amounts.credit.each do |credit_amount|
         entry.credit_amounts.build(
-        amount:              credit_amount.amount,
-        account:             credit_amount.account)
+          amount: credit_amount.amount,
+          account: credit_amount.account
+        )
       end
       entry.save!
       voucher.update(accounting_entry: entry)

@@ -6,7 +6,7 @@ class Term < ApplicationRecord
   delegate :disbursed?, to: :termable, allow_nil: true
 
   def self.past_due
-    where('maturity_date < ?', Date.today)
+    where('maturity_date < ?', Time.zone.today)
   end
 
   def number_of_months
@@ -24,6 +24,7 @@ class Term < ApplicationRecord
   def is_past_due?
     matured?
   end
+
   def past_due?
     maturity_date < Time.zone.now
   end
@@ -32,10 +33,10 @@ class Term < ApplicationRecord
     maturity_date < Time.zone.now + grace_period.days
   end
 
-  def number_of_days_past_due(args={})
+  def number_of_days_past_due(args = {})
     date = args[:date] || Time.zone.now
 
-    num = ((date.to_datetime - maturity_date.to_datetime)/86400.0).to_i
+    num = ((date.to_datetime - maturity_date.to_datetime) / 86_400.0).to_i
     if num.positive?
       num
     else
@@ -44,11 +45,11 @@ class Term < ApplicationRecord
   end
 
   def remaining_term
-    ((maturity_date - Time.zone.now)/86400.0).to_i
+    ((maturity_date - Time.zone.now) / 86_400.0).to_i
   end
 
   def terms_elapsed
-    (Time.zone.now.year * 12 + Time.zone.now.month) - (effectivity_date.year * 12 + effectivity_date.month)
+    ((Time.zone.now.year * 12) + Time.zone.now.month) - ((effectivity_date.year * 12) + effectivity_date.month)
   end
 
   def number_of_months_past_due

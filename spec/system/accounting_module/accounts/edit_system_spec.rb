@@ -1,7 +1,7 @@
 require 'rails_helper'
 include ChosenSelect
 describe 'Edit account' do
-  before(:each) do
+  before do
     bookkeeper  = create(:bookkeeper)
     cooperative = bookkeeper.cooperative
     account     = create(:asset)
@@ -13,7 +13,7 @@ describe 'Edit account' do
     click_link 'Edit Account'
   end
 
-  it 'with valid attributes', js: true do
+  it 'with valid attributes', :js do
     fill_in 'Name', with: 'test account'
     fill_in 'Code', with: 'test code'
     select 'Asset'
@@ -33,5 +33,4 @@ describe 'Edit account' do
 
     expect(page).to have_content("can't be blank")
   end
-
 end

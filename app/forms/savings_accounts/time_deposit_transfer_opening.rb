@@ -16,14 +16,15 @@ module SavingsAccounts
     end
 
     private
+
     def create_savings_account_application
-      savings_account_application = SavingsAccountApplication.new(
-        account_owner_name:    find_depositor.full_name,
-        cooperative:           employee.cooperative,
-        depositor:             find_depositor,
-        account_number:        time_deposit.account_number,
-        date_opened:           voucher.date,
-        saving_product_id:     saving_product_id,
+      SavingsAccountApplication.new(
+        account_owner_name: find_depositor.full_name,
+        cooperative: employee.cooperative,
+        depositor: find_depositor,
+        account_number: time_deposit.account_number,
+        date_opened: voucher.date,
+        saving_product_id: saving_product_id,
         last_transaction_date: savings_account_application.date_opened
       )
       create_accounts(savings_account)
@@ -34,5 +35,4 @@ module SavingsAccounts
       savings_account_application.depositor
     end
   end
-
 end

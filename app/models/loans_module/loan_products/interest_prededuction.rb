@@ -3,8 +3,8 @@ module LoansModule
     class InterestPrededuction < ApplicationRecord
       belongs_to :loan_product
 
-      enum calculation_type: [:percent_based, :amount_based, :number_of_payments_based]
-      enum prededuction_scope: [:on_first_year]
+      enum calculation_type: { percent_based: 0, amount_based: 1, number_of_payments_based: 2 }
+      enum prededuction_scope: { on_first_year: 0 }
       validates :calculation_type, presence: true
       validates :rate, :amount, :number_of_payments, numericality: true
 
@@ -17,7 +17,7 @@ module LoansModule
       end
 
       def calculator
-        ("LoansModule::InterestPredeductionCalculators::" + calculation_type.titleize.gsub(" ", "")).constantize
+        "LoansModule::InterestPredeductionCalculators::#{calculation_type.titleize.delete(' ')}".constantize
       end
     end
   end

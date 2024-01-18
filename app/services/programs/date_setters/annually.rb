@@ -1,19 +1,19 @@
-module Programs 
-  module DateSetters 
+module Programs
+  module DateSetters
     class Annually
-      attr_reader :date 
+      attr_reader :date
 
       def initialize(date:)
-        @date = date 
-      end 
-      
+        @date = date
+      end
+
       def beginning_date
         date.beginning_of_year
-      end 
+      end
 
       def ending_date
         date.end_of_year
-      end 
-    end 
-  end 
-end 
+      end
+    end
+  end
+end

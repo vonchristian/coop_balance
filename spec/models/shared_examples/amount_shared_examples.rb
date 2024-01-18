@@ -1,22 +1,22 @@
 shared_examples_for 'a AccountingModule::Amount subtype' do |elements|
-  let(:amount) { FactoryBot.build(elements[:kind]) }
   subject { amount }
 
-  it { is_expected.to be_valid }
+  let(:amount) { build(elements[:kind]) }
 
-  it "should require an amount" do
+  it { should be_valid }
+
+  it 'requires an amount' do
     amount.amount_cents = nil
-    expect(amount).to_not be_valid
+    expect(amount).not_to be_valid
   end
 
-  it "should require a entry" do
+  it 'requires a entry' do
     amount.entry = nil
-    expect(amount).to_not be_valid
+    expect(amount).not_to be_valid
   end
 
-  it "should require an account" do
+  it 'requires an account' do
     amount.account = nil
-    expect(amount).to_not be_valid
+    expect(amount).not_to be_valid
   end
-
 end

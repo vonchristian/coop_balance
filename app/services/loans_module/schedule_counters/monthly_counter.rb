@@ -1,8 +1,6 @@
 module LoansModule
   module ScheduleCounters
     class MonthlyCounter
-      
-
       attr_reader :loan_application
 
       def initialize(loan_application:)

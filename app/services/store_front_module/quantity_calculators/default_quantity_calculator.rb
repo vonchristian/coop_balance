@@ -6,6 +6,7 @@ module StoreFrontModule
       def initialize(args)
         @line_items = args.fetch(:line_items)
       end
+
       def compute
         line_items.total_converted_quantity
       end

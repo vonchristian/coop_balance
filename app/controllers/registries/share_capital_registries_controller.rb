@@ -5,10 +5,11 @@ module Registries
       @registry.save
       @registry.parse_for_records
       # disable turbolinks on redirects
-      redirect_to management_module_settings_data_migrations_url, notice: "Share Capital registry saved successfully"
+      redirect_to management_module_settings_data_migrations_url, notice: 'Share Capital registry saved successfully'
     end
 
     private
+
     def registry_params
       params.require(:registries_share_capital_registry).permit(:spreadsheet, :office_id, :employee_id)
     end

@@ -17,6 +17,7 @@ module AccountingModule
           render :new, status: :unprocessable_entity
         end
       end
+
       def show
         @entry   = current_office.entries.find(params[:entry_id])
         @voucher = current_office.vouchers.find(params[:id])
@@ -25,8 +26,8 @@ module AccountingModule
       private
 
       def reversal_params
-        params.require(:accounting_module_entries_reversal_voucher_processing).
-        permit(:entry_id, :description, :reference_number, :account_number, :employee_id)
+        params.require(:accounting_module_entries_reversal_voucher_processing)
+              .permit(:entry_id, :description, :reference_number, :account_number, :employee_id)
       end
     end
   end

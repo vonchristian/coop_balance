@@ -1,6 +1,5 @@
-shared_examples_for 'a StoreFrontModule::LineItem subtype' do |elements|
-  let(:line_item) { create(elements[:kind])}
+shared_context 'a StoreFrontModule::LineItem subtype' do |elements|
   subject { line_item }
 
-
+  let(:line_item) { create(elements[:kind]) }
 end

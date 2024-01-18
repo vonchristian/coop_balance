@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'New member membership' do
-  before(:each) do
+  before do
     user = create(:user, role: 'teller')
     login_as(user, scope: :user)
     member = create(:member)
@@ -10,10 +10,10 @@ describe 'New member membership' do
 
   it 'with valid attributes' do
     click_link 'Update Membership'
-    choose "Regular Member"
-    click_button "Save Membership"
+    choose 'Regular Member'
+    click_button 'Save Membership'
 
-    expect(page).to have_content("saved successfully")
+    expect(page).to have_content('saved successfully')
     expect(@member.regular_member?).to be true
   end
 end

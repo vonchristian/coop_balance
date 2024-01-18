@@ -9,6 +9,7 @@ module Memberships
                   :date,
                   :description,
                   :account_number
+
     validates :share_capital_product_id,
               :employee_id,
               :amount,
@@ -32,6 +33,7 @@ module Memberships
     end
 
     private
+
     def save_subscription
       share_capital = DepositsModule::ShareCapital.create(
         subscriber: find_subscriber,
@@ -39,11 +41,12 @@ module Memberships
         share_capital_product: find_share_capital_product,
         date_opened: date,
         last_transaction_date: date
-        )
+      )
       create_entry(share_capital)
     end
-    def create_entry(share_capital)
-      entry = AccountingModule::Entry.create!(
+
+    def create_entry(_share_capital)
+      AccountingModule::Entry.create!(
         office: find_employee.office,
         cooperative: find_employee.cooperative,
         recorder: find_employee,
@@ -53,14 +56,17 @@ module Memberships
         commercial_document: find_subscriber,
         debit_amounts_attributes: [
           account: debit_account,
-          amount: amount],
+          amount: amount
+        ],
         credit_amounts_attributes: [
           account: credit_account,
-          amount: amount]
-        )
+          amount: amount
+        ]
+      )
     end
+
     def find_employee
-      User.find_by_id(employee_id)
+      User.find_by(id: employee_id)
     end
 
     def debit_account
@@ -68,8 +74,8 @@ module Memberships
     end
 
     def find_subscriber
-      employee_subscriber = User.find_by_id(subscriber_id)
-      member_subscriber = Member.find_by_id(subscriber_id)
+      employee_subscriber = User.find_by(id: subscriber_id)
+      member_subscriber = Member.find_by(id: subscriber_id)
       if employee_subscriber.present?
         employee_subscriber
       elsif member_subscriber.present?
@@ -82,7 +88,7 @@ module Memberships
     end
 
     def find_share_capital_product
-      CoopServicesModule::ShareCapitalProduct.find_by_id(share_capital_product_id)
+      CoopServicesModule::ShareCapitalProduct.find_by(id: share_capital_product_id)
     end
   end
 end

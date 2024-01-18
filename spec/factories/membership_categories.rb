@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :membership_category do
-    title { "MyString" }
-    association :cooperative
+    title { 'MyString' }
+    cooperative
   end
 end

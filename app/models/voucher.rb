@@ -1,24 +1,23 @@
-
 class Voucher < ApplicationRecord
   include PgSearch::Model
 
   has_secure_token
-  pg_search_scope :text_search, :against => [:reference_number, :description]
-  multisearchable against: [:number, :description]
+  pg_search_scope :text_search, against: %i[reference_number description]
+  multisearchable against: %i[number description]
 
   belongs_to :cooperative, optional: true
   belongs_to :store_front,         optional: true
-  belongs_to :cooperative_service, class_name: "CoopServicesModule::CooperativeService", optional: true
-  belongs_to :office,              class_name: "Cooperatives::Office", optional: true
-  belongs_to :accounting_entry,    class_name: "AccountingModule::Entry", foreign_key: 'entry_id', optional: true
+  belongs_to :cooperative_service, class_name: 'CoopServicesModule::CooperativeService', optional: true
+  belongs_to :office,              class_name: 'Cooperatives::Office', optional: true
+  belongs_to :accounting_entry,    class_name: 'AccountingModule::Entry', foreign_key: 'entry_id', optional: true
   belongs_to :payee,               polymorphic: true
-  belongs_to :commercial_document, polymorphic: true, optional: true #attaching voucher to orders
-  belongs_to :preparer,            class_name: "User", foreign_key: 'preparer_id', optional: true
+  belongs_to :commercial_document, polymorphic: true, optional: true # attaching voucher to orders
+  belongs_to :preparer,            class_name: 'User', optional: true
   belongs_to :recording_agent,     polymorphic: true, optional: true
   belongs_to :disbursing_agent,    polymorphic: true, optional: true
   belongs_to :origin,              polymorphic: true, optional: true
-  belongs_to :disburser,           class_name: "User", foreign_key: 'disburser_id', optional: true
-  has_many :voucher_amounts,       class_name: "Vouchers::VoucherAmount", dependent: :destroy
+  belongs_to :disburser,           class_name: 'User', optional: true
+  has_many :voucher_amounts,       class_name: 'Vouchers::VoucherAmount', dependent: :destroy
 
   delegate :title, to: :cooperative_service, prefix: true, allow_nil: true
   delegate :name, :abbreviated_name, :address, :contact_number, to: :cooperative, prefix: true
@@ -51,9 +50,7 @@ class Voucher < ApplicationRecord
     accounting_entry
   end
 
-  def total_cash_amount
-    voucher_amounts.total_cash_amount
-  end
+  delegate :total_cash_amount, to: :voucher_amounts
 
   def name
     payee_name
@@ -65,9 +62,9 @@ class Voucher < ApplicationRecord
 
   def self.payees
     User.all +
-    Member.all +
-    Organization.all +
-    StoreFrontModule::Supplier.all
+      Member.all +
+      Organization.all +
+      StoreFrontModule::Supplier.all
   end
 
   def self.unused
@@ -90,7 +87,7 @@ class Voucher < ApplicationRecord
     where.not(entry_id: nil)
   end
 
-  def self.disbursed_on(args={})
+  def self.disbursed_on(args = {})
     if args[:from_date] && args[:to_date]
       range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])
       disbursed.joins(:accounting_entry).where('entries.entry_date' => (range.start_date..range.end_date))
@@ -104,16 +101,17 @@ class Voucher < ApplicationRecord
   end
 
   def self.latest
-    all.pluck(:number).max
+    pluck(:number).max
   end
 
   def self.generate_number
-    return "000000000001" if self.blank?
-      all.pluck(:number).reject!(&:nil?).max.next
+    return '000000000001' if blank?
+
+    pluck(:number).compact!.max.next
   end
 
   def valid_for?(cart)
-    cart.total_cost == self.entry.debit_amounts.total && self.commercial_document.nil?
+    cart.total_cost == entry.debit_amounts.total && commercial_document.nil?
   end
 
   def disbursing_officer
@@ -122,7 +120,7 @@ class Voucher < ApplicationRecord
     else
       # id = voucher_amounts.contains_cash_accounts.pluck(:account_id).last
       # employee = Employees::EmployeeCashAccount.where(cash_account_id: id).last.employee
-      employee = Employees::EmployeeCashAccount.last.employee
+      Employees::EmployeeCashAccount.last.employee
     end
   end
 
@@ -130,20 +128,21 @@ class Voucher < ApplicationRecord
     voucher_amounts.contains_cash_accounts.present?
   end
 
-
   private
+
   def set_default_date
     self.date ||= Time.zone.now
   end
+
   def has_credit_amounts?
-    errors[:base] << "Voucher must have at least one credit amount" if self.voucher_amounts.credit.blank?
+    errors.add(:base, 'Voucher must have at least one credit amount') if voucher_amounts.credit.blank?
   end
 
   def has_debit_amounts?
-    errors[:base] << "Voucher must have at least one debit amount" if self.voucher_amounts.debit.blank?
+    errors.add(:base, 'Voucher must have at least one debit amount') if voucher_amounts.debit.blank?
   end
 
   def amounts_cancel?
-    errors[:base] << "The credit and debit amounts are not equal" if voucher_amounts.credit.total != voucher_amounts.debit.total
+    errors.add(:base, 'The credit and debit amounts are not equal') if voucher_amounts.credit.total != voucher_amounts.debit.total
   end
 end

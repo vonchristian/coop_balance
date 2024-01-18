@@ -5,7 +5,7 @@ FactoryBot.define do
     abbreviated_name    { Faker::Name.name }
     registration_number { Faker::Number.number(digits: 12) }
     after(:build) do |coop|
-    coop.logo.attach(io: File.open(Rails.root.join('spec', 'support', 'images', 'default.png')), filename: 'default.png', content_type: 'image/png')
-  end
+      coop.logo.attach(io: Rails.root.join('spec/support/images/default.png').open, filename: 'default.png', content_type: 'image/png')
+    end
   end
 end

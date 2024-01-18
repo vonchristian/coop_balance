@@ -15,9 +15,10 @@ module Employees
               employee: @employee,
               from_date: @from_date,
               to_date: @to_date,
-              title: "Cash Disbursements Voucher",
-              view_context: view_context)
-            send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Cash Disbursement Report.pdf"
+              title: 'Cash Disbursements Voucher',
+              view_context: view_context
+            )
+            send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'Cash Disbursement Report.pdf'
           end
         end
       end

@@ -1,6 +1,6 @@
 module LoansModule
-  module TotalRepaymentAmortizers 
+  module TotalRepaymentAmortizers
     class EqualPayment
-    end 
-  end 
-end 
+    end
+  end
+end

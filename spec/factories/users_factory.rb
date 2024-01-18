@@ -10,27 +10,27 @@ FactoryBot.define do
       u.cooperative = cooperative
     end
 
-    factory :loan_officer, class: User do
+    factory :loan_officer, class: 'User' do
       role { 'loan_officer' }
     end
 
-    factory :teller, class: User do
+    factory :teller, class: 'User' do
       role { 'teller' }
     end
 
-    factory :general_manager, class: User do
+    factory :general_manager, class: 'User' do
       role { 'general_manager' }
     end
 
-    factory :bookkeeper, class: User do
+    factory :bookkeeper, class: 'User' do
       role { 'bookkeeper' }
     end
 
-    factory :accountant, class: User do
+    factory :accountant, class: 'User' do
       role { 'accountant' }
     end
 
-    factory :treasurer, class: User do
+    factory :treasurer, class: 'User' do
       role { 'treasurer' }
     end
   end

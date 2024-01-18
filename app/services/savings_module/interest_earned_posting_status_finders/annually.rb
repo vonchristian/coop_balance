@@ -3,4 +3,4 @@ module SavingsModule
     class Annually
     end
   end
-end 
+end

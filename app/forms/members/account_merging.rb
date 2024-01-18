@@ -8,7 +8,9 @@ module Members
         create_cart_members
       end
     end
+
     private
+
     def create_cart_members
       find_cart.members << find_member
     end
@@ -16,6 +18,7 @@ module Members
     def find_cart
       StoreFrontModule::Cart.find(cart_id)
     end
+
     def find_member
       Member.find(old_member_id)
     end

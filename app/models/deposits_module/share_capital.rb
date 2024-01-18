@@ -4,31 +4,29 @@ module DepositsModule
     include InactivityMonitoring
     extend  PercentActive
 
-    pg_search_scope :text_search, :against => [:account_number, :account_owner_name]
+    pg_search_scope :text_search, against: %i[account_number account_owner_name]
     pg_search_scope :account_number_search, against: [:account_number]
 
-    multisearchable against: [:account_number, :account_owner_name]
+    multisearchable against: %i[account_number account_owner_name]
 
-    belongs_to :office,                       class_name: "Cooperatives::Office"
+    belongs_to :office, class_name: 'Cooperatives::Office'
     belongs_to :cooperative
     belongs_to :subscriber,                   polymorphic: true
-    belongs_to :share_capital_product,        class_name: "CoopServicesModule::ShareCapitalProduct"
-    belongs_to :barangay,                     class_name: "Addresses::Barangay", optional: true
+    belongs_to :share_capital_product,        class_name: 'CoopServicesModule::ShareCapitalProduct'
+    belongs_to :barangay,                     class_name: 'Addresses::Barangay', optional: true
     belongs_to :organization,                 optional: true
     belongs_to :share_capital_equity_account, class_name: 'AccountingModule::Account', foreign_key: 'equity_account_id'
     has_many   :accountable_accounts,         class_name: 'AccountingModule::AccountableAccount', as: :accountable
     has_many   :accounts,                     through: :accountable_accounts, class_name: 'AccountingModule::Account'
-    has_many   :amounts,                      through: :accounts, class_name: "AccountingModule::Amount"
-    has_many   :debit_amounts,                through: :accounts, class_name: "AccountingModule::DebitAmount"
-    has_many   :credit_amounts,                through: :accounts, class_name: "AccountingModule::CreditAmount"
-
+    has_many   :amounts,                      through: :accounts, class_name: 'AccountingModule::Amount'
+    has_many   :debit_amounts,                through: :accounts, class_name: 'AccountingModule::DebitAmount'
+    has_many   :credit_amounts, through: :accounts, class_name: 'AccountingModule::CreditAmount'
 
     delegate :name, to: :barangay, prefix: true, allow_nil: true
     delegate :name,
-            :equity_account,
-            :default_product?,
-
-            :cost_per_share,
+             :equity_account,
+             :default_product?,
+             :cost_per_share,
              to: :share_capital_product, prefix: true
     delegate :name, :current_address_complete_address, :current_contact_number, to: :subscriber, prefix: true
     delegate :avatar, :name, to: :subscriber
@@ -41,6 +39,7 @@ module DepositsModule
     def self.withdrawn
       where.not(withdrawn_at: nil)
     end
+
     def self.equity_accounts
       ids = pluck(:equity_account_id)
       AccountingModule::Account.where(id: ids)
@@ -51,15 +50,15 @@ module DepositsModule
       AccountingModule::Account.where(id: ids)
     end
 
-    def self.total_balances(args={})
+    def self.total_balances(args = {})
       equity_accounts.balance(args)
     end
 
-    def self.inactive(options={})
+    def self.inactive(options = {})
       updated_at(options)
     end
 
-    def self.updated_at(options={})
+    def self.updated_at(options = {})
       if options[:from_date] && options[:to_date]
         date_range = DateRange.new(from_date: options[:from_date], to_date: options[:to_date])
         joins(:entries).where('entries.entry_date' => (date_range.start_date..date_range.end_date))
@@ -76,25 +75,22 @@ module DepositsModule
       where(has_minimum_balance: false)
     end
 
-    def entries
-      share_capital_equity_account.entries
-    end
+    delegate :entries, to: :share_capital_equity_account
 
-    def capital_build_ups(args={})
+    def capital_build_ups(_args = {})
       entries
     end
 
-
     def average_monthly_balance(args = {})
-      first_entry_date = Date.today - 999.years
+      first_entry_date = Time.zone.today - 999.years
       date = args[:date]
       balance(from_date: first_entry_date, to_date: date.beginning_of_month.last_month.end_of_month) +
-      capital_build_ups(from_date: date.beginning_of_month, to_date: (date.beginning_of_month + 14.days)).sum(&:amount)
+        capital_build_ups(from_date: date.beginning_of_month, to_date: (date.beginning_of_month + 14.days)).sum(&:amount)
     end
 
     def averaged_monthly_balances
       months = []
-      (DateTime.now.beginning_of_year..DateTime.now.end_of_year).each do |month|
+      DateTime.now.all_year.each do |month|
         months << month.beginning_of_month
       end
       balances = []
@@ -124,7 +120,7 @@ module DepositsModule
       name
     end
 
-    def computed_interest(args={})
+    def computed_interest(args = {})
       net_income_distributable = args[:net_income_distributable]
       averaged_monthly_balances / net_income_distributable
     end
@@ -136,8 +132,9 @@ module DepositsModule
     end
 
     private
+
     def set_account_owner_name
-      self.account_owner_name ||= self.subscriber_name
+      self.account_owner_name ||= subscriber_name
     end
   end
 end

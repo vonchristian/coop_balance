@@ -7,7 +7,6 @@ module ShareCapitals
       @share_capital_application = share_capital_application
       @employee                  = employee
       @office                    = @employee.office
-
     end
 
     def process!
@@ -24,13 +23,13 @@ module ShareCapitals
 
     def create_share_capital
       share_capital = office.share_capitals.build(
-        account_owner_name:           share_capital_application.subscriber.name,
-        cooperative:                  employee.cooperative,
-        subscriber:                   share_capital_application.subscriber,
-        account_number:               share_capital_application.account_number,
-        date_opened:                  share_capital_application.date_opened,
-        share_capital_product:        share_capital_application.share_capital_product,
-        beneficiaries:                share_capital_application.beneficiaries,
+        account_owner_name: share_capital_application.subscriber.name,
+        cooperative: employee.cooperative,
+        subscriber: share_capital_application.subscriber,
+        account_number: share_capital_application.account_number,
+        date_opened: share_capital_application.date_opened,
+        share_capital_product: share_capital_application.share_capital_product,
+        beneficiaries: share_capital_application.beneficiaries,
         share_capital_equity_account: share_capital_application.equity_account
       )
       create_accounts(share_capital)
@@ -41,5 +40,4 @@ module ShareCapitals
       ::AccountCreators::ShareCapital.new(share_capital: share_capital).create_accounts!
     end
   end
-
 end

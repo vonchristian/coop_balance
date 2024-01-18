@@ -6,7 +6,7 @@ module StoreFrontModule
         if @registry.valid?
           @registry.save!
           @registry.parse_for_records
-          redirect_to store_front_module_stock_registry_url(@registry), notice: "Products uploaded successfully."
+          redirect_to store_front_module_stock_registry_url(@registry), notice: 'Products uploaded successfully.'
 
         else
           render :new, status: :unprocessable_entity
@@ -19,9 +19,10 @@ module StoreFrontModule
       end
 
       private
+
       def registry_params
-        params.require(:registries_stock_registry).
-        permit(:spreadsheet, :employee_id, :date, :store_front_id, :cooperative_id)
+        params.require(:registries_stock_registry)
+              .permit(:spreadsheet, :employee_id, :date, :store_front_id, :cooperative_id)
       end
     end
   end

@@ -10,6 +10,7 @@ module SavingsAccounts
     end
 
     private
+
     def merge_accounts
       find_cart.savings.each do |saving|
         find_saving.debit_amounts << saving.debit_amounts
@@ -17,9 +18,11 @@ module SavingsAccounts
         saving.destroy
       end
     end
+
     def find_saving
       DepositsModule::Saving.find(saving_id)
     end
+
     def find_cart
       StoreFrontModule::Cart.find(cart_id)
     end

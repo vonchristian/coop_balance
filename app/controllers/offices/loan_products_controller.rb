@@ -19,9 +19,10 @@ module Offices
     end
 
     private
+
     def loan_product_params
-      params.require(:offices_office_loan_product).
-      permit(:loan_product_id,  :interest_revenue_ledger_id, :penalty_revenue_ledger_id, :forwarding_account_id, :loan_protection_plan_provider_id)
+      params.require(:offices_office_loan_product)
+            .permit(:loan_product_id, :interest_revenue_ledger_id, :penalty_revenue_ledger_id, :forwarding_account_id, :loan_protection_plan_provider_id)
     end
   end
 end

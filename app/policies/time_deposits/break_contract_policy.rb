@@ -2,7 +2,8 @@ module TimeDeposits
   class BreakContractPolicy < ApplicationPolicy
     def new?
       user.teller? || user.treasurer?
-    end 
+    end
+
     def create?
       new?
     end

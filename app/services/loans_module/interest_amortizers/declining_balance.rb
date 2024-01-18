@@ -1,6 +1,6 @@
 module LoansModule
-  module InterestAmortizers 
+  module InterestAmortizers
     class DecliningBalance
-    end 
-  end 
-end 
+    end
+  end
+end

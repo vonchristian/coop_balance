@@ -4,13 +4,12 @@ module CoopServicesModule
     extend Totalable
     extend VarianceMonitoring
     belongs_to :cooperative
-    belongs_to :equity_account,      class_name: "AccountingModule::Account"
-    belongs_to :interest_payable_account, class_name: "AccountingModule::Account"
-    belongs_to :transfer_fee_account, class_name: "AccountingModule::Account"
-    has_many :subscribers,            class_name: "DepositsModule::ShareCapital"
+    belongs_to :equity_account, class_name: 'AccountingModule::Account'
+    belongs_to :interest_payable_account, class_name: 'AccountingModule::Account'
+    belongs_to :transfer_fee_account, class_name: 'AccountingModule::Account'
+    has_many :subscribers,            class_name: 'DepositsModule::ShareCapital'
 
-    validates :name, :equity_account_id,
-              :cost_per_share, presence: true
+    validates :name,               :cost_per_share, presence: true
     validates :name, uniqueness: { scope: :cooperative_id }
     validates :cost_per_share, numericality: true
     delegate :name, to: :equity_account, prefix: true
@@ -21,7 +20,7 @@ module CoopServicesModule
     end
 
     def self.equity_accounts
-      accounts = self.pluck(:equity_account_id)
+      accounts = pluck(:equity_account_id)
       AccountingModule::Account.where(id: accounts)
     end
 

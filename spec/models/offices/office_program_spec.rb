@@ -3,8 +3,8 @@ require 'rails_helper'
 module Offices
   describe OfficeProgram, type: :model do
     describe 'associations' do
-      it { is_expected.to belong_to :office }
-      it { is_expected.to belong_to :program }
+      it { should belong_to :office }
+      it { should belong_to :program }
     end
 
     describe 'validations' do

@@ -14,15 +14,16 @@ module AccountCreators
     end
 
     private
+
     def create_liability_account
-      if savings_account_application.liability_account.blank?
-        account = office.accounts.liabilities.create!(
-          name:   "#{saving_product.name} - #{savings_account_application.account_number}",
-          code:   SecureRandom.uuid,
-          ledger: liability_ledger
-        )
-        savings_account_application.update(liability_account: account)
-      end
+      return if savings_account_application.liability_account.present?
+
+      account = office.accounts.liabilities.create!(
+        name: "#{saving_product.name} - #{savings_account_application.account_number}",
+        code: SecureRandom.uuid,
+        ledger: liability_ledger
+      )
+      savings_account_application.update(liability_account: account)
     end
   end
 end

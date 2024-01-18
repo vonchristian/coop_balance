@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'New entry reversal' do
-  before(:each) do
+  before do
     bookkeeper = create(:bookkeeper)
     @entry     = build(:entry, office: bookkeeper.office)
     @cash      = create(:asset)
@@ -26,7 +26,5 @@ describe 'New entry reversal' do
     click_link 'Confirm Transaction'
 
     expect(page).to have_content('saved successfully')
-
   end
-
 end

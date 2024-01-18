@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'New share capital balance transfer' do
-  before(:each) do
+  before do
     bookkeeper       = create(:bookkeeper)
     cash             = create(:asset)
     office           = bookkeeper.office
@@ -23,16 +23,14 @@ describe 'New share capital balance transfer' do
     click_link "#{@share_capital.id}-accounting"
     click_link 'Balance Transfer'
     click_link "#{@share_capital_2.id}-select-destination-account"
-
   end
 
-  it 'with valid attributes', js: true do
+  it 'with valid attributes', :js do
     fill_in 'Amount', with: 100
 
     click_button 'Proceed'
 
     expect(page).to have_content('created successfully')
-
 
     fill_in 'Reference number', with: '01'
     fill_in 'Description', with: 'test'
@@ -46,10 +44,9 @@ describe 'New share capital balance transfer' do
     expect(page).to have_content('confirmed successfully')
   end
 
-  it "with blank attributes" do 
-
-    click_button "Proceed"
+  it 'with blank attributes' do
+    click_button 'Proceed'
 
     expect(page).to have_content("can't be blank")
-  end 
+  end
 end

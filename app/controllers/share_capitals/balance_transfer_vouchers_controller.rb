@@ -14,9 +14,10 @@ module ShareCapitals
     end
 
     private
+
     def voucher_params
-      params.require(:share_capitals_balance_transfer_voucher).
-      permit(:cart_id, :employee_id, :share_capital_id, :date, :reference_number, :description, :account_number)
+      params.require(:share_capitals_balance_transfer_voucher)
+            .permit(:cart_id, :employee_id, :share_capital_id, :date, :reference_number, :description, :account_number)
     end
   end
 end

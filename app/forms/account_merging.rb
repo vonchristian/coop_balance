@@ -9,6 +9,7 @@ class AccountMerging
   end
 
   private
+
   def merge_account
     find_merger.savings        << find_mergee.savings
     find_merger.time_deposits  << find_mergee.time_deposits
@@ -17,10 +18,10 @@ class AccountMerging
   end
 
   def find_merger
-    Member.find_by_id(merger_id)
+    Member.find_by(id: merger_id)
   end
 
   def find_mergee
-    Member.find_by_id(mergee_id)
+    Member.find_by(id: mergee_id)
   end
 end

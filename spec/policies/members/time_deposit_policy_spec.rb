@@ -2,19 +2,21 @@ require 'rails_helper'
 
 module Members
   describe TimeDepositPolicy do
-    subject { Members::TimeDepositPolicy.new(user, record) }
+    subject { described_class.new(user, record) }
     let(:record) { create(:time_deposit) }
+
     context 'teller' do
       let(:user) { create(:user, role: 'teller') }
 
-      it { is_expected.to permit_action(:new) }
-      it { is_expected.to permit_action(:create) }
+      it { should permit_action(:new) }
+      it { should permit_action(:create) }
     end
+
     context 'teller' do
       let(:user) { create(:user, role: 'treasurer') }
 
-      it { is_expected.to permit_action(:new) }
-      it { is_expected.to permit_action(:create) }
+      it { should permit_action(:new) }
+      it { should permit_action(:create) }
     end
   end
 end

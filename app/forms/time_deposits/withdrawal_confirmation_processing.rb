@@ -2,6 +2,7 @@ module TimeDeposits
   class WithdrawalConfirmationProcessing
     include ActiveModel::Model
     attr_reader :time_deposit
+
     def initialize(args)
       @time_deposit = args[:time_deposit]
     end
@@ -17,7 +18,7 @@ module TimeDeposits
     end
 
     def find_time_deposit
-      DepositsModule::TimeDeposit.find_by_id(time_deposit.id)
+      DepositsModule::TimeDeposit.find_by(id: time_deposit.id)
     end
   end
 end

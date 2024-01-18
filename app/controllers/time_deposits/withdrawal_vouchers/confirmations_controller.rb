@@ -7,7 +7,7 @@ module TimeDeposits
         ActiveRecord::Base.transaction do
           create_entry
           set_time_deposit_as_withdrawn
-          redirect_to time_deposit_url(@time_deposit), notice: "Time deposit withdrawn successfully."
+          redirect_to time_deposit_url(@time_deposit), notice: 'Time deposit withdrawn successfully.'
         end
       end
 
@@ -20,7 +20,6 @@ module TimeDeposits
       def set_time_deposit_as_withdrawn
         @time_deposit.withdrawn!
       end
-
     end
   end
 end

@@ -1,18 +1,19 @@
 class ApplicationController < ActionController::Base
   include Pundit::Authorization
   include Pagy::Backend
-  protect_from_forgery with: :null_session, if: Proc.new { |c| c.request.format == 'application/json' }
+  protect_from_forgery with: :null_session, if: proc { |c| c.request.format == 'application/json' }
   before_action :authenticate_user!
   rescue_from Pundit::NotAuthorizedError, with: :permission_denied
   helper_method :current_cooperative, :current_cart, :current_office, :current_store_front
 
   private
+
   def current_cart
-      StoreFrontModule::Cart.find(session[:cart_id])
-      rescue ActiveRecord::RecordNotFound
-      cart = current_user.carts.create!()
-      session[:cart_id] = cart.id
-      cart
+    StoreFrontModule::Cart.find(session[:cart_id])
+  rescue ActiveRecord::RecordNotFound
+    cart = current_user.carts.create!
+    session[:cart_id] = cart.id
+    cart
   end
 
   def current_cooperative
@@ -27,20 +28,21 @@ class ApplicationController < ActionController::Base
     current_user.store_front
   end
 
-  def respond_modal_with(*args, &blk)
+  def respond_modal_with(*args, &)
     options = args.extract_options!
     options[:responder] = ModalResponder
-    respond_with *args, options, &blk
+    respond_with(*args, options, &)
   end
 
   def current_stock_registry
     StockRegistry.find(session[:stock_registry_id])
-    rescue ActiveRecord::RecordNotFound
+  rescue ActiveRecord::RecordNotFound
     registry = StockRegistry.create
     session[:stock_registry_id] = registry.id
     registry
   end
+
   def permission_denied
-    redirect_to "/", alert: 'Sorry but you are not allowed to access this page.'
+    redirect_to '/', alert: 'Sorry but you are not allowed to access this page.'
   end
 end

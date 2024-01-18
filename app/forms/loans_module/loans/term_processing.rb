@@ -8,21 +8,24 @@ module LoansModule
       validates :loan_id, :employee_id, :effectivity_date, presence: true
 
       def process!
-        if valid?
-          ActiveRecord::Base.transaction do
-            create_loan_term
-          end
+        return unless valid?
+
+        ActiveRecord::Base.transaction do
+          create_loan_term
         end
       end
 
       private
+
       def create_loan_term
         Term.create!(
-          termable:         find_loan,
+          termable: find_loan,
           effectivity_date: effectivity_date,
-          maturity_date:    maturity_date,
-          number_of_days:   number_of_days.to_i)
+          maturity_date: maturity_date,
+          number_of_days: number_of_days.to_i
+        )
       end
+
       def maturity_date
         effectivity_date.to_date + number_of_days.to_i.days
       end

@@ -9,11 +9,11 @@ module StoreFrontModule
       end
 
       def compute
-        line_items.
-        with_orders.
-        for_store_front(store_front).
-        includes(:unit_of_measurement).
-        total_converted_quantity
+        line_items
+          .with_orders
+          .for_store_front(store_front)
+          .includes(:unit_of_measurement)
+          .total_converted_quantity
       end
     end
   end

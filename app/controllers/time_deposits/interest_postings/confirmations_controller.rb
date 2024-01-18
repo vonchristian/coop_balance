@@ -1,5 +1,5 @@
-module TimeDeposits 
-  module InterestPostings 
+module TimeDeposits
+  module InterestPostings
     class ConfirmationsController < ApplicationController
       def create
         @voucher      = current_office.vouchers.find(params[:voucher_id])
@@ -7,8 +7,8 @@ module TimeDeposits
         ActiveRecord::Base.transaction do
           Vouchers::EntryProcessing.new(updateable: @time_deposit, voucher: @voucher, employee: current_user).process!
         end
-        redirect_to time_deposit_url(@time_deposit), notice: "Interest posting transaction saved successfully."
+        redirect_to time_deposit_url(@time_deposit), notice: 'Interest posting transaction saved successfully.'
       end
-    end 
-  end 
-end 
+    end
+  end
+end

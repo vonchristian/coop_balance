@@ -1,10 +1,10 @@
 FactoryBot.define do
-  factory :office_loan_product, class: Offices::OfficeLoanProduct do
-    association :office
-    association :loan_product
-    association :interest_revenue_ledger, factory: :revenue_ledger
-    association :penalty_revenue_ledger,  factory: :revenue_ledger
-    association :loan_protection_plan_provider
-    association :forwarding_account,                factory: :asset
+  factory :office_loan_product, class: 'Offices::OfficeLoanProduct' do
+    office
+    loan_product
+    interest_revenue_ledger factory: %i[revenue_ledger]
+    penalty_revenue_ledger factory: %i[revenue_ledger]
+    loan_protection_plan_provider
+    forwarding_account factory: %i[asset]
   end
 end

@@ -21,8 +21,8 @@ module Offices
     private
 
     def saving_product_params
-      params.require(:offices_office_saving_product).
-      permit(:saving_product_id, :liability_ledger_id, :interest_expense_ledger_id, :forwarding_account_id)
+      params.require(:offices_office_saving_product)
+            .permit(:saving_product_id, :liability_ledger_id, :interest_expense_ledger_id, :forwarding_account_id)
     end
   end
 end

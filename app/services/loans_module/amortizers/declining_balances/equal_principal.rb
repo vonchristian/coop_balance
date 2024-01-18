@@ -3,6 +3,7 @@ module LoansModule
     module DecliningBalances
       class EqualPrincipal
         attr_reader :loan_application, :loan_product, :interest_amortization_schedules
+
         def initialize(loan_application:)
           @loan_application       = loan_application
           @loan_product           = @loan_application.loan_product
@@ -15,24 +16,28 @@ module LoansModule
           update_interest_amounts
           update_total_repayments
         end
-        private 
+
+        private
+
         def update_total_repayments
           loan_application.amortization_schedules.each do |amortization_schedule|
             amortization_schedule.update(total_repayment: amortization_schedule.principal + amortization_schedule.interest)
-          end 
-        end 
+          end
+        end
+
         def update_interest_amounts
           set_first_year_interests
-          if (12..24).include?(loan_application.schedule_count)
+          case loan_application.schedule_count
+          when 12..24
             set_second_year_interests
-          elsif (25..36).include?(loan_application.schedule_count)
+          when 25..36
             set_second_year_interests
             set_third_year_interests
-          elsif (37..48).include?(loan_application.schedule_count)
+          when 37..48
             set_second_year_interests
             set_third_year_interests
             set_fourth_year_interests
-          elsif (49..60).include?(loan_application.schedule_count)
+          when 49..60
             set_second_year_interests
             set_third_year_interests
             set_fourth_year_interests
@@ -48,29 +53,27 @@ module LoansModule
           end
         end
 
-        private
-
         def create_first_schedule
           loan_application.amortization_schedules.create!(
-            office:         loan_application.office,
-            date:           loan_application.first_amortization_date,
-            interest:       0,
-            principal:      loan_application.amortizeable_principal,
+            office: loan_application.office,
+            date: loan_application.first_amortization_date,
+            interest: 0,
+            principal: loan_application.amortizeable_principal,
             ending_balance: loan_application.loan_amount.amount - loan_application.amortizeable_principal
           )
         end
 
         def create_succeeding_schedule
-          if loan_application.schedule_count > 1
-            (loan_application.schedule_count - 1).to_i.times do
-              loan_application.amortization_schedules.create!(
-                office:         loan_application.office,
-                date:           loan_application.succeeding_amortization_date,
-                interest:       0,
-                principal:      loan_application.amortizeable_principal,
-                ending_balance: computed_ending_balance_for(loan_application.amortization_schedules.latest)
-              )
-            end
+          return unless loan_application.schedule_count > 1
+
+          (loan_application.schedule_count - 1).to_i.times do
+            loan_application.amortization_schedules.create!(
+              office: loan_application.office,
+              date: loan_application.succeeding_amortization_date,
+              interest: 0,
+              principal: loan_application.amortizeable_principal,
+              ending_balance: computed_ending_balance_for(loan_application.amortization_schedules.latest)
+            )
           end
         end
 
@@ -84,7 +87,7 @@ module LoansModule
 
         def amortizeable_interest_for(schedule)
           loan_product.interest_calculator.new(
-            loan_application: loan_application, 
+            loan_application: loan_application,
             schedule: schedule
           ).monthly_amortization_interest
         end

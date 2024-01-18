@@ -3,7 +3,7 @@ module AccountingModule
     class DefaultBalanceFinder
       attr_reader :amounts
 
-      def initialize(args={})
+      def initialize(args = {})
         @amounts = args.fetch(:amounts)
       end
 

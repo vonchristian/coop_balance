@@ -1,13 +1,13 @@
 require 'rails_helper'
 include ChosenSelect
 describe 'New office loan product' do
-  before(:each) do
+  before do
     manager                           = create(:general_manager)
     cooperative                       = manager.cooperative
     office                            = manager.office
-    loan_product                      = create(:loan_product, name: 'Test Loan Product', cooperative: cooperative)
-    loan_protection_plan_provider     = create(:loan_protection_plan_provider, business_name: 'CLIMBS', cooperative: cooperative)
-    forwarding_account                = create(:asset, name: 'Test Forwarding Account')
+    create(:loan_product, name: 'Test Loan Product', cooperative: cooperative)
+    create(:loan_protection_plan_provider, business_name: 'CLIMBS', cooperative: cooperative)
+    forwarding_account = create(:asset, name: 'Test Forwarding Account')
     office.accounts << forwarding_account
     login_as(manager, scope: :user)
 
@@ -17,7 +17,7 @@ describe 'New office loan product' do
     click_link 'New Loan Product'
   end
 
-  it 'with valid attributes', js: true do
+  it 'with valid attributes', :js do
     select_from_chosen 'Test Loan Product',       from: 'Loan product'
     select_from_chosen 'Test Revenue',            from: 'Interest revenue account category'
     select_from_chosen 'Test Penalty',            from: 'Penalty revenue account category'

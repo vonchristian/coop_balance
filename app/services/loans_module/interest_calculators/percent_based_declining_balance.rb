@@ -1,7 +1,8 @@
 module LoansModule
   module InterestCalculators
     class PercentBasedDecliningBalance
-        attr_reader :loan_application, :monthly_rate, :schedule
+      attr_reader :loan_application, :monthly_rate, :schedule
+
       def initialize(args)
         @loan_application = args.fetch(:loan_application)
         @schedule         = args.fetch(:schedule)

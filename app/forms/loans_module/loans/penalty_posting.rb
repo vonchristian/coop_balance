@@ -11,18 +11,22 @@ module LoansModule
       end
 
       private
+
       def post_penalty
         find_loan.loan_penalties.create(
           date: date,
           description: description,
           amount: amount,
-          employee: find_employee)
+          employee: find_employee
+        )
       end
+
       def find_employee
-        User.find_by_id(employee_id)
+        User.find_by(id: employee_id)
       end
+
       def find_loan
-        LoansModule::Loan.find_by_id(loan_id)
+        LoansModule::Loan.find_by(id: loan_id)
       end
     end
   end

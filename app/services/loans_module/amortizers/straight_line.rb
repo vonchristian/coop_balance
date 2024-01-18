@@ -2,6 +2,7 @@ module LoansModule
   module Amortizers
     class StraightLine
       attr_reader :loan_application, :loan_product
+
       def initialize(args)
         @loan_application = args.fetch(:loan_application)
         @loan_product     = @loan_application.loan_product
@@ -18,25 +19,26 @@ module LoansModule
           schedule.save!
         end
       end
+
       private
 
       def create_first_schedule
         loan_application.amortization_schedules.create!(
-          date:      loan_application.first_amortization_date,
-          interest:  0,
+          date: loan_application.first_amortization_date,
+          interest: 0,
           principal: loan_application.loan_amount.amount / loan_application.schedule_count
         )
       end
 
       def create_succeeding_schedule
-        if !loan_application.lumpsum?
-          (loan_application.schedule_count - 1).to_i.times do
-            loan_application.amortization_schedules.create!(
-              date:      loan_application.succeeding_amortization_date,
-              interest:  0,
-              principal: loan_application.loan_amount.amount / loan_application.schedule_count
-            )
-          end
+        return if loan_application.lumpsum?
+
+        (loan_application.schedule_count - 1).to_i.times do
+          loan_application.amortization_schedules.create!(
+            date: loan_application.succeeding_amortization_date,
+            interest: 0,
+            principal: loan_application.loan_amount.amount / loan_application.schedule_count
+          )
         end
       end
 

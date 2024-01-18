@@ -12,10 +12,13 @@ module StoreFrontModule
           remove_voucher_amount_reference
         end
       end
+
       def find_voucher
         find_cooperative.vouchers.find_by(account_number: account_number)
       end
+
       private
+
       def create_voucher
         voucher = find_cooperative.vouchers.create!(
           payee: find_supplier,
@@ -29,15 +32,19 @@ module StoreFrontModule
         )
         voucher.voucher_amounts << find_supplier.voucher_amounts
       end
+
       def find_supplier
         find_cooperative.suppliers.find(supplier_id)
       end
+
       def find_cooperative
         find_employee.cooperative
       end
+
       def find_employee
         User.find(preparer_id)
       end
+
       def remove_voucher_amount_reference
         find_supplier.voucher_amounts.each do |voucher_amount|
           voucher_amount.commercial_document_id = nil

@@ -9,7 +9,7 @@ module LoansModule
         end
 
         def find_schedule
-          schedule = loan_application.amortization_schedules.by_oldest_date[359]
+          loan_application.amortization_schedules.by_oldest_date[359]
         end
       end
     end

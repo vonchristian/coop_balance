@@ -1,15 +1,15 @@
 module Cooperatives
-	class LogosController < ApplicationController
+  class LogosController < ApplicationController
+    def create
+      @cooperative = current_cooperative
+      @logo = @cooperative.update(logo_params)
+      redirect_to management_module_settings_path, notice: 'Logo updated.'
+    end
 
-		def create
-			@cooperative = current_cooperative
-			@logo = @cooperative.update(logo_params)
-			redirect_to management_module_settings_path, notice: 'Logo updated.'
-		end
+    private
 
-		private
-			def logo_params
-				params.require(:cooperative).permit(:logo)
-			end
-	end
+    def logo_params
+      params.require(:cooperative).permit(:logo)
+    end
+  end
 end

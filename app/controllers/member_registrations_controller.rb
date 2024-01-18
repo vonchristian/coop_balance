@@ -2,6 +2,7 @@ class MemberRegistrationsController < ApplicationController
   def new
     @member = MemberRegistrationForm.new
   end
+
   def create
     @member = MemberRegistrationForm.new(member_params)
     if @member.valid?
@@ -13,13 +14,14 @@ class MemberRegistrationsController < ApplicationController
   end
 
   private
-   def member_params
-    params.require(:member_registration_form).permit(:first_name, 
-                :middle_name, 
-                :last_name, 
-                :sex, 
-                :avatar, 
-                :date_of_birth,
-                :tin_number)
+
+  def member_params
+    params.require(:member_registration_form).permit(:first_name,
+                                                     :middle_name,
+                                                     :last_name,
+                                                     :sex,
+                                                     :avatar,
+                                                     :date_of_birth,
+                                                     :tin_number)
   end
 end

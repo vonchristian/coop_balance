@@ -21,17 +21,18 @@ module Savings
     end
 
     private
+
     def create_savings_account
       savings_account = office.savings.build(
-        liability_account:     savings_account_application.liability_account,
-        account_owner_name:    find_depositor.name,
-        cooperative:           employee.cooperative,
-        depositor:             find_depositor,
-        account_number:        savings_account_application.account_number,
-        date_opened:           savings_account_application.date_opened,
-        saving_product:        savings_account_application.saving_product,
-        beneficiaries:         savings_account_application.beneficiaries,
-        date_opened:           savings_account_application.created_at
+        liability_account: savings_account_application.liability_account,
+        account_owner_name: find_depositor.name,
+        cooperative: employee.cooperative,
+        depositor: find_depositor,
+        account_number: savings_account_application.account_number,
+        date_opened: savings_account_application.date_opened,
+        saving_product: savings_account_application.saving_product,
+        beneficiaries: savings_account_application.beneficiaries,
+        date_opened: savings_account_application.created_at
       )
       create_accounts(savings_account)
       savings_account.save!
@@ -45,5 +46,4 @@ module Savings
       savings_account_application.depositor
     end
   end
-
 end

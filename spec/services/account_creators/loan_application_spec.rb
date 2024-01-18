@@ -15,16 +15,14 @@ module AccountCreators
       receivable_account       = loan_application.receivable_account
       interest_revenue_account = loan_application.interest_revenue_account
 
-      expect(receivable_account).to_not eql nil
-      expect(interest_revenue_account).to_not eql nil
+      expect(receivable_account).not_to eql nil
+      expect(interest_revenue_account).not_to eql nil
 
       expect(office.accounts.assets).to include(receivable_account)
       expect(office.accounts.revenues).to include(interest_revenue_account)
 
       expect(office_loan_product_aging_group.receivable_ledger.accounts).to include(receivable_account)
       expect(office_loan_product.interest_revenue_ledger.accounts).to include(interest_revenue_account)
-
-
     end
   end
 end

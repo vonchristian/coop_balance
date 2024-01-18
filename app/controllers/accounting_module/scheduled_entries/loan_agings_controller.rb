@@ -1,9 +1,9 @@
 module AccountingModule
-  module ScheduledEntries 
+  module ScheduledEntries
     class LoanAgingsController < ApplicationController
-      def index 
+      def index
         @loan_products = current_office.loan_products
-      end 
-    end 
-  end 
-end 
+      end
+    end
+  end
+end

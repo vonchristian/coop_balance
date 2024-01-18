@@ -5,10 +5,11 @@ module LoansModule
         @loan = current_cooperative.loans.find(params[:loan_id])
         @loan.update(
           archived: true,
-          archiving_date: Date.today,
-          archived_by: current_user)
+          archiving_date: Time.zone.today,
+          archived_by: current_user
+        )
 
-        redirect_to loan_url(@loan), notice: "Loan archived successfully."
+        redirect_to loan_url(@loan), notice: 'Loan archived successfully.'
       end
     end
   end

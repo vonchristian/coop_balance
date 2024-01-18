@@ -3,6 +3,7 @@ module StoreFrontModule
     def new?
       user.stock_custodian? || user.sales_clerk?
     end
+
     def create?
       new?
     end

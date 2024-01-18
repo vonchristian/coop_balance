@@ -3,9 +3,11 @@ module StoreFrontModule
     def index?
       user.sales_clerk?
     end
+
     def new?
       user.sales_clerk?
     end
+
     def create?
       new?
     end

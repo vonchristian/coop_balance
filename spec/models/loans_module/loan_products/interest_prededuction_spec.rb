@@ -4,17 +4,17 @@ module LoansModule
   module LoanProducts
     describe InterestPrededuction do
       describe 'associations' do
-        it { is_expected.to belong_to :loan_product }
+        it { should belong_to :loan_product }
       end
 
       describe 'validations' do
-        it { is_expected.to validate_presence_of :calculation_type }
-        it { is_expected.to validate_numericality_of :amount }
-        it { is_expected.to validate_numericality_of :rate }
-        it { is_expected.to validate_numericality_of :number_of_payments }
+        it { should validate_presence_of :calculation_type }
+        it { should validate_numericality_of :amount }
+        it { should validate_numericality_of :rate }
+        it { should validate_numericality_of :number_of_payments }
       end
 
-      it { is_expected.to define_enum_for(:calculation_type).with_values([:percent_based, :amount_based, :number_of_payments_based]) }
+      it { should define_enum_for(:calculation_type).with_values(%i[percent_based amount_based number_of_payments_based]) }
 
       describe 'calculator' do
         it 'returns percent_based_calculator for percent_based' do

@@ -1,11 +1,13 @@
 module Offices
   class TimeDepositProductsController < ApplicationController
     def index
-      @time_deposit_products = current_office.time_deposit_products 
+      @time_deposit_products = current_office.time_deposit_products
     end
+
     def new
       @time_deposit_product = current_office.office_time_deposit_products.build
     end
+
     def create
       @time_deposit_product = current_office.office_time_deposit_products.create(time_deposit_product_params)
       if @time_deposit_product.valid?
@@ -17,9 +19,10 @@ module Offices
     end
 
     private
+
     def time_deposit_product_params
-      params.require(:offices_office_time_deposit_product).
-      permit(:time_deposit_product_id, :liability_ledger_id, :interest_expense_ledger_id, :break_contract_revenue_ledger_id, :forwarding_account_id)
-    end 
+      params.require(:offices_office_time_deposit_product)
+            .permit(:time_deposit_product_id, :liability_ledger_id, :interest_expense_ledger_id, :break_contract_revenue_ledger_id, :forwarding_account_id)
+    end
   end
 end

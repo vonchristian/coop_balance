@@ -13,9 +13,10 @@ module Employees
               employee: @employee,
               from_date: @from_date,
               to_date: @to_date,
-              title: "Cash Receipts Journal",
-              view_context: view_context)
-            send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Cash Receipts Report.pdf"
+              title: 'Cash Receipts Journal',
+              view_context: view_context
+            )
+            send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'Cash Receipts Report.pdf'
           end
         end
       end

@@ -2,6 +2,7 @@ module Loans
   class MultiplePaymentProcessing
     include ActiveModel::Model
     attr_accessor :date, :reference_number, :description, :account_number, :cart_id, :employee_id, :cash_account_id
+
     validates :date, :reference_number, :cash_account_id, :description, presence: true
     def find_voucher
       find_office.vouchers.find_by(account_number: account_number)
@@ -18,8 +19,7 @@ module Loans
         payee: find_employee,
         cooperative: find_office.cooperative
       )
-      
-      
+
       voucher.voucher_amounts.debit.build(
         amount: find_cart.voucher_amounts.credit.total,
         account_id: cash_account_id
@@ -31,12 +31,15 @@ module Loans
       end
       voucher.save!
     end
+
     def find_office
       find_employee.office
     end
+
     def find_cart
       StoreFrontModule::Cart.find(cart_id)
     end
+
     def find_employee
       User.find(employee_id)
     end

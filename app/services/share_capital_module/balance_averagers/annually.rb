@@ -3,7 +3,7 @@ module ShareCapitalModule
     class Annually
       attr_reader :share_capital, :to_date
 
-      def initialize(args={})
+      def initialize(args = {})
         @share_capital = args.fetch(:share_capital)
         @to_date       = args.fetch(:to_date)
       end
@@ -13,8 +13,9 @@ module ShareCapitalModule
       end
 
       private
+
       def end_date
-        if to_date.is_a?(Date)|| to_date.is_a?(Time)
+        if to_date.is_a?(Date) || to_date.is_a?(Time)
           to_date.end_of_year.to_date
         else
           DateTime.parse(to_date).end_of_year.to_date
@@ -37,7 +38,7 @@ module ShareCapitalModule
         end
 
         months.uniq.each do |month|
-          balances <<  share_capital.balance(to_date: month.end_of_month).to_f
+          balances << share_capital.balance(to_date: month.end_of_month).to_f
         end
         balances
       end

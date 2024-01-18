@@ -5,8 +5,8 @@ module Employees
       respond_to do |format|
         format.html
         format.pdf do
-          pdf = Employees::BlotterPdf.new(employee:@employee, date: Date.today, view_context: view_context)
-          send_data pdf.render, type: "application/pdf", disposition: 'inline', file_name: "Disbursement.pdf"
+          pdf = Employees::BlotterPdf.new(employee: @employee, date: Time.zone.today, view_context: view_context)
+          send_data pdf.render, type: 'application/pdf', disposition: 'inline', file_name: 'Disbursement.pdf'
         end
       end
     end

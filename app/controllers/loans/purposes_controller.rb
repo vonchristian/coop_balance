@@ -10,10 +10,11 @@ module Loans
     def update
       @loan = current_cooperative.loans.find(params[:loan_id])
       @loan.update(purpose_params)
-      respond_modal_with @loan, location: loan_url(@loan), notice: "Note saved successfully."
+      respond_modal_with @loan, location: loan_url(@loan), notice: 'Note saved successfully.'
     end
 
     private
+
     def purpose_params
       params.require(:loans_module_loan).permit(:purpose)
     end

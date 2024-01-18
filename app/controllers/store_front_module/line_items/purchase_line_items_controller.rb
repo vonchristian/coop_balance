@@ -8,7 +8,7 @@ module StoreFrontModule
         @purchase_line_item = StoreFrontModule::LineItems::PurchaseLineItemProcessing.new
         @purchase_order = StoreFrontModule::Orders::PurchaseOrderProcessing.new
         @purchase_line_items = @cart.purchase_line_items.includes(:unit_of_measurement, :product).order(created_at: :desc)
-        @vouchers = Voucher.includes(:entry =>[:debit_amounts]).unused
+        @vouchers = Voucher.includes(entry: [:debit_amounts]).unused
         @suppliers = current_cooperative.suppliers
       end
 
@@ -17,11 +17,12 @@ module StoreFrontModule
         @purchase_order_line_item = StoreFrontModule::LineItems::PurchaseLineItemProcessing.new(line_item_params)
         if @purchase_order_line_item.valid?
           @purchase_order_line_item.process!
-          redirect_to new_store_front_module_purchase_line_item_url, notice: "Added to cart."
+          redirect_to new_store_front_module_purchase_line_item_url, notice: 'Added to cart.'
         else
           render :new, status: :unprocessable_entity
         end
       end
+
       def destroy
         @cart = current_cart
         @line_item = StoreFrontModule::LineItems::PurchaseLineItem.find(params[:id])
@@ -30,17 +31,18 @@ module StoreFrontModule
       end
 
       private
+
       def line_item_params
-        params.require(:store_front_module_line_items_purchase_line_item_processing).
-        permit(:unit_of_measurement_id,
-               :quantity,
-               :unit_cost,
-               :total_cost,
-               :product_id,
-               :referenced_line_item_id,
-               :barcode,
-               :cart_id,
-               :expiry_date)
+        params.require(:store_front_module_line_items_purchase_line_item_processing)
+              .permit(:unit_of_measurement_id,
+                      :quantity,
+                      :unit_cost,
+                      :total_cost,
+                      :product_id,
+                      :referenced_line_item_id,
+                      :barcode,
+                      :cart_id,
+                      :expiry_date)
       end
     end
   end

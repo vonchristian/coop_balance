@@ -2,6 +2,7 @@ module LoansModule
   module Amortizers
     class DecliningBalance
       attr_reader :loan_application, :number_of_payments, :interest_prededuction
+
       def initialize(args)
         @loan_application      = args.fetch(:loan_application)
         @loan_product          = @loan_application.loan_product
@@ -15,25 +16,26 @@ module LoansModule
         update_interest_amounts
         update_interests_status
       end
+
       private
 
       def create_first_schedule
         loan_application.amortization_schedules.create!(
-          date:      loan_application.first_amortization_date,
-          interest:  0,
+          date: loan_application.first_amortization_date,
+          interest: 0,
           principal: loan_application.amortizeable_principal
         )
       end
 
       def create_succeeding_schedule
-        if !loan_application.lumpsum?
-          (loan_application.schedule_count - 1).to_i.times do
-            loan_application.amortization_schedules.create!(
-              date:      loan_application.succeeding_amortization_date,
-              interest:  0,
-              principal: loan_application.amortizeable_principal
-            )
-          end
+        return if loan_application.lumpsum?
+
+        (loan_application.schedule_count - 1).to_i.times do
+          loan_application.amortization_schedules.create!(
+            date: loan_application.succeeding_amortization_date,
+            interest: 0,
+            principal: loan_application.amortizeable_principal
+          )
         end
       end
 
@@ -45,11 +47,11 @@ module LoansModule
       end
 
       def update_interests_status
-        if interest_prededuction.number_of_payments_based?
-          loan_application.amortization_schedules.by_oldest_date.first(number_of_payments).each do |schedule|
-            schedule.prededucted_interest = true
-            schedule.save!
-          end
+        return unless interest_prededuction.number_of_payments_based?
+
+        loan_application.amortization_schedules.by_oldest_date.first(number_of_payments).each do |schedule|
+          schedule.prededucted_interest = true
+          schedule.save!
         end
       end
 

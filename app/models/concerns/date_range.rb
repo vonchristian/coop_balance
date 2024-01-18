@@ -15,7 +15,7 @@ DateRange = Struct.new(:from_date, :to_date, keyword_init: true) do
     if to_date.is_a?(Date) || to_date.is_a?(Time) || to_date.is_a?(DateTime)
       to_date.strftime('%Y-%m-%d 23:59:59 +0800')
     else
-    Time.zone.parse(to_date).strftime('%Y-%m-%d 23:59:59 +0800')
+      Time.zone.parse(to_date).strftime('%Y-%m-%d 23:59:59 +0800')
     end
   end
 end

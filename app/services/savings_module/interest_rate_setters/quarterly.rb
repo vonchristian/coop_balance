@@ -1,15 +1,15 @@
 module SavingsModule
-  module InterestRateSetters 
+  module InterestRateSetters
     class Quarterly
       attr_reader :saving_product_interest_config
 
       def initialize(saving_product_interest_config:)
         @saving_product_interest_config = saving_product_interest_config
-      end 
+      end
 
-      def applicable_rate 
+      def applicable_rate
         saving_product_interest_config.annual_rate / 4
-      end 
-    end 
-  end 
-end 
+      end
+    end
+  end
+end

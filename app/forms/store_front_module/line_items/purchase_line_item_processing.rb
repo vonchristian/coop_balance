@@ -1,7 +1,7 @@
 module StoreFrontModule
   module LineItems
     class PurchaseLineItemProcessing
-     include ActiveModel::Model
+      include ActiveModel::Model
       attr_accessor :unit_of_measurement_id,
                     :quantity,
                     :cart_id,
@@ -23,25 +23,26 @@ module StoreFrontModule
 
       def process!
         ActiveRecord::Base.transaction do
-            process_line_item
+          process_line_item
         end
       end
 
       private
+
       def process_line_item
         purchase = find_cart.purchase_line_items.create(
-        quantity:               quantity,
-        unit_cost:              unit_cost,
-        total_cost:             total_cost,
-        unit_of_measurement_id: unit_of_measurement_id,
-        product_id:             product_id,
-        expiry_date:            expiry_date
+          quantity: quantity,
+          unit_cost: unit_cost,
+          total_cost: total_cost,
+          unit_of_measurement_id: unit_of_measurement_id,
+          product_id: product_id,
+          expiry_date: expiry_date
         )
         purchase.barcodes.create(code: barcode)
       end
 
       def find_cart
-        StoreFrontModule::Cart.find_by_id(cart_id)
+        StoreFrontModule::Cart.find_by(id: cart_id)
       end
     end
   end
