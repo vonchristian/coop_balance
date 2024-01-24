@@ -38,7 +38,7 @@ module Vouchers
     end
 
     def find_payee
-      Payee.find_by(id: payee_id)
+      Payee.find_by_id(id: payee_id)
     end
 
     def find_cart

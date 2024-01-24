@@ -23,7 +23,7 @@ module LoansModule
 
     def formatted_interest(schedule)
       if schedule.prededucted_interest?
-        "#{price(schedule.interest)} - PREDEDUCTED"
+        "#{price(schedule.interest)} - (PREDEDUCTED)"
       else
         price(schedule.interest)
       end
@@ -111,7 +111,7 @@ module LoansModule
       if loan.forwarded_loan? || loan.amortization_schedules.blank?
         text 'No data Available'
       else
-        table(amortization_schedule_data, header: true, cell_style: { padding: [1, 3, 1, 3], size: 8.5 }, column_widths: [100, 80, 80, 70, 90, 110]) do
+        table(amortization_schedule_data, header: true, cell_style: { padding: [1, 3, 1, 3], size: 8.5 }, column_widths: [100, 80, 80, 100, 90, 80]) do
           row(0).font_style = :bold
           column(0).align = :right
           column(1).align = :right
@@ -123,7 +123,7 @@ module LoansModule
     end
 
     def amortization_schedule_data
-      [%w[DATE PRINCIPAL INTEREST TOTAL BALANCE NOTES]] +
+      [['DUE DATE', 'PRINCIPAL', 'INTEREST', 'TOTAL REPAYMENT', 'BALANCE', 'NOTES']] +
         [['', '', '', '', price(@loan.loan_amount).to_s, '']] +
         @amortization_schedule_data ||= @amortization_schedules.order(date: :asc).map { |a|
           [a.date.strftime('%B %e, %Y'),
@@ -156,7 +156,7 @@ module LoansModule
     end
 
     def signatory
-      [['PREPARED BY', '', 'APPROVED BY', '', 'DISBURSED BY', '', 'RECIEVED BY']] +
+      [['PREPARED BY', '', 'APPROVED BY', '', 'DISBURSED BY', '', 'RECEIVED BY']] +
         [['', '', '', '', '', '', '']] +
         [['', '', '', '', '', '', '']] +
         [['', '', '', '', '', '', '']] +

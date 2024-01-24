@@ -33,7 +33,7 @@
     </div>
   </div>
 </div>
-<%= simple_form_for [@share_capital, @capital_build_up], url: :loans_module_loan_application_capital_build_up_processings, remote: request.xhr?, html: { autocomplete: 'off', data: { modal: true } } do |f| %>
+<%= simple_form_for [@share_capital, @capital_build_up], url: :loans_module_loan_application_capital_build_ups, remote: request.xhr?, html: { autocomplete: 'off', data: { modal: true } } do |f| %>
   <div class="modal-body">
     <%= f.error_notification %>
     <%= f.input :amount, autofocus: true, as: :currency %>

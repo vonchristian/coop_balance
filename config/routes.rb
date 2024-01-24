@@ -147,7 +147,7 @@ Rails.application.routes.draw do
 
     resources :loan_applications, only: %i[index new create show destroy] do
       resources :disbursements,                       only: %i[new create],                           module: :loan_applications
-      resources :capital_build_up_processings,        only: %i[new create],                           module: :loan_applications
+      resources :capital_build_ups,                   only: %i[new create],                           module: :loan_applications
       resources :savings_account_deposit_processings, only: %i[new create],                           module: :loan_applications
       resources :previous_loan_payment_processings,   only: %i[new create],                           module: :loan_applications
       resources :vouchers,                            only: %i[new create show destroy], module: :loan_applications

@@ -15,8 +15,7 @@ module LoansModule
         @loan             = current_cooperative.loans.find(params[:loans_module_loan_applications_previous_loan_payment_processing][:loan_id])
         @payment          = LoansModule::LoanApplications::PreviousLoanPaymentProcessing.new(payment_params)
         @payment.process!
-        respond_modal_with @payment,
-                           location: new_loans_module_loan_application_voucher_url(@loan_application)
+        redirec_to new_loans_module_loan_application_voucher_url(@loan_application)
       end
 
       private

@@ -4,13 +4,13 @@
 <div class="row">
   <div class="col-md-7">
     <div class="card">
-      <div class="card-header">
+      <div class="card-header pt-5">
         <div class="row">
           <div class="col-md-1 col-sm-1">
             <%= image_tag(@loan_application.borrower_avatar, width: 45, height: 45, class: "img-circle") if @loan_application.borrower_avatar.attached? %>
           </div>
           <div class="col-md-11 col-sm-11">
-            <h3 class="card-title no-margin-bottom"> <%= @loan_application.borrower_name %> </h3>
+            <h3 class="no-margin-bottom"> <%= @loan_application.borrower_name %> </h3>
 
           </div>
         </div>
@@ -154,22 +154,17 @@
       <div class="card-body">
         <% @share_capitals.each do |share_capital| %>
           <div class="row">
-            <div class="col-md-2">
-              <% if share_capital.subscriber.avatar.attachment.present? %>
-                <%= image_tag(share_capital.subscriber.avatar, style: 'width:40px;height:40px;', class: 'media-object img-circle') %>
-              <% end %>
-            </div>
-            <div class="col-md-6">
-              <h3 class="card-title"><%= number_to_currency share_capital.balance %></h3>
-              <span class="text-muted"><%= share_capital.subscriber_name %></span><br>
-              <% if @loan_application.voucher_amounts.for_account(account: share_capital.share_capital_product_equity_account).present? %>
+            <div class="col-md-8">
+              <h3 class="card-title"><%= number_to_currency share_capital.balance %></h3><br>
+              <span class="text-muted"><%= share_capital.share_capital_product_name %></span><br>
+              <% if @loan_application.voucher_amounts.for_account(account: share_capital.share_capital_equity_account).present? %>
                 <span class="text-success"> <i class="fa fa-plus"></i>
-                <%= number_to_currency @loan_application.voucher_amounts.for_account(account: share_capital.share_capital_product_equity_account).where(commercial_document: share_capital).total %>
+                <%= number_to_currency @loan_application.voucher_amounts.for_account(account: share_capital.share_capital_equity_account).total %>
                 </span>
               <% end %>
             </div>
-            <div class="col-md-3">
-               <%=link_to new_loans_module_loan_application_capital_build_up_processing_path(share_capital_id: share_capital.id, loan_application_id: @loan_application.id), data: { modal: true } do %>
+            <div class="col-md-4">
+               <%= link_to new_loans_module_loan_application_capital_build_up_path(share_capital_id: share_capital.id, loan_application_id: @loan_application.id) do %>
                  <span class="btn btn-outline-warning float-right"><i class="fa fa-plus-circle"></i> Add </span>
                <% end %>
             </div>
@@ -178,57 +173,61 @@
         <% end %>
       </div>
     </div>
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title"> Savings Accounts </h3>
-      </div>
-      <div class="card-body">
-        <% @savings_accounts.each do |savings_account| %>
-          <div class="row">
-            <div class="col-md-2">
-              <% if savings_account.depositor.avatar.attachment.present? %>
-                <%= image_tag(savings_account.depositor.avatar, style: 'width:40px;height:40px;', class: 'media-object img-circle') %>
-              <% end %>
-            </div>
-            <div class="col-md-7">
-              <h3 class="card-title">
-                <%= number_to_currency savings_account.balance %>
-              </h3>
-                <span class="text-muted">
-                  <%= savings_account.depositor_name %>
-                </span>
-              <br>
-              <% if @loan_application.cart.voucher_amounts.for_account(account: savings_account.liability_account).present? %>
-                <span class="text-success"> <i class="fa fa-plus"></i>
-                <%= number_to_currency @loan_application.cart.voucher_amounts.for_account(account: savings_account.liability_account).total %>
-                </span>
-              <% end %>
+    <% if @savings_accounts.present? %>
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title"> Savings Accounts </h3>
+        </div>
+        <div class="card-body">
+          <% @savings_accounts.each do |savings_account| %>
+            <div class="row">
+              <div class="col-md-2">
+                <% if savings_account.depositor.avatar.attachment.present? %>
+                  <%= image_tag(savings_account.depositor.avatar, style: 'width:40px;height:40px;', class: 'media-object img-circle') %>
+                <% end %>
+              </div>
+              <div class="col-md-7">
+                <h3 class="card-title">
+                  <%= number_to_currency savings_account.balance %>
+                </h3>
+                  <span class="text-muted">
+                    <%= savings_account.depositor_name %>
+                  </span>
+                <br>
+                <% if @loan_application.cart.voucher_amounts.for_account(account: savings_account.liability_account).present? %>
+                  <span class="text-success"> <i class="fa fa-plus"></i>
+                  <%= number_to_currency @loan_application.cart.voucher_amounts.for_account(account: savings_account.liability_account).total %>
+                  </span>
+                <% end %>
 
+              </div>
+              <div class="col-md-2">
+                <%=link_to new_loans_module_loan_application_savings_account_deposit_processing_path(saving_id: savings_account.id, loan_application_id: @loan_application.id), data: { modal: true } do %>
+                  <span class="btn btn-outline-warning float-right"><i class="fa fa-plus-circle"></i> Add </span>
+                <% end %>
+              </div>
             </div>
-            <div class="col-md-2">
-              <%=link_to new_loans_module_loan_application_savings_account_deposit_processing_path(saving_id: savings_account.id, loan_application_id: @loan_application.id), data: { modal: true } do %>
-                 <span class="btn btn-outline-warning float-right"><i class="fa fa-plus-circle"></i> Add </span>
-               <% end %>
-            </div>
-          </div>
-          <hr>
-        <% end %>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-header">
-        <h3 class="card-title"> Cooperative Programs </h3>
-      </div>
-      <div class="card-body">
-        <% current_cooperative.programs.each do |program| %>
-          <%= program.name %>
-          <%= program.amount %>
-          <%=link_to new_loans_module_loan_application_program_payment_path(loan_application_id: @loan_application.id, program_id: program.id), data: { modal: true } do %>
-            <span class="btn btn-outline-warning float-right"><i class="fa fa-plus-circle"></i> Add </span>
+            <hr>
           <% end %>
-        <% end %>
+        </div>
       </div>
-    </div>
+    <% end %>
+    <% if current_cooperative.programs.present? %>
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title"> Cooperative Programs </h3>
+        </div>
+        <div class="card-body">
+          <% current_cooperative.programs.each do |program| %>
+            <%= program.name %>
+            <%= program.amount %>
+            <%=link_to new_loans_module_loan_application_program_payment_path(loan_application_id: @loan_application.id, program_id: program.id), data: { modal: true } do %>
+              <span class="btn btn-outline-warning float-right"><i class="fa fa-plus-circle"></i> Add </span>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
     <div class="card">
       <div class="card-header">
         <h3 class="card-title"> Previous Loans </h3>
@@ -236,18 +235,14 @@
       <div class="card-body">
         <% @previous_loans.each do |loan| %>
           <div class="row">
-            <div class="col-md-2">
 
-                <%= image_tag(loan.borrower.avatar, style: 'width:40px;height:40px;', class: 'media-object img-circle') %>
-
-            </div>
-            <div class="col-md-7">
+            <div class="col-md-8">
               <h3 class="card-title">
                 <%= number_to_currency loan.principal_balance %>
               </h3>
+              <br>
                 <span class="text-muted">
-                  <i class="fa fa-user-circle"></i> <%= loan.borrower_name %><br>
-                  <i class="fa fa-tag"></i> <%= loan.loan_product_name %>
+                  <%= loan.loan_product_name %>
                 </span>
               <br>
               <% if @loan_application.voucher_amounts.for_account(account: loan.principal_account).present? %>
@@ -257,7 +252,7 @@
               <% end %>
 
             </div>
-            <div class="col-md-2">
+            <div class="col-md-4">
               <%=link_to new_loans_module_loan_application_previous_loan_payment_processing_path(loan_id: loan.id, loan_application_id: @loan_application.id), data: { modal: true } do %>
                  <span class="btn btn-outline-warning float-right"><i class="fa fa-plus-circle"></i> Add Payment </span>
                <% end %>
@@ -316,15 +311,10 @@
   <div class="col-md-5">
     <div class="card card-outline card-primary">
       <div class="card-body">
-        <center>
-          <%= @loan_application.borrower_name.try(:upcase) %>
-        </center>
-      </div>
-      <hr class="no-margin">
-      <div class="card-body">
+        <p><strong class="pb-5 min-margin-bottom"> Voucher Details </strong></p>
         <div class="row min-margin">
           <div class="col-md-6">
-            <small class="text-info">LOAN AMOUNT</small>
+            <strong>LOAN AMOUNT</strong>
           </div>
           <div class="col-md-4 offset-1">
             <span class="float-right">
@@ -332,16 +322,6 @@
             </span>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-8 offset-1">
-            <%= link_to new_loans_module_loan_application_voucher_amount_path(@loan_application), data: { modal: true } do %>
-              <span class="float-left btn btn-outline-primary btn-sm" data-toggle="tooltip" title="Add Charges">
-                <i class="fa fa-plus-circle"></i> Other Deductions
-              </span>
-            <% end %>
-          </div>
-        </div>
-        <br>
         <% if @loan_application.voucher_amounts.debit.present? %>
           <small class="text-danger">ADD-ONS</small>
           <% @loan_application.voucher_amounts.debit.each do |voucher_amount| %>
@@ -355,10 +335,6 @@
               <div class="col-md-2">
                 <%= link_to edit_loans_module_loan_application_voucher_amount_path(id: voucher_amount.id, loan_application_id: @loan_application.id) do %>
                   <span data-toggle="tooltip" title="Edit Amount"><i class="fa fa-edit text-warning mr-2"></i>
-                  </span>
-                <% end %>
-                <%= button_to loans_module_loan_application_voucher_amount_path(id: voucher_amount.id, voucher_amount_id: voucher_amount.id, loan_application_id: @loan_application.id), method: :delete do %>
-                  <span data-toggle="tooltip" title="Remove"><i class="fa fa-times text-danger"></i>
                   </span>
                 <% end %>
               </div>
@@ -433,8 +409,7 @@
       </div>
       <hr class="no-margin">
       <div class="card-body">
-        <h4 class="card-title">Voucher Details</h4>
-        <hr>
+
         <%= simple_form_for [@loan_application, @voucher], url: :loans_module_loan_application_vouchers, html: { autocomplete: 'off' } do |f| %>
           <%= f.input :date, as: :string, input_html: { class: "datepicker", value: @loan_application.application_date.strftime("%B %e, %Y") } %>
           <%= f.input :cash_account_id, collection: Employees::EmployeeCashAccount.cash_accounts.map{ |a| [a.name, a.id] }, default: current_user.cash_accounts.first, hint: "Please select cash account for disbursement." %>
