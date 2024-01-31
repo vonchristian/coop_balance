@@ -96,7 +96,7 @@ module DepositsModule
     end
 
     def self.updated_at(args = {})
-      if args[:from_date] && args[:to_date]
+      if args[:from_date].present? && args[:to_date].present?
         date_range = DateRange.new(from_date: args[:from_date], to_date: args[:to_date])
         joins(:entries).where('entries.entry_date' => (date_range.start_date..date_range.end_date))
       else

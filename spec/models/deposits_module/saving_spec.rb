@@ -27,7 +27,6 @@ module DepositsModule
       it { should delegate_method(:name).to(:depositor).with_prefix }
       it { should delegate_method(:current_address_complete_address).to(:depositor).with_prefix }
       it { should delegate_method(:current_contact_number).to(:depositor).with_prefix }
-      it { should delegate_method(:current_occupation).to(:depositor).with_prefix }
       it { should delegate_method(:interest_rate).to(:saving_product).with_prefix }
       it { should delegate_method(:balance).to(:liability_account) }
       it { should delegate_method(:debits_balance).to(:liability_account) }

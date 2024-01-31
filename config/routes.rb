@@ -209,7 +209,6 @@ Rails.application.routes.draw do
     resources :voucher_confirmations,                 only: [:create], module: :share_capitals
     resources :vouchers, only: %i[show destroy], module: :share_capitals
 
-    resources :barangays, only: %i[edit update], module: :share_capitals
     resources :settings, only: [:index],          module: :share_capitals
     resources :mergings, only: [:create],         module: :share_capitals
     resources :merging_line_items, only: %i[new create destroy], module: :share_capitals
@@ -279,7 +278,6 @@ Rails.application.routes.draw do
       resources :cooperative_products, only: [:index]
       resources :configurations, only: [:index]
       resources :data_migrations, only: [:index]
-      resources :barangays, only: [:index]
 
       resources :loan_products, only: %i[index new create edit update] do
         resources :charges, only: %i[new create edit update], module: :loan_products
@@ -444,7 +442,6 @@ Rails.application.routes.draw do
     resources :deposits,          only: %i[new create],            module: :savings_accounts
     resources :withdrawals,       only: %i[new create],            module: :savings_accounts
     resources :account_closings,  only: %i[new create],            module: :savings_accounts
-    resources :barangay_settings, only: %i[edit update], module: :savings_accounts
     resources :voucher_confirmations, only: [:create], module: :savings_accounts
     resources :transactions, only: [:index], module: :savings_accounts
     resources :beneficiaries, only: %i[edit update], module: :savings_accounts
@@ -509,7 +506,6 @@ Rails.application.routes.draw do
     end
     resources :notes,                 only: %i[index new create], module: :loans
     resources :purposes,              only: %i[edit update],        module: :loans
-    resources :barangays,             only: %i[edit update],        module: :loans
     resources :settings,              only: [:index], module: :loans
     resources :payments,              only: %i[index new create], module: :loans
     resources :payment_with_iocs, only: %i[new create], module: :loans
@@ -552,7 +548,6 @@ Rails.application.routes.draw do
   resources :membership_applications, only: %i[new create]
 
   resources :cooperatives, only: [:show] do
-    resources :barangays, only: %i[new create edit update], module: :cooperatives
     resources :logos, only: [:create], module: :cooperatives
   end
 
@@ -567,16 +562,6 @@ Rails.application.routes.draw do
   resources :filtered_loans, only: [:index], module: :loans_module
   resources :matured_loans, only: [:index],  module: :loans_module
 
-  resources :barangays, only: %i[index show new create edit update] do
-    resources :loans, only: [:index],                  module: :barangays
-    resources :savings, only: [:index],                module: :barangays
-    resources :members, only: %i[index new create], module: :barangays
-    resources :settings, only: [:index], module: :barangays
-  end
-
-  namespace :barangays do
-    resources :imports, only: [:create]
-  end
 
   resources :memberships, only: %i[index show] do
     resources :share_capital_subscriptions, only: %i[new create], module: :memberships

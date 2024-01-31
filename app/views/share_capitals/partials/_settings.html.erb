@@ -78,21 +78,6 @@
 <div class="card-body">
   <div class="row">
     <div class="col-md-9">
-	    <h4 class="card-title">Barangay Details</h4>
-	    <span class="text-muted"> Set barangay for this share capital </span><br>
-      <b>BARANGAY</b>
-      <%= @share_capital.barangay_name %>
-      <br>
-    </div>
-    <div class="col-md-3">
-      <%= link_to 'Set Barangay', edit_share_capital_barangay_path(id: @share_capital.id), class: "btn btn-outline-danger", data: {modal:true} %>
-    </div>
-  </div>
-</div>
-<hr class="no-margin">
-<div class="card-body">
-  <div class="row">
-    <div class="col-md-9">
 	    <h3 class="card-title">Adjustment Entries</h3>
     	<p class="text-muted">
     	  Make adjusting entries for this share capital.

@@ -11,12 +11,6 @@
         <% end %>
         <hr />
 
-
-        <small> BARANGAY:</small><br>
-        <% @barangays.all.each do |barangay| %>
-          <%= link_to barangay.name, barangay_loans_path(barangay) %>
-        <% end %>
-        <hr>
         <small> MUNICIPALITY</small><br>
         <% @municipalities.all.each do |municipality| %>
           <%= link_to municipality.name, municipality_loans_path(municipality) %>
