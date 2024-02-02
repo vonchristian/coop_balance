@@ -1,6 +1,6 @@
 <h3 class="title-up"> Accounting Section </h3>
-<%= @savings_account.liability_account_name %>
-<%= @savings_account.interest_expense_account_name %>
+<%= @savings_account.liability_account.display_name %><br>
+<%= @savings_account.interest_expense_account.display_name %>
 
 <div class="card-body">
   <div class="row">
@@ -16,4 +16,4 @@
       <% end %>
     </div>
   </div>
-</div>
+  <hr>

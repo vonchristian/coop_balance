@@ -31,17 +31,17 @@
       <ul class="nav nav-pills nav-pills-underline">
         <li class="nav-item">
           <%= link_to savings_account_path(@savings_account), class: "nav-link #{'active' if current_page?(savings_account_path(@savings_account))}"  do %>
-          <i class="fa fa-user-circle"></i> Account
+           Account
           <% end %>
         </li>
         <li class="nav-item">
           <%= link_to savings_account_settings_path(@savings_account), id: "#{@savings_account.id}-settings", class: "nav-link #{'active' if current_page?(savings_account_settings_path(@savings_account))}" do %>
-            <i class="fa fa-cog"></i> Settings
+           Settings
           <% end %>
         </li>
         <li class="nav-item">
           <%= link_to savings_account_accounting_index_path(@savings_account), id: "#{@savings_account.id}-accounting", class: "nav-link #{'active' if current_page?(savings_account_accounting_index_path(@savings_account))}" do %>
-            <i class="fa fa-rub"></i> Accounting
+             Accounting
           <% end %>
         </li>
       </ul>
