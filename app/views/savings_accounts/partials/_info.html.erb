@@ -1,5 +1,29 @@
 
-
+ <div class="row pt-5 pb-5">
+          <div class="col-md-1">
+            <%= image_tag(@savings_account.avatar, class: 'img-circle', width: 55, height: 55) %>
+          </div>
+          <div class="col-md-5">
+            <h4 class="subtitle-up"><%= @savings_account.account_owner_name.upcase %></h4>
+            <small class="text-muted"><i class="fa fa-map-marker"></i> <%= @savings_account.depositor.current_address_complete_address %></small>
+            <small class="text-muted"><i class="fa fa-phone"></i> <%= @savings_account.depositor.current_contact_number %></small>
+          </div>
+          <div class="col-md-6">
+            <small class='text-muted'>BALANCE </small>
+            <h4 class='title-up pb-2'><%= number_to_currency @savings_account.balance %></h4>
+            <% if policy([:savings_accounts, :deposit]).new? %>
+              <%= link_to new_savings_account_deposit_path(@savings_account), data: { turbolinks: false } do %>
+                <span class="btn btn-primary"><i class="fa fa-arrow-circle-down"></i> Deposit </span>
+              <% end %>
+            <% end %>&nbsp;
+            <% if policy([:savings_accounts, :withdrawal]).new? %>
+              <%= link_to new_savings_account_withdrawal_path(@savings_account), data: { turbolinks: false } do %>
+                <span class="btn btn-outline-danger"><i class="fa fa-arrow-circle-up"></i> Withdraw </span>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+        <hr />
  <div class="row min-margin">
         <div class="col-md-3 offset-md-1">
           <b><label>Account Name</label> </b>

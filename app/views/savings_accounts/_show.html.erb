@@ -1,33 +1,6 @@
 <div class="container">
   <div class="card">
-    <div class="card-body pt-5">
-      <div class="row">
-          <div class="col-md-1">
-            <%= image_tag(@savings_account.avatar, class: 'img-circle', width: 55, height: 55) %>
-          </div>
-          <div class="col-md-5">
-            <h4 class="subtitle-up"><%= @savings_account.account_owner_name.upcase %></h4>
-            <small class="text-muted"><i class="fa fa-map-marker"></i> <%= @savings_account.depositor.current_address_complete_address %></small>
-            <small class="text-muted"><i class="fa fa-phone"></i> <%= @savings_account.depositor.current_contact_number %></small>
-          </div>
-          <div class='col-md-3'>
-            <strong> BALANCE </strong>
-            <h4 class='title-up'><%= number_to_currency @savings_account.balance %></h4>
-          </div>
-          <div class="col-md-3">
-            <% if policy([:savings_accounts, :deposit]).new? %>
-              <%= link_to new_savings_account_deposit_path(@savings_account), data: { turbolinks: false } do %>
-                <span class="btn btn-primary"><i class="fa fa-arrow-circle-down"></i> Deposit </span>
-              <% end %>
-            <% end %>&nbsp;
-            <% if policy([:savings_accounts, :withdrawal]).new? %>
-              <%= link_to new_savings_account_withdrawal_path(@savings_account), data: { turbolinks: false } do %>
-                <span class="btn btn-danger"><i class="fa fa-arrow-circle-up"></i> Withdraw </span>
-              <% end %>
-            <% end %>
-          </div>
-        </div>
-        <br>
+    <div class="card-body">
       <ul class="nav nav-pills nav-pills-underline">
         <li class="nav-item">
           <%= link_to savings_account_path(@savings_account), class: "nav-link #{'active' if current_page?(savings_account_path(@savings_account))}"  do %>
@@ -45,7 +18,6 @@
           <% end %>
         </li>
       </ul>
-      <br>
       <% if current_page? savings_account_path(@savings_account) %>
         <%= render 'savings_accounts/partials/info' %>
       <% end %>

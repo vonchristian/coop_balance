@@ -79,6 +79,7 @@ group :test do
   gem 'pundit-matchers'
   gem 'shoulda-matchers'
   gem 'webdrivers', '~> 4.0'
+  gem 'simplecov', require: false
 end
 
 gem 'rack-mini-profiler', require: false

@@ -12,6 +12,8 @@ require 'rspec/rails'
 require 'capybara/rspec'
 require 'pundit/rspec'
 require 'webdrivers'
+require 'simplecov'
+SimpleCov.start
 
 begin
   ActiveRecord::Migration.maintain_test_schema!
