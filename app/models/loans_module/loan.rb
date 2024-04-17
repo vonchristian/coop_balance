@@ -35,7 +35,6 @@ module LoansModule
 
     belongs_to :interest_revenue_account, class_name: 'AccountingModule::Account'
     belongs_to :penalty_revenue_account,  class_name: 'AccountingModule::Account'
-    belongs_to :accrued_income_account,   class_name: 'AccountingModule::Account', optional: true
     has_many :amortization_schedules,     dependent: :destroy
     # deprecate
     has_many :notices,                    class_name: 'LoansModule::Notice', as: :notified
@@ -62,7 +61,6 @@ module LoansModule
              :penalty_revenue_account,
              :interest_revenue_account,
              :interest_rebate_account,
-             :accrued_income_account,
              :interest_rate,
              :penalty_rate,
              :monthly_interest_rate,

@@ -56,19 +56,11 @@ module LoansModule
           date: date
         )
 
-        create_accrued_interest_amount(voucher)
         create_penalty_amount(voucher)
         create_principal_amount(voucher)
         create_interest_amount(voucher)
         create_cash_amount(voucher)
         voucher.save!
-      end
-
-      def create_accrued_interest_amount(voucher)
-        voucher.voucher_amounts.debit.build(
-          amount: computed_interest,
-          account: find_loan.accrued_income_account
-        )
       end
 
       def create_cash_amount(voucher)

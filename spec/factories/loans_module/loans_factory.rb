@@ -8,7 +8,6 @@ FactoryBot.define do
     receivable_account factory: %i[asset]
     interest_revenue_account factory: %i[revenue]
     penalty_revenue_account factory: %i[revenue]
-    accrued_income_account factory: %i[asset]
     loan_aging_group
     account_number { SecureRandom.uuid }
     borrower_full_name { Faker::Name.name }

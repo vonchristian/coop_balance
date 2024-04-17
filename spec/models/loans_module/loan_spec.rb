@@ -7,7 +7,6 @@ module LoansModule
       it { should belong_to :receivable_account }
       it { should belong_to :interest_revenue_account }
       it { should belong_to :penalty_revenue_account }
-      it { should belong_to(:accrued_income_account).optional }
       it { should belong_to(:loan_application).optional }
       it { should belong_to(:disbursement_voucher).optional }
       it { should belong_to(:archived_by).optional }

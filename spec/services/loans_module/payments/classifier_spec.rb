@@ -3,7 +3,7 @@ require 'rails_helper'
 module LoansModule
   module Payments
     describe Classifier do
-      it '#returns the correct principal, interest, accrued, penalty and total cash payment' do
+      it '#returns the correct principal, interest, penalty and total cash payment' do
         cooperative      = create(:cooperative)
         employee         = create(:employee, cooperative: cooperative)
         cash_on_hand     = create(:asset)

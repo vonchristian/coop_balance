@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_17_105944) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_17_113034) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -575,9 +575,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_17_105944) do
     t.decimal "prededucted_amount"
     t.integer "rate_type"
     t.string "type"
-    t.uuid "accrued_income_account_id"
     t.uuid "past_due_interest_income_account_id"
-    t.index ["accrued_income_account_id"], name: "index_interest_configs_on_accrued_income_account_id"
     t.index ["amortization_type"], name: "index_interest_configs_on_amortization_type"
     t.index ["calculation_type"], name: "index_interest_configs_on_calculation_type"
     t.index ["cooperative_id"], name: "index_interest_configs_on_cooperative_id"
@@ -863,12 +861,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_17_105944) do
     t.uuid "receivable_account_id"
     t.uuid "interest_revenue_account_id"
     t.uuid "penalty_revenue_account_id"
-    t.uuid "accrued_income_account_id"
     t.datetime "date_archived", precision: nil
     t.datetime "paid_at", precision: nil
     t.uuid "loan_aging_group_id"
     t.index ["account_number"], name: "index_loans_on_account_number", unique: true
-    t.index ["accrued_income_account_id"], name: "index_loans_on_accrued_income_account_id"
     t.index ["archived_by_id"], name: "index_loans_on_archived_by_id"
     t.index ["barangay_id"], name: "index_loans_on_barangay_id"
     t.index ["borrower_type", "borrower_id"], name: "index_loans_on_borrower_type_and_borrower_id"
@@ -1900,7 +1896,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_17_105944) do
   add_foreign_key "entries", "users", column: "recorder_id"
   add_foreign_key "identifications", "identifications", column: "previous_identification_id"
   add_foreign_key "identifications", "identity_providers"
-  add_foreign_key "interest_configs", "accounts", column: "accrued_income_account_id"
   add_foreign_key "interest_configs", "accounts", column: "interest_revenue_account_id"
   add_foreign_key "interest_configs", "accounts", column: "past_due_interest_income_account_id"
   add_foreign_key "interest_configs", "accounts", column: "unearned_interest_income_account_id"
@@ -1949,7 +1944,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_17_105944) do
   add_foreign_key "loan_products", "total_repayment_amortizations"
   add_foreign_key "loan_protection_plan_providers", "accounts", column: "accounts_payable_id"
   add_foreign_key "loan_protection_plan_providers", "cooperatives"
-  add_foreign_key "loans", "accounts", column: "accrued_income_account_id"
   add_foreign_key "loans", "accounts", column: "interest_revenue_account_id"
   add_foreign_key "loans", "accounts", column: "penalty_revenue_account_id"
   add_foreign_key "loans", "accounts", column: "receivable_account_id"
