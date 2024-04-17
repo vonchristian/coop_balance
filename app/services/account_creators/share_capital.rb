@@ -12,7 +12,6 @@ module AccountCreators
     def create_accounts!
       ApplicationRecord.transaction do
         create_equity_account
-        add_accounts
       end
     end
 
@@ -29,10 +28,6 @@ module AccountCreators
 
       share_capital.update(share_capital_equity_account: account)
       share_capital.save!
-    end
-
-    def add_accounts
-      share_capital.accounts << share_capital.share_capital_equity_account
     end
   end
 end

@@ -18,6 +18,7 @@ module AccountingModule
     class_attribute :normal_credit_balance
 
     belongs_to :ledger, class_name: 'AccountingModule::Ledger'
+    belongs_to :office, class_name: 'Cooperatives::Office'
     has_many :amounts, class_name: 'AccountingModule::Amount'
     has_many :credit_amounts,        -> { not_cancelled },        class_name: 'AccountingModule::CreditAmount'
     has_many :debit_amounts,         -> { not_cancelled },        class_name: 'AccountingModule::DebitAmount'
