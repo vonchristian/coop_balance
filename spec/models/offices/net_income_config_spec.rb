@@ -9,8 +9,6 @@ module Offices
       it { should belong_to :total_revenue_account }
       it { should belong_to :total_expense_account }
       it { should belong_to :interest_on_capital_account }
-      it { should have_many :accountable_accounts }
-      it { should have_many :accounts }
       it { should have_many :entries }
     end
 

@@ -13,7 +13,6 @@ module Cooperatives
       it { should have_many :bank_accounts }
       it { should have_many :loan_applications }
       it { should have_many :vouchers }
-      it { should have_many :accountable_accounts }
       it { should have_many :accounts }
       it { should have_many :office_saving_products }
       it { should have_many :saving_products }

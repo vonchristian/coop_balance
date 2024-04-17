@@ -17,8 +17,6 @@ module DepositsModule
     belongs_to :interest_expense_account, class_name: 'AccountingModule::Account'
     belongs_to :saving_product,           class_name: 'SavingsModule::SavingProduct'
     belongs_to :office,                   class_name: 'Cooperatives::Office'
-    has_many :accountable_accounts,       class_name: 'AccountingModule::AccountableAccount', as: :accountable, dependent: :destroy
-    has_many :accounts,                   through: :accountable_accounts, class_name: 'AccountingModule::Account'
     has_many :savings_account_agings,     class_name: 'SavingsModule::SavingsAccountAging', foreign_key: 'savings_account_id', dependent: :destroy
     has_many :savings_aging_groups,       through: :savings_account_agings
 
@@ -41,6 +39,13 @@ module DepositsModule
     delegate :dormancy_number_of_days, :balance_averager, to: :saving_product
     delegate :balance, :debits_balance, :credits_balance, :entries, to: :liability_account
     delegate :title, to: :current_aging_group, prefix: true, allow_nil: true
+
+    def accounts
+      account_ids = []
+      account_ids << liability_account_id
+      account_ids << interest_expense_account_id
+      AccountingModule::Account.where(id: account_ids)
+    end
 
     def current_aging_group
       savings_aging_groups.current

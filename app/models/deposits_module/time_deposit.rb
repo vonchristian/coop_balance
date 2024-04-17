@@ -14,8 +14,6 @@ module DepositsModule
     belongs_to :interest_expense_account, class_name: 'AccountingModule::Account'
     belongs_to :break_contract_account,   class_name: 'AccountingModule::Account'
     has_one  :term,                       as: :termable
-    has_many :accountable_accounts,       class_name: 'AccountingModule::AccountableAccount', as: :accountable
-    has_many :accounts,                   through: :accountable_accounts, class_name: 'AccountingModule::Account'
     has_many :entries,                    through: :accounts, class_name: 'AccountingModule::Entry'
 
     delegate :name, :interest_rate, :account, :break_contract_fee, to: :time_deposit_product, prefix: true
@@ -54,6 +52,15 @@ module DepositsModule
       date_range = DateRange.new(from_date: from_date, to_date: to_date)
 
       joins(:term).where('terms.effectivity_date' => date_range.start_date..date_range.end_date)
+    end
+
+    def accounts
+      account_ids = []
+      account_ids << liability_account_id
+      account_ids << interest_expense_account_id
+      account_ids << break_contract_account_id
+
+      AccountingModule::Account.where(id: account_ids)
     end
 
     def can_be_extended?

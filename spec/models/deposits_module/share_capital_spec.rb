@@ -13,8 +13,6 @@ module DepositsModule
       it { should belong_to :share_capital_product }
       it { should belong_to :office }
       it { should belong_to :share_capital_equity_account }
-      it { should have_many :accountable_accounts }
-      it { should have_many :accounts }
       it { should have_many :entries }
     end
 

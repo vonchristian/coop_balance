@@ -6,8 +6,7 @@ class Cooperative < ApplicationRecord
   has_many :satellite_offices,              class_name: 'Cooperatives::Offices::SatelliteOffice'
   has_many :cooperative_services,           class_name: 'CoopServicesModule::CooperativeService'
   has_many :store_fronts
-  has_many :accountable_accounts,           as: :accountable, class_name: 'AccountingModule::AccountableAccount'
-  has_many :accounts,                       through: :accountable_accounts, class_name: 'AccountingModule::Account'
+  has_many :accounts,                       through: :offices, class_name: 'AccountingModule::Account'
   has_many :memberships,                    class_name: 'Cooperatives::Membership'
   has_many :member_memberships,             through: :memberships, source: :cooperator, source_type: 'Member'
   has_many :bank_accounts

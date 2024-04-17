@@ -24,8 +24,6 @@ module LoansModule
       it { should have_many :member_co_makers }
       it { should have_many :loan_agings }
       it { should have_many :loan_aging_groups }
-      it { should have_many :accountable_accounts }
-      it { should have_many :accounts }
       it { should have_many :entries }
     end
 

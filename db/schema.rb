@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_17_073844) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_17_105944) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -58,10 +58,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_17_073844) do
     t.datetime "last_transaction_date", precision: nil
     t.uuid "ledger_id"
     t.string "account_type"
+    t.uuid "office_id", null: false
     t.index ["account_type"], name: "index_accounts_on_account_type"
     t.index ["code"], name: "index_accounts_on_code", unique: true
     t.index ["ledger_id"], name: "index_accounts_on_ledger_id"
     t.index ["name"], name: "index_accounts_on_name", unique: true
+    t.index ["office_id"], name: "index_accounts_on_office_id"
     t.index ["type"], name: "index_accounts_on_type"
     t.index ["updated_at"], name: "index_accounts_on_updated_at"
   end
@@ -1855,6 +1857,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_17_073844) do
   add_foreign_key "account_running_balances", "entries"
   add_foreign_key "accountable_accounts", "accounts"
   add_foreign_key "accounts", "ledgers"
+  add_foreign_key "accounts", "offices"
   add_foreign_key "addresses", "barangays"
   add_foreign_key "addresses", "municipalities"
   add_foreign_key "addresses", "provinces"

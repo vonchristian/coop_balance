@@ -10,8 +10,6 @@ module DepositsModule
       it { should belong_to(:barangay).optional }
       it { should belong_to :liability_account }
       it { should belong_to :interest_expense_account }
-      it { should have_many :accountable_accounts }
-      it { should have_many :accounts }
       it { should have_many :entries }
       it { should have_many :savings_account_agings }
       it { should have_many :savings_aging_groups }

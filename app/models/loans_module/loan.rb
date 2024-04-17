@@ -47,8 +47,6 @@ module LoansModule
     has_many :member_co_makers,           through: :loan_co_makers, source: :co_maker, source_type: 'Member'
     has_many :loan_agings,                class_name: 'LoansModule::Loans::LoanAging'
     has_many :loan_aging_groups,          through: :loan_agings, class_name: 'LoansModule::LoanAgingGroup'
-    has_many :accountable_accounts,       class_name: 'AccountingModule::AccountableAccount', as: :accountable
-    has_many :accounts,                   through: :accountable_accounts, class_name: 'AccountingModule::Account'
     has_many :entries,                    through: :accounts, class_name: 'AccountingModule::Entry'
 
     delegate :name, :address, :contact_number, to: :cooperative, prefix: true
@@ -129,6 +127,15 @@ module LoansModule
     # sorting loans in reports
     def ascending_order
       tracking_number.to_i
+    end
+
+    def accounts
+      account_ids = []
+      account_ids << receivable_account_id
+      account_ids << interest_revenue_account_id
+      account_ids << penalty_revenue_account_id
+
+      AccountingModule::Account.where(id: ids)
     end
 
     def self.unpaid

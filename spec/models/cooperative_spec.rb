@@ -8,8 +8,6 @@ RSpec.describe Cooperative, type: :model do
     it { should have_many :satellite_offices }
     it { should have_many :store_fronts }
     it { should have_many :cooperative_services }
-    it { should have_many :accountable_accounts }
-    it { should have_many :accounts }
     it { should have_many :memberships }
     it { should have_many :member_memberships }
     it { should have_many :bank_accounts }

@@ -8,14 +8,23 @@ module Offices
     belongs_to :total_revenue_account,       class_name: 'AccountingModule::Account'
     belongs_to :total_expense_account,       class_name: 'AccountingModule::Account'
     belongs_to :interest_on_capital_account, class_name: 'AccountingModule::Account'
-    has_many :accountable_accounts,          class_name: 'AccountingModule::AccountableAccount', as: :accountable
-    has_many :accounts,                      through: :accountable_accounts, class_name: 'AccountingModule::Account'
     has_many :entries,                       through: :accounts, class_name: 'AccountingModule::Entry'
 
     validates :net_surplus_account_id, :net_loss_account_id, :total_revenue_account_id, :total_expense_account_id, :interest_on_capital_account_id, uniqueness: { scope: :office_id }
 
     def self.current
       order(created_at: :desc).first
+    end
+
+    def accounts
+      account_ids = []
+      account_ids << net_surplus_account_id
+      account_ids << net_loss_account_id
+      account_ids << total_revenue_account_id
+      account_ids << total_expense_account_id
+      account_ids << interest_on_capital_account_id
+
+      AccountingModule::Account.where(id: account_ids)
     end
 
     def books_closed?(from_date:, to_date:)

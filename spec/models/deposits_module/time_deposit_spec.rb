@@ -11,8 +11,6 @@ module DepositsModule
       it { should belong_to :liability_account }
       it { should belong_to :interest_expense_account }
       it { should belong_to :break_contract_account }
-      it { should have_many :accountable_accounts }
-      it { should have_many :accounts }
       it { should have_many :entries }
     end
 

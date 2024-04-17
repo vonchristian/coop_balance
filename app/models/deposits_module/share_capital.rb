@@ -16,8 +16,6 @@ module DepositsModule
     belongs_to :barangay,                     class_name: 'Addresses::Barangay', optional: true
     belongs_to :organization,                 optional: true
     belongs_to :share_capital_equity_account, class_name: 'AccountingModule::Account', foreign_key: 'equity_account_id'
-    has_many   :accountable_accounts,         class_name: 'AccountingModule::AccountableAccount', as: :accountable
-    has_many   :accounts,                     through: :accountable_accounts, class_name: 'AccountingModule::Account'
     has_many   :amounts,                      through: :accounts, class_name: 'AccountingModule::Amount'
     has_many   :debit_amounts,                through: :accounts, class_name: 'AccountingModule::DebitAmount'
     has_many   :credit_amounts, through: :accounts, class_name: 'AccountingModule::CreditAmount'
@@ -79,6 +77,12 @@ module DepositsModule
 
     def capital_build_ups(_args = {})
       entries
+    end
+
+    def accounts
+      account_ids = []
+      account_ids << equity_account_id
+      AccountingModule::Account.where(id: account_ids)
     end
 
     def average_monthly_balance(args = {})
