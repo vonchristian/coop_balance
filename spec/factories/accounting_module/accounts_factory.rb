@@ -2,6 +2,7 @@ FactoryBot.define do
   factory :account, class: 'AccountingModule::Account' do
     sequence(:name) { |_n| SecureRandom.uuid.to_s }
     code            { Faker::Number.number(digits: 12) }
+    office
 
     factory :asset, class: 'AccountingModule::Asset' do
       ledger factory: %i[asset_ledger]

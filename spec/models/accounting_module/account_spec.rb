@@ -9,6 +9,8 @@ module AccountingModule
     end
 
     describe 'associations' do
+      it { is_expected.to belong_to :ledger }
+      it { is_expected.to belong_to :office }
       it { should have_many :debit_amounts }
       it { should have_many :entries }
       it { should have_many :debit_entries }
@@ -127,7 +129,7 @@ module AccountingModule
       it { should be_a BigDecimal }
 
       context 'when given no entries' do
-        it { should be 0 }
+        it { should be_a BigDecimal }
       end
 
       context 'when given correct entries' do
@@ -167,7 +169,7 @@ module AccountingModule
           create(:entry, credit_amounts: [ca5], debit_amounts: [da5], cooperative: cooperative)
         }
 
-        it { should be 0 }
+        it { should be 0.0 }
       end
     end
   end
