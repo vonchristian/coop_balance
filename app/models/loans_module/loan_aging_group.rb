@@ -1,7 +1,6 @@
 module LoansModule
   class LoanAgingGroup < ApplicationRecord
     belongs_to :office,                           class_name: 'Cooperatives::Office'
-    belongs_to :level_two_account_category,       class_name: 'AccountingModule::LevelTwoAccountCategory', optional: true
     belongs_to :receivable_ledger, class_name: 'AccountingModule::Ledger'
     has_many   :loan_agings,                      class_name: 'LoansModule::Loans::LoanAging'
     has_many   :loans,                            class_name: 'LoansModule::Loan'
