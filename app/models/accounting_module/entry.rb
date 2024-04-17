@@ -6,7 +6,6 @@ module AccountingModule
     multisearchable against: %i[reference_number description]
 
     has_one    :voucher, dependent: :nullify
-    belongs_to :origin,                polymorphic: true, optional: true
     belongs_to :recording_agent,       polymorphic: true, optional: true
     belongs_to :commercial_document,   polymorphic: true
     belongs_to :cancellation_entry,    class_name: 'AccountingModule::Entry', optional: true

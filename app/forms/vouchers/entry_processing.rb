@@ -20,7 +20,6 @@ module Vouchers
 
     def create_entry
       entry = AccountingModule::Entry.new(
-        origin: voucher.origin,
         recording_agent: voucher.recording_agent,
         office: voucher.office,
         cooperative: cooperative,
