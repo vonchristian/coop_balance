@@ -19,8 +19,6 @@ module Cooperatives
       it { should have_many :office_share_capital_products }
       it { should have_many :share_capital_products }
       it { should have_many :office_loan_products }
-      it { should have_many :office_time_deposit_products }
-      it { should have_many :time_deposit_products }
       it { should have_many :loan_products }
       it { should have_many :office_programs }
       it { should have_many :programs }
