@@ -137,7 +137,7 @@ module LoansModule
     end
 
     def entries
-      AccountingModule::Entry.joins(:amounts).where(account_id: accounts.ids)
+      AccountingModule::Entry.joins(:amounts).where('amounts.account_id' => accounts.ids)
     end
 
     def self.unpaid
