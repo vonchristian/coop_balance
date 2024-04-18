@@ -10,19 +10,18 @@ module LoansModule
 
       describe 'validations' do
         it { should validate_presence_of :name }
-        it { should validate_presence_of :account_id }
         it { should validate_presence_of :rate }
         it { should validate_presence_of :amount }
         it { should validate_numericality_of :rate }
         it { should validate_numericality_of :amount }
       end
 
-      it '#charge_calculator' do
-        percent_based = create(:loan_product_charge, charge_type: 'percent_based')
-        amount_based  = create(:loan_product_charge, charge_type: 'amount_based')
+      describe '#charge_amount(chargeable_amount:)' do
+        let!(:percent_based) { create(:loan_product_charge, rate: 0.02, charge_type: 'percent_based') }
+        let!(:amount_based) { create(:loan_product_charge, amount: 10, charge_type: 'amount_based') }
 
-        expect(percent_based.charge_calculator).to eql LoansModule::LoanProductChargeCalculators::PercentBased
-        expect(amount_based.charge_calculator).to eql LoansModule::LoanProductChargeCalculators::AmountBased
+        it { expect(amount_based.charge_amount).to eq 10 }
+        it { expect(percent_based.charge_amount(chargeable_amount: 100)).to eq 2.0 }
       end
     end
   end
