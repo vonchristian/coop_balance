@@ -75,7 +75,7 @@ end
 
 group :test do
   gem 'capybara'
-  gem 'database_rewinder'
+  gem 'database_cleaner-active_record'
   gem 'pundit-matchers'
   gem 'shoulda-matchers'
   gem 'webdrivers', '~> 4.0'

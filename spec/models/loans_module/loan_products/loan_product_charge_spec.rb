@@ -2,7 +2,7 @@ require 'rails_helper'
 
 module LoansModule
   module LoanProducts
-    describe LoanProductCharge do
+    describe Charge do
       describe 'associations' do
         it { should belong_to :account }
         it { should belong_to :loan_product }

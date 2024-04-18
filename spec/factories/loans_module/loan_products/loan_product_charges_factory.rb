@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :loan_product_charge, class: 'LoansModule::LoanProducts::LoanProductCharge' do
+  factory :loan_product_charge, class: 'LoansModule::LoanProducts::Charge' do
     loan_product
     account factory: %i[revenue]
     name        { Faker::Company.name }

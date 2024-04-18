@@ -143,7 +143,10 @@ GEM
     crass (1.0.6)
     cssbundling-rails (1.4.0)
       railties (>= 6.0.0)
-    database_rewinder (1.0.1)
+    database_cleaner-active_record (2.1.0)
+      activerecord (>= 5.a)
+      database_cleaner-core (~> 2.0.0)
+    database_cleaner-core (2.0.1)
     date (3.3.4)
     dead_end (4.0.0)
     derailed_benchmarks (2.1.2)
@@ -539,7 +542,7 @@ DEPENDENCIES
   caxlsx_rails
   chartkick
   cssbundling-rails (~> 1.2)
-  database_rewinder
+  database_cleaner-active_record
   derailed_benchmarks
   devise!
   dotiw
