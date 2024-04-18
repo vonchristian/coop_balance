@@ -133,7 +133,11 @@ module LoansModule
       account_ids << interest_revenue_account_id
       account_ids << penalty_revenue_account_id
 
-      AccountingModule::Account.where(id: ids)
+      AccountingModule::Account.where(id: account_ids)
+    end
+
+    def entries
+      AccountingModule::Entry.joins(:amounts).where(account_id: accounts.ids)
     end
 
     def self.unpaid
