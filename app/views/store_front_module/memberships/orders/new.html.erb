@@ -56,9 +56,6 @@
           <div class="box box-solid">
             <div class="box-header">
               <%= @membership.name %>
-<p class="text-muted"> Accounts Receivable Store </p>
-<%= number_to_currency @membership.account_receivable_store_balance %>
-<hr>
 <%= number_to_currency @membership.savings.sum(&:balance) %>
 
 <%= number_to_currency @membership.share_capitals.sum(&:balance) %>

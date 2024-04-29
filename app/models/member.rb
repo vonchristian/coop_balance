@@ -152,10 +152,6 @@ class Member < ApplicationRecord
     ((Time.zone.now - date_of_birth.to_time) / 1.year.seconds).floor
   end
 
-  def account_receivable_store_balance
-    StoreFront.accounts_receivable_balance(self)
-  end
-
   def full_name
     if middle_name.present?
       "#{last_name}, #{first_name} #{middle_name}"

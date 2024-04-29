@@ -287,3 +287,40 @@ module LoansModule
     end
   end
 end
+
+recurly_invoice_numbers = %w{77658503}
+prepaid_card = []
+venmo = []
+apple_pay = []
+failed_lookup = []
+
+recurly_invoice_numbers.each do |rin|
+  invoice = Recurly::Invoice.find(rin)
+
+  if invoice.state != 'pending'
+    puts "Invoice state not pending, skipping"
+    next
+  end
+
+  begin
+    transaction = invoice.transactions.last
+    if transaction.payment_method == 'venmo'
+      venmo << rin
+    elsif transaction.payment_method == 'braintree_apple_pay'
+      apple_pay << rin
+    else
+      bin = transaction.details['account'].billing_info.first_six
+      response = JSON.parse(
+        RestClient.get(
+          "https://lookup.binlist.net/#{bin}",
+          'Accept-Version:' => '3',
+          'Authorization' => ENV['BINLIST_API_KEY']
+        ).body
+      )
+      prepaid_card << rin if response['prepaid']
+    end
+  rescue StandardError => e
+    failed_lookup << [{ rin: rin, error: e.message }]
+  end
+end
+
