@@ -81,24 +81,22 @@ module LoansModule
     delegate :name, to: :penalty_revenue_account, prefix: true
     delegate :reference_number, to: :disbursement_voucher, prefix: true, allow_nil: true
     delegate :title, to: :loan_aging_group, prefix: true
+
     def self.with_no_terms
       with_terms = Term.where(termable_type: to_s).pluck(:termable_id)
       where(id: with_terms)
     end
 
     def self.receivable_accounts
-      ids = pluck(:receivable_account_id)
-      AccountingModule::Account.where(id: ids.compact.flatten.uniq)
+      AccountingModule::Account.where(id: pluck(:receivable_account_id).compact.flatten.uniq)
     end
 
     def self.interest_revenue_accounts
-      ids = pluck(:interest_revenue_account_id)
-      AccountingModule::Account.where(id: ids.compact.flatten.uniq)
+      AccountingModule::Account.where(id: pluck(:interest_revenue_account_id).compact.flatten.uniq)
     end
 
     def self.penalty_revenue_accounts
-      ids = pluck(:penalty_revenue_account_id)
-      AccountingModule::Account.where(id: ids.compact.flatten.uniq)
+      AccountingModule::Account.where(id: pluck(:penalty_revenue_account_id).compact.flatten.uniq)
     end
 
     def self.current_loan_agings
