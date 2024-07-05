@@ -14,7 +14,6 @@ module DepositsModule
     belongs_to :interest_expense_account, class_name: 'AccountingModule::Account'
     belongs_to :break_contract_account,   class_name: 'AccountingModule::Account'
     has_one  :term,                       as: :termable
-    has_many :entries,                    through: :accounts, class_name: 'AccountingModule::Entry'
 
     delegate :name, :interest_rate, :account, :break_contract_fee, to: :time_deposit_product, prefix: true
     delegate :full_name, :first_and_last_name, to: :depositor, prefix: true
@@ -61,6 +60,10 @@ module DepositsModule
       account_ids << break_contract_account_id
 
       AccountingModule::Account.where(id: account_ids)
+    end
+
+    def entries
+      AccountingModule::Entry.joins(:amounts).where('amounts.account_id' => accounts.ids)
     end
 
     def can_be_extended?

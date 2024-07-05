@@ -95,10 +95,6 @@ class User < ApplicationRecord
     sales_orders.total(options)
   end
 
-  def account_receivable_store_balance
-    AccountsReceivableStore.new.balance(self)
-  end
-
   def self.loan_approvers
     all.select { |a| User::LOAN_APPROVERS.include?(a.role.titleize) }
   end

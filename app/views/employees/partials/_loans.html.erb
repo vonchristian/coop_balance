@@ -2,12 +2,6 @@
   <div class="col-md-12">
     <div class="card">
       <div class="card-header">
-        <small>ACCOUNTS RECEIVABLE (STORE)</small>
-        <h3 class="card-title">
-          <%=number_to_currency @employee.account_receivable_store_balance %>
-        </h3>
-      </div>
-      <div class="card-header">
         <h4 class="card-title">LOANS </h4>
         <% if policy([:members, :loan]).new? %>
           <%= link_to 'New Loan Application', new_employee_loan_path(@employee), class: "btn btn-primary" %>

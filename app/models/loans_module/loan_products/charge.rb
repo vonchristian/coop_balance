@@ -1,6 +1,8 @@
 module LoansModule
   module LoanProducts
-    class LoanProductCharge < ApplicationRecord
+    class Charge < ApplicationRecord
+      self.table_name = 'loan_product_charges'
+
       enum charge_type: { amount_based: 0, percent_based: 1 }
       belongs_to :loan_product, class_name: 'LoansModule::LoanProduct'
       belongs_to :account,      class_name: 'AccountingModule::Account'
@@ -15,12 +17,10 @@ module LoansModule
         where(account: DepositsModule::ShareCapital.equity_accounts)
       end
 
-      def charge_amount(args = {})
-        charge_calculator.new(args.merge(charge: self)).calculate
-      end
+      def charge_amount(chargeable_amount: nil)
+        return amount if amount_based?
 
-      def charge_calculator
-        "LoansModule::LoanProductChargeCalculators::#{charge_type.titleize.delete(' ')}".constantize
+        rate * chargeable_amount
       end
     end
   end

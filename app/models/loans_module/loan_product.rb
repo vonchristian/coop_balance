@@ -11,7 +11,7 @@ module LoansModule
     belongs_to :total_repayment_amortization,  class_name: 'LoansModule::AmortizationConfigs::TotalRepaymentAmortization'
     has_many :interest_configs,                class_name: 'LoansModule::LoanProducts::InterestConfig', dependent: :destroy
     has_many :penalty_configs,                 class_name: 'LoansModule::LoanProducts::PenaltyConfig', dependent: :destroy
-    has_many :loan_product_charges,            class_name: 'LoansModule::LoanProducts::LoanProductCharge', dependent: :destroy
+    has_many :loan_product_charges,            class_name: 'LoansModule::LoanProducts::Charge', dependent: :destroy
     has_many :loans,                           class_name: 'LoansModule::Loan', dependent: :nullify
     has_many :member_borrowers,                through: :loans, source: :borrower, source_type: 'Member'
     has_many :employee_borrowers,              through: :loans, source: :borrower, source_type: 'User'
