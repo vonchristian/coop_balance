@@ -11,8 +11,25 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :lockable,
          :recoverable, :rememberable, :trackable, :validatable
-  enum sex: { male: 0, female: 1 }
-  enum role: { system_administrator: 0, general_manager: 1, branch_manager: 2, loan_officer: 3, bookkeeper: 4, teller: 5, stock_custodian: 6, sales_clerk: 7, treasurer: 8, accountant: 9, collector: 10 }
+
+  enum sex: {
+    male: 0,
+    female: 1
+  }
+
+  enum role: {
+    system_administrator: 0,
+    general_manager: 1,
+    branch_manager: 2,
+    loan_officer: 3,
+    bookkeeper: 4,
+    teller: 5,
+    stock_custodian: 6,
+    sales_clerk: 7,
+    treasurer: 8,
+    accountant: 9,
+    collector: 10
+  }
 
   belongs_to :store_front, optional: true
 
