@@ -3,7 +3,6 @@ module AccountingModule
     TYPES = %w[Asset Liability Equity Revenue Expense].freeze
 
     include PgSearch::Model
-    extend ProfitPercentage
 
     enum account_type: {
       asset: 'asset',
