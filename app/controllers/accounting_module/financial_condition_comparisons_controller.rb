@@ -19,9 +19,9 @@ module AccountingModule
       first_entry = current_cooperative.entries.order('entry_date ASC').first
       @from_date = first_entry ? DateTime.parse(first_entry.entry_date.strftime('%B %e, %Y')) : Time.zone.now
       @to_date = params[:entry_date] ? DateTime.parse(params[:entry_date]) : Time.zone.now
-      @assets = current_cooperative.accounts.assets.active.order(:code).all
-      @liabilities = current_cooperative.accounts.liabilities.active.order(:code).all
-      @equity = current_cooperative.accounts.equities.active.order(:code).all
+      @assets = current_cooperative.accounts.asset.active.order(:code).all
+      @liabilities = current_cooperative.accounts.liability.active.order(:code).all
+      @equity = current_cooperative.accounts.equity.active.order(:code).all
       @employee = current_user
     end
 

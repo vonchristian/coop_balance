@@ -20,7 +20,7 @@ module AccountCreators
     def create_equity_account
       return if share_capital_application.equity_account_id.present?
 
-      account = office.accounts.equities.create!(
+      account = office.accounts.equity.create!(
         name: "#{share_capital_application.share_capital_product_name} - #{share_capital_application.account_number}",
         code: share_capital_application.account_number,
         ledger: equity_ledger

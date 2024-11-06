@@ -13,7 +13,7 @@
     <%= f.input :account_id, label: "Savings Account", collection: AccountingModule::Account.all.map{|a| [a.name, a.id] } %>
     <%= f.input :interest_expense_account_id, collection: AccountingModule::Account.all.map{|a| [a.name, a.id] }%>
     <%= f.input :minimum_balance, label: "Minimum Balance to earn interest:" %>
-    <%= f.input :closing_account_id, label: "Closing Account", collection: current_cooperative.accounts.revenues.all.map{|a| [a.name, a.id] } %>
+    <%= f.input :closing_account_id, label: "Closing Account", collection: current_cooperative.accounts.revenue.all.map{|a| [a.name, a.id] } %>
     <%= f.input :closing_account_fee %>
     <%= f.input :dormancy_number_of_days %>
   </div>

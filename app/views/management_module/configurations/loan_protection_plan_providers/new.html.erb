@@ -9,7 +9,7 @@
     <%= f.error_notification %>
     <%= f.input :business_name %>
     <%= f.input :rate %>
-    <%= f.input :accounts_payable_id, collection: current_office.accounts.liabilities.map{ |a| [a.name, a.id] } %>
+    <%= f.input :accounts_payable_id, collection: current_office.accounts.liability.map{ |a| [a.name, a.id] } %>
   </div>
   <div class="modal-footer">
     <%= f.submit "Save Details", class: "btn btn-danger float-right", data: { disable_with: "Processing..." } %>

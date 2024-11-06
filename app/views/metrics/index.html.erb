@@ -88,8 +88,8 @@ Active Share Capitals
          <%=link_to 'PDF', metrics_path(from_date: @from_date, to_date: @to_date, format: "pdf") %>
          <hr>
          <small>TOTAL EXPENSES</small>
-         <h1><%= number_to_currency AccountingModule::Expense.balance(from_date: @from_date, to_date: @to_date) %></h1>
-         <% AccountingModule::Expense.updated_at(from_date: @from_date, to_date: @to_date).uniq.sort_by(&:balance).reverse.each do |account| %>
+         <h1><%= number_to_currency AccountingModule::Account.expense.balance(from_date: @from_date, to_date: @to_date) %></h1>
+         <% AccountingModule::Account.expense.updated_at(from_date: @from_date, to_date: @to_date).uniq.sort_by(&:balance).reverse.each do |account| %>
           <div class="row">
             <div class="col-md-7">
               <%= account.name %>
@@ -102,8 +102,8 @@ Active Share Capitals
         <% end %>
         <hr>
         <small>TOTAL REVENUES</small>
-         <h1><%= number_to_currency AccountingModule::Revenue.balance(from_date: @from_date, to_date: @to_date) %></h1>
-         <% AccountingModule::Revenue.updated_at(from_date: @from_date, to_date: @to_date).uniq.sort_by(&:balance).reverse.each do |account| %>
+         <h1><%= number_to_currency AccountingModule::Account.revenue.balance(from_date: @from_date, to_date: @to_date) %></h1>
+         <% AccountingModule::Account.revenue.updated_at(from_date: @from_date, to_date: @to_date).uniq.sort_by(&:balance).reverse.each do |account| %>
           <div class="row">
             <div class="col-md-7">
               <%= account.name %>
@@ -116,7 +116,7 @@ Active Share Capitals
         <% end %>
         <hr>
         <small>PROFIT</small>
-         <h1><%= number_to_currency(AccountingModule::Revenue.balance(from_date: @from_date, to_date: @to_date) - AccountingModule::Expense.balance(from_date: @from_date, to_date: @to_date)) %></h1>
+         <h1><%= number_to_currency(AccountingModule::Account.revenue.balance(from_date: @from_date, to_date: @to_date) - AccountingModule::Account.expense.balance(from_date: @from_date, to_date: @to_date)) %></h1>
 
       </div>
     </div>

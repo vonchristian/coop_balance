@@ -5,8 +5,8 @@ class MetricsController < ApplicationController
     @from_date = params[:from_date] ? DateTime.parse(params[:from_date]) : DateTime.now.at_beginning_of_month
     @to_date = params[:to_date] ? DateTime.parse(params[:to_date]) : DateTime.now
     @members = current_cooperative.member_memberships.updated_at(from_date: @from_date, to_date: @to_date)
-    @revenues = current_cooperative.accounts.revenues.updated_at(from_date: @from_date, to_date: @to_date)
-    @expenses = current_cooperative.accounts.expenses.updated_at(from_date: @from_date, to_date: @to_date)
+    @revenues = current_cooperative.accounts.revenue.updated_at(from_date: @from_date, to_date: @to_date)
+    @expenses = current_cooperative.accounts.expense.updated_at(from_date: @from_date, to_date: @to_date)
     respond_to do |format|
       format.html
       format.pdf do

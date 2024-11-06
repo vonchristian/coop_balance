@@ -326,8 +326,8 @@ class TransactionSummaryPdf < Prawn::Document
 
   def expenses_data
     ([['', '', 'Account', 'Amount']] +
-      expenses_data) || (cooperative.accounts.expenses.updated_at(from_date: date, to_date: date).distinct.map { |a| ['', '', a.name, price(a.debits_balance(to_date: date))] } +
-        [['', '', '<b>TOTAL</b>', "<b>#{price(cooperative.accounts.expenses.updated_at(from_date: date, to_date: date).sum { |a| a.debits_balance(to_date: date) })}</b>"]])
+      expenses_data) || (cooperative.accounts.expense.updated_at(from_date: date, to_date: date).distinct.map { |a| ['', '', a.name, price(a.debits_balance(to_date: date))] } +
+        [['', '', '<b>TOTAL</b>', "<b>#{price(cooperative.accounts.expense.updated_at(from_date: date, to_date: date).sum { |a| a.debits_balance(to_date: date) })}</b>"]])
   end
 
   def revenues
@@ -353,8 +353,8 @@ class TransactionSummaryPdf < Prawn::Document
 
   def revenues_data
     ([['', '', 'Account', 'Amount']] +
-      revenues_data) || (cooperative.accounts.revenues.updated_at(from_date: date, to_date: date).distinct.to_a.sort_by(&:balance).reverse.map { |a| ['', '', a.name, price(a.credits_balance(from_date: date, to_date: date))] } +
-        [['', '', '<b>TOTAL</b>', (cooperative.accounts.revenues.updated_at(from_date: date, to_date: date).sum { |a| a.credits_balance(from_date: date, to_date: date) }).to_s]])
+      revenues_data) || (cooperative.accounts.revenue.updated_at(from_date: date, to_date: date).distinct.to_a.sort_by(&:balance).reverse.map { |a| ['', '', a.name, price(a.credits_balance(from_date: date, to_date: date))] } +
+        [['', '', '<b>TOTAL</b>', (cooperative.accounts.revenue.updated_at(from_date: date, to_date: date).sum { |a| a.credits_balance(from_date: date, to_date: date) }).to_s]])
   end
 
   def summary_of_accounts

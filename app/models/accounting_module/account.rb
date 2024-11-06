@@ -1,7 +1,7 @@
 module AccountingModule
   class Account < ApplicationRecord
     TYPES = %w[Asset Liability Equity Revenue Expense].freeze
-
+    NORMAL_CREDIT_BALANCE = %w[equity liability revenue].freeze
     include PgSearch::Model
 
     enum account_type: {
@@ -13,8 +13,6 @@ module AccountingModule
     }
 
     pg_search_scope :text_search, against: %i[name code]
-
-    class_attribute :normal_credit_balance
 
     belongs_to :ledger, class_name: 'AccountingModule::Ledger'
     belongs_to :office, class_name: 'Cooperatives::Office'
@@ -28,14 +26,8 @@ module AccountingModule
     has_many :account_budgets
     has_many :running_balances, class_name: 'AccountingModule::RunningBalances::Account'
 
-    validates :type, :name, :code, presence: true
+    validates :account_type, :name, :code, presence: true
     validates :name, uniqueness: true
-
-    scope :assets,      -> { where(type: 'AccountingModule::Asset') }
-    scope :liabilities, -> { where(type: 'AccountingModule::Liability') }
-    scope :equities,    -> { where(type: 'AccountingModule::Equity') }
-    scope :revenues,    -> { where(type: 'AccountingModule::Revenue') }
-    scope :expenses,    -> { where(type: 'AccountingModule::Expense') }
 
     # remove
     def self.cash_accounts
@@ -78,7 +70,7 @@ module AccountingModule
     def self.balance(options = {})
       accounts_balance = BigDecimal('0')
       find_each do |account|
-        if account.contra?
+        if  account.normal_credit_balance ^ account.contra?
           accounts_balance -= account.balance(options)
         else
           accounts_balance += account.balance(options)
@@ -117,7 +109,7 @@ module AccountingModule
     def self.debits_balance(options = {})
       accounts_balance = BigDecimal('0')
       find_each do |account|
-        if account.contra?
+        if account.normal_credit_balance ^ account.contra?
           accounts_balance -= account.debits_balance(options)
         else
           accounts_balance += account.debits_balance(options)
@@ -129,7 +121,7 @@ module AccountingModule
     def self.credits_balance(options = {})
       accounts_balance = BigDecimal('0')
       find_each do |account|
-        if account.contra
+        if  account.normal_credit_balance ^ account.contra?
           accounts_balance -= account.credits_balance(options)
         else
           accounts_balance += account.credits_balance(options)
@@ -139,24 +131,21 @@ module AccountingModule
     end
 
     def self.trial_balance(args = {})
-      raise(NoMethodError, "undefined method 'trial_balance'") unless new.instance_of?(AccountingModule::Account)
-
-      AccountingModule::Asset.balance(args) - (AccountingModule::Liability.balance(args) + AccountingModule::Equity.balance(args) + AccountingModule::Revenue.balance(args) - AccountingModule::Expense.balance(args))
+      binding.pry
+      AccountingModule::Account.asset.balance(args) - (AccountingModule::Account.liability.balance(args) + AccountingModule::Account.equity.balance(args) + AccountingModule::Account.revenue.balance(args) - AccountingModule::Account.expense.balance(args))
     end
 
     def self.net_surplus(args = {})
-      revenues.balance(args) -
+      revenue.balance(args) -
         expenses.balance(args)
     end
 
     def self.total_equity_and_liabilities(args = {})
-      equities.balance(args) +
-        liabilities.balance(args)
+      equity.balance(args) +
+        liability.balance(args)
     end
 
     def balance(options = {})
-      return raise(NoMethodError, "undefined method 'balance'") if instance_of?(AccountingModule::Account)
-
       if normal_credit_balance ^ contra?
         credits_balance(options) - debits_balance(options)
       else
@@ -186,6 +175,10 @@ module AccountingModule
 
     def running_balance(entry_date: nil)
       running_balances.balance(entry_date: entry_date)
+    end
+
+    def normal_credit_balance
+      NORMAL_CREDIT_BALANCE.include?(account_type)
     end
   end
 end

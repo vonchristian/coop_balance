@@ -59,11 +59,11 @@ module AccountingModule
     end
 
     def total_revenues
-      find_office.accounts.revenues.balance(from_date: date.beginning_of_year, to_date: date.end_of_year)
+      find_office.accounts.revenue.balance(from_date: date.beginning_of_year, to_date: date.end_of_year)
     end
 
     def total_expenses
-      find_office.accounts.expenses.balance(from_date: date.beginning_of_year, to_date: date.end_of_year)
+      find_office.accounts.expense.balance(from_date: date.beginning_of_year, to_date: date.end_of_year)
     end
 
     def find_office

@@ -18,47 +18,12 @@ module AccountingModule
     end
 
     describe 'validations' do
-      it { should validate_presence_of :type }
+      it { should validate_presence_of :account_type }
       it { should validate_presence_of :name }
       it { should validate_presence_of :code }
     end
 
     describe 'scopes' do
-      it '.assets' do
-        asset     = create(:asset)
-        liability = create(:liability)
-        expect(described_class.assets.pluck(:id)).to include(asset.id)
-        expect(described_class.assets.pluck(:id)).not_to include(liability.id)
-      end
-
-      it '.liabilities' do
-        asset     = create(:asset)
-        liability = create(:liability)
-        expect(described_class.liabilities.pluck(:id)).not_to include(asset.id)
-        expect(described_class.liabilities.pluck(:id)).to include(liability.id)
-      end
-
-      it '.equities' do
-        asset     = create(:asset)
-        equity    = create(:equity)
-        expect(described_class.equities.pluck(:id)).not_to include(asset.id)
-        expect(described_class.equities.pluck(:id)).to include(equity.id)
-      end
-
-      it '.expenses' do
-        asset = create(:asset)
-        expense = create(:expense)
-        expect(described_class.expenses.pluck(:id)).not_to include(asset.id)
-        expect(described_class.expenses.pluck(:id)).to include(expense.id)
-      end
-
-      it '.revenues' do
-        asset = create(:asset)
-        revenue = create(:revenue)
-        expect(described_class.revenues.pluck(:id)).not_to include(asset.id)
-        expect(described_class.revenues.pluck(:id)).to include(revenue.id)
-      end
-
       it '.active' do
         active_account = create(:asset, active: true)
         inactive_account = create(:expense, active: false)
@@ -105,7 +70,8 @@ module AccountingModule
     end
 
     it '#display_name' do
-      asset = create(:asset)
+      ledger = create(:asset_ledger, name: "Cash on Hand")
+      asset = create(:asset, ledger: ledger)
 
       expect(asset.display_name).to eql 'Cash on Hand'
     end
@@ -115,13 +81,9 @@ module AccountingModule
     it { should_not be_valid } # must construct a child type instead
 
     describe 'when using a child type' do
-      let(:account) { create(:asset, type: 'AccountingModule::Asset') }
+      let(:account) { create(:asset) }
 
       it { should be_valid }
-    end
-
-    it 'calling the instance method #balance should raise a NoMethodError' do
-      expect { subject.balance }.to raise_error NoMethodError, "undefined method 'balance'"
     end
 
     describe '.trial_balance' do
@@ -143,11 +105,11 @@ module AccountingModule
           contra_asset   = create(:asset, contra: true)
           contra_expense = create(:expense, contra: true)
           # credit amounts
-          ca1 = build(:credit_amount, account: liability, amount: 100_000)
-          ca2 = build(:credit_amount, account: equity, amount: 1000)
-          ca3 = build(:credit_amount, account: revenue, amount: 40_404)
-          ca4 = build(:credit_amount, account: contra_asset, amount: 2)
-          ca5 = build(:credit_amount, account: contra_expense, amount: 333)
+          ca1 = build(:credit_amount, account: liability, amount_cents: 100_000)
+          ca2 = build(:credit_amount, account: equity, amount_cents: 1000)
+          ca3 = build(:credit_amount, account: revenue, amount_cents: 40_404)
+          ca4 = build(:credit_amount, account: contra_asset, amount_cents: 2)
+          ca5 = build(:credit_amount, account: contra_expense, amount_cents: 333)
 
           # debit accounts
           asset            = create(:asset)
@@ -156,11 +118,11 @@ module AccountingModule
           contra_equity    = create(:equity, contra: true)
           contra_revenue   = create(:revenue, contra: true)
           # debit amounts
-          da1 = build(:debit_amount, account: asset, amount: 100_000)
-          da2 = build(:debit_amount, account: expense, amount: 1000)
-          da3 = build(:debit_amount, account: contra_liability, amount: 40_404)
-          da4 = build(:debit_amount, account: contra_equity, amount: 2)
-          da5 = build(:debit_amount, account: contra_revenue, amount: 333)
+          da1 = build(:debit_amount, account: asset, amount_cents: 100_000)
+          da2 = build(:debit_amount, account: expense, amount_cents: 1000)
+          da3 = build(:debit_amount, account: contra_liability, amount_cents: 40_404)
+          da4 = build(:debit_amount, account: contra_equity, amount_cents: 2)
+          da5 = build(:debit_amount, account: contra_revenue, amount_cents: 333)
 
           create(:entry, credit_amounts: [ca1], debit_amounts: [da1], cooperative: cooperative)
           create(:entry, credit_amounts: [ca2], debit_amounts: [da2], cooperative: cooperative)

@@ -23,7 +23,7 @@ module AccountCreators
     def create_liability_account
       return if saving.liability_account_id.present?
 
-      account = office.accounts.liabilities.create!(
+      account = office.accounts.liability.create!(
         name: "#{saving_product.name} - (#{saving.depositor_name} - #{saving.account_number}",
         code: saving.account_number,
         ledger: liability_ledger
@@ -34,7 +34,7 @@ module AccountCreators
     def create_interest_expense_account
       return if saving.interest_expense_account_id.present?
 
-      account = office.accounts.expenses.create!(
+      account = office.accounts.expense.create!(
         name: "Interest Expense on Savings Deposits - (#{saving.depositor_name} - #{saving.account_number}",
         code: "INT-#{saving.account_number}",
         ledger: interest_expense_ledger

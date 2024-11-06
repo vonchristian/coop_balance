@@ -18,10 +18,10 @@
               <% @store_fronts.each do |store_front| %>
                 <tr>
                   <td><%= store_front.name %></td>
-                  <td><%= number_to_currency AccountingModule::Asset.balance(commercial_document_id: store_front.id) %></td>
+                  <td><%= number_to_currency AccountingModule::Account.asset.balance(commercial_document_id: store_front.id) %></td>
 
-                  <td><%= number_to_currency AccountingModule::Expense.balance(commercial_document_id: store_front.id) %></td>
-                  <td><%= number_to_currency AccountingModule::Revenue.balance(commercial_document_id: store_front.id) %></td>
+                  <td><%= number_to_currency AccountingModule::Account.expense.balance(commercial_document_id: store_front.id) %></td>
+                  <td><%= number_to_currency AccountingModule::Account.revenue.balance(commercial_document_id: store_front.id) %></td>
 
                   <td></td>
                 </tr>

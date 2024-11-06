@@ -53,12 +53,12 @@ module DepositsModule
 
     def self.liability_accounts
       ids = pluck(:liability_account_id)
-      AccountingModule::Liability.where(id: ids)
+      AccountingModule::Account.liability.where(id: ids)
     end
 
     def self.interest_expense_accounts
       ids = pluck(:interest_expense_account_id)
-      AccountingModule::Expense.where(id: ids)
+      AccountingModule::Account.expense.where(id: ids)
     end
 
     def self.total_balances(args = {})
@@ -83,7 +83,7 @@ module DepositsModule
 
     def self.balance(args = {})
       ids = pluck(:liability_account_id)
-      AccountingModule::Liability.where(id: ids.uniq.compact.flatten).balance(args)
+      AccountingModule::Account.liability.where(id: ids.uniq.compact.flatten).balance(args)
     end
 
     def closed?

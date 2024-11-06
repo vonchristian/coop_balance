@@ -22,7 +22,7 @@ module AccountCreators
     def create_receivable_account
       return if loan_application.receivable_account.present?
 
-      account = office.accounts.assets.create!(
+      account = office.accounts.asset.create!(
         name: "#{loan_product.name} - #{SecureRandom.uuid}",
         code: SecureRandom.uuid,
         ledger: receivable_ledger
@@ -33,7 +33,7 @@ module AccountCreators
     def create_interest_revenue_account
       return if loan_application.interest_revenue_account.present?
 
-      account = office.accounts.revenues.create!(
+      account = office.accounts.revenue.create!(
         name: "Interest Income - #{loan_product.name} - #{SecureRandom.uuid}",
         code: "INT-#{loan_application.account_number}",
         ledger: interest_revenue_ledger

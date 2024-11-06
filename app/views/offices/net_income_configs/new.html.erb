@@ -1,9 +1,9 @@
 <%= simple_form_for @net_income_config, url: :office_net_income_configs do |f| %>
   <%= f.input :book_closing, collection: Offices::NetIncomeConfig.book_closings.keys.to_a.map{|a| [a.titleize, a] }, as: :radio_buttons %>
-  <%= f.input :net_surplus_account_id, collection: @office.accounts.equities.map{|a| [a.name, a.id] }, input_html: { class: 'chosen-select' } %>
-  <%= f.input :net_loss_account_id, collection: @office.accounts.equities.map{|a| [a.name, a.id] }, input_html: { class: 'chosen-select' } %>
-  <%= f.input :total_revenue_account_id, collection: @office.accounts.revenues.map{|a| [a.name, a.id] }, input_html: { class: 'chosen-select' } %>
-  <%= f.input :total_expense_account_id, collection: @office.accounts.expenses.map{|a| [a.name, a.id] }, input_html: { class: 'chosen-select' } %>
+  <%= f.input :net_surplus_account_id, collection: @office.accounts.equity.map{|a| [a.name, a.id] }, input_html: { class: 'chosen-select' } %>
+  <%= f.input :net_loss_account_id, collection: @office.accounts.equity.map{|a| [a.name, a.id] }, input_html: { class: 'chosen-select' } %>
+  <%= f.input :total_revenue_account_id, collection: @office.accounts.revenue.map{|a| [a.name, a.id] }, input_html: { class: 'chosen-select' } %>
+  <%= f.input :total_expense_account_id, collection: @office.accounts.expense.map{|a| [a.name, a.id] }, input_html: { class: 'chosen-select' } %>
 
 
   <%= f.submit "Save Config" %>

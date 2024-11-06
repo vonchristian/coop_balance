@@ -59,11 +59,11 @@ module Registries
     end
 
     def cash_account(row)
-      find_cooperative.accounts.assets.find_by(name: row['Cash Account'])
+      find_cooperative.accounts.asset.find_by(name: row['Cash Account'])
     end
 
     def interest_revenue_account(row)
-      find_cooperative.accounts.assets.find_by(name: row['Interest Revenue Account'])
+      find_cooperative.accounts.asset.find_by(name: row['Interest Revenue Account'])
     end
 
     def cut_off_date
