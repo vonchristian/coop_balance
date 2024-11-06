@@ -9,7 +9,7 @@ module Employees
 
     def self.cash_accounts
       accounts = pluck(:cash_account_id)
-      AccountingModule::Asset.where(id: accounts)
+      AccountingModule::Account.asset.where(id: accounts)
     end
 
     def self.recent
@@ -27,7 +27,7 @@ module Employees
     private
 
     def validate_asset_account?
-      errors.add(:cash_account_id, 'Must be an asset account') if AccountingModule::Account.find(cash_account_id).type != 'AccountingModule::Asset'
+      errors.add(:cash_account_id, 'Must be an asset account') if AccountingModule::Account.find(cash_account_id).account_type != 'asset'
     end
   end
 end

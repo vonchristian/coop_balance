@@ -24,7 +24,7 @@ module AccountCreators
     def create_receivable_account!
       return if loan.receivable_account.present?
 
-      account = office.accounts.assets.create!(
+      account = office.accounts.asset.create!(
         name: receivable_account_name,
         code: SecureRandom.uuid,
         ledger: receivable_ledger
@@ -35,7 +35,7 @@ module AccountCreators
     def create_interest_revenue_account!
       return if loan.interest_revenue_account.present?
 
-      account = office.accounts.revenues.create!(
+      account = office.accounts.revenue.create!(
         name: interest_revenue_name,
         code: SecureRandom.uuid,
         ledger: interest_revenue_ledger
@@ -46,7 +46,7 @@ module AccountCreators
     def create_penalty_revenue_account!
       return if loan.penalty_revenue_account.present?
 
-      account = office.accounts.revenues.create!(
+      account = office.accounts.revenue.create!(
         name: penalty_revenue_name,
         code: SecureRandom.uuid,
         ledger: penalty_revenue_ledger

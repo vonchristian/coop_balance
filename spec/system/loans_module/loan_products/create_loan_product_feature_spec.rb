@@ -9,7 +9,7 @@ describe 'Create Loan Product' do
   end
 
   it 'with valid attributes' do
-    create(:account, type: 'AccountingModule::Asset', name: 'Loans Receivable')
+    create(:asset, name: 'Loans Receivable')
 
     fill_in 'Name', with: 'Salary Loan'
     fill_in 'Description', with: 'description for loan'

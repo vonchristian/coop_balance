@@ -32,9 +32,9 @@ module AccountCreators
       expect(interest_revenue_ledger.accounts).to include(interest_revenue_account)
       expect(penalty_revenue_ledger.accounts).to include(penalty_revenue_account)
 
-      expect(office.accounts.assets).to include(receivable_account)
-      expect(office.accounts.revenues).to include(interest_revenue_account)
-      expect(office.accounts.revenues).to include(penalty_revenue_account)
+      expect(office.accounts.asset).to include(receivable_account)
+      expect(office.accounts.revenue).to include(interest_revenue_account)
+      expect(office.accounts.revenue).to include(penalty_revenue_account)
 
       expect(loan.accounts).to include(receivable_account)
       expect(loan.accounts).to include(interest_revenue_account)

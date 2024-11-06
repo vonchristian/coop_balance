@@ -96,8 +96,6 @@ Rails.application.routes.draw do
       resources :credit_entries, only: [:index], module: :accounts
     end
 
-    resources :assets, controller: 'accounts', type: 'AccountingModule::Asset'
-
     resources :entries do
       resources :cancellations, only: %i[new create], module: :entries
       resources :reversal_vouchers, only: %i[new create show], module: :entries

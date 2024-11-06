@@ -2,7 +2,7 @@
   <%= f.input :title %>
   <%= f.input :start_num %>
   <%= f.input :end_num %>
-  <%= f.input :receivable_ledger_id, collection: current_office.level_two_account_categories.assets.map{ |a| [a.title, a.id] }, input_html: { class: 'chosen-select' }, default: @loan_aging_group.receivable_ledger %>
-  
+  <%= f.input :receivable_ledger_id, collection: current_cooperative.ledgers.asset.map{ |a| [a.title, a.id] }, input_html: { class: 'chosen-select' }, default: @loan_aging_group.receivable_ledger %>
+
   <%= f.submit 'Update Loan Aging Group' %>
 <% end %>

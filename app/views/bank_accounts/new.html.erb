@@ -13,7 +13,7 @@
           <%= f.input :bank_address %>
           <%= f.input :account_number %>
           <%= f.input :cash_account_id, collection: current_user.cash_accounts.map{|a| [a.name, a.id] }, input_html: { class: 'chosen-select' } %>
-          <%= f.input :interest_revenue_account_id, collection: current_office.accounts.revenues.map{|a| [a.name, a.id] }, input_html: { class: 'chosen-select' } %>
+          <%= f.input :interest_revenue_account_id, collection: current_office.accounts.revenue.map{|a| [a.name, a.id] }, input_html: { class: 'chosen-select' } %>
       </div>
       <hr class="no-margin">
       <div class="card-body">

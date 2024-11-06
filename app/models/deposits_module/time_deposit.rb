@@ -28,17 +28,17 @@ module DepositsModule
 
     def self.liability_accounts
       ids = pluck(:liability_account_id)
-      AccountingModule::Liability.where(id: ids)
+      AccountingModule::Account.liability.where(id: ids)
     end
 
     def self.interest_expense_accounts
       ids = pluck(:interest_expense_account_id)
-      AccountingModule::Liability.where(id: ids)
+      AccountingModule::Account.liability.where(id: ids)
     end
 
     def self.break_contract_accounts
       ids = pluck(:interest_expense_account_id)
-      AccountingModule::Revenue.where(id: ids)
+      AccountingModule::Account.revenue.where(id: ids)
     end
 
     def self.total_balances(args = {})

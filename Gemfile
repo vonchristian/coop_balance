@@ -5,6 +5,8 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+gem 'rails', '~> 7.1', '>= 7.1.2'
+
 gem 'active_interaction', '~> 5.3'
 gem 'active_interaction-extras'
 gem 'ancestry'
@@ -36,9 +38,8 @@ gem 'prawn-icon'
 gem 'prawn-print'
 gem 'prawn-qrcode'
 gem 'prawn-table'
-gem 'puma', group: %i[development production]
+gem 'puma'
 gem 'pundit'
-gem 'rails', '~> 7.1', '>= 7.1.2'
 gem 'redis'
 gem 'roo', '2.7.0'
 gem 'rqrcode'

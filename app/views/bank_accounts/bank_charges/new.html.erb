@@ -19,7 +19,7 @@
       <%= f.input :bank_account_id, input_html: { value: @bank_account.id },as: :hidden %>
       <%= f.input :recorder_id, input_html: { value: current_user.id },as: :hidden %>
       <%= f.input :credit_account_id, input_html: { value: @bank_account.account_id } %>
-      <%= f.input :debit_account_id, collection: AccountingModule::Expense.all.map{|a| [a.name, a.id] } %>
+      <%= f.input :debit_account_id, collection: AccountingModule::Account.expense.map{|a| [a.name, a.id] } %>
 
       <div class="box-footer">
         <%= f.submit "Save Deposit", class: "btn btn-primary pull-right" %>

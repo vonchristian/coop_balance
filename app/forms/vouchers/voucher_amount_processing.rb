@@ -75,7 +75,7 @@ module Vouchers
     end
 
     def set_amount_type(amount_type)
-      if find_account.is_a?(AccountingModule::Revenue)
+      if find_account.account_type == 'revenue'
         'credit'
       else
         amount_type

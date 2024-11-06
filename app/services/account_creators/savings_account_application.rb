@@ -18,7 +18,7 @@ module AccountCreators
     def create_liability_account
       return if savings_account_application.liability_account.present?
 
-      account = office.accounts.liabilities.create!(
+      account = office.accounts.liability.create!(
         name: "#{saving_product.name} - #{savings_account_application.account_number}",
         code: SecureRandom.uuid,
         ledger: liability_ledger

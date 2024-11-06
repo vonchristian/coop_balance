@@ -18,8 +18,8 @@ module AccountCreators
       expect(receivable_account).not_to eql nil
       expect(interest_revenue_account).not_to eql nil
 
-      expect(office.accounts.assets).to include(receivable_account)
-      expect(office.accounts.revenues).to include(interest_revenue_account)
+      expect(office.accounts.asset).to include(receivable_account)
+      expect(office.accounts.revenue).to include(interest_revenue_account)
 
       expect(office_loan_product_aging_group.receivable_ledger.accounts).to include(receivable_account)
       expect(office_loan_product.interest_revenue_ledger.accounts).to include(interest_revenue_account)

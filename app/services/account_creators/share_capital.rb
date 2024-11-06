@@ -20,7 +20,7 @@ module AccountCreators
     def create_equity_account
       return if share_capital.equity_account_id.present?
 
-      account = office.accounts.equities.create!(
+      account = office.accounts.equity.create!(
         name: "#{share_capital_product.name} - (#{share_capital.subscriber_name} - #{share_capital.account_number}",
         code: SecureRandom.uuid,
         ledger: equity_ledger
