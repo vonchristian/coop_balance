@@ -10,21 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_17_113034) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_07_104752) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
-
-  create_table "account_budgets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "account_id"
-    t.decimal "proposed_amount"
-    t.integer "year"
-    t.uuid "cooperative_id"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.index ["account_id"], name: "index_account_budgets_on_account_id"
-    t.index ["cooperative_id"], name: "index_account_budgets_on_cooperative_id"
-  end
 
   create_table "account_running_balances", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "entry_id", null: false
@@ -58,7 +47,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_17_113034) do
     t.datetime "last_transaction_date", precision: nil
     t.uuid "ledger_id"
     t.string "account_type"
-    t.uuid "office_id", null: false
+    t.uuid "office_id"
     t.index ["account_type"], name: "index_accounts_on_account_type"
     t.index ["code"], name: "index_accounts_on_code", unique: true
     t.index ["ledger_id"], name: "index_accounts_on_ledger_id"
@@ -1468,8 +1457,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_17_113034) do
     t.string "account_number"
     t.datetime "date_opened", precision: nil
     t.string "account_owner_name"
-    t.datetime "created_at", precision: nil, default: "2024-04-13 10:25:50", null: false
-    t.datetime "updated_at", precision: nil, default: "2024-04-13 10:25:50", null: false
+    t.datetime "created_at", precision: nil, default: "2024-11-07 10:50:01", null: false
+    t.datetime "updated_at", precision: nil, default: "2024-11-07 10:50:01", null: false
     t.integer "status"
     t.uuid "office_id"
     t.string "subscriber_type"
@@ -1847,8 +1836,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_17_113034) do
     t.index ["token"], name: "index_vouchers_on_token"
   end
 
-  add_foreign_key "account_budgets", "accounts"
-  add_foreign_key "account_budgets", "cooperatives"
   add_foreign_key "account_running_balances", "accounts"
   add_foreign_key "account_running_balances", "entries"
   add_foreign_key "accountable_accounts", "accounts"

@@ -260,7 +260,6 @@ Rails.application.routes.draw do
   resources :program_subscription_registries, only: [:create],       module: [:registries]
 
   namespace :management_module do
-    resources :account_budgets, only: %i[index new create]
     resources :loan_protection_plan_providers, only: %i[new create], module: :configurations
 
     namespace :settings do
@@ -272,7 +271,6 @@ Rails.application.routes.draw do
       resources :programs, only: [:index]
       resources :store_fronts, only: [:index]
       resources :cooperative_services, only: [:index]
-      resources :account_budgets, only: [:index]
       resources :cooperative_products, only: [:index]
       resources :configurations, only: [:index]
       resources :data_migrations, only: [:index]

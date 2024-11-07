@@ -4,7 +4,6 @@ describe 'New loan term' do
   before do
     loan_officer  = create(:loan_officer)
     @loan         = create(:loan, office: loan_officer.office, cooperative: loan_officer.cooperative, term_id: nil)
-    binding.pry
     login_as(loan_officer, scope: :user)
     visit loan_path(@loan)
     click_link "#{@loan.id}-settings"

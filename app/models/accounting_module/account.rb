@@ -22,8 +22,6 @@ module AccountingModule
     has_many :entries,                       through: :amounts, source: :entry, class_name: 'AccountingModule::Entry'
     has_many :credit_entries,                through: :credit_amounts, source: :entry, class_name: 'AccountingModule::Entry'
     has_many :debit_entries,                 through: :debit_amounts, source: :entry, class_name: 'AccountingModule::Entry'
-
-    has_many :account_budgets
     has_many :running_balances, class_name: 'AccountingModule::RunningBalances::Account'
 
     validates :account_type, :name, :code, presence: true
@@ -131,7 +129,6 @@ module AccountingModule
     end
 
     def self.trial_balance(args = {})
-      binding.pry
       AccountingModule::Account.asset.balance(args) - (AccountingModule::Account.liability.balance(args) + AccountingModule::Account.equity.balance(args) + AccountingModule::Account.revenue.balance(args) - AccountingModule::Account.expense.balance(args))
     end
 
@@ -163,10 +160,6 @@ module AccountingModule
 
     def debits_balance(args = {})
       debit_amounts.balance(args)
-    end
-
-    def current_account_budget
-      account_budgets.current
     end
 
     def default_last_transaction_date
