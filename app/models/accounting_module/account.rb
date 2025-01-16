@@ -1,5 +1,6 @@
 module AccountingModule
   class Account < ApplicationRecord
+    self.inheritance_column = nil
     TYPES = %w[Asset Liability Equity Revenue Expense].freeze
     NORMAL_CREDIT_BALANCE = %w[equity liability revenue].freeze
     include PgSearch::Model
