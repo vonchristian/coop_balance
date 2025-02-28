@@ -141,6 +141,7 @@ GEM
     crass (1.0.6)
     cssbundling-rails (1.4.2)
       railties (>= 6.0.0)
+    csv (3.3.2)
     database_cleaner-active_record (2.2.0)
       activerecord (>= 5.a)
       database_cleaner-core (~> 2.0.0)
@@ -565,6 +566,7 @@ DEPENDENCIES
   caxlsx_rails
   chartkick
   cssbundling-rails (~> 1.2)
+  csv
   database_cleaner-active_record
   derailed_benchmarks
   devise!

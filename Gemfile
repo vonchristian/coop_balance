@@ -87,3 +87,4 @@ gem 'rack-mini-profiler', require: false
 
 gem 'matrix', '~> 0.4.2'
 gem 'sassc-rails'
+gem 'csv'
