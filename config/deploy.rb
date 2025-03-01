@@ -30,7 +30,7 @@ task deploy: :remote_environment do
     invoke :'bundle:install'
     invoke :'rails:db_migrate'
     command 'bundle config set force_ruby_platform true'
-    invoke :'rails:assets_precompile'
+    # invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
 
     on :launch do
