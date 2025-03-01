@@ -84,4 +84,4 @@ production:
   <<: *default
   database: coopledger_production
   username: deploy
-  password: <%= ENV["POSTGRES_PASSWORD"] %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD") %>
