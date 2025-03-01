@@ -14,7 +14,7 @@ gem 'autonumeric-rails'
 gem 'barby'
 gem 'bootsnap', require: false
 gem 'bootstrap', '~> 5.3.0.alpha3'
-gem 'caxlsx', '~> 3.0'
+gem 'caxlsx'
 gem 'caxlsx_rails'
 gem 'chartkick'
 gem 'cssbundling-rails', '~> 1.2'
