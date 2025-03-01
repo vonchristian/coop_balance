@@ -94,4 +94,4 @@ gem 'tailwindcss-ruby', '~> 4.0', '>= 4.0.9'
 gem "tailwindcss-rails", "~> 4.1"
 gem "responders"
 
-gem "nokogiri", "= 1.15.0"
+gem "nokogiri", "= 1.18.1"
