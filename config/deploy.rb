@@ -29,6 +29,7 @@ task deploy: :remote_environment do
     invoke :'deploy:link_shared_paths'
     invoke :'bundle:install'
     invoke :'rails:db_migrate'
+    command "bundle exec rails assets:clobber"
     invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
 
