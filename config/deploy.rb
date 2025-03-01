@@ -28,7 +28,8 @@ task deploy: :remote_environment do
     invoke :'git:clone'
     invoke :'deploy:link_shared_paths'
     invoke :'bundle:install'
-    command "bundle config set --local force_ruby_platform false"
+    command "gem install nokogiri --platform=ruby"
+    command "bundle config set force_ruby_platform true"
     invoke :'rails:db_migrate'
     invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
