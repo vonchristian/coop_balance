@@ -340,10 +340,6 @@ GEM
     rack (3.1.10)
     rack-mini-profiler (3.3.1)
       rack (>= 1.2.0)
-    rack-protection (4.1.1)
-      base64 (>= 0.1.0)
-      logger (>= 1.6.0)
-      rack (>= 3.0.0, < 4)
     rack-session (2.1.0)
       base64 (>= 0.1.0)
       rack (>= 3.0.0)
@@ -473,11 +469,6 @@ GEM
       websocket (~> 1.0)
     shoulda-matchers (6.4.0)
       activesupport (>= 5.2.0)
-    sidekiq (6.0.4)
-      connection_pool (>= 2.2.2)
-      rack (>= 2.0.0)
-      rack-protection (>= 2.0.0)
-      redis (>= 4.1.0)
     simple_form (5.3.1)
       actionpack (>= 5.2)
       activemodel (>= 5.2)
@@ -621,7 +612,6 @@ DEPENDENCIES
   sassc-rails
   select2-rails
   shoulda-matchers
-  sidekiq (< 7)
   simple_form
   simplecov
   spreadsheet
