@@ -84,4 +84,4 @@ production:
   <<: *default
   database: coopbooks_production
   username: deploy
-  password: deploy@coopbooks
+  password: <%= ENV.fetch("POSTGRES_PASSWORD") %>
