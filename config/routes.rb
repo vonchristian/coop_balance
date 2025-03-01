@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  require 'sidekiq/web'
-  mount Sidekiq::Web => '/sidekiq'
   devise_for :users, controllers: { sessions: 'users/sessions', registrations: 'management_module/settings/employees' }
 
   authenticated :user do
