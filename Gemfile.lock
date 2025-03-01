@@ -561,13 +561,13 @@ DEPENDENCIES
   autonumeric-rails
   barby
   bootsnap
-  bootstrap (~> 5.3.0.alpha3)
+  bootstrap
   bullet
   capybara
   caxlsx
   caxlsx_rails
   chartkick
-  cssbundling-rails (~> 1.2)
+  cssbundling-rails
   csv
   database_cleaner-active_record
   derailed_benchmarks
@@ -589,7 +589,7 @@ DEPENDENCIES
   nokogiri (~> 1.15)
   numbers_and_words
   pagy
-  pg (~> 1.1)
+  pg
   pg_search
   prawn
   prawn-icon
