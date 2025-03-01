@@ -5,8 +5,8 @@ require 'mina/rbenv'
 require 'mina/puma'
 
 set :whenever_name, 'production'
-set :domain,        '128.199.223.121'
-set :deploy_to,     '/var/www/kiphodan'
+set :domain,        '143.198.218.38'
+set :deploy_to,     '/var/www/coopledger'
 set :repository,    'git@github.com:vonchristian/coop_balance.git'
 set :branch,        'main'
 set :user,          'deploy'
@@ -28,8 +28,8 @@ task deploy: :remote_environment do
     invoke :'git:clone'
     invoke :'deploy:link_shared_paths'
     invoke :'bundle:install'
-    command "gem install nokogiri --platform=ruby"
-    command "bundle config set force_ruby_platform true"
+    # command "gem install nokogiri --platform=ruby"
+    # command "bundle config set force_ruby_platform true"
     invoke :'rails:db_migrate'
     invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
