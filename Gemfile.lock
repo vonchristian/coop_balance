@@ -623,7 +623,7 @@ DEPENDENCIES
   sprockets-rails
   stimulus-rails
   tailwindcss-rails (~> 4.1)
-  tailwindcss-ruby (~> 4.0)
+  tailwindcss-ruby (~> 4.0, >= 4.0.9)
   trix
   turbo-rails
   webdrivers (~> 4.0)
