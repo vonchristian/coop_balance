@@ -87,9 +87,9 @@ gem 'matrix', '~> 0.4.2'
 gem 'sassc-rails'
 gem 'csv'
 
-gem "tailwindcss-ruby", "3.4.13"
+gem 'tailwindcss-ruby', '~> 4.0', '>= 4.0.9'
 
-gem "tailwindcss-rails", "3.3.1"
+gem "tailwindcss-rails", "~> 4.1"
 gem "responders"
 
 gem "nokogiri", "~>1.15"
