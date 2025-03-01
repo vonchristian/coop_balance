@@ -31,7 +31,7 @@ task deploy: :remote_environment do
     # command "gem install nokogiri --platform=ruby"
     # command "bundle config set force_ruby_platform true"
     invoke :'rails:db_migrate'
-    invoke :'rails:assets_precompile'
+    # invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
 
     on :launch do

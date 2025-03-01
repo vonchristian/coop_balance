@@ -11,3 +11,9 @@
 }
 
 */
+@layer utilities {
+  /* Disable JIT */
+  @media (min-width: 40rem) {
+    /* add some styles if needed */
+  }
+}
