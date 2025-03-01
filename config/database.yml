@@ -82,6 +82,6 @@ test:
 #
 production:
   <<: *default
-  database: coopbooks_production
+  database: coopledger_production
   username: deploy
   password: <%= ENV.fetch("POSTGRES_PASSWORD") %>
