@@ -29,7 +29,6 @@ task deploy: :remote_environment do
     invoke :'deploy:link_shared_paths'
     invoke :'bundle:install'
     invoke :'rails:db_migrate'
-    command "gem pristine nokogiri"
     invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
 
