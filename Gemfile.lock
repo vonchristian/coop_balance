@@ -174,7 +174,6 @@ GEM
       railties (>= 5.0.0)
     faker (3.5.1)
       i18n (>= 1.8.11, < 2)
-    ffi (1.17.1)
     ffi (1.17.1-aarch64-linux-gnu)
     ffi (1.17.1-aarch64-linux-musl)
     ffi (1.17.1-arm-linux-gnu)
@@ -245,7 +244,6 @@ GEM
       benchmark
       logger
     mini_mime (1.1.5)
-    mini_portile2 (2.8.8)
     minitest (5.25.4)
     monetize (1.13.0)
       money (~> 6.12)
@@ -268,9 +266,6 @@ GEM
     net-smtp (0.5.1)
       net-protocol
     nio4r (2.7.4)
-    nokogiri (1.18.3)
-      mini_portile2 (~> 2.8.2)
-      racc (~> 1.4)
     nokogiri (1.18.3-aarch64-linux-gnu)
       racc (~> 1.4)
     nokogiri (1.18.3-aarch64-linux-musl)
@@ -498,7 +493,6 @@ GEM
     tailwindcss-rails (3.3.1)
       railties (>= 7.0.0)
       tailwindcss-ruby (~> 3.0)
-    tailwindcss-ruby (3.4.13)
     tailwindcss-ruby (3.4.13-aarch64-linux)
     tailwindcss-ruby (3.4.13-arm-linux)
     tailwindcss-ruby (3.4.13-arm64-darwin)
@@ -540,12 +534,13 @@ GEM
     zeitwerk (2.7.2)
 
 PLATFORMS
+  aarch64-linux
   aarch64-linux-gnu
   aarch64-linux-musl
+  arm-linux
   arm-linux-gnu
   arm-linux-musl
   arm64-darwin
-  ruby
   x86_64-darwin
   x86_64-linux
   x86_64-linux-gnu
