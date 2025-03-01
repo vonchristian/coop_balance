@@ -576,6 +576,7 @@ DEPENDENCIES
   mina-whenever
   mini_magick
   money-rails
+  nokogiri (~> 1.15)
   numbers_and_words
   pagy
   pg (~> 1.1)
