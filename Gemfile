@@ -18,7 +18,7 @@ gem 'caxlsx', '~> 3.0'
 gem 'caxlsx_rails'
 gem 'chartkick'
 gem 'cssbundling-rails', '~> 1.2'
-gem 'devise', github: 'heartcombo/devise', branch: 'main'
+gem 'devise'
 gem 'dotiw'
 gem 'friendly_id'
 gem 'gretel'
@@ -88,3 +88,8 @@ gem 'rack-mini-profiler', require: false
 gem 'matrix', '~> 0.4.2'
 gem 'sassc-rails'
 gem 'csv'
+
+gem "tailwindcss-ruby", "~> 4.0"
+
+gem "tailwindcss-rails", "~> 4.1"
+gem "responders"

@@ -7,6 +7,7 @@
 import './add_jquery'
 import "core-js/stable";
 import "regenerator-runtime/runtime";
+import 'preline';
 require("@rails/activestorage").start()
 
 import "chartkick/chart.js"
