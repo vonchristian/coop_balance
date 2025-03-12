@@ -4,7 +4,7 @@
   <div class="col-md-12">
     <div class="card">
       <div class="card-header no-border">
-        <h3 class="card-title"> <%= current_office.name %> - <%= current_office.normalized_type %></h3>
+        <h3 class="card-title"> <%= current_office.name %> - <%= current_office.office_type %></h3>
         <br>
         <ul class="nav nav-tabs">
           <li class="nav-item"><%= link_to 'Summary', treasury_module_index_path, class: "nav-link #{ 'active' if current_page?(treasury_module_index_path)}" %></li>

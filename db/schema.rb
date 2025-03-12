@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_11_233245) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_12_001254) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -1106,7 +1106,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_11_233245) do
   end
 
   create_table "offices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "type"
     t.string "name"
     t.uuid "cooperative_id"
     t.string "address"
@@ -1116,7 +1115,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_11_233245) do
     t.string "office_type"
     t.index ["cooperative_id"], name: "index_offices_on_cooperative_id"
     t.index ["office_type"], name: "index_offices_on_office_type"
-    t.index ["type"], name: "index_offices_on_type"
   end
 
   create_table "orders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

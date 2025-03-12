@@ -45,15 +45,5 @@ module Cooperatives
     delegate :net_surplus_account, :net_loss_account, :total_revenue_account, :total_expense_account, :interest_on_capital_account, to: :net_income_config
 
     delegate :cash_accounts, to: :employees
-
-    def normalized_type
-      type.to_s.gsub('Cooperatives::Offices::', '')
-    end
-
-    def self.types
-      ['Cooperatives::Offices::MainOffice',
-       'Cooperatives::Offices::SatelliteOffice',
-       'Cooperatives::Offices::BranchOffice']
-    end
   end
 end
