@@ -89,7 +89,6 @@ end
 gem "rack-mini-profiler", require: false
 
 gem "matrix", "~> 0.4.2"
-gem "sassc-rails"
 gem "csv"
 
 gem "tailwindcss-ruby", "~> 4.0", ">= 4.0.9"
