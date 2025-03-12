@@ -322,6 +322,11 @@ GEM
     prawn-table (0.2.2)
       prawn (>= 1.3.0, < 3.0.0)
     prettyprint (0.2.0)
+    propshaft (1.1.0)
+      actionpack (>= 7.0.0)
+      activesupport (>= 7.0.0)
+      rack
+      railties (>= 7.0.0)
     pry (0.15.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -627,6 +632,7 @@ DEPENDENCIES
   prawn-print
   prawn-qrcode
   prawn-table
+  propshaft
   pry-rails
   puma
   pundit
@@ -648,7 +654,6 @@ DEPENDENCIES
   solid_cache
   solid_queue
   spreadsheet
-  sprockets-rails
   stimulus-rails
   tailwindcss-rails (~> 4.1)
   tailwindcss-ruby (~> 4.0, >= 4.0.9)
