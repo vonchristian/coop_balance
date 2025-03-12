@@ -6,7 +6,7 @@ require "rails/all"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module CoopBalance
+module CoopLedger
   class Application < Rails::Application
     Rails.autoloaders.main.ignore("#{Rails.root}/app/node_modules")
     # Initialize configuration defaults for originally generated Rails version.

@@ -40,7 +40,7 @@ module Cooperatives
     has_many :office_ledgers, class_name: "Offices::Ledger"
     has_many :ledgers, through: :office_ledgers
     validates :name, uniqueness: true
-    validates :name, :type, :contact_number, :address, presence: true
+    validates :name, :contact_number, :address, presence: true
 
     delegate :net_surplus_account, :net_loss_account, :total_revenue_account, :total_expense_account, :interest_on_capital_account, to: :net_income_config
 
